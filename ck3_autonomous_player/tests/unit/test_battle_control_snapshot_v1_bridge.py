@@ -3178,13 +3178,17 @@ class BattleControlSnapshotV1ContractTests(unittest.TestCase):
             expected_snapshot_revision=NATIVE_REVISION,
         )
 
-    def test_step_is_canonical_and_positive_full_cunit_bound(self) -> None:
+    def test_step_is_canonical_and_nonnegative_full_cunit_bound(self) -> None:
         self.assertEqual(query_battle_control_snapshot_v1_step(SUBJECT), STEP)
         self.assertEqual(
             parse_query_battle_control_snapshot_v1_step(STEP), SUBJECT
         )
+        self.assertEqual(
+            parse_query_battle_control_snapshot_v1_step(
+                query_battle_control_snapshot_v1_step(0)
+            ), 0
+        )
         for malformed in (
-            "query-battle-control-snapshot-v1-0",
             "query-battle-control-snapshot-v1-01",
             "query-battle-control-snapshot-v1--1",
             "query-battle-control-snapshot-v1-2147483648",

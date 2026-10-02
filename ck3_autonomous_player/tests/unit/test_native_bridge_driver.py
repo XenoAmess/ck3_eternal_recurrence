@@ -977,6 +977,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
 
     def test_split_army_half_step_parser_is_exact(self) -> None:
+        self.assertEqual(split_army_half_step(0), "split-army-half-0")
+        self.assertEqual(parse_split_army_half_step("split-army-half-0"), 0)
         self.assertEqual(split_army_half_step(1), "split-army-half-1")
         self.assertEqual(
             split_army_half_step(2**31 - 1),
@@ -990,7 +992,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             True,
             "",
             "split-army-half-",
-            "split-army-half-0",
+            "split-army-half-00",
             "split-army-half--1",
             "split-army-half-+1",
             "split-army-half-1 ",
@@ -1002,7 +1004,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             with self.subTest(step=malformed):
                 self.assertIsNone(parse_split_army_half_step(malformed))
                 self.assertFalse(is_native_war_step(malformed))
-        for malformed_id in (0, -1, 2**31, True):
+        for malformed_id in (-1, 2**31, True):
             with self.subTest(army_id=malformed_id):
                 with self.assertRaises(ValueError):
                     split_army_half_step(malformed_id)
@@ -1037,6 +1039,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
 
     def test_merge_armies_step_parser_is_exact(self) -> None:
+        self.assertEqual(parse_merge_armies_step(merge_armies_step(0, 2)), (0, 2))
+        self.assertEqual(parse_merge_armies_step(merge_armies_step(1, 0)), (1, 0))
         self.assertEqual(
             merge_armies_step(1, 2), "merge-armies-1-with-2"
         )
@@ -1055,8 +1059,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             "",
             "merge-armies-",
             "merge-armies-1",
-            "merge-armies-0-with-2",
-            "merge-armies-1-with-0",
+            "merge-armies-00-with-2",
+            "merge-armies-1-with-00",
             "merge-armies--1-with-2",
             "merge-armies-+1-with-2",
             "merge-armies-1-with--2",
@@ -1076,11 +1080,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 self.assertIsNone(parse_merge_armies_step(malformed))
                 self.assertFalse(is_native_war_step(malformed))
         for destination, source in (
-            (0, 1),
             (-1, 1),
             (2**31, 1),
             (True, 1),
-            (1, 0),
             (1, -1),
             (1, 2**31),
             (1, True),
@@ -3796,7 +3798,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
         self.assertFalse(
             _is_deferred_read_only_history_step(
-                "preview-move-army-0-to-2585"
+                "preview-move-army-00-to-2585"
             )
         )
         self.assertFalse(

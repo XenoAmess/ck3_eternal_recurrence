@@ -2,6 +2,12 @@
 
 from __future__ import annotations
 
+from .public_unit_contract import (
+    public_cunit_id as _public_cunit_id,
+    public_cunit_ids as _public_cunit_ids,
+    canonical_public_cunit_decimal as _canonical_public_cunit_decimal,
+)
+
 
 QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY = (
     "game.command.query-battle-control-snapshot-v1-N"
@@ -267,14 +273,14 @@ def query_battle_control_snapshot_v1_step(
     subject_public_cunit_id: int,
 ) -> str:
     """Build the canonical query literal for one public CUnitID."""
-    subject = _positive_int32(
+    subject = _public_cunit_id(
         subject_public_cunit_id, "subject_public_cunit_id"
     )
     return f"{QUERY_BATTLE_CONTROL_SNAPSHOT_V1_STEP_PREFIX}{subject}"
 
 
 def parse_query_battle_control_snapshot_v1_step(step: object) -> int | None:
-    """Parse only the canonical positive-decimal query spelling."""
+    """Parse only the canonical public CUnit decimal query spelling."""
     if not isinstance(step, str) or not step.startswith(
         QUERY_BATTLE_CONTROL_SNAPSHOT_V1_STEP_PREFIX
     ):
@@ -282,7 +288,7 @@ def parse_query_battle_control_snapshot_v1_step(step: object) -> int | None:
     payload = step.removeprefix(
         QUERY_BATTLE_CONTROL_SNAPSHOT_V1_STEP_PREFIX
     )
-    if not _canonical_positive_decimal(payload):
+    if not _canonical_public_cunit_decimal(payload):
         return None
     subject = int(payload)
     return subject if subject <= 2**31 - 1 else None
@@ -296,7 +302,7 @@ def normalize_battle_control_snapshot_v1(
     expected_snapshot_revision: int,
 ) -> dict[str, object]:
     """Validate one complete, paused, application-main battle frame."""
-    expected_subject = _positive_int32(
+    expected_subject = _public_cunit_id(
         expected_subject_public_cunit_id,
         "expected_subject_public_cunit_id",
     )
@@ -329,7 +335,7 @@ def normalize_battle_control_snapshot_v1(
         value.get("observed_date_raw"),
         "battle_control_snapshot.observed_date_raw",
     )
-    subject = _positive_int32(
+    subject = _public_cunit_id(
         value.get("subject_public_cunit_id"),
         "battle_control_snapshot.subject_public_cunit_id",
     )
@@ -350,7 +356,7 @@ def normalize_battle_control_snapshot_v1(
     province_id = _positive_int32(
         value.get("province_id"), "battle_control_snapshot.province_id"
     )
-    selected_public_cunit_id = _positive_int32(
+    selected_public_cunit_id = _public_cunit_id(
         value.get("selected_public_cunit_id"),
         "battle_control_snapshot.selected_public_cunit_id",
     )
@@ -374,11 +380,11 @@ def normalize_battle_control_snapshot_v1(
     side_scope = value.get("side_scope")
     if side_scope not in {"full_side", "owner_subset"}:
         raise ValueError("battle_control_snapshot.side_scope is unknown")
-    affected_public_cunit_ids = _positive_int32_list(
+    affected_public_cunit_ids = _public_cunit_ids(
         value.get("affected_public_cunit_ids_in_stored_order"),
         "battle_control_snapshot.affected_public_cunit_ids_in_stored_order",
     )
-    unaffected_public_cunit_ids = _positive_int32_list(
+    unaffected_public_cunit_ids = _public_cunit_ids(
         value.get("unaffected_same_side_public_cunit_ids_in_stored_order"),
         (
             "battle_control_snapshot."
@@ -805,7 +811,7 @@ def normalize_active_combat_resume_inputs_v1(
     source_checks = {
         "snapshot_revision": _positive_uint64,
         "observed_date_raw": _signed_int64,
-        "subject_public_cunit_id": _positive_int32,
+        "subject_public_cunit_id": _public_cunit_id,
         "subject_native_carmy_id": _positive_int32,
         "combat_id": _full_component_id,
         "province_id": _positive_int32,
@@ -878,7 +884,7 @@ def normalize_active_combat_resume_inputs_v1(
         else:
             raise ValueError(f"{bounds_name} has an invalid status")
         armies_key = f"side_{index}_ordered_public_cunit_ids"
-        armies = _positive_int32_list(
+        armies = _public_cunit_ids(
             observed[armies_key], f"{name}.observed.{armies_key}"
         )
         expected_armies = [
@@ -936,7 +942,7 @@ def normalize_active_combat_resume_inputs_v1(
             ],
         }
         for key, expected in expected_lists.items():
-            actual = _positive_int32_list(mapping[key], f"{mapping_name}.{key}")
+            actual = _public_cunit_ids(mapping[key], f"{mapping_name}.{key}")
             if actual != expected:
                 raise ValueError(f"{mapping_name}.{key} disagrees with battle frame")
     has_counter = "active_counter_inputs_v1" in observed
@@ -1008,7 +1014,7 @@ def _normalize_actual_hard_sides(
             row["commander_character_id"],
             f"{row_name}.commander_character_id",
         )
-        army_ids = _positive_int32_list(
+        army_ids = _public_cunit_ids(
             row["ordered_army_ids"], f"{row_name}.ordered_army_ids"
         )
         expected_army_ids = [
@@ -1435,7 +1441,7 @@ def _normalize_armies(
             "native_carmy_id": _positive_int32(
                 row.get("native_carmy_id"), f"{row_name}.native_carmy_id"
             ),
-            "public_cunit_id": _positive_int32(
+            "public_cunit_id": _public_cunit_id(
                 row.get("public_cunit_id"), f"{row_name}.public_cunit_id"
             ),
             "owner_character_id": _positive_int32(
@@ -1484,7 +1490,7 @@ def _normalize_entries(
         army = army_by_native.get(native_carmy_id)
         if army is None:
             raise ValueError(f"{row_name} belongs to an army on another side")
-        public_cunit_id = _positive_int32(
+        public_cunit_id = _public_cunit_id(
             row.get("public_cunit_id"), f"{row_name}.public_cunit_id"
         )
         owner_character_id = _positive_int32(

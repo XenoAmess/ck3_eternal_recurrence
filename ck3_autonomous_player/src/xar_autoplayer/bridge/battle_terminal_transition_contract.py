@@ -2,6 +2,11 @@
 
 from __future__ import annotations
 
+from .public_unit_contract import (
+    public_cunit_id as _public_cunit_id,
+    public_cunit_ids as _public_cunit_ids,
+)
+
 import copy
 from typing import Final
 
@@ -256,7 +261,7 @@ def query_battle_terminal_transition_v1_step(
     """Encode the two exact identities and optional journal cursor."""
 
     prior_combat_id = _full_component_id(prior_combat_id, "prior_combat_id")
-    subject_public_cunit_id = _positive_int32(
+    subject_public_cunit_id = _public_cunit_id(
         subject_public_cunit_id, "subject_public_cunit_id"
     )
     cursor_wire = 0
@@ -298,7 +303,7 @@ def parse_query_battle_terminal_transition_v1_step(
         -(2**31) <= prior_combat_id <= 2**31 - 1
         and prior_combat_id != -1
         and str(prior_combat_id) == parts[0]
-        and 1 <= subject_public_cunit_id <= 2**31 - 1
+        and 0 <= subject_public_cunit_id <= 2**31 - 1
         and str(subject_public_cunit_id) == parts[1]
         and 0 <= cursor_wire <= 2**64 - 1
         and str(cursor_wire) == parts[2]
@@ -594,7 +599,7 @@ def _normalize_prior(
     attacker_ids = (
         None
         if attacker_ids_value is None
-        else _ordered_positive_ids(
+        else _public_cunit_ids(
             attacker_ids_value,
             "battle_terminal_transition.prior."
             "attacker_public_cunit_ids_in_stored_order",
@@ -604,7 +609,7 @@ def _normalize_prior(
     defender_ids = (
         None
         if defender_ids_value is None
-        else _ordered_positive_ids(
+        else _public_cunit_ids(
             defender_ids_value,
             "battle_terminal_transition.prior."
             "defender_public_cunit_ids_in_stored_order",
@@ -904,7 +909,7 @@ def _normalize_successor(
         successor.get("selected_successor_combat_id"),
         "battle_terminal_transition.successor.selected_successor_combat_id",
     )
-    overlap = _ordered_positive_ids(
+    overlap = _public_cunit_ids(
         successor.get("participant_overlap_public_cunit_ids_in_prior_order"),
         "battle_terminal_transition.successor."
         "participant_overlap_public_cunit_ids_in_prior_order",
@@ -993,7 +998,7 @@ def normalize_battle_terminal_transition_v1(
     expected_prior_combat_id = _full_component_id(
         expected_prior_combat_id, "expected_prior_combat_id"
     )
-    expected_subject_public_cunit_id = _positive_int32(
+    expected_subject_public_cunit_id = _public_cunit_id(
         expected_subject_public_cunit_id,
         "expected_subject_public_cunit_id",
     )
@@ -1049,7 +1054,7 @@ def normalize_battle_terminal_transition_v1(
         frame.get("prior_combat_id"),
         "battle_terminal_transition.prior_combat_id",
     )
-    subject_public_cunit_id = _positive_int32(
+    subject_public_cunit_id = _public_cunit_id(
         frame.get("subject_public_cunit_id"),
         "battle_terminal_transition.subject_public_cunit_id",
     )

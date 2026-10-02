@@ -1,0 +1,423 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "episode03-siege-progress-12003",
+  "question": "For the single recorded .3 siege, how do current/total work produce progress and days, and which ordinary-speed inputs can be independently observed at the same paused endpoint?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.3",
+    "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+  },
+  "observation": {
+    "mode": "paused-snapshot",
+    "actor_kind": "engine",
+    "owner_scope": "Only the root-selected active WarID/objective province/SiegeID in the authorized episode03 recording run; no guessed or historical fixture IDs.",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "Bind full WarID/SiegeID, exact Province back-pointer contract, nullable public ArmyID, episode/session/revision/date/frame; discard comparison on reload, siege completion/replacement or identity mismatch.",
+    "producer_trigger": "paused-query",
+    "producer": "Owning-thread paused rich ReadObjectiveProvince snapshot reads cached current work and current native total/progress/days getters; previous daily producer is not awaited in pause.",
+    "caller": "Root-owned managed native snapshot via tools actually advertised by the loaded exact .3 DLL; ck3_take_snapshot({}) preferred, ck3_get_war_state({}) only as the existing slice. Never call an unreviewed RVA or historical province-local command.",
+    "consumer": "Read-only comparison ledger and episode03 narration for this siege; no counter-policy implementation or automatic army decision.",
+    "cache_lifetime": "The same paused endpoint, current full identities and loaded build only. Resume, reload, object replacement or changed endpoint invalidates cache reuse.",
+    "expected_signal": "Native current/total/progress raw+scale, nullable days, garrison/eligible besiegers/fort/occupation and assault boundary, paired with same-endpoint original GUI normal daily breakdown, progress/time/fort/troop/phase/event tooltips.",
+    "zero_sample_meaning": "siege_observable=false is unobservable; true with active_siege=null means validated no-siege sentinel. days_left=null is unavailable/blocked, not zero days. Missing normal daily JSON is an interface gap, not zero speed.",
+    "stop_condition": "At most two snapshot reads and one GUI tooltip set per paused endpoint; missing fields, wrong build, inconsistent identity or unobservable graph stop that comparison. This plan neither advances date nor starts/stops assault. Any optional A/B daily endpoints are created separately by the root-authorized recording run.",
+    "runtime_window_ref": "Root episode03 task delegation on 2026-10-02 authorizes preparation for its managed recording run; this agent and this check perform no runtime action. Root owns separate fresh offline/desktop/recording evidence and actual session binding."
+  },
+  "evidence": [
+    {
+      "id": "exact-exe",
+      "layer": "exact-build",
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Independently binds actual installed .3 EXE bytes, not a running process."
+    },
+    {
+      "id": "static-receipt",
+      "layer": "offline-fixture",
+      "path": "D:\\ck3-war-episode03-20261002-a01\\siege-offline-static-check.json",
+      "sha256": "126888b8d05c016f8ecb8a2aa14e8b993bfb339f6f2790d7ee143c93cfa0e8bd",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "13 .2 province anchors and 24 instruction slices match current .3 bytes; frozen source hashes and bounded span coverage only."
+    },
+    {
+      "id": "semantic-ledger",
+      "layer": "source-contract",
+      "path": "D:\\we3\\docs\\ck3-native-ai\\episode03-siege-progress-1.20.0.3.md",
+      "sha256": "83517d2dff377371148c737dd1c944c7bf3d591778ec451822a75d0ffc1c3824",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Authored manual disassembly interpretation, finite fixed-point equations, input/capability boundaries and pending live cases; tool does not verify author truth."
+    },
+    {
+      "id": "defines",
+      "layer": "source-contract",
+      "path": "D:\\ck3-war-episode03-20261002-a01\\offline-siege-sources\\defines.txt",
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Current original NSiege/NHolding numeric constants; source comments may be stale and are checked against exact native accessors."
+    },
+    {
+      "id": "stock-gui",
+      "layer": "source-contract",
+      "path": "D:\\ck3-war-episode03-20261002-a01\\offline-siege-sources\\gui.gui",
+      "sha256": "8236d9d1ca373dc19d9e138948864b84887a4516756e1b293f26e2cd88c6b0b9",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Original siege bindings and tooltip locators; no callback registration or live GUI proof."
+    },
+    {
+      "id": "stock-zh",
+      "layer": "source-contract",
+      "path": "D:\\ck3-war-episode03-20261002-a01\\offline-siege-sources\\chinese.yml",
+      "sha256": "d332a17e5facc1d231bf22ae1241c405bc1ae2fe1f2f399c9915755ff7844b59",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Original event/time/daily display contract, including one-decimal GUI normal speed."
+    },
+    {
+      "id": "province-reader",
+      "layer": "source-contract",
+      "path": "D:\\ck3-war-episode03-20261002-a01\\offline-siege-sources\\province-reader.cpp",
+      "sha256": "975c9db6743af49fbddc8fbc3afc12fde20265fa5a112dfe6fe656e84f3e1c15",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Validated generation/back-pointer rich read chain and JSON observation/null boundaries."
+    },
+    {
+      "id": "descriptor-3",
+      "layer": "source-contract",
+      "path": "D:\\ck3-war-episode03-20261002-a01\\offline-siege-sources\\adapter-12003.cpp",
+      "sha256": "f255c46744b7fc4cfd591b664ce791a4b78a0aa97ff06e132336602e935d2559",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Independent .3 SHA gate and explicit .2 descriptor capability reuse."
+    },
+    {
+      "id": "descriptor-2",
+      "layer": "source-contract",
+      "path": "D:\\ck3-war-episode03-20261002-a01\\offline-siege-sources\\adapter-12002.cpp",
+      "sha256": "73d66ca49908aeabc9a172fe61214da797465bfa5b8a790c2573c73d4a37b38e",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Inherited objective siege capabilities; no historical province-local command advertisement."
+    },
+    {
+      "id": "public-route",
+      "layer": "source-contract",
+      "path": "D:\\ck3-war-episode03-20261002-a01\\offline-siege-sources\\public-siege-route-contract.json",
+      "sha256": "7679f3a73a72826dbb292605b6a2e0c5aad893bb6d93bd52918cddfc8a7ef0c8",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Frozen source serializer and existing MCP snapshot/capabilities/war-state slices; source only, not loaded DLL advertisement."
+    },
+    {
+      "id": "progress-span",
+      "layer": "exact-build",
+      "path": "D:\\ck3-war-episode03-20261002-a01\\offline-siege-functions\\span-0251C9C0-progress_fraction.json",
+      "sha256": "a6e0a2aebf8210190a26c87425ee3f18c3fb2313874641ab235f008253be52cc",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Exact bounded progress fraction instructions, manually interpreted with semantic-ledger."
+    },
+    {
+      "id": "days-span",
+      "layer": "exact-build",
+      "path": "D:\\ck3-war-episode03-20261002-a01\\offline-siege-functions\\span-0251CB00-days_left.json",
+      "sha256": "9d6dfe27adb5519bc757c52c539f76afa54f92a1763eba4f13a483d75de65af2",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Exact bounded days getter including block check, current inputs, Q division and positive fractional rounding."
+    },
+    {
+      "id": "blocked-span",
+      "layer": "exact-build",
+      "path": "D:\\ck3-war-episode03-20261002-a01\\offline-siege-functions\\span-0251CF70-blocked.json",
+      "sha256": "edb3f1d3031cae5393f5635826da8525586c57eac32d46cc28fbfcf71e1ad968",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Exact bounded less-than garrison and unresolved Province sentinel branches."
+    },
+    {
+      "id": "total-function",
+      "layer": "exact-build",
+      "path": "D:\\ck3-war-episode03-20261002-a01\\offline-siege-functions\\function-0251DD20.json",
+      "sha256": "4a4816d876085c3ec8bd800fefb09574914bdaf4b8ae635ab86de5ddca08ab04",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Total getter exact bytes with current/effective-max garrison ratio; full modifier name remains open."
+    },
+    {
+      "id": "daily-function",
+      "layer": "exact-build",
+      "path": "D:\\ck3-war-episode03-20261002-a01\\offline-siege-functions\\function-0251F170.json",
+      "sha256": "0d42394065f4e60bdad49a02e92f25931d8c7657c1f5eeff6c126bf903a20531",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Ordinary daily exact instruction sequence; modifiers remain bounded unknown inputs."
+    },
+    {
+      "id": "fort-function",
+      "layer": "exact-build",
+      "path": "D:\\ck3-war-episode03-20261002-a01\\offline-siege-functions\\function-0251FD60.json",
+      "sha256": "b69688c8d8074ec5a0873e3495953a1a72f9e7edea11097fcb3e20270ae9fcd7",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Exact fort threshold loop and sequential fixed point multiplication."
+    },
+    {
+      "id": "maa-span",
+      "layer": "exact-build",
+      "path": "D:\\ck3-war-episode03-20261002-a01\\offline-siege-functions\\span-0247ECE0-eligible_regiment_siege_sum.json",
+      "sha256": "add2296e119606c3a93a6e6079578d5250ffc45201ada4585a92b83126d02470",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Eligible effective regiment value and current count summation."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "build",
+      "label": "Exact installed .3 EXE and source descriptor"
+    },
+    {
+      "id": "province",
+      "label": "Selected paused objective province"
+    },
+    {
+      "id": "siege",
+      "label": "Validated full SiegeID and Province back-pointer"
+    },
+    {
+      "id": "work",
+      "label": "Current work and current total work"
+    },
+    {
+      "id": "fraction",
+      "label": "Fixed-point progress fraction"
+    },
+    {
+      "id": "daily",
+      "label": "Ordinary daily getter and finite input contract"
+    },
+    {
+      "id": "days",
+      "label": "Current remaining days or blocked null"
+    },
+    {
+      "id": "modifiers",
+      "label": "Unclosed effective capacity and daily modifier roles"
+    },
+    {
+      "id": "gui",
+      "label": "Original siege tooltip and event/phase definitions"
+    },
+    {
+      "id": "loaded",
+      "label": "Actual loaded .3 advertisement and matching paused endpoint"
+    },
+    {
+      "id": "pair",
+      "label": "Separately authorized A/B daily endpoint comparison"
+    },
+    {
+      "id": "events",
+      "label": "Full phase/event update producer"
+    },
+    {
+      "id": "completion",
+      "label": "Current .3 occupation and siege completion postcondition"
+    }
+  ],
+  "edges": [
+    {
+      "id": "descriptor-route",
+      "from": "build",
+      "to": "province",
+      "label": "Source advertises objective province siege snapshot through independently gated .3 adapter",
+      "status": "static-confirmed",
+      "evidence": [
+        "semantic-ledger",
+        "descriptor-3",
+        "descriptor-2",
+        "exact-exe"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "bind-generation",
+      "from": "province",
+      "to": "siege",
+      "label": "Full ID, magic and exact back-pointer validation; absence and unobservable are distinct",
+      "status": "static-confirmed",
+      "evidence": [
+        "province-reader",
+        "static-receipt",
+        "semantic-ledger"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "read-work",
+      "from": "siege",
+      "to": "work",
+      "label": "Cached current plus native recomputed total including current/effective-max garrison ratio",
+      "status": "static-confirmed",
+      "evidence": [
+        "total-function",
+        "province-reader",
+        "defines",
+        "semantic-ledger"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "derive-fraction",
+      "from": "work",
+      "to": "fraction",
+      "label": "Fixed-point min(current,total)/total; zero-total branch is zero",
+      "status": "static-confirmed",
+      "evidence": [
+        "progress-span",
+        "semantic-ledger"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "daily-inputs",
+      "from": "siege",
+      "to": "daily",
+      "label": "Finite ordinary daily components, modifier placeholders, fort factor, final minimum",
+      "status": "static-confirmed",
+      "evidence": [
+        "daily-function",
+        "fort-function",
+        "maa-span",
+        "defines",
+        "semantic-ledger"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "remaining-days",
+      "from": "daily",
+      "to": "days",
+      "label": "Blocked sentinel or remaining-work Q division then positive fractional rounding",
+      "status": "static-confirmed",
+      "evidence": [
+        "days-span",
+        "blocked-span",
+        "province-reader",
+        "semantic-ledger"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "modifier-closure",
+      "from": "daily",
+      "to": "modifiers",
+      "label": "Unknown exact names/roles/conditional producers for the bounded modifier inputs",
+      "status": "unknown",
+      "evidence": [
+        "daily-function",
+        "total-function",
+        "semantic-ledger"
+      ],
+      "open_question": "Close capacity enum0x1D8 and daily enums0x11E/11F/120 with source role/producer evidence before any full-speed simulator claim."
+    },
+    {
+      "id": "stock-tooltip",
+      "from": "days",
+      "to": "gui",
+      "label": "Original progress/daily/time/fort and phase/event display bindings are locatable",
+      "status": "static-confirmed",
+      "evidence": [
+        "stock-gui",
+        "stock-zh",
+        "defines",
+        "semantic-ledger"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "live-alignment",
+      "from": "gui",
+      "to": "loaded",
+      "label": "Unknown matching current .3 JSON, actual advertised tools and same paused GUI readback",
+      "status": "unknown",
+      "evidence": [
+        "public-route",
+        "descriptor-3",
+        "descriptor-2",
+        "semantic-ledger"
+      ],
+      "open_question": "Root must bind actual loaded DLL/features and record same-endpoint native/GUI bytes; source presence is not advertisement/live confirmation."
+    },
+    {
+      "id": "daily-pair",
+      "from": "loaded",
+      "to": "pair",
+      "label": "Unknown one-day work delta with stable identity and classified input/event changes",
+      "status": "unknown",
+      "evidence": [
+        "semantic-ledger"
+      ],
+      "open_question": "Optional A/B endpoints require separately authorized recording/date advancement, verified time units and no hidden event/input change to compare against getter D."
+    },
+    {
+      "id": "event-producer",
+      "from": "gui",
+      "to": "events",
+      "label": "Unknown complete phase/event selection and work update chain",
+      "status": "unknown",
+      "evidence": [
+        "defines",
+        "stock-zh",
+        "semantic-ledger"
+      ],
+      "open_question": "Stock effects are definitions; actual .3 event occurrence, work jump and producer chain still require bounded further evidence."
+    },
+    {
+      "id": "siege-completion",
+      "from": "pair",
+      "to": "completion",
+      "label": "Unknown current .3 siege disappearance and occupation postcondition",
+      "status": "unknown",
+      "evidence": [
+        "province-reader",
+        "semantic-ledger"
+      ],
+      "open_question": "Capture actual occupation plus active_siege disappearance and corresponding scene; 100 percent, date prediction or ACK alone does not establish completion."
+    }
+  ],
+  "cases": [
+    {
+      "id": "actual-advertisement",
+      "question": "Does the root-loaded exact .3 bridge advertise the objective siege capability and existing snapshot tools?",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "same-frame",
+      "question": "Do progress/current/total/days and GUI tooltips refer to the same paused siege and endpoint?",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "normal-speed",
+      "question": "Which normal daily breakdown values and effective siege tier/count inputs are actually visible in this scene?",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "boundary-nulls",
+      "question": "Are absence, unobservable graph, blocked days, and assault-only projection kept distinct in this scene?",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "optional-day-pair",
+      "question": "If root separately advances recording date, is a clean stable one-day interval available to compare increment with D?",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "event-delta",
+      "question": "If a siege event is recorded, can its jump/phase/speed effect be identified without calling the whole interval daily speed?",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "completion-postcondition",
+      "question": "Does the actual .3 scene show siege disappearance together with occupation readback?",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}

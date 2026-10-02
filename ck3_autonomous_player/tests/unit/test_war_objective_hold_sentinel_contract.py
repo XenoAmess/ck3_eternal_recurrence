@@ -72,7 +72,7 @@ class WarObjectiveHoldSentinelContractTests(unittest.TestCase):
     def test_noncanonical_or_out_of_range_step_is_rejected(self) -> None:
         malformed = (
             "war-objective-hold-sentinel-advance-war-0-army-11-at-20-until-24",
-            "war-objective-hold-sentinel-advance-war-1-army-0-at-20-until-24",
+            "war-objective-hold-sentinel-advance-war-1-army--1-at-20-until-24",
             "war-objective-hold-sentinel-advance-war-1-army-11-at-0-until-24",
             "war-objective-hold-sentinel-advance-war-1-army-11-at-20-until-0",
             "war-objective-hold-sentinel-advance-war-01-army-11-at-20-until-24",
@@ -91,7 +91,7 @@ class WarObjectiveHoldSentinelContractTests(unittest.TestCase):
 
         for values in (
             (0, 11, 20, 24),
-            (1, 0, 20, 24),
+            (1, -1, 20, 24),
             (1, 11, 0, 24),
             (1, 11, 20, 0),
             (True, 11, 20, 24),

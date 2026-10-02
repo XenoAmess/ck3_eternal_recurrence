@@ -1,0 +1,388 @@
+{
+  "schema": "ck3-war-ai-episode03-shot-list.v1",
+  "status": "complete-candidate-awaiting-root-freeze",
+  "shots": [
+    {
+      "id": "S01",
+      "kind": "raw_frame_pair",
+      "required": true,
+      "status": "ready",
+      "description_zh": "首次围城与确认占领 / First record and occupation",
+      "claim_ids": [
+        "C02",
+        "C13",
+        "C14"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163105-f580d834/desktop.png",
+          "bytes": 2896147,
+          "sha256": "4cfe8ed1c59172c66e4efdc47be6db672c15c6f7e30bbed40ba8b1727f386ac6"
+        }
+      ],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S02",
+      "kind": "raw_frame",
+      "required": true,
+      "status": "ready",
+      "description_zh": "1066威廉开局 / William in 1066",
+      "claim_ids": [
+        "C01",
+        "C02"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-150201-603c039c/desktop.png",
+          "bytes": 2324983,
+          "sha256": "29f704ea9dc361040fcd7e1b623f82031d7a04a3a8e3c58089a5eff8cda5f4ef"
+        }
+      ],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S03",
+      "kind": "raw_frame",
+      "required": true,
+      "status": "ready",
+      "description_zh": "渡海增援 / Crossing reinforcements",
+      "claim_ids": [
+        "C03",
+        "C11"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-153200-228c8f0e/desktop.png",
+          "bytes": 3091463,
+          "sha256": "2a41c83d95c22172ae08ea48154e728d7549c93cc856ab1303adf524f427a50a"
+        }
+      ],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S04",
+      "kind": "raw_frame",
+      "required": true,
+      "status": "ready",
+      "description_zh": "首次自军围城 / First own-army siege",
+      "claim_ids": [
+        "C03"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        }
+      ],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S05",
+      "kind": "raw_frame_pair",
+      "required": true,
+      "status": "ready",
+      "description_zh": "初期围城窗口 / Opening siege",
+      "claim_ids": [
+        "C04",
+        "C05",
+        "C07"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-155505-bdf551ab/desktop.png",
+          "bytes": 2916147,
+          "sha256": "fbd75e88951c52dc0196c82bd7b18126c7d84f7de96c66114cf492f1d1dfa538"
+        }
+      ],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S06",
+      "kind": "evidence_board",
+      "required": true,
+      "status": "ready",
+      "description_zh": "工作量与百分比 / Work and progress",
+      "claim_ids": [
+        "C04",
+        "C05"
+      ],
+      "source_pin": [],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S07",
+      "kind": "raw_frame_pair",
+      "required": true,
+      "status": "ready",
+      "description_zh": "真实相邻一天 / One observed day",
+      "claim_ids": [
+        "C06",
+        "C07"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-155505-bdf551ab/desktop.png",
+          "bytes": 2916147,
+          "sha256": "fbd75e88951c52dc0196c82bd7b18126c7d84f7de96c66114cf492f1d1dfa538"
+        }
+      ],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S08",
+      "kind": "evidence_board",
+      "required": true,
+      "status": "ready",
+      "description_zh": "城防与器械 / Fort and siege tier",
+      "claim_ids": [
+        "C05"
+      ],
+      "source_pin": [],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S09",
+      "kind": "evidence_board",
+      "required": true,
+      "status": "ready",
+      "description_zh": "事件改变不同输入 / Events change different inputs",
+      "claim_ids": [
+        "C08",
+        "C10"
+      ],
+      "source_pin": [],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S10",
+      "kind": "raw_frame",
+      "required": true,
+      "status": "ready",
+      "description_zh": "一级破口与当前阶段 / Small breach",
+      "claim_ids": [
+        "C06",
+        "C09"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160245-2c39c18c/desktop.png",
+          "bytes": 2894674,
+          "sha256": "957ba6defaeb31d86f7f88aa82ebbb31520d36c7d2904281a7b2e226c95d261a"
+        }
+      ],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S11",
+      "kind": "raw_frame",
+      "required": true,
+      "status": "ready",
+      "description_zh": "四月十五日的大破口与僵持 / Large breach and stalemate",
+      "claim_ids": [
+        "C08",
+        "C09",
+        "C10"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-162858-4cd42097/desktop.png",
+          "bytes": 2962355,
+          "sha256": "d4be5849b81844eea9e22430c24a14e174d03ef3d01b3fb3ceeb77f1a3dc57db"
+        }
+      ],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S12",
+      "kind": "raw_frame",
+      "required": true,
+      "status": "ready",
+      "description_zh": "一月二十九日强攻预览 / Assault preview",
+      "claim_ids": [
+        "C12"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160437-467427f9/desktop.png",
+          "bytes": 2923742,
+          "sha256": "46b6215ee71ba6a9b68f5826c7e7eab8bb416d5988a893e9077fe4305afafbba"
+        }
+      ],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S14",
+      "kind": "raw_frame_pair",
+      "required": true,
+      "status": "ready",
+      "description_zh": "军事占领与当前伯爵领持有者 / Occupation and holder",
+      "claim_ids": [
+        "C14"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163105-f580d834/desktop.png",
+          "bytes": 2896147,
+          "sha256": "4cfe8ed1c59172c66e4efdc47be6db672c15c6f7e30bbed40ba8b1727f386ac6"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163445-0409322b/desktop.png",
+          "bytes": 2937509,
+          "sha256": "0edacca805e715920828cbe68c1a10804675ed1b74d90d1438dcf0b5dd1138cc"
+        }
+      ],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S16",
+      "kind": "raw_frame",
+      "required": true,
+      "status": "ready",
+      "description_zh": "本场城破后战争面板 / War panel after capture",
+      "claim_ids": [
+        "C15",
+        "C16",
+        "C17"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163903-edcfdf12/desktop.png",
+          "bytes": 2781531,
+          "sha256": "b584fd2faa066fa841cf884695b7ed10ea3852fcbb7c309c942a9a570652ac74"
+        }
+      ],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S17",
+      "kind": "evidence_board",
+      "required": true,
+      "status": "ready",
+      "description_zh": "增援：实际前后变化 / Reinforcement comparison",
+      "claim_ids": [
+        "C05",
+        "C07",
+        "C11"
+      ],
+      "source_pin": [],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S18",
+      "kind": "evidence_board",
+      "required": true,
+      "status": "ready",
+      "description_zh": "守军补充，估计延后 / Garrison growth extends estimate",
+      "claim_ids": [
+        "C04",
+        "C06",
+        "C07",
+        "C10"
+      ],
+      "source_pin": [],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S19",
+      "kind": "evidence_board",
+      "required": true,
+      "status": "ready",
+      "description_zh": "强攻一日：预览与净变化 / One assault day",
+      "claim_ids": [
+        "C12",
+        "C10"
+      ],
+      "source_pin": [],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S20",
+      "kind": "evidence_board",
+      "required": true,
+      "status": "ready",
+      "description_zh": "兵力与剩余天数 / Manpower and estimate",
+      "claim_ids": [
+        "C05",
+        "C06"
+      ],
+      "source_pin": [],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S21",
+      "kind": "evidence_board",
+      "required": true,
+      "status": "ready",
+      "description_zh": "射石机：当前规模与到场 / Mangonel strength and arrival",
+      "claim_ids": [
+        "C05",
+        "C11"
+      ],
+      "source_pin": [],
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "S13",
+      "kind": "raw_clip",
+      "required": true,
+      "status": "ready",
+      "description_zh": "4月21→22真实城破片段",
+      "claim_ids": [
+        "C13",
+        "C14"
+      ],
+      "source_pin": {
+        "path": "D:/ck3-war-episode03-20261002-a01/capture-15-william-fall/raw-desktop.mkv",
+        "bytes": 84325541,
+        "sha256": "722b82aa8f2a9e083cd929f177cfe05d483bcce69b22c164b2085f2a782daee7"
+      },
+      "raw_clip_interval_selected": true,
+      "source_begin_seconds": 50.033,
+      "source_end_seconds": 59.5,
+      "human_signoff": "not-provided"
+    },
+    {
+      "id": "S23",
+      "kind": "evidence_board",
+      "required": true,
+      "status": "ready",
+      "description_zh": "最后一天与城破 / Final day and capture",
+      "claim_ids": [
+        "C13",
+        "C14"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163105-f580d834/desktop.png",
+          "bytes": 2896147,
+          "sha256": "4cfe8ed1c59172c66e4efdc47be6db672c15c6f7e30bbed40ba8b1727f386ac6"
+        }
+      ],
+      "raw_clip_interval_selected": false
+    }
+  ],
+  "omitted_shots": [
+    {
+      "id": "S15",
+      "reason": "No verified prisoner identity; no case-prisoner outcome narration."
+    }
+  ],
+  "human_signoff": "not-provided"
+}

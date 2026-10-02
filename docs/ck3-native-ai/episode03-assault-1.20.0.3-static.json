@@ -1,0 +1,298 @@
+{
+  "schema": "ck3-episode03-assault-static-summary.v1",
+  "readiness": "static and offline only; no 1.20.0.3 assault live result",
+  "target_build": "1.20.0.3 Crozier / Steam build25652598",
+  "exe": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 101039736,
+    "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+  },
+  "repo_source_head": "f511a32d0c1a5ca2851c3aa2231918b5a2974fab",
+  "isolated_draft_base_head": "6a837a1ecd9b027170f607242f6f02724908dc14",
+  "external_proof": {
+    "path": "D:\\ck3-war-episode03-20261002-a01\\research-assault-static-proof.json",
+    "bytes": 136814,
+    "sha256": "dc71f10634634447b47b014763301ec8b6ca15e4ecc68184e5f49e7786519f3d"
+  },
+  "source_files": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003.hpp",
+      "sha256": "ef7a8a1854e6c8c129fd66bf5397bdf453a1f0d46ff855b57ec3c5d70b1f1c6a",
+      "same_as_external_proof": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12003_adapter.cpp",
+      "sha256": "f255c46744b7fc4cfd591b664ce791a4b78a0aa97ff06e132336602e935d2559",
+      "same_as_external_proof": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_province.cpp",
+      "sha256": "975c9db6743af49fbddc8fbc3afc12fde20265fa5a112dfe6fe656e84f3e1c15",
+      "same_as_external_proof": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_military.cpp",
+      "sha256": "6aa0d5379e4dba424e4442361c78ac9e19409141996c56af46293a9d306f957e",
+      "same_as_external_proof": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/ck3_1_20_0_3_abi_reuse.json",
+      "sha256": "ff7a5b1a8208d7ce0358be3cd2fec9f455a4ba116ccf1b25c4ccf0f0b64dd119",
+      "same_as_external_proof": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_contract.py",
+      "sha256": "e52b04ec702b49f797ee0166ae17cca5791c4c9c480bbb09e0b93f5318953870",
+      "same_as_external_proof": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "sha256": "4047e2948b49c913da205ca63ae061d06352495c567cbd94540718bdd8e94e54",
+      "same_as_external_proof": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "sha256": "36b347b70e032509dff1ea159864fe6c53e0f595feb7ef4d936c3e53b8554518",
+      "same_as_external_proof": true
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_native_bridge_driver.py",
+      "sha256": "031d1eb1c9cfe14d9430ce546127a557ee954bce6718d2e05b8b50b698989099",
+      "same_as_external_proof": true
+    }
+  ],
+  "game_inputs": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\00_defines.txt",
+      "bytes": 125400,
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_siege.gui",
+      "bytes": 75195,
+      "sha256": "8236d9d1ca373dc19d9e138948864b84887a4516756e1b293f26e2cd88c6b0b9"
+    }
+  ],
+  "frozen_narrow_checks": [
+    {
+      "group": "signature_anchors",
+      "name": "province_active_siege",
+      "rva": "0x247d930",
+      "match": true
+    },
+    {
+      "group": "signature_anchors",
+      "name": "assault_daily_progress",
+      "rva": "0x25207f0",
+      "match": true
+    },
+    {
+      "group": "signature_anchors",
+      "name": "assault_daily_casualties",
+      "rva": "0x25205c0",
+      "match": true
+    },
+    {
+      "group": "signature_anchors",
+      "name": "start_assault_complete_validator",
+      "rva": "0x29738c0",
+      "match": true
+    },
+    {
+      "group": "signature_anchors",
+      "name": "stop_assault_complete_validator",
+      "rva": "0x2973a70",
+      "match": true
+    },
+    {
+      "group": "semantic_checks",
+      "name": "active_siege_id",
+      "rva": "0x247d930",
+      "match": true
+    },
+    {
+      "group": "semantic_checks",
+      "name": "siege_magic",
+      "rva": "0x251cb07",
+      "match": true
+    },
+    {
+      "group": "semantic_checks",
+      "name": "siege_breach",
+      "rva": "0x25205e5",
+      "match": true
+    },
+    {
+      "group": "semantic_checks",
+      "name": "siege_assault",
+      "rva": "0x252073a",
+      "match": true
+    },
+    {
+      "group": "signature_anchors",
+      "name": "start_assault_complete_validator",
+      "rva": "0x29738c0",
+      "match": true
+    },
+    {
+      "group": "signature_anchors",
+      "name": "stop_assault_complete_validator",
+      "rva": "0x2973a70",
+      "match": true
+    },
+    {
+      "group": "signature_anchors",
+      "name": "start_assault_clone",
+      "rva": "0x2977ff0",
+      "match": true
+    },
+    {
+      "group": "signature_anchors",
+      "name": "stop_assault_clone",
+      "rva": "0x29780f0",
+      "match": true
+    },
+    {
+      "group": "signature_anchors",
+      "name": "assault_start_primary_validator",
+      "rva": "0x29734d0",
+      "match": true
+    },
+    {
+      "group": "signature_anchors",
+      "name": "assault_stop_primary_validator",
+      "rva": "0x29739f0",
+      "match": true
+    },
+    {
+      "group": "semantic_checks",
+      "name": "province_active_siege",
+      "rva": "0x247f2d7",
+      "match": true
+    },
+    {
+      "group": "semantic_checks",
+      "name": "stop_assault_executor_active_offset",
+      "rva": "0x29739db",
+      "match": true
+    }
+  ],
+  "bounded_regions": [
+    {
+      "name": "complete_start_validator",
+      "begin_rva": "0x29738c0",
+      "end_rva": "0x2973986",
+      "bytes": 198,
+      "sha256": "c981e08b634b789ad16e41f9e24abe5c5152430ba30c1ff30ff5096a64aab60d"
+    },
+    {
+      "name": "complete_stop_validator",
+      "begin_rva": "0x2973a70",
+      "end_rva": "0x2973be5",
+      "bytes": 373,
+      "sha256": "52ecb87b497cd0fc29b9b4c4acce7f55c1571213fd554206a736a005f1f1e276"
+    },
+    {
+      "name": "start_siege_predicate",
+      "begin_rva": "0x29736e0",
+      "end_rva": "0x29738ba",
+      "bytes": 474,
+      "sha256": "77f9c0ba8e33fccc0068cecacd2291afbc176642fe118ea597ac0616f93c4f17"
+    },
+    {
+      "name": "actor_owns_besieger_predicate",
+      "begin_rva": "0x2973610",
+      "end_rva": "0x29736d1",
+      "bytes": 193,
+      "sha256": "8f46fb962c8f9999f81382f1e452c522cb7bd07c8f2465eac6312068158c357d"
+    },
+    {
+      "name": "stop_active_predicate_leaf",
+      "begin_rva": "0x2973a10",
+      "end_rva": "0x2973a66",
+      "bytes": 86,
+      "sha256": "3c9889bc8f0ea6147ae3388cd300402eaf42765c4add801a8b74ee2912d79a98"
+    },
+    {
+      "name": "siege_besieger_owner_leaf",
+      "begin_rva": "0x2520080",
+      "end_rva": "0x2520120",
+      "bytes": 160,
+      "sha256": "857289854d13c2045df9e14116cf4ce603572f042fd51de5abe509a639d50a29"
+    },
+    {
+      "name": "siege_blocked_contiguous",
+      "begin_rva": "0x251cf70",
+      "end_rva": "0x251cff0",
+      "bytes": 128,
+      "sha256": "bcf06814dbf13d119e0c827dda7b5edeaf16a30797877e8c4a76a3b2a7a64b9b"
+    },
+    {
+      "name": "assault_casualty_projection",
+      "begin_rva": "0x25205c0",
+      "end_rva": "0x2520725",
+      "bytes": 357,
+      "sha256": "ea52a17c4d8d092dc8a57a05f88bc294d1a277ad72176ad83c0c434bae26267f"
+    },
+    {
+      "name": "assault_progress_projection_contiguous",
+      "begin_rva": "0x25207f0",
+      "end_rva": "0x2520b4e",
+      "bytes": 862,
+      "sha256": "960c12b5a90440b4548b54f9a34c2dadec52c6dad685e2cb66bf62546a15d9e1"
+    }
+  ],
+  "offline_unit_checks": [
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "ck3_autonomous_player/tests/unit/test_native_bridge_driver.py",
+        "-k",
+        "assault"
+      ],
+      "returncode": 0,
+      "passed": 12,
+      "subtests_passed": 31,
+      "live_game_read": false
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-O",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "ck3_autonomous_player/tests/unit/test_native_bridge_driver.py",
+        "-k",
+        "assault"
+      ],
+      "returncode": 0,
+      "passed": 12,
+      "subtests_passed": 31,
+      "live_game_read": false
+    }
+  ],
+  "minimal_base_observations": [
+    "ordinary_paused_baseline",
+    "ordinary_one_day_paused_end"
+  ],
+  "optional_ab_observations": [
+    "A0",
+    "A1",
+    "B0",
+    "B_start",
+    "B1",
+    "B_stop_or_completion"
+  ],
+  "projection_is_measured_casualty": false,
+  "live_game_read": false,
+  "commands_submitted": false,
+  "historical_pins_modified": false
+}

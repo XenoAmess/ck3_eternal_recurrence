@@ -1,5 +1,6 @@
 ﻿#include "xar_bridge/ck3_12002_army.hpp"
 #include "xar_bridge/ck3_12002.hpp"
+#include "xar_bridge/public_unit_id.hpp"
 
 #include <array>
 #include <cstring>
@@ -105,7 +106,25 @@ bool Test() {
              "all units enumeration")) return false;
   if (!Check(rows[0].controllable && !rows[1].controllable && rows[0].army_state == "moving" &&
              rows[1].in_combat && rows[1].retreating && rows[0].route_province_ids == std::vector<std::int32_t>{1, 2} &&
-             rows[0].move_target_province_id == 2 && rows[0].current_province_id == 1, "unit semantics and route")) return false;
+             rows[0].move_target_province_id == 2 && rows[0].current_province_id == 1 &&
+             rows[0].route_read_status == game::ArmyRouteReadStatus::complete_nonempty &&
+             rows[0].route_source_count == 2 && rows[0].move_target_observable &&
+             rows[1].route_read_status == game::ArmyRouteReadStatus::complete_empty &&
+             rows[1].route_source_count == 0 && !rows[1].move_target_observable,
+             "unit semantics and complete route provenance")) return false;
+  // Enemy routes use the same producer and must carry the same provenance.
+  Put(u2, 0x38, static_cast<void *>(route.data()));
+  Put(u2, 0x40, std::int32_t{2}); Put(u2, 0x44, std::int32_t{2});
+  const std::array<std::int32_t, 1> enemy_owner{8};
+  if (!Check(ReadArmiesForCharacters(bindings, enemy_owner, rows, 7) &&
+             rows.size() == 1 && !rows[0].controllable &&
+             rows[0].route_read_status == game::ArmyRouteReadStatus::complete_nonempty &&
+             rows[0].route_source_count == 2 &&
+             rows[0].route_province_ids == std::vector<std::int32_t>{1, 2} &&
+             rows[0].move_target_observable && rows[0].move_target_province_id == 2,
+             "enemy route has complete provenance")) return false;
+  Put(u2, 0x38, static_cast<void *>(nullptr));
+  Put(u2, 0x40, std::int32_t{0}); Put(u2, 0x44, std::int32_t{0});
   const std::array<std::int32_t, 1> owner{8};
   if (!Check(ReadArmiesForCharacters(bindings, owner, rows) && rows.size() == 1 && rows[0].owner_character_id == 8,
              "owner filtering")) return false;
@@ -114,9 +133,40 @@ bool Test() {
              "incorrect public slot identity skipped")) return false;
   Put(u2, 0x10, std::int32_t{0x05000002});
   route_ids[1] = 99;
-  if (!Check(ReadArmiesForCharacters(bindings, {}, rows) && rows[0].route_province_ids.empty() && !rows[0].move_target_observable,
+  if (!Check(ReadArmiesForCharacters(bindings, {}, rows) && rows[0].route_province_ids.empty() && !rows[0].move_target_observable &&
+             rows[0].move_target_province_id == -1 &&
+             rows[0].route_read_status == game::ArmyRouteReadStatus::unresolved_entry &&
+             rows[0].route_source_count == 2,
              "invalid route province does not become a target")) return false;
   route_ids[1] = 2;
+  route[1] = nullptr;
+  if (!Check(ReadArmiesForCharacters(bindings, {}, rows) &&
+             rows[0].route_read_status == game::ArmyRouteReadStatus::unresolved_entry &&
+             rows[0].route_source_count == 2 && rows[0].route_province_ids.empty() &&
+             !rows[0].move_target_observable && rows[0].move_target_province_id == -1,
+             "unresolved final entry never publishes partial route")) return false;
+  route[1] = &route_ids[1];
+  Put(u1, 0x38, static_cast<void *>(nullptr));
+  if (!Check(ReadArmiesForCharacters(bindings, {}, rows) &&
+             rows[0].route_read_status == game::ArmyRouteReadStatus::unresolved_entry &&
+             rows[0].route_source_count == 2 && rows[0].route_province_ids.empty() &&
+             !rows[0].move_target_observable,
+             "null nonempty route preserves unresolved source count")) return false;
+  Put(u1, 0x38, static_cast<void *>(route.data()));
+  for (const auto header : std::array<std::array<std::int32_t, 2>, 5>{{
+           {{-1, 0}}, {{2, -1}}, {{1, 2}}, {{4097, 4097}}, {{2, 0}}}}) {
+    Put(u1, 0x40, header[0]); Put(u1, 0x44, header[1]);
+    if (!Check(ReadArmiesForCharacters(bindings, {}, rows) &&
+               rows[0].route_province_ids.empty() && !rows[0].move_target_observable &&
+               rows[0].move_target_province_id == -1 &&
+               (header[1] == 0 && header[0] >= 0
+                    ? rows[0].route_read_status == game::ArmyRouteReadStatus::complete_empty &&
+                      rows[0].route_source_count == 0
+                    : rows[0].route_read_status == game::ArmyRouteReadStatus::invalid_header &&
+                      !rows[0].route_source_count.has_value()),
+               "invalid or empty header has exact route provenance")) return false;
+  }
+  Put(u1, 0x40, std::int32_t{2}); Put(u1, 0x44, std::int32_t{2});
   std::array<ArmyStrengthScope, 1> scope{{{0x01000001, game::ArmyStrengthScopeRole::player, {42}}}};
   std::vector<game::ArmyStrengthSnapshot> strength;
   if (!Check(ReadArmyStrengthsForScope(bindings, scope, strength) == game::ReadArmyStrengthsResult::available &&
@@ -151,6 +201,64 @@ bool Test() {
   if (!Check(ReadArmyStrengths(bindings, snapshot, strength) == game::ReadArmyStrengthsResult::available &&
              strength.size() == 1 && strength[0].scope_role == game::ArmyStrengthScopeRole::player &&
              strength[0].war_ids == std::vector<std::int32_t>{42}, "scope deduplication and war membership")) return false;
+  // A full CUnit handle can be zero when generation and storage slot are zero.
+  Put(unit_slots, 0x18, static_cast<void *>(nullptr));
+  Put(unit_slots, 0x08, static_cast<void *>(u1.data()));
+  Put(u1, 0x10, std::int32_t{0});
+  if (!Check(ResolveArmyUnit(bindings, 0) == u1.data() &&
+             ResolveArmyUnit(bindings, -1) == nullptr &&
+             ResolveArmyUnit(bindings, 0x01000000) == nullptr,
+             "zero CUnit resolves only exact slot generation")) return false;
+  const std::array<std::int32_t, 1> zero_owner{7};
+  if (!Check(ReadArmiesForCharacters(bindings, zero_owner, rows, 7) &&
+             rows.size() == 1 && rows[0].army_id == 0 && rows[0].controllable,
+             "zero CUnit remains a controllable published army")) return false;
+  scope = {{0, game::ArmyStrengthScopeRole::player, {42}}};
+  if (!Check(ReadArmyStrengthsForScope(bindings, scope, strength) ==
+                 game::ReadArmyStrengthsResult::available &&
+             strength.size() == 1 && strength[0].army_id == 0 &&
+             strength[0].native_carmy_id == 0x02000001,
+             "zero public CUnit strength keeps separate native CArmy")) return false;
+  std::int32_t parsed_unit = -1;
+  if (!Check(game::ParsePublicCUnitIdV1("0", parsed_unit) && parsed_unit == 0 &&
+             game::ParsePublicCUnitIdV1("2147483647", parsed_unit) &&
+             !game::ParsePublicCUnitIdV1("-1", parsed_unit) &&
+             !game::ParsePublicCUnitIdV1("00", parsed_unit) &&
+             !game::ParsePublicCUnitIdV1("2147483648", parsed_unit) &&
+             !game::ParsePublicCUnitIdV1("true", parsed_unit),
+             "public CUnit canonical bounded parser")) return false;
+  // Strength's resolved CArmy handle has its own exact database identity;
+  // zero is valid here independently of the public CUnit handle.
+  Put(army_slots, 0x18, static_cast<void *>(nullptr));
+  Put(army_slots, 0x08, static_cast<void *>(army.data()));
+  Put(army, 0x10, std::int32_t{0});
+  Put(u1, 0x178, std::int32_t{0});
+  if (!Check(ResolveInternalArmy(bindings, 0) == army.data() &&
+             ResolveInternalArmy(bindings, -1) == nullptr &&
+             ResolveInternalArmy(bindings, 0x01000000) == nullptr,
+             "zero CArmy resolves exact generation only")) return false;
+  if (!Check(ReadArmyStrengthsForScope(bindings, scope, strength) ==
+                 game::ReadArmyStrengthsResult::available &&
+             strength.size() == 1 && strength[0].army_id == 0 &&
+             strength[0].native_carmy_id_observable &&
+             strength[0].native_carmy_id == 0 &&
+             strength[0].current_soldiers == 900 &&
+             strength[0].maximum_soldiers == 1500,
+             "zero CArmy aggregate keeps native helper cross check")) return false;
+  Put(r1, 0x14, std::uint32_t{0});
+  if (!Check(ReadArmyStrengthsForScope(bindings, scope, strength) ==
+                 game::ReadArmyStrengthsResult::partial &&
+             strength[0].native_carmy_id_observable &&
+             strength[0].native_carmy_id == 0 && !strength[0].available &&
+             strength[0].unavailable_reason == "regiment_identity_invalid",
+             "resolved zero CArmy keeps unavailable aggregate atomic")) return false;
+  Put(r1, 0x14, std::uint32_t{0x41725267});
+  Put(u1, 0x178, std::int32_t{0x01000000});
+  if (!Check(ReadArmyStrengthsForScope(bindings, scope, strength) ==
+                 game::ReadArmyStrengthsResult::partial &&
+             !strength[0].native_carmy_id_observable &&
+             strength[0].unavailable_reason == "native_carmy_not_found",
+             "stale CArmy generation stays unobservable")) return false;
   Put(units, 0x2C, std::int32_t{0}); Put(units, 0x20, static_cast<void *>(nullptr));
   if (!Check(ReadArmiesForCharacters(bindings, {}, rows) && rows.empty(), "empty native unit storage")) return false;
   units_ptr = nullptr;

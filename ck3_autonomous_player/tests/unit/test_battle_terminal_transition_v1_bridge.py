@@ -352,13 +352,18 @@ class BattleTerminalTransitionV1ContractTests(unittest.TestCase):
             parse_query_battle_terminal_transition_v1_step(zero_step),
             (0, SUBJECT_CUNIT_ID, None),
         )
+        self.assertEqual(
+            parse_query_battle_terminal_transition_v1_step(
+                query_battle_terminal_transition_v1_step(PRIOR_COMBAT_ID, 0)
+            ),
+            (PRIOR_COMBAT_ID, 0, None),
+        )
         with self.assertRaises(ValueError):
             query_battle_terminal_transition_v1_step(
                 -1, SUBJECT_CUNIT_ID, CURSOR
             )
         for malformed in (
             "query-battle-terminal-transition-v1--1-1-0",
-            "query-battle-terminal-transition-v1-1-0-0",
             "query-battle-terminal-transition-v1-01-1-0",
             "query-battle-terminal-transition-v1-1-1-00",
             "query-battle-terminal-transition-v1-1-1",

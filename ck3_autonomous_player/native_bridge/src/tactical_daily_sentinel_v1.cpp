@@ -1,3 +1,4 @@
+#include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/tactical_daily_sentinel_v1.hpp"
 
 #include <algorithm>
@@ -557,7 +558,7 @@ bool ParseTacticalDailySentinelArmStepV1(
   }
   request.army_count = static_cast<std::uint32_t>(army_count);
   for (std::uint32_t index = 0; index < request.army_count; ++index) {
-    if (!ParseCanonicalPositive(tokens[first_army_index + index],
+    if (!game::ParsePublicCUnitIdV1(tokens[first_army_index + index],
                                 request.army_ids[index]) ||
         std::find(request.army_ids.begin(), request.army_ids.begin() + index,
                   request.army_ids[index]) !=
@@ -618,7 +619,7 @@ TacticalDailySentinelArmStatusV1 ArmTacticalDailySentinelV1(
       return false;
     }
     for (std::uint32_t index = 0; index < request.army_count; ++index) {
-      if (request.army_ids[index] <= 0 ||
+      if (request.army_ids[index] < 0 ||
           std::find(request.army_ids.begin(), request.army_ids.begin() + index,
                     request.army_ids[index]) !=
               request.army_ids.begin() + index ||

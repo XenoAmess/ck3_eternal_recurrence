@@ -2,6 +2,11 @@
 
 from __future__ import annotations
 
+from .public_unit_contract import (
+    public_cunit_id as _public_cunit_id,
+    public_cunit_ids as _public_cunit_ids,
+)
+
 from typing import Final
 
 
@@ -187,11 +192,11 @@ def normalize_battle_transition_v1(
     if combat_id != expected_combat_id:
         raise ValueError("battle_transition_snapshot CombatID binding changed")
 
-    attacker_ids = _ordered_ids(
+    attacker_ids = _public_cunit_ids(
         value.get("attacker_public_cunit_ids_in_stored_order"),
         "battle_transition_snapshot.attacker_public_cunit_ids_in_stored_order",
     )
-    defender_ids = _ordered_ids(
+    defender_ids = _public_cunit_ids(
         value.get("defender_public_cunit_ids_in_stored_order"),
         "battle_transition_snapshot.defender_public_cunit_ids_in_stored_order",
     )

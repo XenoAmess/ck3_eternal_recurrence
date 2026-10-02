@@ -121,7 +121,7 @@ def _normalize_source_row(value: object, *, name: str) -> dict[str, object]:
     role = value.get("role")
     if role not in {"commander", "knight"}:
         raise CandidateSourceProofError(f"{name}.role is malformed")
-    army_id = _positive_int32(value.get("source_army_id"), f"{name}.source_army_id")
+    army_id = _public_cunit_int32(value.get("source_army_id"), f"{name}.source_army_id")
     character_id = _positive_int32(value.get("character_id"), f"{name}.character_id")
     regiment_value = value.get("source_regiment_id")
     if role == "commander":
@@ -156,6 +156,13 @@ def _positive_int32(value: object, name: str) -> int:
     result = _signed_int32(value, name)
     if result <= 0:
         raise CandidateSourceProofError(f"{name} must be a positive full ID")
+    return result
+
+
+def _public_cunit_int32(value: object, name: str) -> int:
+    result = _signed_int32(value, name)
+    if result < 0:
+        raise CandidateSourceProofError(f"{name} must be a nonnegative public CUnit ID")
     return result
 
 

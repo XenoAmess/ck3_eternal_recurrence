@@ -169,7 +169,7 @@ bool CandidateSourceSequenceDigestV3(
     }
     const auto &row = rows[index];
     if ((row.role != "commander" && row.role != "knight") ||
-        row.source_army_id <= 0 || row.character_id <= 0 ||
+        row.source_army_id < 0 || row.character_id <= 0 ||
         (row.role == "commander" && row.source_regiment_id != -1) ||
         (row.role == "knight" && row.source_regiment_id <= 0)) {
       return false;

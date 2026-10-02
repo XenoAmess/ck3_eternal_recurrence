@@ -1,3 +1,4 @@
+#include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_adapter.hpp"
@@ -9891,6 +9892,13 @@ std::optional<std::int32_t> PositiveNativeId(
   return parsed_value;
 }
 
+// CUnit slot zero is valid; -1 remains the missing handle sentinel.
+std::optional<std::int32_t> PublicCUnitId(std::string_view value) noexcept {
+  std::int32_t id = -1;
+  return xar::game::ParsePublicCUnitIdV1(value, id)
+             ? std::optional<std::int32_t>{id} : std::nullopt;
+}
+
 struct MoveArmyStepIds {
   std::int32_t army_id = -1;
   std::int32_t province_id = -1;
@@ -9909,7 +9917,7 @@ std::optional<MoveArmyStepIds> ArmyToProvinceStep(
           std::string_view::npos) {
     return std::nullopt;
   }
-  const auto army_id = PositiveNativeId(payload.substr(0, separator_index));
+  const auto army_id = PublicCUnitId(payload.substr(0, separator_index));
   const auto province_id = PositiveNativeId(
       payload.substr(separator_index + separator.size()));
   if (!army_id.has_value() || !province_id.has_value()) {
@@ -9934,7 +9942,7 @@ std::optional<std::int32_t> DisbandArmyStep(
   if (!step.starts_with(prefix)) {
     return std::nullopt;
   }
-  return PositiveNativeId(step.substr(prefix.size()));
+  return PublicCUnitId(step.substr(prefix.size()));
 }
 
 std::optional<std::int32_t> SplitArmyHalfStep(
@@ -9943,7 +9951,7 @@ std::optional<std::int32_t> SplitArmyHalfStep(
   if (!step.starts_with(prefix)) {
     return std::nullopt;
   }
-  return PositiveNativeId(step.substr(prefix.size()));
+  return PublicCUnitId(step.substr(prefix.size()));
 }
 
 std::optional<std::int32_t> AssaultStep(
@@ -9974,8 +9982,8 @@ std::optional<MergeArmiesStepIds> MergeArmiesStep(
     return std::nullopt;
   }
   const auto destination_army_id =
-      PositiveNativeId(payload.substr(0, separator_index));
-  const auto source_army_id = PositiveNativeId(
+      PublicCUnitId(payload.substr(0, separator_index));
+  const auto source_army_id = PublicCUnitId(
       payload.substr(separator_index + separator.size()));
   if (!destination_army_id.has_value() || !source_army_id.has_value() ||
       destination_army_id.value() == source_army_id.value()) {

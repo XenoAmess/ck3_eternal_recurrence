@@ -535,7 +535,7 @@ class PhaseEventTrialState:
             "phase event evaluation context",
         )
         root_id = _positive_int(context["root_character_id"], "root_character_id")
-        source_army = _positive_int(
+        source_army = _public_cunit_int32(
             context["root_source_army_id"], "root_source_army_id"
         )
         source_regiment_value = context["root_source_regiment_id"]
@@ -3173,6 +3173,13 @@ def _positive_int(value: object, name: str) -> int:
     result = _signed_int64(value, name)
     if result <= 0:
         raise PhaseEventEvaluationError(f"{name} must be positive")
+    return result
+
+
+def _public_cunit_int32(value: object, name: str) -> int:
+    result = _signed_int64(value, name)
+    if not 0 <= result <= 2**31 - 1:
+        raise PhaseEventEvaluationError(f"{name} must be a public CUnit int32")
     return result
 
 

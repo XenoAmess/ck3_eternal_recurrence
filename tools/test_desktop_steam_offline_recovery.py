@@ -7,6 +7,7 @@ from datetime import datetime, timedelta, timezone
 import json
 import os
 from pathlib import Path
+import subprocess
 import tempfile
 import time
 import unittest
@@ -31,6 +32,54 @@ def snapshot() -> dict:
             "todesk_service": {"status": "running", "pid": 11},
             "ck3_pids": [], "steam_windows": [{"hwnd": 123, "pid": 456}],
             "screen_owners": [TASK], "steam_offline_status_observed": None}
+
+
+class TaskBusEncodingTests(unittest.TestCase):
+    def run_bus(self, source: str) -> list[dict]:
+        with tempfile.TemporaryDirectory() as directory:
+            bus = Path(directory) / "task_bus.py"
+            bus.write_text(source, encoding="utf-8")
+            with patch.dict(os.environ, {"PYTHONUTF8": "0",
+                                         "PYTHONIOENCODING": "cp936"}):
+                return recovery.task_bus_tasks(bus)
+
+    def test_real_child_uses_utf8_for_large_chinese_json_and_stderr(self) -> None:
+        tasks = self.run_bus(
+            "import json, sys\n"
+            "assert sys.argv[1:] == ['list']\n"
+            "task = {'padding': 'x' * 140000, 'task_id': '围城任务 🔥', "
+            "'utf8_mode': sys.flags.utf8_mode, "
+            "'stdout_encoding': sys.stdout.encoding, "
+            "'stderr_encoding': sys.stderr.encoding}\n"
+            "print(json.dumps({'ok': True, 'tasks': [task]}, ensure_ascii=False))\n"
+            "print('任务总线诊断 🔥', file=sys.stderr)\n"
+        )
+        self.assertEqual(tasks[0]["task_id"], "围城任务 🔥")
+        self.assertEqual(len(tasks[0]["padding"]), 140000)
+        self.assertEqual(tasks[0]["utf8_mode"], 1)
+        self.assertEqual(tasks[0]["stdout_encoding"].lower(), "utf-8")
+        self.assertEqual(tasks[0]["stderr_encoding"].lower(), "utf-8")
+
+    def test_invalid_stdout_raises_decode_error_in_caller(self) -> None:
+        with self.assertRaises(UnicodeDecodeError):
+            self.run_bus("import sys\nsys.stdout.buffer.write(b'\\xff')\n")
+
+    def test_invalid_stderr_does_not_accept_valid_tasks(self) -> None:
+        with self.assertRaises(UnicodeDecodeError):
+            self.run_bus(
+                "import sys\n"
+                "print('{\"ok\": true, \"tasks\": []}')\n"
+                "sys.stderr.buffer.write(b'\\xff')\n"
+            )
+
+    def test_failed_child_does_not_accept_valid_tasks(self) -> None:
+        with self.assertRaises(subprocess.CalledProcessError) as raised:
+            self.run_bus(
+                "import sys\n"
+                "print('{\"ok\": true, \"tasks\": []}')\n"
+                "sys.exit(7)\n"
+            )
+        self.assertEqual(raised.exception.returncode, 7)
 
 
 class SteamWindowIdentityTests(unittest.TestCase):

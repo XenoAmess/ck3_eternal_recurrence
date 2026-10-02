@@ -2,6 +2,12 @@
 
 from __future__ import annotations
 
+from .public_unit_contract import (
+    public_cunit_id as _public_cunit_id,
+    public_cunit_ids as _public_cunit_ids,
+    canonical_public_cunit_decimal as _canonical_public_cunit_decimal,
+)
+
 from typing import Final
 
 
@@ -146,7 +152,7 @@ def _ids(
 def query_battle_reinforcement_assignment_v1_step(
     selected_public_cunit_id: int,
 ) -> str:
-    selected_public_cunit_id = _positive_int32(
+    selected_public_cunit_id = _public_cunit_id(
         selected_public_cunit_id, "selected_public_cunit_id"
     )
     return (
@@ -165,13 +171,13 @@ def parse_query_battle_reinforcement_assignment_v1_step(
     suffix = step.removeprefix(
         QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_STEP_PREFIX
     )
-    if not suffix.isascii() or not suffix.isdecimal() or suffix.startswith("0"):
+    if not _canonical_public_cunit_decimal(suffix):
         return None
     try:
         value = int(suffix)
     except ValueError:
         return None
-    return value if 1 <= value <= 2**31 - 1 and str(value) == suffix else None
+    return value if 0 <= value <= 2**31 - 1 and str(value) == suffix else None
 
 
 def normalize_battle_reinforcement_assignment_v1(
@@ -183,7 +189,7 @@ def normalize_battle_reinforcement_assignment_v1(
 ) -> dict[str, object]:
     """Normalize one complete v1 frame and reject invented/stale fields."""
 
-    expected_selected_public_cunit_id = _positive_int32(
+    expected_selected_public_cunit_id = _public_cunit_id(
         expected_selected_public_cunit_id,
         "expected_selected_public_cunit_id",
     )
@@ -239,7 +245,7 @@ def normalize_battle_reinforcement_assignment_v1(
         minimum=-(2**63),
         maximum=2**63 - 1,
     )
-    selected_id = _positive_int32(
+    selected_id = _public_cunit_id(
         frame.get("selected_public_cunit_id"),
         "battle_reinforcement_assignment.selected_public_cunit_id",
     )
@@ -496,7 +502,7 @@ def normalize_battle_reinforcement_assignment_v1(
             f"parent_subunits_in_stored_order[{index}]",
             _SUBUNIT_FIELDS,
         )
-        row_ids = _ids(
+        row_ids = _public_cunit_ids(
             row.get("public_cunit_ids_in_stored_order"),
             f"parent_subunits_in_stored_order[{index}]."
             "public_cunit_ids_in_stored_order",

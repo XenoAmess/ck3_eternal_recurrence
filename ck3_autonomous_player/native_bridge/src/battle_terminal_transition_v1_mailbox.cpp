@@ -1,3 +1,4 @@
+#include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/battle_terminal_transition_v1_mailbox.hpp"
 
 #include <windows.h>
@@ -242,7 +243,7 @@ bool ValidFullComponentIds(
 bool ValidateSnapshot(
     const game::BattleTerminalTransitionSnapshotV1 &snapshot) noexcept {
   if (snapshot.snapshot_revision == 0 || snapshot.prior_combat_id == -1 ||
-      snapshot.subject_public_cunit_id <= 0 || StatusName(snapshot.status).empty()) {
+      snapshot.subject_public_cunit_id < 0 || StatusName(snapshot.status).empty()) {
     return false;
   }
   const auto &journal = snapshot.terminal_journal;
@@ -391,7 +392,7 @@ bool IsExecutingExactMailboxSlot(
   if (query.mailbox == nullptr || query.ticket.sequence == 0 ||
       query.expected_snapshot_revision == 0 ||
       query.request.prior_combat_id == -1 ||
-      query.request.subject_public_cunit_id <= 0 || stamp.pump_epoch == 0 ||
+      query.request.subject_public_cunit_id < 0 || stamp.pump_epoch == 0 ||
       stamp.thread_id == 0 || !stamp.paused ||
       stamp.tls_initialized_flag_address == 0 || stamp.tls_initialized != 1 ||
       stamp.tls_context == 0 || stamp.tls_main_thread_marker != 1 ||
@@ -494,7 +495,7 @@ bool ParseBattleTerminalTransitionV1Step(
   std::uint64_t cursor = 0;
   if (!ParseCanonicalFullComponentId(wire.substr(0, first),
                                      output.prior_combat_id) ||
-      !ParseCanonicalPositiveInt32(
+      !game::ParsePublicCUnitIdV1(
           wire.substr(first + 1, second - first - 1),
           output.subject_public_cunit_id) ||
       !ParseCanonicalUint64(wire.substr(second + 1), cursor)) {

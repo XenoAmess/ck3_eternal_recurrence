@@ -1,4 +1,4 @@
-﻿#include "xar_bridge/ck3_12002_combat.hpp"
+#include "xar_bridge/ck3_12002_combat.hpp"
 #include <algorithm>
 #include <array>
 #include <cstring>
@@ -1595,7 +1595,7 @@ ReadCombatSimulationInputsResult ReadCombatSimulationInputs(
   army_ids.insert(army_ids.end(), request.defender_army_ids.begin(),
                   request.defender_army_ids.end());
   for (std::size_t index = 0; index < army_ids.size(); ++index) {
-    if (army_ids[index] <= 0 ||
+    if (army_ids[index] < 0 ||
         std::find(army_ids.begin(), army_ids.begin() + index,
                   army_ids[index]) != army_ids.begin() + index) {
       return ReadCombatSimulationInputsResult::invalid_arguments;

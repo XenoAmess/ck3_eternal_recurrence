@@ -1,0 +1,720 @@
+{
+  "schema_version": 1,
+  "contract": "episode03-ordinary-claim-occupation-score-static-12003",
+  "source_head": "6a837a1ecd9b027170f607242f6f02724908dc14",
+  "source_tree": "D:\\we3",
+  "exact_build": "1.20.0.3",
+  "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "exe_file_size": 101039736,
+  "image_base": "0x140000000",
+  "scope": "One ordinary claim_cb siege; no war-exit effects or religion topics.",
+  "readiness": "offline-static-only; current .3 scenario query and original-pixel evidence required",
+  "live_executed": false,
+  "runtime_wiring_changed": false,
+  "interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "pefile": "2024.8.26",
+  "capstone": "5.0.7",
+  "verification": {
+    "status": "PASS",
+    "exact_exe_sha": true,
+    "span_count": 24,
+    "instruction_count": 64
+  },
+  "runtime_function_spans": [
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x249ac40",
+      "end_rva": "0x249aded",
+      "sha256": "da401d81e6b8555dec35d96a0ea58111eb369b2eda3f686a7eefeea1b2e94470",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x2c0c310",
+      "end_rva": "0x2c0c3ad",
+      "sha256": "ae377b37b0dfc654133bf75c8995c0285a1e6c138486aa7428aa302d2ef1b9e3",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x2c0ddb0",
+      "end_rva": "0x2c0ee63",
+      "sha256": "0abae9dc472c80fce5f417051ee6cb13dbd558be70ff1d6f40b02433599200ed",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x2c0ee70",
+      "end_rva": "0x2c0f1b9",
+      "sha256": "fbc437b5dec5dcb8c8d579aab3a6b23a938a55bb9e82a451fb3df2dd0d551aff",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x2c0d390",
+      "end_rva": "0x2c0d3c3",
+      "sha256": "62c1065cff628b79bc5bfd05cc50fa1d4734dff72a1b44a493a5d9eeab876a37",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x2c0d5b0",
+      "end_rva": "0x2c0d7e4",
+      "sha256": "4fe4d4cd41163855de506fe7190acb6e193e0b7995c6e52528207fc3f77e95f2",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x2c0d7f0",
+      "end_rva": "0x2c0dda2",
+      "sha256": "38da2be8f1b9103986f866144b8044921b01d499ef01e4ce4de0c2486f850464",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x2c0b800",
+      "end_rva": "0x2c0c30c",
+      "sha256": "ceedd16041ee4baa59581b81dc6ba4ab8597300d2d7c4c76a2345b9fdc5b126a",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x2c13840",
+      "end_rva": "0x2c138c1",
+      "sha256": "20222897cd6f5a6d949e04071a2bba28964e4d3f6e5e9e22f001e329deafbbe5",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x24977c0",
+      "end_rva": "0x2497889",
+      "sha256": "0aee16c397083daa3b3e6543066d394a8727dd71a3063c92e68f556e16ebef89",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x2c0b4d0",
+      "end_rva": "0x2c0b7f2",
+      "sha256": "bea7c293dd9576fa1144cc141fde2de7e5c5d206f18f654d454d2a0d8f6cf6c2",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x2c0d3c3",
+      "end_rva": "0x2c0d5a4",
+      "sha256": "6f2f41262151e58b1b4bcf3665ddd9afdd2c7030caf5991003597b6e8bdf477c",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x2494b60",
+      "end_rva": "0x2494be2",
+      "sha256": "d3f63a0875e33bdffc3f058809e0c4e4c24224e378813e78ea3cbc72b55acaff",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x28b1cd0",
+      "end_rva": "0x28b1d8b",
+      "sha256": "eb5693f312eb22ea036d0871ce13486d0abed5ee3ba885dd0e8a5cdf50bc2262",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x48a940",
+      "end_rva": "0x48aaf4",
+      "sha256": "1990980ef2009f85409b96887180b4c1d41e5be2aaf3f40352d7f138a75a220c",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x489e20",
+      "end_rva": "0x489fd4",
+      "sha256": "41d5bc2e32967c917709ac121f8f6df0474350aab2bb41a1072c0793e4fb4974",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x489fe0",
+      "end_rva": "0x48a194",
+      "sha256": "374ea3b509b3684f9cc4b11f1c16de3dec13653dc084e87ae6d9380c1eccb384",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x48a1a0",
+      "end_rva": "0x48a354",
+      "sha256": "ffe51802267d600bd97a68a13ac84b2de8d4df7b79a250e872db496af5b79c4a",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x48a370",
+      "end_rva": "0x48a3fa",
+      "sha256": "785d3403ac1e6cbbee2154cf67f53a60ca287d1524bf20a800c417dafbffb49e",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x2386cb0",
+      "end_rva": "0x2386d35",
+      "sha256": "e2d09f8314334e8dc27f8a517b47301d8624c4a7847ad391e78cc3dbbc2e7a1c",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x2385db0",
+      "end_rva": "0x2386007",
+      "sha256": "3a622516a1c22fc88aff2faf369c1aa4faf649a6fe4ec661ae6263e324dc50a9",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x23860f0",
+      "end_rva": "0x2386347",
+      "sha256": "702039b4640d8cd7f3d0c83950557751574b63f00ae6e74ca2a477d3463c93de",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x2386430",
+      "end_rva": "0x2386687",
+      "sha256": "7e1a58678368acf514de8d5d011844c71acfb05ee8e4f1c2df73dcc05eba1fef",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    },
+    {
+      "kind": "PE_RUNTIME_FUNCTION_SPAN",
+      "start_rva": "0x23867f0",
+      "end_rva": "0x238683f",
+      "sha256": "c686207a6f4e46955af2e56baf987b3799d51e14c9fb86261ceeed8995f1fabc",
+      "note": "A .pdata span can be a fragment of a logical function; no boundary completeness is inferred."
+    }
+  ],
+  "instruction_checks": {
+    "total_score": [
+      {
+        "rva": "0x249ac85",
+        "bytes": "7409",
+        "instruction": "je 0x14249ac90"
+      },
+      {
+        "rva": "0x249acbb",
+        "bytes": "740b",
+        "instruction": "je 0x14249acc8"
+      },
+      {
+        "rva": "0x249ad19",
+        "bytes": "7407",
+        "instruction": "je 0x14249ad22"
+      },
+      {
+        "rva": "0x249ad46",
+        "bytes": "0f8575ffffff",
+        "instruction": "jne 0x14249acc1"
+      },
+      {
+        "rva": "0x249adc2",
+        "bytes": "83f89c",
+        "instruction": "cmp eax, -0x64"
+      },
+      {
+        "rva": "0x249adce",
+        "bytes": "b964000000",
+        "instruction": "mov ecx, 0x64"
+      },
+      {
+        "rva": "0x249add5",
+        "bytes": "0f4fc1",
+        "instruction": "cmovg eax, ecx"
+      }
+    ],
+    "occupation_counting": [
+      {
+        "rva": "0x2c0d706",
+        "bytes": "488b0543b50503",
+        "instruction": "mov rax, qword ptr [rip + 0x305b543]",
+        "rip_target_rva": "0x5c68c50"
+      },
+      {
+        "rva": "0x2c0d712",
+        "bytes": "41ff4104",
+        "instruction": "inc dword ptr [r9 + 4]"
+      },
+      {
+        "rva": "0x2c0d721",
+        "bytes": "48638888000000",
+        "instruction": "movsxd rcx, dword ptr [rax + 0x88]"
+      },
+      {
+        "rva": "0x2c0d749",
+        "bytes": "81ba5c080000766f7250",
+        "instruction": "cmp dword ptr [rdx + 0x85c], 0x50726f76"
+      },
+      {
+        "rva": "0x2c0d75a",
+        "bytes": "448b823c070000",
+        "instruction": "mov r8d, dword ptr [rdx + 0x73c]"
+      },
+      {
+        "rva": "0x2c0d781",
+        "bytes": "44394018",
+        "instruction": "cmp dword ptr [rax + 0x18], r8d"
+      },
+      {
+        "rva": "0x2c0d7c6",
+        "bytes": "41ff01",
+        "instruction": "inc dword ptr [r9]"
+      }
+    ],
+    "occupation_math": [
+      {
+        "rva": "0x2c0e365",
+        "bytes": "4d8b9e88150000",
+        "instruction": "mov r11, qword ptr [r14 + 0x1588]"
+      },
+      {
+        "rva": "0x2c0e36c",
+        "bytes": "418b8678150000",
+        "instruction": "mov eax, dword ptr [r14 + 0x1578]"
+      },
+      {
+        "rva": "0x2c0e375",
+        "bytes": "4d8b9e90150000",
+        "instruction": "mov r11, qword ptr [r14 + 0x1590]"
+      },
+      {
+        "rva": "0x2c0e37c",
+        "bytes": "418b867c150000",
+        "instruction": "mov eax, dword ptr [r14 + 0x157c]"
+      },
+      {
+        "rva": "0x2c0e3b2",
+        "bytes": "4963ca",
+        "instruction": "movsxd rcx, r10d"
+      },
+      {
+        "rva": "0x2c0e3bc",
+        "bytes": "4863c2",
+        "instruction": "movsxd rax, edx"
+      },
+      {
+        "rva": "0x2c0e3fc",
+        "bytes": "48f7fb",
+        "instruction": "idiv rbx"
+      },
+      {
+        "rva": "0x2c0e4a3",
+        "bytes": "480faf0dcdb40503",
+        "instruction": "imul rcx, qword ptr [rip + 0x305b4cd]",
+        "rip_target_rva": "0x5c69978"
+      },
+      {
+        "rva": "0x2c0e4ab",
+        "bytes": "4803c8",
+        "instruction": "add rcx, rax"
+      },
+      {
+        "rva": "0x2c0e4c0",
+        "bytes": "490fafcb",
+        "instruction": "imul rcx, r11"
+      },
+      {
+        "rva": "0x2c0e61d",
+        "bytes": "4885db",
+        "instruction": "test rbx, rbx"
+      },
+      {
+        "rva": "0x2c0e626",
+        "bytes": "483bde",
+        "instruction": "cmp rbx, rsi"
+      },
+      {
+        "rva": "0x2c0e629",
+        "bytes": "480f4fde",
+        "instruction": "cmovg rbx, rsi"
+      },
+      {
+        "rva": "0x2c0e6b8",
+        "bytes": "e8a36488ff",
+        "instruction": "call 0x142494b60",
+        "direct_call_rva": "0x2494b60"
+      },
+      {
+        "rva": "0x2c0e6c1",
+        "bytes": "48630564b20503",
+        "instruction": "movsxd rax, dword ptr [rip + 0x305b264]",
+        "rip_target_rva": "0x5c6992c"
+      },
+      {
+        "rva": "0x2c0e6d4",
+        "bytes": "498d0c1e",
+        "instruction": "lea rcx, [r14 + rbx]"
+      },
+      {
+        "rva": "0x2c0edfc",
+        "bytes": "48c1e83f",
+        "instruction": "shr rax, 0x3f"
+      },
+      {
+        "rva": "0x2c0ee00",
+        "bytes": "4803d0",
+        "instruction": "add rdx, rax"
+      }
+    ],
+    "prisoner_classification": [
+      {
+        "rva": "0x2c0b50e",
+        "bytes": "488b8888020000",
+        "instruction": "mov rcx, qword ptr [rax + 0x288]"
+      },
+      {
+        "rva": "0x2c0b515",
+        "bytes": "4885c9",
+        "instruction": "test rcx, rcx"
+      },
+      {
+        "rva": "0x2c0b51f",
+        "bytes": "e83c9688ff",
+        "instruction": "call 0x142494b60",
+        "direct_call_rva": "0x2494b60"
+      },
+      {
+        "rva": "0x2c0b52d",
+        "bytes": "4188460d",
+        "instruction": "mov byte ptr [r14 + 0xd], al"
+      },
+      {
+        "rva": "0x2c0b69b",
+        "bytes": "488d90a0030000",
+        "instruction": "lea rdx, [rax + 0x3a0]"
+      },
+      {
+        "rva": "0x2c0b6ad",
+        "bytes": "448b25605d8402",
+        "instruction": "mov r12d, dword ptr [rip + 0x2845d60]",
+        "rip_target_rva": "0x5451414"
+      },
+      {
+        "rva": "0x2c0b6c3",
+        "bytes": "0f8db5000000",
+        "instruction": "jge 0x142c0b77e"
+      },
+      {
+        "rva": "0x2c0b70f",
+        "bytes": "488b8188020000",
+        "instruction": "mov rax, qword ptr [rcx + 0x288]"
+      },
+      {
+        "rva": "0x2c0b778",
+        "bytes": "7416",
+        "instruction": "je 0x142c0b790"
+      },
+      {
+        "rva": "0x2c0b77a",
+        "bytes": "41896e08",
+        "instruction": "mov dword ptr [r14 + 8], ebp"
+      },
+      {
+        "rva": "0x2c0b785",
+        "bytes": "41c70664000000",
+        "instruction": "mov dword ptr [r14], 0x64"
+      },
+      {
+        "rva": "0x2c0b7aa",
+        "bytes": "0f450dcfe10503",
+        "instruction": "cmovne ecx, dword ptr [rip + 0x305e1cf]",
+        "rip_target_rva": "0x5c69980"
+      },
+      {
+        "rva": "0x2c0b7b1",
+        "bytes": "0faf15bce10503",
+        "instruction": "imul edx, dword ptr [rip + 0x305e1bc]",
+        "rip_target_rva": "0x5c69974"
+      },
+      {
+        "rva": "0x2c0b7cb",
+        "bytes": "488b05365c8402",
+        "instruction": "mov rax, qword ptr [rip + 0x2845c36]",
+        "rip_target_rva": "0x5451408"
+      },
+      {
+        "rva": "0x2c0b7d2",
+        "bytes": "8b0488",
+        "instruction": "mov eax, dword ptr [rax + rcx*4]"
+      }
+    ],
+    "cached_ticking": [
+      {
+        "rva": "0x2c0eea6",
+        "bytes": "b878000000",
+        "instruction": "mov eax, 0x78"
+      },
+      {
+        "rva": "0x2c0eeab",
+        "bytes": "b9d8000000",
+        "instruction": "mov ecx, 0xd8"
+      },
+      {
+        "rva": "0x2c0eec0",
+        "bytes": "44383c10",
+        "instruction": "cmp byte ptr [rax + rdx], r15b"
+      },
+      {
+        "rva": "0x2c0eec6",
+        "bytes": "b940000000",
+        "instruction": "mov ecx, 0x40"
+      },
+      {
+        "rva": "0x2c0eecb",
+        "bytes": "b8a0000000",
+        "instruction": "mov eax, 0xa0"
+      },
+      {
+        "rva": "0x2c0eed9",
+        "bytes": "48f72c11",
+        "instruction": "imul qword ptr [rcx + rdx]"
+      },
+      {
+        "rva": "0x2c0eee8",
+        "bytes": "4803c2",
+        "instruction": "add rax, rdx"
+      },
+      {
+        "rva": "0x2c0f18f",
+        "bytes": "4803c2",
+        "instruction": "add rax, rdx"
+      }
+    ],
+    "loaded_define_key_storage": [
+      {
+        "rva": "0x2386cb7",
+        "bytes": "488d05da103902",
+        "instruction": "lea rax, [rip + 0x23910da]",
+        "rip_target_rva": "0x4717d98"
+      },
+      {
+        "rva": "0x2386cfc",
+        "bytes": "488d15752c8e03",
+        "instruction": "lea rdx, [rip + 0x38e2c75]",
+        "rip_target_rva": "0x5c69978"
+      },
+      {
+        "rva": "0x2385dc8",
+        "bytes": "488d05f9203902",
+        "instruction": "lea rax, [rip + 0x23920f9]",
+        "rip_target_rva": "0x4717ec8"
+      },
+      {
+        "rva": "0x2385ee8",
+        "bytes": "488d053d3a8e03",
+        "instruction": "lea rax, [rip + 0x38e3a3d]",
+        "rip_target_rva": "0x5c6992c"
+      },
+      {
+        "rva": "0x2386108",
+        "bytes": "488d05d91d3902",
+        "instruction": "lea rax, [rip + 0x2391dd9]",
+        "rip_target_rva": "0x4717ee8"
+      },
+      {
+        "rva": "0x2386228",
+        "bytes": "488d0545378e03",
+        "instruction": "lea rax, [rip + 0x38e3745]",
+        "rip_target_rva": "0x5c69974"
+      },
+      {
+        "rva": "0x2386448",
+        "bytes": "488d05b91a3902",
+        "instruction": "lea rax, [rip + 0x2391ab9]",
+        "rip_target_rva": "0x4717f08"
+      },
+      {
+        "rva": "0x2386568",
+        "bytes": "488d0511348e03",
+        "instruction": "lea rax, [rip + 0x38e3411]",
+        "rip_target_rva": "0x5c69980"
+      },
+      {
+        "rva": "0x23867f7",
+        "bytes": "488d0522163902",
+        "instruction": "lea rax, [rip + 0x2391622]",
+        "rip_target_rva": "0x4717e20"
+      }
+    ]
+  },
+  "source_files": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_diplomacy.cpp",
+      "sha256": "72aac813a82dbb6d094aee1f2ddc2e362f4576023b05d3ce993c8eed2bd4d476"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_province.cpp",
+      "sha256": "975c9db6743af49fbddc8fbc3afc12fde20265fa5a112dfe6fe656e84f3e1c15"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_prisoner_war_retention.cpp",
+      "sha256": "bef8dd3bc19d5215cea83533befbc8b930f860824eb95d75ddf3d3ba1e6e7787"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "sha256": "36b347b70e032509dff1ea159864fe6c53e0f595feb7ef4d936c3e53b8554518"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_contract.py",
+      "sha256": "e52b04ec702b49f797ee0166ae17cca5791c4c9c480bbb09e0b93f5318953870"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/ck3_1_20_0_3_abi_reuse.json",
+      "sha256": "ff7a5b1a8208d7ce0358be3cd2fec9f455a4ba116ccf1b25c4ccf0f0b64dd119"
+    }
+  ],
+  "vanilla_files": [
+    {
+      "path": "common/casus_belli_types/00_claim.txt",
+      "sha256": "887bf0197401cb17cb4588978add556ab6b429bf55cb482e3e5f2d0e8351cfd4"
+    },
+    {
+      "path": "common/casus_belli_types/_casus_belli.info",
+      "sha256": "270343ebae0f8ebd2e4d24f9f839a7c77cb663836d9b36af6d5138a58755bb05"
+    },
+    {
+      "path": "common/defines/00_defines.txt",
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982"
+    },
+    {
+      "path": "gui/window_war_overview.gui",
+      "sha256": "e652bef0c495cf3984ce62636bb492bb9328279e0db07ef38ee9df0ba78f044d"
+    },
+    {
+      "path": "localization/english/wars_l_english.yml",
+      "sha256": "8ab569257bff24a9653fcc21102b861a4b903a6c2b825817a3650813140d6b58"
+    },
+    {
+      "path": "localization/english/gui/waroverview_l_english.yml",
+      "sha256": "a626e98bd128153c34af8eb1ea57a581d41e3407da3d7822d0462eac3de400cd"
+    },
+    {
+      "path": "localization/english/game_concepts_l_english.yml",
+      "sha256": "ae7ebd881fe5b4222220c5dd9cf4b56b5d848202af2e5db9f5c90b479f455dd7"
+    }
+  ],
+  "external_artifacts": [
+    {
+      "path": "D:\\ck3-war-episode03-20261002-a01\\score-getter-disassembly-a01.json",
+      "sha256": "5e3ab3a2b07d16cc9429a5085b7ddb24a9ee40977cbc3875d1b5e6251095884b"
+    },
+    {
+      "path": "D:\\ck3-war-episode03-20261002-a01\\score-getter-disassembly-a02.json",
+      "sha256": "ab59fc5def92adbfc3495275a44ae5441819be72ba85f1ab7403cc91063f4f79"
+    },
+    {
+      "path": "D:\\ck3-war-episode03-20261002-a01\\score-getter-disassembly-a04.json",
+      "sha256": "70755c0e7b80444ac8cbc31934df00e75c75916c50274f751aaba29ac91393f0"
+    },
+    {
+      "path": "D:\\ck3-war-episode03-20261002-a01\\score-getter-disassembly-a05.json",
+      "sha256": "7608c4ca60ca538dad9c2d2ddc5f7a0fb7923e93ab9917476505def647160550"
+    },
+    {
+      "path": "D:\\ck3-war-episode03-20261002-a01\\score-getter-disassembly-a06.json",
+      "sha256": "433f1967332878c51bc8341514f3e45ce58a8832e419251e091c3ea2c790d338"
+    }
+  ],
+  "native_findings": {
+    "occupation": "Count helper increments eligible denominator and occupied numerator separately. Q100000 ratio plus occupied*per_barony_scale, multiplied by side CB scale, clamped to 0..CB cap, then conditional enemy capital bonus and truncation toward zero. Full-occupation flag can replace all components with +/-100.",
+    "prisoner": "Primary war leader custody by opposite participants sets exclusive 100. Ordered cached succession scan stops at first held eligible heir and applies one table entry; spouses and direct-vassal rows use separate loaded defines. Collection count alone is not a score.",
+    "ticking": "Published integer is read from side cached raw accumulated value/valid flag, not calculated from snapshot war_duration_days. Original 0.055/day can be invisible after integer truncation."
+  },
+  "missing_observations": [
+    "Native eligible/occupied barony count and contributing exact full-ID rows; snapshot target province count is a different set.",
+    "CB loaded side scale/cap/full-occupation/capital policy; source vanilla definition alone is not loaded-object readback.",
+    "Native goal-holding ratio and held-objective clock; 0.8 is threshold configuration, not a measured percentage.",
+    "Side cached fractional ticking values and valid flags; current published four-part integers omit them.",
+    "Native score-classified primary/spouse/direct-vassal/ordered-heir custody rows and per-side authoritative flag.",
+    "Typed war-overview window and category-tooltip readback; current UI window enum has no war kind."
+  ],
+  "sampling_plan": {
+    "war_id": null,
+    "target_title_ids": null,
+    "target_province_id": null,
+    "binding": [
+      "exact_build",
+      "exe_sha256",
+      "adapter_id",
+      "snapshot_id",
+      "revision",
+      "native_revision",
+      "date_raw",
+      "episode_run_id",
+      "connection_generation",
+      "paused",
+      "map_ready",
+      "played_character.character_id"
+    ],
+    "war": [
+      "war_id",
+      "player_side",
+      "player_is_primary_war_leader",
+      "primary_opponent_character_id",
+      "targeted_title_ids",
+      "war_objective_province_ids",
+      "player_relative_war_score"
+    ],
+    "province": [
+      "province_id",
+      "occupation_observable",
+      "is_occupied",
+      "occupying_character_id",
+      "fort_level",
+      "garrison_size",
+      "besieging_strength",
+      "siege_observable",
+      "active_siege"
+    ],
+    "siege_before": [
+      "siege_id",
+      "besieging_army_id",
+      "player_army_besieging",
+      "progress_fraction",
+      "current_work",
+      "total_work",
+      "days_left",
+      "assault_observable",
+      "breach_level",
+      "assault_in_progress"
+    ],
+    "score_query": [
+      "absolute_war_scores_observable",
+      "attacker_war_score",
+      "defender_war_score",
+      "player_relative_war_score",
+      "war_duration_days",
+      "active_casus_belli_identity",
+      "war_score_breakdown.imprisonment",
+      "war_score_breakdown.battles",
+      "war_score_breakdown.occupation",
+      "war_score_breakdown.ticking"
+    ],
+    "phases": [
+      "paused_pre_fall",
+      "paused_first_observed_fall",
+      "paused_repeated_same_frame_after",
+      "optional_later_held_objective_read"
+    ],
+    "castle_fall_required": "Same war/title/province, before observable unoccupied+active siege, after observable occupied+validated occupant and observable no active siege; bind original pixels separately.",
+    "recomputable": [
+      "signed player orientation",
+      "four category deltas",
+      "total delta",
+      "component sum residual diagnostic",
+      "verified custody ID set delta when both bounded collections complete"
+    ],
+    "not_recomputable_from_current_dto": [
+      "one-castle formula without native barony denominator",
+      "full county/80% goal control from county-capital-only rows",
+      "per-prisoner score from custody count",
+      "fractional ticking from full war age"
+    ]
+  }
+}

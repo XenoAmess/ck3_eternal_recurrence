@@ -1,4 +1,4 @@
-﻿#include "xar_bridge/ck3_12002_routes.hpp"
+#include "xar_bridge/ck3_12002_routes.hpp"
 
 #include <algorithm>
 #include <array>
@@ -582,7 +582,7 @@ bool CollectCompleteHostileScope(const Snapshot &snapshot,
   for (const auto &war : snapshot.active_wars) {
     found_active_war = true;
     for (const auto &enemy : war.enemy_armies) {
-      if (!enemy.retreating && enemy.army_id > 0 &&
+      if (!enemy.retreating && enemy.army_id >= 0 &&
           std::find(output.begin(), output.end(), enemy.army_id) ==
               output.end()) {
         output.push_back(enemy.army_id);
@@ -919,7 +919,7 @@ RouteContactHorizonStatus ReadRouteContactHorizonSample(
       bindings.read_unit_naval_route_speed == nullptr ||
       bindings.read_unit_current_edge_speed == nullptr ||
       bindings.read_route_travel_duration == nullptr ||
-      request.subject_army_id <= 0 || request.target_province_id <= 0 ||
+      request.subject_army_id < 0 || request.target_province_id <= 0 ||
       request.hostile_army_ids.empty() ||
       request.hostile_army_ids.size() > 64 ||
       std::find(request.hostile_army_ids.begin(),
@@ -929,7 +929,7 @@ RouteContactHorizonStatus ReadRouteContactHorizonSample(
     return output.status;
   }
   for (const auto hostile_id : request.hostile_army_ids) {
-    if (hostile_id <= 0 ||
+    if (hostile_id < 0 ||
         std::count(request.hostile_army_ids.begin(),
                    request.hostile_army_ids.end(), hostile_id) != 1) {
       output.status = RouteContactHorizonStatus::unavailable;
@@ -1824,7 +1824,7 @@ ActualContactScopeStatus ReadActualContactScope(
       bindings.read_province_holder_character_id == nullptr ||
       bindings.classify_contact_defender_by_holder == nullptr ||
       bindings.classify_contact_defender_fallback == nullptr ||
-      request.subject_army_id <= 0 || request.target_province_id <= 0) {
+      request.subject_army_id < 0 || request.target_province_id <= 0) {
     output.status = ActualContactScopeStatus::unavailable;
     return output.status;
   }

@@ -33,6 +33,29 @@ bool ParseCanonicalPositiveInt32(std::string_view text,
   return true;
 }
 
+bool ParseCanonicalPublicCUnitId(std::string_view text,
+                                 std::int32_t &output) noexcept {
+  if (text.empty() || (text.front() == '0' && text != "0")) {
+    return false;
+  }
+  std::int32_t value = -1;
+  const auto parsed =
+      std::from_chars(text.data(), text.data() + text.size(), value);
+  if (parsed.ec != std::errc{} || parsed.ptr != text.data() + text.size() ||
+      value < 0) {
+    return false;
+  }
+  char canonical[16]{};
+  const auto rendered =
+      std::to_chars(canonical, canonical + sizeof(canonical), value);
+  if (rendered.ec != std::errc{} ||
+      std::string_view(canonical, rendered.ptr) != text) {
+    return false;
+  }
+  output = value;
+  return true;
+}
+
 bool TakeToken(std::string_view &input, std::string_view delimiter,
                std::string_view &token) noexcept {
   const auto at = input.find(delimiter);
@@ -88,7 +111,7 @@ bool ParseRouteContactHorizonV1Step(
   if (!TakeToken(body, "-to-", subject_text) ||
       !TakeToken(body, "-h-", target_text) ||
       !TakeToken(body, "-", count_text) ||
-      !ParseCanonicalPositiveInt32(subject_text, output.subject_army_id) ||
+      !ParseCanonicalPublicCUnitId(subject_text, output.subject_army_id) ||
       !ParseCanonicalPositiveInt32(target_text, output.target_province_id)) {
     output = {};
     return false;
@@ -102,7 +125,7 @@ bool ParseRouteContactHorizonV1Step(
     return false;
   }
   output.hostile_army_ids.reserve(static_cast<std::size_t>(hostile_count));
-  std::int32_t prior_hostile_id = 0;
+  std::int32_t prior_hostile_id = -1;
   for (std::int32_t index = 0; index < hostile_count; ++index) {
     const auto separator = body.find('-');
     const bool final = index + 1 == hostile_count;
@@ -113,7 +136,7 @@ bool ParseRouteContactHorizonV1Step(
     }
     const auto token = final ? body : body.substr(0, separator);
     std::int32_t hostile_id = -1;
-    if (!ParseCanonicalPositiveInt32(token, hostile_id) ||
+    if (!ParseCanonicalPublicCUnitId(token, hostile_id) ||
         hostile_id == output.subject_army_id ||
         hostile_id <= prior_hostile_id) {
       output = {};
@@ -188,7 +211,7 @@ bool RouteContactHostileScopeMatchesSnapshotV1(
   std::vector<std::int32_t> expected;
   for (const auto &war : snapshot.active_wars) {
     for (const auto &enemy : war.enemy_armies) {
-      if (!enemy.retreating && enemy.army_id > 0 &&
+      if (!enemy.retreating && enemy.army_id >= 0 &&
           std::find(expected.begin(), expected.end(), enemy.army_id) ==
               expected.end()) {
         expected.push_back(enemy.army_id);
@@ -372,7 +395,7 @@ std::string RouteContactHorizonFailureDetailV1(
   if (wait != MainThreadQueryWaitResultV1::completed ||
       completion != RouteContactHorizonMailboxCompletionV1::query_unavailable ||
       result.status != game::RouteContactHorizonStatus::timeline_unavailable ||
-      failure.army_id <= 0 ||
+      failure.army_id < 0 ||
       failure.role == game::RouteContactTimelineFailureRole::none ||
       failure.path_kind == game::RouteContactTimelinePathKind::none ||
       failure.stage == game::RouteContactTimelineFailureStage::none) {

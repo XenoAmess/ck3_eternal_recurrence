@@ -482,7 +482,7 @@ bool CandidateSourceSequenceDigestV3(
     }
     const auto &row = rows[index];
     if ((row.role != "commander" && row.role != "knight") ||
-        row.source_army_id <= 0 || row.character_id <= 0 ||
+        row.source_army_id < 0 || row.character_id <= 0 ||
         (row.role == "commander" && row.source_regiment_id != -1) ||
         (row.role == "knight" && row.source_regiment_id <= 0)) {
       return false;
@@ -2517,7 +2517,7 @@ bool BuildAdvantageArmyContextsV3(
     for (const auto *snapshot : snapshots) {
       if (snapshot == nullptr || !snapshot->available ||
           !snapshot->native_carmy_id_observable ||
-          snapshot->native_carmy_id <= 0 || snapshot->army_id <= 0 ||
+          snapshot->native_carmy_id <= 0 || snapshot->army_id < 0 ||
           snapshot->owner.status != game::CombatObservationStatus::available) {
         return false;
       }
@@ -2674,7 +2674,7 @@ bool ReadNativeCandidateSourceRowsV3(
     const auto *const army =
         FindCandidateSourceArmyV3(armies, native_carmy_id);
     if (army == nullptr || army->snapshot == nullptr || army->army == nullptr ||
-        army->snapshot->army_id <= 0 ||
+        army->snapshot->army_id < 0 ||
         ResolveComponent(module, kInternalArmyStoreSlot, native_carmy_id,
                          0x10) != army->army) {
       return false;
@@ -2726,7 +2726,7 @@ bool ReadNativeCandidateSourceRowsV3(
     const auto *const army =
         FindCandidateSourceArmyV3(armies, native_carmy_id);
     if (army == nullptr || army->snapshot == nullptr ||
-        army->snapshot->army_id <= 0 ||
+        army->snapshot->army_id < 0 ||
         !CandidateSourceArmyContainsRegimentV3(*army, regiment_id)) {
       return false;
     }

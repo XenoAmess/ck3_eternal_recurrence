@@ -48,7 +48,7 @@ bool SnapshotContainsFullGenerationArmyId(
                          return army.army_id == army_id;
                        });
   };
-  if (army_id <= 0) {
+  if (army_id < 0) {
     return false;
   }
   if (contains(snapshot.player_armies)) {

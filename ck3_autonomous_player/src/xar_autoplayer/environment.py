@@ -1041,16 +1041,21 @@ def ck3_process_inventory() -> dict[str, object]:
         }
     try:
         result = subprocess.run(
-            ["tasklist", "/FI", "IMAGENAME eq ck3.exe", "/FO", "CSV", "/NH"],
+            # A filtered empty result is localized prose rather than CSV.
+            # Enumerate every process, then filter image names ourselves so no
+            # language-specific "no tasks" message can authorize a launch.
+            ["tasklist", "/FO", "CSV", "/NH"],
             capture_output=True,
             text=True,
-            encoding="mbcs",
-            errors="replace",
+            encoding="oem",
+            errors="strict",
             check=False,
             timeout=10,
         )
     except subprocess.TimeoutExpired as error:
         raise UnsafeCleanupError("CK3 tasklist inventory timed out") from error
+    except (OSError, UnicodeError) as error:
+        raise UnsafeCleanupError("CK3 tasklist inventory could not be read") from error
     if result.returncode != 0 or result.stderr.strip():
         if _is_access_denied(result.stderr):
             processes = _toolhelp_ck3_processes()
@@ -1066,28 +1071,40 @@ def ck3_process_inventory() -> dict[str, object]:
             f"rc={result.returncode}, stderr={result.stderr.strip()!r}"
         )
     tasklist_pids: list[int] = []
-    unexpected: list[str] = []
+    all_pids: set[int] = set()
     for line in result.stdout.splitlines():
         stripped = line.strip()
         if not stripped:
             continue
         if stripped.startswith('"'):
             try:
-                row = next(csv.reader([stripped]))
-                if len(row) < 2 or row[0].casefold() != "ck3.exe":
+                row = next(csv.reader([stripped], strict=True))
+                if (
+                    len(row) != 5
+                    or not row[0]
+                    or not row[1].isascii()
+                    or not row[1].isdecimal()
+                ):
                     raise ValueError("unexpected tasklist row")
-                tasklist_pids.append(int(row[1]))
+                pid = int(row[1])
+                if pid in all_pids:
+                    raise ValueError("duplicate tasklist PID")
+                all_pids.add(pid)
+                if row[0].casefold() == "ck3.exe":
+                    if pid == 0:
+                        raise ValueError("invalid CK3 PID")
+                    tasklist_pids.append(pid)
             except (ValueError, csv.Error) as error:
                 raise UnsafeCleanupError(
                     f"CK3 tasklist inventory could not be parsed: {stripped!r}"
                 ) from error
-        elif stripped.casefold().startswith(("info:", "信息:")):
-            continue
         else:
-            unexpected.append(stripped)
-    if unexpected:
+            raise UnsafeCleanupError(
+                f"CK3 tasklist inventory returned unexpected output: {stripped!r}"
+            )
+    if not all_pids:
         raise UnsafeCleanupError(
-            f"CK3 tasklist inventory returned unexpected output: {unexpected!r}"
+            "CK3 tasklist inventory returned an empty full-process list"
         )
     processes = _toolhelp_ck3_processes()
     native_pids = [int(item["pid"]) for item in processes]

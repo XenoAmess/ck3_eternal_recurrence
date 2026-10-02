@@ -131,7 +131,7 @@ bool ReadOneSample(const PrewarScopeBindingsV1 &bindings, void *game_state,
       continue;
     }
     const auto unit_id = LoadAt<std::int32_t>(unit, kUnitIdOffset);
-    if (!IsPositiveFullId(unit_id) ||
+    if (unit_id < 0 ||
         (static_cast<std::uint32_t>(unit_id) & 0x00FFFFFFU) !=
             static_cast<std::uint32_t>(index)) {
       stage = "unit_identity";

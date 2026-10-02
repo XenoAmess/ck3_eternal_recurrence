@@ -1,0 +1,2182 @@
+{
+  "schema": "ck3-war-ai-episode03-live-source.v1",
+  "status": "complete-candidate-awaiting-root-freeze",
+  "case": {
+    "id": "william1066-lewes-siege6-live-a06",
+    "game_version": "1.20.0.3",
+    "steam_build": 25652598,
+    "executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+    "save_pin": {
+      "path": "D:/ck3-war-episode03-20261002-a01/william-lewes-fall-1067-04-22.ck3",
+      "bytes": 74680288,
+      "sha256": "fb0336fe3d570031fa640dc7b0b6d311b09fd62c9dec7b8b18aa47861453d8b0"
+    },
+    "loaded_content_pins": [],
+    "environment_source": {
+      "root_reports_pure_vanilla": true,
+      "independent_build_match_readback": {
+        "path": "D:/ck3-war-episode03-20261002-a01/assault-real-readback-a02.json",
+        "bytes": 110376,
+        "sha256": "95c17b00867c9a6d9c08e7d7d81fda898ffc0a01663edd6164881038a0349d7d"
+      },
+      "not_independently_launched_by_editor": true
+    },
+    "actor_id": 33388,
+    "army_id": 0,
+    "war_id": 1,
+    "siege_id": 6,
+    "province_id": 1506,
+    "holding_name_zh": "刘易斯",
+    "holding_name_en": "Lewes",
+    "holding_id": null,
+    "target_title_id": 202,
+    "CB": "norman_conquest_cb",
+    "episode_run_id": "native-33388-ebbc6357f8b6",
+    "start_date": "1067-01-10",
+    "start_date_kind": "first-observed-not-internal-establishment-tick",
+    "end_date": "1067-04-22",
+    "capture_completed": true,
+    "save_pin_role": "actual-post-capture-checkpoint-not-initial-setup-save",
+    "final_snapshot_pin": {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163035-929866-c5dc12f266-response.json",
+      "bytes": 6872491,
+      "sha256": "79e9bcc8c483b4a2801ea21627791e4f75fffb81044f7dad74f20637dddb3e23"
+    }
+  },
+  "sources": [
+    {
+      "id": "progress",
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a06-sources/progress-count-corrected.md",
+      "bytes": 19093,
+      "sha256": "f03e27d000202ad67489126c8a3a5946a5a49b9692a1149595dd8fb1a954b948",
+      "original_path": "D:/we3/docs/ck3-native-ai/episode03-siege-progress-1.20.0.3.md",
+      "evidence_level": "exact-build-.3-static-count-stack-erratum",
+      "kind": "exact-build-static-research"
+    },
+    {
+      "id": "assault",
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a01-sources/episode03-assault-1.20.0.3.md",
+      "bytes": 13633,
+      "sha256": "fffa08845817596dc5b801a3c55ba4d30ecf510f9b14642bb70304554c2d7163",
+      "original_path": "D:/we3/docs/ck3-native-ai/episode03-assault-1.20.0.3.md",
+      "evidence_level": "exact-build-1.20.0.3-static-no-new-live",
+      "kind": "exact-build-static-research"
+    },
+    {
+      "id": "occupation",
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a01-sources/episode03-occupation-war-score-1.20.0.3.md",
+      "bytes": 19509,
+      "sha256": "86ef1cda96257bd9ad07e0d2936f43890ba55c94ed7146d6e7f37b16de1edfdc",
+      "original_path": "D:/we3/docs/ck3-native-ai/episode03-occupation-war-score-1.20.0.3.md",
+      "evidence_level": "exact-build-1.20.0.3-static-no-new-live",
+      "kind": "exact-build-static-research"
+    },
+    {
+      "id": "events",
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a01-sources/episode03-siege-events-1.20.0.3.md",
+      "bytes": 13563,
+      "sha256": "95f62d705829c840ba7fdaba107608ad17e987508845409ca4d22b10ea4b5780",
+      "original_path": "D:/we3/docs/ck3-native-ai/episode03-siege-events-1.20.0.3.md",
+      "evidence_level": "exact-build-1.20.0.3-static-no-new-live",
+      "kind": "exact-build-static-research"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-one-day-a01/20261002-154540-999103-ef4a2e2a07-response.json",
+      "bytes": 3213279,
+      "sha256": "57643a2026b334453ae73b9eabe9ba111b723c2934bb1388db6e60ad32b3afb7",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+      "bytes": 2904486,
+      "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-one-day-a01/20261002-154544-174142-f2c8881936-response.json",
+      "bytes": 3287287,
+      "sha256": "c2570033a406d64082c69d0121264100b27752084c853394bac02570d4f24053",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-155505-bdf551ab/desktop.png",
+      "bytes": 2916147,
+      "sha256": "fbd75e88951c52dc0196c82bd7b18126c7d84f7de96c66114cf492f1d1dfa538",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-to-reinforcement-a01/20261002-155546-415273-192fcbf8d3-response.json",
+      "bytes": 3361307,
+      "sha256": "b3d96a18aac9ddfbdc0e9214153f69239f8b759c2ecc93e84ff777b576bc148c",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-to-reinforcement-a01/20261002-155549-887766-81ad18a3d6-response.json",
+      "bytes": 3435131,
+      "sha256": "aa1d3be5dd406f03d459e099d4707e7433797ffb7cfa84ae48c6a18eb953b4f1",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-151454-4b044a78/desktop.png",
+      "bytes": 2685955,
+      "sha256": "b1c2c96c7640cfd6ab7eb34c9784c860b7f51f2394c2722dd458f5b838aa831b",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-151753-9392251d/desktop.png",
+      "bytes": 2746359,
+      "sha256": "c211846a86cf124c34db781fa3e13668ada0f0f2dcf52e120f74c0a44d8d81d8",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-merge0-with1-a01/20261002-150649-588939-f53144b228-response.json",
+      "bytes": 220771,
+      "sha256": "89d63ef31d3a579dc72676231b43f1b262a44e6b428ebcd6fa1b3299d7e576c7",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-merge0-with1-a01/20261002-150649-916018-09c7b794ef-response.json",
+      "bytes": 5575,
+      "sha256": "2de91b9e480d710d548ff42ee939ec6cc57c44f3bca0326b8fbba7fe0804616f",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152006-339597-9af4b91f06-response.json",
+      "bytes": 213607,
+      "sha256": "c9fe445654cce740c93375924cefabbb616918d7acebc355506c965d8ea22c31",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152006-638643-1f1a3a35dc-response.json",
+      "bytes": 24142,
+      "sha256": "be935504c669d45877b6d40b3d7d4252ce7260b82c1dbec970201ff69ab65769",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152007-781366-0ea11a6c77-response.json",
+      "bytes": 243531,
+      "sha256": "bb66f60ac3aa7c43532c2d714bd2220158238296b3d2d5e5d83e52174a229d27",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152008-033731-bb8f5e7d13-response.json",
+      "bytes": 29375,
+      "sha256": "4aded155eaed49cfa4ea8fb6306d58fb9eb244d3095b87f7e1f6ff80132980f3",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152009-272695-fd3ed17b36-response.json",
+      "bytes": 284707,
+      "sha256": "0e44264fdc32940d071b05e397f1a4d4271a103c32047cbefc396037b92b9824",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152009-548568-731fd0428f-response.json",
+      "bytes": 32791,
+      "sha256": "06a7262fda9481946d8d8e0ba6e36a7857cd795adc4f2513340b022a43a118ce",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152011-031211-19474ed237-response.json",
+      "bytes": 323707,
+      "sha256": "3df4a7619b25870dfd5110b643a420853f3f0c7e2650a6f09d36cb37e31cf00b",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152011-291495-7b945f79c5-response.json",
+      "bytes": 32791,
+      "sha256": "8c0adedc32e1e7e9a073a093b271b0482baaae0cd60cd3d869de90d5fc6e4c8c",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152012-784265-6501bc754f-response.json",
+      "bytes": 362699,
+      "sha256": "3976ebc74e6b479f5ab036a77790322b38c8f7b511c089618e6c5f52076a1e5b",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152013-071135-9a846a1944-response.json",
+      "bytes": 32791,
+      "sha256": "cd5f0ff75e6c166ac7f2389346adf86491b076303fd426fd32d58186ae6553e8",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152014-781436-564a98f265-response.json",
+      "bytes": 401691,
+      "sha256": "b93188bdce75dd5944de5f5b7deeea2745421ac438485d2def070ac01bd5b2d1",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152015-096053-bd9a76b302-response.json",
+      "bytes": 32791,
+      "sha256": "cd82b305a1a99095c1fb385722d6b4c1945bf0349ecc2426ac309c06741ccc23",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152016-778896-bd8a39366b-response.json",
+      "bytes": 440683,
+      "sha256": "5291a38904d841af4019a33cb8408407a3a78cdad4c02a478015890553fc9c87",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152017-050069-98483cb1b6-response.json",
+      "bytes": 32795,
+      "sha256": "fb1ca57204df06afb664469a0b2e4bfec0a18cfc99c9b3ef6a4f4e01b66b9ba5",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152018-784173-5fc930aefb-response.json",
+      "bytes": 479675,
+      "sha256": "811d446f08f7e9e5484e720fef6fb7f9c63a827ffa5a5c2fe135b7d1fb1d2ea1",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152019-091732-698b41a01b-response.json",
+      "bytes": 32791,
+      "sha256": "fffcde4ea0a64c31713b03b063540d156b7b477e158a9f9624fa3940f57767b7",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152021-016053-c0863fab33-response.json",
+      "bytes": 518687,
+      "sha256": "608e328de5a21694c46d18b7494731fbacfa86d5b03e8e71d7abdba320101283",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152021-321805-a1b2cd6191-response.json",
+      "bytes": 40115,
+      "sha256": "edd5ebea56d2c7419e1f4e1953c6e63a90e7ba974afb8c900e205012d33ee4d5",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152022-800483-6cf9343b02-response.json",
+      "bytes": 571823,
+      "sha256": "e8bfec285533bccd89cddd1f5c663c30d94c8f317e79a33bc17ef99b40c0a578",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-reinforcement-arrival-a01/20261002-155707-473703-0802b5d9c8-response.json",
+      "bytes": 3878607,
+      "sha256": "9cb43d2c3203523d3c392c4df06e6c2b2993b8c81dc5d9032c6612e36aeb4d0b",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-reinforcement-arrival-a01/20261002-155708-055762-5425b3428e-response.json",
+      "bytes": 60236,
+      "sha256": "bd315d765ce260e59c1bc93193432dc6487fe6b295cd4d4d346607fb864afe83",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-reinforcement-arrival-a01/20261002-155710-907291-cf5d035a9e-response.json",
+      "bytes": 3944059,
+      "sha256": "43ef585d6ed142e3a984f4554bcc0723660dae2a0234afe2e0e61d87ec438064",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-reinforcement-arrival-a01/20261002-155711-459605-f6a1468d3a-response.json",
+      "bytes": 58064,
+      "sha256": "3c8b79a9a05cbbcce1fa375cdb7227d428c01579329ec416be62c66d083d5fd6",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-reinforcement-arrival-a01/20261002-155714-166102-bc2b82bb25-response.json",
+      "bytes": 4012911,
+      "sha256": "1ea092e9c1581711ad8be365aa6a821fac5848426cd787476b97f7165058c72a",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-160245-2c39c18c/desktop.png",
+      "bytes": 2894674,
+      "sha256": "957ba6defaeb31d86f7f88aa82ebbb31520d36c7d2904281a7b2e226c95d261a",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-merge-reinforcement-a01/20261002-155817-531876-8085d7efb4-response.json",
+      "bytes": 4012919,
+      "sha256": "04a1fa3516a68d0c8efc04666edbe91909daeaaffbe6038f723e6f356abed9f3",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-merge-reinforcement-a01/20261002-155818-164239-b00b3c95b5-response.json",
+      "bytes": 5452,
+      "sha256": "bf4282e9d040a7ff48bffedd5bb9f260abb31d1d61c08d037ff32f064c18acac",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-merge-next-day-designator-a01/20261002-160047-764132-222dc904fe-response.json",
+      "bytes": 4026083,
+      "sha256": "d00488e0b1d7422f894807fa1938bef4eb152b7323bfe775e2146f3ca1c67786",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-merge-next-day-designator-a01/20261002-160048-457598-be7ff08fa0-response.json",
+      "bytes": 53680,
+      "sha256": "185475825e4ef141ab59637eed184ca1f967c260b2b2647405b37a7b115cb5c7",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160119-326327-d5242ecb5a-response.json",
+      "bytes": 4084655,
+      "sha256": "890e9c728e0189e44755b8254d19635ab45b8fee7fa61d858e506d51687dbf13",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160119-925966-cc38e97b73-response.json",
+      "bytes": 53580,
+      "sha256": "f9117c0898abbc3174d905e9778ed7e31c36e9ad1f78bcdbd294f75d0a5570a5",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160122-639554-03883c2f96-response.json",
+      "bytes": 4148267,
+      "sha256": "6b73dc57bc95c8f3347ae62afba92feecffa786cd2931dd312fc8b599f61f311",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160123-312453-b6c37661a7-response.json",
+      "bytes": 53580,
+      "sha256": "6925747bce2ff7444f45199d957f98b6b5944d19211f53151ca7088e5502443f",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160126-147333-50366594a6-response.json",
+      "bytes": 4211887,
+      "sha256": "857a181d6791d8f9ac4d5e1f342bae30627e49592d5c2cf0c74d3e3af88b31d7",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160126-795766-9f764fd87f-response.json",
+      "bytes": 53580,
+      "sha256": "e130c385e0e845e95c72933c9890381fc23ce7bad13ffd1ca6b26c487b83a828",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160129-655757-fd590fc191-response.json",
+      "bytes": 4275507,
+      "sha256": "3d039eff719fcace2aff863a5d6a121e7ac2f26e9d7d2f4a38efb11326402d03",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160130-317198-34752dfc31-response.json",
+      "bytes": 53580,
+      "sha256": "f25827cb098819b0e489cb18548487dcda1bda4ff741fe96c9641675dc1d9746",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160133-161438-2718bca641-response.json",
+      "bytes": 4339127,
+      "sha256": "9902b58c4407978a8462f73c122b94340adf4a1b32c41f9f8405acf17a49a0f6",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160133-785376-b9d38e9385-response.json",
+      "bytes": 53604,
+      "sha256": "a8a59b9b69ede50dc8831d2fa3adc4d934a874fb986d4afd3579e6d145526bfa",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160136-660101-bf188aa821-response.json",
+      "bytes": 4402795,
+      "sha256": "91a9a50e969ab3669c9f73363e22e3a5eba8ae03b2d74bc469c60cffe332f67d",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160137-332261-42c342eafe-response.json",
+      "bytes": 53628,
+      "sha256": "832fc9f40ce42edb42a86ce77bc6b0cc7106aa975cb8a5b2a78ef0ee37f9d40a",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160139-895909-e8c25e591e-response.json",
+      "bytes": 4466463,
+      "sha256": "950ba973226dd2bbe5d676ee49a043e92ec80d4280ecd562672d5cd0dc5f54dc",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160140-603507-243fe02748-response.json",
+      "bytes": 53624,
+      "sha256": "3a9d001c27a675bad481de4e6f3a72cceb7ab9ccf915eb9e99e56e9663a4a4e7",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160143-404413-b8ea65aea3-response.json",
+      "bytes": 4530123,
+      "sha256": "d8bf67cba860dc43925a1a74cfd97e0ec048624dff802e8e060ebf5fa544d7d5",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-start-a01/20261002-160525-123845-149517b9f4-response.json",
+      "bytes": 4573579,
+      "sha256": "7473ab18efbf90fee00dde0ec16b471c89a4602360c3c0377a002e42e8a87c82",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-start-a01/20261002-160525-865698-26a912eda8-response.json",
+      "bytes": 6868,
+      "sha256": "b3e19ed338bc09a2b383d0a40e129889d8665ff7deee8d69c93f571aafd9d873",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-one-day-a01/20261002-160557-646783-7d853bbcac-response.json",
+      "bytes": 4567095,
+      "sha256": "b0c6e7d12ae6aab7541f2bd61b228146bb67a3a7f02977413500c811083f2ec8",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-one-day-a01/20261002-160558-341162-738ec3bcca-response.json",
+      "bytes": 53548,
+      "sha256": "c79471f5cbb93329bc6c9facc89288c8d0ba52d4b84ca4819520536abeca97e2",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-one-day-a01/20261002-160600-895271-853593ba5c-response.json",
+      "bytes": 4630675,
+      "sha256": "8a65ff758155df5d2efed98b6d094376d27e693efabc73eef2f7b3e5009cd035",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-loss-readback-a01/20261002-160602-028674-b773576e92-response.json",
+      "bytes": 5785,
+      "sha256": "1315c2e611a08e52eb11ebde5f97503083c2c296ba7b9ce5395551892450d577",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-160437-467427f9/desktop.png",
+      "bytes": 2923742,
+      "sha256": "46b6215ee71ba6a9b68f5826c7e7eab8bb416d5988a893e9077fe4305afafbba",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/assault-real-readback-a02.md",
+      "bytes": 7523,
+      "sha256": "6de6a8bc6c32f15813f74276d4833fdc2866c7070284e17ba929bf398f9fa888",
+      "kind": "independent-bounded-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/assault-real-readback-a02.json",
+      "bytes": 110376,
+      "sha256": "95c17b00867c9a6d9c08e7d7d81fda898ffc0a01663edd6164881038a0349d7d",
+      "kind": "independent-bounded-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-stop-a01/20261002-160644-631987-8c1c6cd153-response.json",
+      "bytes": 4643835,
+      "sha256": "162de1b1b637f40fce4a2781436d24c9ca5351a0871933512372ca2f0cba4b42",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-stop-a01/20261002-160645-295024-9a394ec360-response.json",
+      "bytes": 6863,
+      "sha256": "351963965f79a3ceff3c4b226eb6034e8040f7c6a0a700ab93c7c53a41277847",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-162858-4cd42097/desktop.png",
+      "bytes": 2962355,
+      "sha256": "d4be5849b81844eea9e22430c24a14e174d03ef3d01b3fb3ceeb77f1a3dc57db",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163032-439934-28909fcebd-response.json",
+      "bytes": 6820467,
+      "sha256": "91b70b2657217897068bbfe4321b2a1b866c199ce8932734b27ec94b9007f0c5",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163025-298159-04f3b44438-response.json",
+      "bytes": 6708163,
+      "sha256": "761117fa55db01451b0417370523e7e17fb93fd9a37a264467f7f92c3dfe5b58",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163026-153513-b720234978-response.json",
+      "bytes": 53252,
+      "sha256": "324f793d30e65fb81168778b9fa3aa69dd8263dabb83bc4d8e01017cee149e40",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163028-656012-089d85780d-response.json",
+      "bytes": 6757267,
+      "sha256": "4fadfd9a2743ed0bc4b53aad084ff76e57023bc6a6f39883aa6ea6747b4235c9",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163029-537020-5add14da37-response.json",
+      "bytes": 53252,
+      "sha256": "2eed9eadcae23603abb9a72fbe0154506e7dd8b01a7c3871448666fbbb2a523c",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163033-306537-36613c0366-response.json",
+      "bytes": 47292,
+      "sha256": "ad279aeebfbf37745c98484fd6bd62cb20a194ee6fac477739aac02c382dd2c5",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163035-929866-c5dc12f266-response.json",
+      "bytes": 6872491,
+      "sha256": "79e9bcc8c483b4a2801ea21627791e4f75fffb81044f7dad74f20637dddb3e23",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-163105-f580d834/desktop.png",
+      "bytes": 2896147,
+      "sha256": "4cfe8ed1c59172c66e4efdc47be6db672c15c6f7e30bbed40ba8b1727f386ac6",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-strength-a01/20261002-163136-850022-91d2496201-response.json",
+      "bytes": 5785,
+      "sha256": "88e129bd4b3e256d095cb3a391c0304ac320e68302e9f241f5b7813689aa7ed7",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-war-immediate-before-a01/20261002-163024-433224-5b1d6da9cb-response.json",
+      "bytes": 25382,
+      "sha256": "d833368fb717e1d6007a2d8b7874216ab667f78349bc089da6f871556b3ea814",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-war-after-a01/20261002-163104-730054-a42a8cc9a9-response.json",
+      "bytes": 25422,
+      "sha256": "568a09c69e2c2258afaec7962797596c0bb3cd5021e14d5c308f2717f5813a9b",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-163520-50b623cd/desktop.png",
+      "bytes": 2759867,
+      "sha256": "01fd6212598bda9eb6c014b170c86ae50c6c66dd1fdee8068a20bd19d14a8079",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-163903-edcfdf12/desktop.png",
+      "bytes": 2781531,
+      "sha256": "b584fd2faa066fa841cf884695b7ed10ea3852fcbb7c309c942a9a570652ac74",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-163225-9bbcae09/desktop.png",
+      "bytes": 2922727,
+      "sha256": "ece6870ee7c218be69656d7b26df7e0693622264a5a233463839151953113db3",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-163445-0409322b/desktop.png",
+      "bytes": 2937509,
+      "sha256": "0edacca805e715920828cbe68c1a10804675ed1b74d90d1438dcf0b5dd1138cc",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-150201-603c039c/desktop.png",
+      "bytes": 2324983,
+      "sha256": "29f704ea9dc361040fcd7e1b623f82031d7a04a3a8e3c58089a5eff8cda5f4ef",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-153200-228c8f0e/desktop.png",
+      "bytes": 3091463,
+      "sha256": "2a41c83d95c22172ae08ea48154e728d7549c93cc856ab1303adf524f427a50a",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/one-day-real-review-a01/review.md",
+      "bytes": 7000,
+      "sha256": "49da2feb6aaf87173da16462ff8c30d35f3a3b7ce3e8b34bcd5de64e5e255677",
+      "kind": "independent-bounded-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/one-day-real-review-a01/review.json",
+      "bytes": 81985,
+      "sha256": "23b214708316a4a082550e88d11127481c79bb2e9072c06a984f1fc9c6e62016",
+      "kind": "independent-bounded-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/one-day-real-review-a01/count-normalizer-static-proof.json",
+      "bytes": 7222,
+      "sha256": "a0f7b661ce92f00f9205d8fdabb4aac40918caed414576a1622a8fe790fe6c02",
+      "kind": "independent-bounded-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/capture-12-william-reinforcement/raw-desktop.mkv",
+      "bytes": 77981394,
+      "sha256": "d04d62cba6b89af47094838d2c8a46dfa75436a7e3f695ed24c61b03226f92d1",
+      "kind": "fully-decoded-original-recording"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/12/extraction-summary.json",
+      "bytes": 3889,
+      "sha256": "06b75ccf3dba1ceaba20a7d045a333980afed759de4614a60cb4b07eb6e4a6e6",
+      "kind": "decode-frame-evidence"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/capture-13-william-breach/raw-desktop.mkv",
+      "bytes": 81824034,
+      "sha256": "87cb0e07e903fb533eaadc4b70cfe34a9af5e4fcc8d7f31dcc9747066dfab33f",
+      "kind": "fully-decoded-original-recording"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/13/extraction-summary.json",
+      "bytes": 3878,
+      "sha256": "720ac4a80b856b588a1855b182ec8ee8732081917358e85926ee0b6879055bf4",
+      "kind": "decode-frame-evidence"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/capture-14-william-assault/raw-desktop.mkv",
+      "bytes": 84316072,
+      "sha256": "e6b0b237931c33fd714929ec425a115ddc06eb62436508c663a5b7201ef05388",
+      "kind": "fully-decoded-original-recording"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/14/extraction-summary.json",
+      "bytes": 3879,
+      "sha256": "0a6b5a653eab56d7e0698bb1c0bf02ec17e948f39d58a6f72a8bcb92f3494a89",
+      "kind": "decode-frame-evidence"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/capture-15-william-fall/raw-desktop.mkv",
+      "bytes": 84325541,
+      "sha256": "722b82aa8f2a9e083cd929f177cfe05d483bcce69b22c164b2085f2a782daee7",
+      "kind": "fully-decoded-original-recording"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/15/extraction-summary.json",
+      "bytes": 3888,
+      "sha256": "00dbe0c9a13ccb8845c160368b3f76d0cfcf9528b4b2f73fcb4a2f15191a7c0d",
+      "kind": "decode-frame-evidence"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/capture-16-william-occupation/raw-desktop.mkv",
+      "bytes": 78283528,
+      "sha256": "0836dbfeea8997ac0902027c9a463201bc7dc9b053166faf769a41742889d599",
+      "kind": "fully-decoded-original-recording"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/16/extraction-summary.json",
+      "bytes": 3882,
+      "sha256": "1282cf3e7001ad56feb002a7679b44d5772ca37e2a87f076b677497a47371acb",
+      "kind": "decode-frame-evidence"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/15/source-candidate.json",
+      "bytes": 3838,
+      "sha256": "f4786e8eb9541d7258ceac384003d7068f0b55e36bd3f5226adcc1fbcde91afa",
+      "kind": "full-decode-exact-PTS-sampled-candidate-not-human-approval"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/william-lewes-fall-1067-04-22.ck3",
+      "bytes": 74680288,
+      "sha256": "fb0336fe3d570031fa640dc7b0b6d311b09fd62c9dec7b8b18aa47861453d8b0",
+      "kind": "actual-post-capture-checkpoint"
+    }
+  ],
+  "facts": {
+    "F_START": {
+      "summary_zh": "1067年1月10日首次记录自军Siege6/刘易斯省1506：B5660 G420 fort3 C2.46 T305.434 N124；不是内部建立tick。",
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-one-day-a01/20261002-154540-999103-ef4a2e2a07-response.json",
+          "bytes": 3213279,
+          "sha256": "57643a2026b334453ae73b9eabe9ba111b723c2934bb1388db6e60ad32b3afb7"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        }
+      ],
+      "values": {
+        "date": "1067-01-10",
+        "siege_id": 6,
+        "province_id": 1506,
+        "actor_id": 33388,
+        "army_id": 0,
+        "C": 2.46,
+        "T": 305.434,
+        "B": 5660,
+        "G": 420,
+        "fort": 3,
+        "days_left": 124
+      }
+    },
+    "F_DAY1": {
+      "summary_zh": "1月10→11实际24小时，同Siege6 C2.46→4.92净2.46，B/G/T未变，N124→123；UI显示2.4。不独立发布普通D或完整phase账本。",
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-one-day-a01/20261002-154540-999103-ef4a2e2a07-response.json",
+          "bytes": 3213279,
+          "sha256": "57643a2026b334453ae73b9eabe9ba111b723c2934bb1388db6e60ad32b3afb7"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-one-day-a01/20261002-154544-174142-f2c8881936-response.json",
+          "bytes": 3287287,
+          "sha256": "c2570033a406d64082c69d0121264100b27752084c853394bac02570d4f24053"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-155505-bdf551ab/desktop.png",
+          "bytes": 2916147,
+          "sha256": "fbd75e88951c52dc0196c82bd7b18126c7d84f7de96c66114cf492f1d1dfa538"
+        }
+      ],
+      "values": {
+        "C_before": 2.46,
+        "C_after": 4.92,
+        "net_C": 2.46,
+        "elapsed_native_hours": 24,
+        "ordinary_D_independently_observed": false
+      }
+    },
+    "F_GARRISON": {
+      "summary_zh": "1月12→13 G420→460/T305.434→325，C7.38→9.84净2.46；N122→129。有效守军容量未独立采到。",
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-to-reinforcement-a01/20261002-155546-415273-192fcbf8d3-response.json",
+          "bytes": 3361307,
+          "sha256": "b3d96a18aac9ddfbdc0e9214153f69239f8b759c2ecc93e84ff777b576bc148c"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-to-reinforcement-a01/20261002-155549-887766-81ad18a3d6-response.json",
+          "bytes": 3435131,
+          "sha256": "aa1d3be5dd406f03d459e099d4707e7433797ffb7cfa84ae48c6a18eb953b4f1"
+        }
+      ],
+      "values": {
+        "G_before": 420,
+        "G_after": 460,
+        "T_before": 305.434,
+        "T_after": 325,
+        "C_before": 7.38,
+        "C_after": 9.84,
+        "N_before": 122,
+        "N_after": 129,
+        "garrison_capacity_observed": false
+      }
+    },
+    "F_RECRUIT": {
+      "summary_zh": "本案射石机招募tooltip：一档10、+.3/天、有效最大城防10；初始5/10；gold728→668.6净59.4。原有60围攻兵不是新购团。",
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-151454-4b044a78/desktop.png",
+          "bytes": 2685955,
+          "sha256": "b1c2c96c7640cfd6ab7eb34c9784c860b7f51f2394c2722dd458f5b838aa831b"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-151753-9392251d/desktop.png",
+          "bytes": 2746359,
+          "sha256": "c211846a86cf124c34db781fa3e13668ada0f0f2dcf52e120f74c0a44d8d81d8"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-merge0-with1-a01/20261002-150649-588939-f53144b228-response.json",
+          "bytes": 220771,
+          "sha256": "89d63ef31d3a579dc72676231b43f1b262a44e6b428ebcd6fa1b3299d7e576c7"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-merge0-with1-a01/20261002-150649-916018-09c7b794ef-response.json",
+          "bytes": 5575,
+          "sha256": "2de91b9e480d710d548ff42ee939ec6cc57c44f3bca0326b8fbba7fe0804616f"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152006-339597-9af4b91f06-response.json",
+          "bytes": 213607,
+          "sha256": "c9fe445654cce740c93375924cefabbb616918d7acebc355506c965d8ea22c31"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152006-638643-1f1a3a35dc-response.json",
+          "bytes": 24142,
+          "sha256": "be935504c669d45877b6d40b3d7d4252ce7260b82c1dbec970201ff69ab65769"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152007-781366-0ea11a6c77-response.json",
+          "bytes": 243531,
+          "sha256": "bb66f60ac3aa7c43532c2d714bd2220158238296b3d2d5e5d83e52174a229d27"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152008-033731-bb8f5e7d13-response.json",
+          "bytes": 29375,
+          "sha256": "4aded155eaed49cfa4ea8fb6306d58fb9eb244d3095b87f7e1f6ff80132980f3"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152009-272695-fd3ed17b36-response.json",
+          "bytes": 284707,
+          "sha256": "0e44264fdc32940d071b05e397f1a4d4271a103c32047cbefc396037b92b9824"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152009-548568-731fd0428f-response.json",
+          "bytes": 32791,
+          "sha256": "06a7262fda9481946d8d8e0ba6e36a7857cd795adc4f2513340b022a43a118ce"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152011-031211-19474ed237-response.json",
+          "bytes": 323707,
+          "sha256": "3df4a7619b25870dfd5110b643a420853f3f0c7e2650a6f09d36cb37e31cf00b"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152011-291495-7b945f79c5-response.json",
+          "bytes": 32791,
+          "sha256": "8c0adedc32e1e7e9a073a093b271b0482baaae0cd60cd3d869de90d5fc6e4c8c"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152012-784265-6501bc754f-response.json",
+          "bytes": 362699,
+          "sha256": "3976ebc74e6b479f5ab036a77790322b38c8f7b511c089618e6c5f52076a1e5b"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152013-071135-9a846a1944-response.json",
+          "bytes": 32791,
+          "sha256": "cd5f0ff75e6c166ac7f2389346adf86491b076303fd426fd32d58186ae6553e8"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152014-781436-564a98f265-response.json",
+          "bytes": 401691,
+          "sha256": "b93188bdce75dd5944de5f5b7deeea2745421ac438485d2def070ac01bd5b2d1"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152015-096053-bd9a76b302-response.json",
+          "bytes": 32791,
+          "sha256": "cd82b305a1a99095c1fb385722d6b4c1945bf0349ecc2426ac309c06741ccc23"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152016-778896-bd8a39366b-response.json",
+          "bytes": 440683,
+          "sha256": "5291a38904d841af4019a33cb8408407a3a78cdad4c02a478015890553fc9c87"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152017-050069-98483cb1b6-response.json",
+          "bytes": 32795,
+          "sha256": "fb1ca57204df06afb664469a0b2e4bfec0a18cfc99c9b3ef6a4f4e01b66b9ba5"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152018-784173-5fc930aefb-response.json",
+          "bytes": 479675,
+          "sha256": "811d446f08f7e9e5484e720fef6fb7f9c63a827ffa5a5c2fe135b7d1fb1d2ea1"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152019-091732-698b41a01b-response.json",
+          "bytes": 32791,
+          "sha256": "fffcde4ea0a64c31713b03b063540d156b7b477e158a9f9624fa3940f57767b7"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152021-016053-c0863fab33-response.json",
+          "bytes": 518687,
+          "sha256": "608e328de5a21694c46d18b7494731fbacfa86d5b03e8e71d7abdba320101283"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152021-321805-a1b2cd6191-response.json",
+          "bytes": 40115,
+          "sha256": "edd5ebea56d2c7419e1f4e1953c6e63a90e7ba974afb8c900e205012d33ee4d5"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152022-800483-6cf9343b02-response.json",
+          "bytes": 571823,
+          "sha256": "e8bfec285533bccd89cddd1f5c663c30d94c8f317e79a33bc17ef99b40c0a578"
+        }
+      ],
+      "values": {
+        "regiment": "mangonel",
+        "initial_count": 5,
+        "stack": 10,
+        "tooltip_siege_value": 0.3,
+        "tooltip_fort_limit": 10,
+        "gold_before": 728,
+        "gold_after": 668.6,
+        "net_gold_change": -59.4,
+        "old_siege_soldiers": 60,
+        "old_regiment_identity_inferred": false
+      }
+    },
+    "F_ARRIVAL": {
+      "summary_zh": "1月19→20 B5660→6746 C24.6→27.06净2.46；次日C27.06→29.84净2.78；1月29UI武器合计69/日速2.7。不回溯整到达日等于事后日速。",
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-reinforcement-arrival-a01/20261002-155707-473703-0802b5d9c8-response.json",
+          "bytes": 3878607,
+          "sha256": "9cb43d2c3203523d3c392c4df06e6c2b2993b8c81dc5d9032c6612e36aeb4d0b"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-reinforcement-arrival-a01/20261002-155708-055762-5425b3428e-response.json",
+          "bytes": 60236,
+          "sha256": "bd315d765ce260e59c1bc93193432dc6487fe6b295cd4d4d346607fb864afe83"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-reinforcement-arrival-a01/20261002-155710-907291-cf5d035a9e-response.json",
+          "bytes": 3944059,
+          "sha256": "43ef585d6ed142e3a984f4554bcc0723660dae2a0234afe2e0e61d87ec438064"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-reinforcement-arrival-a01/20261002-155711-459605-f6a1468d3a-response.json",
+          "bytes": 58064,
+          "sha256": "3c8b79a9a05cbbcce1fa375cdb7227d428c01579329ec416be62c66d083d5fd6"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-reinforcement-arrival-a01/20261002-155714-166102-bc2b82bb25-response.json",
+          "bytes": 4012911,
+          "sha256": "1ea092e9c1581711ad8be365aa6a821fac5848426cd787476b97f7165058c72a"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160245-2c39c18c/desktop.png",
+          "bytes": 2894674,
+          "sha256": "957ba6defaeb31d86f7f88aa82ebbb31520d36c7d2904281a7b2e226c95d261a"
+        }
+      ],
+      "values": {
+        "B_before": 5660,
+        "B_after": 6746,
+        "arrival_day_net_C": 2.46,
+        "following_day_net_C": 2.78,
+        "later_UI_siege_soldiers": 69
+      }
+    },
+    "F_MERGE": {
+      "summary_zh": "正常合军后相邻日C29.84→32.62净2.78，B6746/G460/T325；before指定军null/after0，不把合军按钮当作加速的独立原因。",
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-merge-reinforcement-a01/20261002-155817-531876-8085d7efb4-response.json",
+          "bytes": 4012919,
+          "sha256": "04a1fa3516a68d0c8efc04666edbe91909daeaaffbe6038f723e6f356abed9f3"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-merge-reinforcement-a01/20261002-155818-164239-b00b3c95b5-response.json",
+          "bytes": 5452,
+          "sha256": "bf4282e9d040a7ff48bffedd5bb9f260abb31d1d61c08d037ff32f064c18acac"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-merge-next-day-designator-a01/20261002-160047-764132-222dc904fe-response.json",
+          "bytes": 4026083,
+          "sha256": "d00488e0b1d7422f894807fa1938bef4eb152b7323bfe775e2146f3ca1c67786"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-merge-next-day-designator-a01/20261002-160048-457598-be7ff08fa0-response.json",
+          "bytes": 53680,
+          "sha256": "185475825e4ef141ab59637eed184ca1f967c260b2b2647405b37a7b115cb5c7"
+        }
+      ],
+      "values": {
+        "C_before": 29.84,
+        "C_after": 32.62,
+        "net_C": 2.78,
+        "besieging_army_id_before": null,
+        "besieging_army_id_after": 0
+      }
+    },
+    "F_BREACH": {
+      "summary_zh": "1月26→27 breach0→1，同Siege6 C43.74→46.52净2.78；1月29C52.08/T325/N99，smallbreach tooltip -10%，currentphase显示16天，来源未完整归因。",
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160119-326327-d5242ecb5a-response.json",
+          "bytes": 4084655,
+          "sha256": "890e9c728e0189e44755b8254d19635ab45b8fee7fa61d858e506d51687dbf13"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160119-925966-cc38e97b73-response.json",
+          "bytes": 53580,
+          "sha256": "f9117c0898abbc3174d905e9778ed7e31c36e9ad1f78bcdbd294f75d0a5570a5"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160122-639554-03883c2f96-response.json",
+          "bytes": 4148267,
+          "sha256": "6b73dc57bc95c8f3347ae62afba92feecffa786cd2931dd312fc8b599f61f311"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160123-312453-b6c37661a7-response.json",
+          "bytes": 53580,
+          "sha256": "6925747bce2ff7444f45199d957f98b6b5944d19211f53151ca7088e5502443f"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160126-147333-50366594a6-response.json",
+          "bytes": 4211887,
+          "sha256": "857a181d6791d8f9ac4d5e1f342bae30627e49592d5c2cf0c74d3e3af88b31d7"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160126-795766-9f764fd87f-response.json",
+          "bytes": 53580,
+          "sha256": "e130c385e0e845e95c72933c9890381fc23ce7bad13ffd1ca6b26c487b83a828"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160129-655757-fd590fc191-response.json",
+          "bytes": 4275507,
+          "sha256": "3d039eff719fcace2aff863a5d6a121e7ac2f26e9d7d2f4a38efb11326402d03"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160130-317198-34752dfc31-response.json",
+          "bytes": 53580,
+          "sha256": "f25827cb098819b0e489cb18548487dcda1bda4ff741fe96c9641675dc1d9746"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160133-161438-2718bca641-response.json",
+          "bytes": 4339127,
+          "sha256": "9902b58c4407978a8462f73c122b94340adf4a1b32c41f9f8405acf17a49a0f6"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160133-785376-b9d38e9385-response.json",
+          "bytes": 53604,
+          "sha256": "a8a59b9b69ede50dc8831d2fa3adc4d934a874fb986d4afd3579e6d145526bfa"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160136-660101-bf188aa821-response.json",
+          "bytes": 4402795,
+          "sha256": "91a9a50e969ab3669c9f73363e22e3a5eba8ae03b2d74bc469c60cffe332f67d"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160137-332261-42c342eafe-response.json",
+          "bytes": 53628,
+          "sha256": "832fc9f40ce42edb42a86ce77bc6b0cc7106aa975cb8a5b2a78ef0ee37f9d40a"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160139-895909-e8c25e591e-response.json",
+          "bytes": 4466463,
+          "sha256": "950ba973226dd2bbe5d676ee49a043e92ec80d4280ecd562672d5cd0dc5f54dc"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160140-603507-243fe02748-response.json",
+          "bytes": 53624,
+          "sha256": "3a9d001c27a675bad481de4e6f3a72cceb7ab9ccf915eb9e99e56e9663a4a4e7"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160143-404413-b8ea65aea3-response.json",
+          "bytes": 4530123,
+          "sha256": "d8bf67cba860dc43925a1a74cfd97e0ec048624dff802e8e060ebf5fa544d7d5"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160245-2c39c18c/desktop.png",
+          "bytes": 2894674,
+          "sha256": "957ba6defaeb31d86f7f88aa82ebbb31520d36c7d2904281a7b2e226c95d261a"
+        }
+      ],
+      "values": {
+        "first_observed_breach_date": "1067-01-27",
+        "breach": 1,
+        "Jan29_C": 52.08,
+        "Jan29_T": 325,
+        "Jan29_N": 99,
+        "UI_current_phase_days": 16,
+        "phase_modifier_roles_fully_closed": false
+      }
+    },
+    "F_ASSAULT": {
+      "summary_zh": "1月29有合法一级破口：开始回读flag true，日预览13.6work/168人；1月29→30同Siege6 C52.08→68.46净16.38，有效参围B6746→6578净-168；不隔离纯强攻贡献或逐团死亡。次预览13.2/164。",
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-start-a01/20261002-160525-123845-149517b9f4-response.json",
+          "bytes": 4573579,
+          "sha256": "7473ab18efbf90fee00dde0ec16b471c89a4602360c3c0377a002e42e8a87c82"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-start-a01/20261002-160525-865698-26a912eda8-response.json",
+          "bytes": 6868,
+          "sha256": "b3e19ed338bc09a2b383d0a40e129889d8665ff7deee8d69c93f571aafd9d873"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-one-day-a01/20261002-160557-646783-7d853bbcac-response.json",
+          "bytes": 4567095,
+          "sha256": "b0c6e7d12ae6aab7541f2bd61b228146bb67a3a7f02977413500c811083f2ec8"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-one-day-a01/20261002-160558-341162-738ec3bcca-response.json",
+          "bytes": 53548,
+          "sha256": "c79471f5cbb93329bc6c9facc89288c8d0ba52d4b84ca4819520536abeca97e2"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-one-day-a01/20261002-160600-895271-853593ba5c-response.json",
+          "bytes": 4630675,
+          "sha256": "8a65ff758155df5d2efed98b6d094376d27e693efabc73eef2f7b3e5009cd035"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-loss-readback-a01/20261002-160602-028674-b773576e92-response.json",
+          "bytes": 5785,
+          "sha256": "1315c2e611a08e52eb11ebde5f97503083c2c296ba7b9ce5395551892450d577"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160437-467427f9/desktop.png",
+          "bytes": 2923742,
+          "sha256": "46b6215ee71ba6a9b68f5826c7e7eab8bb416d5988a893e9077fe4305afafbba"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/assault-real-readback-a02.md",
+          "bytes": 7523,
+          "sha256": "6de6a8bc6c32f15813f74276d4833fdc2866c7070284e17ba929bf398f9fa888"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/assault-real-readback-a02.json",
+          "bytes": 110376,
+          "sha256": "95c17b00867c9a6d9c08e7d7d81fda898ffc0a01663edd6164881038a0349d7d"
+        }
+      ],
+      "values": {
+        "C_before": 52.08,
+        "C_after": 68.46,
+        "net_C": 16.38,
+        "eligible_B_before": 6746,
+        "eligible_B_after": 6578,
+        "net_eligible_B": -168,
+        "preview_C_per_day": 13.6,
+        "preview_losses": 168,
+        "next_preview_C_per_day": 13.2,
+        "next_preview_losses": 164,
+        "assault_only_C_component_observed": false,
+        "individual_death_attribution_observed": false
+      }
+    },
+    "F_STOP": {
+      "summary_zh": "停止回读同Siege6 assaultfalse/canstarttrue/canstopfalse C68.46/T325/N93；不冒称独立完整post-stop全局日期/paused响应。",
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-stop-a01/20261002-160644-631987-8c1c6cd153-response.json",
+          "bytes": 4643835,
+          "sha256": "162de1b1b637f40fce4a2781436d24c9ca5351a0871933512372ca2f0cba4b42"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-stop-a01/20261002-160645-295024-9a394ec360-response.json",
+          "bytes": 6863,
+          "sha256": "351963965f79a3ceff3c4b226eb6034e8040f7c6a0a700ab93c7c53a41277847"
+        }
+      ],
+      "values": {
+        "assault_in_progress": false,
+        "can_start": true,
+        "C": 68.46,
+        "T": 325,
+        "days_left": 93
+      }
+    },
+    "F_LATE": {
+      "summary_zh": "4月15真实UI显示最新僵持、大破口(-30%)、G484/B6384/日速2.7；不是本场全事件账本。",
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-162858-4cd42097/desktop.png",
+          "bytes": 2962355,
+          "sha256": "d4be5849b81844eea9e22430c24a14e174d03ef3d01b3fb3ceeb77f1a3dc57db"
+        }
+      ],
+      "values": {
+        "date": "1067-04-15",
+        "G": 484,
+        "B": 6384,
+        "breach": 2,
+        "UI_daily_progress": 2.7,
+        "all_random_events_observed": false
+      }
+    },
+    "F_LAST": {
+      "summary_zh": "4月21仍Siege6 C323.63/T325/remaining1.37 N1 assaultfalse；最后三次推进各exact1day。",
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163032-439934-28909fcebd-response.json",
+          "bytes": 6820467,
+          "sha256": "91b70b2657217897068bbfe4321b2a1b866c199ce8932734b27ec94b9007f0c5"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163025-298159-04f3b44438-response.json",
+          "bytes": 6708163,
+          "sha256": "761117fa55db01451b0417370523e7e17fb93fd9a37a264467f7f92c3dfe5b58"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163026-153513-b720234978-response.json",
+          "bytes": 53252,
+          "sha256": "324f793d30e65fb81168778b9fa3aa69dd8263dabb83bc4d8e01017cee149e40"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163028-656012-089d85780d-response.json",
+          "bytes": 6757267,
+          "sha256": "4fadfd9a2743ed0bc4b53aad084ff76e57023bc6a6f39883aa6ea6747b4235c9"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163029-537020-5add14da37-response.json",
+          "bytes": 53252,
+          "sha256": "2eed9eadcae23603abb9a72fbe0154506e7dd8b01a7c3871448666fbbb2a523c"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163032-439934-28909fcebd-response.json",
+          "bytes": 6820467,
+          "sha256": "91b70b2657217897068bbfe4321b2a1b866c199ce8932734b27ec94b9007f0c5"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163033-306537-36613c0366-response.json",
+          "bytes": 47292,
+          "sha256": "ad279aeebfbf37745c98484fd6bd62cb20a194ee6fac477739aac02c382dd2c5"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163035-929866-c5dc12f266-response.json",
+          "bytes": 6872491,
+          "sha256": "79e9bcc8c483b4a2801ea21627791e4f75fffb81044f7dad74f20637dddb3e23"
+        }
+      ],
+      "values": {
+        "date": "1067-04-21",
+        "C": 323.63,
+        "T": 325,
+        "remaining": 1.37,
+        "days_left": 1
+      }
+    },
+    "F_FALL": {
+      "summary_zh": "4月22省1506 occupiedtrue/occupier33388、siegeobservabletrue/active_siegenull、G25；通知围攻获胜/现在控制南撒克逊/9gold。typedArmy0=6384。Jan10首次记录→Apr22相隔102日，非完整内部工期。",
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163035-929866-c5dc12f266-response.json",
+          "bytes": 6872491,
+          "sha256": "79e9bcc8c483b4a2801ea21627791e4f75fffb81044f7dad74f20637dddb3e23"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163105-f580d834/desktop.png",
+          "bytes": 2896147,
+          "sha256": "4cfe8ed1c59172c66e4efdc47be6db672c15c6f7e30bbed40ba8b1727f386ac6"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-strength-a01/20261002-163136-850022-91d2496201-response.json",
+          "bytes": 5785,
+          "sha256": "88e129bd4b3e256d095cb3a391c0304ac320e68302e9f241f5b7813689aa7ed7"
+        }
+      ],
+      "values": {
+        "date": "1067-04-22",
+        "occupation_observable": true,
+        "is_occupied": true,
+        "occupying_character_id": 33388,
+        "siege_observable": true,
+        "active_siege": null,
+        "G": 25,
+        "army_current_soldiers": 6384,
+        "first_observed_to_capture_days": 102
+      }
+    },
+    "F_SCORE": {
+      "summary_zh": "同War1原生norman_conquest_cb，Apr19四项0，Apr22战斗0囚犯0占领13计时0 total13/victoryfalse；before距城破3日，未隔离所有同期他城变化。 本场UI占领tooltip县项南撒克逊+13.2%，原生整分项13；这不是统一每城面值或所有战争通用cap。",
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-war-immediate-before-a01/20261002-163024-433224-5b1d6da9cb-response.json",
+          "bytes": 25382,
+          "sha256": "d833368fb717e1d6007a2d8b7874216ab667f78349bc089da6f871556b3ea814"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-war-after-a01/20261002-163104-730054-a42a8cc9a9-response.json",
+          "bytes": 25422,
+          "sha256": "568a09c69e2c2258afaec7962797596c0bb3cd5021e14d5c308f2717f5813a9b"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163520-50b623cd/desktop.png",
+          "bytes": 2759867,
+          "sha256": "01fd6212598bda9eb6c014b170c86ae50c6c66dd1fdee8068a20bd19d14a8079"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163903-edcfdf12/desktop.png",
+          "bytes": 2781531,
+          "sha256": "b584fd2faa066fa841cf884695b7ed10ea3852fcbb7c309c942a9a570652ac74"
+        }
+      ],
+      "values": {
+        "war_id": 1,
+        "CB": "norman_conquest_cb",
+        "before_date": "1067-04-19",
+        "after_date": "1067-04-22",
+        "before_breakdown": {
+          "battles": 0,
+          "imprisonment": 0,
+          "occupation": 0,
+          "ticking": 0
+        },
+        "after_breakdown": {
+          "battles": 0,
+          "imprisonment": 0,
+          "occupation": 13,
+          "ticking": 0
+        },
+        "total_before": 0,
+        "total_after": 13,
+        "victory_available_after": false,
+        "sole_this_castle_contribution_isolated": false,
+        "UI_occupation_detail_percent": 13.2,
+        "UI_county_name": "Sussex",
+        "UI_county_detail_percent": 13.2,
+        "UI_policy_occupation_cap_percent": 150,
+        "policy_cap_live_activation_observed": false
+      }
+    },
+    "F_OWNER": {
+      "summary_zh": "4月22县UI南撒克逊伯国持有者利奥夫温，占领者你；Hastings城市也显示玩家占领。这是当前county状态，不冒称b_lewes法律拥有者围前/后配对。",
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163225-9bbcae09/desktop.png",
+          "bytes": 2922727,
+          "sha256": "ece6870ee7c218be69656d7b26df7e0693622264a5a233463839151953113db3"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163445-0409322b/desktop.png",
+          "bytes": 2937509,
+          "sha256": "0edacca805e715920828cbe68c1a10804675ed1b74d90d1438dcf0b5dd1138cc"
+        }
+      ],
+      "values": {
+        "county_UI_holder": "Leofwine",
+        "county_UI_occupier": "player",
+        "all_fortified_holdings_set_checked": false
+      }
+    }
+  },
+  "shots": {
+    "S01": {
+      "id": "S01",
+      "kind": "raw_frame_pair",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "label": "首次围城与确认占领 / First record and occupation",
+      "case": "William / Lewes, 1067",
+      "claim_ids": [
+        "C02",
+        "C13",
+        "C14"
+      ],
+      "frames": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163105-f580d834/desktop.png",
+          "bytes": 2896147,
+          "sha256": "4cfe8ed1c59172c66e4efdc47be6db672c15c6f7e30bbed40ba8b1727f386ac6"
+        }
+      ],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "board": null,
+      "clean_admission": false,
+      "clean_admission_scope": "Original captured frame, not an admitted clean recording interval or human film approval."
+    },
+    "S02": {
+      "id": "S02",
+      "kind": "raw_frame",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "label": "1066威廉开局 / William in 1066",
+      "case": "William / Lewes, 1067",
+      "claim_ids": [
+        "C01",
+        "C02"
+      ],
+      "frames": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-150201-603c039c/desktop.png",
+          "bytes": 2324983,
+          "sha256": "29f704ea9dc361040fcd7e1b623f82031d7a04a3a8e3c58089a5eff8cda5f4ef"
+        }
+      ],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "board": null,
+      "clean_admission": false,
+      "clean_admission_scope": "Original captured frame, not an admitted clean recording interval or human film approval."
+    },
+    "S03": {
+      "id": "S03",
+      "kind": "raw_frame",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "label": "渡海增援 / Crossing reinforcements",
+      "case": "William / Lewes, 1067",
+      "claim_ids": [
+        "C03",
+        "C11"
+      ],
+      "frames": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-153200-228c8f0e/desktop.png",
+          "bytes": 3091463,
+          "sha256": "2a41c83d95c22172ae08ea48154e728d7549c93cc856ab1303adf524f427a50a"
+        }
+      ],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "board": null,
+      "clean_admission": false,
+      "clean_admission_scope": "Original captured frame, not an admitted clean recording interval or human film approval."
+    },
+    "S04": {
+      "id": "S04",
+      "kind": "raw_frame",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "label": "首次自军围城 / First own-army siege",
+      "case": "William / Lewes, 1067",
+      "claim_ids": [
+        "C03"
+      ],
+      "frames": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        }
+      ],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "board": null,
+      "clean_admission": false,
+      "clean_admission_scope": "Original captured frame, not an admitted clean recording interval or human film approval."
+    },
+    "S05": {
+      "id": "S05",
+      "kind": "raw_frame_pair",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "label": "初期围城窗口 / Opening siege",
+      "case": "William / Lewes, 1067",
+      "claim_ids": [
+        "C04",
+        "C05",
+        "C07"
+      ],
+      "frames": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-155505-bdf551ab/desktop.png",
+          "bytes": 2916147,
+          "sha256": "fbd75e88951c52dc0196c82bd7b18126c7d84f7de96c66114cf492f1d1dfa538"
+        }
+      ],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "board": null,
+      "clean_admission": false,
+      "clean_admission_scope": "Original captured frame, not an admitted clean recording interval or human film approval."
+    },
+    "S06": {
+      "id": "S06",
+      "kind": "evidence_board",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "claim_ids": [
+        "C04",
+        "C05"
+      ],
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        }
+      ],
+      "board_spec": {
+        "source_image": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+        "crop_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "title": "工作量与百分比 / Work and progress",
+        "case": "William / Lewes, 1067",
+        "diagram_title": "静态规则算例 / Rule examples",
+        "diagram_lines": [
+          "总量 = 100 + 75 × 城防 × 守军比例",
+          "Total = 100 + 75 × fort × garrison ratio",
+          "城防4、满员：400；半员：250",
+          "Fort 4: full ratio 400; half ratio 250",
+          "已做200 / 总量400 = 50%"
+        ],
+        "footer": "算例不是刘易斯当日值 / Examples are not this case's current values",
+        "source_kind": "native-readback-with-original-ui"
+      },
+      "frames": [],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "clean_admission": false,
+      "clean_admission_scope": "Prepared graphic from exact actual frame and explicitly sourced facts; no clean-clip or human approval claim."
+    },
+    "S07": {
+      "id": "S07",
+      "kind": "raw_frame_pair",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "label": "真实相邻一天 / One observed day",
+      "case": "William / Lewes, 1067",
+      "claim_ids": [
+        "C06",
+        "C07"
+      ],
+      "frames": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-155505-bdf551ab/desktop.png",
+          "bytes": 2916147,
+          "sha256": "fbd75e88951c52dc0196c82bd7b18126c7d84f7de96c66114cf492f1d1dfa538"
+        }
+      ],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "board": null,
+      "clean_admission": false,
+      "clean_admission_scope": "Original captured frame, not an admitted clean recording interval or human film approval."
+    },
+    "S08": {
+      "id": "S08",
+      "kind": "evidence_board",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "claim_ids": [
+        "C05"
+      ],
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        }
+      ],
+      "board_spec": {
+        "source_image": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+        "crop_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "title": "城防与器械 / Fort and siege tier",
+        "case": "William / Lewes, 1067",
+        "diagram_title": "静态门槛 / Static thresholds",
+        "diagram_lines": [
+          "城防门槛：4 / 6 / 11 / 16 / 31",
+          "Fort thresholds: 4 / 6 / 11 / 16 / 31",
+          "每道无法覆盖的门槛：×0.7",
+          "Each uncovered threshold: ×0.7",
+          "刘易斯城防3；不是高城防实测"
+        ],
+        "footer": "规则算例与本案观测分开 / Rules and actual case kept separate",
+        "source_kind": "native-readback-with-original-ui"
+      },
+      "frames": [],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "clean_admission": false,
+      "clean_admission_scope": "Prepared graphic from exact actual frame and explicitly sourced facts; no clean-clip or human approval claim."
+    },
+    "S09": {
+      "id": "S09",
+      "kind": "evidence_board",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "claim_ids": [
+        "C08",
+        "C10"
+      ],
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-162858-4cd42097/desktop.png",
+          "bytes": 2962355,
+          "sha256": "d4be5849b81844eea9e22430c24a14e174d03ef3d01b3fb3ceeb77f1a3dc57db"
+        }
+      ],
+      "board_spec": {
+        "source_image": "D:/ck3-war-episode03-20261002-a01/ui6-162858-4cd42097/desktop.png",
+        "crop_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "title": "事件改变不同输入 / Events change different inputs",
+        "case": "William / Lewes, 1067",
+        "diagram_title": "静态效果 / Static effects",
+        "diagram_lines": [
+          "断粮：首次 +5%总work；升级另+15%",
+          "疾病：当前日速 +10% / +20%",
+          "逃亡：另 +5 work；僵持：无额外work",
+          "破口：阶段时间 -10% / -30%",
+          "抽取看当前条件；不是固定概率"
+        ],
+        "footer": "本案仅展示实拍结果 / Only recorded events shown as this case",
+        "source_kind": "native-readback-with-original-ui"
+      },
+      "frames": [],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "clean_admission": false,
+      "clean_admission_scope": "Prepared graphic from exact actual frame and explicitly sourced facts; no clean-clip or human approval claim."
+    },
+    "S10": {
+      "id": "S10",
+      "kind": "raw_frame",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "label": "一级破口与当前阶段 / Small breach",
+      "case": "William / Lewes, 1067",
+      "claim_ids": [
+        "C06",
+        "C09"
+      ],
+      "frames": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160245-2c39c18c/desktop.png",
+          "bytes": 2894674,
+          "sha256": "957ba6defaeb31d86f7f88aa82ebbb31520d36c7d2904281a7b2e226c95d261a"
+        }
+      ],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "board": null,
+      "clean_admission": false,
+      "clean_admission_scope": "Original captured frame, not an admitted clean recording interval or human film approval."
+    },
+    "S11": {
+      "id": "S11",
+      "kind": "raw_frame",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "label": "四月十五日的大破口与僵持 / Large breach and stalemate",
+      "case": "William / Lewes, 1067",
+      "claim_ids": [
+        "C08",
+        "C09",
+        "C10"
+      ],
+      "frames": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-162858-4cd42097/desktop.png",
+          "bytes": 2962355,
+          "sha256": "d4be5849b81844eea9e22430c24a14e174d03ef3d01b3fb3ceeb77f1a3dc57db"
+        }
+      ],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "board": null,
+      "clean_admission": false,
+      "clean_admission_scope": "Original captured frame, not an admitted clean recording interval or human film approval."
+    },
+    "S12": {
+      "id": "S12",
+      "kind": "raw_frame",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "label": "一月二十九日强攻预览 / Assault preview",
+      "case": "William / Lewes, 1067",
+      "claim_ids": [
+        "C12"
+      ],
+      "frames": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160437-467427f9/desktop.png",
+          "bytes": 2923742,
+          "sha256": "46b6215ee71ba6a9b68f5826c7e7eab8bb416d5988a893e9077fe4305afafbba"
+        }
+      ],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "board": null,
+      "clean_admission": false,
+      "clean_admission_scope": "Original captured frame, not an admitted clean recording interval or human film approval."
+    },
+    "S13": {
+      "id": "S13",
+      "kind": "raw_clip",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "claim_ids": [
+        "C13",
+        "C14"
+      ],
+      "raw_recording": {
+        "path": "D:/ck3-war-episode03-20261002-a01/capture-15-william-fall/raw-desktop.mkv",
+        "bytes": 84325541,
+        "sha256": "722b82aa8f2a9e083cd929f177cfe05d483bcce69b22c164b2085f2a782daee7"
+      },
+      "source_begin_seconds": 50.033,
+      "source_end_seconds": 59.5,
+      "frames": [],
+      "prepared_board": false,
+      "clean_admission": false,
+      "clean_admission_scope": "Actual reviewed full-decode candidate interval; sampled by AI/machine, not human 1x approval.",
+      "source_pts": {
+        "start_frame_number": 1359,
+        "start_pts": 50033,
+        "end_frame_number_exclusive": 1617,
+        "end_pts_exclusive": 59500,
+        "time_base": "1/1000"
+      },
+      "candidate_review_source": {
+        "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/15/source-candidate.json",
+        "bytes": 3838,
+        "sha256": "f4786e8eb9541d7258ceac384003d7068f0b55e36bd3f5226adcc1fbcde91afa"
+      },
+      "human_approved": false
+    },
+    "S14": {
+      "id": "S14",
+      "kind": "raw_frame_pair",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "label": "军事占领与当前伯爵领持有者 / Occupation and holder",
+      "case": "William / Lewes, 1067",
+      "claim_ids": [
+        "C14"
+      ],
+      "frames": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163105-f580d834/desktop.png",
+          "bytes": 2896147,
+          "sha256": "4cfe8ed1c59172c66e4efdc47be6db672c15c6f7e30bbed40ba8b1727f386ac6"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163445-0409322b/desktop.png",
+          "bytes": 2937509,
+          "sha256": "0edacca805e715920828cbe68c1a10804675ed1b74d90d1438dcf0b5dd1138cc"
+        }
+      ],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "board": null,
+      "clean_admission": false,
+      "clean_admission_scope": "Original captured frame, not an admitted clean recording interval or human film approval."
+    },
+    "S16": {
+      "id": "S16",
+      "kind": "raw_frame",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "label": "本场城破后战争面板 / War panel after capture",
+      "case": "William / Lewes, 1067",
+      "claim_ids": [
+        "C15",
+        "C16",
+        "C17"
+      ],
+      "frames": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163903-edcfdf12/desktop.png",
+          "bytes": 2781531,
+          "sha256": "b584fd2faa066fa841cf884695b7ed10ea3852fcbb7c309c942a9a570652ac74"
+        }
+      ],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "board": null,
+      "clean_admission": false,
+      "clean_admission_scope": "Original captured frame, not an admitted clean recording interval or human film approval."
+    },
+    "S17": {
+      "id": "S17",
+      "kind": "evidence_board",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "claim_ids": [
+        "C05",
+        "C07",
+        "C11"
+      ],
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160245-2c39c18c/desktop.png",
+          "bytes": 2894674,
+          "sha256": "957ba6defaeb31d86f7f88aa82ebbb31520d36c7d2904281a7b2e226c95d261a"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        }
+      ],
+      "board_spec": {
+        "source_image": "D:/ck3-war-episode03-20261002-a01/ui6-160245-2c39c18c/desktop.png",
+        "crop_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "title": "增援：实际前后变化 / Reinforcement comparison",
+        "case": "William / Lewes, 1067",
+        "diagram_title": "原生读数；不是单团归因 / Typed readings",
+        "diagram_lines": [
+          "抵达日：B5660→6746；净work +2.46",
+          "Arrival day: B5660→6746; net work+2.46",
+          "下一日净work +2.78 / Next day net+2.78",
+          "合军后：C29.84→32.62；净work +2.78",
+          "Merged next day: C29.84→32.62"
+        ],
+        "footer": "先到场再参围；净变化不等于单团贡献 / Arrival and participation precede effects",
+        "source_kind": "native-readback-with-original-ui",
+        "extra_ui": [
+          {
+            "image": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+            "crop_xyxy": [
+              0,
+              0,
+              1920,
+              1080
+            ],
+            "label": "同案另一时点 / Same case, different time"
+          }
+        ]
+      },
+      "frames": [],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "clean_admission": false,
+      "clean_admission_scope": "Prepared graphic from exact actual frame and explicitly sourced facts; no clean-clip or human approval claim."
+    },
+    "S18": {
+      "id": "S18",
+      "kind": "evidence_board",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "claim_ids": [
+        "C04",
+        "C06",
+        "C07",
+        "C10"
+      ],
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        }
+      ],
+      "board_spec": {
+        "source_image": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+        "crop_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "title": "守军补充，估计延后 / Garrison growth extends estimate",
+        "case": "William / Lewes, 1067",
+        "diagram_title": "原生相邻日 / Typed adjacent days",
+        "diagram_lines": [
+          "守军G420→460；总量T305.434→325",
+          "G420→460; total T305.434→325",
+          "这一天净work仍+2.46 / Net work still+2.46",
+          "预计N122→129天 / Estimate122→129 days",
+          "推进没有停；剩余总量变了"
+        ],
+        "footer": "守军有效容量未独立采到 / Effective capacity not independently read",
+        "source_kind": "native-readback-with-original-ui"
+      },
+      "frames": [],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "clean_admission": false,
+      "clean_admission_scope": "Prepared graphic from exact actual frame and explicitly sourced facts; no clean-clip or human approval claim."
+    },
+    "S19": {
+      "id": "S19",
+      "kind": "evidence_board",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "claim_ids": [
+        "C12",
+        "C10"
+      ],
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160437-467427f9/desktop.png",
+          "bytes": 2923742,
+          "sha256": "46b6215ee71ba6a9b68f5826c7e7eab8bb416d5988a893e9077fe4305afafbba"
+        }
+      ],
+      "board_spec": {
+        "source_image": "D:/ck3-war-episode03-20261002-a01/ui6-160437-467427f9/desktop.png",
+        "crop_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "title": "强攻一日：预览与净变化 / One assault day",
+        "case": "William / Lewes, 1067",
+        "diagram_title": "同围城6，一月29→30 / Same siege, 29→30 Jan",
+        "diagram_lines": [
+          "预览 +13.6 work / 168损失；不是总增量",
+          "C52.08→68.46；一日净work +16.38",
+          "有效B6746→6578；一日净少168",
+          "下一预览13.2 / 164；随后停止强攻",
+          "Next preview13.2 / 164; assault stopped"
+        ],
+        "footer": "净变化不隔离强攻贡献或逐人死因 / Net change is not isolated causation",
+        "source_kind": "native-readback-with-original-ui"
+      },
+      "frames": [],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "clean_admission": false,
+      "clean_admission_scope": "Prepared graphic from exact actual frame and explicitly sourced facts; no clean-clip or human approval claim."
+    },
+    "S20": {
+      "id": "S20",
+      "kind": "evidence_board",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "claim_ids": [
+        "C05",
+        "C06"
+      ],
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        }
+      ],
+      "board_spec": {
+        "source_image": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+        "crop_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "title": "兵力与剩余天数 / Manpower and estimate",
+        "case": "William / Lewes, 1067",
+        "diagram_title": "静态算例 / Rule examples",
+        "diagram_lines": [
+          "兵力加成：max(B−G,0)每满200人+0.01",
+          "Eligible surplus: +0.01 per complete200",
+          "总量400、已做200、日速2：预计100天",
+          "Work400, done200, speed2: estimate100d",
+          "正常算例100.2天→101；最低日速0.5"
+        ],
+        "footer": "明确条件的规则算例，不冒充本案采值 / Conditional rule examples",
+        "source_kind": "native-readback-with-original-ui"
+      },
+      "frames": [],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "clean_admission": false,
+      "clean_admission_scope": "Prepared graphic from exact actual frame and explicitly sourced facts; no clean-clip or human approval claim."
+    },
+    "S21": {
+      "id": "S21",
+      "kind": "evidence_board",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "claim_ids": [
+        "C05",
+        "C11"
+      ],
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-151454-4b044a78/desktop.png",
+          "bytes": 2685955,
+          "sha256": "b1c2c96c7640cfd6ab7eb34c9784c860b7f51f2394c2722dd458f5b838aa831b"
+        },
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-151753-9392251d/desktop.png",
+          "bytes": 2746359,
+          "sha256": "c211846a86cf124c34db781fa3e13668ada0f0f2dcf52e120f74c0a44d8d81d8"
+        }
+      ],
+      "board_spec": {
+        "source_image": "D:/ck3-war-episode03-20261002-a01/ui6-151454-4b044a78/desktop.png",
+        "crop_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "title": "射石机：当前规模与到场 / Mangonel strength and arrival",
+        "case": "William / Lewes, 1067",
+        "diagram_title": "招募UI + 静态计算 / Recruitment and rule",
+        "diagram_lines": [
+          "满一档10，初始5/10 / Stack10, initially5",
+          "本案提示 +0.3/天；有效城防至10",
+          "Tooltip +0.3/day; effective fort limit10",
+          "有效数值 × 当前数量/每档编制",
+          "Effective value × current count/stack"
+        ],
+        "footer": "在另一支增援里，不能提前计作参围 / A separate reinforcement must arrive",
+        "source_kind": "native-readback-with-original-ui",
+        "extra_ui": [
+          {
+            "image": "D:/ck3-war-episode03-20261002-a01/ui6-151753-9392251d/desktop.png",
+            "crop_xyxy": [
+              0,
+              0,
+              1920,
+              1080
+            ],
+            "label": "同案另一时点 / Same case, different time"
+          }
+        ]
+      },
+      "frames": [],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "clean_admission": false,
+      "clean_admission_scope": "Prepared graphic from exact actual frame and explicitly sourced facts; no clean-clip or human approval claim."
+    },
+    "S23": {
+      "id": "S23",
+      "kind": "evidence_board",
+      "status": "ready",
+      "case_id": "william1066-lewes-siege6-live-a06",
+      "claim_ids": [
+        "C13",
+        "C14"
+      ],
+      "source_pins": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163105-f580d834/desktop.png",
+          "bytes": 2896147,
+          "sha256": "4cfe8ed1c59172c66e4efdc47be6db672c15c6f7e30bbed40ba8b1727f386ac6"
+        }
+      ],
+      "board_spec": {
+        "source_image": "D:/ck3-war-episode03-20261002-a01/ui6-163105-f580d834/desktop.png",
+        "crop_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "title": "最后一天与城破 / Final day and capture",
+        "case": "William / Lewes, 1067",
+        "diagram_title": "原生前后读数 / Typed before and after",
+        "diagram_lines": [
+          "4月21日：C323.63 / T325 / 尚差1.37",
+          "21 Apr: C323.63 / T325 / remaining1.37",
+          "4月22日：玩家占领；原围城已结束",
+          "22 Apr: player occupies; prior siege gone",
+          "主力6384 / Main force6384"
+        ],
+        "footer": "最后两端同省1506/自军围城6 / Same objective and own siege",
+        "source_kind": "native-readback-with-original-ui"
+      },
+      "frames": [],
+      "raw_recording": null,
+      "source_begin_seconds": null,
+      "source_end_seconds": null,
+      "prepared_board": false,
+      "clean_admission": false,
+      "clean_admission_scope": "Prepared graphic from exact actual frame and explicitly sourced facts; no clean-clip or human approval claim."
+    }
+  },
+  "recording_candidates": [
+    {
+      "capture_number": 12,
+      "raw_recording": {
+        "path": "D:/ck3-war-episode03-20261002-a01/capture-12-william-reinforcement/raw-desktop.mkv",
+        "bytes": 77981394,
+        "sha256": "d04d62cba6b89af47094838d2c8a46dfa75436a7e3f695ed24c61b03226f92d1"
+      },
+      "decode_report": {
+        "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/12/extraction-summary.json",
+        "bytes": 3889,
+        "sha256": "06b75ccf3dba1ceaba20a7d045a333980afed759de4614a60cb4b07eb6e4a6e6"
+      },
+      "clean_admission": false,
+      "primary_use": "No raw interval selected or guessed by this editorial author. Original actual frames are the current visual inputs.",
+      "human_approved": false
+    },
+    {
+      "capture_number": 13,
+      "raw_recording": {
+        "path": "D:/ck3-war-episode03-20261002-a01/capture-13-william-breach/raw-desktop.mkv",
+        "bytes": 81824034,
+        "sha256": "87cb0e07e903fb533eaadc4b70cfe34a9af5e4fcc8d7f31dcc9747066dfab33f"
+      },
+      "decode_report": {
+        "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/13/extraction-summary.json",
+        "bytes": 3878,
+        "sha256": "720ac4a80b856b588a1855b182ec8ee8732081917358e85926ee0b6879055bf4"
+      },
+      "clean_admission": false,
+      "primary_use": "No raw interval selected or guessed by this editorial author. Original actual frames are the current visual inputs.",
+      "human_approved": false
+    },
+    {
+      "capture_number": 14,
+      "raw_recording": {
+        "path": "D:/ck3-war-episode03-20261002-a01/capture-14-william-assault/raw-desktop.mkv",
+        "bytes": 84316072,
+        "sha256": "e6b0b237931c33fd714929ec425a115ddc06eb62436508c663a5b7201ef05388"
+      },
+      "decode_report": {
+        "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/14/extraction-summary.json",
+        "bytes": 3879,
+        "sha256": "0a6b5a653eab56d7e0698bb1c0bf02ec17e948f39d58a6f72a8bcb92f3494a89"
+      },
+      "clean_admission": false,
+      "primary_use": "No raw interval selected or guessed by this editorial author. Original actual frames are the current visual inputs.",
+      "human_approved": false
+    },
+    {
+      "capture_number": 15,
+      "raw_recording": {
+        "path": "D:/ck3-war-episode03-20261002-a01/capture-15-william-fall/raw-desktop.mkv",
+        "bytes": 84325541,
+        "sha256": "722b82aa8f2a9e083cd929f177cfe05d483bcce69b22c164b2085f2a782daee7"
+      },
+      "decode_report": {
+        "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/15/extraction-summary.json",
+        "bytes": 3888,
+        "sha256": "00dbe0c9a13ccb8845c160368b3f76d0cfcf9528b4b2f73fcb4a2f15191a7c0d"
+      },
+      "clean_admission": false,
+      "primary_use": "S13/cue092 selects raw capture 15 [50.033,59.500); other cues use original frames or boards. No human approval.",
+      "human_approved": false
+    },
+    {
+      "capture_number": 16,
+      "raw_recording": {
+        "path": "D:/ck3-war-episode03-20261002-a01/capture-16-william-occupation/raw-desktop.mkv",
+        "bytes": 78283528,
+        "sha256": "0836dbfeea8997ac0902027c9a463201bc7dc9b053166faf769a41742889d599"
+      },
+      "decode_report": {
+        "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/16/extraction-summary.json",
+        "bytes": 3882,
+        "sha256": "1282cf3e7001ad56feb002a7679b44d5772ca37e2a87f076b677497a47371acb"
+      },
+      "clean_admission": false,
+      "primary_use": "No raw interval selected or guessed by this editorial author. Original actual frames are the current visual inputs.",
+      "human_approved": false
+    }
+  ],
+  "pending_production_freeze": true,
+  "human_signoff": "not-provided"
+}

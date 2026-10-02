@@ -1,6 +1,7 @@
 """Four explicit native presentation routes; no planner/desktop fallback."""
 from __future__ import annotations
 import math
+from .public_unit_contract import public_cunit_id
 
 NAVIGATE_STEP = "navigate-ingame-ui-v1"
 QUERY_STEP = "query-ingame-ui-window-v1"
@@ -21,6 +22,8 @@ def validate_ui_request(operation: str, kind: str, subject_id: int, revision: in
     if operation in {"query", "open_knights"}:
         if subject_id != 0:
             raise ValueError("this operation has no caller-selected subject")
+    elif operation == "select_army":
+        public_cunit_id(subject_id, "subject public CUnitID")
     elif not 0 < subject_id < 2**32 - 1:
         raise ValueError("subject ID must be positive and exclude the invalid handle")
 
@@ -44,6 +47,8 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
         n = value.get(key)
         if isinstance(n, bool) or not isinstance(n, int) or n < 0 or (key != "pump_epoch" and n >= 2**32):
             raise ValueError(f"native UI typed integer missing: {key}")
+    if kind == "army" and value["subject_id_available"]:
+        public_cunit_id(value["current_subject_id"], "current public CUnitID")
     if value["available"] != value["accepted"]:
         raise ValueError("native UI availability/acceptance differs")
     if value.get("rng_owner_is_ui_admission_gate") is not False:

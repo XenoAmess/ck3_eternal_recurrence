@@ -19,7 +19,7 @@ SelectCurrentBattleKnightEntryV1(
     std::string_view &failure) noexcept {
   failure = "battle_scope_invalid";
   if (battle.status != game::BattleControlSnapshotStatus::available ||
-      !battle.battle_control_ready || request.subject_public_cunit_id <= 0 ||
+      !battle.battle_control_ready || request.subject_public_cunit_id < 0 ||
       request.expected_played_character_id <= 0 ||
       request.expected_war_id < 0 ||
       request.expected_native_carmy_id <= 0 ||

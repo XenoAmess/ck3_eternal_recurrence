@@ -1,3 +1,4 @@
+#include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/combat_phase_event_trace_v1.hpp"
 #if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
@@ -256,7 +257,7 @@ bool ParseCombatSimulationInputsStepWithPrefix(
                                  ? 4 + index
                                  : defender_marker_index + 2 +
                                        (index - attacker_count);
-    if (!parse_positive(tokens[token_index], army_ids[index])) {
+    if (!ParsePublicCUnitIdV1(tokens[token_index], army_ids[index])) {
       request = {};
       return false;
     }

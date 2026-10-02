@@ -1,4 +1,4 @@
-﻿#include "xar_bridge/ck3_12002_battle.hpp"
+#include "xar_bridge/ck3_12002_battle.hpp"
 #include "xar_bridge/ck3_12002_battle_journal.hpp"
 
 #include <algorithm>
@@ -956,7 +956,7 @@ ReadBattleControlSnapshot(const BattleBindings &b, const game::Snapshot &s,
     return o.status;
   }
   if (!Scope(b, s) || !b.get_combat_side_strength ||
-      !b.get_combat_regiment_strength || r.subject_public_cunit_id <= 0)
+      !b.get_combat_regiment_strength || r.subject_public_cunit_id < 0)
     return o.status;
   auto army = std::find_if(
       s.player_armies.begin(), s.player_armies.end(),
@@ -996,7 +996,7 @@ game::BattleReinforcementAssignmentStatus ReadBattleReinforcementAssignmentV1(
   o = {};
   o.selected_public_cunit_id = r.selected_public_cunit_id;
   o.observed_date_raw = s.date_raw;
-  if (!Scope(b, s) || r.selected_public_cunit_id <= 0) {
+  if (!Scope(b, s) || r.selected_public_cunit_id < 0) {
     o.unavailable_reason =
         s.paused ? "unsupported_build_or_state_changed" : "requires_paused";
     return o.status;
@@ -1023,7 +1023,7 @@ game::BattleTerminalTransitionStatusV1 ReadBattleTerminalTransitionV1(
   o.subject_public_cunit_id = r.subject_public_cunit_id;
   o.observed_date_raw = s.date_raw;
   if (!Scope(b, s) || r.prior_combat_id <= 0 ||
-      r.subject_public_cunit_id <= 0) {
+      r.subject_public_cunit_id < 0) {
     o.unavailable_reason =
         s.paused ? "invalid_request_or_state_changed" : "requires_paused";
     return o.status;

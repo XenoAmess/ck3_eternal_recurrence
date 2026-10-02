@@ -7,6 +7,8 @@ semantic driver interface used by the visual and data-Mod backends.
 
 from __future__ import annotations
 
+from .public_unit_contract import is_public_cunit_id
+
 from collections.abc import Callable, Mapping
 import copy
 import ctypes
@@ -823,6 +825,8 @@ class NativeProtocolState:
         self._last_pong: dict[str, object] | None = None
         self._last_error: dict[str, object] | None = None
         self._semantic_snapshot: dict[str, object] | None = None
+        self._raw_state_snapshot: dict[str, object] | None = None
+        self._raw_state_snapshot_accepted = False
         self._command_results: dict[str, dict[str, object]] = {}
         self._rejected_state_snapshot_count = 0
         self._last_rejected_state_snapshot: dict[str, object] | None = None
@@ -883,6 +887,8 @@ class NativeProtocolState:
                 self._last_heartbeat = None
                 self._last_pong = None
                 self._semantic_snapshot = None
+                self._raw_state_snapshot = None
+                self._raw_state_snapshot_accepted = False
                 self._command_results.clear()
                 self._public_revision += 1
             elif frame_type == "heartbeat":
@@ -899,6 +905,8 @@ class NativeProtocolState:
                     raise ValueError("native bridge pong is malformed")
                 self._last_pong = dict(frame)
             elif frame_type == "state_snapshot":
+                self._raw_state_snapshot = copy.deepcopy(frame)
+                self._raw_state_snapshot_accepted = False
                 try:
                     snapshot = _semantic_snapshot_from_frame(frame)
                 except ValueError as error:
@@ -920,6 +928,7 @@ class NativeProtocolState:
                 # Heartbeat-adjacent publishers may repeat the most recent
                 # semantic frame.  Repeated bytes are liveness, not a new game
                 # revision, so wait_for_change must keep waiting.
+                self._raw_state_snapshot_accepted = True
                 if snapshot != self._semantic_snapshot:
                     self._semantic_snapshot = snapshot
                     self._public_revision += 1
@@ -964,6 +973,8 @@ class NativeProtocolState:
             if self._connected:
                 self._connected = False
                 self._semantic_snapshot = None
+                self._raw_state_snapshot = None
+                self._raw_state_snapshot_accepted = False
                 self._public_revision += 1
                 self._condition.notify_all()
 
@@ -1050,6 +1061,25 @@ class NativeProtocolState:
                 "backend_id": "native-headless",
                 "source": "injected-dll-named-pipe",
                 "diagnostics": self._diagnostics_locked(),
+            }
+
+    def raw_transport_snapshot(self) -> dict[str, object]:
+        """Read the same connection's last decoded native packet for diagnosis.
+
+        This runner-only receipt bypasses public action expansion. A rejected
+        packet remains explicitly rejected and never becomes semantic state.
+        """
+        with self._condition:
+            if not self._connected or self._raw_state_snapshot is None:
+                raise BridgeUnavailableError("native transport snapshot is unavailable")
+            if "game.state.snapshot" not in _string_list(self._hello.get("capabilities")):
+                raise UnsupportedStepError("native DLL did not advertise game.state.snapshot")
+            return {
+                "schema": "xar.native.raw-transport-snapshot.v1",
+                "native_packet": copy.deepcopy(self._raw_state_snapshot),
+                "semantic_packet_accepted": self._raw_state_snapshot_accepted,
+                "public_revision": self._public_revision,
+                "diagnostics": copy.deepcopy(self._diagnostics_locked()),
             }
 
     def public_revision(self) -> int:
@@ -1456,6 +1486,7 @@ class NativeHeadlessGameplayDriver:
         endpoint: NativeBridgeEndpoint | None = None,
         command_timeout_seconds: float = 10.0,
         declarable_wars_timeout_seconds: float = 120.0,
+        war_entry_assessments_timeout_seconds: float = 120.0,
         frontend_transition_timeout_seconds: float = 120.0,
         life_advance_timeout_seconds: float = 30.0,
         state_dir: str | os.PathLike[str] | None = None,
@@ -1509,6 +1540,10 @@ class NativeHeadlessGameplayDriver:
         )
         self.declarable_wars_timeout_seconds = _positive_seconds(
             declarable_wars_timeout_seconds, "declarable_wars_timeout_seconds"
+        )
+        self.war_entry_assessments_timeout_seconds = _positive_seconds(
+            war_entry_assessments_timeout_seconds,
+            "war_entry_assessments_timeout_seconds",
         )
         self.frontend_transition_timeout_seconds = _positive_seconds(
             frontend_transition_timeout_seconds,
@@ -4949,7 +4984,7 @@ class NativeHeadlessGameplayDriver:
                 date_raw = binding.get("date_raw")
                 current_subject = (
                     _army_by_id(snapshot, int(subject))
-                    if _positive_native_id(subject)
+                    if is_public_cunit_id(subject)
                     else None
                 )
                 if not (
@@ -11828,6 +11863,10 @@ class NativeHeadlessGameplayDriver:
             step,
             expected_revision=selected_revision,
             required_capability=QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY,
+            # This reader repeats complete declaration enumeration and native
+            # assessment on one paused frame. Its host budget must outlast the
+            # native mailbox's 30-second initial wait without widening actions.
+            timeout_seconds=self.war_entry_assessments_timeout_seconds,
         )
         if (
             set(result)
@@ -20454,7 +20493,6 @@ class NativeHeadlessGameplayDriver:
     ) -> dict[str, object]:
         """One private exact-frame native read. Never retries an executed query."""
         ids = (
-            subject_public_cunit_id,
             character_id,
             regiment_id,
             expected_played_character_id,
@@ -20462,6 +20500,8 @@ class NativeHeadlessGameplayDriver:
             expected_combat_id,
             expected_province_id,
         )
+        if not is_public_cunit_id(subject_public_cunit_id):
+            raise ValueError("subject_public_cunit_id must be a public CUnit int32")
         if any(type(value) is not int or not 1 <= value <= 2**31 - 1
                for value in ids):
             raise ValueError("current-knight IDs must be positive int32")
@@ -22796,7 +22836,7 @@ def _battle_sentinel_watch_army_ids(
         if (
             isinstance(army_id, bool)
             or not isinstance(army_id, int)
-            or not 0 < army_id <= 2**31 - 1
+            or not 0 <= army_id <= 2**31 - 1
             or army_id in army_ids
         ):
             return None
@@ -23382,7 +23422,7 @@ def _battle_sentinel_stationary_objective_hold_state(
         if (
             isinstance(army_id, bool)
             or not isinstance(army_id, int)
-            or not 0 < army_id <= 2**31 - 1
+            or not 0 <= army_id <= 2**31 - 1
             or army_id in army_by_id
         ):
             result["reason"] = "player_army_identity_unavailable"
@@ -24610,7 +24650,7 @@ def _remote_enemy_routes_speed_three_ready(
         army_id = army.get("army_id")
         province_id = army.get("current_province_id")
         if (
-            not _positive_native_id(army_id)
+            not is_public_cunit_id(army_id)
             or not _positive_native_id(province_id)
             or not _army_route_projection_complete(army)
             or not _army_is_known_stationary(army)
@@ -26145,7 +26185,7 @@ def _capital_regroup_capability_scope(
     named_state = army.get("army_state")
     state_code = army.get("army_state_code")
     if not (
-        _positive_native_id(army_id)
+        is_public_cunit_id(army_id)
         and _positive_native_id(current_province_id)
         and current_province_id != capital_province_id
         and (
@@ -26358,7 +26398,7 @@ def _allied_capital_hold_contact_scope(
     army = controlled[0]
     army_id = army.get("army_id")
     if not (
-        _positive_native_id(army_id)
+        is_public_cunit_id(army_id)
         and army.get("current_province_id") == capital
         and army.get("army_state") == "regular"
         and _army_is_known_stationary(army)
@@ -26837,7 +26877,7 @@ def _action_steps(
                 int(army["army_id"]), int(army["current_province_id"])
             )
             for army in controllable
-            if _positive_native_id(army.get("army_id"))
+            if is_public_cunit_id(army.get("army_id"))
             and _positive_native_id(army.get("current_province_id"))
             and not _army_retreating(army)
         )
@@ -26845,7 +26885,7 @@ def _action_steps(
         steps.update(
             query_battle_control_snapshot_v1_step(int(army["army_id"]))
             for army in controllable
-            if _positive_native_id(army.get("army_id"))
+            if is_public_cunit_id(army.get("army_id"))
             and int(army["army_id"]) <= 2**31 - 1
             and _army_in_active_combat(army)
         )
@@ -26855,7 +26895,7 @@ def _action_steps(
                 int(army["army_id"])
             )
             for army in armies
-            if _positive_native_id(army.get("army_id"))
+            if is_public_cunit_id(army.get("army_id"))
             and int(army["army_id"]) <= 2**31 - 1
         )
     if expand_declare_wars and isinstance(declarable_wars, list):
@@ -26883,13 +26923,13 @@ def _action_steps(
             for army in controllable
             if isinstance(army.get("army_id"), int)
             and not isinstance(army.get("army_id"), bool)
-            and 0 < int(army["army_id"]) <= 2**31 - 1
+            and 0 <= int(army["army_id"]) <= 2**31 - 1
         )
     if expand_merge_armies:
         merge_candidates = [
             army
             for army in controllable
-            if _positive_native_id(army.get("army_id"))
+            if is_public_cunit_id(army.get("army_id"))
             and _positive_native_id(army.get("current_province_id"))
             and not _army_known_merge_blocked(army)
         ]
@@ -26969,7 +27009,7 @@ def _action_steps(
             {
                 int(enemy["army_id"])
                 for enemy in enemy_armies_from_wars(wars)
-                if _positive_native_id(enemy.get("army_id"))
+                if is_public_cunit_id(enemy.get("army_id"))
                 and enemy.get("retreating") is not True
                 and enemy.get("army_state") != "retreating"
                 and enemy.get("army_state_code") != 6
@@ -27116,7 +27156,7 @@ def _route_contact_hostile_ids(
                 for enemy in enemy_armies_from_wars(
                     [war for war in wars if isinstance(war, dict)]
                 )
-                if _positive_native_id(enemy.get("army_id"))
+                if is_public_cunit_id(enemy.get("army_id"))
                 and enemy.get("retreating") is not True
                 and enemy.get("army_state") != "retreating"
                 and enemy.get("army_state_code") != 6
@@ -27495,9 +27535,9 @@ def _unavoidable_contact_transition_postcondition(
     if (
         isinstance(subject_army_id, bool)
         or not isinstance(subject_army_id, int)
-        or subject_army_id <= 0
+        or not is_public_cunit_id(subject_army_id)
         or not isinstance(hostile_army_ids, list)
-        or any(not _positive_native_id(value) for value in hostile_army_ids)
+        or any(not is_public_cunit_id(value) for value in hostile_army_ids)
         or ending.get("paused") is not True
     ):
         return None
@@ -27577,7 +27617,7 @@ def _unavoidable_contact_transition_postcondition(
         if isinstance(conflict, dict)
         and conflict.get("kind") == "same_province"
         and conflict.get("province_id") == contact_province_id
-        and _positive_native_id(conflict.get("hostile_army_id"))
+        and is_public_cunit_id(conflict.get("hostile_army_id"))
     }
 
     def hostile_rows_by_id(
@@ -27592,7 +27632,7 @@ def _unavoidable_contact_transition_postcondition(
         return {
             int(army["army_id"]): army
             for army in rows
-            if _positive_native_id(army.get("army_id"))
+            if is_public_cunit_id(army.get("army_id"))
         }
 
     starting_hostile_rows = hostile_rows_by_id(starting)
@@ -27702,7 +27742,7 @@ def _predicted_contact_boundary_postcondition(
     ending_diagnostics = ending.get("diagnostics")
     starting_episode_character_id = starting.get("episode_character_id")
     if (
-        not _positive_native_id(subject_army_id)
+        not is_public_cunit_id(subject_army_id)
         or not _positive_native_id(contact_province_id)
         or not isinstance(episode_run_id, str)
         or not episode_run_id
@@ -27798,7 +27838,7 @@ def _predicted_contact_boundary_postcondition(
         isinstance(conflict, dict)
         and conflict.get("kind") == "same_province"
         and conflict.get("province_id") == contact_province_id
-        and _positive_native_id(conflict.get("hostile_army_id"))
+        and is_public_cunit_id(conflict.get("hostile_army_id"))
         and conflict.get("overlap_start_date_raw") == ending_date_raw
         and conflict.get("overlap_end_date_raw") == ending_date_raw
         for conflict in conflicts
@@ -27884,7 +27924,7 @@ def _route_contact_advance_scope_isolated(
             sibling_proof = (
                 subject_proofs.get(int(army_id))
                 if isinstance(subject_proofs, dict)
-                and _positive_native_id(army_id)
+                and is_public_cunit_id(army_id)
                 else None
             )
             if _contact_free_sibling_proof_matches_conjunction(
@@ -29322,7 +29362,7 @@ def _derive_rollback_war_failure_from_epoch(
                 failed_move = None
         for army in _result_army_observations(result):
             army_id = army.get("army_id")
-            if _positive_native_id(army_id):
+            if is_public_cunit_id(army_id):
                 latest_armies[int(army_id)] = army
     if failed_move is None:
         return None

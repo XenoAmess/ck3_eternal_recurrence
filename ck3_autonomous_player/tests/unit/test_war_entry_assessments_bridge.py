@@ -5,6 +5,7 @@ import importlib.util
 from pathlib import Path
 import sys
 import unittest
+from unittest import mock
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -21,6 +22,7 @@ from xar_autoplayer.bridge.war_entry_contract import (
     EXECUTABLE_SHA256,
     QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY,
 )
+from xar_autoplayer.bridge.version_identity import CK3_12002, CK3_12003
 from xar_autoplayer.strategy import choose_one_life_turn
 
 
@@ -377,12 +379,14 @@ def _native_driver(
     *,
     declarations: list[dict[str, object]] | None = None,
     active_wars: list[dict[str, object]] | None = None,
+    command_timeout_seconds: float = 0.1,
+    game_version: str = "1.19.0.6",
 ) -> tuple[NativeHeadlessGameplayDriver, _FakeEndpoint]:
     endpoint = _FakeEndpoint()
     driver = NativeHeadlessGameplayDriver(
         endpoint.pipe_name,
         endpoint=endpoint,
-        command_timeout_seconds=0.1,
+        command_timeout_seconds=command_timeout_seconds,
     )
     endpoint.publish(
         {
@@ -391,11 +395,16 @@ def _native_driver(
             "bridge_version": "0.1.0",
             "pid": 4545,
             "session_generation": 0,
-            "game_version": "1.19.0.6",
-            "executable_sha256": EXECUTABLE_SHA256,
+            "game_version": game_version,
+            "executable_sha256": (
+                CK3_12003.executable_sha256 if game_version == CK3_12003.game_version
+                else CK3_12002.executable_sha256 if game_version == CK3_12002.game_version
+                else EXECUTABLE_SHA256
+            ),
             "capabilities": [
                 "game.state.snapshot",
                 QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY,
+                "game.command.set-speed-2",
             ],
         }
     )
@@ -437,6 +446,79 @@ def _answer(endpoint: _FakeEndpoint) -> None:
 
 
 class WarEntryNativeDriverTests(unittest.TestCase):
+    def test_crozier_selected_query_can_complete_after_normal_command_budget(self) -> None:
+        for build in (CK3_12002, CK3_12003):
+            with self.subTest(game_version=build.game_version):
+                driver, endpoint = _native_driver(
+                    command_timeout_seconds=10.0, game_version=build.game_version
+                )
+                result = _result()
+                result["war_entry_assessments"]["provenance"] = {
+                    "game_version": build.game_version,
+                    "executable_sha256": build.executable_sha256,
+                    "assessment_rva": "0x1A23240",
+                    "network_collector_rva": "0x1A24010",
+                    "power_leaf": "CCharacter+0x1C0->+0x308",
+                    "fixed_point_scale": 100_000,
+                }
+
+                def delayed_result(request_id: str, timeout_seconds: float):
+                    # Model a 45-second native completion without a wall-clock
+                    # sleep; the old 10-second selected branch cannot get it.
+                    if timeout_seconds < 45.0:
+                        return None
+                    frame = {
+                        "type": "command_result", "protocol_version": 1,
+                        "request_id": request_id, "ok": True, "result": result,
+                    }
+                    endpoint.publish(frame)
+                    return frame
+
+                revision = int(driver.take_snapshot()["revision"])
+                with mock.patch.object(
+                    driver.state, "wait_for_command_result", side_effect=delayed_result
+                ) as wait:
+                    observed = driver.execute_step(STEP, expected_revision=revision)
+                self.assertEqual(observed["status"], "available")
+                self.assertEqual(wait.call_args.args[1], 120.0)
+                self.assertEqual(
+                    driver.take_snapshot()["war_entry_assessments"]["provenance"]["game_version"],
+                    build.game_version,
+                )
+                self.assertEqual(
+                    [frame["step"] for frame in endpoint.frames if frame["type"] == "execute_step"],
+                    [STEP],
+                )
+
+    def test_selected_query_timeout_remains_failure_and_is_not_resent(self) -> None:
+        driver, endpoint = _native_driver(command_timeout_seconds=10.0)
+        revision = int(driver.take_snapshot()["revision"])
+        with mock.patch.object(
+            driver.state, "wait_for_command_result", return_value=None
+        ) as wait:
+            with self.assertRaisesRegex(BridgeUnavailableError, "command_result timed out"):
+                driver.execute_step(STEP, expected_revision=revision)
+        self.assertEqual(wait.call_args.args[1], 120.0)
+        self.assertIsNone(driver.take_snapshot()["war_entry_assessments"])
+        self.assertEqual(
+            [frame["step"] for frame in endpoint.frames if frame["type"] == "execute_step"],
+            [STEP],
+        )
+
+    def test_ordinary_mutation_keeps_normal_command_timeout(self) -> None:
+        driver, endpoint = _native_driver(command_timeout_seconds=10.0)
+        revision = int(driver.take_snapshot()["revision"])
+        with mock.patch.object(
+            driver.state, "wait_for_command_result", return_value=None
+        ) as wait:
+            with self.assertRaisesRegex(BridgeUnavailableError, "command_result timed out"):
+                driver.execute_step("set-speed-2", expected_revision=revision)
+        self.assertEqual(wait.call_args.args[1], 10.0)
+        self.assertEqual(
+            [frame["step"] for frame in endpoint.frames if frame["type"] == "execute_step"],
+            ["set-speed-2"],
+        )
+
     def test_paused_query_is_scope_checked_and_cached_on_exact_frame(self) -> None:
         driver, endpoint = _native_driver()
         _answer(endpoint)

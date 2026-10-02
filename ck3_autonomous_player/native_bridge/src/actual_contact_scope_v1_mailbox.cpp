@@ -1,3 +1,4 @@
+#include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/actual_contact_scope_v1_mailbox.hpp"
 
 #include <windows.h>
@@ -59,7 +60,7 @@ bool ParseActualContactScopeV1Step(
   const auto separator = body.find("-at-");
   if (separator == std::string_view::npos ||
       body.find("-at-", separator + 4) != std::string_view::npos ||
-      !ParsePositive(body.substr(0, separator), output.subject_army_id) ||
+      !game::ParsePublicCUnitIdV1(body.substr(0, separator), output.subject_army_id) ||
       !ParsePositive(body.substr(separator + 4),
                      output.target_province_id)) {
     output = {};

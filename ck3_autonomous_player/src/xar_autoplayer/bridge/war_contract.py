@@ -2,6 +2,12 @@
 
 from __future__ import annotations
 
+from .public_unit_contract import (
+    canonical_public_cunit_decimal,
+    optional_public_cunit_id,
+    public_cunit_id,
+)
+
 from collections.abc import Iterable
 
 from .version_identity import (
@@ -717,7 +723,7 @@ def _normalize_active_siege(
         "siege_id": _positive_int32_id(
             value.get("siege_id"), f"{name}.siege_id"
         ),
-        "besieging_army_id": _optional_positive_int32_id(
+        "besieging_army_id": optional_public_cunit_id(
             value.get("besieging_army_id"),
             f"{name}.besieging_army_id",
         ),
@@ -826,7 +832,7 @@ def normalize_armies(
         if not isinstance(controllable, bool):
             raise ValueError(f"native {name}[{index}].controllable is malformed")
         normalized: dict[str, object] = {
-                "army_id": _non_negative_id(raw_army.get("army_id"), "army_id"),
+                "army_id": public_cunit_id(raw_army.get("army_id"), "army_id"),
                 "owner_character_id": _non_negative_id(
                     raw_army.get("owner_character_id"), "owner_character_id"
                 ),
@@ -1003,7 +1009,7 @@ def normalize_route_contact_horizon(
         raise ValueError("native route_contact_horizon has a malformed schema")
     if value.get("status") != "available":
         raise ValueError("native route_contact_horizon is not available")
-    subject = _positive_int32_id(
+    subject = public_cunit_id(
         value.get("subject_army_id"), "route_contact_horizon.subject_army_id"
     )
     target = _positive_int32_id(
@@ -1024,12 +1030,12 @@ def normalize_route_contact_horizon(
         )
     expected_hostiles = sorted(
         {
-            _positive_int32_id(army_id, "expected_hostile_army_ids")
+            public_cunit_id(army_id, "expected_hostile_army_ids")
             for army_id in expected_hostile_army_ids
         }
     )
     hostile_ids = [
-        _positive_int32_id(
+        public_cunit_id(
             army_id, "route_contact_horizon.hostile_army_ids"
         )
         for army_id in _required_list(
@@ -1112,7 +1118,7 @@ def normalize_route_contact_horizon(
             raise ValueError(
                 f"native route_contact_horizon.conflicts[{index}] has an unknown shape"
             )
-        hostile_id = _positive_int32_id(
+        hostile_id = public_cunit_id(
             conflict.get("hostile_army_id"),
             f"route_contact_horizon.conflicts[{index}].hostile_army_id",
         )
@@ -1185,7 +1191,7 @@ def _normalize_timed_route(
         raise ValueError(f"native {name} has a malformed schema")
     if value.get("timeline_observable") is not True:
         raise ValueError(f"native {name} timeline is not observable")
-    army_id = _positive_int32_id(value.get("army_id"), f"{name}.army_id")
+    army_id = public_cunit_id(value.get("army_id"), f"{name}.army_id")
     current = _positive_int32_id(
         value.get("current_province_id"), f"{name}.current_province_id"
     )
@@ -1243,7 +1249,7 @@ def stationary_province_contact_free_in_horizon(
     )
     if not isinstance(value, dict):
         raise ValueError("stationary route-contact horizon must be an object")
-    subject = _positive_int32_id(
+    subject = public_cunit_id(
         value.get("subject_army_id"),
         "stationary route-contact subject_army_id",
     )
@@ -1470,7 +1476,7 @@ def army_strength_scope(
     def admit(raw_army: object, role: str) -> None:
         if not isinstance(raw_army, dict):
             raise ValueError("army-strength scope contains a malformed army")
-        army_id = _positive_int32_id(
+        army_id = public_cunit_id(
             raw_army.get("army_id"), "army-strength scope army_id"
         )
         current = by_id.get(army_id)
@@ -1521,7 +1527,7 @@ def army_strength_scope(
                     "army-strength scope contains a malformed war army"
                 )
             members.add(
-                _positive_int32_id(
+                public_cunit_id(
                     raw_army.get("army_id"),
                     "army-strength scope war army_id",
                 )
@@ -1546,7 +1552,7 @@ def normalize_army_strength_request_ids(value: object) -> list[int]:
     result: list[int] = []
     seen: set[int] = set()
     for index, raw_army_id in enumerate(value):
-        army_id = _positive_int32_id(
+        army_id = public_cunit_id(
             raw_army_id, f"army_ids[{index}]"
         )
         if army_id in seen:
@@ -1576,7 +1582,7 @@ def normalize_army_strengths(
     if expected_scope is not None:
         expected_identity = [
             {
-                "army_id": _positive_int32_id(
+                "army_id": public_cunit_id(
                     row.get("army_id"), "expected army-strength scope army_id"
                 ),
                 "scope_role": row.get("scope_role"),
@@ -1623,7 +1629,9 @@ def _normalize_army_strength_row(
     war_ids = _strict_positive_int32_id_list(
         value.get("war_ids"), f"{name}.war_ids"
     )
-    native_carmy_id = _optional_positive_int32_id(
+    # This strength DTO reports a generation-checked CArmy database handle.
+    # Generation zero/slot zero is valid; null means it was not resolved.
+    native_carmy_id = _optional_non_negative_int32(
         value.get("native_carmy_id"), f"{name}.native_carmy_id"
     )
     regiment_count = _optional_non_negative_int32(
@@ -1675,7 +1683,7 @@ def _normalize_army_strength_row(
             )
     return {
         "status": status,
-        "army_id": _positive_int32_id(value.get("army_id"), f"{name}.army_id"),
+        "army_id": public_cunit_id(value.get("army_id"), f"{name}.army_id"),
         "native_carmy_id": native_carmy_id,
         "scope_role": scope_role,
         "war_ids": war_ids,
@@ -1690,14 +1698,14 @@ def _normalize_army_strength_row(
 
 def move_army_step(army_id: int, province_id: int) -> str:
     return (
-        f"move-army-{_non_negative_id(army_id, 'army_id')}"
-        f"-to-{_non_negative_id(province_id, 'province_id')}"
+        f"move-army-{public_cunit_id(army_id, 'army_id')}"
+        f"-to-{_positive_int32_id(province_id, 'province_id')}"
     )
 
 
 def preview_move_army_step(army_id: int, province_id: int) -> str:
     return (
-        f"preview-move-army-{_positive_int32_id(army_id, 'army_id')}"
+        f"preview-move-army-{public_cunit_id(army_id, 'army_id')}"
         f"-to-{_positive_int32_id(province_id, 'province_id')}"
     )
 
@@ -1708,17 +1716,17 @@ def query_route_contact_horizon_step(
     hostile_army_ids: Iterable[int],
 ) -> str:
     """Build the canonical exact-build route/contact query literal."""
-    subject = _positive_int32_id(subject_army_id, "subject_army_id")
+    subject = public_cunit_id(subject_army_id, "subject_army_id")
     target = _positive_int32_id(target_province_id, "target_province_id")
     hostiles = sorted(
         {
-            _positive_int32_id(army_id, "hostile_army_ids")
+            public_cunit_id(army_id, "hostile_army_ids")
             for army_id in hostile_army_ids
         }
     )
     if not hostiles or len(hostiles) > MAX_ROUTE_CONTACT_HOSTILE_IDS:
         raise ValueError(
-            "hostile_army_ids must contain 1..64 unique positive int32 IDs"
+            "hostile_army_ids must contain 1..64 unique public CUnit int32 IDs"
         )
     if subject in hostiles:
         raise ValueError("subject army cannot also be hostile")
@@ -1744,20 +1752,20 @@ def advance_route_contact_horizon_step(
 
 
 def disband_army_step(army_id: int) -> str:
-    return f"disband-army-{_non_negative_id(army_id, 'army_id')}"
+    return f"disband-army-{public_cunit_id(army_id, 'army_id')}"
 
 
 def split_army_half_step(army_id: int) -> str:
-    return f"split-army-half-{_positive_int32_id(army_id, 'army_id')}"
+    return f"split-army-half-{public_cunit_id(army_id, 'army_id')}"
 
 
 def merge_armies_step(
     destination_army_id: int, source_army_id: int
 ) -> str:
-    destination = _positive_int32_id(
+    destination = public_cunit_id(
         destination_army_id, "destination_army_id"
     )
-    source = _positive_int32_id(source_army_id, "source_army_id")
+    source = public_cunit_id(source_army_id, "source_army_id")
     if destination == source:
         raise ValueError("merge army IDs must be distinct")
     return f"merge-armies-{destination}-with-{source}"
@@ -1818,11 +1826,17 @@ def parse_move_army_step(step: object) -> tuple[int, int] | None:
     army_text, separator, province_text = payload.partition("-to-")
     if (
         not separator
-        or not army_text.isdigit()
+        or not canonical_public_cunit_decimal(army_text)
+        or not province_text.isascii()
         or not province_text.isdigit()
+        or province_text.startswith("0")
     ):
         return None
-    return int(army_text), int(province_text)
+    army_id = int(army_text)
+    province_id = int(province_text)
+    if not (0 <= army_id <= 2**31 - 1 and 0 < province_id <= 2**31 - 1):
+        return None
+    return army_id, province_id
 
 
 def parse_preview_move_army_step(step: object) -> tuple[int, int] | None:
@@ -1832,13 +1846,15 @@ def parse_preview_move_army_step(step: object) -> tuple[int, int] | None:
     army_text, separator, province_text = payload.partition("-to-")
     if (
         not separator
-        or not army_text.isdigit()
+        or not canonical_public_cunit_decimal(army_text)
+        or not province_text.isascii()
         or not province_text.isdigit()
+        or province_text.startswith("0")
     ):
         return None
     army_id = int(army_text)
     province_id = int(province_text)
-    if not (0 < army_id <= 2**31 - 1 and 0 < province_id <= 2**31 - 1):
+    if not (0 <= army_id <= 2**31 - 1 and 0 < province_id <= 2**31 - 1):
         return None
     return army_id, province_id
 
@@ -1855,7 +1871,8 @@ def parse_query_route_contact_horizon_step(
     if (
         not to_separator
         or not hostile_separator
-        or not subject_text.isdigit()
+        or not canonical_public_cunit_decimal(subject_text)
+        or not target_text.isascii()
         or not target_text.isdigit()
     ):
         return None
@@ -1867,16 +1884,16 @@ def parse_query_route_contact_horizon_step(
     count = int(count_text)
     id_tokens = ids_text.split("-")
     if (
-        not 0 < subject <= 2**31 - 1
+        not 0 <= subject <= 2**31 - 1
         or not 0 < target <= 2**31 - 1
         or not 0 < count <= MAX_ROUTE_CONTACT_HOSTILE_IDS
         or len(id_tokens) != count
-        or any(not token.isdigit() for token in id_tokens)
+        or any(not canonical_public_cunit_decimal(token) for token in id_tokens)
     ):
         return None
     hostiles = tuple(int(token) for token in id_tokens)
     if (
-        any(not 0 < army_id <= 2**31 - 1 for army_id in hostiles)
+        any(not 0 <= army_id <= 2**31 - 1 for army_id in hostiles)
         or tuple(sorted(set(hostiles))) != hostiles
         or subject in hostiles
     ):
@@ -1917,6 +1934,7 @@ def parse_battle_decision_epoch_advance_step(step: object) -> int | None:
     )
     if (
         not target_text.isascii()
+        or not target_text.isascii()
         or not target_text.isdigit()
         or target_text.startswith("0")
     ):
@@ -1933,7 +1951,6 @@ def committed_route_sentinel_advance_step(
     timeline_speed: int = 3,
 ) -> str:
     for name, value, maximum in (
-        ("subject_army_id", subject_army_id, 2**31 - 1),
         ("target_province_id", target_province_id, 2**31 - 1),
         ("target_date_raw", target_date_raw, 2**63 - 1),
     ):
@@ -1943,6 +1960,7 @@ def committed_route_sentinel_advance_step(
             or not 0 < value <= maximum
         ):
             raise ValueError(f"{name} must be a positive signed integer")
+    public_cunit_id(subject_army_id, "subject_army_id")
     speed_suffix = _war_sentinel_speed_suffix(timeline_speed)
     return (
         f"{COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP_PREFIX}"
@@ -1984,9 +2002,7 @@ def _parse_committed_route_sentinel_advance_step(
     if (
         not to_separator
         or not until_separator
-        or not subject_text.isascii()
-        or not subject_text.isdigit()
-        or subject_text.startswith("0")
+        or not canonical_public_cunit_decimal(subject_text)
         or not target_text.isascii()
         or not target_text.isdigit()
         or target_text.startswith("0")
@@ -1999,7 +2015,7 @@ def _parse_committed_route_sentinel_advance_step(
     target_province_id = int(target_text)
     target_date_raw = int(date_text)
     if (
-        not 0 < subject_army_id <= 2**31 - 1
+        not 0 <= subject_army_id <= 2**31 - 1
         or not 0 < target_province_id <= 2**31 - 1
         or not 0 < target_date_raw <= 2**63 - 1
     ):
@@ -2022,7 +2038,6 @@ def war_objective_hold_sentinel_advance_step(
 ) -> str:
     for name, value, maximum in (
         ("war_id", war_id, 2**31 - 1),
-        ("subject_army_id", subject_army_id, 2**31 - 1),
         ("objective_province_id", objective_province_id, 2**31 - 1),
         ("target_date_raw", target_date_raw, 2**63 - 1),
     ):
@@ -2032,6 +2047,7 @@ def war_objective_hold_sentinel_advance_step(
             or not 0 < value <= maximum
         ):
             raise ValueError(f"{name} must be a positive signed integer")
+    public_cunit_id(subject_army_id, "subject_army_id")
     speed_suffix = _war_sentinel_speed_suffix(timeline_speed)
     return (
         f"{WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP_PREFIX}{war_id}"
@@ -2079,7 +2095,7 @@ def _parse_war_objective_hold_sentinel_advance_step(
         or any(
             not token.isascii()
             or not token.isdigit()
-            or token.startswith("0")
+            or (token.startswith("0") and not (token == subject_text == "0"))
             for token in tokens
         )
     ):
@@ -2089,7 +2105,7 @@ def _parse_war_objective_hold_sentinel_advance_step(
     )
     if (
         not 0 < war_id <= 2**31 - 1
-        or not 0 < subject_army_id <= 2**31 - 1
+        or not 0 <= subject_army_id <= 2**31 - 1
         or not 0 < objective_province_id <= 2**31 - 1
         or not 0 < target_date_raw <= 2**63 - 1
     ):
@@ -2144,17 +2160,20 @@ def parse_disband_army_step(step: object) -> int | None:
     if not isinstance(step, str) or not step.startswith("disband-army-"):
         return None
     army_text = step.removeprefix("disband-army-")
-    return int(army_text) if army_text.isdigit() else None
+    if not canonical_public_cunit_decimal(army_text):
+        return None
+    army_id = int(army_text)
+    return army_id if 0 <= army_id <= 2**31 - 1 else None
 
 
 def parse_split_army_half_step(step: object) -> int | None:
     if not isinstance(step, str) or not step.startswith("split-army-half-"):
         return None
     army_text = step.removeprefix("split-army-half-")
-    if not army_text.isascii() or not army_text.isdigit():
+    if not canonical_public_cunit_decimal(army_text):
         return None
     army_id = int(army_text)
-    return army_id if 0 < army_id <= 2**31 - 1 else None
+    return army_id if 0 <= army_id <= 2**31 - 1 else None
 
 
 def parse_merge_armies_step(step: object) -> tuple[int, int] | None:
@@ -2165,16 +2184,16 @@ def parse_merge_armies_step(step: object) -> tuple[int, int] | None:
     if (
         not separator
         or not destination_text.isascii()
-        or not destination_text.isdigit()
+        or not canonical_public_cunit_decimal(destination_text)
         or not source_text.isascii()
-        or not source_text.isdigit()
+        or not canonical_public_cunit_decimal(source_text)
     ):
         return None
     destination = int(destination_text)
     source = int(source_text)
     if not (
-        0 < destination <= 2**31 - 1
-        and 0 < source <= 2**31 - 1
+        0 <= destination <= 2**31 - 1
+        and 0 <= source <= 2**31 - 1
         and destination != source
     ):
         return None
@@ -2222,7 +2241,7 @@ def observe_merge_armies_postcondition_v1(
         for army_id in before_raw
         if isinstance(army_id, int)
         and not isinstance(army_id, bool)
-        and 0 < army_id <= 2**31 - 1
+        and 0 <= army_id <= 2**31 - 1
     ]
     if (
         len(before_ids) != len(before_raw)
@@ -2332,7 +2351,7 @@ def observe_merge_armies_postcondition_v1(
         for army in controllable
         if isinstance(army.get("army_id"), int)
         and not isinstance(army.get("army_id"), bool)
-        and 0 < int(army["army_id"]) <= 2**31 - 1
+        and 0 <= int(army["army_id"]) <= 2**31 - 1
     ]
     if len(current_ids) != len(controllable) or len(set(current_ids)) != len(
         current_ids

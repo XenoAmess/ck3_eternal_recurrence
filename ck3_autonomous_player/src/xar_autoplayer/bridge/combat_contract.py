@@ -8,6 +8,12 @@ promoted to combat readiness.
 
 from __future__ import annotations
 
+from .public_unit_contract import (
+    public_cunit_id as _public_cunit_id,
+    public_cunit_ids as _public_cunit_ids,
+    canonical_public_cunit_token as _canonical_public_cunit_token,
+)
+
 import copy
 import hashlib
 import json
@@ -214,7 +220,7 @@ def normalize_combat_simulation_request(
             raise ValueError(f"{side_name} must be a non-empty array")
         normalized: list[int] = []
         for index, value in enumerate(raw_ids):
-            army_id = _positive_int32_id(value, f"{side_name}[{index}]")
+            army_id = _public_cunit_id(value, f"{side_name}[{index}]")
             if army_id in seen:
                 raise ValueError(
                     "combat participant ArmyIDs must not contain duplicates"
@@ -341,8 +347,8 @@ def _parse_query_combat_simulation_inputs_step_with_prefix(
         return None
     attacker_tokens = tokens[4:defender_marker_index]
     defender_tokens = tokens[defender_marker_index + 2 :]
-    attackers = [_canonical_positive_token(token) for token in attacker_tokens]
-    defenders = [_canonical_positive_token(token) for token in defender_tokens]
+    attackers = [_canonical_public_cunit_token(token) for token in attacker_tokens]
+    defenders = [_canonical_public_cunit_token(token) for token in defender_tokens]
     if any(value is None for value in (*attackers, *defenders)):
         return None
     try:
@@ -842,7 +848,7 @@ def _normalize_phase_character_v3_test_only(
         name,
     )
     character_id = _positive_int32_id(row.get("character_id"), f"{name}.character_id")
-    source_army_id = _positive_int32_id(row.get("source_army_id"), f"{name}.source_army_id")
+    source_army_id = _public_cunit_id(row.get("source_army_id"), f"{name}.source_army_id")
     if (
         character_id != expected["character_id"]
         or source_army_id != expected["source_army_id"]
@@ -887,7 +893,7 @@ def _normalize_phase_army_v3_test_only(
         {"army_id", "encounter_role", "state_refs"},
         name,
     )
-    army_id = _positive_int32_id(row.get("army_id"), f"{name}.army_id")
+    army_id = _public_cunit_id(row.get("army_id"), f"{name}.army_id")
     if (
         army_id != expected.get("army_id")
         or row.get("encounter_role") != expected.get("encounter_role")
@@ -945,7 +951,7 @@ def _normalize_phase_sides_v3_test_only(
         )
         if row.get("side_index") != side_index or row.get("encounter_role") != expected_roles[side_index]:
             raise ValueError("v3 side index/role is malformed")
-        army_ids = _positive_id_array(
+        army_ids = _public_cunit_ids(
             row.get("ordered_army_ids"), f"{side_name}.ordered_army_ids"
         )
         if army_ids != expected_armies[side_index]:
@@ -965,7 +971,7 @@ def _normalize_phase_sides_v3_test_only(
             row.get("primary_participant_character_id"),
             f"{side_name}.primary_participant_character_id",
         )
-        primary_source_army_id = _positive_int32_id(
+        primary_source_army_id = _public_cunit_id(
             row.get("primary_source_army_id"),
             f"{side_name}.primary_source_army_id",
         )
@@ -1225,10 +1231,10 @@ def _normalize_advantage_side_inputs_v3_test_only(
         )
         if row.get("side") != expected_side:
             raise ValueError("v3 advantage side input order is malformed")
-        ordered_armies = _positive_id_array(
+        ordered_armies = _public_cunit_ids(
             row.get("ordered_army_ids"), f"{side_name}.ordered_army_ids"
         )
-        primary_army = _positive_int32_id(
+        primary_army = _public_cunit_id(
             row.get("primary_army_id"), f"{side_name}.primary_army_id"
         )
         if primary_army != ordered_armies[0]:
@@ -2015,10 +2021,10 @@ def _normalize_scenario(
     )
     if entry != expected_entry or entry == target_province_id:
         raise ValueError("native combat attacker entry ProvinceID mismatch")
-    attackers = _positive_id_array(
+    attackers = _public_cunit_ids(
         row.get("attacker_army_ids"), f"{name}.attacker_army_ids"
     )
-    defenders = _positive_id_array(
+    defenders = _public_cunit_ids(
         row.get("defender_army_ids"), f"{name}.defender_army_ids"
     )
     if set(attackers) & set(defenders):
@@ -2105,8 +2111,8 @@ def _normalize_combat_army(
         name,
     )
     status = _available_status(row.get("status"), f"{name}.status")
-    army_id = _positive_int32_id(row.get("army_id"), f"{name}.army_id")
-    expected_army_id = _positive_int32_id(
+    army_id = _public_cunit_id(row.get("army_id"), f"{name}.army_id")
+    expected_army_id = _public_cunit_id(
         expected_scope.get("army_id"), f"{name}.expected_army_id"
     )
     if army_id != expected_army_id:

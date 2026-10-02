@@ -73,6 +73,7 @@ from .bridge.council_assign_councillor_action_contract import (
     ASSIGN_COUNCILLOR_V1_STEP,
 )
 from .bridge.settlement_contract import ONE_LIFE_SETTLEMENT_CAPABILITY
+from .bridge.public_unit_contract import is_public_cunit_id
 from .bridge.succession_transition_contract import (
     CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
     ORDINARY_CAMPAIGN_SUCCESSION,
@@ -3632,7 +3633,7 @@ def _current_battle_control_frames(
             current[int(record["subject_army_id"])] = record
 
     direct_frame = snapshot.get("battle_control_snapshot_v1")
-    direct_subject = _native_int(
+    direct_subject = _public_cunit_int(
         snapshot.get("battle_control_snapshot_v1_subject_army_id")
     )
     direct_sequence = snapshot.get(
@@ -3641,7 +3642,6 @@ def _current_battle_control_frames(
     if (
         snapshot.get("battle_control_snapshot_v1_status") == "available"
         and direct_subject is not None
-        and direct_subject > 0
         and snapshot.get("battle_control_snapshot_v1_queried_snapshot_id")
         == snapshot_id
         and snapshot.get("battle_control_snapshot_v1_queried_revision")
@@ -3926,8 +3926,7 @@ def _battle_sentinel_advance_validation(
         isinstance(watch, list)
         and 0 < len(watch) <= _BATTLE_SENTINEL_MAX_WATCH_ARMIES
         and all(
-            _native_int(item) is not None
-            and 0 < int(item) <= 2**31 - 1
+            is_public_cunit_id(item)
             for item in watch
         )
         and len(set(watch)) == len(watch)
@@ -4252,8 +4251,7 @@ def _battle_sentinel_player_decision_validation(
         isinstance(watch, list)
         and 0 < len(watch) <= _BATTLE_SENTINEL_MAX_WATCH_ARMIES
         and all(
-            _native_int(item) is not None
-            and 0 < int(item) <= 2**31 - 1
+            is_public_cunit_id(item)
             for item in watch
         )
         and len(set(watch)) == len(watch)
@@ -4991,7 +4989,7 @@ def _battle_control_transition(
     terminal_pursuit_skip = False
     before_side_armies = {
         role: {
-            _native_int(row.get("public_cunit_id"))
+            _public_cunit_int(row.get("public_cunit_id"))
             for row in (
                 side.get("ordered_armies", [])
                 if isinstance(side, dict)
@@ -4999,7 +4997,7 @@ def _battle_control_transition(
                 else []
             )
             if isinstance(row, dict)
-            and _native_int(row.get("public_cunit_id")) is not None
+            and _public_cunit_int(row.get("public_cunit_id")) is not None
         }
         for role, side in (
             ("attacker", before.get("attacker")),
@@ -5008,7 +5006,7 @@ def _battle_control_transition(
     }
     after_side_armies = {
         role: {
-            _native_int(row.get("public_cunit_id"))
+            _public_cunit_int(row.get("public_cunit_id"))
             for row in (
                 side.get("ordered_armies", [])
                 if isinstance(side, dict)
@@ -5016,7 +5014,7 @@ def _battle_control_transition(
                 else []
             )
             if isinstance(row, dict)
-            and _native_int(row.get("public_cunit_id")) is not None
+            and _public_cunit_int(row.get("public_cunit_id")) is not None
         }
         for role, side in (
             ("attacker", after.get("attacker")),
@@ -5368,7 +5366,7 @@ def _battle_control_turn_state(
     army_by_id = {
         army_id: army
         for army in controlled_armies
-        if (army_id := _native_int(army.get("army_id"))) is not None
+        if (army_id := _public_cunit_int(army.get("army_id"))) is not None
     }
     all_armies = (
         snapshot.get("player_armies")
@@ -5380,7 +5378,7 @@ def _battle_control_turn_state(
         army_id: army
         for army in all_armies
         if isinstance(army, dict)
-        and (army_id := _native_int(army.get("army_id"))) is not None
+        and (army_id := _public_cunit_int(army.get("army_id"))) is not None
     }
     active_subjects = sorted(
         army_id
@@ -6966,10 +6964,10 @@ def _active_combat_provisional_comparison(
     """Compare observed main-phase strength retention, never future win odds."""
     if not isinstance(snapshot, dict) or snapshot.get("paused") is not True:
         return None
-    subject = _native_int(snapshot.get("battle_control_snapshot_v1_subject_army_id"))
+    subject = _public_cunit_int(snapshot.get("battle_control_snapshot_v1_subject_army_id"))
     sequence = _native_int(snapshot.get("battle_control_snapshot_v1_query_sequence"))
     if not (
-        subject is not None and subject > 0 and sequence is not None and sequence > 0
+        subject is not None and sequence is not None and sequence > 0
         and snapshot.get("battle_control_snapshot_v1_status") == "available"
         and snapshot.get("battle_control_snapshot_v1_queried_snapshot_id")
         == snapshot.get("snapshot_id")
@@ -6982,7 +6980,7 @@ def _active_combat_provisional_comparison(
     armies = snapshot.get("player_armies")
     if not isinstance(armies, list) or not any(
         isinstance(army, dict)
-        and _native_int(army.get("army_id")) == subject
+        and _public_cunit_int(army.get("army_id")) == subject
         and army.get("controllable") is True
         and _army_tactical_state(army) == "combat"
         for army in armies
@@ -7164,8 +7162,7 @@ def _annotate_active_combat_resume_input(
             [army for army in armies if isinstance(army, dict)]
         )
         if _army_tactical_state(army) == "combat"
-        and (army_id := _native_int(army.get("army_id"))) is not None
-        and army_id > 0
+        and (army_id := _public_cunit_int(army.get("army_id"))) is not None
     })
     if not active_subjects:
         return plan
@@ -7174,7 +7171,7 @@ def _annotate_active_combat_resume_input(
 
     raw_receipt = snapshot.get("active_combat_resume_inputs_v1")
     parent = snapshot.get("battle_control_snapshot_v1")
-    subject = _native_int(snapshot.get("battle_control_snapshot_v1_subject_army_id"))
+    subject = _public_cunit_int(snapshot.get("battle_control_snapshot_v1_subject_army_id"))
     sequence = _native_int(snapshot.get("battle_control_snapshot_v1_query_sequence"))
     receipt: dict[str, object] | None = None
     battle_side_mapping: dict[str, object] | None = None
@@ -9510,9 +9507,8 @@ def _choose_one_life_turn_core(
                 {
                     enemy_id
                     for enemy in route_threat_enemies
-                    if (enemy_id := _native_int(enemy.get("army_id")))
+                    if (enemy_id := _public_cunit_int(enemy.get("army_id")))
                     is not None
-                    and enemy_id > 0
                 }
             )
         )
@@ -9564,7 +9560,7 @@ def _choose_one_life_turn_core(
             int, list[dict[str, object]]
         ] = {}
         for controlled_army in controlled_armies:
-            controlled_army_id = _native_int(
+            controlled_army_id = _public_cunit_int(
                 controlled_army.get("army_id")
             )
             if (
@@ -9586,7 +9582,7 @@ def _choose_one_life_turn_core(
         threatened_stationary_armies = [
             army
             for army in controlled_armies
-            if _native_int(army.get("army_id"))
+            if _public_cunit_int(army.get("army_id"))
             in stationary_threats_by_army_id
         ]
         start_blocking_route_armies = [
@@ -9609,7 +9605,7 @@ def _choose_one_life_turn_core(
         global_route_audits: list[dict[str, object]] = []
         if army_routes_supported:
             for controlled_army in controlled_armies:
-                controlled_army_id = _native_int(controlled_army.get("army_id"))
+                controlled_army_id = _public_cunit_int(controlled_army.get("army_id"))
                 controlled_state = _army_tactical_state(controlled_army)
                 controlled_state_code = _native_int(
                     controlled_army.get("army_state_code")
@@ -9661,7 +9657,7 @@ def _choose_one_life_turn_core(
             int(audit["army_id"])
             for audit in global_route_audits
             if audit.get("status") == "unsafe"
-            and isinstance(audit.get("army_id"), int)
+            and is_public_cunit_id(audit.get("army_id"))
         }
         unsafe_armies = [
             army
@@ -9786,7 +9782,7 @@ def _choose_one_life_turn_core(
                     "player_army_ids": sorted(
                         int(army["army_id"])
                         for army in controlled_armies
-                        if _native_int(army.get("army_id")) is not None
+                        if _public_cunit_int(army.get("army_id")) is not None
                     ),
                     "enemy_army_ids": list(route_threat_enemy_ids),
                 },
@@ -9889,7 +9885,7 @@ def _choose_one_life_turn_core(
         ]
         enemy = _stable_strongest_army(visible_enemies)
         army_id = (
-            pursuit_army.get("army_id")
+            _public_cunit_int(pursuit_army.get("army_id"))
             if isinstance(pursuit_army, dict)
             else None
         )
@@ -9989,7 +9985,7 @@ def _choose_one_life_turn_core(
         if combat_armies and not unsafe_armies and not threatened_stationary_armies:
             tactical_states = [
                 {
-                    "army_id": _native_int(army.get("army_id")),
+                    "army_id": _public_cunit_int(army.get("army_id")),
                     "army_state": _army_tactical_state(army),
                 }
                 for army in combat_armies
@@ -9997,8 +9993,7 @@ def _choose_one_life_turn_core(
             watch_army_ids = sorted(
                 army_id
                 for army in controlled_armies
-                if (army_id := _native_int(army.get("army_id"))) is not None
-                and army_id > 0
+                if (army_id := _public_cunit_int(army.get("army_id"))) is not None
             )
             sentinel_watch_ready = bool(
                 watch_army_ids
@@ -10063,7 +10058,7 @@ def _choose_one_life_turn_core(
                     else None
                 )
                 subject = (
-                    _native_int(frame.get("subject_public_cunit_id"))
+                    _public_cunit_int(frame.get("subject_public_cunit_id"))
                     if isinstance(frame, dict)
                     else None
                 )
@@ -10071,7 +10066,7 @@ def _choose_one_life_turn_core(
                     continue
                 incumbent = distinct_frames.get(combat_id)
                 incumbent_subject = (
-                    _native_int(incumbent.get("subject_public_cunit_id"))
+                    _public_cunit_int(incumbent.get("subject_public_cunit_id"))
                     if isinstance(incumbent, dict)
                     else None
                 )
@@ -10305,7 +10300,7 @@ def _choose_one_life_turn_core(
         ):
             tactical_states = [
                 {
-                    "army_id": _native_int(army.get("army_id")),
+                    "army_id": _public_cunit_int(army.get("army_id")),
                     "army_state": _army_tactical_state(army),
                 }
                 for army in retreating_armies
@@ -10353,18 +10348,18 @@ def _choose_one_life_turn_core(
             and split_recovery.get("status") == "ready_to_merge"
         ):
             pair_ids = {
-                _native_int(split_recovery.get("original_army_id")),
-                _native_int(split_recovery.get("sibling_army_id")),
+                _public_cunit_int(split_recovery.get("original_army_id")),
+                _public_cunit_int(split_recovery.get("sibling_army_id")),
             }
             other_unsafe = [
                 army
                 for army in unsafe_armies
-                if _native_int(army.get("army_id")) not in pair_ids
+                if _public_cunit_int(army.get("army_id")) not in pair_ids
             ]
             other_threatened = [
                 army
                 for army in threatened_stationary_armies
-                if _native_int(army.get("army_id")) not in pair_ids
+                if _public_cunit_int(army.get("army_id")) not in pair_ids
             ]
             if not other_unsafe and not other_threatened:
                 merge_step = split_recovery.get("merge_step")
@@ -10392,14 +10387,14 @@ def _choose_one_life_turn_core(
             and not unsafe_armies
             and not threatened_stationary_armies
         ):
-            merged_army_id = _native_int(
+            merged_army_id = _public_cunit_int(
                 split_recovery.get("original_army_id")
             )
             merged_army = next(
                 (
                     army
                     for army in controlled_armies
-                    if _native_int(army.get("army_id")) == merged_army_id
+                    if _public_cunit_int(army.get("army_id")) == merged_army_id
                 ),
                 None,
             )
@@ -11092,7 +11087,7 @@ def _choose_one_life_turn_core(
                                 "active_wars": war_summary,
                             }
                         proven_moving_ids = {
-                            _native_int(candidate.get("army_id"))
+                            _public_cunit_int(candidate.get("army_id"))
                             for candidate in (
                                 moving_conjunction["covered"]
                                 + moving_conjunction["unavoidable"]
@@ -11102,7 +11097,7 @@ def _choose_one_life_turn_core(
                             candidate
                             for candidate in unsafe_armies
                             if candidate.get("army_id") != army_id
-                            and _native_int(candidate.get("army_id"))
+                            and _public_cunit_int(candidate.get("army_id"))
                             not in proven_moving_ids
                         ]
                         stationary_contact_horizons: list[
@@ -11113,10 +11108,9 @@ def _choose_one_life_turn_core(
                         ] = []
                         for candidate in sorted(
                             threatened_stationary_armies,
-                            key=lambda row: _native_int(row.get("army_id"))
-                            or 2**31,
+                            key=_public_cunit_sort_key,
                         ):
-                            candidate_id = _native_int(
+                            candidate_id = _public_cunit_int(
                                 candidate.get("army_id")
                             )
                             candidate_province_id = _native_int(
@@ -12614,8 +12608,8 @@ def _choose_one_life_turn_core(
                     (
                         row
                         for row in visible_enemies
-                        if _native_int(row.get("army_id"))
-                        == _native_int(siege_relief.get("enemy_army_id"))
+                        if _public_cunit_int(row.get("army_id"))
+                        == _public_cunit_int(siege_relief.get("enemy_army_id"))
                     ),
                     None,
                 )
@@ -13079,7 +13073,7 @@ def _choose_one_life_turn_core(
                 and len(route_threat_enemy_ids) == len(route_threat_enemies)
                 and route_threat_enemies
                 and all(
-                    _native_int(hostile.get("army_id")) is not None
+                    _public_cunit_int(hostile.get("army_id")) is not None
                     and _native_int(hostile.get("current_province_id"))
                     is not None
                     and hostile.get("current_province_id")
@@ -13514,7 +13508,7 @@ def _choose_one_life_turn_core(
 
     if controlled_armies:
         army = _stable_strongest_army(controlled_armies)
-        army_id = army.get("army_id") if isinstance(army, dict) else None
+        army_id = _public_cunit_int(army.get("army_id")) if isinstance(army, dict) else None
         if isinstance(army_id, int):
             step = disband_army_step(army_id)
             if step in available_steps:
@@ -14570,7 +14564,7 @@ def _choose_one_life_turn_core(
 def _stable_strongest_army(
     armies: Iterable[dict[str, object]],
 ) -> dict[str, object] | None:
-    rows = [army for army in armies if isinstance(army.get("army_id"), int)]
+    rows = [army for army in armies if is_public_cunit_id(army.get("army_id"))]
     if not rows:
         return None
     return max(
@@ -14967,7 +14961,7 @@ def _capital_regroup_input_ready(
     ):
         return False
     army = controlled_armies[0]
-    army_id = _native_int(army.get("army_id"))
+    army_id = _public_cunit_int(army.get("army_id"))
     if not (
         army_id is not None
         and _native_int(army.get("current_province_id"))
@@ -14999,7 +14993,7 @@ def _capital_regroup_input_ready(
     if not (
         isinstance(siege, dict)
         and _native_int(siege.get("siege_id")) is not None
-        and _native_int(siege.get("besieging_army_id")) == army_id
+        and _public_cunit_int(siege.get("besieging_army_id")) == army_id
         and siege.get("player_army_besieging") is True
         and siege.get("assault_observable") is True
         and siege.get("assault_in_progress") is False
@@ -15016,7 +15010,7 @@ def _capital_regroup_input_ready(
         enemies
         and len(enemies) <= 64
         and all(
-            _native_int(enemy.get("army_id")) is not None
+            _public_cunit_int(enemy.get("army_id")) is not None
             and _native_int(enemy.get("current_province_id")) is not None
             and "move_target_province_id" in enemy
             and isinstance(enemy.get("route_province_ids"), list)
@@ -15061,7 +15055,7 @@ def _attacker_capital_hold_input_ready(
     ):
         return False
     if not all(
-        _native_int(army.get("army_id")) is not None
+        _public_cunit_int(army.get("army_id")) is not None
         and _native_int(army.get("current_province_id"))
         == current_province_id
         and _army_tactical_state(army) == "regular"
@@ -15096,7 +15090,7 @@ def _attacker_capital_hold_input_ready(
     return bool(
         enemies
         and all(
-            _native_int(enemy.get("army_id")) is not None
+            _public_cunit_int(enemy.get("army_id")) is not None
             and _native_int(enemy.get("current_province_id"))
             in expected_targets
             and enemy.get("in_combat") is not True
@@ -15154,9 +15148,9 @@ def _outnumbered_attacker_regroup_input_ready(
     ]
     return bool(
         len(regroup_subjects) == 1
-        and _native_int(regroup_subjects[0].get("army_id")) is not None
+        and _public_cunit_int(regroup_subjects[0].get("army_id")) is not None
         and all(
-            _native_int(army.get("army_id")) is not None
+            _public_cunit_int(army.get("army_id")) is not None
             and army.get("in_combat") is not True
             and army.get("retreating") is not True
             for army in controlled_armies
@@ -15214,7 +15208,7 @@ def _outnumbered_primary_defender_regroup_input_ready(
     if not (
         set(exact_objective_province_ids).issubset(rejected_targets)
         and move_target in rejected_targets
-        and _native_int(army.get("army_id")) is not None
+        and _public_cunit_int(army.get("army_id")) is not None
         and _native_int(army.get("current_province_id"))
         == current_province_id
         and _army_tactical_state(army) == "moving"
@@ -15230,7 +15224,7 @@ def _outnumbered_primary_defender_regroup_input_ready(
         enemies
         and len(enemies) <= 64
         and all(
-            _native_int(enemy.get("army_id")) is not None
+            _public_cunit_int(enemy.get("army_id")) is not None
             and _native_int(enemy.get("current_province_id")) is not None
             and isinstance(enemy.get("route_province_ids"), list)
             and all(
@@ -15287,7 +15281,7 @@ def _primary_defender_capital_hold_input(
     ):
         return None
     army = controlled_armies[0]
-    army_id = _native_int(army.get("army_id"))
+    army_id = _public_cunit_int(army.get("army_id"))
     current_province_id = _native_int(army.get("current_province_id"))
     if not (
         army_id is not None
@@ -15307,7 +15301,7 @@ def _primary_defender_capital_hold_input(
         if _army_tactical_state(enemy) != "retreating"
     ]
     idle_gathering_enemies = all(
-        _native_int(enemy.get("army_id")) is not None
+        _public_cunit_int(enemy.get("army_id")) is not None
         and _native_int(enemy.get("current_province_id")) is not None
         and _army_tactical_state(enemy) == "gathering"
         and enemy.get("in_combat") is False
@@ -15319,7 +15313,7 @@ def _primary_defender_capital_hold_input(
         for enemy in enemies
     )
     observable_noncombat_enemies = all(
-        _native_int(enemy.get("army_id")) is not None
+        _public_cunit_int(enemy.get("army_id")) is not None
         and _native_int(enemy.get("current_province_id")) is not None
         and _army_tactical_state(enemy)
         in {"gathering", "regular", "moving", "sieging", "embarked"}
@@ -15408,7 +15402,7 @@ def _primary_defender_capital_hold_input(
         "enemy_army_ids": sorted(
             int(enemy["army_id"])
             for enemy in enemies
-            if _native_int(enemy.get("army_id")) is not None
+            if _public_cunit_int(enemy.get("army_id")) is not None
         ),
     }
 
@@ -15423,7 +15417,7 @@ def _primary_defender_native_rally_hold_binding(
 ) -> dict[str, object] | None:
     """Bind a remote defender hold to one factual native raise receipt."""
 
-    current_army_id = _native_int(army_id)
+    current_army_id = _public_cunit_int(army_id)
     played_character = snapshot.get("played_character")
     actor_id = (
         _native_int(played_character.get("character_id"))
@@ -15448,7 +15442,7 @@ def _primary_defender_native_rally_hold_binding(
             row
             for row in current_armies
             if isinstance(row, dict)
-            and _native_int(row.get("army_id")) == current_army_id
+            and _public_cunit_int(row.get("army_id")) == current_army_id
         ),
         None,
     ) if isinstance(current_armies, list) else None
@@ -15502,7 +15496,7 @@ def _primary_defender_native_rally_hold_binding(
         and raise_action.get("status") == "raised"
         and raised_army_ids == [current_army_id]
         and isinstance(raised_army, dict)
-        and _native_int(raised_army.get("army_id")) == current_army_id
+        and _public_cunit_int(raised_army.get("army_id")) == current_army_id
         and _native_int(raised_army.get("owner_character_id")) == actor_id
         and _native_int(raised_army.get("current_province_id"))
         == current_province_id
@@ -15603,7 +15597,7 @@ def _primary_defender_native_rally_hold_binding(
     def stable_progress_army(army: dict[str, object] | None) -> bool:
         return bool(
             isinstance(army, dict)
-            and _native_int(army.get("army_id")) == current_army_id
+            and _public_cunit_int(army.get("army_id")) == current_army_id
             and _native_int(army.get("current_province_id"))
             == current_province_id
             and _army_tactical_state(army) in {"gathering", "regular"}
@@ -15903,7 +15897,7 @@ def _preoffensive_army_consolidation(
     if len(provinces) != 1 or None in provinces:
         return None
     if not all(
-        _native_int(army.get("army_id")) is not None
+        _public_cunit_int(army.get("army_id")) is not None
         and _army_tactical_state(army) == "regular"
         and army.get("in_combat") is not True
         and army.get("retreating") is not True
@@ -15921,13 +15915,13 @@ def _preoffensive_army_consolidation(
         and row.get("scope_role") == "player"
         and isinstance(row.get("war_ids"), list)
         and war_id in row["war_ids"]
-        and _native_int(row.get("army_id")) is not None
+        and _public_cunit_int(row.get("army_id")) is not None
         and _native_int(row.get("current_soldiers")) is not None
     }
     army_ids = {
         int(army["army_id"])
         for army in controlled_armies
-        if _native_int(army.get("army_id")) is not None
+        if _public_cunit_int(army.get("army_id")) is not None
     }
     if set(strengths) != army_ids:
         return None
@@ -15975,6 +15969,8 @@ def _same_frame_army_strength_balance(
         and war_id in row["war_ids"]
     ]
     if not rows:
+        return None
+    if any(not is_public_cunit_id(row.get("army_id")) for row in rows):
         return None
     friendly = [
         row
@@ -16068,8 +16064,7 @@ def _general_battle_forecast_ingress(
         for enemy in enemy_rows
         if enemy.get("current_province_id") == target
         and _army_tactical_state(enemy) != "retreating"
-        and (enemy_id := _native_int(enemy.get("army_id"))) is not None
-        and enemy_id > 0
+        and (enemy_id := _public_cunit_int(enemy.get("army_id"))) is not None
     }))
     active_subject = _army_tactical_state(army) == "combat"
     active_defenders = tuple(sorted({
@@ -16077,8 +16072,7 @@ def _general_battle_forecast_ingress(
         for enemy in enemy_rows
         if enemy.get("current_province_id") == target
         and _army_tactical_state(enemy) == "combat"
-        and (enemy_id := _native_int(enemy.get("army_id"))) is not None
-        and enemy_id > 0
+        and (enemy_id := _public_cunit_int(enemy.get("army_id"))) is not None
     }))
     if active_subject or active_defenders:
         # An already active CombatID needs its own same-frame resume operands.
@@ -16154,8 +16148,7 @@ def _general_battle_forecast_ingress(
         enemy_id
         for enemy in enemy_rows
         if _army_tactical_state(enemy) != "retreating"
-        and (enemy_id := _native_int(enemy.get("army_id"))) is not None
-        and enemy_id > 0
+        and (enemy_id := _public_cunit_int(enemy.get("army_id"))) is not None
     }))
     if not hostile_ids or len(hostile_ids) > MAX_ROUTE_CONTACT_HOSTILE_IDS:
         return bounded("native_war_general_battle_roster_blocked", None,
@@ -16177,7 +16170,7 @@ def _general_battle_forecast_ingress(
     if not isinstance(conflicts, list) or any(
         not isinstance(row, dict)
         or row.get("province_id") != target
-        or _native_int(row.get("hostile_army_id")) not in defenders
+        or _public_cunit_int(row.get("hostile_army_id")) not in defenders
         for row in conflicts
     ):
         return bounded(
@@ -16248,8 +16241,8 @@ def _general_battle_forecast_ingress(
         and _army_tactical_state(enemy) != "retreating"
         and isinstance(enemy.get("route_province_ids"), list)
         and target in enemy["route_province_ids"]
-        and (enemy_id := _native_int(enemy.get("army_id"))) is not None
-        and enemy_id > 0 and enemy_id not in defenders
+        and (enemy_id := _public_cunit_int(enemy.get("army_id"))) is not None
+        and enemy_id not in defenders
     })
     if len(remaining_route) == 1 and inbound_unmodeled:
         return bounded(
@@ -16340,8 +16333,7 @@ def _general_battle_forecast_ingress(
             enemy_id
             for enemy in war_enemies if isinstance(enemy, dict)
             if _army_tactical_state(enemy) != "retreating"
-            and (enemy_id := _native_int(enemy.get("army_id"))) is not None
-            and enemy_id > 0
+            and (enemy_id := _public_cunit_int(enemy.get("army_id"))) is not None
         })) if isinstance(war_enemies, list) else ()
         one_war = (
             isinstance(sole_war, dict)
@@ -16423,8 +16415,8 @@ def _siege_forecast_participant_partition(
         return unavailable("war_enemy_or_strength_roster_missing")
     by_id: dict[int, dict[str, object]] = {}
     for row in enemy_rows:
-        enemy_id = _native_int(row.get("army_id")) if isinstance(row, dict) else None
-        if enemy_id is None or enemy_id <= 0 or enemy_id in by_id:
+        enemy_id = _public_cunit_int(row.get("army_id")) if isinstance(row, dict) else None
+        if enemy_id is None or enemy_id in by_id:
             return unavailable("war_enemy_roster_invalid")
         by_id[enemy_id] = row
     enemy_ids = tuple(sorted(by_id))
@@ -16440,7 +16432,7 @@ def _siege_forecast_participant_partition(
         return unavailable("hostile_arrival_timeline_unavailable")
     route_by_id: dict[int, dict[str, object]] = {}
     for row in routes:
-        hostile_id = _native_int(row.get("army_id")) if isinstance(row, dict) else None
+        hostile_id = _public_cunit_int(row.get("army_id")) if isinstance(row, dict) else None
         if hostile_id is None or hostile_id in route_by_id:
             return unavailable("hostile_route_roster_invalid")
         route_by_id[hostile_id] = row
@@ -16547,7 +16539,7 @@ def _primary_defender_siege_forecast_ingress(
     )
     if candidate.get("status") != "forecast_required":
         return baseline
-    army_id = _native_int(candidate.get("army_id"))
+    army_id = _public_cunit_int(candidate.get("army_id"))
     war_id = _native_int(candidate.get("war_id"))
     target = _native_int(candidate.get("target_province_id"))
     origin = _native_int(controlled[0].get("current_province_id"))
@@ -16650,8 +16642,7 @@ def _primary_defender_siege_forecast_ingress(
                 for enemy in enemy_armies_from_wars(active_wars)
                 if isinstance(enemy, dict)
                 and _army_tactical_state(enemy) != "retreating"
-                and (enemy_id := _native_int(enemy.get("army_id"))) is not None
-                and enemy_id > 0
+                and (enemy_id := _public_cunit_int(enemy.get("army_id"))) is not None
             }
         )
     )
@@ -16680,13 +16671,13 @@ def _primary_defender_siege_forecast_ingress(
         }
     contact_conflicts = contact.get("conflicts")
     target_enemy_ids = {
-        _native_int(row.get("army_id"))
+        _public_cunit_int(row.get("army_id"))
         for war in active_wars
         if isinstance(war, dict) and war.get("war_id") == war_id
         for row in war.get("enemy_armies", [])
         if isinstance(row, dict)
         and row.get("current_province_id") == target
-        and _native_int(row.get("army_id")) is not None
+        and _public_cunit_int(row.get("army_id")) is not None
     }
     target_only_contact = bool(
         isinstance(contact_conflicts, list)
@@ -16694,7 +16685,7 @@ def _primary_defender_siege_forecast_ingress(
         and all(
             isinstance(conflict, dict)
             and conflict.get("province_id") == target
-            and _native_int(conflict.get("hostile_army_id")) in target_enemy_ids
+            and _public_cunit_int(conflict.get("hostile_army_id")) in target_enemy_ids
             for conflict in contact_conflicts
         )
     )
@@ -16805,11 +16796,11 @@ def _primary_defender_siege_forecast_ingress(
             full_routes = contact.get("hostile_routes")
             short_routes = short_contact.get("hostile_routes")
             full_by_id = {
-                _native_int(row.get("army_id")): row
+                _public_cunit_int(row.get("army_id")): row
                 for row in full_routes if isinstance(row, dict)
             } if isinstance(full_routes, list) else {}
             short_by_id = {
-                _native_int(row.get("army_id")): row
+                _public_cunit_int(row.get("army_id")): row
                 for row in short_routes if isinstance(row, dict)
             } if isinstance(short_routes, list) else {}
             if not (
@@ -17567,7 +17558,7 @@ def _primary_defender_siege_relief_assessment(
             "required_observation": "single-idle-controllable-army-binding",
         }
     army = controlled_armies[0]
-    army_id = _native_int(army.get("army_id"))
+    army_id = _public_cunit_int(army.get("army_id"))
     if _army_tactical_state(army) == "combat":
         frames = (
             battle_control_state.get("full_frames")
@@ -17586,7 +17577,7 @@ def _primary_defender_siege_relief_assessment(
             and isinstance(frames[0], dict)
             and frames[0].get("status") == "available"
             and frames[0].get("battle_control_ready") is True
-            and _native_int(frames[0].get("subject_public_cunit_id"))
+            and _public_cunit_int(frames[0].get("subject_public_cunit_id"))
             == army_id
             and _native_int(frames[0].get("province_id"))
             == current_province_id
@@ -17708,7 +17699,7 @@ def _primary_defender_siege_relief_assessment(
     incomplete_war_ids: set[int] = set()
     for war, enemy in siege_rows:
         war_id = int(war["war_id"])
-        enemy_id = _native_int(enemy.get("army_id"))
+        enemy_id = _public_cunit_int(enemy.get("army_id"))
         target = _native_int(enemy.get("current_province_id"))
         route = enemy.get("route_province_ids")
         complete_stationary_siege = bool(
@@ -17733,7 +17724,7 @@ def _primary_defender_siege_relief_assessment(
             for row in war.get("enemy_armies", [])
             if isinstance(row, dict)
             and _army_tactical_state(row) != "retreating"
-            and (roster_enemy_id := _native_int(row.get("army_id"))) is not None
+            and (roster_enemy_id := _public_cunit_int(row.get("army_id"))) is not None
         }
         numeric = (
             _native_int(balance.get("friendly_current_soldiers")),
@@ -17785,6 +17776,16 @@ def _primary_defender_siege_relief_assessment(
 
 def _native_int(value: object) -> int | None:
     return value if isinstance(value, int) and not isinstance(value, bool) else None
+
+
+def _public_cunit_int(value: object) -> int | None:
+    """Read only public CUnit handles, including zero, without coercion."""
+    return value if is_public_cunit_id(value) else None
+
+
+def _public_cunit_sort_key(army: dict[str, object]) -> int:
+    army_id = _public_cunit_int(army.get("army_id"))
+    return army_id if army_id is not None else 2**31
 
 
 def _noncombat_sentinel_timeline_speed(
@@ -17878,7 +17879,7 @@ def _stationary_objective_hold_sentinel_substitution(
     ):
         return None
     war_id = _native_int(pursuit.get("war_id"))
-    subject_army_id = _native_int(pursuit.get("army_id"))
+    subject_army_id = _public_cunit_int(pursuit.get("army_id"))
     objective_province_id = _native_int(
         pursuit.get("target_province_id")
     )
@@ -17886,7 +17887,6 @@ def _stationary_objective_hold_sentinel_substitution(
         war_id is None
         or war_id <= 0
         or subject_army_id is None
-        or subject_army_id <= 0
         or objective_province_id is None
         or objective_province_id <= 0
     ):
@@ -17910,7 +17910,7 @@ def _stationary_objective_hold_sentinel_substitution(
     army_by_id: dict[int, dict[str, object]] = {}
     watch_ids: list[int] = []
     for army in player_armies:
-        army_id = _native_int(army.get("army_id"))
+        army_id = _public_cunit_int(army.get("army_id"))
         named_state = army.get("army_state")
         state_code = _native_int(army.get("army_state_code"))
         regular = bool(
@@ -17924,7 +17924,6 @@ def _stationary_objective_hold_sentinel_substitution(
         current = _native_int(army.get("current_province_id"))
         if (
             army_id is None
-            or army_id <= 0
             or army_id in army_by_id
             or not regular
             or current is None
@@ -18068,7 +18067,7 @@ def _stationary_province_threats(
     for enemy in enemies:
         if _army_tactical_state(enemy) == "retreating":
             continue
-        enemy_id = _native_int(enemy.get("army_id"))
+        enemy_id = _public_cunit_int(enemy.get("army_id"))
         enemy_current = _native_int(enemy.get("current_province_id"))
         enemy_target = _native_int(enemy.get("move_target_province_id"))
         route = enemy.get("route_province_ids")
@@ -18251,7 +18250,7 @@ def _latest_assault_day_observation(
             before_strength = None
         if after_strength is not None and after_strength < 0:
             after_strength = None
-        army_id = _native_int(before_siege.get("besieging_army_id"))
+        army_id = _public_cunit_int(before_siege.get("besieging_army_id"))
         before_army = (
             _progress_army(before_war, "player_armies", army_id)
             if army_id is not None
@@ -18348,8 +18347,8 @@ def _recent_exact_siege_stall_days(
         if before is None or after is None:
             stalled_days = 0
             continue
-        before_army_id = _native_int(before.get("besieging_army_id"))
-        after_army_id = _native_int(after.get("besieging_army_id"))
+        before_army_id = _public_cunit_int(before.get("besieging_army_id"))
+        after_army_id = _public_cunit_int(after.get("besieging_army_id"))
         before_army = (
             _progress_army(before_war, "player_armies", before_army_id)
             if before_army_id is not None
@@ -18484,7 +18483,7 @@ def _active_route_evidence_issue(
     return {
         "role": role,
         "war_id": war_id,
-        "army_id": _native_int(army.get("army_id")),
+        "army_id": _public_cunit_int(army.get("army_id")),
         "army_state": state,
         "current_province_id": _native_int(army.get("current_province_id")),
         "move_target_province_id": target,
@@ -18526,13 +18525,12 @@ def _route_evidence_issues(
 def _enemy_endpoint_observation(
     army: dict[str, object], *, war_id: int, date_raw: int
 ) -> dict[str, object] | None:
-    army_id = _native_int(army.get("army_id"))
+    army_id = _public_cunit_int(army.get("army_id"))
     target = _native_int(army.get("move_target_province_id"))
     remaining = _normalized_remaining_route(army)
     state = _army_tactical_state(army)
     if (
         army_id is None
-        or army_id <= 0
         or state in {"combat", "retreating"}
         or target is None
         or target <= 0
@@ -18715,11 +18713,12 @@ def _split_merge_recovery(
 ) -> dict[str, object] | None:
     """Recover only an exact recent split pair; never rank IDs or soldiers."""
     scoped = _history_after_latest_restore(commands)
+    if any(not is_public_cunit_id(army.get("army_id")) for army in controlled_armies):
+        return None
     current_by_id = {
         int(army["army_id"]): army
         for army in controlled_armies
-        if _native_int(army.get("army_id")) is not None
-        and int(army["army_id"]) > 0
+        if _public_cunit_int(army.get("army_id")) is not None
     }
     current_ids = set(current_by_id)
     for split_position in range(len(scoped) - 1, -1, -1):
@@ -18736,8 +18735,10 @@ def _split_merge_recovery(
             "split_applied",
         }:
             continue
-        action_source = _native_int(action.get("source_army_id"))
+        action_source = _public_cunit_int(action.get("source_army_id"))
         before_raw = action.get("player_army_ids_before")
+        if (action.get("source_army_id") is not None and action_source is None):
+            continue
         if action_source not in {None, original_army_id} or not isinstance(
             before_raw, list
         ):
@@ -18745,7 +18746,7 @@ def _split_merge_recovery(
         before_ids = [
             int(army_id)
             for army_id in before_raw
-            if _native_int(army_id) is not None and int(army_id) > 0
+            if _public_cunit_int(army_id) is not None
         ]
         before_set = set(before_ids)
         if (
@@ -18757,7 +18758,9 @@ def _split_merge_recovery(
 
         later_rows = scoped[split_position + 1 :]
         sibling_candidates: set[int] = set()
-        action_sibling = _native_int(action.get("sibling_army_id"))
+        action_sibling = _public_cunit_int(action.get("sibling_army_id"))
+        if action.get("sibling_army_id") is not None and action_sibling is None:
+            continue
         if action_sibling is not None and action_sibling not in before_set:
             sibling_candidates.add(action_sibling)
         current_delta = current_ids - before_set
@@ -19106,9 +19109,9 @@ def _moving_route_contact_horizon_conjunction(
     }
     for army in sorted(
         controlled_armies,
-        key=lambda row: _native_int(row.get("army_id")) or 2**31,
+        key=_public_cunit_sort_key,
     ):
-        army_id = _native_int(army.get("army_id"))
+        army_id = _public_cunit_int(army.get("army_id"))
         if army_id is None or army_id == subject_army_id:
             continue
         tactical_state = _army_tactical_state(army)
@@ -19358,7 +19361,7 @@ def _audit_war_route(
     for enemy in enemies:
         if _army_tactical_state(enemy) == "retreating":
             continue
-        enemy_id = _native_int(enemy.get("army_id"))
+        enemy_id = _public_cunit_int(enemy.get("army_id"))
         enemy_current = _native_int(enemy.get("current_province_id"))
         enemy_target = _native_int(enemy.get("move_target_province_id"))
         if enemy_current in route_provinces:
@@ -19516,7 +19519,7 @@ def _recent_war_tactics(
             int(enemy["army_id"])
             for enemy in (enemies if isinstance(enemies, list) else [])
             if isinstance(enemy, dict)
-            and _native_int(enemy.get("army_id")) is not None
+            and _public_cunit_int(enemy.get("army_id")) is not None
             and enemy.get("current_province_id") == province
             and _army_tactical_state(enemy) != "retreating"
         }
@@ -19527,7 +19530,7 @@ def _recent_war_tactics(
                 after_enemies if isinstance(after_enemies, list) else []
             )
             if isinstance(enemy, dict)
-            and _native_int(enemy.get("army_id")) is not None
+            and _public_cunit_int(enemy.get("army_id")) is not None
         }
         before_score = _native_int(
             before_war.get("player_relative_war_score")
@@ -19889,7 +19892,7 @@ def _progress_summary_player_army(
         for war in wars
         if isinstance(war, dict)
         for army in (war.get("player_armies") or [])
-        if isinstance(army, dict) and _native_int(army.get("army_id")) == army_id
+        if isinstance(army, dict) and _public_cunit_int(army.get("army_id")) == army_id
     ]
     return armies[0] if armies and all(army == armies[0] for army in armies) else None
 
@@ -20103,7 +20106,10 @@ def _capital_regroup_intent(
         isinstance(action, dict)
         and action.get("status") in {"move_submitted", "moving", "arrived"}
         and result.get("accepted") is not False
-        and _native_int(action.get("army_id")) in {None, army_id}
+        and (
+            action.get("army_id") is None
+            or _public_cunit_int(action.get("army_id")) == army_id
+        )
         and _native_int(action.get("target_province_id"))
         in {None, target_province_id}
         and submitted_date_raw is not None

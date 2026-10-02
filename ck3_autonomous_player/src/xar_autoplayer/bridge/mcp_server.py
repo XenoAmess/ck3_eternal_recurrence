@@ -11,6 +11,7 @@ from typing import Annotated, Literal
 from pydantic import Field
 
 IngameUiHandleV1 = Annotated[int, Field(strict=True, gt=0, lt=2**32 - 1)]
+PublicCUnitId = Annotated[int, Field(strict=True, ge=0, le=2**31 - 1)]
 IngameUiRevisionV1 = Annotated[int, Field(strict=True, ge=0, lt=2**64)]
 
 from xar_autoplayer.ck3_save_artifacts import Ck3ProfileArtifactInspector
@@ -365,8 +366,8 @@ def _ck3_query_combat_simulation_inputs_v3(
     service: GameplayBridgeService,
     target_province_id: int,
     attacker_entry_province_id: int,
-    attacker_army_ids: list[int],
-    defender_army_ids: list[int],
+    attacker_army_ids: list[PublicCUnitId],
+    defender_army_ids: list[PublicCUnitId],
     expected_revision: int | None = None,
 ) -> dict[str, object]:
     """Official production-v3 facade shared by MCP and contract tests."""
@@ -394,7 +395,7 @@ def _ck3_query_war_entry_assessments(
 
 def _ck3_query_actual_contact_scope(
     service: GameplayBridgeService,
-    subject_army_id: int,
+    subject_army_id: PublicCUnitId,
     target_province_id: int,
     expected_revision: int | None = None,
 ) -> dict[str, object]:
@@ -408,7 +409,7 @@ def _ck3_query_actual_contact_scope(
 
 def _ck3_query_battle_control_snapshot_v1(
     service: GameplayBridgeService,
-    subject_army_id: int,
+    subject_army_id: PublicCUnitId,
     expected_revision: int,
 ) -> dict[str, object]:
     """Observe retreat gates for one full public CUnitID without mutation."""
@@ -433,7 +434,7 @@ def _ck3_query_battle_transition_v1(
 def _ck3_query_battle_terminal_transition_v1(
     service: GameplayBridgeService,
     prior_combat_id: int,
-    subject_public_cunit_id: int,
+    subject_public_cunit_id: PublicCUnitId,
     expected_revision: int,
     after_terminal_sequence: int | None = None,
 ) -> dict[str, object]:
@@ -448,7 +449,7 @@ def _ck3_query_battle_terminal_transition_v1(
 
 def _ck3_query_battle_reinforcement_assignment_v1(
     service: GameplayBridgeService,
-    selected_public_cunit_id: int,
+    selected_public_cunit_id: PublicCUnitId,
     expected_revision: int,
 ) -> dict[str, object]:
     """Observe one CUnit's native AI help assignment without mutation."""
@@ -1253,7 +1254,7 @@ def _ck3_continue_death_succession_modal_v1(
 
 def _ck3_preview_active_combat_retreat_v1(
     service: GameplayBridgeService,
-    selected_public_cunit_id: int,
+    selected_public_cunit_id: PublicCUnitId,
     target_province_id: int,
     expected_revision: int,
 ) -> dict[str, object]:
@@ -1267,7 +1268,7 @@ def _ck3_preview_active_combat_retreat_v1(
 
 def _ck3_order_active_combat_retreat_v1(
     service: GameplayBridgeService,
-    selected_public_cunit_id: int,
+    selected_public_cunit_id: PublicCUnitId,
     expected_revision: int,
     expected_combat_id: int,
     expected_side_index: int,
@@ -1318,7 +1319,7 @@ def _forbid_unknown_tool_arguments_v1(server: object, tool_name: str) -> None:
 
 def _ck3_query_current_battle_knight_v1(
     service: GameplayBridgeService,
-    subject_public_cunit_id: int,
+    subject_public_cunit_id: PublicCUnitId,
     character_id: int,
     regiment_id: int,
     expected_played_character_id: int,
@@ -2060,7 +2061,7 @@ def create_server(
 
     @server.tool(annotations=read_only_tool)
     def ck3_query_current_battle_knight_v1(
-        subject_public_cunit_id: int,
+        subject_public_cunit_id: PublicCUnitId,
         character_id: int,
         regiment_id: int,
         expected_played_character_id: int,
@@ -2264,7 +2265,7 @@ def create_server(
 
     @server.tool()
     def ck3_move_army(
-        army_id: int,
+        army_id: PublicCUnitId,
         target_province_id: int,
         expected_revision: int | None = None,
     ) -> dict[str, object]:
@@ -2299,7 +2300,7 @@ def create_server(
 
     @server.tool()
     def ck3_disband_army(
-        army_id: int,
+        army_id: PublicCUnitId,
         expected_revision: int | None = None,
     ) -> dict[str, object]:
         """Disband one exact native player army."""
@@ -2321,7 +2322,7 @@ def create_server(
 
     @server.tool()
     def ck3_query_army_strengths(
-        army_ids: list[int],
+        army_ids: list[PublicCUnitId],
         expected_revision: int | None = None,
     ) -> dict[str, object]:
         """Read soldiers and AI base power; never interpret them as win odds."""
@@ -2332,7 +2333,7 @@ def create_server(
 
     @server.tool()
     def ck3_query_actual_contact_scope(
-        subject_army_id: int,
+        subject_army_id: PublicCUnitId,
         target_province_id: int,
         expected_revision: int | None = None,
     ) -> dict[str, object]:
@@ -2346,7 +2347,7 @@ def create_server(
 
     @server.tool()
     def ck3_query_battle_control_snapshot_v1(
-        subject_army_id: int,
+        subject_army_id: PublicCUnitId,
         expected_revision: int,
     ) -> dict[str, object]:
         """Read one full public CUnitID's battle and retreat gates while paused."""
@@ -2371,7 +2372,7 @@ def create_server(
     @server.tool()
     def ck3_query_battle_terminal_transition_v1(
         prior_combat_id: int,
-        subject_public_cunit_id: int,
+        subject_public_cunit_id: PublicCUnitId,
         expected_revision: int,
         after_terminal_sequence: int | None = None,
     ) -> dict[str, object]:
@@ -2386,7 +2387,7 @@ def create_server(
 
     @server.tool()
     def ck3_query_battle_reinforcement_assignment_v1(
-        selected_public_cunit_id: int,
+        selected_public_cunit_id: PublicCUnitId,
         expected_revision: int,
     ) -> dict[str, object]:
         """Read native help flags, target, exact route/ETA and contact candidates."""
@@ -2758,7 +2759,7 @@ def create_server(
         return service.open_character_window_v1(character_id, expected_revision=expected_revision)
 
     @server.tool()
-    def ck3_select_army_ui_v1(subject_army_id: IngameUiHandleV1, expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+    def ck3_select_army_ui_v1(subject_army_id: PublicCUnitId, expected_revision: IngameUiRevisionV1) -> dict[str, object]:
         """Select a played army's public CUnitID through vanilla presentation routing."""
         return service.select_army_ui_v1(subject_army_id, expected_revision=expected_revision)
 
@@ -3301,7 +3302,7 @@ def create_server(
 
     @server.tool()
     def ck3_preview_active_combat_retreat_v1(
-        selected_public_cunit_id: int,
+        selected_public_cunit_id: PublicCUnitId,
         target_province_id: int,
         expected_revision: int,
     ) -> dict[str, object]:
@@ -3315,7 +3316,7 @@ def create_server(
 
     @server.tool()
     def ck3_order_active_combat_retreat_v1(
-        selected_public_cunit_id: int,
+        selected_public_cunit_id: PublicCUnitId,
         expected_revision: int,
         expected_combat_id: int,
         expected_side_index: int,
@@ -3339,8 +3340,8 @@ def create_server(
     def ck3_query_combat_simulation_inputs(
         target_province_id: int,
         attacker_entry_province_id: int,
-        attacker_army_ids: list[int],
-        defender_army_ids: list[int],
+        attacker_army_ids: list[PublicCUnitId],
+        defender_army_ids: list[PublicCUnitId],
         expected_revision: int | None = None,
     ) -> dict[str, object]:
         """Read one explicit hypothetical contact; does not claim win odds."""
@@ -3366,8 +3367,8 @@ def create_server(
     def ck3_query_combat_simulation_inputs_v3(
         target_province_id: int,
         attacker_entry_province_id: int,
-        attacker_army_ids: list[int],
-        defender_army_ids: list[int],
+        attacker_army_ids: list[PublicCUnitId],
+        defender_army_ids: list[PublicCUnitId],
         expected_revision: int | None = None,
     ) -> dict[str, object]:
         """Read exact phase inputs; readiness does not imply simulated odds."""

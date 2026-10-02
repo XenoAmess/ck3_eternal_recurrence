@@ -983,6 +983,7 @@ class TrackedShutdownTests(unittest.TestCase):
             pid_file = root / "ck3.json"
             pid_file.write_text("corrupt\n", encoding="ascii")
             process = mock.MagicMock()
+            process.injector_attestation = None
             process.pid = 12345
             process.poll.side_effect = [None, 0, 0]
             job_handle = object()
@@ -1263,7 +1264,7 @@ class TrackedShutdownTests(unittest.TestCase):
         tasklist = subprocess.CompletedProcess(
             args=["tasklist"],
             returncode=0,
-            stdout="INFO: No tasks are running which match the specified criteria.\n",
+            stdout='"System Idle Process","0","Services","0","8 K"\n',
             stderr="",
         )
         with mock.patch(
@@ -1289,7 +1290,7 @@ class TrackedShutdownTests(unittest.TestCase):
         tasklist = subprocess.CompletedProcess(
             args=["tasklist"],
             returncode=0,
-            stdout="INFO: No tasks are running which match the specified criteria.\n",
+            stdout='"System Idle Process","0","Services","0","8 K"\n',
             stderr="",
         )
         with mock.patch(
@@ -1300,6 +1301,92 @@ class TrackedShutdownTests(unittest.TestCase):
             side_effect=AgentError("Toolhelp snapshot failed"),
         ):
             with self.assertRaisesRegex(AgentError, "Toolhelp snapshot failed"):
+                ck3_process_inventory()
+
+    def test_unfiltered_localized_csv_proves_no_ck3_without_status_prose(self) -> None:
+        tasklist = subprocess.CompletedProcess(
+            args=["tasklist"], returncode=0,
+            stdout=(
+                '"System Idle Process","0","服务","0","8 K"\n'
+                '"中文程序.exe","456","控制台","1","1,234 K"\n'
+            ), stderr="",
+        )
+        with mock.patch(
+            "xar_autoplayer.environment.subprocess.run", return_value=tasklist
+        ) as run, mock.patch(
+            "xar_autoplayer.environment._toolhelp_ck3_processes", return_value=[]
+        ):
+            inventory = ck3_process_inventory()
+        self.assertEqual(inventory["native_pids"], [])
+        self.assertEqual(inventory["tasklist_pids"], [])
+        self.assertEqual(run.call_args.args[0], ["tasklist", "/FO", "CSV", "/NH"])
+        self.assertEqual(run.call_args.kwargs["encoding"], "oem")
+        self.assertEqual(run.call_args.kwargs["errors"], "strict")
+
+    def test_localized_full_csv_retains_ck3_and_cross_checks_native_identity(self) -> None:
+        process = {
+            "pid": 123, "parent_pid": 456, "name": "ck3.exe",
+            "executable": "C:/game/ck3.exe", "creation_date": "created",
+        }
+        tasklist = subprocess.CompletedProcess(
+            args=["tasklist"], returncode=0,
+            stdout=(
+                '"中文程序.exe","456","控制台","1","1,234 K"\n'
+                '"CK3.EXE","123","控制台","1","5,678 K"\n'
+            ), stderr="",
+        )
+        with mock.patch(
+            "xar_autoplayer.environment.subprocess.run", return_value=tasklist
+        ), mock.patch(
+            "xar_autoplayer.environment._toolhelp_ck3_processes", return_value=[process]
+        ):
+            inventory = ck3_process_inventory()
+        self.assertEqual(inventory["tasklist_pids"], [123])
+        self.assertEqual(inventory["native_pids"], [123])
+        self.assertEqual(inventory["processes"], [process])
+
+    def test_full_inventory_does_not_accept_localized_or_mojibake_status_text(self) -> None:
+        for output in (
+            "INFO: No tasks are running which match the specified criteria.\n",
+            "信息: 没有运行的任务匹配指定标准。\n",
+            "��Ϣ: û�����е�����ƥ��ָ����\u05fc��\n",
+        ):
+            with self.subTest(output=output), mock.patch(
+                "xar_autoplayer.environment.subprocess.run",
+                return_value=subprocess.CompletedProcess(
+                    args=["tasklist"], returncode=0, stdout=output, stderr=""
+                ),
+            ), mock.patch(
+                "xar_autoplayer.environment._toolhelp_ck3_processes", return_value=[]
+            ) as native:
+                with self.assertRaisesRegex(AgentError, "unexpected output"):
+                    ck3_process_inventory()
+                native.assert_not_called()
+
+    def test_unreadable_or_malformed_full_inventory_remains_fail_closed(self) -> None:
+        for output in (
+            "", '"ck3.exe","123"\n',
+            '"ck3.exe","-1","Console","1","1 K"\n',
+            '"ck3.exe","0","Console","1","1 K"\n',
+            '"ck3.exe","123","Console","1","1 K"\n'
+            '"other.exe","123","Console","1","1 K"\n',
+        ):
+            with self.subTest(output=output), mock.patch(
+                "xar_autoplayer.environment.subprocess.run",
+                return_value=subprocess.CompletedProcess(
+                    args=["tasklist"], returncode=0, stdout=output, stderr=""
+                ),
+            ), mock.patch(
+                "xar_autoplayer.environment._toolhelp_ck3_processes", return_value=[]
+            ) as native:
+                with self.assertRaises(AgentError):
+                    ck3_process_inventory()
+                native.assert_not_called()
+        with mock.patch(
+            "xar_autoplayer.environment.subprocess.run",
+            side_effect=UnicodeDecodeError("oem", b"\x81", 0, 1, "invalid byte"),
+        ):
+            with self.assertRaisesRegex(AgentError, "could not be read"):
                 ck3_process_inventory()
 
     def test_watchdog_accepts_empty_wmi_path_for_handle_authentication(self) -> None:

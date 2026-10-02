@@ -89,6 +89,28 @@ def _unavailable_row(
 
 
 class ArmyStrengthContractTests(unittest.TestCase):
+    def test_resolved_carmy_zero_keeps_available_and_partial_rows_distinct(self) -> None:
+        row = _available_row(0, "player", [42])
+        row["native_carmy_id"] = 0
+        self.assertEqual(normalize_army_strengths([row])[0]["native_carmy_id"], 0)
+        partial = {**row, "status": "unavailable", "regiment_count": None,
+                   "current_soldiers": None, "maximum_soldiers": None,
+                   "ai_base_power_raw": None, "unavailable_reason": "regiment_identity_invalid"}
+        normalized = normalize_army_strengths([partial])[0]
+        self.assertEqual(normalized["native_carmy_id"], 0)
+        self.assertEqual(normalized["status"], "unavailable")
+        self.assertIsNone(normalized["current_soldiers"])
+        with self.assertRaises(ValueError):
+            normalize_army_strengths([{**partial, "current_soldiers": 0}])
+        with self.assertRaises(ValueError):
+            normalize_army_strengths([{**row, "native_carmy_id": None}])
+
+    def test_strength_carmy_handle_remains_strict_nullable_int32(self) -> None:
+        row = _available_row(0, "player", [])
+        for invalid in (True, False, -1, 2**31, 0.0, "0"):
+            with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                normalize_army_strengths([{**row, "native_carmy_id": invalid}])
+
     def test_frozen_capability_and_step_are_native_only(self) -> None:
         self.assertEqual(
             QUERY_ARMY_STRENGTHS_CAPABILITY,
@@ -123,10 +145,10 @@ class ArmyStrengthContractTests(unittest.TestCase):
 
     def test_request_ids_are_explicit_bounded_and_never_deduplicated(self) -> None:
         self.assertEqual(normalize_army_strength_request_ids([13, 11]), [13, 11])
+        self.assertEqual(normalize_army_strength_request_ids([0, 11]), [0, 11])
         invalid = [
             None,
             [],
-            [0],
             [-1],
             [True],
             [2**31],

@@ -227,7 +227,7 @@ class BattleReinforcementAssignmentV1ContractTests(unittest.TestCase):
             expected_snapshot_revision=NATIVE_REVISION,
         )
 
-    def test_step_is_one_canonical_positive_full_cunit_id(self) -> None:
+    def test_step_is_one_canonical_nonnegative_full_cunit_id(self) -> None:
         self.assertEqual(
             query_battle_reinforcement_assignment_v1_step(SUBJECT), STEP
         )
@@ -235,8 +235,12 @@ class BattleReinforcementAssignmentV1ContractTests(unittest.TestCase):
             parse_query_battle_reinforcement_assignment_v1_step(STEP),
             SUBJECT,
         )
+        self.assertEqual(
+            parse_query_battle_reinforcement_assignment_v1_step(
+                query_battle_reinforcement_assignment_v1_step(0)
+            ), 0
+        )
         for malformed in (
-            "query-battle-reinforcement-assignment-v1-0",
             "query-battle-reinforcement-assignment-v1-01",
             "query-battle-reinforcement-assignment-v1--1",
             "query-battle-reinforcement-assignment-v1-N",

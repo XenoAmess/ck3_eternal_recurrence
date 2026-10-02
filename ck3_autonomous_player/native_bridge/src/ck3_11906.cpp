@@ -10691,7 +10691,7 @@ PhysicalArmyInventoryStatusV1 ReadPhysicalArmyInventoryV1(
   output = {};
   output.war_id = war_id;
   output.subject_army_id = subject_army_id;
-  if (war_id <= 0 || subject_army_id <= 0 || !bindings.enabled ||
+  if (war_id <= 0 || subject_army_id < 0 || !bindings.enabled ||
       bindings.game_state_slot == nullptr ||
       bindings.jomini_state_slot == nullptr ||
       bindings.army_storage_slot == nullptr ||
@@ -10887,7 +10887,7 @@ PhysicalArmyInventoryStatusV1 ReadPhysicalArmyInventoryV1(
         continue;
       }
       const auto unit_id = LoadAt<std::int32_t>(unit, kArmyIdOffset);
-      if (unit_id <= 0 ||
+      if (unit_id < 0 ||
           (static_cast<std::uint32_t>(unit_id) & 0x00FFFFFFU) !=
               static_cast<std::uint32_t>(index)) {
         ++result.invalid_id_slots;
@@ -11164,7 +11164,7 @@ ReadCombatSimulationInputsResult ReadCombatSimulationInputs(
   army_ids.insert(army_ids.end(), request.defender_army_ids.begin(),
                   request.defender_army_ids.end());
   for (std::size_t index = 0; index < army_ids.size(); ++index) {
-    if (army_ids[index] <= 0 ||
+    if (army_ids[index] < 0 ||
         std::find(army_ids.begin(), army_ids.begin() + index,
                   army_ids[index]) != army_ids.begin() + index) {
       return ReadCombatSimulationInputsResult::invalid_arguments;
@@ -12786,7 +12786,7 @@ bool CollectCompleteHostileScope(const Snapshot &snapshot,
   for (const auto &war : snapshot.active_wars) {
     found_active_war = true;
     for (const auto &enemy : war.enemy_armies) {
-      if (!enemy.retreating && enemy.army_id > 0 &&
+      if (!enemy.retreating && enemy.army_id >= 0 &&
           std::find(output.begin(), output.end(), enemy.army_id) ==
               output.end()) {
         output.push_back(enemy.army_id);
@@ -13223,7 +13223,7 @@ RouteContactHorizonStatus ReadRouteContactHorizon(
       bindings.read_unit_current_edge_speed == nullptr ||
       bindings.read_route_travel_duration == nullptr ||
       bindings.read_route_edge_duration == nullptr ||
-      request.subject_army_id <= 0 || request.target_province_id <= 0 ||
+      request.subject_army_id < 0 || request.target_province_id <= 0 ||
       request.hostile_army_ids.empty() ||
       request.hostile_army_ids.size() > 64 ||
       std::find(request.hostile_army_ids.begin(),
@@ -13233,7 +13233,7 @@ RouteContactHorizonStatus ReadRouteContactHorizon(
     return output.status;
   }
   for (const auto hostile_id : request.hostile_army_ids) {
-    if (hostile_id <= 0 ||
+    if (hostile_id < 0 ||
         std::count(request.hostile_army_ids.begin(),
                    request.hostile_army_ids.end(), hostile_id) != 1) {
       output.status = RouteContactHorizonStatus::unavailable;
@@ -14138,7 +14138,7 @@ bool ReadBattleReinforcementPublicIds(
         static_cast<std::size_t>(index) * sizeof(std::int32_t));
     void *const unit = ResolveStoredComponent(
         bindings.army_storage_slot, public_cunit_id, kArmyIdOffset);
-    if (public_cunit_id <= 0 || unit == nullptr ||
+    if (public_cunit_id < 0 || unit == nullptr ||
         LoadAt<void *>(unit, kUnitAiSubunitStackOffset) != subunit ||
         std::find(output.begin(), output.end(), public_cunit_id) !=
             output.end()) {
@@ -14232,7 +14232,7 @@ bool ReadBattleReinforcementParentOrder(
     const auto public_cunit_id = LoadAt<std::int32_t>(
         parent_cunit_header.data,
         static_cast<std::size_t>(index) * sizeof(std::int32_t));
-    if (public_cunit_id <= 0 ||
+    if (public_cunit_id < 0 ||
         ResolveStoredComponent(bindings.army_storage_slot,
                                public_cunit_id,
                                kArmyIdOffset) == nullptr) {
@@ -15909,7 +15909,7 @@ bool ReadBattleTransitionSidePublicIds(
         native_army, kInternalArmyUnitIdOffset);
     void *const public_unit = ResolveStoredComponent(
         bindings.army_storage_slot, public_cunit_id, kArmyIdOffset);
-    if (public_cunit_id <= 0 || public_unit == nullptr ||
+    if (public_cunit_id < 0 || public_unit == nullptr ||
         LoadAt<std::int32_t>(public_unit, kUnitArmyIdOffset) !=
             native_carmy_id ||
         std::find(output.begin(), output.end(), public_cunit_id) !=
@@ -16719,7 +16719,7 @@ ActualContactScopeStatus ReadActualContactScope(
       bindings.read_province_holder_character_id == nullptr ||
       bindings.classify_contact_defender_by_holder == nullptr ||
       bindings.classify_contact_defender_fallback == nullptr ||
-      request.subject_army_id <= 0 || request.target_province_id <= 0) {
+      request.subject_army_id < 0 || request.target_province_id <= 0) {
     output.status = ActualContactScopeStatus::unavailable;
     return output.status;
   }
@@ -16786,7 +16786,7 @@ BattleControlSnapshotStatus ReadBattleControlSnapshot(
       bindings.can_order_combat_retreat == nullptr ||
       bindings.get_combat_retreat_rule_state == nullptr ||
       bindings.minimum_days_before_manual_retreat == nullptr ||
-      request.subject_public_cunit_id <= 0) {
+      request.subject_public_cunit_id < 0) {
     output.status = BattleControlSnapshotStatus::unavailable;
     return output.status;
   }
@@ -17156,9 +17156,9 @@ BattleTerminalTransitionStatusV1 ReadBattleTerminalTransitionV1(
       bindings.army_internal_storage_slot == nullptr ||
       bindings.battle_result_storage_slot == nullptr ||
       request.prior_combat_id == -1 ||
-      request.subject_public_cunit_id <= 0) {
+      request.subject_public_cunit_id < 0) {
     return unavailable(request.prior_combat_id == -1 ||
-                               request.subject_public_cunit_id <= 0
+                               request.subject_public_cunit_id < 0
                            ? "invalid_request"
                            : "unsupported_build");
   }
@@ -17221,7 +17221,7 @@ BattleReinforcementAssignmentStatus ReadBattleReinforcementAssignmentV1(
       bindings.read_route_travel_duration == nullptr ||
       bindings.read_route_edge_duration == nullptr ||
       bindings.is_character_hostile == nullptr ||
-      request.selected_public_cunit_id <= 0) {
+      request.selected_public_cunit_id < 0) {
     return unavailable("unsupported_build");
   }
   if (!same_frame_world.paused) {

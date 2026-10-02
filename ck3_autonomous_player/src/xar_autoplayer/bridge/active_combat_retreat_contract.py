@@ -2,6 +2,12 @@
 
 from __future__ import annotations
 
+from .public_unit_contract import (
+    public_cunit_id as _public_cunit_id,
+    public_cunit_ids as _public_cunit_ids,
+    canonical_public_cunit_decimal as _canonical_public_cunit_decimal,
+)
+
 import copy
 import re
 
@@ -16,7 +22,7 @@ ACTIVE_COMBAT_RETREAT_V1_CONTRACT_STAGE = "python_production_composition"
 
 _TOKEN_PATTERN = re.compile(r"[A-Za-z0-9_-]{32,128}")
 _ORDER_PATTERN = re.compile(
-    r"order-active-combat-retreat-v1-(?P<selected>[1-9][0-9]*)"
+    r"order-active-combat-retreat-v1-(?P<selected>0|[1-9][0-9]*)"
     r"-revision-(?P<revision>0|[1-9][0-9]*)"
     r"-combat-(?P<combat>-?(?:0|[1-9][0-9]*))"
     r"-side-(?P<side>[01])"
@@ -122,7 +128,7 @@ def preview_active_combat_retreat_v1_step(
     target_province_id: int,
 ) -> str:
     """Build the canonical preview literal for one selected CUnit/target."""
-    selected = _positive_int32(
+    selected = _public_cunit_id(
         selected_public_cunit_id, "selected_public_cunit_id"
     )
     target = _positive_int32(target_province_id, "target_province_id")
@@ -135,7 +141,7 @@ def preview_active_combat_retreat_v1_step(
 def parse_preview_active_combat_retreat_v1_step(
     step: object,
 ) -> tuple[int, int] | None:
-    """Parse only the canonical positive-decimal preview spelling."""
+    """Parse only the canonical CUnit and positive province decimal preview spelling."""
     if not isinstance(step, str) or not step.startswith(
         PREVIEW_ACTIVE_COMBAT_RETREAT_V1_STEP_PREFIX
     ):
@@ -145,7 +151,7 @@ def parse_preview_active_combat_retreat_v1_step(
     if not separator:
         return None
     if not (
-        _canonical_positive_decimal(selected_text)
+        _canonical_public_cunit_decimal(selected_text)
         and _canonical_positive_decimal(target_text)
     ):
         return None
@@ -167,7 +173,7 @@ def order_active_combat_retreat_v1_step(
     candidate_token: str,
 ) -> str:
     """Build a self-contained, single-use active-retreat order literal."""
-    selected = _positive_int32(
+    selected = _public_cunit_id(
         selected_public_cunit_id, "selected_public_cunit_id"
     )
     revision = _non_negative_uint64(
@@ -225,7 +231,7 @@ def normalize_active_combat_retreat_v1_preview(
     expected_snapshot_revision: int,
 ) -> dict[str, object]:
     """Validate one same-frame legality plus exact-route preview result."""
-    selected = _positive_int32(
+    selected = _public_cunit_id(
         expected_selected_public_cunit_id,
         "expected_selected_public_cunit_id",
     )
@@ -338,7 +344,7 @@ def normalize_active_combat_retreat_v1_order_ack(
 ) -> dict[str, object]:
     """Validate an order ACK without upgrading it to retreat completion."""
     request = {
-        "selected_public_cunit_id": _positive_int32(
+        "selected_public_cunit_id": _public_cunit_id(
             expected_selected_public_cunit_id,
             "expected_selected_public_cunit_id",
         ),
@@ -408,12 +414,12 @@ def normalize_active_combat_retreat_v1_order_ack(
             or move_result is not None
         ):
             raise ValueError("active-retreat rejected ACK is inconsistent")
-    affected = _positive_int32_list(
+    affected = _public_cunit_ids(
         value.get("affected_public_cunit_ids_in_stored_order"),
         "affected_public_cunit_ids_in_stored_order",
         nonempty=accepted,
     )
-    unaffected = _positive_int32_list(
+    unaffected = _public_cunit_ids(
         value.get("unaffected_same_side_public_cunit_ids_in_stored_order"),
         "unaffected_same_side_public_cunit_ids_in_stored_order",
     )
@@ -566,7 +572,7 @@ def _normalize_semantic_postcondition(
             raise ValueError(
                 f"active-retreat affected observation {index} is malformed"
             )
-        public_id = _positive_int32(
+        public_id = _public_cunit_id(
             row.get("public_cunit_id"),
             f"affected_armies_in_stored_order[{index}].public_cunit_id",
         )

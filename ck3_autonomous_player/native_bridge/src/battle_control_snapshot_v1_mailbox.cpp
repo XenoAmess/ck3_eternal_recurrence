@@ -1,3 +1,4 @@
+#include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/battle_control_snapshot_v1_mailbox.hpp"
 
 #include <windows.h>
@@ -147,7 +148,7 @@ bool IsExecutingExactMailboxSlot(
     const MainThreadExecutionStampV1 &stamp) noexcept {
   if (query.mailbox == nullptr || query.ticket.sequence == 0 ||
       query.expected_snapshot_revision == 0 ||
-      query.request.subject_public_cunit_id <= 0 || stamp.pump_epoch == 0 ||
+      query.request.subject_public_cunit_id < 0 || stamp.pump_epoch == 0 ||
       stamp.thread_id == 0 || !stamp.paused ||
       stamp.tls_initialized_flag_address == 0 ||
       stamp.tls_initialized != 1 || stamp.tls_context == 0 ||
@@ -196,7 +197,7 @@ bool ValidArmyIdentities(const game::BattleControlSideSnapshot &side,
                          std::int32_t combat_id) noexcept {
   for (std::size_t index = 0; index < side.ordered_armies.size(); ++index) {
     const auto &army = side.ordered_armies[index];
-    if (army.native_carmy_id <= 0 || army.public_cunit_id <= 0 ||
+    if (army.native_carmy_id <= 0 || army.public_cunit_id < 0 ||
         army.owner_character_id <= 0 ||
         army.combat_backlink_id != combat_id) {
       return false;
@@ -607,7 +608,7 @@ bool ValidateSnapshot(const game::BattleControlSnapshot &snapshot) noexcept {
        snapshot.forced_winner_side == "defender");
   if (snapshot.status != game::BattleControlSnapshotStatus::available ||
       !snapshot.battle_control_ready || snapshot.snapshot_revision == 0 ||
-      snapshot.subject_public_cunit_id <= 0 ||
+      snapshot.subject_public_cunit_id < 0 ||
       snapshot.subject_native_carmy_id <= 0 || snapshot.combat_id == -1 ||
       snapshot.province_id <= 0 || !phase_valid || !winner_valid ||
       !forced_winner_valid || snapshot.phase_day < 0 ||
@@ -1241,7 +1242,7 @@ bool ParseBattleControlSnapshotV1Step(
     game::BattleControlRequest &output) noexcept {
   output = {};
   if (!step.starts_with(kBattleControlSnapshotV1StepPrefix) ||
-      !ParseCanonicalPositiveInt32(
+      !game::ParsePublicCUnitIdV1(
           step.substr(kBattleControlSnapshotV1StepPrefix.size()),
           output.subject_public_cunit_id)) {
     output = {};
@@ -1299,7 +1300,7 @@ bool ParseCurrentBattleKnightV1Step(
                           ? first : ids.find('-', first + 1);
   if (first == std::string_view::npos ||
       second == std::string_view::npos ||
-      !ParseCanonicalPositiveInt32(ids.substr(0, first),
+      !game::ParsePublicCUnitIdV1(ids.substr(0, first),
                                    output.subject_public_cunit_id) ||
       !ParseCanonicalPositiveInt32(ids.substr(first + 1,
                                               second - first - 1),
@@ -1936,7 +1937,7 @@ std::string SerializeCurrentBattleKnightV1(
     const game::CurrentBattleKnightSnapshotV1 &snapshot) {
   if (!snapshot.available || !snapshot.unavailable_reason.empty() ||
       snapshot.character_id <= 0 || snapshot.regiment_id <= 0 ||
-      snapshot.subject_public_cunit_id <= 0 ||
+      snapshot.subject_public_cunit_id < 0 ||
       snapshot.native_carmy_id <= 0 || snapshot.combat_id == -1 ||
       snapshot.province_id <= 0 || snapshot.observed_date_raw < 0 ||
       snapshot.scale != 100'000) {

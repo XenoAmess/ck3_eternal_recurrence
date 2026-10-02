@@ -67,11 +67,23 @@ std::string_view StateName(std::int32_t code) noexcept {
 }
 
 void Route(void *game_data, void *unit, game::ArmySnapshot &row) {
+  row.route_province_ids.clear();
+  row.route_read_status = game::ArmyRouteReadStatus::invalid_header;
+  row.route_source_count.reset();
+  row.move_target_observable = false;
+  row.move_target_province_id = -1;
   void *data = Load<void *>(unit, 0x38);
   const auto capacity = Load<std::int32_t>(unit, 0x40);
   const auto count = Load<std::int32_t>(unit, 0x44);
-  if (capacity < 0 || count < 0 || count > capacity || count > kMaximumRoute ||
-      (count > 0 && data == nullptr)) return;
+  if (capacity < 0 || count < 0 || count > capacity || count > kMaximumRoute)
+    return;
+  row.route_source_count = count;
+  if (count == 0) {
+    row.route_read_status = game::ArmyRouteReadStatus::complete_empty;
+    return;
+  }
+  row.route_read_status = game::ArmyRouteReadStatus::unresolved_entry;
+  if (data == nullptr) return;
   std::vector<std::int32_t> route;
   route.reserve(static_cast<std::size_t>(count));
   for (std::int32_t i = 0; i < count; ++i) {
@@ -82,6 +94,7 @@ void Route(void *game_data, void *unit, game::ArmySnapshot &row) {
     route.push_back(id);
   }
   row.route_province_ids = std::move(route);
+  row.route_read_status = game::ArmyRouteReadStatus::complete_nonempty;
   if (!row.route_province_ids.empty()) {
     row.move_target_observable = true;
     row.move_target_province_id = row.route_province_ids.back();

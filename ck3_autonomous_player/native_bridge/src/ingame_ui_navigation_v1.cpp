@@ -461,7 +461,8 @@ bool ValidateIngameUiRequestV1(const IngameUiRequestV1 &r) noexcept {
   if(k>3 || o>7 || r.subject_id==(std::numeric_limits<std::uint32_t>::max)())return false;
   if(r.operation==IngameUiOperationV1::query)return r.subject_id==0;
   if(r.operation==IngameUiOperationV1::open_knights)return r.window_kind==IngameUiWindowKindV1::knights && r.subject_id==0;
-  return r.subject_id>0 && ((o==1 && k==0)||(o==2 && k==1)||((o==3 || o==5 || o==6 || o==7) && k==2));
+  if (o==2 && k==1) return r.subject_id <= static_cast<std::uint32_t>((std::numeric_limits<std::int32_t>::max)());
+  return r.subject_id>0 && ((o==1 && k==0)||((o==3 || o==5 || o==6 || o==7) && k==2));
 }
 bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &r) noexcept {
   r={};std::string kind,operation;std::uint64_t id=0;

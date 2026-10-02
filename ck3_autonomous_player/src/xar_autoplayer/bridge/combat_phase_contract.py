@@ -8,6 +8,11 @@ It does not execute a phase event or advance CK3.
 
 from __future__ import annotations
 
+from .public_unit_contract import (
+    public_cunit_id as _public_cunit_id,
+    canonical_public_cunit_token as _canonical_public_cunit_token,
+)
+
 import copy
 import hashlib
 import json
@@ -401,8 +406,8 @@ def parse_query_combat_simulation_inputs_v3_step(
         return None
     attacker_tokens = tokens[4:defender_marker]
     defender_tokens = tokens[defender_marker + 2 :]
-    attackers = [_canonical_positive_token(token) for token in attacker_tokens]
-    defenders = [_canonical_positive_token(token) for token in defender_tokens]
+    attackers = [_canonical_public_cunit_token(token) for token in attacker_tokens]
+    defenders = [_canonical_public_cunit_token(token) for token in defender_tokens]
     if any(value is None for value in (*attackers, *defenders)):
         return None
     try:
@@ -1053,7 +1058,7 @@ def _normalize_character(
 ) -> dict[str, object]:
     row = _exact_object(value, _CHARACTER_KEYS, name)
     character_id = _positive_int32(row.get("character_id"), f"{name}.character_id")
-    source_army_id = _positive_int32(row.get("source_army_id"), f"{name}.source_army_id")
+    source_army_id = _public_cunit_id(row.get("source_army_id"), f"{name}.source_army_id")
     if (
         character_id != expected["character_id"]
         or source_army_id != expected["source_army_id"]
@@ -1198,7 +1203,7 @@ def _normalize_army(value: object, *, expected: dict[str, object], name: str) ->
         {"army_id", "native_carmy_id", "encounter_role", "maa_regiment_count_raw", "maa_counts_raw"},
         name,
     )
-    army_id = _positive_int32(row.get("army_id"), f"{name}.army_id")
+    army_id = _public_cunit_id(row.get("army_id"), f"{name}.army_id")
     native_id = _positive_int32(row.get("native_carmy_id"), f"{name}.native_carmy_id")
     if (
         army_id != expected.get("army_id")
@@ -1284,7 +1289,7 @@ def _normalize_sides(
             row.get("primary_participant_character_id"),
             f"{row_name}.primary_participant_character_id",
         )
-        primary_army = _positive_int32(
+        primary_army = _public_cunit_id(
             row.get("primary_source_army_id"), f"{row_name}.primary_source_army_id"
         )
         if primary_id != participants[0]["owner_character_id"] or primary_army != expected_armies[0]:
@@ -1420,7 +1425,7 @@ def _normalize_participants(
         row_name = f"{name}[{index}]"
         row = _exact_object(raw, {"source_army_id", "owner_character_id", "faith_id"}, row_name)
         normalized = {
-            "source_army_id": _positive_int32(row.get("source_army_id"), f"{row_name}.source_army_id"),
+            "source_army_id": _public_cunit_id(row.get("source_army_id"), f"{row_name}.source_army_id"),
             "owner_character_id": _positive_int32(row.get("owner_character_id"), f"{row_name}.owner_character_id"),
             "faith_id": _positive_int32(row.get("faith_id"), f"{row_name}.faith_id"),
         }

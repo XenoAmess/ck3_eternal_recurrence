@@ -1,3 +1,4 @@
+#include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/battle_reinforcement_assignment_v1_mailbox.hpp"
 
 #include <windows.h>
@@ -97,7 +98,7 @@ bool IsExecutingExactMailboxSlot(
     const MainThreadExecutionStampV1 &stamp) noexcept {
   if (query.mailbox == nullptr || query.ticket.sequence == 0 ||
       query.expected_snapshot_revision == 0 ||
-      query.request.selected_public_cunit_id <= 0 || stamp.pump_epoch == 0 ||
+      query.request.selected_public_cunit_id < 0 || stamp.pump_epoch == 0 ||
       stamp.thread_id == 0 || !stamp.paused ||
       stamp.tls_initialized_flag_address == 0 ||
       stamp.tls_initialized != 1 || stamp.tls_context == 0 ||
@@ -128,6 +129,19 @@ bool ValidPositiveIds(const std::vector<std::int32_t> &values,
                       bool require_unique) noexcept {
   for (std::size_t index = 0; index < values.size(); ++index) {
     if (values[index] <= 0 ||
+        (require_unique &&
+         std::find(values.begin(), values.begin() + index, values[index]) !=
+             values.begin() + index)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool ValidPublicUnitIds(const std::vector<std::int32_t> &values,
+                      bool require_unique) noexcept {
+  for (std::size_t index = 0; index < values.size(); ++index) {
+    if (values[index] < 0 ||
         (require_unique &&
          std::find(values.begin(), values.begin() + index, values[index]) !=
              values.begin() + index)) {
@@ -248,7 +262,7 @@ bool ValidateAvailableSnapshot(
     return false;
   }
   for (const auto &row : native_order.parent_subunits_in_stored_order) {
-    if (!ValidPositiveIds(row.public_cunit_ids_in_stored_order, true) ||
+    if (!ValidPublicUnitIds(row.public_cunit_ids_in_stored_order, true) ||
         (row.assignment_target_province_id.has_value() &&
          *row.assignment_target_province_id <= 0) ||
         row.assigned_to_help !=
@@ -305,7 +319,7 @@ bool ValidateAvailableSnapshot(
 bool ValidateSnapshot(
     const game::BattleReinforcementAssignmentSnapshot &snapshot) noexcept {
   if (snapshot.snapshot_revision == 0 ||
-      snapshot.selected_public_cunit_id <= 0) {
+      snapshot.selected_public_cunit_id < 0) {
     return false;
   }
   if (snapshot.status ==
@@ -458,7 +472,7 @@ bool ParseBattleReinforcementAssignmentV1Step(
     game::BattleReinforcementAssignmentRequest &output) noexcept {
   output = {};
   if (!step.starts_with(kBattleReinforcementAssignmentV1StepPrefix) ||
-      !ParseCanonicalPositiveInt32(
+      !game::ParsePublicCUnitIdV1(
           step.substr(kBattleReinforcementAssignmentV1StepPrefix.size()),
           output.selected_public_cunit_id)) {
     output = {};

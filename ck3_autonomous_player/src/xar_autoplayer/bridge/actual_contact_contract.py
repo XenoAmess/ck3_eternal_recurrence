@@ -2,6 +2,12 @@
 
 from __future__ import annotations
 
+from .public_unit_contract import (
+    public_cunit_id as _public_cunit_id,
+    public_cunit_ids as _public_cunit_ids,
+    canonical_public_cunit_decimal as _canonical_public_cunit_decimal,
+)
+
 
 QUERY_ACTUAL_CONTACT_SCOPE_CAPABILITY = (
     "game.command.query-actual-contact-scope-v1-N"
@@ -42,7 +48,7 @@ def query_actual_contact_scope_step(
     subject_army_id: int, target_province_id: int
 ) -> str:
     """Build the canonical current-Province contact query literal."""
-    subject = _positive_int32(subject_army_id, "subject_army_id")
+    subject = _public_cunit_id(subject_army_id, "subject_army_id")
     target = _positive_int32(target_province_id, "target_province_id")
     return f"{QUERY_ACTUAL_CONTACT_SCOPE_STEP_PREFIX}{subject}-at-{target}"
 
@@ -59,7 +65,7 @@ def parse_query_actual_contact_scope_step(
     if (
         not separator
         or "-at-" in target_text
-        or not _canonical_positive_decimal(subject_text)
+        or not _canonical_public_cunit_decimal(subject_text)
         or not _canonical_positive_decimal(target_text)
     ):
         return None
@@ -79,6 +85,9 @@ def normalize_actual_contact_scope(
     expected_snapshot_revision: int,
 ) -> dict[str, object]:
     """Validate one complete, application-main, two-sample contact mirror."""
+    expected_subject_army_id = _public_cunit_id(
+        expected_subject_army_id, "expected_subject_army_id"
+    )
     if not isinstance(value, dict) or set(value) != _ACTUAL_CONTACT_SCOPE_KEYS:
         raise ValueError("native actual_contact_scope has a malformed schema")
     if (
@@ -97,7 +106,7 @@ def normalize_actual_contact_scope(
     }:
         raise ValueError("actual_contact_scope scope_kind is unknown")
 
-    subject = _positive_int32(
+    subject = _public_cunit_id(
         value.get("subject_army_id"), "actual_contact_scope.subject_army_id"
     )
     native_subject = _positive_int32(
@@ -127,10 +136,11 @@ def normalize_actual_contact_scope(
     ):
         raise ValueError("native actual_contact_scope binding disagrees")
 
-    province_units = _positive_id_list(
+    province_units = _public_cunit_ids(
         value.get("province_unit_army_ids"),
         "actual_contact_scope.province_unit_army_ids",
         strictly_increasing=True,
+        unique=False,
     )
     province_combats = _positive_id_list(
         value.get("province_combat_ids"),
@@ -143,17 +153,20 @@ def normalize_actual_contact_scope(
         value.get("loser_excluded_native_carmy_ids"),
         "actual_contact_scope.loser_excluded_native_carmy_ids",
     )
-    opponents = _positive_id_list(
+    opponents = _public_cunit_ids(
         value.get("opponent_army_ids"),
         "actual_contact_scope.opponent_army_ids",
+        unique=False,
     )
-    attackers = _positive_id_list(
+    attackers = _public_cunit_ids(
         value.get("attacker_army_ids"),
         "actual_contact_scope.attacker_army_ids",
+        unique=False,
     )
-    defenders = _positive_id_list(
+    defenders = _public_cunit_ids(
         value.get("defender_army_ids"),
         "actual_contact_scope.defender_army_ids",
+        unique=False,
     )
     if len(set(attackers)) != len(attackers) or len(set(defenders)) != len(
         defenders

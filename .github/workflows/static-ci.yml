@@ -79,6 +79,25 @@ jobs:
         run: python -m unittest discover -s tools -p "test_*vanilla_event_research.py"
       - name: Test native verifier evidence scope without CK3
         run: python ck3_autonomous_player/native_bridge/research/test_native_verifier_evidence_scope.py
+      - name: Test isolated native army route producer without CK3
+        run: python -X utf8 tools/check_native_army_routes_ci.py --build-dir "%RUNNER_TEMP%\native-army-route-ci"
+      - name: Test strict army route read-status contract
+        run: |
+          python -X utf8 ck3_autonomous_player/tests/unit/test_army_route_read_status_contract.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -O -X utf8 ck3_autonomous_player/tests/unit/test_army_route_read_status_contract.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test public CUnit zero contracts and planner without CK3
+        env:
+          PYTHONPATH: ${{ github.workspace }};${{ github.workspace }}\ck3_autonomous_player\src;${{ github.workspace }}\ck3_autonomous_player\tests\unit;${{ github.workspace }}\tools
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m pip install mcp==2.0.0 pytest==9.1.1
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_public_cunit_core_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_zero_battle_contracts.py ck3_autonomous_player/tests/unit/test_strategy_public_cunit_zero.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -O -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_public_cunit_core_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_zero_battle_contracts.py ck3_autonomous_player/tests/unit/test_strategy_public_cunit_zero.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test CLA checker
         run: python tools/test_cla_check.py
       - name: Test succession GUI projection contract

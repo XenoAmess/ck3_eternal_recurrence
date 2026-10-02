@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 from datetime import datetime, timezone
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -34,9 +35,15 @@ def now() -> str:
 
 
 def task_bus_tasks(bus: Path) -> list[dict]:
-    result = subprocess.run([sys.executable, str(bus), "list"],
-                            capture_output=True, text=True, timeout=15, check=True)
-    payload = json.loads(result.stdout)
+    environment = {**os.environ, "PYTHONUTF8": "1", "PYTHONIOENCODING": "utf-8"}
+    result = subprocess.run([sys.executable, "-X", "utf8", str(bus), "list"],
+                            capture_output=True, text=False, env=environment,
+                            timeout=15, check=True)
+    # Decode in this thread so invalid bytes raise here instead of leaving
+    # stdout as None after a subprocess reader-thread failure.
+    stdout = result.stdout.decode("utf-8", errors="strict")
+    result.stderr.decode("utf-8", errors="strict")
+    payload = json.loads(stdout)
     if payload.get("ok") is not True or not isinstance(payload.get("tasks"), list):
         raise RuntimeError("task bus list did not return a valid task set")
     return payload["tasks"]
@@ -100,11 +107,26 @@ def wait_service(expected: str, timeout_seconds: int) -> dict:
         time.sleep(0.5)
 
 
+class ServiceCommandError(RuntimeError):
+    def __init__(self, action: str, result: subprocess.CompletedProcess) -> None:
+        super().__init__(f"sc {action} {SERVICE} failed with code {result.returncode}")
+        # SC is a native Windows program: its diagnostics use the OEM code
+        # page, unlike the Python task-bus child which explicitly uses UTF-8.
+        # Keep exact bytes as well as readable text, including invalid bytes.
+        self.command_receipt = {
+            "argv": ["sc.exe", action, SERVICE], "returncode": result.returncode,
+            "encoding": "oem",
+            "stdout": result.stdout.decode("oem", errors="backslashreplace"),
+            "stderr": result.stderr.decode("oem", errors="backslashreplace"),
+            "stdout_hex": result.stdout.hex(), "stderr_hex": result.stderr.hex(),
+        }
+
+
 def sc(action: str, timeout_seconds: int) -> None:
     result = subprocess.run(["sc.exe", action, SERVICE], capture_output=True,
-                            text=True, timeout=timeout_seconds)
+                            text=False, timeout=timeout_seconds)
     if result.returncode != 0:
-        raise RuntimeError(f"sc {action} {SERVICE} failed with code {result.returncode}")
+        raise ServiceCommandError(action, result)
 
 
 def ensure_service_running(timeout_seconds: int) -> dict:
@@ -314,7 +336,10 @@ def recover(args: argparse.Namespace) -> dict:
                 raise RuntimeError("Steam UI process identity changed during recovery")
         except (OSError, ValueError, RuntimeError, TimeoutError, subprocess.SubprocessError) as exc:
             outcome = "recovery_error"
-            record("recovery_error", error_type=type(exc).__name__, error=str(exc))
+            fields = {"error_type": type(exc).__name__, "error": str(exc)}
+            if isinstance(exc, ServiceCommandError):
+                fields["service_command"] = exc.command_receipt
+            record("recovery_error", **fields)
     report = {"schema": "ck3.desktop_steam_offline_recovery.v1",
               "completed_at_utc": now(), "outcome": outcome,
               "preflight": before, "steam_offline_status_observed": None,

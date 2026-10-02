@@ -88,6 +88,33 @@ class IngameUiTests(unittest.TestCase):
         for kind,op,subject,rev in [("any","query",0,4),("knights","open_knights",33437,4),("character","open_character",True,4),
                                     ("combat","open_combat",0,4),("combat","open_combat",2**32-1,4),("army","select_army",18,True)]:
             with self.subTest(kind=kind,op=op,subject=subject),self.assertRaises(ValueError):validate_ui_request(op,kind,subject,rev)
+    def test_public_unit_zero_and_signed_upper_bound_round_trip(self):
+        for subject in (0, 2**31-1):
+            raw=result("army","select_army",subject)
+            raw["current_subject_id"]=subject
+            raw["native_army_id"]=83
+            driver=DriverFixture(raw)
+            with self.subTest(subject=subject):
+                got=driver.select_army_ui_v1(subject,expected_revision=4)
+                self.assertEqual(got["current_subject_id"],subject)
+                self.assertEqual(got["native_army_id"],83)
+                self.assertTrue(got["verification_pending"])
+                self.assertEqual(driver.calls[0][1]["request_fields"]["subject_id"],subject)
+    def test_public_unit_invalid_requests_never_dispatch(self):
+        for subject in (True, False, -1, 2**31, 2**32-1, 0.0, "0", None):
+            driver=DriverFixture(result("army","select_army",0))
+            with self.subTest(subject=subject),self.assertRaises(ValueError):
+                driver.select_army_ui_v1(subject,expected_revision=4)
+            self.assertFalse(driver.calls)
+    def test_army_ui_result_preserves_native_army_domain_and_bounds_public_unit(self):
+        raw=result("army","select_army",0)
+        raw["current_subject_id"]=0
+        raw["native_army_id"]=2**32-2
+        self.assertEqual(self.normalize(raw,kind="army",operation="select_army",subject=0)["native_army_id"],2**32-2)
+        for subject in (True, -1, 2**31, 2**32-1, 0.0, "0", None):
+            changed=copy.deepcopy(raw);changed["current_subject_id"]=subject
+            with self.subTest(subject=subject),self.assertRaises(ValueError):
+                self.normalize(changed,kind="army",operation="select_army",subject=0)
     def test_stale_revision_never_dispatches(self):
         driver=DriverFixture(result())
         with self.assertRaises(PreSubmissionRevisionMismatchError):driver.query_ingame_ui_window_v1("combat",expected_revision=3)
