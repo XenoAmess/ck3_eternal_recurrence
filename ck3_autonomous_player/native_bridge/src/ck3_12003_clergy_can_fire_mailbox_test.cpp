@@ -1,4 +1,5 @@
 #include "xar_bridge/religion_rite_governance12002_clergy_mailbox.hpp"
+#include "xar_bridge/ck3_12003_adapter.hpp"
 
 #include <array>
 #include <cstring>
@@ -25,7 +26,7 @@ struct Fixture {
   std::array<void *,1> entries{entry.data()};
   Bytes<0x30> characters{}, tasks{};
   Bytes<0xA0> character_slots{}, task_slots{};
-  Bytes<0x1D8> owner{}, candidate{}, foreign_owner{};
+  Bytes<0x1D8> owner{}, candidate{}, foreign_owner{}, incumbent{};
   Bytes<0x240> landed{};
   Bytes<0x50> task{}, type{};
   Bytes<0x60> position{};
@@ -36,7 +37,9 @@ struct Fixture {
   static constexpr std::int32_t candidate_id=0x06000005;
   static constexpr std::int32_t foreign_owner_id=0x01000007;
   static constexpr std::int32_t task_id=0x02000006;
-  int native_calls=0;
+  static constexpr std::int32_t incumbent_id=0x04000006;
+  int native_calls=0, fire_calls=0;
+  bool fire_value=false, missing_fire_binding=false;
   bool position_value=true,character_value=true,reassign_value=true;
   bool foreign_context=false,drift=false,bad_arguments=false,deny_read=false;
   Fixture() {
@@ -49,6 +52,7 @@ struct Fixture {
     Put(characters,0x20,character_slots.data()); Put(characters,0x2C,std::int32_t{10});
     Put(character_slots,4*0x10+8,owner.data()); Put(owner,0x18,owner_id);
     Put(character_slots,5*0x10+8,candidate.data()); Put(candidate,0x18,candidate_id);
+    Put(character_slots,6*0x10+8,incumbent.data()); Put(incumbent,0x18,incumbent_id);
     Put(character_slots,7*0x10+8,foreign_owner.data()); Put(foreign_owner,0x18,foreign_owner_id);
     Put(owner,r::kCharacterRiteOffset,std::uint32_t{0});
     Put(candidate,r::kCharacterRiteOffset,std::uint32_t{0});
@@ -86,7 +90,13 @@ bool CanReassign(void *task,void *tooltip) {
   if (f->drift) Put(f->state,8,std::int32_t{53175817});
   return f->reassign_value;
 }
-bool CanFire(void *, void *, void *, std::uint32_t, void *) { return true; }
+bool CanFire(void *owner, void *incumbent, void *task, std::uint32_t mode, void *tooltip) {
+  ++f->fire_calls;
+  if (owner!=f->owner.data() || incumbent!=f->incumbent.data() ||
+      incumbent==f->candidate.data() || task!=f->task.data() || mode!=0U || tooltip!=nullptr)
+    f->bad_arguments=true;
+  return f->fire_value;
+}
 bool Read(void *,const void *address,void *out,std::size_t size) noexcept {
   if (f->deny_read && address==f->owner.data()+r::kCharacterRiteOffset) return false;
   std::memcpy(out,address,size); return true;
@@ -98,7 +108,8 @@ r::Bindings Bind(Fixture &fixture) {
   b.core={true,&f->state_ptr,&f->jomini_ptr,&f->characters_ptr,&Player};
   b.task_storage_slot=&f->tasks_ptr;
   b.valid_position=&ValidPosition; b.valid_character=&ValidCharacter;
-  b.can_reassign=&CanReassign; b.can_fire=&CanFire; b.court_owner=&CourtOwner;
+  b.can_reassign=&CanReassign; b.can_fire=f->missing_fire_binding ? nullptr : &CanFire;
+  b.court_owner=&CourtOwner;
   b.read_memory=&Read; return b;
 }
 }
@@ -128,8 +139,8 @@ public:
   const DWORD owner = GetCurrentThreadId();
   mutable unsigned reads = 0;
   bool drift = false;
-  game::AdapterDescriptor identity{"ck3-1.20.0.2-msvc-x64", "1.20.0.2",
-      c::kExecutableSha256, "clergy-fixture", {}};
+  game::AdapterDescriptor identity{xar::ck3_12003::kAdapterId, xar::ck3_12003::kGameVersion,
+      xar::ck3_12003::kExecutableSha256, "clergy-can-fire-fixture", {}};
   const game::AdapterDescriptor &descriptor() const noexcept override { return identity; }
   bool enabled() const noexcept override { return true; }
   bool read_snapshot(game::Snapshot &out) const noexcept override {
@@ -228,7 +239,7 @@ bool Query(Fixture &fixture,FrameAdapter &adapter,const std::filesystem::path &d
   if(result) {
     Check(failure.empty() && query.completed && query.envelope.frame_stable && !serialized.empty(),"complete actual wrapper");
     Check(observed.capture_epoch==query.envelope.execution_stamp.pump_epoch && observed.capture_epoch!=701,"native epoch distinct from public revision");
-    std::ofstream(directory/filename)<<serialized<<'\n';
+    std::ofstream(directory/filename)<<game::RenderCrozierBuildIdentity(serialized,adapter.descriptor())<<'\n';
   } else {
     Check(serialized.empty() && !failure.empty(),"unstable frame has no success JSON");
     std::ofstream(directory/"frame-changed-rejection.json")
@@ -248,58 +259,36 @@ int main(int argc,char **argv) {
     adapter.frame.played_character_id=Fixture::owner_id;
     adapter.frame.date_raw=53175816;
     r::Observation out{};
-    Check(Query(q,adapter,dir,"vacant-valid.json",out) && out.available &&
-          out.position_present && out.native_valid_position==true && out.native_valid_character==true &&
-          out.native_can_reassign==true && !out.incumbent_character_id &&
-          out.owner_rite_id==0U && !q.bad_arguments,"actual candidate and native predicates through owning mailbox");
-    Put(q.task,r::kTaskIncumbentOffset,Fixture::candidate_id); q.reassign_value=false;
-    Check(Query(q,adapter,dir,"incumbent-reassign-denied.json",out) && out.available &&
-          out.candidate_is_incumbent && out.native_valid_character==true && out.native_can_reassign==false,
-          "actual final denial remains an observed query");
-    q.reassign_value=true; q.character_value=false;
-    Put(q.candidate,r::kCharacterRiteOffset,std::uint32_t{0x83000003});
-    Check(Query(q,adapter,dir,"candidate-native-denied.json",out) && out.available &&
-          out.native_valid_character==false && out.candidate_rite_id==0x83000003U,
-          "candidate-specific native final and complete Rite reference");
-    q.character_value=true; q.foreign_context=true;
-    Check(Query(q,adapter,dir,"foreign-context.json",out) && out.available &&
-          out.candidate_matches_owner_context==false && out.native_valid_character==true,
-          "foreign context stays distinct from compiled root predicate");
-    q.foreign_context=false; Put(q.landed,r::kTaskCountOffset,std::int32_t{0});
-    Check(Query(q,adapter,dir,"position-absent.json",out) && out.available && !out.position_present &&
-          !out.native_can_reassign && !out.native_valid_character,"actual position absence has no invented gates");
+    Put(q.task,r::kTaskIncumbentOffset,Fixture::incumbent_id);
+    q.reassign_value=true; q.fire_value=false;
+    Check(Query(q,adapter,dir,"occupied-reassign-true-fire-false.json",out) && out.available &&
+          out.incumbent_character_id==Fixture::incumbent_id && !out.candidate_is_incumbent &&
+          out.native_can_reassign==true && out.native_can_fire==false && q.fire_calls==1 && !q.bad_arguments,
+          "actual incumbent CanFire false is independent from candidate CanReassign true");
+    q.reassign_value=false; q.fire_value=true;
+    Check(Query(q,adapter,dir,"occupied-reassign-false-fire-true.json",out) && out.available &&
+          out.native_can_reassign==false && out.native_can_fire==true && q.fire_calls==2 && !q.bad_arguments,
+          "actual independent opposite predicates retain full owner/incumbent/task/zero/null ABI");
+    Put(q.task,r::kTaskIncumbentOffset,std::int32_t{-1});
+    Check(Query(q,adapter,dir,"vacant-fire-null.json",out) && out.available &&
+          !out.incumbent_character_id && !out.native_can_fire && q.fire_calls==2,
+          "vacant seat does not call CanFire or turn absence into false");
+    Put(q.landed,r::kTaskCountOffset,std::int32_t{0});
+    Check(Query(q,adapter,dir,"absent-fire-null.json",out) && out.available &&
+          !out.position_present && !out.native_can_fire && q.fire_calls==2,
+          "absent position does not call CanFire or turn absence into false");
     Put(q.landed,r::kTaskCountOffset,std::int32_t{1});
-    Put(q.candidate,0x18,Fixture::candidate_id+0x01000000);
-    Check(Query(q,adapter,dir,"candidate-unavailable.json",out) && !out.available &&
-          out.failure==r::Failure::candidate_unavailable && out.candidate_character_id==Fixture::candidate_id &&
-          out.owner_character_id==Fixture::owner_id,"actual invalid full candidate returns typed unavailable with actual player frame");
-    Put(q.candidate,0x18,Fixture::candidate_id); q.deny_read=true;
-    Check(Query(q,adapter,dir,"context-unavailable.json",out) && !out.available &&
-          out.failure==r::Failure::candidate_context_unavailable && !out.native_valid_character,
-          "failed actual context does not become native false");
-    q.deny_read=false; adapter.drift=true;
-    Check(!Query(q,adapter,dir,"frame-changed.json",out),"actual full owner snapshot post-read drift");
-    adapter.drift=false;
-    c::PlayerClergyAppointmentRequest12002 request{};
-    Check(!c::ParsePlayerClergyAppointmentRequest12002("{}",request),"required explicit candidate");
-    Check(!c::ParsePlayerClergyAppointmentRequest12002("{\"candidate_character_id\":0}",request),"not an empty candidate");
-    Check(c::ParsePlayerClergyAppointmentRequest12002("{\"candidate_character_id\":100663301}",request) &&
-          request.candidate_character_id==Fixture::candidate_id && request.expected_revision==0,"actual full candidate without optional revision");
-    Check(c::ParsePlayerClergyAppointmentRequest12002("{\"candidate_character_id\":100663301,\"expected_revision\":701}",request) &&
-          request.expected_revision==701,"revision alias");
-    Check(c::ParsePlayerClergyAppointmentRequest12002("{\"candidate_character_id\":100663301,\"expected_snapshot_revision\":701,\"expected_revision\":701}",request),"matching revision aliases");
-    Check(!c::ParsePlayerClergyAppointmentRequest12002("{\"candidate_character_id\":100663301,\"expected_snapshot_revision\":701,\"expected_revision\":702}",request),"conflicting revision aliases");
-    api::MainThreadQueryMailboxV1 mailbox{}; std::string wire,failure;
-    Check(!c::HandlePlayerClergyAppointmentPrivate12002(adapter,mailbox,adapter.frame,701,
-          c::kPlayerClergyAppointmentPrivateStep12002,"{\"candidate_character_id\":100663301,\"expected_revision\":702}","stale",wire,failure) &&
-          wire.empty() && failure=="player_clergy_appointment_current_frame_unavailable" && mailbox.next_sequence==0,
-          "real handler rejects stale public frame before native queue");
-    Check(!c::HandlePlayerClergyAppointmentPrivate12002(adapter,mailbox,adapter.frame,701,
-          c::kPlayerClergyAppointmentPrivateStep12002,"{}","empty",wire,failure) &&
-          failure=="player_clergy_appointment_request_invalid" && mailbox.next_sequence==0,"real handler has no empty-candidate fallback");
-    Check(c::IsPlayerClergyAppointmentPrivateStep12002(c::kPlayerClergyAppointmentPrivateStep12002) &&
-          !c::IsPlayerClergyAppointmentPrivateStep12002("query-player-clergy-appointment-v1-other"),"exact clergy selector");
-    std::cout<<"PASS checks="<<checks<<" actual_worker_owner_pipeline=true actual_provider=true actual_wrapper=true live=false\n";
+    Put(q.task,r::kTaskIncumbentOffset,Fixture::incumbent_id);
+    q.missing_fire_binding=true;
+    Check(Query(q,adapter,dir,"missing-binding-fire-null.json",out) && !out.available &&
+          out.failure==r::Failure::bindings_unavailable && !out.native_can_fire && q.fire_calls==2,
+          "missing native CanFire binding uses original unavailable and nullable output");
+    const auto bound=r::BindClergyAppointmentImage12002(0x140000000,c::kExecutableSha256);
+    Check(bound.enabled && reinterpret_cast<std::uintptr_t>(bound.can_fire)==0x142C477E0,
+          "production CanFire binder exact RVA");
+    std::cout<<"PASS new_can_fire_cases=5 checks="<<checks
+             <<" actual_worker_owner_pipeline=true actual_provider=true actual_full_serializer=true"
+             <<" actual_crozier_renderer=true live=false\n";
     return 0;
   } catch(const std::exception &error) { std::cerr<<"FAIL "<<error.what()<<'\n'; return 1; }
 }

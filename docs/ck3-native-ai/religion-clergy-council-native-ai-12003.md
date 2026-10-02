@@ -100,3 +100,42 @@ flowchart TD
 新证据位于 `artifacts/g2-maintainer-2026-10-02/resume-12003/religion-clergy-12003/`，包括有限PE spans、stock行窗与pins、`CLERGY-READONLY-NEXT-ABI.json`和`REPORT-FIELDS.json`。新状态为 **research，source/provider实现0、focused tests0、live calls0、actions0、game days0、G2 credit0**；既有RR/clergy/composition的production-live primitive资格仍归原artifact。没有制造synthetic结果或重验已closed调用链。
 
 可立即施工的最小leaf为现有clergy query独立 `native_can_fire`，五参数ABI、actual task/owner/incumbent来源均已闭合。其次在相同查询发布actual-position任务定义的shown/valid及conversion原生目标范围/存在结果；只在实际目标存在时补具体目标final与月rate。候选政治总utility、实际神职任免后的职位读回、任务切换/转换结果仍未完成；每个缺口已有上述明确caller，不能以撤销的宗教禁令或长期null停止。
+
+## 同一 clergy MCP：current-incumbent CanFire 只读增量
+
+本增量基于 immutable public `f30579bf6405e183192c96ea6b9bc35dddd11eec`，只修改原clergy header、生产reader/serializer和现有Python private transport三叶。仍用 `ck3_query_player_clergy_appointment_v1(expected_revision,candidate_character_id)`，owner从当前played actor取得，已有explicit candidate、selector、named permit、owning mailbox、MCP方法/参数、CLI/private flag、Crozier身份renderer和`action_eligibility_complete=false`保持。没有增加SDK入口、catalog、任命、解职、任务切换或策略。
+
+新独立 nullable boolean **`native_can_fire`**指当前actual seat的 **incumbent**，并非请求candidate。生产reader从实际task+0x40解析incumbent完整generation，从已有task+0x44绑定owner；`CanFire` helper通过`ResolveCoreCharacter`取得实际incumbent指针，调用 `0x2C477E0(owner,incumbent,task,0U,nullptr)`。它不使用CanReassign的返回值，也不把candidate有效性和CanFire合成为可执行任命许可。
+
+| 材料 | 新字段语义 |
+| --- | --- |
+| available、实际occupied、native返回true/false | 原样发布独立bool；false是可用的原生拒绝 |
+| available但没有chaplain position或incumbent | 发布null且不调用CanFire；existing position_present/incumbent字段区分合法不适用 |
+| binding/native读取失败 | 沿已有typed unavailable/failure，新增bool清空为null；不把读取失败写成false |
+| older genuine wire无新增key | 现Python decoder兼容原base字段；不补造新bool或声称观测完成 |
+
+Binder安装并确认独立`kCanFireRva=0x2C477E0`与五参数function pointer，现任参数不会被外部candidate替换。serializer只在原CanReassign字段后追加同名nullablebool；Python通过可选新key与nullablebool检查保留原值，继续逐字段返回原生packet和现有provenance。版本和schema字段不以synthetic fixture改写。
+
+```mermaid
+flowchart TD
+    Q[现有 clergy MCP 与 named permit] --> P[同一 owning mailbox 的生产 reader]
+    P --> S[actual task: +40 incumbent 与 +44 owner]
+    S --> O{实际 occupied?}
+    O -- yes --> F[2C477E0: owner, incumbent, task, 0, null]
+    F --> B[独立 native_can_fire bool]
+    O -- no --> N[null: 合法不适用]
+    P --> U[已有 typed unavailable: null]
+    B --> J[既有 serializer 与 Crozier renderer]
+    N --> J
+    U --> J
+    J --> T[现有 Python transport 与真实 ingest/wait]
+    T -. 下一次 ROOT paused query .-> R[Robert 当前值 unknown]
+```
+
+当前外置源码投影与production patch冻结在`religion-clergy-12003/can-fire-leaf/`。唯一新增focused验证在2026-10-03 07:01 Asia/Shanghai首次 **GREEN**，编译使用`/O2 /W4 /WX`。真实reader、现有mailbox/full serializer与Crozier renderer产生5份genuine wire，再由现有Python query transport及真实NativeProtocolState ingest/wait消费5次；native focused共32项checks。引擎指针与内存是明确的fixture stub，属于synthetic file-only材料，最高 **static-ready**，没有真实DLL安装、SDK/pipe或Robert实机查询。
+
+两个occupied场景使用不同的candidate和incumbent，验证`CanReassign=true / CanFire=false`以及`CanReassign=false / CanFire=true`，并检查owner、actual incumbent、task、mode0、tooltipnull全部实际传参。vacant、absent和missing-binding分别保留null与原有available/unavailable边界。Python还验证可选新增key缺失的旧材料兼容与bool类型约束。两处旧fixture Bind仅追加callback兼容；旧23/57项main与旧7份wire矩阵均没有运行。第一次attempt已GREEN，因此没有被覆盖的RED或重复attempt。
+
+回执：[`fixture/attempt-01/RESULT.json`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/religion-clergy-12003/can-fire-leaf/fixture/attempt-01/RESULT.json)，11478 bytes，SHA-256 `882984d5f9824b2f7566ec5ea18ee9213aa378219d6e3c693931488d4fa53c07`。所有source、真实wire、compile/run日志和exe pins均在该回执及[`can-fire-leaf/ROOT-DELIVERY.json`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/religion-clergy-12003/can-fire-leaf/ROOT-DELIVERY.json)中；路径相对本仓库根。三个生产leaf与两处旧Bind兼容保持分别冻结，focused source独立且不增加CMake目标。此增量新增live/actions/game-days/G2 credit均为0。
+
+后续ROOT采用最终projection，经正常strict native构建和同一Robert paused query取得当前`native_can_fire`。该增量仅闭合独立只读输入；即使true也没有完整任命action readiness、解职结果或新的religion OODA资格。

@@ -58,7 +58,7 @@ void *Character(const Bindings &b, std::int32_t id) noexcept {
 bool Exact(const Bindings &b) noexcept {
   if (!b.enabled || b.executable_sha256 != kExecutableSha256 ||
       !b.core.enabled || !b.task_storage_slot || !b.valid_position ||
-      !b.valid_character || !b.can_reassign || !b.court_owner) return false;
+      !b.valid_character || !b.can_reassign || !b.can_fire || !b.court_owner) return false;
   if (b.offline_fixture) return b.module_base == 0;
   const auto base = b.module_base;
   return base != 0 &&
@@ -66,6 +66,7 @@ bool Exact(const Bindings &b) noexcept {
       reinterpret_cast<std::uintptr_t>(b.valid_position) == base + kValidPositionRva &&
       reinterpret_cast<std::uintptr_t>(b.valid_character) == base + kValidCharacterRva &&
       reinterpret_cast<std::uintptr_t>(b.can_reassign) == base + kCanReassignRva &&
+      reinterpret_cast<std::uintptr_t>(b.can_fire) == base + kCanFireRva &&
       reinterpret_cast<std::uintptr_t>(b.court_owner) == base + kCourtOwnerRva;
 }
 
@@ -149,6 +150,20 @@ bool Predicates(const Bindings &b, const Seat &seat, std::int32_t owner,
   return true;
 }
 
+bool CanFire(const Bindings &b, void *owner, const Seat &seat,
+             bool &result) noexcept {
+  void *incumbent = Character(b, seat.incumbent);
+  if (!incumbent) return false;
+#if defined(_MSC_VER)
+  __try {
+#endif
+    result = b.can_fire(owner, incumbent, seat.task, 0U, nullptr);
+#if defined(_MSC_VER)
+  } __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+#endif
+  return true;
+}
+
 bool Context(const Bindings &b, void *owner, void *candidate,
              std::uint32_t &owner_rite, std::uint32_t &candidate_rite,
              std::int32_t &court_owner_id) noexcept {
@@ -178,7 +193,7 @@ bool Failed(Observation &out, Failure failure) noexcept {
   out.available = false;
   out.failure = failure;
   out.native_valid_position.reset(); out.native_valid_character.reset();
-  out.native_can_reassign.reset();
+  out.native_can_reassign.reset(); out.native_can_fire.reset();
   return false;
 }
 
@@ -200,6 +215,7 @@ Bindings BindClergyAppointmentImage12002(
   b.valid_position = reinterpret_cast<PositionPredicate>(module_base + kValidPositionRva);
   b.valid_character = reinterpret_cast<PositionPredicate>(module_base + kValidCharacterRva);
   b.can_reassign = reinterpret_cast<TaskPredicate>(module_base + kCanReassignRva);
+  b.can_fire = reinterpret_cast<CanFirePredicate>(module_base + kCanFireRva);
   b.court_owner = reinterpret_cast<CourtOwnerGetter>(module_base + kCourtOwnerRva);
   return b;
 }
@@ -246,6 +262,12 @@ bool ReadClergyAppointment12002(const Bindings &b, std::uint64_t epoch,
       return Failed(out, Failure::native_predicate_unavailable);
     out.native_valid_position = position; out.native_valid_character = character;
     out.native_can_reassign = reassign;
+    if (seat.incumbent != -1) {
+      bool fire = false;
+      if (!CanFire(b, owner, seat, fire))
+        return Failed(out, Failure::native_predicate_unavailable);
+      out.native_can_fire = fire;
+    }
   }
   Seat last{};
   std::uint32_t last_owner_rite = 0, last_candidate_rite = 0;
@@ -297,6 +319,7 @@ std::string SerializeClergyAppointment12002(const Observation &v) {
   o << ",\"native_valid_position\":"; Optional(o,v.native_valid_position);
   o << ",\"native_valid_character\":"; Optional(o,v.native_valid_character);
   o << ",\"native_can_reassign\":"; Optional(o,v.native_can_reassign);
+  o << ",\"native_can_fire\":"; Optional(o,v.native_can_fire);
   o << ",\"action_eligibility_complete\":false}";
   return o.str();
 }

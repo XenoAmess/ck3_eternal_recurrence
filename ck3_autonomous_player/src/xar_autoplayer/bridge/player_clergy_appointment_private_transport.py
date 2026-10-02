@@ -25,9 +25,10 @@ _KEYS = {
     "candidate_is_incumbent", "candidate_matches_owner_context", "native_valid_position",
     "native_valid_character", "native_can_reassign", "action_eligibility_complete",
 }
+_OPTIONAL_KEYS = {"native_can_fire"}
 _NULLABLE_BOOLS = (
     "candidate_matches_owner_context", "native_valid_position", "native_valid_character",
-    "native_can_reassign",
+    "native_can_reassign", "native_can_fire",
 )
 
 
@@ -46,7 +47,8 @@ def normalize_player_clergy_appointment_v1(
 ) -> dict[str, object]:
     """Preserve independent native booleans, legal missing seats and partial failures."""
     _candidate_id(candidate_character_id)
-    if (not isinstance(value, dict) or set(value) != _KEYS or value["schema"] != SCHEMA
+    if (not isinstance(value, dict) or not _KEYS <= set(value) <= _KEYS | _OPTIONAL_KEYS
+            or value["schema"] != SCHEMA
             or type(value["schema_version"]) is not int or value["schema_version"] != 1):
         raise ValueError("native clergy appointment schema is malformed")
     exact = value["exact_build"]
@@ -75,7 +77,7 @@ def normalize_player_clergy_appointment_v1(
         if value[key] is not None and (type(value[key]) is not int or not 0 <= value[key] <= 0xFFFFFFFF):
             raise ValueError(f"native clergy full Rite reference is malformed: {key}")
     for key in _NULLABLE_BOOLS:
-        if value[key] is not None and type(value[key]) is not bool:
+        if value.get(key) is not None and type(value[key]) is not bool:
             raise ValueError(f"native clergy nullable boolean is malformed: {key}")
     if value["status"] == "available":
         actor = snapshot.get("played_character")

@@ -10,6 +10,7 @@ namespace xar::ck3_12002::religion::clergy {
 inline constexpr std::uintptr_t kValidPositionRva = 0x31BCED0;
 inline constexpr std::uintptr_t kValidCharacterRva = 0x31BCF90;
 inline constexpr std::uintptr_t kCanReassignRva = 0x31B4980;
+inline constexpr std::uintptr_t kCanFireRva = 0x2C477E0;
 inline constexpr std::uintptr_t kCourtOwnerRva = 0x28BFC70;
 inline constexpr std::uintptr_t kTaskStorageRva = 0x5D1DEA0;
 inline constexpr std::size_t kLandedOffset = 0x1C0;
@@ -26,6 +27,7 @@ inline constexpr std::string_view kPositionKey = "councillor_court_chaplain";
 
 using PositionPredicate = bool (*)(void *, std::int32_t);
 using TaskPredicate = bool (*)(void *, void *);
+using CanFirePredicate = bool (*)(void *, void *, void *, std::uint32_t, void *);
 using CourtOwnerGetter = void *(*)(void *);
 using ReadMemory = bool (*)(void *, const void *, void *, std::size_t) noexcept;
 
@@ -40,6 +42,7 @@ struct Bindings {
   PositionPredicate valid_position = nullptr;
   PositionPredicate valid_character = nullptr;
   TaskPredicate can_reassign = nullptr;
+  CanFirePredicate can_fire = nullptr;
   CourtOwnerGetter court_owner = nullptr;
   void *read_context = nullptr;
   ReadMemory read_memory = nullptr;
@@ -77,6 +80,7 @@ struct Observation {
   std::optional<bool> native_valid_position;
   std::optional<bool> native_valid_character;
   std::optional<bool> native_can_reassign;
+  std::optional<bool> native_can_fire;
 };
 
 Bindings BindClergyAppointmentImage12002(

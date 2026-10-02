@@ -86,6 +86,7 @@ bool CanReassign(void *task,void *tooltip) {
   if (f->drift) Put(f->state,8,std::int32_t{53175817});
   return f->reassign_value;
 }
+bool CanFire(void *, void *, void *, std::uint32_t, void *) { return true; }
 bool Read(void *,const void *address,void *out,std::size_t size) noexcept {
   if (f->deny_read && address==f->owner.data()+r::kCharacterRiteOffset) return false;
   std::memcpy(out,address,size); return true;
@@ -97,7 +98,7 @@ r::Bindings Bind(Fixture &fixture) {
   b.core={true,&f->state_ptr,&f->jomini_ptr,&f->characters_ptr,&Player};
   b.task_storage_slot=&f->tasks_ptr;
   b.valid_position=&ValidPosition; b.valid_character=&ValidCharacter;
-  b.can_reassign=&CanReassign; b.court_owner=&CourtOwner;
+  b.can_reassign=&CanReassign; b.can_fire=&CanFire; b.court_owner=&CourtOwner;
   b.read_memory=&Read; return b;
 }
 int checks=0;
