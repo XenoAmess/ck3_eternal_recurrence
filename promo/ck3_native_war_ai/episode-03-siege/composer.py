@@ -26,6 +26,13 @@ def compose(config, run, *, config_path, run_path, workdir,
     dry = p.read(root / "dry-master.json")
     music = p.read(root / "music-policy.json")
     p.exact(dry)
+    if dry.get("visual_render_receipts"):
+        p.exact(dry["visual_render_receipts"])
+        visuals = p.read(dry["visual_render_receipts"]["path"])
+        p.require(visuals["total_duration_frames"] == dry["duration_frames_expected"],
+                  "Native UI render receipt differs from the prepared integer picture clock")
+        p.exact(visuals["timeline"])
+        p.exact(visuals["edit"])
     p.exact(music["source"])
     p.require(config.project_id == p.read(root / "sources/project-config.json")["project"]["id"],
               "Project config differs from the prepared Episode03 run")
@@ -95,7 +102,7 @@ def compose(config, run, *, config_path, run_path, workdir,
                                         "episode03-bound-existing-media"),
                            RenderOptions(1920, 1080, 30, duration), {},
                            prepared_narration=Path(dry["path"]), audio_mix=spec)
-    draft = PipelineDraft(config, (segment,), Path(p.OUTPUT), "e3-deliverable", "video/mp4")
+    draft = PipelineDraft(config, (segment,), Path(p.output_name(root)), "e3-deliverable", "video/mp4")
     return PipelineInvocation(draft,
                               PipelineDependencies(p.environment(root)["ffmpeg"], subtitle_renderer,
                                                    run_command, visual_probe,

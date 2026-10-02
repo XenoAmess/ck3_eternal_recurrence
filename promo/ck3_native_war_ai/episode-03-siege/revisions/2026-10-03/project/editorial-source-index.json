@@ -1,0 +1,846 @@
+{
+  "schema": "ck3-war-ai-episode03-editorial-source-index.v1",
+  "status": "ready-for-root-exact-freeze",
+  "candidate_revision": "episode03-editorial-revision-20261003-a06",
+  "sources": [
+    {
+      "id": "progress",
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a06-sources/progress-count-corrected.md",
+      "bytes": 19093,
+      "sha256": "f03e27d000202ad67489126c8a3a5946a5a49b9692a1149595dd8fb1a954b948",
+      "original_path": "D:/we3/docs/ck3-native-ai/episode03-siege-progress-1.20.0.3.md",
+      "evidence_level": "exact-build-.3-static-count-stack-erratum",
+      "kind": "exact-build-static-research"
+    },
+    {
+      "id": "assault",
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a01-sources/episode03-assault-1.20.0.3.md",
+      "bytes": 13633,
+      "sha256": "fffa08845817596dc5b801a3c55ba4d30ecf510f9b14642bb70304554c2d7163",
+      "original_path": "D:/we3/docs/ck3-native-ai/episode03-assault-1.20.0.3.md",
+      "evidence_level": "exact-build-1.20.0.3-static-no-new-live",
+      "kind": "exact-build-static-research"
+    },
+    {
+      "id": "occupation",
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a01-sources/episode03-occupation-war-score-1.20.0.3.md",
+      "bytes": 19509,
+      "sha256": "86ef1cda96257bd9ad07e0d2936f43890ba55c94ed7146d6e7f37b16de1edfdc",
+      "original_path": "D:/we3/docs/ck3-native-ai/episode03-occupation-war-score-1.20.0.3.md",
+      "evidence_level": "exact-build-1.20.0.3-static-no-new-live",
+      "kind": "exact-build-static-research"
+    },
+    {
+      "id": "events",
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a01-sources/episode03-siege-events-1.20.0.3.md",
+      "bytes": 13563,
+      "sha256": "95f62d705829c840ba7fdaba107608ad17e987508845409ca4d22b10ea4b5780",
+      "original_path": "D:/we3/docs/ck3-native-ai/episode03-siege-events-1.20.0.3.md",
+      "evidence_level": "exact-build-1.20.0.3-static-no-new-live",
+      "kind": "exact-build-static-research"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-one-day-a01/20261002-154540-999103-ef4a2e2a07-response.json",
+      "bytes": 3213279,
+      "sha256": "57643a2026b334453ae73b9eabe9ba111b723c2934bb1388db6e60ad32b3afb7",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+      "bytes": 2904486,
+      "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-one-day-a01/20261002-154544-174142-f2c8881936-response.json",
+      "bytes": 3287287,
+      "sha256": "c2570033a406d64082c69d0121264100b27752084c853394bac02570d4f24053",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-155505-bdf551ab/desktop.png",
+      "bytes": 2916147,
+      "sha256": "fbd75e88951c52dc0196c82bd7b18126c7d84f7de96c66114cf492f1d1dfa538",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-to-reinforcement-a01/20261002-155546-415273-192fcbf8d3-response.json",
+      "bytes": 3361307,
+      "sha256": "b3d96a18aac9ddfbdc0e9214153f69239f8b759c2ecc93e84ff777b576bc148c",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-to-reinforcement-a01/20261002-155549-887766-81ad18a3d6-response.json",
+      "bytes": 3435131,
+      "sha256": "aa1d3be5dd406f03d459e099d4707e7433797ffb7cfa84ae48c6a18eb953b4f1",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-151454-4b044a78/desktop.png",
+      "bytes": 2685955,
+      "sha256": "b1c2c96c7640cfd6ab7eb34c9784c860b7f51f2394c2722dd458f5b838aa831b",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-151753-9392251d/desktop.png",
+      "bytes": 2746359,
+      "sha256": "c211846a86cf124c34db781fa3e13668ada0f0f2dcf52e120f74c0a44d8d81d8",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-merge0-with1-a01/20261002-150649-588939-f53144b228-response.json",
+      "bytes": 220771,
+      "sha256": "89d63ef31d3a579dc72676231b43f1b262a44e6b428ebcd6fa1b3299d7e576c7",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-merge0-with1-a01/20261002-150649-916018-09c7b794ef-response.json",
+      "bytes": 5575,
+      "sha256": "2de91b9e480d710d548ff42ee939ec6cc57c44f3bca0326b8fbba7fe0804616f",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152006-339597-9af4b91f06-response.json",
+      "bytes": 213607,
+      "sha256": "c9fe445654cce740c93375924cefabbb616918d7acebc355506c965d8ea22c31",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152006-638643-1f1a3a35dc-response.json",
+      "bytes": 24142,
+      "sha256": "be935504c669d45877b6d40b3d7d4252ce7260b82c1dbec970201ff69ab65769",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152007-781366-0ea11a6c77-response.json",
+      "bytes": 243531,
+      "sha256": "bb66f60ac3aa7c43532c2d714bd2220158238296b3d2d5e5d83e52174a229d27",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152008-033731-bb8f5e7d13-response.json",
+      "bytes": 29375,
+      "sha256": "4aded155eaed49cfa4ea8fb6306d58fb9eb244d3095b87f7e1f6ff80132980f3",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152009-272695-fd3ed17b36-response.json",
+      "bytes": 284707,
+      "sha256": "0e44264fdc32940d071b05e397f1a4d4271a103c32047cbefc396037b92b9824",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152009-548568-731fd0428f-response.json",
+      "bytes": 32791,
+      "sha256": "06a7262fda9481946d8d8e0ba6e36a7857cd795adc4f2513340b022a43a118ce",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152011-031211-19474ed237-response.json",
+      "bytes": 323707,
+      "sha256": "3df4a7619b25870dfd5110b643a420853f3f0c7e2650a6f09d36cb37e31cf00b",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152011-291495-7b945f79c5-response.json",
+      "bytes": 32791,
+      "sha256": "8c0adedc32e1e7e9a073a093b271b0482baaae0cd60cd3d869de90d5fc6e4c8c",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152012-784265-6501bc754f-response.json",
+      "bytes": 362699,
+      "sha256": "3976ebc74e6b479f5ab036a77790322b38c8f7b511c089618e6c5f52076a1e5b",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152013-071135-9a846a1944-response.json",
+      "bytes": 32791,
+      "sha256": "cd5f0ff75e6c166ac7f2389346adf86491b076303fd426fd32d58186ae6553e8",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152014-781436-564a98f265-response.json",
+      "bytes": 401691,
+      "sha256": "b93188bdce75dd5944de5f5b7deeea2745421ac438485d2def070ac01bd5b2d1",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152015-096053-bd9a76b302-response.json",
+      "bytes": 32791,
+      "sha256": "cd82b305a1a99095c1fb385722d6b4c1945bf0349ecc2426ac309c06741ccc23",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152016-778896-bd8a39366b-response.json",
+      "bytes": 440683,
+      "sha256": "5291a38904d841af4019a33cb8408407a3a78cdad4c02a478015890553fc9c87",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152017-050069-98483cb1b6-response.json",
+      "bytes": 32795,
+      "sha256": "fb1ca57204df06afb664469a0b2e4bfec0a18cfc99c9b3ef6a4f4e01b66b9ba5",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152018-784173-5fc930aefb-response.json",
+      "bytes": 479675,
+      "sha256": "811d446f08f7e9e5484e720fef6fb7f9c63a827ffa5a5c2fe135b7d1fb1d2ea1",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152019-091732-698b41a01b-response.json",
+      "bytes": 32791,
+      "sha256": "fffcde4ea0a64c31713b03b063540d156b7b477e158a9f9624fa3940f57767b7",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152021-016053-c0863fab33-response.json",
+      "bytes": 518687,
+      "sha256": "608e328de5a21694c46d18b7494731fbacfa86d5b03e8e71d7abdba320101283",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152021-321805-a1b2cd6191-response.json",
+      "bytes": 40115,
+      "sha256": "edd5ebea56d2c7419e1f4e1953c6e63a90e7ba974afb8c900e205012d33ee4d5",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-gather-a01/20261002-152022-800483-6cf9343b02-response.json",
+      "bytes": 571823,
+      "sha256": "e8bfec285533bccd89cddd1f5c663c30d94c8f317e79a33bc17ef99b40c0a578",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-reinforcement-arrival-a01/20261002-155707-473703-0802b5d9c8-response.json",
+      "bytes": 3878607,
+      "sha256": "9cb43d2c3203523d3c392c4df06e6c2b2993b8c81dc5d9032c6612e36aeb4d0b",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-reinforcement-arrival-a01/20261002-155708-055762-5425b3428e-response.json",
+      "bytes": 60236,
+      "sha256": "bd315d765ce260e59c1bc93193432dc6487fe6b295cd4d4d346607fb864afe83",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-reinforcement-arrival-a01/20261002-155710-907291-cf5d035a9e-response.json",
+      "bytes": 3944059,
+      "sha256": "43ef585d6ed142e3a984f4554bcc0723660dae2a0234afe2e0e61d87ec438064",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-reinforcement-arrival-a01/20261002-155711-459605-f6a1468d3a-response.json",
+      "bytes": 58064,
+      "sha256": "3c8b79a9a05cbbcce1fa375cdb7227d428c01579329ec416be62c66d083d5fd6",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-reinforcement-arrival-a01/20261002-155714-166102-bc2b82bb25-response.json",
+      "bytes": 4012911,
+      "sha256": "1ea092e9c1581711ad8be365aa6a821fac5848426cd787476b97f7165058c72a",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-160245-2c39c18c/desktop.png",
+      "bytes": 2894674,
+      "sha256": "957ba6defaeb31d86f7f88aa82ebbb31520d36c7d2904281a7b2e226c95d261a",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-merge-reinforcement-a01/20261002-155817-531876-8085d7efb4-response.json",
+      "bytes": 4012919,
+      "sha256": "04a1fa3516a68d0c8efc04666edbe91909daeaaffbe6038f723e6f356abed9f3",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-merge-reinforcement-a01/20261002-155818-164239-b00b3c95b5-response.json",
+      "bytes": 5452,
+      "sha256": "bf4282e9d040a7ff48bffedd5bb9f260abb31d1d61c08d037ff32f064c18acac",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-merge-next-day-designator-a01/20261002-160047-764132-222dc904fe-response.json",
+      "bytes": 4026083,
+      "sha256": "d00488e0b1d7422f894807fa1938bef4eb152b7323bfe775e2146f3ca1c67786",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-merge-next-day-designator-a01/20261002-160048-457598-be7ff08fa0-response.json",
+      "bytes": 53680,
+      "sha256": "185475825e4ef141ab59637eed184ca1f967c260b2b2647405b37a7b115cb5c7",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160119-326327-d5242ecb5a-response.json",
+      "bytes": 4084655,
+      "sha256": "890e9c728e0189e44755b8254d19635ab45b8fee7fa61d858e506d51687dbf13",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160119-925966-cc38e97b73-response.json",
+      "bytes": 53580,
+      "sha256": "f9117c0898abbc3174d905e9778ed7e31c36e9ad1f78bcdbd294f75d0a5570a5",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160122-639554-03883c2f96-response.json",
+      "bytes": 4148267,
+      "sha256": "6b73dc57bc95c8f3347ae62afba92feecffa786cd2931dd312fc8b599f61f311",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160123-312453-b6c37661a7-response.json",
+      "bytes": 53580,
+      "sha256": "6925747bce2ff7444f45199d957f98b6b5944d19211f53151ca7088e5502443f",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160126-147333-50366594a6-response.json",
+      "bytes": 4211887,
+      "sha256": "857a181d6791d8f9ac4d5e1f342bae30627e49592d5c2cf0c74d3e3af88b31d7",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160126-795766-9f764fd87f-response.json",
+      "bytes": 53580,
+      "sha256": "e130c385e0e845e95c72933c9890381fc23ce7bad13ffd1ca6b26c487b83a828",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160129-655757-fd590fc191-response.json",
+      "bytes": 4275507,
+      "sha256": "3d039eff719fcace2aff863a5d6a121e7ac2f26e9d7d2f4a38efb11326402d03",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160130-317198-34752dfc31-response.json",
+      "bytes": 53580,
+      "sha256": "f25827cb098819b0e489cb18548487dcda1bda4ff741fe96c9641675dc1d9746",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160133-161438-2718bca641-response.json",
+      "bytes": 4339127,
+      "sha256": "9902b58c4407978a8462f73c122b94340adf4a1b32c41f9f8405acf17a49a0f6",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160133-785376-b9d38e9385-response.json",
+      "bytes": 53604,
+      "sha256": "a8a59b9b69ede50dc8831d2fa3adc4d934a874fb986d4afd3579e6d145526bfa",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160136-660101-bf188aa821-response.json",
+      "bytes": 4402795,
+      "sha256": "91a9a50e969ab3669c9f73363e22e3a5eba8ae03b2d74bc469c60cffe332f67d",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160137-332261-42c342eafe-response.json",
+      "bytes": 53628,
+      "sha256": "832fc9f40ce42edb42a86ce77bc6b0cc7106aa975cb8a5b2a78ef0ee37f9d40a",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160139-895909-e8c25e591e-response.json",
+      "bytes": 4466463,
+      "sha256": "950ba973226dd2bbe5d676ee49a043e92ec80d4280ecd562672d5cd0dc5f54dc",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160140-603507-243fe02748-response.json",
+      "bytes": 53624,
+      "sha256": "3a9d001c27a675bad481de4e6f3a72cceb7ab9ccf915eb9e99e56e9663a4a4e7",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-before-phase1-a01/20261002-160143-404413-b8ea65aea3-response.json",
+      "bytes": 4530123,
+      "sha256": "d8bf67cba860dc43925a1a74cfd97e0ec048624dff802e8e060ebf5fa544d7d5",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-start-a01/20261002-160525-123845-149517b9f4-response.json",
+      "bytes": 4573579,
+      "sha256": "7473ab18efbf90fee00dde0ec16b471c89a4602360c3c0377a002e42e8a87c82",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-start-a01/20261002-160525-865698-26a912eda8-response.json",
+      "bytes": 6868,
+      "sha256": "b3e19ed338bc09a2b383d0a40e129889d8665ff7deee8d69c93f571aafd9d873",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-one-day-a01/20261002-160557-646783-7d853bbcac-response.json",
+      "bytes": 4567095,
+      "sha256": "b0c6e7d12ae6aab7541f2bd61b228146bb67a3a7f02977413500c811083f2ec8",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-one-day-a01/20261002-160558-341162-738ec3bcca-response.json",
+      "bytes": 53548,
+      "sha256": "c79471f5cbb93329bc6c9facc89288c8d0ba52d4b84ca4819520536abeca97e2",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-one-day-a01/20261002-160600-895271-853593ba5c-response.json",
+      "bytes": 4630675,
+      "sha256": "8a65ff758155df5d2efed98b6d094376d27e693efabc73eef2f7b3e5009cd035",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-loss-readback-a01/20261002-160602-028674-b773576e92-response.json",
+      "bytes": 5785,
+      "sha256": "1315c2e611a08e52eb11ebde5f97503083c2c296ba7b9ce5395551892450d577",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-160437-467427f9/desktop.png",
+      "bytes": 2923742,
+      "sha256": "46b6215ee71ba6a9b68f5826c7e7eab8bb416d5988a893e9077fe4305afafbba",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/assault-real-readback-a02.md",
+      "bytes": 7523,
+      "sha256": "6de6a8bc6c32f15813f74276d4833fdc2866c7070284e17ba929bf398f9fa888",
+      "kind": "independent-bounded-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/assault-real-readback-a02.json",
+      "bytes": 110376,
+      "sha256": "95c17b00867c9a6d9c08e7d7d81fda898ffc0a01663edd6164881038a0349d7d",
+      "kind": "independent-bounded-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-stop-a01/20261002-160644-631987-8c1c6cd153-response.json",
+      "bytes": 4643835,
+      "sha256": "162de1b1b637f40fce4a2781436d24c9ca5351a0871933512372ca2f0cba4b42",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-assault-stop-a01/20261002-160645-295024-9a394ec360-response.json",
+      "bytes": 6863,
+      "sha256": "351963965f79a3ceff3c4b226eb6034e8040f7c6a0a700ab93c7c53a41277847",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-162858-4cd42097/desktop.png",
+      "bytes": 2962355,
+      "sha256": "d4be5849b81844eea9e22430c24a14e174d03ef3d01b3fb3ceeb77f1a3dc57db",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163032-439934-28909fcebd-response.json",
+      "bytes": 6820467,
+      "sha256": "91b70b2657217897068bbfe4321b2a1b866c199ce8932734b27ec94b9007f0c5",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163025-298159-04f3b44438-response.json",
+      "bytes": 6708163,
+      "sha256": "761117fa55db01451b0417370523e7e17fb93fd9a37a264467f7f92c3dfe5b58",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163026-153513-b720234978-response.json",
+      "bytes": 53252,
+      "sha256": "324f793d30e65fb81168778b9fa3aa69dd8263dabb83bc4d8e01017cee149e40",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163028-656012-089d85780d-response.json",
+      "bytes": 6757267,
+      "sha256": "4fadfd9a2743ed0bc4b53aad084ff76e57023bc6a6f39883aa6ea6747b4235c9",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163029-537020-5add14da37-response.json",
+      "bytes": 53252,
+      "sha256": "2eed9eadcae23603abb9a72fbe0154506e7dd8b01a7c3871448666fbbb2a523c",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163033-306537-36613c0366-response.json",
+      "bytes": 47292,
+      "sha256": "ad279aeebfbf37745c98484fd6bd62cb20a194ee6fac477739aac02c382dd2c5",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-a01/20261002-163035-929866-c5dc12f266-response.json",
+      "bytes": 6872491,
+      "sha256": "79e9bcc8c483b4a2801ea21627791e4f75fffb81044f7dad74f20637dddb3e23",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-163105-f580d834/desktop.png",
+      "bytes": 2896147,
+      "sha256": "4cfe8ed1c59172c66e4efdc47be6db672c15c6f7e30bbed40ba8b1727f386ac6",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-strength-a01/20261002-163136-850022-91d2496201-response.json",
+      "bytes": 5785,
+      "sha256": "88e129bd4b3e256d095cb3a391c0304ac320e68302e9f241f5b7813689aa7ed7",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-war-immediate-before-a01/20261002-163024-433224-5b1d6da9cb-response.json",
+      "bytes": 25382,
+      "sha256": "d833368fb717e1d6007a2d8b7874216ab667f78349bc089da6f871556b3ea814",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-fall-war-after-a01/20261002-163104-730054-a42a8cc9a9-response.json",
+      "bytes": 25422,
+      "sha256": "568a09c69e2c2258afaec7962797596c0bb3cd5021e14d5c308f2717f5813a9b",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-163520-50b623cd/desktop.png",
+      "bytes": 2759867,
+      "sha256": "01fd6212598bda9eb6c014b170c86ae50c6c66dd1fdee8068a20bd19d14a8079",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-163903-edcfdf12/desktop.png",
+      "bytes": 2781531,
+      "sha256": "b584fd2faa066fa841cf884695b7ed10ea3852fcbb7c309c942a9a570652ac74",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-163225-9bbcae09/desktop.png",
+      "bytes": 2922727,
+      "sha256": "ece6870ee7c218be69656d7b26df7e0693622264a5a233463839151953113db3",
+      "kind": "actual-live-response-or-frame-or-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-163445-0409322b/desktop.png",
+      "bytes": 2937509,
+      "sha256": "0edacca805e715920828cbe68c1a10804675ed1b74d90d1438dcf0b5dd1138cc",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-150201-603c039c/desktop.png",
+      "bytes": 2324983,
+      "sha256": "29f704ea9dc361040fcd7e1b623f82031d7a04a3a8e3c58089a5eff8cda5f4ef",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-153200-228c8f0e/desktop.png",
+      "bytes": 3091463,
+      "sha256": "2a41c83d95c22172ae08ea48154e728d7549c93cc856ab1303adf524f427a50a",
+      "kind": "original-game-UI-frame"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/one-day-real-review-a01/review.md",
+      "bytes": 7000,
+      "sha256": "49da2feb6aaf87173da16462ff8c30d35f3a3b7ce3e8b34bcd5de64e5e255677",
+      "kind": "independent-bounded-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/one-day-real-review-a01/review.json",
+      "bytes": 81985,
+      "sha256": "23b214708316a4a082550e88d11127481c79bb2e9072c06a984f1fc9c6e62016",
+      "kind": "independent-bounded-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/one-day-real-review-a01/count-normalizer-static-proof.json",
+      "bytes": 7222,
+      "sha256": "a0f7b661ce92f00f9205d8fdabb4aac40918caed414576a1622a8fe790fe6c02",
+      "kind": "independent-bounded-readback"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/capture-12-william-reinforcement/raw-desktop.mkv",
+      "bytes": 77981394,
+      "sha256": "d04d62cba6b89af47094838d2c8a46dfa75436a7e3f695ed24c61b03226f92d1",
+      "kind": "fully-decoded-original-recording"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/12/extraction-summary.json",
+      "bytes": 3889,
+      "sha256": "06b75ccf3dba1ceaba20a7d045a333980afed759de4614a60cb4b07eb6e4a6e6",
+      "kind": "decode-frame-evidence"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/capture-13-william-breach/raw-desktop.mkv",
+      "bytes": 81824034,
+      "sha256": "87cb0e07e903fb533eaadc4b70cfe34a9af5e4fcc8d7f31dcc9747066dfab33f",
+      "kind": "fully-decoded-original-recording"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/13/extraction-summary.json",
+      "bytes": 3878,
+      "sha256": "720ac4a80b856b588a1855b182ec8ee8732081917358e85926ee0b6879055bf4",
+      "kind": "decode-frame-evidence"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/capture-14-william-assault/raw-desktop.mkv",
+      "bytes": 84316072,
+      "sha256": "e6b0b237931c33fd714929ec425a115ddc06eb62436508c663a5b7201ef05388",
+      "kind": "fully-decoded-original-recording"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/14/extraction-summary.json",
+      "bytes": 3879,
+      "sha256": "0a6b5a653eab56d7e0698bb1c0bf02ec17e948f39d58a6f72a8bcb92f3494a89",
+      "kind": "decode-frame-evidence"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/capture-15-william-fall/raw-desktop.mkv",
+      "bytes": 84325541,
+      "sha256": "722b82aa8f2a9e083cd929f177cfe05d483bcce69b22c164b2085f2a782daee7",
+      "kind": "fully-decoded-original-recording"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/15/extraction-summary.json",
+      "bytes": 3888,
+      "sha256": "00dbe0c9a13ccb8845c160368b3f76d0cfcf9528b4b2f73fcb4a2f15191a7c0d",
+      "kind": "decode-frame-evidence"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/capture-16-william-occupation/raw-desktop.mkv",
+      "bytes": 78283528,
+      "sha256": "0836dbfeea8997ac0902027c9a463201bc7dc9b053166faf769a41742889d599",
+      "kind": "fully-decoded-original-recording"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/16/extraction-summary.json",
+      "bytes": 3882,
+      "sha256": "1282cf3e7001ad56feb002a7679b44d5772ca37e2a87f076b677497a47371acb",
+      "kind": "decode-frame-evidence"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/15/source-candidate.json",
+      "bytes": 3838,
+      "sha256": "f4786e8eb9541d7258ceac384003d7068f0b55e36bd3f5226adcc1fbcde91afa",
+      "kind": "full-decode-exact-PTS-sampled-candidate-not-human-approval"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/william-lewes-fall-1067-04-22.ck3",
+      "bytes": 74680288,
+      "sha256": "fb0336fe3d570031fa640dc7b0b6d311b09fd62c9dec7b8b18aa47861453d8b0",
+      "kind": "actual-post-capture-checkpoint"
+    }
+  ],
+  "static_source_pins": [
+    {
+      "id": "progress",
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a06-sources/progress-count-corrected.md",
+      "bytes": 19093,
+      "sha256": "f03e27d000202ad67489126c8a3a5946a5a49b9692a1149595dd8fb1a954b948",
+      "original_path": "D:/we3/docs/ck3-native-ai/episode03-siege-progress-1.20.0.3.md",
+      "evidence_level": "exact-build-.3-static-count-stack-erratum"
+    },
+    {
+      "id": "assault",
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a01-sources/episode03-assault-1.20.0.3.md",
+      "bytes": 13633,
+      "sha256": "fffa08845817596dc5b801a3c55ba4d30ecf510f9b14642bb70304554c2d7163",
+      "original_path": "D:/we3/docs/ck3-native-ai/episode03-assault-1.20.0.3.md",
+      "evidence_level": "exact-build-1.20.0.3-static-no-new-live"
+    },
+    {
+      "id": "occupation",
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a01-sources/episode03-occupation-war-score-1.20.0.3.md",
+      "bytes": 19509,
+      "sha256": "86ef1cda96257bd9ad07e0d2936f43890ba55c94ed7146d6e7f37b16de1edfdc",
+      "original_path": "D:/we3/docs/ck3-native-ai/episode03-occupation-war-score-1.20.0.3.md",
+      "evidence_level": "exact-build-1.20.0.3-static-no-new-live"
+    },
+    {
+      "id": "events",
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a01-sources/episode03-siege-events-1.20.0.3.md",
+      "bytes": 13563,
+      "sha256": "95f62d705829c840ba7fdaba107608ad17e987508845409ca4d22b10ea4b5780",
+      "original_path": "D:/we3/docs/ck3-native-ai/episode03-siege-events-1.20.0.3.md",
+      "evidence_level": "exact-build-1.20.0.3-static-no-new-live"
+    }
+  ],
+  "historical_static_baseline": [
+    {
+      "id": "progress",
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a01-sources/episode03-siege-progress-1.20.0.3.md",
+      "bytes": 16976,
+      "sha256": "83517d2dff377371148c737dd1c944c7bf3d591778ec451822a75d0ffc1c3824",
+      "original_path": "D:/we3/docs/ck3-native-ai/episode03-siege-progress-1.20.0.3.md",
+      "evidence_level": "exact-build-1.20.0.3-static-no-new-live"
+    },
+    {
+      "id": "assault",
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a01-sources/episode03-assault-1.20.0.3.md",
+      "bytes": 13633,
+      "sha256": "fffa08845817596dc5b801a3c55ba4d30ecf510f9b14642bb70304554c2d7163",
+      "original_path": "D:/we3/docs/ck3-native-ai/episode03-assault-1.20.0.3.md",
+      "evidence_level": "exact-build-1.20.0.3-static-no-new-live"
+    },
+    {
+      "id": "occupation",
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a01-sources/episode03-occupation-war-score-1.20.0.3.md",
+      "bytes": 19509,
+      "sha256": "86ef1cda96257bd9ad07e0d2936f43890ba55c94ed7146d6e7f37b16de1edfdc",
+      "original_path": "D:/we3/docs/ck3-native-ai/episode03-occupation-war-score-1.20.0.3.md",
+      "evidence_level": "exact-build-1.20.0.3-static-no-new-live"
+    },
+    {
+      "id": "events",
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a01-sources/episode03-siege-events-1.20.0.3.md",
+      "bytes": 13563,
+      "sha256": "95f62d705829c840ba7fdaba107608ad17e987508845409ca4d22b10ea4b5780",
+      "original_path": "D:/we3/docs/ck3-native-ai/episode03-siege-events-1.20.0.3.md",
+      "evidence_level": "exact-build-1.20.0.3-static-no-new-live"
+    }
+  ],
+  "before_project_manifest": {
+    "path": "D:/ck3-war-episode03-20261002-a01/editorial-before-final-a06/manifest.json",
+    "bytes": 2941,
+    "sha256": "4c896de5045c1dc20966bbe1509902d6abb584b7cc8c47ab0a082384733ccafa"
+  },
+  "a05_draft_pin": {
+    "path": "D:/ck3-war-episode03-20261002-a01/episode03-draft-a05-story.json",
+    "bytes": 193642,
+    "sha256": "d98a724dc2466265035bb010c9f6caed65d3727330dafa9d9edd795228ca6e04"
+  },
+  "pre_final_a06_pin": {
+    "path": "D:/ck3-war-episode03-20261002-a01/episode03-draft-a06-story.json",
+    "bytes": 231715,
+    "sha256": "08c84e91eb2e5c96704bd89b1e2c005e688274872527c10a5f48643e6a457e14"
+  },
+  "root_freeze_expected_path": "D:\\ck3-war-episode03-revision-20261003-a01\\root-production-input-freeze-a01.json",
+  "human_signoff": "not-provided",
+  "scope": "Independent existing-byte reading and bilingual editorial only; no runtime, desktop, provider or media render operations.",
+  "root_postcapture_checkpoint": {
+    "path": "D:/ck3-war-episode03-20261002-a01/william-lewes-fall-1067-04-22.ck3",
+    "bytes": 74680288,
+    "sha256": "fb0336fe3d570031fa640dc7b0b6d311b09fd62c9dec7b8b18aa47861453d8b0"
+  },
+  "fall_source_candidate_report": {
+    "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/15/source-candidate.json",
+    "bytes": 3838,
+    "sha256": "f4786e8eb9541d7258ceac384003d7068f0b55e36bd3f5226adcc1fbcde91afa"
+  },
+  "revision_editorial_pin": {
+    "path": "D:\\ck3-war-episode03-revision-20261003-a01\\editorial\\review-story-episode03-revision-a06.json",
+    "bytes": 256670,
+    "sha256": "B77A0C9C464567B37D4E3886B6179C50CEB6E825907A6535A5221F9FEDAB2161"
+  },
+  "revision_board_text_pin": {
+    "path": "D:\\ck3-war-episode03-revision-20261003-a01\\editorial\\board-text-proposals-a03.json",
+    "bytes": 11339,
+    "sha256": "E722B4FDEDE6701D8A28A0EE88CDB6754B7860CC074E8BFDB152B02B70D52D00"
+  },
+  "historical_project_manifest": [
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\project\\claim-ledger.json",
+      "bytes": 64877,
+      "sha256": "88CD3B077184ADC9C318F56C179CBDC6C68DEE9243BEB925E7880BCF612A4A94"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\project\\editorial-outline.md",
+      "bytes": 1380,
+      "sha256": "1D785AE9322766623FD195D2E8F4A70B3CE8AA92CA5996727916CAFDD601A8A5"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\project\\editorial-source-index.json",
+      "bytes": 34818,
+      "sha256": "1629B884AD75A1BD54074209FC8D74A46F47F197FD6D26ABB09C8A773EDEAF3B"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\project\\full-narration-zh.txt",
+      "bytes": 19194,
+      "sha256": "10A9946797399043A403850D081CF019EF19F66C17AB201BB546690981F2F0A4"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\project\\live-source.json",
+      "bytes": 94185,
+      "sha256": "DD5ADF37892E56814EAB0387A5C3A354CB1A3BEBA081F8D54035DF737B5BF7D5"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\project\\promo-project.json",
+      "bytes": 82998,
+      "sha256": "769005909008FB80909AD35DFBF16DC4E323D2623E095CEBDDF0E8345BBE1891"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\project\\README.md",
+      "bytes": 1710,
+      "sha256": "75C8F697BD1F2F5FBC9E447136E221AB21E98E78FE98C112BCA5BFD62A347F07"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\project\\review-story-episode03.json",
+      "bytes": 225326,
+      "sha256": "C9D2FE23A5BFFAFF371E72F3C1D59D425E6945A2F47936E1E69855E4487E69F0"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\project\\shot-list.json",
+      "bytes": 10851,
+      "sha256": "14A887D51ED9ABEB476247D6177F16C3A184A2D9FF2BDB0B2F674655609E42CD"
+    }
+  ],
+  "new_bookmark_source": {
+    "path": "D:\\ck3-war-episode03-revision-20261003-a01\\ui-capture\\william-bookmark-clean-01\\desktop.png",
+    "bytes": 2805333,
+    "sha256": "414CF9D018E08C8F39270B3EEDFC6077CD487005855C11600AAC1CB1ED4672AE"
+  },
+  "revision_review_source_pins": [
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/mechanism-review/reinforcement-equality-review.md",
+      "bytes": 15025,
+      "sha256": "fc670545a8f9a829b37732c65fb4e338a5181c733ae044f89aadfec491b7e816"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/mechanism-review/reinforcement-equality-review.json",
+      "bytes": 39696,
+      "sha256": "1714d3511d9ccf0c5660795ee7c93ccc9079cfb5eac011e278fbaf2885ae40cc"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/mechanism-review/daily-tooltip-label-scope.json",
+      "bytes": 15801,
+      "sha256": "cdfed0aec6051a2cb25d213f830d6298adc3368911aac5da43b3b74a2fbddd76"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/mechanism-review/daily-tooltip-label-scope.md",
+      "bytes": 2810,
+      "sha256": "02614934611eb09bbfa62f3667982ff40f61c0009d8c1d5d61c558b6001b3a30"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/native-terminology/native-terms-catalog-a01.json",
+      "bytes": 832857,
+      "sha256": "fe0f603bdaea2a7675fe77b0bda3f35fb4ac5f8ce4615b5956ee4311cbe75a43"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/native-terminology/cue-and-board-replacement-plan-a01.json",
+      "bytes": 399984,
+      "sha256": "f7bcf3b77871966f17f57b3366646f6ea7ee22d00bc92cae206ec1b6d140f4ce"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/native-terminology/siege-native-evidence.json",
+      "bytes": 123744,
+      "sha256": "86b36cbcfa36f3b7fea9f07c891c9a0da5f90a827308d65e517fa85f652fa515"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/native-terminology/war-names-native-evidence.json",
+      "bytes": 159550,
+      "sha256": "12194ae12b7b3a4d9178e9201b1f8ac8f5ef1fd76d42e06fa93826ee014df2b1"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-155756-6c372ed9/desktop.png",
+      "bytes": 2877743,
+      "sha256": "56475504a404c8d4037e93e76dab276b3b8ef93adbc17a3b29e1c155606e1aad"
+    },
+    {
+      "path": "D:/we3r/docs/ck3-native-ai/episode03-native-chinese-terminology-1.20.0.3.json",
+      "bytes": 414366,
+      "sha256": "f191ed65dc619db5c35dc9ec137b5e1f1814a730ef05b08d7817c4b766cbdc1b"
+    }
+  ],
+  "prepared_audio": {
+    "path": "D:\\ck3-war-episode03-revision-20261003-a01\\tts-only\\attempt-a03\\prepared-audio.json",
+    "bytes": 393035,
+    "sha256": "9E1D161B3E194328FCD3701A4DBF3731B9FF169C9726E6B289751D666358751B"
+  }
+}

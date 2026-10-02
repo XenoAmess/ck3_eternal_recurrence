@@ -1,0 +1,113 @@
+{
+  "schema": "ck3.episode03.root-production-input-freeze/v1",
+  "status": "ready-for-production",
+  "created_at_utc": "2026-10-02T22:52:58.971830+00:00",
+  "inputs": [
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\revisions\\2026-10-03\\project\\claim-ledger.json",
+      "bytes": 94939,
+      "sha256": "790817BE17B5317BDBF01077743954FFC1D44E94B0C56D0361A03FCBEFAD41F7"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\revisions\\2026-10-03\\project\\editorial-outline.md",
+      "bytes": 576,
+      "sha256": "7EFFAD1CA30363EEF3BDCB8F9A1129888EFD6ED9A1C66EE72B07E4D744E6B504"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\revisions\\2026-10-03\\project\\editorial-source-index.json",
+      "bytes": 40065,
+      "sha256": "CC4E7CB748ECC46AF238B62B0F8A0C818368A2A35CCD6BE83621B538D16755F5"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\revisions\\2026-10-03\\project\\full-narration-zh.txt",
+      "bytes": 17967,
+      "sha256": "9CD2E6923B2471B0364A5B8DA66931FD2F9A5E8069EE1E51B28AA31C40536A91"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\revisions\\2026-10-03\\project\\live-source.json",
+      "bytes": 308229,
+      "sha256": "00D1BCCF65F26F174BFA34A36F5FB411784664E03D21C53A7C584CAC3AA48A64"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\revisions\\2026-10-03\\project\\promo-project.json",
+      "bytes": 77938,
+      "sha256": "A24A5ED707CC1E1D423E5E26442F6FACFA1C07F2426A662F473E87FE7B23535D"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\revisions\\2026-10-03\\project\\README.md",
+      "bytes": 825,
+      "sha256": "7D3CDDDDBFBEC4BA4517C118D092D328FB9A696B2006C8107C6E8702734E6E7F"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\revisions\\2026-10-03\\project\\review-story-episode03.json",
+      "bytes": 241075,
+      "sha256": "CC583CDDE4F79A2CE789D737682DD22539E0103F6138CE8E1F68E376EBB909B6"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\revisions\\2026-10-03\\project\\shot-list.json",
+      "bytes": 67491,
+      "sha256": "31A4295262DF44B8A753398E924D1AEFBED91B94E2B060F5012494704A98CAD3"
+    }
+  ],
+  "handoff": {
+    "path": "D:\\ck3-war-episode03-revision-20261003-a01\\visual-plan\\root-freeze-handoff-a03.json",
+    "bytes": 4934,
+    "sha256": "EB85E0CD6BFFAEF0E368E1F15994DE4881B0CCF3829B9002C65E4F6B5AF5E054"
+  },
+  "sources": {
+    "final_editorial_source": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\editorial\\review-story-episode03-revision-a06.json",
+      "bytes": 256670,
+      "sha256": "B77A0C9C464567B37D4E3886B6179C50CEB6E825907A6535A5221F9FEDAB2161"
+    },
+    "prepared_audio": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\tts-only\\attempt-a03\\prepared-audio.json",
+      "bytes": 393035,
+      "sha256": "9E1D161B3E194328FCD3701A4DBF3731B9FF169C9726E6B289751D666358751B"
+    },
+    "production_source": {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\production.py",
+      "bytes": 62767,
+      "sha256": "AFCD1D7D902C3EF687A6C44502B797619621DCC9388F8BAF0FC9A4564DB3B748"
+    },
+    "composer_source": {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\composer.py",
+      "bytes": 6461,
+      "sha256": "9EA9CE1F494C0DE00D0520B6FD344FBA198FCD044D14C14A24BBC0F28B0562F6"
+    },
+    "layout_validation": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\visual-plan\\final-input-layout-preview-a02\\report.json",
+      "bytes": 116725,
+      "sha256": "A3501EB9AD558750277AC27CCEDC8C406B2B8FBD66B2E9F31363314852F296D8"
+    },
+    "visual_binding_table": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\visual-plan\\prefall-source-refinement-a01\\final-bindings.json",
+      "bytes": 153906,
+      "sha256": "C453308DFE00928AD523B6736886070FD3C9E92E36433D036A5FC44B84783CC5"
+    }
+  },
+  "bilingual_cue_count": 120,
+  "chapter_count": 9,
+  "exact_a06_bilingual_comparison": "PASS",
+  "review_reports": [
+    {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\editorial\\final-editorial-a06-readonly-a01\\report.md",
+      "bytes": 3666,
+      "sha256": "A3A4DFCE7DF61782C222E4D84486653A5A5EC01F42B62D406B35EB70D6219A45"
+    },
+    {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\independent-final-fact-media-boundary-a01-h3937\\report.md",
+      "bytes": 3057,
+      "sha256": "34C8E6488CEEE0FC71A080802854DC1324BD4C88D67F9877DD2D0386A6F5C9A1"
+    },
+    {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\visual-plan\\subtitle-punctuation-refinement-a01\\report.json",
+      "bytes": 50325,
+      "sha256": "2993245187781078E91E4ADF3A8F61A5CA276F217105CC8A57CF3EC0CA57137D"
+    }
+  ],
+  "root_visual_review": "Direct AI review of actual ready rasters: bookmark, opening panel, daily tooltip, prefall, capture and title/occupation. Also directly reviewed the three corrected punctuation rasters; line starts and the isolated period are corrected.",
+  "purpose": "Freeze authorized production inputs; this is not approval of a finished film.",
+  "human_signoff": "not-provided",
+  "full_1x_human_review_performed": false
+}

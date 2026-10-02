@@ -1,0 +1,2332 @@
+{
+  "schema": "ck3-war-ai-episode03-shot-list.v1",
+  "status": "source-bound-ready-for-root-exact-freeze",
+  "shots": [
+    {
+      "id": "R1-E3A03-001",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "人数占优，为什么还要等几个月？",
+      "claim_ids": [
+        "C02",
+        "C13",
+        "C14"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-10-william-siege-opening\\raw-desktop.mkv",
+          "bytes": 83122272,
+          "sha256": "B4C99CD5EC1C5E44B5B14CCF357C9A7E564CF8274A3277C65BD92F19CDAF3099"
+        }
+      ],
+      "origin_shot_id": "S01",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-002",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "“私生子”威廉：1066英格兰的命运",
+      "claim_ids": [
+        "C02"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-revision-20261003-a01\\ui-capture\\william-bookmark-clean-01\\desktop.png",
+          "bytes": 2805333,
+          "sha256": "414CF9D018E08C8F39270B3EEDFC6077CD487005855C11600AAC1CB1ED4672AE"
+        }
+      ],
+      "origin_shot_id": "S02",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-003",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "“私生子”威廉：1066英格兰的命运",
+      "claim_ids": [
+        "C01",
+        "C02"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/bookmark-and-ui-a01/raw.mkv",
+          "bytes": 1791466340,
+          "sha256": "3efaeaecb7396a139fd0b1d143ef4beff2714b80590ed70b4493e7e6f046edac"
+        }
+      ],
+      "origin_shot_id": "S02",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-004",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "本期规则限定：原版1.20.0.3",
+      "claim_ids": [
+        "C01"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/bookmark-and-ui-a01/raw.mkv",
+          "bytes": 1791466340,
+          "sha256": "3efaeaecb7396a139fd0b1d143ef4beff2714b80590ed70b4493e7e6f046edac"
+        }
+      ],
+      "origin_shot_id": "S02",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-006",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "剩余天数是当前估算",
+      "claim_ids": [
+        "C06"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S05",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-007",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "战斗与占领是两回事",
+      "claim_ids": [
+        "C03"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S03",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-008",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "主力渡海，新团还未到场",
+      "claim_ids": [
+        "C02",
+        "C03"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-08-william-channel\\raw-desktop.mkv",
+          "bytes": 91877960,
+          "sha256": "AC90EA97A592850DBC191692C3763D0CB29DCE7EA38F30530E9C5864DC3D0A7A"
+        }
+      ],
+      "origin_shot_id": "S03",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-009",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "1月10日：刘易斯正在围攻",
+      "claim_ids": [
+        "C03"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-10-william-siege-opening\\raw-desktop.mkv",
+          "bytes": 83122272,
+          "sha256": "B4C99CD5EC1C5E44B5B14CCF357C9A7E564CF8274A3277C65BD92F19CDAF3099"
+        }
+      ],
+      "origin_shot_id": "S04",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-010",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "比较实际参围兵力与守军",
+      "claim_ids": [
+        "C03",
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S05",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-011",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "人数检查：规则示例",
+      "claim_ids": [
+        "C03"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S05",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-012",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "人数相等：规则示例",
+      "claim_ids": [
+        "C03"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S05",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-013",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "进展停住，先读原因",
+      "claim_ids": [
+        "C03"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S05",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-014",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "站在城外与正在围攻",
+      "claim_ids": [
+        "C03",
+        "C04"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-155505-bdf551ab/desktop.png",
+          "bytes": 2916147,
+          "sha256": "fbd75e88951c52dc0196c82bd7b18126c7d84f7de96c66114cf492f1d1dfa538"
+        }
+      ],
+      "origin_shot_id": "S05",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-016",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "读懂城防、守军和进展",
+      "claim_ids": [
+        "C04"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        }
+      ],
+      "origin_shot_id": "S05",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-017",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "初期：城防3，守军420",
+      "claim_ids": [
+        "C04"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        }
+      ],
+      "origin_shot_id": "S05",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-018",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "累计进展与所需总进展",
+      "claim_ids": [
+        "C04"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S06",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3R01-001",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "每日速度，还要配合剩余量",
+      "claim_ids": [
+        "C06"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        }
+      ],
+      "origin_shot_id": "S20",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-019",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "进展比例：规则示例",
+      "claim_ids": [
+        "C04"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S06",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-020",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "所需总进展怎样计算",
+      "claim_ids": [
+        "C04",
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S06",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-021",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "守军比例至多按满员算",
+      "claim_ids": [
+        "C04",
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S06",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-022",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "城防4，满员：规则示例",
+      "claim_ids": [
+        "C04"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S08",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-023",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "城防4，半员：规则示例",
+      "claim_ids": [
+        "C04"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S08",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-024",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "所需总进展会随状态变化",
+      "claim_ids": [
+        "C04",
+        "C10"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S06",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-025",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "百分比本身分不清原因",
+      "claim_ids": [
+        "C04",
+        "C10"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S06",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-026",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "1月10日：还不到1%",
+      "claim_ids": [
+        "C04"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        }
+      ],
+      "origin_shot_id": "S06",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-033",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "让日历走过一天",
+      "claim_ids": [
+        "C05",
+        "C06"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        }
+      ],
+      "origin_shot_id": "S07",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-034",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "每日进展：看提示明细",
+      "claim_ids": [
+        "C05",
+        "C06"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-11-william-daily-progress\\raw-desktop.mkv",
+          "bytes": 81012920,
+          "sha256": "93322D0AAD265DCF20915244C968ACEEF61C644A49C5D592030E890EBDD99FA7"
+        }
+      ],
+      "origin_shot_id": "S07",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-050",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "1月10日→11日：一日对比",
+      "claim_ids": [
+        "C06",
+        "C07"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-155505-bdf551ab/desktop.png",
+          "bytes": 2916147,
+          "sha256": "fbd75e88951c52dc0196c82bd7b18126c7d84f7de96c66114cf492f1d1dfa538"
+        }
+      ],
+      "origin_shot_id": "S07",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-051",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "一天净增2.46进展",
+      "claim_ids": [
+        "C07",
+        "C08"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-155505-bdf551ab/desktop.png",
+          "bytes": 2916147,
+          "sha256": "fbd75e88951c52dc0196c82bd7b18126c7d84f7de96c66114cf492f1d1dfa538"
+        }
+      ],
+      "origin_shot_id": "S08",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-053",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "预计从124天到123天",
+      "claim_ids": [
+        "C07"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-155505-bdf551ab/desktop.png",
+          "bytes": 2916147,
+          "sha256": "fbd75e88951c52dc0196c82bd7b18126c7d84f7de96c66114cf492f1d1dfa538"
+        }
+      ],
+      "origin_shot_id": "S08",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A06-001",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "守军读数改变",
+      "claim_ids": [
+        "C04",
+        "C10"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\review-captures07-11-a01\\11\\frame-n00673-pts24.000.png",
+          "bytes": 2278648,
+          "sha256": "67CE0E78CFFB128C69B0FCE53EC79B5FD4C953AB1485E09E92F3E7BDF7A90A2E"
+        }
+      ],
+      "origin_shot_id": "S18",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A06-002",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "仍推进，但预计延后",
+      "claim_ids": [
+        "C06",
+        "C07"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\review-captures07-11-a01\\11\\frame-n00673-pts24.000.png",
+          "bytes": 2278648,
+          "sha256": "67CE0E78CFFB128C69B0FCE53EC79B5FD4C953AB1485E09E92F3E7BDF7A90A2E"
+        }
+      ],
+      "origin_shot_id": "S18",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A06-003",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "剩余天数增加，先查哪项变了",
+      "claim_ids": [
+        "C06",
+        "C10"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\review-captures07-11-a01\\11\\frame-n00673-pts24.000.png",
+          "bytes": 2278648,
+          "sha256": "67CE0E78CFFB128C69B0FCE53EC79B5FD4C953AB1485E09E92F3E7BDF7A90A2E"
+        }
+      ],
+      "origin_shot_id": "S18",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-027",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "军队到场，要看人和武器",
+      "claim_ids": [
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S05",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-035",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "兵士与围攻士兵是两项",
+      "claim_ids": [
+        "C05",
+        "C06"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-11-william-daily-progress\\raw-desktop.mkv",
+          "bytes": 81012920,
+          "sha256": "93322D0AAD265DCF20915244C968ACEEF61C644A49C5D592030E890EBDD99FA7"
+        }
+      ],
+      "origin_shot_id": "S20",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-028",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "原有攻城武器栏数量60",
+      "claim_ids": [
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        }
+      ],
+      "origin_shot_id": "S05",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-029",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "射石机：推进与城防覆盖",
+      "claim_ids": [
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-06-william-mangonel\\raw-desktop.mkv",
+          "bytes": 68541263,
+          "sha256": "00E6E088B8C7DAD89E27FCFECE309CBF4F285501C9ABF76958ED4EF2E8019BA8"
+        }
+      ],
+      "origin_shot_id": "S21",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-030",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "规模、人数与补员",
+      "claim_ids": [
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-07-william-purchase-raise\\raw-desktop.mkv",
+          "bytes": 76496971,
+          "sha256": "4F2EC8AFA751493A24B4C228C5965CC82E6BF17B9E50BC69C682C7F6C6F9B77F"
+        }
+      ],
+      "origin_shot_id": "S21",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A06-004",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "招募的金钱变化",
+      "claim_ids": [
+        "C05",
+        "C11"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-07-william-purchase-raise\\raw-desktop.mkv",
+          "bytes": 76496971,
+          "sha256": "4F2EC8AFA751493A24B4C228C5965CC82E6BF17B9E50BC69C682C7F6C6F9B77F"
+        }
+      ],
+      "origin_shot_id": "S21",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-031",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "按当前规模计算武器贡献",
+      "claim_ids": [
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-06-william-mangonel\\raw-desktop.mkv",
+          "bytes": 68541263,
+          "sha256": "00E6E088B8C7DAD89E27FCFECE309CBF4F285501C9ABF76958ED4EF2E8019BA8"
+        }
+      ],
+      "origin_shot_id": "S21",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A06-005",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "规模1不代表当前满员",
+      "claim_ids": [
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\review-captures07-11-a01\\07\\frame-n00338-pts12.000.png",
+          "bytes": 2182405,
+          "sha256": "6E75F7AE20D3AB9941EB7D1BB20899A7AC3B9FA7F5EE7F2E23189733056151C8"
+        }
+      ],
+      "origin_shot_id": "S21",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-032",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "推进贡献与城防覆盖不同",
+      "claim_ids": [
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\review-capture06-a01\\frame-n00431-pts16.033.png",
+          "bytes": 2196320,
+          "sha256": "685EC98D794D6A830DEA75597982F0DEFA1B92EFC795723547F814ADD8E60E7D"
+        }
+      ],
+      "origin_shot_id": "S06",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A06-006",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "超过有效城防，还要检查门槛",
+      "claim_ids": [
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S08",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-040",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "没有覆盖的门槛，逐层罚速",
+      "claim_ids": [
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-13-william-breach\\raw-desktop.mkv",
+          "bytes": 81824034,
+          "sha256": "87CB0E07E903FB533EAADC4B70CFE34A9AF5E4FCC8D7F31DCC9747066DFAB33F"
+        }
+      ],
+      "origin_shot_id": "S05",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-041",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "本版城防门槛",
+      "claim_ids": [
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-13-william-breach\\raw-desktop.mkv",
+          "bytes": 81824034,
+          "sha256": "87CB0E07E903FB533EAADC4B70CFE34A9AF5E4FCC8D7F31DCC9747066DFAB33F"
+        }
+      ],
+      "origin_shot_id": "S08",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-042",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "每道无法覆盖：再乘0.7",
+      "claim_ids": [
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S08",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-043",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "城防4：规则示例",
+      "claim_ids": [
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S08",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-044",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "城防6：规则示例",
+      "claim_ids": [
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S08",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-045",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "围攻等级1：规则示例",
+      "claim_ids": [
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S08",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-047",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "日速下限与是否受阻分开",
+      "claim_ids": [
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S20",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-048",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "预计天数：规则示例",
+      "claim_ids": [
+        "C06"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S20",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-049",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "最后一点进展也要完成",
+      "claim_ids": [
+        "C06"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S20",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A06-008",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "抵达日不等于全天参围",
+      "claim_ids": [
+        "C07",
+        "C11"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\ui6-155756-6c372ed9\\desktop.png",
+          "bytes": 2877743,
+          "sha256": "56475504A404C8D4037E93E76DAB276B3B8EF93ADBC17A3B29E1C155606E1AAD"
+        }
+      ],
+      "origin_shot_id": "S17",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-077",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "到场、补员与合军分开",
+      "claim_ids": [
+        "C10"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\ui6-155756-6c372ed9\\desktop.png",
+          "bytes": 2877743,
+          "sha256": "56475504A404C8D4037E93E76DAB276B3B8EF93ADBC17A3B29E1C155606E1AAD"
+        }
+      ],
+      "origin_shot_id": "S11",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-078",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "1月20日：另一军队到场",
+      "claim_ids": [
+        "C10",
+        "C11"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-12-william-reinforcement\\raw-desktop.mkv",
+          "bytes": 77981394,
+          "sha256": "D04D62CBA6B89AF47094838D2C8A46DFA75436A7E3F695ED24C61B03226F92D1"
+        }
+      ],
+      "origin_shot_id": "S17",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A06-010",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "抵达日仍净增2.46",
+      "claim_ids": [
+        "C07",
+        "C11"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\ui6-155756-6c372ed9\\desktop.png",
+          "bytes": 2877743,
+          "sha256": "56475504A404C8D4037E93E76DAB276B3B8EF93ADBC17A3B29E1C155606E1AAD"
+        }
+      ],
+      "origin_shot_id": "S17",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A06-011",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "1月21日：净增2.78",
+      "claim_ids": [
+        "C07",
+        "C11"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-12-william-reinforcement\\raw-desktop.mkv",
+          "bytes": 77981394,
+          "sha256": "D04D62CBA6B89AF47094838D2C8A46DFA75436A7E3F695ED24C61B03226F92D1"
+        }
+      ],
+      "origin_shot_id": "S17",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3R01-005",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "每日提示：1.4与0.3分开读",
+      "claim_ids": [
+        "C07",
+        "C11"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\ui6-155756-6c372ed9\\desktop.png",
+          "bytes": 2877743,
+          "sha256": "56475504A404C8D4037E93E76DAB276B3B8EF93ADBC17A3B29E1C155606E1AAD"
+        }
+      ],
+      "origin_shot_id": "S17",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A06-012",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "合军后的下一日",
+      "claim_ids": [
+        "C07",
+        "C11"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\ui6-155911-67032043\\desktop.png",
+          "bytes": 2797045,
+          "sha256": "DF5E456D36EDC9B768904190B302533C2789F29C271FC105271AC227669EC496"
+        }
+      ],
+      "origin_shot_id": "S17",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-054",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "围攻事件：改变的环节不同",
+      "claim_ids": [
+        "C08"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-162858-4cd42097/desktop.png",
+          "bytes": 2962355,
+          "sha256": "d4be5849b81844eea9e22430c24a14e174d03ef3d01b3fb3ceeb77f1a3dc57db"
+        }
+      ],
+      "origin_shot_id": "S09",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-055",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "普通日进展与事件结算分开",
+      "claim_ids": [
+        "C08"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S09",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-056",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "等事件时，普通进展还在累积",
+      "claim_ids": [
+        "C06",
+        "C08"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S09",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-057",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "进度条跳了，先看原因",
+      "claim_ids": [
+        "C06",
+        "C08"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S09",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-058",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "1月27日：出现小缺口",
+      "claim_ids": [
+        "C08"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160245-2c39c18c/desktop.png",
+          "bytes": 2894674,
+          "sha256": "957ba6defaeb31d86f7f88aa82ebbb31520d36c7d2904281a7b2e226c95d261a"
+        }
+      ],
+      "origin_shot_id": "S09",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-059",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "城墙破损与缺口状态",
+      "claim_ids": [
+        "C08"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S09",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-060",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "缺口缩短事件间隔",
+      "claim_ids": [
+        "C09"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S09",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-061",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "只算缺口：规则示例",
+      "claim_ids": [
+        "C09"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S09",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-063",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "缺粮与断粮：两次奖励",
+      "claim_ids": [
+        "C08"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S09",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-064",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "所需400：规则示例",
+      "claim_ids": [
+        "C08"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S09",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-065",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "疾病修正按当前状态算",
+      "claim_ids": [
+        "C08"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S09",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-066",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "守军逃亡另加5点进展",
+      "claim_ids": [
+        "C08"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S09",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-067",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "事件机会随条件改变",
+      "claim_ids": [
+        "C08"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S09",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-068",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "小缺口出现那一日",
+      "claim_ids": [
+        "C08"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160245-2c39c18c/desktop.png",
+          "bytes": 2894674,
+          "sha256": "957ba6defaeb31d86f7f88aa82ebbb31520d36c7d2904281a7b2e226c95d261a"
+        }
+      ],
+      "origin_shot_id": "S09",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-074",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "能否等到缺口，要看武器条件",
+      "claim_ids": [
+        "C08"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S09",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-075",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "僵持不额外奖励进展",
+      "claim_ids": [
+        "C08"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S09",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-076",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "最高状态不再同类升级",
+      "claim_ids": [
+        "C08"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S09",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-073",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "1月29日：两处天数分开读",
+      "claim_ids": [
+        "C10"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160245-2c39c18c/desktop.png",
+          "bytes": 2894674,
+          "sha256": "957ba6defaeb31d86f7f88aa82ebbb31520d36c7d2904281a7b2e226c95d261a"
+        }
+      ],
+      "origin_shot_id": "S10",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A06-009",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "16天是当前事件间隔",
+      "claim_ids": [
+        "C06",
+        "C09"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160245-2c39c18c/desktop.png",
+          "bytes": 2894674,
+          "sha256": "957ba6defaeb31d86f7f88aa82ebbb31520d36c7d2904281a7b2e226c95d261a"
+        }
+      ],
+      "origin_shot_id": "S10",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-070",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "能强攻，不代表值得强攻",
+      "claim_ids": [
+        "C09"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160437-467427f9/desktop.png",
+          "bytes": 2923742,
+          "sha256": "46b6215ee71ba6a9b68f5826c7e7eab8bb416d5988a893e9077fe4305afafbba"
+        }
+      ],
+      "origin_shot_id": "S10",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-080",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "继续等，还是强攻堡垒",
+      "claim_ids": [
+        "C12"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160437-467427f9/desktop.png",
+          "bytes": 2923742,
+          "sha256": "46b6215ee71ba6a9b68f5826c7e7eab8bb416d5988a893e9077fe4305afafbba"
+        }
+      ],
+      "origin_shot_id": "S12",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-081",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "强攻还要满足条件",
+      "claim_ids": [
+        "C12"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S12",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-082",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "1月29日：本次只试一天",
+      "claim_ids": [
+        "C12"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160437-467427f9/desktop.png",
+          "bytes": 2923742,
+          "sha256": "46b6215ee71ba6a9b68f5826c7e7eab8bb416d5988a893e9077fe4305afafbba"
+        }
+      ],
+      "origin_shot_id": "S12",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-083",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "按钮预估的两种数",
+      "claim_ids": [
+        "C12"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160437-467427f9/desktop.png",
+          "bytes": 2923742,
+          "sha256": "46b6215ee71ba6a9b68f5826c7e7eab8bb416d5988a893e9077fe4305afafbba"
+        }
+      ],
+      "origin_shot_id": "S12",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-084",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "强攻代价与缺口状态",
+      "claim_ids": [
+        "C12"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S12",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-085",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "1000人：损失规则示例",
+      "claim_ids": [
+        "C12"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S08",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-086",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "预估只描述当前状态",
+      "claim_ids": [
+        "C12"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S12",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3R01-003",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "更快拿城，也要承担代价",
+      "claim_ids": [
+        "C12"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160437-467427f9/desktop.png",
+          "bytes": 2923742,
+          "sha256": "46b6215ee71ba6a9b68f5826c7e7eab8bb416d5988a893e9077fe4305afafbba"
+        }
+      ],
+      "origin_shot_id": "S12",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-087",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "强攻开始，看完整一天",
+      "claim_ids": [
+        "C12"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-14-william-assault\\raw-desktop.mkv",
+          "bytes": 84316072,
+          "sha256": "E6B0B237931C33FD714929EC425A115DDC06EB62436508C663A5B7201EF05388"
+        }
+      ],
+      "origin_shot_id": "S12",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-088",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "一天真实净变化",
+      "claim_ids": [
+        "C12"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-14-william-assault\\raw-desktop.mkv",
+          "bytes": 84316072,
+          "sha256": "E6B0B237931C33FD714929EC425A115DDC06EB62436508C663A5B7201EF05388"
+        }
+      ],
+      "origin_shot_id": "S19",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A06-014",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "一日总进展，不是纯额外值",
+      "claim_ids": [
+        "C12"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\ui6-160602-83f56bb9\\desktop.png",
+          "bytes": 2911995,
+          "sha256": "699A7C21A11BA9990F3EE1231BCDB3D67AD653121D87E5B6360AFA9E695B0C8C"
+        }
+      ],
+      "origin_shot_id": "S19",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A06-015",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "状态改变，预估也改变",
+      "claim_ids": [
+        "C12"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\ui6-160646-1138606d\\desktop.png",
+          "bytes": 2895590,
+          "sha256": "25FB4A6CF2FBC8A97294BB1C5546DDA9621AC566E4AAC9E6B0303516BDDA57EC"
+        }
+      ],
+      "origin_shot_id": "S19",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A06-016",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "停止强攻，进展还在",
+      "claim_ids": [
+        "C12",
+        "C10"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\ui6-160646-1138606d\\desktop.png",
+          "bytes": 2895590,
+          "sha256": "25FB4A6CF2FBC8A97294BB1C5546DDA9621AC566E4AAC9E6B0303516BDDA57EC"
+        }
+      ],
+      "origin_shot_id": "S19",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-089",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "随后继续普通围攻",
+      "claim_ids": [
+        "C10",
+        "C13"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-162858-4cd42097/desktop.png",
+          "bytes": 2962355,
+          "sha256": "d4be5849b81844eea9e22430c24a14e174d03ef3d01b3fb3ceeb77f1a3dc57db"
+        }
+      ],
+      "origin_shot_id": "S11",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A06-017",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "后期已是大缺口",
+      "claim_ids": [
+        "C08",
+        "C09"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-162858-4cd42097/desktop.png",
+          "bytes": 2962355,
+          "sha256": "d4be5849b81844eea9e22430c24a14e174d03ef3d01b3fb3ceeb77f1a3dc57db"
+        }
+      ],
+      "origin_shot_id": "S11",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A06-018",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "后期仍按当前条件估算",
+      "claim_ids": [
+        "C04",
+        "C10"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-162858-4cd42097/desktop.png",
+          "bytes": 2962355,
+          "sha256": "d4be5849b81844eea9e22430c24a14e174d03ef3d01b3fb3ceeb77f1a3dc57db"
+        }
+      ],
+      "origin_shot_id": "S11",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-090",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "4月21日：接近完成，尚未占领",
+      "claim_ids": [
+        "C10",
+        "C13"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\review-captures12-16-a01\\15\\dense-a01\\sample-005.png",
+          "bytes": 2401306,
+          "sha256": "1CB98CF62343B8503B415C841062116C95C19FADF596C4F2BFC104F8241BC6B1"
+        }
+      ],
+      "origin_shot_id": "S23",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A06-019",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "最后三天连续读",
+      "claim_ids": [
+        "C13"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\review-captures12-16-a01\\15\\dense-a01\\sample-005.png",
+          "bytes": 2401306,
+          "sha256": "1CB98CF62343B8503B415C841062116C95C19FADF596C4F2BFC104F8241BC6B1"
+        }
+      ],
+      "origin_shot_id": "S23",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-091",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "把结果留给游戏画面",
+      "claim_ids": [
+        "C13"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\review-captures12-16-a01\\15\\dense-a01\\sample-005.png",
+          "bytes": 2401306,
+          "sha256": "1CB98CF62343B8503B415C841062116C95C19FADF596C4F2BFC104F8241BC6B1"
+        }
+      ],
+      "origin_shot_id": "S23",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-092",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "4月22日：刘易斯围攻获胜",
+      "claim_ids": [
+        "C13",
+        "C14"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-15-william-fall\\raw-desktop.mkv",
+          "bytes": 84325541,
+          "sha256": "722B82AA8F2A9E083CD929F177CFE05D483BCCE69B22C164B2085F2A782DAEE7"
+        }
+      ],
+      "origin_shot_id": "S13",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-094",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "地图与占领状态一起确认",
+      "claim_ids": [
+        "C14"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163105-f580d834/desktop.png",
+          "bytes": 2896147,
+          "sha256": "4cfe8ed1c59172c66e4efdc47be6db672c15c6f7e30bbed40ba8b1727f386ac6"
+        }
+      ],
+      "origin_shot_id": "S14",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-095",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "军事控制与领地持有者分开",
+      "claim_ids": [
+        "C14"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S14",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-096",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "继续检查其他设防地产",
+      "claim_ids": [
+        "C14"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S14",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-097",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "持有者与占领并排显示",
+      "claim_ids": [
+        "C14"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-16-william-occupation\\raw-desktop.mkv",
+          "bytes": 78283528,
+          "sha256": "0836DBFEEA8997AC0902027C9A463201BC7DC9B053166FAF769A41742889D599"
+        }
+      ],
+      "origin_shot_id": "S14",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A06-020",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "战利品是金钱收入",
+      "claim_ids": [
+        "C13",
+        "C16"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163105-f580d834/desktop.png",
+          "bytes": 2896147,
+          "sha256": "4cfe8ed1c59172c66e4efdc47be6db672c15c6f7e30bbed40ba8b1727f386ac6"
+        }
+      ],
+      "origin_shot_id": "S14",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-105",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "从首次记录到确认占领",
+      "claim_ids": [
+        "C02",
+        "C13",
+        "C14"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163105-f580d834/desktop.png",
+          "bytes": 2896147,
+          "sha256": "4cfe8ed1c59172c66e4efdc47be6db672c15c6f7e30bbed40ba8b1727f386ac6"
+        }
+      ],
+      "origin_shot_id": "S01",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-106",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "城拿下，最后读战争面板",
+      "claim_ids": [
+        "C16"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\capture-17-william-war-score\\raw-desktop.mkv",
+          "bytes": 88474604,
+          "sha256": "776FA8C17BB02A7717C2291138E380AC889B2DB18EACBB5BC5EF5D9C491E1971"
+        }
+      ],
+      "origin_shot_id": "S16",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-098",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "每座城没有固定占领分",
+      "claim_ids": [
+        "C16"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S16",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-100",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "城破前后的占领分项",
+      "claim_ids": [
+        "C16"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163903-edcfdf12/desktop.png",
+          "bytes": 2781531,
+          "sha256": "b584fd2faa066fa841cf884695b7ed10ea3852fcbb7c309c942a9a570652ac74"
+        }
+      ],
+      "origin_shot_id": "S16",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A06-021",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "明细与主面板显示精度不同",
+      "claim_ids": [
+        "C16"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163903-edcfdf12/desktop.png",
+          "bytes": 2781531,
+          "sha256": "b584fd2faa066fa841cf884695b7ed10ea3852fcbb7c309c942a9a570652ac74"
+        }
+      ],
+      "origin_shot_id": "S16",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-108",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "三天间隔的四分项对比",
+      "claim_ids": [
+        "C16"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163903-edcfdf12/desktop.png",
+          "bytes": 2781531,
+          "sha256": "b584fd2faa066fa841cf884695b7ed10ea3852fcbb7c309c942a9a570652ac74"
+        }
+      ],
+      "origin_shot_id": "S16",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-109",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "没有隔离同期其他占领",
+      "claim_ids": [
+        "C16"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163903-edcfdf12/desktop.png",
+          "bytes": 2781531,
+          "sha256": "b584fd2faa066fa841cf884695b7ed10ea3852fcbb7c309c942a9a570652ac74"
+        }
+      ],
+      "origin_shot_id": "S16",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-110",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "计时看目标控制多久",
+      "claim_ids": [
+        "C16"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163903-edcfdf12/desktop.png",
+          "bytes": 2781531,
+          "sha256": "b584fd2faa066fa841cf884695b7ed10ea3852fcbb7c309c942a9a570652ac74"
+        }
+      ],
+      "origin_shot_id": "S16",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-111",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "城拿下了，战争还没结束",
+      "claim_ids": [
+        "C17"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-163903-edcfdf12/desktop.png",
+          "bytes": 2781531,
+          "sha256": "b584fd2faa066fa841cf884695b7ed10ea3852fcbb7c309c942a9a570652ac74"
+        }
+      ],
+      "origin_shot_id": "S16",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-113",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "下一次：先看能否围攻",
+      "claim_ids": [
+        "C03",
+        "C04"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-154349-888aff2c/desktop.png",
+          "bytes": 2904486,
+          "sha256": "eec8ae49ee64887ef0f75f9fbedf3e80d9b92f3d8aad5db32ab7bde7088f506a"
+        }
+      ],
+      "origin_shot_id": "S01",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-114",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "三个进展读数一起看",
+      "claim_ids": [
+        "C04",
+        "C05"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S06",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-115",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "变化来源分开判断",
+      "claim_ids": [
+        "C06",
+        "C08"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S09",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-116",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "有了缺口，再比较强攻",
+      "claim_ids": [
+        "C12"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-20261002-a01/ui6-160437-467427f9/desktop.png",
+          "bytes": 2923742,
+          "sha256": "46b6215ee71ba6a9b68f5826c7e7eab8bb416d5988a893e9077fe4305afafbba"
+        }
+      ],
+      "origin_shot_id": "S12",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3A03-117",
+      "kind": "raw_clip",
+      "status": "ready",
+      "required": true,
+      "description_zh": "城破后的三步查看",
+      "claim_ids": [
+        "C13",
+        "C14"
+      ],
+      "source_pin": [
+        {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+          "bytes": 951107548,
+          "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+        }
+      ],
+      "origin_shot_id": "S14",
+      "raw_clip_interval_selected": true
+    },
+    {
+      "id": "R1-E3A03-118",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "本场三个对比，不是同一原因",
+      "claim_ids": [
+        "C06",
+        "C08",
+        "C13",
+        "C14"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\ui6-155756-6c372ed9\\desktop.png",
+          "bytes": 2877743,
+          "sha256": "56475504A404C8D4037E93E76DAB276B3B8EF93ADBC17A3B29E1C155606E1AAD"
+        }
+      ],
+      "origin_shot_id": "S01",
+      "raw_clip_interval_selected": false
+    },
+    {
+      "id": "R1-E3R01-004",
+      "kind": "raw_frame",
+      "status": "ready",
+      "required": true,
+      "description_zh": "未确定的部分，不用猜测补齐",
+      "claim_ids": [
+        "C04",
+        "C10"
+      ],
+      "source_pin": [
+        {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\review-captures07-11-a01\\11\\frame-n00673-pts24.000.png",
+          "bytes": 2278648,
+          "sha256": "67CE0E78CFFB128C69B0FCE53EC79B5FD4C953AB1485E09E92F3E7BDF7A90A2E"
+        }
+      ],
+      "origin_shot_id": "S18",
+      "raw_clip_interval_selected": false
+    }
+  ],
+  "human_signoff": "not-provided"
+}
