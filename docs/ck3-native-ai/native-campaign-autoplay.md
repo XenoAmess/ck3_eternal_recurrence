@@ -78,6 +78,16 @@ any unexpected pause, a dead/unavailable player, event chain bound, or no native
 clock progress still stop the policy. There is no modal dismissal, player
 switching or repeated resume shortcut.
 
+### Clock progress across succession
+
+`paused=false`, `map_ready=true`, and a new living current-player ID describe observed state; they do not establish that simulation ticks have resumed or a succession modal has closed. Require distinct actual raw-clock readings across the bounded progress window, and keep a `native_clock_no_progress` stop with its original evidence. An actual current-player transition does not permit inventing the next heir or dismissing an unknown modal.
+
+An operator-owned exact 1.20.0.3/build25652598 regression with the frozen n2 DLL illustrates this limit: the new player was alive and unpaused/map-ready while raw date remained `77755008`. A complete immutable save had matching body/meta date `3876.2.22` and `played_character.has_open_succession=yes`. Its corpse-aware selected-record audit receipt SHA is `a0efe0634207585a84001b8f3a594b7243cbe6aba66de3ace834293a4f199256`; it explicitly did not prove window dismissal or later progress. The n2 private death/succession query/action flags are OFF, so the existence of legacy source declarations is no usable exact-patch3 modal capability.
+
+The operator reviewed the normal current-heir continuation and dispatched one existing [semantic desktop action](reviewed-desktop-semantic-action-mcp.md). Its ACK needed independent readback. Frozen `0420-snapshot.json` SHA `30b0090c6ec805c99c52b789dcbb8305a9daa2d670c713b6060fb55ca374b7ff` then recorded raw date `77755032`, one normal day later, with the same process/DLL/session/generation and living current player. This establishes observed timeline progress after that reviewed action sequence, without a restart, reinjection or baseline reset. It does not qualify a generic native succession-continuation tool or an automatic modal policy.
+
+Subsequent events still require actual canonical window-context options with genuine shown/enabled state and the ordinary selection postcondition. Likewise, an observed spouse relationship after ordinary UI proposal is relationship evidence; it does not qualify the SDK's separate native marriage submission path. Specific death, inheritance, event and marriage outcomes, source decisions and raw saves/screens remain in the independent project. Main retains these reusable observation boundaries.
+
 ## Save date and completion
 
 Checkpoint scheduling uses the exact clock reader's 24 raw units per day and a
@@ -96,6 +106,14 @@ Annual checkpoints may overshoot a requested date; they prove reaching at least
 the target without changing the engine calendar. The result returns the final
 checkpoint proof and evidence directory. Every stopped result retains the last
 checkpoint and the original reason.
+
+## Thin caller errors after successful actions
+
+Preserve the canonical `INSPECT` route, `ck3_query_native_profile_v1`, when supplying a queue/composite client. `CampaignPolicy.run()` reads its `observation` into the internal `native_observation` before binding the independent pause controller's target to the native campaign. A caller that omits this route/observation triggers the existing target-identity refusal; it must not fabricate an identity or bypass the guard. If a separate pause already succeeded before the caller error, retain its actual receipt and immediately take a fresh native snapshot before any further dispatch.
+
+Reporting errors belong to a separate layer from submitted game actions. The policy object's retained save proof is `last_save_proof`; a stopped result dictionary uses `last_checkpoint`, while a completed result uses `final_checkpoint`. A caller must use the contract of the object/result it actually holds. An unsupported reporting attribute or exception serializer can fail after event selection or checkpoint success. Preserve those original action/save receipts, record the wrapper exception with `str(error)` when no richer documented shape exists, and repair only the caller's reporting. Do not replay an event, pause, proposal or save to fix report assembly.
+
+These boundaries were exercised by transient caller omissions/reporting mistakes during the same operator-owned campaign. They were not defects in the authoritative profile tool or policy, and required no changes to SDK/native/policy/controller. This documentation update introduces no new test result or century-completion claim; it records how to keep successful business evidence intact while diagnosing a caller failure.
 
 ## Verification and evidence boundary
 
