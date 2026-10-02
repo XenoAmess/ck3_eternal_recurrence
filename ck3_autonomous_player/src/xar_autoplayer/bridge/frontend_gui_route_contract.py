@@ -139,6 +139,20 @@ FRONTEND_GUI_ROUTE_V1_EXECUTABLE_SHA256: Final = (
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 )
 FRONTEND_GUI_ROUTE_V1_GAME_ADAPTER_ID: Final = "ck3-1.19.0.6-msvc-x64"
+# Each tuple is an exact adapter/version/executable identity, including the
+# 1.20.0.3 bridge observed in the closed G2 clan bootstrap attempt.
+FRONTEND_GUI_ROUTE_V1_BUILD_IDENTITIES: Final = (
+    (
+        FRONTEND_GUI_ROUTE_V1_GAME_ADAPTER_ID,
+        FRONTEND_GUI_ROUTE_V1_GAME_VERSION,
+        FRONTEND_GUI_ROUTE_V1_EXECUTABLE_SHA256,
+    ),
+    (
+        "ck3-1.20.0.3-msvc-x64",
+        "1.20.0.3",
+        "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+    ),
+)
 
 
 def frontend_gui_route_binding_from_capabilities(
@@ -177,13 +191,12 @@ def frontend_gui_route_binding_from_capabilities(
                 and 1 <= connection_generation <= 2**64 - 1
                 and hello.get("connection_generation")
                 == connection_generation
-                and hello.get("game_adapter_id")
-                == FRONTEND_GUI_ROUTE_V1_GAME_ADAPTER_ID
+                and (
+                    hello.get("game_adapter_id"),
+                    hello.get("expected_ck3_version"),
+                    hello.get("expected_ck3_sha256"),
+                ) in FRONTEND_GUI_ROUTE_V1_BUILD_IDENTITIES
                 and hello.get("game_adapter_status") == "ready"
-                and hello.get("expected_ck3_version")
-                == FRONTEND_GUI_ROUTE_V1_GAME_VERSION
-                and hello.get("expected_ck3_sha256")
-                == FRONTEND_GUI_ROUTE_V1_EXECUTABLE_SHA256
                 and hello.get("ck3_build_match") is True
                 and isinstance(hello.get("capabilities"), list)
                 and QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY

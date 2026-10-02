@@ -68,6 +68,7 @@ struct NonwarMailboxExecutorsV1 {
   ck3_11906::MainThreadQueryExecutorV1 sway_outcome_opinion = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 prisoner_collection = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 prisoner_ransom = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 steward_develop_county = nullptr;
 };
 
 // This is the production registration seam used before mailbox installation.

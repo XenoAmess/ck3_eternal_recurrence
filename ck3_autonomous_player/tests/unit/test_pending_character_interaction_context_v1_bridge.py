@@ -1406,5 +1406,80 @@ class PendingCharacterInteractionContextV1McpTests(
         self.assertFalse(payload["pending_character_interaction_context_ready"])
 
 
+
+class Actual12003NegativePendingIdTests(unittest.TestCase):
+    def test_actual_signed_id_survives_mcp_query_then_service_reply(self) -> None:
+        from xar_autoplayer.bridge.version_identity import CK3_12003
+        from xar_autoplayer.bridge.pending_character_interaction_context_contract import _PROVENANCE_BY_BUILD
+
+        actual_id = -721420283
+        actor = 31853
+        sender = 32718
+        date = 53329800
+        endpoint = _FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(endpoint.pipe_name, endpoint=endpoint, command_timeout_seconds=0.1)
+        endpoint.publish({
+            "type": "hello", "protocol_version": 1, "bridge_version": "0.1.0",
+            "pid": 7878, "session_generation": 0,
+            "game_version": CK3_12003.game_version,
+            "expected_ck3_version": CK3_12003.game_version,
+            "executable_sha256": CK3_12003.executable_sha256,
+            "capabilities": ["game.state.snapshot", QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY,
+                             "game.command.reject-pending-character-interaction"],
+        })
+        snapshot = _semantic_snapshot(pending_id=actual_id)
+        snapshot["state"]["date_raw"] = date
+        snapshot["state"]["played_character"]["character_id"] = actor
+        snapshot["state"]["pending_character_interaction"]["sender_character_id"] = sender
+        endpoint.publish(snapshot)
+        frame = _frame()
+        frame["pending_interaction_id"] = actual_id
+        frame["date_raw"] = date
+        frame["build"] = {"version": CK3_12003.game_version, "exe_sha256": CK3_12003.executable_sha256}
+        frame["provenance"] = copy.deepcopy(_PROVENANCE_BY_BUILD[CK3_12003.game_version])
+        frame["roles"]["actor_character_id"] = sender
+        frame["roles"]["recipient_character_id"] = actor
+        frame["routing"]["played_character_id"] = actor
+        # Definition and other terms remain the existing static transport fixture;
+        # the unavailable actual capture does not reveal the true interaction key.
+        def answer(request):
+            if request.get("type") != "execute_step":
+                return
+            if request["step"] == STEP:
+                result = _native_result(frame=frame)
+            else:
+                self.assertEqual(request["step"], "reject-pending-character-interaction")
+                result = {"step": request["step"], "accepted": True, "status": "submitted", "backend_id": "native-headless"}
+            endpoint.publish({"type": "command_result", "protocol_version": 1,
+                              "request_id": request["request_id"], "ok": True, "result": result})
+            if request["step"] != STEP:
+                after = copy.deepcopy(snapshot)
+                after["revision"] = NATIVE_REVISION + 1
+                after["snapshot_id"] = f"native:{NATIVE_REVISION + 1}"
+                after["state"]["pending_character_interaction"] = None
+                endpoint.publish(after)
+        endpoint.send_hook = answer
+        service = GameplayBridgeService(driver)
+        public_revision = service.snapshot()["revision"]
+        queried = _ck3_query_pending_character_interaction_context_v1(service, actual_id, public_revision)
+        self.assertEqual(queried["status"], "available")
+        self.assertEqual(queried["pending_interaction_id"], actual_id)
+        self.assertEqual(queried["build"]["version"], "1.20.0.3")
+        self.assertEqual(queried["roles"]["actor_character_id"], sender)
+        requests = [row for row in endpoint.frames if row.get("type") == "execute_step"]
+        self.assertEqual(requests[0]["pending_interaction_id"], actual_id)
+        replied = service.reply_pending_character_interaction(
+            accept=False, interaction_instance_id=actual_id, expected_revision=public_revision,
+        )
+        self.assertEqual(replied["interaction_instance_id"], actual_id)
+        self.assertEqual(replied["interaction_result"]["instance_id"], actual_id)
+        self.assertEqual(replied["interaction_result"]["status"], "rejected")
+        self.assertIsNone(replied["remaining_pending_character_interaction"])
+        self.assertIsNone(service.snapshot()["pending_character_interaction"])
+        self.assertEqual(normalize_pending_interaction_id(0), 0)
+        with self.assertRaises(ValueError):
+            normalize_pending_interaction_id(-1)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1416,7 +1416,7 @@ ReadPendingCharacterInteractionContextV1(
                  "unsupported_build");
       return game::ReadPendingCharacterInteractionContextResultV1::unavailable;
     }
-    if (request.pending_interaction_id <= 0) {
+    if (request.pending_interaction_id == -1) {
       SetFailure(output,
                  game::PendingCharacterInteractionContextStatusV1::invalid,
                  "invalid_pending_interaction_id");

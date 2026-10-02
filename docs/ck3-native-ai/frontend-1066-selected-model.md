@@ -180,6 +180,37 @@ This establishes actual advertisement only. It makes no NewGame, Yahya/Rurik
 model, selector, StartGame, fresh government, or checkpoint claim; their next
 fresh producer attempts remain root-owned and serial.
 
+The next actual v13 Yahya attempt used frozen source
+`176f0640b4394348360e2a379647440546c76562`, managed PID 111604. Its closed
+`m7-clan-preparation/actual-v13-176f0640-01/actual-native-bootstrap-01` report
+has SHA-256
+`82b106f40696cde58738257bab329739ab1912a64ed630f40be1aed7f9e00aa3`.
+Both capability arrays contained all three required frontend entries, so the
+previous advertisement fault stayed closed. After 607.422 seconds and 2,383
+calls, the producer returned `main_menu route was not observed` with
+`last_route={}`. Both the first and final route calls returned the actual MCP
+error `frontend GUI route native bridge identity is malformed`. No NewGame or
+private Bookmark step ran, and authenticated cleanup again proved the process
+tree gone.
+
+The new failure occurs before native command submission:
+`native_driver._execute_primitive_step` calls
+`frontend_gui_route_binding_from_capabilities`, whose existing identity check
+in `frontend_gui_route_contract.py` accepts only the legacy 1.19.0.6 adapter,
+version, and EXE SHA tuple. The ready exact 1.20.0.3 hello is therefore rejected
+locally. The prepared minimum migration adds that exact .3 tuple to this same binding;
+the native bridge already chooses `GuiAbiRevisionV1::crozier12003` for the
+same version and SHA. Actual route/NewGame verification remains pending the
+facade correction. The retained field extraction and precise producer wait
+conditions are under `m7-frontend-12003/actual-v13-route-wait-red/`.
+The two focused binding cases passed once: the retained legacy 1.19 pregame
+binding and a regression using this actual .3 hello's identity and PID.
+The root-only source patch, stable before/after pins, and result are under
+`m7-frontend-12003/schema-cli/v13-binding-fix/`. Query, tree inspection, and
+NewGame all use this one existing binding; their route/tree/action DTOs have
+no second legacy build-identity gate. No native C++, driver, service, MCP,
+public DTO, or timeout change is needed for this observed local rejection.
+
 No actual seed, paired save, cold restore, or succession has been established.
 M7 remains open. Root must verify actual government, actor, rules, paired
 checkpoint, and formal consumer/cold continuation before assigning readiness.
@@ -188,7 +219,8 @@ checkpoint, and formal consumer/cold continuation before assigning readiness.
 flowchart TD
   A[Exact 1.20.0.3 adapter ready] --> R[Historical v12 RED: three frontend capabilities absent]
   R -->|runtime target fix; actual v13 hello has all three| H[Advertisement subfault closed]
-  H -. fresh frontend route pending .-> A1[Main menu route query]
+  H --> I[Actual v13 RED: Python binding accepts legacy identity only]
+  I -. exact .3 facade identity fix; actual route pending .-> A1[Main menu route query]
   A1 -. private typed NewGame pending live .-> B[Bookmarks]
   B -. Rurik only: key-derived native Bookmark setter .-> C[Fresh target Bookmark model]
   B -. Yahya: same Bookmark target probe .-> C

@@ -113,3 +113,28 @@ window 查询已真实读出 played CharacterID `29829` 和 `xar_m120_scheme_tar
 前三场十项成本全为零；cost 场的原始向量为 `[100000,200000,300000,0,0,0,0,0,0,0]`，scale `100000`，资源顺序为 gold、prestige、piety、renown、influence、herd、treasury、treasury_or_gold、merit、barter_goods。返回元数据为 actor/on_send/already_applied；本次核对验证该原生输出及三个正值，不把它写成独立余额会计验收。
 
 本次真实解锁四种外部夹具的 typed pending 观测和回复，readiness 为 **fixture-live**。target absent、发送选项为零、路由为普通 recipient；非空 target/options、中间人路由、block 动作、特殊战争条款及其余七类非零资源未在该矩阵覆盖。`structured_terms_ready` 和 `interaction_semantic_decision_ready` 仍为 false，exchange/effect preview 未闭合；生产原版互动和完整 OODA 未获得认证。attempt09 的失败证据继续保留，当前成功不是对历史失败的重写。
+
+## 2026-10-02：1.20.0.3 自然互动完整 ID 的有符号表示
+
+Murchad 的正式 `formal-v13-next-02` 在正常推进 19 天后读到待回复互动：played CharacterID `31853`、sender `32718`、date raw `53329800`，完整 pending ID 为 `-721420283`。`turn-003/result.json` 与原生回复保留真实 RED：typed query 返回 `invalid_pending_interaction_id`，定义、角色、条款及合法性均为 null。根执行者保存 h2072 后正常关闭游戏；没有提交回复，截图中的宴会视图不能确定互动类型。
+
+本次 exact build 为 `1.20.0.3 (Crozier)` / Steam `25652598`，EXE SHA-256 为 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。证据冻结在 `artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v13-pending-interaction-signed-id/native-evidence/pending-full-id-exact-12003.json`，SHA-256 `3D4D7415998A6E7A71CE818E6927DF944CAFBDA1328C8EEBC8768A77064314D2`。其中 14 条窄指令确认：原生路由 `136D1BD` 只把 `-1` 当空值；回复 validator `29684B8` 从 command `+20` 读取完整 32 位 ID，`29684BD` 仅为 storage 索引取低 24 位，`29684D9` 仍比较 pending 对象 `+10` 的完整 ID，`29684F2` 保留 `-1` 空值判定。
+
+`-721420283` 的原始位模式为 `0xD5000005`，slot 为 `5`，高八位 generation 为 `0xD5`。它不是需要取绝对值的非法句柄。snapshot 生产者、请求解析、JSON、Python normalizer、MCP 查询和 native reply 均已经保留 signed32 原值；实际拒绝来自 `ck3_12002_pending_context.cpp` 中、首次存储观测之前的 `pending_interaction_id <= 0`。旧版读取器使用的 `== -1` 与本次 exact 原生证据一致，因此最小修复仅恢复该空值条件，保留完整 generation 比较。
+
+```mermaid
+flowchart TD
+    Snapshot[实际 snapshot：signed32 -721420283] --> Request[MCP 与 mailbox 保留完整 ID]
+    Request --> Sentinel[仅 -1 为 null]
+    Sentinel --> Slot[0xD5000005 取低24位定位 slot5]
+    Slot --> Compare[pending+10 比较完整32位与 generation]
+    Compare --> Typed[原生上下文与 reply validator]
+    Typed -. 尚待 h2072 冷恢复实机查询 .-> Definition[实际 definition / terms / legality]
+    Definition -. 尚未提交 .-> Reply[生产互动回复与独立结果]
+```
+
+独立 scratch 中的现有原生 `ck3_12002_pending_context_test.cpp` 新增 `--actual-negative-id-only` 模式，调用真实读取器及 `.3` identity renderer，验证负完整 ID、六次 validator command 中相同原值、同 slot 错 generation 拒绝及 `-1` 空值。沿用现有合成 definition，不能把它称为本次实际互动类型。Python 的现有 bridge test 增加一个同 ID 的 MCP 查询→service→driver→normalizer→显式 ID 回复回归，首次单项执行 GREEN；没有修改 Python 生产代码。相关检查与补丁均冻结于同一 artifact 目录，不重复旧夹具矩阵，也不展开通用 UI/目标或宗教输入。
+
+原生 focused 首次严格编译和运行 **GREEN**，结果为 `focused-pending-signed-id-01/result.json`，命令为现有 target `xar_ck3_12002_pending_context_test --actual-negative-id-only`，编译采用 `/W4 /WX /UNDEBUG`。它链接只读复制的真实 v13 runtime archive 与两项既有 family 纯依赖，没有 shim、CMake 修改或游戏接触。完整 argv、输入 pin 和实际 `.3` wire 分别保留在 `COMMANDS.json`、`input-pins.json`、`actual-negative-pending-context-wire.json`；没有重跑旧矩阵。
+
+当前修复为 **static-ready**；生产互动定义、回复合法性、正式动作和独立结果必须由根执行者在更新 DLL 后从 h2072 实际查询取得。历史 `.2` fixture-live 结果与本次 `.3` 生产 RED 分别保留；该目录沿用 `m2-events` 命名不代表 M2 事件或材料 credit。

@@ -5,6 +5,10 @@ namespace xar::ck3_12002 {
 void RegisterNonwarMailboxExecutorsV1(
     ck3_11906::MainThreadQueryInstallEnvironmentV1 &environment,
     const NonwarMailboxExecutorsV1 &executors) noexcept {
+  if (executors.steward_develop_county != nullptr) {
+    environment.permitted_executor_quattuordenary =
+        executors.steward_develop_county;
+  }
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
   environment.permitted_executor_trioquadragintary = executors.lifestyle;
 #endif

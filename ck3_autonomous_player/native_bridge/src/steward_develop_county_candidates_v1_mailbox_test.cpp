@@ -1,8 +1,13 @@
 #include "xar_bridge/steward_develop_county_candidates_v1_mailbox.hpp"
+#include "xar_bridge/ck3_12002_nonwar_mailbox.hpp"
+#include "xar_bridge/ck3_12002_thread_runtime.hpp"
 
 #include <windows.h>
 
+#include <array>
+#include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <iostream>
 
 namespace {
@@ -159,7 +164,179 @@ bool TestCurrentMaterialUnsupportedCompletion() {
          query.result.material.has_value() && !query.result.readiness.ready &&
          query.result.unavailable_reason ==
              xar::game::StewardDevelopCountyFailureReasonV1::
-                 exact_build_not_admitted;
+                  exact_build_not_admitted;
+}
+
+bool OtherRegistryIdentityFixture(
+    void *, const xar::ck3_11906::MainThreadExecutionStampV1 &) noexcept {
+  return false;
+}
+
+BOOL WINAPI PeekFixture(LPMSG, HWND, UINT, UINT, UINT) { return FALSE; }
+
+struct Protection {
+  void **slot = nullptr;
+  DWORD protection = PAGE_READONLY;
+};
+
+bool QueryFixture(void *opaque, const void *address,
+                  MEMORY_BASIC_INFORMATION &information) noexcept {
+  auto &protection = *static_cast<Protection *>(opaque);
+  if (address != protection.slot) { return false; }
+  const auto page =
+      reinterpret_cast<std::uintptr_t>(address) & ~std::uintptr_t{4095};
+  information = {};
+  information.BaseAddress = reinterpret_cast<void *>(page);
+  information.AllocationBase = information.BaseAddress;
+  information.AllocationProtect = PAGE_READONLY;
+  information.RegionSize = 4096;
+  information.State = MEM_COMMIT;
+  information.Protect = protection.protection;
+  information.Type = MEM_IMAGE;
+  return true;
+}
+
+bool ProtectFixture(void *opaque, void *, std::size_t size, DWORD protection,
+                    DWORD &old) noexcept {
+  if (size != 4096) { return false; }
+  auto &memory = *static_cast<Protection *>(opaque);
+  old = memory.protection;
+  memory.protection = protection;
+  return true;
+}
+
+std::array<std::byte, 0x28> g_tls{};
+void *__fastcall TlsFixture() noexcept { return g_tls.data(); }
+
+bool TestCurrentMaterialRegisteredMailboxLifecycle() {
+  using namespace xar::ck3_11906;
+  constexpr auto executor =
+      &ExecuteStewardDevelopCountyCandidatesMailboxQueryV1;
+  // Another permitted identity reproduces the production whitelist rejection.
+  // It is never submitted; the positive path invokes the real Develop executor.
+  const std::array<MainThreadQueryExecutorV1, 1> typed{
+      &OtherRegistryIdentityFixture};
+  auto environment = xar::ck3_12002::BindThreadRuntimeImage(
+      0x100000, xar::ck3_12002::kExecutableSha256, typed);
+  if (environment.build_profile == nullptr ||
+      environment.build_profile !=
+          &xar::ck3_12002::ThreadRuntimeBuildProfile()) {
+    return false;
+  }
+  MainThreadQueryMailboxV1 unregistered{};
+  unregistered.permitted_executor = environment.permitted_executor;
+  StewardDevelopCountyCandidatesMailboxContextV1 rejected_query{};
+  MainThreadQueryTicketV1 rejected_ticket{99};
+  const auto reader_calls_before = g_reader_calls;
+  const auto snapshot_calls_before = g_snapshot_calls;
+  if (TrySubmitMainThreadQueryV1(unregistered, executor, &rejected_query,
+                                rejected_ticket) !=
+          MainThreadQuerySubmitResultV1::invalid_request ||
+      rejected_ticket.sequence != 0 ||
+      rejected_query.executor_invocations != 0 ||
+      g_reader_calls != reader_calls_before ||
+      g_snapshot_calls != snapshot_calls_before) {
+    return false;
+  }
+
+  xar::ck3_12002::NonwarMailboxExecutorsV1 callbacks{};
+  callbacks.steward_develop_county = executor;
+  xar::ck3_12002::RegisterNonwarMailboxExecutorsV1(environment, callbacks);
+  if (environment.permitted_executor_quattuordenary != executor) {
+    return false;
+  }
+
+  const auto thread = GetCurrentThreadId();
+  std::array<std::byte, 0x18> rng{};
+  std::memcpy(rng.data() + 0x10, &thread, sizeof(thread));
+  auto rng_pointer = reinterpret_cast<std::uintptr_t>(rng.data());
+  auto rng_wrapper = reinterpret_cast<std::uintptr_t>(&rng_pointer);
+  std::array<std::byte, 0x28> jomini{};
+  jomini[0x20] = std::byte{1};
+  auto jomini_pointer = reinterpret_cast<std::uintptr_t>(jomini.data());
+  std::array<std::byte, 0x18> game{};
+  const auto date = g_snapshot.date_raw;
+  std::memcpy(game.data() + 0x08, &date, sizeof(date));
+  auto game_pointer = reinterpret_cast<std::uintptr_t>(game.data());
+  std::uint8_t initialized = 1;
+  g_tls[0x20] = std::byte{1};
+  void *iat = reinterpret_cast<void *>(&PeekFixture);
+  Protection protection{&iat};
+  environment.offline_fixture = true;
+  environment.peek_message_iat_slot_override = &iat;
+  environment.resolved_peek_message_override = &PeekFixture;
+  environment.global_rng_wrapper_slot_override =
+      reinterpret_cast<std::uintptr_t>(&rng_wrapper);
+  environment.jomini_state_slot_override =
+      reinterpret_cast<std::uintptr_t>(&jomini_pointer);
+  environment.game_state_slot_override =
+      reinterpret_cast<std::uintptr_t>(&game_pointer);
+  environment.tls_initialized_flag_override =
+      reinterpret_cast<std::uintptr_t>(&initialized);
+  environment.tls_context_getter_override = &TlsFixture;
+  environment.memory_protection_context = &protection;
+  environment.memory_query_override = &QueryFixture;
+  environment.memory_protect_override = &ProtectFixture;
+  environment.system_page_size_override = 4096;
+
+  MainThreadQueryMailboxV1 mailbox{};
+  if (!InstallMainThreadQueryMailboxV1(mailbox, environment)) { return false; }
+  const bool passed = [&] {
+    if (mailbox.permitted_executor_quattuordenary != executor ||
+        iat != reinterpret_cast<void *>(&XarMainThreadPeekMessageWHookV1)) {
+      return false;
+    }
+    const auto return_rva = environment.build_profile->pump_exact_return_rva;
+    for (std::size_t i = 0; i < 3; ++i) {
+      if (ObserveMainThreadPumpAndDrainV1(mailbox, return_rva, thread)) {
+        return false;
+      }
+    }
+    if (!ReadMainThreadQueryMailboxDiagnosticsV1(mailbox).ready) {
+      return false;
+    }
+    StewardDevelopCountyCandidatesMailboxContextV1 query{};
+    query.mailbox = &mailbox;
+    query.request.expected_snapshot_revision = 77;
+    query.expected_snapshot = g_snapshot;
+    // The actual .3 helper returns typed unavailable for this unadmitted build.
+    query.material_profile = true;
+    MainThreadQueryTicketV1 ticket{};
+    if (TrySubmitMainThreadQueryV1(mailbox, executor, &query, ticket) !=
+        MainThreadQuerySubmitResultV1::submitted) {
+      return false;
+    }
+    query.ticket = ticket;
+    const bool drained =
+        ObserveMainThreadPumpAndDrainV1(mailbox, return_rva, thread);
+    const auto waited = WaitForMainThreadQueryV1(mailbox, ticket, 0);
+    const bool completed =
+        drained && ticket.sequence != 0 &&
+        waited == MainThreadQueryWaitResultV1::completed &&
+        query.executor_invocations == 1 &&
+        query.completion ==
+            StewardDevelopCountyCandidatesMailboxCompletionV1::completed &&
+        query.execution_stamp.thread_id == thread &&
+        query.execution_stamp.date_raw == date && query.execution_stamp.paused &&
+        query.read_result ==
+            xar::game::ReadStewardDevelopCountyCandidatesResultV1::unavailable &&
+        query.result.status ==
+            xar::game::StewardDevelopCountyCandidatesStatusV1::unavailable &&
+        query.result.snapshot_revision == 77 &&
+        query.result.material.has_value() && !query.result.readiness.ready &&
+        query.result.unavailable_reason ==
+            xar::game::StewardDevelopCountyFailureReasonV1::
+                exact_build_not_admitted &&
+        g_reader_calls == reader_calls_before &&
+        g_snapshot_calls == snapshot_calls_before;
+    const auto reclaimed = ReclaimMainThreadQueryV1(mailbox, ticket);
+    return completed &&
+           reclaimed == MainThreadQueryReclaimResultV1::reclaimed;
+  }();
+  const auto uninstalled = UninstallMainThreadQueryMailboxV1(mailbox, 0);
+  return passed &&
+         uninstalled == MainThreadQueryUninstallResultV1::uninstalled &&
+         iat == reinterpret_cast<void *>(&PeekFixture);
 }
 
 } // namespace
@@ -231,6 +408,10 @@ int main() {
   }
   if (!TestCurrentMaterialUnsupportedCompletion()) {
     std::cerr << "steward develop-county current material mailbox fixture failed\n";
+    return 1;
+  }
+  if (!TestCurrentMaterialRegisteredMailboxLifecycle()) {
+    std::cerr << "steward develop-county registered mailbox lifecycle fixture failed\n";
     return 1;
   }
   std::cout << "steward-develop-county-candidates-v1 mailbox fixture passed\n";

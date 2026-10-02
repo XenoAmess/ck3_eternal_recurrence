@@ -658,6 +658,47 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
             {"bridge_pid": 1234, "connection_generation": 7},
         )
 
+    def test_frontend_binding_accepts_actual_12003_clan_bootstrap_hello(self) -> None:
+        # Closed PID 111604 bootstrap report SHA-256:
+        # 82b106f40696cde58738257bab329739ab1912a64ed630f40be1aed7f9e00aa3.
+        # It advertised all three entry-route capabilities before NewGame.
+        capabilities = {
+            "backend_id": "native-headless",
+            "mode": "native-headless",
+            "source": "injected-dll-named-pipe",
+            "visual_fallback": False,
+            "bridge_capabilities": [
+                QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
+                INSPECT_FRONTEND_GUI_TREE_V1_CAPABILITY,
+                ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY,
+            ],
+            "diagnostics": {
+                "connected": True,
+                "bridge_pid": 111604,
+                "connection_generation": 1,
+                "hello": {
+                    "pid": 111604,
+                    "connection_generation": 1,
+                    "game_adapter_id": "ck3-1.20.0.3-msvc-x64",
+                    "game_adapter_status": "ready",
+                    "expected_ck3_version": "1.20.0.3",
+                    "expected_ck3_sha256": (
+                        "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+                    ),
+                    "ck3_build_match": True,
+                    "capabilities": [
+                        QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
+                        INSPECT_FRONTEND_GUI_TREE_V1_CAPABILITY,
+                        ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY,
+                    ],
+                },
+            },
+        }
+        self.assertEqual(
+            frontend_gui_route_binding_from_capabilities(capabilities),
+            {"bridge_pid": 111604, "connection_generation": 1},
+        )
+
     def test_route_and_action_require_semantic_postcondition(self) -> None:
         normalized_route = normalize_frontend_gui_route_v1(
             {

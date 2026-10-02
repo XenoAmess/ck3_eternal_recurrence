@@ -4106,11 +4106,16 @@ if(BUILD_TESTING)
     src/council_composition_candidates_public_v1_serializer.cpp
     src/ck3_12002.cpp
     src/ck3_12002_council_candidates.cpp
+    src/ck3_12002_nonwar_mailbox.cpp
+    src/ck3_12002_thread_runtime.cpp
+    src/main_thread_query_mailbox_v1.cpp
     src/steward_develop_county_candidates_v1_mailbox.cpp
     src/steward_develop_county_candidates_v1_mailbox_test.cpp
   )
   target_include_directories(
     xar_ck3_steward_develop_county_candidates_v1_mailbox_test PRIVATE include)
+  target_link_libraries(
+    xar_ck3_steward_develop_county_candidates_v1_mailbox_test PRIVATE user32)
   target_compile_definitions(
     xar_ck3_steward_develop_county_candidates_v1_mailbox_test PRIVATE
     NOMINMAX

@@ -244,8 +244,8 @@ action yet.
 The root-only integration patch is
 `native-stock/root-integration/ROOT-ONLY-DEVELOP-MATERIAL-INTEGRATION.patch`.
 The existing application-main submit/wait/completed-reply path is retained
-unchanged; the single-call Python primitive already receives a completed
-seven-field native envelope. No new polling tool, action flag or task
+unchanged; after an accepted submission, the single-call Python primitive
+receives a completed seven-field native envelope. No new polling tool, action flag or task
 transport is introduced. After v12 froze, root explicitly authorized the
 nine tested native leaves to be projected to canonical; their original
 before/source pins remain frozen in external scratch. Root alone integrates
@@ -279,3 +279,66 @@ JUnit SHA is
 These are offline production-path fixtures. The root-owned merged DLL and
 actual paused same-MCP capture are the next step; current growth remains
 separate from proposed-task growth or tax-versus-development utility.
+
+### First actual v13 query: executor registration gap
+
+Root adopted source `176f0640` / 937 compiled inputs on PID 8600. The
+closed SDK attempt `resume-12003/murchad-v13-current-material-01` is RED at
+`006-ck3_query_steward_develop_county_candidates_v1.json`, whose exact error
+is `application-main steward develop-county executor is unavailable`.
+The successful existing root query `004` is reused: native snapshot 7 /
+frontend revision 2, living paused Murchad 31853, date 53328600, episode
+`native-31853-af642d76cb41`. It independently confirms Steward 39761,
+`task_collect_taxes`, general/infinite progress, and income raw 353565 /
+scale 100000. No material rows or task forecast were observed; the guest
+baseline and normal final checkpoint were not reached in this attempt.
+
+The actual source route is `WorkerMain -> InstallNewAdapter ->
+BindThreadRuntimeImage -> PopulateNonwarRouterExecutors12002 ->
+RegisterNonwarMailboxExecutorsV1`. The current installation populates
+thirteen typed callbacks and the named semantic callback, then nonwar
+callbacks, but omits the existing
+`ExecuteStewardDevelopCountyCandidatesMailboxQueryV1`. The public handler
+submits that callback at `bridge.cpp:16653`; production
+`TrySubmitMainThreadQueryV1` rejects its absence from the permitted callback
+set as `invalid_request` at `main_thread_query_mailbox_v1.cpp:1382`, which
+the handler renders as this observed error. The application-main route is
+already enabled. The old Steward enumerator probe flag is unrelated and
+stays OFF; enabling it is not a fix for the missing production registration.
+
+Root authorized a narrow correction in the existing nonwar registration
+seam: a readonly callback field, mapping its nonnull value to the new
+adapter's free existing slot 14, and setting it only for the `.3` descriptor
+in root's shared bridge initialization. Legacy `.19` uses its independent
+registration path. One direct production registration/submit/pump/completed
+fixture will validate the actual omitted route. Original native reader /
+codec three GREEN and Python eleven tests plus six subtests are reused;
+their inputs and material profile have not changed. The reader remains
+**static-ready with an actual query integration RED**, not a new
+production-live material primitive. The one offline saved-packet report is
+`task-value-observation/ACTUAL-V13-FIRST-REGISTRATION-RED.json`.
+
+The correction then passed its one necessary focused production-path
+fixture on the first build/run. Eleven fresh objects used the frozen three
+file overlay and immutable `production-source-176f0640` with `/O2 /W4 /WX
+/UNDEBUG`. The negative case retains the actual missing-registration
+`invalid_request`; the corrected case executes real registration,
+installation, submit, TLS/main-thread pump, completion, reclaim and
+uninstall. Its actual current helper is intentionally unadmitted and returns
+the typed `exact_build_not_admitted` result: this proves the callback route
+without fabricating a positive paused game material frame. No legacy reader
+is invoked in that case.
+
+The focused receipt is
+`task-value-observation/registration-focused-harness-01/FOCUSED-RESULT.json`
+(SHA `FAD77046AC291AE25457B4AEEF261779CFCE24D380BF16D9BF440BFEB0B00122`),
+and the frozen final source/patch record is
+`native-stock/v13-executor-registration/FINAL-REGISTRATION-GREEN.json`
+(SHA `5D64F7F818B9985E6BA4D4A2370035F3DE574EFE6340DE3DA51A0071427793FB`).
+Root applied the three exact native leaves plus the two shared bridge/CMake
+hunks after its successful apply check. The running immutable v13 DLL is
+unchanged; the fix is **static-ready pending the combined v14 DLL and actual
+paused SDK retry**. Original reader/codec/Python source and PASS are reused.
+The query material field paths, 19-field profile, task/location predicates,
+signed Q100000 current-growth semantics and absence of action/forecast
+claims remain unchanged. The initial actual RED remains retained.

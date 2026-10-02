@@ -1,5 +1,6 @@
 ﻿#include "xar_bridge/ck3_12002_pending_context.hpp"
 
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include <algorithm>
 #include <array>
 #include <cstddef>
@@ -86,6 +87,8 @@ struct Fixture {
   std::int32_t resolve_active_war_calls = 0;
   std::int32_t special_vptr_read_calls = 0;
   std::vector<std::int32_t> trigger_order;
+  std::int32_t expected_pending_id = kPendingId;
+  std::vector<std::int32_t> validator_pending_ids;
 
   Fixture() { Reset(); }
 
@@ -133,6 +136,8 @@ struct Fixture {
     resolve_active_war_calls = 0;
     special_vptr_read_calls = 0;
     trigger_order.clear();
+    expected_pending_id = kPendingId;
+    validator_pending_ids.clear();
 
     Store(pending_storage, 0x20, static_cast<void *>(pending_slots.data()));
     Store(pending_storage, 0x2C, static_cast<std::int32_t>(kPendingSlotCount));
@@ -300,9 +305,10 @@ bool InvokeValidator(void *context,
   std::memcpy(&pending_id, bytes + 0x20, sizeof(pending_id));
   std::memcpy(&reply, bytes + 0x24, sizeof(reply));
   if (primary != 0x11111111U || secondary != 0x22222222U ||
-      pending_id != kPendingId || reply < 0 || reply > 2) {
+      pending_id != fixture.expected_pending_id || reply < 0 || reply > 2) {
     return false;
   }
+  fixture.validator_pending_ids.push_back(pending_id);
   output = fixture.validator_results[static_cast<std::size_t>(reply)];
   return true;
 }
@@ -465,9 +471,56 @@ bool Read(Fixture &fixture,
          xar::game::ReadPendingCharacterInteractionContextResultV1::available;
 }
 
+int TestActualNegativePendingId() {
+  using namespace xar;
+  Fixture fixture;
+  constexpr std::int32_t actual_id = -721'420'283; // 0xD5000005: full ID, slot 5.
+  constexpr std::size_t actual_slot = 5;
+  fixture.expected_pending_id = actual_id;
+  Store(fixture.pending_slots, kPendingSlotIndex * 0x10 + 0x08,
+        static_cast<void *>(nullptr));
+  Store(fixture.pending_slots, actual_slot * 0x10 + 0x08,
+        static_cast<void *>(fixture.pending.data()));
+  Store(fixture.pending, 0x10, actual_id);
+  auto request = Request();
+  request.pending_interaction_id = actual_id;
+  game::PendingCharacterInteractionContextV1 output{};
+  auto read = [&]() {
+    return ck3_12002::ReadPendingCharacterInteractionContextV1(
+        Environment(fixture), Access(fixture), request, output);
+  };
+  if (read() != game::ReadPendingCharacterInteractionContextResultV1::available ||
+      output.pending_interaction_id != actual_id || !output.definition ||
+      output.definition->canonical_key != fixture.definition_key ||
+      fixture.validator_pending_ids.size() != 6 ||
+      !std::all_of(fixture.validator_pending_ids.begin(),
+                   fixture.validator_pending_ids.end(),
+                   [](std::int32_t id) { return id == actual_id; }))
+    return Fail("actual negative pending full ID did not roundtrip");
+  const auto wire = game::RenderCrozierBuildIdentity(
+      ck3_12002::SerializePendingCharacterInteractionContextV1(output),
+      game::Ck3_12003AdapterDescriptor());
+  if (!Contains(wire, "\"pending_interaction_id\":-721420283") ||
+      !Contains(wire, "ck3-1.20.0.3"))
+    return Fail("signed pending ID or exact .3 wire identity was changed");
+  // Same slot, different generation must not resolve the original object.
+  request.pending_interaction_id = actual_id + 0x01000000;
+  if (read() == game::ReadPendingCharacterInteractionContextResultV1::available ||
+      output.definition.has_value())
+    return Fail("pending lookup discarded full generation identity");
+  request.pending_interaction_id = -1;
+  if (read() != game::ReadPendingCharacterInteractionContextResultV1::invalid ||
+      output.reason != "invalid_pending_interaction_id")
+    return Fail("pending null sentinel was admitted");
+  std::cout << wire << '\n';
+  return 0;
+}
+
 } // namespace
 
 int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--actual-negative-id-only")
+    return TestActualNegativePendingId();
   using xar::game::PendingCharacterInteractionContextStatusV1;
   using xar::game::ReadPendingCharacterInteractionContextResultV1;
 
