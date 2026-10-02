@@ -1,5 +1,11 @@
 # CK3 自动游玩智能体进度中心
 
+## 10-03 07:02 3526日／resume373：v27窄宗教primitive三项
+
+2026-10-03T07:02:55+08:00 Asia/Shanghai真实滚动补录：上个3393/full4299阶段已经Root正常发布；本阶段另计 **133保存日＝v26后继33＋v27正常100**，最新原Robert **3526/36524**、resume **373保存日**、10-03 **278保存日**，saved raw **53228952 / full4357**。actor29829、原episode `native-29829-2bc2d599f7f9`、typed dynasty_continuity reconciled_successions **0**。G2 **5/8＝62.5%**、NW **2/4＝50%**保持；NW-LIFE原timely合同与原NW-FAMILY/globalM2/M5 complete不回退，机器percent_reporting_allowed=false不改变。没有以三个宗教readonly primitive升级整体宗教OODA或M6。 [日报](daily/2026-10-03.md) / [W40](weekly/2026-W40.md)。当前full4357/raw53228952，saveSHA13975cb88e26e499847874d79edcfdce3ad2186e9b82d7a5ae909f028599e7a8、driverSHAa25a4894989c9f0fbae8c41455e26a00879bb36f9f9fd9b48914c2361302e63f。
+
+v27 samePID64876/source-native-envf305，原sixledger/tenstreamcold后正常100saved，前另queue33日现仅计一次。Holyloan currentavailable：quote300gold、borrow50piety/hiddenfalse-canTake、repayhidden/canTakeT，均不可执行；旧v25/v26RED保历史。共融actualhidden/canTakeF/100piety/完整genericreason；Catholic→Orthodox目标五口预览available，777piety超该帧365.7625，paidF/faith未变。这些是readonlyprimitive，不是paid动作、完整religionOODA或新M6信用。原Sway同full/gen两端3rings为空，未completed；后继查询另等真实结果。
+
 ## 10-03 06:51 3393日／resume240：NW-LIFE完成，NW2/4
 
 2026-10-03T06:51:32+08:00 Asia/Shanghai真实补录，按 **full/save4299** 的已closed截点一次收账：较上个3343阶段新保存 **50日＝10＋12＋9＋19**，原Robert累计 **3393/36524**，resume **240新增保存日**，10-03 **145保存日**。actor29829 / episode `native-29829-2bc2d599f7f9`，typed dynasty_continuity reconciled_successions **0** 独立列。G2仍 **5/8＝62.5%**；按原NW-LIFE合同owner已qualified complete，NW由1/4升 **2/4＝50%**（LIFE＋原FAMILY）。整体M4未因此完成，global M2/M5/NW-FAMILY原complete保持，机器percent_reporting_allowed=false不改变。后继新的保存窗另queue，不覆写本4299截点。 [日报](daily/2026-10-03.md) / [W40](weekly/2026-W40.md)。full/save4299/raw53225760；saveSHA841f15b9eadf5f90b2a804a043396c7d711ea3da5f58625f2b5b1a3476277473 / driverSHA7452d1acbf5adb8192cc081f09054fa12710d57c05173a9ec7ac5e12d39df951，native/source/env1bb-v26/new15592。

@@ -6,9 +6,9 @@
 
 - [精神满足度与维护](religion-spiritual-growth-and-maintenance-native-ai-12003.md)：罗贝尔实机读到当前值5、等级3／7及58.333%进度；这是当前成长输入，不是月变化或新增长收益。
 - [宗教关系任务的月度虔诚贡献](religious-relations-task-value-native-ai-12003.md)：当前任务原生贡献0.45、角色汇总月变化0.4375分别实读，不按差值猜测修正项。
-- [Holy order借款观测](religion-holy-order-loan-native-observation-12003.md)：v26同存档新PID实读前瞻金额300金，但决议求值仍为capability RED；false gates、零cost和空债务默认值不作为实际合法性。原生void费用getter的最小修复已通过编译，实际判定待下一版实读。
-- [神秘共融的原生最终条款](religion-mystical-communion-native-final-terms-12003.md)：沿固定决议补原生显示、最终合法性、可负担性、费用与理由，同一宗教查询的独立字段。当前仅为待集成包，尚无罗贝尔合法性或付费动作。
-- [普通本人改宗](religion-conversion-native-ai-12003.md)：复用现有候选、条款、理由、输入和结果查询；目标ID必须从当前原生候选取得，现存快照不证明改宗合法。
+- [Holy order借款观测](religion-holy-order-loan-native-observation-12003.md)：v27当前罗贝尔实机完整读取成功，前瞻金额300金、借款费用50虔诚；借款显示／最终合法性均false，可负担性true。还款隐藏、最终合法性true、费用零，独立已读欠款与贷款方合法缺席，不能据此执行还款。当前为只读production-live primitive，v25／v26失败保留，没有借还动作或收益。
+- [神秘共融的原生最终条款](religion-mystical-communion-native-final-terms-12003.md)：同一宗教查询的独立字段实读available，当前决议隐藏／不可执行／可负担，费用100虔诚；原生理由仅返回“你未满足所有要求”，不猜具体未满足的条件。当前为只读production-live primitive，没有付费动作。
+- [普通本人改宗](religion-conversion-native-ai-12003.md)：复用现有候选、条款、理由、输入和结果查询，实机取得Orthodox主Rite153候选并读取最终条款；候选Faith规则true，paid最终can_convert=false，未执行转换。当前Rite和费用、知识等输入回链实际记录，不用候选资格代替最终合法性。
 - [教士与议会任务](religion-clergy-council-native-ai-12003.md)：独立解职、任务显示／有效性与县域目标的exact-build调用链已闭合；下一leaf扩充现有clergy MCP，当前是research，没有新任命或任务结果。
 
 当前实际能力与计划回链[统一进度](../autonomous-agent-progress/README.md)。宗教全面授权不等于宗教全域完成；上述原生研究、静态实现、实机观测和完整动作闭环分别记账。

@@ -676,3 +676,60 @@ Delivery pins and actual normal plan contexts are in
 `m7-robert/V26-CURRENT-COLD-NORMAL-REPORT-FIELDS-01.json`. This update used
 cached cold fields and new closed summaries; it did not reread old cold raw,
 access current state/SDK or rerun gameplay/tests/Git. M7 remains `in_progress`.
+
+## Actual v27 cold and one hundred saved normal days, 2026-10-03
+
+The actual v27 qualified cold baseline is GREEN at new GAME64876, replacing
+GAME15592. Robert29829 remains alive, paused and map-ready at raw53226552 in
+the original episode `native-29829-2bc2d599f7f9`, with the saved
+`dynasty_continuity` goal and all six ledger pins verified. Ten opaque streams
+were carried through the official current-pair path. Its normal source pair
+has saveanchor4309; the actual cold consumer reports full4310/save4309.
+The carried checkpoint is87,736,994 bytes/SHA-256 `bdae8c8e62b96a03e1f78f8c7d0f73ebdb2e55d932d8ea9a835f1a7936cba40a`.
+This cold baseline adds0 natural days, action replays or qualification slots.
+
+Public runtime, native metadata and actual compiler source are
+`f30579bf6405e183192c96ea6b9bc35dddd11eec`, bound to new environment
+`b8a8f48f37324884afa8d7055cd764f0c45c5af9ae82b34e18c62894f1b916be`. The adopted DLL is
+8,126,976 bytes/SHA-256 `dd7213463527f18662e5b0374a1555e98ab5303dc84c1c349ac3648ffff175ba`. The following normal window
+uses the same qualified source/native/environment and GAME64876; the baseline
+itself skipped government and the next planner, so actual normal-plan use is
+the separate evidence below.
+
+The requested100-day window closed `normal-time-target-reached` with
+100 actual saved days,25
+formal turns and0 natural modals,
+raw53226552→53228952, ending paused.
+Formal turn count comes from this sole closed summary rather than from the
+save-history delta or requested day target. Returned normal plans contain
+25 saved campaign-goal contexts and25 observed
+government contexts, used by the normal execution. Goal origin/current remain
+29829, with `reconciled_successions=0`
+and `last_succession=null`.
+The saved pair is h4357/full4357:
+checkpoint88,439,522 bytes/SHA-256 `13975cb88e26e499847874d79edcfdce3ad2186e9b82d7a5ae909f028599e7a8`, driver
+52,288,988 bytes/SHA-256 `a25a4894989c9f0fbae8c41455e26a00879bb36f9f9fd9b48914c2361302e63f`. Robert now has3526/36524
+durable days, this iteration373 days, and278 saved days in the current day03
+stage. No natural succession or new M7 identity/matrix completion is credited.
+
+Root's closed religious readonly preview now observes a Holy Loan quote of
+300 gold plus50 piety and religious renewal/communion terms costing100 piety.
+The Orthodox candidate153 native paid path is `can_take=false`, with a777-piety
+quote versus365.7625 player piety in that same paused preview. These quote and
+legality observations are primitives; they do not establish a paid operation
+or a complete religion OODA. Original faith is unchanged and paid actions
+remain0. The preview is kept distinct from the later normal100 end frame;
+current post-window costs or eligibility are not inferred. No unpublished
+clergy source or subsequent game run is required for this closed-stage report.
+
+Exact cold evidence is
+`m7-robert/robert-mainline-v27-current-review-01/actual-candidate-cold-goal-01/result.json`;
+its cached compact fields are `m7-robert/V27-CURRENT-COLD-REPORT-FIELDS-01.json`.
+The normal close is
+`m7-robert/v27-religion-read-following-normal100-01/result.json`, summarized
+once in `m7-robert/v27-religion-normal100-stage-fields-01.json`. Combined pins
+and actual plan contexts are in
+`m7-robert/V27-CURRENT-COLD-NORMAL-REPORT-FIELDS-01.json`. This update used the
+cached cold report and new closed normal summary; it did not reread old cold
+raw or access current state/SDK, rerun gameplay/tests or perform Git work.
+M7 remains `in_progress`.

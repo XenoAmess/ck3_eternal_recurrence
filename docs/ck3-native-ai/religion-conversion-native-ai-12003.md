@@ -1,6 +1,6 @@
 # CK3 1.20.0.3：Robert 普通本人改宗的最终输入与原生 AI 边界
 
-2026-10-03，**research；所列原生函数 static-confirmed；Robert 目标只读实测 pending**。宗教已全面开放。本包固定一条普通本人转换预览：当前 Catholic Robert29829 → **Orthodox 的当前原生 main Rite**。它复用已发布的 conversion 查询，不提交改宗、不改变 Robert 身份，也不新增 G2 完成项。Orthodox 是本次输入研究目标，尚未被选为自动策略或付费动作。
+2026-10-03，**Robert 当前目标的五个只读口已达到 production-live primitive；原生 AI scheduler/desire 仍为 research**。宗教已全面开放。本包固定一条普通本人转换预览：当前 Catholic Robert29829 → **Orthodox 的当前原生 main Rite**。新实测得到 native paid final=false：报价777piety，实际余额365.7625；原生理由明确指向虔诚不足。它复用已发布的 conversion 查询，保持 Catholic，也不新增 G2 完成项。Orthodox 是本次输入研究目标，尚未被选为自动策略或付费动作；没有改宗动作或conversion loop。
 
 ## exact build、来源与目标
 
@@ -10,7 +10,7 @@
 
 当前原版 `common/religion/faith_types/00_faith_types.txt:535–542,656–665` 把 Catholic、Orthodox 分别指向 `roman_rite`、`byzantine_rite`，两者 Religion 都是 `christianity_religion`。`history/faiths/00_christianity.txt:77–98,189–200` 在 1054.7.16 创建这两条主 Rite；因此1066 Robert主线的静态目标有明确来源。历史定义不会固定运行时 full identity：新 `choices` 返回的 `faith_key=orthodox` 行及其 **`main_rite_id`** 才是实际请求目标。不得把 `orthodox` 的 FaithID、静态序号或旧 full RiteID 发给 native terms。
 
-全部精确行文与 SHA 在 [SOURCE-AND-CORE-PROOF-12003.json](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-conversion-12003/SOURCE-AND-CORE-PROOF-12003.json)。本页尚无 Orthodox 的当前 Robert 候选、合法性、报价或预测数值；合法性若为 false，原生完整理由本身就是可用输入，不以强制动作取得资格。
+全部精确行文与 SHA 在 [SOURCE-AND-CORE-PROOF-12003.json](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-conversion-12003/SOURCE-AND-CORE-PROOF-12003.json)。这是首批 `1bb3eee9` 离线截点。后续ROOT已在source/native/environment `f30579bf6405e183192c96ea6b9bc35dddd11eec` 上完成实际目标预览；其完整原始记录与独立结果见下节，历史静态pin和失败回执均保留。
 
 当前 `common/scripted_rules/00_rules.txt:38–89` 给普通 Faith 转换adult、非当前Faith head/antipope、目标main Rite enabled/convertible与两个block变量门；原文的GHW参与布尔只保留为最终native判定输入，本包不展开战争。Catholic→Orthodox 使用同Religion知识分支，`pam_values.txt:169` 的阈值为 **0.5**，比较是 `>`，恰好0.5不通过；other-Religion阈值是0.6。若目标Faith等于 `top_liege.primary_title.state_rite.faith`，规则先跳过知识与recent-conversion两门。State Rite身份必须真实读回，不从领主或省份宗教猜测；完整 paid final仍是最终入口。
 
@@ -47,7 +47,26 @@ ROOT 可以直接使用外置 [ROOT-READONLY-CHOICES-CALLS.json](Z:/ck3_mod_rewr
 
 付费动作的真正 owning submit、channel0x0E、clone、Execute、signed piety callback及Character+0xB4 setter 已由[本人动作专题](religion-self-conversion-action-native-ai-12003.md)冻结。此包不重复提取。该输入研究不将当前source的submit登记、queue ACK或旧合成Pythoncase计作真实改宗；动作若未来被ROOT选中，仍须其请求关联before/once submit/independent result和正常后继材料。
 
-## 原生 AI：已定位输入与未闭合分支
+## 2026-10-03 06:46：Robert 新PID普通改宗目标实际预览
+
+ROOT 在 **PID64876 / actor29829 / raw53226552** 同一暂停日期完成两阶段采集。实际 source runtime 为 [production-source-f30579bf](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/production-source-f30579bf/)，ROOT绑定的 source/native/environment 完整HEAD为 `f30579bf6405e183192c96ea6b9bc35dddd11eec`；正式environment SHA为 `b8a8f48f37324884afa8d7055cd764f0c45c5af9ae82b34e18c62894f1b916be`。episode仍为 `native-29829-2bc2d599f7f9`，ordinary_campaign_succession / xar_off / pact absent；实际初末帧均paused、无active event或pending interaction、没有日期推进。game/EXE身份与上文exact `.3`相同。
+
+第一段 [actual choices](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v27-religion-sway-conversion-cold-01/007-ck3_query_player_religion_conversion_choices_v1.json) 为 **available=true / status=observed**，native revision3、capture epoch9680。真实行是 `faith_id=24 / faith_key=orthodox / main_rite_id=153 / native_faith_rule_passes=true`。当前Faith23的Rite集合为 `[152,224]`，membership不是最终许可。ROOT使用上文纯文件selector取得153，未硬编码旧目标。第二段 [四个目标查询 result](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v27-orthodox-conversion-preview-01/result.json) 06:46:43–06:46:59（Asia/Shanghai）正式关闭，**4 calls CLOSED / harness GREEN / official driver.close returned**；全部available=true、failure=null，native revision4 / public revision2。两个native revision分别保留，不假称五次请求是同一capture epoch。
+
+| 实际口 | 当帧完整关键信息 | 此次资格 |
+| --- | --- | --- |
+| choices | Orthodox Faith24 → main Rite153；native Faith-rule=true；当前Catholic Faith23成员Rites152、224 | Robert实际候选/身份只读primitive；不是允许改宗 |
+| paid terms，epoch20970 | current Rite152 → target153，**different=true / same Faith=false**；unpaid validator=true，**paid validator=false / can_convert=false** | 有效最终许可只读primitive；false是真实游戏条件，不是provider/harness RED，也不是同Rite早退 |
+| native quote，随terms同epoch | **777points / raw77700000 / charge_piety=true**；actor余额**raw36576250=365.7625**，can_afford=false | 真实当帧原生报价与余额；没有支付。两数相减的缺口411.2375只是直接算术，不冒充native CalcPietyMissing查询 |
+| reasons，epoch21292 | available=true，native paid validator=false；原生当前语言完整文字表示“没有777虔诚”，raw文本与UI文本含原生控制token并已保留；reason_codes_available=false | 实际原生拒绝文本primitive；terms自身text_available=false不否定独立reasons口的真实文本 |
+| inputs，epoch21578 | knowledge **raw96000/100000=0.96**，recent=false；actor/target Religion均8；realm State Rite/Faith合法不存在，目标match=false；base current=0 / target=0 / expected change=0，均available | 独立目标输入primitive；0是已观测合法零值。知识高于同Religion0.5门且Faith-rule/unpaid通过，付费拒绝与实际不足余额一致；不能把base0叫当前真实fulfillment或native final desire |
+| independent baseline outcome，epoch21906 | target_reached=false；实际仍**Rite152 / Faith23 / catholic / Religion8**，Faith main Rite152；piety365.7625、gold1057.28817、prestige2656.8025；真实fulfillment **5**、baseline0、target knowledge0.96；三个conversion flags都registered且absent | 独立当帧状态primitive；absence的timed/expiry字段null是合法没有flag，不是丢失数据。未改宗，不归因收益，不算动作material |
+
+原生 `raw_native_text` 的完整带格式内容、全部source文件SHA和实际component字段只离线提取一次，保存到 [ACTUAL-FIELDS.json](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-conversion-12003/actual-v27-robert-orthodox-preview-01/ACTUAL-FIELDS.json)，SHA `45d201f4f2f505ca350252fd6631d44432bf4c738d109408b8be7cba57a5ca11`。摘要里的“没有777虔诚”是对原生markup文本的可读释义，不覆写原文或生成机器原因码。
+
+本次五个现MCP对这条真实Robert目标的readiness均为 **production-live primitive**，并闭合其组合作为实际只读改宗预览的价值：现在可以区分“候选规则通过”和“普通付费动作当前不可执行”，还能取得具体原生拒绝、最终费用与真实baseline。**paid actions=0 / conversion_submitted=false / conversion material=0 / game days added=0 / G2 credit added=0**。没有收集owning action result或验证改宗后的next-turn/cold，当前Catholic不是转换成功证据。ROOT随后继续原普通主线；这五口不需要重复实测或为凑动作信用改信仰。
+
+## 原生 AI：已定位输入与未闭合分支（继续保持research）
 
 原版 `NAI.MIN_YEARS_BETWEEN_RITE_CHANGE=5` 表示 landed AI 重评Rite的最短年数；原参数绑定 `0x5C68824`、注册 `0x1A62780`。玩家 UI recency flag是另一条 stock effect，不能据此设“每五年必转换一次”的策略。
 
@@ -67,7 +86,7 @@ flowchart TD
     P --> T
     I --> V[独立价值输入 不是final desire]
     T --> B[既有 outcome读取真实 baseline full身份/三余额/flags]
-    B -. Robert actual target probe pending .-> L[production-live readonly primitive]
+    B --> L[已实测五口 production-live readonly primitive]
     D[NAI参数0x5C68824 5年最短重评] -. unknown actual consumer/caller .-> S[unknown 普通landed AI scheduler]
     S -. unknown registration 施工入口0x1CFC310 .-> A[unknown AI候选排序/最终desire]
     V -. unknown participation .-> A
@@ -78,6 +97,6 @@ flowchart TD
 
 ## 交付、测试与剩余项
 
-本包新增一次三函数静态比较、一次7个已知callsite验证及一次实际父函数5区间unwind闭合。没有新游戏进程、SDK会话、管道调用、native运行时调用、转换、游戏日或fixture重跑。文件pins与交付字段见 [REPORT-FIELDS.json](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-conversion-12003/REPORT-FIELDS.json)，由ROOT汇入当日日报和周报并提交。
+首批离线包新增一次三函数静态比较、一次7个已知callsite验证及一次实际父函数5区间unwind闭合；该截点没有游戏/SDK调用或fixture重跑。其原始文件pins与交付字段保留在 [首批 REPORT-FIELDS.json](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-conversion-12003/REPORT-FIELDS.json)，当时的offline状态和旧topic pin按当时版本理解。后续ROOT五个实际只读查询另有独立v27回执，不改写原静态截点，也不混入付费动作或游戏日。两次可核验增量均交给ROOT汇入当日日报和周报。
 
-下一交付是 sole live owner在当前Robert paused帧完成一次两阶段只读链，记录 **实际 target identity、native paid final、原文理由、quote、知识/预测与independent baseline**。某口实际unavailable时，保留failure，沿上表已闭ABI修其最小provider；不把null写成zero/false，也不把缺输入当永久停止理由。只有完整实际目标材料解锁这条独立预览后才写production-live primitive；本题没有转换action/loop或通用宗教能力complete资格。
+后续实际交付已见 [v27目标预览 REPORT-FIELDS.json](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-conversion-12003/actual-v27-robert-orthodox-preview-01/REPORT-FIELDS.json)。ROOT完成上述唯一两阶段只读链，本worker只从已关闭artifact离线提取一次并更新本文，没有再次SDK/query/fixture、native逆向或游戏操作；源码与原静态proof不变。本目标输入已闭合，继续保持Catholic与普通主线。将来明确的玩法用途若需要付费转换，再使用当时的fresh目标/quote和既有typed提交/独立result；原生AI scheduler/desire及任意改宗action/loop、通用宗教complete都仍不具备当前资格。

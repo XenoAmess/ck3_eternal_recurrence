@@ -1,6 +1,6 @@
 # 神秘共融：1.20.0.3 原生最终资格与费用只读口
 
-2026-10-03。项目所有者已全面开放宗教域。本专题仅处理当前玩家的固定 `hold_mystical_communion_decision`：显示、最终资格、实际费用、支付能力和最终资格拒绝文本。外置源码及同 wire focused 验证属于 **static-ready candidate**；同组决议 reader 的 v26 实机失败已由 Holyloan owner 闭合为错误的 CostEvaluate 返回指针合同，本新 leaf 同步必要 void 修复。ROOT 严格构建及当前 Robert paused 实测仍待完成，不能自动认定夹具通过就已适用于真实决议。没有执行决议、付费、改宗或新增完整 OODA 信用。
+2026-10-03。项目所有者已全面开放宗教域。本专题仅处理当前玩家的固定 `hold_mystical_communion_decision`：显示、最终资格、实际费用、支付能力和最终资格拒绝文本。v27 当前 Robert paused 查询已真实返回完整材料，状态升级为 **production-live primitive**。实际结果是隐藏、最终不可执行、支付能力为真，费用 **100 虔诚、0 金币**；通用拒绝文本不揭示具体失败条件。没有执行决议、付费、改宗或新增完整 OODA 信用。
 
 游戏冻结为 CK3 **1.20.0.3 Crozier / Steam build 25652598**，EXE SHA-256 为 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。本包以不可变 `artifacts/g2-maintainer-2026-10-02/resume-12003/production-source-f9da88f9` 为源码输入；共享 bridge、CMake 和 Python 修改只交外置 ROOT patch，ROOT 独占 apply、构建、实机和 Git。
 
@@ -30,6 +30,7 @@ flowchart TD
     Q --> O
     F --> O
     R --> O
+    O --> L[实际v27只读 primitive：隐藏/不可执行/可支付100虔诚]
     O -. 本包没有 submit .-> P[未来实际决议与三天后分支]
     P -. 分支与独立 SF/虔诚结果未实际执行 .-> V[未来结果验证]
 ```
@@ -69,4 +70,21 @@ ROOT 随后提供新的 **真实输入 RED**：v26、PID 15592、Robert、date r
 
 void 修复后的同一必要原生 case 再次 compile 0 / run 0，genuine wire 的 2161 bytes 与 SHA 完全未变，因此复用此前唯一 Python GREEN，不重复解码测试。`PYTHON-WIRE-REUSE-PROOF.json` 保留输入字节一致性和原 case pins；这仍是 synthetic routing 验证，actual paused 决议结果待 ROOT。
 
-下一项由 ROOT 按明确 source base 合并独立完整包、严格 native 构建和一次真实当前 paused 现有宗教查询。只读 final primitive 完成后，才能依据实际 shown/final/afford/cost/reasons 决定保持还是继续研究具体成长行动；本包不自动执行共融，也不把当前能力提升记成行动、天数、M6 整体或完整世代完成。
+## v27 实际生产观测
+
+ROOT 的 `resume-12003/actual-v27-religion-sway-conversion-cold-01/006-ck3_query_player_religion_context_v1.json` 通过既有 registered MCP 路由 CLOSED，整个 batch GREEN 且官方 driver close 返回。source/native/env 为 `f30579bf6405e183192c96ea6b9bc35dddd11eec`，PID 64876；actor 29829、date raw 53226552、capture epoch 9380、public revision 2 / native revision 3。初始与最终同日、paused、当前虔诚 raw 36576250（365.7625）未因本只读 batch 改变。ROOT 提供的 v27 strict 构建为 73.371 秒、948 输入、494 fresh targets / 491 unique targets，CI 37073494135 在 2026-10-03 06:42:31 CST SUCCESS；这里复用，不重复测试。
+
+| 新 sibling 实际字段 | 原样结果 |
+| --- | --- |
+| `available/unavailable_reason` | true / null |
+| `decision_id` | `hold_mystical_communion_decision` |
+| `is_shown/can_take/affordable` | false / false / true；支付能力不等于可执行 |
+| `costs_raw` | gold 0、treasury 0、prestige 0、piety 10000000，scale 100000，即 **100 虔诚** |
+| `reasons_available` | true |
+| `can_take_reasons` | `\u0016warning_icon!\u0015X 你未满足所有要求\u0015!`，完整控制码与中文字样保留 |
+
+拒绝文本只有“未满足所有要求”，**不能推断为缺 Mystic、冷却未结束、年龄或其中任何具体条件**。当前 action opportunity 不成立；没有 paid submit。原宗教 Context 仍独立 available true / null，Catholic、Rite 152、Faith 23、Religion 8、main Rite 152，精神满足度 raw 500000（5），fervor raw 6801782。原 progress sibling 仍独立 available true：当前值 5、level 3/7、上下界 −30/+30、原生 58.333%、最高级 false、运行时界限 −100/+100、不是月变化。
+
+只核对一次六项输入研究的费用文案与预算比较，没有发现虔诚/金币混用或需要纠正的金额错字：共融 100 与涂油 250 均为 authored 虔诚；100/250 对 414.0125 余额及每月 0.4375 的比较也都是原 v25 **虔诚**基线；朝圣的 gold/treasury 动态费用单独记录。旧研究的历史基线不改成假装当时已知 v27 材料。现在共融 100 是实际 native evaluated quote，虽然数值恰好等于脚本基础值，也不能将其他决议基础值当实际报价。
+
+实际 proof 与 report fields 为 `resume-12003/m6-law/mystical-communion-terms-12003/{ACTUAL-V27-MYSTICAL-COMMUNION-PROOF.json,ACTUAL-V27-REPORT-FIELDS.json}`。这闭合一个独立的当前只读 primitive；paid submit、实际三天后分支、成长/资源净结果及完整宗教策略仍未交付，不增加行动、天数、M6 整体或完整世代信用。旧 v26 真实 RED、首次 harness RED 与 pre-void candidate 均保留。

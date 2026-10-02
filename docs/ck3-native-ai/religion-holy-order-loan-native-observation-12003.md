@@ -4,11 +4,10 @@
 
 可见价值是让当前帧回答三件事：**现在能否申请贷款、原生会求出多少金额、现有本金是否能准确偿还**。普通 gold/income snapshot 无法回答 final decision、冷却、合格首领是否存在或现有债务的实际本金。必须补观测，不继续把这些缺口留作长期 `unknown`。
 
-**当前实际状态：v26 真实报价 300 金币已成功，决议读取仍为 capability RED。**
-正确 plain-value registry/evaluator 已在完整注册 MCP transport 内给出 raw `30000000`；
-成本 wrapper 的返回类型错误仍使两决议 getters 提前返回，默认 false/零 cost 不构成
-合法性事实。下文初始 ABI、v25 和 static-ready 记录作为历史证据保留，当前读法以
-末尾 v26 实际故障、最小修复与后续 ROOT paused artifact 为准。
+**当前实际状态：v27 完整只读借贷查询 GREEN，已达 `production-live primitive`。**
+真实报价为 300 金币，两个决议的独立原生 bool/cost 与借款人债务变量均已读出。
+本帧两个决议都隐藏，不能执行；尚未借款、还款或取得收益，也未形成 OODA loop。
+下文 v25/v26 RED 与 static-ready 记录保留为历史，当前结论以末尾 v27 actual 为准。
 
 | 固定输入 | 值 |
 | --- | --- |
@@ -416,3 +415,56 @@ flowchart TD
 但 whole loan context 的 production-live readiness 仍须 ROOT v27
 `available=true` 和真实两决议 bool/cost artifact。代码/ABI receipt 与本专题已释放，
 ROOT 负责 combined build、实机与统一 report/commit/push。
+
+
+## v27 CLOSED：完整只读查询 production-live primitive
+
+ROOT 单次实机查询 `Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v27-religion-sway-conversion-cold-01/005-ck3_query_player_holy_order_loan_context_v1.json`（SHA-256 `8fa5a86841fc9850040be68a499909c43668f97440e3df231cc82fe2b6b09fbe`）
+完整返回 `available=true / unavailable_reason=null / status=observed`。same Robert
+29829，新 PID 64876，raw date `53226552`，capture epoch `9052`，Python queried
+revision `2`、native/snapshot revision `3`，source/native/env
+`f30579bf6405e183192c96ea6b9bc35dddd11eec`。复用 exact `.3` / build 25652598
+与 EXE SHA；本次只提取 ROOT 已 CLOSED artifact，未重新 query、测试或扫描 registry。
+完整 compact 及 pins 在 `Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-loan-12003/ACTUAL-V27-OBSERVED/OBSERVED-COMPACT.json`、
+`Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-loan-12003/ACTUAL-V27-OBSERVED/SOURCE-PINS.json`。
+
+| 本帧原生观测 | 值 | 语义 |
+| --- | --- | --- |
+| prospective quote | raw `30000000`，scale `100000` = **300 金币** | 原生 plain compiled value 已真实求值 |
+| borrow | shown `false` / can_take `false` / affordable `true` | 隐藏且不合法，本帧不可执行 |
+| borrow cost | gold/treasury/prestige `0`，piety raw `5000000` = **50 虔诚** | 真实成本 output，不再是 v26 default |
+| repay | shown `false` / can_take `true` / affordable `true` | 三项独立；隐藏使本帧不可执行 |
+| repay declared cost | 四项均 `0` | 不代表 effect 免本金；真正偿还仍支付 owed principal |
+| borrower debt variables | owed present `false`/raw `null`，holder present `false`/ID `null` | available frame 内合法读取的缺席，不是读取失败或本金为零 |
+| borrower years | present `false`/raw `null` | 借款人变量缺席已读出 |
+| lender years | output present `false`/raw `null` | **不适用，未读取**：没有 holder，源码未进入 lender ReadVariable |
+
+本帧完整执行了两决议的成本、IsShown、CanTake 与 CostAffordable；这些 bool/cost
+现在是 observed，不是 v25/v26 early-return defaults。执行判定必须使用
+`is_shown && can_take && affordable`：隐藏的 repay 即使 `can_take=true` 也不证明
+有债务，不能作为可执行还款动作。`loan_holder_resolved=false` 在无 holder 时同样
+是不适用，没有进行“债主已删除”判定。条件读取在冻结 source 的 181–193 行；
+这项解释直接来自该 source，不能宣称已观察一个不存在 lender 的年数。
+
+readiness 升为 **`production-live primitive`（已授权 religion opt-in 的只读口）**。
+尚未借款、还款、支付或取得任何财政收益，没有动作前后验证或完整 OODA loop；
+不得升为 `production-live loop` 或 `complete`。非零本金/真实 lender 年数的自然帧、
+动作入口及完整策略结果仍为后续游戏任务，不能用本帧填满这些分支。v25/v26 失败
+artifact 原样保留，实际修复链与 native proof 继续可回链。
+
+```mermaid
+flowchart TD
+  A[v27 actual Robert 29829 / available=true] --> Q[原生 quote 300 gold]
+  A --> V[borrower owed/holder/years absent 已读取]
+  V --> NA[lender 不存在 / lender-years 读取不适用]
+  A --> B[borrow: shown F / can_take F / affordable T / cost 50 piety]
+  A --> R[repay: shown F / can_take T / affordable T / cost 0]
+  B --> G[执行需 shown AND can_take AND affordable]
+  R --> G
+  G --> N[本帧两决议均不可执行]
+  Q --> P[只读 production-live primitive 已验证]
+  V --> P
+  N --> P
+  P -. unknown: 借还动作与真实 before/after 尚待交付 .-> O[production-live loop]
+  P -. unknown: 非零本金与实际lender年度帧 尚待自然观测 .-> D[扩展债务场景]
+```
