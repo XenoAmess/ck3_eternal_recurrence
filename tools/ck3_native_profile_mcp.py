@@ -109,6 +109,7 @@ class NativeProfileService:
         self._gameplay = None
         self._postcondition_timeout_seconds = 5.0
         self._postcondition_poll_seconds = 0.05
+        self._resume_timeout_seconds = 10.0
 
     def guard(self) -> dict:
         profile = self.profile
@@ -145,12 +146,16 @@ class NativeProfileService:
         with self._lock:
             return self._receipt("inspect", {"status": "profile_bound", "observation": self.guard(),
                                            "attached": self._attach_result is not None
-                                           and self._attach_result.get("status") == "attached_snapshot_verified"})
+                                           and self._attach_result.get("status") in {
+                                               "attached_snapshot_verified", "resumed_snapshot_verified"}})
 
     def _snapshot(self) -> dict:
         if self.driver is None:
             raise RuntimeError("profile bridge has not been attached")
         snapshot = self.driver.take_snapshot()
+        return self._validate_snapshot_identity(snapshot)
+
+    def _validate_snapshot_identity(self, snapshot: dict) -> dict:
         diagnostics = snapshot.get("diagnostics", {})
         hello = diagnostics.get("hello", {})
         target = self.profile["guard"]["target"]
@@ -229,6 +234,115 @@ class NativeProfileService:
                     "injector": injected.report if injected is not None else None})
             return self._attach_result
 
+    def resume(self) -> dict:
+        """Reconnect the original loaded DLL; never inject or replace its claim."""
+        with self._lock:
+            if self._attach_result is not None:
+                return self._attach_result
+            observed = self.guard()
+            row = self.profile["dll"]
+            if desktop.sha256(Path(row["path"])).lower() != row["sha256"].lower():
+                raise RuntimeError("frozen DLL artifact SHA-256 changed")
+            evidence = Path(self.profile["evidence_directory"])
+            claim_path = evidence / "attach-claim.json"
+            claim = desktop.exact_fields(json.loads(claim_path.read_text(encoding="utf-8-sig")),
+                {"session_id", "profile_sha256", "pipe_name", "target"}, "original attach claim")
+            original_id = claim["session_id"]
+            if (not isinstance(original_id, str) or not re.fullmatch(r"[0-9a-f]{32}", original_id)
+                    or claim["profile_sha256"] != self.profile["profile_sha256"]
+                    or claim["target"] != self.profile["guard"]["target"]
+                    or claim["pipe_name"] != rf"\\.\pipe\xar_profile_{original_id}"):
+                raise RuntimeError("original attach claim is not this frozen profile and target")
+            original_directory = evidence / original_id
+            attach_paths = list(original_directory.glob("*-attach.json"))
+            if len(attach_paths) != 1:
+                raise RuntimeError("resume requires one original successful attach receipt")
+            attach = json.loads(attach_paths[0].read_text(encoding="utf-8-sig"))
+            receipt_paths = [(int(match.group(1)), path) for path in original_directory.glob("*.json")
+                             if (match := re.fullmatch(r"(\d{4,})-[^.]+\.json", path.name))]
+            latest_path = max(receipt_paths, key=lambda pair: pair[0])[1]
+            latest = json.loads(latest_path.read_text(encoding="utf-8-sig"))
+            for receipt in (attach, latest):
+                if (receipt.get("schema") != "ck3.native-profile-receipt.v1"
+                        or receipt.get("session_id") != original_id
+                        or receipt.get("profile_sha256") != self.profile["profile_sha256"]
+                        or receipt.get("pipe_name") != claim["pipe_name"]):
+                    raise RuntimeError("original transport evidence identity changed")
+            injector = attach.get("injector", {})
+            if (attach.get("status") != "attached_snapshot_verified"
+                    or injector.get("returncode") != 0
+                    or injector.get("complete_process_tree_proven") is not True
+                    or latest.get("status") != "native_snapshot_verified"):
+                raise RuntimeError("resume requires successful attach and latest paused snapshot receipts")
+            prior = self._validate_snapshot_identity(latest.get("snapshot", {}))
+            self._validate_snapshot_identity(attach.get("snapshot", {}))
+            prior_generation = prior["diagnostics"]["hello"].get("connection_generation")
+            if (type(prior_generation) is not int or prior_generation < 1
+                    or prior.get("paused") is not True or prior.get("map_ready") is not True):
+                raise RuntimeError("original transport lacks a paused map and connection generation")
+            self.backend.poll(self.profile)
+            self.guard()
+            clock_before = self.backend.read_clock(self.profile)
+            self.guard()
+            if (clock_before.get("paused") is not True
+                    or type(clock_before.get("date_raw")) is not int
+                    or type(clock_before.get("speed")) is not int
+                    or clock_before["date_raw"] != prior["date_raw"]
+                    or clock_before["speed"] != prior["speed"]):
+                raise RuntimeError("resume clock is not the latest paused transport snapshot")
+            # The original DLL's immutable pipe is evidence-owned, never an RPC argument.
+            self.pipe_name = claim["pipe_name"]
+            self._attach_result = {"status": "RED", "reason": "resume endpoint started"}
+            try:
+                if self.driver_factory is None:
+                    from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+                    factory = NativeHeadlessGameplayDriver
+                else:
+                    factory = self.driver_factory
+                self.driver = factory(self.pipe_name, state_dir=self.profile["state_directory"],
+                                      save_dir=str(Path(self.profile["userdir"]) / "save games"),
+                                      episode_projection="native_campaign")
+                deadline = time.monotonic() + self._resume_timeout_seconds
+                while True:
+                    self.guard()
+                    try:
+                        snapshot = self._snapshot()
+                        generation = snapshot["diagnostics"]["hello"].get("connection_generation")
+                        if (type(generation) is not int or generation <= prior_generation
+                                or snapshot.get("paused") is not True or snapshot.get("map_ready") is not True
+                                or snapshot["date_raw"] != prior["date_raw"] or snapshot["speed"] != prior["speed"]
+                                or snapshot.get("pending_character_interaction") != prior.get("pending_character_interaction")
+                                or snapshot.get("active_event") != prior.get("active_event")):
+                            raise RuntimeError("fresh reconnect snapshot has not preserved the paused campaign")
+                        break
+                    except Exception:
+                        if time.monotonic() >= deadline:
+                            raise
+                        time.sleep(0.05)
+                self.guard()
+                clock_after = self.backend.read_clock(self.profile)
+                if any(clock_after.get(key) != clock_before.get(key) for key in ("date_raw", "speed", "paused")):
+                    raise RuntimeError("independent native clock changed during profile reconnect")
+                after = self.guard()
+                self._attach_result = self._receipt("resume", {
+                    "status": "resumed_snapshot_verified", "prior_session_id": original_id,
+                    "prior_connection_generation": prior_generation, "connection_generation": generation,
+                    "original_claim_sha256": desktop.sha256(claim_path),
+                    "original_attach_receipt": str(attach_paths[0]),
+                    "original_attach_receipt_sha256": desktop.sha256(attach_paths[0]),
+                    "prior_snapshot_receipt": str(latest_path), "prior_snapshot_receipt_sha256": desktop.sha256(latest_path),
+                    "observation_before": observed, "observation_after": after,
+                    "native_clock_before": clock_before, "native_clock_after": clock_after, "snapshot": snapshot,
+                    "uses_injection": False, "uses_ocr": False, "uses_desktop_input": False})
+            except Exception as error:
+                self._attach_result = {"status": "RED", "reason": f"{type(error).__name__}: {error}"}
+                if self.driver is not None:
+                    self.driver.close()
+                self._attach_result = self._receipt("resume", {**self._attach_result,
+                    "prior_session_id": original_id, "prior_connection_generation": prior_generation,
+                    "uses_injection": False, "uses_ocr": False, "uses_desktop_input": False})
+            return self._attach_result
+
     def snapshot(self) -> dict:
         with self._lock:
             self.guard()
@@ -238,7 +352,8 @@ class NativeProfileService:
                                                "snapshot": snapshot, "observation_after": after})
 
     def _gameplay_service(self):
-        if self._attach_result is None or self._attach_result.get("status") != "attached_snapshot_verified":
+        if self._attach_result is None or self._attach_result.get("status") not in {
+                "attached_snapshot_verified", "resumed_snapshot_verified"}:
             raise RuntimeError("ordinary gameplay requires a verified profile attachment")
         if self._gameplay is None:
             from xar_autoplayer.bridge.service import GameplayBridgeService
@@ -264,6 +379,23 @@ class NativeProfileService:
                 event_instance_id, expected_revision=expected_revision)
             self._bound_frame(expected_revision, paused=True)
             return self._receipt("event-query", {"status": "native_event_query_verified", "result": result})
+
+    def query_pending_interaction(self, pending_interaction_id: int, expected_revision: int) -> dict:
+        from xar_autoplayer.bridge.pending_character_interaction_context_contract import normalize_pending_interaction_id
+        pending_interaction_id = normalize_pending_interaction_id(pending_interaction_id)
+        with self._lock:
+            before = self._bound_frame(expected_revision, paused=True)
+            pending = before.get("pending_character_interaction")
+            if not isinstance(pending, dict) or pending.get("instance_id") != pending_interaction_id:
+                raise RuntimeError("pending interaction ID is not the current native profile frame")
+            result = self._gameplay_service().query_pending_character_interaction_context_v1(
+                pending_interaction_id, expected_revision=expected_revision)
+            after = self._bound_frame(expected_revision, paused=True)
+            if after.get("pending_character_interaction") != pending:
+                raise RuntimeError("pending interaction changed during profile query")
+            return self._receipt("pending-query", {"status": "native_pending_query_verified", "result": result,
+                "snapshot_before": before, "snapshot_after": after, "uses_injection": False,
+                "uses_ocr": False, "uses_desktop_input": False})
 
     def _ordinary_action(self, operation: str, expected_revision: int, invoke, verify, *, paused: bool = False) -> dict:
         with self._lock:
@@ -360,6 +492,27 @@ class NativeProfileService:
             lambda service: service.select_event_option(option_number, event_instance_id=event_instance_id,
                                                         expected_revision=expected_revision), verify, paused=True)
 
+    def reply_pending_interaction(self, accept: bool, pending_interaction_id: int, expected_revision: int) -> dict:
+        from xar_autoplayer.bridge.pending_character_interaction_context_contract import normalize_pending_interaction_id
+        if type(accept) is not bool:
+            raise ValueError("accept must be a boolean")
+        pending_interaction_id = normalize_pending_interaction_id(pending_interaction_id)
+        with self._lock:
+            frame = self._bound_frame(expected_revision, paused=True)
+            pending = frame.get("pending_character_interaction")
+            if not isinstance(pending, dict) or pending.get("instance_id") != pending_interaction_id:
+                raise RuntimeError("pending interaction ID is not the current native profile frame")
+            def verify(result, before, after):
+                remaining = after.get("pending_character_interaction")
+                if isinstance(remaining, dict) and remaining.get("instance_id") == pending_interaction_id:
+                    raise _PostconditionPending("replied interaction is still pending after its native ACK before deadline")
+                if after.get("paused") is not True or after["date_raw"] != before["date_raw"]:
+                    raise RuntimeError("pending interaction reply did not retain the paused campaign date")
+            return self._ordinary_action("pending-reply", expected_revision,
+                lambda service: service.reply_pending_character_interaction(accept=accept,
+                    interaction_instance_id=pending_interaction_id, expected_revision=expected_revision),
+                verify, paused=True)
+
     def checkpoint(self, expected_revision: int) -> dict:
         def verify(result, before, after):
             checkpoint = result.get("checkpoint", {})
@@ -413,12 +566,21 @@ def create_server(service: NativeProfileService):
     @server.tool(annotations=ToolAnnotations(readOnlyHint=False))
     def ck3_attach_profile_bridge_v1() -> dict[str, object]:
         return service.attach()
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False))
+    def ck3_resume_profile_bridge_v1() -> dict[str, object]:
+        return service.resume()
     @server.tool(annotations=ToolAnnotations(readOnlyHint=True))
     def ck3_take_profile_native_snapshot_v1() -> dict[str, object]:
         return service.snapshot()
     @server.tool(annotations=ToolAnnotations(readOnlyHint=True))
     def ck3_query_profile_event_window_v1(event_instance_id: int, expected_revision: int) -> dict[str, object]:
         return service.query_event(event_instance_id, expected_revision)
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=True))
+    def ck3_query_profile_pending_interaction_v1(pending_interaction_id: int, expected_revision: int) -> dict[str, object]:
+        return service.query_pending_interaction(pending_interaction_id, expected_revision)
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False))
+    def ck3_reply_profile_pending_interaction_v1(accept: bool, pending_interaction_id: int, expected_revision: int) -> dict[str, object]:
+        return service.reply_pending_interaction(accept, pending_interaction_id, expected_revision)
     @server.tool(annotations=ToolAnnotations(readOnlyHint=False))
     def ck3_set_profile_simulation_v1(
         action: Literal["pause", "resume", "speed_1", "speed_3", "speed_5"], expected_revision: int,
@@ -433,8 +595,10 @@ def create_server(service: NativeProfileService):
     @server.tool(annotations=ToolAnnotations(readOnlyHint=False))
     def ck3_save_profile_checkpoint_v1(expected_revision: int) -> dict[str, object]:
         return service.checkpoint(expected_revision)
-    for name in ("ck3_query_native_profile_v1", "ck3_attach_profile_bridge_v1", "ck3_take_profile_native_snapshot_v1",
+    for name in ("ck3_query_native_profile_v1", "ck3_attach_profile_bridge_v1", "ck3_resume_profile_bridge_v1", "ck3_take_profile_native_snapshot_v1",
                  "ck3_query_profile_event_window_v1", "ck3_set_profile_simulation_v1",
+                 "ck3_query_profile_pending_interaction_v1",
+                 "ck3_reply_profile_pending_interaction_v1",
                  "ck3_pause_profile_simulation_v1",
                  "ck3_select_profile_event_option_v1", "ck3_save_profile_checkpoint_v1"):
         _forbid_unknown_tool_arguments_v1(server, name)

@@ -232,8 +232,9 @@ class McpTests(unittest.IsolatedAsyncioTestCase):
             async with Client(native.create_server(service)) as client:
                 tools = (await client.list_tools()).tools
                 self.assertEqual({tool.name for tool in tools}, {
-                    "ck3_query_native_profile_v1", "ck3_attach_profile_bridge_v1", "ck3_take_profile_native_snapshot_v1",
+                    "ck3_query_native_profile_v1", "ck3_attach_profile_bridge_v1", "ck3_resume_profile_bridge_v1", "ck3_take_profile_native_snapshot_v1",
                     "ck3_query_profile_event_window_v1", "ck3_set_profile_simulation_v1",
+                    "ck3_query_profile_pending_interaction_v1", "ck3_reply_profile_pending_interaction_v1",
                     "ck3_pause_profile_simulation_v1",
                     "ck3_select_profile_event_option_v1", "ck3_save_profile_checkpoint_v1"})
                 for tool in tools:
