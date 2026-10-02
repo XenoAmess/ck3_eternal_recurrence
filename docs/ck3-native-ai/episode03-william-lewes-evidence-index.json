@@ -646,9 +646,6 @@
     "new_desktop_actions": false
   },
   "pending": [
-    "final-script-and-render",
-    "production-admission",
-    "external-delivery",
     "human-1x-full-film-review-and-signoff"
   ],
   "known_unknowns": [
@@ -660,7 +657,7 @@
     "gold-ledger-net9.36-versus-GUIreward9",
     "simultaneous-third-party-occupations-not-isolated"
   ],
-  "updated_utc": "2026-10-02T17:56:20.806506+00:00",
+  "updated_utc": "2026-10-02T19:27:52.602430+00:00",
   "append_history": [
     {
       "kind": "original-raw-PTS-review-only",
@@ -676,6 +673,71 @@
       },
       "producer_status": "pending-root-final-production-validation",
       "frozen_nine_or_runtime_source_edited": false
+    },
+    {
+      "kind": "a09-final-media-and-client-delivery",
+      "previous_index": {
+        "path": "D:\\ck3-war-episode03-20261002-a01\\final-delivery-docs-a09-a01\\docs\\ck3-native-ai\\episode03-william-lewes-evidence-index.json",
+        "bytes": 29516,
+        "sha256": "53FB7E7E581D2D41ECE7F5DC92FC638CAF0E7955B8B88DDDCB5AD49A222BB200"
+      },
+      "frozen_nine_or_runtime_source_edited": false
     }
+  ],
+  "current_delivery_status": {
+    "at_utc": "2026-10-02T19:27:52.602430+00:00",
+    "movie": {
+      "path": "D:\\ck3-war-episode03-20261002-a01\\episode03-nativebuild-a09\\CK3-War-AI-Episode03-Siege-BrownGold.mp4",
+      "bytes": 155322628,
+      "sha256": "166E6C53FA6C9359F2BBD826A4E9E6A8A49B4A6AFAEC6218B32A7335BDD89B0B",
+      "duration_expected": 1407.7,
+      "music": {
+        "title": "Quiet Courtly Tension",
+        "source": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v5-theme-film-attempt-001\\run\\artifacts\\raw\\sha256\\FD\\FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F.wav",
+          "bytes": 30726160,
+          "sha256": "FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F"
+        },
+        "narration_gain_db": 0,
+        "music_gain_db": -17,
+        "fade_in_seconds": 2,
+        "fade_out_seconds": 8,
+        "loop": true,
+        "normalize": false,
+        "policy": "same original theme loop; narration 0dB; music -17dB; 2s/8s exterior fades; no normalization",
+        "human_listening_signoff": "not-provided"
+      },
+      "human_signoff": "not-provided",
+      "production_clean_admission": false,
+      "status": "pending-machine-and-human-review"
+    },
+    "machine_condition_status": "PASS",
+    "machine_audit": {
+      "path": "D:\\ck3-war-episode03-20261002-a01\\episode03-media-audit-a09-completion-a02\\media-report.json",
+      "bytes": 424966,
+      "sha256": "68D991C7890F6DB6EA113341F98281222EBAC29DD32F21F86C9F3EE71A276F3B"
+    },
+    "root_ai_visual_review": {
+      "path": "D:\\ck3-war-episode03-20261002-a01\\root-visual-review-a09.json",
+      "bytes": 4686,
+      "sha256": "9D015D9E4E890CD28B7B28D24EAE9EE68FD29BAFE623D4B870ACEA6680BE4566"
+    },
+    "delivery": {
+      "path": "D:\\ck3-war-episode03-20261002-a01\\onedrive-delivery-a09-a01\\delivery-result.json",
+      "bytes": 1815,
+      "sha256": "78BB5E453BC4325A687880D4722A4EE62872C4E23E1CA886EC38274003F4CFFA"
+    },
+    "client_status": "CLIENT_METADATA_IN_SYNC_REMOTE_UNVERIFIED",
+    "source_master_commit": "551a88e91f70767359db7e5545a9536de0d29fed",
+    "source_official_ci": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37048183916",
+    "human_1x_full_review": "not-provided",
+    "human_signoff": "not-provided",
+    "original_R0156_live_qualification_unchanged": true
+  },
+  "pending_at_original_capture_documentation": [
+    "final-script-and-render",
+    "production-admission",
+    "external-delivery",
+    "human-1x-full-film-review-and-signoff"
   ]
 }

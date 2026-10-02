@@ -290,3 +290,9 @@ production 长跑中自然触发 one-life terminal，完成匹配结算，再经
 - 报告必须区分“已完成”“正在进行”“为什么做”“证据/测试”“未闭合”“下一步”。
 - live attempt 无论 GREEN 或 RED 都保留真实结论；不得通过修改预期、删去失败或把 harness 成功写成 capability 成功来美化状态。
 - 当前宗教研究已由2026-10-02最新用户指令全面开放；旧通用宗教/holy order暂缓及“只有圣战/婚姻两窄例外”限制全部撤销。原生AI树、exact-build只读观测和真实材料继续分级记录，授权本身不计完成；当前Robert唯一实机入口/nonwar-only保持。
+
+## 2026-10-03T03:27:52+08:00 战争第3期专项交付
+
+用户单独明确授权的战争视频《一座城究竟是怎样被攻下的？》已完成23:27.721成片、完整机器媒体审计、415帧公开保全与AI内容/画面抽检，并仅把最终MP4通过既有OneDrive目录交付；客户端in-sync、远端bytes未独立回读，人工完整1×观看签核未提供。源码/研究普通FF主线551a88e91、exact官方CI37048183916 SUCCESS；最终文档push/CI另由交付回执收口。细节见[专项交付](../handover/2026-10-03-war-episode03-delivery.md)与[专项日报](daily/2026-10-03-war-episode03.md)。
+
+这项独立William/Lewes围城案例与必要public军队ID0/route/回收修复不增加Robert保存日、G2或NW credit，也不恢复Robert自动玩家的战争策略。既有主线指标与进行中非战争工作保持原记录，所有原片与失败attempt永久保留。

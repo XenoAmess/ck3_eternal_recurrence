@@ -45,7 +45,8 @@ import traceback
 
 import numpy as np
 from PIL import Image
-from xar_promo import probe_and_write_bound_media
+from xar_promo import append_automated_audit_record, probe_and_write_bound_media
+from xar_promo.audit import write_audit_report
 from xar_promo.evidence import (
     bind_external_artifact, write_evidence_bundle_v2, write_sampling_plan_v2,
 )
@@ -505,9 +506,37 @@ def native_frame_audit(audit, manifest, frames, subject_id, prefix):
                     "media_type": "image/png", "producer": producer} for s in plan["samples"]]
     bundle = native_output / "evidence-bundle.json"
     write_evidence_bundle_v2(bundle, project_root=root, plan_path=plan_path, submissions=submissions)
-    audit.command("native-real-frame-audit", [sys.executable, "-X", "utf8", "-B", "-m", "xar_promo", "audit",
-                  manifest, "--subject-artifact-id", subject_id, "--evidence-bundle", bundle,
-                  "--report", native_output / "native-frame-audit.json", "--report-artifact-id", prefix + "-frames-audit"])
+    # The frames above are already immutable registered artifacts. The CLI audit
+    # re-preserves all of them, rehashing the full manifest once per frame.
+    # Keep the same public report verification and append only its three inputs.
+    report_path = native_output / "native-frame-audit.json"
+    verified = write_audit_report(report_path, project_root=root, subject=record,
+                                  evidence_bundle_path=bundle, signoff_run_manifest_path=None)
+    automated = verified["automated_audit"]
+    if (automated["status"] != "passed" or automated["sample_count"] != len(frames)
+            or automated["evidence_artifact_count"] != len(frames)
+            or automated["subject_sha256"] != record.sha256
+            or automated["manual_approval_granted"] is not False
+            or verified["manual_signoff"] != {"state": "not-provided"}):
+        raise ValueError("Native real-frame report failed binding, coverage or approval boundary")
+    saved_inputs = []
+    for suffix, path, role in (("plan", plan_path, "evidence-plan"),
+                              ("bundle", bundle, "evidence-bundle"),
+                              ("frames-audit", report_path, "audit")):
+        saved_inputs.append(preserve_artifact(manifest, path,
+                    artifact_id=prefix + "-" + suffix, collection="derived", role=role,
+                    label=path.name, media_type="application/json"))
+    registered = append_automated_audit_record(manifest,
+                    check_id=automated["scope"], status=automated["status"],
+                    subject_artifact_id=subject_id,
+                    report_artifact_id=saved_inputs[-1].artifact_id)
+    write(audit.output / "native-public-api.json", {
+          "at_utc": stamp(), "toolchain_version": importlib.metadata.version("xar-promo-toolchain"),
+          "interfaces": ["xar_promo.audit.write_audit_report",
+                         "xar_promo.audit.verify_audit_report",
+                         "xar_promo.preserve_artifact", "xar_promo.append_automated_audit_record"],
+          "verified_report": ref(report_path), "audit_record": registered.to_dict(),
+          "source_frame_count": len(frames), "human_signoff": "not-provided"})
     after = load_document(manifest, check_files=True)
     if len(after.run.signoffs) != len(loaded.run.signoffs):
         raise ValueError("Unexpected change to native human signoffs")
