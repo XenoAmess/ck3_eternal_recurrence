@@ -286,6 +286,28 @@ domain/stage，再让后段 effect 各自安静 no-op。若业务允许分步提
 `var:` 比较平铺在同一 trigger list。该结论已进入生成器测试，仍须
 R79 fresh split product 实机确认上述签名归零。
 
+### 1.20.0.3 当前角色守卫的原版合同补充
+
+上述弱引用条目、同级 presence/read 规则及前文 THIS/ROOT 区分不变；这里仅补当前版本出处。CK3 **1.20.0.3 / build 25652598**，EXE SHA-256 `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`：offset `76760304` 的 `exists` help 明确只检查目标非 null，offset `75492240` 区分角色存活/死亡，offset `73158048` 描述 situation 参与角色迭代。因此只面向活角色的 helper 应检查当前 `this`，用独立分支先判存在、再判存活；situation 迭代器的外层 root 不能代替当前角色。原版合同不保证所有 weak 对象的变量能力，不能把 `is_alive` 通过外推成 variables 可读写；前文 temporary-list 反例仍成立。本次补充为 **native-source/static supported；对应 helper 修复 engine NOT_RUN**，不包含产品实机通过结论。
+
+| 原版来源（相对 `game/`） | 本次新增合同出处 | 完整文件 SHA-256 |
+|---|---|---|
+| `common/situation/situations/_situations.info:174–188` | monthly/yearly Root=situation；角色 on_join/on_leave Root=character | `1fe343a5f6ffb7954af1bbd88d2dcc71808fd336aa33842e744450d84d2c955a` |
+| `common/situation/situations/tgp_dynastic_cycle.txt:44–45,489–491` | 存在的 movement_leader 可用 `is_alive=no` 判死者；participant 迭代项执行角色 effect | `6f788efa47cd1ecbef29ea893397eb974907cf54a6b0fa79440f925261eaf04a` |
+| `common/on_action/title_on_actions.txt:148–149,160–161` | 当前角色的原生 `exists=this` / `is_alive` 写法；不由同层排列推导短路 | `015a6165a999cada51424131fa9691c2556f91c607ce046d5d82bae0b3d84352` |
+
+合成形状（this 必须是 character；`example_*` 由使用者定义，**engine NOT_RUN**）：
+
+```text
+if = {
+    limit = { exists = this }
+    if = {
+        limit = { is_alive = yes }
+        example_live_character_effect = yes
+    }
+}
+```
+
 ## 事件背景图 / 纹理
 
 | 现象 | 原因 | 解法 |
