@@ -1,0 +1,314 @@
+{
+  "approval_granted": false,
+  "artifact": {
+    "audio_tracks": [
+      {
+        "channels": 2,
+        "codec": "aac",
+        "index": 1,
+        "sample_rate": 48000
+      }
+    ],
+    "bytes": 247708305,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "duration_seconds": "1911.321354",
+    "path": "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-copy-bgm-20261002-a02/native-build-attempt-01/CK3-War-AI-Episode02-BrownGold-BGM-20261002-a09.mp4",
+    "resolution": {
+      "height": 1080,
+      "width": 1920
+    },
+    "sha256": "BA2E27878FD19D04667ECE628945B25E6C6C340E0C5844214CE43C2C2D07AD6D",
+    "subtitle_tracks": [],
+    "video_tracks": [
+      {
+        "average_frame_rate": "30/1",
+        "codec": "h264",
+        "height": 1080,
+        "index": 0,
+        "width": 1920
+      }
+    ]
+  },
+  "format_version": 1,
+  "frames": [
+    {
+      "bytes": 475374,
+      "chapter_ids": [
+        "opening"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-copy-bgm-20261002-a02/native-review-audit/frames/frame-000001",
+        "label": "extract human-review frame frame-000001",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000001",
+      "path": "frames/frame-000001.png",
+      "roles": [
+        "artifact-first",
+        "chapter-start"
+      ],
+      "sha256": "E27CB260BD2613937DB8C7A34ABE7D955A14AFBD4A80E77B0477226681D7AD71",
+      "timestamp_seconds": "0.000000"
+    },
+    {
+      "bytes": 644948,
+      "chapter_ids": [
+        "opening"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-copy-bgm-20261002-a02/native-review-audit/frames/frame-000002",
+        "label": "extract human-review frame frame-000002",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000002",
+      "path": "frames/frame-000002.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "5C5474120AF9DB12186BEECF6B0A0595FD221B763D51B0CC2AB37A4275B9ED35",
+      "timestamp_seconds": "101.533334"
+    },
+    {
+      "bytes": 603735,
+      "chapter_ids": [
+        "pursuit"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-copy-bgm-20261002-a02/native-review-audit/frames/frame-000003",
+        "label": "extract human-review frame frame-000003",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000003",
+      "path": "frames/frame-000003.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "D533457910E2D2408964407E8FE241AD4A9AE2B273F6B37F4C03A4D06BA916C8",
+      "timestamp_seconds": "101.566667"
+    },
+    {
+      "bytes": 742796,
+      "chapter_ids": [
+        "pursuit"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-copy-bgm-20261002-a02/native-review-audit/frames/frame-000004",
+        "label": "extract human-review frame frame-000004",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000004",
+      "path": "frames/frame-000004.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "BA3CB5B34A1C71D60D9AEBE6A21837A1505FD945ECE68733D6E63838B848B77B",
+      "timestamp_seconds": "472.433334"
+    },
+    {
+      "bytes": 596074,
+      "chapter_ids": [
+        "knights"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-copy-bgm-20261002-a02/native-review-audit/frames/frame-000005",
+        "label": "extract human-review frame frame-000005",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000005",
+      "path": "frames/frame-000005.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "92A2ED051A58E8E7E95FFA4455C6B2ECFCAA86C06EEF0B040B9E8574FBF093CD",
+      "timestamp_seconds": "472.466667"
+    },
+    {
+      "bytes": 713219,
+      "chapter_ids": [
+        "knights"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-copy-bgm-20261002-a02/native-review-audit/frames/frame-000006",
+        "label": "extract human-review frame frame-000006",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000006",
+      "path": "frames/frame-000006.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "F3CACF3927409F2B41ADAA26BAE5BB65032F3DF3FA6E24903B5202DAA6A38E20",
+      "timestamp_seconds": "991.933334"
+    },
+    {
+      "bytes": 1355831,
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-copy-bgm-20261002-a02/native-review-audit/frames/frame-000007",
+        "label": "extract human-review frame frame-000007",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000007",
+      "path": "frames/frame-000007.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "9B082273C8ADACED1FB5A4D299D5940CA4D330B2E4A352F2C878D5AB20170A1A",
+      "timestamp_seconds": "991.966667"
+    },
+    {
+      "bytes": 688073,
+      "chapter_ids": [
+        "reinforcement"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-copy-bgm-20261002-a02/native-review-audit/frames/frame-000008",
+        "label": "extract human-review frame frame-000008",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000008",
+      "path": "frames/frame-000008.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "1B84C16DD08595D8BA89E65FB9561CE798DC2084CDABE1C39B8A2700D7437143",
+      "timestamp_seconds": "1442.133334"
+    },
+    {
+      "bytes": 1380136,
+      "chapter_ids": [
+        "terminal"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-copy-bgm-20261002-a02/native-review-audit/frames/frame-000009",
+        "label": "extract human-review frame frame-000009",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000009",
+      "path": "frames/frame-000009.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "F78549DF56F333280E4DB03F1B6B89AD0E4492EA144F7C71D12372298C4CD8E6",
+      "timestamp_seconds": "1442.166667"
+    },
+    {
+      "bytes": 620780,
+      "chapter_ids": [
+        "terminal"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-copy-bgm-20261002-a02/native-review-audit/frames/frame-000010",
+        "label": "extract human-review frame frame-000010",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000010",
+      "path": "frames/frame-000010.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "593706B8FC95317D7E7F445294404C4B7367925B167A8B2A0A836E978281050A",
+      "timestamp_seconds": "1808.133334"
+    },
+    {
+      "bytes": 640464,
+      "chapter_ids": [
+        "closing"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-copy-bgm-20261002-a02/native-review-audit/frames/frame-000011",
+        "label": "extract human-review frame frame-000011",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000011",
+      "path": "frames/frame-000011.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "5F26D959D83128C1534A6A1F9EEA61C3563DD00EFB9589015EC9500435794CA5",
+      "timestamp_seconds": "1808.166667"
+    },
+    {
+      "bytes": 544211,
+      "chapter_ids": [
+        "closing"
+      ],
+      "command": {
+        "audit_directory": "C:/Users/1/AppData/Local/ck3-review-render/episode02-brown-gold-copy-bgm-20261002-a02/native-review-audit/frames/frame-000012",
+        "label": "extract human-review frame frame-000012",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000012",
+      "path": "frames/frame-000012.png",
+      "roles": [
+        "artifact-final",
+        "chapter-end"
+      ],
+      "sha256": "78018E861DCBDFA917EF3AD45DC96B5F2365EE2A164ECA3E5E31B19A59628F08",
+      "timestamp_seconds": "1911.266667"
+    }
+  ],
+  "is_signoff": false,
+  "kind": "xar-promo-review-package",
+  "review_template": {
+    "bytes": 8887,
+    "path": "review-template.json",
+    "sha256": "39D934F710D5DA6F22DA0C36B2B9DD14DC3CED3ECA22416EB06BD5CA1542F5E3"
+  },
+  "state": "pending-human-review",
+  "template_only": true,
+  "timeline": {
+    "chapters": [
+      {
+        "boundary_seconds": [],
+        "end_seconds": "101.566667",
+        "id": "opening",
+        "start_seconds": "0.000000"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "472.466667",
+        "id": "pursuit",
+        "start_seconds": "101.566667"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "991.966667",
+        "id": "knights",
+        "start_seconds": "472.466667"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "1442.166667",
+        "id": "reinforcement",
+        "start_seconds": "991.966667"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "1808.166667",
+        "id": "terminal",
+        "start_seconds": "1442.166667"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "1911.300000",
+        "id": "closing",
+        "start_seconds": "1808.166667"
+      }
+    ]
+  }
+}

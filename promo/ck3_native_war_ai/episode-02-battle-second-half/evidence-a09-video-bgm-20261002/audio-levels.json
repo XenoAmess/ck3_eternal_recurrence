@@ -1,0 +1,30 @@
+{
+  "subject": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\native-build-attempt-01\\CK3-War-AI-Episode02-BrownGold-BGM-20261002-a09.mp4",
+    "bytes": 247708305,
+    "sha256": "BA2E27878FD19D04667ECE628945B25E6C6C340E0C5844214CE43C2C2D07AD6D",
+    "duration_expected": 1911.3000000000002,
+    "music": {
+      "title": "Quiet Courtly Tension",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v5-theme-film-attempt-001\\run\\artifacts\\raw\\sha256\\FD\\FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F.wav",
+        "bytes": 30726160,
+        "sha256": "FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F"
+      },
+      "policy": "single existing war-series theme throughout; narration 0dB; music -17dB; same original loop; 2s fade in / 8s fade out; no normalization",
+      "reference_build": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\build-records\\v5-theme-fullfilm-20260924-r1.json",
+        "bytes": 6134,
+        "sha256": "964D3EDD8B0725785738750756B4BF1DC530F0932EEF05D65235AADD0056243D"
+      },
+      "human_listening_signoff": "not-provided"
+    },
+    "human_signoff": "not-provided",
+    "production_clean_admission": false,
+    "status": "pending-machine-and-human-review"
+  },
+  "mean_dbfs": -22.1,
+  "peak_dbfs": -3.1,
+  "sample_rate": 48000,
+  "human_listening_signoff": "not-provided"
+}

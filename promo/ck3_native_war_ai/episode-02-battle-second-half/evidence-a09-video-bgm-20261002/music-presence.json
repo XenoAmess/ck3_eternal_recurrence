@@ -1,0 +1,259 @@
+{
+  "at_utc": "2026-10-02T02:39:05.302507+00:00",
+  "subject": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\native-build-attempt-01\\CK3-War-AI-Episode02-BrownGold-BGM-20261002-a09.mp4",
+    "bytes": 247708305,
+    "sha256": "BA2E27878FD19D04667ECE628945B25E6C6C340E0C5844214CE43C2C2D07AD6D",
+    "duration_expected": 1911.3000000000002,
+    "music": {
+      "title": "Quiet Courtly Tension",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v5-theme-film-attempt-001\\run\\artifacts\\raw\\sha256\\FD\\FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F.wav",
+        "bytes": 30726160,
+        "sha256": "FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F"
+      },
+      "policy": "single existing war-series theme throughout; narration 0dB; music -17dB; same original loop; 2s fade in / 8s fade out; no normalization",
+      "reference_build": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\build-records\\v5-theme-fullfilm-20260924-r1.json",
+        "bytes": 6134,
+        "sha256": "964D3EDD8B0725785738750756B4BF1DC530F0932EEF05D65235AADD0056243D"
+      },
+      "human_listening_signoff": "not-provided"
+    },
+    "human_signoff": "not-provided",
+    "production_clean_admission": false,
+    "status": "pending-machine-and-human-review"
+  },
+  "exact_original_theme": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v5-theme-film-attempt-001\\run\\artifacts\\raw\\sha256\\FD\\FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F.wav",
+    "bytes": 30726160,
+    "sha256": "FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F"
+  },
+  "music_duration": 159.96,
+  "policy_music_gain_db": -17,
+  "narration_gain_db": 0,
+  "global_lag_samples_at_8000Hz": 0,
+  "whole_duration_decoded_seconds": 1911.3,
+  "windows": [
+    {
+      "seconds": 5.0,
+      "duration": 4.0,
+      "music_rms_dbfs": -33.58126221214568,
+      "voice_rms_dbfs": -18.235002503014066,
+      "actual_residual_music_correlation": 0.9987226093963222,
+      "actual_residual_expected_music_gain": 0.9977515935897827,
+      "residual_error_ratio": 0.050530774624463363,
+      "passed": true
+    },
+    {
+      "seconds": 40.0,
+      "duration": 4.0,
+      "music_rms_dbfs": -32.015467722094904,
+      "voice_rms_dbfs": -18.98597544146426,
+      "actual_residual_music_correlation": 0.9990006656930406,
+      "actual_residual_expected_music_gain": 0.9978481531143188,
+      "residual_error_ratio": 0.04469572381249947,
+      "passed": true
+    },
+    {
+      "seconds": 50.783,
+      "duration": 4.0,
+      "music_rms_dbfs": -31.711034224576867,
+      "voice_rms_dbfs": -20.006046995751348,
+      "actual_residual_music_correlation": 0.9989631694905375,
+      "actual_residual_expected_music_gain": 0.9974732995033264,
+      "residual_error_ratio": 0.04553003838534798,
+      "passed": true
+    },
+    {
+      "seconds": 199.96,
+      "duration": 4.0,
+      "music_rms_dbfs": -32.015467722094904,
+      "voice_rms_dbfs": -19.40341220881432,
+      "actual_residual_music_correlation": 0.9997479569012669,
+      "actual_residual_expected_music_gain": 0.9985107183456421,
+      "residual_error_ratio": 0.022472074072357257,
+      "passed": true
+    },
+    {
+      "seconds": 287.017,
+      "duration": 4.0,
+      "music_rms_dbfs": -35.09216280538192,
+      "voice_rms_dbfs": -19.60363811234381,
+      "actual_residual_music_correlation": 0.9980991345100712,
+      "actual_residual_expected_music_gain": 0.9961553812026978,
+      "residual_error_ratio": 0.06163043334427236,
+      "passed": true
+    },
+    {
+      "seconds": 359.92,
+      "duration": 4.0,
+      "music_rms_dbfs": -32.015467722094904,
+      "voice_rms_dbfs": -20.334501125162262,
+      "actual_residual_music_correlation": 0.9994699311279189,
+      "actual_residual_expected_music_gain": 0.9980244636535645,
+      "residual_error_ratio": 0.03256843366766224,
+      "passed": true
+    },
+    {
+      "seconds": 519.88,
+      "duration": 4.0,
+      "music_rms_dbfs": -32.015467722094904,
+      "voice_rms_dbfs": -18.314149877239903,
+      "actual_residual_music_correlation": 0.9989759216268986,
+      "actual_residual_expected_music_gain": 0.9958997368812561,
+      "residual_error_ratio": 0.04529168778229384,
+      "passed": true
+    },
+    {
+      "seconds": 679.84,
+      "duration": 4.0,
+      "music_rms_dbfs": -32.015467722094904,
+      "voice_rms_dbfs": -18.97538468390527,
+      "actual_residual_music_correlation": 0.9990485086704014,
+      "actual_residual_expected_music_gain": 0.9978854060173035,
+      "residual_error_ratio": 0.04361347827753533,
+      "passed": true
+    },
+    {
+      "seconds": 732.217,
+      "duration": 4.0,
+      "music_rms_dbfs": -33.630408333135954,
+      "voice_rms_dbfs": -19.65297712001916,
+      "actual_residual_music_correlation": 0.9986280572034243,
+      "actual_residual_expected_music_gain": 0.9985325336456299,
+      "residual_error_ratio": 0.052379757977165625,
+      "passed": true
+    },
+    {
+      "seconds": 839.8,
+      "duration": 4.0,
+      "music_rms_dbfs": -32.015467722094904,
+      "voice_rms_dbfs": -19.435873801484874,
+      "actual_residual_music_correlation": 0.9993256105028879,
+      "actual_residual_expected_music_gain": 0.9972766637802124,
+      "residual_error_ratio": 0.03674537214909319,
+      "passed": true
+    },
+    {
+      "seconds": 999.76,
+      "duration": 4.0,
+      "music_rms_dbfs": -32.015467722094904,
+      "voice_rms_dbfs": -19.0716807896777,
+      "actual_residual_music_correlation": 0.9993541484580439,
+      "actual_residual_expected_music_gain": 0.9977659583091736,
+      "residual_error_ratio": 0.03595044167874919,
+      "passed": true
+    },
+    {
+      "seconds": 1159.72,
+      "duration": 4.0,
+      "music_rms_dbfs": -32.015467722094904,
+      "voice_rms_dbfs": -19.506113977924183,
+      "actual_residual_music_correlation": 0.9992409532800806,
+      "actual_residual_expected_music_gain": 0.9973164796829224,
+      "residual_error_ratio": 0.03897280385220354,
+      "passed": true
+    },
+    {
+      "seconds": 1217.067,
+      "duration": 4.0,
+      "music_rms_dbfs": -33.286219943996116,
+      "voice_rms_dbfs": -19.614565072398577,
+      "actual_residual_music_correlation": 0.9982665754860578,
+      "actual_residual_expected_music_gain": 0.9964428544044495,
+      "residual_error_ratio": 0.05885470472272014,
+      "passed": true
+    },
+    {
+      "seconds": 1319.68,
+      "duration": 4.0,
+      "music_rms_dbfs": -32.015467722094904,
+      "voice_rms_dbfs": -19.52784323568356,
+      "actual_residual_music_correlation": 0.99930135510129,
+      "actual_residual_expected_music_gain": 0.9971320033073425,
+      "residual_error_ratio": 0.037403139256762606,
+      "passed": true
+    },
+    {
+      "seconds": 1479.64,
+      "duration": 4.0,
+      "music_rms_dbfs": -32.015467722094904,
+      "voice_rms_dbfs": -19.565874071718728,
+      "actual_residual_music_correlation": 0.9990302681759177,
+      "actual_residual_expected_music_gain": 0.9968515634536743,
+      "residual_error_ratio": 0.04404529471026982,
+      "passed": true
+    },
+    {
+      "seconds": 1625.167,
+      "duration": 4.0,
+      "music_rms_dbfs": -31.611248048850197,
+      "voice_rms_dbfs": -19.02707244993022,
+      "actual_residual_music_correlation": 0.9986157672526749,
+      "actual_residual_expected_music_gain": 0.9975246787071228,
+      "residual_error_ratio": 0.052598995991524844,
+      "passed": true
+    },
+    {
+      "seconds": 1639.6,
+      "duration": 4.0,
+      "music_rms_dbfs": -32.015467722094904,
+      "voice_rms_dbfs": -19.200135883726247,
+      "actual_residual_music_correlation": 0.9986373937168078,
+      "actual_residual_expected_music_gain": 0.9969344139099121,
+      "residual_error_ratio": 0.052187676474271916,
+      "passed": true
+    },
+    {
+      "seconds": 1799.56,
+      "duration": 4.0,
+      "music_rms_dbfs": -32.015467722094904,
+      "voice_rms_dbfs": -19.637727721324463,
+      "actual_residual_music_correlation": 0.9990664998479518,
+      "actual_residual_expected_music_gain": 0.9978979825973511,
+      "residual_error_ratio": 0.04319939748591437,
+      "passed": true
+    },
+    {
+      "seconds": 1859.733,
+      "duration": 4.0,
+      "music_rms_dbfs": -33.66047808483095,
+      "voice_rms_dbfs": -19.15981807982257,
+      "actual_residual_music_correlation": 0.998802449348365,
+      "actual_residual_expected_music_gain": 0.9963238835334778,
+      "residual_error_ratio": 0.048942054372235054,
+      "passed": true
+    },
+    {
+      "seconds": 1899.3000000000002,
+      "duration": 4.0,
+      "music_rms_dbfs": -33.51395390560296,
+      "voice_rms_dbfs": -19.05501555323076,
+      "actual_residual_music_correlation": 0.9986883634098438,
+      "actual_residual_expected_music_gain": 0.9971972107887268,
+      "residual_error_ratio": 0.05120325349512477,
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "retained_decoded_stems": [
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\audio-proof\\actual.f32",
+      "bytes": 61161600,
+      "sha256": "B99BAA261CED644B3F72DA7E473BD038AF74DFF0AF14F0732FE7C9C30A0F775D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\audio-proof\\narration.f32",
+      "bytes": 61184724,
+      "sha256": "8FE555DB4DBE92C5DB177E9A6C1734C6B9EA506C4BBE3B4097287E2AFC394F3D"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\audio-proof\\music.f32",
+      "bytes": 61161600,
+      "sha256": "A1AE8E1C8563D0BC4BD9BB0BB4CED0A6C2B5E179446834AA80EED10F2F7A6760"
+    }
+  ],
+  "method": "decoded final AAC minus independently decoded new dry narration, compared with exact source theme loop after fixed gain/fades; one fixed sample lag",
+  "full_human_listening": false
+}

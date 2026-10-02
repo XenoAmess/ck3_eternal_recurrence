@@ -1,0 +1,160 @@
+{
+  "automated_audit": {
+    "checks": [
+      "subject-bytes-and-sha256",
+      "sampling-plan-bytes-and-sha256",
+      "source-bytes-and-sha256",
+      "required-role-coverage",
+      "evidence-bytes-and-sha256",
+      "external-producer-metadata"
+    ],
+    "evidence_artifact_count": 33,
+    "evidence_bundle_sha256": "320D3377E5B637F5D78FF149223070316A50638F44A7797D6146A07554E9332B",
+    "evidence_plan_sha256": "2195F60971AADBE7C9BCBFAE15A9F1B34971B5DD8A4176DE3E74B351A573F2EB",
+    "external_producers": [
+      {
+        "adapter_id": "ck3-native-war-ai-v1",
+        "operation": "extract actual final MP4 frame at recorded timestamp",
+        "tool": "FFmpeg",
+        "tool_version": "9.0.1"
+      }
+    ],
+    "manual_approval_granted": false,
+    "required_roles": [
+      "frame"
+    ],
+    "sample_count": 33,
+    "sample_required_roles": {
+      "sample-000001": [
+        "frame"
+      ],
+      "sample-000002": [
+        "frame"
+      ],
+      "sample-000003": [
+        "frame"
+      ],
+      "sample-000004": [
+        "frame"
+      ],
+      "sample-000005": [
+        "frame"
+      ],
+      "sample-000006": [
+        "frame"
+      ],
+      "sample-000007": [
+        "frame"
+      ],
+      "sample-000008": [
+        "frame"
+      ],
+      "sample-000009": [
+        "frame"
+      ],
+      "sample-000010": [
+        "frame"
+      ],
+      "sample-000011": [
+        "frame"
+      ],
+      "sample-000012": [
+        "frame"
+      ],
+      "sample-000013": [
+        "frame"
+      ],
+      "sample-000014": [
+        "frame"
+      ],
+      "sample-000015": [
+        "frame"
+      ],
+      "sample-000016": [
+        "frame"
+      ],
+      "sample-000017": [
+        "frame"
+      ],
+      "sample-000018": [
+        "frame"
+      ],
+      "sample-000019": [
+        "frame"
+      ],
+      "sample-000020": [
+        "frame"
+      ],
+      "sample-000021": [
+        "frame"
+      ],
+      "sample-000022": [
+        "frame"
+      ],
+      "sample-000023": [
+        "frame"
+      ],
+      "sample-000024": [
+        "frame"
+      ],
+      "sample-000025": [
+        "frame"
+      ],
+      "sample-000026": [
+        "frame"
+      ],
+      "sample-000027": [
+        "frame"
+      ],
+      "sample-000028": [
+        "frame"
+      ],
+      "sample-000029": [
+        "frame"
+      ],
+      "sample-000030": [
+        "frame"
+      ],
+      "sample-000031": [
+        "frame"
+      ],
+      "sample-000032": [
+        "frame"
+      ],
+      "sample-000033": [
+        "frame"
+      ]
+    },
+    "scope": "artifact-integrity-and-evidence-completeness",
+    "status": "passed",
+    "subject_sha256": "BA2E27878FD19D04667ECE628945B25E6C6C340E0C5844214CE43C2C2D07AD6D",
+    "verifier": "xar_promo.audit/1"
+  },
+  "created_at_utc": "2026-10-02T02:45:06Z",
+  "evidence_bundle": {
+    "bytes": 27127,
+    "collection": "derived",
+    "id": "audit-evidence-bundle",
+    "label": "Complete hash-bound visual evidence bundle",
+    "media_type": "application/json",
+    "path": "a09-frame-evidence-bundle.json",
+    "role": "evidence-bundle",
+    "sha256": "320D3377E5B637F5D78FF149223070316A50638F44A7797D6146A07554E9332B"
+  },
+  "format_version": 1,
+  "kind": "xar_promo_audit_report",
+  "manual_signoff": {
+    "state": "not-provided"
+  },
+  "subject": {
+    "bytes": 247708305,
+    "collection": "derived",
+    "id": "a09-deliverable",
+    "label": "CK3-War-AI-Episode02-BrownGold-BGM-20261002-a09.mp4",
+    "media_type": "video/mp4",
+    "path": "artifacts/derived/sha256/BA/BA2E27878FD19D04667ECE628945B25E6C6C340E0C5844214CE43C2C2D07AD6D.mp4",
+    "role": "deliverable",
+    "sha256": "BA2E27878FD19D04667ECE628945B25E6C6C340E0C5844214CE43C2C2D07AD6D",
+    "source_name": "CK3-War-AI-Episode02-BrownGold-BGM-20261002-a09.mp4"
+  }
+}
