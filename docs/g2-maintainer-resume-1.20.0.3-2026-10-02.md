@@ -2,6 +2,20 @@
 
 记录时间：2026-10-02 04:08 Asia/Shanghai。用户在新版因果律迁移完成后明确恢复 handover G2，并要求维持高并发。D2–D4 已恢复，D6 迁移完成保留；战争研究停止，宗教按实际决策依赖推进。12 个独立包并行准备、实际材料分域并行判读，root 串行持有游戏与 pipe。没有打开 Steam 界面。
 
+## 07:59 真实续写：v8解除五候选观测阻点，Murchad正式推进50日
+
+2026-10-02 07:59（Asia/Shanghai）据新版实机结果续写。source `50e353bfa142194cc2a53372c1aec726ddd98da1`/v8严格增量构建11.01秒GREEN、933输入绑定；DLL SHA256 `91016f78349828afc3e6e8b62572831cac30245f959bd0ed31117ad715088d2d`。[准确Official Runner CI run36942439170](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36942439170) 于07:49:54 SUCCESS。Murchad当前h2001沿官方prepare/verify/rebind，原save字节及full2001保持，environment SHA256 `416b4e49d5cdc43b3d83544d514cc4fb0349478b63ece9969ae70063cf937870`；沿当前配对恢复，未重建旧archive。
+
+GAME74800在07:50:14–07:50:33、raw53327160/public3/native2→2、paused，原五候选31749/47078/16852491/16852492/16827345全部projection available，前两历史亡配偶ReadRaw阻点实际消失。首继承仍36403，完整ID/原episode保留；五行CanSend=true、10成本0，当前spouse数组为空，实际年龄61/51/25/28/3，前四个成年候选为marriage投影、3岁候选为betrothal。该修复新增 `production-live primitive`；采样零动作/零新日，没有实际婚姻或联盟后置，M5仍in_progress。
+
+随后 `m7-murchad/formal-v8-01` 成功到达正常时间目标：5正式turn+1自然modal共6次实际处理，50真实日、raw53327160→53328360。Steward vacancy实际任命39761/skill8，优于合法候选36403/skill7，turn004独立applied；turn005原建设receipt applied/postcondition_verified=true被正常消费，turn006成功normal advance，没有重发既有施工。原campaign goal正常persisted，同actor31853/episode `native-31853-af642d76cb41`，paused保存full2013/h2013：save111,736,694B/SHA256 `47cada95586efa7092c74e402867b2bbb33c32afcda908c192c4cb77da299b09`，driver12,873,945B/SHA256 `7ad53b2a1e764283d6882906805ca6305d849192684dbd93a0502f5f8fe25413`。Murchad独立新增50日，不能加到rogue恢复191/累计243或Robert3153/36524。
+
+Council补充独立字段：turn004已applied但next_turn_consumed=false；turn006成功+30日的计划中已消费为true，holder39761/task_collect_taxes，8>最佳合法替代7而NO_CHANGE，零重复任命。Council子条件到 `production-live loop`，填补空席，未测实际增税；整体M4仍需原同episode窗口和干预结果。
+
+自然modal是 `hostile_scheme_discovery.2001`/instance12/native0唯一选项；同actor31853/native11→12，stress/gold/prestige delta都0。实际选项为expose_scheme并通知owner `.3002`，但scheme typed identity与独立exposed材料未发布，保留material profile unavailable；不计multi-option或M2材料/next信用，后续入口是缺失的原生scheme身份/exposed观测。readiness新增本Murchad存档正式治理→独立材料→原receipt消费→正常时间→保存的 `production-live loop`，仍没有M4同episode两年窗口、完整M5、广government/seed/自然继承或完整M7信用；G2保持3/8，M7in_progress。原16-requested RED、亡peer旧fixture FAIL和原始archive全部保留。root继续当前Spy/Law/Sway/Feast实际读取和有价值动作，源冻结独立于本轮文档。
+
+证据根 `artifacts/g2-maintainer-2026-10-02/resume-12003/`：`native-build-feast-spy-family-v8/REPORT-FIELDS.json`、`official-ci-50e353bf/terminal-status.json`、`runtime-freeze-50e353bf-v8.json`、`m5-family/murchad-v8-five-live-assessment.json`（原5 raw pins）、`m7-murchad/current-continuation-50e353bf-v8-01/ROOT-PACKET.json`与`m7-murchad/formal-v8-01/result.json`。全部source与实际回执绑定50e/v8，后续新材料另按实际日期记账。
+
 ## 07:43 真实续写：建设新PID读回及 v8 三项静态交付
 
 2026-10-02 07:43（Asia/Shanghai）补入实际Murchad cold03：GAME98664于07:27:15正常停止，h2001/save SHA256 `22b95ec228d48b85eb1e8842f18dd07fecb94eeb5ce472caf213e15aafc306b9`，raw53327160未推进。新PID独立construction receipt仍是action `construction-submit-f0ff9299cc8341af93cd62957c60ecbd`、tuple528/48/604/1，原150金支出、remaining work109500000/divisor0及verified施工中状态保留；下一成功正式turn消费仍open，未完工、未计净收益或M4跨episode窗口。

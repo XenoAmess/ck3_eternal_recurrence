@@ -1,7 +1,7 @@
 {
   "contract": "council-spymaster-readonly-12003",
   "schema_version": 1,
-  "evidence_level": "static-ready",
+  "evidence_level": "production-live primitive",
   "game_version": "1.20.0.3",
   "steam_build": "25652598",
   "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
@@ -42,10 +42,9 @@
     "native_final_gates": null
   },
   "unknown_inputs": [
-    "current Spymaster incumbent intrigue and complete native-final-legal alternatives: fresh paused query required",
     "native composition utility, political preference, appointment scheduling and task-switch value: not consumed by this readonly package"
   ],
-  "live_calls": 0,
+  "live_calls": 3,
   "actions": 0,
   "g2_credit": 0,
   "open_kaishek_prevalidation": {
@@ -292,5 +291,107 @@
     "fixture_current_build_identity": "actual current descriptor and production RenderCrozierBuildIdentity; no JSON label rewrite",
     "paused_live": false,
     "failed_attempt_boundary": "Retained harness attempts: incorrect pure-projector Ninja target before compile/test; two missing real family implementation link dependencies for the current adapter; missing external WriteWire output directory. Corrections change no source/flags/CMake; final transport-only rerun reuses four passing tests."
+  },
+  "actual_paused_validation": {
+    "schema": "xar.ck3.12003.spymaster-live-observation-note/v1",
+    "source_abi_contract": "native_bridge/research/council_spymaster12003_abi.json",
+    "readiness": "production-live primitive",
+    "exact_build": {
+      "game_version": "1.20.0.3",
+      "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+    },
+    "source_runtime": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\production-source-50e353bf",
+    "actual_root_capture": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\murchad-v8-peaceful-readonly-01",
+    "snapshot": {
+      "snapshot_id": "native:28",
+      "revision": 2,
+      "native_revision": 28,
+      "date_raw": 53328360,
+      "paused": true,
+      "map_ready": true,
+      "episode_run_id": "native-31853-af642d76cb41",
+      "player_character_id": 31853,
+      "player_alive": true
+    },
+    "observed_position": {
+      "position_key": "councillor_spymaster",
+      "incumbent_character_id": 36567,
+      "incumbent_main_skill": {
+        "key": "intrigue",
+        "value": 14
+      },
+      "vacant": false,
+      "action_route": "replace"
+    },
+    "observed_candidate_count": 2,
+    "observed_final_legal_count": 1,
+    "best_native_legal": {
+      "character_id": 36403,
+      "native_collection_ordinal": 0,
+      "eligible": true,
+      "eligibility_reason": "native_candidate_provider_accepted",
+      "main_skill": {
+        "key": "intrigue",
+        "value": 4
+      },
+      "action_route": "replace"
+    },
+    "intrigue_gain": -10,
+    "inspection_outcome": "NO_CHANGE",
+    "action_count": 0,
+    "independent_root": {
+      "position_key": "councillor_spymaster",
+      "incumbent_character_id": 36567,
+      "task_key": "task_disrupt_schemes",
+      "task_type": "general",
+      "target": null,
+      "frozen": false,
+      "progress": {
+        "kind": "infinite",
+        "current": null,
+        "maximum": null
+      }
+    },
+    "input_packets": {
+      "gates": {
+        "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\murchad-v8-peaceful-readonly-01\\008-ck3_query_council_final_gates_private_v1.json",
+        "sha256": "18930afbbbe289fde42e1ddf843e116e8bb71e337d20bfd449bb945dcca9eb2e"
+      },
+      "candidates": {
+        "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\murchad-v8-peaceful-readonly-01\\006-ck3_query_council_composition_candidates_private_v1.json",
+        "sha256": "58620a4cdda055e03f30aad5871bd62cb93d1a8ec07329b80440184b4f9df4f2"
+      },
+      "root": {
+        "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\murchad-v8-peaceful-readonly-01\\004-ck3_query_campaign_root_context_v1.json",
+        "sha256": "a583252e675e966660df6e5ca5f9ad6480e442135b27d7a11dd12d21c42a7564"
+      },
+      "snapshot_before": {
+        "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\murchad-v8-peaceful-readonly-01\\007-ck3_take_snapshot.json",
+        "sha256": "78283f13b6e24df885ddd065d3a60904864d6f8542cc3e85831dffb171e215df"
+      },
+      "snapshot_after": {
+        "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\murchad-v8-peaceful-readonly-01\\009-ck3_take_snapshot.json",
+        "sha256": "26cb19871e7955d270857c1e650f15493ab656178a0588104fbcb4eea08f7ae2"
+      }
+    },
+    "comparison": {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m4-council\\spymaster-readonly\\ACTUAL-MURCHAD-SPYMASTER-COMPARE.json",
+      "sha256": "57df356754d0f3f1b126c059ea1f27df0e2e5cf31900b532b69e83da5afd28e2"
+    },
+    "political_and_task_value_unknown": true,
+    "spy_action_or_formal_consumer_enabled": false,
+    "private_candidate_and_final_gate_query_calls": 2,
+    "independent_root_query_calls": 1,
+    "live_executor": "root existing single MCP SDK session",
+    "worker_live_connections": 0,
+    "parent_raw_capture": "artifacts/g2-maintainer-2026-10-02/resume-12003/murchad-v8-peaceful-readonly-01",
+    "initial_sdk_harness_red": {
+      "failure": "Additional positional configs after optional flags rejected before MCP server startup",
+      "parent_corrected_arg_order_capture": "actual existing SDK three-query scope succeeded",
+      "external_parser_followup": "parse_intermixed_args; one-line external helper correction, no production change",
+      "receipt": "artifacts/g2-maintainer-2026-10-02/resume-12003/m4-council/spymaster-readonly/CAPTURE-CLI-INTERMIXED-FIX-RECEIPT.json",
+      "failure_retained": true
+    },
+    "overall_m4_complete": false
   }
 }

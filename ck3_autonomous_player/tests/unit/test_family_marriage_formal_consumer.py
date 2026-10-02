@@ -218,6 +218,59 @@ class FakeDriver:
 
 
 class FamilyConsumerTest(unittest.TestCase):
+    def test_actual_murchad_absent_dynasty_keeps_adult_marriage_value(self):
+        fixture = json.loads((Path(__file__).parent / "fixtures" /
+                              "murchad_12003_absent_dynasty_comparison.json")
+                             .read_text(encoding="utf-8"))
+        native_legality = fixture["legality_command_result"]["result"]
+        native_projection = fixture["projection_command_result"]["result"]
+        frame = fixture["source_frame"]
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            driver.legality = {
+                "schema": "xar.ck3.observed-first-heir-marriage-legality.v1",
+                "status": native_legality["status"],
+                "exact_ck3_build": "1.20.0.3",
+                "native_revision": frame["native_revision"],
+                "query_sequence": native_legality["query_sequence"],
+                "observed_first_heir_character_id": native_legality["subject_character_id"],
+                "native_legal_candidates": native_legality["family_candidates"],
+            }
+            driver.projection = {
+                **native_projection,
+                "schema": "xar.ck3.first-heir-candidate-alliance-projection.v1",
+            }
+            observed_heir = native_projection["rows"][0]
+            driver.allow_private_current_first_heir_relationship_query = True
+            driver.current_first_heir_relationship.update(
+                native_revision=frame["native_revision"],
+                heir_character_id=observed_heir["heir_character_id"],
+                betrothed_character_id=observed_heir["heir_betrothed_character_id"],
+                primary_spouse_character_id=observed_heir["heir_primary_spouse_character_id"],
+                spouse_character_ids=observed_heir["heir_spouse_character_ids"],
+            )
+            snapshot = {**scene(), **frame,
+                        "played_character": {"character_id": observed_heir["actor_character_id"]}}
+            plan = plan_family_marriage_private(
+                driver, {"plan": {"selected_step": "life-advance"}}, snapshot)["plan"]
+            self.assertEqual(plan["selected_step"], SUBMIT_STEP)
+            choice = plan["family_marriage_choice"]
+            self.assertEqual(choice["candidate_character_id"], 16825238)
+            self.assertEqual(choice["value"], "unpartnered_first_heir_adult_marriage_opportunity")
+            self.assertEqual(choice["predicted_outcome_if_accepted"], "marriage")
+            self.assertIs(choice["realm_alliance_attempt_if_accepted"], False)
+            diagnostic = plan["family_marriage_private_diagnostic"]
+            self.assertEqual(diagnostic["final_legal_candidate_count"], 9)
+            self.assertEqual(diagnostic["ranking"]["value_input_unavailable_count"], 0)
+            self.assertEqual(diagnostic["ranking"]["candidate_dynasty_absent_count"], 7)
+            self.assertEqual([row["candidate_character_id"] for row in diagnostic["rows"]],
+                             [31749, 47078, 16825238, 16852491, 16827345])
+            self.assertTrue(all(row["rejection_reasons"] == []
+                                for row in diagnostic["rows"][:4]))
+            self.assertEqual(diagnostic["rows"][4]["rejection_reasons"],
+                             ["betrothal_age_gap_out_of_bounds"])
+            self.assertEqual(driver.calls, ["relationship", "legality", "projection"])
+
     def test_r0255_same_age_external_betrothal_has_value_without_realm_alliance(self):
         with tempfile.TemporaryDirectory() as temporary:
             driver = FakeDriver(Path(temporary))

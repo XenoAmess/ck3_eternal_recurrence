@@ -1,4 +1,5 @@
 #include "xar_bridge/activity_feast_guest_candidate_v1.hpp"
+#include "activity_feast_ordinary_guest_selection_v1.hpp"
 
 #include <cstdio>
 #include <cstdlib>
@@ -167,13 +168,38 @@ int main() {
   result = ReadActivityFeastGuestCandidateV1(env, expected);
   Expect(result.status == ActivityFeastGuestCandidateStatusV1::observed &&
          result.character_id == kEarlierGuestId);
+  // Actual Murchad v8 regression: global first belongs to another category;
+  // the named close-family filtered row is later in the native groups.
+  ActivityGuestRuleProvenanceResultV1 close_family{};
+  close_family.status = ActivityGuestRuleProvenanceStatusV1::observed;
+  close_family.raw_rule_character_count = 3;
+  close_family.filtered_rule_character_count = 1;
+  close_family.filtered_ids[0] = static_cast<std::uint32_t>(kGuestId);
+  const auto global_first = result;
+  const auto ordinary = xar::ck3_12002::SelectFeastOrdinaryCloseFamilyCandidateV1(
+      env, expected, close_family, global_first);
+  Expect(ordinary.status == ActivityFeastGuestCandidateStatusV1::observed &&
+         ordinary.character_id == kGuestId && ordinary.native_filtered &&
+         ordinary.planner_join_raw > 0 && ordinary.travel_days >= 0 &&
+         ordinary.arrival_raw <= ordinary.planned_start_raw &&
+         ordinary.source_fingerprint == global_first.source_fingerprint &&
+         ordinary.normal_refresh_sequence == global_first.normal_refresh_sequence);
+  Expect(ReadActivityFeastGuestCandidateV1(env, expected, ordinary.character_id) == ordinary);
+  close_family.filtered_ids[0] = 32000; // Category member absent from native filtered groups.
+  Expect(xar::ck3_12002::SelectFeastOrdinaryCloseFamilyCandidateV1(
+      env, expected, close_family, global_first) == global_first);
+  close_family.filtered_ids[0] = static_cast<std::uint32_t>(kGuestId);
   candidate.join_raw = -1;
+  Expect(xar::ck3_12002::SelectFeastOrdinaryCloseFamilyCandidateV1(
+      env, expected, close_family, global_first) == global_first);
   result = ReadActivityFeastGuestCandidateV1(env, expected, kGuestId);
   Expect(result.status == ActivityFeastGuestCandidateStatusV1::observed &&
          result.character_id == kGuestId && result.native_filtered &&
          result.planner_join_raw == -1 && result.arrival_raw <= result.planned_start_raw);
   candidate.join_raw = 500000;
   candidate.travel_days = 20;
+  Expect(xar::ck3_12002::SelectFeastOrdinaryCloseFamilyCandidateV1(
+      env, expected, close_family, global_first) == global_first);
   result = ReadActivityFeastGuestCandidateV1(env, expected, kGuestId);
   Expect(result.status == ActivityFeastGuestCandidateStatusV1::observed &&
          result.character_id == kGuestId && result.arrival_raw > result.planned_start_raw);

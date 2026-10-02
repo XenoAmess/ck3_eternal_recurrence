@@ -1,11 +1,16 @@
 #include "xar_bridge/ck3_12002_realm_law_source_adapter.hpp"
 #include "xar_bridge/ck3_12002_nonwar_realm.hpp"
 
+#if defined(NDEBUG)
+#undef NDEBUG
+#endif
+
 #include <cassert>
 #include <cstring>
 #include <iostream>
 #include <map>
 #include <memory>
+#include <string>
 #include <vector>
 
 using namespace xar::bridge;
@@ -24,6 +29,40 @@ constexpr std::int32_t actor_id = 0x01000001, first_id = 0x02000002,
 constexpr std::string_view manifest =
     "1111111111111111111111111111111111111111111111111111111111111111";
 
+// Exact UTF-8 bytes from Murchad's saved 1.20.0.3 final terms (actor 31853,
+// date 53328360). Fixture object identities remain synthetic; no live mutation.
+constexpr std::string_view murchad_ca0_reason = "\x15\x68\x69\x67\x68\x20\xe5\xbd\x93\xe5\x89\x8d\xe6\xb3\x95\xe5\xbe\x8b\x15\x21";
+constexpr std::string_view murchad_ca2_reason = "\x15\x69\x6e\x64\x65\x6e\x74\x5f\x6e\x65\x77\x6c\x69\x6e\x65\x3a\x30\x20\x15\x21\x15\x69\x6e\x64\x65\x6e\x74\x5f\x6e\x65\x77\x6c"
+    "\x69\x6e\x65\x3a\x36\x20\x16\x77\x61\x72\x6e\x69\x6e\x67\x5f\x69\x63\x6f\x6e\x21\x20\x15\x58\x20\xe4\xbd\xa0\x15\x62\x6f\x6c\x64"
+    "\x20\xe6\xb2\xa1\x15\x21\xe6\x9c\x89\x15\x56\x3b\x20\x15\x54\x4f\x4f\x4c\x54\x49\x50\x3a\x4c\x41\x57\x2c\x63\x72\x6f\x77\x6e\x5f"
+    "\x61\x75\x74\x68\x6f\x72\x69\x74\x79\x5f\x31\x20\x15\x4c\x3b\x20\xe6\x9c\x89\xe9\x99\x90\xe5\x90\x9b\xe6\x9d\x83\x15\x21\x15\x21"
+    "\x15\x21\x15\x45\x3b\x20\x15\x54\x4f\x4f\x4c\x54\x49\x50\x3a\x47\x41\x4d\x45\x5f\x43\x4f\x4e\x43\x45\x50\x54\x2c\x6c\x61\x77\x20"
+    "\xe6\xb3\x95\xe5\xbe\x8b\x15\x21\x15\x21\x15\x21\x15\x21\x15\x69\x6e\x64\x65\x6e\x74\x5f\x6e\x65\x77\x6c\x69\x6e\x65\x3a\x30\x20"
+    "\x0a\x15\x21\x15\x69\x6e\x64\x65\x6e\x74\x5f\x6e\x65\x77\x6c\x69\x6e\x65\x3a\x36\x20\x16\x77\x61\x72\x6e\x69\x6e\x67\x5f\x69\x63"
+    "\x6f\x6e\x21\x20\x15\x58\x20\x15\x4f\x4e\x43\x4c\x49\x43\x4b\x3a\x43\x55\x4c\x54\x55\x52\x45\x2c\x37\x35\x20\x15\x54\x4f\x4f\x4c"
+    "\x54\x49\x50\x3a\x43\x55\x4c\x54\x55\x52\x45\x2c\x37\x35\x20\x15\x4c\x3b\x20\xe7\x88\xb1\xe5\xb0\x94\xe5\x85\xb0\x15\x21\x15\x21"
+    "\x15\x21\x15\x45\x3b\x20\x15\x54\x4f\x4f\x4c\x54\x49\x50\x3a\x47\x41\x4d\x45\x5f\x43\x4f\x4e\x43\x45\x50\x54\x2c\x63\x75\x6c\x74"
+    "\x75\x72\x65\x20\xe6\x96\x87\xe5\x8c\x96\x15\x21\x15\x21\x15\x62\x6f\x6c\x64\x20\xe6\xb2\xa1\xe6\x9c\x89\x15\x21\x15\x54\x4f\x4f"
+    "\x4c\x54\x49\x50\x3a\x43\x55\x4c\x54\x55\x52\x45\x5f\x49\x4e\x4e\x4f\x56\x41\x54\x49\x4f\x4e\x2c\x37\x35\x2c\x32\x34\x20\x15\x4c"
+    "\x3b\x20\xe5\xae\x97\xe5\xae\xa4\xe7\x89\xb9\xe6\x9d\x83\x15\x21\x15\x21\x15\x45\x3b\x20\x15\x54\x4f\x4f\x4c\x54\x49\x50\x3a\x47"
+    "\x41\x4d\x45\x5f\x43\x4f\x4e\x43\x45\x50\x54\x2c\x69\x6e\x6e\x6f\x76\x61\x74\x69\x6f\x6e\x20\xe9\x9d\xa9\xe6\x96\xb0\x15\x21\x15"
+    "\x21\x15\x21\x15\x21";
+constexpr std::string_view murchad_ca3_reason = "\x15\x69\x6e\x64\x65\x6e\x74\x5f\x6e\x65\x77\x6c\x69\x6e\x65\x3a\x30\x20\x15\x21\x15\x69\x6e\x64\x65\x6e\x74\x5f\x6e\x65\x77\x6c"
+    "\x69\x6e\x65\x3a\x36\x20\x16\x77\x61\x72\x6e\x69\x6e\x67\x5f\x69\x63\x6f\x6e\x21\x20\x15\x58\x20\xe4\xbd\xa0\x15\x62\x6f\x6c\x64"
+    "\x20\xe6\xb2\xa1\x15\x21\xe6\x9c\x89\x15\x56\x3b\x20\x15\x54\x4f\x4f\x4c\x54\x49\x50\x3a\x4c\x41\x57\x2c\x63\x72\x6f\x77\x6e\x5f"
+    "\x61\x75\x74\x68\x6f\x72\x69\x74\x79\x5f\x32\x20\x15\x4c\x3b\x20\xe9\xab\x98\xe5\x90\x9b\xe6\x9d\x83\x15\x21\x15\x21\x15\x21\x15"
+    "\x45\x3b\x20\x15\x54\x4f\x4f\x4c\x54\x49\x50\x3a\x47\x41\x4d\x45\x5f\x43\x4f\x4e\x43\x45\x50\x54\x2c\x6c\x61\x77\x20\xe6\xb3\x95"
+    "\xe5\xbe\x8b\x15\x21\x15\x21\x15\x21\x15\x21\x15\x69\x6e\x64\x65\x6e\x74\x5f\x6e\x65\x77\x6c\x69\x6e\x65\x3a\x30\x20\x0a\x15\x21"
+    "\x15\x69\x6e\x64\x65\x6e\x74\x5f\x6e\x65\x77\x6c\x69\x6e\x65\x3a\x36\x20\x16\x77\x61\x72\x6e\x69\x6e\x67\x5f\x69\x63\x6f\x6e\x21"
+    "\x20\x15\x58\x20\x15\x4f\x4e\x43\x4c\x49\x43\x4b\x3a\x43\x55\x4c\x54\x55\x52\x45\x2c\x37\x35\x20\x15\x54\x4f\x4f\x4c\x54\x49\x50"
+    "\x3a\x43\x55\x4c\x54\x55\x52\x45\x2c\x37\x35\x20\x15\x4c\x3b\x20\xe7\x88\xb1\xe5\xb0\x94\xe5\x85\xb0\x15\x21\x15\x21\x15\x21\x15"
+    "\x45\x3b\x20\x15\x54\x4f\x4f\x4c\x54\x49\x50\x3a\x47\x41\x4d\x45\x5f\x43\x4f\x4e\x43\x45\x50\x54\x2c\x63\x75\x6c\x74\x75\x72\x65"
+    "\x20\xe6\x96\x87\xe5\x8c\x96\x15\x21\x15\x21\x15\x62\x6f\x6c\x64\x20\xe6\xb2\xa1\xe6\x9c\x89\x15\x21\x15\x54\x4f\x4f\x4c\x54\x49"
+    "\x50\x3a\x43\x55\x4c\x54\x55\x52\x45\x5f\x49\x4e\x4e\x4f\x56\x41\x54\x49\x4f\x4e\x2c\x37\x35\x2c\x32\x34\x20\x15\x4c\x3b\x20\xe5"
+    "\xae\x97\xe5\xae\xa4\xe7\x89\xb9\xe6\x9d\x83\x15\x21\x15\x21\x15\x45\x3b\x20\x15\x54\x4f\x4f\x4c\x54\x49\x50\x3a\x47\x41\x4d\x45"
+    "\x5f\x43\x4f\x4e\x43\x45\x50\x54\x2c\x69\x6e\x6e\x6f\x76\x61\x74\x69\x6f\x6e\x20\xe9\x9d\xa9\xe6\x96\xb0\x15\x21\x15\x21\x15\x21"
+    "\x15\x21";
+
 struct Fixture;
 Fixture *current = nullptr;
 struct Fixture {
@@ -32,6 +71,8 @@ struct Fixture {
   std::uintptr_t allocation = 0x73000000;
   std::uintptr_t active_slots = 0, primary_successors = 0;
   bool allowed = true;
+  bool actual_murchad_reasons = false;
+  std::array<std::string, 4> crown_reasons{};
   std::int64_t exotic_cost = 0;
   int queued = 0;
   RealmLawGovernanceFrameV1 frame{40, 40, 20, 53169072, true, true,
@@ -83,23 +124,42 @@ struct Fixture {
     Memory(current, current->active_slots, &first, sizeof(first));
     return reinterpret_cast<std::uintptr_t>(definition) == first || index == 4;
   }
-  static bool Final(const void *, const void *, void *) { return current->allowed; }
+  static bool Final(const void *definition, const void *, void *) {
+    if (current->actual_murchad_reasons) {
+      return current->laws.at(reinterpret_cast<std::uintptr_t>(definition)) == 1;
+    }
+    return current->allowed;
+  }
   static std::int64_t *Cost(std::int64_t *out, const void *block, std::uint32_t id) {
     assert(id == static_cast<std::uint32_t>(actor_id));
     std::fill_n(out, 10, std::int64_t{0});
     const auto index = current->laws.at(reinterpret_cast<std::uintptr_t>(block) - 0xC40);
-    if (index > 0 && index < 4) { out[1] = 20'000'000; out[3] = current->exotic_cost; }
+    if (current->actual_murchad_reasons) {
+      if (index == 1) out[1] = 14'600'000;
+    } else if (index > 0 && index < 4) {
+      out[1] = 20'000'000; out[3] = current->exotic_cost;
+    }
     return out;
   }
   static bool Reason(const void *definition, const void *, void *sink) {
     const bool active = Active(nullptr, definition);
-    const auto text = active ? std::string_view("already_active")
+    const auto index = current->laws.at(reinterpret_cast<std::uintptr_t>(definition));
+    const auto text = current->actual_murchad_reasons && index < 4
+                            ? std::string_view(current->crown_reasons[index])
+                            : active ? std::string_view("already_active")
                             : current->allowed ? std::string_view{}
                                                : std::string_view("engine_blocked");
     const auto size = static_cast<std::uint64_t>(text.size());
-    std::memcpy(static_cast<char *>(sink), text.data(), text.size());
+    const auto capacity = size <= 15 ? std::uint64_t{15} : size;
+    if (capacity > 15) {
+      const char *characters = text.data();
+      std::memcpy(sink, &characters, sizeof(characters));
+    } else {
+      std::memcpy(sink, text.data(), text.size());
+    }
     std::memcpy(static_cast<char *>(sink) + 0x10, &size, 8);
-    return !active && current->allowed;
+    std::memcpy(static_cast<char *>(sink) + 0x18, &capacity, 8);
+    return !active && (current->actual_murchad_reasons ? index == 1 : current->allowed);
   }
   static void DestroyReason(void *) {}
   static void *Scope(void *out, const void *) { return out; }
@@ -211,9 +271,54 @@ struct Binding {
     return request;
   }
 };
+
+void TestActualMurchadReasonsKeepLegalCandidateReadable() {
+  auto binding = std::make_unique<Binding>();
+  binding->fixture.actual_murchad_reasons = true;
+  binding->fixture.frame.date_raw = 53'328'360;
+  binding->fixture.crown_reasons = {
+      std::string(murchad_ca0_reason), "", std::string(murchad_ca2_reason),
+      std::string(murchad_ca3_reason)};
+  assert(murchad_ca2_reason.size() == 453 && murchad_ca3_reason.size() == 450);
+  const auto access = MakeRealmLawNativeActionAccessV1(*binding->state);
+  auto observation = std::make_unique<RealmLawEnactActionObservationV1>();
+  assert(access.capture_observation(access.context, *observation));
+  assert(observation->available && observation->resources_complete);
+  const auto &snapshot = observation->law_snapshot;
+  assert(snapshot.status == RealmLawGovernanceSnapshotV1Status::available);
+  assert(snapshot.date_raw == 53'328'360 && snapshot.group_count == 1);
+  const auto &group = snapshot.groups[0];
+  assert(RealmLawGovernanceKeyViewV1(group.active_law_key) == "crown_authority_0");
+  assert(group.candidates_complete && group.candidate_count == 4);
+  const auto &ca0 = group.candidates[0];
+  assert(ca0.is_active && !ca0.can_enact);
+  assert(RealmLawGovernanceReasonViewV1(ca0.blocked_reason) == murchad_ca0_reason);
+  const auto &ca1 = group.candidates[1];
+  assert(RealmLawGovernanceKeyViewV1(ca1.law_key) == "crown_authority_1");
+  assert(ca1.engine_final_only && ca1.can_enact && !ca1.is_active);
+  assert(ca1.costs_complete && ca1.cost_count == 1);
+  assert(RealmLawGovernanceKeyViewV1(ca1.costs[0].currency_key) == "prestige");
+  assert(ca1.costs[0].amount_raw == 14'600'000);
+  for (const auto index : {2u, 3u}) {
+    const auto &candidate = group.candidates[index];
+    const auto expected = index == 2 ? murchad_ca2_reason : murchad_ca3_reason;
+    assert(RealmLawGovernanceKeyViewV1(candidate.law_key) ==
+           (index == 2 ? "crown_authority_2" : "crown_authority_3"));
+    assert(candidate.evaluation_complete && candidate.engine_final_only);
+    assert(!candidate.can_enact && !candidate.is_active);
+    assert(candidate.costs_complete && candidate.cost_count == 0);
+    assert(RealmLawGovernanceReasonViewV1(candidate.blocked_reason) == expected);
+  }
+  assert(binding->fixture.queued == 0 && !binding->state->submit_pending);
+}
 }
 
-int main() {
+int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--actual-murchad-reasons-only") {
+    TestActualMurchadReasonsKeepLegalCandidateReadable();
+    std::cout << "PASS: actual Murchad CA2/CA3 reasons 453/450 bytes preserved; CA0 active, CA1 legal prestige14600000; submit0\n";
+    return 0;
+  }
   {
     auto binding = std::make_unique<Binding>();
     auto source_result = std::make_unique<RealmLawGovernanceSourceResultV1>();

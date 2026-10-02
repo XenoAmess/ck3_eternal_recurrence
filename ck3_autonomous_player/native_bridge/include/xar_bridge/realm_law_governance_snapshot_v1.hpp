@@ -16,7 +16,8 @@ inline constexpr std::string_view
 inline constexpr bool kRealmLawGovernanceSnapshotV1AdvertisedByDefault = false;
 
 inline constexpr std::size_t kRealmLawGovernanceKeyCapacityV1 = 96;
-inline constexpr std::size_t kRealmLawGovernanceReasonCapacityV1 = 192;
+// Preserve the native final-terms reader's complete reason (up to 4096 bytes).
+inline constexpr std::size_t kRealmLawGovernanceReasonCapacityV1 = 4097;
 inline constexpr std::size_t kRealmLawGovernanceSha256CapacityV1 = 65;
 inline constexpr std::size_t kRealmLawGovernanceMaximumGroupsV1 = 12;
 inline constexpr std::size_t kRealmLawGovernanceMaximumCandidatesV1 = 24;

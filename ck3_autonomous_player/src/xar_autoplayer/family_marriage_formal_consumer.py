@@ -184,8 +184,11 @@ def _candidate_rejection_reasons(source: Mapping[str, object] | None,
         reasons.append("heir_identity_mismatch")
     if row.get("recipient_character_id") != source.get("recipient_matchmaker_character_id"):
         reasons.append("recipient_identity_mismatch")
-    if (source.get("candidate_dynasty_id") is not None
-            and row.get("candidate_dynasty_id") != source["candidate_dynasty_id"]):
+    ranked_dynasty = source.get("candidate_dynasty_id")
+    # Compact native absence is -1; the rich lineage wire renders it as null.
+    if (ranked_dynasty is not None
+            and row.get("candidate_dynasty_id") !=
+            (None if ranked_dynasty == -1 else ranked_dynasty)):
         reasons.append("candidate_dynasty_changed_since_ranking")
     if (source.get("candidate_adult_measure_raw") is not None
             and row.get("candidate_adult_measure_raw") !=

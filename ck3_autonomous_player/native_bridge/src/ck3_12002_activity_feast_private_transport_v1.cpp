@@ -1,5 +1,6 @@
 #include "ck3_12002_activity_feast_private_transport_v1.hpp"
 #include "ck3_12002_activity_feast_guest_transport.hpp"
+#include "activity_feast_ordinary_guest_selection_v1.hpp"
 #include "xar_bridge/ck3_12002_feast_planner.hpp"
 #include "xar_bridge/ck3_12002_feast_guests_abi.hpp"
 
@@ -324,7 +325,24 @@ bool Capture(void *opaque,
     rule_query.provenance_observer = query.provenance_observer;
     rule_query.candidate_character_id =
         static_cast<std::uint32_t>(ordinary.candidate.character_id);
-    if (ReadActivityFeastGuestRuleSources12002V1(rule_query, context.owner_thread_id)) {
+    bool rule_observed = ReadActivityFeastGuestRuleSources12002V1(
+        rule_query, context.owner_thread_id);
+    if (rule_observed &&
+        rule_query.rule.status == bridge::ActivityFeastGuestRuleStatusV1::observed_active &&
+        rule_query.provenance.status == bridge::ActivityGuestRuleProvenanceStatusV1::observed) {
+      const auto candidate = SelectFeastOrdinaryCloseFamilyCandidateV1(
+          guest_environment, planner_expected, rule_query.provenance,
+          ordinary.candidate);
+      if (candidate != ordinary.candidate) {
+        ordinary.candidate = candidate;
+        if (candidate.status == bridge::ActivityFeastGuestCandidateStatusV1::observed) {
+          rule_query.candidate_character_id = static_cast<std::uint32_t>(candidate.character_id);
+          rule_observed = ReadActivityFeastGuestRuleSources12002V1(
+              rule_query, context.owner_thread_id);
+        }
+      }
+    }
+    if (rule_observed) {
       ordinary.rule_status = rule_query.rule.status;
       ordinary.rule_active = rule_query.rule.active;
       ordinary.native_key_hash = rule_query.rule.native_key_hash;
@@ -339,7 +357,9 @@ bool Capture(void *opaque,
       ordinary.provenance_status = bridge::ActivityGuestRuleProvenanceStatusV1::frame_changed;
     }
     const auto candidate_after = bridge::ReadActivityFeastGuestCandidateV1(
-        guest_environment, planner_expected);
+        guest_environment, planner_expected,
+        ordinary.candidate.status == bridge::ActivityFeastGuestCandidateStatusV1::observed
+            ? ordinary.candidate.character_id : 0);
     if (candidate_after != ordinary.candidate)
       ordinary.candidate.status = bridge::ActivityFeastGuestCandidateStatusV1::configuration_changed;
   }

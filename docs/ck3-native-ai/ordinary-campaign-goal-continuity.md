@@ -323,3 +323,54 @@ and **0 broad qualifications**. After the scoped reader fix, the useful M7
 continuation is root cold restore of this actual h1997 pair, ordinary goal
 and current-government consumption, existing pending action recovery without
 resubmission, then actual next-turn gameplay. M7 remains `in_progress`.
+
+## Murchad v8 same-campaign goal consumption during 50 actual days
+
+Root's closed `formal-v8-01/result.json`, final `snapshot-after.json` and
+`turn-006/result.json` are actual CK3 1.20.0.3 observations from GAME PID74800,
+Python source `50e353bfa142194cc2a53372c1aec726ddd98da1` and native v8. The
+result is `normal-time-target-reached`, **50 actual game days**, and explicitly
+`campaign_complete=false`. Raw date advanced from 53327160 to 53328360; the
+final frame is paused, map-ready, and actor31853 remains alive in the original
+campaign `native-31853-af642d76cb41` with ordinary `xar_off` lifecycle.
+
+The final snapshot keeps `dynasty_continuity`, origin/current character31853,
+and actual goal progress **`reconciled_successions=0`, `last_succession=null`**.
+The 50-day time advance is not goal progress or a succession. Turn006's normal
+`campaign_goal_plan_used` consumes the same campaign/current character/progress
+under `ordinary-campaign-goal-v1`, focus `marriage`, priority100 for current
+ruler marriage/family continuity and priority60 for current ruler succession/partition.
+Its selected step is `life-advance`; that turn actually advances 30 days after
+the earlier 20-day advance. No goal, episode or history was manually edited.
+
+The same normal plan consumes an available `government_runtime_adapter` for
+actor31853: `feudal_government`, `core_landed`, 44 effective feature flags,
+`same_frame_ready=true` and `core_adapter_ready=true`. Its actual sample date
+is **53327640**, immediately before the last 30-day advance. This retained
+observation supports the executed plan; it is not a new government query at
+final date53328360. The government family adds0 new family qualifications.
+
+The closed formal sequence has council assignment,20-day time advance,
+council receipt, construction receipt and30-day time advance. The construction
+receipt is `applied` with `postcondition_verified=true`; domain owners retain
+the independent holder/task/postcondition evidence and next successful
+consumer. The natural event on turn003 advances the captured event instance,
+but its independent material is `unavailable`,
+`current_selected_choice_material_profile_unavailable`, and explicitly
+`new_live_milestone_credit=false`. It adds0 M2 material credit.
+
+The normal final pair is **full2013/saveh2013**, raw53328360, 111,736,694 bytes,
+SHA-256 `47cada95586efa7092c74e402867b2bbb33c32afcda908c192c4cb77da299b09`.
+The existing driver reports complete history retained, SHA-256
+`7ad53b2a1e764283d6882906805ca6305d849192684dbd93a0502f5f8fe25413`.
+Goal/government fields and exact input pins are retained in
+`artifacts/g2-maintainer-2026-10-02/resume-12003/m7-murchad/formal-v8-01/GOAL-CONTINUITY-FIELDS.json`,
+with narrow report fields beside it. This is a `production-live loop` on the
+same existing feudal campaign; M7 remains `in_progress`, adding0 natural
+successions,0 broad M7 qualifications,0 Robert days and0 rogue days.
+
+The external current-continuation generator now defaults to this actual h2013
+pair and accepts explicit checkpoint history index, SHA and raw-date arguments
+for subsequent normal checkpoints. It accepts the next root-selected runtime
+freeze/native metadata without bootstrap or old archive restaging; root alone
+executes official in-place prepare/verify/rebind and all live consumers.
