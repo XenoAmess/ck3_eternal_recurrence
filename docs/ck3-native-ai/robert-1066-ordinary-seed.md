@@ -547,3 +547,75 @@ days or qualification slots. Root's preceding durable total remains3276/36524,
 this iteration123 days; G2 remains5/8 and the nonwar matrix1/4. M7 remains
 `in_progress`. Current monthly-piety/Sway observations and further normal
 continuation require their separate closed root-owned results.
+
+## Actual v25 cold and saved normal continuation, 2026-10-03
+
+The root-owned v25 qualified cold baseline closed GREEN with scope
+`ordinary_paused_goal_checkpoint_baseline`. New GAME95636 differs from archived
+GAME38520; Robert29829 remains alive, paused and map-ready
+at raw53224008 in the original episode
+`native-29829-2bc2d599f7f9`. The saved `dynasty_continuity` goal and all six
+production ledger pins passed the actual helper. The dynamic source pair was
+full4269/save4269; the normal cold
+restore reports full4270/saveanchor4269.
+No natural day, action replay, new identity or qualification slot is credited
+to this baseline. Government and the next planner were intentionally skipped
+by the baseline; subsequent normal-plan evidence is recorded separately.
+
+Official v25 runtime, native metadata and actual compiler source are
+`f9da88f9119223b150356ec110392c0f67073cc1`, with environment
+`7678c6bd47000ff770e8d9b176d6675c4f69070c95866fb090461891488d899f`. The adopted DLL is8,117,760
+bytes/SHA-256 `4119de2275a9d1adfbc951fe93a8d8e407519301f36c8818567ec04ac83b033e`. The subsequent normal window uses Python source
+`a5882a567c0223884df0770494f60648677eab00` with the qualified native/environment
+above; that Python source is not claimed as the DLL compiler source.
+
+The requested8-day window closed `normal-time-target-reached` with
+12 actual saved days, raw53224008→53224296.
+Returned plans contain4 actual campaign-goal
+contexts and4 actual government contexts.
+The final frame is paused and retains the same Robert episode and typed goal;
+reconciled successions remain0
+and `last_succession=null`.
+The new full saved pair is h4276/full4276:
+checkpoint86,735,234 bytes/SHA-256 `90e6579a8772bc51321b855a57afe25abcc47b942023b98b0f0c214250a6ae6d`, driver
+51,347,352 bytes/SHA-256 `8cea61400b332ec4b25955c94d4d771dc8f80f11168d147a7e0951bcaa8914ad`. Robert is now3332/36524,
+this iteration179 saved days, with84 saved days in the current day03 stage.
+Requested8 is not substituted for the observed12.
+
+The closed combined9-call harness is GREEN at PID95636/raw53224008, with actual
+query frame `native:3`/revision2. It publishes monthly total piety43750/Q100000
+and the current chaplain task's monthly piety45000/Q100000 as distinct native
+values. Spiritual fulfillment progress is available with current raw500000,
+level index3 and progress-percent raw5833300/Q100000; its explicit
+`is_monthly_change=false` prevents treating this progress gauge as monthly
+growth. The original Feast83886111 publishes native completed=true,
+invalidated=false, attending_count18 and target37265 in that list. Guest opinion
+is82; `impressed_opinion` is independently observed present with value10 while
+the two hosted-feast modifiers are absent. These readonly materials do not
+alone attribute that modifier to this Feast or create a new reward credit.
+
+The separate Holy Loan capability remains RED with exact
+`loan_amount_expression_unavailable`. The failed amount expression returns
+before decision/debt getters, so their defaults do not prove eligibility,
+costs or absence of debt. Generic religion completion is not claimed.
+Economic observation and war read-only permission do not imply a spending or
+war action. Root's new Python performance path omits two redundant Chancellor
+queries; domain owners retain the economic, task, Feast and performance
+proofs. Existing global M2 and M5 Murchad completion is not withdrawn by this
+separate failure. Global G2 remains5/8, nonwar1/4 and M7 `in_progress`, with no
+new natural-succession credit from this same-Robert continuation.
+
+Exact cold evidence is
+`m7-robert/robert-mainline-v25-current-review-01/actual-candidate-cold-goal-01/result.json`
+and its `ROOT-PACKET.json`. The actual normal close is
+`m7-robert/v25-a588-normal8-with-economic-observation-01/result.json`; its
+once-produced summary is `m7-robert/v25-a588-normal8-stage-fields-01.json`.
+The nine-call compact input is
+`actual-v25-religion-feast-sway-combined-01/REPORT-FIELDS.json`, SHA-256
+`dd9f1b015d5207895b179fe52108d6beac9e66fc329b7aa0b0ec52d9c5872e5f`. Combined exact pins and actual plan contexts are in
+`m7-robert/V25-CURRENT-COLD-REPORT-FIELDS-01.json`. The first external topic
+formatter had a harness KeyError for the driver metadata key; it was corrected
+from cached compact fields using `command_history_length`. No cold, normal or
+live query was repeated for that documentation fix. This delivery did not
+read current state or pending SDK directories, rewrite gameplay data or run
+tests/Git.

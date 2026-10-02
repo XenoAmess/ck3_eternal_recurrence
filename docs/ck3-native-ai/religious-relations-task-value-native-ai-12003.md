@@ -1,6 +1,6 @@
 # CK3 1.20.0.3：ReligiousRelations 学习与敬虔／意见价值
 
-本页服务 Robert 本世的 piety 决策：当前祭司有效学习、总月敬虔与既有总piety／现任总意见口已为 **production-live primitive**；任务单项 owner modifier 的 exact 原生求值链和最小同口生产补丁为 **static-ready**，尚未采用到实际游戏、尚无实际贡献值。宗教已全面开放；这里只追当前 `task_religious_relations` 的有效学习、月度敬虔和意见贡献，不进行神职任命、切换任务或更改信仰。当前 task 的已读 `CanReassign=false`是原生可用观察，不能当作只读价值观察的禁令。
+本页服务 Robert 本世的 piety 决策：当前祭司有效学习、总月敬虔与既有总piety／现任总意见口已为 **production-live primitive**；v25同一MCP还实际读到当前ReligiousRelations任务owner modifier **0.45 piety／月**，同帧最终总月值为 **0.4375**。新任务字段现在也是 **production-live primitive**；两个数值处于不同聚合阶段，不合并归因。宗教已全面开放；这里只追当前 `task_religious_relations` 的有效学习、月度敬虔和意见贡献，不进行神职任命、切换任务或更改信仰。当前 task 的已读 `CanReassign=false`是原生可用观察，不能当作只读价值观察的禁令。
 
 先复用 [realm-priest 原生树](religion-realm-priest-council-native-ai-12003.md)及 [宗教治理／意见](religion-governance-opinion-native-ai-12003.md)。新知识与施工材料冻结在 `artifacts/g2-maintainer-2026-10-02/resume-12003/m4-council/role-coverage/religious-relations-value-12003/`；原 rolecoverage、realm-priest、Chancellor 专题不在本包改写。
 
@@ -38,7 +38,7 @@ ROOT实际 v21 clergy004 的 [compact extract](Z:/ck3_mod_rewrite/artifacts/g2-m
 | `ck3_query_campaign_root_context_v1(expected_revision)` | fresh council.positions中的实际chaplain fullID／task；v24还发布独立 `player_monthly_piety_v1` 总月值 | 用其position key选择角色，不固定56513或list ordinal；总月口实际0.4375／月见下节与独立专题 |
 | `ck3_query_active_scheme_sway_outcome_opinion_private_v1(expected_revision,target_character_id)`，`target_opinion_of_actor` | 任意实际正fullID target→played actor的signed int32总意见；不要求activeSway／event；还分开发布两项Sway modifier | 可绑定fresh chaplain，既有private opt-in即可，不需新getter或flag |
 
-Sway-outcome生产reader `ReadSwayOutcomeOpinionV1`只解析recipient／actor并调用 `target_opinion(recipient,actor)`；Python leaf只要求target不同于玩家。本页依据真实source范围复用此口，而非按工具名称限制它。总monthly-piety已由v24同一root口发布并实读；task-specific yield／opinion component尚未实读，其中敬虔项的当前最小增量见下节。现root capture helper的 `payload_path`只支持dict；bishop recipe只需ROOT-owned小接线按`position_key`选positions list中的row，不构建新framework。
+Sway-outcome生产reader `ReadSwayOutcomeOpinionV1`只解析recipient／actor并调用 `target_opinion(recipient,actor)`；Python leaf只要求target不同于玩家。本页依据真实source范围复用此口，而非按工具名称限制它。总monthly-piety已由v24同一root口发布并实读；v25进一步实读task owner piety项，见末节；task-specific opinion component尚未实读。现root capture helper的 `payload_path`只支持dict；bishop recipe只需ROOT-owned小接线按`position_key`选positions list中的row，不构建新framework。
 
 ## 当前有效学习的最小只读施工
 
@@ -69,7 +69,7 @@ flowchart TD
     LP --> O[stock learning/2及owner／关系条件]
     P --> E[exact task owner modifier 原生求值链已闭合]
     E --> S[producer / serializer / Python decoder static-ready]
-    S -. 新版本同一MCP实读待完成 .-> PV[当前monthly-piety contribution]
+    S --> PV[v25 同一MCP当前task owner piety 0.45]
     O --> V[玩家累计variable／max与每月clamp]
     V -. 实际当前variable／max尚未published .-> OV[当前任务opinion contribution]
     OV -. 实际目标适用与其它意见 .-> TO[定向final total opinion]
@@ -101,13 +101,13 @@ ROOT已合入 composition-only 的五个生产叶子，并在新 v23 冷启动�
 
 ## 当前任务单独敬虔贡献：下一只读增量
 
-ROOT已授权当前ReligiousRelations实际任务贡献的最小只读生产增量，外置包为 `artifacts/g2-maintainer-2026-10-02/resume-12003/m4-council/role-coverage/religious-relations-contribution-12003/`。当前阶段为 **static-ready：exact ABI／生产leaf接线／跨语言fixture已闭，ROOT采用与实读尚待**；补丁基于immutable `production-source-6c87eb77`（完整commit `6c87eb77568601499ab98a43f9cbea4c2ee870f6`），保持已集成总月getter／schema／算法和已冻结总月专题。这里的技能输入是此前实际learning9；未来current task／incumbent仍由freshroot动态绑定，不能把56513或旧task7162固定为每次输入。
+ROOT已授权当前ReligiousRelations实际任务贡献的最小只读生产增量，外置包为 `artifacts/g2-maintainer-2026-10-02/resume-12003/m4-council/role-coverage/religious-relations-contribution-12003/`。以下保留其 **static-ready施工截点**：exact ABI／生产leaf接线／跨语言fixture先闭合，再由ROOT采用并在v25实读，实际新增结果见末节。补丁基于immutable `production-source-6c87eb77`（完整commit `6c87eb77568601499ab98a43f9cbea4c2ee870f6`），保持已集成总月getter／schema／算法和已冻结总月专题。这里的技能输入是此前实际learning9；current task／incumbent由freshroot动态绑定，不能把56513或旧task7162固定为每次输入。
 
 现有actual `.3` `ck3_12002_nonwar_council.cpp::Position`已有ActiveTask、TaskType以及原task+0x40的scopes地址；传给现有progress入口的是这个原指针，并非只含两个ID的8-byte副本。GUI任务caller `0x1158F80`复制task+0x40／+0x50组成32-byte原scopes后调用下述builder，包含incumbent／owner fullID与已有target scope。新入口直接复用当前原地址，由原生builder构造完整ScriptContext与保存作用域；不在Python重建、猜测或手算脚本作用域。
 
 同一campaign-root的position row因此只需承载一个独立numeric task-owner modifier material。四个生产叶子是common root DTO/environment header、nonwar council reader、actual root serializer和Python root contract；现存MCP、参数、flags和root-ready语义保留。Native只增加一个组合callback封装三个已闭入口，不扩final-gates、任命或其它策略。
 
-外置补丁新增 `council.positions[].task_owner_monthly_piety_v1={status,value,unavailable_reason}`；available的value为signed `raw`／scale100000，unavailable保留null及 `task_owner_monthly_piety_unavailable`。旧row缺字段仍可解码。新值与既有 `player_monthly_piety_v1`分别命名，原root readiness与总月算法保留；字段本身目前是静态发布候选，不代表实际MCP已经返回该材料。
+外置补丁新增 `council.positions[].task_owner_monthly_piety_v1={status,value,unavailable_reason}`；available的value为signed `raw`／scale100000，unavailable保留null及 `task_owner_monthly_piety_unavailable`。旧row缺字段仍可解码。新值与既有 `player_monthly_piety_v1`分别命名，原root readiness与总月算法保留。该字段先通过下述静态验证，随后实际MCP返回available材料，阶段不能倒填到旧fixture。
 
 新exact locator排除已留证：`GetCouncilOwnerModifierDescFor` literal `0x48C8928`的一条登记 `0x61E230→0x31BCE10`读取`+0xDD8`，其source-path／限制文本明确属于 **CouncilPosition** passive职位modifier，不能当作TaskType的owner-modifier字段，也不能复用 `.19` GUI-description签名。
 
@@ -132,7 +132,7 @@ flowchart TD
     B --> E[2303700 ID97 / signed Q100000]
     E --> R[9F24F0 清理内部storage]
     R --> P[同一campaign-root position material / static-ready]
-    P -. ROOT采用后新PID paused实读待完成 .-> D[当前ReligiousRelations任务价值输入]
+    P --> D[v25 paused同一MCP实读0.45 / available]
     D -. 实际全局modifier归因仍独立 .-> N[最终总月net]
     T[v24 总月getter2696F40实际0.4375/月] --> N
     X[CouncilPosition passive modifier +DD8] -. 属于另一class不可套用 .-> C
@@ -143,3 +143,17 @@ flowchart TD
 首native case GREEN（0.129369s）保留4142-byte wire；首Python productionnormalizer调用在既有scope检查处RED，因为fixtureDTO `primary_title=null`／`government=null`却发布availableCouncil，且此检查先于新数字helper。该harness RED有缓存事实与原receipt，不是getter失败，也未验证新decoder。只补fixture的landed title／capital／held-primary／feudal government背景，生产四leaf源码保持；复用两个GREEN生产objects，只重编改变的fixture object并必要link。第二native context case GREEN（0.129716s），生成4371-byte原wire SHA `7412326624ff7a55a864b30184473fd53e033748800039df286c487faa8fce5d`；随后生产Python normalizer直接消费同一份wire GREEN（0.8380268s），保留task值-225000与总月marker88888，没有造outer envelope或手改JSON。首RED与修复后的 [decoder receipt](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m4-council/role-coverage/religious-relations-contribution-12003/modifier-provider/implementation/decoder-02-fixture-context-fixed/GENUINE-TASK-OWNER-PIETY-PYTHON-RECEIPT.json)均保留。
 
 此focused case覆盖新leaf链而非完整 `ReadCampaignRootContextV1` producer；新的row布局会由ROOT正常strict构建重编所有header依赖生产对象，再做实际同一MCP paused验收。本包只验证两个有不同fixture上下文的新case／两次normalizer调用（首RED、修复后GREEN），不重跑旧tests、ABI或矩阵；没有SDK、游戏动作、任务切换、day／M4 credit。外置ROOT config只复用已有freshsnapshot→完整campaign-root两call，已有完整新版本freshroot时直接复用，下一真实采集不固定角色／任务／revision。
+
+## V25 同一 MCP 实际任务敬虔修正项
+
+ROOT采用两个已释放源码patch并构建v25后，完成了 `actual-v25-religion-feast-sway-combined-01` 的一次完整freshroot采集。本包只有限解析已有002 `ck3_query_campaign_root_context_v1`，没有重query、重测旧fixture或读取其它Feast／Sway包；实际root actor29829、raw53224008，accepted／available、`campaign_root_context_ready=true`，`queried_snapshot_id=native:3`、outer frontend revision2／native revision3。ROOT独立执行上下文提供newPID95636／native source前缀f9／v25；PID与source前缀不是本002 DTO新发布的字段。
+
+| 同帧实际字段 | 结果 | 解释范围 |
+| --- | --- | --- |
+| 动态chaplain row | position_key `councillor_court_chaplain`，holder **56513**，`task_religious_relations`／general／nulltarget／frozen=false／infinite | 按position key从本帧positions选取；没有固定旧ID或重新任命 |
+| `task_owner_monthly_piety_v1` | **available**，raw **45000**／scale100000，即 **0.45 piety／月**，reason=null | 当前任务原生已求值的council-owner修正项，处于owner／global聚合之前 |
+| `player_monthly_piety_v1` | **available**，raw **43750**／scale100000，即 **0.4375 piety／月**，reason=null | 同帧独立的最终总月净值，与任务项分别保存 |
+
+两个数值不同，任务修正项高于最终总月净值；本口没有读取聚合中的其它分项和全局倍率，不能把差额归因为某个特质、费用或其它任务，也不能用任务0.45覆盖总月0.4375。此前学习9属于v23实读，本002未新发布learning，故不把0.45写成“本帧手算9/20”；它是三个原生入口实际求值的独立结果。完整引擎函数体、producer、serializer、Python decoder和既有MCP在本次真实paused回包上已经产生available材料，满足本项 **production-live primitive**，不是synthetic-2.25的沿用。
+
+原002与有限extract pins见 [ACTUAL-TASK-OWNER-PIETY-EXTRACT.json](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m4-council/role-coverage/religious-relations-contribution-12003/actual-v25-fields-01/ACTUAL-TASK-OWNER-PIETY-EXTRACT.json)，3786B／SHA `d60e751cc83f455651fddb54d46c42ac0627aa62a1943bf4eb13e8746351cf10`。原static报告、genuine wires和首fixture背景RED按原截点保留，不改写为live。当前gap转为任务opinion累计component／approval与替代任务比较；本次没有改任务、任命、策略或信仰，没有新增day／checkpoint／M4信用，也不宣称整个religion OODA或M4完成。

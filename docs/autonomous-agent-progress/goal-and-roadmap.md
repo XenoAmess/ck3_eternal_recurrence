@@ -1,5 +1,21 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 10-03 05:46 三个新readonly值、原活动结果与正常39日闭包
+
+2026-10-03T05:46:08+08:00 Asia/Shanghai真实补录，以 **full/save4279** 为本阶段闭包截点：新保存 **39日＝v24后继16日＋v25正常12日＋新短窗11日**，原Robert累计 **3343/36524**、resume **190新增保存日**、10-03 **95保存日**。actor29829 / episode `native-29829-2bc2d599f7f9`，typed dynasty_continuity reconciled_successions **0** 独立列。G2 **5/8＝62.5%**、NW **1/4＝25%**及global M2/M5/NW-FAMILY complete保持；readonly和子项完整材料不自动升级全局整项。
+
+本阶段最新save **86,893,075B / SHA `d3832baa019a223781949b4e57f3f9b5bf1bea6bfa9820d8477f8b0915158665`**，driver **51,376,239B / SHA `7638a63acef8355acbc7d0e4d85046e1f61da569a89426f122d0056b0081bcc2`**；4279/raw53224560，GAME**95636**最小化。前一4276/12日pair saveSHA90e6579a8772bc51321b855a57afe25abcc47b942023b98b0f0c214250a6ae6d/driverSHA8cea61400b332ec4b25955c94d4d771dc8f80f11168d147a7e0951bcaa8914ad保留为独立阶段来源。Python **a5882a567c0223884df0770494f60648677eab00** 与native/env **f9da88f9119223b150356ec110392c0f67073cc1 / v25**分别绑定。
+
+宗教成长同一现有MCP context新增19field progress现已真实 **available**：newPID95636/raw53224008/native3/public2，current **5**、**level3 of7**、native **58.333%**、本级interval **−30/+30**、runtime **−100/+100**，is_monthly=false / Catholic身份未变。readiness从static-ready升 **production-live primitive**，这是等级区间progress及numeric范围，不能写个人月成长或本stage再次“0→5”；原Rite事件＋5材料只计原自然样本一次。[v25成长reader当前字段](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-growth-maintenance-12003/ACTUAL-V25-REPORT-FIELDS.json)。
+
+同existing MCP的ReligiousRelations任务owner贡献真实 **45000/Q100000＝0.45**，现任56513 / general / infinite / notfrozen；这是 **pre-global evaluated modifier**。独立同帧玩家最终总月净值仍 **43750/Q100000＝0.4375**。两项数值均实读，但0.45不等总净值0.4375，差额原因未由本包归因；不以learning9、currenttask或余额猜完整任务净产出/approval。该贡献reader升 **production-live primitive**，0新任务切换/任命/动作。[任务owner贡献与独立玩家总净值](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m4-council/role-coverage/religious-relations-contribution-12003/actual-v25-fields-01/REPORT-FIELDS.json)。
+
+原宴会 **full83886111 / host29829** 现有真正newPID MCP结果：native3/public2/raw53224008 **completed=true / invalidated=false**，当前attending vector **18人，包含37265**；目标samefull record **state2 / native_active_attendee=true**，同query impressed_opinion10、总opinion82、历史baseline62且当时具名modifier未有。本newproducer真实返回terminal、vector、target状态与具名材料，不再是v24生命周期沿用历史native23的earlyreturn。原once100gold debit→formalnext→native terminal→本newPID full/target结果→具名modifier，原activity子项的production-live loop材料齐备；**整体M6仍未complete**，原scheme/有价值终态缺口继续。总opinion净20不等modifier10或全部自动归因Feast，目标当前active记录与历史其他参与语义分开。[原M6活动结果newPID完整观测](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-feast/robert-feast/original-m6-outcome-interpretation-20261003/ACTUAL-REPORT-FIELDS.json)。
+
+Holy-order loan是本轮真实 **capability RED**：combined只读包004 **available=false / loan_amount_expression_unavailable / quote=null**。其余false/cost0来自earlyreturn默认值、后续未执行，不能据此写无债、借款不合法或费用零；9call batch的harness GREEN不等9个能力均ready。Root已派具体原生表达式/桥接定位，普通normal循环可继续，不等待贷款完整修复才交本闭包。[9call混合包有限字段](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v25-religion-feast-sway-combined-01/REPORT-FIELDS.json)。
+
+新观测已取代growth/task contribution长期未知与活动目标当前状态缺口；Holy loan当前明确有可复现表达式RED，需要最小原生修复，普通normal继续。经济实际readonly材料与final action资格、a588性能实测在[日报](daily/2026-10-03.md)按owner字段记录；不由新开关或static fixture授action。G2原M4/M6/M7整体未完成，globalM2/M5/NW-FAMILY原完成不回退，原visible outcomes与分母不改。[机器状态](g2-requirements-v1.json)按最新4279阶段同步。下一从最新4279原存档继续正常formal并保存真实日数；按实际经济材料校准现有hold/selector，未获允许的spend不因readonly开关解除。对Holy loan只修本次有实证的表达式缺口、未来strict/currentpaused结果另段记；Sway有价值phase/终态与原M6剩余scheme结果继续观测。本阶段normal＋新reader成果立即冻结发布，不等待新短窗timer分项分析、未来贷款修复或新native构建。
+
 ## 10-03 05:06 同原存档28日保存与LIFE可见观测
 
 2026-10-03T05:06:09+08:00 Asia/Shanghai真实补录，本阶段按 **full/save4235** 闭包截点收账：原Robert存档实际又保存 **28日（12＋16）**，该截点累计 **3304/36524**，本resume **151新增保存日**，10-03 **56保存日**。actor29829 / episode `native-29829-2bc2d599f7f9`；typed dynasty_continuity **reconciled_successions0** 独立记账。G2 **5/8＝62.5%**、NW **1/4＝25%** 保持，global M2、M5与NW-FAMILY原complete不重授或回退；后继新闭包另段记账，不覆写本段。

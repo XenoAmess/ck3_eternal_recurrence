@@ -1,5 +1,11 @@
 # CK3 自动游玩智能体进度中心
 
+## 10-03 05:46 4279闭包3343日／resume190：v25新readonly与宴会材料
+
+2026-10-03T05:46:08+08:00 Asia/Shanghai真实补录，以 **full/save4279** 为本阶段闭包截点：新保存 **39日＝v24后继16日＋v25正常12日＋新短窗11日**，原Robert累计 **3343/36524**、resume **190新增保存日**、10-03 **95保存日**。actor29829 / episode `native-29829-2bc2d599f7f9`，typed dynasty_continuity reconciled_successions **0** 独立列。G2 **5/8＝62.5%**、NW **1/4＝25%**及global M2/M5/NW-FAMILY complete保持；readonly和子项完整材料不自动升级全局整项。 [日报](daily/2026-10-03.md) / [W40](weekly/2026-W40.md)。full/save4279/raw53224560；saveSHAd3832baa019a223781949b4e57f3f9b5bf1bea6bfa9820d8477f8b0915158665 / driverSHA7638a63acef8355acbc7d0e4d85046e1f61da569a89426f122d0056b0081bcc2。Python a588/nativef9-v25、新PID95636，前3304中央文档已public2e0d3c9d；4276四回合性能与后继4279单回合timer样本严格分列。
+
+实际readonly：spiritual progress5/level3of7/58.333%且nonmonthly；任务owner月贡献0.45与独立玩家最终总净值0.4375分开；原Feast83886111真正newPID completed/18人含37265/currentactive2/impressed10，原activity loop材料齐但不自动授整体M6。Holy loan真实availablefalse/loan_amount_expression_unavailable/quotenull，其余false/cost0是未执行默认，不能推不合法/无债。现有经济wartime readonly与实际支出hold分开；性能只按唯一a588新包计数与计时，不把不同局面秒数差当受控归因。source f9/a588官方CI均SUCCESS，原Swaycold三rings空无收益；全宗教授权不等全域完成。
+
 ## 10-03 05:06 4235闭包3304日／resume151：正常保存28日，LIFE20真实query
 
 2026-10-03T05:06:09+08:00 Asia/Shanghai真实补录，本阶段按 **full/save4235** 闭包截点收账：原Robert存档实际又保存 **28日（12＋16）**，该截点累计 **3304/36524**，本resume **151新增保存日**，10-03 **56保存日**。actor29829 / episode `native-29829-2bc2d599f7f9`；typed dynasty_continuity **reconciled_successions0** 独立记账。G2 **5/8＝62.5%**、NW **1/4＝25%** 保持，global M2、M5与NW-FAMILY原complete不重授或回退；后继新闭包另段记账，不覆写本段。 [日报](daily/2026-10-03.md) / [W40](weekly/2026-W40.md)。本阶段full/save4235/raw53223624；saveSHA037c1678e95f0d8c1b192764f63f51504957cc5d02c7466c841f3dfe931a849f，driverSHAde59a2e60c23352476fe3f7005340de306c3eb24d2ba345d121b09a904478b1d。

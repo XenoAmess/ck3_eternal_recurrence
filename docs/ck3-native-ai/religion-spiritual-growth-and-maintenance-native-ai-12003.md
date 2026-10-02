@@ -1,6 +1,6 @@
 # 1.20.0.3 宗教维持与精神成长的原生收益输入
 
-2026-10-03，状态 **static-ready 外置完整接线包：exact 原生调用链已闭合，Native/Python 同一 genuine wire 的唯一 focused cases GREEN；ROOT apply、strict build 与当前 paused 观测待执行**。当前目标是比较保持当前 Rite、精神成长、明确 target Rite 转换与未来改革所需的原生收益输入，不为验证而改 Robert 的 Catholic 身份。基线 CK3 `1.20.0.3 Crozier` / Steam `25652598`，EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。getter 研究复用 `6c87eb77568601499ab98a43f9cbea4c2ee870f6`；本完整接线包以不可变 `82c0317448eb8c83c4bf17364a02373b61c0775b` / `production-source-82c03174` 为 base，交 ROOT 下一 v25 batch。source packet 与 focused test 通过不等于 growth publisher 已进入生产。
+2026-10-03，当前进度/范围查询状态 **production-live primitive**。ROOT v25/current Robert paused 实际注册 MCP 返回 complete、两组件 available，官方 driver 正常关闭；没有新增宗教动作或完整宗教 OODA。当前目标是比较保持当前 Rite、精神成长、明确 target Rite 转换与未来改革所需的原生收益输入，不为验证而改 Robert 的 Catholic 身份。基线 CK3 `1.20.0.3 Crozier` / Steam `25652598`，EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。getter 研究复用 `6c87eb77568601499ab98a43f9cbea4c2ee870f6`；完整接线包 base 为不可变 `82c0317448eb8c83c4bf17364a02373b61c0775b`。实际当前 query 使用 ROOT 已发布 `production-source-f9da88f9`，不是 source candidate 或 synthetic fixture。
 
 先复用[宗教身份与现有查询](religion-native-ai-faith-identity-12003.md)、[Rite growth 原生树](religion-native-ai-rite-growth-12003.md)、[效果材料](religion-native-ai-effect-material-12003.md)、[改宗与改革](religion-conversion-and-reformation-native-ai-12003.md)及[已发布 typed conversion 接线](religion-self-conversion-action-native-ai-12003.md)。旧已闭 ABI、已通过 case、实际操作不重复执行；本页只推进决策所缺的新读取入口。
 
@@ -26,7 +26,7 @@
 | 原生分支 | 已有材料 | 本轮未采用/尚缺 | 影响与下一入口 |
 | --- | --- | --- | --- |
 | 当前 notice 保持 Rite、stock +5 | 已闭 stock/实际 shown-enabled；独立0→5；身份不变 | 原生 weighted selector 未展开 | bounded event 路线已经可玩；不为它增新门 |
-| 保持当前 Rite 的当前成长位置 | current/baseline/base raw 已有 query；同 query progress/range publisher 完整外置接线与 focused case 通过 | ROOT apply、strict build 与实际 paused progress 待完成 | 可显示到下一原生等级的实际进度；独立 primitive，不要求假月增 |
+| 保持当前 Rite 的当前成长位置 | current/baseline/base raw 已有 query；v25实际 current5、level3/7、progress58.333%、runtime[-100,+100] | 完整等级收益与个人时间演化不在这个当前位置 reader 内 | 已提供当前等级区间的实际进度；独立 production-live primitive，不要求假月增 |
 | 个人 fulfillment 的长期演化 | 已有当前值与实际事件增量 | 个人 monthly getter/日历演化入口尚未证明存在 | 明确 unknown；不由 base difference、GUI signal 或 county传播率推收敛时间 |
 | 明确 target Rite 付费转换 | full choices/inputs/paid final/quote/reasons/owning submit/result | actual target 对月增、等级 utility 与后续脚本的完整收益未观察 | native final 决定合法性；policy 尚不因 positive base difference 自动转换 |
 | 未来自然 draft 的改革 | reform context/AI inputs/resource costs/nonnull final reasons 已有 source | 当前未开自然 draft，缺实际 changed doctrine/tenet 与玩家收益对比 | 不造 draft/null当零；先复用当前 context 与 native最终结果，独立缺口由 Faith lane 限定 |
@@ -38,7 +38,7 @@ flowchart TD
     B --> C[已有current/target base 与baseline/knowledge]
     C --> D[原生等级区间progress 与runtime范围 调用链已闭]
     D --> L[同query独立progress接线与focused wire GREEN]
-    L -. strict build/实机pending .-> E[保持Rite的可见成长位置 待actual]
+    L --> E[Robert实际5 等级3/7 原生58.333percent]
     C -. unknown 个人monthly/日历入口未证 .-> K[不能猜收敛速率或费用回收时间]
     C --> F[已有paid final/quote/reasons]
     F -. target growth/utility actual pending .-> G[明确转换的价值比较]
@@ -53,7 +53,7 @@ flowchart TD
 
 新 Rite lane 只读取原先未闭的新入口：`.3` reflection `GetSpiritualFulfillmentProgress` 注册 `0xD99C0` → `0xEE5590` → `0xEDEB20` → `0x1870650`。`0xEE5590` 的真实 receiver 是 `Character*`；`0xEDEB20` 提取原生复杂返回对象 `+0xE8` 的数值，`0x1870650` 读取当前 fulfillment、原生 type/level 与等级 thresholds。普通等级由 `0x1870020` 计算 `(current−lower)/(upper−lower) × 100000 × 100`，零跨度返回0，最高等级返回 `10000000`：单位是 Q100000 百分比，10000000即100%，没有时间输入。该结论、完整三段 numeric 函数、type/level 的 exact 边与新字节 pins 见 [Rite PROOF](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-growth-maintenance-12003/rite/PROOF.json)；未实际查询当前 Robert。
 
-外置 headless reader 使用真实数据库 slot `0x5D1F6D0`、`0x3181BF0(database, character)` 与 `0x3181370(type, current_raw)`；type 的 level rows/count 在 `+0x58/+0x64`，level stride `0x218`，lower/upper/index 在 `+0x1E0/+0x1E8/+0x210`。原生 runtime min/max slots 是 `0x5C68E00/0x5C68DF8`。它复用本次已读取 Context 的 current value、actor、date、capture epoch，读取实际 played-character pointer，并调用原生 `0x1870020`；没有手工构造或析构 GUI 的复杂返回对象。typed API 与单位已在 [QUERY-CONTRACT](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-growth-maintenance-12003/rite/QUERY-CONTRACT.json) 冻结。reader 的两个文件分别是 [header](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-growth-maintenance-12003/rite/ROOT-PROJECTION/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_spiritual_fulfillment_progress.hpp)（SHA `8aded05808b057089622825e676a55f115e5bf2286434f405a8e10461c5d41cf`）和 [source](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-growth-maintenance-12003/rite/ROOT-PROJECTION/ck3_autonomous_player/native_bridge/src/ck3_12003_spiritual_fulfillment_progress.cpp)（SHA `96b651349974a7040b47526d9cce361105d5644cfd474719956acd185754d8b6`）。两叶已原样并入完整接线包并随 focused production path 编译通过；ROOT strict build 与实际 getter 当前帧结果仍待执行，不授予 live。
+外置 headless reader 使用真实数据库 slot `0x5D1F6D0`、`0x3181BF0(database, character)` 与 `0x3181370(type, current_raw)`；type 的 level rows/count 在 `+0x58/+0x64`，level stride `0x218`，lower/upper/index 在 `+0x1E0/+0x1E8/+0x210`。原生 runtime min/max slots 是 `0x5C68E00/0x5C68DF8`。它复用本次已读取 Context 的 current value、actor、date、capture epoch，读取实际 played-character pointer，并调用原生 `0x1870020`；没有手工构造或析构 GUI 的复杂返回对象。typed API 与单位已在 [QUERY-CONTRACT](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-growth-maintenance-12003/rite/QUERY-CONTRACT.json) 冻结。reader 的两个文件分别是 [header](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-growth-maintenance-12003/rite/ROOT-PROJECTION/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_spiritual_fulfillment_progress.hpp)（SHA `8aded05808b057089622825e676a55f115e5bf2286434f405a8e10461c5d41cf`）和 [source](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-growth-maintenance-12003/rite/ROOT-PROJECTION/ck3_autonomous_player/native_bridge/src/ck3_12003_spiritual_fulfillment_progress.cpp)（SHA `96b651349974a7040b47526d9cce361105d5644cfd474719956acd185754d8b6`）。两叶已原样并入完整接线包并随 focused production path 编译通过；后续 v25 的实际 getter 当前帧结果见下节。fixture 数据继续保留 synthetic 边界。
 
 `GetBaseFulfillmentDelta` 的 `0xD3170` → `0xEE4010` 只取 window `+0x68` 缓存；`spiritual_fulfillment_change` 的 `0xDF07B0` 是 GUI 变动 signal，两者均不是个人月增。当前 `.3` defines913–917 的2%/邻居/月只影响同 Faith county 的 Rite spread，不能填进个人 fulfillment rate。
 
@@ -69,7 +69,27 @@ Python 外置 shared hunk 仅 `src/xar_autoplayer/bridge/player_religion_context
 
 一条 Python focused case（[RESULT](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-growth-maintenance-12003/python-integration/RESULT.json)，SHA `be6de99ef633b40a6c3f09cb65a7e50b5a547bfd65e03f9bcb4d1ad28813e29e`）仅运行一次/1RPC，由 actual `NativeHeadlessGameplayDriver` 方法进入生产 query/private transport，直接解上述 native serializer完整 command_result。19个进度字段与全部旧 Context 原样；没有 Python 重造 wire，没有旧 suite 重跑。两次最初 Native compile/link **harness RED**分别是新fixture namespace误写与未调用 adapter construction link符号。第二轮完整 raw日志/argv 保留；第一轮因归档命令 quoting 失败，原 raw日志被后续 attempt 覆盖，现只保留 exact原fixture与实际工具 diagnostic摘录，明确不能称原 raw日志。修复仅外置fixture限定名及添加永不调用的 abort construction stubs，未替换真实 renderer/reader/mailbox、未改生产接线。成功的同一 case 不再重复。
 
-ROOT 可直接应用的完整文件与统一 patch 为 [ROOT-APPLY-PROJECTION](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-growth-maintenance-12003/ROOT-APPLY-PROJECTION) 和 [ROOT-GROWTH-INTEGRATION.patch](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-growth-maintenance-12003/ROOT-GROWTH-INTEGRATION.patch)，每文件 base/after pins 与 exact-hunk apply证明见 [完整 receipt](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-growth-maintenance-12003/INTEGRATION-OWNER-RECEIPT.json)。后台包按 static-ready 收口；ROOT strict v25 后只需一次当前 paused 的既有 context query 获取 progress 材料，没有改宗操作前置。若 actual progress unavailable，沿实际返回的具体原因定位同 capability，不能以 ACK 或这个 fixture 冒充当前成长观测。
+ROOT 已应用的完整文件与统一 patch 为 [ROOT-APPLY-PROJECTION](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-growth-maintenance-12003/ROOT-APPLY-PROJECTION) 和 [ROOT-GROWTH-INTEGRATION.patch](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-growth-maintenance-12003/ROOT-GROWTH-INTEGRATION.patch)，每文件 base/after pins 与 exact-hunk apply证明见 [完整 receipt](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-growth-maintenance-12003/INTEGRATION-OWNER-RECEIPT.json)。该 receipt 保留当时 static-ready / pending live 的历史截点；v25实际结果单独追加，不重写旧尝试。
+
+## v25 当前 Robert 的真实进度材料
+
+ROOT 在 `2026-10-03 05:17`（Asia/Shanghai）完成一次既有注册 `ck3_query_player_religion_context_v1(expected_revision=2)`；[实际003 packet](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v25-religion-feast-sway-combined-01/003-ck3_query_player_religion_context_v1.json) 为 `complete/isError=false/status=observed`，[有限 batch result](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v25-religion-feast-sway-combined-01/result.json) GREEN、`official_driver_close_returned=true`，initial/final均 paused同日，`active_event=null`。ROOT 报实际 PID95636；该 PID字段不在宗教 packet 内，单列来源。
+
+| 当前实际字段 | raw / typed值 | 解读 |
+| --- | --- | --- |
+| actor / date / capture epoch | 29829 / 53224008 / 8626 | 新当前 frame；progress与旧Context三值完全一致 |
+| public / native / snapshot revision | 2 / 3 / 3 | capture epoch8626独立，不混为revision |
+| Rite / Faith / Religion / main Rite | 152 / 23 / 8 / 152 | Catholic / Christianity保持 |
+| current fulfillment | 500000，scale100000 | 实际当前5；与旧notice after一致不证明个人月增为0 |
+| active level / count / highest | 3 / 7 / false | 原生索引，不额外改成“第4级”或固定评分 |
+| level lower / upper | −3000000 / 3000000 | 当前原生区间−30至+30 |
+| progress percentage | 5833300，scale100000 | 原生58.333%，保留定点取值，不以Python重算58.333333替换 |
+| runtime min / max | −10000000 / 10000000 | 运行时当前有效范围−100至+100，现已observed |
+| schema / unit / monthly | ck3_12003_spiritual_fulfillment_progress_v1 / percent / false | 19字段组件availabletrue/reasonnull，不是月增长或时间预测 |
+| Faith fervor | 6808550 | 当前68.0855，独立于个人精神等级进度 |
+| piety（batch initial/final） | 41401250，scale100000 | 当前414.0125；本包未支付或增加 |
+
+这次只读能力授予 **production-live primitive**：actual Native handler绑定、typed getter、mailbox、Python decoder与既有 MCP均有真实当前结果。没有新增选择、支付、改宗、改革、天数、M6/G2 或宗教 production-live loop信用。完整 [actual proof](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-growth-maintenance-12003/ACTUAL-V25-SPIRITUAL-PROGRESS-PROOF.json) 与 [report fields](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-growth-maintenance-12003/ACTUAL-V25-REPORT-FIELDS.json) 仅有限文件判读；不重query、不重fixture/ABI。下一非战成长输入研究在独立 external 包，当前没有 present notice，不重发已完成`.0010`。
 
 Faith 的 `GetYearlyFervorChange` 是 Faith 热忱演化，与个人 fulfilled/growth 是不同材料；年度量只在实际年度 Faith 比较需要时扩同 numeric-query。未来自然 draft 的 `GetRiteDivergence`、`DivergenceResultsInFaithCreation` 才分类这份草案是否产生新 Faith；current Rite divergence 或本轮 Catholic identity 不能替代草案结果。现改革 final、quote、nonnull reasons 不重做；本轮没有制造或打开 draft。
 
