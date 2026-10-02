@@ -89,6 +89,26 @@
       "file": "docs/handover/evidence/2026-10-02-war-master-integration/zhongguo-capture-ci-regression-065425429869.json",
       "sha256": "f072389356e485e0f59cd371bbebb6f7b0f67deec5dc7a6ea44787fd7d9ccf98",
       "bytes": 2432
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/traits-12003-extraction-070055013374.json",
+      "sha256": "3bbfcfbe0c715f407b9631dc86e09f7ff6a5f452bc5ed9acd1f90802e002eace",
+      "bytes": 2054
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/traits-12003-generation-070108651892.json",
+      "sha256": "dfee34c088d75d30207369b7e654250cab0bb140e32efa73b08cf767113b52ce",
+      "bytes": 813
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/test_gen_courtier_creator-12003-070137600748.json",
+      "sha256": "ad6456e53dbd9e7851ea763cb2e9bd57a21126054e57331539a2ae33be6d946a",
+      "bytes": 326
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/test_gen_vivhite_courtier-12003-070137990166.json",
+      "sha256": "ad21da6dfb3d6f7e2e82f5625d7e41d6f2a4324ff8d16ebadb6106978627ada0",
+      "bytes": 327
     }
   ],
   "external_process_assets": "C:\\Users\\1\\ck3-upgrade-integration-20261002-a01",

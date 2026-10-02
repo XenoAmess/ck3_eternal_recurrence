@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "tools/test_gen_vivhite_courtier.py"
+  ],
+  "cwd": "C:\\w\\e2merge1002",
+  "rc": 0,
+  "stdout": "",
+  "stderr": ".....\n----------------------------------------------------------------------\nRan 5 tests in 0.203s\n\nOK\n"
+}

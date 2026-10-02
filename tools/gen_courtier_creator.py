@@ -13,8 +13,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 MOD = ROOT / "XenoAmess_s_Eternal_Recurrence"
-SNAPSHOT = Path(__file__).resolve().with_name("courtier_traits_1_20_0_2.json")
-EXPECTED_SOURCE_VERSION = "1.20.0.2"
+SNAPSHOT = Path(__file__).resolve().with_name("courtier_traits_1_20_0_3.json")
+EXPECTED_SOURCE_VERSION = "1.20.0.3"
 EXPECTED_SOURCE_FILE = "Crusader Kings III/game/common/traits/00_traits.txt"
 EXPECTED_SOURCE_SHA256 = "93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa"
 EXPECTED_TRAIT_COUNT = 306

@@ -1,0 +1,19 @@
+{
+  "runs": [
+    {
+      "script": "tools/gen_courtier_creator.py",
+      "rc": 0,
+      "stdout": "generated courtier catalogs: education=25, commander=17, physical=38, personality=36, other=110, union=226, conflict_pairs=95, source_sha256=93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa\n",
+      "stderr": ""
+    },
+    {
+      "script": "tools/gen_vivhite_courtier.py",
+      "rc": 0,
+      "stdout": "generated Vivhite courtier catalogs: education=25, commander=17, physical=38, personality=36, other=110, union=226, conflict_pairs=95, source_sha256=93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa\n",
+      "stderr": ""
+    }
+  ],
+  "product_generated_changed_paths": [],
+  "product_generated_bytes_unchanged": true,
+  "old_snapshots_preserved": true
+}

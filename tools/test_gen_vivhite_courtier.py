@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Protect the independent CK3 1.20.0.2 Vivhite metadata and text contracts."""
+"""Protect the independent CK3 1.20.0.3 Vivhite metadata and text contracts."""
 from pathlib import Path
 import shutil
 import tempfile
@@ -27,7 +27,7 @@ class VivhiteNativeContractTests(unittest.TestCase):
                              {trait["key"] for trait in union}))
 
     def test_independent_old_snapshot_cannot_regenerate_new_product(self):
-        self.assertEqual(generator.SNAPSHOT.name, "vivhite_courtier_traits_1_20_0_2.json")
+        self.assertEqual(generator.SNAPSHOT.name, "vivhite_courtier_traits_1_20_0_3.json")
         with self.assertRaisesRegex(ValueError, "source game version"):
             generator.load_snapshot(generator.SNAPSHOT.with_name("vivhite_courtier_traits_1_19_0_6.json"))
 

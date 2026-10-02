@@ -136,7 +136,7 @@ py tools/build_auto_upgrade_buildings_release.py            # 生成 17 文件 s
 契约原型、PB、图鉴、琉焰之视成长表和 28 个里程碑事件改 `tools/contracts_data.py`，再跑 `gen_contracts.py`；该生成器也产出 `common/traits/xar_traits.txt`。
 无继承人结算 widget 改 `gui/xar_no_heir_settlement.gui`；原生继承窗投影必须运行 `tools/gen_no_heir_gui.py`，不要手改 `gui/window_succession_event.gui`。
 长期平衡 wire 字段改 `tools/balance_wire_data.py`，再运行 `tools/gen_balance_wire.py`；两份生成结果仅供 development acceptance，release staging 必须整文件排除。
-廷臣 trait 元数据快照在 `tools/courtier_traits_1_20_0_2.json`。改动或升级游戏版本时，先更新
+廷臣 trait 元数据快照在 `tools/courtier_traits_1_20_0_3.json`。改动或升级游戏版本时，先更新
 `extract_courtier_traits.py` / `gen_courtier_creator.py` 内的版本、输出名和预期计数，再运行
 `py tools/extract_courtier_traits.py` 从当前原版 `00_traits.txt` 刷新快照；审阅 snapshot diff 后才运行
 `py tools/gen_courtier_creator.py`，并审阅生成的五类目录、226 项元数据与 95 组冲突（当前原版快照为 306 个 trait）。只运行生成器不会重新读取游戏文件。

@@ -14,13 +14,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 MOD = ROOT / "Eternal_Recurrence_Vivhite_Courtier"
 SNAPSHOT = Path(__file__).resolve().with_name(
-    "vivhite_courtier_traits_1_20_0_2.json"
+    "vivhite_courtier_traits_1_20_0_3.json"
 )
 HEADER = (
     "# GENERATED FILE - do not edit. Regenerate with "
     "tools/gen_vivhite_courtier.py"
 )
-EXPECTED_SOURCE_VERSION = "1.20.0.2"
+EXPECTED_SOURCE_VERSION = "1.20.0.3"
 EXPECTED_SOURCE_FILE = "Crusader Kings III/game/common/traits/00_traits.txt"
 EXPECTED_SOURCE_SHA256 = (
     "93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa"

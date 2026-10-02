@@ -1,0 +1,42 @@
+{
+  "snapshots": [
+    {
+      "previous_snapshot": "tools/courtier_traits_1_20_0_2.json",
+      "new_snapshot": "tools/courtier_traits_1_20_0_3.json",
+      "source_game_version": "1.20.0.3",
+      "source_sha256": "93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa",
+      "trait_count": 306,
+      "only_game_version_metadata_changed": true,
+      "argv": [
+        "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "tools/extract_courtier_traits.py",
+        "--source",
+        "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/traits/00_traits.txt",
+        "--output",
+        "C:\\w\\e2merge1002\\tools\\courtier_traits_1_20_0_3.json"
+      ],
+      "stdout": "extracted 306 traits from CK3 1.20.0.3; sha256=93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa\nwrote C:\\w\\e2merge1002\\tools\\courtier_traits_1_20_0_3.json\n",
+      "stderr": ""
+    },
+    {
+      "previous_snapshot": "tools/vivhite_courtier_traits_1_20_0_2.json",
+      "new_snapshot": "tools/vivhite_courtier_traits_1_20_0_3.json",
+      "source_game_version": "1.20.0.3",
+      "source_sha256": "93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa",
+      "trait_count": 306,
+      "only_game_version_metadata_changed": true,
+      "argv": [
+        "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "tools/extract_courtier_traits.py",
+        "--source",
+        "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/traits/00_traits.txt",
+        "--output",
+        "C:\\w\\e2merge1002\\tools\\vivhite_courtier_traits_1_20_0_3.json"
+      ],
+      "stdout": "extracted 306 traits from CK3 1.20.0.3; sha256=93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa\nwrote C:\\w\\e2merge1002\\tools\\vivhite_courtier_traits_1_20_0_3.json\n",
+      "stderr": ""
+    }
+  ],
+  "review_gate": "Only source game_version differs; trait metadata and source SHA identical",
+  "generation_not_yet_run": true
+}
