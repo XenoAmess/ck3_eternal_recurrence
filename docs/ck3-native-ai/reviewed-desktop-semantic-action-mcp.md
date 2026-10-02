@@ -138,6 +138,24 @@ input API ACK does not prove selected character, event outcome, save creation,
 or playable campaign. The consumer must use independent native/log/save
 readback for these results and visual review for the relevant GUI state.
 
+## Native timeline refusal and reviewed modal recovery
+
+An operator-owned exact 1.20.0.3/build25652598 regression on 2026-10-02 exercised this boundary with the already qualified n2 bridge. A normal resume after a checkpoint returned `CK3 map state is unavailable`, while a fresh native snapshot was paused/map-ready with no active event or pending mail. Direct review of a frozen screenshot identified a war-result modal. Map-ready state and empty event/mail fields do not establish that all blocking GUI has closed.
+
+The frozen adapter's `TimelineReady` checks commands, pause vtables, map readiness and player ID; `QueueTimeline` folds both native queue rejection and unavailable submission into the same bridge error. That text cannot independently identify a modal, pending interaction, allocation problem or other exact failing condition. The existing `current_timeline_blocker_context` is not a general war-result query: its identities/routes cover legacy death, game-over and destiny windows, bind 1.19.0.6, and its private death-modal dispatch flag is OFF in n2. Python thin exposure cannot make that frozen artifact observe or acknowledge a patch3 war-result window.
+
+The operator preserved the rejected attempt and used one existing artifact-reviewed, profile-bound semantic action to close the observed ordinary modal. The action receipt remained `dispatched_requires_business_readback` with `business_postcondition_verified=false`. A fresh native snapshot and independent native clock then agreed on the unchanged paused date; only after that evidence did a new policy attempt submit normal resume and observe `paused=false` with actual date advancement. The same CK3 PID, loaded DLL, bridge session and generation 2 remained in use. No rejected command was blindly replayed, and no game restart, reinjection or accumulated-year reset occurred.
+
+| Frozen independent-project evidence | SHA-256 | Boundary |
+| --- | --- | --- |
+| `dismiss-war-result-001-desktop_execute_action_v1.json` | `f27af2e8467a760c2283911630f6cfa354a148635b3868a362cbd54922ceb3a0` | One input ACK; business result still false |
+| `0163-snapshot.json` | `65a0bdccbb39a472d3a65eee6415e168be5d377253b97be7d0ec7af2900f7814` | Paused, map-ready, raw date 77675448 after dismissal |
+| `war-result-dismiss-clock-001.json` | `a80894b71de0a20011d87ae888390b69c5054b1f7da87848e02481ac1a628863` | Independent same paused raw date with offline guard |
+| `000018-action-confirmed.json` | `1701f1d7fbe0036af69314e3be8c2f92734dcc39fb1f33900c24be7573b668bc` | New resume reported `native_gameplay_postcondition_verified` |
+| `0169-snapshot.json` | `bf841e1c9a5f9dde707a2a919d56bb984eeaedb10bf4e9493491c3942e2d4469` | Map-ready, running, raw date 77676120, same generation |
+
+This is an observed use of the existing recovery contract, not new modal-detection or automatic button-selection capability. The consumer still needs reviewed source geometry and independent state readback for each configured action. Generic method and capability limits belong here; project war settlement, source-specific decisions, screenshots, logs, saves and the original RED remain in the independent project. The running Python consumer remains `0700e17546d27d76fa1e37085d3d69db642c4988`; this docs-only update changes no tools/native artifacts and introduces no new test result or century-completion claim. See also [profile transport continuity](native-profile-transport-resume.md).
+
 ## Verification
 
 The focused test command is:
