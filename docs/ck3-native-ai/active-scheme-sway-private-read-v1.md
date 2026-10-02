@@ -104,10 +104,14 @@ must repeat the bounded paused read before any typed sway action.
 
 ## Same-frame target opinion input (source candidate)
 
-The exact 1.19.0.6 `sway_interaction` native AI source considers the
-**recipient's opinion of the actor** and assigns zero AI weight once that
-opinion is at least 100. That is the direction needed to value a sway of a
-direct vassal. The already implemented `ReadGiftOpinionExact11906V1` reads
+The historical 1.19.0.6 native evidence identified the
+**recipient's opinion of the actor** as the relationship input. The current
+1.20.0.3 stock interaction excludes opinion>=100 through AI-only visibility;
+that exclusion is not a measured score or `(100-opinion)` weight formula.
+The ordinary AI start branch allows opinion<=50, with a separate faction-vassal
+exception; the current-build tree and low positive-opinion policy are recorded
+in [Sway state](ck3-1.20.0.2-sway-state.md#low-positive-opinion-native-start-value-before-counter-policy).
+The already implemented `ReadGiftOpinionExact11906V1` reads
 that direction from full character identities, checks the exact
 `gift_opinion` definition and two agreeing native samples, and distinguishes
 an observed opinion of zero from a failed read. It was previously consumed

@@ -65,3 +65,47 @@ Faith 的 `has_doctrine_parameter` trigger `0x2B29170` 同样先解析 main Rite
 这些数字是各包原始验证范围，不汇总成新的验收矩阵或 live 计数。仅对新 selector/mailbox 路径增加相称的验证，不重跑已冻结 library 证明。第一批 ABI 和已闭合最小只读 primitive 在施工开始后约 27 分钟进入 static-ready；共享接线、真实 paused artifact 与实际游戏价值仍由下一增量记录。
 
 交付记录应包含精确 tracked paths、SHA-256、原生 proof、一次与变更相称的实际 production-path fixture、失败 attempt、真实 readiness，以及日报 / 周报汇总字段。fixture 使用夹具进程的对象和原生回调替身，不等于运行游戏、fixture-live 或 production-live。后续真实 paused 验收由 root 串行执行。
+
+## 2026-10-02：1.20.0.3 Murchad 当前宗教五查询实测
+
+2026-10-02 08:47–08:48（Asia/Shanghai），root 在 CK3 **1.20.0.3 Crozier / Steam25652598** 的普通 `xar_off/no-pact` Murchad 局，以现有 production MCP 串行执行 context、effective Doctrine、current Tenet、AI reform inputs、already-open reform context 五项只读查询，全部 `status=observed / available=true`。本次取得的是 **production-live primitive**；没有宗教动作、时间推进、冷恢复或完整宗教 OODA，不增加 G2 完成数。
+
+冻结 EXE SHA-256 为 `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`；Python source 为 `0ccc3f00b741598bc7ef72798a831ed2f7157abf`，v10 DLL SHA-256 为 `af88527cd99d18cdd0b3f493ccc84f25fbe70e58bc1dfacac38647071909c876`。实际 PID **54636**、actor **31853**、episode `native-31853-af642d76cb41`、paused date raw **53328600**。每项查询前取 fresh public snapshot revision，各查询自己的 owning callback epoch 不同；这里证明固定 paused 日期和玩家的连续采样，不声称五查询组成同一个 atomic capture epoch。既有[16 宗教 ABI 迁移 PASS](Z:/ck3_mod_rewrite/artifacts/migrations/2026-10-02/abi-comparison/religion-supplement/summary.json)直接复用，未重跑 ABI 或旧 fixture 矩阵。
+
+原始包保留在 [religion-murchad-v10-01](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-murchad-v10-01/)；完整字段、packet SHA、运行输入与收口字段见 [ACTUAL-MURCHAD-V10-REPORT-FIELDS.json](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-murchad-observation/ACTUAL-MURCHAD-V10-REPORT-FIELDS.json)。只消费 `structuredContent`，不把同一个 payload 的 `content.text` 副本重复计数。
+
+| 实际查询 | 当前观测 | 原始包 SHA-256 |
+| --- | --- | --- |
+| `004 context` | actor Rite **1** → Faith **145**（`christian_faith`）→ Religion **8**（`christianity_religion`）；main Rite **1**；fervor raw **5000000**，Fulfillment raw **0**，scale **100000** | `040404fe33c7c1a17700e876835bf404ce4145db3462d46c7d63498d2560b121` |
+| `006 doctrines` | actor Rite 与 Faith-main-Rite 各 **31** effective Doctrine rows；两个独立参数来源均完整，各 **62** 布尔 token | `67e61ec6ebd3526d3883573b78eceda57e6e8d41ff7c7dbc1e1da34ad1deb8c0` |
+| `008 current tenets` | 两来源各 **3** core Tenets：`tenet_confession`、`tenet_communal_identity`、`tenet_vows_of_poverty`，状态均 **core=4**；`personal_tenets_complete=true`，个人 Tenet `[]` | `45402f7f160894a677bda6ca3d4f5c3c74a90d355fdf4d2ee5123ad4a648488a` |
+| `010 AI inputs` | actual holder **5003** 项完整观测；`observed_no_ai / controller_count=0 / gate_inputs_observation_complete=true`；当前 globals `reformation_enabled=true`，rare period **180 prepare ticks** | `00c599842011405b72d6ebe6ac6972bbb1edc0138e0b39e680eed3b169a8616c` |
+| `012 reform context` | 当前 Rite model、main-Rite status、window observation 可用；head **34676**，`current_is_main=true`，divergence raw **0**，heresy threshold raw **7000000**；窗口 `present=true / visible=false / draft_observed=false` | `39fc2062635df69613c1bc8dca72216ec7fe31c08aa72364e8e3a4b0027d9e73` |
+
+这些是当前普通局的数据，不把历史 Rogue 的 Rite152/Faith23、draft 29 slots/94 sources/49 selectable 或空 Tenet slot 外推到本局。当前 Tenet query 读取现行 core/personal rows，**不是草案 slot 选择**；当前个人列表合法空，与历史草案的 nullable selected key 是不同语义。
+
+AI 的零 controller 来自本帧完整 holder 遍历；不构造 controller，也不将 `schedule_base.ai_status=not_supplied` 下 null cache/timer 当作读失败。当前原生最高 tier **3**、independent-ruler predicate **false** 与 globals 单独保留；180 的单位是 prepare 调用次数，不能写成游戏天数、下次改革日期或意愿。此查询不能替代其它 AI 的改革行为观测。
+
+Reform 窗口已经实例化但隐藏，是合法“当前没有可观测 draft”分支。实际 `current_draft_costs.available=false / draft_unavailable`，`current_draft_eligibility.available=false / current_window_unavailable`；`can_create_rite/can_edit_rite` 与报价均保留 null，draft/popup/final-choice readiness 均 false。该分支不说明创建非法、费用为零或没有合法候选，也不需要为此修改 bridge。只有后续玩法确实需要改革比较时，root 在解决自然 modal 后，通过[既有 stock UI 入口](religion_reform12002_group_gui.md)打开当前 Rite 的真实预览，再调用现成 choices/cost/final-gate 查询；本次没有打开窗口或执行 select/create/edit/convert。
+
+当前完整布尔集合确实含 `doctrine_monogamy`、`divorce_approval`、近亲婚姻许可，以及 `clerical_appointment_fixed`、`clerical_appointment_head_of_faith`、`clergy_must_be_male`、`clergy_can_marry` 和 `tenet_confession_confess_sins_decision`。它们提供婚姻、祭司与后续 stress 管理的实际输入；婚姻仍消费原生 final legality/acceptance，祭司更换仍须现有[clergy final predicates](ck3-1.20.0.2-religion-clergy-appointment.md)与真实候选，不能自行用 token 合取出动作许可。`tenet_confession` 解锁了可进一步评价的玩家价值，但本帧 stress **80**，没有达到 stock AI 的 stress-level1条件，且 cooldown、chaplain、DLC 与最终 CanExecute 没有在本批读取，未提交忏悔或声称减压收益。
+
+```mermaid
+flowchart TD
+    F[Actual .3 paused actor31853 / date53328600] --> C[Rite1 / Faith145 / Religion8 / Fulfillment0]
+    C --> D[Actual31 Doctrine rows and62 Boolean tokens per source]
+    C --> T[Actual3 core Tenets / personal collection complete and empty]
+    F --> AI[Actual5003 holder rows / observed_no_ai]
+    AI --> ABS[Known no controller / no timer prediction]
+    F --> W[Creation window present but hidden]
+    W --> ND[Known no current draft / costs and final gates unavailable]
+    D --> INPUT[Observed marriage and clergy policy inputs]
+    T --> INPUT
+    INPUT -. real gameplay objective and native final gates still required .-> ACT[Religious action and independent material outcome]
+    ND -. existing root-owned UI preview when needed .-> PREVIEW[Current actual draft]
+    PREVIEW -. not executed in this batch .-> CHOICES[Existing full Doctrine/Tenet/cost queries]
+```
+
+最后正常保存为 **h2033/full2033**；`xar_checkpoint.ck3` **111634244 bytes**，SHA-256 `b78f9e9e4ca929b263172fa7549b6411d04071686987a6e7ef7a91f3d9d642f1`，日期仍 **53328600**。checkpoint 原包 `014` SHA-256 为 `3ff44b19b7106c574e97dbd7a8d8c9706ee4b3f849030631d1b9ebb6824b0764`。查询前后 actor、日期、gold/prestige/piety/stress 和自然 event13 均保持；root 已关闭本次 stdio client/driver，没有选择该婚姻 modal。
+
+日报／周报汇总：完成新版当前普通局五宗教观测，readiness 从本包 file-only/static 准备提升为本帧 **production-live primitive**；无宗教动作/G2 delta/游戏日增量。四份共享报告和 Git commit/push 由 root 合并；本 worker 只写本专题与外置 fields，不修改游戏、pipe、共享源或旧证据。当前没有由本批实际故障证明的新 bridge blocker；下一施工按真实婚姻、Council 或 stress 玩法需求消费这些已观测输入，不为合法空 controller/隐藏 draft 添加新机制。

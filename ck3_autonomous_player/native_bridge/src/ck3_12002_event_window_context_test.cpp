@@ -710,7 +710,7 @@ bool TestNullSavedCharacterScope() {
           !output.options.empty()) return false;
     }
     Store<std::uint64_t>(fixture.saved_scope_rows.data(), 0x10, null_payload);
-    for (const std::uint16_t invalid_type : {0, 5}) {
+    for (const std::uint16_t invalid_type : {std::uint16_t{0}, std::uint16_t{5}}) {
       Store<std::uint16_t>(fixture.saved_scope_rows.data(), 0x08, invalid_type);
       if (read() || output.unavailable_reason != "event_saved_scope_invalid") return false;
     }

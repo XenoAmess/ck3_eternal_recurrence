@@ -49,11 +49,13 @@ class Driver:
     allow_private_active_scheme_sway_action = True
 
     def __init__(self, state_dir: Path, *, fail_submit: bool = False,
-                 source_epoch: int = 4493, post_epoch: int = 4496):
+                 source_epoch: int = 4493, post_epoch: int = 4496,
+                 target_opinion: int = -5):
         self.state_dir = state_dir
         self.fail_submit = fail_submit
         self.source_epoch = source_epoch
         self.post_epoch = post_epoch
+        self.target_opinion = target_opinion
         self.submits = 0
         self.receipts = 0
         self.reads = 0
@@ -80,17 +82,24 @@ class Driver:
         self.reads += 1
         assert kwargs == {"expected_revision": 4, "target_character_id": 32716}
         return {**READ, "capture_epoch": self.post_epoch,
+                "target_opinion_of_actor": self.target_opinion,
                 "active_scheme_count": 1, "matching_sway_active": True,
                 "native_complete_can_send": False,
                 "native_legal_now": False}
 
 
-def test_formal_sway_applied_with_independent_read_and_later_turn(tmp_path: Path):
-    driver = Driver(tmp_path)
-    assert should_submit_sway(SNAPSHOT, READ, 32716)
+@pytest.mark.parametrize("target_opinion", [-5, 0, 5, 50])
+def test_formal_sway_applied_with_independent_read_and_later_turn(
+    tmp_path: Path, target_opinion: int,
+):
+    # The actual Murchad candidate at+5 exposed the old negative-only no-op.
+    # Source/receipt/post frames here remain synthetic software fixtures.
+    read = {**READ, "target_opinion_of_actor": target_opinion}
+    driver = Driver(tmp_path, target_opinion=target_opinion)
+    assert should_submit_sway(SNAPSHOT, read, 32716)
     result = consume_sway_private_once(
         driver, target_character_id=32716, snapshot=SNAPSHOT,
-        readback=READ)
+        readback=read)
     assert result["status"] == "applied"
     assert result["postcondition_verified"] is True
     assert driver.submits == driver.receipts == driver.reads == 1
@@ -103,7 +112,7 @@ def test_formal_sway_applied_with_independent_read_and_later_turn(tmp_path: Path
     assert consume_sway_following_turn(tmp_path, following) is None
     duplicate = consume_sway_private_once(
         driver, target_character_id=32716, snapshot=SNAPSHOT,
-        readback=READ)
+        readback=read)
     assert duplicate["status"] == "already_applied"
     assert driver.submits == 1
 
@@ -143,6 +152,7 @@ def test_lost_submit_result_stays_pending_and_cold_read_recovers(tmp_path: Path)
     # A new PID can restart its capture epoch.  The independent native active
     # scheme result is enough to resolve the durable pending action.
     cold_read = {**READ, "capture_epoch": 7, "active_scheme_count": 1,
+                 "target_opinion_of_actor": 75,
                  "matching_sway_active": True, "native_complete_can_send": False,
                  "native_legal_now": False}
     resolved = consume_sway_private_once(
@@ -154,15 +164,20 @@ def test_lost_submit_result_stays_pending_and_cold_read_recovers(tmp_path: Path)
     assert read_sway_ledger(tmp_path)["pending"] is None
 
 
-def test_only_negative_opinion_empty_slot_is_valuable(tmp_path: Path):
+def test_ordinary_ceiling_busy_slot_or_native_rejection_do_not_submit(tmp_path: Path):
     driver = Driver(tmp_path)
     for changed in (
-        {"target_opinion_of_actor": 0},
+        {"target_opinion_of_actor": 51},
+        {"target_opinion_of_actor": 100},
         {"active_scheme_count": 1, "matching_sway_active": True},
         {"native_legal_now": False, "native_complete_can_send": False},
     ):
         read = {**READ, **changed}
         assert not should_submit_sway(SNAPSHOT, read, 32716)
+        result = consume_sway_private_once(
+            driver, target_character_id=32716, snapshot=SNAPSHOT,
+            readback=read)
+        assert result["status"] == "no_positive_opportunity"
     assert driver.submits == 0
     assert not (tmp_path / LEDGER_FILE).exists()
     malformed = tmp_path / LEDGER_FILE
@@ -172,7 +187,8 @@ def test_only_negative_opinion_empty_slot_is_valuable(tmp_path: Path):
         read_sway_ledger(tmp_path)
 
 
-def test_native_transport_accepts_new_epoch_and_zero_generation():
+@pytest.mark.parametrize("target_opinion", [-5, 5])
+def test_native_transport_accepts_new_epoch_and_zero_generation(target_opinion: int):
     class Endpoint:
         request = None
 
@@ -224,10 +240,11 @@ def test_native_transport_accepts_new_epoch_and_zero_generation():
             return dict(SNAPSHOT)
 
     driver = TransportDriver()
+    read = {**READ, "target_opinion_of_actor": target_opinion}
     ack = submit_active_scheme_sway_private_v1(
-        driver, readback=READ, action_id="sway-test-123")
+        driver, readback=read, action_id="sway-test-123")
     assert ack["pre_capture_epoch"] > READ["capture_epoch"]
-    assert driver.endpoint.request["expected_target_opinion_of_actor"] == "-5"
+    assert driver.endpoint.request["expected_target_opinion_of_actor"] == str(target_opinion)
     receipt = query_active_scheme_sway_receipt_private_v1(
         driver, target_character_id=32716, action_id="sway-test-123",
         expected_revision=3, pre_capture_epoch=READ["capture_epoch"])

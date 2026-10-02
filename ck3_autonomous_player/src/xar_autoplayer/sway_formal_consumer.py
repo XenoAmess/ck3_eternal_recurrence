@@ -92,8 +92,11 @@ def _read_matches(snapshot: Mapping[str, object], read: Mapping[str, object],
 
 
 def should_submit_sway(snapshot: Mapping[str, object], read: Mapping[str, object],
-                       target: int) -> bool:
-    """Use an empty personal-scheme slot to improve a negative opinion."""
+                        target: int) -> bool:
+    """Use an empty scheme slot for a low-opinion, explicitly selected relation.
+
+    Fifty is the stock ordinary-AI start ceiling, not a continuation limit.
+    """
     if not _read_matches(snapshot, read, target):
         raise ValueError("private Sway source differs from current paused frame")
     context = snapshot.get("active_context")
@@ -110,7 +113,7 @@ def should_submit_sway(snapshot: Mapping[str, object], read: Mapping[str, object
             or snapshot.get("pending_character_interaction") is not None):
         return False
     return bool(
-        read["target_opinion_of_actor"] < 0
+        read["target_opinion_of_actor"] <= 50
         and read["active_scheme_count"] == 0
         and read["matching_sway_active"] is False
         and read["native_complete_can_send"] is True
