@@ -59,10 +59,35 @@ bool ProxyCaptureFrame(void *opaque,
     return false;
   }
   game::Snapshot snapshot{};
-  if (!ReadSnapshot(proxy->query->bindings, snapshot) ||
-      snapshot != proxy->query->expected_snapshot || !snapshot.paused ||
-      snapshot.date_raw != proxy->stamp->date_raw) {
-    return false;
+  if (proxy->query->material_profile) {
+    ck3_12002::CoreSnapshotPrefix core{};
+    const auto &expected = proxy->query->expected_snapshot;
+    if (!ck3_12002::ReadCoreSnapshot(
+            proxy->query->material_core_bindings, core) ||
+        core.clock.date_raw != expected.date_raw ||
+        core.clock.speed != expected.speed ||
+        core.clock.paused != expected.paused ||
+        core.local_player_id != expected.player_id ||
+        core.map_ready != expected.map_ready ||
+        core.has_played_character != expected.has_played_character ||
+        core.played_character_id != expected.played_character_id ||
+        core.played_character_alive != expected.played_character_alive ||
+        !core.clock.paused ||
+        core.clock.date_raw != proxy->stamp->date_raw) {
+      return false;
+    }
+    snapshot.date_raw = core.clock.date_raw;
+    snapshot.paused = core.clock.paused;
+    snapshot.map_ready = core.map_ready;
+    snapshot.has_played_character = core.has_played_character;
+    snapshot.played_character_id = core.played_character_id;
+    snapshot.played_character_alive = core.played_character_alive;
+  } else {
+    if (!ReadSnapshot(proxy->query->bindings, snapshot) ||
+        snapshot != proxy->query->expected_snapshot || !snapshot.paused ||
+        snapshot.date_raw != proxy->stamp->date_raw) {
+      return false;
+    }
   }
   output.snapshot_revision =
       proxy->query->request.expected_snapshot_revision;
@@ -73,6 +98,17 @@ bool ProxyCaptureFrame(void *opaque,
   output.played_character_alive = snapshot.played_character_alive;
   output.played_character_id = snapshot.played_character_id;
   return true;
+}
+
+bool ProxyReadMaterialMemory(void *opaque, const void *address, void *output,
+                             std::size_t size) noexcept {
+  const auto *proxy = static_cast<const MailboxAccessProxyV1 *>(opaque);
+  return proxy != nullptr && proxy->query != nullptr &&
+         proxy->stamp != nullptr &&
+         proxy->query->material_access.read_memory != nullptr &&
+         IsExecutingExactMailboxSlot(*proxy->query, *proxy->stamp) &&
+         proxy->query->material_access.read_memory(
+             proxy->query->material_access.context, address, output, size);
 }
 
 bool ProxyReadOfflineFixtureSource(
@@ -91,6 +127,9 @@ void MakeInternalUnavailable(
     StewardDevelopCountyCandidatesMailboxContextV1 &query,
     const MainThreadExecutionStampV1 &stamp) {
   query.result = {};
+  if (query.material_profile) {
+    query.result.material.emplace();
+  }
   query.result.status =
       game::StewardDevelopCountyCandidatesStatusV1::unavailable;
   query.result.snapshot_revision = query.request.expected_snapshot_revision;
@@ -166,16 +205,28 @@ bool ExecuteStewardDevelopCountyCandidatesMailboxQueryV1(
     ++query->executor_invocations;
     query->execution_stamp = stamp;
     MailboxAccessProxyV1 proxy{query, &stamp};
-    StewardDevelopCountyCandidatesAccessV1 access{};
-    access.context = &proxy;
-    access.capture_frame = &ProxyCaptureFrame;
-    access.is_main_thread = &ProxyIsMainThread;
-    access.read_offline_fixture_source =
-        query->access.read_offline_fixture_source == nullptr
-            ? nullptr
-            : &ProxyReadOfflineFixtureSource;
-    query->read_result = ReadStewardDevelopCountyCandidatesV1(
-        query->environment, access, query->request, query->result);
+    if (query->material_profile) {
+      ck3_12003::StewardDevelopCountyAccess12003 access{};
+      access.context = &proxy;
+      access.capture_frame = &ProxyCaptureFrame;
+      access.is_main_thread = &ProxyIsMainThread;
+      access.read_memory = query->material_access.read_memory == nullptr
+                               ? nullptr
+                               : &ProxyReadMaterialMemory;
+      query->read_result = ck3_12003::ReadStewardDevelopCounty12003(
+          query->material_environment, access, query->request, query->result);
+    } else {
+      StewardDevelopCountyCandidatesAccessV1 access{};
+      access.context = &proxy;
+      access.capture_frame = &ProxyCaptureFrame;
+      access.is_main_thread = &ProxyIsMainThread;
+      access.read_offline_fixture_source =
+          query->access.read_offline_fixture_source == nullptr
+              ? nullptr
+              : &ProxyReadOfflineFixtureSource;
+      query->read_result = ReadStewardDevelopCountyCandidatesV1(
+          query->environment, access, query->request, query->result);
+    }
     const bool typed_available =
         query->read_result ==
             game::ReadStewardDevelopCountyCandidatesResultV1::available &&
@@ -197,6 +248,7 @@ bool ExecuteStewardDevelopCountyCandidatesMailboxQueryV1(
             : !query->result.observed_date_raw.has_value() ||
                   query->result.observed_date_raw.value() == stamp.date_raw;
     if ((typed_available || typed_unavailable) &&
+        query->material_profile == query->result.material.has_value() &&
         query->result.snapshot_revision ==
             query->request.expected_snapshot_revision &&
         observed_date_consistent) {

@@ -57,6 +57,10 @@ constexpr std::size_t kSplashItemOwnerOffset = 0x00;
 constexpr std::size_t kSplashItemActiveEventOffset = 0x08;
 constexpr std::size_t kSplashItemWindowDataOffset = 0x10;
 constexpr std::size_t kWindowDataOffset = 0xB8;
+constexpr std::size_t kActivityHandlerFromIdlerOffset = 0x88;
+constexpr std::size_t kActivityWindowFromHandlerOffset = 0x3C8;
+constexpr std::size_t kActivitySelectedInsertOffset = 0x188;
+constexpr std::size_t kActivityInsertHasOpenEventOffset = 0x7C8;
 constexpr std::size_t kDataInstanceIdOffset = 0x00;
 constexpr std::size_t kDataOptionDataOffset = 0x10;
 constexpr std::size_t kDataOptionCapacityOffset = 0x18;
@@ -806,6 +810,37 @@ bool ReadSplashObservation(const EventWindowBindings &bindings, void *manager,
              LoadAt<std::int32_t>(output.data, kDataInstanceIdOffset);
 }
 
+struct ActivityObservation {
+  void *handler = nullptr;
+  void *window = nullptr;
+  void *insert = nullptr;
+  bool has_open_event = false;
+  friend bool operator==(const ActivityObservation &,
+                         const ActivityObservation &) = default;
+};
+
+bool ReadActivityObservation(const EventWindowBindings &bindings, void *idler,
+                             ActivityObservation &output) {
+  output = {};
+  if (bindings.activity_window_primary_vtable == 0) return true;
+  output.handler = LoadAt<void *>(idler, kActivityHandlerFromIdlerOffset);
+  if (output.handler == nullptr) return true;
+  if (LoadAt<std::uintptr_t>(output.handler, 0) !=
+      bindings.activity_handler_primary_vtable) return false;
+  output.window =
+      LoadAt<void *>(output.handler, kActivityWindowFromHandlerOffset);
+  if (output.window == nullptr) return true;
+  if (LoadAt<std::uintptr_t>(output.window, 0) !=
+      bindings.activity_window_primary_vtable) return false;
+  // The native activity callback selects one ViewInsert at +0x188. Header
+  // and body widgets resolve the same insert; they are not two windows.
+  output.insert = LoadAt<void *>(output.window, kActivitySelectedInsertOffset);
+  if (output.insert == nullptr) return true;
+  output.has_open_event =
+      LoadAt<std::uint8_t>(output.insert, kActivityInsertHasOpenEventOffset) != 0;
+  return true;
+}
+
 template <typename T>
 bool ParsePositiveField(std::string_view json, std::string_view key,
                         T &output) noexcept {
@@ -847,8 +882,13 @@ EventWindowBindings BindEventWindowImage(std::uintptr_t image_base,
   result.allow_null_saved_character_scope = patch3_splash;
   result.ingame_interface_idler_vtable = image_base + kEventWindowIdlerGfxVtableRva;
   result.event_window_primary_vtable = image_base + kEventWindowPrimaryVtableRva;
-  if (patch3_splash)
+  if (patch3_splash) {
     result.splash_window_primary_vtable = image_base + kEventSplashWindowPrimaryVtableRva;
+    result.activity_handler_primary_vtable =
+        image_base + kActivityEventHandlerPrimaryVtableRva;
+    result.activity_window_primary_vtable =
+        image_base + kActivityEventWindowPrimaryVtableRva;
+  }
   result.scheme_type_primary_vtable = image_base + kEventIndicatorSchemeTypeVtableRva;
   result.trait_database_slot = reinterpret_cast<void **>(image_base + kEventIndicatorTraitDatabaseSlotRva);
   result.scheme_type_database_slot = reinterpret_cast<void **>(image_base + kEventIndicatorSchemeDatabaseSlotRva);
@@ -975,6 +1015,15 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
       SetUnavailable(output, "event_splash_layout_invalid");
       return game::ReadEventWindowContextResultV1::unavailable;
     }
+    ActivityObservation activity_before{};
+    if (!ReadActivityObservation(bindings, idler, activity_before) ||
+        (activity_before.has_open_event &&
+         !ReadMatchingData(bindings, identity_before.event_data,
+                           activity_before.insert, expected_event_instance_id,
+                           candidate))) {
+      SetUnavailable(output, "event_window_layout_invalid");
+      return game::ReadEventWindowContextResultV1::unavailable;
+    }
     output.window_match_count = candidate.window_match_count;
     if (candidate.window_match_count != 1) {
       SetUnavailable(output, candidate.window_match_count == 0
@@ -1003,6 +1052,12 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
     if (!ReadSplashObservation(bindings, manager, splash_after) ||
         splash_after != splash_before) {
       SetUnavailable(output, "event_splash_changed");
+      return game::ReadEventWindowContextResultV1::unavailable;
+    }
+    ActivityObservation activity_after{};
+    if (!ReadActivityObservation(bindings, idler, activity_after) ||
+        activity_after != activity_before) {
+      SetUnavailable(output, "state_changed");
       return game::ReadEventWindowContextResultV1::unavailable;
     }
     game::Snapshot after{};

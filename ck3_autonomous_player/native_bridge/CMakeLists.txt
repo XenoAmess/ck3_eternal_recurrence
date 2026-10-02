@@ -1096,6 +1096,7 @@ add_library(xar_ck3_bridge SHARED
   src/player_world_building_definition_source_v1_process.cpp
   src/player_world_building_action_candidate_v1.cpp
   src/steward_develop_county_candidates_v1.cpp
+  src/ck3_12003_steward_develop_county.cpp
   src/steward_develop_county_candidates_v1_mailbox.cpp
   src/steward_develop_county_candidates_v1_serializer.cpp
   src/steward_develop_county_action_v1.cpp
@@ -3241,6 +3242,10 @@ if(BUILD_TESTING)
     src/player_faction_alerts_v1.cpp
     src/player_faction_alerts_v1_mailbox.cpp
     src/steward_develop_county_candidates_v1.cpp
+    src/ck3_12003_steward_develop_county.cpp
+    src/council_composition_steward_candidates_reader_v1.cpp
+    src/council_composition_candidates_public_v1.cpp
+    src/council_composition_candidates_public_v1_serializer.cpp
     src/steward_develop_county_candidates_v1_mailbox.cpp
     src/combat_simulation_inputs_v3_mailbox.cpp
     src/game_adapter.cpp
@@ -3913,6 +3918,12 @@ if(BUILD_TESTING)
   )
 
   add_executable(xar_ck3_steward_develop_county_candidates_v1_test
+    src/ck3_12003_steward_develop_county.cpp
+    src/council_composition_steward_candidates_reader_v1.cpp
+    src/council_composition_candidates_public_v1.cpp
+    src/council_composition_candidates_public_v1_serializer.cpp
+    src/ck3_12002.cpp
+    src/ck3_12002_council_candidates.cpp
     src/steward_develop_county_candidates_v1.cpp
     src/steward_develop_county_candidates_v1_serializer.cpp
     src/steward_develop_county_candidates_v1_test.cpp
@@ -4087,6 +4098,12 @@ if(BUILD_TESTING)
   )
 
   add_executable(xar_ck3_steward_develop_county_candidates_v1_mailbox_test
+    src/ck3_12003_steward_develop_county.cpp
+    src/council_composition_steward_candidates_reader_v1.cpp
+    src/council_composition_candidates_public_v1.cpp
+    src/council_composition_candidates_public_v1_serializer.cpp
+    src/ck3_12002.cpp
+    src/ck3_12002_council_candidates.cpp
     src/steward_develop_county_candidates_v1_mailbox.cpp
     src/steward_develop_county_candidates_v1_mailbox_test.cpp
   )

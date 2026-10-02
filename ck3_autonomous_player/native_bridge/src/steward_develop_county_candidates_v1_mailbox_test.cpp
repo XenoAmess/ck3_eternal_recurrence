@@ -10,6 +10,7 @@ namespace {
 xar::game::Snapshot g_snapshot{};
 bool g_reader_available = true;
 std::uint32_t g_reader_calls = 0;
+std::uint32_t g_snapshot_calls = 0;
 
 void PrimeMailbox(
     xar::ck3_11906::MainThreadQueryMailboxV1 &mailbox,
@@ -132,11 +133,41 @@ bool TestTypedCompletion(bool available) {
                  native_reader_not_frozen;
 }
 
+bool TestCurrentMaterialUnsupportedCompletion() {
+  xar::ck3_11906::MainThreadQueryMailboxV1 mailbox{};
+  xar::ck3_11906::StewardDevelopCountyCandidatesMailboxContextV1 query{};
+  PrimeMailbox(mailbox, query, 12);
+  query.material_profile = true;
+  // Intentionally unadmitted build: invoke the real current reader, without
+  // overriding its entry or routing through the legacy fixture source.
+  const auto stamp = Stamp();
+  const auto reader_calls_before = g_reader_calls;
+  const auto snapshot_calls_before = g_snapshot_calls;
+  return xar::ck3_11906::
+             ExecuteStewardDevelopCountyCandidatesMailboxQueryV1(&query, stamp) &&
+         g_reader_calls == reader_calls_before &&
+         g_snapshot_calls == snapshot_calls_before &&
+         query.executor_invocations == 1 && query.execution_stamp == stamp &&
+         query.completion == xar::ck3_11906::
+                                 StewardDevelopCountyCandidatesMailboxCompletionV1::
+                                     completed &&
+         query.read_result ==
+             xar::game::ReadStewardDevelopCountyCandidatesResultV1::unavailable &&
+         query.result.status ==
+             xar::game::StewardDevelopCountyCandidatesStatusV1::unavailable &&
+         query.result.snapshot_revision == 77 &&
+         query.result.material.has_value() && !query.result.readiness.ready &&
+         query.result.unavailable_reason ==
+             xar::game::StewardDevelopCountyFailureReasonV1::
+                 exact_build_not_admitted;
+}
+
 } // namespace
 
 namespace xar::ck3_11906 {
 
 bool ReadSnapshot(const Bindings &, game::Snapshot &output) noexcept {
+  ++g_snapshot_calls;
   output = g_snapshot;
   return true;
 }
@@ -196,6 +227,10 @@ int main() {
   }
   if (!TestTypedCompletion(true) || !TestTypedCompletion(false)) {
     std::cerr << "steward develop-county typed completion fixture failed\n";
+    return 1;
+  }
+  if (!TestCurrentMaterialUnsupportedCompletion()) {
+    std::cerr << "steward develop-county current material mailbox fixture failed\n";
     return 1;
   }
   std::cout << "steward-develop-county-candidates-v1 mailbox fixture passed\n";

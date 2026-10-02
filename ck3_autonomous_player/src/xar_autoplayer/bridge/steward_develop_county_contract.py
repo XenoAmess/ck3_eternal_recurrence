@@ -1,14 +1,17 @@
-"""Strict v1 contract for steward Develop County candidate observation.
+"""Develop County observations with distinct legacy AI and .3 material profiles.
 
-The contract is intentionally usable before the exact-build candidate reader is
-closed.  Production may advertise the query and return a typed unavailable
-frame; only the native fixture can currently produce an available frame.
+The .3 reader publishes native player-realm task/location predicates and current
+county growth. Its readiness describes the observation, including observed
+false predicates, rather than task assignment or proposed-task growth.
 """
 
 from __future__ import annotations
 
 import re
 from typing import Final
+
+from .campaign_root_context_contract import _normalize_council_progress
+from .version_identity import CK3_12003
 
 
 QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY: Final = (
@@ -31,6 +34,37 @@ STEWARD_DEVELOP_COUNTY_TASK_KEY: Final = "task_develop_county"
 STEWARD_DEVELOP_COUNTY_TARGET_SELECTION_MODE: Final = (
     "engine_random_unscored"
 )
+STEWARD_DEVELOP_COUNTY_12003_MATERIAL_STAGE: Final = (
+    "native_player_realm_develop_county_material_v1"
+)
+
+_MATERIAL_FIELDS: Final = {
+    "schema_version", "contract_stage", "status", "unavailable_reason",
+    "snapshot_revision", "observed_date_raw", "player_character_id",
+    "steward_character_id", "task_key", "shown", "valid",
+    "task_failure_reason", "current_active_task_binding",
+    "candidate_collection_scope", "candidate_collection_complete",
+    "candidates", "same_frame_stable", "readiness", "provenance",
+}
+_MATERIAL_CANDIDATE_FIELDS: Final = {
+    "county_title_id", "capital_province_id", "holder_character_id",
+    "is_player_capital", "directly_held_by_player",
+    "native_collection_ordinal", "native_target_valid",
+    "monthly_development_rate", "development_progress",
+}
+_MATERIAL_BINDING_FIELDS: Final = {
+    "position_key", "incumbent_character_id", "task_key",
+    "task_type", "target", "frozen", "progress",
+}
+_MATERIAL_PROVENANCE_VALUES: Final = {
+    "game_version": CK3_12003.game_version,
+    "executable_sha256": CK3_12003.executable_sha256,
+    "backend_id": "ck3-1.20.0.3-native-steward-develop-county-material-v1",
+    "reader_mode": "native_player_realm_enumerator_predicates_and_current_growth",
+    "next_reverse_engineering_entry": (
+        "native_develop_county_ai_inputs_and_proposed_task_growth"
+    ),
+}
 
 _FIELDS: Final = {
     "schema_version",
@@ -200,6 +234,163 @@ def _candidate(value: object, index: int) -> dict[str, object]:
     }
 
 
+def _material_fixed_point(value: object, name: str) -> dict[str, int]:
+    if not isinstance(value, dict) or set(value) != {"raw", "scale"}:
+        raise ValueError(f"{name} must contain raw and scale")
+    if type(value.get("scale")) is not int or value["scale"] != 100_000:
+        raise ValueError(f"{name}.scale must be the native Q100000 scale")
+    return {"raw": _int64(value.get("raw"), f"{name}.raw"), "scale": 100_000}
+
+
+def _material_identity(value: object, name: str) -> int:
+    """Retain a full-generation native character or title identity."""
+    return _int(value, name, minimum=1, maximum=2**32 - 1)
+
+
+def _material_binding(value: object, steward_id: int) -> dict[str, object]:
+    name = "current_active_task_binding"
+    if not isinstance(value, dict) or set(value) != _MATERIAL_BINDING_FIELDS:
+        raise ValueError(f"{name} must contain exactly the root position fields")
+    if value.get("position_key") != "councillor_steward":
+        raise ValueError(f"{name} must bind the Steward position")
+    if value.get("incumbent_character_id") != steward_id:
+        raise ValueError(f"{name} must bind the observed Steward")
+    task_type = value.get("task_type")
+    if task_type not in {"general", "county", "court"}:
+        raise ValueError(f"{name}.task_type is invalid")
+    target = value.get("target")
+    if task_type == "general":
+        if target is not None:
+            raise ValueError(f"{name} general task must not expose a target")
+    else:
+        identity = "province_id" if task_type == "county" else "character_id"
+        kind = "province" if task_type == "county" else "character"
+        if not isinstance(target, dict) or set(target) != {"kind", identity}:
+            raise ValueError(f"{name}.target is invalid")
+        if target.get("kind") != kind:
+            raise ValueError(f"{name}.target kind is invalid")
+        normalize_identity = _positive_int32 if task_type == "county" else _material_identity
+        target = {
+            "kind": kind,
+            identity: normalize_identity(target[identity], f"{name}.target.{identity}"),
+        }
+    return {
+        **value,
+        "task_key": _stable_key(value.get("task_key"), f"{name}.task_key"),
+        "target": target,
+        "frozen": _bool(value.get("frozen"), f"{name}.frozen"),
+        "progress": _normalize_council_progress(
+            value.get("progress"), f"{name}.progress"
+        ),
+    }
+
+
+def _material_candidate(value: object, index: int) -> dict[str, object]:
+    name = f"candidates[{index}]"
+    if not isinstance(value, dict) or set(value) != _MATERIAL_CANDIDATE_FIELDS:
+        raise ValueError(f"{name} must contain exactly the material fields")
+    progress = value.get("development_progress")
+    if not isinstance(progress, dict) or set(progress) != {"current", "maximum"}:
+        raise ValueError(f"{name}.development_progress is invalid")
+    return {
+        **value,
+        **{
+            field: _material_identity(value.get(field), f"{name}.{field}")
+            for field in ("county_title_id", "holder_character_id")
+        },
+        "capital_province_id": _positive_int32(
+            value.get("capital_province_id"), f"{name}.capital_province_id"
+        ),
+        **{
+            field: _bool(value.get(field), f"{name}.{field}")
+            for field in (
+                "is_player_capital", "directly_held_by_player", "native_target_valid"
+            )
+        },
+        "native_collection_ordinal": _int(
+            value.get("native_collection_ordinal"), f"{name}.native_collection_ordinal",
+            minimum=0, maximum=2**32 - 1,
+        ),
+        "monthly_development_rate": _material_fixed_point(
+            value.get("monthly_development_rate"), f"{name}.monthly_development_rate",
+        ),
+        "development_progress": {
+            key: _material_fixed_point(progress[key], f"{name}.development_progress.{key}")
+            for key in ("current", "maximum")
+        },
+    }
+
+
+def _normalize_material(
+    value: dict[str, object], *, expected_observed_date_raw: int,
+    expected_snapshot_revision: int,
+) -> dict[str, object]:
+    if set(value) != _MATERIAL_FIELDS:
+        raise ValueError("Develop County material must contain exactly the observed fields")
+    if value.get("schema_version") != 1:
+        raise ValueError("schema_version must be 1")
+    if value.get("snapshot_revision") != expected_snapshot_revision:
+        raise ValueError("snapshot_revision does not match the paused frame")
+    if value.get("task_key") != STEWARD_DEVELOP_COUNTY_TASK_KEY:
+        raise ValueError("task_key is invalid")
+    if value.get("candidate_collection_scope") != "player_realm":
+        raise ValueError("candidate_collection_scope must be player_realm")
+    provenance = value.get("provenance")
+    if not isinstance(provenance, dict) or provenance != _MATERIAL_PROVENANCE_VALUES:
+        raise ValueError("material provenance does not match the exact .3 reader")
+    candidates = value.get("candidates")
+    if not isinstance(candidates, list):
+        raise ValueError("candidates must be a list")
+    if value.get("status") == "unavailable":
+        _stable_key(value.get("unavailable_reason"), "unavailable_reason")
+        if (
+            value.get("observed_date_raw") not in {None, expected_observed_date_raw}
+            or any(value.get(field) is not None for field in (
+                "player_character_id", "steward_character_id", "shown", "valid",
+                "task_failure_reason", "current_active_task_binding",
+            ))
+            or candidates
+            or any(value.get(field) is not False for field in (
+                "candidate_collection_complete", "same_frame_stable", "readiness",
+            ))
+        ):
+            raise ValueError("unavailable material must not invent an observed collection")
+        return {**value, "candidates": [], "provenance": dict(provenance)}
+    if value.get("status") != "available":
+        raise ValueError("status is invalid")
+    if value.get("unavailable_reason") is not None:
+        raise ValueError("available material cannot carry unavailable_reason")
+    if value.get("observed_date_raw") != expected_observed_date_raw:
+        raise ValueError("observed_date_raw does not match the paused frame")
+    if any(value.get(field) is not True for field in (
+        "candidate_collection_complete", "same_frame_stable", "readiness",
+    )):
+        raise ValueError("available material requires a complete stable observation")
+    owner = _material_identity(value.get("player_character_id"), "player_character_id")
+    steward = _material_identity(value.get("steward_character_id"), "steward_character_id")
+    shown = _bool(value.get("shown"), "shown")
+    valid = _bool(value.get("valid"), "valid")
+    reason = value.get("task_failure_reason")
+    if shown and valid:
+        if reason is not None:
+            raise ValueError("valid shown task cannot carry task_failure_reason")
+    elif reason != ("task_not_shown" if not shown else "task_invalid") or candidates:
+        raise ValueError("observed blocked task must preserve its reason and empty collection")
+    return {
+        **value,
+        "player_character_id": owner,
+        "steward_character_id": steward,
+        "shown": shown, "valid": valid,
+        "current_active_task_binding": _material_binding(
+            value.get("current_active_task_binding"), steward
+        ),
+        "candidates": [
+            _material_candidate(row, index) for index, row in enumerate(candidates)
+        ],
+        "provenance": dict(provenance),
+    }
+
+
 def normalize_steward_develop_county_candidates_v1(
     value: object,
     *,
@@ -220,6 +411,14 @@ def normalize_steward_develop_county_candidates_v1(
         minimum=1,
         maximum=2**64 - 1,
     )
+    if (
+        isinstance(value, dict)
+        and value.get("contract_stage") == STEWARD_DEVELOP_COUNTY_12003_MATERIAL_STAGE
+    ):
+        return _normalize_material(
+            value, expected_observed_date_raw=expected_observed_date_raw,
+            expected_snapshot_revision=expected_snapshot_revision,
+        )
     if not isinstance(value, dict) or set(value) != _FIELDS:
         raise ValueError(
             "steward develop-county candidates must contain exactly the v1 fields"
@@ -343,5 +542,6 @@ __all__ = [
     "QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP",
     "STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_BACKEND_ID",
     "STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CONTRACT_STAGE",
+    "STEWARD_DEVELOP_COUNTY_12003_MATERIAL_STAGE",
     "normalize_steward_develop_county_candidates_v1",
 ]

@@ -8,6 +8,8 @@ namespace xar::ck3_12002 {
 inline constexpr std::uintptr_t kEventWindowIdlerGfxVtableRva = 0x44BC408;
 inline constexpr std::uintptr_t kEventWindowPrimaryVtableRva = 0x4597910;
 inline constexpr std::uintptr_t kEventSplashWindowPrimaryVtableRva = 0x4596D38;
+inline constexpr std::uintptr_t kActivityEventHandlerPrimaryVtableRva = 0x44BA890;
+inline constexpr std::uintptr_t kActivityEventWindowPrimaryVtableRva = 0x4579010;
 inline constexpr std::uintptr_t kEventIndicatorSchemeTypeVtableRva = 0x48B9F20;
 inline constexpr std::uintptr_t kEventIndicatorTraitDatabaseSlotRva = 0x5C67528;
 inline constexpr std::uintptr_t kEventIndicatorSchemeDatabaseSlotRva = 0x5C67108;
@@ -35,6 +37,9 @@ struct EventWindowBindings {
   std::uintptr_t ingame_interface_idler_vtable = 0;
   std::uintptr_t event_window_primary_vtable = 0;
   std::uintptr_t splash_window_primary_vtable = 0;
+  // The exact patch3 activity window presents its selected ViewInsert data.
+  std::uintptr_t activity_handler_primary_vtable = 0;
+  std::uintptr_t activity_window_primary_vtable = 0;
   // Only the exact patch3 binder admits the observed native null payload in
   // named saved scopes. Root scopes and legacy patch2 behavior stay strict.
   bool allow_null_saved_character_scope = false;

@@ -6631,33 +6631,8 @@ std::string CampaignRootContextResultFrame(
 std::string StewardDevelopCountyCandidatesResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const xar::game::StewardDevelopCountyCandidatesV1 &candidates) {
-  const auto payload =
-      xar::ck3_11906::SerializeStewardDevelopCountyCandidatesV1(candidates);
-  if (payload.empty()) {
-    return {};
-  }
-  const std::string_view status =
-      candidates.status ==
-              xar::game::StewardDevelopCountyCandidatesStatusV1::available
-          ? "available"
-          : "unavailable";
-  std::string result =
-      "{\"type\":\"command_result\",\"protocol_version\":1,"
-      "\"request_id\":";
-  AppendJsonString(result, request_id);
-  result +=
-      ",\"ok\":true,\"result\":{\"step\":"
-      "\"query-steward-develop-county-candidates-v1\","
-      "\"accepted\":true,\"status\":";
-  AppendJsonString(result, status);
-  result += ",\"query_sequence\":";
-  result += Number(query_sequence);
-  result += ",\"snapshot_revision\":";
-  result += Number(candidates.snapshot_revision);
-  result += ",\"steward_develop_county_candidates\":";
-  result += payload;
-  result += ",\"backend_id\":\"native-headless\"}}";
-  return result;
+  return xar::ck3_11906::SerializeStewardDevelopCountyQueryResultV1(
+      request_id, query_sequence, candidates);
 }
 
 std::string PlayerFactionAlertsResultFrame(
@@ -16653,12 +16628,24 @@ void RunConnectedSession(
               xar::ck3_11906::
                   StewardDevelopCountyCandidatesMailboxContextV1 query{};
               query.mailbox = &g_main_thread_query_mailbox_v1;
-              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
-              query.environment = xar::ck3_11906::
-                  BindStewardDevelopCountyCandidatesNativeEnvironmentV1(
-                      reinterpret_cast<std::uintptr_t>(
-                          GetModuleHandleW(nullptr)),
-                      true);
+              if (xar::game::IsCk3_12003Descriptor(game.descriptor())) {
+                const auto module_base = reinterpret_cast<std::uintptr_t>(
+                    GetModuleHandleW(nullptr));
+                query.material_profile = true;
+                query.material_environment =
+                    xar::ck3_12003::BindStewardDevelopCounty12003(
+                        module_base, game.descriptor().executable_sha256);
+                query.material_core_bindings = xar::ck3_12002::BindCoreImage(
+                    module_base,
+                    xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
+              } else {
+                query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+                query.environment = xar::ck3_11906::
+                    BindStewardDevelopCountyCandidatesNativeEnvironmentV1(
+                        reinterpret_cast<std::uintptr_t>(
+                            GetModuleHandleW(nullptr)),
+                        true);
+              }
               query.request.expected_snapshot_revision = expected_revision;
               query.expected_snapshot = current_snapshot;
 

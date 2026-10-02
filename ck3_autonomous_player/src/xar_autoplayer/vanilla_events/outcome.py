@@ -78,6 +78,8 @@ def _base(decision: Mapping[str, object]) -> dict[str, object] | None:
     event_key = decision.get("event_definition_key")
     native_index = _integer(decision.get("selected_native_option_index"))
     supported = _SUPPORTED_CHOICES.get((event_key, native_index))
+    if event_key == "feast.7002" and native_index == 0 and decision.get("ck3_build") == "1.20.0.3":
+        supported = ("played_character_prestige.raw", "strictly_increasing")
     if supported is None:
         return None
     profile = decision.get("choice_effect_profile")
@@ -330,6 +332,9 @@ def evaluate_registered_event_material_postcondition_v1(
             "stress_not_increased"
             if delta <= 0
             and expected.get("event_definition_key") == "epidemic_events.5007"
+            else "prestige_not_increased"
+            if delta <= 0
+            and expected.get("metric") == "played_character_prestige.raw"
             else "gold_not_increased"
             if delta <= 0
             else None

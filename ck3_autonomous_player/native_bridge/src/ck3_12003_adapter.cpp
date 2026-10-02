@@ -4,6 +4,7 @@
 #include <utility>
 #include <vector>
 #include "xar_bridge/frontend_gui_route_v1.hpp"
+#include "xar_bridge/steward_develop_county_candidates_v1.hpp"
 
 namespace xar::game {
 namespace {
@@ -17,21 +18,19 @@ void ReplaceAll(std::string &value, std::string_view from, std::string_view to) 
 } // namespace
 
 const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
-#if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1) && \
-    defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
-  // Restore only the existing three frontend tools needed by the migrated
-  // private ordinary-seed route. Other frontend actions remain unadvertised.
   static const std::vector<std::string_view> capabilities = [] {
     const auto existing = Ck3_12002AdapterDescriptor().capabilities;
     std::vector<std::string_view> result(existing.begin(), existing.end());
+    result.push_back(ck3_11906::kStewardDevelopCountyCandidatesV1Capability);
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1) && \
+    defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
+    // Restore the existing frontend tools for the migrated ordinary-seed route.
     result.push_back(ck3_11906::kFrontendGuiRouteV1Capability);
     result.push_back(ck3_11906::kFrontendGuiTreeInspectionV1Capability);
     result.push_back(ck3_11906::kFrontendGuiOpenNewGameV1Capability);
+#endif
     return result;
   }();
-#else
-  const auto capabilities = Ck3_12002AdapterDescriptor().capabilities;
-#endif
   static const AdapterDescriptor descriptor{
       ck3_12003::kAdapterId, ck3_12003::kGameVersion, ck3_12003::kExecutableSha256,
       ck3_12002::kCheckpointSaveName, capabilities};

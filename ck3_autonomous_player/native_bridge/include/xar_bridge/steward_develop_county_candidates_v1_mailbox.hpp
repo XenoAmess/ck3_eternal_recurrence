@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_11906.hpp"
+#include "xar_bridge/ck3_12003_steward_develop_county.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/steward_develop_county_candidates_v1.hpp"
 
@@ -35,6 +36,13 @@ struct StewardDevelopCountyCandidatesMailboxContextV1 {
   StewardDevelopCountyCandidatesAccessV1 access{};
   StewardDevelopCountyCandidatesRequestV1 request{};
   game::Snapshot expected_snapshot{};
+
+  // Explicit current-build material path; default construction retains the
+  // original .19 reader and its complete snapshot comparison.
+  bool material_profile = false;
+  ck3_12002::CoreBindings material_core_bindings{};
+  ck3_12003::StewardDevelopCountyEnvironment12003 material_environment{};
+  ck3_12003::StewardDevelopCountyAccess12003 material_access{};
 
   StewardDevelopCountyCandidatesMailboxCompletionV1 completion =
       StewardDevelopCountyCandidatesMailboxCompletionV1::not_executed;

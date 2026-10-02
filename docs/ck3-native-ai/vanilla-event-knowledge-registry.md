@@ -1,5 +1,57 @@
 ﻿# CK3 1.19.0.6 原版事件知识 Registry
 
+## 2026-10-02：1.20.0.3 `feast.7002` 实际主办者到达通知
+
+正式 `formal-v11-next-01/turn-001` 在 instance `14`、玩家/root/host `31853` 的
+`feast.7002` 停止：原 current-event 查询返回 `event_window_not_materialized`，没有提交选项。
+h2046 checkpoint SHA-256 为 `F85E9447704C20E133C65DD9A21E074F31A6F281010DBDC9CC9FAA1A98F49B1F`；
+保存的实际 scope 为 `activity`、`host`、`province`，没有 `center_portrait`。
+存档中的 activity `587202561` / province `45` 是离线身份，不冒充 current-event native typed identity；
+活动的真实完整 ID 由独立 HostedPost DTO 读回，不插入 generic event scope。
+保留原始 RED：`artifacts/g2-maintainer-2026-10-02/resume-12003/m7-murchad/formal-v11-next-01/turn-001/natural-event/`。
+
+本条 exact build 为 CK3 `1.20.0.3` / Steam `25652598`，EXE SHA-256
+`94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。
+当前原版源码和依赖已实际读取、冻结：
+
+| 来源 | 当前 SHA-256 | 本条语义 |
+| --- | --- | --- |
+| `events/activities/feast_activity/feast_events.txt` | `F5820211444E7DBAF0A318ADF65BEBF4CA581D3A4E9F381ADD63D3BF02AAF77E` | `.7002:1139–1278`，activity_event；唯一选项 `1257–1277` |
+| `common/script_values/00_basic_values.txt` | `C379CC0C58ED1574033F0E07A58697DFC6F8475C26AA4B117F2332008D4A27EF` | `1000` 定义 base 35；`1033` 将 gain 绑定该值 |
+| `common/activities/activity_types/feast.txt` | `FBC2E6E3F74BC8C2DB1BB1EB01609AA7CF50E9546671A12617301F175BE84598` | `4980–4982` 的 `on_enter_passive_state` 直接触发 `.7002` |
+
+完整事件块 SHA-256 为 `61700971D916E2D17EB8DD7632362D76850A83C3974B8D1B0BDE8CE6CD3BF8C8`。
+`immediate:1212–1255` 播放宴会音乐，并且只有找到荣誉宾客或合格成年与会者时才保存
+`center_portrait`；其缺失是源码允许的当前三 scope 形态。唯一 native `0` 依据对 host 的好感
+选择 `feast.7002.a.bad` 或 `feast.7002.a.good` 文案，二者都是同一个选项，均执行
+`add_prestige = miniscule_prestige_gain`；没有独立 `ai_chance`、`after` 或选项派生后续事件。
+现有英文和简中文案源分别为 `localization/english/event_localization/activities/feast_events_l_english.yml`
+（SHA `167F119A424BF17525205359BCCE2ED20BDCB3CAB3C1965717D27F331344F5A1`）和
+`localization/simp_chinese/event_localization/activities/feast_events_l_simp_chinese.yml`
+（SHA `A33E34631EAB35D5B05BE34DE123D39E173C76866616267467C5049682B3AE7C`）；复用原 key 与原生 resolved label。
+
+```mermaid
+flowchart TD
+    A["原版 Feast on_enter_passive_state"] --> B["feast.7002 activity_event"]
+    B --> C["音乐；存在合格宾客时才保存 center_portrait"]
+    C --> D{"当前 .3 玩家 root=host；三 scope；唯一 native 0 enabled？"}
+    D -->|是| E["authored 1/native 0；原版 prestige gain base=35"]
+    D -->|否| X["不提交；保留具体阻点"]
+    E -. "待正式实机" .-> U["unknown：独立威望实际增加、instance advance、下一 turn"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
+上述原生树是施工输入；最小我方策略只选择该实际主办者三 scope 形态的唯一合法路线，
+使用已有 `.3` queried-record、角色关系投影和 `prestige.raw` 材料机制。
+activity/province typed payload 保持 opaque，没有加入猜测的身份或活动 ID gate；
+本次没有 center_portrait 的形态独立登记，未见到的宾客/四 scope 形态不新增验收资格。
+效用仅为 `sole_legal_route`，不建立跨事件数值评分。材料 expectation 要求实际
+`played_character_prestige.raw` 严格增加；stock base `35` 只作为源码预期，不当作实际 delta。
+此包 **static-ready**；不新增 live/M2 credit，单选事件不会补足 M2 所需两次多选条件。
+冻结来源和原始阻点在 `artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v11-feast-modal-blocker/registry-continuation/`；
+`.2/.19` 记录、历史结果与下文旧版本截点保持原样。
+
 ## 当前状态
 
 - [static-ready] 共享 registry 已实现在

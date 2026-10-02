@@ -219,6 +219,8 @@ struct Fixture {
   std::array<std::array<std::byte, 0x480>, 4> authored_options{};
   std::array<void *, 4> authored_option_pointers{};
   std::array<std::byte, 0x98> idler{};
+  std::array<std::byte, 0x3D0> activity_handler{};
+  std::array<std::byte, 0x190> activity_window{};
   std::array<std::byte, 0x30> manager{};
   std::array<void *, 2> windows{};
   std::array<std::byte, 0x8F0> window{};
@@ -727,9 +729,68 @@ bool TestNullSavedCharacterScope() {
   }
   return true;
 }
+
+bool TestActivityInsert() {
+  using namespace xar;
+  Fixture fixture;
+  // The real feast.7002 window has no ordinary/splash presentation. Its
+  // selected ViewInsert stores the same EventWindowData at offset zero.
+  Store<std::int32_t>(fixture.manager.data(), 0x24, 0);
+  StoreInlineString(fixture.event_definition.data() + 0x10, "feast.7002");
+  Store<std::int32_t>(fixture.event_definition.data(), 0x1AC, 1);
+  fixture.InitializeOption(0, 0, true, false);
+  Store<std::int32_t>(fixture.option_items.data(), 0x94, 0);
+  std::array<char, 64> option_name{};
+  StoreHeapString(fixture.option_items.data() + 0x170, option_name,
+                  "We have a lovely time ahead of us!");
+  auto *const insert = fixture.window.data() + 0xB8;
+  Store<std::uint8_t>(insert, 0x7C8, 1);
+  Store<void *>(fixture.idler.data(), 0x88, fixture.activity_handler.data());
+  Store<std::uintptr_t>(fixture.activity_handler.data(), 0,
+                       0x1844BA890);
+  Store<void *>(fixture.activity_handler.data(), 0x3C8,
+                fixture.activity_window.data());
+  Store<std::uintptr_t>(fixture.activity_window.data(), 0, 0x184579010);
+  Store<void *>(fixture.activity_window.data(), 0x188, insert);
+  game::EventWindowContextV1 output{};
+  auto read = [&]() {
+    g_current_event_calls = 0;
+    return ck3_12002::ReadEventWindowContextV1(
+               fixture.bindings, kRevision, kEventId, output) ==
+           game::ReadEventWindowContextResultV1::available;
+  };
+  // Reproduce the deployed reader's actual missing presentation branch.
+  if (read() || output.unavailable_reason != "event_window_not_materialized")
+    return false;
+  fixture.bindings.activity_handler_primary_vtable = 0x1844BA890;
+  fixture.bindings.activity_window_primary_vtable = 0x184579010;
+  if (!read() || output.event_definition_key != "feast.7002" ||
+      output.window_match_count != 1 || output.options.size() != 1 ||
+      output.options[0].native_option_index != 0 ||
+      !output.options[0].shown || !output.options[0].enabled ||
+      output.options[0].fallback || output.options[0].cancel ||
+      output.options[0].resolved_name !=
+          "We have a lovely time ahead of us!" ||
+      output.root_scope->typed_identity.character_id != kCharacterId ||
+      output.saved_scopes.size() != 2 || !output.option_presentation_ready ||
+      output.effect_preview_ready || output.semantic_decision_ready)
+    return false;
+  Store<std::uint8_t>(insert, 0x7C8, 0);
+  if (read() || output.unavailable_reason != "event_window_not_materialized" ||
+      !output.options.empty()) return false;
+  return true;
+}
 } // namespace
-int main() {
-  if (!TestMigration() || !TestSplash() || !TestNullSavedCharacterScope()) { std::cerr << "CK3 1.20.0.2/.3 event-window fixture failed\n"; return 1; }
+int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--activity-insert-only") {
+    if (!TestActivityInsert()) {
+      std::cerr << "CK3 1.20.0.3 activity-insert fixture failed\n";
+      return 1;
+    }
+    std::cout << "CK3 1.20.0.3 activity-insert offline fixture passed\n";
+    return 0;
+  }
+  if (!TestMigration() || !TestSplash() || !TestNullSavedCharacterScope() || !TestActivityInsert()) { std::cerr << "CK3 1.20.0.2/.3 event-window fixture failed\n"; return 1; }
   std::cout << "CK3 1.20.0.2 event-window offline fixture passed\n";
   return 0;
 }

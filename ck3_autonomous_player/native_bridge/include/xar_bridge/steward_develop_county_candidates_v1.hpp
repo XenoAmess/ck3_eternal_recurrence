@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/campaign_root_context_v1.hpp"
+
 #include <cstdint>
 #include <optional>
 #include <string>
@@ -62,6 +64,33 @@ struct StewardDevelopCountyCandidatesReadinessV1 {
       default;
 };
 
+// Current-build material observations. Legacy AI inputs remain a separate
+// contract; current growth is not a forecast after assigning this task.
+struct StewardDevelopCountyMaterialCandidateV1 {
+  std::int32_t county_title_id = -1;
+  std::int32_t capital_province_id = -1;
+  std::int32_t holder_character_id = -1;
+  bool is_player_capital = false;
+  bool directly_held_by_player = false;
+  std::uint32_t native_collection_ordinal = 0;
+  bool native_target_valid = false;
+  FixedPointValue monthly_development_rate{0, 100'000};
+  FixedPointValue development_progress_current{0, 100'000};
+  FixedPointValue development_progress_maximum{0, 100'000};
+
+  friend bool operator==(const StewardDevelopCountyMaterialCandidateV1 &,
+                         const StewardDevelopCountyMaterialCandidateV1 &) = default;
+};
+
+struct StewardDevelopCountyMaterialV1 {
+  std::optional<CampaignRootCouncilPositionV1> current_active_task_binding;
+  bool candidate_collection_complete = false;
+  std::vector<StewardDevelopCountyMaterialCandidateV1> candidates;
+
+  friend bool operator==(const StewardDevelopCountyMaterialV1 &,
+                         const StewardDevelopCountyMaterialV1 &) = default;
+};
+
 struct StewardDevelopCountyCandidatesV1 {
   StewardDevelopCountyCandidatesStatusV1 status =
       StewardDevelopCountyCandidatesStatusV1::unavailable;
@@ -83,6 +112,9 @@ struct StewardDevelopCountyCandidatesV1 {
   StewardDevelopCountyCandidatesReadinessV1 readiness;
   StewardDevelopCountyFailureReasonV1 unavailable_reason =
       StewardDevelopCountyFailureReasonV1::none;
+  // Presence chooses the exact 1.20.0.3 material wire, including unavailable
+  // reads. Absence preserves the original 1.19.0.6 fixture contract.
+  std::optional<StewardDevelopCountyMaterialV1> material;
 
   friend bool operator==(const StewardDevelopCountyCandidatesV1 &,
                          const StewardDevelopCountyCandidatesV1 &) = default;
@@ -210,6 +242,12 @@ std::string_view StewardDevelopCountyFailureReasonKeyV1(
     game::StewardDevelopCountyFailureReasonV1 reason) noexcept;
 
 std::string SerializeStewardDevelopCountyCandidatesV1(
+    const game::StewardDevelopCountyCandidatesV1 &snapshot);
+
+// Shared by the production bridge response and the native codec fixture.
+// Preserves the existing command_result and seven-field primitive envelope.
+std::string SerializeStewardDevelopCountyQueryResultV1(
+    std::string_view request_id, std::uint64_t query_sequence,
     const game::StewardDevelopCountyCandidatesV1 &snapshot);
 
 } // namespace xar::ck3_11906

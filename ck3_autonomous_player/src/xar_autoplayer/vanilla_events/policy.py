@@ -944,6 +944,7 @@ _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
         "char_interaction.0232",
         "death_management.1000",
         "epidemic_events.5007",
+        "feast.7002",
         "health.1001",
         "health.1010",
         "health.1101",

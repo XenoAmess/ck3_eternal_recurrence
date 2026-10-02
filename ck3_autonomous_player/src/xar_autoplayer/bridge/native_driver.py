@@ -12703,7 +12703,7 @@ class NativeHeadlessGameplayDriver:
         *,
         expected_revision: int | None,
     ) -> dict[str, object]:
-        """Read the exact-build steward development candidate contract."""
+        """Read an exact-build legacy AI or current county material frame."""
         step = QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP
         starting = self.take_snapshot()
         if starting.get("paused") is not True:

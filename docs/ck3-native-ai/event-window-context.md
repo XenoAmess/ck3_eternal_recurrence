@@ -469,9 +469,35 @@ root 恢复并截图的
 
 原始 RED、窄存档 block 与离线诊断保存在
 [`actual-v11-feast-modal-blocker`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v11-feast-modal-blocker/)。
-当前状态为 **research / production capability RED**：新增 exact `.3`
-Activity insert 入口及该 key 的 source-bound registry/material profile
-正在独立工作包中施工。复用现有 options/scopes/indicators，不从唯一
+当前原运行保持 **production capability RED**；修复包达到 **static-ready**。
+exact `.3` PE 已证明读取链：现有 Gfx idler `+0x88` →
+`CIngameInterfaceHandler`（primary vtable RVA `0x44BA890`）`+0x3C8` →
+`CActivityWindow`（primary vtable RVA `0x4579010`）`+0x188` selected
+`EventWindowViewInsert`；insert `+0x7C8` 是原生 HasOpenEvent，
+GetOpenEvent 返回 insert 自身的 inline `EventWindowData +0`。该 selected
+指针由活动 event-receive callback 设置，关闭时清空。header/body 同名
+widget 指向相同 insert，因此无需枚举两个控件或执行 GUI getter。
+特别地，`+0x3C8` 属于 handler，不能直接从尺寸 `0x98` 的 Gfx idler 读取。
+完整 PE 字节、RTTI 与原版 GUI pins 在
+[`activity-native-exact-12003.json`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v11-feast-modal-blocker/activity-native-evidence/activity-native-exact-12003.json)。
+
+修复在独立 scratch 的原有 header/reader/fixture 中实现，仅 exact `.3`
+binder 开启两项 vtable。前后两次只读检查 selected insert 与 open 状态，
+复用现有 options/scopes/indicators 和 unavailable reasons。
+现有 `xar_ck3_12002_event_window_context_test --activity-insert-only`
+在严格 `/W4 /WX`、`/UNDEBUG` 下唯一一次实际执行 GREEN：
+[`focused-activity-insert-01/result.json`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v11-feast-modal-blocker/focused-activity-insert-01/result.json)。
+该检查复现旧读器 match0，随后读取 selected insert 的真实布局、唯一
+native0/源英文 label，并确认关闭的 insert 没有可执行呈现；未重复
+旧 ordinary/letter/Splash suite。原 runtime archive 与两项真实 family
+纯依赖仅作为 existing target 的链接闭包，没有 shim 或 CMake 修改。
+
+当前 `.3` `feast.7002` 的 source-bound registry/profile 也已通过一项
+生产路径检查，要求真实 root/host 同 actor，保留 activity/province
+typed identity unavailable，并使用既有 prestige 独立材料比较器。
+原版静态量 `35` 不作 actual delta，外部 HostedPost 活动身份不塞入
+event query。此包仍待 root 集成后的严格 DLL 和真实 paused query/choice。
+不从唯一
 snapshot 选项推定可执行选择。只有后续真实 query、typed choice 和
 独立 prestige 后置读回完成，才能记录本事件的材料结果；当前不增加
 M2 材料、多选或完成信用。

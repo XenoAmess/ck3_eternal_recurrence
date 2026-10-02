@@ -2334,7 +2334,7 @@ def create_server(
     def ck3_query_steward_develop_county_candidates_v1(
         expected_revision: int,
     ) -> dict[str, object]:
-        """Read exact native Develop County legality and candidate inputs."""
+        """Read native Develop County task/location legality and current growth."""
         return _ck3_query_steward_develop_county_candidates_v1(
             service,
             expected_revision,
