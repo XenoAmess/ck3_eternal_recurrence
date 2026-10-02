@@ -1,5 +1,13 @@
 # CK3 自动游玩智能体进度中心
 
+## 10-03 01:01 当前Robert主线：宗教实际＋5与新日保存、v21冷恢复
+
+真实补录时间 **2026-10-03T01:01:50+08:00（Asia/Shanghai）**；本日报**进行中**，正式收口为10-04 00:00。10-02日报已按午夜截止封存，不将新宗教选择或后置倒填前日。当前Robert **3249/36524**，本resume自3153新增 **96个保存自然日**；其中10-03实际新增 **1日**，10-02截止95日只算一次。typed dynasty_continuity reconciled_successions0 / last_succession null另列。G2 **4/8=50%**、NW **1/4=25%**不变；固定合同项比例不是整局自主完成率。 [10-03滚动日报](daily/2026-10-03.md)、[早会](meetings/daily/2026-10-03.md)和[W40周报](weekly/2026-W40.md)承接已closed10-02午夜；opening3248/95是当时基线，不当当前值。午夜4doc已实际push publicf3c9ace6，原publishedhistory保留。
+
+原13 rite_growth.0010/native0/API1一次选择→独立fulfillment0→500000＝＋5→正常＋1保存已闭，为一个真实多选材料候选；原M2两multi/整项门槛没有自动完成。EWAN14当前native1/API2一次后独立35466对Robert40→60、34730 41→61，各＋20，是关系material primitive，尚非个人参加或宴会完整终态。 当前同Robert四自然材料候选及两distinct multi已有，M2整项仍等原0801后续/保存/选择后cold，不把genericmetricnull加为新gate。 新Chancellor43696/ForeignAffairs新PID冷保持补齐，Sway134217986/gen8/newPID96348四read三ringattachedempty/55%，独立同日priorPID96/353/op−10仍无收益/terminal。
+
+Family原submit前RED已有静态最小修复，但新attempt2在Council规划query RED挡住、未到Family，0提议/0日；修复live验收待下一普通attempt。 全面宗教native/script树并行交付按research记，含holyorder；当前actualPython38b43747与native/env6443-v21分列，38b exactCI37035204825 SUCCESS00:43:15不代live，旧6443单prompt文字RED保留。当前已闭保存锚点raw **53222304**、full **4141** / save **4140**。这里full4141/anchor4140是root已确认的新PID冷恢复基线；正常saveh4140为前一PID同日readonly后的已知保存锚点，85,752,395B / SHA d620f0998fc712b683c476238e57c995f6e4506ddf86c3c5a7b23e0b2b2da59d。EWAN和本次planning失败都没有新增自然日；新增查询后的最终pair由root实际checkpoint另报，不能按查询数倒推。 [本stage正常保存/当前锚点](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m4-sway/robert-v20-prestop-actual-01/REPORT-FIELDS-20261003.json)。保存日只按root闭合实际clock和checkpoint计，readonly/cold/研究不另加天。 本stagepublication待root正常commit/push，不改旧日期段事实或原可见合同。
+
 ## 00:18 午夜收口与2026-10-03早会入口
 
 2026-10-03 00:18:16 Asia/Shanghai已按自然日午夜截止正式 [收口10-02日报](daily/2026-10-02.md)，并立即以真实时间召开 [10-03早会](meetings/daily/2026-10-03.md)；[W40周报](weekly/2026-W40.md)仍滚动，周正式截止为10-05 00:00。Opening Robert3248/36524/本resume95新日、raw53222280/fullsave4130，typedgoal0successions另列；G24/8、NW1/4未变。全部宗教研究开放，旧dated限制已撤销；原13 rite_growth.0010/PREfulfillment0尚未选，后置归10-03。Publiccode6443/nativeactual4ee-v20分别记录；6443CI00:00:33文案规则RED是新日开场，不回填10-02或当宗教功能失败。本次四文档新增publication待root正常commit/push。
