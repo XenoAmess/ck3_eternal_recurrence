@@ -500,7 +500,56 @@ event query。此包仍待 root 集成后的严格 DLL 和真实 paused query/ch
 不从唯一
 snapshot 选项推定可执行选择。只有后续真实 query、typed choice 和
 独立 prestige 后置读回完成，才能记录本事件的材料结果；当前不增加
-M2 材料、多选或完成信用。
+初始失败包不增加 M2 材料、多选或完成信用。
+
+##### v13 实际读取、选择与独立 prestige 后置
+
+严格增量 DLL 绑定 clean source
+`176f0640b4394348360e2a379647440546c76562` 后，root 在新 PID `8600`
+cold resume 同一存档。首个 SDK 查询仍返回
+`event_window_not_materialized`；root 的实际截图显示纯暂停地图，
+Activity view 没有打开。这个冷呈现 RED 保留在
+[`actual-v13-feast-arrival-01`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v13-feast-arrival-01/)。
+root 随后打开已经观察到的现有 Feast cup view，仅恢复窗口，未选择
+事件或推进时间。后续成功属于 **root-assisted cold presentation**，
+不能称全自动 cold Activity-window loop。
+
+[`actual-v13-feast-arrival-opened-02`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v13-feast-arrival-opened-02/)
+的真实 typed query 发布 `status=available`、key `feast.7002`、instance
+`14`，root/host Character 均匹配 actor `31853`。唯一 shown/enabled
+native option `0` 经正式 API option `1` 选择，非 fallback/cancel，
+原生 postcondition verified。独立 paused snapshots
+`native:4` revision `2` → `native:5` revision `3` 保持同 actor 和
+`date_raw=53328600`，旧 instance `14` → `null`。实际 prestige raw
+`112231420` → `115731420`，scale `100000`，delta `3500000`，即
+**35 prestige**；材料比较为 `verified_change`，不从 stock 量倒填结果。
+正常 h2052 checkpoint size `111634324`，SHA-256
+`A5A9B6F616C23545DAEAD4DA7764CDF4CF9E6F36DCF8D2F475AD8246FBF4294B`。
+专项生产状态因此达到 **production-live primitive**；本包没有后续
+normal formal turn，完整 next-turn 消费另按 root 实际结果记录。
+
+普通来源链也已落盘：原
+[`actual-command-packets.json`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/m6-feast/murchad-feast/attempt03/start-post-read-red-proof/actual-command-packets.json)
+保存唯一正式 Feast Start 提交与 accepted/submitted 回执，同 actor/date，
+独立 gold 已扣 100；其 post-read harness RED 保留，不升级为 M6 完成。
+其后已有
+[`fresh-lifecycle-recovery-proof/REPORT.json`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/m6-feast/murchad-feast/attempt03/fresh-lifecycle-recovery-proof/REPORT.json)
+通过一次现成 lifecycle 只读调用独立恢复 full activity `587202561`、
+host `31853`、type `activity_feast` 与 Start material 后置；原 Start
+没有重发，活动仍 ongoing，M6 完成仍 false。这个外部活动身份不塞入
+event.saved_scopes 尚未闭合的 typed identity。
+当前 stock `feast.txt:4980–4982` 的 `on_enter_passive_state` 自然触发
+`feast.7002`，正常 h2046 中 instance `14` 早于本次 cold/query/choice
+存在。root 当次明确未使用 console/forcedEvent。
+[`normal-provenance-review.json`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v13-feast-arrival-opened-02/normal-provenance-review.json)
+记录这组来源，而 helper 的 `natural_provenance_verified=false`、
+`new_live_milestone_credit=false` 与材料内部同名 false 均原样保留；
+人工来源评估不改写 helper 默认值或原 SDK result。
+
+该事件可作为 M2 的一个**自然单选材料 primitive 样本**，待规定正式
+next-turn 消费后再归入对应完整子项。M2 仍要求三个自然样本、包含两个
+多选事件；本单选不给多选信用，不完成 M2。v11 原窗口漏读 RED、v13
+冷无窗 RED、婚姻通知及 hostile scheme 的零材料结论全部保留。
 
 Phase2 产品时间线 R31 与 R33 在同一 paused frame（`date_raw=53147256`、event instance `14`）稳定复现
 `event_saved_scope_invalid`。20 次有界重试都保持同一 native revision，证明它不是 scope 构建中的瞬态窗口；同一时刻

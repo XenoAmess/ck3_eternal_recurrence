@@ -1,5 +1,14 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+
+## 2026-10-02 11:03：G2-M5原合同完成，当前4/8与真实110日停点
+
+G2-M5原visible_outcome保持“≥5合法候选并完成所选路径的verified postconditions”。成人36403↔16825238实际选定路径已有warm/cold婚姻与nativeparent36403/child-House10443/Dynasty2039价值，formal-v13-next-01 turn4消耗原material/cold receipt并自然31日续行，六合同项全PASS；M5/NW-FAMILY complete，G2 4/8、NW队列1/4。M2/M4/M6/M7继续in_progress，不声称形成联盟、未来孩子、通用Family/war完成。见[机器索引](g2-requirements-v1.json)、[原contract closeout](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m5-family/g2-m5-nw-family-adult-contract-closeout.json)。
+
+v13 source176f0640/937inputs/63ON4OFF strict24.11秒GREEN、exactCI36954746962 10:17:54 SUCCESS；Murchad独立110日，最新h2072/raw53329800/saveSHA `22cd736c7feb67e3077838c33549a5833cc6a99b911110d6e41c01ab19f01ff8`。新的pending instance -721420283/sender32718 typedcontext invalid，60日目标未成、0reply，正在最小实际故障修复；已完成M5不回退。Rogue恢复191/累计243、Robert3153/36524不混加；Clan/Tribal只有file-ready、无NewGame/live/新政府/广M7资格。
+
+其余主线按真实价值：Feast7002单选+35/正常31日续行但两个multi未完成，root-assisted冷view仍明确；Sway同234881208/gen14最后独立31/310/ring空/opinion5，following消费与cold有证但收益/终态未证；建设oldkey材料已读，authored+0.15/月不作净收益；Feast ongoing待完整终态/attendance/useful reward；Develop现有callback注册真实RED先修后live。历史日期段3/8保留，当前完整证据与下一包见[resume](../g2-maintainer-resume-1.20.0.3-2026-10-02.md)与[日报](daily/2026-10-02.md)。
+
 ## 2026-10-02 01:10:05：维护者休假，R11完整现场已收口
 
 用户要求完成在途工作且不再开新工作。最新真实配对为 **full165/h165／raw53170320**，自有PID97312已正常停止、资源释放。R11新增9自然日，独立1.20 rogue累计40日；**G2仍3/8、Robert仍3153/36524**。CA1实际material／次日保存／新PIDcold窄loop闭合；Sway专属modifier合法缺席，终态未发生；serve_the_crown_perk独立applied并被正式next消费，随后第11次campaign-root查询RED保留；整批没有完成30日／64轮。
@@ -90,7 +99,7 @@ flowchart LR
 
 2026-09-12 起，G2 的现行需求、固定分母与施工顺序以
 [`g2-requirements-and-execution.md`](g2-requirements-and-execution.md) 及其机器可读
-[`g2-requirements-v1.json`](g2-requirements-v1.json) 为准。G2 全局当前为 `3/8` 个可见 OODA 里程碑完成（M0/M1/M3）；历史上出现的
+[`g2-requirements-v1.json`](g2-requirements-v1.json) 为准。G2 全局当前为 `4/8` 个可见 OODA 里程碑完成（M0/M1/M3/M5）；历史上出现的
 `T1=90%` 仅是 GEN-034 窄包的临时估计，不得再解释或汇报为全游戏自治完成率。
 
 - 以下历史累计盘点的 exact build：CK3 `1.19.0.6`；当前 `1.20.0.2` 增量见顶部独立段落。
@@ -482,7 +491,7 @@ tyranny；健康、压力与生育；法律、政府、文化、创新与非宗�
 4. `G2-M3/M4`：R0077 已闭合自然继承预期/实际分配及同 campaign 真实继承人续玩（M3）；下一步以 health/stress/legitimacy、vassal/faction alert、建设和内阁组成和平治理 OODA（M4）；
 5. `G2-M5–M7`：家庭/外交/完整战争，谋略/制度/活动，以及按 runtime identity 启用的政府/DLC adapter 和长期 qualification。
 
-G1、GEN-032、GEN-009 与同一 fixed seed 的第二寿命是已冻结前置证据，不再进入现行 G2 分母。当前全局进度只能写 `3/8`；
+G1、GEN-032、GEN-009 与同一 fixed seed 的第二寿命是已冻结前置证据，不再进入现行 G2 分母。当前全局进度只能写 `4/8`；
 GEN-034 子包进度另按 `4/4` 汇报：A/B/C/D 均已完成；
 禁止恢复没有固定分母的百分比。
 

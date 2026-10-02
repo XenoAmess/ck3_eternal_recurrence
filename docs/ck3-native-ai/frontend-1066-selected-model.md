@@ -162,14 +162,33 @@ next frozen production build. Actual hello plus the normal seed producer are
 the next validation; repeating isolated descriptor fixtures cannot establish
 that the real DLL advertises the capabilities.
 
+The advertisement subfault is now closed by root's existing actual v13
+Murchad hello, managed PID 8600. The archived
+`artifacts/g2-maintainer-2026-10-02/resume-12003/murchad-v13-current-material-01/002-ck3_get_bridge_diagnostics.json`
+has SHA-256
+`1257b36b0b8ce131e899029640cc7965d93ba54747c9456c75603e1a819fd99c`.
+Its exact 1.20.0.3 adapter is ready and matches the EXE SHA; actual
+`hello.capabilities` contains all three required entries:
+`game.command.query-frontend-gui-route-v1`,
+`game.command.inspect-frontend-gui-tree-v1`, and
+`game.command.activate-frontend-new-game-v1`. The retained production build
+proof is `native-build-activity-develop-v13/runtime-frontend-defines-proof.json`;
+v13 propagates both existing options to the static runtime target. The single
+file-only hello parse is preserved under
+`m7-frontend-12003/actual-v13-capability-recovered/RESULT.json`.
+This establishes actual advertisement only. It makes no NewGame, Yahya/Rurik
+model, selector, StartGame, fresh government, or checkpoint claim; their next
+fresh producer attempts remain root-owned and serial.
+
 No actual seed, paired save, cold restore, or succession has been established.
 M7 remains open. Root must verify actual government, actor, rules, paired
 checkpoint, and formal consumer/cold continuation before assigning readiness.
 
 ```mermaid
 flowchart TD
-  A[Exact 1.20.0.3 adapter ready] --> R[Actual v12 RED: three frontend capabilities absent]
-  R -. runtime target macro propagation fix; next actual hello pending .-> A1[Main menu route query]
+  A[Exact 1.20.0.3 adapter ready] --> R[Historical v12 RED: three frontend capabilities absent]
+  R -->|runtime target fix; actual v13 hello has all three| H[Advertisement subfault closed]
+  H -. fresh frontend route pending .-> A1[Main menu route query]
   A1 -. private typed NewGame pending live .-> B[Bookmarks]
   B -. Rurik only: key-derived native Bookmark setter .-> C[Fresh target Bookmark model]
   B -. Yahya: same Bookmark target probe .-> C

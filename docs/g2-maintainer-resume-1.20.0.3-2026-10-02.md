@@ -3,6 +3,27 @@
 记录时间：2026-10-02 04:08 Asia/Shanghai。用户在新版因果律迁移完成后明确恢复 handover G2，并要求维持高并发。D2–D4 已恢复，D6 迁移完成保留；战争研究停止，宗教按实际决策依赖推进。12 个独立包并行准备、实际材料分域并行判读，root 串行持有游戏与 pipe。没有打开 Steam 界面。
 
 
+
+## 11:03 真实续写：原成人家族合同闭合，G2完成4/8
+
+2026-10-02 11:03 Asia/Shanghai真实补录。v13实际 source `176f0640b4394348360e2a379647440546c76562`、DLL `fbf376cac33a25848a8545f1884570dc89c3473f967a28e44fb88542e212bdb4`、937inputs、63ON/4OFF，strict24.11秒GREEN；两既有frontend宏已传播到真实runtime。[Exact官方CI36954746962](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36954746962) 于10:17:54 SUCCESS。原v12 Clan607秒attempt RED尚未NewGame，所有PID已回收；v13 Clan/Tribal重试配置只是file-ready，没有新增实机seed/政府类型/百年资格。当前真正持续的是Murchad actor31853/episode `native-31853-af642d76cb41`，没有把其他seed日数并入此episode。
+
+G2-M5及NW-FAMILY按原始验收合同已complete：原9个final-legal中精确比较5个合法候选，原策略唯一submit成人首继承人36403↔16825238/recipient39761；39/28岁、父系、十send成本0；warm独立bilateral实际marriage、正常ledger pending→resolved，native parent36403/child-House10443/Dynasty2039继承价值与主家族相符；新PID46800相对54636保留原pair/source_pending并cold_recovery_verified。最后formal-v13-next-01 turn004原 `family_marriage_result_consumed` 匹配原pair/material/coldverified，成功life-advance31真实日raw53328600→53329344，0新的Family submit；正常full2064/h2064/save112,173,468B/SHA `2b8eabdeacd6ca4a60b12550e5e197e7445e5ea20e436f1442478f56309a311c`。原contract parser唯一一次exit0、六项contract_items全satisfied。状态升production-live loop/complete，G2完成数3→4、原固定分母8与visible_outcome文字不变；NW当前四包队列1/4。实际联盟仍not_allied双方false，不声称联盟形成、未来孩子出生或通用Family/联合战争能力完成；另Rogue childpair成年转婚仍不计。已有war停止安排保持，未给已完成合同新增门槛。
+
+Feast arrival原v11 Activity窗漏读RED及v13 cold地图-only查询RED完整保留。root协助打开既有cup view后，v13实际feast.7002/instance14唯一native0/API1选择verified：独立native4→5/rev2→3、同paused日期/actor、old14→null，prestige112231420→115731420，真实+35。普通唯一Start→独立100golddebit→fresh hosted fullActivity587202561→stock passive→原h2046 event14的自然provenance已回链；本轮正常31日formal续行后未再遇modal。该例为1个自然单选材料primitive候选；两个multi-option与完整M2合同尚未完成，helper原false flags未改。root-assisted冷恢复呈现边界保留，不能写全自动cold Activity-window loop。该+35是此event独立材料，不能自动算整场宴会terminal/attendance/useful关系收益。
+
+Sway原full234881208/gen14在newPID8600冷恢复同实例保留，raw53328600时0/340（原v11为0/310，目标动态），六reader/三ring attached seq0/empty/no gap GREEN；随后正常following consumer在same-date construction-receipt service步骤设置next_turn_consumed=true，无重发。31日后独立实际raw53329344/native23为31/310、continue/CanContinue=true，opinion仍+5、两专属modifier合法absent，三ring seq0/empty/no gap；正常h2065/save112,173,468B/SHA `10dcc21d87143aff4d50aea447d61906eeef8a54946100f27f7d8160ff2fc455`。这是private start primitive的cold/正式消费附加证据，仍无phase/terminal/真实关系收益；不把279进度单位换算剩余天数，不推断后面19日中的Sway状态，不合并Rogue50331723/gen3历史。
+
+Construction v13同暂停date53328600/native10真实材料读GREEN：原tuple528/48/type572/slot1实key pastures_01，target604/slot1/init31853仍active/work102833340/divisor0；0动作/0重复150gold扣款。Stock authored直接收入0.35→0.50差+0.15/月保留旧supply200与条件修正损益；player aggregate3.53565/month与province63896（scale未发布）不归因，未有完工/有效净收益/M4或NW-ECON完成信用。原建设loop与formal-v13-next-01 turn001旧applied receipt once重核保留。Feast35465 baseline SDK真实GREEN，但完整terminal/attendance/useful named reward仍待，不计M6完成。
+
+Council当前root004 GREEN仅证明39761 CollectTaxes/general/infinite与income353565/Q100000。Develop公共SDK006真实executor unavailable、.3初始化漏注册existingcallback，TrySubmit invalid_request1382，material0/末checkpoint未到；此实际capability RED已交owner/builder做最小registration scratch修复，旧native3/Python11+6 PASS复用。当前未有Develop live/任务变更/任命/动作，不能把源与fixture就绪写成已可用。
+
+formal-v13-next-01 closed正常4turn/+31日先使Murchad累计91；接着formal-v13-next-02真实3turn/+19日到raw53329800，但60日目标未完成，status natural-interaction-stop：新pending instance -721420283/sender32718，exact context invalid_pending_interaction_id/typedfieldsnull，无reply submit，producer/consumer正按实际ID边界并行修复。最新正常h2072/full2072/save112,140,179B/SHA `22cd736c7feb67e3077838c33549a5833cc6a99b911110d6e41c01ab19f01ff8`，driver13,292,901B/SHA `2fc3a9cfd5c6e0b706b3a5ba85724b91bfba5604b79b069d4a0899086f3e0061`，paused。此新通知阻点没有撤销已闭合的原成人婚姻合同。
+
+当前G2为4/8（M0/M1/M3/M5 complete，M2/M4/M6/M7 in_progress），Murchad独立110真实日；rogue .3恢复191/累计243、Robert3153/36524保持。没有新增government/broad M7/自然继承/百年资格。下一施工为实际pending ID修复后的正常回复与续行、Council Develop注册、已开Sway与Feast的独立收益/终态、construction净收益观测及Clan/Tribal真实入口；不等待理论审计、不重复现有测试。root负责本轮7个文档/机器索引提交推送，各topic由原owner当场更新。
+
+证据直接复用：`artifacts/g2-maintainer-2026-10-02/resume-12003/m5-family/g2-m5-nw-family-adult-contract-closeout.json`、`m5-family/formal-v13-next-01-family-continuation-assessment.json`、`m2-events/actual-v13-feast-arrival-opened-02/REPORT-FIELDS.json`、`m4-sway/murchad-v13-cold-actual-assessment.json`及`murchad-v13-post31-actual-assessment.json`、`m4-construction/economic-observation/ACTUAL-V13-ECONOMIC-PROOF.json`、`m4-council/task-value-observation/ACTUAL-V13-FIRST-REGISTRATION-RED.json`、`m7-murchad/formal-v13-next-01/result.json`及`formal-v13-next-02/result.json`。失败attempt与历史3/8截点保留，未重跑测试/实机。
+
 ## 09:47 真实续写：成人婚姻 warm/cold、Sway启动与宴会扣款后置
 
 2026-10-02 09:47（Asia/Shanghai）按已经发生的实机结果补录，保留07:59等原始阶段记录。v10 source `0ccc3f00b741598bc7ef72798a831ed2f7157abf`/934inputs/DLL `af88527cd99d18cdd0b3f493ccc84f25fbe70e58bc1dfacac38647071909c876` 及[exact CI36945961775](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36945961775) 08:30:10 SUCCESS已闭合；随后实际v11 source `ad614bfa167153028e2de0bccbe127961eb10ddc`/934inputs/DLL `6db7187abb83716e82f3694e0c574e20e46d89ee1eaf8b58a2655c77ae93034b`，[exact CI36949220688](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36949220688) 09:09:45 SUCCESS。最后实际GAME46800为Murchad actor31853/episode `native-31853-af642d76cb41`，ordinary_campaign_succession/xar_off，currentgoal成功继承仍0。

@@ -1,5 +1,12 @@
 # CK3 自动游玩智能体进度中心
 
+
+## 2026-10-02 11:03：原成人家族合同完成，G2当前4/8
+
+原≥5合法候选的成人36403↔16825238选定路径已闭合独立婚姻、native主家族继承价值、newPIDcold与正式next消费/31日续行，G2-M5及NW-FAMILY complete；G2为4/8（M0/M1/M3/M5）、NW队列1/4，原合同/分母不变。[原合同实证](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m5-family/g2-m5-nw-family-adult-contract-closeout.json)、[机器索引](g2-requirements-v1.json)、[最新日报](daily/2026-10-02.md)。实际not_allied、futurebirth/通用war与另Rogue childpair不冒充完成。
+
+Murchad独立110日/currenth2072/raw53329800，新pending instance -721420283 typedcontext无效造成19日后自然交互停点，60日目标未成、0reply；rogue191/243、Robert3153/36524及百年/新政府资格保持。Feast7002单选+35与root-assisted view、Sway同实例31/310/零收益、Feast ongoing、Develop注册RED各按真实边界继续。v13 source176f0640 exactCI36954746962 SUCCESS，Clan/Tribal暂无NewGame/live。[本轮完整证据与下一施工](../g2-maintainer-resume-1.20.0.3-2026-10-02.md)。下方3/8为原日期历史截点，保留。
+
 ## 2026-10-01 15:49:34：非战争 G2 源码交付与实机准备
 
 项目所有者最新指令已允许本机 CK3 实机，恢复宗教研究，并停止战争相关研究。本节覆盖下方历史截点中的“禁止占用游戏／宗教暂缓／继续战争施工”安排；历史 artifact 与失败保留，不重新解释其资格。
@@ -34,7 +41,7 @@ production 长跑中自然触发 one-life terminal，完成匹配结算，再经
 进入第三个 episode。该结果完成了同一冻结 seed 的 G2 全寿命重复门；它仍不代表不同 ruler/政府/DLC、普通 campaign
 跨继承或全游戏自治已经完成。
 
-现行 G2 使用固定八项可见 OODA 分母，当前为 `3/8`；G2-M0 的三路战争退出、G2-M1 的实体发现/core turn bundle，以及 R0077 自然继承与真实继承人续玩（G2-M3）已完成。需求、状态和施工顺序以
+现行 G2 使用固定八项可见 OODA 分母，当前为 `4/8`；G2-M0 的三路战争退出、G2-M1 的实体发现/core turn bundle、R0077 自然继承与真实继承人续玩（G2-M3），以及原五合法候选的成人家族选定路径（G2-M5）已完成。需求、状态和施工顺序以
 [`g2-requirements-and-execution.md`](g2-requirements-and-execution.md) 及其机器可读 JSON 为准。
 
 ## 2026-10-01 13:00：非战争 1.20 后台组合 `static-ready`
