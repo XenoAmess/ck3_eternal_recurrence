@@ -53,6 +53,7 @@
 | `Undefined event target 'employer'` / `Invalid right side during comparison 'scope'`，位置在 court-position 的 `is_shown_character` / `valid_character`（1.20.0.3） | 这两个候选回调提供的是 `scope:employee`（被考虑或正在任职者）和 `scope:liege`（该职位的雇主），没有 `scope:employer` 合同 | 对雇主的比较使用 `scope:liege`，对候选人的条件使用 `scope:employee`；不要盲换 `root` 或候选人的政治 `liege`。`valid_position` 又是另一个回调，原版明确给它雇主 character root；按具体字段核对，不统一替换整份职位文件 |
 | 联盟成员消息出现 `ERROR:[joiner.GetShortUINameNoTooltip]` / `joiner.GetUIName`，即使角色图标正常（1.20.0.3） | 类型回调 `on_member_character_joined` 的 root 是 Confederation，加入者在 `scope:character`；全局 `on_confederation_join` 的 root 则是加入的 Character，另有 `scope:confederation`。消息文案要求保存的 `joiner` / `confederation`，图标参数不会建立这些别名 | 在实际发送消息的回调内，从确定类型的加入者和联盟显式保存别名；类型回调根保存 `confederation`，进入 `scope:character` 保存 `joiner`。不能把联盟根或收件玩家存成加入者，也不能依赖全局回调先执行并传播别名。`exists` 只保护缺失，不修复 House 等错误类型；源码依据及合成例见下方原版证据，新增产品修复仍须独立实机验证 |
 | `Event target link 'root' returned an unset scope`，位置在 CB `on_victory` 的 tooltip/description（1.20.0.3） | 胜利描述可在战争尚未建立时预求值；CB 的默认根是 CB scope，不等同于攻击方角色，且此时 `root.war` 可不存在 | 仿原版先以外层 `if = { limit = { exists = root.war } ... }` 保护整个依赖战争的调用，再显式传 `WAR = root.war`。共享 helper 可按传入的 `$WAR$` 建存在性门，保留有效战争分支全部业务；不要从攻击方任意另找一场战争，也不要假定 `scope:war` 总被注入。同级 guard/read 不短路规则仍适用；预览报错次数不等于实际败坏的胜利场数 |
+| 单目标 CB 的结算 helper 读 `scope:<selected_title>` 却报 undefined/unset，且前段业务会转移或移除目标列表 | 需分别核验实际覆盖定义、原选中目标的 producer、列表变动与 consumer；helper 推导的最高头衔或攻击方主头衔未必是原选择 | 先核对完整 CB 的目标基数合同；确为单一有效目标时，在原 `target_titles` 改动之前显式保存原目标，再按原 WAR/业务参数调用。不要从改动后的 list 反推、另选目标或用可选读取吞掉真实结算；原版保存示例与 preview 限制见下文 |
 | 失地玩家持有的角色状态无法由 `yearly_global_pulse` 恢复 | `yearly_global_pulse` 没有 root；R426 实机证明其 `every_player` 不枚举这个仍为 `is_ai = no`、但已不再是 count+ playable 的角色 | 扩展原版 `random_yearly_everyone_pulse`；在自定义 on_action 的 `trigger` 首先要求 `is_ai = no`，再调用严格的玩家状态恢复 effect。该原版 pulse 明确逐个覆盖所有角色 |
 | 开局钩子里玩家/规则拿不到 | `on_game_start` 时机太早 | 用 `on_game_start_after_lobby` |
 | effect 里设的值，同 on_action 触发的事件读到旧值 | effect 与事件**并发**执行 | 计算进事件 immediate，或事件延迟 1 天 |
@@ -158,6 +159,24 @@ on_member_character_joined = {
 本次知识富化只修改文档，没有启动游戏、生成 script docs 或运行跨 mod 试验；合成示例和任何新的
 产品修复仍为 **engine NOT_RUN**。后续要在包含修复的 exact-tree 上分别核验错误签名、真实业务结果
 与必要读档；触及日志上限后的缺失记录或旧进程的零报错都不能代替通过。
+
+### CB 原目标的基数与保存位置（2026-10-02）
+
+CK3 1.20.0.3 原版 `game/common/casus_belli_types/_casus_belli.info:60–61` 区分
+`mutually_exclusive_titles` 为真时只能选择一个 title，与 `combine_into_one` 把多个可选目标收进
+一个 UI 条目；后者不证明可同时选择多项。`:72` 的 `scope:target` 保证只描述有目标时的
+`valid_to_start`，不能直接外推所有回调或 tooltip 都注入同名对象。
+
+原版 `game/common/casus_belli_types/00_religious_war.txt:3513–3528` 展示从 `target_titles`
+经 `every_in_list` 保存 `target` 后再生成 title-transfer tooltip 的用法，完整文件 SHA-256 为
+`5c4b6af8742f65a720529434a2997e83ec93b6cfa8d594204ca914ae6c359d33`；info 的完整 hash 沿用上表。
+这只是保存语法的 native source：选择对象的身份仍须由使用者自己的完整有效 CB 头部及 producer 链证明。
+先保存原选择、再让业务改列表，能避免把衍生目标或变动后的列表冒充原目标；不能推广为多目标时
+循环最后一项的任意选择政策。还应追踪保存与 consumer 之间的显式重写，以及真实业务的 typed WAR 合同。
+
+正常单一目标的静态 producer 闭合不证明 tooltip 前序保存已传播、弱目标仍有效或实际结算成功。
+零目标预览也不能伪造正常目标；合法 preview 的处理与真实缺目标的错误应按具体产品语义实机核验。
+本次仅更新知识文档，未执行引擎、战争或新的夹具，相关结果均 **NOT_RUN**。
 
 ## 变量
 
