@@ -1,0 +1,3782 @@
+{
+  "schema": "xar.ck3.episode03.revision-research-boundaries.v1",
+  "date": "2026-10-03",
+  "reviewer": "/root/drafts_h3937",
+  "purpose_zh": "用户第7问：原129段研究边界、具体文案修订及真实研究缺口；本记录不登记制作或交付状态。",
+  "scope": {
+    "original_cues": 129,
+    "original_chapters": 9,
+    "game_version": "1.20.0.3",
+    "steam_build": 25652598,
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0156",
+    "episode_run_id": "native-33388-ebbc6357f8b6",
+    "actor_id": 33388,
+    "war_id": 1,
+    "siege_id": 6,
+    "province_id": 1506,
+    "public_cunit_id": 0,
+    "holding_name": "Lewes",
+    "casus_belli": "norman_conquest_cb",
+    "first_observed_date": "1067-01-10",
+    "occupation_observed_date": "1067-04-22",
+    "observed_span_days": 102,
+    "span_limit_zh": "首次记录不是内部建立tick，102日不是完整内部工期；旧版本或早期其他城案例不外推。"
+  },
+  "categories": [
+    "已证明游戏规则",
+    "实机观察",
+    "未隔离因果",
+    "未查明公式或机制"
+  ],
+  "category_limit_zh": "逐cue类别可多选。未查明类别只针对该句相关的本场有效输入、写入者或精确分账，不撤销其已证明的规则；新增标签对应关系已闭合。",
+  "reader_answer_zh": "四处因果或适用范围和一处英文需要收窄；每日进度中文两标签已经查清。保留观测，采用明确范围的句子即可讲解，无需把全部有界研究统称待确认。",
+  "treatment_status": "research_and_wording_recommendations_only",
+  "historical_policy": {
+    "old_reports_and_json": "unchanged",
+    "new_append_evidence": "daily-tooltip-label-scope.json",
+    "priority_zh": "本记录的标签结论使用2026-10-03追加证据；旧报告的原解释保持历史，不以新JSON改写旧证据。"
+  },
+  "old_research_backlinks": [
+    "episode03-siege-progress-1.20.0.3.md",
+    "episode03-assault-1.20.0.3.md",
+    "episode03-siege-events-1.20.0.3.md",
+    "episode03-occupation-war-score-1.20.0.3.md"
+  ],
+  "latest_label_correction": {
+    "id": "B09",
+    "cue_ids": [
+      "E3A03-034",
+      "E3A03-035",
+      "E3A03-036",
+      "E3A03-037",
+      "E3A03-038"
+    ],
+    "priority": "condense_arithmetic_and_name_separate_components",
+    "question_zh": "人数项0.31为何没有等于UI兵士1.4？",
+    "finding_zh": "这是一处标签对应错误，现已闭合。SW_TT_MAA_PROGRESS对应兵士：M为合格兵士团有效围攻属性乘规模后汇总。SW_TT_MEN_PROGRESS对应围攻士兵：E为人数优势项。B6746/G460得到E0.31，与UI围攻士兵0.3相容；兵士1.4是另外的M显示值。",
+    "proven_zh": "完整日速函数、两处计算到标签的指令、两个字面字符串、原版简中/英文localization和Jan21原图共同证明两行不同。",
+    "unproved_zh": "本案每个合格团的全部有效M输入、完整日速修正和显示格式器尚未独立采齐。不能宣称完全复算2.78；不能将M全部归为射石机。",
+    "affects_explanation_zh": "应纠正两项混称；每200人加0.01是已证明局部规则，删除细算术只为表达和节奏，不能说公式本身未查明。",
+    "replacement_zh": "把鼠标放到每日进度上，就能分开看基础、兵士和围攻士兵的当前贡献。这里的两行不是同一项：一行来自兵士的有效围攻属性，另一行来自围攻人数超过守军的部分。实际推进仍用相邻两天的工作变化来核对。",
+    "replacement_en": "Hover over daily progress to separate the current base, men-at-arms and besieging-soldier contributions. The two troop lines are different: one uses effective regiment siege stats; the other uses soldiers in excess of the garrison. Check actual progress against work gained across adjacent days.",
+    "film_treatment_zh": "建议删除E3A03-036至038细算术，合并035解释两项；若保留算例，只称围攻士兵人数优势这一项，并标静态算例。本记录不确认新素材应用状态。",
+    "conditional_arithmetic_limit_zh": "+0.05加条件性的9/10乘0.3等于+0.32只是差额相容，不能反推实际团型号、全部有效属性或独立贡献。"
+  },
+  "remaining_gaps": [
+    {
+      "id": "G01",
+      "topic_zh": "守军+40唯一生产者",
+      "required_if_zh": "要解释本案+40的原因",
+      "missing_zh": "守军record、容量、存储人数、模式与实际writer/caller的两端证据。",
+      "known_zh": "围城常规补员冻结；容量/零哨兵存在非补员改变getter的有限路径，但不证明本案使用。",
+      "workaround_zh": "只讲守军读数和总工作量上升。"
+    },
+    {
+      "id": "G02",
+      "topic_zh": "完整普通日速与抵达贡献",
+      "required_if_zh": "要精确复算本案日速或唯一分账增援",
+      "missing_zh": "同帧全部合格团count/stack、有效siege属性、归属和完整日速修正；显示格式器。",
+      "known_zh": "两中文标签、人数局部项、规模归一化、城防与最低日速路径已证。",
+      "workaround_zh": "保留UI明细和相邻日净工作，使用抵达后表述。"
+    },
+    {
+      "id": "G03",
+      "topic_zh": "阶段16天的有效修正分账",
+      "required_if_zh": "要解释本场16而非静态18",
+      "missing_zh": "同帧character/cache/province有效项。",
+      "known_zh": "16是长度；基础20、小缺口-10%、修正相加的路径已证。",
+      "workaround_zh": "明确长度并保留其他修正边界。"
+    },
+    {
+      "id": "G04",
+      "topic_zh": "纯强攻与死亡归因",
+      "required_if_zh": "要独立测算纯强攻或逐团阵亡原因",
+      "missing_zh": "普通/强攻/事件分量、参与团变化、损失账或有效对照。",
+      "known_zh": "起始投影13.6/168与日净16.38/-168分别观测；投影算术已知。",
+      "workaround_zh": "讲总净变化，不改称纯强攻或全部阵亡。"
+    },
+    {
+      "id": "G05",
+      "topic_zh": "单城精确占领分",
+      "required_if_zh": "要排除三日同期其他占领并给单城唯一贡献",
+      "missing_zh": "全部合格占领变化、native collector集合与有效CB计分输入。",
+      "known_zh": "Apr19至22四分项窗口、native占领13、UI县13.2与主面板13、当前CB身份已知。",
+      "workaround_zh": "前置三日窗，分别报字段。"
+    },
+    {
+      "id": "G06",
+      "topic_zh": "新建围城等号入口",
+      "required_if_zh": "要讲人数相等自动建立新围城",
+      "missing_zh": "实际创建入口及其比较。",
+      "known_zh": "既有Siege的B<G受阻分支已证。",
+      "workaround_zh": "明确已经建立的围城。"
+    }
+  ],
+  "work_limits": {
+    "new_live_actions": 0,
+    "desktop_actions": 0,
+    "media_or_native_or_full_python_test_runs": 0,
+    "changed_paths": [
+      "docs/ck3-native-ai/episode03-revision-research-boundaries-2026-10-03.md",
+      "docs/ck3-native-ai/episode03-revision-research-boundaries-2026-10-03.json"
+    ],
+    "old_history_edits": 0
+  },
+  "issues": [
+    {
+      "id": "B01",
+      "cue_ids": [
+        "E3A06-001"
+      ],
+      "priority": "must_sharpen_wording",
+      "question_zh": "420→460是否就是围城期间的常规守军补员？",
+      "finding_zh": "不能这样归因。当前游戏概念明确围城期间正常守军补员冻结；原response只证明读数和总工作上升。",
+      "affects_explanation_zh": "影响补员机制讲解，数值与倒计时延长事实保留。",
+      "replacement_zh": "三天后，守军读数从四百二十变成四百六十，总工作量来到三百二十五。城外没换目标，城里要完成的量已经变了。",
+      "replacement_en": "Three days later, the garrison reading rises from 420 to 460 and total work reaches 325. The target has not changed, but the work required has.",
+      "real_gap_zh": "本案+40的实际native写入者、守军军团模式/当前值与容量、建筑或脚本输入变化尚未绑定；只有要解释原因时才必须继续查。",
+      "source_finding_ids": [
+        "GARRISON_NORMAL_REFILL"
+      ],
+      "preserve_numbers": true,
+      "old_cues": [
+        {
+          "id": "E3A06-001",
+          "zh": "可就在三天后，守军从四百二十补到四百六十，总工作量随之来到三百二十五。城外没换目标，城里要完成的量已经变了。",
+          "en": "Three days later, defenders rise from 420 to 460 and total work reaches 325. The target has not changed, but the work required has."
+        }
+      ]
+    },
+    {
+      "id": "B02",
+      "cue_ids": [
+        "E3A03-118",
+        "E3A06-010",
+        "E3A06-011",
+        "E3A06-012"
+      ],
+      "priority": "must_sharpen_summary",
+      "question_zh": "+2.78能否全部归给新射石机，或说合军本身加速？",
+      "finding_zh": "一般兵力/器械贡献规则已证明；本案只记录抵达之后更大的相邻日净工作。B/G可直接算出的兵力项差为+0.05；把其余+0.27认作9个新射石机的独立贡献，还依赖未逐团核齐的eligible规模/有效属性及其他修正。",
+      "affects_explanation_zh": "改总结的因果动词即可；详细段落已正确保留到达日+2.46、次日+2.78和合军后+2.78。",
+      "replacement_zh": "这一场最有用的三次变化，是守军读数和总量上升时预计延后，增援抵达后后续净推进更大，缺口带来强攻选择。最后，四月二十二日确认威廉占领。",
+      "replacement_en": "Three useful observations: higher garrison and total-work readings accompany a longer estimate, reinforcement precedes larger daily gains, and a breach enables assault. William occupies the holding on 22 April.",
+      "real_gap_zh": "若要精确分账，需要同帧所有参围团的count/stack、有效siege value、归属与完整有效日速修正；不能以差额相容反推实际团型号。",
+      "source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "preserve_numbers": true,
+      "old_cues": [
+        {
+          "id": "E3A03-118",
+          "zh": "这一场最有用的三次变化，是守军让预计延后、增援提高后续净推进、破口带来强攻选择。最后，四月二十二日确认威廉占领。",
+          "en": "Three useful changes: garrison growth extends the estimate, reinforcement precedes larger daily gains, and a breach enables assault. William occupies the holding on 22 April."
+        },
+        {
+          "id": "E3A06-010",
+          "zh": "抵达的那个相邻日，工作二十四点六到二十七点零六，仍净增二点四六。不能把日末出现的新兵，当成这一整天都已参围。",
+          "en": "Across the arrival day, work goes from 24.6 to 27.06, still a net 2.46. Troops present at the endpoint were not necessarily there all day."
+        },
+        {
+          "id": "E3A06-011",
+          "zh": "再过一天，二十七点零六到二十九点八四，净增二点七八。窗口后来列出六十九名围攻士兵，每天进度显示二点七。",
+          "en": "The next day gains 2.78, from 27.06 to 29.84. The later UI lists 69 siege soldiers and displays 2.7 work per day."
+        },
+        {
+          "id": "E3A06-012",
+          "zh": "正常合军之后，再过一天，工作二十九点八四到三十二点六二，也净增二点七八。这不是合军按钮凭空奖励的一笔进度。",
+          "en": "After a normal merge, the next day also gains 2.78, from 29.84 to 32.62. This is not a lump-sum progress reward from the merge button."
+        }
+      ]
+    },
+    {
+      "id": "B03",
+      "cue_ids": [
+        "E3A03-073",
+        "E3A06-009",
+        "E3A03-056",
+        "E3A03-060",
+        "E3A03-061"
+      ],
+      "priority": "sharpen_English_only_optional_ZH",
+      "question_zh": "16天究竟是阶段持续长度还是阶段剩余？为何不是18？",
+      "finding_zh": "持续长度已由GUI绑定查清，不是未确认问题。base20仅加小缺口-10%的算例是18；本场16的完整修正输入未分账，不可自动归给缺口或某个军官。",
+      "affects_explanation_zh": "中文已否定16天剩余；英文not necessarily偏弱，建议直接说明长度。",
+      "replacement_zh": "这十六天是当前阶段的长度，不是距下一次事件还剩十六天。缺口有负百分之十修正，其余有效修正要另看。",
+      "replacement_en": "The 16 days are the current phase length, not the countdown to its next event. The breach contributes minus ten percent; other effective modifiers remain separate.",
+      "real_gap_zh": "仅缺本场同帧phase getter的character/cache/province有效项及显示精度；一般加法聚合公式和military_engineer=-0.1现成定义已知。",
+      "source_finding_ids": [
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "preserve_numbers": true,
+      "old_cues": [
+        {
+          "id": "E3A03-073",
+          "zh": "到一月二十九日，工作五十二点零八，总量三百二十五，预计还剩九十九天。窗口这时显示当前阶段十六天。",
+          "en": "By 29 January, work is 52.08 of 325 and the estimate is 99 days. The UI shows 16 days for the current phase."
+        },
+        {
+          "id": "E3A06-009",
+          "zh": "这十六天是窗口显示的当前阶段时间，不是从现在还要等十六天。破口确有负百分之十修正，其他间隔因素还要另看。",
+          "en": "The 16 days describe the displayed current phase, not necessarily 16 days remaining. The breach has a minus-ten-percent modifier; other factors remain separate."
+        },
+        {
+          "id": "E3A03-056",
+          "zh": "阶段间隔的基础值是二十天，相关修正和破口会改变实际间隔。还没到下次事件时，普通进度仍然每天累积。",
+          "en": "Phase length starts at twenty days; modifiers and a breach change the actual interval. Ordinary work still accumulates before the next event."
+        },
+        {
+          "id": "E3A03-060",
+          "zh": "先看破口。一、二级破口，对事件间隔分别有负百分之十、负百分之三十的修正。它们不是把城防数字直接扣成零。",
+          "en": "First, breaches. Levels one and two modify the event interval by minus ten and minus thirty percent. They do not simply reduce fort level to zero."
+        },
+        {
+          "id": "E3A03-061",
+          "zh": "只加入这项修正的算例里，基础二十天，一级对应十八天，二级对应十四天。其他间隔修正还要另外计算。",
+          "en": "With only that modifier in a labelled example, twenty days becomes eighteen at breach level one or fourteen at level two. Other interval modifiers still matter."
+        }
+      ]
+    },
+    {
+      "id": "B04",
+      "cue_ids": [
+        "E3A03-083",
+        "E3A03-084",
+        "E3A03-085",
+        "E3A03-086",
+        "E3A03-088",
+        "E3A06-014",
+        "E3A06-015"
+      ],
+      "priority": "retain_existing_boundary",
+      "question_zh": "16.38是否纯强攻进度，168是否强攻造成的真实阵亡？",
+      "finding_zh": "两者都不可如此改称。13.6/168是起始投影，16.38是一天总净工作，−168是eligible兵力净变；预览损失算术已知，不是伤亡原因未知公式。",
+      "affects_explanation_zh": "现稿已明确净值与预览，保持即可。",
+      "replacement_zh": "这一日总净工作增加十六点三八，合格参围兵力净少一百六十八；净值不能单独证明纯强攻贡献或逐团阵亡原因。",
+      "replacement_en": "Total net work rises by 16.38 over the day and eligible strength falls by 168. These net changes do not isolate assault work or attribute individual deaths.",
+      "real_gap_zh": "纯因果需要同帧实际普通/强攻工作分量、事件结算和参与团变化，死亡归因还需原生损失账或排除补员/移动/损耗的对照。当前讲法无需补这些能力。",
+      "source_finding_ids": [
+        "ASSAULT_PROJECTION",
+        "EVENT_EFFECTS"
+      ],
+      "preserve_numbers": true,
+      "old_cues": [
+        {
+          "id": "E3A03-083",
+          "zh": "当时预览是每天额外十三点六工作、预计一百六十八人减员。十三点六是工作量，不是进度条直接加十三点六个百分点。",
+          "en": "The preview gives 13.6 extra work per day and 168 projected losses. The 13.6 is work, not 13.6 percentage points of the progress bar."
+        },
+        {
+          "id": "E3A03-084",
+          "zh": "预计损失按当前合格围攻兵力与破口等级取值。一级破口配置百分之二点五，二级配置百分之一。",
+          "en": "Projected losses use current eligible strength and breach level. The configured percentages are 2.5 percent at level one and one percent at level two."
+        },
+        {
+          "id": "E3A03-085",
+          "zh": "规则算例里，一千名合格围攻者，分别对应二十五、十人的预计项。这里是预览的算术，尚不是本场真实损失。",
+          "en": "In a rule example, 1,000 eligible besiegers give projected values of 25 or ten. This explains the preview's arithmetic, not actual losses in this siege."
+        },
+        {
+          "id": "E3A03-086",
+          "zh": "预览会跟着当前兵力和守军变化。它帮我们比较眼前的选择，不是一张保证最后损失人数的收据。",
+          "en": "The preview changes with current troops and garrison. It helps compare the present choices, rather than guaranteeing final losses."
+        },
+        {
+          "id": "E3A03-088",
+          "zh": "这一日，工作从五十二点零八到六十八点四六，净增十六点三八。参围兵力从六千七百四十六变为六千五百七十八。",
+          "en": "Over this day, work rises from 52.08 to 68.46, a net 16.38. Eligible strength falls from 6,746 to 6,578."
+        },
+        {
+          "id": "E3A06-014",
+          "zh": "参围兵力净少一百六十八，这次恰好和开始时的预览相同。十六点三八却是这一日总净工作，不能全叫强攻额外贡献。",
+          "en": "Eligible strength falls by 168, matching the starting preview in this sample. The 16.38 is total net work over the day, not an isolated assault contribution."
+        },
+        {
+          "id": "E3A06-015",
+          "zh": "下一次预览已经改成十三点二工作、一百六十四人。兵力变了，预览也跟着变；它不是对整段强攻的一次固定报价。",
+          "en": "The next preview is already 13.2 work and 164 losses. As strength changes, the preview changes; it is not one fixed quote for an entire assault."
+        }
+      ]
+    },
+    {
+      "id": "B05",
+      "cue_ids": [
+        "E3A03-100",
+        "E3A06-021",
+        "E3A03-108",
+        "E3A03-109"
+      ],
+      "priority": "must_sharpen_time_window",
+      "question_zh": "13和13.2是否都是这座城独立贡献，是否同一精度字段？",
+      "finding_zh": "Apr19→Apr22是三日战争比较：native占领项0→13；UI南撒克逊细项显示13.2、主面板总分13。它们是分别观察的字段，既非每城固定奖分，也非精确同一值。",
+      "affects_explanation_zh": "后文已经给三日窗和同期他城边界；前面城破前后容易让人误以为紧邻城破对照，应前置日期。",
+      "replacement_zh": "四月十九日至二十二日的记录里，占领分项从零来到十三。不能把这三日的变化直接推广成每拿一座城都加十三分。",
+      "replacement_en": "Between the records on 19 and 22 April, the occupation component rises from 0 to 13. This does not make every captured holding worth 13 points.",
+      "real_gap_zh": "若要单城精确归因，仍需同期所有eligible占领变化、native collector n/N与CB有效计分输入；CB身份与当前定义不是未知。不能从县细项13.2反解唯一集合。",
+      "source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "preserve_numbers": true,
+      "old_cues": [
+        {
+          "id": "E3A03-100",
+          "zh": "城破前后，占领分项从零来到十三。这个数字先放回本场战争里看，不能直接推广成以后每拿一座城都加十三分。",
+          "en": "Across capture, the occupation component rises from 0 to 13. This does not mean every future holding is worth 13 points."
+        },
+        {
+          "id": "E3A06-021",
+          "zh": "展开占领提示，这次南撒克逊细项显示十三点二，面板总分显示十三。这里先看本场的细项，不把整数显示当成每座城的固定价值。",
+          "en": "The occupation tooltip lists Sussex at 13.2, while the main panel shows 13. Read this case's detailed entry rather than treating the integer as a fixed value per holding."
+        },
+        {
+          "id": "E3A03-108",
+          "zh": "四月十九日四项都是零；二十二日，战斗零、俘虏零、占领十三、目标计时零，总分十三。这里两次记录相隔三天。",
+          "en": "On 19 April all four components are 0. On 22 April: battles 0, prisoners 0, occupation 13 and ticking 0, for a total of 13. The readings are three days apart."
+        },
+        {
+          "id": "E3A03-109",
+          "zh": "这段时间，别处也可能发生占领。我们能确认占领项前后变了，若要把全部十三分都归给这一座城，还要检查同期其他据点。",
+          "en": "Other occupations may occur during this interval. We confirm the occupation component changed; assigning all 13 points to this holding needs further isolation."
+        }
+      ]
+    },
+    {
+      "id": "B06",
+      "cue_ids": [
+        "E3A03-034",
+        "E3A03-035",
+        "E3A03-051",
+        "E3A03-053"
+      ],
+      "priority": "retain_existing_boundary",
+      "question_zh": "UI2.4为何对应实测一天2.46，能否完整复算普通日速？",
+      "finding_zh": "UI使用GetDailyProgress|1，实测是两端工作差。显示精度差已观察；未追完具体格式器及所有有效修正，不能把1+1.2+0.2当作完整精确复算，也不能说已经证明截断规则。",
+      "affects_explanation_zh": "现稿只区分显示与变化且保留事件边界，正确，不必加含糊待确认口播。",
+      "replacement_zh": "界面列二点四；这个相邻日的实际净工作增加二点四六。一个是界面显示，一个是两端差值。",
+      "replacement_en": "The UI lists 2.4; net work increases by 2.46 over this adjacent day. One is a displayed value, the other a difference between two states.",
+      "real_gap_zh": "若要逐项精确复算本案D，需完整有效modifier和原始getter值；若要解释2.4的生成，还需格式器追踪。基础、兵力、count/stack、城防和最低日速规则本身已知。",
+      "source_finding_ids": [
+        "ORDINARY_SPEED"
+      ],
+      "preserve_numbers": true,
+      "old_cues": [
+        {
+          "id": "E3A03-034",
+          "zh": "初期窗口的每天进度显示二点四，说明里还列着基础、兵力与围攻士兵。稍后实际一天的工作差值，会比这一位小数更细。",
+          "en": "The opening UI shows 2.4 work per day, with base, manpower and siege-soldier terms. Our observed daily work difference has greater precision."
+        },
+        {
+          "id": "E3A03-035",
+          "zh": "普通围城的基础日速是一。之后叠加器械、兵力和其他修正，再经过城防影响，最后检查最低日速。",
+          "en": "Ordinary siege speed starts at one. Engine and strength contributions and other modifiers are applied, followed by fort effects and the final minimum speed."
+        },
+        {
+          "id": "E3A03-051",
+          "zh": "工作从二点四六增加到四点九二，实测净增二点四六。这里讲的是这一日的前后差值，不把所有可能的事件都凭空排除。",
+          "en": "Work rises from 2.46 to 4.92: a net gain of 2.46 over this day. This is an observed difference, without claiming every possible event is excluded."
+        },
+        {
+          "id": "E3A03-053",
+          "zh": "界面显示二点四，这一日实际净增二点四六；剩余估计从一百二十四到一百二十三天。比较时，要分清显示精度和实际变化。",
+          "en": "The UI shows 2.4, while this day gains 2.46. The estimate falls from 124 to 123 days. Distinguish display precision from observed change."
+        }
+      ],
+      "latest_label_correction_id": "B09",
+      "film_treatment_zh": "建议删除E3A03-036至038细算术，合并035解释两项；若保留算例，只称围攻士兵人数优势这一项，并标静态算例。本记录不确认新素材应用状态。",
+      "label_mapping_is_proved": true,
+      "unresolved_scope": [
+        "The actual effective siege stat and normalized current size of every contributing live regiment were not independently captured at the endpoint.",
+        "Full character/cache/conditional modifiers and ordinary-D getter are not independently live published;2.78 remains observed net C interval.",
+        "One-decimal formatter round/truncate is not established; displayed subitems must not be summed as exact raw."
+      ]
+    },
+    {
+      "id": "B07",
+      "cue_ids": [
+        "E3A03-004",
+        "E3A03-031",
+        "E3A03-032",
+        "E3A06-005",
+        "E3A03-041",
+        "E3A03-045",
+        "E3A06-007"
+      ],
+      "priority": "no_change_rules_are_already_proved",
+      "question_zh": "max10、每档10、+0.3和高城防规则是否只是待确认猜测？",
+      "finding_zh": "不是。当前定义/有限native路径和本场招募UI可互证mangonel tier2、stack10、base0.3及覆盖至10；有效属性仍可由修正改变。本场fort3只观察本场，不冒充实测高城防。",
+      "affects_explanation_zh": "现稿明确规则算例与本场城防，保留。不要带入早期Palermo或其他版本的0.5/8人读数。",
+      "replacement_zh": "当前原版射石机定义为每档十、基础攻城数值零点三；二级器械覆盖到十级城防。本场城防三级，高城防部分是规则算例。",
+      "replacement_en": "Current vanilla mangonels use ten per stack and a base siege value of 0.3. Tier two covers fort levels through ten. This case has fort level three; higher forts are rule examples.",
+      "real_gap_zh": "不存在阻碍本段规则解释的未知公式。仅本案全部团的有效属性分账未采齐，高城防实机不是证明现存静态规则的必要条件。",
+      "source_finding_ids": [
+        "MANGONEL_CURRENT_DEFINITION",
+        "SIEGE_COUNT_STACK"
+      ],
+      "preserve_numbers": true,
+      "old_cues": [
+        {
+          "id": "E3A03-004",
+          "zh": "这一期使用一点二零点零点三的原版规则。城防、守军、推进速度与事件，各自影响不同的步骤，不能只盯住一个百分比。",
+          "en": "This episode uses vanilla 1.20.0.3 rules. Fort level, garrison, progress speed and events affect different steps; one percentage is not the whole picture."
+        },
+        {
+          "id": "E3A03-031",
+          "zh": "器械贡献按当前数量除以每档编制，再乘有效攻城数值，逐团加起来。半档和满档不同，不能把原始人数直接乘上兵种面板数值。",
+          "en": "For each eligible regiment, multiply its effective siege value by current count divided by stack size. Half a stack is not a full stack."
+        },
+        {
+          "id": "E3A03-032",
+          "zh": "攻城数值和有效城防范围，要分开看。一个帮助每天推进，另一个告诉我们：面对更高城防，器械会不会跟不上。",
+          "en": "Read siege value and effective fort range separately. One helps daily progress; the other warns when the engines fall behind stronger walls."
+        },
+        {
+          "id": "E3A06-005",
+          "zh": "比如一档十、当前五，就按半档规模；当前十才是一档。这里解释计算方式，不用早期合计六十反猜每一团的型号。",
+          "en": "For a stack of 10, current count 5 means half a stack; 10 means one full stack. This explains the rule without identifying every early regiment."
+        },
+        {
+          "id": "E3A03-041",
+          "zh": "这一版的城防门槛是四、六、十一、十六、三十一。达到门槛就开始检查，不必再高出一级才生效。",
+          "en": "This build’s fort thresholds are four, six, eleven, sixteen and thirty-one. The check starts at the threshold, without requiring another fort level."
+        },
+        {
+          "id": "E3A03-045",
+          "zh": "若最高合格攻城等级是一，覆盖第一道门槛，六级城防还剩第二道要受罚。此时速度只乘一次零点七。",
+          "en": "With highest eligible siege tier one, the first threshold is covered. Fort level six leaves the second uncovered, applying 0.7 once."
+        },
+        {
+          "id": "E3A06-007",
+          "zh": "本案城防三级，还没到第一道四级门槛。我们能用这座城看增援和事件，但不会假装在这里实测过十一或十六级城防。",
+          "en": "This holding has fort level 3, below the first threshold at 4. It illustrates reinforcement and events, not a live test of level 11 or 16 forts."
+        }
+      ]
+    },
+    {
+      "id": "B08",
+      "cue_ids": [
+        "E3A03-012"
+      ],
+      "priority": "must_sharpen_existing_siege_scope",
+      "question_zh": "既有围城的B<G检查，能否证明人数相等时自动创建新围城？",
+      "finding_zh": "不能。已审的是既有Siege的IsBlocked及选择谓词，尚未闭合新建入口。",
+      "affects_explanation_zh": "讲既有围城的兵力受阻门可以保留等号，但应明说已经建立；不能泛讲相等就能开始围城。",
+      "replacement_zh": "对已经建立的围城，人数刚好相等不会因为这一道人数比较受阻；还要看窗口里的其他原因。",
+      "replacement_en": "For an existing siege, equal numbers do not trigger this troop-count blocker. Check the window for other blockers.",
+      "real_gap_zh": "若要作出新建围城的等号结论，须另查实际创建入口；保守用原版多于表达或限定既有围城，就不需要扩大本期研究。",
+      "source_finding_ids": [
+        "EQUALITY_GATE",
+        "GARRISON_PRODUCER_FINITE_APPEND"
+      ],
+      "source_append_pin": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\mechanism-review\\equality\\garrison-producer.json",
+        "bytes": 47620,
+        "sha256": "5b8b9990a9cb99edb6d870ce3ba5a09fbb5f8ccdaf06a5ffc0d0f2ac4ed8d9a8"
+      },
+      "old_cues": [
+        {
+          "id": "E3A03-012",
+          "zh": "这道比较用的是“少于”，不是“少于或等于”。人数刚好相等时，再看窗口有没有其他受阻原因。",
+          "en": "This particular check is below, rather than below or equal. At equal strength, check the window for other blockers."
+        }
+      ]
+    },
+    {
+      "id": "B09",
+      "cue_ids": [
+        "E3A03-034",
+        "E3A03-035",
+        "E3A03-036",
+        "E3A03-037",
+        "E3A03-038"
+      ],
+      "priority": "condense_arithmetic_and_name_separate_components",
+      "question_zh": "人数项0.31为何没有等于UI兵士1.4？",
+      "finding_zh": "这是一处标签对应错误，现已闭合。SW_TT_MAA_PROGRESS对应兵士：M为合格兵士团有效围攻属性乘规模后汇总。SW_TT_MEN_PROGRESS对应围攻士兵：E为人数优势项。B6746/G460得到E0.31，与UI围攻士兵0.3相容；兵士1.4是另外的M显示值。",
+      "proven_zh": "完整日速函数、两处计算到标签的指令、两个字面字符串、原版简中/英文localization和Jan21原图共同证明两行不同。",
+      "unproved_zh": "本案每个合格团的全部有效M输入、完整日速修正和显示格式器尚未独立采齐。不能宣称完全复算2.78；不能将M全部归为射石机。",
+      "affects_explanation_zh": "应纠正两项混称；每200人加0.01是已证明局部规则，删除细算术只为表达和节奏，不能说公式本身未查明。",
+      "replacement_zh": "把鼠标放到每日进度上，就能分开看基础、兵士和围攻士兵的当前贡献。这里的两行不是同一项：一行来自兵士的有效围攻属性，另一行来自围攻人数超过守军的部分。实际推进仍用相邻两天的工作变化来核对。",
+      "replacement_en": "Hover over daily progress to separate the current base, men-at-arms and besieging-soldier contributions. The two troop lines are different: one uses effective regiment siege stats; the other uses soldiers in excess of the garrison. Check actual progress against work gained across adjacent days.",
+      "film_treatment_zh": "建议删除E3A03-036至038细算术，合并035解释两项；若保留算例，只称围攻士兵人数优势这一项，并标静态算例。本记录不确认新素材应用状态。",
+      "conditional_arithmetic_limit_zh": "+0.05加条件性的9/10乘0.3等于+0.32只是差额相容，不能反推实际团型号、全部有效属性或独立贡献。",
+      "old_cues": [
+        {
+          "id": "E3A03-035",
+          "zh": "普通围城的基础日速是一。之后叠加器械、兵力和其他修正，再经过城防影响，最后检查最低日速。",
+          "en": "Ordinary siege speed starts at one. Engine and strength contributions and other modifiers are applied, followed by fort effects and the final minimum speed."
+        },
+        {
+          "id": "E3A03-036",
+          "zh": "多出的合格围城兵力，是围攻兵力减去守军，负数按零处理。每满二百人，增加零点零一点工作速度。",
+          "en": "Excess eligible strength is besieging strength minus the garrison, floored at zero. Every complete group of 200 adds 0.01 to daily work speed."
+        },
+        {
+          "id": "E3A03-037",
+          "zh": "算例里，围攻二千五百、守军五百，多出二千。二千除二百是十组，因此这一项加零点一。",
+          "en": "In a labelled example, 2,500 besiegers against 500 garrison leave 2,000 excess. That makes ten groups of 200 and adds 0.1."
+        },
+        {
+          "id": "E3A03-038",
+          "zh": "多出一百九十九人，还没有凑成一组；到二百人才拿到这零点零一。多塞一点兵，不一定马上改变这一项加成。",
+          "en": "An excess of 199 completes no group; 200 earns the 0.01. A small reinforcement need not immediately change this particular bonus."
+        }
+      ]
+    }
+  ],
+  "proven_source_findings": [
+    {
+      "id": "GARRISON_NORMAL_REFILL",
+      "source": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\game_concepts_l_english.yml",
+      "lines": [
+        679,
+        681
+      ],
+      "conclusion_zh": "原版概念把常规守军恢复描述为败城后按月按容量百分比恢复，围城期间补员冻结、rate为0。它不能解释本案Jan12→13的+40。",
+      "level": "current_game_source_rule_text",
+      "limits": "尚未由本次有限研究定位本案+40的native写入者；也不以概念文本替代已审native分支。"
+    },
+    {
+      "id": "EQUALITY_GATE",
+      "source": "D:\\ck3-war-episode03-20261002-a01\\offline-siege-functions\\span-0251CF70-blocked.json",
+      "instruction": "0x251CFB2 jl after cmp eligible B, current G",
+      "conclusion_zh": "该兵力门是B<G；相等不触发这个门，仍须检查另一个Province选择谓词。概念679的more措辞不覆盖实际strict分支。",
+      "level": "exact_build_native_rule"
+    },
+    {
+      "id": "MANGONEL_CURRENT_DEFINITION",
+      "source": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\men_at_arms_types\\00_maa_types.txt",
+      "lines": [
+        397,
+        404,
+        405,
+        425
+      ],
+      "conclusion_zh": "当前原版mangonel tier2、siege_value0.3、stack10；结合fort阈值4/6/11，tier2覆盖至fort10。此为定义/阈值规则，实际本场fort3未验证高城防案例。",
+      "level": "current_game_definition_and_reviewed_native_threshold_rule"
+    },
+    {
+      "id": "SIEGE_COUNT_STACK",
+      "source": "D:\\ck3-war-episode03-20261002-a01\\one-day-real-review-a01\\count-normalizer-static-proof.json",
+      "conclusion_zh": "有效器械贡献使用当前有效siege value乘当前count/stack的归一化规模。不是原人数乘面板值；60/69合计不唯一决定逐团型号和有效修正。",
+      "level": "exact_build_native_rule"
+    },
+    {
+      "id": "PHASE_DURATION",
+      "source": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_siege.gui",
+      "lines": [
+        538,
+        1201
+      ],
+      "conclusion_zh": "总围城剩余是GetTimeLeftShort，阶段标签是GetSiegePhaseLength。16天是当前阶段长度，不是阶段剩余倒计时。",
+      "level": "current_game_GUI_binding"
+    },
+    {
+      "id": "PHASE_MODIFIERS",
+      "source": "D:\\ck3-war-episode03-20261002-a01\\editorial-draft-a01-sources\\episode03-siege-events-1.20.0.3.md",
+      "lines": [
+        43,
+        48,
+        58,
+        60
+      ],
+      "conclusion_zh": "已闭合phase length以base20乘1加当前缺口/character/cache/province修正之和。military_engineer=-0.1现成定义已查到；本场16不能自动归给某一特质，仍缺同帧完整有效输入。",
+      "level": "reviewed_native_formula_and_current_trait_definition"
+    },
+    {
+      "id": "ORDINARY_SPEED",
+      "source": "D:\\ck3-war-episode03-20261002-a01\\editorial-draft-a06-sources\\progress-count-corrected.md",
+      "lines": [
+        76,
+        85,
+        87,
+        105,
+        139
+      ],
+      "conclusion_zh": "基础1、超额兵力每200加0.01、器械有效值/规模、城防逐门槛0.7、最终最低0.5已证明。2.46/2.78是实测一天净工作；本案完整有效modifier分账及UI格式器精确处理未闭合。",
+      "level": "known_rule_with_unobserved_case_inputs"
+    },
+    {
+      "id": "ASSAULT_PROJECTION",
+      "source": "D:\\ck3-war-episode03-20261002-a01\\editorial-draft-a01-sources\\episode03-assault-1.20.0.3.md",
+      "lines": [
+        43,
+        44,
+        45,
+        48,
+        50
+      ],
+      "conclusion_zh": "损失预览用eligibleB及缺口2.5%/1%后整数截断；强攻工作使用100人ceil chunks×0.2及守军比例因子。6746→168、6578→164可用已知配置复算预览，但不是逐团真实死亡归因。",
+      "level": "known_native_projection_rule"
+    },
+    {
+      "id": "EVENT_EFFECTS",
+      "source": "D:\\ck3-war-episode03-20261002-a01\\editorial-draft-a01-sources\\episode03-siege-events-1.20.0.3.md",
+      "lines": [
+        31,
+        34,
+        68,
+        69,
+        70,
+        71,
+        72,
+        83
+      ],
+      "conclusion_zh": "普通进度先加入，再处理尚未完成且到期的阶段事件。缺口改间隔、断粮逐次5%/15%工作、疾病当前级10%/20%倍率、逃亡5工作、僵持无额外工作等规则已闭合；本场未记录每个事件。",
+      "level": "exact_build_native_rule"
+    },
+    {
+      "id": "SCORE_FIELD_BOUNDARIES",
+      "source": "D:\\ck3-war-episode03-20261002-a01\\editorial-draft-a01-sources\\episode03-occupation-war-score-1.20.0.3.md",
+      "lines": [
+        30,
+        32,
+        39,
+        48,
+        58
+      ],
+      "conclusion_zh": "occupation native getter末端向零取整，collector集合、CB规则和首都项参与计分。当前case CB为norman_conquest_cb；县tooltip13.2、主面板13与nativeoccupation13是分别观察的字段，不能单凭它们反推本城孤立值/n/N。",
+      "level": "known_rule_and_separate_case_observations"
+    },
+    {
+      "id": "TOTAL_WORK_RULE",
+      "source": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a06-sources/progress-count-corrected.md",
+      "lines": [
+        61,
+        67,
+        70,
+        72
+      ],
+      "conclusion_zh": "正常非负路径T=100+75*fort*min(1,G/Gmax)，按原生每步固定点截断；有效容量来自基础容量与modifier。公式已知，R0156未独立采到完整容量输入。",
+      "level": "known_exact_build_native_formula"
+    },
+    {
+      "id": "ETA_FIXEDPOINT_RULE",
+      "source": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a06-sources/progress-count-corrected.md",
+      "lines": [
+        97,
+        105
+      ],
+      "conclusion_zh": "正常路径先固定点截断剩余工作/当前日速到1e-5天，再向上取整。示例100.2→101正确；不能把无限精度ceil视为覆盖全部极值的模拟器。",
+      "level": "known_exact_build_native_formula"
+    },
+    {
+      "id": "GARRISON_PRODUCER_FINITE_APPEND",
+      "source_pin": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\mechanism-review\\equality\\garrison-producer.json",
+        "bytes": 47620,
+        "sha256": "5b8b9990a9cb99edb6d870ce3ba5a09fbb5f8ccdaf06a5ffc0d0f2ac4ed8d9a8"
+      },
+      "source_md_pin": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\mechanism-review\\equality\\garrison-producer.md",
+        "bytes": 6165,
+        "sha256": "faf1bb2c6887f863a6f93d71eb2fe8ff18e27a21928db116a3330b4ff4ea5f02"
+      },
+      "conclusion_zh": "有限邻近恢复guard对活动Siege返回false，另有容量setter/模式3零哨兵可影响Ggetter的可行路径；不是本案+40唯一因果。仍缺底层record ID、容量、存储人数、模式和实际writer/caller。",
+      "level": "peer_frozen_exact_build_finite_source_supplement_read_only"
+    }
+  ],
+  "daily_tooltip_label_proof": {
+    "exact_daily_function": {
+      "begin_rva": "0x251f170",
+      "end_rva_exclusive": "0x251fd54",
+      "bytes": 3044,
+      "sha256": "dbbd82904d3959e6f2d4278b893f2c1f95563cc463f054a1213935a2b1338563",
+      "matches_existing_frozen_region": true,
+      "old_artifact": {
+        "path": "D:/ck3-war-episode03-20261002-a01/offline-siege-functions/function-0251F170.json",
+        "bytes": 106167,
+        "sha256": "0d42394065f4e60bdad49a02e92f25931d8c7657c1f5eeff6c126bf903a20531"
+      }
+    },
+    "label_strings": [
+      {
+        "rva": "0x4739688",
+        "bytes": 18,
+        "raw_hex": "53575f54545f4d41415f50524f4752455353",
+        "sha256": "a553e0454ee7f92b30721d01eedbfd56657bff08a783d89d71629a7e5490a160",
+        "text": "SW_TT_MAA_PROGRESS"
+      },
+      {
+        "rva": "0x47396a0",
+        "bytes": 18,
+        "raw_hex": "53575f54545f4d454e5f50524f4752455353",
+        "sha256": "114eff7e066cae89cede97e313c5de252aa216377c92fa7d186c639651c20f60",
+        "text": "SW_TT_MEN_PROGRESS"
+      }
+    ],
+    "stock_localization": [
+      {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/gui/siege_window_l_simp_chinese.yml",
+        "bytes": 5425,
+        "sha256": "d332a17e5facc1d231bf22ae1241c405bc1ae2fe1f2f399c9915755ff7844b59",
+        "entries": [
+          {
+            "line": 13,
+            "source": " SW_TT_MAA_PROGRESS: \"[men_at_arms|E]\""
+          },
+          {
+            "line": 14,
+            "source": " SW_TT_MEN_PROGRESS: \"围攻[soldiers|E]\""
+          }
+        ]
+      },
+      {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/english/gui/siege_window_l_english.yml",
+        "bytes": 5718,
+        "sha256": "73475a83a2df57d188788c95f4e95be9b231a94f8c732d683355439f0a56d3dc",
+        "entries": [
+          {
+            "line": 13,
+            "source": " SW_TT_MAA_PROGRESS:0 \"[men_at_arms|E]\""
+          },
+          {
+            "line": 14,
+            "source": " SW_TT_MEN_PROGRESS:0 \"Besieging [soldiers|E]\""
+          }
+        ]
+      }
+    ],
+    "stock_concept_names": {
+      "input": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+        "bytes": 350826,
+        "sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86"
+      },
+      "entries": [
+        {
+          "line": 492,
+          "source": " game_concept_soldiers: \"士兵\""
+        },
+        {
+          "line": 1097,
+          "source": " game_concept_men_at_arms: \"兵士\""
+        }
+      ]
+    },
+    "mapping": [
+      {
+        "ui_zh": "兵士",
+        "key": "SW_TT_MAA_PROGRESS",
+        "calculation": "M: eligible regiment effective siege stat times normalized current size, sum;0x247ECE0",
+        "call_rva": "0x251F366 or0x251F390",
+        "label_lea_rva": "0x251F3AF",
+        "label_rva": "0x4739688",
+        "case_display": "1.2 initially;1.4 on21January",
+        "scope": "Not the troop excess B-G term. Do not assert all contributing M is only siege engine units; effective stats can modify regiment siege contribution."
+      },
+      {
+        "ui_zh": "围攻士兵",
+        "key": "SW_TT_MEN_PROGRESS",
+        "calculation": "E=.01*floor(max(0,B-G)/200), normal nonnegative current counts and installed define values",
+        "calculation_rvas": "0x251F473 G,0x251F47D B,0x251F484 subtract,0x251F48B clamp,0x251F48F integerdivide,0x251F498 multiply",
+        "label_lea_rva": "0x251F4B5",
+        "label_rva": "0x47396A0",
+        "case_display": ".2 initially; .3 on21January",
+        "numeric_case": "B6746/G460 givesE=.31, compatible with displayed.3, not with the separate MAA1.4 line."
+      }
+    ],
+    "case_ui": {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-155756-6c372ed9/desktop.png",
+      "bytes": 2877743,
+      "sha256": "56475504a404c8d4037e93e76dab276b3b8ef93adbc17a3b29e1c155606e1aad"
+    },
+    "remaining_unknown": [
+      "The actual effective siege stat and normalized current size of every contributing live regiment were not independently captured at the endpoint.",
+      "Full character/cache/conditional modifiers and ordinary-D getter are not independently live published;2.78 remains observed net C interval.",
+      "One-decimal formatter round/truncate is not established; displayed subitems must not be summed as exact raw."
+    ]
+  },
+  "conditional_arithmetic": {
+    "scope": "仅对已知非负输入做明确条件算术，不作为未观测量的来源证明。",
+    "army_term_before_arrival": 0.26,
+    "army_term_after_arrival": 0.31,
+    "army_term_difference": 0.05,
+    "observed_net_work_difference": 0.31999999999999984,
+    "conditional_new_nine_mangonels_at_unmodified_point_three": 0.27,
+    "conditional_warning": "+0.05+0.27与实测+0.32相容，不能反向证明实际所有团及有效修正。",
+    "projected_loss_6746_breach1": 168,
+    "projected_loss_6578_breach1": 164,
+    "source_total_formula_compatible_gmax460": 305.434,
+    "gmax_warning": "460只是正常公式下相容的输入，不是独立采到容量，也不能解释+40的写入者。"
+  },
+  "garrison_raw_pair": [
+    {
+      "source_pin": {
+        "path": "D:\\ck3-war-episode03-20261002-a01\\live6-siege-to-reinforcement-a01\\20261002-155546-415273-192fcbf8d3-response.json",
+        "bytes": 3361307,
+        "sha256": "b3d96a18aac9ddfbdc0e9214153f69239f8b759c2ecc93e84ff777b576bc148c"
+      },
+      "date_raw": 53147184,
+      "episode_run_id": "native-33388-ebbc6357f8b6",
+      "province": {
+        "province_id": 1506,
+        "occupation_observable": true,
+        "is_occupied": false,
+        "occupying_character_id": null,
+        "fort_level": 3,
+        "garrison_size": 420,
+        "besieging_strength": 5660,
+        "siege_observable": true,
+        "active_siege": {
+          "siege_id": 6,
+          "besieging_army_id": 0,
+          "player_army_besieging": true,
+          "progress_fraction": {
+            "raw": 2416,
+            "scale": 100000
+          },
+          "current_work": {
+            "raw": 738000,
+            "scale": 100000
+          },
+          "total_work": {
+            "raw": 30543400,
+            "scale": 100000
+          },
+          "remaining_work": {
+            "raw": 29805400,
+            "scale": 100000
+          },
+          "days_left": 122,
+          "assault_observable": true,
+          "breach_level": 0,
+          "walls_breached": false,
+          "assault_in_progress": false,
+          "can_start_assault": false,
+          "can_stop_assault": false,
+          "assault_daily_progress": {
+            "raw": 0,
+            "scale": 100000
+          },
+          "assault_daily_casualties": 0
+        }
+      }
+    },
+    {
+      "source_pin": {
+        "path": "D:\\ck3-war-episode03-20261002-a01\\live6-siege-to-reinforcement-a01\\20261002-155549-887766-81ad18a3d6-response.json",
+        "bytes": 3435131,
+        "sha256": "aa1d3be5dd406f03d459e099d4707e7433797ffb7cfa84ae48c6a18eb953b4f1"
+      },
+      "date_raw": 53147208,
+      "episode_run_id": "native-33388-ebbc6357f8b6",
+      "province": {
+        "province_id": 1506,
+        "occupation_observable": true,
+        "is_occupied": false,
+        "occupying_character_id": null,
+        "fort_level": 3,
+        "garrison_size": 460,
+        "besieging_strength": 5660,
+        "siege_observable": true,
+        "active_siege": {
+          "siege_id": 6,
+          "besieging_army_id": 0,
+          "player_army_besieging": true,
+          "progress_fraction": {
+            "raw": 3027,
+            "scale": 100000
+          },
+          "current_work": {
+            "raw": 984000,
+            "scale": 100000
+          },
+          "total_work": {
+            "raw": 32500000,
+            "scale": 100000
+          },
+          "remaining_work": {
+            "raw": 31516000,
+            "scale": 100000
+          },
+          "days_left": 129,
+          "assault_observable": true,
+          "breach_level": 0,
+          "walls_breached": false,
+          "assault_in_progress": false,
+          "can_start_assault": false,
+          "can_stop_assault": false,
+          "assault_daily_progress": {
+            "raw": 0,
+            "scale": 100000
+          },
+          "assault_daily_casualties": 0
+        }
+      }
+    }
+  ],
+  "cue_index": [
+    {
+      "spoken_ordinal": 1,
+      "chapter": "opening",
+      "cue_id": "E3A03-001",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C02",
+        "C13",
+        "C14"
+      ],
+      "live_fact_bindings": [
+        "F_START",
+        "F_FALL"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 2,
+      "chapter": "opening",
+      "cue_id": "E3A03-002",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C02"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 3,
+      "chapter": "opening",
+      "cue_id": "E3A03-003",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C01",
+        "C02"
+      ],
+      "live_fact_bindings": [
+        "F_START",
+        "F_SCORE"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 4,
+      "chapter": "opening",
+      "cue_id": "E3A03-004",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C01"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED"
+      ],
+      "issue_ids": [
+        "B07"
+      ]
+    },
+    {
+      "spoken_ordinal": 5,
+      "chapter": "opening",
+      "cue_id": "E3A03-005",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C04",
+        "C06"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 6,
+      "chapter": "opening",
+      "cue_id": "E3A03-006",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C06"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "ETA_FIXEDPOINT_RULE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 7,
+      "chapter": "opening",
+      "cue_id": "E3A03-007",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C03"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 8,
+      "chapter": "siege_start",
+      "cue_id": "E3A03-008",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C02",
+        "C03"
+      ],
+      "live_fact_bindings": [
+        "F_RECRUIT",
+        "F_START"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 9,
+      "chapter": "siege_start",
+      "cue_id": "E3A03-009",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C03"
+      ],
+      "live_fact_bindings": [
+        "F_START"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 10,
+      "chapter": "siege_start",
+      "cue_id": "E3A03-010",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C03",
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "EQUALITY_GATE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 11,
+      "chapter": "siege_start",
+      "cue_id": "E3A03-011",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C03"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "EQUALITY_GATE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 12,
+      "chapter": "siege_start",
+      "cue_id": "E3A03-012",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C03"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "EQUALITY_GATE"
+      ],
+      "issue_ids": [
+        "B08"
+      ]
+    },
+    {
+      "spoken_ordinal": 13,
+      "chapter": "siege_start",
+      "cue_id": "E3A03-013",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C03"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "EQUALITY_GATE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 14,
+      "chapter": "siege_start",
+      "cue_id": "E3A03-014",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C03",
+        "C04"
+      ],
+      "live_fact_bindings": [
+        "F_START",
+        "F_DAY1"
+      ],
+      "static_source_finding_ids": [
+        "EQUALITY_GATE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 15,
+      "chapter": "siege_start",
+      "cue_id": "E3A03-016",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C04"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 16,
+      "chapter": "inputs",
+      "cue_id": "E3A03-017",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C04"
+      ],
+      "live_fact_bindings": [
+        "F_START"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK",
+        "TOTAL_WORK_RULE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 17,
+      "chapter": "inputs",
+      "cue_id": "E3A03-018",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C04"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK",
+        "TOTAL_WORK_RULE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 18,
+      "chapter": "inputs",
+      "cue_id": "E3A03-019",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C04"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK",
+        "TOTAL_WORK_RULE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 19,
+      "chapter": "inputs",
+      "cue_id": "E3A03-020",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C04",
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK",
+        "TOTAL_WORK_RULE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 20,
+      "chapter": "inputs",
+      "cue_id": "E3A03-021",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C04",
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK",
+        "TOTAL_WORK_RULE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 21,
+      "chapter": "inputs",
+      "cue_id": "E3A03-022",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C04"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK",
+        "TOTAL_WORK_RULE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 22,
+      "chapter": "inputs",
+      "cue_id": "E3A03-023",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C04"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK",
+        "TOTAL_WORK_RULE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 23,
+      "chapter": "inputs",
+      "cue_id": "E3A03-024",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C04",
+        "C10"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK",
+        "TOTAL_WORK_RULE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 24,
+      "chapter": "inputs",
+      "cue_id": "E3A03-025",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C04",
+        "C10"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK",
+        "TOTAL_WORK_RULE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 25,
+      "chapter": "inputs",
+      "cue_id": "E3A03-026",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C04"
+      ],
+      "live_fact_bindings": [
+        "F_START"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK",
+        "TOTAL_WORK_RULE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 26,
+      "chapter": "inputs",
+      "cue_id": "E3A06-001",
+      "classification": [
+        "实机观察",
+        "未隔离因果",
+        "未查明公式或机制"
+      ],
+      "classification_limit": "未知标签只表示本场完整输入/生产者/精确归因尚未闭合，不撤销本行已查清的静态规则。",
+      "claim_ids": [
+        "C04",
+        "C10"
+      ],
+      "live_fact_bindings": [
+        "F_GARRISON"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK",
+        "TOTAL_WORK_RULE"
+      ],
+      "issue_ids": [
+        "B01"
+      ]
+    },
+    {
+      "spoken_ordinal": 27,
+      "chapter": "inputs",
+      "cue_id": "E3A06-002",
+      "classification": [
+        "实机观察",
+        "未查明公式或机制"
+      ],
+      "classification_limit": "未知标签只表示本场完整输入/生产者/精确归因尚未闭合，不撤销本行已查清的静态规则。",
+      "claim_ids": [
+        "C06",
+        "C07"
+      ],
+      "live_fact_bindings": [
+        "F_GARRISON"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK",
+        "TOTAL_WORK_RULE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 28,
+      "chapter": "inputs",
+      "cue_id": "E3A06-003",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C06",
+        "C10"
+      ],
+      "live_fact_bindings": [
+        "F_GARRISON"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 29,
+      "chapter": "inputs",
+      "cue_id": "E3A03-027",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 30,
+      "chapter": "inputs",
+      "cue_id": "E3A03-028",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [
+        "F_START",
+        "F_RECRUIT"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 31,
+      "chapter": "inputs",
+      "cue_id": "E3A03-029",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [
+        "F_RECRUIT"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 32,
+      "chapter": "inputs",
+      "cue_id": "E3A03-030",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [
+        "F_RECRUIT"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 33,
+      "chapter": "inputs",
+      "cue_id": "E3A06-004",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05",
+        "C11"
+      ],
+      "live_fact_bindings": [
+        "F_RECRUIT"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 34,
+      "chapter": "inputs",
+      "cue_id": "E3A03-031",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": [
+        "B07"
+      ]
+    },
+    {
+      "spoken_ordinal": 35,
+      "chapter": "inputs",
+      "cue_id": "E3A06-005",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [
+        "F_RECRUIT"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": [
+        "B07"
+      ]
+    },
+    {
+      "spoken_ordinal": 36,
+      "chapter": "inputs",
+      "cue_id": "E3A03-032",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": [
+        "B07"
+      ]
+    },
+    {
+      "spoken_ordinal": 37,
+      "chapter": "inputs",
+      "cue_id": "E3A06-006",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 38,
+      "chapter": "inputs",
+      "cue_id": "E3A03-033",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05",
+        "C06"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 39,
+      "chapter": "inputs",
+      "cue_id": "E3A03-034",
+      "classification": [
+        "实机观察",
+        "未查明公式或机制"
+      ],
+      "classification_limit": "未知标签只表示本场完整输入/生产者/精确归因尚未闭合，不撤销本行已查清的静态规则。",
+      "claim_ids": [
+        "C05",
+        "C06"
+      ],
+      "live_fact_bindings": [
+        "F_DAY1"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": [
+        "B06",
+        "B09"
+      ],
+      "latest_label_mapping_proved": true
+    },
+    {
+      "spoken_ordinal": 40,
+      "chapter": "first_stage",
+      "cue_id": "E3A03-035",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05",
+        "C06"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": [
+        "B06",
+        "B09"
+      ],
+      "latest_label_mapping_proved": true
+    },
+    {
+      "spoken_ordinal": 41,
+      "chapter": "first_stage",
+      "cue_id": "E3A03-036",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": [
+        "B09"
+      ],
+      "latest_label_mapping_proved": true
+    },
+    {
+      "spoken_ordinal": 42,
+      "chapter": "first_stage",
+      "cue_id": "E3A03-037",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": [
+        "B09"
+      ],
+      "latest_label_mapping_proved": true
+    },
+    {
+      "spoken_ordinal": 43,
+      "chapter": "first_stage",
+      "cue_id": "E3A03-038",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": [
+        "B09"
+      ],
+      "latest_label_mapping_proved": true
+    },
+    {
+      "spoken_ordinal": 44,
+      "chapter": "first_stage",
+      "cue_id": "E3A03-040",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 45,
+      "chapter": "first_stage",
+      "cue_id": "E3A03-041",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": [
+        "B07"
+      ]
+    },
+    {
+      "spoken_ordinal": 46,
+      "chapter": "first_stage",
+      "cue_id": "E3A03-042",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 47,
+      "chapter": "first_stage",
+      "cue_id": "E3A03-043",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 48,
+      "chapter": "first_stage",
+      "cue_id": "E3A03-044",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 49,
+      "chapter": "first_stage",
+      "cue_id": "E3A03-045",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": [
+        "B07"
+      ]
+    },
+    {
+      "spoken_ordinal": 50,
+      "chapter": "first_stage",
+      "cue_id": "E3A03-046",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 51,
+      "chapter": "first_stage",
+      "cue_id": "E3A06-007",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [
+        "F_START"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": [
+        "B07"
+      ]
+    },
+    {
+      "spoken_ordinal": 52,
+      "chapter": "first_stage",
+      "cue_id": "E3A03-047",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 53,
+      "chapter": "first_stage",
+      "cue_id": "E3A03-048",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C06"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK",
+        "ETA_FIXEDPOINT_RULE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 54,
+      "chapter": "first_stage",
+      "cue_id": "E3A03-049",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C06"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK",
+        "ETA_FIXEDPOINT_RULE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 55,
+      "chapter": "first_stage",
+      "cue_id": "E3A03-050",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C06",
+        "C07"
+      ],
+      "live_fact_bindings": [
+        "F_DAY1"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 56,
+      "chapter": "first_stage",
+      "cue_id": "E3A03-051",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C07",
+        "C08"
+      ],
+      "live_fact_bindings": [
+        "F_DAY1"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": [
+        "B06"
+      ]
+    },
+    {
+      "spoken_ordinal": 57,
+      "chapter": "first_stage",
+      "cue_id": "E3A03-053",
+      "classification": [
+        "实机观察",
+        "未查明公式或机制"
+      ],
+      "classification_limit": "未知标签只表示本场完整输入/生产者/精确归因尚未闭合，不撤销本行已查清的静态规则。",
+      "claim_ids": [
+        "C07"
+      ],
+      "live_fact_bindings": [
+        "F_DAY1"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": [
+        "B06"
+      ]
+    },
+    {
+      "spoken_ordinal": 58,
+      "chapter": "first_stage",
+      "cue_id": "E3A06-008",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C07",
+        "C11"
+      ],
+      "live_fact_bindings": [
+        "F_DAY1",
+        "F_ARRIVAL"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 59,
+      "chapter": "first_stage",
+      "cue_id": "E3A03-054",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C08"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 60,
+      "chapter": "phase_changes",
+      "cue_id": "E3A03-055",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C08"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 61,
+      "chapter": "phase_changes",
+      "cue_id": "E3A03-056",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C06",
+        "C08"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": [
+        "B03"
+      ]
+    },
+    {
+      "spoken_ordinal": 62,
+      "chapter": "phase_changes",
+      "cue_id": "E3A03-057",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C06",
+        "C08"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 63,
+      "chapter": "phase_changes",
+      "cue_id": "E3A03-058",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C08"
+      ],
+      "live_fact_bindings": [
+        "F_BREACH"
+      ],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 64,
+      "chapter": "phase_changes",
+      "cue_id": "E3A03-059",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C08"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 65,
+      "chapter": "phase_changes",
+      "cue_id": "E3A03-060",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C09"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": [
+        "B03"
+      ]
+    },
+    {
+      "spoken_ordinal": 66,
+      "chapter": "phase_changes",
+      "cue_id": "E3A03-061",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C09"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": [
+        "B03"
+      ]
+    },
+    {
+      "spoken_ordinal": 67,
+      "chapter": "phase_changes",
+      "cue_id": "E3A03-063",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C08"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 68,
+      "chapter": "phase_changes",
+      "cue_id": "E3A03-064",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C08"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 69,
+      "chapter": "phase_changes",
+      "cue_id": "E3A03-065",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C08"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 70,
+      "chapter": "phase_changes",
+      "cue_id": "E3A03-066",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C08"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 71,
+      "chapter": "phase_changes",
+      "cue_id": "E3A03-067",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C08"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 72,
+      "chapter": "phase_changes",
+      "cue_id": "E3A03-068",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C08"
+      ],
+      "live_fact_bindings": [
+        "F_BREACH"
+      ],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 73,
+      "chapter": "phase_changes",
+      "cue_id": "E3A03-069",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C08"
+      ],
+      "live_fact_bindings": [
+        "F_BREACH"
+      ],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 74,
+      "chapter": "phase_changes",
+      "cue_id": "E3A03-070",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C09"
+      ],
+      "live_fact_bindings": [
+        "F_BREACH",
+        "F_ASSAULT"
+      ],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 75,
+      "chapter": "phase_changes",
+      "cue_id": "E3A03-073",
+      "classification": [
+        "实机观察",
+        "未查明公式或机制"
+      ],
+      "classification_limit": "未知标签只表示本场完整输入/生产者/精确归因尚未闭合，不撤销本行已查清的静态规则。",
+      "claim_ids": [
+        "C10"
+      ],
+      "live_fact_bindings": [
+        "F_BREACH"
+      ],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": [
+        "B03"
+      ]
+    },
+    {
+      "spoken_ordinal": 76,
+      "chapter": "phase_changes",
+      "cue_id": "E3A06-009",
+      "classification": [
+        "实机观察",
+        "未查明公式或机制"
+      ],
+      "classification_limit": "未知标签只表示本场完整输入/生产者/精确归因尚未闭合，不撤销本行已查清的静态规则。",
+      "claim_ids": [
+        "C06",
+        "C09"
+      ],
+      "live_fact_bindings": [
+        "F_BREACH"
+      ],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": [
+        "B03"
+      ]
+    },
+    {
+      "spoken_ordinal": 77,
+      "chapter": "continuation",
+      "cue_id": "E3A03-074",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C08"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 78,
+      "chapter": "continuation",
+      "cue_id": "E3A03-075",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C08"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 79,
+      "chapter": "continuation",
+      "cue_id": "E3A03-076",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C08"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "EVENT_EFFECTS",
+        "PHASE_DURATION",
+        "PHASE_MODIFIERS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 80,
+      "chapter": "continuation",
+      "cue_id": "E3A03-077",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C10"
+      ],
+      "live_fact_bindings": [
+        "F_RECRUIT",
+        "F_ARRIVAL"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 81,
+      "chapter": "continuation",
+      "cue_id": "E3A03-078",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C10",
+        "C11"
+      ],
+      "live_fact_bindings": [
+        "F_ARRIVAL"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 82,
+      "chapter": "continuation",
+      "cue_id": "E3A06-010",
+      "classification": [
+        "实机观察",
+        "未隔离因果"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C07",
+        "C11"
+      ],
+      "live_fact_bindings": [
+        "F_ARRIVAL"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": [
+        "B02"
+      ]
+    },
+    {
+      "spoken_ordinal": 83,
+      "chapter": "continuation",
+      "cue_id": "E3A06-011",
+      "classification": [
+        "实机观察",
+        "未隔离因果",
+        "未查明公式或机制"
+      ],
+      "classification_limit": "未知标签只表示本场完整输入/生产者/精确归因尚未闭合，不撤销本行已查清的静态规则。",
+      "claim_ids": [
+        "C07",
+        "C11"
+      ],
+      "live_fact_bindings": [
+        "F_ARRIVAL"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": [
+        "B02"
+      ]
+    },
+    {
+      "spoken_ordinal": 84,
+      "chapter": "continuation",
+      "cue_id": "E3A06-012",
+      "classification": [
+        "实机观察",
+        "未隔离因果"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C07",
+        "C11"
+      ],
+      "live_fact_bindings": [
+        "F_MERGE"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "SIEGE_COUNT_STACK"
+      ],
+      "issue_ids": [
+        "B02"
+      ]
+    },
+    {
+      "spoken_ordinal": 85,
+      "chapter": "continuation",
+      "cue_id": "E3A03-080",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C12"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ASSAULT_PROJECTION",
+        "EVENT_EFFECTS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 86,
+      "chapter": "continuation",
+      "cue_id": "E3A03-081",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C12"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ASSAULT_PROJECTION",
+        "EVENT_EFFECTS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 87,
+      "chapter": "continuation",
+      "cue_id": "E3A03-082",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C12"
+      ],
+      "live_fact_bindings": [
+        "F_ASSAULT"
+      ],
+      "static_source_finding_ids": [
+        "ASSAULT_PROJECTION",
+        "EVENT_EFFECTS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 88,
+      "chapter": "continuation",
+      "cue_id": "E3A03-083",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C12"
+      ],
+      "live_fact_bindings": [
+        "F_ASSAULT"
+      ],
+      "static_source_finding_ids": [
+        "ASSAULT_PROJECTION",
+        "EVENT_EFFECTS"
+      ],
+      "issue_ids": [
+        "B04"
+      ]
+    },
+    {
+      "spoken_ordinal": 89,
+      "chapter": "continuation",
+      "cue_id": "E3A03-084",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C12"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ASSAULT_PROJECTION",
+        "EVENT_EFFECTS"
+      ],
+      "issue_ids": [
+        "B04"
+      ]
+    },
+    {
+      "spoken_ordinal": 90,
+      "chapter": "continuation",
+      "cue_id": "E3A03-085",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C12"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ASSAULT_PROJECTION",
+        "EVENT_EFFECTS"
+      ],
+      "issue_ids": [
+        "B04"
+      ]
+    },
+    {
+      "spoken_ordinal": 91,
+      "chapter": "continuation",
+      "cue_id": "E3A03-086",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C12"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ASSAULT_PROJECTION",
+        "EVENT_EFFECTS"
+      ],
+      "issue_ids": [
+        "B04"
+      ]
+    },
+    {
+      "spoken_ordinal": 92,
+      "chapter": "continuation",
+      "cue_id": "E3A03-087",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C12"
+      ],
+      "live_fact_bindings": [
+        "F_ASSAULT"
+      ],
+      "static_source_finding_ids": [
+        "ASSAULT_PROJECTION",
+        "EVENT_EFFECTS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 93,
+      "chapter": "continuation",
+      "cue_id": "E3A03-088",
+      "classification": [
+        "实机观察",
+        "未隔离因果",
+        "未查明公式或机制"
+      ],
+      "classification_limit": "未知标签只表示本场完整输入/生产者/精确归因尚未闭合，不撤销本行已查清的静态规则。",
+      "claim_ids": [
+        "C12"
+      ],
+      "live_fact_bindings": [
+        "F_ASSAULT"
+      ],
+      "static_source_finding_ids": [
+        "ASSAULT_PROJECTION",
+        "EVENT_EFFECTS"
+      ],
+      "issue_ids": [
+        "B04"
+      ]
+    },
+    {
+      "spoken_ordinal": 94,
+      "chapter": "continuation",
+      "cue_id": "E3A06-014",
+      "classification": [
+        "实机观察",
+        "未隔离因果",
+        "未查明公式或机制"
+      ],
+      "classification_limit": "未知标签只表示本场完整输入/生产者/精确归因尚未闭合，不撤销本行已查清的静态规则。",
+      "claim_ids": [
+        "C12"
+      ],
+      "live_fact_bindings": [
+        "F_ASSAULT"
+      ],
+      "static_source_finding_ids": [
+        "ASSAULT_PROJECTION",
+        "EVENT_EFFECTS"
+      ],
+      "issue_ids": [
+        "B04"
+      ]
+    },
+    {
+      "spoken_ordinal": 95,
+      "chapter": "continuation",
+      "cue_id": "E3A06-015",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C12"
+      ],
+      "live_fact_bindings": [
+        "F_ASSAULT"
+      ],
+      "static_source_finding_ids": [
+        "ASSAULT_PROJECTION",
+        "EVENT_EFFECTS"
+      ],
+      "issue_ids": [
+        "B04"
+      ]
+    },
+    {
+      "spoken_ordinal": 96,
+      "chapter": "continuation",
+      "cue_id": "E3A06-016",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C12",
+        "C10"
+      ],
+      "live_fact_bindings": [
+        "F_STOP"
+      ],
+      "static_source_finding_ids": [
+        "ASSAULT_PROJECTION",
+        "EVENT_EFFECTS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 97,
+      "chapter": "continuation",
+      "cue_id": "E3A03-089",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C10",
+        "C13"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ASSAULT_PROJECTION",
+        "EVENT_EFFECTS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 98,
+      "chapter": "continuation",
+      "cue_id": "E3A06-017",
+      "classification": [
+        "实机观察",
+        "未隔离因果",
+        "未查明公式或机制"
+      ],
+      "classification_limit": "未知标签只表示本场完整输入/生产者/精确归因尚未闭合，不撤销本行已查清的静态规则。",
+      "claim_ids": [
+        "C08",
+        "C09"
+      ],
+      "live_fact_bindings": [
+        "F_LATE"
+      ],
+      "static_source_finding_ids": [
+        "ASSAULT_PROJECTION",
+        "EVENT_EFFECTS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 99,
+      "chapter": "continuation",
+      "cue_id": "E3A06-018",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C04",
+        "C10"
+      ],
+      "live_fact_bindings": [
+        "F_LATE"
+      ],
+      "static_source_finding_ids": [
+        "ASSAULT_PROJECTION",
+        "EVENT_EFFECTS"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 100,
+      "chapter": "continuation",
+      "cue_id": "E3A03-090",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C10",
+        "C13"
+      ],
+      "live_fact_bindings": [
+        "F_LAST"
+      ],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 101,
+      "chapter": "continuation",
+      "cue_id": "E3A06-019",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C13"
+      ],
+      "live_fact_bindings": [
+        "F_LAST",
+        "F_FALL"
+      ],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 102,
+      "chapter": "continuation",
+      "cue_id": "E3A03-091",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C13"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 103,
+      "chapter": "capture",
+      "cue_id": "E3A03-092",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C13",
+        "C14"
+      ],
+      "live_fact_bindings": [
+        "F_FALL"
+      ],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 104,
+      "chapter": "capture",
+      "cue_id": "E3A03-093",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C13"
+      ],
+      "live_fact_bindings": [
+        "F_FALL"
+      ],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 105,
+      "chapter": "capture",
+      "cue_id": "E3A03-094",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C14"
+      ],
+      "live_fact_bindings": [
+        "F_FALL"
+      ],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 106,
+      "chapter": "capture",
+      "cue_id": "E3A03-095",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C14"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 107,
+      "chapter": "capture",
+      "cue_id": "E3A03-096",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C14"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 108,
+      "chapter": "capture",
+      "cue_id": "E3A03-097",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C14"
+      ],
+      "live_fact_bindings": [
+        "F_OWNER"
+      ],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 109,
+      "chapter": "capture",
+      "cue_id": "E3A03-098",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C16"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 110,
+      "chapter": "capture",
+      "cue_id": "E3A03-099",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C16"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 111,
+      "chapter": "capture",
+      "cue_id": "E3A03-100",
+      "classification": [
+        "实机观察",
+        "未隔离因果",
+        "未查明公式或机制"
+      ],
+      "classification_limit": "未知标签只表示本场完整输入/生产者/精确归因尚未闭合，不撤销本行已查清的静态规则。",
+      "claim_ids": [
+        "C16"
+      ],
+      "live_fact_bindings": [
+        "F_SCORE"
+      ],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": [
+        "B05"
+      ]
+    },
+    {
+      "spoken_ordinal": 112,
+      "chapter": "capture",
+      "cue_id": "E3A06-021",
+      "classification": [
+        "实机观察",
+        "未查明公式或机制"
+      ],
+      "classification_limit": "未知标签只表示本场完整输入/生产者/精确归因尚未闭合，不撤销本行已查清的静态规则。",
+      "claim_ids": [
+        "C16"
+      ],
+      "live_fact_bindings": [
+        "F_SCORE"
+      ],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": [
+        "B05"
+      ]
+    },
+    {
+      "spoken_ordinal": 113,
+      "chapter": "capture",
+      "cue_id": "E3A06-020",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C13",
+        "C16"
+      ],
+      "live_fact_bindings": [
+        "F_FALL",
+        "F_SCORE"
+      ],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 114,
+      "chapter": "capture",
+      "cue_id": "E3A03-105",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C02",
+        "C13",
+        "C14"
+      ],
+      "live_fact_bindings": [
+        "F_START",
+        "F_FALL"
+      ],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 115,
+      "chapter": "capture",
+      "cue_id": "E3A03-106",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C16"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 116,
+      "chapter": "war_bridge",
+      "cue_id": "E3A03-107",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C16"
+      ],
+      "live_fact_bindings": [
+        "F_SCORE"
+      ],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 117,
+      "chapter": "war_bridge",
+      "cue_id": "E3A03-108",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C16"
+      ],
+      "live_fact_bindings": [
+        "F_SCORE"
+      ],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": [
+        "B05"
+      ]
+    },
+    {
+      "spoken_ordinal": 118,
+      "chapter": "war_bridge",
+      "cue_id": "E3A03-109",
+      "classification": [
+        "实机观察",
+        "未隔离因果",
+        "未查明公式或机制"
+      ],
+      "classification_limit": "未知标签只表示本场完整输入/生产者/精确归因尚未闭合，不撤销本行已查清的静态规则。",
+      "claim_ids": [
+        "C16"
+      ],
+      "live_fact_bindings": [
+        "F_SCORE"
+      ],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": [
+        "B05"
+      ]
+    },
+    {
+      "spoken_ordinal": 119,
+      "chapter": "war_bridge",
+      "cue_id": "E3A03-110",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C16"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 120,
+      "chapter": "war_bridge",
+      "cue_id": "E3A03-111",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C17"
+      ],
+      "live_fact_bindings": [
+        "F_SCORE"
+      ],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 121,
+      "chapter": "war_bridge",
+      "cue_id": "E3A03-112",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C17"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 122,
+      "chapter": "closing",
+      "cue_id": "E3A03-113",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C03",
+        "C04"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "EVENT_EFFECTS",
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 123,
+      "chapter": "closing",
+      "cue_id": "E3A03-114",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C04",
+        "C05"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "EVENT_EFFECTS",
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 124,
+      "chapter": "closing",
+      "cue_id": "E3A03-115",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C06",
+        "C08"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "EVENT_EFFECTS",
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 125,
+      "chapter": "closing",
+      "cue_id": "E3A03-116",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C12"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "EVENT_EFFECTS",
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 126,
+      "chapter": "closing",
+      "cue_id": "E3A03-117",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C13",
+        "C14"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "EVENT_EFFECTS",
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 127,
+      "chapter": "closing",
+      "cue_id": "E3A03-118",
+      "classification": [
+        "实机观察",
+        "未隔离因果",
+        "未查明公式或机制"
+      ],
+      "classification_limit": "未知标签只表示本场完整输入/生产者/精确归因尚未闭合，不撤销本行已查清的静态规则。",
+      "claim_ids": [
+        "C06",
+        "C08",
+        "C13",
+        "C14"
+      ],
+      "live_fact_bindings": [
+        "F_GARRISON",
+        "F_ARRIVAL",
+        "F_BREACH",
+        "F_FALL"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "EVENT_EFFECTS",
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": [
+        "B02"
+      ]
+    },
+    {
+      "spoken_ordinal": 128,
+      "chapter": "closing",
+      "cue_id": "E3A03-119",
+      "classification": [
+        "已证明游戏规则"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C06",
+        "C10"
+      ],
+      "live_fact_bindings": [],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "EVENT_EFFECTS",
+        "SCORE_FIELD_BOUNDARIES",
+        "ETA_FIXEDPOINT_RULE"
+      ],
+      "issue_ids": []
+    },
+    {
+      "spoken_ordinal": 129,
+      "chapter": "closing",
+      "cue_id": "E3A03-120",
+      "classification": [
+        "实机观察"
+      ],
+      "classification_limit": null,
+      "claim_ids": [
+        "C13",
+        "C14"
+      ],
+      "live_fact_bindings": [
+        "F_START",
+        "F_FALL"
+      ],
+      "static_source_finding_ids": [
+        "ORDINARY_SPEED",
+        "EVENT_EFFECTS",
+        "SCORE_FIELD_BOUNDARIES"
+      ],
+      "issue_ids": []
+    }
+  ],
+  "classification_counts": {
+    "已证明游戏规则": 76,
+    "实机观察": 53,
+    "未隔离因果": 10,
+    "未查明公式或机制": 14
+  },
+  "cue_index_source": "boundary-review/cue-boundary-matrix-final-a02.json",
+  "reviewed_identity_contract": "129 unique stable cue ids; original zh/en checked against original timeline in pinned prior review; label append does not reinterpret old bytes.",
+  "source_pins": [
+    {
+      "path": "D:/we3/promo/ck3_native_war_ai/episode-03-siege/project/full-narration-zh.txt",
+      "bytes": 19194,
+      "sha256": "10a9946797399043a403850d081cf019ef19f66c17ab201bb546690981f2f0a4"
+    },
+    {
+      "path": "D:/we3/promo/ck3_native_war_ai/episode-03-siege/project/review-story-episode03.json",
+      "bytes": 225326,
+      "sha256": "c9d2fe23a5bffaff371e72f3c1d59d425e6945a2f47936e1e69855e4487e69f0"
+    },
+    {
+      "path": "D:/we3/promo/ck3_native_war_ai/episode-03-siege/project/claim-ledger.json",
+      "bytes": 64877,
+      "sha256": "88cd3b077184adc9c318f56c179cbdc6c68dee9243beb925e7880bcf612a4a94"
+    },
+    {
+      "path": "D:/we3/promo/ck3_native_war_ai/episode-03-siege/project/live-source.json",
+      "bytes": 94185,
+      "sha256": "dd5adf37892e56814eab0387a5c3a354cb1a3beba081f8d54035df737b5bf7d5"
+    },
+    {
+      "path": "D:/we3/promo/ck3_native_war_ai/episode-03-siege/project/editorial-source-index.json",
+      "bytes": 34818,
+      "sha256": "1629b884ad75a1bd54074209fc8d74a46f47f197fd6d26abb09c8a773edeaf3b"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/episode03-production-a09/timeline.json",
+      "bytes": 335423,
+      "sha256": "38488fa04ad2a5d1742bd3f7cc0be3d146e1a9ef5da76e404d51bc8bb0143e44"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/episode03-production-a09/sources/story.json",
+      "bytes": 225326,
+      "sha256": "c9d2fe23a5bffaff371e72f3c1d59d425e6945a2f47936e1e69855e4487e69f0"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/desktop-3fevhd2-1c74096080--vanilla--R0156-identity.json",
+      "bytes": 368,
+      "sha256": "cab0f2b2c0f1c45c3da9f2e37258a776cdc34e6f32a61a69b234a195aa802d4e"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/one-day-real-review-a01/review.json",
+      "bytes": 81985,
+      "sha256": "23b214708316a4a082550e88d11127481c79bb2e9072c06a984f1fc9c6e62016"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/assault-real-readback-a02.json",
+      "bytes": 110376,
+      "sha256": "95c17b00867c9a6d9c08e7d7d81fda898ffc0a01663edd6164881038a0349d7d"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/fall-real-readback-a01.json",
+      "bytes": 2360510,
+      "sha256": "6451f87f39737182c95c25fb76653f374d3ef1bb2a7db49aad04a988d6fd3548"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/review-captures12-16-a01/17/native-score-observations.json",
+      "bytes": 3349,
+      "sha256": "d32eaeb30e23b91bf11d200f50c0064e43c209fe05ad8bad6b963c655253c95f"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a06-sources/progress-count-corrected.md",
+      "bytes": 19093,
+      "sha256": "f03e27d000202ad67489126c8a3a5946a5a49b9692a1149595dd8fb1a954b948"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a01-sources/episode03-assault-1.20.0.3.md",
+      "bytes": 13633,
+      "sha256": "fffa08845817596dc5b801a3c55ba4d30ecf510f9b14642bb70304554c2d7163"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a01-sources/episode03-siege-events-1.20.0.3.md",
+      "bytes": 13563,
+      "sha256": "95f62d705829c840ba7fdaba107608ad17e987508845409ca4d22b10ea4b5780"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/editorial-draft-a01-sources/episode03-occupation-war-score-1.20.0.3.md",
+      "bytes": 19509,
+      "sha256": "86ef1cda96257bd9ad07e0d2936f43890ba55c94ed7146d6e7f37b16de1edfdc"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/defines/00_defines.txt",
+      "bytes": 125400,
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/men_at_arms_types/00_maa_types.txt",
+      "bytes": 14441,
+      "sha256": "eea327d9f7ddf9adf4ad4b6a8bcb18048e1fcecc601af037aaed83e3d1cbd133"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/men_at_arms_types/_men_at_arms_types.info",
+      "bytes": 3870,
+      "sha256": "aedb1cabafb8227c37ace1db96a972dfc2e952add44fa76e169df660f9f36dc9"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/traits/00_traits.txt",
+      "bytes": 341199,
+      "sha256": "93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/script_values/00_building_values.txt",
+      "bytes": 103815,
+      "sha256": "f436f7d9d5ac5506b38d715f0ce02c4f4257eef3addf56597c18a526a6f66825"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/english/game_concepts_l_english.yml",
+      "bytes": 382068,
+      "sha256": "ae7ebd881fe5b4222220c5dd9cf4b56b5d848202af2e5db9f5c90b479f455dd7"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/gui/window_siege.gui",
+      "bytes": 75195,
+      "sha256": "8236d9d1ca373dc19d9e138948864b84887a4516756e1b293f26e2cd88c6b0b9"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/casus_belli_types/00_event_war.txt",
+      "bytes": 97481,
+      "sha256": "48ab66002f287f0828cac3dcb3160248f49cc336ad335d838a4dd6c3563c0baa"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/boundary-review/report-final-a02.json",
+      "bytes": 9806,
+      "sha256": "9fcf75f52a6dd28966512077137f0c601f665816f9994647bfc2834ca405ab71"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/boundary-review/issues-final-a02.json",
+      "bytes": 11402,
+      "sha256": "02a9267aa1c756770350e92ab0f473dfd70a6b2a60aa2e1542537862f6b08be1"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/boundary-review/cue-boundary-matrix-final-a02.json",
+      "bytes": 161493,
+      "sha256": "43ab2c23d7d6b17b00c45262508406fa0b09ede649ef22b1a4622402519abba1"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/boundary-review/source-findings-final-a02.json",
+      "bytes": 11721,
+      "sha256": "28530352632365b0f7186b662d5494c542dcd29d83b6afd6c30ac15764b0e58f"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/boundary-review/output-pins-final-a02.json",
+      "bytes": 1938,
+      "sha256": "347fdf25bf83b0fb9c022f0514c76bf7b58e24192f16ce4d2098bb8a936db0bc"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/mechanism-review/daily-tooltip-label-scope.json",
+      "bytes": 15801,
+      "sha256": "cdfed0aec6051a2cb25d213f830d6298adc3368911aac5da43b3b74a2fbddd76"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/mechanism-review/daily-tooltip-label-scope.md",
+      "bytes": 2810,
+      "sha256": "02614934611eb09bbfa62f3667982ff40f61c0009d8c1d5d61c558b6001b3a30"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/mechanism-review/equality/garrison-producer.json",
+      "bytes": 47620,
+      "sha256": "5b8b9990a9cb99edb6d870ce3ba5a09fbb5f8ccdaf06a5ffc0d0f2ac4ed8d9a8"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/mechanism-review/equality/garrison-producer.md",
+      "bytes": 6165,
+      "sha256": "faf1bb2c6887f863a6f93d71eb2fe8ff18e27a21928db116a3330b4ff4ea5f02"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/mechanism-review/reinforcement-equality-review.md",
+      "bytes": 15025,
+      "sha256": "fc670545a8f9a829b37732c65fb4e338a5181c733ae044f89aadfec491b7e816"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/gui/siege_window_l_simp_chinese.yml",
+      "bytes": 5425,
+      "sha256": "d332a17e5facc1d231bf22ae1241c405bc1ae2fe1f2f399c9915755ff7844b59"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/english/gui/siege_window_l_english.yml",
+      "bytes": 5718,
+      "sha256": "73475a83a2df57d188788c95f4e95be9b231a94f8c732d683355439f0a56d3dc"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "bytes": 350826,
+      "sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/ui6-155756-6c372ed9/desktop.png",
+      "bytes": 2877743,
+      "sha256": "56475504a404c8d4037e93e76dab276b3b8ef93adbc17a3b29e1c155606e1aad"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-to-reinforcement-a01/20261002-155546-415273-192fcbf8d3-response.json",
+      "bytes": 3361307,
+      "sha256": "b3d96a18aac9ddfbdc0e9214153f69239f8b759c2ecc93e84ff777b576bc148c"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/live6-siege-to-reinforcement-a01/20261002-155549-887766-81ad18a3d6-response.json",
+      "bytes": 3435131,
+      "sha256": "aa1d3be5dd406f03d459e099d4707e7433797ffb7cfa84ae48c6a18eb953b4f1"
+    }
+  ],
+  "canonical_backlink_pins_at_document_write": [
+    {
+      "path": "D:/we3r/docs/ck3-native-ai/episode03-siege-progress-1.20.0.3.md",
+      "bytes": 19093,
+      "sha256": "f03e27d000202ad67489126c8a3a5946a5a49b9692a1149595dd8fb1a954b948"
+    },
+    {
+      "path": "D:/we3r/docs/ck3-native-ai/episode03-assault-1.20.0.3.md",
+      "bytes": 13633,
+      "sha256": "fffa08845817596dc5b801a3c55ba4d30ecf510f9b14642bb70304554c2d7163"
+    },
+    {
+      "path": "D:/we3r/docs/ck3-native-ai/episode03-siege-events-1.20.0.3.md",
+      "bytes": 13563,
+      "sha256": "95f62d705829c840ba7fdaba107608ad17e987508845409ca4d22b10ea4b5780"
+    },
+    {
+      "path": "D:/we3r/docs/ck3-native-ai/episode03-occupation-war-score-1.20.0.3.md",
+      "bytes": 19509,
+      "sha256": "86ef1cda96257bd9ad07e0d2936f43890ba55c94ed7146d6e7f37b16de1edfdc"
+    }
+  ],
+  "markdown_pin": {
+    "path": "D:/we3r/docs/ck3-native-ai/episode03-revision-research-boundaries-2026-10-03.md",
+    "bytes": 10406,
+    "sha256": "781a5d4b8c36c64508840be52cd8e9237a230c11a36104b4e9280c6af4f2b894"
+  },
+  "recorded_at_utc": "2026-10-02T20:52:59.701815+00:00",
+  "document_validation": {
+    "unique_original_cue_ids": 129,
+    "latest_append_expected_pins_match": true,
+    "backlinks_exist": true,
+    "archived_input_pins_basis": "Prior frozen complete129 read-only review; latest append files hashed once at document assembly. No full group rerun."
+  },
+  "prepublication_native_term_correction": {
+    "at_utc": "2026-10-02T22:03:48.088888+00:00",
+    "scope": "Current recommendation/finding/known/conclusion narrative uses native small/large breach terms; original cue quotations and source pins retain exact historical values.",
+    "historical_markdown_pin_preserved": true,
+    "current_canonical_markdown": {
+      "path": "docs/ck3-native-ai/episode03-revision-research-boundaries-2026-10-03.md",
+      "bytes": 10406,
+      "sha256": "6863a5b8f950308740ea9da086f12e1b83ee2f1a0294c110a19f8fde2c950e48"
+    },
+    "changed_current_narrative_pointers": [
+      "/remaining_gaps/2/known_zh",
+      "/issues/1/replacement_zh",
+      "/issues/2/finding_zh",
+      "/issues/2/replacement_zh",
+      "/proven_source_findings/5/conclusion_zh",
+      "/proven_source_findings/7/conclusion_zh",
+      "/proven_source_findings/8/conclusion_zh"
+    ]
+  }
+}
