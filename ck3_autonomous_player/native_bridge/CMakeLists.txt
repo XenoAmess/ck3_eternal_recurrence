@@ -6064,6 +6064,12 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/pending_character_interaction_context_v1_source_contract.json
   )
 
+  add_executable(xar_ck3_verified_owner_wake_v1_test src/verified_owner_wake_v1_test.cpp)
+  target_include_directories(xar_ck3_verified_owner_wake_v1_test PRIVATE include)
+  target_compile_features(xar_ck3_verified_owner_wake_v1_test PRIVATE cxx_std_20)
+  target_link_libraries(xar_ck3_verified_owner_wake_v1_test PRIVATE user32)
+  add_test(NAME xar_ck3_native_bridge_verified_owner_wake_v1 COMMAND xar_ck3_verified_owner_wake_v1_test)
+
   add_executable(xar_ck3_main_thread_query_mailbox_v1_test
     src/main_thread_query_mailbox_v1.cpp
     src/main_thread_query_mailbox_v1_test.cpp

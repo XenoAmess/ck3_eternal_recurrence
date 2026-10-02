@@ -2056,6 +2056,16 @@ std::string HeartbeatFrame(std::uint64_t sequence, const xar::game::GameAdapter 
       std::memory_order_acquire));
   result += '}';
   if (const auto *worker = dynamic_cast<const xar::ck3_12002::WorkerAdapter *>(&game)) {
+    const auto wake = worker->owner_wake_diagnostics();
+    result += ",\"direct_control_owner_wake_v1\":{\"attempts\":";
+    result += Number(wake.attempts);
+    result += ",\"posted\":"; result += Number(wake.posted);
+    result += ",\"guard_rejections\":"; result += Number(wake.guard_rejections);
+    result += ",\"owner_drift\":"; result += Number(wake.owner_drift);
+    result += ",\"owner_before\":"; result += Number(wake.owner_before);
+    result += ",\"owner_after\":"; result += Number(wake.owner_after);
+    result += ",\"last_error\":"; result += Number(wake.last_error);
+    result += '}';
     const auto observer = worker->snapshot_observer_diagnostics();
     result += ",\"snapshot_observer_12002\":{\"started_ms\":";
     result += Number(observer.started_ms);
@@ -12262,9 +12272,9 @@ void RunConnectedSession(
               connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, true, "submitted"));
               if (connected) {
-                connected = PublishSnapshot(pipe, game, previous_snapshot,
-                                            state_revision, checkpoint_submission,
-                                            published_checkpoint_sequence);
+                connected = PublishTimelineSnapshotWithDiagnostics(
+                    pipe, request_id, game, previous_snapshot, state_revision,
+                    checkpoint_submission, published_checkpoint_sequence);
               }
             } else {
               connected = write_frame(

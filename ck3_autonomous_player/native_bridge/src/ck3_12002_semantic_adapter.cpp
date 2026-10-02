@@ -156,29 +156,50 @@ const game::GameAdapter &NativeAdapter12002(const game::GameAdapter &adapter) no
   return worker == nullptr ? adapter : worker->native_adapter();
 }
 
+ck3_11906::VerifiedOwnerWakeDiagnosticsV1 WorkerAdapter::owner_wake_diagnostics() const noexcept {
+  return owner_wake_counters_.Read();
+}
+void WorkerAdapter::WakeAfterDirectControlSubmit() const noexcept {
+  owner_wake_counters_.Record(ck3_11906::WakeVerifiedApplicationMainOwnerV1(*mailbox_));
+}
+
 game::PauseSubmitResult WorkerAdapter::submit_pause_map(
     game::Snapshot *observed_snapshot) const noexcept {
-  if (observed_snapshot == nullptr) return native_->submit_pause_map();
+  if (observed_snapshot == nullptr) {
+    const auto result = native_->submit_pause_map();
+    if (result == game::PauseSubmitResult::submitted) WakeAfterDirectControlSubmit();
+    return result;
+  }
   *observed_snapshot = {};
   game::Snapshot observed{};
   if (!read_snapshot(observed)) return game::PauseSubmitResult::unavailable;
   const auto result = game::SubmitCk3_12002PauseMapObserved(*native_, observed);
+  if (result == game::PauseSubmitResult::submitted) WakeAfterDirectControlSubmit();
   if (result != game::PauseSubmitResult::unavailable)
     *observed_snapshot = std::move(observed);
   return result;
 }
 game::ResumeSubmitResult WorkerAdapter::submit_resume_map(
     game::Snapshot *observed_snapshot) const noexcept {
-  if (observed_snapshot == nullptr) return native_->submit_resume_map();
+  if (observed_snapshot == nullptr) {
+    const auto result = native_->submit_resume_map();
+    if (result == game::ResumeSubmitResult::submitted) WakeAfterDirectControlSubmit();
+    return result;
+  }
   *observed_snapshot = {};
   game::Snapshot observed{};
   if (!read_snapshot(observed)) return game::ResumeSubmitResult::unavailable;
   const auto result = game::SubmitCk3_12002ResumeMapObserved(*native_, observed);
+  if (result == game::ResumeSubmitResult::submitted) WakeAfterDirectControlSubmit();
   if (result != game::ResumeSubmitResult::unavailable)
     *observed_snapshot = std::move(observed);
   return result;
 }
-bool WorkerAdapter::submit_set_speed(std::int32_t speed) const noexcept { return native_->submit_set_speed(speed); }
+bool WorkerAdapter::submit_set_speed(std::int32_t speed) const noexcept {
+  const bool submitted = native_->submit_set_speed(speed);
+  if (submitted) WakeAfterDirectControlSubmit();
+  return submitted;
+}
 game::SaveCheckpointResult WorkerAdapter::submit_save_checkpoint() const noexcept { return native_->submit_save_checkpoint(); }
 
 bool WorkerAdapter::Run(SemanticRequest &request) const noexcept {

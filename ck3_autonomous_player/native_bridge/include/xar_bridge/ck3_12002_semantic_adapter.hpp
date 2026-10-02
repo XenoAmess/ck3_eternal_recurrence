@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12002_console_fixture.hpp"
+#include "xar_bridge/verified_owner_wake_v1.hpp"
 #include <atomic>
 #include <mutex>
 #include <optional>
@@ -75,6 +76,7 @@ public:
       std::int32_t, game::WarTerminationExitTermsSnapshot &) const noexcept override;
   bool Observe(const ck3_11906::MainThreadExecutionStampV1 &) noexcept;
   SnapshotObserverDiagnostics12002 snapshot_observer_diagnostics() const noexcept;
+  ck3_11906::VerifiedOwnerWakeDiagnosticsV1 owner_wake_diagnostics() const noexcept;
   bool read_marriage_diagnostic(std::string &) const noexcept;
   // Private fixed fixture step; no command or inbox path can be supplied.
   bool run_inbox_fixture(std::string &) const noexcept;
@@ -82,6 +84,8 @@ public:
 private:
   struct SemanticRequest;
   bool Run(SemanticRequest &) const noexcept;
+  void WakeAfterDirectControlSubmit() const noexcept;
+  mutable ck3_11906::VerifiedOwnerWakeCountersV1 owner_wake_counters_{};
   const game::GameAdapter *native_ = nullptr;
   ck3_11906::MainThreadQueryMailboxV1 *mailbox_ = nullptr;
   ConsoleFixtureBindings console_fixture_{};

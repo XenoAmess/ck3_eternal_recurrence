@@ -1190,3 +1190,14 @@ flowchart TD
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class U unknown;
 ```
+
+
+## 直入队控制后的 owner 唤醒与缓存回读（2026-10-03）
+
+桥接心跳持续增长而语义 snapshot ID、owner pump epoch 与 observer 采样时间保持不变时，只能认定缺少新状态证据。多次调用缓存读取不等于多个独立 publication；command_result 的 submitted 也不能提升为已执行或已拒绝。保留真实提交、返回和拒绝顺序，后续 GUI 或新帧观察不能改写旧失败窗口。
+
+1.20 adapter 的速度、暂停和恢复直入队路径在实际提交成功后，现在只尝试一次 inert WM_NULL 消息。调用读取已发布的 owner/TLS/proof 事实，要求 installed hook、已验证 owner、非 detached/stop/failure、没有 proof reset，并在单次 post 前后核对同一 owner。worker 不读取或伪造 owner TLS；typed mailbox ticket 路径保持原字节。唤醒失败或 owner 后置变化保留诊断，不重发游戏命令、不延长等待、不改变 ACK 真值。
+
+heartbeat 新增 direct_control_owner_wake_v1：attempts、posted、guard_rejections、owner_drift、owner_before/after、last_error。固定速度提交后复用既有 publication begin/end 诊断，区分 read_failed、deduplicated 与 written。它们是证据接缝，不能保证引擎产生新帧；只有下一受管实机的新 owner 采样与语义 publication 才能验收作用。
+
+本次必要验证为 MSVC 编译两个受影响生产 translation unit，以及一个 fake-poster CTest 的17项守卫/结果案例，均通过。fake-poster 不发真实OS消息或连接游戏。这些检查不等于已构建可注入DLL，也不等于实机刷新完成；新DLL仍须 fresh-build、Ninja真实头依赖核验与exact-build运行证明。为修复连续游玩阻塞开展这些检查，其他玩法专项不因此启动。
