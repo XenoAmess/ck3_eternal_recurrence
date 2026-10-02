@@ -1,0 +1,1301 @@
+{
+  "schema": "xar.ck3.episode03.revision-ui-capture.v1",
+  "recorded_utc": "2026-10-02T22:20:53.179395+00:00",
+  "document_scope": "New R0157/R0158 vanilla UI/recording provenance and cleanup only; this task reads existing local evidence and writes the two authorized documentation files.",
+  "external_root": "D:\\ck3-war-episode03-revision-20261003-a01",
+  "original_numeric_case": {
+    "run": "R0156",
+    "external_root": "D:\\ck3-war-episode03-20261002-a01",
+    "source_doc": "episode03-william-lewes-live-2026-10-03.md",
+    "capture_date": "1067-04-22",
+    "army_count": 6384,
+    "preservation": "Original R0156 footage, frozen nine production inputs, saves, failures and evidence remain historical sources; no writes to these assets by this documentation task."
+  },
+  "new_runs": [
+    {
+      "run": "R0157",
+      "actual_launcher_candidate_from_argv": "a02",
+      "live_directory": "a03 suffix identifies run directory, not a changed launcher schema",
+      "prepared": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/prepared-desktop-3fevhd2-1c74096080--vanilla--R0157/prepared.json",
+        "bytes": 4665,
+        "sha256": "3e62b4ea59c581440aaec7f114cfeb22d8a03cc31c4d9fd88cd698fe5cdc8bb6"
+      },
+      "result": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/live-desktop-3fevhd2-1c74096080--vanilla--R0157-a03/result.json",
+        "bytes": 2537,
+        "sha256": "6a122c8ebde52bed22bd81109ac09e508ab5eded1882e8bde76890535e5c16f2"
+      },
+      "source_head": "6c87eb77568601499ab98a43f9cbea4c2ee870f6",
+      "source_gate": {
+        "head": "6c87eb77568601499ab98a43f9cbea4c2ee870f6",
+        "whole_worktree_clean": false,
+        "allowed_visual_dirty": {
+          "promo/ck3_native_war_ai/episode-03-siege/composer.py": " M",
+          "promo/ck3_native_war_ai/episode-03-siege/production.py": " M"
+        },
+        "visual_file_pins_at_this_phase": {
+          "promo/ck3_native_war_ai/episode-03-siege/composer.py": {
+            "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\composer.py",
+            "bytes": 6461,
+            "sha256": "9ea9ce1f494c0de00d0520b6fd344fba198fcd044d14c14a24bbc0f28b0562f6"
+          },
+          "promo/ck3_native_war_ai/episode-03-siege/production.py": {
+            "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\production.py",
+            "bytes": 58946,
+            "sha256": "3de46c35fb8c03582d86301e3f73559f224cbfbca00d16f1d5aeda0242574ef7"
+          }
+        },
+        "fixed_launch_dependency_manifest": {
+          "path": "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\launcher-a02-fixed-dependency-pins.json",
+          "bytes": 122200,
+          "sha256": "acfac64433500dd5c6248813e1c762602226390c003a10d44b68bc5f79f3efb2"
+        },
+        "fixed_launch_dependencies_verified": 392,
+        "lease_checkout": "Caller uses separate clean D:/e3rt; no relaxation or patch of existing ScreenLeaseKeeper"
+      },
+      "native_bridge_mode": "disabled",
+      "ck3_pid": 18892,
+      "ui_demo_save_pins": {
+        "source": {
+          "path": "D:\\ck3-war-episode03-20261002-a01\\vanilla-state-carmy-zero-a05\\profile\\save games\\e3_william_carmy0_a05.ck3",
+          "bytes": 68922752,
+          "sha256": "7f4572a65ee6573b9b2a7ea950614f122690860a94a7a38bba7e406aabd0bb64"
+        },
+        "new_profile_copy": {
+          "path": "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\state-desktop-3fevhd2-1c74096080--vanilla--R0157\\profile\\save games\\revision_ui_demo.ck3",
+          "bytes": 68922752,
+          "sha256": "7f4572a65ee6573b9b2a7ea950614f122690860a94a7a38bba7e406aabd0bb64"
+        },
+        "scope": "New UI demonstration only; not evidence of original R0156 numerical events"
+      },
+      "launch_argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\bookmark_ui_launcher_candidate_a02.py",
+        "run",
+        "--prepared",
+        "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\prepared-desktop-3fevhd2-1c74096080--vanilla--R0157\\prepared.json",
+        "--run-dir",
+        "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\live-desktop-3fevhd2-1c74096080--vanilla--R0157-a03",
+        "--steam-offline-receipt",
+        "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\normalized-offline-review-a08.json",
+        "--screen-cli",
+        "D:/we3r/tools/codex_task_bus.py",
+        "--task-bus",
+        "D:/workspace/.codex-task-bus",
+        "--screen-repo",
+        "D:/e3rt",
+        "--screen-task-id",
+        "ck3-e3-revision-bookmark-screen-20261003-a02-clean",
+        "--screen-expected-sequence",
+        "3842",
+        "--screen-cli-sha256",
+        "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+        "--max-runtime-seconds",
+        "1800",
+        "--default-desktop"
+      ],
+      "recorder_argv": [
+        "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+        "-hide_banner",
+        "-nostats",
+        "-thread_queue_size",
+        "512",
+        "-f",
+        "gdigrab",
+        "-framerate",
+        "30",
+        "-draw_mouse",
+        "1",
+        "-video_size",
+        "1920x1080",
+        "-i",
+        "desktop",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "ultrafast",
+        "-crf",
+        "18",
+        "-pix_fmt",
+        "yuv420p",
+        "-fps_mode",
+        "cfr",
+        "-t",
+        "1500",
+        "D:\\ck3-war-episode03-revision-20261003-a01\\recordings\\bookmark-and-ui-a01\\raw.mkv"
+      ],
+      "shutdown": {
+        "nonce": "0bf764394e8e44c38cf3fec79d9d41fd",
+        "ck3_pid": 18892,
+        "ck3_creation_date": "20261002203500.482110+000",
+        "ck3_exit_code": 1,
+        "job_active_processes_before_termination": 1,
+        "job_active_processes_final": 0,
+        "tree_gone": true,
+        "cleanup_proven": true,
+        "final_ck3_inventory": {
+          "tasklist_returncode": 0,
+          "tasklist_pids": [],
+          "wmi_pids": [],
+          "native_pids": [],
+          "inventory_backend": "tasklist+toolhelp32",
+          "processes": []
+        },
+        "watchdog_pid": 12132,
+        "watchdog_creation_date": "20261002203457.344990+000",
+        "watchdog_state_before": "running",
+        "watchdog_state_after": "absent",
+        "control_files_absent": {
+          "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\state-desktop-3fevhd2-1c74096080--vanilla--R0157\\control\\ck3.json": true,
+          "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\state-desktop-3fevhd2-1c74096080--vanilla--R0157\\control\\watchdog-0bf764394e8e44c38cf3fec79d9d41fd.ready.json": true,
+          "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\state-desktop-3fevhd2-1c74096080--vanilla--R0157\\control\\ck3.watchdog_error": true,
+          "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\state-desktop-3fevhd2-1c74096080--vanilla--R0157\\control\\unsafe-cleanup.json": true
+        },
+        "contract_errors": [],
+        "ok": true
+      },
+      "lease": {
+        "schema": "xar.promo.screen-lease-keeper/v1",
+        "task_id": "ck3-e3-revision-bookmark-screen-20261003-a02-clean",
+        "last_sequence": 3857,
+        "failure": null,
+        "thread_exited": true,
+        "journal": "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\live-desktop-3fevhd2-1c74096080--vanilla--R0157-a03\\screen-lease-journal.jsonl"
+      }
+    },
+    {
+      "run": "R0158",
+      "prepared": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/prepared-r0158-a04/prepared.json",
+        "bytes": 4281,
+        "sha256": "1563707b79d9ea370cf333ac608e02166c5c9f2203de065ea6c026db5f8de033"
+      },
+      "result": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/live-r0158-a04/result.json",
+        "bytes": 2382,
+        "sha256": "4cd39ff8ccdd319cefba0bee943f0227084005bbdaa6961a91feda8964b7cbd1"
+      },
+      "source_head": "6c87eb77568601499ab98a43f9cbea4c2ee870f6",
+      "source_gate": {
+        "head": "6c87eb77568601499ab98a43f9cbea4c2ee870f6",
+        "repo": "D:\\e3u",
+        "clean": true,
+        "fixed_dependencies": {
+          "path": "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\launcher-a04-fixed-dependency-pins.json",
+          "bytes": 121805,
+          "sha256": "53f6a9a948cf86ecae05e4ba3db8e75ba014212c0bd4a159263f61aa6b1f553b"
+        },
+        "fixed_dependency_count": 392
+      },
+      "native_bridge_mode": "disabled",
+      "ck3_pid": 9264,
+      "ui_demo_save_pins": [
+        {
+          "source": {
+            "path": "D:\\ck3-war-episode03-20261002-a01\\vanilla-state-carmy-zero-a05\\profile\\save games\\autosave_1.ck3",
+            "bytes": 71837528,
+            "sha256": "17d98cd24f955dd951be14965502c8ba49856ad8524371430348cd60ecd098c1"
+          },
+          "new_profile_copy": {
+            "path": "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\vanilla-state-r0158-a04\\profile\\save games\\revision_ui_demo_01.ck3",
+            "bytes": 71837528,
+            "sha256": "17d98cd24f955dd951be14965502c8ba49856ad8524371430348cd60ecd098c1"
+          },
+          "scope": "New UI demonstration only; not original R0156 numerical event evidence"
+        },
+        {
+          "source": {
+            "path": "D:\\ck3-war-episode03-20261002-a01\\william-lewes-fall-1067-04-22.ck3",
+            "bytes": 74680288,
+            "sha256": "fb0336fe3d570031fa640dc7b0b6d311b09fd62c9dec7b8b18aa47861453d8b0"
+          },
+          "new_profile_copy": {
+            "path": "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\vanilla-state-r0158-a04\\profile\\save games\\revision_ui_demo_02.ck3",
+            "bytes": 74680288,
+            "sha256": "fb0336fe3d570031fa640dc7b0b6d311b09fd62c9dec7b8b18aa47861453d8b0"
+          },
+          "scope": "New UI demonstration only; not original R0156 numerical event evidence"
+        }
+      ],
+      "launch_argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\bookmark_ui_launcher_candidate_a04.py",
+        "run",
+        "--prepared",
+        "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\prepared-r0158-a04\\prepared.json",
+        "--run-dir",
+        "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\live-r0158-a04",
+        "--steam-offline-receipt",
+        "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\normalized-offline-review-a09.json",
+        "--screen-cli",
+        "D:\\e3u\\tools\\codex_task_bus.py",
+        "--task-bus",
+        "D:/workspace/.codex-task-bus",
+        "--screen-repo",
+        "D:\\e3u",
+        "--screen-task-id",
+        "ck3-e3-revision-ui-r0158-20261003",
+        "--screen-expected-sequence",
+        "3861",
+        "--screen-cli-sha256",
+        "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+        "--max-runtime-seconds",
+        "3600",
+        "--default-desktop"
+      ],
+      "recorder_argv": [
+        "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+        "-hide_banner",
+        "-nostats",
+        "-thread_queue_size",
+        "512",
+        "-f",
+        "gdigrab",
+        "-framerate",
+        "30",
+        "-draw_mouse",
+        "1",
+        "-video_size",
+        "1920x1080",
+        "-i",
+        "desktop",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "ultrafast",
+        "-crf",
+        "18",
+        "-pix_fmt",
+        "yuv420p",
+        "-fps_mode",
+        "cfr",
+        "-t",
+        "1500",
+        "D:\\ck3-war-episode03-revision-20261003-a01\\recordings\\r0158-siege-ui-a01\\raw.mkv"
+      ],
+      "shutdown": {
+        "nonce": "6ecf21b2577447b492967960df719874",
+        "ck3_pid": 9264,
+        "ck3_creation_date": "20261002212148.968508+000",
+        "ck3_exit_code": 1,
+        "job_active_processes_before_termination": 1,
+        "job_active_processes_final": 0,
+        "tree_gone": true,
+        "cleanup_proven": true,
+        "final_ck3_inventory": {
+          "tasklist_returncode": 0,
+          "tasklist_pids": [],
+          "wmi_pids": [],
+          "native_pids": [],
+          "inventory_backend": "tasklist+toolhelp32",
+          "processes": []
+        },
+        "watchdog_pid": 19180,
+        "watchdog_creation_date": "20261002212145.769950+000",
+        "watchdog_state_before": "running",
+        "watchdog_state_after": "absent",
+        "control_files_absent": {
+          "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\vanilla-state-r0158-a04\\control\\ck3.json": true,
+          "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\vanilla-state-r0158-a04\\control\\watchdog-6ecf21b2577447b492967960df719874.ready.json": true,
+          "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\vanilla-state-r0158-a04\\control\\ck3.watchdog_error": true,
+          "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\vanilla-state-r0158-a04\\control\\unsafe-cleanup.json": true
+        },
+        "contract_errors": [],
+        "ok": true
+      },
+      "lease": {
+        "schema": "xar.promo.screen-lease-keeper/v1",
+        "task_id": "ck3-e3-revision-ui-r0158-20261003",
+        "last_sequence": 3875,
+        "failure": null,
+        "thread_exited": true,
+        "journal": "D:\\ck3-war-episode03-revision-20261003-a01\\bookmark-preparation\\live-r0158-a04\\screen-lease-journal.jsonl"
+      }
+    }
+  ],
+  "game": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 101039736,
+    "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+  },
+  "launcher": {
+    "raw_version": "1.20.0.3",
+    "display_version": "1.20.0.3 (Crozier)",
+    "distribution": "steam",
+    "launcher_settings_sha256": "9cd6ff96f8092f2d21e1491b37e8344aa287faf69850563128ca1b117244a214"
+  },
+  "profile_contract": {
+    "enabled_mods": [],
+    "language": "l_simp_chinese",
+    "requested_display": [
+      1920,
+      1080
+    ],
+    "native_bridge_mode": "disabled",
+    "save_launch_flags": [],
+    "prepared_scope": "No auto-load or auto-select in launcher; actual official UI selection/load shown in post-launch frames.",
+    "validator_boundary": "Custom pure-vanilla 1920 settings receipt. Standard prepared mod/OCR profile validator has a different 2560 display contract and is not claimed to pass."
+  },
+  "mcp_fallback": {
+    "preparation_status": {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/preparation-status-a01.json",
+      "bytes": 4616,
+      "sha256": "7c327c6d5b2c4b5be8848c81f761fc93d31c682bee55e80ef616463badd0390d"
+    },
+    "offline_descriptor_reference": {
+      "path": "D:\\ck3-war-episode03-20261002-a01\\native-final-master-a05-compiled-12003-capabilities.json",
+      "bytes": 2955,
+      "sha256": "fafd44d6b3ea8112e5c26106b0e2b83d87862a3d7f93d46e5dbfe08d967470cb"
+    },
+    "default_adapter_capability_count": 62,
+    "compiled_frontend_or_bookmark_capabilities": [],
+    "actual_run_mode": "native bridge disabled; no SDK/pipe/DLL injection",
+    "scope": "Preparation confirmed no default .3 compiled frontend/bookmark capability. Official UI was chosen. No claimed runtime advertisement readback, failed MCP invocation, enabled private capability, or new native capability.",
+    "open_kaishek": {
+      "status": "not-applicable",
+      "reason": "Vanilla frontend/bookmark UI has no mod-script open_kaishek semantics"
+    }
+  },
+  "steam_offline_existing_evidence": [
+    {
+      "run": "R0157",
+      "review": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/normalized-offline-review-a08.json",
+        "bytes": 808,
+        "sha256": "0508f468fe34db7dc9a3c8bf88db8664efaa7864b5debd4f1d864994f2726862"
+      },
+      "screenshot": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\steam-recovery-a08\\probe-1\\steam-moved.png",
+        "bytes": 115397,
+        "sha256": "f49074f88935ea71af29246843da01c06fae428fed6875a15cfa89df2122c312"
+      },
+      "freshness": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/steam-recovery-a08/probe-1/steam-frame-freshness.json",
+        "bytes": 1153,
+        "sha256": "ba66f855748ae0095353ab3f446e37cde0218b37caf1e3edeafb6a187a95a066"
+      },
+      "scope": "Existing root original-image observation and actual displaced-window fresh-pixel receipt. Documentation makes no new offline observation or Steam mode change.",
+      "recorded_review": {
+        "schema": "xar.steam-offline-operator-review.v1",
+        "current_offline_ui_observed": true,
+        "observed_at": "2026-10-02T20:34:50.376153+00:00",
+        "reviewer": "root AI operator",
+        "human_video_signoff": false,
+        "screenshot": {
+          "path": "D:\\ck3-war-episode03-revision-20261003-a01\\steam-recovery-a08\\probe-1\\steam-moved.png",
+          "bytes": 115397,
+          "sha256": "f49074f88935ea71af29246843da01c06fae428fed6875a15cfa89df2122c312"
+        },
+        "review": "Direct original1920x1080 view: offline_mode label bottom-center. Recovery actual window displacement and changed pixels reviewed. Black store body does not obscure client offline status. No Steam mode mutation.",
+        "freshness_receipt": "D:\\ck3-war-episode03-revision-20261003-a01\\steam-recovery-a08\\probe-1\\steam-frame-freshness.json"
+      }
+    },
+    {
+      "run": "R0158",
+      "review": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/normalized-offline-review-a09.json",
+        "bytes": 674,
+        "sha256": "09eb9bc30fc81bf5cede2fcd12c7f865406072a805e91c7059d847543dc40123"
+      },
+      "screenshot": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\steam-recovery-a09\\probe-1\\steam-moved.png",
+        "bytes": 115401,
+        "sha256": "01e76d7957d89a85384384ad5f73816cc23cef2ad0c49a7895271e2079d47fbc"
+      },
+      "freshness": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/steam-recovery-a09/probe-1/steam-frame-freshness.json",
+        "bytes": 1153,
+        "sha256": "60554278473f2a34adf3dba9705a513d59f2eecaf5652f7674a2acb018e31daa"
+      },
+      "scope": "Existing root original-image observation and actual displaced-window fresh-pixel receipt. Documentation makes no new offline observation or Steam mode change.",
+      "recorded_review": {
+        "current_offline_ui_observed": true,
+        "observed_at": "2026-10-02T21:21:37.393148+00:00",
+        "reviewer": "root AI operator direct original PNG view",
+        "human_video_signoff": false,
+        "screenshot": {
+          "path": "D:\\ck3-war-episode03-revision-20261003-a01\\steam-recovery-a09\\probe-1\\steam-moved.png",
+          "bytes": 115401,
+          "sha256": "01e76d7957d89a85384384ad5f73816cc23cef2ad0c49a7895271e2079d47fbc"
+        },
+        "freshness_receipt": "D:\\ck3-war-episode03-revision-20261003-a01\\steam-recovery-a09\\probe-1\\steam-frame-freshness.json",
+        "note": "Client offline label directly observed, actual window move and new pixels reviewed; no Steam mode mutation"
+      }
+    }
+  ],
+  "william_bookmark": {
+    "source_image": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\ui-capture\\william-bookmark-clean-01\\desktop.png",
+      "bytes": 2805333,
+      "sha256": "414cf9d018e08c8f39270b3eedfc6077cd487005855c11600aac1cb1ed4672ae"
+    },
+    "clean_receipt": {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/william-bookmark-clean-01/receipt.json",
+      "bytes": 913,
+      "sha256": "fe2a9ebbd1c211865b038bcb3df53f0452999c53b330f446f44fe30257650494"
+    },
+    "selection_receipt": {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/william-bookmark-selected-01/receipt.json",
+      "bytes": 917,
+      "sha256": "0a5dfb12613037ca199ab715be770e6175f9acb012a33b8f97ab815670d28f3d"
+    },
+    "selection_image": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\ui-capture\\william-bookmark-selected-01\\desktop.png",
+      "bytes": 2807237,
+      "sha256": "0afa4eb82b06356a0fdb290eac7c2158ac8de83d832a40c5bf244f172201ea96"
+    },
+    "selection_evidence": "Root clicked official1066FateofEngland William bookmark; direct original image inspection shows selected right-panel character, native portrait/intro, age39 and Normandy duke. Prepared false flags are preparation-time state, not post-run disproof.",
+    "observed_original_image": "1920x1080; 英格兰的命运/公元1066年9月15日; 私生子威廉39岁, 诺曼底公爵; native right-panel family/intro and Start button.",
+    "continuous_media_cut": {
+      "source_role": "new-ui-demo",
+      "game_progress": false,
+      "start_seconds": 126.0,
+      "end_seconds_exclusive": 141.0,
+      "source_cutlist": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0157/exact-cutlist-a01.json",
+        "bytes": 29926,
+        "sha256": "6c7c2ac80a21986bba2b7cc91ea0d54a376adaf137c6265eb5e175822df9b6c3"
+      }
+    }
+  },
+  "new_demo_date_boundary": {
+    "R0157": "Sampled capture shows a different occupation scene: current1067-02-24, notification datedFeb23, army5439. New-run UI only.",
+    "R0158": "Direct screenshot r0158-dismiss-event-01 has current1067-05-02, notification围攻获胜5月2日, army5493, vanished siege window and occupation stripes. It is not the original Apr22/6384 event.",
+    "R0158_later_war_panel": "Occupation tooltip screenshot current1067-06-02 with南撒克逊+13.2/currentcap+150; not a same-day original R0156 numeric query or a new formula proof.",
+    "scope": "New screenshots/footage illustrate navigation, current UI and visible action; cannot replace original R0156 numeric endpoints or validate the full D/G2/Robert case.",
+    "R0158_tooltip_scope": {
+      "actual_pts_295_seconds": "围攻事件计时，8天剩余、12天间隔",
+      "actual_pts_308_320_322_seconds": "森林地形提示",
+      "receipt_name_boundary": "walls/breach are producer file names; they do not prove an actual breach-size tooltip or wall-state observation.",
+      "source_cutlist": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0158/exact-cutlist-a01.json",
+        "bytes": 49968,
+        "sha256": "60380daff742f4eb352b00553c4456c9dcf246bc43c590aad7a9d0bb8678ea2a"
+      }
+    },
+    "R0158_fall_visibility": "May1 event modal obscures the final siege date; May2 is a clear after-state only. No unobstructed continuous before/after fall proof is claimed.",
+    "R0158_war_panel_date_span": "1067-06-02 to 1067-06-24 from actual encoded frames"
+  },
+  "append_erratum": {
+    "date": "2026-10-03",
+    "original_receipt": {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-frontend-01/receipt.json",
+      "bytes": 907,
+      "sha256": "9d6e9837a4ec2cddcfbd8e421010a18928989c63927a0ed9ce75615f592edf84"
+    },
+    "literal_scope": "New vanilla R0157 UI demonstration; not original R0156 numeric evidence",
+    "correction": "The first R0158 frontend snapshot retains a stale literal R0157 scope string. Its path, timestamp andCK3PID9264 match the actual R0158 run. Later loaded/daily/war receipts use the general New vanilla UI demonstration wording. Original bytes are retained, not edited."
+  },
+  "ui_receipts": [
+    {
+      "id": "william-bookmark-selected-01",
+      "receipt": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/william-bookmark-selected-01/receipt.json",
+        "bytes": 917,
+        "sha256": "0a5dfb12613037ca199ab715be770e6175f9acb012a33b8f97ab815670d28f3d"
+      },
+      "image": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\ui-capture\\william-bookmark-selected-01\\desktop.png",
+        "bytes": 2807237,
+        "sha256": "0afa4eb82b06356a0fdb290eac7c2158ac8de83d832a40c5bf244f172201ea96"
+      },
+      "at_utc": "2026-10-02T20:41:05.349573+00:00",
+      "operation": "click",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "literal_scope": "New vanilla R0157 UI demonstration; not original R0156 numeric evidence"
+    },
+    {
+      "id": "william-bookmark-clean-01",
+      "receipt": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/william-bookmark-clean-01/receipt.json",
+        "bytes": 913,
+        "sha256": "fe2a9ebbd1c211865b038bcb3df53f0452999c53b330f446f44fe30257650494"
+      },
+      "image": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\ui-capture\\william-bookmark-clean-01\\desktop.png",
+        "bytes": 2805333,
+        "sha256": "414cf9d018e08c8f39270b3eedfc6077cd487005855c11600aac1cb1ed4672ae"
+      },
+      "at_utc": "2026-10-02T20:42:43.515990+00:00",
+      "operation": "move",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "literal_scope": "New vanilla R0157 UI demonstration; not original R0156 numeric evidence"
+    },
+    {
+      "id": "r0158-frontend-01",
+      "receipt": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-frontend-01/receipt.json",
+        "bytes": 907,
+        "sha256": "9d6e9837a4ec2cddcfbd8e421010a18928989c63927a0ed9ce75615f592edf84"
+      },
+      "image": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\ui-capture\\r0158-frontend-01\\desktop.png",
+        "bytes": 2411118,
+        "sha256": "43ba83014b1f1c5989619b73b06dab31aaf4b03b05de136dabbc7720aeb94c2a"
+      },
+      "at_utc": "2026-10-02T21:24:10.052650+00:00",
+      "operation": "snapshot",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "literal_scope": "New vanilla R0157 UI demonstration; not original R0156 numeric evidence"
+    },
+    {
+      "id": "r0158-loaded-01",
+      "receipt": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-loaded-01/receipt.json",
+        "bytes": 899,
+        "sha256": "29accb7847e1453b48486eb02c4e188a91022a258a4d06a2f76406f26e70cbf1"
+      },
+      "image": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\ui-capture\\r0158-loaded-01\\desktop.png",
+        "bytes": 3468730,
+        "sha256": "5b51485489364c72464219bc6feb86a6c8f67236ec300e9c45a1b651f6f12088"
+      },
+      "at_utc": "2026-10-02T21:28:57.627818+00:00",
+      "operation": "snapshot",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "literal_scope": "New vanilla UI demonstration; not original R0156 numeric evidence"
+    },
+    {
+      "id": "r0158-progress-01",
+      "receipt": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-progress-01/receipt.json",
+        "bytes": 897,
+        "sha256": "a0768b014c4770e7700401d1a5ca876a26146ac3fd19f0b3a8e7da3a0788e12e"
+      },
+      "image": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\ui-capture\\r0158-progress-01\\desktop.png",
+        "bytes": 3521054,
+        "sha256": "992095323e4c070c144bc2fc3cc59c01328c659972dda6eb7f0ac37abb889994"
+      },
+      "at_utc": "2026-10-02T21:41:20.386367+00:00",
+      "operation": "move",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "literal_scope": "New vanilla UI demonstration; not original R0156 numeric evidence"
+    },
+    {
+      "id": "r0158-daily-tooltip-01",
+      "receipt": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-daily-tooltip-01/receipt.json",
+        "bytes": 902,
+        "sha256": "0ff40276d233670226bed8c37661c864d0acf04f65406e067c5fd91708afe2c1"
+      },
+      "image": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\ui-capture\\r0158-daily-tooltip-01\\desktop.png",
+        "bytes": 3520334,
+        "sha256": "149ee0c8487ebf87caf6b0de76a3086c6f9b3e07221d479c01f45204fbb310cf"
+      },
+      "at_utc": "2026-10-02T21:40:41.227291+00:00",
+      "operation": "move",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "literal_scope": "New vanilla UI demonstration; not original R0156 numeric evidence"
+    },
+    {
+      "id": "r0158-walls-01",
+      "receipt": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-walls-01/receipt.json",
+        "bytes": 894,
+        "sha256": "540d3d9a9328d1b1ad19e5a96f99332fbd0984f6c72e882705ab1c35b87cc422"
+      },
+      "image": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\ui-capture\\r0158-walls-01\\desktop.png",
+        "bytes": 3540388,
+        "sha256": "63d06258b987d0cd865293afde79acddb66a6ea1b2462ea868375f3e9b39c7f7"
+      },
+      "at_utc": "2026-10-02T21:42:35.220727+00:00",
+      "operation": "move",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "literal_scope": "New vanilla UI demonstration; not original R0156 numeric evidence"
+    },
+    {
+      "id": "r0158-breach-01",
+      "receipt": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-breach-01/receipt.json",
+        "bytes": 895,
+        "sha256": "ff439c8b1d2c04cde05686afb15761e261abb7d821aa3793fb74fdcf7f4cce77"
+      },
+      "image": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\ui-capture\\r0158-breach-01\\desktop.png",
+        "bytes": 3550961,
+        "sha256": "1b1e12c0d0fe195a5d06f6c8defdfda7cc0b47a112901be5e92c25aa8ba6c478"
+      },
+      "at_utc": "2026-10-02T21:43:04.567686+00:00",
+      "operation": "move",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "literal_scope": "New vanilla UI demonstration; not original R0156 numeric evidence"
+    },
+    {
+      "id": "r0158-clean-siege-01",
+      "receipt": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-clean-siege-01/receipt.json",
+        "bytes": 900,
+        "sha256": "62775a694ae40769c066615824f1beb04cb4ef798903923d6dd11a7db4a13779"
+      },
+      "image": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\ui-capture\\r0158-clean-siege-01\\desktop.png",
+        "bytes": 3259721,
+        "sha256": "34c9300e1ba36f31cb3c5c39fefd9b55d3ada3a0bc8f1d629c9adfb5db6c6d7f"
+      },
+      "at_utc": "2026-10-02T21:44:23.281933+00:00",
+      "operation": "move",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "literal_scope": "New vanilla UI demonstration; not original R0156 numeric evidence"
+    },
+    {
+      "id": "r0158-dismiss-event-01",
+      "receipt": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-dismiss-event-01/receipt.json",
+        "bytes": 903,
+        "sha256": "0544e996269e995dd18177494025991224427a6e5602c3d9d1e3b8449e872359"
+      },
+      "image": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\ui-capture\\r0158-dismiss-event-01\\desktop.png",
+        "bytes": 3475971,
+        "sha256": "952a212a93627c07bb43b48654216ae965e02026c8b1225ff2fe91b89c067cee"
+      },
+      "at_utc": "2026-10-02T21:44:55.506996+00:00",
+      "operation": "click",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "literal_scope": "New vanilla UI demonstration; not original R0156 numeric evidence"
+    },
+    {
+      "id": "r0158-war-panel-01",
+      "receipt": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-war-panel-01/receipt.json",
+        "bytes": 899,
+        "sha256": "8fb303a9600d97c53c8a42409bc01c8e8f4d6ea97211a901c52e21bd612ac4a4"
+      },
+      "image": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\ui-capture\\r0158-war-panel-01\\desktop.png",
+        "bytes": 3137235,
+        "sha256": "16ec4b950404107906976816b0f11e744c266430b26ecea8fac29ae665567bca"
+      },
+      "at_utc": "2026-10-02T21:46:01.257866+00:00",
+      "operation": "click",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "literal_scope": "New vanilla UI demonstration; not original R0156 numeric evidence"
+    },
+    {
+      "id": "r0158-occupation-tooltip-01",
+      "receipt": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-occupation-tooltip-01/receipt.json",
+        "bytes": 907,
+        "sha256": "60f5550d886ac93e15a1a215092e6c7f2e6fbfdea3925d24965517b6246c08fd"
+      },
+      "image": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\ui-capture\\r0158-occupation-tooltip-01\\desktop.png",
+        "bytes": 3163853,
+        "sha256": "49792a1a7d4e4612c4d1ad010b476bf36c5baf2524c53e6fe126f78508601e6f"
+      },
+      "at_utc": "2026-10-02T21:46:56.870777+00:00",
+      "operation": "move",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "literal_scope": "New vanilla UI demonstration; not original R0156 numeric evidence"
+    }
+  ],
+  "recordings": {
+    "R0157": {
+      "producer_result": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/bookmark-and-ui-a01/result.json",
+        "bytes": 358,
+        "sha256": "99ee724443fd7335181022517107863e63f21259479cd5fd98b6e649fc13c70f"
+      },
+      "process_ready": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/bookmark-and-ui-a01/process-ready.json",
+        "bytes": 897,
+        "sha256": "9e253b0b296069b35e516618b440dbfebb55fa3d5fbc2b66deedc668d13d9216"
+      },
+      "raw": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\recordings\\bookmark-and-ui-a01\\raw.mkv",
+        "bytes": 1791466340,
+        "sha256": "3efaeaecb7396a139fd0b1d143ef4beff2714b80590ed70b4493e7e6f046edac"
+      },
+      "producer_completed_at_utc": "2026-10-02T21:04:54.139914+00:00",
+      "human_review": false,
+      "raw_pin_scope": "Copied from producer and independent footage-review hash records; this documentation task does not rerun a full media audit.",
+      "actual_media_duration_seconds": 1453.866
+    },
+    "R0158": {
+      "producer_result": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/result.json",
+        "bytes": 356,
+        "sha256": "53f66d84ab780e692883df7c2af1aeed63660a48764a2a5e48f35aa5cbe42f8e"
+      },
+      "process_ready": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/process-ready.json",
+        "bytes": 909,
+        "sha256": "4733239e3d01503156a05396ded9be5b75a7a24b6ff8da81c0d76bfeec3e2710"
+      },
+      "raw": {
+        "path": "D:\\ck3-war-episode03-revision-20261003-a01\\recordings\\r0158-siege-ui-a01\\raw.mkv",
+        "bytes": 951107548,
+        "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+      },
+      "producer_completed_at_utc": "2026-10-02T21:47:51.631538+00:00",
+      "human_review": false,
+      "raw_pin_scope": "Copied from producer and independent footage-review hash records; this documentation task does not rerun a full media audit.",
+      "actual_media_duration_seconds": 595.7
+    }
+  },
+  "independent_sparse_reviews": [
+    {
+      "run": "R0157",
+      "cutlist": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0157/exact-cutlist-a01.json",
+        "bytes": 29926,
+        "sha256": "6c7c2ac80a21986bba2b7cc91ea0d54a376adaf137c6265eb5e175822df9b6c3"
+      },
+      "report": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0157/exact-cutlist-a01.md",
+        "bytes": 6341,
+        "sha256": "165b12387e3d13a32571765ea35fc856d32f44e357f39667773678b312e312ca"
+      },
+      "raw": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/bookmark-and-ui-a01/raw.mkv",
+        "bytes": 1791466340,
+        "sha256": "3efaeaecb7396a139fd0b1d143ef4beff2714b80590ed70b4493e7e6f046edac"
+      },
+      "actual_probe": {
+        "start_pts": 0,
+        "time_base": "1/1000",
+        "duration_seconds": 1453.866,
+        "width": 1920,
+        "height": 1080,
+        "reported_frame_rate": "30/1",
+        "audio_streams": 0
+      },
+      "recommended_contiguous_cuts": [
+        {
+          "id": "r0157-william-bookmark-intro",
+          "start_pts": 126000,
+          "end_pts_exclusive": 141000,
+          "start_seconds": 126.0,
+          "end_seconds_exclusive": 141.0,
+          "duration_seconds": 15.0,
+          "source_role": "new-ui-demo",
+          "game_progress": false,
+          "actual_change": "Native animated character portraits show subtle frame-to-frame movement. William remains selected on the 1066 bookmark; readable original Chinese introduction, age39 and Normandy duke identity. This is character-selection UI, not a running game.",
+          "use": "A single contiguous opening establishing the selected character and native portrait. Do not extend long stationary selection or restart from its beginning for every cue.",
+          "ui_observation_zh": "英格兰的命运；公元1066年9月15日；‘私生子’威廉，39岁；诺曼底公爵；原生人物介绍。"
+        },
+        {
+          "id": "r0157-paused-merge-action",
+          "start_pts": 496000,
+          "end_pts_exclusive": 503000,
+          "start_seconds": 496.0,
+          "end_seconds_exclusive": 503.0,
+          "duration_seconds": 7.0,
+          "source_role": "paused-ui",
+          "game_progress": false,
+          "actual_change": "Five selected army tabs and tooltip counts1600,1220,1000,920,920 become one selected army with5660. Paused banner stays visible and date remains1066-09-15. The UI merge is real; no calendar or siege progression is implied.",
+          "use": "New-run merge demonstration only; not the old R0156 later-arrival merge or6746 total.",
+          "ui_observation_zh": null
+        },
+        {
+          "id": "r0157-calendar-travel-and-arrival",
+          "start_pts": 856000,
+          "end_pts_exclusive": 880000,
+          "start_seconds": 856.0,
+          "end_seconds_exclusive": 880.0,
+          "duration_seconds": 24.0,
+          "source_role": "new-ui-demo",
+          "game_progress": true,
+          "actual_change": "Calendar advances, moving/embark preparation timer declines, army enters the Channel, crosses, lands in England and the Lewes siege window opens. PTS856 displays1066-09-24; PTS866 displays1066-10-10; PTS878 displays1066-10-30 with the siege window open.",
+          "use": "New-run calendar/travel/arrival illustration, not an elapsed-time reconstruction of R0156.",
+          "ui_observation_zh": null
+        },
+        {
+          "id": "r0157-new-run-occupation-change",
+          "start_pts": 944000,
+          "end_pts_exclusive": 955000,
+          "start_seconds": 944.0,
+          "end_seconds_exclusive": 955.0,
+          "duration_seconds": 11.0,
+          "source_role": "new-ui-demo",
+          "game_progress": true,
+          "actual_change": "The siege is still visible at PTS949. At PTS950 it disappears; blue occupation hatching appears and army panel shows5439. The current date is1067-02-24, notification states siege victory2月23日, control of南撒克逊 and reward9.",
+          "use": "New-run map-occupation illustration only. Must not be used as visual or numeric proof of the R0156 April22 fall,6384 force, +13 warscore or the old assault net effects. Reward9 alone does not explain the complete gold-balance change.",
+          "ui_observation_zh": null
+        }
+      ],
+      "status": "OFFLINE_SPARSE_REVIEW_COMPLETED",
+      "pts_method": "Input fast seek + -copyts + actual FFmpeg showinfo; captured integer PTS and decoded PNG pins retained. Non-frame seek498.250 yielded actual frame PTS498267 (498.267seconds), demonstrating that the requested seek is not substituted for actual PTS. UTC receipts are candidate locators and operation/post-operation records only; no fixed UTC-to-PTS offset is presumed.",
+      "remaining_boundaries": [
+        "No full-length decoder run or overall media audit repeated; sparse candidate review only.",
+        "No full1x human viewing or human signoff; no external delivery approval.",
+        "No desktop, Steam, CK3, native/SDK calls, Git or repository writes were performed by this reviewer.",
+        "The final editor must allocate contiguous subranges in chronological order and bind the final encoded cut's exact source/PTS; changing the film requires its own final-frame verification."
+      ],
+      "human_signoff": "NOT_PROVIDED"
+    },
+    {
+      "run": "R0158",
+      "cutlist": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0158/exact-cutlist-a01.json",
+        "bytes": 49968,
+        "sha256": "60380daff742f4eb352b00553c4456c9dcf246bc43c590aad7a9d0bb8678ea2a"
+      },
+      "report": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0158/exact-cutlist-a01.md",
+        "bytes": 3857,
+        "sha256": "03a876cde9c05e095a9e0a494c50ab3ab579c3f7eaa0a530c8261a759f22a369"
+      },
+      "raw": {
+        "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/raw.mkv",
+        "bytes": 951107548,
+        "sha256": "6bb76e0e776d61ad93ecc5f87845f1a7fc2a351e9063cd7a76eb18d72003e6ac"
+      },
+      "actual_probe": {
+        "probe_evidence": {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0158/metadata.json",
+          "bytes": 13990,
+          "sha256": "e53419384a342490097936ee1d6c42dd0f081540758e309e663e7db2bf589c1a"
+        },
+        "probe_stdout": {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0158/probe-stdout.json",
+          "bytes": 2434,
+          "sha256": "f3f5a47b23cf62a7c55996d1e721df619697ea15be668e416a34b39bbc75efb1"
+        },
+        "probe_stderr": {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0158/probe-stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "probe_exit_code": 0,
+        "duration_seconds": 595.7,
+        "stream_start_pts": 0,
+        "time_base": "1/1000",
+        "r_frame_rate": "30/1",
+        "avg_frame_rate": "30/1",
+        "codec": "h264 Constrained Baseline",
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "audio_stream_count": 0
+      },
+      "recommended_contiguous_cuts": [
+        {
+          "id": "r0158-siege-window-long",
+          "start_pts": 90000,
+          "end_pts_exclusive": 320000,
+          "start_seconds": 90.0,
+          "end_seconds_exclusive": 320.0,
+          "duration_seconds": 230.0,
+          "source_role": "new-ui-demo",
+          "game_progress": true,
+          "game_progress_basis": "公元1067年1月10日 → 4月29日",
+          "actual_change": "原生日期由1月10日推进至4月29日；围攻条、兵力、守军、攻城武器栏、每日围攻进展和围攻事件状态在源片中变化。1月22日已见支援加入，不能把整段当作人数恒定的一个读数。",
+          "use_limits": [
+            "纯围攻窗推荐长度230秒，不能写成至少270秒。",
+            "PTS295悬停为围攻事件计时；PTS308/320悬停为森林地形。不能把receipt中的walls/breach名称写成实际破口大小tooltip内容。",
+            "可讲界面变化及机制示范；新运行中的兵力、守军或时间读数不能填入旧战例的数据绑定。",
+            "这是R0158新运行的原生界面示范；不能替代R0156的6746、强攻损失或4月22日城陷数值证据。",
+            "日期变化由各实际编码帧直接观察；没有以recorder UTC相减来制造媒体PTS。",
+            "推荐连续区间来自离线分层抽帧和边界复核；未声明人工1×全程观看、整片媒体审计或signoff。"
+          ]
+        },
+        {
+          "id": "r0158-occupation-map",
+          "start_pts": 422000,
+          "end_pts_exclusive": 474000,
+          "start_seconds": 422.0,
+          "end_seconds_exclusive": 474.0,
+          "duration_seconds": 52.0,
+          "source_role": "new-ui-demo",
+          "game_progress": true,
+          "game_progress_basis": "公元1067年5月2日 → 5月27日",
+          "actual_change": "5月2日城陷后地图出现蓝色斜线、围攻窗口消失，原生获胜通知注明5月2日及+9奖励；日期继续至5月27日。",
+          "use_limits": [
+            "这是R0158新运行5月2日的后态，不能配旧案4月22日城陷旁白。",
+            "May1模态遮住城陷前最后日程，推荐段从充分清晰的PTS422开始，不声称本段提供无阻挡的连续城陷前后证明。",
+            "获胜通知中的+9是通知所列奖励，不能解释为整个金余额变化均由城陷造成。",
+            "PTS480出现无关任命横幅，推荐段提前在474结束。",
+            "这是R0158新运行的原生界面示范；不能替代R0156的6746、强攻损失或4月22日城陷数值证据。",
+            "日期变化由各实际编码帧直接观察；没有以recorder UTC相减来制造媒体PTS。",
+            "推荐连续区间来自离线分层抽帧和边界复核；未声明人工1×全程观看、整片媒体审计或signoff。"
+          ]
+        },
+        {
+          "id": "r0158-war-panel",
+          "start_pts": 492000,
+          "end_pts_exclusive": 595000,
+          "start_seconds": 492.0,
+          "end_seconds_exclusive": 595.0,
+          "duration_seconds": 103.0,
+          "source_role": "new-ui-demo",
+          "game_progress": true,
+          "game_progress_basis": "公元1067年6月2日 → 6月24日",
+          "actual_change": "原生战争面板显示诺曼人征服英格兰、总战争分数+13%，四个分项图标0/0/+13/0；后段占领tooltip显示+13.2%、上限+150%、南撒克逊+13.2%。日期由6月2日推进至6月24日。",
+          "use_limits": [
+            "实际编码帧日期是June2→June24，不能沿用定位任务中的May21→June13。",
+            "面板及tooltip是此新运行的原生读数示范；不能证明旧案+13的公式分母。",
+            "总分+13%与占领tooltip+13.2%属于不同显示精度，不应把视觉取整写成额外加分或失分。",
+            "没有达到±100、没有战争结束；此段不能用于声称胜利、执行要求或和平完成。",
+            "这是R0158新运行的原生界面示范；不能替代R0156的6746、强攻损失或4月22日城陷数值证据。",
+            "日期变化由各实际编码帧直接观察；没有以recorder UTC相减来制造媒体PTS。",
+            "推荐连续区间来自离线分层抽帧和边界复核；未声明人工1×全程观看、整片媒体审计或signoff。"
+          ]
+        }
+      ],
+      "status": "OFFLINE_SPARSE_REVIEW_COMPLETED",
+      "pts_method": {
+        "method": "ffmpeg -copyts -ss target -i raw -vf showinfo -frames:v 1 -fps_mode passthrough",
+        "actual_output": "每幅PNG绑定本次FFmpeg showinfo第一个n=0帧的实际PTS和日志SHA；requested_seek_seconds不直接冒充PTS。",
+        "time_base": "1/1000",
+        "utc_policy": "operation receipt UTC仅用于定位候选；recorder起止UTC不转换为媒体PTS。",
+        "ffmpeg_path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.EXE",
+        "helper": {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0158/review_helper.py",
+          "bytes": 5840,
+          "sha256": "72ba1c6a723c5ff8544e3119283948db86b69b325992e846ad23c7dfd27411d9"
+        },
+        "finalize_helper": {
+          "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0158/finalize_review.py",
+          "bytes": 18441,
+          "sha256": "a1269795ceb3fb242812cf02066298ce280a853c1fa5a6e79293954cad84c8ca"
+        }
+      },
+      "remaining_boundaries": [
+        "这是R0158新运行的原生界面示范；不能替代R0156的6746、强攻损失或4月22日城陷数值证据。",
+        "日期变化由各实际编码帧直接观察；没有以recorder UTC相减来制造媒体PTS。",
+        "推荐连续区间来自离线分层抽帧和边界复核；未声明人工1×全程观看、整片媒体审计或signoff。",
+        "没有270秒单段清晰围攻窗；没有无阻挡的连续城陷前后采样。",
+        "没有新MCP数值、因果拆分、旧案分母证明或旧案实机验收；守军或兵力增减原因不能由这些界面帧补猜。",
+        "本次没有整片重复解码、逐帧模态首帧判定或媒体总体audit；主段抽帧间隔内仍需编辑者查看所用连续切片。",
+        "没有人工完整观看或签核；后续成片仍需独立audit与实际人工审阅。"
+      ],
+      "human_signoff": "NOT_PROVIDED"
+    }
+  ],
+  "cleanup": {
+    "receipt": {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/capture-cleanup-a01/result.json",
+      "bytes": 3964,
+      "sha256": "7fba144f7af890b364327361c337dc505036d1755a6e188ace9c4c87b46724df"
+    },
+    "display_before": [
+      1920,
+      1080
+    ],
+    "display_restored": [
+      1024,
+      768
+    ],
+    "registry_persisted": false,
+    "sole_owner_before_release": [
+      "ck3-e3-revision-ui-r0158-20261003"
+    ],
+    "ck3_and_recorder_inventory_empty": true,
+    "game_exit_code_recorded": 1,
+    "recorder_exit_code_recorded": 0,
+    "lease_keeper_last_sequence": 3875,
+    "release_argv": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "D:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+      "--expected-cli-sha256",
+      "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+      "release-screen-cas",
+      "--task",
+      "ck3-e3-revision-ui-r0158-20261003",
+      "--expected-sequence",
+      "3875",
+      "--summary",
+      "R0158 capture complete; owned game and recorder gone; original display restored"
+    ],
+    "release_command": {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/capture-screen-release-a01/command.json",
+      "bytes": 542,
+      "sha256": "76260e58a625ac044bd17a8c8e75bb91eca5ebce6e37eaf6ddd464d77036ca1f"
+    },
+    "release_result": {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/capture-screen-release-a01/stdout.json",
+      "bytes": 1205,
+      "sha256": "d694c891b4829c825c44d18aebefc113b7e0c3d86a062ef9a5d76539a0757513"
+    },
+    "release_cas_sequence": 3876,
+    "resources_after_release": [],
+    "task_state": "done"
+  },
+  "validation_scope": {
+    "method": "Existing JSON source pins, literal argv, image pins/dimensions, cutoff source labels and actual cleanup fields checked read-only; local links verified. No tests/native build, live operation, decoder/audit rerun or commit/push.",
+    "never_claimed": [
+      "New numeric formula/live getter proof",
+      "G2 or Robert case acceptance",
+      "Full1x human review/signoff",
+      "Metadata or OneDrive remote-verification",
+      "Every frame inspected",
+      "Original R0156 event recreated"
+    ]
+  },
+  "source_pins": [
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/prepared-desktop-3fevhd2-1c74096080--vanilla--R0157/prepared.json",
+      "bytes": 4665,
+      "sha256": "3e62b4ea59c581440aaec7f114cfeb22d8a03cc31c4d9fd88cd698fe5cdc8bb6"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/prepared-r0158-a04/prepared.json",
+      "bytes": 4281,
+      "sha256": "1563707b79d9ea370cf333ac608e02166c5c9f2203de065ea6c026db5f8de033"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/live-desktop-3fevhd2-1c74096080--vanilla--R0157-a03/result.json",
+      "bytes": 2537,
+      "sha256": "6a122c8ebde52bed22bd81109ac09e508ab5eded1882e8bde76890535e5c16f2"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/live-r0158-a04/result.json",
+      "bytes": 2382,
+      "sha256": "4cd39ff8ccdd319cefba0bee943f0227084005bbdaa6961a91feda8964b7cbd1"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/root-run-command-a03/argv.json",
+      "bytes": 1216,
+      "sha256": "e6526179fe82d19420744fa7438f9e3c170c1d53cef7df0b29727b24761cf195"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/root-run-command-r0158-a04/argv.json",
+      "bytes": 1131,
+      "sha256": "1f0f0da3a4319040f289398b1c7e07b1b194b7cb170cd89484089c63ad954b06"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/bookmark-and-ui-a01/process-ready.json",
+      "bytes": 897,
+      "sha256": "9e253b0b296069b35e516618b440dbfebb55fa3d5fbc2b66deedc668d13d9216"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/bookmark-and-ui-a01/result.json",
+      "bytes": 358,
+      "sha256": "99ee724443fd7335181022517107863e63f21259479cd5fd98b6e649fc13c70f"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/process-ready.json",
+      "bytes": 909,
+      "sha256": "4733239e3d01503156a05396ded9be5b75a7a24b6ff8da81c0d76bfeec3e2710"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/recordings/r0158-siege-ui-a01/result.json",
+      "bytes": 356,
+      "sha256": "53f66d84ab780e692883df7c2af1aeed63660a48764a2a5e48f35aa5cbe42f8e"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/william-bookmark-selected-01/receipt.json",
+      "bytes": 917,
+      "sha256": "0a5dfb12613037ca199ab715be770e6175f9acb012a33b8f97ab815670d28f3d"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/william-bookmark-clean-01/receipt.json",
+      "bytes": 913,
+      "sha256": "fe2a9ebbd1c211865b038bcb3df53f0452999c53b330f446f44fe30257650494"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-frontend-01/receipt.json",
+      "bytes": 907,
+      "sha256": "9d6e9837a4ec2cddcfbd8e421010a18928989c63927a0ed9ce75615f592edf84"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-loaded-01/receipt.json",
+      "bytes": 899,
+      "sha256": "29accb7847e1453b48486eb02c4e188a91022a258a4d06a2f76406f26e70cbf1"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-progress-01/receipt.json",
+      "bytes": 897,
+      "sha256": "a0768b014c4770e7700401d1a5ca876a26146ac3fd19f0b3a8e7da3a0788e12e"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-daily-tooltip-01/receipt.json",
+      "bytes": 902,
+      "sha256": "0ff40276d233670226bed8c37661c864d0acf04f65406e067c5fd91708afe2c1"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-walls-01/receipt.json",
+      "bytes": 894,
+      "sha256": "540d3d9a9328d1b1ad19e5a96f99332fbd0984f6c72e882705ab1c35b87cc422"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-breach-01/receipt.json",
+      "bytes": 895,
+      "sha256": "ff439c8b1d2c04cde05686afb15761e261abb7d821aa3793fb74fdcf7f4cce77"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-clean-siege-01/receipt.json",
+      "bytes": 900,
+      "sha256": "62775a694ae40769c066615824f1beb04cb4ef798903923d6dd11a7db4a13779"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-dismiss-event-01/receipt.json",
+      "bytes": 903,
+      "sha256": "0544e996269e995dd18177494025991224427a6e5602c3d9d1e3b8449e872359"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-war-panel-01/receipt.json",
+      "bytes": 899,
+      "sha256": "8fb303a9600d97c53c8a42409bc01c8e8f4d6ea97211a901c52e21bd612ac4a4"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/ui-capture/r0158-occupation-tooltip-01/receipt.json",
+      "bytes": 907,
+      "sha256": "60f5550d886ac93e15a1a215092e6c7f2e6fbfdea3925d24965517b6246c08fd"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/normalized-offline-review-a08.json",
+      "bytes": 808,
+      "sha256": "0508f468fe34db7dc9a3c8bf88db8664efaa7864b5debd4f1d864994f2726862"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/steam-recovery-a08/probe-1/steam-frame-freshness.json",
+      "bytes": 1153,
+      "sha256": "ba66f855748ae0095353ab3f446e37cde0218b37caf1e3edeafb6a187a95a066"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/normalized-offline-review-a09.json",
+      "bytes": 674,
+      "sha256": "09eb9bc30fc81bf5cede2fcd12c7f865406072a805e91c7059d847543dc40123"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/steam-recovery-a09/probe-1/steam-frame-freshness.json",
+      "bytes": 1153,
+      "sha256": "60554278473f2a34adf3dba9705a513d59f2eecaf5652f7674a2acb018e31daa"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/preparation-status-a01.json",
+      "bytes": 4616,
+      "sha256": "7c327c6d5b2c4b5be8848c81f761fc93d31c682bee55e80ef616463badd0390d"
+    },
+    {
+      "path": "D:/ck3-war-episode03-20261002-a01/native-final-master-a05-compiled-12003-capabilities.json",
+      "bytes": 2955,
+      "sha256": "fafd44d6b3ea8112e5c26106b0e2b83d87862a3d7f93d46e5dbfe08d967470cb"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/launcher-a02-fixed-dependency-pins.json",
+      "bytes": 122200,
+      "sha256": "acfac64433500dd5c6248813e1c762602226390c003a10d44b68bc5f79f3efb2"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/launcher-a04-fixed-dependency-pins.json",
+      "bytes": 121805,
+      "sha256": "53f6a9a948cf86ecae05e4ba3db8e75ba014212c0bd4a159263f61aa6b1f553b"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/bookmark-preparation/launcher-a04-generation-receipt.json",
+      "bytes": 8111,
+      "sha256": "e2816a82f7be376e34720dc1b9a2be4eba6bef169939e443fbe2df98915d0890"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/capture-cleanup-a01/result.json",
+      "bytes": 3964,
+      "sha256": "7fba144f7af890b364327361c337dc505036d1755a6e188ace9c4c87b46724df"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/capture-cleanup-a01/desktop.png",
+      "bytes": 872490,
+      "sha256": "fe62866a25d4314f51171c9b8193bf25341e0f8b1fac8358e17df5cf7e00da49"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/capture-screen-release-a01/command.json",
+      "bytes": 542,
+      "sha256": "76260e58a625ac044bd17a8c8e75bb91eca5ebce6e37eaf6ddd464d77036ca1f"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/capture-screen-release-a01/stdout.json",
+      "bytes": 1205,
+      "sha256": "d694c891b4829c825c44d18aebefc113b7e0c3d86a062ef9a5d76539a0757513"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0157/exact-cutlist-a01.json",
+      "bytes": 29926,
+      "sha256": "6c7c2ac80a21986bba2b7cc91ea0d54a376adaf137c6265eb5e175822df9b6c3"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0157/exact-cutlist-a01.md",
+      "bytes": 6341,
+      "sha256": "165b12387e3d13a32571765ea35fc856d32f44e357f39667773678b312e312ca"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0157/metadata.json",
+      "bytes": 20614,
+      "sha256": "862c162fd1695ee49a97ed54397f57b43940ecd114c207b762316cae4ad3f6fb"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0157/review-artifact-pins-a01.json",
+      "bytes": 1218,
+      "sha256": "3642695316ccd9f8e0540a2c527d56fcab817c2df0b561200b579b65f0c33b45"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0158/exact-cutlist-a01.json",
+      "bytes": 49968,
+      "sha256": "60380daff742f4eb352b00553c4456c9dcf246bc43c590aad7a9d0bb8678ea2a"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0158/exact-cutlist-a01.md",
+      "bytes": 3857,
+      "sha256": "03a876cde9c05e095a9e0a494c50ab3ab579c3f7eaa0a530c8261a759f22a369"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0158/metadata.json",
+      "bytes": 13990,
+      "sha256": "e53419384a342490097936ee1d6c42dd0f081540758e309e663e7db2bf589c1a"
+    },
+    {
+      "path": "D:/ck3-war-episode03-revision-20261003-a01/new-footage-review/r0158/review-artifact-pins-a01.json",
+      "bytes": 5863,
+      "sha256": "cc3e55d1fd1146310bb8d162e51b6b6dabc18d52a563d4aa8abe4d214284a07f"
+    }
+  ],
+  "independent_sparse_review_source_capacity": {
+    "R0158_siege_window_seconds": 230,
+    "R0158_occupation_map_seconds": 52,
+    "R0158_war_panel_seconds": 103,
+    "R0158_total_seconds": 385,
+    "scope": "Source capacity only; not rendered duration, cue coverage, movie audit or human signoff."
+  }
+}
