@@ -70,9 +70,17 @@ def _actor(snapshot: Mapping[str, object]) -> object:
     return played.get("character_id") if isinstance(played, Mapping) else None
 
 
-def _root(driver: object) -> tuple[dict[str, object], dict[str, object]]:
+def _root(
+    driver: object, campaign_root_result: dict[str, object] | None = None,
+) -> tuple[dict[str, object], dict[str, object]]:
+    from .bridge.current_first_heir_relationship_private_transport import (
+        _same_frame_campaign_root_result,
+    )
+
     before = _snapshot(driver)
-    result = driver.execute_step(ROOT_QUERY_STEP, expected_revision=before["revision"])
+    result = _same_frame_campaign_root_result(campaign_root_result, before)
+    if result is None:
+        result = driver.execute_step(ROOT_QUERY_STEP, expected_revision=before["revision"])
     root = result.get("campaign_root_context") if isinstance(result, dict) else None
     after = _snapshot(driver)
     if not (isinstance(root, dict) and root.get("status") == "available"
@@ -189,6 +197,7 @@ def plan_council_private(
     driver: object, planned: dict[str, object], snapshot: Mapping[str, object],
     history: list[dict[str, object]], available_steps: set[str],
     *, state_dir: Path | None = None,
+    campaign_root_result: dict[str, object] | None = None,
 ) -> dict[str, object]:
     """Plan one private council turn without public advertisement or war policy."""
     if getattr(driver, "allow_private_council_action", False) is not True:
@@ -232,7 +241,7 @@ def plan_council_private(
                  "council_observation_consumed": decision["outcome"] != "QUERY_UNAVAILABLE"}
     root = None
     if isinstance(applied, dict) and applied.get("episode_run_id") == current.get("episode_run_id"):
-        root, current = _root(driver)
+        root, current = _root(driver, campaign_root_result)
         holder = _position(root, applied_role)
         receipt = applied.get("receipt", {}).get("council_assign_councillor_receipt", {})
         persistence_query = query if applied_role == STEWARD_POSITION_KEY else applied_query
@@ -257,7 +266,7 @@ def plan_council_private(
                            "reason": "assign one current native-legal steward with higher observed skill"})
     elif decision["outcome"] != "QUERY_UNAVAILABLE":
         if root is None:
-            root, current = _root(driver)
+            root, current = _root(driver, campaign_root_result)
         chancellor = _position(root, CHANCELLOR_POSITION_KEY)
         if chancellor is not None and chancellor.get("incumbent_character_id") is None:
             chancellor_query = _query_position(driver, CHANCELLOR_POSITION_KEY)

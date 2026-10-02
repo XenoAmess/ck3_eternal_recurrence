@@ -17,6 +17,29 @@ from .nonwar_private_build import private_native_provenance
 STEP = "query-current-first-heir-relationship-v1-private"
 SCHEMA = "xar.ck3.current-first-heir-relationship.v1"
 
+
+def _same_frame_campaign_root_result(
+    result: object, snapshot: dict[str, object],
+) -> dict[str, object] | None:
+    """Reuse a full successful observation only within its planning frame."""
+    if not isinstance(result, dict):
+        return None
+    root = result.get("campaign_root_context")
+    played = snapshot.get("played_character")
+    actor = played.get("character_id") if isinstance(played, dict) else None
+    if not (result.get("status") == "available" and isinstance(root, dict)
+            and root.get("status") == "available"
+            and result.get("queried_snapshot_id") == snapshot.get("snapshot_id")
+            and result.get("queried_revision") == snapshot.get("revision")
+            and result.get("queried_native_revision") == snapshot.get("native_revision")
+            and root.get("snapshot_revision") == snapshot.get("native_revision")
+            and root.get("date_raw") == snapshot.get("date_raw")
+            and root.get("player_character_id") == actor
+            and type(result.get("query_sequence")) is int
+            and result["query_sequence"] > 0):
+        return None
+    return result
+
 _PAIR_IDS = ("actor_character_id", "heir_character_id", "partner_character_id",
              "recipient_character_id", "intermediary_character_id")
 _ADULT_FIELDS = ("heir_is_adult", "partner_is_adult", "heir_adult_measure_raw",
@@ -117,6 +140,7 @@ def _current_pair_actionability(
 def query_current_first_heir_relationship_private_v1(
     driver: object, *, expected_native_revision: int,
     timeout_seconds: float = 360.0,
+    campaign_root_result: dict[str, object] | None = None,
 ) -> dict[str, object]:
     if getattr(driver, "allow_private_current_first_heir_relationship_query", False) is not True:
         raise UnsupportedStepError("private current first-heir relationship query is disabled")
@@ -140,9 +164,11 @@ def query_current_first_heir_relationship_private_v1(
         )
     if type(timeout_seconds) not in {int, float} or timeout_seconds <= 0:
         raise ValueError("timeout_seconds must be positive")
-    root = driver._execute_campaign_root_context_v1_query(
-        expected_revision=before["revision"]
-    )
+    root = _same_frame_campaign_root_result(campaign_root_result, before)
+    if root is None:
+        root = driver._execute_campaign_root_context_v1_query(
+            expected_revision=before["revision"]
+        )
     partition = root.get("held_title_partition")
     primary = [row for row in partition if isinstance(row, dict)
                and row.get("primary") is True] if isinstance(partition, list) else []

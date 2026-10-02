@@ -721,9 +721,12 @@ class GameplayBridgeService:
         """Plan lifecycle work and permitted nonwar opportunities on the actual frame."""
         from ..strategy import (
             _same_frame_campaign_root_context, choose_nonwar_turn_v1,
-            ordinary_campaign_goal_plan_v1,
+            ordinary_campaign_goal_plan_v1, _effective_command, _effective_command_result,
         )
         from ..private_council_formal_consumer_v1 import plan_council_private
+        from .current_first_heir_relationship_private_transport import (
+            _same_frame_campaign_root_result,
+        )
 
         internal = getattr(self.driver, "take_internal_semantic_snapshot", None)
         snapshot = internal() if callable(internal) else self.snapshot()
@@ -767,12 +770,23 @@ class GameplayBridgeService:
                 plan["activity_feast_lifecycle_observation"] = feast_lifecycle_observation
             if feast_following_turn is not None:
                 plan["activity_feast_start_following_turn"] = feast_following_turn
+            campaign_root_result = None
+            for row in reversed(history):
+                if (row.get("ok") is True
+                        and _effective_command(row) == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP):
+                    campaign_root_result = _same_frame_campaign_root_result(
+                        _effective_command_result(row), view,
+                    )
+                    if campaign_root_result is not None:
+                        break
             return {"snapshot_id": view["snapshot_id"], "revision": view["revision"],
-                    "plan": plan, "_nonwar_history": history}
+                    "plan": plan, "_nonwar_history": history,
+                    "_nonwar_campaign_root_result": campaign_root_result}
 
         planned = (planning_view(snapshot, seed) if callable(planning_view)
                    else seed(snapshot, snapshot.get("native_command_history", [])))
         history = planned.pop("_nonwar_history")
+        campaign_root_result = planned.pop("_nonwar_campaign_root_result")
         if isinstance(snapshot.get("read_only_query_retry"), dict):
             planned["plan"]["read_only_query_retry"] = copy.deepcopy(
                 snapshot["read_only_query_retry"]
@@ -784,7 +798,9 @@ class GameplayBridgeService:
             return self._plan_initial_lifestyle_focus_first_v1(planned, available)
 
         planned = plan_council_private(self.driver, planned, snapshot, history, available,
-                                       state_dir=self._strategy_state_dir())
+                                       state_dir=self._strategy_state_dir(),
+                                       **({"campaign_root_result": campaign_root_result}
+                                          if campaign_root_result is not None else {}))
         council = planned["plan"]
         if (council.get("phase") == "council_pending_later_frame"
                 and isinstance(council.get("council_pending_action"), dict)
@@ -809,6 +825,8 @@ class GameplayBridgeService:
         if getattr(self.driver, "allow_private_family_marriage_formal_trial", False) is True:
             planned = self._plan_private_family_opportunity_v1(
                 planned, snapshot, wartime_arbitration=bool(snapshot.get("active_wars")),
+                **({"campaign_root_result": campaign_root_result}
+                   if campaign_root_result is not None else {}),
             )
         target = getattr(self.driver, "child_matrilineal_target_v1", None)
         if (getattr(self.driver, "allow_private_player_child_matrilineal_action", False) is True
@@ -1469,6 +1487,7 @@ class GameplayBridgeService:
     def _plan_private_family_opportunity_v1(
         self, planned: dict[str, object], snapshot: dict[str, object], *,
         prewar_arbitration: bool = False, wartime_arbitration: bool = False,
+        campaign_root_result: dict[str, object] | None = None,
     ) -> dict[str, object]:
         """Use the fixed existing pair before the ordinary unpartnered route."""
         if getattr(
@@ -1486,6 +1505,8 @@ class GameplayBridgeService:
                     self.driver, planned, snapshot,
                     prewar_arbitration=prewar_arbitration,
                     wartime_arbitration=wartime_arbitration,
+                    **({"campaign_root_result": campaign_root_result}
+                       if campaign_root_result is not None else {}),
                 )
             except BridgeUnavailableError as error:
                 if getattr(error, "native_error", None) not in {

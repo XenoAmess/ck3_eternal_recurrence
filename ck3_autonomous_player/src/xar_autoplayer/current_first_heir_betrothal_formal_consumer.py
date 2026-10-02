@@ -109,6 +109,7 @@ def _handled(planned: dict[str, object], **fields: object) -> dict[str, object]:
 def plan_current_first_heir_betrothal_fulfillment_private(
     driver: object, planned: dict[str, object], snapshot: Mapping[str, object],
     *, prewar_arbitration: bool = False, wartime_arbitration: bool = False,
+    campaign_root_result: dict[str, object] | None = None,
 ) -> dict[str, object]:
     """Keep ordinary actions; query/submit only this opted-in fixed-pair contract."""
     if getattr(driver, "allow_private_current_first_heir_betrothal_fulfillment", False) is not True:
@@ -180,7 +181,9 @@ def plan_current_first_heir_betrothal_fulfillment_private(
             or snapshot.get("pending_character_interaction") is not None):
         return planned
     relation = driver.query_current_first_heir_relationship_private_v1(
-        expected_native_revision=snapshot["native_revision"])
+        expected_native_revision=snapshot["native_revision"],
+        **({"campaign_root_result": campaign_root_result}
+           if campaign_root_result is not None else {}))
     if (relation.get("status") == "available"
             and relation.get("betrothed_character_id") is None):
         return planned
