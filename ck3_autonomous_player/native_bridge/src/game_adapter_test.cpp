@@ -882,6 +882,17 @@ int main() {
         selected->supports_step("query-war-termination-exit-terms-v2-16777290")) {
       return Fail("three-build registry selected the wrong native implementation");
     }
+    // The historical UI and de-jure readers retain original-build RVAs.
+    // Reusing shared protocol and mailbox code must not advertise them on
+    // either current-version adapter.
+    const bool original_build = descriptor == &known;
+    for (const auto legacy_step : {
+             "navigate-ingame-ui-v1", "query-ingame-ui-window-v1",
+             "query-defender-de-jure-exit-terms-v1-16777290"}) {
+      if (selected->supports_step(legacy_step) != original_build) {
+        return Fail("original-build research capability crossed an adapter gate");
+      }
+    }
   }
   if (!xar::game::BindCk3_12003AdapterImage(
           0x140000000ULL, new_known.executable_sha256).core.enabled ||

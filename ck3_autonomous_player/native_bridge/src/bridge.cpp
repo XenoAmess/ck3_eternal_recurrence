@@ -11819,9 +11819,9 @@ void RunConnectedSession(
       state.outbound_war_white_peace_status_query_sequence;
   auto &war_termination_terms_query_sequence =
       state.war_termination_terms_query_sequence;
-#if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
   auto &defender_de_jure_exit_terms_query_sequence =
       state.defender_de_jure_exit_terms_query_sequence;
+#if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
   auto &raiktor_actual_truce_expiry_query_sequence =
       state.raiktor_actual_truce_expiry_query_sequence;
 #endif
