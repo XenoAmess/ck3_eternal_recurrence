@@ -23,7 +23,8 @@ from xar_autoplayer.bridge.activity_feast_stage5_start_private_transport import 
 )
 from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge.service import GameplayBridgeService
-from xar_autoplayer.bridge.version_identity import CK3_12002
+from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+from xar_autoplayer.bridge.version_identity import CK3_12002, CK3_12003
 
 
 def inputs() -> dict[str, object]:
@@ -144,6 +145,86 @@ class Driver:
 
 
 class FeastStartConsumerTest(unittest.TestCase):
+    def test_actual_cached_pre_start_snapshot_waits_once_before_independent_post(self) -> None:
+        class CachedPostDriver(Driver):
+            # Execute the production wait method. Only its local publication
+            # condition is fixture-owned; no native process or pipe is used.
+            wait_for_change = NativeHeadlessGameplayDriver.wait_for_change
+            command_timeout_seconds = 10.0
+
+            def __init__(self, state_dir: Path) -> None:
+                super().__init__(state_dir)
+                self.published_after_start = False
+                self.waits = []
+                self.native_revision = 18
+                self.actor_character_id = 31853
+                self.date_raw = 53328600
+
+            def capabilities(self):
+                return {**super().capabilities(), "snapshot": True}
+
+            def take_snapshot(self):
+                submitted = self.after_submit
+                self.after_submit = submitted and self.published_after_start
+                try:
+                    value = super().take_snapshot()
+                finally:
+                    self.after_submit = submitted
+                value["revision"] = 3 if self.published_after_start else 2
+                value["diagnostics"] = {"hello": {
+                    "expected_ck3_version": CK3_12003.game_version,
+                    "expected_ck3_sha256": CK3_12003.executable_sha256,
+                }}
+                return value
+
+            def wait_for_public_change(self, after_revision, timeout_seconds):
+                self.waits.append((after_revision, timeout_seconds))
+                self.published_after_start = True
+
+            def wait_for_command_result(self, request_id, timeout_seconds):
+                if (self.sent[-1]["step"] != START_STEP
+                        and self.sent[-1]["expected_revision"] != 19):
+                    return {"type": "command_result", "protocol_version": 1,
+                            "request_id": request_id, "ok": False,
+                            "error": "nonwar private snapshot revision is stale or malformed"}
+                return super().wait_for_command_result(request_id, timeout_seconds)
+
+        # Actual paused .3 attempt03 material values: Commit native18, cached
+        # frame stays18 after ACK; independent published frame19 has -100gold
+        # and full hosted activity587202561. Immediate old post was stale.
+        with TemporaryDirectory() as temp:
+            driver = CachedPostDriver(Path(temp))
+            qualified = inputs()
+            qualified.update({"native_guest_route_qualified": True,
+                              "snapshot_revision": 18, "queried_revision": 2,
+                              "queried_snapshot_id": "native:18",
+                              "date_raw": 53328600, "actor_character_id": 31853})
+            qualified["resources"]["gold"]["configured_cost_raw"] = 10_000_000
+            qualified["balances"]["gold"]["raw"] = 62_305_241
+            qualified["balances"]["piety"] = {"available": True, "raw": 85_985_500}
+            driver.post.update({"snapshot_revision": 19, "date_raw": 53328600,
+                                "actor_character_id": 31853})
+            driver.post["balances"] = deepcopy(qualified["balances"])
+            driver.post["balances"]["gold"]["raw"] = 52_305_241
+            driver.post["hosted_activities"] = [{
+                "activity_id": 587202561, "host_character_id": 31853,
+                "activity_type_key": "activity_feast", "terminal_flags_observed": True,
+                "native_completed": False, "native_invalidated": False,
+            }]
+            actual_guest = {**guest(), "snapshot_revision": 18,
+                            "date_raw": 53328600, "actor_character_id": 31853}
+            result = consume_feast_start_private_v1(
+                driver, inputs=qualified, guest=actual_guest, budget=budget())
+            self.assertEqual(result["status"], "applied")
+            self.assertTrue(result["postcondition_verified"])
+            self.assertEqual(result["activity_id"], 587202561)
+            self.assertEqual(result["lifecycle"]["outcome"]["status"], "ongoing")
+            self.assertEqual(driver.waits, [(2, 10.0)])
+            self.assertEqual([row["step"] for row in driver.sent],
+                             [START_STEP, "query-activity-feast-hosted-post-v1-private"])
+            self.assertEqual(driver.sent[1]["expected_revision"], 19)
+            self.assertIsNone(read_feast_start_ledger(Path(temp))["pending"])
+
     def test_unknown_guest_or_balance_holds_without_native_submit(self) -> None:
         with TemporaryDirectory() as temp:
             driver = Driver(Path(temp))

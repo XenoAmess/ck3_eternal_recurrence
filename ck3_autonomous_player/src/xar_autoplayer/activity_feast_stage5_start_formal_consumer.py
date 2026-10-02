@@ -462,6 +462,15 @@ def consume_feast_start_private_v1(
                 "error": str(exc), "pending": pending}
     pending = {**pending, "stage": "post_pending", "native_ack": ack}
     _write(state_dir, {**ledger, "pending": pending})
+    # Commit can return before the observer publishes its changed resource/
+    # activity frame. Do not send the first post read with that cached source
+    # revision (actual .3 Murchad native18 -> native19 stale-query RED).
+    current = driver.take_snapshot()
+    waiter = getattr(driver, "wait_for_change", None)
+    if (current.get("snapshot_id") == ack["source_snapshot_id"]
+            and callable(waiter)):
+        waiter(current["revision"],
+               timeout_seconds=getattr(driver, "command_timeout_seconds", 30.0))
     return reconcile_feast_start_private_v1(driver)
 
 

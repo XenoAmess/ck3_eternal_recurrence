@@ -403,6 +403,79 @@ immediate 只 `show_as_tooltip`。因此恢复通知继续路径不会给 M2 新
 保存在
 [`actual-v10-turn004`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v10-turn004/)。
 
+#### 当次 v11 生产恢复：query 与唯一通知选项已实机闭合
+
+实际运行使用 clean source
+`ad614bfa167153028e2de0bccbe127961eb10ddc`、v11 DLL SHA-256
+`6DB7187ABB83716E82F3694E0C574E20E46D89EE1EAF8B58A2655C77AE93034B`、
+PID `46800`。构建负责人保留了 C4244 与缺少两项 family 链接依赖的
+两个 harness RED，最终 strict `/W4 /WX`、`/UNDEBUG` 现有 native fixture
+实际执行 GREEN；934 编译输入绑定同一 clean runtime。这里复用
+[`focused-event-context-result.json`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/native-build-saved-event-scope-v11/focused-event-context-result.json)
+和 build receipt，不重新运行 fixture。
+
+root 现成 SDK adapter 在同一自然通知上取得
+`status=available`、key `marriage_interaction.0010`、instance `13`，
+完整发布 13 saved scopes。`intermediary` 保留 `raw_type_index=4`、
+`type_key=character`、`subtype=0`，typed identity 真实为
+`{status:unavailable,reason:character_scope_is_null}`，无猜测 CharacterID；
+root Character 真实匹配 actor `31853`。唯一 rendered/native index `0`
+显示且 enabled，源定义 `EXCELLENT` 空选项经 registry 选择 API option `1`。
+原生回执 `postcondition_verified=true`；独立 paused snapshots
+`native:4` revision `2` → `native:5` revision `3`，同 actor、同
+`date_raw=53328600`，旧 instance `13` → `null`。随后正常保存 h2040，
+checkpoint SHA-256
+`9A1F96ED69C26352DDA101842BA43D36923D531D76FC7A6D4624CEE11A5731BD`。
+
+这闭合的是空 intermediary 的 **production-live primitive** 和该通知
+选项消费。证据包
+[`actual-v11-marriage-notice-01`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v11-marriage-notice-01/)
+保留正式 SDK raw packets；只读评估在其 `closed-packet-assessment.json`。
+本包没有下一次正常正式 turn，通知之后的 narrow loop 接续由 root
+继续执行后另行记录，不由一次窗口消失推定完整 loop。
+
+选项 effect profile 是空效果，`observable_postcondition=null`。
+压力 `80`、gold raw `62305241`、prestige raw `112231420` 前后均不变；
+`independent_material` 原样保持 unavailable、
+`current_selected_choice_material_profile_unavailable`、credit false。
+包装状态 `event_selected_material_recorded` 不证明材料变化，本通知
+不增加 M2 材料、多选或完成信用。此前 v10 capability RED 与旧 hostile
+scheme 的零材料结论都保留。
+
+#### 当次 Feast 进入活动窗：真实 `feast.7002` 呈现缺口
+
+随后 `formal-v11-next-01/turn-001/natural-event` 在同一 PID `46800`、
+actor `31853`、paused `date_raw=53328600` 上观察到 instance `14`、
+一个 snapshot 选项，但正式窗口查询返回
+`event_window_not_materialized`、`window_match_count=0`，未执行选择。
+同一正常保存 h2046 的 checkpoint SHA-256 是
+`F85E9447704C20E133C65DD9A21E074F31A6F281010DBDC9CC9FAA1A98F49B1F`。
+离线解码 `player_event id=14` 确定 key `feast.7002`、root/host
+`31853`、saved activity `587202561` 和 province `45`。这些离线 scope
+identity 是诊断证据，不替代生产 query 的 typed identity。
+
+root 恢复并截图的
+[`actual-after-restore.png`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/m7-murchad/formal-v11-next-01/actual-after-restore.png)
+显示宴会活动窗中的“腾出时间”事件及唯一选项。当前 `.3` 原版
+`events/activities/feast_activity/feast_events.txt:1139–1278` 明确
+`type=activity_event`，唯一 native option `0` 执行
+`add_prestige=miniscule_prestige_gain`；当前 `00_basic_values.txt` 中
+该值解析到 `35`。`gui/window_activity.gui:931–933,1122–1124`
+的实际呈现链为 `ActivityWindow.GetEventWindowInsert` →
+`EventWindowViewInsert.GetOpenEvent` → `EventWindowData.GetOptions`。
+当次 reader 只枚举普通 manager windows 和 Splash 的 selected item，
+没有此活动 insert 分支。named scopes 已在呈现匹配前成功读取，
+本次失败不归入空 saved Character 问题。
+
+原始 RED、窄存档 block 与离线诊断保存在
+[`actual-v11-feast-modal-blocker`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v11-feast-modal-blocker/)。
+当前状态为 **research / production capability RED**：新增 exact `.3`
+Activity insert 入口及该 key 的 source-bound registry/material profile
+正在独立工作包中施工。复用现有 options/scopes/indicators，不从唯一
+snapshot 选项推定可执行选择。只有后续真实 query、typed choice 和
+独立 prestige 后置读回完成，才能记录本事件的材料结果；当前不增加
+M2 材料、多选或完成信用。
+
 Phase2 产品时间线 R31 与 R33 在同一 paused frame（`date_raw=53147256`、event instance `14`）稳定复现
 `event_saved_scope_invalid`。20 次有界重试都保持同一 native revision，证明它不是 scope 构建中的瞬态窗口；同一时刻
 `error.log` 又记录 `intrigue_dread.1501:after` 对已经死亡的 scope character 执行 effect。故最小实际故障是：事件仍然可见、
