@@ -733,3 +733,103 @@ and actual plan contexts are in
 cached cold report and new closed normal summary; it did not reread old cold
 raw or access current state/SDK, rerun gameplay/tests or perform Git work.
 M7 remains `in_progress`.
+
+## Saved v27 continuation and actual v28 cold, 2026-10-03
+
+The preceding v27 requested30-day window closed `normal-time-target-reached` with
+37 actual saved days,4
+formal turns and0 natural modals,
+raw53228952→53229840, ending paused.
+All4 returned formal plans used the saved
+campaign goal and4 observed
+government contexts. Robert remains the original29829/episode, with
+`reconciled_successions=0` and
+`last_succession=null`.
+The normal window's pair is h4366/full4366:
+checkpoint88,913,610 bytes/SHA-256 `06e7e905f6ed77bd5f47f5bd6abad630d4f0786a3a8f713afb4780460621ffe5`, driver
+52,399,701 bytes/SHA-256 `d45476aaebb90775caa174aadacde3f630a8230f4817ac08d8b2d9dfb9ac801e`. The saved total is now
+3563/36524, this iteration410 days, with315 saved days in the current day03
+stage. Observed37 is used instead of requested30.
+
+Root then made the separate normal prestop checkpoint4367, stopped GAME64876,
+and officially prepared/staged/rebound the current pair into v28. The actual
+qualified cold baseline closed GREEN at new GAME24044, paused
+and map-ready at the unchanged raw53229840, with the same
+Robert29829/episode/saved `dynasty_continuity` goal and0 reconciled successions.
+It verifies all six ledger pins and ten carried opaque streams. The normal
+source history is4367; actual cold reports
+full4368/saveanchor4367 through its
+normal restore lineage. Official rebind retains the checkpoint bytes:
+88,913,610 bytes/SHA-256 `0b4318079f2bda821a957f5128efb6c92ffd452b98fd121901f79e222b0514c4`.
+The after-close driver pin is52,401,366 bytes/SHA-256
+`64336c77dc9da400c76457625bbf09bd25e70de3b4b210861876be29a150d322`. Save4366 belongs to the preceding37-day window;
+save4367 belongs to this current cold pair. They are not interchangeable.
+
+V28 public runtime source is `c01b76dbd86b37e6bd1dae4519e2027eab2bbd81`, native metadata
+source is `c01b76dbd86b37e6bd1dae4519e2027eab2bbd81`, and actual compiler source is
+`c01b76dbd86b37e6bd1dae4519e2027eab2bbd81`. The official new environment is
+`a9de6fd7782000b45a5e08f0732087bc7ae29e4fca6943f128dd4311886b79cb`. Its DLL is8,126,976
+bytes/SHA-256 `80845fb309b9d223605e8d29c0acc79f2c4e62fbeb1046fbb7b2ff269acd8ce8`. Root reports the managed game minimized;
+this documentation extraction performed no window or game operation.
+
+Cold adds0 days, action replays or qualification slots. Its government query
+and next planner were skipped; the preceding normal37 execution supplies
+the actual goal/government-plan evidence and is not a post-v28 normal run.
+The clergy query currently owned by Root and later normal continuation are
+not part of this closed baseline. Natural succession remains0 and M7 remains
+`in_progress`.
+
+The normal close is
+`m7-robert/v27-next-normal30-awaiting-clergy-01/result.json`, with cached compact
+`m7-robert/V27-NORMAL37-REPORT-FIELDS-01.json`. New cold evidence is
+`m7-robert/robert-mainline-v28-current-review-01/actual-candidate-cold-goal-01/result.json`,
+its `ROOT-PACKET.json` and `official-rebind-01.json`. Exact new cold pins are
+in `m7-robert/V28-CURRENT-COLD-REPORT-FIELDS-01.json`; chronological delivery
+fields are `m7-robert/V28-CURRENT-COLD-NORMAL37-REPORT-FIELDS-01.json`.
+This increment reused the37-day compact and read only the new closed cold
+metadata. It did not reread old cold/normal100/LIFE raw, inspect pending query
+directories, access current state/SDK or rerun gameplay/tests/Git.
+
+## Actual v28 following continuation: 101 saved days, 2026-10-03
+
+After the actual v28 cold baseline above, the same owned GAME24044 closed the
+requested100-day normal window `normal-time-target-reached` with
+101 actual saved days, raw53229840→53232264,
+ending paused. Its sole closed summary contains12
+formal turns and0 natural modals. Root's actual
+breakdown is2 Guy betrothal/alliance result-consumer steps and10
+`life-advance` steps; the12 formal turns are not12 clock advances. The returned
+plans contain12 saved campaign-goal contexts and12
+observed government contexts, followed by normal execution. Domain owners
+retain the family result/receipt details rather than duplicating that business
+analysis here.
+
+Robert remains29829 in the original episode, with the saved
+`dynasty_continuity` goal, `reconciled_successions=0`
+and `last_succession=null`. The current
+qualified native source remains `c01b76dbd86b37e6bd1dae4519e2027eab2bbd81`, with
+environment `a9de6fd7782000b45a5e08f0732087bc7ae29e4fca6943f128dd4311886b79cb`. The full
+saved pair is h4389/full4389:
+checkpoint89,680,288 bytes/SHA-256 `f2f6f0969249dd929e825404c75ca027d08135de268bd9af9085c189d64438a2`, driver
+52,676,422 bytes/SHA-256 `24102fa7dcd23622baebcd2727ca8ca1c1d99c7fe80246d6ef4590df67701534`. The durable total is
+3664/36524, this iteration511 days; the current day03 stage has416 saved days.
+Observed101 is used instead of requested100. No new natural succession,
+identity or M7 matrix completion is credited.
+
+Root's independent clergy query has released an actual available readonly
+primitive with `nativeCanFire=false`. That observation does not authorize or
+perform a dismissal, create a paid religious operation, add days or establish
+a complete religion OODA. The first following Sway two-call material is also
+GREEN under its own owner; no reward attribution or Sway result is added from
+the passage of101 days alone.
+
+The exact new normal close is
+`m7-robert/v28-clergy-following-normal100-01/result.json`; its once-produced
+stage fields are `m7-robert/v28-clergy-normal100-stage-fields-01.json`.
+New compact delivery is
+`m7-robert/V28-CURRENT-COLD-NORMAL101-REPORT-FIELDS-01.json`. It references the
+already-released `m7-robert/V28-CURRENT-COLD-NORMAL37-REPORT-FIELDS-01.json` for
+the prior37-day/cold chronology rather than rereading those packages. This
+update read only the new closed summary and preserved the existing topic;
+it performed no old cold/normal/LIFE raw parsing, current-state/SDK access,
+gameplay rerun, tests or Git. M7 remains `in_progress`.

@@ -9,7 +9,11 @@
 - [Holy order借款观测](religion-holy-order-loan-native-observation-12003.md)：v27当前罗贝尔实机完整读取成功，前瞻金额300金、借款费用50虔诚；借款显示／最终合法性均false，可负担性true。还款隐藏、最终合法性true、费用零，独立已读欠款与贷款方合法缺席，不能据此执行还款。当前为只读production-live primitive，v25／v26失败保留，没有借还动作或收益。
 - [神秘共融的原生最终条款](religion-mystical-communion-native-final-terms-12003.md)：同一宗教查询的独立字段实读available，当前决议隐藏／不可执行／可负担，费用100虔诚；原生理由仅返回“你未满足所有要求”，不猜具体未满足的条件。当前为只读production-live primitive，没有付费动作。
 - [普通本人改宗](religion-conversion-native-ai-12003.md)：复用现有候选、条款、理由、输入和结果查询，实机取得Orthodox主Rite153候选并读取最终条款；候选Faith规则true，paid最终can_convert=false，未执行转换。当前Rite和费用、知识等输入回链实际记录，不用候选资格代替最终合法性。
-- [教士与议会任务](religion-clergy-council-native-ai-12003.md)：独立解职、任务显示／有效性与县域目标的exact-build调用链已闭合；下一leaf扩充现有clergy MCP，当前是research，没有新任命或任务结果。
+- [教士与议会任务](religion-clergy-council-native-ai-12003.md)：v28 在罗贝尔同一存档的新 PID24044 实读现任56513的独立 `native_can_fire=false`，与 `CanReassign=false` 分别保留；原生结果 available，当前职位与角色有效。该口为只读 production-live primitive，完整动作资格仍 false，没有任免或任务收益。默认完整历史 SDK 快照超时保留为 harness RED，既有有限快照路径完成两条真实注册查询。
+- [教义、信条与忏悔](religion-doctrine-gameplay-native-ai-12003.md)：新版实际决议为 `pam_decision_confession`，广告参数不能代替 permitted 许可或最终决议判定；下一叶复用已有决议 ABI 读取实际条款。当前为 research。
+- [教会收入](religion-church-income-native-ai-12003.md)：新版租赁契约包含个人、固定与地方义务；读取当前／最高月收入必须使用玩家 receiver，不能拿现任祭司收入替代。当前原生树及最小 getter 为 research，没有收入改善信用。
+- [奉献等级、德性与罪性](religion-devotion-virtues-native-ai-12003.md)：累计等级进度与可花费虔诚分开，动态上限和当前 Rite 的德性判定已有具体原生读取入口。当前为 research，贫穷誓愿的静态收益不是罗贝尔实际合法性或收益。
+- [热忱与县改宗](religion-fervor-county-conversion-native-ai-12003.md)：已闭合任务最终月率与真实县目标的施工入口；完成百分比、Faith 热忱和同名县 modifier 分别处理。当前为 research，尚未切换宗教任务。
 
 当前实际能力与计划回链[统一进度](../autonomous-agent-progress/README.md)。宗教全面授权不等于宗教全域完成；上述原生研究、静态实现、实机观测和完整动作闭环分别记账。
 

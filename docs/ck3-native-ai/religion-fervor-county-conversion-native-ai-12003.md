@@ -1,0 +1,131 @@
+# CK3 1.20.0.3：热忱、县改宗与祭司任务机会成本
+
+2026-10-03 **research / file-only**。宗教领域已全面开放，本页聚焦罗贝尔领地中 `task_conversion` 的真实目标、最终月进度率和宗教民意价值。复用[祭司与任务合法性](religion-clergy-council-native-ai-12003.md)、[ReligiousRelations 价值](religious-relations-task-value-native-ai-12003.md)及[宗教治理／意见](religion-governance-opinion-native-ai-12003.md)，不重做 Task 身份解析、CanFire、既有 RR 实机、旧 ABI verifier 或夹具。
+
+游戏固定为 **1.20.0.3 Crozier / Steam25652598**，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。本次只读已冻结的 `artifacts/migrations/2026-10-02/installed-build/binaries/ck3.exe` 和本机 Steam `game/`。EXE 身份复用已有 intake；新窄函数字节单独冻结，不重复 hash 全 EXE。没有 SDK、pipe、内存读取、游戏／窗口输入、任务切换、任免、付费行为或游戏日。
+
+## 罗贝尔的已知起点与缺口
+
+原 v25 实机 Robert29829 的 chaplain56513 为 `task_religious_relations`，general/infinite/unfrozen；当帧 raw53224008、PID95636。其原生 owner modifier 为 **0.45 piety/月**，角色最终总月 piety 为 **0.4375**，两个聚合阶段分别实读。学习9来自原 v23 帧，双方 Rite152 来自原 v21 指定现任帧，不能拼成新鲜同帧评分。后续原 v27宗教只读帧 raw53226552、PID64876仍读到 Robert **Catholic Faith23 / Rite152 / Religion8**；本页没有重新取样这些已知值。
+
+现有 context 已有当前玩家 Faith fervor 的原生 getter，现有 campaign-root 已有 chaplain实际任务绑定及 percentage progress。这仍没有回答：罗贝尔当前有哪些原生合法转换县、哪个县属于亲持领地、县当前 Rite/Faith、最终月率、实际宗教民意或转换收益。**不能凭“罗贝尔是Catholic”推断所有县都是Catholic，也不能把这轮研究称为已找到真实转换目标。**
+
+当前 RR 的可见敬虔收益提供机会成本。停止 RR 改做县转换可能改变这项贡献；0.45是原帧当前值，不是未来固定扣除值或换任务后的实测损失。下一只读查询先回答实际合法对象与最终月率，再以同帧 RR贡献和实际县域价值决定是否换任务。
+
+## 原版 AI 的两层选择
+
+原版真实键为 **`task_conversion`**，不是 `convert_county_task`。`00_court_chaplain_tasks.txt:235–242` 将它定义为 court chaplain、county/percentage，玩家和 AI 均使用 realm县域。其 task-wide valid（`:251–267`）与 target final validity不同；同一任务没有独立 authored `is_shown`块，但仍应调用原生 shown最终入口，不将缺块手写为本帧true。
+
+`ai_will_do`（`:716–738`）按书写顺序为基础1000、crypto-religionist领主乘0、有效convert-faith vassal directive随后加10000。不能压平为“crypto永远不转换”。它没有 `ai_target_score`；原版 `_council_tasks.info:7` 声明未定义时目标随机，显式得分正数时按正分加权随机。这里闭合的是 **authored输入／格式合同**，没有新验证当前 EXE scheduler与全部竞争任务的真实采样、调用顺序或最终选择。该运行时分支仍是unknown，不把“最快县”冒称原生AI。
+
+县 predicate `00_councillor_triggers.txt:1019–1315` 在共同合法性之外还包含 `is_ai=yes` 内部的zeal/rationality、hostility、holy-site、directive、特定Sunni/Maliki与Jizya分支。它们是原生AI研究输入；Robert是玩家，不能将这些AI-only人格门额外施加给玩家策略。
+
+| 共同县域输入 | 原版行窗 | 对只读查询的意义 |
+| --- | --- | --- |
+| 非landless，实际目标Rite与当前不同 | councillor triggers1020–1043 | 目标身份和Rite路径必须真实绑定；Faith相同不排除Rite-only转换 |
+| hold-court宗教承诺／封臣与中间领主保护／county promise | 1045–1087 | 由最终native predicate求值；不在Python复制三套保护规则 |
+| AI grace/unreformed/accepted/Astray等 | 1088–1291 | 保留为原生AI树，不能成为我方玩家额外门 |
+| struggle转换禁用与已有当前目标例外 | 1292–1314 | 原生最终结果包含当前任务状态，不能只按county静态标签判断 |
+
+选择目的Rite的共同代码为：有Ministry访问，或县当前Faith等于领主Faith，或祭司Faith等于领主Faith时使用 **领主Rite**；否则使用 **祭司Rite**。Task-wide另有off-Rite theocratic chaplain与temporal-theocracy领主需要theological puppet的分支。是否可切换任务、是否可更换祭司和县是否合法是独立结果；原帧CanReassign=false不能推出所有转换任务不可选。
+
+## 热忱怎样进入进度与县域稳定
+
+`_council_tasks.info:62–63` 明确：percentage任务的进度表达式每天按**月率÷30**推进，界面显示月率，即使日历月份不是30天。当前已完成百分比与月进度率必须分开；不从“推进多少游戏日”反推最终月率。
+
+`00_court_chaplain_tasks.txt:415–475` 的进度从0开始，加基础0.5、学习/10、条件热忱差、context与发展惩罚，再乘全部context factors，最后下限0.1。`99_court_chaplain_values.txt` 的additive/factor两大段包含perks、legacy、关系、个人／有效tenets、文化、holy sites、laws/government、spiritual fulfillment、domicile、区域／struggle、State Rite和Church situation等输入。学习与热忱是参与者，**不是足以复算当前最终值的全部输入**。
+
+| 热忱相关分支 | 原版位置 | 按实际代码可得的结论 |
+| --- | --- | --- |
+| additive fervor | task426–452；values1482、1663–1667 | 以祭司Faith与县Faith之差乘基础进度百分比和0.5。Religious Icon对该贡献设minimum0；不是比较领主Faith与县Faith的通用捷径 |
+| county development helper | values1552–1582 | helper另含base/learning/perk与未乘0.5的热忱差，再乘`max(-development/100,-0.9)`；不能把完整进度简化为`(base+bonus)*(1-development/100)` |
+| same-Faith Rite factor | values1257–1273、1488–1549 | 县Faith等于领主或祭司Faith时使用Rite热忱乘数；实际传播者按hegemony+merit／县Faith=领主Faith选择领主，否则祭司 |
+| 传播主Rite | values1488–1549 | 乘数`1+(F-50)/100`；高热忱提高这个分支的authored倍率 |
+| 传播非主Rite | 同上 | 乘数`1-(F-50)/100`，有`pam_rite_grace_period`时下限1；高热忱不能概括为所有Rite转换都更快 |
+
+同Faith的additive注释不能覆盖实际off-Faith祭司路径；目的Rite矩阵、rate中祭司Faith与县Faith、完成effect中领主Faith与旧Faith分别求值。下一provider直接读取原生最终rate，避免克隆数百行修正并误合并概念。
+
+大众宗教稳定还涉及**当前县民意**。[宗教治理／意见](religion-governance-opinion-native-ai-12003.md)已经冻结 `00_defines.txt:848–861` 的county religious hostility意见 `[0,-15,-30,-45]` 按fervor/100缩放。它不是角色总意见公式，也不能由当前Catholic热忱单独重建县总popular opinion。实际county当前宗教身份、方向与final opinion是具体价值观测入口；这轮没有新读任何县的民意。
+
+`NFaith` defines（`:794–822`）提供base50/max100/yearly growth0.5、counties-per-Rite100、low-fervor threshold40、divergent-Rite与heresy保护常数。它们是authored输入；引擎最终净增长、时间积分、钳制及真实县／Rite数量consumer未在本包逆向，不把0.5称为Catholic当前年净增长，也不把它换算成当前月实测值。
+
+## 完成与副作用：按effect条件记账
+
+完成effect先保存old Faith/Rite（task536–538），按上述矩阵写Rite（622–633）。随后实际guard（635–650）检查的是 **`liege Faith != old Faith`**，没有比较实际new Faith与old Faith：成立时降低development，给领主Faith `trivial_fervor_gain`，给old Faith `small_fervor_gain`。基本值定义分别为 **+0.15 / +0.3**。因此不能用“Rite-only不影响发展／热忱”的描述注释代替这段条件；off-Faith祭司场景应按实际分支与独立结果解释。
+
+发展损失 helper为`-(floor(development/10)+1)`（`00_council_values.txt:111–122`）。转换还维护migration列表/旧Rite、记录已转Faith、普通chaplain返回默认任务、条件式struggle piety、Acts-of-Apostles legitimacy与spiritual fulfillment及Mendicant个人tenet奖励。minority stance封臣的转换反感定义为**−20、10年、decaying、stacking**。这些都是authored后果，没有发生在本次只读研究中。
+
+monthly_on_action `task_convert_side_effects`具冷却与随机事件。原版format注明开始／换祭司后前30天不触发，之后延迟1–30日。失败／好事件按当前技能和modifier条件再过滤，不能从1000“无事件”与五项100权重直接宣布五个无条件实机概率。
+
+尤其要区分同名概念：county **`court_chaplain_religious_fervor_modifier`只提供levy_size +0.25**，不修改Faith fervor。`religious_construction`修正寺庙建设费用与速度，并非立即增加development。抵抗、副作用tax/levies、popular opinion及minority反感都是可观察成本，不以事件名或结束通知代替物质结果。
+
+## 新闭合：无窗口的最终月率 ABI
+
+本包只对新rate缺口冻结窄PE证据。原版 `gui/shared/value_breakdown.gui:558–611` 使用 **ActiveCouncilTask.GetProgressBreakdown**，并在percentage任务显示rate。名称20字节在literal `0x44E3360`；注册 `0x94C73–0x94C8A`复制完整名字，`0x94CEE`将callback `0xCF1E30`交给`0xCF4580`。callback于`0xCF1E42`调用`0xCF1660`。
+
+真实current-task helper `0xCF1660`从task+18取TaskType、+40取原task scopes、+39取frozen；`0xCF1735`调用 **`0x31ADC60`**。该GUI helper会准备TLS breakdown list；新provider **直接调用numeric core**，传null breakdown，避免调用窗口、构造伪窗口或触发TLS展示list。确定合同为：
+
+```cpp
+using EvaluatedTaskMonthlyRate = std::int64_t* (*)(
+    void* task_type, std::int64_t* out,
+    const void* raw_task_scopes, void* nullable_breakdown,
+    bool frozen);
+// Exact .3 RVA 0x31ADC60; returned pointer is the supplied out.
+```
+
+`0x31ADC60–0x31AE106`是完整1190-byte `.pdata` entry，SHA-256 **`0be954d982e3159f7d0f281984048afa69b42901aa2f2a8c3be1916727a5d5fc`**。core以`TaskType+1358`递归clone；incumbent=-1时原生输出零；county分支委托既有scope builder `0x31AE770`。它以type+A88判断是否有full_progress，若有求值+9C8，否则+8D8；原生expression evaluator保持全部修正。numeric结果复制到out并返回同一out。
+
+`frozen`只在非null breakdown路径控制当前task contribution展示差额；**numeric返回不会因frozen自动变成0**。provider应保留独立frozen字段，策略不把“预测rate正数”当作冻结任务正在推进。不能将这个read-only数值求值称为任务提交最终合法性。
+
+与overall rate不同，**`0x31AD9D0(TaskType*,out*,scopes*,nullable_breakdown)`**只计算+8D8的own `progress`。其完整 `0x31AD9D0–31ADC52`、642-byte SHA-256 `9435a44a2daedbaf69014d8ef01984aba8ef06d39f156d34ebe270bcf66836bf`。conversion未定义authored full_progress，但provider仍采用overall core，不依赖缺块手写相等关系。
+
+完成progress从另一条链来：percentage读actual task+20、max raw10000000；`ActiveCouncilTask.GetProgressFloat` reflection `0x31B67E0`调用`0x31B5680`读current，`GetProgressPie` reflection `0x31B6860`调用`0x31B5770`计算current/max。**GetProgressPie不是月率**；本包保留其字节用于防止误接，并没有将它新增为月率getter。value-task current/max继续复用旧 `31AB520/31AB840`，不重复其验收。
+
+原版named script value `council_task_monthly_progress`也真实存在；本包冻结它的literal `0x47DA2C8`与registration `0x59D970`，没有闭合整条script-value evaluator的final调用链，不把factory vtable或字符串存在称为已发布getter。上面的named GUI→numeric core已经提供一条可施工的明确ABI，不等待另一条factory链完成。
+
+## 一个最小可施工查询叶
+
+在**现有 clergy MCP**内增加独立readonly `task_conversion_candidates`，不另造SDK、窗口、动作或旗标。沿现有actual played actor→chaplain实际task/owner/incumbent绑定，按actual position取得TaskType key `task_conversion`，复用已证明的`shown31AC7B0 / valid31AC680`。目标producer与allocator直接复用已在当前版Steward provider实际实现的路径；不用完整stock目录制造候选。
+
+| 输入／输出 | 已闭合原生入口与字段 | 首个leaf的具体用途 |
+| --- | --- | --- |
+| task shown/valid | 31AC7B0 /31AC680；actual incumbent/owner scopes | 区分当前任务可用与不适用，独立于换人CanReassign/CanFire |
+| 实际realm目标 | 2C48E80(incumbent,TaskType,false,allocator vector,false) | `first_only=false`获取完整原生目标集合；false expand_court沿旧clergy caller，只覆盖这项county任务，不称所有县完整catalog |
+| 每县final validity | 2C48970→31ACEF0 | actual Province，保留最终bool；ProvinceID不能替换为TitleID |
+| 每县身份与亲持 | Province+10/+85C；Province+848→county+18 fullTitle→Title+128 holder | 复用当前Steward identity路径；真实holder=Robert才标directly_held |
+| 最终月率 | 31ADC60(type,out,32-byte scopes,nullptr,false) | proposed县scope沿原生格式：actual incumbent/owner，tag8、真实ProvinceID，trailingflag0；不是构造新ActiveTask或切换任务 |
+| 当前任务完成度／冻结 | 现有campaign-root百分比+20及frozen+39 | 与candidate预测月率分列；未开始转换的候选没有current percentage，不填0伪装已开始 |
+| 当前 RR贡献 | 现有RR owner modifier口 | 用同帧值衡量继续RR的可见收益；不重新把总piety当任务贡献 |
+
+32-byte raw scopes与producer、allocator、generation／province identity全沿[现有Steward `.3` reader](../../ck3_autonomous_player/native_bridge/src/ck3_12003_steward_develop_county.cpp)及旧clergy树，不新增协议。`first_only=true`只能回答是否存在目标；若选择只先实现这一项，就只能解锁“没有目标则继续RR”的独立决策，不能冒称完成目标排序。
+
+首个**可见自动决策**是：新Robert paused帧若shown/valid不成立或完整原生集合为空，则保留RR，给出原生输入原因；若有真实亲持合法目标，则用最终月率建立县候选机会和完成成本，不再长期写unknown。本页只落研究输入，不提前实现或授权任意切换。具体转换动作前仍需读取该真实候选的县Rite/Faith与目的Rite、当前民意／价值以及任务typed提交入口；这些属于功能施工，不能以本leaf ACK或正rate宣称action readiness。
+
+县Rite/Faith、实际选择的destination Rite、county religious-opinion component、Catholic最终净fervor growth和conversion typed submit尚未在此页闭合。最窄续接为：从该leaf实际返回的Province/County对象，沿对应命名getter闭合Rite→Faith及当前county final opinion；typed提交复用现有CouncilTask command路径，再在同一Robert实机读回实际任务/目标及独立县结果。它们有明确真实对象入口，不能拿长期null或已撤销宗教禁令停止施工。
+
+```mermaid
+flowchart TD
+    R[Fresh Robert / actual chaplain task and owner] --> T[actual position: task_conversion]
+    T --> S[31AC7B0 shown / 31AC680 valid]
+    S --> E[2C48E80 actual realm targets / full vector]
+    E --> V[2C48970 + 31ACEF0 per-county final]
+    V --> P[actual incumbent/owner + county Province scopes]
+    P --> M[31ADC60 overall native monthly rate]
+    M --> C[conversion candidate opportunity]
+    RR[同帧 existing RR piety contribution] --> C
+    E -->|empty| N[继续 RR / 无可转换目标]
+    A[authored task weight1000 / crypto / directive] -. scheduler与实际选择 unknown .-> AI[原生 AI task selection]
+    F[authored fervor/development/context/factors] --> M
+    G[GUI GetProgressBreakdown / CF1E30 / CF1660] --> M
+    H[actual task+20 current / max100] --> H2[completed percentage]
+    H2 -. 与月率分别读取 .-> C
+    C -. Robert新目标与rate尚未实测 .-> L[existing clergy MCP paused observation]
+    L -. county Rite/opinion与typed submit未闭合 .-> O[未来转换 OODA]
+    O -. 独立完成物质尚未实测 .-> X[actual Rite / development / fervor outcomes]
+```
+
+## 可核验交付与资格
+
+新native artifacts位于 `artifacts/g2-maintainer-2026-10-02/resume-12003/religion-fervor-county-12003/`；stock lane位于 `religion-fervor-spread-12003/county-stock/`，12份原版文件分别记录bytes、SHA-256、line count和窄行窗。`STOCK-EVIDENCE.json`为240343 bytes，SHA-256 `49bd53b3ff4a648413adbf4c7a196c6e1c96fca2bd46773480100f6387fadb5f`；stock总结13930 bytes，SHA-256 `6c31ea0e50d59227b7362389f5cc7b868e405b33772a0ba588fb69833afe98d8`。新getter的完整函数及注册slice、GUI输入窗均由file-backed提取器保存，最终pins见本包 `ROOT-DELIVERY.json` 和 `COUNTY-CONVERSION-NATIVE-ABI.json`。
+
+本次新增 **research**，provider/source实现0、focused tests0、live calls0、actions0、game days0、G2 credit0。离线读取退出码0是研究工具成功，不是native fixture或游戏GREEN。原有context/clergy/RR的production-live primitive资格归各自冻结原帧，不提升整套宗教AI或县转换loop。报告字段发送ROOT，由中央单一owner合并日报／周报和Git发布；本页不编辑共享索引或中央报告。

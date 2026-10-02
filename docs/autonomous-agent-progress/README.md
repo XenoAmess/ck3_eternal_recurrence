@@ -1,5 +1,13 @@
 # CK3 自动游玩智能体进度中心
 
+## 10-03 07:53 3664日／resume511：神职只读与隐藏phase来源
+
+2026-10-03T07:53:26+08:00 Asia/Shanghai真实补录：上次3526阶段已经正常发布，此次新增 **138保存日＝v27后继37＋v28正常101**，原Robert累计 **3664/36524**、resume **511保存日**、10-03 **416保存日**。最终saved **raw53232264 / full4389**，同actor29829/episode `native-29829-2bc2d599f7f9`、typed dynasty_continuity reconciled_successions **0**。G2 **5/8＝62.5%**、NW **2/4＝50%**，原M2/M5/NW-FAMILY与NW-LIFE complete保持；机器percent_reporting_allowed=false不改变，神职只读与隐藏Sway阶段来源不增加整项完成数。 [日报](daily/2026-10-03.md) / [W40](weekly/2026-W40.md)。最终4389/raw53232264，saveSHAf2f6f0969249dd929e825404c75ca027d08135de268bd9af9085c189d64438a2、driverSHA24102fa7dcd23622baebcd2727ca8ca1c1d99c7fe80246d6ef4590df67701534；source/nativec01-v28/new24044。
+
+CanFirefalse与CanReassignfalse均来自有效独立查询，current56513/task7162/validtrue/eligibilitycompletefalse，只readonlyprimitive。Sway原full/gen首次实读hiddenfailure source/seq1，仍CanContinue55%@pre/cold；后继材料如下，收益与wholeterminal不从phase失败或100日外推。
+
+正常101后Root唯一2-query actual已独立读到同原scheme full134217986/gen8、target34333：v28/PID24044/raw53232264/native44/public2，fresh progress158/goal353、总opinion−9、owned active1、exposedfalse/frozenfalse；专属Sway与blocker均observed但合法absence/null、terminal/cancelfalse。这个158来自实读，不是把clock101天累加旧progress；旧hiddenphasefailure@53228472仍是独立来源，不能用这些值证明新的phase/reset发生，也不能把总opinion归因Sway。当前完整Sway收益及wholeterminal仍pending，没有新Start/ring刷新或完成信用。[正常101后Sway有限实际材料](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m4-sway/robert-v28-first-next-material-after-normal101-01/REPORT-FIELDS-20261003.json)。
+
 ## 10-03 07:02 3526日／resume373：v27窄宗教primitive三项
 
 2026-10-03T07:02:55+08:00 Asia/Shanghai真实滚动补录：上个3393/full4299阶段已经Root正常发布；本阶段另计 **133保存日＝v26后继33＋v27正常100**，最新原Robert **3526/36524**、resume **373保存日**、10-03 **278保存日**，saved raw **53228952 / full4357**。actor29829、原episode `native-29829-2bc2d599f7f9`、typed dynasty_continuity reconciled_successions **0**。G2 **5/8＝62.5%**、NW **2/4＝50%**保持；NW-LIFE原timely合同与原NW-FAMILY/globalM2/M5 complete不回退，机器percent_reporting_allowed=false不改变。没有以三个宗教readonly primitive升级整体宗教OODA或M6。 [日报](daily/2026-10-03.md) / [W40](weekly/2026-W40.md)。当前full4357/raw53228952，saveSHA13975cb88e26e499847874d79edcfdce3ad2186e9b82d7a5ae909f028599e7a8、driverSHAa25a4894989c9f0fbae8c41455e26a00879bb36f9f9fd9b48914c2361302e63f。

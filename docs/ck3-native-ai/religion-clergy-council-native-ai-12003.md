@@ -1,5 +1,7 @@
 # CK3 1.20.0.3：现任祭司、解职权限与宗教任务选择
 
+最新实机增量：2026-10-03 07:39 Asia/Shanghai，v28 current Robert 已独立读取 **`native_can_fire=false`，available／failure none**；该只读项为 **production-live primitive**。页内先前research和static-ready部分保留各自冻结时点，以下最后一节是当前同帧结果。
+
 2026-10-03 的 **research / file-only** 增量。宗教已全面开放；本页复用 [realm-priest 任免与任务树](religion-realm-priest-council-native-ai-12003.md)、[ReligiousRelations 价值](religious-relations-task-value-native-ai-12003.md)和[宗教治理意见](religion-governance-opinion-native-ai-12003.md)，补齐它们尚未闭合的独立 `CanFireCouncillor` 调用合同、任务 `is_shown / is_valid` 与县域最终目标判定。没有重复 RR 查询、构建、旧 ABI verifier 或测试，没有 SDK、pipe、进程内存、窗口、任免、任务切换、付费动作或游戏日。ROOT 负责后续实现、实机和发布。
 
 ## 当前 Robert 输入与边界
@@ -139,3 +141,37 @@ flowchart TD
 回执：[`fixture/attempt-01/RESULT.json`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/religion-clergy-12003/can-fire-leaf/fixture/attempt-01/RESULT.json)，11478 bytes，SHA-256 `882984d5f9824b2f7566ec5ea18ee9213aa378219d6e3c693931488d4fa53c07`。所有source、真实wire、compile/run日志和exe pins均在该回执及[`can-fire-leaf/ROOT-DELIVERY.json`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/religion-clergy-12003/can-fire-leaf/ROOT-DELIVERY.json)中；路径相对本仓库根。三个生产leaf与两处旧Bind兼容保持分别冻结，focused source独立且不增加CMake目标。此增量新增live/actions/game-days/G2 credit均为0。
 
 后续ROOT采用最终projection，经正常strict native构建和同一Robert paused query取得当前`native_can_fire`。该增量仅闭合独立只读输入；即使true也没有完整任命action readiness、解职结果或新的religion OODA资格。
+
+## v28 Robert 实际独立 CanFire：只读 primitive
+
+ROOT的finite-02实际捕获于2026-10-03 07:39 Asia/Shanghai首次 **GREEN**：复用当前official owner、现有MCP方法和原配置，2个registered查询，ROOT记录总耗时9.51秒。真实native pong绑定 **PID24044**；initial/final均`native:5 / public revision2 / native revision5 / raw53229840 / paused=true`，actor29829、episode`native-29829-2bc2d599f7f9`保持。源码与strict native为`c01b76dbd86b37e6bd1dae4519e2027eab2bbd81`，EXE仍为本页冻结的Steam1.20.0.3/25652598/SHA94B55397…A6；新环境绑定为`a9de6fd7782000b45a5e08f0732087bc7ae29e4fca6943f128dd4311886b79cb`。
+
+| 同一paused输入 | 实际结果与含义 |
+| --- | --- |
+| court-chaplain composition → 当前现任 | fullID56513、learning9、occupied；配置从该回包绑定candidate，没有预填56513 |
+| 现有clergy query | statusavailable、failure none、epoch93375、actual task7162、owner29829、incumbent56513 |
+| native_valid_position／native_valid_character | true／true，仅对应本次指定现任 |
+| native_can_reassign／**native_can_fire** | false／**false**，独立发布，当前拒绝不是null或读取失败 |
+| Rite／action资格 | owner152、candidate152；candidate_is_incumbent=true；action_eligibility_complete=false |
+
+composition本帧完整集合为5项：32023/learning0、33437/0、35637/3、36077/1、38574/6。它们是native collection eligible材料，不是5个完整任命final-gates或可执行替代祭司。上一v23的4项集合仍是历史帧；此处没有补候选任免动作。当前独立CanFirefalse不推导任命许可、任务选择合法性、任务目标范围或完整宗教策略loop。
+
+MCP两个请求都使用fresh frontend `expected_revision=2`；真实native执行包绑定`expected_revision=5`，clergy同时带`expected_snapshot_revision=5`。native-wire保留Council的pending ACK与后续completed status回包，clergy received则直接含`native_can_fire=false`；后续Python字段与该原生值一致。不要把MCP public revision2与native revision5重命名为同一编号。
+
+```mermaid
+flowchart TD
+    S[Robert paused native:5 / public2 / raw53229840] --> C[现有 Court Chaplain composition]
+    C --> I[实际 incumbent56513 / learning9]
+    I --> Q[同现有 clergy MCP / explicit current incumbent]
+    Q --> N[actual task7162 / owner29829]
+    N --> F[独立 native_can_fire=false / available]
+    Q --> R[独立 CanReassign=false]
+    F --> P[production-live readonly primitive]
+    P -. action_eligibility_complete=false .-> A[任免 action readiness 未完成]
+```
+
+第一次11923 attempt已正常 **exit1／harness RED／completed calls0**，发生在通用SDK helper初始默认全history snapshot，尚未取得snapshot或发出配置中的两项domain查询。源码单次窄检查确认clergy opt-in仅登记方法/设置属性，构造与snapshot没有eager clergy binder/CanFire调用。先前GREEN的registered helper使用finite internal semantic frame；finite-02沿该已有路径在同PID/同日期完成。原RED、running阶段快照及closed回执全部保留；没有追JSON/stdio内部栈，也未把52MB driver大小当作已定位阻塞instruction。
+
+实际证据：[`actual-v28-current-can-fire-finite-02/result.json`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/religion-clergy-12003/can-fire-leaf/actual-v28-current-can-fire-preparation-01/actual-v28-current-can-fire-finite-02/result.json)、同目录两个原始MCP packet与`native-wire.jsonl`；独立摘录和pins为[`actual-observed-02/ACTUAL-OBSERVATION.json`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/religion-clergy-12003/can-fire-leaf/actual-v28-current-can-fire-preparation-01/actual-observed-02/ACTUAL-OBSERVATION.json)。本包新增query由ROOT执行；本代理只读已closed文件，无额外SDK、pipe或窗口调用。
+
+这次增量为current realm-priest **只读production-live primitive**。新增任命、解职、任务切换、付费宗教动作、改宗、游戏日和G2 credit均为0。原nullable空席／缺席／读取失败边界仍由唯一static fixture证明，本帧只验证occupied/available的实际false，未把空席fixture称为Robert实测。ROOT随后恢复原normal window；不重复此查询，也不等待未纳入本叶子的task catalog或付费动作。

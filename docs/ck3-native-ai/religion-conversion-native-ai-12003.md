@@ -74,7 +74,21 @@ ROOT 在 **PID64876 / actor29829 / raw53226552** 同一暂停日期完成两阶�
 
 该父函数 **`0x1933A20`** 的5个完整unwind regions `[1933A20,1933BA0)` 已另行合并，见 [DELTA-COMPARATOR-UNWIND-12003.json](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-conversion-12003/DELTA-COMPARATOR-UNWIND-12003.json)。它解析当前played Character与目标full Rite，调用target base getter，再减 Character extension **`+0x300`** 的缓存；extension缺失时调用 `0x2BFB4C0`。末尾把差值送 `0xEDF830`、`0xF10830` 的输出路径，并清理字符串。本包没有闭合此callback的登记名称/业务身份，因此只记录实际数据流，不把它叫native AI desirability或scheduler，也不擅改现有base-minus-base DTO。
 
-候选相关另一个已知函数 **`0x1CFC310`** 具有实际世界Rite/同Faith候选集合、Rite `+0x4E9` 状态过滤和base getter调用；`+0x4E9` 不能当完整 paid conversion rule。它还把base结果取负后存入排序pair，某个flag分支要求该值优于既有比较值；flag的业务名称、登记者与AI顶层使用仍unknown。后续原生AI研究的具体入口是：从该函数与 **`0x5C68824`实际消费者** 绑定 registration/完整caller，到landed AI evaluator，再冻结候选排序与owning command submission。不能把已有 reform handler `0x1A9D890` 直接改名为普通转换 scheduler。当前本人只读预览具有独立价值，这些AI质量差距不阻塞读取 native paid final/quote，也不被宣布已完成。
+候选相关已知函数 **`0x1CFC310`** 已在下一轮 exact PE 研究中绑定为 **`CAvailableRiteListBuilder` 的脚本列表构造函数**；它不是已证明的 AI scheduler registration。已闭合的调用者见下一节，Rite `+0x4E9` 仍仅是其候选启用过滤，不能当完整 paid conversion rule。flag 的业务名称、parser defaults 与 AI 顶层使用仍 unknown。`0x5C68824` 的实际数值消费者仍未定位；不能把地址形成指令、此脚本列表函数或 reform handler `0x1A9D890` 直接改名为普通转换 scheduler。当前本人只读预览具有独立价值，这些 AI 质量差距不阻塞读取 native paid final/quote，也不被宣布已完成。
+
+### 2026-10-03：候选列表 caller 已闭合，当前 scheduler 线索收口
+
+这次只续已有 `1CFC310 / 5C68824` 两个入口，读取同一 exact EXE 和 [production-source-f30579bf](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/production-source-f30579bf/)；没有全 AI 搜索或新 live 调用。[RESEARCH-INCREMENT.json](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-conversion-12003/scheduler-next-entry-01/RESEARCH-INCREMENT.json) 固定全部 source spans、ABI 边界、测试与建议，SHA `5cf44f90d89a038d69c8aa3c0e7242e5a5b424be4eff548a0e1f936ac0b0ceb9`。
+
+`1CFC310` 的七个已知直接 E8 callsite 都从完整 `.pdata` 函数起点确认了指令边界。六条已命名 RTTI/vtable caller 分别是 list size、ordered/every script math、ordered/every/random script effect 的 **CAvailableRiteListBuilder** 实例；余下一条 `1D20AE0` generic any helper 在 `1D20B05` 调用同一 builder。其原文与函数 SHA 在 [AVAILABLE-RITE-CALLER-BINDINGS-12003.json](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-conversion-12003/scheduler-next-entry-01/AVAILABLE-RITE-CALLER-BINDINGS-12003.json)。这证明这些列表调用者的身份，不排除另有间接消费者，也不证明普通 landed AI 的候选、接受度或最终意愿。
+
+已观测 ABI 是 `RCX=builder flags subobject / RDX=native scope-vector output / R8=script scope context`，输出16-byte scope row、type `0x2A` Rite。flag byte `+2` 非零从角色当前 Rite→Faith 的成员 full RiteIDs 取集合，否则取 WorldData `+0xD9E8` 指针数组、`+0xD9F4` count；角色 scope type4、full identity 与 Rite 启用 `+0x4E9` 均照原生解析。flag byte `+1` 非零只保留 target base **严格大于**比较 baseline 的候选：Character `+0x1A5` 非零时 baseline=0，否则 extension `+0x300`、缺 extension 时 `0x2BFB4C0`。target base 调用为 **`1CFC82C → 2BFC270(out,Character*,Rite*)`**；flag byte0非零进入 `(Rite*,-base)` pair 的排序。业务 flag 名称、默认值和输出容器 allocator 合同未闭，因此这个脚本 builder 尚不可直接作为新 bridge getter 调用。
+
+原版实际消费者 `common/scripted_triggers/00_stress_triggers.txt:369–398` 是 `stress_rite_conversion_trigger`：adult、**真实 spiritual_fulfillment<0**、current Rite base score≤0、cynical/eccentric/fickle 或真实 fulfillment<−30、Faith fervor≤50，并存在非当前、非regional且 base>0 的候选。`events/stress_events/stress_threshold_events.txt:1655–1708` 的 `stress_threshold.1501` picker 按 **>75、>50、>25、>0** 的第一个非空分档随机选择。它不是取全局最大 base，也不是已证明的普通付费转换或 AI scheduler。原文注释明确要求 trigger 与 picker 一致；`pam_values.txt:2141` 给 −1 tier 为 −30。
+
+上节 v27 实际帧的 fulfillment=5，已经使这一压力改宗动机门为 false；Orthodox target base=0 也没有正 base 动机。这是**既有 v27 帧**的结论，ROOT 后续普通时间推进后不从旧值推断当前状态。该分支此刻不带来新玩法，按任务要求停止追普通 AI scheduler。`5C68824` 的五个 RIP 地址-pattern 中四条绑定到了完整 runtime 函数，全部只是 LEA；另一个 `1A62763` 无 `.pdata` owner，保留 unverified candidate。它们均不能证明读取五年参数的实际 evaluator；不据此宣布参数未使用。初次 extractor 对所有 candidate 强求 `.pdata` owner 导致 offline harness RED，已保存 [失败 attempt](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-conversion-12003/scheduler-next-entry-01/FINALIZE-FAILED-ATTEMPT-01.json)，修正后 GREEN；无 capability RED 或游戏操作。
+
+下一条有真实施工价值的入口是**复用现成的目标 inputs/terms/reasons/outcome** 评估同 Faith 的非当前 Rite：v27 membership 中已有224，下一次必须从 fresh choices 再取得身份，不硬编码旧 ID。它可以直接消费 `2BFC270` 目标 base、`29A3DE0` 完整报价及 `29A34C0` paid final，而不增加 ABI；224 的费用、许可、实际收益仍 unknown，本包未查询或选择动作。只有当前自然事件/策略实际需要完整 available-Rite集合时，才扩既有 choices reader 的 world/member full identities 与逐候选 base，随后用实机 paused snapshot 验收；目前不为此新增 script-vector 包装。**本增量 readiness=research；新 SDK/game/window/source/paid/material/days/G2 credit 全为0**，此前五个 production-live primitive 的资格和冻结 actual 均不变。
 
 ```mermaid
 flowchart TD
@@ -88,10 +102,17 @@ flowchart TD
     T --> B[既有 outcome读取真实 baseline full身份/三余额/flags]
     B --> L[已实测五口 production-live readonly primitive]
     D[NAI参数0x5C68824 5年最短重评] -. unknown actual consumer/caller .-> S[unknown 普通landed AI scheduler]
-    S -. unknown registration 施工入口0x1CFC310 .-> A[unknown AI候选排序/最终desire]
+    S -. unknown actual candidate/score consumer .-> A[unknown AI候选排序/最终desire]
     V -. unknown participation .-> A
     A -. unknown owning submission .-> O[AI普通转换执行]
     U[0x1933A20 target base减缓存 输出callback已证] -. unknown 登记名称 非final AI证明 .-> A
+    K[0x1CFC310 已绑定 CAvailableRiteListBuilder] --> Q[script any/random/ordered/every/list-size]
+    K --> F[0x2BFC270 target base 严格baseline比较]
+    Q --> H[stock stress trigger 实际fulfillment负值且存在正base候选]
+    H --> J[stress_threshold.1501 首个非空正分档随机挑选]
+    R --> N[v27 actual fulfillment5 压力改宗动机门false]
+    K -. unknown indirect AI consumer .-> A
+    Q -. unknown parser flags/defaults和输出allocator .-> W[仅需求成立时扩既有 choices reader]
     L -. 独立目标与预算选择 实际付费动作尚未选择 .-> X[现有typed submit与请求关联结果入口]
 ```
 
