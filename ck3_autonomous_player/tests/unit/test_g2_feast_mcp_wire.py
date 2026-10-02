@@ -7,6 +7,8 @@ from pathlib import Path
 import sys
 import unittest
 from copy import deepcopy
+import json
+import os
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
@@ -15,6 +17,9 @@ from test_ck3_12002_feast_wire import FixtureDriver, actual_wire
 from test_activity_feast_guest_route_proof_private_transport import GuestRouteProofTransportTests
 from test_activity_feast_guest_rule_provenance_private_transport import (
     Driver as ProvenanceDriver, payload as provenance_payload,
+)
+from test_activity_feast_guest_opinion_private_transport import (
+    Driver as GuestOpinionDriver, snapshot as opinion_snapshot,
 )
 from xar_autoplayer.bridge.mcp_server import create_server
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
@@ -29,6 +34,7 @@ POST_TOOL = "ck3_query_activity_feast_hosted_post_private_v1"
 ROUTE_TOOL = "ck3_query_activity_feast_guest_route_proof_private_v1"
 PROVENANCE_TOOL = "ck3_query_activity_feast_guest_rule_provenance_private_v1"
 INPUT_TOOL = "ck3_query_activity_feast_stage5_start_inputs_private_v1"
+OPINION_TOOL = "ck3_query_activity_feast_guest_opinion_private_v1"
 
 
 class NativeWrapperWireDriver(FixtureDriver):
@@ -105,8 +111,72 @@ class GuestProvenanceWireDriver(ProvenanceDriver):
         return value
 
 
+class GuestOpinionWireDriver(GuestOpinionDriver):
+    """Actual production named-reader wire with .3 same-paused-frame identity."""
+
+    def __init__(self, native):
+        super().__init__(native)
+        self.before = opinion_snapshot()
+        self.before.update({"snapshot_id": "native:4", "native_revision": 4})
+        self.before["diagnostics"] = {"hello": {
+            "expected_ck3_version": CK3_12003.game_version,
+            "expected_ck3_sha256": CK3_12003.executable_sha256,
+        }}
+        self.after = deepcopy(self.before)
+
+    def take_snapshot(self):
+        return deepcopy(self.before if not self.sent else self.after)
+
+
 @unittest.skipIf(importlib.util.find_spec("mcp") is None, "optional MCP SDK not installed")
 class FeastMcpWireTests(unittest.IsolatedAsyncioTestCase):
+    async def test_fixed_reward_modifiers_use_actual_native_wire_through_official_sdk(self):
+        from mcp import Client
+
+        path = os.environ.get("XAR_FEAST_REWARD_FIXTURE_WIRE")
+        if path is None:
+            self.skipTest("production named-reader wire is not configured")
+        wires = json.loads(Path(path).read_text(encoding="utf-8"))
+        for case, wire in wires.items():
+            with self.subTest(case=case):
+                driver = GuestOpinionWireDriver(wire)
+                async with Client(create_server(driver)) as client:
+                    tools = {tool.name: tool for tool in (await client.list_tools()).tools}
+                    self.assertIs(tools[OPINION_TOOL].annotations.read_only_hint, True)
+                    self.assertEqual(set(tools[OPINION_TOOL].input_schema["properties"]),
+                                     {"expected_revision", "guest_character_id"})
+                    reply = await client.call_tool(OPINION_TOOL, {
+                        "expected_revision": 5, "guest_character_id": 32000,
+                    })
+                    self.assertFalse(reply.is_error)
+                    observed = reply.structured_content
+                self.assertEqual(observed["reward_opinion_modifiers"], wire["reward_opinion_modifiers"])
+                self.assertEqual(observed["guest_character_id"], 32000)
+                self.assertEqual(observed["exact_ck3_build"], CK3_12003.game_version)
+                self.assertEqual(observed["exe_sha256"], CK3_12003.executable_sha256)
+                self.assertEqual(observed["queried_snapshot_id"], observed["post_snapshot_id"])
+                self.assertNotIn("benefit_verified", observed)
+                self.assertNotIn("attendance_verified", observed)
+                self.assertEqual(len(driver.sent), 1)
+                self.assertEqual(driver.sent[0]["expected_revision"], 4)
+                self.assertEqual(driver.sent[0]["guest_character_id"], 32000)
+                self.assertEqual(driver.sent[0]["expected_actor_character_id"], 31000)
+                self.assertNotIn("modifier_key", driver.sent[0])
+
+    async def test_disabled_fixed_reward_query_is_absent_from_sdk_discovery(self):
+        from mcp import Client
+
+        path = os.environ.get("XAR_FEAST_REWARD_FIXTURE_WIRE")
+        if path is None:
+            self.skipTest("production named-reader wire is not configured")
+        native = json.loads(Path(path).read_text(encoding="utf-8"))["absent_and_zero"]
+        driver = GuestOpinionWireDriver(native)
+        driver.allow_private_activity_feast_guest_opinion_query = False
+        async with Client(create_server(driver)) as client:
+            names = {tool.name for tool in (await client.list_tools()).tools}
+        self.assertNotIn(OPINION_TOOL, names)
+        self.assertEqual(driver.sent, [])
+
     async def test_actual_ordinary_serializer_sdk_and_policy_keep_positive_negative_unavailable(self):
         from mcp import Client
 

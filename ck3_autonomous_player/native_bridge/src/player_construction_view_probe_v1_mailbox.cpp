@@ -613,6 +613,15 @@ std::string SerializePlayerConstructionViewProbePrivateV1(
       json += std::to_string(built.building_type_id);
       json += ",\"slot_index\":";
       json += std::to_string(built.slot_index);
+      json += ",\"building_key\":";
+      if (built.building_key.has_value()) {
+        // ReadBuildingKey uses the same restricted key alphabet as samples.
+        json += '"';
+        json += *built.building_key;
+        json += '"';
+      } else {
+        json += "null";
+      }
       json += '}';
     }
     json += ']';

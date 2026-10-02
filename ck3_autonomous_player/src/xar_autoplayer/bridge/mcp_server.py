@@ -74,6 +74,9 @@ from .activity_feast_guest_route_proof_private_transport import (
 from .activity_feast_guest_rule_provenance_private_transport import (
     query_activity_feast_guest_rule_provenance_private_v1,
 )
+from .activity_feast_guest_opinion_private_transport import (
+    query_activity_feast_guest_opinion_private_v1,
+)
 from .war_entry_contract import normalize_war_entry_target_ids
 
 
@@ -1937,6 +1940,17 @@ def create_server(
             """Read native guest candidate IDs and join or arrival observations."""
             return driver.query_activity_feast_guest_candidate_private_v1(
                 expected_revision=expected_revision,
+            )
+
+    if getattr(driver, "allow_private_activity_feast_guest_opinion_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_activity_feast_guest_opinion_private_v1(
+            expected_revision: int, guest_character_id: int,
+        ) -> dict[str, object]:
+            """Read one full guest ID's opinion and fixed stock Feast reward modifiers."""
+            return query_activity_feast_guest_opinion_private_v1(
+                driver, expected_revision=expected_revision,
+                guest_character_id=guest_character_id,
             )
 
     if getattr(driver, "allow_private_activity_feast_guest_route_proof_query", False) is True:
@@ -3906,6 +3920,7 @@ def main(argv: list[str] | None = None) -> int:
         driver.allow_private_activity_stage5_feast_full_cost_query = True
         driver.allow_private_activity_feast_stage5_start_query = True
         driver.allow_private_activity_feast_guest_candidate_query = True
+        driver.allow_private_activity_feast_guest_opinion_query = True
         driver.allow_private_activity_feast_guest_target_query = True
         driver.allow_private_activity_feast_guest_route_proof_query = True
         driver.allow_private_activity_feast_guest_rule_provenance_query = True

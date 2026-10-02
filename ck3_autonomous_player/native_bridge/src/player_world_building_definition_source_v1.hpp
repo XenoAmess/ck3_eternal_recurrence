@@ -3,6 +3,7 @@
 #include "player_held_construction_model_enumerator_v1.hpp"
 
 #include <array>
+#include <optional>
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -102,6 +103,10 @@ struct PlayerWorldCompletedBuildingV1 final {
   std::int32_t province_id = -1;
   std::int32_t building_type_id = -1;
   std::int32_t slot_index = -1;
+  // Same registry-verified definition's canonical key. An unreadable key is
+  // null on the wire, distinct from an old packet which omitted this field;
+  // it does not erase the already observed numeric occupant identity.
+  std::optional<std::string> building_key;
   friend bool operator==(const PlayerWorldCompletedBuildingV1 &,
                          const PlayerWorldCompletedBuildingV1 &) = default;
 };

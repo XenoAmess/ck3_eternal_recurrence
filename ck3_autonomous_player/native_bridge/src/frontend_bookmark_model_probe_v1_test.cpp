@@ -30,6 +30,8 @@ struct Region {
 struct Fixture {
   std::vector<Region> regions;
   int setter_calls = 0;
+  int bookmark_setter_calls = 0;
+  bool crozier = false;
 
   void Add(std::uintptr_t base, std::size_t size) {
     regions.push_back(Region{base, {}, size});
@@ -163,20 +165,23 @@ Fixture MakeFixture() {
 }
 
 void *FakeFinalGovernment(void *, const void *character) noexcept {
-  return character == reinterpret_cast<const void *>(0xA000)
-             ? reinterpret_cast<void *>(0xE000)
-             : nullptr;
+  if (character == reinterpret_cast<const void *>(0xA000)) {
+    return reinterpret_cast<void *>(0xE000);
+  }
+  return character == reinterpret_cast<const void *>(0x15000)
+             ? reinterpret_cast<void *>(0x18000) : nullptr;
 }
 
 bool FakeSelectedCharacterSetter(void *opaque, void *view,
                                  const void *character) noexcept {
   auto &fixture = *static_cast<Fixture *>(opaque);
   if (view != reinterpret_cast<void *>(0x8000) ||
-      character != reinterpret_cast<const void *>(0xA000)) {
+      (character != reinterpret_cast<const void *>(0xA000) &&
+       character != reinterpret_cast<const void *>(0x15000))) {
     return false;
   }
   ++fixture.setter_calls;
-  fixture.Put(0x8000 + 0x158, std::int32_t{0});
+  fixture.Put(0x8000 + (fixture.crozier ? 0x128 : 0x158), std::int32_t{0});
   return true;
 }
 
@@ -206,6 +211,199 @@ bool Select(Fixture &fixture,
   return xar::ck3_11906::SelectSupportedFeudalBookmarkCharacterV1(
       environment, access, reinterpret_cast<void *>(0x2000),
       output, &FakeFinalGovernment, &FakeSelectedCharacterSetter);
+}
+
+
+using xar::ck3_11906::FrontendBookmarkSeedTargetV1;
+using xar::ck3_11906::GuiAbiRevisionV1;
+
+void PutLongKey(Fixture &fixture, std::uintptr_t owner, std::size_t offset,
+                std::uintptr_t storage, std::string_view key) {
+  if (key.size() < 16) {
+    fixture.PutBytes(owner + offset, key);
+  } else {
+    fixture.Put(owner + offset, storage);
+    fixture.PutBytes(storage, key);
+  }
+  fixture.Put(owner + offset + 0x10, std::uint64_t{key.size()});
+  fixture.Put(owner + offset + 0x18, std::uint64_t{key.size()});
+}
+
+Fixture MakeCrozierFixture(FrontendBookmarkSeedTargetV1 target) {
+  auto fixture = MakeFixture();
+  fixture.crozier = true;
+  const auto &profile = xar::ck3_11906::GetFrontendBookmarkTargetProfileV1(target);
+  constexpr std::uintptr_t slot = kModuleBase + 0x5CB87F8;
+  fixture.Add(slot, 8);
+  fixture.Put(slot, std::uintptr_t{0x1000});
+  fixture.Put(0x1000, kModuleBase + 0x449BDA8);
+  fixture.Put(0x5000, kModuleBase + 0x44D5F30);
+  fixture.Put(0x6000, kModuleBase + 0x4500660);
+  fixture.Put(0x7000, kModuleBase + 0x45008B0);
+  fixture.Put(0x8000, kModuleBase + 0x451B938);
+  fixture.Put(0x8000 + 0x60, std::uintptr_t{0x2000});
+  fixture.Put(0x8000 + 0x68, std::uintptr_t{0x4000});
+  fixture.Put(0x8000 + 0xD8, std::uintptr_t{0xD000});
+  PutLongKey(fixture, 0xD000, 0x18, 0x11000, "bm_group_1066");
+  fixture.Put(0x8000 + 0x120, std::uintptr_t{0x9000});
+  fixture.Put(0x8000 + 0x128, std::int32_t{-1});
+  fixture.Put(0x8000 + 0x12C, std::int32_t{-1});
+  fixture.Put(0x9000 + 0x40,
+              std::uint64_t{0xFFFFFFFF00000000ULL | profile.date_low_raw});
+  fixture.Put(0x9000 + 0x160, std::uintptr_t{0xA000});
+  fixture.Put(0x9000 + 0x168, std::uint32_t{5});
+  fixture.Put(0x9000 + 0x16C, std::uint32_t{1});
+  fixture.Put(0x9000 + 0x170, std::uint64_t{0});
+  PutLongKey(fixture, 0x9000, 0x18, 0xB000, profile.bookmark_key);
+  PutLongKey(fixture, 0xA000, 0x08, 0xC000, profile.character_key);
+  PutLongKey(fixture, 0xE000, 0x18, 0xF000, profile.government_key);
+  for (const auto item : std::array<RttiFixture, 4>{{
+           {0x44D5F30, 0x4A84928, 0x56B9FD8},
+           {0x4500660, 0x4ACC280, 0x5519DC0},
+           {0x45008B0, 0x4ACC8A8, 0x5702BF0},
+           {0x451B938, 0x4AEC370, 0x5720228}}}) {
+    fixture.Add(kModuleBase + item.vtable_rva - 8, 8);
+    fixture.Put(kModuleBase + item.vtable_rva - 8,
+                kModuleBase + item.locator_rva);
+    fixture.Add(kModuleBase + item.locator_rva, 24);
+    fixture.Put(kModuleBase + item.locator_rva, std::uint32_t{1});
+    fixture.Put(kModuleBase + item.locator_rva + 4, std::uint32_t{0});
+    fixture.Put(kModuleBase + item.locator_rva + 0xC, item.type_rva);
+  }
+  return fixture;
+}
+
+bool ProbeCrozier(Fixture &fixture,
+                  xar::ck3_11906::FrontendBookmarkModelProbeV1 &output,
+                  FrontendBookmarkSeedTargetV1 target) {
+  xar::ck3_11906::ZhongguoScoreboardNativeEnvironmentV1 environment{};
+  environment.module_base = kModuleBase;
+  environment.exact_build_admitted = true;
+  environment.gui_global_slot =
+      reinterpret_cast<void **>(kModuleBase + 0x5CB87F8);
+  environment.gui_abi_revision = GuiAbiRevisionV1::crozier12003;
+  xar::ck3_11906::ZhongguoScoreboardAccessV1 access{};
+  access.context = &fixture;
+  access.read_memory = &ReadFixture;
+  return xar::ck3_11906::ProbeFrontendBookmarkModelV1(
+      environment, access, reinterpret_cast<void *>(0x2000), output,
+      &FakeFinalGovernment, target);
+}
+
+bool FakeBookmarkSetter(void *opaque, void *view,
+                        const void *bookmark) noexcept {
+  auto &fixture = *static_cast<Fixture *>(opaque);
+  if (view != reinterpret_cast<void *>(0x8000) ||
+      bookmark != reinterpret_cast<const void *>(0x14000)) return false;
+  ++fixture.bookmark_setter_calls;
+  fixture.Put(0x8000 + 0x120, std::uintptr_t{0x14000});
+  fixture.Put(0x8000 + 0x128, std::int32_t{-1});
+  fixture.Put(0x8000 + 0x12C, std::int32_t{-1});
+  return true;
+}
+
+bool CrozierCases() {
+  using xar::ck3_11906::FrontendBookmarkModelProbeV1;
+  using xar::ck3_11906::FrontendBookmarkChangeV1;
+  using xar::ck3_11906::FrontendBookmarkSelectionV1;
+  for (const auto target : {FrontendBookmarkSeedTargetV1::configured_1066,
+                            FrontendBookmarkSeedTargetV1::yahya_1066,
+                            FrontendBookmarkSeedTargetV1::rurik_867}) {
+    auto fixture = MakeCrozierFixture(target);
+    FrontendBookmarkModelProbeV1 result{};
+    const auto &profile = xar::ck3_11906::GetFrontendBookmarkTargetProfileV1(target);
+    if (!ProbeCrozier(fixture, result, target) ||
+        !result.candidate_identity_ready ||
+        result.selected_bookmark_key != profile.bookmark_key ||
+        result.bookmark_character_keys[0] != profile.character_key ||
+        result.government_type_keys[0] != profile.government_key ||
+        result.selected_date_low_raw != profile.date_low_raw ||
+        !result.selected_bookmark_group_key_available ||
+        result.selected_bookmark_group_key != "bm_group_1066" ||
+        result.supported_1066_candidate_feudal !=
+            (target == FrontendBookmarkSeedTargetV1::configured_1066)) {
+      std::fprintf(stderr, "Crozier target profile failed: %s\n",
+                   result.unavailable_reason.c_str());
+      return false;
+    }
+    xar::ck3_11906::ZhongguoScoreboardNativeEnvironmentV1 environment{};
+    environment.module_base = kModuleBase;
+    environment.exact_build_admitted = true;
+    environment.gui_abi_revision = GuiAbiRevisionV1::crozier12003;
+    environment.gui_global_slot =
+        reinterpret_cast<void **>(kModuleBase + 0x5CB87F8);
+    xar::ck3_11906::ZhongguoScoreboardAccessV1 access{};
+    access.context = &fixture;
+    access.read_memory = &ReadFixture;
+    FrontendBookmarkSelectionV1 selection{};
+    if (!xar::ck3_11906::SelectSupportedFeudalBookmarkCharacterV1(
+            environment, access, reinterpret_cast<void *>(0x2000), selection,
+            &FakeFinalGovernment, &FakeSelectedCharacterSetter, target) ||
+        !selection.setter_invoked || !selection.same_frame_index_matches ||
+        fixture.setter_calls != 1 ||
+        !ProbeCrozier(fixture, result, target) ||
+        result.selected_character_index != 0) return false;
+    // The current registry route remains available when the app owner changes.
+    fixture.Put(0x1000 + 0x78, std::uintptr_t{0});
+    fixture.Put(0x4000 + 0x230, std::uintptr_t{0x11000});
+    fixture.Put(0x4000 + 0x238, std::uint32_t{1});
+    fixture.Put(0x4000 + 0x23C, std::uint32_t{1});
+    fixture.Put(0x11000, std::uintptr_t{0x7000});
+    if (!ProbeCrozier(fixture, result, target) ||
+        !result.candidate_identity_ready ||
+        result.verified_owner_route != "gui_context_registry") return false;
+  }
+
+  // Changing from the actual initial 1066 bookmark to 867 uses a native
+  // Bookmark pointer found by key, followed by an independent model query.
+  auto fixture = MakeCrozierFixture(FrontendBookmarkSeedTargetV1::yahya_1066);
+  for (std::uintptr_t base = 0x14000; base <= 0x1A000; base += 0x1000) {
+    fixture.Add(base, 512);
+  }
+  const auto &rurik = xar::ck3_11906::GetFrontendBookmarkTargetProfileV1(
+      FrontendBookmarkSeedTargetV1::rurik_867);
+  PutLongKey(fixture, 0x14000, 0x18, 0x16000, rurik.bookmark_key);
+  fixture.Put(0x14000 + 0x40, std::uint64_t{0xFFFFFFFF03103968ULL});
+  fixture.Put(0x14000 + 0x160, std::uintptr_t{0x15000});
+  fixture.Put(0x14000 + 0x168, std::uint32_t{1});
+  fixture.Put(0x14000 + 0x16C, std::uint32_t{1});
+  fixture.Put(0x14000 + 0x170, std::uint64_t{0});
+  PutLongKey(fixture, 0x15000, 0x08, 0x17000, rurik.character_key);
+  fixture.Put(0x15000 + 0x130, std::uintptr_t{0x14000});
+  PutLongKey(fixture, 0x18000, 0x18, 0x19000, rurik.government_key);
+  fixture.Put(0x1A000, std::uintptr_t{0x9000});
+  fixture.Put(0x1A000 + 8, std::uintptr_t{0x14000});
+  fixture.Put(0x8000 + 0xC0, std::uintptr_t{0x1A000});
+  fixture.Put(0x8000 + 0xC8, std::uint32_t{2});
+  fixture.Put(0x8000 + 0xCC, std::uint32_t{2});
+  xar::ck3_11906::ZhongguoScoreboardNativeEnvironmentV1 environment{};
+  environment.module_base = kModuleBase;
+  environment.exact_build_admitted = true;
+  environment.gui_abi_revision = GuiAbiRevisionV1::crozier12003;
+  environment.gui_global_slot =
+      reinterpret_cast<void **>(kModuleBase + 0x5CB87F8);
+  xar::ck3_11906::ZhongguoScoreboardAccessV1 access{};
+  access.context = &fixture;
+  access.read_memory = &ReadFixture;
+  FrontendBookmarkChangeV1 change{};
+  FrontendBookmarkModelProbeV1 result{};
+  if (!xar::ck3_11906::SelectSupportedBookmarkV1(
+          environment, access, reinterpret_cast<void *>(0x2000), change,
+          FrontendBookmarkSeedTargetV1::rurik_867, &FakeBookmarkSetter) ||
+      !change.owner_resolved || !change.target_resolved ||
+      !change.setter_invoked || !change.same_frame_bookmark_matches ||
+      fixture.bookmark_setter_calls != 1 ||
+      !ProbeCrozier(fixture, result, FrontendBookmarkSeedTargetV1::rurik_867) ||
+      !result.candidate_identity_ready || result.selected_character_index != -1) {
+    std::fprintf(stderr, "Crozier key-derived bookmark switch/requery failed\n");
+    return false;
+  }
+  if (!xar::ck3_11906::SelectSupportedBookmarkV1(
+          environment, access, reinterpret_cast<void *>(0x2000), change,
+          FrontendBookmarkSeedTargetV1::rurik_867, &FakeBookmarkSetter) ||
+      !change.already_selected || change.setter_invoked ||
+      fixture.bookmark_setter_calls != 1) return false;
+  return true;
 }
 
 } // namespace
@@ -433,5 +631,5 @@ int main() {
     std::fprintf(stderr, "unmatched bookmark root must fail closed\n");
     return 1;
   }
-  return 0;
+  return CrozierCases() ? 0 : 1;
 }

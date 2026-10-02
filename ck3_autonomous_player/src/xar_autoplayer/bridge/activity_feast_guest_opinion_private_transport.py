@@ -18,6 +18,14 @@ from .nonwar_private_build import private_native_provenance
 
 STEP = "query-activity-feast-guest-opinion-v1"
 SCHEMA = "activity-feast-guest-opinion-private-read-v1"
+REWARD_OPINION_MODIFIER_KEYS = (
+    "hosted_feast_opinion", "hosted_mediocre_feast_opinion", "impressed_opinion",
+)
+_BASE_PAYLOAD_KEYS = {
+    "schema", "snapshot_revision", "date_raw", "actor_character_id",
+    "guest_character_id", "status", "guest_opinion_of_actor", "read_only",
+    "raw_pointer_fields_persisted",
+}
 _UNAVAILABLE = frozenset({
     "invalid_request", "frame_changed", "opinion_unavailable",
 })
@@ -28,12 +36,10 @@ def parse_activity_feast_guest_opinion_private_v1(
     actor_id: int, guest_id: int, envelope_status: str,
 ) -> dict[str, object]:
     if (not isinstance(payload, dict)
-            or set(payload) != {
-                "schema", "snapshot_revision", "date_raw",
-                "actor_character_id", "guest_character_id", "status",
-                "guest_opinion_of_actor", "read_only",
-                "raw_pointer_fields_persisted",
-            }
+            or set(payload) not in (
+                _BASE_PAYLOAD_KEYS,
+                _BASE_PAYLOAD_KEYS | {"reward_opinion_modifiers"},
+            )
             or payload["schema"] != SCHEMA
             or type(payload["snapshot_revision"]) is not int
             or payload["snapshot_revision"] != native_revision
@@ -58,6 +64,24 @@ def parse_activity_feast_guest_opinion_private_v1(
             raise BridgeUnavailableError("private feast guest opinion unavailable malformed")
     else:
         raise BridgeUnavailableError("private feast guest opinion status unknown")
+    if "reward_opinion_modifiers" in payload:
+        modifiers = payload["reward_opinion_modifiers"]
+        if not isinstance(modifiers, dict) or set(modifiers) != set(REWARD_OPINION_MODIFIER_KEYS):
+            raise BridgeUnavailableError("private feast reward modifier keys malformed")
+        for row in modifiers.values():
+            if not isinstance(row, dict) or set(row) != {"status", "present", "value"}:
+                raise BridgeUnavailableError("private feast reward modifier row malformed")
+            if row["status"] == "observed":
+                if (status != "observed" or type(row["present"]) is not bool
+                        or (row["present"] and (type(row["value"]) is not int
+                                                or not -(2**31) <= row["value"] < 2**31))
+                        or (not row["present"] and row["value"] is not None)):
+                    raise BridgeUnavailableError("private feast reward modifier value malformed")
+            elif row["status"] == "read_failed":
+                if row["present"] is not None or row["value"] is not None:
+                    raise BridgeUnavailableError("private feast reward modifier failure malformed")
+            else:
+                raise BridgeUnavailableError("private feast reward modifier status unknown")
     return dict(payload)
 
 

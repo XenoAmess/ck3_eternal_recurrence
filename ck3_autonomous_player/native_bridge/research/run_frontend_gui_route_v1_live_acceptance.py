@@ -85,6 +85,49 @@ EXPECTED_CK3_SHA256 = (
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 )
 FEUDAL_1066_CHARACTER_KEYS = FEUDAL_1066_CHARACTER_NAME_KEYS
+# These are stock source identities, never runtime character IDs or vector slots.
+# CK3's bookmark qword may contain an upper sentinel; dates use its semantic low32.
+PRIVATE_BOOKMARK_PROFILES = {
+    key: {
+        "group_key": "bm_group_1066",
+        "bookmark_key": "bm_1066_rags_to_riches",
+        "character_key": key,
+        "government_key": "feudal_government",
+        "date_low_raw": 0x032AEB08,
+        "model_step": "probe-frontend-bookmark-model-v1",
+        "selection_step": "select-frontend-supported-1066-character-v1",
+        "start_step": "activate-frontend-start-selected-bookmark-v1",
+        "bookmark_switch_step": None,
+    }
+    for key in FEUDAL_1066_CHARACTER_KEYS
+}
+PRIVATE_BOOKMARK_PROFILES.update({
+    "bookmark_rags_to_riches_emir_yahya": {
+        "group_key": "bm_group_1066",
+        "bookmark_key": "bm_1066_rags_to_riches",
+        "character_key": "bookmark_rags_to_riches_emir_yahya",
+        "government_key": "clan_government",
+        "date_low_raw": 0x032AEB08,
+        "model_step": "probe-frontend-bookmark-model-yahya-v1",
+        "selection_step": "select-frontend-bookmark-character-yahya-v1",
+        "start_step": "activate-frontend-start-selected-bookmark-yahya-v1",
+        "bookmark_switch_step": None,
+    },
+    "bookmark_adventurers_rurik_rurikid": {
+        "group_key": "bm_group_867",
+        "bookmark_key": "bm_867_adventurers",
+        "character_key": "bookmark_adventurers_rurik_rurikid",
+        "government_key": "tribal_government",
+        # 867.1.1 under the native calendar encoding; checked again against
+        # both the independent native Bookmark and the actual paused map.
+        "date_low_raw": 51394920,
+        "model_step": "probe-frontend-bookmark-model-rurik-v1",
+        "selection_step": "select-frontend-bookmark-character-rurik-v1",
+        "start_step": "activate-frontend-start-selected-bookmark-rurik-v1",
+        "bookmark_switch_step": "activate-frontend-select-bookmark-rurik-v1",
+    },
+})
+PRIVATE_BOOKMARK_CHARACTER_KEYS = tuple(PRIVATE_BOOKMARK_PROFILES)
 QUERY_CAPABILITY = "game.command.query-frontend-gui-route-v1"
 INSPECT_CAPABILITY = "game.command.inspect-frontend-gui-tree-v1"
 ACTIVATE_NEW_GAME_CAPABILITY = "game.command.activate-frontend-new-game-v1"
@@ -389,6 +432,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--bridge-dll", type=Path, required=True)
     parser.add_argument("--bridge-injector", type=Path, required=True)
     parser.add_argument(
+        "--expected-ck3-sha256",
+        default=EXPECTED_CK3_SHA256,
+        help="exact executable SHA-256 for this run; defaults to the historical build pin",
+    )
+    parser.add_argument(
         "--steam-loginusers",
         type=Path,
         help=(
@@ -411,23 +459,23 @@ def _parser() -> argparse.ArgumentParser:
         "--bookmarks-select-start-private",
         action="store_true",
         help=(
-            "controlled exact-build 1066 path: key-derived private typed "
+            "controlled exact-build stock bookmark path: key-derived private typed "
             "selection, independent model requery, private StartGame, paused "
             "public campaign-root and paired checkpoint; public MCP tools stay OFF"
         ),
     )
     parser.add_argument(
         "--bookmark-character-key",
-        choices=FEUDAL_1066_CHARACTER_KEYS,
+        choices=PRIVATE_BOOKMARK_CHARACTER_KEYS,
         default=FEUDAL_1066_CHARACTER_KEYS[0],
-        help="exact stock 1066 feudal character key; must match the private DLL target",
+        help="exact stock character key; must match the private native selector target",
     )
     parser.add_argument(
         "--ordinary-campaign-xar-off-seed",
         action="store_true",
         help=(
             "use the already prepared state-dir xar_off profile and bind the "
-            "paired fresh-1066 checkpoint as an ordinary no-pact campaign seed"
+            "paired fresh bookmark checkpoint as an ordinary no-pact campaign seed"
         ),
     )
     parser.add_argument(
@@ -715,12 +763,14 @@ def _structured(call: dict[str, object]) -> dict[str, object]:
 
 
 def _call_private_bookmarks_model(
-    driver: NativeHeadlessGameplayDriver, timeout_seconds: float
+    driver: NativeHeadlessGameplayDriver,
+    timeout_seconds: float,
+    *,
+    step: str = "probe-frontend-bookmark-model-v1",
 ) -> dict[str, object]:
     """One fixed read-only native-pipe ABI capture, outside public MCP tools."""
     started = time.monotonic()
     request_id = f"feudal-bm-model-{uuid.uuid4().hex[:12]}"
-    step = "probe-frontend-bookmark-model-v1"
     if timeout_seconds <= 0:
         return {
             "tool": "private-native-bookmarks-model-v1",
@@ -779,15 +829,16 @@ def _call_private_bookmarks_model(
     }
 
 
-def _private_1066_candidate_index(
+def _private_bookmark_candidate_index(
     model: object,
     expected_character_name_key: str = FEUDAL_1066_CHARACTER_KEYS[0],
 ) -> int:
     """Use only this exact frame's selected Bookmark and native element keys."""
-    if expected_character_name_key not in FEUDAL_1066_CHARACTER_KEYS:
-        raise ValueError("unsupported exact-build 1066 feudal character key")
+    if expected_character_name_key not in PRIVATE_BOOKMARK_PROFILES:
+        raise ValueError("unsupported exact-build stock bookmark character key")
+    profile = PRIVATE_BOOKMARK_PROFILES[expected_character_name_key]
     if not isinstance(model, dict):
-        raise ValueError("private 1066 model is not an object")
+        raise ValueError("private bookmark model is not an object")
     keys = model.get("candidate_keys")
     index = model.get("supported_1066_candidate_index")
     count = model.get("bookmark_character_count")
@@ -798,12 +849,14 @@ def _private_1066_candidate_index(
         or model.get("setup_view_matches_bookmarks_root") is not True
         or model.get("verified_owner_route")
         not in {"gui_context_registry", "app_idler_chain"}
+        or model.get("selected_bookmark_group_key")
+        not in {None, profile["group_key"]}
         or model.get("selected_bookmark_key")
-        != "bm_1066_rags_to_riches"
+        != profile["bookmark_key"]
         or model.get("supported_1066_government_key")
-        != "feudal_government"
+        != profile["government_key"]
         or model.get("supported_1066_date_matches") is not True
-        or model.get("selected_date_low_raw") != 0x032AEB08
+        or model.get("selected_date_low_raw") != profile["date_low_raw"]
         or not isinstance(keys, list)
         or not isinstance(count, int)
         or isinstance(count, bool)
@@ -817,7 +870,7 @@ def _private_1066_candidate_index(
         or keys[index]
         != expected_character_name_key
     ):
-        raise ValueError("current native 1066 feudal candidate identity is unproven")
+        raise ValueError("current native stock bookmark candidate identity is unproven")
     return index
 
 
@@ -896,13 +949,14 @@ def _controlled_private_feudal_start(
     expected_character_name_key: str = FEUDAL_1066_CHARACTER_KEYS[0],
     expected_succession_lifecycle: dict[str, object] | None = None,
 ) -> dict[str, object]:
-    """One private selection and StartGame, each followed by separate state."""
+    """Start one stock profile through the existing private typed route."""
     deadline = time.monotonic() + timeout_seconds
     calls: list[dict[str, object]] = []
     flow: dict[str, object] = {
-        "scope": "controlled-private-exact-build-1066",
+        "scope": "controlled-private-exact-build-bookmark",
         "public_query_action_advertised": False,
         "expected_character_name_key": expected_character_name_key,
+        "bookmark_switch_submitted": False,
         "selector_submitted": False,
         "start_submitted": False,
         "ok": False,
@@ -913,8 +967,47 @@ def _controlled_private_feudal_start(
         flow["error"] = reason
         return flow
 
+    profile = PRIVATE_BOOKMARK_PROFILES.get(expected_character_name_key)
+    if profile is None:
+        return stop("unsupported exact-build stock bookmark character key")
+    flow["expected_stock_profile"] = dict(profile)
+    switch_step = profile["bookmark_switch_step"]
+    if (
+        switch_step is not None
+        and before_model.get("selected_bookmark_key") != profile["bookmark_key"]
+    ):
+        if (
+            before_model.get("private_scope") != "exact-build-bookmarks-model-v1"
+            or before_model.get("setup_view_matches_bookmarks_root") is not True
+            or before_model.get("verified_owner_route")
+            not in {"gui_context_registry", "app_idler_chain"}
+        ):
+            return stop("native Bookmarks owner is unavailable before bookmark switch")
+        switch = _call_private_frontend_action(
+            driver, switch_step, max(0.0, deadline - time.monotonic())
+        )
+        calls.append(switch)
+        flow["bookmark_switch_submitted"] = switch.get("submitted") is True
+        switch_result = _structured(switch)
+        if (
+            switch.get("is_error") is not False
+            or switch_result.get("accepted") is not True
+            or switch_result.get("status") != "acknowledged_verification_pending"
+        ):
+            return stop("bookmark switch lacks a confirmed acknowledgement; do not retry")
+        switched_call = _call_private_bookmarks_model(
+            driver,
+            max(0.0, deadline - time.monotonic()),
+            step=profile["model_step"],
+        )
+        calls.append(switched_call)
+        before_model = _structured(switched_call)
+        flow["independent_switched_model"] = before_model
+        if switched_call.get("is_error") is not False:
+            return stop("independent post-switch native model unavailable")
+
     try:
-        target_index = _private_1066_candidate_index(
+        target_index = _private_bookmark_candidate_index(
             before_model, expected_character_name_key
         )
     except ValueError as error:
@@ -931,7 +1024,7 @@ def _controlled_private_feudal_start(
     flow["selected_index_before"] = selected_index
     if selected_index != target_index:
         selector = _call_private_frontend_action(
-            driver, "select-frontend-supported-1066-character-v1",
+            driver, profile["selection_step"],
             max(0.0, deadline - time.monotonic()),
         )
         calls.append(selector)
@@ -945,7 +1038,9 @@ def _controlled_private_feudal_start(
         ):
             return stop("typed selection submitted or rejected without a verified next model; do not retry")
     after_call = _call_private_bookmarks_model(
-        driver, max(0.0, deadline - time.monotonic())
+        driver,
+        max(0.0, deadline - time.monotonic()),
+        step=profile["model_step"],
     )
     calls.append(after_call)
     after_model = _structured(after_call)
@@ -953,7 +1048,7 @@ def _controlled_private_feudal_start(
     if after_call.get("is_error") is not False:
         return stop("independent post-selection native model unavailable")
     try:
-        after_target_index = _private_1066_candidate_index(
+        after_target_index = _private_bookmark_candidate_index(
             after_model, expected_character_name_key
         )
     except ValueError as error:
@@ -971,7 +1066,7 @@ def _controlled_private_feudal_start(
     flow["independent_selected_model_verified"] = True
 
     start = _call_private_frontend_action(
-        driver, "activate-frontend-start-selected-bookmark-v1",
+        driver, profile["start_step"],
         max(0.0, deadline - time.monotonic()),
     )
     calls.append(start)
@@ -1025,7 +1120,7 @@ def _controlled_private_feudal_start(
     # StartGame can publish the player/map snapshot before its application-main
     # load work returns through another SDL/Windows pump. A ready mailbox from
     # the previous pump is only submission permission, not a fresh executor
-    # opportunity. Keep the same paused 1066 player binding and wait for one
+    # opportunity. Keep the same paused bookmark player binding and wait for one
     # later pump, as initial production native_auto_run readiness already does.
     first_played = paused_map.get("played_character")
     first_played_id = (
@@ -1054,7 +1149,7 @@ def _controlled_private_feudal_start(
         or not isinstance(first_connection_generation, int)
         or isinstance(first_connection_generation, bool)
     ):
-        return stop("independent paused 1066 player binding is incomplete")
+        return stop("independent paused bookmark player binding is incomplete")
 
     def pump_epoch(snapshot: dict[str, object]) -> int | None:
         diagnostics = snapshot.get("diagnostics")
@@ -1132,7 +1227,7 @@ def _controlled_private_feudal_start(
         "last_error": last_error,
     }
     if post_ready_map is None:
-        return stop("application-main pump did not advance on the stable paused 1066 player binding within the bounded window")
+        return stop("application-main pump did not advance on the stable paused bookmark player binding within the bounded window")
     paused_map = post_ready_map
     flow["post_ready_pump"].update(
         {
@@ -1163,9 +1258,9 @@ def _controlled_private_feudal_start(
         != paused_map.get("native_revision")
         or root.get("player_character_id") != played_id
         or not isinstance(government, dict)
-        or government.get("key") != "feudal_government"
+        or government.get("key") != profile["government_key"]
     ):
-        return stop("independent paused-map/public root does not prove 1066 feudal player")
+        return stop("independent paused-map/public root does not prove the requested bookmark government and player")
     flow["independent_campaign_root_verified"] = True
     if expected_succession_lifecycle is not None:
         readiness = root.get("readiness")
@@ -4082,8 +4177,13 @@ async def _mcp_sequence(
             private_model: dict[str, object] = {}
             private_start_flow: dict[str, object] | None = None
             if bookmarks_model_private:
+                bookmark_profile = PRIVATE_BOOKMARK_PROFILES[
+                    expected_character_name_key
+                ]
                 private_model_call = _call_private_bookmarks_model(
-                    driver, max(0.0, deadline - time.monotonic())
+                    driver,
+                    max(0.0, deadline - time.monotonic()),
+                    step=bookmark_profile["model_step"],
                 )
                 record(private_model_call)
                 private_model = _structured(private_model_call)
@@ -4094,31 +4194,6 @@ async def _mcp_sequence(
                     and private_model.get("status")
                     in {"identity_ready", "unavailable"}
                 )
-                checks["selected_1066_feudal_candidate"] = (
-                    private_model.get("candidate_identity_ready") is True
-                    and private_model.get("selected_bookmark_key")
-                    == "bm_1066_rags_to_riches"
-                    and private_model.get("supported_1066_government_key")
-                    == "feudal_government"
-                    and private_model.get("selected_date_low_raw")
-                    == 0x032AEB08
-                    and private_model.get("supported_1066_date_matches")
-                    is True
-                    and isinstance(
-                        private_model.get("supported_1066_candidate_index"),
-                        int,
-                    )
-                    and not isinstance(
-                        private_model.get("supported_1066_candidate_index"),
-                        bool,
-                    )
-                    and private_model["supported_1066_candidate_index"] >= 0
-                    and isinstance(private_model.get("candidate_keys"), list)
-                    and private_model["supported_1066_candidate_index"]
-                    < len(private_model["candidate_keys"])
-                    and private_model["candidate_keys"][private_model["supported_1066_candidate_index"]]
-                    == expected_character_name_key
-                )
                 if bookmarks_select_start_private:
                     private_start_flow = _controlled_private_feudal_start(
                         driver, private_model,
@@ -4128,9 +4203,32 @@ async def _mcp_sequence(
                             expected_succession_lifecycle
                         ),
                     )
-                    checks["controlled_private_1066_start"] = (
+                    checks["controlled_private_bookmark_start"] = (
                         private_start_flow.get("ok") is True
                     )
+                    if expected_character_name_key in FEUDAL_1066_CHARACTER_KEYS:
+                        checks["controlled_private_1066_start"] = checks[
+                            "controlled_private_bookmark_start"
+                        ]
+                identity_model = private_model
+                if private_start_flow is not None:
+                    switched_model = private_start_flow.get(
+                        "independent_switched_model"
+                    )
+                    if isinstance(switched_model, dict):
+                        identity_model = switched_model
+                try:
+                    _private_bookmark_candidate_index(
+                        identity_model, expected_character_name_key
+                    )
+                except ValueError:
+                    checks["selected_stock_bookmark_candidate"] = False
+                else:
+                    checks["selected_stock_bookmark_candidate"] = True
+                if expected_character_name_key in FEUDAL_1066_CHARACTER_KEYS:
+                    checks["selected_1066_feudal_candidate"] = checks[
+                        "selected_stock_bookmark_candidate"
+                    ]
             if vfs_mount_order_diagnostics:
                 checks["vfs_mount_order_diagnostics_complete"] = (
                     isinstance(vfs_mount_order_result, dict)
@@ -4146,6 +4244,8 @@ async def _mcp_sequence(
                 "bookmarks_tree": inspection,
                 "private_bookmarks_model_call": private_model_call,
                 "private_bookmarks_model": private_model,
+                "private_bookmark_start_flow": private_start_flow,
+                # Existing root receipts still read this private compatibility key.
                 "private_1066_start_flow": private_start_flow,
                 "vfs_mount_order_diagnostics": vfs_mount_order_result,
                 "tree_truncated": inspection.get("truncated"),
@@ -4803,8 +4903,17 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     expected_character_name_key = getattr(
         args, "bookmark_character_key", FEUDAL_1066_CHARACTER_KEYS[0]
     )
-    if expected_character_name_key not in FEUDAL_1066_CHARACTER_KEYS:
-        raise ValueError("unsupported exact-build 1066 feudal character key")
+    if expected_character_name_key not in PRIVATE_BOOKMARK_PROFILES:
+        raise ValueError("unsupported exact-build stock bookmark character key")
+    expected_ck3_sha256 = getattr(
+        args, "expected_ck3_sha256", EXPECTED_CK3_SHA256
+    )
+    if (
+        not isinstance(expected_ck3_sha256, str)
+        or re.fullmatch(r"[0-9a-fA-F]{64}", expected_ck3_sha256) is None
+    ):
+        raise ValueError("expected CK3 executable SHA-256 must contain 64 hex digits")
+    expected_ck3_sha256 = expected_ck3_sha256.upper()
     reference_preview = (
         _load_reference_preview(args.reference_preview)
         if getattr(args, "reference_preview", None) is not None
@@ -5034,6 +5143,10 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         "bookmarks_select_start_private_requested":
             bookmarks_select_start_private,
         "bookmark_character_key": expected_character_name_key,
+        "expected_stock_bookmark_profile": dict(
+            PRIVATE_BOOKMARK_PROFILES[expected_character_name_key]
+        ),
+        "expected_ck3_sha256": expected_ck3_sha256,
         "ordinary_campaign_xar_off_seed_requested": (
             ordinary_campaign_xar_off_seed
         ),
@@ -5257,7 +5370,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             "bridge_injector_sha256": _sha256(injector),
         }
         report["binary"] = binary
-        if binary["ck3_exe_sha256"] != EXPECTED_CK3_SHA256:
+        if binary["ck3_exe_sha256"] != expected_ck3_sha256:
             raise RuntimeError("CK3 executable SHA-256 differs from the exact-build pin")
         slot_stack.enter_context(exclusive_launch_lock(spec.game_exe))
         shared_slot["launch_lock_acquired"] = True

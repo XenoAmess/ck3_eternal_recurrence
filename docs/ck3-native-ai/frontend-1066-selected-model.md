@@ -52,3 +52,101 @@ The private probe reports selected indices and ABI diagnostics only. Sole CK3 R7
 R740 also read selected_character_index=-1, so GameSetup.HasSelectedCharacter is not yet true. The next typed action must re-resolve the same unique GUI owner and current key-matched native element in an application-main decision frame, call exact setter 0xF707E0 at most once, and then query a new frame with selected index equal to that element's current index. Only then may the existing StartGame path check selected projection/start-button fireability and submit once; an independent paused-map campaign-root result plus paired checkpoint is still unexecuted. Unknown owner, changed Bookmark/key/date/government, ambiguous target or missing requery leaves StartGame OFF. Public advertisement remains disabled.
 
 The guarded native protocol-v1 read-only step is `probe-frontend-bookmark-model-v1` (`expected_revision=0`), compiled only with `XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=ON` and absent from public capability advertisement. Its `command_result.result` carries `private_scope=exact-build-bookmarks-model-v1`, source keys, selected/hover indices, collection count/capacity, full launch-date qword and low32, final government key, `candidate_identity_ready`, and a distinct `unavailable_reason`. The controlled runner's `--bookmarks-read-only --bookmarks-model-private` option first uses the public MCP NewGame and Bookmarks-tree path, then sends exactly one private read-only pipe query. This is an acceptance interface, not a production ruler-selection or StartGame capability. The eventual public MCP mapping and `open_kaishek` impact remain dependent on the live identity frame and typed selector result.
+
+## CK3 1.20.0.3 ordinary Clan and Tribal seed migration, 2026-10-02
+
+The installed Steam EXE is CK3 1.20.0.3, build 25652598, SHA-256
+`94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`.
+M7's next government seeds exposed a concrete producer gap: the existing
+private native route still used 1.19 frontend addresses and layouts, accepted
+only Murchad/Robert, and required feudal government. The private runner also
+rejected the new EXE's actual SHA. The following source migration addresses
+that gap; historical 1.19 evidence above remains historical evidence.
+
+The stock profiles are deliberately narrow:
+
+| Profile | Bookmark / character source key | Expected native government | Start date |
+| --- | --- | --- | --- |
+| Yahya | `bm_1066_rags_to_riches` / `bookmark_rags_to_riches_emir_yahya` | `clan_government` | 1066.9.15 |
+| Rurik | `bm_867_adventurers` / `bookmark_adventurers_rurik_rurikid` | `tribal_government` | 867.1.1 |
+
+Their stock history IDs, 3924 and 40605, describe authored source characters.
+They are never passed as runtime player IDs. Only the actual first paused map
+and public campaign root can establish each new runtime actor and government.
+The prepared profiles remain `ordinary_campaign_succession/xar_off/no-pact`.
+
+Exact PE evidence places the new SetupView selected Bookmark at `+0x120`,
+selected/hover indices at `+0x128/+0x12C`, and Bookmarks root at `+0x60`.
+The Bookmark launch date moved from `+0x38` to `+0x40`; `+0x38` now contains
+the Bookmark magic, so retaining the old date field would be incorrect.
+The character collection moved to `+0x160` and retains stride `0x1A0`.
+The native selected-character setter is `0x1060A90`, selected-Bookmark setter
+`0x1060950`, and final government getter `0x321D1A0`.
+The current native list of Bookmark pointers is SetupView `+0xC0`;
+Rurik's Bookmark is found by its script key in that list before one setter
+submission. The date updater `0x3836770` retains the established low32
+encoding; expected 867.1.1 low32 is 51,394,920. Actual native model and paused
+date observations must still agree after StartGame.
+
+The common GUI resolver and dispatcher now accept an explicit
+`GuiAbiRevisionV1::crozier12003` branch for this frontend. Legacy callers and
+all original 1.19 constants keep their existing default. The new GUI global is
+`0x5CB87F8`, named widget lookup `0x3AAB100`, shortcut activation `0x3ABC4D0`,
+strict descendant `0x3A78230`, and ButtonBase slot 13 `0x3AA0D40`.
+The application GUI chain and common Widget/callback field layouts retain their
+old offsets. This work does not migrate Zhongguo scoreboard business readers.
+
+The existing private feature options remain default OFF. An actual new seed
+requires `XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1` and
+`XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1` explicitly ON
+in the frozen seed runtime. No new CMake option or public MCP tool is added.
+Only when both options are ON, the 1.20.0.3 adapter additionally advertises the
+three existing generic frontend capabilities needed by the runner: query route,
+inspect GUI tree, and activate NewGame. Its inherited 1.20.0.2 capability list
+omitted all three, which would otherwise reject the real new-seed producer
+before NewGame. The OFF and single-option paths keep the prior descriptor.
+Yahya and Rurik use fixed private probe/selector/Start steps naming their
+stock target. Rurik first submits one Bookmark switch and queries a fresh
+model; both routes query another independent selected-role model before one
+stock StartGame button submission. The original `supported_1066_*` private
+fields remain compatible aliases carrying the requested profile's observed
+index, government, and date; the feudal Boolean remains literal and is false
+for Clan/Tribal. The private runner accepts explicit `--expected-ck3-sha256`
+and leaves the historical default pin intact.
+
+The source/fixture evidence lives under
+`artifacts/g2-maintainer-2026-10-02/resume-12003/m7-frontend-12003/`:
+`native-abi/`, `gui-substrate-abi/GUI-SUBSTRATE-12003-ABI.json`, and
+`schema-cli/REPORT-FIELDS.json`. The Python runner's 18 targeted tests passed.
+The common GUI package passed both existing legacy fixtures and a synthetic
+Crozier pointer-chain fixture with MSVC `/O2 /W4 /WX`.
+The model fixture passed `/O2 /W4 /WX`, including legacy regressions, the three
+native target profiles, independent role requery, new registry owner fallback,
+and Rurik's key-derived Bookmark switch followed by independent requery.
+The route and 1.20.0.3 adapter also compiled with the same strict flags.
+Five descriptor fixtures ran the actual adapter source and production
+`supports` body with an isolated two-capability base stub: the original
+both-ON source omitted the frontend capabilities, the three OFF/single-ON
+cases preserved the base, and the migrated both-ON case added exactly the
+three required capabilities. The initial attempt to link the unrelated full
+GameAdapter implementation failed as a harness RED; its log is retained.
+The initial isolated environment invocation and one incorrect synthetic
+fixture assertion are preserved as harness RED attempts; no production
+behavior was changed to satisfy the latter.
+
+No new CK3 process, actual seed, paired save, cold restore, or succession has
+been performed by this source package. It adds no government-matrix credit
+and does not close M7. Root must freeze the integrated source/DLL, execute the
+prepared ordinary seed route, then verify actual government, actor, rules,
+paired checkpoint, and formal consumer/cold continuation before assigning
+live readiness.
+
+```mermaid
+flowchart TD
+  A[Exact 1.20.0.3 main menu] -. private typed NewGame pending live .-> B[Bookmarks]
+  B -. Rurik only: key-derived native Bookmark setter .-> C[Fresh target Bookmark model]
+  B -. Yahya: same Bookmark target probe .-> C
+  C -. one source-key-derived character setter .-> D[Independent selected-role model]
+  D -. one stock StartGame button .-> E[Actual paused player and government]
+  E -. root seed verification pending .-> F[Ordinary goal + paired checkpoint + cold formal consumer]
+```

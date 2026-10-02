@@ -11763,12 +11763,15 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
                    && step != xar::ck3_11906::
                                   kFrontendBookmarkModelProbeV1Step
+                   && xar::ck3_11906::FrontendBookmarkPrivateStepKindForV1(step) !=
+                          xar::ck3_11906::FrontendBookmarkPrivateStepKindV1::probe
 #endif
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
                    && step != xar::ck3_11906::
                                   kFrontendGuiSelectSupported1066CharacterV1Step
                    && step != xar::ck3_11906::
                                   kFrontendGuiStartSelectedBookmarkV1Step
+                   && !xar::ck3_11906::IsFrontendBookmarkPrivateActionStepV1(step)
 #endif
 #if defined(XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1)
                    && !xar::ck3_11906::
@@ -13842,12 +13845,15 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
               step == xar::ck3_11906::
                           kFrontendBookmarkModelProbeV1Step ||
+              xar::ck3_11906::FrontendBookmarkPrivateStepKindForV1(step) ==
+                  xar::ck3_11906::FrontendBookmarkPrivateStepKindV1::probe ||
 #endif
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
               step == xar::ck3_11906::
                           kFrontendGuiSelectSupported1066CharacterV1Step ||
               step == xar::ck3_11906::
                           kFrontendGuiStartSelectedBookmarkV1Step ||
+              xar::ck3_11906::IsFrontendBookmarkPrivateActionStepV1(step) ||
 #endif
               step == xar::ck3_11906::
                           kFrontendGuiSelectRandomPlayableV1Step ||
@@ -13954,14 +13960,44 @@ void RunConnectedSession(
                     FrontendGuiRouteOperationV1::
                         enter_coat_of_arms_custom_mode;
               }
+              const auto private_seed_kind =
+                  xar::ck3_11906::FrontendBookmarkPrivateStepKindForV1(step);
+              query.bookmark_seed_target =
+                  xar::ck3_11906::FrontendBookmarkPrivateTargetForV1(step);
+              switch (private_seed_kind) {
+              case xar::ck3_11906::FrontendBookmarkPrivateStepKindV1::probe:
+                query.operation = xar::ck3_11906::
+                    FrontendGuiRouteOperationV1::probe_bookmark_model;
+                break;
+              case xar::ck3_11906::FrontendBookmarkPrivateStepKindV1::select_character:
+                query.operation = xar::ck3_11906::
+                    FrontendGuiRouteOperationV1::select_supported_1066_character;
+                break;
+              case xar::ck3_11906::FrontendBookmarkPrivateStepKindV1::start_bookmark:
+                query.operation = xar::ck3_11906::
+                    FrontendGuiRouteOperationV1::start_selected_bookmark;
+                break;
+              case xar::ck3_11906::FrontendBookmarkPrivateStepKindV1::select_bookmark:
+                query.operation = xar::ck3_11906::
+                    FrontendGuiRouteOperationV1::select_supported_bookmark;
+                break;
+              case xar::ck3_11906::FrontendBookmarkPrivateStepKindV1::none:
+                break;
+              }
               const auto module_base = reinterpret_cast<std::uintptr_t>(
                   GetModuleHandleW(nullptr));
+              const auto gui_abi_revision =
+                  game.descriptor().game_version == "1.20.0.3" &&
+                          game.descriptor().executable_sha256 ==
+                              "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+                      ? xar::ck3_11906::GuiAbiRevisionV1::crozier12003
+                      : xar::ck3_11906::GuiAbiRevisionV1::legacy11906;
               query.environment = xar::ck3_11906::
-                  BindZhongguoScoreboardNativeEnvironmentV1(module_base,
-                                                             true);
+                  BindZhongguoScoreboardNativeEnvironmentV1(
+                      module_base, true, gui_abi_revision);
               query.dispatch_environment = xar::ck3_11906::
                   BindZhongguoScoreboardActionDispatchEnvironmentV1(
-                      module_base, true);
+                      module_base, true, gui_abi_revision);
               const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
                   g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1,
@@ -14020,12 +14056,18 @@ void RunConnectedSession(
                         request_id, step, query.result.bookmark_model_probe);
 #endif
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
-                  } else if (query.operation == xar::ck3_11906::
-                                                    FrontendGuiRouteOperationV1::
-                                                        select_supported_1066_character &&
+                  } else if ((query.operation == xar::ck3_11906::
+                                                     FrontendGuiRouteOperationV1::
+                                                         select_supported_1066_character ||
+                              query.operation == xar::ck3_11906::
+                                                     FrontendGuiRouteOperationV1::
+                                                         select_supported_bookmark) &&
                              !query.result.dispatch_invoked) {
                     const auto &reason =
-                        query.result.bookmark_selection.unavailable_reason;
+                        query.operation == xar::ck3_11906::
+                                               FrontendGuiRouteOperationV1::select_supported_bookmark
+                            ? query.result.bookmark_change.unavailable_reason
+                            : query.result.bookmark_selection.unavailable_reason;
                     response = CommandResultFrame(
                         request_id, step, false,
                         reason.empty()

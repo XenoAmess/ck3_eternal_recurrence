@@ -21,8 +21,11 @@ class FakeEndpoint:
 
 
 class FakeState:
-    def __init__(self, status: str) -> None:
+    def __init__(
+        self, status: str, step: str = "probe-frontend-bookmark-model-v1"
+    ) -> None:
         self.status = status
+        self.step = step
 
     def wait_for_command_result(
         self, request_id: str, timeout_seconds: float
@@ -42,7 +45,7 @@ class FakeState:
             "request_id": request_id,
             "ok": True,
             "result": {
-                "step": "probe-frontend-bookmark-model-v1",
+                "step": self.step,
                 "status": "identity_ready",
                 "private_scope": "exact-build-bookmarks-model-v1",
             },
@@ -50,12 +53,30 @@ class FakeState:
 
 
 class FakeDriver:
-    def __init__(self, status: str, *, send_failure: bool = False) -> None:
+    def __init__(
+        self, status: str, *, send_failure: bool = False,
+        step: str = "probe-frontend-bookmark-model-v1",
+    ) -> None:
         self.endpoint = FakeEndpoint(failure=send_failure)
-        self.state = FakeState(status)
+        self.state = FakeState(status, step=step)
 
 
 class PrivateBookmarksModelRunnerTest(unittest.TestCase):
+    def test_target_specific_models_use_fixed_steps_without_runtime_identity_input(self):
+        for target in ("yahya", "rurik"):
+            step = f"probe-frontend-bookmark-model-{target}-v1"
+            with self.subTest(target=target):
+                driver = FakeDriver("ok", step=step)
+                call = _call_private_bookmarks_model(driver, 20.0, step=step)
+                self.assertFalse(call["is_error"])
+                self.assertTrue(call["envelope_valid"])
+                self.assertEqual(len(driver.endpoint.sent), 1)
+                request = driver.endpoint.sent[0]
+                self.assertEqual(request["step"], step)
+                self.assertEqual(request["expected_revision"], 0)
+                self.assertNotIn("character_id", request)
+                self.assertNotIn("history_id", request)
+
     def test_only_fixed_read_only_native_step_is_submitted(self) -> None:
         driver = FakeDriver("ok")
         call = _call_private_bookmarks_model(driver, 20.0)

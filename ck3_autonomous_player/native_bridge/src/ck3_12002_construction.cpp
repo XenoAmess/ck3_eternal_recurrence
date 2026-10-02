@@ -384,9 +384,14 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
               result.completed_buildings_observed = false;
               break;
             }
-            result.completed_buildings.push_back({
+            PlayerWorldCompletedBuildingV1 completed{
                 holding.barony_title_id, holding.province_id,
-                built_match->first, slot});
+                built_match->first, slot, std::nullopt};
+            std::string key;
+            if (ReadBuildingKey(campaign, built_definition, key)) {
+              completed.building_key = std::move(key);
+            }
+            result.completed_buildings.push_back(std::move(completed));
           }
         }
         if (!result.completed_buildings_observed) {

@@ -5,12 +5,28 @@
 #include <array>
 #include <cstdint>
 #include <string>
+#include <string_view>
 
 namespace xar::ck3_11906 {
 
-// Exact CK3 1.19.0.6, EXE SHA-256 2D00FF31...83DB86. This private probe
-// identifies the native GameSetup owner and selected-model indices; it never
-// infers a bookmark character from repeated GUI widget order.
+enum class FrontendBookmarkSeedTargetV1 : std::uint32_t {
+  configured_1066 = 0, yahya_1066 = 1, rurik_867 = 2
+};
+
+struct FrontendBookmarkTargetProfileV1 {
+  std::string_view bookmark_key;
+  std::string_view character_key;
+  std::string_view government_key;
+  std::uint32_t date_low_raw;
+};
+
+const FrontendBookmarkTargetProfileV1 &GetFrontendBookmarkTargetProfileV1(
+    FrontendBookmarkSeedTargetV1 target) noexcept;
+
+
+// Exact CK3 1.19.0.6 (2D00FF31...83DB86) and 1.20.0.3
+// (94B55397...DE02A6), selected explicitly by GuiAbiRevisionV1. This private
+// probe reads the native owner and current model, never GUI widget order.
 struct FrontendBookmarkModelProbeV1 {
   std::array<std::uint64_t, 3> gui_chain_vtable_rvas{};
   std::int32_t interface_application_chain_level = -1;
@@ -48,8 +64,10 @@ struct FrontendBookmarkModelProbeV1 {
   bool bookmark_character_keys_available = false;
   std::array<std::string, 16> government_type_keys{};
   bool government_type_keys_available = false;
-  // The source key identifies a candidate in the current native vector;
-  // its runtime government/date and final selection are separate gates.
+  // The supported_1066 names remain private wire-compatibility aliases for
+  // the configured, Yahya or Rurik target. Presence/index/date refer to that
+  // target profile; candidate_feudal states only the actual feudal key.
+  // Identity requires the selected profile's native government and date.
   std::int32_t supported_1066_candidate_index = -1;
   bool supported_1066_candidate_present = false;
   bool supported_1066_candidate_feudal = false;
@@ -84,7 +102,9 @@ bool ProbeFrontendBookmarkModelV1(
     const ZhongguoScoreboardAccessV1 &access, void *bookmarks_root,
     FrontendBookmarkModelProbeV1 &output,
     FrontendBookmarkGovernmentGetterV1 fixture_government_getter =
-        nullptr) noexcept;
+        nullptr,
+    FrontendBookmarkSeedTargetV1 target =
+        FrontendBookmarkSeedTargetV1::configured_1066) noexcept;
 
 // May be invoked only by a verified application-main frontend mailbox slot.
 // The source key is resolved from the current selected Bookmark's native
@@ -94,6 +114,29 @@ bool SelectSupportedFeudalBookmarkCharacterV1(
     const ZhongguoScoreboardAccessV1 &access, void *bookmarks_root,
     FrontendBookmarkSelectionV1 &output,
     FrontendBookmarkGovernmentGetterV1 fixture_government_getter = nullptr,
-    FrontendBookmarkSelectionSetterV1 fixture_setter = nullptr) noexcept;
+    FrontendBookmarkSelectionSetterV1 fixture_setter = nullptr,
+    FrontendBookmarkSeedTargetV1 target =
+        FrontendBookmarkSeedTargetV1::configured_1066) noexcept;
+
+struct FrontendBookmarkChangeV1 {
+  bool owner_resolved = false;
+  bool target_resolved = false;
+  bool already_selected = false;
+  bool setter_invoked = false;
+  bool same_frame_bookmark_matches = false;
+  std::string unavailable_reason;
+};
+
+using FrontendBookmarkSetterV1 =
+    bool (*)(void *opaque_context, void *setup_view,
+             const void *bookmark) noexcept;
+
+bool SelectSupportedBookmarkV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const ZhongguoScoreboardAccessV1 &access, void *bookmarks_root,
+    FrontendBookmarkChangeV1 &output,
+    FrontendBookmarkSeedTargetV1 target =
+        FrontendBookmarkSeedTargetV1::configured_1066,
+    FrontendBookmarkSetterV1 fixture_setter = nullptr) noexcept;
 
 } // namespace xar::ck3_11906

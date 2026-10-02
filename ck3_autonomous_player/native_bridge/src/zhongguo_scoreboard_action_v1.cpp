@@ -127,7 +127,7 @@ bool CallableAddress(
   if (environment.offline_fixture_function_overrides) return true;
   const auto value = reinterpret_cast<std::uintptr_t>(address);
   return environment.module_base != 0 && value >= environment.module_base &&
-         value - environment.module_base < kZhongguoExactImageSize;
+         value - environment.module_base < GuiExactImageSizeV1(environment.gui_abi_revision);
 }
 
 bool DispatchEnvironmentIsExact(
@@ -142,13 +142,13 @@ bool DispatchEnvironmentIsExact(
   if (environment.offline_fixture_function_overrides) return true;
   return environment.module_base != 0 &&
          reinterpret_cast<std::uintptr_t>(environment.gui_global_slot) ==
-             environment.module_base + kZhongguoGuiGlobalSlotRva &&
+             environment.module_base + GuiGlobalSlotRvaV1(environment.gui_abi_revision) &&
          reinterpret_cast<std::uintptr_t>(environment.activate_shortcut) ==
-             environment.module_base + kZhongguoShortcutManagerActivateRva &&
+             environment.module_base + GuiShortcutManagerActivateRvaV1(environment.gui_abi_revision) &&
          reinterpret_cast<std::uintptr_t>(environment.is_strict_descendant) ==
-             environment.module_base + kZhongguoStrictDescendantRva &&
+             environment.module_base + GuiStrictDescendantRvaV1(environment.gui_abi_revision) &&
          reinterpret_cast<std::uintptr_t>(environment.button_base_slot13) ==
-             environment.module_base + kZhongguoButtonBaseSlot13Rva;
+             environment.module_base + GuiButtonBaseSlot13RvaV1(environment.gui_abi_revision);
 }
 
 bool ResolveGuiDispatchContext(
@@ -391,21 +391,23 @@ void AppendJsonString(std::string &output, std::string_view value) {
 
 ZhongguoScoreboardActionDispatchEnvironmentV1
 BindZhongguoScoreboardActionDispatchEnvironmentV1(
-    std::uintptr_t module_base, bool exact_build_admitted) noexcept {
+    std::uintptr_t module_base, bool exact_build_admitted,
+    GuiAbiRevisionV1 gui_abi_revision) noexcept {
   ZhongguoScoreboardActionDispatchEnvironmentV1 environment{};
   environment.module_base = module_base;
+  environment.gui_abi_revision = gui_abi_revision;
   environment.exact_build_admitted = exact_build_admitted;
   if (module_base != 0 && exact_build_admitted) {
     environment.gui_global_slot = reinterpret_cast<void **>(
-        module_base + kZhongguoGuiGlobalSlotRva);
+        module_base + GuiGlobalSlotRvaV1(environment.gui_abi_revision));
     environment.activate_shortcut =
         reinterpret_cast<NativeZhongguoShortcutManagerActivateV1>(
-            module_base + kZhongguoShortcutManagerActivateRva);
+            module_base + GuiShortcutManagerActivateRvaV1(environment.gui_abi_revision));
     environment.is_strict_descendant =
         reinterpret_cast<NativeZhongguoStrictDescendantV1>(
-            module_base + kZhongguoStrictDescendantRva);
+            module_base + GuiStrictDescendantRvaV1(environment.gui_abi_revision));
     environment.button_base_slot13 = reinterpret_cast<void *>(
-        module_base + kZhongguoButtonBaseSlot13Rva);
+        module_base + GuiButtonBaseSlot13RvaV1(environment.gui_abi_revision));
   }
   return environment;
 }

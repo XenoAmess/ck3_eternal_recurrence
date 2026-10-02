@@ -137,7 +137,8 @@ bool InspectBookmarkModel(FrontendGuiRouteMailboxContextV1 &query) noexcept {
     return true;
   }
   return ProbeFrontendBookmarkModelV1(
-      query.environment, access, root, query.result.bookmark_model_probe);
+      query.environment, access, root, query.result.bookmark_model_probe,
+      nullptr, query.bookmark_seed_target);
 }
 
 bool InspectCoatOfArmsTree(
@@ -301,7 +302,7 @@ bool DispatchStartSelectedBookmark(
     FrontendGuiRouteMailboxContextV1 &query) noexcept {
   if (query.result.route != FrontendGuiRouteV1::bookmarks) return false;
   // Do not infer the target from HasSelectedCharacter/CanStart. The current
-  // native model must still select the unique key-derived 1066 feudal role.
+  // native model must still select the unique key-derived stock role.
   ZhongguoScoreboardAccessV1 access{};
   void *root = nullptr;
   void *selected = nullptr;
@@ -313,7 +314,8 @@ bool DispatchStartSelectedBookmark(
   }
   FrontendBookmarkModelProbeV1 model{};
   if (!ProbeFrontendBookmarkModelV1(query.environment, access, root,
-                                    model) ||
+                                    model, nullptr,
+                                    query.bookmark_seed_target) ||
       !model.candidate_identity_ready ||
       model.selected_character_index !=
           model.supported_1066_candidate_index) {
@@ -348,7 +350,8 @@ bool DispatchSelectSupported1066Character(
   }
   if (!SelectSupportedFeudalBookmarkCharacterV1(
           query.environment, access, root,
-          query.result.bookmark_selection)) {
+          query.result.bookmark_selection, nullptr, nullptr,
+          query.bookmark_seed_target)) {
     return false;
   }
   query.result.target_resolved =
@@ -392,6 +395,28 @@ bool DispatchSelectRandomPlayable(
   query.result.dispatch_invoked = DispatchFixedGuiWidgetNativeV1(
       &query.dispatch_environment, game::ZhongguoScoreboardActionV1::open,
       target, vtable, query.result.native_handled);
+  return query.result.dispatch_invoked;
+}
+
+bool DispatchSelectSupportedBookmark(
+    FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  if (query.result.route != FrontendGuiRouteV1::bookmarks) return false;
+  ZhongguoScoreboardAccessV1 access{};
+  void *root = nullptr;
+  void *widget = nullptr;
+  if (!ResolveNamedGuiWidgetV1(query.environment, access,
+                               "frontend_bookmarks", "frontend_bookmarks",
+                               root, widget) ||
+      root == nullptr || widget != root) {
+    return false;
+  }
+  if (!SelectSupportedBookmarkV1(
+          query.environment, access, root, query.result.bookmark_change,
+          query.bookmark_seed_target)) {
+    return false;
+  }
+  query.result.target_resolved = query.result.bookmark_change.target_resolved;
+  query.result.dispatch_invoked = query.result.bookmark_change.setter_invoked;
   return query.result.dispatch_invoked;
 }
 
@@ -652,6 +677,10 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   if (query->operation ==
       FrontendGuiRouteOperationV1::select_supported_1066_character) {
     return DispatchSelectSupported1066Character(*query);
+  }
+  if (query->operation ==
+      FrontendGuiRouteOperationV1::select_supported_bookmark) {
+    return DispatchSelectSupportedBookmark(*query);
   }
   if (query->operation == FrontendGuiRouteOperationV1::open_new_game) {
     return DispatchOpenNewGame(*query);

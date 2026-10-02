@@ -109,6 +109,30 @@ inline constexpr std::uintptr_t kZhongguoStrictDescendantRva = 0x369E620;
 inline constexpr std::uintptr_t kZhongguoDeliverGuiEventRva = 0x36CB4A0;
 inline constexpr std::uintptr_t kZhongguoShortcutEventVtableRva = 0x4507A78;
 inline constexpr std::uintptr_t kZhongguoButtonBaseSlot13Rva = 0x36C69A0;
+inline constexpr std::uintptr_t kCrozierShortcutManagerActivateRva = 0x3ABC4D0;
+inline constexpr std::uintptr_t kCrozierStrictDescendantRva = 0x3A78230;
+inline constexpr std::uintptr_t kCrozierButtonBaseSlot13Rva = 0x3AA0D40;
+
+constexpr std::uintptr_t GuiShortcutManagerActivateRvaV1(
+    GuiAbiRevisionV1 revision) noexcept {
+  return revision == GuiAbiRevisionV1::crozier12003
+             ? kCrozierShortcutManagerActivateRva
+             : kZhongguoShortcutManagerActivateRva;
+}
+
+constexpr std::uintptr_t GuiStrictDescendantRvaV1(
+    GuiAbiRevisionV1 revision) noexcept {
+  return revision == GuiAbiRevisionV1::crozier12003
+             ? kCrozierStrictDescendantRva
+             : kZhongguoStrictDescendantRva;
+}
+
+constexpr std::uintptr_t GuiButtonBaseSlot13RvaV1(
+    GuiAbiRevisionV1 revision) noexcept {
+  return revision == GuiAbiRevisionV1::crozier12003
+             ? kCrozierButtonBaseSlot13Rva
+             : kZhongguoButtonBaseSlot13Rva;
+}
 inline constexpr std::size_t kZhongguoGuiShortcutManagerOffset = 0x3E0;
 inline constexpr std::size_t kZhongguoGuiModalVectorOffset = 0x290;
 inline constexpr std::size_t kZhongguoGuiModalCountOffset = 0x29C;
@@ -128,6 +152,13 @@ inline constexpr std::size_t kZhongguoShortcutCStringLengthOffset = 0x10;
 inline constexpr std::size_t kZhongguoShortcutCStringCapacityOffset = 0x18;
 inline constexpr std::uint64_t kZhongguoShortcutCStringEmptyCapacity = 0x0F;
 inline constexpr std::size_t kZhongguoExactImageSize = 0x5C2D000;
+inline constexpr std::size_t kCrozierExactImageSize = 0x61C5000;
+
+constexpr std::size_t GuiExactImageSizeV1(GuiAbiRevisionV1 revision) noexcept {
+  return revision == GuiAbiRevisionV1::crozier12003
+             ? kCrozierExactImageSize
+             : kZhongguoExactImageSize;
+}
 inline constexpr std::int32_t kZhongguoMaximumModalReceivers = 256;
 inline constexpr std::int32_t kZhongguoMaximumCallbacks = 256;
 
@@ -146,6 +177,7 @@ struct ZhongguoScoreboardActionDispatchEnvironmentV1 {
   NativeZhongguoShortcutManagerActivateV1 activate_shortcut = nullptr;
   NativeZhongguoStrictDescendantV1 is_strict_descendant = nullptr;
   void *button_base_slot13 = nullptr;
+  GuiAbiRevisionV1 gui_abi_revision = GuiAbiRevisionV1::legacy11906;
 };
 
 using DispatchZhongguoScoreboardActionV1 = bool (*)(
@@ -160,7 +192,8 @@ struct ZhongguoScoreboardActionAccessV1 {
 
 ZhongguoScoreboardActionDispatchEnvironmentV1
 BindZhongguoScoreboardActionDispatchEnvironmentV1(
-    std::uintptr_t module_base, bool exact_build_admitted) noexcept;
+    std::uintptr_t module_base, bool exact_build_admitted,
+    GuiAbiRevisionV1 gui_abi_revision = GuiAbiRevisionV1::legacy11906) noexcept;
 
 bool DispatchZhongguoScoreboardActionNativeV1(
     void *opaque_environment, game::ZhongguoScoreboardActionV1 action,

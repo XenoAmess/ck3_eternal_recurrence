@@ -1,4 +1,4 @@
-"""Focused ordering checks for the controlled exact-build 1066 route."""
+"""Ordering and stock identity checks for the private bookmark start route."""
 
 from __future__ import annotations
 
@@ -16,9 +16,20 @@ import run_frontend_gui_route_v1_live_acceptance as route  # noqa: E402
 def model(
     *,
     selected: int = -1,
-    government: str = "feudal_government",
+    government: str | None = None,
     target: str = "bookmark_rags_to_riches_petty_king_murchad",
 ):
+    profile = route.PRIVATE_BOOKMARK_PROFILES[target]
+    keys = [
+        "bookmark_rags_to_riches_petty_king_murchad",
+        "bookmark_rags_to_riches_duchess_matilda",
+        "bookmark_rags_to_riches_emir_yahya",
+        "bookmark_rags_to_riches_duke_vratislav",
+        "bookmark_rags_to_riches_duke_robert",
+    ]
+    if target == "bookmark_adventurers_rurik_rurikid":
+        keys = ["bookmark_adventurers_ivar_the_boneless", target]
+    government = government or profile["government_key"]
     return {
         "private_scope": "exact-build-bookmarks-model-v1",
         "status": "identity_ready",
@@ -26,22 +37,15 @@ def model(
         "setup_view_matches_bookmarks_root": True,
         "verified_owner_route": "gui_context_registry",
         "selected_bookmark_group_key": None,
-        "selected_bookmark_key": "bm_1066_rags_to_riches",
-        "selected_date_raw": 0xFFFFFFFF032AEB08,
-        "selected_date_low_raw": 0x032AEB08,
+        "selected_bookmark_key": profile["bookmark_key"],
+        "selected_date_raw": (0xFFFFFFFF << 32) | profile["date_low_raw"],
+        "selected_date_low_raw": profile["date_low_raw"],
         "supported_1066_government_key": government,
+        "supported_1066_feudal": government == "feudal_government",
         "supported_1066_date_matches": True,
-        "candidate_keys": [
-            "bookmark_rags_to_riches_petty_king_murchad",
-            "bookmark_rags_to_riches_duchess_matilda",
-            "bookmark_rags_to_riches_emir_yahya",
-            "bookmark_rags_to_riches_duke_vratislav",
-            "bookmark_rags_to_riches_duke_robert",
-        ],
-        "bookmark_character_count": 5,
-        "supported_1066_candidate_index": (
-            4 if target == "bookmark_rags_to_riches_duke_robert" else 0
-        ),
+        "candidate_keys": keys,
+        "bookmark_character_count": len(keys),
+        "supported_1066_candidate_index": keys.index(target),
         "selected_character_index": selected,
     }
 
@@ -70,6 +74,7 @@ class FakeDriver:
         *,
         pump_epochs: list[int] | None = None,
         succession_lifecycle: dict[str, object] | None = None,
+        target: str = "bookmark_rags_to_riches_petty_king_murchad",
     ):
         self.save = root / "xar_checkpoint.ck3"
         self.state = root / "native_driver_state.json"
@@ -78,6 +83,10 @@ class FakeDriver:
         self.snapshot_reads = 0
         self.root_queries = 0
         self.succession_lifecycle = succession_lifecycle
+        self.date_raw = route.PRIVATE_BOOKMARK_PROFILES[target]["date_low_raw"]
+        self.government_key = route.PRIVATE_BOOKMARK_PROFILES[target]["government_key"]
+        # An actual runtime identity deliberately distinct from source history IDs.
+        self.runtime_actor = 42
 
     def take_snapshot(self):
         epoch = self.pump_epochs[
@@ -90,8 +99,8 @@ class FakeDriver:
             "snapshot_id": "native:3",
             "native_revision": 3,
             "revision": 3,
-            "date_raw": 0x032AEB08,
-            "played_character": {"character_id": 42},
+            "date_raw": self.date_raw,
+            "played_character": {"character_id": self.runtime_actor},
             "diagnostics": {
                 "bridge_pid": 99,
                 "connection_generation": 1,
@@ -107,9 +116,9 @@ class FakeDriver:
         return {
             "campaign_root_context_ready": True,
             "queried_native_revision": 3,
-            "date_raw": 0x032AEB08,
-            "player_character_id": 42,
-            "government": {"key": "feudal_government"},
+            "date_raw": self.date_raw,
+            "player_character_id": self.runtime_actor,
+            "government": {"key": self.government_key},
             "selected_game_rule_tokens": (
                 ["normal_difficulty", "xar_off"]
                 if self.succession_lifecycle is not None
@@ -187,6 +196,197 @@ class PrivateFeudalStartOrderingTests(unittest.TestCase):
         self.assertFalse(result["selector_submitted"])
         self.assertFalse(result["start_submitted"])
         submit.assert_not_called()
+
+    def test_yahya_clan_uses_its_target_steps_and_actual_runtime_actor(self):
+        target = "bookmark_rags_to_riches_emir_yahya"
+        steps = [
+            "select-frontend-bookmark-character-yahya-v1",
+            "activate-frontend-start-selected-bookmark-yahya-v1",
+        ]
+        with tempfile.TemporaryDirectory(
+            dir=Path(__file__).resolve().parents[4]
+        ) as directory:
+            driver = FakeDriver(Path(directory), target=target)
+            with (
+                mock.patch.object(
+                    route, "_call_private_frontend_action",
+                    side_effect=[action(step) for step in steps],
+                ) as submit,
+                mock.patch.object(
+                    route, "_call_private_bookmarks_model",
+                    return_value={
+                        "is_error": False,
+                        "structured_content": model(selected=2, target=target),
+                    },
+                ) as requery,
+            ):
+                result = route._controlled_private_feudal_start(
+                    driver, model(selected=0, target=target), 1.0,
+                    expected_character_name_key=target,
+                )
+            self.assertTrue(result["ok"], result.get("error"))
+            self.assertFalse(result["bookmark_switch_submitted"])
+            self.assertEqual(submit.call_count, 2)
+            self.assertEqual(
+                [call.args[1] for call in submit.call_args_list], steps
+            )
+            self.assertEqual(
+                requery.call_args.kwargs["step"],
+                "probe-frontend-bookmark-model-yahya-v1",
+            )
+            self.assertEqual(
+                result["public_campaign_root"]["government"]["key"],
+                "clan_government",
+            )
+            self.assertEqual(
+                result["public_campaign_root"]["player_character_id"], 42
+            )
+            self.assertNotEqual(
+                result["public_campaign_root"]["player_character_id"], 3924
+            )
+            self.assertEqual(driver.executed, ["save-checkpoint"])
+
+    def test_rurik_switch_is_once_then_independent_selection_and_tribal_map(self):
+        target = "bookmark_adventurers_rurik_rurikid"
+        steps = [
+            "activate-frontend-select-bookmark-rurik-v1",
+            "select-frontend-bookmark-character-rurik-v1",
+            "activate-frontend-start-selected-bookmark-rurik-v1",
+        ]
+        with tempfile.TemporaryDirectory(
+            dir=Path(__file__).resolve().parents[4]
+        ) as directory:
+            driver = FakeDriver(Path(directory), target=target)
+            with (
+                mock.patch.object(
+                    route, "_call_private_frontend_action",
+                    side_effect=[action(step) for step in steps],
+                ) as submit,
+                mock.patch.object(
+                    route, "_call_private_bookmarks_model",
+                    side_effect=[
+                        {"is_error": False, "structured_content": model(target=target)},
+                        {"is_error": False, "structured_content": model(selected=1, target=target)},
+                    ],
+                ) as requery,
+            ):
+                result = route._controlled_private_feudal_start(
+                    driver, model(), 1.0, expected_character_name_key=target,
+                )
+            self.assertTrue(result["ok"], result.get("error"))
+            self.assertTrue(result["bookmark_switch_submitted"])
+            self.assertTrue(result["independent_selected_model_verified"])
+            self.assertEqual(
+                [call.args[1] for call in submit.call_args_list], steps
+            )
+            self.assertEqual(requery.call_count, 2)
+            self.assertEqual(
+                {call.kwargs["step"] for call in requery.call_args_list},
+                {"probe-frontend-bookmark-model-rurik-v1"},
+            )
+            self.assertEqual(result["public_campaign_root"]["date_raw"], 51394920)
+            self.assertEqual(
+                result["public_campaign_root"]["government"]["key"],
+                "tribal_government",
+            )
+            self.assertNotEqual(
+                result["public_campaign_root"]["player_character_id"], 40605
+            )
+            self.assertEqual(driver.executed, ["save-checkpoint"])
+
+    def test_wrong_post_switch_bookmark_never_submits_selection_or_start(self):
+        target = "bookmark_adventurers_rurik_rurikid"
+        switch_step = "activate-frontend-select-bookmark-rurik-v1"
+        with (
+            mock.patch.object(
+                route, "_call_private_frontend_action",
+                return_value=action(switch_step),
+            ) as submit,
+            mock.patch.object(
+                route, "_call_private_bookmarks_model",
+                return_value={"is_error": False, "structured_content": model()},
+            ),
+        ):
+            result = route._controlled_private_feudal_start(
+                object(), model(), 1.0, expected_character_name_key=target,
+            )
+        self.assertFalse(result["ok"])
+        self.assertTrue(result["bookmark_switch_submitted"])
+        self.assertFalse(result["selector_submitted"])
+        self.assertFalse(result["start_submitted"])
+        self.assertEqual(submit.call_count, 1)
+
+    def test_clan_native_model_rejects_wrong_government_or_source_date(self):
+        target = "bookmark_rags_to_riches_emir_yahya"
+        wrong_government = model(target=target, government="tribal_government")
+        wrong_date = model(target=target)
+        wrong_date["selected_date_low_raw"] += 24
+        for invalid in (wrong_government, wrong_date):
+            with self.subTest(model=invalid), mock.patch.object(
+                route, "_call_private_frontend_action"
+            ) as submit:
+                result = route._controlled_private_feudal_start(
+                    object(), invalid, 1.0, expected_character_name_key=target,
+                )
+                self.assertFalse(result["ok"])
+                submit.assert_not_called()
+
+    def test_clan_selected_model_cannot_substitute_for_actual_root_government(self):
+        target = "bookmark_rags_to_riches_emir_yahya"
+        step = "activate-frontend-start-selected-bookmark-yahya-v1"
+        with tempfile.TemporaryDirectory(
+            dir=Path(__file__).resolve().parents[4]
+        ) as directory:
+            driver = FakeDriver(Path(directory), target=target)
+            driver.government_key = "feudal_government"
+            with (
+                mock.patch.object(
+                    route, "_call_private_frontend_action",
+                    return_value=action(step),
+                ) as submit,
+                mock.patch.object(
+                    route, "_call_private_bookmarks_model",
+                    return_value={
+                        "is_error": False,
+                        "structured_content": model(selected=2, target=target),
+                    },
+                ),
+            ):
+                result = route._controlled_private_feudal_start(
+                    driver, model(selected=2, target=target), 1.0,
+                    expected_character_name_key=target,
+                )
+            self.assertFalse(result["ok"])
+            self.assertEqual(submit.call_count, 1)
+            self.assertEqual(driver.root_queries, 1)
+            self.assertEqual(driver.executed, [])
+
+    def test_cli_accepts_stock_targets_and_explicit_latest_executable_pin(self):
+        required = [
+            "--source-profile", "source",
+            "--state-dir", "state",
+            "--game-dir", "game",
+            "--bridge-pipe", "test-pipe",
+            "--bridge-dll", "bridge.dll",
+            "--bridge-injector", "injector.exe",
+            "--output", "output",
+        ]
+        latest_sha = "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+        for target in (
+            "bookmark_rags_to_riches_emir_yahya",
+            "bookmark_adventurers_rurik_rurikid",
+        ):
+            with self.subTest(target=target):
+                parsed = route._parser().parse_args(required + [
+                    "--bookmark-character-key", target,
+                    "--expected-ck3-sha256", latest_sha,
+                ])
+                self.assertEqual(parsed.bookmark_character_key, target)
+                self.assertEqual(parsed.expected_ck3_sha256, latest_sha)
+        self.assertEqual(
+            route._parser().parse_args(required).expected_ck3_sha256,
+            route.EXPECTED_CK3_SHA256,
+        )
 
     def test_robert_mismatch_stops_before_typed_selection(self):
         robert = "bookmark_rags_to_riches_duke_robert"

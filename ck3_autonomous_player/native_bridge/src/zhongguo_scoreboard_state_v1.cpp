@@ -321,9 +321,9 @@ bool EnvironmentIsExact(
   const auto base = environment.module_base;
   return base != 0 && !environment.variables.offline_fixture_function_overrides &&
          reinterpret_cast<std::uintptr_t>(environment.gui_global_slot) ==
-             base + kZhongguoGuiGlobalSlotRva &&
+             base + GuiGlobalSlotRvaV1(environment.gui_abi_revision) &&
          reinterpret_cast<std::uintptr_t>(environment.find_top_level_widget) ==
-             base + kZhongguoGuiFindTopLevelWidgetRva &&
+             base + GuiFindTopLevelWidgetRvaV1(environment.gui_abi_revision) &&
          environment.variables.module_base == base;
 }
 
@@ -1742,18 +1742,20 @@ bool InspectNamedGuiSubtreeV1(
 }
 
 ZhongguoScoreboardNativeEnvironmentV1 BindZhongguoScoreboardNativeEnvironmentV1(
-    std::uintptr_t module_base, bool exact_build_admitted) noexcept {
+    std::uintptr_t module_base, bool exact_build_admitted,
+    GuiAbiRevisionV1 gui_abi_revision) noexcept {
   ZhongguoScoreboardNativeEnvironmentV1 environment{};
   environment.variables =
       BindZhongguoCaseNativeEnvironmentV1(module_base, exact_build_admitted);
   environment.module_base = module_base;
+  environment.gui_abi_revision = gui_abi_revision;
   environment.exact_build_admitted = exact_build_admitted;
   if (module_base != 0 && exact_build_admitted) {
     environment.gui_global_slot = reinterpret_cast<void **>(
-        module_base + kZhongguoGuiGlobalSlotRva);
+        module_base + GuiGlobalSlotRvaV1(environment.gui_abi_revision));
     environment.find_top_level_widget =
         reinterpret_cast<NativeZhongguoFindTopLevelWidgetV1>(
-            module_base + kZhongguoGuiFindTopLevelWidgetRva);
+            module_base + GuiFindTopLevelWidgetRvaV1(environment.gui_abi_revision));
   }
   return environment;
 }

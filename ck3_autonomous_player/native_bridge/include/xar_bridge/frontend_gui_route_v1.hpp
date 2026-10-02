@@ -52,6 +52,59 @@ inline constexpr std::string_view
 inline constexpr std::string_view
     kFrontendGuiSelectSupported1066CharacterV1Step =
         "select-frontend-supported-1066-character-v1";
+// These fixed private seed steps keep the existing public frontend surface
+// unchanged. Each step names a stock source profile, never a runtime actor ID.
+enum class FrontendBookmarkPrivateStepKindV1 : std::uint32_t {
+  none = 0,
+  probe = 1,
+  select_character = 2,
+  start_bookmark = 3,
+  select_bookmark = 4,
+};
+
+inline FrontendBookmarkPrivateStepKindV1
+FrontendBookmarkPrivateStepKindForV1(std::string_view step) noexcept {
+  if (step == "probe-frontend-bookmark-model-yahya-v1" ||
+      step == "probe-frontend-bookmark-model-rurik-v1") {
+    return FrontendBookmarkPrivateStepKindV1::probe;
+  }
+  if (step == "select-frontend-bookmark-character-yahya-v1" ||
+      step == "select-frontend-bookmark-character-rurik-v1") {
+    return FrontendBookmarkPrivateStepKindV1::select_character;
+  }
+  if (step == "activate-frontend-start-selected-bookmark-yahya-v1" ||
+      step == "activate-frontend-start-selected-bookmark-rurik-v1") {
+    return FrontendBookmarkPrivateStepKindV1::start_bookmark;
+  }
+  if (step == "activate-frontend-select-bookmark-rurik-v1") {
+    return FrontendBookmarkPrivateStepKindV1::select_bookmark;
+  }
+  return FrontendBookmarkPrivateStepKindV1::none;
+}
+
+inline bool IsFrontendBookmarkPrivateActionStepV1(
+    std::string_view step) noexcept {
+  const auto kind = FrontendBookmarkPrivateStepKindForV1(step);
+  return kind == FrontendBookmarkPrivateStepKindV1::select_character ||
+         kind == FrontendBookmarkPrivateStepKindV1::start_bookmark ||
+         kind == FrontendBookmarkPrivateStepKindV1::select_bookmark;
+}
+
+inline FrontendBookmarkSeedTargetV1
+FrontendBookmarkPrivateTargetForV1(std::string_view step) noexcept {
+  if (step == "probe-frontend-bookmark-model-yahya-v1" ||
+      step == "select-frontend-bookmark-character-yahya-v1" ||
+      step == "activate-frontend-start-selected-bookmark-yahya-v1") {
+    return FrontendBookmarkSeedTargetV1::yahya_1066;
+  }
+  if (step == "probe-frontend-bookmark-model-rurik-v1" ||
+      step == "select-frontend-bookmark-character-rurik-v1" ||
+      step == "activate-frontend-start-selected-bookmark-rurik-v1" ||
+      step == "activate-frontend-select-bookmark-rurik-v1") {
+    return FrontendBookmarkSeedTargetV1::rurik_867;
+  }
+  return FrontendBookmarkSeedTargetV1::configured_1066;
+}
 inline constexpr std::string_view kFrontendGuiSelectRandomPlayableV1Capability =
     "game.command.activate-frontend-select-random-playable-v1";
 inline constexpr std::string_view kFrontendGuiSelectRandomPlayableV1Step =
@@ -119,6 +172,7 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   finalize_custom_ruler = 15,
   confirm_custom_ruler = 16,
   start_lobby_selected_character = 17,
+  select_supported_bookmark = 18,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {
@@ -138,6 +192,7 @@ struct FrontendGuiRouteResultV1 {
   NamedGuiTreeInspectionV1 tree_inspection{};
   FrontendBookmarkModelProbeV1 bookmark_model_probe{};
   FrontendBookmarkSelectionV1 bookmark_selection{};
+  FrontendBookmarkChangeV1 bookmark_change{};
 };
 
 struct FrontendGuiRouteMailboxContextV1 {
@@ -145,6 +200,8 @@ struct FrontendGuiRouteMailboxContextV1 {
   MainThreadQueryTicketV1 ticket{};
   FrontendGuiRouteOperationV1 operation =
       FrontendGuiRouteOperationV1::query;
+  FrontendBookmarkSeedTargetV1 bookmark_seed_target =
+      FrontendBookmarkSeedTargetV1::configured_1066;
   ZhongguoScoreboardNativeEnvironmentV1 environment{};
   ZhongguoScoreboardActionDispatchEnvironmentV1 dispatch_environment{};
   FrontendGuiRouteResultV1 result{};

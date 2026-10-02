@@ -12,29 +12,62 @@
 namespace xar::ck3_11906 {
 namespace {
 
-constexpr std::uintptr_t kInterfaceApplicationVtableRva = 0x4093158;
-constexpr std::array<std::uintptr_t, 3> kFrontendOwnerVtableRvas{
-    0x40C9BD0, 0x40F3A10, 0x40F3CF0};
-constexpr std::uintptr_t kFrontendSetupViewVtableRva = 0x410B070;
-constexpr std::uintptr_t kFrontendHandlerRttiTypeRva = 0x51FCE10;
-constexpr std::uintptr_t kFrontendSetupViewRttiTypeRva = 0x5212C48;
+struct FrontendModelAbiV1 {
+  std::uintptr_t application_vtable;
+  std::array<std::uintptr_t, 3> owner_vtables;
+  std::uintptr_t view_vtable;
+  std::uintptr_t handler_type;
+  std::uintptr_t view_type;
+  std::size_t view_root;
+  std::size_t selected_group;
+  std::size_t group_key;
+  std::size_t selected_bookmark;
+  std::size_t selected_index;
+  std::size_t hovered_index;
+  std::size_t bookmark_date;
+  std::size_t bookmark_characters;
+  std::uintptr_t final_government_getter;
+  std::uintptr_t character_setter;
+  std::uintptr_t bookmark_setter;
+  std::size_t all_bookmarks;
+};
+
+constexpr FrontendModelAbiV1 kLegacyAbi{
+    0x4093158, {0x40C9BD0, 0x40F3A10, 0x40F3CF0}, 0x410B070,
+    0x51FCE10, 0x5212C48, 0x78, 0x108, 0x38, 0x150, 0x158, 0x15C,
+    0x38, 0x170, 0x2DAB260, 0xF707E0, 0xF706A0, 0xF0};
+constexpr FrontendModelAbiV1 kCrozierAbi{
+    0x449BDA8, {0x44D5F30, 0x4500660, 0x45008B0}, 0x451B938,
+    0x5702BF0, 0x5720228, 0x60, 0xD8, 0x18, 0x120, 0x128, 0x12C,
+    0x40, 0x160, 0x321D1A0, 0x1060A90, 0x1060950, 0xC0};
+
+const FrontendModelAbiV1 &ModelAbi(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment) noexcept {
+  return environment.gui_abi_revision == GuiAbiRevisionV1::crozier12003
+             ? kCrozierAbi : kLegacyAbi;
+}
+
 constexpr std::uintptr_t kGuiContextOwnerRegistryOffset = 0x230;
 constexpr std::uintptr_t kGuiContextOwnerRegistryEntryStride = 0x50;
 constexpr std::uint32_t kMaxBoundedGuiContextOwners = 1024;
-constexpr std::uintptr_t kMaxExactImageRva = 0x6000000;
+constexpr std::uintptr_t kMaxExactImageRva = 0x61C5000;
 constexpr std::uintptr_t kBookmarkCharacterStride = 0x1A0;
-constexpr std::string_view kSupportedBookmarkKey =
-    "bm_1066_rags_to_riches";
 #if defined(XAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1)
-constexpr std::string_view kSupportedCharacterKey =
+constexpr std::string_view kConfiguredCharacterKey =
     "bookmark_rags_to_riches_duke_robert";
 #else
-constexpr std::string_view kSupportedCharacterKey =
+constexpr std::string_view kConfiguredCharacterKey =
     "bookmark_rags_to_riches_petty_king_murchad";
 #endif
-constexpr std::string_view kFeudalGovernmentKey = "feudal_government";
-constexpr std::uintptr_t kFinalGovernmentGetterRva = 0x2DAB260;
-constexpr std::uint32_t kSupportedDateLowRaw = 0x032AEB08;
+constexpr FrontendBookmarkTargetProfileV1 kConfiguredTarget{
+    "bm_1066_rags_to_riches", kConfiguredCharacterKey,
+    "feudal_government", 0x032AEB08};
+constexpr FrontendBookmarkTargetProfileV1 kYahyaTarget{
+    "bm_1066_rags_to_riches", "bookmark_rags_to_riches_emir_yahya",
+    "clan_government", 0x032AEB08};
+constexpr FrontendBookmarkTargetProfileV1 kRurikTarget{
+    "bm_867_adventurers", "bookmark_adventurers_rurik_rurikid",
+    "tribal_government", 51394920};
 
 bool IsScriptKeyByte(char value) noexcept {
   return (value >= 'a' && value <= 'z') ||
@@ -160,7 +193,7 @@ bool ReadScriptKeySso(const ZhongguoScoreboardAccessV1 &access,
 
 bool ResolveRegisteredSetupView(
     const ZhongguoScoreboardAccessV1 &access, std::uintptr_t module_base,
-    const void *gui_context, const void *bookmarks_root,
+    const FrontendModelAbiV1 &abi, const void *gui_context, const void *bookmarks_root,
     FrontendBookmarkModelProbeV1 &output, void *&setup_view) noexcept {
   setup_view = nullptr;
   void *entries = nullptr;
@@ -201,10 +234,10 @@ bool ResolveRegisteredSetupView(
           "frontend_owner_registry_entry_type_unreadable";
       return false;
     }
-    if (handler_vtable_rva != kFrontendOwnerVtableRvas[2]) continue;
+    if (handler_vtable_rva != abi.owner_vtables[2]) continue;
     std::uint64_t handler_type_rva = 0;
     if (!ReadRttiTypeRva(access, module_base, handler, handler_type_rva) ||
-        handler_type_rva != kFrontendHandlerRttiTypeRva) {
+        handler_type_rva != abi.handler_type) {
       output.registry_owner_unavailable_reason =
           "frontend_owner_registry_handler_rtti_unverified";
       return false;
@@ -222,16 +255,16 @@ bool ResolveRegisteredSetupView(
           "frontend_owner_registry_view_type_unreadable";
       return false;
     }
-    if (view_vtable_rva != kFrontendSetupViewVtableRva) continue;
+    if (view_vtable_rva != abi.view_vtable) continue;
     std::uint64_t view_type_rva = 0;
     if (!ReadRttiTypeRva(access, module_base, view, view_type_rva) ||
-        view_type_rva != kFrontendSetupViewRttiTypeRva) {
+        view_type_rva != abi.view_type) {
       output.registry_owner_unavailable_reason =
           "frontend_owner_registry_view_rtti_unverified";
       return false;
     }
     void *view_root = nullptr;
-    if (!ReadAt(access, view, 0x78, view_root)) {
+    if (!ReadAt(access, view, abi.view_root, view_root)) {
       output.registry_owner_unavailable_reason =
           "frontend_owner_registry_view_root_unreadable";
       return false;
@@ -251,18 +284,116 @@ bool ResolveRegisteredSetupView(
   return true;
 }
 
-} // namespace
+bool ResolveCurrentSetupView(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const ZhongguoScoreboardAccessV1 &access, void *bookmarks_root,
+    const FrontendBookmarkModelProbeV1 &model, void *&setup_view,
+    std::string &reason) noexcept {
+  const auto &abi = ModelAbi(environment);
+  setup_view = nullptr;
+  // R740's sole owner route was the current GUI-context registry. The
+  // direct application/idler path is also accepted when its exact vtables,
+  // RTTI and independently named Bookmarks root all still match.
+  void *application = nullptr;
+  void *host = nullptr;
+  void *gui_context = nullptr;
+  if (!ReadAt(access, environment.gui_global_slot, 0, application) ||
+      !ReadAt(access, application, kZhongguoGuiChainFirstOffset, host) ||
+      !ReadAt(access, host, kZhongguoGuiChainSecondOffset, gui_context)) {
+    reason = "current_frontend_owner_unreadable";
+    return false;
+  }
+  std::uint64_t application_vtable_rva = 0;
+  if (!ReadVtableRva(access, environment.module_base, application,
+                     application_vtable_rva) ||
+      application_vtable_rva != abi.application_vtable) {
+    reason = "current_frontend_application_replaced";
+    return false;
+  }
+  if (model.verified_owner_route == "gui_context_registry") {
+    FrontendBookmarkModelProbeV1 owner_check{};
+    if (!ResolveRegisteredSetupView(access, environment.module_base,
+                                    abi, gui_context, bookmarks_root,
+                                    owner_check, setup_view) ||
+        owner_check.registry_owner_match_count != 1) {
+      reason =
+          owner_check.registry_owner_unavailable_reason.empty()
+              ? "current_bookmarks_owner_registry_unverified"
+              : owner_check.registry_owner_unavailable_reason;
+      return false;
+    }
+  } else if (model.verified_owner_route == "app_idler_chain") {
+    const void *previous = application;
+    for (std::size_t i = 0; i < abi.owner_vtables.size();
+         ++i) {
+      void *node = nullptr;
+      constexpr std::array<std::size_t, 3> kOwnerOffsets{0x78, 0x10,
+                                                          0x08};
+      std::uint64_t vtable_rva = 0;
+      if (!ReadAt(access, previous, kOwnerOffsets[i], node) ||
+          !ReadVtableRva(access, environment.module_base, node,
+                         vtable_rva) ||
+          vtable_rva != abi.owner_vtables[i]) {
+        reason = "current_app_idler_owner_replaced";
+        return false;
+      }
+      if (i == 2) {
+        std::uint64_t handler_type_rva = 0;
+        if (!ReadRttiTypeRva(access, environment.module_base, node,
+                             handler_type_rva) ||
+            handler_type_rva != abi.handler_type) {
+          reason = "current_app_handler_rtti_unverified";
+          return false;
+        }
+      }
+      previous = node;
+    }
+    std::uint64_t view_vtable_rva = 0;
+    std::uint64_t view_type_rva = 0;
+    void *view_root = nullptr;
+    if (!ReadAt(access, previous, 0x30, setup_view) ||
+        !ReadVtableRva(access, environment.module_base, setup_view,
+                       view_vtable_rva) ||
+        !ReadRttiTypeRva(access, environment.module_base, setup_view,
+                         view_type_rva) ||
+        view_vtable_rva != abi.view_vtable ||
+        view_type_rva != abi.view_type ||
+        !ReadAt(access, setup_view, abi.view_root, view_root) ||
+        view_root != bookmarks_root) {
+      reason = "current_app_bookmarks_view_unverified";
+      return false;
+    }
+  } else {
+    reason = "current_bookmarks_owner_route_unknown";
+    return false;
+  }
+  return true;
+}
+
+ } // namespace
+
+const FrontendBookmarkTargetProfileV1 &GetFrontendBookmarkTargetProfileV1(
+    FrontendBookmarkSeedTargetV1 seed_target) noexcept {
+  switch (seed_target) {
+  case FrontendBookmarkSeedTargetV1::yahya_1066: return kYahyaTarget;
+  case FrontendBookmarkSeedTargetV1::rurik_867: return kRurikTarget;
+  default: return kConfiguredTarget;
+  }
+}
 
 bool ProbeFrontendBookmarkModelV1(
     const ZhongguoScoreboardNativeEnvironmentV1 &environment,
     const ZhongguoScoreboardAccessV1 &access, void *bookmarks_root,
     FrontendBookmarkModelProbeV1 &output,
-    FrontendBookmarkGovernmentGetterV1 fixture_government_getter) noexcept {
+    FrontendBookmarkGovernmentGetterV1 fixture_government_getter,
+    FrontendBookmarkSeedTargetV1 seed_target) noexcept {
   output = {};
+  const auto &abi = ModelAbi(environment);
+  const auto &profile = GetFrontendBookmarkTargetProfileV1(seed_target);
   if (!environment.exact_build_admitted || environment.module_base == 0 ||
       bookmarks_root == nullptr || environment.gui_global_slot == nullptr ||
       reinterpret_cast<std::uintptr_t>(environment.gui_global_slot) !=
-          environment.module_base + kZhongguoGuiGlobalSlotRva) {
+          environment.module_base + GuiGlobalSlotRvaV1(environment.gui_abi_revision)) {
     output.unavailable_reason = "exact_bookmarks_gui_root_unavailable";
     return true;
   }
@@ -277,7 +408,7 @@ bool ProbeFrontendBookmarkModelV1(
     output.unavailable_reason = "gui_owner_type_unreadable";
     return true;
   }
-  if (output.gui_chain_vtable_rvas[0] != kInterfaceApplicationVtableRva) {
+  if (output.gui_chain_vtable_rvas[0] != abi.application_vtable) {
     output.unavailable_reason = "interface_application_unverified";
     return true;
   }
@@ -339,9 +470,9 @@ bool ProbeFrontendBookmarkModelV1(
       output.setup_view_vtable_rva = output.owner_chain_vtable_rvas[i];
     }
     const auto expected_vtable =
-        i < kFrontendOwnerVtableRvas.size()
-            ? kFrontendOwnerVtableRvas[i]
-            : kFrontendSetupViewVtableRva;
+        i < abi.owner_vtables.size()
+            ? abi.owner_vtables[i]
+            : abi.view_vtable;
     if (output.owner_chain_vtable_rvas[i] != expected_vtable) {
       output.direct_owner_unavailable_reason = type_mismatch_reasons[i];
       break;
@@ -352,7 +483,7 @@ bool ProbeFrontendBookmarkModelV1(
   if (output.direct_owner_unavailable_reason.empty()) {
     setup_view = owner_chain.back();
     void *view_root = nullptr;
-    if (!ReadAt(access, setup_view, 0x78, view_root)) {
+    if (!ReadAt(access, setup_view, abi.view_root, view_root)) {
       output.direct_owner_unavailable_reason =
           "frontend_setup_view_root_unreadable";
     } else if (view_root != bookmarks_root) {
@@ -364,18 +495,18 @@ bool ProbeFrontendBookmarkModelV1(
     output.verified_owner_route = "app_idler_chain";
   } else {
     if (!ResolveRegisteredSetupView(access, environment.module_base,
-                                    chain[2], bookmarks_root, output,
+                                    abi, chain[2], bookmarks_root, output,
                                     setup_view)) {
       output.unavailable_reason = output.registry_owner_unavailable_reason;
       return true;
     }
-    output.setup_view_vtable_rva = kFrontendSetupViewVtableRva;
+    output.setup_view_vtable_rva = abi.view_vtable;
     output.verified_owner_route = "gui_context_registry";
   }
   output.setup_view_matches_bookmarks_root = true;
 
   void *selected_group = nullptr;
-  if (!ReadAt(access, setup_view, 0x108, selected_group)) {
+  if (!ReadAt(access, setup_view, abi.selected_group, selected_group)) {
     output.unavailable_reason = "selected_bookmark_group_pointer_unreadable";
     return true;
   }
@@ -386,14 +517,14 @@ bool ProbeFrontendBookmarkModelV1(
     (void)ReadVtableRva(access, environment.module_base, selected_group,
                         output.selected_bookmark_group_vtable_rva);
     output.selected_bookmark_group_key_available = ReadScriptKeySso(
-        access, selected_group, 0x38, output.selected_bookmark_group_key);
+        access, selected_group, abi.group_key, output.selected_bookmark_group_key);
   }
 
   void *selected_bookmark = nullptr;
-  if (!ReadAt(access, setup_view, 0x150, selected_bookmark) ||
-      !ReadAt(access, setup_view, 0x158,
+  if (!ReadAt(access, setup_view, abi.selected_bookmark, selected_bookmark) ||
+      !ReadAt(access, setup_view, abi.selected_index,
               output.selected_character_index) ||
-      !ReadAt(access, setup_view, 0x15C,
+      !ReadAt(access, setup_view, abi.hovered_index,
               output.hovered_character_index) ||
       selected_bookmark == nullptr) {
     output.unavailable_reason = "frontend_selected_model_unreadable";
@@ -408,7 +539,7 @@ bool ProbeFrontendBookmarkModelV1(
     return true;
   }
   output.selected_bookmark_key_available = true;
-  if (!ReadAt(access, selected_bookmark, 0x38,
+  if (!ReadAt(access, selected_bookmark, abi.bookmark_date,
               output.selected_date_raw)) {
     output.unavailable_reason = "selected_bookmark_date_unreadable";
     return true;
@@ -416,13 +547,13 @@ bool ProbeFrontendBookmarkModelV1(
   output.selected_date_raw_available = true;
   output.selected_date_low_raw =
       static_cast<std::uint32_t>(output.selected_date_raw);
-  if (!ReadAt(access, selected_bookmark, 0x170,
+  if (!ReadAt(access, selected_bookmark, abi.bookmark_characters,
               output.bookmark_character_base_raw) ||
-      !ReadAt(access, selected_bookmark, 0x178,
+      !ReadAt(access, selected_bookmark, abi.bookmark_characters + 8,
               output.bookmark_character_capacity_raw) ||
-      !ReadAt(access, selected_bookmark, 0x17C,
+      !ReadAt(access, selected_bookmark, abi.bookmark_characters + 0xC,
               output.bookmark_character_count_raw) ||
-      !ReadAt(access, selected_bookmark, 0x180,
+      !ReadAt(access, selected_bookmark, abi.bookmark_characters + 0x10,
               output.bookmark_character_allocator_raw)) {
     output.unavailable_reason = "bookmark_character_collection_unreadable";
     return true;
@@ -465,12 +596,12 @@ bool ProbeFrontendBookmarkModelV1(
     }
   }
   output.bookmark_character_keys_available = true;
-  if (output.selected_bookmark_key == kSupportedBookmarkKey) {
+  if (output.selected_bookmark_key == profile.bookmark_key) {
     for (std::int32_t index = 0; index < output.bookmark_character_count;
          ++index) {
       if (output.bookmark_character_keys[
               static_cast<std::size_t>(index)] ==
-          kSupportedCharacterKey) {
+          profile.character_key) {
         if (output.supported_1066_candidate_present) {
           output.unavailable_reason = "supported_1066_key_is_ambiguous";
           return true;
@@ -495,7 +626,7 @@ bool ProbeFrontendBookmarkModelV1(
   } else if (access.read_memory == nullptr) {
     using NativeGetter = void *(*)(const void *);
     const auto getter = reinterpret_cast<NativeGetter>(
-        environment.module_base + kFinalGovernmentGetterRva);
+        environment.module_base + abi.final_government_getter);
     final_government = getter(target);
   }
   if (final_government == nullptr ||
@@ -506,15 +637,19 @@ bool ProbeFrontendBookmarkModelV1(
   }
   output.government_type_keys_available = true;
   output.supported_1066_candidate_feudal =
-      output.government_type_keys[index] == kFeudalGovernmentKey;
-  if (!output.supported_1066_candidate_feudal) {
-    output.unavailable_reason = "supported_1066_candidate_not_feudal";
+      output.government_type_keys[index] == "feudal_government";
+  if (output.government_type_keys[index] != profile.government_key) {
+    output.unavailable_reason = seed_target == FrontendBookmarkSeedTargetV1::configured_1066
+            ? "supported_1066_candidate_not_feudal"
+            : "supported_bookmark_candidate_government_mismatch";
     return true;
   }
   output.supported_1066_date_matches =
-      output.selected_date_low_raw == kSupportedDateLowRaw;
+      output.selected_date_low_raw == profile.date_low_raw;
   if (!output.supported_1066_date_matches) {
-    output.unavailable_reason = "selected_bookmark_date_not_1066_09_15";
+    output.unavailable_reason = seed_target == FrontendBookmarkSeedTargetV1::configured_1066
+            ? "selected_bookmark_date_not_1066_09_15"
+            : "selected_bookmark_date_not_target_date";
     return true;
   }
   output.candidate_identity_ready = true;
@@ -527,11 +662,14 @@ bool SelectSupportedFeudalBookmarkCharacterV1(
     const ZhongguoScoreboardAccessV1 &access, void *bookmarks_root,
     FrontendBookmarkSelectionV1 &output,
     FrontendBookmarkGovernmentGetterV1 fixture_government_getter,
-    FrontendBookmarkSelectionSetterV1 fixture_setter) noexcept {
+    FrontendBookmarkSelectionSetterV1 fixture_setter,
+    FrontendBookmarkSeedTargetV1 seed_target) noexcept {
   output = {};
+  const auto &abi = ModelAbi(environment);
+  const auto &profile = GetFrontendBookmarkTargetProfileV1(seed_target);
   if (!ProbeFrontendBookmarkModelV1(environment, access, bookmarks_root,
                                     output.before,
-                                    fixture_government_getter)) {
+                                    fixture_government_getter, seed_target)) {
     output.unavailable_reason = "current_bookmarks_model_query_failed";
     return true;
   }
@@ -552,81 +690,9 @@ bool SelectSupportedFeudalBookmarkCharacterV1(
     output.same_frame_index_matches = true;
     return true;
   }
-  // R740's sole owner route was the current GUI-context registry. The
-  // direct application/idler path is also accepted when its exact vtables,
-  // RTTI and independently named Bookmarks root all still match.
-  void *application = nullptr;
-  void *host = nullptr;
-  void *gui_context = nullptr;
-  if (!ReadAt(access, environment.gui_global_slot, 0, application) ||
-      !ReadAt(access, application, kZhongguoGuiChainFirstOffset, host) ||
-      !ReadAt(access, host, kZhongguoGuiChainSecondOffset, gui_context)) {
-    output.unavailable_reason = "current_frontend_owner_unreadable";
-    return true;
-  }
-  std::uint64_t application_vtable_rva = 0;
-  if (!ReadVtableRva(access, environment.module_base, application,
-                     application_vtable_rva) ||
-      application_vtable_rva != kInterfaceApplicationVtableRva) {
-    output.unavailable_reason = "current_frontend_application_replaced";
-    return true;
-  }
   void *setup_view = nullptr;
-  if (model.verified_owner_route == "gui_context_registry") {
-    FrontendBookmarkModelProbeV1 owner_check{};
-    if (!ResolveRegisteredSetupView(access, environment.module_base,
-                                    gui_context, bookmarks_root,
-                                    owner_check, setup_view) ||
-        owner_check.registry_owner_match_count != 1) {
-      output.unavailable_reason =
-          owner_check.registry_owner_unavailable_reason.empty()
-              ? "current_bookmarks_owner_registry_unverified"
-              : owner_check.registry_owner_unavailable_reason;
-      return true;
-    }
-  } else if (model.verified_owner_route == "app_idler_chain") {
-    const void *previous = application;
-    for (std::size_t i = 0; i < kFrontendOwnerVtableRvas.size();
-         ++i) {
-      void *node = nullptr;
-      constexpr std::array<std::size_t, 3> kOwnerOffsets{0x78, 0x10,
-                                                          0x08};
-      std::uint64_t vtable_rva = 0;
-      if (!ReadAt(access, previous, kOwnerOffsets[i], node) ||
-          !ReadVtableRva(access, environment.module_base, node,
-                         vtable_rva) ||
-          vtable_rva != kFrontendOwnerVtableRvas[i]) {
-        output.unavailable_reason = "current_app_idler_owner_replaced";
-        return true;
-      }
-      if (i == 2) {
-        std::uint64_t handler_type_rva = 0;
-        if (!ReadRttiTypeRva(access, environment.module_base, node,
-                             handler_type_rva) ||
-            handler_type_rva != kFrontendHandlerRttiTypeRva) {
-          output.unavailable_reason = "current_app_handler_rtti_unverified";
-          return true;
-        }
-      }
-      previous = node;
-    }
-    std::uint64_t view_vtable_rva = 0;
-    std::uint64_t view_type_rva = 0;
-    void *view_root = nullptr;
-    if (!ReadAt(access, previous, 0x30, setup_view) ||
-        !ReadVtableRva(access, environment.module_base, setup_view,
-                       view_vtable_rva) ||
-        !ReadRttiTypeRva(access, environment.module_base, setup_view,
-                         view_type_rva) ||
-        view_vtable_rva != kFrontendSetupViewVtableRva ||
-        view_type_rva != kFrontendSetupViewRttiTypeRva ||
-        !ReadAt(access, setup_view, 0x78, view_root) ||
-        view_root != bookmarks_root) {
-      output.unavailable_reason = "current_app_bookmarks_view_unverified";
-      return true;
-    }
-  } else {
-    output.unavailable_reason = "current_bookmarks_owner_route_unknown";
+  if (!ResolveCurrentSetupView(environment, access, bookmarks_root, model,
+                               setup_view, output.unavailable_reason)) {
     return true;
   }
   output.owner_resolved = true;
@@ -637,16 +703,16 @@ bool SelectSupportedFeudalBookmarkCharacterV1(
   std::uint64_t current_date = 0;
   std::string current_bookmark_key;
   std::int32_t selected_index = -1;
-  if (!ReadAt(access, setup_view, 0x150, selected_bookmark) ||
-      !ReadAt(access, setup_view, 0x158, selected_index) ||
+  if (!ReadAt(access, setup_view, abi.selected_bookmark, selected_bookmark) ||
+      !ReadAt(access, setup_view, abi.selected_index, selected_index) ||
       selected_bookmark == nullptr ||
       !ReadScriptKeySso(access, selected_bookmark, 0x18,
                         current_bookmark_key) ||
-      current_bookmark_key != kSupportedBookmarkKey ||
-      !ReadAt(access, selected_bookmark, 0x38, current_date) ||
+      current_bookmark_key != profile.bookmark_key ||
+      !ReadAt(access, selected_bookmark, abi.bookmark_date, current_date) ||
       current_date != model.selected_date_raw ||
-      !ReadAt(access, selected_bookmark, 0x170, current_base) ||
-      !ReadAt(access, selected_bookmark, 0x17C, current_count) ||
+      !ReadAt(access, selected_bookmark, abi.bookmark_characters, current_base) ||
+      !ReadAt(access, selected_bookmark, abi.bookmark_characters + 0xC, current_count) ||
       current_base != model.bookmark_character_base_raw ||
       current_count != model.bookmark_character_count_raw ||
       // CK3 normally opens Bookmarks with another featured character
@@ -668,7 +734,7 @@ bool SelectSupportedFeudalBookmarkCharacterV1(
   if (!ReadAt(access, target, 0x130, parent_bookmark) ||
       parent_bookmark != selected_bookmark ||
       !ReadScriptKeySso(access, target, 0x08, current_key) ||
-      current_key != kSupportedCharacterKey) {
+      current_key != profile.character_key) {
     output.unavailable_reason = "current_bookmark_character_key_changed";
     return true;
   }
@@ -678,8 +744,8 @@ bool SelectSupportedFeudalBookmarkCharacterV1(
     return true;
   }
 
-  // Exact stock 0xF71460 invokes 0xF707E0(view, model element). The
-  // latter writes view+0x158 from element's offset in Bookmark+0x170.
+  // Exact stock setters are 0xF707E0 (legacy) and 0x1060A90 (.3).
+  // Each derives the index from the current native Bookmark collection.
   // This is one submission. The independent following model frame, not
   // this same-frame read or pipe ACK, proves whether it took effect.
   output.setter_invoked = true;
@@ -691,10 +757,10 @@ bool SelectSupportedFeudalBookmarkCharacterV1(
   } else {
     using NativeSetter = void (*)(void *, const void *);
     const auto setter = reinterpret_cast<NativeSetter>(
-        environment.module_base + 0xF707E0);
+        environment.module_base + abi.character_setter);
     setter(setup_view, target);
   }
-  if (!ReadAt(access, setup_view, 0x158,
+  if (!ReadAt(access, setup_view, abi.selected_index,
               output.same_frame_selected_index)) {
     output.unavailable_reason = "submitted_selection_index_unreadable";
     return true;
@@ -704,6 +770,104 @@ bool SelectSupportedFeudalBookmarkCharacterV1(
       model.supported_1066_candidate_index;
   if (!output.same_frame_index_matches) {
     output.unavailable_reason = "submitted_selection_index_unconfirmed";
+  }
+  return true;
+}
+
+bool SelectSupportedBookmarkV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const ZhongguoScoreboardAccessV1 &access, void *bookmarks_root,
+    FrontendBookmarkChangeV1 &output, FrontendBookmarkSeedTargetV1 seed_target,
+    FrontendBookmarkSetterV1 fixture_setter) noexcept {
+  output = {};
+  const auto &abi = ModelAbi(environment);
+  const auto &profile = GetFrontendBookmarkTargetProfileV1(seed_target);
+  FrontendBookmarkModelProbeV1 before{};
+  if (!ProbeFrontendBookmarkModelV1(environment, access, bookmarks_root,
+                                    before, nullptr, seed_target) ||
+      !before.setup_view_matches_bookmarks_root ||
+      !before.selected_bookmark_key_available) {
+    output.unavailable_reason = before.unavailable_reason.empty()
+                                    ? "current_bookmark_owner_unavailable"
+                                    : before.unavailable_reason;
+    return true;
+  }
+  void *setup_view = nullptr;
+  if (!ResolveCurrentSetupView(environment, access, bookmarks_root, before,
+                               setup_view, output.unavailable_reason)) {
+    return true;
+  }
+  output.owner_resolved = true;
+  if (before.selected_bookmark_key == profile.bookmark_key) {
+    output.already_selected = true;
+    output.target_resolved = true;
+    output.same_frame_bookmark_matches = true;
+    return true;
+  }
+  void *entries = nullptr;
+  std::uint32_t capacity = 0;
+  std::uint32_t count = 0;
+  if (!ReadAt(access, setup_view, abi.all_bookmarks, entries) ||
+      !ReadAt(access, setup_view, abi.all_bookmarks + 8, capacity) ||
+      !ReadAt(access, setup_view, abi.all_bookmarks + 0xC, count) ||
+      count == 0 || count > capacity || count > kMaxBoundedGuiContextOwners ||
+      entries == nullptr) {
+    output.unavailable_reason = "current_bookmark_collection_unavailable";
+    return true;
+  }
+  void *bookmark = nullptr;
+  for (std::uint32_t i = 0; i < count; ++i) {
+    void *candidate = nullptr;
+    std::string key;
+    if (!ReadAt(access, entries, static_cast<std::size_t>(i) * sizeof(void *),
+                candidate) || candidate == nullptr ||
+        !ReadScriptKeySso(access, candidate, 0x18, key)) {
+      output.unavailable_reason = "current_bookmark_key_unavailable";
+      return true;
+    }
+    if (key != profile.bookmark_key) continue;
+    if (bookmark != nullptr) {
+      output.unavailable_reason = "target_bookmark_key_ambiguous";
+      return true;
+    }
+    bookmark = candidate;
+  }
+  if (bookmark == nullptr) {
+    output.unavailable_reason = "target_bookmark_key_not_in_current_collection";
+    return true;
+  }
+  std::uint64_t date = 0;
+  if (!ReadAt(access, bookmark, abi.bookmark_date, date) ||
+      static_cast<std::uint32_t>(date) != profile.date_low_raw) {
+    output.unavailable_reason = "target_bookmark_date_mismatch";
+    return true;
+  }
+  output.target_resolved = true;
+  if (fixture_setter == nullptr && access.read_memory != nullptr) {
+    output.unavailable_reason = "fixture_bookmark_setter_required";
+    return true;
+  }
+  output.setter_invoked = true;
+  if (fixture_setter != nullptr) {
+    if (!fixture_setter(access.context, setup_view, bookmark)) {
+      output.unavailable_reason = "fixture_bookmark_setter_rejected";
+      return true;
+    }
+  } else {
+    using NativeSetter = void (*)(void *, const void *);
+    reinterpret_cast<NativeSetter>(environment.module_base + abi.bookmark_setter)(
+        setup_view, bookmark);
+  }
+  void *current = nullptr;
+  std::string key;
+  if (!ReadAt(access, setup_view, abi.selected_bookmark, current) ||
+      current != bookmark || !ReadScriptKeySso(access, current, 0x18, key)) {
+    output.unavailable_reason = "submitted_bookmark_unreadable";
+    return true;
+  }
+  output.same_frame_bookmark_matches = key == profile.bookmark_key;
+  if (!output.same_frame_bookmark_matches) {
+    output.unavailable_reason = "submitted_bookmark_not_target";
   }
   return true;
 }

@@ -6,12 +6,15 @@ from copy import deepcopy
 from pathlib import Path
 import sys
 import unittest
+import json
+import os
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from xar_autoplayer.bridge.activity_feast_guest_opinion_private_transport import (
     SCHEMA, STEP, query_activity_feast_guest_opinion_private_v1,
+    parse_activity_feast_guest_opinion_private_v1,
 )
 from xar_autoplayer.bridge.driver import BridgeUnavailableError, UnsupportedStepError
 
@@ -66,6 +69,35 @@ class Driver:
 
 
 class GuestOpinionReadTest(unittest.TestCase):
+    def test_actual_production_named_reader_and_serializer_wire(self) -> None:
+        wire_path = os.environ.get("XAR_FEAST_REWARD_FIXTURE_WIRE")
+        if wire_path is None:
+            self.skipTest("production native named-reader wire fixture is not configured")
+        wire = json.loads(Path(wire_path).read_text(encoding="utf-8"))
+        for name, native in wire.items():
+            with self.subTest(case=name):
+                parsed = parse_activity_feast_guest_opinion_private_v1(
+                    native, native_revision=4, date_raw=10000,
+                    actor_id=31000, guest_id=32000, envelope_status="available")
+                self.assertEqual(parsed["guest_opinion_of_actor"], -25)
+                self.assertNotIn("attendance_verified", parsed)
+                self.assertNotIn("benefit_verified", parsed)
+        modifiers = wire["absent_and_zero"]["reward_opinion_modifiers"]
+        self.assertEqual(modifiers["hosted_feast_opinion"],
+                         {"status": "observed", "present": False, "value": None})
+        self.assertEqual(modifiers["impressed_opinion"],
+                         {"status": "observed", "present": True, "value": 0})
+        failed = wire["missing_definition"]["reward_opinion_modifiers"]
+        self.assertEqual(failed["hosted_mediocre_feast_opinion"],
+                         {"status": "read_failed", "present": None, "value": None})
+        self.assertEqual(failed["impressed_opinion"]["status"], "observed")
+        invalid = deepcopy(wire["missing_definition"])
+        invalid["reward_opinion_modifiers"]["hosted_mediocre_feast_opinion"]["present"] = False
+        with self.assertRaisesRegex(BridgeUnavailableError, "failure malformed"):
+            parse_activity_feast_guest_opinion_private_v1(
+                invalid, native_revision=4, date_raw=10000,
+                actor_id=31000, guest_id=32000, envelope_status="available")
+
     def test_negative_opinion_is_observed_for_arbitrary_pair(self) -> None:
         driver = Driver(payload())
         result = query_activity_feast_guest_opinion_private_v1(

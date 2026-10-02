@@ -3,6 +3,9 @@
 #include "xar_bridge/ck3_12002_feast_planner.hpp"
 #include "xar_bridge/ck3_12002_feast_guests_abi.hpp"
 #include "xar_bridge/ck3_12002_gift_opinion.hpp"
+#include "xar_bridge/ck3_12002_event_window_context.hpp"
+
+#include <cstring>
 
 #include <windows.h>
 
@@ -934,6 +937,62 @@ std::string SerializeActivityFeastGuestRuleProvenancePrivateV1(
 
 namespace {
 
+// Same reviewed named-modifier data path used by Sway. The fixed Feast caller
+// below supplies only stock on-complete keys, never an arbitrary script key.
+template <typename T>
+T FeastOpinionLoadAt(const void *object, std::size_t offset) noexcept {
+  T value{};
+  std::memcpy(&value, static_cast<const std::byte *>(object) + offset, sizeof(T));
+  return value;
+}
+
+bool ReadFeastRewardModifier(const GiftOpinionBindings12002 &b,
+    EventHashStableKey hash_stable_key, void *recipient,
+    std::uint32_t actor_id, std::string_view key,
+    bridge::ActivityFeastRewardOpinionModifierV1 &output) noexcept {
+  output = {};
+  if (!b.enabled || b.modifier_database_slot == nullptr ||
+      b.lookup_modifier == nullptr || b.find_group == nullptr ||
+      b.sum_modifier == nullptr || hash_stable_key == nullptr || recipient == nullptr)
+    return false;
+  void *database = *b.modifier_database_slot;
+  if (database == nullptr) return false;
+  const auto size = static_cast<std::uint32_t>(key.size());
+  const auto hash = static_cast<std::uint32_t>(hash_stable_key(database, key.data(), size));
+  void *definition = b.lookup_modifier(database, hash);
+  if (definition == nullptr ||
+      FeastOpinionLoadAt<std::uintptr_t>(definition, 0) != b.modifier_primary_vtable ||
+      FeastOpinionLoadAt<std::uintptr_t>(definition, 0x88) != b.modifier_secondary_vtable ||
+      FeastOpinionLoadAt<std::uint32_t>(definition, 0x14) != hash ||
+      FeastOpinionLoadAt<std::uint32_t>(definition, 0x38) != 0x4744624Fu ||
+      FeastOpinionLoadAt<std::uint64_t>(definition, 0x28) != size) return false;
+  const auto capacity = FeastOpinionLoadAt<std::uint64_t>(definition, 0x30);
+  const char *actual_key = capacity < 16 ? static_cast<const char *>(definition) + 0x18
+      : FeastOpinionLoadAt<const char *>(definition, 0x18);
+  if (capacity < size || actual_key == nullptr ||
+      std::memcmp(actual_key, key.data(), size) != 0) return false;
+  void *extension = FeastOpinionLoadAt<void *>(recipient, 0x1B0);
+  void *group = extension == nullptr ? nullptr : b.find_group(extension, actor_id);
+  if (group != nullptr) {
+    void *rows = FeastOpinionLoadAt<void *>(group, 8);
+    const auto count = FeastOpinionLoadAt<std::int32_t>(group, 0x14);
+    if (count < 0 || count > (1 << 20) || (count != 0 && rows == nullptr)) return false;
+    for (std::int32_t index = 0; index < count; ++index) {
+      void *active = FeastOpinionLoadAt<void *>(rows, static_cast<std::size_t>(index) * 8);
+      if (active == nullptr) continue;
+      const auto vtable = FeastOpinionLoadAt<std::uintptr_t>(active, 0);
+      if (vtable != b.active_opinion_vtable && vtable != b.temporary_opinion_vtable)
+        return false;
+      if (FeastOpinionLoadAt<void *>(active, 8) == definition) output.present = true;
+    }
+    if (output.present) output.value = b.sum_modifier(group, definition);
+  }
+  if (*b.modifier_database_slot != database ||
+      b.lookup_modifier(database, hash) != definition) return false;
+  output.observed = true;
+  return true;
+}
+
 struct OpinionContext {
   ActivityFeastGuestOpinionPrivateQueryV1 *query = nullptr;
   std::uintptr_t module_base = 0;
@@ -973,6 +1032,34 @@ bool OpinionReadOpinion(void *opaque, std::uint32_t recipient_character_id,
     succeeded = false;
   }
   return succeeded;
+}
+
+void OpinionReadRewardModifiers(void *opaque, std::uint32_t recipient_character_id,
+    std::uint32_t actor_character_id,
+    bridge::ActivityFeastRewardOpinionModifiersV1 &output) noexcept {
+  output = {};
+  auto &context = *static_cast<OpinionContext *>(opaque);
+  if (GetCurrentThreadId() != context.owner_thread_id || context.module_base == 0)
+    return;
+  __try {
+    const auto bindings = BindGiftOpinionImage12002(context.module_base,
+        context.query->executable_sha256);
+    const auto event_bindings = BindEventWindowImage(context.module_base,
+        context.query->executable_sha256);
+    void *recipient = ResolveCoreCharacter(bindings.core,
+        static_cast<std::int32_t>(recipient_character_id));
+    if (recipient == nullptr || ResolveCoreCharacter(bindings.core,
+        static_cast<std::int32_t>(actor_character_id)) == nullptr) return;
+    for (std::size_t index = 0; index < output.size(); ++index) {
+      bridge::ActivityFeastRewardOpinionModifierV1 row{};
+      if (ReadFeastRewardModifier(bindings, event_bindings.hash_stable_key,
+          recipient, actor_character_id,
+          bridge::kActivityFeastRewardOpinionKeysV1[index], row))
+        output[index] = row;
+    }
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    output = {};
+  }
 }
 
 } // namespace
@@ -1027,7 +1114,7 @@ bool ExecuteActivityFeastGuestOpinionPrivateV1(
         query->expected_revision, current.date_raw,
         current.played_character_id, true, true, true};
     const bridge::ActivityFeastGuestOpinionEnvironmentV1 environment{
-        &context, &OpinionReadFrame, &OpinionReadOpinion};
+        &context, &OpinionReadFrame, &OpinionReadOpinion, &OpinionReadRewardModifiers};
     query->opinion = bridge::ReadActivityFeastGuestOpinionV1(
         environment, expected, query->guest_character_id);
     query->completed = true;
@@ -1060,6 +1147,21 @@ std::string SerializeActivityFeastGuestOpinionPrivateV1(
       "\",\"guest_opinion_of_actor\":";
   result += observed ? std::to_string(query.opinion.guest_opinion_of_actor)
                      : "null";
+  if (query.opinion.reward_modifiers_requested) {
+    result += ",\"reward_opinion_modifiers\":{";
+    for (std::size_t index = 0; index < query.opinion.reward_modifiers.size(); ++index) {
+      if (index != 0) result += ",";
+      const auto &row = query.opinion.reward_modifiers[index];
+      result += "\"" + std::string(bridge::kActivityFeastRewardOpinionKeysV1[index]) +
+          "\":{\"status\":\"" + (row.observed ? "observed" : "read_failed") +
+          "\",\"present\":";
+      result += row.observed ? (row.present ? "true" : "false") : "null";
+      result += ",\"value\":";
+      result += row.observed && row.value.has_value() ? std::to_string(*row.value) : "null";
+      result += "}";
+    }
+    result += "}";
+  }
   result += ",\"read_only\":true,\"raw_pointer_fields_persisted\":false}";
   return result;
 }

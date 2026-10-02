@@ -153,8 +153,31 @@ inline constexpr std::string_view kZhongguoScoreboardSemanticDomainV1 =
 inline constexpr std::string_view kZhongguoScoreboardStateDomainV1 =
     "XAR/ZG361/SCOREBOARD/STATE/V1";
 
+// Common GUI ABI selection for the exact legacy and Crozier frontends.
+// The Zhongguo business readers keep the legacy default; a migrated frontend
+// caller must explicitly select crozier12003 after exact-build admission.
+enum class GuiAbiRevisionV1 : std::uint32_t {
+  legacy11906 = 0,
+  crozier12003 = 1,
+};
+
 inline constexpr std::uintptr_t kZhongguoGuiGlobalSlotRva = 0x576CC68;
 inline constexpr std::uintptr_t kZhongguoGuiFindTopLevelWidgetRva = 0x36D0B20;
+inline constexpr std::uintptr_t kCrozierGuiGlobalSlotRva = 0x5CB87F8;
+inline constexpr std::uintptr_t kCrozierGuiFindTopLevelWidgetRva = 0x3AAB100;
+
+constexpr std::uintptr_t GuiGlobalSlotRvaV1(GuiAbiRevisionV1 revision) noexcept {
+  return revision == GuiAbiRevisionV1::crozier12003
+             ? kCrozierGuiGlobalSlotRva
+             : kZhongguoGuiGlobalSlotRva;
+}
+
+constexpr std::uintptr_t GuiFindTopLevelWidgetRvaV1(
+    GuiAbiRevisionV1 revision) noexcept {
+  return revision == GuiAbiRevisionV1::crozier12003
+             ? kCrozierGuiFindTopLevelWidgetRva
+             : kZhongguoGuiFindTopLevelWidgetRva;
+}
 inline constexpr std::size_t kZhongguoGuiChainFirstOffset = 0x1B8;
 inline constexpr std::size_t kZhongguoGuiChainSecondOffset = 0x58;
 inline constexpr std::size_t kZhongguoGuiContextOffset = 0x3D0;
@@ -232,6 +255,7 @@ struct ZhongguoScoreboardNativeEnvironmentV1 {
   bool offline_fixture_function_overrides = false;
   void **gui_global_slot = nullptr;
   NativeZhongguoFindTopLevelWidgetV1 find_top_level_widget = nullptr;
+  GuiAbiRevisionV1 gui_abi_revision = GuiAbiRevisionV1::legacy11906;
 };
 
 using FindZhongguoFixedWidgetV1 = void *(*)(
@@ -362,7 +386,8 @@ bool InspectNamedGuiSubtreeV1(
     NamedGuiTreeInspectionV1 &output) noexcept;
 
 ZhongguoScoreboardNativeEnvironmentV1 BindZhongguoScoreboardNativeEnvironmentV1(
-    std::uintptr_t module_base, bool exact_build_admitted) noexcept;
+    std::uintptr_t module_base, bool exact_build_admitted,
+    GuiAbiRevisionV1 gui_abi_revision = GuiAbiRevisionV1::legacy11906) noexcept;
 
 game::ReadZhongguoScoreboardStateResultV1 ReadZhongguoScoreboardStateV1(
     const ZhongguoScoreboardNativeEnvironmentV1 &environment,

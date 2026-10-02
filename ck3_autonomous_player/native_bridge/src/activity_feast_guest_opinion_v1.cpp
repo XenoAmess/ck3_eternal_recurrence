@@ -24,6 +24,7 @@ ActivityFeastGuestOpinionResultV1 ReadActivityFeastGuestOpinionV1(
     result.status = ActivityFeastGuestOpinionStatusV1::frame_changed;
     return result;
   }
+  result.reward_modifiers_requested = environment.read_reward_modifiers != nullptr;
   std::int32_t opinion = 0;
   if (!environment.read_opinion(environment.context,
                                 static_cast<std::uint32_t>(guest_character_id),
@@ -33,8 +34,26 @@ ActivityFeastGuestOpinionResultV1 ReadActivityFeastGuestOpinionV1(
     result.status = ActivityFeastGuestOpinionStatusV1::opinion_unavailable;
     return result;
   }
+  if (result.reward_modifiers_requested) {
+    ActivityFeastRewardOpinionModifiersV1 first{};
+    ActivityFeastRewardOpinionModifiersV1 second{};
+    environment.read_reward_modifiers(environment.context,
+        static_cast<std::uint32_t>(guest_character_id),
+        static_cast<std::uint32_t>(expected.actor_character_id), first);
+    environment.read_reward_modifiers(environment.context,
+        static_cast<std::uint32_t>(guest_character_id),
+        static_cast<std::uint32_t>(expected.actor_character_id), second);
+    for (std::size_t index = 0; index < first.size(); ++index) {
+      // A failed or changing modifier does not erase independently read total
+      // opinion. It is published as read_failed rather than legal absence.
+      if (first[index].observed && first[index] == second[index] &&
+          first[index].present == first[index].value.has_value())
+        result.reward_modifiers[index] = first[index];
+    }
+  }
   if (!environment.read_frame(environment.context, after) ||
       after != expected) {
+    result.reward_modifiers = {};
     result.status = ActivityFeastGuestOpinionStatusV1::frame_changed;
     return result;
   }
