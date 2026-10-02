@@ -308,6 +308,28 @@ if = {
 }
 ```
 
+### 1.20.0.3 临时与永久 saved target 的命名边界
+
+引擎诊断 `Trying to add the temporary target '<name>' which has the same name as a permanent target` 表示当前链已有同名永久目标，不能再把它当作临时结果保存。共享 trigger 应使用自身专用的临时别名，并同步其内部保存和读取；事件用于 sender、选项、后续事件与本地化的永久别名继续由原入口保存。改名之前必须搜索调用者及别名消费者，确认调用方没有依赖该临时结果作为出口；不能把所有同名引用一起替换，也不能据此推断整个事件的求值顺序。
+
+CK3 **1.20.0.3 / build 25652598** 的原版 `events/war_events/war_events.txt:349–380` 仍在贡献检查 helper 中保存临时 `war_owner`；同文件的 `war_event.3001/.3002` immediate 又保存永久 `war_owner`，用于信件发送者、付款、意见和解盟。原版存在该安排，因此仅凭脚本来源是原版不能排除这种运行冲突。这里记录的是源码引用合同和已观察诊断的意义，**专用改名的冷加载与完整事件业务验收仍 NOT_RUN**；没有将原版自身或其他 mod 标成失败或通过。
+
+| 原版来源（相对 `game/`） | 合同出处 | 完整文件 SHA-256 |
+|---|---|---|
+| `events/war_events/war_events.txt` | helper 内临时目标与事件永久目标的生产/消费；事件延迟链 | `5cf0517dae121b11462e4fb18ef8e0319499c12a6c88c42afb7547438e641e23` |
+| `common/on_action/_on_actions.info:95` | on_action effect 与其 events 属于不同链，effect 新设 scope/局部变量不保证传入 events | `2bfbbf903d55a2417c988caf1479ef0ff91719c55128ce6357bca3d2c8e9b25f` |
+
+EXE SHA-256 与上文当前角色守卫条目相同。合成命名形状如下；`example_target` 的实际来源、对象类型和有效性由调用方提供，本例 **engine NOT_RUN**：
+
+```text
+# helper 内部使用专用临时别名；全部内部读取同步使用它
+scope:example_target = { save_temporary_scope_as = example_helper_target }
+# 事件入口继续保存持久别名；sender/选项/本地化消费这个名字
+scope:example_target = { save_scope_as = example_event_target }
+```
+
+日志 header 中的 `at file: ... line: ...` 可以帮助定位，但没有独立 `Script location:` / caller 时应保持解析器的 primary/caller 为未知；不能替日志补造事件 ID 或重评阶段。复验要使用新冻结源的实际加载证据及未封顶的日志窗口，并验证永久目标的玩家可见效果；静态反向字节相等和旧签名零命中各自只证明其限定条件。
+
 ## 事件背景图 / 纹理
 
 | 现象 | 原因 | 解法 |
