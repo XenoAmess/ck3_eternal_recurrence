@@ -347,3 +347,38 @@ the native owner's minimal fix and adopted final metadata. Its successful CI
 does not establish a usable DLL. Candidate rendering therefore accepts the
 root's final source/freeze and latest current pair rather than pinning either
 this intermediate h4065 or the failed build identity as the future entry.
+
+## Latest saved Robert continuation and v19 candidate, 2026-10-02
+
+The existing finite normal continuation has now closed with15 actual saved
+days, raw53220096→53220456, and a paused final frame. Its three turns requested
+1/7/7 days and actually observed1/5/9; credit follows the observed15-day date
+delta. Combined with the preceding4 saved days, this iteration adds19 days to
+historical3153, giving3172/36524. The same Robert29829/original episode remains
+the sole entry; this does not complete M7 or add another identity/government.
+
+The closed current checkpoint is h4075/full4075,83,192,479 bytes/SHA-256
+`dd4d3f772147778e7308a85f0e09336b491f00ad4f6e067e1d11564dfb5d23ec`;
+the full driver is49,277,053 bytes/SHA-256
+`49b547a68df99c2fe8e4c4aecd20d1bf6605a12a68aba908791cd1882f454b72`.
+The actual close is `m7-robert/finite-normal-7day-actual-01/result.json`.
+The capture owner's existing
+`m7-robert/normal-time-value-01/FINITE-PRODUCTION-LIVE-PROOF.json` and
+`REPORT-FIELDS-LIVE-INCREMENT.json` supply the verified counts/pins and capture
+cost boundaries; no duplicate driver/save/ledger inventory or static test is
+required for this note. Requested30-day continuation and explicit stop reasons
+remain unobserved. Its measured remaining cost is planning/enrichment; the
+capture result is not a controlled wall-time speedup comparison.
+
+The next independent candidate is native v19/public source
+`716acfecc6c487e2b48942c6a6030c8b7012e5d5`; its build/adoption is pending at this
+recording. The unchanged CURRENT renderer accepts the final adopted freeze
+plus explicit v19 target state/output. It retains the latest stopped complete
+pair, current typed goal/expectation, five ledgers and immutable seed through
+official prepare/verify, opaque staging, ordinary rebind and receipt-derived
+preflight. It does not stage the historical full4031/save4029 pair. Every
+rendered game startup is minimized. The exact parameter recipe is
+`m7-robert/CURRENT-CANDIDATE-V19-PARAMETERS-01.json`; it has not copied live
+state or executed any profile/game/client operation. Actual v19 new-PID
+paused goal/five-ledger/restore proof is still required before v19 readiness
+or further gameplay credit can be reported.

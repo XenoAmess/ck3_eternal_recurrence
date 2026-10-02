@@ -1,5 +1,13 @@
 # CK3 自动游玩智能体进度中心
 
+## 20:36 Robert有限输出正式续行新增15日：累计3172天
+
+2026-10-02 20:36:16 Asia/Shanghai当前增量：已发布20:07旧3157阶段之后，Robert原ordinary campaign真实又保存15日，**本次恢复新增19日、累计3172/36524**（约8.7%历史天数比例；typed goal0另列）。G2 **4/8=50%**、NW **1/4=25%**不变，17:27实机授权/Steam离线/唯一Robert入口/最小化不抢前台保持。三turn requested1/7/7、实际1/5/9，raw53220456、full4075/save h4075；不声称30日或固定7日窗口已验。
+
+外置三turn＋双snapshot输出 **881,867,199B→608,110B，减少99.931%**，原driver完整4075历史保持，有限输出capturer可记production-live loop；规划80.471s是主要实测成本，旧run无同计时不能推wall-time倍数。最新save83,192,479B/SHA `dd4d3f772147778e7308a85f0e09336b491f00ad4f6e067e1d11564dfb5d23ec`，driver49,277,053B/SHA `49b547a68df99c2fe8e4c4aecd20d1bf6605a12a68aba908791cd1882f454b72`。[有限输出实际增量字段](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/normal-time-value-01/REPORT-FIELDS-LIVE-INCREMENT.json)。
+
+CA1/Council窄loop沿用已闭证据，Sway收益和Feast终态未成；Guy两次原child-subject provider RED发生在result query/ledger write之前，未观察新婚约结果，不由19日推断成交。v18严格构建931 inputs/486TU/75s GREEN只static，v19诊断构建进行中无新live。旧20:07历史与原合同分母保持；下一项原Robert latestpair及fresh材料，root负责Git发布，不预填commit。
+
 ## 20:07 Robert原局冷恢复后正式续行闭包：3157天，整体门数不变
 
 2026-10-02 20:07:09 Asia/Shanghai真实当前状态：17:27用户已授权Robert原ordinary campaign恢复实机，Steam离线、最小化且不抢前台；原用户手玩禁令留作dated history。G2 **4/8=50%**、NW **1/4=25%**不变。本轮冷前1日＋新PID冷后正式3日已正常保存，Robert **3157/36524**（约8.6%历史天数），raw53220096、h4065/full4065；typed goal progress0/successions0分列，不新增政府矩阵或自然继承信用。

@@ -10,6 +10,14 @@
 
 显式 `native-session --start-minimized` 将首次、frontend warm-up/final、checkpoint 和 next-episode 启动传入 Windows `STARTUPINFO` 的 `STARTF_USESHOWWINDOW` / `SW_SHOWMINNOACTIVE`，复用受管 PID 的窗口采样保持最小化。默认其它流程不改变；当前 G2 后续启动全部选择此参数。真实 CLI→session→launch 参数链、Win32 producer 与 PID helper 的一个定向 case GREEN；新进程焦点／窗口状态仍由实机采样确认。对应源码及收据为 `artifacts/g2-maintainer-2026-10-02/resume-12003/minimized-start-implementation-01/`。
 
+## 20:36 Robert有限输出正式续行新增15日：累计3172天
+
+2026-10-02 20:36:16 Asia/Shanghai实际流程增量：延续17:27授权的Robert原ordinary campaign，root最小化管理且不抢Steam/用户前台。本轮正式finite run三turn requested1/7/7、actual1/5/9，真实15日raw53220096→53220456，final paused，原driver完整history4075正常保存。最新full4075/save h4075，save83,192,479B/SHA `dd4d3f772147778e7308a85f0e09336b491f00ad4f6e067e1d11564dfb5d23ec`，driver49,277,053B/SHA `49b547a68df99c2fe8e4c4aecd20d1bf6605a12a68aba908791cd1882f454b72`；本次恢复4＋15=19新日，Robert3172/36524，G2 4/8、NW1/4不变。继续使用最新真实pair，不回退旧4031/4065入口。[有限输出实际增量字段](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/normal-time-value-01/REPORT-FIELDS-LIVE-INCREMENT.json)。
+
+有限外置投影使三turn和双snapshot总881,867,199B→608,110B、99.931%缩小，未删持久driver history，可记有限capture production-live loop；没有旧run同计时，不能换算整轮速度倍数。规划80.471s、dispatch/verify5.100s、save2.018s、JSON总0.076s只代表本run。30日未请求/未验，receipt未输出explicit stop_reason，保留requested与actual差异。
+
+两次Guy proper consumer child-subject读取RED发生在pending-result query和ledger write之前，未观察接受/拒绝/material，不重发历史动作；诊断native v19尚未live。v18严格build GREEN仅static，实际仍旧D4/v16 native＋c0Python。CA1/Council既有loop不新增credit，Sway/Feast后置未完成；本包只新增文档检查一次，无L0/ABI/G2/fixture/CI复跑。
+
 ## 20:07 Robert原局冷恢复后正式续行闭包：3157天，整体门数不变
 
 2026-10-02 20:07:09 Asia/Shanghai实际流程补录：仅续跑已授权Robert原ordinary campaign。Python/runtime c0f53e9b接现有D4/v16 native，原局cold前正式1日→正常保存h4053→GAME109676到101084官方新PID冷恢复→原goal/五ledger pins和feudal/core_landed44正式plan消费→三个life-advance→最终paused正常保存h4065，raw53220000→53220096，本轮4个真实日、累计3157/36524。最新save80,076,282B/SHA `8f3517957d7697a2cbf780f3caedae3ae951a12a52a414378e5738e8ceb186aa`，driver49,131,360B/SHA `1db0dd4a2eefa90f542cdc7cd5bb84bab493d63daff89ff7dcbd925b9ac1f187`，继续使用最新配对，不回滚4031旧入口。[冷后3日正式续行结果](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/actual-cold-following-family-sway-01/result.json)。
