@@ -506,3 +506,44 @@ added0 Robert days. It verifies this new-PID saved-goal/six-ledger cold baseline
 it does not establish a new government loop, resolve a pending domain outcome,
 add a G2 qualification slot or complete M7. Subsequent live domain queries and
 normal continuation remain separately owned by Root.
+
+## Actual v24 current-checkpoint cold baseline, 2026-10-03
+
+Root's actual v24 qualified helper closed GREEN at
+`2026-10-02T20:03:47.809030+00:00`, with scope
+`ordinary_paused_goal_checkpoint_baseline`. GAME38520 differs from the archived
+GAME6280; Robert29829 remains alive,
+paused and map-ready at raw53222952 in the original
+episode `native-29829-2bc2d599f7f9`. The saved `dynasty_continuity` goal retains
+origin/current29829, `reconciled_successions=0`
+and `last_succession=null`.
+
+The full source history is4192; the
+normal cold consumer reports full4192/saveanchor4191.
+The carried checkpoint is86,097,310 bytes/SHA-256
+`2e1a27f33e020fd86628ccab4af23376b91591d364c3ffb1e7298b1b1e7d1ed7`. Official ordinary rebind retained the save bytes.
+The actual after-close driver pin is50,325,456 bytes/SHA-256
+`57f04dad3f5629ad6768ca140c47aee798764c46ed2b2e8068862f73c462304a`. All six production ledger pins passed the existing
+qualified helper. Goal, opaque pending/applied records and full history were
+not manually rewritten, and no appointment, marriage proposal, Feast Start or
+Sway Start was replayed. The actual post-cold succession expectation is
+`null`; source expectation evidence remains separate from the
+persisted goal.
+
+The runtime source is `6c87eb77568601499ab98a43f9cbea4c2ee870f6`, native metadata source is
+`6c87eb77568601499ab98a43f9cbea4c2ee870f6`, and actual compiler source is
+`6c87eb77568601499ab98a43f9cbea4c2ee870f6`. The v24 DLL is8,075,776
+bytes/SHA-256 `77101b5388890088f013f1f06249e0066547f6ec41249484602a3eebbb5b9dec`. The official new environment is
+`8a98da66b7bc798e6b30c7f7e2821e287775cb6353fba108edacf895a7651f0c`. Root independently observed
+GAME38520/HWND6299886 as visible and minimized; that window observation is
+Root's tool evidence, not a field emitted by this qualified helper.
+
+Evidence is
+`m7-robert/robert-mainline-v24-current-review-01/actual-candidate-cold-goal-01/result.json`,
+its `ROOT-PACKET.json` and `official-rebind-01.json`; compact exact pins are in
+`m7-robert/V24-CURRENT-COLD-REPORT-FIELDS-01.json`. This limited baseline skipped
+government and the next planner, executed no planned step and added0 natural
+days or qualification slots. Root's preceding durable total remains3276/36524,
+this iteration123 days; G2 remains5/8 and the nonwar matrix1/4. M7 remains
+`in_progress`. Current monthly-piety/Sway observations and further normal
+continuation require their separate closed root-owned results.

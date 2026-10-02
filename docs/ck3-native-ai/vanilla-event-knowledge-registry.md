@@ -1,5 +1,42 @@
 # CK3 1.19.0.6 原版事件知识 Registry
 
+## 2026-10-03：实际19旅行完成，合法5scope替代历史7scope前置
+
+ROOT currentRobert ordinaryepisode/PID6280/暂停raw53222952的onceobserve已经闭合，原queued19真实定义 **travel_completion_event.1000**，不是从7101后置ID猜出来。`robert-queued19-a391c881-v23-actual-observe-01/result.json` currentnative29/public2、calculated2931000/runtime5104、root29829；basic **authored2**，typed **rendered1/native0/API1** shownenabled。savedexact5为`travel_plan,travel_owner,current_location,travel_plan_scope,final_destination_province`；travel_owner character29829，travel_plan两项rawtype35/province两项rawtype8，identityopaque保持。原registryalreadyknown，但recommendation与ordinaryplan的真实RED都是`direct_projection_support:character_scopes`/`direct_projection_support:unique_character_scope_excludes`。
+
+历史R502 contract要求7names，额外mandatory destination/travel_leader_scope与distinctleader；当前不存在这两项。仅开放policykey仍会在names/count失败。源先行后以独立 **.3 records_travel_completion1000_12003.py** 登记当前已出现5scope/sole0形态，character travel_owner仅绑定$player，原旧版本与7scope历史数据保持；不将历史样本覆盖面冒充当前fieldshape支持，也不以根本未保存的leader增加readgate。
+
+ExactcurrentSteam `events/travel_events/travel_completion_events.txt:15–194`/wholefileSHA `2FB4F01EB814A3FE28180D05B69856A01B271171A9D754CE16501400F3D19CA1`、rawtokenblockSHA `5951EC5F8E23698F329875B28DAE6F57D9251037FD8E31D5CB8F06E505BEAAE0`，.2→.3 authoredsource unchanged兼容凭据与currentactualscope/AI树均冻在`m2-events/actual-robert-travel-completion1000-blocker-01/source-evidence/`。当前 native0/a 的源trigger **location=root.default_location** 且button本体只有name/trigger，无stateeffect；native1/b仅location!=default_location才显示，真实return_home=yes/ai_chance base100，当前hidden、不作为候选。native0未给authoredai_chance，最终默认AI权重未闭合，不宣称等价AI最优；solelive合法性由当前nativepresentation/最终selection判定。
+
+immediate traveler成长检查、统计/elapsed/progress及可选horseXP已先执行，不能作为按钮后置收益。after仅在已持有`recently_completed_mandala_contract`时移除该flag，所以 **selectedoptioneffects=[]，commonafterconditionalcleanup非空**，不能把全事件标成empty，也不把老1.19的craven/paranoid stressloss又带回本版。CurrentfiveScope省略destination/leader不需要虚构它们的typedidentity或查询旅行全局协议；opaque旅程/省份payload不解释为已独立确认路线、返回动作或终态。
+
+```mermaid
+flowchart TD
+  A[实际19 .1000 typedavailable / root-owner29829] --> B[immediate 已执行统计与成长相关条件]
+  B --> C{当前location与default_location相等?}
+  C -->|实际native0 shownenabled| D[当前soleAPI1/native0 无buttonstateeffect]
+  C -->|不相等 当前hidden| E[native1 return_home / authoredAIbase100]
+  D --> F{recently_completed_mandala_contract flag存在?}
+  F -->|存在| G[after清该flag]
+  F -->|没有| H[不执行after清理]
+  G -.实际flag未独立读.-> U[unknown具体清理收益]
+  D -.当前native0最终默认AI权重未研究.-> V[非native-equivalent最优声明]
+```
+
+仅新currentleaf+registrylookup+policyexactrelationalkey和现有fullroutecase，共4source/test触点。唯一firstnecessarycase复用actual19/native29/public2/5scope/authored2-render1与原RED，经normalizer→currentknowledge/classifier→ordinaryplan→生产service/API1-native0→独立模拟old19gone；selectedeffect[]/commonafterflag并observableNone，未模拟flag/XP/wealth/stressgain/旅行phase/Feast奖/terminal。静态GREEN只为当前续行static-ready，ROOT另一次actual选择及后继normal保存才授production阶段，无native/DLL/service/outcome或通用gate改动。
+
+Root strictv24/newcold与源补丁可并行；本事件leaf是纯Pythonsourcefreeze/rebind，不要求改变已严格编译nativeinputs。当前19未选与blockedattempt保留，既有M2complete保持，本包day/material/M2/M6信用0；旧7101post保存h4191的0day事实不被本sourcecase改写。四路径patch/receipt/唯一case在`m2-events/actual-robert-travel-completion1000-blocker-01/python-compatibility/`。
+
+
+## 2026-10-03：7101后置正常保存h4191，下一回合仍0日
+
+ROOT actual `m7-robert/feast7101-following-normal30-a391-v23-actual-01/result.json` 已closed：runtimePythona391/native-env2c/v23原Robert29829/ordinaryepisode，`existing_consumer_not_ready`、**actual0day/formal_turns=[]**，firstfollowingmodal未选。日期仍暂停53222952；此有限stage不导出queued19 typeddefinition，ROOT另行onceobserve pending，不从basic2选项或ID猜key。
+
+选择后正常nativecheckpoint明确 **saved h4191/raw53222952、86097310B/SHA2E1A27F33E020FD86628CCAB4AF23376B91591D364C3FFB1E7298B1B1E7D1ED7**；同actor/episode的existingdriver pairedstate **50325443B/SHAB1798D1CDED3CC72A080627A175E412565E5E91A6760D8DF37EC6981BF0C3FE6/history4191**，normalhistorypreserved=true。与此前API1/native0 old20gone primitive形成明确post-choice持久保存；没有新增cold恢复证明，也不把same-date保存写成正天数下一回合已完成。
+
+当前仍 **production-live primitive + saved checkpoint**，positive-next/normalgameplay credit pending；wholebatch非GREEN/requested30未推进。原M2complete保持，新增day/M2/rank/物质奖励/M6terminal信用均0。唯一7项有限判读fields在`m2-events/actual-robert-feast7101-blocker-01/actual-a391c881-v23-post-choice-save/REPORT-FIELDS.json`；原选择source/topic已由ROOT随6c87正常push，此新doc增量独立释放，不阻strictv24或事件19正式观察，无test/SDK/Git重跑。
+
+
 ## 2026-10-03：a391 生产选择原20，后置保留已排队19
 
 ROOT纯Python sourcea391c881、native/env2c435dcb/v23/PID6280，通过已发布同一consumer实际消费原`feast.7101`/20。有限closed `m2-events/robert-feast7101-a391c881-v23-actual-select-01/result.json`：before native25/public2、actualexact5scopes/root-host-root_scope29829、soleauthored/rendered1、native0shownenabled，既有25项registry checks全true。一次 **API1/native0**，独立native26/public3证明old20advanced与同Robert29829/ordinaryepisode/暂停raw53222952。后置 **activeevent仍是已排队19/basic2options**，不是null；这个包没有19的typedkey，不猜它的原版定义，不以instance顺序推断新source，再由ROOT现成formalconsumer读实际19。

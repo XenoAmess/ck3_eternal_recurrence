@@ -1,6 +1,6 @@
 # CK3 1.20.0.3：玩家总月敬虔观测
 
-本页的目标是观察 Robert 当前敬虔余额之外的实际月变化值，供本世资源决策使用。当前状态 **static-ready：exact ABI／输入树已闭合，唯一生产读数→序列化→Python解码验证 GREEN**；Robert 实际总月值仍待 ROOT 新版本 paused 采集。余额和有效学习均已有 **production-live primitive**，两者不能代替实际月增长。这里只准备同一 MCP 的只读输入，不任命祭司、切换任务、更改信仰或新增宗教策略。
+本页的目标是观察 Robert 当前敬虔余额之外的实际月变化值，供本世资源决策使用。当前状态 **production-live primitive：v24同一MCP已实读Robert总月净敬虔0.4375／月**。此前exact ABI／输入树、唯一生产读数→序列化→Python解码验证均GREEN；现已由真实paused输入解除余额之外的增长观测缺口。这个口尚未组成完整宗教OODA，不任命祭司、切换任务、更改信仰或新增宗教策略。
 
 原输入树见 [ReligiousRelations 任务价值](religious-relations-task-value-native-ai-12003.md)，资源／现任意见事实见该页 v22 实际段。外置研究包为 `artifacts/g2-maintainer-2026-10-02/resume-12003/m4-council/role-coverage/monthly-piety-observation-12003/`。本包不重扫宗教治理的29份 stock 文件，不重跑已 GREEN 的学习包，也不改当前冻结 v23 的源码。
 
@@ -70,7 +70,7 @@ flowchart TD
     N --> Ctx[原actor保持 / top-liege仅评价context]
     Ctx --> Net[gross减cost再全部modifiers]
     Net --> M[signedQ100000当前总月净敬虔]
-    M -. 尚未生产发布或实读 .-> Q[同一 MCP 的独立 piety 月值 DTO]
+    M --> Q[v24同一MCP实际0.4375每月]
     Q --> D[Robert 资源增长与等待时间决策输入]
     G --> D
     T[ReligiousRelations 已冻结 stock 输入树] -. 当前 task evaluator 与应用分量未闭合 .-> C[该任务实际敬虔贡献]
@@ -78,3 +78,21 @@ flowchart TD
 ```
 
 本页没有 counter-policy。当前收益是把总月资源观测的必要依赖和最小施工入口具体化；ROOT 独占共享源码集成、游戏／SDK、状态、构建和发布。
+
+## V24 实际当前总月净敬虔
+
+ROOT新immutable source `6c87eb77568601499ab98a43f9cbea4c2ee870f6`／strict v24与official CI均SUCCESS，随后在新paused执行上下文PID38520通过single-client现存registered MCP完成6calls CLOSED GREEN并official driver close。其中本专题只消费002 campaign-root与整体result元数据；其它4个Sway调用由其它owner报告，没有重复SDK调用、读取其raw或重测新／旧case。
+
+| 实际字段 | 值与绑定 |
+| --- | --- |
+| 玩家与日期 | Robert29829，raw53222952，player alive／independent，top-liege29829 |
+| Revision | queried snapshot `native:3`，outer frontend queried_revision2／native3；inner root snapshot_revision3不改写frontend2 |
+| 当前总月净敬虔 | `player_monthly_piety_v1.status=available`，**raw43750／scale100000＝0.4375 piety／月**，unavailable_reason=null |
+| Root可用性 | accepted／available，`campaign_root_context_ready=true`，scope=`exact-campaign-root-context` |
+| 当前祭司任务 | 56513，`task_religious_relations`／general／null target／frozen=false／infinite progress current/max=null |
+
+这是实际总月净资源率，读取结果来自已证`0x2696F40`路径，源版本与ABI冻结对应同一 `.3`。Root PID来自ROOT独立执行上下文，002的normalized DTO不含PID字段；first/final same date采用ROOT supplied执行事实，artifact中本页保留实际queried frame／player／date。不是一次性piety增益、资源余额、任务单项或clergy approval，也不承诺一个未来月底的精确余额。原413.1375与learning9是各自较早实际帧，不能当作这次002新读字段或由0.4375反算任务贡献。
+
+有限提取与原始002／result字节pins见 [ACTUAL-MONTHLY-PIETY-EXTRACT.json](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m4-council/role-coverage/monthly-piety-observation-12003/actual-v24-monthly-and-sway-cold-01/ACTUAL-MONTHLY-PIETY-EXTRACT.json)，7618 bytes，SHA `672ce9afd045127d57f0109aea899824869f4aed7aeb95380cf2c69de733ec24`。两个JSON原件各只读一次，Sway raw0读；本owner无game／SDK／state／Git操作。此前synthetic-1.25、编译／link／path-selection／BOM apply首RED均作为历史证据保留。
+
+本输入现在可用于Robert本世资源增长决策；独立 [ReligiousRelations任务贡献](religious-relations-task-value-native-ai-12003.md)继续补该task原生owner-modifier单项求值，不能用total替代该项，也不因本口可用宣称完整宗教AI、M4全项或新的动作完成。

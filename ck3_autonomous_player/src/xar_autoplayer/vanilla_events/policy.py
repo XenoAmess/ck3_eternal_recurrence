@@ -966,6 +966,7 @@ _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
         "prison_notification.2002",
         "rite_growth.0010",
         "stress_threshold_special.1001",
+        "travel_completion_event.1000",
     }
 )
 _DIRECT_SCOPE_VARIANT_EVENT_KEYS: Final = frozenset(
