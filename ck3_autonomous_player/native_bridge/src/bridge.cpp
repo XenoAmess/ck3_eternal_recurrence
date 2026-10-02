@@ -15903,11 +15903,90 @@ void RunConnectedSession(
                 }
               }
               xar::game::Snapshot after{};
-              if (!xar::game::ReadSnapshot(game, after) || after != before ||
+              const bool after_read_success = xar::game::ReadSnapshot(game, after);
+              const bool after_equal = after_read_success && after == before;
+              if (!after_read_success || !after_equal ||
                   child.failure == Failure::frame_changed) {
-                connected = write_frame(
-                    pipe, CommandResultFrame(request_id, step, false,
-                        "player-child marriage subject changed during read"));
+                // Preserve the failure and exact error. These are the existing
+                // read's actual fields; no extra native read or retry is added.
+                auto failure_frame = CommandResultFrame(request_id, step, false,
+                    "player-child marriage subject changed during read");
+                failure_frame.pop_back();
+                failure_frame += ",\"native_diagnostics\":{\"child_failure_enum\":";
+                failure_frame += std::to_string(static_cast<unsigned>(child.failure));
+                failure_frame += ",\"child_failure\":\"";
+                failure_frame += child.failure == Failure::none ? "none" : reason;
+                failure_frame += "\",\"after_read_success\":";
+                failure_frame += after_read_success ? "true" : "false";
+                failure_frame += ",\"after_equal\":";
+                failure_frame += after_equal ? "true" : "false";
+                const auto append_core = [&](std::string_view key,
+                                             const xar::game::Snapshot &observed) {
+                  failure_frame += ",\"";
+                  failure_frame += key;
+                  failure_frame += "\":{";
+                  failure_frame += "\"date_raw\":";
+                  failure_frame += std::to_string(observed.date_raw);
+                  failure_frame += ",\"speed\":";
+                  failure_frame += std::to_string(observed.speed);
+                  failure_frame += ",\"paused\":";
+                  failure_frame += observed.paused ? "true" : "false";
+                  failure_frame += ",\"player_id\":";
+                  failure_frame += std::to_string(observed.player_id);
+                  failure_frame += ",\"map_ready\":";
+                  failure_frame += observed.map_ready ? "true" : "false";
+                  failure_frame += ",\"has_played_character\":";
+                  failure_frame += observed.has_played_character ? "true" : "false";
+                  failure_frame += ",\"played_character_id\":";
+                  failure_frame += std::to_string(observed.played_character_id);
+                  failure_frame += ",\"played_character_alive\":";
+                  failure_frame += observed.played_character_alive ? "true" : "false";
+                  failure_frame += "}";
+                };
+                append_core("before", before);
+                if (after_read_success) append_core("after", after);
+                else failure_frame += ",\"after\":null";
+                failure_frame += ",\"changed_snapshot_fields\":[";
+                if (after_read_success && !after_equal) {
+                  // Snapshot's original default equality fields only.
+                  bool first_changed_field = true;
+                  const auto changed_field = [&](std::string_view name, bool changed) {
+                    if (!changed) return;
+                    if (!first_changed_field) failure_frame += ",";
+                    first_changed_field = false;
+                    failure_frame += "\"";
+                    failure_frame += name;
+                    failure_frame += "\"";
+                  };
+                  changed_field("date_raw", before.date_raw != after.date_raw);
+                  changed_field("speed", before.speed != after.speed);
+                  changed_field("paused", before.paused != after.paused);
+                  changed_field("player_id", before.player_id != after.player_id);
+                  changed_field("map_ready", before.map_ready != after.map_ready);
+                  changed_field("has_played_character", before.has_played_character != after.has_played_character);
+                  changed_field("played_character_id", before.played_character_id != after.played_character_id);
+                  changed_field("played_character_alive", before.played_character_alive != after.played_character_alive);
+                  changed_field("played_character_stress_points", before.played_character_stress_points != after.played_character_stress_points);
+                  changed_field("played_character_gold", before.played_character_gold != after.played_character_gold);
+                  changed_field("played_character_prestige", before.played_character_prestige != after.played_character_prestige);
+                  changed_field("played_character_piety", before.played_character_piety != after.played_character_piety);
+                  changed_field("played_character_betrothed_id", before.played_character_betrothed_id != after.played_character_betrothed_id);
+                  changed_field("played_character_primary_spouse_id", before.played_character_primary_spouse_id != after.played_character_primary_spouse_id);
+                  changed_field("played_character_spouse_ids", before.played_character_spouse_ids != after.played_character_spouse_ids);
+                  changed_field("has_active_event", before.has_active_event != after.has_active_event);
+                  changed_field("active_event_instance_id", before.active_event_instance_id != after.active_event_instance_id);
+                  changed_field("active_event_option_count", before.active_event_option_count != after.active_event_option_count);
+                  changed_field("has_pending_character_interaction", before.has_pending_character_interaction != after.has_pending_character_interaction);
+                  changed_field("pending_character_interaction_id", before.pending_character_interaction_id != after.pending_character_interaction_id);
+                  changed_field("pending_sender_character_id", before.pending_sender_character_id != after.pending_sender_character_id);
+                  changed_field("pending_auto_accept_notification", before.pending_auto_accept_notification != after.pending_auto_accept_notification);
+                  changed_field("active_wars", before.active_wars != after.active_wars);
+                  changed_field("player_armies", before.player_armies != after.player_armies);
+                  changed_field("has_one_life_settlement", before.has_one_life_settlement != after.has_one_life_settlement);
+                  changed_field("one_life_settlement", before.one_life_settlement != after.one_life_settlement);
+                }
+                failure_frame += "]}}";
+                connected = write_frame(pipe, failure_frame);
               } else {
                 ++state.marriage_family_private_query_sequence;
                 connected = write_frame(
