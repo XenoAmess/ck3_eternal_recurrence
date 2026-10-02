@@ -512,6 +512,26 @@ class GameplayBridgeService:
             )
         return result
 
+    def submit_player_religion_conversion_private_v1(
+        self, *, expected_revision: int, target_rite_id: int,
+        max_piety_cost_raw: int, action_id: str,
+    ) -> dict[str, object]:
+        """Submit a caller-selected paid target; native ACK remains pending."""
+        submit = getattr(self.driver, "submit_player_religion_conversion_private_v1", None)
+        if not callable(submit):
+            raise UnsupportedStepError("selected backend cannot submit player religion conversion")
+        return submit(expected_revision=expected_revision, target_rite_id=target_rite_id,
+                      max_piety_cost_raw=max_piety_cost_raw, action_id=action_id)
+
+    def query_player_religion_conversion_result_private_v1(
+        self, *, expected_revision: int, request_id: str, action_id: str,
+    ) -> dict[str, object]:
+        """Read actual material associated with an owning request/action pair."""
+        read = getattr(self.driver, "query_player_religion_conversion_result_private_v1", None)
+        if not callable(read):
+            raise UnsupportedStepError("selected backend cannot read player conversion results")
+        return read(expected_revision=expected_revision, request_id=request_id, action_id=action_id)
+
     def capabilities(self) -> dict[str, object]:
         return self.driver.capabilities()
 

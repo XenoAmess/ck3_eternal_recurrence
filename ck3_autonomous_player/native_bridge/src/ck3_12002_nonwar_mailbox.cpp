@@ -162,6 +162,7 @@ void RegisterNonwarMailboxExecutorsV1(
 #endif
 #if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
   environment.permitted_executor_religion_conversion12002 = executors.religion_conversion;
+  environment.permitted_executor_religion_conversion_action12003 = executors.religion_conversion_action;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
   environment.permitted_executor_religion_doctrines12002 = executors.religion_doctrines;

@@ -872,6 +872,23 @@ std::string SerializeCampaignRootContextV1(
     }
     output.push_back('}');
   }
+  output += ",\"player_monthly_piety_v1\":";
+  if (!available) {
+    output += "null";
+  } else if (!context.player_monthly_piety_v1.has_value()) {
+    output += "{\"status\":\"unavailable\",\"value\":null,"
+              "\"unavailable_reason\":\"monthly_piety_unavailable\"}";
+  } else {
+    output += "{\"status\":\"available\",\"value\":{\"raw\":";
+    if (!AppendNumber(output, context.player_monthly_piety_v1->raw)) {
+      return {};
+    }
+    output += ",\"scale\":";
+    if (!AppendNumber(output, context.player_monthly_piety_v1->scale)) {
+      return {};
+    }
+    output += "},\"unavailable_reason\":null}";
+  }
   output += ",\"player_health\":";
   if (!context.player_health.has_value()) {
     output += "null";

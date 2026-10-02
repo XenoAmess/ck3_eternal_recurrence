@@ -9,6 +9,7 @@
 #endif
 #if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_religion_conversion_mailbox.hpp"
+#include "xar_bridge/ck3_12003_religion_conversion_action_mailbox.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
 #include "xar_bridge/religion_doctrine12002_mailbox.hpp"
@@ -112,6 +113,9 @@ namespace xar::ck3_12002 {
 // One worker owns these existing domain ledgers across MCP reconnections.
 struct NonwarPrivateState12002 {
   std::uint64_t faction_query_sequence = 0;
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  PlayerReligionConversionActionMailboxState12003 religion_conversion_action{};
+#endif
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
   CouncilTransportState12002 council{};
 #endif

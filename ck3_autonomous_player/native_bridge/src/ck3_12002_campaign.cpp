@@ -758,6 +758,35 @@ bool CouncilScopeIsAdmitted(const ObservationV1 &output) noexcept {
              flags.end();
 }
 
+// Exact Crozier numeric GetPietyBalance entry. The engine reads Character* at
+// scope+0 and tag0 at+8; the remaining bytes are only our local zero storage.
+constexpr std::uintptr_t kMonthlyPietyNumericRva = 0x2696F40;
+
+bool ReadMonthlyPiety(const CampaignRootNativeEnvironmentV1 &environment,
+                      void *character, game::FixedPointValue &output) noexcept {
+  if (environment.monthly_piety == nullptr) {
+    return false;
+  }
+  alignas(void *) std::byte scope[16]{};
+  std::memcpy(scope, &character, sizeof(character));
+  std::int64_t raw = 0;
+#if defined(_MSC_VER)
+  __try {
+    if (environment.monthly_piety(scope, &raw, nullptr) != &raw) {
+      return false;
+    }
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+#else
+  if (environment.monthly_piety(scope, &raw, nullptr) != &raw) {
+    return false;
+  }
+#endif
+  output = {raw, 100'000};
+  return true;
+}
+
 bool ReadObservation(const CampaignRootNativeEnvironmentV1 &environment,
                      const CampaignRootAccessV1 &access,
                      ObservationV1 &output,
@@ -861,6 +890,8 @@ CampaignRootNativeEnvironmentV1 BindCampaignRootNativeEnvironmentV1(
   output.script_identifier_name = reinterpret_cast<
       NativeCampaignRootScriptIdentifierNameV1>(
       module_base + kCampaignRootScriptIdentifierNameRva);
+  output.monthly_piety = reinterpret_cast<decltype(output.monthly_piety)>(
+      module_base + kMonthlyPietyNumericRva);
   BindNonwarMetrics12002(output, module_base);
   BindNonwarCouncil12002(output, module_base);
   BindNonwarRealm12002(output, module_base);
@@ -956,11 +987,17 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
       SetUnavailable(output, "player_character_generation_mismatch");
       return game::ReadCampaignRootContextResultV1::unavailable;
     }
+    game::FixedPointValue first_piety{};
+    const bool first_piety_available =
+        ReadMonthlyPiety(environment, first.player_character, first_piety);
     failure = "internal_error";
     if (!ReadObservation(environment, access, second, failure)) {
       SetUnavailable(output, failure);
       return game::ReadCampaignRootContextResultV1::unavailable;
     }
+    game::FixedPointValue second_piety{};
+    const bool second_piety_available =
+        ReadMonthlyPiety(environment, second.player_character, second_piety);
     game::CampaignRootFrameV1 after{};
     if (!access.capture_frame(access.context, after) || after != before ||
         second != first) {
@@ -974,6 +1011,10 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     output.player_character_alive = first.player_character_alive;
     output.player_monthly_gold_income = {
         first.metrics.monthly_gold_income_raw, 100'000};
+    if (first_piety_available && second_piety_available &&
+        first_piety == second_piety) {
+      output.player_monthly_piety_v1 = first_piety;
+    }
     output.player_health = {first.metrics.health_raw, 100'000};
     output.player_legitimacy_v1 = std::move(first.metrics.legitimacy);
     output.player_max_monthly_gold_maintenance_v1 =

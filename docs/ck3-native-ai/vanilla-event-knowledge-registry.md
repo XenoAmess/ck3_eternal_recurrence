@@ -1,5 +1,14 @@
 # CK3 1.19.0.6 原版事件知识 Registry
 
+## 2026-10-03：a391 生产选择原20，后置保留已排队19
+
+ROOT纯Python sourcea391c881、native/env2c435dcb/v23/PID6280，通过已发布同一consumer实际消费原`feast.7101`/20。有限closed `m2-events/robert-feast7101-a391c881-v23-actual-select-01/result.json`：before native25/public2、actualexact5scopes/root-host-root_scope29829、soleauthored/rendered1、native0shownenabled，既有25项registry checks全true。一次 **API1/native0**，独立native26/public3证明old20advanced与同Robert29829/ordinaryepisode/暂停raw53222952。后置 **activeevent仍是已排队19/basic2options**，不是null；这个包没有19的typedkey，不猜它的原版定义，不以instance顺序推断新source，再由ROOT现成formalconsumer读实际19。
+
+独立暂停before/after **stress7、gold105813299、prestige256705850、piety41357500**全部不变（资源rawscale100000），因此不把tool包装`event_selected_material_recorded`写成奖励材料。真实rankuphelper conditionaleffect非空，但这里没有trait/XP读回，也不能从unchangedstress认定没有成长；show_as_tooltip disburse仍与activity.on_complete实际奖励分开。Genericmetric/profileNone/unavailable、helpernaturalprovenancefalse、newcreditfalse均原样，未伪造通用rank/rewardobserver支持。M6 Hostedterminal有其独立专题/包，不从选择old20gone借信用。
+
+本阶段status **production-live primitive**，0新day/0新M2credit，原M2complete保持；ROOT下一正常回合/pairedsave另闭合后再追加，不从这次same-date selection声明next已完成。唯一本次finite19项判读在 `m2-events/actual-robert-feast7101-blocker-01/actual-a391c881-v23-closed/REPORT-FIELDS.json`，仅读closed actual body，没有SDK/Git/旧tests或源码变化。此前static唯一testGREEN保留；child仅将stdoutpin从内存LF改为真实CRLF文件SHA A0D4136D1E95AF97837A81CA361F8E8D5B55089959384472800E2534D7C0E670，测试、日志内容与source均未重跑或改动。
+
+
 ## 2026-10-03：6003后正式13天，新20 `feast.7101` 的实际效果边界
 
 ROOT source/native/env2c435dcb/PID6280 的closed normal30 actual推进 **13天**：life-advance turn2+3、turn6+3、turn7+7，从53222640至53222952，正常pairedcheckpoint **h4187**、save86097647B/SHA19660902DF72FD0E51934AC6EFACE446DCF750C050E9E28C6D67989206E697E1，driver50310947B/SHACB7C0017B00CF8160BE9409CB25DA615EF3941A979E44132EA577D51E9F3340E/history4187。原6003正式next/save成立；actualnatural列表中turn3已有marriage_interaction.0010/18消费、old18gone/samepausedframe/空效果无材料，turn8是新20notready，不写成两个已登记自然选项，也不猜未captured19。Family提交及结果属于Familyowner；本package没有新day/M2credit，中央已计Robert3276/resume123/day03+28。

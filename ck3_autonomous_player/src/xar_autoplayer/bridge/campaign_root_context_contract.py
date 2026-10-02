@@ -281,6 +281,7 @@ _UNAVAILABLE_NULL_FIELDS: Final = {
     "player_health",
     "player_legitimacy_v1",
     "player_max_monthly_gold_maintenance_v1",
+    "player_monthly_piety_v1",
     "player_domain_size",
     "player_domain_limit",
     "player_targeting_faction_count",
@@ -373,6 +374,20 @@ def _optional_max_gold_maintenance_v1(value: object) -> dict[str, object]:
             }):
         return dict(row)
     raise ValueError("max gold maintenance observation is invalid")
+
+
+def _optional_monthly_piety_v1(value: object) -> dict[str, object]:
+    name = "player_monthly_piety_v1"
+    row = _exact_object(value, _LEGITIMACY_FIELDS, name)
+    if row.get("status") == "available":
+        amount = _fixed_point(row.get("value"), name + ".value")
+        if row.get("unavailable_reason") is not None:
+            raise ValueError("available monthly piety observation is invalid")
+        return {"status": "available", "value": amount, "unavailable_reason": None}
+    if (row.get("status") == "unavailable" and row.get("value") is None
+            and row.get("unavailable_reason") == "monthly_piety_unavailable"):
+        return dict(row)
+    raise ValueError("monthly piety observation is invalid")
 
 
 def _optional_positive_int32(value: object, name: str) -> int | None:
@@ -945,13 +960,14 @@ def normalize_campaign_root_context_v1(
         minimum=1,
         maximum=2**64 - 1,
     )
-    if not isinstance(value, dict) or set(value) not in (
+    if not isinstance(value, dict) or set(value) - {"player_monthly_piety_v1"} not in (
         _FIELDS, _MATERIAL_FIELDS, _FINANCE_FIELDS, _ALL_MATERIAL_FIELDS
     ):
         raise ValueError("campaign_root_context has invalid v1 fields")
     frame = value
     material_present = "player_legitimacy_v1" in frame
     finance_present = "player_max_monthly_gold_maintenance_v1" in frame
+    piety_present = "player_monthly_piety_v1" in frame
     if frame.get("schema_version") != 1:
         raise ValueError("campaign_root_context.schema_version must be 1")
     status = frame.get("status")
@@ -1076,6 +1092,10 @@ def normalize_campaign_root_context_v1(
     player_max_monthly_gold_maintenance_v1 = (
         _optional_max_gold_maintenance_v1(frame.get("player_max_monthly_gold_maintenance_v1"))
         if finance_present else None
+    )
+    player_monthly_piety_v1 = (
+        _optional_monthly_piety_v1(frame.get("player_monthly_piety_v1"))
+        if piety_present else None
     )
     player_domain_size = _int(
         frame.get("player_domain_size"),
@@ -1235,6 +1255,8 @@ def normalize_campaign_root_context_v1(
            if material_present else {}),
         **({"player_max_monthly_gold_maintenance_v1": player_max_monthly_gold_maintenance_v1}
            if finance_present else {}),
+        **({"player_monthly_piety_v1": player_monthly_piety_v1}
+           if piety_present else {}),
         "player_domain_size": player_domain_size,
         "player_domain_limit": player_domain_limit,
         "player_targeting_faction_count": player_targeting_faction_count,

@@ -847,6 +847,8 @@ if(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_conversion_cost.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_conversion_terms.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_conversion_mailbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_religion_conversion_action_v1.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_religion_conversion_action_mailbox.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_conversion_faith.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_conversion_choices_mailbox.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_conversion_gates.cpp"

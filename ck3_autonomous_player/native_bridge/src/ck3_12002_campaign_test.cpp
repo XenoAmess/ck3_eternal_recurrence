@@ -1,4 +1,6 @@
 ﻿#include "xar_bridge/ck3_12002_campaign.hpp"
+#include "xar_bridge/ck3_12003.hpp"
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_nonwar_metrics.hpp"
 #include "xar_bridge/ck3_12002_nonwar_council.hpp"
 #include "xar_bridge/ck3_12002_nonwar_realm.hpp"
@@ -47,6 +49,11 @@ std::string NonAsciiFlag() {
 struct Fixture;
 Fixture *g_fixture = nullptr;
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+// Owned native-memory blobs intentionally add alignment padding.
+#pragma warning(disable : 4324)
+#endif
 struct Fixture {
   static constexpr std::int32_t kPlayerCharacterId = 0x02000001;
   static constexpr std::int32_t kImmediateLiegeId = 0x03000002;
@@ -165,6 +172,8 @@ struct Fixture {
   bool monthly_income_available = true;
   std::int64_t monthly_income_raw = 570'772;
   std::uint32_t monthly_income_calls = 0;
+  std::int64_t monthly_piety_raw = -125'000;
+  std::uint32_t monthly_piety_calls = 0;
   bool health_available = true;
   std::int64_t health_raw = 275'000;
   std::uint32_t health_calls = 0;
@@ -508,6 +517,10 @@ struct Fixture {
   }
 };
 
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
+
 void *__fastcall ResolvePrimaryTitle(void *character) noexcept {
   if (g_fixture == nullptr) {
     return nullptr;
@@ -547,6 +560,26 @@ std::int64_t *__fastcall ResolveMonthlyGoldIncome(
   }
   ++g_fixture->monthly_income_calls;
   *output = g_fixture->monthly_income_raw;
+  return output;
+}
+
+// Synthetic engine output using the observed Crozier numeric ABI. No live piety
+// observation is represented by this offline fixture.
+std::int64_t *__fastcall ResolveMonthlyPiety(
+    const void *scope, std::int64_t *output, void *optional_tooltip) noexcept {
+  if (g_fixture == nullptr || scope == nullptr || output == nullptr ||
+      optional_tooltip != nullptr) {
+    return nullptr;
+  }
+  void *character = nullptr;
+  std::uint8_t tag = 0xff;
+  std::memcpy(&character, scope, sizeof(character));
+  std::memcpy(&tag, static_cast<const std::byte *>(scope) + 8, sizeof(tag));
+  if (character != Address(g_fixture->player_character) || tag != 0) {
+    return nullptr;
+  }
+  ++g_fixture->monthly_piety_calls;
+  *output = g_fixture->monthly_piety_raw;
   return output;
 }
 
@@ -1516,9 +1549,64 @@ bool TestStateChangedAndUnsupportedBuild() {
          ClearedUnavailable(result, "unsupported_build");
 }
 
+bool TestMonthlyPietyOnly(const char *wire_path) {
+  Fixture fixture;
+  auto environment = Environment(fixture);
+  environment.monthly_piety = &ResolveMonthlyPiety;
+  xar::game::CampaignRootContextV1 result{};
+  const auto observed = xar::ck3_12002::ReadCampaignRootContextV1(
+      environment, Access(fixture), {41}, result);
+  // Distinct synthetic markers, not additional balance/fulfillment queries.
+  constexpr std::int64_t piety_balance_marker = 8'123'456;
+  constexpr std::int64_t spiritual_fulfillment_marker = 470'000;
+  if (observed != xar::game::ReadCampaignRootContextResultV1::available ||
+      !result.readiness.ready || result.snapshot_revision != 41 ||
+      result.date_raw != 12'345 ||
+      result.player_character_id != Fixture::kPlayerCharacterId ||
+      result.player_monthly_piety_v1 !=
+          xar::game::FixedPointValue{-125'000, 100'000} ||
+      fixture.monthly_piety_calls != 2 || fixture.capture_calls != 2 ||
+      !result.player_monthly_gold_income ||
+      result.player_monthly_piety_v1->raw ==
+          result.player_monthly_gold_income->raw ||
+      result.player_monthly_piety_v1->raw == piety_balance_marker ||
+      result.player_monthly_piety_v1->raw == spiritual_fulfillment_marker) {
+    std::cerr << "monthly piety signed current actor production read failed\n";
+    return false;
+  }
+  const xar::game::AdapterDescriptor descriptor{
+      "ck3-1.20.0.3-msvc-x64", "1.20.0.3",
+      xar::ck3_12003::kExecutableSha256, "fixture-only", {}};
+  const auto wire = xar::game::RenderCrozierBuildIdentity(
+      xar::ck3_12002::SerializeCampaignRootContextV1(result), descriptor);
+  const std::string_view expected =
+      "\"player_monthly_piety_v1\":{\"status\":\"available\","
+      "\"value\":{\"raw\":-125000,\"scale\":100000},"
+      "\"unavailable_reason\":null}";
+  if (wire.empty() || wire.find(expected) == std::string::npos ||
+      wire.find("1.20.0.3") == std::string::npos ||
+      wire.find(xar::ck3_12003::kExecutableSha256) == std::string::npos) {
+    std::cerr << "monthly piety production serializer/render wire failed\n";
+    return false;
+  }
+  std::ofstream destination(wire_path, std::ios::binary);
+  if (!destination) {
+    return false;
+  }
+  destination << wire << '\n';
+  if (!destination.good()) {
+    return false;
+  }
+  std::cout << "monthly-piety-only signed production reader/wire passed\n";
+  return true;
+}
+
 } // namespace
 
 int main(int argc, char **argv) {
+  if (argc == 3 && std::string_view(argv[1]) == "--monthly-piety-only") {
+    return TestMonthlyPietyOnly(argv[2]) ? 0 : 1;
+  }
   if (!TestAvailableAndSerializer()) {
     std::cerr << "available reader/serializer fixture failed\n";
     return 1;

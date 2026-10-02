@@ -199,6 +199,8 @@ struct CampaignRootContextV1 {
   std::int32_t native_selected_game_rule_token_count = 0;
   CampaignRootReadinessV1 readiness;
   std::string unavailable_reason;
+  // Current total monthly net piety. Optional material never changes root readiness.
+  std::optional<FixedPointValue> player_monthly_piety_v1;
 
   friend bool operator==(const CampaignRootContextV1 &,
                          const CampaignRootContextV1 &) = default;
@@ -295,6 +297,9 @@ using NativeCampaignRootMonthlyGoldIncomeV1 =
     std::int64_t *(XAR_CAMPAIGN_ROOT_FASTCALL *)(
         std::int64_t *output, void *character, void *optional_breakdown,
         void *evaluation_context);
+using NativeCampaignRootMonthlyPietyV1 =
+    std::int64_t *(XAR_CAMPAIGN_ROOT_FASTCALL *)(
+        const void *scope, std::int64_t *output, void *optional_tooltip);
 using NativeCampaignRootMaxMonthlyMaintenanceV1 =
     std::int64_t *(XAR_CAMPAIGN_ROOT_FASTCALL *)(std::int64_t *output,
                                                void *character);
@@ -347,6 +352,7 @@ struct CampaignRootNativeEnvironmentV1 {
   NativeCampaignRootProvinceHolderCharacterIdV1
       province_holder_character_id = nullptr;
   NativeCampaignRootScriptIdentifierNameV1 script_identifier_name = nullptr;
+  NativeCampaignRootMonthlyPietyV1 monthly_piety = nullptr;
 };
 
 using CaptureCampaignRootFrameV1 = bool (*)(

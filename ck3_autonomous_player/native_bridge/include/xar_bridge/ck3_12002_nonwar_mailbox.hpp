@@ -41,6 +41,7 @@ struct NonwarMailboxExecutorsV1 {
   ck3_11906::MainThreadQueryExecutorV1 rite_governance = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 clergy = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 religion_conversion = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 religion_conversion_action = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 religion_doctrines = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 rite_members = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 religion_conversion_choices = nullptr;

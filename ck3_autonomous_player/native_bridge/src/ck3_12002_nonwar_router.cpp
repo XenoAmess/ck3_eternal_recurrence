@@ -146,6 +146,7 @@ void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &out) noexcept 
 #endif
 #if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
   out.religion_conversion = &ExecutePlayerReligionConversionTermsMailbox12002;
+  out.religion_conversion_action = &ExecutePlayerReligionConversionActionMailbox12003;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
   out.religion_doctrines = &ExecutePlayerReligionDoctrinesMailbox12002;
@@ -273,6 +274,7 @@ bool IsNonwarPrivateStep12002(std::string_view step) noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
   if (IsPlayerReligionConversionTermsPrivateStep12002(step)) return true;
+  if (IsPlayerReligionConversionActionPrivateStep12003(step)) return true;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
   if (IsPlayerReligionDoctrinesPrivateStep12002(step)) return true;
@@ -420,6 +422,9 @@ bool HandleNonwarPrivate12002(
 #endif
 
 #if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+    if (IsPlayerReligionConversionActionPrivateStep12003(step))
+      return HandlePlayerReligionConversionActionPrivate12003(state.religion_conversion_action,
+          native, mailbox, published, revision, step, payload, request_id, serialized, failure);
     if (IsPlayerReligionConversionOutcomePrivateStep12002(step))
       return HandlePlayerReligionConversionOutcomePrivate12002(native, mailbox, published, revision,
           step, payload, request_id, serialized, failure);

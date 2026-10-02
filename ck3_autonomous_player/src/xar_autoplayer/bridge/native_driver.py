@@ -3022,6 +3022,30 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def submit_player_religion_conversion_private_v1(
+        self, *, expected_revision: int, target_rite_id: int,
+        max_piety_cost_raw: int, action_id: str,
+    ) -> dict[str, object]:
+        """Submit one explicit ordinary paid conversion through its native owner."""
+        from .player_religion_conversion_private_action_v1 import submit_player_religion_conversion_private_v1
+
+        return submit_player_religion_conversion_private_v1(
+            self, expected_revision=expected_revision, target_rite_id=target_rite_id,
+            max_piety_cost_raw=max_piety_cost_raw, action_id=action_id,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_player_religion_conversion_result_private_v1(
+        self, *, expected_revision: int, request_id: str, action_id: str,
+    ) -> dict[str, object]:
+        """Read fresh conversion material for the retained owning submission."""
+        from .player_religion_conversion_private_action_v1 import query_player_religion_conversion_result_private_v1
+
+        return query_player_religion_conversion_result_private_v1(
+            self, expected_revision=expected_revision, request_id=request_id, action_id=action_id,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
     def query_player_religion_conversion_outcome_private_v1(
         self, *, expected_revision: int, target_rite_id: int,
     ) -> dict[str, object]:

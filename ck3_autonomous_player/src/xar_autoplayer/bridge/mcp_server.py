@@ -1653,6 +1653,26 @@ def create_server(
                 expected_revision=expected_revision, target_rite_id=target_rite_id,
             )
 
+        @server.tool()
+        def ck3_convert_player_religion_private_v1(
+            expected_revision: int, target_rite_id: int,
+            max_piety_cost_raw: int, action_id: str,
+        ) -> dict[str, object]:
+            """Submit one explicit ordinary paid target and return its pending record."""
+            return service.submit_player_religion_conversion_private_v1(
+                expected_revision=expected_revision, target_rite_id=target_rite_id,
+                max_piety_cost_raw=max_piety_cost_raw, action_id=action_id,
+            )
+
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_religion_conversion_result_private_v1(
+            expected_revision: int, request_id: str, action_id: str,
+        ) -> dict[str, object]:
+            """Read actual later conversion material for the retained native request."""
+            return service.query_player_religion_conversion_result_private_v1(
+                expected_revision=expected_revision, request_id=request_id, action_id=action_id,
+            )
+
     if getattr(driver, "allow_private_active_scheme_sway_completion_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_active_scheme_sway_completion_private_v1(
@@ -3820,7 +3840,7 @@ def parser() -> argparse.ArgumentParser:
     )
     result.add_argument(
         "--private-player-religion-conversion-terms-query", action="store_true",
-        help="enable private native conversion terms for an explicitly selected Rite",
+        help="enable private conversion terms and explicit paid target submission/results",
     )
     result.add_argument(
         "--private-active-scheme-sway-completion-query", action="store_true",
