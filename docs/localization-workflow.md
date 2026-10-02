@@ -16,6 +16,29 @@
 release-localization audit。该 audit 只允许在明确的 ZhongGuo 发布 tag 或人工 release workflow dispatch 中执行。历史版本已经
 留下 audit snapshot 时，开发中的中英增量可以暂时使它落后；等所有者明确进入发布阶段后，再集中翻译、重建 snapshot 并验收。
 
+## 实际语言集合与格式认证
+
+2026-10-03 的独立产品发布补充了可复用方法：先从目标 CK3 安装的 `launcher/settings-layout.json` 读取
+`name=language`、`provider=lang` 的 `options[].value`，记录文件 SHA-256，并绑定当次游戏版本、build 和 EXE 摘要。
+将这些 `l_<language>` 选项与原版 `game/localization/<language>/` 目录及实际 `.yml` header 逐项核对；安装更新或
+集合变化时重新审阅，不从本指南旧列表推定支持范围。`pdx_settings.txt` 仅保存 userdir 当前选择，不能据此枚举全部语言；
+`game/localization/jomini/` 是引擎内容目录，不能把目录名或其账户界面翻译当作 CK3 游戏语言。
+
+复用现有 [候选生成器及 parser](../tools/translate_localization_minimax.py) 的 `parse_ck3_localization` 和
+`assert_protected_tokens`，由产品校验器补齐集合及业务合同，不复制新的通用解析工具：
+
+1. 逐文件验证 UTF-8 BOM、精确 `l_<language>:` header、条目版本字段、双引号/转义和结构；检查单文件及同语言跨文件重复键。
+2. 聚合同语言键集，再与基准及产品声明的预期集合精确比较；用既有 token 校验保护 scope、变量、图标、格式及转义。
+3. 产品显式声明刻意为空的隐藏 key 集合，要求这些值在每种语言保持真正的 `""`；可见文案另按非空及翻译合同审阅。
+   不把合法空键当作漏译，不送入翻译候选，也不能用英文占位填充它们。
+4. 收据记录语言来源/摘要、文件和键集覆盖、检查结果及未覆盖项。格式通过使用 `format-certified`，不能据此将
+   `live_verified` 设为 true，或宣称母语审核、游戏内布局与截断通过；实机仍按各产品授权和验收计划分别记录。
+
+来源为 [More Tenets Slots 本地化报告](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/b10d50faac3c8462354cfa235ea62d72265ee54d/docs/localization-coverage.md)
+及其 [产品校验器](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/b10d50faac3c8462354cfa235ea62d72265ee54d/dev_tools/validate_and_build.py)。
+该产品的用户明确规定后续只用 `simp_chinese` 实机、其他语言只做格式认证，历史英文记录保留；这是该产品约束，
+不是框架所有 mod 的新政策。这里只沉淀语言发现及认证边界，产品译文、隐藏键定义、数量和发布配置留在独立仓库。
+
 ## 一、检查环境与项目
 
 1. 检查环境变量 `MINIMAX_API_KEY` 是否存在。
