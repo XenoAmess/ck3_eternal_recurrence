@@ -39,6 +39,18 @@ flowchart LR
     GUI[Named GetSplashItem reflection binding] -. unresolved thunk mapping .-> Stable
 ```
 
+## Frozen n2 option budget and layout refusal
+
+The later [nullable-scope n2 epoch](nullable-saved-character-scope-1.20.0.3.md) retains a 64-option budget. Read-only review used the frozen reader at `C:/cb123n2`, SHA-256 `c858d713a42c4959485a8384b6b6002d87dca83c8d63319520c6520e7bc90263`, rather than treating the latest source as the loaded DLL. `ValidVector` requires `0 <= count <= capacity <= 64` for both rendered and authored option vectors, with non-null data when count is positive (reader lines 226–230 and 678–693). Even a smaller count fails if reserved capacity exceeds 64. The Python context list and profile selection ordinal also remain bounded at 64.
+
+Ordinary-window admission requires a non-null object and the exact bound `CEventWindow` primary vtable (lines 757–765). This reader does not route by GUI type names. A failed ordinary-window check returns the merged `event_window_layout_invalid` reason (lines 949–956): possible failures include that object/type gate, either option-vector gate, owner/index/Boolean checks, authored-option pointers, duplicate indices, strings, effect indicators or allocation. The shared data decoder is also used by the splash branch, which reports its own layout-invalid reason.
+
+An authored set of 70 options exceeds this frozen reader's support if the matched native vector carries that count. The merged reason alone cannot establish which predicate failed first, or distinguish a type/layout mismatch from that budget. Nor does `window_match_count=0` establish absence of a matching window: the decoder increments a temporary candidate before option checks (line 674), while the count is committed to the published output only after layout checks pass (line 978). An early layout refusal can therefore publish zero after reaching an instance match.
+
+The outer `native_event_query_verified` status confirms the guarded query completed; an inner unavailable context still supplies no verified options or decision semantics. Layout refusal remains outside the rendering-wait allowlist. No authored-count or synthetic-enabled fallback follows. A separately reviewed [desktop semantic action](reviewed-desktop-semantic-action-mcp.md) has its own ACK and independent old-instance/state readback contract; it does not qualify the native preview or remove the original RED.
+
+The ignored review receipt is `_runtime/native-n2-event-layout-budget-review-001.json`, SHA-256 `5324234c77975667a184ca6a2be3650c9ce00b6d700352fe630bde35b06123c1`. This is frozen-source interpretation, with no new tests, memory reads, native build or live operation. Existing n2 qualification is unchanged. Custom event/GUI definitions, choices and private artifacts remain in the independent project; the reusable budget and diagnostic limits belong here.
+
 ## Bounded read-only rendering wait
 
 The generic campaign policy previously stopped on the first unavailable presentation. It now waits for at most `CampaignConfig.postcondition_timeout_seconds` (default 20 seconds), including slow query/snapshot calls, only when a verified query for the bound instance returns precisely `event_window_not_materialized` or `event_splash_transition_in_progress`. Each retry obtains a guarded native snapshot, requires actual paused state and uses its fresh revision. A changed event is returned to the outer loop for a new identity binding; no selection is replayed.
