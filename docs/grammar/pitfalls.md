@@ -246,6 +246,14 @@ CK3 1.20.0.3 / build 25652598 的原版 `game/common/scripted_effects/00_decisio
 候选的字节、ZIP CRC 与字段证明不代表引擎已加载或名称已显示；冷载后应另验健康对照、坏名
 consumer 与新创建路径。尚未观察具体渲染对象，也不能把同类日志的全部错误唯一归因于这些旧值。
 
+**保存头与文本 payload 分开验证。** 2026-10-02 的正常闭合保存头部回执观察到：
+opaque `SAV` 首行可以不是 `SAVtxt`，其后仍有文本 `meta_data`，容器为单个 deflated `gamestate`。
+头部回执 SHA-256 为 `1eeb7e27632dcd9601fdb1a97a8294ab108c6c1d257dda50dd46d5166824e167`；具体首行允许值及私有原文留独立项目。
+完整 ZIP CRC 和已读文本 metadata/player 块不能证明整个 payload 已经通过严格 UTF-8 解码。
+离线工具应保留 prefix 原字节，仅支持实际核验的完整首行形状，并另验严格 UTF-8 payload、
+root/date/player、正常 parent/hash 和允许字段范围；不能由一个已观察头部外推任意 `SAV` 或二进制支持。
+合成 producer 回归证明这些检查可执行，仍不等于真实存档迁移、引擎冷读或续链已经通过。
+
 ### 数值式的上下界与机制资格（2026-10-02）
 
 CK3 1.20.0.3 原版 `game/common/script_values/_script_values.info:27–34` 明确 `value` 覆盖累计值、
