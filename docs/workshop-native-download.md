@@ -5,7 +5,9 @@ AppID and Workshop item. It starts an independent Python process so its manual
 callback queue cannot share ownership with a publication or preview query.
 The tool requires an existing authorized Steam session. It does not start Steam
 or CK3, change online/offline mode, subscribe to an item, create an item, publish,
-or move/delete any cache. The download uses normal priority.
+or move/delete any cache. The download uses normal priority. It now has a
+**first independent live acceptance** for item 3182367229, documented below;
+other targets and failure paths retain their existing static-test boundary.
 
 ## MCP parameters and CLI
 
@@ -91,8 +93,9 @@ Product mechanism, material and publication receipts remain in
 [`ck3_mod_more_tenant_slots`](https://github.com/XenoAmess/ck3_mod_more_tenant_slots).
 Its specific migration evidence is
 [`docs/migration-report.md`](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/master/docs/migration-report.md);
-the independent project's final publication report must record the first live
-download and exact manifest result. The reusable download/callback contract,
+the independent project's
+[v10 publication report](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/master/docs/workshop/publication-v10.md)
+records the first live download and exact manifest result. The reusable download/callback contract,
 implementation and synthetic fixtures belong in this framework.
 
 Focused static validation covers exact/foreign/failed/malformed callbacks,
@@ -110,3 +113,32 @@ this framework work package. Static results cannot claim public release success.
 
 Run from `ck3_workshop_mcp` with PYTHONPATH pointing to its `src` and the official
 MCP SDK installed. The bounded suite passes 35 tests.
+
+## First independent live acceptance (2026-10-03)
+
+The coordinating publication root reported this tool's first real download
+after the native existing-item update at `2026-10-02T22:00:32Z`. The caller
+preserved/moved the exact old 13-file cache before invoking the isolated native
+worker; the MCP itself did not move or delete it. Callback 3406 matched
+AppID 1158310, item 3182367229 and EResult 1. Completion took 14.398 seconds;
+GetItemInstallInfo returned the exact expected path, size-on-disk 1,008,047
+bytes and timestamp `1790978434`. State flags were 5: Subscribed and Installed
+true; NeedsUpdate, Downloading and DownloadPending false. The Subscribed flag
+was observed existing state, not a SubscribeItem action.
+
+The publishing caller then passed the returned installation tree and frozen
+release manifest to `_validate_manifest_tree`: the exact inventory, sizes and
+SHA-256 of all **46 files** passed. This closes the download plus content gate
+for that product version. The raw MCP report, manifest, cache preservation and
+publication evidence remain in
+[publication-v10.md](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/master/docs/workshop/publication-v10.md)
+in the independent project. Only the root-provided method/results and source
+link are enriched here; no machine path or product artifact is imported.
+
+This live result covers the exact installed DLL hash above and this subscribed
+item's successful fresh download. Unsubscribed temporary-cache behavior,
+timeouts, failed callbacks and child failure remain statically tested only.
+The implementation author performed no Steam/game/desktop action for this
+documentation package. Public metadata/media/notes and final Steam offline
+restoration are distinct gates, with their final status owned by the product
+publication report.

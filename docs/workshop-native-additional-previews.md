@@ -2,8 +2,10 @@
 
 The native bridge now reads, appends, replaces and removes the additional image
 strip of an existing item. This is separate from `SetItemPreview` (the main
-thumbnail) and BBCode `[img]` links. This package is **static-ready**: its new
-query and setters have not yet been called against a live Steam session.
+thumbnail) and BBCode `[img]` links. Exact-item queries, replacement and append
+now have a **first independent live acceptance** for item 3182367229. Removal
+and other items retain their existing static-only boundary; see the live record
+below.
 
 ## Source and ownership decision
 
@@ -14,8 +16,10 @@ update the additional image strip. That capability also serves other mods, so
 the generic code, contract and tests belong to this framework. Product media,
 BBCode, image provenance and actual release facts stay in
 [ck3_mod_more_tenant_slots](https://github.com/XenoAmess/ck3_mod_more_tenant_slots).
-The product's `docs/workshop-publication-plan.md` and release evidence govern
-that publication; this document does not claim the mod is published.
+The product's publication plan and
+[v10 publication evidence](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/master/docs/workshop/publication-v10.md)
+govern that release. This framework record does not replace its product receipt
+or final offline-restoration gate.
 
 ## Read and freeze the existing strip
 
@@ -127,6 +131,37 @@ receipt and anonymously read image list. Download the public URLs and compare
 decoded pixels and order with the chosen source images; filenames and
 `EResult=1` are insufficient. Continue independent title, BBCode, full Change
 Notes, fresh subscription-cache and offline-restoration acceptance.
+
+## First independent live acceptance (2026-10-03)
+
+The coordinating publication root reported a successful existing-item update
+for More Tenets Slots(XA), AppID 1158310 / item 3182367229, at
+`2026-10-02T22:00:32Z`: native receipt `complete`, EResult 1 and no legal-agreement
+pause. The frozen one-image strip was replaced at index 0, then two images were
+appended. A new native query returned three previews with the intended order
+and original filenames. Anonymous CDN reads returned HTTP 200 for all three
+JPEGs and the new 640-pixel PNG thumbnail; downloaded bytes and decoded pixels
+matched the frozen selected files exactly.
+
+The same product acceptance separately verified all 46 fresh cache files and
+the anonymous BBCode / full bilingual Change Notes. The notes entry
+`1790978434` matched 2013 characters / 23 lines and SHA-256
+`009a95736c0a87d7fd4db4e9bfb592594a6d4e0b60b5556cec25ea01aa837754`.
+After the original changelog request returned 429, the publication root waited
+seven minutes and read the canonical same page with `?l=english&p=1` and an
+ordinary browser User-Agent, obtaining anonymous 200 and exact `verify_payloads`
+comparison. This is a recorded caller-side readback, not a new automatic retry
+or fallback capability in the native tool.
+
+Primary product receipt and raw evidence remain in
+[publication-v10.md](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/master/docs/workshop/publication-v10.md).
+No product media, machine paths or raw artifacts are copied into this framework.
+The implementation author only recorded the root's provided first-live facts;
+Steam actions were performed by that root while holding its screen lease.
+This acceptance covers fresh enumeration plus replace/append on this exact
+item/DLL. It does not promote removal, failure/timeout recovery or unrelated
+items to live-verified. Final Steam offline restoration remains separately
+required and must be recorded in the product's final release report.
 
 - [Valve ISteamUGC documentation](https://partner.steamgames.com/doc/api/ISteamUGC)
   defines query, preview setters and native image limits.

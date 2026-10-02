@@ -392,14 +392,16 @@ restart recovery, and inert real-provider capabilities.
 Existing-item additional image previews now have a read-only native query and
 optional hash-bound append/replace/remove plan fields. See the
 [additional preview contract](../docs/workshop-native-additional-previews.md).
-This extension is static-ready; its first live query and public media-order
-verification remain the responsibility of the publishing operator.
+Its first independent live query, replacement/append and anonymous media
+byte/pixel/order acceptance passed for item 3182367229; removal remains
+statically tested only. Exact source and product receipt are linked in the contract.
 
 Native create and update publication are both live-verified. An isolated
 `workshop_native_download` worker now handles the exact download callback and
 installation readback; see the [download contract](../docs/workshop-native-download.md).
-This new tool has focused static tests; its first live acceptance is recorded
-separately by the publishing operator. Earlier verified releases used Steam's
+The first independent live download and 46-file strict manifest acceptance
+passed for item 3182367229 and are linked in the contract. Other targets and
+failure paths retain their static-test boundary. Earlier verified releases used Steam's
 console for fresh downloads. Steam mode restoration still uses the client menu.
 Direct tools remain separate from the prototype WAL workflow.
 
