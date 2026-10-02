@@ -17,7 +17,10 @@ from ..construction_formal_consumer import (
 from ..environment import sha256_file, write_json_atomic
 from ..runtime import _process_identity
 from .driver import BridgeUnavailableError, StepPostconditionError
-from .construction_economic_value_v1 import authored_monthly_income_hundredths
+from .construction_economic_value_v1 import (
+    authored_existing_monthly_income_hundredths,
+    authored_monthly_income_hundredths,
+)
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
 from .version_identity import CK3_11906
 
@@ -118,9 +121,13 @@ def _candidate(
     gold = world.get("player_gold_raw")
     active = world.get("active_constructions")
     samples = world.get("legal_samples")
+    completed = world.get("completed_buildings")
     if not (type(gold) is int and isinstance(active, list)
             and isinstance(samples, list)):
         return None
+    inventory_observed = (world.get("completed_buildings_observed") is True
+                          and isinstance(completed, list))
+    completed_rows = completed if isinstance(completed, list) else []
     idle = {(row.get("barony_title_id"), row.get("province_id"))
             for row in active if isinstance(row, Mapping) and row.get("active") is False}
     choices = []
@@ -140,15 +147,37 @@ def _candidate(
             row.get("building_key"), exact_ck3_build=exact_ck3_build)
         if income is None or income <= 0:
             continue
-        choices.append((-income, costs[0], *(row[k] for k in TUPLE_KEYS),
-                        row["building_key"]))
+        occupants = [old for old in completed_rows if isinstance(old, Mapping)
+                     and all(old.get(k) == row[k] for k in (
+                         "barony_title_id", "province_id", "slot_index"))]
+        if len(occupants) > 1 or (not occupants and not inventory_observed):
+            continue
+        empty = not occupants
+        old_key = None if empty else occupants[0].get("building_key")
+        old_income = (0 if empty else authored_existing_monthly_income_hundredths(
+            old_key, exact_ck3_build=exact_ck3_build))
+        if old_income is None:
+            continue
+        delta = income - old_income
+        if delta <= 0:
+            continue
+        # Rank the direct authored increment, not the target's gross income.
+        # With equal increment/cost, keep the old building's noncash effects
+        # by using a truly observed empty slot. Coverage can remain bounded.
+        choices.append((-delta, costs[0], not empty,
+                        *(row[k] for k in TUPLE_KEYS), row["building_key"],
+                        income, old_income, old_key))
     if not choices:
         return None
-    negative_income, cost, *identity_and_key = min(choices)
-    *identifiers, building_key = identity_and_key
+    negative_delta, cost, occupied, *details = min(choices)
+    identifiers = details[:len(TUPLE_KEYS)]
+    building_key, income, old_income, old_key = details[len(TUPLE_KEYS):]
     return {**dict(zip(TUPLE_KEYS, identifiers)), "stock_gold_cost_raw": cost,
             "gold_before_raw": gold, "building_key": building_key,
-            "authored_monthly_income_hundredths": -negative_income}
+            "authored_monthly_income_hundredths": income,
+            "authored_monthly_income_delta_hundredths": -negative_delta,
+            "old_authored_monthly_income_hundredths": old_income,
+            "old_building_key": old_key, "slot_was_empty": not occupied}
 
 
 def query_construction_private(driver: object, *, expected_revision: int,

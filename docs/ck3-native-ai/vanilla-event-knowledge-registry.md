@@ -146,6 +146,118 @@ native `3` 的 wine-cellar 门、influence `+30` / ambitious AI `+50` 仅为隐�
 需各自独立观测，不从金币扣款推断。本包为 **static-ready**，保留原始 not_registered RED，
 没有新的实机选择、物质收益或 M2 credit；多选资格须在真实选择/材料/正常 next 消费后另行评估。
 
+## 2026-10-02：Robert 普通回合自然 `feast.7002` 材料与 next 消费
+
+`m7-robert/normal-30day-412-actual-01` 的实际 turn `2` 确认事件为 `feast.7002`，
+不是依据威望金额猜 key。当前 runtime 是 `production-source-41291bf2`；same ordinary episode
+`native-29829-2bc2d599f7f9`、玩家/root/host `29829`。原 typed 查询 available、
+instance `10`、calculated ID `5167002`、runtime ordinal `8318`、`date_raw=53220648`，
+三个 saved scopes 为 `activity/host/province`。basic authored count 与 typed rendered count
+均为 `1`；唯一 rendered/native `0/0` 的“我们将度过一段美好的时光！” shown/enabled，
+已有消费者以 API `1`、event instance `10`、expected public revision `5` 提交一次。
+原 natural-event/result SHA-256 为
+`7872B651BDC875CAF628CFBA26EF2FCE0C918F696AB6B4326ADA0036B86ED034`。
+
+复用上文 exact `.3` 原版来源、事件块及 `miniscule_prestige_gain` base `35`，
+没有新增 registry/策略或重跑 native/旧 fixture。独立 paused snapshot
+`native:22/public5 -> native:23/public6` 在相同 actor/date/episode 下，
+prestige raw `233259130 -> 236759130`、scale `100000`，实际增加 `3500000 = 35`；
+旧 instance 已消失，金币 raw `110659426` 保持不变。独立 material 的八项身份/后置检查
+全部为 true、`status=verified_change`，选择 ACK 本身不当作材料证据。
+
+```mermaid
+flowchart TD
+    S["唯一正常 Feast Start：host29829，独立活动 full83886111"] --> T["turn1 既有 life-advance +1day：自然出现 feast.7002 instance10"]
+    T --> Q["turn2 同帧 typed：三 scopes；sole rendered/native0 enabled"]
+    Q --> C["既有 source-bound sole route：API1 / instance10 / public5"]
+    C --> V["独立 same actor/date paused：旧实例消失；prestige +35"]
+    V --> N["turn3 原正式普通回合消费 clear modal 与新 prestige；正常 +9days"]
+    N --> F["同一 run 正常共39days，h4098 checkpoint；不是额外事件 day credit"]
+```
+
+正常来源可复现：唯一 Feast Start 在 `date_raw=53220624` 提交，独立 HostedPost
+native `18` 读出新活动 full ID `83886111`、host `29829`、type `activity_feast`，
+金币 raw `120659426 -> 110659426`，实际支付 `100`。其一次提取 sidecar 为
+`m6-feast/robert-feast/v19-412-live-01/actual-start-summary.json`
+（SHA `B5DE388D8AB00F5508844C8D4EB45635756AE5D8AF294A8DB8E0EC1DA50D068F`），
+原 Start packet `prepared/live/run-20261002T134742770290Z-start-fresh.json`
+SHA `8C51216129772276226C39F33415BF8C480208FE8B43B26A021AA94A14997B4F`。
+原版 passive callback 的 `.7002` 和 turn `1` 的正常一天推进后出现事件闭合这条自然来源；
+该 run 的记录中没有 console/forced-event step，也没有为 M2 构造事件。
+full `83886111` 属于独立 activity DTO 的身份链；event query 的 activity/province
+typed identities 仍为 unavailable，不能把外部 fullID 写进其 opaque payload。
+
+窗口分类保持可证边界：该 key 的 stock type 是 `activity_event`；当前 native reader
+`ck3_12002_event_window_context.cpp:822–842,1018–1062` 支持
+idler `+0x88 -> handler+0x3C8 -> ActivityWindow selected insert+0x188 -> open flag+0x7C8`
+读取同一 EventWindowData。实际 DTO 只给通用 provenance 与 `window_match_count=1`，
+没有输出 ordinary/splash/activity-insert 的 branch tag 或 window vtable。
+所以本次证明“活动事件被当前读器读取、选择并验证材料”，不另声称 DTO 独立证明了命中的
+activity-insert 分支；已成功决策无需为该报告新增诊断或 ABI gate。
+此前 V11 和 V13 cold-hidden window RED、root-assisted view 的历史边界保持原样，
+不能据本次正常后台消费宣布所有 cold 活动视图自动恢复完成。
+
+turn `3` 的普通 next 在 active_event 已清空、prestige raw 已为 `236759130` 的状态下
+执行 `life-advance`，`53220648 -> 53220864` 正常增加九天；后续 ordinary 回合仍继续。
+同一 run 总共 `39` 天，最终 paused `53221560`、h4098 checkpoint 大小 `85621047`，
+SHA `7708B4BD2D0ED05040185D15E2F88ECC29706F629D7A5E1D8E53C631CA56BA40`。
+这些天数已由 root/ledger 计入同一窗口，本专题不再增计。
+
+资格为该 exact key/三 scope/sole option 的 **production-live loop**。
+它可供 M2 的一个单选自然材料样本审阅，不能替代两次多选；已有 Murchad 同 key 样本的
+替代/实例去重由 ledger 决定，不自动双计或宣布 M2 complete。
+helper 的 `natural_provenance_verified=false`、`new_live_milestone_credit=false`
+保持未改，来源确认是此闭合包的独立 review。完整一次判读和报告字段在
+`artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-robert-normal30-natural-modal-01/`。
+
+## 2026-10-02：Robert `feast.2001` 的原版可选 `my_spouse`
+
+随后正常 `normal-90day-412-actual-01` 推进 `20` 天并停在真实 instance `11`：
+`date_raw=53222040`、native `53` / public `12`，Robert/root/host `29829`。
+该 key 已登记，basic authored count `5`、唯一 typed rendered/native `0/0` shown/enabled，
+API `1`；只有 saved-scope count/names/type coverage 三项检查失败，
+原因是出现第四个 typed character scope `my_spouse=34730`。
+保留未选择的真实 `registered_contract_projection_drift` RED：
+`m7-robert/normal-90day-412-actual-01/turn-004/natural-event/result.json`，SHA
+`A1C6DFFD311C42EAEA96A96C61DE5E022744AB6D822C2ED9B7EF5B9CFFCAF064`。
+root 已正常保存 h4106；修复不重新制造事件或重复推进该存档。
+
+当前原版仍匹配既有 event file SHA `F5820211444E7DBAF0A318ADF65BEBF4CA581D3A4E9F381ADD63D3BF02AAF77E`
+与全文 block `601–927`。`immediate:724–742` 的条件是存在出席且健康的 root 配偶，
+随后从同一合格集合随机选取并在 `739` 保存为 `my_spouse`。
+它独立于后面的 murder-feast 分支；可选 scope 既不意味着谋杀宴会，也不一定是 primary spouse，
+所以合同不硬编码本次人物 ID 或新增 primary-spouse gate。
+普通 native `0:809–816` 仍由 `is_murder_feast=no` 与 `exclusive=yes` 定义，
+只有 `custom_tooltip=feast.2001.a.tt`；新增配偶 scope 不改变选项自身语义。
+其他 authored 分支及展示前 immediate 不是无效果，不能把五个定义项整体当作空通知。
+
+```mermaid
+flowchart TD
+    I["既有 feast.2001 immediate"] --> S{"有健康配偶出席？"}
+    S -->|"没有：既有实际三 scope"| B["activity/host/province"]
+    S -->|"有：原版随机保存配偶"| P["activity/host/province/my_spouse；当前34730"]
+    B --> O["普通 sole native0：非 murder、exclusive、tooltip-only"]
+    P --> O
+    O --> C["既有 typed API1；独立 old instance advance 与同 actor/date"]
+    C -. "原paused instance11待root更新runtime消费" .-> U["unknown：本次实际选择与下一正常回合；材料credit0"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
+必要源码证据在 `m2-events/actual-robert-normal90-natural-blocker-01/source-evidence/stock-spouse-scope-review.json`
+（SHA `FF5772C537C9314552F7F670843A0A1727AC69B5E7F44DD14746B113D54DD218`）。
+最小实现保留三 scope base，给 `records_feast_start_12003.py` 增加唯一四 scope
+`scope_variants`，并在 `policy.py` 已有 exact scope-variant resolver 的有限 key 集中加入
+`feast.2001`。不伪造 `.2` migration metadata，不修改 registry、service、native、ABI 或 DLL；
+对未观察的其他 scope/option 形态不泛化。独立事件推进与正常 next 消费仍由原消费者执行。
+该普通空选项只恢复宴会时间线；即便成功也不增加 M2 物质样本信用。
+
+唯一新增实际四 scope full-route case 首次通过：normalizer/current registry/普通 classifier
+到 `choose_one_life_turn`、service typed API `1`，再由 native driver 独立模拟旧 instance `11`
+消失及同 actor/date paused；使用实际 native `53` / public `12` 绑定，材料 expectation
+保持 `None`。既有三 scope、`.7002` 和 `.6231` 测试未重跑。此修复为 **static-ready**；
+root 对原 paused 实例的更新 runtime 选择与下一真实回合仍待执行，原 RED 保留。
+
 ## 当前状态
 
 - [static-ready] 共享 registry 已实现在

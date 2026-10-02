@@ -22,6 +22,14 @@ FEAST_START_12003_RECORDS: Final = {
             "scope_types": {"activity": "activity", "host": "character", "province": "province"},
             "saved_scope_name_sets": (("activity", "host", "province"),),
             "saved_scope_count": 3,
+            "scope_variants": ({
+                "saved_scope_names": ("activity", "host", "province", "my_spouse"),
+                "saved_scope_count": 4,
+                "scope_types": {
+                    "activity": "activity", "host": "character",
+                    "province": "province", "my_spouse": "character",
+                },
+            },),
             "option_count": 1,
             "snapshot_option_count": 5,
             "native_option_indices": (0,),
@@ -51,6 +59,13 @@ FEAST_START_12003_RECORDS: Final = {
                 "music, conditional portrait/scope capture and list initialization happen "
                 "before selection; they are not selected-choice gains"
             ),
+            "source_defined_scope_variants": {
+                "my_spouse": {
+                    "source_lines": f"{_EVENT_PATH}:724-742",
+                    "condition": "an attending healthy spouse of root exists; one qualifying random attendee is saved as my_spouse",
+                    "boundary": "optional immediate scope independent of murder-feast branches; observed four-scope variant preserves the base three-scope contract",
+                },
+            },
             "option_lines": "809-816",
             "option_semantics": {"0": "ordinary exclusive opening; custom tooltip only"},
             "authored_option_name_aliases": ["feast.2001.a"],
@@ -58,7 +73,7 @@ FEAST_START_12003_RECORDS: Final = {
             "after_effect": None,
             "follow_up_event": None,
             "scope_boundary": (
-                "only the actual ordinary three-scope root=host variant with sole native 0; "
+                "only the actual ordinary root=host three-scope or my_spouse four-scope variants with sole native 0; "
                 "other authored native 1-4 variants are not admitted; backdown native 4 "
                 "has no independent murder guard, but ordinary native 0 is exclusive; "
                 "activity/province typed identities remain opaque"
@@ -111,6 +126,17 @@ FEAST_START_12003_RECORDS: Final = {
                 "event_instance_id": 15, "root_character_id": 31853,
                 "date_raw": 53330784, "selection_attempted": False,
                 "boundary": "actual ordinary source-bound modal; original not_registered RED; no selection/material result",
+            }, {
+                "kind": "closed-production-red",
+                "artifact": (
+                    "artifacts/g2-maintainer-2026-10-02/resume-12003/"
+                    "m7-robert/normal-90day-412-actual-01/turn-004/natural-event/result.json"
+                ),
+                "artifact_sha256": "A1C6DFFD311C42EAEA96A96C61DE5E022744AB6D822C2ED9B7EF5B9CFFCAF064",
+                "event_instance_id": 11, "root_character_id": 29829,
+                "my_spouse_character_id": 34730, "date_raw": 53222040,
+                "selection_attempted": False,
+                "boundary": "registered three-scope projection drifted only on current source-defined my_spouse; actual typed sole native 0 remains enabled",
             }],
         },
     },
