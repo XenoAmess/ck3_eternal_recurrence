@@ -1,5 +1,13 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-02 21:46：Robert 两个非宗教 Council 角色的真实技能机会
+
+[非宗教 Council 角色输入与实际边界](ck3-1.20.0.3-council-role-coverage.md)记录新的同帧 paused 观测：Chancellor 34867 外交 7，唯一最高原生合法候选 43696 外交 13（+6）；Spymaster 34333 密谋 12，唯一最高合法候选 32440 密谋 23（+11）。完整候选／四 gates 与独立现任任务在 actor29829、raw53220624、native16／public2、PID70968 上闭合，各既有比较器一次 GREEN。当前是 **production-live primitive 只读输入**，任务产出、解职政治成本与原生总评分未观测；真实差值是下一项必要 task-value 观测及独立功能决策的依据，不是已任命或新的 G2／M4 credit。Steward43706 已闭合的 collect-taxes 循环不重发。
+
+ROOT 已选择 Chancellor +6 优先进入最小功能扩展；Spymaster +11 因现任34333是已有 Sway target／liberty member 暂不替换。当前412源码与工具清单未发布 current-task-value MCP口，旧v13执行token不代表该口；实际skill／current task／final gates已足够本轮最小策略，未采用任务总产出与政治utility记为质量差距，不新增前置blocker。该取舍不把本次只读包升级为动作结果，也不扩展为通用政治评分或其他职位施工。
+
+当前 [AGENTS.md](../../AGENTS.md) 明确“宗教域由项目所有者明确暂缓”，仅保留其中圣战与婚姻必要判定的窄例外。该当前指令覆盖下方 2026-10-01 历史截点中的“恢复宗教研究”安排；历史研究与 artifact 保留，通用宗教施工及 holy order 继续暂缓。本包仅处理非宗教 Council 角色。
+
 ## 2026-10-02：1.20.0.3 Spymaster 只读候选输入
 
 [Spymaster exact-build 输入账本与原生树](ck3-1.20.0.3-spymaster-candidates.md)用当前 EXE 的命名技能枚举注册与有效技能 getter 证明 intrigue 3 / Character+E4，复用现有两项 private Council queries 的职位参数。默认总管、任命动作与正式策略保持原状；当前现任与真实合法候选的密谋能力仍须新 paused 观测，政治权重与原生 AI 评分维持 unknown。实现与 focused 验收状态回链该专题，零新增任命或 G2 M4 credit。

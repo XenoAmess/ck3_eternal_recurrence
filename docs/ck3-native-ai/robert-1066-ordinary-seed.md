@@ -382,3 +382,79 @@ rendered game startup is minimized. The exact parameter recipe is
 state or executed any profile/game/client operation. Actual v19 new-PID
 paused goal/five-ledger/restore proof is still required before v19 readiness
 or further gameplay credit can be reported.
+
+## Current native v19 / Python412 normal continuation, 2026-10-02
+
+The canonical topic retained its published3172-day content and exact prior
+SHA-256 before this append; no older topic was substituted. Root's new actual
+closed normal window uses native source `716acfecc6c487e2b48942c6a6030c8b7012e5d5`,
+Python `41291bf2315f11b6748affce318e1e456a6f8918`, the new officially prepared
+v19 environment and owned GAME70968. One actual `life-advance` turn added7
+saved days, raw53220456→53220624, and ended paused with no natural modal.
+Robert is now3179/36524, this iteration26 new durable days. The current goal
+still has0 reconciled successions; no natural succession or M7 matrix
+completion is credited.
+
+The current pair is h4081/full4081: save84,495,805 bytes/SHA-256
+`ce9c7b4aa8ac70664920696fa9629f58e738b28aa7e8227a7c8ded66bddfec60`,
+driver49,329,974 bytes/SHA-256
+`91c383a0a147895464c5b7c3fe61415d68cb09e5ed9c4e66b27433d49f7384e1`.
+The actual close is `m7-robert/planning-reuse-412-actual-01/result.json`.
+Its original Sway action remains `already_applied`; the actual target is34333,
+full134217986/gen8, and Start is not replayed. Native source, Python source and
+prepared environment are separate recorded identities; this is not an old D4
+environment relabeled as v19.
+
+The next file-only recipe,
+`m7-robert/NORMAL-30DAY-MCP412-ROOT-RECIPE-01.json`, reuses the current MCP412
+entry and existing finite normal runner with target30 actual advance days and
+max16 turns. It permits the existing family/first-heir, Council, government and
+Sway34333 consumers, without enabling construction. The existing
+`--private-activity-feast-queries` is already present in MCP412, mapped by the
+factory to `allow_private_activity_feast_lifecycle_observation`; the normal
+paused planner uses `reconcile_feast_lifecycle_private_v1`. The same finite
+runner already delegates natural events to `consume_natural_event_service`.
+Feast continuation therefore needs no new flag or policy rewrite and does not
+resend a start action. Actual modal, lifecycle, turn and checkpoint results
+must be consumed after the root-owned run closes; prepared30-day argv adds no
+day credit and does not promise an exact30-day final delta. M7 remains
+`in_progress`.
+
+## Closed normal30 window and remaining Feast lifecycle, 2026-10-02
+
+Root's requested30-day window has closed GREEN with39 actual saved days,
+raw53220624→53221560. Five executed `life-advance` turns observed1/9/9/9/11
+days; one natural modal advanced its event instance and preserved the actor
+and date. The independent M2 owner owns that event's choice/material analysis.
+Robert remains alive29829 in the original episode, paused, with the saved
+`dynasty_continuity` goal,0 reconciled successions and `last_succession=null`.
+The saved total is3218/36524, this iteration65 new days. The requested30 is
+not substituted for the observed39, and neither implies M7 completion.
+
+The full saved pair is h4098/full4098: checkpoint85,621,047 bytes/SHA-256
+`7708b4bd2d0ed05040185d15e2f88ecc29706f629d7a5e1d8e53c631ca56ba40`,
+driver49,556,602 bytes/SHA-256
+`46b7fed0e0272bab151e16178dfb8337d0cd643271e79ba2b2302f5d46998675`.
+The actual result is `m7-robert/normal-30day-412-actual-01/result.json`.
+Root's once-produced stage summary is
+`m7-robert/normal-30day-412-stage-fields-01.json`,99,762 bytes/SHA-256
+`8337636efb6921ea6052aed37dd17c764a2ae01a61a7df44b1365edcd9e5e819`.
+The normal turns continue to use the current campaign goal and observed
+feudal/core_landed government context. No current war/army/default-horizon
+fields are exported by this stage summary, so it does not establish a
+no-war branch or native default30 horizon.
+
+Feast activity83886111 has five actual `lifecycle_observed` samples, all
+`ongoing`, with native completed/invalidated/terminal false. The latest sample
+is raw53221296/native37, before the final11-day advance; no terminal or latest
+final-frame lifecycle result is inferred from the saved end date. The samples
+retain `benefit_verified=false` and no attribution of counter changes to the
+Feast. Event material and Feast terminal/value proof remain distinct.
+
+`m7-robert/NORMAL-90DAY-MCP412-ROOT-RECIPE-01.json` prepares the next current
+normal window, target90/max32, with the same production time policy and
+existing family/Council/government/Sway34333 permissions. Only the finite
+runner owns its existing natural-event consumer; no second default event
+consumer, new Feast start or construction action is added. Existing Feast
+lifecycle reconciliation continues until an actual native terminal result is
+observed. This prepared window adds0 days or completion credit.

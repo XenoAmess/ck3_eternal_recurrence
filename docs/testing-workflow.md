@@ -10,6 +10,14 @@
 
 显式 `native-session --start-minimized` 将首次、frontend warm-up/final、checkpoint 和 next-episode 启动传入 Windows `STARTUPINFO` 的 `STARTF_USESHOWWINDOW` / `SW_SHOWMINNOACTIVE`，复用受管 PID 的窗口采样保持最小化。默认其它流程不改变；当前 G2 后续启动全部选择此参数。真实 CLI→session→launch 参数链、Win32 producer 与 PID helper 的一个定向 case GREEN；新进程焦点／窗口状态仍由实机采样确认。对应源码及收据为 `artifacts/g2-maintainer-2026-10-02/resume-12003/minimized-start-implementation-01/`。
 
+## 22:09 Robert一次Feast启动与已保存59日增量：累计3238天，90日窗口未达标
+
+2026-10-02 22:09:30 Asia/Shanghai当前实际流程：唯一Robert原ordinary campaign、21:12继续授权/Steam离线/最小化no-focus，root独占game/SDK/pipe/state/Git；actual Python412/native716-v19/PID70968。合法fresh预算305.948 reserve＋100cost≤1206.59426且无Family hold之后，**只一次Start**得到独立fullActivity83886111/精确100gold debit。随后自然feast.7002/instance10 sole native0/API1在raw53220648被消费、独立prestige＋35，ordinary下一turn及共38日正常后续闭合；不代替2multi或M6完整lifecycle。
+
+requested30窗口实际保存39日（5clock1/9/9/9/11＋1modal）至4098；后requested90窗口只3advance/20日保存，以feast.2001/instance11/spouse34730旧scope3合同漂移existing_consumer_not_ready关闭，最小Pythonfix尚未算live。本stage **39＋20=59新日，累计3238/36524、本次恢复85新日**；latest raw53222040/full4106/save4106，save85,672,987B/SHA `48b9d2a54890a10f323a1aee34215dd7143c85ec6509dac5816808f58898bd83`，driver49,640,813B/SHA `874fbfe6a006b5582cd07347ac2574dc8ecdd1621f45c9e4040440229b5d439d`。继续latest真实pair，不回退4081；[39日正常续行已关闭结果](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/normal-30day-412-actual-01/result.json)。
+
+五次Feast ongoing最后的独立材料是39窗口最后11日之前raw53221296/native37，不能替最新activity终态/attendance/named reward/cold。新source已能读Robert自己的24key/55quote建设材料和两角色候选，分别仅readonlyprimitive；Guy fullqueue0只有not_observed，不由经过时间判拒绝或timeout。Sway v19首规划native5真19/355/op−10，cold4仍缺这些字段，不推当前进度。本stage一次文档/JSON检查，G2 4/8、NW1/4、typedgoal0及原合同保持；旧docs actualpush5833084记录为Git交付，不重核旧tests。
+
 ## 21:25 21:12继续授权后的Robert正式7日闭包：累计3179天
 
 2026-10-02 21:25:13 Asia/Shanghai当前流程补录：21:12用户按新prompt继续，高并发owner仍仅文件并行；实机/SDK/pipe/state由root独占、Steam离线、最小化不抢前台，唯一Robert原ordinary campaign。新Python41291bf2接actual native716/v19/PID70968的一正式回合完成7日目标，真实raw53220456→53220624/final paused，无新natural modal/Sway Start。Robert3179/36524、本次恢复26新日；G2 4/8/NW1/4不变，typed goal0分列。最新full4081/save h4081，save84,495,805B/SHA `ce9c7b4aa8ac70664920696fa9629f58e738b28aa7e8227a7c8ded66bddfec60`，driver49,329,974B/SHA `91c383a0a147895464c5b7c3fe61415d68cb09e5ed9c4e66b27433d49f7384e1`；继续最新pair，不回退4075。[412正式7日闭包](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/planning-reuse-412-actual-01/result.json)。
