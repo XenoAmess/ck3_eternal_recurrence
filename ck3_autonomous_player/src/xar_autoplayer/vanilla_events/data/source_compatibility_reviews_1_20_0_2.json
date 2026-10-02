@@ -120,7 +120,7 @@
         "source_compatibility_semantic_changes": [
           "Native 0 invokes pam_childbirth_piety_reward_effect regardless of the suppression branch.",
           "When child_bastardy_suppressed is present, native 0 may rename a Mongolic father's child Jochi and invokes adoption on child/optional child_2/child_3.",
-          "The adoption helper sets father to root, conditionally sets root.house, and hidden effects assign root.rite and root.culture. Religious identity assignment remains opaque and owner-deferred.",
+          "The adoption helper sets father to root, conditionally sets root.house, and hidden effects assign root.rite and root.culture. Religious identity assignment has not been observed by this review; its research and implementation are authorized as of 2026-10-02.",
           "Old source native 1 was the twin acknowledgement; current native 1 is the suppressed-bastardy alternative, so any old twin continuation must remap to current native 0. Do not promote a stale twin native-1 choice."
         ]
       },
@@ -1352,7 +1352,7 @@
             "ordinal": 2
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
@@ -1393,7 +1393,7 @@
             "ordinal": 3
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
@@ -1414,7 +1414,7 @@
               "included_in_material_prediction": false,
               "observation_status": "unavailable",
               "operation": "stress_and_fulfillment_impact",
-              "prediction_status": "owner-deferred-opaque-trait-inputs"
+              "prediction_status": "trait-input-observation-pending"
             }
           ],
           "common_after_effects": [
@@ -1457,7 +1457,7 @@
             "events/death_events/death_management_events.txt:2128-2138",
             "common/script_values/00_stress_values.txt:27-27"
           ],
-          "source_review_boundary": "New consolamentum_grief_immunity personal-tenet guard is kept opaque and owner-deferred; no religious exploration or new religion query. Postcondition must use actual current native result/indicator and allow guarded no effect as distinct from material success. The +20 authored input is conditional; no unconditional stress change is predicted.",
+          "source_review_boundary": "The consolamentum_grief_immunity personal-tenet guard was not reviewed or observed in the original migration. Religious research and queries are authorized as of 2026-10-02; predicate observation remains to be implemented. Postcondition must use actual current native result/indicator and allow guarded no effect as distinct from material success. The +20 authored input is conditional; no unconditional stress change is predicted.",
           "source_sha256": {
             "common/script_values/00_stress_values.txt": "821A0B77244FC5EE2D87D339CB24DBEF00787B83D44EC2DF9215FC1A93AEC2D4",
             "events/death_events/death_management_events.txt": "DFDAB7AB6757C73980B82F5E3A6F23184160688B844558FCE85D8EE5B9EF4C59"
@@ -1476,7 +1476,7 @@
             "ordinal": 0
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
@@ -1673,7 +1673,7 @@
             "ordinal": 0
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
@@ -2110,7 +2110,7 @@
             "ordinal": 3
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
@@ -2300,7 +2300,7 @@
             "ordinal": 1
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
@@ -2382,7 +2382,7 @@
             "ordinal": 2
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
@@ -2718,7 +2718,7 @@
             "ordinal": 0
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
@@ -2744,7 +2744,7 @@
             "ordinal": 0
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
@@ -2924,7 +2924,7 @@
               "included_in_material_prediction": false,
               "observation_status": "unavailable",
               "operation": "stress_and_fulfillment_impact",
-              "prediction_status": "owner-deferred-opaque-trait-inputs"
+              "prediction_status": "trait-input-observation-pending"
             }
           ],
           "common_after_effects": [],
@@ -3273,7 +3273,7 @@
     "faction_demand.0099": {
       "analysis_updates": {
         "source_compatibility_semantic_changes": [
-          "Keep religion conversion branch opaque and owner-deferred; do not claim old faith conversion equals new rite conversion."
+          "Religion conversion research and implementation are authorized as of 2026-10-02. This migration has not reviewed the conversion branch; do not claim old faith conversion equals new rite conversion."
         ]
       },
       "manual_review": {
@@ -3284,7 +3284,7 @@
             "ordinal": 0
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
@@ -3299,7 +3299,7 @@
     "faction_demand.0101": {
       "analysis_updates": {
         "source_compatibility_semantic_changes": [
-          "Accepted authority reduction is not globally equivalent: helper includes nomadic_authority and church_authority; selected refusal remains unchanged. Religious authority branch is opaque and owner-deferred."
+          "Accepted authority reduction is not globally equivalent: helper includes nomadic_authority and church_authority; selected refusal remains unchanged. Religious authority semantics have not been reviewed; research and implementation are authorized as of 2026-10-02."
         ]
       },
       "manual_review": {
@@ -3356,7 +3356,7 @@
             "ordinal": 3
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
@@ -3488,7 +3488,7 @@
     },
     "health.3101": {
       "analysis_updates": {
-        "source_migration_boundary": "Each treatment or no-treatment option invokes pam_epidemic_disease_treatment_spiritual_fulfillment_loss_effect after its existing disease-treatment helper. General religious fulfillment semantics remain owner-deferred."
+        "source_migration_boundary": "Each treatment or no-treatment option invokes pam_epidemic_disease_treatment_spiritual_fulfillment_loss_effect after its existing disease-treatment helper. Religious fulfillment semantics have not been reviewed or observed; research and implementation are authorized as of 2026-10-02."
       },
       "manual_review": {
         "changed_fields": [
@@ -3590,7 +3590,7 @@
     },
     "health.7200": {
       "analysis_updates": {
-        "source_migration_boundary": "Only caller trigger/weight changes: biological ancestry traversals replace prior family traversal; .7500 replaces a sibling factor with real-grandparent/great-grandparent factors. Opaque rite/personal-tenet weights are owner-deferred. Current displayed option and immediate bodies are unchanged."
+        "source_migration_boundary": "Only caller trigger/weight changes: biological ancestry traversals replace prior family traversal; .7500 replaces a sibling factor with real-grandparent/great-grandparent factors. Rite/personal-tenet weights were not reviewed; research and implementation are authorized as of 2026-10-02. Current displayed option and immediate bodies are unchanged."
       },
       "manual_review": {
         "changed_fields": [
@@ -3614,7 +3614,7 @@
     },
     "health.7400": {
       "analysis_updates": {
-        "source_migration_boundary": "Only caller trigger/weight changes: biological ancestry traversals replace prior family traversal; .7500 replaces a sibling factor with real-grandparent/great-grandparent factors. Opaque rite/personal-tenet weights are owner-deferred. Current displayed option and immediate bodies are unchanged."
+        "source_migration_boundary": "Only caller trigger/weight changes: biological ancestry traversals replace prior family traversal; .7500 replaces a sibling factor with real-grandparent/great-grandparent factors. Rite/personal-tenet weights were not reviewed; research and implementation are authorized as of 2026-10-02. Current displayed option and immediate bodies are unchanged."
       },
       "manual_review": {
         "changed_fields": [
@@ -3643,7 +3643,7 @@
     },
     "health.7500": {
       "analysis_updates": {
-        "source_migration_boundary": "Only caller trigger/weight changes: biological ancestry traversals replace prior family traversal; .7500 replaces a sibling factor with real-grandparent/great-grandparent factors. Opaque rite/personal-tenet weights are owner-deferred. Current displayed option and immediate bodies are unchanged."
+        "source_migration_boundary": "Only caller trigger/weight changes: biological ancestry traversals replace prior family traversal; .7500 replaces a sibling factor with real-grandparent/great-grandparent factors. Rite/personal-tenet weights were not reviewed; research and implementation are authorized as of 2026-10-02. Current displayed option and immediate bodies are unchanged."
       },
       "manual_review": {
         "changed_fields": [
@@ -3740,7 +3740,7 @@
             "ordinal": 2
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
@@ -4061,7 +4061,7 @@
             "ordinal": 2
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
@@ -4092,7 +4092,7 @@
             "ordinal": 0
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
@@ -4179,7 +4179,7 @@
             "ordinal": 0
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
@@ -4217,7 +4217,7 @@
     },
     "stress_threshold.1011": {
       "analysis_updates": {
-        "source_migration_boundary": "The existing native5 endure route is source-unchanged under the existing nonconversion scope/option projection. Conversion native2/native3 and sex_positive_rite/new_faith-related shapes are owner-deferred; this migration neither permits them nor infers their rite semantics."
+        "source_migration_boundary": "The existing native5 endure route is source-unchanged under the existing nonconversion scope/option projection. Conversion native2/native3 and sex_positive_rite/new_faith-related shapes have not been migrated or observed by this contract. Their research and implementation are authorized as of 2026-10-02; exact source, scope and native observation work remains necessary before those options can be selected."
       },
       "manual_review": {
         "changed_fields": [
@@ -4294,7 +4294,7 @@
               "included_in_material_prediction": false,
               "observation_status": "unavailable",
               "operation": "stress_and_fulfillment_impact",
-              "prediction_status": "owner-deferred-opaque-trait-inputs"
+              "prediction_status": "trait-input-observation-pending"
             }
           ],
           "common_after_effects": [
@@ -4440,7 +4440,7 @@
             "ordinal": 1
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
@@ -4506,7 +4506,7 @@
     "tgp_china_yearly.0005": {
       "analysis_updates": {
         "current_source_body_review": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment": "opaque additive native effect; no exact current fulfillment observation or optimizer claim",
           "new_live_evidence": false,
           "policy_contract_compatible": true,
@@ -4542,13 +4542,13 @@
             "ordinal": 2
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
-        "reason": "Changed tokens introduce or replace rite/faith/doctrine/virtue or character-rite operations. Owner-deferred religious semantics were not explored; nonreligious stress-helper substitutions in the same body do not establish compatibility.",
+        "reason": "Changed tokens introduce or replace rite/faith/doctrine/virtue or character-rite operations. Religious semantics were not explored during the original restricted review; the restriction was revoked on 2026-10-02. This review gap remains open; nonreligious stress-helper substitutions in the same body do not establish compatibility.",
         "source_review_notes": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment_runtime_delta_observed": false,
           "live_acceptance_performed": false,
           "policy_reuse_eligible_by_manual_review": true,
@@ -4622,7 +4622,7 @@
     "tgp_china_yearly.0015": {
       "analysis_updates": {
         "current_source_body_review": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment": "opaque additive native effect; no exact current fulfillment observation or optimizer claim",
           "new_live_evidence": false,
           "policy_contract_compatible": true,
@@ -4653,13 +4653,13 @@
             "ordinal": 2
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
-        "reason": "Changed tokens introduce or replace rite/faith/doctrine/virtue or character-rite operations. Owner-deferred religious semantics were not explored; nonreligious stress-helper substitutions in the same body do not establish compatibility.",
+        "reason": "Changed tokens introduce or replace rite/faith/doctrine/virtue or character-rite operations. Religious semantics were not explored during the original restricted review; the restriction was revoked on 2026-10-02. This review gap remains open; nonreligious stress-helper substitutions in the same body do not establish compatibility.",
         "source_review_notes": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment_runtime_delta_observed": false,
           "live_acceptance_performed": false,
           "policy_reuse_eligible_by_manual_review": true,
@@ -4875,7 +4875,7 @@
     "tgp_dynastic_cycle_events.0001": {
       "analysis_updates": {
         "current_source_body_review": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment": "opaque additive native effect; no exact current fulfillment observation or optimizer claim",
           "new_live_evidence": false,
           "policy_contract_compatible": true,
@@ -4922,13 +4922,13 @@
             "ordinal": 3
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
-        "reason": "Changed tokens introduce or replace rite/faith/doctrine/virtue or character-rite operations. Owner-deferred religious semantics were not explored; nonreligious stress-helper substitutions in the same body do not establish compatibility.",
+        "reason": "Changed tokens introduce or replace rite/faith/doctrine/virtue or character-rite operations. Religious semantics were not explored during the original restricted review; the restriction was revoked on 2026-10-02. This review gap remains open; nonreligious stress-helper substitutions in the same body do not establish compatibility.",
         "source_review_notes": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment_runtime_delta_observed": false,
           "live_acceptance_performed": false,
           "policy_reuse_eligible_by_manual_review": true,
@@ -4947,7 +4947,7 @@
     "tgp_dynastic_cycle_events.0020": {
       "analysis_updates": {
         "current_source_body_review": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment": "opaque additive native effect; no exact current fulfillment observation or optimizer claim",
           "new_live_evidence": false,
           "policy_contract_compatible": true,
@@ -4988,13 +4988,13 @@
             "ordinal": 2
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
-        "reason": "Changed tokens introduce or replace rite/faith/doctrine/virtue or character-rite operations. Owner-deferred religious semantics were not explored; nonreligious stress-helper substitutions in the same body do not establish compatibility.",
+        "reason": "Changed tokens introduce or replace rite/faith/doctrine/virtue or character-rite operations. Religious semantics were not explored during the original restricted review; the restriction was revoked on 2026-10-02. This review gap remains open; nonreligious stress-helper substitutions in the same body do not establish compatibility.",
         "source_review_notes": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment_runtime_delta_observed": false,
           "live_acceptance_performed": false,
           "policy_reuse_eligible_by_manual_review": true,
@@ -5162,7 +5162,7 @@
               "included_in_material_prediction": false,
               "observation_status": "unavailable",
               "operation": "stress_and_fulfillment_impact",
-              "prediction_status": "owner-deferred-opaque-trait-inputs"
+              "prediction_status": "trait-input-observation-pending"
             }
           ],
           "common_after_effects": [],
@@ -5335,7 +5335,7 @@
     "tgp_movement_events.0060": {
       "analysis_updates": {
         "current_source_body_review": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment": "opaque additive native effect; no exact current fulfillment observation or optimizer claim",
           "new_live_evidence": false,
           "policy_contract_compatible": true,
@@ -5376,13 +5376,13 @@
             "ordinal": 3
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
-        "reason": "Changed tokens introduce or replace rite/faith/doctrine/virtue or character-rite operations. Owner-deferred religious semantics were not explored; nonreligious stress-helper substitutions in the same body do not establish compatibility.",
+        "reason": "Changed tokens introduce or replace rite/faith/doctrine/virtue or character-rite operations. Religious semantics were not explored during the original restricted review; the restriction was revoked on 2026-10-02. This review gap remains open; nonreligious stress-helper substitutions in the same body do not establish compatibility.",
         "source_review_notes": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment_runtime_delta_observed": false,
           "live_acceptance_performed": false,
           "policy_reuse_eligible_by_manual_review": true,
@@ -5462,7 +5462,7 @@
       "analysis_updates": {
         "changed_selected_option_boundary": "Native 3 uses rite and trait_is_virtue_rite where old source used faith and trait_is_virtue. This current predicate is opaque and evaluated only by CK3; the existing native-enabled action can continue without deriving religious semantics or exact utility.",
         "current_source_body_review": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment": "opaque additive native effect; no exact current fulfillment observation or optimizer claim",
           "new_live_evidence": false,
           "policy_contract_compatible": true,
@@ -5501,13 +5501,13 @@
             "ordinal": 3
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
-        "reason": "Changed tokens introduce or replace rite/faith/doctrine/virtue or character-rite operations. Owner-deferred religious semantics were not explored; nonreligious stress-helper substitutions in the same body do not establish compatibility.",
+        "reason": "Changed tokens introduce or replace rite/faith/doctrine/virtue or character-rite operations. Religious semantics were not explored during the original restricted review; the restriction was revoked on 2026-10-02. This review gap remains open; nonreligious stress-helper substitutions in the same body do not establish compatibility.",
         "source_review_notes": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment_runtime_delta_observed": false,
           "live_acceptance_performed": false,
           "policy_reuse_eligible_by_manual_review": true,
@@ -5526,7 +5526,7 @@
     "tgp_movement_events.0150": {
       "analysis_updates": {
         "current_source_body_review": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment": "opaque additive native effect; no exact current fulfillment observation or optimizer claim",
           "new_live_evidence": false,
           "policy_contract_compatible": true,
@@ -5537,7 +5537,7 @@
           "whole_body_equal": false
         },
         "source_manual_review_required": false,
-        "unselected_conversion_boundary": "Native 2 changes set_character_faith=root.faith to set_character_rite=root.rite. This unselected conversion path remains owner-deferred; no conversion strategy or doctrine semantics are provided."
+        "unselected_conversion_boundary": "Native 2 changes set_character_faith=root.faith to set_character_rite=root.rite. This unselected conversion path was not reviewed or observed. Conversion strategy and doctrine research are authorized as of 2026-10-02; this migration does not supply their implementation."
       },
       "manual_review": {
         "changed_fields": [
@@ -5567,13 +5567,13 @@
             "ordinal": 3
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
-        "reason": "Changed tokens introduce or replace rite/faith/doctrine/virtue or character-rite operations. Owner-deferred religious semantics were not explored; nonreligious stress-helper substitutions in the same body do not establish compatibility.",
+        "reason": "Changed tokens introduce or replace rite/faith/doctrine/virtue or character-rite operations. Religious semantics were not explored during the original restricted review; the restriction was revoked on 2026-10-02. This review gap remains open; nonreligious stress-helper substitutions in the same body do not establish compatibility.",
         "source_review_notes": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment_runtime_delta_observed": false,
           "live_acceptance_performed": false,
           "policy_reuse_eligible_by_manual_review": true,
@@ -5673,7 +5673,7 @@
               "included_in_material_prediction": false,
               "observation_status": "unavailable",
               "operation": "stress_and_fulfillment_impact",
-              "prediction_status": "owner-deferred-opaque-trait-inputs"
+              "prediction_status": "trait-input-observation-pending"
             }
           ],
           "common_after_effects": [],
@@ -5824,7 +5824,7 @@
             "common/traits/00_traits.txt:2155-2206",
             "common/modifiers/00_event_modifiers.txt:81-84"
           ],
-          "source_review_boundary": "Alternative still structurally offers permanent herbalist, ten-year seeker_of_knowledge, or no authored benefit; native duel resolution/transitive trait effects are not fully reviewed. Newly added owner-deferred religious flag is recorded as boundary only.",
+          "source_review_boundary": "Alternative still structurally offers permanent herbalist, ten-year seeker_of_knowledge, or no authored benefit; native duel resolution/transitive trait effects are not fully reviewed. The newly added religious flag was not reviewed in the original migration; its research and implementation are authorized as of 2026-10-02.",
           "source_sha256": {
             "common/modifiers/00_event_modifiers.txt": "546ADC3AF9413031228928C0621829791F843D7E93450C9EEC2C5E2CEC18187E",
             "common/script_values/00_basic_values.txt": "C379CC0C58ED1574033F0E07A58697DFC6F8475C26AA4B117F2332008D4A27EF",
@@ -5835,7 +5835,7 @@
         }
       },
       "manual_review": {
-        "boundary": "Alternative still structurally offers permanent herbalist, ten-year seeker_of_knowledge, or no authored benefit; native duel resolution/transitive trait effects are not fully reviewed. Newly added owner-deferred religious flag is recorded as boundary only.",
+        "boundary": "Alternative still structurally offers permanent herbalist, ten-year seeker_of_knowledge, or no authored benefit; native duel resolution/transitive trait effects are not fully reviewed. The newly added religious flag was not reviewed in the original migration; its research and implementation are authorized as of 2026-10-02.",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/selected-profile-dependency-review.json",
         "evidence_artifact_sha256": "DF61BF07C309668AAA70BB0A45B9DC92EEDDA045D44C92E75E4BF7EAE92421AE",
         "full_existing_campaign_utility_profile_ported": false,
@@ -5867,7 +5867,7 @@
               "included_in_material_prediction": false,
               "observation_status": "unavailable",
               "operation": "stress_and_fulfillment_impact",
-              "prediction_status": "owner-deferred-opaque-trait-inputs"
+              "prediction_status": "trait-input-observation-pending"
             }
           ],
           "common_after_effects": [
@@ -6153,7 +6153,7 @@
             "ordinal": 3
           }
         ],
-        "classification": "owner-deferred-religion",
+        "classification": "religion-semantics-unreviewed-at-original-review",
         "evidence_artifact": "artifacts/nonwar-offline-1.20.0.2/events/changed-body-source-review.json",
         "evidence_artifact_sha256": "68012DFC1150ECF330657DFAF5307DA262B63DB6EAC06A5F2B6AB17CAE304A4C",
         "live_acceptance_performed": false,
@@ -6270,6 +6270,12 @@
     }
   },
   "live_acceptance_performed": false,
+  "religion_authorization": {
+    "boundary": "Authorization does not establish source compatibility, native observation, or live acceptance. Original review gaps remain explicit implementation work.",
+    "current_policy": "religion-research-and-implementation-authorized",
+    "date": "2026-10-02",
+    "previous_owner_restriction_revoked": true
+  },
   "review_scope": "Current displayed/native-enabled bounded event continuation; no full native caller/OODA or counterfactual utility equality",
   "schema": "xar.ck3.nonwar-event-source-review-ledger",
   "schema_version": 1

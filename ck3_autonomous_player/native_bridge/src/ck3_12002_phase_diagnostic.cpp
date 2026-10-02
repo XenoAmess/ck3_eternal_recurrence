@@ -1,4 +1,4 @@
-﻿#include "xar_bridge/ck3_12002_phase_diagnostic.hpp"
+#include "xar_bridge/ck3_12002_phase_diagnostic.hpp"
 
 namespace xar::ck3_12002 {
 
@@ -15,7 +15,7 @@ bool ProjectPhaseNonreligiousDiagnostic(
     output.inputs = inputs;
     output.nonreligious_ready = inputs.base_inputs.input_observation_ready &&
         inputs.phase_event_inputs.unavailable_reason ==
-            "phase_religion_and_rites_owner_deferred";
+            "phase_religion_and_rites_implementation_pending";
     output.phase_json = SerializeCombatPhaseInputsV3(inputs.phase_event_inputs);
     return true;
   } catch (...) {

@@ -42,7 +42,7 @@
     "legacy_flag_declaration_count": 136,
     "current_snapshot": "research/government_runtime_adapter_1_20_0_2.json",
     "new_tribal_flag_test": "government_uses_tribal_authority",
-    "new_monastic_government": "opaque identity; owner_deferred_religious",
+    "new_monastic_government": "opaque identity; religious_adapter_implementation_pending",
     "legacy_theocracy": "unchanged opaque identity under legacy profile",
     "japan_feudal_government": "new stock has no direct feature gate; disabled all_under_heaven remains a capability input and does not make the identity unavailable",
     "japan_readiness": "adapter_spec_ready_not_implemented; requirements_met true; not core_supported"

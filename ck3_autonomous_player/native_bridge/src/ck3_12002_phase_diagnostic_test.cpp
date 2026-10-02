@@ -1,4 +1,4 @@
-﻿#include "xar_bridge/ck3_12002_phase_diagnostic.hpp"
+#include "xar_bridge/ck3_12002_phase_diagnostic.hpp"
 
 #include <cassert>
 #include <iostream>
@@ -10,7 +10,7 @@ int main() {
   game::CombatSimulationInputsV3Snapshot inputs{};
   inputs.base_inputs.input_observation_ready = true;
   inputs.base_inputs.target_province_id = 701;
-  inputs.phase_event_inputs.unavailable_reason = "phase_religion_and_rites_owner_deferred";
+  inputs.phase_event_inputs.unavailable_reason = "phase_religion_and_rites_implementation_pending";
   inputs.phase_event_inputs.characters.emplace_back();
   inputs.phase_event_inputs.characters.back().character_id = 123;
   inputs.phase_event_inputs.characters.back().martial = 29;

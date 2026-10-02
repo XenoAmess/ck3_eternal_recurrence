@@ -121,7 +121,7 @@ def test_current_catalog_retains_legacy_live_as_legacy_not_current():
     assert listed["dataset_summary"]["portable_events"] == 0
     assert query_vanilla_event_knowledge_v1("fervor.1002", CURRENT_CK3_BUILD)[
         "unavailable_reason"
-    ] == "event_domain_owner_deferred"
+    ] == "event_source_migration_pending"
 
 
 def test_current_source_index_tracks_actual_build_and_caller_candidates():
@@ -259,3 +259,39 @@ def test_current_offline_tool_replays_new_contracts_without_material_receipts():
         frozen = report["production"]["frozen_data_sha256"]
         for name in ("source_index_1_20_0_2.json", "source_compatibility_1_20_0_2.json"):
             assert frozen[f"data/{name}"] == hashlib.sha256((data_dir / name).read_bytes()).hexdigest()
+
+
+def test_religion_authorization_retains_real_source_review_readiness():
+    from xar_autoplayer.vanilla_events import migration_1_20_0_2, migration_1_20_0_3
+
+    for build, migration in (("1.20.0.2", migration_1_20_0_2),
+                             ("1.20.0.3", migration_1_20_0_3)):
+        data = migration.load_compatibility()
+        assert data["religion_authorization"]["previous_owner_restriction_revoked"] is True
+        for key in ("fervor.1002", "court_chaplain_task.0313"):
+            result = query_vanilla_event_knowledge_v1(key, build)
+            assert result["status"] == "unavailable"
+            assert result["unavailable_reason"] == "event_source_migration_pending"
+            assert data["events"][key]["body_compared"] is False
+            assert data["events"][key]["policy_reuse_eligible_by_body"] is False
+        assert query_vanilla_event_knowledge_v1("epidemic_events.0110", build)["status"] == "available"
+        war = query_vanilla_event_knowledge_v1("great_holy_war.0011", build)
+        assert war["status"] == "unavailable"
+        assert war["unavailable_reason"] == "event_domain_outside_nonwar_work_package"
+
+    data_dir = ROOT / "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/data"
+    review = data_dir / "source_compatibility_reviews_1_20_0_2.json"
+    data2 = migration_1_20_0_2.load_compatibility()
+    data3 = migration_1_20_0_3.load_compatibility()
+    assert data2["review_ledger_file_sha256"] == hashlib.sha256(review.read_bytes()).hexdigest().upper()
+    assert data3["baseline_compatibility_file_sha256"] == hashlib.sha256(
+        (data_dir / "source_compatibility_1_20_0_2.json").read_bytes()).hexdigest().upper()
+    assert data3["baseline_compatibility_dataset_sha256"] == data2["dataset_sha256"]
+    collector_path = ROOT / "ck3_autonomous_player/native_bridge/research/ck3_12002_nonwar_event_sources.py"
+    spec = importlib.util.spec_from_file_location("religion_authorized_source_collector", collector_path)
+    collector = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = collector
+    spec.loader.exec_module(collector)
+    assert "fervor.1002" not in collector.EXCLUDED
+    assert "court_chaplain_task.0313" not in collector.EXCLUDED
+    assert collector.EXCLUDED["great_holy_war.0011"] == "war-domain-outside-nonwar-work-package"

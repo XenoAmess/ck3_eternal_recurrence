@@ -63,7 +63,7 @@
         "core_supported",
         "adapter_spec_ready_not_implemented",
         "unsupported_nonplayer_identity",
-        "owner_deferred_religious",
+        "religious_adapter_implementation_pending",
         "unavailable_feature_mismatch",
         "unadapted_runtime_government"
       ],
@@ -91,7 +91,7 @@
     "Use script_dlc_keys as corroborating product identity, never to reconstruct feature booleans.",
     "Return unavailable_feature_mismatch when a required feature is false.",
     "Return unadapted_runtime_government for unknown or mod-added keys and keep the observed key and flags.",
-    "Return owner_deferred_religious for theocracy_government and holy_order_government without examining faith, doctrine, tenet, fervor or holy-order mechanics."
+    "Return religious_adapter_implementation_pending for theocracy_government and holy_order_government until their dedicated religious-government adapter inputs and behavior are implemented."
   ],
   "entitlement_semantics": {
     "ready": false,

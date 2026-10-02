@@ -123,7 +123,7 @@ class GovernmentRuntimeAdapterObserverSourceContractTests(unittest.TestCase):
             "result.government.religious_identity_opaque", self.observer_source
         )
         self.assertIn(
-            "SelectionStatus::owner_deferred_religious", self.observer_source
+            "SelectionStatus::religious_adapter_implementation_pending", self.observer_source
         )
         implementation = self.abi["implementation"]
         self.assertTrue(implementation["cmake_target_added"])

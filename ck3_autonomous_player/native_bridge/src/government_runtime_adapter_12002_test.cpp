@@ -341,17 +341,17 @@ bool TestChangedStockGovernmentIdentities() {
           std::vector<std::string>{"government_uses_tribal_authority"}) {
     return false;
   }
-  // Identity recognition is needed for routing. Religious implementation
-  // remains deferred and must not expose a newly usable flag policy.
+  // Religious flags are observed normally; the dedicated adapter is not implemented.
   collector.sample.campaign_root.government = game::CampaignRootGovernmentV1{
       "monastic_holy_order_government", {"government_uses_domain_limit"}, 1};
   observer::ReadGovernmentRuntimeAdapterSourceV1(access, result);
   if (result.status != SourceStatus::available ||
       !result.semantic_result.government.recognized_stock_key ||
       !result.semantic_result.government.religious_identity_opaque ||
-      !result.semantic_result.government.observed_flags.empty() ||
+      result.semantic_result.government.observed_flags !=
+           std::vector<std::string>{"government_uses_domain_limit"} ||
       !result.semantic_result.government.applicable_stock_flags.empty() ||
-      result.semantic_result.adapter.status != Selection::owner_deferred_religious) {
+      result.semantic_result.adapter.status != Selection::religious_adapter_implementation_pending) {
     return false;
   }
   auto legacy_input = result.input;
@@ -364,7 +364,7 @@ bool TestChangedStockGovernmentIdentities() {
   const auto legacy = legacy_input.Evaluate();
   if (!legacy.government.recognized_stock_key ||
       !legacy.government.religious_identity_opaque ||
-      legacy.adapter.status != Selection::owner_deferred_religious) {
+      legacy.adapter.status != Selection::religious_adapter_implementation_pending) {
     return false;
   }
   // In the new stock definition, Japan's feudal identity has no authored

@@ -1,4 +1,4 @@
-﻿#include "xar_bridge/ck3_12002_phase.hpp"
+#include "xar_bridge/ck3_12002_phase.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include <array>
 #include <cassert>
@@ -218,7 +218,7 @@ int main() {
   assert(diagnostic.find("\"death_is_glory\"") == std::string::npos);
   assert(diagnostic.find("nonreligious_fields_ready\":false") != std::string::npos);
   game::CombatPhaseInputsV3 values{};
-  values.unavailable_reason = "phase_religion_and_rites_owner_deferred";
+  values.unavailable_reason = "phase_religion_and_rites_implementation_pending";
   values.characters.push_back({});
   values.characters.back().martial = 23;
   values.characters.back().government_is_nomadic = true;

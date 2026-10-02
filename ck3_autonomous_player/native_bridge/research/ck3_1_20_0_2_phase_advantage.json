@@ -10,7 +10,7 @@
     "architecture": "x86_64",
     "steam_build_id": "25588574"
   },
-  "readiness": "static-ready nonreligious advantage constructor source plan; full advantage unavailable because owner-deferred religion sources",
+  "readiness": "static-ready nonreligious advantage constructor source plan; full advantage unavailable because unimplemented religion sources",
   "runtime_registered": false,
   "live_verified": false,
   "signature_anchors": [
@@ -576,7 +576,7 @@
     "treasury_gate": "government+0x40 bit29; character+0x1B0; realm containers+0x1C0 or+0x1D0; realm magic+0x14 ==Land, ID+0x10!=-1, balance+0x318<0"
   },
   "known_gaps": [
-    "Two religion constructor stages deferred by owner; do not derive absent religion bonus from omission",
+    "Two religion constructor operands are not implemented; do not derive absent religion bonus from omission",
     "Owning-thread paused live validation required before production-live readiness"
   ]
 }

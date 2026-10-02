@@ -35,7 +35,12 @@ def migrate_event_knowledge(
     if not isinstance(row, dict):
         return {"status": "unavailable", "unavailable_reason": "event_migration_not_reviewed"}
     if row.get("status") == "owner-deferred":
-        return {"status": "unavailable", "unavailable_reason": "event_domain_owner_deferred"}
+        # Historical aliases never impose the revoked religion restriction.
+        # The war package exclusion remains a separate execution boundary.
+        reason = ("event_domain_outside_nonwar_work_package"
+                  if row.get("reason") == "war-domain-outside-nonwar-work-package"
+                  else "event_source_migration_pending")
+        return {"status": "unavailable", "unavailable_reason": reason}
     compatible = (
         row.get("status") == "unchanged"
         or row.get("policy_contract_compatible") is True

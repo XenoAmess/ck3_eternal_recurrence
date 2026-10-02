@@ -4,7 +4,8 @@
 This is lexical compatibility evidence, not a live acceptance or a proof that
 all scripted dependencies, native triggers or caller chains retain semantics.
 Comments and whitespace are ignored; quoted strings, escaping, token ordering
-and repeated field ordering are preserved. General religion is owner-deferred.
+and repeated field ordering are preserved. Religion research is authorized;
+unreviewed sources retain ordinary source-migration readiness gaps.
 """
 
 from __future__ import annotations
@@ -23,8 +24,6 @@ NEW_BUILD = "1.20.0.2"
 NEW_EXE_SHA256 = "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
 OLD_BUILD = "1.19.0.6"
 EXCLUDED = {
-    "fervor.1002": "owner-deferred-general-religion",
-    "court_chaplain_task.0313": "owner-deferred-general-religion",
     "great_holy_war.0011": "war-domain-outside-nonwar-work-package",
 }
 

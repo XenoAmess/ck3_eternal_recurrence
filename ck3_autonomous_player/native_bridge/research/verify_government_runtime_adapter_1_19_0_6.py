@@ -370,8 +370,8 @@ def verify(game_root: Path, contract_path: Path, observer_path: Path) -> dict[st
         raise ValueError("unexpected government adapter research schema")
     if observer.get("contract") != "government-runtime-adapter-observer-v1":
         raise ValueError("unexpected observer contract")
-    if contract["scope"]["religion_status"] != "owner-deferred":
-        raise ValueError("religion deferral changed")
+    if contract["scope"]["religion_status"] != "implementation-pending":
+        raise ValueError("religious adapter implementation status changed")
     if not contract["scope"]["religious_governments_identity_only"]:
         raise ValueError("religious-government identity boundary changed")
     for key in ("bridge_changed", "cmake_changed", "public_schema_changed", "planner_changed"):
@@ -423,8 +423,8 @@ def verify(game_root: Path, contract_path: Path, observer_path: Path) -> dict[st
     if set(rows) != {row["key"] for row in actual_registry}:
         raise ValueError("adapter table does not cover the complete stock registry")
     for key in contract["scope"]["religious_government_keys"]:
-        if rows[key]["adapter_status"] != "owner_deferred_religious":
-            raise ValueError("religious government escaped the owner-deferred boundary")
+        if rows[key]["adapter_status"] != "religious_adapter_implementation_pending":
+            raise ValueError("unimplemented religious government adapter marked ready")
     vocabulary = set(required_features["vocabulary"])
     registry_by_key = {row["key"]: row for row in actual_registry}
     for key, row in rows.items():

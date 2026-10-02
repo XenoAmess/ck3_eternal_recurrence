@@ -324,15 +324,23 @@ void TestProofAndDateCannotDrift() {
   Require(output.failure == Failure::collector_frame_mismatch);
 }
 
-void TestReligiousEducationOptionRemainsDeferred() {
-  Fixture fixture{};
-  fixture.Configure("educate_child_interaction");
-  fixture.selected_options[1] = 1;
-  game::CharacterInteractionProposalPayloadSourceV1 output{};
-  Require(ck3::ReadCharacterInteractionProposalPayloadSourceV1(
-              Environment(fixture), Access(fixture), fixture.preview, output) ==
-          Result::unavailable);
-  Require(output.failure == Failure::religious_option_deferred);
+void TestReligiousEducationOptionPreservesNativeSelection() {
+  for (const auto key : {"educate_child_interaction", "offer_ward_interaction",
+                         "offer_guardianship_interaction"}) {
+    Fixture fixture{};
+    fixture.Configure(key);
+    fixture.selected_options[0] = 1;
+    fixture.selected_options[1] = 1;
+    fixture.selected_options[3] = 1;
+    game::CharacterInteractionProposalPayloadSourceV1 output{};
+    Require(ck3::ReadCharacterInteractionProposalPayloadSourceV1(
+                Environment(fixture), Access(fixture), fixture.preview, output) ==
+            Result::available);
+    Require(output.failure == Failure::none && output.payload.complete);
+    Require(output.selected_option_mask == 11 &&
+            output.payload.religious_option_selected &&
+            output.payload.fingerprint.find(":o=11:") != std::string::npos);
+  }
 }
 
 void TestGrantTitleCollectorAndGenerationGates() {
@@ -379,7 +387,7 @@ int main() {
     TestAllSixTypedPayloads();
     TestGenerationBearingIdentityIsMandatory();
     TestProofAndDateCannotDrift();
-    TestReligiousEducationOptionRemainsDeferred();
+    TestReligiousEducationOptionPreservesNativeSelection();
     TestGrantTitleCollectorAndGenerationGates();
     TestMalformedOptionsAndExactBuildStayRed();
     for (std::uint32_t value = 0;

@@ -298,11 +298,13 @@ void TestPreviewAndAllowlistGates() {
     auto fixture = BaseFixture("educate_child_interaction");
     fixture.envelope.payload.religious_option_selected = true;
     ck3::CharacterInteractionProposalActionStateV1 state{};
-    game::CharacterInteractionProposalActionAckV1 ack{};
-    ck3::ExecuteCharacterInteractionProposalActionCoreV1(
-        Environment(), Access(fixture), state, Request(fixture), ack);
-    Require(ack.failure == Failure::religious_option_deferred &&
-            fixture.submits == 0);
+    const auto ack = ExecuteAvailable(fixture, state);
+    Require(ack.failure == Failure::none && fixture.submits == 1 &&
+            state.submission_in_flight);
+    game::CharacterInteractionProposalReceiptV1 receipt{};
+    Require(ck3::VerifyCharacterInteractionProposalReceiptV1(
+                state, ack, AppliedPost(ack), receipt) == ReceiptStatus::applied);
+    Require(receipt.interaction_specific_postcondition_verified);
   }
   {
     auto fixture = BaseFixture("offer_vassalization_interaction");

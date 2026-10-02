@@ -151,22 +151,22 @@ bool TestUnknownGovernmentRetainsIdentity() {
          result.adapter.status == Selection::unadapted_runtime_government;
 }
 
-bool TestReligiousGovernmentIsOpaqueIdentityOnly() {
+bool TestReligiousGovernmentFlagsObservedAdapterPending() {
   const auto features = Features(std::span<const std::string_view>{});
   constexpr std::string_view flags[]{"government_is_theocracy",
                                      "government_is_settled"};
   constexpr std::array<std::string_view, 0> dlcs{};
   auto input = AvailableInput("theocracy_government", flags, features, dlcs);
-  input.government_flags_available = false;
   const auto result = observer::EvaluateGovernmentRuntimeAdapterObserverV1(input);
   return result.status == Status::available &&
          result.government.status == Status::available &&
          result.government.stable_key == "theocracy_government" &&
          result.government.recognized_stock_key &&
          result.government.religious_identity_opaque &&
-         result.government.observed_flags.empty() &&
-         result.government.applicable_stock_flags.empty() &&
-         result.adapter.status == Selection::owner_deferred_religious &&
+         result.government.observed_flags ==
+             std::vector<std::string>{"government_is_settled", "government_is_theocracy"} &&
+         result.government.applicable_stock_flags == result.government.observed_flags &&
+         result.adapter.status == Selection::religious_adapter_implementation_pending &&
          result.adapter.family == std::nullopt;
 }
 
@@ -246,7 +246,7 @@ int main() {
       TestCoreGovernmentIdentityGreen() &&
       TestDlcAdapterAndFeatureIdentity() && TestFeatureMismatchIsTyped() &&
       TestUnknownGovernmentRetainsIdentity() &&
-      TestReligiousGovernmentIsOpaqueIdentityOnly() && TestTypedNotPresent() &&
+      TestReligiousGovernmentFlagsObservedAdapterPending() && TestTypedNotPresent() &&
       TestTypedUnavailableInputs() && TestExecutionGates();
   if (!green) {
     std::cerr << "government-runtime-adapter-observer-v1: RED\n";

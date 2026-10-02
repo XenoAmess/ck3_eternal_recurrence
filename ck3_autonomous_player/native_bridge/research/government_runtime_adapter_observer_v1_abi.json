@@ -86,7 +86,7 @@
     "required_features_source": "same input observation effective feature vector",
     "missing_required_feature": "unavailable_feature_mismatch",
     "unknown_government": "unadapted_runtime_government",
-    "religious_government": "owner_deferred_religious"
+    "religious_government": "religious_adapter_implementation_pending"
   },
   "acceptance": {
     "normal_msvc_w4_wx": "green",

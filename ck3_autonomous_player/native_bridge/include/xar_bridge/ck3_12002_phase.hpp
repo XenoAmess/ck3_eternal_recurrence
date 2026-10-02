@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "xar_bridge/combat_v3.hpp"
 #include "xar_bridge/ck3_12002_combat.hpp"
@@ -114,7 +114,7 @@ struct NativeCombatPhase {
   bool available = false;
   std::array<NativeCombatPhaseSide, 2> sides;
   // Native side difference with zero rolls. The separately recorded constructor
-  // ledger contains all nonreligious sources; religion/rites remain deferred.
+  // ledger contains all nonreligious sources; religion/rites operands remain implementation pending.
   std::int64_t dynamic_advantage_at_zero_roll_raw = 0;
   game::CombatAdvantageModelV3TestOnly nonreligious_advantage_model;
   bool nonreligious_constructor_ready = false;
@@ -142,7 +142,7 @@ ReadNativeCombatPhaseResult ReadNativeCombatPhase(
     const game::CombatSimulationInputsSnapshot &, NativeCombatPhase &) noexcept;
 
 // Private projection using the version-independent DTO. Complete v3 remains
-// unavailable because religion/rites remain deferred;
+// unavailable because religion/rites operands remain implementation pending;
 // migrated nonreligious values remain accessible in the diagnostic serializer.
 game::ReadCombatSimulationInputsV3Result ReadCombatPhaseInputs(
     const PhaseBindings &, const PhaseEnvironment &, const game::Snapshot &,

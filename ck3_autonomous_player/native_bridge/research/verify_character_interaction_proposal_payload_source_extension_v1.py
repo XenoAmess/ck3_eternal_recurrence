@@ -172,7 +172,7 @@ def main() -> int:
                 "exact_collector_memory_bound",
                 "full_generation_identity_preserved",
                 "frame_proof_and_date_preserved",
-                "religious_option_deferred",
+                "religious_option_selection_propagated",
             )
         ),
         "implemented readiness regressed",
@@ -208,7 +208,7 @@ def main() -> int:
             "stored_id != full_id",
             "collector.frame.proof_epoch",
             "collector.frame.date_raw",
-            "Failure::religious_option_deferred",
+            "payload.religious_option_selected = religious_option_selected",
             "kCharacterInteractionProposalPayloadGrantTitlesOfferVtableRvaV1",
             "payload.fingerprint = Fingerprint(output)",
         ),

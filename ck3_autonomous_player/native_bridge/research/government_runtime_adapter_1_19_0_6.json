@@ -10,7 +10,7 @@
       "theocracy_government",
       "holy_order_government"
     ],
-    "religion_status": "owner-deferred",
+    "religion_status": "implementation-pending",
     "excluded": [
       "faith, doctrine, tenet, fervor, conversion and religious reformation policy",
       "holy-order behavior beyond stable government identity",
@@ -123,7 +123,7 @@
     "deliberately_excluded_default": {
       "perform_religious_reformation": {
         "source_default": true,
-        "policy": "owner-deferred religion domain; never projected as a G2 adapter decision input"
+        "policy": "religious adapter implementation pending; identity observed but no G2 adapter decision implementation"
       }
     },
     "special_native_ai_fields": [
@@ -972,7 +972,7 @@
       },
       {
         "government_key": "theocracy_government",
-        "adapter_status": "owner_deferred_religious",
+        "adapter_status": "religious_adapter_implementation_pending",
         "adapter_family": null,
         "required_effective_features": [],
         "capability_profile_features": [],
@@ -1019,7 +1019,7 @@
       },
       {
         "government_key": "holy_order_government",
-        "adapter_status": "owner_deferred_religious",
+        "adapter_status": "religious_adapter_implementation_pending",
         "adapter_family": null,
         "required_effective_features": [],
         "capability_profile_features": [],
@@ -1214,6 +1214,6 @@
     "A single main-thread observer that atomically composes government identity and the loaded feature vector is not implemented.",
     "Adapter policy matrices and cross-inheritance goal-memory behavior are not implemented or live-validated.",
     "Entitlement provenance remains unavailable and is not inferred from false cache values.",
-    "Religious government behavior remains owner-deferred."
+    "Religious government behavior is authorized; dedicated adapter implementation remains pending."
   ]
 }

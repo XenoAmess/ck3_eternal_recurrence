@@ -1,4 +1,4 @@
-﻿#include "xar_bridge/ck3_12002_phase_advantage.hpp"
+#include "xar_bridge/ck3_12002_phase_advantage.hpp"
 #include "xar_bridge/ck3_12002_phase.hpp"
 
 #include <algorithm>
@@ -392,10 +392,10 @@ bool BuildNonReligiousAdvantagePlan(const AdvantageBindings &b,
     }
     for (std::size_t side = 0; side < 2; ++side)
       if (!Append(out, side, side == 0 ? "unreformed_faith_0" : "unreformed_faith_1",
-          nullptr, false, false, kScale, {}, "religion_domain_deferred_by_owner",
+          nullptr, false, false, kScale, {}, "religion_constructor_operand_implementation_pending",
           append_order, accumulator)) return false;
     out.model.base_static_accumulator_raw = accumulator;
-    out.model.unavailable_reason = "religion_constructor_sources_deferred_by_owner";
+    out.model.unavailable_reason = "religion_constructor_sources_implementation_pending";
     out.unavailable_reason = out.model.unavailable_reason;
     out.nonreligious_available = true;
     return true;

@@ -3,16 +3,17 @@
     "changed_registered_dependency_pin_count": 1,
     "current_bounded_campaign_utility_review_count": 3,
     "current_bounded_continuation_source_compatible_count": 192,
-    "current_contract_adaptation_pending_count": 0,
-    "excluded-owner-boundary": 3,
+    "current_contract_adaptation_pending_count": 2,
+    "excluded-owner-boundary": 1,
     "registered_event_count": 195,
+    "source-review-pending": 2,
     "unchanged-source-file-bytes": 192
   },
-  "baseline_compatibility_dataset_sha256": "CC285AFD964FFE36489822CF43C997ED6F1037BB8731DF14E1A9DB4ADFABB126",
-  "baseline_compatibility_file_sha256": "4BCE1FBDD96913C9A385978A291BA63BAE64734B1BCCC2DDCA949B972968859E",
+  "baseline_compatibility_dataset_sha256": "11E2AE895DBF9B0C73131C4497F64F0DD521E92698B17745689DB2632C12FABF",
+  "baseline_compatibility_file_sha256": "D4EAE439E084A705EAE02C56C348B7516D112855BCA82D94BCE303621F5D82D1",
   "ck3_build": "1.20.0.3",
   "ck3_exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
-  "dataset_sha256": "0E272AC1B46E8799BAB35A9383CBE7F24D224724BAA134EB77F9E5FE4F8108E9",
+  "dataset_sha256": "EE280715008886E4614C33A42E42B68935193EED72804AF65A9DB98535536A95",
   "events": {
     "adultery.0002": {
       "analysis_updates": {
@@ -189,11 +190,11 @@
         "source_compatibility_semantic_changes": [
           "Native 0 invokes pam_childbirth_piety_reward_effect regardless of the suppression branch.",
           "When child_bastardy_suppressed is present, native 0 may rename a Mongolic father's child Jochi and invokes adoption on child/optional child_2/child_3.",
-          "The adoption helper sets father to root, conditionally sets root.house, and hidden effects assign root.rite and root.culture. Religious identity assignment remains opaque and owner-deferred.",
+          "The adoption helper sets father to root, conditionally sets root.house, and hidden effects assign root.rite and root.culture. Religious identity assignment has not been observed by this review; its research and implementation are authorized as of 2026-10-02.",
           "Old source native 1 was the twin acknowledgement; current native 1 is the suppressed-bastardy alternative, so any old twin continuation must remap to current native 0. Do not promote a stale twin native-1 choice."
         ]
       },
-      "baseline_compatibility_row_sha256": "1A7DC241F3AA1F77AF7C497AD5B74ADA7AA8783F73C0071515251263768E6CE8",
+      "baseline_compatibility_row_sha256": "1D877793C8F43382F7149820EDE3C53D5B49D33F9BB9D515CD7AB8851D585822",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -1517,13 +1518,15 @@
       "token_differences": []
     },
     "court_chaplain_task.0313": {
+      "authorization_date": "2026-10-02",
       "body_compared": false,
-      "classification": "excluded-owner-boundary",
+      "classification": "source-review-pending",
       "namespace": "court_chaplain_task",
       "policy_reuse_eligible_by_body": false,
-      "reason": "owner-deferred-general-religion",
+      "reason": "event_source_migration_pending",
+      "review_gap": "Current source definition, scope projection and native outcome have not yet been migrated. Religion research and implementation are authorized.",
       "source_file_sha256": {},
-      "status": "owner-deferred"
+      "status": "source-review-pending"
     },
     "court_yearly.6030": {
       "analysis_updates": {
@@ -1772,7 +1775,7 @@
           "Stress is now conditional on opaque native has_personal_tenet_flag; affected options may use the callous alternative stress loss. Exact fulfillment/stress deltas are not claimed."
         ]
       },
-      "baseline_compatibility_row_sha256": "5B4C508E131AFEF971A609530C34475B540DC75D9EEC6944347E3185575D36F2",
+      "baseline_compatibility_row_sha256": "34C9CA2C07C13813136DB782CD2FFB3AAF364223C7F22E8700AC464F0C431E46",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -1825,7 +1828,7 @@
           "Unavoidable response no longer proves unavoidable positive stress. Treat grief immunity as opaque and trust native enabled state."
         ]
       },
-      "baseline_compatibility_row_sha256": "B368529F0161546A75E3B85CC82442BD45D12A5995E2A2AFEF6FFFFD912E0558",
+      "baseline_compatibility_row_sha256": "4D90A7F9FA0B1106B133C7546DDAD7355FC9594A6C9FAA98B0D424696E07B72E",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -1939,7 +1942,7 @@
               "included_in_material_prediction": false,
               "observation_status": "unavailable",
               "operation": "stress_and_fulfillment_impact",
-              "prediction_status": "owner-deferred-opaque-trait-inputs"
+              "prediction_status": "trait-input-observation-pending"
             }
           ],
           "common_after_effects": [
@@ -1982,7 +1985,7 @@
             "events/death_events/death_management_events.txt:2128-2138",
             "common/script_values/00_stress_values.txt:27-27"
           ],
-          "source_review_boundary": "New consolamentum_grief_immunity personal-tenet guard is kept opaque and owner-deferred; no religious exploration or new religion query. Postcondition must use actual current native result/indicator and allow guarded no effect as distinct from material success. The +20 authored input is conditional; no unconditional stress change is predicted.",
+          "source_review_boundary": "The consolamentum_grief_immunity personal-tenet guard was not reviewed or observed in the original migration. Religious research and queries are authorized as of 2026-10-02; predicate observation remains to be implemented. Postcondition must use actual current native result/indicator and allow guarded no effect as distinct from material success. The +20 authored input is conditional; no unconditional stress change is predicted.",
           "source_sha256": {
             "common/script_values/00_stress_values.txt": "821A0B77244FC5EE2D87D339CB24DBEF00787B83D44EC2DF9215FC1A93AEC2D4",
             "events/death_events/death_management_events.txt": "DFDAB7AB6757C73980B82F5E3A6F23184160688B844558FCE85D8EE5B9EF4C59"
@@ -1993,7 +1996,7 @@
           "Do not assert exact twenty-point runtime delta or equality of fulfillment consequences."
         ]
       },
-      "baseline_compatibility_row_sha256": "6B166B95B3BEAFEA2BFDECA9F7209E949430D2871501D740A43CC4979035F755",
+      "baseline_compatibility_row_sha256": "16CC31D784506F8345BC4EAEDA94A0FF7A76980D0ABD51ED3EEA50F84C4368DA",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -2496,7 +2499,7 @@
           "Treat rite/tenet subpredicate as opaque native input; retained reveler action is unchanged while stress/fulfillment equality is not asserted."
         ]
       },
-      "baseline_compatibility_row_sha256": "65EECECF850EE103E725B958753C6EC4F5C00DCBF3C0D8515AA264F93F48C329",
+      "baseline_compatibility_row_sha256": "7517055B8E57D59D7C0847C45DF7D2C6D120C50DA5A5A0E08FD422F84C6FF55F",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -3198,7 +3201,7 @@
           "Actor creation adds rite = root.capital_county.rite; stress application migrates. Record new rite provenance as opaque identity only; defer religious semantics."
         ]
       },
-      "baseline_compatibility_row_sha256": "F99130A6D7F6AD62BB779DADEB551072508CBC3B6CA0CEEB6D3D14CE7BB74451",
+      "baseline_compatibility_row_sha256": "7EA350E5F01C3F18433458EBF6AE91E274A7C476DE6297357B7068B42F1D103B",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -3508,7 +3511,7 @@
           "Actor creation adds county rite; minority_county.faith/has_doctrine references become minority_county.rite/rite_has_doctrine. Record lexical changes only and consume current native branch/scope results; no doctrine equivalence claim."
         ]
       },
-      "baseline_compatibility_row_sha256": "642285E2D945F27E55B0C9803F8A4A8FA18C5203BFE59F453530DF0F0656F839",
+      "baseline_compatibility_row_sha256": "48C75B87DF76397A38060FE75B86135816482216C33E282165483C300CCF436F",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -3681,7 +3684,7 @@
           "Actor creation adds rite = root.location.rite; stress application migrates. Record opaque rite provenance only; defer religious semantics."
         ]
       },
-      "baseline_compatibility_row_sha256": "EC3E0C32971CDD019344D760640050169AD32E3BE9469CAF222EFF32F24ECECC",
+      "baseline_compatibility_row_sha256": "B7BA8B6B421FC374461AB294805A399917A471045860976E7A1D64167C37BF85",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -4288,7 +4291,7 @@
           "Actor creation adds rite = root.rite. Record opaque actor rite provenance only; defer religious semantics."
         ]
       },
-      "baseline_compatibility_row_sha256": "D038685D3D3F9ECAB5F9FFC9E1B13DC98C25343EDD1249986DB3C3C42BF140A6",
+      "baseline_compatibility_row_sha256": "B811576ED2F3F39537870BAB48F3A1AED523C542FF98877D0AB9C16C64F1FAE1",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -4342,7 +4345,7 @@
           "Actor creation adds rite = root.rite. Record opaque actor rite provenance only; defer religious semantics."
         ]
       },
-      "baseline_compatibility_row_sha256": "38CE44BE406639B4694F513939914E5ED60E6C3060A1EE5A3208477EBD287572",
+      "baseline_compatibility_row_sha256": "18898567D01A40B3405B14D757CBBC3BC3784E3253A46BFFE9B0FF779B520F80",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -4780,7 +4783,7 @@
               "included_in_material_prediction": false,
               "observation_status": "unavailable",
               "operation": "stress_and_fulfillment_impact",
-              "prediction_status": "owner-deferred-opaque-trait-inputs"
+              "prediction_status": "trait-input-observation-pending"
             }
           ],
           "common_after_effects": [],
@@ -4841,7 +4844,7 @@
           }
         }
       },
-      "baseline_compatibility_row_sha256": "67692B282FBA7ACC51B676E77A008A0E47526D68AFA3BFD6A79365CD789CD55B",
+      "baseline_compatibility_row_sha256": "F196A705F544F78068725BDFF904008BE2911F0C925CADCBC5BC90CF0782E286",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -5349,10 +5352,10 @@
     "faction_demand.0099": {
       "analysis_updates": {
         "source_compatibility_semantic_changes": [
-          "Keep religion conversion branch opaque and owner-deferred; do not claim old faith conversion equals new rite conversion."
+          "Religion conversion research and implementation are authorized as of 2026-10-02. This migration has not reviewed the conversion branch; do not claim old faith conversion equals new rite conversion."
         ]
       },
-      "baseline_compatibility_row_sha256": "B2ABD316620985611CA976F0DC9C9AFAF0AF37D5A14B9C094FF2D89669D6F782",
+      "baseline_compatibility_row_sha256": "7936807311F6807F8A47681CEC6B18C3A5A3E3F5F0D8E7DC726401FD6EEEC8F4",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -5402,10 +5405,10 @@
     "faction_demand.0101": {
       "analysis_updates": {
         "source_compatibility_semantic_changes": [
-          "Accepted authority reduction is not globally equivalent: helper includes nomadic_authority and church_authority; selected refusal remains unchanged. Religious authority branch is opaque and owner-deferred."
+          "Accepted authority reduction is not globally equivalent: helper includes nomadic_authority and church_authority; selected refusal remains unchanged. Religious authority semantics have not been reviewed; research and implementation are authorized as of 2026-10-02."
         ]
       },
-      "baseline_compatibility_row_sha256": "4D96CFAD538D5AEE76FECAC3E6F214063D22114E6BB84C20559BEE51AEDE1682",
+      "baseline_compatibility_row_sha256": "94007D0123C83D220AF1D81B631E652F86F1B2DBD968B3CFBFD0843B58E1994A",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -5459,7 +5462,7 @@
           "Do not infer equivalence of faith/rite conversion, Catholic-vs-eastern-Christian predicate or popularity effects; preserve only the existing enabled refusal continuation."
         ]
       },
-      "baseline_compatibility_row_sha256": "7676FF4212DC18612079C667C7FB95E0EEE2F2EBA9E3C48869E6C13F57A57C8F",
+      "baseline_compatibility_row_sha256": "CB82920BD9D4FADBFCC2F112816881C15DFC312D127CB71E4F662335E38CEEC8",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -5613,13 +5616,15 @@
       "token_differences": []
     },
     "fervor.1002": {
+      "authorization_date": "2026-10-02",
       "body_compared": false,
-      "classification": "excluded-owner-boundary",
+      "classification": "source-review-pending",
       "namespace": "fervor",
       "policy_reuse_eligible_by_body": false,
-      "reason": "owner-deferred-general-religion",
+      "reason": "event_source_migration_pending",
+      "review_gap": "Current source definition, scope projection and native outcome have not yet been migrated. Religion research and implementation are authorized.",
       "source_file_sha256": {},
-      "status": "owner-deferred"
+      "status": "source-review-pending"
     },
     "great_holy_war.0011": {
       "body_compared": false,
@@ -6375,9 +6380,9 @@
     },
     "health.3101": {
       "analysis_updates": {
-        "source_migration_boundary": "Each treatment or no-treatment option invokes pam_epidemic_disease_treatment_spiritual_fulfillment_loss_effect after its existing disease-treatment helper. General religious fulfillment semantics remain owner-deferred."
+        "source_migration_boundary": "Each treatment or no-treatment option invokes pam_epidemic_disease_treatment_spiritual_fulfillment_loss_effect after its existing disease-treatment helper. Religious fulfillment semantics have not been reviewed or observed; research and implementation are authorized as of 2026-10-02."
       },
-      "baseline_compatibility_row_sha256": "40432198E02A64C75C9BD8CA9D5D654A49ACF2B69D6F8EC8584F4AAE4CB98E86",
+      "baseline_compatibility_row_sha256": "68CEF4060F6452C774819C8609E01BFD4A2255015D4B8F510AEBE1C61C6BFE27",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -6706,9 +6711,9 @@
     },
     "health.7200": {
       "analysis_updates": {
-        "source_migration_boundary": "Only caller trigger/weight changes: biological ancestry traversals replace prior family traversal; .7500 replaces a sibling factor with real-grandparent/great-grandparent factors. Opaque rite/personal-tenet weights are owner-deferred. Current displayed option and immediate bodies are unchanged."
+        "source_migration_boundary": "Only caller trigger/weight changes: biological ancestry traversals replace prior family traversal; .7500 replaces a sibling factor with real-grandparent/great-grandparent factors. Rite/personal-tenet weights were not reviewed; research and implementation are authorized as of 2026-10-02. Current displayed option and immediate bodies are unchanged."
       },
-      "baseline_compatibility_row_sha256": "1A139145672B2B0FBA732863EE3D447D0CF86E9DED8DF66AE8EC9269D256ECA4",
+      "baseline_compatibility_row_sha256": "0A0B3324A84A67C6DD5837C447877D4467F6BEACC6369CF878BD5BA6867997D3",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -6758,9 +6763,9 @@
     },
     "health.7400": {
       "analysis_updates": {
-        "source_migration_boundary": "Only caller trigger/weight changes: biological ancestry traversals replace prior family traversal; .7500 replaces a sibling factor with real-grandparent/great-grandparent factors. Opaque rite/personal-tenet weights are owner-deferred. Current displayed option and immediate bodies are unchanged."
+        "source_migration_boundary": "Only caller trigger/weight changes: biological ancestry traversals replace prior family traversal; .7500 replaces a sibling factor with real-grandparent/great-grandparent factors. Rite/personal-tenet weights were not reviewed; research and implementation are authorized as of 2026-10-02. Current displayed option and immediate bodies are unchanged."
       },
-      "baseline_compatibility_row_sha256": "88807C5EA64B5E1B1A98179FB48F0B145CFD5BBEF5C31EB55AB5E76D9C601FC7",
+      "baseline_compatibility_row_sha256": "E7F8B7FADABABF9BA20A4DA1D7234F3944C4DEBDB243677B7D0A283DED3FFF80",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -6810,9 +6815,9 @@
     },
     "health.7500": {
       "analysis_updates": {
-        "source_migration_boundary": "Only caller trigger/weight changes: biological ancestry traversals replace prior family traversal; .7500 replaces a sibling factor with real-grandparent/great-grandparent factors. Opaque rite/personal-tenet weights are owner-deferred. Current displayed option and immediate bodies are unchanged."
+        "source_migration_boundary": "Only caller trigger/weight changes: biological ancestry traversals replace prior family traversal; .7500 replaces a sibling factor with real-grandparent/great-grandparent factors. Rite/personal-tenet weights were not reviewed; research and implementation are authorized as of 2026-10-02. Current displayed option and immediate bodies are unchanged."
       },
-      "baseline_compatibility_row_sha256": "9D2B8B750A2CD8E70BFC6783CF6F554D17B3E1DFCAFC55A14CFDDA8F6FC77A0A",
+      "baseline_compatibility_row_sha256": "5173BB71AC3633D57D7CAE9D3A67340101A96E47AFC1E57E14659BCB2D405212",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -6990,7 +6995,7 @@
           "Generated spy rite is an opaque identity; do not claim prior faith/doctrine semantics are equal. Selected removal remains bounded."
         ]
       },
-      "baseline_compatibility_row_sha256": "D2204A3FD3699904E4BE56863ECF320DCE92346EA93305D4B21F727C74AF8150",
+      "baseline_compatibility_row_sha256": "51B048A912C9AAE15AA3CD68ACB7FB58FAFC127B957583975422E04751C0CFB3",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -9665,7 +9670,7 @@
           "Religious criminality and legality helpers remain opaque; no new imprisonment or religious policy is authorized."
         ]
       },
-      "baseline_compatibility_row_sha256": "0A9CD746AA76131016A44787C341914809F3479B99344C5B97E112B4DF1F2AE1",
+      "baseline_compatibility_row_sha256": "BEABF6C97AA950FD83204281C866E8E572E885020F99C7D3B4AEC60EFE6FB01B",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -9719,7 +9724,7 @@
           "Treat rite identity and incest helper as opaque; source body equality is not asserted."
         ]
       },
-      "baseline_compatibility_row_sha256": "BC0403EA6F5EBA774A0FB5AB04558DD4170153F4A2861385989AC42B2930611C",
+      "baseline_compatibility_row_sha256": "BB5E2955936A44DCAD19424FA11458B6C261EF092C7054DB167F7127AF87CBA5",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -9930,7 +9935,7 @@
           "Religious description predicate remains opaque; do not use it to infer crime status or rank options."
         ]
       },
-      "baseline_compatibility_row_sha256": "5CFD35EFAC548D12B8FEBE6DE91479D65F2D9EAEBCAADF63449B84E7862111ED",
+      "baseline_compatibility_row_sha256": "B28AC5F98C032DBEDDF5707912670EC0F1EC16D9AD01DB775A3CAC7229DE5BF1",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -10309,9 +10314,9 @@
     },
     "stress_threshold.1011": {
       "analysis_updates": {
-        "source_migration_boundary": "The existing native5 endure route is source-unchanged under the existing nonconversion scope/option projection. Conversion native2/native3 and sex_positive_rite/new_faith-related shapes are owner-deferred; this migration neither permits them nor infers their rite semantics."
+        "source_migration_boundary": "The existing native5 endure route is source-unchanged under the existing nonconversion scope/option projection. Conversion native2/native3 and sex_positive_rite/new_faith-related shapes have not been migrated or observed by this contract. Their research and implementation are authorized as of 2026-10-02; exact source, scope and native observation work remains necessary before those options can be selected."
       },
-      "baseline_compatibility_row_sha256": "609D8ECC76D5F48D4FC229076FF81C67DA50D95E400A1059082C883EBEAE10EC",
+      "baseline_compatibility_row_sha256": "E1F24173A28C4623EE4888DDDCE885FD6F5847FD9DDBE11B22F9EC154859C092",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -10468,7 +10473,7 @@
               "included_in_material_prediction": false,
               "observation_status": "unavailable",
               "operation": "stress_and_fulfillment_impact",
-              "prediction_status": "owner-deferred-opaque-trait-inputs"
+              "prediction_status": "trait-input-observation-pending"
             }
           ],
           "common_after_effects": [
@@ -10525,7 +10530,7 @@
           }
         }
       },
-      "baseline_compatibility_row_sha256": "7FF626018C102464F638AEFC2D9AB83D457A47E343D4B1FC9068F14BECCE14C4",
+      "baseline_compatibility_row_sha256": "888BB4016589D868FE008253F32B29A14492FA025761CE6F1DA850189C3642BE",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -10684,7 +10689,7 @@
           "Conditional minor piety reward depends on an opaque native rite parameter and relation predicate; do not infer faith/rite equivalence or exact material delta."
         ]
       },
-      "baseline_compatibility_row_sha256": "6EED949DEDF51AD16299EF044F96FC5973C2C9635B88BB46858E56F94DF888FE",
+      "baseline_compatibility_row_sha256": "DB3905C6DB6697F1AF48450D302EFA640B77E5EF094B56C7A82B5F1A45D06FE8",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -10853,7 +10858,7 @@
     "tgp_china_yearly.0005": {
       "analysis_updates": {
         "current_source_body_review": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment": "opaque additive native effect; no exact current fulfillment observation or optimizer claim",
           "new_live_evidence": false,
           "policy_contract_compatible": true,
@@ -10866,7 +10871,7 @@
         "opaque_rite_setup_boundary": "Changed rite/gender-doctrine source tokens are treated as pre-display native setup; no rite/doctrine semantics are inferred. Existing selected nonreligious continuation still requires its original exact saved-scope checks.",
         "source_manual_review_required": false
       },
-      "baseline_compatibility_row_sha256": "B1E913E42E7B0C5DBE40B7AC203EA49025A755A6358B4875AEFB28EB1ECD5DCA",
+      "baseline_compatibility_row_sha256": "C98D350D344FB7EFBBF65D4BF5EE656E21D7F2E0BC27A8B654E91CEEC036A98B",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -10996,7 +11001,7 @@
     "tgp_china_yearly.0015": {
       "analysis_updates": {
         "current_source_body_review": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment": "opaque additive native effect; no exact current fulfillment observation or optimizer claim",
           "new_live_evidence": false,
           "policy_contract_compatible": true,
@@ -11009,7 +11014,7 @@
         "opaque_rite_setup_boundary": "Changed rite/gender-doctrine source tokens are treated as pre-display native setup; no rite/doctrine semantics are inferred. Existing selected nonreligious continuation still requires its original exact saved-scope checks.",
         "source_manual_review_required": false
       },
-      "baseline_compatibility_row_sha256": "C8037D94EB7D1520705B487D4E17DA31A94708491029CC1B442CAB85A2E1D612",
+      "baseline_compatibility_row_sha256": "158356D94FE19D217074EA5E841572FD124ED8777D6F7011879A2BB2C0670EE5",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -11382,7 +11387,7 @@
     "tgp_dynastic_cycle_events.0001": {
       "analysis_updates": {
         "current_source_body_review": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment": "opaque additive native effect; no exact current fulfillment observation or optimizer claim",
           "new_live_evidence": false,
           "policy_contract_compatible": true,
@@ -11401,7 +11406,7 @@
         },
         "source_manual_review_required": false
       },
-      "baseline_compatibility_row_sha256": "5273F18DD893EF070EEC71BDB0FFF83902591174B399E8D6DF9C323761C1627D",
+      "baseline_compatibility_row_sha256": "85A4A3896CF28E89D860AB39AF1E5BA764A3366D575C50E06F52770CBF1557D5",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -11460,7 +11465,7 @@
     "tgp_dynastic_cycle_events.0020": {
       "analysis_updates": {
         "current_source_body_review": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment": "opaque additive native effect; no exact current fulfillment observation or optimizer claim",
           "new_live_evidence": false,
           "policy_contract_compatible": true,
@@ -11478,7 +11483,7 @@
         },
         "source_manual_review_required": false
       },
-      "baseline_compatibility_row_sha256": "BEE4C467FA07A18AA5A89C92DFF17E0BC07624D971B7D896D46F71CD342B10A3",
+      "baseline_compatibility_row_sha256": "35BE46C13A9DA54F4FF19F2C99673310161ADA6416A3CA3F8C3995576E0ED084",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -11912,7 +11917,7 @@
               "included_in_material_prediction": false,
               "observation_status": "unavailable",
               "operation": "stress_and_fulfillment_impact",
-              "prediction_status": "owner-deferred-opaque-trait-inputs"
+              "prediction_status": "trait-input-observation-pending"
             }
           ],
           "common_after_effects": [],
@@ -11979,7 +11984,7 @@
         },
         "source_manual_review_required": false
       },
-      "baseline_compatibility_row_sha256": "115A75DBE858CBDB034CF3352A4F4784C782C0C537227E2F50BFB0393645A7FD",
+      "baseline_compatibility_row_sha256": "404F0737ECE194B48121305D186C51695BDF78C82A7164D53D1A0DDCC048C397",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -12171,7 +12176,7 @@
     "tgp_movement_events.0060": {
       "analysis_updates": {
         "current_source_body_review": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment": "opaque additive native effect; no exact current fulfillment observation or optimizer claim",
           "new_live_evidence": false,
           "policy_contract_compatible": true,
@@ -12189,7 +12194,7 @@
         },
         "source_manual_review_required": false
       },
-      "baseline_compatibility_row_sha256": "10A8DA134F6BCD055A4EEDE1E2406FC1C197D375C83C185359D97FD57B90226B",
+      "baseline_compatibility_row_sha256": "E41F12198BA0043D4D0EF620209A626FF47FBE8B984CA31AFFEB48D173FF36F3",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -12333,7 +12338,7 @@
       "analysis_updates": {
         "changed_selected_option_boundary": "Native 3 uses rite and trait_is_virtue_rite where old source used faith and trait_is_virtue. This current predicate is opaque and evaluated only by CK3; the existing native-enabled action can continue without deriving religious semantics or exact utility.",
         "current_source_body_review": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment": "opaque additive native effect; no exact current fulfillment observation or optimizer claim",
           "new_live_evidence": false,
           "policy_contract_compatible": true,
@@ -12349,7 +12354,7 @@
         },
         "source_manual_review_required": false
       },
-      "baseline_compatibility_row_sha256": "0751016858B84C6D6229B971C56A9F21F73BD140228B4D70459E728C2FC609D0",
+      "baseline_compatibility_row_sha256": "A5BE9A7445B4994129E64F3BD19B5F29227D1642EFBB40A5B59AD5D3AB07F89F",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -12465,7 +12470,7 @@
     "tgp_movement_events.0150": {
       "analysis_updates": {
         "current_source_body_review": {
-          "classification": "owner-deferred-religion",
+          "classification": "religion-semantics-unreviewed-at-original-review",
           "fulfillment": "opaque additive native effect; no exact current fulfillment observation or optimizer claim",
           "new_live_evidence": false,
           "policy_contract_compatible": true,
@@ -12476,9 +12481,9 @@
           "whole_body_equal": false
         },
         "source_manual_review_required": false,
-        "unselected_conversion_boundary": "Native 2 changes set_character_faith=root.faith to set_character_rite=root.rite. This unselected conversion path remains owner-deferred; no conversion strategy or doctrine semantics are provided."
+        "unselected_conversion_boundary": "Native 2 changes set_character_faith=root.faith to set_character_rite=root.rite. This unselected conversion path was not reviewed or observed. Conversion strategy and doctrine research are authorized as of 2026-10-02; this migration does not supply their implementation."
       },
-      "baseline_compatibility_row_sha256": "1F3934CCFCBC54C1C375DDDAA1ABC034703F56614762F88DC5577F0EB2D6FEEC",
+      "baseline_compatibility_row_sha256": "799229F69423D815A7642DFBBD15B26FFA807F026387135C8BCB606EB9F185BE",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -12700,7 +12705,7 @@
               "included_in_material_prediction": false,
               "observation_status": "unavailable",
               "operation": "stress_and_fulfillment_impact",
-              "prediction_status": "owner-deferred-opaque-trait-inputs"
+              "prediction_status": "trait-input-observation-pending"
             }
           ],
           "common_after_effects": [],
@@ -12739,7 +12744,7 @@
         "source_manual_review_required": false,
         "trigger_boundary": "Current source requires TGP DLC, government_has_flag=government_is_celestial, an available travelling adult, a valid land location and a nearby special-building province; ten-year cooldown. The old concrete celestial_government predicate was replaced."
       },
-      "baseline_compatibility_row_sha256": "C7226DD0D68C00BE866B7F5D8844A91D0305D7BEECAF49F2E2D276446C736691",
+      "baseline_compatibility_row_sha256": "1879C778B8455E9B2BF02AC42EC09AB4D757663709F5DE6630A6B7F0691DBE30",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -12984,7 +12989,7 @@
             "common/traits/00_traits.txt:2155-2206",
             "common/modifiers/00_event_modifiers.txt:81-84"
           ],
-          "source_review_boundary": "Alternative still structurally offers permanent herbalist, ten-year seeker_of_knowledge, or no authored benefit; native duel resolution/transitive trait effects are not fully reviewed. Newly added owner-deferred religious flag is recorded as boundary only.",
+          "source_review_boundary": "Alternative still structurally offers permanent herbalist, ten-year seeker_of_knowledge, or no authored benefit; native duel resolution/transitive trait effects are not fully reviewed. The newly added religious flag was not reviewed in the original migration; its research and implementation are authorized as of 2026-10-02.",
           "source_sha256": {
             "common/modifiers/00_event_modifiers.txt": "546ADC3AF9413031228928C0621829791F843D7E93450C9EEC2C5E2CEC18187E",
             "common/script_values/00_basic_values.txt": "C379CC0C58ED1574033F0E07A58697DFC6F8475C26AA4B117F2332008D4A27EF",
@@ -12994,7 +12999,7 @@
           }
         }
       },
-      "baseline_compatibility_row_sha256": "F2762562624D627C0BB92D4EDB132E112C3EC3AEDF44E8FA60AE4C1257122351",
+      "baseline_compatibility_row_sha256": "582196FBD1EE1C09FA409A688A124A7479585044BA18CEF9CFE30571D7777266",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -13093,7 +13098,7 @@
               "included_in_material_prediction": false,
               "observation_status": "unavailable",
               "operation": "stress_and_fulfillment_impact",
-              "prediction_status": "owner-deferred-opaque-trait-inputs"
+              "prediction_status": "trait-input-observation-pending"
             }
           ],
           "common_after_effects": [
@@ -13155,7 +13160,7 @@
           "Arrogant stress relief uses stress_and_fulfillment_impact; permanent poet benefit remains source-authored and existing material trait observation limits remain."
         ]
       },
-      "baseline_compatibility_row_sha256": "B041B6D692AD7D0AC37C4F137B33379ED64620A55AD1A06B2B458368BECD13A0",
+      "baseline_compatibility_row_sha256": "30451A4FB452A65646C5F93C04C68FF29202E15D868D5800FA75ED2508250101",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -13734,7 +13739,7 @@
           "Opaque religious predicates and lover legality are native-authoritative. Selected trait stress uses fulfillment keyword; do not claim global equality of the unselected sexual branch."
         ]
       },
-      "baseline_compatibility_row_sha256": "F8A07C78F9601CF315CA8078A946CF6390781A412644D0821205083E5583783C",
+      "baseline_compatibility_row_sha256": "DC9D1EA4BDFD00EFD6434E51846088CE5229F743D4F780893B75C27B4AA1396B",
       "body_compared": true,
       "caller_candidate_files": [
         {
@@ -13999,6 +14004,12 @@
   "old_source_index_dataset_sha256": "BF4ADC6FEE5742B1E57F0768E2BE120113E9176D4A8FABAA3BF30EB42FB22DF8",
   "old_source_index_file_sha256": "3BAB1109B00B45548373A4993C7D959131821EB5BCB883E29EEB63828A45F923",
   "policy_reuse_boundary": "Byte-identical registered definitions/caller candidate files and the reviewed direct effect permit static source reuse only. Legacy live exemplars remain legacy; actual .3 runtime is separately accepted by the migration owner.",
+  "religion_authorization": {
+    "boundary": "Authorization does not establish source compatibility, native observation, or live acceptance. Original review gaps remain explicit implementation work.",
+    "current_policy": "religion-research-and-implementation-authorized",
+    "date": "2026-10-02",
+    "previous_owner_restriction_revoked": true
+  },
   "review_ledger_file_sha256": "6508984676F440DF16F9D73F9F03BB670F34D8C2396D8C3B62AA8444322ECDE0",
   "schema": "xar.ck3.nonwar-event-source-compatibility",
   "schema_version": 1,

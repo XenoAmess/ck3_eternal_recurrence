@@ -340,7 +340,7 @@ std::string_view GovernmentSelectionStatusKey(
   case Status::core_supported: return "core_supported";
   case Status::adapter_spec_ready_not_implemented: return "adapter_spec_ready_not_implemented";
   case Status::unsupported_nonplayer_identity: return "unsupported_nonplayer_identity";
-  case Status::owner_deferred_religious: return "owner_deferred_religious";
+  case Status::religious_adapter_implementation_pending: return "religious_adapter_implementation_pending";
   case Status::unavailable_feature_mismatch: return "unavailable_feature_mismatch";
   case Status::unadapted_runtime_government: return "unadapted_runtime_government";
   }

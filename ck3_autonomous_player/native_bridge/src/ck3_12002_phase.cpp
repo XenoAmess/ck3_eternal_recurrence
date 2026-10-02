@@ -1,4 +1,4 @@
-﻿#include "xar_bridge/ck3_12002_phase.hpp"
+#include "xar_bridge/ck3_12002_phase.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 
 #ifndef NOMINMAX
@@ -981,7 +981,7 @@ game::ReadCombatSimulationInputsV3Result ReadCombatPhaseInputs(
     const bool ready = ReadNonReligiousPhaseOperands(bindings, environment, scope, base, observed);
     output = std::move(observed.fields);
     output.available = false;
-    output.unavailable_reason = ready ? "phase_religion_and_rites_owner_deferred" :
+    output.unavailable_reason = ready ? "phase_religion_and_rites_implementation_pending" :
         "phase_nonreligious_operand_unavailable:" +
         (observed.failed_domains.empty() ? std::string("unspecified") : observed.failed_domains.front());
     return Result::phase_inputs_unavailable;
@@ -1171,7 +1171,7 @@ bool ReadNonReligiousPhaseOperands(
     output.fields.advantage_model = output.native_sides.nonreligious_advantage_model;
     output.non_religious_ready = output.failed_domains.empty();
     output.fields.unavailable_reason = output.non_religious_ready ?
-        "phase_religion_and_rites_owner_deferred" :
+        "phase_religion_and_rites_implementation_pending" :
         "phase_nonreligious_operand_unavailable:" + output.failed_domains.front();
     return output.non_religious_ready;
   } catch (...) {
@@ -1202,7 +1202,7 @@ std::string SerializeCombatPhaseInputsV3(const game::CombatPhaseInputsV3 &inputs
   AppendSigned(output, kPhaseAstDeferredOpaqueNodes);
   output += "},\"complete_phase_inputs_ready\":false,\"current_build_ast_ready\":false,"
             "\"deferred_domains\":[\"religion_and_rites\"],\"nonreligious_fields_ready\":";
-  output += inputs.unavailable_reason == "phase_religion_and_rites_owner_deferred" ? "true" : "false";
+  output += inputs.unavailable_reason == "phase_religion_and_rites_implementation_pending" ? "true" : "false";
   output += ",\"nonreligious_fields\":{\"characters\":";
   AppendCharacters(output, inputs.characters);
   output += ",\"armies\":";

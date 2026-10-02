@@ -1,5 +1,36 @@
 ﻿# CK3 1.19.0.6 原版事件知识 Registry
 
+## 2026-10-02：宗教开放后的真实 `rite_growth.0010`
+
+用户已经明确开放全方位深入宗教研究并撤销旧宗教暂缓要求；以下当前事件不再沿用该限制。ROOT 与其它 owner 维护全局旧限制清理，本包只修复 Robert 当前自然 instance13 的实际消费缺项，不抢共享迁移或中央报告文件。
+
+正式 following6day stage 的 turn3 原生查询 available：`rite_growth.0010` / instance13 / calculated3910010 / runtime5952，原 DTO native19/public6，actor29829、raw53222280、paused；closed checkpoint 的随后 native20 不替换原同帧 binding。snapshot authored3，typed rendered/native0、1、2 均 shown/enabled。七 saved scopes 为 `origin_faith:faith`、`source_rite:rite`、`founder:character`、`bg_override_char:character`、`rite_growth_target_share:value`、`new_rite:rite`、`differing_doctrine:doctrine`；两个角色均为36108，非角色 payload 仍 opaque。当前0有 fulfillment-increase indicator，magnitude unavailable；query并未提供完整效果预览。原小 query SHA `BC8A6653B4583B894FBC7434CD9D767D34E8F34B16CB05790CDE8311AD73A802`，finite turn SHA `BDF5FAF7BD3758B95E99DC40B4A527F750282C825401BEB397F17D86783D54FE`；没有读取112MB snapshot/driver history或提交选择。
+
+施工前冻结的原版输入为 exact CK3 1.20.0.3 / Steam25652598 / EXE94B55397…DE02A6。`events/religion_events/rite_growth_events.txt:73–413` 文件 SHA `D09C0EB94E1A81C0D456F55C049004D7EF1EBE38464A1274CF151D0214418895`；SourceTree key token到末brace、无随后换行的完整 block SHA `ECDB6AD5179B47CFFC2114A3030A1CCE5F9231ECEC29CED3DC4B64A961AB4E42`，本文件 raw/LF一致。直接 `.0001:14–68`、必要 script effects/triggers/values/opinion 及简中英文 loc 已冻结在 `m2-events/actual-robert-rite-growth-0010-blocker-01/source-evidence/stock-source-exact-12003.json`（SHA `7AC4375FB419A4ACE5F41C8B29D03B3F734B470D9EBA8DB3F5C0E69CC86FE1AE`）；只审阅当前事件及实际选择比较所需依赖，不以宗教全域开放为由给未出现事件预登记。
+
+```mermaid
+flowchart TD
+    P["[stock] faith pulse/.0001 选source rite与合格AI founder"] --> I["[stock] founder immediate 创建新rite、转换创始者/领地/宫廷、安排传播"]
+    I --> M["[stock] major=yes；origin-faith人物看到.0010"]
+    M --> A["[actual] root29829不同founder36108；3native全部enabled"]
+    A --> O0["[stock] native0：精神满足度+5；AIbase100"]
+    A --> O1["[stock] native1：改new Rite、founder反向opinion+30、转换cascade；AI0"]
+    A --> O2["[stock] native2：虔诚+100、founder反向opinion-15；AI0"]
+    O0 -. "当前/后置独立query尚未采集" .-> U["unknown：实际fulfillment变化及clamp"]
+    O1 -. "未采用；当前完整target doctrinal/cascade价值未闭合" .-> C["unknown：conversion质量与实际结果"]
+    O2 -. "未选择" .-> V["unknown：实际piety/opinion结果"]
+```
+
+原 `.0010` founding immediate `138–324` 处理预算/分歧、新rite、创始者转换、herald与领地/宫廷，并在4–7天后安排 `.0011`；它在选项前发生，当前玩家不同于 founder，不把其中的创建/转换归给玩家点击或推断玩家已转换。该事件没有 common after。native0 `326–332` 仅 `change_spiritual_fulfillment=5`、AIbase100；native1 `334–399` 排除faith/rite heads，`set_character_rite_with_conversion=new_rite`，founder对root好感+30、十年recent-conversion flag和county/court cascade，AI0；native2 `401–412` 给medium_piety_gain（当前base100）并使founder对root contempt−15，AI0。`.b` 的 `custom_tooltip` 包含实际执行脚本，不能按 `show_as_tooltip` 当作纯展示。Rite与Faith是不同身份，改Rite不能笼统等同于改Faith。
+
+原生树落盘后，ROOT按当前Robert目标授权 native0/API1：保留当前Rite、不制造对founder敌意，获取源码定义精神满足度正效果；这是有界当前路线，不宣称完整宗教策略最优或引擎采样AI等价。native1转换价值比较所需当前doctrines/tenets、转换回调和受影响人物/领地尚未闭合，将来该策略需要它们时补观测；它们不阻断当前明确的0选择。只登记此实际七scope/三选项，不固定founder ID，不借其它查询填造opaque payload，不提前注册`.0011`。
+
+材料使用现有 `ck3_query_player_religion_context_v1(expected_revision=<fresh public revision>)`：正式normalized MCP DTO直接提供顶层 `spiritual_fulfillment_raw/raw_scale`，native envelope才位于 `player_religion_context` 内；signed合法0保留，当前scale100000。当前native4ee已发布，现有CLI `--private-player-religion-context-query` 是read-only入口，无需DLL重编；旧exact .3 SDK176成功只证明入口可用，不替代本实例pre。复用 [材料查询专题](religion-native-ai-effect-material-12003.md)；native owner已定位脚本effect先经gain/loss modifier，再由runtime bounds夹限写回，所以源码+5不保证raw+500000。ROOT会保留同actor/datepaused的pre、一次typed choice及独立post，按实际delta核材料；indicator、ACK与instance消失不替代真实值。通用event材料比较器当前不覆盖fulfillment，profile expectation保持None，外部独立材料与general observer readiness分开记录。
+
+本次单项登记已 **static-ready**，唯一新增 existing generic-registry full-route 方法首次 **GREEN，1/1**：保持原真实native19/public6、七scope和三个可见选项，经normalizer → knowledge/classifier → ordinary plan → service API1 → native-driver独立合成old13advance、sameactor/datepaused。没有模拟fulfillment增加、转换或后续传播结果；generic material expectation仍None。原Feast或宗教旧测试未重跑，receipt在同包 `python-compatibility/focused-checks.json`。三production触点为独立 `.3` religion leaf、现有 `.3` dispatch 和有限relational-scope key入口；service/native/outcome/旧版本数据没有本包改动。
+
+ROOT已用现成permission plan闭合当前真实pre：`m2-events/robert-rite-fulfillment-before-01/001-ck3_query_player_religion_context_v1.json`，normalized `available=true/read_only=true`，native23/同actor29829、pausedraw53222280，fulfillment raw **0** / scale100000，Rite152/Faith23/Religion8，fervor raw6808550。合法0不作missing，也不把这些独立player宗教身份塞入generic event的opaque savedscope。当前新leaf尚待ROOTcommit/push/freeze和原13一次生产选择，post材料及下一正常回合尚未发生，本段不授live或多选M2 credit。
+
 ## 2026-10-02：Robert 自然活禽宴会 `feast_main_live_fowl.0003`
 
 正常 `.2001` 消费后推进四天产生的新 instance `12`，首次正式读取在 `feast2001-following-normal30-242-actual-01/turn-001/natural-event/result.json` 返回 `existing_consumer_not_ready`；原 result SHA-256 `0E85C592E8E0209FFC7E7DE6F2A631E4A58F0E1908DC3C9BD87B3FBFFECDC339`。这是 Python242/native716 的 registry 缺项，不是原生窗口读取故障：typed key `feast_main_live_fowl.0003`、calculated ID `6040003`、runtime ordinal `10287`，`native:62` / public revision `2` / `date_raw=53222136`，root=host=玩家 `29829`。saved scopes 为 `activity/host/province/fowl_dinner_target/fowl_bird_chaser`；两个实际人物为 `37636/36907`，不作为固定合同 ID。activity/province typed payload 继续 opaque。basic snapshot authored count `1`，唯一 rendered/native `0/0` 显示启用，API option `1`；中文 resolved label 为“啊，没有恶作剧的宴会可不完整。”。此 RED 没有提交选择或推进时间，原实例保留。
@@ -24,6 +55,20 @@ flowchart TD
 这是有明确游戏价值的非空效果单选路线，没有立即写金币、威望或压力点；incomplete empty icon indicators 不能把它改判为 effectless。现有 consumer 的材料比较器仅覆盖压力点、金币与威望，本次 `observable_postcondition=None`，不制造财富变化或 M2 credit。已发表 `ck3_query_campaign_root_context_v1(expected_revision=<fresh public revision>)` 提供 `campaign_root_context.player_health.raw/scale`：根执行者可以在选择前后独立 paused 查询，同角色/日期确认实际健康变化。原 basic snapshot 没有健康 baseline，源定义 `+0.5` 不是实际 delta，也不是自动动作的新增前置门槛。
 
 最小登记及现有生产消费路径现为 **static-ready**：独立 `.3` fowl leaf 只覆盖本次五 scope；现有 `.3` registry dispatch 与 relational-scope 有限 key 集各接入此 key，不改 service、driver、native、outcome 或 DLL。唯一新增的 existing full-route 方法首次 **GREEN，1/1**，使用真实 public2/native62/key/五 scope、authored1/rendered1，经过 normalizer → knowledge/classifier → ordinary `choose_one_life_turn` → service 的显式 instance API1 → native driver 的独立合成 old12 advance / same actor-date paused。selected 与 common-after profiles 均非空，材料 expectation 保持 None，没有模拟 modifier/健康收益或十天后结果。测试记录为同包 `python-compatibility/focused-checks.json`；原 `.7002/.2001/.6231` 方法未重跑。根执行者仍需冻结新 Python，并在其实际 native 环境中一次消费原12与独立回读；本包没有新增 live/M2 credit，原 RED 与 checkpoint 保留。
+
+### Robert `.0003`：b03/4ee 实际健康材料与正常接续
+
+根执行者已正常提交、推送并冻结该五路径源码为 `b03d34fd2a7b24cebbf2e82de9cf06fa1405da8e`；当前运行绑定 native/environment4ee、PID `94488`。首次 cold SDK read 保留原 instance12，却在 native6 / 同日 `53222136` 返回 `event_window_not_materialized`、window_match_count0，key/scopes/options 均 null；没有提交选择。这是冷活动视图缺少物化的 presentation 阻点，与已审阅 leaf 的 scope/option 合同无关。原 query SHA `6EC92A50F484381C7B1966444D1C0B943BA5EE383B0CF3CD5265BC9F36593CAC`；旧 Python242 registry 缺项 RED 和这个 cold RED 均保留。
+
+复用 [既有后台 Feast 视图恢复 primitive](ck3-1.20.0.2-feast-guest-rule.md)，没有新增 provider/ABI/native build。第一外置 open attempt 因遗漏连接等待而 harness RED，尚未 native action；有限等待修正后的 `m6-feast/robert-v20-headless-activity-open-02` 对 independently observed full ActivityID `83886111` 只执行一次 `open-current-activity-view-v1-private`。原 ACK 如实为 `invoked_pending`，`materialization_independently_verified=false`；首个独立 typed query 才证明 available/1match、原 instance12 和 canonical `.0003`。保存时仍为同角色/日期暂停，原事件保留，0 focus/physical input/Start/事件选择/时间推进。full ActivityID 只用于已有活动 manager-resolved 显式动作，不写入 opaque event scopes。
+
+随后 `m2-events/robert-fowl3-b03-actual-select-02` 通过既有生产消费者一次选择 native0/API1，真实 before native10/public2 → 独立 after native11/public3；actor29829、日期53222136和paused一致，旧12消失，active_event=null。真实当前 calculated ID `5320003` / runtime ordinal `8861` 与旧 warm 的 `6040003` / `10287` 不同，仍以 canonical key 和当前同帧 binding 验收。选择前已发表 campaign-root 查询 native5 读健康 `380962/100000`；选择后独立查询 native12 读 `430962/100000`，同 actor/date/paused、不同 native snapshots，实际 raw delta **+50000 = +0.5 健康**。这项材料来自 pre/typed-action/post，不从源定义或 ACK 推定；stress_gain_mult、活动日志及十天后结果未独立观测。
+
+generic event material profile 仍保持 `metric=null/unavailable`、production expectation=None；外部 helper 的 `natural_provenance_verified=false` 与 `new_live_milestone_credit=false` 默认值没有改成 true。这次独立既有 campaign-root 材料证明不声称生产通用 health/modifier 比较器已经接入。原 normal `.2001` 续行真实推进四天产生12，继而 cold 保存、恢复、后台开视图和本次 typed消费，没有 console/forced event 或再次 Start；完整来源回链前一段 Robert 普通开席实际 loop 与 Feast once-Start 记录。
+
+正式 following package `m7-robert/fowl3-chancellor-following-normal30-b03-actual-01` 已 closed，turn2 实际 `life-advance` **+6天**，raw53222136 → 53222280、同普通 episode/actor，旧12在下一正常回合 absent；请求的30天窗口没有完成。最终 paused checkpoint h4130/save85736985bytes，SHA `ED1BF0FB76915FFDA910121A83B327780D5B94352D4388AB6592129C1D6E6E23`；driver SHA由 ROOT 闭包记录为 `1F81968A0434DD4E610D6CE13CB1386B4903A6B19CEFBDF1AD67BD601E5E3842`，本次解析没有打开 save/driver/history。新 instance13 的宗教通知停点由 ROOT 等待用户权限，本包未研究或实现该事件。
+
+有限 once assessment 共 **22/22 GREEN**，落在 `m2-events/actual-robert-following-natural12-242-blocker-01/actual-b03-closed/closed-packet-assessment.json`（SHA `2E6016EB7E93385CEA545A60FA0F0D760AA0B92909ED20A61488CFA9C8803F1F`）与同目录 `REPORT-FIELDS.json`。本形态为 **production-live loop**，是有真实健康材料的单选自然事件候选；不补 M2 两次多选门槛，不宣称 whole M2 完成。正常6天由 ROOT 日数 ledger 计，本专题不重复加天；原 static1/1 测试直接复用，没有再次 query、测试或逆向。
 
 ## 2026-10-02：实际普通宴会开席 `feast.2001`
 

@@ -43,7 +43,7 @@ enum class GovernmentRuntimeAdapterSelectionStatusV1 : std::uint32_t {
   core_supported,
   adapter_spec_ready_not_implemented,
   unsupported_nonplayer_identity,
-  owner_deferred_religious,
+  religious_adapter_implementation_pending,
   unavailable_feature_mismatch,
   unadapted_runtime_government,
 };

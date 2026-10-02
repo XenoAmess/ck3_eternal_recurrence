@@ -77,7 +77,7 @@
     "binding": "snapshot, public/native revision, proof epoch, date, canonical interaction key, full actor/recipient IDs and typed payload fingerprint match the request",
     "stability": "two complete preview envelopes are equal before submit, including CanSend, signed ten-slot costs, acceptance and payload",
     "budget": "every positive actor cost slot is less than or equal to its independently supplied nonnegative per-resource maximum; negative slots do not consume budget",
-    "religion": "any selected religious option is deferred and cannot submit; ordinary feudal/clan is required for the vassalization slice",
+    "religion": "selected religious education options follow the same native legal/cost/acceptance gates and independent relation receipt; ordinary feudal/clan is required for the existing vassalization slice, other adapters remain implementation pending",
     "submit": "the callback is invoked at most once; its true result creates only submitted_verification_pending and occupies the single in-flight state"
   },
   "receipt_contract": {

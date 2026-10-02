@@ -1,4 +1,4 @@
-﻿#include "xar_bridge/ck3_12002_phase_advantage.hpp"
+#include "xar_bridge/ck3_12002_phase_advantage.hpp"
 #include "xar_bridge/ck3_12002_phase.hpp"
 
 #include <array>
@@ -164,7 +164,7 @@ int main() {
       !Check(plan.model.base_static_accumulator_raw == 150'000, "signed constructor aggregate") ||
       !Check(plan.ledgers[0][0].contribution_raw == 100'000, "ledger stores effect contribution") ||
       !Check(plan.ledgers[1][3].contribution_raw == 1'250'000, "holding native ledger scale product") ||
-      !Check(plan.model.constructor_sources[13].skip_reason == "religion_domain_deferred_by_owner", "religion omitted explicitly")) return 1;
+      !Check(plan.model.constructor_sources[13].skip_reason == "religion_constructor_operand_implementation_pending", "religion omitted explicitly")) return 1;
   f.ignore_crossing = true;
   if (!Check(BuildNonReligiousAdvantagePlan(b, env, f.base, commanders, plan) &&
       plan.model.base_static_accumulator_raw == 350'000 &&

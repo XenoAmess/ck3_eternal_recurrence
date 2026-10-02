@@ -960,6 +960,7 @@ _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
         "prison_notification.0001",
         "prison_notification.2001",
         "prison_notification.2002",
+        "rite_growth.0010",
         "stress_threshold_special.1001",
     }
 )

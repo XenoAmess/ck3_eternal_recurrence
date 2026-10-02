@@ -238,9 +238,6 @@ Failure ValidateBoundPreview(
                            request.recipient_character_id)) {
     return Failure::proposal_payload_mismatch;
   }
-  if (payload.religious_option_selected) {
-    return Failure::religious_option_deferred;
-  }
   if (!preview.can_send) return Failure::can_send_rejected;
   if (!ActionableAcceptance(preview.acceptance)) {
     return Failure::acceptance_not_actionable;

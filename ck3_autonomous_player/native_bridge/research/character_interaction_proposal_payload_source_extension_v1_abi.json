@@ -119,7 +119,7 @@
       "influence",
       "herd"
     ],
-    "religious_option_policy": "convert_faith remains deferred and returns RED unavailable"
+    "religious_option_policy": "convert_faith is authorized; the actual bit1 selection is propagated with the complete mask and payload fingerprint; production materializer and current-build migration remain pending"
   },
   "binding": {
     "frame": "the collector must be paused and exactly match snapshot ID, public revision, native revision, proof epoch and date of the finalized preview",
@@ -141,7 +141,7 @@
     "exact_collector_memory_bound": true,
     "full_generation_identity_preserved": true,
     "frame_proof_and_date_preserved": true,
-    "religious_option_deferred": true,
+    "religious_option_selection_propagated": true,
     "private_source_wired_to_public_bridge": false,
     "production_action_live": false
   }

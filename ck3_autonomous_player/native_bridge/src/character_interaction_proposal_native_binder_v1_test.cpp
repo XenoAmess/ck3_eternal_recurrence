@@ -149,11 +149,18 @@ struct Fixture {
     StoreRaw(storage, 0x2E0, secondary_actor);
     StoreRaw(storage, 0x2E4, source.secondary_recipient_character_id);
     StoreRaw(storage, 0x2E8, source.intermediary_character_id);
-    void *options = nullptr;
-    const std::int32_t zero = 0;
+    std::int32_t option_count = 0;
+    std::memcpy(&option_count, self.definition.data() + 0x2554,
+                sizeof(option_count));
+    if (option_count < 0 || option_count > 4) return false;
+    for (std::int32_t index = 0; index < option_count; ++index) {
+      self.selected_options[static_cast<std::size_t>(index)] =
+          (source.selected_option_mask & (std::uint32_t{1} << index)) != 0 ? 1 : 0;
+    }
+    void *options = option_count == 0 ? nullptr : self.selected_options.data();
     StoreRaw(storage, 0x300, options);
-    StoreRaw(storage, 0x308, zero);
-    StoreRaw(storage, 0x30C, zero);
+    StoreRaw(storage, 0x308, option_count);
+    StoreRaw(storage, 0x30C, option_count);
     output = storage;
     return true;
   }
@@ -365,6 +372,33 @@ game::CharacterInteractionProposalActionAckV1 Execute(
   return ack;
 }
 
+void TestReligiousEducationTypedMaskSurvivesReconstruction() {
+  Fixture fixture;
+  Prepare(fixture, "educate_child_interaction", true);
+  Store(fixture.definition, 0x2554, std::int32_t{4});
+  for (auto &capture : fixture.captures) {
+    auto &payload = capture.envelope.payload;
+    payload.religious_option_selected = true;
+    const auto at = payload.fingerprint.find(":o=0:");
+    Require(at != std::string::npos, "missing actual selected mask fingerprint");
+    payload.fingerprint.replace(at, 5, ":o=11:");
+    capture.typed_payload_source.selected_option_mask = 11;
+    capture.typed_payload_source.payload = payload;
+  }
+  ck3::CharacterInteractionProposalNativeBinderStateV1 state{};
+  state.environment = fixture.Environment();
+  const auto request = GoodRequest(fixture.captures[0]);
+  game::CharacterInteractionProposalActionAckV1 ack{};
+  Require(ck3::ExecuteCharacterInteractionProposalFromNativeBinderV1(
+              state, request, ack) ==
+              game::CharacterInteractionProposalActionAckStatusV1::submitted_verification_pending &&
+          fixture.selected_options == std::array<std::uint8_t, 4>{1, 1, 0, 1} &&
+          fixture.materialize_calls == 1 && fixture.can_send_calls == 1 &&
+          fixture.command_calls == 1 && fixture.submit_calls == 1 &&
+          ack.verification_pending,
+          "faith mask was lost or rejected during actual typed-source reread");
+}
+
 void TestExactEnvironmentAndConfigurationGates() {
   const auto bound =
       ck3::BindCharacterInteractionProposalNativeBinderEnvironmentV1(
@@ -514,6 +548,7 @@ int main() {
     void (*run)();
   };
   constexpr Case cases[] = {
+      {"religious_selected_mask_reconstruction", &TestReligiousEducationTypedMaskSurvivesReconstruction},
       {"exact_environment_configuration",
        &TestExactEnvironmentAndConfigurationGates},
       {"two_role_submit_once_cleanup", &TestTwoRoleSubmitOnceAndCleanup},

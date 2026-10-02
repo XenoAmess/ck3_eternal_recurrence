@@ -17,7 +17,7 @@ enum class CharacterInteractionProposalActionFailureV1 : std::uint32_t {
   proposal_preview_unavailable,
   snapshot_binding_mismatch,
   proposal_payload_mismatch,
-  religious_option_deferred,
+  religious_option_deferred, // Reserved numeric slot for historical receipts; no active owner gate.
   can_send_rejected,
   acceptance_not_actionable,
   budget_exceeded,

@@ -331,11 +331,6 @@ ReadCharacterInteractionProposalPayloadSourceV1(
            "selected_options_malformed");
       return Result::unavailable;
     }
-    if (religious_option_selected) {
-      Fail(output, Failure::religious_option_deferred,
-           "religious_option_deferred");
-      return Result::unavailable;
-    }
 
     auto &payload = output.payload;
     if (key == "educate_child_interaction") {
@@ -424,7 +419,7 @@ ReadCharacterInteractionProposalPayloadSourceV1(
       return Result::unavailable;
     }
     payload.complete = true;
-    payload.religious_option_selected = false;
+    payload.religious_option_selected = religious_option_selected;
     payload.ordinary_feudal_or_clan_vassalization = false;
     payload.fingerprint = Fingerprint(output);
     output.available = true;

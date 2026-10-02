@@ -255,7 +255,7 @@ constexpr std::array<GovernmentDefinitionV1,
          SelectionStatus::unsupported_nonplayer_identity, "", kNoNames,
          kNoNames, false},
         {"theocracy_government", kTheocracyFlags,
-         SelectionStatus::owner_deferred_religious, "", kNoNames, kNoNames,
+         SelectionStatus::religious_adapter_implementation_pending, "", kNoNames, kNoNames,
          true},
         {"clan_government", kClanFlags, SelectionStatus::core_supported,
          "core_landed", kNoNames, kNoNames, false},
@@ -268,7 +268,7 @@ constexpr std::array<GovernmentDefinitionV1,
          SelectionStatus::unsupported_nonplayer_identity, "", kNoNames,
          kNoNames, false},
         {"holy_order_government", kHolyOrderFlags,
-         SelectionStatus::owner_deferred_religious, "", kNoNames, kNoNames,
+         SelectionStatus::religious_adapter_implementation_pending, "", kNoNames, kNoNames,
          true},
         {"administrative_government", kAdministrativeFlags,
          SelectionStatus::adapter_spec_ready_not_implemented,
@@ -519,8 +519,8 @@ constexpr std::array<GovernmentDefinitionV1, 18> kGovernmentDefinitions12002{{
     {"tribal_government", kGovernmentFlags12002_3, SelectionStatus::core_supported, "core_tribal", kNoNames, kNoNames, false},
     {"wanua_government", kGovernmentFlags12002_4, SelectionStatus::adapter_spec_ready_not_implemented, "tgp_wanua", kTgpRequired, kWanuaProfile, false},
     {"mercenary_government", kGovernmentFlags12002_5, SelectionStatus::unsupported_nonplayer_identity, "", kNoNames, kNoNames, false},
-    {"holy_order_government", kGovernmentFlags12002_6, SelectionStatus::owner_deferred_religious, "", kNoNames, kNoNames, true},
-    {"monastic_holy_order_government", kGovernmentFlags12002_7, SelectionStatus::owner_deferred_religious, "", kNoNames, kNoNames, true},
+    {"holy_order_government", kGovernmentFlags12002_6, SelectionStatus::religious_adapter_implementation_pending, "", kNoNames, kNoNames, true},
+    {"monastic_holy_order_government", kGovernmentFlags12002_7, SelectionStatus::religious_adapter_implementation_pending, "", kNoNames, kNoNames, true},
     {"administrative_government", kGovernmentFlags12002_8, SelectionStatus::adapter_spec_ready_not_implemented, "rtp_administrative", kAdminRequired, kAdminProfile, false},
     {"landless_adventurer_government", kGovernmentFlags12002_9, SelectionStatus::adapter_spec_ready_not_implemented, "rtp_landless_adventurer", kLandlessRequired, kLandlessProfile, false},
     {"nomad_government", kGovernmentFlags12002_10, SelectionStatus::adapter_spec_ready_not_implemented, "mpo_nomad", kNomadRequired, kNomadProfile, false},
@@ -702,7 +702,9 @@ EvaluateGovernmentRuntimeAdapterObserverV1(
   result.government.recognized_stock_key = definition != nullptr;
   result.government.religious_identity_opaque =
       definition != nullptr && definition->religious_opaque;
-  if (!result.government.religious_identity_opaque) {
+  // Religion authorization permits the same observed flag projection.
+  // Dedicated adapter readiness remains independent of this raw observation.
+  {
     if (!input.government_flags_available) {
       result.unavailable_reason =
           UnavailableReason::government_flags_unavailable;

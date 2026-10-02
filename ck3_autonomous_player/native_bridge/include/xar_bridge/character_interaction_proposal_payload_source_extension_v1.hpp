@@ -23,7 +23,7 @@ enum class CharacterInteractionProposalPayloadSourceFailureV1 : std::uint32_t {
   definition_identity_mismatch,
   role_identity_unavailable,
   selected_options_malformed,
-  religious_option_deferred,
+  religious_option_deferred, // Reserved numeric slot for historical receipts; no active owner gate.
   title_offer_identity_mismatch,
   selected_titles_malformed,
   selected_title_identity_unavailable,

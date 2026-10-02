@@ -10,7 +10,7 @@
     "architecture": "x86_64",
     "steam_build_id": "25588574"
   },
-  "readiness": "static-ready complete nonreligious operands, constructor ledger, dynamic components and private source AST; complete v3 owner-deferred religion/rites",
+  "readiness": "static-ready complete nonreligious operands, constructor ledger, dynamic components and private source AST; complete v3 implementation-pending religion/rites",
   "runtime_registered": false,
   "live_verified": false,
   "signature_anchors": [
@@ -603,7 +603,7 @@
   },
   "known_gaps": [
     "paused owning-thread live equivalence and temporary object cleanup",
-    "owner-deferred religion/rites values and subtrees; complete v3 deliberately absent",
+    "implementation-pending religion/rites values and subtrees; complete v3 deliberately absent",
     "loaded-playset source identity and original effect trace require live artifact"
   ],
   "integrated_modules": [
