@@ -87,7 +87,8 @@ def compose(config, run, *, config_path, run_path, workdir,
 
     def visual_probe(path):
         p.require(Path(path).resolve() == Path(dry["path"]).resolve(), "Unexpected prepared picture")
-        return VisualProbeResult("video/mp4", video["width"], video["height"])
+        mime = "video/quicktime" if Path(dry["path"]).suffix.lower() == ".mov" else "video/mp4"
+        return VisualProbeResult(mime, video["width"], video["height"])
 
     segment = SegmentDraft("episode03-full-picture",
                            VisualSource("episode03-dry-picture", VIDEO, Path(dry["path"]),

@@ -446,6 +446,104 @@ def boards(args):
                                "human_signoff": "not-provided", "production_clean_admission": False})
 
 
+
+def frame_aligned_narration(run, timeline):
+    """Keep original PCM samples, adding only each cue's allocated silent tail."""
+    import wave
+    output = run / "narration-frame-grid.wav"
+    rows, expected_start = [], 0
+    with output.open("xb") as stream, wave.open(stream, "wb") as target:
+        target.setparams((2, 2, 48000, 0, "NONE", "not compressed"))
+        for chapter in timeline["chapters"]:
+            for cue in chapter["utterances"]:
+                require(cue["global_start_frame"] == expected_start, "Cue PCM grid is discontinuous")
+                pin = exact(cue["tts_trimmed"])
+                allocated = cue["duration_frames"] * 1600
+                with wave.open(pin["path"], "rb") as source:
+                    require((source.getnchannels(), source.getsampwidth(), source.getframerate(), source.getcomptype()) ==
+                            (2, 2, 48000, "NONE"), "Narration must be exact 48kHz stereo PCM16")
+                    samples = source.getnframes()
+                    require(0 < samples <= allocated, "Cue audio exceeds its picture grid; never cut speech")
+                    while data := source.readframes(65536):
+                        target.writeframesraw(data)
+                target.writeframesraw(bytes((allocated - samples) * 4))
+                rows.append({"id": cue["id"], "source": pin, "global_start_frame": expected_start,
+                             "source_samples": samples, "allocated_samples": allocated,
+                             "added_silent_samples": allocated - samples})
+                expected_start += cue["duration_frames"]
+    require(expected_start == timeline["total_duration_frames"], "Narration frame-grid total differs")
+    with wave.open(str(output), "rb") as result:
+        require(result.getnframes() == expected_start * 1600, "PCM master sample count differs")
+    write(run / "narration-frame-grid.json", {**ref(output), "sample_rate": 48000, "channels": 2,
+          "sample_width_bytes": 2, "total_samples": expected_start * 1600, "cues": rows,
+          "policy": "Original PCM samples copied unchanged; only allocated silence added; no speed change or trimming",
+          "human_signoff": "not-provided"})
+    return output
+
+
+def reuse_render(args):
+    """New run recovery: exact previous picture/ASS, original WAV cues, new PCM mux."""
+    run, previous = args.run.resolve(), args.previous_run.resolve()
+    require_ready(run)
+    prior_freeze = read(previous / "input-freeze.json")
+    # Historical producer hashes remain historical. Only immutable data is imported.
+    for pin in prior_freeze["snapshots"]:
+        exact(pin)
+    historical_scripts = []
+    for pin in prior_freeze["scripts"]:
+        path = Path(pin["path"])
+        preserved = ref(previous / "sources" / (path.parent.name + "-" + path.name))
+        require(preserved["bytes"] == pin["bytes"] and preserved["sha256"] == pin["sha256"],
+                "Previous producer snapshot differs from its historical freeze")
+        historical_scripts.append(preserved)
+    current_names = read(run / "input-freeze.json")["input_snapshot_names"]
+    require(current_names == prior_freeze["input_snapshot_names"], "Recovery editorial input roles differ")
+    for name in current_names:
+        require(ref(run / "sources" / name)["sha256"] == ref(previous / "sources" / name)["sha256"],
+                "Recovery inputs differ from the previous exact editorial/media snapshots: " + name)
+    require(ref(previous / "timeline.json")["sha256"] == args.previous_timeline_sha256.upper(),
+            "Previous timeline differs from the explicitly selected recovery subject")
+    timeline, edit = read(previous / "timeline.json"), read(previous / "edit.json")
+    picture = read(previous / "dry-master.json")
+    exact(picture)
+    for pin in pins(edit):
+        exact(pin)
+    tracks = read(previous / "subtitle-tracks.json")
+    imported = [ref(previous / name) for name in ("input-freeze.json", "timeline.json", "edit.json", "subtitle-tracks.json", "fonts.json", "chapters.ffmetadata")]
+    imported.extend(ref(track["path"]) for track in tracks["tracks"])
+    imported.extend(exact(track["chunk_probe"]) for track in tracks["tracks"])
+    write(run / "timeline.json", timeline)
+    write(run / "edit.json", edit)
+    write(run / "subtitle-tracks.json", tracks)
+    # prepare already writes fonts.json; compare the exact font policy.
+    require(read(run / "fonts.json") == read(previous / "fonts.json"), "Recovery font policy differs")
+    write(run / "reuse-render-inputs.json", {"previous_run": str(previous), "picture": picture,
+          "inputs": imported, "historical_scripts": historical_scripts,
+          "new_input_freeze": ref(run / "input-freeze.json"),
+          "scope": "Reuse exact encoded picture and ASS; discard previous concatenated AAC from recovery output",
+          "human_signoff": "not-provided"})
+    audio = frame_aligned_narration(run, timeline)
+    output = run / "dry-master.mov"
+    env = environment(run)
+    command(run, "recovered-PCM-picture-mux", [env["ffmpeg"], "-hide_banner", "-nostdin", "-n",
+            "-i", picture["path"], "-i", audio, "-f", "ffmetadata", "-i", previous / "chapters.ffmetadata",
+            "-map", "0:v:0", "-map", "1:a:0", "-map_metadata", "2", "-map_chapters", "2",
+            "-c:v", "copy", "-c:a", "pcm_s16le", "-movflags", "+faststart", output])
+    producer, _ = _legacy(run)
+    probe = producer.probe(run, "dry-master-probe", output)
+    write(run / "dry-master-probe.json", probe)
+    video = next(row for row in probe["streams"] if row["codec_type"] == "video")
+    audio_probe = next(row for row in probe["streams"] if row["codec_type"] == "audio")
+    require(int(video["nb_frames"]) == timeline["total_duration_frames"], "Recovered picture frame count differs")
+    require(audio_probe["codec_name"] == "pcm_s16le" and int(audio_probe["duration_ts"]) == timeline["total_duration_frames"] * 1600,
+            "Recovered PCM sample count differs")
+    write(run / "dry-master.json", {**ref(output), "duration_expected": timeline["total_duration"], "music": False,
+          "duration_frames_expected": timeline["total_duration_frames"],
+          "actual_video_start_pts_seconds": float(video["start_time"]), "actual_video_time_base": video["time_base"],
+          "cue_count": sum(len(chapter["utterances"]) for chapter in timeline["chapters"]),
+          "narration": ref(audio), "human_signoff": "not-provided"})
+
+
 def render(args):
     run = args.run.resolve()
     require_ready(run)
@@ -503,10 +601,12 @@ def render(args):
         metadata.extend(["[CHAPTER]", "TIMEBASE=1/1000", f"START={round(chapter['global_start'] * 1000)}",
                          f"END={round((chapter['global_start'] + chapter['duration']) * 1000)}", "title=" + title])
     producer.text_once(run / "chapters.ffmetadata", "\n".join(metadata) + "\n")
-    output = run / "dry-master.mp4"
+    audio = frame_aligned_narration(run, timeline)
+    output = run / "dry-master.mov"
     command(run, "dry-final-join", [producer.FFMPEG, "-hide_banner", "-nostdin", "-n", "-f", "concat", "-safe", "0", "-i", run / "concat.txt",
-                                     "-f", "ffmetadata", "-i", run / "chapters.ffmetadata", "-map", "0", "-map_metadata", "1", "-map_chapters", "1",
-                                     "-c", "copy", "-movflags", "+faststart", output])
+                                     "-i", audio, "-f", "ffmetadata", "-i", run / "chapters.ffmetadata",
+                                     "-map", "0:v:0", "-map", "1:a:0", "-map_metadata", "2", "-map_chapters", "2",
+                                     "-c:v", "copy", "-c:a", "pcm_s16le", "-movflags", "+faststart", output])
     probe = producer.probe(run, "dry-master-probe", output)
     write(run / "dry-master-probe.json", probe)
     video = next(row for row in probe["streams"] if row["codec_type"] == "video")
@@ -555,7 +655,7 @@ def main():
         prepare_parser.add_argument("--" + flag, type=Path)
     prepare_parser.add_argument("--supporting-input", action="append", type=Path, default=[],
                                 help="Additional exact editorial source; may be repeated; included in the root input freeze")
-    for phase in ("narrate", "boards", "render", "build"):
+    for phase in ("narrate", "boards", "render", "reuse-render", "build"):
         sub.add_parser(phase)
     for phase, child in sub.choices.items():
         if phase != "check-release":
@@ -565,6 +665,8 @@ def main():
     for phase in ("narrate", "render"):
         sub.choices[phase].add_argument("--workers", type=int, default=3)
     sub.choices["build"].add_argument("--workdir", required=True, type=Path)
+    sub.choices["reuse-render"].add_argument("--previous-run", required=True, type=Path)
+    sub.choices["reuse-render"].add_argument("--previous-timeline-sha256", required=True)
     args = parser.parse_args()
     require(getattr(args, "workers", 1) > 0, "Worker count must be positive")
     failed_root = getattr(args, "run", getattr(args, "output_dir", None))
