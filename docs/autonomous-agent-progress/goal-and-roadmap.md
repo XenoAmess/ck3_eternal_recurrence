@@ -1,5 +1,13 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 14:55 罗贝尔作为当前唯一测试入口；手玩期间仅离线工作
+
+2026-10-02 14:55:31 Asia/Shanghai真实补录。用户明确要求“使用罗贝尔作为当前唯一测试入口”：后续本机实机从Robert原ordinary campaign最新真实save/driver配对续跑，同campaign自然继承沿用；不另开Murchad/Clan/Tribal/rogue独立seed或CK3新开局fixture，旧artifact保留为历史证据，不算本轮新资格。
+
+当前用户手玩期间仅offline，直到用户明确恢复agent实机：不启动、attach、SDK/pipe、输入、保存、关闭任何CK3，不抢窗口；最小化也不代表获准后台实机。root自有CK3已正常退出，Robert恢复与新政府实机ETA均暂停待用户恢复。后台继续Robert归档/ledger/source只读整理、最新版兼容配置与源码、exact-build原生研究、离线fixture/native编译、源码CI及文档提交，严格按实际offline readiness记录，不冒充live或新增游戏日。Robert3153/36524、Murchad153日现场保留、G2 4/8与NW1/4及原合同/分母不变。源码公共HEAD `2929bf666cf6d8ea5dddd5f398a76ab157a55417` 已由root收口，本条为其后独立文档增量。
+
+[当前唯一入口与离线执行规则](../testing-workflow.md)。
+
 ## 2026-10-02 14:18：后台原生呈现与正式续行已实证，Murchad独立153日
 
 2026-10-02 14:18 Asia/Shanghai真实更新：G2仍4/8=50%（原M0/M1/M3/M5），NW四包仍1/4=25%（NW-FAMILY）；固定合同项比例不代表整局自主完成率。Murchad原ordinary episode独立153自然日，最新h2121/full2121、raw53330832、save112,436,214B、SHA `1fd5168dd61a373849b93d46fc8c27093d88ebaf382c3f93923ad3fe1b2be74c`；rogue191/243、Robert3153/36524与自然继承/政府矩阵资格不增加。v16 source d4f377d9/938inputs/63ON4OFF strictGREEN，[exact官方CI36969620602](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/36969620602)13:40:05 SUCCESS。

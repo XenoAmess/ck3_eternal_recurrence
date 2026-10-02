@@ -10,6 +10,17 @@
 
 显式 `native-session --start-minimized` 将首次、frontend warm-up/final、checkpoint 和 next-episode 启动传入 Windows `STARTUPINFO` 的 `STARTF_USESHOWWINDOW` / `SW_SHOWMINNOACTIVE`，复用受管 PID 的窗口采样保持最小化。默认其它流程不改变；当前 G2 后续启动全部选择此参数。真实 CLI→session→launch 参数链、Win32 producer 与 PID helper 的一个定向 case GREEN；新进程焦点／窗口状态仍由实机采样确认。对应源码及收据为 `artifacts/g2-maintainer-2026-10-02/resume-12003/minimized-start-implementation-01/`。
 
+## 14:55 罗贝尔作为当前唯一测试入口；手玩期间仅离线工作
+
+实际更新时间：2026-10-02 14:55:31（Asia/Shanghai），按用户最新明确指令生效，覆盖本文下方历史实机调度与入口安排。
+
+**当前迭代本机CK3实机唯一入口是罗贝尔（Robert）的原ordinary存档线：从该campaign最新真实save/driver配对继续。** 同campaign发生自然继承后继续沿用该存档线；“罗贝尔入口”不要求永久锁定最初角色。不得另开Murchad、Clan、Tribal、rogue独立seed或CK3新开局fixture作为本轮实机入口。既有材料与失败artifact保留作历史证据，不能计为本轮新资格。
+
+**当前阶段仅offline，直到用户明确恢复agent实机。** 用户手动玩CK3或要求agent不动CK3时，不启动、attach、调用SDK/pipe、发送输入、保存或关闭任何CK3，也不切换/抢占窗口。root本次自有CK3已正常退出；这不授权接管用户随后自行启动的游戏。最小化、不抢前台的偏好继续有效，但最小化后台执行同样属于实机，不能在本次暂停期自动运行。
+
+后台可以继续真实可交付工作：只读核对Robert已归档save/driver、ledger与原campaign来源；准备最新版兼容恢复配置；研究对应exact-build PE/原生决策树；施工源码、离线fixture和native编译；收口已有或新增源码CI；整理专题、报告、离线阻点与提交推送。只使用现有归档/源码，不接触正在运行的CK3及其现场。上述工作最高按实际research/static-ready/fixture范围记录，不能声称新paused/live、OODA闭合或游戏日增加。
+
+Robert实机恢复与新政府实机ETA均暂停待用户明确恢复；恢复后仍以Robert原campaign为唯一入口，按当前局面观察→决策→合法操作→独立结果→正式下一回合/正常保存推进。此安排调整当前迭代入口与执行许可，不修改原G2验收合同、完成项或分母。当前Robert3153/36524、Murchad153日暂停现场、G2 4/8、NW1/4保持。进度见[统一入口](autonomous-agent-progress/README.md)。
 
 ## 启动与日志
 
