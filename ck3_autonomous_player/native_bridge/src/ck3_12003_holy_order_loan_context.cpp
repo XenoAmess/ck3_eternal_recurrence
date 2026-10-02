@@ -96,7 +96,7 @@ bool ReadDecision(const Bindings &b, void *character, void *scope,
   auto *cost = b.decision_cost(definition);
   if (!cost) return false;
   std::array<std::int64_t, 10> resources{};
-  if (b.cost_evaluate(cost, scope, resources.data()) != resources.data()) return false;
+  b.cost_evaluate(cost, scope, resources.data());
   output.is_shown = b.decision_shown(definition, character);
   output.can_take = b.decision_can_take(definition, character, scope, nullptr, nullptr);
   output.affordable = b.cost_affordable(cost, scope, character, nullptr);

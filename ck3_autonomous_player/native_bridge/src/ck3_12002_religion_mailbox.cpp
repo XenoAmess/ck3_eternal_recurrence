@@ -81,6 +81,12 @@ bool ExecutePlayerReligionMailbox12002(
         query.progress_bindings,
         out.available ? ResolveCoreCharacter(query.bindings.core, out.played_character_id) : nullptr,
         out, query.progress);
+    // The fixed decision read is independent of Faith Context and loan numerics.
+    (void)ck3_12003::religion::mystical_communion::ReadPlayerMysticalCommunionDecisionTerms12003(
+        query.mystical_communion_bindings,
+        ResolveCoreCharacter(query.bindings.core, static_cast<std::int32_t>(frame.played_character_id)),
+        static_cast<std::int32_t>(frame.played_character_id),
+        static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.mystical_communion_terms);
     query.completed = true;
     (void)FinishQueryMailbox(*envelope);
     return true;
@@ -105,7 +111,10 @@ std::string SerializePlayerReligionResult12002(
       ",\"date_raw\":" + std::to_string(frame.date_raw) +
       ",\"player_religion_context\":" + religion::SerializePlayedReligionContext12002(query.observation) +
       ",\"player_spiritual_fulfillment_progress\":" +
-      religion::fulfillment_progress12003::SerializeSpiritualFulfillmentProgress12003(query.progress) + "}}";
+      religion::fulfillment_progress12003::SerializeSpiritualFulfillmentProgress12003(query.progress) +
+      ",\"player_mystical_communion_decision_terms\":" +
+      ck3_12003::religion::mystical_communion::SerializePlayerMysticalCommunionDecisionTerms12003(
+          query.mystical_communion_terms) + "}}";
 }
 
 bool RunPlayerReligionMailbox12002(PlayerReligionMailboxContext12002 &query,
@@ -175,6 +184,9 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
     query.progress_bindings =
         religion::fulfillment_progress12003::BindSpiritualFulfillmentProgressImage12003(
             image_base, adapter.descriptor());
+    query.mystical_communion_bindings =
+        ck3_12003::religion::mystical_communion::BindPlayerMysticalCommunionDecisionTermsImage12003(
+            image_base, adapter.descriptor().executable_sha256);
     return RunPlayerReligionMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_handler_exception"; return false; }
 }

@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12002_religion_context.hpp"
 #include "xar_bridge/ck3_12003_spiritual_fulfillment_progress.hpp"
+#include "xar_bridge/ck3_12003_mystical_communion_decision_terms.hpp"
 
 namespace xar::ck3_12002 {
 
@@ -19,6 +20,8 @@ struct PlayerReligionMailboxContext12002 {
   religion::Context observation{};
   religion::fulfillment_progress12003::Bindings progress_bindings{};
   religion::fulfillment_progress12003::Progress progress{};
+  ck3_12003::religion::mystical_communion::Bindings mystical_communion_bindings{};
+  ck3_12003::religion::mystical_communion::Terms mystical_communion_terms{};
   bool completed = false;
   std::string failure;
 };

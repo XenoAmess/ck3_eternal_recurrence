@@ -24,7 +24,7 @@ using RootDestroy = void (*)(void *);
 using DecisionShown = bool (*)(const void *, void *);
 using DecisionCanTake = bool (*)(const void *, void *, void *, const void *, void *);
 using DecisionCost = const void *(*)(const void *);
-using CostEvaluate = std::int64_t *(*)(const void *, void *, std::int64_t *);
+using CostEvaluate = void (*)(const void *, void *, std::int64_t *);
 using CostAffordable = bool (*)(const void *, void *, void *, void *);
 using AmountEvaluate = bool (*)(std::uintptr_t, void *, std::int64_t &) noexcept;
 

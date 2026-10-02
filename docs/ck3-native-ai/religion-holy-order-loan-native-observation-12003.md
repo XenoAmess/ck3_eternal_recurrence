@@ -4,10 +4,11 @@
 
 可见价值是让当前帧回答三件事：**现在能否申请贷款、原生会求出多少金额、现有本金是否能准确偿还**。普通 gold/income snapshot 无法回答 final decision、冷却、合格首领是否存在或现有债务的实际本金。必须补观测，不继续把这些缺口留作长期 `unknown`。
 
-**当前实际状态：v25 金额 capability RED，修复中。** 首次完整 MCP transport 已成功返回，
-但原生 amount 接线误用 `CJominiScriptedModifierTemplate` registry，真实 quote 仍为空；
-后续 borrow/repay getters 尚未执行。下文初始 ABI 与 static-ready 记录作为历史施工证据
-保留，正确读法以末尾“v25 实际根因”及修复后的 paused artifact 为准。
+**当前实际状态：v26 真实报价 300 金币已成功，决议读取仍为 capability RED。**
+正确 plain-value registry/evaluator 已在完整注册 MCP transport 内给出 raw `30000000`；
+成本 wrapper 的返回类型错误仍使两决议 getters 提前返回，默认 false/零 cost 不构成
+合法性事实。下文初始 ABI、v25 和 static-ready 记录作为历史证据保留，当前读法以
+末尾 v26 实际故障、最小修复与后续 ROOT paused artifact 为准。
 
 | 固定输入 | 值 |
 | --- | --- |
@@ -352,3 +353,66 @@ flowchart TD
 plain registry/load 的 unique native span pins 为 `Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-loan-12003/ACTUAL-V25-AMOUNT-FIX/parser/FIXED-POINT-REGISTRY-SOURCE-PINS.json`。
 这些 direct caller proof 与已编译的两份最终 source 一致，未另跑 fixture、RPM、
 EXE 全量 hash 或源编译。最终 patch hash 仍为 `e34d557ec2b2d2ed495c5befd33e37c002dce9b7d68cae0c80b58cfb367b450f`。
+
+
+## v26 实际增量：金额真实成功，成本函数返回类型使决议 capability RED
+
+ROOT 的注册 MCP 实机 artifact `Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v26-loan-sway-cold-01/005-ck3_query_player_holy_order_loan_context_v1.json`（SHA-256
+`aaf9bc83dd14bc3169bef225fc919519425db34afa1ec09f629d7a83967e5cbc`）为完整 transport / harness GREEN，same Robert 29829，
+新 PID 15592，raw date `53225304`，public/native revision 2，capture epoch `7554`，
+source/native/env `1bb3eee96e00216464e8269ec5153c60b22aca43`。
+`loan_amount_quote_raw=30000000`、scale `100000`，真实报价 **300 金币**：v25 的错误
+modifier registry 已被正确 plain-value 求值修复，这个真实字段无需重研或再跑旧 scalar fixture。
+
+总体仍 `available=false` / `decision_evaluation_unavailable`。源码中 `ReadDecision`
+只有 definition 未找到、cost selector 为 null、cost evaluator 返回比较失败三个 early-return；
+原生 `is_shown/can_take/affordable=false` 本身不会使读取 unavailable。两决议 bool/cost
+尚未赋值，不能把 envelope 默认 false/0 当作门槛事实。变量调用在 amount 之前实际已
+返回，但本次总体 unavailable，不将 presence=false 升格为可执行的无欠款 readiness。
+
+成本侧 direct callee/caller 已证明 `0x310CE70(cost, rootScope, out80)` 是写出 80 字节
+资源结果的 wrapper；它没有 `RAX=&out80` 返回契约，原生 caller 不依赖此返回值。
+我方 `CostEvaluate=int64_t*` 及 `return != resources.data()` 判定误将这个函数当
+输出指针 getter。最小修复是 alias 改 `void` 并直接调用一次，再继续既有的三个 bool
+getter 和 four-currency 投影，不引入新 field、framework 或 gate。
+
+FindDecision 的 DB/hash/lookup、key `+0x18` 与两 stock 决议 key 已匹配冻结原生
+caller/constructor，见 `Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-loan-12003/ACTUAL-V26-DECISION-FIX/lookup/LOOKUP-PROOF.json`；
+未因理论缺口追加 table 读取，额外 RPM 草稿取消且没有请求或执行。
+已同步 `g2_m6_law` 的 v27 copied reader 与 synthetic fixture owner 使用相同 void ABI；
+synthetic GREEN 仍不代替实机决议读器成功。
+
+```mermaid
+flowchart TD
+  A[v26 actual same Robert / full transport] --> Q[真实 quote raw 30000000 = 300 gold]
+  Q --> R[ReadDecision]
+  R --> C[原生成本 wrapper 310CE70 写 out80 / void]
+  C --> F[旧我方指针返回比较失败 / capability RED]
+  F --> P[最小修复: void alias / 直接一次调用]
+  P -. unknown: v27 paused actual 待验收 .-> G[真实 borrow / repay gates 与 cost]
+  G -. unknown: 借款/还款动作尚未闭环 .-> L[production-live loop]
+```
+
+
+### v27 成本返回类型最小修复：已投影并编译，等待实际决议字段
+
+仅两 native leaf：`ck3_12003_holy_order_loan_context.hpp` 将 `CostEvaluate`
+改为 `void(*)(cost, scope, out80)`；`ck3_12003_holy_order_loan_context.cpp`
+调用一次后继续 native IsShown/CanTake/CostAffordable，并复制原始资源结果。
+完整外置 patch `Z:\ck3_mod_rewrite\artifacts\g2-maintainer-2026-10-02\resume-12003\religion-holy-order-loan-12003\ACTUAL-V26-DECISION-FIX\holy-order-loan-decision-cost-void-fix.patch` 的 SHA-256 为 `9c83f40d4e50722b890890d8c6f50ca4020e619124cd7d64a6bccecbab6b43d6`，
+基准 `1bb3eee96e00216464e8269ec5153c60b22aca43`；逐 leaf before/after hash
+和 corrected proof 在 `Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-loan-12003/ACTUAL-V26-DECISION-FIX/SOURCE-PINS.json`。
+
+`Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-loan-12003/ACTUAL-V26-DECISION-FIX/cost/COST-VOID-ABI-PROOF.md` 及
+`Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-loan-12003/ACTUAL-V26-DECISION-FIX/cost/SOURCE-PINS.json` 复用 frozen native bytes，
+纠正旧 `abi/ABI-PROOF.json` 的 `int64_t*` 返回 label；native caller
+`0x31D40DE` 不读取 RAX，affordability validator `0x288D81A` 保留自己的 bool
+检查。没有修改 selector、资源缩放、真正的 final bool、lookup/key 或已真实成功的
+金额逻辑，也没有用额外 gating 代替读取。
+
+新真实 provider `/std:c++20 /EHsc /W4 /WX` 一次编译 **GREEN**，
+`Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-loan-12003/ACTUAL-V26-DECISION-FIX/compile/attempt-01/RESULT.json`，约 2.42 秒。未跑旧 scalar/getter/wire fixtures，
+未执行新 RPM。当前修复为 `static-ready`；v26 amount 300 金币是已观察的真实字段，
+但 whole loan context 的 production-live readiness 仍须 ROOT v27
+`available=true` 和真实两决议 bool/cost artifact。代码/ABI receipt 与本专题已释放，
+ROOT 负责 combined build、实机与统一 report/commit/push。

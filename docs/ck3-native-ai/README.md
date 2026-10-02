@@ -1,5 +1,18 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-03：宗教观测与当前原生施工入口
+
+宗教领域已全面开放；罗贝尔唯一入口、最小化后台执行及独立战争暂停继续有效。当前 exact build 为 CK3 1.20.0.3／Steam25652598，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。新增专题沿已有原生树施工，不把原生最终判定、真实费用或结果观测替换成脚本猜测。
+
+- [精神满足度与维护](religion-spiritual-growth-and-maintenance-native-ai-12003.md)：罗贝尔实机读到当前值5、等级3／7及58.333%进度；这是当前成长输入，不是月变化或新增长收益。
+- [宗教关系任务的月度虔诚贡献](religious-relations-task-value-native-ai-12003.md)：当前任务原生贡献0.45、角色汇总月变化0.4375分别实读，不按差值猜测修正项。
+- [Holy order借款观测](religion-holy-order-loan-native-observation-12003.md)：v26同存档新PID实读前瞻金额300金，但决议求值仍为capability RED；false gates、零cost和空债务默认值不作为实际合法性。原生void费用getter的最小修复已通过编译，实际判定待下一版实读。
+- [神秘共融的原生最终条款](religion-mystical-communion-native-final-terms-12003.md)：沿固定决议补原生显示、最终合法性、可负担性、费用与理由，同一宗教查询的独立字段。当前仅为待集成包，尚无罗贝尔合法性或付费动作。
+- [普通本人改宗](religion-conversion-native-ai-12003.md)：复用现有候选、条款、理由、输入和结果查询；目标ID必须从当前原生候选取得，现存快照不证明改宗合法。
+- [教士与议会任务](religion-clergy-council-native-ai-12003.md)：独立解职、任务显示／有效性与县域目标的exact-build调用链已闭合；下一leaf扩充现有clergy MCP，当前是research，没有新任命或任务结果。
+
+当前实际能力与计划回链[统一进度](../autonomous-agent-progress/README.md)。宗教全面授权不等于宗教全域完成；上述原生研究、静态实现、实机观测和完整动作闭环分别记账。
+
 ## 2026-10-03：战争第 3 期刘易斯围城实机与机制研究
 
 本次用户单独明确要求继续研究并完成战争系列视频；授权只覆盖这项交付，不改变 Robert 主线的非战争运行政策。CK3 **1.20.0.3 / Steam build25652598** 的[威廉刘易斯实机专题](episode03-william-lewes-live-2026-10-03.md)及[精确证据索引](episode03-william-lewes-evidence-index.json)记录自然102日围城、一天相邻读回、器械增援、正常合军、一次强攻开关与4月22日占领结果。

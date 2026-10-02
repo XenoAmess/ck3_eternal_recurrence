@@ -123,6 +123,51 @@ def normalize_player_spiritual_fulfillment_progress_v1(
     return dict(value)
 
 
+def normalize_player_mystical_communion_decision_terms_v1(
+    value: object, *, current_context: Mapping[str, object],
+) -> dict[str, object] | None:
+    """Publish the independent native final terms for the fixed decision."""
+    if value is None:
+        return None
+    keys = {
+        "schema", "read_only", "available", "unavailable_reason", "capture_epoch",
+        "date_raw", "played_character_id", "decision_id", "is_shown", "can_take",
+        "affordable", "costs_raw", "raw_scale", "reasons_available", "can_take_reasons",
+    }
+    if (not isinstance(value, dict) or set(value) != keys
+            or value["schema"] != "ck3_12003_mystical_communion_decision_terms_v1"
+            or value["read_only"] is not True or type(value["available"]) is not bool
+            or value["decision_id"] != "hold_mystical_communion_decision"
+            or type(value["raw_scale"]) is not int or value["raw_scale"] != 100000
+            or type(value["reasons_available"]) is not bool):
+        raise ValueError("native mystical communion decision terms schema is malformed")
+    for key in ("capture_epoch", "date_raw", "played_character_id"):
+        if type(value[key]) is not int or value[key] != current_context[key]:
+            raise ValueError("native mystical communion decision terms differ from the current context")
+    for key in ("is_shown", "can_take", "affordable"):
+        if value[key] is not None and type(value[key]) is not bool:
+            raise ValueError(f"native mystical communion decision predicate is malformed: {key}")
+    costs = value["costs_raw"]
+    if not isinstance(costs, dict) or set(costs) != {"gold", "treasury", "prestige", "piety"}:
+        raise ValueError("native mystical communion evaluated costs are malformed")
+    for key, raw in costs.items():
+        if raw is not None and (type(raw) is not int or not -(1 << 63) <= raw < (1 << 63)):
+            raise ValueError(f"native mystical communion evaluated signed cost is malformed: {key}")
+    if value["reasons_available"]:
+        if not isinstance(value["can_take_reasons"], str):
+            raise ValueError("native mystical communion final reason text is malformed")
+    elif value["can_take_reasons"] is not None:
+        raise ValueError("unavailable native mystical communion final reasons lost their null")
+    if value["available"]:
+        if (value["unavailable_reason"] is not None
+                or any(value[key] is None for key in ("is_shown", "can_take", "affordable"))
+                or any(raw is None for raw in costs.values())):
+            raise ValueError("available native mystical communion terms lost actual final values")
+    elif not isinstance(value["unavailable_reason"], str) or not value["unavailable_reason"]:
+        raise ValueError("unavailable native mystical communion terms lost their reason")
+    return {**value, "costs_raw": dict(costs)}
+
+
 def query_player_religion_context_private_v1(
     driver: object, *, expected_revision: int, timeout_seconds: float = 30.0,
 ) -> dict[str, object]:
@@ -150,13 +195,20 @@ def query_player_religion_context_private_v1(
                     result["player_spiritual_fulfillment_progress"], current_context=value,
                 )
             )
+        decision_fields = {}
+        if "player_mystical_communion_decision_terms" in result:
+            decision_fields["player_mystical_communion_decision_terms"] = (
+                normalize_player_mystical_communion_decision_terms_v1(
+                    result["player_mystical_communion_decision_terms"], current_context=value,
+                )
+            )
         expected_status = "observed" if value["available"] else "unavailable"
         if result.get("status") != expected_status:
             raise ValueError("native player religion context envelope lost its source status")
     except ValueError as error:
         raise BridgeUnavailableError(str(error)) from error
     return {
-        **value, **progress_fields, **private_native_provenance(before),
+        **value, **progress_fields, **decision_fields, **private_native_provenance(before),
         **private_g2_query_metadata_v1(before),
         "snapshot_revision": result["snapshot_revision"],
         "query_date_raw": result["date_raw"],
