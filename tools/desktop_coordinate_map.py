@@ -217,6 +217,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     action = parser.add_mutually_exclusive_group()
     action.add_argument("--click", action="store_true")
     action.add_argument("--move", action="store_true")
+    parser.add_argument("--button", choices=("left", "right"), default="left")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--reviewed-left", type=float)
     parser.add_argument("--reviewed-top", type=float)
@@ -227,6 +228,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     args = parser.parse_args(argv)
     if args.click and args.receipt is None:
         parser.error("--click requires --receipt")
+    if args.button != "left" and not args.click:
+        parser.error("--button right requires --click")
     if args.move and not args.dry_run and args.receipt is None:
         parser.error("--move requires --receipt")
     if not args.click and not args.move and args.receipt is not None:
@@ -298,7 +301,10 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.click:
         args.receipt.parent.mkdir(parents=True, exist_ok=True)
-        pyautogui.click(*screen_point)
+        if args.button == "left":
+            pyautogui.click(*screen_point)
+        else:
+            pyautogui.click(*screen_point, button=args.button)
         receipt = pyautogui.screenshot(str(args.receipt))
         if receipt.size != live_screen_size:
             raise SystemExit(
