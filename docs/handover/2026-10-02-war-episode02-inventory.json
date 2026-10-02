@@ -1,0 +1,253 @@
+{
+  "schema": "ck3-war-episode02-handoff-v1",
+  "created_at_utc": "2026-10-02T05:01:05.169426+00:00",
+  "handoff": "2026-10-02-war-episode02-video-research.md",
+  "branches": [
+    {
+      "worktree": "C:\\w\\e2gold1001",
+      "branch": "codex/war-series-brown-gold-20261001",
+      "head_before_handoff": "8306ce103bf3374765c81427a297453ac0d181ec"
+    },
+    {
+      "worktree": "C:\\w\\e2research1001",
+      "branch": "codex/war-e2-mechanism-closure-20261001",
+      "head_before_handoff": "c4e87182397e19ccb4112617bde13168d96eb50d"
+    },
+    {
+      "worktree": "C:\\w\\e2cap1001i",
+      "branch": "codex/war-e2-identifier-append-capture-20261002",
+      "head_before_handoff": "431461d6841604ebd19e65670661ca2a732dbff8"
+    }
+  ],
+  "master_intake_or_integration": false,
+  "final_video": {
+    "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\native-build-attempt-01\\CK3-War-AI-Episode02-BrownGold-BGM-20261002-a09.mp4",
+    "bytes": 247708305,
+    "sha256": "BA2E27878FD19D04667ECE628945B25E6C6C340E0C5844214CE43C2C2D07AD6D",
+    "duration_expected": 1911.3000000000002,
+    "music": {
+      "title": "Quiet Courtly Tension",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v5-theme-film-attempt-001\\run\\artifacts\\raw\\sha256\\FD\\FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F.wav",
+        "bytes": 30726160,
+        "sha256": "FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F"
+      },
+      "policy": "single existing war-series theme throughout; narration 0dB; music -17dB; same original loop; 2s fade in / 8s fade out; no normalization",
+      "reference_build": {
+        "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\build-records\\v5-theme-fullfilm-20260924-r1.json",
+        "bytes": 6134,
+        "sha256": "964D3EDD8B0725785738750756B4BF1DC530F0932EEF05D65235AADD0056243D"
+      },
+      "human_listening_signoff": "not-provided"
+    },
+    "human_signoff": "not-provided",
+    "production_clean_admission": false,
+    "status": "pending-machine-and-human-review"
+  },
+  "final_local_bytes_verified": true,
+  "delivery": {
+    "at_utc": "2026-10-02T02:43:19.402180+00:00",
+    "status": "CLIENT_METADATA_IN_SYNC_REMOTE_UNVERIFIED",
+    "final_artifact": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\native-build-attempt-01\\CK3-War-AI-Episode02-BrownGold-BGM-20261002-a09.mp4",
+      "bytes": 247708305,
+      "sha256": "BA2E27878FD19D04667ECE628945B25E6C6C340E0C5844214CE43C2C2D07AD6D",
+      "duration_expected": 1911.3000000000002,
+      "music": {
+        "title": "Quiet Courtly Tension",
+        "source": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v5-theme-film-attempt-001\\run\\artifacts\\raw\\sha256\\FD\\FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F.wav",
+          "bytes": 30726160,
+          "sha256": "FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F"
+        },
+        "policy": "single existing war-series theme throughout; narration 0dB; music -17dB; same original loop; 2s fade in / 8s fade out; no normalization",
+        "reference_build": {
+          "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\build-records\\v5-theme-fullfilm-20260924-r1.json",
+          "bytes": 6134,
+          "sha256": "964D3EDD8B0725785738750756B4BF1DC530F0932EEF05D65235AADD0056243D"
+        },
+        "human_listening_signoff": "not-provided"
+      },
+      "human_signoff": "not-provided",
+      "production_clean_admission": false,
+      "status": "pending-machine-and-human-review"
+    },
+    "target": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode02-BrownGold-BGM-20261002-a09.mp4",
+    "files_transferred": 1,
+    "local_copy": {
+      "status": "LOCAL_COPY_VERIFIED_CLOUD_PENDING",
+      "at_utc": "2026-10-02T02:41:15.170117+00:00",
+      "label": "series-video",
+      "source": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\native-build-attempt-01\\CK3-War-AI-Episode02-BrownGold-BGM-20261002-a09.mp4",
+      "target": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode02-BrownGold-BGM-20261002-a09.mp4",
+      "bytes": 247708305,
+      "sha256": "BA2E27878FD19D04667ECE628945B25E6C6C340E0C5844214CE43C2C2D07AD6D",
+      "copy_stream_sha256": "BA2E27878FD19D04667ECE628945B25E6C6C340E0C5844214CE43C2C2D07AD6D",
+      "source_mtime_ns": 1790908537455301100,
+      "cloud_confirmation": null
+    },
+    "last_client_sample": {
+      "at_utc": "2026-10-02T02:43:19.400440+00:00",
+      "raw": {
+        "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode02-BrownGold-BGM-20261002-a09.mp4",
+        "sample_utc": "2026-10-02T02:43:19.352545+00:00",
+        "size": 247708305,
+        "mtime_ns": 1790908873366847600,
+        "attributes_hex": "0x00000020",
+        "sync_root_hresult": "0x00000000",
+        "handle_attributes_hex": "0x00000020",
+        "reparse_tag_hex": "0x00000000",
+        "cf_placeholder_state_hex": "0x00000000",
+        "cf_placeholder_state_flags": [],
+        "placeholder_hresult": "0x00000000",
+        "placeholder_returned_bytes": 412,
+        "in_sync_state": 1,
+        "on_disk": 247708305,
+        "validated": 247708305,
+        "modified": 0,
+        "pin_state": 0,
+        "file_id": 562949954823072,
+        "sync_root_file_id": 5910974510929700,
+        "stable_size_mtime": true
+      },
+      "checks": {
+        "exact_path": true,
+        "exact_size": true,
+        "stable_size_mtime": true,
+        "sync_root_success": true,
+        "placeholder_success": true,
+        "sync_root_id": true,
+        "in_sync": true,
+        "validated_full_size": true,
+        "modified_zero": true
+      }
+    },
+    "sample_count": 13,
+    "remote_independent_readback_performed": false,
+    "human_signoff": "not-provided",
+    "other_cloud_files_downloaded": false,
+    "old_outputs_changed": false
+  },
+  "remote_independent_video_readback_performed": false,
+  "human_full_review": "pending",
+  "human_signoff": "not-provided",
+  "machine_checks": 193,
+  "sampled_final_frames": 33,
+  "decoded_music_windows": 20,
+  "finite_research_case": {
+    "knight_six_items": "closed within R0148 case",
+    "reinforcement_full_frame": "R0149 captured and finite audit passed",
+    "nonzero_losing_screen": "static-ready; missing two live branch cases",
+    "nonempty_growth": "static script explanation; no new live writeback"
+  },
+  "toolchain": {
+    "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "promo_version_at_run": "0.2.1",
+    "wheel": {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-a04-production\\inputs\\xar_promo_toolchain-0.2.1-py3-none-any.whl",
+      "bytes": 190405,
+      "sha256": "F8DE0711415E7FCE2BF07A34D3DB4EDC0593F32BA1CB61034946665E27014621"
+    },
+    "future_runs_requery_latest_formal_release": true
+  },
+  "critical_files": [
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\review-story-a09-story.json",
+      "bytes": 327082,
+      "sha256": "61969B7321EB86754A8AF4EE87B90C3455EA62682D2A2771ACFE20A62B7F96C3"
+    },
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\review-story-a09-project.json",
+      "bytes": 1796,
+      "sha256": "DEF08E489AC3B52A8D2A7F7BE32310C96E035D9C3A5D0E79703AB7B3F1D272EA"
+    },
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\full-narration-zh-a09.txt",
+      "bytes": 27589,
+      "sha256": "0A490144A92C2F08AE72B5E1AD6B7FCDC89F931DED9E14B3D188AFBA15639545"
+    },
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\project\\full-narration-zh-en-a09.txt",
+      "bytes": 52574,
+      "sha256": "1879AD17181EE98994B4B9F021E49DBB64153BAE9B1D8FDD0BF9D4661F3F6A89"
+    },
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a09-copy-audit-20261002\\full-copy-audit.json",
+      "bytes": 314038,
+      "sha256": "FABDAB7A97DFA2F346C1642EDF4EBF294628C0823088D48016BC280BDCEEE8FF"
+    },
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a09-copy-audit-20261002\\four-question-investigation.json",
+      "bytes": 13950,
+      "sha256": "87DCC8A2A017AE382CE54E982A60F6D2F82466ACFB649A602F5F971A7DA16B59"
+    },
+    {
+      "path": "C:\\w\\e2gold1001\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a09-video-bgm-20261002\\production-report.json",
+      "bytes": 6470,
+      "sha256": "714640D51429F6076DFF83027077EB6836BBED0DA723A7FDAF9C010B6DBB6882"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\sources\\environment.json",
+      "bytes": 3450,
+      "sha256": "D3D4E2D774741EF71CF9C140497C0C4D185D892B5661358703A2DA704010B090"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\native-run\\run-manifest.json",
+      "bytes": 50086,
+      "sha256": "71C575F8838F1E859600A117EF5B31D96E042B117BA3CF77DDF73FFB82149EAF"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\closed-process-index.json",
+      "bytes": 868644,
+      "sha256": "E4A09E1517EC9026EBF2E3941203A692F2363FFE0F29EAF81AE3B4D544D16DC7"
+    },
+    {
+      "path": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02\\pending-human-review\\review-package.json",
+      "bytes": 9698,
+      "sha256": "0920106F3F3AB4FC12371AF7681FFCCED98E4E5A2B7100E53B7AF49B5F6E3B2D"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\docs\\ck3-native-ai\\episode02-r148-six-gap-closure-2026-10-02.md",
+      "bytes": 8302,
+      "sha256": "1647A3C512D7441A6B50309606FACE972B4B77E97DDCBA869A11C98DCC093B1A"
+    },
+    {
+      "path": "C:\\w\\e2research1001\\docs\\ck3-native-ai\\episode02-r149-reinforcement-full-frame-2026-10-02.md",
+      "bytes": 3144,
+      "sha256": "437FBDEBA519577DA94B75B5D286DDA3ECF6246DE384F8F7CB53E625926DFBB6"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-12-identifier-append-safe\\R0148-six-gap-finite-case-semantic-closure-a01.json",
+      "bytes": 172344,
+      "sha256": "17751A015324D4F995D0F5B9668F9EFE5B70784230A9C9F62CD6622E764E6091"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-a04-mechanism-evidence-20261001\\R0149-actual-join-control-audit-reinforcement-a01\\R0149-finite-reinforcement-facts-a01.json",
+      "bytes": 21669,
+      "sha256": "A91B333219864C161999FE74D4C6040B05A9EBCBA2D9BB3D9E8C1EC6C3D19819"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-e2-six-gap-research-20261001\\root-attempt-13-reinforcement-full-frame\\R0149-root-finite-capture-completion-a01.json",
+      "bytes": 7232,
+      "sha256": "5A0A37C70CAD0730F302BD38B03EC7EBBD33B5E246ECCC2CDE5A861D2BB1DFA1"
+    }
+  ],
+  "process_assets": {
+    "final_run": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a02",
+    "earlier_a09_candidate": "C:\\Users\\1\\AppData\\Local\\ck3-review-render\\episode02-brown-gold-copy-bgm-20261002-a01",
+    "wrappers": "C:/Users/1/ck3-e2-copy-bgm-20261002-a01",
+    "closed_indexed_files": 3299,
+    "deleted_or_overwritten_assets": false
+  },
+  "next_episode": {
+    "duration_requested_minutes": [
+      20,
+      40
+    ],
+    "topic_status": "proposed only; not selected or started",
+    "suggested_topic": "围城怎样把一场胜仗变成战争胜利",
+    "suggested_minutes": 33,
+    "delivery_date_committed": false
+  }
+}
