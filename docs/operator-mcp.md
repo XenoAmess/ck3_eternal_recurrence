@@ -87,6 +87,22 @@ ANSI code page；保留原 errors、超时、未知输出拒绝、CSV 解析、�
 RPC 失败、Toolhelp 失败与 access-denied fallback 继续保持。未执行 tasklist/Toolhelp、操作桌面、
 启动 CK3 或接入 SDK；实际新受管 launch 仍 NOT_RUN。旧失败和冻结候选不由未来修复重新解释。
 
+## 原生注入、完整校验与恢复线程的预算
+
+受管 runtime 在注入前和 CK3 恢复线程前分别执行调用方的完整准备/CAS 校验，并在操作期间持有对应锁。
+两次校验等待不计入注入预算；注入执行、原始证据保全及 executable/report 验证仍受原 30 秒限制。
+第二次 fresh gate 成功进入后，CK3 恢复线程另起 30 秒预算，前后均检查；任一 gate 拒绝时不得恢复线程。
+这没有跳过完整文件校验，也没有扩大 injector 本身的期限。
+
+超时仍记录 `RED_TIMEOUT`、`deadline_phase` 与 `deadline_budget`，并保持 `role_query_authorized=false`。
+`contained_job_report_validated` 只由本地完整报告验证设置；已经验证的 root reap/complete tree 物理事实
+不会因随后超时被改写为未知。未验证、矛盾、失败或不可证明的 Job 报告仍保留 unsafe cleanup 门禁。
+清理事实成立只允许后续正常清理判断，不代表注入/恢复成功、可继续 SDK 查询或整场 session GREEN。
+
+聚焦离线测试使用虚拟时钟和合成 Job 结果：两个各 43 秒的完整 gate 后可正常注入/恢复，任一 gate
+拒绝时不恢复；31 秒的 helper 返回、报告验证和恢复线程分别拒绝，且区分已验证与未验证清理事实。
+没有创建进程、构造 SDK、连接 pipe 或操作游戏/桌面；这次修改的实际受管启动仍 NOT_RUN。
+
 ## 版本与复用
 
 - profile schema：`1`

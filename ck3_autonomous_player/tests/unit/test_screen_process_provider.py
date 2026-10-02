@@ -30,12 +30,15 @@ class ScreenProcessProviderTests(unittest.TestCase):
                 events = []
                 held = False
                 sequence = 0
+                clock = [0.0]
 
                 @contextmanager
                 def gate():
                     nonlocal held, sequence
                     sequence += 1
                     events.append(f"gate{sequence}")
+                    # Full-profile validation can take longer than injection.
+                    clock[0] += 43.0
                     if refusal == sequence:
                         raise AgentError("owner changed")
                     held = True
@@ -47,17 +50,20 @@ class ScreenProcessProviderTests(unittest.TestCase):
                 def inject(*args, **kwargs):
                     self.assertTrue(held)
                     events.append("inject")
+                    self.assertEqual(kwargs["timeout_seconds"], 30.0)
+                    clock[0] += 1.0
                     return NativeBridgeInjectorTests.outcome(argv)
 
                 def resume():
                     self.assertTrue(held)
                     events.append("resume")
+                    clock[0] += 1.0
 
                 process = SimpleNamespace(pid=4123, resume=mock.Mock(side_effect=resume))
                 evidence = Path(td) / "attempt"
                 with mock.patch.object(runtime, "sha256_file", return_value="a" * 64), mock.patch.object(
                     runtime, "run_contained_injector_command", side_effect=inject
-                ) as spawn:
+                ) as spawn, mock.patch.object(runtime.time, "monotonic", side_effect=lambda: clock[0]):
                     if refusal is None:
                         runtime._resume_with_native_bridge(process, config,
                             before_process_create=gate, injector_evidence_dir=evidence)
@@ -74,6 +80,10 @@ class ScreenProcessProviderTests(unittest.TestCase):
                 if refusal is None:
                     self.assertEqual(events, ["gate1", "inject", "gate2", "resume"])
                     process.resume.assert_called_once_with()
+                    self.assertEqual(clock[0], 88.0)
+                    self.assertTrue(process.injector_attestation["contained_job_report_validated"])
+                    self.assertTrue(process.injector_attestation["complete_process_tree_proven"])
+                    self.assertFalse(process.injector_attestation["role_query_authorized"])
                 else:
                     process.resume.assert_not_called()
 

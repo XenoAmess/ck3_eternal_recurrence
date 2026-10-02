@@ -21,6 +21,7 @@ import time
 import unicodedata
 import uuid
 from pathlib import Path
+from typing import Literal
 
 from .environment import (
     EXPECTED_MOD_NAME,
@@ -87,6 +88,7 @@ NATIVE_BRIDGE_PIPE_ENV = "XAR_CK3_BRIDGE_PIPE"
 NATIVE_BRIDGE_DLL_ENV = "XAR_CK3_BRIDGE_DLL"
 NATIVE_BRIDGE_INJECTOR_ENV = "XAR_CK3_BRIDGE_INJECTOR"
 NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS = 30.0
+NATIVE_BRIDGE_RESUME_TIMEOUT_SECONDS = 30.0
 _FALLBACK_WATCHDOG_COMMAND_LINES: dict[int, str] = {}
 _FALLBACK_WATCHDOG_PROCESSES: dict[int, subprocess.Popen[bytes]] = {}
 _WATCHDOG_PROCESS_CUSTODY: dict[int, WatchdogProcessCustody] = {}
@@ -2477,14 +2479,19 @@ def _contained_injector_report_matches(
 
 def _require_native_injector_deadline(
     attestation: dict[str, object], deadline: float, stage: str,
+    *, budget: Literal["injector", "ck3_resume"] = "injector",
 ) -> None:
     if time.monotonic() >= deadline:
         attestation["status"] = "RED_TIMEOUT"
         attestation["deadline_phase"] = stage
-        attestation["complete_process_tree_proven"] = False
+        attestation["deadline_budget"] = budget
+        # A timing refusal cannot undo validated physical cleanup. A helper's
+        # claimed proof is still untrusted until our complete validation passes.
+        if attestation.get("contained_job_report_validated") is not True:
+            attestation["complete_process_tree_proven"] = False
         attestation["role_query_authorized"] = False
         raise NativeInjectorError(
-            f"native bridge injector deadline expired during {stage}",
+            f"native bridge {budget} deadline expired during {stage}",
             attestation,
         )
 
@@ -2543,6 +2550,7 @@ def _inject_native_bridge(
         "stdout_bytes": None, "stderr_bytes": None,
         "injector_root_reaped": False,
         "complete_process_tree_proven": False,
+        "contained_job_report_validated": False,
         "role_query_authorized": False,
     }
     process.injector_attestation = attestation
@@ -2624,6 +2632,7 @@ def _inject_native_bridge(
             f"native bridge injector report validation failed: {error}",
             attestation,
         ) from error
+    attestation["contained_job_report_validated"] = report_matches is True
     _require_native_injector_deadline(attestation, deadline,
                                       "post-helper executable/report validation")
     if not report_matches:
@@ -2662,7 +2671,6 @@ def _resume_with_native_bridge(
     before_process_create: Callable[[], AbstractContextManager[None]] | None = None,
     injector_evidence_dir: Path | None = None,
 ) -> None:
-    deadline = time.monotonic() + NATIVE_BRIDGE_INJECT_TIMEOUT_SECONDS
     if config is not None:
         if injector_evidence_dir is None:
             process.injector_attestation = {
@@ -2682,13 +2690,18 @@ def _resume_with_native_bridge(
                 process, config, injector_evidence_dir)
     with before_process_create() if before_process_create is not None else nullcontext():
         if config is not None:
+            # Full preparation/CAS gates have their own caller contract; their
+            # wait must not consume either the injector or CK3 resume budget.
+            deadline = time.monotonic() + NATIVE_BRIDGE_RESUME_TIMEOUT_SECONDS
             _require_native_injector_deadline(
-                process.injector_attestation, deadline, "pre-CK3-resume"
+                process.injector_attestation, deadline, "pre-CK3-resume",
+                budget="ck3_resume",
             )
         process.resume()
         if config is not None:
             _require_native_injector_deadline(
-                process.injector_attestation, deadline, "post-CK3-resume"
+                process.injector_attestation, deadline, "post-CK3-resume",
+                budget="ck3_resume",
             )
 
 
