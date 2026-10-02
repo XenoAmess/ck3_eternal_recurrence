@@ -1,5 +1,13 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 10-03 02:03 原M2合同完成：G2 5/8，Robert累计3252日
+
+2026-10-03T02:03:47+08:00 Asia/Shanghai真实滚动补录，10-03日报仍进行中、10-02已closed不倒填。Robert **3252/36524**、本resume **99新增保存日**，其中10-03 **4日**；typed dynasty_continuity reconciled_successions0 / last_succession null保持。G2 **5/8=62.5%**、NW **1/4=25%**；原G2-M2合同由sole owner22/22最终判定complete，新增一整项；NW四域为LIFE/ECON/FAMILY/JOINT，M2无对应整包，故NW仍1/4。唯一actor29829/episode `native-29829-2bc2d599f7f9`，Steam离线、最小化/no-focus、Robert-only/nonwar保持。
+
+**G2-M2 complete（原合同范围）**：same original Robert episode三自然样本为 **feast.7002单选＋35prestige、rite_growth.0010三可见多选＋5fulfillment、feast_events_ewan.0801三可见多选两recipient各＋20opinion**。两个不同multi均有typed选择、独立material、oldinstance gone、正常next与paired保存、选后newPID材料保留；sole owner22/22最终合同评估确认，不添加next之后第二次cold条款，genericmetricnull也不新增门禁。fowl.0003 health＋0.5是另一个历史独立材料候选，不把原事件/天数重复加账。原八visible_outcome/denominator完整保留，新增M2使 **M0/M1/M2/M3/M5共5/8（62.5%）**；NW仍只有NW-FAMILY complete **1/4（25%）**。新15未登记只是下一实际运行适配，不撤销已满足M2合同，也不授M4/M6/M7或Family动作信用。[M2最终合同判定与全部pins](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-robert-feast-0801-blocker-01/actual-b59464e0-v22-complete/REPORT-FIELDS.json)。
+
+最新真正保存pair为 **full/save4156、raw53222376**；save SHA `b138cf4661e1e2509727cc4935dd5fcba686863c5edf974a437e24fbf900dc92`、driver SHA `fd37c1d6fcf556f88f7867f0900681e6f654c603d8fbbbeca9107fbce6e74ead`。此前选后4151保存EWAN关系材料与37571 may_have_submitted pending，10streams保全，未退回4140；该旧pair是本次newPID119508 cold的源，不冒充最终4156。[选后源pair](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/ewan0801-post-choice-normal-checkpoint-01/result.json)。 正式life-advance仅实际＋3保存日到raw53222376/full-save4156，新15 fowl.9002未登记使requested30暂停；Council/Sway/root实际正常查询恢复，0新Council任命/Family婚配/Start重发。 Family原37571实际cold proper consumer为gone_unmaterialized/materialfalse，source_pending完整归档、pendingnull、attempted[37571,37909]，不是婚约/拒绝/timeout。Feast83886111终态/37265参加/归因收益、Sway134217986/gen8专属收益、建设收益与跨自然继承/宽政府矩阵仍未完成；M4/M6/M7保持in_progress。下一步继续当前Robert4156原campaign正常循环及新15精确适配，全宗教研究（含holyorder）开放、nonwar/Robertonly/最小化不抢焦点分别保持。[当日日报](daily/2026-10-03.md)、[机器合同状态](g2-requirements-v1.json)。以下各dated截点是当时历史，不能用旧4/8或待13覆盖本次当前值。
+
 ## 23:33 Robert v20冷恢复、健康材料及正式新增6日：累计3248天
 
 2026-10-02 23:33:53 Asia/Shanghai最新用户明确授权：“从现在开始，允许你进行全方位的深入的宗教领域研究。你需要全局搜索，打破任何你发现的 类似‘宗教领域暂缓’ 的禁令。”本次八份中央文档中所有现行宗教暂缓、holy order暂缓及“只有婚姻/圣战两项窄例外”限制全部撤销；下方dated历史段中的旧限制只记录当时权限，当前均已失效。通用faith/religion、doctrine/tenet/fervor、改宗/宗教改革、holy order及相应原生AI树、只读bridge/MCP和策略研究可按真实价值施工。授权不等于能力完成；Robert唯一入口、nonwar-only当前执行、玩家限定与发布规则保持。

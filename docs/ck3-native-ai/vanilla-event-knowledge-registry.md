@@ -1,4 +1,48 @@
-﻿# CK3 1.19.0.6 原版事件知识 Registry
+# CK3 1.19.0.6 原版事件知识 Registry
+
+## 2026-10-03：Robert 新15 `feast_main_live_fowl.9002` 单选 host farewell
+
+v22 正式普通下一回合真实推进3天后，新自然instance15在暂停raw53222376出现。唯一closed typed receipt为 `m7-robert/ewan0801-following-normal30-b594-v22-actual-01/turn-002/natural-event/002-ck3_query_current_event_window_context_v1-service-receipt.json`，SHA `5537F69FEBF56AEA11E0AD6074EA8B0939966EF32F4850295703AFBCD803335D`：exact key **`feast_main_live_fowl.9002`** / calculated4849002 / runtime7525，native8/public5，root29829。它不是凭10日延迟猜测的`.9000`。snapshot authored1与rendered1一致，native0/API1显示启用，label“我们，应该经常这样！”；six saved scopes为activity、host、province、fowl_dinner_target37636、fowl_bird_chaser36907、host_saying_goodbye29829。root=host=host_saying_goodbye，target/chaser是当前动态身份；activity/province继续opaque。压力实际0；icon stress-decrease幅度unavailable、效果集合不完整，不据此推收益。原knowledge003仅 `event_definition_key_not_registered`，原15未提交选项、0新增日。
+
+我方policy前已冻结exact CK31.20.0.3/Steam25652598/EXE94B55397…DE02A6原版树：`m2-events/actual-robert-fowl9002-blocker-01/source-evidence/stock-source-exact-12003.json` SHA `EED31AA2C40C6BE803B9AE13F3D8C90C9BC8AC807F7854AD80BA83BC70D18ABF`、`native-source-tree.md`及完整event/direct caller/value/简中英文loc。`events/activities/feast_activity/main_events/feast_main_live_fowl_events.txt:652–683` wholefile SHA `159C17409D07B6F6D8307D58522FBF066F90E895B25DC64BD97AEE77D7202C56`；原CRLF key-token到末brace不含随后newline block SHA `01129EB3EAA7A318B5625FD4E2FFB0A91D37F8A439058174EFA305268F7CAD1D`，LF规范化 block为 `AFF4E0659231D9208E5E979B4C1B3943C44D468ABCA0100F1C4A6F062F449144`，明确区分两者。只读直接`.9000` caller的527–541保存host_saying_goodbye及605–608 host dispatch，不扩其余ending链。
+
+```mermaid
+flowchart TD
+    C["[stock direct caller] 保存host_saying_goodbye；activity_host接9002"] --> P["[actual native8] root/host/goodbye29829；6scopes；唯一native0 enabled"]
+    P --> O["[stock .a] stress_and_fulfillment_impact；minor_stress_loss=-10"]
+    O --> E["[stock complete block] 无immediate/after/ai_chance；无direct gold/prestige/health/modifier"]
+    P --> B["[actual before] played stress0；icon幅度未知"]
+    O -. "原生routing/modifier/clamp未在此包闭合" .-> U["unknown：实际stress/fulfillment后置"]
+    B --> K["[our bounded route] sole API1/native0；恢复当前自然timeline"]
+    K -. "尚未在实机选择" .-> N["unknown：独立old15advance与正式next"]
+```
+
+sole `.a:676–681` 的完整游戏effect只有 `stress_and_fulfillment_impact = { base = minor_stress_loss }`。直接value `common/script_values/00_stress_values.txt:13` **minor_stress_loss=-10**，不是同文件另一个minor_stress_impact_loss=-15；file SHA `821A0B77244FC5EE2D87D339CB24DBEF00787B83D44EC2DF9215FC1A93AEC2D4`。原block没有trigger、immediate、after或ai_chance，description的first_valid bird-killer文案选择不增加effect。该原生effect的最终stress/fulfillment路径及夹限不由源码base替代，当前stress0不预写actual−10或任何fulfillmentdelta。
+
+只登记实际`.9002`六scope、root/host/goodbye关系和sole0；不固定target/chaser ID，不注册`.9000`或其它兄弟结尾，不加stress0门禁、observer、native/DLL或service修改。非空source-reviewed effect profile保留 `observable_postcondition=None`，当前材料未知不妨碍已明确唯一合法选项的bounded continuation；M2已由此前三事件合同闭合，本实例不凭ACK或source数值增加M2材料信用。本包fixture/实际选择状态分别随下方交付记录更新，未重跑旧`.0801`/`.2001`/Rite cases。
+
+本包 **static-ready**：既有 `test_vanilla_event_registry_policy.py` 只新增 `test_fowl9002_actual_host_farewell_uses_service_and_observed_advance`，唯一首次实际执行 **GREEN1/1**（attempt01，0failure/0error）。真实native8/public5六scope/sole0经normalizer→knowledge/classifier→ordinaryplan API1/native0→现有service显式instance/revision→native-driver独立合成old15gone、同actor/datepaused；fixture压力0保持、材料None，没有模拟−10或fulfillment变化。三module overlay只含新leaf/registry/policy，其余outcome/strategy/service/driver使用immutableb594，旧cases未重跑。完整patch、baseline/current pins、sole测试argv/log在 `m2-events/actual-robert-fowl9002-blocker-01/python-compatibility/`，ROOT发布Python新freeze后才实际消费原15；b594 native/DLL及现会话原权限可复用，不需新build。本条fixture不授live/材料/Feast终态信用。
+
+## 2026-10-03：v22 选择后 cold、正式 next 与原 G2-M2 合同闭合
+
+ROOT 从原14选择后的正常配对检查点 h4151 恢复 v22，新 PID119508（由 ROOT managed lease 证明；finite DTO不伪填PID），同 Robert29829 / ordinary episode `native-29829-2bc2d599f7f9`、暂停 raw53222304，Python/native/environment `b59464e0`。已closed七capture中只提取M2三query和初末有限snapshot；Sway004–007由peer处理，未重复读取。初末均native4/public2、active_event/pending=null，原14及13未再现；recipient35466→29829总opinion仍60、34730→29829仍61，宗教fulfillment仍raw500000/scale100000=5，Rite152/Faith23/Religion8/mainRite152、keys/fervor6808550不变。此cold保留选择后材料，不计第二次+20/+5、不重选事件。唯一摘要 `v22-post-choice-cold-next-recipe/cold-material-summary.json` SHA `0FF5818DFEDA625C0E5054737A4AA9297CD645BE1E4B86DC7677637D7AD21EEB`，15/15 actual checks。
+
+随后同v22正式普通turn1从native5/public2、同日无原14/13出发，`life-advance` **executed**，独立native8/public5/raw53222376仍paused、同actor/episode，实际 **+3days**。原14没有回来；新的自然15是typed `feast_main_live_fowl.9002`，不是猜测`.9000`。checkpoint **saved h4156**，save85706043B/SHA `B138CF4661E1E2509727CC4935DD5FCBA686863C5EDF974A437E24FBF900DC92`，driver50071248B/history4156/SHA `FD37C1D6FCF556F88F7867F0900681E6F654C603D8FBBBECA9107FBCE6E74EAD`（下方完整pin以receipt为准）；save/driver大文件复用closed receipt，未重读。请求30日尚未完成：整批status仍`existing_consumer_not_ready`，turn2被新15的`event_definition_key_not_registered`停住，原15未提交任何选择。该新leaf缺项不抹去原14的actual next和配对保存，也不冒称wholebatch GREEN。
+
+```mermaid
+flowchart TD
+    A["[prior production] 原14 API2/native1；独立两recipient各+20"] --> S["[ROOT saved] post-choice h4151 paired checkpoint"]
+    S --> C["[actual v22 cold PID119508] 原14/13gone；60/61与fulfillment5保留"]
+    C --> N["[formal normal turn1] life-advance executed；实际+3days"]
+    N --> P["[closed paired save] h4156；同Robert/date53222376"]
+    P --> M["[original M2] 三自然、其中两多选、材料/next/cold齐备"]
+    P -. "新的自然实例、未选择" .-> B["unknown：9002 registry continuation；不影响原M2闭合"]
+```
+
+沿已核一次的原handover / G2-M2 visible outcome及原执行合同，当前可授 **G2-M2 complete**：同Robert episode选取 `.7002` 单选（actual prestige+35、next）＋Rite `.0010` 三选（actual fulfillment+5、next1day及new-PID保留）＋Ewan `.0801` 三选（actual两opinion各+20、选后cold及next3day/保存）。两种不同多选均有真实材料和完整生产循环；fowl `.0003` 的health+.5/next6day是额外已有样本，不需以它补两个multi。原合同没有要求已完成post-choice cold再在next之后重做第二cold，不新增这一门禁。M2的完成不提升M6整场Feast、Family、war或整个30日窗口；generic material profile仍None/unavailable，helper provenance false及named-friendliness未发表仍原样保留，这些不否定独立现成MCP已观测的材料。
+
+原v21 following fallback01/02的共享mailbox SEH512 **0turn0day** RED、原unregistered/冷hidden视图与harness失败都保留；没有把ACK、stock数值或fixture当实际收益。最终一次合同assessment和当日fields位于 `m2-events/actual-robert-feast-0801-blocker-01/actual-b59464e0-v22-complete/M2-FINAL-CONTRACT-ASSESSMENT.json` 与 `REPORT-FIELDS.json`，旧各阶段fields保持原历史状态。中央ledger/ROOT负责更新machine status、commit/push和这3天计数，本包不重复增加days、不修改中央报告；未运行SDK、游戏或旧测试。
+
 
 ## 2026-10-03：Robert `.0801` 一次选择、两项关系实测与原宗教材料冷保留
 

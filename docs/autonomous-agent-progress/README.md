@@ -1,5 +1,11 @@
 # CK3 自动游玩智能体进度中心
 
+## 10-03 02:03 v22当前恢复与正常循环
+
+2026-10-03T02:03:47+08:00 Asia/Shanghai真实滚动补录，10-03日报仍进行中、10-02已closed不倒填。Robert **3252/36524**、本resume **99新增保存日**，其中10-03 **4日**；typed dynasty_continuity reconciled_successions0 / last_succession null保持。G2 **5/8=62.5%**、NW **1/4=25%**；原G2-M2合同由sole owner22/22最终判定complete，新增一整项；NW四域为LIFE/ECON/FAMILY/JOINT，M2无对应整包，故NW仍1/4。唯一actor29829/episode `native-29829-2bc2d599f7f9`，Steam离线、最小化/no-focus、Robert-only/nonwar保持。 [当日日报](daily/2026-10-03.md) / [W40周报](weekly/2026-W40.md)记录本stage。上一报告publicb65和功能publicb594都实际push，v22严格83.02303s/933inputs/487TU及exactCI37040857656 SUCCESS。
+
+最新真正保存pair为 **full/save4156、raw53222376**；save SHA `b138cf4661e1e2509727cc4935dd5fcba686863c5edf974a437e24fbf900dc92`、driver SHA `fd37c1d6fcf556f88f7867f0900681e6f654c603d8fbbbeca9107fbce6e74ead`。此前选后4151保存EWAN关系材料与37571 may_have_submitted pending，10streams保全，未退回4140；该旧pair是本次newPID119508 cold的源，不冒充最终4156。[选后源pair](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/ewan0801-post-choice-normal-checkpoint-01/result.json)。 新PID119508的v22选后cold保留EWAN60/61、Rite5与原Sway/gen8/三attached空rings。 正式life-advance仅实际＋3保存日到raw53222376/full-save4156，新15 fowl.9002未登记使requested30暂停；Council/Sway/root实际正常查询恢复，0新Council任命/Family婚配/Start重发。 原M2三自然（7002、Rite0010、EWAN0801）与两个不同多选的独立材料/next/save/cold齐，sole owner final22/22 complete；原M0/M1/M2/M3/M5共5/8，NW既有四域仍NW-FAMILY一包。 Family typedsubmit原guard拒绝/nativequeue0但已may_have_submitted预写，不能盲重发；Council stale和共享SEH512原真实失败保留，具体SEHleaf不猜。祭司can_reassignfalse是合法当前primitive，广宗教仍全面开放；Feast/Sway整体价值/终态、建设hold不自动升级。本stagepublication待root，历史日期段不当当前值。
+
 ## 10-03 01:01 当前Robert主线：宗教实际＋5与新日保存、v21冷恢复
 
 真实补录时间 **2026-10-03T01:01:50+08:00（Asia/Shanghai）**；本日报**进行中**，正式收口为10-04 00:00。10-02日报已按午夜截止封存，不将新宗教选择或后置倒填前日。当前Robert **3249/36524**，本resume自3153新增 **96个保存自然日**；其中10-03实际新增 **1日**，10-02截止95日只算一次。typed dynasty_continuity reconciled_successions0 / last_succession null另列。G2 **4/8=50%**、NW **1/4=25%**不变；固定合同项比例不是整局自主完成率。 [10-03滚动日报](daily/2026-10-03.md)、[早会](meetings/daily/2026-10-03.md)和[W40周报](weekly/2026-W40.md)承接已closed10-02午夜；opening3248/95是当时基线，不当当前值。午夜4doc已实际push publicf3c9ace6，原publishedhistory保留。

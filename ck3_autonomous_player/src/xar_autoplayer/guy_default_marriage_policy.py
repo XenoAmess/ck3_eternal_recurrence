@@ -45,6 +45,7 @@ def _native_fertility_available(value: object) -> bool:
 
 def shortlist_specified_child_default_candidates(
     legality: Mapping[str, object], *, limit: int = _BOUNDED_FULL_VALUE_COMPARISON,
+    excluded_candidate_ids: frozenset[int] = frozenset(),
 ) -> list[int]:
     """Pick bounded full-value reads from native final-legal compact rows.
 
@@ -97,7 +98,8 @@ def shortlist_specified_child_default_candidates(
             continue
         ranked.append((candidate_age + child_wait, -accept, candidate_id))
     return [candidate_id for _, _, candidate_id in sorted(ranked)
-            if candidate_id not in duplicates][:limit]
+            if candidate_id not in duplicates
+            and candidate_id not in excluded_candidate_ids][:limit]
 
 
 def _reason(legality: Mapping[str, object], value: Mapping[str, object],
@@ -224,7 +226,8 @@ def choose_specified_child_default_value(
             if candidate_id in legal_rows:
                 duplicates.add(candidate_id)
             legal_rows[candidate_id] = row
-    shortlist = shortlist_specified_child_default_candidates(legality)
+    shortlist = shortlist_specified_child_default_candidates(
+        legality, excluded_candidate_ids=rejected_candidate_ids)
     evaluated: list[dict[str, object]] = []
     value_by_id: dict[int, Mapping[str, object]] = {}
     for value in values:

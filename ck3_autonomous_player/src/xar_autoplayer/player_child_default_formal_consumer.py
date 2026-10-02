@@ -284,7 +284,9 @@ def plan_child_default_private(driver: object, planned: dict[str, object],
         return planned
     # The bounded comparison is the two youngest future partners in the
     # compact native-final ranking. Both receive a full same-frame value read.
-    shortlist = shortlist_specified_child_default_candidates(subject, limit=2)
+    shortlist = shortlist_specified_child_default_candidates(
+        subject, limit=2,
+        excluded_candidate_ids=rejected_candidate_ids | attempted_candidate_ids)
     values: list[dict[str, object]] = []
     for candidate_id in shortlist:
         value = driver.query_player_child_marriage_value_private_v1(
@@ -389,7 +391,8 @@ def submit_child_default_private(driver: object, *,
             or not isinstance(chosen, dict)
             or not isinstance(shortlist, list)
             or shortlist != shortlist_specified_child_default_candidates(
-                legality, limit=2)
+                legality, limit=2,
+                excluded_candidate_ids=rejected_candidate_ids | attempted_candidate_ids)
             or [row.get("candidate_character_id") for row in full_values
                 if isinstance(row, dict)] != shortlist
             or len(full_values) != len(shortlist)
