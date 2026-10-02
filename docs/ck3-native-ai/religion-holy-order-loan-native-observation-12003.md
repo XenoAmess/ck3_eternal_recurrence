@@ -4,6 +4,11 @@
 
 可见价值是让当前帧回答三件事：**现在能否申请贷款、原生会求出多少金额、现有本金是否能准确偿还**。普通 gold/income snapshot 无法回答 final decision、冷却、合格首领是否存在或现有债务的实际本金。必须补观测，不继续把这些缺口留作长期 `unknown`。
 
+**当前实际状态：v25 金额 capability RED，修复中。** 首次完整 MCP transport 已成功返回，
+但原生 amount 接线误用 `CJominiScriptedModifierTemplate` registry，真实 quote 仍为空；
+后续 borrow/repay getters 尚未执行。下文初始 ABI 与 static-ready 记录作为历史施工证据
+保留，正确读法以末尾“v25 实际根因”及修复后的 paused artifact 为准。
+
 | 固定输入 | 值 |
 | --- | --- |
 | 游戏 | CK3 1.20.0.3 Crozier，Steam build 25652598 |
@@ -219,3 +224,131 @@ flowchart LR
 新增验证的失败 attempt 保留并明确分类：native glue attempt-01 是 harness 缺 base `src` include；native wire attempt-01 是 isolated link 缺现有七个 mailbox callbacks，生产 serializer 拆为小 `wire.cpp` 后 attempt-02 GREEN。没有把这类 harness RED 算成能力 RED，没有重跑已有 getter/reader/normalizer fixture。
 
 正式 receipt：同一 `ROOT-PROJECTION/GLUE-DELIVERY.json`、`GLUE-REPORT-FIELDS.json` 与 `GLUE-SOURCE-PINS.json`；native 子线日志在 `native/GLUE-REPORT.json` / `WIRE-RESULT.json`，Python 一次实际链证据在 `python/registered-path-once-01/REPORT-FIELDS.json` / `PATH-RESULT.json`。ROOT sole owner apply 这份源码 hunks，并与 Growth/Task/Feast 包做一次 v25 strict/fresh build 及真实 paused 查询；本代理已经完成全部获授权的 source packet 施工，没有留下重新研究 glue 的工作。
+
+## v25 首次实际查询：金额 capability RED，继续修复
+
+真实 frozen native/public `f9da88f9119223b150356ec110392c0f67073cc1` / `production-source-f9da88f9`、DLL 8117760 bytes SHA `4119de2275a9d1adfbc951fe93a8d8e407519301f36c8818567ec04ac83b033e`。ROOT 在 Robert 29829 / PID 95636 / paused date 53224008 调用现成注册 MCP；完整返回已到达，但 `available=false`、`unavailable_reason=loan_amount_expression_unavailable`、`loan_amount_quote_raw=null`。真实 artifact 为 `artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v25-religion-feast-sway-combined-01/004-ck3_query_player_holy_order_loan_context_v1.json`（capture epoch 8924、native revision 3）。
+
+此结果是 **loan capability RED**，此前 provider/serializer/registered-path fixture GREEN 只证明静态代码和 transport，不能算金额或决议观测已经可用。f9 调用顺序是变量 → amount → 两决议；amount 失败提前 return，当前 borrow/repay false 和 cost 0 确定未执行原生读取。总体 unavailable 时也不把变量 presence false 用作可执行的无债务结论。
+
+立即施工入口限定实际失败链：`ReadAmountRaw` 的 native database → named entry/key → local native compile → native eval。DB/key 与 parser actual root/context 两条窄线并行；`3F7E240` 已由直接当前函数数据流排除 RCX 首参形态差异（函数实际只用 RDX bytes/R8 length），不据此修改 hash getter。当前 parser 重点核对实际 loader 在编译前写入的 source-location/recursion字段与 local ctor 是否一致。仅在真实层级仍无法闭合时，由 ROOT 在自然 saved-paused 边界执行一次明确地址/长度的只读 RPM；此代理不碰 live/SDK/pipe/window/Git。
+
+只提交针对金额实际失败的外置最小修复；不重跑旧 GREEN fixture，不新增框架、flag、理论 gate 或宗教禁令，不阻断 ROOT 的 a588 普通游玩/经济材料主线。金额与真实两决议观测须由修复后的 paused MCP artifact 确认，才能再次讨论 production-live readiness。
+
+
+### v25 金额故障：一次 paused RPM 已闭到命名查找未命中
+
+ROOT 在自然保存暂停边界一次只读捕获 PID 95636、罗贝尔 29829、日期 raw 53224296；
+证据为 `Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-loan-12003/ACTUAL-V25-AMOUNT-FIX/root-paused-named-math-rpm-01.json`（SHA-256 `237fa60887cf5a317c7f78bf0251ddfabc949633347d208545454b171b339ae7`）。
+该日期是补定位的暂停边界，不能替换首次 query 的 raw 53224008 / capture epoch 8924。
+
+数据库与 fallback 槽均可读；命名表 mask `0x1ff`、最大探测 `11`。当前 helper
+计算 `holy_order_gold_value` 的 hash `0x6C728160`，其原生桶及探测范围没有匹配条目，
+故 entry、key 校验、Build 和 Evaluate 尚未触及。表内已读行的桶位及 probe distance
+与 Robin Hood 布局相符，不能把未命中误写成表布局错误。金额后的决议 getters
+也未执行，首次 unavailable envelope 的 false/0 仍是默认值，不构成合法性或无欠款观测。
+
+下一项只核对冻结 exact 的名称 hash / registry 类别与原生 script-value token 调用路由，
+据真实缺口修最小 amount lookup；不部署无必要的 diagnostic build，不重复旧 GREEN
+fixture，不扩日志扫描。ROOT 继续正常游玩，当前借贷观测仍为 capability RED / research。
+
+```mermaid
+flowchart TD
+  Q[actual v25 paused query: available=false] --> D[ROOT RPM: named DB 非空]
+  D --> T[mask 0x1ff / max probe 11 / 表布局一致]
+  T --> F[hash 0x6C728160 未命中 / native fallback]
+  F -. unknown: 正确 registry 与普通 script_value token 入口正在闭合 .-> A[真实金额 observation]
+  A -. unknown: 当前 amount early return 后未执行 .-> G[borrow / repay final gates]
+  G -. unknown: 修复后 ROOT paused artifact 待验收 .-> L[production-live primitive]
+```
+
+
+### v25 实际根因：scripted modifier registry 不能代替普通 script_value
+
+第二次必要窄读只使用首次已定位的两条 entry 与 fallback。它们在 `+0x18`
+的实际名称分别为 `inspiration_region_court_grandeur_attraction_modifier` 和 `laamp_contract_scheme_basic_success_chance_modifier`；
+`+0x08` 不能按合法 std::string 解码。两条实际 vtable RVA `0x493CB40` 的
+冻结 EXE RTTI 为 `CJominiScriptedModifierTemplate`；fallback RVA `0x4929340`
+是对应 `TPdxNullObject<CJominiScriptedModifierTemplate>`，magic `Null`。
+
+因此已确认 v25 `ReadAmountRaw` 所用 `0x3763060 / 0x37630C0` 是 scripted modifier
+registry，不能查普通 `holy_order_gold_value`。此前 NamedMath constructor/parser/eval
+的 direct caller proof 证明的是该 modifier 类型，静态 callbacks 测试没有实际走入
+游戏命名查找，不能用来证明这条 amount 接线正确。上文旧接线说明以本实机纠正为准；
+不通过改 `+0x08`、hash RCX、probe 布局或添加猜测 metadata 来掩盖错误入口。
+
+普通 numeric parser `0x37D30F0` 先调用 game factory slot `0x5C6A4C8`，
+只有 callback 不提供节点时才回退旧 Jomini modifier path。ROOT 最后只读 8 字节
+得到当前 factory RVA `0x27F6740`。下一项只追该 exact native plain-value 分支，
+用正确 native object/evaluator 替换 amount lookup，不猜报价公式，不扩其它领域。
+证据与 SHA 见 `Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-loan-12003/ACTUAL-V25-AMOUNT-FIX/WRONG-REGISTRY-REPORT-FIELDS.json` 和
+`Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-loan-12003/ACTUAL-V25-AMOUNT-FIX/lookup/WRONG-REGISTRY-ROOT-CAUSE.json`。
+
+```mermaid
+flowchart TD
+  A[actual v25: holy_order_gold_value 查找失败] --> B[actual entries +18 = 两个 modifier 名称]
+  B --> C[RTTI: CJominiScriptedModifierTemplate]
+  C --> D[根因: plain script_value 使用错误 modifier registry]
+  D --> E[actual numeric factory = 0x27F6740]
+  E -. unknown: plain-value branch / getter 接线正在施工 .-> Q[真实 loan amount]
+  Q -. unknown: v26 ROOT paused MCP 待验证 .-> L[production-live primitive]
+```
+
+精确 factory 分支继续闭合后，`0x27F6740` 只提供 FirstValid 与专用 modifier tokens，
+不能直接当成普通 `holy_order_gold_value` getter。新的正确 scalar 类型入口已由
+direct RTTI 证明：`0xA13AE0(storage 0xF0)` 构造 `CJominiScriptValue<CFixedPoint>`，
+vtable RVA `0x44A7B48`，其 Load 虚表槽 `+0x18` 指向 `0xA136A0`。它也是 clamp
+数字节点 `+0x48` 的内嵌数值对象；当前最小修复只闭该对象的 Load、root-kind 4
+Evaluate 和回收签名。此前 callback 调查作为排除错误入口的证据保留，不能将
+它或 constructor/RTTI 单独写成真实金额观测完成。
+
+
+### v26 最小修复已交付：借原生 compiled plain fixed-point value
+
+修复严格基于 immutable native/public `f9da88f9119223b150356ec110392c0f67073cc1`，
+只替换 `ck3_12003_holy_order_loan_amount.hpp` 与 amount provider 内部接线。
+正确 plain-value registry getter 是 `0xA07970`，lookup 是 `0xA07830`，fallback
+是 `0x5D1DD48`。这些入口来自 `CJominiScriptValue<CFixedPoint>` 的原生 scalar
+loader `0xA13180`；不使用先前 modifier registry。native success 仍要求合法
+entry magic，沿原生顺序优先 `entry+0x7C` 的 compiled expression，其次 `+0x7B`
+常数分支直接读 `+0x68` 的 Q100000 raw，不再套用 modifier 的 name layout。
+
+compiled 分支直接借游戏自有 entry 调 `0x37542F0(entry, out, context, RNG=null,
+entry+0x40 metadata)`。`context` 为 `0x28`，三个作用域指针都引用当前玩家
+RootScope；原生临时 scratch 为 `0x3D8`，由 `0x3736060` 与
+`0x3735FB0(scratch+0x128)` 初始化，在 `+0x3D0` 引用 root，mode 读
+`0x5D1DADC`。只按原生 caller 顺序清理这两个临时 vector；不构造 parser，
+不复制/重编 stock 表达式，不析构游戏 entry，不手算报价。完整参数、调用链与
+字段 proof 见 `Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-loan-12003/ACTUAL-V25-AMOUNT-FIX/parser/FIXED-POINT-REGISTRY-PROOF.md`
+及 eval 子线的冻结 proof。
+
+完整外置 patch：`Z:\ck3_mod_rewrite\artifacts\g2-maintainer-2026-10-02\resume-12003\religion-holy-order-loan-12003\ACTUAL-V25-AMOUNT-FIX\holy-order-loan-plain-value-amount-fix.patch`，SHA-256 `e34d557ec2b2d2ed495c5befd33e37c002dce9b7d68cae0c80b58cfb367b450f`；
+逐 leaf before/after hashes 与 corrected proof pins 见 `Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-loan-12003/ACTUAL-V25-AMOUNT-FIX/SOURCE-PINS.json`。
+一次新真实 provider `/std:c++20 /EHsc /W4 /WX` 编译 **GREEN**，
+`Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-loan-12003/ACTUAL-V25-AMOUNT-FIX/compile/attempt-01/RESULT.json`；没有重跑旧 callbacks/serializer/MCP fixtures。
+现有宗教 opt-in、query owner、mailbox、router、Python driver 与注册 MCP 全部复用。
+
+本次仅为修复后的 **static-ready**；v25 actual RED 和失败 artifact 继续保留。
+ROOT 一次 combined v26 strict build 后必须捕获暂停罗贝尔的 `available=true`、
+真实 quote 和已执行的 borrow/repay native gates/cost，才能升为
+`production-live primitive`。借款/还款操作与完整 OODA 不由此单次只读查询完成。
+
+```mermaid
+flowchart TD
+  N[holy_order_gold_value / 当前玩家 root] --> D[正确 plain-value DB A07970 / A07830]
+  D --> C{compiled flag +7C?}
+  C -->|yes| E[native entry Eval 37542F0 / context28 / scratch3D8]
+  C -->|no and constant +7B| K[读取 native constant raw +68]
+  E --> Q[quote raw / native income-era-clamp]
+  K --> Q
+  Q --> G[现有 provider 继续执行两决议 getters]
+  G -. unknown: ROOT v26 paused artifact 待验收 .-> L[production-live primitive]
+  L -. unknown: 借款和还款动作仍待单独闭环 .-> O[production-live loop]
+```
+
+
+最终正确求值 proof 已冻结： `Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-loan-12003/ACTUAL-V25-AMOUNT-FIX/lookup/fixed-point-eval/ABI-PROOF.json`，SHA-256
+`53b666afc18c65a2987102c063e0f30521cd2285fab903022b1606f9cfdc0da5`；其 source pins 为 `Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-loan-12003/ACTUAL-V25-AMOUNT-FIX/lookup/fixed-point-eval/SOURCE-PINS.json`。
+plain registry/load 的 unique native span pins 为 `Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-loan-12003/ACTUAL-V25-AMOUNT-FIX/parser/FIXED-POINT-REGISTRY-SOURCE-PINS.json`。
+这些 direct caller proof 与已编译的两份最终 source 一致，未另跑 fixture、RPM、
+EXE 全量 hash 或源编译。最终 patch hash 仍为 `e34d557ec2b2d2ed495c5befd33e37c002dce9b7d68cae0c80b58cfb367b450f`。

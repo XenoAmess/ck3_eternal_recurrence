@@ -104,32 +104,12 @@ bool ReadDecision(const Bindings &b, void *character, void *scope,
   return true;
 }
 
-// The current .3 named definition is parsed/evaluated in a local native node.
-// Database entries are never passed directly as compiled numerical math.
-bool EvaluateNamedAmount(std::uintptr_t base, const void *entry,
-                         void *scope, std::int64_t &raw) noexcept {
-  // The original recipe supports a cache. This finite query uses local node
-  // ownership instead: native destructor releases the compiled children before
-  // returning, while RootScope remains alive throughout evaluation and cleanup.
-  xar::holy_order_amount_recipe::NamedMath math;
-  bool ok = math.Build(base, entry) && math.Evaluate(scope, raw);
-  math.Destroy();
-  return ok;
-}
+// The plain fixed-point registry already owns the compiled stock expression.
 bool ReadAmountRaw(std::uintptr_t base, void *scope, std::int64_t &raw) noexcept {
-  using DatabaseGetter = void *(*)();
-  using NamedLookup = const void *(*)(void *, std::uint32_t);
   constexpr std::string_view key = "holy_order_gold_value";
-  auto get_database = reinterpret_cast<DatabaseGetter>(base + 0x3763060);
-  auto hash_key = reinterpret_cast<DecisionHash>(base + 0x3F7E240);
-  auto lookup = reinterpret_cast<NamedLookup>(base + 0x37630C0);
-  auto *database = get_database();
-  if (!database) return false;
-  auto hash = hash_key(database, key.data(), static_cast<std::uint32_t>(key.size()));
-  auto *entry = lookup(database, hash);
-  auto *fallback = Load<const void *>(reinterpret_cast<const void *>(base + 0x5D37DB8), 0);
-  if (!entry || entry == fallback || !KeyEquals(entry, key)) return false;
-  return EvaluateNamedAmount(base, entry, scope, raw);
+  auto *entry = xar::holy_order_amount_recipe::FindFixedPointScriptValue(base, key);
+  return entry && xar::holy_order_amount_recipe::EvaluateFixedPointScriptValue(
+                      base, entry, scope, raw);
 }
 
 template <typename T> void Optional(std::ostringstream &out, const std::optional<T> &value) {

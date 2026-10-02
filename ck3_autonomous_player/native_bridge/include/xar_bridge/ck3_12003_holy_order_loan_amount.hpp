@@ -1,81 +1,93 @@
 #pragma once
 
-// External research recipe: CK3 1.20.0.3 build 25652598.
+// CK3 1.20.0.3 build 25652598: borrow a loaded fixed-point script value.
 // EXE SHA-256: 94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6.
-// Game main owner only. Compiles numeric math and executes no scripted effect.
-// ABI-PROOF.json records the actual native load/eval/destructor callers.
+// Native scalar route A13180 -> A07970 / A07830, not scripted modifiers.
+// Game main owner only; database entries remain owned by the game.
 #include <array>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
+#include <string_view>
 
 namespace xar::holy_order_amount_recipe {
 template <typename T> inline T Read(const void* p, std::size_t off) noexcept {
-  T v{};
-  std::memcpy(&v, static_cast<const std::byte*>(p) + off, sizeof(v));
-  return v;
+  T value{};
+  std::memcpy(&value, static_cast<const std::byte*>(p) + off, sizeof(value));
+  return value;
 }
-template <typename T> inline void Write(void* p, std::size_t off, T v) noexcept {
-  std::memcpy(static_cast<std::byte*>(p) + off, &v, sizeof(v));
-}
-struct NamedContext {
-  void* node;
-  std::uint16_t root_kind;
-  std::byte padding[6];
-};
-static_assert(sizeof(NamedContext) == 0x10);
 
-class NamedMath {
- public:
-  bool Build(std::uintptr_t base, const void* definition) noexcept {
-    if (ready_) return base_ == base && definition_ == definition;
-    base_ = base;
-    definition_ = definition;
-    node_.fill(std::byte{});
-    // This native constructor is inlined in 0x3760DBC..0x3760E72.
-    Write(node_.data(), 0x00, base + 0x492E1B0);
-    Write(node_.data(), 0x20, std::uint64_t{15}); // empty SSO at +0x08
-    Write(node_.data(), 0x3C, std::uint8_t{1});
-    Write(node_.data(), 0x48, definition);
-    Write(node_.data(), 0x68, std::uint64_t{15}); // empty SSO at +0x50
-    Write(node_.data(), 0x80, base + 0x54E2BB0); // argument allocator
-    Write(node_.data(), 0x98, node_.data() + 0xA0); // child allocator
-    Write(node_.data(), 0xA0, base + 0x492E288); // allocator vtable
-    Write(node_.data(), 0xC8, base + 0x54E6448); // underlying allocator
-    NamedContext context{node_.data(), 4, {}};
-    using Compile = void (__fastcall*)(void*, const void*, const NamedContext*);
-    reinterpret_cast<Compile>(base + 0x37D36D0)(node_.data(), definition, &context);
-    ready_ = Read<void*>(node_.data(), 0x88) != nullptr &&
-             Read<std::int32_t>(node_.data(), 0x94) > 0;
-    if (!ready_) { Destroy(); return false; }
-    math_.fill(std::byte{});
-    nodes_[0] = node_.data();
-    Write(math_.data(), 0x30, nodes_.data());
-    Write(math_.data(), 0x38, std::int32_t{1});
-    Write(math_.data(), 0x3C, std::int32_t{1});
+inline const void* FindFixedPointScriptValue(std::uintptr_t base,
+                                            std::string_view key) noexcept {
+  using DatabaseGetter = void* (__fastcall*)();
+  using Hash = std::uint32_t (__fastcall*)(const void*, const char*, std::uint32_t);
+  using Lookup = const void* (__fastcall*)(void*, std::uint32_t);
+  auto* database = reinterpret_cast<DatabaseGetter>(base + 0xA07970)();
+  if (!database) return nullptr;
+  auto hash = reinterpret_cast<Hash>(base + 0x3F7E240)(
+      database, key.data(), static_cast<std::uint32_t>(key.size()));
+  auto* entry = reinterpret_cast<Lookup>(base + 0xA07830)(database, hash);
+  auto* fallback = Read<const void*>(reinterpret_cast<const void*>(base + 0x5D1DD48), 0);
+  return entry && entry != fallback && Read<std::uint32_t>(entry, 0x38) == 0x4744624FU
+             ? entry : nullptr;
+}
+
+// Context is the native fixed-point cost caller's 0x28-byte input.
+struct FixedPointEvaluationContext {
+  const void* root;
+  const void* previous;
+  const void* current;
+  void* scratch;
+  std::uint8_t mode;
+  std::byte padding[7];
+};
+static_assert(sizeof(FixedPointEvaluationContext) == 0x28);
+
+inline void ReleaseEvaluationVector(void* scratch, std::size_t vector_offset,
+                                    bool clear_values, std::uintptr_t base) noexcept {
+  auto* data = Read<void*>(scratch, vector_offset);
+  if (!data) return;
+  auto* vector = static_cast<std::byte*>(scratch) + vector_offset;
+  if (clear_values) {
+    using ClearValues = void (__fastcall*)(void*);
+    reinterpret_cast<ClearValues>(base + 0x9D7340)(vector);
+  } else {
+    const std::int32_t zero = 0;
+    std::memcpy(vector + 0x0C, &zero, sizeof(zero));
+  }
+  auto* allocator = Read<void*>(vector, 0x10);
+  auto* vtable = Read<const void*>(allocator, 0);
+  using Release = void (__fastcall*)(void*, void*, std::uint64_t);
+  auto release = Read<Release>(vtable, 0x10);
+  release(allocator, data, 8);
+}
+
+inline bool EvaluateFixedPointScriptValue(std::uintptr_t base, const void* entry,
+                                          const void* root_scope,
+                                          std::int64_t& raw) noexcept {
+  if (!entry || !root_scope) return false;
+  // Native A13180 gives the compiled expression precedence over the constant.
+  if (!Read<std::uint8_t>(entry, 0x7C)) {
+    if (!Read<std::uint8_t>(entry, 0x7B)) return false;
+    raw = Read<std::int64_t>(entry, 0x68);
     return true;
   }
-  bool Evaluate(const void* scope, std::int64_t& raw) noexcept {
-    if (!ready_ || !scope) return false;
-    using EvaluateMath = std::int64_t* (__fastcall*)(const void*, std::int64_t*, const void*);
-    return reinterpret_cast<EvaluateMath>(base_ + 0x37616A0)(math_.data(), &raw, scope) == &raw;
-  }
-  // Use before bridge/game cleanup; flags=0 retains the local 0xD0 storage.
-  void Destroy() noexcept {
-    if (!base_) return;
-    using DestroyNode = void* (__fastcall*)(void*, std::uint32_t);
-    reinterpret_cast<DestroyNode>(base_ + 0x3760C60)(node_.data(), 0);
-    base_ = 0;
-    ready_ = false;
-    definition_ = nullptr;
-  }
- private:
-  alignas(16) std::array<std::byte, 0xD0> node_{};
-  alignas(16) std::array<std::byte, 0x40> math_{};
-  std::array<void*, 1> nodes_{};
-  std::uintptr_t base_{};
-  const void* definition_{};
-  bool ready_{};
-};
+  alignas(16) std::array<std::byte, 0x3D8> scratch{};
+  using Construct = void (__fastcall*)(void*);
+  reinterpret_cast<Construct>(base + 0x3736060)(scratch.data());
+  reinterpret_cast<Construct>(base + 0x3735FB0)(scratch.data() + 0x128);
+  std::memcpy(scratch.data() + 0x3D0, &root_scope, sizeof(root_scope));
+  FixedPointEvaluationContext context{
+      root_scope, root_scope, root_scope, scratch.data(),
+      Read<std::uint8_t>(reinterpret_cast<const void*>(base + 0x5D1DADC), 0), {}};
+  using EvaluateEntry = std::int64_t* (__fastcall*)(
+      const void*, std::int64_t*, const FixedPointEvaluationContext*, void*, const void*);
+  auto* result = reinterpret_cast<EvaluateEntry>(base + 0x37542F0)(
+      entry, &raw, &context, nullptr, static_cast<const std::byte*>(entry) + 0x40);
+  // Native 37616A0 cleanup order; only temporary vectors are owned locally.
+  ReleaseEvaluationVector(scratch.data(), 0x128, true, base);
+  ReleaseEvaluationVector(scratch.data(), 0, false, base);
+  return result == &raw;
+}
 
 } // namespace xar::holy_order_amount_recipe
