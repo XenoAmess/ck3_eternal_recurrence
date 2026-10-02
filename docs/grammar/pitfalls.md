@@ -51,6 +51,7 @@
 | 原版开局逻辑失效（`There is more than one 'effect' defined`） | on_action 同名字段**覆盖不合并** | 只加 `on_actions = { 自定义钩子 }` 条目 |
 | `Undefined event target 'actor'` / `scope:actor trigger [ Failed context switch ]`，位置在 interaction 的 `ai_potential`（1.20.0.3） | 当前原版明确规定此回调的 `root` 是发起角色，其他 event target 不可用；不能把其他交互回调的 `scope:actor`、`scope:recipient`、`scope:target` 合同搬进来 | 条件直接对角色 root 求值；保留既有包装深度时可将 `scope:actor = { ... }` 改为 `root = { ... }`。还须检查其调用的 trigger 闭包是否依赖其他保存目标，不能只替换一层。此字段已被原版标为 deprecated；迁移到 `is_available` 应另审玩家入口和可用性，不能当成纯 scope 修复 |
 | `Undefined event target 'employer'` / `Invalid right side during comparison 'scope'`，位置在 court-position 的 `is_shown_character` / `valid_character`（1.20.0.3） | 这两个候选回调提供的是 `scope:employee`（被考虑或正在任职者）和 `scope:liege`（该职位的雇主），没有 `scope:employer` 合同 | 对雇主的比较使用 `scope:liege`，对候选人的条件使用 `scope:employee`；不要盲换 `root` 或候选人的政治 `liege`。`valid_position` 又是另一个回调，原版明确给它雇主 character root；按具体字段核对，不统一替换整份职位文件 |
+| 联盟成员消息出现 `ERROR:[joiner.GetShortUINameNoTooltip]` / `joiner.GetUIName`，即使角色图标正常（1.20.0.3） | 类型回调 `on_member_character_joined` 的 root 是 Confederation，加入者在 `scope:character`；全局 `on_confederation_join` 的 root 则是加入的 Character，另有 `scope:confederation`。消息文案要求保存的 `joiner` / `confederation`，图标参数不会建立这些别名 | 在实际发送消息的回调内，从确定类型的加入者和联盟显式保存别名；类型回调根保存 `confederation`，进入 `scope:character` 保存 `joiner`。不能把联盟根或收件玩家存成加入者，也不能依赖全局回调先执行并传播别名。`exists` 只保护缺失，不修复 House 等错误类型；源码依据及合成例见下方原版证据，新增产品修复仍须独立实机验证 |
 | `Event target link 'root' returned an unset scope`，位置在 CB `on_victory` 的 tooltip/description（1.20.0.3） | 胜利描述可在战争尚未建立时预求值；CB 的默认根是 CB scope，不等同于攻击方角色，且此时 `root.war` 可不存在 | 仿原版先以外层 `if = { limit = { exists = root.war } ... }` 保护整个依赖战争的调用，再显式传 `WAR = root.war`。共享 helper 可按传入的 `$WAR$` 建存在性门，保留有效战争分支全部业务；不要从攻击方任意另找一场战争，也不要假定 `scope:war` 总被注入。同级 guard/read 不短路规则仍适用；预览报错次数不等于实际败坏的胜利场数 |
 | 失地玩家持有的角色状态无法由 `yearly_global_pulse` 恢复 | `yearly_global_pulse` 没有 root；R426 实机证明其 `every_player` 不枚举这个仍为 `is_ai = no`、但已不再是 count+ playable 的角色 | 扩展原版 `random_yearly_everyone_pulse`；在自定义 on_action 的 `trigger` 首先要求 `is_ai = no`，再调用严格的玩家状态恢复 effect。该原版 pulse 明确逐个覆盖所有角色 |
 | 开局钩子里玩家/规则拿不到 | `on_game_start` 时机太早 | 用 `on_game_start_after_lobby` |
@@ -97,6 +98,11 @@ SHA-256：`94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`。
 |---|---|---|
 | `common/character_interactions/_character_interactions.info:562–568` | `ai_potential` root 为 actor；其他 event target 不可用；字段已弃用 | `cc2442a313a6b1a2a7fa02b92a094276edfe39c60835c3286172c5b6d7b70a37` |
 | `common/court_positions/types/_court_positions.info:100–127` | 区分雇主 root 的 `valid_position` 与 `liege` / `employee` 候选回调 | `d33893bbf21caf3886f9e30b2fcb51bfa102be1b138746bd2047dc7ff18d6c1f` |
+| `common/confederation_types/_confederation_types.info:125–137,141–150` | 成员角色回调为 Confederation root + Character；间接由家族加入时才可能另有 House；家族成员回调是独立 House 合同 | `5ae6d30f7a99a41dc34b4cb62111679f6b240ae00b61b8c87ccc4a8be86570a7` |
+| `common/confederation_types/00_confederation_types.txt:9–16,46–54` | 类型回调从联盟根保存 `confederation`，从加入角色保存 `joiner`，再进入收件玩家发送消息 | `69c6b61f63f652ef8ade899a2a003e7279c8b63dff63e811bb7fbc5e6d24788e` |
+| `common/on_action/confederation_on_actions.txt:8–10,51–64` | 全局加入回调以 Character 为 root；51 行保存 `joiner`，52–53 行进入其联盟保存 `confederation` | `b4b1857a90573d7983ea1d268684d66adb274d4597f5d383c7cd6cbd3445e9ea` |
+| `localization/simp_chinese/dlc/mpo/mpo_interactions_l_simp_chinese.yml:75–76` | joined 消息标题读取角色 `joiner`，正文另读取联盟 `confederation` | `0668bb5a555df3b04962cb20855b36b746899ee0d521c982aa9ab3bee06d8cec` |
+| `localization/english/dlc/mpo/mpo_interactions_l_english.yml:79–80` | 英文 joined 消息有同一角色与联盟依赖 | `71471ffb1b7665bde485707676197509d280bb800645e9c2082e0701804bf986` |
 | `common/casus_belli_types/_casus_belli.info:55,147` | 结果描述与效果同 scope；默认 CB scope | `270343ebae0f8ebd2e4d24f9f839a7c77cb663836d9b36af6d5138a58755bb05` |
 | `common/casus_belli_types/00_tributarize.txt:285–291` | 战前本地化以 `exists = root.war` 保护，再显式传 WAR | `087d6151be86546d4b1fcb600230534cb14c6a57ec2762e4efdb3ae98f9227c9` |
 | `common/situation/situations/_situations.info:280–303` | 未来阶段推进方式、Points 门槛与 catalysts | `1fe343a5f6ffb7954af1bbd88d2dcc71808fd336aa33842e744450d84d2c955a` |
@@ -129,7 +135,23 @@ if = {
     limit = { exists = root.war }
     example_settle_war_effect = { WAR = root.war }
 }
+
+# 既有 confederation type 内的成员角色回调；不是全局 on_action
+on_member_character_joined = {
+    save_scope_as = confederation  # 当前对象是联盟
+    scope:character = {
+        save_scope_as = joiner    # 当前对象是加入者
+    }
+    # 此后才进入收件人作用域，使用上述别名构建通知。
+}
 ```
+
+联盟合成片段只说明通知角色绑定，不包含成员业务或完整发送逻辑，不应覆盖原版全局 on_action。
+全局 `on_confederation_join.effect` 的保存顺序相反：先在 Character root 保存 `joiner`，再进入联盟
+保存 `confederation`。House 成员应按自己的家族文案合同处理，不能借同名别名混用角色 getter。
+若发送前新增会保存同名别名的嵌套业务，须重新核验发送时两者的身份；本条没有测定两个入口的
+触发次序、别名传播或消息刷新时机。五份原版文件已与来源审计冻结 bytes / SHA 对齐；没有重跑
+来源的回调夹具。此文档补充的引擎执行、消息 UI 和存读档验证均为 **NOT_RUN**。
 
 复用这些修复时，必要静态检查应锁定回调位置、参数消费、guard 与读取的嵌套关系，以及有效对象分支
 保留的条件/数值/业务顺序；字段改名或包装层改动还应反向核验未改字节。该检查不是 CK3 执行。
