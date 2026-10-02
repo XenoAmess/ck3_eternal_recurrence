@@ -330,6 +330,18 @@ scope:example_target = { save_scope_as = example_event_target }
 
 日志 header 中的 `at file: ... line: ...` 可以帮助定位，但没有独立 `Script location:` / caller 时应保持解析器的 primary/caller 为未知；不能替日志补造事件 ID 或重评阶段。复验要使用新冻结源的实际加载证据及未封顶的日志窗口，并验证永久目标的玩家可见效果；静态反向字节相等和旧签名零命中各自只证明其限定条件。
 
+### 1.20.0.3 条件化的国教标题链接
+
+`state_rite` 是原生 title link，不能用保存 `scope:state_rite` 来修复缺失。查询相关角色的政府规则后，再在独立 `trigger_if` 内检查标题链接存在，最后在 body 中比较；普通同层 government 条件和读取不能作为短路保证。`state_rite` 与其 parent `state_faith` 不是同一个对象。政府允许 `state_faith` 也不能独自证明某个标题的国教数据已经初始化；尤其不能从 setter help 推断不支持的标题上 getter/exists 必然静默。合法 absence 应按本业务原规则处理，不能凭空建立国教或改变宗教 AI 权重。
+
+当前原版 **1.20.0.3 / build 25652598** 的出处如下，EXE SHA 与上文相同；这里只增加条件化 title-link 的实例出处，沿用已有惰性守卫规则，**对应修复的 engine 验证 NOT_RUN**：
+
+| 原版来源（相对 `game/`） | 合同出处 | 完整文件 SHA-256 |
+|---|---|---|
+| `common/governments/_governments.info:106–110` | state_faith 政府规则默认 no | `af825eb9fc59c3fde4cc74f11d2f9997419b9bd83bdf6a5dec8790d9d435b59a` |
+| `common/scripted_triggers/00_scripted_triggers.txt:319–331` | 先按角色 government_allows 分支，再读取其 primary_title.state_rite | `a0d06291c9b29dbeb29e855b8d9552f30b967238046ebbce45d997f730c41b5a` |
+| `common/scripted_rules/00_rules.txt:65–70` | 原版实际使用 exists 检查 top_liege.primary_title.state_rite；不由其同层比较推断短路 | `c7ba2ae71e4461e88c6d5c86d8fc15fa7ccc73edae1e28fb3b65f0e362c4560f` |
+
 ## 事件背景图 / 纹理
 
 | 现象 | 原因 | 解法 |
@@ -338,6 +350,9 @@ scope:example_target = { save_scope_as = example_event_target }
 | 自定义事件场景图不显示/黑 | 纹理格式 | 必须 DDS；事件场景规格 **1592×848 DXT1**（原版 alley.dds 实测），Pillow 可写（`save(pixel_format="DXT1")`），路径放 `gfx/interface/illustrations/event_scenes/`，事件里 `override_background = { reference = <背景键> }` |
 | character_event 窗口右半边空着 | 窗口类型固定布局：左文本列 + 右立绘区，无立绘角色就空 | 把人物合成进背景图右半（tools/compose_avatar.py）；或改用 `type = letter_event` 窄窗（信纸风，无大图背景） |
 | 事件窗口尺寸想改 | window 类型由事件 type 决定，theme 只管图标/标题底/音效/默认背景 | 不想覆盖全局 GUI 就别动；用构图迁就窗口 |
+| `fullscreen_event '<id>' requires queue_icon`，并伴随运行期空路径 VFS 纹理请求 | fullscreen 事件缺少事件队列用的 queue_icon；背景图或 theme 不能代替此字段 | 显式提供业务对应、实际可加载的 DDS 路径，并核对组件同路径覆盖及 replace_path；不能只填默认空图。无 caller 的 VFS 记录仅靠时间关联不能逐条归因，字段修复仍须冷加载和实际队列图标复验 |
+
+CK3 **1.20.0.3** 原版 `events/_events.info:62–66` 明确 fullscreen_event 必填 `queue_icon`，文件 SHA `ccd628f42374eb300199a2676bde45ba60af0be056290f191bfc72461910a5fd`；`gui/event_windows/fullscreen_event.gui:491–498` 的队列图标 texture 消费 `[SplashItem.GetIcon]`，文件 SHA `6bf3c22041c36c98a02de78ed80bf0a9e5defb8c2a5681b71209cfb71127f219`。这是必填字段与原版 GUI 的源级合同；不等于 [fullscreen 原生 reader](../ck3-native-ai/fullscreen-event-context-1.20.0.3.md) 的 getter thunk 映射已闭合，也不等于产品 UI、全部纹理请求或百年验收通过。
 
 ## 持久名单的动态排序上限
 
