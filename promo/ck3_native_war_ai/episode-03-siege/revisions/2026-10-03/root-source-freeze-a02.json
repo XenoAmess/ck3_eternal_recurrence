@@ -1,0 +1,106 @@
+{
+  "schema": "ck3.episode03.root-source-advance/v1",
+  "status": "ready-for-production",
+  "created_at_utc": "2026-10-02T23:10:57.285624+00:00",
+  "input_freeze": {
+    "path": "D:\\ck3-war-episode03-revision-20261003-a01\\root-production-input-freeze-a01.json",
+    "bytes": 5323,
+    "sha256": "1C22A7C30F260CF427028C7EDAC9D965273280E94DBC31F8C769D479B0054D01"
+  },
+  "inputs": [
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\revisions\\2026-10-03\\project\\claim-ledger.json",
+      "bytes": 94939,
+      "sha256": "790817BE17B5317BDBF01077743954FFC1D44E94B0C56D0361A03FCBEFAD41F7"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\revisions\\2026-10-03\\project\\editorial-outline.md",
+      "bytes": 576,
+      "sha256": "7EFFAD1CA30363EEF3BDCB8F9A1129888EFD6ED9A1C66EE72B07E4D744E6B504"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\revisions\\2026-10-03\\project\\editorial-source-index.json",
+      "bytes": 40065,
+      "sha256": "CC4E7CB748ECC46AF238B62B0F8A0C818368A2A35CCD6BE83621B538D16755F5"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\revisions\\2026-10-03\\project\\full-narration-zh.txt",
+      "bytes": 17967,
+      "sha256": "9CD2E6923B2471B0364A5B8DA66931FD2F9A5E8069EE1E51B28AA31C40536A91"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\revisions\\2026-10-03\\project\\live-source.json",
+      "bytes": 308229,
+      "sha256": "00D1BCCF65F26F174BFA34A36F5FB411784664E03D21C53A7C584CAC3AA48A64"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\revisions\\2026-10-03\\project\\promo-project.json",
+      "bytes": 77938,
+      "sha256": "A24A5ED707CC1E1D423E5E26442F6FACFA1C07F2426A662F473E87FE7B23535D"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\revisions\\2026-10-03\\project\\README.md",
+      "bytes": 825,
+      "sha256": "7D3CDDDDBFBEC4BA4517C118D092D328FB9A696B2006C8107C6E8702734E6E7F"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\revisions\\2026-10-03\\project\\review-story-episode03.json",
+      "bytes": 241075,
+      "sha256": "CC583CDDE4F79A2CE789D737682DD22539E0103F6138CE8E1F68E376EBB909B6"
+    },
+    {
+      "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\revisions\\2026-10-03\\project\\shot-list.json",
+      "bytes": 67491,
+      "sha256": "31A4295262DF44B8A753398E924D1AEFBED91B94E2B060F5012494704A98CAD3"
+    }
+  ],
+  "nine_inputs_unchanged": true,
+  "production_source": {
+    "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\production.py",
+    "bytes": 63334,
+    "sha256": "9BA0240A0215E61F8C87915199180DAE9431E8C76FC9D11806C715414692A273"
+  },
+  "composer_source": {
+    "path": "D:\\we3r\\promo\\ck3_native_war_ai\\episode-03-siege\\composer.py",
+    "bytes": 6461,
+    "sha256": "9EA9CE1F494C0DE00D0520B6FD344FBA198FCD044D14C14A24BBC0F28B0562F6"
+  },
+  "prepared_audio": {
+    "path": "D:\\ck3-war-episode03-revision-20261003-a01\\tts-only\\attempt-a03\\prepared-audio.json",
+    "bytes": 393035,
+    "sha256": "9E1D161B3E194328FCD3701A4DBF3731B9FF169C9726E6B289751D666358751B"
+  },
+  "recipe": {
+    "path": "D:\\ck3-war-episode03-revision-20261003-a01\\visual-plan\\revision-production-argv-a05.json",
+    "bytes": 8914,
+    "sha256": "3FF158937AD4F3FA561B56D6EC2C1311F0821475A228A1FD445DB4547175CD6E"
+  },
+  "actual_audio_flag_verified": true,
+  "guard_verification": [
+    {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\visual-plan\\guard-dedup-source-a01\\verification-normal\\report.json",
+      "bytes": 2303,
+      "sha256": "7DC09458B3C862534E154EBE8306C638A36BFA749B336A6723750EE7D53234FF"
+    },
+    {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\visual-plan\\guard-dedup-source-a01\\verification-optimized\\report.json",
+      "bytes": 2311,
+      "sha256": "0C0E489BCE659EEF7F3456CA5E18590FA5525708BF08DCB0A752F3C9AD2EB116"
+    }
+  ],
+  "previous_producer_preserved": {
+    "path": "D:\\ck3-war-episode03-revision-20261003-a01\\visual-plan\\guard-dedup-source-a01\\production-before.py",
+    "bytes": 62767,
+    "sha256": "AFCD1D7D902C3EF687A6C44502B797619621DCC9388F8BAF0FC9A4564DB3B748"
+  },
+  "change_scope": "require_ready only; one complete hash per unique resolved media identity per call, conflicting references rejected, no cross-call cache",
+  "execution_run": "D:\\ck3-war-episode03-revision-20261003-a01\\revision-production-a02",
+  "build_workdir": "D:\\ck3-war-episode03-revision-20261003-a01\\revision-native-build-a02",
+  "retained_prior_failure": {
+    "run": "D:\\ck3-war-episode03-revision-20261003-a01\\revision-production-a01",
+    "actual_exit_code": 1,
+    "reason": "Actual argv used old audio manifest; cue096 SHA check correctly rejected it"
+  },
+  "human_signoff": "not-provided",
+  "full_1x_human_review_performed": false
+}

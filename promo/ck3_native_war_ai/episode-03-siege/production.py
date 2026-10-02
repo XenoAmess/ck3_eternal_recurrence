@@ -393,8 +393,22 @@ def require_ready(run):
     require(keys and len(set(keys)) == len(keys), "Frozen story has no cues or duplicate cue keys")
     lookup = _shot_lookup(run)
     native_required = read(run / "sources/live-source.json").get("visual_policy", {}).get("require_native_presentation", False)
-    bound_media = {str(Path(pin["path"]).resolve()): exact(pin)
-                   for pin in pins(read(run / "sources/live-source.json"))}
+    # This cache lasts only for this guard call. Every distinct file is fully
+    # hashed; conflicting references to one resolved path are rejected.
+    bound_media, media_identity = {}, {}
+
+    def checked_media(pin):
+        path = str(Path(pin["path"]).resolve())
+        identity = (pin["bytes"], pin["sha256"].upper())
+        if path in media_identity:
+            require(media_identity[path] == identity, "Conflicting frozen media pins: " + path)
+            return bound_media[path]
+        actual = exact(pin)
+        media_identity[path], bound_media[path] = identity, actual
+        return actual
+
+    for pin in pins(read(run / "sources/live-source.json")):
+        checked_media(pin)
     for chapter, cue, key in cues(story):
         require(isinstance(cue["id"], str) and re.fullmatch(r"[A-Za-z0-9_-]+", cue["id"]),
                 "Cue id must be a safe file identifier: " + key)
@@ -412,7 +426,7 @@ def require_ready(run):
                 "Revision cue still awaits its declared media binding: " + key)
         if shot.get("kind") == "raw_clip":
             require(shot.get("raw_recording"), "Raw shot has no recording: " + key)
-            exact(shot["raw_recording"])
+            checked_media(shot["raw_recording"])
             clip_selection(shot, cue, key)
         elif shot.get("board_spec") or (isinstance(shot.get("board"), dict) and "source_image" in shot["board"]):
             spec = shot.get("board_spec") or shot["board"]
@@ -665,6 +679,7 @@ def boards(args):
 
 def render_native_chunk(run, chapter, edit, items, index):
     """Render declared raw PTS once into one native viewport; never loop it."""
+    from fractions import Fraction
     producer, _ = _legacy(run)
     root = Path(run) / "chapters" / chapter["id"] / f"chunk-{index:02d}"
     root.mkdir(parents=True, exist_ok=False)
@@ -698,8 +713,12 @@ def render_native_chunk(run, chapter, edit, items, index):
                  "-threads", "1", "-loop", "1", "-framerate", "30", "-t", str(cue["duration"]), "-i", shot["hold_label"]["path"]]
         x0, y0, x1, y1 = shot["source_crop_xyxy"]
         x, y, w, h = shot["viewport_xywh"]
-        # showinfo precedes PTS reset: its log is the actual decoded source clock.
-        filters.append(f"[{inputs}:v]trim=start={begin:.6f}:end={end:.6f},showinfo@source_{i},"
+        # Explicit integer ticks keep FFmpeg from rounding a fractional start
+        # backwards into the preceding source frame. End remains exclusive.
+        source_tb = Fraction(shot["source_time_base"])
+        start_pts = math.ceil(Fraction(str(begin)) / source_tb)
+        end_pts = math.ceil(Fraction(str(end)) / source_tb)
+        filters.append(f"[{inputs}:v]trim=start_pts={start_pts}:end_pts={end_pts},showinfo@source_{i},"
                        f"setpts=(PTS-STARTPTS)/{policy['playback_rate']:.9f},crop={x1-x0}:{y1-y0}:{x0}:{y0},"
                        f"scale={w}:{h}:force_original_aspect_ratio=decrease:force_divisible_by=2,"
                        f"pad={w}:{h}:(ow-iw)/2:(oh-ih)/2:color=0x{producer.BG[1:]},setsar=1,fps=30,"
@@ -713,7 +732,8 @@ def render_native_chunk(run, chapter, edit, items, index):
         inputs += 3
         receipts.append({"key": cue["key"], "kind": shot["kind"], "source": shot["source_binding"],
                          "source_begin_pts_seconds": begin, "source_end_pts_seconds_exclusive": end,
-                         "source_time_base": shot["source_time_base"], "presentation": policy,
+                         "source_time_base": shot["source_time_base"], "source_start_pts": start_pts,
+                          "source_end_pts_exclusive": end_pts, "presentation": policy,
                          "playback_frames": playback_frames, "end_hold_frames": hold_frames,
                          "duration_frames": cue["duration_frames"], "showinfo_filter": f"source_{i}"})
     audio_index = inputs
@@ -734,19 +754,29 @@ def render_native_chunk(run, chapter, edit, items, index):
              "-ar", "48000", "-ac", "2", "-movflags", "+faststart", str(output)]
     command(run, label, argv)
     log = Path(run) / "logs" / (label + ".stderr.txt")
-    actual = {}
+    actual, actual_tb = {}, {}
     for line in log.read_text(encoding="utf-8", errors="replace").splitlines():
         name = re.search(r"showinfo@(source_\d+)", line)
-        pts = re.search(r"\bpts_time:\s*([-+\d.eE]+)", line)
+        tb = re.search(r"config in time_base:\s*(\d+/\d+)", line)
+        pts = re.search(r"\bpts:\s*(-?\d+)", line)
+        if name and tb:
+            actual_tb[name[1]] = tb[1]
         if name and pts:
-            actual.setdefault(name[1], []).append(float(pts[1]))
+            actual.setdefault(name[1], []).append(int(pts[1]))
     for receipt in receipts:
         if receipt["kind"] == "native-excerpt":
-            decoded = actual.get(receipt["showinfo_filter"], [])
-            require(decoded and all(receipt["source_begin_pts_seconds"] - .000001 <= n <
-                                    receipt["source_end_pts_seconds_exclusive"] for n in decoded),
+            name = receipt["showinfo_filter"]
+            ticks = actual.get(name, [])
+            require(name in actual_tb and Fraction(actual_tb[name]) == Fraction(receipt["source_time_base"]),
+                    "Actual source time base differs from the frozen probe: " + receipt["key"])
+            source_tb = Fraction(actual_tb[name])
+            decoded = [tick * source_tb for tick in ticks]
+            require(decoded and all(Fraction(str(receipt["source_begin_pts_seconds"])) <= n <
+                                    Fraction(str(receipt["source_end_pts_seconds_exclusive"])) for n in decoded),
                     "Actual decoded source PTS is absent or outside the chosen range: " + receipt["key"])
-            receipt["actual_decoded_source_pts_seconds"] = decoded
+            receipt["actual_decoded_source_integer_pts"] = ticks
+            receipt["actual_decoded_source_time_base"] = actual_tb[name]
+            receipt["actual_decoded_source_pts_seconds"] = [float(n) for n in decoded]
             receipt["actual_decoded_source_frame_count"] = len(decoded)
     path = root / "visual-render-receipt.json"
     write(path, {"output": ref(output), "filter": ref(graph), "source_pts_log": ref(log), "cues": receipts,
