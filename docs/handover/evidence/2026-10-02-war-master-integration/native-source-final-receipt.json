@@ -1,0 +1,862 @@
+{
+  "head": "d88f25140bcacb23f9a36ecfed92c89eb9c001f5",
+  "base": "d4f377d97b7a4f97ac85151610adbc4d4df818f8",
+  "linear_commit_count": 23,
+  "merge_commits_in_integration": [],
+  "commits": [
+    "b3f4c4352791a21963531c480e417f16ac55d370 Record read-only typed center failure stages and snapshot field differences",
+    "b29f6358794a1f4fc90b364a3319e1421e473fad Add bounded knight death causality observers and native original UI research",
+    "4b91ea2669bbfd06d4ad91752af1ca550d6396fd Fix observer parent residency integration using real managed detour ownership",
+    "a7158ec54ec372e44650f3288339b73585dbd29c Fix original GUI owner admission and preserve actual knight observation threads",
+    "1ce7e85fd5a01fd429a245894347201a58e44b2a Honor original effective-hidden modal receiver admission for scoped UI research",
+    "a75da9461785890cdc4bbf0f745ccbc429ab2eff Preserve native scoped trace failures and correct exact artifact tuple projection",
+    "aebe4d804bea43a6549168497d415d8e7641f721 Expand paired native transport for complete scoped daily trace export",
+    "27d90d7026c5881db5c5c750f60581f2e32b8b13 Preserve complete knight monitor and bind original native case representations",
+    "df02fdb26f16849f8071d173e88e8da9b4fcad89 Observe original death commit and bind scripted effect names",
+    "100a5dca60a031ac41310c042b2fbc93daf1bb47 research: preserve R147 evidence and allow stable identifier append",
+    "aff1c2c0f6bf64c7c0d055b99285f3f069fa5f9c docs: close Episode02 R148 finite six-gap case research",
+    "fece2cf7f6c4646cf2a3beb6503af4b4e3602f5f Record R149 original reinforcement full-frame evidence and finite audit",
+    "7a200903ec6c8fbded81ecce834052eb7b9de824 Record_ie_research_isolation_and_Steam_offline_policy",
+    "ac005827ccab40e82221114153b51eabd7928de1 H3937: integrate frozen physical-inventory producer and single query on ie",
+    "c9c2fac69b4e8c02299d7bad6bb6cc1c26338048 H3937: preserve decoded negative command frames on isolated ie",
+    "fc75994e43aadc62efac552e45d0f51aad160c5c Policy: keep Steam offline for every task on this machine",
+    "a6c26236c8957c9d66a8377642418c9c35b9c073 H3937 and ROLE: integrate frozen queued wakes on isolated ie",
+    "31e8d0926f7f45cb793be55a8ebf1515f2af22ea ie: preserve complete H2743 producer and frozen research consumers",
+    "ebf89266031c0b1f12070fc60844fdfa52e2283e Recount the combined original-build capability registry",
+    "83f45dd61951e056a761e4c53b78d476abb3624c Keep historical de-jure queries independent of current truce opt-ins",
+    "d9bac1d5fa89a6a68bb3755f1487f46863513e24 Check-mailbox-ordering-at-the-worker-route",
+    "a7aa35f6b9fdd53549afec0129dfd3df1d2453e0 Bind-source-and-dispatch-fixtures-to-integrated-routes",
+    "d88f25140bcacb23f9a36ecfed92c89eb9c001f5 Link-the-feast-dispatcher-fixture-to-protocol-readers"
+  ],
+  "clean_worktree": true,
+  "status": "",
+  "diff_check_returncode": 0,
+  "diff_check_stdout": "",
+  "diff_check_stderr": "",
+  "protected_paths_count": 524,
+  "changed_protected_paths": [],
+  "changed_paths_count": 114,
+  "changed_paths": [
+    {
+      "path": "ck3_autonomous_player/h3937_single_query_once.py",
+      "bytes": 300,
+      "sha256": "faeccc45ad137566f32e04e8c769ca986c911a7be20e18d9006a6722e0addf2e"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "bytes": 285188,
+      "sha256": "455adf5e8e48573677c30f295821d86d0ebe2705f1a075911012e2d43d249bdc"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/cmake/h2743_stock_predicate_reader_v1.cmake",
+      "bytes": 2710,
+      "sha256": "dd1ad9c548daf86c8ec07fb1fa9179c4a69c0dc4da050d3d7f781863b40de5e8"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_11906.hpp",
+      "bytes": 78539,
+      "sha256": "1b31eb40f563ce8103cb49953862b5e53c730f58f58dca500b94eaf84c687592"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/combat_phase_event_trace_detour_v1.hpp",
+      "bytes": 6758,
+      "sha256": "610e9b030f96ba80f5b292c70d26d716ef394587453ff8eb27a44a78d96dfc2d"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/combat_phase_event_trace_managed_v1.hpp",
+      "bytes": 9356,
+      "sha256": "d36014ee85d3d56645386f8b422f654cd78e24b92c11dfd0cb6c3bb64b95a7b0"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/combat_phase_event_trace_wire_v1.hpp",
+      "bytes": 890,
+      "sha256": "fa418381a81435947db47b1a51fa158e5d75dfb869aef0cca6adf3ec12510608"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/combat_scoped_transition_chain_v1.hpp",
+      "bytes": 17981,
+      "sha256": "5ee7c1b3303f1a3a46af15413ef63abfe9940e891b8e3b94270f2211e179a938"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/frontend_gui_route_v1.hpp",
+      "bytes": 9737,
+      "sha256": "7ef9272f1c4dd74d2beccb2cdbc6db3d1cbf514e075629a414f565abd9b901d8"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/game_adapter.hpp",
+      "bytes": 18291,
+      "sha256": "5608f52370fef5052d5f25c5cf5aa9c1216ab32c9ddcda65675e20c9708d5a80"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/game_contract.hpp",
+      "bytes": 76688,
+      "sha256": "7173aac809302bbcbeecacee35da6ac6f99a905e7aaf6fad15cbf1066ec88e48"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/h2743_stock_predicate_reader_v1.hpp",
+      "bytes": 3741,
+      "sha256": "6d413617951e6e2adf9a1a67d949107c57fd2632ac766cc603b1db0437a6aa5e"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/h2743_stock_private_query_v1.hpp",
+      "bytes": 1884,
+      "sha256": "c576c8929fd4ce62238d48fa4d4f59a69eb980925dfc42ffaec4d0105c351654"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/h2743_war_storage_candidate_v1.hpp",
+      "bytes": 3714,
+      "sha256": "d156895e0165d6cf83522da1e2cad2e0eaed96259ae4cc78e48c1cfa709cff79"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ingame_ui_navigation_v1.hpp",
+      "bytes": 6702,
+      "sha256": "9e53e5bd77f3ef19faa6832f12a2a1c4d3fa551dc491502498e61384740e7725"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/main_thread_query_mailbox_v1.hpp",
+      "bytes": 39669,
+      "sha256": "31007088aae43937a4e3cff7c1a6f70734ea06bb6818e0a6a2662ec42fb37608"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/physical_army_inventory_diagnostics_v1_json.hpp",
+      "bytes": 2805,
+      "sha256": "420814239cafcad3b09a5be79a7a90ddcb46e7b4bda4d8e300f28c253a23eca2"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/protocol.hpp",
+      "bytes": 1801,
+      "sha256": "5a01b0581a245d47e9eb7a97a91f29d0dcbaaff6855dd8fd5b29d4ef248e3366"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/route_contact_horizon_v1_dispatch.hpp",
+      "bytes": 6358,
+      "sha256": "4e430db6e57fbd576c037827adde4dcf6e7d032d7046de0a422150b222d2c6ad"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/route_contact_horizon_v1_mailbox.hpp",
+      "bytes": 5041,
+      "sha256": "ba31fb81c55ad0300d4d1bbe2664f9486656ab851d5b2eee12f1492d6e400d8c"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/scoped_character_variable_monitor_v1.hpp",
+      "bytes": 11090,
+      "sha256": "c290efdf1bb32eb7c5a094129de047653c1070528db8543583208aa5be414e69"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/scoped_observer_lifetime_v1.hpp",
+      "bytes": 2440,
+      "sha256": "55edf8e916e14955ee1a3424303943a1b5a14979a76f171d6cfba7f15778c181"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/title_map_navigation_diagnostics_v1.hpp",
+      "bytes": 6319,
+      "sha256": "cdbaf3fdb99ab874eec45f5a3e2eb26dedffd58a9664f45cf1b83898c241230b"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/title_map_navigation_v1_camera.hpp",
+      "bytes": 8732,
+      "sha256": "8cc54f52d564c87d55c693feb469b7cb23535aa34847c0048df30e9d055243b5"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/title_map_navigation_v1_mailbox.hpp",
+      "bytes": 3259,
+      "sha256": "133072c6c4fa93b14399de9fb9476d556f3eba10feaa802dfa1e2e49b4dbac0a"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/combat_trace_publish_diagnostic_v1_contract.json",
+      "bytes": 2856,
+      "sha256": "8fbb8f3b2d10f9659c9f358dff197a3ead156b93c2dbe93529c56c9fca8aba4b"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/combat_trace_transport_capacity_v1_contract.json",
+      "bytes": 2177,
+      "sha256": "4295b88d19c4d44b6c256e012ef070b1053cf6e8964644d2584de7b34b70e111"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/h2743_stock_predicate_reader_v1_abi.json",
+      "bytes": 9088,
+      "sha256": "f98a2b8b4baf47322aa93868b8cdef63bdd8b4d8a4bb3af5432eed9ad31dda55"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/ingame_ui_navigation_v1_abi.json",
+      "bytes": 15409,
+      "sha256": "279eff1c0abacdfbd63cddc51cf1d5f1d04569a2a854224efeda269654c2cd2f"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/knight_selector_death_causality_11906_a01.json",
+      "bytes": 15468,
+      "sha256": "de20b687870baed55b2ff477e2e4bbd12ca8a98601755e5b293aac6389ecb720"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/scoped_loaded_trait_track_count_v1_contract.json",
+      "bytes": 2253,
+      "sha256": "b7fd6376ac100eeb8240b71545a94ba6d6cae88c54a93f671d7c1e7edd7b658a"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/scoped_monitor_dead_null_compression_v1_contract.json",
+      "bytes": 2898,
+      "sha256": "e6c074431142cb00ad98655bce19ccd5c3950e7ce31f4b977d8a975f3c93203b"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/scoped_notification_named_dead_character_v1_contract.json",
+      "bytes": 4931,
+      "sha256": "9139689d2ddc996c9b86d623831286ac183fcb2a55ed37319ba079a411a6feb4"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/scoped_original_death_commit_observation_v1_contract.json",
+      "bytes": 3346,
+      "sha256": "754208710632296ecaee85f609ce54aba6c1f9befe1329f160b4ffc77afd935d"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/scoped_original_effect_branch_layout_v1_contract.json",
+      "bytes": 2561,
+      "sha256": "66bc71fc17c6b59673fb7bec0227c0f569e50e8ebaae5e5639dfae960b2f9cc0"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/scoped_scripted_effect_definition_v1_contract.json",
+      "bytes": 2006,
+      "sha256": "d49dd44e7c0d3f769e2ba022bf947c0eac00aee56aee740ed8676245471a1efe"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_h2743_stock_predicate_reader_v1_source_contract.py",
+      "bytes": 7203,
+      "sha256": "250a3411870b48e53183947b37c2db017dd7e1edc4779a3231d940bb51b184fb"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_knight_causal_run.py",
+      "bytes": 22860,
+      "sha256": "f1134df2810bd7b1b8eff72eb399e448ff1a2e24ddc7afd0f9f3362f6fa93bed"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_knight_death_abi_semantics_offline.py",
+      "bytes": 13565,
+      "sha256": "e0b082e4fe680dbb09e8763125b2acfd77feff2e449ecd9be0b04dafe5acf459"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_knight_death_artifact_wire_projection_offline.py",
+      "bytes": 8806,
+      "sha256": "249698b922829042f448fb79314bf777c502c4b32200818598c51d603536d01a"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_knight_scoped_thread_contract_offline.py",
+      "bytes": 11012,
+      "sha256": "d743f9b28d8d6c25f15db2fdbd7ef41ba29f57b65652c92ad78f4826e62122ce"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_knight_selector_death_static.py",
+      "bytes": 4601,
+      "sha256": "1d6f27d8a8f5b275dc2be620b7ea798d355ac89a3220d1b3abc79105be4dac67"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_knight_variable_monitor_run.py",
+      "bytes": 13443,
+      "sha256": "c15e0bfbcf79a76acad13d729b26f417c35106e3ec7b973aae8bf3db2565a5d8"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_scoped_monitor_compression_offline.py",
+      "bytes": 4920,
+      "sha256": "5712bbd847888c8a9e2c99672ba7fe92dac6b1a9070da7cf2174b10553d3f024"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_scripted_effect_definition_offline.py",
+      "bytes": 13213,
+      "sha256": "b1c2308e423822b7a1f4423098ebf37ea9ae35f0a92b6aad855a3b4a60d0d2ab"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "bytes": 1211588,
+      "sha256": "8d31c7e3c5b7c0570b7372c01a676fedef3e0066f1f7cc38cccc970f7f1c86a8"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_11906.cpp",
+      "bytes": 875580,
+      "sha256": "6ae1bdea3cc144f91716efe74cf02a8ec17db549c1ae645a3b09e853ff7a354a"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_11906_adapter.cpp",
+      "bytes": 19006,
+      "sha256": "314debb9ab56bfd02d2ff900cddda40b6afa3ebbe1cfd5f9b096ba1cfb71dfc5"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/combat_phase_event_trace_detour_v1.cpp",
+      "bytes": 49532,
+      "sha256": "887dda6b0d3a8ca726cca42e0a207b5dc18c6214e397cd8a2e8d1f7f8dc4b840"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/combat_phase_event_trace_managed_v1.cpp",
+      "bytes": 52411,
+      "sha256": "61900e4f803a99868b4ca61ac8bb043129553137e27a14d13f18a4745e70d8ae"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/combat_phase_event_trace_managed_v1_test.cpp",
+      "bytes": 43644,
+      "sha256": "7f54016724238241629ac2e8c243fd4996b47e9b8d1c18b95074c789596232e2"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/combat_phase_event_trace_ring_v1.cpp",
+      "bytes": 105268,
+      "sha256": "81e4fa16049fbc3358b655131d838ea70cb98e4752ea2274ed6ab6afdf34d7d5"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/combat_scoped_transition_chain_v1.cpp",
+      "bytes": 74084,
+      "sha256": "418dac4a1efe967dbd8a0ec77383ef08b064709118925a36cdcc0765be453765"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/combat_scoped_transition_chain_v1_test.cpp",
+      "bytes": 49588,
+      "sha256": "946d19f534f483aaba836477fba4f724aac636e3779cb25ce7a35831bd0734cc"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/combat_scoped_transition_chain_v1_wire.cpp",
+      "bytes": 25496,
+      "sha256": "b44e944488e857a4c57d213ba9c674e459283c82ae0af005c887bbe032e76fdb"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/frontend_gui_route_v1.cpp",
+      "bytes": 32360,
+      "sha256": "7899f3c494d0768548ba796e5881624707a1bcabf491d7c155842f6b39345869"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
+      "bytes": 27707,
+      "sha256": "73d12535e1f9281e7183c7cddf7dbe0b3b40ef0812f198300881cfabd4ba97e0"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/game_adapter_test.cpp",
+      "bytes": 43962,
+      "sha256": "0a20af99c7263d5d0d055f818ffca562d38b0a7e3cff57f970d73d8f835407a5"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/h2743_stock_native_source_adapter_v1.cpp",
+      "bytes": 9928,
+      "sha256": "54756e9f9991e377d202901191df179d404d2e994d656f5f3dccd4b660ddd430"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/h2743_stock_predicate_reader_v1.cpp",
+      "bytes": 17363,
+      "sha256": "f5ca0c5212b8aed2f365ee63513789ff44fef3df4b13dc629d1fe0ef70457416"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/h2743_stock_predicate_reader_v1_test.cpp",
+      "bytes": 17087,
+      "sha256": "c19f0a287c84df9a59e5fd71fb553614094981bad4edff13f29849e569cd6e6a"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/h2743_stock_private_query_v1.cpp",
+      "bytes": 13153,
+      "sha256": "a6c2cf2a36f4841dff995f444319150c04656ea075bcf55fd8178003724c14f7"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/h2743_stock_private_query_v1_test.cpp",
+      "bytes": 22086,
+      "sha256": "f6cbfe21d0fe12c8dbbee275c351e890228868fbe6897467302f69feda960f35"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/h3937_route_contact_queued_retry_v1_test.cpp",
+      "bytes": 16385,
+      "sha256": "7c86817e86950a3b5642999ad1599950e9acc5215ec9f448989fc744ad410f0e"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ingame_ui_navigation_v1.cpp",
+      "bytes": 43853,
+      "sha256": "dd6393fd8b901565c9fe089fd331774310238f72fe01859ef5f4b76e57763819"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1.cpp",
+      "bytes": 94067,
+      "sha256": "11e65c9018380512779380b45fc186760a3fbfdb33fc782021dc565b4faaaa02"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1_test.cpp",
+      "bytes": 108469,
+      "sha256": "9135f37c3d1fa85bbbaae33dc3f29d8128b86d9308892c3b99006e0c3ab997f9"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/physical_army_inventory_diagnostics_v1_test.cpp",
+      "bytes": 4869,
+      "sha256": "3ee2c884a4803d9e25488f61156c6c482a9cf38fba169caca666f9e79e56deb6"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/protocol_test.cpp",
+      "bytes": 4819,
+      "sha256": "e4aa3252a296799e0539be6735947432b45e02994b2b89d626361f89871e8b61"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/route_contact_horizon_v1_mailbox.cpp",
+      "bytes": 19004,
+      "sha256": "396081126e7e2713ec61fc7df005597bbb2848cfceb405ca044193cc51e5f3ac"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/scoped_character_variable_monitor_v1.cpp",
+      "bytes": 67938,
+      "sha256": "3f3326e03279c014a70640cab42b4ba83261feab064806b05a73e408c6c812d8"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/scoped_character_variable_monitor_v1_test.cpp",
+      "bytes": 61513,
+      "sha256": "5aaa6e9d2bc1c24517a8e01704ba740bf0ef0e142a866b72ea60e318f47b6f22"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/title_map_navigation_v1_camera.cpp",
+      "bytes": 35797,
+      "sha256": "473d2bad421bce6f8d89ea2519c480d41cdbe8853b1d384409f743c22e636681"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/title_map_navigation_v1_mailbox.cpp",
+      "bytes": 19455,
+      "sha256": "0a55172e5e3e7c102bef7f93095bd7bc090ea50989da58eed17404fbe0a06f71"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/title_map_navigation_v1_mailbox_test.cpp",
+      "bytes": 11220,
+      "sha256": "e22445b91f749fe5f0bef189fb3bd21e09c6e298cd94c84e1ce84bf00fb73a1f"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/tests/ingame_ui_navigation_v1_test.cpp",
+      "bytes": 15861,
+      "sha256": "0f73cb6bdb2543ef6a346382d29111599b9dfd024374f5a11029beaee5a25a0d"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/defender_dejure_exit_terms_v1.py",
+      "bytes": 18163,
+      "sha256": "fdb5155ed55d5c1c700cdeb4fe8235f9e6317515d70341fe58a6860f5ec6dc0a"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/h2743_exit_readonly_transport.py",
+      "bytes": 6018,
+      "sha256": "1e69bf57ba441e0ba2d9a19f39ce8570dafed5644329ee3336ac6b21cf9ee92e"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_ui_contract.py",
+      "bytes": 13854,
+      "sha256": "5b7c0a9662ffa2ea59e6c9c4f2f384a39987a0ebb21a37c9d2303058ccbc9965"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "bytes": 157593,
+      "sha256": "7ff1f6f6319ce3a91ce5c29d0e5b5b4de3c9dd82ba67049e91097dad57fbdc71"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1224312,
+      "sha256": "54cefa3b828c393def213146fc13b36ffe91e38a04dd7f0f459545610bd60c7f"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 546973,
+      "sha256": "fc484ad8837cddeb1a3d658250b4eb390e4e22fc3bd80a66ac4b0474a3845789"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/cli.py",
+      "bytes": 59476,
+      "sha256": "37fdfd634d3309eada18399513e690e154f0b3145617d99c9b4f9433b970af0f"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/h2743_exit_readonly_live.py",
+      "bytes": 20246,
+      "sha256": "9dd214436b6b33e3852d81dedcd96e501bbe68c390421af282e6d4332d3a54ba"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/h2743_stock_predicate_admission.py",
+      "bytes": 14831,
+      "sha256": "de9816f26acdc5e76899fa87bdaefb4d5c7c16b49e626bf1daeecf531f7b3bb8"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/h3937_cold_observer_once_enable.py",
+      "bytes": 51805,
+      "sha256": "0ea0c9ce347e0d749240a4de338dbcac42b981261b0c9729798dc4d511d3128a"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/h3937_run_config.py",
+      "bytes": 4817,
+      "sha256": "f82bed23d55c35bcbfee2f56368aecd4c53f5f561456c581e7fc0a7634cc7e8a"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/h3937_single_query_once_enable.py",
+      "bytes": 29837,
+      "sha256": "af1fdda78ce90f4f7a2be53480f4fe86f3a5dbf332d40d23cb5284a5fd2b9182"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/h3937_stationary_route_contact_query_run.py",
+      "bytes": 41201,
+      "sha256": "19051c669213fc6c8f4e5960cc10e78d7a4bd33c6793548efcc1087837fb3ab7"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/r0368_actor_army_role_firstguard_live.py",
+      "bytes": 2511,
+      "sha256": "548a18f3edbe3bb9c7a01508a71d3a1336be43fdb0d7bede2a0282fb29b91c01"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/r0368_actor_army_role_firstguard_pair.py",
+      "bytes": 8279,
+      "sha256": "2daf909fdf47d4a967925107761b3be92139050f5e6189a1feb5a5d08888abf2"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_historical_date_layout_v1.json",
+      "bytes": 3464,
+      "sha256": "053629c73e407ae906bae406ab8aaf6147125177a79b6be8a7f2c36d1d6226cc"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/knight_causal_save_projection.py",
+      "bytes": 41961,
+      "sha256": "a7497c1bdbd00d6f55ddee711532b38bf64125efa2c26de18553dd0f574f91aa"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/knight_selector_replay.py",
+      "bytes": 9299,
+      "sha256": "41c4fd602ec0eb82b97733f155ed189aac174685419006ea40d8cdbebd54db5f"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/knight_variable_monitor_projection.py",
+      "bytes": 22129,
+      "sha256": "3fd2004d0e2fd3690b589d10a80aded580815929ff0226bcd23e4c0529ae3bf4"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_h2743_stock_predicate_consumer.py",
+      "bytes": 13593,
+      "sha256": "6fed5fdf2dce4af272f0a6b89c3e1a1296eaa6c2017763bf551c3ae3550854b8"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_h3937_single_query_once.py",
+      "bytes": 22597,
+      "sha256": "4b591f722b4d8ce1744d90011a94594a5eaf1a074d013b1b3cafefd8592c9189"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_ingame_ui_navigation_v1.py",
+      "bytes": 23223,
+      "sha256": "2de9755a848952375706f6bb56d2701271dff820e2df20577795ccfeb30f41ab"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_native_trace_frame_capacity.py",
+      "bytes": 4903,
+      "sha256": "d045d15148a037fec60ea9890e91a793c53ac15a9156c4996b0ec7f19217e834"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_trace_publish_failure_preservation.py",
+      "bytes": 6046,
+      "sha256": "8468dc74622b9e28c10c058f75366859f5f47a4e2b0f4b3f5d26229683b4def3"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode02-r147-original-death-and-named-identifier-progress-2026-10-02.md",
+      "bytes": 5474,
+      "sha256": "922aed8c61034edd8168286e1fc1ddff31b9a023c74cc43164bb4ac98b32f166"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode02-r148-six-gap-closure-2026-10-02.md",
+      "bytes": 8302,
+      "sha256": "1647a3c512d7441a6b50309606face972b4b77e97ddcba869a11c98dcc093b1a"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode02-r149-reinforcement-full-frame-2026-10-02.md",
+      "bytes": 3144,
+      "sha256": "437fbdeba519577da94b75b5d286dda3ecf6246de384f8f7cb53e625926dfbb6"
+    },
+    {
+      "path": "docs/ck3-native-ai/h2743-stock-predicate-consumer-candidate-2026-09-30.md",
+      "bytes": 10865,
+      "sha256": "46cb4e23dbb40e4b555e990c76d12b7036ff17962e13e95b97bd3eae6d3d7686"
+    },
+    {
+      "path": "docs/ck3-native-ai/h3937-noncanonical-slot-diagnostics-2026-09-30.md",
+      "bytes": 5262,
+      "sha256": "055c415d4e09bcc1e69c51e8f6233c16da51f3b9c2ea18b28433242b0f1dea72"
+    },
+    {
+      "path": "docs/ck3-native-ai/h3937-route-contact-queued-retry-2026-09-30.md",
+      "bytes": 3559,
+      "sha256": "a880180c557f777d0c28d082bdbe18728696103b93a7e156dfb63e51660ffda3"
+    },
+    {
+      "path": "docs/ck3-native-ai/h3937-single-query-operator-2026-09-30.md",
+      "bytes": 7589,
+      "sha256": "4ccb811057462326c8fbdc2f22b584d0518f7c81180781ffecf0d16c92e23531"
+    },
+    {
+      "path": "docs/ck3-native-ai/knight-death-notification-producer-2026-10-01.md",
+      "bytes": 11720,
+      "sha256": "630c4f33984a85a069598d75ba9a17feef7e68e7c79f7be5fc29d44fb3f6f33a"
+    },
+    {
+      "path": "docs/ck3-native-ai/knight-killed-case-closure-contract-2026-10-01.md",
+      "bytes": 8429,
+      "sha256": "a25932fccf3a4f7a8b2934e23c821759db6051bc59bb3ec397ebd24dbacbc47b"
+    },
+    {
+      "path": "docs/ck3-native-ai/knight-killed-selector-death-causality-2026-10-01.md",
+      "bytes": 10864,
+      "sha256": "e9f3e96153bea2e853b8650a80c7b22236d5355535fa2ecb629c01fa5e3c5136"
+    },
+    {
+      "path": "docs/handover/2026-09-30-ie-research-isolation.md",
+      "bytes": 2066,
+      "sha256": "b446de4addba0df687ec3b4f2d436539867f5052de117ee06b3bab37adc57679"
+    },
+    {
+      "path": "docs/handover/2026-09-30-war-and-video-progress-addendum.md",
+      "bytes": 83210,
+      "sha256": "7b070c1e6193f8766b6d1cf26e8ff906b9ebe62a84a7fd338a1de80200ae11b3"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/integration/capture_session.py",
+      "bytes": 122365,
+      "sha256": "2a3807cfbd398ad9293a468e2ff548436c7e9ec15f246307d42a39a907bf34f1"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/integration/test_capture_hot_service.py",
+      "bytes": 14979,
+      "sha256": "f7d3c6b5bd4936ea240b58442a8a9016fc4cf648ab7f0210d13c8447e320dccd"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\w\\e2nb1002a03\\xar_ck3_bridge.dll",
+      "bytes": 4458496,
+      "sha256": "bd9b37c604378a1800bc55e28201ecf0397eb9b46c6190c96f43ba716a0c2969"
+    },
+    {
+      "path": "C:\\w\\e2nb1002a03\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "877789e7ce4242280fc285c0cda1c5f63730d85fa252dd718cf17979d757ee09"
+    },
+    {
+      "path": "C:\\w\\e2nb1002a03\\msvc-build.log",
+      "bytes": 193,
+      "sha256": "ff5a1479ba4c8a055bc7990cb2d0c5b9471867f7c3258b7bb97361eeef8670dd"
+    },
+    {
+      "path": "C:\\w\\e2nb1002a03\\CMakeCache.txt",
+      "bytes": 35310,
+      "sha256": "ad7afa881e260c8b8353ba83d725a6e9f8a6e0ef3c5e7e64ba8ef4652491dcbd"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-upgrade-integration-20261002-a01\\native-source-build-validation-a02\\ctest-junit.xml",
+      "bytes": 11766,
+      "sha256": "06384b9e8d440c4cbabf84a7393797056850a9af80f0ac0f94e35ba7f3284c79"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-upgrade-integration-20261002-a01\\native-source-build-validation-a03\\ctest-junit.xml",
+      "bytes": 3931,
+      "sha256": "c6c9ece8a58b1dbc51739207652106e00d636dd4c6b03c5d6fb6f09a042a01f7"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-upgrade-integration-20261002-a01\\native-source-build-validation-a05\\ctest-junit.xml",
+      "bytes": 908,
+      "sha256": "d30d44fe5de85f494b97744c07942e8f1913b4ac430e5a540f00c32122e01e09"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-upgrade-integration-20261002-a01\\native-source-validation-python-a01\\junit.xml",
+      "bytes": 23266,
+      "sha256": "42983ed9433db2ebf3d202d824631d53637339bb3eb62785cca29010f40f8e3b"
+    },
+    {
+      "path": "C:\\Users\\1\\ck3-upgrade-integration-20261002-a01\\native-source-validation-python-a02\\junit.xml",
+      "bytes": 12247,
+      "sha256": "61ca8ae9b1b4873712073f245e0108bf0428614ecd69b0245ce54c7e3e5cb6bb"
+    }
+  ],
+  "executable_fixtures": [
+    {
+      "version": "1.19.0.6",
+      "path": "C:\\Users\\1\\ck3-upgrade-integration-20261002-a01\\installed-before\\ck3.exe",
+      "bytes": 95206008,
+      "sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "expected_sha256_match": true,
+      "usage": "read-only on-disk fixture, never launched by this integration"
+    },
+    {
+      "version": "1.20.0.3",
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "bytes": 101039736,
+      "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "expected_sha256_match": true,
+      "usage": "read-only on-disk fixture, never launched by this integration"
+    }
+  ],
+  "python_interpreter": "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+  "python_result": "Initial 145 tests + 201 subtests passed; later source changes exactly the new master minimized-session changes, separately tested in python-a02",
+  "build_directory": "C:\\w\\e2nb1002a03",
+  "live_ck3_launched": false,
+  "new_version_live_acceptance_claimed": false,
+  "python_verified_source_head": "bb70404937eb372f38b26172262fd596480625ee",
+  "python_paths_changed_since_python_run": [
+    "ck3_autonomous_player/src/xar_autoplayer/cli.py",
+    "ck3_autonomous_player/src/xar_autoplayer/native_session.py",
+    "ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+    "ck3_autonomous_player/tests/unit/test_native_session.py"
+  ],
+  "latest_python_verified_source_head": "d9bac1d5fa89a6a68bb3755f1487f46863513e24",
+  "latest_python_result_returncode": 0,
+  "initial_native_source_head": "8a0a49a472c55926925045683bf4bf0d63e3dafe",
+  "native_paths_changed_since_initial_native_run": [
+    "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_activity_feast_router.cpp",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_activity_feast_router_test.cpp",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_feast_planner_private_transport_v1.cpp",
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_feast_planner_private_transport_v1.hpp",
+    "ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1_test.cpp"
+  ],
+  "native_test_runs": [
+    {
+      "attempt": "a02",
+      "tests": [
+        {
+          "name": "xar_ck3_12002_adapter_test",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_12002_semantic_adapter_test",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_12003_semantic_worker_test",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_12002_thread_runtime_test",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_12002_nonwar_router_default_test",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_ingame_ui_navigation_v1_test",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_native_bridge_frontend_bookmark_model_probe_v1",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_native_bridge_protocol",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_native_bridge_physical_inventory_diagnostics_v1",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_native_bridge_h3937_route_contact_queued_retry_v1",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_native_bridge_adapter_registry",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_native_bridge_scoped_character_variable_monitor_v1",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_native_bridge_combat_scoped_transition_chain_v1",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_native_bridge_combat_phase_event_trace_ring_v1",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_native_bridge_combat_phase_event_trace_managed_v1",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_native_bridge_title_map_navigation_v1_mailbox",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_native_bridge_main_thread_query_mailbox_v1",
+          "passed": false
+        },
+        {
+          "name": "xar_ck3_h2743_stock_predicate_reader_v1",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_h2743_stock_private_query_v1",
+          "passed": true
+        }
+      ],
+      "passed": 18,
+      "total": 19
+    },
+    {
+      "attempt": "a03",
+      "tests": [
+        {
+          "name": "xar_ck3_12002_activity_feast_router_test",
+          "passed": false
+        },
+        {
+          "name": "xar_ck3_12002_adapter_test",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_12002_semantic_adapter_test",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_12003_semantic_worker_test",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_12002_thread_runtime_test",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_12002_nonwar_router_default_test",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_native_bridge_adapter_registry",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_native_bridge_main_thread_query_mailbox_v1",
+          "passed": false
+        }
+      ],
+      "passed": 6,
+      "total": 8
+    },
+    {
+      "attempt": "a05",
+      "tests": [
+        {
+          "name": "xar_ck3_12002_activity_feast_router_test",
+          "passed": true
+        },
+        {
+          "name": "xar_ck3_native_bridge_main_thread_query_mailbox_v1",
+          "passed": true
+        }
+      ],
+      "passed": 2,
+      "total": 2
+    }
+  ],
+  "latest_native_status_by_test": {
+    "xar_ck3_12002_adapter_test": true,
+    "xar_ck3_12002_semantic_adapter_test": true,
+    "xar_ck3_12003_semantic_worker_test": true,
+    "xar_ck3_12002_thread_runtime_test": true,
+    "xar_ck3_12002_nonwar_router_default_test": true,
+    "xar_ck3_ingame_ui_navigation_v1_test": true,
+    "xar_ck3_native_bridge_frontend_bookmark_model_probe_v1": true,
+    "xar_ck3_native_bridge_protocol": true,
+    "xar_ck3_native_bridge_physical_inventory_diagnostics_v1": true,
+    "xar_ck3_native_bridge_h3937_route_contact_queued_retry_v1": true,
+    "xar_ck3_native_bridge_adapter_registry": true,
+    "xar_ck3_native_bridge_scoped_character_variable_monitor_v1": true,
+    "xar_ck3_native_bridge_combat_scoped_transition_chain_v1": true,
+    "xar_ck3_native_bridge_combat_phase_event_trace_ring_v1": true,
+    "xar_ck3_native_bridge_combat_phase_event_trace_managed_v1": true,
+    "xar_ck3_native_bridge_title_map_navigation_v1_mailbox": true,
+    "xar_ck3_native_bridge_main_thread_query_mailbox_v1": true,
+    "xar_ck3_h2743_stock_predicate_reader_v1": true,
+    "xar_ck3_h2743_stock_private_query_v1": true,
+    "xar_ck3_12002_activity_feast_router_test": true
+  },
+  "production_dll_unchanged_by_fixture_repairs": true,
+  "cli_delta_from_latest_master": "diff --git a/ck3_autonomous_player/src/xar_autoplayer/cli.py b/ck3_autonomous_player/src/xar_autoplayer/cli.py\nindex 24fa756ef..4905cf71e 100644\n--- a/ck3_autonomous_player/src/xar_autoplayer/cli.py\n+++ b/ck3_autonomous_player/src/xar_autoplayer/cli.py\n@@ -615,6 +615,12 @@ def parser() -> argparse.ArgumentParser:\n         required=True,\n         help=\"monotonic CK3 ownership round R<number>; keeps this route private\",\n     )\n+    h3937_single_parser = commands.add_parser(\n+        \"native-query-h3937-stationary-route-contact-v1\",\n+        help=\"one H3937 paused route-contact query; default no-launch; fresh root GO required\",\n+    )\n+    h3937_single_parser.add_argument(\"--config\", type=Path, required=True)\n+    h3937_single_parser.add_argument(\"--live\", action=\"store_true\")\n     family_alliance_query_parser = commands.add_parser(\n         \"native-query-first-heir-marriage-alliance-result-v1\",\n         help=\"one private read-only material marriage and actual alliance query\",\n@@ -940,6 +946,7 @@ def main(argv: list[str] | None = None) -> int:\n         if args.command not in {\n             \"native-one-generation-preflight\",\n             \"rebind-ordinary-seed-v1\",\n+            \"native-query-h3937-stationary-route-contact-v1\",\n         }:\n             configure_native_bridge_launch_environment(\n                 args.bridge_mode,\n@@ -1212,6 +1219,9 @@ def main(argv: list[str] | None = None) -> int:\n                     **succession_options,\n                     operator_stop_event=operator_stop_event,\n                 )\n+        elif args.command == \"native-query-h3937-stationary-route-contact-v1\":\n+            from .h3937_single_query_once_enable import main as single_query_main\n+            return single_query_main([\"--config\", str(args.config)] + ([\"--live\"] if args.live else []))\n         elif args.command == \"native-query-current-timeline-blocker-context-v1\":\n             from .timeline_blocker_query_run import (\n                 query_current_timeline_blocker_once,\n"
+}

@@ -69,6 +69,16 @@
       "file": "docs/handover/evidence/2026-10-02-war-master-integration/integration-python-only-a03.json",
       "sha256": "dbd2ecad067ac4613fe35a2951d2772686b433918142598b9d3d82bac38e1a93",
       "bytes": 247
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/native-source-final-report.md",
+      "sha256": "00328955a456f97e5be436edcc486c50a7b334acc065883de9eb486bb9d4871b",
+      "bytes": 3974
+    },
+    {
+      "file": "docs/handover/evidence/2026-10-02-war-master-integration/native-source-final-receipt.json",
+      "sha256": "706e7b65eff9d69a683a3e14548c69b7e30a9a8a38f5c8958b45a1849ce441da",
+      "bytes": 39306
     }
   ],
   "external_process_assets": "C:\\Users\\1\\ck3-upgrade-integration-20261002-a01",

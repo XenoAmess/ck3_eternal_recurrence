@@ -40,7 +40,7 @@ Steam 公共默认分支已由 **1.19.0.6 (Scribe), build 23530548** 更新为 *
 
 保留主线 CK3 1.20.0.2 / 1.20.0.3 adapter、dispatcher、runtime、任务总线 CAS 和受管 session 行为，按函数组合原生冲突。旧 UI、de-jure 和战斗研究仍受 1.19.0.6 exact EXE / RVAs / GUI 身份约束；相关 opt-in 功能继续默认关闭。不能把原生编译、Python 测试或旧 1.19 实机证据称为新增 1.20 production-live 能力。
 
-视频 / 索引定向测试：29 个 Episode02 合同测试、3 个 frozen PTS 测试、8 个 sampler 测试通过。最初缺失 `seek_text` 的 RED 及修复后两组 PASS 收据均保留于 [本次证据目录](evidence/2026-10-02-war-master-integration/index.json)。原生编译和定向测试结果另附于该目录的 native integration 收据。
+视频 / 索引定向测试：29 个 Episode02 合同测试、3 个 frozen PTS 测试、8 个 sampler 测试通过。最初缺失 `seek_text` 的 RED 及修复后两组 PASS 收据均保留于 [本次证据目录](evidence/2026-10-02-war-master-integration/index.json)。原生最终候选 `d88f25140bcacb23f9a36ecfed92c89eb9c001f5` 基于并发更新后的主线 `d4f377d97b7a4f97ac85151610adbc4d4df818f8`；20 个独立 Native 用例有效 PASS 覆盖，Python 145 tests + 201 subtests 与最新版 session/runtime 75 tests + 28 subtests PASS。先前 native a02/a03/a04 RED 全部保留，后续只复测受修复影响的项目。Mailbox source-contract 与 feast fixture 接线修复没有改变生产 DLL bytes。完整结果见 [原生报告](evidence/2026-10-02-war-master-integration/native-source-final-report.md) 和 [SHA 回执](evidence/2026-10-02-war-master-integration/native-source-final-receipt.json)。
 
 Python-only 检查首次将十份冻结构建环境日志里的默认 Windows PATH 目录误判为 shell 调用。检查器现在仅在三类构建环境 metadata 中忽略该目录名称，实际 engine executable、脚本扩展名和其他调用继续拒绝；没有改写这些历史 bytes。交接中的禁令说明改为引用根目录 AGENTS，避免普通文档触发相同字面扫描。
 
