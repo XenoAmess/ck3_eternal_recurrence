@@ -105,35 +105,35 @@
     {
       "language": "french",
       "path": "localization/french/greatwar_l_french.yml",
-      "sha256": "b9faf3117b0275868cb90c904a934de8aa3d4531a8d95f92e2359451fcbe6567",
+      "sha256": "1e55cc07cf6ba1f75b6aa50af1ac2f74aa9c7d505e2dd03f8415f62fef500d34",
       "keys": 15,
       "live_verified": false
     },
     {
       "language": "german",
       "path": "localization/german/greatwar_l_german.yml",
-      "sha256": "76154087b22f84c4ec655ff386657b74b3709feb705267911d4c0847c00e0b7e",
+      "sha256": "b66ec0b5fc618bf5806881dcb610cd6a786afae358fbad7b2c58d268118ad986",
       "keys": 15,
       "live_verified": false
     },
     {
       "language": "polish",
       "path": "localization/polish/greatwar_l_polish.yml",
-      "sha256": "7418c2e311e4e4b2a4b2d0a5fdd5476b89364e12a40fc20a979f8a46b5f05860",
+      "sha256": "0063629bac05538d8c980cd0fd09840aab31f0b5fcff75873f619a76f17378a2",
       "keys": 15,
       "live_verified": false
     },
     {
       "language": "japanese",
       "path": "localization/japanese/greatwar_l_japanese.yml",
-      "sha256": "4596f3229c9707c6ff161dd977664cc4eac4b7176a78cff04a341c6555c0e631",
+      "sha256": "5fff5dfffe35b7a855866d33717d95cb2fdfe6faf97dc5dc0c8b6e3c24e4a9f7",
       "keys": 15,
       "live_verified": false
     },
     {
       "language": "spanish",
       "path": "localization/spanish/greatwar_l_spanish.yml",
-      "sha256": "3cd85a49cb8e908d8bb1f2520f008653d8a59b63bc12660e4ed4ee04fa0134db",
+      "sha256": "98c680f4f36e689314b132b8fd0497d584e990347335bb198ffd34c8df262e55",
       "keys": 15,
       "live_verified": false
     },
@@ -147,19 +147,20 @@
     {
       "language": "russian",
       "path": "localization/russian/greatwar_l_russian.yml",
-      "sha256": "c2dc864163a9f1f415828888594093354b7216ee9027346027d57b33764145f1",
+      "sha256": "ac6920c019027f7b80a1add1079f5e27d057b72b04d56115a701078207cd59a6",
       "keys": 15,
       "live_verified": false
     },
     {
       "language": "korean",
       "path": "localization/korean/greatwar_l_korean.yml",
-      "sha256": "fc14435ab6596af37e0d861828f4760fe722789f57a171a807f2234f5efdc0a2",
+      "sha256": "509518ba720053649f2a3202084797755811e88046d73cc33bddbdf965985d89",
       "keys": 15,
       "live_verified": false
     }
   ],
   "native_speaker_reviewed": false,
   "live_verified": false,
-  "remaining_live_scope": "CK3 rendering and interaction are separately recorded in product test report; no static result implies live verification."
+  "remaining_live_scope": "CK3 rendering and interaction are separately recorded in product test report; no static result implies live verification.",
+  "canonical_line_endings": "LF, matching repository .gitattributes eol=lf; initial CRLF receipt is preserved separately."
 }

@@ -1,14 +1,13 @@
 {
   "schema": "independent-mod-release-localization.v1",
   "status": "format-certified",
-  "product": "mod_change_holding_types",
+  "product": "mod_de_jure_conquest",
   "model": "MiniMax-M3",
-  "source_sha256": "58ce77b1023693ed2dd0c3757c37b105f079a5ec55b2ae324b8980c6b338c461",
-  "candidate_sha256": "ae3b7503056916f582b109a0ede29d2dc74f021faa6c743bd9a7f0a8616f7bf4",
+  "source_sha256": "719ad53ee0b238afae6ab70691492e2b5e8d3095fbde27263bb080b693d0399a",
+  "candidate_sha256": "cc3e27502f2b52561162d43f36f4e97dfb45fa15d09f67d38169856b9e9a6213",
   "review_decisions": [
-    "R0001 Japanese/Korean were English placeholders and rejected; replaced by R0002 translations.",
-    "Corrected mixed Chinese 转变 in Korean descriptions to 전환.",
-    "Restored whitespace after Japanese #bold and German neuter Stammesgebiet article."
+    "Corrected Russian hereditary mistranslation to CK3 installed term де-юре.",
+    "Corrected Korean prestige and white peace to installed CK3 terms 위신 / 무조건 평화."
   ],
   "installed_language_source": {
     "schema": "independent-mod-installed-languages.v1",
@@ -98,70 +97,69 @@
   "files": [
     {
       "language": "english",
-      "path": "localization/english/00_convert_holdings_l_english.yml",
-      "sha256": "58ce77b1023693ed2dd0c3757c37b105f079a5ec55b2ae324b8980c6b338c461",
-      "keys": 44,
+      "path": "localization/english/greatwar_l_english.yml",
+      "sha256": "719ad53ee0b238afae6ab70691492e2b5e8d3095fbde27263bb080b693d0399a",
+      "keys": 15,
       "live_verified": false
     },
     {
       "language": "french",
-      "path": "localization/french/00_convert_holdings_l_french.yml",
-      "sha256": "550b216ab0f55e3e4c49af63efc5d64832b89145ea14916131000c5de37b4dad",
-      "keys": 44,
+      "path": "localization/french/greatwar_l_french.yml",
+      "sha256": "b9faf3117b0275868cb90c904a934de8aa3d4531a8d95f92e2359451fcbe6567",
+      "keys": 15,
       "live_verified": false
     },
     {
       "language": "german",
-      "path": "localization/german/00_convert_holdings_l_german.yml",
-      "sha256": "be61439a63ec9aa8790dfc39bfb463d1c57ac07606d1b69de48254d495ce0a6e",
-      "keys": 44,
+      "path": "localization/german/greatwar_l_german.yml",
+      "sha256": "76154087b22f84c4ec655ff386657b74b3709feb705267911d4c0847c00e0b7e",
+      "keys": 15,
       "live_verified": false
     },
     {
       "language": "polish",
-      "path": "localization/polish/00_convert_holdings_l_polish.yml",
-      "sha256": "d08f204d772788e7a0a07387a044a16acd00791a82d17f27d64f60e81dcd1fc5",
-      "keys": 44,
+      "path": "localization/polish/greatwar_l_polish.yml",
+      "sha256": "7418c2e311e4e4b2a4b2d0a5fdd5476b89364e12a40fc20a979f8a46b5f05860",
+      "keys": 15,
       "live_verified": false
     },
     {
       "language": "japanese",
-      "path": "localization/japanese/00_convert_holdings_l_japanese.yml",
-      "sha256": "60e460938aa2e54801439af0cc95b3dabeaeecd143bb0ba02296281f6c651222",
-      "keys": 44,
+      "path": "localization/japanese/greatwar_l_japanese.yml",
+      "sha256": "4596f3229c9707c6ff161dd977664cc4eac4b7176a78cff04a341c6555c0e631",
+      "keys": 15,
       "live_verified": false
     },
     {
       "language": "spanish",
-      "path": "localization/spanish/00_convert_holdings_l_spanish.yml",
-      "sha256": "5f90075faa751c31901b897a579cfd1d0230d4b64df9ecde751baa73142dbd73",
-      "keys": 44,
+      "path": "localization/spanish/greatwar_l_spanish.yml",
+      "sha256": "3cd85a49cb8e908d8bb1f2520f008653d8a59b63bc12660e4ed4ee04fa0134db",
+      "keys": 15,
       "live_verified": false
     },
     {
       "language": "simp_chinese",
-      "path": "localization/simp_chinese/00_convert_holdings_l_simp_chinese.yml",
-      "sha256": "87223ea400c45e166c4f127d5b8cc34d57bea6fdddd9b089d583029d1b23ac34",
-      "keys": 44,
+      "path": "localization/simp_chinese/greatwar_l_simp_chinese.yml",
+      "sha256": "214c3afcd66a5c534d9b44b5bc429579d9f3bb75265f765732b4cf4adbb553b2",
+      "keys": 15,
       "live_verified": false
     },
     {
       "language": "russian",
-      "path": "localization/russian/00_convert_holdings_l_russian.yml",
-      "sha256": "c265ea01c4de7114458b343d68aecad9ddb2e8f5e703222abd82aa773fa5e83b",
-      "keys": 44,
+      "path": "localization/russian/greatwar_l_russian.yml",
+      "sha256": "c2dc864163a9f1f415828888594093354b7216ee9027346027d57b33764145f1",
+      "keys": 15,
       "live_verified": false
     },
     {
       "language": "korean",
-      "path": "localization/korean/00_convert_holdings_l_korean.yml",
-      "sha256": "7bf7964306bfc8180392cedafb99aab1d4821fdbdfa178ca141d0762e9488e6c",
-      "keys": 44,
+      "path": "localization/korean/greatwar_l_korean.yml",
+      "sha256": "fc14435ab6596af37e0d861828f4760fe722789f57a171a807f2234f5efdc0a2",
+      "keys": 15,
       "live_verified": false
     }
   ],
   "native_speaker_reviewed": false,
   "live_verified": false,
-  "remaining_live_scope": "CK3 rendering and interaction are separately recorded in product test report; no static result implies live verification.",
-  "canonical_line_endings": "LF, matching repository .gitattributes eol=lf; initial CRLF receipt is preserved separately."
+  "remaining_live_scope": "CK3 rendering and interaction are separately recorded in product test report; no static result implies live verification."
 }

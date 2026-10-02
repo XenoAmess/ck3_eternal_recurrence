@@ -61,7 +61,7 @@ verify_manifest(spec, staging, manifest_path)
 
 当前游戏目录为 `C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/`。同机最新独立发布先例 More Tenets Slots (XA) v10 的当次目标是 CK3 `1.20.0.3 (Crozier)`、Steam build `25652598`、EXE SHA-256 `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`。两产品仍须重新读取本机 version/build/EXE hash，并由主任务核验最新公开版本；先例不替代当次 pin。
 
-本执行器 `cmd.exe` 对带双引号的 `-c` 多行命令存在参数异常。可靠方式是把临时 Python script 放在 `C:/workspace/two-mod-maintenance-20261003/`，由无空格实体解释器路径执行；路径含空格的调用交给 Python `subprocess.run([...], shell=False)`，stdout/stderr 精确保全。项目不使用 PowerShell。
+本执行器 `cmd.exe` 对带双引号的 `-c` 多行命令存在参数异常。可靠方式是把临时 Python script 放在 `C:/workspace/two-mod-maintenance-20261003/`，由无空格实体解释器路径执行；路径含空格的调用交给 Python `subprocess.run([...], shell=False)`，stdout/stderr 精确保全。自动化遵守仓库的 Python-only 合同。
 
 ## 实机入口可以复用什么
 

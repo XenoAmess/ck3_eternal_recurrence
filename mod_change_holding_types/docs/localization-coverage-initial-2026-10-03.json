@@ -106,35 +106,35 @@
     {
       "language": "french",
       "path": "localization/french/00_convert_holdings_l_french.yml",
-      "sha256": "550b216ab0f55e3e4c49af63efc5d64832b89145ea14916131000c5de37b4dad",
+      "sha256": "fc857e4a31897780ca237a7cb39229f911bde3367873f9f66f15ebb857d0c05a",
       "keys": 44,
       "live_verified": false
     },
     {
       "language": "german",
       "path": "localization/german/00_convert_holdings_l_german.yml",
-      "sha256": "be61439a63ec9aa8790dfc39bfb463d1c57ac07606d1b69de48254d495ce0a6e",
+      "sha256": "0d625367d70877d1ed8dc4955e19bcbcf8b73b873007472651a9fa125466b025",
       "keys": 44,
       "live_verified": false
     },
     {
       "language": "polish",
       "path": "localization/polish/00_convert_holdings_l_polish.yml",
-      "sha256": "d08f204d772788e7a0a07387a044a16acd00791a82d17f27d64f60e81dcd1fc5",
+      "sha256": "753de39e3ed414f0561003c6bf6f92b4d8e0d1dc1292e89355ee72708db61e6c",
       "keys": 44,
       "live_verified": false
     },
     {
       "language": "japanese",
       "path": "localization/japanese/00_convert_holdings_l_japanese.yml",
-      "sha256": "60e460938aa2e54801439af0cc95b3dabeaeecd143bb0ba02296281f6c651222",
+      "sha256": "ea1483a79b91c8560f91a51427d971ca6ec413468d24d7772562e967da22ed85",
       "keys": 44,
       "live_verified": false
     },
     {
       "language": "spanish",
       "path": "localization/spanish/00_convert_holdings_l_spanish.yml",
-      "sha256": "5f90075faa751c31901b897a579cfd1d0230d4b64df9ecde751baa73142dbd73",
+      "sha256": "2714db73ca2612453e0854df12666bff09f08ecc66714e7dd7d388b03a4c176a",
       "keys": 44,
       "live_verified": false
     },
@@ -148,20 +148,19 @@
     {
       "language": "russian",
       "path": "localization/russian/00_convert_holdings_l_russian.yml",
-      "sha256": "c265ea01c4de7114458b343d68aecad9ddb2e8f5e703222abd82aa773fa5e83b",
+      "sha256": "128c3f7c0ada61e236b825405f41e6770b690c79215f4b62dec4e8e4f83f0c35",
       "keys": 44,
       "live_verified": false
     },
     {
       "language": "korean",
       "path": "localization/korean/00_convert_holdings_l_korean.yml",
-      "sha256": "7bf7964306bfc8180392cedafb99aab1d4821fdbdfa178ca141d0762e9488e6c",
+      "sha256": "32add5901197ff7198ab0e97d798d3d731e23b0d672255a9c3d67ae31a2bef57",
       "keys": 44,
       "live_verified": false
     }
   ],
   "native_speaker_reviewed": false,
   "live_verified": false,
-  "remaining_live_scope": "CK3 rendering and interaction are separately recorded in product test report; no static result implies live verification.",
-  "canonical_line_endings": "LF, matching repository .gitattributes eol=lf; initial CRLF receipt is preserved separately."
+  "remaining_live_scope": "CK3 rendering and interaction are separately recorded in product test report; no static result implies live verification."
 }
