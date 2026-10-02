@@ -1,36 +1,36 @@
 # 罗贝尔G2接续 prompt
 
-配套[现状与行动计划](2026-10-02-g2-robert-current-state-action-plan.md)按2026-10-02 23:26（Asia/Shanghai）基线更新。较晚ROOT actual回执覆盖定位信息，沿最新配对接续，不回滚。
+配套[现状与行动计划](2026-10-02-g2-robert-current-state-action-plan.md)保留2026-10-02 23:26基线，并同步2026-10-03的6443实际接续。沿ROOT最新配对与actual回执，不回滚历史基线。
 
 ## 协调者总 prompt
 
 ```text
 继续Z:/ck3_mod_rewrite的G2自动玩家与最新CK3任务。用户最新明确：“从现在开始，允许全方位深入宗教领域研究，全局搜索打破类似宗教暂缓禁令”。该授权覆盖旧AGENTS/handover/nativeREADME/roadmap/prompt的宗教pause、holy order暂缓、仅圣战/婚姻例外。全面Faith/Rite/Religion/doctrine/tenet/fervor/组织/改宗/改革/神职/教廷/holy order/AI/bridge/MCP/策略/实机全部开放，不等再授权、不暗留窄限制。历史当时暂缓保留事实，但不约束现行任务。先读当前AGENTS、配套计划、nativeREADME和机器需求，用户最新授权优先。
 
-顺序：冻结exact build→原生AI/脚本树与Mermaid→必要实际观测→counter-policy→Robert生产实机OODA。授权不代表宗教full readiness完成，没实读/材料/loop不报live或complete。当前natural event13 rite_growth.0010已实际阻normal，优先leaf和必要查询/consumer，其它宗教领域并行，不把全部矩阵加为前置。
+顺序：冻结exact build→原生AI/脚本树与Mermaid→必要实际观测→counter-policy→Robert生产实机OODA。授权不代表宗教full readiness完成。原event13 rite_growth.0010已由6443唯一选择native0/API1，独立religionMCP同日精神满足度0→500000/Q100000=+5，faith23/rite152/actor29829保持；generic event material不替代此独立宗教材料。下一正常fresh Guy/30日与后续v21，原event不再重复选择，M2整项信用仍不变。
 
 当前唯一入口Robert actor29829，episode native-29829-2bc2d599f7f9，ordinary_campaign_succession/xar_off，typed goal dynasty_continuity/reconciled_successions0。保持原campaign与自然successor，不创建Murchad/rogue/Clan/Tribal/新seed，不造fixture信用。用户已释放CK3，Steam离线，继续最小化后台，不抢焦点、不用物理输入。ROOT唯一Game/window/process/SDK/pipe/state/Git owner。
 
 现场与身份：
 - canonical Z:/ck3_mod_rewrite/.task-tmp/g2dlv；原root dirty workspace保留，不reset/stash/clean/force。
-- Python Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe；PowerShell不可用用cmd.exe/login:false，结构化传参。
+- Python Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe；使用Python API、pathlib及subprocess结构化argv执行项目工具，不拼接shell命令。
 - HERE=Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003。
 - CK3 1.20.0.3/Steam25652598/EXE94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6。
 - 当前v20/PID94488/最小化，ROOT已有managed game，不另启第二游戏。
-- Python live b03d34fd2a7b24cebbf2e82de9cf06fa1405da8e；HERE/production-source-b03d34fd。
-- Native/environment 4ee2e7558dbc32c69cfa1caaeaf232a287a5ee34，单独记录，不误记成b03。
-- 当前plan HERE/MCP-ROBERT-FEAST-FOWL-b03d34fd-PLAN.json已实际使用；生成时live_executedfalse不覆盖后续actual。
+- 当前functional/live Python6443a5160c1369b5e64b2d22e3a27f87902ec256；HERE/production-source-6443a516，已实际attach和消费宗教event。
+- Native/environment 4ee2e7558dbc32c69cfa1caaeaf232a287a5ee34，单独记录，不误记成6443。
+- 当前plan HERE/MCP-ROBERT-RELIGION-RITE-6443a516-PLAN.json已实际使用；生成时live_executedfalse不覆盖后续actual。
 - state Z:/ck3_mod_rewrite_process_assets/g2-robert-mainline-12003-v20-20261002/state；pipe \\.\pipe\xar-g2-robert-1066-seed-66f926d。
 - ROOTpacket HERE/m7-robert/robert-mainline-v20-current-review-01/ROOT-PACKET.json，samegoal/sixledgers/newPIDcold已GREEN；Swaycold4/Feast同ongoingcold复用，不重复。
-- 最新pair h4130/raw53222280/paused，save ed1bf0fb76915ffda910121a83b327780d5b94352d4388ab6592129c1d6e6e23；driver1f81968a0434dd4e610d6ce13cb1386b4903a6b19cefbdf1ad67bd601e5e3842。
-- 最新normal HERE/m7-robert/fowl3-chancellor-following-normal30-b03-actual-01/result.json：Councilreceipt applied→normal6日→turn3 rite_growth.0010 existing_consumer_not_ready→完整checkpoint。
+- 历史基线h4130/raw53222280及其save/driver保留；宗教选择后ROOT已更新sourcepair，不将旧h4130/旧hash硬绑定为current，沿ROOT较晚实际配对。
+- 历史b03 normal6日后的rite blocker保留；6443解除它的实际result HERE/m2-events/robert-rite0010-6443a516-actual-select-01/result.json status event_selected_material_recorded。独立religionMCP BEFORE native23 raw0、AFTER native26 raw500000，同date53222280；before/after包分别HERE/m2-events/robert-rite-fulfillment-before-01和after-01，文件001-ck3_query_player_religion_context_v1.json。0新日/0焦点输入。
 - v19/412/h4031属历史，不用旧计划重attach/启动/回滚。当前nonwar模式、WAR_CASH/PREWAR OFF保持，flags不能当宗教禁令。
 
 实际状态：
 - CA1/Steward窄动作-material-next-cold已闭合，不重发法律或任命。
 - Chancellor43696diplomacy13替34867/7，onceACK+normal独立receipt applied+6日；propernext NO_APPLIED_ASSIGNMENT_CONSUMED由Councilowner解释已有closed标记或modalgate，未解清不称loopcomplete，不重发assign。
 - fowl3独立health+0.5及normal6日已closed，不重选、不扩大M2整项信用。
-- 当前event13 rite_growth.0010宗教研究/适配全面授权，立即冻结原生scope/选项/effect，补必要观测与leafconsumer，不awaitpermission。
+- 原event13宗教叶已实际选择且独立满足度+5；复用该结果并验证正常next，不重选。不awaitpermission，不把generic event material冒充fulfillment，也不增加完整M2资格。
 - Guy原38988↔37909/recipient34332已v20正常consumer退休为gone_unmaterialized/not_observed，pendingnull，resolved完整source_pending+attempted37909。无拒绝/timeout/婚约/联盟信用，不盲等、不重发37909。下一已有child-default正常freshroot/候选/合法性/费用/价值路径。
 - 第一继承38822↔38718原双向订婚，最近实读双方14/阈值16，成年履约待自然实际。
 - Feastfull83886111已Start，同ongoing在v20cold保持，续原activity不重Start/付费；ongoing/cold不是terminal全闭环。
@@ -38,7 +38,7 @@
 - 最近派系liberty50331692watch，旧188不在当时完整vector；空county不是getterRED，也不能认消失为干预收益。建设只读Robert自己的材料，不能复制Murchadtype572。
 
 现在执行：
-1. M2独占当前rite_growth.0010 leaf/registry/material，宗教native owner独占query/ABI/数据链，共享bridge.cpp/CMake/driver/service单owner整合。ROOT沿event13/h4130实际scope观测，先原生树再counter-policy，唯一合法typed选择→独立后置→normalnext→checkpoint/所需cold。不要猜效果/造触发/套.2地址/新seed。
+1. M2独占rite leaf的有限实际材料parser/next字段，复用6443唯一native0/API1及独立满足度+5；ROOT继续normal fresh Guy/30日并保存最新pair，不重选event13。宗教native owner继续query/ABI/数据链，共享文件单owner。不要猜效果/造触发/套.2地址/新seed。
 2. Council解释propernext精确输出，依据ledger/receipt/normalnext一次收口；不掩饰未解状态、不重发任命。
 3. modal解除后normal nonwar/finite/原1-7-30接续原Feast/Sway与Familyfresh路径。Family保留event/Council/LIFE/Construction/Family优先序，37909只按attempted语义排除，不预选新pair，无新动作前不报婚配价值。
 4. 全面宗教拆身份关系、组织成员领袖、doctrine最终约束、tenet数字/个人参数、改宗合法性费用结果、改革AI/成本/选择、神职/holy order、当前eventconsumer。各包原生树→同MCP观测→策略→Robertlive，不停在长期null/unknown，不将全矩阵加给当前leaf。
@@ -56,7 +56,7 @@
 ```text
 工作包{名称}，唯一可写{canonical清单}+{新artifact目录}；ROOT sole Game/window/process/SDK/pipe/state/Git。你不触游戏/liveSDK/pipe/save/profile/driver/ledger，不提交推送，不抢owner文件。
 最新用户全面授权宗教，撤销旧pause、holyorderpause、圣战/婚姻only限制。原生树/exact .3版本→必要实际观测→counter-policy→Robertlive；旧.2是输入，不套旧地址或称新fullreadiness。
-当前Robert29829/episode native-29829-2bc2d599f7f9/ordinary/xar_off/goal；v20PID94488，Pythonb03/nativeenv4ee，h4130raw53222280。
+当前Robert29829/episode native-29829-2bc2d599f7f9/ordinary/xar_off/goal；v20PID94488，Python6443/nativeenv4ee，宗教选择后pair由ROOT更新，旧h4130只作历史。
 输入{真实包/commit}；输出{可见价值/解除实际阻点}；验收{一次focused生产路径/ROOTactual配置}。
 共享bridge/CMake/driver/service只patch。缺字段确实阻决策就补口，不长期unknown，不加理论门禁。无实机不造live。回报结果/实际身份/时点/文件SHA/source/tests/artifact/资格/RED/剩余依赖/ROOT下一唯一操作/日报周报字段。旧proof/CI/fixture复用。
 ```
@@ -79,8 +79,8 @@ native owner独占指定.3宗教模块/专题，冻结Rite/Faith/Religion身份�
 ### M2：当前宗教event leaf
 
 ```text
-独占natural event13 rite_growth.0010 registry/consumer/material。从ROOTpaused包和stock定义冻结可见选项/native-authored映射/scope/effect，与M1沟通必要query，先原生树/观测再策略。全面宗教已授权，立即施工、不awaitpermission。
-交ROOT唯一typed选择与独立material/normalnext，focused一次。fowl3 health+0.5/6日closed复用。M2原三自然事件含两多选及材料/续跑门槛保持，definition计数不当可见多选；不强制event/新seed。
+独占rite_growth.0010有限材料parser/normalnext。6443已唯一native0/API1，独立religionMCP raw0→500000/Q100000=+5、faith23/rite152不变；复用实际包，不重选、不把generic event material当fulfillment。全面宗教授权保持，原生树/必要观测先于新策略，不awaitpermission。
+fowl3材料复用；当前rite normalnext待ROOT实际接续。M2原三自然事件含两多选及材料/续跑门槛保持，不增加整项信用，不造事件/新seed。
 ```
 
 ### M3：同campaign自然继承
@@ -115,7 +115,7 @@ Sway原134217986gen8→34333/v20cold4closed，无收益terminal，batch按需tar
 ### M7：长局、禁令清理、报告
 
 ```text
-ROOT当前b03Python/4eenative/v20PID94488/h4130raw53222280，normalnonwar/finite/1-7-30与完整pair。优先真实宗教event13，不把全矩阵加前置。
+ROOT当前6443Python/4eenative/v20PID94488，原rite event已唯一选择并独立满足度+5，沿更新pair做fresh Guy/normal30日；不重选、不硬pin旧h4130。normalnonwar/finite/1-7-30与全面宗教并行保持。
 Nativebuild只为真实变更 strict/W4WX/jobs64，准确绑定对象复用，ROOT officialadopt/newPID；纯Pythonattach现env，不误记来源。
 现行禁令inventory全仓撤销religionpause/holyorderpause/only圣战婚姻门禁，历史标当时不抹事实；文件由ROOT划分，不抢M2/native/Family/Feast/计划doc。
 Requirements唯一写中央8报告/索引；他人交字段。G2 4/8、NW1/4、Robert3248/36524（8.89%仅持久日）、goal0，无实测宗教fullreadiness不造完成。旧性能/CI/proof复用，无同类actual计时不报速度收益。
