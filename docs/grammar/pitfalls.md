@@ -233,6 +233,19 @@ CK3 1.20.0.3 / build 25652598 的原版 `game/common/scripted_effects/00_decisio
 | `localization/simp_chinese/dynasties/dynasty_names_l_simp_chinese.yml` | `91a5f1d12cd263baa3070db17e7a6412c101f1840d38380945ad0f90ed3299a7` |
 | `localization/english/dynasties/dynasty_names_l_english.yml` | `4d5b2396a78e5ed219bdbaaf22dd757ac6f11f0c231efb8a4fdfac20e9b58162` |
 
+**已序列化名称需独立迁移。** 2026-10-02 的已退役私有存档审计在根 `dynasties` →
+`dynasty_house` 中实际读到 70 个 `localized_name`，其值已包含 `ERROR:` 与裸地点表达式；
+它们是保存的字符串，不能当成等待新 producer 求值的本地化 key。该段还同时存在互斥的
+`name`、`localized_name`、`key` 三种一级名称字段，检查器不能要求每个家族都有 quoted `name`。
+这份只读报告 SHA-256 为 `e6bf42969f2133fca5e93966eca0b6edcbfac2497a2dce19ee9d9a7efeb44c40`；
+具体对象、存档、原始字段与迁移政策留在独立 private 仓库，不进入本仓。
+
+补齐新创建时的地点准备，不会自行改写这些已保存的坏字符串。当前 head、title 或 capital
+也不足以恢复创立时地点；迁移应明确保留与降级的名称含义，绑定正常闭合父档和允许修改的字段，
+并证明其余 payload 字节一致。长局验收只能继续最新正常检查点，旧档修复候选不能用来回退年份。
+候选的字节、ZIP CRC 与字段证明不代表引擎已加载或名称已显示；冷载后应另验健康对照、坏名
+consumer 与新创建路径。尚未观察具体渲染对象，也不能把同类日志的全部错误唯一归因于这些旧值。
+
 ### 数值式的上下界与机制资格（2026-10-02）
 
 CK3 1.20.0.3 原版 `game/common/script_values/_script_values.info:27–34` 明确 `value` 覆盖累计值、
