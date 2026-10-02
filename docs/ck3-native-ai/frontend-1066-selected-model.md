@@ -134,16 +134,43 @@ The initial isolated environment invocation and one incorrect synthetic
 fixture assertion are preserved as harness RED attempts; no production
 behavior was changed to satisfy the latter.
 
-No new CK3 process, actual seed, paired save, cold restore, or succession has
-been performed by this source package. It adds no government-matrix credit
-and does not close M7. Root must freeze the integrated source/DLL, execute the
-prepared ordinary seed route, then verify actual government, actor, rules,
-paired checkpoint, and formal consumer/cold continuation before assigning
-live readiness.
+The first actual 1.20.0.3 Yahya bootstrap used frozen source
+`91ede96f19e2d58fafe8a83e8331d68b57a1a0e3` and DLL SHA-256
+`58a2659116e25bb0d66b4af8be3b27cbfa394adef76fda408d1df7c517aecf58`.
+Its closed report is
+`artifacts/g2-maintainer-2026-10-02/resume-12003/m7-clan-preparation/actual-v12-91ede96f-01/actual-native-bootstrap-01`.
+After 607.388 seconds and 2,378 capability polls it returned RED:
+`native bridge did not advertise frontend MCP capabilities`. The actual
+1.20.0.3 adapter was ready and matched the EXE SHA, but neither
+`bridge_capabilities` nor `diagnostics.hello.capabilities` contained any
+frontend entry. No NewGame, private model, selector, or StartGame ran.
+Authenticated cleanup completed with `cleanup_proven=true`, `tree_gone=true`,
+and no remaining CK3 process. This is an actual producer integration RED;
+it does not test the migrated native Bookmark ABI or give Clan/Tribal credit.
+
+The exact cause is the production CMake target boundary:
+`ck3_12003_adapter.cpp` is compiled into `xar_ck3_12002_runtime`, while both
+existing Bookmark options were passed only to `xar_ck3_bridge` as private
+compile definitions. The static runtime's `foreach(private_option IN ITEMS)`
+omitted both options, so the descriptor's both-ON branch was compiled OFF
+despite the manifest's ON option values. The isolated descriptor fixtures
+above used explicit macro definitions and did not validate this production
+target propagation. The two-item runtime option transfer patch is preserved
+under `m7-frontend-12003/actual-v12-capability-red/`; it adds no option and
+changes no native C++ code or timeout. Root owns its CMake application and the
+next frozen production build. Actual hello plus the normal seed producer are
+the next validation; repeating isolated descriptor fixtures cannot establish
+that the real DLL advertises the capabilities.
+
+No actual seed, paired save, cold restore, or succession has been established.
+M7 remains open. Root must verify actual government, actor, rules, paired
+checkpoint, and formal consumer/cold continuation before assigning readiness.
 
 ```mermaid
 flowchart TD
-  A[Exact 1.20.0.3 main menu] -. private typed NewGame pending live .-> B[Bookmarks]
+  A[Exact 1.20.0.3 adapter ready] --> R[Actual v12 RED: three frontend capabilities absent]
+  R -. runtime target macro propagation fix; next actual hello pending .-> A1[Main menu route query]
+  A1 -. private typed NewGame pending live .-> B[Bookmarks]
   B -. Rurik only: key-derived native Bookmark setter .-> C[Fresh target Bookmark model]
   B -. Yahya: same Bookmark target probe .-> C
   C -. one source-key-derived character setter .-> D[Independent selected-role model]
