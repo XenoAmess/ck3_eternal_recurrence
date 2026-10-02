@@ -144,7 +144,9 @@ def query_current_first_heir_relationship_private_v1(
 ) -> dict[str, object]:
     if getattr(driver, "allow_private_current_first_heir_relationship_query", False) is not True:
         raise UnsupportedStepError("private current first-heir relationship query is disabled")
-    before = driver.take_snapshot()
+    read = (getattr(driver, "take_internal_semantic_snapshot", None)
+            or getattr(driver, "take_snapshot"))
+    before = read()
     played = before.get("played_character")
     played_id = played.get("character_id") if isinstance(played, dict) else None
     if (
@@ -180,7 +182,7 @@ def query_current_first_heir_relationship_private_v1(
     if heir_id is not None and (type(heir_id) is not int or heir_id <= 0):
         raise BridgeUnavailableError("public primary first-heir ID malformed")
     _require_same_paused_frame(
-        driver.take_snapshot(), before, expected_native_revision, played_id
+        read(), before, expected_native_revision, played_id
     )
     request_id = "family-relation-" + uuid.uuid4().hex
     driver.endpoint.send({
@@ -214,7 +216,7 @@ def query_current_first_heir_relationship_private_v1(
     ):
         raise BridgeUnavailableError("current heir relationship identity changed")
     _require_same_paused_frame(
-        driver.take_snapshot(), before, expected_native_revision, played_id
+        read(), before, expected_native_revision, played_id
     )
     base = {
         "schema": SCHEMA, "schema_version": 1,

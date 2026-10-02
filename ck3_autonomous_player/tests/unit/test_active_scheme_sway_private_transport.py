@@ -84,6 +84,128 @@ class SwayPrivateTransportTest(unittest.TestCase):
         self.assertEqual(driver.endpoint.sent[0]["step"], STEP_PREFIX + "32716")
         self.assertEqual(driver.endpoint.sent[0]["expected_revision"], 4)
 
+    def test_semantic_query_readers_preserve_values_and_history(self) -> None:
+        import importlib.util
+        import json
+        import os
+        from types import MethodType
+        from unittest import mock
+        from uuid import UUID
+
+        from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+        from xar_autoplayer.bridge.player_lifestyle_private_transport_v1 import (
+            query_player_lifestyle_private_v1,
+        )
+        from xar_autoplayer.bridge.current_first_heir_relationship_private_transport import (
+            query_current_first_heir_relationship_private_v1,
+        )
+        from test_lifestyle_formal_private_consumer import _Driver as LifeDriver
+        from test_current_first_heir_relationship_private_transport import (
+            _Driver as FamilyDriver, _frame, _reply, _pair_value,
+        )
+
+        transcript = [{"index": index, "command": "retained-query",
+                       "ok": True, "result": {"values": list(range(32))}}
+                      for index in range(1, 65)]
+        evidence_keys = {"native_command_history", "native_rollback_war_failure",
+                         "native_rollback_war_failures"}
+
+        def family_driver():
+            return FamilyDriver(
+                _reply(betrothed_character_id=38718, betrothal_actionability=_pair_value()),
+                [deepcopy(_frame()) for _ in range(3)],
+            )
+
+        definitions = [
+            ("sway", lambda: Driver(True), query_active_scheme_sway_target_private_v1,
+             {"expected_revision": 5, "target_character_id": 32716}, 2,
+             "active_scheme_sway_private_transport.py"),
+            ("life", LifeDriver, query_player_lifestyle_private_v1,
+             {"expected_revision": 3}, 2, "player_lifestyle_private_transport_v1.py"),
+            ("family", family_driver, query_current_first_heir_relationship_private_v1,
+             {"expected_native_revision": 3}, 3,
+             "current_first_heir_relationship_private_transport.py"),
+        ]
+
+        def instrument(driver, use_internal):
+            original_reader = driver.take_snapshot
+            driver._command_history = deepcopy(transcript)
+            if hasattr(driver, "history"):
+                driver.history = driver._command_history
+            counts = {"full": 0, "semantic": 0}
+
+            def full_reader():
+                counts["full"] += 1
+                return {**original_reader(),
+                        "native_command_history": deepcopy(driver._command_history)}
+
+            driver.take_snapshot = full_reader
+            if use_internal:
+                # Native reader runs unchanged; only its game/episode producers are fixture data.
+                driver.state.semantic_snapshot = lambda: {
+                    key: value for key, value in original_reader().items()
+                    if key not in evidence_keys
+                }
+                driver._transport_error = lambda: None
+                driver._with_one_life_episode = lambda frame: frame
+                driver._observe_arrange_marriage_outcome = lambda frame: None
+
+                def internal_reader(self):
+                    counts["semantic"] += 1
+                    return NativeHeadlessGameplayDriver.take_internal_semantic_snapshot(self)
+
+                driver.take_internal_semantic_snapshot = MethodType(internal_reader, driver)
+            return counts
+
+        def request(driver):
+            if hasattr(driver.endpoint, "sent"):
+                return driver.endpoint.sent
+            if hasattr(driver.endpoint, "request"):
+                return driver.endpoint.request
+            return driver.state.last
+
+        observed = {}
+        for name, factory, production_query, kwargs, reads, filename in definitions:
+            fallback = factory()
+            fallback_counts = instrument(fallback, False)
+            optimized = factory()
+            optimized_counts = instrument(optimized, True)
+            with mock.patch("uuid.uuid4", return_value=UUID(int=1)):
+                original_value = production_query(fallback, **kwargs)
+                optimized_value = production_query(optimized, **kwargs)
+            self.assertEqual(optimized_value, original_value, name)
+            self.assertEqual(request(optimized), request(fallback), name)
+            self.assertEqual(fallback_counts, {"full": reads, "semantic": 0}, name)
+            self.assertEqual(optimized_counts, {"full": 0, "semantic": reads}, name)
+            self.assertEqual(fallback._command_history, transcript, name)
+            self.assertEqual(optimized._command_history, transcript, name)
+            observed[name] = {"fallback_full": reads, "optimized_full": 0,
+                              "semantic_reads": reads, "history_retained": True}
+
+            # Optional archived-source comparison is used only by the external receipt run.
+            baseline_dir = os.environ.get("G2_SEMANTIC_QUERY_BASELINE_PATH")
+            if baseline_dir:
+                module_name = "xar_autoplayer.bridge._semantic_query_baseline_" + name
+                spec = importlib.util.spec_from_file_location(
+                    module_name, Path(baseline_dir) / filename,
+                )
+                module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(module)
+                baseline_query = getattr(module, production_query.__name__)
+                archived = factory()
+                archived_counts = instrument(archived, True)
+                with mock.patch("uuid.uuid4", return_value=UUID(int=1)):
+                    baseline_value = baseline_query(archived, **kwargs)
+                self.assertEqual(baseline_value, optimized_value, name)
+                self.assertEqual(request(archived), request(optimized), name)
+                self.assertEqual(archived_counts, {"full": reads, "semantic": 0}, name)
+                self.assertEqual(archived._command_history, transcript, name)
+                observed[name]["frozen_baseline_full"] = archived_counts["full"]
+
+        self.assertEqual(sum(item["optimized_full"] for item in observed.values()), 0)
+        self.assertEqual(sum(item["fallback_full"] for item in observed.values()), 7)
+        print("SEMANTIC_QUERY_REPLAY=" + json.dumps(observed, sort_keys=True))
+
     def test_default_off_rejects_before_wire(self) -> None:
         driver = Driver(False)
         with self.assertRaises(UnsupportedStepError):

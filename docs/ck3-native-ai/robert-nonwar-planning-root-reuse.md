@@ -29,14 +29,14 @@ flowchart TD
   I --> J[next turn: fresh succession/root observation]
   C -. same paused public/native frame .-> F
   C -. same paused public/native frame .-> G
-  C -. static-ready: same-frame incumbent .-> K[consume applied Chancellor persistence]
-  K -. next natural live validation pending .-> F
+  C -. same-frame incumbent: actual a588 .-> K[consume applied Chancellor persistence]
+  K --> F
   H -. future unobserved business outcomes: unknown .-> U[actual later reply / event]
 ```
 
 第一份真实 root 读取保留：原生查询同时刷新当前 primary-heir 观测。仅将该完整 result 显式传给本轮 council planning 与 current-first-heir relationship 的绑定部分；relationship 和 council final-gate 查询继续真实读取。完整 result 来自规划已有的成功 history，保留首个原始 query_sequence，不使用缺少 query_sequence 的 driver 缓存重建结果。
 
-若 snapshot_id、public/native revision、日期或 actor 变化，消费者走原有 fresh root 调用。可选参数只在 `plan_nonwar_turn` 本次调用内传递，不落盘，不建立全局缓存。实际 council receipt reader、直接公开/私有 relationship 查询、family fresh-frame retry 与下一回合仍走 fresh 读取。计划的普通 1/7/30-day 策略不变。
+若 snapshot_id、public/native revision、日期或 actor 变化，消费者走原有 fresh root 调用。可选参数只在 `plan_nonwar_turn` 本次调用内传递，不落盘，不建立全局缓存。实际 council receipt reader、直接公开/私有 relationship 查询、family fresh-frame retry 与已进入新帧的下一回合仍走 fresh 读取。计划的普通 1/7/30-day 策略不变。
 
 ## 交付状态
 
@@ -85,3 +85,35 @@ flowchart TD
 新增既有测试文件的一个 focused case，真实 production consumer → driver wrapper → pending/status transport 的离线 wire 请求 **4 → 2**，Steward 完整计划、quote、决策和 Chancellor 消费结果相等，既有 typed 提交行为保持。第一次因独立测试目录缺少 frozen tools import 路径而在收集阶段 **harness RED**，尚未进入用例；receipt 保留，补路径后同一个用例 **1 passed in 3.56s**。最终测试文件只另同步旧 cold-query 计数断言，已通过的 focused case 字节未变，未重跑旧 suite。这是 **static-ready**，端点回包仍为 fixture 输入。按本批次预计每轮读取请求 **9 → 7**（16 轮 144 → 112；planning 请求 128 → 96），尚无节省秒数或实机提速百分比的 claim；等待新冻结 Python attach 后下一轮自然普通游玩确认。日期 1/7/30 策略、native DLL、窗口行为与完整 history 持久化保持现有实现。
 
 完整计时、16/16 比较、两路径 patch/pins、首次 harness RED 与 focused GREEN 索引见 `artifacts/g2-maintainer-2026-10-02/resume-12003/performance-v24-normal16/ROOT-DELIVERY.json`（SHA-256 `7372273681087f2f659ccec1197a4f6271329df66dae7c2979f4f84956349458`）。本分析与静态补丁不另加 Robert 天数、政府资格或 G2 credit。
+
+## 公开 a588：Chancellor 复用的实机确认
+
+公开 Python `a5882a567c0223884df0770494f60648677eab00` 的 `m7-robert/v25-a588-normal8-with-economic-observation-01` 已 CLOSED GREEN，native/environment 沿用 f9。预算与目标为 8，但实际只有 **4 个 formal turn**，推进日数 **0 / 0 / 3 / 9，合计 12 天**；前两轮是 Guy 的只读冷回读，推进沿既有实现。前三轮提交前 native frame 都为 4、日期 53224008，第四轮为 frame 7、日期 53224080；实际 root 查询为 **1 / 0 / 0 / 1**，因此不能把旧 advancing 样本的“一轮一次”套到连续同帧的零日回读。
+
+真实 wire 共 **38** 个请求：31 个 query/status/probe、6 个时间控制和 1 个 save；逐轮读取数为 **10 / 7 / 6 / 8**。Chancellor 全候选查询为 **0**；四轮均保留完整 Steward final-gates 与独立 status，实际 incumbent **43706**、14 个原生候选、决策 **NO_CHANGE**。四次 Chancellor **43696** 持任消费都与相应 root 的 holder、日期/native frame 及 `task_foreign_affairs` 匹配。该持任复用升级为 **production-live primitive**。本轮另启用 construction 只读观测，实际有 2 个经济 probe，Guy/Family 额外读包为 3；这些不同条件不代表所有回合固定为预测的 7 个请求，也不代表执行了建设支出。
+
+formal service 合计 **99.824338 秒**，其中 planning **89.671990 秒，占 89.8298%**；dispatch/verification **10.146083 秒，占 10.1639%**，提交前 capture 为 0.006265 秒。91 次外部写入合计 0.092299 秒，与其他计时重叠，外部 Sway 预查询仍未单列。不同日期、原生进程、Family 回读、经济 permission 和推进长度使本轮与旧 16 个 advancing 回合不构成受控提速对照，不能把总秒数差归因于一个补丁。
+
+最终 actor 29829、paused、日期 53224296，实际配对 save/driver history 为 **4276**；save 为 86,735,234 B、SHA-256 `90e6579a8772bc51321b855a57afe25abcc47b942023b98b0f0c214250a6ae6d`，完整 driver 为 51,347,352 B、SHA-256 `8cea61400b332ec4b25955c94d4d771dc8f80f11168d147a7e0951bcaa8914ad`。一次有限读出的 12 份输入 pins 与消费匹配见 `performance-v24-normal16/actual-a588-normal8/REPORT-FIELDS.json`（SHA-256 `aa88ae5cc859e60364d92a2a97215e908a3004dacd56d6d85481eb2c8c912779`）。12 天属于 ROOT 的真实运行，文件分析不再次增加进度，仍不表示完整 G2。
+
+## a588：完整 snapshot 成本的实测
+
+ROOT 在外置 finite runner 为现有 Driver 实例临时安装方法计时，未修改游戏协议、公开 snapshot 或持久化实现。`m7-robert/v25-a588-normal4-finite-driver-timers-01` 已 CLOSED GREEN：预算目标 4，实际一个 formal `life-advance` 推进 11 天，最终 actor 29829、paused、日期 **53224560**、save/完整 driver history **4279**。方法测量窗口为 **38.164128 秒**；formal service 为 **29.388833 秒**，其中 planning **28.129359 秒，占 formal 95.7144%**。两个分母覆盖范围不同。
+
+| 实际 Driver 读取方法 | 调用次数 | 累计 inclusive 秒 | 占方法测窗 |
+| --- | ---: | ---: | ---: |
+| `take_snapshot` | 41 | 25.8024 | 67.609% |
+| `take_internal_semantic_snapshot` | 62 | 0.08170 | 0.214% |
+| finite 无 history reader | 20 | 0.01142 | 0.0299% |
+
+query 的 inclusive timer 包含其内部 snapshot，不能与表中读取时间相加。实际 root、government、first-heir、Sway、LIFE、council 查询分别为约 **4.156 / 3.912 / 3.809 / 2.630 / 2.538 / 1.519 秒**；外置 capture 总计 0.024297 秒。现有数据直接证明完整 snapshot 路径是高成本读取，但未单独计时其 history 深复制、其他归一化步骤或原生等待，不能把这 25.8024 秒全部归给某个内部步骤或最小化时的原生帧率。
+
+这次实测给出最小施工入口：只在已确认不消费 history 的 root/Council identity caller，以及 LIFE、Family、Sway 只读 transport 中使用现有 internal semantic reader，旧 fake-driver 缺少该接口时仍 fallback 到原 `take_snapshot`。实际游戏字段、public/native revision、expected revision、查询 DTO、公开 snapshot、动作提交及完整 history 持久化保持现有语义；额外 driver 方法不自动批量替换。替换后的调用次数与秒数仍待下一份真实包确认。
+
+一次方法计时与必要源行 readout 见 `performance-v24-normal16/actual-a588-driver-timers/REPORT-FIELDS.json`（SHA-256 `b32bd01e5ec9012f1f2b184aba6b01bf25065afa5289a66b1ec41941598cc2ab`）。真实 save 为 86,893,075 B、SHA-256 `d3832baa019a223781949b4e57f3f9b5bf1bea6bfa9820d8477f8b0915158665`，完整 driver 为 51,376,239 B、SHA-256 `7638a63acef8355acbc7d0e4d85046e1f61da569a89426f122d0056b0081bcc2`。11 天属于 ROOT 的运行，计时分析不重复增加进度；本节的成本观测是实际分项计时，尚非 snapshot 替换后的提速验收。
+
+## 最小 semantic reader 补丁：静态回放已通过
+
+四个生产源路径只替换上述只读 caller 的帧读取，另在既有 Sway transport 测试文件增加一个 focused case。必要源行已确认这些 caller 只消费角色、日期、revision、资源/状态与 provenance，不使用完整 history。真实生产 Sway/LIFE/Family query 函数与未修改的 internal reader 通过同一个离线 transport 回放：完整 snapshot 调用合计 **7 → 0**，返回值与 wire 请求一致，64 条历史记录完整保留；缺少 internal 接口的旧 fake driver 仍走 7 次原读取。冻结前源码对照也一致，唯一用例 **1 passed in 2.95s**。
+
+NativeDriver 的 root/Council 三处读取本轮以源码字段证明为边界，未扩大成其动态请求数验收。补丁为 **static-ready**；公开 snapshot、完整 history 生产/持久化与 expected revision 保持原样。统一源码和测试 pins、focused receipt 见 `performance-v24-normal16/semantic-query-readers/ROOT-DELIVERY.json`；下一轮 ROOT 的短 ordinary continuation 将确认实际完整 snapshot 次数与秒数，目前不声称 67.609% 的实测成本都会消失。

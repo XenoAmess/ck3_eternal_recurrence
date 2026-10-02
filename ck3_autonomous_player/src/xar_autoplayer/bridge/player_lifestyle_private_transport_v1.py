@@ -385,7 +385,9 @@ def query_player_lifestyle_private_v1(
         raise ValueError("unsupported private lifestyle query step")
     if getattr(driver, "allow_private_lifestyle_formal_trial", False) is not True:
         return {"status": "trial_off", "step": query_step}
-    starting = driver.take_snapshot()
+    read = (getattr(driver, "take_internal_semantic_snapshot", None)
+            or getattr(driver, "take_snapshot"))
+    starting = read()
     played = starting.get("played_character")
     player_id = played.get("character_id") if isinstance(played, Mapping) else None
     revision = starting.get("revision")
@@ -439,7 +441,7 @@ def query_player_lifestyle_private_v1(
         }
     result = frame.get("result")
     life_snapshot = result.get("snapshot") if isinstance(result, dict) else None
-    ending = driver.take_snapshot()
+    ending = read()
     if not (
         isinstance(result, dict)
         and result.get("step") == query_step

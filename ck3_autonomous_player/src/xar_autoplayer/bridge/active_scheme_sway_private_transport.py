@@ -71,7 +71,9 @@ def query_active_scheme_sway_target_private_v1(
         raise ValueError("target_character_id must be a full 32-bit character ID")
     if type(timeout_seconds) not in (int, float) or timeout_seconds <= 0:
         raise ValueError("timeout_seconds must be positive")
-    before = driver.take_snapshot()
+    internal_reader = getattr(driver, "take_internal_semantic_snapshot", None)
+    read_frame = internal_reader if callable(internal_reader) else driver.take_snapshot
+    before = read_frame()
     actor = before.get("played_character")
     native_revision = before.get("native_revision")
     if (
@@ -152,7 +154,7 @@ def query_active_scheme_sway_target_private_v1(
         or (current_build and not _valid_active_sway_instances(value))
     ):
         raise BridgeUnavailableError("private sway native payload malformed")
-    after = driver.take_snapshot()
+    after = read_frame()
     if (
         after.get("paused") is not True
         or after.get("date_raw") != before["date_raw"]

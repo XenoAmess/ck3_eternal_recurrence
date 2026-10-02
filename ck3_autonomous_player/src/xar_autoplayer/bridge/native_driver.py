@@ -2757,7 +2757,9 @@ class NativeHeadlessGameplayDriver:
         from .council_private_transport_v1 import PRIVATE_GATES_STEP, query_council_private_v1
         from .nonwar_private_build import private_native_build_identity
 
-        source = private_native_build_identity(self.take_snapshot())
+        take_snapshot = (getattr(self, "take_internal_semantic_snapshot", None)
+                         or self.take_snapshot)
+        source = private_native_build_identity(take_snapshot())
         return query_council_private_v1(
             self, expected_revision=expected_revision, position_key=position_key,
             query_step=PRIVATE_GATES_STEP,
@@ -12926,7 +12928,9 @@ class NativeHeadlessGameplayDriver:
     ) -> dict[str, object]:
         """Read the atomic local-player campaign root while paused."""
         step = QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
-        starting = self.take_snapshot()
+        take_snapshot = (getattr(self, "take_internal_semantic_snapshot", None)
+                         or self.take_snapshot)
+        starting = take_snapshot()
         if starting.get("paused") is not True:
             raise BridgeUnavailableError(
                 "native campaign-root query requires a paused snapshot"
@@ -12994,7 +12998,7 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native campaign-root envelope status disagrees with frame"
             )
-        current = self.take_snapshot()
+        current = take_snapshot()
         if not (
             _same_paused_native_frame(starting, current)
             and starting.get("revision") == current.get("revision")
