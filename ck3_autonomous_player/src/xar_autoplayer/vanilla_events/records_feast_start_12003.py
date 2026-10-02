@@ -23,7 +23,7 @@ FEAST_START_12003_RECORDS: Final = {
             "saved_scope_name_sets": (("activity", "host", "province"),),
             "saved_scope_count": 3,
             "option_count": 1,
-            "snapshot_option_count": 1,
+            "snapshot_option_count": 5,
             "native_option_indices": (0,),
             "selected_option_number": 1,
             "selected_native_option_index": 0,

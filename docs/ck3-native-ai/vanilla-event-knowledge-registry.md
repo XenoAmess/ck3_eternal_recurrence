@@ -23,6 +23,14 @@ flowchart TD
 
 该原生树是本次 registry 施工输入。只登记已实际发生的 `.2001` 普通三 scope 形态；root/host 关系和唯一 native/rendered projection 使用现有机制，scope identity 不借外部 HostedPost ID 补造。独立选择后必须回读旧 instance advance、同角色/日期/paused；选择本身是 timeline continuation，材料 expectation 为 None，M2 credit 为零。source-bound 登记 **static-ready**：新增独立 `.3` record、现有 `.3` dispatch 和 relational-scope 有限 key 集各加这一项。现有 Feast test 文件的唯一新增 full-route 方法首次 GREEN，actual normalizer → knowledge → ordinary classifier → `GameplayBridgeService.select_event_option` → `NativeHeadlessGameplayDriver` 的独立合成 post snapshot 确认旧 instance15 advance、same actor/date/paused；旧 `.7002` 方法没有重跑。测试记录在 `artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v14-feast-start-continuation/python-compatibility/focused-checks.json`。没有正式实机选择或新 live/material credit；未提前注册 `.2003`、`.7101` 或其它 variant，也不把自然开席推断为任何指定宾客个人出席证据。
 
+### `feast.2001` V15 实际计数修正
+
+V15 第一次正式续行仍在 instance15 / `53330784` 停止，唯一失败检查为 `snapshot_option_count`，其它 21 项为 true。离线对照原 V14 warm 与 V15 cold 包后确认：basic snapshot `active_event.option_count=5` 是包括隐藏选项的定义总数，typed window 的 `options` 只有一个实际显示并启用的 native0。初版 record/test 把 rendered count `1` 当成 snapshot count，是本包错误；初版静态 GREEN 和本次 live RED 均保留。最小修复仅令 record `snapshot_option_count=5`，`option_count=1`、API1→native0 映射、root/host、三 scope 与其它检查不变；同一个既有 full-route fixture 改用真实 basic snapshot5 / typed rendered1。
+
+V15 的 calculated ID `5172001`、runtime ordinal `8310` 与 V14 的 `5162001` / `8308` 随加载顺序改变，canonical key 仍为 `feast.2001`；本次不建立新的 ordinal/calculated-ID gate。root 从冷加载地图通过已观察活动 cup 打开 ActivityView 一次，只恢复视图，没有选择/Start/推进时间；typed 可用后才出现这次计数失配。该 root-assisted presentation 边界保留，不能声称无人辅助 cold 活动窗恢复。冻结诊断为 `artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v15-feast-start-count-mismatch/closed-count-diagnostic.json`，原 V15 阻点为 `formal-v15-next-02/turn-001/result.json`（SHA-256 `D60C2ACD54F1A547D6402403434CA474068241CC88195AAC40FC7219DAEE8817`）。这是纯 Python record/test 修正，不改 native、adapter、service 或 DLL；尚未补做真实选择，没有材料或 M2 credit。
+
+修正后的同一 existing full-route 方法首次 **GREEN**，只重跑这一个受本次真实失配影响的方法，旧 `7002` 方法未跑。fixture 只把 basic native total counter 改成 `5`，原 V14 typed binding / rendered1 / native0 保持，覆盖 normalizer → knowledge → production ordinary planner/classifier → service event selection → native-driver 独立合成 old-instance advance。结果为同诊断目录的 `python-compatibility/focused-checks.json`，修复 **static-ready**；根执行者会复用原 V15 DLL、冻结新 Python 后以原生产消费者 cold 续行，实际结果待观察。
+
 ## 2026-10-02：1.20.0.3 `feast.7002` 实际主办者到达通知
 
 正式 `formal-v11-next-01/turn-001` 在 instance `14`、玩家/root/host `31853` 的

@@ -166,7 +166,7 @@ class FeastArrival12003PolicyTests(unittest.TestCase):
         before_wire["state"].update({
             "date_raw": date_raw,
             "played_character": {"character_id": player, "alive": True},
-            "active_event": {"instance_id": event_id, "option_count": 1},
+            "active_event": {"instance_id": event_id, "option_count": 5},
             "pending_character_interaction": None,
         })
         endpoint.publish(before_wire)
