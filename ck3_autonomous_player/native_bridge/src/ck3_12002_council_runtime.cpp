@@ -44,7 +44,9 @@ bool ActionFrame(CouncilMailboxContext12002& context,
   return true;
 }
 bool CaptureAction(void* raw, game::CouncilAssignCouncillorFrameV1& output) noexcept {
-  return raw != nullptr && ActionFrame(*static_cast<CouncilMailboxContext12002*>(raw), output);
+  if (raw == nullptr) return false;
+  auto& context = *static_cast<CouncilMailboxContext12002*>(raw);
+  return ActionFrame(context, output, context.action_request.position_key);
 }
 CouncilCandidatesRequestV1 RequestFor(const game::CouncilAssignCouncillorFrameV1& frame) {
   return {frame.snapshot_id, frame.public_revision, frame.native_revision,
@@ -189,7 +191,7 @@ bool ExecuteCouncilMailbox12002(void* raw,
         return true;
       }
       game::CouncilAssignCouncillorFrameV1 after{};
-      if (!ActionFrame(context, after)) after = {};
+      if (!ActionFrame(context, after, context.shared_state->pending_ack.position_key)) after = {};
       const auto status = ck3_11906::VerifyCouncilAssignCouncillorActionReceiptV1(
           context.shared_state->pending_ack, after, context.wire.action_receipt);
       context.wire.completion = status == game::CouncilAssignCouncillorReceiptStatusV1::applied ?

@@ -283,6 +283,77 @@ int main(int argc, char **argv) {
         f.helper_calls == 0 && !f.state.has_pending_ack,
         "readonly Chancellor projection does not enable Steward assignment"); ++checks;
   }
+  for (bool pending : {false, true}) {
+    auto owned = std::make_unique<SourceChainFixture>();
+    auto &f = *owned;
+    f.source.EnableChancellor();
+    f.source.tasks[1].Put(0x40, std::int32_t{-1});
+    f.context.query_request = f.source.request;
+    f.Execute(Operation::query_candidates);
+    Require(ck3_11906::PrepareCouncilAssignCouncillorActionRequestV1(
+        f.context.wire.query_result, SourceFixture::kCandidate,
+        "chancellor-vacancy-action", f.context.action_request,
+        kCouncilCandidatesChancellorPosition12002), "explicit Chancellor request"); ++checks;
+    f.pending = pending;
+    f.Execute(Operation::submit_assignment);
+    if (pending) {
+      Require(f.context.wire.action_ack.failure == Failure::pending_character_interaction &&
+          f.helper_calls == 0 && !f.state.has_pending_ack,
+          "fresh Chancellor pending gate must reject before helper"); ++checks;
+      WriteWire(directory, "chancellor-vacant-reject-pending.json", f);
+      continue;
+    }
+    const auto &ack = f.context.wire.action_ack;
+    std::int32_t steward_incumbent = -1;
+    std::memcpy(&steward_incumbent,
+        static_cast<const std::byte*>(f.source.tasks[0].Data()) + 0x40,
+        sizeof(steward_incumbent));
+    Require(f.context.wire.completion == Completion::submitted_verification_pending &&
+        ack.position_key == kCouncilCandidatesChancellorPosition12002 &&
+        ack.active_task_id == SourceFixture::kTask + 1 &&
+        ack.route == game::CouncilAssignCouncillorRouteV1::assign_vacant &&
+        ack.native_helper_invoked && !ack.queue_acceptance_observed &&
+        f.submitted_task == SourceFixture::kTask + 1 &&
+        f.helper_calls == 1 && steward_incumbent == SourceFixture::kIncumbent,
+        "Chancellor submit must use its own actual task and preserve Steward"); ++checks;
+    WriteWire(directory, "chancellor-vacant-ack.json", f);
+    f.AdvanceFrame();
+    f.Execute(Operation::verify_assignment_receipt);
+    Require(f.context.wire.completion == Completion::receipt_rejected &&
+        f.context.wire.action_receipt.reason == "candidate_not_observed_as_incumbent" &&
+        f.state.has_pending_ack && f.helper_calls == 1,
+        "Chancellor helper ACK is not independent material"); ++checks;
+    f.source.tasks[0].Put(0x40, SourceFixture::kCandidate);
+    f.Execute(Operation::verify_assignment_receipt);
+    Require(f.context.wire.completion == Completion::receipt_rejected &&
+        f.context.wire.action_receipt.reason == "candidate_not_observed_as_incumbent" &&
+        f.context.wire.action_receipt.position_key == kCouncilCandidatesChancellorPosition12002 &&
+        f.state.has_pending_ack && f.helper_calls == 1,
+        "Steward change must not satisfy Chancellor receipt"); ++checks;
+    f.source.tasks[1].Put(0x40, SourceFixture::kCandidate);
+    f.Execute(Operation::verify_assignment_receipt);
+    Require(f.context.wire.completion == Completion::receipt_applied &&
+        f.context.wire.action_receipt.postcondition_verified &&
+        f.context.wire.action_receipt.position_key == kCouncilCandidatesChancellorPosition12002 &&
+        f.context.wire.action_receipt.incumbent_character_id == SourceFixture::kCandidate &&
+        !f.state.has_pending_ack && f.helper_calls == 1,
+        "independent actual Chancellor task receipt"); ++checks;
+    WriteWire(directory, "chancellor-vacant-receipt.json", f);
+  }
+  {
+    auto owned = std::make_unique<SourceChainFixture>();
+    auto &f = *owned;
+    f.source.EnableChancellor(); f.context.query_request = f.source.request;
+    f.Execute(Operation::query_candidates);
+    Require(ck3_11906::PrepareCouncilAssignCouncillorActionRequestV1(
+        f.context.wire.query_result, SourceFixture::kCandidate,
+        "chancellor-occupied-denied", f.context.action_request,
+        kCouncilCandidatesChancellorPosition12002), "explicit occupied fixture request");
+    f.Execute(Operation::submit_assignment);
+    Require(f.context.wire.action_ack.failure == Failure::request_contract_invalid &&
+        f.helper_calls == 0 && !f.state.has_pending_ack,
+        "Chancellor occupied replacement remains outside vacancy scope"); ++checks;
+  }
   {
     auto owned = std::make_unique<SourceChainFixture>();
     auto &f = *owned;

@@ -1,5 +1,28 @@
 ﻿# CK3 1.19.0.6 原版事件知识 Registry
 
+## 2026-10-02：实际普通宴会开席 `feast.2001`
+
+根执行者的 `formal-v14-next-02` 在正常推进 41 天到原 planned start `53330784` 后，自然读到 instance `15` / `feast.2001` / calculated ID `5162001` / runtime ordinal `8308`。真实 typed context available，root 与 host 均为玩家 `31853`，保存 scope 恰为 `activity`、`host`、`province`；非 character payload 的 typed identity 继续 opaque。当前唯一 rendered `0` / native `0` / API option `1` 显示并启用，文案“欢迎，朋友们！”。原正式 turn6 因 `not_registered` 停止，没有选择；冻结 typed 包是 `artifacts/g2-maintainer-2026-10-02/resume-12003/m7-murchad/formal-v14-next-02/turn-006/result.json`，保存 h2097 SHA-256 `F5849B3A9A17D0D1E9006A06B96479535665DBAB963075121B6A5EFF62E5EBF0`。
+
+Exact build 为 `.3` / Steam `25652598`，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。复用 Feast owner 的 [开席原生树](ck3-1.20.0.2-feast-guest-rule.md) 和冻结源码：`events/activities/feast_activity/feast_events.txt:601–927`，全文件 SHA-256 `F5820211444E7DBAF0A318ADF65BEBF4CA581D3A4E9F381ADD63D3BF02AAF77E`，原始换行 definition block SHA-256 `9E52F6C1F72317CC91B79271CAA6079D4354D073FA906F7BED39DD5A219AEE47`；`common/activities/activity_types/feast.txt` SHA-256 `FBC2E6E3F74BC8C2DB1BB1EB01609AA7CF50E9546671A12617301F175BE84598`。meal `on_phase_active:4425–4442` 在存在非 host attendee 时触发 `.2001`，另一分支是未发生的 `.2003`；`.2001:718–720` 要求 event root 为 activity host。
+
+当前普通 variant authored native `0`（`809–816`）的 `is_murder_feast=no` / exclusive 条件和实际 sole native `0` projection 排除其余 authored `1–4`；其中 backdown native `4` 没有自己的 murder guard，不能说全部其它选项都带独立 murder-only trigger。native `0` 只含 `custom_tooltip=feast.2001.a.tt`，无选项 game effect、无 ai_chance、无 common after。`immediate:722–807` 的音乐、条件 portrait/scope 与列表初始化在选项之前执行，不能当本次点击收益。
+
+```mermaid
+flowchart TD
+    A["[actual] 正常时间到 planned start"] --> M["[stock] meal on_phase_active"]
+    M --> G{"[stock] 至少一名非host attendee？"}
+    G -->|是| E["[actual typed] feast.2001 root=host=31853"]
+    G -. "未发生；不注册" .-> X[".2003 unknown"]
+    E --> I["[stock] immediate 已执行：音乐/条件scope/list"]
+    I --> V{"[stock + typed] 唯一 native0 enabled，普通exclusive variant"}
+    V --> O["[bounded continuation] tooltip-only option；无 chosen/common-after game effect"]
+    V -. "其它authored1–4；未登记" .-> U["unknown variant"]
+    O -. "尚未选择" .-> P["unknown：独立 old15advance，same actor/date paused；next normalturn"]
+```
+
+该原生树是本次 registry 施工输入。只登记已实际发生的 `.2001` 普通三 scope 形态；root/host 关系和唯一 native/rendered projection 使用现有机制，scope identity 不借外部 HostedPost ID 补造。独立选择后必须回读旧 instance advance、同角色/日期/paused；选择本身是 timeline continuation，材料 expectation 为 None，M2 credit 为零。source-bound 登记 **static-ready**：新增独立 `.3` record、现有 `.3` dispatch 和 relational-scope 有限 key 集各加这一项。现有 Feast test 文件的唯一新增 full-route 方法首次 GREEN，actual normalizer → knowledge → ordinary classifier → `GameplayBridgeService.select_event_option` → `NativeHeadlessGameplayDriver` 的独立合成 post snapshot 确认旧 instance15 advance、same actor/date/paused；旧 `.7002` 方法没有重跑。测试记录在 `artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v14-feast-start-continuation/python-compatibility/focused-checks.json`。没有正式实机选择或新 live/material credit；未提前注册 `.2003`、`.7101` 或其它 variant，也不把自然开席推断为任何指定宾客个人出席证据。
+
 ## 2026-10-02：1.20.0.3 `feast.7002` 实际主办者到达通知
 
 正式 `formal-v11-next-01/turn-001` 在 instance `14`、玩家/root/host `31853` 的

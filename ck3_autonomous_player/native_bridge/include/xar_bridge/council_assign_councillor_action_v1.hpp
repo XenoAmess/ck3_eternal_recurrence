@@ -225,7 +225,9 @@ struct CouncilAssignCouncillorActionAccessV1 {
 bool PrepareCouncilAssignCouncillorActionRequestV1(
     const game::CouncilCompositionCandidatesPublicV1 &candidates,
     std::int32_t candidate_character_id, std::string_view request_id,
-    game::CouncilAssignCouncillorActionRequestV1 &request) noexcept;
+    game::CouncilAssignCouncillorActionRequestV1 &request,
+    std::string_view expected_position_key =
+        kCouncilAssignCouncillorPositionKeyV1) noexcept;
 
 using CouncilAssignCouncillorNativeHelperOverrideV1 = void (*)(
     void *context, std::int32_t candidate_character_id,
@@ -257,7 +259,9 @@ game::CouncilAssignCouncillorAckStatusV1 ExecuteCouncilAssignCouncillorActionFor
     const CouncilAssignCouncillorActionAccessV1 &access,
     const game::CouncilAssignCouncillorActionRequestV1 &request,
     game::CouncilAssignCouncillorActionAckV1 &ack,
-    std::string_view expected_executable_sha256) noexcept;
+    std::string_view expected_executable_sha256,
+    std::string_view expected_position_key =
+        kCouncilAssignCouncillorPositionKeyV1) noexcept;
 
 game::CouncilAssignCouncillorReceiptStatusV1
 VerifyCouncilAssignCouncillorActionReceiptV1(

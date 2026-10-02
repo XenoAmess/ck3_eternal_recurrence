@@ -1,4 +1,4 @@
-"""Strict Python projection of the Council22 steward action contract.
+"""Strict Council action contract for Steward and a vacant Chancellor.
 
 The native helper ACK only proves invocation.  A successful result requires
 the independently captured, later paused-frame receipt produced by the native
@@ -12,7 +12,10 @@ import copy
 import re
 from typing import Final
 
-from .council_composition_candidates_contract import STEWARD_POSITION_KEY
+from .council_composition_candidates_contract import (
+    CHANCELLOR_POSITION_KEY,
+    STEWARD_POSITION_KEY,
+)
 
 
 ASSIGN_COUNCILLOR_V1_CAPABILITY: Final = "game.action.assign-councillor-v1"
@@ -165,7 +168,9 @@ def build_assign_councillor_request_v1(
         isinstance(snapshot, dict)
         and snapshot.get("paused") is True
         and isinstance(position, dict)
-        and position.get("position_key") == STEWARD_POSITION_KEY
+        and (position.get("position_key") == STEWARD_POSITION_KEY
+             or (position.get("position_key") == CHANCELLOR_POSITION_KEY
+                 and position.get("vacant") is True))
         and isinstance(candidates, list)
         and observation.get("candidate_collection_complete") is True
         and isinstance(readiness, dict)
@@ -199,7 +204,7 @@ def build_assign_councillor_request_v1(
         raise ValueError("council incumbent binding is invalid")
     return AssignCouncillorRequestV1(
         request_id=_token(request_id, "request_id"),
-        position_key=STEWARD_POSITION_KEY,
+        position_key=position["position_key"],
         expected_snapshot_id=_token(
             snapshot.get("snapshot_id"), "expected_snapshot_id"
         ),
@@ -334,7 +339,8 @@ def normalize_assign_councillor_receipt_v1(
             and _int32(value.get("post_date_raw"), "post_date_raw")
             >= int(expected_ack["pre_date_raw"])
             and value.get("owner_character_id") == expected_ack.get("owner_character_id")
-            and value.get("position_key") == STEWARD_POSITION_KEY
+            and expected_ack.get("position_key") in {STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY}
+            and value.get("position_key") == expected_ack.get("position_key")
             and value.get("incumbent_character_id") == expected_ack.get("candidate_character_id")
             and round_trip is True
             and verified is True

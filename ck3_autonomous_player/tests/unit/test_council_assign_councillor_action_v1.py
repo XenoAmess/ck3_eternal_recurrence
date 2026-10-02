@@ -117,7 +117,7 @@ def _receipt(ack):
         "post_native_revision": 10,
         "post_date_raw": 1000,
         "owner_character_id": ack["owner_character_id"],
-        "position_key": "councillor_steward",
+        "position_key": ack["position_key"],
         "incumbent_character_id": ack["candidate_character_id"],
         "incumbent_identity_round_trip": True,
         "postcondition_verified": True,
@@ -261,6 +261,23 @@ class _NativeActionHarness:
 
 
 class CouncilAssignCouncillorContractTests(unittest.TestCase):
+    def test_vacant_chancellor_request_and_receipt_use_the_observed_role(self):
+        # Constructed offline contract states, not a live appointment receipt.
+        observation = _observation(incumbent=None)
+        observation["position"]["position_key"] = "councillor_chancellor"
+        observation["candidates"][0]["main_skill"]["key"] = "diplomacy"
+        request = build_assign_councillor_request_v1(
+            observation, candidate_character_id=901, request_id="chancellor-vacancy",
+        )
+        self.assertEqual(request.position_key, "councillor_chancellor")
+        self.assertFalse(request.expected_has_incumbent)
+        ack = normalize_assign_councillor_ack_v1(_ack(request), expected_request=request)
+        receipt = _receipt(ack)
+        self.assertEqual(normalize_assign_councillor_receipt_v1(receipt, expected_ack=ack)["status"], "applied")
+        receipt["position_key"] = "councillor_steward"
+        with self.assertRaisesRegex(ValueError, "internally inconsistent"):
+            normalize_assign_councillor_receipt_v1(receipt, expected_ack=ack)
+
     def test_native_capability_projects_formal_action_step_only_when_paused(self):
         self.assertIn(
             ASSIGN_COUNCILLOR_V1_STEP,

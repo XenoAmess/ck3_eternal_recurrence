@@ -676,6 +676,91 @@ void CheckSourceFrame(const std::filesystem::path& wire_directory) {
       "unknown-role", transport, serialized, failure));
   assert(failure == "private_position_outside_coverage" &&
       mailbox.next_sequence.load() == before_unknown_role && !transport.in_flight);
+
+  // The new action admits a real role-selected vacancy through the same
+  // production producer, final predicates, mailbox, helper and receipt.
+  provider.EnableChancellor();
+  provider.tasks[0].Put(0x40, ProviderFixture::kIncumbent);
+  provider.tasks[1].Put(0x40, std::int32_t{-1});
+  assert(HandleCouncilPrivate12002(current_adapter, mailbox, receipt_published, 14,
+      bridge::kCouncilFinalGatesPrivateStepV1,
+      "{\"expected_revision\":14,\"position_key\":\"councillor_chancellor\"}",
+      "chancellor-vacant-current-gates", transport, serialized, failure));
+  assert(ck3_11906::ObserveMainThreadPumpAndDrainV1(mailbox,
+      kSdlWindowsPumpFirstPeekReturnRva, stamp.thread_id));
+  assert(HandleCouncilPrivate12002(current_adapter, mailbox, {}, 0,
+      bridge::kCouncilPrivateStatusStepV1, "{}", "chancellor-vacant-gates-result",
+      transport, serialized, failure));
+  assert(transport.context.wire.query_result.vacant &&
+      transport.context.wire.query_result.readiness.ready &&
+      transport.context.wire.final_gate_row_count == 2 &&
+      !transport.context.wire.final_gate_rows[0].fireability_evaluated);
+  serialized = game::RenderCrozierBuildIdentity(std::move(serialized), current_adapter.descriptor());
+  WriteWire(wire_directory, "chancellor_vacant_status_gates.json", serialized);
+  const auto helper_calls_before_chancellor = action.helper_calls;
+  assert(HandleCouncilPrivate12002(current_adapter, mailbox, receipt_published, 14,
+      bridge::kCouncilPrivateAssignStepV1, current_assign_payload,
+      "chancellor-vacant-assign", transport, serialized, failure));
+  assert(transport.context.action_request.position_key == ProviderFixture::kChancellorPosition &&
+      transport.context.query_request.position_key == ProviderFixture::kChancellorPosition);
+  assert(ck3_11906::ObserveMainThreadPumpAndDrainV1(mailbox,
+      kSdlWindowsPumpFirstPeekReturnRva, stamp.thread_id));
+  assert(HandleCouncilPrivate12002(current_adapter, mailbox, {}, 0,
+      bridge::kCouncilPrivateStatusStepV1, "{}", "chancellor-vacant-assign-result",
+      transport, serialized, failure));
+  assert(transport.shared.has_pending_ack &&
+      transport.shared.pending_ack.position_key == ProviderFixture::kChancellorPosition &&
+      transport.shared.pending_ack.active_task_id == ProviderFixture::kTask + 1 &&
+      transport.shared.pending_ack.route == game::CouncilAssignCouncillorRouteV1::assign_vacant &&
+      transport.shared.pending_ack.native_helper_invoked &&
+      !transport.shared.pending_ack.queue_acceptance_observed &&
+      action.submitted_task == ProviderFixture::kTask + 1 &&
+      action.helper_calls == helper_calls_before_chancellor + 1);
+  serialized = game::RenderCrozierBuildIdentity(std::move(serialized), current_adapter.descriptor());
+  assert(serialized.find("councillor_chancellor") != std::string::npos);
+  WriteWire(wire_directory, "chancellor_vacant_status_ack.json", serialized);
+
+  auto chancellor_post = receipt_published;
+  chancellor_post.date_raw = date + 2;
+  Put(game_state, 8, chancellor_post.date_raw);
+  assert(!ck3_11906::ObserveMainThreadPumpAndDrainV1(mailbox,
+      kSdlWindowsPumpFirstPeekReturnRva, stamp.thread_id));
+  assert(!ck3_11906::ObserveMainThreadPumpAndDrainV1(mailbox,
+      kSdlWindowsPumpFirstPeekReturnRva, stamp.thread_id));
+  assert(mailbox.paused_owner_verified_pump_epochs.load() >=
+      ck3_11906::kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs);
+  const auto verify_chancellor = [&](std::string_view name) {
+    assert(HandleCouncilPrivate12002(current_adapter, mailbox, chancellor_post, 15,
+        bridge::kCouncilPrivateReceiptStepV1,
+        "{\"expected_revision\":15}", name,
+        transport, serialized, failure));
+    assert(transport.context.query_request.position_key == ProviderFixture::kChancellorPosition);
+    assert(ck3_11906::ObserveMainThreadPumpAndDrainV1(mailbox,
+        kSdlWindowsPumpFirstPeekReturnRva, stamp.thread_id));
+    assert(HandleCouncilPrivate12002(current_adapter, mailbox, {}, 0,
+        bridge::kCouncilPrivateStatusStepV1, "{}", name,
+        transport, serialized, failure));
+    serialized = game::RenderCrozierBuildIdentity(std::move(serialized), current_adapter.descriptor());
+  };
+  provider.tasks[0].Put(0x40, ProviderFixture::kCandidate);
+  verify_chancellor("chancellor-vacant-wrong-role-material");
+  assert(transport.context.wire.action_receipt.reason == "candidate_not_observed_as_incumbent" &&
+      transport.context.wire.action_receipt.position_key == ProviderFixture::kChancellorPosition &&
+      transport.shared.has_pending_ack &&
+      action.helper_calls == helper_calls_before_chancellor + 1);
+  WriteWire(wire_directory, "chancellor_vacant_status_wrong_role_receipt.json", serialized);
+  provider.tasks[1].Put(0x40, ProviderFixture::kCandidate);
+  verify_chancellor("chancellor-vacant-material");
+  assert(transport.context.wire.action_receipt.postcondition_verified &&
+      transport.context.wire.action_receipt.position_key == ProviderFixture::kChancellorPosition &&
+      transport.context.wire.action_receipt.incumbent_character_id == ProviderFixture::kCandidate &&
+      !transport.shared.has_pending_ack &&
+      action.helper_calls == helper_calls_before_chancellor + 1);
+  WriteWire(wire_directory, "chancellor_vacant_status_receipt.json", serialized);
+  assert(HandleCouncilPrivate12002(current_adapter, mailbox, {}, 0,
+      bridge::kCouncilPrivateStatusStepV1, "{}", "chancellor-vacant-terminal-idle",
+      transport, serialized, failure));
+  assert(serialized.find("\"status\":\"idle\"") != std::string::npos);
   assert(ck3_11906::UninstallMainThreadQueryMailboxV1(mailbox, 10) ==
       ck3_11906::MainThreadQueryUninstallResultV1::uninstalled);
   assert(iat_slot == reinterpret_cast<void*>(&FixturePeek));

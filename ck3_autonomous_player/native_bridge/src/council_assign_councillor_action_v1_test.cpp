@@ -244,6 +244,45 @@ void TestAssignAndReplaceRoutes() {
   Require(occupied.invocation_count == 1);
 }
 
+void TestExplicitPositionKeepsLegacyStewardDefault() {
+  constexpr std::string_view chancellor = "councillor_chancellor";
+  Fixture fixture;
+  fixture.frame.position_key = chancellor;
+  fixture.legality.position_key = chancellor;
+  ++fixture.frame.active_task_id;
+  fixture.legality.active_task_id = fixture.frame.active_task_id;
+  auto candidates = PublicCandidates(fixture);
+  SetFixed(candidates.candidates[0].main_skill.key, "diplomacy");
+  xar::game::CouncilAssignCouncillorActionRequestV1 request{};
+  Require(!xar::ck3_11906::PrepareCouncilAssignCouncillorActionRequestV1(
+      candidates, fixture.legality.candidate_character_id,
+      "chancellor-legacy-denied", request));
+  Require(xar::ck3_11906::PrepareCouncilAssignCouncillorActionRequestV1(
+      candidates, fixture.legality.candidate_character_id,
+      "chancellor-explicit-vacancy", request, chancellor));
+  Require(request.position_key == chancellor && !request.expected_has_incumbent);
+  xar::game::CouncilAssignCouncillorActionAckV1 ack{};
+  Require(xar::ck3_11906::ExecuteCouncilAssignCouncillorActionV1(
+      Environment(), Access(fixture), request, ack) == AckStatus::rejected_before_submit);
+  Require(fixture.invocation_count == 0 && fixture.capture_count == 0);
+  Require(xar::ck3_11906::ExecuteCouncilAssignCouncillorActionForBuildV1(
+      Environment(), Access(fixture), request, ack,
+      xar::ck3_11906::kCouncilAssignCouncillorExecutableSha256V1,
+      chancellor) == AckStatus::native_helper_invoked_verification_pending);
+  Require(ack.position_key == chancellor && ack.route == Route::assign_vacant &&
+      fixture.submission.active_task_id == fixture.frame.active_task_id &&
+      fixture.invocation_count == 1);
+
+  Fixture wrong_frame;
+  request.expected_owner_character_id = wrong_frame.frame.owner_character_id;
+  Require(xar::ck3_11906::ExecuteCouncilAssignCouncillorActionForBuildV1(
+      Environment(), Access(wrong_frame), request, ack,
+      xar::ck3_11906::kCouncilAssignCouncillorExecutableSha256V1,
+      chancellor) == AckStatus::rejected_before_submit);
+  Require(ack.failure == Failure::position_outside_coverage &&
+      wrong_frame.invocation_count == 0 && wrong_frame.legality_count == 0);
+}
+
 void TestBindingAndLegalityFailuresNeverInvoke() {
   {
     Fixture fixture;
@@ -369,6 +408,7 @@ int main() {
     TestPrivateAndExactBuildGates();
     TestCouncil19TypedRequestPreparation();
     TestAssignAndReplaceRoutes();
+    TestExplicitPositionKeepsLegacyStewardDefault();
     TestBindingAndLegalityFailuresNeverInvoke();
     TestReceiptRequiresNewIndependentIncumbentObservation();
     std::cout << "council_assign_councillor_action_v1_test: GREEN\n";

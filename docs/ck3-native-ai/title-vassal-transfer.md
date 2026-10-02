@@ -168,6 +168,8 @@ flowchart TD
 
 本次真实 recurrence 同时证明正式策略的版本兼容缺口：现有 exact definition 校验仍要求旧 ordinal `277`。独立 scratch 最小修复在同一 `grant-vassal-reject-only-v1` 内按 exact `.3` context build/version/EXE SHA 选 ordinal `296` 与上述 current stock pins，保留旧 `277` 输入、回复选择、角色/合法性/期限等现有逻辑，不新增策略或门禁。现有 `test_gameplay_bridge.py` 单个新增方法首次 **GREEN**：生产 `service.plan_turn` / ordinary classifier 使用实际 .3 ID/roles/date/ordinal，选合法 reject，再经 `GameplayBridgeService` 显式 ID typed reply 调用验证模拟 pending 清空；同方法保留旧 `277` planner 子项。该结果为 **static-ready**，冻结于同包 `python-compatibility/focused-checks.json`，没有把合成回复冒称本次 live。源码仅为两文件 scratch 小 patch，由 root 合并同文件的议会独立 hunk 后提交与冻结。
 
+随后 `formal-v14-next-02` 从 actual pending null 正式正常续行，同角色/episode/PID，turn3 +33 天、turn5 +8 天，总 41 天至 `53330784`，旧 pending 保持 absent。checkpoint h2097 留存，最后新自然 `feast.2001` 未登记，未选该事件。`normal-next-consumption-assessment.json` 的七项 GREEN 证明此 root 选定 SDK reject 的后续正式消费，形成这一窄回复的 **production-live loop**；不证明 ordinal296 自动规则已经在实机自然 recurrence 中重新做出决策。未重发拒绝、未增加转封材料或 M2 credit。
+
 ## 对天朝 361 内部流动的约束
 
 1. #312 不自行创造人物、头衔或 HC。它只能认领 Career/HC 先前从真实角色、真实 `primary_title`、

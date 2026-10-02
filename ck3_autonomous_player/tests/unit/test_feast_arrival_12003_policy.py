@@ -112,5 +112,124 @@ class FeastArrival12003PolicyTests(unittest.TestCase):
         ))
 
 
+    def test_feast_start_actual_sole_option_uses_service_and_observed_advance(self) -> None:
+        import copy
+        from test_pending_character_interaction_context_v1_bridge import _FakeEndpoint, _semantic_snapshot
+        from xar_autoplayer.bridge.event_window_context_contract import _EVENT_PROVENANCE_BY_BACKEND
+        from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+        from xar_autoplayer.bridge.service import GameplayBridgeService
+        from xar_autoplayer.bridge.version_identity import CK3_12003
+
+        player, event_id, date_raw, native_revision = 31853, 15, 53330784, 23
+        context = _frame()
+        context.update({
+            "event_definition_key": "feast.2001", "calculated_event_id": 5162001,
+            "runtime_stats_ordinal": 8308, "snapshot_revision": native_revision,
+            "date_raw": date_raw, "current_event_instance_id": event_id,
+            "root_scope": _scope(character_id=player),
+            "saved_scopes": [
+                {"name": "activity", "name_identifier": 2,
+                 "scope": _scope(raw_type_index=6, type_key="activity", character_id=None)},
+                {"name": "host", "name_identifier": 62, "scope": _scope(character_id=player)},
+                {"name": "province", "name_identifier": 37,
+                 "scope": _scope(raw_type_index=8, type_key="province", character_id=None)},
+            ],
+            "provenance": copy.deepcopy(_EVENT_PROVENANCE_BY_BACKEND[CK3_12003.backend_id("event-window-v1")]),
+        })
+        option = context["options"][0]
+        option.update({
+            "rendered_index": 0, "native_option_index": 0, "shown": True,
+            "enabled": True, "fallback": False, "cancel": False,
+            "resolved_name": "\u6b22\u8fce\uff0c\u670b\u53cb\u4eec\uff01", "unavailable_reason": "",
+        })
+        option["effect_indicators"]["coverage"] = "played-character-event-icon-indicators-1.20.0.3-v1"
+        option["effect_indicators"]["rows"] = []
+        context = normalize_current_event_window_context_v1(
+            context, expected_event_instance_id=event_id, expected_date_raw=date_raw,
+            expected_snapshot_revision=native_revision,
+        )
+        knowledge = query_vanilla_event_knowledge_v1("feast.2001", CK3_12003.game_version)
+        self.assertEqual(knowledge["status"], "available")
+        self.assertFalse(knowledge["analysis"]["new_live_evidence"])
+
+        endpoint = _FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(endpoint.pipe_name, endpoint=endpoint, command_timeout_seconds=0.1)
+        endpoint.publish({
+            "type": "hello", "protocol_version": 1, "bridge_version": "0.1.0",
+            "pid": 7878, "session_generation": 0,
+            "game_version": CK3_12003.game_version,
+            "expected_ck3_version": CK3_12003.game_version,
+            "executable_sha256": CK3_12003.executable_sha256,
+            "capabilities": ["game.state.snapshot", "game.command.select-event-option-N"],
+        })
+        before_wire = _semantic_snapshot(native_revision)
+        before_wire["state"].update({
+            "date_raw": date_raw,
+            "played_character": {"character_id": player, "alive": True},
+            "active_event": {"instance_id": event_id, "option_count": 1},
+            "pending_character_interaction": None,
+        })
+        endpoint.publish(before_wire)
+        before = driver.take_snapshot()
+        history = [{
+            "command": QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP, "ok": True,
+            "result": {
+                "step": QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP, "accepted": True,
+                "status": "available", "snapshot_revision": native_revision,
+                "current_event_instance_id": event_id, "date_raw": date_raw,
+                "current_event_window_context": context,
+                "queried_snapshot_id": before["snapshot_id"], "queried_revision": before["revision"],
+                "queried_native_revision": native_revision,
+            },
+        }]
+        plan = choose_one_life_turn(
+            history, snapshot=before,
+            action_steps={QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP, "select-event-option-1"},
+        )
+        self.assertEqual(plan["phase"], "active_event_registry_choice")
+        self.assertEqual(plan["selected_step"], "select-event-option-1")
+        decision = plan["event_decision"]
+        self.assertEqual(decision["selected_native_option_index"], 0)
+        self.assertTrue(decision["checks"]["scope:host:character_id"])
+        self.assertEqual(decision["choice_effect_profile"]["selected_option_effects"], [])
+        self.assertEqual(decision["choice_effect_profile"]["common_after_effects"], [])
+        self.assertIsNone(decision["choice_effect_profile"]["observable_postcondition"])
+        self.assertEqual(plan["event_campaign_utility"]["comparison_kind"], "sole_legal_route")
+        self.assertEqual(plan["event_campaign_utility"]["selected_utility"]["material_direction"], "neutral")
+        self.assertIsNone(plan.get("event_material_postcondition"))
+
+        def answer(request):
+            if request.get("type") != "execute_step":
+                return
+            self.assertEqual(request["step"], plan["selected_step"])
+            endpoint.publish({"type": "command_result", "protocol_version": 1,
+                              "request_id": request["request_id"], "ok": True,
+                              "result": {"accepted": True}})
+            after_wire = copy.deepcopy(before_wire)
+            after_wire["revision"] = native_revision + 1
+            after_wire["snapshot_id"] = f"native:{native_revision + 1}"
+            after_wire["state"]["active_event"] = None
+            endpoint.publish(after_wire)
+        endpoint.send_hook = answer
+        service = GameplayBridgeService(driver)
+        result = service.select_event_option(
+            decision["selected_option_number"], event_instance_id=event_id,
+            expected_revision=before["revision"],
+        )
+        selection = result["event_selection"]
+        self.assertEqual(result["event_instance_id"], event_id)
+        self.assertEqual(result["option_number"], 1)
+        self.assertEqual(selection["selected_native_option_index"], 0)
+        self.assertTrue(selection["postcondition_verified"])
+        self.assertEqual(selection["old_event_instance_id"], event_id)
+        self.assertIsNone(selection["new_event_instance_id"])
+        after = service.snapshot()
+        self.assertIsNone(after["active_event"])
+        self.assertTrue(after["paused"])
+        self.assertEqual(after["played_character"]["character_id"], player)
+        self.assertEqual(after["date_raw"], date_raw)
+
+
+
 if __name__ == "__main__":
     unittest.main()

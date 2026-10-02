@@ -30,12 +30,14 @@ bool ValidToken(std::string_view value, std::size_t capacity) noexcept {
 }
 
 bool ValidRequest(
-    const game::CouncilAssignCouncillorActionRequestV1 &request) noexcept {
+    const game::CouncilAssignCouncillorActionRequestV1 &request,
+    std::string_view expected_position_key) noexcept {
   if (!ValidToken(request.request_id,
                   kCouncilAssignCouncillorRequestIdCapacityV1) ||
       !ValidToken(request.expected_snapshot_id,
                   kCouncilAssignCouncillorSnapshotIdCapacityV1) ||
-      request.position_key != kCouncilAssignCouncillorPositionKeyV1 ||
+      expected_position_key.empty() ||
+      request.position_key != expected_position_key ||
       request.expected_public_revision == 0 ||
       request.expected_native_revision == 0 ||
       request.expected_owner_character_id <= 0 ||
@@ -64,10 +66,11 @@ AckStatus Reject(
 
 Failure BindFrame(
     const Frame &frame,
-    const game::CouncilAssignCouncillorActionRequestV1 &request) noexcept {
+    const game::CouncilAssignCouncillorActionRequestV1 &request,
+    std::string_view expected_position_key) noexcept {
   if (!frame.available || !frame.map_ready) return Failure::observation_unavailable;
   if (!frame.paused) return Failure::not_paused;
-  if (frame.position_key != kCouncilAssignCouncillorPositionKeyV1) {
+  if (frame.position_key != expected_position_key) {
     return Failure::position_outside_coverage;
   }
   if (frame.snapshot_id != request.expected_snapshot_id ||
@@ -150,7 +153,8 @@ void CopyPost(const Frame &post,
 bool PrepareCouncilAssignCouncillorActionRequestV1(
     const game::CouncilCompositionCandidatesPublicV1 &candidates,
     std::int32_t candidate_character_id, std::string_view request_id,
-    game::CouncilAssignCouncillorActionRequestV1 &request) noexcept {
+    game::CouncilAssignCouncillorActionRequestV1 &request,
+    std::string_view expected_position_key) noexcept {
   request = {};
   if (candidates.status !=
           game::CouncilCompositionCandidatesPublicStatusV1::available ||
@@ -165,8 +169,8 @@ bool PrepareCouncilAssignCouncillorActionRequestV1(
       candidates.owner_character_id <= 0 || candidate_character_id <= 0 ||
       candidates.public_revision == 0 || candidates.native_revision == 0 ||
       candidates.candidate_count > candidates.candidates.size() ||
-      FixedString(candidates.position_key) !=
-          kCouncilAssignCouncillorPositionKeyV1 ||
+      expected_position_key.empty() ||
+      FixedString(candidates.position_key) != expected_position_key ||
       !ValidToken(request_id, kCouncilAssignCouncillorRequestIdCapacityV1)) {
     return false;
   }
@@ -194,7 +198,7 @@ bool PrepareCouncilAssignCouncillorActionRequestV1(
     return false;
   }
   request.request_id.assign(request_id);
-  request.position_key.assign(kCouncilAssignCouncillorPositionKeyV1);
+  request.position_key.assign(expected_position_key);
   request.expected_snapshot_id.assign(snapshot_id);
   request.expected_public_revision = candidates.public_revision;
   request.expected_native_revision = candidates.native_revision;
@@ -212,9 +216,10 @@ AckStatus ExecuteCouncilAssignCouncillorActionForBuildV1(
     const CouncilAssignCouncillorActionAccessV1 &access,
     const game::CouncilAssignCouncillorActionRequestV1 &request,
     game::CouncilAssignCouncillorActionAckV1 &ack,
-    std::string_view expected_executable_sha256) noexcept {
+    std::string_view expected_executable_sha256,
+    std::string_view expected_position_key) noexcept {
   try {
-    if (!ValidRequest(request)) {
+    if (!ValidRequest(request, expected_position_key)) {
       return Reject(request, Failure::request_contract_invalid, {}, ack);
     }
     if (!environment.exact_build_admitted ||
@@ -248,7 +253,7 @@ AckStatus ExecuteCouncilAssignCouncillorActionForBuildV1(
     if (!access.capture_frame(access.context, first)) {
       return Reject(request, Failure::observation_unavailable, {}, ack);
     }
-    auto failure = BindFrame(first, request);
+    auto failure = BindFrame(first, request, expected_position_key);
     if (failure != Failure::none) return Reject(request, failure, {}, ack);
 
     game::CouncilAssignCouncillorFinalLegalityV1 legality{};

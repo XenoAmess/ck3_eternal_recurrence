@@ -14,6 +14,12 @@ using Completion = bridge::CouncilApplicationMainCompletionV1;
 using Failure = bridge::CouncilApplicationMainFailureV1;
 using MailboxState = ck3_11906::MainThreadQueryMailboxStateV1;
 
+template<std::size_t N> std::string_view Fixed(const std::array<char,N>& value) {
+  const auto end = std::find(value.begin(), value.end(), '\0');
+  return end == value.end() ? std::string_view{} :
+      std::string_view(value.data(), static_cast<std::size_t>(end-value.begin()));
+}
+
 std::string Result(std::string_view request_id, std::string_view step,
                    std::string_view status) {
   std::string result;
@@ -285,9 +291,13 @@ bool HandleCouncilPrivate12002(const game::GameAdapter& adapter,
         failure = "private_candidate_id_invalid"; return false;
       }
       game::CouncilAssignCouncillorActionRequestV1 request{};
-      if (!ck3_11906::PrepareCouncilAssignCouncillorActionRequestV1(
-          state.context.wire.query_result, static_cast<std::int32_t>(candidate),
-          request_id, request) || request.expected_native_revision != revision ||
+      const auto& observed = state.context.wire.query_result;
+      const auto position = Fixed(observed.position_key);
+      const bool supported = position == kCouncilCandidatesStewardPosition12002 ||
+          (position == kCouncilCandidatesChancellorPosition12002 && observed.vacant);
+      if (!supported || !ck3_11906::PrepareCouncilAssignCouncillorActionRequestV1(
+          observed, static_cast<std::int32_t>(candidate),
+          request_id, request, position) || request.expected_native_revision != revision ||
           request.expected_public_revision != revision ||
           request.expected_owner_character_id != published.played_character_id ||
           request.expected_date_raw != published.date_raw) {
@@ -299,7 +309,8 @@ bool HandleCouncilPrivate12002(const game::GameAdapter& adapter,
       state.context.action_request = request;
       state.context.query_request = {state.expected_snapshot_id,
           request.expected_public_revision, request.expected_native_revision,
-          request.expected_date_raw, request.expected_owner_character_id};
+          request.expected_date_raw, request.expected_owner_character_id,
+          state.context.action_request.position_key};
       PrepareOperation(state, Operation::submit_assignment);
       if (!Queue(state)) {
         failure = "private_assignment_queue_unavailable"; return false;
@@ -313,7 +324,7 @@ bool HandleCouncilPrivate12002(const game::GameAdapter& adapter,
         revision <= state.shared.pending_ack.pre_native_revision) {
       failure = "private_independent_receipt_frame_unavailable"; return false;
     }
-    SnapshotRequest(state, published, revision);
+    SnapshotRequest(state, published, revision, state.shared.pending_ack.position_key);
     PrepareOperation(state, Operation::verify_assignment_receipt);
     if (!Queue(state)) {
       failure = "private_receipt_queue_unavailable"; return false;

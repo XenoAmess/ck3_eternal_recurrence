@@ -62,6 +62,7 @@ from .bridge.event_window_context_contract import (
     normalize_current_event_window_context_v1,
 )
 from .bridge.council_composition_candidates_contract import (
+    CHANCELLOR_POSITION_KEY,
     QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY,
     QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP,
     STEWARD_POSITION_KEY,
@@ -3308,6 +3309,25 @@ def _plan_steward_composition_v1(
 ) -> dict[str, object]:
     """Plan the narrow steward decision without inventing an assignment ACK."""
 
+    return _plan_council_composition_v1(
+        observation, available_capabilities=available_capabilities,
+        position_key=STEWARD_POSITION_KEY,
+    )
+
+
+def _plan_council_composition_v1(
+    observation: dict[str, object],
+    *,
+    available_capabilities: set[str],
+    position_key: str,
+) -> dict[str, object]:
+    """Preserve Steward selection and fill a native-legal Chancellor vacancy."""
+
+    if position_key not in {STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY}:
+        raise ValueError("Council assignment position is outside coverage")
+    policy = ("council-composition-steward-v1" if position_key == STEWARD_POSITION_KEY
+              else "council-composition-chancellor-v1")
+
     position = observation.get("position")
     if not isinstance(position, dict):
         raise ValueError("normalized council observation lacks position")
@@ -3319,7 +3339,7 @@ def _plan_steward_composition_v1(
         ),
     )
     evidence = {
-        "position_key": STEWARD_POSITION_KEY,
+        "position_key": position_key,
         "incumbent_character_id": position["incumbent_character_id"],
         "incumbent_main_skill": position["incumbent_main_skill"],
         "vacant": position["vacant"],
@@ -3328,17 +3348,25 @@ def _plan_steward_composition_v1(
     }
     if not candidates:
         return {
-            "policy": "council-composition-steward-v1",
+            "policy": policy,
             "outcome": "NO_CHANGE",
             "reason_code": "no_eligible_candidates",
             **evidence,
         }
     selected = candidates[0]
+    if position_key == CHANCELLOR_POSITION_KEY and position["vacant"] is not True:
+        return {
+            "policy": policy,
+            "outcome": "NO_CHANGE",
+            "reason_code": "occupied_chancellor_outside_action_coverage",
+            "selected_candidate": dict(selected),
+            **evidence,
+        }
     if position["vacant"] is not True:
         incumbent_skill = int(position["incumbent_main_skill"]["value"])
         if int(selected["main_skill"]["value"]) <= incumbent_skill:
             return {
-                "policy": "council-composition-steward-v1",
+                "policy": policy,
                 "outcome": "NO_CHANGE",
                 "reason_code": "incumbent_not_outperformed",
                 "selected_candidate": dict(selected),
@@ -3346,7 +3374,7 @@ def _plan_steward_composition_v1(
             }
         routable = ASSIGN_COUNCILLOR_V1_CAPABILITY in available_capabilities
         return {
-            "policy": "council-composition-steward-v1",
+            "policy": policy,
             "outcome": "REPLACE_REQUIRED",
             "reason_code": (
                 "replacement_action_ready"
@@ -3360,7 +3388,7 @@ def _plan_steward_composition_v1(
         }
     routable = ASSIGN_COUNCILLOR_V1_CAPABILITY in available_capabilities
     return {
-        "policy": "council-composition-steward-v1",
+        "policy": policy,
         "outcome": "ASSIGN_REQUIRED",
         "reason_code": (
             "assignment_action_ready"

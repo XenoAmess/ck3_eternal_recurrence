@@ -203,7 +203,7 @@ def test_old_steward_response_cannot_satisfy_chancellor_request(query_step: str)
         )
 
 
-def test_readonly_chancellor_dto_does_not_expand_assignment_or_formal_policy() -> None:
+def test_chancellor_assignment_extends_only_the_vacant_ordinary_route() -> None:
     observation = _normalize(_payload(CHANCELLOR_POSITION_KEY), expected_position_key=CHANCELLOR_POSITION_KEY)
     with pytest.raises(ValueError, match="complete paused frame"):
         build_assign_councillor_request_v1(
@@ -212,8 +212,26 @@ def test_readonly_chancellor_dto_does_not_expand_assignment_or_formal_policy() -
         )
     terminal = _terminal(CHANCELLOR_POSITION_KEY, PRIVATE_GATES_STEP)
     query = {**terminal, "council_composition_candidates": observation}
-    with pytest.raises(ValueError, match="requested position"):
-        select_council_candidate_v1(query)
+    occupied = select_council_candidate_v1(query, position_key=CHANCELLOR_POSITION_KEY)
+    assert occupied["outcome"] == "NO_CHANGE"
+    assert occupied["reason_code"] == "occupied_chancellor_outside_action_coverage"
+    # This is a constructed offline vacancy, not a paused appointment outcome.
+    observation["position"].update({"incumbent_character_id": None,
+        "incumbent_main_skill": None, "vacant": True, "action_route": "assign"})
+    for row in observation["candidates"]:
+        row["action_route"] = "assign"
+    decision = select_council_candidate_v1(query, position_key=CHANCELLOR_POSITION_KEY)
+    assert decision["outcome"] == "ASSIGN_REQUIRED"
+    request = build_assign_councillor_request_v1(
+        observation, candidate_character_id=decision["selected_candidate"]["character_id"],
+        request_id="offline-chancellor-vacancy",
+    )
+    assert request.position_key == CHANCELLOR_POSITION_KEY
+    assert request.expected_has_incumbent is False
+    observation["position"]["position_key"] = "councillor_spymaster"
+    with pytest.raises(ValueError, match="complete paused frame"):
+        build_assign_councillor_request_v1(observation,
+            candidate_character_id=request.candidate_character_id, request_id="unsupported-role")
 
 
 @pytest.mark.parametrize("query_step,tool_name", [
