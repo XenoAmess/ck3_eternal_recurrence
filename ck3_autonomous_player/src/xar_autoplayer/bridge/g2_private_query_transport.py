@@ -39,7 +39,24 @@ def read_private_g2_native_query_v1(
     if (not isinstance(frame, Mapping) or frame.get("type") != "command_result"
             or frame.get("protocol_version") != 1 or frame.get("request_id") != request_id
             or frame.get("ok") is not True):
-        raise BridgeUnavailableError(f"private native observation returned RED: {step}")
+        if isinstance(frame, Mapping):
+            native_summary = "; ".join(
+                f"{key}={str(frame[key])[:600]}"
+                for key in (
+                    "type", "protocol_version", "request_id", "ok",
+                    "error", "reason", "status", "execution_code", "result",
+                    "source_snapshot_id", "source_revision",
+                    "source_connection_generation",
+                )
+                if key in frame
+            )
+        else:
+            native_summary = f"frame={repr(frame)[:200]}"
+        raise BridgeUnavailableError(
+            f"private native observation returned RED: {step}; "
+            f"request_id={request_id}; native_revision={native_revision}; "
+            f"{native_summary or 'native command result has no failure details'}"
+        )
     result = frame.get("result")
     if (not isinstance(result, dict) or result.get("step") != step
             or result.get("accepted") is not True or result.get("private_build") is not True
