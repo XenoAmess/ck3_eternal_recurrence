@@ -1,0 +1,225 @@
+{
+  "scope": "public fixture synthetic tests, CLI help, closed pixel/save parsing; no live execution",
+  "commands": [
+    {
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "tools/test_ck3_stability_fixture.py"
+      ],
+      "exit_code": 0,
+      "at_utc": "2026-10-03T03:35:23.552959+00:00",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b7761f1d1111667c60bc95af57554dd700a6d4a50ef04131b9cdfd5465d67d4a"
+    },
+    {
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "ck3_stability_fixture",
+        "--help"
+      ],
+      "exit_code": 0,
+      "at_utc": "2026-10-03T03:35:31.145861+00:00",
+      "stdout_sha256": "b5315a99d43ee59d7426d9953979b45dd1b2923558e429d4996471938d4d047c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "ck3_stability_fixture",
+        "route",
+        "--help"
+      ],
+      "exit_code": 0,
+      "at_utc": "2026-10-03T03:35:31.362092+00:00",
+      "stdout_sha256": "ba4199e84cea9b9642507c62cb28e4ea7b8e14d53d3907f42a2e3af3fc07c9ce",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "ck3_stability_fixture",
+        "assist",
+        "--help"
+      ],
+      "exit_code": 0,
+      "at_utc": "2026-10-03T03:35:31.585900+00:00",
+      "stdout_sha256": "eaca1d0ebe00d78a985a4b853d3d25f7efa300d8d6315bd6eac9dd48201cef0f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "ck3_stability_fixture",
+        "verify-chain",
+        "--help"
+      ],
+      "exit_code": 0,
+      "at_utc": "2026-10-03T03:35:31.800092+00:00",
+      "stdout_sha256": "4bebf693d58ff8a2bb88d9b934fe73f9e22ea79bdf21ecc04deb76269a568fc5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "interpreter_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "public_sources": [
+    {
+      "path": "tools\\ck3_stability_fixture\\__init__.py",
+      "sha256": "41fff9c40dfcaa161481dc89ab20fc90afb960daf2e2859392d13c9763c43fc9"
+    },
+    {
+      "path": "tools\\ck3_stability_fixture\\__main__.py",
+      "sha256": "1495e04f611e9b0b0c3f3d6911916469b346667af77dbd5947c5443fb1d5d95e"
+    },
+    {
+      "path": "tools\\ck3_stability_fixture\\chain.py",
+      "sha256": "10bcb5703b76c57c57daba76a226210cb8cc9a57dfe72303a729d71db71675e4"
+    },
+    {
+      "path": "tools\\ck3_stability_fixture\\evidence.py",
+      "sha256": "31792f3fc2b1aa26cd7553a066c0d6d22e4b47c8fab1a7c9e621f6ad0da23dfc"
+    },
+    {
+      "path": "tools\\ck3_stability_fixture\\pixels.py",
+      "sha256": "fc40f97d58e4fa6470ee7760f39545632eb11f7a7cd3733e760419cd06f00dc1"
+    },
+    {
+      "path": "tools\\ck3_stability_fixture\\runner.py",
+      "sha256": "318cdf0e64fc1de7c103f16ad363d0bc1969614bddb620f67513d58dab5b158a"
+    },
+    {
+      "path": "tools\\ck3_stability_fixture\\windows.py",
+      "sha256": "8f83daf04f1db9f9d6cc42f195c8b6062e4226678fe4fe37a9edec26ab7552dc"
+    }
+  ],
+  "closed_pixel_rows": [
+    {
+      "source_id": "natural-progress-a31.png",
+      "source_sha256": "1e675efd53fe09d266453fa387bd1b2c7418f6f6646576ae4c0711e622bfccf3",
+      "kind": "WAR_OUTCOME",
+      "action": "Escape",
+      "body_mask_pixels": 1931
+    },
+    {
+      "source_id": "natural-progress-a36.png",
+      "source_sha256": "202a751d645c038dbe8c0fa3cb4b369da4c28b9912ac92247df64b7f11018326",
+      "kind": "WAR_OUTCOME",
+      "action": "Escape",
+      "body_mask_pixels": 1605
+    },
+    {
+      "source_id": "natural-progress-a37.png",
+      "source_sha256": "5867e13d43d7aadc0a29731091ffe88d03fd2632e38d7519f65dcf5313c8aa59",
+      "kind": "WAR_OUTCOME",
+      "action": "Escape",
+      "body_mask_pixels": 1918
+    },
+    {
+      "source_id": "natural-progress-a40.png",
+      "source_sha256": "082d7b578f85dc2714c7cc987a80ba5d37b8bdb2e0a620fe64686a8551279a44",
+      "kind": "WAR_OUTCOME",
+      "action": "Escape",
+      "body_mask_pixels": 2088
+    },
+    {
+      "source_id": "natural-progress-a44.png",
+      "source_sha256": "973eba91a98375806036ad284fc114ccbf639f887e6f8a6c8720d2bf0e9266c4",
+      "kind": "WAR_OUTCOME",
+      "action": "Escape",
+      "body_mask_pixels": 2062
+    },
+    {
+      "source_id": "natural-progress-a45.png",
+      "source_sha256": "8b589035e60b01910f9450a5e522b4193583a638e5d001782212bde4b0f51562",
+      "kind": "WAR_OUTCOME",
+      "action": "Escape",
+      "body_mask_pixels": 523
+    },
+    {
+      "source_id": "natural-progress-a09.png",
+      "source_sha256": "b78e71a9f18e3688e114caa519179aa7facfac7c487b79ab333fa5e835e48b9a",
+      "kind": "STANDARD_EVENT",
+      "option_count": 1,
+      "action": "Shift+1"
+    },
+    {
+      "source_id": "natural-progress-a12.png",
+      "source_sha256": "53f857bacf81fd8185a0f4689001503ec17a0f5e50243f7a4f19ba2b4b9eae8b",
+      "kind": "STANDARD_EVENT",
+      "option_count": 1,
+      "action": "Shift+1"
+    },
+    {
+      "source_id": "natural-progress-a13.png",
+      "source_sha256": "a6e1af1e3fef38323390f9a7a8ea92a05612e01c1dec57fbf151b4ad6f8af7b9",
+      "kind": "STANDARD_EVENT",
+      "option_count": 1,
+      "action": "Shift+1"
+    },
+    {
+      "source_id": "natural-progress-a14.png",
+      "source_sha256": "e4d1e941e92ae8a8f8463b0d2a353079736766402061813d7b2cfe36a8592589",
+      "kind": "STANDARD_EVENT",
+      "option_count": 1,
+      "action": "Shift+1"
+    },
+    {
+      "source_id": "natural-progress-a15.png",
+      "source_sha256": "9ee667a44b54519da70a36dbd890f5c6e45e6b8a03e3b2e81898c5af0c4779d6",
+      "kind": "STANDARD_EVENT",
+      "option_count": 1,
+      "action": "Shift+1"
+    },
+    {
+      "source_id": "natural-progress-a17.png",
+      "source_sha256": "9a5faa26dc4fdba174cff1489b6980cb9207271323183a5fa665c618d0b357d7",
+      "kind": "STANDARD_EVENT",
+      "option_count": 4,
+      "action": "Shift+1"
+    },
+    {
+      "source_id": "natural-progress-a21.png",
+      "source_sha256": "a4bad2c4d12cd2315c6a81c66419eddd301c0d281ed1ccd5a3d8db31cfa5bb4f",
+      "kind": "STANDARD_EVENT",
+      "option_count": 3,
+      "action": "Shift+1"
+    },
+    {
+      "source_id": "natural-progress-a22.png",
+      "source_sha256": "ef389ba21c33d739637dd5549db566a80b653ac634072b4ac8984db164cb0f1c",
+      "kind": "STANDARD_EVENT",
+      "option_count": 5,
+      "action": "Shift+1"
+    },
+    {
+      "source_id": "natural-progress-a29.png",
+      "source_sha256": "6b6e0c4839028be1e39ac31e254fd6c5ae5c4f80f48ae018fce591a0f75e4c5a",
+      "kind": "STANDARD_EVENT",
+      "option_count": 3,
+      "action": "Shift+1"
+    },
+    {
+      "source_id": "a03/20261003T025329-5652ef19fe/before-a",
+      "source_sha256": "3ab0b9e37872fc1a55f1c1de6692fffe7c1f2655b94fba2a4e1ecd8e6d629e8c",
+      "kind": "WAR_OUTCOME",
+      "same_action_as_closed_a44": true
+    }
+  ],
+  "closed_save_integrity_ok": true,
+  "closed_save_sha256": "d3ce51eda0e2900cb7353ddbf0831a2f90dc1d8c10b4c4dc9c8e716b0b4ef0cd",
+  "source_pin_sha256": "89ca95c7d0ccf3bde76443c6a9a8357f48e106cb4bdb2a27738e689b07442ab8",
+  "external_verification_sha256": "208218458934dadd597d39f90b7a1796fa494689809d613b872c174e7d8293dd",
+  "external_closed_replay_sha256": "cef069dd660bdcec3e26c8950f18512418b9f54438006a4f3712ee97c8ae187f",
+  "fixture_cases": 22,
+  "public_live_executed": false,
+  "century_status": "NOT_GRADED",
+  "initial_a01_red_preserved": true,
+  "initial_a01_red_cause": "synthetic button outline r-g55 was outside observed gold predicate; corrected test art to r-g30"
+}
