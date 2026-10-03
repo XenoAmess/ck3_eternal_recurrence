@@ -1,14 +1,14 @@
 # Occupied-holding actual siege observation on CK3 1.20.0.3
 
-2026-10-03. Exact CK3 **1.20.0.3 Crozier**, Steam build **25652598**, EXE SHA **94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6**. Implementation baseline **g40 / 0ad923525ef899b836a823dfe983db49030789f2**. The ordinary Robert 29829 campaign remains the only actual entry. Warfare authorization is fully open.
+2026-10-03. Exact CK3 **1.20.0.3 Crozier**, Steam build **25652598**, EXE SHA **94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6**. Historical implementation baseline **g40 / 0ad923525ef899b836a823dfe983db49030789f2**. Current v39 actual observer is a **production-live primitive**, source **fca9daf1aa517ca5a5c185cc2c0736287ad26847 / g41**, DLL SHA **ba650ab1d42aa17d9d2e94f2f3a92db7b644c36a7b9348c6a18e541fe7a4153e**; the initial actual and one saved day below retain separate frames. The ordinary Robert 29829 campaign remains the only actual entry. Warfare authorization is fully open.
 
 ## Actual milestone and necessary observation
 
 Root's real route batch reached province **2604** with public CUnit **83886367**, current province2604, `army_state=sieging`/code3, observable complete-empty route and no combat/retreat. This extends the finite occupation-target selection → native route preview → one movement → saved daily progression loop through arrival and automatic siege start. It does not prove recovery or a completed war loop.
 
-The separate old-v38 postarrival occupation query confirms **War16777231 / holding2400 / province2604 / legal holder33435 / occupying character30097 / fort3 / garrison400 / counted opponent occupation=true**. Native defender occupied count remains **17**. The independent snapshot still reports sieging3 while army siege days/holder/subrealm are all null. Current saved baseline is DateRaw **53237136**, normal checkpoint **h4821**, SHA **19007da8127bf8cda28bea484021fad116e1082a67d15e7c5927c7d6c546c08f**, size **90945405 B**, total **3867** days / resume **714** / today **619**. The earlier arrival h4819/SHA21273b864f1f6533fbf8c6fa8203de25925835026547bf6c0c7b7fe1676154f2 remains historical evidence.
+The separate old-v38 postarrival occupation query confirms **War16777231 / holding2400 / province2604 / legal holder33435 / occupying character30097 / fort3 / garrison400 / counted opponent occupation=true**. Native defender occupied count remains **17**. The independent snapshot still reports sieging3 while army siege days/holder/subrealm are all null. The historical pre-v39 saved baseline is DateRaw **53237136**, normal checkpoint **h4821**, SHA **19007da8127bf8cda28bea484021fad116e1082a67d15e7c5927c7d6c546c08f**, size **90945405 B**, total **3867** days / resume **714** / today **619**. The earlier arrival h4819/SHA21273b864f1f6533fbf8c6fa8203de25925835026547bf6c0c7b7fe1676154f2 remains historical evidence.
 
-Those actual null fields prevent reading this siege's FullSiegeID, remaining work/days and native assault eligibility. The existing objective projection covers the original war goals2610/2640 rather than this actual occupied destination. Inventory found no advertised `.3` arbitrary-province siege MCP: a historical `query-province-local-siege-v1` parser is not a published adapter capability. Existing start/stop assault MCP tools require an already observed full SiegeID. This is a production observation gap with a concrete next entry.
+Those actual v38 null fields prevented reading this siege's FullSiegeID, remaining work/days and native assault eligibility; v39 now reads those fields in the same occupation MCP as recorded below. The existing objective projection covers the original war goals2610/2640 rather than this actual occupied destination. Inventory found no advertised `.3` arbitrary-province siege MCP: a historical `query-province-local-siege-v1` parser is not a published adapter capability. Existing start/stop assault MCP tools require an already observed full SiegeID. This was the concrete production observation gap that motivated the following implementation; it is closed by the v39 actual primitive below.
 
 ## Frozen tree and reused exact reader
 
@@ -60,13 +60,13 @@ Fixed point remains `{raw, scale:100000}`; remaining work is max(0,total-current
 
 The native DTO owns a small scalar `WarOccupationActiveSiegeV1`, avoiding a game_contract include cycle. Python imports and reuses existing `war_contract._normalize_active_siege`; no new endpoint, schema, flag, driver, service or platform is introduced.
 
-## Verification and next actual recipe
+## Historical fixture verification and original actual recipe
 
 Four production source paths and two reusable fixture paths are complete. The sole focused new suite passed on its first attempt: **6TU /O2 /DNDEBUG /W4 /WX**, **28 native Check**, **38 Python require**, **3 genuine native JSON / 3 registered MCP** cases. It covers a full player siege and legal zero values/native assault validators, true no-siege versus a stale FullSiegeID, and unavailable days with valid progress retained. Old12 GREEN cases were not rerun. Runtime verifier failures use explicit Check/require and survive disabled assertions.
 
-New observation readiness is **static-ready with a GREEN production-path fixture**. New fields are not production-live until Root loads the combined DLL and reads the actual paused holding. Existing arrival/sieging evidence remains a finite production-live loop milestone. This lane performs zero SDK/window/game actions, zero shared-source/Git writes and advances zero days.
+At this historical implementation stage, observation readiness was **static-ready with a GREEN production-path fixture**. That fixture did not grant production-live status. Root subsequently loaded the v39 combined DLL and actually read the paused holding, which grants the finite primitive documented below. Existing arrival/sieging evidence remains a separate finite production-live loop milestone. The pure-file consumption lane performs zero SDK/window/game actions, zero shared-source/Git writes and advances zero days.
 
-Root's next query stays:
+The original actual query recipe, now exercised by Root, stays:
 
 ```json
 {"tool":"ck3_query_war_occupation_targets_v1","arguments":{"war_id":16777231,"expected_revision":"<fresh public revision from this SDK>"}}
@@ -86,3 +86,21 @@ All paths below are rooted at `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261
 - Combined source/report and exact raw pins: `war-goal-capture-execution/actual-v38-01/holding-siege-combined/ROOT-DELIVERY.json` and `ACTUAL-POSTARRIVAL-CONSUMPTION.json`.
 
 Index from [war occupation targets](war-occupation-targets-12003.md) and [army target triage](army-target-triage-1.20.0.3.md). Prior native trees, failed preview attempts, ABI and actual arrival values remain historical evidence. Commit/push and final source/DLL/live receipts belong to Root's candidate integration.
+
+
+## 2026-10-03：v39 首次实际 holding siege primitive
+
+7-path源码 `fca9daf1aa517ca5a5c185cc2c0736287ad26847` 已发布；g41/jobs64构建4 targets、541 TU/538 unique/1041 inputs，71.17104秒。War16777231 同一次 paused query 完整读回35 holding行，date_raw=53237136；Holding2400/Province2604 的FullSiege503316492由玩家Army83886367围攻，strength2334、progress540/100000、work175750/32500000、remaining32324250、native days_left184已实际观测。assault observable=true，breach0，start/stop/in_progress=false，突击preview daily progress/casualties均为合法0。新增围城字段为有限 production-live primitive；35行中2行有active siege，占领/holder/occupier/side/fort/garrison变化均0，defender31/17、attacker4/0，2604仍敌占，未收复。 本lane0新日/0动作；累计3867、resume714、当日619不因证据索引变化。 同一次实机的2份其他owner消费receipt已并入证据索引。 最新normal014/h4824；围城184日是当前原生估计，不保证收复日期。CI37117062048 GREEN，游戏保持minimized=true/foreground=false。
+
+此处 current readiness 为 **production-live primitive**：新增字段已从 Robert 暂停真实 holding 返回，而非仅 DTO/ACK/fixture。首实际 query 解析出同 War16777231 的35条完整行，其中2条存在 active siege；目标2604上玩家围攻的完整 FullSiege 身份、work/remaining/ETA、breach和native assault资格均有真实值。没有新增 schema、MCP、运行开关或动作，完整原生 target rank/assault utility 仍由此前专题维护为质量差距。首字段可用不等于收复或全局循环完成。
+
+
+### 一次正常围城日推进及独立保存后的 actual 状态
+
+首个请求最多64日的 helper attempt 在 `actual-first-siege-batch-2604-01/day-01/003-ck3_execute_step.json` 的 contact-horizon 步骤实际 RED，advance 未发送，新增0日，正常存档保留 h4827。该失败保留为 harness RED，不能写成64日完成或部分完成若干日。
+
+Root 随后只发送一次实际 day advance。它成功使 raw53237136→53237160；通用 readonly capture 沿用旧 expected-date，因而随后报 harness RED。Root 没有重播这个已成功的 advance，而是用独立新日期读取与正常保存收口：[actual-after-stationary-day-save-2604-01/result.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/siege-v39/actual-after-stationary-day-save-2604-01/result.json) GREEN，正常 pair **h4831 / 90,890,887 B / SHA-256 `3f482def35fe0d13c901044ff5c6a5b9eec3b643ef9c6e6774e9a1f42c3415e6`**。累计 **3868日 / resume715 / 2026-10-03增量620**。本纯文件消费增加0日；唯一新增日归属于 Root 的该次实际 advance。
+
+同一 **FullSiege503316492 / player Army83886367 / holding2400 / province2604** 的 fresh 读数为 current_work **351500**、total_work **32500000**、remaining_work **32148500**，scale均 **100000**；progress_fraction **1081/100000**，native days_left **183**。此前首 actual h4824/raw53237136 的 work175750、progress540/100000、ETA184保留为历史当帧值。一日实际工作增量175750并未完成围城；ETA仍是原生当前估计，不承诺收复日期。
+
+breach_level仍0、native CanStartAssault仍false，holding2400仍由敌方30097占领，守方被对側占领的holding仍17。此次没有突击、occupation17→16、收复、围城结束或战争终结；有限围城观测 primitive 加上一日保存后变化，不冒充完整战争 OODA。Robert29829 原普通战役与 exact .3 绑定不变，游戏保持 minimized=true/foreground=false。下一项仍按真实 paused work/ETA、contact 与 occupation输入推进正常围城，后续 batch 和 current 由 Root 独立记账。

@@ -193,6 +193,24 @@ v37 三个同目标 preview 的真实 RED 原样保留在上节：当时是 Pyth
 
 ## 2026-10-03T18:41 到达2604后的真实占领复查
 
-到达后004 occupation实际GREEN：2604的 **holding2400 / legalholder33435 / occupier30097 / fort3 / garrison400 / counted_opposing=true**；主战defender仍有 **17个被占holding**，没有17→16收复。005独立ownarmy再读为2604/sieging3/emptyroute；三项siege字段仍null，尚不能观察实际active_siege、围城进度、破墙或assault资格。这个具体缺字段影响下一步围城决策，P0 holding active_siege新provider已源码采用，仍static-ready；不把null当作没有围城或已完成围城，不等待未来v39才记录当前到达。
+到达后004 occupation实际GREEN：2604的 **holding2400 / legalholder33435 / occupier30097 / fort3 / garrison400 / counted_opposing=true**；主战defender仍有 **17个被占holding**，没有17→16收复。005独立ownarmy再读为2604/sieging3/emptyroute；三项siege字段仍null，尚不能观察实际active_siege、围城进度、破墙或assault资格。在该 v38 当帧，这个具体缺字段影响下一步围城决策；P0 holding active_siege provider 当时已源码采用、仅 static-ready，后续 v39 actual 闭合见下节；不把null当作没有围城或已完成围城，不等待未来v39才记录当前到达。
 
-实际004 occupation为v38原Robert战役raw53237136、native69，005独立ownarmy后置读回；正常SDK关闭并保存 **h4821 / 90,945,405B / SHA `19007da8127bf8cda28bea484021fad116e1082a67d15e7c5927c7d6c546c08f`**。批末h4819/3867日保持此前冻结事实，本次查询增加0日；到达部署loop与占领目标primitive分开，不能用CArmy sieging state或active_siege空投影证明收复。[唯一Root后置实机包](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-goal-capture-execution/actual-v38-post-arrival-01/result.json)。P0围城provider已由fca9daf源码采用并取得单次fixture GREEN，仍静态；新DLL与真实2604读数另验，未授live资格。
+实际004 occupation为v38原Robert战役raw53237136、native69，005独立ownarmy后置读回；正常SDK关闭并保存 **h4821 / 90,945,405B / SHA `19007da8127bf8cda28bea484021fad116e1082a67d15e7c5927c7d6c546c08f`**。批末h4819/3867日保持此前冻结事实，本次查询增加0日；到达部署loop与占领目标primitive分开，不能用CArmy sieging state或active_siege空投影证明收复。[唯一Root后置实机包](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-goal-capture-execution/actual-v38-post-arrival-01/result.json)。P0围城provider在此 v38 历史施工阶段已由fca9daf源码采用并取得单次fixture GREEN，尚属静态；该阶段不授live资格，后续 v39 真实2604读数见下节。
+
+
+## 2026-10-03：v39 actual occupation holding 围城输入已闭合
+
+7-path源码 `fca9daf1aa517ca5a5c185cc2c0736287ad26847` 已发布；g41/jobs64构建4 targets、541 TU/538 unique/1041 inputs，71.17104秒。War16777231 同一次 paused query 完整读回35 holding行，date_raw=53237136；Holding2400/Province2604 的FullSiege503316492由玩家Army83886367围攻，strength2334、progress540/100000、work175750/32500000、remaining32324250、native days_left184已实际观测。assault observable=true，breach0，start/stop/in_progress=false，突击preview daily progress/casualties均为合法0。新增围城字段为有限 production-live primitive；35行中2行有active siege，占领/holder/occupier/side/fort/garrison变化均0，defender31/17、attacker4/0，2604仍敌占，未收复。 本lane0新日/0动作；累计3867、resume714、当日619不因证据索引变化。 同一次实机的2份其他owner消费receipt已并入证据索引。 最新normal014/h4824；围城184日是当前原生估计，不保证收复日期。CI37117062048 GREEN，游戏保持minimized=true/foreground=false。
+
+上述是首 v39 actual h4824/raw53237136 的有限读口：同一个既有 occupation MCP 现发布真实 FullSiege/work/days/assault 输入，并保持35条 holding、双方计数与旧占领语义。它解决 v38 到达后 null siege 投影缺口；实际 siege 状态与 source/getter 账本见 [occupied-holding siege observation](war-occupation-holding-siege-observation-12003.md)。以前 null、fixture/static-ready 和失败 artifact 保留为当时事实，不作为当前阻点。
+
+
+### 一次正常围城日推进及独立保存后的 actual 状态
+
+首个请求最多64日的 helper attempt 在 `actual-first-siege-batch-2604-01/day-01/003-ck3_execute_step.json` 的 contact-horizon 步骤实际 RED，advance 未发送，新增0日，正常存档保留 h4827。该失败保留为 harness RED，不能写成64日完成或部分完成若干日。
+
+Root 随后只发送一次实际 day advance。它成功使 raw53237136→53237160；通用 readonly capture 沿用旧 expected-date，因而随后报 harness RED。Root 没有重播这个已成功的 advance，而是用独立新日期读取与正常保存收口：[actual-after-stationary-day-save-2604-01/result.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/siege-v39/actual-after-stationary-day-save-2604-01/result.json) GREEN，正常 pair **h4831 / 90,890,887 B / SHA-256 `3f482def35fe0d13c901044ff5c6a5b9eec3b643ef9c6e6774e9a1f42c3415e6`**。累计 **3868日 / resume715 / 2026-10-03增量620**。本纯文件消费增加0日；唯一新增日归属于 Root 的该次实际 advance。
+
+同一 **FullSiege503316492 / player Army83886367 / holding2400 / province2604** 的 fresh 读数为 current_work **351500**、total_work **32500000**、remaining_work **32148500**，scale均 **100000**；progress_fraction **1081/100000**，native days_left **183**。此前首 actual h4824/raw53237136 的 work175750、progress540/100000、ETA184保留为历史当帧值。一日实际工作增量175750并未完成围城；ETA仍是原生当前估计，不承诺收复日期。
+
+breach_level仍0、native CanStartAssault仍false，holding2400仍由敌方30097占领，守方被对側占领的holding仍17。此次没有突击、occupation17→16、收复、围城结束或战争终结；有限围城观测 primitive 加上一日保存后变化，不冒充完整战争 OODA。Robert29829 原普通战役与 exact .3 绑定不变，游戏保持 minimized=true/foreground=false。下一项仍按真实 paused work/ETA、contact 与 occupation输入推进正常围城，后续 batch 和 current 由 Root 独立记账。

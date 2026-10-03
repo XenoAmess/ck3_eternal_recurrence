@@ -1,5 +1,15 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-03T19:17 v39围城观察与驻地一日实际入口
+
+v39/R0018/PID112516仍最小化、非前台；当前正常pair **h4831/raw53237160/3868日**。围城观察primitive已实读，驻地24h已实际推进并独立保存；首max64零日horizon RED与旧dateguard RED保留，未完成64日、17项仍敌占、未获围城结束或胜利。
+
+- [Robert防御战争决策树](robert-defensive-war-loop-12003.md)：已发布的防御战争观察/决策入口。
+- [占领目标真实行](war-occupation-targets-12003.md)：2604/holding2400仍由30097占领，occupation后态核实收复。
+- [任意holding围城观察](war-occupation-holding-siege-observation-12003.md)：FullSiege503316492/work351500/32500000、progress1081/100000、ETA183、breach0/CanStartfalse；旧null/static阶段为历史。
+
+完整真实失败、保存与下一步见[接续报告](../handover/2026-10-03-g2-v33-resume.md)；三份[进度索引](../autonomous-agent-progress/README.md)由独立owner更新。
+
 ## 2026-10-03T18:41：2604到达与围城观察入口
 
 最近v38/R0017/原PID107772已最小化完成3867保存日并正常exit0回收/completed-green；当前游戏关闭，最新正常pair h4821/raw53237136，13日日级批末h4819与旧3854首日分别保留。
