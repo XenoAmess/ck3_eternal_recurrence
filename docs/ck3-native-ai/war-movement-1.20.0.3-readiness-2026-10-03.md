@@ -36,9 +36,9 @@ flowchart TD
     F["[live-confirmed] saved .3 Robert paused frame<br/>complete player and all-war enemy routes"] --> P["[static-confirmed .3 ABI] native player move preview<br/>validators and exact path"]
     P --> T["[static-confirmed .3 ABI] exact route timeline<br/>locked first edge and per-province arrival dates"]
     T --> H["[static-confirmed] all-hostile next-day contact intervals"]
-    H -. "[unknown] fresh .3 Robert preview/timeline result still required" .-> D["[counter-policy] choose defend / relieve siege / intercept / regroup"]
-    D --> M["[counter-policy] typed player move with current public revision"]
-    M --> R["[counter-policy] independent paused route/target read"]
+    H --> D["[production-live inputs] actual7-day2610 vs89-day2640 routes; choose short2610 defense"]
+    D --> M["[production-live primitive] Root typed move83886367 to2610 / public2"]
+    M --> R["[bounded production-live loop] independent paused target2610 / route2610 / moving; native19 public3"]
     R --> A["[counter-policy] one-day travel and re-observe"]
     A --> C["[static-confirmed .3 ABI] actual current-province contact"]
     C --> B["[static-confirmed .3 ABI] battle identity / legality / transition"]
@@ -152,3 +152,28 @@ One file-only registration/signature and saved-frame extraction PASS was run;
 old tests and full DLL builds were not repeated. `open_kaishek` is not applicable
 to PE/native route timing or MCP signature extraction. ROOT integrates this
 topic and its report fields into current daily/weekly evidence and commits/pushes.
+
+## 2026-10-03: actual post-refusal route inputs before the later order
+
+Root's GREEN `war-movement/actual-post-refusal-v34-01` binds paused `native:11`, public2/native11/connection6, actor29829, original episode and DateRaw53236608. The earlier event23-unselected/two-war/four-hostile frame is historical: actual refusal added populist War50331736, and all seven hostile full IDs are now `473,474,16777683,50331920,67109295,83886484,251658381`.
+
+Native preview to2610 is `[2610]`, one leg/7 days/arrival53236776;2640 is11 legs/89 days/arrival53238744, final entry2634. Incoming67109295 reaches2640 in203 days on its frozen route. Both all-seven-hostile horizons returned contact-free only for `[53236608,53236632]`, one day. These captured queries committed no move and prove no full-route safety. The later completed order below supersedes the earlier pending Robert-order claim.
+
+Capture save4665 is90957945 bytes/SHA`7575339ff6cb301b6b00e73e76275803f75c56589570af4132fedb167da8394e`. The later observed working checkpoint4667 has distinct SHA`49e0d1528095bbbeeb9962b7d2ea8d0f420337c2a47605130ab8e46fb849e730`; `war-movement/FINAL-FRAME-NORMAL-PAIR.json` preserves both identities. Do not merge them with the later move checkpoint4671. Full route/finance/siege inputs and source pins are summarized in [the actual topic](robert-post-refusal-military-actual-2026-10-03.md).
+
+## 2026-10-03：Robert 实际暂停移动订单与独立后置验证
+
+Root 已完成 `battle-move-execution/actual-move-2610-v34-01`（GREEN）。这是同一原普通 campaign 的真实移动订单闭环，更新本页先前的“Robert route order pending”状态。绑定仍为 CK3 1.20.0.3 / Steam 25652598、EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`，actual source/native `5b2030b09041dbfcea11104e15d155a3b9aac1d6`、PID 119724、Robert 29829、episode `native-29829-2bc2d599f7f9`。全部操作维持暂停，DateRaw 53236608 不变，未推进任何游戏日。
+
+决策输入已先落盘到本页的原生路径合同，以及 [army target triage](army-target-triage-1.20.0.3.md) 和 [relief/siege](war-relief-siege-native-ai-12003.md) 原生树。实际 route/contact 输入见 `war-movement/actual-post-refusal-v34-01/014-ck3_execute_step.json` 和 `016-ck3_execute_step.json`：2614→2610 的完整路线 `[2610]`，到达 DateRaw 53236776；完整 all-war 敌军集合的下一日无 contact，实际 horizon 仅覆盖 53236608→53236632。2640 的实际路线则为 11 跳，到达 DateRaw 53238744。该处 Combat 1577058305 是起义军 `[251658381,473,474]` 对原有敌军 `[50331920,83886484]`，Robert 不在双方；不能据此假定 Robert 将加入哪一方。Root 选择短途 2610 防守/调位策略，尚未完成未来 contact、抵达或战斗预测质量的闭环。
+
+| 实际步骤 | 可复核产物与结果 |
+| --- | --- |
+| 新鲜 action 前帧 | `003-ck3_take_snapshot.json`：native 18 / public 2，暂停/map-ready，Robert CUnit 83886367 位于 2614、regular/code1，目标为空、完整空路线，未参战/撤退 |
+| 唯一 movement action | `004-ck3_move_army.json`：注册的 `ck3_move_army(army_id=83886367,target_province_id=2610,expected_revision=2)`，`accepted=true,status=submitted`，driver 的 `war_action.status=moving` |
+| 独立 action 后帧 | `005-ck3_take_snapshot.json`：native 19 / public 3 / connection 10，仍为同 episode/date、暂停/map-ready；CUnit 83886367 仍在 2614、可控、`move_target_observable=true`、目标 2610、完整路线 `[2610]`、moving/code7，未参战/撤退 |
+| 正常 checkpoint | `006-ck3_save_checkpoint.json`：保存成功，history index 4671，90,957,973 bytes，SHA-256 `40add3f7523facab37706478202e3c48a70896a66e5ef2b5e455fa12828a2ee9`；三个 WarID `[16777231,50331736,129]` 保留，无恢复/回退 |
+
+实际 `native_revision 18→19`、公开 revision 2→3 与独立的目标/路线/状态变化证明订单已在原 campaign 生效。Readiness 可记为 **production-live loop，仅限“观察 → 原生树输入下的短程调位决策 → movement order → 独立暂停路线验证”**；其运行时 `.3` movement primitive 已实测。当前位置仍是 2614，因此不能记成“已抵达 2610”、围城/战斗闭环或战争胜利。额外 gameplay day 为 0，累计天数、代际进度与自然继承计数不因这次移动订单增加。
+
+下一步由 Root 从正常结束的最新存档/历史对继续，先重新挂接原 Sway 四类 recorder，再在新的实际帧重读 all-war route/contact，并按一天粒度推进与复核。原生 AI 完整分数/未来 assignment/接敌质量差距继续记在专题及 blocker ledger；不把它们扩成新的战争授权限制。此 worker 只消费已经完成的 Root 文件，没有另开 SDK、重发移动、重复 query、抢焦点或修改 Git。

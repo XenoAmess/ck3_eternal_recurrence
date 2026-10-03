@@ -78,3 +78,32 @@ flowchart TD
 真实`strength.source.game_version`和SHA仍null，保留原值；构建身份来自同帧hello的`expected_ck3_version`/`expected_ck3_sha256`及match=true，不伪填DTO。全batch的两次strategic war-entry RED另由专门修复lane保全，当前五军strength GREEN不冒充那些输入已可读。
 
 实读来源及最小consumer：[ACTUAL.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-army-forces/ACTUAL.json)、[ACTUAL.md](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-army-forces/ACTUAL.md)。consumer绑定原before013、query014、after015三文件SHA，0 SDK/pipe/game/Git操作；独占工作包只写外置projection，ROOT收口进日报/周报及真实commit/push。
+
+## 2026-10-03：拒绝后的八军基线，地点集合不等于战斗双方
+
+ROOT的新paused capture`war-movement/actual-post-refusal-v34-01/006-ck3_query_army_strengths.json`八行available，PID119724、public2/native11、`native:11`、raw53236608、actor29829、同episode、query_sequence2。读取前后event为null、日期增量0，当前strength primitive继续production-live；本consumer没有SDK/pipe/game/desktop/test/Git动作，旧五军证据不覆盖或改写。
+
+实际新增防守War50331736、primary opponent70766、objective2640、warscore0；CB字段仍null。该owner有三军：public251658381→CArmy167772260为2880/2880、base57600；public473→461为300/300、base13800；public474→462为10/10、base120。总计3190/3190人、base71520。三军都在2640且in_combat=true，每军1团；这不是已读到兵种或骑士组成，不能把300、10等数量猜成特定类别。
+
+原五军的current/max/base power和CArmy identity均保持：玩家2334/2461、base75881；War16777231敌军1765/2311、base66549；War129敌军2305/2305、base59860。玩家同一public83886367仍在2614、regular、非战斗，并同时属于三war allied数组；全局只计一次。全部七个唯一敌军现7260/7806、base197929，分处2640、3078、4573；不能将此跨战地点库存写成单场敌方。
+
+2640两个旧war敌军现由sieging变为combat，另有三个新war敌军也combat；该地点五军合计4854/5400、base132069。此数只描述**地理去重集合**：该输入没有完整CombatID、side index或stored participant order，两个hostile-to-player war lane也不能证明它们互为盟友或同一战斗侧。下一观测是各真实CombatID/side的原生映射，再按实际side组合；在此之前不发布battle side total、胜率或完整接战策略。
+
+```mermaid
+flowchart TD
+  S[Same exact .3 paused query / public2 native11] --> Q[Eight full-ID rows available]
+  Q --> W[War16777231 / War50331736 / War129 membership]
+  W --> P[Deduplicate shared player2334 across3 wars]
+  W --> R[70766 three actual units /3190 persons /base71520]
+  Q --> L[Five combat-marked units at2640 / geographic total4854]
+  L -. full CombatIDs and stored sides absent .-> C[Actual combat side grouping unknown]
+  R -. detailed levy / MAA / knight roster not queried .-> D[Composition unavailable in this capture]
+  C -. needs dedicated actual observation .-> B[No battle-side total or odds inferred]
+  D -. needs detailed native input query .-> B
+```
+
+源metadata的version/SHA仍null，exact .3身份仍由同帧matched hello证明。原始005/006/007文件SHA、按war/location/owner分组、旧五军比较及0进展边界见[八军ACTUAL.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-army-forces/post-refusal-01/ACTUAL.json)与[说明](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-army-forces/post-refusal-01/ACTUAL.md)。只读派生资料只落外置独占目录，ROOT维护central报告及真实commit/push。
+
+### 2026-10-03: subsequent actual side and composition observations
+
+The native11 graph above records that capture's missing fields. Later native14 v2 and native16 ID-only transition closed the current discovery and detailed-composition gap: Combat1577058305 attackers `[251658381,473,474]` vs defenders `[50331920,83886484]`, Robert absent; see [actual sides](battle-hostile-existing-combat-discovery-1.20.0.3-2026-10-03.md) and [composition](battle-composition-actual-v34-12003.md). The4854 location total remains a geographical inventory, not one opposing side. Each query retains its own native revision.

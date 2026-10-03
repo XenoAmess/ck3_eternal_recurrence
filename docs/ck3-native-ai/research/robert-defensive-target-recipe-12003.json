@@ -1,0 +1,810 @@
+{
+  "schema": "xar.ck3.robert-defensive-target-recipe/v1",
+  "status": "static-ready-external-counterpolicy",
+  "native_tree_prerequisite": "docs/ck3-native-ai/army-target-triage-1.20.0.3.md",
+  "exact_build": {
+    "version": "1.20.0.3",
+    "steam_build": "25652598",
+    "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+  },
+  "observed_frame": {
+    "character_id": 29829,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "date_raw": 53236608,
+    "paused": true,
+    "public_revision": 2,
+    "snapshot_id": "native:11",
+    "native_revision": 11,
+    "connection_generation": 6
+  },
+  "input_ledger": {
+    "wars": [
+      {
+        "war_id": 16777231,
+        "player_side": "defender",
+        "primary_opponent_character_id": 30097,
+        "war_objective_province_ids": [
+          2610
+        ],
+        "objective_province_states": [
+          {
+            "province_id": 2610,
+            "occupation_observable": true,
+            "is_occupied": false,
+            "occupying_character_id": null,
+            "fort_level": 3,
+            "garrison_size": 400,
+            "besieging_strength": 0,
+            "siege_observable": true,
+            "active_siege": null
+          }
+        ],
+        "player_relative_war_score": -39
+      },
+      {
+        "war_id": 50331736,
+        "player_side": "defender",
+        "primary_opponent_character_id": 70766,
+        "war_objective_province_ids": [
+          2640
+        ],
+        "objective_province_states": [
+          {
+            "province_id": 2640,
+            "occupation_observable": true,
+            "is_occupied": false,
+            "occupying_character_id": null,
+            "fort_level": 7,
+            "garrison_size": 1350,
+            "besieging_strength": 0,
+            "siege_observable": true,
+            "active_siege": {
+              "siege_id": 318767158,
+              "besieging_army_id": 50331920,
+              "player_army_besieging": false,
+              "progress_fraction": {
+                "raw": 44133,
+                "scale": 100000
+              },
+              "current_work": {
+                "raw": 27583600,
+                "scale": 100000
+              },
+              "total_work": {
+                "raw": 62500000,
+                "scale": 100000
+              },
+              "remaining_work": {
+                "raw": 34916400,
+                "scale": 100000
+              },
+              "days_left": null,
+              "assault_observable": true,
+              "breach_level": 2,
+              "walls_breached": true,
+              "assault_in_progress": false,
+              "can_start_assault": false,
+              "can_stop_assault": false,
+              "assault_daily_progress": {
+                "raw": 0,
+                "scale": 100000
+              },
+              "assault_daily_casualties": 0
+            }
+          }
+        ],
+        "player_relative_war_score": 0
+      },
+      {
+        "war_id": 129,
+        "player_side": "defender",
+        "primary_opponent_character_id": 32750,
+        "war_objective_province_ids": [
+          2640
+        ],
+        "objective_province_states": [
+          {
+            "province_id": 2640,
+            "occupation_observable": true,
+            "is_occupied": false,
+            "occupying_character_id": null,
+            "fort_level": 7,
+            "garrison_size": 1350,
+            "besieging_strength": 0,
+            "siege_observable": true,
+            "active_siege": {
+              "siege_id": 318767158,
+              "besieging_army_id": 50331920,
+              "player_army_besieging": false,
+              "progress_fraction": {
+                "raw": 44133,
+                "scale": 100000
+              },
+              "current_work": {
+                "raw": 27583600,
+                "scale": 100000
+              },
+              "total_work": {
+                "raw": 62500000,
+                "scale": 100000
+              },
+              "remaining_work": {
+                "raw": 34916400,
+                "scale": 100000
+              },
+              "days_left": null,
+              "assault_observable": true,
+              "breach_level": 2,
+              "walls_breached": true,
+              "assault_in_progress": false,
+              "can_start_assault": false,
+              "can_stop_assault": false,
+              "assault_daily_progress": {
+                "raw": 0,
+                "scale": 100000
+              },
+              "assault_daily_casualties": 0
+            }
+          }
+        ],
+        "player_relative_war_score": 0
+      }
+    ],
+    "player_armies": [
+      {
+        "army_id": 83886367,
+        "owner_character_id": 29829,
+        "soldiers": null,
+        "current_province_id": 2614,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "regular",
+        "army_state_code": 1,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    ],
+    "army_strengths": [
+      {
+        "status": "available",
+        "army_id": 83886367,
+        "native_carmy_id": 50331794,
+        "scope_role": "player",
+        "war_ids": [
+          16777231,
+          50331736,
+          129
+        ],
+        "regiment_count": 40,
+        "current_soldiers": 2334,
+        "maximum_soldiers": 2461,
+        "ai_base_power_raw": 7588100000,
+        "ai_base_power_scale": 100000,
+        "unavailable_reason": null
+      },
+      {
+        "status": "available",
+        "army_id": 50331920,
+        "native_carmy_id": 33554713,
+        "scope_role": "active_war_enemy",
+        "war_ids": [
+          16777231
+        ],
+        "regiment_count": 19,
+        "current_soldiers": 1362,
+        "maximum_soldiers": 1899,
+        "ai_base_power_raw": 4663700000,
+        "ai_base_power_scale": 100000,
+        "unavailable_reason": null
+      },
+      {
+        "status": "available",
+        "army_id": 83886484,
+        "native_carmy_id": 150995083,
+        "scope_role": "active_war_enemy",
+        "war_ids": [
+          16777231
+        ],
+        "regiment_count": 4,
+        "current_soldiers": 302,
+        "maximum_soldiers": 311,
+        "ai_base_power_raw": 1391200000,
+        "ai_base_power_scale": 100000,
+        "unavailable_reason": null
+      },
+      {
+        "status": "available",
+        "army_id": 67109295,
+        "native_carmy_id": 67109272,
+        "scope_role": "active_war_enemy",
+        "war_ids": [
+          16777231
+        ],
+        "regiment_count": 2,
+        "current_soldiers": 101,
+        "maximum_soldiers": 101,
+        "ai_base_power_raw": 600000000,
+        "ai_base_power_scale": 100000,
+        "unavailable_reason": null
+      },
+      {
+        "status": "available",
+        "army_id": 251658381,
+        "native_carmy_id": 167772260,
+        "scope_role": "active_war_enemy",
+        "war_ids": [
+          50331736
+        ],
+        "regiment_count": 1,
+        "current_soldiers": 2880,
+        "maximum_soldiers": 2880,
+        "ai_base_power_raw": 5760000000,
+        "ai_base_power_scale": 100000,
+        "unavailable_reason": null
+      },
+      {
+        "status": "available",
+        "army_id": 473,
+        "native_carmy_id": 461,
+        "scope_role": "active_war_enemy",
+        "war_ids": [
+          50331736
+        ],
+        "regiment_count": 1,
+        "current_soldiers": 300,
+        "maximum_soldiers": 300,
+        "ai_base_power_raw": 1380000000,
+        "ai_base_power_scale": 100000,
+        "unavailable_reason": null
+      },
+      {
+        "status": "available",
+        "army_id": 474,
+        "native_carmy_id": 462,
+        "scope_role": "active_war_enemy",
+        "war_ids": [
+          50331736
+        ],
+        "regiment_count": 1,
+        "current_soldiers": 10,
+        "maximum_soldiers": 10,
+        "ai_base_power_raw": 12000000,
+        "ai_base_power_scale": 100000,
+        "unavailable_reason": null
+      },
+      {
+        "status": "available",
+        "army_id": 16777683,
+        "native_carmy_id": 457,
+        "scope_role": "active_war_enemy",
+        "war_ids": [
+          129
+        ],
+        "regiment_count": 10,
+        "current_soldiers": 2305,
+        "maximum_soldiers": 2305,
+        "ai_base_power_raw": 5986000000,
+        "ai_base_power_scale": 100000,
+        "unavailable_reason": null
+      }
+    ],
+    "route_2610": {
+      "snapshot_id": "native:11",
+      "public_revision": 2,
+      "native_revision": 11,
+      "connection_generation": 6,
+      "date_raw": 53236608,
+      "target_province_id": 2610,
+      "route_province_ids": [
+        2610
+      ],
+      "arrival_date_raws": [
+        53236776
+      ],
+      "arrival_days_from_frame": 7.0,
+      "horizon_start_date_raw": 53236608,
+      "horizon_end_date_raw": 53236632,
+      "one_day_contact_free": true,
+      "conflicts": [],
+      "hostile_army_ids": [
+        473,
+        474,
+        16777683,
+        50331920,
+        67109295,
+        83886484,
+        251658381
+      ],
+      "hostile_routes": [
+        {
+          "timeline_observable": true,
+          "army_id": 473,
+          "current_province_id": 2640,
+          "effective_origin_province_id": 2640,
+          "route_province_ids": [],
+          "arrival_date_raws": []
+        },
+        {
+          "timeline_observable": true,
+          "army_id": 474,
+          "current_province_id": 2640,
+          "effective_origin_province_id": 2640,
+          "route_province_ids": [],
+          "arrival_date_raws": []
+        },
+        {
+          "timeline_observable": true,
+          "army_id": 16777683,
+          "current_province_id": 4573,
+          "effective_origin_province_id": 4573,
+          "route_province_ids": [],
+          "arrival_date_raws": []
+        },
+        {
+          "timeline_observable": true,
+          "army_id": 50331920,
+          "current_province_id": 2640,
+          "effective_origin_province_id": 2640,
+          "route_province_ids": [],
+          "arrival_date_raws": []
+        },
+        {
+          "timeline_observable": true,
+          "army_id": 67109295,
+          "current_province_id": 3078,
+          "effective_origin_province_id": 3085,
+          "route_province_ids": [
+            3085,
+            3086,
+            3091,
+            3092,
+            3120,
+            3119,
+            3116,
+            3106,
+            3103,
+            3102,
+            3097,
+            3098,
+            2523,
+            8650,
+            1109,
+            8651,
+            1038,
+            1036,
+            8653,
+            2643,
+            2641,
+            2640
+          ],
+          "arrival_date_raws": [
+            53236704,
+            53236848,
+            53236992,
+            53237112,
+            53237304,
+            53237544,
+            53237736,
+            53237928,
+            53238096,
+            53238264,
+            53238456,
+            53238648,
+            53238960,
+            53239680,
+            53239896,
+            53240088,
+            53240304,
+            53240448,
+            53240664,
+            53240904,
+            53241240,
+            53241480
+          ]
+        },
+        {
+          "timeline_observable": true,
+          "army_id": 83886484,
+          "current_province_id": 2640,
+          "effective_origin_province_id": 2640,
+          "route_province_ids": [],
+          "arrival_date_raws": []
+        },
+        {
+          "timeline_observable": true,
+          "army_id": 251658381,
+          "current_province_id": 2640,
+          "effective_origin_province_id": 2640,
+          "route_province_ids": [],
+          "arrival_date_raws": []
+        }
+      ]
+    },
+    "route_2640": {
+      "snapshot_id": "native:11",
+      "public_revision": 2,
+      "native_revision": 11,
+      "connection_generation": 6,
+      "date_raw": 53236608,
+      "target_province_id": 2640,
+      "route_province_ids": [
+        2618,
+        2617,
+        2632,
+        2613,
+        8752,
+        2628,
+        2626,
+        2627,
+        2633,
+        2634,
+        2640
+      ],
+      "arrival_date_raws": [
+        53236776,
+        53236872,
+        53236992,
+        53237160,
+        53237352,
+        53237544,
+        53237808,
+        53238048,
+        53238312,
+        53238600,
+        53238744
+      ],
+      "arrival_days_from_frame": 89.0,
+      "horizon_start_date_raw": 53236608,
+      "horizon_end_date_raw": 53236632,
+      "one_day_contact_free": true,
+      "conflicts": [],
+      "hostile_army_ids": [
+        473,
+        474,
+        16777683,
+        50331920,
+        67109295,
+        83886484,
+        251658381
+      ],
+      "hostile_routes": [
+        {
+          "timeline_observable": true,
+          "army_id": 473,
+          "current_province_id": 2640,
+          "effective_origin_province_id": 2640,
+          "route_province_ids": [],
+          "arrival_date_raws": []
+        },
+        {
+          "timeline_observable": true,
+          "army_id": 474,
+          "current_province_id": 2640,
+          "effective_origin_province_id": 2640,
+          "route_province_ids": [],
+          "arrival_date_raws": []
+        },
+        {
+          "timeline_observable": true,
+          "army_id": 16777683,
+          "current_province_id": 4573,
+          "effective_origin_province_id": 4573,
+          "route_province_ids": [],
+          "arrival_date_raws": []
+        },
+        {
+          "timeline_observable": true,
+          "army_id": 50331920,
+          "current_province_id": 2640,
+          "effective_origin_province_id": 2640,
+          "route_province_ids": [],
+          "arrival_date_raws": []
+        },
+        {
+          "timeline_observable": true,
+          "army_id": 67109295,
+          "current_province_id": 3078,
+          "effective_origin_province_id": 3085,
+          "route_province_ids": [
+            3085,
+            3086,
+            3091,
+            3092,
+            3120,
+            3119,
+            3116,
+            3106,
+            3103,
+            3102,
+            3097,
+            3098,
+            2523,
+            8650,
+            1109,
+            8651,
+            1038,
+            1036,
+            8653,
+            2643,
+            2641,
+            2640
+          ],
+          "arrival_date_raws": [
+            53236704,
+            53236848,
+            53236992,
+            53237112,
+            53237304,
+            53237544,
+            53237736,
+            53237928,
+            53238096,
+            53238264,
+            53238456,
+            53238648,
+            53238960,
+            53239680,
+            53239896,
+            53240088,
+            53240304,
+            53240448,
+            53240664,
+            53240904,
+            53241240,
+            53241480
+          ]
+        },
+        {
+          "timeline_observable": true,
+          "army_id": 83886484,
+          "current_province_id": 2640,
+          "effective_origin_province_id": 2640,
+          "route_province_ids": [],
+          "arrival_date_raws": []
+        },
+        {
+          "timeline_observable": true,
+          "army_id": 251658381,
+          "current_province_id": 2640,
+          "effective_origin_province_id": 2640,
+          "route_province_ids": [],
+          "arrival_date_raws": []
+        }
+      ]
+    },
+    "actual_battle_2640": {
+      "snapshot_id": "native:16",
+      "public_revision": 2,
+      "native_revision": 16,
+      "schema_version": 1,
+      "contract_stage": "production_exact_combat_lifecycle",
+      "status": "available",
+      "battle_transition_ready": true,
+      "snapshot_revision": 16,
+      "observed_date_raw": 53236608,
+      "combat_id": 1577058305,
+      "province_id": 2640,
+      "phase": "maneuver",
+      "phase_raw": 0,
+      "phase_day": 0,
+      "winner_side": "none",
+      "winner_raw": -1,
+      "forced_winner_side": "none",
+      "forced_winner_raw": -1,
+      "finalized": false,
+      "battle_result_id": 1493172226,
+      "attacker_public_cunit_ids_in_stored_order": [
+        251658381,
+        473,
+        474
+      ],
+      "defender_public_cunit_ids_in_stored_order": [
+        50331920,
+        83886484
+      ]
+    },
+    "hypothetical_battle_query_arguments": {
+      "target_province_id": 2640,
+      "attacker_entry_province_id": 2634,
+      "attacker_army_ids": [
+        83886367
+      ],
+      "defender_army_ids": [
+        251658381,
+        473,
+        474
+      ],
+      "participant_policy": "explicit_hypothetical_fixed_at_contact_no_reinforcements",
+      "monte_carlo_ready": false
+    }
+  },
+  "selected_choice": {
+    "choice": "defend_goal_2610",
+    "army_id": 83886367,
+    "target_province_id": 2610,
+    "intent": "station_on_held_unbesieged_defensive_wargoal",
+    "move_command": {
+      "tool": "ck3_execute_step",
+      "arguments": {
+        "step": "move-army-83886367-to-2610",
+        "expected_revision": "LATEST_PUBLIC_REVISION"
+      }
+    },
+    "first_observation_interval_days": 1,
+    "expected_route_days_at_frozen_frame": 7,
+    "is_recovery_siege": false,
+    "is_relief_2640": false,
+    "claims_war_score_gain": false,
+    "claims_battle_win": false
+  },
+  "choice_reason": [
+    "Native current defender objectives include camping at a wargoal even without local battle or siege.",
+    "2610 is observed player-held/unoccupied/no active siege, and the direct one-edge route arrives in 7 days.",
+    "2640 is an active hostile-siege objective with a real enemy-versus-enemy battle; Robert is absent. Its 89-day route provides no immediate relief.",
+    "Holding2614 spends the current step without moving to an observed defensive objective. It is a fallback when current army state no longer admits this goal move."
+  ],
+  "execution_and_observation_recipe": [
+    {
+      "step": 1,
+      "action": "Refresh current snapshot and substitute its public revision in the move command; use this saved frame only for the recorded choice."
+    },
+    {
+      "step": 2,
+      "action": "Submit one move to2610 while paused. Read back player_armies route/move_target/state. ACK alone is not movement credit."
+    },
+    {
+      "step": 3,
+      "action": "Use ROOT existing bounded one-day advancement, then pause and read snapshot. No new time-control API is proposed."
+    },
+    {
+      "step": 4,
+      "action": "While still moving to2610, keep the existing order and continue one-day observation instead of submitting identical moves. Rechoose on war/goal/army phase changes or a current contact conflict."
+    },
+    {
+      "step": 5,
+      "action": "On actual arrival2610, record the defensible-goal station outcome and current three-war scores. This is no recapture, siege victory or war victory claim."
+    }
+  ],
+  "next_queries_by_actual_trigger": [
+    {
+      "priority": 1,
+      "trigger": "after each one-day movement step",
+      "existing_query": "ck3_take_snapshot",
+      "fields": [
+        "player_armies current_province/move_target/full route/in_combat/retreating/state",
+        "active_wars complete hostile participants",
+        "objective_province_states occupation/active_siege/progress/remaining_work/assault status"
+      ],
+      "purpose": "verify real movement and update objective state"
+    },
+    {
+      "priority": 2,
+      "trigger": "next movement day or observed route/hostile change",
+      "existing_query": "ck3_execute_step",
+      "step_template": "query-route-contact-horizon-v1-83886367-to-2610-h-{count}-{sorted-current-hostile-ids}",
+      "fields": [
+        "one_day_contact_free",
+        "conflicts",
+        "all timeline_observable",
+        "subject and hostile arrival dates"
+      ],
+      "purpose": "observe the next day, not certify the entire7/89-day route"
+    },
+    {
+      "priority": 3,
+      "trigger": "battle phase update while2640 battle persists",
+      "existing_query": "ck3_query_battle_transition_v1(combat_id=1577058305)",
+      "fields": [
+        "actual stored side IDs",
+        "phase/day",
+        "winner/finalized"
+      ],
+      "purpose": "watch the actual enemy battle with no Robert win inference"
+    },
+    {
+      "priority": 4,
+      "trigger": "2640 becomes a near-term actionable relief/recovery candidate",
+      "existing_query": "current move preview + route/contact scope + exact battle inputs if contact occurs",
+      "fields": [
+        "new ETA/final entry",
+        "current besiegers/participants",
+        "current siege days-left or daily work",
+        "actual joining side and reinforcements"
+      ],
+      "purpose": "replace the temporary goal station using current facts; no universal Monte Carlo requirement"
+    },
+    {
+      "priority": 5,
+      "trigger": "explain or act on War16777231 score-39",
+      "existing_query": "ck3_query_war_termination_options(war_id=16777231)",
+      "fields": [
+        "battle/occupation/ticking/imprisonment native war-score breakdown"
+      ],
+      "purpose": "avoid calling unoccupied2610 a score recovery target"
+    }
+  ],
+  "unused_native_inputs_and_quality_gaps": [
+    {
+      "input": "stance/candidate fact cache and final native score",
+      "why_unused": "not needed to choose a visible short defensive goal now",
+      "replacement_entry": "current0x1A04F40→0x1A05200; stack+0x60/+0x78/+0x74 and fact consumer0x1A140C0"
+    },
+    {
+      "input": "native target power aggregation, combat threshold and all modifiers",
+      "why_unused": "no combat candidate is admitted from a soldier/base-power ratio",
+      "replacement_entry": "current0x1A070F0 enemy-power pass and0x1A09450 path/combat admission consumer"
+    },
+    {
+      "input": "simultaneous-war allocation",
+      "why_unused": "temporary shortest-goal rule; both2640 wars remain live threats",
+      "replacement_entry": "current war-coordinator objective expansion0x1A06080; extend policy after actual station/goal-loss outcome"
+    },
+    {
+      "input": "2640 exact siege completion ETA",
+      "why_unused": "days_left=null and current besieging_strength=0 while besieger is fighting; no completion time is inferred",
+      "replacement_entry": "existing ReadObjectiveProvince / Episode03 exact siege daily-work getters only if imminent-relief timing remains necessary"
+    },
+    {
+      "input": "full hypothetical battle result",
+      "why_unused": "v2 reports precontact inputs only and omits outcome transitions; current query models Robert vs populist subset, not the real battle or future arrival coalition",
+      "replacement_entry": "actual-contact-scope/current battle joining and reinforcement tree; current battle control/transition/outcome primitives"
+    },
+    {
+      "input": "supply and commander quality",
+      "why_unused": "not used to prove a fight or a long march; current player commander absent in v2",
+      "replacement_entry": "existing supply query and minimum commander observation before a materially longer route or battle"
+    }
+  ],
+  "missing_observation_entry": {
+    "new_provider_needed_for_selected_move": false,
+    "reason": "Current existing snapshot and route horizon supply the complete short-goal choice inputs; no new AI-score provider is necessary.",
+    "next_concrete_gap": "If2640 relief becomes actionable, days_left currently null and v2 does not identify actual-contact joining semantics; reuse existing lifecycle/contact scopes before extending a provider."
+  },
+  "sources": [
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-movement/actual-post-refusal-v34-01/017-ck3_take_snapshot.json",
+      "sha256": "7487ccdc60d11997690df0e4778d648a7015533be01630f927417743ff5b9239",
+      "bytes": 86035
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-movement/actual-post-refusal-v34-01/016-ck3_execute_step.json",
+      "sha256": "d768a0f65d4cf749bd877648f70f5c6ebd34bfbbb250e9d1f5fb710e7e9e5773",
+      "bytes": 8685
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-movement/actual-post-refusal-v34-01/012-ck3_execute_step.json",
+      "sha256": "ded2e30d74755aafbfb095f16ee19d4efb79476759d59cc3da09bec268e4b806",
+      "bytes": 9445
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-battle-phase/actual-battle-transition-v34-01/004-ck3_query_battle_transition_v1.json",
+      "sha256": "eee45f2011a31ce9fd65aa3ea30e599d48d50dc359af14973e7d17970d21956d",
+      "bytes": 4431
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-battle-phase/actual-battle-discovery-v34-02/004-ck3_query_combat_simulation_inputs.json",
+      "sha256": "64c8c2b67b3aec4a2a4ca3a87bf400fa0c5acd2e95a192b9e2fc0caa108c77a0",
+      "bytes": 185128
+    }
+  ],
+  "boundaries": {
+    "this_agent_game_actions": 0,
+    "this_agent_time_advance_days": 0,
+    "this_agent_live_calls": 0,
+    "root_acquired_frozen_inputs_reused": true,
+    "new_tests": 0,
+    "shared_source_edits": 0,
+    "sdk_edits": 0,
+    "git_operations": 0,
+    "implemented_policy_loop": false,
+    "battle_win_probability": null
+  }
+}

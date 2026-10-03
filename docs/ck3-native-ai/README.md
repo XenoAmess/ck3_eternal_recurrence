@@ -932,3 +932,21 @@ flowchart TD
 - [圣骑士团选中地产条款](religion-holy-order-selected-title-native-ai-12003.md)：九项真实报价／资格／理由为 `production-live primitive`，当前 eligible=0；乱码结论已更正为 worker 显示误读，typed 动作与收益未完成。
 - [朝圣默认阶段实测](religion-pilgrimage-headless-candidate-activity-quote-native-ai-12003.md)：五个活动报价为 `production-live primitive`，只追加“v34 默认阶段报价实际验收”，全旅程、CanStart 与完成结果仍待。
 - [从敌军发现既有战斗](battle-hostile-existing-combat-discovery-1.20.0.3-2026-10-03.md)：复用 ROOT 拒绝后 War50331736 与 route-entry2634；已有 v2→CombatID→transition 查询配方，真实 provider 结果仍待。
+
+## 2026-10-03 拒绝后的实际战场与首个防守移动循环
+
+2026-10-03 post-refusal increment: actual military input primitives and a verified paused movement-order loop; no arrival, battle victory or completed war credited.
+
+- [Post-refusal actual observations and verified2610 movement order](robert-post-refusal-military-actual-2026-10-03.md)
+- [Actual composition, knights and native counters](battle-composition-actual-v34-12003.md)
+- [Short defensive target counterpolicy](robert-defensive-target-counterpolicy-1.20.0.3.md)
+- [Relief/contact tactical delta and native bonus boundaries](war-relief-contact-tactical-delta-12003-20261003.md)
+- [Headless one-day observation cadence](battle-observation-cadence-headless-12003.md)
+- [Casualty, retreat and terminal military outcome observations](battle-casualty-retreat-terminal-outcomes-1.20.0.3-2026-10-03.md)
+- [Installed character-result stock chain](battle-character-result-stock-1.20.0.3-2026-10-03.md)
+- [Current-build native retreat/continue AI branches](battle-retreat-and-continue-native-ai-12003-2026-10-03.md)
+- [Dated actual route and movement postconditions](war-movement-1.20.0.3-readiness-2026-10-03.md)
+- [Dated actual populist war end conditions](war-end-conditions-1.20.0.3-2026-10-03.md)
+- [Dated eight-army strength capture](army-1.20.0.2-migration.md)
+- [Dated actual terrain and hypothetical-entry inputs](battle-current-robert-1.20.0.3-2026-10-03.md)
+- [Observed hostile CombatID and actual ordered sides](battle-hostile-existing-combat-discovery-1.20.0.3-2026-10-03.md)

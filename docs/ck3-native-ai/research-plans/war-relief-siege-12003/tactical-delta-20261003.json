@@ -1,0 +1,400 @@
+{
+  "schema": "xar.ck3.war-relief-contact-tactical-delta/v1",
+  "created_at": "2026-10-03T06:06:13.576345+00:00",
+  "artifact_pins": {
+    "post_refusal_snapshot": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-movement\\actual-post-refusal-v34-01\\017-ck3_take_snapshot.json",
+      "sha256": "7487ccdc60d11997690df0e4778d648a7015533be01630f927417743ff5b9239",
+      "bytes": 86035
+    },
+    "strength": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-movement\\actual-post-refusal-v34-01\\006-ck3_query_army_strengths.json",
+      "sha256": "64e21522022ebf73500628bbcf3cf06b1d32c926739c652dc9beff63f78d20c4",
+      "bytes": 9608
+    },
+    "route2640": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-movement\\actual-post-refusal-v34-01\\012-ck3_execute_step.json",
+      "sha256": "ded2e30d74755aafbfb095f16ee19d4efb79476759d59cc3da09bec268e4b806",
+      "bytes": 9445
+    },
+    "route2610": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-movement\\actual-post-refusal-v34-01\\016-ck3_execute_step.json",
+      "sha256": "d768a0f65d4cf749bd877648f70f5c6ebd34bfbbb250e9d1f5fb710e7e9e5773",
+      "bytes": 8685
+    },
+    "discovery": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\actual-battle-discovery-v34-02\\004-ck3_query_combat_simulation_inputs.json",
+      "sha256": "64c8c2b67b3aec4a2a4ca3a87bf400fa0c5acd2e95a192b9e2fc0caa108c77a0",
+      "bytes": 185128
+    },
+    "transition": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\actual-battle-transition-v34-01\\004-ck3_query_battle_transition_v1.json",
+      "sha256": "eee45f2011a31ce9fd65aa3ea30e599d48d50dc359af14973e7d17970d21956d",
+      "bytes": 4431
+    },
+    "after_transition_snapshot": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\actual-battle-transition-v34-01\\005-ck3_take_snapshot.json",
+      "sha256": "bfaf719479c4d6bc66d09899feab5d327ec17abde0df03f4e6f41777bf9102e3",
+      "bytes": 71633
+    },
+    "bridge": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\actual-battle-transition-v34-01\\002-ck3_get_bridge_diagnostics.json",
+      "sha256": "8fb773aad1f0d49848c346a1799263d3dde00f27a99d4522f14d304874fd75e9",
+      "bytes": 27423
+    }
+  },
+  "facts": {
+    "exact_build": {
+      "version": "1.20.0.3",
+      "steam_build": 25652598,
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+    },
+    "frame": {
+      "actor": 29829,
+      "episode": "native-29829-2bc2d599f7f9",
+      "date_raw": 53236608,
+      "paused": true,
+      "public_revision": 2,
+      "native_revision": 16,
+      "snapshot_id": "native:16"
+    },
+    "player_army": {
+      "army_id": 83886367,
+      "owner_character_id": 29829,
+      "soldiers": null,
+      "current_province_id": 2614,
+      "move_target_province_id": null,
+      "move_target_observable": false,
+      "controllable": true,
+      "source": "native",
+      "route_province_ids": [],
+      "route_read_status": "complete_empty",
+      "route_source_count": 0,
+      "in_combat": false,
+      "retreating": false,
+      "army_state": "regular",
+      "army_state_code": 1,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null
+    },
+    "objectives": {
+      "2610": {
+        "province_id": 2610,
+        "occupation_observable": true,
+        "is_occupied": false,
+        "occupying_character_id": null,
+        "fort_level": 3,
+        "garrison_size": 400,
+        "besieging_strength": 0,
+        "siege_observable": true,
+        "active_siege": null
+      },
+      "2640": {
+        "province_id": 2640,
+        "occupation_observable": true,
+        "is_occupied": false,
+        "occupying_character_id": null,
+        "fort_level": 7,
+        "garrison_size": 1350,
+        "besieging_strength": 0,
+        "siege_observable": true,
+        "active_siege": {
+          "siege_id": 318767158,
+          "besieging_army_id": 50331920,
+          "player_army_besieging": false,
+          "progress_fraction": {
+            "raw": 44133,
+            "scale": 100000
+          },
+          "current_work": {
+            "raw": 27583600,
+            "scale": 100000
+          },
+          "total_work": {
+            "raw": 62500000,
+            "scale": 100000
+          },
+          "remaining_work": {
+            "raw": 34916400,
+            "scale": 100000
+          },
+          "days_left": null,
+          "assault_observable": true,
+          "breach_level": 2,
+          "walls_breached": true,
+          "assault_in_progress": false,
+          "can_start_assault": false,
+          "can_stop_assault": false,
+          "assault_daily_progress": {
+            "raw": 0,
+            "scale": 100000
+          },
+          "assault_daily_casualties": 0
+        }
+      }
+    },
+    "actual_combat": {
+      "schema_version": 1,
+      "contract_stage": "production_exact_combat_lifecycle",
+      "status": "available",
+      "battle_transition_ready": true,
+      "snapshot_revision": 16,
+      "observed_date_raw": 53236608,
+      "combat_id": 1577058305,
+      "province_id": 2640,
+      "phase": "maneuver",
+      "phase_raw": 0,
+      "phase_day": 0,
+      "winner_side": "none",
+      "winner_raw": -1,
+      "forced_winner_side": "none",
+      "forced_winner_raw": -1,
+      "finalized": false,
+      "battle_result_id": 1493172226,
+      "attacker_public_cunit_ids_in_stored_order": [
+        251658381,
+        473,
+        474
+      ],
+      "defender_public_cunit_ids_in_stored_order": [
+        50331920,
+        83886484
+      ]
+    },
+    "actual_side_groups": {
+      "attacker": {
+        "army_ids": [
+          251658381,
+          473,
+          474
+        ],
+        "war_id_against_robert": 50331736,
+        "soldiers_from_same_date_prior_query": 3190
+      },
+      "defender": {
+        "army_ids": [
+          50331920,
+          83886484
+        ],
+        "war_id_against_robert": 16777231,
+        "soldiers_from_same_date_prior_query": 1664
+      },
+      "player": {
+        "army_id": 83886367,
+        "soldiers_from_same_date_prior_query": 2334,
+        "in_actual_combat": false
+      }
+    },
+    "routes_reused_from_movement": {
+      "route2610": {
+        "target": 2610,
+        "route_province_ids": [
+          2610
+        ],
+        "arrival_date_raws": [
+          53236776
+        ],
+        "arrival_days": 7,
+        "next_day_contact_free": true,
+        "checked_date_interval": [
+          53236608,
+          53236632
+        ],
+        "full_route_battle_outcome_established": false
+      },
+      "route2640": {
+        "target": 2640,
+        "route_province_ids": [
+          2618,
+          2617,
+          2632,
+          2613,
+          8752,
+          2628,
+          2626,
+          2627,
+          2633,
+          2634,
+          2640
+        ],
+        "arrival_date_raws": [
+          53236776,
+          53236872,
+          53236992,
+          53237160,
+          53237352,
+          53237544,
+          53237808,
+          53238048,
+          53238312,
+          53238600,
+          53238744
+        ],
+        "arrival_days": 89,
+        "next_day_contact_free": true,
+        "checked_date_interval": [
+          53236608,
+          53236632
+        ],
+        "full_route_battle_outcome_established": false
+      }
+    },
+    "boundary": [
+      "Actual current battle side order is read from the transition; hypothetical v2 attacker/defender request order is not current battle identity.",
+      "3190 and 1664 are separate enemy sides in the actual battle, not one 4854-strength opponent army.",
+      "Same raw date does not imply same native revision; original strength query native11 is recorded separately from transition native16.",
+      "Maneuver/day0, no winner, nonfinalized and a BattleResultID do not prove a resolved battle outcome.",
+      "The side cohort war IDs are active-war memberships against Robert; no CCombat-to-War binding was queried.",
+      "Future actual contact must be read when Robert reaches its current target province; current-province-only contact cannot be queried at remote2640 while Robert is at2614.",
+      "Enemy siege days_left=null and besieging_strength=0 do not mean zero completion days or no siege."
+    ]
+  },
+  "native_semantics_reused": {
+    "proof": "research-plans/war-relief-siege-12003/exact-proof.json",
+    "target_bonus": {
+      "rva": "0x1A140C0",
+      "ordered_exclusive": [
+        {
+          "condition": "already_sieging_target",
+          "bonus": 500
+        },
+        {
+          "condition": "info_bit7_would_lift_siege",
+          "bonus": 190
+        },
+        {
+          "condition": "relationship_filtered_combat",
+          "bonus": 80
+        },
+        {
+          "condition": "info_bit6_start_siege",
+          "bonus": 70
+        }
+      ],
+      "actual_target_info_flags_read": false,
+      "relief_plus_combat_bonus": 190,
+      "full_score_or_final_choice_closed": false
+    },
+    "help_ratio": {
+      "fragment": "0x19F29D0..0x19F2ADB",
+      "progress_getter": "0x251C9C0",
+      "compare": "0x19F2ABB..0x19F2AD3",
+      "threshold": 0.6,
+      "comparison": ">=",
+      "below_threshold_ratio": 1.5,
+      "at_or_above_threshold_ratio": 1.7,
+      "complete_help_stack_arbitration_closed": false,
+      "actual_robert_help_ratio_assigned": null,
+      "reason": "No actual helper/requester object input was read; enemy Siege318767158 progress is not assigned to a Robert help decision."
+    },
+    "ongoing_own_siege_cost_applicable_now": false,
+    "assault_native_start_available_now": false
+  },
+  "minimal_choice": {
+    "recommended": {
+      "choice": "short_defend_reposition_2610",
+      "rationale": "Observed objective2610 is unoccupied/no-siege and reached in7 days; current2640 combat is between two enemy groups and long relief preview is89 days. Start a short route and observe only the next day before extending the decision.",
+      "source_credit": "counter-policy inference after exact native tree; no order or day executed by this lane"
+    },
+    "alternatives": [
+      {
+        "choice": "hold_2614_one_day_observe_enemy_battle",
+        "rationale": "Follow actualCombat1577058305 and Siege318767158 as the enemy-versus-enemy fight evolves; gives no guaranteed relief/war-score credit."
+      },
+      {
+        "choice": "long_relief_2640",
+        "rationale": "Native route preview is legal but current benefit is unproved. A89-day commitment cannot assume current battle sides, siege window or future join side remain unchanged."
+      },
+      {
+        "choice": "own_siege_2610",
+        "available_currently": false,
+        "reason": "Observed unoccupied player defensive objective with no active siege; mere movement there is not own siege progression."
+      },
+      {
+        "choice": "assault_2640",
+        "available_currently": false,
+        "reason": "Player does not besiege this siege and full native CanStart is false; breach2 does not override that result."
+      }
+    ]
+  },
+  "postconditions": {
+    "move_2610_order": [
+      "Independent paused frame retains actor29829/episode and player army83886367, and reads exact destination2610 with a nonempty committed route or already arrived2610. Command acknowledgement alone earns no movement credit."
+    ],
+    "one_day_slice": [
+      "Read date_raw increase24 and paused true, then current army province/committed route/combat/retreat state. Do not require immediate arrival because current native ETA is7 days."
+    ],
+    "enemy_battle": [
+      "Requery priorCombat1577058305 with registered transition. If no longer available, use terminal transition on that prior ID; battle exit/result identity and any survivor retreat state establish what happened. No winner is inferred from BattleResultID alone."
+    ],
+    "relief": [
+      "Re-read objective2640 occupation plus active_siege identity, besieging actor/eligible and progress/days. Battle start, zero besieging strength or a disappearing old siege ID alone does not prove the objective remains defended; distinguish replacement siege and enemy occupation."
+    ],
+    "contact_on_arrival": [
+      "At actual current province, query actual_contact_scope for83886367/currentProvince and actual battle control. Read actual stored participant sides rather than projecting current enemy-versus-enemy sides into a future Robert battle."
+    ],
+    "assault_future": [
+      "Only if a future owned active siege becomes observable with native CanStart true, use current full SiegeID and re-read assault active flag plus same province/siege identity after start; then one-day work/eligible/occupation before continue/stop."
+    ]
+  },
+  "registered_query_recipes": {
+    "move_if_root_selects": {
+      "tool": "ck3_move_army",
+      "arguments": {
+        "army_id": 83886367,
+        "target_province_id": 2610,
+        "expected_revision": "latest public R"
+      }
+    },
+    "battle_followup": {
+      "tool": "ck3_query_battle_transition_v1",
+      "arguments": {
+        "combat_id": 1577058305,
+        "expected_revision": "latest public R"
+      }
+    },
+    "battle_terminal_if_needed": {
+      "tool": "ck3_query_battle_terminal_transition_v1",
+      "arguments": {
+        "prior_combat_id": 1577058305,
+        "subject_public_cunit_id": 251658381,
+        "expected_revision": "latest public R"
+      },
+      "scope_note": "Use a real prior participant, not absent player83886367; consume current scope and actual result."
+    },
+    "actual_contact_on_arrival": {
+      "tool": "ck3_query_actual_contact_scope",
+      "arguments": {
+        "subject_army_id": 83886367,
+        "target_province_id": "actual current province from latest snapshot",
+        "expected_revision": "latest public R"
+      }
+    },
+    "fresh_objective_read": {
+      "tool": "ck3_take_snapshot",
+      "arguments": {
+        "include_native_command_history": false
+      }
+    }
+  },
+  "readiness": {
+    "research": "Exact native bonus/help consumer tree, complete AI rank/help/assault desire still partial.",
+    "production_live_primitive": "Root frozen current battle ID/sides and objective siege read; this lane reuses those observations.",
+    "production_live_loop": false,
+    "complete": false,
+    "actions_executed_by_lane": 0,
+    "days_advanced_by_lane": 0,
+    "new_tests": 0,
+    "sdk_operations": 0,
+    "git_operations": 0
+  },
+  "report_fields": {
+    "completed": "Read actual enemy-versus-enemyCombat1577058305 sides; updated relief/contact choice and independent postconditions after refusal.",
+    "why": "Prevent treating all geographically present hostile troops as one opponent or current combat as a friendly reinforcement opportunity.",
+    "readiness_change": "Current actual combat identity/sides input now production-live primitive by root evidence; tactical recommendation remains unexecuted counter-policy.",
+    "red_or_blocker": "No new RED. Complete native final ranking/help arbitration and autonomous assault utility remain research quality gaps, not new gates.",
+    "next": "Root may execute short2610 route or one-day hold, independently read route/date and prior battle/siege afterward.",
+    "commit_push": "Root adopts external delta and records its own commit/push; this lane performs none."
+  }
+}

@@ -2222,3 +2222,7 @@ this policy candidate does not replace or invalidate it. Authority remains G2
 | M4 lifestyle readback | R0135 `completed-red/evidence_insufficient`; M4 `in_progress` | [Private report](Z:/ck3_mod_rewrite_process_assets/g2-m4-h2479-readback-20260922/live-R0135/report.json) SHA `764FAD6D217DFE22634B708D9AEC12014661DD7AFBB8DD2AABBFF92E953CBF2C` | Same paused h2479 frame: stock wealth focus legal, target XP/points zero; LIFE2 candidates unavailable because window unavailable; formal perk query windowless unavailable. Zero action/date, cleanup true, public query/action/ad OFF. Repair observation boundary before typed closure. |
 
 - PR #112 `health.7400` static patch `ccda170a` is integrated but R0134 did not replay it; R0132 RED stays open. [PR #113](https://github.com/XenoAmess/ck3_eternal_recurrence/pull/113) merged at `59065f8` as offline defender-surrender terms research; original R0118 WarID251658364 RED stays open. Durable date span **13,445/36,524 days only**; hundred-year/full-campaign/independent-seed gates **0/1**, **0/1**, **0/2**; G2 **3/8**; PRV008 frozen narrow preview GO unchanged.
+
+## 2026-10-03T14:31 当前防守军务输入与替换入口
+
+当前三个防守WarID16777231/129/50331736、玩家2334、两目标实际7/89日路线与敌军互斗双方已实读；先实现7日目标防守的最小一日循环，actual首日GREEN。完整native candidate ranking、tie、求援0.6实际比率、未来敌军意图/MonteCarlo未采用，不作额外前置；替换入口是原生目标与解围专题已列的facts/score/native query。下一可施工项正在并行：当前统帅候选、exact当前补给、真实terminal field projection、县typed派遣、召盟typed执行及悔罪fallback/compiled route。拒绝和移动两已验证动作不等于战争胜利；全量终战仍待实际score/CanSend与后态。
