@@ -1,8 +1,8 @@
 # Catholic clergy financial requests, CK3 1.20.0.3
 
-Readiness: **static-ready implementation; v30 actual partial observation / required gold quote capability RED**. Robert `29829` is the only test entry; Catholic is ROOT's current baseline. ROOT's one registered paused query genuinely observed identity, ordinary options, shown, final CanSend, declared costs and native acceptance. Its gold amount failed with `gold_value_evaluation_unavailable`, leaving the complete domain unavailable. The full leaf is not yet a production-live primitive or loop. Existing synthetic GREEN receipts remain implementation evidence, not proof of the missing amount. No interaction, letter acknowledgement or resource transfer was performed. Religion is fully authorized; the real amount failure is now the concrete next repair.
+Readiness: **production-live primitive / complete readonly ordinary HoF Gold context observed in v31**. Robert `29829` is the only test entry; Catholic is ROOT's current baseline. ROOT's one v31 registered paused query observed all groups, including native final Q raw `5833566` / scale `100000` = **58.33566 gold quote**, with overall `available=true` and status `observed`. Independent shown and final CanSend are both false, so the current ordinary route is skipped. This quote is not received money: no request, letter acknowledgement, payment, revenue or financial OODA loop was performed. The v30 actual amount failure and the intervening static production-function reproduction remain preserved. Religion is fully authorized; the concrete unavailable-amount fault is closed by actual recovery.
 
-Exact target is Steam `1.20.0.3`, build `25652598`, EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. Research and the existing fixture inputs use immutable `f30579bf6405e183192c96ea6b9bc35dddd11eec`, at `artifacts/g2-maintainer-2026-10-02/resume-12003/production-source-f30579bf`. The implementation was rebased onto `d1b5b4c5583fa428d9226d4ebe4431e0c8db3579`; ROOT's published v30 actual source/native/environment is `3223af636a1b7807064046f1c8e38805c5732731`, frozen at `artifacts/g2-maintainer-2026-10-02/resume-12003/production-source-3223af63`. The existing exact EXE freeze is reused; this task does not rehash it. External packet is `artifacts/g2-maintainer-2026-10-02/resume-12003/religion-head-of-faith-gold-12003/`.
+Exact target is Steam `1.20.0.3`, build `25652598`, EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. Research and the existing fixture inputs use immutable `f30579bf6405e183192c96ea6b9bc35dddd11eec`, at `artifacts/g2-maintainer-2026-10-02/resume-12003/production-source-f30579bf`. The implementation was rebased onto `d1b5b4c5583fa428d9226d4ebe4431e0c8db3579`; v30 actual source `3223af636a1b7807064046f1c8e38805c5732731` remains its failure input. Current v31 source/native/Python/environment is `db46311827eeffe24f5a093ecc9461e12c828b40`, frozen at `artifacts/g2-maintainer-2026-10-02/resume-12003/production-source-db463118`; actual prepared-environment SHA is `0a50491fa8f311d5abe36d341cfacfae635962bba9faa836ff032285eb8564a3`. The existing exact EXE freeze is reused; this task does not rehash it. External packet is `artifacts/g2-maintainer-2026-10-02/resume-12003/religion-head-of-faith-gold-12003/`.
 
 ## Primary route: Ask Head of Faith for Gold
 
@@ -61,14 +61,13 @@ flowchart TD
     AC --> LEAF
     Q --> LEAF
     LEAF --> ROUTE[Registered MCP and NativeDriver route: synthetic fixture GREEN]
-    ROUTE --> ACT[v30 actual: identity, options, shown, CanSend, costs and acceptance observed]
-    Q -.-> FAIL[unknown: actual amount failed; named-scope evaluation repair in progress]
-    FAIL -.-> FULL[unknown: complete actual readonly domain after repair]
-    ACT -.-> FULL
+    ROUTE --> V30[Historical v30 actual: other groups observed, Q failed]
+    V30 --> FIX[Closed exact scratch/context correction and production-function synthetic repro]
+    FIX --> ACT[v31 actual: complete readonly domain, Q58.33566, shown false and CanSend false]
     ACT -.-> OODA[unknown: future request, reply, independent balances and liabilities]
 ```
 
-Solid arrows describe source-confirmed dependencies, the implemented fixture-tested route and the independently observed v30 groups. Dashed arrows retain the actual failed amount, complete-domain repair and future action boundary. A real registered transport query does not make its failed evaluator GREEN.
+Solid arrows describe source-confirmed dependencies, implementation, preserved failure/repair history and the independently observed complete v31 readonly domain. The dashed branch retains only the unperformed financial action/reply/balance loop. v30 transport GREEN remains distinct from its evaluator RED; v31 includes genuine amount recovery.
 
 ## Exact native inputs and existing machinery
 
@@ -79,7 +78,7 @@ Existing `religion_rite_governance12002_head.hpp/cpp` already exposes Faith/main
 | Faith religious head `0x2439E10` |125 bytes|`63b93a6b0be15fcdc9f7c741c94f4b3ed7cdb1dc51745d00c883ad9801bf5cd1`|
 | Faith religious head title `0x2443FA0` |61 bytes|`b48cb7d3a424066f54316a90c5b1c03a9e0a4e9ad1dfab046498ada9aa0a2519`|
 
-Both are `void* (Faith*)` returning borrowed native objects in RAX. Faith+0x300 supplies the full TitleID; the native title store requires full title ID equality at+0x10. Title+0x128 supplies the holder's full CharacterID; the character store requires full ID equality at+0x18. Native fallbacks do not establish a real head. Direct registration/thunk/reflection slices prove the getter role. **Reuse the existing heads schema and getter code**; no second identity framework is needed. Current values still need the new leaf's actual paused capture.
+Both are `void* (Faith*)` returning borrowed native objects in RAX. Faith+0x300 supplies the full TitleID; the native title store requires full title ID equality at+0x10. Title+0x128 supplies the holder's full CharacterID; the character store requires full ID equality at+0x18. Native fallbacks do not establish a real head. Direct registration/thunk/reflection slices prove the getter role. **Reuse the existing heads schema and getter code**; no second identity framework is needed. The v31 paused capture below supplies the current qualified head/role identities.
 
 The current `.3` ABI reuse manifest already covers the existing Family/gift context machinery. Selected coverage is extracted once into `native/EXISTING-CONTEXT-PINS.json`; full original source pins are reused:
 
@@ -120,7 +119,7 @@ The external package implements one bounded `ck3_query_player_head_of_faith_gold
 
 Fields must retain their own sampled status. A definition/context/evaluator failure must not present early-return false/zero defaults as current legality, costs, acceptance or quote. The existing loan v25/v26 failures already established that lesson; do not rerun them. A completely observed negative ordinary request is useful: it identifies actual readiness, receiver, final Q and acceptance without sending anything.
 
-The original construction inputs remain in `native/READONLY-LEAF-PATCH-PLAN.md` and the research `DELIVERY.json`. Completed implementation, exact source pins, preserved attempt receipts and the rebased source projection are described below. ROOT remains sole shared source/Git/SDK/game owner. Its v30 paused capture has now exposed a real amount-evaluator failure, which must be repaired before a complete paused body can qualify the leaf as **production-live primitive**. Source proof, synthetic callback, schema or transport ACK do not close that failure. Any subsequent action must independently verify reply, resource balances and liabilities.
+The original construction inputs remain in `native/READONLY-LEAF-PATCH-PLAN.md` and the research `DELIVERY.json`. Completed implementation, exact source pins, preserved attempts and recovery are described below. ROOT remains sole shared source/Git/SDK/game owner. The v30 amount-evaluator failure led to a bounded helper correction, then ROOT's complete v31 paused body qualified this readonly leaf as **production-live primitive**. Source proof, synthetic callback, schema or transport ACK alone did not close the failure. Any subsequent action would require independent reply, resource balance and liability verification; this delivery performs no action.
 
 ### Implementation and existing verification receipts
 
@@ -156,6 +155,25 @@ The initial/final frozen helper frame remained paused with no request or pending
 
 **v31 amount fix static addendum:** that bounded offline repair is now complete and ROOT has applied its frozen single-file patch. Only `ck3_12002_gift_opinion.cpp` changed: native-shaped contiguous0x3D8 scratch, second constructor at+0x128, scratch scope pointer at+0x3D0, and evaluation-context scope pointers at0/+8/+0x10; named-scope clone, plain registry/type, key, effective root, DTO and routing are preserved. One new deterministic reproduction directly compiled the old production helper, then only the repaired helper with the same fixture object. Old construction returnedfalse with the missing context+8 scope pointer; corrected construction returnedtrue with synthetic rawQ12345000 and two evaluator calls. Both strict `/W4 /WX` compilations passed. `ACTUAL-V30-AMOUNT-FIX/ABI-EVAL/DELIVERY.json` (SHA `b214dde812a4a3997aea3b786d37b246fe69538493c574d1bd466adfe238f7e8`) pins the patch, existing exact ABI inputs and `repro-attempt-01/RESULT.json`. This is **static-ready production-function reproduction with synthetic callbacks**, not an actual amount result. The v30 generic false did not identify its first internal failing branch; the historical partial/RED attempt remains intact. No old fixture, full suite, ABI scan, SDK or game query was rerun. **The next required closure is ROOT's one v31 paused actual query.**
 
+### v31 actual recovery: complete readonly primitive
+
+ROOT's one new registered query is CLOSED with helper EXIT0/GREEN at `artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v31-head-of-faith-gold-recovery-01/`. Its actual native body has overall `available=true`, reason `none` and normalized status `observed`. PID is `97992`, date raw `53235480`, public revision2/native revision4, snapshot `native:4`, capture epoch `16267`. Every native sample group is available; ordinary on-accept piety remains separately stock-qualified.
+
+| Actual group | v31 sampled result |
+|---|---|
+| Identity | Actor `29829`, Rite/main Rite `152`, Faith `23`, head title `4`; requested/effective recipient and amount root all `29097`; no redirect in this frame |
+| Ordinary options | Three declared flags, selected count0, all unselected |
+| Independent shown / final CanSend | Both available and false; a complete negative route observation, not a failed read or an executable request |
+| Declared costs | Ten available raw zeros, on-send only; separate stock-qualified on-accept piety250 remains a potential consequence |
+| Native acceptance | Auto-accept false; recipient raw `-14900000` (=−149 score), intermediary raw `10000000` (=100 score), outer status2; intermediary ID−1 still does not identify a character or prove acceptance |
+| Final Q | Available, raw `5833566`, scale `100000`: **58.33566 gold quote**. Key `hof_ask_for_gold_request_value`; current root/recipient `29097`, named actor `29829` |
+
+Initial and final helper frames stayed paused at the same date/revisions, with no active event or pending interaction, and piety raw `37101250` unchanged. This artifact observes a price/proceeds preview; it records **no request, receipt of gold, debit, paid fee, income/revenue outcome or OODA loop**. Its independent visible value is a fully observed reason to skip the current ordinary financial route: shown and final CanSend are false. The unavailable amount is no longer an active observation blocker.
+
+The real v30 amount fault is closed by this complete v31 recovery. The two artifacts are **not a same-frame A/B test**: raw dates differ by912 (=38 game days), PID and published source/environment changed, and the v30 generic failed sample never exposed its first internal false-return branch. The intervening deterministic production-function reproduction proves the corrected construction contract; it is retained separately from the two actual attempts. No prior test, actual query or ABI check was repeated for this recovery documentation.
+
+`ACTUAL-V31-RECOVERY/ACTUAL-V31-COMPACT.json`, `REPORT-FIELDS.json` and `DELIVERY.json` preserve the one extracted actual body, original helper/native-wire pins, current source/environment/frame identities, readiness and publication fields. The complete tool artifact SHA is `21e01f51cc6726d517a36b4741cc0983cccf75a793f241f180f87a0231f7eed1`; native wire SHA is `41ecf333574708a0cfe9e46067f04ebe8ea6e0f5ed4a068f8552d7b9d00d835e`. ROOT owns aggregate Git publication.
+
 ## Narrow reverse route: Seek Indulgences
 
 `seek_indulgences_interaction` is a source-confirmed gold→piety route, with its own five-year recipient cooldown and capital-archbishop/head/landed-prelate/chaplain hierarchy. It requires central sacraments, permitted Rite and the valid clergy/faith/blocker tree. AI-only availability prefilters must not be applied to Robert. Exact narrow proof is `indulgence/STOCK-ALTERNATIVE.md`; this is not a second implemented capability or an action recommendation.
@@ -168,6 +186,6 @@ Here the interaction tooltip does not apply the effect: it triggers letter`relig
 
 ## Publication and continuing work
 
-The research packet freezes exact stock and native construction inputs and closes the two missing head getters. The ordinary-request native/MCP leaf is implemented and published by ROOT, with three existing GREEN verification receipts. v30 additionally produced actual qualified negative shown/CanSend and other observations, but exposed the required final-amount failure. The next work is its concrete production evaluator repair and one ROOT paused verification, not another whole-suite or loan/getter audit. Church income/devotion owners remain independent parallel dependencies; this task adds no war operations or global framework.
+The research packet freezes exact stock and native construction inputs and closes the two missing head getters. The ordinary-request native/MCP leaf is implemented and published by ROOT, with existing GREEN verification receipts, a preserved v30 actual amount failure, its minimal scratch/context correction and a complete v31 actual recovery. This readonly work package is delivered as **production-live primitive**. Current shown/CanSend false provides a useful skip result; there is no need for another query or audit to close this fault. Any future action work is a separate request/reply/resource loop, not a claim made here. Church income/devotion owners remain independent dependencies; this task adds no war operations or global framework.
 
-External research `REPORT-FIELDS.json` retains the original source-only delivery facts; `IMPLEMENTATION/REPORT-FIELDS.json`, `IMPLEMENTATION/DOC-DELIVERY.json` and `ACTUAL-V30-AMOUNT-FIX/ACTUAL-PARTIAL-DOC-DELIVERY.json` provide chronological increments for the daily/weekly ledger owner. Full-leaf readiness remains static-ready with actual partial observations; production-live primitive, production-live loop and complete remain unclaimed. Git/publication pins belong to ROOT's aggregate commit; this subagent makes no Git change.
+External research `REPORT-FIELDS.json` retains the original source-only delivery facts; implementation and v30 failure/fix receipts retain their historical qualifiers. `ACTUAL-V31-RECOVERY/REPORT-FIELDS.json` and `DELIVERY.json` provide the current daily/weekly increment: **production-live primitive**, complete readonly context, amount recovered, useful current negative route. Production-live loop and general financial capability complete remain unclaimed. Git/publication pins belong to ROOT's aggregate commit; this subagent makes no Git change.

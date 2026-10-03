@@ -17,9 +17,11 @@
 
 [朝圣类型判定](religion-pilgrimage-native-inputs-12003.md)、忏悔最终决议条款和[教会当前／最高月收入](religion-church-income-readonly-leaf-12003.md)已在同一宗教 MCP 的罗贝尔实际暂停帧验收：PID120436、raw date53234568、source/native/env d1b5b4c5。当前最高为 production-live primitive（只读）；CanPlan=true，忏悔 shown=false/can_take=false，教会当前／最高月收入分别为0.21165／0.70554金。朝圣 CanPlan 不代表所选目的地的完整 CanStart／费用／旅行时间，最高月收入也不代表已取得收入改善。证据：`artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v29-religion-three-leaves-01/result.json`。
 
-[向信仰领袖请求资助](religion-catholic-head-of-faith-gold-native-ai-12003.md)已在 v30 当前罗贝尔暂停帧读到信仰领袖／实际收件人29097、shown=false、CanSend=false，以及独立接受度；普通请求的声明成本和接受后的250虔诚效果费用分别记账。原生金额计算仍返回 `gold_value_evaluation_unavailable`，整体查询为 partial，正在修复真实 getter 故障，不能称完整查询或资金收益已完成。证据：`artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v30-head-of-faith-gold-01/result.json`。
+[向信仰领袖请求资助](religion-catholic-head-of-faith-gold-native-ai-12003.md)已在 v31 当前罗贝尔暂停帧闭合完整只读查询，达到 production-live primitive：信仰领袖／实际收件人29097，报价58.33566金，shown=false、CanSend=false，接受度为独立原生观测。普通请求的声明成本和接受后的250虔诚效果费用分别记账，没有发送请求或取得资金收益。v30 金额不可用的失败保留，最小计算上下文修复已在新进程恢复金额；前后不是同帧比较。证据：`artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v31-head-of-faith-gold-recovery-01/result.json`。
 
 [成年通知 coming_of_age.1002](ck3-1.20.0.3-coming-of-age1002.md)已从实际阻塞事件和新版原文闭合唯一 native0/API1 选项，v30 实际消费原通知22、独立确认窗口消失并保存，恢复正常推进。按钮只确认既有成长通知，不计教育特质、解除监护或 M2 材料收益。证据：`artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/v30-coming-age1002-resolve-save-01/result.json`。
+
+[圣骑士团创建与雇佣](religion-holy-order-systems-native-ai-12003.md)已形成新版原生研究树，闭合动态赞助者、租约、最终雇佣许可、费用与支付能力入口；现为 research，只读查询实现正在施工。研究不依赖打开 Military/Faith 窗口，尚无罗贝尔实机组织集合或雇佣收益。
 
 当前实际能力与计划回链[统一进度](../autonomous-agent-progress/README.md)。宗教全面授权不等于宗教全域完成；上述原生研究、静态实现、实机观测和完整动作闭环分别记账。
 

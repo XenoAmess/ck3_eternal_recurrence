@@ -1,6 +1,8 @@
 # 1.20.0.3 教会租约、意见与罗贝尔的实际经济输入
 
-本页是 2026-10-03 的 **research / file-only** 增量，服务罗贝尔29829当前封建本世的经济决策。新版原版已把基督教教会租约指定为 `ecclesiastical_lease`，采用教区层级；世俗统治者的 authored 最高税份额是25%，实际份额还受教会情势的 personal／fixed obligations、local secular power、现任 lessee 的意见与 override 影响。不能把旧版“提高祭司意见即可获得固定比例税收”的记忆直接写入策略。本页闭合当前原生数值 getter，下一最小施工先取得玩家本人教会来源的当前／最高月收入；没有实机新收入、任命、赠礼或收益结论。
+本页研究正文是 2026-10-03 的 **research / file-only** 增量，服务罗贝尔29829当前封建本世的经济决策。新版原版已把基督教教会租约指定为 `ecclesiastical_lease`，采用教区层级；世俗统治者的 authored 最高税份额是25%，实际份额还受教会情势的 personal／fixed obligations、local secular power、现任 lessee 的意见与 override 影响。不能把旧版“提高祭司意见即可获得固定比例税收”的记忆直接写入策略。研究阶段闭合原生数值 getter，最小施工先取得玩家本人教会来源的当前／最高月收入；当时没有实机新收入、任命、赠礼或收益结论。
+
+**v29 实机增量（2026-10-03）：**独立 [church income 只读叶](religion-church-income-readonly-leaf-12003.md) 已由 ROOT 在 source/native/env `d1b5b4c5583fa428d9226d4ebe4431e0c8db3579`、PID120436、Robert29829 / raw53234568 paused frame 正式读取并 `GREEN/CLOSED`：current raw21165、maximum raw70554、Q100000，即 **0.21165 / 0.70554 gold/month**。该叶现为 `production-live primitive`；最大与当前之差不是已实现收入或净收益。本次没有经济动作或政策收益，树中尚未闭合的有效份额／IncomeRules 分支继续作为下一项只读施工入口，详见该叶的实际帧与下一入口章节。
 
 复用[经济建造树](domain-construction-ai.md)、[province 原始收入的边界](domain-construction-province-income-raw-c97.md)、[议会与发展](council-and-development.md)、[realm-priest 原生树](religion-realm-priest-council-native-ai-12003.md)、[神职任免](religion-clergy-council-native-ai-12003.md)、[宗教治理与意见](religion-governance-opinion-native-ai-12003.md)及[ReligiousRelations 价值](religious-relations-task-value-native-ai-12003.md)。现有RR任务月贡献0.45、最终总月piety0.4375、较早祭司56513→罗贝尔总意见+10仍归各自原帧，未重查，也不把旧+10冒充本页的新税收输入。
 

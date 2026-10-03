@@ -1,8 +1,8 @@
 # CK3 1.20.0.3：罗贝尔的教义／信条玩法输入与忏悔入口
 
-2026-10-03。本页完成一次后台原生研究，当前为 **research**；新增的 `has_at_least_tenet_status` 注册／求值子链已由 exact EXE 静态闭合。最小下一项是读取固定决议 **`pam_decision_confession`** 的原生显示、最终资格、费用、支付能力及最终拒绝文本。它有明确的减压和宗教结果用途，并能沿现有宗教 Context MCP 追加独立 sibling；当前尚未实现或实读这个 sibling。
+2026-10-03。本页的原生教义／信条研究保留原始证据；固定决议 **`pam_decision_confession`** 的显示、最终资格、费用、支付能力和最终理由已沿现有宗教 Context MCP 发布，并经 ROOT 的 v29 罗贝尔实机只读验收达到 **production-live primitive**。该帧 `is_shown=false / can_take=false / affordable=true`，四项费用为零，最终文本只有通用“你未满足所有要求”。查询可用不代表决议可用；未执行忏悔，也没有实测减压或宗教收益。`has_at_least_tenet_status` 注册／求值子链仍复用此前 exact EXE 静态闭合。
 
-宗教领域按项目所有者最新授权全面开放。罗贝尔唯一测试入口和独立战争暂停继续有效。本页没有启动、附加或操作 CK3，没有 SDK／pipe／窗口／Git 操作，没有付费、任命、改宗、改革或军事动作。ROOT 独占源码集成与实机；本 worker 只写本专题和外置研究材料。
+宗教领域按项目所有者最新授权全面开放。罗贝尔唯一测试入口和独立战争暂停继续有效。ROOT 独占源码集成与实机；本 worker 只完成后台研究、外置独占 leaf／fixture 及本轮 actual 离线提取，没有启动、附加或操作 CK3，没有 SDK／pipe／窗口／Git 操作，没有付费、任命、改宗、改革或军事动作。
 
 ## 版本与可复用实际基线
 
@@ -12,6 +12,26 @@
 先读 [原生索引](README.md)、[身份／现行教义](religion-native-ai-faith-identity-12003.md)、[Doctrine 总览](religion_doctrine12002_overview.md)、[Core／personal Tenet](religion_doctrine12002_tenet_rows.md)、[personal flags](religion_doctrine12002_personal_parameters.md)、[原生婚姻](ck3-1.20.0.2-marriage.md)、[治理意见](religion-governance-opinion-native-ai-12003.md)与[神秘共融最终条款](religion-mystical-communion-native-final-terms-12003.md)。已有婚姻／家族 G2 证据、原生 provider、fixtures 和迁移结果直接复用，没有新增婚姻验收。
 
 ROOT 的既有 [v27 Context 原包](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v27-religion-sway-conversion-cold-01/006-ck3_query_player_religion_context_v1.json)实际记录 actor **29829**、paused raw **53226552**、epoch **9380**，Rite **152**、Faith **23／catholic**、Religion **8**、main Rite **152**、精神满足度 **5**。这是该历史帧的实际身份和资源；它没有当前忏悔条款、Tenet 状态或 personal bonus，不把它外推成下一帧的动作资格。Murchad 和旧 Rogue 的 confession Core／参数也不能搬到本罗贝尔局。
+
+## v29：罗贝尔忏悔入口的实机只读结果
+
+ROOT 于 **2026-10-03 08:28:20–08:28:23（Asia/Shanghai）**执行一次既有 `ck3_query_player_religion_context_v1`，official result **GREEN／CLOSED**，driver close 已返回；初末帧均 paused、actor29829、date_raw53234568、native revision4。实际输出见 [v29 MCP 原包](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v29-religion-three-leaves-01/001-ck3_query_player_religion_context_v1.json)与 [official result](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v29-religion-three-leaves-01/result.json)。本 worker 只离线提取该已完成验收，没有重复调用或新增实机测试。
+
+| 实际绑定／条款 | v29 paused 帧 |
+| --- | --- |
+| exact game／EXE | 1.20.0.3／Steam25652598；EXE SHA 与本页冻结值相同 |
+| production source／native | `d1b5b4c5583fa428d9226d4ebe4431e0c8db3579`；v29 manifest 同 head；bridge DLL SHA `d3a851b9062a7b49e229ddd1cd92fd9b4781e14299b15788633bde1e5dffd31a` |
+| prepared environment／PID | env `de0dd8c86b8d2edc11bf4475edfab62e8485076ebc8a8a60f93106b80ddd2345`；PID120436（ROOT live owner 提供，worker 未查询进程） |
+| player／日期／捕获 | Robert29829；raw53234568；epoch17985；paused／map_ready=true |
+| 身份／资源 | Rite152、Faith23／catholic、Religion8、main Rite152；SF raw500000＝5；仅该帧 |
+| `player_confession_decision_terms` | schema `ck3_12003_confession_decision_terms_v1`；固定 `pam_decision_confession`；read_only=true、available=true、unavailable_reason=null |
+| 独立原生谓词 | `is_shown=false`；`can_take=false`；`affordable=true` |
+| evaluated 费用 | gold=0、treasury=0、prestige=0、piety=0；raw_scale100000。这次是真实报价，与 authored 无 cost block 的定义不同 |
+| native final 理由 | reasons_available=true；原样字段为 `\u0016warning_icon!\u0015X 你未满足所有要求\u0015!`；无具体失败条件 |
+
+源、native manifest、prepared env、原包与提取哈希在 [CONFESSION-ACTUAL](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-doctrine-gameplay-12003/confession-actual-v29/CONFESSION-ACTUAL.json)和 [SOURCE-NATIVE-ENV](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-doctrine-gameplay-12003/confession-actual-v29/SOURCE-NATIVE-ENV.json)。旧 research 的 f305 输入与 c01 独占 leaf 测试基线保留作历史；本次 production-live 绑定使用 d1b5／v29，不混称当前源码。
+
+这次解锁了实际价值：自动玩家能够确认当前没有可执行忏悔入口，且支付能力不是该帧返回的失败项，从而避免盲目尝试。它没有证明隐藏是由 DLC、fulfillment 类型还是 Rite许可造成，也没有证明 cooldown／chaplain／角色状态中的哪一项失败。当前只有只读 primitive；typed submit、`.0001.a` 及 stress／SF 后置尚未实现或验收，不能称 production-live loop、完整宗教能力或 G2 完成。
 
 ## 已有观测应如何用于玩法
 
@@ -23,7 +43,7 @@ ROOT 的既有 [v27 Context 原包](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2
 | 性别继承法与 Council | `20_doctrines.txt:763–805` 发布 `male_dominated_law`、`male_dominated_council` 等不同参数；`00_succession_laws.txt:2024–2079` 的 male-preference `can_keep` 保留政府、liege 同步、Rite 与文化分支，`can_have`／`can_pass` 是独立条件 | Doctrine 参数是输入；不能写成“Catholic 自动允许某法”。实际当前法与最终资格复用既有 law／government queries；不把 realm Crown Authority 的完成证据扩成所有继承法已完成 |
 | 政治成本 | confession Tenet 的 authored `character_modifier` 为 `tyranny_gain_mult=-0.1`、`dread_decay_mult=0.15`；personal modifier 另有 scheme secrecy 两项 | 核心 Tenet／个人拥有集合有现成口；这些定义不是当前 Robert 的已生效总倍率或已实现政治收益，不把 Core 和 personal 两来源的 modifier 混用 |
 | 教会经济 | `20_doctrines.txt:1110–1168` 的 temporal lease 参数与 lay ownership／allowed holding types 分开；Christian defaults 又把 ecclesiastical government 与 lease contract 分开定义 | 机制身份不是当前税／征召兵收入。复用[治理意见](religion-governance-opinion-native-ai-12003.md)与对应教会收入 owner 的最终 consumer，不在本页重建 endorsement 或旧版收入公式 |
-| 减压／宗教维护 | `pam_decision_confession` 消费当前 Christian fulfillment 类型、至少 permitted 的 confession 状态、DLC、神职现任／可用性、角色状态与五年冷却；实际结果在事件选项 | 这是本页优先的缺失 **固定决议 final terms**。现成 Context 只读成功或旧 SF=5 都不能代替这项最终条款 |
+| 减压／宗教维护 | `pam_decision_confession` 消费当前 Christian fulfillment 类型、至少 permitted 的 confession 状态、DLC、神职现任／可用性、角色状态与五年冷却；实际结果在事件选项 | 固定决议 final terms 已在 v29 实读：显示／资格false、affordtrue、cost0。显示层逐项失败来源和真实结果仍未观测；不以 Context 身份或旧 SF=5 代替实际条款 |
 
 Catholic 的 authored seed 更说明为什么需要读有效状态：`00_faith_types.txt:535–542` 与 `history/faiths/00_christianity.txt:77–138` 指向 `roman_rite`；1054 的 DLC Core setup 列 apostolic succession、communion、peace of God，1066 的 **permitted** 列表另含 confession。`00_rite_types.txt:1–33` 还有 DLC／fallback 选择。它们是当前安装 stock 的初始化定义；可能受到加载、DLC、历史演化、礼仪变更影响，不能断言当前 Robert 的 Core 或 permission 一定等于其中一份列表。
 
@@ -40,9 +60,11 @@ flowchart TD
     S --> NS[原生 IsShown3103400]
     V --> NT[原生 CanTake3103510<br/>保留最终原因文本]
     P --> COST[实际DecisionCost＋CharacterScope<br/>void CostEvaluate310CE70／CanAfford310B3B0]
-    NS -. 本页仅给出施工入口 .-> Q[下一固定忏悔条款sibling]
-    NT -. 尚无当前Robert paused包 .-> Q
-    COST -. 当前费用尚未实读 .-> Q
+    NS --> Q[已发布固定忏悔条款sibling]
+    NT --> Q
+    COST --> Q
+    Q --> LIVE[v29 Robert实际：shown=false／CanTake=false<br/>affordable=true／四项cost0<br/>reason仅通用unmet]
+    S -. 该帧各显示谓词尚未分解 .-> WHY[unknown：fulfillment type／许可／DLC<br/>下一最小观测入口]
     Q -. submit／动作未实现或执行 .-> E[pam_decision_events.0001<br/>immediate绑定chaplain／secret]
     E --> A[.0001.a才执行stress／SF与随机结果]
     A --> BONUS[现成personal flag<br/>改变收益／hook／意见／义务分支权重]
@@ -70,9 +92,9 @@ stock `ai_potential` 为 stress level ≥1，`ai_will_do` 基础35，stress leve
 
 首次离线 extraction 将 registrar 的说明文字地址 `0x4783D80` 当作 entry vtable，产生脚本 assertion；完整 registrar 随后证明真正赋给 entry 首字段的是 `0x4785FE8`。该 **research harness RED**保存在 `FIRST-REGISTRATION-ASSUMPTION-RED.json`；修正只涉及外置研究 helper，没有 CK3 capability RED、生产源码修复、运行时防御或额外门禁。
 
-## 下一项最小只读 getter 的实现入口
+## 已交付最小只读 getter 的实现入口
 
-复用 [v27 共融条款](religion-mystical-communion-native-final-terms-12003.md)已关闭的 ABI／native owner 与实际 current Context：在现有 `ck3_query_player_religion_context_v1(expected_revision)` 返回里追加独立可选 `player_confession_decision_terms`，固定 key `pam_decision_confession`。它不要求 UI 打开，不增加 actor override、feature flag、通用决议枚举或新框架，旧 Context／共融 sibling 的 availability 独立保留。
+复用 [v27 共融条款](religion-mystical-communion-native-final-terms-12003.md)已关闭的 ABI／native owner 与实际 current Context：现有 `ck3_query_player_religion_context_v1(expected_revision)` 已发布独立可选 `player_confession_decision_terms`，固定 key `pam_decision_confession`。它不要求 UI 打开，不增加 actor override、feature flag、通用决议枚举或新框架，旧 Context／共融 sibling 的 availability 独立保留。
 
 | 复用接口／布局 | exact input |
 | --- | --- |
@@ -82,9 +104,9 @@ stock `ai_potential` 为 stress level ≥1，`ai_will_do` 基础35，stress leve
 | 最终费用／支付能力 | cost getter `14706D0`；**`void 310CE70(cost,scope,int64_t[10])`**，不检查RAX=out；afford `310B3B0` |
 | final拒绝文本 | 沿现成32-byte native reason sink复制完整UTF-8／控制码，原生析构 `856050`；不是 DecisionTooltip 或 affordability reason |
 
-候选 DTO 保留 `available/unavailable_reason`、原 `capture_epoch/date_raw/played_character_id`、固定 `decision_id`、三项 `is_shown/can_take/affordable`、四资源 `costs_raw`、scale100000、`reasons_available/can_take_reasons`。合法false／实际零／原生空文本保留；读取失败才是nullable／unavailable。费用slot与现有生产 reader相同：gold0、prestige1、piety2、treasury6，保留signed raw。这个合同目前是施工设计，**尚未成为发布字段或新 MCP 能力**。
+已发布的15字段 DTO 保留 `available/unavailable_reason`、原 `capture_epoch/date_raw/played_character_id`、固定 `decision_id`、三项 `is_shown/can_take/affordable`、四资源 `costs_raw`、scale100000、`reasons_available/can_take_reasons`。合法false／实际零／原生空文本保留；读取失败才是nullable／unavailable。费用slot与现有生产 reader相同：gold0、prestige1、piety2、treasury6，保留signed raw。v29 实际 MCP 返回保留三项谓词、四项真实零值及 native 最终文本；没有新增 MCP 方法。
 
-最小源码路径是新固定决议 header／cpp，加现有 `ck3_12002_religion_mailbox.hpp/.cpp` 的 sibling composition，以及 `player_religion_context_private_transport.py` 的可选 sibling normalization；CMake只登记新leaf。实现后做一条真实owner→reader→mailbox→wire→Python的focused验证，再由ROOT在Robert fresh paused frame实读。无需再跑旧共融／Holyloan ABI、fixture、整个宗教suite或历史婚姻矩阵。先读final terms就能决定当前是否存在可用减压入口；它仍不赋予submit或结果资格。
+独占源码为 `ck3_12003_confession_decision_terms.hpp/.cpp`，类型／binder复用 v27 现有条款，独立固定key读取；shared owner负责现有 `ck3_12002_religion_mailbox.hpp/.cpp` 的 sibling composition、CMake与 `player_religion_context_private_transport.py` 可选 normalization。独占 native fixture 首轮 **GREEN：1 case／2 scenarios／41 checks，compile 7.20s、run0**；真实 leaf reader／serializer／现成 renderer 输出交给 projected production normalizer，首轮 **GREEN：1 case／2 scenarios**。两者是 synthetic callbacks／frame，边界与哈希见 [静态交付包](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-doctrine-gameplay-12003/confession-leaf/ROOT-DELIVERY-v2.json)，不把 leaf fixture 称为完整 mailbox。ROOT随后发布 d1b5／v29 并完成上述 official MCP 实读；本轮复用已有结果，没有重跑 ABI、旧fixture、宗教suite或婚姻矩阵。
 
 ## 结果的实际价值与遗留
 
@@ -94,6 +116,8 @@ stock `ai_potential` 为 stress level ≥1，`ai_will_do` 基础35，stress leve
 
 同一选项还可能以50%的独立random揭露自己secret给chaplain，再进入带条件和weight modifiers的random list：虔诚、chaplain获得hook、chaplain意见−25、发现廷臣secret、intrigue XP及pilgrimage／High Almoner／不同Faith配偶或子女转换／五年不战争等义务。personal confession bonus改变其中多项权重，hook／意见／部分义务的factor可为0。原始权重40／5／10等**不是固定百分比**，因为条件会移除分支、modifier会改权重；本页没有计算当前期望值或推荐动作。该列表作为忏悔结果合同保留，不开展军事或其他owner的策略研究。
 
-因此当前遗留按顺序为：ROOT需要新帧原生shown／CanTake／费用／afford／理由；有效confession许可与personal bonus先消费现成查询；如有真实合法机会再实现一次typed decision submit、该实际event选项及独立stress／SF／资源／关系或penalty结果；following、save与规定cold资格按真实artifacts另记。旧namespace的现成事件管道能复用，但未分类event不得凭“只有一个选项”盲点。native AI scheduler／final desire仍未知，有具体registrar和decision输入可继续施工；它不阻止先交付玩家需要的窄final getter。
+当前 v29 阻点为实际 `is_shown=false / can_take=false`，尚未获得具体失败谓词。下一项最高价值观测入口应分解 **stock is_shown 的三个输入**，沿同一个 played actor／epoch读取 Christian fulfillment 类型、实际 Rite152 的 confession 至少permitted结果、原生 PAM DLC feature。有效 Rite／Tenet与personal bonus先消费现成查询；DLC只读取原生运行期 `by_god_alone` entitlement，不能用“已安装30个descriptor”代替实际拥有／mount或授权，也不能把10世纪初始化列表当当前许可。已闭合 permitted trigger／GetTenetStatus可直接复用；fulfillment-type与DLC原生入口仍需对应exact调用链定位，未闭合字段标unknown并记录到同一 Context 的最小 sibling 扩展计划。无需先扩 generic decision reason框架或所有宗教动作。
 
-日报／周报汇总：完成20个stock行窗／14文件及4个新完整native函数的研究、独立Mermaid、忏悔advertisement／permission／personal作用分界与现有MCP sibling的最小施工入口。新增状态为research（原生子链static-confirmed），**0新build、0新test、0新MCP、0动作、0游戏日、0G2 credit**；现成身份、婚姻与宗教primitive复用其原始实际范围。ROOT负责合并共享报告、commit与push，本页不修改README或中央报告。
+取得这三个实际输入后，才能定位隐藏来源并选择具体可玩提升；不以 generic unmet 猜 chaplain、cooldown、DLC或 Rite是否许可，不建议为制造可见性盲目改宗／换礼仪／购买DLC。如未来实际显示且最终资格为true，再实现一次typed decision submit、`.0001.a` 及独立stress／SF／资源／关系或penalty结果；following、save与规定cold按真实artifact另记。现成事件管道可复用，未分类event不得凭“只有一个选项”盲点。native AI scheduler／final desire仍未知，但不阻碍窄玩家观测入口继续交付。
+
+日报／周报汇总：历史研究完成20个stock行窗／14文件与4个新完整native函数；独占忏悔leaf及 projected normalizer 首轮静态测试已交付，由ROOT集成发布并在 v29／d1b5 Robert actual 达到 **production-live primitive（只读）**。本轮只做已冻结actual的离线提取与专题更新，**0新测试／SDK或MCP调用／动作／游戏日／G2 credit**；paid submit、stress／SF净收益和完整loop未验收。ROOT负责共享日报／周报、commit与push；独占 [REPORT-FIELDS](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-doctrine-gameplay-12003/confession-actual-v29/REPORT-FIELDS.json)提供可核验字段。本页不修改README或中央报告。

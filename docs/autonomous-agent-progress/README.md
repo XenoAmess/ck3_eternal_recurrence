@@ -1,5 +1,11 @@
 # CK3 自动游玩智能体进度中心
 
+## 10-03 09:29 3798日／resume645：首继承婚姻与宗教只读输入
+
+2026-10-03T09:29:27+08:00 Asia/Shanghai真实补录：已发布3664截点后新增 **134保存日＝94恢复保存＋2部分完成＋8正常完成＋30正常完成**，当前原Robert **3798/36524**、resume **645保存日**、10-03 **550保存日**。raw **53235480**，最新配对save **4534**，v31 cold full **4535**。actor29829 / episode `native-29829-2bc2d599f7f9` / typed dynasty_continuity reconciled_successions **0**。G2 **5/8**、NW **2/4**；原M2/M5/NW-FAMILY/NW-LIFE complete和机器percent_reporting_allowed=false保持。婚姻与新宗教只读输入具备实际价值，不另记全项完成或把cold额外算游戏日。 [日报](daily/2026-10-03.md) / [W40](weekly/2026-W40.md)。v31 source/native/db463118/new97992/full4535/save4534/raw53235480，saveSHAfedf0860bf8943cae80170faacb9e67f9d4c801fdcbe5656bf2aa6aee54da1ee，afterdriverSHAf112cef01c875defe6d730eb9d86952723fba6165975ab949c0fbeaaaeff11b5。
+
+首继承38822↔38718双边married及cold正式consumer已成立，非Guy38988↔37689 betrothal/not_allied；未查询首继承联盟。天然22仅notification gone，0material/M2增量。94窗口wholeRED恢复保存、following7只2日未完成、后继8＋30closed分别保留。v29CanPlan/告解final/教会current/max月值已readonlyprimitive；HoF当前完整quote58.33566gold且shownF/CanSendF，仅观测无paid收益。Sway最后实际262/353/op−8属于53234760，v31cold同实例55%/emptyrings，不能从随后30日外推收益/终态。
+
 ## 10-03 07:53 3664日／resume511：神职只读与隐藏phase来源
 
 2026-10-03T07:53:26+08:00 Asia/Shanghai真实补录：上次3526阶段已经正常发布，此次新增 **138保存日＝v27后继37＋v28正常101**，原Robert累计 **3664/36524**、resume **511保存日**、10-03 **416保存日**。最终saved **raw53232264 / full4389**，同actor29829/episode `native-29829-2bc2d599f7f9`、typed dynasty_continuity reconciled_successions **0**。G2 **5/8＝62.5%**、NW **2/4＝50%**，原M2/M5/NW-FAMILY与NW-LIFE complete保持；机器percent_reporting_allowed=false不改变，神职只读与隐藏Sway阶段来源不增加整项完成数。 [日报](daily/2026-10-03.md) / [W40](weekly/2026-W40.md)。最终4389/raw53232264，saveSHAf2f6f0969249dd929e825404c75ca027d08135de268bd9af9085c189d64438a2、driverSHA24102fa7dcd23622baebcd2727ca8ca1c1d99c7fe80246d6ef4590df67701534；source/nativec01-v28/new24044。

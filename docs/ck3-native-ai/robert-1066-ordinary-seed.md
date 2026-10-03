@@ -833,3 +833,287 @@ the prior37-day/cold chronology rather than rereading those packages. This
 update read only the new closed summary and preserved the existing topic;
 it performed no old cold/normal/LIFE raw parsing, current-state/SDK access,
 gameplay rerun, tests or Git. M7 remains `in_progress`.
+
+## Failed v28 normal100 prefix and durable 94-day recovery, 2026-10-03
+
+The next requested100-day window ended with actual `status=error`
+and exit1 after94 elapsed days. Its exact
+failure is `BridgeUnavailableError: private sway native RED: published_frame_changed`. The retained attempt is not whole GREEN and
+did not complete100 days. The closed summary contains31 formal
+results:30 `life-advance` results and one current-first-heir betrothal-fulfillment
+submission with `typed_status=receipt_pending`. That pending submission is
+not an independently verified marriage outcome in this failed batch.
+
+Root then performed a fresh readonly checkpoint through the existing official
+MCP owner. That recovery closed `GREEN`, with actual paused
+raw53234520 and checkpoint h4451, 90,454,144 bytes/SHA-256
+`cf964132e20987f01a226ba082dd46f0eab2fcfe879a692f32997e05f3c729d6`. This normal save makes the94-day prefix durable:
+3758/36524 total, this iteration605 days and510 saved days in the current
+day03 stage. The recovered days are distinct from successful completion of
+the interrupted100-day runner. No driver/full-history pin was fabricated or
+read from live state for this report.
+
+The recovered paused frame also contains event21 `marriage_interaction.0010`.
+The private-Sway failure and this event are recorded as co-occurring; the
+metadata does not prove that the event or its instructions caused
+`published_frame_changed`. Root's existing event consumer accepted a choice,
+advanced the instance and observed `active_event=null` at the same actor/date,
+then materialized checkpoint h4455, 90,453,215 bytes/SHA-256
+`323c83951479b6aa11a73131663a753a9b5bb2ab76d833ff35e3f6cb0ccdcf4d`. Event resolution adds0 elapsed days. Its retained
+resolver reports `natural_provenance_verified=false` and no new live milestone
+credit, so this cleanup is not promoted to a new natural-event qualification.
+The separate family query concerns current first heir38822 and peer38718,
+not Guy; its relation/outcome analysis stays with Root and the family owner.
+
+GAME24044 still uses qualified native c01b76dbd86b37e6bd1dae4519e2027eab2bbd81.
+Robert29829/original episode and the saved `dynasty_continuity` goal remain,
+with `reconciled_successions=0` and
+`last_succession=null`. Public
+v29 d1b5b4c5 and its running strict build are future adoption work; the reported
+documentation CI37079823259 SUCCESS does not turn this failure into game
+GREEN. The following7-day window has not been consumed or credited in this
+increment; final stage cutoff waits for that actual closed save. M7 remains
+`in_progress`, with no new natural-succession credit.
+
+The failed attempt is
+`m7-robert/v28-next-normal100-awaiting-religion-leaves-01/result.json`.
+Actual recovery is `m7-robert/v28-normal94-frame-change-recovery-save-01/result.json`;
+event21 cleanup is `m2-events/v28-marriage-success21-resolve-save-01/result.json`.
+Compact evidence and pins are `m7-robert/V28-NORMAL94-RECOVERY-REPORT-FIELDS-01.json`.
+This increment read only these new closed metadata files, preserved the failed
+attempt and reused prior delivery by reference; it did not audit the whole
+fault, reread old packages, access current state/SDK or run gameplay/tests/Git.
+
+## Partial following7 and actual v29 cold, 2026-10-03
+
+The following requested7-day window closed with
+`status=existing_consumer_not_ready` and exit0, saving only2 days,
+raw53234520→53234568. Exit0 does not mean
+the7-day target completed. Its3 recorded formal results comprise
+the first `query-observed-first-heir-marriage-result` consumption and2
+`life-advance` steps. Root's family owner independently observes the bilateral
+marriage38822↔38718; this is the current first heir, not Guy. No new alliance
+was observed, and none is inferred from marriage or the event title.
+
+Turn4 encountered naturally arriving event22 `coming_of_age.1002`, with
+`registry_notregistered`; it was not actively generated to create a fixture.
+The existing consumer stopped and saved its actual2-day prefix. This is a
+concrete registry-readiness gap, not a claim that the7-day continuation is
+whole GREEN. The saved pair is h4461/full4461:
+checkpoint90,534,708 bytes/SHA-256 `0a690bde85c3b96879b1d0bcca6317deb97fd2891ec57fae601bf8d9106882ca`, driver
+53,602,019 bytes/SHA-256 `2678d52c6492dbf9efaf62148e8ca45c3d29dfaae7f4a0d3579a80c9644804b6`. The current durable
+total is3760/36524, this iteration607 days and512 saved days in the current
+day03 stage. The preceding94-day recovery remains separate, with its failed
+normal100 attempt still RED.
+
+Root's separate prestop checkpoint4462 was then officially carried into v29.
+The actual new GAME120436 cold baseline is GREEN, paused/map-ready
+at unchanged raw53234568, with the same Robert29829/episode,
+saved `dynasty_continuity` goal, six ledger pins and ten opaque streams.
+Source full4462 restores to full4463/
+saveanchor4462. The current cold checkpoint is
+90,534,708 bytes/SHA-256 `74eba78a3750500550f07cfbc275532ec7652fea6e52ec6f5cb9470872e522bf`;
+the after-close driver pin is53,603,685 bytes/SHA-256
+`aa12fa7860b239749b17aa4aa14680f37f00cba0cf27f1efa3c4038e4453ec70`. The partial window's save4461 and this cold save4462
+are distinct actual anchors.
+
+V29 runtime source is `d1b5b4c5583fa428d9226d4ebe4431e0c8db3579`, native metadata source is
+`d1b5b4c5583fa428d9226d4ebe4431e0c8db3579`, and actual compiler source is
+`d1b5b4c5583fa428d9226d4ebe4431e0c8db3579`. The official environment is
+`de0dd8c86b8d2edc11bf4475edfab62e8485076ebc8a8a60f93106b80ddd2345`. Its DLL is8,150,528
+bytes/SHA-256 `d3a851b9062a7b49e229ddd1cd92fd9b4781e14299b15788633bde1e5dffd31a`. Root's strict build66.285s and CI37080832186
+SUCCESS remain build/CI evidence; the closed new-PID result is the actual
+gameplay restore evidence. Cold adds0 days or qualification slots, skips
+government/next-plan and performs no action replay. Goal reconciled
+successions remain0, with
+`last_succession=null`.
+
+The current v29 religion query is not part of this closed extraction; no new
+religious eligibility, quote, paid operation or full religion OODA is filled
+from older previews. Event22 registration and later following execution stay
+with their owners. M7 remains `in_progress`, without new natural-succession
+or matrix-completion credit.
+
+The new partial close is
+`m7-robert/v28-marriage21-following-normal7-01/result.json`, summarized once in
+`m7-robert/v28-marriage21-normal7-stage-fields-01.json`. New cold evidence is
+`m7-robert/robert-mainline-v29-current-review-01/actual-candidate-cold-goal-01/result.json`,
+its `ROOT-PACKET.json` and `official-rebind-01.json`. Delivery fields are
+`m7-robert/V29-CURRENT-COLD-NORMAL2-REPORT-FIELDS-01.json`, referencing the
+already-released recovered94 compact rather than rereading it. This update
+did not inspect old fault/LIFE raw, pending religion outputs or current state,
+invoke SDK/game operations, repeat tests or perform Git work.
+
+## Actual v30 current-checkpoint cold baseline, 2026-10-03
+
+After Root's separate v29 prestop save/full4464, official v30 preparation,
+verification, opaque staging, ordinary rebind and preflight completed. The
+new root-owned qualified cold baseline has now closed `GREEN`
+with scope `ordinary_paused_goal_checkpoint_baseline` at actual GAME57484, distinct
+from previous GAME120436. Robert29829 is
+alive, paused and map-ready at unchanged raw53234568 in the
+original episode `native-29829-2bc2d599f7f9`. The actual helper verifies the
+saved `dynasty_continuity` goal and all six ledger pins; ten opaque streams
+were carried through the official current-pair path. Source
+full4464 restores normally to
+full4465/saveanchor4464.
+
+The carried checkpoint is90,534,727 bytes/SHA-256
+`102ba9c82e41e26331ddc3ed1a79ac989eda2fc3be7ebb2ffa253ea5e3e3b8ee`. Official rebind preserved its bytes; the new
+after-close driver pin is53,606,427 bytes/SHA-256
+`14034b7c9c566bcde0ea15774c718993178e896e1ed496c98ced739540f93b7b`. No goal, episode, ledger or history was manually
+rewritten. Public runtime source is `3223af636a1b7807064046f1c8e38805c5732731`, native
+metadata source is `3223af636a1b7807064046f1c8e38805c5732731`, and actual compiler
+source is `3223af636a1b7807064046f1c8e38805c5732731`. The new environment
+is `5f2dd1f30d7aecb4c6d217179b3e40c49df3477968945cef0e6e81a72584a8bb`. Its DLL is
+8,174,080 bytes/SHA-256 `f8d50afce2251d6f4c8a9f33ef159bdaae91c02133c3d4aca1255f125997550f`. Root reports strict
+build65.752536s/960raw/500TUs/497uniqueCPP/0reuse/4targets; those build facts
+remain separate from this actual paused/new-PID cold proof. Managed startup
+requested minimization; launcher session78027 is not the game PID.
+
+This limited baseline skipped government/next-plan, executed no planned step
+and adds0 natural days or qualification slots. Durable totals remain
+3760/36524, this iteration607 days and512 saved days in the current day03
+stage. Goal `reconciled_successions=0`
+and `last_succession=null` remain.
+The prior published-frame failure/94-day recovery and partial2-day following7
+remain unchanged; neither is reclassified as a completed normal target.
+
+Event22 `coming_of_age.1002` remains the current pending event reported by
+Root. Registry and HoF query publication are static-ready at this recording;
+no new live event selection, HoF observation or religion OODA is claimed from
+the cold baseline. Sway four-reader reattachment, HoF query, event resolution
+and later following execution remain separately root-owned pending results.
+M7 remains `in_progress`, with no natural-succession or matrix credit added.
+
+New exact evidence is
+`m7-robert/robert-mainline-v30-current-review-01/actual-candidate-cold-goal-01/result.json`.
+It reuses `m7-robert/V30-CURRENT-COLD-PENDING-REPORT-FIELDS-01.json` for the
+already-read official packet/rebind metadata; the actual result supersedes
+that pending status. New delivery fields are
+`m7-robert/V30-CURRENT-COLD-REPORT-FIELDS-01.json`. This update read the actual
+new result once, reused cached preparation, and preserved the existing
+topic. It did not reread old94/2/LIFE raw, inspect pending query outputs or
+running driver, access SDK/game, rerun tests or perform Git work.
+
+## Actual v30 following7 saved8, 2026-10-03
+
+The new root-owned following window closed `normal-time-target-reached`
+(Root observed exit0) at actual GAME57484. The request was7 days; actual
+normal execution and the saved clock delta are8 days, raw53234568
+to raw53234760. The final Robert29829 frame is paused and
+alive in the original episode `native-29829-2bc2d599f7f9`. This fixed cutoff
+is3768/36524 durable days,615 new days in this iteration and520 saved days
+in the current day03 stage; a later root-owned window is outside this record.
+
+The closed result contains4 formal result rows:
+1 `life-advance` steps and3 family
+result queries, with0 modal-consumer rows. The query
+order was:
+
+- Turn1: `query-player-child-default-marriage-result-v1-private`, typed status `betrothal`.
+- Turn2: `query-player-child-default-alliance-result-v1-private`, typed status `None`.
+- Turn3: `query-observed-first-heir-marriage-result-v1-private`, typed status `marriage`.
+
+The first two queries consume the existing Guy betrothal/alliance-result
+path; the third reads the existing first-heir typed marriage. These are
+result reads, not new marriage/betrothal submissions or attributed rewards.
+The actual returned plans contain saved-goal use on4
+rows and government context use on4
+rows. The persisted `dynasty_continuity` goal still has
+`reconciled_successions=0` and
+`last_succession=null`; no natural
+succession or extra M7 qualification is claimed.
+
+Normal checkpoint and full history are both4472.
+The checkpoint is90,456,351 bytes/SHA-256
+`944752e1b3820ebac76fccc13174f974840c0d0c9d8420d489ba39fbdbc55bc0`; the after-close driver is53,654,546
+bytes/SHA-256 `c1237531d037b680db20544c8ba9d34e0e62ed1dfeca1df66254ef9d0f1be65f` with full history
+4472. Native, public Python and environment
+source remain the separate actual v30 cold pins above. The prior cold carried
+all six ledgers and ten opaque streams; this continuation did not replay
+their applied actions or rebuild the campaign goal.
+
+Root separately reports event22 `coming_of_age.1002` resolved, independently
+gone on the same actor/date paused frame and saved at4468, with0 additional
+days or credited material benefit. Its domain proof remains with the
+event/Feast owner at `m2-events/v30-coming-age1002-resolve-save-01`; this
+normal-window extraction did not reread that full packet. HoF's current
+query remains an actual partial observation with amount `null` and a real
+fault being repaired; neither a full primitive nor religion OODA is inferred.
+The prior Sway published-frame RED and recovered94 days, partial2-day window
+and the new cold proof retain their separate statuses. Global G2 stays5/8,
+nonwar2/4 and M7 `in_progress`. The current nonwar count is the already-closed
+NWLIFE original TaxMan next/cold outcome loop plus NW-FAMILY; the central
+ledger has used2/4 since3664. This corrects the global summary field and
+adds no new credit from the current cold or eight-day window.
+
+Exact new evidence is
+`m7-robert/v30-comingage-following-normal7-01/result.json`, extracted once to
+`m7-robert/V30-NORMAL8-STAGE-FIELDS-01.json`. The compact combined delivery is
+`m7-robert/V30-CURRENT-COLD-NORMAL8-REPORT-FIELDS-01.json`, reusing the cached
+`m7-robert/V30-CURRENT-COLD-REPORT-FIELDS-01.json`. No old94/2/cold raw,
+running state, SDK, game, tests or Git were used for this increment.
+
+## Actual normal30 and v31 current-checkpoint cold, 2026-10-03
+
+The next v30 normal window closed `normal-time-target-reached` (Root observed
+exit0), saving exactly30 days from raw53234760
+to raw53235480. Its30 formal result rows
+are all `life-advance`, with0 modal-consumer rows.
+All30 returned plans use the preserved goal,
+and all30 contain the actual
+government context. Robert29829 remains alive and paused in the original
+episode. The fixed normal cutoff is3798/36524 durable days,645 new days in
+this iteration and550 saved days in the current day03 stage.
+
+That normal save and full history are both4533; its
+checkpoint is90,867,177 bytes/SHA-256
+`7fde325081a6520ca98f938fbd9f44ed0c754f43a1a8599c0f86754e2d7f56fd`, and driver is54,499,423 bytes/SHA-256
+`610743229e2e5b51ab1a4397269333b0d2c595d1c847ff5509c9d794a01906b1`. Root's separate prestop checkpoint then supplies
+the CURRENT source full4534/save4534
+used by official v31 continuation, rather than replaying an older archive.
+
+After the previous managed v30 session closed normally, Root's official
+prepare, verify, ten-stream staging, ordinary rebind and preflight completed
+EXIT0. The new actual cold result is `GREEN` with scope
+`ordinary_paused_goal_checkpoint_baseline` at GAME97992, distinct from old
+GAME57484. It verifies the same Robert,
+episode, saved `dynasty_continuity` goal and all six ledger pins at unchanged
+raw53235480. Source full4534
+restores normally to full4535/saveanchor4534.
+The carried checkpoint is90,867,177 bytes/SHA-256
+`fedf0860bf8943cae80170faacb9e67f9d4c801fdcbe5656bf2aa6aee54da1ee`; official rebind preserved its bytes. The new
+after-close driver is54,501,086 bytes/SHA-256 `f112cef01c875defe6d730eb9d86952723fba6165975ab949c0fbeaaaeff11b5`.
+No goal, episode, history or applied action was manually rewritten/replayed.
+
+Public runtime source is `db46311827eeffe24f5a093ecc9461e12c828b40`, native metadata source
+is `db46311827eeffe24f5a093ecc9461e12c828b40`, and actual compiler source is
+`db46311827eeffe24f5a093ecc9461e12c828b40`. The official new environment is
+`0a50491fa8f311d5abe36d341cfacfae635962bba9faa836ff032285eb8564a3`. DLL is8,174,080 bytes/SHA-256
+`bbb584b6ae5860fc7ab4cedd3e4982de4c016758738ae0cc7b3c9f79496e35de`; final manifest is236,256
+bytes/SHA-256 `257826ef7881a3794e8a65f40e301ca5d496adbf0f218b2654da9e68e3a84533`. Root reports strict
+build65.833214s/960raw/500TUs/497uniqueCPP/0reuse/4productiontargets and official
+CI run37084824555 SUCCESS. Build/CI facts remain separate from the actual
+paused cold proof. Managed startup requests minimization; tool session52002
+is not the game PID.
+
+This cold scope skips government/next-plan, executes no planned step and
+adds0 days or qualification slots. The preceding30-day normal window is the
+actual goal/government execution evidence; it is not rerun by this cold.
+Goal `reconciled_successions=0` and
+`last_succession=null` remain.
+Global G2 remains5/8, nonwar2/4 and M7 `in_progress`. Root's upcoming Sway
+reattachment and new HoF amount query are outside this cutoff: no amount,
+full HoF primitive or religion OODA is inferred from the new build/cold.
+
+New exact cold evidence is
+`m7-robert/robert-mainline-v31-current-review-01/actual-candidate-cold-goal-01/result.json`,
+with that directory's `ROOT-PACKET.json` and `official-rebind-01.json` read
+once as metadata. The normal evidence is cached
+`m7-robert/V30-NORMAL30-REPORT-FIELDS-01.json`, retaining its one extraction
+of `m7-robert/v30-next-normal30-awaiting-gold-fix-01/result.json`.
+The combined delivery is `m7-robert/V31-CURRENT-COLD-NORMAL30-REPORT-FIELDS-01.json`,
+also referencing the cached preceding cold/eight-day cutoff. No old failure
+raw, opaque rehash, current state, pending query, SDK/game, tests or Git were
+used for this increment.

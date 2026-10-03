@@ -1,8 +1,8 @@
 # 朝圣：1.20.0.3 当前玩家的下一项成长观测
 
-2026-10-03，**static-ready／完整外置只读生产包已验证**。宗教域已由项目所有者全面开放。下一项选择固定 `activity_pilgrimage`，本轮交当前普通 Robert 的 **CanPlan 类型资格与完整原生拒绝文本**；独立显示、实际行程费用与时间是后续具体叶。本页不声明现在可以朝圣，不自动提交活动，不制造收益或完整宗教 OODA 信用。
+2026-10-03，**production-live primitive／当前 Robert 朝圣类型规划资格实测成功**。宗教域已由项目所有者全面开放。固定 `activity_pilgrimage` 的 **CanPlan 类型资格与完整原生拒绝文本**已经实机读取：true、空文本。所选目的地、行程费用与时间是后续具体叶；本包未启动活动，未兑现收益，也没有完整宗教 OODA 信用。
 
-冻结 CK3 **1.20.0.3 Crozier / Steam 25652598**，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。源码输入为不可变 `resume-12003/production-source-f30579bf`；ROOT 正在接续 v28，该包进行离线生产接线及 focused 验证，不绑定未知新 PID 或把旧字段冒充新帧。
+冻结 CK3 **1.20.0.3 Crozier / Steam 25652598**，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。包原始输入为不可变 `resume-12003/production-source-f30579bf`；ROOT 已发布、严格构建并实机采用 v29 `d1b5b4c5583fa428d9226d4ebe4431e0c8db3579`。新实际包与历史 v27 输入分别注明，不把旧字段冒充新帧。
 
 ## 为何先选朝圣
 
@@ -25,9 +25,9 @@
 
 ```mermaid
 flowchart TD
-    A[exact .3 当前玩家/Catholic/SF5：已有actual] --> T[固定 activity_pilgrimage 类型]
-    T --> G[原生CanPlan类型资格/拒绝文本：新exact .3 caller已闭]
-    G -. 当前资格尚未查询 .-> D[完整当前Faith圣地目的地与冷却]
+    A[v29 exact .3 Robert/Catholic/SF5：当前actual] --> T[固定 activity_pilgrimage 类型]
+    T --> G[原生CanPlan=true/拒绝文本为空：production-live primitive]
+    G -. selected destination/cooldown unknown .-> D[完整当前Faith圣地目的地与冷却]
     D -. 选中的真实地点/选项/旅行计划 .-> Q[原生活动费用与独立旅行费用]
     D -. 行程配置 .-> L[旅行时间与活动本身时长]
     T --> R[stock authored完成普通base5/mandatory或Hajj10]
@@ -60,3 +60,17 @@ stock 与 native 两个独立子包已冻结：`resume-12003/m6-law/religion-pil
 下一项按实际 CanPlan 决定：若 false，优先原样发布失败文本并补其中确切缺少输入；若 true，读取当前 Faith 完整圣地、已访问／冷却、所选目的地与真实选项，再闭 chosen host/travel quote 和 ETA。完成净收益还需要当前 Rite doctrine membership、demon-torment 与实际完成后材料，不能把 authored +5／+10 当已兑现。ROOT 独占共享源 apply、严格构建、新 PID paused 查询与 Git；这些必要实机步骤仍 pending。
 
 同批聚合接线额外承载其他 owner 的 `player_confession_decision_terms` 与 `player_church_income_profile`，分别独立读取 fixed `pam_decision_confession` 的最终 terms 和当前／最大月收入。它们不覆盖朝圣或旧 Context，也不把 max-current 称实际收益；各自叶源码、focused 结果与实际边界由对应专题和 owner receipt 负责。
+
+## v29 当前实机材料
+
+ROOT 一次注册 `ck3_query_player_religion_context_v1(expected_revision=2)`，2026-10-03 08:28 CST CLOSED/GREEN，official driver close 返回 true。实际 wire 的 pong PID **120436**；当前 actor **29829**、saved date **53234568**、capture epoch **17985**、native revision **4**。同帧 actual source/native/environment 由 ROOT 绑定为 **d1b5b4c5583fa428d9226d4ebe4431e0c8db3579**，本包没有再调用 SDK。初末有限帧一致，Catholic／Faith23／Rite152、SF5 与 progress58.333% 都保持可读；自然活动事件 instance22 保留，没有替换或选项动作。
+
+| 独立组件 | 实际原生结果 | 当前玩家价值与界限 |
+| --- | --- | --- |
+| pilgrimage 11 keys | available true；`activity_pilgrimage`；CanPlan true；reasons available true，literal 空串 | 已取得当前规划资格，下一步具体读取所选圣地／旅行配置；本 query 未提供选中行程身份、CanStart、报价、ETA 或完成收益，不能据此断言当前不存在行程 |
+| confession 15 keys | available true；shown false／can_take false／affordable true；gold、treasury、prestige、piety 四费用均 0；完整 generic 原因文本保持 | 当前无法提供可执行告解机会；不能从通用原因猜是哪条条件，也不因费用 0 提交 |
+| church income 10 keys | available true；current **21165**／maximum **70554**，Q100000 | 两个当前原生月收入 **0.21165／0.70554** 可独立比较；没有把二者差值称已实现收益 |
+
+共融仍是 shown false／can_take false／affordable true、费用 **100 虔诚**；它和告解的字面原因均保留包内 `\\u0016warning_icon!\\u0015X 你未满足所有要求\\u0015!` 表示，不另解释控制 token 或条件。原始 wire、MCP 三组件值与 schema 11／15／10 keys 一次离线对照完整相等，详见 `resume-12003/m6-law/religion-pilgrimage-next-inputs-12003/actual-v29/ACTUAL-PROOF.json` 和 `REPORT-FIELDS.json`，原始包为 `resume-12003/actual-v29-religion-three-leaves-01`。
+
+发布 `d1b5b4c…` 的四 strict target 首轮 GREEN（66.285s、955 raw／497 TU／494 unique、0 reuse、flags 不变），official CI `37080832186` SUCCESS，直接复用 ROOT 已交收据。新三组件各自已取得实际观测 primitive；paid action、活动日推进、朝圣完成、策略闭环、G2/M6 整项增量仍为 0。所选行程下一 getter 研究独占 `selected-trip-native-next/`，只读 native caller，不开 planner 窗口。
