@@ -13,6 +13,10 @@ struct FamilyObligationsMailboxContext12002 {
   FamilyObligationsBreakBindingsV1 break_bindings{};
   family_obligations_alliance::Bindings alliance_bindings{};
   FamilyObligationsObservation12002 observation{};
+  bool call_ally_submission = false;
+  family_obligations_alliance::CallAllySubmitRequest call_ally_request{};
+  family_obligations_alliance::CallAllySubmitReceipt call_ally_receipt{};
+  CommandSubmitResult call_ally_result = CommandSubmitResult::unavailable;
   std::string failure;
   bool completed = false;
 };

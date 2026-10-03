@@ -781,8 +781,8 @@ list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "/ck3_12002_sway_outcome.*\\.cpp
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX
   "/ck3_12002_(religion.*|sway_completion.*|epidemic.*|personal.*)\\.cpp$")
 if(NOT XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1)
-  # The owner stopped war work. Retain the independent actual treasury source
-  # used by ordinary snapshots; do not compile or register the cash package.
+  # War research/execution is authorized as of 2026-10-03. This OFF build
+  # choice retains snapshot treasury while the separate cash producer stays excluded.
   list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX
     "/ck3_12002_war_cash(_serializer|_mailbox|_maintenance|_action_fees)?\\.cpp$")
 endif()
@@ -793,6 +793,11 @@ if(NOT (XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1 AND
         XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1))
   list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX
     "/ck3_12002_family_obligations_alliance\\.cpp$")
+endif()
+if(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1 AND
+   XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_call_ally_private_action.cpp")
 endif()
 # The delivered queries share the current-player religion leaf.
 if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1 OR
@@ -2121,6 +2126,44 @@ endif()
 
 include(CTest)
 if(BUILD_TESTING)
+  if(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1 AND
+     XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+    add_executable(xar_ck3_12002_call_ally_sender_test
+      src/ck3_12002.cpp
+      src/ck3_12002_commands.cpp
+      src/ck3_12002_context.cpp
+      src/ck3_12002_family_obligations_alliance.cpp
+      src/ck3_12002_call_ally_sender_test.cpp)
+    add_executable(xar_ck3_12003_call_ally_mailbox_test
+      src/ck3_12002_family_obligations_mailbox.cpp
+      src/ck3_12002_family_obligations_wire.cpp
+      src/ck3_12003_call_ally_private_action.cpp
+      src/ck3_12002_query_mailbox.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/protocol.cpp
+      src/ck3_12003_abi_profile.cpp
+      src/ck3_12003_adapter.cpp
+      src/ck3_12003_call_ally_mailbox_test.cpp)
+    foreach(call_ally_target IN ITEMS
+        xar_ck3_12002_call_ally_sender_test xar_ck3_12003_call_ally_mailbox_test)
+      target_include_directories(${call_ally_target} PRIVATE include)
+      target_compile_definitions(${call_ally_target} PRIVATE
+        NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+        XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1=1
+        XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1=1)
+      if(MSVC)
+        target_compile_options(${call_ally_target} PRIVATE /W4 /WX /Gy /permissive- /EHsc)
+        target_link_options(${call_ally_target} PRIVATE /OPT:REF)
+      endif()
+    endforeach()
+    target_link_libraries(xar_ck3_12003_call_ally_mailbox_test PRIVATE user32)
+    add_test(NAME xar_ck3_12002_call_ally_sender_test
+      COMMAND xar_ck3_12002_call_ally_sender_test)
+    add_test(NAME xar_ck3_12003_call_ally_mailbox_test
+      COMMAND xar_ck3_12003_call_ally_mailbox_test
+        "${CMAKE_BINARY_DIR}/ck3_12003_call_ally_to_war_submit.json"
+        "${CMAKE_BINARY_DIR}/ck3_12003_call_ally_to_war_quote.json")
+  endif()
   # The 1.20 feast fixtures exercise pure shared readers even when the
   # corresponding private live feature is disabled in the production DLL.
   add_library(xar_ck3_12002_feast_fixture_support STATIC
@@ -2159,6 +2202,7 @@ if(BUILD_TESTING)
         NOT XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1) OR
        fixture_name MATCHES "^ck3_12002_(sway_completion|sway_outcome|epidemic)" OR
        fixture_name STREQUAL "ck3_12002_family_obligations_alliance_test" OR
+       fixture_name STREQUAL "ck3_12002_call_ally_sender_test" OR
        (fixture_name MATCHES "^ck3_12002_religion" AND
         (NOT XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1 OR
          NOT fixture_name STREQUAL "ck3_12002_religion_context_test")) OR

@@ -3241,6 +3241,18 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def submit_call_ally_to_war_private_v1(
+        self, *, expected_revision: int, war_id: int, recipient_character_id: int,
+    ) -> dict[str, object]:
+        """Submit one selected ally invitation; native ACK remains pending."""
+        from .call_ally_to_war_private_action_v1 import submit_call_ally_to_war_private_v1
+
+        return submit_call_ally_to_war_private_v1(
+            self, expected_revision=expected_revision, war_id=war_id,
+            recipient_character_id=recipient_character_id,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
     def query_war_cash_current_resources_private_v1(
         self, *, expected_revision: int,
     ) -> dict[str, object]:

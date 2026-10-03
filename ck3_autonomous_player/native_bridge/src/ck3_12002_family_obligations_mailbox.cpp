@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_family_obligations_mailbox.hpp"
+#include "xar_bridge/ck3_12003_call_ally_private_action.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
 
@@ -27,7 +28,8 @@ bool CharacterId(std::string_view payload, std::string_view key,
 } // namespace
 
 bool IsFamilyObligationsPrivateStep12002(std::string_view step) noexcept {
-  return step == kFamilyObligationsPrivateStep12002;
+  return step == kFamilyObligationsPrivateStep12002 ||
+      step == kCallAllySubmitPrivateStep12003;
 }
 
 bool ParseFamilyObligationsPrivateRequest12002(
@@ -66,6 +68,22 @@ bool ExecuteFamilyObligationsMailbox12002(
     o.frame = envelope->expected_snapshot;
     o.snapshot_revision = envelope->expected_snapshot_revision;
     std::string_view reason;
+    if (query.call_ally_submission) {
+      CoreSnapshotPrefix prefix{};
+      prefix.clock = {o.frame.date_raw, o.frame.speed, o.frame.paused};
+      prefix.local_player_id = o.frame.player_id;
+      prefix.map_ready = o.frame.map_ready;
+      prefix.has_played_character = o.frame.has_played_character;
+      prefix.played_character_id = o.frame.played_character_id;
+      prefix.played_character_alive = o.frame.played_character_alive;
+      query.call_ally_result = family_obligations_alliance::SubmitCallAlly(
+          query.alliance_bindings, prefix, query.call_ally_request,
+          query.call_ally_receipt, &reason);
+      query.failure = std::string(reason);
+      query.completed = true;
+      (void)FinishQueryMailbox(*envelope);
+      return true;
+    }
     if (r.subject_character_id > 0) {
       o.lineage_available = family_obligations_lineage::Read(query.lineage_bindings,
           r.subject_character_id, r.candidate_character_id, r.request_matrilineal_option,
@@ -111,8 +129,15 @@ bool HandleFamilyObligationsPrivate12002(
   if (!IsFamilyObligationsPrivateStep12002(step)) {
     failure = "family_obligations_step_unavailable"; return false;
   }
+  const bool call_ally_submission = step == kCallAllySubmitPrivateStep12003;
   FamilyObligationsRequest12002 request{};
-  if (!ParseFamilyObligationsPrivateRequest12002(payload, request)) {
+  CallAllyPrivateActionRequest12003 action_request{};
+  if (call_ally_submission) {
+    if (!ParseCallAllyPrivateActionRequest12003(payload, action_request)) {
+      failure = "call_ally_request_invalid"; return false;
+    }
+    request.expected_snapshot_revision = action_request.expected_revision;
+  } else if (!ParseFamilyObligationsPrivateRequest12002(payload, request)) {
     failure = "family_obligations_request_invalid"; return false;
   }
   if (xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
@@ -120,7 +145,8 @@ bool HandleFamilyObligationsPrivate12002(
       revision == 0 || (request.expected_snapshot_revision != 0 &&
                        request.expected_snapshot_revision != revision) ||
       !published.paused || !published.map_ready || !published.has_played_character ||
-      !published.played_character_alive || published.played_character_id <= 0) {
+      !published.played_character_alive || published.played_character_id <= 0 ||
+      (call_ally_submission && !game::IsCk3_12003Descriptor(adapter.descriptor()))) {
     failure = "family_obligations_current_frame_unavailable"; return false;
   }
   try {
@@ -131,10 +157,12 @@ bool HandleFamilyObligationsPrivate12002(
     query.envelope.expected_snapshot_revision = revision;
     query.envelope.typed_context = &query;
     query.observation.request = request;
+    query.call_ally_submission = call_ally_submission;
+    query.call_ally_request = action_request.native_request;
     const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     if (request.subject_character_id > 0)
       query.lineage_bindings = family_obligations_lineage::BindImage(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
-    if (request.ally_character_id > 0 || request.enumerate_current_allies)
+    if (call_ally_submission || request.ally_character_id > 0 || request.enumerate_current_allies)
       query.alliance_bindings = family_obligations_alliance::BindImage(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     if (request.break_recipient_character_id > 0)
       query.break_bindings = BindFamilyObligationsBreakImageV1(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
@@ -152,7 +180,9 @@ bool HandleFamilyObligationsPrivate12002(
       failure = query.failure.empty() ? "family_obligations_paused_capture_unavailable" : query.failure;
       return false;
     }
-    serialized = SerializeFamilyObligationsResult12002(request_id, query.observation);
+    serialized = call_ally_submission
+        ? SerializeCallAllySubmissionResult12003(request_id, query)
+        : SerializeFamilyObligationsResult12002(request_id, query.observation);
     return !serialized.empty();
   } catch (...) {
     serialized.clear(); failure = "family_obligations_mailbox_exception"; return false;

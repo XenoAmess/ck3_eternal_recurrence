@@ -275,4 +275,94 @@ bool Read(const Bindings &b, const CoreSnapshotPrefix &frame, std::int32_t first
   return true;
 }
 
+
+CommandSubmitResult SubmitCallAlly(const Bindings &b, const CoreSnapshotPrefix &frame,
+    const CallAllySubmitRequest &request, CallAllySubmitReceipt &receipt,
+    std::string_view *reason) noexcept {
+  receipt = {};
+  if (reason != nullptr) *reason = {};
+  const auto reject = [reason](std::string_view why) {
+    if (reason != nullptr) *reason = why;
+    return CommandSubmitResult::rejected;
+  };
+  if (!Ready(b) || !b.context.construct_send_command || !b.context.commands.enabled ||
+      !b.context.send_primary_vtable || !b.context.send_secondary_vtable) {
+    if (reason != nullptr) *reason = "call_ally_send_binding_unavailable";
+    return CommandSubmitResult::unavailable;
+  }
+  const auto same_frame = [&frame](const CoreSnapshotPrefix &now) {
+    return now.clock.paused && now.map_ready && now.has_played_character &&
+        now.played_character_alive && frame.clock.paused && frame.map_ready &&
+        frame.has_played_character && frame.played_character_alive &&
+        now.clock.date_raw == frame.clock.date_raw && now.clock.speed == frame.clock.speed &&
+        now.local_player_id == frame.local_player_id &&
+        now.played_character_id == frame.played_character_id;
+  };
+  CoreSnapshotPrefix current{};
+  if (!ReadCoreSnapshot(b.core, current) || !same_frame(current))
+    return reject("call_ally_current_player_frame_mismatch");
+  if (request.recipient_character_id == -1 || request.war_id == -1 ||
+      request.recipient_character_id == frame.played_character_id)
+    return reject("call_ally_concrete_recipient_and_war_required");
+  void *const recipient = ResolveCoreCharacter(b.core, request.recipient_character_id);
+  void *const war = ResolveWar(b, request.war_id);
+  void *const definition = Definition(b);
+  if (!recipient || Load<void *>(recipient, kCharacterDeathDataOffset) || !war || !definition)
+    return reject("call_ally_current_identity_unavailable");
+  const auto side = ReadSide(b, war, frame.played_character_id);
+  const auto primary = side == Side::attacker ? Load<std::int32_t>(war, 0x288) :
+      side == Side::defender ? Load<std::int32_t>(war, 0x28C) : -1;
+  if (primary != frame.played_character_id || ReadSide(b, war, request.recipient_character_id) != Side::absent ||
+      b.was_called(war, request.recipient_character_id))
+    return reject("call_ally_selected_war_or_recipient_not_selectable");
+  struct alignas(8) Storage { std::array<std::byte, 0x338> bytes{}; } source;
+  void *const context = source.bytes.data();
+  if (b.construct_context(context, definition, frame.played_character_id,
+                          request.recipient_character_id, nullptr, true) != context) {
+    if (reason != nullptr) *reason = "call_ally_context_construction_unavailable";
+    return CommandSubmitResult::unavailable;
+  }
+  struct Cleanup {
+    const ContextBindings &b; void *context;
+    ~Cleanup() { b.destroy(context); }
+  } cleanup{b.context, context};
+  WarTarget target{}; target.full_war_id = static_cast<std::uint32_t>(request.war_id);
+  Store(context, kContextTargetOffset, target);
+  b.context.refresh(context, true); b.context.finalize(context);
+  const auto same_context = [&](const void *copy) {
+    return Load<void *>(copy, 0) == definition &&
+        Load<std::int32_t>(copy, kContextActorOffset) == frame.played_character_id &&
+        Load<std::int32_t>(copy, kContextRecipientOffset) == request.recipient_character_id &&
+        Load<std::uint16_t>(copy, kContextTargetOffset) == kWarTargetType &&
+        Load<std::uint64_t>(copy, kContextTargetTokenOffset) == target.full_war_id &&
+        Load<void *>(copy, kContextSpecialInstanceOffset) != nullptr;
+  };
+  if (!same_context(context) || !b.can_pick_war_target(context, &target, nullptr) ||
+      !b.context.validate(context, nullptr))
+    return reject("call_ally_final_native_selected_target_rejected");
+  receipt.selected_target_native_legal = true;
+  b.context.evaluate_cost(static_cast<const std::byte *>(definition) + 0x40,
+      static_cast<const std::byte *>(context) + 8, receipt.actual_send_cost_raw.data());
+  receipt.send_cost_sampled = true;
+  if (receipt.actual_send_cost_raw != request.expected_send_cost_raw)
+    return reject("call_ally_observed_send_cost_changed");
+  if (!ReadCoreSnapshot(b.core, current) || !same_frame(current))
+    return reject("call_ally_current_player_frame_changed");
+  struct alignas(8) Command { std::array<std::byte, 0x368> bytes{}; } command;
+  void *const native_command = command.bytes.data();
+  const bool constructed = b.context.construct_send_command(native_command, context) == native_command;
+  const void *const copy = static_cast<const std::byte *>(native_command) + 0x20;
+  bool identity = constructed && Load<std::uintptr_t>(native_command, 0) == b.context.send_primary_vtable &&
+      Load<std::uintptr_t>(native_command, 0x18) == b.context.send_secondary_vtable && same_context(copy);
+  for (const auto offset : {0x2E0U, 0x2E4U, 0x2E8U, 0x2ECU})
+    identity = identity && Load<std::int32_t>(copy, offset) == Load<std::int32_t>(context, offset);
+  receipt.copied_context_identity_verified = identity;
+  const auto result = identity ? SubmitCommandCopy(b.context.commands, native_command, 0x0E) :
+      CommandSubmitResult::unavailable;
+  if (constructed || Load<void *>(native_command, 0x20) != nullptr)
+    b.context.destroy(static_cast<std::byte *>(native_command) + 0x20);
+  if (!identity && reason != nullptr) *reason = "call_ally_copied_context_identity_unavailable";
+  return result;
+}
+
 } // namespace xar::ck3_12002::family_obligations_alliance

@@ -538,6 +538,16 @@ class GameplayBridgeService:
             raise UnsupportedStepError("selected backend cannot read player conversion results")
         return read(expected_revision=expected_revision, request_id=request_id, action_id=action_id)
 
+    def submit_call_ally_to_war_private_v1(
+        self, *, expected_revision: int, war_id: int, recipient_character_id: int,
+    ) -> dict[str, object]:
+        """Forward one selected invitation without turning its ACK into a join."""
+        submit = getattr(self.driver, "submit_call_ally_to_war_private_v1", None)
+        if not callable(submit):
+            raise UnsupportedStepError("selected backend cannot submit call ally to war")
+        return submit(expected_revision=expected_revision, war_id=war_id,
+                      recipient_character_id=recipient_character_id)
+
     def capabilities(self) -> dict[str, object]:
         return self.driver.capabilities()
 

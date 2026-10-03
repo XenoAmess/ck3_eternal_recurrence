@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "kind": "offline_native_serializer_fixture",
+  "source_head": "19b508ae4fa8e3ab09f4e8631fcf0340d69939c2",
+  "exact_build": "1.20.0.3",
+  "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "synthetic_native_objects_and_sender_callback": true,
+  "real_native_queue_test": "ck3_12002_call_ally_sender_test.cpp; six focused cases use actual SubmitCallAlly and SubmitCommandCopy",
+  "production_mailbox_parser_serializer": "compiled unchanged; original Bindings and local-player frame retained",
+  "live": false,
+  "source_receipts": [
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\focused-fixture\\result.json",
+      "sha256": "2c4547f89c6460eec0181ea3048c8440b702c258cc3d07df27f729100e4c4479"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-wire-mcp\\native-test-projection\\build-02\\result.json",
+      "sha256": "48a960201d0f9d770d7e75342b4e82ac3145e866a2a801c1462b43ef799f10f6"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-wire-mcp\\python-projection\\FOCUSED-TEST-RESULT.json",
+      "sha256": "bb7a3f2b4152ee4c22ade59cab7d77200d9ef6b50834450a75ac355518900eb8"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12003_call_ally_to_war_submit.json",
+      "sha256": "afb0d8b3590e3cb96f1b1e79289fa27384979171c054fa319b111fe37855a6fa"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/fixtures/ck3_12003_call_ally_to_war_family_quote.json",
+      "sha256": "531e2ac0d1125af3632d3366d9e1e382d84245961666b935160fe7b4b66daee7"
+    }
+  ],
+  "native_objects_and_header_pins": {
+    "ck3_12002_family_obligations_mailbox.cpp": "9b8d239a9a5cc487bc595ffb024c9c96f48d694abc7540346d9486f19f3010fb",
+    "ck3_12002_family_obligations_wire.cpp": "db7f170cdbd401a4470d1fbcd3e1ff87d3aa57b3d08c0a02ab4ac5a486f67f35",
+    "ck3_12003_call_ally_private_action.cpp": "3290314d45e7320037bdb7ced6e4ba03a78373d43b6d999a6b1a403061d56db7",
+    "ck3_12002_query_mailbox.cpp": "565124a9fcafb847feb56e02c4ab925d88d2c85117760c46bf1e01a607ec517b",
+    "main_thread_query_mailbox_v1.cpp": "019642d41f5ed007e67c816dd929505a7c0d2d795ebcee0ae6a1a107da84a572",
+    "protocol.cpp": "59b6a901d937c18dfa2c9749d89173030d0f33ee27df25a8ce94c41978686708",
+    "ck3_12003_abi_profile.cpp": "9c6828f932d9fe7b4d1a112c3f43f580f4456b12e73cda7eb99aa2eeceed8856",
+    "ck3_12003_adapter.cpp": "f255c46744b7fc4cfd591b664ce791a4b78a0aa97ff06e132336602e935d2559",
+    "ck3_12003_call_ally_mailbox_test.cpp": "86cd4d9309a9aa3cf8c9cb99b5edbe3f8a3f68337773b31ed713e7ee6f58b282"
+  }
+}

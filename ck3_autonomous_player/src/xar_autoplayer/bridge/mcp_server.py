@@ -1606,6 +1606,16 @@ def create_server(
                 enumerate_current_allies=enumerate_current_allies,
             )
 
+        @server.tool()
+        def ck3_submit_call_ally_to_war_private_v1(
+            expected_revision: int, war_id: int, recipient_character_id: int,
+        ) -> dict[str, object]:
+            """Quote and send one selected ally invitation; ACK does not prove a join."""
+            return service.submit_call_ally_to_war_private_v1(
+                expected_revision=expected_revision, war_id=war_id,
+                recipient_character_id=recipient_character_id,
+            )
+
     if getattr(driver, "allow_private_war_cash_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_war_cash_current_resources_private_v1(

@@ -134,4 +134,22 @@ bool Read(const Bindings &, const CoreSnapshotPrefix &,
           std::int32_t first_character_id, std::int32_t second_character_id,
           Snapshot &, std::string_view *reason = nullptr) noexcept;
 
+
+// Caller is the current paused player. This is only a native owning-thread
+// submitter; the external transport must bind expected snapshot revision.
+struct CallAllySubmitRequest {
+  std::int32_t recipient_character_id = -1;
+  std::int32_t war_id = -1;
+  std::array<std::int64_t, 10> expected_send_cost_raw{};
+};
+struct CallAllySubmitReceipt {
+  bool selected_target_native_legal = false;
+  bool copied_context_identity_verified = false;
+  bool send_cost_sampled = false;
+  std::array<std::int64_t, 10> actual_send_cost_raw{};
+};
+CommandSubmitResult SubmitCallAlly(const Bindings &, const CoreSnapshotPrefix &,
+    const CallAllySubmitRequest &, CallAllySubmitReceipt &,
+    std::string_view *reason = nullptr) noexcept;
+
 } // namespace xar::ck3_12002::family_obligations_alliance
