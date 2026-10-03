@@ -1,5 +1,16 @@
 # 一代人自治：阻塞与能力债账本
 
+## 最新短增量：玩家首战胜利、v49/R25 已实机部署
+
+真实编制 **2026-10-04T04:56:11.084525+08:00（Asia/Shanghai）**，固定截止正常关闭的 **SDK38881**；累计 **4061/36524 已保存日 / resume908 / Oct3正式冻结777 / Oct4新增36**，G2 **5/8**、NW **2/4**、自然继承 **0**。最新正常保存 **h5707 / raw53241792 / 92,162,450 B / SHA-256 `2f8446a5f45d0844c1621ab087c57a7d8e4ecde33ea0528d2896df1873f1175f`**。
+
+首场玩家战斗 **1543503874 → normal_result1694498817 / cursor17→58 / player-side1胜利 / old combat deleted** 已闭合为有限 `production-live loop`。实际战斗 **4040→4061共21保存日**，前述分段均包含其中。战后第二次合军独立验证 **D83886367保留、S167772189消失、controlled set2→1**；独立后态 **3901/4231、47兵团、Supply111.52397/300、月供+20、attrition0**，不与终局记录 ours3900 混为同一帧。**整场战争仍active**；2640已敌占70766、fort7/garrison25、无active siege，下一P0是夺回首都。
+
+**R0025 / PID66464 / managed75537 / native+Python g54/source889821f5** 已真实cold GREEN并保持最小化、非前台、无输入；四目标64jobs/fullstrict **78.056079s GREEN** 与 CI **37150080025 GREEN** 分开记录。13201与38881查询正常关闭；当前省2618 **limit5330/usage3901**、目标2640 **limit3080/usage0** 双row available/scale1，达到 `production-live primitive`；目标usage0不含本军未来抵达。AI增援007对非AI管理主体合法返回 `subject_not_ai_managed / unavailable / accepted-ready=false / noerror`，限定负分支生产口已实测。
+
+部署、查询与这次正常保存均 **0新增日**；后继首都move、SDK60709预算64由独立owner接续，不计未来信用。旧RED、R24 completed-red、此前v48 build-only与另一产品追加均保留；Oct4及W40继续滚动，不提前正式收口。此前六入口已发布 `d1507e768a0053da37b9d710f21b749e5fd44f9c`；本短段待Root实际采用与commit/push登记。完整终局、独立强度/war/供给/部署/Sway证据与前像SHA见[本次采用receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/progress-current-six-v47-battle-terminal/ROOT-DELIVERY.json)，不重复投影旧39k包。
+
+
 ## 当前实际边界：v47 首场玩家战斗进入主战，截至 h5616
 
 本次进度投影真实编制时间为 **2026-10-04T03:23:56.430551+08:00（Asia/Shanghai）**，采用 Root 已确认的关闭区间、sole-consumer compact 与正常保存；不倒填到 00:00。累计 **4043/36524 个已保存日**、恢复后 **890 日**；Oct3 正式收口保持 **777 日**，Oct4 当前 **18 日**。G2 **5/8**、NW **2/4**、自然继承 **0**。最新正常保存 **h5616 / raw53241360 / 91,982,553 B / SHA-256 `a90ce4d26566ee2cd41abfeeeda3cb0957e29e83ae7519483e23b4399ce08497`**。这是保存后的真实边界，不把预算日、零日查询或历史派生日再相加。
