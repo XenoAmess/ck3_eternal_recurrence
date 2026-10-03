@@ -14,6 +14,26 @@ from ck3_workshop_mcp.wal import OperationStore
 
 @unittest.skipIf(importlib.util.find_spec("mcp") is None, "optional MCP SDK not installed")
 class McpSurfaceTests(unittest.IsolatedAsyncioTestCase):
+    async def test_native_subscribe_forwards_target_and_preserves_partial(self) -> None:
+        from mcp import Client
+
+        with tempfile.TemporaryDirectory() as temporary:
+            service = WorkshopService(OperationStore(Path(temporary)), PdxLauncherReadOnlyProvider())
+            server = create_server(service, enable_native=True)
+            partial = {"ok": False, "status": "partial", "item_id": "123456789", "app_id": 1158310,
+                       "callback": {"callback_id": 1313, "item_id": "123456789", "result": 1}, "subscribed": False}
+            with patch("ck3_workshop_mcp.steam_subscribe.subscribe", return_value=partial) as run:
+                async with Client(server) as client:
+                    tools = {t.name: t for t in (await client.list_tools()).tools}
+                    self.assertFalse(tools["workshop_native_subscribe"].annotations.read_only_hint)
+                    result = await client.call_tool("workshop_native_subscribe", {
+                        "dll_path": "unused.dll", "item_id": "123456789", "app_id": 1158310,
+                        "timeout_seconds": 180,
+                    })
+                    self.assertFalse(result.is_error)
+                    self.assertEqual(partial, result.structured_content)
+                    run.assert_called_once_with("unused.dll", "123456789", 1158310, 180)
+
     async def test_native_download_forwards_exact_target_and_preserves_unknown(self) -> None:
         from mcp import Client
 

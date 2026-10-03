@@ -405,6 +405,12 @@ failure paths retain their static-test boundary. Earlier verified releases used 
 console for fresh downloads. Steam mode restoration still uses the client menu.
 Direct tools remain separate from the prototype WAL workflow.
 
+`workshop_native_subscribe` now subscribes one exact item and requires callback
+1313 plus an observed Subscribed state. It closes the new-item cache path before
+the independent download tool, without claiming installation or content
+integrity. The capability is initially statically covered only; see the
+[subscription contract](../docs/workshop-native-subscribe.md).
+
 ### Native MCP invocation used for publication
 
 Set `SteamAppId=1158310` and `SteamGameId=1158310` only in the calling process,

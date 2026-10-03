@@ -92,6 +92,11 @@ _DOWNLOAD_FLAT_EXPORTS = (
     "SteamAPI_GetHSteamPipe",
 )
 
+_SUBSCRIPTION_FLAT_EXPORTS = (
+    "SteamAPI_ISteamUGC_SubscribeItem",
+    "SteamAPI_ISteamUGC_GetItemState",
+)
+
 _VISIBILITY = {
     "public": 0,
     "friends_only": 1,
@@ -353,6 +358,8 @@ def symbols(dll_path: str | Path) -> dict[str, object]:
         ],
         "download_flat_exports": {name: name in export_set for name in _DOWNLOAD_FLAT_EXPORTS},
         "download_missing": [name for name in _DOWNLOAD_FLAT_EXPORTS if name not in export_set],
+        "subscription_flat_exports": {name: name in export_set for name in _SUBSCRIPTION_FLAT_EXPORTS},
+        "subscription_missing": [name for name in _SUBSCRIPTION_FLAT_EXPORTS if name not in export_set],
         "missing": missing,
         "abi": {
             "create_item_callback_id": CREATE_ITEM_CALLBACK_ID,

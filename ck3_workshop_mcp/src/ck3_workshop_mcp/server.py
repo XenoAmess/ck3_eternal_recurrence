@@ -246,6 +246,13 @@ def create_server(
             return previews(dll_path, item_id, app_id)
 
         @server.tool(annotations=external_reversible)
+        def workshop_native_subscribe(dll_path: str, item_id: str, app_id: int = 1158310,
+                                      timeout_seconds: float = 180) -> dict[str, Any]:
+            """Subscribe one exact item and verify callback/state; Steam may download it automatically."""
+            from .steam_subscribe import subscribe
+            return subscribe(dll_path, item_id, app_id, timeout_seconds)
+
+        @server.tool(annotations=external_reversible)
         def workshop_native_download(dll_path: str, item_id: str, app_id: int = 1158310,
                                      timeout_seconds: float = 300, expected_cache_path: str | None = None) -> dict[str, Any]:
             """Download one exact item in an isolated callback worker; no subscription or cache deletion."""
