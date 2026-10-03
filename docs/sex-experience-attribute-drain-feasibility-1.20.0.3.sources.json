@@ -110,10 +110,26 @@
     "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3491370441",
     "use": "Independent precedent for viewing sexual-activity statistics and overriding the same effects; not imported source, licensing authorization or validation of this proposed mod."
   },
-  "pending": [
+  "pending_at_initial_report": [
     "Exact engine trait-XP storage clamp: source documents level thresholds 0..100, not an executed add_trait_xp clamp test.",
     "Variable precision and engine numerical ceiling: not researched; do not claim unlimited count.",
     "Base-skill floor, effective-skill modifiers and recipient saturation require an engine fixture.",
     "Same-key scripted effect override precedence and event/tooltip non-duplication require an engine fixture."
-  ]
+  ],
+  "follow_up_counter_ceiling": {
+    "date": "2026-10-04",
+    "method": "Reused repository native numeric EventTarget and character-variable decoder research; integer arithmetic inference; no CK3 launch.",
+    "signed_storage_bits": 64,
+    "fixed_point_scale": 100000,
+    "maximum_integer_count": "92233720368547",
+    "maximum_fixed_point_value": "92233720368547.75807",
+    "formula": "floor((2^63 - 1) / 100000)",
+    "primary_repository_sources": [
+      "ck3_autonomous_player/native_bridge/research/README.md:710",
+      "ck3_autonomous_player/native_bridge/src/zhongguo_b2_pip_snapshot_v1.cpp:16",
+      "ck3_autonomous_player/native_bridge/src/zhongguo_b2_pip_snapshot_v1.cpp:340"
+    ],
+    "resolves": "Initial research did not identify the numeric storage domain. This follow-up establishes a theoretical representable ceiling, not extreme-value arithmetic/save/load/UI acceptance.",
+    "pending": "No new extreme-value engine fixture; ordinary intended count/save/display behavior still awaits implementation and acceptance."
+  }
 }
