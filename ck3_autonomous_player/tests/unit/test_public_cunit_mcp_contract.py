@@ -70,9 +70,23 @@ class PublicCUnitMcpTests(unittest.IsolatedAsyncioTestCase):
                     schema = tools[tool_name].input_schema["properties"][name]
                     if is_list:
                         schema = schema["items"]
+                    nullable = (
+                        tool_name == "ck3_query_battle_terminal_transition_v1"
+                        and name == "subject_public_cunit_id"
+                    )
+                    if nullable:
+                        self.assertEqual(
+                            {branch["type"] for branch in schema["anyOf"]},
+                            {"integer", "null"},
+                        )
+                        schema = next(
+                            branch for branch in schema["anyOf"]
+                            if branch["type"] == "integer"
+                        )
                     self.assertEqual(schema["minimum"], 0)
                     self.assertEqual(schema["maximum"], 2**31-1)
-                    for value in (0, 2**31-1):
+                    valid_values = (0, 2**31-1, None) if nullable else (0, 2**31-1)
+                    for value in valid_values:
                         argument = [value] if is_list else value
                         with self.subTest(tool=tool_name, name=name, value=value):
                             before = method.call_count
@@ -84,7 +98,10 @@ class PublicCUnitMcpTests(unittest.IsolatedAsyncioTestCase):
                                 arg for arg in call.args if type(arg) is type(argument) and arg == argument
                             )
                             self.assertEqual(forwarded, argument)
-                    for value in (True, False, -1, 2**31, 2**32-1, 0.0, "0", None):
+                    invalid_values = (True, False, -1, 2**31, 2**32-1, 0.0, "0")
+                    if not nullable:
+                        invalid_values += (None,)
+                    for value in invalid_values:
                         argument = [value] if is_list else value
                         with self.subTest(tool=tool_name, name=name, invalid=value):
                             before = method.call_count

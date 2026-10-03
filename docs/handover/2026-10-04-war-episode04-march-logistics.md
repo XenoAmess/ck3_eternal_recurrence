@@ -95,3 +95,11 @@
 ## 可直接交给接手者的任务说明
 
 > 继续制作第4期《大军为什么越走越少？——CK3 行军、补给与损耗》。先读本交接与第4期导演案，再登记任务、更新主线和研究状态。先提取原生中文术语，选定并冻结主案，完成补给/损耗结算、路线修改和分合军的最小因果实验，再从同一出发存档独立拍A/B/C。已有研究按真实身份复用，缺失因果补齐后才冻结口播。目标30–35分钟、交付20–40分钟，大原生界面、动态操作视频、清晰条件和代价。所有旧素材与失败attempt保留；单个指定最终MP4通过固定OneDrive客户端目录交付。完成工作包及时线性提交推送，报告实际CI与同步结果。
+
+## 文档提交后的CI复核
+
+首个三文档包已通过32分钟预算、21个本地链接与既有来源核对，并以 `311187b0bd3e69e24b70f01ae6b7ba70df7c7ef8` 普通推送到master。[官方CI37139691990](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37139691990)实际失败：`test_public_cunit_mcp_contract.py`仍直接读取终局查询参数的顶层`minimum`，而该接口已允许null上下文，整数范围位于`anyOf`整数分支。原生产接口及service均已声明并支持该nullable语义，不能为修测试撤销它。
+
+修复只更新MCP契约测试：验证终局查询的integer/null两种schema分支、合法null转发，同时保留所有军队ID的0及上限、布尔/浮点/字符串/越界拒绝检查；其他必填军队参数继续拒绝null。与CI相同的四份测试在普通及`-O`模式均实际通过，各为30 tests、351 subtests；没有游戏/原生transport调用，没有修改生产API。
+
+首次失败回执保留在本任务外置目录的 `ci-a01/terminal.json` 与 `ci-failure-a01/`，本地两模式回执在 `ci-repair-tests-normal-a01/`、`ci-repair-tests-optimized-a01/`。测试修复与本节为独立收口提交，真实普通推送及官方新CI结果分别由随后生成的 `git-delivery-a02/completion.json`、`ci-a02/terminal.json`记录；本节冻结时不预填其SHA或PASS。首轮CI失败不回改成成功，第4期研究与媒体状态不因测试修复增加信用。
