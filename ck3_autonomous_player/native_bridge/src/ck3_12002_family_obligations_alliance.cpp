@@ -23,7 +23,9 @@ bool Ready(const Bindings &b) noexcept {
   const auto &c = b.context;
   return b.enabled && b.core.enabled && c.enabled && b.is_allied && b.key_hash &&
       b.lookup_definition && b.construct_context && b.can_pick_war_target &&
-      b.was_called && b.final_answer && b.contains_participant && b.war_storage_slot &&
+      b.was_called && b.final_answer && b.setup && b.availability && b.send_precheck &&
+      b.already_considering && b.pair_restriction && b.diplomatic_range &&
+      b.contains_participant && b.war_storage_slot &&
       b.war_fallback_slot && b.interaction_missing_slot &&
       c.interaction_database_slot && c.refresh && c.finalize && c.validate &&
       c.destroy && c.recipient_answer_score && c.evaluate_cost && c.evaluate_trigger;
@@ -81,6 +83,68 @@ Side ReadSide(const Bindings &b, const void *war, std::int32_t id) noexcept {
   const bool defender = b.contains_participant(base + 0x80, id);
   return attacker ? Side::attacker : defender ? Side::defender : Side::absent;
 }
+bool SendDiagnostics(const Bindings &b, void *definition, void *context,
+                     WarExposure &row, std::string_view *reason) noexcept {
+  void *const actor = ResolveCoreCharacter(b.core, row.caller_character_id);
+  void *const recipient = ResolveCoreCharacter(b.core, row.recipient_character_id);
+  if (actor == nullptr || recipient == nullptr)
+    return Fail(reason, "call_ally_send_diagnostic_roles_unavailable");
+  const auto scope = static_cast<const std::byte *>(context) + 8;
+  auto *const definition_bytes = static_cast<std::byte *>(definition);
+  row.native_send_answer_status_raw = b.final_answer(context, 0, 0, nullptr, nullptr);
+  if (row.native_send_answer_status_raw > 2)
+    return Fail(reason, "call_ally_native_send_answer_unavailable");
+  // Four-argument ABI: both tests are enabled in complete native CanSend.
+  row.native_send_precheck_passed = b.send_precheck(context, 1, 1, nullptr);
+  row.native_send_setup_passed = b.setup(context);
+  row.native_send_availability_passed = b.availability(context, nullptr);
+  // Native pair restriction true rejects availability. The pending wrapper
+  // true rejects precheck; it already inverts the manager allow predicate.
+  row.native_send_pair_restriction_blocked =
+      b.pair_restriction(definition, actor, recipient, nullptr);
+  row.native_send_diplomatic_range_passed = b.diplomatic_range(context, scope);
+  row.native_send_already_considering_blocked = b.already_considering(context);
+  for (std::size_t index = 0; index < kSendDefinitionGateOffsets.size(); ++index)
+    row.native_send_definition_gate_results[index] = b.context.evaluate_trigger(
+        definition_bytes + kSendDefinitionGateOffsets[index], scope);
+  row.native_first_failed_send_stage = "none";
+  if (row.native_complete_can_send) return true;
+  if (!row.native_send_precheck_passed) {
+    if (!row.native_send_setup_passed) {
+      row.native_first_failed_send_stage = "setup";
+    } else if (!row.native_send_availability_passed) {
+      if (row.native_send_pair_restriction_blocked)
+        row.native_first_failed_send_stage = "pair_definition_restriction";
+      else if (!row.native_send_diplomatic_range_passed)
+        row.native_first_failed_send_stage = "diplomatic_range";
+      else if (!row.native_send_definition_gate_results[0])
+        row.native_first_failed_send_stage = "definition_ae8";
+      else
+        row.native_first_failed_send_stage = "availability";
+    } else if (row.native_send_already_considering_blocked) {
+      row.native_first_failed_send_stage = "already_considering";
+    } else {
+      constexpr std::array<std::string_view, 6> stages{
+          "definition_c88", "definition_e28", "definition_1168",
+          "definition_fc8", "definition_d58", "definition_ef8"};
+      row.native_first_failed_send_stage = "precheck_other";
+      for (std::size_t index = 0; index < stages.size(); ++index) {
+        if (!row.native_send_definition_gate_results[index + 1]) {
+          row.native_first_failed_send_stage = stages[index];
+          break;
+        }
+      }
+    }
+  } else if (Load<std::uint8_t>(definition, 0x271A) == 0 &&
+             row.native_send_answer_status_raw == 2) {
+    row.native_first_failed_send_stage = "internal_answer";
+  } else {
+    // Preserve native false even when this bounded diagnostic has not named
+    // its remaining branch (e.g. nonzero future costs); never authorize send.
+    row.native_first_failed_send_stage = "complete_can_send_other";
+  }
+  return true;
+}
 bool Terms(const Bindings &b, void *definition, WarExposure &row,
            std::string_view *reason) noexcept {
   struct alignas(8) Context { std::array<std::byte, 0x338> bytes{}; } storage;
@@ -136,7 +200,7 @@ bool Terms(const Bindings &b, void *definition, WarExposure &row,
     if (scalar > 1) return Fail(reason, "call_ally_native_auto_accept_unavailable");
     row.native_auto_accept = scalar != 0;
   }
-  return true;
+  return SendDiagnostics(b, definition, context, row, reason);
 }
 bool Wars(const Bindings &b, void *definition, void *caller, std::int32_t caller_id,
           std::int32_t recipient_id, std::vector<WarExposure> &output,
@@ -254,6 +318,12 @@ Bindings BindImage(std::uintptr_t base, std::string_view sha) noexcept {
   b.can_pick_war_target = reinterpret_cast<CanPickWarTarget>(base + kCanPickWarTargetRva);
   b.was_called = reinterpret_cast<WasCalled>(base + kWasCalledRva);
   b.final_answer = reinterpret_cast<FinalAnswer>(base + family_query_abi::kEvaluateAnswerRva);
+  b.setup = reinterpret_cast<ContextPredicate>(base + kSendSetupRva);
+  b.availability = reinterpret_cast<ContextAvailability>(base + kSendAvailabilityRva);
+  b.send_precheck = reinterpret_cast<SendPrecheck>(base + kSendPrecheckRva);
+  b.already_considering = reinterpret_cast<ContextPredicate>(base + kAlreadyConsideringRva);
+  b.pair_restriction = reinterpret_cast<PairRestriction>(base + kPairRestrictionRva);
+  b.diplomatic_range = reinterpret_cast<DiplomaticRange>(base + kDiplomaticRangeRva);
   b.contains_participant = reinterpret_cast<ContainsParticipant>(base + kContainsParticipantRva);
   return b;
 }

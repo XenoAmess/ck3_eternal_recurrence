@@ -18,6 +18,14 @@ inline constexpr std::uintptr_t kInteractionMissingSlotRva = 0x5D1DD28;
 inline constexpr std::uintptr_t kDefinitionKeyHashRva = 0x3F7E240;
 inline constexpr std::uintptr_t kDefinitionLookupRva = 0xA055E0;
 inline constexpr std::uintptr_t kCanPickWarTargetRva = 0x307A690;
+inline constexpr std::uintptr_t kSendSetupRva = 0x307A770;
+inline constexpr std::uintptr_t kSendAvailabilityRva = 0x307A860;
+inline constexpr std::uintptr_t kSendPrecheckRva = 0x307AB70;
+inline constexpr std::uintptr_t kAlreadyConsideringRva = 0x307A570;
+inline constexpr std::uintptr_t kPairRestrictionRva = 0x2BF5E30;
+inline constexpr std::uintptr_t kDiplomaticRangeRva = 0x307D6E0;
+inline constexpr std::array<std::size_t, 7> kSendDefinitionGateOffsets{
+    0xAE8, 0xC88, 0xE28, 0x1168, 0xFC8, 0xD58, 0xEF8};
 inline constexpr std::uintptr_t kWasCalledRva = 0x2497770;
 inline constexpr std::uintptr_t kContainsParticipantRva = 0x2494B60;
 inline constexpr std::size_t kCharacterFamilyOffset = 0x1A8;
@@ -40,6 +48,11 @@ using DefinitionKeyHash = std::uint32_t (*)(const void *, const char *, std::uin
 using DefinitionLookup = void *(*)(void *, std::int32_t);
 using CanPickWarTarget = bool (*)(void *, const void *, void *);
 using FinalAnswer = std::uint8_t (*)(void *, std::uint8_t, std::uint8_t, void *, void *);
+using ContextPredicate = bool (*)(void *);
+using ContextAvailability = bool (*)(void *, void *);
+using SendPrecheck = bool (*)(void *, std::uint8_t, std::uint8_t, void *);
+using PairRestriction = bool (*)(void *, void *, void *, void *);
+using DiplomaticRange = bool (*)(void *, const void *);
 using WasCalled = bool (*)(const void *, std::int32_t);
 using ContainsParticipant = bool (*)(const void *, std::int32_t);
 
@@ -65,6 +78,12 @@ struct Bindings {
   CanPickWarTarget can_pick_war_target = nullptr;
   WasCalled was_called = nullptr;
   FinalAnswer final_answer = nullptr;
+  ContextPredicate setup = nullptr;
+  ContextAvailability availability = nullptr;
+  SendPrecheck send_precheck = nullptr;
+  ContextPredicate already_considering = nullptr;
+  PairRestriction pair_restriction = nullptr;
+  DiplomaticRange diplomatic_range = nullptr;
   ContainsParticipant contains_participant = nullptr;
 };
 
@@ -93,6 +112,17 @@ struct WarExposure {
   std::int64_t recipient_acceptance_raw = 0;
   bool native_auto_accept = false;
   std::uint8_t recipient_answer_status_raw = 0;
+  // Complete CanSend uses answer flags 0,0, independently of preview flags 1,1.
+  std::uint8_t native_send_answer_status_raw = 0;
+  bool native_send_precheck_passed = false;
+  bool native_send_setup_passed = false;
+  bool native_send_availability_passed = false;
+  bool native_send_pair_restriction_blocked = false;
+  bool native_send_diplomatic_range_passed = false;
+  bool native_send_already_considering_blocked = false;
+  // Observed definition trigger results: AE8,C88,E28,1168,FC8,D58,EF8.
+  std::array<bool, 7> native_send_definition_gate_results{};
+  std::string_view native_first_failed_send_stage = "none";
 };
 
 struct Snapshot {

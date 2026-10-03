@@ -16,6 +16,46 @@ from .version_identity import require_exact_native_build
 STEP = "read-family-obligations-private-12002"
 KIND = "ck3_12002_family_obligations_private_v1"
 
+_SEND_DIAGNOSTIC_BOOL_KEYS = (
+    "native_send_precheck_passed", "native_send_setup_passed",
+    "native_send_availability_passed", "native_send_pair_restriction_blocked",
+    "native_send_diplomatic_range_passed", "native_send_already_considering_blocked",
+)
+_SEND_DIAGNOSTIC_KEYS = (*_SEND_DIAGNOSTIC_BOOL_KEYS,
+    "native_send_answer_status_raw", "native_send_definition_gate_results",
+    "native_first_failed_send_stage")
+_SEND_FAILURE_STAGES = {
+    "none", "setup", "pair_definition_restriction", "diplomatic_range",
+    "definition_ae8", "availability", "already_considering", "definition_c88",
+    "definition_e28", "definition_1168", "definition_fc8", "definition_d58",
+    "definition_ef8", "precheck_other", "internal_answer", "complete_can_send_other",
+}
+
+
+def _validate_send_diagnostics(row: Mapping[str, object], selected: bool) -> None:
+    # Frozen older FAMILY rows predate this additive observation group.
+    if not any(key in row for key in _SEND_DIAGNOSTIC_KEYS):
+        return
+    if any(key not in row for key in _SEND_DIAGNOSTIC_KEYS):
+        raise ValueError("family native send diagnostics are incomplete")
+    if not selected:
+        if any(row[key] is not None for key in _SEND_DIAGNOSTIC_KEYS):
+            raise ValueError("family unselected send diagnostics must remain unobserved")
+        return
+    gates = row["native_send_definition_gate_results"]
+    stage = row["native_first_failed_send_stage"]
+    if (any(type(row[key]) is not bool for key in _SEND_DIAGNOSTIC_BOOL_KEYS)
+            or type(row["native_send_answer_status_raw"]) is not int
+            or row["native_send_answer_status_raw"] not in {0, 1, 2}
+            or not isinstance(gates, list) or len(gates) != 7
+            or any(type(result) is not bool for result in gates)
+            or not isinstance(stage, str) or stage not in _SEND_FAILURE_STAGES
+            or (row["native_complete_can_send"] is True) != (stage == "none")):
+        raise ValueError("family sampled native send diagnostics are malformed")
+    # The native producer orders these slots as AE8/C88/E28/1168/FC8/D58/EF8.
+    # Preserve its raw results and independent send-answer (flags0,0); do not
+    # replace the existing predictive answer (flags1,1) or native CanSend.
+
 
 def _id(value: object) -> bool:
     return type(value) is int and 0 < value < (1 << 32)
@@ -116,6 +156,7 @@ def normalize_family_obligations_private_v1(
                             or len(row["send_cost_raw"]) != 10
                             or any(type(raw) is not int for raw in row["send_cost_raw"])):
                         raise ValueError("family alliance war native terms are malformed")
+                    _validate_send_diagnostics(row, selected_context_available)
     collection = value.get("current_native_allies")
     if enumerate_current_allies:
         if (not isinstance(collection, Mapping)

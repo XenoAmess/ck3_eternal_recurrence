@@ -119,10 +119,20 @@ std::int64_t *Answer(void *, std::int64_t *output) {
   return active->acceptance_unavailable ? nullptr : output;
 }
 std::uint8_t FinalAnswer(void *, std::uint8_t first, std::uint8_t second, void *a, void *b) {
-  Check(first == 1 && second == 1 && a == nullptr && b == nullptr, "native final-answer query flags");
+  Check(((first == 1 && second == 1) || (first == 0 && second == 0)) && a == nullptr && b == nullptr, "native preview and internal final-answer query flag pairs");
   return 2;
 }
 bool Trigger(void *, const void *) { return false; }
+
+
+bool DefaultSendSetup(void *) { return true; }
+bool DefaultSendAvailability(void *, void *text) { Check(text == nullptr, "availability null text"); return true; }
+bool DefaultSendPrecheck(void *, std::uint8_t first, std::uint8_t second, void *text) {
+  Check(first == 1 && second == 1 && text == nullptr, "exact four-argument complete CanSend precheck"); return true;
+}
+bool DefaultAlreadyConsidering(void *) { return false; }
+bool DefaultPairRestriction(void *, void *, void *, void *text) { Check(text == nullptr, "pair restriction null text"); return false; }
+bool DefaultDiplomaticRange(void *, const void *) { return true; }
 
 Fixture::Fixture() {
   active = this;
@@ -171,6 +181,9 @@ Fixture::Fixture() {
   bindings.is_allied = Allied; bindings.key_hash = Hash; bindings.lookup_definition = Lookup;
   bindings.can_pick_war_target = Pick; bindings.was_called = Called;
   bindings.contains_participant = Contains; bindings.final_answer = FinalAnswer;
+  bindings.setup = DefaultSendSetup; bindings.availability = DefaultSendAvailability;
+  bindings.send_precheck = DefaultSendPrecheck; bindings.already_considering = DefaultAlreadyConsidering;
+  bindings.pair_restriction = DefaultPairRestriction; bindings.diplomatic_range = DefaultDiplomaticRange;
 }
 
 void PositiveProductionPath() {

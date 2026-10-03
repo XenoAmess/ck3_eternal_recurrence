@@ -3,6 +3,7 @@
 #undef main
 #include "xar_bridge/ck3_12002_family_obligations_wire.hpp"
 #include <fstream>
+#include <algorithm>
 
 namespace {
 void EmitNoEntry(const a::Snapshot &snapshot, const Fixture &fixture, const char *path) {
@@ -164,10 +165,168 @@ void NullSpecialCases(const char *output) {
   }
   std::cout<<"GREEN call ally optional-null-special: 4 focused changed production-path cases; no game\n";
 }
+struct SendLegalityFixtureState {
+  bool setup = true, availability = true, precheck = true;
+  bool already_considering_blocked = false, pair_restriction_blocked = false, range = true;
+  std::array<bool, 7> gates{true, true, true, true, true, true, true};
+  std::uint8_t preview_answer = 0, internal_answer = 2;
+  int setup_reads = 0, availability_reads = 0, precheck_reads = 0;
+  int considering_reads = 0, restriction_reads = 0, range_reads = 0;
+  int preview_reads = 0, internal_reads = 0;
+  std::array<int, 7> gate_reads{};
+};
+SendLegalityFixtureState *legality_fixture = nullptr;
+constexpr std::array<std::size_t, 7> diagnostic_gate_offsets{
+    0xAE8, 0xC88, 0xE28, 0x1168, 0xFC8, 0xD58, 0xEF8};
+void CheckSelectedReasonContext(const void *context) {
+  Check(Get<std::int32_t>(context, a::kContextActorOffset) == actor &&
+        Get<std::int32_t>(context, a::kContextRecipientOffset) == ally &&
+        Get<std::uint16_t>(context, a::kContextTargetOffset) == a::kWarTargetType &&
+        Get<std::uint64_t>(context, a::kContextTargetTokenOffset) == static_cast<std::uint32_t>(own_war),
+        "new native diagnostic callback receives genuine same finalized selected identity");
+}
+bool DiagnosticSetup(void *context) {
+  CheckSelectedReasonContext(context); ++legality_fixture->setup_reads;
+  return legality_fixture->setup;
+}
+bool DiagnosticAvailability(void *context, void *text) {
+  CheckSelectedReasonContext(context); Check(text == nullptr, "availability exact null text");
+  ++legality_fixture->availability_reads; return legality_fixture->availability;
+}
+bool DiagnosticPrecheck(void *context, std::uint8_t already, std::uint8_t gate1168, void *text) {
+  CheckSelectedReasonContext(context);
+  Check(already == 1 && gate1168 == 1 && text == nullptr,
+        "new production uses four-argument precheck (context,1,1,null)");
+  ++legality_fixture->precheck_reads; return legality_fixture->precheck;
+}
+bool DiagnosticConsidering(void *context) {
+  CheckSelectedReasonContext(context); ++legality_fixture->considering_reads;
+  return legality_fixture->already_considering_blocked;
+}
+bool DiagnosticRestriction(void *definition, void *first, void *second, void *text) {
+  Check(definition == active->definition.data() && first == active->actor_object.data() &&
+        second == active->ally_object.data() && text == nullptr,
+        "native pair-restriction receives current full resolved identities and definition");
+  ++legality_fixture->restriction_reads; return legality_fixture->pair_restriction_blocked;
+}
+bool DiagnosticRange(void *context, const void *scope) {
+  CheckSelectedReasonContext(context);
+  Check(scope == static_cast<std::byte *>(context) + 8, "native range exact context scope");
+  ++legality_fixture->range_reads; return legality_fixture->range;
+}
+std::uint8_t DiagnosticAnswer(void *context, std::uint8_t first, std::uint8_t second,
+                              void *left, void *right) {
+  CheckSelectedReasonContext(context); Check(left == nullptr && right == nullptr, "answer null text inputs");
+  if (first == 1 && second == 1) {
+    ++legality_fixture->preview_reads; return legality_fixture->preview_answer;
+  }
+  Check(first == 0 && second == 0, "complete CanSend internal answer exact zero/zero flags");
+  ++legality_fixture->internal_reads; return legality_fixture->internal_answer;
+}
+bool DiagnosticTrigger(void *compiled, const void *scope) {
+  const auto context = static_cast<const std::byte *>(scope) - 8;
+  CheckSelectedReasonContext(context);
+  for (std::size_t index = 0; index < diagnostic_gate_offsets.size(); ++index) {
+    if (compiled == active->definition.data() + diagnostic_gate_offsets[index]) {
+      ++legality_fixture->gate_reads[index]; return legality_fixture->gates[index];
+    }
+  }
+  throw std::runtime_error("new diagnostic called an unbound compiled definition offset");
+}
+void InstallSendLegality(Fixture &fixture, SendLegalityFixtureState &state) {
+  legality_fixture = &state;
+  Put(fixture.ally_object, a::kCharacterRealmOffset, static_cast<void *>(nullptr));
+  fixture.can_send = false;
+  fixture.bindings.setup = DiagnosticSetup; fixture.bindings.availability = DiagnosticAvailability;
+  fixture.bindings.send_precheck = DiagnosticPrecheck;
+  fixture.bindings.already_considering = DiagnosticConsidering;
+  fixture.bindings.pair_restriction = DiagnosticRestriction;
+  fixture.bindings.diplomatic_range = DiagnosticRange;
+  fixture.bindings.final_answer = DiagnosticAnswer;
+  fixture.bindings.context.evaluate_trigger = DiagnosticTrigger;
+}
+void EmitSendLegality(const a::Snapshot &snapshot, const Fixture &fixture,
+                      const char *directory, const char *label) {
+  FamilyObligationsObservation12002 observation{};
+  observation.snapshot_revision = 17; observation.request.ally_character_id = ally;
+  observation.frame.date_raw = fixture.frame.clock.date_raw;
+  observation.frame.played_character_id = actor;
+  observation.frame.paused = observation.frame.map_ready = observation.frame.played_character_alive = true;
+  observation.alliance_available = true; observation.alliance = snapshot;
+  const auto wire = SerializeFamilyObligationsResult12002(label, observation);
+  Check(wire.find("\"native_send_answer_status_raw\":") != std::string::npos &&
+        wire.find("\"native_send_precheck_passed\":") != std::string::npos &&
+        wire.find("\"native_send_definition_gate_results\":[") != std::string::npos &&
+        wire.find("\"native_first_failed_send_stage\":\"") != std::string::npos,
+        "genuine production serializer emits sampled new diagnostic values");
+  if (directory != nullptr) {
+    const auto file = std::string(directory) + "/" + label + "-native-command-result.json";
+    std::ofstream output(file, std::ios::binary); output << wire << '\n';
+    Check(bool(output), "new reason packet emitted by actual production serializer");
+  }
+}
+void ReadAndVerifySendLegality(Fixture &fixture, const SendLegalityFixtureState &state,
+                             std::string_view expected, const char *directory, const char *label) {
+  a::Snapshot snapshot; std::string_view reason;
+  Check(a::Read(fixture.bindings, fixture.frame, actor, ally, snapshot, &reason) && reason.empty() &&
+        snapshot.first_wars.size() == 1 && snapshot.second_wars.empty(),
+        "new reason scenarios traverse genuine production reader and actual native world row");
+  const auto &row = snapshot.first_wars[0];
+  Check(row.native_selected_target_context_available && !row.native_complete_can_send &&
+        row.recipient_answer_status_raw == state.preview_answer &&
+        row.native_send_answer_status_raw == state.internal_answer &&
+        row.native_send_precheck_passed == state.precheck &&
+        row.native_send_setup_passed == state.setup &&
+        row.native_send_availability_passed == state.availability &&
+        row.native_send_already_considering_blocked == state.already_considering_blocked &&
+        row.native_send_pair_restriction_blocked == state.pair_restriction_blocked &&
+        row.native_send_diplomatic_range_passed == state.range &&
+        row.native_send_definition_gate_results == state.gates &&
+        row.native_first_failed_send_stage == expected,
+        "production preserves independent exact native inputs and first actual failed-stage enum");
+  Check(state.setup_reads == 1 && state.availability_reads == 1 && state.precheck_reads == 1 &&
+        state.considering_reads == 1 && state.restriction_reads == 1 && state.range_reads == 1 &&
+        state.preview_reads == 1 && state.internal_reads == 1,
+        "one same-context native sample per new diagnostic getter and flag pair");
+  Check(std::all_of(state.gate_reads.begin(), state.gate_reads.end(), [](int count) { return count == 1; }),
+        "all seven raw compiled slots are actually sampled once");
+  Check(fixture.validates == 1 && fixture.cost_reads == 1 && fixture.answer_reads == 1 &&
+        fixture.constructions == fixture.destructions,
+        "existing complete gate/quote/score and cleanup remain genuine independent observations");
+  EmitSendLegality(snapshot, fixture, directory, label);
+}
+void SendLegalityCases(const char *directory) {
+  {
+    Fixture fixture; SendLegalityFixtureState state; InstallSendLegality(fixture, state);
+    ReadAndVerifySendLegality(fixture, state, "internal_answer", directory, "internal-answer");
+  }
+  {
+    Fixture fixture; SendLegalityFixtureState state;
+    state.precheck = false; state.already_considering_blocked = true;
+    InstallSendLegality(fixture, state);
+    ReadAndVerifySendLegality(fixture, state, "already_considering", directory, "already-considering");
+  }
+  {
+    Fixture fixture; SendLegalityFixtureState state;
+    state.precheck = false; state.gates[2] = false; state.internal_answer = 1;
+    InstallSendLegality(fixture, state);
+    ReadAndVerifySendLegality(fixture, state, "definition_e28", directory, "definition-e28");
+  }
+  {
+    Fixture fixture; SendLegalityFixtureState state;
+    state.internal_answer = 0;
+    InstallSendLegality(fixture, state);
+    ReadAndVerifySendLegality(fixture, state, "complete_can_send_other", directory, "complete-other");
+  }
+  std::cout << "GREEN call ally send-legality: 4 focused new production reader/serializer reasons; no old cases\n";
+}
+
 }
 int main(int argc,char **argv) {
   try {
-#ifdef XAR_CK3_CALL_ALLY_NULL_SPECIAL_FOCUSED_ONLY
+#if defined(XAR_CK3_CALL_ALLY_SEND_LEGALITY_FOCUSED_ONLY)
+    SendLegalityCases(argc==2?argv[1]:nullptr);
+#elif defined(XAR_CK3_CALL_ALLY_NULL_SPECIAL_FOCUSED_ONLY)
     NullSpecialCases(argc==2?argv[1]:nullptr);
 #else
     NoEntryCases(argc==2?argv[1]:nullptr); NullSpecialCases(nullptr);

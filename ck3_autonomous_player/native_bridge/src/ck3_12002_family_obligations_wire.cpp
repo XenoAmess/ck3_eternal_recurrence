@@ -28,6 +28,15 @@ template <typename T> void Numbers(std::string &wire, const T &values) {
   }
   wire += ']';
 }
+void Booleans(std::string &wire, const std::array<bool, 7> &values) {
+  wire += '[';
+  bool first = true;
+  for (const auto value : values) {
+    if (!first) wire += ',';
+    first = false; Boolean(wire, value);
+  }
+  wire += ']';
+}
 std::string_view SideName(family_obligations_alliance::Side side) {
   using Side = family_obligations_alliance::Side;
   return side == Side::attacker ? "attacker" : side == Side::defender ? "defender" : "absent";
@@ -59,9 +68,23 @@ void Wars(std::string &wire, const std::vector<family_obligations_alliance::WarE
       wire += ",\"recipient_acceptance_raw\":" + std::to_string(r.recipient_acceptance_raw);
       wire += ",\"recipient_answer_status_raw\":" + std::to_string(r.recipient_answer_status_raw);
       wire += ",\"native_auto_accept\":"; Boolean(wire, r.native_auto_accept);
+      wire += ",\"native_send_answer_status_raw\":" + std::to_string(r.native_send_answer_status_raw);
+      wire += ",\"native_send_precheck_passed\":"; Boolean(wire, r.native_send_precheck_passed);
+      wire += ",\"native_send_setup_passed\":"; Boolean(wire, r.native_send_setup_passed);
+      wire += ",\"native_send_availability_passed\":"; Boolean(wire, r.native_send_availability_passed);
+      wire += ",\"native_send_pair_restriction_blocked\":"; Boolean(wire, r.native_send_pair_restriction_blocked);
+      wire += ",\"native_send_diplomatic_range_passed\":"; Boolean(wire, r.native_send_diplomatic_range_passed);
+      wire += ",\"native_send_already_considering_blocked\":"; Boolean(wire, r.native_send_already_considering_blocked);
+      wire += ",\"native_send_definition_gate_results\":"; Booleans(wire, r.native_send_definition_gate_results);
+      wire += ",\"native_first_failed_send_stage\":"; String(wire, r.native_first_failed_send_stage);
     } else {
       wire += ",\"native_complete_can_send\":null,\"send_cost_raw\":null,"
-          "\"recipient_acceptance_raw\":null,\"recipient_answer_status_raw\":null,\"native_auto_accept\":null";
+          "\"recipient_acceptance_raw\":null,\"recipient_answer_status_raw\":null,\"native_auto_accept\":null,"
+          "\"native_send_answer_status_raw\":null,\"native_send_precheck_passed\":null,"
+          "\"native_send_setup_passed\":null,\"native_send_availability_passed\":null,"
+          "\"native_send_pair_restriction_blocked\":null,\"native_send_diplomatic_range_passed\":null,"
+          "\"native_send_already_considering_blocked\":null,\"native_send_definition_gate_results\":null,"
+          "\"native_first_failed_send_stage\":null";
     }
     wire += '}';
   }
