@@ -9,6 +9,24 @@ namespace xar::game {
 inline constexpr std::string_view kWarOccupationTargetsV1Capability =
     "game.command.query-war-occupation-targets-v1-N";
 
+struct WarOccupationActiveSiegeV1 {
+  std::int32_t siege_id = -1;
+  std::int32_t besieging_army_id = -1;
+  bool player_army_besieging = false;
+  std::int64_t progress_fraction_raw = 0;
+  std::int64_t current_work_raw = 0;
+  std::int64_t total_work_raw = 0;
+  bool days_left_observable = false;
+  std::int32_t days_left = 0;
+  bool assault_observable = false;
+  std::int32_t breach_level = 0;
+  bool assault_in_progress = false;
+  bool can_start_assault = false;
+  bool can_stop_assault = false;
+  std::int64_t assault_daily_progress_raw = 0;
+  std::int32_t assault_daily_casualties = 0;
+};
+
 struct WarOccupationTargetRowV1 {
   // The native collector returns barony CLandedTitle pointers. This full title
   // ID is the holding identity; no invented second CHolding ID is published.
@@ -26,6 +44,11 @@ struct WarOccupationTargetRowV1 {
   std::int32_t fort_level = 0;
   bool garrison_size_observable = false;
   std::int32_t garrison_size = 0;
+  bool besieging_strength_observable = false;
+  std::int32_t besieging_strength = 0;
+  bool siege_observable = false;
+  bool has_active_siege = false;
+  WarOccupationActiveSiegeV1 active_siege;
 };
 
 struct WarOccupationSideCountsV1 {

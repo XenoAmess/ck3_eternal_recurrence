@@ -33,6 +33,46 @@ std::string ObservableBool(bool observable, bool value) {
   return observable ? Bool(value) : "null";
 }
 
+std::string ObservableInt(bool observable, std::int32_t value) {
+  return observable ? std::to_string(value) : std::string("null");
+}
+
+std::string FixedPoint(std::int64_t raw) {
+  return "{\"raw\":" + std::to_string(raw) + ",\"scale\":100000}";
+}
+
+std::string ActiveSiege(const WarOccupationTargetRowV1 &row) {
+  if (!row.siege_observable || !row.has_active_siege) return "null";
+  const auto &siege = row.active_siege;
+  const auto remaining = siege.total_work_raw >= siege.current_work_raw
+      ? siege.total_work_raw - siege.current_work_raw : 0;
+  return "{\"siege_id\":" + NullableId(siege.siege_id) +
+      ",\"besieging_army_id\":" + NullableId(siege.besieging_army_id) +
+      ",\"player_army_besieging\":" + Bool(siege.player_army_besieging) +
+      ",\"progress_fraction\":" + FixedPoint(siege.progress_fraction_raw) +
+      ",\"current_work\":" + FixedPoint(siege.current_work_raw) +
+      ",\"total_work\":" + FixedPoint(siege.total_work_raw) +
+      ",\"remaining_work\":" + FixedPoint(remaining) +
+      ",\"days_left\":" + ObservableInt(
+          siege.days_left_observable, siege.days_left) +
+      ",\"assault_observable\":" + Bool(siege.assault_observable) +
+      ",\"breach_level\":" + ObservableInt(
+          siege.assault_observable, siege.breach_level) +
+      ",\"walls_breached\":" + ObservableBool(
+          siege.assault_observable, siege.breach_level > 0) +
+      ",\"assault_in_progress\":" + ObservableBool(
+          siege.assault_observable, siege.assault_in_progress) +
+      ",\"can_start_assault\":" + ObservableBool(
+          siege.assault_observable, siege.can_start_assault) +
+      ",\"can_stop_assault\":" + ObservableBool(
+          siege.assault_observable, siege.can_stop_assault) +
+      ",\"assault_daily_progress\":" +
+      (siege.assault_observable ? FixedPoint(siege.assault_daily_progress_raw)
+                               : std::string("null")) +
+      ",\"assault_daily_casualties\":" + ObservableInt(
+          siege.assault_observable, siege.assault_daily_casualties) + '}';
+}
+
 } // namespace
 
 std::string SerializeWarOccupationTargetsV1(
@@ -108,7 +148,11 @@ std::string SerializeWarOccupationTargetsV1(
             ? std::to_string(row.fort_level) : std::string("null")) +
         ",\"garrison_size\":" +
         (row.garrison_size_observable
-            ? std::to_string(row.garrison_size) : std::string("null")) + '}';
+            ? std::to_string(row.garrison_size) : std::string("null")) +
+        ",\"besieging_strength\":" + ObservableInt(
+            row.besieging_strength_observable, row.besieging_strength) +
+        ",\"siege_observable\":" + Bool(row.siege_observable) +
+        ",\"active_siege\":" + ActiveSiege(row) + '}';
   }
   return out + "]}}";
 }

@@ -8,6 +8,8 @@ from __future__ import annotations
 from collections.abc import Mapping
 import copy
 
+from .war_contract import _normalize_active_siege
+
 QUERY_WAR_OCCUPATION_TARGETS_V1_CAPABILITY = (
     "game.command.query-war-occupation-targets-v1-N"
 )
@@ -149,11 +151,23 @@ def normalize_war_occupation_targets_v1(
     result = copy.deepcopy(value)
     # Older occupation rows did not carry these optional observations. Keep
     # their absence distinct from a native measurement of zero.
-    for row in result["rows"]:
-        for name in ("fort_level", "garrison_size"):
+    for index, row in enumerate(result["rows"]):
+        for name in ("fort_level", "garrison_size", "besieging_strength"):
             measurement = row.get(name)
             if measurement is not None:
                 measurement = _count(measurement, name)
             row[name] = measurement
+        # A missing legacy observation is unknown. A native observable null
+        # is the distinct, successful observation that no siege is active.
+        row["siege_observable"] = _bool(
+            row.get("siege_observable", False), "siege_observable"
+        )
+        active_siege = row.get("active_siege")
+        if not row["siege_observable"] and active_siege is not None:
+            raise ValueError("unobservable siege must not publish an active siege")
+        row["active_siege"] = (
+            _normalize_active_siege(active_siege, name=f"rows[{index}].active_siege")
+            if active_siege is not None else None
+        )
     result["executable_sha256"] = str(value["executable_sha256"]).lower()
     return result

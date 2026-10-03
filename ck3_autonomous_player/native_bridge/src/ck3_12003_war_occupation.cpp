@@ -162,6 +162,24 @@ WarOccupationTargetsReadResultV1 ReadWarOccupationTargetsV1(
   const bool liege_related = b.war_participants_are_liege_related(war);
 
   try {
+    std::vector<game::ArmySnapshot> known_armies;
+    auto include_armies = [&known_armies](const auto &armies) {
+      for (const auto &army : armies) {
+        bool present = false;
+        for (const auto &known : known_armies) {
+          if (known.army_id == army.army_id) {
+            present = true;
+            break;
+          }
+        }
+        if (!present) known_armies.push_back(army);
+      }
+    };
+    include_armies(scope.player_armies);
+    for (const auto &active_war : scope.active_wars) {
+      include_armies(active_war.allied_armies);
+      include_armies(active_war.enemy_armies);
+    }
     // The native packed occupation getter processes defender territory first
     // (attacker score), then attacker territory (defender score). Keep that
     // order, and keep each native occurrence without sorting or deduplication.
@@ -224,20 +242,33 @@ WarOccupationTargetsReadResultV1 ReadWarOccupationTargetsV1(
           if (province == nullptr || b.provinces.title_province(title) != province ||
               Load<std::int32_t>(province, 0x738) != title_id)
             return fail("holding_province_backlink_unavailable");
-          if (b.provinces.fort_level != nullptr) {
-            const auto value = b.provinces.fort_level(province);
-            if (value >= 0) {
-              row.fort_level_observable = true;
-              row.fort_level = value;
-            }
-          }
-          if (b.provinces.garrison_size != nullptr) {
-            const auto value = b.provinces.garrison_size(province);
-            if (value >= 0) {
-              row.garrison_size_observable = true;
-              row.garrison_size = value;
-            }
-          }
+          const auto rich = ck3_12002::ReadObjectiveProvince(
+              b.provinces, row.province_id, known_armies,
+              scope.played_character_id, true);
+          row.fort_level_observable = rich.fort_level_observable;
+          row.fort_level = rich.fort_level;
+          row.garrison_size_observable = rich.garrison_size_observable;
+          row.garrison_size = rich.garrison_size;
+          row.besieging_strength_observable = rich.besieging_strength_observable;
+          row.besieging_strength = rich.besieging_strength;
+          row.siege_observable = rich.siege_observable;
+          row.has_active_siege = rich.has_active_siege;
+          auto &siege = row.active_siege;
+          siege.siege_id = rich.siege_id;
+          siege.besieging_army_id = rich.besieging_army_id;
+          siege.player_army_besieging = rich.player_army_besieging;
+          siege.progress_fraction_raw = rich.siege_progress_fraction.raw;
+          siege.current_work_raw = rich.siege_current_work.raw;
+          siege.total_work_raw = rich.siege_total_work.raw;
+          siege.days_left_observable = rich.siege_days_left_observable;
+          siege.days_left = rich.siege_days_left;
+          siege.assault_observable = rich.assault_observable;
+          siege.breach_level = rich.breach_level;
+          siege.assault_in_progress = rich.assault_in_progress;
+          siege.can_start_assault = rich.can_start_assault;
+          siege.can_stop_assault = rich.can_stop_assault;
+          siege.assault_daily_progress_raw = rich.assault_daily_progress.raw;
+          siege.assault_daily_casualties = rich.assault_daily_casualties;
           row.is_occupied = b.provinces.is_occupied(province);
           if (row.is_occupied) {
             row.occupying_character_id = Load<std::int32_t>(province, 0x73C);
