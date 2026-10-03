@@ -1,5 +1,19 @@
 # CK3 自动游玩智能体进度中心
 
+## 当前截点：v39 实际驻地围城，3917 个保存日（2026-10-03T19:46:05+08:00 实际补录）
+
+- **当前 runtime**：actual 编译源码 `fca9daf1aa517ca5a5c185cc2c0736287ad26847` / frozen `Z:/g41`；R0018 / bridge PID112516；corrected stationary siege batch 终态 RED，最后正常保存已落盘，v40 尚未部署。 运行窗口实测 `minimized=true / foreground=false`。
+- **strict / CI / cold**：fresh four targets Release `/W4 /WX`、64 jobs、541 TU / 538 unique / 1041 inputs、71.17104 s GREEN；DLL SHA-256 `ba650ab1d42aa17d9d2e94f2f3a92db7b644c36a7b9348c6a18e541fe7a4153e`；exact-source [CI37117062048](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37117062048) GREEN；cold / 10 streams / rebind / preflight GREEN。[v39 fresh strict](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v39/ROOT-BUILD-RESULT.json)。
+- **最新正常 pair**：`h5021 / raw 53238336 / SHA-256 d6e9986ccf24fd85c853a08921cd4d200e2b279a33236a31619e8fc1ba88bab2`；累计 **3917 / 36524**、恢复 **+764**、10-03 **+669**，G2 **5/8**、NW **2/4**、自然终局 **0**，`percent_reporting_allowed=false`。[最后实际正常保存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/siege-v39/actual-stationary-siege-batch-2604-02/result.json)。artifact 消费、读口、ACK 和未推进的保存均不计新日。
+- **原 active_siege P0 CLOSED**：v39 实际完整读到 target2604 / holding2400 / Siege503316492 / army83886367 / 2334 soldiers / work175750÷32500000 / native progress540 / ETA184 / breach0 / CanStart=false，成为 `production-live primitive`。compact snapshot 原三 NULL 与专用 active_siege 原生读口分开记账。[active siege 实际读取](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v39/actual-holding-siege-v39-01/result.json)。
+- **真实驻地围城闭环**：首个 ordinary 1日由独立 normal h4831/raw53237160/3868保存闭合；corrected batch共37轮，其中36轮24h bounded成功。末day37请求7日、实际13日并留下harness RED；batch实际累积49 calendar日按正常末保存全部记账（3868→3917），不是64完成。没有重发move。 首个独立日及成功的24h rounds构成限定于驻地围城推进与复观测的 `production-live loop`；末段13日只记实际末帧与正常保存，不造逐日观测或bounded成功。收复、玩家战斗获胜、终战及自然终局尚未取得信用。[首日后独立正常保存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/siege-v39/actual-after-stationary-day-save-2604-01/result.json)、[corrected stationary siege batch](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/siege-v39/actual-stationary-siege-batch-2604-02/result.json)。
+- **失败和正常事实分别保留**：h4824/raw53237136 的新 observer 正常保存；h4827/raw53237136 后 zero-day horizon RED（batch0 complete_saved_days）；首个 ordinary day 实际推进后 readonly date guard RED，再独立正常 h4831/raw53237160 保存恢复闭包。两次早期 RED 和 corrected batch 最后 interval RED 都作为 harness attempt 保留，不能抹去已正常保存的实际calendar日，也不能重复计日。[zero-day horizon RED](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/siege-v39/actual-first-siege-batch-2604-01/result.json)、[首日后 readonly date-guard RED](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/siege-v39/actual-first-stationary-day-2604-01/result.json)。
+- **当前围城输入与下一依赖**：目标2604仍由30097占领，17敌占未减少；当前work9781290÷32500000、scale100000/native progress对应30.096%、ETA109。own army仍2604/state3sieging/空route/无combat/无retreat，尚未夺回。末段7日请求与13日实际推进偏差作为真实harness RED保留。 v40 / frozen g42 / source02e88d57fcef399368f34b23f497d3e8565af95d 的盟友final-CanSend-false原生原因观测仍为static-ready：4 native fixtures+1 registered GREEN、64job strict build GREEN、exact CI37119607735 GREEN；尚未部署、actual trace未到，旧9terms最终false实测blocker仍未关闭。 Robert 一军 commander 与县 task_conversion 派遣保持各自既有 bounded loop；县尚未改宗，盟友未发送或取得参战信用。
+
+以下 v38 及更早记录保留当时原始事实、保存和失败 attempt；旧标题“当前”仅代表各自记录时点，最新状态以本节为准。
+
+当前已由到达并围城推进至真实驻地围城日循环；下一依赖和能力边界回链 [路线图](goal-and-roadmap.md) 与 [单世阻点账本](one-generation-blocker-ledger.md)。
+
 ## 当前截点：v38 实际到达 2604 并围城，3867 个保存日（2026-10-03T18:32:58+08:00 实际补录）
 
 - **当前 runtime 与源码分列**：v38 live 编译源码 `0ad923525ef899b836a823dfe983db49030789f2` / frozen `Z:/g40`；R0017 / bridge PID107772 仍 paused 运行；到达后查询 GREEN，本轮 SDK 已正常关闭。 环境指纹 `79f9a725a47a82cb4104637f62f3c4173662818a2f39f06e779b050270888e31`。窗口实际 `minimized=true / foreground=false`，无抢焦点输入。
