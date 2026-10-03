@@ -251,3 +251,25 @@ Fresh strength queries exist in **6** material-change rounds. Day32 has **no new
 ## v46 actual seven new bounded days
 
 Root completed seven GREEN +24h retained-route rounds (168h, actual calendar7/bounded7/whole OODA7). Raw53240928→53241096, total4032/resumed879, Oct4 actual7 with Oct3 frozen777. Final paused map native:35/public30/native35 binds the target rich observer and normal SAVE h5532/91825231 bytes/SHA-256 `e7b610e633f3a5c47a3bcfe3386adee7ec6b83db220edf191ab6b6cfec750783`. Execution before was h5510, not h5509. Main83886367 is moving7 at8754 on complete eight-edge committed route `[2613, 8752, 2628, 2626, 2627, 2633, 2634, 2640]` toward2640, noncombat/nonretreat. Last canonical ETA is bound before day7, raw53241072: arrival53242968,79 rounded days at that frame,24h older than final; actual arrival is unobserved.
+
+### v47 双向真实会合预览与主军返2618接续（0新日）
+
+Root SDK83853已正常关闭、全部GREEN。Python g52/892378b5修正当前可控军队驻省的既有目标广告，native仍g51/1c67491f、PID32372/R24。只消费005/007两个已完成preview，cap003由war_goal owner消费。
+
+同一暂停帧 raw53241096/native19/public2/generation9：主军83886367从8754到2618的真实route为`[2632,2617,2618]`；167772189从2618到8754反向route为`[2617,2632,8754]`。两个preview均accepted/available，均未发布ETA。三跳不能折算为三日，也不能沿用此前赴2640的ETA。
+
+随后Root SDK45817已全部GREEN并正常关闭：004仅一次`move-army-83886367-to-2618`，005独立war ownroute，007正确完整6-hostile route-contact-horizon，008独立最终快照，009正常SAVE。最终同raw53241096/native22/public3：83886367仍在8754/moving7，target2618真实可见，complete_nonempty/sourcecount3且route`[2632,2617,2618]`；167772189在2618/regular1/空route，无combat/retreat。本次形成有限production-live loop，仅限选择既有原生真实候选→一次实际移动→独立准确目标/路线→正常保存；到达、会合、合并、解围和胜利尚无信用。
+
+007原生时间轴同raw53241096/native22/public3/generation10，三个省到达raw分别为53241312、53241432、53241528，赴2618当前剩432小时/18日。这里`h-6`表示六个实际hostile CUnit IDs，不是六日；查询horizon仅53241096→53241120一个24小时，真实one_day_contact_free=true/conflicts=[]只作观测，不新增拒战门禁。actual公共CUnit IDs为473、16777683、50331920、67109295、83886367、83886484、167772189、251658381；本次快照soldiers仍null，不能把之前strength读数称为本帧新查实力。
+
+新正常pair：h5567/raw53241096/91826221B/SHA`3c7de8467e1d058893a3c5e8a7d4844b835182fdb4b95576c078e43f5ffe5d3a`。native仍g51/1c67491f，Python仅g52/892378b5，无新native重建。Root wrapper58000已开始最多10个显式24h观察循环，route endpoint2618、occupation watch2640、relief角色；此receipt未读运行中output，不能预记10天完成。当前日账仍4032/恢复879/Oct3冻结777/Oct4实际7。
+
+### v47 会合行军期间另一玩家军队接战：有限stop/control/save交接已实测
+
+Root选主军83886367赴2618，watch capital2640、occupation-role=relief。实际八日192h后正常SAVE h5597/raw53241288/native55/pub33，91928475B；SHA-256 `2c56808c20900a845e54e61a82185c0f680c18ee08352dd7163f4b0c50d8c667`。该批8 calendar/8 bounded/8 whole，累计4040；预算10的另2日未执行。
+
+本帧 `player_armies` 的真实combat集合仅 `[167772189]`。J在2618/state2/combat；selected main83886367在8754/state7/moving、无combat，target2618 observable=true，complete_nonempty路线 `[2632,2617,2618]`/sourcecount3。helper以 fresh own集合选择实际handoff subject167772189，不向未接战主军错误查询control。正常SAVE与真实subject控制观察已闭合有限Root交接循环，readiness为production-live loop（任意own接战stop/control/save范围）；不等于完整battle推进或胜利。
+
+march canonical ETA仍绑定before day8 raw53241264/native52，arrival `[53241312,53241432,53241528]`/remaining11days；终态age24h，不计算after末帧新ETA。首次真正battle contact不改写原 route ETA 观测，不宣称主军抵达或merge。
+
+实物入口：`military-ooda-continuation/rendezvous-v47/eight-day-contact-consumption/ROOT-DELIVERY.json`、已owned `TERMINAL-COMPACT-AUTO.json`、同目录 `ACTUAL-BATTLE-CONTROL-SCOPE-COMPACT.json`；报告字段 `rendezvous-v47/eight-day-contact-report/ROOT-DAY-WEEK-FIELDS.json`。旧44 calendar/43 whole且day44 occupationRED与旧subset horizonRED保留。非战领域门禁0；本lane无SDK/window/shared/source/Git/tests。

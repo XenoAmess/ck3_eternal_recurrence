@@ -1,5 +1,8 @@
 # CK3 1.19.0.6 战中控制帧：`query-battle-control-snapshot-v1`
 
+> 当前实机增量见文末 [1.20.0.3 玩家战斗日记录](#current-v47-player-battle)：2026-10-04 第三 attempt保存24h/1日，第四保存48h/2日并观测maneuver→main，第五又保存168h/7日并实见主军抵达2618、加入玩家defender侧与Robert29829成为commander。能力限定同一单战斗的有限有界loop与行军入战。此前两次零日RED与下文1.19.0.6历史ABI/验收原文全部保留；旧build地址、readiness和overshoot记录只说明各自冻结时的事实，不外推到当前.3。
+
+
 本文冻结 P1 第一口可施工的战中 typed observation。它回答的不是“谁会赢”，而是同一 paused revision 中：
 
 1. 玩家究竟在打哪一场 `CCombat`，当前 phase/day/winner/finalizer 状态是什么；
@@ -501,3 +504,93 @@ py tools/file_sha256.py "Crusader Kings III/binaries/ck3.exe"
 `0x23CB845..0x23CB8C4` 的 two-bucket tick-start cache；`0x2309E8F/0x2309EA1` 的 refresh-before-damage；
 `0x2309FE8/0x230A002 → 0x23CE080 → 0x23CDF70` 的 damage 后 entry 写点；`0x2308D9A/0x2308DCE` 的 qword advantage load/store；
 `0x27FB67C/+0x717` 的 in-progress byte；`0x230A5C4` 的 finalized byte。
+
+<a id="current-v47-player-battle"></a>
+
+## 2026-10-04：1.20.0.3 实际玩家战斗日与失败恢复
+
+[live-confirmed / production-live loop，限定单场 battle-day及行军入战] 本节独立绑定owner已封存的g51/source1c/R24/PID32372、CK3 1.20.0.3、普通Robert29829玩家战役；复用五份sealed append/receipt，不读取旧版地址来补当前状态。CombatID1543503874、玩家defender side1、cursor17的有限“观察 → 决定有界等待 → 实际推进 → 战中重查与正常保存”子循环已覆盖03保存一日、04再保存两日并观测maneuver进入main、05再保存七日并实见main军队到达与加入defender侧。完整phase/outcome controller、terminal、玩家胜利与整局OODA仍未由这些局部证据完成；报告采用另增0保存日/0whole-OODA计数。day06不在本次封存范围。
+
+按已关闭 attempt 时序保留以下记录。
+
+### 1.20.0.3 实际玩家战斗：首轮零日 RED 与现有推进模式边界
+
+2026-10-04，g51/source1c/R24/PID32372 的普通 Robert29829 战役，已关闭的 `actual-v47-player-battle-day-01` SDK18278 attempt 为 RED。实际 `003` control GREEN：玩家 defender side1、J CUnit167772189/native CArmy83886088 在2618，CombatID1543503874，enemy CUnit50331920/owner30097 为 attacker。玩家侧 commander34867、敌侧 commander30097。观察为 native57/public2/raw53241288，`battle_control_ready=true`，maneuver/raw0/day1，cadence0、roll0/0、resolvedadvantage0、combatwidth1543、winner/forcedwinner none、finalizedfalse。J仍 controllable/in_combat、非 retreat；main83886367 仍从8754沿[2632,2617,2618]向2618行军。
+
+唯一实际推进 `005 battle-decision-epoch-advance-to-53241312` 返回 `native tactical sentinel cannot execute ...`。未推进时间：raw53241288→53241288，0h/0保存日/0 bounded成功日。`007` 正常保存 h5602、91928475B、SHA256 `1ba89bc910802652883af517bcbff0e40d8fe8e8f4aec6c793bec9a603fe4c36`；总保存日4040、Oct4+15不变。失败 attempt 保留，不重发同一 sentinel 指令。
+
+源码定位为 `native_driver.py::execute_step` 8470–8491：base `battle-decision-epoch-advance` 不在发布的 composite steps 时，在 `_execute_battle_sentinel_advance` 调用前拒绝。1986–2005 的发布条件包含 snapshot/wait-for-change、native sentinel arm/status、paused/map_ready、无 active event/pending interaction、完整 controllable ArmyID watch set、resume-map/pause-map 与 set-speed-3。g51 `.3` descriptor 继承的 `.2` capabilities 未发布 sentinel arm/status/cancel，Crozier startup 在旧11906 sentinel install 前 return；当前没有可开启 `.3` sentinel 的已有 runtimeflag。因此这个失败不能归因于 maneuver 或 roll/input/fullv3 readiness。现有独立 `life-advance-one-day` composite（1967–1976）是当前恢复入口；Root 新尝试保持 CombatID/cursor17。
+
+`active_combat_resume_inputs_v1` 实际 aggregate unavailable/`same_frame_resume_operands_incomplete`：四缺口为 selected_commander_next_roll_bounds、active_regiment_counter_class_stack_context、next_day_non_roll_advantage_sources、battle_knight_participation_and_dynamic_entry_transitions。两侧 next-main-roll bounds 因 `next_main_roll_not_applicable_in_phase` unavailable，作为该阶段真实字段记录；不增设推进门禁。原生 retreat legality 为 false/too_early，elapsed0，exclusive minimum14、earliest date53241648，未发 retreat。journal 仅保留初始 latest/cursor17，未消费 terminal raw 或推断结算；BattleResultID存在不代表结束。
+
+Root 通知的独立 exact-day02 attempt 在初始001/002 snapshot unavailable阶段已关闭 RED，尚无 execute/control/post-save，0h/0day；本 lane 没有再次消费其 raw。它不是 life-advance 拒绝。最新正常保存仍 h5602/raw53241288。
+
+可核验索引：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/player-v47-first-day-consumption/ROOT-DELIVERY.json`；8个首轮实际 capture pins、缓存字段与 interval CSV 位于 actual-player-day-lane；source exactlines/pins 位于 metadata-fieldmap-lane。此次仅文件消费，SDK/游戏操作/Start/advance/测试/Git/窗口/共享编辑均为0。readiness限于 production-live primitive；未计战斗单日 loop、胜利、伤亡结算或额外保存日。
+
+### 实际桥状态恢复与最小 battle helper 初始化适配
+
+2026-10-04，关闭后的 diagnostics-first SDK36947 receipt 为 GREEN/normal_client_close=true，001 diagnostics、002 capabilities、003 snapshot 全 GREEN。仍为 PID32372、exact1.20.0.3，diagnostics connected=true/semantic_state_available=true、adapter ready/build_match=true、connection_generation14，last_error/transport_fatal_error null；快照 native60/public2/raw53241288、paused/map_ready true、played Robert29829、同 episode。
+
+当前实际 composite 表发布 `life-advance-one-day` 和 `life-advance`，没有 base `battle-decision-epoch-advance`；本实际帧无 sentinel composite/native广告。此前 .3 descriptor source结论直接复用，不再重新研究。此bundle没有新的 battle control查询，不能把此前 maneuver/day1改写为 fresh phase。
+
+`battle_speed_readiness` 的 decision/route/hold/terminal flags 实际为true，但当前战斗epoch composite仍未发布；这些flags不能替代当前可执行能力表。diagnostics的 faction async observer状态仅为其自身字段，不作为 bridge故障或战斗phase判断。
+
+实际恢复仅证明本次三项读取成功，首轮 sentinel unsupported RED 与第二轮 initial snapshot unavailable RED 保留；不能据此证明 diagnostics priming 因果修复。源脚本 actual retry_loops=0、game_clock_input_stop_or_save_calls=0；无 restart/rebind/rollback/restore/advance/save。latest正常保存仍 h5602/raw53241288，total4040/Oct4+15、本次保存日credit0。
+
+Root请求的外置 helper复制冻结 preimage ff920c067f29b5c0b9adf30b100b732de3324713ed96bc00c79bbb7d3644de18，仅在新client首次round的首snapshot之前调用现有 archived `ck3_get_bridge_diagnostics({})` 一次。投影 SHA256 727d4cb20ae50cb9570330420d7574d0b92630e3ad120015a708e4406c454026；prior CombatID1543503874/side1/cursor17、normalSAVE、phase/day/actualtime逻辑保持原样，无新retry/wait/gate。该适配由 Root 第三 actual attempt验证；本lane没有执行 SDK或游戏动作。
+
+索引：ROOT-DELIVERY.json、BRIDGE-READINESS-AND-OCT4-FIELDS.json、SOURCE-PINS.json（四个 actual file pins）、HELPER-PROJECTION-ROOT-DELIVERY.json、one-hunk patch。日报/周报标记 readonly状态恢复与最小外置helper ready，不能提前计第三attempt loop成功。
+
+### 实际玩家战斗 exact-day03：一日推进与敌方编组变化
+
+2026-10-04，已封存 SDK65600 正常关闭 exit0；`actual-v47-player-battle-exact-day-03` 为 STOPPED/`actual_battle_decision_state_changed_requires_root`，error null。复用诊断先行外置helper执行唯一 `life-advance-one-day`，speed1/exact_one_day_unavoidable_contact，actual raw53241288→53241312（24h），正常保存1日、bounded成功1日。保存 h5607、91942797B、SHA256 `ece3d52af3e5fb39374ace119ff3104b5f70630a4b6b60a88df4375bb4be15b5`；final native64/public5/paused+mapready true，总4040→4041、Oct4+15→16。此前两次零日RED完整保留；本次成功不能证明初始化诊断的因果修复。
+
+原 CombatID1543503874/player defender side1/J CUnit167772189/native CArmy83886088@2618 延续，original/current cursor17。control before native61/date53241288 与 after native64/date53241312 均 readytrue。phase仍 maneuver/raw0，day1→2，cadence0，roll0/0，winner/forcedwinner none、finalizedfalse。具体停止字段是 ordered_rosters + selected_commanders，不能写成 phase切换：enemy CUnit83886484/native CArmy150995083/owner35357实际加入 attacker0，与50331920/owner30097同侧；selected attacker commander30097→35357，defender commander34867保持；resolvedadvantage raw0→-3000000，width1543→1673。
+
+双方 current stored/derived fighting raw一致：attacker131700000→157600000，defender177000000保持。此变化包含真实敌军加入，不能当作伤亡；snapshot army soldiers仍null，不冒充fresh strength query。J仍@2618/combat、controllable、route空、无retreat；main83886367实际8754→2632，仍 moving目标2618、route[2617,2618]，未进入combat。native retreat仍false/too_early，elapsed1、earliest raw53241648，未发retreat。
+
+active resume inputs aggregate仍unavailable，四operand缺口仅入质量账；maneuver next-main-roll bounds阶段性unavailable不构成新推进门禁。readiness可记为生产实际一日有界战斗OODA loop；不计完整phase/outcome controller、玩家胜利或终结。terminal/ID-transition raw留专属outcomes owner，本lane没有消费或推断。
+
+唯一索引：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/player-v47-exact-day03-consumption/ROOT-DELIVERY.json`。11个actual file pins、完整control/command缓存、interval CSV与normalpair字段已外置。本lane无SDK/游戏动作/测试/共享修改/Git/窗口动作；报告adoption另增日数0。Root在新的独立目录据最新编组继续同Combat与cursor17，下一批不得重复计本日。
+
+### 玩家战斗 exact-day04：两日保存与真实 maneuver→main 边界
+
+2026-10-04，SDK34732正常关闭 exit0；封存 `actual-v47-player-battle-exact-day-04` STOPPED/`actual_battle_decision_state_changed_requires_root`、error null。本批两次 `life-advance-one-day` 各实际24h/正常保存1日/bounded1：53241312→53241336→53241360，共48h/saved2/bounded2。总4041→4043、Oct4+16→18，Root报resume890。末保存h5616、91982553B、SHA256 `a90ce4d26566ee2cd41abfeeeda3cb0957e29e83ae7519483e23b4399ce08497`，native73/public9/暂停地图就绪。同一 Combat1543503874/玩家defender1/J167772189，原始与当前journal cursor17；前一03日不重复计。
+
+第一日 maneuver day2→3，helper changed_decision_fields=[]；第二日实际 maneuver/raw0/day3→main/raw1/day0，changed_decision_fields精确为[phase_raw]，触发停止。两日控制均readytrue，无winner/forcedwinner、finalizedfalse。main入口cadence0/roll0/0；双方selected commanders35357/34867的next-main-roll bounds由阶段性不适用变为available0..10。resume aggregate仍unavailable，但selected_commander_next_roll_bounds缺口消除，余三个operand缺口仅入质量账，不加full-v3推进门禁。
+
+编组保持 attacker[50331920 owner30097,83886484 owner35357]，defender[J167772189 owner29829]；无新roster或commander变化。J仍@2618/combat、controllable、route空、无retreat。main83886367仍@2632/moving target2618/route[2617,2618]，尚未加入battle。native retreat false/too_early、elapsed3、earliest raw53241648，无retreat动作。
+
+既有合同明确 resolved advantage为attacker−defender/Q100000；本批末raw-2100000=攻击方方向−21点（玩家防守方向+21仅可标派生换算）。stored fighting raw attacker157600000/defender177000000保持，Q100000缩放当前参战缓存1576/1770，不能称whole-army兵数、损失或胜率。此batch没有额外strength查询或terminalraw消费。
+
+readiness为两次实际有界战斗OODA与maneuver→main相变观测；不是完整battle outcome controller或玩家胜利。Root依据main0真实状态继续同battle的独立后续预算。唯一索引 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/player-v47-exact-day04-consumption/ROOT-DELIVERY.json`，含19个actual pins、两个正常日CSV、control/command缓存、known人物字段和sign/scale合同receipt链接；本lane无SDK/游戏动作/测试/Git/共享/窗口，报告额外credit0。
+
+### 玩家战斗 exact-day05：七个实际保存日与主军真实加入
+
+2026-10-04，已封存 SDK99839 正常关闭 exit0；`actual-v47-player-battle-exact-day-05` 为 STOPPED/`actual_battle_decision_state_changed_requires_root`，error null。七个正常有界 `life-advance-one-day` 分别实际24h、保存1日、bounded1；总 raw53241360→53241528（168h），saved7/bounded7，累计4043→4050、Oct4+18→25，Root报resume897。同 Combat1543503874/subject J167772189/玩家defender1、original/current cursor17。末保存 h5645、92050133B、SHA256 `3529f5f276a7ab1b489852bcd74709e5a9cfede177ddd04fbf48b7c39546ac6b`，native102/public29/paused+map_ready true。
+
+最后第7日主军83886367/native CArmy50331794实际抵达2618：snapshot current2618/combat/in_combat true、route空、targetnull；battle control defender ordered armies从[J167772189]变成[J167772189,83886367]，两者owner29829并backlink同Combat。affected side units两军、unaffected=[]，selected defender commander34867→Robert29829。STOP字段精确为 ordered_rosters + selected_commanders；这次是按真实后态确认行军到达并加入战斗，无合军命令或phase切换。
+
+phase main/raw1 day0→7；7个daily后态cadence为[1,2,0,1,2,0,1]，attacker/defender roll依次[2/10,2/10,2/10,8/8,8/8,8/8,2/10]。末main7/cadence1、selected commanders35357/29829、next-roll bounds双方available0..10。敌方编组仍[50331920 owner30097,83886484 owner35357]。width1673→2352，resolved advantage仍raw-2100000（attacker-oriented−21）；winner/forcedwinner none，finalizedfalse。native retreat false/too_early、elapsed10、earliest raw53241648，两支玩家军均未retreat。
+
+严格分列末帧fighting Q100000原字段：attacker stored cache102725776、entry derived87067996；defender stored cache367832611、entry derived364444825。这些值实际不相等，分别保留，不拿差值推断终局伤亡、死亡或whole-army兵数；军队snapshot soldiers仍null。resume aggregate仍false、三个缺口仅入质量账，不加full-v3 gate；没有补查强度或terminalraw。
+
+readiness为七个连续实际有界战斗日，以及主军行军到同一玩家battle side的有限loop；不计完整战争/战斗结束或玩家胜利。06运行中目录不读，待Root封存再独立计新日；不得重复03/04/05任何保存日。索引 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/player-v47-exact-day05-consumption/ROOT-DELIVERY.json`，59个actual pins、日interval与control/command/SAVE缓存、日级轨迹CSV lane及Oct4/W40 fields；本lane SDK/游戏动作/测试/Git/窗口/共享修改全0，报告额外credit0。
+
+### 字段尺度与当前封存边界
+
+尺度沿用此前已消费的owner [ADVANTAGE-SCALE-RECEIPT.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/player-v47-first-day-consumption/metadata-fieldmap-lane/ADVANTAGE-SCALE-RECEIPT.json)；本次只读05 sealed summary/append/日周字段，不重复读取raw、query、capability、sourcecpp或cached-trajectory lane。
+
+| 字段 | 已封存变化 / 05末帧 | 限定解释 |
+|---|---|---|
+| `resolved_advantage_raw` | 03为`0 → -3000000`；04、05末为`-2100000`，signed Q100000 | 全局attacker-minus-defender，分别为`-30`、`-21` attacker points；玩家defender相对`+30/+21`仅派生换算，不是新增原生字段或胜率 |
+| current-fighting Q100000 | 05 attacker stored cache`102725776` / entry derived`87067996`；defender stored cache`367832611` / entry derived`364444825` | cache与derived分别保留且实际不相等；不以差值认定伤亡、死亡、whole-army兵数或胜率。03/04的`1576/1770`是当时缩放的cache，不能当作05fresh人数。snapshot soldiers仍null，无额外strength查询 |
+| 停止原因 | 03：rosters+commanders；04：`[phase_raw]`；05第7round：`[ordered_rosters,selected_commanders]` | 04是maneuver day3→main day0；05是主军抵达并加入defender，仍main，无合军命令或phase切换 |
+| 05主军入战 | CUnit83886367 / native CArmy50331794；current2618、in_combat true、route空、targetnull | 与J167772189形成defender stored order`[J167772189,83886367]`，两者owner29829、backlink同Combat1543503874；selected defender commander34867→Robert29829 |
+| phase / cadence / roll | 05 main/raw1/day0→7；末cadence1、attacker/defender roll`2/10`；width2352 | winner/forcedwinner none、finalizedfalse；双方next-roll bounds仍available`0..10`，三个resume缺口仅入质量账、aggregatefalse，无新增gate |
+| 当前normal SAVE | h5645 / raw53241528 / 92050133B；native102/public29/paused+map_ready | SHA256 `3529f5f276a7ab1b489852bcd74709e5a9cfede177ddd04fbf48b7c39546ac6b`；total4050 / resume897（Root报告）/ Oct4+25；05实际168h、saved7/bounded7，与03/04各自分开计，文档采用另增0日 |
+| 当前continuation | 同Combat1543503874 / player side1 / original=current cursor17；两军defender、Robert29829 commander | native retreat仍false/too_early、elapsed10、earliest raw53241648，两军未retreat；06运行中未纳入本包 |
+
+既有`.3` capability结论与两次零日RED原样保留：当时发布`life-advance-one-day`，未发布可执行battle sentinel epoch；首轮拒绝在native sentinel调用前，第二轮仅初始snapshot unavailable。只读恢复以及03/04/05成功分别成立，不据此声称diagnostics priming是因果修复，也不新增重试或门禁。
+
+04进入main时next-main-roll bounds已available；余三个operand为active_regiment_counter_class_stack_context、next_day_non_roll_advantage_sources、battle_knight_participation_and_dynamic_entry_transitions，05仍为质量账。当前新价值是七个连续实际battle-day与main军队的行军入战，完整battle outcome controller、terminal、玩家胜利和整局OODA仍未由这些证据完成。Root已启动06独立预算；本包不读取06、不预计其日数或结论，终结/ID-transition raw留专属outcomes owner。05 primary已sole封存，无需等cached-trajectory追加lane才能采用。

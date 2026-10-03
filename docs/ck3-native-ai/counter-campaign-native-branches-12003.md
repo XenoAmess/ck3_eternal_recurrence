@@ -135,3 +135,25 @@ The four external lanes each freeze native caller ranges/raw byte hashes, source
 Readiness of the new trees is **research / listed exact static branches closed**. Historical route/foreign-current/occupation/terminal primitives retain their own actual scopes. This file work adds0 SDK/game/window calls,0 shared edits/Git operations,0 builds/tests,0 days/actions and no arrival/recapture/battle/war credit. Root continues actual2640 execution and owns canonical adoption/commit/push.
 
 Package and per-lane manifests: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-counter-campaign/v46-native-continuation/ROOT-DELIVERY.json`. It includes the unchanged Root handback recipe identity, exact frozen source pair, four complete lane evidence files and merged daily/weekly fields. Mercenary/rally/gathering work remains with its existing owners.
+
+## 2026-10-04：真实玩家战斗终态后的会合、合军与2640行动配方
+
+本段复用上文 v46 原生树、既有 Root handback 和 `current-preparation-v47/helper/root_sdk_counter_transit_days.py`；已发布内容不重新打包。编写时 Root 报告累计4041保存日、raw53241312，玩家战斗正常推进+1日，第二主军仍沿 `[2632,2617,2618]` 前往J当时所在地2618。这些只是协调元数据：本工作包不读取当前 battle body，实际 phase、参战军、终态和胜负由唯一 battle consumer 提供。下列配方是准备完成，不是本轮 actual policy loop 或胜利信用。
+
+1. **接收真实 own terminal。** 优先复用 battle owner 已给出的 terminal；确需读取时，现 `ck3_query_battle_terminal_transition_v1(prior_combat_id=C, subject_public_cunit_id=U, expected_revision=R, after_terminal_sequence=L)` 沿用实际 CombatID、handoff subject 和 owner cursor。保留新 `terminal_journal.event_status/event_sequence`、`prior.terminal_kind/combat_id/terminal_date_raw`、双方 stored-order full CUnitID 和 `winner_raw`。只在新 observed `normal_result`、实际玩家参战 side 已知且 winner 等于该 side 时计该场正常胜利；玩家胜或败均可交回 campaign。ACK、旧Combat删除、ResultID或军队暂时未接战均不能替代终态。
+
+2. **独立取得当前军队并确认会合位置。** `ck3_take_snapshot(include_native_command_history=false)` 的实际 `player_armies` 加上当前 actor-owned/controllable 行给出完整可控 roster。读取 alive full CUnitID、`current_province_id`、实际 committed route/target、`in_combat`、`retreating` 和 control；保留 mercenary captain owner，不能只按 owner29829 删除受控军。任一受控军实际仍在 Combat或 successor接战继续由 battle owner接管。主军移动目标2618不是抵达：需新快照显示主军与当前J在同一实际省；若J已移动，以新roster的真实地点处理，不把旧2618或旧军ID当战后事实。现 helper 自动记录到达而其调用 `stop_on_arrival=False`，因此会合必须由 Root 独立消费实际快照确认，不能宣称已有自动 arrival-stop。
+
+3. **合军一次并独立读回。** `ck3_get_capabilities()` 的当前 `action_steps` 发布同省可合军 literal；沿用 `ck3_execute_step(step="merge-armies-D-with-S", expected_revision=R)`，D/S均取实际roster与本帧公布的方向。没有单独 `ck3_merge_armies` 或 readonly final CanMerge工具，最终原生 validator 在现动作执行链中生效。现任控制、combat/retreat及同省合法性按当前原生结果处理。动作内 postcondition 与新 `ck3_take_snapshot` 独立读回分开：核对D实际存续、S不再存在、完整ID变化；再对实际存续名单读 `ck3_query_army_strengths(army_ids=[...], expected_revision=R)`。需要决定将领时再复用 `ck3_query_commander_candidates_v1(subject_army_id=D, expected_revision=R)`。不把两军历史人数相加写成合军后的战斗兵力。
+
+4. **同一新帧选取2640物理任务。** 优先消费该 snapshot已发布的2640 rich objective；缺少完整行时才调一次 `ck3_query_war_occupation_targets_v1(war_id=W, expected_revision=R)`，W取目前仍实际发布2640的 active player war（129/50331736是历史候选），返回中筛 `rows[province_id=2640]`。该工具没有province_id参数。保留实际holding/合法holder、occupation、occupier/war side、`siege_observable`、FullSiegeID、besieging full ArmyID 和 `player_army_besieging`。同一物理围城跨战争重复行只计一次，各WarID的side counts与战分保持独立。
+
+5. **沿用2640并执行现有动作。** 当前敌方围城存在则保留relief任务；当前敌方占领则保留recapture任务，两项可以同时成立。已确认敌占时现 helper选 `--occupation-role recapture` 并同时保留当前敌围城事实；未敌占且敌围城仍在时选 `relief`。自己已经在围城的 active_siege 是当前收复过程，不能重新标成敌方围城。对合军后的实际D，复用当前能力公布的 `move-army-D-to-2640` 和 fresh `expected_revision`；已有相同实际 committed route则继续它。若还需接触上下文，重取现 projected-contact角色，不沿用v43敌占前的defender角色，也不等待MC或尚未发布的sentinel。
+
+6. **继续现 helper并验证结果。** 首都行进/收复沿用其实际军ID、`--target-province 2640`、`--occupation-province 2640`、当前WarIDs和选定relief/recapture角色；每轮仍是已实测的 `life-advance-one-day`、fresh观察和normal SAVE。会合途中可以分别传真实meeting target与`--occupation-province 2640`，两者不必同省。任一受控军新接战保留既有 any-owned-combat handback交 battle owner。对曾观测的敌围城，后态 `siege_observable=true, active_siege=null`才证明当前已清；旧SiegeID变成另一active ID仍有围城。对同holding曾实际敌占的baseline，后态occupation真实解除才记收复；ETA、到达、动作ACK、空路径、玩家单场获胜均不替代该物理后态。最后保留实际normal checkpoint date/history/hash，观察或动作同日不增加保存日信用。
+
+原生依据直接沿用已闭合树：`0x247CCE0`写`Province+0x73C`占领者，`0x247D1EB`释放占领；`0x2521665`清`Province+0x788` SiegeID且另有无合格besieger的清理路径，故clear不是capture；`0x19F1590`没有当前Siege时只在既有early-refresh条件满足后触发目标重评，不能预测敌军必然离开capital。终态、当前受控名单与同帧军队合法性均复用已有native/read-only/typed路径，不新增入口或执行门禁。若实际所有active war已结束而2640行不再发布，缺行保持未观测，先复用另一实际发布行；确需补口时沿用既有`ReadObjectiveProvince` current-capital发布入口，而非把缺行当无围城。按实际需要才查询各WarID终结选项，单场胜利不是战争胜利。
+
+本包三个文件工作线并行完成；新增游戏日、动作、SDK、窗口、fixture、测试、full build、共享源码与Git操作均为0。日/周字段为2026-10-04／2026-W40，当前 battle和接续结果由 Root唯一执行及报告归属；不重复认领Root的+1日。未闭合原生分支和具体施工入口仍在既有v46账本，未为本recipe重做逆向。
+
+Sealed prepared-recipe receipt: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-counter-campaign/post-battle-campaign/ROOT-DELIVERY.json`; its report fields remain research/prepared, with no new actual terminal, meeting, merge, relief, recapture or campaign-loop credit.

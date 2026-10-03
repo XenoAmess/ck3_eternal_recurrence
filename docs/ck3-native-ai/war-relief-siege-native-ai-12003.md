@@ -131,3 +131,19 @@ Existing frozen consumer: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/
 ## same-frame enemy capital siege
 
 At raw53241096, capital2640 is unoccupied with observable enemy Siege318767158 still active: public besieger473/player=false, current work60892200of62500000 Q100000, remaining1607800, progress97427/100000=97.427%, ETA10 days, strength2508, fort7/garrison1350, breach2, CanStart/CanStop=false and assault inactive. This is continuing siege observation, not capital relief or a battle result. Selected war rows repeat the same FullSiegeID, not multiple siege strengths. New CUnit167772189 is present in the final body at Province2618, typed state `regular`/1, controllable=True, route status `complete_empty`/0, target `None`, in_combat=False, retreating=False. Its snapshot soldiers field is `None`. Duplicate allied-war rows are the same CUnit, not additional armies.
+
+### v47 双向真实会合预览与主军返2618接续（0新日）
+
+Root明确选择主军赴小军驻省2618会合，驻2618军队无需新移动。下一步仅一次主军move→独立实际route→正常SAVE，然后用外部counter helper最多10个显式单日循环。route endpoint为2618，独立occupation watch仍为首都2640；relief角色遇首次真实首都失陷保存交接，之后Root可依据原生counter树显式选择recapture，不需重新请求战争授权。任意当前己方CUnit实际接战交接真实subject到既有battle helper。
+
+随后Root SDK45817已全部GREEN并正常关闭：004仅一次`move-army-83886367-to-2618`，005独立war ownroute，007正确完整6-hostile route-contact-horizon，008独立最终快照，009正常SAVE。最终同raw53241096/native22/public3：83886367仍在8754/moving7，target2618真实可见，complete_nonempty/sourcecount3且route`[2632,2617,2618]`；167772189在2618/regular1/空route，无combat/retreat。本次形成有限production-live loop，仅限选择既有原生真实候选→一次实际移动→独立准确目标/路线→正常保存；到达、会合、合并、解围和胜利尚无信用。
+
+新正常pair：h5567/raw53241096/91826221B/SHA`3c7de8467e1d058893a3c5e8a7d4844b835182fdb4b95576c078e43f5ffe5d3a`。native仍g51/1c67491f，Python仅g52/892378b5，无新native重建。Root wrapper58000已开始最多10个显式24h观察循环，route endpoint2618、occupation watch2640、relief角色；此receipt未读运行中output，不能预记10天完成。当前日账仍4032/恢复879/Oct3冻结777/Oct4实际7。
+
+### v47 会合行军期间另一玩家军队接战：有限stop/control/save交接已实测
+
+Root选主军83886367赴2618，watch capital2640、occupation-role=relief。实际八日192h后正常SAVE h5597/raw53241288/native55/pub33，91928475B；SHA-256 `2c56808c20900a845e54e61a82185c0f680c18ee08352dd7163f4b0c50d8c667`。该批8 calendar/8 bounded/8 whole，累计4040；预算10的另2日未执行。
+
+资本rich row与SAVE同实际末帧：P2640 occupation observable true/is_occupiedfalse、occupiernull；siege observable true/active318767158/besiegingCUnit473/playerfalse。work62303400/62500000、remaining196600、progress99685/Q100000（99.685%）/ETA2，fort7/garrison1350/besieging_strength2486/breach2。两war rows重复该Siege，不合成两个围城或翻倍兵力。`is_occupied=false`不能构成relief；enemySiege仍active，尚无解除、收复或warwin。
+
+实物入口：`military-ooda-continuation/rendezvous-v47/eight-day-contact-consumption/ROOT-DELIVERY.json`、已owned `TERMINAL-COMPACT-AUTO.json`、同目录 `ACTUAL-BATTLE-CONTROL-SCOPE-COMPACT.json`；报告字段 `rendezvous-v47/eight-day-contact-report/ROOT-DAY-WEEK-FIELDS.json`。旧44 calendar/43 whole且day44 occupationRED与旧subset horizonRED保留。非战领域门禁0；本lane无SDK/window/shared/source/Git/tests。

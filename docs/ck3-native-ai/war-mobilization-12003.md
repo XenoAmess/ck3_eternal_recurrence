@@ -93,3 +93,41 @@ flowchart TD
 3. 集结点CRUD、当地集结/仅MAA变体、额外兵力补集结与统帅候选/任命尚未发布同一MCP。没有当前故障或独立价值证据时不作为本场前置blocker；必要时冻结其原生GUI caller/validator/command并补只读候选、最终合法性及typed动作。
 
 实现和证据采用ROOT统一报告入口；本工作包的progress-fields.json用于合并当天/当周报告，没有并行编辑共享日报或周报。
+
+## 2026-10-04 v47 post-fix controlled-rendezvous candidate publication
+
+The sealed Root post-fix capability receipt reports pure-Python source **g52/892378**, actual SDK83853 closed/exit0 and actionSteps **100→107 (+7)**. Cross-army candidates main **83886367→2618** and J **167772189→8754** each publish move/preview=true/true. The actual matrix preserves its asymmetric entries:
+
+| Target province | Main83886367 move / preview | J167772189 move / preview |
+|---|---|---|
+| 2618 | true / true | true / false |
+| 8754 | false / true | true / true |
+
+Readiness is **production-live primitive: controlled-rendezvous candidate publication**. This receipt establishes advertised candidates only; it adds no executed movement, arrival, meeting, merge into the main army or victory. Preview and route outcomes remain their military owner's separate evidence. Historical Root cumulative saved days are **4032**, with **0 new saved days** from this publication.
+
+Sealed source: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-goal-capture-execution/army-coordination-v47/actual-postfix-capabilities-01/report-fields/ROOT-DELIVERY.json` and its `TOPIC-APPEND.md` / `DAY-WEEK-FIELDS.md`. This append reuses that normalized report; it does not reread cap, preview or horizon raw captures.
+
+## 2026-10-04：汇合路线与实际战斗分开验证（battle day04）
+
+协调者提供的当前真实帧为 raw53241360，累计保存游戏日4043：主军 public CUnit83886367 在2632，未参战，沿 `[2617,2618]` 移动至 J；J167772189 已属于 Combat1543503874 的 side1。第二次合军尚未执行，主军尚未证明加入该战斗，战斗终态、胜利及收复均未取得。本追加只复用已闭合的合军原生树、RVAs及来源账本，不重新读取 raw、源码、ABI 或重跑测试；新增游戏日、物质收益与动作信用均为0。
+
+既有 `merge-armies-D-with-S` 保留 D、消耗 S；Python 当前公告及执行投影要求同一正省份、两军可控且无已知 combat/retreat，再经过完整原生 command validator。已有 native submission 不绕过这些限制。主军到达 J 所在省不等于合军许可，也不等于实际加入 Combat1543503874；须由 fresh paused roster、实际接触及 combat membership 独立读回。如果出现 J 正撤退而主军仍在战斗，下一次查询 subject 应从当前真实 ownedArmy 状态中选取正在参战的军队，不能沿用旧 J 状态或随机选一个 WarID 来归因。
+
+```mermaid
+flowchart TD
+  M["Root actual day04: main83886367@2632 非战斗; route2617→2618"] --> A["Root: fresh arrival / roster / actual contact"]
+  J["Root actual: J167772189 in Combat1543503874 side1"] --> A
+  A -.-> B["未取得: main实际加入同Combat的membership"]
+  B -.-> T["未取得: 真实terminal结果与当前ownedArmy后态"]
+  A --> S["subject依当前ownedArmy状态选取; 当前参战者用于contact/membership"]
+  T --> R["fresh own roster / strength / current province / combat / retreat"]
+  R --> E{"真实同省、可控、两军非combat且非retreat？"}
+  E -->|是| V["现有merge-armies-D-with-S + 完整native validator"]
+  E -->|否| O["沿当前真实战斗/撤退状态继续观察"]
+  V -.-> P["未取得: independent paused D保留 / S消失 / 准确军集合减S"]
+  T -.-> C["未取得: 玩家胜利 / 战争归属结果 / capture"]
+```
+
+真实 terminal 出现后，先读取当前 owned roster、兵力和省份，确认拟合军双方均非战斗、非撤退，并使用 fresh public revision 与当帧公告的 literal。若拟保留主军仍实际存在且符合条件，既有配方是 `ck3_execute_step(step="merge-armies-83886367-with-167772189", expected_revision=R)`；若军队后态发生变化，则按真实完整 CUnit ID 重选，不能将该模板当作已合法命令。只有新暂停帧证明 D 同 owner/省份保留、S 消失、可控集合准确减去 S，才可记 `merge_applied`。本段不新增 stationary 门槛、战争结果声明或 split/attach/stop-gather 研究；canonical 合并、实际操作及提交推送由 Root 和唯一文档总包 owner 完成。
+
+Sealed day04 coordination receipt: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-goal-capture-execution/army-coordination-v47/battle-followup-day04/native-topic/ROOT-DELIVERY.json`; current metadata and pending merge/join/terminal boundaries remain those of the owner-provided frame.

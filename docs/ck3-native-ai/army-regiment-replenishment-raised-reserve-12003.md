@@ -224,3 +224,20 @@ Runtime **v46** fresh query **004**, sequence **3**, accepted/status **available
 Old public CUnit **83886367** / CArmy **50331794** was retained at **8754**, state **7 / moving**, not in combat, with eight remaining hops **[2613,8752,2628,2626,2627,2633,2634,2640]**, **2259/2460 soldiers**, **39 regiments**, supply **120/300**, current attrition **0**, and monthly supply change **0**. The result was **GREEN**, with **none failed**. Normal SAVE **006** retained the same **Robert 29829 / episode2bc**, **h5534 / raw date53241096**, **91825231 bytes**, SHA-256 **22e9028da99a4f77ba5b5485b912065f38aa9761fc9100a1adf63d4dd238f028**. Root reported SDK **99980**, normal closed exit **0 / GREEN**.
 
 The bounded sequence is now a **production-live loop**: one default-raise action created the new zero-strength ID, one initial normal day exposed the actual 7-day countdown, Root advanced seven normal days, and the fresh frame confirmed positive soldiers, gathering completion, and the retained old army. Initial raise was **raw date53240904 / h5496**; the countdown phase was **raw date53240928 / h5509**; completion at **53241096** is **8 game days from raise**. Credit applies only to this raise/gather loop; full war and autoplay remain incomplete. Root owns the Oct4 seven-day advance and sole consumption of the three current files. This documentation lane used only supplied facts, with no artifact/source reread, SDK, advance, test, build, shared edit, Git, or window use.
+
+### 2026-10-04 v47：合并后保留军的实际兵力与现任指挥官
+
+这次独立消费只读取 `actual-merge-local-reinforcements-01/007-ck3_query_army_strengths.json` 和 `009-ck3_query_army_commander_candidates_v1.json`，各一次。两条查询同为 public revision `3` / native revision `13` / snapshot `native:13`，日期 raw `53241096`；007 query sequence 为 `3`，009 为 `2`。玩家为 Robert `29829`。Root 提供的运行时标识为 `v47 / g51 / source1c / R24`，游戏 PID `32372`；SDK `37552` 正常关闭、exit `0`、批次全部 GREEN。运行时和关闭信息来自 Root 的实际报告，本消费者没有读取环境、result、checkpoint 或合并成员查询。
+
+| 公开 CUnit / 原生 CArmy | 实际当前 / 最大兵力 | 团数 | 实际补给 / 上限 | 月度补给变化 | 当前损耗 | 集结剩余天数 / 状态 / ready |
+| --- | --- | --- | --- | --- | --- | --- |
+| `167772189 / 83886088`，保留军 D | `1770 / 1770` | `7` | `99.999 / 100` | `+20` | `0` | `null / not_gathering / true` |
+| `83886367 / 50331794`，原军 | `2259 / 2460` | `39` | `120 / 300` | `0` | `0` | `null / not_gathering / true` |
+
+D 的兵力 `1770` 是 007 当前 native getter 的结果，可以计入实际兵力；此前雇佣军 `1647` 和地方征召军 `123` 的相加不作为本次信用依据。D 的补给原值为 `9999900`、scale `100000`，必须保留为 `99.999`；上限原值 `10000000`，月度变化原值 `2000000`，当前损耗原值 `0`，同用 scale `100000`。AI base power 原值为 `4840400000` / scale `100000`；它不是胜率。
+
+009 的 `current_commander` 独立对象为 `status=available, character_id=34867, unavailable_reason=null`。同一原生 CArmy 的 `current_movement_speed.current_commander_character_id` 也为 `34867`，该上下文可观察；D 位于 `2618`，状态 `regular / 1`，路径为空，未战斗、未撤退。当前指挥官对应候选行可观察，`available=true`、`final_eligibility_observable=true`、`can_assign=false`；这不会改变其已经被选中的当前事实。该 false 的原因没有在本包中读取，不补造解释。已读 quality 为 native AI base quality `28`、generic advantage points `28`、siege phase time modifier raw `-10000`；本包不另推该 raw 的缩放。
+
+本次两条查询各自达到 `production-live primitive`。合并动作和成员关系由 `war_goal` 的唯一消费者记录；完整合并闭环须由 Root 将它的动作／成员证据与本包的独立实际兵力、指挥官观测结合。补给加权截断及指挥官继承的原生数学由军队供给工作包维护，本包只向它提供这份同帧 decoded summary，不让它二读 raw，也不从公共总人数强推未发布的原生权重。未宣称战斗、抵达目标或完整战争完成。
+
+外部 receipt：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-reinforcement-raise/runtime-v47-postmerge-strength-commander-consumption/ROOT-DELIVERY.json`，SHA-256 `08f9260d550af7bd64cd6a064dfd099eb204feb08d653e13530f1d5a031da103`。输入完整 SHA、两个 query 的参数和当前指挥官对象保留在 receipt 及同目录 raw cache；Oct4／2026-W40 报告片段在 `report-lane/`。本消费者 SDK、推进、重复查询、测试、Git、共享写入、窗口和构建均为 `0`。
