@@ -110,4 +110,18 @@ R0002 最终 state/live 的1950文件另保存于 `aub-empty-agent-02/r0002-clos
 
 R0007实读原生ID差异已回链原版bookmark/history来源：罗贝尔的script/history ID为1128，native31254是当次runtime CharacterID；旧29829不属于可跨build固定身份。两个prepared fixture content无29829硬编码，错误在旧执行plan/reader helper。永久harness新增显式 `kind=episode_identity_anchor`：首次actual paused/alive one-life snapshot→现成campaign-root(expected同revision)→第二snapshot完整帧一致后，才保存唯一episode/PID/generation/实际角色锚点；禁止重绑。事件ROOT及settle来源引用该episode，死亡后不会改成继承人。仅显式 `expect` 的 `{"$ref":...}`启用动态比较，旧literal行为保持，没有引入不存在的 `$before` 语法。
 
-最小两文件补丁SHA `33759c8cf69200df404c81c733bb0a2eda4206cf566acb87f8dc05f6966c387c`，四项新聚焦身份检查PASS，覆盖nativeID变化、错误ROOT/stale revision、PID/generation连续性、死亡后原episode及literal兼容。初稿测试patch换行导致apply-check RED保留，LF最终包装check PASS，检查未重跑。外置v8 SHA `5e3bfb5347dacf8285cee2349e2c3655e756075562ab53c57e5b55cdcdd10f5f`来自同字节永久harness；旧v7/10计划及完成native源/DLL均保持原样。新writer/noheir计划位于 `C:/workspace/ck3-upgrade-20261004/courtier-runtime-identity-agent-01/execution-plans-runtime-v8-01/`，尚未执行，实际窗口必须逐phase读回后才提交下一输入。
+最小两文件补丁SHA `33759c8cf69200df404c81c733bb0a2eda4206cf566acb87f8dc05f6966c387c`，四项新聚焦身份检查PASS，覆盖nativeID变化、错误ROOT/stale revision、PID/generation连续性、死亡后原episode及literal兼容。初稿测试patch换行导致apply-check RED保留，LF最终包装check PASS，检查未重跑。外置v8 SHA `5e3bfb5347dacf8285cee2349e2c3655e756075562ab53c57e5b55cdcdd10f5f`来自同字节永久harness；旧v7/10计划及完成native源/DLL均保持原样。新writer/noheir计划位于 `C:/workspace/ck3-upgrade-20261004/courtier-runtime-identity-agent-01/execution-plans-runtime-v8-01/`，采用时尚未执行，实际窗口必须逐phase读回后才提交下一输入。
+
+## 主版 R0006：真实契约入口，推进接口拒绝
+
+10-04 01:12–01:26（Asia/Shanghai）运行 `4-8e1c2f1861--eternal-recurrence--R0006`，execution `baaf6cda-58a5-4adb-9a8a-f7c374d2331c`，clean HEAD `21bfb186d381ae3eba63dbf8b6594508cd00f929`。新 state 在 `C:/workspace/ck3-upgrade-20261004/courtier-runtime-identity-agent-01/fresh-persistence-states-01/main-writer/state`；其 tutorial 初始58bytes、SHA `4e009f2b0764d78793a89e109fc5bc019b6c1e3f65c8553bd085a0af483217aa`，没有纪录位。复用完成的 f4 原生组合与上述 v8，未改旧输入。R0004/R0005 的启动配置分别因规则意图补全、screen task 重新注册要求在启动前作废；两次均无游戏，原配置与 CAS 拒绝保留。
+
+当次新图直接审阅 nonce `1facf82b3c16`、UTC17:11:50 和同图 Steam“离线模式”；PNG SHA `807a748d8c80ad36a16fe823b35b83144b2008518b37fd48fac67ad7ab9a24be`。只证明 challenge 像素与离线标签，不外推冻结背景实时性。CK3 PID1208/creation1791047533.680012。三规则 `xar_enabled=xar_on`、`xar_inheritance=xar_inherit_100`、`xar_score_basis=xar_score_growth` 的冻结意图 SHA `402a1d9ea14f55a94325437e6b516d1b4dca4acbba6c5d16bf892e7609f55a74`，实际89对应用读回及规则窗口关闭通过。
+
+17:16:38 UTC，anchor 真实证明 snapshot `native:3`/public4/native3/date53144328 与同帧 campaign-root，实际角色及 episode=31254、episode run `native-31254-719c9d611aa3`、PID1208/generation1。随后 Root 按单 phase 实际派发：`xar.0002` instance1 的契约接受→`xar.0010` instance2 首世开始→`xar.0004` instance3 的不领祝福。每次 typed definition、ROOT、同 instance/revision、shown/enabled 均通过；最后 rendered_index3 对应 native_option_index4，所以提交 authored option5，独立后态证明窗口关闭。没有按预览序号猜选项。
+
+第四 phase 调用 `ck3_execute_step(step=life-advance-one-day)`，冻结 f4 Python runtime 没有该 composite，抛 `UnsupportedStepError`，在原生命令派发前拒绝；计划接口核对漏项已保留，不改写 GREEN。最终快照 date53144328/paused/无事件/原 episode/非 terminal。**死亡、结算、真实存档、tutorial 持久化和冷 reader 均未执行，七 cell 仍0/7。** 当前 master 中较新的 composite 源不能当作该冻结 runtime 已有能力。
+
+[原报告](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--eternal-recurrence--R0006/native-report.json) SHA `6268aa22a8b5be3824b4e94b0d925e5a90c7c82236f9eb1036166a8d42d2fe34`，实际 RED、cleanup_ok=true、managed thread finished。17:26:56 UTC关闭后 CK3/harness均消失，keeper failure=null/thread退出，最后1811，CAS1813释放；这是 containment，未证明 normal quit/flush。10条静态 unused variable（五种各两次）保留，不能称零日志。下一尝试先核实际注册接口及所有后续 phase，再用新纯输入 profile；不重发旧失败 phase。
+
+另已采用[独立夹具开局 policy](ck3-native-ai/frontend-fixture-start-policy-2026-10-04.md)，21项新边界检查通过，实机仍 NOT_RUN；不改变普通罗贝尔入口，也不把业务角色绑定写成产品通过。

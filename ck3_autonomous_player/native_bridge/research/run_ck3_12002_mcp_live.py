@@ -112,13 +112,24 @@ def native_server(args: argparse.Namespace) -> None:
             wire.write("dll-to-python", frame)
             super()._ingest(frame)
 
+    fixture_policy = None
+    if args.frontend_fixture_start_policy is not None:
+        from xar_autoplayer.bridge.frontend_fixture_start_contract import load_bound_fixture_start_policy
+        fixture_policy, fixture_policy_bytes = load_bound_fixture_start_policy(
+            args.frontend_fixture_start_policy, args.state_dir / "profile")
+    driver_options = {"episode_projection": "native_campaign"} if fixture_policy is not None else {}
     driver = RecordingDriver(
         args.bridge_pipe, endpoint=RecordingEndpoint(args.bridge_pipe),
         state_dir=args.state_dir, save_dir=args.state_dir / "profile/save games",
         command_timeout_seconds=args.command_timeout,
-        checkpoint_timeout_seconds=args.command_timeout,
+        checkpoint_timeout_seconds=args.command_timeout, **driver_options,
     )
-    server = create_server(driver)
+    if fixture_policy is not None:
+        driver.frontend_fixture_start_policy_binding = {"policy_sha256": hashlib.sha256(fixture_policy_bytes).hexdigest(),
+            "preparation_sha256": fixture_policy["preparation"]["sha256"]}
+        server = create_server(driver, profile_dir=args.state_dir / "profile")
+    else:
+        server = create_server(driver)
 
     @server.tool()
     def ck3_migration_pipe_diagnostics() -> dict[str, object]:
@@ -867,6 +878,110 @@ async def execute_frontend_rules_plan(client: PlanClient, plan: dict[str, object
 
 
 
+async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str, object],
+        submission: dict[str, object], *, report: dict[str, object], write: object,
+        timeout: float, managed_done: threading.Event | None = None,
+        poll_interval: float = 0.05) -> dict[str, object]:
+    from xar_autoplayer.bridge.frontend_fixture_start_contract import (
+        fixture_business_context_binding, require_fixture_start_submission)
+    submission = require_fixture_start_submission(submission)
+    state = {"status": "WAITING_FOR_ACTUAL_BUSINESS_CONTEXT", "observations": [],
+        "fixture_target_identity_proven": False, "product_acceptance_proven": False,
+        "start_resubmitted": False, "episode_projection": "native_campaign"}
+    report["frontend_fixture_business_context"] = state
+    write()
+    baseline = None
+    deadline = time.monotonic() + timeout
+    try:
+        while True:
+            if managed_done is not None and managed_done.is_set():
+                raise RuntimeError("managed session ended before fixture business binding")
+            snapshot = await client.fresh()
+            root, binding = None, None
+            if snapshot.get("map_ready") is True and snapshot.get("paused") is True:
+                root = await client.call("ck3_query_campaign_root_context_v1", {"expected_revision": snapshot["revision"]})
+                after = await client.fresh()
+                # Native query already binds its own before/after frame; an unrelated
+                # publication after its return is observed again instead of credited.
+                if root.get("queried_snapshot_id") == after.get("snapshot_id") and root.get("queried_revision") == after.get("revision"):
+                    binding = fixture_business_context_binding(after, root, policy, submission)
+                snapshot = after
+            logs = await client.call("ck3_query_engine_log_literals_v1", {"log_name": "debug.log",
+                "literals": policy["required_log_markers"] + policy["forbidden_log_markers"], "sample_limit": 1})
+            counts = fixture_qualification_counts(logs, policy)
+            row = {"snapshot": snapshot, "campaign_root": root, "binding": binding, "qualification": logs}
+            state["observations"].append(row)
+            if any(counts[key] for key in policy["forbidden_log_markers"]):
+                raise RuntimeError("actual fixture qualification emitted a forbidden marker")
+            qualified = all(counts[key] == 1 for key in policy["required_log_markers"])
+            if any(counts[key] > 1 for key in policy["required_log_markers"]):
+                raise RuntimeError("fixture initialization was observed more than once")
+            if binding is not None and qualified:
+                stable = {key: value for key, value in binding.items() if key != "pump_epoch"}
+                if baseline is not None and baseline[0] == stable and binding["pump_epoch"] > baseline[1]:
+                    state.update(status="ACTUAL_FIXTURE_QUALIFIED_BUSINESS_CONTEXT_BOUND", binding=binding,
+                        actual_current_actor_bound=True, qualification_observed=True, finished_at=now())
+                    write()
+                    return state
+                baseline = (stable, binding["pump_epoch"])
+            else:
+                baseline = None
+            write()
+            if time.monotonic() >= deadline:
+                raise TimeoutError("actual qualified fixture government/tier/player did not stabilize before deadline")
+            await asyncio.sleep(poll_interval)
+    except BaseException as error:
+        state.update(status="FAILED_AFTER_SINGLE_START_NO_RETRY", error=f"{type(error).__name__}: {error}", finished_at=now())
+        write()
+        raise
+
+
+def fixture_qualification_counts(value: object, policy: dict[str, object]) -> dict[str, int]:
+    requested = policy["required_log_markers"] + policy["forbidden_log_markers"]
+    if not isinstance(value, dict) or value.get("schema") != "xar.ck3.engine-log-literals/v1" or value.get("log_name") != "debug.log":
+        raise RuntimeError("fixture qualification is not the actual server-bound fixed log query")
+    if value.get("exists") is False and value.get("matches") == []:
+        return {key: 0 for key in requested}
+    if value.get("exists") is not True or value.get("read_only") is not True or value.get("case_sensitive") is not True:
+        raise RuntimeError("fixture qualification query is malformed")
+    rows = value.get("matches")
+    if not isinstance(rows, list) or [row.get("literal") for row in rows if isinstance(row, dict)] != requested or any(
+            not isinstance(row, dict) or type(row.get("line_count")) is not int or row["line_count"] < 0 for row in rows):
+        raise RuntimeError("fixture qualification counts do not match the exact requested literals")
+    return {row["literal"]: row["line_count"] for row in rows}
+
+
+async def submit_fixture_robert_once(client: PlanClient, policy: dict[str, object], *,
+        report: dict[str, object], write: object) -> dict[str, object]:
+    if "frontend_fixture_start_submission" in report:
+        raise RuntimeError("fixture Start already attempted; no request may be replayed")
+    required = {"ck3_submit_frontend_fixture_robert_start_v1", "ck3_take_snapshot",
+                "ck3_query_campaign_root_context_v1", "ck3_query_engine_log_literals_v1"}
+    if not required <= set(client.tools):
+        raise RuntimeError("fixture startup requires its actual typed submission and read-only query surface")
+    state = {"status": "REQUEST_NOT_SENT", "acknowledged": False, "retry_allowed": False}
+    report["frontend_fixture_start_submission"] = state
+    write()
+    try:
+        before = await client.call("ck3_query_engine_log_literals_v1", {"log_name": "debug.log",
+            "literals": policy["required_log_markers"] + policy["forbidden_log_markers"], "sample_limit": 1})
+        state["before_qualification"] = before
+        if any(fixture_qualification_counts(before, policy).values()):
+            raise RuntimeError("fixture qualification was already present before Start")
+        state.update(status="REQUEST_WRITTEN_BEFORE_SUBMISSION", requested_at=now())
+        write()
+        submission = await client.call("ck3_submit_frontend_fixture_robert_start_v1")
+        from xar_autoplayer.bridge.frontend_fixture_start_contract import require_fixture_start_submission
+        submission = require_fixture_start_submission(submission)
+        state.update(status="SINGLE_START_ACKNOWLEDGED_POST_STATE_PENDING", acknowledged=True, result=submission)
+        write()
+        return submission
+    except BaseException as error:
+        state.update(status="FAILED_NO_START_RETRY", error=f"{type(error).__name__}: {error}", finished_at=now())
+        write()
+        raise
+
+
 def require_verified_bookmarks_picker(tree: object) -> dict[str, object]:
     """Admit only a complete native tree rooted at the ordinary bookmark picker.
 
@@ -1072,6 +1187,20 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
             "intent": frontend_rules_plan, "source_game_state_claimed": False}
         write()
 
+    frontend_fixture_policy = None
+    if args.frontend_fixture_start_policy is not None:
+        clean_imports(args.agent_source_root)
+        from xar_autoplayer.bridge.frontend_fixture_start_contract import load_bound_fixture_start_policy
+        frontend_fixture_policy, policy_bytes = load_bound_fixture_start_policy(
+            args.frontend_fixture_start_policy, args.state_dir / "profile")
+        policy_snapshot = args.output.with_suffix(".frontend-fixture-start-policy.json")
+        with policy_snapshot.open("xb") as stream:
+            stream.write(policy_bytes)
+        report["frontend_fixture_start_policy_input"] = {"source_path": str(args.frontend_fixture_start_policy.resolve()),
+            "snapshot_path": str(policy_snapshot), "sha256": hashlib.sha256(policy_bytes).hexdigest(),
+            "policy": frontend_fixture_policy, "episode_projection": "native_campaign", "product_acceptance_proven": False}
+        write()
+
     supervisor: threading.Thread | None = None
     if not args.sdk_smoke_test:
         clean_imports(args.agent_source_root)
@@ -1117,6 +1246,9 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
         child_args.append("--fixture-server")
     else:
         child_args += ["--agent-source-root", str(args.agent_source_root), "--state-dir", str(args.state_dir)]
+    if frontend_fixture_policy is not None:
+        child_args += ["--frontend-fixture-start-policy", str(policy_snapshot),
+                       "--frontend-robert-bootstrap", "--fixture-profile"]
     parameters = StdioServerParameters(command=sys.executable, args=child_args, env={"PYTHONUTF8": "1"})
     client: PlanClient | None = None
     try:
@@ -1223,14 +1355,22 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                                     post_rules_tree=entry_tree, post_rules_proof=entry_proof,
                                     post_rules_picker_proof=require_verified_bookmarks_picker(entry_tree))
                                 write()
-                            started = await client.call("ck3_activate_frontend_start_1066_bookmark_character_v1",
-                                {"character_name_key": "bookmark_rags_to_riches_duke_robert"})
-                            report["frontend_bootstrap"]["start_robert"] = started
-                            write()
-                            if not isinstance(started, dict) or started.get("status") != "verified":
-                                raise RuntimeError("native stock Robert Start did not independently verify the map")
-                            report["frontend_bootstrap"]["status"] = "NATIVE_START_VERIFIED_MAP_READINESS_PENDING"
-                            write()
+                            if frontend_fixture_policy is not None:
+                                started = await submit_fixture_robert_once(client, frontend_fixture_policy, report=report, write=write)
+                                await wait_for_fixture_business_context(client, frontend_fixture_policy, started,
+                                    report=report, write=write, timeout=args.readiness_timeout,
+                                    managed_done=done if supervisor is not None else None, poll_interval=args.poll_interval)
+                                report["frontend_bootstrap"]["status"] = "SINGLE_FIXTURE_START_ACTUAL_BUSINESS_CONTEXT_BOUND"
+                                write()
+                            else:
+                                started = await client.call("ck3_activate_frontend_start_1066_bookmark_character_v1",
+                                    {"character_name_key": "bookmark_rags_to_riches_duke_robert"})
+                                report["frontend_bootstrap"]["start_robert"] = started
+                                write()
+                                if not isinstance(started, dict) or started.get("status") != "verified":
+                                    raise RuntimeError("native stock Robert Start did not independently verify the map")
+                                report["frontend_bootstrap"]["status"] = "NATIVE_START_VERIFIED_MAP_READINESS_PENDING"
+                                write()
                         report["phase"] = "waiting-for-paused-map"
                         write()
                         deadline = time.monotonic() + args.readiness_timeout
@@ -1324,6 +1464,8 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--cold-start-checkpoint", action="store_true")
     result.add_argument("--frontend-robert-bootstrap", action="store_true",
                         help="Use existing typed native stock Robert start before map readiness; no desktop input")
+    result.add_argument("--frontend-fixture-start-policy", type=Path,
+                        help="Bound external cold fixture inputs; separate once-only Robert Start and actual native_campaign business context")
     result.add_argument("--frontend-rules-plan", type=Path,
                         help="Explicit typed rule targets before stock Robert Start; independently prove closure and actual applied values")
     result.add_argument("--frontend-rules-diagnostic", action="store_true",
@@ -1350,6 +1492,11 @@ def parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = parser().parse_args()
+    if args.frontend_fixture_start_policy is not None and (not args.frontend_robert_bootstrap
+            or not args.fixture_profile or args.frontend_diagnostic_only or args.frontend_rules_diagnostic
+            or args.frontend_rules_diagnostic_new_game or args.cold_start_checkpoint
+            or args.sdk_smoke_test or args.sdk_error_smoke_test):
+        raise SystemExit("--frontend-fixture-start-policy requires explicit --fixture-profile and --frontend-robert-bootstrap without diagnostic/checkpoint/SDK modes")
     if args.frontend_rules_plan is not None and (not args.frontend_robert_bootstrap
             or args.frontend_diagnostic_only or args.frontend_rules_diagnostic
             or args.frontend_rules_diagnostic_new_game or args.cold_start_checkpoint

@@ -6086,6 +6086,124 @@ class NativeHeadlessGameplayDriver:
                 f"native 1066 feudal selected-candidate query is malformed: {error}"
             ) from error
 
+    def submit_frontend_fixture_robert_start_v1(self) -> dict[str, object]:
+        """Explicit fixture mode: prove Robert before one Start; no ordinary post-policy."""
+        from .frontend_fixture_start_contract import (
+            ROBERT_KEY, require_fixture_frontend_build, require_fixture_selected_robert,
+            require_fixture_start_submission)
+        policy_binding = getattr(self, "frontend_fixture_start_policy_binding", None)
+        if self.episode_projection != "native_campaign" or not isinstance(policy_binding, dict) or (
+                not policy_binding.get("policy_sha256")) or self.state_dir is None:
+            raise BridgeUnavailableError("fixture Start requires a bound explicit policy and native_campaign projection")
+        binding = require_fixture_frontend_build(self.capabilities())
+        path = self.state_dir / "frontend-fixture-start-requests.jsonl"
+        def journal(phase: str, detail: dict[str, object]) -> None:
+            with path.open("a", encoding="utf-8") as stream:
+                stream.write(json.dumps({"phase": phase, "binding": binding, **detail}, ensure_ascii=False) + "\n")
+                stream.flush()
+                os.fsync(stream.fileno())
+        with self._driver_state_lock:
+            if getattr(self, "_frontend_fixture_start_claimed", False):
+                raise BridgeUnavailableError("fixture Start was already attempted; requests cannot be replayed")
+            with path.open("x", encoding="utf-8") as stream:
+                stream.write(json.dumps({"phase": "claimed-before-any-mutation", "binding": binding,
+                    "policy_binding": policy_binding}, ensure_ascii=False) + "\n")
+                stream.flush()
+                os.fsync(stream.fileno())
+            self._frontend_fixture_start_claimed = True
+        character_name_key = ROBERT_KEY
+        before = self.query_frontend_gui_route_v1()
+        if before.get("route") != "bookmarks":
+            raise BridgeUnavailableError(
+                "frontend bookmark-character start requires the bookmarks route"
+            )
+        model = self._execute_primitive_step(
+            PROBE_FRONTEND_BOOKMARK_MODEL_V1_STEP,
+            expected_revision=0,
+            required_capability=PROBE_FRONTEND_BOOKMARK_MODEL_V1_CAPABILITY,
+            allow_frontend_revision_zero=True,
+        )
+        keys = model.get("candidate_keys")
+        target_index = model.get("supported_1066_candidate_index")
+        selected_index = model.get("selected_character_index")
+        if not (
+            model.get("candidate_identity_ready") is True
+            and isinstance(keys, list)
+            and isinstance(target_index, int)
+            and not isinstance(target_index, bool)
+            and 0 <= target_index < len(keys)
+            and keys[target_index] == character_name_key
+            and isinstance(selected_index, int)
+            and not isinstance(selected_index, bool)
+            and -1 <= selected_index < len(keys)
+        ):
+            raise BridgeUnavailableError(
+                "exact-build bridge is not bound to the requested 1066 "
+                "bookmark character"
+            )
+        selection_acknowledgement: dict[str, object] | None = None
+        if require_fixture_frontend_build(self.capabilities()) != binding:
+            raise BridgeUnavailableError("fixture selection crossed the admitted frontend process")
+        if selected_index != target_index:
+            journal("before-native-selection-request", {"step": ACTIVATE_FRONTEND_SELECT_SUPPORTED_1066_CHARACTER_V1_STEP})
+            selection_acknowledgement = self._execute_primitive_step(
+                ACTIVATE_FRONTEND_SELECT_SUPPORTED_1066_CHARACTER_V1_STEP,
+                expected_revision=0,
+                required_capability=(
+                    ACTIVATE_FRONTEND_SELECT_SUPPORTED_1066_CHARACTER_V1_CAPABILITY
+                ),
+                allow_frontend_revision_zero=True,
+            )
+        # Native selection is one submission.  Its same-frame index is only
+        # diagnostic because the Bookmarks view may publish the new selected
+        # model on a later UI frame.  Poll the independent read-only probe;
+        # never repeat the setter merely because the first requery is early.
+        selection_deadline = (
+            time.monotonic()
+            + min(10.0, self.frontend_transition_timeout_seconds)
+        )
+        last_selection_error: BridgeUnavailableError | None = None
+        selected: dict[str, object] | None = None
+        while time.monotonic() < selection_deadline:
+            try:
+                selected = (
+                    self.query_frontend_selected_1066_feudal_candidate_v1(
+                        expected_character_name_key=character_name_key
+                    )
+                )
+            except BridgeUnavailableError as error:
+                last_selection_error = error
+            else:
+                break
+            remaining = selection_deadline - time.monotonic()
+            if remaining > 0:
+                time.sleep(min(0.1, remaining))
+        if selected is None:
+            raise BridgeUnavailableError(
+                "submitted 1066 bookmark selection did not publish the "
+                "requested native character before the transition deadline; "
+                f"last probe failed: {last_selection_error}"
+            )
+        selected = require_fixture_selected_robert(selected)
+        if self.query_frontend_gui_route_v1().get("route") != "bookmarks" or (
+                require_fixture_frontend_build(self.capabilities()) != binding):
+            raise BridgeUnavailableError("fixture Start lost its actual selected-bookmark process/route binding")
+        journal("before-native-start-request", {"step": ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_STEP,
+            "selected_candidate": selected, "retry_allowed": False})
+        acknowledgement = self._execute_primitive_step(
+            ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_STEP, expected_revision=0,
+            required_capability=ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_CAPABILITY,
+            allow_frontend_revision_zero=True)
+        result = require_fixture_start_submission({"schema": "ck3-frontend-fixture-robert-start-submission-v1",
+            "schema_version": 1, "accepted": True, "status": "acknowledged_verification_pending",
+            "requested_character_name_key": character_name_key, "pre_start_identity_proven": True,
+            "postcondition_verified": False, "fixture_target_identity_proven": False,
+            "binding": binding, "policy_binding": policy_binding, "before": before,
+            "selected_candidate": selected, "selection_acknowledgement": selection_acknowledgement,
+            "acknowledgement": acknowledgement, "uses_ocr": False, "uses_keyboard": False, "uses_mouse": False})
+        journal("native-start-acknowledged-post-state-pending", {"acknowledgement": acknowledgement})
+        return result
+
     def activate_frontend_start_1066_bookmark_character_v1(
         self,
         character_name_key: str,

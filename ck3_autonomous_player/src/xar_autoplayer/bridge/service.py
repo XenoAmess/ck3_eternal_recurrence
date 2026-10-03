@@ -11053,6 +11053,14 @@ class GameplayBridgeService:
             )
         return result
 
+    def submit_frontend_fixture_robert_start_v1(self) -> dict[str, object]:
+        """Submit the separately admitted fixture Start and retain verification pending."""
+        from .frontend_fixture_start_contract import require_fixture_start_submission
+        submit = getattr(self.driver, "submit_frontend_fixture_robert_start_v1", None)
+        if not callable(submit):
+            raise UnsupportedStepError("selected backend has no typed fixture Start submission")
+        return require_fixture_start_submission(submit())
+
     def activate_frontend_start_1066_bookmark_character_v1(
         self,
         character_name_key: str,
