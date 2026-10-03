@@ -1,4 +1,4 @@
-# 兼容接续：本机 `.3` 原生启动 R0002–R0004
+# 兼容接续：本机 `.3` 原生启动 R0002–R0005
 
 本包接续 [2026-10-03 接手记录](ck3-upgrade-resume-2026-10-03.md)，只记录真实准备与首次启动。主/白绮七 cell 仍为 `.3` 实机 **0/7**；AUB 没有到地图、政策菜单或自动建造循环。
 
@@ -69,3 +69,15 @@ R0002 最终 state/live 的1950文件另保存于 `aub-empty-agent-02/r0002-clos
 永久harness新增显式 `--frontend-rules-diagnostic-new-game`，仅与bootstrap+diagnostic-only+rules-diagnostic共用：从两次一致的真实主菜单调用一次已有typed NewGame，保全request-before-call；回调异常或未verified ACK均禁止重试；再等两次一致的Bookmarks tree，才打开/读取规则。默认rules诊断保持零NewGame；没有角色选择、Apply或Start。新单一聚焦测试覆盖默认零动作、显式一次动作及回调丢失不重试，CLI两路径与孤flag拒绝PASS，旧测试未重跑。外置v5 SHA `c78246a124b56188b45d898b791a5eeca6e5ea614fc9102ce252f3f02b985b72`，报告 `courtier-agent-02/frontend-v5-focused-validation-01/report.json`。下一新run才可验证该动作。
 
 前端接线 `6e11ba8dd` 的[官方CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37128219251)、规则读取 `57dee2e90` 的[官方CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37129633661)、一致等待 `2c28a7bec` 的[官方CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37131442194)实际均success，不能替代上面的实机边界。
+
+## R0005：NewGame完成，Bookmarks树触预算上限
+
+新 run **`4-8e1c2f1861--auto-upgrade-buildings--R0005`** 使用相同DLL、新v5以及独立profile06；preparation SHA `b281a9d1b383ad2ffd9edcd0a925e8bc85f2cd291de040ec1d696bc0cfc79e28`。R0004原state/live另保全3819文件，ZIP逐项读回SHA相同，ZIP SHA `d4d7e84d50817a2ed407ff2bbc34d8cb150d5e831d327c640cbb9e1776c0d9ad`，旧目录未删除。profile06仍仅从17+空1+85纯输入构造，未导入运行缓存。
+
+固定clean master `760ce9736c358b0d177f5e564680edf5f360af0c`；screen task a04。当次15:15:37 UTC直接读到nonce `d0fa8b132f12`和同图Steam“离线模式”，PNG SHA `30b84a833eaf7d1fbe82c3fd170a53b18a1effa6f8b4de942e4a9ae30dc53e4a`；仍无整幅冻结背景实时声明。实际CK3 PID18716/creation1791040556.1846728。
+
+两次一致主菜单证明后，真实 `ck3_activate_frontend_new_game_v1` 调用一次，独立route读回Bookmarks，`status=verified`，不是只记录ACK。随后actual `frontend_bookmarks` root当前可见，`game_rules_button`与`pick_any_character_button`可见且enabled；树触512节点硬上限，`truncated=true`。驱动保留截断结果并拒绝ready；最终在规则打开之前超时。故 **NewGame原语有本机实际信用**，规则打开/controller值/角色选择/Apply/Start/产品仍NOT_RUN。最终报告SHA `713a58a4e4cde9625157f372fb1380e436e37a21b5c475c5fa0ec2bc292f1b0e`。
+
+受管结束仍exit1/job1→0的containment，随后CK3零；keeper最后1747、failure=null/thread退出，15:26:06 CAS释放1748。下一候选核对原生树预算、Python上限、transport与栈占用，保留截断拒绝；这次512下界不证明总节点数。旧源/DLL/v5/R0005继续保留，不能在完成产物上修改预算。
+
+显式诊断提交 `760ce9736` 的[官方CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37132350327)已实际success，仍与本机上述原语结果分开。

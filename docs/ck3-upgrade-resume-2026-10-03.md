@@ -39,3 +39,5 @@
 R0003已实际续跑，但首个Bookmarks route是加载瞬态：随后树为 `_root_`/截断/不可见，下一路由不可用，原生规则打开命令未派发。新增[route/tree一致等待修复与证据](ck3-upgrade-native-startup-2026-10-03.md#r0003瞬态路由不能证明可操作窗口)，单一聚焦回归PASS，真实规则值仍 NOT_RUN。当次清理是现有 job containment；没有正常退出，不能用来证明教程落盘。CK3=0、keeper停止与CAS释放均已读回；新验证继续用新run及新userdir。
 
 [R0004](ck3-upgrade-native-startup-2026-10-03.md#r0004真实入口是主菜单)越过加载瞬态，实际稳定主菜单树完整且NewGame可用；规则诊断的零NewGame范围导致Bookmarks等待超时。hold四只读查询实际PASS，产品仍NOT_RUN。现增加独立显式诊断flag，下一run可按真实主菜单→一次NewGame→稳定Bookmarks→规则查询验证，角色选择/Apply/Start不在该范围。此前三接线提交的官方CI均success，详细链接见同一专题。
+
+[R0005](ck3-upgrade-native-startup-2026-10-03.md#r0005newgame完成bookmarks树触预算上限)实际完成一次typed NewGame并独立读回Bookmarks，但该scope超过512节点，驱动保留截断并在规则打开之前停止。新native组合将保留有界预算及拒绝语义，同时接规则选择/Apply后actual实例读回与局部产品窗口树；尚无规则或产品通过。显式诊断提交官方CI success，当前屏幕已释放/CK3零。
