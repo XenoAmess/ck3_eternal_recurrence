@@ -19,6 +19,7 @@
 - `mod_auto_upgrade_buildings/` — “自动升级建筑（XenoAmess维护版）”源码；维护版 Workshop item id：**3800124956**；上游 **3596580780** 仅作来源身份，禁止作为维护版发布目标；正式上传只使用 `build_auto_upgrade_buildings_release.py` 生成的 17 文件 staging，维护与验收见 `docs/auto-upgrade-buildings-*.md`
 - `mod_de_jure_conquest/` — “公国/王国/帝国法理征服（XenoAmess维护版）”；维护版 Workshop item id：**3812510217**；上游 **3600021457** 仅作来源，禁止作为发布目标；功能、适配、测试和发布记录在其 `docs/`；正式上传只用其 `tools/build_release.py` 生成的 16 文件 staging。
 - `mod_change_holding_types/` — “地产类型转换（XenoAmess维护版）”；维护版 Workshop item id：**3812510834**；上游 **3337428403** 仅作来源，禁止作为发布目标；功能、适配、测试和发布记录在其 `docs/`；正式上传只用其 `tools/build_release.py --release-localization` 生成的 17 文件 staging。
+- `mod_superman_qiang/` — 原创独立版“超人强：越超人越强”；Workshop item ID 待实际首次发布；规则、验收及发布记录在其 `docs/`。正式上传只用其 `tools/build_release.py` 生成的 22 文件 staging，角色经验与六项净属性修正由变量保存，生成文件只改生成器再运行。
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
 - `coat_of_arms_editer_of_ck3/` — 独立 Vue 3 家徽编辑器；正式站点由 GitHub Pages Actions 构建，禁止把 CK3、MCP 或 Java 后端变成线上运行依赖
@@ -129,6 +130,8 @@ py mod_de_jure_conquest/tools/build_release.py --check       # 法理征服维�
 py mod_de_jure_conquest/tools/build_release.py --release --output <new-output> # 正式 tag 对应的 16 文件 staging
 py mod_change_holding_types/tools/build_release.py --check --release-localization # 地产转换维护版临时双构建
 py mod_change_holding_types/tools/build_release.py --output <new-output> --git-tag change-holding-types-v1.0.0 --release-localization # 正式 tag 对应的 17 文件 staging
+py mod_superman_qiang/tools/build_release.py --check          # 超人强独立版 22 文件临时双构建
+py mod_superman_qiang/tools/build_release.py --output <new-output> --git-tag superman-qiang-v1.0.0 # 正式 tag 对应的 staging
 ```
 
 上述脚本生成器与素材投影工具中，**不要手改 `GENERATED FILE` 标记的文件**。计分参数只改 `tools/scoring_data.py`，
@@ -459,11 +462,12 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
   `has_character_flag = xa_enabled`（该 flag 只能由玩家点契约获得）**且** `is_ai = no` 双闸门；GUI 桥走
   `GetPlayer`。今后新增任何事件/决议/互动/钩子，都必须挂在上述玩家限定链上（或自带等价闸门），
   禁止给 AI 留入口；新增 on_action 钩子时注意其本身对全场角色触发，effect 必须包 limit
-- 唯一已授权例外是独立 `ox_here/` mod：AI 可以低意愿使用“牛来”，所有层级每 12 个月检查一次，执行后冷却
+- 一个已授权例外是独立 `ox_here/` mod：AI 可以低意愿使用“牛来”，所有层级每 12 个月检查一次，执行后冷却
   **恰好 1 年且永远不得提高到 1 年以上**。该例外不得外推到主 mod 或白绮独立版；权威权重与实机边界见
   `docs/court-position-mechanics.md`。
 - 第二个已授权例外是独立 `mod_zhongguo_style/`：有地、在世、天朝制公爵及以上 AI 管理者可静默运行 361 后台考核；
   伯爵和男爵只能被考核，不能建立 cohort、分配配额或校准别人。该例外只覆盖此 mod，不能外推到主 mod、白绮版或其他政府。
+- 用户于 2026-10-04 明确授权独立 `mod_superman_qiang/` 对每个合格角色记录性经验：年满 18 岁、在世的 AI 与玩家使用相同计数及属性转移规则；查看交互由玩家发起。此例外只覆盖本产品两个原版性行为效果接入点，不外推到其他产品。
 - 所有脚本文件 **UTF-8 BOM**；yml 缺 BOM 直接不加载
 - script values 目录是 `common/script_values`（**不是** scripted_values）
 - `is_tutorial_lesson_completed` 是 interface trigger，只能用于 customizable_localization / GUI，游戏状态脚本禁用

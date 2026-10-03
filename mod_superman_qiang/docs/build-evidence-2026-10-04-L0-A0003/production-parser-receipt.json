@@ -1,0 +1,154 @@
+{
+  "schema": "sxad.ledger.open-kaishek-precheck.v1",
+  "open_kaishek_head": "890b32de49081b7b5510e40c5518dfb59d5c8a6d",
+  "jar": {
+    "path": "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+    "bytes": 365313,
+    "sha256": "7262e771ad3e1f5d724d663ac259a20e2a7df0c491d4c125f56cb4c3a604e75c"
+  },
+  "generated_inputs": [
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/common/scripted_effects/zz_sxad_had_sex_with_effect.txt",
+      "bytes": 9868,
+      "sha256": "46e066aa7e7e81ab2f6292e9650a479de9e8c7ae7e5808d35868396bf99c4ba2"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt",
+      "bytes": 1353,
+      "sha256": "afaab280b0be669bf019203e2b3d16f97f087daa5b682338fdcb3bbfaca75fe1"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/common/scripted_effects/sxad_experience_effects.txt",
+      "bytes": 2872,
+      "sha256": "3ba408a0320378b6f09c4d16880d925a16aab07a5904847e0e59af2a183e8a50"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/common/scripted_effects/sxad_probe_skill_effects.txt",
+      "bytes": 9604,
+      "sha256": "2bf2599cebd91659b58b8adad1241f136394af252a03f3123c9250ef9e07719a"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/common/scripted_effects/sxad_transfer_effects.txt",
+      "bytes": 10285,
+      "sha256": "2141d3bc944fffa0dfbd62d5d34238baddafc649c861ed0e47a0e775ebf63323"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/common/script_values/sxad_values.txt",
+      "bytes": 4651,
+      "sha256": "63fab3a51d616e848c9ea15ba3b19eeb8779ca141c1f853b88cbdb1fe7903468"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/common/modifiers/sxad_skill_balance_modifiers.txt",
+      "bytes": 2040,
+      "sha256": "6d97fa914b5b6a9c49baa537359866e35ac0139a40b6be7efb3d3a191995a42f"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/common/traits/sxad_traits.txt",
+      "bytes": 482,
+      "sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/common/character_interactions/sxad_interactions.txt",
+      "bytes": 921,
+      "sha256": "2b81d6cdde8512197c60edbee473a9b235d3c9fec8479a82d2f39f581bb82a7e"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/events/sxad_events.txt",
+      "bytes": 390,
+      "sha256": "a3e84da90696f3b246f8301d744ebe8dd04d7441ebdc31d426cda04e80da9cb0"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/localization/simp_chinese/sxad_l_simp_chinese.yml",
+      "bytes": 3820,
+      "sha256": "a61f0411f95387115be9bce51d51286e6e5f2bf255838f23cac9ab8b686f60f8"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/localization/english/sxad_l_english.yml",
+      "bytes": 4071,
+      "sha256": "0f5c5b0afdaaff35ff80e1931b8c538d8b87d8d0103cd75fc3108b3720eaeda6"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/gfx/interface/icons/traits/sxad_sex_experience.dds",
+      "bytes": 57728,
+      "sha256": "7f4c9f2925ac10d6803261ae0e28ec0b417b3a9917664b5297e45a955c4de5b5"
+    }
+  ],
+  "source_inputs": [
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/tools/gen_runtime.py",
+      "bytes": 19040,
+      "sha256": "9a68b30ed4b46edd99bc6093c2b4b413468aaed2ba40a4e52c283eb3b153006b"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/tools/runtime_data.py",
+      "bytes": 7080,
+      "sha256": "769a8482c1f5e7b93a6681d93a9ed7d274faa7b87604eee9d2a55b8a77e13684"
+    }
+  ],
+  "localization_keys": [
+    "trait_sxad_sex_experience",
+    "trait_sxad_sex_experience_desc",
+    "trait_sxad_sex_experience_character_desc",
+    "sxad_view_experience_interaction",
+    "sxad_view_experience_interaction_desc",
+    "sxad_view_experience_interaction_notification",
+    "sxad_view_experience_interaction_accept_tt",
+    "sxad.1.t",
+    "sxad.1.desc",
+    "sxad.1.a",
+    "sxad_absorbed_skill_modifier",
+    "sxad_drained_skill_modifier",
+    "sxad_diplomacy_gain_modifier",
+    "sxad_diplomacy_loss_modifier",
+    "sxad_martial_gain_modifier",
+    "sxad_martial_loss_modifier",
+    "sxad_stewardship_gain_modifier",
+    "sxad_stewardship_loss_modifier",
+    "sxad_intrigue_gain_modifier",
+    "sxad_intrigue_loss_modifier",
+    "sxad_learning_gain_modifier",
+    "sxad_learning_loss_modifier",
+    "sxad_prowess_gain_modifier",
+    "sxad_prowess_loss_modifier"
+  ],
+  "skill_balance_maximum": 1000000,
+  "manifest": {
+    "path": "D:/ck3-superman-ledger-precheck-A0001/manifest.jsonl",
+    "bytes": 30630,
+    "sha256": "6f5c3f9753fb79819e0c438cf8f0e9c6862defce2162287998c6aee4ec3a1107"
+  },
+  "checks": {
+    "cli_help": {
+      "argv": [
+        "java",
+        "-jar",
+        "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout": "kaishek-cli 0.1.0-cli (pure Java; Quarkus is not started)\nUsage: parse|validate|hash|corpus|profile [--file PATH|PATH] [corpus: --require-corpus]\n       synthetic-361|runtime-fixture\n       preflight [--root PATH] [--profile ID] [--fixture ID]\n       batch|replay [--file MANIFEST.jsonl] [--stop-on-error]\nBatch lines: {\"id\":\"case\",\"command\":\"parse\",\"text\":\"x = 1\\n\"}\nPreflight is offline-only and never starts CK3; it returns one JSON report.\nFixtures include synthetic-361-014, appeal-014, ck3-calculated-value-014 (schema-only RED), ck3-g2-activity-type-schema-red-11906 (schema-only RED), ck3-war-days-trigger-11906, ck3-has-innovation-trigger-11906, ck3-has-cultural-tradition-trigger-11906, ck3-has-cultural-pillar-trigger-11906, ck3-has-cultural-parameter-trigger-11906, ck3-is-acclaimed-trigger-11906, ck3-can-be-acclaimed-trigger-11906, zg361-projects-metrics-postcondition-v1, and zg361-promotion-compensation-postcondition-v1.\nUnknown semantics return status UNSUPPORTED.\n",
+      "stderr": ""
+    },
+    "parser_batch": {
+      "argv": [
+        "java",
+        "-jar",
+        "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+        "batch",
+        "--file",
+        "D:\\ck3-superman-ledger-precheck-A0001\\manifest.jsonl",
+        "--stop-on-error"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"id\":\"sxad_probe_skill_effects\",\"line\":1,\"exitCode\":0,\"result\":{\"status\":\"PARSED\",\"bytes\":9601,\"tokens\":2322,\"blocks\":115,\"diagnostics\":[],\"roundTrip\":true}}\n{\"id\":\"sxad_transfer_effects\",\"line\":2,\"exitCode\":0,\"result\":{\"status\":\"PARSED\",\"bytes\":10282,\"tokens\":3276,\"blocks\":187,\"diagnostics\":[],\"roundTrip\":true}}\n{\"id\":\"sxad_experience_effects\",\"line\":3,\"exitCode\":0,\"result\":{\"status\":\"PARSED\",\"bytes\":2869,\"tokens\":773,\"blocks\":48,\"diagnostics\":[],\"roundTrip\":true}}\n{\"id\":\"sxad_values\",\"line\":4,\"exitCode\":0,\"result\":{\"status\":\"PARSED\",\"bytes\":4648,\"tokens\":1604,\"blocks\":87,\"diagnostics\":[],\"roundTrip\":true}}\n{\"id\":\"sxad_skill_balance_modifiers\",\"line\":5,\"exitCode\":0,\"result\":{\"status\":\"PARSED\",\"bytes\":2037,\"tokens\":569,\"blocks\":24,\"diagnostics\":[],\"roundTrip\":true}}\n",
+      "stderr": ""
+    }
+  },
+  "runtime_semantics": {
+    "status": "UNSUPPORTED",
+    "reason": "Current CLI/source has no certified character modifier definition-local scale, force skill refresh, six-skill balance transfer or temporary numeric scope runtime; parser pass is syntax-only."
+  },
+  "ck3_started": false,
+  "save_mutated": false,
+  "network_used": false
+}

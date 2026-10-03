@@ -1,0 +1,95 @@
+{
+  "scope": "R7 UI data-model error and current vanilla precedent; A4 two generated-language mutation only; fresh corrected live UI pending",
+  "old_ui_screen": {
+    "path": "D:/ck3-experience-drain-feasibility-20261004/r7-ui-event-a01/screen.png",
+    "bytes": 1017386,
+    "sha256": "12724e4e780e2aa1ce38ab769cdf3dea545569bbe455449e8ff400f229424f00"
+  },
+  "actual_ui_errors": {
+    "whole_source_snapshot": {
+      "path": "D:/ck3-experience-drain-feasibility-20261004/desktop-3fevhd2-1c74096080--superman-qiang--R0007/ui-loc-attribution-runtime-a01/error-log.source.raw",
+      "bytes": 105887,
+      "sha256": "768f0926c0dd64b1f84eea716dbc4af45458349ee561113e4f9e39763ffcbf39"
+    },
+    "matching_count": 43,
+    "extracted": {
+      "path": "D:/ck3-experience-drain-feasibility-20261004/desktop-3fevhd2-1c74096080--superman-qiang--R0007/ui-loc-attribution-runtime-a01/ui-loc-errors.txt",
+      "bytes": 7103,
+      "sha256": "0cc54fc0d1eefb92cc2c2cdd4b1950847b1c13f0fa112aa9821a0dedaef345b4"
+    }
+  },
+  "vanilla_precedents": [
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/english/activities/coronation_activity_l_english.yml",
+      "bytes": 116780,
+      "sha256": "28419918a65f1fb0ddb6c2de822d7bdaa6c0844f07bdac861fea878a73039a03",
+      "lines": [
+        {
+          "line": 413,
+          "text": " diplomacy_oath_2_tooltip: \"I swear an [oath|E] to #V Strengthen the House#!:\\n\\t$EFFECT_LIST_BULLET$Need to have at least #V 7#! [legitimate|E] [children|E] #weak (Currently [host.MakeScope.ScriptValue('children_oath_value')|V0]/#V 7#!)#!\\n\\t$EFFECT_LIST_BULLET$Needs to be completed within #V 30 Years#!\\n\\t$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], [dynasty_prestige_i][dynasty_prestige|E] and [GetModifier('oath_of_children').GetNameWithTooltip]\""
+        },
+        {
+          "line": 415,
+          "text": " martial_oath_1_tooltip: \"I swear an [oath|E] to #V Consolidate [host.GetPrimaryTitle.GetNameNoTierNoTooltip]#!:\\n\\t$EFFECT_LIST_BULLET$[host.GetPrimaryTitle.GetName] needs to [completely_control|E] its [de_jure|E] borders #low (Currently [host.MakeScope.ScriptValue('oath_reconquest_value_1')|V0]/[host.MakeScope.ScriptValue('oath_reconquest_value_2')|V0])#!\\n$EFFECT_LIST_BULLET$Needs to be completed within #V 20 Years#!\\n$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], and [GetModifier('oath_of_reconquest').GetNameWithTooltip]\""
+        }
+      ]
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/english/dlc/bp2/dlc_bp2_yearly_6_l_english.yml",
+      "bytes": 80832,
+      "sha256": "ecb9f2081bb64f46249ba501be346c86e9a032c65f0858bbe99e3b220891a140",
+      "lines": [
+        {
+          "line": 180,
+          "text": "bp2_yearly.6020.pay_vassals: \"You pay [gold_i|E]#N [root_scope.MakeScope.ScriptValue('minor_gold_value')]#! to all your [powerful_vassals|E] #EMP and#! lose [gold_i|E]#N [root_scope.MakeScope.ScriptValue('minor_gold_value')]\""
+        }
+      ]
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/english/decisions_l_english.yml",
+      "bytes": 224266,
+      "sha256": "219a9ac6a8b89b114bfec566e37a9d0a5ffecd750bbc9b200db15fa6e049749f",
+      "lines": [
+        {
+          "line": 1759,
+          "text": " expand_duchy_less_than_4: \"[duchy_title.GetName] has fewer than #color_white [root_scope_temporary.MakeScope.ScriptValue('expand_duchy_max_size_value')]#! [de_jure|E] [counties|E]\""
+        }
+      ]
+    }
+  ],
+  "a4_source": [
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/tools/gen_runtime.py",
+      "bytes": 19040,
+      "sha256": "9a68b30ed4b46edd99bc6093c2b4b413468aaed2ba40a4e52c283eb3b153006b"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/tools/runtime_data.py",
+      "bytes": 6912,
+      "sha256": "fc8452e9e8ee482d1ce070cf086205e8b592754bfb1ced005c99d68e4c289784"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/localization/simp_chinese/sxad_l_simp_chinese.yml",
+      "bytes": 3736,
+      "sha256": "29ac11c5a8ad6c2f5b115974658d6d32616fdcf03081bbd24ddaff06c285e25a"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/localization/english/sxad_l_english.yml",
+      "bytes": 3987,
+      "sha256": "d16c7f9cd076096cc39f2734b496119d23d3630aa9dab23f16c3d07b3c49a59b"
+    }
+  ],
+  "a3_preserved_inputs": {
+    "path": "D:/ck3-superman-qiang-20261004/A0003-source-before-loc-datamodel-fix-20261004/preserved-inputs.json",
+    "bytes": 1412,
+    "sha256": "8d68750d9619e7722b12e2e8ebed99c2ece7d08de706d3e8273a9fe89a4a2d83"
+  },
+  "gameplay_changes": false,
+  "generator_parity_count": 13,
+  "generator_parity_pass": true,
+  "outer_receipt": {
+    "path": "D:/ck3-experience-drain-feasibility-20261004/desktop-3fevhd2-1c74096080--superman-qiang--R0007/ui-loc-attribution-runtime-a01/ui-loc-evidence.json",
+    "bytes": 4955,
+    "sha256": "4e64831e2ea99578e60f0d1c1fe225443d0ba80598f5abd565c45026fc1a75e6"
+  }
+}

@@ -119,3 +119,26 @@ MSVC `.pdata` 可以把同一函数拆成多个 unwind segment。新增证据目
 | [只读提取脚本](D:/ck3-superman-skill-trigger-readonly-20261004.py) | `4862` | `5da1a0f7c635a01fdc1698cfd96194ff1b4e9703bf0080889db0591d3aacfb17` |
 
 原始 trigger 专题永久化只归档既有研究；本页新增的 AddSkill／Force 窄调用链研究另保全在 [新增原生合同](D:/ck3-superman-add-skill-readonly-20261004/add-skill-refresh-contracts.json)，其 SHA-256 为 `3bd4d0b24989d182b698b6b4fddadf0dd3fe253a14664a83f01870b63bd0fc8e`。新增所有反汇编、脚本快照、原版来源摘录和 R0006 摘要均在同一永久 JSON 索引逐文件绑定；没有复制完整 EXE 入仓，也没有通过提取脚本启动游戏。
+
+## 2026-10-04 追加：R0007 勇武惩罚抵消的真实归因
+
+前文 R0006 与 A0002 描述历史基础点试探方案。当前《超人强》已采用[净账本与静态缩放修正](../../mod_superman_qiang/docs/skill-boundaries-reference.md)，生产不再改基础数组。R0007 的独立存档读回发现：勇武 helper 接收者 `65868` 从12到13，来源者 `65869` 从12仍为12；双方基础数组均为六项10，净账本分别为 +1/-1，每方保存了唯一相符的 gain/loss modifier，scale 为1。这一差异不能只凭 PASS marker 忽略，也不能直接判定负勇武无效。
+
+真实 melted save 的 culture `73` 为 Norman，明确保存 `ethos_bellicose` 和 `tradition_chanson_de_geste`。当前原版 `common/culture/pillars/00_ethos.txt:1–4` 给前者 `prowess = 2`，完整文件 SHA-256 `80e4d665b97f9f1305d3a6503a0dc0a008c9de6c6b8e8fa0940d58616bc52017`；`common/culture/traditions/00_maa_traditions.txt:2127、2167–2171` 定义后者并给 `negate_prowess_penalty_add = 5`，SHA-256 `74a6ca6152900e8b36a0747ae9ce3f1592a36947a2f533b540685f9d54e8ef81`。普通负勇武 character modifier 本身有原版先例：`00_activity_tournament_modifiers.txt:203、523` 都使用 `prowess = -1`，完整文件 SHA-256 `74a9287c4cf046ce012dcb32608e66878b144b7b53b640f9b868d12cd80ef955`。
+
+相同 EXE 上只读闭合的窄计算链为：`0x291D170` 将 skill5 映射到 modifier enum18；`0x2BA95E0` 取得该项抵消量，正值时分别请求 mode1 正修正与 mode2 负修正；`0x24389A0:0x2438B14–0x2438B43` 的符号过滤实际区分正负值，包含每个 modifier 的已算 scale；`0x2BA96B8–0x2BA96C0` 将 `min(0, negative_total + negation)` 加到正修正，再加基础技能并继续百分比、取整和原生边界处理。
+
+静态 modifier 定义表的下列实际行均由本地化名称指针定位；相对行头 `+0x28` 的数值枚举与计算链吻合。这里没有把全脚本 token ID 误当作 modifier enum。
+
+| 定义表名称 | 行头 RVA | `+0x28` 数值 |
+| --- | --- | --- |
+| `MOD_PROWESS` | `0x480C370` | `5` |
+| `MOD_PROWESS_NO_PORTRAIT` | `0x480C3A8` | `6` |
+| `MOD_PROWESS_MULT` | `0x480C4F8` | `12` |
+| `MOD_PROWESS_NEGATE_PENALTY` | `0x480C648` | `18` |
+
+因此本次基线为 `10 + 2 + min(0, 0 + 5) = 12`，接收后为 `10 + 3 + min(0, 0 + 5) = 13`，来源者为 `10 + 2 + min(0, -1 + 5) = 12`。实际 culture、正负账本、唯一 modifier 和这个原版分支共同解释了读回，生产负修正已提交；不能为了让 UI 每次必降1而再次扣点、换字段或绕过原版抵消规则。后续平坦显示用例应排除这类抵消，或先用明确原版修正耗尽额度；另外保留有抵消的 raw 账本与 scale 守恒用例。
+
+`prowess_no_portrait` 也不是基础技能接口。其 RTTI `.?AVCProwessNoPortraitSkillTrigger@@` 的 type descriptor RVA 为 `0x5A5AD28`、vtable `0x47F05A0`、slot32 getter `0x2B64790`。该函数实际从普通总缓存 `char + 0xEC` 减去 aggregate enum6，再按原生边界 clamp；普通 `prowess` 仍由 `0x2B68870` 直接读取同一总缓存。
+
+完整真实 culture、四个角色摘录、八份原生反汇编、四份定义行 bytes、源码及日志身份在[R0007 窄归因索引](D:/ck3-experience-drain-feasibility-20261004/desktop-3fevhd2-1c74096080--superman-qiang--R0007/runtime-issue-attribution-a01/issue-attribution.json)永久保全，索引 SHA-256 `6d959476d70733be052d8fc023d3f9f8394b62945d78058942f541c6206df55a`；本页[永久 JSON](character-skill-trigger-readback-1.20.0.3-2026-10-04.evidence.json)追加该索引与 disassembly SHA。melted save SHA-256 是 `d7f56d11656698476cca533eb39defc88ccef17e857e6b9069eb75b73f60a948`。这是该实际勇武差异的归因，不等于 R0007 全矩阵或发布 GREEN；另有独立的[本地化界面 RED 与修复候选](../../mod_superman_qiang/docs/live-R0007-ui-loc-fix.md)。

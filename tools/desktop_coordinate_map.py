@@ -224,7 +224,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--reviewed-width", type=int)
     parser.add_argument("--reviewed-height", type=int)
     parser.add_argument("--expected-foreground-hwnd", type=lambda value: int(value, 0))
-    parser.add_argument("--receipt", type=Path)
+    parser.add_argument("--receipt", type=Path,
+                        help="Post-action screenshot path, for example receipt.png; mapping JSON is printed separately")
     args = parser.parse_args(argv)
     if args.click and args.receipt is None:
         parser.error("--click requires --receipt")

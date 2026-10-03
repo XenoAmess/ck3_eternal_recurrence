@@ -487,3 +487,20 @@ CK3 **1.20.0.3** 原版 `events/_events.info:62–66` 明确 fullscreen_event �
 | `common/modifiers/07_ep3_modifiers.txt:1356–1359` | 静态 `diplomacy = -1` 先例 | `c4a7815e1d5f787699ffc4705a6f39ab742796e3493fce979e348f90147c4a9b` |
 
 这条记录源于 [《超人强》账本合同](../../mod_superman_qiang/docs/skill-boundaries-reference.md)，只确证原版源级语法和缩放生命周期；新模组的对应实机验收仍 **pending**。原始修正点守恒不能替代有效技能守恒：原版百分比与整数运算仍可使显示变化为 0 或 2。历史基础技能试扣 RED 和原生缓存研究继续见 [角色技能读回专题](../ck3-native-ai/character-skill-trigger-readback-1.20.0.3-2026-10-04.md)。
+
+
+## 事件本地化的 named scope 数据链（2026-10-04，CK3 1.20.0.3 实机 RED）
+
+| 现象 | 原因 | 解法 |
+| --- | --- | --- |
+| 事件已打开、saved character scope 实际存在，但含姓名与数值的整段描述空白，仅纯规则文字显示；日志报 `Failed to find type 'scope:<name>'`、promote/conversion 失败及 loc data error | 把脚本作用域 `scope:<name>` 放进本地化方括号的数据模型链；它被解析为不存在的数据类型 | 脚本继续使用 `scope:<name>`；本地化使用 `[<name>.GetShortUIName]`、`[<name>.MakeScope.ScriptValue('…')|0]`。从权威数据修正、重生成全部语言，再实机查看正文并核对数值与新 error.log |
+
+当前原版 `coronation_activity_l_english.yml:413、415`、`dlc_bp2_yearly_6_l_english.yml:180`、`decisions_l_english.yml:1759` 均有不带 `scope:` 的真实链。完整源码 SHA、本次14条数据链/43条界面错误和原始截图在[永久修复证据](../../mod_superman_qiang/docs/live-R0007-ui-loc-fix.evidence.json)。A0003 的实际 RED 与 A0004 源码修复分开保留；修复后 fresh UI 验收仍 pending，不用九语格式检查代替。
+
+## 勇武负修正可能被文化抵消（2026-10-04，CK3 1.20.0.3 实际存档与原生链）
+
+| 现象 | 原因 | 解法 |
+| --- | --- | --- |
+| 负勇武 modifier 与净账本 -1 已保存，但有效勇武未下降；其他五项正常 | 原版 `negate_prowess_penalty_add` 抵消负修正；R0007 实际 Norman culture 保存 `tradition_chanson_de_geste` 的5点抵消与 `ethos_bellicose` 的 +2勇武，计算是 `base10 + positive2 + min(0, negative(-1) + negate5) = 12` | 同时核对原始账本、缩放 modifier、基础数组及有效值，并核对实际 culture/faith 等抵消来源。平坦 ±1 用例排除或耗尽抵消额度；保留有抵消用例验证 raw 守恒，不追加扣点来追赶 UI |
+
+同 EXE 的实际 enum18 分支与定义表、signed64 存档、文化块和源码 SHA 见[追加的勇武专题](../ck3-native-ai/character-skill-trigger-readback-1.20.0.3-2026-10-04.md)。普通 `prowess = -1` 有原版 character modifier 使用先例；`prowess_no_portrait` getter 仍由总值减去相关 modifier 得到，不能当作基础值。

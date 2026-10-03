@@ -685,5 +685,162 @@
         "simp_chinese_semantic_and_live_acceptance": "owned by root/native product acceptance; not assessed by this format step"
       }
     }
+  ],
+  "token_fixes": [
+    {
+      "schema": "sxad.localization-saved-scope-datamodel-sync.v1",
+      "attempt": "A4",
+      "source_sha256": "29ac11c5a8ad6c2f5b115974658d6d32616fdcf03081bbd24ddaff06c285e25a",
+      "reference_sha256": "d16c7f9cd076096cc39f2734b496119d23d3630aa9dab23f16c3d07b3c49a59b",
+      "operation": "mechanically replace 14 protected saved-character datamodel prefixes in sxad.1.desc; preserve the other 23 keys and all natural-language text",
+      "reported_native_ui_failure": {
+        "attempt": "A3",
+        "status": "RED",
+        "cause": "Event localization used CK3 script scope syntax [scope:sxad_view_subject...] as a datamodel; the character name/count/skill/balance fields failed to render.",
+        "correct_form": "[sxad_view_subject.MakeScope.ScriptValue(...)]",
+        "evidence_owner": "root live product acceptance; this format receipt does not claim the A4 UI is passed"
+      },
+      "old_prefix": "[scope:sxad_view_subject.",
+      "new_prefix": "[sxad_view_subject.",
+      "changes": [
+        {
+          "language": "french",
+          "key": "sxad.1.desc",
+          "before_sha256": "da3c09c73ada071d18859d2bba2eabe897fd49204bc663b2aeb58927ee16f29e",
+          "after_sha256": "bde1db01f5e5b7cb391eba0b2affce817ec8a49d9ededf471665d31fb069c3e2",
+          "replacement_count": 14,
+          "unchanged_key_count": 23
+        },
+        {
+          "language": "german",
+          "key": "sxad.1.desc",
+          "before_sha256": "121b4cc9e3a454852a3f88c0acf2830263a5ba68f780131240dba0f8b5e2caf1",
+          "after_sha256": "66a54d3e970e615d460877c319ee7fd6211a861ad3f2ece783ff3ae49b609d5f",
+          "replacement_count": 14,
+          "unchanged_key_count": 23
+        },
+        {
+          "language": "polish",
+          "key": "sxad.1.desc",
+          "before_sha256": "d36b32bae867bf67de4faeb226064f914421464f399fb0790748f5cf3b519dca",
+          "after_sha256": "dab3e3ebd984dd9ecaaea69d9ebc4cd018cb4aaf441266f7361c4a448f156079",
+          "replacement_count": 14,
+          "unchanged_key_count": 23
+        },
+        {
+          "language": "japanese",
+          "key": "sxad.1.desc",
+          "before_sha256": "f53950734991b3652d87e8e81fb9096855a489667273d1e2cac78838097d1d88",
+          "after_sha256": "7b29d4811b16eedbb5e4af655aa58b604d3f777131531bc45be9472cb39f8451",
+          "replacement_count": 14,
+          "unchanged_key_count": 23
+        },
+        {
+          "language": "spanish",
+          "key": "sxad.1.desc",
+          "before_sha256": "5968b3b84b150235bb4fb052dcc263a1e6752cc8fd7360ca7bc6e71788b84945",
+          "after_sha256": "52303622d7fb968fe64fea7671bd021c337212bbf46ec63acf757b89c1e2bfa1",
+          "replacement_count": 14,
+          "unchanged_key_count": 23
+        },
+        {
+          "language": "russian",
+          "key": "sxad.1.desc",
+          "before_sha256": "ac7774c8951760656076448693f6421a84bd4c16074a40e8dca249cc97716f59",
+          "after_sha256": "cac22ed9a85c79893c73eb910a8493a63a1738cebe1374f6b675ba4f0a2f868a",
+          "replacement_count": 14,
+          "unchanged_key_count": 23
+        },
+        {
+          "language": "korean",
+          "key": "sxad.1.desc",
+          "before_sha256": "32cb0453632c19e3e7fe6322ce64d6a4d0a7c6cab51932ee75f1f7cb66a2a66e",
+          "after_sha256": "a31d5ba52ff3591c843d76f817fe8ce2c15c4bfe916c5f918dd6417450f023e6",
+          "replacement_count": 14,
+          "unchanged_key_count": 23
+        }
+      ],
+      "checks": [
+        {
+          "language": "simp_chinese",
+          "path": "localization/simp_chinese/sxad_l_simp_chinese.yml",
+          "key_count": 24,
+          "sha256": "29ac11c5a8ad6c2f5b115974658d6d32616fdcf03081bbd24ddaff06c285e25a",
+          "status": "format-certified",
+          "live_verified": false
+        },
+        {
+          "language": "english",
+          "path": "localization/english/sxad_l_english.yml",
+          "key_count": 24,
+          "sha256": "d16c7f9cd076096cc39f2734b496119d23d3630aa9dab23f16c3d07b3c49a59b",
+          "status": "format-certified",
+          "live_verified": false
+        },
+        {
+          "language": "french",
+          "path": "localization/french/sxad_l_french.yml",
+          "key_count": 24,
+          "sha256": "bde1db01f5e5b7cb391eba0b2affce817ec8a49d9ededf471665d31fb069c3e2",
+          "status": "format-certified",
+          "live_verified": false
+        },
+        {
+          "language": "german",
+          "path": "localization/german/sxad_l_german.yml",
+          "key_count": 24,
+          "sha256": "66a54d3e970e615d460877c319ee7fd6211a861ad3f2ece783ff3ae49b609d5f",
+          "status": "format-certified",
+          "live_verified": false
+        },
+        {
+          "language": "polish",
+          "path": "localization/polish/sxad_l_polish.yml",
+          "key_count": 24,
+          "sha256": "dab3e3ebd984dd9ecaaea69d9ebc4cd018cb4aaf441266f7361c4a448f156079",
+          "status": "format-certified",
+          "live_verified": false
+        },
+        {
+          "language": "japanese",
+          "path": "localization/japanese/sxad_l_japanese.yml",
+          "key_count": 24,
+          "sha256": "7b29d4811b16eedbb5e4af655aa58b604d3f777131531bc45be9472cb39f8451",
+          "status": "format-certified",
+          "live_verified": false
+        },
+        {
+          "language": "spanish",
+          "path": "localization/spanish/sxad_l_spanish.yml",
+          "key_count": 24,
+          "sha256": "52303622d7fb968fe64fea7671bd021c337212bbf46ec63acf757b89c1e2bfa1",
+          "status": "format-certified",
+          "live_verified": false
+        },
+        {
+          "language": "russian",
+          "path": "localization/russian/sxad_l_russian.yml",
+          "key_count": 24,
+          "sha256": "cac22ed9a85c79893c73eb910a8493a63a1738cebe1374f6b675ba4f0a2f868a",
+          "status": "format-certified",
+          "live_verified": false
+        },
+        {
+          "language": "korean",
+          "path": "localization/korean/sxad_l_korean.yml",
+          "key_count": 24,
+          "sha256": "a31d5ba52ff3591c843d76f817fe8ce2c15c4bfe916c5f918dd6417450f023e6",
+          "status": "format-certified",
+          "live_verified": false
+        }
+      ],
+      "non_chinese_scope": "format-only; no semantic, native-speaker or game/UI acceptance",
+      "new_minimax_requests": 0,
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "D:\\ck3-experience-drain-feasibility-20261004\\sync_saved_scope_datamodel_tokens.py"
+      ],
+      "driver_sha256": "6b1b6e69fe8a93dfbdef44620a09547e6e56fde0bfaf4567ef3374e5894a55a2"
+    }
   ]
 }

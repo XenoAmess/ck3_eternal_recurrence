@@ -22,10 +22,10 @@ tools\.venv\Scripts\python.exe tools\desktop_steam_offline_recovery.py recover -
 `inspect`只读；`recover`会在租约下做窗口新鲜度取证，不切换模式。必须直接审阅它生成的新像素中的“离线模式”。正常在线切换选Steam菜单当次实际的“上线/Go Online”并读回确认后的状态；恢复选择当次“进入离线模式/Go Offline”及其真实确认控件。若需鼠标，精确CLI为：
 
 ```text
-tools\.venv\Scripts\python.exe tools\desktop_coordinate_map.py --source-image <当次原始PNG> --preview-left <实际预览内容左边界> --preview-top <实际预览内容上边界> --preview-width <实际内容宽> --preview-height <实际内容高> --observed-x <预览中目标X> --observed-y <预览中目标Y> --click --button left --receipt <新的坐标回执JSON>
+tools\.venv\Scripts\python.exe tools\desktop_coordinate_map.py --source-image <当次原始PNG> --preview-left <实际预览内容左边界> --preview-top <实际预览内容上边界> --preview-width <实际内容宽> --preview-height <实际内容高> --observed-x <预览中目标X> --observed-y <预览中目标Y> --click --button left --receipt <新的操作后截图.png>
 ```
 
-以上占位值只能由动作当时的真实图像与UIA提供。模式切换后保存新图、菜单/窗口状态及实际业务结果；不由本机配置标志自动推断成功。菜单异常时先保全异常；只有没有CK3/录制/别人的屏幕占用，才按既有恢复指南处理。不能登出账号、强行启动游戏或终止别人的会话。
+以上占位值只能由动作当时的真实图像与UIA提供。`--receipt` 是操作后截图路径，应使用 `.png`；命令标准输出中的坐标 JSON 另行保全。此前误把此参数当作 JSON 路径会在动作已执行后导致截图编码失败，不能据此重发点击。模式切换后保存新图、菜单/窗口状态及实际业务结果；不由本机配置标志自动推断成功。菜单异常时先保全异常；只有没有CK3/录制/别人的屏幕占用，才按既有恢复指南处理。不能登出账号、强行启动游戏或终止别人的会话。
 
 ## 待根任务交付的绑定输入
 

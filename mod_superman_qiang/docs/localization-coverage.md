@@ -12,15 +12,15 @@
 
 | 目录语言 | 精确 header | key 数 | 文案来源 | 文件 SHA-256 |
 | --- | --- | ---: | --- | --- |
-| simp_chinese | `l_simp_chinese:` | 24 | `runtime_data.py` 简中源文案 | `a61f0411f95387115be9bce51d51286e6e5f2bf255838f23cac9ab8b686f60f8` |
-| english | `l_english:` | 24 | `runtime_data.py` 英文参考 | `0f5c5b0afdaaff35ff80e1931b8c538d8b87d8d0103cd75fc3108b3720eaeda6` |
-| french | `l_french:` | 24 | MiniMax-M3 字符串候选及 alias 同步 | `da3c09c73ada071d18859d2bba2eabe897fd49204bc663b2aeb58927ee16f29e` |
-| german | `l_german:` | 24 | MiniMax-M3 字符串候选及 alias 同步 | `121b4cc9e3a454852a3f88c0acf2830263a5ba68f780131240dba0f8b5e2caf1` |
-| polish | `l_polish:` | 24 | MiniMax-M3 字符串候选及 alias 同步 | `d36b32bae867bf67de4faeb226064f914421464f399fb0790748f5cf3b519dca` |
-| japanese | `l_japanese:` | 24 | MiniMax-M3 字符串候选及 alias 同步 | `f53950734991b3652d87e8e81fb9096855a489667273d1e2cac78838097d1d88` |
-| spanish | `l_spanish:` | 24 | MiniMax-M3 字符串候选及 alias 同步 | `5968b3b84b150235bb4fb052dcc263a1e6752cc8fd7360ca7bc6e71788b84945` |
-| russian | `l_russian:` | 24 | MiniMax-M3 字符串候选及 alias 同步 | `ac7774c8951760656076448693f6421a84bd4c16074a40e8dca249cc97716f59` |
-| korean | `l_korean:` | 24 | MiniMax-M3 字符串候选及 alias 同步 | `32cb0453632c19e3e7fe6322ce64d6a4d0a7c6cab51932ee75f1f7cb66a2a66e` |
+| simp_chinese | `l_simp_chinese:` | 24 | `runtime_data.py` 简中源文案 | `29ac11c5a8ad6c2f5b115974658d6d32616fdcf03081bbd24ddaff06c285e25a` |
+| english | `l_english:` | 24 | `runtime_data.py` 英文参考 | `d16c7f9cd076096cc39f2734b496119d23d3630aa9dab23f16c3d07b3c49a59b` |
+| french | `l_french:` | 24 | MiniMax-M3 候选及机械 token 同步 | `bde1db01f5e5b7cb391eba0b2affce817ec8a49d9ededf471665d31fb069c3e2` |
+| german | `l_german:` | 24 | MiniMax-M3 候选及机械 token 同步 | `66a54d3e970e615d460877c319ee7fd6211a861ad3f2ece783ff3ae49b609d5f` |
+| polish | `l_polish:` | 24 | MiniMax-M3 候选及机械 token 同步 | `dab3e3ebd984dd9ecaaea69d9ebc4cd018cb4aaf441266f7361c4a448f156079` |
+| japanese | `l_japanese:` | 24 | MiniMax-M3 候选及机械 token 同步 | `7b29d4811b16eedbb5e4af655aa58b604d3f777131531bc45be9472cb39f8451` |
+| spanish | `l_spanish:` | 24 | MiniMax-M3 候选及机械 token 同步 | `52303622d7fb968fe64fea7671bd021c337212bbf46ec63acf757b89c1e2bfa1` |
+| russian | `l_russian:` | 24 | MiniMax-M3 候选及机械 token 同步 | `cac22ed9a85c79893c73eb910a8493a63a1738cebe1374f6b675ba4f0a2f868a` |
+| korean | `l_korean:` | 24 | MiniMax-M3 候选及机械 token 同步 | `a31d5ba52ff3591c843d76f817fe8ce2c15c4bfe916c5f918dd6417450f023e6` |
 
 ## 候选与应用过程
 
@@ -43,6 +43,14 @@ tools/.venv/Scripts/python.exe D:/ck3-experience-drain-feasibility-20261004/tran
 
 最终生产机制使用六项净转移账本及永久 character modifier，源文案说明转移的是修正点、基础属性保持原值、原版百分比修正和取整仍继续作用。只翻译更新的 `trait_sxad_sex_experience_desc`、`sxad.1.desc` 与两个新名称 `sxad_absorbed_skill_modifier`、`sxad_drained_skill_modifier`，共 **4 × 7 = 28** 个增量字符串；其余 8 个原 key 的外语译值保持原样。六项属性各有 gain/loss modifier alias，12 个 alias 只含 `$sxad_<名称>$` 与原版 `$<skill>$` 保护引用和标点，由执行者逐字复制，未送入翻译。
 
-增量候选、冻结中英源、七语原始 bytes、实际命令及九语最终格式报告保存在 `attempt-03-modifier-balance/`；调用 exit code **0**，stderr 为空，候选 SHA-256 为 `12ec14de06cdd43c58832e849b95e5520096a6ba9aec66a795d3ebc4c1e18e99`。[跟踪收据](localization-coverage.sources.json)的 `deltas` 保留该增量；上表记录最新24-key文件摘要。增量再次通过九语格式认证，包括新增六项余额 ScriptValue tokens 和所有 alias 引用，未进行非中文语义或实机检查。
+增量候选、冻结中英源、七语原始 bytes、实际命令及该次九语格式报告保存在 `attempt-03-modifier-balance/`；调用 exit code **0**，stderr 为空，候选 SHA-256 为 `12ec14de06cdd43c58832e849b95e5520096a6ba9aec66a795d3ebc4c1e18e99`。[跟踪收据](localization-coverage.sources.json)的 `deltas` 保留该增量。该次九语通过格式认证，包括新增六项余额 ScriptValue tokens 和所有 alias 引用，未进行非中文语义或实机检查。
+
+## A4：保存角色的本地化 datamodel 修复
+
+中文真实 UI 的 A3 结果为 **RED**：`sxad.1.desc` 将脚本里的 `scope:sxad_view_subject` 形式错误用于本地化 datamodel，导致角色名称、经验及属性/余额数字段无法展开。格式解析与 token 一致并没有证明这个 datamodel 入口有效；A3 的翻译候选、格式收据和真实运行报告均保留原结果。
+
+运行时开发代理通过生成器将中英文 `sxad.1.desc` 的 14 处 `[scope:sxad_view_subject.` 改为 `[sxad_view_subject.`；正确的数值形式为 `[sxad_view_subject.MakeScope.ScriptValue(...)]`。本地化代理随后只对七语同一 key 的精确 14 处前缀做机械同步，每语另外 **23 个 key 的值与全部自然语言正文保持不变**，新 MiniMax 请求数为 **0**。
+
+A4 的冻结中英源、七语替换前 bytes、替换计数、命令和九语格式结果保存在 `attempt-04-saved-scope-datamodel/`，并追加到[跟踪收据](localization-coverage.sources.json)的 `token_fixes`。九语24-key格式认证再次通过，上表记录 A4 当前摘要。新的中文真实 UI 结果由主任务的产品验收报告确认，本节只记录修复及格式结果；非中文仍未增加语义或实机门禁。
 
 该步骤只验证 YML 与本地化 token，不执行 CK3 脚本或有限运行时语义，`open_kaishek` 预验记为 **not-applicable**。产品静态检查及确定性双构建由[发布流程](release-plan.md)的完整 L0 步骤覆盖，不以本地化格式结果替代它们。

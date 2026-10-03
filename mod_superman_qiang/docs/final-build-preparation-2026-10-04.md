@@ -14,7 +14,7 @@ tools\.venv\Scripts\python.exe mod_superman_qiang\tools\build_release.py --outpu
 tools\.venv\Scripts\python.exe mod_superman_qiang\tools\build_release.py --verify D:/ck3-superman-qiang-20261004/final-tagbound-A0001/mod_superman_qiang --manifest D:/ck3-superman-qiang-20261004/final-tagbound-A0001/mod_superman_qiang.manifest.json
 ```
 
-`final-tagbound-A0001` 必须尚不存在；如已用过，使用新的 attempt 名。首次 CreateItem 尚无 item ID，因此 manifest 的 `workshop_item_id` 为 null；真实 ID 仅在创建成功后的新证据中记录，不倒填本轮历史。产品正式 staging 为精确 21 文件，README/docs/tools/夹具均不上传，内层 descriptor 无 `remote_file_id`。
+`final-tagbound-A0001` 必须尚不存在；如已用过，使用新的 attempt 名。首次 CreateItem 尚无 item ID，因此 manifest 的 `workshop_item_id` 为 null；真实 ID 仅在创建成功后的新证据中记录，不倒填本轮历史。当前账本版本正式 staging 为精确 22 文件，README/docs/tools/夹具均不上传，内层 descriptor 无 `remote_file_id`。A0001/A0002 的历史 21 文件报告保持原样。
 
 ## GitHub 附件
 
