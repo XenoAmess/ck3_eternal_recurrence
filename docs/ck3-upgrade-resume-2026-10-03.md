@@ -45,3 +45,5 @@ R0003已实际续跑，但首个Bookmarks route是加载瞬态：随后树为 `_
 [新规则动作、实际实例及窗口树组合](ck3-native-ai/frontend-game-rules-1.20.0.3-2026-10-03.md#选择提交与实际实例读取源码已接入实机待验)已接入源码：默认OFF私有gate、实际选项有界Next、原版Apply→Hide资格、later actual-instance全pair读回；永久harness有可选pre-Start规则意图，不用地图snapshot、不重试已派发输入。2048树预算使用heap并保留2MiB与截断拒绝。有限offline检查通过，新独立f4组合DLL正在构建；产品实机与七cell仍未完成。
 
 23:53 新独立组合DLL实际编译完成，新预算聚焦项PASS；DLL SHA `bac25eb4de967bd9be9603c8983ab672052dabbd74ec8d8e42cef1e97a501065`。原Release-command筛选收据RED保留，另存对同一raw log的纠正PASS；未重建。接续跨至10-04仍用独立run，计划先诊断规则窗而不Start。产品实机与七cell仍0/7。
+
+10-04 00:09 [R0006](ck3-upgrade-native-startup-2026-10-03.md#r0006完整书签树与实际规则选中值)实际越过512预算阻点：1846行完整Bookmarks，规则打开及独立86对GUI选中值、283行完整rules树。85项prepared defaults一致，extra安装规则单列。追加第四只读工具名错误在派发前拒绝，全局RED保留；没有Select/Apply/Start/产品通过。CK3零与CAS1764释放已读回。下一新run测试显式规则提交、实际实例与普通Robert地图；正常退出/教程flush尚无typed能力，不能用containment替代。

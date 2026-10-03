@@ -62,3 +62,5 @@ R0005真实Bookmarks超过512节点，旧截断拒绝保持。新预算为2048�
 23:53:58（Asia/Shanghai）唯一jobs2 Release构建完成，346 steps、exit0；新native预算聚焦项执行一次PASS。DLL4,613,120bytes，SHA `bac25eb4de967bd9be9603c8983ab672052dabbd74ec8d8e42cef1e97a501065`；injector39,936bytes，SHA `45383f0700dc6660c7182cd812390ae96a84fe8bfe3d248d98d8add642b28e46`。MODEL、SELECTED_START、TARGET_ROBERT、GAME_RULES为ON，旧死亡modal为OFF。最终[产物包](C:/workspace/ck3-upgrade-20261003/courtier-agent-02/frontend-native-final-combo-packet-01.json) SHA `4474b5d6ac06b215df1cb3eaeb93f4ce39fd743a5a29f1c5ff0dce252f0234b5`，4567源文件复验通过；完整源差异表仍保留。
 
 原 `result.json` 的Release断言收据筛选只识别 `/c`，实际CMake MSVC命令使用 `-c`，故原收据RED保留。单独脚本只重新读取同一冻结raw log（SHA `2624cdbb86f48aea8bc085c9a8a1d2cc8562e32aed3e9490eac348a549608f45`），另存 `result.checked-release-flags.json`：四个测试目标10条实际compile argv均在 `/DNDEBUG` 后有 `/UNDEBUG`。没有重建、替换二进制或重跑测试；纠正只属于收据解析。实机与七cell仍0/7。主仓Python-only检查通过。
+
+10-04 00:09 [R0006实际观察](../ck3-upgrade-native-startup-2026-10-03.md#r0006完整书签树与实际规则选中值)已完成一次typed NewGame、完整1846行Bookmarks、规则打开及三次独立86对GUI选中值读取，283行规则scope完整。85项准备默认值一致，额外安装规则单列来源。Apply/actual-instance/Start仍未运行；可选第四只读control工具名错误导致全局RED保留，不影响之前原语的独立证据，亦不提升产品通过口径。

@@ -81,3 +81,15 @@ R0002 最终 state/live 的1950文件另保存于 `aub-empty-agent-02/r0002-clos
 受管结束仍exit1/job1→0的containment，随后CK3零；keeper最后1747、failure=null/thread退出，15:26:06 CAS释放1748。下一候选核对原生树预算、Python上限、transport与栈占用，保留截断拒绝；这次512下界不证明总节点数。旧源/DLL/v5/R0005继续保留，不能在完成产物上修改预算。
 
 显式诊断提交 `760ce9736` 的[官方CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37132350327)已实际success，仍与本机上述原语结果分开。
+
+## R0006：完整书签树与实际规则选中值
+
+10-04 00:06–00:09（Asia/Shanghai）运行 **`4-8e1c2f1861--auto-upgrade-buildings--R0006`**，execution `c4777f13-e33a-456c-97b6-3ab06c811b47`。clean master `f8d8793c4e608d028b6228daba860919bf381b43`，使用新2048预算组合DLL及独立profile07，preparation SHA `a04d90ff04f77945150afef6bcb72942155a34f211fadebed41e3a60d35aa4a8`。外置v7来自该master永久harness精确bytes，SHA `326907da1fd979b6f97292a7b14e8a03f8c283c2a0bd3dff5c21e556818b9bb3`，实际help exit0。DLL/injector及4567源freeze见[组合产物](ck3-native-ai/frontend-game-rules-1.20.0.3-2026-10-03.md#有界窗口树组合)；f4与master基底差异仍有表，未宣称全树相同。
+
+新屏幕a05独占期间，16:06:29 UTC原始1920×1080图直接核对nonce `b77eb402342f`和同帧Steam“离线模式”，PNG SHA `8b89e5999403f0f5d88b318f8899a15721dfe62c4eb8d3da57c570486b1ae4cf`；冻结背景不作实时声明。CK3 PID16072/creation1791043611.0490716。一次typed NewGame获得独立Bookmarks route verified；两次一致actual `frontend_bookmarks`树 **1846行、truncated=false**。规则打开一次返回observed，再独立读取86对实际 `CJominiGameRulesGui.current_selections`，同PID16072/generation1的querySequence84→85→88。GUI选中值仍 `applied_settings_proven=false`。
+
+85对prepared vanilla defaults全部匹配，没有缺失或不同；额外真实对为 `empire_faith_gate=empire_faith_gate_off`。它来自安装目录 `game/common/game_rules/01_empire_faith_gate_rules.txt`（200bytes，SHA `c04dc35c7d3cd4a0c414a1b61435d013d8601014d378cbed102e7b12733d64a9`），本次未改该文件，也不把86项总数称为85项vanilla快照。hold前三项typed只读route/tree/selected查询PASS，无地图after_snapshot；actual `game_rules`局部树 **283行、truncated=false**。
+
+根执行者追加的第四项control误写工具名 `ck3_native_pipe_status`，被 `frontend_read_only` allowlist在派发前拒绝；因此全局原报告RED与该输入保留，不重发前三个PASS查询。此错误没有游戏输入；实际未调用Select、Apply、角色选择或Start，产品与七cell新增通过均为0。最终[原报告](C:/workspace/ck3-upgrade-20261003/live/4-8e1c2f1861--auto-upgrade-buildings--R0006/native-report.json) SHA `4f69cee7729ce20b16e9f5d74e683fdf6a6cb8e5c6df6d851f494de47df3f015`；[单独原语汇总](C:/workspace/ck3-upgrade-20261003/live/4-8e1c2f1861--auto-upgrade-buildings--R0006/primitive-summary.json)没有改写全局状态。
+
+16:09:28 UTC受管containment exit1/job1→0，CK3零、harness消失；keeper最后1763、failure=null/thread退出，16:12:09 CAS释放1764。没有正常退出或教程落盘证明。下一独立run才执行显式规则选择/Apply、actual-instance比对与stock Robert Start。源码组合的[官方CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37135465150)实际success，仅属官方L0。
