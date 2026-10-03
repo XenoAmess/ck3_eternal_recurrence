@@ -88,6 +88,15 @@ class IndependentModReleaseTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, message):
                     self.build()
 
+    def test_original_product_has_no_upstream_identity_and_accepts_a_new_item(self) -> None:
+        original = replace(self.spec, upstream_item_id=None)
+        self.assertEqual(release.source_errors(original), [])
+        staging, manifest, _, payload = release.build(original, self.root / "original", REVISION, "3600021457")
+        self.assertIsNone(original.upstream_item_id)
+        self.assertEqual(payload["workshop_item_id"], "3600021457")
+        self.assertEqual(release.verify_manifest(original, staging, manifest), 4)
+        self.assertNotIn("upstream_item_id", payload)
+
     def test_bom_and_utf8_contract_rejects_bad_script_localization_and_descriptor(self) -> None:
         original = {path: (self.source / path).read_bytes() for path in (SCRIPT, LOCALIZATION, "descriptor.mod")}
         for path, data, message in (

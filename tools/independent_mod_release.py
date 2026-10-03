@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic runtime projection for independently maintained CK3 mods.
+"""Deterministic runtime projection for independent original and maintained CK3 mods.
 
 Product wrappers own feature validation, tag creation and publication. This
 module only accepts an explicit runtime inventory and verifies its exact bytes.
@@ -42,7 +42,7 @@ def _relative_path(raw: str) -> str:
     return raw
 
 
-def _item_id(value: str | None, upstream_item_id: str) -> str | None:
+def _item_id(value: str | None, upstream_item_id: str | None) -> str | None:
     if value is None:
         return None
     if not isinstance(value, str) or ITEM_ID.fullmatch(value) is None or int(value) > 2**64 - 1:
@@ -57,16 +57,17 @@ class ProductSpec:
     product_id: str
     source: Path
     runtime_files: frozenset[str] | Iterable[str]
-    upstream_item_id: str
+    upstream_item_id: str | None
     tag_prefix: str
 
     def __post_init__(self) -> None:
         if not isinstance(self.product_id, str) or PRODUCT_ID.fullmatch(self.product_id) is None:
             raise ValueError("product_id must be a lowercase ASCII identifier")
-        if not isinstance(self.upstream_item_id, str) or ITEM_ID.fullmatch(self.upstream_item_id) is None:
-            raise ValueError("upstream_item_id must be a canonical positive decimal string")
-        if int(self.upstream_item_id) > 2**64 - 1:
-            raise ValueError("upstream_item_id exceeds uint64")
+        if self.upstream_item_id is not None:
+            if not isinstance(self.upstream_item_id, str) or ITEM_ID.fullmatch(self.upstream_item_id) is None:
+                raise ValueError("upstream_item_id must be None for originals or a canonical positive decimal string")
+            if int(self.upstream_item_id) > 2**64 - 1:
+                raise ValueError("upstream_item_id exceeds uint64")
         if not isinstance(self.tag_prefix, str) or not self.tag_prefix or any(c.isspace() for c in self.tag_prefix):
             raise ValueError("tag_prefix must be a nonempty string without whitespace")
         if isinstance(self.runtime_files, (str, bytes)):
@@ -144,7 +145,7 @@ def _runtime_text_errors(spec: ProductSpec, relative: str, data: bytes) -> list[
         return errors + [f"runtime text is not UTF-8: {relative}"]
     if "remote_file_id" in text:
         errors.append(f"canonical runtime contains remote_file_id: {relative}")
-    if re.search(r"(?<![0-9])" + re.escape(spec.upstream_item_id) + r"(?![0-9])", text):
+    if spec.upstream_item_id is not None and re.search(r"(?<![0-9])" + re.escape(spec.upstream_item_id) + r"(?![0-9])", text):
         errors.append(f"upstream Workshop identity leaked into runtime: {relative}")
     return errors
 
