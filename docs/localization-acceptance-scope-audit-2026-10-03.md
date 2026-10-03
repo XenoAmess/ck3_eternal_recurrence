@@ -58,3 +58,16 @@
 天朝 361 的实际全文件格式 audit 发现七种外语 core 文件各缺 37 个当前 key，并有 key 顺序漂移；mechanisms 文件格式检查没有该问题。诊断保存在 `zhstyle-format-policy-probe-20261003-01/key-format-diagnostics.json`。这是现有文件的真实格式 RED，本次没有通过改报告、弱化格式检查或补造翻译把它写成 GREEN；该产品正式发布前仍须修复并生成绑定当前字节的格式报告。旧 canonical snapshot 继续保留为历史记录，不再证明当前标签或文件状态通过。普通 push/PR 不以该产品正式 release audit snapshot 的时效为门禁。
 
 本次两个第三方维护版的目标继续有效：分别完成剩余简体中文实机、测试报告和独立新 Workshop 发布。多语言实机计划已取消，不再是待办项。
+
+## 2026-10-03 外置控制入口补充勘误
+
+后续只读检查又发现两个外置入口遗漏，已先保全各自精确旧字节再修正：
+
+- `configure_holding_reload.py` 原入口会切换英文；原片和回执保存在 `holding-legacy-reload-cn-guard-20261003-01/`。兼容入口现仅委托既有 `configure_locale_reload.py`，参数固定为 `mod_change_holding_types simp_chinese`，拒绝语言覆盖参数。重载仍由既有简中配置与来源存档 SHA 守卫处理。
+- `game_keyboard.py` 原 paste 分支接受任意 `switchlanguage ` 前缀；现只接受归一化后文本精确等于 `switchlanguage l_simp_chinese`，原有 scan/key 和文件读取分支不变。原片、修正源码、差分及布尔 guard 检查见 `external-cn-control-scope-addendum-20261003-01/{game_keyboard-original.py,game_keyboard-cn-guarded.py,addendum.json,verification.json}`；结果为 `SOURCE_GUARD_GREEN_NOT_EXECUTED`，其含义仅为源码检查通过。
+
+上述两个入口均未执行，没有屏幕、剪贴板、游戏启动或 profile 写入；冻结的 `C:/tm-screen` 消费树及当前 `live_session.py` 没有改动。旧历史记录保持原样，补充证据根仍为 `C:/workspace/two-mod-maintenance-20261003/`。这项勘误不证明 holding R5 已启动或中文实机通过，实际验收继续等待新 attempt 的原生日志与清晰中文画面。
+
+## 2026-10-03 后续简体中文实机完成记录
+
+上述源码守卫检查与实际实机证据分开保留。后续法理征服 R0003 完成九组72项综合语义断言、普通中文宣战和公国战争保存重载，已知诊断限制见[本产品中文报告](../mod_de_jure_conquest/docs/cn-live-acceptance-2026-10-03.md)。地产类型转换 R0005 在简体中文 profile 完成12项唯一断言、六种中文决议名称、400金币费用显示与完整无遮挡警告；实际付款另引用早前简体中文 R0002，详见[本产品当前测试报告](../mod_change_holding_types/docs/test-report-2026-10-03.md)。两游戏均已停止并释放屏幕占用。历史外语 attempt 继续只作过程证据，未计入任何中文签核；其他八语仍仅做格式检查。上述结果不等于两产品已经发布。

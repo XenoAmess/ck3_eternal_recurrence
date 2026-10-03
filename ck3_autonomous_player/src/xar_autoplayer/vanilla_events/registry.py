@@ -332,6 +332,9 @@ def query_vanilla_event_knowledge_v1(
     if ck3_build == "1.20.0.3":
         from .records_faction_demand1001_12003 import FACTION_DEMAND1001_12003_RECORDS
         from .records_marriage_notice_12003 import MARRIAGE_NOTICE_12003_RECORDS
+        from .records_laamp_conquest_notice_12003 import LAAMP_CONQUEST_NOTICE_12003_RECORDS
+        from .records_stress1701_12003 import STRESS1701_12003_RECORDS
+        from .records_norman_sicily1070_12003 import NORMAN_SICILY1070_12003_RECORDS
         from .records_feast_arrival_12003 import FEAST_ARRIVAL_12003_RECORDS
         from .records_feast_start_12003 import FEAST_START_12003_RECORDS
         from .records_feast_drinks_12003 import FEAST_DRINKS_12003_RECORDS
@@ -347,6 +350,12 @@ def query_vanilla_event_knowledge_v1(
         notice = FACTION_DEMAND1001_12003_RECORDS.get(event_definition_key)
         if notice is None:
             notice = MARRIAGE_NOTICE_12003_RECORDS.get(event_definition_key)
+        if notice is None:
+            notice = LAAMP_CONQUEST_NOTICE_12003_RECORDS.get(event_definition_key)
+        if notice is None:
+            notice = STRESS1701_12003_RECORDS.get(event_definition_key)
+        if notice is None:
+            notice = NORMAN_SICILY1070_12003_RECORDS.get(event_definition_key)
         if notice is None:
             notice = FEAST_ARRIVAL_12003_RECORDS.get(event_definition_key)
         if notice is None:

@@ -1,0 +1,31 @@
+{
+  "schema": "djc.release-text-freeze.v1",
+  "status": "PENDING_PUBLICATION_TEXT_A_FROZEN",
+  "utc": "2026-10-03T09:57:32.986227+00:00",
+  "files": [
+    {
+      "path": "mod_de_jure_conquest/docs/steam-change-notes-1.0.0.txt",
+      "utf8_bytes": 3521,
+      "lf_characters": 1363,
+      "lines": 32,
+      "sha256": "e854d04d8b387ce486f59192fa1fe2bdf94c8bb3a8399ab083cdd449b8486c7b",
+      "delivery": "Complete player textA; no new image appendixB yet",
+      "publish_state": "FROZEN_FOR_PENDING_PUBLICATION_NOT_PUBLIC_UPLOAD_FACT"
+    },
+    {
+      "path": "mod_de_jure_conquest/docs/workshop-description.bbcode",
+      "utf8_bytes": 3188,
+      "lf_characters": 1302,
+      "lines": 33,
+      "sha256": "791ffb72f2e836c1cc2e749dada1ae51e519c3919babca7cf38f379a98129b84",
+      "delivery": "Complete player textA; no new image appendixB yet",
+      "publish_state": "FROZEN_FOR_PENDING_PUBLICATION_NOT_PUBLIC_UPLOAD_FACT"
+    }
+  ],
+  "source_acceptance_sha256": "73677db83085621bc8ad47b47e7b89178c6d50b8f4aebf4b88590200ee216f49",
+  "runtime_changes": 0,
+  "uploaded": false,
+  "public_change_notes_readback": false,
+  "old_freezes_untouched": true,
+  "root_image_appendix_B": "Not generated or claimed in this package"
+}

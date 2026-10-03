@@ -1,6 +1,6 @@
 # 当前测试报告
 
-日期：2026-10-03。当前结论：**1.0.0 候选源码、16文件正式语言静态与可复现构建通过；简中R0001费用已实测，完整简中功能验收与发布待完成。** 用户已明确只用简体中文做真实游戏验收，其他八语只做基本格式／键／占位符规范检查。R0002英文实机保留为诊断，不作为简中签核。
+日期：2026-10-03。当前结论：**1.0.0 的16文件静态与可复现构建通过；普通简中宣战／参战／公国战争保存重载及九格72项综合语义验收通过，保留诊断限制；正式发布尚未发生。** 用户已明确只用简体中文做真实游戏验收，其他八语只做基本格式／键／占位符规范检查。R0002英文实机保留为诊断，不作为简中签核。[最终简中报告](cn-live-acceptance-2026-10-03.md) 和 [精确机器证据](cn-live-acceptance-2026-10-03-R0003.json) 覆盖下方早期待验状态；旧RED和不可变报告继续保留。
 
 ## 当前结果
 
@@ -13,15 +13,18 @@
 | 正式其他七语 | format-certified | 主执行者生成候选并认证键／占位符；不代表七语界面实机 |
 | 正式16文件静态 | GREEN | 生产参战方修复后的 [R0003永久副本](release-static-2026-10-03-R0003.json)，release_localization=true，完整16文件；R0002保留为旧候选 |
 | 可复现构建 | 16文件PASS | 修复候选公共builder双构建manifest／ZIP一致；[精确hash](production-repair-review-2026-10-03-R0001.json)，尚非tag绑定发布包 |
-| 外置夹具生成 | parser／生成一致性 PASS；新夹具live NOT_RUN | `de-jure-fixture-R0005-CN`，72条语义合同不变；每格定向停战前后实读，资格失败停止；[修复复核](fixture-repair-review-2026-10-03-R0005-CN.json) |
+| 外置夹具生成 | parser PASS；最终分phase实机完成 | `djc-manual-ninecase-R0006`保持72语义合同，R0007／8／9组合验收；旧自动R0005-CN失败与修复证据保留 |
 | Open Kaishek 确定性子集 | NOT_RUN | 本工作包未找到 sibling checkout；完整探测由主执行者协调 |
 | CK3 首次加载 | HARNESS_RED | R0001真实日志发现27条fixture文件namespace缺失；[原始快照与修复](fixture-initial-load-red-2026-10-03.md)，runtime改动0，R0003待clean实机 |
 | CK3 公国 GUI 宣战费用 | 已实测，预览与总扣款不同 | R0001原生010→014实际扣50威望／300虔诚，预览50／200；[原数值勘误与证据](duchy-live-red-2026-10-03.md) |
 | CK3 王国 GUI 宣战费用 | PASS（该场景） | R0001原生017→018同paused日期实际扣250威望／1000虔诚，战争5／k_sicily目标2189；[三档报告](gui-declaration-fees-2026-10-03.md) |
 | CK3 帝国 GUI 宣战费用 | 已实测，预览与总扣款不同 | R0001原生019→020实际扣1250威望／5100虔诚，预览1250／5000；原版宣战效果有匹配-100机制，但未直接回读该分支执行 |
-| CK3 公国参战方／列表断言 | R0002英文诊断通过，简中待验 | 原R0001实际PRODUCTION_RED保留；候选86302普通GUI后实际四项PASS、三真实参战方；[诊断回执](r2-gui-english-diagnostic-2026-10-03.json) |
-| CK3 结算矩阵 | R0002调试矩阵HARNESS_RED；新简中矩阵待验 | clean LoadGame确认无GUI白和后态；第一格8项PASS，第二格native eligibility FAIL；[实际失败与最小修复](matrix-native-eligibility-red-2026-10-03.md) |
-| Workshop／缓存／Change Notes | NOT_RUN | 尚无实机GREEN或发布事实 |
+| CK3 公国参战方／目标 | 简中R0003 PASS | 普通GUI实际三参战者，保存重载后只读4项再次PASS；原R0001实际PRODUCTION_RED和R0002英文诊断保留 |
+| CK3 新公国战争保存重载 | 简中R0003 PASS（该场景） | GUI重载后资源raw及战争字段完全一致，不外推所有旧存档／三档战争 |
+| CK3 结算矩阵 | 简中综合72语义PASS，诊断限制保留 | R0007六格、R0008帝国胜利跨阶段、R0009余两格；原RED不改写；[实际范围](cn-live-acceptance-2026-10-03.md) |
+| 最终运行文件身份 | 16文件逐SHA相同 | 冻结source3f023e5f／loaded production／当前源码三方一致；未重跑不变的全量static/build |
+| 实际停止／屏幕释放 | PASS | PID5908停止，Job0／tree_gone／cleanup_proven；CAS2447 done/resources[] |
+| Workshop／缓存／Change Notes | NOT_RUN | 尚无上传或公开发布事实 |
 
 所有外置 artifact 位于 `C:/workspace/two-mod-maintenance-20261003/`。`de-jure-static-R0001`、`R0002`、`R0003` 报告与 fixture `R0001`、`R0002` 独立保留；没有覆盖历史 attempt。R0003 `checked_runtime_file_count=9`、`runtime_allowlist_count=16`、`release_localization=false`、`live=NOT_RUN`。
 

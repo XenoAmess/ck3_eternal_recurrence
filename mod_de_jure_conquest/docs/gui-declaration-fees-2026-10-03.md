@@ -19,3 +19,7 @@
 2026-10-03勘误：初次摘要沿用公国预览200，未实际计算raw差，错误写为总扣200。机器审计R0001要求expected200时触发AssertionError，输入脚本、54项前置证据及失败回执保留在 `C:/workspace/two-mod-maintenance-20261003/de-jure-fee-evidence-R0001/`；没有把这个审计错误归为CK3产品RED。新审计R0002直接验证实际300，永久回执为 [三档费用证据索引](gui-fee-evidence-2026-10-03-R0002.json)，SHA-256 `4d264b85da40ca4ac5c15a20f9d15ed0ae38990e6f38c3af7a5af37a53c9d912`。54个完整原始文件（冻结16文件production、六个原生回执、三档截图及坐标回执、fresh日志、4份原版来源）保存于 `C:/workspace/two-mod-maintenance-20261003/de-jure-fee-evidence-R0002/`；旧证据和R0001执行树保持原样。
 
 本轮不新增runtime改动，不启动或控制游戏。进程退出、profile恢复及R0002修复候选验收由root独立保存回执；本记录没有把stop请求写成cleanup已完成，也没有发布事实。
+
+## R0003简中最终候选追加
+
+source3f023e5f的普通中文GUI三档预览分别50／200、250／1000、1250／5000。实际公国宣战仍在同暂停日期53144328扣50威望／300虔诚，原始余额同上公国行；次级Naples实际参加，普通GUI保存重载后资源raw与war4目标2221字段保持一致，14:48:19只读四项断言再次PASS。R0003王国／帝国没有新增实际扣款操作，不能由预览外推；其R0001简中原数值继续原样保留。完整范围及九格结算见 [最终简中验收](cn-live-acceptance-2026-10-03.md)。

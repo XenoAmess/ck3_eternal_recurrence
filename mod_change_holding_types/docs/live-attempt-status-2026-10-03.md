@@ -59,3 +59,9 @@ Python MCP `tools.json` 中存在 `ck3_query_frontend_gui_route_v1` wrapper；�
 当前待简体中文实机最终签核及正式上传／公开全文Change Notes／fresh缓存／永久changelog。已有功能与历史英文证据保留，其他八语只检查格式；外语实机和语义／术语审阅计划已取消。
 
 当前验收范围以[语言验收政策](localization-acceptance-policy-2026-10-03.md)为准：**只进行简体中文实机验收；其他八种语言只做格式检查，不进行语义／术语审阅或外语实机验收。**
+
+## 2026-10-03 最终补记：R0005简体中文GREEN
+
+[R0005最终报告](live-R0005-cn-2026-10-03/README.md)绑定源提交`3f023e5ff00f87f8df3a8adde1a72400c36851ec`及本机1.20.0.3／build25652598。新鲜离线准入后，以简体中文冷载R0002转换保存；只读两项和生产effect组合12项原生日志PASS，五次error.log均0bytes，同日暂停、金币846。已亲阅中文六决议名称、城市400费用显示、特拉尼及完整无tooltip遮挡的建筑损失／政府继承警告。R0005未再次执行决议付款；R0002实际GUI扣款400的历史证据单独保留。
+
+PID19216已受管停止；Job tree_gone／cleanup_proven=true、final0，freshCK3[]；CAS2475 done／resources[]。原始run永久保留，历史报告不改写。其他八语仅格式检查，无新的外语实机或语义签核。本产品中文实机门已完成；Workshop上传、全文Change Notes公开回读、fresh缓存及永久changelog仍待正式交付。发布文本见[冻结记录](release-text-freeze-2026-10-03.json)。

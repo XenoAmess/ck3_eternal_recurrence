@@ -1,0 +1,207 @@
+{
+  "schema": "cht.live-acceptance.v1",
+  "reported_date": "2026-10-03",
+  "product": "mod_change_holding_types",
+  "mod_version": "1.0.0",
+  "status": "GREEN_CN_LIVE_ACCEPTANCE",
+  "publication_status": "NOT_YET_PUBLISHED",
+  "executor": "Codex /root/holding_conversion",
+  "identity": {
+    "schema": "xar.ck3-live-run-identity.v1",
+    "run_id": "bf-202609141645-5434332d4d--change-holding-types--R0005",
+    "execution_id": "20fb3714-9bc0-42cb-89f9-a88eacaf974e",
+    "machine_id": "bf-202609141645-5434332d4d",
+    "mod_key": "change-holding-types",
+    "sequence": 5,
+    "allocated_at_utc": "2026-10-03T09:28:13.799227+00:00",
+    "allocator_pid": 15176,
+    "legacy_alias": null
+  },
+  "source_revision": "3f023e5ff00f87f8df3a8adde1a72400c36851ec",
+  "runtime_files": 17,
+  "production_manifest_sha256": "f653bef42a041168168f31754e2b73aea111e25ac244e514f11200adb6acf843",
+  "production_zip_sha256": "58eeea830aebfda11faabadc11b48ea3d1aa732d1179438a652b9a6ec068ba72",
+  "game": {
+    "version": "1.20.0.3",
+    "steam_build": "25652598",
+    "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+    "pid": 19216,
+    "language": "simp_chinese",
+    "consumer_revision": "f30579bf6405e183192c96ea6b9bc35dddd11eec"
+  },
+  "input_save": {
+    "product": "mod_change_holding_types",
+    "run_id": "bf-202609141645-5434332d4d--change-holding-types--R0005",
+    "input_save": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0002\\session\\preserved-saves\\converted-rossano-city\\xar_checkpoint.ck3",
+    "loaded_save": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0005\\state\\profile\\save games\\xar_checkpoint.ck3",
+    "size": 68962340,
+    "sha256": "47a1178c8373eb79ab8ca7071e5c14b0e30218c43a493d2f5e49c2230915a35a",
+    "language": "simp_chinese",
+    "load_save_name": "xar_checkpoint",
+    "settings_before_sha256": "e71b33eae3d6096de8522c33ad42e613514ddcdf114c8b8e04f1cb0bc8798c5d",
+    "settings_sha256": "e71b33eae3d6096de8522c33ad42e613514ddcdf114c8b8e04f1cb0bc8798c5d",
+    "config_before_sha256": "bfe1e5e2d665851c97e5a6c340aab2de93e6ec820e25c486590ea48ef223c2d7",
+    "config_sha256": "c7c558f3cf23aa8e617b3fe587ff7b4d321f13590cf0d019a4c4879dee6e7045"
+  },
+  "fixture": {
+    "name": "holding-live-fixture-02",
+    "inventory": {
+      "common/on_action/chtt_on_actions.txt": {
+        "size": 232,
+        "sha256": "cebb3384c7d0e45fade0719fef3f6f7872ebc84d6903e98373fe845f89b770a6"
+      },
+      "descriptor.mod": {
+        "size": 82,
+        "sha256": "9c3bede238e7e45cea7814f02c991efecf417ba86dd10a9fe3f0ab792e351fd7"
+      },
+      "events/chtt_events.txt": {
+        "size": 3669,
+        "sha256": "72fac24f77544135d15a35398658c15d8619d7aa1617fa47eaee63d42e19be9b"
+      }
+    },
+    "on_game_start_repeat_not_triggered": true
+  },
+  "snapshots": [
+    {
+      "name": "003-cold-map-ready",
+      "started_at_utc": "2026-10-03T09:44:25Z",
+      "date_raw": 53144328,
+      "paused": true,
+      "player_runtime_id": 31254,
+      "gold": 846,
+      "revision": 3,
+      "native_revision": 2
+    },
+    {
+      "name": "005-before-matrix-snapshot",
+      "started_at_utc": "2026-10-03T09:56:31Z",
+      "date_raw": 53144328,
+      "paused": true,
+      "player_runtime_id": 31254,
+      "gold": 846,
+      "revision": 3,
+      "native_revision": 2
+    },
+    {
+      "name": "007-after-ui-paused-snapshot",
+      "started_at_utc": "2026-10-03T10:23:50Z",
+      "date_raw": 53144328,
+      "paused": true,
+      "player_runtime_id": 31254,
+      "gold": 846,
+      "revision": 3,
+      "native_revision": 2
+    }
+  ],
+  "saved_state_readonly": {
+    "status": "PASS",
+    "assertions": [
+      "GUI Rossano direct-owned city",
+      "GUI untargeted capital castle"
+    ]
+  },
+  "combined_native_log_matrix": {
+    "status": "PASS",
+    "unique_pass_count": 12,
+    "assertions": [
+      "GUI Rossano direct-owned city",
+      "GUI untargeted capital castle",
+      "convert-city",
+      "convert-temple",
+      "convert-tribal",
+      "convert-nomad",
+      "convert-temple_citadel",
+      "convert-castle",
+      "same-type-rejected",
+      "same-type-unchanged",
+      "ai-effect-blocked",
+      "non-barony-rejected"
+    ],
+    "new_log_prefix_preserved": true,
+    "start_end_and_ai_actor_present": true,
+    "fail_count": 0,
+    "transport_marker_confirmed": false,
+    "basis": "actual newly appended native debug.log state assertions"
+  },
+  "error_log": {
+    "phases": [
+      "before-readonly",
+      "after-readonly",
+      "before-matrix",
+      "after-matrix",
+      "after-ui"
+    ],
+    "all_bytes": 0,
+    "empty_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "chinese_ui": {
+    "status": "PASS",
+    "personally_reviewed": true,
+    "six_names": [
+      "地产转化为城堡",
+      "地产转化为城市",
+      "地产转化为神殿",
+      "地产转化为游牧聚落",
+      "地产转化为部落",
+      "地产转化为神殿城塞"
+    ],
+    "target": "Trani / 特拉尼",
+    "city_cost_displayed": 400,
+    "warning": "不兼容的建筑可能丢失。地产仍受政府兼容性及继承规则约束。",
+    "warning_complete_unoccluded": true,
+    "key_leak_observed_in_product_fields": false,
+    "best_image": "session/screens/cn-city-full-warning-01.png",
+    "best_image_sha256": "abc9318800a7c600e5f143b3611c2e7b7948396b67b0ac8754ef7b8b606bc24c",
+    "vanilla_requirement_row": "One engine-generated requirement row reads Is not AI; product Chinese fields render correctly; no product runtime edit or new error was observed."
+  },
+  "cleanup": {
+    "nonce": "94c0db7973e54c1d9ffa307b610a7def",
+    "ck3_pid": 19216,
+    "ck3_creation_date": "20261003092932.024834+000",
+    "ck3_exit_code": 1,
+    "job_active_processes_before_termination": 1,
+    "job_active_processes_final": 0,
+    "tree_gone": true,
+    "cleanup_proven": true,
+    "final_ck3_inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    },
+    "watchdog_pid": 2112,
+    "watchdog_creation_date": "20261003092930.487247+000",
+    "watchdog_state_before": "running",
+    "watchdog_state_after": "absent",
+    "control_files_absent": {
+      "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0005\\state\\control\\ck3.json": true,
+      "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0005\\state\\control\\watchdog-94c0db7973e54c1d9ffa307b610a7def.ready.json": true,
+      "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0005\\state\\control\\ck3.watchdog_error": true,
+      "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0005\\state\\control\\unsafe-cleanup.json": true
+    },
+    "contract_errors": [],
+    "ok": true
+  },
+  "cas_release": {
+    "ok": true,
+    "sequence": 2475,
+    "state": "done",
+    "resources": [],
+    "timestamp_utc": "2026-10-03T10:24:31.966702+00:00"
+  },
+  "boundaries": [
+    "Only Simplified Chinese was launched and accepted in this run; other eight languages are format-only.",
+    "No new GUI decision execution or gold deduction occurred in R0005; R0002 actual GUI 400-gold deduction is separately preserved.",
+    "Direct production-effect fixture assertions do not prove decision execution or payment.",
+    "Startup requests 001/002 honestly report game state unavailable while loading; ready request 003 succeeded later.",
+    "Transport marker_confirmed=false is retained; state PASS rests on the new native debug.log interval.",
+    "The reviewer template uses a generic root label; actual subagent visual review is recorded by a separate preserved addendum.",
+    "Fixed EXE 1.20.0.3 result does not establish compatibility of all 1.20.* builds.",
+    "Historical failed attempts and R0002 fixture diagnostic remain unchanged.",
+    "Workshop upload, public full Change Notes, fresh downloaded cache and permanent release changelog remain separate pending delivery."
+  ],
+  "evidence_index": "evidence-index.json",
+  "permanent_external_root": "C:/workspace/two-mod-maintenance-20261003/bf-202609141645-5434332d4d--change-holding-types--R0005"
+}

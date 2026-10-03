@@ -12,7 +12,7 @@
 | 产品 L0／可复现构建 | GREEN（正式九语候选） | [正式静态 R0003](release-static-R0003-2026-10-03.json)，17运行文件；canonical LF double-build manifest／ZIP bytes一致 |
 | Open Kaishek 离线加速器 | environment unavailable | [来源预验回执](holding-kaishek-source-01.json)：`open_kaishek-root-missing`，没有工具执行或引擎语义 GREEN |
 | 外置实机夹具准备 | 已冻结；结果待实机回执 | [fixture manifest](holding-live-fixture-01.fixture.json)，10 PASS声明＋START／END＋AI actor到达，声明不等于结果 |
-| 产品 CK3 实机验收 | 中文最终签核待完成 | [实际过程与限制](live-attempt-status-2026-10-03.md)：R0002GUI付款、R0003重载／干净矩阵保留；英文过程不替代中文签核，其他八语只做格式检查 |
+| 产品 CK3 实机验收 | R0005简体中文GREEN | [实际过程与限制](live-attempt-status-2026-10-03.md)：R0002GUI付款、R0003重载／干净矩阵保留；英文过程不替代中文签核，其他八语只做格式检查 |
 | 新 Workshop 发布／缓存／Change Notes | 未执行 | 没有创建、上传或公开发布事实 |
 
 首次静态 [attempt01](holding-static-attempt-01.json) 为 harness RED：结构扫描器把同名参数化 trigger 调用与顶层定义一并计数，误报 7 个定义。修复当前层 block 识别后 attempt02 GREEN；失败报告仍保留，没有修改为 GREEN。
@@ -44,3 +44,9 @@ attempt03 在相同 runtime bytes 上补齐共享来源allowlist检查、严格�
 当前待简体中文实机最终签核及正式上传／公开全文Change Notes／fresh缓存／永久changelog。已有功能与历史英文证据保留，其他八语只检查格式；外语实机和语义／术语审阅计划已取消。
 
 当前验收范围以[语言验收政策](localization-acceptance-policy-2026-10-03.md)为准：**只进行简体中文实机验收；其他八种语言只做格式检查，不进行语义／术语审阅或外语实机验收。**
+
+## 2026-10-03 最终补记：R0005简体中文GREEN
+
+[R0005最终报告](live-R0005-cn-2026-10-03/README.md)绑定源提交`3f023e5ff00f87f8df3a8adde1a72400c36851ec`及本机1.20.0.3／build25652598。新鲜离线准入后，以简体中文冷载R0002转换保存；只读两项和生产effect组合12项原生日志PASS，五次error.log均0bytes，同日暂停、金币846。已亲阅中文六决议名称、城市400费用显示、特拉尼及完整无tooltip遮挡的建筑损失／政府继承警告。R0005未再次执行决议付款；R0002实际GUI扣款400的历史证据单独保留。
+
+PID19216已受管停止；Job tree_gone／cleanup_proven=true、final0，freshCK3[]；CAS2475 done／resources[]。原始run永久保留，历史报告不改写。其他八语仅格式检查，无新的外语实机或语义签核。本产品中文实机门已完成；Workshop上传、全文Change Notes公开回读、fresh缓存及永久changelog仍待正式交付。发布文本见[冻结记录](release-text-freeze-2026-10-03.json)。

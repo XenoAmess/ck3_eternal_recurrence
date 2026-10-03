@@ -1,0 +1,48 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "key": "ep3_laamps.0003",
+      "exact_build": "PASS",
+      "source_only": "PASS",
+      "option_count": 1,
+      "selected_index": 0,
+      "other_build_rejected": "PASS"
+    },
+    {
+      "key": "stress_threshold.1701",
+      "exact_build": "PASS",
+      "source_only": "PASS",
+      "option_count": 9,
+      "selected_index": 8,
+      "other_build_rejected": "PASS"
+    },
+    {
+      "key": "bookmark.1070",
+      "exact_build": "PASS",
+      "source_only": "PASS",
+      "option_count": 3,
+      "selected_index": 2,
+      "other_build_rejected": "PASS"
+    }
+  ],
+  "unregistered_neighbor_unavailable": "PASS",
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\registry.py",
+      "sha256": "aaf3dc5e28f5432d982960eae817de9bc92153256e11e0ab348c15c852125f4e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_laamp_conquest_notice_12003.py",
+      "sha256": "d5357be8f80a36e43e589e78eecca5c146688913e94534a8740756e80413a083"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_stress1701_12003.py",
+      "sha256": "535f322c5f827f2b80cfdc97c759aa33f412901e13c9ca6802a3fb3053def050"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_norman_sicily1070_12003.py",
+      "sha256": "4efa320ea923f99c82fe590af022f1dd3057f1bb2ec4e74bf262698b2c96d814"
+    }
+  ]
+}

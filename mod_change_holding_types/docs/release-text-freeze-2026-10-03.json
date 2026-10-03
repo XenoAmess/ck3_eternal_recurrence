@@ -1,0 +1,31 @@
+{
+  "schema": "cht.release-text-freeze.v1",
+  "date": "2026-10-03",
+  "version": "1.0.0",
+  "baseline": "initial baseline",
+  "status": "FROZEN_NOT_YET_PUBLISHED",
+  "text_modified_for_this_freeze": false,
+  "files": [
+    {
+      "path": "docs/change-notes-1.0.0.txt",
+      "encoding": "UTF-8",
+      "bytes": 2935,
+      "sha256": "1114ada1e29128e02c0a70fb707fdf54ca65beee14c7cd5d8b6ea7e706bbff99",
+      "characters": 1963,
+      "lines": 31,
+      "normalized_lf_sha256": "1114ada1e29128e02c0a70fb707fdf54ca65beee14c7cd5d8b6ea7e706bbff99",
+      "ends_with_newline": true
+    },
+    {
+      "path": "docs/workshop-description.bbcode",
+      "encoding": "UTF-8",
+      "bytes": 2816,
+      "sha256": "f6635206656f84eb983832351975276fc3e2928d33081fdc478dee52d192f1f4",
+      "characters": 1854,
+      "lines": 27,
+      "normalized_lf_sha256": "f6635206656f84eb983832351975276fc3e2928d33081fdc478dee52d192f1f4",
+      "ends_with_newline": true
+    }
+  ],
+  "public_readback_required": true
+}

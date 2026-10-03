@@ -1,12 +1,12 @@
 # 1.0.0 发布计划
 
-状态：待本产品简体中文实机最终签核与正式发布闭环；其他八语只做格式检查，不做语义／术语审阅或实机。没有上传成功事实。上游 `3337428403` 只能用于注明来源，新维护版必须使用新的 Workshop ID。
+状态：本产品[R0005简体中文实机验收](live-R0005-cn-2026-10-03/README.md)GREEN，待正式发布闭环；其他八语只做格式检查，不做语义／术语审阅或实机。没有上传成功事实。上游 `3337428403` 只能用于注明来源，新维护版必须使用新的 Workshop ID。
 
 ## 已备齐
 
 来源冻结、代码适配、正式九语候选 L0、外置 fixture 与可复现构建已经完成；详见 [当前报告](test-report-2026-10-03.md)和[正式静态R0003](release-static-R0003-2026-10-03.json)。九语格式与保护token层结果见[覆盖报告](localization-coverage-2026-10-03.json)；依用户最新指令，其他八语只检查格式，外语实机或语义／术语审阅不是当前发布要求。预览沿用原作者 `thumbnail.png`，SHA-256 `26ce48cd711b6a6ca65661c4511f4499da3ed72b80d1bf3b855a49e65d529071`，完整原片包含 `.sai2` 留在外置原始快照，后者不进入发布树。
 
-[Workshop 完整描述](workshop-description.bbcode) 和 [完整 Steam Change Notes](change-notes-1.0.0.txt) 是不同交付物。目前都是待冻结文案，不能以它们证明已发布。
+[Workshop 完整描述](workshop-description.bbcode) 和 [完整 Steam Change Notes](change-notes-1.0.0.txt) 是不同交付物。原文已[冻结字符数、行数和SHA-256](release-text-freeze-2026-10-03.json)，不能以它们证明已发布。
 
 ## 剩余发布门
 
@@ -27,6 +27,6 @@ R0001的harness RED、R0002的真实GUI付款与fixture diagnostic、R0003重载
 
 [R0004 报告](live-R0004-visual-route-2026-10-03/README.md) 确认英文六名称、城市说明、Trani目标及成本400；完整警告仍被tooltip遮挡，名为unobscured的末帧也不满足门禁。debug French按钮／控制台路线后HUD仍英文，分类为测试路线 FAIL，产品法语及其余六语视觉均未测，外语冷启动路线现已取消，保留该次历史失败事实。debug原版 `is_ai` trigger perspective 诊断及产品调用上下文完整保留，没有改 runtime。实际session-final与bus-release证明清理／屏幕释放；R0003 register回执误覆盖另见 [追加勘误](corrections-2026-10-03.md)。
 
-当前仍待简体中文实机最终签核及正式上传／公开全文Change Notes／fresh缓存／永久changelog；历史R0004外语路线及英文警告截图不作为中文签核。九语格式检查保留，外语实机和语义／术语审阅计划取消。
+当前简体中文实机最终签核已完成，仍待正式上传／公开全文Change Notes／fresh缓存／永久changelog；历史R0004外语路线及英文警告截图不作为中文签核。九语格式检查保留，外语实机和语义／术语审阅计划取消。
 
 当前验收范围以[语言验收政策](localization-acceptance-policy-2026-10-03.md)为准：**只进行简体中文实机验收；其他八种语言只做格式检查，不进行语义／术语审阅或外语实机验收。**

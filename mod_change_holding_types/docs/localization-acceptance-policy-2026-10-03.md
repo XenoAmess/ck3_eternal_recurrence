@@ -13,4 +13,4 @@ R0002／R0003／R0004的冻结report、原日志、截图和SHA保持原字节�
 
 外置九语cold helper与双产品locale组合准备方案保留为 `NOT_EXECUTED`／计划已取消：没有分配组合run或product artifact ID，没有准备／admit／启动组合profile。后续不调用这些路线。简体中文新的实机与正式发布依各产品自身独立证据收口。
 
-当前发布仍等待本产品简体中文实机最终签核及Workshop上传、完整公开Change Notes、fresh订阅缓存和永久changelog。现有格式检查、旧英文界面过程或另一个产品的结果不替代这些交付。
+本产品[R0005简体中文实机最终签核](live-R0005-cn-2026-10-03/README.md)已GREEN；当前发布仍等待Workshop上传、完整公开Change Notes、fresh订阅缓存和永久changelog。现有格式检查、旧英文界面过程或另一个产品的结果不替代这些交付。

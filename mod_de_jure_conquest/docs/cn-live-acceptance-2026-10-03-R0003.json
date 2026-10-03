@@ -1,0 +1,833 @@
+{
+  "schema": "djc.cn-live-acceptance.v1",
+  "status": "PASS_WITH_DIAGNOSTIC_LIMITATIONS",
+  "utc": "2026-10-03T09:36:31.561027+00:00",
+  "run_id": "bf-202609141645-5434332d4d--de-jure-conquest--R0003",
+  "source_revision": "3f023e5ff00f87f8df3a8adde1a72400c36851ec",
+  "runtime_file_count": 16,
+  "runtime_files_exact_source_and_frozen_equal": true,
+  "runtime_files": [
+    {
+      "path": "common/casus_belli_types/duchy_de_jure_greatwar.txt",
+      "sha256": "2bf55d811901828136416689e75917219d00440d5e63ad8aab2d5db4c6d5aeb1",
+      "size": 5528
+    },
+    {
+      "path": "common/casus_belli_types/empire_de_jure_greatwar.txt",
+      "sha256": "dfd554edc5d42be3cbc76b1ced8555f3fa1e25f499189649e4f8e7c693ec0363",
+      "size": 5534
+    },
+    {
+      "path": "common/casus_belli_types/kingdom_de_jure_greatwar.txt",
+      "sha256": "dfff8ebedc4f8bcf744b198324b1be5faa7ab9076d3956fe548e6ddf236ae56d",
+      "size": 5537
+    },
+    {
+      "path": "common/on_action/greatwar.txt",
+      "sha256": "c9e7aa7c3092e633f74413b861357ea9fd0bb7cd6004ef0d38bbe6c3424356cf",
+      "size": 839
+    },
+    {
+      "path": "common/scripted_effects/djc_war_effects.txt",
+      "sha256": "963e10b91a9f2b4df60396a32b06b6ccce46f3db051d5340d6e1e35b0897941f",
+      "size": 2751
+    },
+    {
+      "path": "descriptor.mod",
+      "sha256": "359e9378843b2532e156f4701179a1dd963dc7dd131a6c5e8d52dab96aaa63d7",
+      "size": 155
+    },
+    {
+      "path": "localization/english/greatwar_l_english.yml",
+      "sha256": "719ad53ee0b238afae6ab70691492e2b5e8d3095fbde27263bb080b693d0399a",
+      "size": 1584
+    },
+    {
+      "path": "localization/french/greatwar_l_french.yml",
+      "sha256": "1e55cc07cf6ba1f75b6aa50af1ac2f74aa9c7d505e2dd03f8415f62fef500d34",
+      "size": 1656
+    },
+    {
+      "path": "localization/german/greatwar_l_german.yml",
+      "sha256": "b66ec0b5fc618bf5806881dcb610cd6a786afae358fbad7b2c58d268118ad986",
+      "size": 1758
+    },
+    {
+      "path": "localization/japanese/greatwar_l_japanese.yml",
+      "sha256": "5fff5dfffe35b7a855866d33717d95cb2fdfe6faf97dc5dc0c8b6e3c24e4a9f7",
+      "size": 1459
+    },
+    {
+      "path": "localization/korean/greatwar_l_korean.yml",
+      "sha256": "509518ba720053649f2a3202084797755811e88046d73cc33bddbdf965985d89",
+      "size": 1543
+    },
+    {
+      "path": "localization/polish/greatwar_l_polish.yml",
+      "sha256": "0063629bac05538d8c980cd0fd09840aab31f0b5fcff75873f619a76f17378a2",
+      "size": 1563
+    },
+    {
+      "path": "localization/russian/greatwar_l_russian.yml",
+      "sha256": "ac6920c019027f7b80a1add1079f5e27d057b72b04d56115a701078207cd59a6",
+      "size": 2389
+    },
+    {
+      "path": "localization/simp_chinese/greatwar_l_simp_chinese.yml",
+      "sha256": "214c3afcd66a5c534d9b44b5bc429579d9f3bb75265f765732b4cf4adbb553b2",
+      "size": 1430
+    },
+    {
+      "path": "localization/spanish/greatwar_l_spanish.yml",
+      "sha256": "98c680f4f36e689314b132b8fd0497d584e990347335bb198ffd34c8df262e55",
+      "size": 1608
+    },
+    {
+      "path": "thumbnail.png",
+      "sha256": "7b9d9de50b9a8a9fdf83bc89996330ea12f28a4a2396006d733043a8840c0465",
+      "size": 111868
+    }
+  ],
+  "production_manifest_sha256": "c29dba2e521c9451f2660140aafaf38b6242233dcf68fba515f3c7e99dfce96b",
+  "game_version": "1.20.0.3",
+  "steam_build_id": 25652598,
+  "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "live_language": "simp_chinese",
+  "other_eight_languages": "FORMAT_ONLY_NO_LIVE_OR_SEMANTIC_GATE",
+  "semantic_result": "72_distinct_actual_assertions_across_nine_cells",
+  "case_count": 9,
+  "assertion_count": 72,
+  "composition": "R0007 first6 cases; empire attacker reset/startR0007 and settlementR0008; final2 casesR0009. Original R0007/R0008 driver RED remains unchanged. This is a composed semantic report, not a rewritten all-green attempt.",
+  "cases": [
+    {
+      "case": "duchy_white_peace",
+      "status": "PASS_8_ACTUAL_ASSERTIONS",
+      "source_attempts": [
+        "R0007"
+      ],
+      "reset_date": 53145720,
+      "reset_stress_points": 0,
+      "war_start_date": 53145792,
+      "war_refreshed_date": 53145840,
+      "result_date": 53145840,
+      "result_stress_points": 34,
+      "war_id": 83886088,
+      "native_target_title_ids": [
+        2221
+      ],
+      "result_wars": [],
+      "result_image": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0003\\session\\screens\\manual-cn-R0007-duchy_white_peace-result.png",
+      "actual_markers": [
+        {
+          "marker": "duchy_white_peace_ai_unavailable",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:29:58][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 7: DJCM: TEST PASS duchy_white_peace_ai_unavailable"
+        },
+        {
+          "marker": "duchy_white_peace_distinct_realms",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:29:58][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 12: DJCM: TEST PASS duchy_white_peace_distinct_realms"
+        },
+        {
+          "marker": "duchy_white_peace_native_eligibility",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:29:58][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 17: DJCM: TEST PASS duchy_white_peace_native_eligibility"
+        },
+        {
+          "marker": "duchy_white_peace_native_participants",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:02][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 9: DJCM: TEST PASS duchy_white_peace_native_participants"
+        },
+        {
+          "marker": "duchy_white_peace_native_goal",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:02][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 14: DJCM: TEST PASS duchy_white_peace_native_goal"
+        },
+        {
+          "marker": "duchy_white_peace_county_ownership",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:02][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 7: DJCM: TEST PASS duchy_white_peace_county_ownership"
+        },
+        {
+          "marker": "duchy_white_peace_war_ended",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:02][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 12: DJCM: TEST PASS duchy_white_peace_war_ended"
+        },
+        {
+          "marker": "duchy_white_peace_outside_and_owned_unchanged",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:02][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 17: DJCM: TEST PASS duchy_white_peace_outside_and_owned_unchanged"
+        }
+      ]
+    },
+    {
+      "case": "duchy_attacker",
+      "status": "PASS_8_ACTUAL_ASSERTIONS",
+      "source_attempts": [
+        "R0007"
+      ],
+      "reset_date": 53145840,
+      "reset_stress_points": 0,
+      "war_start_date": 53145888,
+      "war_refreshed_date": 53145936,
+      "result_date": 53145936,
+      "result_stress_points": 0,
+      "war_id": 10,
+      "native_target_title_ids": [
+        2221
+      ],
+      "result_wars": [],
+      "result_image": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0003\\session\\screens\\manual-cn-R0007-duchy_attacker-result.png",
+      "actual_markers": [
+        {
+          "marker": "duchy_attacker_ai_unavailable",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:12][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 7: DJCM: TEST PASS duchy_attacker_ai_unavailable"
+        },
+        {
+          "marker": "duchy_attacker_distinct_realms",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:12][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 12: DJCM: TEST PASS duchy_attacker_distinct_realms"
+        },
+        {
+          "marker": "duchy_attacker_native_eligibility",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:12][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 17: DJCM: TEST PASS duchy_attacker_native_eligibility"
+        },
+        {
+          "marker": "duchy_attacker_native_participants",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:16][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 9: DJCM: TEST PASS duchy_attacker_native_participants"
+        },
+        {
+          "marker": "duchy_attacker_native_goal",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:16][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 14: DJCM: TEST PASS duchy_attacker_native_goal"
+        },
+        {
+          "marker": "duchy_attacker_county_ownership",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:17][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 7: DJCM: TEST PASS duchy_attacker_county_ownership"
+        },
+        {
+          "marker": "duchy_attacker_war_ended",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:17][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 12: DJCM: TEST PASS duchy_attacker_war_ended"
+        },
+        {
+          "marker": "duchy_attacker_outside_and_owned_unchanged",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:17][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 17: DJCM: TEST PASS duchy_attacker_outside_and_owned_unchanged"
+        }
+      ]
+    },
+    {
+      "case": "duchy_defender",
+      "status": "PASS_8_ACTUAL_ASSERTIONS",
+      "source_attempts": [
+        "R0007"
+      ],
+      "reset_date": 53145936,
+      "reset_stress_points": 0,
+      "war_start_date": 53146008,
+      "war_refreshed_date": 53146056,
+      "result_date": 53146056,
+      "result_stress_points": 0,
+      "war_id": 16777226,
+      "native_target_title_ids": [
+        2221
+      ],
+      "result_wars": [],
+      "result_image": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0003\\session\\screens\\manual-cn-R0007-duchy_defender-result.png",
+      "actual_markers": [
+        {
+          "marker": "duchy_defender_ai_unavailable",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:24][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 7: DJCM: TEST PASS duchy_defender_ai_unavailable"
+        },
+        {
+          "marker": "duchy_defender_distinct_realms",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:24][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 12: DJCM: TEST PASS duchy_defender_distinct_realms"
+        },
+        {
+          "marker": "duchy_defender_native_eligibility",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:24][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 17: DJCM: TEST PASS duchy_defender_native_eligibility"
+        },
+        {
+          "marker": "duchy_defender_native_participants",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:28][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 9: DJCM: TEST PASS duchy_defender_native_participants"
+        },
+        {
+          "marker": "duchy_defender_native_goal",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:28][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 14: DJCM: TEST PASS duchy_defender_native_goal"
+        },
+        {
+          "marker": "duchy_defender_county_ownership",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:29][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 7: DJCM: TEST PASS duchy_defender_county_ownership"
+        },
+        {
+          "marker": "duchy_defender_war_ended",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:29][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 12: DJCM: TEST PASS duchy_defender_war_ended"
+        },
+        {
+          "marker": "duchy_defender_outside_and_owned_unchanged",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:29][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 17: DJCM: TEST PASS duchy_defender_outside_and_owned_unchanged"
+        }
+      ]
+    },
+    {
+      "case": "kingdom_attacker",
+      "status": "PASS_8_ACTUAL_ASSERTIONS",
+      "source_attempts": [
+        "R0007"
+      ],
+      "reset_date": 53146056,
+      "reset_stress_points": 0,
+      "war_start_date": 53146104,
+      "war_refreshed_date": 53146176,
+      "result_date": 53146176,
+      "result_stress_points": 0,
+      "war_id": 33554442,
+      "native_target_title_ids": [
+        2189
+      ],
+      "result_wars": [],
+      "result_image": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0003\\session\\screens\\manual-cn-R0007-kingdom_attacker-result.png",
+      "actual_markers": [
+        {
+          "marker": "kingdom_attacker_ai_unavailable",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:36][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 7: DJCM: TEST PASS kingdom_attacker_ai_unavailable"
+        },
+        {
+          "marker": "kingdom_attacker_distinct_realms",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:36][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 12: DJCM: TEST PASS kingdom_attacker_distinct_realms"
+        },
+        {
+          "marker": "kingdom_attacker_native_eligibility",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:36][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 17: DJCM: TEST PASS kingdom_attacker_native_eligibility"
+        },
+        {
+          "marker": "kingdom_attacker_native_participants",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:40][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 9: DJCM: TEST PASS kingdom_attacker_native_participants"
+        },
+        {
+          "marker": "kingdom_attacker_native_goal",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:40][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 14: DJCM: TEST PASS kingdom_attacker_native_goal"
+        },
+        {
+          "marker": "kingdom_attacker_county_ownership",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:41][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 7: DJCM: TEST PASS kingdom_attacker_county_ownership"
+        },
+        {
+          "marker": "kingdom_attacker_war_ended",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:41][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 12: DJCM: TEST PASS kingdom_attacker_war_ended"
+        },
+        {
+          "marker": "kingdom_attacker_outside_and_owned_unchanged",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:41][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 17: DJCM: TEST PASS kingdom_attacker_outside_and_owned_unchanged"
+        }
+      ]
+    },
+    {
+      "case": "kingdom_white_peace",
+      "status": "PASS_8_ACTUAL_ASSERTIONS",
+      "source_attempts": [
+        "R0007"
+      ],
+      "reset_date": 53146176,
+      "reset_stress_points": 0,
+      "war_start_date": 53146224,
+      "war_refreshed_date": 53146272,
+      "result_date": 53146272,
+      "result_stress_points": 34,
+      "war_id": 50331658,
+      "native_target_title_ids": [
+        2189
+      ],
+      "result_wars": [],
+      "result_image": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0003\\session\\screens\\manual-cn-R0007-kingdom_white_peace-result.png",
+      "actual_markers": [
+        {
+          "marker": "kingdom_white_peace_ai_unavailable",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:48][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 7: DJCM: TEST PASS kingdom_white_peace_ai_unavailable"
+        },
+        {
+          "marker": "kingdom_white_peace_distinct_realms",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:48][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 12: DJCM: TEST PASS kingdom_white_peace_distinct_realms"
+        },
+        {
+          "marker": "kingdom_white_peace_native_eligibility",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:48][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 17: DJCM: TEST PASS kingdom_white_peace_native_eligibility"
+        },
+        {
+          "marker": "kingdom_white_peace_native_participants",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:52][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 9: DJCM: TEST PASS kingdom_white_peace_native_participants"
+        },
+        {
+          "marker": "kingdom_white_peace_native_goal",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:52][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 14: DJCM: TEST PASS kingdom_white_peace_native_goal"
+        },
+        {
+          "marker": "kingdom_white_peace_county_ownership",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:53][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 7: DJCM: TEST PASS kingdom_white_peace_county_ownership"
+        },
+        {
+          "marker": "kingdom_white_peace_war_ended",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:53][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 12: DJCM: TEST PASS kingdom_white_peace_war_ended"
+        },
+        {
+          "marker": "kingdom_white_peace_outside_and_owned_unchanged",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:30:53][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 17: DJCM: TEST PASS kingdom_white_peace_outside_and_owned_unchanged"
+        }
+      ]
+    },
+    {
+      "case": "kingdom_defender",
+      "status": "PASS_8_ACTUAL_ASSERTIONS",
+      "source_attempts": [
+        "R0007"
+      ],
+      "reset_date": 53146272,
+      "reset_stress_points": 0,
+      "war_start_date": 53146344,
+      "war_refreshed_date": 53146392,
+      "result_date": 53146392,
+      "result_stress_points": 0,
+      "war_id": 67108874,
+      "native_target_title_ids": [
+        2189
+      ],
+      "result_wars": [],
+      "result_image": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0003\\session\\screens\\manual-cn-R0007-kingdom_defender-result.png",
+      "actual_markers": [
+        {
+          "marker": "kingdom_defender_ai_unavailable",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:31:00][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 7: DJCM: TEST PASS kingdom_defender_ai_unavailable"
+        },
+        {
+          "marker": "kingdom_defender_distinct_realms",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:31:00][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 12: DJCM: TEST PASS kingdom_defender_distinct_realms"
+        },
+        {
+          "marker": "kingdom_defender_native_eligibility",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:31:00][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 17: DJCM: TEST PASS kingdom_defender_native_eligibility"
+        },
+        {
+          "marker": "kingdom_defender_native_participants",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:31:04][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 9: DJCM: TEST PASS kingdom_defender_native_participants"
+        },
+        {
+          "marker": "kingdom_defender_native_goal",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:31:04][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 14: DJCM: TEST PASS kingdom_defender_native_goal"
+        },
+        {
+          "marker": "kingdom_defender_county_ownership",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:31:05][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 7: DJCM: TEST PASS kingdom_defender_county_ownership"
+        },
+        {
+          "marker": "kingdom_defender_war_ended",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:31:05][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 12: DJCM: TEST PASS kingdom_defender_war_ended"
+        },
+        {
+          "marker": "kingdom_defender_outside_and_owned_unchanged",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:31:05][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 17: DJCM: TEST PASS kingdom_defender_outside_and_owned_unchanged"
+        }
+      ]
+    },
+    {
+      "case": "empire_attacker",
+      "status": "PASS_8_ACTUAL_ASSERTIONS",
+      "source_attempts": [
+        "R0007",
+        "R0008"
+      ],
+      "reset_date": 53146392,
+      "reset_stress_points": 0,
+      "war_start_date": 53146464,
+      "war_refreshed_date": 53146536,
+      "result_date": 53146536,
+      "result_stress_points": 0,
+      "war_id": 83886090,
+      "native_target_title_ids": [
+        2276
+      ],
+      "result_wars": [],
+      "result_image": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0003\\session\\screens\\manual-cn-R0008-empire_attacker-result.png",
+      "actual_markers": [
+        {
+          "marker": "empire_attacker_ai_unavailable",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:31:13][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 7: DJCM: TEST PASS empire_attacker_ai_unavailable"
+        },
+        {
+          "marker": "empire_attacker_distinct_realms",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:31:13][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 12: DJCM: TEST PASS empire_attacker_distinct_realms"
+        },
+        {
+          "marker": "empire_attacker_native_eligibility",
+          "attempt": "R0007",
+          "raw_debug_line": "[16:31:13][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 17: DJCM: TEST PASS empire_attacker_native_eligibility"
+        },
+        {
+          "marker": "empire_attacker_native_participants",
+          "attempt": "R0008",
+          "raw_debug_line": "[16:56:48][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 9: DJCM: TEST PASS empire_attacker_native_participants"
+        },
+        {
+          "marker": "empire_attacker_native_goal",
+          "attempt": "R0008",
+          "raw_debug_line": "[16:56:48][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 14: DJCM: TEST PASS empire_attacker_native_goal"
+        },
+        {
+          "marker": "empire_attacker_county_ownership",
+          "attempt": "R0008",
+          "raw_debug_line": "[16:56:49][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 7: DJCM: TEST PASS empire_attacker_county_ownership"
+        },
+        {
+          "marker": "empire_attacker_war_ended",
+          "attempt": "R0008",
+          "raw_debug_line": "[16:56:49][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 12: DJCM: TEST PASS empire_attacker_war_ended"
+        },
+        {
+          "marker": "empire_attacker_outside_and_owned_unchanged",
+          "attempt": "R0008",
+          "raw_debug_line": "[16:56:49][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 17: DJCM: TEST PASS empire_attacker_outside_and_owned_unchanged"
+        }
+      ]
+    },
+    {
+      "case": "empire_white_peace",
+      "status": "PASS_8_ACTUAL_ASSERTIONS",
+      "source_attempts": [
+        "R0009"
+      ],
+      "reset_date": 53146608,
+      "reset_stress_points": 0,
+      "war_start_date": 53146656,
+      "war_refreshed_date": 53146704,
+      "result_date": 53146704,
+      "result_stress_points": 34,
+      "war_id": 100663306,
+      "native_target_title_ids": [
+        2276
+      ],
+      "result_wars": [],
+      "result_image": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0003\\session\\screens\\manual-cn-R0009-empire_white_peace-result.png",
+      "actual_markers": [
+        {
+          "marker": "empire_white_peace_ai_unavailable",
+          "attempt": "R0009",
+          "raw_debug_line": "[17:17:50][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 7: DJCM: TEST PASS empire_white_peace_ai_unavailable"
+        },
+        {
+          "marker": "empire_white_peace_distinct_realms",
+          "attempt": "R0009",
+          "raw_debug_line": "[17:17:50][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 12: DJCM: TEST PASS empire_white_peace_distinct_realms"
+        },
+        {
+          "marker": "empire_white_peace_native_eligibility",
+          "attempt": "R0009",
+          "raw_debug_line": "[17:17:50][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 17: DJCM: TEST PASS empire_white_peace_native_eligibility"
+        },
+        {
+          "marker": "empire_white_peace_native_participants",
+          "attempt": "R0009",
+          "raw_debug_line": "[17:17:54][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 9: DJCM: TEST PASS empire_white_peace_native_participants"
+        },
+        {
+          "marker": "empire_white_peace_native_goal",
+          "attempt": "R0009",
+          "raw_debug_line": "[17:17:54][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 14: DJCM: TEST PASS empire_white_peace_native_goal"
+        },
+        {
+          "marker": "empire_white_peace_county_ownership",
+          "attempt": "R0009",
+          "raw_debug_line": "[17:17:55][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 7: DJCM: TEST PASS empire_white_peace_county_ownership"
+        },
+        {
+          "marker": "empire_white_peace_war_ended",
+          "attempt": "R0009",
+          "raw_debug_line": "[17:17:55][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 12: DJCM: TEST PASS empire_white_peace_war_ended"
+        },
+        {
+          "marker": "empire_white_peace_outside_and_owned_unchanged",
+          "attempt": "R0009",
+          "raw_debug_line": "[17:17:55][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 17: DJCM: TEST PASS empire_white_peace_outside_and_owned_unchanged"
+        }
+      ]
+    },
+    {
+      "case": "empire_defender",
+      "status": "PASS_8_ACTUAL_ASSERTIONS",
+      "source_attempts": [
+        "R0009"
+      ],
+      "reset_date": 53146704,
+      "reset_stress_points": 0,
+      "war_start_date": 53146776,
+      "war_refreshed_date": 53146824,
+      "result_date": 53146824,
+      "result_stress_points": 0,
+      "war_id": 117440522,
+      "native_target_title_ids": [
+        2276
+      ],
+      "result_wars": [],
+      "result_image": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0003\\session\\screens\\manual-cn-R0009-empire_defender-result.png",
+      "actual_markers": [
+        {
+          "marker": "empire_defender_ai_unavailable",
+          "attempt": "R0009",
+          "raw_debug_line": "[17:18:02][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 7: DJCM: TEST PASS empire_defender_ai_unavailable"
+        },
+        {
+          "marker": "empire_defender_distinct_realms",
+          "attempt": "R0009",
+          "raw_debug_line": "[17:18:02][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 12: DJCM: TEST PASS empire_defender_distinct_realms"
+        },
+        {
+          "marker": "empire_defender_native_eligibility",
+          "attempt": "R0009",
+          "raw_debug_line": "[17:18:02][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 17: DJCM: TEST PASS empire_defender_native_eligibility"
+        },
+        {
+          "marker": "empire_defender_native_participants",
+          "attempt": "R0009",
+          "raw_debug_line": "[17:18:06][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 9: DJCM: TEST PASS empire_defender_native_participants"
+        },
+        {
+          "marker": "empire_defender_native_goal",
+          "attempt": "R0009",
+          "raw_debug_line": "[17:18:06][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 14: DJCM: TEST PASS empire_defender_native_goal"
+        },
+        {
+          "marker": "empire_defender_county_ownership",
+          "attempt": "R0009",
+          "raw_debug_line": "[17:18:07][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 7: DJCM: TEST PASS empire_defender_county_ownership"
+        },
+        {
+          "marker": "empire_defender_war_ended",
+          "attempt": "R0009",
+          "raw_debug_line": "[17:18:07][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 12: DJCM: TEST PASS empire_defender_war_ended"
+        },
+        {
+          "marker": "empire_defender_outside_and_owned_unchanged",
+          "attempt": "R0009",
+          "raw_debug_line": "[17:18:07][D][jomini_effect_impl.cpp:450]: file: run/xar_mcp_inbox.txt line: 17: DJCM: TEST PASS empire_defender_outside_and_owned_unchanged"
+        }
+      ]
+    }
+  ],
+  "ordinary_cn_gui": {
+    "status": "PASS_IN_OBSERVED_SCOPE",
+    "report": "C:\\workspace\\two-mod-maintenance-20261003\\de-jure-R0003-cn-gui-phase-R0001\\cn-gui-phase-report-R0002.json",
+    "sha256": "1681478ed0ce154a3caabcfc2a158fedc0f50a3d9842c10f2b080ec300c53d40",
+    "three_tier_previews": [
+      {
+        "tier": "duchy",
+        "screen": "session/screens/021-cn-duchy-preview.png",
+        "prestige": 50,
+        "piety": 200,
+        "target_visible_cn": "卡普阿公国",
+        "sha256": "92bb9d057e8ffbd77903b722cf5d7a49e86a01916df79958f6ddcb82e5146389",
+        "visual_review": "Actual archived image opened with view_image; Chinese CB name, target, consequence text and costs visible"
+      },
+      {
+        "tier": "kingdom",
+        "screen": "session/screens/017-cn-kingdom-preview.png",
+        "prestige": 250,
+        "piety": 1000,
+        "target_visible_cn": "西西里王国",
+        "sha256": "6a46ac2730a881cf384c5bf7a52d34db54c95ede14926ece18c4da9808b2615f",
+        "visual_review": "Actual archived image opened with view_image; Chinese CB name, target, consequence text and costs visible"
+      },
+      {
+        "tier": "empire",
+        "screen": "session/screens/013-cn-empire-preview.png",
+        "prestige": 1250,
+        "piety": 5000,
+        "target_visible_cn": "拜占庭帝国",
+        "sha256": "78e7e4ab3856b106a5de6295f7f0b334c0d69e2484f8d80425d308e21a22d15a",
+        "visual_review": "Actual archived image opened with view_image; Chinese CB name, target, consequence text and costs visible"
+      }
+    ],
+    "duchy_actual_raw_arithmetic": {
+      "prestige": {
+        "before_raw": 10220000000,
+        "after_raw": 10215000000,
+        "reload_raw": 10215000000,
+        "scale": 100000,
+        "raw_difference": 5000000,
+        "units_deducted": "50"
+      },
+      "piety": {
+        "before_raw": 10015000000,
+        "after_raw": 9985000000,
+        "reload_raw": 9985000000,
+        "scale": 100000,
+        "raw_difference": 30000000,
+        "units_deducted": "300"
+      }
+    },
+    "ui_save_reload_preservation": {
+      "war_exact_fields_equal": true,
+      "resource_raw_values_equal": true,
+      "before_save": "session/024-cn-native-after-declare-result.json",
+      "after_ui_load": "session/033-cn-after-war-reload-result.json"
+    },
+    "duchy_defenders": "Actual Robert31254/Richard32512/Sergios32909; four native scoped assertions after actualsave/reload"
+  },
+  "diagnostics": {
+    "initial_loading_baseline": {
+      "time": "14:06:38",
+      "records": 58,
+      "source_breakdown": {
+        "jomini_script_system.cpp:304": 57,
+        "court_scene_manager.cpp:2764": 1
+      },
+      "jomini_context": "gfx/court_scene null-character loading diagnostics"
+    },
+    "reload_loading_diagnostics": {
+      "time": "14:47:52",
+      "records": 58
+    },
+    "prior_gui_matrix_formatter_records": 21,
+    "accepted_composition_attempt_deltas": [
+      {
+        "attempt": "R0007",
+        "delta_bytes": 5580,
+        "headers": 62,
+        "counts": {
+          "weak_negative_formatter_unknown_producer": 62
+        },
+        "error_delta_sha256": "4dfd9b66e685357b365341a70b21d8b6fae7bef4fa6e82d72656dd0de3b80d77",
+        "travel_entries": [],
+        "no_new_product_parser_or_on_war_started_invalid_cb": true
+      },
+      {
+        "attempt": "R0008",
+        "delta_bytes": 2167,
+        "headers": 17,
+        "counts": {
+          "weak_negative_formatter_unknown_producer": 14,
+          "vanilla_source_travel_invalid_scope": 3
+        },
+        "error_delta_sha256": "c1af89d93ac311a14c8b167d269764449cf30b41a8e2bb039a9de1e42f47299e",
+        "travel_entries": [
+          "[17:04:02][E][jomini_script_system.cpp:304]: Script system error!\n  Error: set_variable effect [ Scoped object is not valid. Type: 前往的旅途\u0015weak （Travel_plan-4294967295）\u0015! ]\n  Script location: file: common/on_action/travel_on_actions.txt line: 1209 (on_travel_plan_start)\n\r\n",
+          "[17:04:02][E][jomini_script_system.cpp:304]: Script system error!\n  Error: set_variable effect [ Scoped object is not valid. Type: 前往的旅途\u0015weak （Travel_plan-4294967295）\u0015! ]\n  Script location: file: common/on_action/travel_on_actions.txt line: 1213 (on_travel_plan_start)\n\r\n",
+          "[17:04:02][E][jomini_script_system.cpp:304]: Script system error!\n  Error: current_travel_plan trigger [ Failed context switch ]\n  Script location: file: common/scripted_effects/00_wanderer_lifestyle_effects.txt line: 532 (surveyor_tutor_child_effect)\n    file: common/on_action/travel_on_actions.txt line: 1400 (on_travel_plan_start)\n\r\n"
+        ],
+        "no_new_product_parser_or_on_war_started_invalid_cb": true
+      },
+      {
+        "attempt": "R0009",
+        "delta_bytes": 1530,
+        "headers": 17,
+        "counts": {
+          "weak_negative_formatter_unknown_producer": 17
+        },
+        "error_delta_sha256": "c0997d350edc185710025465289969cc910a39926c57a2697b75fd7854c7efcc",
+        "travel_entries": [],
+        "no_new_product_parser_or_on_war_started_invalid_cb": true
+      }
+    ],
+    "new_composition_formatter_total": 93,
+    "vanilla_source_travel_scope_total": 3,
+    "last_attempt_product_parser_scope_and_onwar_invalidcb": 0,
+    "formatter_unique_producer": "UNKNOWN_KNOWN_LIMITATION_NOT_ASSUMED_VANILLA",
+    "all_logs_zero_error": false,
+    "travel_boundary": "Actual error locations are installed vanilla travel/wanderer scripts absent from16productfiles; actualtravel actor anduniqueorigin not readback, not claimed resolved"
+  },
+  "fixture_isolation": {
+    "runtime_changes": 0,
+    "old_future_events_not_triggered": true,
+    "normal_reset_clock_raw_minimum": 48,
+    "normal_after_start_clock_raw_minimum": 24,
+    "no_set_date": true,
+    "same_holder_grants_skipped": true,
+    "naples_only_native_independency_restore": true,
+    "hre_vassals_not_forced_independent": true,
+    "one_way_truce_reset": "Actual TRUE/FALSEreadback where present, nativecan_declare guard required",
+    "stress": "Fixture-only add_stress=-1000 after reset, native played_character.stress_points0 before start; result stress retained; whitepeace actually34 in observed cells",
+    "event_mental_break": "Authorized1701.k SDK9 index8; event3closed, stress102→136, same date, gold/prestige unchanged; commoncooldown/flags/futureevent kept; no nativefulltraitinventory claimed",
+    "event_bookmark": "Authorized1070.c SDK3 index2; immediate6claims beforechoice, source spawn250 army; source-onlyarmystrength250, native soldiersunavailable. New army134blocked exactdeclaration; exactsamepauseddate disband134 only provedraisedTRUE→FALSE/can_declareFALSE→TRUE",
+    "laamp_notices": "Five actual image/source-matched .0003 emptyoptions acknowledged with freshinstance/revision, IDs9/8/7/6/5; no arbitraryunknownselection"
+  },
+  "cleanup": {
+    "cleanup_proven": true,
+    "job_active_processes_final": 0,
+    "tree_gone": true,
+    "exact_ck3_pid": 5908,
+    "inventory_at_cleanup": [],
+    "screen_release_ok": true,
+    "screen_release_sequence": 2447,
+    "task_resources_after_release": [],
+    "receipt": "C:\\workspace\\two-mod-maintenance-20261003\\djc-session-stop-after-ninecase-R0001\\actual-cleanup-and-release.json",
+    "sha256": "8293a8bd6183c5a7e1c29618ac5453bbfb546564c24c06fc3f826e54c2679439"
+  },
+  "limits": [
+    "Matrix uses guarded scriptedstart_war/end_war and realproductioncallbacks; nativepeaceUI/enforcementlegality not accepted.",
+    "Observed player/history1128 and fixed1066syntheticcounty setup only; not comprehensivecampaignbalance/AIarmy/concurrentwars or oldgreat-holy-war migration regression.",
+    "CNsave/reload verified this newlydeclaredduchywar, not all tiers/all旧saves.",
+    "CNkingdom/empire currentR3previewonly; actualdebit for those tiers retained in originalR1CN evidence, not inferred from R3preview.",
+    "Formatter producer unresolved andvanillatravel scopes emitted3 diagnostics; no claim0errors.",
+    "Only CNrealgame; nonCNformatonly.",
+    "NoWorkshopupload/cache/changenotespublicreadbackorpublicationfact."
+  ],
+  "external_archive": {
+    "path": "C:\\workspace\\two-mod-maintenance-20261003\\djc-cn-acceptance-final-R0002",
+    "receipt_sha256": "f16d4029fb99367fbe2c2eb32448fcd8b258fcdf0975f59b10e3e0e2a21018ee",
+    "file_count": 2300
+  },
+  "older_reds_preserved": [
+    "OriginalR1 productionmissingNaples andfixture namespace errors",
+    "R2English diagnosis notCNsignoff",
+    "R3CNautomatic eligibility fail aftercanceltruce",
+    "ManualR1Naples restored asrootvassal",
+    "ManualR2unknownletter/invalidis_independent",
+    "ManualR3stale pause observation",
+    "ManualR4stale war observation",
+    "ManualR5mentalbreakstop",
+    "ManualR6wrongnative stressfield",
+    "ManualR7importantbookmarkstop",
+    "ManualR8raisednewarmy eligibilityfail"
+  ],
+  "publication": {
+    "uploaded": false,
+    "workshop_item_id": null,
+    "release_completed": false
+  }
+}

@@ -125,6 +125,10 @@ py tools/compose_celestial_commerce_corruption_workshop_media.py --artifacts <ru
 py tools/gen_auto_upgrade_buildings.py                      # 自动升级建筑 165 条建筑链、605 条升级边
 py tools/build_auto_upgrade_buildings_release.py --check    # 自动升级建筑临时双构建
 py tools/build_auto_upgrade_buildings_release.py            # 生成 17 文件 staging、manifest 与 ZIP
+py mod_de_jure_conquest/tools/build_release.py --check       # 法理征服维护版临时双构建
+py mod_de_jure_conquest/tools/build_release.py --release --output <new-output> # 正式 tag 对应的 16 文件 staging
+py mod_change_holding_types/tools/build_release.py --check --release-localization # 地产转换维护版临时双构建
+py mod_change_holding_types/tools/build_release.py --output <new-output> --git-tag change-holding-types-v1.0.0 --release-localization # 正式 tag 对应的 17 文件 staging
 ```
 
 上述脚本生成器与素材投影工具中，**不要手改 `GENERATED FILE` 标记的文件**。计分参数只改 `tools/scoring_data.py`，
