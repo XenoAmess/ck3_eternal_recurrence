@@ -517,6 +517,37 @@ struct CombatHypotheticalScenarioSnapshot {
 // adapter revalidates both public ArmyID partitions against one current active
 // war and derives crossing only from the caller-supplied final-edge origin;
 // native storage handles never cross this contract.
+// Narrow observation of a synthetic nonreligious constructor context. The
+// selected commander precedes the static ledger; target residual is arithmetic.
+// This DTO does not represent a complete encounter or a real resolved CCombat.
+struct ContextualAdvantageSideSnapshot {
+  std::int32_t side_index = -1;
+  std::vector<std::int32_t> ordered_public_cunit_ids;
+  std::int32_t selected_commander_character_id = -1;
+  std::int32_t relation_kind_raw = 0;
+  std::int64_t commander_dynamic_raw = 0;
+  std::int64_t side_dynamic_raw = 0;
+  std::int64_t target_conditionals_residual_raw = 0;
+  std::int64_t side_total_raw = 0;
+
+  friend bool operator==(const ContextualAdvantageSideSnapshot &,
+                         const ContextualAdvantageSideSnapshot &) = default;
+};
+
+struct ContextualAdvantageSnapshot {
+  bool attempted = false;
+  bool available = false;
+  std::int32_t target_province_id = -1;
+  std::vector<ContextualAdvantageSideSnapshot> sides;
+  std::int64_t base_nonreligious_accumulator_raw = 0;
+  std::int64_t synthetic_zero_roll_total_raw = 0;
+  bool synthetic_helper_total_match = false;
+  std::string unavailable_reason;
+
+  friend bool operator==(const ContextualAdvantageSnapshot &,
+                         const ContextualAdvantageSnapshot &) = default;
+};
+
 struct CombatSimulationInputsSnapshot {
   std::int32_t target_province_id = -1;
   CombatHypotheticalScenarioSnapshot scenario;
@@ -524,6 +555,7 @@ struct CombatSimulationInputsSnapshot {
   CombatCandidateProvinceSnapshot target_province;
   std::vector<OngoingCombatInputsSnapshot> ongoing_combats;
   std::vector<CombatCounterResolutionSnapshot> counter_resolutions;
+  ContextualAdvantageSnapshot contextual_advantage;
   bool input_observation_ready = false;
   bool monte_carlo_ready = false;
   std::vector<std::string> missing_required_domains;

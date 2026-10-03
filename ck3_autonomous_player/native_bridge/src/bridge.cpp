@@ -8,6 +8,7 @@
 #include "xar_bridge/title_holder_v1_serializer.hpp"
 #include "xar_bridge/army_strength_v1_serializer.hpp"
 #include "xar_bridge/projected_contact_scope_v1_serializer.hpp"
+#include "xar_bridge/contextual_advantage_v1.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 #include "xar_bridge/ck3_12003_default_raise_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_mercenary_mailbox.hpp"
@@ -3621,7 +3622,13 @@ void AppendCombatSimulationInputs(
     }
     AppendJsonString(result, snapshot.missing_required_domains[index]);
   }
-  result += "]}}";
+  result += "]}";
+  if (snapshot.contextual_advantage.attempted) {
+    result += ",\"contextual_advantage\":";
+    result += xar::bridge::SerializeContextualAdvantageV1(
+        snapshot.contextual_advantage);
+  }
+  result += '}';
 }
 
 void AppendCombatSimulationInputsV3(

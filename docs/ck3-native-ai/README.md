@@ -1,5 +1,16 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-04：v46 增援实读与战斗上下文施工
+
+v46/R0023/PID77476 由 source9772958/冻结g49 恢复至 raw53240928；原生 strict553TU/550unique/1066inputs、jobs64、78.506418s 与官方 CI37134271120均 GREEN。最新正常 SAVE h5509，91,443,885字节，SHA-256 `7ded957a3c703ceb5bd5bd3515444c5c04d01de0594da1812a2ba99440fabafb`；累计4025日、自然继承0，窗口最小化且非前台。
+
+- [雇佣兵原生增援上下文](player-mercenary-reinforcement-context-12003.md)：actual013 查询559候选，33支最终可雇佣、payment2/CanAffordtrue；实际生成省2618，资源1066.34828金币。尚未雇佣，typed动作正在施工。
+- [集结与补员输入](army-regiment-replenishment-raised-reserve-12003.md)：actual016新军167772189原生剩余7天、available/readytrue，但实际0/0；旧军2259/2460、not_gathering，继续2640方向行军。没有抵达、接战或解围信用。
+- [实际侧选将](combat-side-commander-selection-12003.md)、[战中换将时序](commander-in-battle-assignment-timing-12003.md)、[counter-campaign原生分支](counter-campaign-native-branches-12003.md)：新的exact-build研究，未增加实战信用。
+- [v2局部上下文优势](contextual-advantage-v2-12003.md)：7文件扩展、sole native5/5与registeredMCP5/5 GREEN；当前static-ready，完整 encounter=false，faith来源正在续建，尚未cold部署或实读。
+
+同批004原Sway completion读取真实RED，另三项及merc/gather/SAVE独立GREEN；原失败保留，具体原生原因恢复中，不归于增援capability。当前进度与后续回链[统一入口](../autonomous-agent-progress/README.md)和[接续报告](../handover/2026-10-03-g2-v33-resume.md)。下文保留各历史截止。
+
 ## 2026-10-03：v43 冷恢复与军事输入的当前入口
 
 v43/R0021/PID14124已真实冷恢复，运行proof为minimized=true/foreground=false；最新有限移动保存h5384，累计仍 **3992日**、自然终局0，本轮零新增日。实际二进制来自冻结g45/source8e2cfbee：strict545TU/542unique/1051inputs、jobs64/79.43849s GREEN，DLL8,752,128字节/SHA-256 `1dba8d92eadfb6ea4469345b465b9500b8dc83ed4059303adcd949a2707e8524`、官方CI37125578704 GREEN。

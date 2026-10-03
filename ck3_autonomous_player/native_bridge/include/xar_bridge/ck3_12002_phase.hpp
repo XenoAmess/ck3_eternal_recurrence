@@ -141,6 +141,14 @@ ReadNativeCombatPhaseResult ReadNativeCombatPhase(
     const PhaseBindings &, const PhaseEnvironment &, const game::Snapshot &,
     const game::CombatSimulationInputsSnapshot &, NativeCombatPhase &) noexcept;
 
+// Existing v2 owning-thread adapter calls this only after v2 composition
+// succeeds. It directly reads the native nonreligious context without the full
+// phase AST, traits, culture or miscellaneous migration readers.
+bool ReadContextualAdvantageInputs(
+    const PhaseBindings &, const game::Snapshot &paused_scope,
+    const game::CombatSimulationInputsSnapshot &already_read_v2,
+    game::ContextualAdvantageSnapshot &) noexcept;
+
 // Private projection using the version-independent DTO. Complete v3 remains
 // unavailable because religion/rites operands remain implementation pending;
 // migrated nonreligious values remain accessible in the diagnostic serializer.

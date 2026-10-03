@@ -452,6 +452,11 @@ def normalize_combat_simulation_inputs(
     must keep ``input_observation_ready`` false.  This function never changes
     the separate Monte Carlo gate.
     """
+    optional_keys = (
+        {"contextual_advantage"}
+        if isinstance(value, dict) and "contextual_advantage" in value
+        else set()
+    )
     root = _exact_object(
         value,
         {
@@ -463,7 +468,7 @@ def normalize_combat_simulation_inputs(
             "ongoing_combats",
             "counter_resolutions",
             "completeness",
-        },
+        } | optional_keys,
         "combat_simulation_inputs",
     )
     target_id = _positive_int32_id(
@@ -582,10 +587,174 @@ def normalize_combat_simulation_inputs(
         "counter_resolutions": counter_resolutions,
         "completeness": completeness,
     }
+    if "contextual_advantage" in root:
+        normalized["contextual_advantage"] = _normalize_contextual_advantage(
+            root["contextual_advantage"],
+            target_province_id=target_id,
+            scenario=scenario,
+        )
     # Return detached canonical values so a transport fixture cannot mutate a
     # query cache after validation.
     return copy.deepcopy(normalized)
 
+
+def _contextual_advantage_unavailable(
+    target_province_id: int, reason: str
+) -> dict[str, object]:
+    return {
+        "schema_version": 1,
+        "status": "unavailable",
+        "scope": "hypothetical_nonreligious_constructor_context",
+        "scale": CK3_COMBAT_FIXED_POINT_SCALE,
+        "target_province_id": target_province_id,
+        "sides": None,
+        "base_nonreligious_accumulator_raw": None,
+        "synthetic_zero_roll_total_raw": None,
+        "synthetic_helper_total_match": None,
+        "partial_context_observation_ready": False,
+        "complete_encounter_advantage_ready": False,
+        "missing_domains": ["religion_constructor_sources"],
+        "unavailable_reason": reason,
+    }
+
+
+def _normalize_contextual_advantage(
+    value: object,
+    *,
+    target_province_id: int,
+    scenario: dict[str, object],
+) -> dict[str, object]:
+    """Validate the optional synthetic nonreligious context independently.
+
+    Its failure cannot downgrade the existing v2 composition observation.  A
+    malformed fragment becomes scoped unavailable; it never supplies a full
+    encounter advantage or adds a required v2 input domain.
+    """
+    name = "combat_simulation_inputs.contextual_advantage"
+    try:
+        row = _exact_object(
+            value,
+            {
+                "schema_version", "status", "scope", "scale",
+                "target_province_id", "sides",
+                "base_nonreligious_accumulator_raw",
+                "synthetic_zero_roll_total_raw", "synthetic_helper_total_match",
+                "partial_context_observation_ready",
+                "complete_encounter_advantage_ready", "missing_domains",
+                "unavailable_reason",
+            },
+            name,
+        )
+        if _signed_int32(row["schema_version"], f"{name}.schema_version") != 1:
+            raise ValueError(f"native {name}.schema_version must be 1")
+        status = _available_status(row["status"], f"{name}.status")
+        available = status == "available"
+        if row["scope"] != "hypothetical_nonreligious_constructor_context":
+            raise ValueError(f"native {name}.scope is malformed")
+        scale = _signed_int32(row["scale"], f"{name}.scale")
+        _fixed_scale(scale, f"{name}.scale")
+        target = _positive_int32_id(
+            row["target_province_id"], f"{name}.target_province_id"
+        )
+        if target != target_province_id:
+            raise ValueError(f"native {name} target ProvinceID mismatch")
+        if _strict_bool(
+            row["partial_context_observation_ready"],
+            f"{name}.partial_context_observation_ready",
+        ) is not available:
+            raise ValueError(f"native {name} partial readiness is inconsistent")
+        if _strict_bool(
+            row["complete_encounter_advantage_ready"],
+            f"{name}.complete_encounter_advantage_ready",
+        ):
+            raise ValueError(f"native {name} cannot be complete encounter ready")
+        if row["missing_domains"] != ["religion_constructor_sources"]:
+            raise ValueError(f"native {name} must preserve religion source gap")
+        reason = _status_reason(status, row["unavailable_reason"], name)
+        base = _conditional_signed_int64(
+            row["base_nonreligious_accumulator_raw"], available,
+            f"{name}.base_nonreligious_accumulator_raw",
+        )
+        total = _conditional_signed_int64(
+            row["synthetic_zero_roll_total_raw"], available,
+            f"{name}.synthetic_zero_roll_total_raw",
+        )
+        if not available:
+            if row["sides"] is not None or row["synthetic_helper_total_match"] is not None:
+                raise ValueError(f"native unavailable {name} must null context values")
+            return _contextual_advantage_unavailable(target, reason)
+        if _strict_bool(
+            row["synthetic_helper_total_match"],
+            f"{name}.synthetic_helper_total_match",
+        ) is not True:
+            raise ValueError(f"native {name} synthetic helper mismatch")
+        sides = _array(row["sides"], f"{name}.sides")
+        if len(sides) != 2:
+            raise ValueError(f"native {name} must publish two ordered sides")
+        normalized_sides = []
+        for index, side in enumerate(sides):
+            side_name = f"{name}.sides[{index}]"
+            side = _exact_object(
+                side,
+                {
+                    "side_index", "ordered_public_cunit_ids",
+                    "selected_commander_character_id", "relation_kind_raw",
+                    "commander_dynamic_raw", "side_dynamic_raw",
+                    "target_conditionals_residual_raw", "side_total_raw",
+                },
+                side_name,
+            )
+            side_index = _signed_int32(side["side_index"], f"{side_name}.side_index")
+            if side_index != index:
+                raise ValueError(f"native {side_name} side order mismatch")
+            units = _public_cunit_ids(
+                side["ordered_public_cunit_ids"],
+                f"{side_name}.ordered_public_cunit_ids", nonempty=True,
+            )
+            expected = scenario["attacker_army_ids" if index == 0 else "defender_army_ids"]
+            if units != expected:
+                raise ValueError(f"native {side_name} explicit participant order mismatch")
+            selected = _optional_non_negative_int32_id(
+                side["selected_commander_character_id"],
+                f"{side_name}.selected_commander_character_id",
+            )
+            relation = _signed_int32(side["relation_kind_raw"], f"{side_name}.relation_kind_raw")
+            raw_fields = {
+                key: _signed_int64(side[key], f"{side_name}.{key}")
+                for key in (
+                    "commander_dynamic_raw", "side_dynamic_raw",
+                    "target_conditionals_residual_raw", "side_total_raw",
+                )
+            }
+            if raw_fields["side_total_raw"] != (
+                raw_fields["commander_dynamic_raw"] + raw_fields["side_dynamic_raw"]
+                + raw_fields["target_conditionals_residual_raw"]
+            ):
+                raise ValueError(f"native {side_name} partial arithmetic mismatch")
+            normalized_sides.append({
+                "side_index": side_index, "ordered_public_cunit_ids": units,
+                "selected_commander_character_id": selected,
+                "relation_kind_raw": relation, **raw_fields,
+            })
+        if total != base + normalized_sides[0]["side_total_raw"] - normalized_sides[1]["side_total_raw"]:
+            raise ValueError(f"native {name} synthetic partial total mismatch")
+        return {
+            "schema_version": 1, "status": "available",
+            "scope": "hypothetical_nonreligious_constructor_context",
+            "scale": CK3_COMBAT_FIXED_POINT_SCALE, "target_province_id": target,
+            "sides": normalized_sides,
+            "base_nonreligious_accumulator_raw": base,
+            "synthetic_zero_roll_total_raw": total,
+            "synthetic_helper_total_match": True,
+            "partial_context_observation_ready": True,
+            "complete_encounter_advantage_ready": False,
+            "missing_domains": ["religion_constructor_sources"],
+            "unavailable_reason": None,
+        }
+    except (ValueError, TypeError) as error:
+        return _contextual_advantage_unavailable(
+            target_province_id, f"contextual_advantage_fragment_invalid: {error}"
+        )
 
 def normalize_combat_simulation_inputs_v3_test_only(
     value: object,

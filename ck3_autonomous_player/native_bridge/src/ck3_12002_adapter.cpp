@@ -330,8 +330,14 @@ public:
       output = {};
       return ReadCombatSimulationInputsResult::unavailable;
     }
-    return ck3_12002::ReadCombatSimulationInputs(bindings_.combat, scope, request,
-                                                output);
+    const auto result = ck3_12002::ReadCombatSimulationInputs(
+        bindings_.combat, scope, request, output);
+    if (result == ReadCombatSimulationInputsResult::available) {
+      // Partial contextual observation is independent of existing v2 readiness.
+      (void)ck3_12002::ReadContextualAdvantageInputs(
+          bindings_.phase, scope, output, output.contextual_advantage);
+    }
+    return result;
   }
   ReadCombatSimulationInputsV3Result read_combat_simulation_inputs_v3(
       const CombatSimulationInputsRequest &request,

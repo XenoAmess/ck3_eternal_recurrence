@@ -966,6 +966,74 @@ ReadNativeCombatPhaseResult ReadNativeCombatPhase(
   }
 }
 
+bool ReadContextualAdvantageInputs(
+    const PhaseBindings &bindings, const game::Snapshot &scope,
+    const game::CombatSimulationInputsSnapshot &base,
+    game::ContextualAdvantageSnapshot &output) noexcept {
+  output = {};
+  output.attempted = true;
+  output.target_province_id = base.target_province_id;
+  try {
+    const auto fail = [&](std::string reason) {
+      output = {};
+      output.attempted = true;
+      output.target_province_id = base.target_province_id;
+      output.unavailable_reason = "contextual_advantage:" + std::move(reason);
+      return false;
+    };
+    if (!bindings.advantage.enabled || !bindings.commander_dynamic ||
+        !bindings.side_modifier || !bindings.relation_kind)
+      return fail("nonreligious_context_bindings_unavailable");
+    PhaseEnvironment environment{const_cast<CombatBindings *>(&bindings.combat),
+                                 ResolveEnvironmentArmy, ResolveEnvironmentCharacter,
+                                 ResolveEnvironmentProvince, ReadEnvironmentGathering,
+                                 ResolveEnvironmentRegiment};
+    NativeCombatPhase native{};
+    const auto result = ReadNativeCombatPhase(bindings, environment, scope, base, native);
+    if (result != ReadNativeCombatPhaseResult::available) {
+      std::string reason = native.unavailable_reason;
+      if (reason.empty()) {
+        switch (result) {
+        case ReadNativeCombatPhaseResult::requires_paused: reason = "requires_paused"; break;
+        case ReadNativeCombatPhaseResult::no_played_character: reason = "no_played_character"; break;
+        case ReadNativeCombatPhaseResult::base_inputs_unavailable: reason = "base_inputs_unavailable"; break;
+        default: reason = "native_phase_unavailable"; break;
+        }
+      }
+      return fail(std::move(reason));
+    }
+    const auto &model = native.nonreligious_advantage_model;
+    const auto &resolved = model.resolved_dynamic;
+    if (!native.available || !native.nonreligious_constructor_ready ||
+        resolved.sides.size() != 2 || !resolved.original_total_helper_match)
+      return fail("nonreligious_context_components_unavailable");
+    for (std::size_t i = 0; i < 2; ++i) {
+      const auto &dynamic = resolved.sides[i];
+      game::ContextualAdvantageSideSnapshot side{};
+      side.side_index = static_cast<std::int32_t>(i);
+      side.ordered_public_cunit_ids = native.sides[i].ordered_army_ids;
+      side.selected_commander_character_id = native.sides[i].commander_character_id;
+      side.relation_kind_raw = dynamic.relation_kind_raw;
+      side.commander_dynamic_raw = dynamic.commander_dynamic_raw;
+      side.side_dynamic_raw = dynamic.side_dynamic_raw;
+      side.target_conditionals_residual_raw = dynamic.target_conditionals_residual_raw;
+      side.side_total_raw = dynamic.side_total_raw;
+      output.sides.push_back(std::move(side));
+    }
+    output.base_nonreligious_accumulator_raw = model.base_static_accumulator_raw;
+    output.synthetic_zero_roll_total_raw = resolved.original_total_helper_raw;
+    output.synthetic_helper_total_match = resolved.original_total_helper_match;
+    output.available = true;
+    return true;
+  } catch (...) {
+    output = {};
+    output.attempted = true;
+    output.target_province_id = base.target_province_id;
+    output.unavailable_reason = "contextual_advantage:read_exception";
+    return false;
+  }
+}
+
 game::ReadCombatSimulationInputsV3Result ReadCombatPhaseInputs(
     const PhaseBindings &bindings, const PhaseEnvironment &environment,
     const game::Snapshot &scope, const game::CombatSimulationInputsSnapshot &base,
