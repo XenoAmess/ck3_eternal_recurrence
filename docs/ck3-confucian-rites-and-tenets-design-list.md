@@ -1,7 +1,7 @@
 # 儒家礼仪与信条设计清单
 
 更新：2026-10-04。代码基线：本机 CK3 1.20.0.3；历史与代码研究始于 2026-10-03。
-状态：设计与考据清单，尚未实现或完成实机验收。总规划见[《礼与道》规划书](ck3-confucian-flavor-mod-plan.md)，原版缺口见[机制对比](ck3-religion-confucian-christian-comparison-1.20.0.3.md)。
+状态：设计与考据清单，尚未实现或完成实机验收。总规划见[《礼与道》规划书](ck3-confucian-flavor-mod-plan.md)，原版缺口见[机制对比](ck3-religion-confucian-christian-comparison-1.20.0.3.md)，预计时间节点见[实施排期](ck3-confucian-implementation-schedule.md)。
 
 ## 1. 设计口径
 
