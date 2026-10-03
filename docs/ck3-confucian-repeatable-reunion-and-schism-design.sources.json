@@ -1,0 +1,120 @@
+{
+  "schema": "ck3_confucian_reunion_design_sources.v1",
+  "captured_at_utc": "2026-10-03T18:54:19.914267+00:00",
+  "research_date_local": "2026-10-04",
+  "source_install": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III",
+  "game_version": "1.20.0.3 (Crozier)",
+  "raw_version": "1.20.0.3",
+  "steam_buildid": "25652598",
+  "steam_manifest": "C:/Program Files (x86)/Steam/steamapps/appmanifest_1158310.acf",
+  "steam_manifest_sha256": "27d1071f5190f19254b1db417fd38e1bf0f61eb1b119a597f8d03d976e46efa5",
+  "evidence_level": "static_script_reading_and_file_hashes",
+  "exe_read_this_turn": false,
+  "game_launched_this_turn": false,
+  "mod_implemented_this_turn": false,
+  "prior_research": "ck3-1.20.0.3-rites-split-and-reunion.md",
+  "prior_install_is_separate": true,
+  "files": [
+    {
+      "path": "launcher/launcher-settings.json",
+      "bytes": 1335,
+      "sha256": "9cd6ff96f8092f2d21e1491b37e8344aa287faf69850563128ca1b117244a214"
+    },
+    {
+      "path": "game/common/character_interactions/pam_interactions.txt",
+      "bytes": 724542,
+      "sha256": "2db73b0da8572e218f1a677a91ff4281a890ade115e6dc40e696ecb59c0b1049"
+    },
+    {
+      "path": "game/common/decisions/dlc_decisions/pam/pam_antipope_decisions.txt",
+      "bytes": 13445,
+      "sha256": "01564604392c6ce5a9fcec9827c98ce3b62d2ebcdb61401055647cd6ae154bd8"
+    },
+    {
+      "path": "game/common/decisions/dlc_decisions/pam/pam_decisions.txt",
+      "bytes": 162367,
+      "sha256": "fe113568051ccf2243f08543a522bc5afeb3e25e6fb97e5440d2fae7a4cb7a64"
+    },
+    {
+      "path": "game/common/scripted_effects/pam_antipope_effects.txt",
+      "bytes": 24354,
+      "sha256": "c74caedc55a76f3d7158ecb586a33473a2c80d65b79f77f336e5fced7c3713f0"
+    },
+    {
+      "path": "game/common/scripted_triggers/pam_antipope_triggers.txt",
+      "bytes": 7948,
+      "sha256": "6457fd56e3ba27e1ca5a9cd7913322c1502806505d62c360da5b13d6acec038a"
+    },
+    {
+      "path": "game/common/scripted_triggers/pam_scripted_triggers.txt",
+      "bytes": 186187,
+      "sha256": "0ad98f123b6739593b9ab2c170d0e8c9b3d9d941baa9d3580296dd2139b2ea6e"
+    },
+    {
+      "path": "game/common/scripted_effects/pam_effects.txt",
+      "bytes": 369911,
+      "sha256": "fc4c77974a7844c31c1271dcc2ace24b17906620a832658919aa281e42a2b94f"
+    },
+    {
+      "path": "game/common/on_action/religion_on_actions.txt",
+      "bytes": 59475,
+      "sha256": "ef9367ddf5f89c912b895743f8b72441e88af3a5b03a5c1a9eddea0e5681ee2d"
+    },
+    {
+      "path": "game/common/on_action/dlc/pam/pam_on_actions.txt",
+      "bytes": 13160,
+      "sha256": "6149169c1be40bd71bd86bd21bff7afff59b5773dbcfa3b13e6ea840911b7fbf"
+    },
+    {
+      "path": "game/common/on_action/title_on_actions.txt",
+      "bytes": 141749,
+      "sha256": "015a6165a999cada51424131fa9691c2556f91c607ce046d5d82bae0b3d84352"
+    },
+    {
+      "path": "game/common/casus_belli_types/00_event_war.txt",
+      "bytes": 97481,
+      "sha256": "48ab66002f287f0828cac3dcb3160248f49cc336ad335d838a4dd6c3563c0baa"
+    },
+    {
+      "path": "game/common/scripted_effects/00_major_decisions_scripted_effects.txt",
+      "bytes": 125829,
+      "sha256": "f89b48e11152d03b4164637c2a6a67df264cdb522ba07a11057f0f68a54c1d0b"
+    },
+    {
+      "path": "game/common/scripted_effects/00_religion_effects.txt",
+      "bytes": 41530,
+      "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931"
+    },
+    {
+      "path": "game/common/defines/00_defines.txt",
+      "bytes": 125400,
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982"
+    },
+    {
+      "path": "game/common/religion/rite_types/00_rite_types.txt",
+      "bytes": 45201,
+      "sha256": "3123e46d154cc35a72986979d3db951accf31fdbb03bf65d54b9261a3451dbce"
+    },
+    {
+      "path": "game/common/religion/faith_types/00_faith_types.txt",
+      "bytes": 118526,
+      "sha256": "c1b94cd6cf2cc47824a43112965e9a1e1a669530090b44b1cd702245914e84df"
+    }
+  ],
+  "online_references": [
+    "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/master/docs/ck3-1.20.0.3-rites-split-and-reunion.md",
+    "https://zh.wikisource.org/wiki/漢書/卷008",
+    "https://zh.wikisource.org/wiki/後漢書/卷3",
+    "https://www.shidianguji.com/book/SBCK222/chapter/SBCK222_474",
+    "https://shandong-chorography.org/database/c8a/section/1/article/75/"
+  ],
+  "unverified": [
+    "pre-transfer pair divergence versus post-transfer inherited rules and automatic detachment",
+    "main or last rite detachment and empty faith lifecycle",
+    "assignment of partial follower groups to distinct rites",
+    "head of rite appointment and succession",
+    "arbitrary challenger followership setters, multiple challengers, and cleanup lifecycle",
+    "dynamic faith identity, founderless callbacks, and repeated transfer across save reloads",
+    "holy order, relic, and other faith-bound institution migration"
+  ]
+}
