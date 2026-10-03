@@ -11656,7 +11656,8 @@ std::string TypedQueryFailureFrame12002(
     std::optional<bool> frame_stable, std::optional<bool> typed_result,
     std::optional<bool> final_read, std::optional<bool> final_equal,
     std::optional<bool> executor_enter, std::optional<bool> executor_typed_result,
-    std::optional<bool> executor_finish) {
+    std::optional<bool> executor_finish,
+    const xar::game::RouteContactHorizonSnapshot *route_result = nullptr) {
   constexpr std::array<std::string_view, 13> query_names = {
       "war_entry", "route", "actual_contact", "combat_v3", "battle_control",
       "battle_transition", "battle_reinforcement", "battle_terminal", "campaign",
@@ -11672,9 +11673,17 @@ std::string TypedQueryFailureFrame12002(
       : !*frame_stable ? "frame_stable"
       : !*typed_result ? "typed_result"
       : !*final_read ? "final_read" : "final_equal";
-  auto response = CommandResultFrame(
-      request_id, step, false,
-      "application-main typed query failed or its snapshot changed");
+  const auto error = kind == QueryKind12002::route && wait_completed &&
+          frame_stable == false
+      ? std::string("route-contact completion snapshot changed")
+      : kind == QueryKind12002::route && route_result != nullptr &&
+          wait_completed && frame_stable.value_or(false) && typed_result == false &&
+          executor_typed_result.has_value()
+      ? xar::ck3_11906::RouteContactHorizonFailureDetailV1(
+            wait, xar::ck3_11906::RouteContactHorizonMailboxCompletionV1::query_unavailable,
+            *route_result, true)
+      : std::string("application-main typed query failed or its snapshot changed");
+  auto response = CommandResultFrame(request_id, step, false, error);
   response.pop_back();
   response += ",\"typed_query_failure_v1\":{\"stage\":\"";
   response += stage;
@@ -11801,7 +11810,8 @@ std::string RunTypedQuery12002(
       return TypedQueryFailureFrame12002(
           request_id, step, query.kind, wait, wait_completed,
           frame_stable, typed_result, final_read, final_equal,
-          query.executor_enter, query.executor_typed_result, query.executor_finish);
+          query.executor_enter, query.executor_typed_result, query.executor_finish,
+          query.kind == QueryKind12002::route ? &query.route : nullptr);
     }
     if (query.kind != QueryKind12002::title_map ||
         xar::ck3_12002::IsTitleMapNavigationTerminalV1(query.title_command.status)) break;
