@@ -98,6 +98,8 @@ void RegisterNonwarMailboxExecutorsV1(
   environment.permitted_executor_head_of_faith_gold12003 = executors.head_of_faith_gold;
   environment.permitted_executor_repentance12003 = executors.repentance;
   environment.permitted_executor_holy_order_context12003 = executors.holy_order_context;
+  environment.permitted_executor_holy_order_selected_title_terms12003 =
+      executors.holy_order_selected_title_terms;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
   environment.permitted_executor_triquinquagintary = executors.prisoner_collection;

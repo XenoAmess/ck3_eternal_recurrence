@@ -88,3 +88,11 @@ GREEN receipt 为外置 `selected-title-parameters/fixture/attempt-02/RESULT.jso
 用户要求度假温和收尾后，本包只完成正在运行的联合 case并封存，不新增 glue、normalizer、fixture、ABI方向或 v33部署。ROOT后续采用入口是：把三个 cpp加入现宗教 opt-in CMake source list；在现 application-main reader callback中绑定 `BindHolyOrderSelectedTitleTermsImage12003`，以当前actor/frame调用 `ReadHolyOrderSelectedTitleTerms12003` 并正式序列化；再接同宗教 opt-in的单独 current-player MCP transport，并完成一次真实 Robert paused selected query。当前只记录这些入口，没有开始实现它们。
 
 收尾采用说明：本页新增代码如有，仅封存为外置补丁，尚未应用到生产 v32；实际读取以本文标注的 artifact/date 为准。接续入口：[度假交接](../handover/2026-10-03-g2-religion-v32-maintainer-vacation-handoff.md)。
+
+## 2026-10-03T12:31 接续源码采用
+
+实际原生失败帧明确 error=player_holy_order_selected_title_terms_mailbox_submit_unavailable，原生reader尚未执行。新typed callback遗漏现有主线程executor名单；五共享源码最小补全 main_thread_query_mailbox environment/mailbox字段、Register/Have/TrySubmit名单、nonwar executors/environment和router具体函数指针。无reader/ABI/产品flags/策略改变。一次真实production Register→TrySubmit场景从缺字段invalid_request到注册后submitted/cancel/reclaim GREEN；router严格编译GREEN，保留link/ICF harness RED及第一版diagnostic筛选无step帧失败。修复static-ready，等待v34严格组合及新PID真实paused查询，不重跑旧reader矩阵、不宣称实际报价/收益。补丁只存在行尾差异，Root以ignore-space-change逐hunk应用，保留所有既有宗教siblings。
+
+实际记录：`2026-10-03T12:31:35+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
+
+交付回执：[holy-selected-executor-fix](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/holy-order-title/actual-analysis/mailbox-submit-fix/ROOT-DELIVERY.json)。

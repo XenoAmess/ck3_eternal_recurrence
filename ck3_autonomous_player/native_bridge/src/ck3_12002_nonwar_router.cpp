@@ -138,6 +138,8 @@ void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &out) noexcept 
   out.head_of_faith_gold = &ck3_12003::ExecutePlayerHeadOfFaithGoldMailbox12003;
   out.repentance = &ck3_12003::ExecutePlayerRepentanceMailbox12003;
   out.holy_order_context = &ck3_12003::ExecutePlayerHolyOrderContextMailbox12003;
+  out.holy_order_selected_title_terms =
+      &ck3_12003::ExecutePlayerHolyOrderSelectedTitleTermsMailbox12003;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1)
   out.family_obligations = &ExecuteFamilyObligationsMailbox12002;
