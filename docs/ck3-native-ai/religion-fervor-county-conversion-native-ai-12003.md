@@ -131,3 +131,37 @@ flowchart TD
 新native artifacts位于 `artifacts/g2-maintainer-2026-10-02/resume-12003/religion-fervor-county-12003/`；stock lane位于 `religion-fervor-spread-12003/county-stock/`，12份原版文件分别记录bytes、SHA-256、line count和窄行窗。`STOCK-EVIDENCE.json`为240343 bytes，SHA-256 `49bd53b3ff4a648413adbf4c7a196c6e1c96fca2bd46773480100f6387fadb5f`；stock总结13930 bytes，SHA-256 `6c31ea0e50d59227b7362389f5cc7b868e405b33772a0ba588fb69833afe98d8`。新getter的完整函数及注册slice、GUI输入窗均由file-backed提取器保存，最终pins见本包 `ROOT-DELIVERY.json` 和 `COUNTY-CONVERSION-NATIVE-ABI.json`。
 
 本次新增 **research**，provider/source实现0、focused tests0、live calls0、actions0、game days0、G2 credit0。离线读取退出码0是研究工具成功，不是native fixture或游戏GREEN。原有context/clergy/RR的production-live primitive资格归各自冻结原帧，不提升整套宗教AI或县转换loop。报告字段发送ROOT，由中央单一owner合并日报／周报和Git发布；本页不编辑共享索引或中央报告。
+
+## 2026-10-03：v34 候选县价值输入施工
+
+用户恢复工作后，v33 原组件与共享接线已由中央采用；本增量只在独占县投影施工，不延迟该批。现有查询的 `county_conversion.value_inputs` 增加 owner／当前 chaplain Faith、每个候选和当前真实目标的县 Faith、目的 Rite／Faith、实际县民意，以及是否改变 Faith／Rite。原候选、最终月率、当前进度、frozen和原查询状态保持独立；value getter失败有自己的 unavailable/failure，不伪造零民意或目的宗教。v33 没有这个可选 subtree，Python仍接受旧完整 shape。
+
+Faith读取复用已闭合的 `Character.GetRite 28D2F90` → `Rite.GetFaith 24FC560`；先互证完整 RiteID，再以 Rite+4B8 原始 FaithID 与 getter返回对象+8互证 generation。目标县沿已证明 `County.GetRite 24D6350` 取得真实 Rite对象，使用同一 Faith链。本包的61-byte完整无unwind leaf分别冻结于外置 `PE-SPANS-0xA847A0-0x24FC560_0x3D-0x28D2F90_0x3D.json`，其 Faith与Character Rite SHA分别为 `379361b0de2cf6947b56a6b8171082c7155ca948555b0e4706674fc1fa68587f`、`a070e31f68f01cc5795c8c49b50414a1168f35aacac1fbd8c1c4219017b99c2b`；不是默认192-byte窗口。
+
+目的Rite来源是已冻结的 `00_court_chaplain_tasks.txt:622–633`／`00_councillor_triggers.txt:1022–1043` 三分支 authored合同：有Ministry访问、县Faith等于ownerFaith或当前chaplainFaith等于ownerFaith时传播ownerRite，否则传播当前chaplainRite。它是基于新鲜native输入的脚本投影，**不是新发现的任务提交或原生最终目的getter**。Ministry严格按当前1.20.0.3 `10_tgp_triggers.txt` 的三个条件：持有 `h_china`、政府flag `government_is_celestial`、政府flag `government_uses_ministry_budget`。读取当前政府getter `28C2E10`、flags完整vector+50/+5C以及identifier-name `3F4F900`，均复用现有campaign/government ABI；两flag不齐时直接为false，不需要标题查询。flags齐时使用既有标题key resolver `A847A0`，传32-byte stack MSVC小字符串 `h_china`，再沿FullTitleID registry互证实际title和+128 holder；不依赖primary title猜持有关系，也不扫描全目录。新窄PE冻结中government完整237-byte SHA为 `c2c90483b681a9b6b86f979b691a9446151544d7729b28b60f05c3894d6f2895`；title resolver完整155-byte SHA为 `73aaebbb970d86c42e2f68b06d989ef2711cca6ac006f4f3279142b25512da11`。
+
+实际民意直接复用[当前县意见](county-faction-material-12003.md)已发布 `.3` `County.GetCountyOpinion 24D4CB0`：`int32(CountyData*)`，scale **1**，recipient是县当前持有者。当前CountyData由真实Province+848取得，ProvinceID／FullCountyTitleID／holder先互证。负值和零都是合法结果；封臣县的该值不能冒称对Robert的直接民意。它是当前aggregate popular opinion，不能分离为宗教component、不能用前后尚未发生的转换构造提升幅度，也不能说已获得改宗收益。
+
+具名 `GetConversionRite` 虽然确实存在（literal4510DD8，registration EDEBE/EDF36，callback F628F0），原版GUI用在 **ClericalRegionConversionProgressIcon**。该getter读取icon+6C的clerical-region identity，再取region+58 Rite；它不是现有county task的接收者。本包不制造该GUI对象、不将其当作县目的Rite，也不调用这个不适用入口。
+
+```mermaid
+flowchart TD
+    A[Actual owner and current chaplain Rite] --> F[Native Rite.GetFaith full identity]
+    C[Actual candidate/current Province and CountyData] --> R[Native County.GetRite to Faith]
+    C --> O[Native current-holder County.GetCountyOpinion / int32 scale1]
+    G[Native owner government flags] --> M[Exact stock Ministry conditions]
+    T[Native fixed h_china lookup and holder] --> M
+    F --> D[Stock three-branch destination Rite/Faith projection]
+    R --> D
+    M --> D
+    D --> V[County value_inputs with actual identities]
+    O --> V
+    V -. actual Robert paused query pending .-> P[Production-live value primitive]
+    P -. typed assignment and independent county outcome pending .-> L[Conversion loop]
+```
+
+旧7案例／28断言／7JSON以及原fullwire/MCP GREEN仍按原源码边界复用，不重跑。该增量只新增价值字段的focused reader/serializer→Python验证，实际回执和结果待本包收口追加；冻结EXE身份复用现有intake。`open_kaishek` 对此 C++ native对象、函数callback与PE调用ABI没有覆盖语义，本次预验标记 `not-applicable`，不以其parser通过替代native fixture。没有typed动作、策略、SDK、pipe、游戏／窗口操作或新保存日；真实Robert目的Rite/Faith与民意仍需中央新暂停帧。
+
+新增focused实际 `/O2 /W4 /WX` 编译与执行为 **5 case / 15 C++运行断言 / 5生产JSON**，每份JSON经过更新后的生产Python normalizer保持字段；读取一个旧v33冻结wire验证可选subtree兼容性，未重跑原reader/MCP矩阵。新五场景覆盖：off-Faith县与owner-Faith县的不同目的、同Faith chaplain与当前真实冻结任务目标、具备Ministry三条件、仅flags成立但h_china属于他人、Faith getter失败独立unavailable。attempt-01新fixture将optional<uint32>与int比较而触发 `/WX C4389`，保留 **harness RED**；仅fixture改成unsigned literal，attempt-02 GREEN，生产源码未因失败修正。实际receipt为 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/county-conversion/v34-values-attempt-02/RESULT.json`，SHA-256 `26b07812dce49170c915ecd0127a63b33976222fe54394012d8658771440628c`。
+
+当前最高资格 **static-ready**；SDK/native callbacks均为明确fixture stub，production reader／serializer／Python normalizer是真实执行源码。旧clergy mailbox与已注册MCP路由保持原接线，不新增生产translation unit或产品flag；新增focused CMake target `xar_ck3_12003_county_conversion_values_test` 在既有clergy query flag之下。`open_kaishek` 引用commit `1643d03d3a8d2ae1547e352d724e2b1a721c98ba`，not-applicable边界如上。中央接续仍需组合构建和Robert真实同帧观测；当前县总民意、目的宗教输入不等于宗教民意component、反事实民意delta或真实转换收益。

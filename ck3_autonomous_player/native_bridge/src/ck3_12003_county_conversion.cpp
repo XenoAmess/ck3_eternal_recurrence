@@ -111,7 +111,15 @@ bool Exact(const Environment &e) noexcept {
       reinterpret_cast<std::uintptr_t>(e.target_valid) == base + 0x2C48970 &&
       reinterpret_cast<std::uintptr_t>(e.produce_targets) == base + 0x2C48E80 &&
       reinterpret_cast<std::uintptr_t>(e.monthly_rate) == base + kMonthlyRateRva &&
-      reinterpret_cast<std::uintptr_t>(e.county_rite) == base + kCountyRiteRva;
+      reinterpret_cast<std::uintptr_t>(e.county_rite) == base + kCountyRiteRva &&
+      (!e.value_inputs_enabled || (
+      reinterpret_cast<std::uintptr_t>(e.character_rite) == base + 0x28D2F90 &&
+      reinterpret_cast<std::uintptr_t>(e.rite_faith) == base + 0x24FC560 &&
+      reinterpret_cast<std::uintptr_t>(e.government) == base + 0x28C2E10 &&
+      reinterpret_cast<std::uintptr_t>(e.title_by_key) == base + 0xA847A0 &&
+      reinterpret_cast<std::uintptr_t>(e.identifier_name) == base + 0x3F4F900 &&
+      reinterpret_cast<std::uintptr_t>(e.county_opinion) == base + 0x24D4CB0 &&
+      reinterpret_cast<std::uintptr_t>(e.government_fallback_slot) == base + 0x5D1E2A8));
 }
 
 bool Key(const Environment &e, const void *object, std::string &out) {
@@ -127,6 +135,17 @@ bool Key(const Environment &e, const void *object, std::string &out) {
       std::none_of(out.begin(), out.end(), [](unsigned char ch) {
         return ch == 0 || ch < 0x20U;
       });
+}
+
+bool NativeString(const Environment &e, const void *key, std::string &out) {
+  if (!key) return false;
+  std::uint64_t size = 0, capacity = 0;
+  if (!At(e, key, 0x10, size) || !At(e, key, 0x18, capacity) ||
+      size == 0 || size > 1024 || size > capacity) return false;
+  const void *text = key;
+  if (capacity > 15 && (!At(e, key, 0, text) || !text)) return false;
+  out.resize(static_cast<std::size_t>(size));
+  return Bytes(e, text, out.data(), out.size());
 }
 
 bool Province(const Environment &e, const void *province, std::int32_t &id) noexcept {
@@ -204,6 +223,90 @@ bool CharacterRite(const Environment &e, const void *character,
   std::uint32_t id = 0xFFFFFFFFU;
   if (!At(e, character, 0xB4, id)) return false;
   if (id != 0xFFFFFFFFU) out = id;
+  return true;
+}
+
+bool RiteFaith(const Environment &e, const void *rite, std::uint32_t rite_id,
+               std::uint32_t &faith_id) noexcept {
+  const void *faith = nullptr;
+  std::uint32_t observed_rite = 0, observed_faith = 0;
+  return rite && At(e, rite, 8, observed_rite) && observed_rite == rite_id &&
+      At(e, rite, 0x4B8, faith_id) && faith_id != 0xFFFFFFFFU &&
+      Invoke(e.rite_faith, faith, rite) && faith &&
+      At(e, faith, 8, observed_faith) && observed_faith == faith_id;
+}
+
+bool CharacterFaith(const Environment &e, const void *character,
+                    std::optional<std::uint32_t> rite_id,
+                    std::uint32_t &faith_id) noexcept {
+  const void *rite = nullptr;
+  return rite_id && Invoke(e.character_rite, rite, character) &&
+      RiteFaith(e, rite, *rite_id, faith_id);
+}
+
+bool MinistryAccess(const Environment &e, const void *owner,
+                    std::int32_t owner_id, bool &out) {
+  out = false;
+  const void *government = nullptr, *fallback = nullptr, *flags = nullptr;
+  std::int32_t count = 0;
+  if (!At(e, e.government_fallback_slot, 0, fallback) ||
+      !Invoke(e.government, government, owner)) return false;
+  if (!government || government == fallback) return true;
+  if (!At(e, government, 0x50, flags) || !At(e, government, 0x5C, count) ||
+      count < 0 || count > 4096 || (count > 0 && !flags)) return false;
+  bool celestial = false, budget = false;
+  for (std::int32_t i = 0; i < count; ++i) {
+    std::int32_t identifier = 0;
+    const std::string *native = nullptr;
+    std::string key;
+    if (!At(e, flags, static_cast<std::size_t>(i) * sizeof(identifier), identifier) ||
+        !Invoke(e.identifier_name, native, identifier) || !NativeString(e, native, key))
+      return false;
+    celestial = celestial || key == "government_is_celestial";
+    budget = budget || key == "government_uses_ministry_budget";
+  }
+  if (!celestial || !budget) return true;
+  // Mirror only the seven-byte fixed stock key. Engine resolver retains all
+  // lookup ownership; this stack string transfers no allocation or title.
+  struct NativeSmallString {
+    std::array<char, 16> bytes{'h','_','c','h','i','n','a','\0'};
+    std::uint64_t size = 7;
+    std::uint64_t capacity = 15;
+  } key;
+  static_assert(sizeof(NativeSmallString) == 32);
+  const void *title = nullptr, *title_fallback = nullptr, *resolved = nullptr;
+  std::int32_t full_id = -1, holder = -1;
+  if (!At(e, e.title_fallback_slot, 0, title_fallback) ||
+      !Invoke(e.title_by_key, title, static_cast<const void *>(&key))) return false;
+  if (!title || title == title_fallback) return true;
+  if (!At(e, title, 0x10, full_id) || !Title(e, full_id, resolved) || resolved != title ||
+      !At(e, title, 0x128, holder)) return false;
+  out = holder == owner_id;
+  return true;
+}
+
+bool CountyValues(const Environment &e, const Candidate &identity,
+                  std::uint32_t owner_faith, std::uint32_t incumbent_faith,
+                  std::uint32_t owner_rite, std::uint32_t incumbent_rite,
+                  bool ministry, CountyValueInputs &out) noexcept {
+  const void *province = nullptr, *county = nullptr, *rite = nullptr;
+  Candidate checked{};
+  if (!identity.county_rite_id || !ProvinceById(e, identity.province_id, province) ||
+      !CountyIdentity(e, province, county, checked) ||
+      checked.county_title_id != identity.county_title_id ||
+      checked.holder_character_id != identity.holder_character_id ||
+      !Invoke(e.county_rite, rite, county) ||
+      !RiteFaith(e, rite, *identity.county_rite_id, out.county_faith_id) ||
+      !Invoke(e.county_opinion, out.current_popular_opinion, county)) return false;
+  out.province_id = identity.province_id;
+  out.county_title_id = identity.county_title_id;
+  out.holder_character_id = identity.holder_character_id;
+  const bool use_owner = ministry || out.county_faith_id == owner_faith ||
+      incumbent_faith == owner_faith;
+  out.destination_rite_id = use_owner ? owner_rite : incumbent_rite;
+  out.destination_faith_id = use_owner ? owner_faith : incumbent_faith;
+  out.faith_changes = out.county_faith_id != out.destination_faith_id;
+  out.rite_changes = *identity.county_rite_id != out.destination_rite_id;
   return true;
 }
 
@@ -421,6 +524,53 @@ bool SameFrame(const Frame &a, const Frame &b) noexcept {
       a.played_character_alive == b.played_character_alive;
 }
 
+void ReadValueInputs(const Environment &e, const CurrentState &current,
+                     Observation &out) {
+  if (!e.value_inputs_enabled) return;
+  auto &values = out.value_inputs.emplace();
+  if (!e.character_rite || !e.rite_faith || !e.government || !e.identifier_name ||
+      !e.title_by_key || !e.county_opinion || !e.government_fallback_slot) return;
+  if (!current.seat.incumbent || !current.owner_rite || !current.incumbent_rite) {
+    values.failure = "owner_or_incumbent_rite_absent"; return;
+  }
+  std::uint32_t owner_faith = 0, incumbent_faith = 0;
+  bool ministry = false;
+  if (!CharacterFaith(e, current.seat.owner, current.owner_rite, owner_faith) ||
+      !CharacterFaith(e, current.seat.incumbent, current.incumbent_rite, incumbent_faith)) {
+    values.failure = "character_faith_unavailable"; return;
+  }
+  if (!MinistryAccess(e, current.seat.owner, out.owner_character_id, ministry)) {
+    values.failure = "ministry_access_unavailable"; return;
+  }
+  values.owner_faith_id = owner_faith; values.incumbent_faith_id = incumbent_faith;
+  values.owner_has_access_to_ministry = ministry;
+  if (current.province) {
+    const void *province = nullptr, *county = nullptr;
+    Candidate identity{};
+    CountyValueInputs target{};
+    if (!ProvinceById(e, *current.province, province) ||
+        !CountyIdentity(e, province, county, identity)) {
+      values.failure = "current_target_identity_unavailable"; return;
+    }
+    identity.county_rite_id = current.county_rite;
+    if (!CountyValues(e, identity, owner_faith, incumbent_faith,
+        *current.owner_rite, *current.incumbent_rite, ministry, target)) {
+      values.failure = "current_target_values_unavailable"; return;
+    }
+    values.current_target = target;
+  }
+  for (const auto &identity : out.candidates) {
+    CountyValueInputs row{};
+    if (!CountyValues(e, identity, owner_faith, incumbent_faith,
+        *current.owner_rite, *current.incumbent_rite, ministry, row)) {
+      values.failure = "candidate_values_unavailable";
+      values.candidates.clear(); return;
+    }
+    values.candidates.push_back(row);
+  }
+  values.available = true; values.failure = "none";
+}
+
 bool Failed(Observation &out, Failure failure) {
   const auto epoch = out.capture_epoch;
   const auto date = out.date_raw;
@@ -470,6 +620,14 @@ Environment BindCountyConversionImage12003(std::uintptr_t base,
   e.produce_targets = reinterpret_cast<ProduceTargets>(base + 0x2C48E80);
   e.monthly_rate = reinterpret_cast<EvaluatedTaskMonthlyRate>(base + kMonthlyRateRva);
   e.county_rite = reinterpret_cast<CountyRiteGetter>(base + kCountyRiteRva);
+  e.value_inputs_enabled = true;
+  e.character_rite = reinterpret_cast<ObjectGetter>(base + 0x28D2F90);
+  e.rite_faith = reinterpret_cast<ObjectGetter>(base + 0x24FC560);
+  e.government = reinterpret_cast<ObjectGetter>(base + 0x28C2E10);
+  e.title_by_key = reinterpret_cast<ObjectGetter>(base + 0xA847A0);
+  e.identifier_name = reinterpret_cast<IdentifierName>(base + 0x3F4F900);
+  e.county_opinion = reinterpret_cast<CountyOpinionGetter>(base + 0x24D4CB0);
+  e.government_fallback_slot = reinterpret_cast<void **>(base + 0x5D1E2A8);
   return e;
 }
 
@@ -512,6 +670,7 @@ bool ReadCountyConversion12003(const Environment &e, std::uint64_t epoch,
       failure = Candidates(e, current, type, out);
       if (failure != Failure::none) return Failed(out, failure);
     }
+    ReadValueInputs(e, current, out);
     if (!Snapshot(e, after) || !SameFrame(before, after) ||
         ReadCurrent(e, out.owner_character_id, last) != Failure::none || current != last)
       return Failed(out, Failure::state_changed);
@@ -589,7 +748,38 @@ std::string SerializeCountyConversion12003(const Observation &v) {
       << ",\"native_monthly_rate_raw\":"; Optional(o, row.native_monthly_rate_raw);
     o << ",\"native_monthly_rate_scale\":" << kFixedPointScale << '}';
   }
-  o << "],\"action_eligibility_complete\":false}";
+  o << ']';
+  if (v.value_inputs) {
+    const auto &values = *v.value_inputs;
+    const auto county_value = [&](const CountyValueInputs &row) {
+      o << "{\"province_id\":" << row.province_id
+        << ",\"county_title_id\":" << row.county_title_id
+        << ",\"holder_character_id\":" << row.holder_character_id
+        << ",\"county_faith_id\":" << row.county_faith_id
+        << ",\"destination_rite_id\":" << row.destination_rite_id
+        << ",\"destination_faith_id\":" << row.destination_faith_id
+        << ",\"current_popular_opinion\":" << row.current_popular_opinion
+        << ",\"popular_opinion_scale\":1,\"faith_changes\":" << row.faith_changes
+        << ",\"rite_changes\":" << row.rite_changes << '}';
+    };
+    o << ",\"value_inputs\":{\"status\":\""
+      << (values.available ? "available" : "unavailable") << "\",\"failure\":";
+    JsonString(o, values.failure);
+    o << ",\"owner_faith_id\":"; Optional(o, values.owner_faith_id);
+    o << ",\"incumbent_faith_id\":"; Optional(o, values.incumbent_faith_id);
+    o << ",\"owner_has_access_to_ministry\":";
+    Optional(o, values.owner_has_access_to_ministry);
+    o << ",\"current_target\":";
+    if (values.current_target) county_value(*values.current_target); else o << "null";
+    o << ",\"candidates\":[";
+    bool value_comma = false;
+    for (const auto &row : values.candidates) {
+      if (value_comma) o << ',';
+      value_comma = true; county_value(row);
+    }
+    o << "],\"decision_inputs_complete\":" << values.available << '}';
+  }
+  o << ",\"action_eligibility_complete\":false}";
   return o.str();
 }
 

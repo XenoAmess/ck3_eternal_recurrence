@@ -43,7 +43,7 @@ def normalize_player_county_conversion_v1(
     value: object, *, snapshot: Mapping[str, object], clergy: Mapping[str, object],
 ) -> dict[str, object]:
     """Preserve raw rates, generation-bearing Rite IDs and independent statuses."""
-    if (not isinstance(value, dict) or set(value) != _KEYS
+    if (not isinstance(value, dict) or set(value) not in (_KEYS, _KEYS | {"value_inputs"})
             or value["schema"] != SCHEMA or type(value["schema_version"]) is not int
             or value["schema_version"] != 1):
         raise ValueError("native county conversion schema is malformed")
@@ -109,7 +109,58 @@ def normalize_player_county_conversion_v1(
                 or (clergy.get("status") == "available"
                     and value["capture_epoch"] != clergy.get("capture_epoch"))):
             raise ValueError("native county conversion differs from its queried player frame")
+    if "value_inputs" in value:
+        _normalize_value_inputs(value["value_inputs"], value)
     # A rejected target, a legal empty collection, a frozen current task and a
     # failed component retain their own raw fields. Rates remain separate from
-    # percentage progress; no destination Rite, action readiness or ETA is inferred.
+    # percentage progress; no action readiness, ETA or opinion gain is inferred.
     return deepcopy(value)
+
+
+def _normalize_value_inputs(values: object, county: Mapping[str, object]) -> None:
+    keys = {"status", "failure", "owner_faith_id", "incumbent_faith_id",
+            "owner_has_access_to_ministry", "current_target", "candidates",
+            "decision_inputs_complete"}
+    row_keys = {"province_id", "county_title_id", "holder_character_id", "county_faith_id",
+                "destination_rite_id", "destination_faith_id", "current_popular_opinion",
+                "popular_opinion_scale", "faith_changes", "rite_changes"}
+    if (not isinstance(values, dict) or set(values) != keys
+            or values["status"] not in ("available", "unavailable")
+            or not isinstance(values["failure"], str)
+            or type(values["decision_inputs_complete"]) is not bool
+            or values["decision_inputs_complete"] != (values["status"] == "available")):
+        raise ValueError("native county value inputs are malformed")
+    for key in ("owner_faith_id", "incumbent_faith_id"):
+        _nullable_integer(values[key], 0, 0xFFFFFFFF, key)
+    ministry = values["owner_has_access_to_ministry"]
+    if ministry is not None and type(ministry) is not bool:
+        raise ValueError("native county ministry input is malformed")
+    rows = values["candidates"]
+    if not isinstance(rows, list):
+        raise ValueError("native county value candidates are malformed")
+    targets = ([values["current_target"]] if values["current_target"] is not None else []) + rows
+    for row in targets:
+        if not isinstance(row, dict) or set(row) != row_keys:
+            raise ValueError("native county value row is malformed")
+        for key in ("province_id", "county_title_id", "holder_character_id", "current_popular_opinion"):
+            _integer(row[key], -(1 << 31), (1 << 31) - 1, key)
+        for key in ("county_faith_id", "destination_rite_id", "destination_faith_id"):
+            _integer(row[key], 0, 0xFFFFFFFF, key)
+        if type(row["popular_opinion_scale"]) is not int or row["popular_opinion_scale"] != 1:
+            raise ValueError("native county popular opinion scale is malformed")
+        for key in ("faith_changes", "rite_changes"):
+            if type(row[key]) is not bool:
+                raise ValueError("native county value boolean is malformed")
+    if values["status"] == "available":
+        if (values["failure"] != "none" or ministry is None
+                or values["owner_faith_id"] is None or values["incumbent_faith_id"] is None
+                or len(rows) != county["candidate_count"]):
+            raise ValueError("native county value inputs are incomplete")
+        for row, candidate in zip(rows, county["candidates"], strict=True):
+            if any(row[key] != candidate[key] for key in ("province_id", "county_title_id", "holder_character_id")):
+                raise ValueError("native county value candidate identity differs")
+        target = values["current_target"]
+        if ((target is None) != (county["current_target_province_id"] is None)
+                or (target is not None and (target["province_id"] != county["current_target_province_id"]
+                    or target["county_title_id"] != county["current_target_county_title_id"]))):
+            raise ValueError("native county value current target differs")

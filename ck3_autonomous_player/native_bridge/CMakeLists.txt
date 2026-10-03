@@ -2549,6 +2549,25 @@ if(BUILD_TESTING)
       COMMAND xar_ck3_12003_county_conversion_clergy_full_wire_test
         "${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/county_conversion_clergy_full_wire_leaf_12003.json"
         "${CMAKE_BINARY_DIR}/county-conversion-clergy-full-wire")
+
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/county-conversion-values")
+    add_executable(xar_ck3_12003_county_conversion_values_test
+      src/ck3_12002.cpp
+      src/ck3_12002_council_candidates.cpp
+      src/council_composition_candidates_public_v1.cpp
+      src/council_composition_candidates_public_v1_serializer.cpp
+      src/religion_rite_governance12002_clergy.cpp
+      src/ck3_12003_county_conversion.cpp
+      src/ck3_12003_county_conversion_values_test.cpp)
+    target_include_directories(xar_ck3_12003_county_conversion_values_test PRIVATE include)
+    target_link_libraries(xar_ck3_12003_county_conversion_values_test PRIVATE xar_bridge_protocol user32)
+    if(MSVC)
+      target_compile_options(xar_ck3_12003_county_conversion_values_test PRIVATE
+        /O2 /UNDEBUG /W4 /WX /Gy /permissive- /EHsc /utf-8)
+      target_link_options(xar_ck3_12003_county_conversion_values_test PRIVATE /OPT:REF)
+    endif()
+    add_test(NAME xar_ck3_12003_county_conversion_values_test
+      COMMAND xar_ck3_12003_county_conversion_values_test "${CMAKE_BINARY_DIR}/county-conversion-values")
   endif()
 
   if(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)

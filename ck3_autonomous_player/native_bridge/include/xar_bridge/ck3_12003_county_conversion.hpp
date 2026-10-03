@@ -25,6 +25,9 @@ using ProduceTargets = void (*)(const void *, const void *, bool, NativeVector *
 using EvaluatedTaskMonthlyRate = std::int64_t *(*)(
     const void *, std::int64_t *, const void *, void *, bool);
 using CountyRiteGetter = const void *(*)(const void *);
+using ObjectGetter = const void *(*)(const void *);
+using IdentifierName = const std::string *(*)(std::int32_t);
+using CountyOpinionGetter = std::int32_t (*)(const void *);
 
 struct Environment {
   bool exact_build_admitted = false;
@@ -47,6 +50,16 @@ struct Environment {
   ProduceTargets produce_targets = nullptr;
   EvaluatedTaskMonthlyRate monthly_rate = nullptr;
   CountyRiteGetter county_rite = nullptr;
+  // Optional extension for old offline component fixtures. The exact .3
+  // production binder always enables these actual value inputs.
+  bool value_inputs_enabled = false;
+  ObjectGetter character_rite = nullptr;
+  ObjectGetter rite_faith = nullptr;
+  ObjectGetter government = nullptr;
+  ObjectGetter title_by_key = nullptr;
+  IdentifierName identifier_name = nullptr;
+  CountyOpinionGetter county_opinion = nullptr;
+  void **government_fallback_slot = nullptr;
 };
 
 enum class Failure {
@@ -78,6 +91,28 @@ struct Candidate {
   std::optional<std::int64_t> native_monthly_rate_raw;
 };
 
+struct CountyValueInputs {
+  std::int32_t province_id = -1;
+  std::int32_t county_title_id = -1;
+  std::int32_t holder_character_id = -1;
+  std::uint32_t county_faith_id = 0;
+  std::uint32_t destination_rite_id = 0;
+  std::uint32_t destination_faith_id = 0;
+  std::int32_t current_popular_opinion = 0;
+  bool faith_changes = false;
+  bool rite_changes = false;
+};
+
+struct ValueInputs {
+  bool available = false;
+  std::string failure = "bindings_unavailable";
+  std::optional<std::uint32_t> owner_faith_id;
+  std::optional<std::uint32_t> incumbent_faith_id;
+  std::optional<bool> owner_has_access_to_ministry;
+  std::optional<CountyValueInputs> current_target;
+  std::vector<CountyValueInputs> candidates;
+};
+
 struct Observation {
   bool available = false;
   Failure failure = Failure::bindings_unavailable;
@@ -103,6 +138,7 @@ struct Observation {
   bool candidate_collection_evaluated = false;
   bool candidate_collection_complete = false;
   std::vector<Candidate> candidates;
+  std::optional<ValueInputs> value_inputs;
 };
 
 Environment BindCountyConversionImage12003(
