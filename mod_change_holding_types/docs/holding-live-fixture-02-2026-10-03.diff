@@ -1,0 +1,16 @@
+--- holding-live-fixture-01/events/chtt_events.txt
++++ holding-live-fixture-02/events/chtt_events.txt
+@@ -14,7 +14,12 @@
+                 capital_province = { has_ongoing_construction = no }
+             }
+             capital_province.barony = { save_scope_as = barony }
+-            scope:barony.title_province = { set_holding_type = castle_holding }
++            scope:barony.title_province = {
++                if = {
++                    limit = { NOT = { has_holding_type = castle_holding } }
++                    set_holding_type = castle_holding
++                }
++            }
+             cht_convert_to_city_effect = yes
+     if = {
+         limit = { scope:barony.title_province = { has_holding_type = city_holding } }

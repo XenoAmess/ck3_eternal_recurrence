@@ -1,0 +1,34 @@
+{
+  "schema": "cht.fixed-fixture-generator-verification.v1",
+  "status": "GREEN",
+  "command": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:\\workspace\\ck3_eternal_recurrence\\mod_change_holding_types\\tools\\prepare_live_fixture.py",
+    "--output",
+    "C:\\workspace\\two-mod-maintenance-20261003\\holding-live-fixture-generator-fixed"
+  ],
+  "generated_fixture": "C:\\workspace\\two-mod-maintenance-20261003\\holding-live-fixture-generator-fixed",
+  "reference_fixture": "C:\\workspace\\two-mod-maintenance-20261003\\holding-live-fixture-02",
+  "exact_file_inventory": true,
+  "exact_bytes_match": true,
+  "files": [
+    {
+      "path": "common/on_action/chtt_on_actions.txt",
+      "size": 232,
+      "sha256": "cebb3384c7d0e45fade0719fef3f6f7872ebc84d6903e98373fe845f89b770a6"
+    },
+    {
+      "path": "descriptor.mod",
+      "size": 82,
+      "sha256": "9c3bede238e7e45cea7814f02c991efecf417ba86dd10a9fe3f0ab792e351fd7"
+    },
+    {
+      "path": "events/chtt_events.txt",
+      "size": 3669,
+      "sha256": "72fac24f77544135d15a35398658c15d8619d7aa1617fa47eaee63d42e19be9b"
+    }
+  ],
+  "game_started": false,
+  "runtime_source_changed": false,
+  "meaning": "The repaired generator emits the exact fixture02 bytes used by root R0003; this is not an additional live test."
+}

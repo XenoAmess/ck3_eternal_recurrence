@@ -39,7 +39,12 @@ chtt.0001 = {
                 capital_province = { has_ongoing_construction = no }
             }
             capital_province.barony = { save_scope_as = barony }
-            scope:barony.title_province = { set_holding_type = castle_holding }
+            scope:barony.title_province = {
+                if = {
+                    limit = { NOT = { has_holding_type = castle_holding } }
+                    set_holding_type = castle_holding
+                }
+            }
 """
     order = ["city", "temple", "tribal", "nomad", "temple_citadel", "castle"]
     by_kind = {kind: (holding, main) for kind, holding, main in TARGETS}

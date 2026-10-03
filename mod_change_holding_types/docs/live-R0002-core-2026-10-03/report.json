@@ -1,0 +1,136 @@
+{
+  "schema": "cht.live-core-verification-candidate.v1",
+  "run_id": "bf-202609141645-5434332d4d--change-holding-types--R0002",
+  "recorded_at_utc": "2026-10-03T00:05:08.454647+00:00",
+  "classification": "PRODUCT_CORE_PASS_WITH_FIXTURE_DIAGNOSTIC",
+  "overall_clean_acceptance": false,
+  "release_ready": false,
+  "game": {
+    "version": "1.20.0.3",
+    "steam_build": "25652598",
+    "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+  },
+  "character": {
+    "history_id": 1128,
+    "native_character_id": 31254,
+    "bookmark": "bookmark_rags_to_riches_duke_robert"
+  },
+  "gui_observation": {
+    "status": "PASS",
+    "selection_and_execution": "Root operator selected Rossano from the native decision UI and executed conversion to city; available targets included Taranto/Rossano.",
+    "observation_source": "Parent operator report and retained GUI evidence; this verifier did not perform screen input.",
+    "gold_setup": "Isolated setup added 1000 gold before the GUI action, as logged by CHTT setup marker.",
+    "gold_before": 1246.0,
+    "gold_after": 846.0,
+    "gold_paid": 400,
+    "date_raw": 53144328,
+    "both_snapshots_paused": true,
+    "target_state_marker": "PASS GUI Rossano direct-owned city",
+    "untargeted_capital_marker": "PASS GUI untargeted capital castle"
+  },
+  "production_effect_matrix": {
+    "status": "PASS",
+    "pass_count": 10,
+    "pass_markers": [
+      "convert-city",
+      "convert-temple",
+      "convert-tribal",
+      "convert-nomad",
+      "convert-temple_citadel",
+      "convert-castle",
+      "same-type-rejected",
+      "same-type-unchanged",
+      "ai-effect-blocked",
+      "non-barony-rejected"
+    ],
+    "covers": "Six production conversion effects; same type rejected/unchanged; actual AI actor blocked; non-barony predicate rejected.",
+    "does_not_equal_gui_execution": "The separate ten-case matrix invokes real production effects through the external fixture. Only the preceding city/Rossano case used the real decision UI."
+  },
+  "state_marker_basis": {
+    "status": "PASS",
+    "markers": [
+      "GUI setup Robert gold plus 1000",
+      "PASS GUI Rossano direct-owned city",
+      "PASS GUI untargeted capital castle",
+      "START production-effect-matrix",
+      "PASS convert-city",
+      "PASS convert-temple",
+      "PASS convert-tribal",
+      "PASS convert-nomad",
+      "PASS convert-temple_citadel",
+      "PASS convert-castle",
+      "PASS same-type-rejected",
+      "PASS same-type-unchanged",
+      "AI guard actor reached",
+      "PASS ai-effect-blocked",
+      "PASS non-barony-rejected",
+      "END production-effect-matrix"
+    ],
+    "inbox_native_executed": true,
+    "inbox_marker_confirmed": false,
+    "basis": "State outcomes are verified from the actual engine debug.log markers, not from the inbox command ACK."
+  },
+  "diagnostic": {
+    "status": "FIXTURE_RED",
+    "count": 1,
+    "product_diagnostic_count_in_captured_error_log": 0,
+    "file": "events/chtt_events.txt",
+    "line": 17,
+    "error": "set_holding_type: Holding already has the target type 'castle_holding'",
+    "cause": "External fixture unconditionally initialized an already-castle holding. Product effects still passed all declared state checks.",
+    "old_fixture_retained": true,
+    "successor_fixture": "C:\\workspace\\two-mod-maintenance-20261003\\holding-live-fixture-02",
+    "successor_preflight": "C:\\workspace\\two-mod-maintenance-20261003\\holding-live-fixture-02-preflight.json",
+    "successor_engine_verified": false
+  },
+  "remaining": [
+    "New R0003 must load corrected fixture and prove a clean matrix.",
+    "Reload saved R0002 and verify persisted Rossano city through actual state checks.",
+    "Complete final process cleanup and protected-input receipts.",
+    "Workshop upload, public text/Change Notes, fresh cache and permanent changelog are separate pending deliveries."
+  ],
+  "evidence": [
+    {
+      "path": "gold-before.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0002\\session\\010-gui-gold-before-result.json",
+      "size": 22032,
+      "sha256": "07e4323b4f15dcd9d9428fa799cd5a93135efb08108b3f3caa1e7ae3c17a8def"
+    },
+    {
+      "path": "gold-after.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0002\\session\\011-city-gold-after-result.json",
+      "size": 22034,
+      "sha256": "f505788ddefd55f652acba6828ecdabcb641c5f3a485a8faf15f88ab8fba9d45"
+    },
+    {
+      "path": "inbox-result.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0002\\session\\012-holding-matrix-result.json",
+      "size": 1197,
+      "sha256": "d23910d429887705c25ec30050e96f10a0515e8289a865f1ba462548003079e2"
+    },
+    {
+      "path": "debug-log-snapshot.log",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0002\\state\\profile\\logs\\debug.log",
+      "size": 1115866,
+      "sha256": "3c2c8ae97ea7bbc49fee0059195b7b6a663fb2aa10563b514d67d015a822a86e"
+    },
+    {
+      "path": "error-log-snapshot.log",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0002\\state\\profile\\logs\\error.log",
+      "size": 278,
+      "sha256": "727a2a52b88cc5bdf9d047448765141550ee04fcf1e569fa658623fb8aac1c1f"
+    },
+    {
+      "path": "inbox-script-snapshot.txt",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0002\\state\\profile\\run\\xar_mcp_inbox.txt",
+      "size": 539,
+      "sha256": "7eebac615cd9df9bc8a9145ecef794333066310c4bcd8001273da56d8525acb9"
+    },
+    {
+      "path": "production.manifest.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0002\\production.manifest.json",
+      "size": 3371,
+      "sha256": "9bb6793a36c264b8a1ba17fd58a1961229259cdd22f347f37e97ff993519a797"
+    }
+  ]
+}

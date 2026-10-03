@@ -1,0 +1,21 @@
+{
+  "schema": "cht.fixture-successor-preflight.v1",
+  "structural_status": "GREEN",
+  "ck3_started": false,
+  "original_fixture_unchanged": true,
+  "runtime_source_changed": false,
+  "changed_files": [
+    "events/chtt_events.txt"
+  ],
+  "diff": "C:\\workspace\\two-mod-maintenance-20261003\\holding-live-fixture-02.diff",
+  "diff_sha256": "b526e682689bc5c92c67e7b98e5c050f00dae6982b9e22017f370eaeb547d528",
+  "manifest": "C:\\workspace\\two-mod-maintenance-20261003\\holding-live-fixture-02.fixture.json",
+  "manifest_sha256": "20fbf9d5cc7ad52da9e6b0bbe6e69e557f51d0cac69f97cc17be6552736e9dd1",
+  "event_sha256": "72fac24f77544135d15a35398658c15d8619d7aa1617fa47eaee63d42e19be9b",
+  "open_kaishek": {
+    "status": "not-applicable",
+    "reason": "open_kaishek-root-missing",
+    "artifact": "C:\\workspace\\two-mod-maintenance-20261003\\holding-live-fixture-02-kaishek.json"
+  },
+  "engine_semantics_verified": false
+}

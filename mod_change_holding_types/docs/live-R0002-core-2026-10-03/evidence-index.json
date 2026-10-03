@@ -1,0 +1,51 @@
+{
+  "schema": "cht.archived-core-evidence-index.v1",
+  "report_sha256": "046aa52c68fed91d3f263ae1ed5b727fcd30ebffa696c82ded4fbb90674d7d6a",
+  "captured_evidence_root": "C:\\workspace\\two-mod-maintenance-20261003\\holding-R0002-verification-candidate",
+  "evidence_in_repository": false,
+  "meaning": "Report bytes are archived without amendment. Relative evidence paths in report.json resolve under captured_evidence_root, not this docs directory. Mutable original runtime sources are not substituted for these preserved snapshots.",
+  "files": [
+    {
+      "path": "gold-before.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0002\\session\\010-gui-gold-before-result.json",
+      "size": 22032,
+      "sha256": "07e4323b4f15dcd9d9428fa799cd5a93135efb08108b3f3caa1e7ae3c17a8def"
+    },
+    {
+      "path": "gold-after.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0002\\session\\011-city-gold-after-result.json",
+      "size": 22034,
+      "sha256": "f505788ddefd55f652acba6828ecdabcb641c5f3a485a8faf15f88ab8fba9d45"
+    },
+    {
+      "path": "inbox-result.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0002\\session\\012-holding-matrix-result.json",
+      "size": 1197,
+      "sha256": "d23910d429887705c25ec30050e96f10a0515e8289a865f1ba462548003079e2"
+    },
+    {
+      "path": "debug-log-snapshot.log",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0002\\state\\profile\\logs\\debug.log",
+      "size": 1115866,
+      "sha256": "3c2c8ae97ea7bbc49fee0059195b7b6a663fb2aa10563b514d67d015a822a86e"
+    },
+    {
+      "path": "error-log-snapshot.log",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0002\\state\\profile\\logs\\error.log",
+      "size": 278,
+      "sha256": "727a2a52b88cc5bdf9d047448765141550ee04fcf1e569fa658623fb8aac1c1f"
+    },
+    {
+      "path": "inbox-script-snapshot.txt",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0002\\state\\profile\\run\\xar_mcp_inbox.txt",
+      "size": 539,
+      "sha256": "7eebac615cd9df9bc8a9145ecef794333066310c4bcd8001273da56d8525acb9"
+    },
+    {
+      "path": "production.manifest.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0002\\production.manifest.json",
+      "size": 3371,
+      "sha256": "9bb6793a36c264b8a1ba17fd58a1961229259cdd22f347f37e97ff993519a797"
+    }
+  ]
+}
