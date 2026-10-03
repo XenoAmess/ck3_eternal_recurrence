@@ -15,6 +15,10 @@
 - [奉献等级、德性与罪性](religion-devotion-virtues-native-ai-12003.md)：累计等级进度与可花费虔诚分开，动态上限和当前 Rite 的德性判定已有具体原生读取入口。当前为 research，贫穷誓愿的静态收益不是罗贝尔实际合法性或收益。
 - [热忱与县改宗](religion-fervor-county-conversion-native-ai-12003.md)：已闭合任务最终月率与真实县目标的施工入口；完成百分比、Faith 热忱和同名县 modifier 分别处理。当前为 research，尚未切换宗教任务。
 
+[朝圣类型判定](religion-pilgrimage-native-inputs-12003.md)、忏悔最终决议条款和[教会当前／最高月收入](religion-church-income-readonly-leaf-12003.md)已进入同一宗教 MCP 的三个独立只读 sibling 实现。新原生叶与生产解码的必要验证已通过，当前最高为 static-ready；严格构建和罗贝尔当前暂停帧仍待验收。朝圣 CanPlan 不代表所选目的地的完整 CanStart／费用／旅行时间，最高月收入也不代表已取得收入改善。
+
+[向信仰领袖请求资助](religion-catholic-head-of-faith-gold-native-ai-12003.md)已闭合新版原生领袖、实际收件人重定向、独立显示、最终发送与金额计算入口；普通请求的声明成本和接受后的250虔诚效果费用分别记账。当前为 research，专用读取叶正在下一包施工，没有请求或资金收益。
+
 当前实际能力与计划回链[统一进度](../autonomous-agent-progress/README.md)。宗教全面授权不等于宗教全域完成；上述原生研究、静态实现、实机观测和完整动作闭环分别记账。
 
 ## 2026-10-03：战争第 3 期刘易斯围城实机与机制研究

@@ -816,6 +816,9 @@ if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_religion_mailbox.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_spiritual_fulfillment_progress.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_mystical_communion_decision_terms.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_pilgrimage_activity_type_terms.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_confession_decision_terms.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_church_income_profile.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_holy_order_loan_context.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_holy_order_loan_mailbox.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_holy_order_loan_wire.cpp")
@@ -2241,6 +2244,10 @@ if(BUILD_TESTING)
       src/main_thread_query_mailbox_v1.cpp
       src/ck3_12002_religion_mailbox.cpp
       src/ck3_12003_spiritual_fulfillment_progress.cpp
+      src/ck3_12003_mystical_communion_decision_terms.cpp
+      src/ck3_12003_pilgrimage_activity_type_terms.cpp
+      src/ck3_12003_confession_decision_terms.cpp
+      src/ck3_12003_church_income_profile.cpp
       src/ck3_12002_religion_mailbox_test.cpp)
     target_include_directories(xar_ck3_12002_religion_mailbox_test PRIVATE include)
     target_link_libraries(xar_ck3_12002_religion_mailbox_test PRIVATE

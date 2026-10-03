@@ -168,6 +168,120 @@ def normalize_player_mystical_communion_decision_terms_v1(
     return {**value, "costs_raw": dict(costs)}
 
 
+def normalize_player_pilgrimage_activity_type_terms_v1(
+    value: object, *, current_context: Mapping[str, object],
+) -> dict[str, object] | None:
+    """Preserve fixed-type CanPlan and literal reasons; not a Start/quote."""
+    if value is None:
+        return None
+    keys = {
+        "schema", "read_only", "available", "unavailable_reason", "capture_epoch",
+        "date_raw", "played_character_id", "activity_id", "can_plan",
+        "reasons_available", "can_plan_reasons",
+    }
+    if (not isinstance(value, dict) or set(value) != keys
+            or value["schema"] != "ck3_12003_pilgrimage_activity_type_terms_v1"
+            or value["read_only"] is not True or type(value["available"]) is not bool
+            or value["activity_id"] != "activity_pilgrimage"
+            or type(value["reasons_available"]) is not bool):
+        raise ValueError("native pilgrimage activity type terms schema is malformed")
+    for key in ("capture_epoch", "date_raw", "played_character_id"):
+        if type(value[key]) is not int or value[key] != current_context[key]:
+            raise ValueError("native pilgrimage type terms differ from the current context")
+    if value["can_plan"] is not None and type(value["can_plan"]) is not bool:
+        raise ValueError("native pilgrimage CanPlan predicate is malformed")
+    if value["reasons_available"]:
+        if not isinstance(value["can_plan_reasons"], str):
+            raise ValueError("native pilgrimage CanPlan literal reasons are malformed")
+    elif value["can_plan_reasons"] is not None:
+        raise ValueError("unavailable native pilgrimage reasons lost their null")
+    if value["available"]:
+        if (value["unavailable_reason"] is not None or value["can_plan"] is None
+                or value["reasons_available"] is not True):
+            raise ValueError("available native pilgrimage type terms lost actual values")
+    elif not isinstance(value["unavailable_reason"], str) or not value["unavailable_reason"]:
+        raise ValueError("unavailable native pilgrimage type terms lost their reason")
+    return dict(value)
+
+
+def normalize_player_confession_decision_terms_v1(
+    value: object, *, current_context: Mapping[str, object],
+) -> dict[str, object] | None:
+    """Publish the independent native final terms for the fixed decision."""
+    if value is None:
+        return None
+    keys = {
+        "schema", "read_only", "available", "unavailable_reason", "capture_epoch",
+        "date_raw", "played_character_id", "decision_id", "is_shown", "can_take",
+        "affordable", "costs_raw", "raw_scale", "reasons_available", "can_take_reasons",
+    }
+    if (not isinstance(value, dict) or set(value) != keys
+            or value["schema"] != "ck3_12003_confession_decision_terms_v1"
+            or value["read_only"] is not True or type(value["available"]) is not bool
+            or value["decision_id"] != "pam_decision_confession"
+            or type(value["raw_scale"]) is not int or value["raw_scale"] != 100000
+            or type(value["reasons_available"]) is not bool):
+        raise ValueError("native confession decision terms schema is malformed")
+    for key in ("capture_epoch", "date_raw", "played_character_id"):
+        if type(value[key]) is not int or value[key] != current_context[key]:
+            raise ValueError("native confession decision terms differ from the current context")
+    for key in ("is_shown", "can_take", "affordable"):
+        if value[key] is not None and type(value[key]) is not bool:
+            raise ValueError(f"native confession decision predicate is malformed: {key}")
+    costs = value["costs_raw"]
+    if not isinstance(costs, dict) or set(costs) != {"gold", "treasury", "prestige", "piety"}:
+        raise ValueError("native confession evaluated costs are malformed")
+    for key, raw in costs.items():
+        if raw is not None and (type(raw) is not int or not -(1 << 63) <= raw < (1 << 63)):
+            raise ValueError(f"native confession evaluated signed cost is malformed: {key}")
+    if value["reasons_available"]:
+        if not isinstance(value["can_take_reasons"], str):
+            raise ValueError("native confession final reason text is malformed")
+    elif value["can_take_reasons"] is not None:
+        raise ValueError("unavailable native confession final reasons lost their null")
+    if value["available"]:
+        if (value["unavailable_reason"] is not None
+                or any(value[key] is None for key in ("is_shown", "can_take", "affordable"))
+                or any(raw is None for raw in costs.values())):
+            raise ValueError("available native confession terms lost actual final values")
+    elif not isinstance(value["unavailable_reason"], str) or not value["unavailable_reason"]:
+        raise ValueError("unavailable native confession terms lost their reason")
+    return {**value, "costs_raw": dict(costs)}
+
+
+def normalize_player_church_income_profile_v1(
+    value: object, *, current_context: Mapping[str, object],
+) -> dict[str, object] | None:
+    """Preserve independent native current and maximum monthly income."""
+    if value is None:
+        return None
+    keys = {
+        "schema", "read_only", "available", "unavailable_reason", "capture_epoch",
+        "date_raw", "played_character_id", "current_monthly_income_raw",
+        "maximum_monthly_income_raw", "raw_scale",
+    }
+    if (not isinstance(value, dict) or set(value) != keys
+            or value["schema"] != "ck3_12003_player_church_income_profile_v1"
+            or value["read_only"] is not True or type(value["available"]) is not bool
+            or type(value["raw_scale"]) is not int or value["raw_scale"] != 100000):
+        raise ValueError("native church income profile schema is malformed")
+    for key in ("capture_epoch", "date_raw", "played_character_id"):
+        if type(value[key]) is not int or value[key] != current_context[key]:
+            raise ValueError("native church income profile differs from its current context")
+    raw_keys = ("current_monthly_income_raw", "maximum_monthly_income_raw")
+    for key in raw_keys:
+        if value[key] is not None and (type(value[key]) is not int
+                or not -(1 << 63) <= value[key] < (1 << 63)):
+            raise ValueError(f"native church income signed raw is malformed: {key}")
+    if value["available"]:
+        if (value["unavailable_reason"] is not None
+                or any(value[key] is None for key in raw_keys)):
+            raise ValueError("available native church income lost actual values")
+    elif not isinstance(value["unavailable_reason"], str) or not value["unavailable_reason"]:
+        raise ValueError("unavailable native church income lost its reason")
+    return dict(value)
+
+
 def query_player_religion_context_private_v1(
     driver: object, *, expected_revision: int, timeout_seconds: float = 30.0,
 ) -> dict[str, object]:
@@ -202,13 +316,35 @@ def query_player_religion_context_private_v1(
                     result["player_mystical_communion_decision_terms"], current_context=value,
                 )
             )
+        pilgrimage_fields = {}
+        if "player_pilgrimage_activity_type_terms" in result:
+            pilgrimage_fields["player_pilgrimage_activity_type_terms"] = (
+                normalize_player_pilgrimage_activity_type_terms_v1(
+                    result["player_pilgrimage_activity_type_terms"], current_context=value,
+                )
+            )
+        confession_fields = {}
+        if "player_confession_decision_terms" in result:
+            confession_fields["player_confession_decision_terms"] = (
+                normalize_player_confession_decision_terms_v1(
+                    result["player_confession_decision_terms"], current_context=value,
+                )
+            )
+        church_income_fields = {}
+        if "player_church_income_profile" in result:
+            church_income_fields["player_church_income_profile"] = (
+                normalize_player_church_income_profile_v1(
+                    result["player_church_income_profile"], current_context=value,
+                )
+            )
         expected_status = "observed" if value["available"] else "unavailable"
         if result.get("status") != expected_status:
             raise ValueError("native player religion context envelope lost its source status")
     except ValueError as error:
         raise BridgeUnavailableError(str(error)) from error
     return {
-        **value, **progress_fields, **decision_fields, **private_native_provenance(before),
+        **value, **progress_fields, **decision_fields, **pilgrimage_fields,
+        **confession_fields, **church_income_fields, **private_native_provenance(before),
         **private_g2_query_metadata_v1(before),
         "snapshot_revision": result["snapshot_revision"],
         "query_date_raw": result["date_raw"],

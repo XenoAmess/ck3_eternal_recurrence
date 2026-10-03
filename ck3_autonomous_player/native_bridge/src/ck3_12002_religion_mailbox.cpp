@@ -87,6 +87,25 @@ bool ExecutePlayerReligionMailbox12002(
         ResolveCoreCharacter(query.bindings.core, static_cast<std::int32_t>(frame.played_character_id)),
         static_cast<std::int32_t>(frame.played_character_id),
         static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.mystical_communion_terms);
+    // Read fixed pilgrimage CanPlan and its tooltip without opening a planner.
+    // This independent component does not change the existing Context.
+    (void)ck3_12003::religion::pilgrimage::ReadPlayerPilgrimageActivityTypeTerms12003(
+        query.pilgrimage_bindings,
+        ResolveCoreCharacter(query.bindings.core, static_cast<std::int32_t>(frame.played_character_id)),
+        static_cast<std::int32_t>(frame.played_character_id),
+        static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.pilgrimage_terms);
+    // Independent fixed confession and church-income components use the
+    // same resolved current player/frame; neither gates existing Context.
+    (void)ck3_12003::religion::confession::ReadPlayerConfessionDecisionTerms12003(
+        query.confession_bindings,
+        ResolveCoreCharacter(query.bindings.core, static_cast<std::int32_t>(frame.played_character_id)),
+        static_cast<std::int32_t>(frame.played_character_id),
+        static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.confession_terms);
+    (void)ck3_12003::religion::church_income::ReadPlayerChurchIncomeProfile12003(
+        query.church_income_bindings,
+        ResolveCoreCharacter(query.bindings.core, static_cast<std::int32_t>(frame.played_character_id)),
+        static_cast<std::int32_t>(frame.played_character_id),
+        static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.church_income_terms);
     query.completed = true;
     (void)FinishQueryMailbox(*envelope);
     return true;
@@ -114,7 +133,16 @@ std::string SerializePlayerReligionResult12002(
       religion::fulfillment_progress12003::SerializeSpiritualFulfillmentProgress12003(query.progress) +
       ",\"player_mystical_communion_decision_terms\":" +
       ck3_12003::religion::mystical_communion::SerializePlayerMysticalCommunionDecisionTerms12003(
-          query.mystical_communion_terms) + "}}";
+          query.mystical_communion_terms) +
+      ",\"player_pilgrimage_activity_type_terms\":" +
+      ck3_12003::religion::pilgrimage::SerializePlayerPilgrimageActivityTypeTerms12003(
+          query.pilgrimage_terms) +
+      ",\"player_confession_decision_terms\":" +
+      ck3_12003::religion::confession::SerializePlayerConfessionDecisionTerms12003(
+          query.confession_terms) +
+      ",\"player_church_income_profile\":" +
+      ck3_12003::religion::church_income::SerializePlayerChurchIncomeProfile12003(
+          query.church_income_terms) + "}}";
 }
 
 bool RunPlayerReligionMailbox12002(PlayerReligionMailboxContext12002 &query,
@@ -186,6 +214,15 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
             image_base, adapter.descriptor());
     query.mystical_communion_bindings =
         ck3_12003::religion::mystical_communion::BindPlayerMysticalCommunionDecisionTermsImage12003(
+            image_base, adapter.descriptor().executable_sha256);
+    query.pilgrimage_bindings =
+        ck3_12003::religion::pilgrimage::BindPlayerPilgrimageActivityTypeTermsImage12003(
+            image_base, adapter.descriptor().executable_sha256);
+    query.confession_bindings =
+        ck3_12003::religion::confession::BindPlayerConfessionDecisionTermsImage12003(
+            image_base, adapter.descriptor().executable_sha256);
+    query.church_income_bindings =
+        ck3_12003::religion::church_income::BindPlayerChurchIncomeProfileImage12003(
             image_base, adapter.descriptor().executable_sha256);
     return RunPlayerReligionMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_handler_exception"; return false; }
