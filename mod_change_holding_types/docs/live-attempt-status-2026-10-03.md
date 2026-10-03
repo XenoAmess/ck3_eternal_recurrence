@@ -45,3 +45,9 @@ Python MCP `tools.json` 中存在 `ck3_query_frontend_gui_route_v1` wrapper；�
 ## 下一项收据
 
 父任务继续同一R0002现场时追加原生状态、生产fixture结果和玩家入口证据；发生新冷载则分配新的mod run ID。失败或未实现的能力继续如实记录，不能把partial连接、命令ACK或空error.log写成产品GREEN。Workshop上传、完整公开Change Notes、fresh缓存与永久changelog仍各自等待实际交付。
+
+## 2026-10-03 补记：R0003 重载与干净矩阵
+
+[R0003 冻结核验报告](live-R0003-reload-2026-10-03/README.md) 已记录实际 ready snapshot002：人物 `31254`、同日 `53144328`、暂停、金币 `846`，保存 bytes 与 R0002 保存源 size／SHA 一致。原生日志证明 Rossano 的玩家直辖城市结果持久化，未选中首都仍为城堡。修正后的 fixture02 十项生产矩阵 PASS，连同两项保存状态共十二 PASS，START／END／AI actor 完整；捕获 error.log 为零字节。R0002 原错误继续保留。
+
+英文截图已观察六名称、费用400和条件；完整 warning 的无遮挡稳定截图及七语视觉尚待 R0004 独立结果，母语审阅未完成。结论只适用本机固定 `1.20.0.3` EXE/build，不外推整个 `1.20.*` 系列，也不代表发布、公开 Change Notes、缓存或 changelog 已交付。早期 Taranto 地名误记以 [追加勘误](corrections-2026-10-03.md) 更正为 Trani／特拉尼，原候选不覆盖。

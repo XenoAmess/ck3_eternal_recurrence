@@ -30,3 +30,9 @@ attempt03 在相同 runtime bytes 上补齐共享来源allowlist检查、严格�
 本报告不把页面评论当作确定根因，也不把自动升级建筑历史结果当成本产品验收。实机与发布结果应另存当次实际命令与回执，再追加日期记录；失败 attempt 不覆盖。
 
 参考：[功能分析](function-analysis.md)、[来源记录](upstream.md)、[适配计划](adaptation-plan.md)、[测试计划](test-plan.md)。
+
+## 2026-10-03 补记：R0003 重载与干净矩阵
+
+[R0003 冻结核验报告](live-R0003-reload-2026-10-03/README.md) 已记录实际 ready snapshot002：人物 `31254`、同日 `53144328`、暂停、金币 `846`，保存 bytes 与 R0002 保存源 size／SHA 一致。原生日志证明 Rossano 的玩家直辖城市结果持久化，未选中首都仍为城堡。修正后的 fixture02 十项生产矩阵 PASS，连同两项保存状态共十二 PASS，START／END／AI actor 完整；捕获 error.log 为零字节。R0002 原错误继续保留。
+
+英文截图已观察六名称、费用400和条件；完整 warning 的无遮挡稳定截图及七语视觉尚待 R0004 独立结果，母语审阅未完成。结论只适用本机固定 `1.20.0.3` EXE/build，不外推整个 `1.20.*` 系列，也不代表发布、公开 Change Notes、缓存或 changelog 已交付。早期 Taranto 地名误记以 [追加勘误](corrections-2026-10-03.md) 更正为 Trani／特拉尼，原候选不覆盖。

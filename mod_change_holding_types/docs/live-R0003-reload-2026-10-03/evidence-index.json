@@ -1,0 +1,68 @@
+{
+  "schema": "cht.archived-core-evidence-index.v1",
+  "report_sha256": "18e92e71fa861d9f1e6679461fdfe7f78e2a6ccd993cdfee635863dee8414788",
+  "captured_evidence_root": "C:\\workspace\\two-mod-maintenance-20261003\\holding-R0003-verification-candidate",
+  "evidence_in_repository": false,
+  "files": [
+    {
+      "path": "reload-ready.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\session\\002-reload-ready-result.json",
+      "size": 21733,
+      "sha256": "1c303dbccf80de2edd8efa917455c57458f081c3e99a8dd353fd4f91e94007a0"
+    },
+    {
+      "path": "inbox-result.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\session\\003-reloaded-matrix-result.json",
+      "size": 1196,
+      "sha256": "067d8a46313dd2a86ff42f095323c3f59e0724fe7c836af769f552258ce1c47c"
+    },
+    {
+      "path": "debug-log-snapshot.log",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\state\\profile\\logs\\debug.log",
+      "size": 556363,
+      "sha256": "62845d21780b1c919282592a89642b789d7db9b57bb2421718e675aa80e4d135"
+    },
+    {
+      "path": "error-log-snapshot.log",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\state\\profile\\logs\\error.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "inbox-script-snapshot.txt",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\state\\profile\\run\\xar_mcp_inbox.txt",
+      "size": 539,
+      "sha256": "7eebac615cd9df9bc8a9145ecef794333066310c4bcd8001273da56d8525acb9"
+    },
+    {
+      "path": "reload-input.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\reload-input.json",
+      "size": 623,
+      "sha256": "5e70588cf0721446233a64d0190f57bd622504e62804147eaee91af6bcb8cb01"
+    },
+    {
+      "path": "production.manifest.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\production.manifest.json",
+      "size": 3371,
+      "sha256": "d52b11f67f38f63b6a53dc04a5773831bb67cca60554b62735b042d478ed4f7c"
+    },
+    {
+      "path": "en-city-detail-01.png",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\session\\screens\\en-city-detail-01.png",
+      "size": 2548622,
+      "sha256": "6fc97697438de22c2394d473480c148900ab54b17ab8fbbabd547d978fa53511"
+    },
+    {
+      "path": "en-conversion-list-01.png",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\session\\screens\\en-conversion-list-01.png",
+      "size": 2521787,
+      "sha256": "4e0e7f26e0565e2858c83360068c4fa48ee7afd863c497a992bfaa4bbb28d38e"
+    },
+    {
+      "path": "en-open-city-01.png",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\session\\screens\\en-open-city-01.png",
+      "size": 2480888,
+      "sha256": "88d9fc8faf294f23d919415a6124ec71c84060182a7f4fd5c4d639df79b597fc"
+    }
+  ]
+}

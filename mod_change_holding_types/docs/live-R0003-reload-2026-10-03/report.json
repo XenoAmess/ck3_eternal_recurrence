@@ -1,0 +1,182 @@
+{
+  "schema": "cht.reload-clean-matrix-verification-candidate.v1",
+  "run_id": "bf-202609141645-5434332d4d--change-holding-types--R0003",
+  "recorded_at_utc": "2026-10-03T00:26:54.633140+00:00",
+  "classification": "RELOAD_AND_CLEAN_EFFECT_MATRIX_PASS_ENGLISH_VISUAL_OBSERVED",
+  "overall_release_acceptance": false,
+  "release_ready": false,
+  "game": {
+    "version": "1.20.0.3",
+    "steam_build": "25652598",
+    "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+    "scope": "Only the pinned installed build, not all 1.20.* builds"
+  },
+  "native": {
+    "pid": 7860,
+    "map_ready": true,
+    "character_history_id": 1128,
+    "character_runtime_id": 31254,
+    "date_raw": 53144328,
+    "paused": true,
+    "gold": 846,
+    "gold_matches_R0002_post_GUI": true,
+    "exact_build_match": true
+  },
+  "reload": {
+    "status": "PASS",
+    "save_size": 68962340,
+    "save_sha256": "47a1178c8373eb79ab8ca7071e5c14b0e30218c43a493d2f5e49c2230915a35a",
+    "preserved_save_bytes_verified": true,
+    "same_native_character_and_date": true,
+    "gold_unchanged": true,
+    "persisted_title": "b_rossano",
+    "persisted_holding": "city_holding",
+    "persisted_direct_owner": "player",
+    "untargeted_capital": "castle_holding"
+  },
+  "production_effect_matrix": {
+    "status": "PASS",
+    "pass_count": 10,
+    "pass_markers": [
+      "convert-city",
+      "convert-temple",
+      "convert-tribal",
+      "convert-nomad",
+      "convert-temple_citadel",
+      "convert-castle",
+      "same-type-rejected",
+      "same-type-unchanged",
+      "ai-effect-blocked",
+      "non-barony-rejected"
+    ],
+    "fixture": "holding-live-fixture-02",
+    "fixture_event_sha256": "72fac24f77544135d15a35398658c15d8619d7aa1617fa47eaee63d42e19be9b",
+    "AI_actor_reached": true,
+    "start_and_end_seen": true,
+    "scope": "Production effects were invoked via external fixture; this was not ten GUI executions"
+  },
+  "state_evidence": {
+    "total_PASS": 12,
+    "markers": [
+      "PASS GUI Rossano direct-owned city",
+      "PASS GUI untargeted capital castle",
+      "START production-effect-matrix",
+      "PASS convert-city",
+      "PASS convert-temple",
+      "PASS convert-tribal",
+      "PASS convert-nomad",
+      "PASS convert-temple_citadel",
+      "PASS convert-castle",
+      "PASS same-type-rejected",
+      "PASS same-type-unchanged",
+      "AI guard actor reached",
+      "PASS ai-effect-blocked",
+      "PASS non-barony-rejected",
+      "END production-effect-matrix"
+    ],
+    "inbox_native_executed": true,
+    "inbox_marker_confirmed": false,
+    "basis": "Actual engine debug.log state markers, not command ACK"
+  },
+  "diagnostics": {
+    "status": "CLEAN_AT_CAPTURE",
+    "error_log_bytes": 0,
+    "error_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scope": "Pinned R0003 captured log; this does not erase R0002 fixture diagnostic"
+  },
+  "english_visual": {
+    "status": "OBSERVED",
+    "reviewer": "holding_conversion agent read-only image review, plus parent operator",
+    "language": "english",
+    "six_decision_names_readable": true,
+    "city_cost_readable": 400,
+    "city_requirements_readable": true,
+    "default_target_english": "Trani",
+    "default_target_simplified_chinese": "特拉尼",
+    "warning_present": true,
+    "full_warning_unobscured_in_detail": false,
+    "limitation": "en-city-detail-01.png has a tooltip over the right half of the warning; en-open-city-01.png shows the whole warning during a dark fade transition. A stable unobscured detail frame remains for the language visual pass."
+  },
+  "runtime_unchanged_from_R0002": true,
+  "production_git_sha": "d076cc89fe1370e60ee693bb4cc5c0ed7df50500",
+  "localization_visual": {
+    "simplified_chinese": "R0002 operator evidence separate",
+    "english": "R0003 observed with warning-frame limitation",
+    "french": "pending",
+    "german": "pending",
+    "japanese": "pending",
+    "korean": "pending",
+    "polish": "pending",
+    "russian": "pending",
+    "spanish": "pending",
+    "native_speaker_reviewed": false
+  },
+  "remaining": [
+    "R0004 cold debug launch is planned for nine-language visual checks; no R0004 result inferred here.",
+    "Capture stable unobscured warning/detail screenshots.",
+    "Retain final process cleanup and protected-input receipts.",
+    "Workshop upload, public full Change Notes, fresh-cache verification and permanent changelog remain separate."
+  ],
+  "evidence": [
+    {
+      "path": "reload-ready.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\session\\002-reload-ready-result.json",
+      "size": 21733,
+      "sha256": "1c303dbccf80de2edd8efa917455c57458f081c3e99a8dd353fd4f91e94007a0"
+    },
+    {
+      "path": "inbox-result.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\session\\003-reloaded-matrix-result.json",
+      "size": 1196,
+      "sha256": "067d8a46313dd2a86ff42f095323c3f59e0724fe7c836af769f552258ce1c47c"
+    },
+    {
+      "path": "debug-log-snapshot.log",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\state\\profile\\logs\\debug.log",
+      "size": 556363,
+      "sha256": "62845d21780b1c919282592a89642b789d7db9b57bb2421718e675aa80e4d135"
+    },
+    {
+      "path": "error-log-snapshot.log",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\state\\profile\\logs\\error.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "inbox-script-snapshot.txt",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\state\\profile\\run\\xar_mcp_inbox.txt",
+      "size": 539,
+      "sha256": "7eebac615cd9df9bc8a9145ecef794333066310c4bcd8001273da56d8525acb9"
+    },
+    {
+      "path": "reload-input.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\reload-input.json",
+      "size": 623,
+      "sha256": "5e70588cf0721446233a64d0190f57bd622504e62804147eaee91af6bcb8cb01"
+    },
+    {
+      "path": "production.manifest.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\production.manifest.json",
+      "size": 3371,
+      "sha256": "d52b11f67f38f63b6a53dc04a5773831bb67cca60554b62735b042d478ed4f7c"
+    },
+    {
+      "path": "en-city-detail-01.png",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\session\\screens\\en-city-detail-01.png",
+      "size": 2548622,
+      "sha256": "6fc97697438de22c2394d473480c148900ab54b17ab8fbbabd547d978fa53511"
+    },
+    {
+      "path": "en-conversion-list-01.png",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\session\\screens\\en-conversion-list-01.png",
+      "size": 2521787,
+      "sha256": "4e0e7f26e0565e2858c83360068c4fa48ee7afd863c497a992bfaa4bbb28d38e"
+    },
+    {
+      "path": "en-open-city-01.png",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\session\\screens\\en-open-city-01.png",
+      "size": 2480888,
+      "sha256": "88d9fc8faf294f23d919415a6124ec71c84060182a7f4fd5c4d639df79b597fc"
+    }
+  ]
+}
