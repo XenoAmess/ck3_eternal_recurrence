@@ -5,6 +5,7 @@
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
+#include <string>
 #include <string_view>
 
 namespace xar::ck3_11906 {
@@ -411,10 +412,23 @@ struct MainThreadQueryInstallEnvironmentV1 {
   void *snapshot_observer_context = nullptr;
 };
 
+// Existing executor SEH diagnostics, relative to the loaded game or bridge
+// image. Raw process addresses are not published.
+enum class MainThreadExecutorExceptionImageV1 : std::uint32_t {
+  none,
+  game,
+  bridge,
+  other,
+};
+
 struct MainThreadQueryMailboxDiagnosticsV1 {
   MainThreadQueryMailboxStateV1 state =
       MainThreadQueryMailboxStateV1::detached;
   std::uint32_t failure_flags = 0;
+  std::uint32_t last_executor_exception_code = 0;
+  MainThreadExecutorExceptionImageV1 last_executor_exception_image =
+      MainThreadExecutorExceptionImageV1::none;
+  std::uint64_t last_executor_exception_rva = 0;
   std::uint64_t pump_epochs = 0;
   std::uint64_t owner_verified_pump_epochs = 0;
   std::uint64_t paused_owner_verified_pump_epochs = 0;
@@ -450,6 +464,10 @@ struct MainThreadQueryMailboxV1 {
   std::atomic<MainThreadQueryMailboxStateV1> state{
       MainThreadQueryMailboxStateV1::detached};
   std::atomic<std::uint32_t> failure_flags{0};
+  std::atomic<std::uint32_t> last_executor_exception_code{0};
+  std::atomic<MainThreadExecutorExceptionImageV1> last_executor_exception_image{
+      MainThreadExecutorExceptionImageV1::none};
+  std::atomic<std::uint64_t> last_executor_exception_rva{0};
   std::atomic<std::uint64_t> next_sequence{0};
   std::atomic<std::uint64_t> published_sequence{0};
   std::atomic<std::uint64_t> completed_sequence{0};
@@ -705,6 +723,10 @@ bool ObserveMainThreadPumpAndDrainV1(
 
 MainThreadQueryMailboxDiagnosticsV1 ReadMainThreadQueryMailboxDiagnosticsV1(
     const MainThreadQueryMailboxV1 &mailbox) noexcept;
+
+// Shared by the existing typed-failure and mailbox diagnostic JSON blocks.
+std::string SerializeMainThreadExecutorExceptionDiagnosticV1(
+    const MainThreadQueryMailboxDiagnosticsV1 &diagnostics);
 
 extern "C" BOOL WINAPI XarMainThreadPeekMessageWHookV1(
     LPMSG message, HWND window, UINT minimum_filter, UINT maximum_filter,

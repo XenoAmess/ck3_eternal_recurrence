@@ -88,3 +88,11 @@ CombatID、真实 subject，与 snapshot/transition 同步保存。战斗未结�
 ## 2026-10-03T16:22 v36实际executor SEH
 
 028在serializer之前触发真实executor_exception512；后续mailbox不ready且计数停13。原phase/date补丁字节已经加载，但没有新的terminal body，故该修复仍static-ready；实际故障不能标为已关闭。随后private reader与统帅提交前拒绝共享这一前置故障。诊断：[DIAG-SUMMARY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v36-retry-02/diag-summary/DIAG-SUMMARY.json)。Root已正常保存/stop/reap并从save4714恢复同v36新PID；先继续游戏价值，下一候选只补针对本SEH的异常code/RVA定位，不自动rearm、不新建安全门禁。
+
+## 2026-10-03T16:29 接续源码采用
+
+真实v36 query028触发executor_exception512并使后续private reader和统帅提交前被拒绝，现有记录没有具体exceptioncode/RVA。候选仅在现有SEH filter记录真实Win32 exceptioncode、所属image和相对RVA，沿已有typed_query_failure_v1/heartbeat/snapshot诊断块发布；不自动rearm、不改门槛或协议版本。实际AV production-handler fixture首次GREEN，0xC0000005/failure512/callback1，Reclaim前后提交仍拒绝且metadata保留；2TU并行，变更bridge TU使用v36完整feature defines严格Release GREEN。fixture的RVA23941为测试样本，不能写成真实CK3 terminal故障RVA。实际外国战斗没有Robert参与，terminal仍RED；新定位尚需新DLL及保存后最后一次实际请求。Root已用同v36最新save正常冷恢复R15，观察→选择→一次任命→独立读回GREEN，正在继续军事日；本源码包本身不增加日数/动作/胜利信用。
+
+实际记录：`2026-10-03T16:29:33+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
+
+交付回执：[v37-seh-location](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-casualty-outcomes/v36-terminal-live/ROOT-DELIVERY.json)。

@@ -13,6 +13,40 @@ std::atomic<MainThreadQueryMailboxV1 *> g_active_mailbox{nullptr};
 std::atomic<PeekMessageWFunctionV1> g_original_peek_message{nullptr};
 std::atomic<SdlPollEventFunctionV1> g_original_sdl_poll_event{nullptr};
 
+#if defined(_MSC_VER)
+int CaptureExecutorExceptionV1(MainThreadQueryMailboxV1 &mailbox,
+                               EXCEPTION_POINTERS *exception) noexcept {
+  std::uint32_t code = 0;
+  auto image = MainThreadExecutorExceptionImageV1::other;
+  std::uint64_t rva = 0;
+  if (exception != nullptr && exception->ExceptionRecord != nullptr) {
+    const auto *record = exception->ExceptionRecord;
+    code = record->ExceptionCode;
+    MEMORY_BASIC_INFORMATION fault_region{}, bridge_region{};
+    if (VirtualQuery(record->ExceptionAddress, &fault_region,
+                     sizeof(fault_region)) == sizeof(fault_region) &&
+        fault_region.Type == MEM_IMAGE &&
+        VirtualQuery(reinterpret_cast<const void *>(&CaptureExecutorExceptionV1),
+                     &bridge_region, sizeof(bridge_region)) ==
+            sizeof(bridge_region)) {
+      if (fault_region.AllocationBase == GetModuleHandleW(nullptr)) {
+        image = MainThreadExecutorExceptionImageV1::game;
+      } else if (fault_region.AllocationBase == bridge_region.AllocationBase) {
+        image = MainThreadExecutorExceptionImageV1::bridge;
+      }
+      if (image != MainThreadExecutorExceptionImageV1::other) {
+        rva = reinterpret_cast<std::uintptr_t>(record->ExceptionAddress) -
+              reinterpret_cast<std::uintptr_t>(fault_region.AllocationBase);
+      }
+    }
+  }
+  mailbox.last_executor_exception_code.store(code, std::memory_order_release);
+  mailbox.last_executor_exception_image.store(image, std::memory_order_release);
+  mailbox.last_executor_exception_rva.store(rva, std::memory_order_release);
+  return EXCEPTION_EXECUTE_HANDLER;
+}
+#endif
+
 static_assert(kMainThreadQueryMaximumDrainPerPump == 1);
 
 constexpr std::array<std::uint8_t, 15> kWindowsPumpPrologue{
@@ -703,6 +737,10 @@ bool InstallMainThreadQueryMailboxV1(
     return false;
   }
 
+  mailbox.last_executor_exception_code.store(0, std::memory_order_release);
+  mailbox.last_executor_exception_image.store(
+      MainThreadExecutorExceptionImageV1::none, std::memory_order_release);
+  mailbox.last_executor_exception_rva.store(0, std::memory_order_release);
   mailbox.failure_flags.store(0, std::memory_order_release);
   mailbox.published_sequence.store(0, std::memory_order_release);
   mailbox.completed_sequence.store(0, std::memory_order_release);
@@ -1779,7 +1817,7 @@ bool ObserveMainThreadPumpAndDrainV1(
 #endif
     succeeded = executor(context, before);
 #if defined(_MSC_VER)
-  } __except (EXCEPTION_EXECUTE_HANDLER) {
+  } __except (CaptureExecutorExceptionV1(mailbox, GetExceptionInformation())) {
     AddFailure(mailbox, main_thread_query_failure_executor_exception);
     succeeded = false;
   }
@@ -1814,6 +1852,12 @@ MainThreadQueryMailboxDiagnosticsV1 ReadMainThreadQueryMailboxDiagnosticsV1(
   output.state = mailbox.state.load(std::memory_order_acquire);
   output.failure_flags =
       mailbox.failure_flags.load(std::memory_order_acquire);
+  output.last_executor_exception_code =
+      mailbox.last_executor_exception_code.load(std::memory_order_acquire);
+  output.last_executor_exception_image =
+      mailbox.last_executor_exception_image.load(std::memory_order_acquire);
+  output.last_executor_exception_rva =
+      mailbox.last_executor_exception_rva.load(std::memory_order_acquire);
   output.pump_epochs = mailbox.pump_epochs.load(std::memory_order_acquire);
   output.owner_verified_pump_epochs =
       mailbox.owner_verified_pump_epochs.load(std::memory_order_acquire);
@@ -1878,6 +1922,32 @@ MainThreadQueryMailboxDiagnosticsV1 ReadMainThreadQueryMailboxDiagnosticsV1(
                  output.failure_flags == 0 &&
                  output.paused_main_thread_observed;
   return output;
+}
+
+std::string SerializeMainThreadExecutorExceptionDiagnosticV1(
+    const MainThreadQueryMailboxDiagnosticsV1 &diagnostics) {
+  std::string_view image = "other";
+  switch (diagnostics.last_executor_exception_image) {
+  case MainThreadExecutorExceptionImageV1::none: image = "none"; break;
+  case MainThreadExecutorExceptionImageV1::game: image = "game"; break;
+  case MainThreadExecutorExceptionImageV1::bridge: image = "bridge"; break;
+  case MainThreadExecutorExceptionImageV1::other: break;
+  }
+  std::string result = "{\"code\":";
+  result += std::to_string(diagnostics.last_executor_exception_code);
+  result += ",\"image\":\"";
+  result += image;
+  result += "\",\"rva\":";
+  if (diagnostics.last_executor_exception_image ==
+          MainThreadExecutorExceptionImageV1::game ||
+      diagnostics.last_executor_exception_image ==
+          MainThreadExecutorExceptionImageV1::bridge) {
+    result += std::to_string(diagnostics.last_executor_exception_rva);
+  } else {
+    result += "null";
+  }
+  result += '}';
+  return result;
 }
 
 extern "C" BOOL WINAPI XarMainThreadPeekMessageWHookV1(

@@ -1994,6 +1994,9 @@ std::string HeartbeatFrame(std::uint64_t sequence, const xar::game::GameAdapter 
   result += mailbox.stop_requested ? "true" : "false";
   result += ",\"failure\":";
   result += Number(mailbox.failure_flags);
+  result += ",\"executor_exception\":";
+  result += xar::ck3_11906::SerializeMainThreadExecutorExceptionDiagnosticV1(
+      mailbox);
   result += ",\"pump_epochs\":";
   result += Number(mailbox.pump_epochs);
   result += ",\"owner_verified_pump_epochs\":";
@@ -11698,6 +11701,10 @@ std::string TypedQueryFailureFrame12002(
   response += nullable_boolean(executor_typed_result);
   response += ",\"executor_finish\":";
   response += nullable_boolean(executor_finish);
+  response += ",\"executor_exception\":";
+  response += xar::ck3_11906::SerializeMainThreadExecutorExceptionDiagnosticV1(
+      xar::ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(
+          g_main_thread_query_mailbox_v1));
   response += "}}";
   return response;
 }
