@@ -110,7 +110,7 @@ ROOT以source/native前缀 `5b203`、environment前缀 `12ced0ab`、新PID119724
 
 九个实际候选的完整signed十槽报价均为 `[50000000,0,100000000,0,0,0,0,0,0,0]`，scale100000，即500金币与1000虔诚，其他八槽实际为0。资源顺序为gold、prestige、piety、renown、influence、herd、treasury、treasury_or_gold、merit、barter_goods。该报价来自当前Robert选中地产的真实native evaluator，不是fixture的合成11／42／25；这些fixture值实际写在index3 renown，不能当成Robert实机报价。
 
-CanTake与CanAfford的18条reason均sampled且中文文字完整，实际包含“你处于战争”“你未满足所有要求”以及“缺少虔诚629”，并保留原生格式控制符与war／piety_i token。这些是当前资格解释输入，不表示已穷尽所有失败条件。先前worker报告的U+FFFD／中文乱码结论已更正：严格UTF-8解析原始capture及完整原生body后，18条literal的U+FFFD计数为0；原因是PowerShell 5.1默认GB2312显示层误读。原交付的部分新中文报告文案还受ASCII OutputEncoding影响，本次采用直接UTF-8文件写入替代。原capture、原始字段和旧报告均保留。没有生产文本损坏的实证，不新增生产fix或测试矩阵。
+CanTake与CanAfford的18条reason均sampled且中文文字完整，实际包含“你处于战争”“你未满足所有要求”以及“缺少虔诚629”，并保留原生格式控制符与war／piety_i token。这些是当前资格解释输入，不表示已穷尽所有失败条件。先前worker报告的U+FFFD／中文乱码结论已更正：严格UTF-8解析原始capture及完整原生body后，18条literal的U+FFFD计数为0；原因是旧worker终端默认GB2312显示层误读。原交付的部分新中文报告文案还受ASCII OutputEncoding影响，本次采用直接UTF-8文件写入替代。原capture、原始字段和旧报告均保留。没有生产文本损坏的实证，不新增生产fix或测试矩阵。
 
 实际reader按String32长度逐字节复制；serializer只转义JSON控制符，保留UTF-8非ASCII字节；native协议按完整payload字节长度写帧，Python endpoint在整帧读取后执行严格 `payload.decode("utf-8")`，normalizer原样返回literal。对应只读定位与更正回执见外置 `reason-encoding-correction/REASON-ENCODING-DIAGNOSIS.json`。
 

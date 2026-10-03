@@ -88,7 +88,7 @@ kingdom2100当前无持有人，冻结seized-set只占其法理县 **4／17**，
 
 九项均title_valid=true、CanTake=false、CanAfford=false；实际十槽signed raw报价全为 `[50000000,0,100000000,0,0,0,0,0,0,0]`，scale100000，即500 gold＋1000 piety，其他八槽为0。资源顺序为gold、prestige、piety、renown、influence、herd、treasury、treasury_or_gold、merit、barter_goods。撤租无候选，不推导撤租零报价。fixture的11／42／25与实机报价严格分开。
 
-18条实际reason sampled且UTF-8中文完整，U+FFFD=0；文字包含战争条件、未满足所有要求、虔诚不足629，不宣称穷尽所有失败条件。先前所谓实机乱码已定位为worker PowerShell默认编码显示误读，不是生产reader/serializer/transport损坏，无生产fix或额外矩阵。独立shown、title_valid、CanTake、CanAfford共同满足的候选为 **0**；这不降低已实读报价/资格的primitive状态，也不产生建团动作或收益信用。
+18条实际reason sampled且UTF-8中文完整，U+FFFD=0；文字包含战争条件、未满足所有要求、虔诚不足629，不宣称穷尽所有失败条件。先前所谓实机乱码已定位为worker 旧worker终端默认编码显示误读，不是生产reader/serializer/transport损坏，无生产fix或额外矩阵。独立shown、title_valid、CanTake、CanAfford共同满足的候选为 **0**；这不降低已实读报价/资格的primitive状态，也不产生建团动作或收益信用。
 
 证据：[corrected holy REPORT-FIELDS.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/holy-order-title/actual-analysis/reason-encoding-correction/REPORT-FIELDS.json)、[encoding diagnosis](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/holy-order-title/actual-analysis/reason-encoding-correction/REASON-ENCODING-DIAGNOSIS.json)；原生树见 [selected-title专题](religion-holy-order-selected-title-native-ai-12003.md)。ROOT另行采用该专题更正补丁；本包仅新增本页。
 
