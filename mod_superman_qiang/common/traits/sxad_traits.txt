@@ -1,0 +1,18 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
+
+sxad_sex_experience = {
+    icon = sxad_sex_experience.dds
+    minimum_age = 18
+    birth = 0
+    random_creation = 0
+    inherit_chance = 0
+    desc = {
+        first_valid = {
+            triggered_desc = {
+                trigger = { NOT = { exists = this } }
+                desc = trait_sxad_sex_experience_desc
+            }
+            desc = trait_sxad_sex_experience_character_desc
+        }
+    }
+}

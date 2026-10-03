@@ -1,0 +1,62 @@
+﻿had_sex_with_unknown_effect = {
+	save_temporary_scope_value_as = {
+		name = gender
+		value = flag:$GENDER$
+	}
+
+	#Error logging
+	if = {
+		limit = {
+			is_adult = no
+		}
+		error_log = "Trying to run had_sex_with_unknown_effect on a child"
+	}
+
+	#Stress release
+	if = {
+		limit = {
+			OR = {
+				has_trait = lustful
+				has_trait = lifestyle_reveler
+			}
+		}
+		add_stress = minor_stress_loss
+	}
+
+	#Sodomy
+	if = {
+		limit = { scope:gender = flag:male }
+		give_homosexual_secret_or_nothing_with_target_effect = { CHARACTER = dummy_male }
+	}
+
+	shunned_or_criminal_sf_impact_effect = { TRAIT = trait:fornicator }
+
+	hidden_effect = {
+		#Adultery suspicion
+		set_variable = {
+			name = had_recent_sex
+			value = flag:$GENDER$
+		}
+		random = {
+			chance = 5
+			random_spouse = {
+				limit = { is_ai = no }
+				alternative_limit = { always = yes }
+				trigger_event = adultery.0001
+			}
+		}
+
+		#STD transmission
+		random_list = {
+			95 = {
+				#Nothing
+			}
+			4 = {
+				contract_disease_notify_effect = { DISEASE = lovers_pox }
+			}
+			1 = {
+				contract_disease_notify_effect = { DISEASE = great_pox }
+			}
+		}
+	}
+}

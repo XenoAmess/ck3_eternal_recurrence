@@ -1,0 +1,177 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
+# Temporary probes preserve skill totals; the selected point is transferred as one pair.
+# Positive effective skills avoid masked floor changes. No assumed native skill ceiling.
+
+sxad_probe_diplomacy_effect = {
+    save_temporary_scope_value_as = { name = sxad_can_diplomacy value = 0 }
+    if = {
+        limit = {
+            diplomacy > 0
+            scope:sxad_donor = { diplomacy > 0 }
+        }
+        scope:sxad_donor = {
+            save_temporary_scope_value_as = { name = sxad_donor_before_diplomacy value = diplomacy }
+            add_diplomacy_skill = -1
+            if = {
+                limit = { trigger_if = { limit = { exists = scope:sxad_donor_before_diplomacy } diplomacy < scope:sxad_donor_before_diplomacy }
+trigger_else = { always = no } }
+                add_diplomacy_skill = 1
+                scope:sxad_receiver = {
+                    save_temporary_scope_value_as = { name = sxad_receiver_before_diplomacy value = diplomacy }
+                    add_diplomacy_skill = 1
+                    if = {
+                        limit = { trigger_if = { limit = { exists = scope:sxad_receiver_before_diplomacy } diplomacy > scope:sxad_receiver_before_diplomacy }
+trigger_else = { always = no } }
+                        add_diplomacy_skill = -1
+                        save_temporary_scope_value_as = { name = sxad_can_diplomacy value = 1 }
+                    }
+                }
+            }
+        }
+    }
+}
+
+sxad_probe_martial_effect = {
+    save_temporary_scope_value_as = { name = sxad_can_martial value = 0 }
+    if = {
+        limit = {
+            martial > 0
+            scope:sxad_donor = { martial > 0 }
+        }
+        scope:sxad_donor = {
+            save_temporary_scope_value_as = { name = sxad_donor_before_martial value = martial }
+            add_martial_skill = -1
+            if = {
+                limit = { trigger_if = { limit = { exists = scope:sxad_donor_before_martial } martial < scope:sxad_donor_before_martial }
+trigger_else = { always = no } }
+                add_martial_skill = 1
+                scope:sxad_receiver = {
+                    save_temporary_scope_value_as = { name = sxad_receiver_before_martial value = martial }
+                    add_martial_skill = 1
+                    if = {
+                        limit = { trigger_if = { limit = { exists = scope:sxad_receiver_before_martial } martial > scope:sxad_receiver_before_martial }
+trigger_else = { always = no } }
+                        add_martial_skill = -1
+                        save_temporary_scope_value_as = { name = sxad_can_martial value = 1 }
+                    }
+                }
+            }
+        }
+    }
+}
+
+sxad_probe_stewardship_effect = {
+    save_temporary_scope_value_as = { name = sxad_can_stewardship value = 0 }
+    if = {
+        limit = {
+            stewardship > 0
+            scope:sxad_donor = { stewardship > 0 }
+        }
+        scope:sxad_donor = {
+            save_temporary_scope_value_as = { name = sxad_donor_before_stewardship value = stewardship }
+            add_stewardship_skill = -1
+            if = {
+                limit = { trigger_if = { limit = { exists = scope:sxad_donor_before_stewardship } stewardship < scope:sxad_donor_before_stewardship }
+trigger_else = { always = no } }
+                add_stewardship_skill = 1
+                scope:sxad_receiver = {
+                    save_temporary_scope_value_as = { name = sxad_receiver_before_stewardship value = stewardship }
+                    add_stewardship_skill = 1
+                    if = {
+                        limit = { trigger_if = { limit = { exists = scope:sxad_receiver_before_stewardship } stewardship > scope:sxad_receiver_before_stewardship }
+trigger_else = { always = no } }
+                        add_stewardship_skill = -1
+                        save_temporary_scope_value_as = { name = sxad_can_stewardship value = 1 }
+                    }
+                }
+            }
+        }
+    }
+}
+
+sxad_probe_intrigue_effect = {
+    save_temporary_scope_value_as = { name = sxad_can_intrigue value = 0 }
+    if = {
+        limit = {
+            intrigue > 0
+            scope:sxad_donor = { intrigue > 0 }
+        }
+        scope:sxad_donor = {
+            save_temporary_scope_value_as = { name = sxad_donor_before_intrigue value = intrigue }
+            add_intrigue_skill = -1
+            if = {
+                limit = { trigger_if = { limit = { exists = scope:sxad_donor_before_intrigue } intrigue < scope:sxad_donor_before_intrigue }
+trigger_else = { always = no } }
+                add_intrigue_skill = 1
+                scope:sxad_receiver = {
+                    save_temporary_scope_value_as = { name = sxad_receiver_before_intrigue value = intrigue }
+                    add_intrigue_skill = 1
+                    if = {
+                        limit = { trigger_if = { limit = { exists = scope:sxad_receiver_before_intrigue } intrigue > scope:sxad_receiver_before_intrigue }
+trigger_else = { always = no } }
+                        add_intrigue_skill = -1
+                        save_temporary_scope_value_as = { name = sxad_can_intrigue value = 1 }
+                    }
+                }
+            }
+        }
+    }
+}
+
+sxad_probe_learning_effect = {
+    save_temporary_scope_value_as = { name = sxad_can_learning value = 0 }
+    if = {
+        limit = {
+            learning > 0
+            scope:sxad_donor = { learning > 0 }
+        }
+        scope:sxad_donor = {
+            save_temporary_scope_value_as = { name = sxad_donor_before_learning value = learning }
+            add_learning_skill = -1
+            if = {
+                limit = { trigger_if = { limit = { exists = scope:sxad_donor_before_learning } learning < scope:sxad_donor_before_learning }
+trigger_else = { always = no } }
+                add_learning_skill = 1
+                scope:sxad_receiver = {
+                    save_temporary_scope_value_as = { name = sxad_receiver_before_learning value = learning }
+                    add_learning_skill = 1
+                    if = {
+                        limit = { trigger_if = { limit = { exists = scope:sxad_receiver_before_learning } learning > scope:sxad_receiver_before_learning }
+trigger_else = { always = no } }
+                        add_learning_skill = -1
+                        save_temporary_scope_value_as = { name = sxad_can_learning value = 1 }
+                    }
+                }
+            }
+        }
+    }
+}
+
+sxad_probe_prowess_effect = {
+    save_temporary_scope_value_as = { name = sxad_can_prowess value = 0 }
+    if = {
+        limit = {
+            prowess > 0
+            scope:sxad_donor = { prowess > 0 }
+        }
+        scope:sxad_donor = {
+            save_temporary_scope_value_as = { name = sxad_donor_before_prowess value = prowess }
+            add_prowess_skill = -1
+            if = {
+                limit = { trigger_if = { limit = { exists = scope:sxad_donor_before_prowess } prowess < scope:sxad_donor_before_prowess }
+trigger_else = { always = no } }
+                add_prowess_skill = 1
+                scope:sxad_receiver = {
+                    save_temporary_scope_value_as = { name = sxad_receiver_before_prowess value = prowess }
+                    add_prowess_skill = 1
+                    if = {
+                        limit = { trigger_if = { limit = { exists = scope:sxad_receiver_before_prowess } prowess > scope:sxad_receiver_before_prowess }
+trigger_else = { always = no } }
+                        add_prowess_skill = -1
+                        save_temporary_scope_value_as = { name = sxad_can_prowess value = 1 }
+                    }
+                }
+            }
+        }
+    }
+}

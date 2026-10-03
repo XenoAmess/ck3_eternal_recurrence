@@ -1,0 +1,11 @@
+﻿l_russian:
+ trait_sxad_sex_experience:0 "Сексуальный опыт"
+ trait_sxad_sex_experience_desc:0 "Подсчитывает количество явных половых актов, зафиксированных после включения «Супермен Цян», для живущихся персонажей 18 лет и старше. При разном опыте более опытный партнёр забирает один переносимый навык у другого."
+ trait_sxad_sex_experience_character_desc:0 "Зафиксировано сексуального опыта после включения: #V [SCOPE.ScriptValue('sxad_experience_value')|0]#! раз.\n\n$trait_sxad_sex_experience_desc$"
+ sxad_view_experience_interaction:0 "Посмотреть сексуальный опыт"
+ sxad_view_experience_interaction_desc:0 "Посмотреть зафиксированные случаи и текущие навыки [recipient.GetShortUIName] после включения «Супермен Цян». Просмотр не меняет ни опыт, ни навыки."
+ sxad_view_experience_interaction_notification:0 "Посмотреть сексуальный опыт"
+ sxad_view_experience_interaction_accept_tt:0 "Посмотреть записи сексуального опыта [recipient.GetShortUIName]."
+ sxad.1.t:0 "Супермен Цян: запись опыта"
+ sxad.1.desc:0 "У [scope:sxad_view_subject.GetShortUIName] зафиксировано #V [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_experience_value')|0]#! случаев после включения мода.\n\nТекущие навыки: Дипломатия [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_diplomacy_value')|0], Военное дело [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_martial_value')|0], Управление [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_stewardship_value')|0], Интриги [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_intrigue_value')|0], Учёность [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_learning_value')|0], Доблесть [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_prowess_value')|0].\n\nУчитываются только явные акты, достигшие стандартного общего эффекта. Прошлые случаи не оцениваются, обычная супружеская жизнь не моделируется. Известные партнёры получают по одному случаю; анонимный партнёр добавляет один случай только известному лицу. Партнёр с большим опытом до акта с равной вероятностью забирает один балл случайного переносимого навыка; при равном опыте ничего не передаётся."
+ sxad.1.a:0 "Понятно"

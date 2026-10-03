@@ -1,0 +1,11 @@
+﻿l_german:
+ trait_sxad_sex_experience:0 "Sexuelle Erfahrung"
+ trait_sxad_sex_experience_desc:0 "Zählt explizite sexuelle Begegnungen nach Aktivierung von Superman Qiang für lebende Charaktere ab 18 Jahren. Unterscheidet sich ihre Erfahrung, nimmt der erfahrenere Partner einen übertragbaren Fertigkeitspunkt."
+ trait_sxad_sex_experience_character_desc:0 "Aufgezeichnete sexuelle Erfahrung: #V [SCOPE.ScriptValue('sxad_experience_value')|0]#! Begegnungen.\n\n$trait_sxad_sex_experience_desc$"
+ sxad_view_experience_interaction:0 "Sexuelle Erfahrung anzeigen"
+ sxad_view_experience_interaction_desc:0 "Zeigt [recipient.GetShortUIName]s aufgezeichnete Begegnungen und aktuellen Fertigkeiten seit Aktivierung von Superman Qiang. Das Anzeigen verändert weder Erfahrung noch Fertigkeiten."
+ sxad_view_experience_interaction_notification:0 "Sexuelle Erfahrung anzeigen"
+ sxad_view_experience_interaction_accept_tt:0 "[recipient.GetShortUIName]s Aufzeichnung der sexuellen Erfahrung anzeigen."
+ sxad.1.t:0 "Superman Qiang: Erfahrungsaufzeichnung"
+ sxad.1.desc:0 "[scope:sxad_view_subject.GetShortUIName] hat #V [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_experience_value')|0]#! aufgezeichnete Begegnungen seit Aktivierung der Mod.\n\nAktuelle Fertigkeiten: Diplomatie [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_diplomacy_value')|0], Kampfkunst [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_martial_value')|0], Verwaltung [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_stewardship_value')|0], Intrige [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_intrigue_value')|0], Gelehrsamkeit [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_learning_value')|0], Tüchtigkeit [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_prowess_value')|0].\n\nNur explizite Begegnungen, die den Vanilla-geteilten Effekt auslösen, werden gezählt. Vergangene Begegnungen werden nicht geschätzt und das gewöhnliche Eheleben wird nicht simuliert. Bekannte Partner erhalten je eine Begegnung; anonyme Partner zählen nur für den bekannten Charakter. Der vor der Begegnung erfahrenere Partner entzieht mit gleicher Wahrscheinlichkeit einen Punkt einer übertragbaren Fertigkeit. Bei gleicher Erfahrung findet keine Übertragung statt."
+ sxad.1.a:0 "Verstanden"

@@ -1,0 +1,70 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
+
+# Current scope is a living, eligible participant. No experience query writes state.
+sxad_increment_experience_effect = {
+    if = {
+        limit = { has_variable = sxad_sex_experience }
+        if = {
+            limit = { var:sxad_sex_experience < 92233720368547 }
+            change_variable = { name = sxad_sex_experience add = 1 }
+        }
+    }
+    else = { set_variable = { name = sxad_sex_experience value = 1 } }
+    if = {
+        limit = { NOT = { has_trait = sxad_sex_experience } }
+        add_trait = sxad_sex_experience
+    }
+}
+
+# The vanilla paired hook runs this once, before changing either experience count.
+sxad_record_pair_effect = {
+    if = {
+        limit = { is_alive = yes age >= 18 }
+        if = {
+            limit = { exists = $PARTNER$ }
+            if = {
+                limit = {
+                    $PARTNER$ = { is_alive = yes age >= 18 }
+                    NOT = { this = $PARTNER$ }
+                }
+                save_temporary_scope_as = sxad_first
+                $PARTNER$ = { save_temporary_scope_as = sxad_second }
+                if = {
+                    limit = { has_variable = sxad_sex_experience }
+                    if = {
+                        limit = { $PARTNER$ = { has_variable = sxad_sex_experience } }
+                        if = {
+                            limit = { var:sxad_sex_experience > scope:sxad_second.var:sxad_sex_experience }
+                            sxad_select_transfer_effect = { DONOR = scope:sxad_second }
+                        }
+                        else_if = {
+                            limit = { var:sxad_sex_experience < scope:sxad_second.var:sxad_sex_experience }
+                            scope:sxad_second = { sxad_select_transfer_effect = { DONOR = scope:sxad_first } }
+                        }
+                    }
+                    else_if = {
+                        limit = { var:sxad_sex_experience > 0 }
+                        sxad_select_transfer_effect = { DONOR = scope:sxad_second }
+                    }
+                }
+                else_if = {
+                    limit = { $PARTNER$ = { has_variable = sxad_sex_experience } }
+                    if = {
+                        limit = { scope:sxad_second = { var:sxad_sex_experience > 0 } }
+                        scope:sxad_second = { sxad_select_transfer_effect = { DONOR = scope:sxad_first } }
+                    }
+                }
+                sxad_increment_experience_effect = yes
+                scope:sxad_second = { sxad_increment_experience_effect = yes }
+            }
+        }
+    }
+}
+
+# Vanilla explicitly describes this partner as not an actual character.
+sxad_record_unknown_effect = {
+    if = {
+        limit = { is_alive = yes age >= 18 }
+        sxad_increment_experience_effect = yes
+    }
+}

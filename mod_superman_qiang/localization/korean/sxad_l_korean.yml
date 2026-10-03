@@ -1,0 +1,11 @@
+﻿l_korean:
+ trait_sxad_sex_experience:0 "성 경험"
+ trait_sxad_sex_experience_desc:0 "《수퍼맨 챙》을 켠 후 모드가 포착한 명시적 성행사 횟수를 기록합니다. 생존 중이며 18세 이상인 캐릭터만 집계됩니다. 양쪽의 경험치가 다르면 경험치가 높은 쪽이 상대방의 전이 가능 속성 하나를 흡수합니다."
+ trait_sxad_sex_experience_character_desc:0 "启用 후 누적 성 경험: #V [SCOPE.ScriptValue('sxad_experience_value')|0]#! 회.\n\n$trait_sxad_sex_experience_desc$"
+ sxad_view_experience_interaction:0 "성 경험 보기"
+ sxad_view_experience_interaction_desc:0 "[recipient.GetShortUIName]의 《超人强》启用 후 누적 횟수와 현재 속성을 확인합니다. 확인만으로는 경험치나 속성이 변하지 않습니다."
+ sxad_view_experience_interaction_notification:0 "성 경험 보기"
+ sxad_view_experience_interaction_accept_tt:0 "[recipient.GetShortUIName]의 성 경험 기록을 확인합니다."
+ sxad.1.t:0 "超人强: 성 경험 기록"
+ sxad.1.desc:0 "[scope:sxad_view_subject.GetShortUIName]의 모드 启用 후 누적 성 경험은 #V [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_experience_value')|0]#! 회입니다.\n\n현재 속성: 외교 [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_diplomacy_value')|0], 군사 [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_martial_value')|0], 경영 [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_stewardship_value')|0], 첩보 [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_intrigue_value')|0], 학식 [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_learning_value')|0], 무예 [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_prowess_value')|0].\n\n모드 启用 후 실제로 바닐라 공용 효과에 도달한 명시적 성행사만 기록되며, 과거经历的은 추산하지 않고 일상적 부부性生活은模拟하지 않습니다. 알려진 상대는 각 1회씩 加算되며, 익명 대상은 알려진 쪽에만 1회 加算됩니다. 가정 전 경험치가 높은 쪽이 전이 가능 속성 중 하나를 균등 확률로 1점 흡수합니다. 경험치가 같으면 흡수하지 않습니다."
+ sxad.1.a:0 "알겠습니다"

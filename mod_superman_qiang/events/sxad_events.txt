@@ -1,0 +1,13 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
+
+namespace = sxad
+
+# Read-only detail event: no immediate, after, experience effect or variable write.
+sxad.1 = {
+    type = character_event
+    title = sxad.1.t
+    desc = sxad.1.desc
+    theme = intrigue
+    left_portrait = { character = scope:sxad_view_subject animation = idle }
+    option = { name = sxad.1.a }
+}

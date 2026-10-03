@@ -1,0 +1,11 @@
+﻿l_japanese:
+ trait_sxad_sex_experience:0 "性経験"
+ trait_sxad_sex_experience_desc:0 "『超人強』MODを有効化した後、MODが捉えた明確な性行為の回数を記録します。対象は存命かつ18歳以上のキャラクターのみです。双方の経験値が異なる場合、より経験の多い側が経験の少ない側から移転可能な属性ポイントを1点吸収します。"
+ trait_sxad_sex_experience_character_desc:0 "有効化以降の累計性経験：#V [SCOPE.ScriptValue('sxad_experience_value')|0]#! 回。\n\n$trait_sxad_sex_experience_desc$"
+ sxad_view_experience_interaction:0 "性経験を確認する"
+ sxad_view_experience_interaction_desc:0 "[recipient.GetShortUIName]の『超人強』有効化以降の累計回数と現在の属性を確認する。確認しても経験値と属性は変動しない。"
+ sxad_view_experience_interaction_notification:0 "性経験を確認する"
+ sxad_view_experience_interaction_accept_tt:0 "[recipient.GetShortUIName]の性経験記録を確認する。"
+ sxad.1.t:0 "超人強：性経験記録"
+ sxad.1.desc:0 "[scope:sxad_view_subject.GetShortUIName]のMOD有効化以降の累計性経験は #V [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_experience_value')|0]#! 回です。\n\n現在の属性：外交 [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_diplomacy_value')|0]、軍事 [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_martial_value')|0]、管理 [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_stewardship_value')|0]、謀略 [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_intrigue_value')|0]、学識 [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_learning_value')|0]、武勇 [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_prowess_value')|0]。\n\nMOD有効化後に実際にバニラ共通の処理に入った明確な性行為のみを記録し、過去の経験は推定せず、日常の夫婦間の性生活も再現しません。既知の相手同士では互いに1回ずつ加算され、匿名の相手の場合は既知側のみに1回加算されます。行為前に経験が多い側が等確率で移転可能な属性から1点を吸収し、経験が同値の場合は吸収は行われません。"
+ sxad.1.a:0 "了解"

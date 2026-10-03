@@ -1,0 +1,12 @@
+﻿l_simp_chinese:
+ # GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
+ trait_sxad_sex_experience:0 "性经验"
+ trait_sxad_sex_experience_desc:0 "记录启用《超人强》后，模组捕获的明确性行为次数。仅统计在世、18岁及以上角色。双方经验不同，经验较高者会吸取对方一项可转移属性。"
+ trait_sxad_sex_experience_character_desc:0 "启用后累计性经验：#V [SCOPE.ScriptValue('sxad_experience_value')|0]#! 次。\n\n$trait_sxad_sex_experience_desc$"
+ sxad_view_experience_interaction:0 "查看性经验"
+ sxad_view_experience_interaction_desc:0 "查看[recipient.GetShortUIName]启用《超人强》后的累计次数和当前属性。查看不会改变经验或属性。"
+ sxad_view_experience_interaction_notification:0 "查看性经验"
+ sxad_view_experience_interaction_accept_tt:0 "查看[recipient.GetShortUIName]的性经验记录。"
+ sxad.1.t:0 "超人强：性经验记录"
+ sxad.1.desc:0 "[scope:sxad_view_subject.GetShortUIName]启用模组后累计的性经验为 #V [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_experience_value')|0]#! 次。\n\n当前属性：外交 [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_diplomacy_value')|0]，军事 [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_martial_value')|0]，管理 [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_stewardship_value')|0]，谋略 [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_intrigue_value')|0]，学识 [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_learning_value')|0]，勇武 [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_prowess_value')|0]。\n\n只记录模组启用后实际进入原版统一效果的明确性行为，不推算过去经历，也不模拟日常夫妻性生活。已知双方各加1次；匿名对象只给已知一方加1次。行为前经验较高者等概率吸取一项可转移属性1点；经验相等时不吸取。"
+ sxad.1.a:0 "知道了"

@@ -1,0 +1,140 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
+
+# Current scope is receiver. This independently checked helper is also the random branch.
+sxad_transfer_diplomacy_effect = {
+    save_temporary_scope_as = sxad_receiver
+    $DONOR$ = { save_temporary_scope_as = sxad_donor }
+    sxad_probe_diplomacy_effect = yes
+    if = {
+        limit = { trigger_if = { limit = { exists = scope:sxad_can_diplomacy } scope:sxad_can_diplomacy = 1 }
+trigger_else = { always = no } }
+        scope:sxad_donor = { add_diplomacy_skill = -1 }
+        add_diplomacy_skill = 1
+    }
+}
+
+# Current scope is receiver. This independently checked helper is also the random branch.
+sxad_transfer_martial_effect = {
+    save_temporary_scope_as = sxad_receiver
+    $DONOR$ = { save_temporary_scope_as = sxad_donor }
+    sxad_probe_martial_effect = yes
+    if = {
+        limit = { trigger_if = { limit = { exists = scope:sxad_can_martial } scope:sxad_can_martial = 1 }
+trigger_else = { always = no } }
+        scope:sxad_donor = { add_martial_skill = -1 }
+        add_martial_skill = 1
+    }
+}
+
+# Current scope is receiver. This independently checked helper is also the random branch.
+sxad_transfer_stewardship_effect = {
+    save_temporary_scope_as = sxad_receiver
+    $DONOR$ = { save_temporary_scope_as = sxad_donor }
+    sxad_probe_stewardship_effect = yes
+    if = {
+        limit = { trigger_if = { limit = { exists = scope:sxad_can_stewardship } scope:sxad_can_stewardship = 1 }
+trigger_else = { always = no } }
+        scope:sxad_donor = { add_stewardship_skill = -1 }
+        add_stewardship_skill = 1
+    }
+}
+
+# Current scope is receiver. This independently checked helper is also the random branch.
+sxad_transfer_intrigue_effect = {
+    save_temporary_scope_as = sxad_receiver
+    $DONOR$ = { save_temporary_scope_as = sxad_donor }
+    sxad_probe_intrigue_effect = yes
+    if = {
+        limit = { trigger_if = { limit = { exists = scope:sxad_can_intrigue } scope:sxad_can_intrigue = 1 }
+trigger_else = { always = no } }
+        scope:sxad_donor = { add_intrigue_skill = -1 }
+        add_intrigue_skill = 1
+    }
+}
+
+# Current scope is receiver. This independently checked helper is also the random branch.
+sxad_transfer_learning_effect = {
+    save_temporary_scope_as = sxad_receiver
+    $DONOR$ = { save_temporary_scope_as = sxad_donor }
+    sxad_probe_learning_effect = yes
+    if = {
+        limit = { trigger_if = { limit = { exists = scope:sxad_can_learning } scope:sxad_can_learning = 1 }
+trigger_else = { always = no } }
+        scope:sxad_donor = { add_learning_skill = -1 }
+        add_learning_skill = 1
+    }
+}
+
+# Current scope is receiver. This independently checked helper is also the random branch.
+sxad_transfer_prowess_effect = {
+    save_temporary_scope_as = sxad_receiver
+    $DONOR$ = { save_temporary_scope_as = sxad_donor }
+    sxad_probe_prowess_effect = yes
+    if = {
+        limit = { trigger_if = { limit = { exists = scope:sxad_can_prowess } scope:sxad_can_prowess = 1 }
+trigger_else = { always = no } }
+        scope:sxad_donor = { add_prowess_skill = -1 }
+        add_prowess_skill = 1
+    }
+}
+
+sxad_select_transfer_effect = {
+    save_temporary_scope_as = sxad_receiver
+    $DONOR$ = { save_temporary_scope_as = sxad_donor }
+    sxad_probe_diplomacy_effect = yes
+    sxad_probe_martial_effect = yes
+    sxad_probe_stewardship_effect = yes
+    sxad_probe_intrigue_effect = yes
+    sxad_probe_learning_effect = yes
+    sxad_probe_prowess_effect = yes
+    if = {
+        limit = {
+            OR = {
+                AND = { trigger_if = { limit = { exists = scope:sxad_can_diplomacy } scope:sxad_can_diplomacy = 1 }
+trigger_else = { always = no } }
+                AND = { trigger_if = { limit = { exists = scope:sxad_can_martial } scope:sxad_can_martial = 1 }
+trigger_else = { always = no } }
+                AND = { trigger_if = { limit = { exists = scope:sxad_can_stewardship } scope:sxad_can_stewardship = 1 }
+trigger_else = { always = no } }
+                AND = { trigger_if = { limit = { exists = scope:sxad_can_intrigue } scope:sxad_can_intrigue = 1 }
+trigger_else = { always = no } }
+                AND = { trigger_if = { limit = { exists = scope:sxad_can_learning } scope:sxad_can_learning = 1 }
+trigger_else = { always = no } }
+                AND = { trigger_if = { limit = { exists = scope:sxad_can_prowess } scope:sxad_can_prowess = 1 }
+trigger_else = { always = no } }
+            }
+        }
+        random_list = {
+            1 = {
+                trigger = { trigger_if = { limit = { exists = scope:sxad_can_diplomacy } scope:sxad_can_diplomacy = 1 }
+trigger_else = { always = no } }
+                sxad_transfer_diplomacy_effect = { DONOR = scope:sxad_donor }
+            }
+            1 = {
+                trigger = { trigger_if = { limit = { exists = scope:sxad_can_martial } scope:sxad_can_martial = 1 }
+trigger_else = { always = no } }
+                sxad_transfer_martial_effect = { DONOR = scope:sxad_donor }
+            }
+            1 = {
+                trigger = { trigger_if = { limit = { exists = scope:sxad_can_stewardship } scope:sxad_can_stewardship = 1 }
+trigger_else = { always = no } }
+                sxad_transfer_stewardship_effect = { DONOR = scope:sxad_donor }
+            }
+            1 = {
+                trigger = { trigger_if = { limit = { exists = scope:sxad_can_intrigue } scope:sxad_can_intrigue = 1 }
+trigger_else = { always = no } }
+                sxad_transfer_intrigue_effect = { DONOR = scope:sxad_donor }
+            }
+            1 = {
+                trigger = { trigger_if = { limit = { exists = scope:sxad_can_learning } scope:sxad_can_learning = 1 }
+trigger_else = { always = no } }
+                sxad_transfer_learning_effect = { DONOR = scope:sxad_donor }
+            }
+            1 = {
+                trigger = { trigger_if = { limit = { exists = scope:sxad_can_prowess } scope:sxad_can_prowess = 1 }
+trigger_else = { always = no } }
+                sxad_transfer_prowess_effect = { DONOR = scope:sxad_donor }
+            }
+        }
+    }
+}

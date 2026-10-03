@@ -1,0 +1,28 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
+
+sxad_view_experience_interaction = {
+    category = interaction_category_friendly
+    common_interaction = yes
+    interface_priority = 200
+    icon = icon_scheme_seduce
+    desc = sxad_view_experience_interaction_desc
+    use_diplomatic_range = no
+    ignores_pending_interaction_block = yes
+    auto_accept = yes
+    is_shown = {
+        scope:actor = { is_ai = no }
+        scope:recipient = { is_alive = yes age >= 18 }
+    }
+    is_valid_showing_failures_only = {
+        scope:actor = { is_ai = no }
+        scope:recipient = { is_alive = yes age >= 18 }
+    }
+    on_accept = {
+        custom_tooltip = sxad_view_experience_interaction_accept_tt
+        hidden_effect = {
+            scope:recipient = { save_scope_as = sxad_view_subject }
+            scope:actor = { trigger_event = sxad.1 }
+        }
+    }
+    ai_will_do = { base = 0 }
+}

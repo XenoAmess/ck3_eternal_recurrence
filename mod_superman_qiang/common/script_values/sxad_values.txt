@@ -1,0 +1,22 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
+
+# Pure guarded read. Missing variables represent zero and are never initialized here.
+sxad_experience_value = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_sex_experience }
+        add = var:sxad_sex_experience
+    }
+}
+
+sxad_diplomacy_value = { value = diplomacy }
+
+sxad_martial_value = { value = martial }
+
+sxad_stewardship_value = { value = stewardship }
+
+sxad_intrigue_value = { value = intrigue }
+
+sxad_learning_value = { value = learning }
+
+sxad_prowess_value = { value = prowess }

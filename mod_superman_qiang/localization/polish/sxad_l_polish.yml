@@ -1,0 +1,11 @@
+﻿l_polish:
+ trait_sxad_sex_experience:0 "Doświadczenie seksualne"
+ trait_sxad_sex_experience_desc:0 "Liczy jawne spotkania seksualne zarejestrowane po włączeniu Supermana Qianga, dla żyjących postaci w wieku 18 lat lub starszych. Gdy doświadczenie uczestników się różni, bardziej doświadczony partner pobiera jeden punkt z losowej atrybutów do przeniesienia."
+ trait_sxad_sex_experience_character_desc:0 "Łączne doświadczenie seksualne od włączenia: #V [SCOPE.ScriptValue('sxad_experience_value')|0]#! razy.\n\n$trait_sxad_sex_experience_desc$"
+ sxad_view_experience_interaction:0 "Wyświetl doświadczenie seksualne"
+ sxad_view_experience_interaction_desc:0 "Wyświetla liczbę zarejestrowanych spotkań i bieżące atrybuty [recipient.GetShortUIName] od włączenia Supermana Qianga. Wyświetlanie nie zmienia doświadczenia ani atrybutów."
+ sxad_view_experience_interaction_notification:0 "Wyświetl doświadczenie seksualne"
+ sxad_view_experience_interaction_accept_tt:0 "Wyświetl zapis doświadczenia seksualnego [recipient.GetShortUIName]."
+ sxad.1.t:0 "Superman Qiang: zapis doświadczenia"
+ sxad.1.desc:0 "[scope:sxad_view_subject.GetShortUIName] ma #V [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_experience_value')|0]#! zarejestrowanych spotkań od włączenia moda.\n\nBieżące atrybuty: dyplomacja [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_diplomacy_value')|0], wojskowość [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_martial_value')|0], zarządzanie [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_stewardship_value')|0], intryga [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_intrigue_value')|0], wiedza [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_learning_value')|0], waleczność [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_prowess_value')|0].\n\nLiczone są tylko jawne spotkania, które faktycznie wywołały standardowy efekt współdzielony gry. Przeszłe spotkania nie są szacowane, a rutynowe życie małżeńskie nie jest symulowane. Znani partnerzy zyskują po 1 spotkaniu; anonimowi partnerzy dodają 1 tylko znanej postaci. Partner z wyższym doświadczeniem przed spotkaniem pobiera z równym prawdopodobieństwem 1 punkt z losowej atrybutów do przeniesienia; równy poziom doświadczenia nie powoduje przeniesienia."
+ sxad.1.a:0 "Rozumiem"

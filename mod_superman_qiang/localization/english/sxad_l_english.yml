@@ -1,0 +1,12 @@
+﻿l_english:
+ # GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
+ trait_sxad_sex_experience:0 "Sexual Experience"
+ trait_sxad_sex_experience_desc:0 "Counts explicit sexual encounters captured after enabling Superman Qiang, for living characters aged 18 or older. When their experience differs, the more experienced partner takes one transferable skill point."
+ trait_sxad_sex_experience_character_desc:0 "Recorded sexual experience: #V [SCOPE.ScriptValue('sxad_experience_value')|0]#! encounters.\n\n$trait_sxad_sex_experience_desc$"
+ sxad_view_experience_interaction:0 "View Sexual Experience"
+ sxad_view_experience_interaction_desc:0 "View [recipient.GetShortUIName]'s recorded encounters and current skills. Viewing changes neither experience nor skills."
+ sxad_view_experience_interaction_notification:0 "View Sexual Experience"
+ sxad_view_experience_interaction_accept_tt:0 "View [recipient.GetShortUIName]'s sexual experience record."
+ sxad.1.t:0 "Superman Qiang: Experience Record"
+ sxad.1.desc:0 "[scope:sxad_view_subject.GetShortUIName] has #V [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_experience_value')|0]#! recorded encounters since enabling the mod.\n\nCurrent skills: Diplomacy [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_diplomacy_value')|0], Martial [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_martial_value')|0], Stewardship [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_stewardship_value')|0], Intrigue [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_intrigue_value')|0], Learning [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_learning_value')|0], Prowess [scope:sxad_view_subject.MakeScope.ScriptValue('sxad_prowess_value')|0].\n\nOnly explicit encounters reaching the vanilla shared effect are counted. Past encounters are not estimated and routine married life is not simulated. Known partners each gain one encounter; anonymous partners add one only to the known character. The partner with more experience before the encounter takes one point from a uniformly selected transferable skill. Equal experience causes no transfer."
+ sxad.1.a:0 "Understood"
