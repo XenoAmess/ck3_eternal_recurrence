@@ -90,6 +90,20 @@ def normalize_player_holy_order_context_v1(
             if costs is not None and (not isinstance(costs, list) or len(costs) != 10
                     or any(type(item) is not int for item in costs)):
                 raise ValueError("native holy-order partial resource costs are malformed")
+        # Older frozen wires predate the optional current-troop observation.
+        # Its availability is independent of final hire and affordability.
+        strength = terms.get("troop_strength")
+        if "troop_strength" in terms:
+            if not isinstance(strength, Mapping) or type(strength.get("available")) is not bool:
+                raise ValueError("native holy-order troop strength is malformed")
+            soldiers = strength.get("current_soldiers")
+            if strength["available"]:
+                if (strength.get("unavailable_reason") is not None or type(soldiers) is not int
+                        or not 0 <= soldiers <= 0x7FFFFFFF):
+                    raise ValueError("native holy-order current soldier count is malformed")
+            elif (not isinstance(strength.get("unavailable_reason"), str)
+                    or not strength["unavailable_reason"] or soldiers is not None):
+                raise ValueError("unavailable native holy-order troop strength lost its reason")
         for prefix in ("can_hire", "can_afford"):
             sampled = terms.get(prefix + "_reasons_available")
             literal = terms.get(prefix + "_reason_literal")

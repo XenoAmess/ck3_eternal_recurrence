@@ -112,6 +112,13 @@ bool ReadIdentity(const Bindings &b, void *order, Row &row) {
 void ReadMilitaryTerms(const Bindings &b, void *order, void *player,
                        MilitaryTerms &terms) {
   terms.unavailable_reason = "native_evaluation_unavailable";
+  terms.troop_strength.unavailable_reason = "native_current_soldiers_unavailable";
+  std::int32_t current_soldiers = 0;
+  if (Call(b.current_soldiers, current_soldiers, order)) {
+    terms.troop_strength.current_soldiers = current_soldiers;
+    terms.troop_strength.available = true;
+    terms.troop_strength.unavailable_reason.clear();
+  }
   NativeReason hire_reason(b.reason_destroy), afford_reason(b.reason_destroy);
   bool can_hire = false;
   if (Call(b.can_hire, can_hire, order, player, hire_reason.get())) {
@@ -179,7 +186,12 @@ void TermsJson(std::ostream &out, const MilitaryTerms &terms) {
       << ",\"can_hire_reason_literal\":"; Optional(out, terms.can_hire_reason_literal);
   out << ",\"can_afford_reasons_available\":" << terms.can_afford_reasons_available
       << ",\"can_afford_reason_literal\":"; Optional(out, terms.can_afford_reason_literal);
-  out << '}';
+  out << ",\"troop_strength\":{\"available\":" << terms.troop_strength.available
+      << ",\"unavailable_reason\":";
+  if (terms.troop_strength.available) out << "null";
+  else Quote(out, terms.troop_strength.unavailable_reason);
+  out << ",\"current_soldiers\":"; Optional(out, terms.troop_strength.current_soldiers);
+  out << "}}";
 }
 } // namespace
 
@@ -195,6 +207,7 @@ Bindings BindPlayerHolyOrderImage12003(std::uintptr_t base, std::string_view sha
   b.cost = reinterpret_cast<Cost>(base + 0x26198E0);
   b.can_afford = reinterpret_cast<CanAfford>(base + 0x310E710);
   b.reason_destroy = reinterpret_cast<ReasonDestroy>(base + 0x856050);
+  b.current_soldiers = reinterpret_cast<CurrentSoldiers>(base + 0x261AD10);
   return b;
 }
 

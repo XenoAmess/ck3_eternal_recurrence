@@ -20,6 +20,7 @@ using CanHire = bool (*)(void *, void *, void *);
 using Cost = std::int64_t *(*)(void *, std::int64_t *, void *);
 using CanAfford = bool (*)(const std::int64_t *, void *, void *);
 using ReasonDestroy = void (*)(void *);
+using CurrentSoldiers = std::int32_t (*)(void *);
 
 struct Bindings {
   bool enabled = false;
@@ -31,6 +32,14 @@ struct Bindings {
   Cost cost = nullptr;
   CanAfford can_afford = nullptr;
   ReasonDestroy reason_destroy = nullptr;
+  CurrentSoldiers current_soldiers = nullptr;
+};
+
+struct TroopStrength {
+  bool available = false;
+  std::string unavailable_reason = "not_sampled";
+  // Native GetCurrentSoldiers returns an unscaled int32 headcount.
+  std::optional<std::int32_t> current_soldiers;
 };
 
 struct MilitaryTerms {
@@ -45,6 +54,8 @@ struct MilitaryTerms {
   std::optional<std::string> can_hire_reason_literal;
   bool can_afford_reasons_available = false;
   std::optional<std::string> can_afford_reason_literal;
+  // Independent from final hire/affordability availability.
+  TroopStrength troop_strength;
 };
 struct Row {
   std::uint32_t holy_order_id = UINT32_MAX;
