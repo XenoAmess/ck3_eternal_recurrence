@@ -35,6 +35,11 @@ using CandidateVisitor = bool (*)(void *company, const Candidate &candidate,
 
 CandidateBindings BindMercenaryCandidatesImage12003(
     std::uintptr_t image_base, std::string_view executable_sha256) noexcept;
+// Resolve one full ID against the current live manager. Return is borrowed
+// only inside the current owner-thread handler; carry IDs across frames and
+// resolve again before validation/Submit. No market or soldier enumeration.
+void *ResolveMercenaryCompany12003(const CandidateBindings &bindings,
+                                  std::uint32_t full_company_id) noexcept;
 bool VisitMercenaryCandidates12003(const CandidateBindings &bindings,
     CandidateVisitor visitor, void *user, std::string &unavailable_reason) noexcept;
 

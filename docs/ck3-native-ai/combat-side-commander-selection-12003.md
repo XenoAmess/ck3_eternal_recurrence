@@ -37,7 +37,7 @@ flowchart TD
 |---|---|---|
 | 有效 martial | Character `+0xDC * 100000`，`0x2589E48` | `.2` phase-character 合同与 `.3` 已有 `0x28B16B0(owner,1)` 相符；是评分的起始值 |
 | 对侧 primary participant | index0 取 Combat `+0x3D8`，index1 取 `+0x90`，交 `0x2589020` | 这是对侧 `side+0x70`，不是 selected `+0x74`；其下游语义由 contextual lane 持续闭合 |
-| 实际目标 terrain | Combat `+0x6B8` Province → `+0x848` terrain → `+0x388`，交 `0x25893F0` | native 目标贡献，不能机械累加 stock trait 文本 |
+| 目标原始上下文输入（类型未确认） | Combat `+0x6B8` Province → `+0x848` data → `+0x388` raw context operand，交 `0x25893F0` | 该 raw operand 的业务类型未闭合；实际 TerrainFinal 为独立 getter 输入，不能互相替代 |
 | modifier `0x1AE` | `0x28C3AE0` aggregator；Character `+0x1B8` Army link，generation resolve 后 `0x24DFB70` gate | 条件分支通过才加入该有效 modifier；名字和 gate 业务名未闭合 |
 | 本侧 primary 身份条件 | CharacterID 等于 Combat `+index*0x348+0x90` | 等于本侧 `side+0x70` 才经 `0x2C4D550` 加 modifier `0x1B1`（index0）或 `0x1B0`（index1）；没有无条件 primary 胜出规则 |
 | gathering 条件 | Combat `+index*0x348+0x364` = actual `side+0x344` | gathering=true 且 aggregator 缺 flag `0x1A5` 时加 DB `+0xEF0→+0x40 *100000`；该字段不是 holding flag |

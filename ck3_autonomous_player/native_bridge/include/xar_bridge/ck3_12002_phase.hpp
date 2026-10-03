@@ -118,6 +118,9 @@ struct NativeCombatPhase {
   std::int64_t dynamic_advantage_at_zero_roll_raw = 0;
   game::CombatAdvantageModelV3TestOnly nonreligious_advantage_model;
   bool nonreligious_constructor_ready = false;
+  bool religion_constructor_ready = false;
+  std::int64_t base_nonreligious_accumulator_raw = 0;
+  std::vector<game::ContextualAdvantageReligionSourceSnapshot> religion_constructor_sources;
   std::string unavailable_reason;
 };
 
@@ -139,7 +142,8 @@ enum class ReadNativeCombatPhaseResult {
 // scope and v2 inputs. Offline tests supply only fixture-owned native objects.
 ReadNativeCombatPhaseResult ReadNativeCombatPhase(
     const PhaseBindings &, const PhaseEnvironment &, const game::Snapshot &,
-    const game::CombatSimulationInputsSnapshot &, NativeCombatPhase &) noexcept;
+    const game::CombatSimulationInputsSnapshot &, NativeCombatPhase &,
+    bool include_constructor_religion = false) noexcept;
 
 // Existing v2 owning-thread adapter calls this only after v2 composition
 // succeeds. It directly reads the native nonreligious context without the full

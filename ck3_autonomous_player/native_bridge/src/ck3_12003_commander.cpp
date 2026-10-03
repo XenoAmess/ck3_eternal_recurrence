@@ -48,6 +48,63 @@ struct OwnedCandidateVector {
   }
 };
 
+void ReadMovementRate(CommanderBindings::MovementRateReader reader, void *unit,
+                      NativeMovementRateSnapshot &output) noexcept {
+  output = {};
+  if (reader == nullptr) {
+    output.unavailable_reason = "native_rate_callback_unavailable";
+    return;
+  }
+  std::int64_t raw = 0;
+  if (reader(unit, &raw) != &raw) {
+    output.unavailable_reason = "native_rate_read_failed";
+    return;
+  }
+  output.status = "available";
+  output.raw = raw;
+  output.unavailable_reason = {};
+}
+
+void ReadCurrentMovementSpeed(
+    const CommanderBindings &bindings, const game::Snapshot &paused_scope,
+    const game::ArmySnapshot &selected, void *unit,
+    ArmyCommanderCandidatesSnapshot &output) noexcept {
+  auto &movement = output.current_movement_speed;
+  movement.context_observable = true;
+  movement.public_cunit_id = output.army_id;
+  movement.native_carmy_id = output.native_carmy_id;
+  movement.owner_character_id = output.owner_character_id;
+  movement.current_commander_character_id =
+      output.current_commander_character_id;
+  movement.date_raw = paused_scope.date_raw;
+  if (selected.has_current_province)
+    movement.current_province_id = selected.current_province_id;
+  if (selected.move_target_observable && selected.move_target_province_id >= 0)
+    movement.move_target_province_id = selected.move_target_province_id;
+  movement.army_state_code = selected.army_state_code;
+  movement.army_state = selected.army_state;
+  movement.in_combat = selected.in_combat;
+  movement.retreating = selected.retreating;
+  movement.route_read_status = selected.route_read_status;
+  movement.route_source_count = selected.route_source_count;
+
+  // These totals use the selected public CUnit, independently of CanAssign,
+  // native candidate collection, army AI assignments and the other rate reads.
+  ReadMovementRate(bindings.read_unit_land_movement_rate, unit, movement.land);
+  ReadMovementRate(bindings.read_unit_naval_movement_rate, unit, movement.naval);
+  if (selected.route_read_status == game::ArmyRouteReadStatus::complete_empty) {
+    movement.current_edge.status = "not_applicable";
+    movement.current_edge.unavailable_reason = "empty_route";
+  } else if (selected.route_read_status ==
+                 game::ArmyRouteReadStatus::complete_nonempty &&
+             !selected.route_province_ids.empty()) {
+    ReadMovementRate(bindings.read_unit_current_edge_movement_rate, unit,
+                     movement.current_edge);
+  } else {
+    movement.current_edge.unavailable_reason = "stored_route_unavailable";
+  }
+}
+
 bool ArmyIdentityUnchanged(const CommanderBindings &bindings, void *unit,
                            void *army,
                            const ArmyCommanderCandidatesSnapshot &output) {
@@ -88,6 +145,16 @@ CommanderBindings BindCommanderImage(
       image_base + 0x28C3AE0);
   result.read_character_modifier = reinterpret_cast<decltype(result.read_character_modifier)>(
       image_base + 0x2303700);
+  // Exact .3 native CUnit rates already used by the reviewed route timing ABI.
+  result.read_unit_land_movement_rate =
+      reinterpret_cast<CommanderBindings::MovementRateReader>(
+          image_base + 0x24AA940);
+  result.read_unit_naval_movement_rate =
+      reinterpret_cast<CommanderBindings::MovementRateReader>(
+          image_base + 0x24AAC00);
+  result.read_unit_current_edge_movement_rate =
+      reinterpret_cast<CommanderBindings::MovementRateReader>(
+          image_base + 0x24AB5C0);
   return result;
 }
 
@@ -96,13 +163,7 @@ CommanderCandidatesReadResult ReadArmyCommanderCandidates(
     std::int32_t army_id, ArmyCommanderCandidatesSnapshot &output) noexcept {
   output = {};
   output.army_id = army_id;
-  if (!bindings.enabled || !bindings.armies.enabled ||
-      bindings.character_storage_slot == nullptr ||
-      bindings.collect_candidates == nullptr ||
-      bindings.can_set_commander == nullptr ||
-      bindings.get_native_ai_base_quality == nullptr ||
-      bindings.get_generic_advantage == nullptr ||
-      bindings.get_army_commander == nullptr) {
+  if (!bindings.enabled || !bindings.armies.enabled) {
     output.unavailable_reason = "commander_bindings_unavailable";
     return CommanderCandidatesReadResult::unavailable;
   }
@@ -135,13 +196,23 @@ CommanderCandidatesReadResult ReadArmyCommanderCandidates(
     output.unavailable_reason = "native_carmy_or_owner_unavailable";
     return CommanderCandidatesReadResult::unavailable;
   }
+  output.current_commander_character_id = Load<std::int32_t>(army, 0x120);
+  ReadCurrentMovementSpeed(bindings, paused_scope, *selected, unit, output);
+  if (bindings.character_storage_slot == nullptr ||
+      bindings.collect_candidates == nullptr ||
+      bindings.can_set_commander == nullptr ||
+      bindings.get_native_ai_base_quality == nullptr ||
+      bindings.get_generic_advantage == nullptr ||
+      bindings.get_army_commander == nullptr) {
+    output.unavailable_reason = "commander_bindings_unavailable";
+    return CommanderCandidatesReadResult::unavailable;
+  }
   void *owner = ResolveCharacter(bindings.character_storage_slot,
                                 output.owner_character_id);
   if (owner == nullptr || Load<void *>(owner, 0x1D0) != nullptr) {
     output.unavailable_reason = "army_owner_character_unavailable";
     return CommanderCandidatesReadResult::unavailable;
   }
-  output.current_commander_character_id = Load<std::int32_t>(army, 0x120);
   if (output.current_commander_character_id == -1) {
     output.current_commander_status = "absent";
     output.current_commander_unavailable_reason = {};
@@ -228,6 +299,7 @@ CommanderCandidatesReadResult ReadArmyCommanderCandidates(
   if (!ArmyIdentityUnchanged(bindings, unit, army, output) ||
       ResolveCharacter(bindings.character_storage_slot,
                        output.owner_character_id) != owner) {
+    output.current_movement_speed = {};
     output.unavailable_reason = "army_identity_changed";
     return CommanderCandidatesReadResult::unavailable;
   }

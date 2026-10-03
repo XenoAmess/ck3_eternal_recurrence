@@ -405,4 +405,127 @@ bool BuildNonReligiousAdvantagePlan(const AdvantageBindings &b,
     return false;
   }
 }
+
+namespace {
+bool ResolveReligionReference(void **storage_slot, void **null_slot,
+    std::uint32_t id, void *&object) noexcept {
+  object = nullptr;
+  if (id == 0xFFFFFFFFU) {
+    object = null_slot == nullptr ? nullptr : *null_slot;
+    return object != nullptr;
+  }
+  if (storage_slot == nullptr || *storage_slot == nullptr) return false;
+  auto *storage = *storage_slot;
+  const auto index = id & 0xFFFFFFU;
+  const auto capacity = Load<std::uint32_t>(storage, 0x2C);
+  auto *data = Load<void *>(storage, 0x20);
+  if (index >= capacity || data == nullptr) return false;
+  object = Load<void *>(data, static_cast<std::size_t>(index) * 16 + 8);
+  return object != nullptr && Load<std::uint32_t>(object, 8) == id;
+}
+} // namespace
+
+bool CompleteConstructorReligionPlan(const AdvantageBindings &b,
+    const PhaseEnvironment &env, const game::CombatSimulationInputsSnapshot &base,
+    NonReligiousAdvantagePlan &plan) noexcept {
+  const auto &r = b.constructor_religion;
+  plan.religion_constructor_ready = false;
+  plan.religion_constructor_sources.clear();
+  plan.base_nonreligious_accumulator_raw = plan.model.base_static_accumulator_raw;
+  try {
+    const auto fail = [&](std::string reason) {
+      plan.unavailable_reason = std::move(reason);
+      return false;
+    };
+    if (!r.enabled || !r.rite_storage_slot || !r.faith_storage_slot ||
+        !r.null_rite_slot || !r.null_faith_slot || !r.target_faith_is_unreformed ||
+        !plan.nonreligious_available || plan.model.constructor_sources.size() != 15)
+      return fail("religion_constructor_bindings_or_base_unavailable");
+    auto *target = env.resolve_province(env.context, base.target_province_id);
+    auto *data = target == nullptr ? nullptr : Load<void *>(target, 0x848);
+    if (data == nullptr) return fail("religion_target_province_data_unavailable");
+    const auto target_rite_id = Load<std::uint32_t>(data, 0x384);
+    void *target_rite = nullptr;
+    if (!ResolveReligionReference(r.rite_storage_slot, r.null_rite_slot,
+                                 target_rite_id, target_rite))
+      return fail("religion_target_rite_identity_unavailable");
+    const auto target_faith_id = Load<std::uint32_t>(target_rite, 0x4B8);
+    void *target_faith = nullptr;
+    if (!ResolveReligionReference(r.faith_storage_slot, r.null_faith_slot,
+                                 target_faith_id, target_faith))
+      return fail("religion_target_faith_identity_unavailable");
+    const auto target_main_rite_id = Load<std::uint32_t>(target_faith, 0x98);
+    const auto unreformed = r.target_faith_is_unreformed(target_faith);
+    std::array<std::vector<ArmyContext>, 2> armies;
+    if (!Contexts(env, base, armies))
+      return fail("religion_first_army_owner_unavailable");
+    // Replace only the two explicit deferred placeholders. Reuse the original
+    // stage sequence, global append order and each-source accumulator clamp.
+    plan.model.constructor_sources.resize(13);
+    std::int32_t append_order = static_cast<std::int32_t>(
+        plan.ledgers[0].size() + plan.ledgers[1].size());
+    auto accumulator = plan.base_nonreligious_accumulator_raw;
+    for (std::size_t side = 0; side < 2; ++side) {
+      game::ContextualAdvantageReligionSourceSnapshot source;
+      source.side_index = static_cast<std::int32_t>(side);
+      source.primary_public_cunit_id = armies[side].front().snapshot->army_id;
+      source.owner_character_id = armies[side].front().snapshot->owner.character_id;
+      source.target_rite_id = target_rite_id;
+      source.target_faith_id = target_faith_id;
+      source.target_main_rite_id = target_main_rite_id;
+      source.target_faith_unreformed = unreformed;
+      bool selected = false;
+      std::string reason = "target_faith_not_unreformed";
+      void *effect = nullptr;
+      std::string key;
+      if (unreformed) {
+        source.owner_rite_observed = true;
+        source.owner_rite_id = Load<std::uint32_t>(armies[side].front().owner, 0xB4);
+        void *owner_rite = nullptr;
+        if (!ResolveReligionReference(r.rite_storage_slot, r.null_rite_slot,
+                                     source.owner_rite_id, owner_rite))
+          return fail("religion_owner_rite_identity_unavailable");
+        source.owner_faith_id = Load<std::uint32_t>(owner_rite, 0x4B8);
+        source.owner_faith_matches_target =
+            source.owner_faith_id == Load<std::uint32_t>(target_faith, 8);
+        selected = *source.owner_faith_matches_target;
+        reason = "owner_faith_differs_from_target";
+        if (selected) {
+          auto *rules = b.get_rules();
+          if (rules == nullptr) return fail("religion_combat_rules_unavailable");
+          effect = Load<void *>(rules, 0xF50);
+          key = "unreformed_faith_province";
+          if (!RequireKey(effect, key))
+            return fail("religion_loaded_effect_identity_unavailable");
+        }
+      }
+      // Native faith wrapper always appends a matching effect, including zero
+      // loaded points. The scale is fixed Q100000; no supply-zero shortcut.
+      if (!Append(plan, side, side == 0 ? "unreformed_faith_0" : "unreformed_faith_1",
+                  effect, selected, selected, kScale, std::move(key),
+                  std::move(reason), append_order, accumulator))
+        return fail("religion_constructor_append_unavailable");
+      const auto &row = plan.model.constructor_sources.back();
+      source.selected = row.selected;
+      source.applied = row.applied;
+      source.source_key = row.source_key;
+      source.effect_advantage_points = row.effect_advantage_points;
+      source.scale_raw = row.scale_raw;
+      source.signed_contribution_raw = row.signed_contribution_raw;
+      source.accumulator_before_raw = row.accumulator_before_raw;
+      source.accumulator_after_raw = row.accumulator_after_raw;
+      source.append_order = row.append_order;
+      source.skip_reason = row.skip_reason;
+      plan.religion_constructor_sources.push_back(std::move(source));
+    }
+    plan.model.base_static_accumulator_raw = accumulator;
+    plan.model.unavailable_reason.clear();
+    plan.unavailable_reason.clear();
+    plan.religion_constructor_ready = true;
+    return true;
+  } catch (...) {
+    plan.unavailable_reason = "religion_constructor_read_exception";
+    return false;
+  }
+}
 } // namespace xar::ck3_12002

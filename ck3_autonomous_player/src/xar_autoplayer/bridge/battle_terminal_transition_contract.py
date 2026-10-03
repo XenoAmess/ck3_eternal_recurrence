@@ -37,6 +37,7 @@ _TOP_FIELDS: Final = {
     "subject",
     "successor",
 }
+_TOP_OPTIONAL_EXTENSION_FIELDS: Final = {"character_observations"}
 _JOURNAL_FIELDS: Final = {
     "requested_after_sequence",
     "oldest_available_sequence",
@@ -265,13 +266,57 @@ def _ordered_full_component_ids(
     return result
 
 
-def query_battle_terminal_transition_v1_step(
-    prior_combat_id: int,
-    subject_public_cunit_id: int,
-    after_terminal_sequence: int | None = None,
-) -> str:
-    """Encode the two exact identities and optional journal cursor."""
+def _requested_character_ids(value: object, field: str) -> list[int]:
+    if value is None:
+        return []
+    return list(dict.fromkeys(_ordered_positive_ids(value, field, unique=False)))
 
+
+def _normalize_character_custody_rows(
+    value: object, field: str,
+) -> list[dict[str, object]] | None:
+    if value is None:
+        return None
+    if not isinstance(value, list):
+        raise ValueError(f"{field} must be a list or null")
+    result = []
+    for index, value in enumerate(value):
+        fields = {"character_id", "status", "actual_jailer_character_id"}
+        if isinstance(value, dict) and "alive" in value:
+            fields.add("alive")
+        row = _exact_dict(value, f"{field}[{index}]", fields)
+        character_id = _positive_int32(row["character_id"], f"{field} character")
+        status = row["status"]
+        jailer = _optional_integer(
+            row["actual_jailer_character_id"], f"{field} jailer",
+            minimum=-1, maximum=2**31 - 1,
+        )
+        if (status not in {"observed", "none", "unavailable"}
+            or (status == "observed" and (jailer is None or jailer <= 0))
+            or (status == "none" and jailer != -1)
+            or (status == "unavailable" and jailer is not None)):
+            raise ValueError(f"{field} custody state disagrees")
+        normalized = {"character_id": character_id, "status": status,
+                      "actual_jailer_character_id": jailer}
+        if "alive" in row:
+            normalized["alive"] = _optional_boolean(row["alive"], f"{field} alive")
+        result.append(normalized)
+    return result
+
+
+def query_battle_terminal_transition_v1_step(
+    prior_combat_id: int | None,
+    subject_public_cunit_id: int | None,
+    after_terminal_sequence: int | None = None,
+    character_ids: list[int] | None = None,
+) -> str:
+    """Encode battle context when present and actual requested characters."""
+    ids = _requested_character_ids(character_ids, "character_ids")
+    if prior_combat_id is None and subject_public_cunit_id is None:
+        if not ids or after_terminal_sequence is not None:
+            raise ValueError("character-only queries need IDs and no journal cursor")
+        return (QUERY_BATTLE_TERMINAL_TRANSITION_V1_STEP_PREFIX + "none:characters:"
+                + ",".join(map(str, ids)))
     prior_combat_id = _full_component_id(prior_combat_id, "prior_combat_id")
     subject_public_cunit_id = _public_cunit_id(
         subject_public_cunit_id, "subject_public_cunit_id"
@@ -279,53 +324,75 @@ def query_battle_terminal_transition_v1_step(
     cursor_wire = 0
     if after_terminal_sequence is not None:
         cursor_wire = _integer(
-            after_terminal_sequence,
-            "after_terminal_sequence",
-            minimum=1,
-            maximum=2**64 - 1,
+            after_terminal_sequence, "after_terminal_sequence",
+            minimum=1, maximum=2**64 - 1,
         )
-    return (
-        f"{QUERY_BATTLE_TERMINAL_TRANSITION_V1_STEP_PREFIX}"
-        f"{prior_combat_id}-{subject_public_cunit_id}-{cursor_wire}"
-    )
+    step = (f"{QUERY_BATTLE_TERMINAL_TRANSITION_V1_STEP_PREFIX}"
+            f"{prior_combat_id}-{subject_public_cunit_id}-{cursor_wire}")
+    if ids:
+        step += ":characters:" + ",".join(map(str, ids))
+    return step
+
+
+def _split_query_battle_terminal_transition_v1_characters(
+    step: object,
+) -> tuple[str, list[int]] | None:
+    if not isinstance(step, str) or not step.startswith(
+        QUERY_BATTLE_TERMINAL_TRANSITION_V1_STEP_PREFIX
+    ):
+        return None
+    wire = step.removeprefix(QUERY_BATTLE_TERMINAL_TRANSITION_V1_STEP_PREFIX)
+    if ":characters:" not in wire:
+        return wire, []
+    wire, ids_wire = wire.split(":characters:", 1)
+    parts = ids_wire.split(",")
+    try:
+        ids = [int(part) for part in parts]
+    except ValueError:
+        return None
+    if any(not part.isascii() or str(value) != part or not 1 <= value <= 2**31 - 1
+           for part, value in zip(parts, ids)):
+        return None
+    return wire, list(dict.fromkeys(ids))
 
 
 def parse_query_battle_terminal_transition_v1_step(
     step: object,
 ) -> tuple[int, int, int | None] | None:
-    """Parse only the canonical decimal wire spelling; zero means no cursor."""
-
-    if not isinstance(step, str) or not step.startswith(
-        QUERY_BATTLE_TERMINAL_TRANSITION_V1_STEP_PREFIX
-    ):
+    """Keep the legacy triple while accepting an optional character suffix."""
+    split = _split_query_battle_terminal_transition_v1_characters(step)
+    if split is None:
         return None
-    suffix = step.removeprefix(
-        QUERY_BATTLE_TERMINAL_TRANSITION_V1_STEP_PREFIX
-    )
-    parts = suffix.rsplit("-", 2)
-    if len(parts) != 3:
-        return None
-    if any(not part.isascii() for part in parts):
+    wire, ids = split
+    if wire == "none" and ids:
+        return -1, -1, None
+    parts = wire.rsplit("-", 2)
+    if len(parts) != 3 or any(not part.isascii() for part in parts):
         return None
     try:
         prior_combat_id, subject_public_cunit_id, cursor_wire = map(int, parts)
     except ValueError:
         return None
     if not (
-        -(2**31) <= prior_combat_id <= 2**31 - 1
-        and prior_combat_id != -1
+        -(2**31) <= prior_combat_id <= 2**31 - 1 and prior_combat_id != -1
         and str(prior_combat_id) == parts[0]
         and 0 <= subject_public_cunit_id <= 2**31 - 1
         and str(subject_public_cunit_id) == parts[1]
-        and 0 <= cursor_wire <= 2**64 - 1
-        and str(cursor_wire) == parts[2]
+        and 0 <= cursor_wire <= 2**64 - 1 and str(cursor_wire) == parts[2]
     ):
         return None
-    return (
-        prior_combat_id,
-        subject_public_cunit_id,
-        cursor_wire if cursor_wire > 0 else None,
-    )
+    return (prior_combat_id, subject_public_cunit_id,
+            cursor_wire if cursor_wire > 0 else None)
+
+
+def parse_query_battle_terminal_transition_v1_character_ids(
+    step: object,
+) -> list[int] | None:
+    """Return first-occurrence character IDs; valid legacy steps return []."""
+    if parse_query_battle_terminal_transition_v1_step(step) is None:
+        return None
+    split = _split_query_battle_terminal_transition_v1_characters(step)
+    return None if split is None else split[1]
 
 
 def _normalize_journal(
@@ -753,26 +820,12 @@ def _normalize_prior(
                 "target_right": _optional_boolean(row["target_right"], "character row target_right")})
             if character_rows[-1]["side0"] is None or character_rows[-1]["target_right"] is None:
                 raise ValueError("terminal character row bool is absent")
-    character_custody = None
     rows = prior.get("character_custody_in_observed_order")
-    if rows is not None:
-        if terminal_kind != "normal_result" or not isinstance(rows, list):
-            raise ValueError("terminal custody requires a normal-result list")
-        character_custody = []
-        for value in rows:
-            row = _exact_dict(value, "terminal character custody", {
-                "character_id", "status", "actual_jailer_character_id",
-            })
-            character_id = _integer(row["character_id"], "custody character", minimum=1, maximum=2**31 - 1)
-            status = row["status"]
-            jailer = _optional_integer(row["actual_jailer_character_id"], "custody jailer", minimum=-1, maximum=2**31 - 1)
-            if (status not in {"observed", "none", "unavailable"}
-                or (status == "observed" and (jailer is None or jailer <= 0))
-                or (status == "none" and jailer != -1)
-                or (status == "unavailable" and jailer is not None)):
-                raise ValueError("terminal custody state disagrees")
-            character_custody.append({"character_id": character_id, "status": status,
-                                      "actual_jailer_character_id": jailer})
+    if rows is not None and terminal_kind != "normal_result":
+        raise ValueError("terminal custody requires a normal-result list")
+    character_custody = _normalize_character_custody_rows(
+        rows, "terminal character custody"
+    )
 
     observed_fields = (
         terminal_date_raw,
@@ -1109,21 +1162,26 @@ def _normalize_successor(
 def normalize_battle_terminal_transition_v1(
     value: object,
     *,
-    expected_prior_combat_id: int,
-    expected_subject_public_cunit_id: int,
+    expected_prior_combat_id: int | None,
+    expected_subject_public_cunit_id: int | None,
     expected_after_terminal_sequence: int | None,
     expected_observed_date_raw: int,
     expected_snapshot_revision: int,
+    expected_character_ids: list[int] | None = None,
 ) -> dict[str, object]:
     """Normalize one journal-backed frame without inferring terminal kind."""
 
-    expected_prior_combat_id = _full_component_id(
-        expected_prior_combat_id, "expected_prior_combat_id"
-    )
-    expected_subject_public_cunit_id = _public_cunit_id(
-        expected_subject_public_cunit_id,
-        "expected_subject_public_cunit_id",
-    )
+    character_only = (expected_prior_combat_id in (None, -1)
+                      and expected_subject_public_cunit_id in (None, -1))
+    if character_only:
+        expected_prior_combat_id = expected_subject_public_cunit_id = -1
+    else:
+        expected_prior_combat_id = _full_component_id(
+            expected_prior_combat_id, "expected_prior_combat_id"
+        )
+        expected_subject_public_cunit_id = _public_cunit_id(
+            expected_subject_public_cunit_id, "expected_subject_public_cunit_id"
+        )
     if expected_after_terminal_sequence is not None:
         expected_after_terminal_sequence = _integer(
             expected_after_terminal_sequence,
@@ -1143,7 +1201,27 @@ def normalize_battle_terminal_transition_v1(
         minimum=1,
         maximum=2**64 - 1,
     )
-    frame = _exact_dict(value, "battle_terminal_transition", _TOP_FIELDS)
+    fields = _TOP_FIELDS | (
+        _TOP_OPTIONAL_EXTENSION_FIELDS & value.keys()
+        if isinstance(value, dict) else set()
+    )
+    frame = _exact_dict(value, "battle_terminal_transition", fields)
+    observations = _normalize_character_custody_rows(
+        frame.get("character_observations"), "character_observations"
+    )
+    if expected_character_ids is not None:
+        expected_ids = _requested_character_ids(
+            expected_character_ids, "expected_character_ids"
+        )
+        observed_ids = [] if observations is None else [
+            row["character_id"] for row in observations
+        ]
+        if observed_ids != expected_ids:
+            raise ValueError("character observation request binding changed")
+    character_extension = (
+        {"character_observations": observations}
+        if "character_observations" in frame else {}
+    )
     if frame.get("schema_version") != 1:
         raise ValueError("battle_terminal_transition.schema_version must be 1")
     if (
@@ -1158,7 +1236,7 @@ def normalize_battle_terminal_transition_v1(
         frame.get("battle_terminal_transition_ready"),
         "battle_terminal_transition.battle_terminal_transition_ready",
     )
-    if ready is not (status == "available"):
+    if ready is not (status == "available" and not character_only):
         raise ValueError("battle terminal transition readiness disagrees with status")
     revision = _integer(
         frame.get("snapshot_revision"),
@@ -1172,14 +1250,19 @@ def normalize_battle_terminal_transition_v1(
         minimum=-(2**31),
         maximum=2**31 - 1,
     )
-    prior_combat_id = _full_component_id(
-        frame.get("prior_combat_id"),
-        "battle_terminal_transition.prior_combat_id",
-    )
-    subject_public_cunit_id = _public_cunit_id(
-        frame.get("subject_public_cunit_id"),
-        "battle_terminal_transition.subject_public_cunit_id",
-    )
+    if character_only:
+        prior_combat_id = _integer(frame.get("prior_combat_id"),
+            "battle_terminal_transition.prior_combat_id", minimum=-1, maximum=-1)
+        subject_public_cunit_id = _integer(frame.get("subject_public_cunit_id"),
+            "battle_terminal_transition.subject_public_cunit_id", minimum=-1, maximum=-1)
+    else:
+        prior_combat_id = _full_component_id(
+            frame.get("prior_combat_id"), "battle_terminal_transition.prior_combat_id"
+        )
+        subject_public_cunit_id = _public_cunit_id(
+            frame.get("subject_public_cunit_id"),
+            "battle_terminal_transition.subject_public_cunit_id",
+        )
     if revision != expected_snapshot_revision:
         raise ValueError("battle terminal transition revision binding changed")
     if observed_date_raw != expected_observed_date_raw:
@@ -1190,6 +1273,20 @@ def normalize_battle_terminal_transition_v1(
         raise ValueError("battle terminal transition CUnitID binding changed")
 
     reason = frame.get("unavailable_reason")
+    if character_only and status == "available":
+        journal = _normalize_journal(
+            frame.get("terminal_journal"),
+            expected_after_terminal_sequence=expected_after_terminal_sequence,
+        )
+        if (reason is not None or not observations
+            or journal["requested_after_sequence"] is not None
+            or journal["event_status"] != "not_observed"
+            or journal["event_sequence"] is not None
+            or any(frame.get(key) is not None
+                   for key in ("prior", "removal", "subject", "successor"))):
+            raise ValueError("character-only observation invented battle context")
+        return {**copy.deepcopy(frame), **character_extension,
+                "terminal_journal": journal}
     if status == "unavailable":
         if reason not in _UNAVAILABLE_REASONS:
             raise ValueError("battle terminal unavailable_reason is invalid")
@@ -1207,7 +1304,8 @@ def normalize_battle_terminal_transition_v1(
             for key in ("prior", "removal", "subject", "successor")
         ):
             raise ValueError("unavailable terminal transition invented native state")
-        return {**copy.deepcopy(frame), "terminal_journal": journal}
+        return {**copy.deepcopy(frame), **character_extension,
+                "terminal_journal": journal}
     if reason is not None:
         raise ValueError("available terminal transition has unavailable_reason")
 
@@ -1237,6 +1335,7 @@ def normalize_battle_terminal_transition_v1(
         raise ValueError("unavailable_after_removal still strictly resolves")
     return {
         **frame,
+        **character_extension,
         "unavailable_reason": None,
         "snapshot_revision": revision,
         "observed_date_raw": observed_date_raw,

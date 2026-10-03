@@ -1079,6 +1079,9 @@ add_library(xar_ck3_12002_runtime STATIC
   src/ck3_12003_player_mercenary_context.cpp
   src/ck3_12003_player_mercenary_wire.cpp
   src/ck3_12003_player_mercenary_mailbox.cpp
+  src/ck3_12003_mercenary_hire_action.cpp
+  src/ck3_12003_mercenary_hire_wire.cpp
+  src/ck3_12003_player_mercenary_hire_mailbox.cpp
   src/ck3_12003_army_reserve.cpp
   src/ck3_12003_commander_assignment.cpp
   src/ck3_12003_commander_assignment_mailbox.cpp
@@ -1112,6 +1115,26 @@ endif()
 add_test(NAME ck3_12003_player_mercenary_context
   COMMAND xar_ck3_12003_player_mercenary_context_test
     "${CMAKE_CURRENT_BINARY_DIR}/ck3_12003_player_mercenary_context_wire.json")
+
+add_executable(xar_ck3_12003_mercenary_hire_action_test
+  src/ck3_12003_mercenary_hire_action_test.cpp
+  src/ck3_12003_mercenary_hire_action.cpp
+  src/ck3_12003_mercenary_hire_wire.cpp
+  src/ck3_12003_mercenary_candidates.cpp
+  src/ck3_12003_mercenary_final_terms.cpp
+  src/ck3_12002_commands.cpp
+  src/ck3_12002.cpp)
+target_include_directories(xar_ck3_12003_mercenary_hire_action_test PRIVATE include)
+target_compile_definitions(xar_ck3_12003_mercenary_hire_action_test PRIVATE NOMINMAX NDEBUG)
+if(MSVC)
+  target_compile_options(xar_ck3_12003_mercenary_hire_action_test PRIVATE
+    /O2 /W4 /WX /permissive- /EHsc /utf-8 /Gy)
+  target_link_options(xar_ck3_12003_mercenary_hire_action_test PRIVATE
+    /OPT:REF /INCREMENTAL:NO)
+endif()
+add_test(NAME ck3_12003_mercenary_hire_action
+  COMMAND xar_ck3_12003_mercenary_hire_action_test
+    "${CMAKE_CURRENT_BINARY_DIR}/ck3_12003_mercenary_hire_action_wire.json")
 
 foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1
@@ -7586,4 +7609,39 @@ if(BUILD_TESTING)
   add_test(NAME xar_ck3_12003_selected_commander_next_roll_bounds
     COMMAND xar_ck3_12003_battle_current_state_test --selected-roll-only
       "${CMAKE_BINARY_DIR}/ck3_12003_selected_roll_wire")
+endif()
+
+
+# Selected-unit total rates: new focused production reader/serializer/MCP cases.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12003_commander_movement_speed_test
+    src/ck3_12002_army.cpp
+    src/ck3_12003_commander.cpp
+    src/ck3_12003_commander_mailbox.cpp
+    src/ck3_12002_query_mailbox.cpp
+    src/ck3_12003_abi_profile.cpp
+    src/ck3_12003_commander_movement_speed_test.cpp)
+  target_include_directories(xar_ck3_12003_commander_movement_speed_test PRIVATE include)
+  target_compile_features(xar_ck3_12003_commander_movement_speed_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12003_commander_movement_speed_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_commander_movement_speed_test PRIVATE
+      /W4 /WX /permissive- /EHsc /Gy)
+    target_link_options(xar_ck3_12003_commander_movement_speed_test PRIVATE /OPT:REF)
+  endif()
+  target_link_libraries(xar_ck3_12003_commander_movement_speed_test PRIVATE user32)
+  file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/ck3_12003_commander_movement_speed_wire")
+  add_test(NAME xar_ck3_12003_commander_movement_speed
+    COMMAND xar_ck3_12003_commander_movement_speed_test
+      "${CMAKE_BINARY_DIR}/ck3_12003_commander_movement_speed_wire")
+  add_test(NAME xar_ck3_12003_commander_movement_speed_registered_mcp
+    COMMAND ${Python3_EXECUTABLE}
+      "${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/run_commander_movement_speed_mcp_fixture.py"
+      --projection-root "${CMAKE_CURRENT_SOURCE_DIR}/../.."
+      --native-dir "${CMAKE_BINARY_DIR}/ck3_12003_commander_movement_speed_wire")
+  set_tests_properties(xar_ck3_12003_commander_movement_speed PROPERTIES
+    FIXTURES_SETUP commander_movement_speed_wire)
+  set_tests_properties(xar_ck3_12003_commander_movement_speed_registered_mcp PROPERTIES
+    FIXTURES_REQUIRED commander_movement_speed_wire)
 endif()

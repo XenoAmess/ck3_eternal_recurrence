@@ -4,6 +4,8 @@
 #include "xar_bridge/game_contract.hpp"
 
 #include <cstdint>
+#include <optional>
+#include <string>
 #include <string_view>
 #include <vector>
 
@@ -32,6 +34,36 @@ struct CommanderCandidateSnapshot {
   std::string_view unavailable_reason = "candidate_not_read";
 };
 
+// Native movement-weight rates, signed Q100000. A returned raw zero is observed;
+// a missing/failed callback has no raw value. No candidate ranking is inferred.
+struct NativeMovementRateSnapshot {
+  std::string_view status = "unavailable";
+  std::optional<std::int64_t> raw;
+  std::int32_t scale = 100000;
+  std::string_view unavailable_reason = "rate_not_read";
+};
+
+struct ArmyCurrentMovementSpeedSnapshot {
+  bool context_observable = false;
+  std::int32_t public_cunit_id = -1;
+  std::int32_t native_carmy_id = -1;
+  std::int32_t owner_character_id = -1;
+  std::int32_t current_commander_character_id = -1;
+  std::int32_t date_raw = 0;
+  std::optional<std::int32_t> current_province_id;
+  std::optional<std::int32_t> move_target_province_id;
+  std::int32_t army_state_code = 0;
+  std::string army_state = "unknown";
+  bool in_combat = false;
+  bool retreating = false;
+  game::ArmyRouteReadStatus route_read_status =
+      game::ArmyRouteReadStatus::not_attempted;
+  std::optional<std::int32_t> route_source_count;
+  NativeMovementRateSnapshot land;
+  NativeMovementRateSnapshot naval;
+  NativeMovementRateSnapshot current_edge;
+};
+
 struct ArmyCommanderCandidatesSnapshot {
   std::int32_t army_id = -1;
   std::int32_t native_carmy_id = -1;
@@ -40,6 +72,7 @@ struct ArmyCommanderCandidatesSnapshot {
   std::string_view current_commander_status = "unavailable";
   std::int32_t current_commander_character_id = -1;
   std::string_view current_commander_unavailable_reason = "army_not_read";
+  ArmyCurrentMovementSpeedSnapshot current_movement_speed;
   bool candidate_collection_complete = false;
   std::int32_t candidate_source_count = 0;
   std::vector<CommanderCandidateSnapshot> candidates;
@@ -49,6 +82,7 @@ struct ArmyCommanderCandidatesSnapshot {
 enum class CommanderCandidatesReadResult { unavailable, available, partial };
 
 struct CommanderBindings {
+  using MovementRateReader = std::int64_t *(*)(void *, std::int64_t *);
   bool enabled = false;
   ck3_12002::ArmyBindings armies{};
   void **character_storage_slot = nullptr;
@@ -60,6 +94,9 @@ struct CommanderBindings {
   void *(*get_army_commander)(void *) = nullptr;
   void *(*get_character_modifier_aggregator)(void *) = nullptr;
   std::int64_t *(*read_character_modifier)(void *, std::int64_t *, std::int32_t) = nullptr;
+  MovementRateReader read_unit_land_movement_rate = nullptr;
+  MovementRateReader read_unit_naval_movement_rate = nullptr;
+  MovementRateReader read_unit_current_edge_movement_rate = nullptr;
 };
 
 CommanderBindings BindCommanderImage(

@@ -3,6 +3,8 @@
 #include "xar_bridge/game_contract.hpp"
 
 #include <cstddef>
+#include <cstdint>
+#include <limits>
 #include <string>
 #include <string_view>
 
@@ -26,6 +28,20 @@ inline void AppendJsonString(std::string &result, std::string_view value) {
     }
   }
   result += '"';
+}
+
+inline void AppendNullableString(std::string &result, std::string_view value) {
+  if (value.empty()) {
+    result += "null";
+  } else {
+    AppendJsonString(result, value);
+  }
+}
+
+inline void AppendDatabaseId(std::string &result, std::uint32_t value) {
+  result += value == std::numeric_limits<std::uint32_t>::max()
+                ? "null"
+                : std::to_string(value);
 }
 
 inline void AppendSide(
@@ -52,17 +68,68 @@ inline void AppendSide(
   result += '}';
 }
 
+inline void AppendReligionSource(
+    std::string &result,
+    const xar::game::ContextualAdvantageReligionSourceSnapshot &source) {
+  result += "{\"side_index\":" + std::to_string(source.side_index);
+  result += ",\"primary_public_cunit_id\":" +
+            std::to_string(source.primary_public_cunit_id);
+  result += ",\"owner_character_id\":" +
+            std::to_string(source.owner_character_id);
+  result += ",\"target_rite_id\":";
+  AppendDatabaseId(result, source.target_rite_id);
+  result += ",\"target_faith_id\":";
+  AppendDatabaseId(result, source.target_faith_id);
+  result += ",\"target_main_rite_id\":";
+  AppendDatabaseId(result, source.target_main_rite_id);
+  result += ",\"owner_rite_id\":";
+  AppendDatabaseId(result, source.owner_rite_id);
+  result += ",\"owner_faith_id\":";
+  AppendDatabaseId(result, source.owner_faith_id);
+  result += ",\"owner_rite_observed\":";
+  result += source.owner_rite_observed ? "true" : "false";
+  result += ",\"target_faith_unreformed\":";
+  result += source.target_faith_unreformed ? "true" : "false";
+  result += ",\"owner_faith_matches_target\":";
+  result += source.owner_faith_matches_target.has_value()
+                ? (*source.owner_faith_matches_target ? "true" : "false")
+                : "null";
+  result += ",\"selected\":";
+  result += source.selected ? "true" : "false";
+  result += ",\"applied\":";
+  result += source.applied ? "true" : "false";
+  result += ",\"source_key\":";
+  AppendNullableString(result, source.source_key);
+  result += ",\"effect_advantage_points\":";
+  result += source.selected ? std::to_string(source.effect_advantage_points)
+                            : "null";
+  result += ",\"scale_raw\":" + std::to_string(source.scale_raw);
+  result += ",\"signed_contribution_raw\":" +
+            std::to_string(source.signed_contribution_raw);
+  result += ",\"accumulator_before_raw\":" +
+            std::to_string(source.accumulator_before_raw);
+  result += ",\"accumulator_after_raw\":" +
+            std::to_string(source.accumulator_after_raw);
+  result += ",\"append_order\":" + std::to_string(source.append_order);
+  result += ",\"skip_reason\":";
+  AppendNullableString(result, source.skip_reason);
+  result += '}';
+}
+
 }  // namespace contextual_advantage_v1_detail
 
-// Pure typed serialization for the narrow, synthetic nonreligious context.
-// The v2 caller controls optional presence with snapshot.attempted; availability
-// here belongs only to this fragment and cannot grant full encounter readiness.
+// Typed synthetic constructor context. A religion attempt publishes schema 2
+// even when unavailable; neither revision grants full encounter readiness.
 inline std::string SerializeContextualAdvantageV1(
     const xar::game::ContextualAdvantageSnapshot &snapshot) {
-  std::string result = "{\"schema_version\":1,\"status\":";
+  const bool religious = snapshot.religion_constructor_attempted;
+  std::string result = religious ? "{\"schema_version\":2,\"status\":"
+                                 : "{\"schema_version\":1,\"status\":";
   result += snapshot.available ? "\"available\"" : "\"unavailable\"";
-  result += ",\"scope\":\"hypothetical_nonreligious_constructor_context\","
-            "\"scale\":100000,\"target_province_id\":";
+  result += religious
+                ? ",\"scope\":\"hypothetical_constructor_context\","
+                : ",\"scope\":\"hypothetical_nonreligious_constructor_context\",";
+  result += "\"scale\":100000,\"target_province_id\":";
   result += std::to_string(snapshot.target_province_id);
   result += ",\"sides\":";
   if (snapshot.available) {
@@ -83,11 +150,32 @@ inline std::string SerializeContextualAdvantageV1(
               "\"synthetic_zero_roll_total_raw\":null,"
               "\"synthetic_helper_total_match\":null";
   }
+  if (religious) {
+    result += ",\"religion_constructor_sources_ready\":";
+    result += snapshot.religion_constructor_sources_ready ? "true" : "false";
+    result += ",\"base_constructor_accumulator_raw\":";
+    if (snapshot.available) {
+      result += std::to_string(snapshot.base_constructor_accumulator_raw);
+      result += ",\"religion_constructor_sources\":[";
+      for (std::size_t index = 0;
+           index < snapshot.religion_constructor_sources.size(); ++index) {
+        if (index != 0) result += ',';
+        contextual_advantage_v1_detail::AppendReligionSource(
+            result, snapshot.religion_constructor_sources[index]);
+      }
+      result += ']';
+    } else {
+      result += "null,\"religion_constructor_sources\":null";
+    }
+  }
   result += ",\"partial_context_observation_ready\":";
   result += snapshot.available ? "true" : "false";
   result += ",\"complete_encounter_advantage_ready\":false,"
-            "\"missing_domains\":[\"religion_constructor_sources\"],"
-            "\"unavailable_reason\":";
+            "\"missing_domains\":";
+  result += religious && snapshot.religion_constructor_sources_ready
+                ? "[]"
+                : "[\"religion_constructor_sources\"]";
+  result += ",\"unavailable_reason\":";
   if (snapshot.available) {
     result += "null";
   } else {

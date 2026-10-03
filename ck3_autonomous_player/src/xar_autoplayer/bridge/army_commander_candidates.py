@@ -54,7 +54,7 @@ def normalize_army_commander_candidates_v1(
     expected_snapshot_revision: int,
     expected_date_raw: int,
 ) -> dict[str, object]:
-    """Keep native eligibility and quality observations distinct."""
+    """Keep native eligibility, quality and selected-unit speed reads distinct."""
     if not isinstance(value, dict):
         raise ValueError("native army_commander_candidates must be an object")
     if (
@@ -130,7 +130,138 @@ def normalize_army_commander_candidates_v1(
         _reason(row.get("unavailable_reason"), "candidate.unavailable_reason")
         copied_candidates.append({**row, "siege_phase_time_modifier_raw": phase_raw})
     _reason(value.get("unavailable_reason"), "unavailable_reason")
-    return {**value, "current_commander": dict(current), "candidates": copied_candidates}
+    normalized = {
+        **value, "current_commander": dict(current), "candidates": copied_candidates
+    }
+    # Older frozen readers have no selected-unit speed block. Preserve that
+    # absence rather than manufacture zero rates or commander-derived speeds.
+    if "current_movement_speed" in value:
+        normalized["current_movement_speed"] = _normalize_current_movement_speed(
+            value["current_movement_speed"],
+            expected_army_id=expected_army_id,
+            expected_native_carmy_id=value.get("native_carmy_id"),
+            expected_owner_character_id=value.get("owner_character_id"),
+            expected_current_commander=current,
+            expected_snapshot_revision=expected_snapshot_revision,
+            expected_date_raw=expected_date_raw,
+        )
+    return normalized
+
+
+def _normalize_current_movement_speed(
+    value: object,
+    *,
+    expected_army_id: int,
+    expected_native_carmy_id: object,
+    expected_owner_character_id: object,
+    expected_current_commander: dict[str, object],
+    expected_snapshot_revision: int,
+    expected_date_raw: int,
+) -> dict[str, object] | None:
+    """Retain independent native total rates for the selected current CUnit."""
+    if value is None:
+        return None
+    if not isinstance(value, dict):
+        raise ValueError("native current_movement_speed must be an object or null")
+    if (
+        value.get("schema") != "ck3_12003_army_current_movement_speed_v1"
+        or value.get("source") != "native_selected_cunit_movement_rates"
+        or type(value.get("snapshot_revision")) is not int
+        or value.get("snapshot_revision") != expected_snapshot_revision
+        or type(value.get("date_raw")) is not int
+        or value.get("date_raw") != expected_date_raw
+        or type(value.get("context_observable")) is not bool
+    ):
+        raise ValueError("native current_movement_speed frame/source is malformed")
+    context_observable = value["context_observable"]
+    identity_fields = (
+        "public_cunit_id", "native_carmy_id", "owner_character_id",
+        "current_commander_character_id",
+    )
+    for name in identity_fields:
+        _optional_id(value.get(name), f"current_movement_speed.{name}")
+    for name in ("current_province_id", "move_target_province_id"):
+        amount = value.get(name)
+        if amount is not None and (
+            type(amount) is not int or not 1 <= amount <= 2**31 - 1
+        ):
+            raise ValueError(f"current_movement_speed.{name} must be a ProvinceID or null")
+    count = value.get("route_source_count")
+    if count is not None and (
+        type(count) is not int or not 0 <= count <= 2**31 - 1
+    ):
+        raise ValueError("current_movement_speed.route_source_count must be non-negative or null")
+    if value.get("route_read_status") not in {
+        "not_attempted", "complete_empty", "complete_nonempty", "target_only",
+        "invalid_header", "unresolved_entry",
+    }:
+        raise ValueError("native current_movement_speed route_read_status is malformed")
+    if context_observable:
+        if (
+            value.get("public_cunit_id") != public_cunit_id(expected_army_id, "army_id")
+            or value.get("native_carmy_id") is None
+            or value.get("owner_character_id") is None
+            or expected_native_carmy_id is not None
+            and value.get("native_carmy_id") != expected_native_carmy_id
+            or expected_owner_character_id is not None
+            and value.get("owner_character_id") != expected_owner_character_id
+        ):
+            raise ValueError("native current_movement_speed selected-unit identity disagrees")
+        if (
+            expected_current_commander.get("status") in {"available", "absent"}
+            and value.get("current_commander_character_id")
+            != expected_current_commander.get("character_id")
+        ):
+            raise ValueError("native current_movement_speed current commander disagrees")
+        state_code = value.get("army_state_code")
+        if (
+            type(state_code) is not int or not -(2**31) <= state_code <= 2**31 - 1
+            or not isinstance(value.get("army_state"), str)
+            or type(value.get("in_combat")) is not bool
+            or type(value.get("retreating")) is not bool
+        ):
+            raise ValueError("native current_movement_speed army state is malformed")
+    elif any(value.get(name) is not None for name in (
+        *identity_fields, "current_province_id", "move_target_province_id",
+        "route_source_count", "army_state_code", "army_state", "in_combat",
+        "retreating",
+    )):
+        raise ValueError("unavailable current_movement_speed context must retain null fields")
+    normalized = dict(value)
+    for name, getter in (
+        ("land", "0x24AA940"),
+        ("naval", "0x24AAC00"),
+        ("current_edge", "0x24AB5C0"),
+    ):
+        rate = value.get(name)
+        if not isinstance(rate, dict):
+            raise ValueError(f"native current_movement_speed.{name} must be an object")
+        status = rate.get("status")
+        allowed = {"available", "unavailable"}
+        if name == "current_edge":
+            allowed.add("not_applicable")
+        if (
+            status not in allowed
+            or type(rate.get("scale")) is not int
+            or rate.get("scale") != 100000
+            or rate.get("native_getter_rva") != getter
+        ):
+            raise ValueError(f"native current_movement_speed.{name} status/scale/source is malformed")
+        raw = rate.get("raw")
+        if (
+            status == "available"
+            and (type(raw) is not int or not -(2**63) <= raw <= 2**63 - 1)
+            or status != "available" and raw is not None
+        ):
+            raise ValueError(f"native current_movement_speed.{name}.raw must match its native status")
+        _reason(rate.get("unavailable_reason"), f"current_movement_speed.{name}.unavailable_reason")
+        if status == "not_applicable" and (
+            value.get("route_read_status") != "complete_empty"
+            or rate.get("unavailable_reason") != "empty_route"
+        ):
+            raise ValueError("native current edge is not applicable only for an observed empty route")
+        normalized[name] = dict(rate)
+    return normalized
 
 
 def _optional_id(value: object, name: str) -> int | None:

@@ -32,6 +32,78 @@ std::string NullableReason(std::string_view value) {
   return value.empty() ? "null" : Quote(value);
 }
 
+std::string NullableInteger(const std::optional<std::int32_t> &value) {
+  return value ? std::to_string(*value) : "null";
+}
+
+std::string_view RouteReadStatus(game::ArmyRouteReadStatus value) noexcept {
+  switch (value) {
+  case game::ArmyRouteReadStatus::not_attempted: return "not_attempted";
+  case game::ArmyRouteReadStatus::complete_empty: return "complete_empty";
+  case game::ArmyRouteReadStatus::complete_nonempty: return "complete_nonempty";
+  case game::ArmyRouteReadStatus::target_only: return "target_only";
+  case game::ArmyRouteReadStatus::invalid_header: return "invalid_header";
+  case game::ArmyRouteReadStatus::unresolved_entry: return "unresolved_entry";
+  }
+  return "not_attempted";
+}
+
+std::string SerializeMovementRate(const NativeMovementRateSnapshot &rate,
+                                  std::string_view native_getter_rva) {
+  return "{\"status\":" + Quote(rate.status) +
+      ",\"raw\":" +
+      (rate.status == "available" && rate.raw
+           ? std::to_string(*rate.raw) : std::string("null")) +
+      ",\"scale\":" + std::to_string(rate.scale) +
+      ",\"unavailable_reason\":" + NullableReason(rate.unavailable_reason) +
+      ",\"native_getter_rva\":" + Quote(native_getter_rva) + '}';
+}
+
+std::string SerializeCurrentMovementSpeed(
+    const ArmyCurrentMovementSpeedSnapshot &movement,
+    std::uint64_t snapshot_revision, std::int32_t date_raw) {
+  const bool observed = movement.context_observable;
+  return "{\"schema\":\"ck3_12003_army_current_movement_speed_v1\","
+      "\"source\":\"native_selected_cunit_movement_rates\","
+      "\"context_observable\":" + std::string(observed ? "true" : "false") +
+      ",\"snapshot_revision\":" + std::to_string(snapshot_revision) +
+      ",\"date_raw\":" + std::to_string(date_raw) +
+      ",\"public_cunit_id\":" +
+      (observed ? NullableId(movement.public_cunit_id) : std::string("null")) +
+      ",\"native_carmy_id\":" +
+      (observed ? NullableId(movement.native_carmy_id) : std::string("null")) +
+      ",\"owner_character_id\":" +
+      (observed ? NullableId(movement.owner_character_id) : std::string("null")) +
+      ",\"current_commander_character_id\":" +
+      (observed ? NullableId(movement.current_commander_character_id)
+                : std::string("null")) +
+      ",\"current_province_id\":" +
+      (observed ? NullableInteger(movement.current_province_id)
+                : std::string("null")) +
+      ",\"move_target_province_id\":" +
+      (observed ? NullableInteger(movement.move_target_province_id)
+                : std::string("null")) +
+      ",\"route_source_count\":" +
+      (observed ? NullableInteger(movement.route_source_count)
+                : std::string("null")) +
+      ",\"army_state_code\":" +
+      (observed ? std::to_string(movement.army_state_code)
+                : std::string("null")) +
+      ",\"army_state\":" +
+      (observed ? Quote(movement.army_state) : std::string("null")) +
+      ",\"in_combat\":" +
+      (observed ? std::string(movement.in_combat ? "true" : "false")
+                : std::string("null")) +
+      ",\"retreating\":" +
+      (observed ? std::string(movement.retreating ? "true" : "false")
+                : std::string("null")) +
+      ",\"route_read_status\":" + Quote(RouteReadStatus(movement.route_read_status)) +
+      ",\"land\":" + SerializeMovementRate(movement.land, "0x24AA940") +
+      ",\"naval\":" + SerializeMovementRate(movement.naval, "0x24AAC00") +
+      ",\"current_edge\":" +
+      SerializeMovementRate(movement.current_edge, "0x24AB5C0") + '}';
+}
+
 std::string_view ReadStatus(CommanderCandidatesReadResult value) noexcept {
   switch (value) {
   case CommanderCandidatesReadResult::available: return "available";
@@ -93,7 +165,10 @@ std::string SerializeArmyCommanderCandidates(
       NullableId(observation.current_commander_character_id) +
       ",\"unavailable_reason\":" +
       NullableReason(observation.current_commander_unavailable_reason) +
-      "},\"candidate_collection_complete\":" +
+      "},\"current_movement_speed\":" +
+      SerializeCurrentMovementSpeed(observation.current_movement_speed,
+                                    snapshot_revision, date_raw) +
+      ",\"candidate_collection_complete\":" +
       (observation.candidate_collection_complete ? "true" : "false") +
       ",\"candidate_source_count\":" +
       std::to_string(observation.candidate_source_count) +

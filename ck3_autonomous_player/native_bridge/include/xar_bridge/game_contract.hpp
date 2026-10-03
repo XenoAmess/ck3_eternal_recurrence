@@ -534,12 +534,44 @@ struct ContextualAdvantageSideSnapshot {
                          const ContextualAdvantageSideSnapshot &) = default;
 };
 
+// Exact constructor-faith source operands, not an actual battle result.
+struct ContextualAdvantageReligionSourceSnapshot {
+  std::int32_t side_index = -1;
+  std::int32_t primary_public_cunit_id = -1;
+  std::int32_t owner_character_id = -1;
+  std::uint32_t target_rite_id = 0xFFFFFFFFU;
+  std::uint32_t target_faith_id = 0xFFFFFFFFU;
+  std::uint32_t target_main_rite_id = 0xFFFFFFFFU;
+  std::uint32_t owner_rite_id = 0xFFFFFFFFU;
+  std::uint32_t owner_faith_id = 0xFFFFFFFFU;
+  bool owner_rite_observed = false;
+  bool target_faith_unreformed = false;
+  std::optional<bool> owner_faith_matches_target;
+  bool selected = false;
+  bool applied = false;
+  std::string source_key;
+  std::int32_t effect_advantage_points = 0;
+  std::int64_t scale_raw = 100'000;
+  std::int64_t signed_contribution_raw = 0;
+  std::int64_t accumulator_before_raw = 0;
+  std::int64_t accumulator_after_raw = 0;
+  std::int32_t append_order = -1;
+  std::string skip_reason;
+
+  friend bool operator==(const ContextualAdvantageReligionSourceSnapshot &,
+                         const ContextualAdvantageReligionSourceSnapshot &) = default;
+};
+
 struct ContextualAdvantageSnapshot {
   bool attempted = false;
   bool available = false;
   std::int32_t target_province_id = -1;
   std::vector<ContextualAdvantageSideSnapshot> sides;
   std::int64_t base_nonreligious_accumulator_raw = 0;
+  bool religion_constructor_attempted = false;
+  bool religion_constructor_sources_ready = false;
+  std::int64_t base_constructor_accumulator_raw = 0;
+  std::vector<ContextualAdvantageReligionSourceSnapshot> religion_constructor_sources;
   std::int64_t synthetic_zero_roll_total_raw = 0;
   bool synthetic_helper_total_match = false;
   std::string unavailable_reason;
@@ -1804,6 +1836,7 @@ struct BattleTerminalTransitionRequestV1 {
   std::int32_t prior_combat_id = -1;
   std::int32_t subject_public_cunit_id = -1;
   std::optional<std::uint64_t> after_terminal_sequence;
+  std::vector<std::int32_t> character_ids;
 
   friend bool operator==(const BattleTerminalTransitionRequestV1 &,
                          const BattleTerminalTransitionRequestV1 &) =
@@ -1947,6 +1980,7 @@ struct BattleTerminalCharacterCustodySnapshotV1 {
   std::int32_t character_id = -1;
   BattleTerminalCustodyStatusV1 status = BattleTerminalCustodyStatusV1::unavailable;
   std::optional<std::int32_t> actual_jailer_character_id;
+  std::optional<bool> alive;
   friend bool operator==(const BattleTerminalCharacterCustodySnapshotV1 &,
                          const BattleTerminalCharacterCustodySnapshotV1 &) = default;
 };
@@ -2047,6 +2081,8 @@ struct BattleTerminalTransitionSnapshotV1 {
   BattleTerminalRemovalSnapshotV1 removal;
   BattleTerminalSubjectSnapshotV1 subject;
   BattleTerminalSuccessorSnapshotV1 successor;
+  std::optional<std::vector<BattleTerminalCharacterCustodySnapshotV1>>
+      character_observations;
 
   friend bool operator==(const BattleTerminalTransitionSnapshotV1 &,
                          const BattleTerminalTransitionSnapshotV1 &) =

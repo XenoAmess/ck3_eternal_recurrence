@@ -12,6 +12,7 @@
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 #include "xar_bridge/ck3_12003_default_raise_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_mercenary_mailbox.hpp"
+#include "xar_bridge/ck3_12003_player_mercenary_hire_mailbox.hpp"
 #include "xar_bridge/ck3_12002_lifestyle.hpp"
 #include "xar_bridge/ck3_12002_family.hpp"
 #include "xar_bridge/ck3_12002_family_projection.hpp"
@@ -10512,6 +10513,7 @@ public:
           &xar::ck3_12003::ExecuteArmyCommanderAssignmentMailbox;
       xar::ck3_12003::RegisterPlayerDefaultRaiseMailboxExecutorV1(environment);
       xar::ck3_12003::RegisterPlayerMercenaryMailboxExecutorV1(environment);
+      xar::ck3_12003::RegisterPlayerMercenaryHireMailboxExecutorV1(environment);
 #if defined(XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1)
       environment.permitted_executor_quattuorquadragintary =
           &xar::ck3_11906::ExecuteCurrentTimelineBlockerContextMailboxQueryV1;
@@ -11122,6 +11124,7 @@ struct WorkerState {
   std::uint64_t army_commander_candidates_query_sequence = 0;
   std::uint64_t player_default_raise_query_sequence = 0;
   std::uint64_t player_mercenary_query_sequence = 0;
+  std::uint64_t player_mercenary_hire_command_sequence = 0;
   std::uint64_t army_commander_assignment_command_sequence = 0;
   std::uint64_t province_local_siege_query_sequence = 0;
   std::uint64_t combat_inputs_query_sequence = 0;
@@ -12205,6 +12208,72 @@ std::string RunPlayerMercenaryContextQuery12003(
       query.envelope.expected_snapshot_revision);
 }
 
+std::string RunPlayerMercenaryHire12003(
+    const xar::game::GameAdapter &game, WorkerState &state,
+    std::string_view request_id, std::string_view step,
+    std::string_view payload) {
+  xar::ck3_12003::PlayerMercenaryHireMailboxContextV1 action{};
+  action.envelope.game = &xar::ck3_12002::NativeAdapter12002(game);
+  action.envelope.mailbox = &g_main_thread_query_mailbox_v1;
+  action.envelope.typed_context = &action;
+  xar::ck3_12003::MercenaryHireRequestV1 request{};
+  if (!xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
+      !xar::ck3_12003::ParseMercenaryHireRequestV1(step, payload, request)) {
+    return CommandResultFrame(request_id, step, false,
+                              "mercenary hire request is malformed or unsupported");
+  }
+  action.company_id = request.company_id;
+  action.envelope.expected_snapshot_revision = request.expected_revision;
+  if (request.expected_revision != state.state_revision ||
+      state.state_revision == 0 || !state.previous_snapshot.has_value() ||
+      !xar::game::ReadSnapshot(game, action.envelope.expected_snapshot) ||
+      action.envelope.expected_snapshot != *state.previous_snapshot) {
+    return CommandResultFrame(request_id, step, false, "state_changed");
+  }
+  const auto &snapshot = action.envelope.expected_snapshot;
+  if (!snapshot.paused) {
+    return CommandResultFrame(request_id, step, false, "requires_paused");
+  }
+  if (!snapshot.map_ready || !snapshot.has_played_character ||
+      !snapshot.played_character_alive) {
+    return CommandResultFrame(request_id, step, false, "player_map_not_ready");
+  }
+  if (!xar::ck3_12003::BindPlayerMercenaryHireMailboxImageV1(action,
+          reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+          game.descriptor())) {
+    return CommandResultFrame(request_id, step, false,
+                              "mercenary hire image bindings unavailable");
+  }
+  const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,
+      &xar::ck3_12003::ExecutePlayerMercenaryHireMailboxV1,
+      &action.envelope, action.envelope.ticket);
+  if (submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+    return CommandResultFrame(request_id, step, false,
+        "application-main mercenary hire executor is unavailable or busy");
+  }
+  auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, action.envelope.ticket, 30'000);
+  while (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
+                     timeout_executor_already_running) {
+    wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1, action.envelope.ticket, 2'000);
+  }
+  const bool completed =
+      wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
+      action.completed;
+  const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, action.envelope.ticket);
+  if (reclaimed != xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed ||
+      !completed) {
+    return CommandResultFrame(request_id, step, false,
+        "mercenary hire execution unresolved; query current company employer and armies");
+  }
+  return xar::ck3_12003::SerializeMercenaryHireResultV1(action.observation,
+      request_id, ++state.player_mercenary_hire_command_sequence,
+      action.envelope.expected_snapshot_revision, snapshot.date_raw);
+}
+
 std::string RunTitleHolderQueryV1(
     const xar::game::GameAdapter &game, WorkerState &state,
     std::string_view request_id, std::string_view step,
@@ -12769,6 +12838,12 @@ void RunConnectedSession(
         if (!early_step_dispatched &&
             step == xar::ck3_12003::mercenary::kPlayerMercenaryContextStep12003) {
           connected = write_frame(pipe, RunPlayerMercenaryContextQuery12003(
+              game, state, request_id, step, incoming.payload));
+          early_step_dispatched = true;
+        }
+        if (!early_step_dispatched &&
+            step == xar::ck3_12003::kMercenaryHireStepV1) {
+          connected = write_frame(pipe, RunPlayerMercenaryHire12003(
               game, state, request_id, step, incoming.payload));
           early_step_dispatched = true;
         }

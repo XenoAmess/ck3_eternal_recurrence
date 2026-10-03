@@ -452,10 +452,11 @@ def _ck3_query_battle_transition_v1(
 
 def _ck3_query_battle_terminal_transition_v1(
     service: GameplayBridgeService,
-    prior_combat_id: int,
-    subject_public_cunit_id: PublicCUnitId,
+    prior_combat_id: int | None,
+    subject_public_cunit_id: PublicCUnitId | None,
     expected_revision: int,
     after_terminal_sequence: int | None = None,
+    character_ids: list[int] | None = None,
 ) -> dict[str, object]:
     """Observe a journal-backed terminal event and exact successor state."""
     return service.query_battle_terminal_transition_v1(
@@ -463,6 +464,7 @@ def _ck3_query_battle_terminal_transition_v1(
         subject_public_cunit_id,
         expected_revision=expected_revision,
         after_terminal_sequence=after_terminal_sequence,
+        character_ids=character_ids,
     )
 
 
@@ -2469,6 +2471,15 @@ def create_server(
         """Read the player's final native default raise legality, including during war."""
         return service.query_player_default_raise_v1(expected_revision=expected_revision)
 
+    @server.tool()
+    def ck3_hire_mercenary_v1(
+        company_id: int, expected_revision: int,
+    ) -> dict[str, object]:
+        """Submit one normal mercenary hire; native ACK awaits independent after-state."""
+        return service.hire_mercenary_v1(
+            company_id=company_id, expected_revision=expected_revision,
+        )
+
     @server.tool(annotations=read_only_tool)
     def ck3_query_player_mercenary_context_v1(
         expected_revision: int,
@@ -2564,18 +2575,20 @@ def create_server(
 
     @server.tool()
     def ck3_query_battle_terminal_transition_v1(
-        prior_combat_id: int,
-        subject_public_cunit_id: PublicCUnitId,
+        prior_combat_id: int | None,
+        subject_public_cunit_id: PublicCUnitId | None,
         expected_revision: int,
         after_terminal_sequence: int | None = None,
+        character_ids: list[int] | None = None,
     ) -> dict[str, object]:
-        """Read terminal history, removal, subject and successor while paused."""
+        """Read terminal history and requested current characters; null IDs omit battle context."""
         return _ck3_query_battle_terminal_transition_v1(
             service,
             prior_combat_id,
             subject_public_cunit_id,
             expected_revision,
             after_terminal_sequence,
+            character_ids,
         )
 
     @server.tool()

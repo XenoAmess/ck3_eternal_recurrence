@@ -1,5 +1,32 @@
 # CK3 自动游玩智能体进度中心
 
+## 2026-10-04T01:06:20.190420+08:00 最新状态：123成军、h5534正常保存、R23已关闭
+
+当前累计 **4032/36524**、恢复 **879**、10月3日正式冻结 **+777**、10月4日 **+7**，G2 **5/8**、NW **2/4**、自然继承 **0**；七日预算就是同批7个正常保存日，未再加7。最新正常锚点 **h5534 / raw53241096 / 91825231B / SHA-256 `22e9028da99a4f77ba5b5485b912065f38aa9761fc9100a1adf63d4dd238f028`**，独立查询与新保存新增 **0日**。
+
+SDK99980 **closed / exit0 / GREEN** 已fresh确认：新军 **167772189** 在 **2618 / regular1**，**123/123 soldiers、1 regiment、days=null/not_gathering、ready=true**；主军 **83886367** 在 **8754 / moving**，**2259/2460 soldiers、39 regiments、Supply120/300、本帧attrition0、月供变化0**，仍八跳向2640。此前同一路径的 **一次defaultRaise→0兵gathering→独立7天ETA→真实7日循环→独立123成军** 已闭合为限定 **bounded production-live loop**。初raise为h5496/raw53240904，先前首日到53240928，本日7日到53241096；from-raise总8日，本日仍只+7，首日不重加。该信用不扩为雇佣、有效解围援军、2640到达、玩家battle、战争complete或自然继承。h5532原末snapshot没发布strength的null仍是当时事实，fresh查询已经补足当前兵力；不继续以它描述current未知。
+
+**当前CK3已正常关闭、运行中SDK为0，旧PID77476不再存活。** Root在 **2026-10-04 00:53:37+08:00** 正常stop R0023，managed57163 **closed/exit0**，并在 **00:55:01+08:00** retired为 **completed-red**：原Sway004实际RED保留，同PIDreadonly recovery GREEN、merc/gather及7日各自GREEN分开记账。停止/回收证据为 `runtime-preparation/v47/ROOT-RETIRE-R23-ARGV.json` 与 `retire-r23-result`。v47批次部署准备中；本包没有新的native组合full/cold/live信用。独立fresh strength唯一消费：[ROOT-FINAL-DELIVERY](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-reinforcement-raise/runtime-v46-gathering-finished-consumption/ROOT-FINAL-DELIVERY.json)，SHA-256 `dddda5bd5a63553cc15b5c0e04d168dff5e4403415576fe158692dc7dba5424e`。
+
+主军仍未到2640，目标未被敌占领，敌围城末ETA10天；原Sway仍同FullID134217986/gen8/target34333、CanContinue/statuscontinue、terminalfalse，未重Start。下一P0转为结合**已fresh成军的123军队**与主军/围城/合法候选决定军务、完成既有typed hire静态整合与新exact部署/独立动作验收。已完成的兵力查询不再列为待执行；新merc雇佣、支付、接战和解围仍待真实后态。Root48-source LF包已实际apply/check GREEN，等待与本六报告共同publish后组合fullbuild；此前CRLF applycheck失败未写共享树，EOL修复后的成功单独保留，不外推native部署。以下h5532阶段记录及旧runtime身份保留为各自采集时现场。
+
+## 当前截点：v46 七日保存闭环，4032 日（2026-10-04T00:53:20.825759+08:00 实际补录）
+
+累计 **4032/36524 保存日、resume +879、10-03已收口 +777、10-04 +7**，G2 **5/8**、NW **2/4**、自然继承 **0**。原Robert29829/ordinary episode `native-29829-2bc2d599f7f9`、xar_off保持。SDK53917正常关闭 **exit0/GREEN**，本次七个bounded日循环、七个正常保存、168 raw小时：**4025→4032**，raw53240928→**53241096**；预算准备的7日就是本次已执行的7日，不能再加另一组7日。最新正常pair **h5532/raw53241096/91,825,231B/SHA-256 e7b610e633f3a5c47a3bcfe3386adee7ec6b83db220edf191ab6b6cfec750783**，native35/public30。[七日sole消费收据](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/relief-v46/seven-day-consumption/ROOT-DELIVERY.json)。
+
+主力 **83886367** 末帧位于 **8754**、state7/moving、target2640，剩完整八跳 `[2613,8752,2628,2626,2627,2633,2634,2640]`，无combat/retreat。2640仍未occupied，敌Siege318767158继续，work **60892200/62500000**、remaining1607800、ETA **10日**、2508兵、breach2。**尚未到达、接战或解围**，七日仅授既定行军限定 `production-live loop`。最近主军arrival ETA79日来自before-day7 raw53241072，较末帧老24h，不能造raw53241096当前ETA；末包未提供独立main strength，不把旧2259写成末帧数。新军 **167772189** 同末帧owner29829/current2618、**regular1/controllable=true**；targetnull且targetobservablefalse、route complete_empty/sourcecount0/[]，无combat/retreat。该末帧soldiers=null是未提供strength查询，不能写合法0兵；max/regiments/current内部CArmy/gatherdays/ready尚未发布，83886088仅历史mapping，不写当前仍0兵gathering。[军务末帧compact](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/relief-v46/seven-day-consumption/COMPACT-TERMINAL-STATE.json)。
+
+原Sway只读恢复独立入账：SDK92861正常 **exit0/GREEN**，FullID134217986/gen8、target34333、exact join/present、CanContinue、statuscontinue、terminalfalse，**Start0/新增日0**。其正常历史pair **h5510/raw53240928/91,443,885B/SHA-256 c3005d3b1305cfb29b1efd8f9ac48eb20e1d8c5dbbccbe8ba6285360827237cc** 保留，当前save仍为上方h5532。原completion004 RED保留；error1相关最小修复 **`f4cdcb66b96e71f2b9f966e40f33ddede3b9cacd`** 已发布，runtime Python **g50** 与native **g49** 分列。本次恢复是实际查询primitive，未授Sway完整终态、专属收益或新全局信用。[修复发布](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/sway-v46-completion-red/ROOT-ERROR-TEXT-ADOPTED-PUBLISHED.json)、[独立恢复收据](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/sway-v46-original-readonly-recovery/ROOT-DELIVERY.json)。
+
+运行native为v46/R23、PID77476、frozen **Z:/g49**／source **`9772958a55e5182ef78562c74e43d72ba3f2302e`**，paused/minimized、无窗口输入；其四目标strict64jobs与exact-sourceCI **37134271120 GREEN** 保留独立构建信用。10-03正式收口/10-04早会/W40/交接四文件已实际发布 **`5b07786f56950b95959b3520c46cd21ac77552e1`**，不把该报告commit当DLL身份。[10-03已收口日报](daily/2026-10-03.md)、[10-04当前日报](daily/2026-10-04.md)、[10-04真实早会](meetings/daily/2026-10-04.md)。
+
+候选新增包按部署边界分列：**c456** 的v2增量目前仅部分 `static-ready`，尚未full组合构建/部署；mercenary typed hire **24路径**、native fixture65/registered31检查及4ownerTU strict GREEN，仍外部整合、未full部署或实机hire；faith **8路径/4native+4registered GREEN** 仅外部集成 `static-ready`，speed/character待交。以上不能授雇佣、支付、生成军、信仰变化或新增玩法收益。当前0hire信用，后续用原生树及真实资格/费用/资源决定已授权增援动作，再按实际material和normal save记账。
+
+此前Robert单军统帅、县task_conversion派遣和2604单holding收复各自有限loop保持；县尚未改宗，2640仍未解围，玩家battle/战争胜利/终战与自然继承仍待实际结果。旧004 RED、v45 modal RED、defaultRaise012登记RED、v42/v44 C1061、v39请求7实进13和v41首44保存日仅43whole OODA等全部保留。下方所有旧“当前”段仅代表各自历史时刻，最新状态以上节为准。
+
+当前动态入口：[路线图](goal-and-roadmap.md)、[单世阻点账本](one-generation-blocker-ledger.md)、[W40滚动周报](weekly/2026-W40.md)。新的报告字段由各sole consumer与本次进度lane合并，不重复SDK或旧矩阵。
+
+
 ## 2026-10-03T23:15:48+08:00 当前 v45 实机截止
 
 累计4025/36524、resume872、10月3日777，最新正常h5504/raw53240928。v45 R22/PID28944最小化cold、defaultRaise权限/预备人数和新增军队独立读回、living retention及无阻塞modal读取已实测；正常一日后新军仍0兵集结。主力仍2616→2640，无接战抵达解围。自然0/G2 5/8/NW 2/4保持。原生DLL7a/g47与Python补线451dde/g48分开绑定，四目标strict64jobs和exact-sourceCI GREEN。详见[10月3日日报](daily/2026-10-03.md)及[实机汇总](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v45/ROOT-ACTUAL-MILESTONE-H5504.json)；下面前序v43/v45pending段保留当时事实。

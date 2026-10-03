@@ -677,6 +677,28 @@ bool ReinforcementSample(const BattleBindings &b, const game::Snapshot &scope,
   out.battle_reinforcement_assignment_ready = true;
   return true;
 }
+game::BattleTerminalCharacterCustodySnapshotV1 CharacterObservationSample(
+    const BattleBindings &b, std::int32_t id) noexcept {
+  game::BattleTerminalCharacterCustodySnapshotV1 observed{};
+  observed.character_id = id;
+  void *const character = Resolve(b.character_storage_slot, id, 0x18);
+  if (!character) return observed;
+  // Exact .3 native 0x28EE9BA compares this eight-byte death-data pointer.
+  // Missing strict identity remains null; nonnull is an observed dead object.
+  observed.alive = At<void *>(character, kCharacterDeathDataOffset) == nullptr;
+  void *const extension = At<void *>(character, 0x1B0);
+  void *const relation = extension ? At<void *>(extension, 0x288) : nullptr;
+  const auto jailer = relation ? At<std::int32_t>(relation, 0) : -1;
+  if (jailer == -1) {
+    observed.status = game::BattleTerminalCustodyStatusV1::none;
+    observed.actual_jailer_character_id = -1;
+  } else if (jailer > 0 && Resolve(b.character_storage_slot, jailer, 0x18)) {
+    observed.status = game::BattleTerminalCustodyStatusV1::observed;
+    observed.actual_jailer_character_id = jailer;
+  }
+  return observed;
+}
+
 bool TerminalSample(const BattleBindings &b, const game::Snapshot &scope,
                     const game::BattleTerminalTransitionRequestV1 &r,
                     game::BattleTerminalTransitionSnapshotV1 &o) {
@@ -684,6 +706,22 @@ bool TerminalSample(const BattleBindings &b, const game::Snapshot &scope,
   o.prior_combat_id = r.prior_combat_id;
   o.subject_public_cunit_id = r.subject_public_cunit_id;
   o.prior.combat_id = r.prior_combat_id;
+  if (!r.character_ids.empty()) {
+    o.character_observations.emplace();
+    for (const auto id : r.character_ids) {
+      if (std::any_of(o.character_observations->begin(),
+                      o.character_observations->end(),
+                      [id](const auto &row) { return row.character_id == id; }))
+        continue;
+      o.character_observations->push_back(CharacterObservationSample(b, id));
+    }
+  }
+  // A character-only request explicitly has no historical Combat or CUnit.
+  if (r.prior_combat_id == -1 && r.subject_public_cunit_id == -1 &&
+      !r.character_ids.empty()) {
+    o.status = game::BattleTerminalTransitionStatusV1::available;
+    return true;
+  }
   auto j = LookupBattleTerminalJournalV1(r.prior_combat_id,
                                          r.after_terminal_sequence.value_or(0));
   o.terminal_journal.requested_after_sequence = r.after_terminal_sequence;
@@ -756,24 +794,9 @@ bool TerminalSample(const BattleBindings &b, const game::Snapshot &scope,
         add_id(row.right_character_id);
       }
       p.character_custody_in_observed_order.emplace();
-      for (const auto id : ids) {
-        game::BattleTerminalCharacterCustodySnapshotV1 custody{};
-        custody.character_id = id;
-        void *const character = Resolve(b.character_storage_slot, id, 0x18);
-        if (character) {
-          void *const extension = At<void *>(character, 0x1B0);
-          void *const relation = extension ? At<void *>(extension, 0x288) : nullptr;
-          const auto jailer = relation ? At<std::int32_t>(relation, 0) : -1;
-          if (jailer == -1) {
-            custody.status = game::BattleTerminalCustodyStatusV1::none;
-            custody.actual_jailer_character_id = -1;
-          } else if (jailer > 0 && Resolve(b.character_storage_slot, jailer, 0x18)) {
-            custody.status = game::BattleTerminalCustodyStatusV1::observed;
-            custody.actual_jailer_character_id = jailer;
-          }
-        }
-        p.character_custody_in_observed_order->push_back(std::move(custody));
-      }
+      for (const auto id : ids)
+        p.character_custody_in_observed_order->push_back(
+            CharacterObservationSample(b, id));
     }
     p.daily_guard_raw = e.daily_guard_raw;
     p.province_id = e.province_id;
@@ -1115,8 +1138,10 @@ game::BattleTerminalTransitionStatusV1 ReadBattleTerminalTransitionV1(
   o.prior_combat_id = r.prior_combat_id;
   o.subject_public_cunit_id = r.subject_public_cunit_id;
   o.observed_date_raw = s.date_raw;
-  if (!Scope(b, s) || r.prior_combat_id <= 0 ||
-      r.subject_public_cunit_id < 0) {
+  const bool character_only = r.prior_combat_id == -1 &&
+      r.subject_public_cunit_id == -1 && !r.character_ids.empty();
+  if (!Scope(b, s) || (!character_only &&
+      (r.prior_combat_id <= 0 || r.subject_public_cunit_id < 0))) {
     o.unavailable_reason =
         s.paused ? "invalid_request_or_state_changed" : "requires_paused";
     return o.status;

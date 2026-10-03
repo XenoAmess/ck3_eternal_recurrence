@@ -598,13 +598,84 @@ def normalize_combat_simulation_inputs(
     return copy.deepcopy(normalized)
 
 
+def _contextual_religion_database_id(value: object, name: str) -> int | None:
+    if value is None:
+        return None
+    if isinstance(value, bool) or not isinstance(value, int) or not 0 <= value < 2**32 - 1:
+        raise ValueError(f"native {name} must be a nullable uint32 database ID")
+    return value
+
+
+def _normalize_contextual_religion_sources(
+    value: object, *, scenario: dict[str, object], name: str
+) -> list[dict[str, object]]:
+    sources = _array(value, name)
+    if len(sources) != 2:
+        raise ValueError(f"native {name} must publish two ordered sources")
+    normalized = []
+    for index, source in enumerate(sources):
+        source_name = f"{name}[{index}]"
+        source = _exact_object(source, {
+            "side_index", "primary_public_cunit_id", "owner_character_id",
+            "target_rite_id", "target_faith_id", "target_main_rite_id",
+            "owner_rite_id", "owner_faith_id", "owner_rite_observed",
+            "target_faith_unreformed", "owner_faith_matches_target",
+            "selected", "applied", "source_key", "effect_advantage_points",
+            "scale_raw", "signed_contribution_raw", "accumulator_before_raw",
+            "accumulator_after_raw", "append_order", "skip_reason",
+        }, source_name)
+        side_index = _signed_int32(source["side_index"], f"{source_name}.side_index")
+        primary = _signed_int32(source["primary_public_cunit_id"],
+                                f"{source_name}.primary_public_cunit_id")
+        expected = scenario["attacker_army_ids" if index == 0 else "defender_army_ids"]
+        if side_index != index or primary != expected[0]:
+            raise ValueError(f"native {source_name} primary participant binding mismatch")
+        owner = _non_negative_int32_id(source["owner_character_id"],
+                                       f"{source_name}.owner_character_id")
+        ids = {key: _contextual_religion_database_id(source[key], f"{source_name}.{key}")
+               for key in ("target_rite_id", "target_faith_id", "target_main_rite_id",
+                           "owner_rite_id", "owner_faith_id")}
+        owner_observed = _strict_bool(source["owner_rite_observed"],
+                                      f"{source_name}.owner_rite_observed")
+        matches = source["owner_faith_matches_target"]
+        if owner_observed:
+            matches = _strict_bool(matches, f"{source_name}.owner_faith_matches_target")
+        elif matches is not None or ids["owner_rite_id"] is not None or ids["owner_faith_id"] is not None:
+            raise ValueError(f"native {source_name} unevaluated owner fields must be null")
+        unreformed = _strict_bool(source["target_faith_unreformed"],
+                                  f"{source_name}.target_faith_unreformed")
+        selected = _strict_bool(source["selected"], f"{source_name}.selected")
+        applied = _strict_bool(source["applied"], f"{source_name}.applied")
+        source_key = source["source_key"]
+        if source_key is not None:
+            source_key = _nonempty_string(source_key, f"{source_name}.source_key")
+        points = _conditional_signed_int32(source["effect_advantage_points"], selected,
+                                           f"{source_name}.effect_advantage_points")
+        raw = {key: _signed_int64(source[key], f"{source_name}.{key}")
+               for key in ("scale_raw", "signed_contribution_raw",
+                           "accumulator_before_raw", "accumulator_after_raw")}
+        append_order = _signed_int32(source["append_order"], f"{source_name}.append_order")
+        skip_reason = source["skip_reason"]
+        if skip_reason is not None:
+            skip_reason = _nonempty_string(skip_reason, f"{source_name}.skip_reason")
+        normalized.append({
+            "side_index": side_index, "primary_public_cunit_id": primary,
+            "owner_character_id": owner, **ids, "owner_rite_observed": owner_observed,
+            "target_faith_unreformed": unreformed, "owner_faith_matches_target": matches,
+            "selected": selected, "applied": applied, "source_key": source_key,
+            "effect_advantage_points": points, **raw, "append_order": append_order,
+            "skip_reason": skip_reason,
+        })
+    return normalized
+
 def _contextual_advantage_unavailable(
-    target_province_id: int, reason: str
+    target_province_id: int, reason: str, *, schema_version: int = 1
 ) -> dict[str, object]:
-    return {
-        "schema_version": 1,
+    result = {
+        "schema_version": schema_version,
         "status": "unavailable",
-        "scope": "hypothetical_nonreligious_constructor_context",
+        "scope": ("hypothetical_constructor_context" if schema_version == 2
+                  else "hypothetical_nonreligious_constructor_context"),
         "scale": CK3_COMBAT_FIXED_POINT_SCALE,
         "target_province_id": target_province_id,
         "sides": None,
@@ -616,6 +687,11 @@ def _contextual_advantage_unavailable(
         "missing_domains": ["religion_constructor_sources"],
         "unavailable_reason": reason,
     }
+    if schema_version == 2:
+        result.update({"religion_constructor_sources_ready": False,
+                       "base_constructor_accumulator_raw": None,
+                       "religion_constructor_sources": None})
+    return result
 
 
 def _normalize_contextual_advantage(
@@ -624,14 +700,19 @@ def _normalize_contextual_advantage(
     target_province_id: int,
     scenario: dict[str, object],
 ) -> dict[str, object]:
-    """Validate the optional synthetic nonreligious context independently.
+    """Validate either revision of the optional constructor context independently.
 
     Its failure cannot downgrade the existing v2 composition observation.  A
     malformed fragment becomes scoped unavailable; it never supplies a full
     encounter advantage or adds a required v2 input domain.
     """
     name = "combat_simulation_inputs.contextual_advantage"
+    schema_version = 2 if isinstance(value, dict) and value.get("schema_version") == 2 else 1
     try:
+        extra_keys = ({"religion_constructor_sources_ready",
+                       "base_constructor_accumulator_raw",
+                       "religion_constructor_sources"}
+                      if schema_version == 2 else set())
         row = _exact_object(
             value,
             {
@@ -642,14 +723,17 @@ def _normalize_contextual_advantage(
                 "partial_context_observation_ready",
                 "complete_encounter_advantage_ready", "missing_domains",
                 "unavailable_reason",
-            },
+            } | extra_keys,
             name,
         )
-        if _signed_int32(row["schema_version"], f"{name}.schema_version") != 1:
-            raise ValueError(f"native {name}.schema_version must be 1")
+        schema_version = _signed_int32(row["schema_version"], f"{name}.schema_version")
+        if schema_version not in (1, 2):
+            raise ValueError(f"native {name}.schema_version must be 1 or 2")
         status = _available_status(row["status"], f"{name}.status")
         available = status == "available"
-        if row["scope"] != "hypothetical_nonreligious_constructor_context":
+        scope = ("hypothetical_constructor_context" if schema_version == 2
+                 else "hypothetical_nonreligious_constructor_context")
+        if row["scope"] != scope:
             raise ValueError(f"native {name}.scope is malformed")
         scale = _signed_int32(row["scale"], f"{name}.scale")
         _fixed_scale(scale, f"{name}.scale")
@@ -668,8 +752,15 @@ def _normalize_contextual_advantage(
             f"{name}.complete_encounter_advantage_ready",
         ):
             raise ValueError(f"native {name} cannot be complete encounter ready")
-        if row["missing_domains"] != ["religion_constructor_sources"]:
-            raise ValueError(f"native {name} must preserve religion source gap")
+        religion_ready = False
+        if schema_version == 2:
+            religion_ready = _strict_bool(row["religion_constructor_sources_ready"],
+                                          f"{name}.religion_constructor_sources_ready")
+            if religion_ready is not available:
+                raise ValueError(f"native {name} religion readiness is inconsistent")
+        missing_domains = [] if religion_ready else ["religion_constructor_sources"]
+        if row["missing_domains"] != missing_domains:
+            raise ValueError(f"native {name} religion source gap is inconsistent")
         reason = _status_reason(status, row["unavailable_reason"], name)
         base = _conditional_signed_int64(
             row["base_nonreligious_accumulator_raw"], available,
@@ -679,10 +770,17 @@ def _normalize_contextual_advantage(
             row["synthetic_zero_roll_total_raw"], available,
             f"{name}.synthetic_zero_roll_total_raw",
         )
+        base_constructor = None
+        if schema_version == 2:
+            base_constructor = _conditional_signed_int64(
+                row["base_constructor_accumulator_raw"], available,
+                f"{name}.base_constructor_accumulator_raw")
         if not available:
+            if schema_version == 2 and row["religion_constructor_sources"] is not None:
+                raise ValueError(f"native unavailable {name} must null religion sources")
             if row["sides"] is not None or row["synthetic_helper_total_match"] is not None:
                 raise ValueError(f"native unavailable {name} must null context values")
-            return _contextual_advantage_unavailable(target, reason)
+            return _contextual_advantage_unavailable(target, reason, schema_version=schema_version)
         if _strict_bool(
             row["synthetic_helper_total_match"],
             f"{name}.synthetic_helper_total_match",
@@ -736,11 +834,11 @@ def _normalize_contextual_advantage(
                 "selected_commander_character_id": selected,
                 "relation_kind_raw": relation, **raw_fields,
             })
-        if total != base + normalized_sides[0]["side_total_raw"] - normalized_sides[1]["side_total_raw"]:
+        if schema_version == 1 and total != base + normalized_sides[0]["side_total_raw"] - normalized_sides[1]["side_total_raw"]:
             raise ValueError(f"native {name} synthetic partial total mismatch")
-        return {
-            "schema_version": 1, "status": "available",
-            "scope": "hypothetical_nonreligious_constructor_context",
+        result = {
+            "schema_version": schema_version, "status": "available",
+            "scope": scope,
             "scale": CK3_COMBAT_FIXED_POINT_SCALE, "target_province_id": target,
             "sides": normalized_sides,
             "base_nonreligious_accumulator_raw": base,
@@ -748,12 +846,22 @@ def _normalize_contextual_advantage(
             "synthetic_helper_total_match": True,
             "partial_context_observation_ready": True,
             "complete_encounter_advantage_ready": False,
-            "missing_domains": ["religion_constructor_sources"],
+            "missing_domains": missing_domains,
             "unavailable_reason": None,
         }
+        if schema_version == 2:
+            result.update({
+                "religion_constructor_sources_ready": religion_ready,
+                "base_constructor_accumulator_raw": base_constructor,
+                "religion_constructor_sources": _normalize_contextual_religion_sources(
+                    row["religion_constructor_sources"], scenario=scenario,
+                    name=f"{name}.religion_constructor_sources"),
+            })
+        return result
     except (ValueError, TypeError) as error:
         return _contextual_advantage_unavailable(
-            target_province_id, f"contextual_advantage_fragment_invalid: {error}"
+            target_province_id, f"contextual_advantage_fragment_invalid: {error}",
+            schema_version=schema_version,
         )
 
 def normalize_combat_simulation_inputs_v3_test_only(

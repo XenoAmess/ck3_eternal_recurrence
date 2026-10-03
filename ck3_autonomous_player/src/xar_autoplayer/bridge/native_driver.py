@@ -161,6 +161,7 @@ from .battle_terminal_transition_contract import (
     QUERY_BATTLE_TERMINAL_TRANSITION_V1_STEP_PREFIX,
     normalize_battle_terminal_transition_v1,
     parse_query_battle_terminal_transition_v1_step,
+    parse_query_battle_terminal_transition_v1_character_ids,
 )
 from .battle_reinforcement_assignment_contract import (
     QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_CAPABILITY,
@@ -9493,6 +9494,37 @@ class NativeHeadlessGameplayDriver:
             "sha256": hashlib.sha256(encoded).hexdigest(),
             "validation_state": "unvalidated", "wire_bytes_preserved": False}
 
+    def hire_mercenary_v1(
+        self, *, company_id: int, expected_revision: int,
+    ) -> dict[str, object]:
+        """Submit one normal native mercenary hire; the ACK is not an after-state."""
+        from .hire_mercenary import (
+            CAPABILITY, STEP, normalize_hire_mercenary_v1,
+            validate_hire_mercenary_request_v1,
+        )
+        validate_hire_mercenary_request_v1(company_id, expected_revision)
+        before = self.take_snapshot()
+        player = before.get("played_character")
+        if (before.get("paused") is not True or before.get("map_ready") is not True
+                or not isinstance(player, dict) or player.get("alive") is not True):
+            raise BridgeUnavailableError("mercenary hire requires a living paused player")
+        if before.get("revision") != expected_revision:
+            raise PreSubmissionRevisionMismatchError("mercenary hire source revision is stale")
+        raw = self._execute_primitive_step(
+            STEP, expected_revision=expected_revision, required_capability=CAPABILITY,
+            request_fields={"company_id": company_id},
+        )
+        try:
+            normalized = normalize_hire_mercenary_v1(
+                raw, snapshot=before, expected_company_id=company_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        return {**normalized,
+                "submitted_snapshot_id": before.get("snapshot_id"),
+                "submitted_revision": expected_revision,
+                "submitted_native_revision": before.get("native_revision")}
+
     def _execute_primitive_step(
         self,
         step: str,
@@ -13322,6 +13354,7 @@ class NativeHeadlessGameplayDriver:
                 f"malformed battle-terminal transition v1 step {step}"
             )
         prior_combat_id, subject_public_cunit_id, after_sequence = request
+        character_ids = parse_query_battle_terminal_transition_v1_character_ids(step)
         starting = self.take_snapshot()
         if starting.get("paused") is not True:
             raise BridgeUnavailableError(
@@ -13390,6 +13423,7 @@ class NativeHeadlessGameplayDriver:
                 expected_after_terminal_sequence=after_sequence,
                 expected_observed_date_raw=date_raw,
                 expected_snapshot_revision=native_revision,
+                expected_character_ids=character_ids,
             )
         except ValueError as error:
             raise BridgeUnavailableError(
@@ -13422,6 +13456,8 @@ class NativeHeadlessGameplayDriver:
             "battle_terminal_transition_ready",
             "unavailable_reason",
         )
+        if "character_observations" in normalized:
+            mirror_keys += ("character_observations",)
         return {
             **result,
             "status": normalized["status"],
@@ -27194,6 +27230,10 @@ def _action_steps(
             continue
         if capability == ASSIGN_COUNCILLOR_V1_CAPABILITY:
             advertise_assign_councillor = True
+            continue
+        if capability == "game.command.hire-mercenary-v1":
+            # This typed action requires an explicit company full ID. The
+            # bare fixed step cannot supply that payload to execute_step.
             continue
         if capability == ASSIGN_ARMY_COMMANDER_V1_CAPABILITY:
             # The typed action supplies a native-observed commander FullID;

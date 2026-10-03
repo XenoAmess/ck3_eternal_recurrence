@@ -4159,6 +4159,17 @@ class GameplayBridgeService:
                 "queried_revision": revision,
                 "queried_native_revision": snapshot.get("native_revision")}
 
+    def hire_mercenary_v1(
+        self, *, company_id: int, expected_revision: int,
+    ) -> dict[str, object]:
+        """Submit a normal native hire; observe employer, armies and payment separately."""
+        from .hire_mercenary import validate_hire_mercenary_request_v1
+        validate_hire_mercenary_request_v1(company_id, expected_revision)
+        callback = getattr(self.driver, "hire_mercenary_v1", None)
+        if not callable(callback):
+            raise UnsupportedStepError("selected backend cannot submit native mercenary hire")
+        return callback(company_id=company_id, expected_revision=expected_revision)
+
     def query_player_mercenary_context_v1(
         self, *, expected_revision: int,
     ) -> dict[str, object]:
@@ -12374,17 +12385,19 @@ class GameplayBridgeService:
 
     def query_battle_terminal_transition_v1(
         self,
-        prior_combat_id: int,
-        subject_public_cunit_id: int,
+        prior_combat_id: int | None,
+        subject_public_cunit_id: int | None,
         *,
         expected_revision: int,
         after_terminal_sequence: int | None = None,
+        character_ids: list[int] | None = None,
     ) -> dict[str, object]:
         """Read terminal history and the subject's same-frame successor state."""
         step = query_battle_terminal_transition_v1_step(
             prior_combat_id,
             subject_public_cunit_id,
             after_terminal_sequence,
+            character_ids,
         )
         snapshot = self.snapshot()
         if snapshot.get("paused") is not True:
@@ -12459,6 +12472,9 @@ class GameplayBridgeService:
             "battle_terminal_transition_ready",
             "unavailable_reason",
         }
+        frame = result.get("battle_terminal_transition")
+        if isinstance(frame, dict) and "character_observations" in frame:
+            mirror_keys.add("character_observations")
         required_result_keys = {
             "step",
             "accepted",
@@ -12502,6 +12518,7 @@ class GameplayBridgeService:
                 expected_after_terminal_sequence=after_terminal_sequence,
                 expected_observed_date_raw=date_raw,
                 expected_snapshot_revision=native_revision,
+                expected_character_ids=character_ids if character_ids is not None else [],
             )
         except ValueError as error:
             raise BridgeUnavailableError(

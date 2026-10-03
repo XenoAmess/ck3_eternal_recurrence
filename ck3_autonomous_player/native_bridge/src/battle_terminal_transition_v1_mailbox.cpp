@@ -240,13 +240,76 @@ bool ValidFullComponentIds(
                      [](std::int32_t value) { return value != -1; });
 }
 
+bool ValidCharacterObservations(
+    const std::optional<std::vector<game::BattleTerminalCharacterCustodySnapshotV1>>
+        &rows) noexcept {
+  if (!rows) return true;
+  for (const auto &row : *rows) {
+    if (row.character_id <= 0) return false;
+    switch (row.status) {
+    case game::BattleTerminalCustodyStatusV1::observed:
+      if (row.actual_jailer_character_id.value_or(-1) <= 0) return false;
+      break;
+    case game::BattleTerminalCustodyStatusV1::none:
+      if (row.actual_jailer_character_id != -1) return false;
+      break;
+    case game::BattleTerminalCustodyStatusV1::unavailable:
+      if (row.actual_jailer_character_id.has_value()) return false;
+      break;
+    default:
+      return false;
+    }
+  }
+  return true;
+}
+
+bool AppendCharacterObservations(
+    std::string &output,
+    const std::optional<std::vector<game::BattleTerminalCharacterCustodySnapshotV1>>
+        &rows) {
+  if (!ValidCharacterObservations(rows)) return false;
+  if (!rows) {
+    output += "null";
+    return true;
+  }
+  output.push_back('[');
+  bool first = true;
+  for (const auto &row : *rows) {
+    if (!first) output.push_back(',');
+    first = false;
+    output += "{\"character_id\":";
+    if (!AppendNumber(output, row.character_id)) return false;
+    output += ",\"status\":";
+    AppendJsonString(output, row.status == game::BattleTerminalCustodyStatusV1::observed
+        ? "observed" : row.status == game::BattleTerminalCustodyStatusV1::none
+        ? "none" : "unavailable");
+    output += ",\"actual_jailer_character_id\":";
+    if (!AppendOptionalNumber(output, row.actual_jailer_character_id)) return false;
+    output += ",\"alive\":";
+    AppendOptionalBool(output, row.alive);
+    output.push_back('}');
+  }
+  output.push_back(']');
+  return true;
+}
+
 bool ValidateSnapshot(
     const game::BattleTerminalTransitionSnapshotV1 &snapshot) noexcept {
-  if (snapshot.snapshot_revision == 0 || snapshot.prior_combat_id == -1 ||
-      snapshot.subject_public_cunit_id < 0 || StatusName(snapshot.status).empty()) {
-    return false;
-  }
+  if (snapshot.snapshot_revision == 0 || StatusName(snapshot.status).empty() ||
+      !ValidCharacterObservations(snapshot.character_observations)) return false;
+  const bool character_only = snapshot.prior_combat_id == -1 &&
+                              snapshot.subject_public_cunit_id == -1;
   const auto &journal = snapshot.terminal_journal;
+  if (character_only) {
+    return snapshot.status == game::BattleTerminalTransitionStatusV1::available &&
+           !snapshot.battle_terminal_transition_ready &&
+           snapshot.unavailable_reason.empty() &&
+           !journal.requested_after_sequence && !journal.event_sequence &&
+           journal.event_status == game::BattleTerminalJournalEventStatusV1::not_observed &&
+           snapshot.character_observations && !snapshot.character_observations->empty();
+  }
+  if (snapshot.prior_combat_id == -1 || snapshot.subject_public_cunit_id < 0)
+    return false;
   if (journal.event_status ==
           game::BattleTerminalJournalEventStatusV1::observed &&
       (!journal.event_sequence.has_value() || *journal.event_sequence == 0)) {
@@ -481,31 +544,49 @@ bool ParseBattleTerminalTransitionV1Step(
     std::string_view step,
     game::BattleTerminalTransitionRequestV1 &output) noexcept {
   output = {};
-  if (!step.starts_with(kBattleTerminalTransitionV1StepPrefix)) {
-    return false;
-  }
-  const auto wire = step.substr(kBattleTerminalTransitionV1StepPrefix.size());
-  const auto second = wire.rfind('-');
-  const auto first = second == std::string_view::npos || second == 0
-                         ? std::string_view::npos
-                         : wire.rfind('-', second - 1);
-  if (first == std::string_view::npos || second == std::string_view::npos) {
-    return false;
-  }
-  std::uint64_t cursor = 0;
-  if (!ParseCanonicalFullComponentId(wire.substr(0, first),
-                                     output.prior_combat_id) ||
-      !game::ParsePublicCUnitIdV1(
-          wire.substr(first + 1, second - first - 1),
-          output.subject_public_cunit_id) ||
-      !ParseCanonicalUint64(wire.substr(second + 1), cursor)) {
+  try {
+    if (!step.starts_with(kBattleTerminalTransitionV1StepPrefix)) return false;
+    auto wire = step.substr(kBattleTerminalTransitionV1StepPrefix.size());
+    constexpr std::string_view marker = ":characters:";
+    const auto characters_at = wire.find(marker);
+    if (characters_at != std::string_view::npos) {
+      auto characters = wire.substr(characters_at + marker.size());
+      wire = wire.substr(0, characters_at);
+      for (;;) {
+        const auto comma = characters.find(',');
+        std::int32_t id = -1;
+        if (!ParseCanonicalPositiveInt32(characters.substr(0, comma), id)) {
+          output = {};
+          return false;
+        }
+        output.character_ids.push_back(id);
+        if (comma == std::string_view::npos) break;
+        characters.remove_prefix(comma + 1);
+      }
+    }
+    if (wire == "none" && !output.character_ids.empty()) return true;
+    const auto second = wire.rfind('-');
+    const auto first = second == std::string_view::npos || second == 0
+                           ? std::string_view::npos
+                           : wire.rfind('-', second - 1);
+    if (first == std::string_view::npos || second == std::string_view::npos) {
+      output = {};
+      return false;
+    }
+    std::uint64_t cursor = 0;
+    if (!ParseCanonicalFullComponentId(wire.substr(0, first), output.prior_combat_id) ||
+        !game::ParsePublicCUnitIdV1(wire.substr(first + 1, second - first - 1),
+                                  output.subject_public_cunit_id) ||
+        !ParseCanonicalUint64(wire.substr(second + 1), cursor)) {
+      output = {};
+      return false;
+    }
+    if (cursor != 0) output.after_terminal_sequence = cursor;
+    return true;
+  } catch (...) {
     output = {};
     return false;
   }
-  if (cursor != 0) {
-    output.after_terminal_sequence = cursor;
-  }
-  return true;
 }
 
 bool ParseBattleTerminalTransitionExpectedRevisionV1(
@@ -665,6 +746,8 @@ std::string SerializeBattleTerminalTransitionV1(
   if (!AppendNumber(output, snapshot.prior_combat_id)) return {};
   output += ",\"subject_public_cunit_id\":";
   if (!AppendNumber(output, snapshot.subject_public_cunit_id)) return {};
+  output += ",\"character_observations\":";
+  if (!AppendCharacterObservations(output, snapshot.character_observations)) return {};
   const auto &journal = snapshot.terminal_journal;
   output += ",\"terminal_journal\":{\"requested_after_sequence\":";
   if (!AppendOptionalNumber(output, journal.requested_after_sequence)) return {};
@@ -681,7 +764,8 @@ std::string SerializeBattleTerminalTransitionV1(
           ? "observed"
           : "not_observed");
   output.push_back('}');
-  if (!available) {
+  if (!available || (snapshot.prior_combat_id == -1 &&
+                     snapshot.subject_public_cunit_id == -1)) {
     output += ",\"prior\":null,\"removal\":null,\"subject\":null,\"successor\":null}";
     return output;
   }
@@ -788,23 +872,8 @@ std::string SerializeBattleTerminalTransitionV1(
     output.push_back(']');
   } else output += "null";
   output += ",\"character_custody_in_observed_order\":";
-  if (prior.character_custody_in_observed_order) {
-    output.push_back('[');
-    bool first = true;
-    for (const auto &row : *prior.character_custody_in_observed_order) {
-      if (!first) output.push_back(','); first = false;
-      output += "{\"character_id\":";
-      if (!AppendNumber(output, row.character_id)) return {};
-      output += ",\"status\":";
-      AppendJsonString(output, row.status == game::BattleTerminalCustodyStatusV1::observed
-          ? "observed" : row.status == game::BattleTerminalCustodyStatusV1::none
-          ? "none" : "unavailable");
-      output += ",\"actual_jailer_character_id\":";
-      if (!AppendOptionalNumber(output, row.actual_jailer_character_id)) return {};
-      output.push_back('}');
-    }
-    output.push_back(']');
-  } else output += "null";
+  if (!AppendCharacterObservations(output,
+                                   prior.character_custody_in_observed_order)) return {};
   output += ",\"daily_guard_raw\":";
   if (!AppendOptionalNumber(output, prior.daily_guard_raw)) return {};
   output += ",\"province_id\":";

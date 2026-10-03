@@ -793,7 +793,7 @@ PhaseBindings BindPhaseImage(std::uintptr_t base, std::string_view hash) noexcep
 ReadNativeCombatPhaseResult ReadNativeCombatPhase(
     const PhaseBindings &bindings, const PhaseEnvironment &environment,
     const game::Snapshot &scope, const game::CombatSimulationInputsSnapshot &base,
-    NativeCombatPhase &output) noexcept {
+    NativeCombatPhase &output, bool include_constructor_religion) noexcept {
   output = {};
   if (!bindings.enabled || !bindings.construct_side || !bindings.populate_side ||
       !bindings.select_commander || !bindings.refresh_strength || !bindings.read_strength ||
@@ -897,12 +897,19 @@ ReadNativeCombatPhaseResult ReadNativeCombatPhase(
         return fail("phase_nonreligious_constructor_plan_unavailable:" +
                     (plan.unavailable_reason.empty() ? std::string("unspecified") :
                                                        plan.unavailable_reason));
+      if (include_constructor_religion &&
+          !CompleteConstructorReligionPlan(bindings.advantage, environment, base, plan))
+        return fail("phase_religion_constructor_plan_unavailable:" + plan.unavailable_reason);
       if (!AllocatePhaseLedger(local.side(0), plan.ledgers[0]) ||
           !AllocatePhaseLedger(local.side(1), plan.ledgers[1]))
         return fail("phase_constructor_ledger_allocation_unavailable");
       Store<std::int64_t>(local.shell.data(), 0x6C8, plan.model.base_static_accumulator_raw);
       Store<std::uint8_t>(local.shell.data(), 0x6FE, plan.holding_defender ? 1 : 0);
       output.nonreligious_constructor_ready = true;
+      output.religion_constructor_ready = plan.religion_constructor_ready;
+      output.base_nonreligious_accumulator_raw = include_constructor_religion
+          ? plan.base_nonreligious_accumulator_raw : plan.model.base_static_accumulator_raw;
+      output.religion_constructor_sources = std::move(plan.religion_constructor_sources);
       output.nonreligious_advantage_model = std::move(plan.model);
     }
     bindings.resolve_advantage(local.shell.data());
@@ -973,11 +980,13 @@ bool ReadContextualAdvantageInputs(
   output = {};
   output.attempted = true;
   output.target_province_id = base.target_province_id;
+  output.religion_constructor_attempted = bindings.advantage.constructor_religion.enabled;
   try {
     const auto fail = [&](std::string reason) {
       output = {};
       output.attempted = true;
       output.target_province_id = base.target_province_id;
+      output.religion_constructor_attempted = bindings.advantage.constructor_religion.enabled;
       output.unavailable_reason = "contextual_advantage:" + std::move(reason);
       return false;
     };
@@ -989,7 +998,8 @@ bool ReadContextualAdvantageInputs(
                                  ResolveEnvironmentProvince, ReadEnvironmentGathering,
                                  ResolveEnvironmentRegiment};
     NativeCombatPhase native{};
-    const auto result = ReadNativeCombatPhase(bindings, environment, scope, base, native);
+    const auto result = ReadNativeCombatPhase(bindings, environment, scope, base, native,
+        bindings.advantage.constructor_religion.enabled);
     if (result != ReadNativeCombatPhaseResult::available) {
       std::string reason = native.unavailable_reason;
       if (reason.empty()) {
@@ -1020,7 +1030,10 @@ bool ReadContextualAdvantageInputs(
       side.side_total_raw = dynamic.side_total_raw;
       output.sides.push_back(std::move(side));
     }
-    output.base_nonreligious_accumulator_raw = model.base_static_accumulator_raw;
+    output.base_nonreligious_accumulator_raw = native.base_nonreligious_accumulator_raw;
+    output.base_constructor_accumulator_raw = model.base_static_accumulator_raw;
+    output.religion_constructor_sources_ready = native.religion_constructor_ready;
+    output.religion_constructor_sources = std::move(native.religion_constructor_sources);
     output.synthetic_zero_roll_total_raw = resolved.original_total_helper_raw;
     output.synthetic_helper_total_match = resolved.original_total_helper_match;
     output.available = true;
@@ -1029,6 +1042,7 @@ bool ReadContextualAdvantageInputs(
     output = {};
     output.attempted = true;
     output.target_province_id = base.target_province_id;
+    output.religion_constructor_attempted = bindings.advantage.constructor_religion.enabled;
     output.unavailable_reason = "contextual_advantage:read_exception";
     return false;
   }

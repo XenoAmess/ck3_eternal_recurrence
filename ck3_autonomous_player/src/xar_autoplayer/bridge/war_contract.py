@@ -78,6 +78,8 @@ WAR_OBJECTIVE_SIEGE_PROGRESS_CAPABILITY = (
 )
 WAR_OBJECTIVE_ASSAULT_CAPABILITY = "game.state.war-objective-assault"
 RAISE_TROOPS_STEP = "raise-troops-default"
+HIRE_MERCENARY_V1_STEP = "hire-mercenary-v1"
+HIRE_MERCENARY_V1_CAPABILITY = "game.command." + HIRE_MERCENARY_V1_STEP
 BATTLE_DECISION_EPOCH_ADVANCE_STEP = "battle-decision-epoch-advance"
 BATTLE_DECISION_EPOCH_ADVANCE_STEP_PREFIX = (
     BATTLE_DECISION_EPOCH_ADVANCE_STEP + "-to-"
@@ -4196,6 +4198,7 @@ def _normalize_war_termination_recipient_response(
 def is_native_war_step(step: object) -> bool:
     return (
         step == RAISE_TROOPS_STEP
+        or step == HIRE_MERCENARY_V1_STEP
         or step == QUERY_ARMY_STRENGTHS_STEP
         or parse_query_province_local_siege_step(step) is not None
         or parse_preview_move_army_step(step) is not None

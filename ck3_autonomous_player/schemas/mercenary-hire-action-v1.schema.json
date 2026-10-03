@@ -1,0 +1,277 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.local/schemas/mercenary-hire-action-v1.schema.json",
+  "title": "Current-player normal mercenary hire request and submission ACK v1",
+  "description": "A submission ACK records native validation and queue acceptance; independent employer, army and resource observation remains separate.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/request"
+    },
+    {
+      "$ref": "#/$defs/result"
+    }
+  ],
+  "$defs": {
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "company_id",
+        "expected_revision"
+      ],
+      "properties": {
+        "company_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967294
+        },
+        "expected_revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "finalTerms": {
+      "type": "object",
+      "required": [
+        "available",
+        "unavailable_reason",
+        "can_hire",
+        "can_afford",
+        "payment_status",
+        "resource_costs_raw",
+        "resource_scale",
+        "hire_duration_months",
+        "can_hire_reasons_available",
+        "can_hire_reason_literal",
+        "can_afford_reasons_available",
+        "can_afford_reason_literal"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "unavailable_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "can_hire": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "can_afford": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "payment_status": {
+          "enum": [
+            0,
+            1,
+            2,
+            null
+          ]
+        },
+        "resource_costs_raw": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "minItems": 10,
+              "maxItems": 10,
+              "items": {
+                "type": "integer"
+              }
+            }
+          ]
+        },
+        "resource_scale": {
+          "const": 100000
+        },
+        "hire_duration_months": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "can_hire_reasons_available": {
+          "type": "boolean"
+        },
+        "can_hire_reason_literal": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "can_afford_reasons_available": {
+          "type": "boolean"
+        },
+        "can_afford_reason_literal": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "nativeAction": {
+      "type": "object",
+      "required": [
+        "schema",
+        "status",
+        "snapshot_revision",
+        "date_raw",
+        "actor_character_id",
+        "company_id",
+        "company_resolved",
+        "prior_employer_character_id",
+        "native_hire_mode",
+        "final_terms",
+        "native_command_validation_observable",
+        "native_command_valid",
+        "command_submitted",
+        "verification_pending",
+        "after_state_observed",
+        "unavailable_reason"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ck3_12003_mercenary_hire_action_v1"
+        },
+        "status": {
+          "enum": [
+            "unavailable",
+            "rejected",
+            "submitted",
+            "already_hired"
+          ]
+        },
+        "snapshot_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "date_raw": {
+          "type": "integer"
+        },
+        "actor_character_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "company_id": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967294
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "company_resolved": {
+          "type": "boolean"
+        },
+        "prior_employer_character_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "native_hire_mode": {
+          "const": 1
+        },
+        "final_terms": {
+          "$ref": "#/$defs/finalTerms"
+        },
+        "native_command_validation_observable": {
+          "type": "boolean"
+        },
+        "native_command_valid": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "command_submitted": {
+          "type": "boolean"
+        },
+        "verification_pending": {
+          "type": "boolean"
+        },
+        "after_state_observed": {
+          "const": false
+        },
+        "unavailable_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "result": {
+      "type": "object",
+      "required": [
+        "step",
+        "accepted",
+        "status",
+        "read_only",
+        "game_version",
+        "executable_sha256",
+        "command_sequence",
+        "snapshot_revision",
+        "date_raw",
+        "mercenary_hire"
+      ],
+      "properties": {
+        "step": {
+          "const": "hire-mercenary-v1"
+        },
+        "accepted": {
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "unavailable",
+            "rejected",
+            "submitted_verification_pending",
+            "already_hired"
+          ]
+        },
+        "read_only": {
+          "const": false
+        },
+        "game_version": {
+          "const": "1.20.0.3"
+        },
+        "executable_sha256": {
+          "const": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+        },
+        "command_sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "snapshot_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "date_raw": {
+          "type": "integer"
+        },
+        "mercenary_hire": {
+          "$ref": "#/$defs/nativeAction"
+        }
+      }
+    }
+  }
+}

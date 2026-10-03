@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 #include "xar_bridge/ck3_12003_default_raise_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_mercenary_mailbox.hpp"
+#include "xar_bridge/ck3_12003_player_mercenary_hire_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 #include <windows.h>
 #include <utility>
@@ -30,6 +31,7 @@ const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
     result.push_back(ck3_12003::kArmyCommanderCandidatesCapability);
     result.push_back(ck3_12003::kPlayerDefaultRaiseCapabilityV1);
     result.push_back(ck3_12003::kPlayerMercenaryContextCapabilityV1);
+    result.push_back(ck3_12003::kMercenaryHireCapabilityV1);
     result.push_back(kWarOccupationTargetsV1Capability);
     result.push_back(kTitleHolderV1Capability);
     result.push_back(kProjectedContactScopeV1Capability);
@@ -99,6 +101,19 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
     result.armies.get_army_gathering_days_left =
         reinterpret_cast<decltype(result.armies.get_army_gathering_days_left)>(
             image_base + ck3_12002::kArmyGatheringDaysLeftRva12003);
+  }
+  if (result.phase.advantage.enabled) {
+    // Constructor-faith closure is proven only for exact .3. Keep the .2
+    // binder's reviewed nonreligious contract unchanged.
+    auto &religion = result.phase.advantage.constructor_religion;
+    religion.enabled = true;
+    religion.rite_storage_slot = reinterpret_cast<void **>(image_base + 0x5D1E2F8);
+    religion.faith_storage_slot = reinterpret_cast<void **>(image_base + 0x5D1E300);
+    religion.null_rite_slot = reinterpret_cast<void **>(image_base + 0x5C67670);
+    religion.null_faith_slot = reinterpret_cast<void **>(image_base + 0x5D1E2E0);
+    religion.target_faith_is_unreformed =
+        reinterpret_cast<decltype(religion.target_faith_is_unreformed)>(
+            image_base + 0x2BD8960);
   }
   return result;
 }

@@ -46,6 +46,28 @@ CandidateBindings BindMercenaryCandidatesImage12003(std::uintptr_t base,
   return b;
 }
 
+void *ResolveMercenaryCompany12003(const CandidateBindings &b,
+                                  std::uint32_t full_company_id) noexcept {
+  if (!b.enabled || b.manager_slot == nullptr || b.fallback_slot == nullptr ||
+      full_company_id == UINT32_MAX) return nullptr;
+  void *manager = nullptr, *fallback = nullptr;
+  if (!Read(b.manager_slot, 0, manager) || manager == nullptr ||
+      !Read(b.fallback_slot, 0, fallback)) return nullptr;
+  const void *entries = nullptr;
+  std::int32_t range_bound = -1;
+  const std::uint32_t index = full_company_id & 0xFFFFFFU;
+  if (!Read(manager, 0x20, entries) || entries == nullptr ||
+      !Read(manager, 0x2C, range_bound) || range_bound < 0 ||
+      index >= static_cast<std::uint32_t>(range_bound)) return nullptr;
+  void *company = nullptr;
+  std::uint32_t actual_id = UINT32_MAX, type = 0;
+  if (!Read(entries, static_cast<std::size_t>(index) * 0x10 + 8, company) ||
+      company == nullptr || company == fallback ||
+      !Read(company, 0x10, actual_id) || actual_id != full_company_id ||
+      !Read(company, 0x14, type) || type != 0x4D657263U) return nullptr;
+  return company;
+}
+
 bool VisitMercenaryCandidates12003(const CandidateBindings &b,
     CandidateVisitor visitor, void *user, std::string &reason) noexcept {
   reason = "mercenary_bindings_unavailable";

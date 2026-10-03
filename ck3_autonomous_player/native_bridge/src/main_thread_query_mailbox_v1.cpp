@@ -527,6 +527,7 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_sexdenary == nullptr &&
       environment.permitted_executor_septendenary == nullptr &&
        environment.permitted_executor_player_mercenary_context12003 == nullptr &&
+       environment.permitted_executor_player_mercenary_hire12003 == nullptr &&
       environment.permitted_executor_octodenary == nullptr &&
       environment.permitted_executor_novemdenary == nullptr &&
       environment.permitted_executor_vigintary == nullptr &&
@@ -954,6 +955,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_holy_order_selected_title_terms12003;
   mailbox.permitted_executor_player_mercenary_context12003 =
       environment.permitted_executor_player_mercenary_context12003;
+  mailbox.permitted_executor_player_mercenary_hire12003 =
+      environment.permitted_executor_player_mercenary_hire12003;
   mailbox.permitted_executor_sway_outcome_opinion12002 =
       environment.permitted_executor_sway_outcome_opinion12002;
   mailbox.permitted_executor_religion_ai_reform_inputs12002 =
@@ -1214,6 +1217,7 @@ MainThreadQueryUninstallResultV1 UninstallMainThreadQueryMailboxV1(
   mailbox.snapshot_observer_callback = nullptr;
   mailbox.snapshot_observer_context = nullptr;
   mailbox.permitted_executor_player_mercenary_context12003 = nullptr;
+  mailbox.permitted_executor_player_mercenary_hire12003 = nullptr;
   mailbox.state.store(MainThreadQueryMailboxStateV1::detached,
                       std::memory_order_release);
   return MainThreadQueryUninstallResultV1::uninstalled;
@@ -1315,6 +1319,7 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
          mailbox.permitted_executor_holy_order_context12003 != nullptr ||
          mailbox.permitted_executor_holy_order_selected_title_terms12003 != nullptr ||
          mailbox.permitted_executor_player_mercenary_context12003 != nullptr ||
+         mailbox.permitted_executor_player_mercenary_hire12003 != nullptr ||
          mailbox.permitted_executor_sway_outcome_opinion12002 != nullptr ||
          mailbox.permitted_executor_religion_ai_reform_inputs12002 != nullptr ||
          mailbox.permitted_executor_religion_draft_doctrine_choices12002 != nullptr ||
@@ -1431,6 +1436,7 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        executor != mailbox.permitted_executor_holy_order_context12003 &&
        executor != mailbox.permitted_executor_holy_order_selected_title_terms12003 &&
        executor != mailbox.permitted_executor_player_mercenary_context12003 &&
+       executor != mailbox.permitted_executor_player_mercenary_hire12003 &&
       executor != mailbox.permitted_executor_sway_outcome_opinion12002 &&
       executor != mailbox.permitted_executor_religion_ai_reform_inputs12002 &&
       executor != mailbox.permitted_executor_religion_draft_doctrine_choices12002 &&

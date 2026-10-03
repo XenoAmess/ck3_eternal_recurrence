@@ -33,9 +33,21 @@ using ReadAdvantageProvinceModifier = std::int64_t *(*)(
 using ReadAdvantageModifierValue = std::int64_t *(*)(
     std::int64_t *, void *, std::int32_t, void *, std::int64_t, std::int32_t);
 
+// These operands are installed only by the exact .3 adapter. The pure target
+// predicate reads its main Rite; canonical native NullObjects preserve absence.
+struct ConstructorReligionBindings {
+  bool enabled = false;
+  void **rite_storage_slot = nullptr;
+  void **faith_storage_slot = nullptr;
+  void **null_rite_slot = nullptr;
+  void **null_faith_slot = nullptr;
+  bool (*target_faith_is_unreformed)(void *) = nullptr;
+};
+
 struct AdvantageBindings {
   bool enabled = false;
   GetCombatRules get_rules = nullptr;
+  ConstructorReligionBindings constructor_religion;
   SelectAdvantageSupply select_supply = nullptr;
   SelectAdvantageDebt select_debt = nullptr;
   ResolveAdvantageTreasury resolve_treasury = nullptr;
@@ -68,6 +80,9 @@ static_assert(sizeof(AdvantageLedgerEntry) == 16);
 
 struct NonReligiousAdvantagePlan {
   bool nonreligious_available = false;
+  bool religion_constructor_ready = false;
+  std::int64_t base_nonreligious_accumulator_raw = 0;
+  std::vector<game::ContextualAdvantageReligionSourceSnapshot> religion_constructor_sources;
   bool holding_defender = false;
   std::array<std::vector<AdvantageLedgerEntry>, 2> ledgers;
   game::CombatAdvantageModelV3TestOnly model;
@@ -80,6 +95,12 @@ struct NonReligiousAdvantagePlan {
 bool BuildNonReligiousAdvantagePlan(const AdvantageBindings &,
     const PhaseEnvironment &, const game::CombatSimulationInputsSnapshot &,
     const std::array<void *, 2> &selected_commanders,
+    NonReligiousAdvantagePlan &) noexcept;
+
+// Completes only the contextual query's two closed faith constructor stages.
+// The old nonreligious plan entry and full-v3 availability remain unchanged.
+bool CompleteConstructorReligionPlan(const AdvantageBindings &,
+    const PhaseEnvironment &, const game::CombatSimulationInputsSnapshot &,
     NonReligiousAdvantagePlan &) noexcept;
 
 } // namespace xar::ck3_12002
