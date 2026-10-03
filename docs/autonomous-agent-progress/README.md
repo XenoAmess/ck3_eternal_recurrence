@@ -1,5 +1,19 @@
 # CK3 自动游玩智能体进度中心
 
+## 当前截点：v43 行军续32日，4024 个保存日（2026-10-03T22:58:42+08:00 实际补录）
+
+- **最新实机与保存**：v43/R0021/PID14124，compiled source `8e2cfbee4981af7f80398ec09129c1cf0f3dbe54` / frozen `Z:/g45`，原Robert29829/episode native-29829-2bc2d599f7f9/ordinary/xar_off/pact absent；minimized=true/foreground=false。最新正常 `h5490 / raw 53240904 / SHA-256 45a738d9082a9bab322c786a1c9c2c784f9468a13a4e664fe1a3a435bc15eeab` 来自holy只读SDK26432正常exit0，新增日0。累计 **4024/36524**、恢复 **+871**、10-03 **+776**，G2 **5/8**、NW **2/4**、自然终局 **0**、`percent_reporting_allowed=false`。[holy actual fields](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-holy-order/ACTUAL-V43-REPORT-FIELDS.json)。
+- **行军实际闭环**：3992→4024，共32 rounds/32 GREEN/32实际保存日/32完整one-day OODA/768 raw hours；只续行既定route，逐日fresh army/target观测与normal save已构成限定的 `production-live loop`。batch自己的正常保存 `h5489 / raw 53240904 / SHA-256 78577dea427e8f2c0e0611308057a0cc758ec8fdc344cf27df365aece7a64351` 独立保留；后续h5490不追溯替换该batch，artifact消费不新增日。[32日终态消费](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/relief-v43/terminal-consumption/ROOT-DELIVERY.json)。
+- **末帧仍在途**：army83886367/owner29829位于2616、state7 moving、target2640，完整9段route `[8754,2613,8752,2628,2626,2627,2633,2634,2640]`，未combat/retreat。目标2640仍有敌Siege318767158/army473/2508兵，fort7/garrison1350、progress95.169%/ETA18；在War50331736/129两行投影同一个物理siege。尚未观察到到达、玩家参战或解除敌围城，不计relief/胜利/终战。
+- **时间与兵数边界**：最后route ETA只来自day32推进前raw53240880，canonical arrival53242968/当帧剩2088h；没有把它当作raw53240904终帧的新ETA。32日末无独立strength packet，最近strength引用为day30，不能把旧兵数或差值当成终帧兵数/combat casualty。下一决策需fresh route/contact/strength及目标围城输入。
+- **holy真实读口**：raw53240904/native141/capture339029配对完整，5行（4非military/1military）；唯一军事order4/Rite15实际938兵，employer39004/patron35131/leases7558、4146。final `CanHire=false / CanAfford=true / quote106 piety`，原生理由为绝罚与已受雇；当前无合法可雇骑士团增援。查询为fresh `production-live primitive`，无hire/payment/player新增兵/完整军用loop信用。[holy actual receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-holy-order/mcp-recipe/actual-v43/ROOT-DELIVERY.json)、[holy战争资格专题](../ck3-native-ai/religion-holy-order-war-eligibility-12003.md)。
+- **候选与真实失败分列**：v44/g46/`a6f3221ef99cea5501dcd0595b4461affc63e2db` 的full strict实际 **C1061 RED** 保留；v45/g47/`7a0bef46588292d26c74716a39fe02b348d3ee65` 已冻结，fullbuild运行中、尚未live。候选115 flags64ON51OFF保留既有death/succession modal flag ON，六ordered guarded dispatch chains修C1061；增援query仍待新PID真实采集，不能把source/fixture或构建进度写成live。[v44 freeze](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v44/ROOT-SOURCE-FREEZE.json)、[v44实际C1061 RED](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v44/ROOT-BUILD-RESULT.json)、[v45 freeze](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v45/ROOT-SOURCE-FREEZE.json)。
+- **当前下一入口**：先将敌围城ETA18与fresh行军/接战/兵力输入交回[Robert防御战争树](../ck3-native-ai/robert-defensive-war-loop-12003.md)决策；首次玩家combat交battle owner，capital occupation/event/siege clearance交Root。v45新PID再验收增援读口；holy既有读口已足够判定本帧不可雇，typed hire仍未实现，constructor/submit为既有施工入口，合法候选出现时再实测独立employer/resources/new-army after。先前2604单县收复和commander/county dispatch bounded loops保留各自信用，县尚未改宗。
+
+下方旧短指针、截点、保存与失败attempt保留当时事实；旧标题“当前”仅代表记录时点，最新状态以本节为准。
+
+当前从2604收复进入2640增援行军；目标/下一施工和诚实边界回链 [路线图](goal-and-roadmap.md) 与 [单世阻点账本](one-generation-blocker-ledger.md)。
+
 ## 当前短指针：v43 已真实冷恢复与有限军事操作（2026-10-03）
 
 v43/R0021/PID14124冷恢复实测成功，minimized=true/foreground=false；最新typed move保存h5384，累计仍 **3992/36524日**、恢复+839、10月3日+744、自然终局0，本轮不增加保存日或全局里程碑。补给health016与19行phase统帅候选为只读primitive；remote004/006及v2查询正常close GREEN、MC readiness仍false。typed move仅已完成派遣与独立after，未观测到达或解除围攻。
