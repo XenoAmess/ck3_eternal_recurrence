@@ -1938,7 +1938,9 @@ class NativeHeadlessGameplayDriver:
             and "game.command.life-advance" not in bridge_capabilities
         ):
             action_steps.add("life-advance")
+            action_steps.add("life-advance-one-day")
             composite_action_steps.append("life-advance")
+            composite_action_steps.append("life-advance-one-day")
         checkpoint_path = self._checkpoint_path()
         if (
             result.get("snapshot") is True
@@ -7006,7 +7008,7 @@ class NativeHeadlessGameplayDriver:
             parse_war_objective_hold_sentinel_advance_step(step)
         )
         if (
-            step == "life-advance"
+            step in {"life-advance", "life-advance-one-day"}
             or step in BATTLE_SENTINEL_ADVANCE_STEPS
             or decision_epoch_target is not None
             or committed_route_request is not None
@@ -8250,6 +8252,15 @@ class NativeHeadlessGameplayDriver:
                 requested_objective_hold=objective_hold_request,
             )
         if step in capabilities.get("composite_action_steps", []):
+            if step == "life-advance-one-day":
+                return self._execute_life_advance(
+                    expected_revision=expected_revision,
+                    exact_one_day=True,
+                    exact_one_day_proof_kind=None,
+                    exact_one_day_preferred_speed=1,
+                    result_step="life-advance-one-day",
+                    starting_snapshot=life_advance_starting,
+                )
             if step == "life-advance":
                 return self._execute_life_advance(
                     expected_revision=expected_revision,

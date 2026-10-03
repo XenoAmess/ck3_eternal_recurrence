@@ -2174,6 +2174,7 @@ def _parse_war_sentinel_date_and_speed(
 def is_life_advance_step(step: object) -> bool:
     return bool(
         step == "life-advance"
+        or step == "life-advance-one-day"
         or (
             isinstance(step, str)
             and step in BATTLE_SENTINEL_ADVANCE_STEPS
