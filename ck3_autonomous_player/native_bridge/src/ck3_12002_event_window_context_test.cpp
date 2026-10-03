@@ -491,6 +491,187 @@ struct Fixture {
   }
 };
 
+bool TestLandedTitleSavedScope() {
+  using namespace xar;
+  Fixture fixture;
+  fixture.bindings.allow_null_saved_character_scope = true;
+  std::array<std::byte, 0x40> storage{};
+  std::array<std::byte, 4 * 0x10> slots{};
+  std::array<std::array<std::byte, 0x20>, 3> titles{};
+  std::array<std::byte, 0x20> fallback{};
+  std::array<std::byte, 6 * 0x50> registry_entries{};
+  std::array<std::byte, 0x20> type_name{};
+  std::array<std::byte, 3 * 0x18> saved_rows{};
+  void *storage_pointer = storage.data();
+  void *fallback_pointer = fallback.data();
+  fixture.bindings.landed_title_storage_slot = &storage_pointer;
+  fixture.bindings.landed_title_fallback_slot = &fallback_pointer;
+  std::memcpy(registry_entries.data(), fixture.generic_value_type_entries.data(),
+              fixture.generic_value_type_entries.size());
+  StoreInlineString(type_name.data(), "landed_title");
+  g_generic_value_type_names.emplace(105,
+      reinterpret_cast<const std::string *>(type_name.data()));
+  Store<std::int32_t>(registry_entries.data() + 5 * 0x50, 0, 105);
+  Store<void *>(fixture.generic_value_type_registry.data(), 0, registry_entries.data());
+  Store<std::int32_t>(fixture.generic_value_type_registry.data(), 0x0C, 6);
+  Store<void *>(storage.data(), 0x20, slots.data());
+  Store<std::int32_t>(storage.data(), 0x2C, 4);
+  std::array<std::string, 3> names{"peasant_county", "target_title", "new_title"};
+  constexpr std::array<std::uint32_t, 3> ids{0x01000001U, 0x02000002U, 0x01000003U};
+  for (std::size_t index = 0; index < ids.size(); ++index) {
+    Store<void *>(slots.data(), (index + 1) * 0x10 + 8, titles[index].data());
+    Store<std::uint32_t>(titles[index].data(), 0x10, ids[index]);
+    const auto identifier = static_cast<std::int32_t>(301 + index);
+    g_script_identifier_names.emplace(identifier, &names[index]);
+    g_script_identifier_text.emplace(identifier, names[index]);
+    auto *row = saved_rows.data() + index * 0x18;
+    Store<std::int32_t>(row, 0, identifier);
+    Store<std::uint16_t>(row, 8, 5);
+    Store<std::uint64_t>(row, 0x10, ids[index]);
+  }
+  Store<void *>(fixture.active_event.data(), 0x18, saved_rows.data());
+  Store<std::int32_t>(fixture.active_event.data(), 0x20, 3);
+  Store<std::int32_t>(fixture.active_event.data(), 0x24, 3);
+  game::EventWindowContextV1 output{};
+  const auto read = [&]() {
+    g_current_event_calls = 0;
+    return ck3_12002::ReadEventWindowContextV1(fixture.bindings, kRevision, kEventId,
+        output) == game::ReadEventWindowContextResultV1::available;
+  };
+  if (!read() || output.saved_scopes.size() != ids.size() ||
+      output.root_scope->typed_identity.character_id != kCharacterId) return false;
+  for (std::size_t index = 0; index < ids.size(); ++index) {
+    const auto &row = output.saved_scopes[index];
+    if (row.name != names[index] || row.scope.raw_type_index != 5 ||
+        row.scope.type_key != "landed_title" || !row.scope.typed_identity.available ||
+        row.scope.typed_identity.title_id != static_cast<std::int32_t>(ids[index]) ||
+        row.scope.typed_identity.character_id.has_value()) return false;
+  }
+  auto wire = ck3_12002::SerializeEventWindowContextV1(output, true);
+  if (wire.find("\"kind\":\"landed_title\",\"title_id\":16777217}") == std::string::npos ||
+      wire.find("\"title_id\":33554434}") == std::string::npos ||
+      wire.find("\"kind\":\"character\",\"character_id\":42}") == std::string::npos) return false;
+  Store<std::uint64_t>(saved_rows.data() + 2 * 0x18, 0x10, 0xFFFFFFFFULL);
+  if (!read() || output.saved_scopes[2].scope.typed_identity.available ||
+      output.saved_scopes[2].scope.typed_identity.title_id.has_value() ||
+      output.saved_scopes[2].scope.typed_identity.unavailable_reason !=
+          "landed_title_scope_is_null") return false;
+  wire = ck3_12002::SerializeEventWindowContextV1(output, true);
+  if (wire.find("landed_title_scope_is_null") == std::string::npos) return false;
+  // Use the existing null-character production branch in the same reader and serializer.
+  Store<std::uint16_t>(saved_rows.data() + 2 * 0x18, 8, 4);
+  if (!read() || output.saved_scopes[2].scope.typed_identity.unavailable_reason !=
+          "character_scope_is_null" ||
+      ck3_12002::SerializeEventWindowContextV1(output, true).find(
+          "character_scope_is_null") == std::string::npos) return false;
+  std::cout << "landed-title scope production reader + serializer GREEN\n";
+  return true;
+}
+
+bool TestCombinedTitleAndFactionSavedScope() {
+  using namespace xar;
+  Fixture fixture;
+  fixture.bindings.allow_null_saved_character_scope = true;
+  std::array<std::byte, 0x40> title_storage{}, faction_storage{};
+  std::array<std::byte, 4 * 0x10> title_slots{}, faction_slots{};
+  std::array<std::array<std::byte, 0x20>, 3> titles{};
+  std::array<std::byte, 0x20> title_fallback{}, faction{}, faction_fallback{};
+  std::array<std::byte, 26 * 0x50> registry_entries{};
+  std::array<std::byte, 0x20> title_type_name{}, faction_type_name{};
+  std::array<std::byte, 4 * 0x18> saved_rows{};
+  void *title_storage_pointer = title_storage.data();
+  void *title_fallback_pointer = title_fallback.data();
+  void *faction_storage_pointer = faction_storage.data();
+  void *faction_fallback_pointer = faction_fallback.data();
+  fixture.bindings.landed_title_storage_slot = &title_storage_pointer;
+  fixture.bindings.landed_title_fallback_slot = &title_fallback_pointer;
+  fixture.bindings.faction_scope_storage_slot = &faction_storage_pointer;
+  fixture.bindings.faction_scope_fallback_slot = &faction_fallback_pointer;
+  fixture.bindings.faction_scope_expected_vtable = 0x184743520;
+  std::memcpy(registry_entries.data(), fixture.generic_value_type_entries.data(),
+              fixture.generic_value_type_entries.size());
+  StoreInlineString(title_type_name.data(), "landed_title");
+  StoreInlineString(faction_type_name.data(), "faction");
+  g_generic_value_type_names.emplace(105,
+      reinterpret_cast<const std::string *>(title_type_name.data()));
+  g_generic_value_type_names.emplace(125,
+      reinterpret_cast<const std::string *>(faction_type_name.data()));
+  Store<std::int32_t>(registry_entries.data() + 5 * 0x50, 0, 105);
+  Store<std::int32_t>(registry_entries.data() + 25 * 0x50, 0, 125);
+  Store<void *>(fixture.generic_value_type_registry.data(), 0, registry_entries.data());
+  Store<std::int32_t>(fixture.generic_value_type_registry.data(), 0x0C, 26);
+  Store<void *>(title_storage.data(), 0x20, title_slots.data());
+  Store<std::int32_t>(title_storage.data(), 0x2C, 4);
+  Store<void *>(faction_storage.data(), 0x20, faction_slots.data());
+  Store<std::int32_t>(faction_storage.data(), 0x2C, 4);
+  constexpr std::uint32_t full_faction_id = 0x02000001U;
+  Store<void *>(faction_slots.data(), 0x18, faction.data());
+  Store<std::uintptr_t>(faction.data(), 0, fixture.bindings.faction_scope_expected_vtable);
+  Store<std::uint32_t>(faction.data(), 0x10, full_faction_id);
+  std::array<std::string, 4> names{"peasant_county", "target_title", "new_title", "faction"};
+  constexpr std::array<std::uint32_t, 3> title_ids{0x01000001U, 0x02000002U, 0x81000003U};
+  for (std::size_t index = 0; index < names.size(); ++index) {
+    const auto identifier = static_cast<std::int32_t>(401 + index);
+    g_script_identifier_names.emplace(identifier, &names[index]);
+    g_script_identifier_text.emplace(identifier, names[index]);
+    auto *row = saved_rows.data() + index * 0x18;
+    Store<std::int32_t>(row, 0, identifier);
+    Store<std::uint16_t>(row, 8, index < 3 ? 5 : 25);
+    Store<std::uint16_t>(row, 0x0A, 2);
+    if (index < title_ids.size()) {
+      Store<void *>(title_slots.data(), (index + 1) * 0x10 + 8, titles[index].data());
+      Store<std::uint32_t>(titles[index].data(), 0x10, title_ids[index]);
+      Store<std::uint64_t>(row, 0x10, title_ids[index]);
+    } else {
+      Store<std::uint64_t>(row, 0x10, full_faction_id);
+    }
+  }
+  Store<void *>(fixture.active_event.data(), 0x18, saved_rows.data());
+  Store<std::int32_t>(fixture.active_event.data(), 0x20, 4);
+  Store<std::int32_t>(fixture.active_event.data(), 0x24, 4);
+  game::EventWindowContextV1 output{};
+  const game::AdapterDescriptor descriptor{
+      ck3_12003::kAdapterId, ck3_12003::kGameVersion, ck3_12003::kExecutableSha256,
+      ck3_12002::kCheckpointSaveName, {}};
+  const auto production_wire = [&]() {
+    return game::RenderCrozierBuildIdentity(
+        ck3_12002::SerializeEventWindowContextV1(output, true), descriptor);
+  };
+  const auto read = [&]() {
+    g_current_event_calls = 0;
+    return ck3_12002::ReadEventWindowContextV1(fixture.bindings, kRevision, kEventId,
+        output) == game::ReadEventWindowContextResultV1::available;
+  };
+  if (!read() || output.saved_scopes.size() != names.size() ||
+      output.root_scope->typed_identity.character_id != kCharacterId ||
+      output.saved_scopes[3].scope.typed_identity.faction_id !=
+          static_cast<std::int32_t>(full_faction_id)) return false;
+  for (std::size_t index = 0; index < title_ids.size(); ++index) {
+    if (output.saved_scopes[index].scope.typed_identity.title_id !=
+            static_cast<std::int32_t>(title_ids[index])) return false;
+  }
+  std::cout << production_wire() << '\n';
+  // The same combined frame retains named null-title identity and exact faction generation.
+  Store<std::uint64_t>(saved_rows.data() + 2 * 0x18, 0x10, 0xFFFFFFFFULL);
+  if (!read() || output.saved_scopes[2].scope.typed_identity.unavailable_reason !=
+          "landed_title_scope_is_null") return false;
+  std::cout << production_wire() << '\n';
+  // Old generation resolves to unavailable rather than silently selecting the current slot.
+  Store<std::uint64_t>(saved_rows.data() + 3 * 0x18, 0x10, 0x01000001ULL);
+  if (!read() || output.saved_scopes[3].scope.typed_identity.unavailable_reason !=
+          "faction_scope_identity_unavailable") return false;
+  std::cout << production_wire() << '\n';
+  // Legacy binders keep these registered payloads opaque.
+  fixture.bindings.landed_title_storage_slot = nullptr;
+  fixture.bindings.faction_scope_storage_slot = nullptr;
+  if (!read() || output.saved_scopes[0].scope.typed_identity.unavailable_reason !=
+          "generic_scope_payload_identity_not_closed" ||
+      output.saved_scopes[3].scope.typed_identity.unavailable_reason !=
+          "generic_scope_payload_identity_not_closed") return false;
+  std::cout << ck3_12002::SerializeEventWindowContextV1(output) << '\n';
+  return true;
+}
+
 bool TestMigration() {
   using namespace xar;
   Fixture fixture;
@@ -782,6 +963,12 @@ bool TestActivityInsert() {
 }
 } // namespace
 int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--combined-title-faction-scopes") {
+    return TestCombinedTitleAndFactionSavedScope() ? 0 : 1;
+  }
+  if (argc == 2 && std::string_view(argv[1]) == "--landed-title-scope") {
+    return TestLandedTitleSavedScope() ? 0 : 1;
+  }
   if (argc == 2 && std::string_view(argv[1]) == "--activity-insert-only") {
     if (!TestActivityInsert()) {
       std::cerr << "CK3 1.20.0.3 activity-insert fixture failed\n";

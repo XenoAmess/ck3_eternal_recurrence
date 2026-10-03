@@ -264,6 +264,40 @@ def _event_scope(
     type_key = _stable_key(scope["type_key"], f"{label}.type_key")
     _int(scope["subtype"], f"{label}.subtype", 0, 2**16 - 1)
     identity = scope["typed_identity"]
+    if raw_type_index == 25 and type_key == "faction":
+        if isinstance(identity, dict) and identity.get("status") == "available":
+            identity = _exact_object(identity, {"status", "kind", "faction_id"},
+                                     f"{label}.typed_identity")
+            if identity["kind"] != "faction":
+                raise ValueError(f"{label}.typed_identity.kind is invalid")
+            _int(identity["faction_id"], f"{label}.typed_identity.faction_id", 1, 2**31 - 1)
+            return
+        identity = _exact_object(identity, {"status", "reason"}, f"{label}.typed_identity")
+        if identity["status"] != "unavailable" or identity["reason"] not in {
+            "faction_scope_identity_unavailable", "generic_scope_payload_identity_not_closed"
+        }:
+            raise ValueError(f"{label}.typed_identity is invalid")
+        return
+    if raw_type_index == 5 and type_key == "landed_title":
+        if isinstance(identity, dict) and identity.get("status") == "available":
+            identity = _exact_object(
+                identity, {"status", "kind", "title_id"}, f"{label}.typed_identity"
+            )
+            if identity["kind"] != "landed_title":
+                raise ValueError(f"{label}.typed_identity.kind is invalid")
+            title_id = _int(
+                identity["title_id"], f"{label}.typed_identity.title_id", -(2**31), 2**31 - 1
+            )
+            if title_id == -1:
+                raise ValueError(f"{label}.typed_identity.title_id is the null FullRef")
+            return
+        identity = _exact_object(identity, {"status", "reason"}, f"{label}.typed_identity")
+        allowed_reasons = {"generic_scope_payload_identity_not_closed"}
+        if allow_null_character_identity:
+            allowed_reasons.add("landed_title_scope_is_null")
+        if identity["status"] != "unavailable" or identity["reason"] not in allowed_reasons:
+            raise ValueError(f"{label}.typed_identity is invalid")
+        return
     if raw_type_index == 4:
         if type_key != "character":
             raise ValueError(f"{label} character type key drifted")

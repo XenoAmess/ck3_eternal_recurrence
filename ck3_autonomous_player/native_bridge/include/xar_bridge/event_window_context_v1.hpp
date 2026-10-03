@@ -59,6 +59,8 @@ struct EventScopeTypedIdentityV1 {
   bool available = false;
   std::optional<std::int32_t> character_id;
   std::string unavailable_reason;
+  std::optional<std::int32_t> title_id;
+  std::optional<std::int32_t> faction_id;
 
   friend bool operator==(const EventScopeTypedIdentityV1 &,
                          const EventScopeTypedIdentityV1 &) = default;

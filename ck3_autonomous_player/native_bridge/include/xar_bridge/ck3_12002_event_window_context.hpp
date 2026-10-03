@@ -5,6 +5,8 @@
 
 namespace xar::ck3_12002 {
 
+inline constexpr std::uintptr_t kEventScopeLandedTitleStorageSlotRva = 0x5D1DAF8;
+inline constexpr std::uintptr_t kEventScopeLandedTitleFallbackSlotRva = 0x5D1DAE0;
 inline constexpr std::uintptr_t kEventWindowIdlerGfxVtableRva = 0x44BC408;
 inline constexpr std::uintptr_t kEventWindowPrimaryVtableRva = 0x4597910;
 inline constexpr std::uintptr_t kEventSplashWindowPrimaryVtableRva = 0x4596D38;
@@ -43,6 +45,12 @@ struct EventWindowBindings {
   // Only the exact patch3 binder admits the observed native null payload in
   // named saved scopes. Root scopes and legacy patch2 behavior stay strict.
   bool allow_null_saved_character_scope = false;
+  // Exact patch3 type5 FullRef storage; legacy patch2 generic scopes stay opaque.
+  void **landed_title_storage_slot = nullptr;
+  void **landed_title_fallback_slot = nullptr;
+  void **faction_scope_storage_slot = nullptr;
+  void **faction_scope_fallback_slot = nullptr;
+  std::uintptr_t faction_scope_expected_vtable = 0;
   std::uintptr_t scheme_type_primary_vtable = 0;
   void **trait_database_slot = nullptr;
   void **scheme_type_database_slot = nullptr;

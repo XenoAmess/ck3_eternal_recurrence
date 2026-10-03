@@ -14,6 +14,8 @@ constexpr std::size_t kMaximumEffectIndicators = 128;
 constexpr std::size_t kMaximumSavedScopes = 1'024;
 constexpr std::uint16_t kCharacterScopeTypeIndex = 4;
 constexpr std::string_view kCharacterScopeTypeKey = "character";
+constexpr std::uint16_t kLandedTitleScopeTypeIndex = 5;
+constexpr std::string_view kLandedTitleScopeTypeKey = "landed_title";
 constexpr std::string_view kGenericScopeIdentityUnavailableReason =
     "generic_scope_payload_identity_not_closed";
 
@@ -154,6 +156,32 @@ bool ValidScope(const game::EventScopeV1 &scope,
     return false;
   }
   const auto &identity = scope.typed_identity;
+  if (scope.raw_type_index == 25 && scope.type_key == "faction") {
+    if (identity.available) {
+      return identity.faction_id.has_value() && *identity.faction_id > 0 &&
+             !identity.character_id.has_value() && !identity.title_id.has_value() &&
+             identity.unavailable_reason.empty();
+    }
+    return !identity.faction_id.has_value() && !identity.character_id.has_value() &&
+           !identity.title_id.has_value() &&
+           (identity.unavailable_reason == "faction_scope_identity_unavailable" ||
+            identity.unavailable_reason == kGenericScopeIdentityUnavailableReason);
+  }
+  if (scope.raw_type_index == kLandedTitleScopeTypeIndex &&
+      scope.type_key == kLandedTitleScopeTypeKey && identity.available) {
+    return !identity.character_id.has_value() && !identity.faction_id.has_value() &&
+           identity.title_id.has_value() &&
+           *identity.title_id != -1 && identity.unavailable_reason.empty();
+  }
+  if (allow_null_saved_character_scope &&
+      scope.raw_type_index == kLandedTitleScopeTypeIndex &&
+      scope.type_key == kLandedTitleScopeTypeKey && !identity.available &&
+      !identity.character_id.has_value() && !identity.title_id.has_value() &&
+      !identity.faction_id.has_value() &&
+      identity.unavailable_reason == "landed_title_scope_is_null") return true;
+  if (identity.title_id.has_value() || identity.faction_id.has_value()) {
+    return false;
+  }
   if (scope.raw_type_index == kCharacterScopeTypeIndex) {
     if (allow_null_saved_character_scope &&
         scope.type_key == kCharacterScopeTypeKey && !identity.available &&
@@ -177,7 +205,15 @@ void AppendScope(std::string &output, const game::EventScopeV1 &scope) {
   AppendString(output, scope.type_key);
   output += ",\"subtype\":" + Number(scope.subtype) +
             ",\"typed_identity\":";
-  if (scope.typed_identity.available) {
+  if (scope.typed_identity.available &&
+      scope.raw_type_index == kLandedTitleScopeTypeIndex &&
+      scope.type_key == kLandedTitleScopeTypeKey) {
+    output += "{\"status\":\"available\",\"kind\":\"landed_title\","
+              "\"title_id\":" + Number(*scope.typed_identity.title_id) + "}";
+  } else if (scope.typed_identity.available && scope.raw_type_index == 25) {
+    output += "{\"status\":\"available\",\"kind\":\"faction\","
+              "\"faction_id\":" + Number(*scope.typed_identity.faction_id) + "}";
+  } else if (scope.typed_identity.available) {
     output += "{\"status\":\"available\",\"kind\":\"character\","
               "\"character_id\":" +
               Number(*scope.typed_identity.character_id) + "}";

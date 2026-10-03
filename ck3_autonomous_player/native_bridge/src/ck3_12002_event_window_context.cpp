@@ -1,4 +1,6 @@
 ﻿#include "xar_bridge/ck3_12002_event_window_context.hpp"
+#include "xar_bridge/ck3_12002_faction_alerts.hpp"
+#include "xar_bridge/event_faction_scope_identity_12003.hpp"
 
 
 
@@ -98,6 +100,9 @@ constexpr std::int32_t kMaximumComponentSlots = 4'194'304;
 constexpr std::size_t kMaximumStringBytes = 16'384;
 constexpr std::uint16_t kCharacterScopeTypeIndex = 4;
 constexpr std::string_view kCharacterScopeTypeKey = "character";
+constexpr std::uint16_t kLandedTitleScopeTypeIndex = 5;
+constexpr std::string_view kLandedTitleScopeTypeKey = "landed_title";
+constexpr std::size_t kLandedTitleIdOffset = 0x10;
 constexpr std::string_view kGenericScopeIdentityUnavailableReason =
     "generic_scope_payload_identity_not_closed";
 
@@ -316,6 +321,31 @@ bool ResolveCharacterScopeIdentity(const EventWindowBindings &bindings,
          LoadAt<std::int32_t>(character, kCharacterIdOffset) == character_id;
 }
 
+bool ResolveLandedTitleScopeIdentity(const EventWindowBindings &bindings,
+                                    const void *token,
+                                    std::int32_t &title_id) noexcept {
+  title_id = -1;
+  if (bindings.landed_title_storage_slot == nullptr ||
+      bindings.landed_title_fallback_slot == nullptr || token == nullptr) return false;
+  // Exact native type5 FullRef producer zero-extends Title+0x10 into token+8.
+  // Resolve all generation bits, matching native 0x225E200 rather than a pointer.
+  const auto raw_title_id = LoadAt<std::uint32_t>(token, kEventScopeTokenPayloadOffset);
+  title_id = static_cast<std::int32_t>(raw_title_id);
+  if (raw_title_id == std::numeric_limits<std::uint32_t>::max()) return false;
+  void *const storage = *bindings.landed_title_storage_slot;
+  if (storage == nullptr) return false;
+  void *const slots = LoadAt<void *>(storage, kComponentStorageSlotsOffset);
+  const auto capacity = LoadAt<std::int32_t>(storage, kComponentStorageCapacityOffset);
+  const auto index = raw_title_id & 0x00FFFFFFU;
+  if (slots == nullptr || capacity <= 0 || capacity > kMaximumComponentSlots ||
+      index >= static_cast<std::uint32_t>(capacity)) return false;
+  const auto slot_offset = static_cast<std::size_t>(index) * kComponentStorageSlotStride +
+                           kComponentStorageSlotObjectOffset;
+  void *const title = LoadAt<void *>(slots, slot_offset);
+  return title != nullptr && title != *bindings.landed_title_fallback_slot &&
+         LoadAt<std::int32_t>(title, kLandedTitleIdOffset) == title_id;
+}
+
 bool ReadEventScopeToken(const EventWindowBindings &bindings, void *registry,
                           const void *token, game::EventScopeV1 &output,
                           bool named_saved_scope = false) {
@@ -353,6 +383,35 @@ bool ReadEventScopeToken(const EventWindowBindings &bindings, void *registry,
     output.typed_identity.available = true;
     output.typed_identity.character_id = character_id;
     output.typed_identity.unavailable_reason.clear();
+    return true;
+  }
+  if (output.raw_type_index == kLandedTitleScopeTypeIndex &&
+      bindings.landed_title_storage_slot != nullptr) {
+    if (output.type_key != kLandedTitleScopeTypeKey) return false;
+    const auto raw_title_id = LoadAt<std::uint32_t>(token, kEventScopeTokenPayloadOffset);
+    if (named_saved_scope && raw_title_id == std::numeric_limits<std::uint32_t>::max()) {
+      output.typed_identity.unavailable_reason = "landed_title_scope_is_null";
+      return true;
+    }
+    std::int32_t title_id = -1;
+    if (!ResolveLandedTitleScopeIdentity(bindings, token, title_id)) return false;
+    output.typed_identity.available = true;
+    output.typed_identity.title_id = title_id;
+    return true;
+  }
+  if (output.raw_type_index == 25 && bindings.faction_scope_storage_slot != nullptr) {
+    if (output.type_key != "faction") return false;
+    std::int32_t faction_id = -1;
+    const auto payload = LoadAt<std::uint64_t>(token, kEventScopeTokenPayloadOffset);
+    if (ResolveEventFactionScopeIdentity12003(payload,
+            bindings.faction_scope_storage_slot, bindings.faction_scope_fallback_slot,
+            bindings.faction_scope_expected_vtable, faction_id)) {
+      output.typed_identity.available = true;
+      output.typed_identity.faction_id = faction_id;
+      output.typed_identity.unavailable_reason.clear();
+    } else {
+      output.typed_identity.unavailable_reason = "faction_scope_identity_unavailable";
+    }
     return true;
   }
   if (output.type_key == kCharacterScopeTypeKey) {
@@ -880,6 +939,18 @@ EventWindowBindings BindEventWindowImage(std::uintptr_t image_base,
   result.events = BindEventsImage(image_base, patch3_splash ? kExecutableSha256 : sha256);
   if (!result.events.core.enabled) { return result; }
   result.allow_null_saved_character_scope = patch3_splash;
+  if (patch3_splash) {
+    const auto factions = BindPlayerFactionAlertsNativeEnvironmentV1(image_base, true);
+    result.faction_scope_storage_slot = factions.faction_storage_slot;
+    result.faction_scope_fallback_slot = factions.faction_fallback_slot;
+    result.faction_scope_expected_vtable = factions.expected_faction_vtable;
+  }
+  if (patch3_splash) {
+    result.landed_title_storage_slot = reinterpret_cast<void **>(
+        image_base + kEventScopeLandedTitleStorageSlotRva);
+    result.landed_title_fallback_slot = reinterpret_cast<void **>(
+        image_base + kEventScopeLandedTitleFallbackSlotRva);
+  }
   result.ingame_interface_idler_vtable = image_base + kEventWindowIdlerGfxVtableRva;
   result.event_window_primary_vtable = image_base + kEventWindowPrimaryVtableRva;
   if (patch3_splash) {
