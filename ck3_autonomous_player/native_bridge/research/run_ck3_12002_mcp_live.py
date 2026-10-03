@@ -575,6 +575,37 @@ class PlanClient:
             await asyncio.sleep(min(0.25, max(0, deadline - time.monotonic())))
 
 
+def require_verified_bookmarks_picker(tree: object) -> dict[str, object]:
+    """Admit only a complete native tree rooted at the ordinary bookmark picker.
+
+    Selection/date/government/Robert identity remain independently guarded by
+    the existing typed start method; tree presence is not selection proof.
+    """
+    if not isinstance(tree, dict) or not (
+        tree.get("schema") == "ck3-frontend-gui-tree-inspection-v1"
+        and tree.get("accepted") is True and tree.get("status") == "available"
+        and tree.get("scope_root_name") == "frontend_bookmarks"
+        and tree.get("root_available") is True and tree.get("read_only") is True
+        and tree.get("truncated") is False and isinstance(tree.get("widgets"), list)
+    ):
+        raise RuntimeError("native tree does not prove a complete ordinary bookmarks picker")
+    widgets = tree["widgets"]
+    proof: dict[str, object] = {}
+    for name in ("frontend_bookmarks", "character_selection", "start_button", "pick_any_character_button"):
+        matches = [row for row in widgets if isinstance(row, dict) and row.get("runtime_name") == name]
+        if len(matches) != 1 or not isinstance(matches[0].get("vtable_rva"), int) or matches[0]["vtable_rva"] <= 0:
+            raise RuntimeError("native bookmarks picker does not uniquely resolve " + name)
+        proof[name] = matches[0]
+    root = proof["frontend_bookmarks"]
+    any_character = proof["pick_any_character_button"]
+    if root.get("child_path") != "" or root.get("effective_visible") is not True:
+        raise RuntimeError("native bookmarks picker root is not currently visible")
+    if any_character.get("effective_visible") is not True or any_character.get("enabled") is not True:
+        raise RuntimeError("native ordinary character picker control is not active")
+    return {"status": "ORDINARY_BOOKMARKS_TREE_VERIFIED", "widgets": proof,
+            "selection_identity": "Existing typed start must independently prove exact stock Robert model before mutation"}
+
+
 async def run(args: argparse.Namespace) -> dict[str, object]:
     from mcp import ClientSession, StdioServerParameters
     from mcp.client.stdio import stdio_client
@@ -661,6 +692,63 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                         # initialize/list_tools prove the child has already opened its pipe.
                         if supervisor is not None:
                             supervisor.start()
+                        if args.frontend_robert_bootstrap:
+                            report["phase"] = "native-frontend-robert-bootstrap"
+                            report["frontend_bootstrap"] = {"status": "RUNNING", "uses_ocr": False,
+                                "uses_keyboard": False, "uses_mouse": False, "attempts": []}
+                            write()
+                            frontend_deadline = time.monotonic() + args.readiness_timeout
+                            while True:
+                                if supervisor is not None and done.is_set():
+                                    raise RuntimeError("managed session ended before native frontend readiness")
+                                try:
+                                    route = await client.call("ck3_query_frontend_gui_route_v1")
+                                except Exception as error:
+                                    report["frontend_bootstrap"]["attempts"].append({
+                                        "at": now(), "error": f"{type(error).__name__}: {error}"})
+                                    write()
+                                else:
+                                    report["frontend_bootstrap"]["attempts"].append({"at": now(), "route": route})
+                                    write()
+                                    if isinstance(route, dict) and route.get("route") in {"main_menu", "bookmarks"}:
+                                        break
+                                    if isinstance(route, dict) and route.get("route") not in {"unavailable", "main_menu"}:
+                                        raise RuntimeError("fresh ordinary Robert bootstrap observed another native frontend route: " + str(route))
+                                if time.monotonic() >= frontend_deadline:
+                                    raise TimeoutError("native frontend route did not become main_menu")
+                                await asyncio.sleep(1)
+                            entry_route = route["route"]
+                            report["frontend_bootstrap"]["entry_route"] = route
+                            entry_tree = await client.call("ck3_inspect_frontend_gui_tree_v1")
+                            report["frontend_bootstrap"]["entry_tree"] = entry_tree
+                            write()
+                            if args.frontend_diagnostic_only:
+                                report["frontend_bootstrap"]["status"] = "READ_ONLY_ROUTE_AND_TREE_OBSERVED_NO_ACTIONS"
+                                write()
+                                if args.hold_seconds:
+                                    await client.hold(args.hold_seconds)
+                                raise RuntimeError("Frontend diagnostic only; no New Game, selection, Start or product test requested")
+                            if entry_route == "main_menu":
+                                opened = await client.call("ck3_activate_frontend_new_game_v1")
+                                report["frontend_bootstrap"]["new_game"] = opened
+                                write()
+                                if not isinstance(opened, dict) or opened.get("status") != "verified":
+                                    raise RuntimeError("native New Game did not independently verify Bookmarks")
+                                entry_tree = await client.call("ck3_inspect_frontend_gui_tree_v1")
+                                report["frontend_bootstrap"]["bookmarks_tree"] = entry_tree
+                                write()
+                            elif not args.allow_verified_direct_bookmarks:
+                                raise RuntimeError("direct bookmarks tree preserved; explicit guarded direct-entry option required")
+                            report["frontend_bootstrap"]["picker_tree_proof"] = require_verified_bookmarks_picker(entry_tree)
+                            write()
+                            started = await client.call("ck3_activate_frontend_start_1066_bookmark_character_v1",
+                                {"character_name_key": "bookmark_rags_to_riches_duke_robert"})
+                            report["frontend_bootstrap"]["start_robert"] = started
+                            write()
+                            if not isinstance(started, dict) or started.get("status") != "verified":
+                                raise RuntimeError("native stock Robert Start did not independently verify the map")
+                            report["frontend_bootstrap"]["status"] = "NATIVE_START_VERIFIED_MAP_READINESS_PENDING"
+                            write()
                         report["phase"] = "waiting-for-paused-map"
                         write()
                         deadline = time.monotonic() + args.readiness_timeout
@@ -743,6 +831,12 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--control-plan-dir", type=Path, help="read new/updated JSON plans during hold")
     result.add_argument("--turns", type=int, default=0, help="MCP ck3_auto_turn count after the plan")
     result.add_argument("--cold-start-checkpoint", action="store_true")
+    result.add_argument("--frontend-robert-bootstrap", action="store_true",
+                        help="Use existing typed native stock Robert start before map readiness; no desktop input")
+    result.add_argument("--frontend-diagnostic-only", action="store_true",
+                        help="Capture typed entry route/tree and hold; never dispatch a frontend action")
+    result.add_argument("--allow-verified-direct-bookmarks", action="store_true",
+                        help="Allow direct Bookmarks only after complete typed ordinary picker tree admission")
     result.add_argument("--fixture-profile", action="store_true",
                         help="explicit external fixture profile; use owned launch without singleton verification")
     result.add_argument("--native-fixture-inbox", action="store_true",
@@ -759,6 +853,8 @@ def parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = parser().parse_args()
+    if args.frontend_robert_bootstrap and (args.cold_start_checkpoint or args.sdk_smoke_test or args.sdk_error_smoke_test):
+        raise SystemExit("frontend Robert bootstrap requires a fresh actual game session, not cold checkpoint or SDK fixture")
     if args.sdk_error_smoke_test:
         args.sdk_smoke_test = True
     if args.native_fixture_inbox and not args.fixture_profile:

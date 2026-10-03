@@ -236,7 +236,45 @@ bool Contains(std::span<const std::string_view> values,
 
 } // namespace
 
-int main() {
+int TestCrozierFrontendPrivateCapabilities() {
+  const auto &crozier = xar::game::Ck3_12003AdapterDescriptor();
+  if (crozier.adapter_id != "ck3-1.20.0.3-msvc-x64" ||
+      crozier.game_version != "1.20.0.3" ||
+      crozier.executable_sha256 !=
+          "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6") {
+    return Fail("frontend capability test did not bind the exact .3 descriptor");
+  }
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
+  constexpr bool model_enabled = true;
+#else
+  constexpr bool model_enabled = false;
+#endif
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
+  constexpr bool selected_start_enabled = true;
+#else
+  constexpr bool selected_start_enabled = false;
+#endif
+  if (Contains(crozier.capabilities,
+               "game.command.probe-frontend-bookmark-model-v1") != model_enabled) {
+    return Fail(".3 bookmark model capability does not match its compile flag");
+  }
+  for (const auto capability : {
+         "game.command.activate-frontend-select-supported-1066-character-v1",
+         "game.command.activate-frontend-start-selected-bookmark-v1"}) {
+    if (Contains(crozier.capabilities, capability) != selected_start_enabled) {
+      return Fail(".3 selected character/Start capability does not match its compile flag");
+    }
+  }
+  std::cout << "PASS: .3 private frontend capabilities match model="
+            << model_enabled << " selected_start=" << selected_start_enabled << '\n';
+  return 0;
+}
+
+int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--frontend-private-capabilities-only") {
+    return TestCrozierFrontendPrivateCapabilities();
+  }
+  if (argc != 1) return Fail("unknown focused adapter test argument");
   const auto &known = xar::game::Ck3_11906AdapterDescriptor();
 #if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
   if (!Contains(known.capabilities,

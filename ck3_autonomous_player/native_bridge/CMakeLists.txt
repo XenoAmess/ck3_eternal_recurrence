@@ -3945,6 +3945,10 @@ if(BUILD_TESTING)
     target_compile_definitions(xar_ck3_adapter_registry_test PRIVATE
       XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1=1)
   endif()
+  if(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
+    target_compile_definitions(xar_ck3_adapter_registry_test PRIVATE
+      XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1)
+  endif()
   if(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
     target_compile_definitions(xar_ck3_adapter_registry_test PRIVATE
       XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=1)
@@ -3981,6 +3985,10 @@ if(BUILD_TESTING)
     target_compile_options(xar_ck3_adapter_registry_test PRIVATE
       /W4 /permissive- /EHsc)
   endif()
+  add_test(
+    NAME xar_ck3_12003_frontend_private_capabilities
+    COMMAND xar_ck3_adapter_registry_test --frontend-private-capabilities-only
+  )
   add_test(
     NAME xar_ck3_native_bridge_adapter_registry
     COMMAND xar_ck3_adapter_registry_test

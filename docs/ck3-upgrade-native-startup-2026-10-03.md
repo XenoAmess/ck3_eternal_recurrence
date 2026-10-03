@@ -31,3 +31,15 @@ Run **`4-8e1c2f1861--auto-upgrade-buildings--R0002`**，执行目录 `C:/workspa
 退出由受管会话进行 containment：`cleanup_ok=true`、最终 job active 0，CK3 exit code 1、清理前仍有一个活动游戏进程。故记录为清理完成，**不记正常游戏退出**。13:28 UTC 本机复核 CK3 为零，keeper 停止且 CAS release 成功，随后才更新 checkout。
 
 后续诊断已定位两个具体驱动阻点：无 checkpoint 的 owned launch 固定 `-continuelastsave`，但 route=`bookmarks` 本身不足以证明可操作的实际 picker，需要 typed tree；`.3` adapter 的 hello 目前遗漏已启用 flags 对应的 bookmark model/selected Start capability，Python 会在缺 capability 时拒绝下一步。修复必须保持真实注册与条件一致，不能绕过缺失声明。后续使用新源/二进制、新 run 和新 userdir，旧 R0002 原样保留。
+
+## 已采用的前端接线修复
+
+`.3` descriptor 现在按已有 MODEL 和 SELECTED_START 开关分别发布 bookmark model、selected character 与 selected Start 的能力声明。默认开关未改变；没有新建这些底层动作或放宽 exact-build gate。`game_adapter_test` 的单一 `--frontend-private-capabilities-only` 模式核对真实 descriptor 与对应编译开关，CMake 向测试传播 MODEL 开关，并注册独立 CTest，避免为了此修复重跑已知 strict-combat registry RED。
+
+外置新源 `courtier-agent-01/source-f4e-frontend-caps-01` 从原4552文件逐项验证复制，只有三文件接线补丁。13:43 UTC 新构建及聚焦 descriptor 测试通过，输出 model=1、selected_start=1；未取得 OFF 构建或实机结果。收据 `native-frontend-caps-on-attempt-01/result.json` 保全完整命令、stdio、freeze与产物。新 DLL SHA `34160bbf673097d0ac9944d2e8ff54e6c80b55dd47e339598d85be01e1d58f60`、injector SHA `831914e9e3ab03f03ffe8f78dab8a029b8b7a030fd2a01f1aa7145bbf1feeaee`；上一组二进制未覆盖。
+
+既有永久入口 `ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py` 增加可选的 stock Robert 原生前端启动，不新增完整 `.3` 副本。它在实际 route/tree 保全后，才允许主菜单 NewGame；直接 bookmarks 另需显式 CLI 选项、完整且未截断的实际树、唯一 root/character_selection/start/pick-any 控件与当前可见性。最终仍由已有 typed Start 独立核对 stock Robert model、日期、政府及地图，树中有按钮本身不证明选中了 Robert。冷 checkpoint 与 SDK fixture 模式不使用这条新启动路径。
+
+只读诊断选项保全 route/tree并有限 hold，禁止发出 Start，结果不计战役或产品验收。三个聚焦离线检查通过：已有 SDK error 路径、fixture episode queue，以及新 picker admission 的有效输入/截断/错误 scope/缺失 Start/重复 Start。已跑结果在 `frontend-tree-harness-v2-validation-01/report.json`，回归测试并入原测试文件；没有重复运行。当前主线 harness 与外置 v2 的文本归一化内容及 Python AST 相同，字节差仅为换行；实际 run仍各自绑定原始 bytes。
+
+R0002 最终 state/live 的1950文件另保存于 `aub-empty-agent-02/r0002-closed-packet-01/closed-state-and-live.zip`，逐文件解包读回 SHA相同；原目录保留。新 profile04 准备于 `aub-empty-agent-02/native/profiles/aub-production-empty-fixture-profile-04`，preparation SHA `807771332e6b167e2072283eb40648003106e9270beb6e50218f8f603e80f138`，17+空1文件与85 defaults复用精确来源、未复用旧 runtime state。仍是准备状态。

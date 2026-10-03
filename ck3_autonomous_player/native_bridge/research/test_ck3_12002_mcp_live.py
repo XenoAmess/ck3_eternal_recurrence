@@ -17,10 +17,31 @@ import time
 import unittest
 from unittest import mock
 
-from run_ck3_12002_mcp_live import PlanClient, clean_imports, fixture_session, resolve, tool_payload
+from run_ck3_12002_mcp_live import (
+    PlanClient, clean_imports, fixture_session,
+    require_verified_bookmarks_picker, resolve, tool_payload,
+)
 
 
 class OfflinePlanTests(unittest.TestCase):
+    def test_unknown_or_incomplete_tree_never_admits_direct_bookmarks(self):
+        # Unit fixtures exercise admission only; real runs must obtain native
+        # tree/model observations before selecting or starting a character.
+        base = {"schema": "ck3-frontend-gui-tree-inspection-v1", "accepted": True,
+                "status": "available", "scope_root_name": "frontend_bookmarks",
+                "root_available": True, "read_only": True, "truncated": False,
+                "widgets": [{"runtime_name": name, "child_path": "" if index == 0 else str(index),
+                             "vtable_rva": 1, "effective_visible": True, "enabled": True}
+                            for index, name in enumerate(["frontend_bookmarks", "character_selection",
+                                                         "start_button", "pick_any_character_button"])]}
+        self.assertEqual(require_verified_bookmarks_picker(base)["status"], "ORDINARY_BOOKMARKS_TREE_VERIFIED")
+        bad = [dict(base, truncated=True), dict(base, scope_root_name="mainmenu_panel_bottom"),
+               dict(base, widgets=[r for r in base["widgets"] if r["runtime_name"] != "start_button"]),
+               dict(base, widgets=base["widgets"]+[base["widgets"][2]])]
+        for tree in bad:
+            with self.subTest(tree=tree):
+                with self.assertRaises(RuntimeError): require_verified_bookmarks_picker(tree)
+
     def test_fixture_session_consumes_next_episode_queue_and_relaunches(self):
         clean_imports(Path(__file__).resolve().parents[2] / "src")
         session_module = importlib.import_module("xar_autoplayer.native_session")
