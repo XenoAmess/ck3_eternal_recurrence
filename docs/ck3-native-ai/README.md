@@ -1,5 +1,21 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-03T21:25 最新正常pair与真实收复范围
+
+最新 h5360/raw53240136/3992日，第二explicit batch31×24h均完整，末同帧native308/public125/generation5/raw53240136的完整occupation实读：2604/holding2400 legalholder33435、occupied=false、occupier=null、counted_opposing=false；siege_observable=true且active_siege=null、besieging_strength=0、garrison25，独立证明目标敌占已清除。defender31 eligible/15 occupied，恢复帧17→终态15的两项减少中，只把holding2400这项归于已证玩家收复，另一项不猜来源。玩家军83886367仍2604、regular1/complete_empty、noncombat/nonretreat，独立strength2248。仅授单holding收复loop，无玩家battlewin/自然继承。首批44时间保存/43whole与day44 RED、h5222独立恢复分别保留。[唯一31日终态receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/siege-v41/second-batch-consumption/ROOT-TERMINAL-DELIVERY.json)
+
+## 2026-10-03：v41 围城推进与收复批次的最新入口
+
+v41/sourcecd5/冻结g43的首批显式24h推进记录44个实际日，43轮完整收口；末轮005 completion-changed真实RED保留。随后fresh recovery正常保存 **h5222 / raw53239392 / 累计3961日**，该冻结恢复帧PID62988，work20004730/32500000、progress61.553%、ETA60、主战17项仍敌占。不得把末轮失败改写为完整GREEN或补造中间日级帧。
+
+第二批随后实际推进31日/744h，31轮完整并正常保存；累计3961→3992日（接续+839、10月3日+744）。末正常pair **h5360 / raw53240136**，save91,504,049字节、SHA-256 `b76ed06c77002e15c19e3b2c9ca349d4fad68f95c9305e745241c8c1719065c5`。完整occupation后态在native308/public125/connection generation5确认2604/holding2400合法持有人33435、`occupied=false`/occupier null/count false，siege可观测且active_siege null、besieging0/garrison25；Robert军队83886367在2604 regular1/空route/无战斗或撤退、当前2248兵。这是我军单个holding的真实收复闭环；defender31项eligible、敌占17→15，另一项减少未归因。此冻结帧不推测游戏当前运行/停止状态，不授玩家战斗胜利或自然继承信用。
+
+- [Robert防御战争决策树](robert-defensive-war-loop-12003.md)：沿已发布树进行观察、决策、操作与独立结果验证。
+- [占领目标真实行](war-occupation-targets-12003.md)：区分首批恢复帧的17项敌占与第二批的15项敌占，仅holding2400已证我军收复，不把两项减少全归因于该动作。
+- [holding围城观察与实际进度](war-occupation-holding-siege-observation-12003.md)：首批恢复帧的61.553%进度和ETA60为当时值；第二批收复结果另据独立占领观察记录，估计不是完成证明。
+
+后继v42官方CI GREEN，但fullbuild C1061真实RED；focused fix已GREEN。Root的clean source8e2cfbee已推送，v43/冻结g45基于该源等待build，只记prepared/static状态；这些结果不得替代v41实际游戏结果或声称后继版本已部署。
+
 ### 撤退原生树与当前编成的实际边界
 
 [撤退、追击及再接战原生树](battle-retreat-pursuit-reengagement-12003.md)的独立三路径文档包已发布 `0fd88714b154c69bef90c3265a7dc0c56dcbb916`，现有双route查询实读ETA51/42日，不代表撤退解除或固定保护期。[当前目标省编成](battle-composition-actual-v34-12003.md)为target2604/entry2605指定的hypothetical contact，真实40军团与Robert advantage34/roll0..10可读，MC仍false，未接战或算胜率。
