@@ -118,8 +118,8 @@ lyd_adopt_{rite.slug}_effect = {{
     for practice in PRACTICES:
         for option in practice.options:
             mutations = []
-            for field, value in (("add_gold", -option.gold_cost), ("add_piety", option.piety_change),
-                                 ("add_prestige", option.prestige_change), ("change_stress", option.stress_change),
+            for field, value in (("remove_short_term_gold", option.gold_cost), ("add_piety", option.piety_change),
+                                 ("add_prestige", option.prestige_change), ("add_stress", option.stress_change),
                                  ("add_learning_lifestyle_xp", option.learning_xp)):
                 if value:
                     mutations.append(f"{field} = {value}")
@@ -132,7 +132,6 @@ lyd_adopt_{rite.slug}_effect = {{
             gold >= {option.gold_cost}
         }}
         {' '.join(mutations)}
-        add_character_flag = {practice.completion_flag}
         add_character_flag = {{ flag = lyd_study_cooldown days = {STUDY_COOLDOWN_DAYS} }}
     }}
 }}
@@ -143,6 +142,9 @@ lyd_adopt_{rite.slug}_effect = {{
     def decision(identifier: str, gate: str, effect: str, extra: str = "") -> str:
         return f"""
 {identifier} = {{
+    picture = {{ reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }}
+    decision_group_type = religious
+    ai_check_interval = 0
     desc = {identifier}_desc
     selection_tooltip = {identifier}_tooltip
     confirm_text = {identifier}_confirm

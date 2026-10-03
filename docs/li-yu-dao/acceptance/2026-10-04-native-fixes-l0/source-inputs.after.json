@@ -1,0 +1,184 @@
+{
+  "files": [
+    {
+      "path": "common/character_interactions/lyd_interactions.txt",
+      "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba",
+      "size": 127
+    },
+    {
+      "path": "common/decisions/lyd_decisions.txt",
+      "sha256": "aae30076a90402e285d4f589b6160a21ef9eb321a12239f4b0955d11ff23b9f4",
+      "size": 1973
+    },
+    {
+      "path": "common/religion/faith_types/lyd_faiths.txt",
+      "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525",
+      "size": 424
+    },
+    {
+      "path": "common/religion/rite_types/lyd_rites.txt",
+      "sha256": "889d7846bb876ee260f0b5882116fafe9185db78c8adeab9551f43146cb33a2b",
+      "size": 3061
+    },
+    {
+      "path": "common/religion/tenet_types/lyd_tenets.txt",
+      "sha256": "8c48b1d0e6056845fec7a6babb53754fb7b7aecb2c3b7df7bae608654bd20789",
+      "size": 8333
+    },
+    {
+      "path": "common/scripted_effects/lyd_entry_effects.txt",
+      "sha256": "6ad04df437ce1e7ba63fcbb5c475b15fb22d4e7e5131aa0849b69b6aecaa226d",
+      "size": 1099
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_1_effects.txt",
+      "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7",
+      "size": 2798
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_2_effects.txt",
+      "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879",
+      "size": 2703
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_3_effects.txt",
+      "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131",
+      "size": 2756
+    },
+    {
+      "path": "common/scripted_effects/lyd_school_effects.txt",
+      "sha256": "440ff86222c5143bec5d00862afff7113b38c7c0e45605aa1e5036fad2ff6055",
+      "size": 2186
+    },
+    {
+      "path": "common/scripted_triggers/lyd_player_triggers.txt",
+      "sha256": "4908f60fcea79e98a4389dd332bcf1da33a812d895562327aa37d16272a50e02",
+      "size": 738
+    },
+    {
+      "path": "descriptor.mod",
+      "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2",
+      "size": 139
+    },
+    {
+      "path": "events/lyd_events.txt",
+      "sha256": "443036f4787efa5e59f927bb0d8832d8f6e55efbf744b3810efe674de36817ed",
+      "size": 10604
+    },
+    {
+      "path": "fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/decisions/lyd_np_decisions.txt",
+      "sha256": "7a95bec62bcc6533c7fcdef7331b76a359ec4dedac29d5bc99888b2c53757db2",
+      "size": 1770
+    },
+    {
+      "path": "fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/religion/faith_types/lyd_np_faiths.txt",
+      "sha256": "bcd46bd4407ae43dcaf84b505a08c2d883c2e52726587e7ae9cd088d88c62870",
+      "size": 641
+    },
+    {
+      "path": "fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/religion/rite_types/lyd_np_rites.txt",
+      "sha256": "ba76cd96f18ba0f75d9932c6e50dcd4067abfd465364731c10e7bcfc211b058c",
+      "size": 845
+    },
+    {
+      "path": "fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/scripted_effects/lyd_np_effects.txt",
+      "sha256": "4f11d1ae816e349ee2f4c736939819c0964dc1ddcecd75545026ef5eeeae4d70",
+      "size": 8225
+    },
+    {
+      "path": "fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/scripted_triggers/lyd_np_triggers.txt",
+      "sha256": "4c487386b018af6b2a0c918ee5cf89dad908b483eba44b696b47c303fcdaf445",
+      "size": 2790
+    },
+    {
+      "path": "fixtures/native_cycle/mod_li_yu_dao_native_prototype/descriptor.mod",
+      "sha256": "b82a694df94b885c0438d55bb3f1d5ed2fdde6b624131633b5ae56cfabe101f1",
+      "size": 125
+    },
+    {
+      "path": "fixtures/native_cycle/mod_li_yu_dao_native_prototype/events/lyd_np_events.txt",
+      "sha256": "9e2086e8373a11f6dc7c4ff4f9cf342d6d87b60adba45dd68e5797f9452b9457",
+      "size": 3739
+    },
+    {
+      "path": "fixtures/native_cycle/mod_li_yu_dao_native_prototype/localization/english/lyd_np_l_english.yml",
+      "sha256": "26acb8c79ff2c790a62b8905e725250153141731c14719259a52c02d555ad723",
+      "size": 2296
+    },
+    {
+      "path": "fixtures/native_cycle/mod_li_yu_dao_native_prototype/localization/simp_chinese/lyd_np_l_simp_chinese.yml",
+      "sha256": "d7d4381c8bb172e4a32041588e43f1838e1bc861902153df3a2d1f10eec2d907",
+      "size": 1993
+    },
+    {
+      "path": "fixtures/native_cycle/validate_prototype.py",
+      "sha256": "7e7113af4010890c2ffbc30133921c8b16a0091c003634690151abf6a839af8e",
+      "size": 7179
+    },
+    {
+      "path": "history/faiths/lyd_faith_history.txt",
+      "sha256": "00ea56c310601a142d18ee52313d39556ffb56964f4927026de69126b9914f11",
+      "size": 588
+    },
+    {
+      "path": "localization/english/lyd_content_l_english.yml",
+      "sha256": "3c5ca01e2f47ad87700eb6e93eb0a9675e98ceb5a58337679e9f31c7eea6f3c4",
+      "size": 17495
+    },
+    {
+      "path": "localization/english/lyd_runtime_l_english.yml",
+      "sha256": "ecea067dcd55ee5bf78018d39e972ca875547390b392550e8a2b4504a1835193",
+      "size": 2471
+    },
+    {
+      "path": "localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "sha256": "df78c4340ba0f8ae53d3637f5485143046497c014e980ee91f6a9b6031f9dae5",
+      "size": 14147
+    },
+    {
+      "path": "localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "sha256": "f95bc217ca63028cb828e156e0a2f131d80ad2a332f98bc5290c4683e0a90a1a",
+      "size": 2138
+    },
+    {
+      "path": "tools/build_release.py",
+      "sha256": "3d4005b79d6246b5a9591cd0b0c17109a81a9245413bdb8c2f107193d1771930",
+      "size": 9341
+    },
+    {
+      "path": "tools/content_data.py",
+      "sha256": "fbfdda2180c5a62f2bb9a24e0d3de53d040d788790b52fd0872642f0f39ab508",
+      "size": 59113
+    },
+    {
+      "path": "tools/gen_content.py",
+      "sha256": "0f84c4ba8bd0971cae88bae97e0c7abd335688985417b9b0b97afcae34466cf0",
+      "size": 8024
+    },
+    {
+      "path": "tools/gen_runtime.py",
+      "sha256": "62e8b6ad78211b3877c3c4ebda77a15b80b952b4a29be891da4164c3c7aac67c",
+      "size": 12630
+    },
+    {
+      "path": "tools/run_acceptance.py",
+      "sha256": "29a092c56bc6a86fece29821e286db4a0bf58dc62c607caa7b048866d130215e",
+      "size": 19154
+    },
+    {
+      "path": "tools/test_build_release.py",
+      "sha256": "2bbc8712f3a7dd780bbf8921a2c90c76088d045c9b6d59c743336787f947b367",
+      "size": 10238
+    },
+    {
+      "path": "tools/test_run_acceptance.py",
+      "sha256": "0ab609f33042898596a8e1b1726cc7b166b15a88db3340d1211c89285811db23",
+      "size": 8981
+    },
+    {
+      "path": "tools/validate_static.py",
+      "sha256": "f24c01ae2c91c5a859b383ad73a0a8823dbaf7be205f219ad56ee53edb2c883c",
+      "size": 17044
+    }
+  ]
+}

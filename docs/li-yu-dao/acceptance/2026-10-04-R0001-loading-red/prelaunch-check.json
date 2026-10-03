@@ -1,0 +1,20 @@
+{
+  "processes": [],
+  "time": "2026-10-03T22:20:52.318978+00:00",
+  "argv": [
+    "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "-debug_mode",
+    "-gdpr-compliant",
+    "-userdir=C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\userdir"
+  ],
+  "review": {
+    "steam_offline_confirmed": true,
+    "reviewer": "root visual inspection of full desktop image",
+    "image": "offline/probe-1/steam-moved.png",
+    "image_sha256": "a2921177d232052ed4a8881fd204ed828ecd07b3695d47ada0d111cc9fefeea4",
+    "fresh_frame_receipt": "offline/probe-1/steam-frame-freshness.json",
+    "evidence_scope": "current isolated LYD R0001 launch; Steam lower bar visibly reads 离线模式"
+  },
+  "git_head": "e0378edac081c2413b56f942bd322e81cea5c8a7",
+  "git_status": ""
+}

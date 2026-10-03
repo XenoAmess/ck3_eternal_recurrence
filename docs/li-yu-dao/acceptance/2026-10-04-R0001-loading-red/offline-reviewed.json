@@ -1,0 +1,8 @@
+{
+  "steam_offline_confirmed": true,
+  "reviewer": "root visual inspection of full desktop image",
+  "image": "offline/probe-1/steam-moved.png",
+  "image_sha256": "a2921177d232052ed4a8881fd204ed828ecd07b3695d47ada0d111cc9fefeea4",
+  "fresh_frame_receipt": "offline/probe-1/steam-frame-freshness.json",
+  "evidence_scope": "current isolated LYD R0001 launch; Steam lower bar visibly reads 离线模式"
+}

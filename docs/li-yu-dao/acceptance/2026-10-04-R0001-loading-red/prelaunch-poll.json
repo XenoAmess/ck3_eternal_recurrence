@@ -1,0 +1,2330 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task_id": "ck3-lyd-live-001-20261004",
+  "previous_cursor": 0,
+  "acknowledged_cursor": 103,
+  "events": [
+    {
+      "event_id": "1eb681ad5eab4a4cae109c425b991dff",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 23,
+        "head": "8791b389f47c9de30a7ed4d06d4d81ead3dcd28e"
+      },
+      "kind": "registered",
+      "next_step": "Steam_offline_fresh_frame",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "origin/master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 1,
+      "state": "running",
+      "summary": "AUB_4.0.2_cap_and_release",
+      "task_id": "aub-4-0-2-20260928",
+      "timestamp_utc": "2026-09-27T17:45:15.645699+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "789fed6c9e194602be18eced676a30d2",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 23,
+        "head": "8791b389f47c9de30a7ed4d06d4d81ead3dcd28e"
+      },
+      "kind": "status",
+      "next_step": "CK3_isolated_acceptance",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "origin/master",
+        "ck3-screen:acquired",
+        "CK3"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 2,
+      "state": "running",
+      "summary": "Steam_offline_evidence",
+      "task_id": "aub-4-0-2-20260928",
+      "timestamp_utc": "2026-09-27T17:45:43.347547+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "2b45d88da56c4f27a5be582064361aee",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "90f47cf855cbf552fa0bb191bfd6cf414c168add"
+      },
+      "kind": "registered",
+      "next_step": "source_audit_while_CK3_busy",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 3,
+      "state": "running",
+      "summary": "seven_item_upstream_refresh",
+      "task_id": "damengsan-seven-refresh-20260928",
+      "timestamp_utc": "2026-09-28T01:19:48.483050+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "c9c4bced5730476bb0e99dc80b8b2f57",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 2,
+        "head": "90f47cf855cbf552fa0bb191bfd6cf414c168add"
+      },
+      "kind": "status",
+      "next_step": "download_seven_items",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master",
+        "Steam",
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 5,
+      "state": "running",
+      "summary": "Steam_download_window",
+      "task_id": "damengsan-seven-refresh-20260928",
+      "timestamp_utc": "2026-09-28T01:21:40.307551+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "9587f74a44544805ae99fb228bd77f2f",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 10,
+        "head": "90f47cf855cbf552fa0bb191bfd6cf414c168add"
+      },
+      "kind": "status",
+      "next_step": "import_and_audit",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 6,
+      "state": "running",
+      "summary": "Steam_offline_seven_items_current",
+      "task_id": "damengsan-seven-refresh-20260928",
+      "timestamp_utc": "2026-09-28T01:29:28.640825+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "0568d505ecec44a6b23e947074ba8b99",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "8d115ab4f69dfd999a5f1df871d2bbbfebef568d"
+      },
+      "kind": "status",
+      "next_step": "CK3_isolated_acceptance",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master",
+        "ck3-screen:acquired",
+        "CK3"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 7,
+      "state": "running",
+      "summary": "seven_mod_static_green",
+      "task_id": "damengsan-seven-refresh-20260928",
+      "timestamp_utc": "2026-09-28T02:04:21.521627+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "6168a7a0d28a42b49894ba7db7eae917",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 10,
+        "head": "8d115ab4f69dfd999a5f1df871d2bbbfebef568d"
+      },
+      "kind": "status",
+      "next_step": "audit_report",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 8,
+      "state": "running",
+      "summary": "seven_mod_acceptance_red",
+      "task_id": "damengsan-seven-refresh-20260928",
+      "timestamp_utc": "2026-09-28T02:50:01.428067+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "ab78137e9ea84c008d91a70a8d4eabd4",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "1a484f2488bbc1917bc514ba70ba3b87e086be82"
+      },
+      "kind": "completed",
+      "next_step": "resolve_upstream_map_and_gui_before_filming",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "sequence": 9,
+      "state": "done",
+      "summary": "seven_mod_refresh_merged_director_script_delivered_live_acceptance_red",
+      "task_id": "damengsan-seven-refresh-20260928",
+      "timestamp_utc": "2026-09-28T02:55:47.274525+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "f76e916aee2f42fd87954501d92b3e49",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 2,
+        "head": "1a484f2488bbc1917bc514ba70ba3b87e086be82"
+      },
+      "kind": "registered",
+      "next_step": "commit_variant_plans",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 10,
+      "state": "running",
+      "summary": "prepare_three_director_cuts_with_xar_promo",
+      "task_id": "damengsan-promo-variants-20260928",
+      "timestamp_utc": "2026-09-28T03:13:18.396942+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "5ddc0404fae3475e9ca3c4bb65b96ae2",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "e3c179a47eb902e24a6357171e928ba827bcbdde"
+      },
+      "kind": "completed",
+      "next_step": "choose_cut_then_capture_and_compose",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "sequence": 11,
+      "state": "done",
+      "summary": "three_director_variants_and_xar_promo_authoring_ready",
+      "task_id": "damengsan-promo-variants-20260928",
+      "timestamp_utc": "2026-09-28T03:15:51.150124+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "902d36e9329d429c891681bedd9af1e5",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 4,
+        "head": "e3c179a47eb902e24a6357171e928ba827bcbdde"
+      },
+      "kind": "registered",
+      "next_step": "capture_and_compose",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 12,
+      "state": "running",
+      "summary": "two_minute_promo_production",
+      "task_id": "damengsan-promo-production-20260928",
+      "timestamp_utc": "2026-09-28T03:26:44.519356+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "217de98e52774e1984651895cebb0500",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "ab5254aaa59dea3eeb46732412d1711dd11db95b"
+      },
+      "kind": "status",
+      "next_step": "ck3_isolated_capture",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master",
+        "ck3-screen:acquired",
+        "CK3"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 13,
+      "state": "running",
+      "summary": "capture_two_minute_promo",
+      "task_id": "damengsan-promo-production-20260928",
+      "timestamp_utc": "2026-09-28T03:33:04.225396+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "6a68d42ad1744be0b5e3b741afef7fe3",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 2,
+        "head": "ab5254aaa59dea3eeb46732412d1711dd11db95b"
+      },
+      "kind": "status",
+      "next_step": "compose_visual_and_audio",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 14,
+      "state": "running",
+      "summary": "two_minute_promo_editing",
+      "task_id": "damengsan-promo-production-20260928",
+      "timestamp_utc": "2026-09-28T04:31:36.990101+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "499a7cb2edc24161a634e9de9302e5f4",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "1e2a6984cf2b69d365f2beeda84a0fdc5a83cbec"
+      },
+      "kind": "completed",
+      "next_step": "",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "sequence": 15,
+      "state": "done",
+      "summary": "promo_completed_120s_private_review_commit_1e2a698",
+      "task_id": "damengsan-promo-production-20260928",
+      "timestamp_utc": "2026-09-28T07:42:29.180119+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "9df5e179f0ce46ad912c0d9d46d0be28",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "1e2a6984cf2b69d365f2beeda84a0fdc5a83cbec"
+      },
+      "kind": "registered",
+      "next_step": "",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 16,
+      "state": "running",
+      "summary": "private_github_video_delivery",
+      "task_id": "damengsan-promo-remote-delivery-20260928",
+      "timestamp_utc": "2026-09-28T08:33:17.675383+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "3e2a8c09f4754f5895ef55641a0ce95a",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "1e2a6984cf2b69d365f2beeda84a0fdc5a83cbec"
+      },
+      "kind": "completed",
+      "next_step": "",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "sequence": 17,
+      "state": "done",
+      "summary": "private_draft_release_uploaded_sha256_verified_no_git_blob",
+      "task_id": "damengsan-promo-remote-delivery-20260928",
+      "timestamp_utc": "2026-09-28T08:42:22.234468+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "9dca301ce1004318b20c7f14180e6ff8",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "1e2a6984cf2b69d365f2beeda84a0fdc5a83cbec"
+      },
+      "kind": "registered",
+      "next_step": "",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 18,
+      "state": "running",
+      "summary": "gameplay_led_cinematic_recut",
+      "task_id": "damengsan-promo-remake-20260928",
+      "timestamp_utc": "2026-09-28T09:12:45.838985+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "d620a23db8ad45229fd58358c76db735",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "1e2a6984cf2b69d365f2beeda84a0fdc5a83cbec"
+      },
+      "kind": "status",
+      "next_step": "",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master",
+        "CK3",
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 19,
+      "state": "running",
+      "summary": "capture_new_live_gameplay",
+      "task_id": "damengsan-promo-remake-20260928",
+      "timestamp_utc": "2026-09-28T09:16:32.094433+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "9a949dd2f51d42179d8a3e81b0048c11",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 113,
+        "head": "2b54aeebfeef1dcea0f94617e4b78358e99cb5c5"
+      },
+      "kind": "registered",
+      "next_step": "prepare-single-save-capture",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "CK3"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 20,
+      "state": "running",
+      "summary": "Jin-Wenhou-long-film",
+      "task_id": "promo-jichou-20260929",
+      "timestamp_utc": "2026-09-29T08:21:54.137345+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "b69598d111c04a558f68676409e98d54",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 116,
+        "head": "2b54aeebfeef1dcea0f94617e4b78358e99cb5c5"
+      },
+      "kind": "heartbeat",
+      "next_step": "prepare-single-save-capture",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "CK3"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 21,
+      "state": "running",
+      "summary": "Jin-Wenhou-long-film",
+      "task_id": "promo-jichou-20260929",
+      "timestamp_utc": "2026-09-29T10:30:13.554700+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "746795d1d3a64bd7b6e666bc8c5d7784",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 118,
+        "head": "2b54aeebfeef1dcea0f94617e4b78358e99cb5c5"
+      },
+      "kind": "heartbeat",
+      "next_step": "prepare-single-save-capture",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "CK3"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 22,
+      "state": "running",
+      "summary": "Jin-Wenhou-long-film",
+      "task_id": "promo-jichou-20260929",
+      "timestamp_utc": "2026-09-29T14:31:13.937852+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "7b81dd9436874f71af280f397ba061b1",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 118,
+        "head": "2b54aeebfeef1dcea0f94617e4b78358e99cb5c5"
+      },
+      "kind": "heartbeat",
+      "next_step": "prepare-single-save-capture",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "CK3"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 23,
+      "state": "running",
+      "summary": "Jin-Wenhou-long-film",
+      "task_id": "promo-jichou-20260929",
+      "timestamp_utc": "2026-09-29T20:04:33.694533+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "a73e4bf982e64b0c833037523934cd17",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 122,
+        "head": "2b54aeebfeef1dcea0f94617e4b78358e99cb5c5"
+      },
+      "kind": "status",
+      "next_step": "audit-and-private-draft-release",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "video-encoding"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 24,
+      "state": "running",
+      "summary": "Jin-Wenhou-film-encoding",
+      "task_id": "promo-jichou-20260929",
+      "timestamp_utc": "2026-09-29T20:47:24.750032+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "6508c29d380341819b52b12c984c71b1",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 122,
+        "head": "2b54aeebfeef1dcea0f94617e4b78358e99cb5c5"
+      },
+      "kind": "status",
+      "next_step": "load-autosave-and-record-actions",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "CK3"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 25,
+      "state": "running",
+      "summary": "Jin-Wenhou-film-pickup-shoot",
+      "task_id": "promo-jichou-20260929",
+      "timestamp_utc": "2026-09-29T21:06:56.824171+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "6ada1303d004480e9735c23216c9220e",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 122,
+        "head": "2b54aeebfeef1dcea0f94617e4b78358e99cb5c5"
+      },
+      "kind": "heartbeat",
+      "next_step": "load-autosave-and-record-actions",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "CK3"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 26,
+      "state": "running",
+      "summary": "Jin-Wenhou-film-pickup-shoot",
+      "task_id": "promo-jichou-20260929",
+      "timestamp_utc": "2026-09-29T21:58:55.278579+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "67f142848b8f487cb16b2895a072a9c0",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 115,
+        "head": "23e5b36748e6a24393ca03e7219110b0edfc70c1"
+      },
+      "kind": "completed",
+      "next_step": "Await-review",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "sequence": 27,
+      "state": "done",
+      "summary": "Jin-Wenhou-film-delivered",
+      "task_id": "promo-jichou-20260929",
+      "timestamp_utc": "2026-09-29T22:33:12.494865+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "962ca9cecba141369d9374a38bba2507",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 116,
+        "head": "811de87a4eb396037043daaf812eaa4d6e10399a"
+      },
+      "kind": "registered",
+      "next_step": "capture_active_gameplay",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "CK3",
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 28,
+      "state": "running",
+      "summary": "rework_long_film_motion",
+      "task_id": "promo-jichou-smooth-20260930",
+      "timestamp_utc": "2026-09-30T02:04:52.608174+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "90db990f8901461d93ee376b5c3e4357",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 118,
+        "head": "811de87a4eb396037043daaf812eaa4d6e10399a"
+      },
+      "kind": "status",
+      "next_step": "audit_and_recut_video",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "video-encoding"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 29,
+      "state": "running",
+      "summary": "raw_pickups_complete_four_clips",
+      "task_id": "promo-jichou-smooth-20260930",
+      "timestamp_utc": "2026-09-30T03:41:26.044424+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "1a26461b60ff49bcba28cf65bdbddb55",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 117,
+        "head": "811de87a4eb396037043daaf812eaa4d6e10399a"
+      },
+      "kind": "status",
+      "next_step": "continuous_battle_probe",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "CK3",
+        "ck3-screen:acquired",
+        "video-encoding"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 30,
+      "state": "running",
+      "summary": "battle_capture_cadence_fix",
+      "task_id": "promo-jichou-smooth-20260930",
+      "timestamp_utc": "2026-09-30T04:21:54.669509+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "69e2f754f1c04eb1b8a4bdf458d87d34",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 117,
+        "head": "68bbac44720b29f9da41dba3942f10b9ee89b901"
+      },
+      "kind": "status",
+      "next_step": "obs_capture_readback",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "CK3",
+        "ck3-screen",
+        "video-encoding"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 31,
+      "state": "running",
+      "summary": "battle_capture_cadence_fix",
+      "task_id": "promo-jichou-smooth-20260930",
+      "timestamp_utc": "2026-09-30T05:27:33.857319+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "68d0db3a46b847bc8b1fb0052d29c538",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 117,
+        "head": "fcd92da63bb33db0f37784bc9816912d236ce0da"
+      },
+      "kind": "status",
+      "next_step": "render_r5",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "CK3",
+        "ck3-screen",
+        "video-encoding"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 32,
+      "state": "running",
+      "summary": "film_motion_revision",
+      "task_id": "promo-jichou-smooth-20260930",
+      "timestamp_utc": "2026-09-30T06:48:28.476801+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "cabd8a0abee141bd90635023ba9a9960",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 121,
+        "head": "fcd92da63bb33db0f37784bc9816912d236ce0da"
+      },
+      "kind": "heartbeat",
+      "next_step": "render_r5",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "CK3",
+        "ck3-screen",
+        "video-encoding"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 33,
+      "state": "running",
+      "summary": "film_motion_revision",
+      "task_id": "promo-jichou-smooth-20260930",
+      "timestamp_utc": "2026-09-30T07:06:06.987046+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "489cf9c2bb084e07a46504d5ba5ccd9e",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 122,
+        "head": "fcd92da63bb33db0f37784bc9816912d236ce0da"
+      },
+      "kind": "heartbeat",
+      "next_step": "render_r5",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "CK3",
+        "ck3-screen",
+        "video-encoding"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 34,
+      "state": "running",
+      "summary": "film_motion_revision",
+      "task_id": "promo-jichou-smooth-20260930",
+      "timestamp_utc": "2026-09-30T07:21:00.621767+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "12c8d9a9fe844bdd86acd74519c5dec1",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 116,
+        "head": "8c7a81f892371c4a7d146d84d080c3086a2ac58c"
+      },
+      "kind": "status",
+      "next_step": "finish_review_evidence",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "CK3",
+        "ck3-screen",
+        "video-encoding"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 35,
+      "state": "running",
+      "summary": "r5_uploaded_quality_checks",
+      "task_id": "promo-jichou-smooth-20260930",
+      "timestamp_utc": "2026-09-30T07:50:30.479856+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "45bee21f12224ff3997213cb525034d3",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 119,
+        "head": "8c7a81f892371c4a7d146d84d080c3086a2ac58c"
+      },
+      "kind": "status",
+      "next_step": "verify_27_shots_and_deliver",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "video-encoding"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 36,
+      "state": "running",
+      "summary": "r6_scene_alignment_checks",
+      "task_id": "promo-jichou-smooth-20260930",
+      "timestamp_utc": "2026-09-30T08:49:55.031687+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "851c9a215ccf4189a3d3d14e3280c8d6",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 116,
+        "head": "fa85790c983eb4b857a496b5f2b4bc9962274109"
+      },
+      "kind": "status",
+      "next_step": "finish_review_archive",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "video-encoding"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 37,
+      "state": "running",
+      "summary": "r6_uploaded_digest_verified",
+      "task_id": "promo-jichou-smooth-20260930",
+      "timestamp_utc": "2026-09-30T09:08:36.237641+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "eb52fd34493a489399f1be43ccc80094",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 115,
+        "head": "9d0ce88837dce48c5ce54d3a490231ec4974c576"
+      },
+      "kind": "completed",
+      "next_step": "user_review_of_private_draft",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "sequence": 38,
+      "state": "done",
+      "summary": "r6_delivered_verified_and_archived",
+      "task_id": "promo-jichou-smooth-20260930",
+      "timestamp_utc": "2026-09-30T09:18:49.102400+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "aea28744b9df465fa13eeba42665d7e4",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 115,
+        "head": "9d0ce88837dce48c5ce54d3a490231ec4974c576"
+      },
+      "kind": "registered",
+      "next_step": "verify_sources_and_write_docs",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "docs"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 39,
+      "state": "running",
+      "summary": "document_completed_video_work_and_machine_handoff",
+      "task_id": "promo-video-handoff-20260930",
+      "timestamp_utc": "2026-09-30T11:23:59.348825+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "6b0c0cb255634c3c8b1f0645dd88f4c9",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 115,
+        "head": "40bbfd8647afe611e4c4e063f916eaf581e4183c"
+      },
+      "kind": "completed",
+      "next_step": "colleague_reads_docs_before_next_revision",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "sequence": 40,
+      "state": "done",
+      "summary": "video_handoff_docs_committed_and_pushed",
+      "task_id": "promo-video-handoff-20260930",
+      "timestamp_utc": "2026-09-30T11:47:31.493127+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "684e4b55e78b4e1c9c182558db8896f8",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 115,
+        "head": "40bbfd8647afe611e4c4e063f916eaf581e4183c"
+      },
+      "kind": "registered",
+      "next_step": "establish_provenance_and_audit",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 41,
+      "state": "running",
+      "summary": "classify_and_commit_or_ignore_pending_changes",
+      "task_id": "suite-pending-review-20261001",
+      "timestamp_utc": "2026-10-01T06:53:19.047954+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "6f8d20e6665e47e3ba7ec232992c2029",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "43b262eb42246b530c96625eca129e270103c7ef"
+      },
+      "kind": "registered",
+      "next_step": "Inspect-running-game-and-update-channel",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "origin/master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 42,
+      "state": "running",
+      "summary": "Update-project-and-Steam-CK3",
+      "task_id": "machine-project-ck3-update-20261001",
+      "timestamp_utc": "2026-10-01T07:02:51.006017+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "8a152e8d1d09499885417e31d14a1997",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 118,
+        "head": "40bbfd8647afe611e4c4e063f916eaf581e4183c"
+      },
+      "kind": "status",
+      "next_step": "byte_verification_and_private_commit",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 43,
+      "state": "running",
+      "summary": "replace_all_mod_roots_with_original_upstream",
+      "task_id": "suite-pending-review-20261001",
+      "timestamp_utc": "2026-10-01T07:05:28.345889+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "bca411d927894399b8f00b7b9f34db09",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 23,
+        "head": "8791b389f47c9de30a7ed4d06d4d81ead3dcd28e"
+      },
+      "kind": "status",
+      "next_step": "CK3_isolated_acceptance",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "retirement": {
+        "business_status": "unresolved_red",
+        "kind": "expired-legacy-multi-resource-claim-released",
+        "original_snapshot": "C:\\workspace\\.codex-machine-update-20261001\\aub-4-0-2-20260928-original.json",
+        "prior_sequence": 2,
+        "reason": "legacy multi-resource shape cannot be retired by current single-resource CAS; producer absent and lease expired"
+      },
+      "schema": "codex.task_bus.v1",
+      "sequence": 44,
+      "state": "waiting",
+      "summary": "Expired-legacy-screen-lease-released-business-unresolved",
+      "task_id": "aub-4-0-2-20260928",
+      "timestamp_utc": "2026-10-01T07:07:55.648297+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "76499185198b4f17811ada83be208552",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "1e2a6984cf2b69d365f2beeda84a0fdc5a83cbec"
+      },
+      "kind": "status",
+      "next_step": "",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "retirement": {
+        "business_status": "unresolved_red",
+        "kind": "expired-legacy-multi-resource-claim-released",
+        "original_snapshot": "C:\\workspace\\.codex-machine-update-20261001\\damengsan-promo-remake-20260928-original.json",
+        "prior_sequence": 19,
+        "reason": "legacy multi-resource shape cannot be retired by current single-resource CAS; producer absent and lease expired"
+      },
+      "schema": "codex.task_bus.v1",
+      "sequence": 45,
+      "state": "waiting",
+      "summary": "Expired-legacy-screen-lease-released-business-unresolved",
+      "task_id": "damengsan-promo-remake-20260928",
+      "timestamp_utc": "2026-10-01T07:07:55.675274+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "87d9327a48064d61ad71a7538117feb8",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "43b262eb42246b530c96625eca129e270103c7ef"
+      },
+      "kind": "registered",
+      "next_step": "Save-and-close-CK3",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 46,
+      "state": "running",
+      "summary": "Save-game-and-update-Steam-CK3",
+      "task_id": "machine-ck3-update-screen-20261001",
+      "timestamp_utc": "2026-10-01T07:07:56.188748+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "bda087e199c8473eae10feb976699ca3",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "768b003bdac625d13b8288eca37c518de81415fe"
+      },
+      "kind": "completed",
+      "next_step": "use_original_five_mods_for_video",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "sequence": 47,
+      "state": "done",
+      "summary": "original_upstream_committed_pushed_worktree_clean",
+      "task_id": "suite-pending-review-20261001",
+      "timestamp_utc": "2026-10-01T07:18:34.456027+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "519c08049c3145fa9838becffc000cc4",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "768b003bdac625d13b8288eca37c518de81415fe"
+      },
+      "kind": "registered",
+      "next_step": "Inspect-new-cache-and-sync-requested-root",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "damengsan:source-update"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 48,
+      "state": "running",
+      "summary": "Refresh-Workshop-3804412275-original",
+      "task_id": "damengsan-main-refresh-20261001",
+      "timestamp_utc": "2026-10-01T07:35:11.595147+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "df3ab724a1524d80a8e5d0b310f899da",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "768b003bdac625d13b8288eca37c518de81415fe"
+      },
+      "kind": "status",
+      "next_step": "Stage-backup-and-verify-seven-roots",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 49,
+      "state": "running",
+      "summary": "User-authorized-seven-original-refresh",
+      "task_id": "damengsan-main-refresh-20261001",
+      "timestamp_utc": "2026-10-01T07:36:35.077389+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "6418580c25ce4455937c9bdf7e746056",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 1426,
+        "head": "768b003bdac625d13b8288eca37c518de81415fe"
+      },
+      "kind": "status",
+      "next_step": "Review-and-private-commit-push",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 51,
+      "state": "running",
+      "summary": "Seven-original-roots-exact-match-9105-files",
+      "task_id": "damengsan-main-refresh-20261001",
+      "timestamp_utc": "2026-10-01T07:44:22.126223+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "3d444ba3dd484806b96ef912a23fef0e",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "43b262eb42246b530c96625eca129e270103c7ef"
+      },
+      "kind": "status",
+      "next_step": "Save-and-close-CK3",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "retirement": {
+        "business_status": "unresolved_red",
+        "kind": "expired-own-claim-released",
+        "prior_sequence": 46
+      },
+      "schema": "codex.task_bus.v1",
+      "sequence": 53,
+      "state": "waiting",
+      "summary": "Expired-screen-lease-released-after-idle-Steam-attestation",
+      "task_id": "machine-ck3-update-screen-20261001",
+      "timestamp_utc": "2026-10-01T07:45:52.977829+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "08751741614f43edb181f336d7b7d0fb",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 1414,
+        "head": "768b003bdac625d13b8288eca37c518de81415fe"
+      },
+      "kind": "registered",
+      "next_step": "Semantic-offline-selection-and-readback",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 54,
+      "state": "running",
+      "summary": "Restore-Steam-offline-after-completed-download-validation",
+      "task_id": "damengsan-refresh-offline-screen-20261001",
+      "timestamp_utc": "2026-10-01T07:46:15.351112+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "bef4c00668a648e9a70ac3612de6e8dd",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 1414,
+        "head": "768b003bdac625d13b8288eca37c518de81415fe"
+      },
+      "kind": "completed",
+      "next_step": "",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "sequence": 55,
+      "state": "done",
+      "summary": "Steam-offline-restored-and-readback-verified",
+      "task_id": "damengsan-refresh-offline-screen-20261001",
+      "timestamp_utc": "2026-10-01T07:47:15.904866+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "5538fc36638a4a70b06d4b3b860996b5",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "eabce6d5ae67268c66ca475011924d36407aaaa8"
+      },
+      "kind": "completed",
+      "next_step": "",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "sequence": 56,
+      "state": "done",
+      "summary": "Seven-original-roots-updated-verified-private-push-eabce6d-Steam-offline-worktree-clean",
+      "task_id": "damengsan-main-refresh-20261001",
+      "timestamp_utc": "2026-10-01T07:48:47.846024+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "d51c6dd29b6c4482a74f28137d63ab6c",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "eabce6d5ae67268c66ca475011924d36407aaaa8"
+      },
+      "kind": "registered",
+      "next_step": "Inspect-upstream-MCP-and-new-build",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 57,
+      "state": "running",
+      "summary": "Diagnose-and-fix-core-only-playability",
+      "task_id": "damengsan-core-playable-20261001",
+      "timestamp_utc": "2026-10-01T07:51:06.096652+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "0f3c9d0cda9d472ba67b901d062a48d5",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "9c41fb5b1dee7ebff12253380d4f04d8eab8aa64"
+      },
+      "kind": "registered",
+      "next_step": "Fresh-offline-frame-and-first-launch",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 58,
+      "state": "running",
+      "summary": "Core-only-playability-controlled-game-session",
+      "task_id": "damengsan-core-screen-20261001",
+      "timestamp_utc": "2026-10-01T07:57:41.346066+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "881821c5702d44d2bfefd580bd9aef5c",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "9c41fb5b1dee7ebff12253380d4f04d8eab8aa64"
+      },
+      "kind": "heartbeat",
+      "next_step": "Fresh-offline-frame-and-first-launch",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 59,
+      "state": "running",
+      "summary": "Core-only-playability-controlled-game-session",
+      "task_id": "damengsan-core-screen-20261001",
+      "timestamp_utc": "2026-10-01T08:05:56.801191+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "529f382511c64615a3e5c4e6f963d8a0",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 2,
+        "head": "9ee1cc1bc7b9e66c7d3043e06ab492c227e9069b"
+      },
+      "kind": "registered",
+      "next_step": "Document-verify-and-push",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "main-steam-window-enumeration"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 60,
+      "state": "running",
+      "summary": "Steam-SDL-offline-frame-fix",
+      "task_id": "main-steam-sdl-fix-20261001",
+      "timestamp_utc": "2026-10-01T08:08:05.402733+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "d6cc953aef574a4187ee0eb9bffaee89",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "17160cd462b2d3b8d451b0054d49aa437a5ca0ee"
+      },
+      "kind": "completed",
+      "next_step": "",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "sequence": 61,
+      "state": "done",
+      "summary": "Steam-SDL-frame-fix-pushed-17160cd46-tests-17-and-MCP-4-green",
+      "task_id": "main-steam-sdl-fix-20261001",
+      "timestamp_utc": "2026-10-01T08:11:22.858157+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "ec03e6364d7b436da80e63048470b1e8",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "9c41fb5b1dee7ebff12253380d4f04d8eab8aa64"
+      },
+      "kind": "status",
+      "next_step": "Fresh-offline-frame-and-first-launch",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "retirement": {
+        "business_status": "unresolved_red",
+        "kind": "expired-own-claim-released",
+        "prior_sequence": 59
+      },
+      "schema": "codex.task_bus.v1",
+      "sequence": 62,
+      "state": "waiting",
+      "summary": "R1-crash-evidence-preserved-lease-expired",
+      "task_id": "damengsan-core-screen-20261001",
+      "timestamp_utc": "2026-10-01T08:28:04.041866+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "ea6e3494dcaa46a09de3f811bffd7ea0",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 3,
+        "head": "17160cd462b2d3b8d451b0054d49aa437a5ca0ee"
+      },
+      "kind": "registered",
+      "next_step": "Commit-and-push-tested-provider",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "main-reviewed-desktop-actions"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 63,
+      "state": "running",
+      "summary": "Reviewed-GUI-action-MCP",
+      "task_id": "main-semantic-gui-actions-20261001",
+      "timestamp_utc": "2026-10-01T08:31:06.805088+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "eae54c3c16594a25a0903eb666a2c2e9",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "e8e0267d2dbe8618d88d470a6c5ad5322cea7864"
+      },
+      "kind": "completed",
+      "next_step": "",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "sequence": 64,
+      "state": "done",
+      "summary": "Reviewed-GUI-action-MCP-pushed-eight-tests-green",
+      "task_id": "main-semantic-gui-actions-20261001",
+      "timestamp_utc": "2026-10-01T08:32:24.264583+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "0a690bbc63d64d258caaa63bdb03ce73",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 17,
+        "head": "1ca161a1adec13af02cf0dbc9d4a42b21e874193"
+      },
+      "kind": "registered",
+      "next_step": "Capture-offline-frame-and-launch",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 65,
+      "state": "running",
+      "summary": "Core-R2-map-layer-and-law-verification",
+      "task_id": "damengsan-core-screen-r2-20261001",
+      "timestamp_utc": "2026-10-01T08:48:21.521156+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "4bf23d9704fd42b0a1000d3e703f6a9b",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 17,
+        "head": "1ca161a1adec13af02cf0dbc9d4a42b21e874193"
+      },
+      "kind": "heartbeat",
+      "next_step": "Capture-offline-frame-and-launch",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 66,
+      "state": "running",
+      "summary": "Core-R2-map-layer-and-law-verification",
+      "task_id": "damengsan-core-screen-r2-20261001",
+      "timestamp_utc": "2026-10-01T08:54:03.657468+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "44e83828943b4260a73df07b86d4cdf4",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "33e4e56e78eeb0f565d2479433c256522a8b1860"
+      },
+      "kind": "heartbeat",
+      "next_step": "Inspect-upstream-MCP-and-new-build",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 67,
+      "state": "running",
+      "summary": "Diagnose-and-fix-core-only-playability",
+      "task_id": "damengsan-core-playable-20261001",
+      "timestamp_utc": "2026-10-01T09:02:52.518945+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "174b3b356f1e4d6aaa8febc2f543e5ef",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 4,
+        "head": "e8e0267d2dbe8618d88d470a6c5ad5322cea7864"
+      },
+      "kind": "registered",
+      "next_step": "Push-tested-compatibility-repair",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "main-reviewed-desktop-actions"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 68,
+      "state": "running",
+      "summary": "Fix-CEF-host-and-native-client-binding",
+      "task_id": "main-semantic-gui-actions-20261001",
+      "timestamp_utc": "2026-10-01T09:07:16.414067+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "95007d1270224036a96382648267e456",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "c46c77fe67bb4996dbf1cf81789155683feb2c1f"
+      },
+      "kind": "completed",
+      "next_step": "",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "sequence": 69,
+      "state": "done",
+      "summary": "Steam-UI-host-client-repair-pushed-eleven-tests-green",
+      "task_id": "main-semantic-gui-actions-20261001",
+      "timestamp_utc": "2026-10-01T09:07:46.644795+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "f4d66f5dd82f41118c351f22777a9bdc",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 17,
+        "head": "1ca161a1adec13af02cf0dbc9d4a42b21e874193"
+      },
+      "kind": "status",
+      "next_step": "Capture-offline-frame-and-launch",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "retirement": {
+        "business_status": "unresolved_red",
+        "kind": "expired-own-claim-released",
+        "prior_sequence": 66
+      },
+      "schema": "codex.task_bus.v1",
+      "sequence": 70,
+      "state": "waiting",
+      "summary": "R2-crash-preserved-session-closed",
+      "task_id": "damengsan-core-screen-r2-20261001",
+      "timestamp_utc": "2026-10-01T09:07:54.318538+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "8692f12030d547d1adc118b34dfb2d1e",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "c46c77fe67bb4996dbf1cf81789155683feb2c1f"
+      },
+      "kind": "status",
+      "next_step": "Fetch-rebase-retest-and-push",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "main-reviewed-desktop-actions"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 71,
+      "state": "running",
+      "summary": "Push-rejected-remote-advanced-rebase-pending",
+      "task_id": "main-semantic-gui-actions-20261001",
+      "timestamp_utc": "2026-10-01T09:08:04.951399+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "03fa656970164a42a7379770364297dc",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "7912f5d4c222fd485111b30927d6e9b15ab5c128"
+      },
+      "kind": "completed",
+      "next_step": "",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "sequence": 72,
+      "state": "done",
+      "summary": "Steam-UI-host-client-repair-pushed-eleven-tests-green",
+      "task_id": "main-semantic-gui-actions-20261001",
+      "timestamp_utc": "2026-10-01T09:08:41.492142+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "84d868bd431f42598b4590b2396d8265",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 6,
+        "head": "33e4e56e78eeb0f565d2479433c256522a8b1860"
+      },
+      "kind": "registered",
+      "next_step": "Capture-offline-and-enter-game",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 73,
+      "state": "running",
+      "summary": "Core-R3-modifier-validation-and-law-API",
+      "task_id": "damengsan-core-screen-r3-20261001",
+      "timestamp_utc": "2026-10-01T09:13:00.255947+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "c5a6c008cf7d440db587a0a3f7e07b15",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "00157c47c244fe838c677bbb08d4b6ee61537a50"
+      },
+      "kind": "heartbeat",
+      "next_step": "Capture-offline-and-enter-game",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 74,
+      "state": "running",
+      "summary": "Core-R3-modifier-validation-and-law-API",
+      "task_id": "damengsan-core-screen-r3-20261001",
+      "timestamp_utc": "2026-10-01T09:21:29.203289+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "969eaba295b84ccc8858bc294a989e10",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "00157c47c244fe838c677bbb08d4b6ee61537a50"
+      },
+      "kind": "heartbeat",
+      "next_step": "Capture-offline-and-enter-game",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 75,
+      "state": "running",
+      "summary": "Core-R3-modifier-validation-and-law-API",
+      "task_id": "damengsan-core-screen-r3-20261001",
+      "timestamp_utc": "2026-10-01T09:27:51.465063+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "e6a88e1741f44837ae1b224d5b1f1406",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "00157c47c244fe838c677bbb08d4b6ee61537a50"
+      },
+      "kind": "completed",
+      "next_step": "",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "sequence": 76,
+      "state": "done",
+      "summary": "Core-R3-worldgen-invalid-rite-and-map-overlay-RED-preserved",
+      "task_id": "damengsan-core-screen-r3-20261001",
+      "timestamp_utc": "2026-10-01T09:36:36.306410+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "af49493008f24222915527ee1e97c482",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 5,
+        "head": "00157c47c244fe838c677bbb08d4b6ee61537a50"
+      },
+      "kind": "heartbeat",
+      "next_step": "Inspect-upstream-MCP-and-new-build",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "suite-master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 77,
+      "state": "running",
+      "summary": "Diagnose-and-fix-core-only-playability",
+      "task_id": "damengsan-core-playable-20261001",
+      "timestamp_utc": "2026-10-01T09:46:38.145559+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "9cdbf82f5ab640859865f74ed5d458c8",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "e322f3c8b20f1d84aee5ac96461ad10ea5668d21"
+      },
+      "kind": "registered",
+      "next_step": "Offline-preflight-and-real-play",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 78,
+      "state": "running",
+      "summary": "Core-R4-stable-rites-and-map-visual",
+      "task_id": "damengsan-core-screen-r4-20261001",
+      "timestamp_utc": "2026-10-01T09:54:24.472975+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "93aaa3f57cc04117b6c9302dfd838f72",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "e322f3c8b20f1d84aee5ac96461ad10ea5668d21"
+      },
+      "kind": "completed",
+      "next_step": "",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "sequence": 79,
+      "state": "done",
+      "summary": "No-screen-owner-was-acquired",
+      "task_id": "damengsan-core-screen-r4-20261001",
+      "timestamp_utc": "2026-10-01T09:56:43.736200+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "74976b9b0b324bc49cdac9dfa4de642d",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "e322f3c8b20f1d84aee5ac96461ad10ea5668d21"
+      },
+      "kind": "registered",
+      "next_step": "Offline-preflight-and-real-play",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 80,
+      "state": "running",
+      "summary": "Core-R4-stable-rites-and-map-visual",
+      "task_id": "damengsan-core-screen-r4-v2-20261001",
+      "timestamp_utc": "2026-10-01T09:56:44.112485+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "a815f8d42f044065a844d2e3db50cb74",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 1,
+        "head": "e322f3c8b20f1d84aee5ac96461ad10ea5668d21"
+      },
+      "kind": "heartbeat",
+      "next_step": "Offline-preflight-and-real-play",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 81,
+      "state": "running",
+      "summary": "Core-R4-stable-rites-and-map-visual",
+      "task_id": "damengsan-core-screen-r4-v2-20261001",
+      "timestamp_utc": "2026-10-01T10:04:43.276081+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "5d404a03bb55452893f3a9b9f59d6181",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 1,
+        "head": "e322f3c8b20f1d84aee5ac96461ad10ea5668d21"
+      },
+      "kind": "completed",
+      "next_step": "",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "sequence": 82,
+      "state": "done",
+      "summary": "Core-R4-world-generation-access-violation-RED-preserved",
+      "task_id": "damengsan-core-screen-r4-v2-20261001",
+      "timestamp_utc": "2026-10-01T10:12:35.945973+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "403883b6ac394a849ec1e1036f0ef22f",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "b9cb56abab6c52185fbcf07664183d05531f274e"
+      },
+      "kind": "registered",
+      "next_step": "Offline-preflight-and-real-play",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 83,
+      "state": "running",
+      "summary": "Core-R5-regional-religion-native-crash-validation",
+      "task_id": "damengsan-core-screen-r5-20261001",
+      "timestamp_utc": "2026-10-01T10:57:06.551404+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "15b03356d0de4d3dab65068897ffb0f0",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "b9cb56abab6c52185fbcf07664183d05531f274e"
+      },
+      "kind": "heartbeat",
+      "next_step": "Offline-preflight-and-real-play",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 84,
+      "state": "running",
+      "summary": "Core-R5-regional-religion-native-crash-validation",
+      "task_id": "damengsan-core-screen-r5-20261001",
+      "timestamp_utc": "2026-10-01T11:05:30.031381+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "90782a5b31fe408d8bff14e2d3fe3b62",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "b9cb56abab6c52185fbcf07664183d05531f274e"
+      },
+      "kind": "heartbeat",
+      "next_step": "Offline-preflight-and-real-play",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 85,
+      "state": "running",
+      "summary": "Core-R5-regional-religion-native-crash-validation",
+      "task_id": "damengsan-core-screen-r5-20261001",
+      "timestamp_utc": "2026-10-01T11:11:38.415400+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "685011c4746d4df58b9dcc47832e6fb3",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "b9cb56abab6c52185fbcf07664183d05531f274e"
+      },
+      "kind": "heartbeat",
+      "next_step": "Offline-preflight-and-real-play",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 86,
+      "state": "running",
+      "summary": "Core-R5-regional-religion-native-crash-validation",
+      "task_id": "damengsan-core-screen-r5-20261001",
+      "timestamp_utc": "2026-10-01T11:20:44.840765+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "f599c44639a54cae956ae2e410c19375",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "b9cb56abab6c52185fbcf07664183d05531f274e"
+      },
+      "kind": "heartbeat",
+      "next_step": "Offline-preflight-and-real-play",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 87,
+      "state": "running",
+      "summary": "Core-R5-regional-religion-native-crash-validation",
+      "task_id": "damengsan-core-screen-r5-20261001",
+      "timestamp_utc": "2026-10-01T11:30:35.638445+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "1e7ea7d9539c4084b5ea7d14949bd7ac",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "b9cb56abab6c52185fbcf07664183d05531f274e"
+      },
+      "kind": "status",
+      "next_step": "Offline-preflight-and-real-play",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "retirement": {
+        "business_status": "unresolved_red",
+        "kind": "expired-own-claim-released",
+        "prior_sequence": 87
+      },
+      "schema": "codex.task_bus.v1",
+      "sequence": 88,
+      "state": "waiting",
+      "summary": "R5-playable-evidence-preserved-expired-lease-released-for-reload",
+      "task_id": "damengsan-core-screen-r5-20261001",
+      "timestamp_utc": "2026-10-01T11:54:35.547527+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "50a5d0e7f9a34ee7bd9c70bb8df768f8",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "74852c37b5dc01564da7bc3f665e7769f92a6f1e"
+      },
+      "kind": "registered",
+      "next_step": "Validate-saved-campaign",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 89,
+      "state": "running",
+      "summary": "Core-R5-frozen-version-save-reload",
+      "task_id": "damengsan-core-screen-r5-reload-20261001",
+      "timestamp_utc": "2026-10-01T11:54:35.935412+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "511c75fa800a4addbef8c24d73dad321",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "74852c37b5dc01564da7bc3f665e7769f92a6f1e"
+      },
+      "kind": "heartbeat",
+      "next_step": "Validate-saved-campaign",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 90,
+      "state": "running",
+      "summary": "Core-R5-frozen-version-save-reload",
+      "task_id": "damengsan-core-screen-r5-reload-20261001",
+      "timestamp_utc": "2026-10-01T11:59:38.976939+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "110792f1e28e460c9da237dda1fed2c1",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "74852c37b5dc01564da7bc3f665e7769f92a6f1e"
+      },
+      "kind": "heartbeat",
+      "next_step": "Validate-saved-campaign",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 91,
+      "state": "running",
+      "summary": "Core-R5-frozen-version-save-reload",
+      "task_id": "damengsan-core-screen-r5-reload-20261001",
+      "timestamp_utc": "2026-10-01T12:08:18.732577+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "e0ae039d5f48499b8dce4e090db404da",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "74852c37b5dc01564da7bc3f665e7769f92a6f1e"
+      },
+      "kind": "status",
+      "next_step": "Validate-saved-campaign",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "retirement": {
+        "business_status": "unresolved_red",
+        "kind": "expired-own-claim-released",
+        "prior_sequence": 91
+      },
+      "schema": "codex.task_bus.v1",
+      "sequence": 92,
+      "state": "waiting",
+      "summary": "R5-same-process-reload-and-graceful-exit-verified",
+      "task_id": "damengsan-core-screen-r5-reload-20261001",
+      "timestamp_utc": "2026-10-01T12:22:38.169066+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "7b1e1cb373ac4ee9bf9c1a654f3d0092",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "74852c37b5dc01564da7bc3f665e7769f92a6f1e"
+      },
+      "kind": "registered",
+      "next_step": "Offline-cold-restart-from-verified-save",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 93,
+      "state": "running",
+      "summary": "Core-only-100-year-stability-run",
+      "task_id": "damengsan-core-screen-r6-20261001",
+      "timestamp_utc": "2026-10-01T12:22:38.483001+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "c0da16b12abc4685851b17ca23f6bbf1",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 64,
+        "head": "7912f5d4c222fd485111b30927d6e9b15ab5c128"
+      },
+      "kind": "registered",
+      "next_step": "Fresh-build-and-typed-profile-consumer",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "main-native-bootstrap:active"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 94,
+      "state": "running",
+      "summary": "Core-native-12002-bootstrap",
+      "task_id": "main-core-native-bootstrap-20261001",
+      "timestamp_utc": "2026-10-01T12:23:51.789410+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "aa894af5490046098ef6626df9982bf2",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 1,
+        "head": "74852c37b5dc01564da7bc3f665e7769f92a6f1e"
+      },
+      "kind": "heartbeat",
+      "next_step": "Offline-cold-restart-from-verified-save",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 95,
+      "state": "running",
+      "summary": "Core-only-100-year-stability-run",
+      "task_id": "damengsan-core-screen-r6-20261001",
+      "timestamp_utc": "2026-10-01T12:27:17.063944+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "302ad443fe6548e987214449f75ffb7d",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 1,
+        "head": "74852c37b5dc01564da7bc3f665e7769f92a6f1e"
+      },
+      "kind": "status",
+      "next_step": "Offline-cold-restart-from-verified-save",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "retirement": {
+        "business_status": "unresolved_red",
+        "kind": "expired-own-claim-released",
+        "prior_sequence": 95
+      },
+      "schema": "codex.task_bus.v1",
+      "sequence": 96,
+      "state": "waiting",
+      "summary": "R6-startup-observation-wait-old-lease-retired",
+      "task_id": "damengsan-core-screen-r6-20261001",
+      "timestamp_utc": "2026-10-01T12:55:29.900532+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "c68156ed151a4879941334421f5a7ee6",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "7e630745101afd995b4d9cee4c80e27e80181584"
+      },
+      "kind": "registered",
+      "next_step": "Cold-load-and-native-clock-readback",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 97,
+      "state": "running",
+      "summary": "Core-only-100-year-stability-run",
+      "task_id": "damengsan-core-screen-r6-v2-20261001",
+      "timestamp_utc": "2026-10-01T12:55:32.319789+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "3ab90774f0c7415d8f56df1588058e4f",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 6,
+        "head": "752b426333b367ef09690959361b424ac6a5b7c8"
+      },
+      "kind": "heartbeat",
+      "next_step": "Fresh-build-and-typed-profile-consumer",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "main-native-bootstrap:active"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 98,
+      "state": "running",
+      "summary": "Core-native-12002-bootstrap",
+      "task_id": "main-core-native-bootstrap-20261001",
+      "timestamp_utc": "2026-10-01T13:06:02.657540+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "d074f0c37d6d46158e8024f2fa16400e",
+      "git": {
+        "branch": null,
+        "dirty_entries": 1,
+        "head": "752b426333b367ef09690959361b424ac6a5b7c8"
+      },
+      "kind": "registered",
+      "next_step": "Official-fresh-build-and-full-offline-tests",
+      "repo": "C:\\cb120",
+      "resources": [
+        "native-build-c3:active"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 99,
+      "state": "running",
+      "summary": "Frozen-core-native-12002-full-build",
+      "task_id": "main-core-native-build-c3-20261001",
+      "timestamp_utc": "2026-10-01T13:21:33.434940+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "da2032b4bdf441be83a6e5881118784a",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "7e630745101afd995b4d9cee4c80e27e80181584"
+      },
+      "kind": "status",
+      "next_step": "Cold-load-and-native-clock-readback",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "retirement": {
+        "business_status": "unresolved_red",
+        "kind": "expired-own-claim-released",
+        "prior_sequence": 97
+      },
+      "schema": "codex.task_bus.v1",
+      "sequence": 100,
+      "state": "waiting",
+      "summary": "R6-cold-load-HUD-verified-expired-lease-retired",
+      "task_id": "damengsan-core-screen-r6-v2-20261001",
+      "timestamp_utc": "2026-10-01T13:21:47.119690+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "85f631d1d3234b729931834630df4ce3",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "7e630745101afd995b4d9cee4c80e27e80181584"
+      },
+      "kind": "registered",
+      "next_step": "Native-clock-and-automatic-play",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 101,
+      "state": "running",
+      "summary": "Core-only-100-year-stability-run",
+      "task_id": "damengsan-core-screen-r6-v3-20261001",
+      "timestamp_utc": "2026-10-01T13:21:47.971813+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "e8c3e60a24194071a90d7582deeb2c39",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "7e630745101afd995b4d9cee4c80e27e80181584"
+      },
+      "kind": "heartbeat",
+      "next_step": "Native-clock-and-automatic-play",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 102,
+      "state": "running",
+      "summary": "Core-only-100-year-stability-run",
+      "task_id": "damengsan-core-screen-r6-v3-20261001",
+      "timestamp_utc": "2026-10-01T13:26:09.089681+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    {
+      "event_id": "67a8cef3958944ab80ef71236f2ea79f",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "7e630745101afd995b4d9cee4c80e27e80181584"
+      },
+      "kind": "heartbeat",
+      "next_step": "Native-clock-and-automatic-play",
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [
+        "ck3-screen:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "sequence": 103,
+      "state": "running",
+      "summary": "Core-only-100-year-stability-run",
+      "task_id": "damengsan-core-screen-r6-v3-20261001",
+      "timestamp_utc": "2026-10-01T13:28:17.874553+00:00",
+      "to": [
+        "*"
+      ]
+    }
+  ],
+  "remaining": 2429
+}

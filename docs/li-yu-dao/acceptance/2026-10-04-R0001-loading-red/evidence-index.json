@@ -1,0 +1,104 @@
+{
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0001",
+  "result": "LOADING_RED",
+  "campaign": "NOT_STARTED",
+  "bridge": "NOT_ATTACHED",
+  "all_process_assets_retained": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001",
+  "files": {
+    "live-run-id.json": {
+      "sha256": "bf9db2f0269a21fa0db79d9b7638e1d73e0f3914dcbd96136229d38693976846",
+      "size": 371,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\live-run-id.json"
+    },
+    "launch.json": {
+      "sha256": "0428ed35ae29957682550e649f06e42ceb204fa0912d614127e273a123c788a5",
+      "size": 316,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\launch.json"
+    },
+    "prelaunch-check.json": {
+      "sha256": "add84e1eedc38ed126b51f39e534859f8bb70db4f3f71d1ef4d421358301caea",
+      "size": 832,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\prelaunch-check.json"
+    },
+    "prelaunch-poll.json": {
+      "sha256": "f4246fabb0fb03a01f028ff141745b23d3d1a17c59ceb749906427eb7e03eac7",
+      "size": 71731,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\prelaunch-poll.json"
+    },
+    "PREPARED.json": {
+      "sha256": "b5d0183dc23323443aada1108a6a08dc2a2933c05f5d16d84524333153359016",
+      "size": 13630,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\PREPARED.json"
+    },
+    "offline-reviewed.json": {
+      "sha256": "95d55dd297e12da0a0e90bc4256953bdbf95e0b1f9eabcde9829708c8824bad3",
+      "size": 404,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\offline-reviewed.json"
+    },
+    "startup-02.json": {
+      "sha256": "a203a7b3640eefe884098a3ca44029cc169068f6ff93861b3bde38b6242f8655",
+      "size": 4290,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\startup-02.json"
+    },
+    "startup-02.png": {
+      "sha256": "86b663cd8f530d5a8f107dd4bce2f5df8ceaefc7c1508159e88311b737686aea",
+      "size": 2007545,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\startup-02.png"
+    },
+    "close-receipt.json": {
+      "sha256": "a97cdb878b71aba2ddbb956286a2e9270bc84f9c07fe1b834e09b0929e920728",
+      "size": 115,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\close-receipt.json"
+    },
+    "screen-register.json": {
+      "sha256": "8b46a4ed6fa167a1a9e3b7dbed2612750937d4116cb99745892186a96b731ece",
+      "size": 1274,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\screen-register.json"
+    },
+    "expired-screen-release.json": {
+      "sha256": "5cb41e337365df2fa9b62e90205ef766d8f643bebc48049754e8edd784825b26",
+      "size": 1368,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\expired-screen-release.json"
+    },
+    "screen-register-cleanup.json": {
+      "sha256": "39dad34df82a049c6c1572c408ac1b723c996cc25213db72bfdfead87363bfcd",
+      "size": 1273,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\screen-register-cleanup.json"
+    },
+    "cleanup-screen-release.json": {
+      "sha256": "cc1fd1b97267031a6b6f8e8f7ff81b25999a6c0ea19f0ad27f8cdb0f87a3597b",
+      "size": 1173,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\cleanup-screen-release.json"
+    },
+    "error.log": {
+      "sha256": "9c19651836597f8fb3987d4150c2b38f1171e2dd876616f94e176916bb3d9a48",
+      "size": 15834,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\userdir\\logs\\error.log"
+    },
+    "steam-frame-freshness.json": {
+      "sha256": "8644f98771628d71d88b827bf74f3a99dc84a0f6d33a4b3552916e8d704b2534",
+      "size": 1170,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\offline\\probe-1\\steam-frame-freshness.json"
+    },
+    "steam-moved.png": {
+      "sha256": "a2921177d232052ed4a8881fd204ed828ecd07b3695d47ada0d111cc9fefeea4",
+      "size": 327441,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\offline\\probe-1\\steam-moved.png"
+    },
+    "cleanup-keeper-final.json": {
+      "sha256": "fb718cec84e1904e9f615a07c831ffa857f4513b9570d98498943eb663284da2",
+      "size": 385,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-002\\FINAL.json"
+    },
+    "production.manifest.json": {
+      "sha256": "e1a69536e7b04ffca57ece10431e3449cc3b31d9feb34266c6b80b8ef040a7a0",
+      "size": 3341,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\build-iteration1\\mod_li_yu_dao.manifest.json"
+    },
+    "native-reuse-audit.json": {
+      "sha256": "d8fa90381698a5558bad9ab7de40e55f2858db11511bf44f41bd03eb6e25df52",
+      "size": 3637,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\native-reuse-audit-001.json"
+    }
+  }
+}

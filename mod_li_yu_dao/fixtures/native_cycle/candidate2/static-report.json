@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "utc": "2026-10-03T23:56:40.211464+00:00",
+  "static_status": "GREEN",
+  "runtime_status": "NOT_RUN",
+  "scope": "encoding/brace/native-picture/event-reference/static-log repair checks; not an engine parse/load result",
+  "errors": [],
+  "contracts": {
+    "six_script_txt_bom": true,
+    "three_native_picture_blocks": true,
+    "three_zero_ai_intervals": true,
+    "initialize_event_referenced_by_player_decision": true,
+    "unused_created_subject_variable_removed": true,
+    "no_log_parameter_expansion": true,
+    "all_debug_logs_fully_quoted": true,
+    "four_constant_assertion_effects": true,
+    "player_only_entry_preserved": true,
+    "picture_texture_exists": true
+  },
+  "payload": [
+    {
+      "path": "common/decisions/lyd_np_decisions.txt",
+      "bytes": 1857,
+      "sha256": "06ff98f68af5b7dc4b7d2d0e42e0cefe180b3cdaf0e7cbb48b938965f6d4fef0"
+    },
+    {
+      "path": "common/religion/faith_types/lyd_np_faiths.txt",
+      "bytes": 644,
+      "sha256": "d349b0c5bd4a6102a32ca1f9762487b33559b6da255ccab9533bd13ad8b7247c"
+    },
+    {
+      "path": "common/religion/rite_types/lyd_np_rites.txt",
+      "bytes": 848,
+      "sha256": "11aab688d88c6f8cfbdb8464f408b111ecc07e07e884eee13bbf44492ca15230"
+    },
+    {
+      "path": "common/scripted_effects/lyd_np_effects.txt",
+      "bytes": 10380,
+      "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d"
+    },
+    {
+      "path": "common/scripted_triggers/lyd_np_triggers.txt",
+      "bytes": 2777,
+      "sha256": "7c1bc919d2ddf3dfc5b59969ea1cb4b795e4a172e8ad1d984acadc048ed25cff"
+    },
+    {
+      "path": "descriptor.mod",
+      "bytes": 125,
+      "sha256": "b82a694df94b885c0438d55bb3f1d5ed2fdde6b624131633b5ae56cfabe101f1"
+    },
+    {
+      "path": "events/lyd_np_events.txt",
+      "bytes": 3743,
+      "sha256": "b9d57ad721c799e551870f39027a26727b207c5fef97f175dd4db0dff81db896"
+    },
+    {
+      "path": "localization/english/lyd_np_l_english.yml",
+      "bytes": 2296,
+      "sha256": "26acb8c79ff2c790a62b8905e725250153141731c14719259a52c02d555ad723"
+    },
+    {
+      "path": "localization/simp_chinese/lyd_np_l_simp_chinese.yml",
+      "bytes": 1993,
+      "sha256": "d7d4381c8bb172e4a32041588e43f1838e1bc861902153df3a2d1f10eec2d907"
+    }
+  ],
+  "r0001_input_payload": [
+    {
+      "path": "common/decisions/lyd_np_decisions.txt",
+      "bytes": 1695,
+      "sha256": "4e847c65988ac4a3853f6320d4a2683a9688e0aa4db2f875fae403b97b967f16"
+    },
+    {
+      "path": "common/religion/faith_types/lyd_np_faiths.txt",
+      "bytes": 641,
+      "sha256": "bcd46bd4407ae43dcaf84b505a08c2d883c2e52726587e7ae9cd088d88c62870"
+    },
+    {
+      "path": "common/religion/rite_types/lyd_np_rites.txt",
+      "bytes": 845,
+      "sha256": "ba76cd96f18ba0f75d9932c6e50dcd4067abfd465364731c10e7bcfc211b058c"
+    },
+    {
+      "path": "common/scripted_effects/lyd_np_effects.txt",
+      "bytes": 9410,
+      "sha256": "5add010b934ef5074303ecdcabf48f1009b4d23b3a687d4e070603c3264731b2"
+    },
+    {
+      "path": "common/scripted_triggers/lyd_np_triggers.txt",
+      "bytes": 2774,
+      "sha256": "46eabe7e5218e9cbcfb9051bc7390010038a6cf25228cf859fdfb31d0c797bf5"
+    },
+    {
+      "path": "descriptor.mod",
+      "bytes": 125,
+      "sha256": "b82a694df94b885c0438d55bb3f1d5ed2fdde6b624131633b5ae56cfabe101f1"
+    },
+    {
+      "path": "events/lyd_np_events.txt",
+      "bytes": 4010,
+      "sha256": "4f2d4272a224e08b4f6a2f3b1379f4f3528f0e15b6ec833bb8c0fa47b36f2e99"
+    },
+    {
+      "path": "localization/english/lyd_np_l_english.yml",
+      "bytes": 2296,
+      "sha256": "26acb8c79ff2c790a62b8905e725250153141731c14719259a52c02d555ad723"
+    },
+    {
+      "path": "localization/simp_chinese/lyd_np_l_simp_chinese.yml",
+      "bytes": 1993,
+      "sha256": "d7d4381c8bb172e4a32041588e43f1838e1bc861902153df3a2d1f10eec2d907"
+    }
+  ],
+  "error_intake": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\userdir\\logs\\error.log",
+    "frozen_snapshot": "source/r0001-error-at-intake.log",
+    "sha256": "9c19651836597f8fb3987d4150c2b38f1171e2dd876616f94e176916bb3d9a48"
+  },
+  "native_picture_source": {
+    "source_root": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game",
+    "path": "common/decisions/00_lifestyle_decisions.txt",
+    "lines": "14-19",
+    "sha256": "3110c1f0398721a69fe24d68415222f48e886fe6c263d92902facdf8c7bb604a"
+  },
+  "fixes": [
+    "all six script files UTF-8 BOM",
+    "native picture/reference blocks and explicit AI interval zero",
+    "fixed quoted log markers in four parameterless delayed assertion effects",
+    "player initialization decision references .0001",
+    "removed unused created-subject variable"
+  ],
+  "known_limits": [
+    "R0001 remains RED and unchanged",
+    "native semantic load and three rounds require new cold run",
+    "unlanded NPC head fallback and natural cooldown still unverified"
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "utc": "2026-10-03T19:40:29.872936+00:00",
+  "audit_scope": "filesystem hashes and Python imports only; no server initialization, process/pipe/desktop/live attach",
+  "account_home": "C:\\Users\\Administrator",
+  "interpreter": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "python_version": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+  "game_root": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III",
+  "game_version": "1.20.0.3",
+  "executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "exact_reviewed_executable": true,
+  "native_artifacts": {
+    "dll": {
+      "path": "C:\\cn123\\xar_ck3_bridge.dll",
+      "exists": true,
+      "bytes": 4073472,
+      "sha256": "6cd8a0a3fcb91a426d043adbc311c04bf540fcd3321659b45f74951c4a8fee2d",
+      "reviewed_sha256": "6cd8a0a3fcb91a426d043adbc311c04bf540fcd3321659b45f74951c4a8fee2d",
+      "matches_reviewed": true
+    },
+    "injector": {
+      "path": "C:\\cn123\\xar_ck3_bridge_injector.exe",
+      "exists": true,
+      "bytes": 39936,
+      "sha256": "00fe3853594ada9eeab9aa235f78188b509bc7da8f74ef497f423cc6fa8b9a03",
+      "reviewed_sha256": "00fe3853594ada9eeab9aa235f78188b509bc7da8f74ef497f423cc6fa8b9a03",
+      "matches_reviewed": true
+    }
+  },
+  "imports": {
+    "mcp": {
+      "available": true,
+      "module_file": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\__init__.py"
+    },
+    "mcp.server": {
+      "available": true,
+      "module_file": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\server\\__init__.py"
+    },
+    "mcp.client.stdio": {
+      "available": true,
+      "module_file": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\client\\stdio.py"
+    },
+    "cv2": {
+      "available": true,
+      "module_file": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\cv2\\__init__.py"
+    },
+    "PIL": {
+      "available": true,
+      "module_file": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\PIL\\__init__.py"
+    },
+    "psutil": {
+      "available": true,
+      "module_file": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\psutil\\__init__.py"
+    },
+    "win32api": {
+      "available": true,
+      "module_file": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\win32\\win32api.pyd"
+    },
+    "ck3_native_profile_mcp": {
+      "available": true,
+      "module_file": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_native_profile_mcp.py"
+    }
+  },
+  "api": {
+    "mcp.Client": true,
+    "mcp.server.MCPServer": true
+  },
+  "current_codex_game_servers": [],
+  "historical_other_machine": {
+    "Z:/": false,
+    "C:/Users/xenoa": false
+  },
+  "native_profile_cli": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_native_profile_mcp.py",
+    "--profile",
+    "<FRESH_LIVE_NATIVE_PROFILE.json>"
+  ],
+  "requires_root_live_work": [
+    "launch this fresh isolated userdir",
+    "select 867 Robert and independently read played ID 29829",
+    "fresh desktop/Steam/offline/lease guard",
+    "native attach hello/map/paused/date postcondition",
+    "persistent official MCP client"
+  ],
+  "runtime_status": "NOT_RUN",
+  "can_reuse_without_native_rebuild": true
+}

@@ -1,5 +1,8 @@
 ﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
 lyd_enter_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious
+    ai_check_interval = 0
     desc = lyd_enter_decision_desc
     selection_tooltip = lyd_enter_decision_tooltip
     confirm_text = lyd_enter_decision_confirm
@@ -10,6 +13,9 @@ lyd_enter_decision = {
 }
 
 lyd_change_school_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious
+    ai_check_interval = 0
     desc = lyd_change_school_decision_desc
     selection_tooltip = lyd_change_school_decision_tooltip
     confirm_text = lyd_change_school_decision_confirm
@@ -20,6 +26,9 @@ lyd_change_school_decision = {
 }
 
 lyd_study_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious
+    ai_check_interval = 0
     desc = lyd_study_decision_desc
     selection_tooltip = lyd_study_decision_tooltip
     confirm_text = lyd_study_decision_confirm

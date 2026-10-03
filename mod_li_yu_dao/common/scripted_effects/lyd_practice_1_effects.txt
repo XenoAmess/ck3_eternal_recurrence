@@ -6,8 +6,7 @@ lyd_practice_kongmen_a_effect = {
             rite = rite:lyd_rite_kongmen
             gold >= 10
         }
-        add_gold = -10 add_piety = 35 change_stress = 5 add_learning_lifestyle_xp = 25
-        add_character_flag = lyd_practice_kongmen_completed
+        remove_short_term_gold = 10 add_piety = 35 add_stress = 5 add_learning_lifestyle_xp = 25
         add_character_flag = { flag = lyd_study_cooldown days = 180 }
     }
 }
@@ -19,8 +18,7 @@ lyd_practice_kongmen_b_effect = {
             rite = rite:lyd_rite_kongmen
             gold >= 25
         }
-        add_gold = -25 add_piety = 25 add_prestige = 15 add_learning_lifestyle_xp = 15
-        add_character_flag = lyd_practice_kongmen_completed
+        remove_short_term_gold = 25 add_piety = 25 add_prestige = 15 add_learning_lifestyle_xp = 15
         add_character_flag = { flag = lyd_study_cooldown days = 180 }
     }
 }
@@ -32,8 +30,7 @@ lyd_practice_kongmen_c_effect = {
             rite = rite:lyd_rite_kongmen
             gold >= 40
         }
-        add_gold = -40 add_piety = -15 add_prestige = 25
-        add_character_flag = lyd_practice_kongmen_completed
+        remove_short_term_gold = 40 add_piety = -15 add_prestige = 25
         add_character_flag = { flag = lyd_study_cooldown days = 180 }
     }
 }
@@ -45,8 +42,7 @@ lyd_practice_mengzi_a_effect = {
             rite = rite:lyd_rite_mengzi
             gold >= 20
         }
-        add_gold = -20 add_piety = 40 add_prestige = -10 change_stress = 5 add_learning_lifestyle_xp = 25
-        add_character_flag = lyd_practice_mengzi_completed
+        remove_short_term_gold = 20 add_piety = 40 add_prestige = -10 add_stress = 5 add_learning_lifestyle_xp = 25
         add_character_flag = { flag = lyd_study_cooldown days = 180 }
     }
 }
@@ -58,8 +54,7 @@ lyd_practice_mengzi_b_effect = {
             rite = rite:lyd_rite_mengzi
             gold >= 15
         }
-        add_gold = -15 add_piety = 25 add_learning_lifestyle_xp = 15
-        add_character_flag = lyd_practice_mengzi_completed
+        remove_short_term_gold = 15 add_piety = 25 add_learning_lifestyle_xp = 15
         add_character_flag = { flag = lyd_study_cooldown days = 180 }
     }
 }
@@ -71,8 +66,7 @@ lyd_practice_mengzi_c_effect = {
             rite = rite:lyd_rite_mengzi
             gold >= 0
         }
-        add_piety = -20 change_stress = 5
-        add_character_flag = lyd_practice_mengzi_completed
+        add_piety = -20 add_stress = 5
         add_character_flag = { flag = lyd_study_cooldown days = 180 }
     }
 }
@@ -84,8 +78,7 @@ lyd_practice_xunzi_a_effect = {
             rite = rite:lyd_rite_xunzi
             gold >= 10
         }
-        add_gold = -10 add_piety = 35 change_stress = -10 add_learning_lifestyle_xp = 35
-        add_character_flag = lyd_practice_xunzi_completed
+        remove_short_term_gold = 10 add_piety = 35 add_stress = -10 add_learning_lifestyle_xp = 35
         add_character_flag = { flag = lyd_study_cooldown days = 180 }
     }
 }
@@ -97,8 +90,7 @@ lyd_practice_xunzi_b_effect = {
             rite = rite:lyd_rite_xunzi
             gold >= 15
         }
-        add_gold = -15 add_piety = 25 change_stress = -5 add_learning_lifestyle_xp = 20
-        add_character_flag = lyd_practice_xunzi_completed
+        remove_short_term_gold = 15 add_piety = 25 add_stress = -5 add_learning_lifestyle_xp = 20
         add_character_flag = { flag = lyd_study_cooldown days = 180 }
     }
 }

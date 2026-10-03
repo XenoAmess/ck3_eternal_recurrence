@@ -1,0 +1,368 @@
+{
+  "schema_version": 1,
+  "utc": "2026-10-03T20:48:28.985524+00:00",
+  "runtime_status": "NOT_RUN",
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001",
+  "userdir": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\userdir",
+  "mount_order": [
+    "mod/lyd_production.mod",
+    "mod/lyd_fixture.mod"
+  ],
+  "production_input": "C:\\workspace\\ck3_lyd_runtime_20261004\\build-iteration1\\mod_li_yu_dao",
+  "production_manifest": "C:\\workspace\\ck3_lyd_runtime_20261004\\build-iteration1\\mod_li_yu_dao.manifest.json",
+  "production_manifest_sha256": "e1a69536e7b04ffca57ece10431e3449cc3b31d9feb34266c6b80b8ef040a7a0",
+  "production_payload": [
+    {
+      "path": "common/character_interactions/lyd_interactions.txt",
+      "bytes": 127,
+      "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba"
+    },
+    {
+      "path": "common/decisions/lyd_decisions.txt",
+      "bytes": 1481,
+      "sha256": "3faada6dbe2e34e5fce4650362a97908e4a1f1fb29478abaf532bf2095d300cf"
+    },
+    {
+      "path": "common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 424,
+      "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525"
+    },
+    {
+      "path": "common/religion/rite_types/lyd_rites.txt",
+      "bytes": 3061,
+      "sha256": "889d7846bb876ee260f0b5882116fafe9185db78c8adeab9551f43146cb33a2b"
+    },
+    {
+      "path": "common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 8333,
+      "sha256": "8c48b1d0e6056845fec7a6babb53754fb7b7aecb2c3b7df7bae608654bd20789"
+    },
+    {
+      "path": "common/scripted_effects/lyd_entry_effects.txt",
+      "bytes": 1099,
+      "sha256": "6ad04df437ce1e7ba63fcbb5c475b15fb22d4e7e5131aa0849b69b6aecaa226d"
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_1_effects.txt",
+      "bytes": 3195,
+      "sha256": "c9e3106ad93f8cc4bbf4345610ff9261232cca01dce1c23e1ede33b196d6d55d"
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_2_effects.txt",
+      "bytes": 3096,
+      "sha256": "d72cf677111d87c9cad2129e6d220b31b073bbdbf1856b0008c93009c184fdf1"
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_3_effects.txt",
+      "bytes": 3170,
+      "sha256": "76ca4cfefb255377241f620cee28f3bf2e672f625625fc077efdc29f7a86ac6e"
+    },
+    {
+      "path": "common/scripted_effects/lyd_school_effects.txt",
+      "bytes": 2186,
+      "sha256": "440ff86222c5143bec5d00862afff7113b38c7c0e45605aa1e5036fad2ff6055"
+    },
+    {
+      "path": "common/scripted_triggers/lyd_player_triggers.txt",
+      "bytes": 738,
+      "sha256": "4908f60fcea79e98a4389dd332bcf1da33a812d895562327aa37d16272a50e02"
+    },
+    {
+      "path": "descriptor.mod",
+      "bytes": 139,
+      "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2"
+    },
+    {
+      "path": "events/lyd_events.txt",
+      "bytes": 10604,
+      "sha256": "443036f4787efa5e59f927bb0d8832d8f6e55efbf744b3810efe674de36817ed"
+    },
+    {
+      "path": "history/faiths/lyd_faith_history.txt",
+      "bytes": 588,
+      "sha256": "00ea56c310601a142d18ee52313d39556ffb56964f4927026de69126b9914f11"
+    },
+    {
+      "path": "localization/english/lyd_content_l_english.yml",
+      "bytes": 17495,
+      "sha256": "3c5ca01e2f47ad87700eb6e93eb0a9675e98ceb5a58337679e9f31c7eea6f3c4"
+    },
+    {
+      "path": "localization/english/lyd_runtime_l_english.yml",
+      "bytes": 2471,
+      "sha256": "ecea067dcd55ee5bf78018d39e972ca875547390b392550e8a2b4504a1835193"
+    },
+    {
+      "path": "localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 14147,
+      "sha256": "df78c4340ba0f8ae53d3637f5485143046497c014e980ee91f6a9b6031f9dae5"
+    },
+    {
+      "path": "localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 2138,
+      "sha256": "f95bc217ca63028cb828e156e0a2f131d80ad2a332f98bc5290c4683e0a90a1a"
+    }
+  ],
+  "fixture_payload": [
+    {
+      "path": "common/decisions/lyd_np_decisions.txt",
+      "bytes": 1695,
+      "sha256": "4e847c65988ac4a3853f6320d4a2683a9688e0aa4db2f875fae403b97b967f16"
+    },
+    {
+      "path": "common/religion/faith_types/lyd_np_faiths.txt",
+      "bytes": 641,
+      "sha256": "bcd46bd4407ae43dcaf84b505a08c2d883c2e52726587e7ae9cd088d88c62870"
+    },
+    {
+      "path": "common/religion/rite_types/lyd_np_rites.txt",
+      "bytes": 845,
+      "sha256": "ba76cd96f18ba0f75d9932c6e50dcd4067abfd465364731c10e7bcfc211b058c"
+    },
+    {
+      "path": "common/scripted_effects/lyd_np_effects.txt",
+      "bytes": 9410,
+      "sha256": "5add010b934ef5074303ecdcabf48f1009b4d23b3a687d4e070603c3264731b2"
+    },
+    {
+      "path": "common/scripted_triggers/lyd_np_triggers.txt",
+      "bytes": 2774,
+      "sha256": "46eabe7e5218e9cbcfb9051bc7390010038a6cf25228cf859fdfb31d0c797bf5"
+    },
+    {
+      "path": "descriptor.mod",
+      "bytes": 125,
+      "sha256": "b82a694df94b885c0438d55bb3f1d5ed2fdde6b624131633b5ae56cfabe101f1"
+    },
+    {
+      "path": "events/lyd_np_events.txt",
+      "bytes": 4010,
+      "sha256": "4f2d4272a224e08b4f6a2f3b1379f4f3528f0e15b6ec833bb8c0fa47b36f2e99"
+    },
+    {
+      "path": "localization/english/lyd_np_l_english.yml",
+      "bytes": 2296,
+      "sha256": "26acb8c79ff2c790a62b8905e725250153141731c14719259a52c02d555ad723"
+    },
+    {
+      "path": "localization/simp_chinese/lyd_np_l_simp_chinese.yml",
+      "bytes": 1993,
+      "sha256": "d7d4381c8bb172e4a32041588e43f1838e1bc861902153df3a2d1f10eec2d907"
+    }
+  ],
+  "fixture_contract": {
+    "mode": "existing qualifying direct vassal, otherwise create one fixed-role 40-year-old male fixture subject",
+    "npc_scope": "only responds inside player initialization/transition chain; no scheduled AI entry",
+    "county_witness": "subject capital county if present, otherwise player's capital county",
+    "side_effects": [
+      "player and subject Rite changes",
+      "witness county Rite changes",
+      "native temporal head titles/laws",
+      "at most one new NPC when no qualifying vassal"
+    ],
+    "unverified": [
+      "new unlanded NPC temporal-head validity",
+      "ordinary 867 Robert's actual vassals and native ID"
+    ]
+  },
+  "launch_argv": [
+    "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "-debug_mode",
+    "-gdpr-compliant",
+    "-userdir=C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-001\\userdir"
+  ],
+  "launch_cwd": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries",
+  "entry": {
+    "bookmark_date": "867.1.1",
+    "character_name": "Robert",
+    "expected_native_character_id": 29829,
+    "identity_status": "REQUIRES_INDEPENDENT_LIVE_READBACK"
+  },
+  "console_commands": [
+    "event lyd_np.0001 29829",
+    "event lyd_np.9000 29829"
+  ],
+  "console_precondition": "only after actual played-character ID equals 29829; no play/switch-character command",
+  "settings_requested": {
+    "language": "l_simp_chinese",
+    "autosave": "NEVER",
+    "cloud_save": false,
+    "display_mode": "windowed",
+    "windowed_resolution": "1600x900"
+  },
+  "settings_status": "REQUIRES_GAME_SETTINGS_READBACK; requested window size is not a click coordinate assumption",
+  "prepared_files": [
+    {
+      "path": "content/fixture/common/decisions/lyd_np_decisions.txt",
+      "bytes": 1695,
+      "sha256": "4e847c65988ac4a3853f6320d4a2683a9688e0aa4db2f875fae403b97b967f16"
+    },
+    {
+      "path": "content/fixture/common/religion/faith_types/lyd_np_faiths.txt",
+      "bytes": 641,
+      "sha256": "bcd46bd4407ae43dcaf84b505a08c2d883c2e52726587e7ae9cd088d88c62870"
+    },
+    {
+      "path": "content/fixture/common/religion/rite_types/lyd_np_rites.txt",
+      "bytes": 845,
+      "sha256": "ba76cd96f18ba0f75d9932c6e50dcd4067abfd465364731c10e7bcfc211b058c"
+    },
+    {
+      "path": "content/fixture/common/scripted_effects/lyd_np_effects.txt",
+      "bytes": 9410,
+      "sha256": "5add010b934ef5074303ecdcabf48f1009b4d23b3a687d4e070603c3264731b2"
+    },
+    {
+      "path": "content/fixture/common/scripted_triggers/lyd_np_triggers.txt",
+      "bytes": 2774,
+      "sha256": "46eabe7e5218e9cbcfb9051bc7390010038a6cf25228cf859fdfb31d0c797bf5"
+    },
+    {
+      "path": "content/fixture/descriptor.mod",
+      "bytes": 125,
+      "sha256": "b82a694df94b885c0438d55bb3f1d5ed2fdde6b624131633b5ae56cfabe101f1"
+    },
+    {
+      "path": "content/fixture/events/lyd_np_events.txt",
+      "bytes": 4010,
+      "sha256": "4f2d4272a224e08b4f6a2f3b1379f4f3528f0e15b6ec833bb8c0fa47b36f2e99"
+    },
+    {
+      "path": "content/fixture/localization/english/lyd_np_l_english.yml",
+      "bytes": 2296,
+      "sha256": "26acb8c79ff2c790a62b8905e725250153141731c14719259a52c02d555ad723"
+    },
+    {
+      "path": "content/fixture/localization/simp_chinese/lyd_np_l_simp_chinese.yml",
+      "bytes": 1993,
+      "sha256": "d7d4381c8bb172e4a32041588e43f1838e1bc861902153df3a2d1f10eec2d907"
+    },
+    {
+      "path": "content/production/common/character_interactions/lyd_interactions.txt",
+      "bytes": 127,
+      "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba"
+    },
+    {
+      "path": "content/production/common/decisions/lyd_decisions.txt",
+      "bytes": 1481,
+      "sha256": "3faada6dbe2e34e5fce4650362a97908e4a1f1fb29478abaf532bf2095d300cf"
+    },
+    {
+      "path": "content/production/common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 424,
+      "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525"
+    },
+    {
+      "path": "content/production/common/religion/rite_types/lyd_rites.txt",
+      "bytes": 3061,
+      "sha256": "889d7846bb876ee260f0b5882116fafe9185db78c8adeab9551f43146cb33a2b"
+    },
+    {
+      "path": "content/production/common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 8333,
+      "sha256": "8c48b1d0e6056845fec7a6babb53754fb7b7aecb2c3b7df7bae608654bd20789"
+    },
+    {
+      "path": "content/production/common/scripted_effects/lyd_entry_effects.txt",
+      "bytes": 1099,
+      "sha256": "6ad04df437ce1e7ba63fcbb5c475b15fb22d4e7e5131aa0849b69b6aecaa226d"
+    },
+    {
+      "path": "content/production/common/scripted_effects/lyd_practice_1_effects.txt",
+      "bytes": 3195,
+      "sha256": "c9e3106ad93f8cc4bbf4345610ff9261232cca01dce1c23e1ede33b196d6d55d"
+    },
+    {
+      "path": "content/production/common/scripted_effects/lyd_practice_2_effects.txt",
+      "bytes": 3096,
+      "sha256": "d72cf677111d87c9cad2129e6d220b31b073bbdbf1856b0008c93009c184fdf1"
+    },
+    {
+      "path": "content/production/common/scripted_effects/lyd_practice_3_effects.txt",
+      "bytes": 3170,
+      "sha256": "76ca4cfefb255377241f620cee28f3bf2e672f625625fc077efdc29f7a86ac6e"
+    },
+    {
+      "path": "content/production/common/scripted_effects/lyd_school_effects.txt",
+      "bytes": 2186,
+      "sha256": "440ff86222c5143bec5d00862afff7113b38c7c0e45605aa1e5036fad2ff6055"
+    },
+    {
+      "path": "content/production/common/scripted_triggers/lyd_player_triggers.txt",
+      "bytes": 738,
+      "sha256": "4908f60fcea79e98a4389dd332bcf1da33a812d895562327aa37d16272a50e02"
+    },
+    {
+      "path": "content/production/descriptor.mod",
+      "bytes": 139,
+      "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2"
+    },
+    {
+      "path": "content/production/events/lyd_events.txt",
+      "bytes": 10604,
+      "sha256": "443036f4787efa5e59f927bb0d8832d8f6e55efbf744b3810efe674de36817ed"
+    },
+    {
+      "path": "content/production/history/faiths/lyd_faith_history.txt",
+      "bytes": 588,
+      "sha256": "00ea56c310601a142d18ee52313d39556ffb56964f4927026de69126b9914f11"
+    },
+    {
+      "path": "content/production/localization/english/lyd_content_l_english.yml",
+      "bytes": 17495,
+      "sha256": "3c5ca01e2f47ad87700eb6e93eb0a9675e98ceb5a58337679e9f31c7eea6f3c4"
+    },
+    {
+      "path": "content/production/localization/english/lyd_runtime_l_english.yml",
+      "bytes": 2471,
+      "sha256": "ecea067dcd55ee5bf78018d39e972ca875547390b392550e8a2b4504a1835193"
+    },
+    {
+      "path": "content/production/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 14147,
+      "sha256": "df78c4340ba0f8ae53d3637f5485143046497c014e980ee91f6a9b6031f9dae5"
+    },
+    {
+      "path": "content/production/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 2138,
+      "sha256": "f95bc217ca63028cb828e156e0a2f131d80ad2a332f98bc5290c4683e0a90a1a"
+    },
+    {
+      "path": "native-profile.template.json",
+      "bytes": 734,
+      "sha256": "9682bc91bf382254236e15246a2319ef5b3fd1d510e201be3f64aa87478787b1"
+    },
+    {
+      "path": "userdir/dlc_load.json",
+      "bytes": 107,
+      "sha256": "24f8cb5d6d471c101e5da573f86a4e9aa7cb865593179b33389491231bdf8f30"
+    },
+    {
+      "path": "userdir/mod/lyd_fixture.mod",
+      "bytes": 203,
+      "sha256": "eab7b3398aa7f9e1323808e9793c7c942c74a5cac0a26a1f0fc31f4b5df7a42e"
+    },
+    {
+      "path": "userdir/mod/lyd_production.mod",
+      "bytes": 217,
+      "sha256": "4d4c159d198d8b11b3a7b69adff3b7679a588cc137cefe1f2c8f0c32b152981a"
+    },
+    {
+      "path": "userdir/pdx_settings.txt",
+      "bytes": 434,
+      "sha256": "35ac79cc6e173bf82e975b4a401a94dab924bca2414497e66e3fedbffe7783db"
+    },
+    {
+      "path": "userdir/player/game_rules/presets.txt",
+      "bytes": 71,
+      "sha256": "c564e5e177e8263a66b32c572fd713f6cb79a7be6e4760d565d4144ca9024c46"
+    },
+    {
+      "path": "userdir/tutorial.txt",
+      "bytes": 57,
+      "sha256": "de93ebed7d262c2450ac9fd18543e0890d8e5d3661cc773b62f707fc310a2075"
+    }
+  ],
+  "real_documents_written": false,
+  "workshop_cache_written": false
+}

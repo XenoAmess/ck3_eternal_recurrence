@@ -6,8 +6,7 @@ lyd_practice_jingshu_b_effect = {
             rite = rite:lyd_rite_jingshu
             gold >= 20
         }
-        add_gold = -20 add_piety = 25 change_stress = -5 add_learning_lifestyle_xp = 30
-        add_character_flag = lyd_practice_jingshu_completed
+        remove_short_term_gold = 20 add_piety = 25 add_stress = -5 add_learning_lifestyle_xp = 30
         add_character_flag = { flag = lyd_study_cooldown days = 180 }
     }
 }
@@ -19,8 +18,7 @@ lyd_practice_jingshu_c_effect = {
             rite = rite:lyd_rite_jingshu
             gold >= 35
         }
-        add_gold = -35 add_piety = -15 add_prestige = 15
-        add_character_flag = lyd_practice_jingshu_completed
+        remove_short_term_gold = 35 add_piety = -15 add_prestige = 15
         add_character_flag = { flag = lyd_study_cooldown days = 180 }
     }
 }
@@ -32,8 +30,7 @@ lyd_practice_zhuxi_a_effect = {
             rite = rite:lyd_rite_zhuxi
             gold >= 15
         }
-        add_gold = -15 add_piety = 35 change_stress = 5 add_learning_lifestyle_xp = 40
-        add_character_flag = lyd_practice_zhuxi_completed
+        remove_short_term_gold = 15 add_piety = 35 add_stress = 5 add_learning_lifestyle_xp = 40
         add_character_flag = { flag = lyd_study_cooldown days = 180 }
     }
 }
@@ -45,8 +42,7 @@ lyd_practice_zhuxi_b_effect = {
             rite = rite:lyd_rite_zhuxi
             gold >= 10
         }
-        add_gold = -10 add_piety = 25 add_learning_lifestyle_xp = 25
-        add_character_flag = lyd_practice_zhuxi_completed
+        remove_short_term_gold = 10 add_piety = 25 add_learning_lifestyle_xp = 25
         add_character_flag = { flag = lyd_study_cooldown days = 180 }
     }
 }
@@ -58,8 +54,7 @@ lyd_practice_zhuxi_c_effect = {
             rite = rite:lyd_rite_zhuxi
             gold >= 35
         }
-        add_gold = -35 add_piety = -20 add_prestige = 20
-        add_character_flag = lyd_practice_zhuxi_completed
+        remove_short_term_gold = 35 add_piety = -20 add_prestige = 20
         add_character_flag = { flag = lyd_study_cooldown days = 180 }
     }
 }
@@ -71,8 +66,7 @@ lyd_practice_lujiuyuan_a_effect = {
             rite = rite:lyd_rite_lujiuyuan
             gold >= 0
         }
-        add_piety = 40 add_prestige = -15 change_stress = 10 add_learning_lifestyle_xp = 25
-        add_character_flag = lyd_practice_lujiuyuan_completed
+        add_piety = 40 add_prestige = -15 add_stress = 10 add_learning_lifestyle_xp = 25
         add_character_flag = { flag = lyd_study_cooldown days = 180 }
     }
 }
@@ -84,8 +78,7 @@ lyd_practice_lujiuyuan_b_effect = {
             rite = rite:lyd_rite_lujiuyuan
             gold >= 15
         }
-        add_gold = -15 add_piety = 25 add_learning_lifestyle_xp = 30
-        add_character_flag = lyd_practice_lujiuyuan_completed
+        remove_short_term_gold = 15 add_piety = 25 add_learning_lifestyle_xp = 30
         add_character_flag = { flag = lyd_study_cooldown days = 180 }
     }
 }
@@ -97,8 +90,7 @@ lyd_practice_lujiuyuan_c_effect = {
             rite = rite:lyd_rite_lujiuyuan
             gold >= 0
         }
-        add_piety = -25 add_prestige = 25 change_stress = -5
-        add_character_flag = lyd_practice_lujiuyuan_completed
+        add_piety = -25 add_prestige = 25 add_stress = -5
         add_character_flag = { flag = lyd_study_cooldown days = 180 }
     }
 }

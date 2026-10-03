@@ -1,0 +1,47 @@
+﻿# Acceptance-only controls. These are not release decisions.
+lyd_np_initialize_decision = {
+    picture = {
+        reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+    }
+    ai_check_interval = 0
+    decision_group_type = major
+    desc = lyd_np_initialize_decision_desc
+    selection_tooltip = lyd_np_initialize_decision_tooltip
+    confirm_text = lyd_np_initialize_decision_confirm
+    is_shown = { lyd_np_actor_trigger = yes NOT = { has_variable = lyd_np_initialized } }
+    is_valid = { lyd_np_actor_trigger = yes }
+    effect = { trigger_event = lyd_np.0001 }
+    ai_will_do = { base = 0 }
+}
+
+lyd_np_join_decision = {
+    picture = {
+        reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+    }
+    ai_check_interval = 0
+    decision_group_type = major
+    desc = lyd_np_join_decision_desc
+    selection_tooltip = lyd_np_join_decision_tooltip
+    confirm_text = lyd_np_join_decision_confirm
+    is_shown = { lyd_np_initialized_trigger = yes rite:lyd_np_branch_rite = { faith != faith:lyd_np_anchor_faith } }
+    is_valid = { lyd_np_join_ready_trigger = yes }
+    cost = { piety = 100 }
+    effect = { lyd_np_join_effect = yes }
+    ai_will_do = { base = 0 }
+}
+
+lyd_np_detach_decision = {
+    picture = {
+        reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds"
+    }
+    ai_check_interval = 0
+    decision_group_type = major
+    desc = lyd_np_detach_decision_desc
+    selection_tooltip = lyd_np_detach_decision_tooltip
+    confirm_text = lyd_np_detach_decision_confirm
+    is_shown = { lyd_np_initialized_trigger = yes rite:lyd_np_branch_rite = { faith = faith:lyd_np_anchor_faith } }
+    is_valid = { lyd_np_detach_ready_trigger = yes }
+    cost = { piety = 100 }
+    effect = { lyd_np_detach_effect = yes }
+    ai_will_do = { base = 0 }
+}

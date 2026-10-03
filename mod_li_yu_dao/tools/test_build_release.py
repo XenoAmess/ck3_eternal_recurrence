@@ -25,13 +25,13 @@ def fixture(source: Path) -> None:
         "common/religion/tenet_types/lyd_tenets.txt": "lyd_tenet = { }\nlyd_tenet_second = { }\nlyd_tenet_third = { }\n",
         "history/faiths/lyd_faith_history.txt": "lyd_faith = { 867.1.1 = { main_rite = lyd_rite } }\n",
         "common/scripted_triggers/lyd_actor_triggers.txt": "lyd_actor = { is_ai = no }\n",
-        "common/scripted_effects/lyd_notice_effects.txt": "lyd_notify = { trigger_event = lyd.1 }\n",
-        "common/decisions/lyd_decisions.txt": "lyd_open = { is_shown = { lyd_actor = yes } effect = { if = { limit = { lyd_actor = yes } lyd_notify = yes } } }\n",
+        "common/scripted_effects/lyd_notice_effects.txt": "lyd_notify = { add_stress = -5 remove_short_term_gold = 10 add_gold = 5 trigger_event = lyd.1 }\n",
+        "common/decisions/lyd_decisions.txt": 'lyd_open = { picture = { reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds" } ai_check_interval = 0 is_shown = { lyd_actor = yes } effect = { if = { limit = { lyd_actor = yes } lyd_notify = yes } } }\n',
         "common/character_interactions/lyd_interactions.txt": "lyd_request = { is_shown = { scope:actor = { lyd_actor = yes } } on_accept = { scope:actor = { lyd_notify = yes } } }\n",
         "events/lyd_events.txt": "namespace = lyd\nlyd.1 = { type = character_event title = lyd.1.t desc = lyd.1.d option = { name = lyd.1.a } }\n",
     }
     for relative, text in scripts.items():
-        write(source / relative, text)
+        write(source / relative, text, bom=True)
     for language in ("english", "simp_chinese"):
         write(source / f"localization/{language}/lyd_content_l_{language}.yml", f'l_{language}:\n lyd_rite:0 "School"\n lyd_rite_desc:0 "A tradition"\n lyd_tenet_name:0 "Learning"\n lyd_tenet_desc:0 "Learning practice"\n lyd_tenet_second_name:0 "Rites"\n lyd_tenet_second_desc:0 "Ritual practice"\n lyd_tenet_third_name:0 "Virtue"\n lyd_tenet_third_desc:0 "Virtue practice"\n', bom=True)
         write(source / f"localization/{language}/lyd_runtime_l_{language}.yml", f'l_{language}:\n lyd_open:0 "Open"\n lyd_request:0 "Request"\n lyd.1.t:0 "Discussion"\n lyd.1.d:0 "$lyd_open$ [ROOT.Char.GetName]"\n lyd.1.a:0 "Agree"\n', bom=True)
@@ -88,11 +88,58 @@ class BuildTests(unittest.TestCase):
                     path = source / relative
                     initial = path.read_bytes()
                     text = path.read_text(encoding="utf-8-sig")
-                    write(path, text.replace(original, replacement), bom=relative.endswith(".yml"))
+                    write(path, text.replace(original, replacement), bom=True)
                     report = static.validate(source)
                     self.assertEqual(report["result"], "RED")
                     self.assertTrue(any(expected in error for error in report["errors"]), report["errors"])
                     path.write_bytes(initial)
+
+    def test_r0001_boot_regressions_and_native_tier_interval(self) -> None:
+        decisions = "common/decisions/lyd_decisions.txt"
+        effects = "common/scripted_effects/lyd_notice_effects.txt"
+        picture = 'picture = { reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds" }'
+        mutants = (
+            (effects, "add_stress = -5", "change_stress = -5", "unknown native effect change_stress"),
+            (effects, "add_gold = 5", "add_gold = -5", "negative add_gold"),
+            (decisions, picture, "", "decision picture"),
+            (decisions, picture, 'picture = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"', "decision picture"),
+            (decisions, picture, "picture = { }", "decision picture"),
+            (decisions, "ai_check_interval = 0", "", "AI check interval"),
+            (decisions, "ai_check_interval = 0", "ai_check_interval = -1", "AI check interval"),
+            (decisions, "ai_check_interval = 0", "ai_check_interval_by_tier = { county = 0 }", "AI check interval"),
+            (decisions, "ai_check_interval = 0", "ai_check_interval_by_tier = { barony = 0 county = 0 duchy = 0 kingdom = -1 empire = 0 hegemony = 0 }", "AI check interval"),
+        )
+        with tempfile.TemporaryDirectory(prefix="lyd-boot-regression-") as directory:
+            source = Path(directory)
+            fixture(source)
+            self.assertEqual(static.validate(source)["result"], "GREEN")
+            # Every shipped native script and descriptor is covered by the BOM
+            # rule; missing encoding cannot hide behind a passing fixture.
+            for relative in release.collect_runtime_files(source):
+                if Path(relative).suffix not in {".txt", ".mod"}:
+                    continue
+                with self.subTest(missing_bom=relative):
+                    path = source / relative
+                    initial = path.read_bytes()
+                    self.assertTrue(initial.startswith(b"\xef\xbb\xbf"))
+                    path.write_bytes(initial[3:])
+                    report = static.validate(source)
+                    self.assertEqual(report["result"], "RED")
+                    self.assertTrue(any("runtime script needs UTF-8 BOM" in error and relative in error for error in report["errors"]), report["errors"])
+                    path.write_bytes(initial)
+            for relative, original, replacement, expected in mutants:
+                with self.subTest(replacement=replacement):
+                    path = source / relative
+                    initial = path.read_bytes()
+                    write(path, path.read_text(encoding="utf-8-sig").replace(original, replacement), bom=True)
+                    report = static.validate(source)
+                    self.assertEqual(report["result"], "RED")
+                    self.assertTrue(any(expected in error for error in report["errors"]), report["errors"])
+                    path.write_bytes(initial)
+            path = source / decisions
+            text = path.read_text(encoding="utf-8-sig")
+            write(path, text.replace("ai_check_interval = 0", "ai_check_interval_by_tier = { barony = 0 county = 12 duchy = 6 kingdom = 1 empire = 1 hegemony = 1 }"), bom=True)
+            self.assertEqual(static.validate(source)["result"], "GREEN")
 
 
 if __name__ == "__main__":

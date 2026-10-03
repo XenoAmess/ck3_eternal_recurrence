@@ -1,0 +1,149 @@
+[06:21:59][E][lexer.cpp:306]: File 'common/scripted_triggers/lyd_np_triggers.txt' should be in utf8-bom encoding (will try to use it anyways)
+[06:22:00][E][lexer.cpp:306]: File 'common/scripted_effects/lyd_np_effects.txt' should be in utf8-bom encoding (will try to use it anyways)
+[06:22:01][E][decision_type.cpp:225]: lyd_enter_decision has 'ai_check_interval'/'ai_check_interval_by_tier' that's negative or unset. Setting to 0 instead
+[06:22:01][E][decision_type.cpp:242]: Decision picture lyd_enter_decision missing entries
+[06:22:01][E][decision_type.cpp:225]: lyd_change_school_decision has 'ai_check_interval'/'ai_check_interval_by_tier' that's negative or unset. Setting to 0 instead
+[06:22:01][E][decision_type.cpp:242]: Decision picture lyd_change_school_decision missing entries
+[06:22:01][E][decision_type.cpp:225]: lyd_study_decision has 'ai_check_interval'/'ai_check_interval_by_tier' that's negative or unset. Setting to 0 instead
+[06:22:01][E][decision_type.cpp:242]: Decision picture lyd_study_decision missing entries
+[06:22:01][E][lexer.cpp:306]: File 'common/decisions/lyd_np_decisions.txt' should be in utf8-bom encoding (will try to use it anyways)
+[06:22:01][E][pdx_persistent_reader.cpp:216]: Error: "Unexpected token: decision_group_type, near line: 3 (expanded from file: common/decisions/lyd_np_decisions.txt line: 4)" in file: "common/decisions/lyd_np_decisions.txt" near line: 3
+[06:22:01][E][pdx_persistent_reader.cpp:216]: Error: "Unexpected token: desc, near line: 4 (expanded from file: common/decisions/lyd_np_decisions.txt line: 5)" in file: "common/decisions/lyd_np_decisions.txt" near line: 4
+[06:22:01][E][pdx_persistent_reader.cpp:216]: Error: "Unexpected token: selection_tooltip, near line: 5 (expanded from file: common/decisions/lyd_np_decisions.txt line: 6)" in file: "common/decisions/lyd_np_decisions.txt" near line: 5
+[06:22:01][E][pdx_persistent_reader.cpp:216]: Error: "Unexpected token: confirm_text, near line: 6 (expanded from file: common/decisions/lyd_np_decisions.txt line: 7)" in file: "common/decisions/lyd_np_decisions.txt" near line: 6
+[06:22:01][E][pdx_persistent_reader.cpp:216]: Error: "Unexpected token: is_shown, near line: 8" in file: "common/decisions/lyd_np_decisions.txt" near line: 8
+[06:22:01][E][pdx_persistent_reader.cpp:216]: Error: "Unexpected token: is_valid, near line: 9" in file: "common/decisions/lyd_np_decisions.txt" near line: 9
+[06:22:01][E][pdx_persistent_reader.cpp:216]: Error: "Unexpected token: effect, near line: 10" in file: "common/decisions/lyd_np_decisions.txt" near line: 10
+[06:22:01][E][pdx_persistent_reader.cpp:216]: Error: "Unexpected token: ai_will_do, near line: 11" in file: "common/decisions/lyd_np_decisions.txt" near line: 11
+[06:22:01][E][decision_type.cpp:44]: texture path empty on 'file: common/decisions/lyd_np_decisions.txt line: 3 (lyd_np_initialize_decision)'
+[06:22:01][E][pdx_persistent_reader.cpp:216]: Error: "Unexpected token: lyd_np_join_decision, near line: 14" in file: "common/decisions/lyd_np_decisions.txt" near line: 25
+[06:22:01][E][pdx_persistent_reader.cpp:216]: Error: "Unexpected token: lyd_np_detach_decision, near line: 27" in file: "common/decisions/lyd_np_decisions.txt" near line: 38
+[06:22:01][E][decision_type.cpp:225]: lyd_np_initialize_decision has 'ai_check_interval'/'ai_check_interval_by_tier' that's negative or unset. Setting to 0 instead
+[06:22:03][E][lexer.cpp:306]: File 'events/lyd_np_events.txt' should be in utf8-bom encoding (will try to use it anyways)
+[06:22:12][E][lexer.cpp:306]: File 'common/religion/faith_types/lyd_np_faiths.txt' should be in utf8-bom encoding (will try to use it anyways)
+[06:22:12][E][lexer.cpp:306]: File 'common/religion/rite_types/lyd_np_rites.txt' should be in utf8-bom encoding (will try to use it anyways)
+[06:22:20][E][pdx_persistent_reader.cpp:216]: Error: "Unknown effect:  
+} 
+else = { debug_log = LYD_NP_JOIN_D1_FAIL$, near line: 179
+Unknown effect: =, near line: 179" in file: "common/scripted_effects/lyd_np_effects.txt" near line: 179
+[06:22:20][E][pdx_persistent_reader.cpp:216]: Error: "Unknown effect:  
+} 
+else = { debug_log = LYD_NP_JOIN_D30_FAIL$, near line: 179
+Unknown effect: =, near line: 179" in file: "common/scripted_effects/lyd_np_effects.txt" near line: 179
+[06:22:20][E][pdx_persistent_reader.cpp:216]: Error: "Unknown effect:  
+} 
+else = { debug_log = LYD_NP_DETACH_D1_FAIL$, near line: 193
+Unknown effect: =, near line: 193" in file: "common/scripted_effects/lyd_np_effects.txt" near line: 193
+[06:22:20][E][pdx_persistent_reader.cpp:216]: Error: "Unknown effect:  
+} 
+else = { debug_log = LYD_NP_DETACH_D30_FAIL$, near line: 193
+Unknown effect: =, near line: 193" in file: "common/scripted_effects/lyd_np_effects.txt" near line: 193
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_1_effects.txt line: 9 (lyd_practice_kongmen_a_effect)
+
+[06:22:20][E][pdx_persistent_reader.cpp:216]: Error: "Unknown effect: change_stress, near line: 9" in file: "common/scripted_effects/lyd_practice_1_effects.txt" near line: 11
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_1_effects.txt line: 22 (lyd_practice_kongmen_b_effect)
+
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_1_effects.txt line: 35 (lyd_practice_kongmen_c_effect)
+
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_1_effects.txt line: 48 (lyd_practice_mengzi_a_effect)
+
+[06:22:20][E][pdx_persistent_reader.cpp:216]: Error: "Unknown effect: change_stress, near line: 48" in file: "common/scripted_effects/lyd_practice_1_effects.txt" near line: 50
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_1_effects.txt line: 61 (lyd_practice_mengzi_b_effect)
+
+[06:22:20][E][pdx_persistent_reader.cpp:216]: Error: "Unknown effect: change_stress, near line: 74" in file: "common/scripted_effects/lyd_practice_1_effects.txt" near line: 76
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_1_effects.txt line: 87 (lyd_practice_xunzi_a_effect)
+
+[06:22:20][E][pdx_persistent_reader.cpp:216]: Error: "Unknown effect: change_stress, near line: 87" in file: "common/scripted_effects/lyd_practice_1_effects.txt" near line: 89
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_1_effects.txt line: 100 (lyd_practice_xunzi_b_effect)
+
+[06:22:20][E][pdx_persistent_reader.cpp:216]: Error: "Unknown effect: change_stress, near line: 100" in file: "common/scripted_effects/lyd_practice_1_effects.txt" near line: 102
+[06:22:20][E][pdx_persistent_reader.cpp:216]: Error: "Unknown effect: change_stress, near line: 9" in file: "common/scripted_effects/lyd_practice_2_effects.txt" near line: 11
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_2_effects.txt line: 22 (lyd_practice_zhengxuan_a_effect)
+
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_2_effects.txt line: 35 (lyd_practice_zhengxuan_b_effect)
+
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_2_effects.txt line: 48 (lyd_practice_zhengxuan_c_effect)
+
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_2_effects.txt line: 61 (lyd_practice_wangsu_a_effect)
+
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_2_effects.txt line: 74 (lyd_practice_wangsu_b_effect)
+
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_2_effects.txt line: 87 (lyd_practice_wangsu_c_effect)
+
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_2_effects.txt line: 100 (lyd_practice_jingshu_a_effect)
+
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_3_effects.txt line: 9 (lyd_practice_jingshu_b_effect)
+
+[06:22:20][E][pdx_persistent_reader.cpp:216]: Error: "Unknown effect: change_stress, near line: 9" in file: "common/scripted_effects/lyd_practice_3_effects.txt" near line: 11
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_3_effects.txt line: 22 (lyd_practice_jingshu_c_effect)
+
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_3_effects.txt line: 35 (lyd_practice_zhuxi_a_effect)
+
+[06:22:20][E][pdx_persistent_reader.cpp:216]: Error: "Unknown effect: change_stress, near line: 35" in file: "common/scripted_effects/lyd_practice_3_effects.txt" near line: 37
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_3_effects.txt line: 48 (lyd_practice_zhuxi_b_effect)
+
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_3_effects.txt line: 61 (lyd_practice_zhuxi_c_effect)
+
+[06:22:20][E][pdx_persistent_reader.cpp:216]: Error: "Unknown effect: change_stress, near line: 74" in file: "common/scripted_effects/lyd_practice_3_effects.txt" near line: 76
+[06:22:20][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Negative value in: {}. {} ]
+  Script location: file: common/scripted_effects/lyd_practice_3_effects.txt line: 87 (lyd_practice_lujiuyuan_b_effect)
+
+[06:22:20][E][pdx_persistent_reader.cpp:216]: Error: "Unknown effect: change_stress, near line: 100" in file: "common/scripted_effects/lyd_practice_3_effects.txt" near line: 102
+[06:22:28][E][jomini_effect.cpp:1146]: Variable 'lyd_practice_zhuxi_completed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[06:22:28][E][jomini_effect.cpp:1146]: Variable 'lyd_practice_jingshu_completed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[06:22:28][E][jomini_effect.cpp:1146]: Variable 'lyd_practice_wangsu_completed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[06:22:28][E][jomini_effect.cpp:1146]: Variable 'lyd_practice_zhengxuan_completed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[06:22:28][E][jomini_effect.cpp:1146]: Variable 'lyd_practice_lujiuyuan_completed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[06:22:28][E][jomini_effect.cpp:1146]: Variable 'lyd_practice_xunzi_completed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[06:22:28][E][jomini_effect.cpp:1146]: Variable 'lyd_practice_mengzi_completed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[06:22:28][E][jomini_effect.cpp:1146]: Variable 'lyd_practice_kongmen_completed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[06:22:28][E][jomini_effect.cpp:1146]: Variable 'lyd_np_created_fixture_subject' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[06:23:09][E][jomini_eventmanager.cpp:368]: Event lyd_np.0001 is orphaned
+[06:23:16][E][jomini_effect.cpp:1146]: Variable 'lyd_practice_zhuxi_completed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[06:23:16][E][jomini_effect.cpp:1146]: Variable 'lyd_practice_jingshu_completed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[06:23:16][E][jomini_effect.cpp:1146]: Variable 'lyd_practice_wangsu_completed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[06:23:16][E][jomini_effect.cpp:1146]: Variable 'lyd_practice_zhengxuan_completed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[06:23:16][E][jomini_effect.cpp:1146]: Variable 'lyd_practice_lujiuyuan_completed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[06:23:16][E][jomini_effect.cpp:1146]: Variable 'lyd_practice_xunzi_completed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[06:23:16][E][jomini_effect.cpp:1146]: Variable 'lyd_practice_mengzi_completed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[06:23:16][E][jomini_effect.cpp:1146]: Variable 'lyd_practice_kongmen_completed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[06:23:16][E][jomini_effect.cpp:1146]: Variable 'lyd_np_created_fixture_subject' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count

@@ -23,6 +23,8 @@ PLACEHOLDER = re.compile(r"\$[^$\r\n]+\$|\[[^\]\r\n]+\]")
 LYD_ID = re.compile(r"(?:lyd_[A-Za-z0-9_]+|lyd\.[0-9]+)")
 LOC_FIELDS = frozenset({"title", "desc", "name", "confirm_text", "selection_tooltip", "custom_tooltip", "text"})
 META_FIELDS = frozenset({"namespace", "add_namespace"})
+NATIVE_TIERS = frozenset({"barony", "county", "duchy", "kingdom", "empire", "hegemony"})
+EFFECT_CONTAINERS = frozenset({"effect", "immediate", "after", "option", "on_send", "on_accept", "on_decline", "on_auto_accept"})
 
 
 def walk(block: Block, ancestors: tuple[str, ...] = ()):
@@ -114,6 +116,8 @@ def validate(source: Path = SOURCE) -> dict:
             data = path.read_bytes()
             hashes[relative] = sha256(data)
             if path.suffix in {".txt", ".mod"}:
+                if not data.startswith(b"\xef\xbb\xbf"):
+                    errors.append(f"runtime script needs UTF-8 BOM: {relative}")
                 text = data.decode("utf-8-sig")
                 scripts[relative] = parse_clausewitz(text)
             elif path.suffix == ".yml":
@@ -199,6 +203,13 @@ def validate(source: Path = SOURCE) -> dict:
     for relative, ast in scripts.items():
         runtime_flow = relative.startswith(("common/decisions/", "common/character_interactions/", "common/scripted_", "events/"))
         for entry, ancestors in walk(ast):
+            # Targeted R0001 boot regressions only, not a native scope checker.
+            effect_context = relative.startswith("common/scripted_effects/") or bool(EFFECT_CONTAINERS.intersection(ancestors))
+            if effect_context and entry.key == "change_stress":
+                errors.append(f"unknown native effect change_stress; use add_stress: {relative}")
+            if effect_context and entry.key == "add_gold" and isinstance(entry.value, str) and re.fullmatch(r"-\d+(?:\.\d+)?", entry.value):
+                if float(entry.value) < 0:
+                    errors.append(f"negative add_gold; use positive remove_short_term_gold: {relative}")
             if runtime_flow and entry.key.startswith("lyd_") and "parameters" not in ancestors and entry.key not in known_ids:
                 errors.append(f"unresolved LYD helper/definition: {relative}: {entry.key}")
             if isinstance(entry.value, str):
@@ -214,6 +225,20 @@ def validate(source: Path = SOURCE) -> dict:
                     if value not in events:
                         errors.append(f"unresolved event reference: {relative}: {value}")
     for identifier, decision in definitions.get("common/decisions", {}).items():
+        pictures = [entry for entry in decision.entries if entry.key == "picture"]
+        if not pictures or any(not isinstance(entry.value, Block) or not scalar(entry.value, "reference") for entry in pictures):
+            errors.append(f"decision picture requires native picture = {{ reference = \"...\" }} entries: {identifier}")
+        interval = [entry for entry in decision.entries if entry.key == "ai_check_interval"]
+        tiers = [entry for entry in decision.entries if entry.key == "ai_check_interval_by_tier"]
+        zero_interval = len(interval) == 1 and interval[0].operator == "=" and interval[0].value == "0" and not tiers
+        tier_interval = False
+        if not interval and len(tiers) == 1 and isinstance(tiers[0].value, Block):
+            rows = tiers[0].value.entries
+            tier_interval = len(rows) == len(NATIVE_TIERS) and {entry.key for entry in rows} == NATIVE_TIERS and all(
+                entry.operator == "=" and isinstance(entry.value, str) and re.fullmatch(r"\d+", entry.value)
+                for entry in rows)
+        if not zero_interval and not tier_interval:
+            errors.append(f"decision AI check interval requires 0 or a complete nonnegative native by_tier block: {identifier}")
         gates = blocks(decision, "is_shown") + blocks(decision, "is_valid")
         if not any(player_guard(gate, triggers) for gate in gates):
             errors.append(f"decision lacks current actor player gate: {identifier}")

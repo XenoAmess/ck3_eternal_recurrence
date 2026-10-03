@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "e0378edac081c2413b56f942bd322e81cea5c8a7"
+    },
+    "last_sequence": 2546,
+    "next_step": "",
+    "pid": 14180,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "Expired-preflight-lease-no-map-actions",
+    "task_id": "ck3-lyd-live-002-20261004",
+    "updated_at_utc": "2026-10-03T23:52:04.191655+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 2546,
+    "event_id": "1d6ae1333581480cae6fa4080b70c446",
+    "timestamp_utc": "2026-10-03T23:52:04.192387+00:00",
+    "kind": "completed",
+    "task_id": "ck3-lyd-live-002-20261004",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "Expired-preflight-lease-no-map-actions",
+    "next_step": "",
+    "resources": [],
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "e0378edac081c2413b56f942bd322e81cea5c8a7"
+    }
+  }
+}

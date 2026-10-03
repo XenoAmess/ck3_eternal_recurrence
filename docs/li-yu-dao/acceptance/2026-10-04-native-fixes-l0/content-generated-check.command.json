@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\gen_content.py",
+    "--output",
+    "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao",
+    "--check"
+  ],
+  "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+  "execution": "COMPLETED",
+  "finished_at": "2026-10-03T23:58:26.291771+00:00",
+  "returncode": 0,
+  "started_at": "2026-10-03T23:58:26.196192+00:00",
+  "stderr": {
+    "path": "content-generated-check.stderr.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size": 0
+  },
+  "stdout": {
+    "path": "content-generated-check.stdout.txt",
+    "sha256": "157865262a1916b2a1b57807d665ffbbb6739d973eb351ec7eb998e94697733e",
+    "size": 541
+  },
+  "timeout_seconds": 60
+}
