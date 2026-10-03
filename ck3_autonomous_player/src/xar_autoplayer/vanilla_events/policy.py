@@ -1155,6 +1155,18 @@ def recommend_registered_vanilla_event_option_v1(
         )
 
     raw_contract = knowledge.get("contract")
+    if build == "1.20.0.3" and event_key == "faction_demand.1001":
+        from .faction_demand1001_context import recognize_faction_demand1001_projection_v1
+
+        recognition = recognize_faction_demand1001_projection_v1(event_context,
+            played_character_id=played_character_id, snapshot_option_count=snapshot_option_count)
+        result = respond(status="blocked", event_key=event_key,
+            reason="populist_ultimatum_readonly_review_required" if recognition["status"] == "recognized"
+                else "current_populist_projection_does_not_match",
+            checks=recognition["checks"])
+        result["readonly_projection"] = recognition
+        result["decision_context_builder"] = "build_faction_demand1001_decision_context_v1"
+        return result
     character_id = _integer(played_character_id)
     option_count = _integer(snapshot_option_count)
     if (

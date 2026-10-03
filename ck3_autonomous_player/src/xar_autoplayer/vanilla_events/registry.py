@@ -330,6 +330,7 @@ def query_vanilla_event_knowledge_v1(
             unavailable_reason="invalid_event_definition_key",
         )
     if ck3_build == "1.20.0.3":
+        from .records_faction_demand1001_12003 import FACTION_DEMAND1001_12003_RECORDS
         from .records_marriage_notice_12003 import MARRIAGE_NOTICE_12003_RECORDS
         from .records_feast_arrival_12003 import FEAST_ARRIVAL_12003_RECORDS
         from .records_feast_start_12003 import FEAST_START_12003_RECORDS
@@ -343,7 +344,9 @@ def query_vanilla_event_knowledge_v1(
         from .records_feast_0801_12003 import FEAST_0801_12003_RECORDS
         from .records_coming_age1002_12003 import COMING_AGE1002_12003_RECORDS
 
-        notice = MARRIAGE_NOTICE_12003_RECORDS.get(event_definition_key)
+        notice = FACTION_DEMAND1001_12003_RECORDS.get(event_definition_key)
+        if notice is None:
+            notice = MARRIAGE_NOTICE_12003_RECORDS.get(event_definition_key)
         if notice is None:
             notice = FEAST_ARRIVAL_12003_RECORDS.get(event_definition_key)
         if notice is None:
