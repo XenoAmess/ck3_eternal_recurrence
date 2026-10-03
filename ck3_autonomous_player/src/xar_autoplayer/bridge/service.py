@@ -12904,11 +12904,12 @@ class GameplayBridgeService:
     def query_combat_simulation_inputs(
         self,
         target_province_id: int,
-        attacker_entry_province_id: int,
+        attacker_entry_province_id: int | None,
         attacker_army_ids: list[int],
         defender_army_ids: list[int],
         *,
         expected_revision: int | None = None,
+        constructor_adjacency_kind_raw: int | None = None,
     ) -> dict[str, object]:
         """Read exact-build inputs for one hypothetical contact scenario.
 
@@ -12921,9 +12922,11 @@ class GameplayBridgeService:
             attacker_entry_province_id,
             attacker_army_ids,
             defender_army_ids,
+            constructor_adjacency_kind_raw=constructor_adjacency_kind_raw,
         )
         step = query_combat_simulation_inputs_step(
-            target, entry, attackers, defenders
+            target, entry, attackers, defenders,
+            constructor_adjacency_kind_raw=constructor_adjacency_kind_raw,
         )
         snapshot = self.snapshot()
         if snapshot.get("paused") is not True:
@@ -13016,6 +13019,7 @@ class GameplayBridgeService:
                 result.get("combat_simulation_inputs"),
                 expected_target_province_id=target,
                 expected_attacker_entry_province_id=entry,
+                expected_constructor_adjacency_kind_raw=constructor_adjacency_kind_raw,
                 expected_encounter_scope=encounter_scope,
             )
             status = combat_simulation_inputs_status(normalized)
@@ -13155,11 +13159,12 @@ class GameplayBridgeService:
     def query_combat_simulation_inputs_v3(
         self,
         target_province_id: int,
-        attacker_entry_province_id: int,
+        attacker_entry_province_id: int | None,
         attacker_army_ids: list[int],
         defender_army_ids: list[int],
         *,
         expected_revision: int | None = None,
+        constructor_adjacency_kind_raw: int | None = None,
     ) -> dict[str, object]:
         """Read and offline-normalize the exact 132-ref phase-event slice."""
         target, entry, attackers, defenders = normalize_combat_simulation_request(
@@ -13167,9 +13172,11 @@ class GameplayBridgeService:
             attacker_entry_province_id,
             attacker_army_ids,
             defender_army_ids,
+            constructor_adjacency_kind_raw=constructor_adjacency_kind_raw,
         )
         step = query_combat_simulation_inputs_v3_step(
-            target, entry, attackers, defenders
+            target, entry, attackers, defenders,
+            constructor_adjacency_kind_raw=constructor_adjacency_kind_raw,
         )
         snapshot = self.snapshot()
         if snapshot.get("paused") is not True:
@@ -13262,6 +13269,7 @@ class GameplayBridgeService:
                 result.get("combat_simulation_inputs"),
                 expected_target_province_id=target,
                 expected_attacker_entry_province_id=entry,
+                expected_constructor_adjacency_kind_raw=constructor_adjacency_kind_raw,
                 expected_encounter_scope=encounter_scope,
             )
             status = combat_simulation_inputs_v3_status(normalized)

@@ -1,4 +1,4 @@
-﻿"""Official MCP v2 server facade for replaceable CK3 gameplay drivers."""
+"""Official MCP v2 server facade for replaceable CK3 gameplay drivers."""
 
 from __future__ import annotations
 
@@ -372,10 +372,11 @@ def load_driver(
 def _ck3_query_combat_simulation_inputs_v3(
     service: GameplayBridgeService,
     target_province_id: int,
-    attacker_entry_province_id: int,
+    attacker_entry_province_id: int | None,
     attacker_army_ids: list[PublicCUnitId],
     defender_army_ids: list[PublicCUnitId],
     expected_revision: int | None = None,
+    constructor_adjacency_kind_raw: Annotated[int, Field(strict=True, ge=0, le=0)] | None = None,
 ) -> dict[str, object]:
     """Official production-v3 facade shared by MCP and contract tests."""
     return service.query_combat_simulation_inputs_v3(
@@ -384,6 +385,7 @@ def _ck3_query_combat_simulation_inputs_v3(
         attacker_army_ids,
         defender_army_ids,
         expected_revision=expected_revision,
+        constructor_adjacency_kind_raw=constructor_adjacency_kind_raw,
     )
 
 
@@ -3597,10 +3599,11 @@ def create_server(
     @server.tool()
     def ck3_query_combat_simulation_inputs(
         target_province_id: int,
-        attacker_entry_province_id: int,
+        attacker_entry_province_id: int | None,
         attacker_army_ids: list[PublicCUnitId],
         defender_army_ids: list[PublicCUnitId],
         expected_revision: int | None = None,
+        constructor_adjacency_kind_raw: Annotated[int, Field(strict=True, ge=0, le=0)] | None = None,
     ) -> dict[str, object]:
         """Read one explicit hypothetical contact; does not claim win odds."""
         return service.query_combat_simulation_inputs(
@@ -3609,6 +3612,7 @@ def create_server(
             attacker_army_ids,
             defender_army_ids,
             expected_revision=expected_revision,
+            constructor_adjacency_kind_raw=constructor_adjacency_kind_raw,
         )
 
     @server.tool()
@@ -3624,10 +3628,11 @@ def create_server(
     @server.tool()
     def ck3_query_combat_simulation_inputs_v3(
         target_province_id: int,
-        attacker_entry_province_id: int,
+        attacker_entry_province_id: int | None,
         attacker_army_ids: list[PublicCUnitId],
         defender_army_ids: list[PublicCUnitId],
         expected_revision: int | None = None,
+        constructor_adjacency_kind_raw: Annotated[int, Field(strict=True, ge=0, le=0)] | None = None,
     ) -> dict[str, object]:
         """Read exact phase inputs; readiness does not imply simulated odds."""
         return _ck3_query_combat_simulation_inputs_v3(
@@ -3637,6 +3642,7 @@ def create_server(
             attacker_army_ids,
             defender_army_ids,
             expected_revision=expected_revision,
+            constructor_adjacency_kind_raw=constructor_adjacency_kind_raw,
         )
 
     @server.tool()

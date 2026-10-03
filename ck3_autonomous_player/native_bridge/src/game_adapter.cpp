@@ -1,5 +1,6 @@
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/game_adapter.hpp"
+#include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/war_occupation_targets_v1_serializer.hpp"
 #include "xar_bridge/title_holder_v1_serializer.hpp"
 #include "xar_bridge/combat_phase_event_trace_v1.hpp"
@@ -225,10 +226,13 @@ bool ParseCombatSimulationInputsStepWithPrefix(
     return true;
   };
 
+  const bool constructor_zero = tokens[1] == "ctor0";
+  if (constructor_zero) request.constructor_adjacency_kind_raw = 0;
   std::int32_t attacker_count_value = -1;
   if (!parse_positive(tokens[0], request.target_province_id) ||
-      !parse_positive(tokens[1], request.attacker_entry_province_id) ||
-      request.target_province_id == request.attacker_entry_province_id ||
+      (!constructor_zero &&
+       (!parse_positive(tokens[1], request.attacker_entry_province_id) ||
+        request.target_province_id == request.attacker_entry_province_id)) ||
       !parse_positive(tokens[3], attacker_count_value) ||
       attacker_count_value > 63) {
     request = {};
@@ -586,6 +590,12 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
       capability = "game.command.query-combat-simulation-inputs-v3-N";
     } else if (ParseCombatSimulationInputsStep(step, request)) {
       capability = "game.command.query-combat-simulation-inputs-v2-N";
+    }
+    if (request.constructor_adjacency_kind_raw.has_value() &&
+        (descriptor().adapter_id != ck3_12003::kAdapterId ||
+         descriptor().game_version != ck3_12003::kGameVersion ||
+         descriptor().executable_sha256 != ck3_12003::kExecutableSha256)) {
+      return false;
     }
   }
   if (capability.empty()) {

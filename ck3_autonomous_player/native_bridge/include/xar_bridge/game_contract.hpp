@@ -497,6 +497,8 @@ struct CombatSimulationInputsRequest {
   std::int32_t attacker_entry_province_id = -1;
   std::vector<std::int32_t> attacker_army_ids;
   std::vector<std::int32_t> defender_army_ids;
+  // Exact .3 defending-arrival constructor operand; absent keeps explicit entry.
+  std::optional<std::int32_t> constructor_adjacency_kind_raw;
 
   friend bool operator==(const CombatSimulationInputsRequest &,
                          const CombatSimulationInputsRequest &) = default;
@@ -508,6 +510,7 @@ struct CombatHypotheticalScenarioSnapshot {
   std::vector<std::int32_t> defender_army_ids;
   std::string attacker_side;
   std::string defender_side;
+  std::optional<std::int32_t> constructor_adjacency_kind_raw;
 
   friend bool operator==(const CombatHypotheticalScenarioSnapshot &,
                          const CombatHypotheticalScenarioSnapshot &) = default;

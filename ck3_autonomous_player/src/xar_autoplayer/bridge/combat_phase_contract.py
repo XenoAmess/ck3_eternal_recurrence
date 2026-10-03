@@ -361,6 +361,7 @@ def query_combat_simulation_inputs_v3_step(
     attacker_entry_province_id: object,
     attacker_army_ids: object,
     defender_army_ids: object,
+    *, constructor_adjacency_kind_raw: int | None = None,
 ) -> str:
     """Encode the canonical production-v3 request literal."""
     target, entry, attackers, defenders = normalize_combat_simulation_request(
@@ -368,10 +369,11 @@ def query_combat_simulation_inputs_v3_step(
         attacker_entry_province_id,
         attacker_army_ids,
         defender_army_ids,
+        constructor_adjacency_kind_raw=constructor_adjacency_kind_raw,
     )
     tokens = [
         str(target),
-        str(entry),
+        "ctor0" if entry is None else str(entry),
         "a",
         str(len(attackers)),
         *(str(value) for value in attackers),
@@ -384,7 +386,7 @@ def query_combat_simulation_inputs_v3_step(
 
 def parse_query_combat_simulation_inputs_v3_step(
     step: object,
-) -> tuple[int, int, list[int], list[int]] | None:
+) -> tuple[int, int | None, list[int], list[int]] | None:
     if not isinstance(step, str) or not step.startswith(
         QUERY_COMBAT_SIMULATION_INPUTS_V3_STEP_PREFIX
     ):
@@ -394,9 +396,11 @@ def parse_query_combat_simulation_inputs_v3_step(
     )
     if len(tokens) < 8 or tokens[2] != "a":
         return None
-    numeric = [_canonical_positive_token(token) for token in tokens[:2]]
+    constructor_raw = 0 if tokens[1] == "ctor0" else None
+    numeric = [_canonical_positive_token(tokens[0]),
+               None if constructor_raw == 0 else _canonical_positive_token(tokens[1])]
     attacker_count = _canonical_positive_token(tokens[3])
-    if any(value is None for value in numeric) or attacker_count is None:
+    if numeric[0] is None or (numeric[1] is None and constructor_raw is None) or attacker_count is None:
         return None
     defender_marker = 4 + attacker_count
     if defender_marker + 2 >= len(tokens) or tokens[defender_marker] != "d":
@@ -412,7 +416,8 @@ def parse_query_combat_simulation_inputs_v3_step(
         return None
     try:
         return normalize_combat_simulation_request(
-            numeric[0], numeric[1], attackers, defenders
+            numeric[0], numeric[1], attackers, defenders,
+            constructor_adjacency_kind_raw=constructor_raw,
         )
     except ValueError:
         return None
@@ -452,8 +457,9 @@ def normalize_combat_simulation_inputs_v3(
     value: object,
     *,
     expected_target_province_id: int,
-    expected_attacker_entry_province_id: int,
+    expected_attacker_entry_province_id: int | None,
     expected_encounter_scope: dict[str, object],
+    expected_constructor_adjacency_kind_raw: int | None = None,
 ) -> dict[str, object]:
     """Validate one atomic production v3 response and derive stock state."""
     name = "combat_simulation_inputs_v3"
@@ -508,6 +514,7 @@ def normalize_combat_simulation_inputs_v3(
                 expected_attacker_entry_province_id
             ),
             expected_encounter_scope=expected_encounter_scope,
+            expected_constructor_adjacency_kind_raw=expected_constructor_adjacency_kind_raw,
         )
         if recomputed != value:
             raise ValueError("normalized production combat v3 derivation drifted")
@@ -528,6 +535,7 @@ def normalize_combat_simulation_inputs_v3(
         expected_target_province_id=expected_target_province_id,
         expected_attacker_entry_province_id=expected_attacker_entry_province_id,
         expected_encounter_scope=expected_encounter_scope,
+        expected_constructor_adjacency_kind_raw=expected_constructor_adjacency_kind_raw,
     )
     if base["completeness"]["input_observation_ready"] is not True:
         raise ValueError("production combat v3 requires a complete v2 base slice")

@@ -4995,9 +4995,10 @@ class NativeHeadlessGameplayDriver:
                 normalized = normalize_combat_simulation_inputs(
                     cached.get("combat_simulation_inputs"),
                     expected_target_province_id=int(target_province_id),
-                    expected_attacker_entry_province_id=int(
-                        attacker_entry_province_id
+                    expected_attacker_entry_province_id=(
+                        None if attacker_entry_province_id is None else int(attacker_entry_province_id)
                     ),
+                    expected_constructor_adjacency_kind_raw=0 if attacker_entry_province_id is None else None,
                     expected_encounter_scope=encounter_scope,
                 )
                 status = combat_simulation_inputs_status(normalized)
@@ -5099,9 +5100,10 @@ class NativeHeadlessGameplayDriver:
                 normalized = normalize_combat_simulation_inputs_v3(
                     cached.get("combat_simulation_inputs"),
                     expected_target_province_id=int(target_province_id),
-                    expected_attacker_entry_province_id=int(
-                        attacker_entry_province_id
+                    expected_attacker_entry_province_id=(
+                        None if attacker_entry_province_id is None else int(attacker_entry_province_id)
                     ),
+                    expected_constructor_adjacency_kind_raw=0 if attacker_entry_province_id is None else None,
                     expected_encounter_scope=encounter_scope,
                 )
                 status = combat_simulation_inputs_v3_status(normalized)
@@ -12448,6 +12450,7 @@ class NativeHeadlessGameplayDriver:
                     attacker_entry_province_id
                 ),
                 expected_encounter_scope=encounter_scope,
+                expected_constructor_adjacency_kind_raw=0 if attacker_entry_province_id is None else None,
             )
             status = combat_simulation_inputs_status(normalized)
         except ValueError as error:
@@ -12923,6 +12926,7 @@ class NativeHeadlessGameplayDriver:
                     attacker_entry_province_id
                 ),
                 expected_encounter_scope=encounter_scope,
+                expected_constructor_adjacency_kind_raw=0 if attacker_entry_province_id is None else None,
             )
             status = combat_simulation_inputs_v3_status(normalized)
         except ValueError as error:

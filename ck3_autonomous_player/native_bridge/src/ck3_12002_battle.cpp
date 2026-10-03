@@ -478,7 +478,7 @@ bool ReinforcementSample(const BattleBindings &b, const game::Snapshot &scope,
   if (!coordinator ||
       At<std::uintptr_t>(coordinator, 0) != b.ai_war_coordinator_vtable ||
       !subunit || At<std::uintptr_t>(subunit, 0) != b.ai_subunit_stack_vtable) {
-    out.unavailable_reason = "ai_assignment_not_bound";
+    out.unavailable_reason = "subject_not_ai_managed";
     return false;
   }
   auto *parent = At<void *>(subunit, kBattleSubunitParentOffset);
@@ -1124,10 +1124,15 @@ game::BattleReinforcementAssignmentStatus ReadBattleReinforcementAssignmentV1(
     o.unavailable_reason = "state_changed";
     return o.status;
   }
+  if (!cr) {
+    // A stable negative must obey the shared unavailable DTO contract. The
+    // sample can have read identity and membership fields before failing.
+    o.unavailable_reason = c.unavailable_reason.empty()
+                               ? "state_changed" : c.unavailable_reason;
+    return o.status;
+  }
   o = std::move(c);
   o.observed_date_raw = s.date_raw;
-  if (!cr && o.unavailable_reason.empty())
-    o.unavailable_reason = "state_changed";
   return o.status;
 }
 game::BattleTerminalTransitionStatusV1 ReadBattleTerminalTransitionV1(

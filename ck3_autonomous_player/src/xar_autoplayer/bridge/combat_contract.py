@@ -195,17 +195,22 @@ def normalize_combat_simulation_request(
     attacker_entry_province_id: object,
     attacker_army_ids: object,
     defender_army_ids: object,
-) -> tuple[int, int, list[int], list[int]]:
+    *, constructor_adjacency_kind_raw: int | None = None,
+) -> tuple[int, int | None, list[int], list[int]]:
     """Validate one explicit hypothetical contact scenario.
 
     The two physical sides are caller-selected, but every ID is revalidated
     against one paused active-war scope before the native query may run.
     """
     target = _positive_int32_id(target_province_id, "target_province_id")
-    entry = _positive_int32_id(
-        attacker_entry_province_id,
-        "attacker_entry_province_id",
-    )
+    if constructor_adjacency_kind_raw is None:
+        entry = _positive_int32_id(attacker_entry_province_id, "attacker_entry_province_id")
+    else:
+        if type(constructor_adjacency_kind_raw) is not int or constructor_adjacency_kind_raw != 0:
+            raise ValueError("constructor_adjacency_kind_raw supports only native defender raw0")
+        if attacker_entry_province_id is not None:
+            raise ValueError("constructor raw mode requires attacker_entry_province_id=null")
+        entry = None
     if target == entry:
         raise ValueError(
             "attacker_entry_province_id must differ from target_province_id"
@@ -241,6 +246,7 @@ def query_combat_simulation_inputs_step(
     attacker_entry_province_id: object,
     attacker_army_ids: object,
     defender_army_ids: object,
+    *, constructor_adjacency_kind_raw: int | None = None,
 ) -> str:
     """Encode the canonical, count-delimited strict-ASCII v2 step."""
     target, entry, attackers, defenders = normalize_combat_simulation_request(
@@ -248,10 +254,11 @@ def query_combat_simulation_inputs_step(
         attacker_entry_province_id,
         attacker_army_ids,
         defender_army_ids,
+        constructor_adjacency_kind_raw=constructor_adjacency_kind_raw,
     )
     tokens: list[str] = [
         str(target),
-        str(entry),
+        "ctor0" if entry is None else str(entry),
         "a",
         str(len(attackers)),
         *(str(value) for value in attackers),
@@ -267,6 +274,7 @@ def query_combat_simulation_inputs_v3_test_step(
     attacker_entry_province_id: object,
     attacker_army_ids: object,
     defender_army_ids: object,
+    *, constructor_adjacency_kind_raw: int | None = None,
 ) -> str:
     """Encode the reserved v3 literal without advertising or dispatching it."""
     target, entry, attackers, defenders = normalize_combat_simulation_request(
@@ -274,10 +282,11 @@ def query_combat_simulation_inputs_v3_test_step(
         attacker_entry_province_id,
         attacker_army_ids,
         defender_army_ids,
+        constructor_adjacency_kind_raw=constructor_adjacency_kind_raw,
     )
     tokens: list[str] = [
         str(target),
-        str(entry),
+        "ctor0" if entry is None else str(entry),
         "a",
         str(len(attackers)),
         *(str(value) for value in attackers),
@@ -304,7 +313,7 @@ def _canonical_positive_token(token: str) -> int | None:
 
 def parse_query_combat_simulation_inputs_step(
     step: object,
-) -> tuple[int, int, list[int], list[int]] | None:
+) -> tuple[int, int | None, list[int], list[int]] | None:
     """Parse only the canonical count-delimited ASCII v2 spelling."""
     return _parse_query_combat_simulation_inputs_step_with_prefix(
         step, QUERY_COMBAT_SIMULATION_INPUTS_STEP_PREFIX
@@ -313,7 +322,7 @@ def parse_query_combat_simulation_inputs_step(
 
 def parse_query_combat_simulation_inputs_v3_test_step(
     step: object,
-) -> tuple[int, int, list[int], list[int]] | None:
+) -> tuple[int, int | None, list[int], list[int]] | None:
     """Parse the reserved v3 spelling; no production dispatcher calls this."""
     return _parse_query_combat_simulation_inputs_step_with_prefix(
         step, QUERY_COMBAT_SIMULATION_INPUTS_V3_TEST_STEP_PREFIX
@@ -322,7 +331,7 @@ def parse_query_combat_simulation_inputs_v3_test_step(
 
 def _parse_query_combat_simulation_inputs_step_with_prefix(
     step: object, prefix: str
-) -> tuple[int, int, list[int], list[int]] | None:
+) -> tuple[int, int | None, list[int], list[int]] | None:
     if not isinstance(step, str) or not step.startswith(prefix):
         return None
     suffix = step.removeprefix(prefix)
@@ -330,9 +339,10 @@ def _parse_query_combat_simulation_inputs_step_with_prefix(
     if len(tokens) < 8 or tokens[2] != "a":
         return None
     target = _canonical_positive_token(tokens[0])
-    entry = _canonical_positive_token(tokens[1])
+    constructor_raw = 0 if tokens[1] == "ctor0" else None
+    entry = None if constructor_raw == 0 else _canonical_positive_token(tokens[1])
     attacker_count = _canonical_positive_token(tokens[3])
-    if target is None or entry is None or attacker_count is None:
+    if target is None or (entry is None and constructor_raw is None) or attacker_count is None:
         return None
     defender_marker_index = 4 + attacker_count
     if (
@@ -357,6 +367,7 @@ def _parse_query_combat_simulation_inputs_step_with_prefix(
             entry,
             attackers,
             defenders,
+            constructor_adjacency_kind_raw=constructor_raw,
         )
     except ValueError:
         return None
@@ -442,8 +453,9 @@ def normalize_combat_simulation_inputs(
     value: object,
     *,
     expected_target_province_id: int,
-    expected_attacker_entry_province_id: int,
+    expected_attacker_entry_province_id: int | None,
     expected_encounter_scope: dict[str, object],
+    expected_constructor_adjacency_kind_raw: int | None = None,
 ) -> dict[str, object]:
     """Validate the exact JSON emitted by ``AppendCombatSimulationInputs``.
 
@@ -493,6 +505,7 @@ def normalize_combat_simulation_inputs(
             expected_attacker_entry_province_id
         ),
         expected_encounter_scope=expected_encounter_scope,
+        expected_constructor_adjacency_kind_raw=expected_constructor_adjacency_kind_raw,
     )
 
     raw_armies = _array(root.get("armies"), "combat_simulation_inputs.armies")
@@ -868,8 +881,9 @@ def normalize_combat_simulation_inputs_v3_test_only(
     value: object,
     *,
     expected_target_province_id: int,
-    expected_attacker_entry_province_id: int,
+    expected_attacker_entry_province_id: int | None,
     expected_encounter_scope: dict[str, object],
+    expected_constructor_adjacency_kind_raw: int | None = None,
 ) -> dict[str, object]:
     """Validate the unadvertised v3 fixture shape.
 
@@ -903,6 +917,7 @@ def normalize_combat_simulation_inputs_v3_test_only(
             expected_attacker_entry_province_id
         ),
         expected_encounter_scope=expected_encounter_scope,
+        expected_constructor_adjacency_kind_raw=expected_constructor_adjacency_kind_raw,
     )
     if base_inputs["completeness"]["input_observation_ready"] is not True:
         raise ValueError("v3 test contract requires a complete v2 base slice")
@@ -2266,10 +2281,15 @@ def _normalize_scenario(
     value: object,
     *,
     target_province_id: int,
-    expected_attacker_entry_province_id: int,
+    expected_attacker_entry_province_id: int | None,
     expected_encounter_scope: dict[str, object],
+    expected_constructor_adjacency_kind_raw: int | None = None,
 ) -> dict[str, object]:
     name = "combat_simulation_inputs.scenario"
+    constructor_mode = expected_constructor_adjacency_kind_raw is not None
+    if constructor_mode and (type(expected_constructor_adjacency_kind_raw) is not int
+                             or expected_constructor_adjacency_kind_raw != 0):
+        raise ValueError("expected constructor geometry supports only native defender raw0")
     row = _exact_object(
         value,
         {
@@ -2283,21 +2303,25 @@ def _normalize_scenario(
             "defender_position_policy",
             "defender_insertion_order_policy",
             "actual_route_dependency",
-        },
+        } | ({"contact_geometry_mode", "constructor_adjacency_kind_raw"} if constructor_mode else set()),
         name,
     )
     if row.get("kind") != "explicit_hypothetical_contact":
         raise ValueError("native combat scenario kind is malformed")
-    entry = _positive_int32_id(
-        row.get("attacker_entry_province_id"),
-        f"{name}.attacker_entry_province_id",
-    )
-    expected_entry = _positive_int32_id(
-        expected_attacker_entry_province_id,
-        "expected_attacker_entry_province_id",
-    )
-    if entry != expected_entry or entry == target_province_id:
-        raise ValueError("native combat attacker entry ProvinceID mismatch")
+    if constructor_mode:
+        if (expected_attacker_entry_province_id is not None
+                or row.get("attacker_entry_province_id") is not None
+                or row.get("contact_geometry_mode") != "native_defender_constructor_zero"
+                or type(row.get("constructor_adjacency_kind_raw")) is not int
+                or row.get("constructor_adjacency_kind_raw") != 0):
+            raise ValueError("native defender constructor scenario binding is malformed")
+        entry = None
+    else:
+        entry = _positive_int32_id(row.get("attacker_entry_province_id"), f"{name}.attacker_entry_province_id")
+        expected_entry = _positive_int32_id(expected_attacker_entry_province_id, "expected_attacker_entry_province_id")
+        if entry != expected_entry or entry == target_province_id:
+            raise ValueError("native combat attacker entry ProvinceID mismatch")
+    attacker_position = "fixed_at_target_hypothetical" if constructor_mode else "fixed_at_entry_hypothetical"
     attackers = _public_cunit_ids(
         row.get("attacker_army_ids"), f"{name}.attacker_army_ids"
     )
@@ -2320,7 +2344,7 @@ def _normalize_scenario(
         raise ValueError("native combat scenario coalition orientation drifted")
     if (
         row.get("attacker_position_policy")
-        != "fixed_at_entry_hypothetical"
+        != attacker_position
         or row.get("defender_position_policy")
         != "fixed_at_target_hypothetical"
         or row.get("defender_insertion_order_policy")
@@ -2335,12 +2359,14 @@ def _normalize_scenario(
         "defender_army_ids": defenders,
         "attacker_side": attacker_side,
         "defender_side": defender_side,
-        "attacker_position_policy": "fixed_at_entry_hypothetical",
+        "attacker_position_policy": attacker_position,
         "defender_position_policy": "fixed_at_target_hypothetical",
         "defender_insertion_order_policy": (
             "explicit_request_order_hypothetical"
         ),
         "actual_route_dependency": False,
+        **({"contact_geometry_mode": "native_defender_constructor_zero",
+            "constructor_adjacency_kind_raw": 0} if constructor_mode else {}),
     }
 
 

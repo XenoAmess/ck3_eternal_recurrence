@@ -143,3 +143,49 @@ Two harness REDs are retained: `focused-attempt-01/RESULT.json` records C4715 un
 | `complete` | Not claimed for encounter simulation, battle OODA or warfare. |
 
 Central fixture: **GREEN**, native and registered receipts under `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-terrain-actual/future-engagement/implementation-02e/fixture/focused-attempt-02/`; all receipt and wire pins are in the evidence file. Root paused query: **GREEN v43**, two actual target artifacts and same-frame source fields recorded above; the full tactical/contact/battle loop remains incomplete. No new tests, game days, SDK calls, desktop/window operations, Git commands or policy changes occurred in this documentation lane. Root owns central report/index merge, shared integration, build, deployment, real acceptance, commit and push. Further results must update the evidence and report fields from their actual receipts without crediting an ACK, schema or synthetic case as a player battle.
+
+## 2026-10-04：defender create-new 的原生 constructor kind0 闭合
+
+本段纠正上文及 v47 post-hire 历史记录中“defender arrival 还需敌军历史 attacker entry”的当前施工结论。Exact CK3 **1.20.0.3 / Steam25652598**、EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6` 的 contact builder 在 holder/fallback 判定 incoming initiator 为 defender 时，直接跳到 `0x247A886..0x247A889`，设置 defender=true 和 constructor adjacency **raw0**；整个 incoming current/prior adjacency 扫描被跳过，未读取任何敌方 entry/history。旧 missing-history 文案保留其当时接口限制；这条 native create-new 分支现已闭合，下一项是既有 v2/v3 的最小 constructor0 查询增量。
+
+原生链为 defender true branch `0x247A7AF/0x247A7C6` → `0x247A886/889` → raw arg6 `0x247A8A1` → wrapper call `0x247A8B6` / `0x2AD81F0` → ctor `0x25863A0`。Ctor 在 Combat `+0x6F8` 保存 raw，incoming 加入 side1，ordered opponents 加入 side0。只有 attacker initiator 才走 `0x247A7CE..0x247A884` 的本方 current/prior adjacency 路径；`join_existing` 不采用这条 new-contact 公式。Native tree/输入账本在实现之前完成，交付 receipt SHA `3092003e9f682ee922f081197d5a880ff111f7048479c212f5794d5b774c4508`，文件位于 `v47-defender-attacker-entry/native-tree/`。
+
+```mermaid
+flowchart TD
+    P["Fresh same-frame create_new / native ordered sides"] --> R{"observable initiator is defender?"}
+    R -->|true| D["Skip entry scan; effective constructor kind0"]
+    R -->|false| A["Existing incoming attacker adjacency"]
+    D --> Q["Existing v2/v3 ctor0 token; entry null"]
+    A --> L["Legacy positive attacker-entry query"]
+    Q --> E["Loaded Rules F70/FA0 effects + existing commander flag exclusion"]
+    L --> E
+    E --> I["Target stats / width / counters / native advantage ledger"]
+    U["unknown: future target state / role at ETA"] -.-> P
+    classDef unknown stroke-dasharray:6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
+复用已消费的 saved normalized post-hire receipt：raw53241096/native10/public2/generation5、Robert83886367实际仍@8754 moving，target2640，incoming2634→2640；native create_new/defender，A=`[473,251658381]`、D=`[83886367]`、target CombatIDs=[]。本分支有效 constructor raw0 即使 incoming geometric raw 为非零仍成立；当前 saved incoming raw0与constructor raw0相等不是证明来源。2634继续是 incoming defender 的几何入口，角色和顺序来自已发布 native projection，不是 player movement 推断。未重读006–009或faith raw，也未证 actual arrival/contact、未来首都陷落或之后的 role。
+
+Root 已授权 against read-only `Z:/g52`、owner-supplied HEAD `892378b5` 的最小真实增量。现有 v2/v3 step 的第二 token 新增 `ctor0`；现有 MCP 可显式给 `attacker_entry_province_id=None` 与 `constructor_adjacency_kind_raw=0`，native DTO 的 entry=-1仅为“不适用”的内部表示。Registered MCP fixture实际 scenario 发布 entry=null、`contact_geometry_mode="native_defender_constructor_zero"`、constructor kind0，攻守position policy均为`fixed_at_target_hypothetical`；ordinary positive-entry请求/JSON不新增fields，保留原语义。Target、ordered side IDs、pause/revision和既有actual字段读数照常绑定；无新MCP、enemy getter、permit、flag或战争门禁。
+
+以下v2参数形状已通过唯一registered MCP fixture，属于准备好的源码接口，尚未部署实读；`fresh_revision` 必须来自将要执行的暂停帧：
+
+```python
+ck3_query_combat_simulation_inputs(
+    target_province_id=2640,
+    attacker_entry_province_id=None,
+    attacker_army_ids=[473, 251658381],
+    defender_army_ids=[83886367],
+    constructor_adjacency_kind_raw=0,
+    expected_revision=fresh_revision,
+)
+```
+
+raw0仍索引实际 loaded Rules `+0xF70/+0xFA0` effect、保留 commander flag `0x1A4` 排除和原生 append/符号/钳位。它是可观察的 enum0，不能变成 null、硬编码 advantage0 或“两个 adjacency effect必为零”。Pure composer source plan的既有文件check GREEN保留；新mode的唯一 production reader/advantage/full serializer→Python normalizer/driver/service→实际注册MCP chain现为 **static-ready**：native1、registeredMCP1、exit0，production `ReadCombatSimulationInputs`调用1、entry对象不存在且不resolve、existing MCP execute1；无旧matrix/full DLL/game调用。
+
+Fixture用真实loaded F70[0]/FA0[0]选择路径：attacker effect points=7、defender effect points=11，scale100000的signed contributions分别为 **+700000 / −1100000**；existing advantage planner调用1、flag420(`0x1A4`)false判定消费1。这些是synthetic fixture值，不是当前游戏advantage。保存的旧production fixture incoming raw2在纯文件消费中仍保留2、derive constructor raw0；保存post-hire roles/order也原样保留，无旧query/matrix重跑或006–009重读。纯计划字段`query_producer_geometry_mode`标明新producer mode；其`source_plan_complete=true`与`native_v2_query_ready=false`不能作为已部署native query信用。
+
+首 `focused-attempt-01/RESULT.json` harness RED因generated full serializer include漏`<charconv>`、`std::to_chars`不可见；production reader/advantage对象已GREEN。Attempt02只修harness并重编它，复用未变生产对象；这是独立harness失败，未证明capability RED。Final receipts在 `implementation-g52/fixture/focused-attempt-02/RESULT.json` / `REGISTERED-MCP-RESULT.json`，生产wire `native-command-result.json` SHA `c24f8c0fe04215a487bd3d5a13d2fd660ec637ac00001105290d7f29e7519593`。新mode **没有live信用**；Root后续结合构建/实际paused v2/v3查询另验。Existing projected-contact只读primitive与完整battle OODA分别记账。
+
+来源为既有 `native-tree/ROOT-DELIVERY.json`、`NATIVE-TREE.md`、`abi-proposal/FINAL-PROPOSAL.md` 和 `pure-model/ROOT-DELIVERY.json`。本文档lane仅输出外置append与Oct4/W40字段，0 raw读取/研究重跑/测试/SDK/nativebuild/shared/Git/window/游戏日；Root拥有源码合并与实机。

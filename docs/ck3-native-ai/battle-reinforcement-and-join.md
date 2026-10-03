@@ -833,3 +833,33 @@ tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disa
 tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x23040A0 --size 0x340
 tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x23C9100 --size 0x310
 ```
+
+## 2026-10-04：exact .3 增援查询真实 RED 与 unavailable DTO 最小修复
+
+本段独立绑定 CK3 **1.20.0.3 / Steam25652598**、EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。当前 source baseline 为 g52/`892378b5e82b7be0bfe4eb596b631b4be8c52fa4`；Root 提供的运行基线为 g51/v47/`1c67491f8217a389bfdea75a9914afff70b44a05`、R24/PID32372。`.3` 的 reviewed ABI 选择既有 `.2` battle binder；本段只采用该实际生产 reader 的最小修复，不把上文 1.19.0.6 的 RVA 或夹具移植为 `.3` 证据。
+
+实际 `actual-current-reinforcement-eta-01/004`（CUnit83886367）与 `006`（167772189）查询均为 `typed query result is inconsistent` **RED**。两个实际包没有 raw native DTO，因此各自失败的精确谓词仍为 **unknown**。下面直接执行生产源码的确定性复现证明存在可达的同类缺陷，并不证明两次实际失败必定经过该分支；实际 RED 保留，修复后 production-live 仍待 Root 新 DLL 的 fresh paused 查询。
+
+```mermaid
+flowchart TD
+    I["Exact .3 identity / reviewed .2 ABI"] --> B["Application-main selects .2 battle binder"]
+    B --> C["Resolve full CUnit and CArmy backlink"]
+    C --> G{"Current AI coordinator/subunit binding valid?"}
+    G -->|no| N["Old producer: ai_assignment_not_bound + partial CArmy ID"]
+    N --> X["Shared serializer rejects reason/partial unavailable DTO"]
+    X --> F["Generic typed-query error"]
+    G -->|no, minimal repair| U["Existing subject_not_ai_managed / clear nine optional groups"]
+    U --> O["Structured unavailable; CUnit/date retained; readiness false"]
+    G -->|yes| A["Read stored assignment and committed route; existing path unchanged"]
+    F -. "unknown: actual 004/006 contain no raw DTO" .-> R["Frozen actual RED; fresh post-fix query pending"]
+    A --> S["Assigned helper already at target / empty route source case"]
+    S -. "research only: unchanged Python consumer RED" .-> P["Stationary and combined patches parked outside adoption"]
+```
+
+该查询观察 **原生 AI 增援分配**；有效的手动玩家 CUnit、CArmy 和行军路线不保证存在当前 AI membership。原 reader 先写入 `selected_native_carmy_id`，在缺 coordinator/subunit 时返回共享九项 reason 表之外的 `ai_assignment_not_bound`，外层随后把失败 sample 的部分字段移动到最终 DTO；现有 serializer 要求 unavailable 的九组可选字段全部为 null，因此这条生产源码路径稳定产生 generic error。唯一采用的 `ROOT-ONLY-NATIVE-UNAVAILABLE-DTO.patch`（SHA-256 `a2bb393c2e030f27fc95c99e8d7edf44fe56e0b240652f2f0c597c568cfe927f`）只改 `ck3_12002_battle.cpp`：改用既有 `subject_not_ai_managed`，对稳定失败保留初始空 DTO，仅复制 reason，并保留 requested CUnit/date。没有新增 schema、reason、tool、gate、Python 修改或 AI 动作。Unavailable 中 route=null 表示此查询未发布路线，不能据此断言玩家军无手动路线；当前实际路线继续使用既有 committed getter/horizon/snapshot。
+
+Owner 的新源码回放已保存两条 source case、三种 before/after 组合；六个必要 TU 在 `/W4 /WX /O2 /DNDEBUG` 下编译，首 attempt 的 unrelated-symbol 链接 **harness RED** 保留，attempt02 仅重编修正的外部 harness并复用五个未变生产对象。Primary 修复生成的 structured-unavailable JSON经未修改 g52 driver/service/registered tool 消费 **GREEN**，其能力为 **static-ready**；没有 full DLL、SDK、游戏推进或新 live 信用。本整合文档 lane 直接复用这些回执，未重跑验证。
+
+另一个“assigned helper 已在目标、empty path、native move target=null、ETA=now”source case仅为 **research**。Stationary serializer patch的源码回放可生成 positive DTO，但未修改的 Python consumer 报 `aligned route does not satisfy its independent native-slot and route-final target gates` **RED**；stationary/combined patches留作外置研究，均不采用，不归为上述实际 004/006 的原因，也不增加 readiness。原生 AI assignment-to-join、玩家接战、胜负与完整 OODA 均未在本增量完成。
+
+完整原生树、source pins、actual RED hashes及回放见 [owner TREE](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-reinforcement-query-fault-v47/native-model/TREE.md) 和 [owner ROOT-DELIVERY](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-reinforcement-query-fault-v47/native-model/ROOT-DELIVERY.json)。Root负责 combined build/cold-query 与最终 commit/push；本 lane 为零 tests/build/SDK/Git/shared writes/window operations/game days。

@@ -962,6 +962,84 @@ ReadAdjacencyKindResult ReadProvinceAdjacencyKind(
   return ReadAdjacencyKindResult::available;
 }
 
+ReadContactGeographyResult ReadContactDefenderContext(
+    const CombatBindings &bindings, void *game_state, void *target_province,
+    std::int32_t target_province_id, std::int32_t attacker_entry_province_id,
+    void *attacker_entry_province, bool attacker_enemy_side,
+    const std::vector<CombatArmyInputsSnapshot> &armies,
+    game::CombatCrossingSnapshot &crossing,
+    game::CombatDefenderContextSnapshot &defender_context) noexcept {
+  if ((attacker_entry_province != nullptr &&
+       ResolveProvince(game_state, attacker_entry_province_id) !=
+           attacker_entry_province) ||
+      ResolveProvince(game_state, target_province_id) != target_province) {
+    crossing = {};
+    defender_context = {};
+    crossing.unavailable_reason = "hypothetical_contact_identity_changed";
+    defender_context.unavailable_reason = crossing.unavailable_reason;
+    return ReadContactGeographyResult::unavailable;
+  }
+  crossing.available = true;
+  crossing.unavailable_reason.clear();
+  defender_context.available = true;
+  defender_context.defender_side =
+      attacker_enemy_side ? "player_or_allied" : "enemy";
+  defender_context.unavailable_reason.clear();
+
+  std::int32_t defender_owner_character_id = -1;
+  for (const auto &army : armies) {
+    if (army.encounter_role != "defender") {
+      continue;
+    }
+    if (army.owner.status != CombatObservationStatus::available) {
+      defender_context.holding_unavailable_reason =
+          "defender_owner_unavailable";
+      return ReadContactGeographyResult::available;
+    }
+    // CCombat side population establishes the primary participant from the
+    // first inserted army. A hypothetical side uses explicit request order as
+    // that insertion order; current Province participant order is irrelevant.
+    defender_owner_character_id = army.owner.character_id;
+    break;
+  }
+  if (defender_owner_character_id == -1) {
+    defender_context.holding_unavailable_reason = "defender_side_missing";
+    return ReadContactGeographyResult::available;
+  }
+  void *const defender_owner = ResolveStoredComponent(
+      bindings.character_storage_slot, defender_owner_character_id,
+      kCharacterIdOffset);
+  if (defender_owner == nullptr) {
+    defender_context.holding_unavailable_reason =
+        "defender_owner_generation_changed";
+    return ReadContactGeographyResult::available;
+  }
+  const bool holding_defender =
+      bindings.is_holding_defender(defender_owner, target_province);
+  if ((attacker_entry_province != nullptr &&
+       ResolveProvince(game_state, attacker_entry_province_id) !=
+           attacker_entry_province) ||
+      ResolveProvince(game_state, target_province_id) != target_province) {
+    crossing = {};
+    defender_context = {};
+    crossing.unavailable_reason = "hypothetical_contact_identity_changed";
+    defender_context.unavailable_reason = crossing.unavailable_reason;
+    return ReadContactGeographyResult::unavailable;
+  }
+  if (ResolveStoredComponent(bindings.character_storage_slot,
+                             defender_owner_character_id,
+                             kCharacterIdOffset) != defender_owner) {
+    defender_context.holding_unavailable_reason =
+        "holding_context_identity_changed";
+    return ReadContactGeographyResult::available;
+  }
+  defender_context.holding_defender_status =
+      CombatObservationStatus::available;
+  defender_context.holding_defender = holding_defender;
+  defender_context.holding_unavailable_reason.clear();
+  return ReadContactGeographyResult::available;
+}
+
 ReadContactGeographyResult ReadContactGeography(
     const CombatBindings &bindings, void *game_state, void *target_province,
     std::int32_t target_province_id, std::int32_t attacker_entry_province_id,
@@ -1020,73 +1098,26 @@ ReadContactGeographyResult ReadContactGeography(
     return ReadContactGeographyResult::unavailable;
   }
 
-  if (ResolveProvince(game_state, attacker_entry_province_id) !=
-          attacker_entry_province ||
-      ResolveProvince(game_state, target_province_id) != target_province) {
-    crossing = {};
-    defender_context = {};
-    crossing.unavailable_reason = "hypothetical_contact_identity_changed";
-    defender_context.unavailable_reason = crossing.unavailable_reason;
-    return ReadContactGeographyResult::unavailable;
-  }
-  crossing.available = true;
-  crossing.unavailable_reason.clear();
-  defender_context.available = true;
-  defender_context.defender_side =
-      attacker_enemy_side ? "player_or_allied" : "enemy";
-  defender_context.unavailable_reason.clear();
+  return ReadContactDefenderContext(
+      bindings, game_state, target_province, target_province_id,
+      attacker_entry_province_id, attacker_entry_province, attacker_enemy_side,
+      armies, crossing, defender_context);
+}
 
-  std::int32_t defender_owner_character_id = -1;
-  for (const auto &army : armies) {
-    if (army.encounter_role != "defender") {
-      continue;
-    }
-    if (army.owner.status != CombatObservationStatus::available) {
-      defender_context.holding_unavailable_reason =
-          "defender_owner_unavailable";
-      return ReadContactGeographyResult::available;
-    }
-    // CCombat side population establishes the primary participant from the
-    // first inserted army. A hypothetical side uses explicit request order as
-    // that insertion order; current Province participant order is irrelevant.
-    defender_owner_character_id = army.owner.character_id;
-    break;
-  }
-  if (defender_owner_character_id == -1) {
-    defender_context.holding_unavailable_reason = "defender_side_missing";
-    return ReadContactGeographyResult::available;
-  }
-  void *const defender_owner = ResolveStoredComponent(
-      bindings.character_storage_slot, defender_owner_character_id,
-      kCharacterIdOffset);
-  if (defender_owner == nullptr) {
-    defender_context.holding_unavailable_reason =
-        "defender_owner_generation_changed";
-    return ReadContactGeographyResult::available;
-  }
-  const bool holding_defender =
-      bindings.is_holding_defender(defender_owner, target_province);
-  if (ResolveProvince(game_state, attacker_entry_province_id) !=
-          attacker_entry_province ||
-      ResolveProvince(game_state, target_province_id) != target_province) {
-    crossing = {};
-    defender_context = {};
-    crossing.unavailable_reason = "hypothetical_contact_identity_changed";
-    defender_context.unavailable_reason = crossing.unavailable_reason;
-    return ReadContactGeographyResult::unavailable;
-  }
-  if (ResolveStoredComponent(bindings.character_storage_slot,
-                             defender_owner_character_id,
-                             kCharacterIdOffset) != defender_owner) {
-    defender_context.holding_unavailable_reason =
-        "holding_context_identity_changed";
-    return ReadContactGeographyResult::available;
-  }
-  defender_context.holding_defender_status =
-      CombatObservationStatus::available;
-  defender_context.holding_defender = holding_defender;
-  defender_context.holding_unavailable_reason.clear();
-  return ReadContactGeographyResult::available;
+ReadContactGeographyResult ReadConstructorZeroContactGeography(
+    const CombatBindings &bindings, void *game_state, void *target_province,
+    std::int32_t target_province_id, bool attacker_enemy_side,
+    const std::vector<CombatArmyInputsSnapshot> &armies,
+    game::CombatCrossingSnapshot &crossing,
+    game::CombatDefenderContextSnapshot &defender_context) noexcept {
+  crossing = {};
+  defender_context = {};
+  // Exact .3 contact builder 0x247A886: defender initiator skips the entry
+  // scan and supplies raw kind 0. No attacker entry province is applicable.
+  crossing.kind = "none";
+  return ReadContactDefenderContext(
+      bindings, game_state, target_province, target_province_id, -1, nullptr,
+      attacker_enemy_side, armies, crossing, defender_context);
 }
 
 bool AppendOngoingCombat(const CombatBindings &bindings, void *game_state,
@@ -1605,9 +1636,13 @@ ReadCombatSimulationInputsResult ReadCombatSimulationInputs(
   output = {};
   const auto total_army_count = request.attacker_army_ids.size() +
                                 request.defender_army_ids.size();
+  const bool constructor_zero = request.constructor_adjacency_kind_raw.has_value();
   if (request.target_province_id <= 0 ||
-      request.attacker_entry_province_id <= 0 ||
-      request.target_province_id == request.attacker_entry_province_id ||
+      (constructor_zero
+           ? (*request.constructor_adjacency_kind_raw != 0 ||
+              request.attacker_entry_province_id != -1)
+           : (request.attacker_entry_province_id <= 0 ||
+              request.target_province_id == request.attacker_entry_province_id)) ||
       request.attacker_army_ids.empty() ||
       request.defender_army_ids.empty() ||
       request.attacker_army_ids.size() > 63 ||
@@ -1671,8 +1706,8 @@ ReadCombatSimulationInputsResult ReadCombatSimulationInputs(
   if (target_province == nullptr) {
     return ReadCombatSimulationInputsResult::target_province_not_found;
   }
-  if (ResolveProvince(game_state, request.attacker_entry_province_id) ==
-      nullptr) {
+  if (!constructor_zero &&
+      ResolveProvince(game_state, request.attacker_entry_province_id) == nullptr) {
     return ReadCombatSimulationInputsResult::invalid_encounter;
   }
   std::int32_t counter_class_count = 0;
@@ -1683,6 +1718,8 @@ ReadCombatSimulationInputsResult ReadCombatSimulationInputs(
   output.target_province_id = request.target_province_id;
   output.scenario.attacker_entry_province_id =
       request.attacker_entry_province_id;
+  output.scenario.constructor_adjacency_kind_raw =
+      request.constructor_adjacency_kind_raw;
   output.scenario.attacker_army_ids = request.attacker_army_ids;
   output.scenario.defender_army_ids = request.defender_army_ids;
   output.input_observation_ready = false;
@@ -1774,11 +1811,16 @@ ReadCombatSimulationInputsResult ReadCombatSimulationInputs(
       return ReadCombatSimulationInputsResult::unavailable;
     }
   }
-  const auto geography_result = ReadContactGeography(
-      bindings, game_state, target_province, request.target_province_id,
-      request.attacker_entry_province_id, attacker_enemy_side,
-      output.armies, output.target_province.crossing,
-      output.target_province.defender_context);
+  const auto geography_result = constructor_zero
+      ? ReadConstructorZeroContactGeography(
+            bindings, game_state, target_province, request.target_province_id,
+            attacker_enemy_side, output.armies, output.target_province.crossing,
+            output.target_province.defender_context)
+      : ReadContactGeography(
+            bindings, game_state, target_province, request.target_province_id,
+            request.attacker_entry_province_id, attacker_enemy_side,
+            output.armies, output.target_province.crossing,
+            output.target_province.defender_context);
   if (geography_result != ReadContactGeographyResult::available) {
     if (geography_result == ReadContactGeographyResult::invalid_encounter) {
       output = {};

@@ -1854,3 +1854,13 @@ request order、且不依赖当前驻军排序；`current_province_id=null` 也�
   [unknown] loaded script effect 对伤/残/死、participant 移除和下一日 side state 的完整反馈。
 - [unknown] 多军中途加入、离开、第三方敌对关系与同日到达的 dynamic participant policy；它不属于
   `explicit_hypothetical_fixed_at_contact_no_reinforcements` v2 的 input-readiness gate。
+
+## 2026-10-04：exact .3 defender constructor0 的最小 v2/v3 增量
+
+已冻结 `.3` contact-builder native tree证明 create-new initiator被判为defender时跳过adjacency scan并传raw0：`0x247A886..0x247A889` → `0x2AD81F0` → `0x25863A0` / Combat+0x6F8。该分支不需要enemy historical entry；具体证据与角色账本见 [projected-contact-scope-v1-12003.md](projected-contact-scope-v1-12003.md)。这替代此前defender场景的missing-enemy-entry施工结论，旧positive-entry条件场景仍有效。
+
+Against g52/source892378b5的当前设计，在 existing v2/v3 literal第二token接收`ctor0`，例如 `query-combat-simulation-inputs-v2-2640-ctor0-a-2-473-251658381-d-1-83886367`；v3同样token形状。Existing MCP参数新增可选`constructor_adjacency_kind_raw`：此mode为raw0与`attacker_entry_province_id=None`；native request entry=-1只表示不适用，不是真实Province。Native reader共享target/holding/loaded-effect/stat/counter上下文；new scenario entry=null、contact_geometry_mode=`native_defender_constructor_zero`、constructor kind0。旧positive-entry模式保留原请求、entry解析、地理与JSON，未添加其fields。
+
+Registered scenario确切字段为`contact_geometry_mode="native_defender_constructor_zero"`，entry=null、constructor raw0，两侧position policy为`fixed_at_target_hypothetical`。New constructor kind0仍消费Rules+F70/FA0当前effect、commander flag排除及原生ledger计算；不能硬编码crossing优势或最终advantage0。复用post-hire sameframe native A[473,251658381]/D[83886367]和defender角色，为当前target条件输入，不是实际battle sides或新contact；future状态须Rootfreshquery。
+
+唯一新fixture现为 **static-ready**：production reader/advantage/full serializer native1、normalizer/driver/service/registered existing `ck3_query_combat_simulation_inputs`1、native/MCP exit0。Synthetic native41/public2中execute1成功，无entry Province对象或resolve；保存incomingraw2的pureplan保留2→constructor0，saved post-hire role/order原样保留。Actual scenario shape与production command result一致，`input_observation_ready=true/monte_carlo_ready=false`；没有独立v3实机、full DLL/game/旧matrix信用。首harness `<charconv>`遗漏RED保留，未变生产对象复用，只重编修正harness。Pure plan `query_producer_geometry_mode`指source mode，`native_v2_query_ready`不是部署live标记。Root结合构建和实际paused查询后另记live；本append无测试/原始包读取/SDK/nativebuild/shared/Git/window/天数。来源pins见外置 `v47-defender-attacker-entry/implementation-g52/docs/ROOT-DELIVERY.json`。

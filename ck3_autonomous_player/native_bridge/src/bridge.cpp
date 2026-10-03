@@ -1,5 +1,6 @@
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/game_adapter.hpp"
+#include "xar_bridge/combat_hypothetical_scenario_v2_serializer.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_adapter.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
@@ -3568,24 +3569,9 @@ void AppendCombatSimulationInputs(
   result += SignedNumber(snapshot.target_province_id);
   result += ",\"participant_policy\":"
             "\"explicit_hypothetical_fixed_at_contact_no_reinforcements\",";
-  result += "\"scenario\":{\"kind\":"
-            "\"explicit_hypothetical_contact\",\"attacker_entry_province_id\":";
-  result += SignedNumber(snapshot.scenario.attacker_entry_province_id);
-  result += ",\"attacker_army_ids\":";
-  AppendInt32Array(result, snapshot.scenario.attacker_army_ids);
-  result += ",\"defender_army_ids\":";
-  AppendInt32Array(result, snapshot.scenario.defender_army_ids);
-  result += ",\"attacker_side\":";
-  AppendJsonString(result, snapshot.scenario.attacker_side);
-  result += ",\"defender_side\":";
-  AppendJsonString(result, snapshot.scenario.defender_side);
-  result += ",\"attacker_position_policy\":"
-            "\"fixed_at_entry_hypothetical\","
-            "\"defender_position_policy\":"
-            "\"fixed_at_target_hypothetical\","
-            "\"defender_insertion_order_policy\":"
-            "\"explicit_request_order_hypothetical\","
-            "\"actual_route_dependency\":false},\"armies\":[";
+  result += "\"scenario\":";
+  result += xar::game::SerializeCombatHypotheticalScenarioV2(snapshot.scenario);
+  result += ",\"armies\":[";
   for (std::size_t index = 0; index < snapshot.armies.size(); ++index) {
     if (index != 0) {
       result += ',';
@@ -11737,6 +11723,11 @@ std::string RunTypedQuery12002(
   query.image_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
   if (!ParseTypedQuery12002(step, payload, query)) {
     return CommandResultFrame(request_id, step, false, "typed query request is malformed");
+  }
+  if (query.combat_request.constructor_adjacency_kind_raw.has_value() &&
+      !xar::game::IsCk3_12003Descriptor(game.descriptor())) {
+    return CommandResultFrame(request_id, step, false,
+                              "constructor contact geometry requires the exact 1.20.0.3 adapter");
   }
   if (query.projected_contact_query &&
       !xar::game::IsCk3_12003Descriptor(game.descriptor())) {
@@ -22687,6 +22678,8 @@ void RunConnectedSession(
           std::uint64_t expected_revision = 0;
           if (!xar::game::ParseCombatSimulationInputsV3Step(
                   step, combat_request) ||
+              (combat_request.constructor_adjacency_kind_raw.has_value() &&
+               !xar::game::IsCk3_12003Descriptor(game.descriptor())) ||
               !xar::ck3_11906::
                   ParseCombatSimulationInputsV3ExpectedRevision(
                       incoming.payload, expected_revision)) {
@@ -22808,7 +22801,9 @@ void RunConnectedSession(
                        "query-combat-simulation-inputs-v2-")) {
           xar::game::CombatSimulationInputsRequest combat_request{};
           if (!xar::game::ParseCombatSimulationInputsStep(step,
-                                                          combat_request)) {
+                                                          combat_request) ||
+              (combat_request.constructor_adjacency_kind_raw.has_value() &&
+               !xar::game::IsCk3_12003Descriptor(game.descriptor()))) {
             connected = write_frame(
                 pipe, CommandResultFrame(
                           request_id, step, false,

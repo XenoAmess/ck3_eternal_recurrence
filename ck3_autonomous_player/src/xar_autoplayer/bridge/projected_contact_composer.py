@@ -116,6 +116,55 @@ def compose_projected_contact_calls(snapshot: dict[str, object], preview_respons
             "calls": [_call("ck3_query_projected_contact_scope_v1", arguments, binding["revision"])]}
 
 
+def derive_projected_constructor_geometry(scope: dict[str, object]) -> dict[str, object]:
+    """Derive exact .3 new-contact constructor geometry from a normalized DTO.
+
+    A defending initiator bypasses the entry scan and supplies raw zero. This
+    selects loaded rules; it does not supply a numeric advantage/effect result.
+    The existing v2/v3 port also accepts the dedicated ctor0 geometry mode.
+    """
+    transition = scope["transition_kind"]
+    role = scope["projected_initiator_is_defender"]
+    incoming = scope["incoming_adjacency_kind_raw"]
+    plan = {
+        "geometry_mode": "projected_contact_constructor",
+        "scope_kind": scope["scope_kind"],
+        **{name: scope[name] for name in (
+            "snapshot_revision", "date_raw", "subject_army_id",
+            "subject_current_province_id", "target_province_id",
+            "incoming_entry_province_id", "incoming_adjacency_kind_raw",
+            "projected_subject_side", "projected_initiator_is_defender_observable",
+            "projected_initiator_is_defender", "transition_kind")},
+        "projected_attacker_army_ids": list(scope["projected_attacker_army_ids"]),
+        "projected_defender_army_ids": list(scope["projected_defender_army_ids"]),
+        "constructor_adjacency_kind_raw": None,
+        "source_plan_complete": False,
+        "native_v2_query_ready": False,
+        "query_producer_geometry_mode": "native_defender_constructor_zero" if role is True else "legacy_explicit_attacker_entry",
+        "loaded_effects_evaluation": "required_existing_native_loaded_effects_plan",
+        "constructor_effects_evaluated": False,
+        "exact_build": "1.20.0.3/Steam25652598",
+    }
+    if transition in {"none", "join_existing"}:
+        return {**plan, "status": "inapplicable_transition",
+                "source_provenance": "This branch constructs only create_new contact; join uses current combat context."}
+    if transition != "create_new":
+        raise ValueError("constructor geometry requires a known projected transition")
+    if scope["projected_initiator_is_defender_observable"] is not True or type(role) is not bool:
+        return {**plan, "status": "role_unobserved",
+                "source_provenance": "Native initiator role must be observed before deriving a constructor operand."}
+    if type(incoming) is not int or not 0 <= incoming <= 3:
+        raise ValueError("incoming_adjacency_kind_raw must be the normalized native enum")
+    return {
+        **plan, "status": "available", "source_plan_complete": True,
+        "constructor_adjacency_kind_raw": 0 if role else incoming,
+        "source_provenance": (
+            "exact .3 contact builder0x247A886->0x247A889: defender raw0, entry scan bypassed"
+            if role else "exact .3 create_new attacker: native incoming adjacency operand retained"),
+    }
+
+
+
 def compose_projected_combat_calls(
     snapshot: dict[str, object], preview_response: object, projection_response: object, *,
     attacker_entry_province_id: int | None = None,
@@ -124,8 +173,8 @@ def compose_projected_combat_calls(
     """Stage C preserves projected sides/order in an existing v2 diagnostic.
 
     For create_new with an attacking subject, its incoming edge is the attacker
-    edge. A defending subject or join_existing needs an independently supplied
-    attacker edge; the arriving player's edge is never renamed to fill it.
+    edge. A new defending subject uses constructor raw0 with null entry;
+    join_existing retains its independent existing-combat geometry context.
     """
     binding = _binding(snapshot)
     edge = _preview_edge(snapshot, preview_response, binding)
@@ -147,6 +196,7 @@ def compose_projected_combat_calls(
     result = {"status": "available", "stage": "compose_fixed_contact_v2_diagnostic",
               "revision_metadata": binding, "preview_binding": edge,
               "projected_contact_scope": scope, "calls": [],
+              "constructor_geometry_plan": derive_projected_constructor_geometry(scope),
               "diagnostic_contract": "hypothetical_fixed_contact_against_current_target_state",
               "limitations": ["No future reinforcement, ongoing battle resume, or win odds claim."]}
     if scope["transition_kind"] == "none":
@@ -159,7 +209,16 @@ def compose_projected_combat_calls(
         return {**result, "composition_status": "outside_existing_v2_encounter_scope",
                 "composition_detail": str(error)}
     result["common_war_ids"] = encounter["common_war_ids"]
-    if scope["transition_kind"] == "create_new" and scope["projected_subject_side"] == "attacker":
+    constructor_raw = None
+    if (scope["transition_kind"] == "create_new"
+            and scope["projected_initiator_is_defender_observable"] is True
+            and scope["projected_initiator_is_defender"] is True
+            and attacker_entry_province_id is None):
+        entry = None
+        constructor_raw = result["constructor_geometry_plan"]["constructor_adjacency_kind_raw"]
+        provenance = result["constructor_geometry_plan"]["source_provenance"]
+        result["constructor_geometry_plan"]["native_v2_query_ready"] = True
+    elif scope["transition_kind"] == "create_new" and scope["projected_subject_side"] == "attacker":
         entry = edge["incoming_entry_province_id"]
         if attacker_entry_province_id is not None and attacker_entry_province_id != entry:
             raise ValueError("new attacking subject's v2 edge must match its native preview")
@@ -177,12 +236,16 @@ def compose_projected_combat_calls(
     result["attacker_entry_binding"] = {"attacker_entry_province_id": entry,
                                         "source": provenance}
     result["composition_status"] = "prepared_read_only_calls"
+    result["query_geometry_mode"] = (
+        "native_defender_constructor_zero" if constructor_raw == 0 else "legacy_explicit_attacker_entry")
+    result["constructor_geometry_plan"]["query_producer_geometry_mode"] = result["query_geometry_mode"]
     result["calls"] = [
         _call("ck3_query_army_strengths", {"army_ids": [*attackers, *defenders]}, binding["revision"]),
         _call("ck3_query_combat_simulation_inputs", {
             "target_province_id": edge["target_province_id"],
             "attacker_entry_province_id": entry,
             "attacker_army_ids": list(attackers), "defender_army_ids": list(defenders),
+            **({"constructor_adjacency_kind_raw": constructor_raw} if constructor_raw is not None else {}),
         }, binding["revision"]),
     ]
     return result
