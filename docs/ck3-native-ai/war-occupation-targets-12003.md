@@ -190,3 +190,9 @@ v37 三个同目标 preview 的真实 RED 原样保留在上节：当时是 Pyth
 本 preview 批正常存档独立记录为 history4755/SHA-256 `098220c27dcdbe5e7de50c1a7706906b2d18497e3a9a397bb3b4429ca151c90d`、raw53236800。协调者在文档派发时另给出后续 latest normal pair history4759/SHA-256 `189d84b62c273aef8e98059b33975c277e84824f58549967bcbe8ce3e4513789`；它不被冒充为本 preview 批的 checkpoint，也不因本文件消费而回退。最新移动/推进后的 pair 与 current 计数始终由 Root 更新。
 
 各实际 packet、历史 v37 RED 和冻结 runtime 构建输入的 SHA-256 见 [occupation-preview/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/actual-v38-doc-merge/occupation-preview/ROOT-DELIVERY.json)。本 lane 只交付外部文档 projection 与规范 LF 补丁，未运行 SDK、游戏、state、窗口、共享源、Git mutation 或重复测试；canonical 文档采用和 commit/push 由 Root 完成。
+
+## 2026-10-03T18:41 到达2604后的真实占领复查
+
+到达后004 occupation实际GREEN：2604的 **holding2400 / legalholder33435 / occupier30097 / fort3 / garrison400 / counted_opposing=true**；主战defender仍有 **17个被占holding**，没有17→16收复。005独立ownarmy再读为2604/sieging3/emptyroute；三项siege字段仍null，尚不能观察实际active_siege、围城进度、破墙或assault资格。这个具体缺字段影响下一步围城决策，P0 holding active_siege新provider已源码采用，仍static-ready；不把null当作没有围城或已完成围城，不等待未来v39才记录当前到达。
+
+实际004 occupation为v38原Robert战役raw53237136、native69，005独立ownarmy后置读回；正常SDK关闭并保存 **h4821 / 90,945,405B / SHA `19007da8127bf8cda28bea484021fad116e1082a67d15e7c5927c7d6c546c08f`**。批末h4819/3867日保持此前冻结事实，本次查询增加0日；到达部署loop与占领目标primitive分开，不能用CArmy sieging state或active_siege空投影证明收复。[唯一Root后置实机包](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-goal-capture-execution/actual-v38-post-arrival-01/result.json)。P0围城provider已由fca9daf源码采用并取得单次fixture GREEN，仍静态；新DLL与真实2604读数另验，未授live资格。

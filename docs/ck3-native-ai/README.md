@@ -1,5 +1,16 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-03T18:41：2604到达与围城观察入口
+
+最近v38/R0017/原PID107772已最小化完成3867保存日并正常exit0回收/completed-green；当前游戏关闭，最新正常pair h4821/raw53237136，13日日级批末h4819与旧3854首日分别保留。
+
+- [实际行军到达](army-march-remaining-timeline-12003.md)：首日之后13连续日仅在批day13抵达2604，sieging3/空route、非战斗非撤退；限定部署loop。
+- [到达后占领目标](war-occupation-targets-12003.md)：holding2400仍被30097占领、fort3/garrison400、主战17项未收复。
+- [P0任意holding围城观察](war-occupation-holding-siege-observation-12003.md)：新7路径fca9daf已推送并单次fixture GREEN，仍static-ready；v39构建与原2604paused实读待执行。
+- [外国13日当前战斗](battle-current-foreign-casualty-state-1.20.0.3-2026-10-03.md)：main/day6→18无winner/未finalized，Strength仅02/06/13采样，Robert未参与。
+
+围城状态primitive不等于围城进度或收复结果；当前证据与下一施工回链[接续账本](../handover/2026-10-03-g2-v33-resume.md)，三份[进度索引](../autonomous-agent-progress/README.md)由独立owner同步，无需等待v39未来构建才记录本次结果。
+
 ## 2026-10-03T18:02：v38真实军务输入与2604第一路线日
 
 本次冻结报告截至R0017/PID107772/h4764/raw53236824、3854日；运行最小化不抢焦点，source0ad9235/冻结g40，strict与官方CI37113104087 GREEN。

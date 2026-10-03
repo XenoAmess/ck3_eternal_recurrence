@@ -140,3 +140,29 @@ Root strict541TU/64jobs 和官方 CI37110280135 GREEN 沿用既有记录，不�
 消费包与 exact pins 在 `battle-missing-observations/actual-v37-01/ROOT-DELIVERY.json`。
 本包零新增 SDK/游戏动作/窗口操作/存档日/Git 或共享源码改动；3853/date53236800
 是 Root 已保存进度，本次 read-only 消费不再计日。
+
+## 2026-10-03: v38 thirteen saved days of foreign current-battle observation
+
+Existing paused live evidence: actual-route-days-batch-2604-01/result.json and its thirteen per-day battle/snapshot/strength/save captures. External derived files and SHA-256 pins: Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/recapture-v38-thirteen-day-consumption/foreign-battle-lane/ROOT-DELIVERY.json. No game rerun or API research occurred in this lane.
+
+CombatID **1577058305**, province **2640**, battle_result_id **1493172226** stayed observable on all 13 saved days: date_raw **53236848–53237136**, native revisions **19–67**. Actual phase stays **main (phase_raw=1)**, phase_day **6→18**. Every sample has **winner_side=none / winner_raw=-1**, **forced_winner_side=none / forced_winner_raw=-1**, and **finalized=false**. A battle_result_id alone is not a finalized outcome.
+
+Published current-battle raw fields use **scale=100000**:
+
+| Actual field | Attacker first→last raw | Defender first→last raw |
+|---|---:|---:|
+| participant_hard_total_raw | 10717859→31948694 | 7087221→20717315 |
+| derived_soft_casualties_raw | 25008356→74547010 | 16537021→48340940 |
+| derived_current_fighting_raw | 282273785→211504296 | 140775758→95341745 |
+
+The side ledger preserves each daily delta. The participant ledger keeps attacker character **70766**, defender characters **30097/35357**, and their actual hard_casualties_raw fields. The separate non_main_start_minus_current_minus_soft_raw stays **1000000/2000000**; it is not reclassified as deaths.
+
+Stored full attacker CUnitIDs remain **[251658381, 473, 474]** and defender IDs **[50331920, 83886484]**. At every final sampled snapshot all five are at province 2640, in_combat=true, retreating=false. No sampled membership arrival, retreat transition, or destruction occurs; intermediate states are unobserved.
+
+Fresh current_soldiers queries exist only on days **02/06/13**. Same full ID **251658381** reads **2733→2665→2552** (fresh-interval decreases **68/113**); **50331920** reads **1307→1289→1243** (**18/46**); **473/474/83886484** stay **300/10/300**. The fresh intervals span **96/168 raw hours**. Other ten days have blank measurements. These are **unattributed current-soldier changes**, kept separate from published current-battle hard/soft casualty fields; they are not combat death counts.
+
+Readiness remains **production-live primitive: foreign current battle observation**. No future win odds, terminal foreign outcome, player victory, native AI decision cause, or player battle OODA is demonstrated. The root batch stops for the separate player army's actual arrival at 2604; checkpoint **h4819**, date **53237136**, SHA-256 **21273b864f1f6533fbf8c6fa8203de25925835026547bf6c0c7b7fe1676154f2**. Battle query source game_version/executable_sha256 are null; root v38 exact-build binding must remain attached separately.
+
+Next: continue the root-owned player siege/war OODA from the saved arrival frame. Record later foreign phase/winner/terminal fields only when an actual observation publishes them. No policy was changed by this lane.
+
+Root v38 binding is separately frozen at `Z:/g40`, source commit `0ad923525ef899b836a823dfe983db49030789f2`, game `1.20.0.3` / Steam `25652598`, EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`; see `runtime-preparation/v38/v38-root-packet/ROOT-PACKET.json` and `runtime-preparation/v38/ADOPTED-V38-RUNTIME-FREEZE.json`. The Root batch advances raw date `53236824→53237136` through 13 normal saved days; foreign observations begin after its first day at `53236848`. Root has already credited these 13 days once: total **3867**, resume **714**, 2026-10-03 **+619**, G2 **5/8**, NW **2/4**, natural reconciled successions **0**. This file-only topic adoption adds **0** days, actions, or battle outcomes.

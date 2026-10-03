@@ -205,3 +205,31 @@ foreign battle 1577058305（province2640）实际 main/day5，observation availa
 正常保存 h4764、SHA-256 `91ee0cebb347e32cec7fccb1c581a0c2661b22bd26cf90f6a12c29025f3b5422`、90840300 bytes、raw53236824。Root 累计 total3854 / resume701 / Oct3 606；本真实一天已由 Root 计入，纯文件消费者不重计。Root 从 raw53236824 带 prior-first-result 接续 batch16；后续日数/到达/围城状态要消费后续真实产物，文档不阻断执行。
 
 原始 packet SHA-256 与冻结消费索引：[ACTUAL-FIRST-ROUTE-DAY-CONSUMED.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/recapture-v38/first-day-consumed/ACTUAL-FIRST-ROUTE-DAY-CONSUMED.json)。本 lane 无 SDK/game/window/Git/shared-source/test 操作，专题与日报/周报由 actual merge owner 合入。
+
+## v38：连续十三个正常保存日与 2604 实际抵达/围城状态
+
+Root 同一 SDK 的 `actual-route-days-batch-2604-01` 在第 **13** 日按 **actual_target_arrival** 正常停止，状态 **STOPPED**，不是 capability RED。实际 DateRaw **53236824 → 53237136**，合计 **312 原生小时 / 13 个完整保存日**；13 日均有独立暂停状态与同日期正常 checkpoint，逐日配对和 SHA 保留在 [daily-normal-pairs.csv](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/recapture-v38-thirteen-day-consumption/normal-pair-lane/daily-normal-pairs.csv)、[DAILY-NORMAL-PAIR-REPORT-FIELDS.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/recapture-v38-thirteen-day-consumption/normal-pair-lane/DAILY-NORMAL-PAIR-REPORT-FIELDS.json)。本消费仅文件读取，无 SDK、重查、测试、游戏、窗口、Git 或共享源码操作。
+
+| 日 | 实际 DateRaw | 我军 current / target / route / state | 正常保存h | Save SHA-256 |
+|---|---|---|---:|---|
+| 1 | 53236824→53236848 | 2610 / 2604 / [2605, 2604] / moving | 4768 | 14eaa21896b678c8c09656e9eb37c8722d658080705b7c59be24d095e584b7f2 |
+| 2 | 53236848→53236872 | 2610 / 2604 / [2605, 2604] / moving | 4773 | 6d567eb5eebcb1810f67c14f338352cf43a2e103c20fcf4ddf0f910fb3931003 |
+| 3 | 53236872→53236896 | 2610 / 2604 / [2605, 2604] / moving | 4777 | b7306ce9c576e48c456b912504ca7f5f0e1d248f8e02bc7bab217df90ce97402 |
+| 4 | 53236896→53236920 | 2610 / 2604 / [2605, 2604] / moving | 4781 | 82a2deb86572396a3dfdc7f6bb2b6d3ab5bf91516d14be4fb68659c01354993a |
+| 5 | 53236920→53236944 | 2610 / 2604 / [2605, 2604] / moving | 4785 | e33cd35fdd6876b543501bfb98c380d2cb231332268fe3388db29ddb10985c09 |
+| 6 | 53236944→53236968 | 2605 / 2604 / [2604] / moving | 4790 | 2b56c8c094821586e9a318ca61c81f09c68798b51e169242cdea0be822cfd62d |
+| 7 | 53236968→53236992 | 2605 / 2604 / [2604] / moving | 4794 | 3bb454305051cfeef27007ad131bfd5b2fa6906d2e45f8190c62d45600a3884f |
+| 8 | 53236992→53237016 | 2605 / 2604 / [2604] / moving | 4798 | 47003e5c76e791a021eda41d0b144a795ca14ea867e0c8730e88f9cb2e54504d |
+| 9 | 53237016→53237040 | 2605 / 2604 / [2604] / moving | 4802 | e597c41d1126bb3b80d965087b86c51ce6937bde6394f9a7e6614ec1b7e4919d |
+| 10 | 53237040→53237064 | 2605 / 2604 / [2604] / moving | 4806 | 08d6619d61ff04d86d983ddec3ba5c276292dd8f9a197d3b2002e0fa75d6e460 |
+| 11 | 53237064→53237088 | 2605 / 2604 / [2604] / moving | 4810 | c5e24b24abebe295096f272824134beb72edfe14dff5662c7918a5f753fd9fff |
+| 12 | 53237088→53237112 | 2605 / 2604 / [2604] / moving | 4814 | 680bafd90d6d05d57a0fa2a75e0df8ec4c05132207387248530e84bf986982b3 |
+| 13 | 53237112→53237136 | 2604 / None / [] / sieging | 4819 | 21273b864f1f6533fbf8c6fa8203de25925835026547bf6c0c7b7fe1676154f2 |
+
+军队始终是原 CUnit **83886367**，Robert **29829** / episode **`native-29829-2bc2d599f7f9`**、ordinary **xar_off**。批次末第13日 **native67/public53** 暂停帧首次实际 current **2604**、move target **null**、完整 route **[]**、state **sieging/code3**、controllable true、无 combat/retreat。故 **向2604移动/部署 loop 已完成，围城状态已实际观察**；围城数值进度、城堡夺回、县改宗、我方战斗取胜和整场战争完成均不由该状态推定，下一项 occupation/围城 provider 由 Root 按实际目标继续施工。
+
+末正常 checkpoint **h4819**、**90945405 B**、SHA-256 **`21273b864f1f6533fbf8c6fa8203de25925835026547bf6c0c7b7fe1676154f2`**，保存日 **53237136**，same actor/episode。只计本批十三日一次：保留此前 **3854**，当前 **3867 / 36524 保存日**，resume **+714 日**、Oct3 **+619 日**；**G2 5/8、NW2/4、自然继承0**保持。旧日、报告采纳和零日任命/派遣动作不额外计日。
+
+末帧的 `siege_days_left`、`siege_province_holder_character_id` 与 `siege_province_in_player_subrealm` 三字段仍为 **null**；这不是围城零日、合法零值或占领改变。Root 已把只读 `active_siege` provider 列为当前 P0 并在施工，用于后续围城进度与目标判断；本次只采用已有到达证据，不等待未来版本，也不把尚未验收的 provider 写成 live。
+
+本批消费与逐日配对索引：[normal-pair-lane/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/recapture-v38-thirteen-day-consumption/normal-pair-lane/ROOT-DELIVERY.json)。此前首路线的八日到达2610、后续3854日首帧与零日派遣记录全部保留；本附录不重计任何一天。
