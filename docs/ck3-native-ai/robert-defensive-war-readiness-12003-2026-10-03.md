@@ -92,3 +92,11 @@ Root已通过删除 `--nonwar-only` 的 v34计划在同 PID119724独占执行 `a
 最后正常save016为history4653，90951584字节，SHA-256 `290be4d858b899b911f2843c71aa850aae68987576b94e42359bf7139640fbbf`，日期仍53236608。实际hello证明exact EXE；army-strength自己的source.game_version/executable_sha256是null，保留真实字段，不补成该DTO自身已经发布版本。证据路径位于上述`actual-paused-war-v34-01`，本次最高新增状态是实际只读production-live primitive，战争 loop继续施工。
 
 复用机制和证据：[当前派系事件](ck3-1.20.0.3-faction-demand1001-populist.md)、[William实际 .3 primitives](episode03-william-lewes-live-2026-10-03.md)、[.3真实故障修复](episode03-public-unit-zero-recovery-2026-10-03.md)、[历史防守tree](primary-defensive-war-response.md)。历史防守文档的版本/旧实机边界照旧；只有本文重新绑定的当前stock输入可作当前研究输入。
+
+## 2026-10-03T13:56 接续源码采用
+
+v34 对实际敌方领袖30097、32750的战略查询均RED。迁移同时丢失callback的active-primary scope收集与reader的active-war准入；本次复用现有paused snapshot字段，恢复active OR declarable，正在交战目标不枚举无关宣战CB。两个实际目标的生产reader确定性复现旧RED、修复GREEN，3TU和2链接严格编译GREEN；复用一次现有验证，不新增ABI、schema、权限或重试。v34已观测军力、路线、战争状态继续可用，修复实机仍待新DLL。
+
+实际记录：`2026-10-03T13:56:08+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
+
+交付回执：[war-entry-active-scope-adoption](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-native-readiness/permits/war-entry-fault/ROOT-DELIVERY.json)。

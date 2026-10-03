@@ -10217,15 +10217,11 @@ bool CaptureWarEntryFrame12002(
     void *opaque, xar::game::WarEntryAssessmentFrameV1 &output) noexcept {
   auto *envelope = static_cast<xar::ck3_12002::QueryMailboxEnvelope *>(opaque);
   xar::game::Snapshot snapshot{};
-  if (envelope == nullptr ||
+  if (envelope == nullptr || envelope->typed_context == nullptr ||
       !xar::ck3_12002::CaptureQuerySnapshot(envelope, snapshot)) {
     return false;
   }
   try {
-    std::vector<xar::game::DeclarableWarSnapshot> declarations;
-    if (!xar::game::ReadDeclarableWars(*envelope->game, declarations)) {
-      return false;
-    }
     output = {};
     output.snapshot_revision = envelope->expected_snapshot_revision;
     output.date_raw = snapshot.date_raw;
@@ -10234,12 +10230,31 @@ bool CaptureWarEntryFrame12002(
     output.actor_alive = snapshot.has_played_character &&
                          snapshot.played_character_alive;
     output.actor_character_id = snapshot.played_character_id;
-    for (const auto &declaration : declarations) {
-      const auto id = declaration.target_character_id;
-      if (id > 0 && std::find(output.declarable_target_character_ids.begin(),
-                             output.declarable_target_character_ids.end(), id) ==
-                        output.declarable_target_character_ids.end()) {
-        output.declarable_target_character_ids.push_back(id);
+    const auto append_unique_positive = [](auto &targets, std::int32_t id) {
+      if (id > 0 && std::find(targets.begin(), targets.end(), id) == targets.end()) {
+        targets.push_back(id);
+      }
+    };
+    for (const auto &war : snapshot.active_wars) {
+      append_unique_positive(output.active_war_primary_opponent_character_ids,
+                             war.primary_opponent_character_id);
+    }
+    const auto &query =
+        *static_cast<const TypedQuery12002 *>(envelope->typed_context);
+    for (const auto target : query.war_entry_request.target_character_ids) {
+      const auto &active = output.active_war_primary_opponent_character_ids;
+      if (std::find(active.begin(), active.end(), target) != active.end()) {
+        continue;
+      }
+      std::vector<xar::game::DeclarableWarSnapshot> declarations;
+      if (xar::game::ReadDeclarableWarsForTarget(*envelope->game, target,
+                                               declarations) !=
+          xar::game::ReadDeclarableWarsResult::available) {
+        return false;
+      }
+      for (const auto &declaration : declarations) {
+        append_unique_positive(output.declarable_target_character_ids,
+                               declaration.target_character_id);
       }
     }
     return true;

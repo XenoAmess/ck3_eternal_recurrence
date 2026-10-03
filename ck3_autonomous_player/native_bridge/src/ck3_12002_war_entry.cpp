@@ -1,4 +1,4 @@
-﻿#include "xar_bridge/ck3_12002_war_entry.hpp"
+#include "xar_bridge/ck3_12002_war_entry.hpp"
 
 #include <windows.h>
 
@@ -592,11 +592,16 @@ bool RevalidateAssessmentInputs(
   return true;
 }
 
-bool IsDeclarable(const game::WarEntryAssessmentFrameV1 &frame,
-                  std::int32_t target) {
-  return std::find(frame.declarable_target_character_ids.begin(),
-                   frame.declarable_target_character_ids.end(),
-                   target) != frame.declarable_target_character_ids.end();
+bool ContainsTarget(const std::vector<std::int32_t> &targets,
+                    std::int32_t target) {
+  return std::find(targets.begin(), targets.end(), target) != targets.end();
+}
+
+bool IsAdmittedTarget(const game::WarEntryAssessmentFrameV1 &frame,
+                      std::int32_t target) {
+  return ContainsTarget(frame.declarable_target_character_ids, target) ||
+         ContainsTarget(frame.active_war_primary_opponent_character_ids,
+                        target);
 }
 
 bool FrameShapeValid(const game::WarEntryAssessmentFrameV1 &frame) {
@@ -606,6 +611,9 @@ bool FrameShapeValid(const game::WarEntryAssessmentFrameV1 &frame) {
   }
   return std::all_of(frame.declarable_target_character_ids.begin(),
                      frame.declarable_target_character_ids.end(),
+                     IsPositiveFullId) &&
+         std::all_of(frame.active_war_primary_opponent_character_ids.begin(),
+                     frame.active_war_primary_opponent_character_ids.end(),
                      IsPositiveFullId);
 }
 
@@ -691,7 +699,7 @@ game::ReadWarEntryAssessmentsV1Result ReadWarEntryAssessmentsV1(
                   "frame_identity");
     }
     for (const auto target : request.target_character_ids) {
-      if (!IsDeclarable(before, target)) {
+      if (!IsAdmittedTarget(before, target)) {
         return Fail(output, ReadWarEntryAssessmentsV1Result::unavailable,
                     "target_not_declarable");
       }
