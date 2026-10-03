@@ -594,3 +594,28 @@ readiness为七个连续实际有界战斗日，以及主军行军到同一玩�
 既有`.3` capability结论与两次零日RED原样保留：当时发布`life-advance-one-day`，未发布可执行battle sentinel epoch；首轮拒绝在native sentinel调用前，第二轮仅初始snapshot unavailable。只读恢复以及03/04/05成功分别成立，不据此声称diagnostics priming是因果修复，也不新增重试或门禁。
 
 04进入main时next-main-roll bounds已available；余三个operand为active_regiment_counter_class_stack_context、next_day_non_roll_advantage_sources、battle_knight_participation_and_dynamic_entry_transitions，05仍为质量账。当前新价值是七个连续实际battle-day与main军队的行军入战，完整battle outcome controller、terminal、玩家胜利和整局OODA仍未由这些证据完成。Root已启动06独立预算；本包不读取06、不预计其日数或结论，终结/ID-transition raw留专属outcomes owner。05 primary已sole封存，无需等cached-trajectory追加lane才能采用。
+
+
+<a id="v47-postbattle-06-09"></a>
+
+## 2026-10-04：06–09有限战斗循环、零日RED与战后regular
+
+[production-live loop，限定同一单场战斗] 本次只续接已发布05之后的sealed owner字段，沿用R24普通Robert29829、CK3 1.20.0.3、Combat1543503874/player defender1/cursor17的实际战役。06/07/09分别保存5/2/4日，合计11个新保存日；08与只读诊断02均0日。文档采用另增0日，不重复03–05或新建whole-OODA计数。
+
+| 已封存attempt | 实际推进与正常SAVE | 可核验状态与停止边界 |
+|---|---|---|
+| 06 / SDK68214 closed exit0 | 120h / saved5 / bounded5；h5666/raw53241648；total4055/res902/Oct4+30 | main7→12；第5round仅`retreat_legal_now`变化：elapsed14 false/too_early→elapsed15 true/reasons空。两玩家军仍2618/in_combat、nonretreat；没有retreat动作，资格不等于已撤退 |
+| 07 / SDK1424 closed exit0 | 48h / saved2 / bounded2；h5676/raw53241696；total4057/res904/Oct4+32 | 第二round main13→pursuit0，winner none→defender1、forcedwinner-1、finalizedfalse；两我军仍combat/nonretreat。current winner已观测，尚不能单凭此帧认定终局；retreat资格因pursuit转false |
+| 08 / SDK54525 closed exit1 | initial/finalization snapshot RED；0h / 0saved / 0bounded；无execute或SAVE | diagnostics虽GREEN，gen20 semantic_state_available=false/heartbeat absent；工具“state not available yet”不证明CK3真的loading或pursuit不能推进。source RED与file consumer首attempt RED分别保留，无fresh状态，不改07结论 |
+| pursuit diagnostics02 / closed GREEN | 独立diag→cap→snapshot三项GREEN；0保存日；raw53241696 | 新gen21 semantic=true、heartbeat present、native136/public2/paused+map_ready；life-advance-one-day已发布，battle epoch/sentinel广告空。只说明当前读取恢复；v48 helper首次diagnostics后加一次capabilities输入，不证明priming因果修复，不增retry/wait/gate |
+| 09 / SDK99589 closed exit0 | 96h / saved4 / bounded4；h5697/raw53241792；total4061/res908/Oct4+36 | STOP=`actual_subject_left_combat_requires_root`。fresh末snapshot两军regular/state1、controllable、in_combat=false、retreating=false、route空/targetnull，均current2618；没有合军或新军令 |
+
+09末正常SAVE为92163403B、SHA256 `10ee6273a5521493576bf41b7a90bb1dad6be5eb36b8b796b412e4d7f52ca0ec`，native152/public17/paused+map_ready。最后一天已出combat，没有post-step battle-control；最后control是before raw53241768/native149/pursuit3/currentwinner defender/finalizedfalse历史帧，不能冒充raw53241792当前combat或终局字段。
+
+06的current-fighting stored/derived仍分别保存Q100000，07的attacker fighting0不等于全部死亡/wipe或最终损失；不以cache差值推断伤亡、whole-army人数或胜率。阶段不适用的next-main-roll bounds与resume三/四缺口保留质量账，不加full-v3推进门禁。08失败、只读恢复和09成功分别成立，不把后来成功改写成根因修复。
+
+专属owner已封存该场真实normal_result/event58/winner defender1。这里只引用 [terminal owner回执](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-casualty-outcomes/player-combat-1543503874-actual-terminal/ROOT-DELIVERY.json) 与 [后续link addendum](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/player-v47-exact-day09-consumption/TERMINAL-OWNER-LINK-ADDENDUM.json)，终结/人物/损失/warscore由专属专题维护，未二读terminal body。09原receipt的terminal pending仅是当时事实，后续addendum闭合最终结果。当前完成的是这一场实际玩家battle loop，不升级完整通用battle/战争controller；文档整合不新增胜利或终结信用。
+
+[21个既有正常保存日索引](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/player-v47-first-battle-saved-days-index/ROOT-DELIVERY.json) 与 [CSV](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/player-v47-first-battle-saved-days-index/TWENTY-ONE-NORMAL-SAVED-DAYS.csv) 仅链接，未二解析；失败/诊断没有day row。
+
+sealed来源： [06](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/player-v47-exact-day06-consumption/ROOT-DELIVERY.json)、[07](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/player-v47-exact-day07-consumption/ROOT-DELIVERY.json)、[08](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/player-v47-exact-day08-consumption/ROOT-DELIVERY.json)、[diagnostics02](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/pursuit-v47-bridge-diagnostics-02/ROOT-DELIVERY.json)、[09](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/player-v47-exact-day09-consumption/ROOT-DELIVERY.json)。本增量SDK/raw/query/cap/source audit/Git/tests/window/shared动作均0。

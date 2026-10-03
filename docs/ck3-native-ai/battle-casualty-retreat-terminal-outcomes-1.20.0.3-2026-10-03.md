@@ -134,3 +134,49 @@ Root 的实际 `004` / `006` 查询在同一暂停日期 `date_raw=53238336` 读
 两军的 `asking_for_help` / `assigned_to_help` / `asking_changed_last_evaluation` 均为 false；`cross_coordinator_request_valid_raw=0`，power basis 与 cross request power 保留 `null`。首条 route edge 的 remaining duration Q100000 分别为 `638752` 与 `2559441`，不替换已发布的 rounded arrival dates。该增量是两支实际败军路线与 AI membership 的 **production-live primitive**；ETA 是当前预计，不能证明撤退解除、保护期、实际到达、追击动作、玩家接战或胜率。原生继续/撤退树及策略仍由对应 owner 维护，见 [撤退锁、接触过滤与再交战原生树](battle-retreat-pursuit-reengagement-12003.md)。
 
 本轮 latest normal pair 为 `h5034` / raw `53238336` / `91105480` B / save SHA-256 `7ebe6682539b7e5477566a4613afc2b36356e0880ed94a0d7f9c4a3b62758983`，R0019 / PID28788 已正常退出 `exit 0`。读取新增 `0` 日：累计仍 `3917/36524`，恢复后 `764` 日，2026-10-03 增量 `669` 日。未计撤退解除、收复、玩家胜利或完整战争完成；下一步在真实日期推进后重读撤退、位置和 route，继续以当前围城实际 outcome 决策。
+
+## Oct4 first player normal terminal — sealed actual result
+
+`production-live primitive`：玩家Combat1543503874@2618由真实journal event58（cursor17之后）发布normal_result，
+phase3/day0/date53241792。winner_raw1对应combat defender Robert29829，实际defender CUnits
+[167772189,83886367]；attacker primary30097、CUnits[50331920,83886484]。这是真实玩家参战胜利结果，
+不据此声称战争结束或完整OODA loop。finalized_before=false为journal捕获前字段，不否定observed终结。
+
+recorded battle_warscore绑定War16777231/row0，value1495100Q100000、winner_is_war_attacker=false、
+combat_side0_is_war_attacker=true、attacker-relative delta−1495100（−14.951）。这里仅发布该battle row对war attacker的方向。
+该原生方向与WarID有实值，不能由combat side标签代替，也不能把此单场delta当独立战争总分。
+selected CB scale与denominator仍null，不展开审计或妨碍Root军事主线。
+
+| 原生side | captured hard Q100000 / 兵员当量 | final baseline / survivors兵员当量 | captured current cache Q100000 |
+|---|---|---|---|
+| attacker0 | 63423101 / 634.23101 | 1596 / 1068 | 0 |
+| defender1 | 16970782 / 169.70782 | 4029 / 3900 | 355758395 |
+
+final survivor原始值为106800000/390000000Q100000；stored current cache不是该结果字段。
+soft原始levy/MAA分别为side0=28866897/67310002、side1=22633122/7537701Q100000。
+这些保留为不同原生账；不要求baseline-minus-survivors等于captured hard，不启动差值一致性审计。
+已有army整数strength若另由指定consumer提供则保持整数人数，不再次除Q。
+
+Result1694498817仍严格解析、relevant_player_count1；旧Combat已删除、省份不再包含旧ID。
+subject167772189在2618存活存在，backlink/active null、blocked=false、AI membership none；successor
+no_successor、无选中ID。现有normal result/removal/post-battle状态已可消费，不以等待第二次人物查询回退资格。
+
+prior自动读到五个实际人物：30097/29829/35357/60822 alive=true，37671 alive=false；全部current custody
+none/jailer−1。原生结果行combatant_killed_in_battle的left enemy_knight60822/right this combatant37671、
+target_right=true；原生语义owner已从冻结stock combat_events.txt986–999/key988闭合death类型与后续
+death_reason=death_battle、killer=enemy_knight。这里有限报告一条具名native killed record target37671，
+同查询读回目标已死；不称完整骑士死亡总数。side0=false是event root side，不能推成victim side。
+top character_observations=null，因为本次未请求character_ids，不表示prior人物观测缺失。
+Root已取消重复第二次四人物query；现有prior足以消费，不设置新的结果门禁或等待人物blocker。
+
+本正式追加仅消费主consumer之前落盘的FIRST-DECODED.json与FIRST-CONSUMED-FACTS.json，以及父代理
+转述的原生stock语义与normal-save锚点；未读origin/raw/control/stock源或运行SDK/tests/shared/Git/窗口。
+Root正常h5697/date53241792、已计total4061/resume908/Oct4+36，save SHA
+10ee6273a5521493576bf41b7a90bb1dad6be5eb36b8b796b412e4d7f52ca0ec；Root报告J/main均regularnoncombat@2618。
+此query与report新增日、动作均0。当前whole-war score及before/after整场战争分数没有在本包中读回，
+不能把battle row delta变成整场战争当前分数或其变化。Root新fresh strength/occupation/merge/route由各自
+consumer封包后只链接；本lane不重读origin。Root统一topic与日/周记录、正常commit/push。
+
+本次短increment沿用已封真实normal_result；Root补充该结果 `wipe=false`。查询normal-save配对仍为 **h5697/date53241792**，不得用后续latest h5701替换。Root已发布的单场玩家战斗有限loop和06–09控制追加保持原归属；本页只补terminal/outcome组件，不新增whole-war或整代完成信用。v49 prep/verify stage GREEN与rebind30901 running是后续部署元数据，尚未新增本包live证据。
+
+Sealed increment source: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-casualty-outcomes/player-combat-1543503874-actual-terminal/ROOT-DELIVERY.json` and `reports/{TOPIC-APPEND.md,OCT4-W40-FIELDS.json}`. Only these sealed reports were consumed for this append; origin, raw, stock/source and the cancelled second query were not reread.

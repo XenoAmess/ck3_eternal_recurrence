@@ -241,3 +241,21 @@ D 的兵力 `1770` 是 007 当前 native getter 的结果，可以计入实际�
 本次两条查询各自达到 `production-live primitive`。合并动作和成员关系由 `war_goal` 的唯一消费者记录；完整合并闭环须由 Root 将它的动作／成员证据与本包的独立实际兵力、指挥官观测结合。补给加权截断及指挥官继承的原生数学由军队供给工作包维护，本包只向它提供这份同帧 decoded summary，不让它二读 raw，也不从公共总人数强推未发布的原生权重。未宣称战斗、抵达目标或完整战争完成。
 
 外部 receipt：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-reinforcement-raise/runtime-v47-postmerge-strength-commander-consumption/ROOT-DELIVERY.json`，SHA-256 `08f9260d550af7bd64cd6a064dfd099eb204feb08d653e13530f1d5a031da103`。输入完整 SHA、两个 query 的参数和当前指挥官对象保留在 receipt 及同目录 raw cache；Oct4／2026-W40 报告片段在 `report-lane/`。本消费者 SDK、推进、重复查询、测试、Git、共享写入、窗口和构建均为 `0`。
+
+### 2026-10-04 v49：战斗后的两军前态与合并后主军实读
+
+唯一兵力消费者各读一次 `actual-post-battle-merge-hot-python-01/005-ck3_query_army_strengths.json` 和 `010-ck3_query_army_strengths.json`。Root 报告 SDK `84390` 正常关闭、exit `0`、GREEN；当前 Python 为 hot `g54/8898`，原生运行时仍是 `R24/g51`，本次没有为这份双 row 观测制造新 DLL。两次查询日期都为 raw `53241792`，均 `accepted=true/status=available`。
+
+| 查询 / 公开 CUnit / 原生 CArmy | 当前 / 最大兵力 | 团数 | 补给 / 上限 | 月度补给变化 | 当前损耗 |
+| --- | --- | --- | --- | --- | --- |
+| 005 前态主军 `83886367 / 50331794` | `2253 / 2460` | `39` | `120 / 300` | `+20` | `0` |
+| 005 前态 J `167772189 / 83886088` | `1647 / 1770` | `7` | `99.999 / 100` | `+20` | `0` |
+| 010 后态保留主军 `83886367 / 50331794` | **`3901 / 4231`** | **`47`** | **`111.52397 / 300`** | `+20` | `0` |
+
+005 参数为两 IDs、expected public revision `2`，query sequence `9`，实际 public/native revision `2/154`、snapshot `native:154`。010 参数只有主军、expected public revision `3`，query sequence `10`，实际 public/native revision `3/155`、snapshot `native:155`。后态补给原值 `11152397`、上限原值 `30000000`、月度变化原值 `2000000`、当前损耗原值 `0`，scale 均为 `100000`。三条实际 row 的集结字段全部是 `null/not_gathering/ready=true`；它只证明可观察的非集结状态，本消费者没有读取移动、战斗或其他 unit state。
+
+当前兵力信用以 010 的实际 getter **3901** 为准。前态公开当前兵力合计是 `3900`、最大兵力合计 `4230`、团数合计 `46`；后态分别多 `1/1/1`。AI base power 前态原值合计 `11921100000`，后态实际原值 `11981100000`，同 scale `100000`，差 `600` power points；它不是胜率。差值只作为原生前后结果记录，未从这两条查询读取原因，不由公开总人数强推原生补给权重，也不为了相等而改写实际数字。
+
+这两条强度观测达到 `production-live primitive`。Root 发起的 `83886367-with167772189` 合并动作和成员结果由另一个唯一消费者确认；本包不从“后查询只请求主军”推断 J 已消失，不重复读取其他 snapshot、merge、war、result 或 checkpoint，也不宣称独立战斗终态、完整战争或完整自动游玩完成。本增量推进 `0` 日，当前 Root 全局日数未随任务给出，不沿用历史 `4032/4040` 作为当前数值。
+
+Receipt：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-reinforcement-raise/runtime-v49-postbattle-merge-strength-consumption/ROOT-DELIVERY.json`，9545 bytes，SHA-256 `88897872d38c4a7ac00b64aaa12b248bc8c19877e77977c851dd96e79aa2c426`；其中保留两输入完整 SHA、原生前后数值和精确参数。Oct4／2026-W40 报告字段在同目录 `report-lane/`。SDK、重复查询、推进、测试、Git、共享写入、窗口和构建均为 `0`；未重复读取旧 `1770` 证据。

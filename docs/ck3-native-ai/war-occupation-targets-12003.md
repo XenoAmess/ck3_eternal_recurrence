@@ -235,3 +235,13 @@ The normal pair is **h5360 / raw53240136 /91504049B / SHA `b76ed06c77002e15c19e3
 ## observation/outcome boundary
 
 Rich objective2640 is same-frame bound to this final map and normal checkpoint; `is_occupied=false` while enemy active_siege persists supplies no recapture/relief credit. Future occupied transition hands control to Root's already prepared countercampaign role; first actual main-army combat goes to battle owner. Fresh enemy siege removal, arrival, actual recapture and war termination remain distinct outcomes. No gathering completion or invented soldier count is claimed; Root's later fresh strength SDK is separate from this frozen completed batch. Evidence is `relief-v46/seven-day-consumption/{COMPACT-TERMINAL-STATE,ACTUAL-CALENDAR-CONSUMPTION,ROOT-DAY-WEEK-FIELDS,ROOT-DELIVERY}.json`. No new native tree, platform or source change is introduced.
+
+### 战斗后首都已占领：独立war观测primitive与recapture接续
+
+008 `ck3_get_war_state`已由soleowner消费GREEN，provider snapshotnative:155/public3，body无date_raw。Root独立时钟raw53241792与latestnormalh5697(beforepostmerge)分别保留，不生成008伪同帧savepair。本次warquery0day、无新battlewin/loopcredit；累计4061/res908/Oct4+36属于Root已计结果。
+
+资本2640 occupation_observable=true、is_occupied=true、occupier70766；fort7/garrison25/besieging_strength0，siege_observable=true/active_siege=null。row由activewars50331736和129重复发布，字段完整。本帧无围城是已占领结果，不是relief或recapture。war16777231 score0、50331736 -14、129 -32仍active，battle terminal结论不替代战争结算。
+
+已有externalcounter入口`current-preparation-v47/helper/root_sdk_counter_transit_days.py`（SHA22e24726740b19b012b9f5bc6b6a87718651457f43a0127b36cd960077ec027a）保留route endpoint与occupation province分离。Root策略依据实际capitaloccupation切recapture；此role在起步occupiedtrue时继续观察、已见实际占领且后来fresh解除才计收复。defaultrelief仍首个occupiedtrue STOP handback，不能用于反攻占领中的资本而反复0day停止。军队主体由fresh实际survivor publicCUnit继承，任何own实际接战仍选择真实subject交Root。尚无反攻move、arrival、siege或收复证据；ready为prepared，不新增平台或授权门禁。
+
+可核验输入：`post-battle-v49/war-state-consumption/COMPACT-WAR-STATE.json`；soleowner raw008 reference SHA326602aed6f5f0e4d8f4acfa4484233d62df758e249c8e7b7fef5127bd9ec159；本包`post-battle-v49/war-report/ROOT-DAY-WEEK-FIELDS.json`与`ROOT-DELIVERY.json`。本报告只读ownedcompact，SDK/raw/其他snapshot/strength/merge/window/shared/source/Git/tests均0。

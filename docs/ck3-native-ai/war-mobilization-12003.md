@@ -131,3 +131,7 @@ flowchart TD
 真实 terminal 出现后，先读取当前 owned roster、兵力和省份，确认拟合军双方均非战斗、非撤退，并使用 fresh public revision 与当帧公告的 literal。若拟保留主军仍实际存在且符合条件，既有配方是 `ck3_execute_step(step="merge-armies-83886367-with-167772189", expected_revision=R)`；若军队后态发生变化，则按真实完整 CUnit ID 重选，不能将该模板当作已合法命令。只有新暂停帧证明 D 同 owner/省份保留、S 消失、可控集合准确减去 S，才可记 `merge_applied`。本段不新增 stationary 门槛、战争结果声明或 split/attach/stop-gather 研究；canonical 合并、实际操作及提交推送由 Root 和唯一文档总包 owner 完成。
 
 Sealed day04 coordination receipt: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-goal-capture-execution/army-coordination-v47/battle-followup-day04/native-topic/ROOT-DELIVERY.json`; current metadata and pending merge/join/terminal boundaries remain those of the owner-provided frame.
+
+2026-10-04 / 2026-W40：原生当前帧date53241792（native154→155、pub2→3、gen23），玩家29829两军83886367与167772189同处2618、regular1、无战斗/撤退、route为空。003公告104 steps并包含literal merge；007 merge_submitted→merge_applied，011独立读回仅83886367，精确等于001集合去掉167772189。战后合军达到限定production-live loop；012 normal SAVE已实存h5701，92,163,172B，SHA4d4dd61f5e0e8fba3b72b37010cc412f030bca957eea66a20f5bf21713d142d4。Python g54/8898 hot-only，native R24/g51/1c，无新构建；Root SDK84390已closed0。本包0新日，累计/resume/当日游戏日待Root当前账本；本lane0 SDK/tests/window/sharedsource/Git操作。
+
+Root 协调收口已绑定累计4061日、resume908、Oct4+36；本次第二merge新增0日。上述封存包的 ledger-null 保留为其生成时元数据，本句只补 Root 后续明确总账，不重复计入已发布的战斗胜利。
