@@ -16,6 +16,7 @@
 | 两个维护版各自 README、适配/测试/发布计划及状态报告 | 取消外语实机和组合语言计划；英文过程记录不能计作中文实机通过。见[统一范围说明](two-maintained-mods-testing-scope-2026-10-03.md)。 |
 | [牛来实机 runner](../tools/run_ox_here_loc_smoke.py) | CLI 默认及唯一选择为 `l_simp_chinese`；直接调用入口也拒绝 `all` 和非中文。其离线本地化检查覆盖其他语言格式。 |
 | 自动升级建筑、天朝经商贪腐、驱策朝贡国、肃清曼荼罗、体验优化、重整河山及法理征服的本地化校验入口 | 退役非中文语义、术语、文字种类、英文相同内容等门禁；保留 key、编码/BOM、header、解析、转义及保护 token 检查。简体中文产品机制检查保留。 |
+| 主 mod 和白绮静态校验入口 | 仅对简体中文检查功能说明和自然正文合同；英文 branding、外语正文逐字内容及数字语义不再是验收门禁。既有 key/header/token 检查、历史合同身份及生成器字节复现要求保留。 |
 | [天朝 361 发布本地化预检](../mod_zhongguo_style/tools/prepare_release_localization.py)及正式构建器 audit 消费入口 | 非中文 audit 使用格式检查标签，发布构建继续要求报告身份、精确文件覆盖及当前 bytes/SHA；旧语义标签不构成当前门禁。见[专属说明](../mod_zhongguo_style/docs/release-localization-format-policy-2026-10-03.md)。 |
 | 本次任务的外置启动 helper | `review_and_start.py` 和 `live_session.py` 在写入离线审阅或加载启动模块前校验实际 `pdx_settings.txt`，仅允许唯一的 `l_simp_chinese` 设置；语言重载/组合准备入口同样拒绝非中文实机。 |
 
@@ -38,6 +39,19 @@
 - 外置启动保护：实际中文配置接受、实际英文配置拒绝，两个启动入口的保护均早于副作用边界。证据 `chinese-launch-guard-verification-R0001/report.json`，SHA-256 `9c84261f763a00928c81272c2656960def7e47c71e9e7258340b557e7cb00d96`。
 
 以上相对证据路径均位于 `C:/workspace/two-mod-maintenance-20261003/`。后续新增源码、文档或执行入口必须沿用本规则，不能因旧报告、模型可理解某语言或发布指令而恢复外语实机和语义门禁。
+
+## 最终复查补齐
+
+初包推送后，只读复查继续发现了遗漏，逐项报修，未把初包称作全仓终态：天朝经商贪腐 README/旧审阅页、重整河山旧方案、天朝 361 正式 schema 与两个运行时专题、自动升级建筑三期计划和体验优化旧审阅页仍有旧范围；白绮及主 mod 静态校验还有外语自然正文、branding、数字语义或普通英文词要求。相关现行入口已同步当前范围，历史正文只追加日期化退役说明。原始漏项观察保存在 `localization-final-readonly-audit-R0001/audit-report.json`，SHA-256 `c191eb34da3e62a10e2ff568b081801e92bb4a477e7b1aea39cb656a3c7c365a`；这是当时的报修清单，不能当作尾包完成证明。
+
+非中文自然正文空值检查也统一退出内容门禁；空字符串仍必须符合语法、key 和保护 token 等格式要求。缺失必需引擎表达式的空值仍会失败，不能把可解析的空值称作翻译完成。简体中文的可见正文非空及功能语义检查继续保留。
+
+尾包定向验证：
+
+- 白绮、主 mod 和五个共享检查入口：7 个直接测试方法及 13 项新增分支检查通过。9 个修改源文件语法及差分检查通过；白绮的生成器复现、历史合同读取、解析和 token 函数保持原样，其他 helper 除新增中文语言条件外 AST 一致。证据 `vivhite-localization-format-policy-R0001/freeze-and-review.json`，SHA-256 `8a5fbb737d565b9e6d78a5c8b37f856b0c73159da194379fbc41a75f9260c46e`。
+- 天朝 361 七语 release translation loader：4 项直接测试通过，格式合法空字符串可加载，非字符串、缺/多 key 和顺序漂移仍失败，来源 SHA 过期的候选不加载。1032 个运行时文件字节未变，CN/EN 作者数据规格保留，未重新生成；证据 `zhstyle-release-translation-empty-probe-20261003-01/freeze.json`。
+
+尾包不重跑旧语言实机，不刷新旧报告，不把语义门禁移除写成外语翻译或实机通过。首包 `fa28a0f0f9661fe9e63219f61de31dcce7f779b6` 的两个官方工作流均 completed/success；此结果只绑定首包，后续提交另核对其 exact HEAD。
 
 ## 已知格式问题及后续工作
 

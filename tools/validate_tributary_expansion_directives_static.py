@@ -195,7 +195,7 @@ def validate() -> list[str]:
         except ValueError as error:
             errors.append(f"{relative}: {error}")
             continue
-        if any(not item.strip() for item in entries.values()):
+        if language == "simp_chinese" and any(not item.strip() for item in entries.values()):
             errors.append(f"blank localization value: {relative}")
         localized[language] = entries
     english = localized.get("english", {})

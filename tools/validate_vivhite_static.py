@@ -520,8 +520,6 @@ def localization_checks(errors: list[str], report: dict[str, object]) -> None:
 
     english = all_values.get("english", {})
     chinese = all_values.get("simp_chinese", {})
-    if english.get(GROUP_KEY) != ENGLISH_GROUP_BRANDING:
-        errors.append("English decision-group branding is not the fixed Vivhite value")
     if chinese.get(GROUP_KEY) != CHINESE_GROUP_BRANDING:
         errors.append("Simplified Chinese decision-group branding is not the fixed Vivhite value")
 
@@ -550,16 +548,19 @@ def localization_checks(errors: list[str], report: dict[str, object]) -> None:
                     f"in {language}"
                 )
                 continue
-            if standalone.get(key) != expected:
+            if language == "simp_chinese" and standalone.get(key) != expected:
                 errors.append(
                     f"standalone localization drifted from independent frozen contract for "
                     f"{key!r} in {language}"
                 )
 
+    frozen_english = frozen_values.get("english", {})
     for key in sorted(EXPECTED_LOC_KEYS):
         english_value = english.get(key, "")
         expected_tokens = localization_tokens(english_value)
-        expected_numbers = numeric_literals(english_value)
+        # Chinese content checks use the pinned baseline, independently of edits
+        # to English prose. All other languages are checked for format only.
+        expected_numbers = numeric_literals(frozen_english.get(key, ""))
         allowed_numbers = expected_numbers | OPTIONAL_TRANSLATED_DIGITS.get(key, set())
         for language in LANGUAGES:
             value = all_values.get(language, {}).get(key, "")
@@ -568,13 +569,14 @@ def localization_checks(errors: list[str], report: dict[str, object]) -> None:
                     f"protected localization token mismatch for {key!r} in {language}: "
                     f"{localization_tokens(value)} != {expected_tokens}"
                 )
-            actual_numbers = numeric_literals(value)
-            if not expected_numbers.issubset(actual_numbers) or not actual_numbers.issubset(allowed_numbers):
-                errors.append(
-                    f"numeric literal mismatch for {key!r} in {language}: "
-                    f"required={sorted(expected_numbers)}, actual={sorted(actual_numbers)}, "
-                    f"allowed={sorted(allowed_numbers)}"
-                )
+            if language == "simp_chinese":
+                actual_numbers = numeric_literals(value)
+                if not expected_numbers.issubset(actual_numbers) or not actual_numbers.issubset(allowed_numbers):
+                    errors.append(
+                        f"numeric literal mismatch for {key!r} in {language}: "
+                        f"required={sorted(expected_numbers)}, actual={sorted(actual_numbers)}, "
+                        f"allowed={sorted(allowed_numbers)}"
+                    )
 
     protected = {
         "ervc.cc.physical.help": "$trait_impotent$",

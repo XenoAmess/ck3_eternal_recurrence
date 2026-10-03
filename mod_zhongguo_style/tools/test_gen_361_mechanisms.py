@@ -10,6 +10,9 @@ import re
 import sys
 import tempfile
 import unittest
+from unittest import mock
+
+import gen_361_mechanisms as mechanism_generator
 
 from gen_361_mechanisms import (
     FULL_LEDGER_TOOLTIP_MECHANISM_IDS,
@@ -53,6 +56,57 @@ def valid_acceptance_payload(mechanism_id: int) -> dict[str, object]:
         "visible_feedback": [f"显示机制 {mechanism_id:03d} 的具体案卷结果"],
         "batch_assertions": [f"机制 {mechanism_id:03d} 的案卷只结算一次"],
     }
+
+
+class ReleaseTranslationFormatTests(unittest.TestCase):
+    SOURCE_DIGEST = "a" * 64
+    KEYS = ("zg361m.1.t", "zg361m.1.desc")
+
+    def load_catalog(self, root: Path, language: str, translations: dict, digest: str | None = None):
+        path = root / "tools" / "mechanism_translations" / f"{language}.json"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({
+            "schema": 1,
+            "language": language,
+            "source_sha256": self.SOURCE_DIGEST if digest is None else digest,
+            "translations": translations,
+        }), encoding="utf-8")
+        with mock.patch.object(mechanism_generator, "MOD_ROOT", root), mock.patch.object(
+            mechanism_generator, "release_translation_source_sha256", return_value=self.SOURCE_DIGEST
+        ):
+            return mechanism_generator.load_release_translation([], language, self.KEYS)
+
+    def test_release_translation_accepts_format_valid_empty_strings_in_seven_languages(self):
+        with tempfile.TemporaryDirectory() as directory:
+            for language in sorted(mechanism_generator.RELEASE_TRANSLATION_LANGUAGES):
+                with self.subTest(language=language):
+                    values = dict.fromkeys(self.KEYS, "")
+                    self.assertEqual(values, self.load_catalog(Path(directory), language, values))
+
+    def test_release_translation_rejects_non_string_values(self):
+        with tempfile.TemporaryDirectory() as directory:
+            for value in (None, False, 1, [], {}):
+                with self.subTest(value=value):
+                    values = {self.KEYS[0]: "", self.KEYS[1]: value}
+                    with self.assertRaisesRegex(ValueError, "non-string value"):
+                        self.load_catalog(Path(directory), "french", values)
+
+    def test_release_translation_does_not_use_a_stale_source_hash(self):
+        with tempfile.TemporaryDirectory() as directory:
+            self.assertIsNone(self.load_catalog(
+                Path(directory), "french", dict.fromkeys(self.KEYS, ""), "b" * 64
+            ))
+
+    def test_release_translation_still_rejects_key_inventory_and_order_drift(self):
+        with tempfile.TemporaryDirectory() as directory:
+            for values in (
+                {self.KEYS[0]: ""},
+                {**dict.fromkeys(self.KEYS, ""), "extra": ""},
+                dict.fromkeys(reversed(self.KEYS), ""),
+            ):
+                with self.subTest(values=values):
+                    with self.assertRaisesRegex(ValueError, "key/order mismatch"):
+                        self.load_catalog(Path(directory), "french", values)
 
 
 class MechanismGenerationTests(unittest.TestCase):

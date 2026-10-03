@@ -564,7 +564,7 @@ RED `9098`。
    `al_external_stage_receipts_verified`、`al_external_receipt_{owner,subject,cycle,case,state,count}`、
    `al_external_last_operation` 均报 used-never-set；本次生产调用链让它们的 setter 可达，但必须用新一轮 loader 日志确认
    这 8 条确实归零，不能以静态可达性代替实机结论。
-7. 发布前补齐七语正式翻译；当前七语英文占位不满足 Steam release 国际化门。
+7. 用户明确进入发布流程后补齐七语候选；非中文仅检查 key、编码/BOM、header、保护 token、转义和解析格式，不因英文相同内容、语义或术语而阻止发布。候选来源与占位状态如实记录，不把占位称作翻译完成；真实游戏验收仅用简体中文。
 8. 2026-08-31 旧 loader 的 303 项 Workforce external warning 已逐字段归责于
    `docs/361-workforce-external-producer-ledger-2026-08-31.md`。该 ledger 是冻结的旧现场，仍诚实保留“剩余 AD 30”原文；
    当前静态预期已消掉 AC 20、AL stage 8、AL collective 167、已删除的 AL charter 28、AD 47 个重复 alias、

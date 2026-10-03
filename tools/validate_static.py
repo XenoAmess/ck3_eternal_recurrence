@@ -420,8 +420,8 @@ def encoding_and_loc_checks(errors):
 
     for lang in LANGS:
         enabled_desc = all_values[lang].get("setting_xar_on_desc", "")
-        if "tutorial" not in enabled_desc.lower():
-                errors.append(f"enabled rule description lacks tutorial write prerequisite in {lang}")
+        if lang == "simp_chinese" and "tutorial" not in enabled_desc.lower():
+            errors.append(f"enabled rule description lacks tutorial write prerequisite in {lang}")
         group_title = all_values[lang].get(
             "decision_group_type_xar_eternal_recurrence", "")
         if not group_title.startswith("@xar_decision_group_icon! "):

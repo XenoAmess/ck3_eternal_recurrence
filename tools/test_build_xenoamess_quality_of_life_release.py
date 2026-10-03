@@ -161,6 +161,36 @@ class XqolReleaseTests(unittest.TestCase):
                 any("formatting tokens" in error for error in release.release_localization_errors(source))
             )
 
+    def test_non_chinese_empty_plaintext_is_format_only(self):
+        with self.fixture() as (_, source):
+            for language in release.LOCALIZATION_LANGUAGES:
+                value = "中文正文" if language == "simp_chinese" else ""
+                path = source / "localization" / language / f"xqol_l_{language}.yml"
+                path.write_bytes(
+                    codecs.BOM_UTF8
+                    + f'l_{language}:\n line:0 "{value}"\n'.encode("utf-8")
+                )
+            self.assertEqual([], release.release_localization_errors(source))
+
+            chinese = source / "localization/simp_chinese/xqol_l_simp_chinese.yml"
+            chinese.write_bytes(codecs.BOM_UTF8 + b'l_simp_chinese:\n line:0 ""\n')
+            self.assertTrue(
+                any("simp_chinese localization is empty" in error
+                    for error in release.release_localization_errors(source))
+            )
+
+            for language in release.LOCALIZATION_LANGUAGES:
+                value = "" if language == "french" else "#P Text#!"
+                path = source / "localization" / language / f"xqol_l_{language}.yml"
+                path.write_bytes(
+                    codecs.BOM_UTF8
+                    + f'l_{language}:\n line:0 "{value}"\n'.encode("utf-8")
+                )
+            errors = release.release_localization_errors(source)
+            self.assertTrue(any("french localization changes CK3 formatting tokens" in error
+                                for error in errors), errors)
+            self.assertFalse(any("french localization is empty" in error for error in errors), errors)
+
     def test_item_id_normalization_and_workshop_descriptor_exception_are_strict(self):
         with self.fixture() as (root, source):
             staging, manifest, _, details = self.build(root, source, workshop_item_id=WORKSHOP_ID)

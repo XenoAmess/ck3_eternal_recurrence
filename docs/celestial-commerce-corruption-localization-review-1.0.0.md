@@ -1,5 +1,9 @@
 # Celestial Commerce & Corruption 1.0.0 localization review
 
+## Policy correction — 2026-10-03
+
+This page preserves the 1.0.0 review and its historical checks. Current acceptance uses Simplified Chinese for real-game tests; English and every other language receive format checks only: keys, encoding/BOM, header, syntax, escapes, and protected tokens. The numeric-meaning, terminology, target-script and English-copy requirements below are retired for non-Chinese locales and must not become future release gates. See the [current localization workflow](localization-workflow.md) and [scope audit](localization-acceptance-scope-audit-2026-10-03.md).
+
 ## Scope
 
 The release projection contains 31 keys in each of nine CK3 languages: English, French, German, Japanese, Korean, Polish, Russian, Simplified Chinese, and Spanish. English and Simplified Chinese are the authored source languages. The other 217 values form the release translation scope.

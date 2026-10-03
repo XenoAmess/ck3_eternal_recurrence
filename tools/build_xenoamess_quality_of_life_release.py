@@ -231,7 +231,7 @@ def release_localization_errors(source: Path) -> list[str]:
             )
             continue
         for key, value in values.items():
-            if not value.strip():
+            if language == "simp_chinese" and not value.strip():
                 errors.append(f"{language} localization is empty: {key}")
             if sorted(LOCALIZATION_PROTECTED_TOKEN.findall(value)) != sorted(
                 LOCALIZATION_PROTECTED_TOKEN.findall(english[key])

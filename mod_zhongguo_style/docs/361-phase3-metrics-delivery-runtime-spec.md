@@ -283,7 +283,7 @@ zg361_p3_open_portfolio_effect = { SUBJECT = <direct assessed vassal> }
 - `english`：原创英文，不是机器逐字占位。
 - `french`、`german`、`japanese`、`korean`、`polish`、`russian`、`spanish`：本开发阶段逐 key 使用英文结构占位，以保证九语加载结构完整。
 - 九种语言 key 集合必须完全相等；YML 有正确语言 header 与 UTF-8 BOM。
-- 七语英文占位不得称作“已翻译”或“已完成发布国际化”。只有用户明确进入发布流程后，才按发布本地化规范补译与审阅。
+- 七语英文占位不得称作“已翻译”。只有用户明确进入发布流程后才补译候选；英文及其他非中文仅做 key、编码/BOM、header、占位符、保护 token 和解析格式检查，不要求语义、术语、母语或实机签核。实机验收只用简体中文。
 
 ## 静态验收合同
 

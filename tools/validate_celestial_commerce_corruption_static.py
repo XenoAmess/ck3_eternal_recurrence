@@ -315,7 +315,7 @@ def validate() -> list[str]:
             missing = sorted(EXPECTED_LOC_KEYS - set(entries))
             extra = sorted(set(entries) - EXPECTED_LOC_KEYS)
             errors.append(f"localization key mismatch: {relative}: missing={missing} extra={extra}")
-        if any(not localized_value.strip() for localized_value in entries.values()):
+        if language == "simp_chinese" and any(not localized_value.strip() for localized_value in entries.values()):
             errors.append(f"blank localization value: {relative}")
         localized[language] = entries
     english = localized.get("english", {})

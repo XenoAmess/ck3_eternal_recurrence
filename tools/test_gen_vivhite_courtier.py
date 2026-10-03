@@ -45,17 +45,80 @@ class VivhiteNativeContractTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "SHA-256 changed"):
                 validator.load_localization_contract(path)
 
-    def test_independent_contract_still_rejects_localization_drift(self):
+    def test_independent_contract_still_rejects_chinese_localization_drift(self):
         with tempfile.TemporaryDirectory() as name:
             source = Path(name) / "source"
             shutil.copytree(validator.MOD, source)
-            path = source / "localization/english/ervc_l_english.yml"
-            path.write_bytes(path.read_bytes().replace(b"Your faith keeps", b"Changed faith keeps"))
+            path = source / "localization/simp_chinese/ervc_l_simp_chinese.yml"
+            data = path.read_text(encoding="utf-8-sig")
+            lines = data.splitlines()
+            for index, line in enumerate(lines):
+                if line.lstrip().startswith("ervc.cc.origin.help:"):
+                    lines[index] = line[:-1] + "正文变化999\""
+            path.write_text("\n".join(lines) + "\n", encoding="utf-8-sig")
             with mock.patch.object(validator, "MOD", source):
                 errors = []
                 validator.localization_checks(errors, {})
         self.assertTrue(any("independent frozen contract" in error and "origin.help" in error
                             for error in errors), errors)
+        self.assertTrue(any("numeric literal mismatch" in error and "origin.help" in error
+                            for error in errors), errors)
+
+    def test_non_chinese_prose_and_numbers_are_format_only(self):
+        with tempfile.TemporaryDirectory() as name:
+            source = Path(name) / "source"
+            shutil.copytree(validator.MOD, source)
+            for language in validator.LANGUAGES:
+                if language == "simp_chinese":
+                    continue
+                path = source / f"localization/{language}/ervc_l_{language}.yml"
+                lines = path.read_text(encoding="utf-8-sig").splitlines()
+                for index, line in enumerate(lines):
+                    if line.lstrip().startswith(tuple(validator.EXPECTED_LOC_KEYS)):
+                        lines[index] = line[:-1] + " Changed text 777\""
+                path.write_text("\n".join(lines) + "\n", encoding="utf-8-sig")
+            with mock.patch.object(validator, "MOD", source):
+                errors = []
+                validator.localization_checks(errors, {})
+            self.assertEqual(errors, [])
+
+    def test_non_chinese_english_copy_is_valid_format(self):
+        with tempfile.TemporaryDirectory() as name:
+            source = Path(name) / "source"
+            shutil.copytree(validator.MOD, source)
+            english = (source / "localization/english/ervc_l_english.yml").read_bytes()
+            for language in validator.OTHER_LANGUAGES:
+                path = source / f"localization/{language}/ervc_l_{language}.yml"
+                path.write_bytes(english.replace(b"l_english:", f"l_{language}:".encode(), 1))
+            with mock.patch.object(validator, "MOD", source):
+                errors = []
+                validator.localization_checks(errors, {})
+            self.assertEqual(errors, [])
+
+    def test_non_chinese_format_drift_is_rejected(self):
+        mutations = {
+            "missing_key": lambda data: b"\n".join(
+                line for line in data.split(b"\n")
+                if not line.lstrip().startswith(b"ervc.cc.origin.help:")
+            ),
+            "protected_token": lambda data: data.replace(b"$trait_impotent$", b"impotent"),
+            "header": lambda data: data.replace(b"l_french:", b"l_german:", 1),
+        }
+        for label, mutate in mutations.items():
+            with self.subTest(label=label), tempfile.TemporaryDirectory() as name:
+                source = Path(name) / "source"
+                shutil.copytree(validator.MOD, source)
+                path = source / "localization/french/ervc_l_french.yml"
+                path.write_bytes(mutate(path.read_bytes()))
+                with mock.patch.object(validator, "MOD", source):
+                    errors = []
+                    validator.localization_checks(errors, {})
+                expected = {
+                    "missing_key": "exact 45 standalone keys",
+                    "protected_token": "protected localization token mismatch",
+                    "header": "must begin exactly with l_french:",
+                }[label]
+                self.assertTrue(any(expected in error for error in errors), errors)
 
 
 if __name__ == "__main__":

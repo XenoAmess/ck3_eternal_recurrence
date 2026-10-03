@@ -591,7 +591,7 @@ def validate(
             continue
         if set(entries) != LOC_KEYS:
             errors.append(f"localization key inventory mismatch: {relative}")
-        if any(not item.strip() for item in entries.values()):
+        if language == "simp_chinese" and any(not item.strip() for item in entries.values()):
             errors.append(f"blank localization value: {relative}")
         if language == "simp_chinese" and "15" not in entries.get("enable_auto_build_desc", ""):
             errors.append(f"visible 15-upgrade limit missing: {relative}")

@@ -1405,8 +1405,8 @@ def load_release_translation(
         raise ValueError(
             f"release translation key/order mismatch: {path}; missing={missing} extra={extra}"
         )
-    if not all(isinstance(value, str) and value for value in translations.values()):
-        raise ValueError(f"release translation contains empty/non-string value: {path}")
+    if not all(isinstance(value, str) for value in translations.values()):
+        raise ValueError(f"release translation contains non-string value: {path}")
     return translations
 
 

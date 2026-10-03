@@ -187,7 +187,7 @@ def validate() -> list[str]:
             continue
         if set(entries) != LOC_KEYS:
             errors.append(f"localization key inventory mismatch: {relative}")
-        if any(not item.strip() for item in entries.values()):
+        if language == "simp_chinese" and any(not item.strip() for item in entries.values()):
             errors.append(f"blank localization value: {relative}")
         localized[language] = entries
     zh = localized.get("simp_chinese", {})
