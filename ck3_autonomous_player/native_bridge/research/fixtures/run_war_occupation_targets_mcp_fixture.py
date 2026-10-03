@@ -160,6 +160,34 @@ async def check_packets():
             require(expected["available"] is False and expected["collection_complete"] is False and
                     bool(expected["unavailable_reason"]),
                     "failed native read remains explicitly unavailable through MCP")
+        for row in expected["rows"]:
+            require("fort_level_observable" not in row and "garrison_size_observable" not in row,
+                    "public occupation row adds only the two nullable scalars")
+        if path.stem in {"defender-ordered-native-counts", "available-native-fallback-context"}:
+            for row in expected["rows"]:
+                index = row["province_id"] - 2610
+                require(row["fort_level"] == [4, 0, 8, 1, 6][index] and
+                        row["garrison_size"] == [325, 0, 910, 0, 1400][index],
+                        "genuine observed zero and nonzero native getter values survive MCP")
+        elif path.stem == "available-negative-fort-garrison":
+            require(expected["available"] is True and expected["collection_complete"] is True and
+                    len(expected["rows"]) == 5,
+                    "unavailable optional scalar does not relabel the native collection")
+            for row in expected["rows"]:
+                if row["province_id"] == 2610:
+                    require(row["fort_level"] is None and row["garrison_size"] == 325,
+                            "negative native fort is null while garrison remains observed")
+                if row["province_id"] == 2611:
+                    require(row["fort_level"] == 0 and row["garrison_size"] is None,
+                            "negative native garrison remains distinct from legal fort zero")
+        elif path.stem in {"available-null-fort-getter", "available-null-garrison-getter"}:
+            missing = "fort_level" if path.stem == "available-null-fort-getter" else "garrison_size"
+            present = "garrison_size" if missing == "fort_level" else "fort_level"
+            require(expected["available"] is True and expected["collection_complete"] is True,
+                    "absent getter preserves occupation completeness")
+            for row in expected["rows"]:
+                require(row[missing] is None and type(row[present]) is int,
+                        "absent getter wire null does not mask the independently observed scalar")
         reports.append({"case": path.stem, "packet": str(path),
                         "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
                         "status": "GREEN", "observation_status": expected["status"],

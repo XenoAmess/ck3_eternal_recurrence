@@ -131,3 +131,11 @@ Readiness：新occupation目标集合与title-holder成为production-live primit
 ### Fresh recovery preview exposure remains separate
 
 After the complete target collection, Root attempted the existing `preview-move-army-83886367-to-2604`, `...-to-2625` and `...-to-2629` literals at the same raw53236800. All three returned the actual `native DLL does not implement gameplay step` error in `war-goal-capture-execution/actual-v37-previews-01/result.json`; the normal checkpoint remained GREEN, history4747/SHA-256 `b5e311543062571113816a93be3b1b3e4b9d6f7c332f11d85beb96fde3e18f66`. This is a concrete exposure blocker for those fresh recovery previews, not evidence that their native paths are unreachable or illegal. The occupation collection and title-holder observations retain their actual GREEN readiness; no move, additional day or recovery result was produced. The owning implementation lane is repairing the existing target path; this documentation merge adds no code, ABI or separate gate.
+
+## 2026-10-03T17:19 接续源码采用
+
+v37 已实读旧战争 31 个 defender eligible holdings 中 17 个被敌方30097占领；这些收复目标没有出现在旧 war-goal 2610 投影中，旧路线预览也不发布堡垒或驻军。复用已有 exact .3 Province getter fort_level 0x247AB90 与 garrison_size 0x247F370，在同一个 ck3_query_war_occupation_targets_v1 的每条 holding row 新增 nullable fort_level/garrison_size，观察到零仍保留0，真实不可读或负 getter保留null；完整 occupation/count 语义不变，旧报文兼容。6 个严格优化编译单元、12 份真实 reader→serializer 报文、注册 MCP 161 项显式检查 GREEN。新字段仅 static-ready，旧17敌占目标本身已 production-live primitive；尚未执行新收复移动或围城，具体省的 active_siege/work 如后续真实决策依赖再复用现有 ReadObjectiveProvince 入口施工。
+
+实际记录：`2026-10-03T17:19:27+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
+
+交付回执：[occupation-fort-garrison-v38](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-goal-capture-execution/actual-v37-01/ROOT-FORT-GARRISON-DELIVERY.json)。

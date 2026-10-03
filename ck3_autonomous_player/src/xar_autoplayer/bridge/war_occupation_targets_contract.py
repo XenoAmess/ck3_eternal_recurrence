@@ -147,5 +147,13 @@ def normalize_war_occupation_targets_v1(
         if available and not observable:
             raise ValueError("complete occupation collection contains an unobservable holding")
     result = copy.deepcopy(value)
+    # Older occupation rows did not carry these optional observations. Keep
+    # their absence distinct from a native measurement of zero.
+    for row in result["rows"]:
+        for name in ("fort_level", "garrison_size"):
+            measurement = row.get(name)
+            if measurement is not None:
+                measurement = _count(measurement, name)
+            row[name] = measurement
     result["executable_sha256"] = str(value["executable_sha256"]).lower()
     return result

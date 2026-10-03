@@ -68,6 +68,8 @@ struct Fixture {
   bool liege_related = true;
   int context_calls = 0, territory_calls = 0, holding_calls = 0;
   int count_calls = 0, allocated = 0, released = 0;
+  int fort_calls = 0, garrison_calls = 0;
+  std::array<std::int32_t, 5> garrisons{325, 0, 910, 0, 1400};
   std::vector<std::int32_t> counted_titles;
   std::string callback_error;
 
@@ -114,6 +116,7 @@ struct Fixture {
       Put(provinces[index], 0x10, province_id);
       Put(provinces[index], 0x85C, std::uint32_t{0x50726F76});
       Put(provinces[index], 0x738, kTitles[index]);
+      Put(provinces[index], 0x850, std::array<std::int32_t, 5>{4, 0, 8, 1, 6}[index]);
       const auto occupier = index == 0 ? kAttacker :
           index == 2 ? kOutside : index == 4 ? kActor : std::int32_t{-1};
       Put(provinces[index], 0x73C, occupier);
@@ -204,6 +207,20 @@ void *TitleProvince(void *title) {
 bool IsOccupied(void *province) {
   return Get<std::int32_t>(province, 0x73C) != -1;
 }
+std::int32_t FortLevel(void *province) {
+  ++active->fort_calls;
+  for (const auto &row : active->provinces)
+    if (province == row.data()) return Get<std::int32_t>(province, 0x850);
+  CallbackCheck(false, "fort getter receives the resolved Province pointer");
+  return -1;
+}
+std::int32_t GarrisonSize(void *province) {
+  ++active->garrison_calls;
+  for (std::size_t index = 0; index < active->provinces.size(); ++index)
+    if (province == active->provinces[index].data()) return active->garrisons[index];
+  CallbackCheck(false, "garrison getter receives the resolved Province pointer");
+  return -1;
+}
 bool LiegeRelated(void *war) {
   CallbackCheck(war == active->war.data(), "native liege-related check receives resolved CWar");
   return active->liege_related;
@@ -246,6 +263,8 @@ WarOccupationTargetsBindingsV1 Bindings(Fixture &fixture) {
   bindings.provinces.landed_title_storage_slot = &fixture.title_slot;
   bindings.provinces.title_province = TitleProvince;
   bindings.provinces.is_occupied = IsOccupied;
+  bindings.provinces.fort_level = FortLevel;
+  bindings.provinces.garrison_size = GarrisonSize;
   bindings.vector_allocator = fixture.allocator.data();
   bindings.get_war_occupation_context = GetContext;
   bindings.war_occupation_context_fallback_slot = &fixture.context_fallback_slot;
@@ -312,6 +331,15 @@ int main(int argc, char **argv) {
       Check(fixture.context_calls == 2 && fixture.territory_calls == 2 &&
                 fixture.holding_calls == 2 && fixture.count_calls == 6,
             "reader genuinely reaches context, territory, holding and per-holding native callbacks");
+      for (const auto &row : output.rows) {
+        const auto index = static_cast<std::size_t>(row.province_id - 2610);
+        Check(row.fort_level_observable && row.garrison_size_observable &&
+                  row.fort_level == Get<std::int32_t>(fixture.provinces[index].data(), 0x850) &&
+                  row.garrison_size == fixture.garrisons[index],
+              "native fort/garrison callbacks retain observed zero and nonzero values");
+      }
+      Check(fixture.fort_calls == 5 && fixture.garrison_calls == 5,
+            "each native eligible row reaches both resolved-Province getters");
       CheckCallbacks(fixture);
       Emit(directory / "defender-ordered-native-counts.json", output, result);
     }
@@ -432,7 +460,47 @@ int main(int argc, char **argv) {
       CheckCallbacks(fixture);
       Emit(directory / "unavailable-null-context.json", output, result);
     }
-    std::cout << "PASS checks=" << checks << " cases=9\n";
+    {
+      Fixture fixture;
+      Put(fixture.provinces[0], 0x850, std::int32_t{-1});
+      fixture.garrisons[1] = -1;
+      Output output{};
+      const auto result = ReadWarOccupationTargetsV1(Bindings(fixture), fixture.Scope(), kWar, output);
+      Check(result == Result::available && output.available && output.collection_complete &&
+                output.rows.size() == 5 && output.side_counts.size() == 2,
+            "negative getter values do not erase the real occupation collection");
+      for (const auto &row : output.rows) {
+        if (row.province_id == 2610)
+          Check(!row.fort_level_observable && row.garrison_size_observable && row.garrison_size == 325,
+                "negative fort getter leaves garrison independently observed");
+        if (row.province_id == 2611)
+          Check(row.fort_level_observable && row.fort_level == 0 && !row.garrison_size_observable,
+                "negative garrison is unavailable while actual fort zero stays observable");
+      }
+      CheckCallbacks(fixture);
+      Emit(directory / "available-negative-fort-garrison.json", output, result);
+    }
+    for (const bool missing_fort : {true, false}) {
+      Fixture fixture;
+      auto bindings = Bindings(fixture);
+      if (missing_fort) bindings.provinces.fort_level = nullptr;
+      else bindings.provinces.garrison_size = nullptr;
+      Output output{};
+      const auto result = ReadWarOccupationTargetsV1(bindings, fixture.Scope(), kWar, output);
+      Check(result == Result::available && output.available && output.collection_complete && output.rows.size() == 5,
+            "absent optional getter preserves the complete occupation collector result");
+      for (const auto &row : output.rows)
+        Check(missing_fort ? !row.fort_level_observable && row.garrison_size_observable
+                           : row.fort_level_observable && !row.garrison_size_observable,
+              "optional native getter absence is kept separate for each scalar");
+      Check(missing_fort ? fixture.fort_calls == 0 && fixture.garrison_calls == 5
+                        : fixture.fort_calls == 5 && fixture.garrison_calls == 0,
+            "absent native getter is never called or synthesized");
+      CheckCallbacks(fixture);
+      Emit(directory / (missing_fort ? "available-null-fort-getter.json" : "available-null-garrison-getter.json"),
+           output, result);
+    }
+    std::cout << "PASS checks=" << checks << " cases=12\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << "RED " << error.what() << '\n';

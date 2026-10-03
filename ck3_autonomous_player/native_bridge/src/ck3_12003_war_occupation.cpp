@@ -224,6 +224,20 @@ WarOccupationTargetsReadResultV1 ReadWarOccupationTargetsV1(
           if (province == nullptr || b.provinces.title_province(title) != province ||
               Load<std::int32_t>(province, 0x738) != title_id)
             return fail("holding_province_backlink_unavailable");
+          if (b.provinces.fort_level != nullptr) {
+            const auto value = b.provinces.fort_level(province);
+            if (value >= 0) {
+              row.fort_level_observable = true;
+              row.fort_level = value;
+            }
+          }
+          if (b.provinces.garrison_size != nullptr) {
+            const auto value = b.provinces.garrison_size(province);
+            if (value >= 0) {
+              row.garrison_size_observable = true;
+              row.garrison_size = value;
+            }
+          }
           row.is_occupied = b.provinces.is_occupied(province);
           if (row.is_occupied) {
             row.occupying_character_id = Load<std::int32_t>(province, 0x73C);

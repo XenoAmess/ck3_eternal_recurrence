@@ -102,7 +102,13 @@ std::string SerializeWarOccupationTargetsV1(
         ",\"occupier_side\":" + Quote(row.occupier_side) +
         ",\"counted_occupied_by_opposing_side\":" + ObservableBool(
             row.occupation_observable,
-            row.counted_occupied_by_opposing_side) + '}';
+            row.counted_occupied_by_opposing_side) +
+        ",\"fort_level\":" +
+        (row.fort_level_observable
+            ? std::to_string(row.fort_level) : std::string("null")) +
+        ",\"garrison_size\":" +
+        (row.garrison_size_observable
+            ? std::to_string(row.garrison_size) : std::string("null")) + '}';
   }
   return out + "]}}";
 }

@@ -22,6 +22,10 @@ struct WarOccupationTargetRowV1 {
   std::string_view occupier_side = "unavailable";
   // occupier_side: attacker / defender / outside_war / none / unavailable.
   bool counted_occupied_by_opposing_side = false;
+  bool fort_level_observable = false;
+  std::int32_t fort_level = 0;
+  bool garrison_size_observable = false;
+  std::int32_t garrison_size = 0;
 };
 
 struct WarOccupationSideCountsV1 {
