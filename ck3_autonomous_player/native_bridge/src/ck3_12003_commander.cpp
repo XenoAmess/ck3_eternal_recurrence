@@ -16,6 +16,7 @@ template <class T> T Load(const void *object, std::size_t offset) noexcept {
 }
 
 constexpr std::int32_t kMaximumStorageCapacity = 1'000'000;
+constexpr std::int32_t kSiegePhaseTimeModifierIndex = 0x11D;
 using ReleaseVector = void (*)(void *, void *, std::uint64_t);
 
 void *ResolveCharacter(void **slot, std::int32_t id) noexcept {
@@ -83,6 +84,10 @@ CommanderBindings BindCommanderImage(
       image_base + 0xC6DED0);
   result.get_army_commander = reinterpret_cast<decltype(result.get_army_commander)>(
       image_base + 0x24E9ED0);
+  result.get_character_modifier_aggregator = reinterpret_cast<decltype(result.get_character_modifier_aggregator)>(
+      image_base + 0x28C3AE0);
+  result.read_character_modifier = reinterpret_cast<decltype(result.read_character_modifier)>(
+      image_base + 0x2303700);
   return result;
 }
 
@@ -193,6 +198,18 @@ CommanderCandidatesReadResult ReadArmyCommanderCandidates(
         row.generic_advantage_points =
             bindings.get_generic_advantage(candidate, -1, false);
         row.quality_observable = true;
+        // Same effective enum consumed by native siege-phase length and
+        // the mask-4 candidate scorer. Generic quality stays independent.
+        if (bindings.get_character_modifier_aggregator != nullptr &&
+            bindings.read_character_modifier != nullptr) {
+          void *aggregator = bindings.get_character_modifier_aggregator(candidate);
+          if (aggregator != nullptr &&
+              bindings.read_character_modifier(static_cast<std::byte *>(aggregator) + 0x68,
+                  &row.siege_phase_time_modifier_raw, kSiegePhaseTimeModifierIndex) ==
+                  &row.siege_phase_time_modifier_raw) {
+            row.siege_phase_time_modifier_observable = true;
+          }
+        }
         row.available = true;
         row.unavailable_reason = {};
         if (ResolveCharacter(bindings.character_storage_slot, row.character_id) !=
@@ -200,6 +217,7 @@ CommanderCandidatesReadResult ReadArmyCommanderCandidates(
           row.available = false;
           row.final_eligibility_observable = false;
           row.quality_observable = false;
+          row.siege_phase_time_modifier_observable = false;
           row.unavailable_reason = "candidate_generation_changed";
         }
       }

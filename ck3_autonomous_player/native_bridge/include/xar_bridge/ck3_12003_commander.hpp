@@ -26,6 +26,9 @@ struct CommanderCandidateSnapshot {
   bool quality_observable = false;
   std::int32_t native_ai_base_quality = 0;
   std::int32_t generic_advantage_points = 0;
+  // Effective character siege-phase modifier, signed Q100000.
+  bool siege_phase_time_modifier_observable = false;
+  std::int64_t siege_phase_time_modifier_raw = 0;
   std::string_view unavailable_reason = "candidate_not_read";
 };
 
@@ -55,6 +58,8 @@ struct CommanderBindings {
   std::int32_t (*get_native_ai_base_quality)(void *) = nullptr;
   std::int32_t (*get_generic_advantage)(void *, std::int32_t, bool) = nullptr;
   void *(*get_army_commander)(void *) = nullptr;
+  void *(*get_character_modifier_aggregator)(void *) = nullptr;
+  std::int64_t *(*read_character_modifier)(void *, std::int64_t *, std::int32_t) = nullptr;
 };
 
 CommanderBindings BindCommanderImage(

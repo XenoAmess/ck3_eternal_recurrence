@@ -119,8 +119,16 @@ def normalize_army_commander_candidates_v1(
                 or not row["quality_observable"] and amount is not None
             ):
                 raise ValueError(f"native candidate.{name} observation is malformed")
+        # Older frozen readers omit this new observation; retain null,
+        # never infer a zero modifier from generic quality or traits.
+        phase_raw = row.get("siege_phase_time_modifier_raw")
+        if phase_raw is not None and (
+            type(phase_raw) is not int
+            or not -(2**63) <= phase_raw <= 2**63 - 1
+        ):
+            raise ValueError("native candidate.siege_phase_time_modifier_raw must be signed Q100000 int64 or null")
         _reason(row.get("unavailable_reason"), "candidate.unavailable_reason")
-        copied_candidates.append(dict(row))
+        copied_candidates.append({**row, "siege_phase_time_modifier_raw": phase_raw})
     _reason(value.get("unavailable_reason"), "unavailable_reason")
     return {**value, "current_commander": dict(current), "candidates": copied_candidates}
 

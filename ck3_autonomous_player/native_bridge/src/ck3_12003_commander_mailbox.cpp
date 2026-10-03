@@ -118,6 +118,9 @@ std::string SerializeArmyCommanderCandidates(
         ",\"generic_advantage_points\":" +
         (candidate.quality_observable
              ? std::to_string(candidate.generic_advantage_points) : "null") +
+        ",\"siege_phase_time_modifier_raw\":" +
+        (candidate.siege_phase_time_modifier_observable
+             ? std::to_string(candidate.siege_phase_time_modifier_raw) : "null") +
         ",\"unavailable_reason\":" +
         NullableReason(candidate.unavailable_reason) + '}';
   }
