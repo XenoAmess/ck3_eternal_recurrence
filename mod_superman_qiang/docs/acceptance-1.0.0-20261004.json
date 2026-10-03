@@ -1,0 +1,2044 @@
+{
+  "schema": "sxad.release-acceptance-summary.v1",
+  "at_utc": "2026-10-03T23:40:30.413911+00:00",
+  "product": "超人强",
+  "target_version": "1.0.0",
+  "live_acceptance_status": "GREEN",
+  "release_status": "PENDING",
+  "overall_status": "PENDING_FORMAL_TAG_BUILD_AND_PUBLICATION",
+  "production_source_commit": "2873141e76177f52e218aa7da05e75cbdd312fc1",
+  "production_manifest_sha256": "63b0bc75a4c13bfdb343d77d621617eb425c204af081f00658454b193f261aac",
+  "production_file_count": 22,
+  "game_version": "1.20.0.3",
+  "steam_build": 25652598,
+  "game_exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "runtime_languages": "simplified Chinese live; other actual languages format-certified only",
+  "l0_status": {
+    "candidate_static_and_reproducible_build": "GREEN",
+    "formal_tag_bound_source_and_artifacts": "PENDING",
+    "candidate_reports": [
+      "static-validation-2026-10-04.md",
+      "build-validation-2026-10-04-ledger.md",
+      "build-validation-2026-10-04-query-localization.md"
+    ]
+  },
+  "plan_items": [
+    {
+      "id": "L1-01",
+      "status": "GREEN",
+      "verified": "真实A4+夹具加载与A4-only中文旧档；R13最终error.log0B",
+      "gate_keys": [
+        "r9",
+        "existing_save"
+      ],
+      "notes": "其他轮未知formatter噪声原样保留；不称全局日志零错误"
+    },
+    {
+      "id": "L1-02",
+      "status": "GREEN",
+      "verified": "原版两个hook实际执行且只计一次；原版memory/stress保全",
+      "gate_keys": [
+        "r9"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L1-03",
+      "status": "GREEN",
+      "verified": "A4-only普通旧档正常肖像交互与原图；无夹具",
+      "gate_keys": [
+        "existing_save"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L2-01",
+      "status": "GREEN",
+      "verified": "未初始化0/0→1/1，tie无转移",
+      "gate_keys": [
+        "r9"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L2-02",
+      "status": "GREEN",
+      "verified": "前经验赢家真实selector、同项paired ledger ±1；R14另实际10/3→11/4",
+      "gate_keys": [
+        "r9",
+        "reverse_xp"
+      ],
+      "notes": "R9受控无百分比技能±1；R14有效值受边界钳制"
+    },
+    {
+      "id": "L2-03",
+      "status": "GREEN",
+      "verified": "低经验发起，吸取方向仍由先前经验决定",
+      "gate_keys": [
+        "r9"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L2-04",
+      "status": "GREEN",
+      "verified": "非零相同经验各+1，无属性转移",
+      "gate_keys": [
+        "r9"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L2-05",
+      "status": "GREEN",
+      "verified": "6生产helper各实测；真实selector多样本/多技能结果；每次最多同项1点",
+      "gate_keys": [
+        "r9",
+        "reverse_boundary"
+      ],
+      "notes": "有限样本不证明分布；等权静态检查另有L0"
+    },
+    {
+      "id": "L2-06",
+      "status": "GREEN",
+      "verified": "来源基础0+正修正可贡献；接收者面板0能收；原base不变",
+      "gate_keys": [
+        "r9",
+        "reverse_xp"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L2-07",
+      "status": "GREEN",
+      "verified": "receiver/donor -50%与+50%、取整0或2、上下钳制；raw ledger/scale守恒",
+      "gate_keys": [
+        "r9",
+        "positive_and_control",
+        "reverse_xp"
+      ],
+      "notes": "不把面板未变化误作原始修正未转移"
+    },
+    {
+      "id": "L2-08",
+      "status": "GREEN",
+      "verified": "六项无法转移仍双方经验+1",
+      "gate_keys": [
+        "r9"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L2-09",
+      "status": "GREEN",
+      "verified": "16/17岁、自身、死者拒绝；死者真实level2 base独立读回",
+      "gate_keys": [
+        "r9"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L2-10",
+      "status": "GREEN",
+      "verified": "AI/AI和玩家/AI真实经验与ledger方向",
+      "gate_keys": [
+        "r9"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L2-11",
+      "status": "GREEN",
+      "verified": "匿名只计已知合格角色，无属性转移",
+      "gate_keys": [
+        "r9"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L2-12",
+      "status": "GREEN",
+      "verified": "同日两次真实pair各+2、两次paired ledger原始点守恒",
+      "gate_keys": [
+        "r9"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L2-13",
+      "status": "GREEN",
+      "verified": "show_as_tooltip不写XP；no_sex_memory真实hook仍计一次且无sex memory",
+      "gate_keys": [
+        "r9"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L2-14",
+      "status": "GREEN",
+      "verified": "99/100/101、1000001、安全max/max-1固定点整数读回与重载",
+      "gate_keys": [
+        "r9",
+        "reload"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L2-15",
+      "status": "GREEN",
+      "verified": "原版lustful压力下降、had_sex memory与禁用memory行为保全",
+      "gate_keys": [
+        "r9"
+      ],
+      "notes": "概率性怀孕结果未视为必定发生"
+    },
+    {
+      "id": "L2-16",
+      "status": "GREEN",
+      "verified": "合法最后一点至±百万、at-limit跳过、真pair/selector相反方向离开两边界",
+      "gate_keys": [
+        "r9",
+        "reverse_boundary",
+        "reverse_xp",
+        "reload"
+      ],
+      "notes": "六helper静态共享边界合同；native极值以外交实测"
+    },
+    {
+      "id": "L2-17",
+      "status": "GREEN",
+      "verified": "正负成长/翻转/回零；variable-only实际old scale1，rebuild两次唯一scale3",
+      "gate_keys": [
+        "r9",
+        "positive_and_control",
+        "rebuild"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L3-01",
+      "status": "GREEN",
+      "verified": "未初始化NPC0及真正旧档自身0；base/traits/sxad fields无写入",
+      "gate_keys": [
+        "readonly",
+        "trait_readonly",
+        "existing_save"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L3-02",
+      "status": "GREEN",
+      "verified": "正常root1001、NPC0、million holder1000001各目标准确；holder hover1000001",
+      "gate_keys": [
+        "readonly"
+      ],
+      "notes": "采用不同真实计数，不为3/10示例额外造UI角色"
+    },
+    {
+      "id": "L3-03",
+      "status": "GREEN",
+      "verified": "三正常目标查看和holder hover后127角色SXAD/base/rawscale零变化",
+      "gate_keys": [
+        "readonly",
+        "trait_readonly"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L3-04",
+      "status": "GREEN",
+      "verified": "退出真实load_save_name重载127角色XP/base/ledger/rawscale保持及正常有效值UI",
+      "gate_keys": [
+        "reload"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L3-05",
+      "status": "GREEN",
+      "verified": "真正enabled_mods=[]旧档→A4-only载入默认0；无反推；原版首事件计数另组合R9",
+      "gate_keys": [
+        "existing_save",
+        "r9"
+      ],
+      "notes": "R13没有发生性行为，后续首次计数由R9未初始化hook矩阵组合证明"
+    },
+    {
+      "id": "L3-06",
+      "status": "GREEN",
+      "verified": "R13真实中文A4-only普通旧档干净原图+完整frame JPEG发布素材",
+      "gate_keys": [
+        "existing_save"
+      ],
+      "notes": "仅证明可用于发布，未宣称Steam媒体已公开"
+    }
+  ],
+  "gates": {
+    "r9": {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\log-save-gate-a03.json",
+      "bytes": 9451,
+      "sha256": "19b959ae1e3fe69546c73eb7472a3328d5a917866c015809b7dbe01b7dde2d0f",
+      "result": {
+        "schema": "sxad.fixture-log-gate.v1",
+        "ok": true,
+        "scope": "log-markers-only; does not prove native base skills, UI, persistence or clean media",
+        "fixture_manifest_sha256": "2b34e778c0f3d94a1782a3f7bb09cd447222be80a434c89c2774f3b446448fe7",
+        "log_sha256": "6a84fa1b2f4ed94fdb964420f905cf8057d30e99bc5d61ad6cd0e909541f1fdd",
+        "expected_case_count": 42,
+        "pass_count": 42,
+        "missing_or_duplicate": [],
+        "failures": [],
+        "unexpected_markers": [],
+        "start_count": 1,
+        "end_count": 1,
+        "independent_save_gate": {
+          "schema": "sxad.fixture-save-gate.v1",
+          "ok": true,
+          "scope": "actual saved base arrays, ledger conservation and raw modifier scales; excludes UI/reload/media",
+          "readback_sha256": "ec4fbddd1b8740c94d2feec6a7a8fef5e8305a5d52f98bf8ddbe3f7db42ae349",
+          "melted_sha256": "9cc5851a00537758919e936e675d5f81fcdb37f38c471a8069aad932983fd3f2",
+          "fixture_manifest_sha256": "2b34e778c0f3d94a1782a3f7bb09cd447222be80a434c89c2774f3b446448fe7",
+          "cases": [
+            {
+              "case": "paired-diplomacy",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65857,
+                "donor": 65858
+              }
+            },
+            {
+              "case": "paired-martial",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65860,
+                "donor": 65861
+              }
+            },
+            {
+              "case": "paired-stewardship",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65863,
+                "donor": 65864
+              }
+            },
+            {
+              "case": "paired-intrigue",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65866,
+                "donor": 65867
+              }
+            },
+            {
+              "case": "paired-learning",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65869,
+                "donor": 65870
+              }
+            },
+            {
+              "case": "paired-prowess",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65872,
+                "donor": 65873
+              }
+            },
+            {
+              "case": "tie-no-drain",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65875,
+                "donor": 65876
+              }
+            },
+            {
+              "case": "winner-previous-count",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65878,
+                "donor": 65879
+              }
+            },
+            {
+              "case": "reverse-winner",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65884,
+                "donor": 65885
+              }
+            },
+            {
+              "case": "anonymous-count-only",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65887,
+                "donor": 65888
+              }
+            },
+            {
+              "case": "vanilla-pair-once",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65890,
+                "donor": 65891
+              }
+            },
+            {
+              "case": "tooltip-read-only",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65893,
+                "donor": 65894
+              }
+            },
+            {
+              "case": "ai-pair-supported",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65896,
+                "donor": 65897
+              }
+            },
+            {
+              "case": "same-character-rejected",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65899,
+                "donor": 65900
+              }
+            },
+            {
+              "case": "minor-rejected",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65902,
+                "donor": 65903
+              }
+            },
+            {
+              "case": "donor-floor-with-positive-modifier",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65905,
+                "donor": 65906
+              }
+            },
+            {
+              "case": "receiver-negative-modifier",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65914,
+                "donor": 65915
+              }
+            },
+            {
+              "case": "receiver-upper-bound-probe",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65917,
+                "donor": 65918
+              }
+            },
+            {
+              "case": "million-experience",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65920,
+                "donor": 65921
+              }
+            },
+            {
+              "case": "experience-boundary-99",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65923,
+                "donor": 65924
+              }
+            },
+            {
+              "case": "experience-boundary-100",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65926,
+                "donor": 65927
+              }
+            },
+            {
+              "case": "experience-boundary-101",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65929,
+                "donor": 65930
+              }
+            },
+            {
+              "case": "experience-boundary-92233720368546",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65932,
+                "donor": 65933
+              }
+            },
+            {
+              "case": "experience-boundary-92233720368547",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65935,
+                "donor": 65936
+              }
+            },
+            {
+              "case": "nonzero-tie-no-drain",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65940,
+                "donor": 65941
+              }
+            },
+            {
+              "case": "same-day-two-pairs",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65943,
+                "donor": 65944
+              }
+            },
+            {
+              "case": "no-sex-memory-still-counts",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65946,
+                "donor": 65947
+              }
+            },
+            {
+              "case": "dead-partner-rejected",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65949,
+                "donor": 65950
+              }
+            },
+            {
+              "case": "receiver-fractional-modifier",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65952,
+                "donor": 65953
+              }
+            },
+            {
+              "case": "donor-fractional-modifier",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65955,
+                "donor": 65956
+              }
+            },
+            {
+              "case": "all-skills-no-transfer",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65958,
+                "donor": 65959
+              }
+            },
+            {
+              "case": "minor-16-rejected",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65961,
+                "donor": 65962
+              }
+            },
+            {
+              "case": "player-ai-pair-supported",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 31254,
+                "donor": 65965
+              }
+            },
+            {
+              "case": "vanilla-memory-stress-preserved",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65967,
+                "donor": 65968
+              }
+            },
+            {
+              "case": "norman-prowess-penalty-negated",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65970,
+                "donor": 65971
+              }
+            },
+            {
+              "case": "balance-growth",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65973,
+                "donor": 65974
+              }
+            },
+            {
+              "case": "balance-to-zero",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65976,
+                "donor": 65977
+              }
+            },
+            {
+              "case": "balance-sign-flip",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65979,
+                "donor": 65980
+              }
+            },
+            {
+              "case": "receiver-balance-limit",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65982,
+                "donor": 65983
+              }
+            },
+            {
+              "case": "donor-balance-limit",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65985,
+                "donor": 65986
+              }
+            },
+            {
+              "case": "receiver-balance-last-point",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65989,
+                "donor": 65990
+              }
+            },
+            {
+              "case": "donor-balance-last-point",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65992,
+                "donor": 65993
+              }
+            }
+          ],
+          "errors": []
+        }
+      }
+    },
+    "readonly": {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\ui-readonly-comparison-a01\\report.json",
+      "bytes": 1563,
+      "sha256": "beae5cebbfe3faf2ce181d79b9fa43f4af82a52dfd262d43a615d53f2754b207",
+      "result": {
+        "schema": "sxad.real-ui-readonly-comparison.v1",
+        "at_utc": "2026-10-03T22:27:48.485960+00:00",
+        "before": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-decode-a04\\fixture-readback-v6.json",
+        "before_sha256": "ec4fbddd1b8740c94d2feec6a7a8fef5e8305a5d52f98bf8ddbe3f7db42ae349",
+        "after": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a03\\fixture-readback-v6.json",
+        "after_sha256": "d5d423382f646cbef34fb1aa13ce4bd835f115b22a559b73d787fe469199f3a8",
+        "actor_count": 127,
+        "changed_ids": [],
+        "uninitialized_viewed_character": [
+          {
+            "label": "before",
+            "character_id": 50601,
+            "sxad_variables": {},
+            "skills": [
+              8,
+              2,
+              7,
+              8,
+              6,
+              7
+            ],
+            "production_modifier_present": false,
+            "sha256": "66969aacbeb2ff0e3d0a3d0ad9e8987b6c13a8975451ffbe5c1a2a959af6d913"
+          },
+          {
+            "label": "after",
+            "character_id": 50601,
+            "sxad_variables": {},
+            "skills": [
+              8,
+              2,
+              7,
+              8,
+              6,
+              7
+            ],
+            "production_modifier_present": false,
+            "sha256": "53ef4f1b80afb2e461feb3b297401c9bfb119b1e17587bedee343f5d61839399"
+          }
+        ],
+        "ok": true,
+        "scope": "actual production XP/all sxad variables/six base attributes/raw production modifier scale before and after three normal player/nonplayer UI entries and holder tooltip; engine RNG state not claimed"
+      }
+    },
+    "trait_readonly": {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\ui-readonly-comparison-a01\\trait-comparison-a01.json",
+      "bytes": 967,
+      "sha256": "8edc62a4687cbb0b8cb6eeb6d8fa046687a517ebcd2962a7366da626b1a6991e",
+      "result": {
+        "character_id": 50601,
+        "traits": [
+          {
+            "source": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\ui-readonly-comparison-a01\\before-50601.txt",
+            "sha256": "5e961457788292d76116c9663eb86b2861a2028600d1b2c69f6a077bd4edeb53",
+            "traits_raw": "\n\t\t\t67 73 66 6\n\t\t",
+            "traits": [
+              67,
+              73,
+              66,
+              6
+            ]
+          },
+          {
+            "source": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\ui-readonly-comparison-a01\\after-50601.txt",
+            "sha256": "5d422f6bed90a67b1b1e1f5935182ddf475c4466acf43bd51c4ac3b61087206c",
+            "traits_raw": "\n\t\t\t67 73 66 6\n\t\t",
+            "traits": [
+              67,
+              73,
+              66,
+              6
+            ]
+          }
+        ],
+        "ok": true,
+        "scope": "uninitialized viewed original courtier raw saved traits before/after normal production view; no trait addition"
+      }
+    },
+    "reload": {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0010\\reload-gate-a01.json",
+      "bytes": 17177,
+      "sha256": "98e377a97a913b271061a9eee0313440ed6c1cece7d959951b2169b50521ddf7",
+      "result": {
+        "schema": "sxad.real-save-reload-gate.v1",
+        "at_utc": "2026-10-03T22:32:21.386484+00:00",
+        "input_checkpoint": {
+          "source": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a01\\checkpoint.ck3",
+          "sha256": "48d573a9e60c009172df481fcffcc8e7349883e6b635945f5461d7a27a96afbd",
+          "size": 69126866,
+          "load_save_name": "xar_checkpoint"
+        },
+        "load_intent": "native-load-save",
+        "date_raw": 53144544,
+        "paused": true,
+        "played_character_id": 31254,
+        "source_readback": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-decode-a04\\fixture-readback-v6.json",
+        "source_readback_sha256": "ec4fbddd1b8740c94d2feec6a7a8fef5e8305a5d52f98bf8ddbe3f7db42ae349",
+        "reloaded_readback": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0010\\save-readback-a01\\fixture-readback-v6.json",
+        "reloaded_readback_sha256": "4abba71a3d7428410b4d301fd6351663e2359ae4b5a067b3ab6c73cc3d45e636",
+        "actor_count": 127,
+        "changed_ids": [],
+        "fixture_reexecuted": false,
+        "independent_save_gate": {
+          "schema": "sxad.fixture-save-gate.v1",
+          "ok": true,
+          "scope": "actual saved base arrays, ledger conservation and raw modifier scales; excludes UI/reload/media",
+          "readback_sha256": "4abba71a3d7428410b4d301fd6351663e2359ae4b5a067b3ab6c73cc3d45e636",
+          "melted_sha256": "d418bf0bf10139204440e56ba3dfe539650bf04ea4015f2bcdfe75791cbc69d4",
+          "fixture_manifest_sha256": "2b34e778c0f3d94a1782a3f7bb09cd447222be80a434c89c2774f3b446448fe7",
+          "cases": [
+            {
+              "case": "paired-diplomacy",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65857,
+                "donor": 65858
+              }
+            },
+            {
+              "case": "paired-martial",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65860,
+                "donor": 65861
+              }
+            },
+            {
+              "case": "paired-stewardship",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65863,
+                "donor": 65864
+              }
+            },
+            {
+              "case": "paired-intrigue",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65866,
+                "donor": 65867
+              }
+            },
+            {
+              "case": "paired-learning",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65869,
+                "donor": 65870
+              }
+            },
+            {
+              "case": "paired-prowess",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65872,
+                "donor": 65873
+              }
+            },
+            {
+              "case": "tie-no-drain",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65875,
+                "donor": 65876
+              }
+            },
+            {
+              "case": "winner-previous-count",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65878,
+                "donor": 65879
+              }
+            },
+            {
+              "case": "reverse-winner",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65884,
+                "donor": 65885
+              }
+            },
+            {
+              "case": "anonymous-count-only",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65887,
+                "donor": 65888
+              }
+            },
+            {
+              "case": "vanilla-pair-once",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65890,
+                "donor": 65891
+              }
+            },
+            {
+              "case": "tooltip-read-only",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65893,
+                "donor": 65894
+              }
+            },
+            {
+              "case": "ai-pair-supported",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65896,
+                "donor": 65897
+              }
+            },
+            {
+              "case": "same-character-rejected",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65899,
+                "donor": 65900
+              }
+            },
+            {
+              "case": "minor-rejected",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65902,
+                "donor": 65903
+              }
+            },
+            {
+              "case": "donor-floor-with-positive-modifier",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65905,
+                "donor": 65906
+              }
+            },
+            {
+              "case": "receiver-negative-modifier",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65914,
+                "donor": 65915
+              }
+            },
+            {
+              "case": "receiver-upper-bound-probe",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65917,
+                "donor": 65918
+              }
+            },
+            {
+              "case": "million-experience",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65920,
+                "donor": 65921
+              }
+            },
+            {
+              "case": "experience-boundary-99",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65923,
+                "donor": 65924
+              }
+            },
+            {
+              "case": "experience-boundary-100",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65926,
+                "donor": 65927
+              }
+            },
+            {
+              "case": "experience-boundary-101",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65929,
+                "donor": 65930
+              }
+            },
+            {
+              "case": "experience-boundary-92233720368546",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65932,
+                "donor": 65933
+              }
+            },
+            {
+              "case": "experience-boundary-92233720368547",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65935,
+                "donor": 65936
+              }
+            },
+            {
+              "case": "nonzero-tie-no-drain",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65940,
+                "donor": 65941
+              }
+            },
+            {
+              "case": "same-day-two-pairs",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65943,
+                "donor": 65944
+              }
+            },
+            {
+              "case": "no-sex-memory-still-counts",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65946,
+                "donor": 65947
+              }
+            },
+            {
+              "case": "dead-partner-rejected",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65949,
+                "donor": 65950
+              }
+            },
+            {
+              "case": "receiver-fractional-modifier",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65952,
+                "donor": 65953
+              }
+            },
+            {
+              "case": "donor-fractional-modifier",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65955,
+                "donor": 65956
+              }
+            },
+            {
+              "case": "all-skills-no-transfer",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65958,
+                "donor": 65959
+              }
+            },
+            {
+              "case": "minor-16-rejected",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65961,
+                "donor": 65962
+              }
+            },
+            {
+              "case": "player-ai-pair-supported",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 31254,
+                "donor": 65965
+              }
+            },
+            {
+              "case": "vanilla-memory-stress-preserved",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65967,
+                "donor": 65968
+              }
+            },
+            {
+              "case": "norman-prowess-penalty-negated",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65970,
+                "donor": 65971
+              }
+            },
+            {
+              "case": "balance-growth",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65973,
+                "donor": 65974
+              }
+            },
+            {
+              "case": "balance-to-zero",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65976,
+                "donor": 65977
+              }
+            },
+            {
+              "case": "balance-sign-flip",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65979,
+                "donor": 65980
+              }
+            },
+            {
+              "case": "receiver-balance-limit",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65982,
+                "donor": 65983
+              }
+            },
+            {
+              "case": "donor-balance-limit",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65985,
+                "donor": 65986
+              }
+            },
+            {
+              "case": "receiver-balance-last-point",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65989,
+                "donor": 65990
+              }
+            },
+            {
+              "case": "donor-balance-last-point",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65992,
+                "donor": 65993
+              }
+            }
+          ],
+          "errors": []
+        },
+        "selected_boundaries": [
+          {
+            "character_id": 31254,
+            "sxad_variables": {
+              "sxad_intrigue_balance": {
+                "present": true,
+                "type": "value",
+                "identity": 100000,
+                "number": 1.0,
+                "signed_identity": 100000,
+                "integer_exact": 1,
+                "signed_number_decimal": "1"
+              },
+              "sxad_sex_experience": {
+                "present": true,
+                "type": "value",
+                "identity": 100100000,
+                "number": 1001.0,
+                "signed_identity": 100100000,
+                "integer_exact": 1001,
+                "signed_number_decimal": "1001"
+              }
+            },
+            "raw_production_modifiers": [
+              {
+                "key": "sxad_intrigue_gain_modifier",
+                "scale_raw": null,
+                "scale_source_key": null,
+                "scale_default": 1,
+                "scale_decimal": "1",
+                "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_intrigue_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t}"
+              }
+            ],
+            "base": {
+              "field": "skill",
+              "array": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ]
+            }
+          },
+          {
+            "character_id": 65993,
+            "sxad_variables": {
+              "sxad_diplomacy_balance": {
+                "present": true,
+                "type": "value",
+                "identity": 18446743973709551616,
+                "number": 184467439737095.53,
+                "signed_identity": -100000000000,
+                "integer_exact": -1000000,
+                "signed_number_decimal": "-1000000"
+              }
+            },
+            "raw_production_modifiers": [
+              {
+                "key": "sxad_diplomacy_loss_modifier",
+                "scale_raw": "1000000",
+                "scale_source_key": "multiplier",
+                "scale_default": null,
+                "scale_decimal": "1000000",
+                "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_diplomacy_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=1000000\n\t\t\t}"
+              }
+            ],
+            "base": {
+              "field": "skill",
+              "array": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ]
+            }
+          },
+          {
+            "character_id": 65986,
+            "sxad_variables": {
+              "sxad_diplomacy_balance": {
+                "present": true,
+                "type": "value",
+                "identity": 18446743973709551616,
+                "number": 184467439737095.53,
+                "signed_identity": -100000000000,
+                "integer_exact": -1000000,
+                "signed_number_decimal": "-1000000"
+              }
+            },
+            "raw_production_modifiers": [
+              {
+                "key": "sxad_diplomacy_loss_modifier",
+                "scale_raw": "1000000",
+                "scale_source_key": "multiplier",
+                "scale_default": null,
+                "scale_decimal": "1000000",
+                "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_diplomacy_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=1000000\n\t\t\t}"
+              }
+            ],
+            "base": {
+              "field": "skill",
+              "array": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ]
+            }
+          },
+          {
+            "character_id": 65920,
+            "sxad_variables": {
+              "sxad_sex_experience": {
+                "present": true,
+                "type": "value",
+                "identity": 100000100000,
+                "number": 1000001.0,
+                "signed_identity": 100000100000,
+                "integer_exact": 1000001,
+                "signed_number_decimal": "1000001"
+              }
+            },
+            "raw_production_modifiers": [],
+            "base": {
+              "field": "skill",
+              "array": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ]
+            }
+          },
+          {
+            "character_id": 65932,
+            "sxad_variables": {
+              "sxad_sex_experience": {
+                "present": true,
+                "type": "value",
+                "identity": 9223372036854700000,
+                "number": 92233720368547.0,
+                "signed_identity": 9223372036854700000,
+                "integer_exact": 92233720368547,
+                "signed_number_decimal": "92233720368547"
+              }
+            },
+            "raw_production_modifiers": [],
+            "base": {
+              "field": "skill",
+              "array": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ]
+            }
+          },
+          {
+            "character_id": 65935,
+            "sxad_variables": {
+              "sxad_sex_experience": {
+                "present": true,
+                "type": "value",
+                "identity": 9223372036854700000,
+                "number": 92233720368547.0,
+                "signed_identity": 9223372036854700000,
+                "integer_exact": 92233720368547,
+                "signed_number_decimal": "92233720368547"
+              }
+            },
+            "raw_production_modifiers": [],
+            "base": {
+              "field": "skill",
+              "array": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ]
+            }
+          },
+          {
+            "character_id": 65982,
+            "sxad_variables": {
+              "sxad_diplomacy_balance": {
+                "present": true,
+                "type": "value",
+                "identity": 100000000000,
+                "number": 1000000.0,
+                "signed_identity": 100000000000,
+                "integer_exact": 1000000,
+                "signed_number_decimal": "1000000"
+              }
+            },
+            "raw_production_modifiers": [
+              {
+                "key": "sxad_diplomacy_gain_modifier",
+                "scale_raw": "1000000",
+                "scale_source_key": "multiplier",
+                "scale_default": null,
+                "scale_decimal": "1000000",
+                "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_diplomacy_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=1000000\n\t\t\t}"
+              }
+            ],
+            "base": {
+              "field": "skill",
+              "array": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ]
+            }
+          },
+          {
+            "character_id": 65989,
+            "sxad_variables": {
+              "sxad_diplomacy_balance": {
+                "present": true,
+                "type": "value",
+                "identity": 100000000000,
+                "number": 1000000.0,
+                "signed_identity": 100000000000,
+                "integer_exact": 1000000,
+                "signed_number_decimal": "1000000"
+              }
+            },
+            "raw_production_modifiers": [
+              {
+                "key": "sxad_diplomacy_gain_modifier",
+                "scale_raw": "1000000",
+                "scale_source_key": "multiplier",
+                "scale_default": null,
+                "scale_decimal": "1000000",
+                "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_diplomacy_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=1000000\n\t\t\t}"
+              }
+            ],
+            "base": {
+              "field": "skill",
+              "array": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ]
+            }
+          }
+        ],
+        "ok": true
+      }
+    },
+    "positive_and_control": {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\phase1-save-gate-a02.json",
+      "bytes": 4006,
+      "sha256": "deda409ab9a2dbc668f88107e3d05d54c7d3f20142411249530f78703301536c",
+      "result": {
+        "schema": "sxad.supplement-phase1-native-save-gate.v1",
+        "ok": true,
+        "errors": [],
+        "rows": [
+          {
+            "character_id": 65866,
+            "flag": "sxat_receiver_positive_receiver_percentage",
+            "base": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ],
+            "balance": 1,
+            "effective_before": 15,
+            "effective_after": 16,
+            "actual_saved_modifiers": [
+              {
+                "key": "sxad_diplomacy_gain_modifier",
+                "scale_raw": null,
+                "scale_source_key": null,
+                "scale_default": 1,
+                "scale_decimal": "1",
+                "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_diplomacy_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t}"
+              }
+            ]
+          },
+          {
+            "character_id": 65867,
+            "flag": "sxat_donor_positive_receiver_percentage",
+            "base": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ],
+            "balance": -1,
+            "effective_before": 10,
+            "effective_after": 9,
+            "actual_saved_modifiers": [
+              {
+                "key": "sxad_diplomacy_loss_modifier",
+                "scale_raw": null,
+                "scale_source_key": null,
+                "scale_default": 1,
+                "scale_decimal": "1",
+                "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_diplomacy_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t}"
+              }
+            ]
+          },
+          {
+            "character_id": 65868,
+            "flag": "sxat_receiver_positive_donor_percentage",
+            "base": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ],
+            "balance": 1,
+            "effective_before": 10,
+            "effective_after": 11,
+            "actual_saved_modifiers": [
+              {
+                "key": "sxad_diplomacy_gain_modifier",
+                "scale_raw": null,
+                "scale_source_key": null,
+                "scale_default": 1,
+                "scale_decimal": "1",
+                "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_diplomacy_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t}"
+              }
+            ]
+          },
+          {
+            "character_id": 65869,
+            "flag": "sxat_donor_positive_donor_percentage",
+            "base": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ],
+            "balance": -1,
+            "effective_before": 15,
+            "effective_after": 13,
+            "actual_saved_modifiers": [
+              {
+                "key": "sxad_diplomacy_loss_modifier",
+                "scale_raw": null,
+                "scale_source_key": null,
+                "scale_default": 1,
+                "scale_decimal": "1",
+                "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_diplomacy_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t}"
+              }
+            ]
+          },
+          {
+            "character_id": 65870,
+            "flag": "sxat_receiver_variable_only_scale_control",
+            "base": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ],
+            "balance": 3,
+            "effective_before": 11,
+            "effective_after": 11,
+            "actual_saved_modifiers": [
+              {
+                "key": "sxad_diplomacy_gain_modifier",
+                "scale_raw": null,
+                "scale_source_key": null,
+                "scale_default": 1,
+                "scale_decimal": "1",
+                "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_diplomacy_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t}"
+              }
+            ]
+          },
+          {
+            "character_id": 65871,
+            "flag": "sxat_donor_variable_only_scale_control",
+            "base": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ],
+            "balance": 0,
+            "effective_before": 10,
+            "effective_after": 10,
+            "actual_saved_modifiers": []
+          }
+        ],
+        "source_readback_sha256": "190abae4341ab11b0c77bd84ebf79eff9eb5db6c232d9a71f7b5c286d91b56f8",
+        "intentional_control": "receiver balance3 with gain modifier raw multiplier1; no rebuild yet"
+      }
+    },
+    "rebuild": {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\phase2-save-gate-a01.json",
+      "bytes": 2258,
+      "sha256": "762b7bc48f91c1ad58431aff25b68a0f6968a8c409565cf26f57585ffb60b340",
+      "result": {
+        "schema": "sxad.supplement-phase2-native-save-gate.v1",
+        "ok": true,
+        "independent_save_gate": {
+          "schema": "sxad.fixture-save-gate.v1",
+          "ok": true,
+          "scope": "actual saved base arrays, ledger conservation and raw modifier scales; excludes UI/reload/media",
+          "readback_sha256": "cdc9a54938e26167a08fab62568d1a9ec9adfa7acb0c22097d6176733208f172",
+          "melted_sha256": "4c72a4ad36309404d43682d3b490f7f223e936ca49471c0b5432813bf89f8021",
+          "fixture_manifest_sha256": "bc92e921bc4d7d3576aba319c27a9ae21cf9b42abb970b40cb0d074c53b1b6eb",
+          "cases": [
+            {
+              "case": "positive-receiver-percentage",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65866,
+                "donor": 65867
+              }
+            },
+            {
+              "case": "positive-donor-percentage",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65868,
+                "donor": 65869
+              }
+            },
+            {
+              "case": "variable-only-scale-control",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65870,
+                "donor": 65871
+              }
+            }
+          ],
+          "errors": []
+        },
+        "holder_character_id": 65870,
+        "base": {
+          "field": "skill",
+          "array": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ]
+        },
+        "balance": {
+          "present": true,
+          "type": "value",
+          "identity": 300000,
+          "number": 3.0,
+          "signed_identity": 300000,
+          "integer_exact": 3,
+          "signed_number_decimal": "3"
+        },
+        "effective_first_rebuild": 13,
+        "effective_second_rebuild": 13,
+        "actual_production_modifiers": [
+          {
+            "key": "sxad_diplomacy_gain_modifier",
+            "scale_raw": "3",
+            "scale_source_key": "multiplier",
+            "scale_default": null,
+            "scale_decimal": "3",
+            "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_diplomacy_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=3\n\t\t\t}"
+          }
+        ],
+        "source_readback_sha256": "cdc9a54938e26167a08fab62568d1a9ec9adfa7acb0c22097d6176733208f172",
+        "scope": "real raw scale3 after explicit rebuild, exactly one modifier after repeated rebuild; base unchanged"
+      }
+    },
+    "existing_save": {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0013\\existing-save-installation-gate-a01.json",
+      "bytes": 2571,
+      "sha256": "070a7e9cb4a747bd5ff0d5e83f438eb0cd9c0bb201f1dbef0f1898ea179b6367",
+      "result": {
+        "schema": "sxad.genuine-existing-save-installation-gate.v1",
+        "ok": true,
+        "vanilla_input_checkpoint": {
+          "source": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0012\\save-readback-a01\\checkpoint.ck3",
+          "sha256": "b6f341c9879b572a0eb4325f96fd0338433d0fc4c9fa36fa4dfc0fbebb61506e",
+          "size": 68930809,
+          "load_save_name": "xar_checkpoint"
+        },
+        "vanilla_loading": {
+          "enabled_mods": [],
+          "disabled_dlcs": []
+        },
+        "production_loading": {
+          "enabled_mods": [
+            "mod/sxad_product.mod"
+          ],
+          "disabled_dlcs": []
+        },
+        "changed_character_ids": [],
+        "before_readback": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0012\\original-character-readback-a01\\report.json",
+        "before_sha256": "bdb6e2f7b973f8f5a8ea2ea70550645cf4bc399bc3aed8b29ce605468be34981",
+        "after_readback": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0013\\original-character-readback-a01\\report.json",
+        "after_sha256": "09b64444176860dbcb352755f422594ab8b9d823d8e4c1ab1b2d111940ed910d",
+        "original_character_fields": {
+          "31254": {
+            "character_id": 31254,
+            "base": [
+              4,
+              9,
+              6,
+              6,
+              6,
+              10
+            ],
+            "traits": [
+              69,
+              51,
+              67,
+              19,
+              31,
+              158
+            ],
+            "sxad_variables": {},
+            "sxad_modifiers": []
+          },
+          "50601": {
+            "character_id": 50601,
+            "base": [
+              2,
+              0,
+              4,
+              9,
+              10,
+              10
+            ],
+            "traits": [
+              50,
+              51,
+              64,
+              17,
+              248,
+              279
+            ],
+            "sxad_variables": {},
+            "sxad_modifiers": []
+          }
+        },
+        "date_raw": 53144328,
+        "viewed_subject": 31254,
+        "normal_ui_experience": 0,
+        "normal_ui_effective_skills": [
+          5,
+          24,
+          11,
+          11,
+          7,
+          21
+        ],
+        "image": "C:\\ck3-superman-qiang-20261004\\acceptance\\r13-ui-production-only-event-a01\\screen.png",
+        "image_sha256": "dbb4b4085b775fcc93b9b2a1f13de82a2a6f4b562886f4409356a0561450e5cf",
+        "image_size": [
+          1024,
+          768
+        ],
+        "error_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "scope": "genuine unmodded saved game then A4-only load, absent XP/net displayed 0, base/traits/SXAD fields preserved after normal view; no sex action performed in R13; first new count behavior composed with R9 original effect matrix"
+      }
+    },
+    "reverse_boundary": {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0014\\log-save-gate-a01.json",
+      "bytes": 1249,
+      "sha256": "c6215433582b23e21cd8d92e7c863f91bbc96fa084940b5b2e4607b06096c25b",
+      "result": {
+        "schema": "sxad.fixture-log-gate.v1",
+        "ok": true,
+        "scope": "log-markers-only; does not prove native base skills, UI, persistence or clean media",
+        "fixture_manifest_sha256": "9a5ee2dc5261324acda1f6f83851f50db7f7265265f834deac24c46dbf4271ff",
+        "log_sha256": "cac115a32cd0b69af54250f06ece553ce340dccbe3fc55d922c9bbad13a198af",
+        "expected_case_count": 1,
+        "pass_count": 1,
+        "missing_or_duplicate": [],
+        "failures": [],
+        "unexpected_markers": [],
+        "start_count": 1,
+        "end_count": 1,
+        "independent_save_gate": {
+          "schema": "sxad.fixture-save-gate.v1",
+          "ok": true,
+          "scope": "actual saved base arrays, ledger conservation and raw modifier scales; excludes UI/reload/media",
+          "readback_sha256": "d61585528080a668885f4d12509c90c472b727ad0a4029b08f09dbef300035e7",
+          "melted_sha256": "14c15fe260b08bef2f31ae4488e722e2c4481385ba91abd858f15171f0788154",
+          "fixture_manifest_sha256": "9a5ee2dc5261324acda1f6f83851f50db7f7265265f834deac24c46dbf4271ff",
+          "cases": [
+            {
+              "case": "reverse-balance-boundaries",
+              "ok": true,
+              "errors": [],
+              "character_ids": {
+                "receiver": 65810,
+                "donor": 65811
+              }
+            }
+          ],
+          "errors": []
+        }
+      }
+    },
+    "reverse_xp": {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0014\\reverse-boundary-save-gate-a01.json",
+      "bytes": 4055,
+      "sha256": "13896eba0cb9c7de6b627c79f4d3ebd33145205325cba9e8175a0ec96b9be090",
+      "result": {
+        "schema": "sxad.reverse-boundary-real-save.v1",
+        "ok": true,
+        "errors": [],
+        "rows": [
+          {
+            "role": "receiver",
+            "character_id": 65810,
+            "variables": {
+              "sxad_diplomacy_balance": -999999,
+              "sxad_sex_experience": 11,
+              "sxat_before_balance_diplomacy": -1000000,
+              "sxat_before_effective_diplomacy": 0,
+              "sxat_after_effective_diplomacy": 0
+            },
+            "base": {
+              "field": "skill",
+              "array": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ]
+            },
+            "actual_production_modifiers": [
+              {
+                "key": "sxad_martial_gain_modifier",
+                "scale_raw": "1000000",
+                "scale_source_key": "multiplier",
+                "scale_default": null,
+                "scale_decimal": "1000000",
+                "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_martial_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=1000000\n\t\t\t}"
+              },
+              {
+                "key": "sxad_stewardship_gain_modifier",
+                "scale_raw": "1000000",
+                "scale_source_key": "multiplier",
+                "scale_default": null,
+                "scale_decimal": "1000000",
+                "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_stewardship_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=1000000\n\t\t\t}"
+              },
+              {
+                "key": "sxad_intrigue_gain_modifier",
+                "scale_raw": "1000000",
+                "scale_source_key": "multiplier",
+                "scale_default": null,
+                "scale_decimal": "1000000",
+                "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_intrigue_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=1000000\n\t\t\t}"
+              },
+              {
+                "key": "sxad_learning_gain_modifier",
+                "scale_raw": "1000000",
+                "scale_source_key": "multiplier",
+                "scale_default": null,
+                "scale_decimal": "1000000",
+                "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_learning_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=1000000\n\t\t\t}"
+              },
+              {
+                "key": "sxad_prowess_gain_modifier",
+                "scale_raw": "1000000",
+                "scale_source_key": "multiplier",
+                "scale_default": null,
+                "scale_decimal": "1000000",
+                "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_prowess_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=1000000\n\t\t\t}"
+              },
+              {
+                "key": "sxad_diplomacy_loss_modifier",
+                "scale_raw": "999999",
+                "scale_source_key": "multiplier",
+                "scale_default": null,
+                "scale_decimal": "999999",
+                "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_diplomacy_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=999999\n\t\t\t}"
+              }
+            ]
+          },
+          {
+            "role": "donor",
+            "character_id": 65811,
+            "variables": {
+              "sxad_diplomacy_balance": 999999,
+              "sxad_sex_experience": 4,
+              "sxat_before_balance_diplomacy": 1000000,
+              "sxat_before_effective_diplomacy": 100,
+              "sxat_after_effective_diplomacy": 100
+            },
+            "base": {
+              "field": "skill",
+              "array": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ]
+            },
+            "actual_production_modifiers": [
+              {
+                "key": "sxad_diplomacy_gain_modifier",
+                "scale_raw": "999999",
+                "scale_source_key": "multiplier",
+                "scale_default": null,
+                "scale_decimal": "999999",
+                "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_diplomacy_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=999999\n\t\t\t}"
+              }
+            ]
+          }
+        ],
+        "readback_sha256": "d61585528080a668885f4d12509c90c472b727ad0a4029b08f09dbef300035e7",
+        "pair_ledger_delta_sum": 0
+      }
+    }
+  },
+  "random_actual_examples": [
+    {
+      "case": "winner_previous_count",
+      "receiver_id": 65878,
+      "ledger": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "case": "reverse_winner",
+      "receiver_id": 65884,
+      "ledger": [
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "case": "same_day_two_pairs",
+      "receiver_id": 65943,
+      "ledger": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "case": "player_ai_pair_supported",
+      "receiver_id": 31254,
+      "ledger": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    }
+  ],
+  "raw_index": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\acceptance-1.0.0-20261004.raw-index.json",
+    "bytes": 440148,
+    "sha256": "d27a71afc591851cf7d3b7e9c0065071e26d127516a9e8d61ab067167337211a"
+  },
+  "media": {
+    "raw": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\images\\superman_qiang_gameplay_experience.png",
+      "bytes": 1071131,
+      "sha256": "dbb4b4085b775fcc93b9b2a1f13de82a2a6f4b562886f4409356a0561450e5cf"
+    },
+    "jpeg": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\superman_qiang_media\\01_experience_view.jpg",
+      "bytes": 170086,
+      "sha256": "d0d0adbaf28445d0aa1ced1de5351374337c6921a67919a9743bbf2dbb2eaa8d"
+    },
+    "crop_rect": [
+      0,
+      0,
+      1024,
+      768
+    ],
+    "published": false
+  },
+  "independent_root_reviews": [
+    {
+      "path": "C:\\ck3-superman-space-a01\\root-r9-v6-readonly-review-a02.json",
+      "bytes": 4924,
+      "sha256": "b29cb3609fd7d2601975ec3432bcb060fc3c1d90a9f2daa5126283770363e178"
+    },
+    {
+      "path": "C:\\ck3-superman-space-a01\\root-r11-independent-readback-review-a01.md",
+      "bytes": 1471,
+      "sha256": "054d4fd7087b463fdbdc73d5b3dce986123a667e5825cc8f9102ed42a75c5404"
+    },
+    {
+      "path": "C:\\ck3-superman-space-a01\\root-r14-independent-readback-review-a01.json",
+      "bytes": 4137,
+      "sha256": "f33aee1f25a007058ee31e0326e16289852624514b9578e05b0e1d40f4a14e6b"
+    }
+  ],
+  "known_limits": [
+    "No multiplayer/removal/achievement/other game versions tested",
+    "Finite selector draws do not prove random distribution",
+    "No natural sex occurrence asserted in R13",
+    "R9/R11 unknown formatter provenance retained, R13 production-only final error.log0B",
+    "R14 normal original story choice did not call typed event-choice first; actual procedural deviation preserved",
+    "Historical DLL compilation stdout/stderr retention gap documented separately; no false complete preservation claim"
+  ],
+  "screen_release": {
+    "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\screen-release-cas-a01\\stdout.txt",
+    "bytes": 1125,
+    "sha256": "e218687cd1fb0192d713af91cb8d5a1160d7f94f01ceb7a021a79c96cf2de704",
+    "sequence": 4109,
+    "resources": []
+  },
+  "game_cleanup_proven": true
+}
