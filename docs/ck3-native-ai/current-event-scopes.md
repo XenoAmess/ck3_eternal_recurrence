@@ -27,8 +27,8 @@ Character identity 与完整 named/type inventory，不升级非 Character paylo
 R193–R207 artifact 才提供 paused scope live 证据。该证据来自一个 retained product session，不能外推成所有事件类型、
 fresh-cold 稳定性、value payload decoder 或 semantic decision readiness。
 
-本专题是 generic、非宗教事件观测。没有研究或推导 faith、doctrine、tenet、fervor、改宗、宗教改革、holy order
-或 holy-war 专用语义；稳定 type key 也不得被用来展开这些域。
+本专题保留上述 1.19.0.6 历史观测事实；宗教领域自 **2026-10-02** 起已全面开放，允许 faith/religion、rite、doctrine、tenet、fervor、改宗、宗教改革、holy order、圣战与大圣战的原生研究、bridge/MCP、策略和实机验收。
+原非宗教限定及禁止由稳定 type key 继续研究宗教领域的规范已撤销。授权不表示能力已完成；仍区分 exact-build 绑定、真实观测和 readiness，未闭合字段与具体施工入口按原证据边界记录。
 
 ## R193–R207 exact-build product live evidence
 
@@ -305,3 +305,15 @@ received-self Workforce provider 提供并与事件 full guard 互证。
 ## 2026-10-03T12:22 新 PID paused 实读
 
 本专题对应的新只读叶与真实缺口见[统一实读记录](g2-v33-paused-religion-and-event-observations-12003.md)，回链actor/date/native/public revisions和原capture。仅记录primitive，不增加动作、日数或完整OODA；历史fixture与封存状态保留原时点。
+
+## 2026-10-04 .3：event24 的健康事件上下文与选择清除
+
+Root确认本轮production source-root **g54 / exact CK3 1.20.0.3**；sole consumer提供暂停帧date_raw **53245560**、event instance **24**、root/actor **29829**与唯一enabled选项（**optionCount=1**）。该count本身不推出option index。上下文索引为 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v49/actual-event-24-context-01/result.json`；本追加只链接，不读取该raw。
+
+Root提供的static stock语境为 `health.7300`。已缓存official `health_events.txt` **12313..12457** stdout显示单一option `health.7300.a`，其authored effect为 `add_trait = clouded_eyes`；trait ID124来自Root提供的语境。官方文件identity为 `Z:/SteamLibrary/steamapps/common/Crusader Kings III/game/events/health_events.txt`；本lane仅消费Root先前缓存的三个stock stdout receipt，没有重读官方文件。这个静态定义不能证明实际trait已添加。
+
+Root sole SDK **74826** 正常closed/exit0、GREEN的实际选择body另确认 **option_number1 / native_index0**，event24→null、`postcondition_verified=true`；native **650→651**、public **2→3**，actor/date保持29829/raw53245560、新日0。Root提供的gold raw65169236、prestige raw280879140、stress raw0前后相同。这是该事件的 **production-live acknowledgment有限loop**：实际option已选择且instance已清除；不是根据optionCount或ACK猜测clear。
+
+trait尚未独立读回，不记clouded_eyes已添加或material effect信用；本文件consumer新增0日/动作。1.19 historical ABI、R193–R207实际能力及未闭合generic/fresh-cold/non-Character边界继续保留，本次.3 frame不扩大为通用semantic utility或整局OODA完成。独立frame与normal SAVE现已由Root唯一control owner封存，见下列锚点；本lane不重读其raw。
+
+Root已封独立frame/SAVE：normal **h6147／93428206B／SHA256 `3db05b5df4b982e4938af5bae0b079ce401afb9efaeae2c3420ea88b43a610cf`**；native **651**／public **3**／date_raw **53245560**，event=null、主军在2640围城。此选择与保存新增 **0日**，累计仍 **4218**；此前 **h6143／38日STOP** 保持原阶段归属，不被h6147替换。证据仅链接 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/r25-v49-event24-select-zero-days/ROOT-DELIVERY.json` 与 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/r25-v49-event24-select-zero-days/CACHED-FINAL-IDENTITY-CONTROL-SAVE-FIELDS.json`，未读取raw或这些receipt。资格仍为finite event acknowledgment loop；trait尚未后验，不记clouded_eyes已添加或material effect。
