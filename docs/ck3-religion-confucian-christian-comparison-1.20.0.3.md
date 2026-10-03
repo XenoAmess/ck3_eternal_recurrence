@@ -27,9 +27,9 @@
 | 隐修与修道会 | 默认没有宣誓出家及创办修道会、围绕修道会核心教义开展的相应玩法。 | 儒家定义 `:36`；`20_doctrines.txt:2173–2253`；`common/decisions/00_holy_order_decisions.txt:605–621` 与 `common/scripted_triggers/pam_scripted_triggers.txt:994–1005`。这是默认教义差异，不能说一切儒家自创礼仪永远无法选择隐修。 |
 | 军事修会 | 默认不能创建军事修会；即使宗教定义列了修会名字，也不证明具备创建资格。 | 儒家“法界圆融”特殊教义 `40_doctrines_special.txt:416–424` 提供 `immaterial_harmony_no_holy_orders`；创建门禁 `common/scripted_triggers/00_religious_triggers.txt:996–1011` 排除该参数。 |
 | 大圣战／十字军 | 默认没有宗教领袖与启用大圣战的参数，不具备天主教式十字军动员链。 | `common/scripted_triggers/00_great_holy_war_triggers.txt:9–23,69–86`。十字军也不是所有基督教分支自动拥有；普通圣战需另行分析。 |
-| 基督教专属灵性玩法 | 儒家使用非基督教的通用灵性满足模型，缺少基督教专属的告解、虔敬行为、灵性指导等入口与专属等级效果。 | `common/spiritual_fulfillment/00_spiritual_fulfillment_types.txt:1–113` 为基督教七级模型，`:115–177` 为非基督教五级 fallback；`pam_decisions.txt:57–65,147–150,239–241` 的身份／DLC门禁。不是“儒家没有灵性满足”。 |
+| 基督教专属灵性玩法 | 儒家使用非基督教的通用灵性满足模型，缺少基督教专属的告解、展现奉献、提供属灵指引等入口与专属等级效果。 | `common/spiritual_fulfillment/00_spiritual_fulfillment_types.txt:1–113` 为基督教七级模型，`:115–177` 为非基督教五级 fallback；`pam_decisions.txt:57–65,147–150,239–241` 的身份／DLC门禁。不是“儒家没有灵性满足”。 |
 | 大教堂伟大工程 | 没有 PAM 基督教大教堂的建造与升级工程入口。 | `common/scripted_triggers/pam_scripted_triggers.txt:787–791` 要求 PAM、公爵以上、`christian_fulfillment`；`common/buildings/pam_buildings.txt:61–106` 另有建筑启用条件。不是“儒家没有任何特殊建筑／伟大工程”。 |
-| 基督教守护圣人与敬圣强化 | 没有选择基督教守护圣人，以及敬圣核心信条提供的封圣减费、额外圣物加成等。封圣和圣物的通用／非基督教路径另见下文。 | `pam_decisions.txt:889–910` 显式限定基督教与个人Dulia参数；`tenet_types/00_pam_tenets.txt:153–180` 限定宗派／个人选择并提供强化。 |
+| 基督教守护圣人与圣人敬礼强化 | 没有选择基督教守护圣人，以及圣人敬礼核心信条提供的封圣减费、额外圣物加成等。封圣和圣物的通用／非基督教路径另见下文。 | `pam_decisions.txt:889–910` 显式限定基督教与个人Dulia参数；`tenet_types/00_pam_tenets.txt:153–180` 限定宗派／个人选择并提供强化。中文名见 `localization/simp_chinese/dlc/pam/pam_tenets_l_simp_chinese.yml:1173`。 |
 | 历史宗教目标 | 没有基督教的阻止／造成／弥合大分裂及天主教恢复教廷／归还罗马的对应宗教剧情。 | `common/decisions/80_major_decisions_roman.txt:435–436,825,894`；`pam_decisions.txt:2577,2693,2814`；`common/decisions/10_religious_decisions.txt:1423`。拆除教廷是反例，见下文。 |
 | 神职傅油加冕 | 少的是教会傅油路径，普通加冕和加冕宝物仍存在。 | 儒家 `doctrine_no_anointment`，基督教 `doctrine_imperial_anointment`；`20_doctrines.txt:1928–1938,1964–1984`。 |
 
