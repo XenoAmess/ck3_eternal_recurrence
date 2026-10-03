@@ -84,3 +84,7 @@ CombatID、真实 subject，与 snapshot/transition 同步保存。战斗未结�
 - `SOURCE-PINS.json`、`focused-attempt-01/RESULT.json`：字节前像、8 TU 命令、原始 RED、修后 GREEN。
 - `ROOT-ONLY-TERMINAL-PHASE-DATE-DOC-CORRECTION.patch`：本 topic 与原 outcome topic 更正。
 - `ROOT-DAY-WEEK-FIELDS.md`：Root 合并当天/当周记录；worker 无共享 source/Git/window 操作。
+
+## 2026-10-03T16:22 v36实际executor SEH
+
+028在serializer之前触发真实executor_exception512；后续mailbox不ready且计数停13。原phase/date补丁字节已经加载，但没有新的terminal body，故该修复仍static-ready；实际故障不能标为已关闭。随后private reader与统帅提交前拒绝共享这一前置故障。诊断：[DIAG-SUMMARY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v36-retry-02/diag-summary/DIAG-SUMMARY.json)。Root已正常保存/stop/reap并从save4714恢复同v36新PID；先继续游戏价值，下一候选只补针对本SEH的异常code/RVA定位，不自动rearm、不新建安全门禁。

@@ -75,3 +75,16 @@ ROOT可现在调用现成hire查询判断真实许可与费用：若同帧完整
 历史v32 order4的106虔诚、can_hire=false/can_afford=true及绝罚/已被雇佣理由只属于raw53236176；v34 selected-title的500 gold＋1000 piety是建团费用，九个CanTake/CanAfford=false也不是当前军事雇佣资格。本页不把两份历史帧或合成fixture填成当前live报价，也不推断全旅程或完整宗教/军事实机loop。
 
 当前API配方：[EXISTING-API-RECIPE.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/holy-order-title/hire-military-observation/EXISTING-API-RECIPE.json)。总交付：[ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/holy-order-title/hire-military-observation/ROOT-DELIVERY.json)。ROOT负责采用、合并日周报、Git与实际游戏查询；本包不重新请求战争/宗教/游戏资源授权。
+
+
+## v36 新DLL实际attempt：032返回RED，未晋级兵数live
+
+ROOT以source/native前缀 `6b0` 的v36新DLL完成strict与cold GREEN后，执行 `actual-new-leaves-v36-01`。worker纯文件消费032 `ck3_query_player_holy_order_context_v1(expected_revision=2)` 与配对031 snapshot。本次SDK packet明确 `isError=true`、status=RED，文字为 `private native observation returned RED: query-player-holy-order-context-v1`；没有 `ck3_12003_player_holy_order_context_v1` 原生body，也没有捕获具体native command error。
+
+因此本attempt没有当前组织集合、兵数、CanHire、CanAfford或十槽报价；不能填零、不能推导所有hire=false，也不能从strict/cold或此前focused GREEN晋级新兵数production-live。新增兵数仍为static-ready，既有v32 hire/费用production-live primitive保留为历史证据；这次真实capability RED单独保留。
+
+运行时lane已用七个实际snapshot闭合共同故障：028 battle terminal首次RED后，failure512对应 `executor_exception`，ready=false，seq持续13不增长，而主线程泵继续。executor SEH设置bit9；后续Submit因failure flags非零返回 `infrastructure_failed`，Reclaim只恢复idle而不清flags。因此030悔罪、032 holy与034/036/038盟友的reader均没有执行，032不能判作holy getter ABI故障。此前occupation、commander、army-strength成功，末尾正常checkpoint继续完成。共同归因见 [DIAG-SUMMARY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v36-retry-02/diag-summary/DIAG-SUMMARY.json) 与 [PINS.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v36-retry-02/diag-summary/PINS.json)。battle owner负责真实SEH的最小exceptioncode/RVA观测；本lane不自动rearm、不改holy源码、不重复测试或query。
+
+当前total saved days为ROOT提供的3850；worker新增日/雇佣/支付/玩家兵力收益/G2增量均0。没有实读合法组织，未触发typed hire执行口施工；宗教、战争及游戏资源支出授权已经开放，不存在permission等待。ROOT正常stop后以同v36/R15避开terminal恢复价值动作；共同故障恢复后的正常同帧原口读取：全部完整军事行can_hire=false即可判当前无可用增援；只有真实合法且可支付候选出现时才继续必要typed hire与独立after-state。
+
+保留actual失败与日报周报字段：[actual-v36/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/holy-order-title/hire-military-observation/actual-v36/ROOT-DELIVERY.json)。本包只新增专题append和外置报告，不修改共享源码、不运行SDK/游戏/pipe/窗口/Git。

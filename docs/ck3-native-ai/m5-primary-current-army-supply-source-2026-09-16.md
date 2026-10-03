@@ -38,3 +38,71 @@ treasury/active wars/player armies and bind this module to one legal declaration
 on the same native revision. Voluntary allies, objective-route supply,
 campaign cost/exit and first-heir marriage commitment need separate exact-build
 observations before cross-domain scoring can submit one action.
+
+## 2026-10-03 exact .3 existing army-strength query: production observation
+
+The older `1.19.0.6` M5 module above remains its historical static-ready, unwired
+package. This increment uses the separately adopted **existing**
+`ck3_query_army_strengths` path on CK3 **1.20.0.3 / Steam build25652598**,
+EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. Source/compile commit is `6b0e6bdfa6b18396394ce8f12301e464825f1f46`;
+bridge DLL SHA-256 is `bdb08f2e6cc7bc5afd4d65119e8d19ca5cf19fba50c1e356eb8fa892c1702c16`.
+The exact .3 selector operand `0x2587254` is signed64 `CArmy+0x180`, scale100000;
+the strength reader retains the actual public CUnit-to-CArmy backlink before
+publishing the additive raw/scale fields. No old M5 capability or runtime flag
+was enabled to obtain these values.
+
+Root's ordinary Robert29829 paused capture is
+`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v36-retry-02/actual-new-leaves-v36-01/026-ck3_query_army_strengths.json`
+(SHA-256 `e5bcfc7b7c319e109590d4e00a281bc83920e02ebf98b40d9d62edc146829c0d`). It binds PID90596, connection generation2,
+snapshot `native:2`, public/native revision2, date_raw53236728 and episode
+`native-29829-2bc2d599f7f9`. All eight requested rows are available and carry
+the additive numeric fields. The leaf's inline `source.game_version` and
+`source.executable_sha256` are null; exact-build identity comes from the same
+session's successful hello/diagnostics and the frozen runtime packet, rather
+than attributing nonexistent pins to those null fields.
+
+| Public CUnitID | Native CArmyID | Scope | Current/max soldiers | Supply raw /100000 | Exact supply units |
+|---|---|---|---|---|---|
+| 83886367 | 50331794 | player | 2334/2461 | 10000000 | 100 |
+| 50331920 | 33554713 | active_war_enemy | 1343/1899 | 9100002 | 91.00002 |
+| 83886484 | 150995083 | active_war_enemy | 300/311 | 11700000 | 117 |
+| 67109295 | 67109272 | active_war_enemy | 101/101 | 11500000 | 115 |
+| 251658381 | 167772260 | active_war_enemy | 2863/2880 | 10000000 | 100 |
+| 473 | 461 | active_war_enemy | 300/300 | 10000000 | 100 |
+| 474 | 462 | active_war_enemy | 10/10 | 10000000 | 100 |
+| 16777683 | 457 | active_war_enemy | 2436/2436 | 10000000 | 100 |
+
+The player's current decision input is **100 supply**, with **2334/2461 soldiers**
+and **40 regiments**. Both enemy values above100 are retained as read; the
+consumer does not clamp them to100. These values can feed the next actual
+route, resupply or siege decision alongside its current contact/route inputs.
+They are current observations, not a future supply budget, attrition forecast,
+reinforcement arrival, or battle probability. Enemy groups on different war
+fronts must not be summed into a claimed local battle comparison.
+
+All eight supply operands are positive in this frame. Legal zero and negative
+preservation, explicit-null handling and absent legacy fields reuse the existing
+focused parser fixture at `war-supply/army-mcp-projection-test.json`; those
+branches gain **no production-live coverage** from this all-positive packet.
+An explicit raw0 is observed zero. Signed negative raw remains a signed value.
+Missing or null supply remains unobserved and must not become zero. The existing
+normalizer preserves absent legacy row fields and explicit null separately.
+No fixture or live query was repeated for this documentation increment.
+
+The supply leaf is **production-live primitive** for this actual numeric current
+army set. A resupply/attrition outcome loop remains unproven. The broader query
+batch is RED because other leaves failed; this successful supply row set does
+not turn that batch GREEN. Root saved the unchanged date at history_index
+4712, checkpoint SHA-256 `31ef035624be4146e8f9f9743081e27b0418e18ea3f67d885252648e97a8b784`.
+This read-only observation adds **0 game days**; cumulative saved progress stays
+3850/36524, G2 5/8, NW2/4 and natural succession0.
+
+```mermaid
+flowchart TD
+  A["[live] exact .3 paused CUnit/CArmy identity and backlink"] --> B["[live] existing strength query: signed supply raw /100000"]
+  B --> C["[live] own army83886367: supply100, soldiers2334/2461"]
+  C -. "next actual decision and readback" .-> D["[unknown] resupply or attrition outcome loop"]
+  D -. "separate native inputs" .-> E["[unknown] future supply, winter, hostile entry and sea costs"]
+  classDef unknown stroke-dasharray:6 4,fill:#fff4e5,stroke:#b36b00;
+  class D,E unknown;
+```

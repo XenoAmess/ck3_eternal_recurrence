@@ -1,5 +1,24 @@
 # 一代人自治：阻塞与能力债账本
 
+## 当前截点：v36 冷恢复与新查询，3850 个保存日（2026-10-03T16:14:12+08:00 实际补录）
+
+当前v36/PID90596/source-native `6b0e6bdfa6b18396394ce8f12301e464825f1f46` 已在原raw53236728 cold GREEN，full4702/source save4701，六ledger与四Sway附着保持；3850/36524、resume697、10-03+602、G2 5/8、NW2/4、自然继承0。64jobs四目标strict Release 538TU/535unique/1034inputs、74.994401s GREEN与exact-head CI37107189723 GREEN独立于实际query资格；原configure RED与retry02最小GLOB修复保留。
+
+新只读batch正常保存 **h4712 / raw53236728**，save SHA-256 `31ef035624be4146e8f9f9743081e27b0418e18ea3f67d885252648e97a8b784`；aggregate仍 **RED**，成功分项独立保留。h4702是cold full history、h4701是其来源save，不能当作本batch保存序号，也不增加游戏日。[完整新查询与正常保存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v36-retry-02/actual-new-leaves-v36-01/result.json)。
+
+| 当前实际阻点/闭合 | 最新证据与readiness | 下一可施工入口 |
+| --- | --- | --- |
+| 当前统帅缺位 | 名单真实complete19、全CanAssign=true、质量可读；候选升级 `production-live primitive`，任命动作未执行 | 同帧合法typed任命一次→CUnit83886367/CArmy50331794/owner29829独立commander读回，才能计任命闭环 |
+| 当前补给缺字段已解除 | actual八Strength available，玩家signed supply10000000/100000=100、兵2334；只读 `production-live primitive` | 后续决策读取当前值并观察实际结果；未闭合补给预测、attrition-free或长期补给OODA |
+| 占领/收复目标观测实际未完成 | 012/016/020均tool GREEN而payload unavailable/available=false/war_occupation_context_unavailable/collection_complete=false/rows空 | 针对同生产context修复；空rows不作零占领或没有可收复目标，不把transport GREEN升级capability |
+| terminal新的真实失败 | 028为application-main typed query failed or snapshot changed；旧v35序列化修复静态已合入仍不足以证明当前叶可用 | 消费028实际失败与当前身份输入，修最小生产缺口，不重跑旧矩阵或假定胜者/finalizer |
+| 悔罪与holy当前RED | 030/032private native observation returned RED；旧成功角色/候选primitive保留，新输入不能称live | 沿本次原生结果补必要source/recovery/PAM/holy观测，paused验收后再执行宗教策略 |
+| ally recipient terms当前RED | 034/036/038 read-family-obligations-private-12002 observation RED；名单旧primitive独立保留，未发送或取得军援 | 最小context修复后同帧读真实final CanSend/费用/回答/WarID，再选合法发送及参战/支付独立后置 |
+| 县改宗typed未执行 | 五县旧final eligibility/value primitive和新typed静态GREEN均保留；本batch没有县动作 | fresh当前资格→一次typed派遣→独立task字段读回；ActiveTaskID可不变，派遣不等于县Faith转变 |
+| 当前终战options成功范围 | 三options查询actual available，CB/score/native资格可读；CB-specific terms与recipient_response unavailable | 根据真实游戏机会补条款/后果，不把成功query当终战或物质损失已知 |
+
+已有最后通牒拒绝、一次move和五个独立保存日的bounded `production-live loop`不因新batch RED回退；新cold/queries/save不增加日期、统帅/县动作、G2/NW、自然继承或战争完成信用。精确原生ranking/tie、敌未来意图/Monte Carlo等质量债继续按实际outcome完善，不扩成全局前置。战争与宗教全面授权继续生效，Robert唯一原campaign、exact-build、玩家限定、最小化不抢焦点保持；下方v35/STOP/旧限制和失败原样留作历史。
+
 ## 15:34 最新军事保存截点：五个单日 OODA
 
 截至本次实际保存，累计 **3850/36524** 日、resume+697、10月3日+602；`raw53236728`，正常保存 `h4701`，SHA `662f8ce9e40d515ccceea97466585e2e66e6e9c01cfcc135f8dede0a7f7cca4f`。第三日3848/h4692记录保留为历史截点，不重复计日。当前v35/Robert29829/episode `native-29829-2bc2d599f7f9`/PID13408继续最小化不抢焦点；新统帅、县任务、召盟修复、占领收复目标、悔罪恢复及圣骑士团兵数能力已源码采用并聚焦GREEN，待统一新DLL实测。G2 5/8、NW2/4和自然继承0保持；推进ACK不能当作抵达、战争胜利或宗教结果。原始第五日证据：`Z:\ck3_mod_rewrite_process_assets\g2-resume-20261003\battle-observation-schedule\actual-fifth-day-v35-01\result.json`。

@@ -1,5 +1,32 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 当前截点：v36 冷恢复与新查询，3850 个保存日（2026-10-03T16:14:12+08:00 实际补录）
+
+原 Robert29829 / episode `native-29829-2bc2d599f7f9` 已由 **v36 / PID90596** 正常冷恢复，仍为 ordinary / `xar_off` / pact absent。source/native/compiled 均为 **`6b0e6bdfa6b18396394ce8f12301e464825f1f46`**，runtime冻结 `Z:/g37`、开发树 `Z:/g38`；当前 **raw53236728**，累计 **3850/36524 天**、resume **697 天**、10-03 **602 天**。此次构建、冷恢复、查询和正常保存新增游戏日 **0**，统帅任命与县任务派遣尚未执行；G2 **5/8**、NW **2/4**、自然继承 **0** 与 `percent_reporting_allowed=false` 保持。
+
+fresh-cache Release 四目标 `/W4 /WX` 严格构建 **74.994401 秒 GREEN**，64 jobs、538 次编译 / 535 个unique source / 1034 个inputs，115 flags保持63 ON / 52 OFF。DLL SHA-256 `bdb08f2e6cc7bc5afd4d65119e8d19ca5cf19fba50c1e356eb8fa892c1702c16`；manifest SHA-256 `898c26db8c2f7d27ec52680982e0389e7c28c59a94d8f45a2c36679ff8f479d0`。此前v36 configure RED保留，retry02只修既有fixture GLOB重复项，未借重试改变ABI、flags或回调。[实际严格构建回执](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v36-retry-02/BUILD-RESULT.json)。[exact-head官方CI37107189723](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37107189723) GREEN只证明static，不替代本机实测。
+
+冷恢复独立结果 **GREEN**：full history **4702**、原save anchor **4701**，原日期、角色、goal与六ledger保持；原Sway134217986/gen8的completion/execution/termination/invalidation四项重新附着均GREEN，没有重发Start。[原存档cold基线](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v36-retry-02/v36-root-packet/actual-candidate-cold-goal-01/result.json)。实际窗口 `minimized=true / ck3_is_foreground=false`，无窗口修改或输入。[窗口只读回执](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v36-retry-02/actual-window-state-01.json)。
+
+新只读batch正常保存 **h4712 / raw53236728**，save SHA-256 `31ef035624be4146e8f9f9743081e27b0418e18ea3f67d885252648e97a8b784`；aggregate仍 **RED**，成功分项独立保留。h4702是cold full history、h4701是其来源save，不能当作本batch保存序号，也不增加游戏日。[完整新查询与正常保存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v36-retry-02/actual-new-leaves-v36-01/result.json)。
+
+| 当前工作包 | 实际readiness与证据边界 | 下一最小交付 |
+| --- | --- | --- |
+| 原战役cold与Sway附着 | v36/PID90596在raw53236728从原save4701恢复，full4702、同actor/episode/goal/六ledgerGREEN；四Sway recorder附着GREEN、无重Start | 在同一原campaign继续既有正式消费者；cold不记日期或Sway完成信用 |
+| 统帅候选与任命 | 当前commander absent；原生集合complete **19行 / 19CanAssign=true**、mode1、质量可读，候选为 `production-live primitive`；typed任命仍 `static-ready` | 按当帧final-native资格一次typed任命，独立观察同CUnit/CArmy/owner的实际commander；ACK不作任命 |
+| 当前补给 | 八Strength行actual available，玩家2334兵、当前signed supply **10000000/100000=100**；补给字段为 `production-live primitive` | 用真实当前值支持既有路线/补给选择；后续状态和实际收益另验，不把100外推为长路线无损 |
+| 战争占领/收复目标 | 三tool调用GREEN但payload均unavailable，`war_occupation_context_unavailable`、集合不完整、rows空；未取得目标primitive | 修同一生产context缺口，raw53236728的既有三失败payload直接复用；新只读目标实际可用后再选收复路线 |
+| 战争外交options | 三战争options actual available，CB/score/validator与available可读；CB-specific terms和recipient_response仍unavailable | 依实际机会补条款与独立后态；当前只读输入不意味着已投降、议和或战争结束 |
+| 战斗terminal | 028真实RED：application-main typed query failed or snapshot changed；已合入的phase/day/date修复没有闭合本次失败 | 用现有028包确定本次生产缺口后最小修复；实际当前Combat/subject基线成功才升级primitive，真实finalizer结果另计 |
+| 悔罪与holy order | 030/032均private native observation RED；新source/recovery/PAM与holy兵数静态GREEN不能替代实际输入 | 分别消费本次原生失败，补同MCP必要观测并paused验收；尚无合法解除、雇佣或宗教玩法结果 |
+| 召盟参战与县任务 | 三recipient034/036/038实际RED，typed sender仍 `static-ready`；县typed亦未实机执行，旧五县资格primitive保留 | 盟友context失败最小修复；县取得fresh合法资格后派遣一次并独立task type/target/owner/incumbent读回，信仰改变另验 |
+
+统帅真实名单已complete：军队83886367/CArmy50331794/owner29829，当前commander合法absent；**19个候选、19个最终CanAssign=true**，质量/通用advantage可读，最高native base29为Robert；此为 `production-live primitive`，typed任命仍 `static-ready`。ArmyStrength八行available且当前signed supply实际可读：玩家 **10000000/100000＝100**、兵数 **2334**；只完成当前补给观测，没有预测补给、抵达、玩家战斗或军务收益信用。
+
+三场occupation调用均tool GREEN，但实际payload均 **available=false / `war_occupation_context_unavailable` / collection_complete=false / rows空**，占领与收复目标观测未闭合，空rows不能表示零占领。三场termination options实际available，CB/war score/native option资格独立可用；CB-specific terms和recipient_response仍unavailable，未议和或投降。terminal、悔罪、holy-order及三位ally recipient查询共六个实际RED保留，不能借strict或fixture GREEN升级live。后续沿对应生产缺口作最小修复，并复用本次失败包与成功输入，不重复whole batch。
+
+Root继续独占SDK/game/pipe/Git/桌面，独立施工包保持外置高并发；任务分流依据当前真实失败和游戏价值，不把六项RED变为所有成功primitive的前置。现有五日军务循环正常信用保留，新batch新增日与新typed动作数均0；G2/NW/自然继承与完整campaign门未变化。当前授权不受历史nonwar或WAR OFF限制，原生树与exact-build先于策略修改；下方旧截点保留。
+
 ## 15:34 最新军事保存截点：五个单日 OODA
 
 截至本次实际保存，累计 **3850/36524** 日、resume+697、10月3日+602；`raw53236728`，正常保存 `h4701`，SHA `662f8ce9e40d515ccceea97466585e2e66e6e9c01cfcc135f8dede0a7f7cca4f`。第三日3848/h4692记录保留为历史截点，不重复计日。当前v35/Robert29829/episode `native-29829-2bc2d599f7f9`/PID13408继续最小化不抢焦点；新统帅、县任务、召盟修复、占领收复目标、悔罪恢复及圣骑士团兵数能力已源码采用并聚焦GREEN，待统一新DLL实测。G2 5/8、NW2/4和自然继承0保持；推进ACK不能当作抵达、战争胜利或宗教结果。原始第五日证据：`Z:\ck3_mod_rewrite_process_assets\g2-resume-20261003\battle-observation-schedule\actual-fifth-day-v35-01\result.json`。

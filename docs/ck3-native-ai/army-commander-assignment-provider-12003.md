@@ -41,3 +41,19 @@ Focused fixture 使用真实 production reader、command submit、serializer、t
 `open_kaishek` 预验为 `not-applicable`：此包处理 exact-build native C++ ABI 和 MCP wire，不运行其 parser、Paradox 脚本或 finite-runtime 支持语义；确定性子集由本包 focused production fixture 执行。没有游戏日推进、SDK/window 操作或 G2 信用。
 
 剩余由 Root 合入并构建新的冻结 DLL，读取 Robert 当帧真实候选，再根据已冻结原生质量字段做单军最小策略、执行一次 typed 任命并保存独立后置 artifact。原生全军排序、auto-commander bits、大表 tie-order 与目标地形质量尚不由本最小策略复刻，质量差距继续记入原生专题和 blocker ledger；它们不构成这项单军合法任命的额外门禁。
+
+## v36 实际名单与首个任命 attempt（2026-10-03）
+
+新冻结源码/native head `6b0e6bdfa6b18396394ce8f12301e464825f1f46`，`Z:/g37`，CK3 1.20.0.3 / Steam 25652598，PID `90596`（仅当次历史身份），同 Robert `29829`、episode `native-29829-2bc2d599f7f9`、paused `date_raw=53236728`。Root 原 SDK 批次 `runtime-preparation/v36-retry-02/actual-new-leaves-v36-01/result.json` 已完整正常保存；aggregate RED 与本项 query `024` 的 GREEN 分开。
+
+实际 `ck3_query_army_commander_candidates_v1` 为 available、native/public revision `2/2`、query sequence `1`，public CUnit `83886367` → internal CArmy `50331794`、owner `29829`；current commander **absent** 是合法缺席，非读取失败。native `(filter_now=false, allow_guests=true)` collection有 `19` 行，19/19 身份、player mode-1 final资格和两个质量 getter均完整，19/19 can_assign=true。Robert本人 `29829` 的 native base quality/generic advantage `29/29` 唯一最高，`34867` 次高 `28/28`，随后 `32716=23/23`、`33435=22/22`。29不能改称独立martial字段，两getter本帧相等不能一般化为同一字段或胜率。
+
+File-only最小单军策略从这些实际原生eligible候选动态选择最高base quality，再generic advantage，同分保留原生collection顺序，选择Robert `29829`，没有假定fixture人物ID。原生全军mode-2 owner-priority/group/tie/目标地形策略仍按既有原生树记质量差距。观察器此项可记 `production-live primitive`；策略选择是证据消费，不领取任命或战斗信用。名单正常checkpoint为 `4712`，SHA `31ef035624be4146e8f9f9743081e27b0418e18ea3f67d885252648e97a8b784`。
+
+Root随后仅发送一次 `ck3_assign_army_commander_v1(army_id=83886367,commander_character_id=29829,expected_revision=2)`，失败artifact `commander-assignment-provider/actual-assignment-v36-01/005-ck3_assign_army_commander_v1.json` 为实际 RED：`application-main army-commander assignment executor unavailable or busy`。002/003动作前诊断已观察共同mailbox `failure=512`、ready=false，published/completed/started/executed均13，submission_enabled=true，paused/date仍一致。`512=1U<<9` 是既有executor_exception位，不能把它归给未进入的统帅command factory。
+
+**此 attempt确定未入application-main mailbox，也未到native CSetCommanderCommand queue。** frozen `bridge.cpp:11936-11942` 仅在 `TrySubmitMainThreadQueryV1 != submitted` 时产生上述确切字符串；mailbox源码在 `1433-1434` 检查既有failure并在 `1469-1478` 发布ticket/queued之前返回。所有非submitted返回均在publication前，已queued路径只于1502返回submitted。assignment callback→`ApplyArmyCommanderAssignment`→native factory/validator/`SubmitCommandCopy` 没有进入。这是按源码分支确定的本attempt零执行，并非伪造实测counter。该error没有公开具体TrySubmit拒绝enum；pre-existing512足以解释infrastructure_failed，但不把推断的enum写成已观测字段。
+
+这与已进入callback之后的 `army-commander assignment execution unresolved; query actual commander` 或native queue接受后的 `submitted_verification_pending` 不同。本attempt没有queue ACK，也没有独立post-command commander读回，因此任命仍未完成，不能记production-live assignment primitive/loop。正常checkpoint `4714` GREEN，SHA `8a9e4345edb07ba6b6e118a6ad4eee12daecf21ab58bee095a346ff1d80119a5`，同date/actor/episode；它不证明任命结果。
+
+外置 `commander-assignment-provider/actual-v36-new-leaves-01/ACTUAL-ASSIGNMENT-CLASSIFICATION.json` 保存actual packet、源码branch与文件hash。保留once失败attempt，不重发；Root恢复共同mailbox后先执行已经准备的 `selection/READBACK-ONLY-CALLS.json`。只有读取当前实际commander后仍需任命，才用新fresh名单/revision绑定下一次动作。本项worker未连接SDK、未操作窗口/Git、未重跑旧测试；没有新增游戏日、G2或战斗胜利信用。

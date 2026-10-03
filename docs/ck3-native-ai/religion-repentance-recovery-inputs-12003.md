@@ -156,3 +156,15 @@ Faith.HasDoctrine/GetDoctrines 的当前 native 语义已经由现有 `religion_
 父级证据目录 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/repentance/v36-integration-focused-attempt-01/{RESULT.json,PYTHON-V36-REGISTERED-RESULT.json}`。独立 leaf 证据位于 `native-superior/v36/focused-*`、`native-recovery-bits/focused-attempt-01/RESULT.json` 和 `native-pam/v36/focused-attempt-02/RESULT.json`；PAM 第一次 fixture signed/unsigned warning 是 harness RED，保留失败 attempt 后只修该 fixture 并完成新分支验证，不改产品语义。
 
 ROOT 合入后需要一次同 MCP 新 paused capture；新实际输入若全部成功，则普通恢复决策得到真实合法入口或完整的当前无入口结论。若 requires-petition=true，下一项可施工入口是选中 `scope:petition_head_of_faith_repentance` 的 widget/setup/cost/CanTake，而不是把未选中一般决议当作已可发送；若 recent modifier=true，则 actual expiry/remaining days 直接供等待分支。通用 compiled named-trigger lookup/eval 保留为研究替换入口，本次 typed stock route 已有完整源公式与 native scalar/field 证据。
+
+## 2026-10-03 actual v36：共同主线程前置故障，悔罪新增叶尚未执行
+
+Source `6b0e6bdfa6b18396394ce8f12301e464825f1f46`，DLL `bdb08f2e6cc7bc5afd4d65119e8d19ca5cf19fba50c1e356eb8fa892c1702c16`，ROOT PID90596。实机capture `Z:\ck3_mod_rewrite_process_assets\g2-resume-20261003\runtime-preparation\v36-retry-02\actual-new-leaves-v36-01` 的 `030-ck3_query_player_repentance_context_v1.json` SHA `1a42f9a3e0d07d6fedcafa6d8082d86d0b4404f96e07ffadccd43b3f183f74c9`、610bytes，为保存的RED错误包；没有native result body。不能把此包写成PAM/expiry/候选来源已观测，也不能从它得出普通请求不存在、requires-petition或冷却布尔值。
+
+已有027 snapshot的mailbox为failure=0、ready=true、published/completed/executed=12。028 battle查询后029为failure=512、ready=false、三计数13；030悔罪请求后的031仍failure=512、ready=false、三计数13，pump从77420增长到77684。请求前后actor29829、episode native-29829-2bc2d599f7f9、DateRaw53236728、paused/mapready、public/native revision2都稳定。由已保存的计数可确认：该悔罪attempt没有执行新增reader；目前可复现前置阻点是共同mailbox状态，不是具体悔罪ABI叶或原生合法性false。512的具体异常归因由ROOT的runtime_prepare lane负责，本lane不重复展开共同故障。
+
+新增五个sidecars仍保持static-ready；此前v35 current-role final terms和unselected petition production-live primitive保留为其历史日期证据，不能补入本次不同日期的空body。最高优先级依赖已经交给运行时lane：恢复共同mailbox后，使用fresh public revision/actor/episode/date，**一次**同MCP新paused capture，再依据实际requires-petition/expiry/完整候选legal判断下一原生primitive。当前没有支持新增宗教观察字段或改PAM公式的真实叶子失败，因此没有派生无依据新native lane。
+
+本分析仅文件消费；ROOT累计3850日，本lane零新增日、动作、SDK/pipe/window/Git/shared-source操作；旧测试零重跑。逐包SHA、counter和资格存于同目录OBSERVATION-QUALIFICATION.json。
+
+运行时负责人追加源码闭合：实际512为 `main_thread_query_failure_executor_exception`；executor SEH catch置该flag（其hpp132/cpp1782证据）。后续Submit在非零flags时直接`infrastructure_failed`（cpp1433/1463），Reclaim只回idle不清flags；因此实际持续seq13/readyfalse对应共同executor异常后的拒绝，悔罪叶没有被执行。具体最初battle terminal异常由该owner修复；本lane无悔罪产品代码修改。
