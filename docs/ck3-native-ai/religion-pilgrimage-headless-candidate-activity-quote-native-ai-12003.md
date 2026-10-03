@@ -85,3 +85,11 @@ flowchart TD
 另一个未采用分支是非 `single_location` 类型的总选址计数：准确 `.3 11B6780` 语义尚未闭合，不能拿 raw configured rows 或旧 `.2` 实现代替。固定朝圣的真实 single-location 分支跳过该总 gate；同省 cap 继续原生求值。此遗留项在工厂收据中保留，不为收尾扩展研究。
 
 后台完整旅费/返程研究已停止并冻结于 `journey-fees-and-return-schedule-next`。service/options 的无窗口 numeric recipe 已回链原生 current-player 与实际 Data.actor 的对应条件；CActivityPhase RTTI 与 loader/postload 仅证明定义类型，尚不是 duration/Date getter。下一入口是 constructor 安装的 nested type 与原 post-route 路径中的纯 evaluator；不能调用 loader/postload 来代替时长读取，不把 stock3个月或 Date raw 差值写成全程 ETA。
+
+## 2026-10-03T11:51 接续源码采用
+
+已闭合Phase+1078是AI分数、+6A0是CScriptedCost；GetProgressPhaseDate与GetActiveStartDate为既有活动纯getter，三个月是到达后停留而非全程ETA。采用两独立内部只读组件与原生专题，唯一新增fixture直接执行exactgetter机器码，/W4 /WX GREEN，Date=-1与对象bytes不变。尚未发布此叶的MCP；同帧active CActivity身份和全旅程CostBreakdown仍有具体施工依赖，完整费用/预先返回日期仍research，不替代现activityquote。
+
+实际记录：`2026-10-03T11:51:26+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
+
+交付回执：[pilgrimage-journey](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/pilgrimage-journey/ROOT-DELIVERY.json)。

@@ -820,6 +820,7 @@ if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_pilgrimage_candidate_factory.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_pilgrimage_activity_terms.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_pilgrimage_candidate_route.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_activity_phase_dates.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_confession_decision_terms.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_confession_rite_permission.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_tenet_rows.cpp"
