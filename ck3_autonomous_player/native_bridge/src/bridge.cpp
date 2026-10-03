@@ -10496,6 +10496,7 @@ public:
       // owned command submitter, followed by a separate read-only observer.
       environment.permitted_executor_sexdenary =
           &xar::ck3_12003::ExecuteArmyCommanderAssignmentMailbox;
+      xar::ck3_12003::RegisterPlayerDefaultRaiseMailboxExecutorV1(environment);
 #if defined(XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1)
       environment.permitted_executor_quattuorquadragintary =
           &xar::ck3_11906::ExecuteCurrentTimelineBlockerContextMailboxQueryV1;
