@@ -75,6 +75,12 @@ bool ExecutePlayerReligionMailbox12002(
       out.date_raw = static_cast<std::int32_t>(frame.date_raw);
       out.played_character_id = static_cast<std::int32_t>(frame.played_character_id);
     }
+    // Resolve the fixed confession definition against this current Context
+    // and actual player. A legal false permission remains an observed value.
+    (void)ck3_12003::religion::confession_permission::ReadPlayerConfessionRitePermission12003(
+        query.confession_permission_bindings, query.bindings,
+        out.available ? ResolveCoreCharacter(query.bindings.core, out.played_character_id) : nullptr,
+        out, query.confession_rite_permission);
     // Read the independent milestone component on the same owner callback.
     // Its availability does not alter the existing Context or conversion inputs.
     (void)religion::fulfillment_progress12003::ReadPlayerSpiritualFulfillmentProgress12003(
@@ -162,6 +168,9 @@ std::string SerializePlayerReligionResult12002(
       ",\"player_confession_decision_terms\":" +
       ck3_12003::religion::confession::SerializePlayerConfessionDecisionTerms12003(
           query.confession_terms) +
+      ",\"player_confession_rite_permission\":" +
+      ck3_12003::religion::confession_permission::SerializePlayerConfessionRitePermission12003(
+          query.confession_rite_permission) +
       ",\"player_church_income_profile\":" +
       ck3_12003::religion::church_income::SerializePlayerChurchIncomeProfile12003(
           query.church_income_terms) +
@@ -255,6 +264,11 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
     query.confession_bindings =
         ck3_12003::religion::confession::BindPlayerConfessionDecisionTermsImage12003(
             image_base, adapter.descriptor().executable_sha256);
+    // Reuse reviewed .3 admission for the existing definition/status factory.
+    // No draft reader or window operation is invoked by this query.
+    query.confession_permission_bindings =
+        religion_reform::BindCurrentDraftTenetSources12002(
+            image_base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     query.church_income_bindings =
         ck3_12003::religion::church_income::BindPlayerChurchIncomeProfileImage12003(
             image_base, adapter.descriptor().executable_sha256);

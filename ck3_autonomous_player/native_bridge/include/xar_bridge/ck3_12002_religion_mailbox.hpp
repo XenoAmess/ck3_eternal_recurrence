@@ -7,6 +7,7 @@
 #include "xar_bridge/ck3_12003_mystical_communion_decision_terms.hpp"
 #include "xar_bridge/ck3_12003_pilgrimage_activity_type_terms.hpp"
 #include "xar_bridge/ck3_12003_confession_decision_terms.hpp"
+#include "xar_bridge/ck3_12003_confession_rite_permission.hpp"
 #include "xar_bridge/ck3_12003_church_income_profile.hpp"
 #include "xar_bridge/ck3_12003_church_tax_inputs.hpp"
 #include "xar_bridge/ck3_12003_player_devotion_profile.hpp"
@@ -35,6 +36,8 @@ struct PlayerReligionMailboxContext12002 {
   ck3_12003::religion::pilgrimage::Terms pilgrimage_terms{};
   ck3_12003::religion::confession::Bindings confession_bindings{};
   ck3_12003::religion::confession::Terms confession_terms{};
+  ck3_12003::religion::confession_permission::Bindings confession_permission_bindings{};
+  ck3_12003::religion::confession_permission::Terms confession_rite_permission{};
   ck3_12003::religion::church_income::Bindings church_income_bindings{};
   ck3_12003::religion::church_income::Terms church_income_terms{};
   ck3_12003::religion::church_tax_inputs::Bindings church_tax_bindings{};

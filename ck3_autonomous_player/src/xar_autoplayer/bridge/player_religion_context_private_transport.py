@@ -9,6 +9,9 @@ from .player_spiritual_fulfillment_type import (
     normalize_player_spiritual_fulfillment_type_v1,
 )
 from .player_church_tax_inputs import normalize_player_church_tax_inputs_v1
+from .player_confession_rite_permission import (
+    normalize_player_confession_rite_permission_v1,
+)
 from .player_devotion_virtues import (
     normalize_player_piety_devotion_profile_v1,
     normalize_player_rite_virtue_sin_profile_v1,
@@ -339,6 +342,13 @@ def query_player_religion_context_private_v1(
                     result["player_confession_decision_terms"], current_context=value,
                 )
             )
+        confession_permission_fields = {}
+        if "player_confession_rite_permission" in result:
+            confession_permission_fields["player_confession_rite_permission"] = (
+                normalize_player_confession_rite_permission_v1(
+                    result["player_confession_rite_permission"], current_context=value,
+                )
+            )
         church_income_fields = {}
         if "player_church_income_profile" in result:
             church_income_fields["player_church_income_profile"] = (
@@ -375,7 +385,8 @@ def query_player_religion_context_private_v1(
         raise BridgeUnavailableError(str(error)) from error
     return {
         **value, **progress_fields, **decision_fields, **pilgrimage_fields,
-        **confession_fields, **church_income_fields, **fulfillment_type_fields, **church_tax_fields,
+        **confession_fields, **confession_permission_fields, **church_income_fields,
+        **fulfillment_type_fields, **church_tax_fields,
         **devotion_virtues_fields,
         **private_native_provenance(before),
         **private_g2_query_metadata_v1(before),
