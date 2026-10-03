@@ -1,0 +1,93 @@
+{
+  "exact_identity": {
+    "exe": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "version": "1.20.0.3",
+    "steam_build_id": 25652598,
+    "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+    "rvas_relative_to_image": true,
+    "research_base": "Z:/g36 @ 19b508a"
+  },
+  "readiness": "research / exact static-confirmed; not live",
+  "tree": "docs/ck3-native-ai/commander-candidates-and-assignment-12003.md",
+  "collector": {
+    "rva": "0x2c11c10",
+    "prototype": "void(CCharacter* RCX, NativePointerVector* RDX, bool R8B filter_now, bool R9B allow_guests)",
+    "player_gui_flags": [
+      false,
+      true
+    ],
+    "native_ai_flags": [
+      true,
+      false
+    ],
+    "output": "CCharacter* elements; FullCharacterID +0x18; tag +0x1c",
+    "vector": {
+      "size": 24,
+      "data_offset": 0,
+      "capacity_i32_offset": 8,
+      "count_i32_offset": 12,
+      "allocator_object_offset": 16,
+      "allocator_object_rva": "0x54debb8",
+      "allocator_is_object_address_not_pointer_slot": true
+    },
+    "scratch_init": "zero first 16 bytes, set vector+0x10 = image+0x54debb8",
+    "scratch_free": "if data != null: (*(allocator->vtable+0x10))(allocator RCX,data RDX,8 R8D) from GUI exact callsite",
+    "writes": "caller-owned scratch output only; no assignment"
+  },
+  "army_context": {
+    "public_unit_to_army_id": "CUnit+0x178 FullCArmyID",
+    "internal_army_backref": "CArmy+0x124 FullCUnitID",
+    "unit_owner": "CUnit+0x174 FullCharacterID",
+    "current_commander": "CArmy+0x120 FullCharacterID",
+    "army_id": "CArmy+0x10 FullCArmyID; tag +0x14"
+  },
+  "final_eligibility": {
+    "rva": "0x2971510",
+    "prototype": "bool(int mode ECX,CCharacter* candidate RDX,CArmy* army R8,NativeString* reason R9)",
+    "Robert_player_mode": 1,
+    "native_ai_mode": 2,
+    "reason_null_legal": true,
+    "mode2_not_player_readiness": true
+  },
+  "quality": {
+    "base_rva": "0x2c0b270",
+    "base_prototype": "int32(CCharacter* RCX)",
+    "base_inputs": [
+      "Character+0xdc = indexed skill 1",
+      "modifier index 0x19b, Q100000 toward zero"
+    ],
+    "existing_generic_advantage_rva": "0xc6ded0",
+    "existing_generic_advantage_call": "(candidate,-1,false)",
+    "native_sort_rva": "0x2c11fd0",
+    "native_sort_flags": 2,
+    "owner_priority_input": "0x28b16b0(owner,1) = Character+0xdc",
+    "owner_threshold": "*(image+0x54504b8)+4",
+    "owner_threshold_semantic_name": "unknown",
+    "base_and_generic_advantage_are_distinct": true
+  },
+  "command_research": {
+    "48_byte_packet": {
+      "+0": "primary vtable 0x476a418",
+      "+0x18": "secondary interface vtable",
+      "+0x20": "mode int32",
+      "+0x24": "candidate FullCharacterID",
+      "+0x28": "FullCArmyID"
+    },
+    "validate_rva": "0x2971480",
+    "validate_vtable_slot": 48,
+    "mutating_executor_rva": "0x2971320",
+    "executor_secondary_vtable": "0x476a4b0",
+    "executor_secondary_slot": 8,
+    "query_must_not_execute": true,
+    "published_assignment_action": "none found"
+  },
+  "remaining_unknown": [
+    "native weekly tick binding",
+    "semantic names landed list +0x138/+0x150",
+    "group+0x24 weighting meaning",
+    "global owner threshold name",
+    "full large-table tie-order branches"
+  ],
+  "source_pins": "SOURCE-PINS.json",
+  "stock_pins": "stock-ranges.json"
+}

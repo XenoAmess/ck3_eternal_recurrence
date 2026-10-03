@@ -47,6 +47,7 @@
 #include "xar_bridge/ck3_11906_adapter.hpp"
 #include "xar_bridge/ck3_12002_adapter.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 
 #include <windows.h>
 #include <bcrypt.h>
@@ -487,6 +488,12 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     if (ck3_11906::ParseBattleControlSnapshotV1Step(step,
                                                     battle_request)) {
       capability = ck3_11906::kBattleControlSnapshotV1Capability;
+    }
+  }
+  if (capability.empty()) {
+    std::int32_t commander_army_id = -1;
+    if (ck3_12003::ParseArmyCommanderCandidatesStep(step, commander_army_id)) {
+      capability = ck3_12003::kArmyCommanderCandidatesCapability;
     }
   }
   if (capability.empty()) {

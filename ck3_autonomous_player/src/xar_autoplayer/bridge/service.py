@@ -69,6 +69,12 @@ from .war_entry_contract import (
     war_entry_assessment_target_scopes,
 )
 from .actual_contact_contract import query_actual_contact_scope_step
+from .army_commander_candidates import (
+    QUERY_ARMY_COMMANDER_CANDIDATES_V1_CAPABILITY,
+    commander_query_army_scope,
+    normalize_army_commander_candidates_v1,
+    query_army_commander_candidates_v1_step,
+)
 from .battle_control_contract import (
     QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY,
     normalize_active_combat_resume_inputs_v1,
@@ -3929,6 +3935,74 @@ class GameplayBridgeService:
                 "war_termination_exit_terms"
             )
         return {**result, "war_id": war_id}
+
+    def query_army_commander_candidates_v1(
+        self,
+        army_id: int,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read the current player army's native manual commander candidates."""
+        step = query_army_commander_candidates_v1_step(army_id)
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError("commander queries require a paused CK3 snapshot")
+        try:
+            commander_query_army_scope(snapshot, army_id)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        revision = snapshot.get("revision")
+        if type(revision) is not int or revision < 0:
+            raise BridgeUnavailableError("commander query lacks a valid public revision")
+        if expected_revision is not None:
+            if type(expected_revision) is not int or expected_revision < 0:
+                raise ValueError("expected_revision must be a non-negative integer")
+            if expected_revision != revision:
+                raise PreSubmissionRevisionMismatchError(
+                    f"commander revision mismatch: expected {expected_revision}, current {revision}"
+                )
+        native_revision = snapshot.get("native_revision")
+        date_raw = snapshot.get("date_raw")
+        if type(native_revision) is not int or native_revision <= 0 or type(date_raw) is not int:
+            raise BridgeUnavailableError("commander query lacks native revision/date")
+        capabilities = self.capabilities().get("bridge_capabilities")
+        if not isinstance(capabilities, list) or QUERY_ARMY_COMMANDER_CANDIDATES_V1_CAPABILITY not in capabilities:
+            raise UnsupportedStepError("selected backend cannot query native commander candidates")
+        result = self.execute_step(step, expected_revision=revision)
+        if (
+            not isinstance(result, dict)
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") != "completed"
+            or result.get("read_only") is not True
+            or type(result.get("query_sequence")) is not int
+            or result.get("query_sequence") <= 0
+            or result.get("snapshot_revision") != native_revision
+            or result.get("date_raw") != date_raw
+        ):
+            raise BridgeUnavailableError("native commander query returned a malformed envelope")
+        try:
+            normalized = normalize_army_commander_candidates_v1(
+                result.get("army_commander_candidates"),
+                expected_army_id=army_id,
+                expected_snapshot_revision=native_revision,
+                expected_date_raw=date_raw,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native commander result is malformed: {error}") from error
+        current = self.snapshot()
+        if current.get("paused") is not True or any(
+            current.get(key) != snapshot.get(key)
+            for key in ("snapshot_id", "revision", "native_revision", "date_raw")
+        ):
+            raise BridgeUnavailableError("commander query crossed a paused frame")
+        return {
+            **result,
+            "army_commander_candidates": normalized,
+            "queried_snapshot_id": snapshot.get("snapshot_id"),
+            "queried_revision": revision,
+            "queried_native_revision": native_revision,
+        }
 
     def query_army_strengths(
         self,

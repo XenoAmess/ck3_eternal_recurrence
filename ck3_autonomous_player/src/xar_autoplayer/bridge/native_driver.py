@@ -121,6 +121,13 @@ from .actual_contact_contract import (
     parse_query_actual_contact_scope_step,
     query_actual_contact_scope_step,
 )
+from .army_commander_candidates import (
+    QUERY_ARMY_COMMANDER_CANDIDATES_V1_CAPABILITY,
+    QUERY_ARMY_COMMANDER_CANDIDATES_V1_STEP_PREFIX,
+    commander_query_army_scope,
+    parse_query_army_commander_candidates_v1_step,
+    query_army_commander_candidates_v1_step,
+)
 from .battle_control_contract import (
     BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC,
     BATTLE_CONTROL_IDENTITY_PENDING_STATUS,
@@ -7202,6 +7209,13 @@ class NativeHeadlessGameplayDriver:
             raise UnsupportedStepError(
                 "malformed ZhongGuo scoreboard state v1 query step"
             )
+        commander_subject = parse_query_army_commander_candidates_v1_step(step)
+        if (
+            isinstance(step, str)
+            and step.startswith(QUERY_ARMY_COMMANDER_CANDIDATES_V1_STEP_PREFIX)
+            and commander_subject is None
+        ):
+            raise UnsupportedStepError("malformed army commander candidates v1 query step")
         actual_contact_query = parse_query_actual_contact_scope_step(step)
         if (
             isinstance(step, str)
@@ -7706,6 +7720,19 @@ class NativeHeadlessGameplayDriver:
                 )
             return self._execute_native_war_step(
                 step, expected_revision=expected_revision
+            )
+        if commander_subject is not None:
+            starting = self.take_snapshot()
+            if starting.get("paused") is not True:
+                raise BridgeUnavailableError("native commander query requires a paused snapshot")
+            try:
+                commander_query_army_scope(starting, commander_subject)
+            except ValueError as error:
+                raise BridgeUnavailableError(str(error)) from error
+            return self._execute_primitive_step(
+                step,
+                expected_revision=expected_revision,
+                required_capability=QUERY_ARMY_COMMANDER_CANDIDATES_V1_CAPABILITY,
             )
         if battle_control_subject is not None:
             bridge_capabilities = set(
@@ -26557,6 +26584,7 @@ def _action_steps(
     expand_preview_move_armies = False
     expand_route_contact_horizons = False
     expand_actual_contact_scopes = False
+    expand_army_commander_candidates = False
     expand_battle_control_snapshots = False
     expand_battle_reinforcement_assignments = False
     advertise_campaign_root_context = False
@@ -26620,6 +26648,8 @@ def _action_steps(
             expand_route_contact_horizons = True
         elif capability == QUERY_ACTUAL_CONTACT_SCOPE_CAPABILITY:
             expand_actual_contact_scopes = True
+        elif capability == QUERY_ARMY_COMMANDER_CANDIDATES_V1_CAPABILITY:
+            expand_army_commander_candidates = True
         elif capability == QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY:
             expand_battle_control_snapshots = True
         elif capability == QUERY_BATTLE_TRANSITION_V1_CAPABILITY:
@@ -26975,6 +27005,12 @@ def _action_steps(
             if is_public_cunit_id(army.get("army_id"))
             and _positive_native_id(army.get("current_province_id"))
             and not _army_retreating(army)
+        )
+    if expand_army_commander_candidates and paused is True:
+        steps.update(
+            query_army_commander_candidates_v1_step(int(army["army_id"]))
+            for army in controllable
+            if is_public_cunit_id(army.get("army_id"))
         )
     if expand_battle_control_snapshots and paused is True:
         steps.update(

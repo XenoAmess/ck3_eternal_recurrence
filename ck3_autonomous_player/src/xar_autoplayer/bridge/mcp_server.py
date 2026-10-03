@@ -2389,6 +2389,17 @@ def create_server(
             expected_revision=expected_revision,
         )
 
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_army_commander_candidates_v1(
+        army_id: PublicCUnitId,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read native current commander and manual candidates for a player army."""
+        return service.query_army_commander_candidates_v1(
+            army_id,
+            expected_revision=expected_revision,
+        )
+
     @server.tool()
     def ck3_query_army_strengths(
         army_ids: list[PublicCUnitId],
