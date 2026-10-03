@@ -57,3 +57,5 @@ R0003已实际续跑，但首个Bookmarks route是加载瞬态：随后树为 `_
 随后[时间推进修正](ck3-upgrade-native-startup-2026-10-03.md#下一-writer-的时间推进修正)以真实cap核定缺少 exact-one-day、普通life-advance存在；新增显式day-or-event观察分支及4项新边界检查，默认逻辑不变。source实际定时器补齐两天后offer与加分后的第三天death提示，独立04a/04b/06b后态逐项读取。新纯输入prepared，仍不记writer/reader或七cell通过；闭包与字节不变压缩收据已保全。
 
 02:06 [主版R0007](ck3-upgrade-native-startup-2026-10-03.md#主版-r0007动态资格列表不能替代观察能力)再次实际通过规则、地图、anchor及三生产事件。04a把无事件时动态隐藏的query action误作backend能力，发出任何time primitive前拒绝，全局RED保留；无死亡或持久化，CK3零/CAS1842释放。v10改核真实HELLO能力+注册tool，受影响4项及真实no-event向量新增1项聚焦PASS；下一新state/run才能推进，不重写旧报告。
+
+02:35 [主版R0008](ck3-upgrade-native-startup-2026-10-03.md#主版-r0008实际死亡结算与文件持久化)实际写入子链33/33通过并闭包：三次有界日推进、真实死亡前存档、单次原角色死亡、原episode结算2.97/新纪录2及75-byte真实教程两次稳定SHA一致。原生消费者实际读到source/commit/ready；10条引擎unused-variable日志原样保留，不称零错误。受管containment不是正常quit/flush；冷reader、无继承人GUI及完整七cell仍未完成，完整产品0/10。新reader只从此次闭合实际报告和精确教程字节生成；因C盘仅约36MB，先做精确已闭合材料的字节不变存储压缩，恢复足够容量后再新run。

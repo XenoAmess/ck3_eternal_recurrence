@@ -147,3 +147,21 @@ R0006完整3794文件 manifest index SHA `0cf8e4d1398190033f483e989cffdae4c3fab2
 v10仅把观察器能力判据改为实际注册tool、query_supported及 HELLO bridge_capabilities；三个time primitive仍须当前可执行，出现事件后实际query仍核 paused/fullinstance/revision/ROOT。patch SHA `000efc8681d73934ac9fc23fbafadedda7b718b189746714a0732c2e0d207027`。四项受影响旧检查与一项绑定实际R0007无事件响应的新增检查在同一次focused run全部PASS；新增负向证明缺HELLO能力或注册工具时任何mutation前拒绝。其余10个PlanClient方法AST原样，旧v9失败及输入不改写；下一run再取实际结果。
 
 磁盘存储只做字节保留处理：八份已闭合profile03/04存档各68,450,662bytes/SHA `52e8d94ef42e6d3f61c83e9cef92da8a5898347e51947fa76577ee637cf4341e`，NTFS压缩前后完整SHA/path/size/mtime相同，actual allocatedsize回收323,551,232B，报告SHA `69e52fea7b42775872310690242c8431add8a3ef0f69ee45fb92034fd2628766`。没有重新编码、删除或假定SAV文件是plain格式。
+
+## 主版 R0008：实际死亡、结算与文件持久化
+
+北京时间10-04 02:35，新 run `4-8e1c2f1861--eternal-recurrence--R0008`（execution `297043b7-3f50-4e35-bcb7-66179852515e`）已闭包。启动时 master `f520824fe89380318f38d4f4237c468533a49d6f` 干净；v10 harness 97,486 bytes/SHA `8cc00df931552b835e217f3d1c744ff0a900bfcd68406d824612bf70ce9d8df0`。仍使用已完成的 c2a5 source freeze 与 bac25 DLL，没有混入后续 fixture policy 或决议模型候选。新纯 writer state 的7文件、空58-byte教程和规则/分阶段计划由 frozen argv 32项绑定；新 active-input-binding SHA `664ef4343cd61d2cd47df5f567768c398282420bc586ef43119de05b6f73f029` 明确旧 v9 contract 仅作来源分析，旧 state 路径不是本次输入。
+
+新离线证据直接审阅 nonce `1bc6f7ca75d2`、UTC18:25:10和同图Steam“离线模式”；PNG SHA `76bae371eb975259b684ea2f889cff4fa7c86c923fa846b8046ecf55886708f9`。只证明当前挑战像素与同图标签，冻结背景不作实时声明，未切换Steam模式或重启ToDesk。
+
+实际89对规则、三目标规则应用/窗口关闭、stock Robert地图与动态episode锚点通过：`native-31254-f2bdb92ee080`、原角色31254、PID13876/generation1，初帧 native:3/public4/native3/date53144328。契约、第一世、拒绝祝福分别核真实定义/ROOT/实例/选项后只提交一次。04a、04b、06b各实际推进24原生小时，结束均speed1/paused且同owner；04b和06b分别在目标日观察到实例4、5，没有代选。无事件cap检查已越过R0007阻点。
+
+05实际 `cca120.11`/ROOT31254/原生选项0资格通过，单次引擎输入令威望2200→7200，未植入纪录位或结算结果。06真实保存 materialization available；`xar_checkpoint.ck3` 与 `xar_episode_seed.ck3` 各68,477,256 bytes/SHA `88f166dc3e6d8e411b1fe389da3283e161b42ab53ec5bb54a7b2653596ea475b`，日期53144376。07实际 `cca120.12`/ROOT31254/实例5/选项0核对后只提交一次；引擎自动切换到角色40526，但原episode维持31254并进入terminal，未执行继承人游玩操作。
+
+08实际消费者读回 ready、source31254、commit_serial1、final_score2.97、record_candidate2、old_record0、record_written=true。`ck3_settle_one_life` 的真实目标教程文件两次稳定读取为75 bytes/SHA `56300fb968e34e3383e5ecbd103face48efd05f15d54aa8966e17750a5166a64`，含 `xar_hs_ge_2`；required/present/persisted、stable_observations2、heir_gameplay_actions0及continue_as_heir=false全部通过。关闭前另保全精确报告与教程字节。
+
+[闭合原报告](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--eternal-recurrence--R0008/native-report.json) SHA `e9baa78ad7afa84b219db865bd0587c3ecfd30e713d5ca156c02d8e678c195ec`，33步骤通过，18:35:01.950671 UTC结束GREEN、cleanup_ok/thread_finished true。CK3及harness均零，keeper停止1864、CAS1865释放。最后动作只是finish_hold及受管containment，**未证明原生正常退出或quit时flush**。该GREEN证明写入子链，尚不替代冷reader、无继承人GUI、廷臣/白绮及双顺序等七cell完整合同。
+
+error.log仍保留10条原五种unused-variable各两次，2,380 bytes/SHA `2a92362d739587b548ca0e7c5837cb165975092ec3625b79df8aa76d61aaa3e1`。本次首次实际证明三个settlement字段被native消费者读取，但不会改写引擎诊断、制造脚本读取或称零错误。两项curse rarity旧边界仍保留。
+
+启动前对精确旧失败 `registration-annotations-03.json` 做NTFS metadata压缩，流式双SHA `cf8c3cadc9d682b3d10e03448a4af83d6e70a1d162ca59a8d58bda3463f1bfbe`、path/size/mtime不变，actual allocated回收766,267,392 bytes；报告SHA `0750ce8d5335ed486b06e91242d47e8ce2cf205f79bf9a108151d55b28b366ef`。旧失败未修复。R0008闭包后C盘仍仅约36MB可用，真实四存档均已压缩；下一实机先恢复容量，不删素材、不重复保存、不复用旧run。
