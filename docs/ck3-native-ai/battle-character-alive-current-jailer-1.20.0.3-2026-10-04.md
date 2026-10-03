@@ -79,3 +79,23 @@ Related adopted topic: [final survivor and saved character observation](battle-t
 验证 receipt：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-casualty-outcomes/oct4-character-alive-increments/fixture-topic/focused-attempt-01/RESULT.json`；原始输出位于同级 `native-wire/actual-character-frame.json`。新增生产路径首次 focused GREEN：1 native frame / 1 Python normalization；没有 SDK、窗口、full DLL 或 shared/Git 操作。
 
 截至此 receipt 为 **static-ready + 离线生产路径 fixture GREEN**。Root 当前玩家尚未接战、没有新的实际 per-ID paused artifact；本 lane 不计 production-live，也不计 killed/captured aggregate 或 battle-caused death。下一步由 Root 合并构建，在原普通战役的真实 paused MCP 中请求已实测的 full CharacterIDs；若要报告同一人物从 alive 到 dead，须另保存两个真实帧及相应身份，因果死亡结论仍需原生原因字段。
+
+## 2026-10-04 v47 实机：独立 character-only primitive
+
+本轮仅消费协调者冻结的 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-casualty-outcomes/oct4-character-alive-actual-v47/CONSUMED-FACTS.json` 与 `RAW-PINS.json`；原始验收包为 `runtime-preparation/v47/actual-preview-character-01/`。协调者资格说明在同包 `QUALIFICATION.json`。reports lane 未重新读取原始 005/006/007 或 result、未执行 SDK、测试或窗口操作。
+
+真实请求为 `ck3_query_battle_terminal_transition_v1(prior_combat_id=None, subject_public_cunit_id=None, character_ids=[29829], expected_revision=2)`；step 为 `query-battle-terminal-transition-v1-none:characters:29829`。返回 accepted=true、status=available、is_error=false。已发布人物行是 `character_id=29829, alive=true, status=none, actual_jailer_character_id=-1`。这里 status 是 **custody 状态**，none 表示该帧合法无当前 jailer；它不是死亡状态。依据已闭合的 native qword 语义，alive=true 表示严格解析的该角色 death-data pointer 为空；本 query 没有发布 raw pointer 或新的 death-record status 字段。
+
+005/007 两份周边 paused snapshot 均为 native revision **5**、public revision **2**、snapshot ID `native:5`、date_raw **53241096**、paused=true、PID **32372**、Robert **29829**，exact CK3 **1.20.0.3** / EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6` 且 buildmatch=true。query 自身 source.game_version/source.executable_sha256 是 null，保持其实际值；exact build 绑定来自这些独立 surrounding snapshot 证据。
+
+同帧 mailbox published/completed/executed counters 从 **8 → 10**，前后 failure=0、ready=true、executor_exception `{code:0,image:none,rva:null}`。query 使用 public expected revision2，查询结果绑定 native revision5；两层 revision 各保留自身语义。
+
+本查询是独立当前人物观察：terminal_journal latest_sequence=0 / event_status=not_observed，prior/removal/subject/successor 均为 null，battle_terminal_transition_ready=false。bridge mailbox ready=true 表示执行通路可用；terminal readiness=false 表示这次没有战斗终结 context，人物观察的 available 不产生终结战果。
+
+**本次 readiness 增量：alive=true + custody none/-1 分支由 static-ready 升为 production-live primitive。** alive=false、unresolved/null、positive actual jailer 仍只有既有静态夹具证据；没有真实同一角色 alive→dead 的跨帧变化。本次不计人物死亡、被俘或战果数量，不计玩家 battle loop 或完整 OODA。
+
+Root 另行告知执行元数据 native `g51` / `code1c`、SDK **90471** normal close exit0；来源是 Root 告知，资格说明已标明，不作为 result.json 发布字段。Root 告知 docs HEAD `c3cd` 的官方 CI run **37141461220** 当时待结论，本记录没有 CI GREEN 声明。
+
+下一步在 Robert 29829 原普通战役产生有价值的当前人物或战斗变化后，用同一 MCP 保存真实 fullID 帧；人物死亡、正 jailer 分支及战斗因果结论分别需要对应实际状态和原生原因证据。
+
+本次 character-only 只读帧没有新增游戏天数或 gameplay 动作；Root累计4032／resumed879／10月4日新增7日保持此前独立执行口径。封存 report receipt：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-casualty-outcomes/oct4-character-alive-actual-v47/reports/ROOT-DELIVERY.json`。

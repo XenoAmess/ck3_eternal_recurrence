@@ -27878,6 +27878,11 @@ def _action_steps(
             if isinstance(army.get("current_province_id"), int)
         }
         target_provinces.update(
+            int(army["current_province_id"])
+            for army in controllable
+            if _positive_native_id(army.get("current_province_id"))
+        )
+        target_provinces.update(
             int(army["move_target_province_id"])
             for army in controllable
             if _positive_native_id(army.get("move_target_province_id"))

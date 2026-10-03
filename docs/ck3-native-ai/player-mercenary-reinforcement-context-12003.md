@@ -72,3 +72,31 @@ All 33 candidates and all ten signed resource slots are retained in external `wa
 The current checkpoint is saved at history **5509**, raw date **53240928**, **91443885** bytes, SHA-256 **7ded957a3c703ceb5bd5bd3515444c5c04d01de0594da1812a2ba99440fabafb**. The raw query artifact is **1948654** bytes, SHA-256 **0e65416298a95479eb7b81ee7cb64f6eef25b046d6f3e46f4656bb0871c66529**. Source packets and copied production body remain immutable evidence; consumer receipts add no days, hires, payments or army credit.
 
 Readiness has advanced from initial **static-ready** to **production-live primitive** for this current-player mercenary observation. The next concrete dependency is the normal typed hire action plus independent employer/contract, wealth and player-army after-state. Root authorized file-only parallel implementation against frozen `Z:/g49`; it does not credit submitted/queued commands as actual hires. Native AI chooser scoring remains a separate tree branch, and current manager enumeration order is not a winner.
+
+## Production-live loop: normal mercenary hire514, 2026-10-04
+
+The normal hire loop is now observed in Root's original ordinary Robert29829 campaign, episode `native-29829-2bc2d599f7f9`, exact CK3 **1.20.0.3 / Steam25652598 / EXE SHA94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6**. Root uses v47/g51/source1c/R24, gamePID32372 minimized, not foreground, no input. This is one hire with independent after-state; it does not claim army merging, capital relief, combat success or the complete autonomous war loop.
+
+Fresh prehire observation at raw date **53241096**, calendar **4032**, native3/public2/capture17903 found company **514**: employer null, native `CanHire=true`, `CanAfford=true`, payment status **2**, quote `[42000000,0,0,0,0,0,0,0,0,0]` at scale100000, **1647** current company soldiers, **36 quoted new-hire months**, home title1586/province3664 and actual active-war auto-raise selector **2618**. Observed gold was **106634828/100000 =1066.34828**; before player PublicCUnit IDs were **167772189** and **83886367**. Root selected this one medium-size quantity/cost fallback; it is not the native AI winner or a composition-quality optimum.
+
+Root's sole action batch `runtime-preparation/v47/actual-hire-514-01` is GREEN, SDK **33221** normally closed exit0, zero world days advanced. `004-ck3_hire_mercenary_v1.json` re-read actual company/actor and native terms at Submit; native command validation is observable and true. The action outer status is `submitted_verification_pending`, inner status `submitted`, command sequence1/native snapshot7/public2. Its `after_state_observed=false` remains unchanged: native queue AL is only submission evidence.
+
+Independent `006-ck3_query_player_mercenary_context_v1.json`, native8/public3/capture74125, shows company514 employer **null→29829**, current company soldiers1647 and native `CanHire=false` with the already-hired reason. This observes the actual hire/contract association. Independent final snapshot `008` shows gold **106634828→64634828**, exact delta **−42000000/100000 =−420** gold, after balance **646.34828**; prestige and piety are unchanged. It also shows the sole new controlled player PublicCUnit **150995038**, owner29829, current province **2618**, regular/state1, not fighting or retreating, no move target and an empty route. Its core snapshot soldier field is null and was not replaced by the company's1647.
+
+Root then obtained independent `runtime-preparation/v47/actual-post-hire-strength-plan-projection-01/004-ck3_query_army_strengths.json`, GREEN, SDK **22868** normally closed exit0, query sequence2/native10/public2. For actual PublicCUnit **150995038** the native CArmy reference is **201326610**; these are distinct IDs and only the PublicCUnit ID is supplied to player army commands. The query observes **1647/1647** current/max soldiers, **6** regiments, native AI base power raw **4594400000** at scale100000 (**45944**), supply **100/100**, monthly supply change **+20**, current attrition fraction **0**, and `not_gathering`. Three detailed persistent-regiment records are available (940,352,352); three first-record entries are unavailable. Those partial record leaves do not erase the independent full native current/max1647 aggregate and are not invented as observed unit types or quality.
+
+```mermaid
+flowchart LR
+    O[Fresh company514: legal,1647 soldiers,420 gold,spawn2618] --> D[Root selects one medium-size fallback]
+    D --> A[Native factory and fresh validator; submitted pending]
+    A --> V[Independent employer29829 and exact420 gold debit]
+    V --> B[New controlled PublicCUnit150995038 at2618]
+    B --> S[Independent army strength1647 of1647,supply100 of100]
+    S -. merge not observed in this package .-> M[Separate next army merge and after-strength]
+```
+
+The hire checkpoint `009-ck3_save_checkpoint.json` is saved at history **5545**, same date **53241096**, **91826468** bytes, SHA-256 **6efa2dfdde7e03530d6aa74fcc35351251533b072e8b58a4c61de7eae1f4fd28**. Sole file consumer sealed the exact pre/post and strength source pins in external `war-mercenary-hire-v46/actual-v47-hire514/ACTUAL-HIRE-514-RECEIPT.json`; it made zero SDK/game/window/Git calls and repeated no fixtures. The raw action ACK was never used as an employer, wallet or army observation.
+
+Readiness is **production-live loop for normal mercenary hire only**: observe fresh terms → choose one company → native Submit → independently verify employer/actual payment/new controlled body/actual army strength. The 36-month field remains a new-hire quote, not actual remaining duration or expiry. No extra default raise, repeated hire, merged1770-force credit, rescue of capital2640, or battle win is claimed here; subsequent merge/movement receipts own their outcomes.
+
+Root subsequently supplied the normal save paired with the independent strength capture: **history5550 / date53241096 / 91826468 bytes**, SHA-256 **cdcd3d5d388a63e5f80570d2cd6875ec19a1fa291f351b783aad2dbcaaa17401**. The hire checkpoint h5545 and this independent-strength checkpoint retain their separate frozen milestone roles. Cumulative saved progress remains4032, resume879 and Oct4+7; this normal hire loop and documentation increment add0 world days.

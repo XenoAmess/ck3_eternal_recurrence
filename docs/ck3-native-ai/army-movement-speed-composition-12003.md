@@ -323,3 +323,47 @@ fixture GREEN cannot establish `production-live primitive` or a movement
 benefit. This documentation lane ran no tests or builds, sampled no game state
 and adds no live speed/ETA benefit, actions or days. ROOT merges the final
 fixture and later paused result into the Oct4 daily and W40 report.
+
+## 2026-10-04 v47 paused production selected-rate observation
+
+This appendix supersedes the earlier handoff's pending paused-query status. ROOT's
+v47 capture returned the existing `ck3_query_army_commander_candidates_v1` with
+`army_id=83886367`, `expected_revision=2`: accepted/completed/read-only, backend
+`native-headless`, query native revision3/public revision2 and `date_raw=53241096`.
+The actual packet is `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v47/actual-main-readonly-01/018-ck3_query_army_commander_candidates_v1.json` (SHA-256 `6cd2dbe88e6c482171391dd2261b567ef790fd8f6cc9effa4955a0ed5d0908a1`).
+
+The selected unit is public CUnit83886367/native CArmy50331794, owner and current
+commander29829. Its context is observable, state7/`moving`, current province8754,
+target2640, route source count8/`complete_nonempty`, in combat false and retreating
+false. These are current query fields, separate from the earlier main-at2616
+handoff context.
+
+| Native total | Getter RVA | Status | Integer raw | Scale | Q = raw / scale |
+| --- | --- | --- | ---: | ---: | ---: |
+| land | `0x24AA940` | `available` | 435000 | 100000 | 4.35 |
+| naval | `0x24AAC00` | `available` | 2625000 | 100000 | 26.25 |
+| current_edge | `0x24AB5C0` | `available` | 435000 | 100000 | 4.35 |
+
+All three statuses are `available` and all three unavailable reasons are null.
+The current-edge Q equals this frame's land Q. The naval total is an observed
+total; it does not establish that a sea route is selected, available, cheaper or
+faster to the target.
+
+Query018 has no ETA field. The supplied speed observation therefore does not publish a current remaining-day estimate. ROOT supplied a prior79day native ETA at raw53241072/native32: that observation is24native hours earlier and historical, not the current ETA. ROOT assigned the fresh same-date preview at `runtime-preparation/v47/actual-preview-character-01/004-ck3_execute_step.json` to the sole terrain consumer; this lane does not reparse it.
+
+Q represents the native fixed-point rate at this frame. It is not a day count or
+arrival date. Rate totals alone omit route geometry and remaining edge progress;
+they do not replace the native route/timeline ETA or prove arrival.
+
+The selected-rate block now has **`production-live primitive` at the independent
+query layer**. Candidate modifier contribution/ranking, speed-optimal routing,
+arrival, a movement outcome and a production decision loop remain unestablished
+by this artifact. This read-only consumption adds zero game/SDK/window calls,
+tests, fixture repetitions, actions or days. The prior focused fixture and its
+retained harness failures are reused without rerun.
+
+Actual consumption receipt: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/war-movement-speed-v47-live/ACTUAL-READ-RECEIPT.json`, SHA-256 `f5ebb80d74fa8180cafd8b39300619925f65c1de0f688325daa6817ce8cecbf4`.
+ROOT's supplied runtime is g51/source HEAD1c67491f8217a389bfdea75a9914afff70b44a05,
+R24, exact1.20.0.3. ROOT reports the v47 MAIN SDK batch exited0/allGREEN and the
+game PID32372 stayed minimized with no input. Those runtime statements are parent
+provenance; the field/value evidence above comes directly from frozen query018.
