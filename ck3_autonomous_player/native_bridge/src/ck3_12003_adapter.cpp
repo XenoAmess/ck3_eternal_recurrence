@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12002_campaign.hpp"
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 #include "xar_bridge/ck3_12003_default_raise_mailbox.hpp"
@@ -101,6 +102,15 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
     result.armies.get_army_gathering_days_left =
         reinterpret_cast<decltype(result.armies.get_army_gathering_days_left)>(
             image_base + ck3_12002::kArmyGatheringDaysLeftRva12003);
+    result.armies.get_province_supply_limit =
+        reinterpret_cast<decltype(result.armies.get_province_supply_limit)>(
+            image_base + ck3_12002::kProvinceSupplyLimitRva12003);
+    result.armies.get_province_supply_usage =
+        reinterpret_cast<decltype(result.armies.get_province_supply_usage)>(
+            image_base + ck3_12002::kProvinceSupplyUsageRva12003);
+    result.armies.province_supply_character_fallback_slot =
+        reinterpret_cast<void **>(
+            image_base + ck3_12002::kCampaignRootCharacterFallbackSlotRva);
   }
   if (result.phase.advantage.enabled) {
     // Constructor-faith closure is proven only for exact .3. Keep the .2

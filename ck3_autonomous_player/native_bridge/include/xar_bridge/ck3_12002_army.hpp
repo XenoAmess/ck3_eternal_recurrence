@@ -22,6 +22,8 @@ inline constexpr std::uintptr_t kChunkCanReplenishRva12003 = 0x2657F10;
 inline constexpr std::uintptr_t kRegimentMonthlyReplenishmentRva12003 = 0x262CAD0;
 inline constexpr std::uintptr_t kArmyMonthlySupplyChangeRva12003 = 0x24E51A0;
 inline constexpr std::uintptr_t kArmyGatheringDaysLeftRva12003 = 0x24E9070;
+inline constexpr std::uintptr_t kProvinceSupplyLimitRva12003 = 0x247BEC0;
+inline constexpr std::uintptr_t kProvinceSupplyUsageRva12003 = 0x247C5A0;
 
 struct ArmyBindings {
   bool enabled = false;
@@ -45,6 +47,11 @@ struct ArmyBindings {
   std::int64_t *(*get_army_monthly_supply_change)(void *, std::int64_t *, void *, void *) = nullptr;
   // Exact .3 native CArmy receiver, integral remaining days (scale 1).
   std::int32_t (*get_army_gathering_days_left)(void *) = nullptr;
+  // Exact .3 native whole soldier-equivalent values, scale 1, not Q100000.
+  std::int32_t (*get_province_supply_limit)(void *, void *, void *, void *) = nullptr;
+  std::int32_t (*get_province_supply_usage)(void *, void *, std::int32_t,
+                                          std::int64_t *) = nullptr;
+  void **province_supply_character_fallback_slot = nullptr;
 };
 
 ArmyBindings BindArmyImage(std::uintptr_t image_base,
@@ -79,5 +86,13 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
 game::ReadArmyStrengthsResult ReadArmyStrengths(
     const ArmyBindings &bindings, const game::Snapshot &snapshot,
     std::vector<game::ArmyStrengthSnapshot> &output) noexcept;
+
+struct MilitaryWorldAccess;
+
+// Invoked on the same owning thread after the existing paused controllable-army
+// move preview succeeds. The subquery never changes the movement result.
+game::ArmyProvinceSupplySnapshot ReadArmyProvinceSupplyForPreview(
+    const ArmyBindings &, const MilitaryWorldAccess &,
+    const game::PreviewMoveArmyResult &) noexcept;
 
 } // namespace xar::ck3_12002

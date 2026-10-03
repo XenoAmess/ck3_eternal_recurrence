@@ -1225,12 +1225,50 @@ enum class PreviewMoveArmyStatus {
   unavailable,
 };
 
+enum class ArmyProvinceSupplyStatus {
+  available,
+  partial,
+  unavailable,
+};
+
+enum class ArmyProvinceSupplyRole { current, target };
+
+struct ArmyProvinceSupplyRow {
+  bool available = false;
+  ArmyProvinceSupplyRole role = ArmyProvinceSupplyRole::current;
+  std::int32_t province_id = -1;
+  std::optional<std::int32_t> native_supply_limit_soldiers;
+  std::optional<std::int32_t> native_supply_usage_soldiers;
+  std::string unavailable_reason;
+
+  friend bool operator==(const ArmyProvinceSupplyRow &,
+                         const ArmyProvinceSupplyRow &) = default;
+};
+
+// Both Provinces are evaluated now with the same actual army owner and current
+// commander. Target usage excludes any invented future arrival contribution.
+struct ArmyProvinceSupplySnapshot {
+  ArmyProvinceSupplyStatus status = ArmyProvinceSupplyStatus::unavailable;
+  std::string unavailable_reason;
+  std::int32_t army_id = -1;
+  std::optional<std::int32_t> native_carmy_id;
+  std::optional<std::int32_t> owner_character_id;
+  std::optional<std::int32_t> commander_character_id;
+  ArmyProvinceSupplyRow current;
+  ArmyProvinceSupplyRow target;
+
+  friend bool operator==(const ArmyProvinceSupplySnapshot &,
+                         const ArmyProvinceSupplySnapshot &) = default;
+};
+
 struct PreviewMoveArmyResult {
   PreviewMoveArmyStatus status = PreviewMoveArmyStatus::unavailable;
   std::int32_t army_id = -1;
   std::int32_t origin_province_id = -1;
   std::int32_t target_province_id = -1;
   std::vector<std::int32_t> route_province_ids;
+  // Exact .3 additive observation. Its failure does not alter movement legality.
+  std::optional<ArmyProvinceSupplySnapshot> province_supply;
 
   friend bool operator==(const PreviewMoveArmyResult &,
                          const PreviewMoveArmyResult &) = default;

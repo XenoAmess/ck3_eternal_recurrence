@@ -169,4 +169,71 @@ inline void AppendArmyStrengthV1(
   result += '}';
 }
 
+template <class Number, class JsonString>
+inline void AppendArmyProvinceSupplyRowV1(
+    std::string &output, const ArmyProvinceSupplyRow &row,
+    Number number, JsonString append_json_string) {
+  output += "{\"status\":\"";
+  output += row.available ? "available" : "unavailable";
+  output += "\",\"unavailable_reason\":";
+  if (row.available) output += "null";
+  else append_json_string(output, row.unavailable_reason);
+  output += ",\"role\":\"";
+  output += row.role == ArmyProvinceSupplyRole::current ? "current" : "target";
+  output += "\",\"province_id\":" + number(row.province_id);
+  output += ",\"native_supply_limit_soldiers\":";
+  output += row.native_supply_limit_soldiers.has_value()
+      ? number(*row.native_supply_limit_soldiers) : "null";
+  output += ",\"native_supply_usage_soldiers\":";
+  output += row.native_supply_usage_soldiers.has_value()
+      ? number(*row.native_supply_usage_soldiers) : "null";
+  output += ",\"scale\":1}";
+}
+
+template <class Number, class JsonString>
+inline void AppendArmyProvinceSupplyV1(
+    std::string &output, const ArmyProvinceSupplySnapshot &supply,
+    Number number, JsonString append_json_string) {
+  output += "{\"status\":\"";
+  switch (supply.status) {
+  case ArmyProvinceSupplyStatus::available: output += "available"; break;
+  case ArmyProvinceSupplyStatus::partial: output += "partial"; break;
+  case ArmyProvinceSupplyStatus::unavailable: output += "unavailable"; break;
+  }
+  output += "\",\"unavailable_reason\":";
+  if (supply.status == ArmyProvinceSupplyStatus::available) output += "null";
+  else append_json_string(output, supply.unavailable_reason);
+  output += ",\"army_id\":" + number(supply.army_id);
+  output += ",\"native_carmy_id\":";
+  output += supply.native_carmy_id.has_value() ? number(*supply.native_carmy_id) : "null";
+  output += ",\"owner_character_id\":";
+  output += supply.owner_character_id.has_value() ? number(*supply.owner_character_id) : "null";
+  output += ",\"commander_character_id\":";
+  output += supply.commander_character_id.has_value() ? number(*supply.commander_character_id) : "null";
+  output += ",\"current\":";
+  AppendArmyProvinceSupplyRowV1(output, supply.current, number, append_json_string);
+  output += ",\"target\":";
+  AppendArmyProvinceSupplyRowV1(output, supply.target, number, append_json_string);
+  output += '}';
+}
+
+// The same route-preview row body is used by the real bridge and its focused
+// native producer. Existing helpers preserve number/array/string semantics.
+template <class Number, class Int32Array, class JsonString>
+inline void AppendMoveRoutePreviewV1(
+    std::string &output, const PreviewMoveArmyResult &preview,
+    Number number, Int32Array append_int32_array, JsonString append_json_string) {
+  output += "{\"status\":\"available\",\"army_id\":" + number(preview.army_id);
+  output += ",\"origin_province_id\":" + number(preview.origin_province_id);
+  output += ",\"target_province_id\":" + number(preview.target_province_id);
+  output += ",\"route_province_ids\":";
+  append_int32_array(output, preview.route_province_ids);
+  if (preview.province_supply.has_value()) {
+    output += ",\"province_supply\":";
+    AppendArmyProvinceSupplyV1(output, *preview.province_supply, number,
+                               append_json_string);
+  }
+  output += '}';
+}
+
 } // namespace xar::game

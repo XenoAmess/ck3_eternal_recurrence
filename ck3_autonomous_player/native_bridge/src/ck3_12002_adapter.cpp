@@ -249,8 +249,14 @@ public:
   }
   PreviewMoveArmyResult preview_move_army(
       std::int32_t army, std::int32_t province) const noexcept override {
-    return ck3_12002::PreviewMoveArmy(bindings_.military, WorldAccess(), army,
-                                     province);
+    auto preview = ck3_12002::PreviewMoveArmy(
+        bindings_.military, WorldAccess(), army, province);
+    if (preview.status == PreviewMoveArmyStatus::available &&
+        IsCk3_12003Descriptor(*descriptor_)) {
+      preview.province_supply = ck3_12002::ReadArmyProvinceSupplyForPreview(
+          bindings_.armies, WorldAccess(), preview);
+    }
+    return preview;
   }
   DisbandArmyResult submit_disband_army(std::int32_t army) const noexcept override {
     return ck3_12002::SubmitDisbandArmy(bindings_.military, WorldAccess(), army);

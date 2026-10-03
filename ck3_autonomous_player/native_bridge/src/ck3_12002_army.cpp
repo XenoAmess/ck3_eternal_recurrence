@@ -1,5 +1,6 @@
 ﻿#include "xar_bridge/ck3_12002_army.hpp"
 #include "xar_bridge/ck3_12002.hpp"
+#include "xar_bridge/ck3_12002_military.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -455,6 +456,90 @@ game::ReadArmyStrengthsResult ReadArmyStrengths(
       AppendScope(scope, army.army_id, game::ArmyStrengthScopeRole::active_war_enemy, war.war_id);
   }
   return ReadArmyStrengthsForScope(bindings, scope, output);
+}
+
+game::ArmyProvinceSupplySnapshot ReadArmyProvinceSupplyForPreview(
+    const ArmyBindings &bindings, const MilitaryWorldAccess &world,
+    const game::PreviewMoveArmyResult &preview) noexcept {
+  game::ArmyProvinceSupplySnapshot output{};
+  output.army_id = preview.army_id;
+  output.current.role = game::ArmyProvinceSupplyRole::current;
+  output.current.province_id = preview.origin_province_id;
+  output.target.role = game::ArmyProvinceSupplyRole::target;
+  output.target.province_id = preview.target_province_id;
+  const auto unavailable = [&](const char *reason) {
+    output.unavailable_reason = reason;
+    output.current.unavailable_reason = reason;
+    output.target.unavailable_reason = reason;
+    return output;
+  };
+  if (preview.status != game::PreviewMoveArmyStatus::available)
+    return unavailable("route_preview_unavailable");
+  if (!bindings.enabled || bindings.get_province_supply_limit == nullptr ||
+      bindings.get_province_supply_usage == nullptr ||
+      world.resolve_character == nullptr || world.resolve_province == nullptr)
+    return unavailable("native_province_supply_bindings_unavailable");
+  void *const unit = ResolveArmyUnit(bindings, preview.army_id);
+  if (unit == nullptr) return unavailable("public_cunit_not_found");
+  const auto native_id = Load<std::int32_t>(unit, 0x178);
+  void *const army = ResolveInternalArmy(bindings, native_id);
+  if (army == nullptr) return unavailable("native_carmy_not_found");
+  output.native_carmy_id = native_id;
+  if (Load<std::int32_t>(army, 0x124) != preview.army_id)
+    return unavailable("native_carmy_backlink_unresolved");
+  const auto owner_id = Load<std::int32_t>(unit, 0x174);
+  void *const owner = world.resolve_character(world.context, owner_id);
+  if (owner == nullptr) return unavailable("army_owner_character_unresolved");
+  output.owner_character_id = owner_id;
+  const auto commander_id = Load<std::int32_t>(army, 0x120);
+  void *commander = commander_id == -1 ? nullptr
+      : world.resolve_character(world.context, commander_id);
+  if (commander != nullptr) {
+    output.commander_character_id = commander_id;
+  } else {
+    // Native 24E5A74 uses the canonical CCharacter fallback object. The limit
+    // leaf dereferences its commander argument, so an absent ID is not nullptr.
+    commander = bindings.province_supply_character_fallback_slot == nullptr
+        ? nullptr : *bindings.province_supply_character_fallback_slot;
+    if (commander == nullptr)
+      return unavailable("native_commander_fallback_unavailable");
+  }
+  const auto read_province = [&](game::ArmyProvinceSupplyRow &row) {
+    void *const province = world.resolve_province(world.context, row.province_id);
+    if (province == nullptr) {
+      row.unavailable_reason = "province_not_found";
+      return;
+    }
+    if (row.role == game::ArmyProvinceSupplyRole::current &&
+        Load<void *>(unit, 0x20) != province) {
+      row.unavailable_reason = "current_province_scope_changed";
+      return;
+    }
+    // Both native leaves return whole signed EAX values. Zero and INT32_MAX
+    // remain successful values. Usage's mode 0 keeps currently present routes.
+    row.native_supply_limit_soldiers =
+        bindings.get_province_supply_limit(province, owner, commander, nullptr);
+    row.native_supply_usage_soldiers =
+        bindings.get_province_supply_usage(province, owner, 0, nullptr);
+    row.available = true;
+  };
+  read_province(output.current);
+  if (output.current.available &&
+      output.current.province_id == output.target.province_id) {
+    output.target = output.current;
+    output.target.role = game::ArmyProvinceSupplyRole::target;
+  } else {
+    read_province(output.target);
+  }
+  if (output.current.available && output.target.available) {
+    output.status = game::ArmyProvinceSupplyStatus::available;
+  } else {
+    output.status = output.current.available || output.target.available
+        ? game::ArmyProvinceSupplyStatus::partial
+        : game::ArmyProvinceSupplyStatus::unavailable;
+    output.unavailable_reason = "province_supply_scope_incomplete";
+  }
+  return output;
 }
 
 } // namespace xar::ck3_12002

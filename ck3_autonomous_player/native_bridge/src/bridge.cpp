@@ -6490,15 +6490,10 @@ std::string RoutePreviewResultFrame(
   result += "\",\"ok\":true,\"result\":{\"step\":\"";
   result += step;
   result += "\",\"accepted\":true,\"status\":\"available\","
-            "\"route_preview\":{\"status\":\"available\",\"army_id\":";
-  result += SignedNumber(preview.army_id);
-  result += ",\"origin_province_id\":";
-  result += SignedNumber(preview.origin_province_id);
-  result += ",\"target_province_id\":";
-  result += SignedNumber(preview.target_province_id);
-  result += ",\"route_province_ids\":";
-  AppendInt32Array(result, preview.route_province_ids);
-  result += "}}}";
+            "\"route_preview\":";
+  xar::game::AppendMoveRoutePreviewV1(
+      result, preview, SignedNumber, AppendInt32Array, AppendJsonString);
+  result += "}}";
   return result;
 }
 

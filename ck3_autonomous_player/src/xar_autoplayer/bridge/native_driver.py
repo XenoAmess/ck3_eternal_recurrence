@@ -1095,13 +1095,33 @@ class NativeProtocolState:
         with self._condition:
             return self._diagnostics_locked()
 
-    def semantic_snapshot(self) -> dict[str, object]:
+    def semantic_snapshot(
+        self, *, timeout_seconds: float = 0.0
+    ) -> dict[str, object]:
         with self._condition:
             if not self._connected:
                 raise BridgeUnavailableError(
                     f"native DLL is not connected to {self.pipe_name}"
                 )
             raw_capabilities = _string_list(self._hello.get("capabilities"))
+            if (
+                timeout_seconds > 0
+                and self._semantic_snapshot is None
+                and self._raw_state_snapshot is None
+                and "game.state.snapshot" in raw_capabilities
+            ):
+                # A fresh client receives hello before the first semantic
+                # frame. Wait for that existing publication once; do not
+                # turn connection liveness into a game snapshot.
+                self._condition.wait_for(
+                    lambda: self._raw_state_snapshot is not None
+                    or not self._connected,
+                    timeout=timeout_seconds,
+                )
+                if not self._connected:
+                    raise BridgeUnavailableError(
+                        f"native DLL is not connected to {self.pipe_name}"
+                    )
             if self._semantic_snapshot is None:
                 if "game.state.snapshot" in raw_capabilities:
                     raise BridgeUnavailableError(
@@ -2546,7 +2566,11 @@ class NativeHeadlessGameplayDriver:
         transport_error = self._transport_error()
         if transport_error is not None:
             raise BridgeUnavailableError(transport_error)
-        snapshot = self._with_one_life_episode(self.state.semantic_snapshot())
+        snapshot = self._with_one_life_episode(
+            self.state.semantic_snapshot(
+                timeout_seconds=self.command_timeout_seconds
+            )
+        )
         self._observe_arrange_marriage_outcome(snapshot)
         return snapshot
 
