@@ -33,10 +33,14 @@ CLI 返回 0 表示声明的分析/辅助过程结束；不表示某 mod 通过�
 | 未知、歧义、死亡、继承 | 无后续输入，返回 `NEEDS_OPERATOR` 并保留原图；死亡和继承由原 operator 审阅、正常处理及证明存档角色链。显式 `STOP` 模板优先于普通 shell。 |
 
 输入前保存两帧，标题、静态正文、首项/关闭项的亮字或纸面暗字连通分量 mask 用于容差比较，完全不识别语言和字符。
+已见普通事件的连续物理按钮边框既有金色也有中性灰，首项亮字判断继续独立执行；正文图示不能凭一段亮字被误当作第六按钮。
+普通事件的标题亮字mask可以精确为零，仍要求正文和首项充分可见；两端空mask只作精确相等，正文动画不能释放相同首项动作。
 普通事件以标题、首项、布局保守防重，正文动画不能释放旧动作。战争结果必须把静态战争正文纳入身份，避免相同“胜利”标题和
 关闭按钮阻止另一个真实结果，同时不能把同一结果重绘当新结果。窗口边框或身份不稳定即停止。
 
-只有 `UI_TRANSITION_ROUTING_ONLY` 或 `UI_DISAPPEARED_ROUTING_ONLY` 这样的图像结论。按键 ACK、窗口消失、日期截图和日志中没有某项错误，
+输入后的两帧可能分别是地图与紧接着的新事件，也可能跨两个已知事件。这时只记录 `UNCONFIRMED_PENDING_NEXT_STABLE_ROUTE`，
+有限循环的下一次输入必须重新通过独立稳定前置、guard 和跨 attempt 防重；不要求后置两帧硬凑成相同窗口。任一后置未知或歧义仍停止。
+只有 `UI_TRANSITION_ROUTING_ONLY`、`UI_DISAPPEARED_ROUTING_ONLY` 或待确认路由这样的图像结论。按键 ACK、窗口消失、日期截图和日志中没有某项错误，
 都不产生百年 credit，也不自动写 GREEN。后置出现未知窗口会立即交还原 operator。
 
 ## 外置配置
@@ -83,7 +87,7 @@ CLI 返回 0 表示声明的分析/辅助过程结束；不表示某 mod 通过�
 | `patterns` | 至少两个窗内固定区域，每项含绝对 `path`、文件 `sha256`、原图 `rect=[left,top,right,bottom]` 和可选 `max_delta`（默认 3）。不得包括会动画的地图、人物、窗外阴影。 |
 | `identity_rois` | 事件/结果窗口含 `title` 和 `body` 两项，每项含原图 `rect`；纸面暗字正文设 `dark=true`。action mask 由实际首项或关闭按钮产生。 |
 | `option_slots` | 普通事件的五个物理槽，从上到下；每项含 `top`、`bottom`、`line_x=[left,right]` 与 `glyph_rect`。first row 必须从实际连续边框确认。 |
-| `excluded_slots` | 普通事件受支持五槽之前的已审阅排除区，用相同槽结构检测第六项、更早灰按钮或过长正文；存在歧义停止。 |
+| `excluded_slots` | 普通事件受支持五槽之前的已审阅排除区，以成对物理边框检测第六项或更早灰按钮；正文图示的孤立亮字不算按钮，布局歧义继续停止。 |
 | `unique_close_button_reviewed` | 战争结果唯一关闭项已经实际审阅，必须为 true。固定位置可给 `action_rect`。 |
 | `button_geometry` | 战争结果动态按钮：`search_rect`、实际像素的 `width_range`/`height_range`、`action_inset=[left,top,right,bottom]`。`strips` 的四项为外置 PNG `path`/`sha256`、相对按钮左上角的 `relative_rect` 和可选 `max_delta`。全部四边必须匹配。 |
 
@@ -98,6 +102,8 @@ Windows backend 在每次采集、每次按键阶段核对唯一、新鲜（小�
 
 每次 attempt 永久保存 exact profile input、副本、原始 before/after PNG、guard receipt、路由、输入前 intent、按键返回与失败。
 动作先 fsync 到跨 attempt 的 ledger，再发送按键；同一不确定动作不自动重发。operator lock 关闭时移入 attempt，失败 lock/attempt 不删除。
+升级辅助版本或改用新 evidence directory 时，配置 `inherited_ledgers=[{path,sha256}]`，指向按精确字节保全的旧同格式 ledger；
+加载旧动作身份后才允许下一项，不能通过更换工具目录清空不确定输入历史。
 正常 Save/Exit deadline 到达只停止辅助，不替代存档和退出；原 operator 必须在自己的 supervisor 超时前正常保存、退出和释放 lease。
 
 ## 百年角色与普通存档链
@@ -144,5 +150,6 @@ played/current actor 和 player 1，逐段比对日期及父档 SHA。改朝/继
 
 无游戏、无桌面输入的测试覆盖 1–5 物理选项、灰首项、额外槽、STOP 优先、未知尺寸/窗口、模板损坏、war body 防重与变高按钮、
 ACK 后 unchanged/uncertain action、锁、期限、实际 backend custody 检查、Win32 ABI 和闭合存档日期/父档/角色约束。
+后续最小回归另覆盖中性灰边、正文图示、标题亮字缺席、混合后置与下一独立前置、未知后置和精确继承旧 ledger。
 它们属于夹具回归，不能替代实机百年或其他 mod 验收。具体首次验证和真实能力边界见
 [2026-10-03 富化记录](ck3-native-ai/stability-fixture-enrichment-2026-10-03.md)。

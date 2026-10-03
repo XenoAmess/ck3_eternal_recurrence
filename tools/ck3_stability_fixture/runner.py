@@ -44,8 +44,11 @@ def assist(profile: dict, backend: object, *, execute: bool = False, max_actions
         backend.guard(profile, initial=True)
         router = PixelRouter(profile["routing"])
         prior = [json.loads(line) for line in ledger.read_text(encoding="utf-8").splitlines()] if ledger.exists() else []
+        for inherited in profile.get("inherited_ledgers", []):
+            source = checked_file(inherited)
+            prior.extend(json.loads(line) for line in source.read_text(encoding="utf-8").splitlines())
 
-        def capture(step: Path, label: str) -> tuple[dict, dict]:
+        def capture(step: Path, label: str, allow_unknown: bool = False) -> tuple[dict | None, dict]:
             before = backend.guard(profile)
             path = step / (label + ".png")
             receipt = backend.capture(path)
@@ -58,6 +61,8 @@ def assist(profile: dict, backend: object, *, execute: bool = False, max_actions
                 route = router.route(path)
             except NeedsOperator as error:
                 write_new(step / (label + "-route.json"), {"refusal": str(error)})
+                if allow_unknown:
+                    return None, receipt
                 raise
             write_new(step / (label + "-route.json"), route)
             return route, receipt
@@ -105,16 +110,21 @@ def assist(profile: dict, backend: object, *, execute: bool = False, max_actions
             record["ack"] = ack
             append(journal, {"phase": "input-return", "ack": ack, "business_result": "NOT_VERIFIED"})
             sleep(.5)
-            after_a, _ = capture(step, "after-a")
+            after_a, _ = capture(step, "after-a", allow_unknown=True)
             sleep(.3)
-            after_b, _ = capture(step, "after-b")
+            after_b, _ = capture(step, "after-b", allow_unknown=True)
+            require(after_a is not None and after_b is not None, "unknown post window; no further input")
             if after_a["kind"] == "MAP_WAIT" and after_b["kind"] == "MAP_WAIT":
                 record["status"] = "UI_DISAPPEARED_ROUTING_ONLY"
             else:
-                require(same_window(after_a, after_b), "post window identity unstable")
-                require(not same_window(second, after_b) and not same_action(second, after_b),
-                        "window/action unchanged; no automatic retry")
-                record["status"] = "UI_TRANSITION_ROUTING_ONLY"
+                if (after_a["kind"] == "MAP_WAIT" or after_b["kind"] == "MAP_WAIT"
+                        or not same_window(after_a, after_b)):
+                    record["status"] = "UNCONFIRMED_PENDING_NEXT_STABLE_ROUTE"
+                else:
+                    require(not same_window(second, after_b) and not same_action(second, after_b),
+                            "window/action unchanged; no automatic retry")
+                    record["status"] = "UI_TRANSITION_ROUTING_ONLY"
+            record["next_input_requires_independent_stable_route"] = True
             result["status"] = record["status"]
             append(journal, {"phase": record["status"], "business_result": "NOT_VERIFIED"})
     except Exception as error:

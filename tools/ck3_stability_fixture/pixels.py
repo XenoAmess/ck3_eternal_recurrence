@@ -66,6 +66,8 @@ def text_shape(crop: Image.Image, dark: bool = False) -> dict:
 def shape_close(a: dict, b: dict) -> bool:
     if (a["width"], a["height"]) != (b["width"], b["height"]):
         return False
+    if a["pixels"] == b["pixels"] == 0:
+        return a["mask_hex"] == b["mask_hex"]
     aa, bb = bytes.fromhex(a["mask_hex"]), bytes.fromhex(b["mask_hex"])
     union = sum((x | y).bit_count() for x, y in zip(aa, bb))
     delta = sum((x ^ y).bit_count() for x, y in zip(aa, bb))
@@ -191,8 +193,10 @@ class PixelRouter:
     def line_strength(self, image: Image.Image, slot: dict, y: int, weak: bool = False) -> float:
         left, right = slot["line_x"]
         threshold, spread = (45, 10) if weak else (70, 25)
-        return sum(r > threshold and r > g > b and r - b > spread and r - g < 35
-                   for r, g, b in (image.getpixel((x, y)) for x in range(left, right))) / (right - left)
+        pixels = [image.getpixel((x, y)) for x in range(left, right)]
+        gold = sum(r > threshold and r > g > b and r-b > spread and r-g < 35 for r, g, b in pixels) / (right-left)
+        neutral = sum(min(rgb) >= (45 if weak else 55) and max(rgb)-min(rgb) < 18 for rgb in pixels) / (right-left)
+        return max(gold, neutral)
 
     def slot(self, image: Image.Image, slot: dict) -> dict:
         self.rect(slot["glyph_rect"])
@@ -201,6 +205,7 @@ class PixelRouter:
                 "button line outside frame")
         return {**slot, "strong": min(self.line_strength(image, slot, y) for y in (slot["top"], slot["bottom"])),
                 "possible": max(self.line_strength(image, slot, y, True) for y in (slot["top"], slot["bottom"])),
+                "paired_possible": min(self.line_strength(image, slot, y, True) for y in (slot["top"], slot["bottom"])),
                 "bands": glyph_bands(image.crop(slot["glyph_rect"]))}
 
     def route(self, path: Path) -> dict:
@@ -222,10 +227,10 @@ class PixelRouter:
             require(len(slots) == 5, "ordinary route supports exactly five physical slots")
             for excluded in variant.get("excluded_slots", []):
                 row = self.slot(image, excluded)
-                require(row["possible"] < .55 and not row["bands"], "earlier/sixth option or body overlaps slot")
+                require(row["paired_possible"] < .55, "earlier/sixth option beyond supported physical rows")
             indices = [i for i, s in enumerate(slots) if s["strong"] >= .78]
             require(indices and indices == list(range(indices[0], 5)), "buttons missing/noncontiguous/ambiguous")
-            require(not any(s["possible"] >= .55 or s["bands"] for s in slots[:indices[0]]),
+            require(not any(s["paired_possible"] >= .55 for s in slots[:indices[0]]),
                     "possible earlier disabled option; never skip to a later row")
             require(all(len(s["bands"]) == 1 for s in slots[indices[0]:]), "option text wrapped/obscured")
             first = slots[indices[0]]
@@ -250,7 +255,9 @@ class PixelRouter:
             rois["body"] = {**rois["body"], "rect": body}
         shapes = {key: text_shape(image.crop(self.rect(row["rect"])), row.get("dark", False))
                   for key, row in rois.items()}
-        require(set(shapes) == {"title", "body", "action"} and all(s["pixels"] >= 50 for s in shapes.values()),
+        require(set(shapes) == {"title", "body", "action"}
+                and shapes["body"]["pixels"] >= 50 and shapes["action"]["pixels"] >= 50
+                and (shapes["title"]["pixels"] >= 50 or kind == "STANDARD_EVENT" and shapes["title"]["pixels"] == 0),
                 "title/body/action shape insufficient")
         fingerprint = hashlib.sha256(json.dumps({"variant": variant["id"], "count": option_count,
             "shapes": {k: v["sha256"] for k, v in shapes.items()}}, sort_keys=True).encode()).hexdigest()

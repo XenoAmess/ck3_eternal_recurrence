@@ -222,6 +222,43 @@ class RoutingTests(unittest.TestCase):
             self.assertTrue(same_action(original, current))
             self.assertTrue(same_window(original, current))
 
+    def test_neutral_borders_and_body_icons_keep_physical_first(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            p = profile(root)
+            source = image(root, "neutral.png", count=3)
+            raw = Image.open(source)
+            draw = ImageDraw.Draw(raw)
+            for index in range(2, 5):
+                top = 340 + index*42
+                draw.rectangle((150, top, 650, top+33), outline=(80, 82, 84), width=1)
+            glyphs(raw, [170, 302, 610, 328])
+            raw.save(source)
+            router = PixelRouter(p["routing"])
+            self.assertEqual(router.route(source)["option_count"], 3)
+            # A dim physical first is still rejected rather than skipping it.
+            draw.rectangle((170, 432, 610, 445), fill=(35, 30, 25))
+            glyphs(raw, [170, 428, 610, 454], value=(150,150,150))
+            raw.save(source)
+            with self.assertRaisesRegex(NeedsOperator, "first option dim"):
+                router.route(source)
+
+    def test_absent_light_title_is_exact_and_body_does_not_release_action(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            router = PixelRouter(profile(root)["routing"])
+            routes = []
+            for seed in (0, 1):
+                source = image(root, f"untitled-{seed}.png", seed=seed)
+                raw = Image.open(source)
+                ImageDraw.Draw(raw).rectangle((100, 80, 650, 110), fill=(35,30,25))
+                raw.save(source)
+                routes.append(router.route(source))
+            self.assertEqual(routes[0]["shapes"]["title"]["pixels"], 0)
+            self.assertTrue(same_window(routes[0], routes[0]))
+            self.assertTrue(same_action(*routes))
+            self.assertFalse(same_window(*routes))
+
 
 class RunnerTests(unittest.TestCase):
     def test_default_analysis_sends_zero_input(self):
@@ -297,6 +334,47 @@ class RunnerTests(unittest.TestCase):
             self.assertEqual(result["status"], "NEEDS_OPERATOR")
             self.assertEqual(lock.read_bytes(), b"original-custodian")
             self.assertEqual(backend.keys, [])
+
+    def test_mixed_post_restarts_independent_stable_preflight(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            p = profile(root)
+            backend = FakeBackend([root/"war.png"]*2 + [root/"map.png",root/"standard.png"]
+                                  + [root/"standard.png"]*2 + [root/"map.png"]*2)
+            result = assist(p, backend, execute=True, max_actions=2, sleep=lambda _: None)
+            self.assertEqual(backend.keys, ["Escape", "Shift+1"])
+            self.assertEqual(result["steps"][0]["status"], "UNCONFIRMED_PENDING_NEXT_STABLE_ROUTE")
+            self.assertTrue(result["steps"][0]["next_input_requires_independent_stable_route"])
+            self.assertEqual(result["status"], "UI_DISAPPEARED_ROUTING_ONLY")
+            self.assertEqual(result["business_result"], "NOT_VERIFIED")
+
+    def test_unknown_post_stops_and_preserves_both_samples(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            p = profile(root)
+            unknown = root / "unknown.png"
+            Image.new("RGB", SIZE, "black").save(unknown)
+            backend = FakeBackend([root/"war.png"]*2 + [root/"map.png",unknown])
+            result = assist(p, backend, execute=True, max_actions=3, sleep=lambda _: None)
+            self.assertEqual(backend.keys, ["Escape"])
+            self.assertEqual(result["status"], "NEEDS_OPERATOR")
+            self.assertTrue((Path(result["attempt"])/"step-01/after-a.png").is_file())
+            self.assertTrue((Path(result["attempt"])/"step-01/after-b.png").is_file())
+
+    def test_new_helper_directory_preserves_inherited_uncertain_action(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            p = profile(root)
+            first = FakeBackend([root/"standard.png"], ack=RuntimeError("uncertain original input"))
+            assist(p, first, execute=True, sleep=lambda _: None)
+            old = Path(p["evidence_directory"])/"action-ledger.jsonl"
+            p["inherited_ledgers"] = [{"path": str(old), "sha256": sha256(old)}]
+            p["evidence_directory"] = str(root/"new-helper-attempts")
+            second = FakeBackend([root/"standard.png"])
+            result = assist(p, second, execute=True, sleep=lambda _: None)
+            self.assertEqual(result["status"], "NEEDS_OPERATOR")
+            self.assertEqual(second.keys, [])
+            self.assertIn("already reserved", result["error"])
 
     def test_win32_input_abi_includes_mouse_union(self):
         self.assertEqual(abi(), {4: (28, 16, 4, 48), 8: (40, 24, 8, 72)}[ctypes.sizeof(HANDLE)])

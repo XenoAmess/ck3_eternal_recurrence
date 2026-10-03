@@ -52,3 +52,26 @@ closed-replay SHA 为 `cef069dd660bdcec3e26c8950f18512418b9f54438006a4f3712ee97c
 无 native enabled/date/actor/window-instance 真值，未知模板或输入不确定时交还原操作者；不会自动重发。
 map-like 匹配只用于无输入等待，不证明时间前进或 actor 正确。闭合存档扫描只支持唯一 UTF-8 ZIP `gamestate`，raw/二进制格式需以后按实际需求适配。
 存档 SHA、CRC 和引用文件存在不证明自然玩法；原 operator 仍必须审阅原始动作、普通保存和自然继承证据，再作正式验收结论。
+
+## 12:30 后的最小窗口衔接修正
+
+后续实际 a04 attempt 在一次普通输入后频繁停止。闭合原图分析证实四个具体原因：
+
+- `20261003T034858-94f87dcbe7`、`20261003T040712-79bcde2957` 的两帧 post 跨地图与下一事件。前次输入之后不必等待同一窗口的两帧，下一次输入仍独立稳定前置。
+- `20261003T040337-43a5c3691b` 的两帧都为 root 已审阅普通地图，右侧通知栏竖边被项目 map classifier 误当中心弹窗。项目适配缩至中心窗口区，未删除未知窗口拒绝，也未把地图作为时间真值。
+- `20261003T034310-69d50cfa5b/step-03/map-wait-001` 的按钮实际为中性灰连续边框，旧 gold-only 谓词误拒；物理首项亮字仍独立核对。
+- 同批标准窗口的标题亮字 mask 为零，正文图示落在旧“第六项仅亮字”区域。标题缺席精确保持，正文图示按成对按钮边框排除；不让正文变化释放相同不确定首项。
+
+外置 `r6-gui-century-assist-agent-a05/assist-v2.py` 为本次最小候选，SHA
+`de54e9d90fac581cb4bb3635d77f203d9575dd020031ee9d8401fe725847e3d0`，pins SHA
+`a1f217b0bbdf11012e154f84e30911fbe82f672381dcdbd302fa69ebe4683819`。
+三项实际 post 闭合回放分别得到两项 `UNCONFIRMED_PENDING_NEXT_STABLE_ROUTE` 和一项普通 UI 消失；未知 post 仍拒绝。
+a03、a04 的完整闭合 ledger 按精确字节继承，不能靠更换辅助目录清空历史。a04 原件和 a05 初稿（标题亮字不足拒绝）均保留；
+本代理未执行任何实机输入，候选是否实机消费继续以 root 的独立产品报告为准。
+
+公共代码只同步通用中性边框/标题缺席/成对槽识别、混合后置重新前置和旧 ledger 继承；不携带本机通知栏坐标或私人图像。
+新增五项必要合成回归后，27 项全部通过（11.271 秒）；混合后置之后重新取得稳定前置、未知后置停止、跨目录历史防重均有回归覆盖。
+首次 27 项运行因旧测试断言的错误消息措辞不匹配而有一项 RED，保留原运行记录；只统一错误消息后最终通过，未改变判定规则。
+最终摘要、公共源码 SHA 与外置闭合 handoff SHA 在
+[verification.json](evidence/stability-window-handoff-20261003/verification.json)，测试输出在
+[test-stderr.txt](evidence/stability-window-handoff-20261003/test-stderr.txt)。这些结果仅证明必要夹具回归及闭合像素匹配，不是实机业务通过或百年验收结论。

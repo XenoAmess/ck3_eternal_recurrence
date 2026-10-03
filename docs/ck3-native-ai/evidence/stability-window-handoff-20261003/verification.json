@@ -1,0 +1,43 @@
+{
+  "at_utc": "2026-10-03T04:33:22.626465+00:00",
+  "command": [
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "tools/test_ck3_stability_fixture.py"
+  ],
+  "exit_code": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "7102ad2a949a5cb6716a6eb5edbdfaef2dbb11d4e3c08ce782380e7cfefc9ff9",
+  "public_sources": [
+    {
+      "path": "tools\\ck3_stability_fixture\\__init__.py",
+      "sha256": "41fff9c40dfcaa161481dc89ab20fc90afb960daf2e2859392d13c9763c43fc9"
+    },
+    {
+      "path": "tools\\ck3_stability_fixture\\__main__.py",
+      "sha256": "1495e04f611e9b0b0c3f3d6911916469b346667af77dbd5947c5443fb1d5d95e"
+    },
+    {
+      "path": "tools\\ck3_stability_fixture\\chain.py",
+      "sha256": "10bcb5703b76c57c57daba76a226210cb8cc9a57dfe72303a729d71db71675e4"
+    },
+    {
+      "path": "tools\\ck3_stability_fixture\\evidence.py",
+      "sha256": "31792f3fc2b1aa26cd7553a066c0d6d22e4b47c8fab1a7c9e621f6ad0da23dfc"
+    },
+    {
+      "path": "tools\\ck3_stability_fixture\\pixels.py",
+      "sha256": "a30939c2123bef747341c170674fb275800dbdd3dfa5f29bd24b88fce0fc48ff"
+    },
+    {
+      "path": "tools\\ck3_stability_fixture\\runner.py",
+      "sha256": "f60d93449390f9caf003d27e9851df2908a0f26f1f1ff65ac66a250851313225"
+    },
+    {
+      "path": "tools\\ck3_stability_fixture\\windows.py",
+      "sha256": "8f83daf04f1db9f9d6cc42f195c8b6062e4226678fe4fe37a9edec26ab7552dc"
+    }
+  ],
+  "scope": "27 necessary synthetic fixture tests; no CK3/Steam/desktop/SDK",
+  "closed_private_candidate_handoff_sha256": "b256eae674beb9459d09091a0eeb5727b6230faca32642232e3615c45cddf7bf"
+}
