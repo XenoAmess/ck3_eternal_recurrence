@@ -189,3 +189,27 @@ flowchart TD
 Root其后SDK43780正常closed0/GREEN的独立 paused query（raw53244648，`native:491`、public2/native491、seq53）已由soleowner一次消费：`83886367/CArmy50331794` **3801/4231、reg47、supply106.97852/cap300、monthly change−4.54545、attrition fraction0.01**；gathering为not_gathering/null/readytrue。补员47行中30available、17为recordcount0 unavailable；30 observed firstrecord chunks的两个独立bool分别14T/16F与0T/30F，6行multirecord仍partial，不AND、不合成为整军月补人数。该body未发布currentprovince/currentcommander，不跨帧冒用旧preview值；3901→3801差值不造combatcasualty或唯一损失原因。负month与非零attr是新实际成本输入，query本身不授拆军、围城收益或完整loop信用。
 
 研究树与三lane receipt：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/native-ai-overcapacity-r25/ROOT-DELIVERY.json`；新health primitive：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/actual-capital-arrival-health-v49/ROOT-DELIVERY.json`（raw leaf SHA `273b058597dc101cac84ff3f6d2541e058cfdc6dd9e3f99db08765a0ffbbef76`）。两phase新增SDK、测试、自然日、窗口操作、策略代码均为0；仅新actual phase原始叶消费1次，research phase原始叶消费0次。
+
+
+### 2026-10-04 首批38日围城缓存：历史health与当前besieger分列
+
+本轮只复用军事线已封 `recapture-v49/actual02-sealed-day-consumption`、`siege01-sealed-day-consumption` 的COMPACT与ROOT-DELIVERY，未读任何原始daybody或day-N缓存。对`83886367/CArmy50331794`可证两份历史typed health：baseline raw53244648/native489/public259/seq52，以及day9 raw53244864/native530/public37/seq55；两点均3801/4231、47reg、supply106.97852/cap300、monthly change−4.54545、attritionfraction0.01。相隔9日的endpoint delta为0，不等于期间逐日不变，也不成立38日军需趋势。
+
+首批day38的paused终态为raw53245560/native646/public153：dedicated health metadata为null、literal payload为空、sameframe queriedmatch为false，map soldiers亦null。最后有效typed读数已距29日；day38的current soldiers、stock/capacity、monthchange及attrition仍未知，历史106.97852不可写成当前。独立siege385875999/province2640的`besieging_strength`由day1=3801变为day27(raw53245296/native602/public109)=3764，day38仍3764；该−37是围城eligible strength字段变化，不是已证Army net loss、combat casualty、补员失败或唯一损失原因。
+
+```mermaid
+flowchart LR
+    H["baseline + day9: typed health两点相同"] --> A["day38: last typed age29日"]
+    A --> U["当前health unknown"]
+    B["同Siege B: day1 3801 → day27 3764"] --> E["day38 B3764; 非专用Army soldiers"]
+```
+
+继续普通siege与半拆的质量输入复用现口：同paused-binding的ArmyStrength读stock/capacity/monthchange/attrition和当前兵力；已发布move-preview的current/target省limit/usage保持实际统帅上下文；同Siege的garrison、eligible besieging strength、progress/work/ETA与真实参与者／器械数据用于衡量移除部分兵力后的围城收益。现health总兵数/regcount不发布完整participant roster或器械分配，公开总兵数也不等同eligible；原生`1A1B9B0`的移除后反事实及分配selector保持research入口，不在本轮新增provider。
+
+已封有限AI分支继续复用：incoming row+18是stack全部当前兵数，candidate其他项才eligible；unitcount0或othereligible≤0会绕过比较，fallback commander limit与玩家实际commander值分列，有限评分排除不是统一禁入。正常half现口仍在submit时读`296CF60(kind1,nativeCArmyID,playedCharacterID,null)`最终boolean；若Root选择实际拆分，使用fresh roster识别新／保留ID，再读各军health/province-supply及同Siege，不凭ACK或当前B推收益。此账本不实现新策略、不新增门禁，也不阻塞Root普通围城继续执行。
+
+外置趋势、原生输入账本与Oct4/W40字段：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/siege-cache-trend-r25/ROOT-DELIVERY.json`。本包新增SDK、raw daybody reads、测试、game days、窗口操作、policy actions均为0；上述历史趋势cutoff仅首批38日sealed；其后仅下段Root另授权的收复critical入包，事件清零日不冒本包health查询或结果。
+
+其后续批`siege02 day47`的已封critical由Root追加授权复用一次：seq70/statuspartial、queried`native:840`/public189与final raw53246688同帧。全查询partial而`83886367/CArmy50331794`行available，实际**3728/4231、reg47、supply97.88762/cap300、monthly−4.54545、attritionfraction0**，not_gathering/null/readytrue；不把整体partial强填unknown。同帧map@2640/regular/空route/noCombat，map soldiers仍null；器械／军种／完整参与分配未从总量或补员行伪造。补员47行中30available、17recordcount0 unavailable，30firstrecord chunks的两个独立bool为18T/12F与15T/15F，6multirecord仍partial，不合成为整军净补率。
+
+当前点距首批day9已76日，距baseline85日（首批38日＋续批47日）；端点soldiers−73、supply−9.09090、attritionfraction0.01→0仅观察差值，不补齐连续health路径或损失因果。旧day38 unknown保留为当时事实，新查询已恢复此末帧current health观测，**不再提出重复strength query**。Root同帧已proofowned Siege385875999由before99.729%变为occupationfalse／activeSiegenull并正常保存h6254，故该资本普通围城已真实完成收复，B0只指围城结束、不是军队兵数零；白和平仍独立pending，不赋warwin。Root累计4265/res1112/Oct4+240，本lane0day。新增current qualification：`recapture-health/ROOT-DELIVERY.json`（source sealedcritical SHA `8474b2371e5b8ae2f188bb5bea737f93df06e2939fdc689124ecd9f3a8dad544`）。
