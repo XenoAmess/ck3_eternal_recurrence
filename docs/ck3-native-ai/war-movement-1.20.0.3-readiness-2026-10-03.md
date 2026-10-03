@@ -177,3 +177,17 @@ Root 已完成 `battle-move-execution/actual-move-2610-v34-01`（GREEN）。这�
 实际 `native_revision 18→19`、公开 revision 2→3 与独立的目标/路线/状态变化证明订单已在原 campaign 生效。Readiness 可记为 **production-live loop，仅限“观察 → 原生树输入下的短程调位决策 → movement order → 独立暂停路线验证”**；其运行时 `.3` movement primitive 已实测。当前位置仍是 2614，因此不能记成“已抵达 2610”、围城/战斗闭环或战争胜利。额外 gameplay day 为 0，累计天数、代际进度与自然继承计数不因这次移动订单增加。
 
 下一步由 Root 从正常结束的最新存档/历史对继续，先重新挂接原 Sway 四类 recorder，再在新的实际帧重读 all-war route/contact，并按一天粒度推进与复核。原生 AI 完整分数/未来 assignment/接敌质量差距继续记在专题及 blocker ledger；不把它们扩成新的战争授权限制。此 worker 只消费已经完成的 Root 文件，没有另开 SDK、重发移动、重复 query、抢焦点或修改 Git。
+
+### v43 首都2640反围城单次移动已真实下达（0日）
+
+Root独占SDK54091，existing `ck3_move_army(83886367,2640,expected_revision=2)` 实际GREEN，仅一次移动；独立009暂停快照 `native:8` / public3 / native8 / raw53240136 确认军队仍在2604、moving7、目标2640可观察，完整13跳路线 `[2605,8757,2615,2616,8754,2613,8752,2628,2626,2627,2633,2634,2640]`，实际无战斗/无退却。008专用fresh strength为2248/2461；不能从地图soldiers=null求兵数。
+
+独立009同帧目标2640在war50331736和129均实际可观察，`is_occupied=false`，同一敌FullSiege318767158（public CUnit473、player=false）仍存在；fort7/garrison1350/besieging_strength2534/progress70337（Q100000，70.337%）/原生ETA106/breach2/CanStartfalse。两war只映射一个siege，不能重复计数。该事实不代表解除敌方围城。
+
+010正常checkpoint h5384 / raw53240136 / 91503841B / SHA `f228391541ec3f34d43906e390394bf656e809816149a6b72d53c0f69c98539d`。本包0小时、0日，累计3992/36524、恢复839、Oct3已保存744日不变。当前只闭合production-live primitive的路线下达与独立读回，尚未抵达、实际接战或解围。后续复用显式单日retained SDK transit；实际player in_combat时保存真实后态并交战斗负责人，arrival与fresh enemy active_siege解除分别观察。
+
+冻结artifact：`Z:\ck3_mod_rewrite_process_assets\g2-resume-20261003\runtime-preparation\v43\actual-relief-move-2640-v43-01\result.json`；报告字段：`Z:\ck3_mod_rewrite_process_assets\g2-resume-20261003\military-ooda-continuation\relief-v43\actual-move-consumption\ROOT-DAY-WEEK-FIELDS.json`。此前first44/43 RED、独立recovery h5222，以及second31天收复2604均保留原证据。
+
+本次实际移动使用 v43 / R21 / PID 14124 的已冷恢复运行时，编译源码为 `Z:/g45` / source prefix `8e2`；本专题的 g38 文档前像与随后 Root 修复提交 不替代该编译绑定。实际正常关闭的 SDK 54091 与独立 afterframe、正常存档共同证明 有限派遣及路线读回；命令 ACK 本身不授予抵达、接战或解围成果。
+
+独立009同帧目标2640在war50331736和129均实际可观察，`is_occupied=false`，同一敌FullSiege318767158（public CUnit473、player=false）仍存在；fort7/garrison1350/besieging_strength2534/progress70337（Q100000，70.337%）/原生ETA106/breach2/CanStartfalse。两war只映射一个siege，不能重复计数。该事实不代表解除敌方围城。

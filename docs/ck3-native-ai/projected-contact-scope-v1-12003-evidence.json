@@ -1,7 +1,7 @@
 {
   "schema": "xar.projected-contact-scope-v1-12003.docs.v1",
   "date": "2026-10-03",
-  "status": "static-ready",
+  "status": "production-live primitive",
   "source_baseline": {
     "path": "Z:\\g38",
     "owner_supplied_head": "02e",
@@ -727,28 +727,154 @@
     ]
   },
   "root_production_paused_query": {
-    "status": "pending",
-    "runtime": null,
-    "source_commit": null,
-    "artifact_path": null,
-    "artifact_sha256": null,
-    "public_revision": null,
-    "native_revision": null,
-    "date_raw": null,
-    "transition_kind": null,
-    "subject_current_province_id": null,
-    "target_province_id": null,
-    "incoming_entry_province_id": null,
-    "contact_projection_inputs_complete": null
+    "status": "GREEN",
+    "runtime": "v43 / Z:/g45 / R21 / PID14124",
+    "source_commit": "8e2cfbee4981af7f80398ec09129c1cf0f3dbe54",
+    "source_status": "Frozen build/actual source; future registration repair a6f3221 is separate",
+    "artifact_path": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v43/actual-projected-counter-targets-v43-01",
+    "report_fields_path": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-terrain-actual/future-engagement/v43-dual-target/REPORT-FIELDS.json",
+    "sdk_exec_id": 74963,
+    "sdk_closed_normally": true,
+    "public_revision": 2,
+    "native_revision": 5,
+    "connection_generation": 3,
+    "date_raw": 53240136,
+    "actor_character_id": 29829,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "subject_current_province_id": 2604,
+    "subject_army_id": 83886367,
+    "scope_kind": "hypothetical_arrival_against_current_target_state",
+    "targets": [
+      {
+        "target_province_id": 2640,
+        "actual_scope": {
+          "status": "available",
+          "scope_kind": "hypothetical_arrival_against_current_target_state",
+          "snapshot_revision": 5,
+          "date_raw": 53240136,
+          "subject_army_id": 83886367,
+          "subject_native_carmy_id": 50331794,
+          "subject_owner_character_id": 29829,
+          "subject_current_province_id": 2604,
+          "target_province_id": 2640,
+          "incoming_entry_province_id": 2634,
+          "observed_target_public_cunit_ids": [
+            473,
+            251658381
+          ],
+          "observed_target_combat_ids": [],
+          "transition_kind": "create_new",
+          "selected_current_combat_id": null,
+          "selected_current_combat_array_index": null,
+          "projected_subject_side": "defender",
+          "projected_initiator_is_defender_observable": true,
+          "projected_initiator_is_defender": true,
+          "incoming_adjacency_kind_raw": 0,
+          "projected_attacker_army_ids": [
+            473,
+            251658381
+          ],
+          "projected_defender_army_ids": [
+            83886367
+          ],
+          "contact_projection_inputs_complete": true
+        },
+        "common_war_ids": [
+          50331736
+        ],
+        "projection_receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\runtime-preparation\\v43\\actual-projected-counter-targets-v43-01\\004-ck3_query_projected_contact_scope_v1.json",
+        "projection_sha256": "621d82a828300a81f918d2f078f6b736042319cd82714350773bd5befb6b105b",
+        "fresh_preview_receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\runtime-preparation\\v43\\actual-sway-new-fields-and-counter-scope-v43-01\\030-ck3_execute_step.json",
+        "incoming_defender_entry": 2634,
+        "v2_attacker_entry_scenario": 2634,
+        "attacker_entry_provenance": "explicit caller-owned diagnostic edge scenario using known native adjacency; enemy historic entry is not observed",
+        "role_and_side_order_source": "actual projected native body, not snapshot/war army order",
+        "old_foreign_combat_reused": false
+      },
+      {
+        "target_province_id": 2635,
+        "actual_scope": {
+          "status": "available",
+          "scope_kind": "hypothetical_arrival_against_current_target_state",
+          "snapshot_revision": 5,
+          "date_raw": 53240136,
+          "subject_army_id": 83886367,
+          "subject_native_carmy_id": 50331794,
+          "subject_owner_character_id": 29829,
+          "subject_current_province_id": 2604,
+          "target_province_id": 2635,
+          "incoming_entry_province_id": 2634,
+          "observed_target_public_cunit_ids": [
+            16777683
+          ],
+          "observed_target_combat_ids": [],
+          "transition_kind": "create_new",
+          "selected_current_combat_id": null,
+          "selected_current_combat_array_index": null,
+          "projected_subject_side": "defender",
+          "projected_initiator_is_defender_observable": true,
+          "projected_initiator_is_defender": true,
+          "incoming_adjacency_kind_raw": 0,
+          "projected_attacker_army_ids": [
+            16777683
+          ],
+          "projected_defender_army_ids": [
+            83886367
+          ],
+          "contact_projection_inputs_complete": true
+        },
+        "common_war_ids": [
+          129
+        ],
+        "projection_receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\runtime-preparation\\v43\\actual-projected-counter-targets-v43-01\\006-ck3_query_projected_contact_scope_v1.json",
+        "projection_sha256": "711f680025b63297a96cedf1681f9035eba24464cd8a404bc6ff1eeaf3008a7e",
+        "fresh_preview_receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\runtime-preparation\\v43\\actual-sway-new-fields-and-counter-scope-v43-01\\032-ck3_execute_step.json",
+        "incoming_defender_entry": 2634,
+        "v2_attacker_entry_scenario": 2634,
+        "attacker_entry_provenance": "explicit caller-owned diagnostic edge scenario using known native adjacency; enemy historic entry is not observed",
+        "role_and_side_order_source": "actual projected native body, not snapshot/war army order",
+        "old_foreign_combat_reused": false
+      }
+    ],
+    "compiled_build": {
+      "jobs": 64,
+      "strict_translation_units": 545,
+      "unique_sources": 542,
+      "inputs": 1051,
+      "duration_seconds": 79.43849,
+      "status": "GREEN",
+      "official_ci_run": 37125578704,
+      "official_ci_status": "GREEN"
+    },
+    "window": {
+      "minimized": true,
+      "foreground": false,
+      "cold_runtime_success": true
+    },
+    "original_attempt_retained": {
+      "sdk_exec_id": 30708,
+      "status": "RED",
+      "root_reported_failure": "First default Raise012 missing startup registration",
+      "later_source_registration_fix": "a6f3221",
+      "failure_rewritten": false
+    },
+    "new_days": 0,
+    "calendar_days_total": 3992,
+    "recovery_days": 839,
+    "october3_days": 744,
+    "natural_succession": 0,
+    "actual_arrival_or_contact_claimed": false,
+    "player_battle_win_claimed": false,
+    "complete_battle_ooda_claimed": false
   },
   "readiness": {
     "research": true,
     "static_ready": true,
     "fixture_live": false,
-    "production_live_primitive": false,
+    "production_live_primitive": true,
     "production_live_loop": false,
     "complete": false,
-    "promotion": "central native and registered MCP receipts GREEN establish static-ready; production-live primitive awaits Root actual paused .3 receipt; none can establish read-only availability"
+    "promotion": "v43 actual paused projected-contact packets004/006 establish the read-only primitive; SDK86145 separately establishes fixed-entry v2 input primitives. Actual contact/action/outcome loop and complete battle OODA are not established."
   },
   "remaining_observation_and_quality_seams": [
     "target movement/relations/reinforcement changes before ETA",
@@ -762,6 +888,109 @@
     "sdk_calls": 0,
     "game_days": 0,
     "window_operations": 0,
-    "strategy_changes": 0
+    "strategy_changes": 0,
+    "raw_packet_reconsumption": 0
+  },
+  "historical_readiness_before_v43": {
+    "status": "static-ready",
+    "root_production_paused_query": {
+      "status": "pending",
+      "runtime": null,
+      "source_commit": null,
+      "artifact_path": null,
+      "artifact_sha256": null,
+      "public_revision": null,
+      "native_revision": null,
+      "date_raw": null,
+      "transition_kind": null,
+      "subject_current_province_id": null,
+      "target_province_id": null,
+      "incoming_entry_province_id": null,
+      "contact_projection_inputs_complete": null
+    },
+    "readiness": {
+      "research": true,
+      "static_ready": true,
+      "fixture_live": false,
+      "production_live_primitive": false,
+      "production_live_loop": false,
+      "complete": false,
+      "promotion": "central native and registered MCP receipts GREEN establish static-ready; production-live primitive awaits Root actual paused .3 receipt; none can establish read-only availability"
+    }
+  },
+  "fixed_entry_v2_actual_diagnostics": {
+    "status": "GREEN",
+    "readiness": "production-live primitive: two target-context input sets",
+    "sdk_exec_id": 86145,
+    "sdk_closed_normally": true,
+    "receipt": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-counter-campaign/ranking/fixed-entry-v2/ROOT-DELIVERY.json",
+    "receipt_sha256": "f5dc9d0adf7da799cbfd1b8b49c1e0149d954eb37e3b6d0c8bb996e0c4669644",
+    "leaves": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-counter-campaign\\ranking\\fixed-entry-v2\\FIXED-ENTRY-V2-LEAVES.json",
+      "sha256": "910772f49195232b4223a9352c335fd588813efd83e122ce31e29f1c0c288795"
+    },
+    "diagnostics": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-counter-campaign\\ranking\\fixed-entry-v2\\DIAGNOSTICS.md",
+      "sha256": "afde298b341c153ab08f598ba23d586215e21130116c9b5c4a194b8fe8c9465b"
+    },
+    "report_fields": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-counter-campaign\\ranking\\fixed-entry-v2\\REPORT-FIELDS.json",
+      "sha256": "c02c70b25201e6d278fb9ab80060042e9609372018c068c63b5b21c59636f314"
+    },
+    "normal_checkpoint": {
+      "status": "saved",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-mainline-12003-v43-20261003\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91503841,
+      "sha256": "b7a691d12981339398842743175bc448b8389d6335cc8677a15699221332cdf2",
+      "date_raw": 53240136,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "succession_lifecycle": {
+        "schema": "xar.ck3.succession-lifecycle-binding/v1",
+        "lifecycle": "ordinary_campaign_succession",
+        "xar_enabled": "xar_off",
+        "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+        "source": "prepared-environment-manifest",
+        "environment_sha256": "198075ec055e8c12e0dc73f1ca18ac827ddc5b45b79f106a3012a7f57dde420b"
+      },
+      "history_index": 5387,
+      "episode_character_id": 29829,
+      "episode_run_id": "native-29829-2bc2d599f7f9"
+    },
+    "caller_owned_attacker_entry_province_id": 2634,
+    "enemy_historic_entry_observed": false,
+    "actual_route_dependency": false,
+    "input_observation_ready": true,
+    "monte_carlo_ready": false,
+    "targets": [
+      {
+        "province_id": 2640,
+        "terrain": "mountains",
+        "width_multiplier": 0.5,
+        "precontact_width_base": 2391,
+        "precontact_width": 1195,
+        "crossing": "none",
+        "holding_defender": true
+      },
+      {
+        "province_id": 2635,
+        "terrain": "farmlands",
+        "width_multiplier": 1,
+        "precontact_width_base": 2306,
+        "precontact_width": 2306,
+        "crossing": "none",
+        "holding_defender": true
+      }
+    ],
+    "missing_simulation_inputs": [
+      "damage_to_casualty_allocation",
+      "pursuit_transition",
+      "battle_end_and_retreat_transition",
+      "phase_event_rng_and_effects"
+    ],
+    "new_days": 0,
+    "already_committed_movement_target": 2640,
+    "actual_contact_or_player_win_claimed": false
   }
 }

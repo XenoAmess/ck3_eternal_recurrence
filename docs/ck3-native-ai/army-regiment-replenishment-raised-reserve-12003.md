@@ -133,3 +133,36 @@ Persistent补员owner可能是玩家军队所含的vassal/titleholder；CUnit当
 正常围城日级军力下降并不单独说明未补员、损耗率或补员disabled；需同时读取current/max/类型、supply/attrition和native补员最终输入。Root/army_supply_attrition拥有现有军力reader/wire/normalizer修改，本包只提供原生字段和ABI证据，避免重复投影。
 
 本包readiness为research；精确源码/stock/二进制研究不增加Robert production-live、补集结、兵力恢复、围城收复、战争胜利、保存日或G2信用。未闭合getter按具体xrefs继续施工，不以unknown终止当前战斗与围城主线。
+
+## 2026-10-03 v43 当前 paused production 实读
+
+前文离线 research/static-ready 与旧帧资格保留为各自施工阶段和冻结日期的历史事实；本节只提升本次 v43 实际已读字段，不回填旧帧 live。
+
+Root 新 runtime `g45/v43` 冻结源码 `8e2cfbee4981af7f80398ec09129c1cf0f3dbe54`，CK3 exact `.3` 版本及 EXE SHA 保持本页上述绑定；唯一 Robert29829 普通战役 `native-29829-2bc2d599f7f9` 继续，game PID14124 处于后台暂停。本次只消费既有生产查询文件，不启动 SDK、不运行夹具、不操作窗口、不新增游戏日。
+
+生产叶 [016-ck3_query_army_strengths.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v43/actual-sway-new-fields-and-counter-scope-v43-01/016-ck3_query_army_strengths.json) 为 **GREEN**，SHA-256 `1f1f863e3ad77ad2ea59ad344ec1a5ae8c6178309e1e839a7c1514a04a913577`；date53240136、public revision2/native3、snapshot `native:3`、paused=true。既有 consumer 一次消费生成 [CURRENT-HEALTH.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/actual-current-health-v43/CURRENT-HEALTH.json)。同 SDK30708 已正常关闭，整批 exit1 的原因是独立 defaultRaise012 RED，不能把本叶 GREEN 写成整批 GREEN。查询叶内 version/EXE SHA 为 null，版本绑定来自 Root 已冻结的 runtime，未伪造叶内身份字段。
+
+当前玩家 CUnit83886367 → CArmy50331794，40 ArmyRegiments，current/max2248/2461；Root 同暂停帧正常保存 h5377，save SHA-256 `1b24b41318a27a75d4148ec58d9dcad93d74ec1be4f7e31b4eec30ed6ca998e6`。本 lane 不增加该正常保存的日信用，不以暂停帧兵数差构造伤亡。
+
+首记录投影实际包含40个 ArmyRegiment rows：26 available、14 unavailable，14个原因均为 `army_regiment_first_record_absent` 且 actual native record count 为0。这是该回链入口在这些 row 的真实无首记录，不合成 hidden source、零补员率或全军不可补员结论。
+
+26个 available rows 匹配26个 persistent inline chunks；`native_can_replenish` 分别 true14/false12，独立 `native_chunk_can_replenish` 分别 true6/false20。实际结果再次说明不能用人工 AND 替换两项原生返回值。persistent whole-Regiment monthly fraction raw/Q100000 含3075、10000、4200、3825、3000、4125、5700、3150、4575、3675；完整频次在 receipt。它们不是当前 ArmyRegiment 或整军净补兵人数/月。
+
+真实 native data-record count 分布为0×14、1×20、2×2、3×2、4×1、5×1，六个 row 多于一条 record。已读首记录/双 FullID 匹配 chunk 原生当前许可与 fraction 提升为 **limited production-live primitive**；全部 record 覆盖与整军净补兵预测仍未完成。需要完整覆盖时，具体施工入口是 native `0xD14960` 下 actual ArmyRegiment+0x20 data-record 基址/+0x2C count 的 stride与完整遍历、persistent解析及 chunk双向回链；现有首记录路径和已读原生 getter 直接复用，不再研究同一 getter。此质量差距不阻断当前以 supply/capacity/attrition 和已有军力进行普通移动/围城解围。
+
+```mermaid
+flowchart TD
+    A["v43 paused: 40 actual ArmyRegiment rows"] --> C{"actual data-record count"}
+    C -->|0: 14 rows| E["first_record_absent; 不伪造补员零值"]
+    C -->|positive: 26 rows| F["真实 first persistent record + 双FullID匹配26chunks"]
+    F --> B["独立 native262C700 与2657F10 bool"]
+    F --> M["whole persistent262CAD0 monthly fraction"]
+    B --> P["首记录当前输入 production-live primitive"]
+    M --> P
+    C -. "count>1: 6 rows; stride完整遍历未闭合" .-> U["全部record覆盖施工入口"]
+    P --> D["当前 army health 与正常战术继续"]
+```
+
+没有声明补员动作、完整未集结reserve、全军净月补员、战斗胜利或新游戏日。当前 SDK 的 defaultRaise012 RED 由其 owner 处理，与本叶首记录真实已读区分记录。当前补给三数值 actual 见 [容量/损耗专题](army-current-supply-capacity-attrition-12003.md) 的同日追加。
+
+Root 本次协调收口的累计保存日为3992，自然继承0；本健康查询与文件整合新增0日。该计日来自 Root 总账，不由补给、兵数或月贡献推算；2248/2461 的差额不作为24小时损耗或战斗伤亡。

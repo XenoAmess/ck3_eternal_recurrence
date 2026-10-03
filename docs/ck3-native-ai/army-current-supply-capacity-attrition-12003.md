@@ -1,6 +1,6 @@
 # CK3 1.20.0.3 当前军队补给容量与损耗率原生入口
 
-冻结 CK3 1.20.0.3 / Steam build25652598；EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。本页是离线静态调用链证据；没有 SDK、进程读取、游戏函数执行或新增游戏天。
+冻结 CK3 1.20.0.3 / Steam build25652598；EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。本页先记录离线静态调用链，末节追加2026-10-03 v43当前 paused production 实读；离线研究自身没有 SDK、进程读取、游戏函数执行或新增游戏天。
 
 既有 `current_supply_raw`/Q100000 来自已闭合 `CArmy+0x180`，本次不重复它。新增入口来自当前原版 `gui/window_army.gui` 的真实注册链：
 
@@ -22,7 +22,7 @@ flowchart TD
     D --> F["当前 siege / raid / supply 状态比例"]
     E --> G["独立下一暂停帧：日期、当前供给、兵数、siege与occupation"]
     F --> G
-    G -. "unknown: 新字段 production paused 实读" .-> H["当前供给/损耗 primitive"]
+    G -->|"v43 actual date53240136"| H["当前供给/损耗 primitive"]
     H -. "unknown: 月检查时刻、未来驻军与补给变化" .-> I["实际围城供给/损耗 outcome loop"]
 ```
 
@@ -42,7 +42,7 @@ flowchart TD
     R -. "unknown .3 3省距离/250天冷却消费" .-> A["原生 resupply 最终目标"]
     A -. "unknown committed route future province/cycle" .-> F["未来 supply / attrition / reinforcement"]
     P["本包 closed: 当前容量/attrition getter"] --> O["当前 Strength 只读扩展施工"]
-    O -. "待真实暂停帧" .-> L["当前军务策略消费"]
+    O -->|"v43 actual date53240136"| L["当前军务策略消费"]
 ```
 
 上述 unknown 是质量与逆向入口：需要精确模仿 AI resupply 时，沿 AI define 名称注册槽与当前 army coordinator 的 resupply caller 定位，冻结当前省 supply limit、CArmy状态及真实 committed route，再给既有查询补同帧输入。当前普通 siege 观察可先使用既有 supply/current soldiers和新的容量/attrition数值，不能因完整未来预测未闭合停止实机。
@@ -130,3 +130,39 @@ Construction entry: implementation owner adds this optional `.3` native pointer 
 源码交付：[replenishment-chunk-projection/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/replenishment-chunk-projection/ROOT-DELIVERY.json)，7路径delta SHA-256 `939680baaec10ed6e5b630a3f1ecfdce0039ce679300c9018a2b7971bf480323`；[原生补员ABI](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-reinforcement-raise/native-replenishment/abi-lane/ROOT-DELIVERY.json)、[月供给原生ABI](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/native-tree/supply-change-next/ROOT-DELIVERY.json)。ROOT需要正常新runtime严格构建与paused query取得当前值。若真实record count大于1仍挡目标决策，则沿同专题继续闭合record stride与完整覆盖；局部primitive不冒充整军ready，也不成为普通围城接续的新门禁。
 
 本包新增0游戏天、0SDK/进程读取/窗口输入，readonly旧供给100只绑定date53238336。ROOT另行已完成正常34日prefix至累计3951/h5177、围城55.108%/原生预计70天；该实际进度不代表本包新字段已live或补员/收复动作完成。
+
+## 2026-10-03 v43 当前 paused production 实读
+
+前文离线 research/static-ready 与旧帧资格保留为各自施工阶段和冻结日期的历史事实；本节只提升本次 v43 实际已读字段，不回填旧帧 live。
+
+Root 新 runtime `g45/v43` 冻结源码 `8e2cfbee4981af7f80398ec09129c1cf0f3dbe54`，CK3 exact `.3` 版本及 EXE SHA 保持本页上述绑定；唯一 Robert29829 普通战役 `native-29829-2bc2d599f7f9` 继续，game PID14124 处于后台暂停。本次只消费既有生产查询文件，不启动 SDK、不运行夹具、不操作窗口、不新增游戏日。
+
+生产叶 [016-ck3_query_army_strengths.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v43/actual-sway-new-fields-and-counter-scope-v43-01/016-ck3_query_army_strengths.json) 为 **GREEN**，SHA-256 `1f1f863e3ad77ad2ea59ad344ec1a5ae8c6178309e1e839a7c1514a04a913577`；date53240136、public revision2/native3、snapshot `native:3`、paused=true。既有 consumer 一次消费生成 [CURRENT-HEALTH.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/actual-current-health-v43/CURRENT-HEALTH.json)。同 SDK30708 已正常关闭，整批 exit1 的原因是独立 defaultRaise012 RED，不能把本叶 GREEN 写成整批 GREEN。查询叶内 version/EXE SHA 为 null，版本绑定来自 Root 已冻结的 runtime，未伪造叶内身份字段。
+
+当前玩家 CUnit83886367 → CArmy50331794，40 ArmyRegiments，current/max2248/2461；Root 同暂停帧正常保存 h5377，save SHA-256 `1b24b41318a27a75d4148ec58d9dcad93d74ec1be4f7e31b4eec30ed6ca998e6`。本 lane 不增加该正常保存的日信用，不以暂停帧兵数差构造伤亡。
+
+| 当前值 | observed | raw / Q100000 | 正常玩家可用含义 |
+|---|---|---|---|
+| stored supply | true | 10000000 → 100 | 当前军队实际持有补给。 |
+| current supply capacity | true | 30000000 → 300 | 此帧原生当前容量；100 并非已满容量。 |
+| current monthly supply contribution | true | 2000000 → +20 Supplies/month | 使用当前 Province2604 的原生 getter；不外推目的地或未来已实现增加。 |
+| current attrition fraction | true | 0 → 0 | 当前合法原生零值；不说明此前兵数净降的原因。 |
+
+三项新增数值从 static-ready 提升为 **production-live primitive**，且本次不是长期 null 的 schema 交付。旧 v40/v41 的 supply100 保留其当日事实，不能由旧字段推断其当日容量。本次实际容量300也不额外推断统帅具体 modifier。
+
+```mermaid
+flowchart TD
+    F["v43 native:3 / date53240136 paused actual"] --> A["83886367 → CArmy50331794: 2248/2461"]
+    F --> S["stored supply100 / native capacity300"]
+    F --> M["current Province2604: +20 Supplies/month"]
+    F --> T["current attrition fraction0, observed=true"]
+    S --> P["当前军队 health production-live primitive"]
+    M --> P
+    T --> P
+    P --> C["war_counter_campaign 当前路线/接触比较输入"]
+    C -. "下一实际抵达/省份变化后继续当前查询" .-> N["新的 paused health 及正常游戏 outcome"]
+```
+
+2640 首都/两战 shared goal 和2635 本人 holding2103 的敌围城比较继续由 `war_counter_campaign` 消费 fresh022 enemy 与既有路线/接触查询；本包 health 只给当前2604输入。当前损耗0、月贡献+20支持继续当前移动/解围决策，不能生成目的地补给保证，也不新增等待满补给或完整未来预测门禁。native 首记录补员实际覆盖见 [补员专题](army-regiment-replenishment-raised-reserve-12003.md) 的同日追加。此 primitive 不宣称完整 resupply AI 排序、全军净补兵或 attrition outcome loop 已完成。
+
+Root 本次协调收口的累计保存日为3992，自然继承0；本健康查询与文件整合新增0日。该计日来自 Root 总账，不由补给、兵数或月贡献推算；2248/2461 的差额不作为24小时损耗或战斗伤亡。

@@ -1,5 +1,13 @@
 # CK3 自动游玩智能体进度中心
 
+## 当前短指针：v43 已真实冷恢复与有限军事操作（2026-10-03）
+
+v43/R0021/PID14124冷恢复实测成功，minimized=true/foreground=false；最新typed move保存h5384，累计仍 **3992/36524日**、恢复+839、10月3日+744、自然终局0，本轮不增加保存日或全局里程碑。补给health016与19行phase统帅候选为只读primitive；remote004/006及v2查询正常close GREEN、MC readiness仍false。typed move仅已完成派遣与独立after，未观测到达或解除围攻。
+
+详细原生入口见[当前原生索引](../ck3-native-ai/README.md)、[补给/上限/损耗](../ck3-native-ai/army-current-supply-capacity-attrition-12003.md)、[补员与预备兵](../ck3-native-ai/army-regiment-replenishment-raised-reserve-12003.md)、[围城效率与phase统帅输入](../ck3-native-ai/siege-efficiency-inputs-12003.md)、[投影接战scope](../ck3-native-ai/projected-contact-scope-v1-12003.md)与[Robert防御战争树](../ck3-native-ai/robert-defensive-war-loop-12003.md)。default-raise012的startup注册缺失真实RED和h5377保存仍保留，不能以其它查询GREEN代替该能力成功；目标2640同帧敌方围城仍在、我军CanStart=false，不是救援完成。
+
+运行构建为冻结g45/source8e2cfbee，strict545TU/542unique/1051inputs、jobs64/79.43849s及官方CI37125578704 GREEN；v44/g46修复候选仅准备中。R20 day44与preflight01→02历史失败分别保留。此段仅给当前证据入口；完整目标与blocker账本由其owner更新，下方旧记录保留当时状态。
+
 ## 当前截点：v41 实际收复 2604，3992 个保存日（2026-10-03T21:35:30+08:00 实际补录）
 
 - **真实运行与当前保存**：本次 actual 编译源码 `cd5db630a5e280b477cf946f3ce6cc0410799d85` / frozen `Z:/g43`；最近已闭合的实机R20/记录bridge PID62988、原Robert29829/episode native-29829-2bc2d599f7f9/ordinary/xar_off/pact absent，收复SDK正常关闭；随后readonly SDK45702 GREEN/recovery0day、plan_turn retentions为actual primitive，normal保存更新h5364，计日不变。当前v43/R21已launchstarted但新cold尚未确认。 最新 normal `h5364 / raw 53240136 / SHA-256 e8b4f01508d5e08b20091d87a127f154de49b074c14d680159e6d2dc035f2014`。累计 **3992/36524**、恢复 **+839**、10-03 **+744**，G2 **5/8**、NW **2/4**、自然终局 **0**、`percent_reporting_allowed=false`。[military 终态消费收据](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/siege-v41/second-batch-consumption/ROOT-TERMINAL-DELIVERY.json)、[readonly后最新normal pair投影](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v43/v43-root-packet/root-stage-current-pair-01.json)。索引消费新增日0。

@@ -1,14 +1,14 @@
 # CK3 1.20.0.3：本次围攻效率输入与候选阶段修正
 
-2026-10-03，readiness **research / exact static-confirmed**。当前 Robert 围攻的进展和合法性复用已完成的 v39 暂停叶；本包没有新 SDK、游戏进程读取、命令、窗口操作、游戏日或胜利信用。原生树在候选字段实现之前落盘；当前可施工入口是同一将领候选查询增加有效阶段修正，之后由 ROOT 根据实际合法候选值使用已有正式任命动作。
+2026-10-03，当前新增候选 phase 输入为 **production-live primitive**：v43 / frozen `Z:/g45` / source `8e2cfbee4981af7f80398ec09129c1cf0f3dbe54` 已从 Robert29829 暂停真实候选返回19个有效 signed phase 值，唯一文件消费生产 normalizer GREEN。下方保留历史原生研究、v39围城帧及 focused 验证；最新实际字段与本帧将领取舍见末节。未执行由本字段驱动的换将或加速，不把它归为收复或战争胜利。
 
 精确构建为 **1.20.0.3 / Steam25652598**，实际安装目录 `Z:/SteamLibrary/steamapps/common/Crusader Kings III`，EXE SHA-256 `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`。源码读取基线 `Z:/g38@5cbc0ee17f3d6cd2065c1a482607ef6975eef447`，本次运行来源 `02e88d57fcef399368f34b23f497d3e8565af95d`。完整字节、输入路径和哈希在本包 `EXACT-INPUTS.json` 与 `CANDIDATE-PHASE-NATIVE-PINS.json`；所有地址为 RVA。
 
-## 本场已有事实
+## 历史 v39 raw53238336 围城当帧
 
-读取旧完成叶 `military-ooda-continuation/siege-v39/actual-stationary-siege-batch-2604-02/day-37/006-ck3_query_war_occupation_targets_v1.json`。其目标行是 province2604 / holding2400 / Siege503316492 / public CUnit83886367；legal holder33435、敌方 occupier30097，玩家主围攻为 true。当前累计进展9781290、所需总进展32500000、剩余22718710，均为 Q100000；进展分数30096即30.096%，原生剩余预测109天。城防3、当前守军400、合格围攻兵2290；破口0、强攻未开始、原生 CanStart/CanStop 都 false。没有收复完成事实。
+读取旧完成叶 `military-ooda-continuation/siege-v39/actual-stationary-siege-batch-2604-02/day-37/006-ck3_query_war_occupation_targets_v1.json`。其目标行是 province2604 / holding2400 / Siege503316492 / public CUnit83886367；legal holder33435、敌方 occupier30097，玩家主围攻为 true。该历史当帧累计进展9781290、所需总进展32500000、剩余22718710，均为 Q100000；进展分数30096即30.096%，原生剩余预测109天。城防3、当前守军400、合格围攻兵2290；破口0、强攻未开始、原生 CanStart/CanStop 都 false。没有收复完成事实。
 
-该行给出的城防3低于原版第一阈值4，按已闭合正常非负 tier 路径，本场当前城防缺级日速因子为1。不能把“新增高阶器械”解释成正在消除本场城防惩罚。多余合格兵的已知日速项为 `0.01 * floor((2290-400)/200) = 0.09`；这只是一个输入项，不能因此将普通日速补成1.09。本场当前器械有效属性、规模、疾病等级和完整日速修正没有被本包观测，109天也不能反解唯一日速或当成固定完成期限。
+该行给出的城防3低于原版第一阈值4，按已闭合正常非负 tier 路径，该v39当帧城防缺级日速因子为1。不能把“新增高阶器械”解释成正在消除本场城防惩罚。多余合格兵的已知日速项为 `0.01 * floor((2290-400)/200) = 0.09`；这只是一个输入项，不能因此将普通日速补成1.09。该v39当帧器械有效属性、规模、疾病等级和完整日速修正没有被本包观测，109天也不能反解唯一日速或当成固定完成期限。
 
 ## 已有原生日进展与阶段树
 
@@ -81,24 +81,25 @@ flowchart TD
     C --> F["phase getter inline同键同值加入factor"]
     C --> S["candidate mask4分支：负raw ×1000质量附加"]
     U["unknown: mask4真实GUI/AI caller"] -. "尚未闭合" .-> S
-    J -. "ROOT新DLL当前候选实读pending" .-> A["比较CanAssign true候选与现任有效raw"]
-    A -. "已有正式typed assignment +独立读回pending" .-> L["实际换将与继续围攻"]
+    J -->|v43 actual014| A["现任Robert与19位真实候选；phase全可读"]
+    A --> Q["18位CanAssign true，均未改善两质量或phase"]
+    A -. "未来fresh候选如有真实收益再用typed assignment" .-> L["实际换将与独立读回"]
     classDef unknown stroke-dasharray: 6 4;
-    class U,A,L unknown;
+    class U,L unknown;
 ```
 
 ## 本次可执行改善与验收边界
 
-第一项可执行增量是在既有 `ck3_query_army_commander_candidates_v1` 的候选行补一个 nullable signed `siege_phase_time_modifier_raw`，scale明确为100000；不新增MCP、flags、许可或war禁令。不改变既有quality或CanAssign。当前未发布此值时，不猜Robert为0，也不凭军事工程师标签直接换将。
+已实施的第一项增量是在既有 `ck3_query_army_commander_candidates_v1` 的候选行补一个 nullable signed `siege_phase_time_modifier_raw`，scale明确为100000；不新增MCP、flags、许可或war禁令。不改变既有quality或CanAssign。其它未读当帧中，不猜Robert为0，也不凭军事工程师标签直接换将。
 
 一次新字段 focused验证覆盖真实production reader→serializer→registered MCP，使用specific与generic子表不同哨值，证明生产receiver的+0x68正确；保留负值、零值、missing key合法0与真实getter不可用null。ROOT随后读当前候选：只有实际更小raw且正式CanAssign=true时，才有确定的缩短phase输入理由；使用已有正式typed任命并独立确认当前将领。普通推进后仍按同SiegeID进展和occupation读回结果，不把字段ACK或较小raw当成实际缩短天数/城破。
 
 器械另一条可执行路线是当前实际regiments/有效siege_value/归一化人数的观测和正式补员、创建或会师资格；这些由对应composition lane施工。当前CanStart=false意味着本次不能使用既有强攻动作，未来有破口后仍应读取完整原生CanStart，而非仅以breach>0判定。本包不为这些尚未采集字段设计额外门禁，也不等待完整事件模拟器。
 
-本包新增信用为0：静态输入链已闭合，candidate新字段、实际更优将领、正式换将、围攻加速、收复完成与战争胜利都仍须后续真实artifact。普通围攻已经推进的49实际保存日属于ROOT既有运行，不能再次累计为本研究收益。
+原生研究阶段新增信用为0。candidate新字段的实际读取现已由v43闭合；当帧没有质量或phase更优的合法替代，因此没有换将。Root的2604收复由独立occupation运行证明，本字段与文件消费者不领取该结果信用；围攻加速与战争胜利仍须各自真实结果artifact。普通围攻已经推进的49实际保存日属于ROOT既有运行，不能再次累计为本研究收益。
 
 
-## 同口最小实现与唯一 focused 验证
+## 历史实现阶段：同口最小增量与唯一 focused 验证
 
 本次四个生产文件已完成外置实现，同一 commander candidate 口增加唯一公开字段 `siege_phase_time_modifier_raw`，单位 signed Q100000；缺少 getter/容器/输出指针为 null，原生 missing key 为真实0。字段观测与既有 CanAssign、generic quality 独立；旧冻结 payload 缺字段只补 null。没有新增端点、动作或运行开关。Root 采用、正式组合 DLL 与新 PID 的实际候选读取仍按各自 receipt 记录。
 
@@ -114,6 +115,25 @@ flowchart TD
 
 Reusable canonical paths为 `ck3_autonomous_player/native_bridge/src/ck3_12003_commander_siege_phase_test.cpp`、`ck3_autonomous_player/native_bridge/research/fixtures/run_commander_siege_phase_mcp_fixture.py`；两路径外置patch与完整结果在 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/siege-efficiency-inputs/production-validation/new-fixture/ROOT-DELIVERY.json`。Root负责与4生产路径及native专题一起正常采用、commit/push，再做fresh actual候选读取。纯文件lane 0SDK / 0游戏 / 0窗口 / 0Git写 / 0新日 / 0实际围城或战斗收益信用。现口actual008的40regiments/Robert34/roll0..10是另外的production-live primitive包，本新phase源码与之分开归属。
 
-新字段当前为 **static-ready / focused production-path fixture GREEN**；尚无新字段的 Robert paused actual，不记 production-live、换将、加速日数、收复、胜利或 G2 信用。现 normal siege 与 v40 composition actual 是独立已有能力，继续推进不等待该静态候选输入。
+在上述外置实现阶段，新字段为 **static-ready / focused production-path fixture GREEN**；当时尚无新字段的 Robert paused actual，不记 production-live、换将、加速日数、收复、胜利或 G2 信用。现 normal siege 与 v40 composition actual 是独立已有能力，继续推进不等待该静态候选输入。
 
 外置索引：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/siege-efficiency-inputs/combined/ROOT-DELIVERY.json`；原生 pins、四文件 projection、唯一 focused attempt 和当前 actual composition 各自保留在其 lane 的 receipt，不重播任何 SDK 或时间推进。
+
+
+### 2026-10-03：v43 真实候选将领 effective siege-phase 修正
+
+Root 在 frozen `Z:/g45` / source `8e2cfbee4981af7f80398ec09129c1cf0f3dbe54` 的 Robert29829 原普通战役，以既有 registered `ck3_query_army_commander_candidates_v1` 实际读取 public CUnit83886367 / native CArmy50331794，date_raw53240136、native revision3、public revision2。当前 commander 是 Robert29829；其当前 candidate native_ai_base_quality=34、generic_advantage_points=34，新增 effective `siege_phase_time_modifier_raw`=-10000 / Q100000。当前自身 CanAssign=false 是原生 final observation，不否认他已经任命的事实。
+
+实际候选集合 19 行、phase原生非null 19 行、原生 CanAssign=true 18 行；同帧合法候选中 generic advantage更高 0 行、native base quality更高 0 行、phase raw更低 0 行。具体 current/可任命候选逐行raw及top比较保存在 proof/CSV，不把 native_ai_base_quality 或 generic_advantage_points 改称独立martial属性。负raw只降低当前 character阶段因子组成；整场围城时长还依赖breach、省份及siege cached modifier，不能按raw直接承诺缩短百分比。
+
+这个新phase字段现为独立 **production-live primitive**，公开v1 schema/端点不变，非null来自实际新原生叶，未复用fixture值。唯一文件消费者调用当前对应 frozen production `normalize_army_commander_candidates_v1`，核对实际frame/owner/currentcommander/CanAssign/int64有符号phase；33显式Require GREEN，无removable assert，未重发query/SDK或重跑旧测试。只消费014一次。
+
+证据：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v43/actual-sway-new-fields-and-counter-scope-v43-01/014-ck3_query_army_commander_candidates_v1.json`；pure-file consumer `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/siege-efficiency-inputs/production-validation/actual-phase-v43-01/ROOT-DELIVERY.json`、同目录 `ACTUAL-PHASE-PROOF.json` 与 `ACTUAL-CANDIDATE-PHASE-VALUES.csv`。Root独立正常SAVE为h5377/date53240136，消费者增加0日。Province2604收复另归Root实际occupation包；本叶不增加新的任命、阶段加速、围城/玩家战斗/战争胜利或G2信用。canonical专题和日周/commit-push由Root负责，外置消费者不修改共享源/Git/窗口。
+
+### 本帧战斗质量与阶段修正取舍
+
+18位正式可任命替代中，15位与Robert相同为phase raw=-10000，3位为真实0。最佳合法替代34867的native AI base quality与generic advantage均为28；32716为23/23、33435为22/22，三者phase均与Robert相同。Robert为34/34，没有这些已观测维度上的Pareto改善。当前保留已任命Robert，继续由Root评估2640/2635解围；不为已结束的2604围城指标牺牲6点generic advantage而换同phase的34867。两质量都不是独立读取的martial skill或目标专属战斗advantage，不能据此计算胜率。
+
+这是本帧选择，不创建永久换将限制；未来fresh候选或目标上下文出现真实收益时仍可用既有正式任命并独立读回。取舍材料：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/siege-efficiency-inputs/observable-composition/actual-phase-tradeoff-v43-01/TRADEOFF.md`。
+
+文件消费者的首次 preflight 曾误认为此endpoint会发布episode字段，在生产normalizer调用之前报harness RED；该字段实际未发布，现保留null并移除这个不适用假设。之后matching frozen生产normalizer实际调用恰好1次、33显式Require GREEN，未重发SDK或旧测试。原harness RED保留在consumer receipt。Root同批defaultRaise012的actual executor unavailable/busy RED另包保留，不改写为此只读014能力RED。

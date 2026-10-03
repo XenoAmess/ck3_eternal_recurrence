@@ -1,5 +1,16 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-03：v43 冷恢复与军事输入的当前入口
+
+v43/R0021/PID14124已真实冷恢复，运行proof为minimized=true/foreground=false；最新有限移动保存h5384，累计仍 **3992日**、自然终局0，本轮零新增日。实际二进制来自冻结g45/source8e2cfbee：strict545TU/542unique/1051inputs、jobs64/79.43849s GREEN，DLL8,752,128字节/SHA-256 `1dba8d92eadfb6ea4469345b465b9500b8dc83ed4059303adcd949a2707e8524`、官方CI37125578704 GREEN。
+
+- [当前补给、上限与损耗](army-current-supply-capacity-attrition-12003.md)及[补员与预备兵输入](army-regiment-replenishment-raised-reserve-12003.md)：health016实读stored100/cap300/月补给+20/attrition0，只读primitive，不作未来补给或损失承诺。
+- [围城效率与phase统帅输入](siege-efficiency-inputs-12003.md)：phase014完整19行，Robert原生base quality34/generic advantage34/围城阶段时间modifier raw−10000；18个可任命候选无已观测的更优项，只读primitive、没有换将。这三值不含effective_roll读数。
+- [投影接战scope](projected-contact-scope-v1-12003.md)及[对应证据](projected-contact-scope-v1-12003-evidence.json)：remote004/006与v2 SDK86145正常close GREEN，投影目标的当前守方为Robert、enemy entry2634；MC readiness仍false，只读primitive，未声称胜率或实际接战。
+- [移动实际入口](war-movement-1.20.0.3-readiness-2026-10-03.md)：typed move SDK54091 GREEN，派遣及独立after有限闭环保存h5384；未抵达或解除围攻。同帧目标2640仍有敌方active siege且我军CanStart=false，War50331736/129指向同一Siege并去重，不能计为两处围城。后续仍沿[Robert防御战争树](robert-defensive-war-loop-12003.md)观察实际结果。
+
+首SDK30708的default-raise012因startup注册缺失真实RED、h5377保存，其余成功查询分别保留；R20 day44 completed-red及preflight01过早读receipt失败→02 GREEN均保留历史。v44/g46正准备modal/raise修复，尚无新版本live信用；原生.3 adapter的162e研究/fixture已发布，未在本包改动。当前能力与保存回链[统一进度](../autonomous-agent-progress/README.md)及[接续报告](../handover/2026-10-03-g2-v33-resume.md)，下方原记录保留其历史截止。
+
 ## 2026-10-03T21:25 最新正常pair与真实收复范围
 
 最新 h5360/raw53240136/3992日，第二explicit batch31×24h均完整，末同帧native308/public125/generation5/raw53240136的完整occupation实读：2604/holding2400 legalholder33435、occupied=false、occupier=null、counted_opposing=false；siege_observable=true且active_siege=null、besieging_strength=0、garrison25，独立证明目标敌占已清除。defender31 eligible/15 occupied，恢复帧17→终态15的两项减少中，只把holding2400这项归于已证玩家收复，另一项不猜来源。玩家军83886367仍2604、regular1/complete_empty、noncombat/nonretreat，独立strength2248。仅授单holding收复loop，无玩家battlewin/自然继承。首批44时间保存/43whole与day44 RED、h5222独立恢复分别保留。[唯一31日终态receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/siege-v41/second-batch-consumption/ROOT-TERMINAL-DELIVERY.json)
