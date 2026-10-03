@@ -1,0 +1,653 @@
+{
+  "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "native": [
+    {
+      "name": "player_commander_gui_handler",
+      "rva": "0x1483040",
+      "size": 539,
+      "end_exclusive": "0x148325b",
+      "sha256": "fb5535903368efbfe6ffb6ad465ac4306408d90ab72a5dbc649c5f40e1e6166f",
+      "entry_bytes_32": "48895c2408555657488bec4883ec60488bda488bf1498378181072034d8b0048"
+    },
+    {
+      "name": "player_commander_packet_clone_submit_callsite",
+      "rva": "0x14830c0",
+      "size": 150,
+      "end_exclusive": "0x1483156",
+      "sha256": "003a82a6e65470a489e69b0beeaec80459c510e711d19d5e8dcb3d2d65ddf41f",
+      "entry_bytes_32": "c645d80033ff48897ddc897de4488d0d44732e0348894dd0488d0dd1732e0348"
+    },
+    {
+      "name": "generic_clone_submit_wrapper",
+      "rva": "0x9e16b0",
+      "size": 120,
+      "end_exclusive": "0x9e1728",
+      "sha256": "5048d599b10a65e292fc7c179cf2516943fec8cbb30d29d73beea4844c828c18",
+      "entry_bytes_32": "4c89442418534883ec308bda488b01488d542458ff504090488b0833d2488910"
+    },
+    {
+      "name": "owned_command_queue",
+      "rva": "0x37f06f0",
+      "size": 250,
+      "end_exclusive": "0x37f07ea",
+      "sha256": "535c67b33da7e1cdb8f1838476b2064a6dd4c09ef3efceda33e5e9d28d34a2be",
+      "entry_bytes_32": "4c894c242048895424105356574883ec20418bd8488bfa488bf1418bc0c1e803"
+    },
+    {
+      "name": "global_wrapper_used_by_ai",
+      "rva": "0x37ebc40",
+      "size": 120,
+      "end_exclusive": "0x37ebcb8",
+      "sha256": "535e0b08396233189ea042aa97410ae0debb4c6be69b75e85e4fce6f927ceb58",
+      "entry_bytes_32": "4c8944241848894c2408534883ec20488bd9f60577584d02fd7525488b0148c7"
+    },
+    {
+      "name": "commander_clone",
+      "rva": "0x2977c10",
+      "size": 130,
+      "end_exclusive": "0x2977c92",
+      "sha256": "08085d67b09a3a9ca7cd0368dffad5a959fe1440ad99b549420c45d69f9bba92",
+      "entry_bytes_32": "48895c2408574883ec20488bd9488bfab930000000e88abf8a014c8bc8488d05"
+    },
+    {
+      "name": "primary_deleting_destructor",
+      "rva": "0x9d1560",
+      "size": 43,
+      "end_exclusive": "0x9d158b",
+      "sha256": "b366e6937d2ababa61aac02c64b2ae8373db5d2cae01e0119c700a11f27c9235",
+      "entry_bytes_32": "40534883ec20488d052b9bab03488bd9488901f6c201740aba30000000e8e229"
+    },
+    {
+      "name": "native_sized_delete_tail",
+      "rva": "0x4223f64",
+      "size": 5,
+      "end_exclusive": "0x4223f69",
+      "sha256": "1d8ad9e9a0aa4feb1d60c8bbded9c0552b72b3713d0464c2225882299a4a3f16",
+      "entry_bytes_32": "e9e785ecff"
+    },
+    {
+      "name": "primary_final_validation_wrapper",
+      "rva": "0x2971480",
+      "size": 138,
+      "end_exclusive": "0x297150a",
+      "sha256": "e0c9c49147fe163e0778246155a728e12840893d74d818c569f1b04211e3b17f",
+      "entry_bytes_32": "4c8b05c1c93a034c8bda4c8bd14d85c074298b51288bc225ffffff00413b402c"
+    },
+    {
+      "name": "secondary_interface_executor",
+      "rva": "0x2971320",
+      "size": 352,
+      "end_exclusive": "0x2971480",
+      "sha256": "eb38cc48a3ba5002901aaba8cd63f6203f294f17ef3ec0e5932dec8fbb952e71",
+      "entry_bytes_32": "48895c24084889742410574883ec20488b1512cb3a03488bf1488b1d10cb3a03"
+    },
+    {
+      "name": "player_mode_gate",
+      "rva": "0x29675f0",
+      "size": 168,
+      "end_exclusive": "0x2967698",
+      "sha256": "ad46ce8d456d9e62d1c17a2cdb21c63bd322d00c93faf81607e0ee3816bdc4dc",
+      "entry_bytes_32": "40534883ec40488bd983fa03742f83fa027532488b81b00100004885c0741048"
+    },
+    {
+      "name": "player_character_membership_predicate",
+      "rva": "0x2baa710",
+      "size": 91,
+      "end_exclusive": "0x2baa76b",
+      "sha256": "b3a725070cb36de80ece42ee6be694881e8e5de502fbfe92414bffb35de0a02a",
+      "entry_bytes_32": "40534883ec20488b0533e50b034c8d442430894c2430488b98a0000000488b8b"
+    },
+    {
+      "name": "manager_consumption_function",
+      "rva": "0x37f2540",
+      "size": 2732,
+      "end_exclusive": "0x37f2fec",
+      "sha256": "0d903a7f682c0905e50a17e71b501951fac3082e19bf7d3e41f8aa653443d1b9",
+      "entry_bytes_32": "488bc488501048894808555356574154415541564157488da8c8fcffff4881ec"
+    },
+    {
+      "name": "manager_null_reason_validation_callsite",
+      "rva": "0x37f2ade",
+      "size": 19,
+      "end_exclusive": "0x37f2af1",
+      "sha256": "dcd71c855b76eddb2f032482172cd5b532910d8d49b046a75e5fa77c3891b3b6",
+      "entry_bytes_32": "488b0733d2488bcfff503084c00f84a0010000"
+    },
+    {
+      "name": "manager_second_null_reason_callsite",
+      "rva": "0x37f6305",
+      "size": 15,
+      "end_exclusive": "0x37f6314",
+      "sha256": "0df2b98089ca32eafe88c373ac3326330c8ca54ed951f2ace41e220f6280fc81",
+      "entry_bytes_32": "488b0333d2488bcbff503084c07461"
+    },
+    {
+      "name": "primary_vtable",
+      "rva": "0x476a418",
+      "size": 144,
+      "end_exclusive": "0x476a4a8",
+      "sha256": "4e870ac46448f33f946359cac6569082cdfc1c9470843c7041f5c6cc520ba104",
+      "entry_bytes_32": "60159d4001000000d0e2f74301000000c0b37e430100000050e3f74301000000"
+    },
+    {
+      "name": "secondary_vtable",
+      "rva": "0x476a4b0",
+      "size": 32,
+      "end_exclusive": "0x476a4d0",
+      "sha256": "19b579377a4cea2696ff5677e3e443ff50961706fce037343be7e0cf2720c0d9",
+      "entry_bytes_32": "a0779642010000002013974201000000c022854001000000c022854001000000"
+    }
+  ],
+  "repository": [
+    {
+      "path": "Z:\\g36\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_commands.cpp",
+      "sha256": "8d5806d2b57dc8d115bc6cb52ca7e4b6374e6be4b546ab813ea3b3b889324c2a",
+      "lines": [
+        {
+          "line": 28,
+          "text": "CommandBindings BindCommandImage(std::uintptr_t image_base,"
+        },
+        {
+          "line": 29,
+          "text": "                                 std::string_view executable_sha256) noexcept {"
+        },
+        {
+          "line": 30,
+          "text": "  CommandBindings bindings{};"
+        },
+        {
+          "line": 31,
+          "text": "  if (image_base == 0 || executable_sha256 != kExecutableSha256) {"
+        },
+        {
+          "line": 32,
+          "text": "    return bindings;"
+        },
+        {
+          "line": 33,
+          "text": "  }"
+        },
+        {
+          "line": 34,
+          "text": "  bindings.command_manager ="
+        },
+        {
+          "line": 35,
+          "text": "      reinterpret_cast<void *>(image_base + kCommandManagerRva);"
+        },
+        {
+          "line": 36,
+          "text": "  bindings.queue_owned_command = reinterpret_cast<QueueOwnedCommand>("
+        },
+        {
+          "line": 37,
+          "text": "      image_base + kQueueOwnedCommandRva);"
+        },
+        {
+          "line": 38,
+          "text": "  bindings.pause_primary_vtable = image_base + kPausePrimaryVtableRva;"
+        },
+        {
+          "line": 39,
+          "text": "  bindings.pause_secondary_vtable = image_base + kPauseSecondaryVtableRva;"
+        },
+        {
+          "line": 40,
+          "text": "  bindings.set_speed_primary_vtable = image_base + kSetSpeedPrimaryVtableRva;"
+        },
+        {
+          "line": 41,
+          "text": "  bindings.set_speed_secondary_vtable = image_base + kSetSpeedSecondaryVtableRva;"
+        },
+        {
+          "line": 42,
+          "text": "  bindings.auto_save_primary_vtable = image_base + kAutoSavePrimaryVtableRva;"
+        },
+        {
+          "line": 43,
+          "text": "  bindings.auto_save_secondary_vtable = image_base + kAutoSaveSecondaryVtableRva;"
+        },
+        {
+          "line": 44,
+          "text": "  bindings.enabled = true;"
+        },
+        {
+          "line": 45,
+          "text": "  return bindings;"
+        },
+        {
+          "line": 48,
+          "text": "bool DestroyOwnedCommand(void *&command) noexcept {"
+        },
+        {
+          "line": 49,
+          "text": "  if (command == nullptr) {"
+        },
+        {
+          "line": 50,
+          "text": "    return true;"
+        },
+        {
+          "line": 51,
+          "text": "  }"
+        },
+        {
+          "line": 52,
+          "text": "  const auto table = LoadAt<const void *>(command, 0);"
+        },
+        {
+          "line": 53,
+          "text": "  if (table == nullptr) {"
+        },
+        {
+          "line": 54,
+          "text": "    return false;"
+        },
+        {
+          "line": 55,
+          "text": "  }"
+        },
+        {
+          "line": 56,
+          "text": "  const auto destroy = LoadAt<DeleteCommand>(table, 0);"
+        },
+        {
+          "line": 57,
+          "text": "  if (destroy == nullptr) {"
+        },
+        {
+          "line": 58,
+          "text": "    return false;"
+        },
+        {
+          "line": 59,
+          "text": "  }"
+        },
+        {
+          "line": 60,
+          "text": "  void *const owned = command;"
+        },
+        {
+          "line": 61,
+          "text": "  command = nullptr;"
+        },
+        {
+          "line": 62,
+          "text": "  destroy(owned, 1);"
+        },
+        {
+          "line": 63,
+          "text": "  return true;"
+        },
+        {
+          "line": 64,
+          "text": "}"
+        },
+        {
+          "line": 65,
+          "text": ""
+        },
+        {
+          "line": 66,
+          "text": "CommandSubmitResult SubmitCommandCopy(const CommandBindings &bindings,"
+        },
+        {
+          "line": 67,
+          "text": "                                      const void *command,"
+        },
+        {
+          "line": 68,
+          "text": "                                      std::uint32_t channel_flags) noexcept {"
+        },
+        {
+          "line": 69,
+          "text": "  if (!bindings.enabled || bindings.command_manager == nullptr ||"
+        },
+        {
+          "line": 70,
+          "text": "      bindings.queue_owned_command == nullptr || command == nullptr) {"
+        },
+        {
+          "line": 71,
+          "text": "    return CommandSubmitResult::unavailable;"
+        },
+        {
+          "line": 72,
+          "text": "  }"
+        },
+        {
+          "line": 73,
+          "text": "  const auto table = LoadAt<const void *>(command, 0);"
+        },
+        {
+          "line": 74,
+          "text": "  if (table == nullptr) {"
+        },
+        {
+          "line": 75,
+          "text": "    return CommandSubmitResult::unavailable;"
+        },
+        {
+          "line": 76,
+          "text": "  }"
+        },
+        {
+          "line": 77,
+          "text": "  const auto clone = LoadAt<CloneCommand>(table, 0x40);"
+        },
+        {
+          "line": 78,
+          "text": "  if (clone == nullptr) {"
+        },
+        {
+          "line": 79,
+          "text": "    return CommandSubmitResult::unavailable;"
+        },
+        {
+          "line": 80,
+          "text": "  }"
+        },
+        {
+          "line": 81,
+          "text": "  void *clone_storage = nullptr;"
+        },
+        {
+          "line": 82,
+          "text": "  void **const returned_storage = clone(command, &clone_storage);"
+        },
+        {
+          "line": 83,
+          "text": "  if (returned_storage == nullptr || *returned_storage == nullptr) {"
+        },
+        {
+          "line": 84,
+          "text": "    DestroyOwnedCommand(clone_storage);"
+        },
+        {
+          "line": 85,
+          "text": "    return CommandSubmitResult::unavailable;"
+        },
+        {
+          "line": 86,
+          "text": "  }"
+        },
+        {
+          "line": 87,
+          "text": "  // Match 0x9E16C8..0x9E16E7: move ownership out of the clone's return"
+        },
+        {
+          "line": 88,
+          "text": "  // storage before invoking the manager. No bridge allocator participates."
+        },
+        {
+          "line": 89,
+          "text": "  void *queued_command = *returned_storage;"
+        },
+        {
+          "line": 90,
+          "text": "  *returned_storage = nullptr;"
+        },
+        {
+          "line": 91,
+          "text": "  const bool accepted = bindings.queue_owned_command("
+        },
+        {
+          "line": 92,
+          "text": "      bindings.command_manager, &queued_command, channel_flags);"
+        },
+        {
+          "line": 93,
+          "text": "  DestroyOwnedCommand(queued_command);"
+        },
+        {
+          "line": 94,
+          "text": "  DestroyOwnedCommand(clone_storage);"
+        },
+        {
+          "line": 95,
+          "text": "  return accepted ? CommandSubmitResult::submitted"
+        },
+        {
+          "line": 96,
+          "text": "                  : CommandSubmitResult::rejected;"
+        },
+        {
+          "line": 97,
+          "text": "}"
+        }
+      ]
+    },
+    {
+      "path": "Z:\\g36\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_commands.hpp",
+      "sha256": "c2a783d4f49c880e5b9691486fbfa816504460a352e720be01c49f0725350fe1",
+      "lines": [
+        {
+          "line": 14,
+          "text": "inline constexpr std::uintptr_t kCommandManagerRva = 0x5CC1240;"
+        },
+        {
+          "line": 15,
+          "text": "inline constexpr std::uintptr_t kQueueOwnedCommandRva = 0x37F06F0;"
+        },
+        {
+          "line": 16,
+          "text": "inline constexpr std::uintptr_t kAutoSavePrimaryVtableRva = 0x44B5148;"
+        },
+        {
+          "line": 17,
+          "text": "inline constexpr std::uintptr_t kAutoSaveSecondaryVtableRva = 0x44B51E0;"
+        },
+        {
+          "line": 18,
+          "text": ""
+        },
+        {
+          "line": 19,
+          "text": "// Win64's native command clone writes an owning pointer into its return"
+        },
+        {
+          "line": 20,
+          "text": "// storage and returns the address of that storage (primary vtable +0x40)."
+        },
+        {
+          "line": 21,
+          "text": "using CloneCommand = void **(*)(const void *command, void **return_storage);"
+        },
+        {
+          "line": 22,
+          "text": "using DeleteCommand = void *(*)(void *command, std::uint32_t delete_flags);"
+        },
+        {
+          "line": 23,
+          "text": "// Native queue consumes *owned_command on both acceptance and rejection."
+        },
+        {
+          "line": 24,
+          "text": "// Its explicit AL return is a queue result, not a gameplay-state result."
+        },
+        {
+          "line": 25,
+          "text": "using QueueOwnedCommand = bool (*)(void *manager, void **owned_command,"
+        },
+        {
+          "line": 26,
+          "text": "                                  std::uint32_t channel_flags);"
+        },
+        {
+          "line": 28,
+          "text": "struct CommandBindings {"
+        },
+        {
+          "line": 29,
+          "text": "  bool enabled = false;"
+        },
+        {
+          "line": 30,
+          "text": "  void *command_manager = nullptr; // Embedded native object, not a pointer slot."
+        },
+        {
+          "line": 31,
+          "text": "  QueueOwnedCommand queue_owned_command = nullptr;"
+        },
+        {
+          "line": 32,
+          "text": "  std::uintptr_t pause_primary_vtable = 0;"
+        },
+        {
+          "line": 33,
+          "text": "  std::uintptr_t pause_secondary_vtable = 0;"
+        },
+        {
+          "line": 34,
+          "text": "  std::uintptr_t set_speed_primary_vtable = 0;"
+        },
+        {
+          "line": 35,
+          "text": "  std::uintptr_t set_speed_secondary_vtable = 0;"
+        },
+        {
+          "line": 36,
+          "text": "  std::uintptr_t auto_save_primary_vtable = 0;"
+        },
+        {
+          "line": 37,
+          "text": "  std::uintptr_t auto_save_secondary_vtable = 0;"
+        },
+        {
+          "line": 38,
+          "text": "};"
+        },
+        {
+          "line": 39,
+          "text": ""
+        },
+        {
+          "line": 40,
+          "text": "// Address calculation only: no process lookup, module reads or game mutation."
+        },
+        {
+          "line": 41,
+          "text": "CommandBindings BindCommandImage(std::uintptr_t image_base,"
+        },
+        {
+          "line": 42,
+          "text": "                                 std::string_view executable_sha256) noexcept;"
+        },
+        {
+          "line": 43,
+          "text": ""
+        },
+        {
+          "line": 44,
+          "text": "enum class CommandSubmitResult { unavailable, rejected, submitted };"
+        },
+        {
+          "line": 45,
+          "text": ""
+        },
+        {
+          "line": 46,
+          "text": "// Owning-thread callers provide a native-layout source object that remains"
+        },
+        {
+          "line": 47,
+          "text": "// caller-owned. The synchronous native clone, queue and residual deleting"
+        },
+        {
+          "line": 48,
+          "text": "// destructor all run through the game's allocator/ownership machinery."
+        },
+        {
+          "line": 49,
+          "text": "CommandSubmitResult SubmitCommandCopy(const CommandBindings &bindings,"
+        },
+        {
+          "line": 50,
+          "text": "                                      const void *command,"
+        },
+        {
+          "line": 51,
+          "text": "                                      std::uint32_t channel_flags = 7) noexcept;"
+        },
+        {
+          "line": 52,
+          "text": ""
+        },
+        {
+          "line": 53,
+          "text": "// For domain bindings that accept a bool(context, command, flags) callback."
+        },
+        {
+          "line": 54,
+          "text": "// context points to a CommandBindings object owned by the selected adapter."
+        },
+        {
+          "line": 55,
+          "text": "bool SubmitCommandCopyCompat(void *context, void *command,"
+        },
+        {
+          "line": 56,
+          "text": "                             std::uint32_t channel_flags) noexcept;"
+        },
+        {
+          "line": 57,
+          "text": ""
+        },
+        {
+          "line": 58,
+          "text": "// Same scalar-deleting-destructor path used by CK3's owning smart pointer."
+        },
+        {
+          "line": 59,
+          "text": "// Only for game-allocated command clones; never pass caller-owned storage."
+        },
+        {
+          "line": 60,
+          "text": "bool DestroyOwnedCommand(void *&command) noexcept;"
+        }
+      ]
+    },
+    {
+      "path": "Z:\\g36\\ck3_autonomous_player\\native_bridge\\src\\ck3_12003_religion_conversion_action_mailbox.cpp",
+      "sha256": "ade73afa9aed1700b3e9d4ce6dd5e7735390b52903ea95f5399976302e98631c",
+      "lines": [
+        {
+          "line": 58,
+          "text": "action::Access Bind(const game::GameAdapter &adapter) noexcept {"
+        },
+        {
+          "line": 59,
+          "text": "  const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));"
+        },
+        {
+          "line": 60,
+          "text": "  const auto sha = game::ReviewedCrozierAbiSha256(adapter.descriptor());"
+        },
+        {
+          "line": 61,
+          "text": "  action::Access access;"
+        },
+        {
+          "line": 62,
+          "text": "  access.terms = religion_conversion::terms::BindReligionConversionTermsImage12002(base, sha);"
+        },
+        {
+          "line": 63,
+          "text": "  access.reasons = religion_conversion::reasons::BindReligionConversionReasonsImage12002(base, sha);"
+        },
+        {
+          "line": 64,
+          "text": "  access.outcome = religion_conversion::outcome::BindConversionOutcomeImage12002(base, sha);"
+        },
+        {
+          "line": 65,
+          "text": "  access.commands = BindCommandImage(base, sha);"
+        },
+        {
+          "line": 66,
+          "text": "  return access;"
+        }
+      ]
+    }
+  ]
+}

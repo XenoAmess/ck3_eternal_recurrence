@@ -128,6 +128,11 @@ from .army_commander_candidates import (
     parse_query_army_commander_candidates_v1_step,
     query_army_commander_candidates_v1_step,
 )
+from .army_commander_assignment import (
+    ASSIGN_ARMY_COMMANDER_V1_CAPABILITY,
+    ASSIGN_ARMY_COMMANDER_V1_STEP_PREFIX,
+    parse_assign_army_commander_v1_step,
+)
 from .battle_control_contract import (
     BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC,
     BATTLE_CONTROL_IDENTITY_PENDING_STATUS,
@@ -7256,6 +7261,13 @@ class NativeHeadlessGameplayDriver:
             and commander_subject is None
         ):
             raise UnsupportedStepError("malformed army commander candidates v1 query step")
+        commander_assignment = parse_assign_army_commander_v1_step(step)
+        if (
+            isinstance(step, str)
+            and step.startswith(ASSIGN_ARMY_COMMANDER_V1_STEP_PREFIX)
+            and commander_assignment is None
+        ):
+            raise UnsupportedStepError("malformed army commander assignment v1 step")
         actual_contact_query = parse_query_actual_contact_scope_step(step)
         if (
             isinstance(step, str)
@@ -7773,6 +7785,22 @@ class NativeHeadlessGameplayDriver:
                 step,
                 expected_revision=expected_revision,
                 required_capability=QUERY_ARMY_COMMANDER_CANDIDATES_V1_CAPABILITY,
+            )
+        if commander_assignment is not None:
+            _validate_revision(expected_revision, "expected_revision")
+            starting = self.take_snapshot()
+            if starting.get("paused") is not True:
+                raise BridgeUnavailableError("native commander assignment requires a paused snapshot")
+            if starting.get("revision") != expected_revision:
+                raise PreSubmissionRevisionMismatchError("native commander assignment source revision is stale")
+            try:
+                commander_query_army_scope(starting, commander_assignment[0])
+            except ValueError as error:
+                raise BridgeUnavailableError(str(error)) from error
+            return self._execute_primitive_step(
+                step,
+                expected_revision=expected_revision,
+                required_capability=ASSIGN_ARMY_COMMANDER_V1_CAPABILITY,
             )
         if battle_control_subject is not None:
             bridge_capabilities = set(
@@ -20934,6 +20962,7 @@ class ConfiguredHybridFallbackDriver:
             for step in action_steps
             if (
                 not is_native_war_step(step)
+                and parse_assign_army_commander_v1_step(step) is None
                 and not is_native_declaration_step(step)
                 and not is_native_marriage_step(step)
             )
@@ -21577,6 +21606,19 @@ class ConfiguredHybridFallbackDriver:
     def execute_step(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
+        commander_assignment = parse_assign_army_commander_v1_step(step)
+        if commander_assignment is not None:
+            native_capabilities = self.native.capabilities().get("bridge_capabilities")
+            if not isinstance(native_capabilities, list) or ASSIGN_ARMY_COMMANDER_V1_CAPABILITY not in native_capabilities:
+                raise UnsupportedStepError("army commander assignment is pure native and will not use fallback")
+            _validate_revision(expected_revision, "expected_revision")
+            starting = self.take_snapshot()
+            if starting.get("revision") != expected_revision:
+                raise PreSubmissionRevisionMismatchError("hybrid commander assignment source revision is stale")
+            backend_revisions = starting.get("backend_revisions")
+            native_revision = backend_revisions.get("fast") if isinstance(backend_revisions, dict) else None
+            _validate_revision(native_revision, "native_revision")
+            return self.native.execute_step(step, expected_revision=native_revision)
         zhongguo_case_query = parse_query_zhongguo_case_snapshot_v1_step(
             step
         )
@@ -22794,6 +22836,7 @@ class ConfiguredHybridFallbackDriver:
         if (
             (
                 is_native_war_step(step)
+                or parse_assign_army_commander_v1_step(step) is not None
                 or is_native_declaration_step(step)
                 or is_native_marriage_step(step)
             )
@@ -26656,6 +26699,10 @@ def _action_steps(
             continue
         if capability == ASSIGN_COUNCILLOR_V1_CAPABILITY:
             advertise_assign_councillor = True
+            continue
+        if capability == ASSIGN_ARMY_COMMANDER_V1_CAPABILITY:
+            # The typed action supplies a native-observed commander FullID;
+            # never project its N placeholders into autonomous action space.
             continue
         if not capability.startswith(_ACTION_CAPABILITY_PREFIX):
             continue

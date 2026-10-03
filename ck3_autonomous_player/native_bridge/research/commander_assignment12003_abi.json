@@ -1,0 +1,15 @@
+{
+  "status": "research / exact static-confirmed; not live",
+  "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "tree": "docs/ck3-native-ai/commander-player-assignment-12003.md",
+  "rvas_relative_to_image": true,
+  "factory": {"rva": "0x297bb00", "prototype": "void*()", "allocated_bytes": 48, "caller_owns_source": true, "sha256": "53869570741a82b4eda69180d86d243514513af84f2df618f94e66d8c19cd36e", "span_bytes": 69},
+  "packet": {"primary_vtable_rva": "0x476a418", "secondary_vtable_rva": "0x476a4b0", "secondary_offset": 24, "mode_i32_offset": 32, "candidate_full_id_i32_offset": 36, "internal_army_full_id_i32_offset": 40, "player_mode": 1},
+  "validator": {"rva": "0x2971480", "primary_vtable_slot": 48, "prototype": "bool(const void* full_primary_packet RCX, NativeString* reason RDX)", "reason_null_legal": true, "reason_null_native_consumer_callsite": "0x37f2ade..0x37f2ae6: mov rax,[rdi]; xor edx,edx; mov rcx,rdi; call [rax+0x30]", "second_native_null_reason_callsite": "0x37f630d", "sha256": "e0c9c49147fe163e0778246155a728e12840893d74d818c569f1b04211e3b17f", "span_bytes": 138, "tailcalls": "0x2971510"},
+  "clone": {"rva": "0x2977c10", "primary_vtable_slot": 64, "prototype": "void**(const void* source RCX,void** return_storage RDX)", "rax": "RDX", "owning_result": "*RDX", "span_bytes": 130, "sha256": "08085d67b09a3a9ca7cd0368dffad5a959fe1440ad99b549420c45d69f9bba92"},
+  "submit": {"provider_reuse": "ck3_12002::SubmitCommandCopy(bindings,source,0x0E)", "manager_object_rva": "0x5cc1240", "manager_is_embedded_object_not_pointer_slot": true, "queue_rva": "0x37f06f0", "prototype": "bool(void* manager RCX,void** owned_command RDX,uint32 flags R8D)", "channel_flags": 14, "consumes_on_acceptance_and_rejection": true, "ack_is_queue_result_only": true},
+  "destroy": {"rva": "0x9d1560", "primary_vtable_slot": 0, "prototype": "void*(void* primary RCX,uint32 flags EDX)", "delete_flags": 1, "sized_delete_rva": "0x4223f64", "size_bytes": 48, "span_bytes": 43, "sha256": "b366e6937d2ababa61aac02c64b2ae8373db5d2cae01e0119c700a11f27c9235", "source_cleanup": "finally ck3_12002::DestroyOwnedCommand(source); only native-owned source"},
+  "executor": {"rva": "0x2971320", "secondary_vtable_slot": 8, "receiver": "full_primary_packet+0x18", "provider_must_not_directly_execute": true},
+  "readback": {"resolve_same_public_full_army_id": true, "public_unit_to_internal_army_full_id_offset": "0x178", "internal_army_backref_unit_full_id_offset": "0x124", "public_unit_actual_owner_full_id_offset": "0x174", "internal_army_commander_full_id_offset": "0x120", "independent_commander_getter_rva": "0x24e9ed0", "require_commander_full_id_matches_selected_candidate": true, "record_fresh_owner_candidate_identity_and_final_eligible_qualifier": true, "native_mode1_owner_check": "0x29675f0 -> 0x2baa710 tests owner FullCharacterID membership in native played-character ID vector; existing Robert current-actor/owner observation still applies"},
+  "proof_files": ["SOURCE-PINS.json", "assignment-constructor/SOURCE-PINS.json", "assignment-submit/SOURCE-PINS.json"]
+}

@@ -75,6 +75,12 @@ from .army_commander_candidates import (
     normalize_army_commander_candidates_v1,
     query_army_commander_candidates_v1_step,
 )
+from .army_commander_assignment import (
+    ASSIGN_ARMY_COMMANDER_V1_CAPABILITY,
+    assign_army_commander_v1_step,
+    commander_assignment_readback_v1,
+    normalize_army_commander_assignment_v1,
+)
 from .battle_control_contract import (
     QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY,
     normalize_active_combat_resume_inputs_v1,
@@ -4039,6 +4045,91 @@ class GameplayBridgeService:
             "queried_snapshot_id": snapshot.get("snapshot_id"),
             "queried_revision": revision,
             "queried_native_revision": native_revision,
+        }
+
+    def assign_army_commander_v1(
+        self,
+        army_id: int,
+        commander_character_id: int,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Submit one native assignment, then query the actual commander independently."""
+        step = assign_army_commander_v1_step(army_id, commander_character_id)
+        if type(expected_revision) is not int or expected_revision < 0:
+            raise ValueError("expected_revision must be a non-negative integer")
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError("commander assignment requires a paused CK3 snapshot")
+        if snapshot.get("revision") != expected_revision:
+            raise PreSubmissionRevisionMismatchError("commander assignment source revision is stale")
+        try:
+            commander_query_army_scope(snapshot, army_id)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        native_revision = snapshot.get("native_revision")
+        date_raw = snapshot.get("date_raw")
+        if type(native_revision) is not int or native_revision <= 0 or type(date_raw) is not int:
+            raise BridgeUnavailableError("commander assignment lacks native revision/date")
+        capabilities = self.capabilities().get("bridge_capabilities")
+        if not isinstance(capabilities, list) or ASSIGN_ARMY_COMMANDER_V1_CAPABILITY not in capabilities:
+            raise UnsupportedStepError("selected backend cannot assign a native army commander")
+        result = self.execute_step(step, expected_revision=expected_revision)
+        try:
+            assignment = normalize_army_commander_assignment_v1(
+                result,
+                expected_army_id=army_id,
+                expected_commander_character_id=commander_character_id,
+                expected_snapshot_revision=native_revision,
+                expected_date_raw=date_raw,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native commander assignment result is malformed: {error}") from error
+        receipt = {
+            **result,
+            "army_commander_assignment": assignment,
+            "submitted_revision": expected_revision,
+            "submitted_native_revision": native_revision,
+            "submitted_snapshot_id": snapshot.get("snapshot_id"),
+        }
+        if assignment["status"] not in {"submitted", "already_assigned"}:
+            return receipt
+        fresh = self.snapshot()
+        if fresh.get("paused") is not True or any(
+            fresh.get(key) != snapshot.get(key)
+            for key in ("date_raw", "episode_id", "episode_character_id", "player_character_id")
+        ):
+            return {
+                **receipt,
+                "status": "submitted_verification_pending",
+                "commander_assignment_verification": {
+                    "status": "verification_pending", "verified": False,
+                    "unavailable_reason": "commander readback crossed the paused player/date context",
+                },
+            }
+        try:
+            readback = self.query_army_commander_candidates_v1(
+                army_id, expected_revision=fresh["revision"]
+            )
+        except (BridgeUnavailableError, UnsupportedStepError) as error:
+            return {
+                **receipt,
+                "status": "submitted_verification_pending",
+                "commander_assignment_verification": {
+                    "status": "verification_pending", "verified": False,
+                    "unavailable_reason": str(error),
+                },
+            }
+        verification = commander_assignment_readback_v1(
+            assignment, readback["army_commander_candidates"],
+            expected_date_raw=date_raw,
+        )
+        return {
+            **receipt,
+            "status": "commander_assigned_verified" if verification["verified"] else "submitted_verification_pending",
+            "native_submission_status": result.get("status"),
+            "commander_assignment_verification": verification,
+            "commander_readback": readback,
         }
 
     def query_army_strengths(

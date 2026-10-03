@@ -2436,6 +2436,19 @@ def create_server(
         )
 
     @server.tool()
+    def ck3_assign_army_commander_v1(
+        army_id: PublicCUnitId,
+        commander_character_id: Annotated[int, Field(strict=True, ge=0, le=2**31 - 1)],
+        expected_revision: IngameUiRevisionV1,
+    ) -> dict[str, object]:
+        """Assign a native commander and independently read back the army context."""
+        return service.assign_army_commander_v1(
+            army_id,
+            commander_character_id,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
     def ck3_query_army_strengths(
         army_ids: list[PublicCUnitId],
         expected_revision: int | None = None,

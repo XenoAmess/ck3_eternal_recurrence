@@ -1,6 +1,7 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
+#include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 #include <windows.h>
 #include <utility>
 #include <vector>
@@ -24,6 +25,7 @@ const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
     std::vector<std::string_view> result(existing.begin(), existing.end());
     result.push_back(ck3_11906::kStewardDevelopCountyCandidatesV1Capability);
     result.push_back(ck3_12003::kArmyCommanderCandidatesCapability);
+    result.push_back(ck3_12003::kArmyCommanderAssignmentCapability);
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1) && \
     defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
     // Restore the existing frontend tools for the migrated ordinary-seed route.

@@ -1053,6 +1053,8 @@ add_library(xar_ck3_12002_runtime STATIC
   src/ck3_12003_adapter.cpp
   src/ck3_12003_commander.cpp
   src/ck3_12003_commander_mailbox.cpp
+  src/ck3_12003_commander_assignment.cpp
+  src/ck3_12003_commander_assignment_mailbox.cpp
   src/ck3_12003_family_terminal_events.cpp
   src/ck3_12003_abi_profile.cpp
   src/county_faction_final_12003.cpp

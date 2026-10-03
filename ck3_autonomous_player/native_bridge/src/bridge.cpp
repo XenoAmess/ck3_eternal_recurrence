@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12002_adapter.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
+#include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 #include "xar_bridge/ck3_12002_lifestyle.hpp"
 #include "xar_bridge/ck3_12002_family.hpp"
 #include "xar_bridge/ck3_12002_family_projection.hpp"
@@ -10505,6 +10506,10 @@ public:
       // historical ZhongGuo executor remains registered only in 1.19.0.6.
       environment.permitted_executor_quindenary =
           &xar::ck3_12003::ExecuteArmyCommanderCandidatesMailbox;
+      // Slot 16 is unused by the Crozier installer; this is the exact .3
+      // owned command submitter, followed by a separate read-only observer.
+      environment.permitted_executor_sexdenary =
+          &xar::ck3_12003::ExecuteArmyCommanderAssignmentMailbox;
     }
     environment.snapshot_observer_callback = &xar::ck3_12002::ObserveAdapterSnapshot12002;
     environment.snapshot_observer_context = observer_;
@@ -11106,6 +11111,7 @@ struct WorkerState {
   std::uint64_t coat_of_arms_designer_probe_query_sequence = 0;
   std::uint64_t army_strength_query_sequence = 0;
   std::uint64_t army_commander_candidates_query_sequence = 0;
+  std::uint64_t army_commander_assignment_command_sequence = 0;
   std::uint64_t province_local_siege_query_sequence = 0;
   std::uint64_t combat_inputs_query_sequence = 0;
   std::uint64_t combat_phase_event_trace_query_sequence = 0;
@@ -11885,6 +11891,86 @@ std::string RunTypedQuery12002(
       : response;
 }
 
+std::string RunArmyCommanderAssignment12003(
+    const xar::game::GameAdapter &game, WorkerState &state,
+    std::string_view request_id, std::string_view step,
+    std::string_view payload) {
+  xar::ck3_12003::ArmyCommanderAssignmentMailboxContext action{};
+  action.envelope.game = &xar::ck3_12002::NativeAdapter12002(game);
+  action.envelope.mailbox = &g_main_thread_query_mailbox_v1;
+  action.envelope.typed_context = &action;
+  action.image_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  if (!xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
+      !xar::ck3_12003::ParseArmyCommanderAssignmentStep(
+          step, action.army_id, action.candidate_character_id) ||
+      !xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
+          payload, action.envelope.expected_snapshot_revision)) {
+    return CommandResultFrame(request_id, step, false,
+        "army-commander assignment is malformed or unsupported");
+  }
+  if (action.envelope.expected_snapshot_revision != state.state_revision ||
+      state.state_revision == 0 || !state.previous_snapshot.has_value() ||
+      !xar::game::ReadSnapshot(game, action.envelope.expected_snapshot) ||
+      action.envelope.expected_snapshot != *state.previous_snapshot) {
+    return CommandResultFrame(request_id, step, false, "state_changed");
+  }
+  const auto &snapshot = action.envelope.expected_snapshot;
+  if (!snapshot.paused) {
+    return CommandResultFrame(request_id, step, false, "requires_paused");
+  }
+  if (!snapshot.map_ready || !snapshot.has_played_character ||
+      !snapshot.played_character_alive) {
+    return CommandResultFrame(request_id, step, false, "player_map_not_ready");
+  }
+  const bool controllable = std::any_of(
+      snapshot.player_armies.begin(), snapshot.player_armies.end(),
+      [&action, &snapshot](const auto &army) {
+        return army.army_id == action.army_id && army.controllable &&
+            army.owner_character_id == snapshot.played_character_id;
+      });
+  if (!controllable) {
+    return CommandResultFrame(request_id, step, false, "army_not_controllable");
+  }
+  const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,
+      &xar::ck3_12003::ExecuteArmyCommanderAssignmentMailbox,
+      &action.envelope, action.envelope.ticket);
+  if (submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+    return CommandResultFrame(request_id, step, false,
+        "application-main army-commander assignment executor unavailable or busy");
+  }
+  auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, action.envelope.ticket, 30'000);
+  while (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
+                     timeout_executor_already_running) {
+    wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1, action.envelope.ticket, 2'000);
+  }
+  xar::game::Snapshot after{};
+  const bool completed =
+      wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
+      action.completed && action.envelope.frame_stable &&
+      xar::game::ReadSnapshot(game, after) && after == snapshot;
+  const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, action.envelope.ticket);
+  if (reclaimed != xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed ||
+      !completed) {
+    return CommandResultFrame(request_id, step, false,
+        "army-commander assignment execution unresolved; query actual commander");
+  }
+  const auto result = xar::ck3_12003::SerializeArmyCommanderAssignment(
+      action.observation, action.apply_result,
+      ++state.army_commander_assignment_command_sequence,
+      action.envelope.expected_snapshot_revision, snapshot.date_raw, step);
+  std::string response =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(response, request_id);
+  response += ",\"ok\":true,\"result\":";
+  response += result;
+  response += '}';
+  return response;
+}
+
 std::string RunArmyCommanderCandidatesQuery12003(
     const xar::game::GameAdapter &game, WorkerState &state,
     std::string_view request_id, std::string_view step,
@@ -12448,10 +12534,17 @@ void RunConnectedSession(
             connected = write_frame(pipe, response);
           }
         } else if (xar::game::IsCk3_12003Descriptor(game.descriptor()) &&
-                   step.starts_with(xar::ck3_12003::
-                                        kArmyCommanderCandidatesStepPrefix)) {
-          connected = write_frame(pipe, RunArmyCommanderCandidatesQuery12003(
-              game, state, request_id, step, incoming.payload));
+                   (step.starts_with(xar::ck3_12003::
+                                         kArmyCommanderAssignmentStepPrefix) ||
+                    step.starts_with(xar::ck3_12003::
+                                         kArmyCommanderCandidatesStepPrefix))) {
+          const auto response = step.starts_with(xar::ck3_12003::
+                                     kArmyCommanderAssignmentStepPrefix)
+              ? RunArmyCommanderAssignment12003(
+                    game, state, request_id, step, incoming.payload)
+              : RunArmyCommanderCandidatesQuery12003(
+                    game, state, request_id, step, incoming.payload);
+          connected = write_frame(pipe, response);
         } else if (xar::game::IsReviewedCrozierAdapter(game) &&
                    TypedQueryKind12002(step).has_value()) {
           connected = write_frame(pipe, RunTypedQuery12002(
