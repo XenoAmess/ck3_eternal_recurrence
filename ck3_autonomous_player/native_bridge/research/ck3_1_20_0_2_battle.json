@@ -298,7 +298,7 @@
     "combat_storage": "0x5D1DE70",
     "battle_result_storage": "0x5D1FFE0",
     "battle_result_fallback": "0x5D1FFD8",
-    "ai_coordinator_storage": "0x5D204F0",
+    "ai_coordinator_storage": "0x5D20550",
     "minimum_retreat_days": "0x5C699B4"
   },
   "native_abis": {

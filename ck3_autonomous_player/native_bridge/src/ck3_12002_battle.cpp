@@ -905,7 +905,7 @@ BattleBindings BindBattleImage(std::uintptr_t base,
   b.battle_result_fallback_slot =
       reinterpret_cast<void **>(base + kBattleResultFallbackRva);
   b.ai_war_coordinator_storage_slot =
-      reinterpret_cast<void **>(base + 0x5D204F0);
+      reinterpret_cast<void **>(base + 0x5D20550);
   b.ai_unit_stack_vtable = base + 0x45AA608;
   b.ai_subunit_stack_vtable = base + 0x45AB4B0;
   b.ai_war_coordinator_vtable = base + 0x45AB0B8;
