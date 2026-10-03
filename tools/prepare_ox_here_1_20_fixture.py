@@ -6,7 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 import shutil
-from fixture_engine_prepare import BUILD, VERSION, checked_output, digest
+from fixture_engine_prepare import checked_output, engine_identity
 
 START = '''on_game_start_after_lobby = {
     on_actions = { oxa120_start }
@@ -46,8 +46,7 @@ def prepare(repo: Path, output: Path) -> dict:
         target.parent.mkdir(parents=True,exist_ok=True)
         target.write_text(text,encoding='utf-8-sig',newline='\n')
     receipt = {
-        'product':'ox_here', 'game_version':VERSION,
-        'steam_build_id':BUILD, 'exe_sha256':digest(repo / 'Crusader Kings III/binaries/ck3.exe'),
+        'product':'ox_here', **engine_identity(repo),
         'source_fixture':str(source), 'prepared_fixture':str(output),
         'runtime_status':'NOT_RUN', 'native_abi_loaded':False,
         'entry':'on_game_start_after_lobby -> oxa120_start -> oxa120.1 -> oxa_initialize_effect',

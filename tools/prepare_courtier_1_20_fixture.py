@@ -11,7 +11,7 @@ import subprocess
 
 import build_release as main_builder
 import build_vivhite_release as vivhite_builder
-from fixture_engine_prepare import BUILD, EXE_SHA256, VERSION, checked_output
+from fixture_engine_prepare import checked_output, engine_identity
 
 ROOT = Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "tools/fixtures/vivhite_acceptance"
@@ -120,6 +120,7 @@ def make_decision(key: str, effect: str, guard: str, picture: str) -> str:
 
 def prepare(args: argparse.Namespace) -> dict:
     _, output = checked_output(ROOT, args.output)
+    engine = engine_identity(ROOT)
     if args.scenario != "main-reader" and (args.tutorial_from or args.expected_record is not None):
         raise ValueError("tutorial handoff/expected record are main-reader-only")
     if args.scenario == "main-reader" and (not args.tutorial_from or args.expected_record is None):
@@ -176,7 +177,7 @@ def prepare(args: argparse.Namespace) -> dict:
  cca120_verify_branch_confirm:0 "Verify"
 ''')
     else:
-        write(fixture / "descriptor.mod", 'name="CCA120 production persistence observer"\nversion="1"\nsupported_version="1.20.0.2"\n', bom=False)
+        write(fixture / "descriptor.mod", f'name="CCA120 production persistence observer"\nversion="1"\nsupported_version="{engine["game_version"]}"\n', bom=False)
         if args.scenario in {"main-writer", "main-no-heir"}:
             setup = 'debug_log = "CCA120: READY real_pact_and_death_ui"'
             write(fixture / "common/on_action/cca120_death.txt", '''on_death = { on_actions = { cca120_observe_actual_death } }
@@ -255,8 +256,8 @@ cca120.1 = {{ hidden = yes immediate = {{ if = {{ limit = {{ is_ai = no NOT = {{
     receipt = {"schema_version": 1, "scenario": args.scenario, "repository_head": revision,
                "userdir": str(userdir), "mount_order": [*order, "fixture"], "game_rule_settings": rules,
                "launch_argv": [str(ROOT / "Crusader Kings III/binaries/ck3.exe"), "-debug_mode", f"-userdir={userdir}"],
-               "game_version": VERSION, "steam_build_id": BUILD,
-               "expected_executable_sha256": EXE_SHA256, "runtime_status": "NOT_RUN", "native_abi_used": False,
+               "game_version": engine["game_version"], "steam_build_id": engine["steam_build_id"],
+               "expected_executable_sha256": engine["exe_sha256"], "runtime_status": "NOT_RUN", "native_abi_used": False,
                "preparer_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                "entry": "on_game_start_after_lobby -> day 1 cca120.1; UI remains operator work",
                "coverage": "fixture setup and existing UI-state observers; actual GUI clicks/death/restart are required",

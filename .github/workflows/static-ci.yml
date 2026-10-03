@@ -255,6 +255,8 @@ jobs:
         run: python tools/test_translate_localization_minimax.py
       - name: Test Workshop public readback verifier
         run: python tools/test_verify_workshop_publication.py
+      - name: Test disposable fixture engine identities
+        run: python tools/test_fixture_engine_prepare.py
       - name: Test full-agent showcase builder
         run: python tools/test_build_full_agent_showcase.py
       - name: Enforce Python-only Windows automation

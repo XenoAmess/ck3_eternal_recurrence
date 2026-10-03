@@ -8,13 +8,32 @@ import re
 import shutil
 from pathlib import Path
 
-VERSION = "1.20.0.2"
-BUILD = "25588574"
-EXE_SHA256 = "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d"
+REVIEWED_BUILDS = {
+    "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d": (
+        "1.20.0.2", "25588574",
+    ),
+    "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6": (
+        "1.20.0.3", "25652598",
+    ),
+}
 
 
 def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def engine_identity(repo: Path) -> dict[str, str]:
+    """Select preparation metadata from the actual reviewed executable bytes.
+
+    This identifies the fixture's engine input, not product or native readiness.
+    The separate .3 ABI evidence is recorded in crozier-1.20.0.3-native-migration.
+    """
+    exe_sha256 = digest(repo / "Crusader Kings III/binaries/ck3.exe")
+    try:
+        version, build = REVIEWED_BUILDS[exe_sha256]
+    except KeyError:
+        raise ValueError("installed EXE differs from the reviewed CK3 1.20.0.2/1.20.0.3 builds") from None
+    return {"game_version": version, "steam_build_id": build, "exe_sha256": exe_sha256}
 
 
 def checked_output(repo: Path, output: Path) -> tuple[Path, Path]:
@@ -23,9 +42,7 @@ def checked_output(repo: Path, output: Path) -> tuple[Path, Path]:
         raise ValueError("fixture output must be outside the repository")
     if output.exists() or output.with_suffix(".prepare.json").exists():
         raise ValueError("use a new output directory for every attempt")
-    exe = repo / "Crusader Kings III/binaries/ck3.exe"
-    if digest(exe) != EXE_SHA256:
-        raise ValueError("installed EXE differs from the reviewed CK3 1.20.0.2 build")
+    engine_identity(repo)
     return repo, output
 
 
@@ -102,7 +119,7 @@ def required_markers(runner: Path) -> list[str]:
 
 def finish_receipt(repo: Path, source: Path, output: Path, files: list[Path], receipt: dict) -> dict:
     receipt.update({
-        "game_version":VERSION, "steam_build_id":BUILD, "exe_sha256":EXE_SHA256,
+        **engine_identity(repo),
         "source_fixture":str(source), "prepared_fixture":str(output),
         "runtime_status":"NOT_RUN", "native_abi_loaded":False, "gui_callbacks_mounted":False,
         "source_file_sha256":{p.relative_to(source).as_posix():digest(p) for p in files},

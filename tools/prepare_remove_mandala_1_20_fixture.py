@@ -6,7 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 import shutil
-from fixture_engine_prepare import BUILD, VERSION, checked_output, digest
+from fixture_engine_prepare import checked_output, engine_identity
 
 START = '''on_game_start_after_lobby = {
     on_actions = { mrma120_start }
@@ -35,8 +35,7 @@ def prepare(repo: Path, output: Path) -> dict:
     shutil.copytree(source, output)
     (output / 'common/on_action/mrma_on_actions.txt').write_text(START + '\n' + core, encoding='utf-8-sig', newline='\n')
     receipt = {
-        'product':'mod_remove_mandala', 'game_version':VERSION,
-        'steam_build_id':BUILD, 'exe_sha256':digest(repo / 'Crusader Kings III/binaries/ck3.exe'),
+        'product':'mod_remove_mandala', **engine_identity(repo),
         'source_fixture':str(source), 'prepared_fixture':str(output),
         'runtime_status':'NOT_RUN', 'native_abi_loaded':False,
         'entry':'on_game_start_after_lobby -> mrma120_start -> mrma_start',
