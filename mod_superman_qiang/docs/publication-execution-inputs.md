@@ -85,7 +85,7 @@ tools\.venv\Scripts\python.exe mod_superman_qiang\tools\prepare_publication.py -
 tools\.venv\Scripts\python.exe D:\ck3-experience-drain-feasibility-20261004\publication_native_call.py --repo D:\workspace\ck3_eternal_recurrence --tool workshop_native_publish --arguments-file <media冻结目录/native-arguments.json> --output <新的media调用收据目录>
 ```
 
-更多图逐个增加`--media`，顺序须与冻结清单一致。再查询实际post-update媒体库存用于公开URL核对。完整notes B的匿名entry核对失败时，保全失败，再从owner页面编辑该条目的全文；最终以匿名entry ID及HTML解码、换行归一化后全文的字符数、行数和SHA为准。
+更多图逐个增加`--media`，顺序须与冻结清单一致。再查询实际post-update媒体库存用于公开URL核对；先完成下面的原生订阅/下载并立即恢复offline，随后再做匿名页面回读。
 
 ## 订阅、fresh cache与立即恢复离线
 
@@ -127,6 +127,8 @@ tools\.venv\Scripts\python.exe mod_superman_qiang\tools\build_release.py --verif
 
 原生联网工作结束或失败时第一时间使用官方菜单恢复离线，并运行前述新的offline `recover`、直接审阅“离线模式”。网络公开页读取可以在Steam已离线时继续；不能为了匿名HTTP等待或429让客户端一直在线。最终离线收据与失败attempt永久保全。
 
+offline新帧确认后再核对完整notes B。匿名entry不匹配时保全失败，优先使用已有登录网页会话、保持Steam离线，从owner页面编辑同一条目全文，再匿名回读。仅实际原生动作需要时另开短在线窗口；最终以匿名entry ID及HTML解码、换行归一化后全文的字符数、行数和SHA为准。
+
 ## 匿名页面依赖核对规则
 
 只读一手正例确认Steam页面有两个独立栏目：
@@ -144,10 +146,10 @@ tools\.venv\Scripts\python.exe mod_superman_qiang\tools\build_release.py --verif
 
 1. 在实际已加载的sidebar内找可见且规范化文本精确等于`Required DLC`或`Required items`的标题，检查对应说明句。获取只包含该栏目标题、说明及目标链接的最小祖先；若祖先同时包含`Created by`、其他栏目或正文，则继续缩小。保存实际DOM path、class/id、matched outerHTML及SHA；不要预设未经真实DOM证明的CSS class。
 2. 只在该栏目中提取href：DLC限定`store.steampowered.com`的`/app/<ASCII数字>`；mod限定`steamcommunity.com`的`/sharedfiles/filedetails/`或`/workshop/filedetails/`路径及`id=<ASCII数字>`query。记录DOM顺序、去重ID、链接文字及完整href。
-3. 返回空数组需要真实完整sidebar已观察：同一已验证物品的File Size、Posted/Updated及Created by区域实际加载，保存完整sidebar outerHTML和所有可见标题，并证明其中缺少上述两个Required栏目。429、登录页、错误页、尚未加载、无法界定sidebar或标题歧义时保持`not_observed`与`null`，不能从API缺字段得到空数组。
+3. 返回空数组需要真实完整sidebar已观察：同一已验证物品的File Size/Posted元数据和独立Created by区域实际加载，保存完整sidebar outerHTML和所有可见标题，并证明其中缺少上述两个Required栏目。文件元数据在上方header，不能要求它与Created by属于同一最小sidebar祖先；Updated如存在则另行记录。429、登录页、错误页、尚未加载、无法界定sidebar或标题歧义时保持`not_observed`与`null`，不能从API缺字段得到空数组。
 4. 栏目存在但没有可解析的href时记`unknown`并直接检查DOM；不能当成无依赖。布局变更只调整针对真实页面的最小规则，不新增无关平台API。
 
-本机先前三个直接匿名HTML请求均429，已经保全，未反复请求；正例核对来自官方Steam页面读取。本准备阶段未取得成功的本机匿名原始DOM，以上布局绑定留待实际窗口。
+本机先前三个直接匿名HTML请求均429，已经保全，未反复请求。随后用全新headless Chrome context对两个官方正例分别读取一次，均HTTP200；实际DOM、截图及已确认的`#rightContents > .sidebar`/独立panel规则见[本机浏览器预检](publication-browser-preflight-20261004.md)。Steam标题有CSS大写转换，应以可见性加规范化textContent判断，不能因innerText大小写差异漏列后判为无依赖。正式新物品仍须从其自身匿名DOM重新绑定结果。
 
 实际观察记录最少应包含以下字段（占位/未观察不可标为通过）：
 
@@ -176,5 +178,7 @@ tools\.venv\Scripts\python.exe mod_superman_qiang\tools\build_release.py --verif
 ```text
 tools\.venv\Scripts\python.exe mod_superman_qiang\tools\verify_publication.py --item-id <真实新ID> --owner-steam-id <当次probe的steam_id64> --description <最终media冻结目录/description.bbcode> --change-notes <最终media冻结目录/change-notes.txt> --thumbnail <tagged-staging/thumbnail.png> --native-previews <post-update预览查询/stdout.json> --media <干净玩法图1> --output <新的anonymous公开回读目录>
 ```
+
+为复用同一次真实匿名浏览器取证、避免反复urllib的429，可先在offline状态用[浏览器预检](publication-browser-preflight-20261004.md)中的外置脚本分别读取item与`--page-kind changelog`，再给上述命令增加`--item-page-observation <item取证目录/observation.json> --changelog-observation <changelog取证目录/observation.json>`。helper严格核对精确item、请求/最终URL、HTTP200、匿名context/请求证明，以及原HTTP正文和DOM的SHA，并保全这些原文和观察JSON；不是接受没有来源证明的HTML片段。DLC/Required items仍须独立实际sidebar观察，API缺字段不关闭该门。
 
 公开CDN字节与解码像素核对、实际图片审阅、完整notes精确entry、DOM依赖观察、fresh cache和最后offline均须真实通过。之后才可写实际发布changelog与发布报告；永久changelog的master commit/push及GitHub Release附件校验由根任务收口。

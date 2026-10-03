@@ -7,7 +7,7 @@
 - 主描述：[superman_qiang_description.bbcode](../../workshop/superman_qiang_description.bbcode)。
 - 独立的完整Steam Change Notes草稿：[superman_qiang_change_notes.txt](../../workshop/superman_qiang_change_notes.txt)。
 - 首发真实玩法图清单：[superman_qiang_screenshots.md](../../workshop/superman_qiang_screenshots.md)，目前待GREEN截图。
-- 正式候选本地冻结工具：[prepare_publication.py](../tools/prepare_publication.py)。它调用已有严格manifest校验和native plan本地校验，绑定tag、commit、正式21文件库存、实机报告SHA与封面，冻结主描述及完整notes的字符数、行数和SHA。不会加载Steam DLL、切换模式或上传。
+- 正式候选本地冻结工具：[prepare_publication.py](../tools/prepare_publication.py)。它调用已有严格manifest校验和native plan本地校验，绑定tag、commit、正式manifest的精确库存、实机报告SHA与封面，冻结主描述及完整notes的字符数、行数和SHA。不会加载Steam DLL、切换模式或上传。
 - 匿名公开读回工具：[verify_publication.py](../tools/verify_publication.py)。它复用现有完整notes解码比较器，另核对精确item/AppID/owner/可见性/tags、公开封面、media库存、原图字节与解码像素，并保全原始匿名响应；真实图片审阅仍单独记录。
 - 待根任务交付后使用的[发布窗口输入与收据方案](publication-execution-inputs.md)：准确记录真实provider的模式控制缺口、现有官方Steam菜单/UIA路径、原生工具JSON和命令，以及基于官方正例的匿名sidebar依赖解析规则。该页不是实机或发布成功证据。
 
@@ -31,9 +31,9 @@
 2. 取得屏幕排他槽；结束CK3，核对任务总线及当前账号占用后，为发布任务进入必要在线窗口。不得顶掉其他机器会话。运行native probe，绑定当前AppID和owner身份。
 3. 冻结完整Create plan及notesA，使用同一耐久receipt执行`workshop_native_publish`。Create返回ID立即保全，未知callback不得重建。新的Workshop Legal Agreement只能由物品所有者亲自处理。
 4. 匿名核对新item元数据。对该item调用`workshop_native_previews`取得现有strip，冻结独立media update及完整notesB，再追加至少一张干净真实玩法图。每图须严格小于1MiB。notesB包含实际媒体变化，避免把相同正文的多个条目混为最终版本。
-5. 匿名读取最终标题、主描述、tags、DLC/依赖、可见性、封面、media数量/顺序，下载公开CDN图核对字节/像素。独立读取本次Change Notes entry ID与HTML解码、换行归一化后的全文，精确匹配冻结字符数、行数与SHA；若native未公开更新，使用owner page语义控件编辑同一条目并再次匿名核对。
-6. 真实`workshop_native_subscribe`取得callback1313及Subscribed状态；保存任何自动下载的旧cache，证明该精确缓存路径不存在，再调用`workshop_native_download`，等待exact callback3406与真实安装路径；严格比对正式manifest，按产品要求复核实机等价性。
-7. 网络任务完成或失败立即恢复Steam离线，并审阅新的真实像素，不能用旧帧或回执时间代替。重建canonical无内层ID的staging，外层`.mod`保留新ID。
+5. 真实`workshop_native_subscribe`取得callback1313及Subscribed状态；保存任何自动下载的旧cache，证明该精确缓存路径不存在，再调用`workshop_native_download`，等待exact callback3406与真实安装路径；严格比对正式manifest，按产品要求复核实机等价性。
+6. 原生联网任务完成或失败立即恢复Steam离线，并审阅新的真实像素，不能用旧帧或回执时间代替。重建canonical无内层ID的staging，外层`.mod`保留新ID。
+7. 在Steam离线时匿名读取最终标题、主描述、tags、DLC/依赖、可见性、封面、media数量/顺序，下载公开CDN图核对字节/像素。独立读取本次Change Notes entry ID与HTML解码、换行归一化后的全文，精确匹配冻结字符数、行数与SHA；若native未公开更新，优先在Steam离线时使用既有登录网页会话编辑owner page的同一条目并再次匿名核对。仅实际原生动作需要时另开短在线窗口，不为HTTP等待让客户端保持在线。
 8. 根任务发布GitHub Release并验证附件SHA。只有真实上传、公开notes/media、fresh-cache、离线恢复均通过后，才形成永久`docs/release-changelogs/superman-qiang/1.0.0.md`与本mod发布报告，并commit/push master。源码tag不移动。
 
 以上是执行方案，不代表任何一步实际完成。原片、失败attempt、输入快照、回执和缓存保留，不能为收口删除。

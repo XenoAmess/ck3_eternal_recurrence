@@ -56,6 +56,45 @@ def fetch(url: str, output: Path, timeout: float, data: bytes | None = None) -> 
     return result
 
 
+def preserved_browser_response(observation: Path, item_id: str, kind: str, output: Path) -> dict[str, object]:
+    """Read the exact HTTP bytes from an independently preserved anonymous browser navigation."""
+    observed = json.loads(observation.read_text(encoding="utf-8-sig"))
+    headers = observed.get("main_request_header_names")
+    if (observed.get("item_id") != item_id or observed.get("http_status") != 200
+            or observed.get("anonymous_new_context") is not True
+            or observed.get("context_uses_storage_state") is not False
+            or observed.get("context_uses_authorization") is not False
+            or observed.get("initial_cookies_count") != 0
+            or observed.get("main_request_authentication_absent") is not True
+            or not isinstance(headers, list) or not headers
+            or any(not isinstance(name, str) or name.casefold() in {"cookie", "authorization"} for name in headers)
+            or observed.get("failure")):
+        raise ValueError("browser observation does not establish an exact-item anonymous HTTP200 response")
+    url = parse.urlsplit(str(observed.get("final_url", "")))
+    query = parse.parse_qs(url.query)
+    expected_path = "/sharedfiles/filedetails/" if kind == "item" else f"/sharedfiles/filedetails/changelog/{item_id}"
+    if (observed.get("url") != observed.get("final_url")
+            or url.scheme != "https" or url.netloc != "steamcommunity.com" or url.path != expected_path
+            or query.get("l") != ["english"]
+            or (kind == "item" and query.get("id") != [item_id])
+            or (kind == "changelog" and query.get("p") != ["1"])):
+        raise ValueError("browser observation URL differs from the exact public item/changelog request")
+    source = observation.parent / "http-response.html"
+    dom_source = observation.parent / "browser-dom.html"
+    raw, dom = source.read_bytes(), dom_source.read_bytes()
+    if sha(raw) != observed.get("http_body_sha256") or sha(dom) != observed.get("dom_sha256"):
+        raise ValueError("preserved browser HTTP/DOM bytes differ from their observation hashes")
+    output.write_bytes(raw)
+    dom_output = output.with_name(output.stem + ".browser-dom.html")
+    observation_output = output.with_name(output.stem + ".browser-observation.json")
+    dom_output.write_bytes(dom)
+    observation_output.write_bytes(observation.read_bytes())
+    return {"source": "preserved anonymous browser main HTTP response", "requested_url": observed.get("url"),
+            "final_url": observed["final_url"], "http_status": 200, "request_cookie_or_authorization": False,
+            "body": identity(output), "browser_dom": identity(dom_output),
+            "browser_observation": identity(observation_output), "original_observation": identity(observation)}
+
+
 def image_comparison(public: Path, source: Path) -> dict[str, object]:
     public_raw, source_raw = public.read_bytes(), source.read_bytes()
     with Image.open(BytesIO(public_raw)) as shown, Image.open(BytesIO(source_raw)) as selected:
@@ -76,6 +115,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--native-previews", type=Path, required=True)
     parser.add_argument("--media", type=Path, action="append", required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--item-page-observation", type=Path, help="preserved anonymous browser observation.json for this exact item page")
+    parser.add_argument("--changelog-observation", type=Path, help="preserved anonymous browser observation.json for this exact changelog page")
     parser.add_argument("--timeout", type=float, default=30)
     args = parser.parse_args(argv)
     result: dict[str, object] = {"schema": "superman-qiang.publication.anonymous-readback.v1", "ok": False,
@@ -116,7 +157,8 @@ def main(argv: list[str] | None = None) -> int:
         if not all(result["item_identity"].values()):
             raise ValueError("public item identity/owner/visibility/tags do not match")
         changelog_url = f"https://steamcommunity.com/sharedfiles/filedetails/changelog/{args.item_id}?l=english&p=1"
-        result["changelog_response"] = fetch(changelog_url, output / "changelog.raw.html", args.timeout)
+        result["changelog_response"] = (preserved_browser_response(args.changelog_observation, args.item_id, "changelog", output / "changelog.raw.html")
+            if args.changelog_observation else fetch(changelog_url, output / "changelog.raw.html", args.timeout))
         result["text_verification"] = verify_payloads(
             item_api=api,
             changelog_html=(output / "changelog.raw.html").read_text(encoding="utf-8-sig"),
@@ -124,8 +166,9 @@ def main(argv: list[str] | None = None) -> int:
             expected_description=args.description.read_text(encoding="utf-8-sig"),
             expected_change_notes=args.change_notes.read_text(encoding="utf-8-sig"),
         )
-        page_url = f"https://steamcommunity.com/sharedfiles/filedetails/?id={args.item_id}"
-        result["item_page_response"] = fetch(page_url, output / "item-page.raw.html", args.timeout)
+        page_url = f"https://steamcommunity.com/sharedfiles/filedetails/?id={args.item_id}&l=english"
+        result["item_page_response"] = (preserved_browser_response(args.item_page_observation, args.item_id, "item", output / "item-page.raw.html")
+            if args.item_page_observation else fetch(page_url, output / "item-page.raw.html", args.timeout))
         result["dlc_and_required_mods"] = {
             "state": "not_observed",
             "verified": False,

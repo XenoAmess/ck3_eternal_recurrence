@@ -14,7 +14,7 @@ import re
 import sys
 
 
-def inspect(run: Path, save_dir: Path, sdk: Path, player_id: int) -> dict:
+def inspect(run: Path, save_dir: Path, sdk: Path, player_id: int, output_dir: Path) -> dict:
     sys.path.insert(0, str(sdk / 'tools'))
     from inspect_ck3_save_player_topology import _numeric_records
     from inspect_ck3_save_character_scope import _anonymous_records, _variable_record
@@ -34,7 +34,7 @@ def inspect(run: Path, save_dir: Path, sdk: Path, player_id: int) -> dict:
                 identity = value.get('identity') or 0
                 signed = identity - (1 << 64) if identity >= (1 << 63) else identity
                 value['signed_identity'] = signed
-                value['integer_exact'] = signed // 100000
+                value['integer_exact'] = signed // 100000 if signed % 100000 == 0 else None
                 value['signed_number_decimal'] = str(Decimal(signed) / Decimal(100000))
             result[parsed[0]] = value
         return result
@@ -54,7 +54,11 @@ def inspect(run: Path, save_dir: Path, sdk: Path, player_id: int) -> dict:
                     references[name] = value['character_id']
     characters = []
     for level, cid, block in _numeric_records(melted):
-        if level != 1 or ('sxat_' not in block and cid not in references.values()):
+        # Living characters are level 1; dead characters are stored under a
+        # nested dead-character section at level 2. Select those only through
+        # the independently saved typed root reference and character fields.
+        dead_reference = level == 2 and cid in references.values() and 'first_name=' in block and 'dead_data={' in block
+        if (level != 1 and not dead_reference) or ('sxat_' not in block and cid not in references.values()):
             continue
         match = re.search(r'(?m)^\s*(skills?|base_skills?)=\{([^}]+)\}', block)
         base = {'field': match.group(1), 'array': [int(x) for x in re.findall(r'-?\d+', match.group(2))]} if match else None
@@ -70,18 +74,19 @@ def inspect(run: Path, save_dir: Path, sdk: Path, player_id: int) -> dict:
                               'scale_default': 1 if scale is None else None,
                               'scale_decimal': str(Decimal(scale.group(2))) if scale else '1',
                               'raw_record': item.group(0)})
-        row = {'character_id': cid, 'alive': '\n\t\talive_data={' in block,
+        row = {'character_id': cid, 'alive': bool(re.search(r'(?m)^\s*alive_data=\{', block)),
+               'save_record_level': level,
                'role_flags': re.findall(r'flag="(sxat_(?:receiver|donor)_[^"]+)"', block),
                'root_reference_names': [name for name, identity in references.items() if identity == cid],
                'base_skill_save_field': base, 'variables': variables(block), 'modifiers': modifiers,
                'raw_character_sha256': hashlib.sha256(block.encode('utf-8')).hexdigest()}
         characters.append(row)
-        with (save_dir / f'character-{cid}.txt').open('x', encoding='utf-8') as stream:
+        with (output_dir / f'character-{cid}.txt').open('x', encoding='utf-8') as stream:
             stream.write(block)
     root = next((row for row in characters if row['character_id'] == player_id), None)
     names = ['sxat_case_' + marker.removeprefix('SXAT: PASS ').replace('-', '_') for marker in manifest['expected_pass_markers']]
     results = {name: root['variables'].get(name) if root else None for name in names}
-    return {'schema': 'sxad.real-save-fixture-readback.v4', 'run_id': run.name,
+    return {'schema': 'sxad.real-save-fixture-readback.v6', 'run_id': run.name,
             'melted_sha256': hashlib.sha256(melted.read_bytes()).hexdigest(),
             'decoder_script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
             'helper_sources': {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in
@@ -100,12 +105,16 @@ def main() -> int:
     parser.add_argument('--save-dir', required=True, type=Path)
     parser.add_argument('--sdk', required=True, type=Path)
     parser.add_argument('--player-id', required=True, type=int)
-    parser.add_argument('--output-name', default='fixture-readback-v4.json')
+    parser.add_argument('--output-name', default='fixture-readback-v6.json')
+    parser.add_argument('--output-dir', type=Path, help='New directory for another decoder attempt against the same immutable save')
     args = parser.parse_args()
-    destination = args.save_dir / args.output_name
-    if destination.exists() or any(args.save_dir.glob('character-*.txt')):
+    output_dir = args.output_dir or args.save_dir
+    if args.output_dir:
+        args.output_dir.mkdir(exist_ok=False)
+    destination = output_dir / args.output_name
+    if destination.exists() or any(output_dir.glob('character-*.txt')):
         parser.error('new readback output required; retain earlier files')
-    result = inspect(args.run, args.save_dir, args.sdk, args.player_id)
+    result = inspect(args.run, args.save_dir, args.sdk, args.player_id, output_dir)
     with destination.open('x', encoding='utf-8') as stream:
         json.dump(result, stream, ensure_ascii=False, indent=2)
         stream.write('\n')
