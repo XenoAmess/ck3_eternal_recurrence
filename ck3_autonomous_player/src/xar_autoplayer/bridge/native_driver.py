@@ -1848,6 +1848,13 @@ class NativeHeadlessGameplayDriver:
         )
         if isinstance(current_snapshot, dict):
             action_steps.update(
+                _fresh_war_occupation_route_steps(
+                    current_snapshot,
+                    self._history_tail_snapshot(128),
+                    bridge_capabilities,
+                )
+            )
+            action_steps.update(
                 _fresh_preview_first_hop_steps(
                     current_snapshot,
                     self._history_tail_snapshot(128),
@@ -12158,6 +12165,11 @@ class NativeHeadlessGameplayDriver:
             "queried_snapshot_id": starting.get("snapshot_id"),
             "queried_revision": revision,
             "queried_native_revision": starting.get("native_revision"),
+            "queried_connection_generation": (
+                starting.get("diagnostics", {}).get("connection_generation")
+                if isinstance(starting.get("diagnostics"), dict) else None
+            ),
+            "queried_episode_run_id": starting.get("episode_run_id"),
         }
 
     def _execute_war_entry_assessments_query(
@@ -26815,6 +26827,7 @@ def _action_steps(
     declarable_wars: object = None,
     arrange_marriage_choices: object = None,
     paused: object = None,
+    occupation_target_province_ids: object = None,
 ) -> list[str]:
     steps: set[str] = set()
     war_primary_opponent_supported = (
@@ -27385,12 +27398,21 @@ def _action_steps(
             for army in controllable
             if _positive_native_id(army.get("move_target_province_id"))
         )
+        target_provinces.update(
+            int(route[-1])
+            for army in controllable
+            if isinstance((route := army.get("route_province_ids")), list)
+            and route
+            and _positive_native_id(route[-1])
+        )
         if war_primary_opponent_supported:
             target_provinces.update(
                 enemy_primary_default_raise_province_ids(wars)
             )
         if war_objectives_supported:
             target_provinces.update(war_objective_province_ids(wars))
+        if isinstance(occupation_target_province_ids, set):
+            target_provinces.update(occupation_target_province_ids)
         hostile_ids = sorted(
             {
                 int(enemy["army_id"])
@@ -27466,6 +27488,15 @@ def _action_steps(
                 and _army_is_known_stationary(army)
                 and not _army_in_combat_or_retreat(army)
             )
+            if (
+                expand_route_contact_horizons
+                and paused is True
+                and stationary_contact_hold_ready
+                and 0 < len(hostile_ids) <= 64
+            ):
+                steps.add(query_route_contact_horizon_step(
+                    army_id, int(current_province_id), hostile_ids
+                ))
             if same_province_route_clear_ready:
                 army_target_provinces.add(int(current_province_id))
             if (
@@ -27549,6 +27580,76 @@ def _route_contact_hostile_ids(
             }
         )
     )
+
+
+def _fresh_war_occupation_route_steps(
+    snapshot: dict[str, object],
+    history: list[dict[str, object]],
+    bridge_capabilities: set[str],
+) -> set[str]:
+    """Expand existing route steps from this frame's native recovery holdings."""
+    if (
+        snapshot.get("paused") is not True
+        or QUERY_WAR_OCCUPATION_TARGETS_V1_CAPABILITY not in bridge_capabilities
+    ):
+        return set()
+    diagnostics = snapshot.get("diagnostics")
+    generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict) else None
+    )
+    targets: set[int] = set()
+    seen: set[int] = set()
+    for row in reversed(_native_history_after_latest_restore(history)):
+        war_id = parse_query_war_occupation_targets_v1_step(row.get("command"))
+        if war_id is None or war_id in seen:
+            continue
+        seen.add(war_id)
+        result = row.get("result")
+        if row.get("ok") is not True or not isinstance(result, dict):
+            continue
+        try:
+            actor_id, player_side = war_occupation_query_scope(snapshot, war_id)
+        except ValueError:
+            continue
+        value = result.get("war_occupation_targets_v1")
+        if not (
+            isinstance(value, dict)
+            and value.get("available") is True
+            and value.get("collection_complete") is True
+            and value.get("war_id") == war_id
+            and value.get("actor_character_id") == actor_id
+            and value.get("player_side") == player_side
+            and value.get("snapshot_revision") == snapshot.get("native_revision")
+            and value.get("date_raw") == snapshot.get("date_raw")
+            and result.get("queried_snapshot_id") == snapshot.get("snapshot_id")
+            and result.get("queried_revision") == snapshot.get("revision")
+            and result.get("queried_native_revision") == snapshot.get("native_revision")
+            and result.get("queried_connection_generation") == generation
+            and result.get("queried_episode_run_id") == snapshot.get("episode_run_id")
+        ):
+            continue
+        opposing_side = "attacker" if player_side == "defender" else "defender"
+        for holding in value["rows"]:
+            if (
+                holding["territory_side"] == player_side
+                and holding["occupation_observable"] is True
+                and holding["is_occupied"] is True
+                and holding["occupier_side"] == opposing_side
+                and holding["counted_occupied_by_opposing_side"] is True
+            ):
+                targets.add(holding["province_id"])
+    if not targets:
+        return set()
+    return set(_action_steps(
+        sorted(bridge_capabilities),
+        snapshot.get("active_event"),
+        snapshot.get("pending_character_interaction"),
+        snapshot.get("active_wars"),
+        snapshot.get("player_armies"),
+        paused=snapshot.get("paused"),
+        occupation_target_province_ids=targets,
+    ))
 
 
 def _fresh_preview_first_hop_steps(
