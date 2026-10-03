@@ -10,6 +10,7 @@ from .g2_private_query_transport import (
     private_g2_query_metadata_v1, read_private_g2_native_query_v1,
 )
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
+from .player_county_conversion_private_observation import normalize_player_county_conversion_v1
 from .version_identity import CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build
 
 
@@ -117,10 +118,16 @@ def query_player_clergy_appointment_private_v1(
         )
         if result.get("status") != ("observed" if value["status"] == "available" else "unavailable"):
             raise ValueError("native clergy appointment envelope lost its source status")
+        county = (
+            {"county_conversion": normalize_player_county_conversion_v1(
+                result["county_conversion"], snapshot=before, clergy=value,
+            )}
+            if "county_conversion" in result else {}
+        )
     except ValueError as error:
         raise BridgeUnavailableError(str(error)) from error
     return {
-        **value, **private_native_provenance(before), **private_g2_query_metadata_v1(before),
+        **value, **county, **private_native_provenance(before), **private_g2_query_metadata_v1(before),
         "snapshot_revision": result["snapshot_revision"], "query_date_raw": result["date_raw"],
         "backend_id": result["backend_id"], "domain_key": DOMAIN_KEY,
         "query_status": result["status"], "read_only": True, "advertised": False,

@@ -1,5 +1,7 @@
 # CK3 1.20.0.3：热忱、县改宗与祭司任务机会成本
 
+**2026-10-03 11:32 接续采用：** component→glue的13代码路径已采用到集成源码，复用现 `ck3_query_player_clergy_appointment_v1` 返回独立 `county_conversion`。原component7case/28断言/7JSON、fullwire7断言与注册MCP21断言GREEN直接复用，无新语义/重复验证；原RED保留。目标Faith/Rite与实际县价值未补造，组合DLL/Robert暂停帧仍待完成，状态static-ready。见[接续账本](../handover/2026-10-03-g2-v33-resume.md)。
+
 2026-10-03 **research / file-only**。宗教领域已全面开放，本页聚焦罗贝尔领地中 `task_conversion` 的真实目标、最终月进度率和宗教民意价值。复用[祭司与任务合法性](religion-clergy-council-native-ai-12003.md)、[ReligiousRelations 价值](religious-relations-task-value-native-ai-12003.md)及[宗教治理／意见](religion-governance-opinion-native-ai-12003.md)，不重做 Task 身份解析、CanFire、既有 RR 实机、旧 ABI verifier 或夹具。
 
 游戏固定为 **1.20.0.3 Crozier / Steam25652598**，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。本次只读已冻结的 `artifacts/migrations/2026-10-02/installed-build/binaries/ck3.exe` 和本机 Steam `game/`。EXE 身份复用已有 intake；新窄函数字节单独冻结，不重复 hash 全 EXE。没有 SDK、pipe、内存读取、游戏／窗口输入、任务切换、任免、付费行为或游戏日。

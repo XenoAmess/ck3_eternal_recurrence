@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
+#include "xar_bridge/ck3_12003_county_conversion.hpp"
 #include "xar_bridge/religion_rite_governance12002_clergy.hpp"
 
 namespace xar::ck3_12002 {
@@ -22,6 +23,9 @@ struct PlayerClergyAppointmentMailboxContext12002 {
   PlayerClergyAppointmentRequest12002 request{};
   religion::clergy::Bindings bindings{};
   religion::clergy::Observation observation{};
+  // Present only for the actual exact .3 adapter; the existing .2 query is unchanged.
+  std::optional<ck3_12003::religion::county_conversion::Environment> county_conversion_environment;
+  std::optional<ck3_12003::religion::county_conversion::Observation> county_conversion_observation;
   bool completed = false;
   std::string failure;
 };

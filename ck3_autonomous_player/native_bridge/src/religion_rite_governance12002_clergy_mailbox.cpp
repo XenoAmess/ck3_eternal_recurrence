@@ -79,6 +79,24 @@ bool ExecutePlayerClergyAppointmentMailbox12002(
       out.owner_character_id = static_cast<std::int32_t>(frame.played_character_id);
       out.candidate_character_id = query.request.candidate_character_id;
     }
+    if (query.county_conversion_environment) {
+      namespace county = ck3_12003::religion::county_conversion;
+      auto &environment = *query.county_conversion_environment;
+      environment.application_main_thread_id = stamp.thread_id;
+      environment.clergy.application_main_thread_id = stamp.thread_id;
+      auto &county_out = query.county_conversion_observation.emplace();
+      (void)county::ReadCountyConversion12003(environment, stamp.pump_epoch, county_out);
+      if (county_out.available && (county_out.owner_character_id != frame.played_character_id ||
+          county_out.date_raw != frame.date_raw)) {
+        county_out = {};
+        county_out.failure = county::Failure::state_changed;
+        county_out.capture_epoch = stamp.pump_epoch;
+      }
+      if (!county_out.available) {
+        county_out.date_raw = static_cast<std::int32_t>(frame.date_raw);
+        county_out.owner_character_id = static_cast<std::int32_t>(frame.played_character_id);
+      }
+    }
     query.completed = true;
     (void)FinishQueryMailbox(*envelope);
     return true;
@@ -92,6 +110,10 @@ std::string SerializePlayerClergyAppointmentResult12002(
     const PlayerClergyAppointmentMailboxContext12002 &query,std::string_view request_id) {
   if (!query.completed || !query.envelope.frame_stable || !query.failure.empty()) return {};
   const auto &frame = query.envelope.expected_snapshot;
+  const auto county_wire = query.county_conversion_environment && query.county_conversion_observation
+      ? ",\"county_conversion\":" + ck3_12003::religion::county_conversion::SerializeCountyConversion12003(
+          *query.county_conversion_observation)
+      : std::string{};
   return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" + Quote(request_id) +
       ",\"ok\":true,\"result\":{\"step\":" + Quote(kPlayerClergyAppointmentPrivateStep12002) +
       ",\"accepted\":true,\"status\":" + Quote(query.observation.available ? "observed" : "unavailable") +
@@ -101,7 +123,7 @@ std::string SerializePlayerClergyAppointmentResult12002(
       ",\"backend_id\":" + Quote(kPlayerClergyAppointmentBackend12002) +
       ",\"snapshot_revision\":" + std::to_string(query.envelope.expected_snapshot_revision) +
       ",\"date_raw\":" + std::to_string(frame.date_raw) +
-      ",\"player_clergy_appointment\":" + religion::clergy::SerializeClergyAppointment12002(query.observation) + "}}";
+      ",\"player_clergy_appointment\":" + religion::clergy::SerializeClergyAppointment12002(query.observation) + county_wire + "}}";
 }
 
 bool RunPlayerClergyAppointmentMailbox12002(
@@ -166,6 +188,10 @@ bool HandlePlayerClergyAppointmentPrivate12002(
     query.request = request;
     query.bindings = religion::clergy::BindClergyAppointmentImage12002(
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    if (game::IsCk3_12003Descriptor(adapter.descriptor())) {
+      query.county_conversion_environment = ck3_12003::religion::county_conversion::BindCountyConversionImage12003(
+          reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), adapter.descriptor().executable_sha256);
+    }
     return RunPlayerClergyAppointmentMailbox12002(query,request_id,serialized,failure);
   } catch (...) { failure = "player_clergy_appointment_handler_exception"; return false; }
 }

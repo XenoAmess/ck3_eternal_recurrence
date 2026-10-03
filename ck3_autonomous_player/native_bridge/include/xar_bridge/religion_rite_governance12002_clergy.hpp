@@ -83,6 +83,23 @@ struct Observation {
   std::optional<bool> native_can_fire;
 };
 
+
+// Internal read-only seam for other exact-build religious observations. The
+// caller owns the application-main paused transaction. Absent/vacant seats
+// remain successful observations with null task/incumbent pointers.
+struct CurrentClergySeat {
+  void *owner = nullptr;
+  void *task = nullptr;
+  void *type = nullptr;
+  void *position = nullptr;
+  void *incumbent = nullptr;
+  std::int32_t task_id = -1;
+  std::int32_t incumbent_character_id = -1;
+  bool operator==(const CurrentClergySeat &) const = default;
+};
+bool ResolveCurrentClergySeat12002(const Bindings &bindings,
+    std::int32_t owner_character_id, CurrentClergySeat &output) noexcept;
+
 Bindings BindClergyAppointmentImage12002(
     std::uintptr_t module_base, std::string_view executable_sha256) noexcept;
 

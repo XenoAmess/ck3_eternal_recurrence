@@ -845,7 +845,8 @@ endif()
 if(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_clergy.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_clergy_mailbox.cpp")
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_clergy_mailbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_county_conversion.cpp")
 endif()
 if(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
@@ -2390,6 +2391,10 @@ if(BUILD_TESTING)
       src/main_thread_query_mailbox_v1.cpp
       src/religion_rite_governance12002_clergy.cpp
       src/religion_rite_governance12002_clergy_mailbox.cpp
+      src/ck3_12003_county_conversion.cpp
+      src/ck3_12002_council_candidates.cpp
+      src/council_composition_candidates_public_v1.cpp
+      src/council_composition_candidates_public_v1_serializer.cpp
       src/r3_clergy_named_test.cpp)
     target_include_directories(xar_r3_clergy_named_test PRIVATE include)
     target_link_libraries(xar_r3_clergy_named_test PRIVATE xar_bridge_protocol user32)
@@ -2402,6 +2407,36 @@ if(BUILD_TESTING)
     endif()
     add_test(NAME xar_r3_clergy_named_test
       COMMAND xar_r3_clergy_named_test "${CMAKE_BINARY_DIR}/r3-clergy-wire")
+
+    # One new full command-result fixture. Replays a frozen actual county leaf
+    # through the production serializer and exact .3 identity renderer; no game.
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/county-conversion-clergy-full-wire")
+    add_executable(xar_ck3_12003_county_conversion_clergy_full_wire_test
+      src/ck3_12002.cpp
+      src/ck3_12002_query_mailbox.cpp
+      src/ck3_12003_abi_profile.cpp
+      src/ck3_12003_adapter.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/religion_rite_governance12002_clergy.cpp
+      src/religion_rite_governance12002_clergy_mailbox.cpp
+      src/ck3_12003_county_conversion.cpp
+      src/ck3_12002_council_candidates.cpp
+      src/council_composition_candidates_public_v1.cpp
+      src/council_composition_candidates_public_v1_serializer.cpp
+      src/ck3_12003_county_conversion_clergy_full_wire_test.cpp)
+    target_include_directories(xar_ck3_12003_county_conversion_clergy_full_wire_test PRIVATE include)
+    target_link_libraries(xar_ck3_12003_county_conversion_clergy_full_wire_test PRIVATE xar_bridge_protocol user32)
+    target_compile_definitions(xar_ck3_12003_county_conversion_clergy_full_wire_test PRIVATE
+      XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1=1)
+    if(MSVC)
+      target_compile_options(xar_ck3_12003_county_conversion_clergy_full_wire_test PRIVATE
+        /O2 /UNDEBUG /W4 /WX /Gy /permissive- /EHsc /utf-8)
+      target_link_options(xar_ck3_12003_county_conversion_clergy_full_wire_test PRIVATE /OPT:REF)
+    endif()
+    add_test(NAME xar_ck3_12003_county_conversion_clergy_full_wire_test
+      COMMAND xar_ck3_12003_county_conversion_clergy_full_wire_test
+        "${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/county_conversion_clergy_full_wire_leaf_12003.json"
+        "${CMAKE_BINARY_DIR}/county-conversion-clergy-full-wire")
   endif()
 
   if(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)

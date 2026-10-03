@@ -204,6 +204,26 @@ void Optional(std::ostringstream &out, const std::optional<T> &value) {
 }
 } // namespace
 
+
+bool ResolveCurrentClergySeat12002(const Bindings &b, std::int32_t owner_id,
+                                 CurrentClergySeat &out) noexcept {
+  out = {};
+  if (!Exact(b)) return false;
+  void *owner = Character(b, owner_id);
+  Seat seat{};
+  if (!owner || !ChaplainSeat(b, owner, owner_id, seat)) return false;
+  out.owner = owner;
+  if (!seat.task) return true;
+  void *type = nullptr;
+  if (!At(b, seat.task, kTaskTypeOffset, type) || !type) return false;
+  void *incumbent = seat.incumbent == -1 ? nullptr : Character(b, seat.incumbent);
+  if (seat.incumbent != -1 && !incumbent) return false;
+  out.task = seat.task; out.type = type; out.position = seat.position;
+  out.incumbent = incumbent; out.task_id = seat.task_id;
+  out.incumbent_character_id = seat.incumbent;
+  return true;
+}
+
 Bindings BindClergyAppointmentImage12002(
     std::uintptr_t module_base, std::string_view sha) noexcept {
   Bindings b{};
