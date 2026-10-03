@@ -325,6 +325,12 @@ from .coat_of_arms_framebuffer import (
     capture_and_compare_coat_of_arms_framebuffer_v1,
     prepare_ck3_framebuffer_capture_v1,
 )
+from .frontend_applied_game_rules_contract import normalize_frontend_applied_game_rules_v1
+from .frontend_game_rules_control_contract import (
+    normalize_frontend_game_rules_window_v1,
+    normalize_frontend_game_rules_mutation_v1,
+    require_game_rule_script_key,
+)
 from .frontend_game_rules_contract import normalize_frontend_game_rule_selections_v1
 from .frontend_gui_route_contract import (
     frontend_gui_route_binding_from_capabilities,
@@ -10280,6 +10286,73 @@ class GameplayBridgeService:
             "loaded_feature_manifest": normalized,
         }
 
+    def query_frontend_applied_game_rules_v1(self) -> dict[str, object]:
+        method = getattr(self.driver, "query_frontend_applied_game_rules_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend has no native actual-rule-instance observer")
+        try:
+            return normalize_frontend_applied_game_rules_v1(method())
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native applied rules are malformed: {error}") from error
+
+    def query_frontend_game_rules_window_v1(self) -> dict[str, object]:
+        method = getattr(self.driver, "query_frontend_game_rules_window_v1", None)
+        if not callable(method):
+            raise BridgeUnavailableError("native game rules window query is unavailable")
+        try:
+            return normalize_frontend_game_rules_window_v1(method())
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native game rules window is malformed: {error}") from error
+
+    def select_frontend_game_rule_v1(self, rule_key: str,
+            expected_current_setting_key: str, desired_setting_key: str) -> dict[str, object]:
+        method = getattr(self.driver, "select_frontend_game_rule_v1", None)
+        if not callable(method):
+            raise BridgeUnavailableError("native game rule selection is unavailable")
+        rule_key = require_game_rule_script_key(rule_key)
+        expected_current_setting_key = require_game_rule_script_key(expected_current_setting_key)
+        desired_setting_key = require_game_rule_script_key(desired_setting_key)
+        result = method(rule_key, expected_current_setting_key, desired_setting_key)
+        if not isinstance(result, dict) or result.get("status") != "observed" or result.get("applied_settings_proven") is not False:
+            raise BridgeUnavailableError("native rule selection lacks an observed result")
+        try:
+            ack = normalize_frontend_game_rules_mutation_v1(result.get("acknowledgement"), "select")
+            before = normalize_frontend_game_rule_selections_v1(result.get("before"))
+            after = normalize_frontend_game_rule_selections_v1(result.get("observation"))
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native rule selection is malformed: {error}") from error
+        before_values = {p["rule_key"]: p["selected_setting_key"] for p in before["selections"]}
+        after_values = {p["rule_key"]: p["selected_setting_key"] for p in after["selections"]}
+        if not ack["ready"] or not before["ready"] or not after["ready"] or before_values.get(rule_key) != expected_current_setting_key or after_values != {**before_values, rule_key: desired_setting_key} or before.get("binding") != after.get("binding"):
+            raise BridgeUnavailableError("native rule selection target or binding was not observed")
+        return {**result, "acknowledgement": ack, "before": before, "observation": after}
+
+    def apply_and_hide_frontend_game_rules_v1(self) -> dict[str, object]:
+        method = getattr(self.driver, "apply_and_hide_frontend_game_rules_v1", None)
+        if not callable(method):
+            raise BridgeUnavailableError("native game rules apply is unavailable")
+        return self._validate_frontend_game_rules_closure_v1(method(), "apply_and_hide")
+
+    def hide_frontend_game_rules_v1(self) -> dict[str, object]:
+        method = getattr(self.driver, "hide_frontend_game_rules_v1", None)
+        if not callable(method):
+            raise BridgeUnavailableError("native game rules hide is unavailable")
+        return self._validate_frontend_game_rules_closure_v1(method(), "hide")
+
+    def _validate_frontend_game_rules_closure_v1(self, result: object,
+            action: str) -> dict[str, object]:
+        if not isinstance(result, dict) or result.get("status") != "observed" or result.get("window_closed_proven") is not True or result.get("applied_settings_proven") is not False:
+            raise BridgeUnavailableError("native rules closure lacks an observed result")
+        try:
+            ack = normalize_frontend_game_rules_mutation_v1(result.get("acknowledgement"), action)
+            before = normalize_frontend_game_rule_selections_v1(result.get("before"))
+            window = normalize_frontend_game_rules_window_v1(result.get("window_observation"))
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native rules closure is malformed: {error}") from error
+        if not ack["ready"] or not before["ready"] or not window["ready"] or not window["window_closed_proven"] or before.get("binding") != window.get("binding"):
+            raise BridgeUnavailableError("native rules closure or binding was not independently observed")
+        return {**result, "acknowledgement": ack, "before": before, "window_observation": window}
+
     def query_frontend_game_rule_selections_v1(self) -> dict[str, object]:
         query = getattr(self.driver, "query_frontend_game_rule_selections_v1", None)
         if not callable(query):
@@ -10321,6 +10394,16 @@ class GameplayBridgeService:
             raise BridgeUnavailableError(
                 "native frontend GUI route observer returned malformed data"
             )
+        return result
+
+    def inspect_gui_window_tree_v1(self, window_kind: str) -> dict[str, object]:
+        """Read a native window census; a hidden root is not an open modal."""
+        inspect = getattr(self.driver, "inspect_gui_window_tree_v1", None)
+        if not callable(inspect):
+            raise UnsupportedStepError("selected backend has no native GUI window census")
+        result = inspect(window_kind)
+        if not isinstance(result, dict) or result.get("schema") != "ck3-native-gui-window-tree-inspection-v1" or result.get("window_kind") != window_kind or result.get("read_only") is not True:
+            raise BridgeUnavailableError("native GUI window census returned malformed data")
         return result
 
     def inspect_frontend_gui_tree_v1(self) -> dict[str, object]:

@@ -1671,10 +1671,12 @@ bool InspectNamedGuiSubtreeV1(
     std::string child_path;
   };
   try {
-    std::array<Pending, kMaximumWidgetTraversal> pending{};
+    std::vector<Pending> pending;
+    pending.reserve(kMaximumWidgetTraversal);
+    output.widgets.reserve(kNamedGuiTreeInspectionMaximumWidgetsV1);
     std::size_t head = 0;
     std::size_t tail = 1;
-    pending[0] = {root, 0, {}};
+    pending.push_back({root, 0, {}});
     while (head < tail) {
       auto current = std::move(pending[head++]);
       std::string runtime_name;
@@ -1695,11 +1697,13 @@ bool InspectNamedGuiSubtreeV1(
           (count != 0 && children == nullptr)) {
         return false;
       }
-      if (output.widget_count >= output.widgets.size()) {
+      if (output.widget_count >= kNamedGuiTreeInspectionMaximumWidgetsV1) {
         output.truncated = true;
         return true;
       }
-      auto &row = output.widgets[output.widget_count++];
+      output.widgets.emplace_back();
+      ++output.widget_count;
+      auto &row = output.widgets.back();
       row.runtime_name = std::move(runtime_name);
       row.child_path = current.child_path;
       row.depth = current.depth;
@@ -1714,7 +1718,7 @@ bool InspectNamedGuiSubtreeV1(
         output.truncated = true;
         continue;
       }
-      if (tail + static_cast<std::size_t>(count) > pending.size()) {
+      if (tail + static_cast<std::size_t>(count) > kMaximumWidgetTraversal) {
         output.truncated = true;
         return true;
       }
@@ -1729,8 +1733,8 @@ bool InspectNamedGuiSubtreeV1(
           std::string child_path = current.child_path;
           if (!child_path.empty()) child_path += '/';
           child_path += std::to_string(index);
-          pending[tail++] = {child, current.depth + 1,
-                             std::move(child_path)};
+          pending.push_back({child, current.depth + 1, std::move(child_path)});
+          ++tail;
         }
       }
     }

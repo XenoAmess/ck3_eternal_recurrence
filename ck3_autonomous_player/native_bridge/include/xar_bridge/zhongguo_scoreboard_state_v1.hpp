@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <string>
 #include <string_view>
+#include <vector>
 
 namespace xar::game {
 
@@ -271,7 +272,13 @@ struct ZhongguoScoreboardAccessV1 : ZhongguoCaseAccessV1 {
   ResolveZhongguoFixtureGuiV1 resolve_fixture_gui = nullptr;
 };
 
-inline constexpr std::size_t kNamedGuiTreeInspectionMaximumWidgetsV1 = 512;
+inline constexpr std::size_t kNamedGuiTreeInspectionMaximumWidgetsV1 = 2048;
+// Paired with the unchanged process-local protocol frame admission.
+inline constexpr std::size_t kNamedGuiTreeInspectionMaximumFrameBytesV1 = 2U * 1024U * 1024U;
+constexpr bool NamedGuiTreeInspectionFrameBytesFitV1(std::size_t bytes) noexcept {
+  return bytes <= kNamedGuiTreeInspectionMaximumFrameBytesV1;
+}
+
 
 struct NamedGuiWidgetInspectionV1 {
   std::string runtime_name;
@@ -288,9 +295,9 @@ struct NamedGuiTreeInspectionV1 {
   bool root_available = false;
   bool truncated = false;
   std::size_t widget_count = 0;
-  std::array<NamedGuiWidgetInspectionV1,
-             kNamedGuiTreeInspectionMaximumWidgetsV1>
-      widgets{};
+  // Allocate rows only within the owning-thread traversal try/catch;
+  // the mailbox carries the bounded vector handle, not thousands of rows.
+  std::vector<NamedGuiWidgetInspectionV1> widgets;
 };
 
 enum class ZhongguoScoreboardProviderReadModeV1 : std::uint32_t {

@@ -39,6 +39,7 @@ const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
     // Restore the existing frontend tools for the migrated ordinary-seed route.
     result.push_back(ck3_11906::kFrontendGuiRouteV1Capability);
     result.push_back(ck3_11906::kFrontendGuiTreeInspectionV1Capability);
+    result.push_back(ck3_11906::kGuiWindowTreeInspectionV1Capability);
     result.push_back(ck3_11906::kFrontendGuiOpenNewGameV1Capability);
 #endif
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
@@ -51,6 +52,11 @@ const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
 #if defined(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
     result.push_back(ck3_11906::kFrontendGameRulesV1Capability);
     result.push_back(ck3_11906::kFrontendOpenGameRulesV1Capability);
+    result.push_back(ck3_11906::kFrontendGameRulesControlV1Capability);
+    result.push_back(ck3_11906::kFrontendSelectGameRuleV1Capability);
+    result.push_back(ck3_11906::kFrontendApplyGameRulesV1Capability);
+    result.push_back(ck3_11906::kFrontendHideGameRulesV1Capability);
+    result.push_back(ck3_11906::kFrontendAppliedGameRulesV1Capability);
 #endif
     return result;
   }();

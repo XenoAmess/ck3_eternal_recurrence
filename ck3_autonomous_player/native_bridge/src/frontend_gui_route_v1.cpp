@@ -98,9 +98,48 @@ bool ResolveRoute(const FrontendGuiRouteMailboxContextV1 &query,
   return true;
 }
 
+bool InspectGuiWindowTree(FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  const auto root_name = GuiWindowTreeRootForV1(query.gui_window_tree_scope);
+  if (root_name.empty()) return false;
+  auto &out = query.result.tree_inspection;
+  out = {};
+  out.scope_root_name.assign(root_name);
+  ZhongguoScoreboardAccessV1 access{};
+  void *root = nullptr;
+  void *widget = nullptr;
+  if (!ResolveNamedGuiWidgetV1(query.environment, access, root_name,
+                               root_name, root, widget)) return false;
+  // A missing/preloaded-hidden window is an observation, never "opened".
+  if (root == nullptr) return widget == nullptr;
+  if (widget != root) return false;
+  return InspectNamedGuiSubtreeV1(access, query.environment.module_base,
+                                  root, root_name, out);
+}
+
 bool InspectActiveRouteTree(FrontendGuiRouteMailboxContextV1 &query) noexcept {
   if (!ResolveRoute(query, query.result)) return false;
   ZhongguoScoreboardAccessV1 access{};
+#if defined(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
+  if (query.result.route == FrontendGuiRouteV1::bookmarks &&
+      query.environment.gui_abi_revision == GuiAbiRevisionV1::crozier12003) {
+    void *root = nullptr;
+    void *widget = nullptr;
+    if (!ResolveNamedGuiWidgetV1(query.environment, access, "game_rules",
+                                 "game_rules", root, widget)) return false;
+    if (root != nullptr && widget == root) {
+      std::string name;
+      void *vtable = nullptr;
+      bool visible = false, enabled = false;
+      if (!ReadGuiWidgetRuntimeV1(access, root, name, vtable, visible, enabled) ||
+          name != "game_rules") return false;
+      if (visible) {
+        return InspectNamedGuiSubtreeV1(access, query.environment.module_base,
+                                        root, "game_rules",
+                                        query.result.tree_inspection);
+      }
+    }
+  }
+#endif
   for (const auto &probe : kRoutePriority) {
     if (probe.route != query.result.route) continue;
     void *root = nullptr;
@@ -119,6 +158,72 @@ bool InspectActiveRouteTree(FrontendGuiRouteMailboxContextV1 &query) noexcept {
 }
 
 #if defined(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
+bool ResolveRulesControlRoot(FrontendGuiRouteMailboxContextV1 &query,
+                             void *&root) noexcept {
+  auto &o = query.result.game_rules_control;
+  root = nullptr;
+  if (!ResolveRoute(query, query.result) ||
+      query.result.route != FrontendGuiRouteV1::bookmarks) {
+    o.unavailable_reason = "bookmarks_route_unavailable"; return true;
+  }
+  ZhongguoScoreboardAccessV1 access{};
+  void *widget = nullptr, *vtable = nullptr;
+  std::string name;
+  bool visible = false, enabled = false;
+  if (!ResolveNamedGuiWidgetV1(query.environment, access, "game_rules", "game_rules",
+                               root, widget) || !root || widget != root ||
+      !ReadGuiWidgetRuntimeV1(access, root, name, vtable, visible, enabled) ||
+      name != "game_rules") {
+    o.unavailable_reason = "current_named_game_rules_root_unverified"; return true;
+  }
+  if (!ProbeFrontendGameRulesControlV1(query.environment, access, root, o)) return false;
+  if (!o.ready) return true;
+  void *after_root = nullptr, *after_widget = nullptr, *after_vtable = nullptr;
+  std::string after_name;
+  bool after_visible = false, after_enabled = false;
+  if (!ResolveNamedGuiWidgetV1(query.environment, access, "game_rules", "game_rules",
+                               after_root, after_widget) || after_root != root ||
+      after_widget != root ||
+      !ReadGuiWidgetRuntimeV1(access, root, after_name, after_vtable,
+                              after_visible, after_enabled) ||
+      after_name != name || after_vtable != vtable || after_visible != visible ||
+      after_enabled != enabled || o.window_visible != visible ||
+      o.window_enabled != enabled) {
+    o = {}; o.unavailable_reason = "game_rules_named_root_changed_during_observation";
+  }
+  return true;
+}
+
+bool InspectAppliedRules(FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  if (!ResolveRoute(query, query.result) || query.result.route != FrontendGuiRouteV1::bookmarks) {
+    query.result.applied_game_rules.unavailable_reason = "bookmarks_route_unavailable"; return true;
+  }
+  ZhongguoScoreboardAccessV1 access{};
+  return ProbeFrontendAppliedGameRulesV1(query.environment, access, query.result.applied_game_rules);
+}
+
+bool InspectRulesControl(FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  void *root = nullptr; return ResolveRulesControlRoot(query, root);
+}
+
+bool DispatchRulesMutation(FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  void *root = nullptr;
+  if (!ResolveRulesControlRoot(query, root)) return false;
+  if (!query.result.game_rules_control.ready) {
+    query.result.game_rules_mutation.unavailable_reason =
+        query.result.game_rules_control.unavailable_reason; return true;
+  }
+  ZhongguoScoreboardAccessV1 access{};
+  FrontendGameRulesCallsV1 calls{};
+  if (query.operation == FrontendGuiRouteOperationV1::select_game_rule)
+    return SelectFrontendGameRuleV1(query.environment, access, root,
+        query.rule_key, query.expected_current_setting_key, query.desired_setting_key,
+        calls, query.result.game_rules_mutation);
+  return ApplyAndHideFrontendGameRulesV1(query.environment, access, root,
+      query.operation == FrontendGuiRouteOperationV1::apply_and_hide_game_rules,
+      calls, query.result.game_rules_mutation);
+}
+
 bool InspectGameRules(FrontendGuiRouteMailboxContextV1 &query) noexcept {
   auto &result = query.result.game_rules;
   if (query.environment.gui_abi_revision != GuiAbiRevisionV1::crozier12003) {
@@ -689,6 +794,9 @@ bool ExecuteFrontendGuiRouteMailboxV1(
     return false;
   }
   query->result = {};
+  if (query->operation == FrontendGuiRouteOperationV1::inspect_gui_window_tree) {
+    return InspectGuiWindowTree(*query);
+  }
   if (query->operation == FrontendGuiRouteOperationV1::ingame_ui) {
     // Failure metadata is observed at this original application event boundary,
     // never copied from the caller's expected snapshot.
@@ -744,6 +852,14 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   if (query->operation == FrontendGuiRouteOperationV1::query_game_rules) {
     return InspectGameRules(*query);
   }
+  if (query->operation == FrontendGuiRouteOperationV1::query_applied_game_rules)
+    return InspectAppliedRules(*query);
+  if (query->operation == FrontendGuiRouteOperationV1::query_game_rules_control)
+    return InspectRulesControl(*query);
+  if (query->operation == FrontendGuiRouteOperationV1::select_game_rule ||
+      query->operation == FrontendGuiRouteOperationV1::apply_and_hide_game_rules ||
+      query->operation == FrontendGuiRouteOperationV1::hide_game_rules)
+    return DispatchRulesMutation(*query);
 #endif
   if (query->operation == FrontendGuiRouteOperationV1::inspect_tree) {
     return InspectActiveRouteTree(*query);

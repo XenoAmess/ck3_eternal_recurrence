@@ -32,3 +32,33 @@ R0003的实际诊断没有达到controller：加载中一次route=`bookmarks`之
 下一独立run必须重新领取屏幕、审阅当次Steam离线原图、核对准确二进制/源/用户目录与本机能力，然后读取真实85项默认值或361三个规则。准备文件中的`LastAppliedRules`、原生调用ACK、synthetic数据及schema通过都不等于实际选择。尚缺选择目标规则、Apply/Hide按钮资格及应用后规则读回；这些后续候选不修改现已冻结的DLL或旧证据。
 
 原版Apply/Close按钮没有name，不能伪造名字来走fixedInvoke。后续需实际规则scope树、原生child_path与可见/可用状态，或同等真实资格读回；已找到Apply/Hide函数RVA也不授权绕过原版IsHost/NotGameStarted条件。该工作包没有派生出新的Workshop发布、B1成绩或主/白绮七cell通过。
+
+## 选择、提交与实际实例读取：源码已接入，实机待验
+
+后续候选复用同一个默认OFF的私有开关；没有新增生产默认动作。三键选择输入为 `rule_key`、`expected_current_setting_key`、`desired_setting_key`，从实际rule的选项集合计算有界Next次数，不写原始指针。原版Next方法为 `0x21DD6F0(record*)`；每次调用前后核对同owner/root、选项集合与全部选中对，只允许目标项按真实顺序变化。原版Apply `0x21DBD20(owner*)` 后再Hide `0xBE9CF0(owner*)`；调用前读取实际主机与未启动资格，Apply后owner/model改变即拒绝Hide。主机条件来自 `byte[base+0x5CC14D0]&0xFD==0`；首次启动条件来自 `state_slot0x5C68C50` 和state+`0xC3`。未绕过原版按钮条件。
+
+| 新工具 | 合同 |
+| --- | --- |
+| `ck3_query_frontend_game_rules_window_v1` | 真实owner/root与可见、enabled、主机、首次启动状态；独立隐藏读回才证明关闭 |
+| `ck3_select_frontend_game_rule_v1` | 实际选项有界Next，独立query验证目标与其余全部规则 |
+| `ck3_apply_and_hide_frontend_game_rules_v1` | 单次原版Apply→Hide；ACK不证明设置已应用 |
+| `ck3_hide_frontend_game_rules_v1` | 单次原版Hide与独立关闭观察，不调用Apply |
+| `ck3_query_frontend_applied_game_rules_v1` | 真实 `CGameRuleInstance.selected_settings`，不读取GUI默认值或准备文件 |
+
+actual实例入口 `0x5CB3D78` 是已安装getter的std::function holder；核对holder RTTI、VT和getter `0x27F82F0`后，只读其等价纯getter链：state存在取state+`0xF0`，否则取application+`0x268`。再核对 `CGameRuleInstance` 类型与真实setting数组、setting→rule、数据库marker、唯一key及两次稳定读取。GUI选中值与动作ACK继续恒为 `applied_settings_proven=false`；只有这个实际实例读取ready时才给true，仍须和当次目标完整比对才能证明该次提交结果。
+
+选择/Apply原补丁SHA `1d882f6e4825330d1e2e470412c19325d6f7b7d5c908ea0ce3a93ed97cab33e0`，actual实例补丁SHA `08e0e9789b127cb4f6cf3b12bb410151e6dad8ebd144f42ea45033b76cbdf9cb`。26项动作native synthetic与10项actual实例synthetic、10+3项Python合同检查通过；真实调用接线分别4个C++ `/Zs`通过，均非实机。没有重复运行已通过的规则读取检查。完整来源/报告索引在 `zhongguo-agent-01/typed-rules-delivery-v1.json`。
+
+永久harness新增可选 `--frontend-rules-plan`，仅用于普通Robert bootstrap的pre-Start阶段；checked-in意图只允许显式rule/desired key，current必须由当次query取出。它绕开需要地图snapshot的通用逐行plan执行器，仅调用六个已定义typed规则接口。每个动作在调用前写journal；丢失ACK就停止，禁止重发。ApplyHide之后另一次window query及later actual-instance query必须证明关闭和完整pair一致，再复用既有一致等待取得新Bookmarks/picker证明，随后才交还既有Robert Start。原默认路径不变；诊断、冷checkpoint、SDK/server模式拒绝该参数。14项新聚焦协议检查通过，输入bytes快照、binding/query sequence、无关规则不变、未ready观察、三种丢ACK与不重试均覆盖。源码补丁SHA `09063595effc58e920fa9f6b6306a5bb16d349b9df161e6b1189fcc1ca219724`；外置361意图与来源在 `zhongguo-agent-01/rules-plan-package-01/`，没有把准备配置当actual信用。
+
+## 有界窗口树组合
+
+R0005真实Bookmarks超过512节点，旧截断拒绝保持。新预算为2048行，遍历队列4096/depth64/child4096界限不变；行和pending队列改为惰性heap容器，避免扩大应用主线程栈。完整command_result序列化逐行核对最终bytes（含结尾），超过既有2MiB协议上限返回typed rejection。MSVC实测row88bytes、tree result45104→72、frontend context96064→6256；EXE PE stack reserve4MiB/commit4096。这里只是布局/PE检查，未声称实际stack高水位或Bookmarks完整总数。新native/Python预算边界与实际root-name拒绝检查已通过；新组合f4与pinned master2c28的6个C++接线语法均通过，旧include来源错误保留为单独环境context RED。
+
+组合还提供 `ck3_inspect_gui_window_tree_v1(window_kind)`，只允许decisions、decision_detail、courtier、vivhite_courtier四个固定root；当前root row必须唯一且名字匹配，隐藏root不算modal打开。它复用已迁移named-GUI读取，不进入旧ingame11906分支，没有决议动作、选中状态、文本或hover能力。game_rules可见时，原frontend树接口返回该局部scope；隐藏后回Bookmarks。新能力只提供观察，不证明AUB策略默认值或廷臣tab选择。
+
+最终24文件源码组合补丁SHA `e6eb225f4fc4175041761681215a48fe8a841ad9d3fbafe125083f38b0600ed5`。新外置f4组合为 `courtier-agent-02/source-f4e-frontend-actions-applied-window-budget-rootguard-01`，4567文件，freeze SHA `c2a5fb367e6d78bc432d8c265dda47f6d84f339b2f3915bf27094bfe705dc0d6`。它与当前master有明确基底/接线差异，不能宣称全部bytes相同。新独立DLL构建已开始，尚待产物和实机；旧source、512预算DLL与全部失败attempt未覆盖。新的Python等待默认轮询间隔1秒，只减少完整树写入量，ready仍靠两次真实一致观察。
+
+23:53:58（Asia/Shanghai）唯一jobs2 Release构建完成，346 steps、exit0；新native预算聚焦项执行一次PASS。DLL4,613,120bytes，SHA `bac25eb4de967bd9be9603c8983ab672052dabbd74ec8d8e42cef1e97a501065`；injector39,936bytes，SHA `45383f0700dc6660c7182cd812390ae96a84fe8bfe3d248d98d8add642b28e46`。MODEL、SELECTED_START、TARGET_ROBERT、GAME_RULES为ON，旧死亡modal为OFF。最终[产物包](C:/workspace/ck3-upgrade-20261003/courtier-agent-02/frontend-native-final-combo-packet-01.json) SHA `4474b5d6ac06b215df1cb3eaeb93f4ce39fd743a5a29f1c5ff0dce252f0234b5`，4567源文件复验通过；完整源差异表仍保留。
+
+原 `result.json` 的Release断言收据筛选只识别 `/c`，实际CMake MSVC命令使用 `-c`，故原收据RED保留。单独脚本只重新读取同一冻结raw log（SHA `2624cdbb86f48aea8bc085c9a8a1d2cc8562e32aed3e9490eac348a549608f45`），另存 `result.checked-release-flags.json`：四个测试目标10条实际compile argv均在 `/DNDEBUG` 后有 `/UNDEBUG`。没有重建、替换二进制或重跑测试；纠正只属于收据解析。实机与七cell仍0/7。主仓Python-only检查通过。

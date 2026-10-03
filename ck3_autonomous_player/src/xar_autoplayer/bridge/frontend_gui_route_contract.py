@@ -26,7 +26,7 @@ INSPECT_FRONTEND_COAT_OF_ARMS_PATTERN_GRID_V1_CAPABILITY: Final = (
 INSPECT_FRONTEND_COAT_OF_ARMS_PATTERN_GRID_V1_STEP: Final = (
     "inspect-frontend-coat-of-arms-pattern-grid-v1"
 )
-INSPECT_FRONTEND_GUI_TREE_V1_MAXIMUM_WIDGETS: Final = 512
+INSPECT_FRONTEND_GUI_TREE_V1_MAXIMUM_WIDGETS: Final = 2048
 ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY: Final = (
     "game.command.activate-frontend-new-game-v1"
 )
@@ -260,6 +260,7 @@ def normalize_frontend_gui_tree_inspection_v1(
             "_root_",
             "mainmenu_panel_bottom",
             "frontend_bookmarks",
+            "game_rules",
             "lobbyview",
             "ruler_designer",
             "coat_of_arms_page",

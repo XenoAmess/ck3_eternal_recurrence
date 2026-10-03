@@ -156,6 +156,35 @@ inline constexpr std::string_view
 inline constexpr std::string_view kFrontendGuiRouteV1BackendId =
     "ck3-1.19.0.6-native-frontend-gui-route-v1";
 
+// Bounded window census reuses the already migrated named GUI primitives.
+// It does not read a decision model, selected/down, rendered text or tooltip.
+inline constexpr std::string_view kGuiWindowTreeInspectionV1Capability =
+    "game.command.inspect-gui-window-tree-v1";
+inline constexpr std::string_view kGuiWindowTreeInspectionV1Step =
+    "inspect-gui-window-tree-v1";
+enum class GuiWindowTreeScopeV1 : std::uint32_t {
+  unavailable = 0, decisions = 1, decision_detail = 2,
+  courtier = 3, vivhite_courtier = 4,
+};
+inline GuiWindowTreeScopeV1 GuiWindowTreeScopeForV1(
+    std::string_view kind) noexcept {
+  if (kind == "decisions") return GuiWindowTreeScopeV1::decisions;
+  if (kind == "decision_detail") return GuiWindowTreeScopeV1::decision_detail;
+  if (kind == "courtier") return GuiWindowTreeScopeV1::courtier;
+  if (kind == "vivhite_courtier") return GuiWindowTreeScopeV1::vivhite_courtier;
+  return GuiWindowTreeScopeV1::unavailable;
+}
+inline std::string_view GuiWindowTreeRootForV1(
+    GuiWindowTreeScopeV1 scope) noexcept {
+  switch (scope) {
+  case GuiWindowTreeScopeV1::decisions: return "decisions_view";
+  case GuiWindowTreeScopeV1::decision_detail: return "decisiondetail_view";
+  case GuiWindowTreeScopeV1::courtier: return "xar_courtier_creator_window";
+  case GuiWindowTreeScopeV1::vivhite_courtier: return "ervc_courtier_creator_window";
+  default: return {};
+  }
+}
+
 enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   query = 0,
   open_new_game = 1,
@@ -179,6 +208,12 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   ingame_ui = 19,
   query_game_rules = 20,
   open_game_rules = 21,
+  query_game_rules_control = 22,
+  select_game_rule = 23,
+  apply_and_hide_game_rules = 24,
+  hide_game_rules = 25,
+  query_applied_game_rules = 26,
+  inspect_gui_window_tree = 27,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {
@@ -200,6 +235,9 @@ struct FrontendGuiRouteResultV1 {
   FrontendBookmarkSelectionV1 bookmark_selection{};
   FrontendBookmarkChangeV1 bookmark_change{};
   FrontendGameRulesObservationV1 game_rules{};
+  FrontendGameRulesControlV1 game_rules_control{};
+  FrontendGameRulesMutationV1 game_rules_mutation{};
+  FrontendAppliedGameRulesV1 applied_game_rules{};
 };
 
 struct FrontendGuiRouteMailboxContextV1 {
@@ -212,6 +250,10 @@ struct FrontendGuiRouteMailboxContextV1 {
   ZhongguoScoreboardNativeEnvironmentV1 environment{};
   ZhongguoScoreboardActionDispatchEnvironmentV1 dispatch_environment{};
   FrontendGuiRouteResultV1 result{};
+  GuiWindowTreeScopeV1 gui_window_tree_scope = GuiWindowTreeScopeV1::unavailable;
+  std::string rule_key;
+  std::string expected_current_setting_key;
+  std::string desired_setting_key;
   Bindings ingame_bindings{};
   game::Snapshot ingame_expected_snapshot{};
   IngameUiRequestV1 ingame_request{};

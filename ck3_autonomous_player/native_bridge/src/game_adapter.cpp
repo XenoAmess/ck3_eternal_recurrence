@@ -424,12 +424,24 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = ck3_11906::kFrontendGameRulesV1Capability;
   } else if (step == ck3_11906::kFrontendOpenGameRulesV1Step) {
     capability = ck3_11906::kFrontendOpenGameRulesV1Capability;
+  } else if (step == ck3_11906::kFrontendGameRulesControlV1Step) {
+    capability = ck3_11906::kFrontendGameRulesControlV1Capability;
+  } else if (step == ck3_11906::kFrontendSelectGameRuleV1Step) {
+    capability = ck3_11906::kFrontendSelectGameRuleV1Capability;
+  } else if (step == ck3_11906::kFrontendApplyGameRulesV1Step) {
+    capability = ck3_11906::kFrontendApplyGameRulesV1Capability;
+  } else if (step == ck3_11906::kFrontendHideGameRulesV1Step) {
+    capability = ck3_11906::kFrontendHideGameRulesV1Capability;
+  } else if (step == ck3_11906::kFrontendAppliedGameRulesV1Step) {
+    capability = ck3_11906::kFrontendAppliedGameRulesV1Capability;
   } else if (step == ck3_11906::kFrontendGuiRouteV1Step) {
     capability = ck3_11906::kFrontendGuiRouteV1Capability;
   } else if (step == ck3_11906::kIngameUiNavigationV1Step) {
     capability = ck3_11906::kIngameUiNavigationV1Capability;
   } else if (step == ck3_11906::kIngameUiWindowQueryV1Step) {
     capability = ck3_11906::kIngameUiWindowQueryV1Capability;
+  } else if (step == ck3_11906::kGuiWindowTreeInspectionV1Step) {
+    capability = ck3_11906::kGuiWindowTreeInspectionV1Capability;
   } else if (step == ck3_11906::kFrontendGuiTreeInspectionV1Step) {
     capability = ck3_11906::kFrontendGuiTreeInspectionV1Capability;
   } else if (step == ck3_11906::kFrontendCoatOfArmsTreeInspectionV1Step) {

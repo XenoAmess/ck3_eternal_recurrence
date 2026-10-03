@@ -6176,6 +6176,10 @@ std::string FrontendGuiTreeInspectionResultFrame(
     std::string_view request_id,
     std::string_view step,
     const xar::ck3_11906::NamedGuiTreeInspectionV1 &inspection) {
+  static_assert(xar::ck3_11906::kNamedGuiTreeInspectionMaximumFrameBytesV1 == xar::bridge::kMaximumFrameBytes);
+  if (inspection.widget_count > inspection.widgets.size() ||
+      inspection.widget_count > xar::ck3_11906::kNamedGuiTreeInspectionMaximumWidgetsV1)
+    return CommandResultFrame(request_id, step, false, "native GUI tree row budget is inconsistent");
   std::string result =
       "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
   AppendJsonString(result, request_id);
@@ -6211,6 +6215,8 @@ std::string FrontendGuiTreeInspectionResultFrame(
     result += ",\"enabled\":";
     result += widget.enabled ? "true" : "false";
     result += '}';
+    if (!xar::ck3_11906::NamedGuiTreeInspectionFrameBytesFitV1(result.size() + 3U))
+      return CommandResultFrame(request_id, step, false, "native GUI tree exceeds bounded response byte budget");
   }
   result += "]}}";
   return result;
@@ -15271,9 +15277,15 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
               step == xar::ck3_11906::kFrontendGameRulesV1Step ||
               step == xar::ck3_11906::kFrontendOpenGameRulesV1Step ||
+              step == xar::ck3_11906::kFrontendGameRulesControlV1Step ||
+              step == xar::ck3_11906::kFrontendSelectGameRuleV1Step ||
+              step == xar::ck3_11906::kFrontendApplyGameRulesV1Step ||
+              step == xar::ck3_11906::kFrontendHideGameRulesV1Step ||
+              step == xar::ck3_11906::kFrontendAppliedGameRulesV1Step ||
 #endif
               step == xar::ck3_11906::kFrontendGuiRouteV1Step ||
               step == xar::ck3_11906::kFrontendGuiTreeInspectionV1Step ||
+              step == xar::ck3_11906::kGuiWindowTreeInspectionV1Step ||
               step == xar::ck3_11906::
                           kFrontendCoatOfArmsTreeInspectionV1Step ||
               step == xar::ck3_11906::
@@ -15325,11 +15337,34 @@ void RunConnectedSession(
               if (step == xar::ck3_11906::kFrontendGuiRouteV1Step) {
                 query.operation =
                     xar::ck3_11906::FrontendGuiRouteOperationV1::query;
+              } else if (step == xar::ck3_11906::kGuiWindowTreeInspectionV1Step) {
+                std::string window_kind;
+                if (!xar::bridge::JsonStringField(incoming.payload, "window_kind", window_kind, 24)) {
+                  query.gui_window_tree_scope = xar::ck3_11906::GuiWindowTreeScopeV1::unavailable;
+                } else {
+                  query.gui_window_tree_scope = xar::ck3_11906::GuiWindowTreeScopeForV1(window_kind);
+                }
+                query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::inspect_gui_window_tree;
 #if defined(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
               } else if (step == xar::ck3_11906::kFrontendGameRulesV1Step) {
                 query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::query_game_rules;
               } else if (step == xar::ck3_11906::kFrontendOpenGameRulesV1Step) {
                 query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::open_game_rules;
+              } else if (step == xar::ck3_11906::kFrontendGameRulesControlV1Step) {
+                query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::query_game_rules_control;
+              } else if (step == xar::ck3_11906::kFrontendSelectGameRuleV1Step) {
+                query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::select_game_rule;
+                // Failure leaves empty keys; the typed provider rejects them
+                // before any native method is invoked on the main thread.
+                xar::bridge::JsonStringField(incoming.payload, "rule_key", query.rule_key, 96);
+                xar::bridge::JsonStringField(incoming.payload, "expected_current_setting_key", query.expected_current_setting_key, 96);
+                xar::bridge::JsonStringField(incoming.payload, "desired_setting_key", query.desired_setting_key, 96);
+              } else if (step == xar::ck3_11906::kFrontendApplyGameRulesV1Step) {
+                query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::apply_and_hide_game_rules;
+              } else if (step == xar::ck3_11906::kFrontendHideGameRulesV1Step) {
+                query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::hide_game_rules;
+              } else if (step == xar::ck3_11906::kFrontendAppliedGameRulesV1Step) {
+                query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::query_applied_game_rules;
 #endif
               } else if (step == xar::ck3_11906::
                                      kFrontendGuiTreeInspectionV1Step) {
@@ -15484,6 +15519,7 @@ void RunConnectedSession(
                   } else if (query.operation == xar::ck3_11906::
                                                     FrontendGuiRouteOperationV1::
                                                         inspect_tree ||
+                             query.operation == xar::ck3_11906::FrontendGuiRouteOperationV1::inspect_gui_window_tree ||
                              query.operation == xar::ck3_11906::
                                                     FrontendGuiRouteOperationV1::
                                                         inspect_coat_of_arms_tree ||
@@ -15498,6 +15534,30 @@ void RunConnectedSession(
                     response += request_id;
                     response += "\",\"ok\":true,\"result\":";
                     response += xar::ck3_11906::SerializeFrontendGameRulesV1(query.result.game_rules);
+                    response += '}';
+                  } else if (query.operation == xar::ck3_11906::FrontendGuiRouteOperationV1::query_applied_game_rules) {
+                    response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"";
+                    response += request_id;
+                    response += "\",\"ok\":true,\"result\":";
+                    response += xar::ck3_11906::SerializeFrontendAppliedGameRulesV1(query.result.applied_game_rules);
+                    response += '}';
+                  } else if (query.operation == xar::ck3_11906::FrontendGuiRouteOperationV1::query_game_rules_control ||
+                             query.operation == xar::ck3_11906::FrontendGuiRouteOperationV1::select_game_rule ||
+                             query.operation == xar::ck3_11906::FrontendGuiRouteOperationV1::apply_and_hide_game_rules ||
+                             query.operation == xar::ck3_11906::FrontendGuiRouteOperationV1::hide_game_rules) {
+                    response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"";
+                    response += request_id;
+                    response += "\",\"ok\":true,\"result\":";
+                    if (query.operation == xar::ck3_11906::FrontendGuiRouteOperationV1::query_game_rules_control)
+                      response += xar::ck3_11906::SerializeFrontendGameRulesControlV1(query.result.game_rules_control);
+                    else {
+                      const auto kind = query.operation == xar::ck3_11906::FrontendGuiRouteOperationV1::select_game_rule
+                          ? xar::ck3_11906::FrontendGameRulesMutationKindV1::select
+                          : query.operation == xar::ck3_11906::FrontendGuiRouteOperationV1::apply_and_hide_game_rules
+                          ? xar::ck3_11906::FrontendGameRulesMutationKindV1::apply_and_hide
+                          : xar::ck3_11906::FrontendGameRulesMutationKindV1::hide;
+                      response += xar::ck3_11906::SerializeFrontendGameRulesMutationV1(kind, query.result.game_rules_mutation);
+                    }
                     response += '}';
 #endif
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)

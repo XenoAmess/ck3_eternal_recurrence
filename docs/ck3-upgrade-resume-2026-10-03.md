@@ -41,3 +41,7 @@ R0003已实际续跑，但首个Bookmarks route是加载瞬态：随后树为 `_
 [R0004](ck3-upgrade-native-startup-2026-10-03.md#r0004真实入口是主菜单)越过加载瞬态，实际稳定主菜单树完整且NewGame可用；规则诊断的零NewGame范围导致Bookmarks等待超时。hold四只读查询实际PASS，产品仍NOT_RUN。现增加独立显式诊断flag，下一run可按真实主菜单→一次NewGame→稳定Bookmarks→规则查询验证，角色选择/Apply/Start不在该范围。此前三接线提交的官方CI均success，详细链接见同一专题。
 
 [R0005](ck3-upgrade-native-startup-2026-10-03.md#r0005newgame完成bookmarks树触预算上限)实际完成一次typed NewGame并独立读回Bookmarks，但该scope超过512节点，驱动保留截断并在规则打开之前停止。新native组合将保留有界预算及拒绝语义，同时接规则选择/Apply后actual实例读回与局部产品窗口树；尚无规则或产品通过。显式诊断提交官方CI success，当前屏幕已释放/CK3零。
+
+[新规则动作、实际实例及窗口树组合](ck3-native-ai/frontend-game-rules-1.20.0.3-2026-10-03.md#选择提交与实际实例读取源码已接入实机待验)已接入源码：默认OFF私有gate、实际选项有界Next、原版Apply→Hide资格、later actual-instance全pair读回；永久harness有可选pre-Start规则意图，不用地图snapshot、不重试已派发输入。2048树预算使用heap并保留2MiB与截断拒绝。有限offline检查通过，新独立f4组合DLL正在构建；产品实机与七cell仍未完成。
+
+23:53 新独立组合DLL实际编译完成，新预算聚焦项PASS；DLL SHA `bac25eb4de967bd9be9603c8983ab672052dabbd74ec8d8e42cef1e97a501065`。原Release-command筛选收据RED保留，另存对同一raw log的纠正PASS；未重建。接续跨至10-04仍用独立run，计划先诊断规则窗而不Start。产品实机与七cell仍0/7。

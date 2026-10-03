@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import sys
 import threading
@@ -584,6 +585,220 @@ class PlanClient:
             await asyncio.sleep(min(0.25, max(0, deadline - time.monotonic())))
 
 
+def load_frontend_rules_plan(path: Path) -> tuple[dict[str, object], bytes]:
+    raw = path.expanduser().resolve().read_bytes()
+    if len(raw) > 32768:
+        raise ValueError("frontend rules plan exceeds 32768 bytes")
+    def unique(pairs: list[tuple[str, object]]) -> dict[str, object]:
+        result: dict[str, object] = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError("frontend rules plan contains duplicate JSON fields")
+            result[key] = value
+        return result
+    plan = validate_frontend_rules_plan(json.loads(raw.decode("utf-8-sig"), object_pairs_hook=unique))
+    return plan, raw
+
+
+def validate_frontend_rules_plan(value: object) -> dict[str, object]:
+    if not isinstance(value, dict) or set(value) != {"schema", "schema_version", "rules"}:
+        raise ValueError("frontend rules plan accepts only schema/version/rules intent")
+    if value["schema"] != "ck3-frontend-rules-plan-v1" or type(value["schema_version"]) is not int or value["schema_version"] != 1:
+        raise ValueError("unsupported frontend rules plan schema")
+    rows = value["rules"]
+    if not isinstance(rows, list) or not 1 <= len(rows) <= 32:
+        raise ValueError("frontend rules plan requires 1..32 actual rule targets")
+    result = []
+    seen: set[str] = set()
+    for row in rows:
+        if not isinstance(row, dict) or set(row) != {"rule_key", "desired_setting_key"}:
+            raise ValueError("frontend rule target accepts only rule_key/desired_setting_key")
+        for key in row.values():
+            if not isinstance(key, str) or not re.fullmatch(r"[A-Za-z0-9_]{1,96}", key):
+                raise ValueError("frontend rule target must be an explicit script key")
+        if row["rule_key"] in seen:
+            raise ValueError("frontend rules plan contains duplicate rule keys")
+        seen.add(row["rule_key"])
+        result.append(dict(row))
+    return {"schema": value["schema"], "schema_version": 1, "rules": result}
+
+
+def require_frontend_rules_native(value: object, schema: str, source: str,
+        binding: object = None, *, allow_unavailable: bool = False) -> dict[str, object]:
+    if not isinstance(value, dict):
+        raise RuntimeError("native rules result is not an object")
+    for key, expected in {"schema": schema, "schema_version": 1,
+            "source": source, "backend_id": "native-headless", "read_only": True,
+            "game_version": "1.20.0.3", "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+            "uses_ocr": False, "uses_mouse": False, "uses_keyboard": False}.items():
+        if type(value.get(key)) is not type(expected) or value[key] != expected:
+            raise RuntimeError("native rules result has an unadmitted " + key)
+    native_binding = value.get("binding")
+    if not isinstance(native_binding, dict) or set(native_binding) != {"bridge_pid", "connection_generation"} or any(
+            type(native_binding.get(key)) is not int or not 1 <= native_binding[key] <= maximum
+            for key, maximum in (("bridge_pid", 2**32 - 1), ("connection_generation", 2**64 - 1))) or (
+            binding is not None and native_binding != binding):
+        raise RuntimeError("native rules result crossed or lacks its frontend binding")
+    if type(value.get("ready")) is not bool or not isinstance(value.get("unavailable_reason"), str) or value["ready"] != (value["unavailable_reason"] == ""):
+        raise RuntimeError("native rules result has inconsistent availability")
+    applied = schema == "frontend_applied_game_rules_v1" and value["ready"]
+    if value.get("applied_settings_proven") is not applied:
+        raise RuntimeError("native rules proof does not belong to the observed actual instance")
+    if not allow_unavailable and not value["ready"]:
+        raise RuntimeError("native rules are unavailable: " + value["unavailable_reason"])
+    if type(value.get("query_sequence")) is not int or value["query_sequence"] < 1:
+        raise RuntimeError("native rules result lacks its actual query sequence")
+    return value
+
+
+def require_frontend_rules_values(value: object, *, applied: bool = False,
+        binding: object = None) -> dict[str, str]:
+    packet = require_frontend_rules_native(value,
+        "frontend_applied_game_rules_v1" if applied else "frontend_game_rule_selections_v1",
+        "CGameRuleInstance.selected_settings" if applied else "CJominiGameRulesGui.current_selections", binding)
+    rows, count = packet.get("selections"), packet.get("selection_count")
+    if not isinstance(rows, list) or type(count) is not int or not 1 <= count <= 4096 or len(rows) != count:
+        raise RuntimeError("native rules selection collection is malformed")
+    values: dict[str, str] = {}
+    for row in rows:
+        if not isinstance(row, dict) or set(row) != {"rule_key", "selected_setting_key"} or any(
+                not isinstance(key, str) or not re.fullmatch(r"[A-Za-z0-9_]{1,96}", key) for key in row.values()):
+            raise RuntimeError("native rules selected pair is malformed")
+        if row["rule_key"] in values:
+            raise RuntimeError("native rules selected pair has duplicate rule key")
+        values[row["rule_key"]] = row["selected_setting_key"]
+    return values
+
+
+def require_frontend_rules_window(value: object, binding: object = None,
+        *, allow_unavailable: bool = False) -> dict[str, object]:
+    packet = require_frontend_rules_native(value, "frontend_game_rules_window_v1",
+        "CJominiGameRulesGui.owner_root_and_stock_predicates", binding,
+        allow_unavailable=allow_unavailable)
+    fields = ["window_visible", "window_enabled", "is_host", "game_has_started", "may_edit", "window_closed_proven"]
+    if any(type(packet.get(key)) is not bool for key in fields):
+        raise RuntimeError("native rule-window predicate is malformed")
+    may_edit = packet["ready"] and packet["window_visible"] and packet["window_enabled"] and packet["is_host"] and not packet["game_has_started"]
+    if not packet["ready"] and any(packet[key] for key in fields):
+        raise RuntimeError("unavailable native rule-window cannot assert state")
+    if packet["may_edit"] is not may_edit or packet["window_closed_proven"] is not (packet["ready"] and not packet["window_visible"]):
+        raise RuntimeError("native rule-window predicates are inconsistent")
+    return packet
+
+
+async def execute_frontend_rules_plan(client: PlanClient, plan: dict[str, object],
+        *, report: dict[str, object], write: object, timeout: float,
+        managed_done: threading.Event | None = None, poll_interval: float = 0.1) -> dict[str, object]:
+    plan = validate_frontend_rules_plan(plan)
+    if "frontend_rules_plan_execution" in report:
+        raise RuntimeError("frontend rules plan was already attempted; actions cannot be retried")
+    allowed = {"ck3_query_frontend_game_rules_window_v1", "ck3_activate_frontend_game_rules_v1",
+        "ck3_query_frontend_game_rule_selections_v1", "ck3_select_frontend_game_rule_v1",
+        "ck3_apply_and_hide_frontend_game_rules_v1", "ck3_query_frontend_applied_game_rules_v1"}
+    if not allowed.issubset(client.tools):
+        raise RuntimeError("frontend rules plan requires the complete typed MCP rule surface")
+    execution: dict[str, object] = {"status": "RUNNING", "plan": plan, "calls": [],
+        "uses_ocr": False, "uses_mouse": False, "uses_keyboard": False, "snapshot_calls": 0,
+        "actions_retried": False, "applied_settings_proven": False, "window_closed_proven": False}
+    report["frontend_rules_plan_execution"] = execution
+    write()
+    async def call(name: str, arguments: dict[str, object] | None = None) -> object:
+        if name not in allowed or (managed_done is not None and managed_done.is_set()):
+            raise RuntimeError("frontend rules plan scope or managed-session admission failed")
+        row: dict[str, object] = {"tool": name, "arguments": arguments or {},
+            "started_at": now(), "acknowledged": False, "retry_allowed": False}
+        execution["calls"].append(row)
+        write()
+        try:
+            value = await client.call(name, arguments)
+            row.update(acknowledged=True, result=value)
+            return value
+        except BaseException as error:
+            row["error"] = f"{type(error).__name__}: {error}"
+            raise
+        finally:
+            row["finished_at"] = now()
+            write()
+    last_query_sequence = 0
+    def later(packet: dict[str, object]) -> dict[str, object]:
+        nonlocal last_query_sequence
+        if packet["query_sequence"] <= last_query_sequence:
+            raise RuntimeError("native rules result is not a later independent query")
+        last_query_sequence = packet["query_sequence"]
+        return packet
+    try:
+        window = later(require_frontend_rules_window(await call("ck3_query_frontend_game_rules_window_v1"), allow_unavailable=True))
+        binding = window["binding"]
+        if not window["ready"] or not window["window_visible"]:
+            opened = await call("ck3_activate_frontend_game_rules_v1")
+            if not isinstance(opened, dict) or opened.get("status") != "observed":
+                raise RuntimeError("native rules Open was not independently observed")
+            require_frontend_rules_values(opened.get("observation"), binding=binding)
+            later(opened["observation"])
+            window = later(require_frontend_rules_window(await call("ck3_query_frontend_game_rules_window_v1"), binding))
+        if not window["may_edit"]:
+            raise RuntimeError("native rules plan requires the actual host/not-started editable window")
+        initial = await call("ck3_query_frontend_game_rule_selections_v1")
+        values = require_frontend_rules_values(initial, binding=binding)
+        later(initial)
+        if any(row["rule_key"] not in values for row in plan["rules"]):
+            raise RuntimeError("frontend rules plan target is absent from the actual selected model")
+        execution["initial"] = initial
+        for target in plan["rules"]:
+            current_packet = await call("ck3_query_frontend_game_rule_selections_v1")
+            current = require_frontend_rules_values(current_packet, binding=binding)
+            later(current_packet)
+            if current != values:
+                raise RuntimeError("native rule choices changed between planned selections")
+            key, desired = target["rule_key"], target["desired_setting_key"]
+            selected = await call("ck3_select_frontend_game_rule_v1", {"rule_key": key,
+                "expected_current_setting_key": current[key], "desired_setting_key": desired})
+            if not isinstance(selected, dict) or selected.get("status") != "observed" or selected.get("applied_settings_proven") is not False:
+                raise RuntimeError("native rule selection did not return an observed result")
+            values = {**values, key: desired}
+            if require_frontend_rules_values(selected.get("observation"), binding=binding) != values:
+                raise RuntimeError("native rule selection changed another rule or missed its target")
+            later(selected["observation"])
+            verification = await call("ck3_query_frontend_game_rule_selections_v1")
+            if require_frontend_rules_values(verification, binding=binding) != values:
+                raise RuntimeError("later actual rule selection query did not verify the requested target")
+            later(verification)
+        execution["requested_selected_pairs"] = values
+        applied_ack = await call("ck3_apply_and_hide_frontend_game_rules_v1")
+        execution["apply_hide"] = applied_ack
+        if not isinstance(applied_ack, dict) or applied_ack.get("status") != "observed" or applied_ack.get("applied_settings_proven") is not False or applied_ack.get("window_closed_proven") is not True:
+            raise RuntimeError("native Apply/Hide did not independently observe its window closure")
+        ack_window = require_frontend_rules_window(applied_ack.get("window_observation"), binding)
+        later(ack_window)
+        closed = later(require_frontend_rules_window(await call("ck3_query_frontend_game_rules_window_v1"), binding))
+        execution["closed_window"] = closed
+        if not closed["window_closed_proven"]:
+            raise RuntimeError("a later native window query did not prove closure")
+        execution["window_closed_proven"] = True
+        deadline = time.monotonic() + timeout
+        while True:
+            actual = await call("ck3_query_frontend_applied_game_rules_v1")
+            actual = later(require_frontend_rules_native(actual, "frontend_applied_game_rules_v1",
+                "CGameRuleInstance.selected_settings", binding, allow_unavailable=True))
+            execution["latest_applied_instance"] = actual
+            if not actual["ready"] and (actual.get("selections") != [] or actual.get("selection_count") != 0):
+                raise RuntimeError("unavailable actual rule instance cannot assert selected pairs")
+            actual_values = require_frontend_rules_values(actual, applied=True, binding=binding) if actual["ready"] else None
+            if actual_values == values:
+                execution.update(status="ACTUAL_RULES_APPLIED_AND_WINDOW_CLOSED",
+                    applied_settings_proven=True, finished_at=now())
+                write()
+                return execution
+            if time.monotonic() >= deadline:
+                raise TimeoutError("later actual rule-instance values did not equal the requested selected pairs")
+            await asyncio.sleep(poll_interval)
+    except BaseException as error:
+        execution.update(status="FAILED_NO_START", error=f"{type(error).__name__}: {error}", finished_at=now())
+        write()
+        raise
+
+
+
 def require_verified_bookmarks_picker(tree: object) -> dict[str, object]:
     """Admit only a complete native tree rooted at the ordinary bookmark picker.
 
@@ -667,7 +882,7 @@ def require_consistent_frontend_observation(
 async def wait_for_consistent_frontend(
     client: PlanClient, *, report: dict[str, object], write: object,
     timeout: float, managed_done: object = None, require_route: str | None = None,
-    require_rules_button: bool = False, poll_interval: float = 0.25,
+    require_rules_button: bool = False, poll_interval: float = 1.0,
 ) -> tuple[dict[str, object], dict[str, object], dict[str, object]]:
     """Require two consecutive route/tree/route packets; retain every attempt."""
     deadline = time.monotonic() + timeout
@@ -777,6 +992,17 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
 
     def write() -> None:
         args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    frontend_rules_plan = None
+    if args.frontend_rules_plan is not None:
+        frontend_rules_plan, plan_bytes = load_frontend_rules_plan(args.frontend_rules_plan)
+        plan_snapshot = args.output.with_suffix(".frontend-rules-plan.json")
+        with plan_snapshot.open("xb") as stream:
+            stream.write(plan_bytes)
+        report["frontend_rules_plan_input"] = {"source_path": str(args.frontend_rules_plan.resolve()),
+            "snapshot_path": str(plan_snapshot), "sha256": hashlib.sha256(plan_bytes).hexdigest(),
+            "intent": frontend_rules_plan, "source_game_state_claimed": False}
+        write()
 
     supervisor: threading.Thread | None = None
     if not args.sdk_smoke_test:
@@ -917,6 +1143,18 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                                 raise RuntimeError("direct bookmarks tree preserved; explicit guarded direct-entry option required")
                             report["frontend_bootstrap"]["picker_tree_proof"] = require_verified_bookmarks_picker(entry_tree)
                             write()
+                            if frontend_rules_plan is not None:
+                                await execute_frontend_rules_plan(client, frontend_rules_plan,
+                                    report=report, write=write, timeout=args.readiness_timeout,
+                                    managed_done=done if supervisor is not None else None,
+                                    poll_interval=args.poll_interval)
+                                route, entry_tree, entry_proof = await wait_for_consistent_frontend(
+                                    client, report=report, write=write, timeout=args.readiness_timeout,
+                                    managed_done=done if supervisor is not None else None, require_route="bookmarks")
+                                report["frontend_bootstrap"].update(post_rules_route=route,
+                                    post_rules_tree=entry_tree, post_rules_proof=entry_proof,
+                                    post_rules_picker_proof=require_verified_bookmarks_picker(entry_tree))
+                                write()
                             started = await client.call("ck3_activate_frontend_start_1066_bookmark_character_v1",
                                 {"character_name_key": "bookmark_rags_to_riches_duke_robert"})
                             report["frontend_bootstrap"]["start_robert"] = started
@@ -1018,6 +1256,8 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--cold-start-checkpoint", action="store_true")
     result.add_argument("--frontend-robert-bootstrap", action="store_true",
                         help="Use existing typed native stock Robert start before map readiness; no desktop input")
+    result.add_argument("--frontend-rules-plan", type=Path,
+                        help="Explicit typed rule targets before stock Robert Start; independently prove closure and actual applied values")
     result.add_argument("--frontend-rules-diagnostic", action="store_true",
                         help="Only with diagnostic-only: directly open native rules and query actual choices before hold; no Apply/Start")
     result.add_argument("--frontend-rules-diagnostic-new-game", action="store_true",
@@ -1042,6 +1282,11 @@ def parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = parser().parse_args()
+    if args.frontend_rules_plan is not None and (not args.frontend_robert_bootstrap
+            or args.frontend_diagnostic_only or args.frontend_rules_diagnostic
+            or args.frontend_rules_diagnostic_new_game or args.cold_start_checkpoint
+            or args.sdk_smoke_test or args.sdk_error_smoke_test or args.server):
+        raise SystemExit("--frontend-rules-plan requires ordinary --frontend-robert-bootstrap without diagnostic, checkpoint, SDK or server modes")
     if args.frontend_rules_diagnostic_new_game and not (args.frontend_rules_diagnostic
             and args.frontend_diagnostic_only and args.frontend_robert_bootstrap):
         raise SystemExit("--frontend-rules-diagnostic-new-game requires --frontend-rules-diagnostic, --frontend-diagnostic-only and --frontend-robert-bootstrap")

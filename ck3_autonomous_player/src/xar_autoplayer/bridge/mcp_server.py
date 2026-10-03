@@ -3124,6 +3124,33 @@ def create_server(
         )
 
     @server.tool()
+    def ck3_query_frontend_applied_game_rules_v1() -> dict[str, object]:
+        """Read actual CGameRuleInstance choices, independently of the GUI model."""
+        return service.query_frontend_applied_game_rules_v1()
+
+    @server.tool()
+    def ck3_query_frontend_game_rules_window_v1() -> dict[str, object]:
+        """Read actual rule window visibility and stock edit eligibility."""
+        return service.query_frontend_game_rules_window_v1()
+
+    @server.tool()
+    def ck3_select_frontend_game_rule_v1(rule_key: str,
+            expected_current_setting_key: str, desired_setting_key: str) -> dict[str, object]:
+        """Select an actual rule option with bounded stock Next and native readback."""
+        return service.select_frontend_game_rule_v1(
+            rule_key, expected_current_setting_key, desired_setting_key)
+
+    @server.tool()
+    def ck3_apply_and_hide_frontend_game_rules_v1() -> dict[str, object]:
+        """Invoke stock Apply then Hide and independently observe window closure."""
+        return service.apply_and_hide_frontend_game_rules_v1()
+
+    @server.tool()
+    def ck3_hide_frontend_game_rules_v1() -> dict[str, object]:
+        """Invoke stock Hide and independently observe window closure."""
+        return service.hide_frontend_game_rules_v1()
+
+    @server.tool()
     def ck3_query_frontend_game_rule_selections_v1() -> dict[str, object]:
         """Read actual native rules-window choices; excludes Apply verification."""
         return service.query_frontend_game_rule_selections_v1()
@@ -3137,6 +3164,13 @@ def create_server(
     def ck3_query_frontend_gui_route_v1() -> dict[str, object]:
         """Read CK3's current native frontend route; no OCR or input."""
         return _ck3_query_frontend_gui_route_v1(service)
+
+    @server.tool()
+    def ck3_inspect_gui_window_tree_v1(
+        window_kind: Literal["decisions", "decision_detail", "courtier", "vivhite_courtier"],
+    ) -> dict[str, object]:
+        """Read one bounded native window tree; no text, selection, hover or input."""
+        return service.inspect_gui_window_tree_v1(window_kind)
 
     @server.tool()
     def ck3_inspect_frontend_gui_tree_v1() -> dict[str, object]:
@@ -3819,6 +3853,11 @@ def create_server(
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_export_coat_of_arms_source_v1"
     )
+    _forbid_unknown_tool_arguments_v1(server, "ck3_query_frontend_applied_game_rules_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_query_frontend_game_rules_window_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_select_frontend_game_rule_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_apply_and_hide_frontend_game_rules_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_hide_frontend_game_rules_v1")
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_frontend_game_rule_selections_v1"
     )
@@ -3827,6 +3866,9 @@ def create_server(
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_frontend_gui_route_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_inspect_gui_window_tree_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_inspect_frontend_gui_tree_v1"

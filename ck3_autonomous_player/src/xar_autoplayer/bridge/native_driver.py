@@ -390,6 +390,24 @@ from .coat_of_arms_source_export_contract import (
     normalize_coat_of_arms_source_export_v1_result,
     normalize_native_coat_of_arms_source_export_v1_result,
 )
+from .frontend_applied_game_rules_contract import (
+    QUERY_FRONTEND_APPLIED_GAME_RULES_V1_CAPABILITY,
+    QUERY_FRONTEND_APPLIED_GAME_RULES_V1_STEP,
+    normalize_frontend_applied_game_rules_v1,
+)
+from .frontend_game_rules_control_contract import (
+    QUERY_FRONTEND_GAME_RULES_WINDOW_V1_STEP,
+    QUERY_FRONTEND_GAME_RULES_WINDOW_V1_CAPABILITY,
+    SELECT_FRONTEND_GAME_RULE_V1_STEP,
+    SELECT_FRONTEND_GAME_RULE_V1_CAPABILITY,
+    APPLY_AND_HIDE_FRONTEND_GAME_RULES_V1_STEP,
+    APPLY_AND_HIDE_FRONTEND_GAME_RULES_V1_CAPABILITY,
+    HIDE_FRONTEND_GAME_RULES_V1_STEP,
+    HIDE_FRONTEND_GAME_RULES_V1_CAPABILITY,
+    normalize_frontend_game_rules_window_v1,
+    normalize_frontend_game_rules_mutation_v1,
+    require_game_rule_script_key,
+)
 from .frontend_game_rules_contract import (
     QUERY_FRONTEND_GAME_RULE_SELECTIONS_V1_CAPABILITY,
     QUERY_FRONTEND_GAME_RULE_SELECTIONS_V1_STEP,
@@ -5806,6 +5824,126 @@ class NativeHeadlessGameplayDriver:
                 f"native coat-of-arms export projection is malformed: {error}"
             ) from error
 
+    def query_frontend_applied_game_rules_v1(self) -> dict[str, object]:
+        """Read the actual stock rule instance under a fresh application-main ticket."""
+        before = frontend_gui_route_binding_from_capabilities(self.capabilities())
+        raw = self._execute_primitive_step(
+            QUERY_FRONTEND_APPLIED_GAME_RULES_V1_STEP, expected_revision=0,
+            required_capability=QUERY_FRONTEND_APPLIED_GAME_RULES_V1_CAPABILITY,
+            allow_frontend_revision_zero=True,
+        )
+        after = frontend_gui_route_binding_from_capabilities(self.capabilities())
+        if before != after:
+            raise BridgeUnavailableError("native applied rules query crossed its frontend binding")
+        try:
+            result = normalize_frontend_applied_game_rules_v1(raw)
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native applied rules are malformed: {error}") from error
+        return {**result, "binding": after, "query_sequence": max(1, int(self._request_sequence))}
+
+    def query_frontend_game_rules_window_v1(self) -> dict[str, object]:
+        """Read the typed current owner/root and exact stock edit predicates."""
+        before = frontend_gui_route_binding_from_capabilities(self.capabilities())
+        raw = self._execute_primitive_step(
+            QUERY_FRONTEND_GAME_RULES_WINDOW_V1_STEP, expected_revision=0,
+            required_capability=QUERY_FRONTEND_GAME_RULES_WINDOW_V1_CAPABILITY,
+            allow_frontend_revision_zero=True,
+        )
+        after = frontend_gui_route_binding_from_capabilities(self.capabilities())
+        if before != after:
+            raise BridgeUnavailableError("native rules window query crossed its frontend binding")
+        try:
+            result = normalize_frontend_game_rules_window_v1(raw)
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native rules window is malformed: {error}") from error
+        return {**result, "binding": after, "query_sequence": max(1, int(self._request_sequence))}
+
+    def select_frontend_game_rule_v1(self, rule_key: str,
+            expected_current_setting_key: str, desired_setting_key: str) -> dict[str, object]:
+        """Cycle only actual typed options and independently read the target."""
+        rule_key = require_game_rule_script_key(rule_key)
+        expected_current_setting_key = require_game_rule_script_key(expected_current_setting_key)
+        desired_setting_key = require_game_rule_script_key(desired_setting_key)
+        initial = self.query_frontend_game_rule_selections_v1()
+        window = self.query_frontend_game_rules_window_v1()
+        if not initial["ready"] or not window["ready"] or not window["may_edit"]:
+            raise BridgeUnavailableError("native game rule selection requires an editable actual window")
+        if initial["binding"] != window["binding"]:
+            raise BridgeUnavailableError("native game rule selection crossed its frontend binding")
+        before_values = {p["rule_key"]: p["selected_setting_key"] for p in initial["selections"]}
+        if before_values.get(rule_key) != expected_current_setting_key:
+            raise ValueError("game rule expected current setting is absent or stale")
+        raw = self._execute_primitive_step(
+            SELECT_FRONTEND_GAME_RULE_V1_STEP, expected_revision=0,
+            required_capability=SELECT_FRONTEND_GAME_RULE_V1_CAPABILITY,
+            allow_frontend_revision_zero=True,
+            request_fields={"rule_key": rule_key,
+                "expected_current_setting_key": expected_current_setting_key,
+                "desired_setting_key": desired_setting_key},
+        )
+        try:
+            ack = normalize_frontend_game_rules_mutation_v1(raw, "select")
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native rule selection ACK is malformed: {error}") from error
+        if not ack["ready"]:
+            raise BridgeUnavailableError(f"native game rule selection unverified: {ack['unavailable_reason']}")
+        after = self.query_frontend_game_rule_selections_v1()
+        expected_values = {**before_values, rule_key: desired_setting_key}
+        if not after["ready"] or after["binding"] != initial["binding"] or {
+                p["rule_key"]: p["selected_setting_key"] for p in after["selections"]} != expected_values:
+            raise BridgeUnavailableError("native game rule target or other selections changed after Next")
+        return {"status": "observed", "rule_key": rule_key,
+            "selected_setting_key": desired_setting_key, "acknowledgement": ack,
+            "before": initial, "observation": after, "applied_settings_proven": False}
+
+    def _wait_frontend_game_rules_closed_v1(self, binding: dict[str, object],
+            action_sequence: int) -> dict[str, object]:
+        deadline = time.monotonic() + 5.0
+        while True:
+            observed = self.query_frontend_game_rules_window_v1()
+            if observed["binding"] != binding:
+                raise BridgeUnavailableError("native game rules closure crossed its frontend binding")
+            if observed["ready"] and observed["window_closed_proven"]:
+                if observed["query_sequence"] <= action_sequence:
+                    raise BridgeUnavailableError("native rules closure lacks a later independent query")
+                return observed
+            if time.monotonic() >= deadline:
+                raise BridgeUnavailableError("native game rules window closure was not independently observed")
+            time.sleep(0.05)
+
+    def _apply_or_hide_frontend_game_rules_v1(self, apply: bool) -> dict[str, object]:
+        window = self.query_frontend_game_rules_window_v1()
+        if not window["ready"] or not window["window_visible"] or not window["window_enabled"]:
+            raise BridgeUnavailableError("native game rules action requires an actual visible enabled window")
+        if apply and not window["may_edit"]:
+            raise BridgeUnavailableError("native game rules Apply requires the stock host/not-started predicate")
+        initial = self.query_frontend_game_rule_selections_v1()
+        if not initial["ready"] or initial["binding"] != window["binding"]:
+            raise BridgeUnavailableError("native game rules action lacks current bound selections")
+        step = APPLY_AND_HIDE_FRONTEND_GAME_RULES_V1_STEP if apply else HIDE_FRONTEND_GAME_RULES_V1_STEP
+        capability = APPLY_AND_HIDE_FRONTEND_GAME_RULES_V1_CAPABILITY if apply else HIDE_FRONTEND_GAME_RULES_V1_CAPABILITY
+        raw = self._execute_primitive_step(step, expected_revision=0,
+            required_capability=capability, allow_frontend_revision_zero=True)
+        action_sequence = int(self._request_sequence)
+        try:
+            ack = normalize_frontend_game_rules_mutation_v1(raw, "apply_and_hide" if apply else "hide")
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native rules action ACK is malformed: {error}") from error
+        if not ack["ready"]:
+            raise BridgeUnavailableError(f"native rules action unverified: {ack['unavailable_reason']}")
+        closed = self._wait_frontend_game_rules_closed_v1(initial["binding"], action_sequence)
+        return {"status": "observed", "acknowledgement": ack, "before": initial,
+            "window_observation": closed, "window_closed_proven": True,
+            "applied_settings_proven": False}
+
+    def apply_and_hide_frontend_game_rules_v1(self) -> dict[str, object]:
+        """Run stock Apply/Hide once; window closure excludes applied-state proof."""
+        return self._apply_or_hide_frontend_game_rules_v1(True)
+
+    def hide_frontend_game_rules_v1(self) -> dict[str, object]:
+        """Run stock Hide once and require a later actual-window observation."""
+        return self._apply_or_hide_frontend_game_rules_v1(False)
+
     def query_frontend_game_rule_selections_v1(self) -> dict[str, object]:
         """Read current native rules-window choices; Apply is not proven here."""
         before = frontend_gui_route_binding_from_capabilities(self.capabilities())
@@ -6037,6 +6175,25 @@ class NativeHeadlessGameplayDriver:
             "uses_keyboard": False,
             "uses_mouse": False,
         }
+
+    def inspect_gui_window_tree_v1(self, window_kind: str) -> dict[str, object]:
+        """Inspect one exact native root without old ingame-view RVA calls."""
+        from .gui_window_tree_contract import (
+            GUI_WINDOW_TREE_CAPABILITY, GUI_WINDOW_TREE_STEP,
+            GUI_WINDOW_TREE_ROOTS, normalize_gui_window_tree_v1,
+        )
+        if window_kind not in GUI_WINDOW_TREE_ROOTS:
+            raise ValueError("unsupported GUI window census scope")
+        raw = self._execute_primitive_step(
+            GUI_WINDOW_TREE_STEP, expected_revision=0,
+            required_capability=GUI_WINDOW_TREE_CAPABILITY,
+            request_fields={"window_kind": window_kind},
+            allow_frontend_revision_zero=True,
+        )
+        try:
+            return normalize_gui_window_tree_v1(raw, window_kind)
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native GUI window census is malformed: {error}") from error
 
     def inspect_frontend_gui_tree_v1(self) -> dict[str, object]:
         """Read a bounded native GUI-name census on the main thread."""
