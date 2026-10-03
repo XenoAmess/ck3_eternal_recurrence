@@ -1,0 +1,26 @@
+{
+  "at_utc": "2026-10-03T06:59:18.174698+00:00",
+  "command": [
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "tools/test_ck3_stability_fixture.py"
+  ],
+  "exit_code": 0,
+  "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "interpreter": "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "Pillow": "12.3.0",
+  "psutil": "7.2.2",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e43e3f49e9678527716034c640125814d17bd9d1724124e442c426195c78f05b",
+  "sources": [
+    {
+      "path": "tools\\ck3_stability_fixture\\pixels.py",
+      "sha256": "5a88c207a2d12091f545c5bcd72e4c8c50b295967f0f3bc27e32387cc29bfd35"
+    },
+    {
+      "path": "tools\\test_ck3_stability_fixture.py",
+      "sha256": "23bc94f187bd5ae0c5defd8be9bf7c6162cc8799857f1be968969e81bdabe07c"
+    }
+  ],
+  "scope": "Affected existing 27 plus 9 necessary synthetic map fixture cases; no desktop/game/Steam/SDK"
+}

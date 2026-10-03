@@ -29,7 +29,7 @@ CLI 返回 0 表示声明的分析/辅助过程结束；不表示某 mod 通过�
 | --- | --- |
 | 普通事件 | 在已审阅布局内，以实际按钮边框确认连续的 1–5 个物理选项；只对明亮的物理首项发送 `Shift+1`。灰首项不跳到后项。亮字不是 native enabled 查询。 |
 | 战争结果 | 核对窗内固定 shell 和唯一关闭按钮的四边。按钮可在配置范围内随正文长度上下移动；仅发送 `Escape`，不选择投降、议和或战争策略。 |
-| 地图等待 | 仅当配置的已审阅 map regions 匹配时等待和采集，零输入。map-like 不是日期、暂停、玩家或存活真值。 |
+| 地图等待 | 至少两块已审阅 HUD 模板与显式中心排除 guard 同时通过才允许有限等待和采集，零输入。map-like 不是日期、暂停、玩家或存活真值。 |
 | 未知、歧义、死亡、继承 | 无后续输入，返回 `NEEDS_OPERATOR` 并保留原图；死亡和继承由原 operator 审阅、正常处理及证明存档角色链。显式 `STOP` 模板优先于普通 shell。 |
 
 输入前保存两帧，标题、静态正文、首项/关闭项的亮字或纸面暗字连通分量 mask 用于容差比较，完全不识别语言和字符。
@@ -90,10 +90,41 @@ CLI 返回 0 表示声明的分析/辅助过程结束；不表示某 mod 通过�
 | `excluded_slots` | 普通事件受支持五槽之前的已审阅排除区，以成对物理边框检测第六项或更早灰按钮；正文图示的孤立亮字不算按钮，布局歧义继续停止。 |
 | `unique_close_button_reviewed` | 战争结果唯一关闭项已经实际审阅，必须为 true。固定位置可给 `action_rect`。 |
 | `button_geometry` | 战争结果动态按钮：`search_rect`、实际像素的 `width_range`/`height_range`、`action_inset=[left,top,right,bottom]`。`strips` 的四项为外置 PNG `path`/`sha256`、相对按钮左上角的 `relative_rect` 和可选 `max_delta`。全部四边必须匹配。 |
+| `modal_exclusion_guard` | `MAP_WAIT` 专用的显式、已审阅中心排除配置。没有默认坐标、采样步长、颜色或阈值；完整合同见下文。 |
 
 每个配置 rectangle 必须属于原图的实际宽高；没有自动分辨率推断、历史倍率或截图缩放。PNG crop 的实际尺寸必须等于所声明 rectangle。
-生产配置应覆盖本次已见死亡/继承的 STOP 变体，地图模板要含足以排除中心弹窗的区域；无法穷尽的新布局继续交给原操作者。
+生产配置应覆盖本次已见死亡/继承的 STOP 变体；缺少实际已审阅素材时必须记录 `NOT_AVAILABLE`，不能生成虚构模板。
 `tools/test_ck3_stability_fixture.py` 的程序化合成配置提供完整、无游戏素材的数据结构示例，不能当成真实 CK3 布局直接执行。
+
+### 地图只读等待的中心排除
+
+HUD 会在事件和结果窗口背后继续显示。路由先检查 `STOP`，再检查所有普通事件/战争结果的固定 shell。
+普通 shell 必须唯一且通过完整按钮、首项和身份验证；灰首项、第六项、战争按钮无效或多个 shell 匹配都立即拒绝，不能降级到地图。
+仅在没有普通 shell 时，才允许唯一 `MAP_WAIT` 的至少两块已审阅 HUD 模板和中心排除 guard 共同通过。
+多个 map 变体同时匹配仍拒绝；重复 HUD 模板应由产品配置保守去重。
+
+`modal_exclusion_guard` 必须恰好包含 `reviewed_as=READ_ONLY_CENTER_MODAL_EXCLUSION`、`horizontal_edges`、`vertical_edges`、`panels`。
+每个子对象也必须完整，未知字段拒绝。审核应覆盖 ROI 确实位于中心、采样密度足够、会经过可能出现的窗口边缘及正文；仅通过字段校验不等于完成该审核。
+
+| 子对象/字段 | 约束与计算 |
+| --- | --- |
+| 两种 `edges.rect` | `[left,top,right,bottom]`，严格整数、非空、属于精确原图。水平比较前一行，因此 `top>=1`；垂直比较前一列，因此 `left>=1`。 |
+| `edges.sample_stride`, `scan_stride` | 严格正整数。沿边采样至少两个像素，每个扫描区域至少一条线。每行/列的分母使用实际 `len(range(...))`，不按宽高除步长取整。 |
+| `edges.edge_delta` | 有限数字，范围 `[0,254]`。当前像素与相邻行/列像素的最大 RGB 通道差严格大于此值计一次边缘。 |
+| `edges.max_edge_fraction` | 有限比例 `(0,1]`。任一采样行/列的边缘比例达到或超过此值即拒绝；不识别窗口文字。 |
+| `panels.rect`, `sample_stride` | 同样严格的原图 rectangle；步长为两个严格正整数 `[x,y]`，每轴至少两个采样点。分母为实际 X/Y 采样点数之积。 |
+| `panels.dark.max_channel_below` | 有限数字 `[1,255]`；RGB 最大通道严格低于此值计暗像素。 |
+| `panels.light_neutral.min_channel_above`, `spread_below` | 有限数字，分别 `[0,254]`、`[1,256]`。RGB 最小通道严格高于前者且最大/最小通道之差严格低于后者计中性浅像素。 |
+| 两种 panel 的 `max_fraction` | 有限比例 `(0,1]`；采样占比达到或超过各自阈值即拒绝。bool、NaN、零/负比例不接受。 |
+
+成功的地图路由包含 `action=null`、`routing_only=true`、`state_truth=NOT_READ` 和 `modal_exclusion` 的实际采样分母、扫描线数与比例。
+这些像素启发只能排除配置能看见的面板，不能证明不存在未知窗口；细小、透明、偏离 ROI 或与地图相似的窗口仍可能漏检。
+地图暗色地形、通知横幅及固定地图部件也可能造成保守误拒。产品 ROI/阈值应绑定已审阅原图并保留拒绝历史，不能为通过回放盲目放宽。
+
+旧配置省略 guard 或使用 `null` 时，可以继续路由通过验证的普通事件/战争窗口，但 `MAP_WAIT` 明确拒绝。
+`false`、空对象及不完整对象不是关闭校验的开关。已有 malformed guard 在加载时拒绝；没有兼容入口恢复 HUD-only map。
+`allow_readonly_map_wait` 仍须由产品显式开启；有效 guard 不增加输入预算、时间预算、deadline 或任何 native 状态真值。
+版本升级只能在旧辅助 attempt 已关闭后建立新 profile，并精确继承届时完整的动作 ledger，不热改正在执行的源码或配置。
 
 Windows backend 在每次采集、每次按键阶段核对唯一、新鲜（小于 600 秒）的原 SCREEN lease，exact HEAD 和干净 checkout，
 原 control hash、唯一 PID/EXE/创建时间、前台窗口和当前桌面尺寸。它不更新 keeper 序号。按键前请求并读回目标控件 `LANGID=0x0409`，
@@ -153,3 +184,5 @@ ACK 后 unchanged/uncertain action、锁、期限、实际 backend custody 检�
 后续最小回归另覆盖中性灰边、正文图示、标题亮字缺席、混合后置与下一独立前置、未知后置和精确继承旧 ledger。
 它们属于夹具回归，不能替代实机百年或其他 mod 验收。具体首次验证和真实能力边界见
 [2026-10-03 富化记录](ck3-native-ai/stability-fixture-enrichment-2026-10-03.md)。
+地图扩展的 36 项必要回归、外置产品候选及拒绝边界见
+[2026-10-03 地图中心排除记录](ck3-native-ai/stability-map-exclusion-2026-10-03.md)。

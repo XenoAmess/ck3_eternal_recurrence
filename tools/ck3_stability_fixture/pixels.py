@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from pathlib import Path
 
 from PIL import Image, ImageChops, ImageStat
@@ -94,10 +95,14 @@ class PixelRouter:
     def __init__(self, configuration: dict):
         self.configuration = configuration
         self.size = tuple(configuration["frame_size"])
-        require(len(self.size) == 2 and min(self.size) > 0, "invalid configured frame size")
+        require(len(self.size) == 2 and all(type(v) is int and v > 0 for v in self.size),
+                "invalid configured frame size")
         self.templates = {}
         self.buttons = {}
+        self.map_guards = {}
         require(configuration["variants"], "no reviewed window variants")
+        require(len({v["id"] for v in configuration["variants"]}) == len(configuration["variants"]),
+                "window variant IDs must be unique")
         for variant in configuration["variants"]:
             require(variant["kind"] in {"STANDARD_EVENT", "WAR_OUTCOME", "MAP_WAIT", "STOP"},
                     "unsupported window kind")
@@ -110,6 +115,8 @@ class PixelRouter:
                 self.templates[(variant["id"], pattern["path"])] = template
             for strip in variant.get("button_geometry", {}).get("strips", []):
                 self.templates[(variant["id"], strip["path"])] = Image.open(checked_file(strip)).convert("RGB")
+            if variant["kind"] == "MAP_WAIT" and variant.get("modal_exclusion_guard") is not None:
+                self.map_guards[variant["id"]] = self.validate_map_guard(variant["modal_exclusion_guard"])
 
     def rect(self, value: list[int]) -> tuple[int, int, int, int]:
         require(len(value) == 4 and all(type(v) is int for v in value), "integer rectangle required")
@@ -118,7 +125,7 @@ class PixelRouter:
                 "rectangle outside exact original frame")
         return x, y, right, bottom
 
-    def matches(self, image: Image.Image, variant: dict) -> bool:
+    def shell_matches(self, image: Image.Image, variant: dict) -> bool:
         for pattern in variant["patterns"]:
             delta = ImageStat.Stat(ImageChops.difference(
                 image.crop(self.rect(pattern["rect"])),
@@ -126,6 +133,11 @@ class PixelRouter:
             )).mean
             if max(delta) > pattern.get("max_delta", 3):
                 return False
+        return True
+
+    def matches(self, image: Image.Image, variant: dict) -> bool:
+        if not self.shell_matches(image, variant):
+            return False
         if variant.get("button_geometry"):
             try:
                 button = self.war_button(image, variant["button_geometry"])
@@ -140,6 +152,86 @@ class PixelRouter:
                     return False
             self.buttons[variant["id"]] = button
         return True
+
+    def validate_map_guard(self, guard: dict) -> dict:
+        """No implicit crop, stride, colour threshold, or disabling switch."""
+        require(isinstance(guard, dict) and set(guard) == {"reviewed_as", "horizontal_edges", "vertical_edges", "panels"}
+                and guard["reviewed_as"] == "READ_ONLY_CENTER_MODAL_EXCLUSION", "explicit reviewed map exclusion guard required")
+        def number(value, low, high, label):
+            require(type(value) in (int, float) and math.isfinite(value) and low <= value <= high,
+                    "invalid map guard " + label)
+        def fraction(value):
+            number(value, 0, 1, "fraction")
+            require(value > 0, "map guard fraction must be positive")
+        def stride(value, dimension, minimum):
+            require(type(value) is int and value > 0 and len(range(0, dimension, value)) >= minimum,
+                    "map guard stride leaves insufficient samples")
+        for name, horizontal in (("horizontal_edges", True), ("vertical_edges", False)):
+            row = guard[name]
+            require(isinstance(row, dict) and set(row) == {"rect", "sample_stride", "scan_stride", "edge_delta", "max_edge_fraction"},
+                    "complete map edge guard required")
+            left, top, right, bottom = self.rect(row["rect"])
+            require(top >= 1 if horizontal else left >= 1, "map edge predecessor outside original frame")
+            stride(row["sample_stride"], right-left if horizontal else bottom-top, 2)
+            stride(row["scan_stride"], bottom-top if horizontal else right-left, 1)
+            number(row["edge_delta"], 0, 254, "edge delta")
+            fraction(row["max_edge_fraction"])
+        panels = guard["panels"]
+        require(isinstance(panels, dict) and set(panels) == {"rect", "sample_stride", "dark", "light_neutral"},
+                "complete map panel guard required")
+        left, top, right, bottom = self.rect(panels["rect"])
+        steps = panels["sample_stride"]
+        require(isinstance(steps, list) and len(steps) == 2, "map panel requires X/Y sample strides")
+        stride(steps[0], right-left, 2)
+        stride(steps[1], bottom-top, 2)
+        dark, light = panels["dark"], panels["light_neutral"]
+        require(isinstance(dark, dict) and set(dark) == {"max_channel_below", "max_fraction"}
+                and isinstance(light, dict) and set(light) == {"min_channel_above", "spread_below", "max_fraction"},
+                "explicit dark and light-neutral panel thresholds required")
+        number(dark["max_channel_below"], 1, 255, "dark channel threshold")
+        number(light["min_channel_above"], 0, 254, "light channel threshold")
+        number(light["spread_below"], 1, 256, "neutral spread threshold")
+        fraction(dark["max_fraction"])
+        fraction(light["max_fraction"])
+        return guard
+
+    def map_guard(self, image: Image.Image, variant: dict) -> dict:
+        guard = self.map_guards.get(variant["id"])
+        require(guard is not None, "MAP_WAIT needs an explicit reviewed center exclusion guard; legacy HUD-only map refused")
+        result = {}
+        for name, horizontal in (("horizontal_edges", True), ("vertical_edges", False)):
+            row = guard[name]
+            left, top, right, bottom = row["rect"]
+            samples = range(left, right, row["sample_stride"]) if horizontal else range(top, bottom, row["sample_stride"])
+            scans = range(top, bottom, row["scan_stride"]) if horizontal else range(left, right, row["scan_stride"])
+            peak = 0
+            for line in scans:
+                hits = 0
+                for sample in samples:
+                    x, y = (sample, line) if horizontal else (line, sample)
+                    before = image.getpixel((x, y-1) if horizontal else (x-1, y))
+                    current = image.getpixel((x, y))
+                    hits += max(abs(a-b) for a, b in zip(current, before)) > row["edge_delta"]
+                peak = max(peak, hits / len(samples))
+            result[name] = {"sample_denominator": len(samples), "scan_count": len(scans), "peak_edge_fraction": peak}
+            require(peak < row["max_edge_fraction"], f"map {name} panel edge fraction {peak:.6f} reaches exclusion threshold")
+        row = guard["panels"]
+        left, top, right, bottom = row["rect"]
+        xs, ys = range(left, right, row["sample_stride"][0]), range(top, bottom, row["sample_stride"][1])
+        denominator = len(xs) * len(ys)
+        dark, light = row["dark"], row["light_neutral"]
+        dark_count = light_count = 0
+        for y in ys:
+            for x in xs:
+                rgb = image.getpixel((x, y))
+                dark_count += max(rgb) < dark["max_channel_below"]
+                light_count += min(rgb) > light["min_channel_above"] and max(rgb)-min(rgb) < light["spread_below"]
+        result["panels"] = {"sample_denominator": denominator, "dark_fraction": dark_count/denominator,
+                            "light_neutral_fraction": light_count/denominator}
+        require(dark_count/denominator < dark["max_fraction"], "map center dark panel reaches exclusion threshold")
+        require(light_count/denominator < light["max_fraction"], "map center light-neutral panel reaches exclusion threshold")
+        result["scope"] = "CONFIGURED_PIXEL_EXCLUSION_ONLY; NOT_PROOF_OF_NO_UNKNOWN_WINDOW"
+        return result
 
     def war_button(self, image: Image.Image, geometry: dict) -> list[int]:
         """Locate one actual rectangular close button inside the reviewed range.
@@ -212,15 +304,23 @@ class PixelRouter:
         with Image.open(path) as source:
             image = source.convert("RGB")
         require(image.size == self.size, "source dimensions differ; no scaling inferred")
-        matches = [v for v in self.configuration["variants"] if self.matches(image, v)]
-        # Explicit STOP (e.g. succession) wins over any ordinary shell.
-        require(not any(v["kind"] == "STOP" for v in matches), "reviewed stop window; operator required")
-        require(len(matches) == 1, "unknown or ambiguous window; operator required")
-        variant = matches[0]
+        shells = [v for v in self.configuration["variants"] if self.shell_matches(image, v)]
+        # A known shell with invalid controls is never downgraded to MAP_WAIT.
+        require(not any(v["kind"] == "STOP" for v in shells), "reviewed stop window; operator required")
+        ordinary = [v for v in shells if v["kind"] in {"STANDARD_EVENT", "WAR_OUTCOME"}]
+        require(len(ordinary) <= 1, "ambiguous ordinary window shells; operator required")
+        if ordinary:
+            variant = ordinary[0]
+            require(self.matches(image, variant), "known window control validation failed; no map fallback")
+        else:
+            maps = [v for v in shells if v["kind"] == "MAP_WAIT"]
+            require(len(maps) == 1, "unknown or ambiguous window; operator required")
+            variant = maps[0]
         kind = variant["kind"]
         if kind == "MAP_WAIT":
             return {"kind": kind, "variant": variant["id"], "action": None, "routing_only": True,
-                    "state_truth": "NOT_READ", "option_count": 0, "shapes": {}}
+                    "state_truth": "NOT_READ", "option_count": 0, "shapes": {},
+                    "modal_exclusion": self.map_guard(image, variant)}
         first = None
         if kind == "STANDARD_EVENT":
             slots = [self.slot(image, s) for s in variant["option_slots"]]

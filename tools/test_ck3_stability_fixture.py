@@ -63,6 +63,17 @@ def reference(root, source, rect, name):
     return {"path": str(path), "sha256": sha256(path), "rect": rect, "max_delta": 0}
 
 
+def map_guard_config():
+    return {"reviewed_as": "READ_ONLY_CENTER_MODAL_EXCLUSION",
+            "horizontal_edges": {"rect": [100, 100, 699, 500], "sample_stride": 3, "scan_stride": 3,
+                                 "edge_delta": 25, "max_edge_fraction": .5},
+            "vertical_edges": {"rect": [100, 101, 700, 499], "sample_stride": 3, "scan_stride": 3,
+                               "edge_delta": 25, "max_edge_fraction": .5},
+            "panels": {"rect": [100, 120, 700, 480], "sample_stride": [7, 11],
+                       "dark": {"max_channel_below": 10, "max_fraction": .4},
+                       "light_neutral": {"min_channel_above": 160, "spread_below": 25, "max_fraction": .4}}}
+
+
 def profile(root):
     standard = image(root, "standard.png")
     war = image(root, "war.png", "WAR_OUTCOME")
@@ -86,8 +97,9 @@ def profile(root):
                  "identity_rois": rois, "action_rect": [270, 479, 530, 505],
                  "unique_close_button_reviewed": True},
                 {"id": "map", "kind": "MAP_WAIT", "reviewed_as": "MAP_WAIT",
-                 "patterns": [reference(root, terrain, [60, 50, 740, 54], "map-top"),
-                              reference(root, terrain, [180, 180, 620, 320], "map-center")]},
+                 "patterns": [reference(root, terrain, [0, 0, 800, 8], "map-top"),
+                              reference(root, terrain, [0, 592, 800, 600], "map-bottom")],
+                 "modal_exclusion_guard": map_guard_config()},
             ]}}
 
 
@@ -116,6 +128,142 @@ class FakeBackend:
 
 
 class RoutingTests(unittest.TestCase):
+    def test_guarded_map_is_readonly_and_uses_actual_sample_denominators(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            p = profile(root)
+            route = PixelRouter(p["routing"]).route(root/"map.png")
+            self.assertEqual(route["kind"], "MAP_WAIT")
+            self.assertIsNone(route["action"])
+            self.assertEqual(route["state_truth"], "NOT_READ")
+            observation = route["modal_exclusion"]
+            self.assertEqual(observation["horizontal_edges"]["sample_denominator"], 200)
+            self.assertEqual(observation["vertical_edges"]["sample_denominator"], 133)
+            self.assertEqual(observation["panels"]["sample_denominator"], 2838)
+            backend = FakeBackend([root/"map.png"])
+            result = assist(p, backend, sleep=lambda _: None)
+            self.assertEqual(result["status"], "READ_ONLY_MAP_WAIT")
+            self.assertEqual(backend.keys, [])
+
+    def test_known_event_and_war_shells_take_precedence_over_hud_map(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            p = profile(root)
+            router = PixelRouter(p["routing"])
+            for name, kind in (("standard.png", "STANDARD_EVENT"), ("war.png", "WAR_OUTCOME")):
+                with Image.open(root/name) as source:
+                    self.assertTrue(router.shell_matches(source.convert("RGB"), p["routing"]["variants"][2]))
+                self.assertEqual(router.route(root/name)["kind"], kind)
+            dim = image(root, "dim-hud.png", count=3, disabled=True)
+            six = image(root, "six-hud.png", count=5)
+            raw = Image.open(six).convert("RGB")
+            ImageDraw.Draw(raw).rectangle((150, 298, 650, 331), outline=(140,120,90))
+            raw.save(six)
+            with patch.object(router, "map_guard", side_effect=AssertionError("known shell cannot downgrade")):
+                for path in (dim, six):
+                    with self.assertRaises(NeedsOperator):
+                        router.route(path)
+
+    def test_invalid_known_war_control_cannot_downgrade_to_map(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            p = profile(root)
+            war = p["routing"]["variants"][1]
+            war["patterns"][1] = reference(root, root/"war.png", [60,552,740,556], "war-shell-fixed-bottom")
+            war["button_geometry"] = {"search_rect": [200,400,600,550], "width_range": [380,390],
+                                      "height_range": [35,37], "strips": [], "action_inset": [20,4,20,6]}
+            router = PixelRouter(p["routing"])
+            with patch.object(router, "map_guard", side_effect=AssertionError("known war cannot downgrade")):
+                with self.assertRaisesRegex(NeedsOperator, "known window control validation failed"):
+                    router.route(root/"war.png")
+
+    def test_ambiguous_ordinary_shells_are_not_resolved_by_map(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            p = profile(root)
+            other = copy.deepcopy(p["routing"]["variants"][0])
+            other["id"] = "second-event-shell"
+            p["routing"]["variants"].append(other)
+            with self.assertRaisesRegex(NeedsOperator, "ambiguous ordinary"):
+                PixelRouter(p["routing"]).route(root/"standard.png")
+
+    def test_unknown_wide_edges_reject_at_configured_fraction(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            router = PixelRouter(profile(root)["routing"])
+            for name, box, expected in (("horizontal", (100,199,397,201), "horizontal_edges"),
+                                        ("vertical", (199,101,201,498), "vertical_edges")):
+                path = root/(name+".png")
+                raw = Image.open(root/"map.png").convert("RGB")
+                ImageDraw.Draw(raw).rectangle(box, fill=(245,245,245))
+                raw.save(path)
+                with self.assertRaisesRegex(NeedsOperator, expected):
+                    router.route(path)
+
+    def test_unknown_dark_and_neutral_light_panels_reject_without_edges(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            router = PixelRouter(profile(root)["routing"])
+            for name, color, expected in (("dark", (0,0,0), "dark panel"),
+                                          ("light", (220,220,220), "light-neutral panel")):
+                path = root/(name+".png")
+                raw = Image.open(root/"map.png").convert("RGB")
+                ImageDraw.Draw(raw).rectangle((0,9,799,590), fill=color)
+                raw.save(path)
+                with self.assertRaisesRegex(NeedsOperator, expected):
+                    router.route(path)
+
+    def test_legacy_map_without_guard_refuses_but_known_event_still_routes(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            p = profile(root)
+            del p["routing"]["variants"][2]["modal_exclusion_guard"]
+            router = PixelRouter(p["routing"])
+            self.assertEqual(router.route(root/"standard.png")["kind"], "STANDARD_EVENT")
+            with self.assertRaisesRegex(NeedsOperator, "explicit reviewed center"):
+                router.route(root/"map.png")
+
+    def test_map_guard_bad_geometry_stride_and_thresholds_refuse(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            baseline = profile(root)["routing"]
+            mutations = [("horizontal_edges", "rect", [100,0,699,500]),
+                         ("vertical_edges", "rect", [0,101,700,499]),
+                         ("horizontal_edges", "rect", [100,100,801,500]),
+                         ("horizontal_edges", "sample_stride", 0),
+                         ("vertical_edges", "sample_stride", 1000),
+                         ("horizontal_edges", "scan_stride", True),
+                         ("horizontal_edges", "edge_delta", 255),
+                         ("horizontal_edges", "max_edge_fraction", 0),
+                         ("vertical_edges", "max_edge_fraction", float("nan")),
+                         ("vertical_edges", "max_edge_fraction", 1.1)]
+            for section, field, value in mutations:
+                configuration = copy.deepcopy(baseline)
+                configuration["variants"][2]["modal_exclusion_guard"][section][field] = value
+                with self.subTest(section=section, field=field, value=value), self.assertRaises(NeedsOperator):
+                    PixelRouter(configuration)
+            for field, value in (("sample_stride", [7,0]), ("sample_stride", [900,11]),
+                                 ("dark", {"max_channel_below": 0, "max_fraction": .4}),
+                                 ("light_neutral", {"min_channel_above": 255, "spread_below": 25, "max_fraction": .4})):
+                configuration = copy.deepcopy(baseline)
+                configuration["variants"][2]["modal_exclusion_guard"]["panels"][field] = value
+                with self.subTest(panel_field=field), self.assertRaises(NeedsOperator):
+                    PixelRouter(configuration)
+            configuration = copy.deepcopy(baseline)
+            configuration["variants"][2]["modal_exclusion_guard"] = False
+            with self.assertRaises(NeedsOperator):
+                PixelRouter(configuration)
+
+    def test_multiple_map_shells_refuse_without_picking_a_guard(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            p = profile(root)
+            other = copy.deepcopy(p["routing"]["variants"][2])
+            other["id"] = "second-map-shell"
+            p["routing"]["variants"].append(other)
+            with self.assertRaisesRegex(NeedsOperator, "ambiguous window"):
+                PixelRouter(p["routing"]).route(root/"map.png")
+
     def test_one_to_five_options_choose_physical_first_only(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
