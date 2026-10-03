@@ -1,0 +1,595 @@
+{
+  "schema": "xar.g2.vacation-patch-packets/v1",
+  "production_source_commit": "8cf176b436b6b0024fb591d4114b92448146181a",
+  "production_version": "v32",
+  "robert_days": 3845,
+  "game_status": "normally_stopped",
+  "save_history": 4639,
+  "code_patches_applied": false,
+  "v33_built": false,
+  "v33_deployed": false,
+  "packets": [
+    {
+      "id": "event-title5",
+      "readiness": "static-ready; Python type5 not connected",
+      "base_commit": "8cf176b436b6b0024fb591d4114b92448146181a",
+      "source_directory": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m2-events\\event-scope-title-v32-native-01",
+      "patch": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m2-events\\event-scope-title-v32-native-01\\ROOT-TITLE-SCOPE.patch",
+          "bytes": 13421,
+          "sha256": "bcad380e3821f79cc2f8d248dd1f7c951072704b68ba5ec7bc2c8386f65f615b"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\event-title5.patch.gz",
+          "bytes": 3371,
+          "sha256": "dd2f48d0b7ce3c0bc188427f0d1aa27d7697307ace912293f3137973e6627477"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m2-events\\event-scope-title-v32-native-01\\ROOT-DELIVERY.json",
+          "bytes": 5690,
+          "sha256": "1525f2d1573e993c844c7d089b5f6dd1135639b543fe681fd151846092420650"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\event-title5.receipt.json.gz",
+          "bytes": 1859,
+          "sha256": "967546226458187931571e1a1f294cbc80d76fc00830561236c0964c05ce8bc5"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "applied_to_production": false,
+      "v33_deployed": false
+    },
+    {
+      "id": "event-faction25",
+      "readiness": "static-ready; saved scope actual pending",
+      "base_commit": "8cf176b436b6b0024fb591d4114b92448146181a",
+      "source_directory": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m2-events\\faction-scope25-payload-12003-01",
+      "patch": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m2-events\\faction-scope25-payload-12003-01\\ROOT-ONLY-TYPE25-FACTION.patch",
+          "bytes": 8427,
+          "sha256": "b7a914ffc51ca77e000d627de8b64e16cd2650959cbdbc32b89d4ddf2d850dca"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\event-faction25.patch.gz",
+          "bytes": 2321,
+          "sha256": "2af8d476ad84969906a7dec2389e1e13d536c60512be4dda8222e36d95f0a4ce"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m2-events\\faction-scope25-payload-12003-01\\ROOT-DELIVERY.json",
+          "bytes": 7285,
+          "sha256": "000943e710c731c23587becbcecde95a365acc2fe5a14fb3e2bacf094adc88d0"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\event-faction25.receipt.json.gz",
+          "bytes": 2245,
+          "sha256": "a6c34486031b75a13b0db6aa29ceb22c981f57888dd32347ec4e9ee34b3cb95a"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "applied_to_production": false,
+      "v33_deployed": false
+    },
+    {
+      "id": "confession-permission",
+      "readiness": "static-ready; shared glue not started",
+      "base_commit": "8cf176b436b6b0024fb591d4114b92448146181a",
+      "source_directory": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-doctrine-gameplay-12003\\confession-permission-leaf",
+      "patch": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-doctrine-gameplay-12003\\confession-permission-leaf\\confession-rite-permission-unique-four-files.patch",
+          "bytes": 17889,
+          "sha256": "649213549f2d9e39245b8bbf8633e0c3df0907c01628a0c5e6a7f5a83feb68be"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\confession-permission.patch.gz",
+          "bytes": 4933,
+          "sha256": "c78e99a947b9482cc564dc791a04db601fab6a38d5386b2d59b0e1ed79290117"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-doctrine-gameplay-12003\\confession-permission-leaf\\ROOT-DELIVERY.json",
+          "bytes": 3217,
+          "sha256": "c2f15ab62f4e342564444e4daadaffda4ee2db563f9697774d33f8be06cdcd12"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\confession-permission.receipt.json.gz",
+          "bytes": 1184,
+          "sha256": "6f369e6954496d53363efcd8df02ce11d04eff3c96b8afc22f96424aad95eded"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "applied_to_production": false,
+      "v33_deployed": false
+    },
+    {
+      "id": "devotion-virtues",
+      "readiness": "static-ready external integrated query",
+      "base_commit": "8cf176b436b6b0024fb591d4114b92448146181a",
+      "source_directory": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-devotion-virtues-12003\\implementation",
+      "patch": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-devotion-virtues-12003\\implementation\\ROOT-ONLY.diff",
+          "bytes": 79551,
+          "sha256": "870f9c6620819b331554675404309cece4eb202915f5e980b0aab1b48f861df8"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\devotion-virtues.patch.gz",
+          "bytes": 19960,
+          "sha256": "58eb96d9b47b2014a716aeefa836bee2effe984d1d601f32ca8e75f6fc3ea892"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-devotion-virtues-12003\\implementation\\ROOT-DELIVERY.json",
+          "bytes": 13801,
+          "sha256": "8b564f2a531e1c62c447784a8a6a9cdf2c750bff98bc672e95308c74585f5096"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\devotion-virtues.receipt.json.gz",
+          "bytes": 3195,
+          "sha256": "462f1ae3b3862870d7e8530df73f832b9b20c291e43db19a1ce4e49e467573fc"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "applied_to_production": false,
+      "v33_deployed": false
+    },
+    {
+      "id": "county-conversion-component",
+      "readiness": "component static-ready",
+      "base_commit": "8cf176b436b6b0024fb591d4114b92448146181a",
+      "source_directory": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-fervor-county-12003\\county-leaf-v32",
+      "patch": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-fervor-county-12003\\county-leaf-v32\\ROOT-COMBINED.patch",
+          "bytes": 60530,
+          "sha256": "ff1ada0a1179aa743fa0820d849ba23d29b4808b53c87b04daad87810deba247"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\county-conversion-component.patch.gz",
+          "bytes": 15677,
+          "sha256": "c96a3c640b6890e85baa47505f17daceab5c7074c6ed1822c6ae1915d1383e55"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-fervor-county-12003\\county-leaf-v32\\ROOT-DELIVERY.json",
+          "bytes": 8796,
+          "sha256": "9d3ce3fe21107b2a32abb18151be582616c99beed809ef69ce11a49d1f2828f4"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\county-conversion-component.receipt.json.gz",
+          "bytes": 2164,
+          "sha256": "fd5e9441ac5f6ab0166e6eb4bd217655b4531c4fd78e87cdc37dbaebe9960a70"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "applied_to_production": false,
+      "v33_deployed": false
+    },
+    {
+      "id": "county-conversion-glue",
+      "readiness": "integrated query static-ready; apply after component",
+      "base_commit": "8cf176b436b6b0024fb591d4114b92448146181a",
+      "source_directory": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-fervor-county-12003\\county-share-glue-v32",
+      "patch": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-fervor-county-12003\\county-share-glue-v32\\ROOT-ONLY-SHARE-GLUE.patch",
+          "bytes": 43302,
+          "sha256": "4954f2e60f8af12c2b3b10db3e0592ecb15678fbb695653d7b8dd7fac6356a45"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\county-conversion-glue.patch.gz",
+          "bytes": 12718,
+          "sha256": "73bfe2e2e32514fcf3662ae7af57ae97512e314d288f3a863cc266330b4c8a64"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-fervor-county-12003\\county-share-glue-v32\\ROOT-DELIVERY.json",
+          "bytes": 10877,
+          "sha256": "fd89387ad08bd2b52838def798cfde7bda67dca1e88ddbe6d2f325b128b15e73"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\county-conversion-glue.receipt.json.gz",
+          "bytes": 2174,
+          "sha256": "d733f834785f43bcb3b6ac5c5b48e2248abd362554aa8924122b4f6468256f22"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "applied_to_production": false,
+      "v33_deployed": false
+    },
+    {
+      "id": "holy-order-selected",
+      "readiness": "static-ready; glue not started",
+      "base_commit": "8cf176b436b6b0024fb591d4114b92448146181a",
+      "source_directory": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-holy-order-systems-12003",
+      "patch": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-holy-order-systems-12003\\ROOT-ONLY-SELECTED-NATIVE.patch",
+          "bytes": 36509,
+          "sha256": "4c56290649c6d77a277cca73c0edd55e9f7de157b32041a54543ce013b15a547"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\holy-order-selected.patch.gz",
+          "bytes": 7433,
+          "sha256": "ef54e50e1dd1fdcf1dd2b6f73342ce240a2b1cd4abec0f8a11d7d9c1177661d8"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-holy-order-systems-12003\\SELECTED-DELIVERY.json",
+          "bytes": 6907,
+          "sha256": "b29954eda21fe2349643d835758c3b9312ed8857c2bfd839a9f02400e770d7a9"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\holy-order-selected.receipt.json.gz",
+          "bytes": 2006,
+          "sha256": "153d23741b8833c71aa10711e19b3582557b91ff373cfbdc4e1e30afb4553db7"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "applied_to_production": false,
+      "v33_deployed": false
+    },
+    {
+      "id": "pilgrimage-route",
+      "readiness": "internal component static-ready",
+      "base_commit": "8cf176b436b6b0024fb591d4114b92448146181a",
+      "source_directory": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m6-law\\religion-pilgrimage-next-inputs-12003\\candidate-route-leaf",
+      "patch": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m6-law\\religion-pilgrimage-next-inputs-12003\\candidate-route-leaf\\ROOT-NATIVE.patch",
+          "bytes": 13056,
+          "sha256": "00559a9abd658f52624b3c7b20bfc2f28de9cc386eb17ef1aa709db40c4b55bd"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\pilgrimage-route.patch.gz",
+          "bytes": 3475,
+          "sha256": "a3f30c4f2c323eb6be0fb71382f9b4e8009d4a2387649ca48cba5d8e96220527"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m6-law\\religion-pilgrimage-next-inputs-12003\\candidate-route-leaf\\OWNER-RECEIPT.json",
+          "bytes": 5186,
+          "sha256": "6ad2d4c28dfc31c6e360a92dfdfa2b51fb0a146a38926ce0e63ed93772c97010"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\pilgrimage-route.receipt.json.gz",
+          "bytes": 1821,
+          "sha256": "6256797e4279e11d57048c787e0b9ef5d40bced8baa263023eb32c536a719010"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "applied_to_production": false,
+      "v33_deployed": false
+    },
+    {
+      "id": "pilgrimage-candidates",
+      "readiness": "source-ready; combined component fixture GREEN",
+      "base_commit": "8cf176b436b6b0024fb591d4114b92448146181a",
+      "source_directory": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m6-law\\religion-pilgrimage-next-inputs-12003\\headless-candidate-activity-terms\\candidates",
+      "patch": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m6-law\\religion-pilgrimage-next-inputs-12003\\headless-candidate-activity-terms\\candidates\\ROOT-NATIVE.patch",
+          "bytes": 22639,
+          "sha256": "5e70ec235db5168c98b519f4bea52cea3475e577c9e3aa271d547b8c8333254e"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\pilgrimage-candidates.patch.gz",
+          "bytes": 5436,
+          "sha256": "7bc85e987a25f8d96588b5a159cac639d081c4be4ed565d950ab82b8997ba690"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m6-law\\religion-pilgrimage-next-inputs-12003\\headless-candidate-activity-terms\\candidates\\OWNER-RECEIPT.json",
+          "bytes": 3818,
+          "sha256": "333783608043aa0af90f1a168ce01711cb71406bc5caacff0bb805b3bb7d7a22"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\pilgrimage-candidates.receipt.json.gz",
+          "bytes": 1393,
+          "sha256": "d5a654891db10d547e22b581c3d54196bc6659bc226d9356416e6b7ba1a541b0"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "applied_to_production": false,
+      "v33_deployed": false
+    },
+    {
+      "id": "pilgrimage-quote",
+      "readiness": "source-ready; activity quote only; combined component fixture GREEN",
+      "base_commit": "8cf176b436b6b0024fb591d4114b92448146181a",
+      "source_directory": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m6-law\\religion-pilgrimage-next-inputs-12003\\headless-candidate-activity-terms\\quote",
+      "patch": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m6-law\\religion-pilgrimage-next-inputs-12003\\headless-candidate-activity-terms\\quote\\ROOT-NATIVE.patch",
+          "bytes": 26643,
+          "sha256": "30003aec9b803b39982bb26823ed647ee85827c1dcb053f93a2a8afa34c9b328"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\pilgrimage-quote.patch.gz",
+          "bytes": 5785,
+          "sha256": "2e3ae240e6ff7cda522a14c3a7989fbe5fb6402bb7750d2f84179b9ced7c9f7e"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m6-law\\religion-pilgrimage-next-inputs-12003\\headless-candidate-activity-terms\\quote\\OWNER-RECEIPT.json",
+          "bytes": 2986,
+          "sha256": "870eca0c22b209741529af3546d4f1422966b1819ba63a595de7e1104edf9e99"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\pilgrimage-quote.receipt.json.gz",
+          "bytes": 991,
+          "sha256": "76e3efb0b2fbaa2dfdff6cdc868bf819edb14ffd53db2e8158afe6bc8f370feb"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      },
+      "applied_to_production": false,
+      "v33_deployed": false
+    }
+  ],
+  "research_and_state_receipts": [
+    {
+      "id": "faction-demand-source",
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m2-events\\actual-v32-faction-demand1001-blocker-01\\REPORT.json",
+          "bytes": 5561,
+          "sha256": "02da3355d868118c7c92b0258a5ec0ebf318fc936107bf7c60920f1cf3750576"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\faction-demand-source.receipt.json.gz",
+          "bytes": 2357,
+          "sha256": "ee4f22ee3e6d827c179d8fe43120ba184eaff53a45952f276c3cbca1f09dcc09"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      }
+    },
+    {
+      "id": "surrender-impact",
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m4-construction\\faction-surrender-impact-20261003\\DELIVERY.json",
+          "bytes": 3261,
+          "sha256": "9becc18e6318fd6b4601b429ef1d6949d2679753ae6eb2ade5075bbfb8c0f8dd"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\surrender-impact.receipt.json.gz",
+          "bytes": 899,
+          "sha256": "6934fa8ff19e1f9497fd0008ddd7c7d737b250b58815be45e66ca525d8364a73"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      }
+    },
+    {
+      "id": "repentance",
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-excommunication-12003\\ROOT-DELIVERY.json",
+          "bytes": 10778,
+          "sha256": "05f2d26e5dd42321beff0e6e44a86c509a79cce07b8e5185dab5154159b89650"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\repentance.receipt.json.gz",
+          "bytes": 3997,
+          "sha256": "719c5d964cb618ba1bbec95f663ab9c967b8841f5ae7637f6401c9050252efa7"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      }
+    },
+    {
+      "id": "saved-pair",
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\vacation-handoff-20261003\\FINAL-SAVED-PAIR.json",
+          "bytes": 8076,
+          "sha256": "afc73403b01e15f2c070ffa60a413b5eae8d9676ac2adee4f59183c880a9819e"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\saved-pair.receipt.json.gz",
+          "bytes": 2028,
+          "sha256": "67d193c4de59a4cb2d052c185db29db049a7f0bf78cab18809776778b8961a9d"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      }
+    },
+    {
+      "id": "county-component-fixture",
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-fervor-county-12003\\county-leaf-v32\\fixture\\FIXTURE-DELIVERY.json",
+          "bytes": 3780,
+          "sha256": "387f6de46751c7ec5f95c4f78aba32670b746a227894c61293f6ff6f1fabc82b"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\county-component-fixture.receipt.json.gz",
+          "bytes": 1246,
+          "sha256": "6a1267fe114dcbc0dd4549e6e630be88cae61512130565c97a0cbb41653ce131"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      }
+    },
+    {
+      "id": "confession-fixture",
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-doctrine-gameplay-12003\\confession-permission-leaf\\FOCUSED-RESULT.json",
+          "bytes": 19508,
+          "sha256": "75adbbbc77c81c773010ae5828383a9b99284627106f4aa190a8e0d733531696"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\confession-fixture.receipt.json.gz",
+          "bytes": 3073,
+          "sha256": "ca54662f4a4f4f495fbf14f72180186bb10de879f3176790eab5cf069b495ed6"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      }
+    },
+    {
+      "id": "pilgrimage-combined-fixture",
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m6-law\\religion-pilgrimage-next-inputs-12003\\headless-candidate-activity-terms\\combined-fixture\\RESULT.json",
+          "bytes": 9239,
+          "sha256": "5de50caeace02602aaf77314c66ae75f80da91e65534c5e3eedbbddf1395d55c"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\pilgrimage-combined-fixture.receipt.json.gz",
+          "bytes": 2654,
+          "sha256": "9da29f2d037ab2b4e48f7aa608a4a4679419f590cee0bab794c861313ea16828"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      }
+    },
+    {
+      "id": "pilgrimage-final-delivery",
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m6-law\\religion-pilgrimage-next-inputs-12003\\headless-candidate-activity-terms\\ROOT-DELIVERY.json",
+          "bytes": 925,
+          "sha256": "7812cf8bd812d8c33c09697edb95e9c64e5e4ba1c9f7b12b95eb51cec63747d0"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\pilgrimage-final-delivery.receipt.json.gz",
+          "bytes": 462,
+          "sha256": "01167cd9c357d149addd0bddf13c012d92bb46044e18997573147d8e77518b46"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      }
+    },
+    {
+      "id": "journey-research",
+      "receipt": {
+        "source": {
+          "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m6-law\\religion-pilgrimage-next-inputs-12003\\journey-fees-and-return-schedule-next\\PROOF.json",
+          "bytes": 9471,
+          "sha256": "0bb8a1b4a09888adf932a422074ee69582b258c0f53ff2aa8b2af4a549732274"
+        },
+        "repository_file": {
+          "path": "docs\\handover\\2026-10-03-g2-religion-v32-packets\\journey-research.receipt.json.gz",
+          "bytes": 4054,
+          "sha256": "20ed70f5806cf3c520f24bdad6e168aa61fe8dcc416fe165309e82263467f55a"
+        },
+        "compression": "gzip; original bytes preserved; mtime=0"
+      }
+    }
+  ],
+  "adopted_knowledge_docs": [
+    {
+      "source": {
+        "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m2-events\\actual-v32-faction-demand1001-blocker-01\\docs\\ck3-native-ai\\ck3-1.20.0.3-faction-demand1001-populist.md",
+        "bytes": 9424,
+        "sha256": "307b06d605058a0a2375dbf7a693fc043110c7b5c10dfc159a4047da5183a434"
+      },
+      "repository_file": {
+        "path": "docs\\ck3-native-ai\\ck3-1.20.0.3-faction-demand1001-populist.md",
+        "bytes": 9686,
+        "sha256": "010c2113e1768f52bf9fdc499b4a37a6bc9b5274560b477a4171f4705130eeb5"
+      }
+    },
+    {
+      "source": {
+        "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m2-events\\event-scope-title-v32-native-01\\projection\\docs\\ck3-native-ai\\ck3-1.20.0.3-event-scope-landed-title.md",
+        "bytes": 5435,
+        "sha256": "b49db9f4aab971fd50e93fc02bdda993675777c0a46d0475756f69ce6fc081b9"
+      },
+      "repository_file": {
+        "path": "docs\\ck3-native-ai\\ck3-1.20.0.3-event-scope-landed-title.md",
+        "bytes": 5697,
+        "sha256": "ea7561fbceea1b58d40a88e7e21dd336299d43c1d33a7837657e3b52108fafa3"
+      }
+    },
+    {
+      "source": {
+        "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\m2-events\\faction-scope25-payload-12003-01\\event-faction-scope25-12003.md",
+        "bytes": 8076,
+        "sha256": "0efbd29e07f9f40c52e22bad878e5766011309583a2ef31c44ef2b5f98cb1f02"
+      },
+      "repository_file": {
+        "path": "docs\\ck3-native-ai\\event-faction-scope25-12003.md",
+        "bytes": 8338,
+        "sha256": "ce38698a74087a53d2c8eafc6d258338729714c1ba45574070fff5ae92ed45f3"
+      }
+    },
+    {
+      "source": {
+        "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-devotion-virtues-12003\\implementation\\ROOT-PROJECTION\\docs\\ck3-native-ai\\religion-devotion-virtues-observation-12003.md",
+        "bytes": 6704,
+        "sha256": "81062e5f52d39d83abfe540607b2931884c0aef548c2c12fd8e78f3712b2db28"
+      },
+      "repository_file": {
+        "path": "docs\\ck3-native-ai\\religion-devotion-virtues-observation-12003.md",
+        "bytes": 6966,
+        "sha256": "46a8df433a680d712c0c3d4129f0e8e02c48db77da89cad8fe691ad76e6099a1"
+      }
+    },
+    {
+      "source": {
+        "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-excommunication-12003\\newdoc\\religion-excommunication-repentance-native-ai-12003.md",
+        "bytes": 19597,
+        "sha256": "3fdaa4dc0bfd5f5982f85b63a6efdc59649cfafbb15c05f62c091d8285f8f60d"
+      },
+      "repository_file": {
+        "path": "docs\\ck3-native-ai\\religion-excommunication-repentance-native-ai-12003.md",
+        "bytes": 19856,
+        "sha256": "104f5e82fc95081139940950dccee64d79bf896182f877333c0a0ff34f124fa9"
+      }
+    },
+    {
+      "source": {
+        "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-holy-order-systems-12003\\selected-title-reader\\docs\\religion-holy-order-selected-title-native-ai-12003.md",
+        "bytes": 10021,
+        "sha256": "b06b7efe8f51ddc1d033793fa33afbb625b28ab8e87f7d6770e3d11cda456a72"
+      },
+      "repository_file": {
+        "path": "docs\\ck3-native-ai\\religion-holy-order-selected-title-native-ai-12003.md",
+        "bytes": 10283,
+        "sha256": "bdb6dacce5532b15161b152bd6a83655ffdfd6774d1593e447827835d42187ad"
+      }
+    },
+    {
+      "source": {
+        "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2dlv\\docs\\ck3-native-ai\\religion-pilgrimage-headless-candidate-activity-quote-native-ai-12003.md",
+        "bytes": 11703,
+        "sha256": "dacfd9be32106c2fa600a485cc0574ebdeaa8e0bdf066e60d2011eac728fc466"
+      },
+      "repository_file": {
+        "path": "docs\\ck3-native-ai\\religion-pilgrimage-headless-candidate-activity-quote-native-ai-12003.md",
+        "bytes": 11703,
+        "sha256": "dacfd9be32106c2fa600a485cc0574ebdeaa8e0bdf066e60d2011eac728fc466"
+      },
+      "created_by_original_owner": true
+    }
+  ],
+  "apply_notes": [
+    "Read the handoff first; work resumes only after the user resumes it.",
+    "Decompress a packet into a temporary file; original SHA-256 is recorded under patch.source.",
+    "Merge shared headers/readers/CMake/normalizers surgically; never overwrite another packet wholesale.",
+    "County glue assumes the component packet has already been applied; its doc baseline is that component projection.",
+    "Event type5 still needs Python _event_scope support; type25 alone does not close title identity.",
+    "Existing component fixture results are synthetic and must not be relabeled as paused Robert observations.",
+    "Large logs, wires, source projections, binaries and checkpoint files remain in their listed local artifacts."
+  ]
+}

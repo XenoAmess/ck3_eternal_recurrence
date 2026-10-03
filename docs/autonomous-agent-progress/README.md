@@ -1,5 +1,15 @@
 # CK3 自动游玩智能体进度中心
 
+## 当前封存入口：3845天，游戏正常停止（2026-10-03T10:59:14+08:00 实际补录）
+
+**本轮工作封存，游戏已正常停止。** Robert29829原episode持久化 **3845/36524天**，resume已保存 **692天**，10-03已保存 **597天**；比已公开3834阶段新增 **11天**。原始G2 **5/8**、NW **2/4**，自然继承 **0**、`percent_reporting_allowed=false`；原M2/M5与NW-LIFE/NW-FAMILY完成状态保留，整体M4/M6/M7未完成。
+
+最后运行v32/source-native8cf176b4/PID109732，ROOT已正常stop且确认0CK3；最终raw53236608/save-full4639、原goal0、六ledger十stream保全。[正常停止与最终封存配对](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/vacation-handoff-20261003/FINAL-SAVED-PAIR.json)。normal100实际11部分窗口，event23 faction_demand.1001未选；三个ROOT成员县仅损失下界，完整割让范围缺观测，API3割让／API4开战保持未执行。[未完成100日窗口的实际11日](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/V32-PARTIAL-NORMAL11-REPORT-FIELDS-01.json)；[派系自然事件原生树与必要输入](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/actual-v32-faction-demand1001-blocker-01/REPORT-FIELDS.json)；[割让范围未闭合的影响账本](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m4-construction/faction-surrender-impact-20261003/REPORT-FIELDS.json)。
+
+现有后台static包／原生研究已冻结；v33未构建、未部署，不计当前live。[县改宗同口接线静态交付](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-fervor-county-12003/county-share-glue-v32/REPORT-FIELDS.json)。现有fixture最终结果：已在手两项case均GREEN后封存。Holy selected六个unique native文件为static-ready：一次联合case、三个decision／三个title，GREEN1.94秒；原C4324 harness RED保留，未接CMake、transport、normalizer或shared口，未构建部署v33／未live。朝圣headless候选factory两文件＋owned550 activityquote两文件的一次生产组件case，经Context→factory→quote→serializer→现有.3renderer编译6.807759秒／run0 GREEN；callbacks为synthetic，未进入native mailbox、MCP、Python查询或当前Robert。三个真实harness RED保留，仅修MAX_PATH harness recipe，四个source文件未因此改变。该quote仅activity cost，不是CanStart或整段旅行费用；service/options与wholetrip仍research。ROOT未应用本批source，压缩静态patch包与新研究文档用于交接，动作／live／day／G2增量均0。
+
+返岗handover由ROOT统一维护 `docs/handover/2026-10-03-g2-religion-v32-maintainer-vacation-handoff.md`。本轮现有事项收尾后停止，没有启动新任务；宗教全授权保留、Catholic unchanged、原G2/NW资格不增不退。3834阶段15docs已正常publicpush `3f80cc34b28c5fd0279495f5452c38a4a7dd1ce0`，owned `7e54ecaed56b691ebd0a702da1ce406a5639009c`，[3834阶段实际公开回执](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/day03-v32-religion-3834-progress-published.json)；[3f80文档官方CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37089905100) SUCCESS 2026-10-03 10:33:43 CST，观测10:34:49。当前canonical已由ROOT同步最终published文件，全部上游war/video段继续保留；本次从该基线追加，未恢复prepublication缓存。新最终五报告与handover的Git由ROOT统一发布，事后回执为 `artifacts/g2-maintainer-2026-10-02/resume-12003/day03-v32-vacation-handoff-published.json`，最终docshead与runtime/compiler8cf身份分列。
+
 ## 当前滚动截点：v32，3834天（2026-10-03T10:26:56+08:00 实际补录）
 
 Robert 29829 原 episode 已持久化 **3834/36524 天**，本次恢复累计 **681 天**，10-03 已保存 **586 天**；原始 G2 **5/8**、NW **2/4**，自然继承 **0**。本阶段比已发布 3798 截点新增 **36＝29＋7 天**。所有能力分母、原 M2/M5 与 NW-LIFE/NW-FAMILY 完成状态保持；`percent_reporting_allowed=false`。
