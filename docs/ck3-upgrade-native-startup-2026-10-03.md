@@ -165,3 +165,15 @@ v10仅把观察器能力判据改为实际注册tool、query_supported及 HELLO 
 error.log仍保留10条原五种unused-variable各两次，2,380 bytes/SHA `2a92362d739587b548ca0e7c5837cb165975092ec3625b79df8aa76d61aaa3e1`。本次首次实际证明三个settlement字段被native消费者读取，但不会改写引擎诊断、制造脚本读取或称零错误。两项curse rarity旧边界仍保留。
 
 启动前对精确旧失败 `registration-annotations-03.json` 做NTFS metadata压缩，流式双SHA `cf8c3cadc9d682b3d10e03448a4af83d6e70a1d162ca59a8d58bda3463f1bfbe`、path/size/mtime不变，actual allocated回收766,267,392 bytes；报告SHA `0750ce8d5335ed486b06e91242d47e8ce2cf205f79bf9a108151d55b28b366ef`。旧失败未修复。R0008闭包后C盘仍仅约36MB可用，真实四存档均已压缩；下一实机先恢复容量，不删素材、不重复保存、不复用旧run。
+
+## 主版 R0009：新进程实际导入纪录
+
+北京时间10-04 03:03:53，`4-8e1c2f1861--eternal-recurrence--R0009`（execution `21f19c93-2a1b-4f3a-867f-2ce4d52067cc`）闭包GREEN、12/12步骤通过。启动时 master `797353690af0998cd97e46f1024cfcb9bd0dd6ed` 干净；复用相同v10 harness/c2a5 source/bac25 DLL。新reader只有7个profile文件3,889B，真实复制R0008实际75B教程，未复制旧存档、运行状态或缓存；旧helper的实际writer验证入口核对闭合报告、原文件、保全副本和candidate2。新增只读reader脚本一次离线grammar parser实际2/2、errors0，报告SHA `6f0e369f61d0911f34fb5b9ddf22ac4a9448b3169d4e2c681a8cc7f05b1a7aca`，不代替引擎运行。
+
+新nonce `65ceda2f8ced`、UTC18:52:57及同图Steam离线标签直接审阅；PNG SHA `d6b1eb80681d2cb182dd803d2f06666444ae6d67e44c3b187bb63f4f40c8b130`。本轮PID19020/episode `native-31254-127b1e64f049` 与已关闭writer不同；全新世界而非载入死者存档。实际89规则、三目标选中值及anchor通过，再核typed `xar.0002` 的原生选项1拒绝契约、`xar.0003` 的选项0关闭告别，只提交各一次。没有走writer的接受/第一世/祝福分支。
+
+有限自然一天到date53144352后暂停，同owner/episode/原生活角色，未代选任何事件。原脚本唯一 `CCA120: BEGIN main-reader` 与 `CCA120: PASS actual_process_restart_import` 实际出现，FAIL为零；该PASS由真实 `global_var:xa_import_consumed=1`、`xa_global_record_imported=2` 和 `xa_inheritance_percent=100` 三条件同时成立产生。目标教程保持75B/SHA `56300fb968e34e3383e5ecbd103face48efd05f15d54aa8966e17750a5166a64`。实际日志、脚本hash、新旧PID/episode及教程证据保存在run的 `actual-import-proof/`，未植入import结果。
+
+[闭合报告](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--eternal-recurrence--R0009/native-report.json) SHA `4e4a080b8204a26b08a042d10d74d53dd56c7208d91cf24acb7b1f26e61b6b97`，cleanup_ok/threadfinished true、CK3/harness零，keeper停止1899/CAS1900释放。结果证明实际跨进程纪录导入子链；没有正常quit/flush、产品GUI或完整七cell信用。
+
+低空间另对12个精确已闭合旧日志/JSON做字节不变NTFS metadata压缩，实际allocated共回收504,406,016B，三份报告SHA依次 `49cfb2d441f407e8d1a8ff9286c8451fc77f7b76d09ef69d749e0423c618926f`、`d3c4a4dad0183161c9bc86af2b5ec5992e11a63f60caca075c18d74085bff516`、`7d63f8b2954c5911d6fddf2cb38041382772af8c1a6c37686dc4119a114361fc`；全部流式SHA/path/size/mtime不变。未删除、重编码或改变旧RED；不把全盘容量波动全归因于压缩。完成本轮后按用户新优先切白绮独立版，RMTM/Ox/no-heir后续暂缓，准备和原生缺口保留。
