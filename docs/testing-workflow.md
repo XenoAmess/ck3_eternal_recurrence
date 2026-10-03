@@ -2939,3 +2939,9 @@ R0123 进一步证实 `_wait_for_readiness` 返回顶层 `played_character_id`�
 按用户明确要求，实机 runner 直接启动游戏 `binaries/ck3.exe`，不把 Steam 窗口置前，不点击 Steam 启动按钮。已准备的 native-session 启动计划继续负责 profile、checkpoint、DLL/injector 与所属进程生命周期；不要额外加入 Steam 界面步骤。
 
 R9 已按此方式直接冷启动 PID101408，恢复 h98 后完成暂停只读验收，并通过所属队列正常退出。实际启动 argv 和结果见 `artifacts/g2-offline-2026-10-01/live-run-09/session-attempt-01-result.json`；执行计划见 `artifacts/g2-offline-2026-10-01/r9-file-only/prepared/NEXT-LIVE-PHASES.json`。只读管道查询不需要切换窗口；必须打开原生草案预览时，只由 root 操作该次验收所属的 CK3 窗口。
+
+## 将 GUI 验收夹具转换为引擎入口时保留业务消费者
+
+只挂载原 scripted effects、主动省略决议／GUI 的外置夹具，可能同时省掉某个初始化 flag 的唯一读取者。TED 1.20.0.2 R0005 的两条 `tea_fixture_initialized` 未使用诊断就是这种投影差异：effect 写入该 flag，原决议的一次初始化 guard 读它，而 engine fixture 未带决议。
+
+应把原 guard 放入替代入口的真实 trigger，继续阻止已初始化对象再次进入；不得添加只为压日志的无业务读取、过滤原记录或宣称修复已实机通过。本次 `tea120.1` 候选保留核心 effects、marker、作用域修复及后续事件的精确输入，changed-event parser 通过；unused flag 的引擎归零仍待新 run。源码／挂载树有明确诊断区域时，先绑定并解释该差异，不能把去除诊断后的比较误记为原始文件逐字节相等。详见 [续接报告](ck3-1.20-aub-ted-log-continuation-2026-10-03.md)。

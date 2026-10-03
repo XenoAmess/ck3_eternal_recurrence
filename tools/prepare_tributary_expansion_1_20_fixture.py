@@ -24,6 +24,8 @@ EVENTS = '''namespace = tea120
 tea120.1 = {
     type = character_event
     hidden = yes
+    # Preserve the original decision entry gate when GUI callbacks are omitted.
+    trigger = { NOT = { has_character_flag = tea_fixture_initialized } }
     immediate = {
         add_character_flag = tea_initialize_pending
         tea_initialize_effect = yes

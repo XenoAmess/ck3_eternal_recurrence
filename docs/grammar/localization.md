@@ -71,3 +71,11 @@ xar_record_level = {
 ## 坑
 
 - 文本内容含 `[...]` 会被当 loc 命令解析：内容 `XAR_SYNC_SENTINEL` 正常， `[XAR_SYNC]` 显示为 `ERROR:[XAR_SYNC]`。**哨兵/标记文本不要带方括号**
+
+## inline 格式与正文分隔（1.20.0.2／1.20.0.3 来源核对）
+
+inline 文案把格式和正文用 ASCII 空格分开，例如 `#weak （文字）#!`；组合格式的原版用法为 `#weak;P <文字>#!`。GUI 的独立属性 `default_format="#weak"` 没有正文，不能按同一规则在属性尾部补空格。原版 `gui/preload/textformatting.gui` 分别定义合法的 `weak`、`positive_value` 和 `P`，不能把日志中的组合或控制字节注册成一个新格式来消错。
+
+简中原版 `house_relation_latest_change_amount` 在本次两个 build 的相同来源中写作 `#weak（[HOUSE_RELATION.GetLatestChangeAmount|=+%^]）#!`，英文同键为 `#weak (`。仅补一个 ASCII 空格的外置候选已存在；它没有修改游戏安装，也没有证明 AUB／TED formatter 日志的唯一因果。源 UTF-8 的全角左括号是 `ef bc 88`，日志中的 `08 15` 是展开后诊断的真实控制字节；不能用“全角括号低字节为 08”推定 native 转换链。
+
+定向归因时分别保全格式定义、原始 YML bytes、具体 key／consumer、最终展开文本与实际调用点。缺失 caller／key 的 formatter 诊断不能据报错名字或路径直接归为 mod 或原版责任。复用来源、候选和未解边界见 [AUB／TED 日志续接](../ck3-1.20-aub-ted-log-continuation-2026-10-03.md)。

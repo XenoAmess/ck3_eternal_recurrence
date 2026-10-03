@@ -22,6 +22,8 @@
 
 ## 并行范围与下一步
 
+准备器工作包已提交并普通推送至 master `00af1b285`。随后采用[TED 初始化 guard 修复与通用日志知识](ck3-1.20-aub-ted-log-continuation-2026-10-03.md)：替代引擎入口继承原决议的一次初始化 trigger，13项聚焦合同与1项changed-event parser通过。当前源码候选已应用，实机归零仍 NOT_RUN；原85/93条日志不改写。
+
 根执行者负责本机桌面、版本准备、汇总和主线交付；三个独立线程分别处理 AUB/TED 已有日志、主/白绮七 cell 接续、361 规则页实际停止。候选都写外置目录，避免污染未来 clean source freeze。
 
 旧廷臣 continuous driver 固定 d19e794/.2 helper，导航使用 RapidOCR。它不能因收到继续指令而直接视为 .3 正式 MCP 路径。需要采用实际 .3 frozen source/binary 并确认可用的原生 UI 能力；规则、死亡、冷载入及教程 bytes 的业务结果继续独立读回。七 cell 的 .3 实机目前 **0/7**。
