@@ -1649,6 +1649,44 @@ enum class BattleTransitionSnapshotStatus {
   unavailable,
 };
 
+// Present-time casualty operands read by full CombatID. These are independent
+// accounting views: main-entry hard losses and owner-ledger hard losses must
+// never be added together. Non-main residuals are retained separately.
+struct BattleCurrentParticipantHardSnapshotV1 {
+  std::int32_t participant_character_id = -1;
+  std::int64_t hard_casualties_raw = 0;
+
+  friend bool operator==(const BattleCurrentParticipantHardSnapshotV1 &,
+                         const BattleCurrentParticipantHardSnapshotV1 &) = default;
+};
+
+struct BattleCurrentSideObservationSnapshotV1 {
+  std::int64_t derived_current_fighting_raw = 0;
+  std::int64_t derived_soft_casualties_raw = 0;
+  std::int64_t derived_main_fighting_entry_hard_casualties_raw = 0;
+  std::int64_t non_main_start_minus_current_minus_soft_raw = 0;
+  std::int64_t participant_hard_total_raw = 0;
+  std::vector<BattleCurrentParticipantHardSnapshotV1> participant_hard_ledger;
+
+  friend bool operator==(const BattleCurrentSideObservationSnapshotV1 &,
+                         const BattleCurrentSideObservationSnapshotV1 &) = default;
+};
+
+struct BattleCurrentObservationSnapshotV1 {
+  bool available = false;
+  std::string unavailable_reason;
+  std::int64_t scale = 100'000;
+  std::int32_t base_combat_width = 0;
+  std::int32_t final_combat_width = 0;
+  std::int64_t base_advantage_raw = 0;
+  std::int64_t resolved_advantage_raw = 0;
+  BattleCurrentSideObservationSnapshotV1 attacker;
+  BattleCurrentSideObservationSnapshotV1 defender;
+
+  friend bool operator==(const BattleCurrentObservationSnapshotV1 &,
+                         const BattleCurrentObservationSnapshotV1 &) = default;
+};
+
 struct BattleTransitionSnapshot {
   BattleTransitionSnapshotStatus status =
       BattleTransitionSnapshotStatus::unavailable;
@@ -1668,6 +1706,9 @@ struct BattleTransitionSnapshot {
   std::vector<std::int32_t> attacker_public_cunit_ids_in_stored_order;
   std::vector<std::int32_t> defender_public_cunit_ids_in_stored_order;
   bool battle_transition_ready = false;
+  // Null on older adapters or absent lifecycle; an unavailable leaf
+  // preserves the successfully observed original lifecycle.
+  std::optional<BattleCurrentObservationSnapshotV1> current_observation;
 
   friend bool operator==(const BattleTransitionSnapshot &,
                          const BattleTransitionSnapshot &) = default;

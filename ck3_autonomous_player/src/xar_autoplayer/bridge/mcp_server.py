@@ -424,7 +424,7 @@ def _ck3_query_battle_transition_v1(
     combat_id: int,
     expected_revision: int,
 ) -> dict[str, object]:
-    """Observe one non-missing signed full CombatID without an army-state gate."""
+    """Observe exact lifecycle and optional current attrition for a full CombatID."""
     return service.query_battle_transition_v1(
         combat_id,
         expected_revision=expected_revision,
@@ -2490,7 +2490,7 @@ def create_server(
         combat_id: int,
         expected_revision: int,
     ) -> dict[str, object]:
-        """Read phase, winner and ordered sides for one full CombatID."""
+        """Read lifecycle and optional actual strength, losses, width and advantage."""
         return _ck3_query_battle_transition_v1(
             service,
             combat_id,

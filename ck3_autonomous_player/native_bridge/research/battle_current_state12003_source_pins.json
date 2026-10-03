@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "repository": "Z:\\g38",
+  "source_head_input_from_root": "6b0",
+  "hash_policy": "Current raw file bytes; no Git invocation and no source mutation. CRLF hashes are not Git blob hashes.",
+  "build": {
+    "version": "1.20.0.3",
+    "steam_build_id": "25652598",
+    "sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+    "file_size": 101039736,
+    "pe_timestamp": 1790852258,
+    "image_base": "0x140000000",
+    "size_of_image": 102518784
+  },
+  "source_pins": [
+    {
+      "path": "Z:\\g38\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_battle.hpp",
+      "sha256_raw_file_bytes": "d9d55cbc03fdc4ad4c3064fb77246a4ebd7c53cbcd4801595a0c5226a1e31147",
+      "bytes": 4233,
+      "repository_relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_battle.hpp"
+    },
+    {
+      "path": "Z:\\g38\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_battle.cpp",
+      "sha256_raw_file_bytes": "0a3e0e8d312d22f3b6793e58443f22d2fc325e14fd21a7b8befc5ebd1d80d1e5",
+      "bytes": 45561,
+      "repository_relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12002_battle.cpp"
+    },
+    {
+      "path": "Z:\\g38\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_combat.cpp",
+      "sha256_raw_file_bytes": "3181428b014f85a3c0780f3ed53a920225febbc2bffcf9438669a875f02d6818",
+      "bytes": 76716,
+      "repository_relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12002_combat.cpp"
+    },
+    {
+      "path": "Z:\\g38\\ck3_autonomous_player\\native_bridge\\src\\ck3_12003_abi_profile.cpp",
+      "sha256_raw_file_bytes": "9c6828f932d9fe7b4d1a112c3f43f580f4456b12e73cda7eb99aa2eeceed8856",
+      "bytes": 1164,
+      "repository_relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12003_abi_profile.cpp"
+    },
+    {
+      "path": "Z:\\g38\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002.hpp",
+      "sha256_raw_file_bytes": "3a6a701735402a75dd4c99deb6aa1027aff7283d1a636784ebb8efb68d41308c",
+      "bytes": 3898,
+      "repository_relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002.hpp"
+    },
+    {
+      "path": "Z:\\g38\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\game_contract.hpp",
+      "sha256_raw_file_bytes": "a38385e062080686f4153b284a6c312313f19f33ee7d90bb9e899c9edbadc2cd",
+      "bytes": 78821,
+      "repository_relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/game_contract.hpp"
+    },
+    {
+      "path": "Z:\\g38\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_battle_test.cpp",
+      "sha256_raw_file_bytes": "0e58b4c5446c7c5ba9de4df00c386ce25e0843b7593f0b537aa4dfa28bb9880a",
+      "bytes": 15108,
+      "repository_relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12002_battle_test.cpp"
+    },
+    {
+      "path": "Z:\\g38\\docs\\ck3-native-ai\\ck3-1.20.0.2-battle-migration.md",
+      "sha256_raw_file_bytes": "168888aef445cc97517062d921f0811d904c6305ccf2f0d8fa97c357d4863496",
+      "bytes": 21656,
+      "repository_relative_path": "docs/ck3-native-ai/ck3-1.20.0.2-battle-migration.md"
+    },
+    {
+      "path": "Z:\\g38\\docs\\ck3-native-ai\\battle-casualty-retreat-terminal-outcomes-1.20.0.3-2026-10-03.md",
+      "sha256_raw_file_bytes": "a0cc3e2816fe9f7f9281f7faac927d4089a707261daa17b5bcfb9fef6d968487",
+      "bytes": 10627,
+      "repository_relative_path": "docs/ck3-native-ai/battle-casualty-retreat-terminal-outcomes-1.20.0.3-2026-10-03.md"
+    }
+  ],
+  "native_reuse_pins": [
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\evidence\\core-comparison.json",
+      "sha256_raw_file_bytes": "5bd80588c3021bf300edda12a63b8d96fbefdb484f0d869ee129d0fc5a81876d",
+      "bytes": 21878
+    },
+    {
+      "path": "Z:\\g38\\ck3_autonomous_player\\native_bridge\\research\\ck3_1_20_0_3_abi_reuse.json",
+      "sha256_raw_file_bytes": "ff7a5b1a8208d7ce0358be3cd2fec9f455a4ba116ccf1b25c4ccf0f0b64dd119",
+      "bytes": 769751
+    },
+    {
+      "path": "Z:\\g38\\ck3_autonomous_player\\native_bridge\\research\\ck3_1_20_0_2_battle.json",
+      "sha256_raw_file_bytes": "5be799da379967d0876f2fe224f081bccd43a2778ee952adb6c9f9fd33c4d9d7",
+      "bytes": 20466
+    },
+    {
+      "path": "Z:\\g38\\ck3_autonomous_player\\native_bridge\\research\\ck3_1_20_0_2_combat.json",
+      "sha256_raw_file_bytes": "ec070954a4f5c6f50afd8c9259e9c18963c35dafe81c0537cc9a278fe864166e",
+      "bytes": 17848
+    }
+  ],
+  "reviewed_modules": [
+    {
+      "id": "combat",
+      "manifest": "ck3_1_20_0_2_combat.json",
+      "manifest_sha256": "ec070954a4f5c6f50afd8c9259e9c18963c35dafe81c0537cc9a278fe864166e",
+      "status": "GREEN",
+      "checks": {
+        "build_identity": 4,
+        "unique_signatures": 16,
+        "vtable_prefixes": 2,
+        "decoded_instructions": 37,
+        "source_constants": 76
+      },
+      "source_hash_policy": "domain raw bytes",
+      "failures": [],
+      "historical_manifest_readiness": "static-ready complete combat v2 input reader, paused live pending",
+      "historical_manifest_live_verified": false,
+      "target_live_verified": false,
+      "comparison_status": "UNCHANGED"
+    },
+    {
+      "id": "battle",
+      "manifest": "ck3_1_20_0_2_battle.json",
+      "manifest_sha256": "5be799da379967d0876f2fe224f081bccd43a2778ee952adb6c9f9fd33c4d9d7",
+      "status": "GREEN",
+      "checks": {
+        "build_identity": 4,
+        "unique_signatures": 18,
+        "vtable_prefixes": 7,
+        "decoded_instructions": 73,
+        "source_constants": 30
+      },
+      "source_hash_policy": "domain raw bytes",
+      "failures": [],
+      "historical_manifest_readiness": "static-ready: complete battle frame, transition, assignment and passive terminal migration; paused live pending",
+      "historical_manifest_live_verified": false,
+      "target_live_verified": false,
+      "comparison_status": "UNCHANGED"
+    }
+  ],
+  "reused_actual_receipt": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-observation-schedule\\actual-first-day-v35-01\\005-ck3_query_battle_transition_v1.json",
+    "sha256_raw_file_bytes": "5539c5da289749bbb5e7df87433bc4a7babd843d6bf5d44e50ece72c93802b2f",
+    "bytes": 4419
+  },
+  "actual_transition_receipt": {
+    "schema_version": 1,
+    "contract_stage": "production_exact_combat_lifecycle",
+    "status": "available",
+    "battle_transition_ready": true,
+    "snapshot_revision": 9,
+    "observed_date_raw": 53236632,
+    "combat_id": 1577058305,
+    "province_id": 2640,
+    "phase": "maneuver",
+    "phase_raw": 0,
+    "phase_day": 1,
+    "winner_side": "none",
+    "winner_raw": -1,
+    "forced_winner_side": "none",
+    "forced_winner_raw": -1,
+    "finalized": false,
+    "battle_result_id": 1493172226,
+    "attacker_public_cunit_ids_in_stored_order": [
+      251658381,
+      473,
+      474
+    ],
+    "defender_public_cunit_ids_in_stored_order": [
+      50331920,
+      83886484
+    ]
+  },
+  "research_reused": true,
+  "tests_run": [],
+  "sdk_game_window_git_mutations": []
+}

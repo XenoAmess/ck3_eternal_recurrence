@@ -1,0 +1,421 @@
+{
+  "schema_version": 1,
+  "capability": "battle_transition_v1.current_observation",
+  "readiness": "research: exact-build field/reuse proof closed; additive implementation and new .3 paused receipt pending",
+  "target_build": {
+    "version": "1.20.0.3",
+    "steam_build_id": "25652598",
+    "sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+    "file_size": 101039736,
+    "pe_timestamp": 1790852258,
+    "image_base": "0x140000000",
+    "size_of_image": 102518784
+  },
+  "native_implementation_family": "reviewed ck3_12002 BattleBindings for public ck3_12003; no extra SHA exception",
+  "source_contract": "Read only real full CombatID in the same owning-thread paused snapshot as the successful existing ID-only transition. No selected-army control or retreat action authority is requested.",
+  "reuse": {
+    "battle_manifest_sha256": "5be799da379967d0876f2fe224f081bccd43a2778ee952adb6c9f9fd33c4d9d7",
+    "combat_manifest_sha256": "ec070954a4f5c6f50afd8c9259e9c18963c35dafe81c0537cc9a278fe864166e",
+    "comparison_sha256": "5bd80588c3021bf300edda12a63b8d96fbefdb484f0d869ee129d0fc5a81876d",
+    "permanent_reuse_sha256": "ff7a5b1a8208d7ce0358be3cd2fec9f455a4ba116ccf1b25c4ccf0f0b64dd119",
+    "battle_module_comparison": {
+      "id": "battle",
+      "manifest": "ck3_1_20_0_2_battle.json",
+      "manifest_sha256": "5be799da379967d0876f2fe224f081bccd43a2778ee952adb6c9f9fd33c4d9d7",
+      "status": "GREEN",
+      "checks": {
+        "build_identity": 4,
+        "unique_signatures": 18,
+        "vtable_prefixes": 7,
+        "decoded_instructions": 73,
+        "source_constants": 30
+      },
+      "source_hash_policy": "domain raw bytes",
+      "failures": [],
+      "historical_manifest_readiness": "static-ready: complete battle frame, transition, assignment and passive terminal migration; paused live pending",
+      "historical_manifest_live_verified": false,
+      "target_live_verified": false,
+      "comparison_status": "UNCHANGED"
+    },
+    "native_anchors": [
+      {
+        "name": "combat_constructor",
+        "rva": "0x25863a0",
+        "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 48 89 4C 24 08 57 41 54 41 55 41 56 41 57 48 83 EC 40 41 0F B6 F9 4D 8B F8 48 8B EA 48 8B F1 48 8D",
+        "confidence": "reviewed-static-exact-build"
+      },
+      {
+        "name": "combat_side_constructor",
+        "rva": "0x264ca60",
+        "pattern": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 48 89 4C 24 08 57 48 83 EC 20 48 8B FA 48 8B D9 C7",
+        "confidence": "reviewed-static-exact-build"
+      },
+      {
+        "name": "combat_regiment_initializer",
+        "rva": "0x26552c0",
+        "pattern": "8B 02 4C 8B C1 4C 8B 0D 74 A0 6C 03 48 8D 0D 9D 09 0F 02 33 D2 49 89 08 48 8D 0D D9 24 F0 01 41",
+        "confidence": "reviewed-static-exact-build"
+      },
+      {
+        "name": "active_combat_predicate",
+        "rva": "0x24e8360",
+        "pattern": "48 8B 05 09 5B 83 03 48 85 C0 74 29 8B 91 28 01 00 00 8B CA 81 E1 FF FF FF 00 3B 48 2C 73 16 48",
+        "confidence": "reviewed-static-exact-build"
+      },
+      {
+        "name": "main_phase_flag",
+        "rva": "0x2655384",
+        "pattern": "48 8B 49 18 49 8B 50 18 80 B9 8A 09 00 00 00 48 0F 45 D0 49 8B C0 49 89 50 18 C3 CC 48 83 EC 08",
+        "confidence": "reviewed-static-exact-build"
+      }
+    ],
+    "instruction_checks": [
+      {
+        "rva": "0x2586444",
+        "bytes": "48 89 8e b0 06 00 00",
+        "instruction": "mov qword ptr [rsi + 0x6b0], rcx"
+      },
+      {
+        "rva": "0x2586453",
+        "bytes": "48 89 86 b8 06 00 00",
+        "instruction": "mov qword ptr [rsi + 0x6b8], rax"
+      },
+      {
+        "rva": "0x258645a",
+        "bytes": "48 89 8e c0 06 00 00",
+        "instruction": "mov qword ptr [rsi + 0x6c0], rcx"
+      },
+      {
+        "rva": "0x2586461",
+        "bytes": "48 89 8e c8 06 00 00",
+        "instruction": "mov qword ptr [rsi + 0x6c8], rcx"
+      },
+      {
+        "rva": "0x258646a",
+        "bytes": "48 89 86 d0 06 00 00",
+        "instruction": "mov qword ptr [rsi + 0x6d0], rax"
+      },
+      {
+        "rva": "0x2586478",
+        "bytes": "c7 86 e0 06 00 00 ff ff ff ff",
+        "instruction": "mov dword ptr [rsi + 0x6e0], 0xffffffff"
+      },
+      {
+        "rva": "0x2586482",
+        "bytes": "89 8e e4 06 00 00",
+        "instruction": "mov dword ptr [rsi + 0x6e4], ecx"
+      },
+      {
+        "rva": "0x25864aa",
+        "bytes": "c7 86 00 07 00 00 ff ff ff ff",
+        "instruction": "mov dword ptr [rsi + 0x700], 0xffffffff"
+      },
+      {
+        "rva": "0x25864b4",
+        "bytes": "66 89 8e 04 07 00 00",
+        "instruction": "mov word ptr [rsi + 0x704], cx"
+      },
+      {
+        "rva": "0x25864bb",
+        "bytes": "44 89 b6 08 07 00 00",
+        "instruction": "mov dword ptr [rsi + 0x708], r14d"
+      },
+      {
+        "rva": "0x25864c2",
+        "bytes": "48 89 8e 10 07 00 00",
+        "instruction": "mov qword ptr [rsi + 0x710], rcx"
+      },
+      {
+        "rva": "0x264cab5",
+        "bytes": "48 89 6b 10",
+        "instruction": "mov qword ptr [rbx + 0x10], rbp"
+      },
+      {
+        "rva": "0x264cab9",
+        "bytes": "48 89 6b 18",
+        "instruction": "mov qword ptr [rbx + 0x18], rbp"
+      },
+      {
+        "rva": "0x264cac8",
+        "bytes": "48 89 6b 28",
+        "instruction": "mov qword ptr [rbx + 0x28], rbp"
+      },
+      {
+        "rva": "0x264cacc",
+        "bytes": "48 89 6b 30",
+        "instruction": "mov qword ptr [rbx + 0x30], rbp"
+      },
+      {
+        "rva": "0x264cadb",
+        "bytes": "48 89 6b 40",
+        "instruction": "mov qword ptr [rbx + 0x40], rbp"
+      },
+      {
+        "rva": "0x264cadf",
+        "bytes": "48 89 6b 48",
+        "instruction": "mov qword ptr [rbx + 0x48], rbp"
+      },
+      {
+        "rva": "0x264cae7",
+        "bytes": "48 89 6b 58",
+        "instruction": "mov qword ptr [rbx + 0x58], rbp"
+      },
+      {
+        "rva": "0x264caeb",
+        "bytes": "48 89 6b 60",
+        "instruction": "mov qword ptr [rbx + 0x60], rbp"
+      },
+      {
+        "rva": "0x264cafa",
+        "bytes": "48 c7 43 70 ff ff ff ff",
+        "instruction": "mov qword ptr [rbx + 0x70], 0xffffffffffffffff"
+      },
+      {
+        "rva": "0x264cb22",
+        "bytes": "48 89 ab 98 00 00 00",
+        "instruction": "mov qword ptr [rbx + 0x98], rbp"
+      },
+      {
+        "rva": "0x264cb29",
+        "bytes": "48 89 ab a0 00 00 00",
+        "instruction": "mov qword ptr [rbx + 0xa0], rbp"
+      },
+      {
+        "rva": "0x264cb3e",
+        "bytes": "48 89 bb b8 00 00 00",
+        "instruction": "mov qword ptr [rbx + 0xb8], rdi"
+      },
+      {
+        "rva": "0x2655348",
+        "bytes": "49 89 40 10",
+        "instruction": "mov qword ptr [r8 + 0x10], rax"
+      },
+      {
+        "rva": "0x2655384",
+        "bytes": "48 8b 49 18",
+        "instruction": "mov rcx, qword ptr [rcx + 0x18]"
+      },
+      {
+        "rva": "0x265538c",
+        "bytes": "80 b9 8a 09 00 00 00",
+        "instruction": "cmp byte ptr [rcx + 0x98a], 0"
+      }
+    ]
+  },
+  "storage": {
+    "CCombat": {
+      "slot_rva": "0x5D1DE70",
+      "identity_offset": "0x08"
+    },
+    "CUnit": {
+      "slot_rva": "0x5D1E380",
+      "identity_offset": "0x10"
+    },
+    "CArmy": {
+      "slot_rva": "0x5D1DE48",
+      "identity_offset": "0x10"
+    },
+    "CArmyRegiment": {
+      "slot_rva": "0x5D1F340",
+      "identity_offset": "0x10",
+      "distinct_from_CRegiment": true
+    },
+    "CCharacter": {
+      "slot_rva": "0x5C67568",
+      "identity_offset": "0x18"
+    },
+    "resolver_layout": {
+      "data": "storage+0x20",
+      "capacity_int32": "storage+0x2C",
+      "index": "uint32(full_id)&0xFFFFFF",
+      "row_stride": "0x10",
+      "row_object_pointer": "+0x08",
+      "full_identity_match_required": true
+    }
+  },
+  "paused_scope": {
+    "game_state_date_raw": "+0x08 int32 equals snapshot.date_raw",
+    "jomini_paused_byte": "+0x20 nonzero",
+    "combat_daily_dispatch_guard": "+0x705 false before and after read",
+    "same_full_combat_identity_before_after": true,
+    "two_equal_optional_samples": "reuse existing paused sampling convention; optional field failure must not erase successful base transition"
+  },
+  "CCombat": {
+    "attacker_side": {
+      "offset": "0x20",
+      "native_type": "embedded CCombatSide"
+    },
+    "defender_side": {
+      "offset": "0x368",
+      "native_type": "embedded CCombatSide"
+    },
+    "phase_raw": {
+      "offset": "0x6B0",
+      "native_type": "int32",
+      "semantics": "0 maneuver, 1 main, 2 pursuit, 3 done"
+    },
+    "phase_day": {
+      "offset": "0x6B4",
+      "native_type": "int32",
+      "semantics": "nonnegative; phase-relative native day, not campaign elapsed days"
+    },
+    "base_combat_width": {
+      "offset": "0x6C0",
+      "native_type": "int32",
+      "unit": "integer frontage",
+      "zero": "preserve native zero; no guessed width"
+    },
+    "final_combat_width": {
+      "offset": "0x6C4",
+      "native_type": "int32",
+      "unit": "integer frontage",
+      "zero": "preserve native zero; no guessed width"
+    },
+    "base_advantage_raw": {
+      "offset": "0x6C8",
+      "native_type": "int64",
+      "unit": "Q100000 signed advantage points"
+    },
+    "resolved_advantage_raw": {
+      "offset": "0x710",
+      "native_type": "int64",
+      "unit": "Q100000 signed advantage points"
+    }
+  },
+  "CCombatSide": {
+    "combat_backpointer": {
+      "offset": "0xB8",
+      "native_type": "CCombat*",
+      "semantics": "exact pointer equals resolved requested Combat"
+    },
+    "ordered_native_carmy_ids": {
+      "header": {
+        "data": "0x10",
+        "capacity": "0x18",
+        "count": "0x1C"
+      },
+      "stride": "0x04",
+      "native_type": "int32 full CArmy ID"
+    },
+    "levy_entries": {
+      "header": {
+        "data": "0x28",
+        "capacity": "0x30",
+        "count": "0x34"
+      },
+      "stride": "0x60"
+    },
+    "men_at_arms_entries": {
+      "header": {
+        "data": "0x40",
+        "capacity": "0x48",
+        "count": "0x4C"
+      },
+      "stride": "0x60",
+      "knight_double_count_rule": "Retained knight regiment entries are already represented here. Sum this array once; do not append a separate knight count or army-strength integer total."
+    },
+    "participant_hard_ledger": {
+      "header": {
+        "data": "0x58",
+        "capacity": "0x60",
+        "count": "0x64"
+      },
+      "stride": "0x18",
+      "row": {
+        "participant_character_id": {
+          "offset": "0x08",
+          "native_type": "int32 full CCharacter ID"
+        },
+        "hard_casualties_raw": {
+          "offset": "0x10",
+          "native_type": "int64",
+          "unit": "Q100000 troop ledger"
+        }
+      }
+    },
+    "stored_current_fighting_raw": {
+      "offset": "0x98",
+      "native_type": "int64",
+      "unit": "Q100000 troop ledger",
+      "semantics": "reference only: existing tick-start cache, may legally differ from retained entries; not read or published by this increment",
+      "published_by_increment": false
+    },
+    "stored_levy_current_fighting_raw": {
+      "offset": "0xA0",
+      "native_type": "int64",
+      "unit": "Q100000 troop ledger",
+      "semantics": "reference only: existing tick-start levy cache, may legally differ from retained entries; not read or published by this increment",
+      "published_by_increment": false
+    }
+  },
+  "CArmy_backlinks": {
+    "public_cunit_id": {
+      "offset": "0x124",
+      "native_type": "int32 full CUnit ID"
+    },
+    "combat_id": {
+      "offset": "0x128",
+      "native_type": "int32 full Combat ID"
+    }
+  },
+  "CUnit_backlinks": {
+    "native_carmy_id": {
+      "offset": "0x178",
+      "native_type": "int32 full CArmy ID"
+    },
+    "owner_character_id": {
+      "offset": "0x174",
+      "native_type": "int32 full CCharacter ID"
+    }
+  },
+  "Entry60": {
+    "regiment_id": {
+      "offset": "0x08",
+      "native_type": "int32 full CArmyRegiment ID"
+    },
+    "starting_raw": {
+      "offset": "0x10",
+      "native_type": "int64",
+      "unit": "Q100000 troop ledger"
+    },
+    "current_fighting_raw": {
+      "offset": "0x18",
+      "native_type": "int64",
+      "unit": "Q100000 troop ledger"
+    },
+    "soft_casualties_raw": {
+      "offset": "0x20",
+      "native_type": "int64",
+      "unit": "Q100000 troop ledger"
+    },
+    "regiment_owning_carmy_id": "CArmyRegiment+0x140 int32, must appear on this actual side",
+    "type": "CArmyRegiment+0x18 pointer",
+    "fights_in_main_phase": "CMenAtArmsType+0x98A uint8 0/1; the old +0xA0A is invalid",
+    "valid_accounting": "starting>=0, current>=0, soft>=0, current<=starting, soft<=starting-current"
+  },
+  "derived_fields": {
+    "derived_current_fighting_raw": "checked sum of current for levy and MAA retained Entry60 arrays, each row once",
+    "derived_soft_casualties_raw": "checked sum of soft for both arrays, each row once",
+    "derived_main_fighting_entry_hard_casualties_raw": "checked sum(starting-current-soft) for main eligible rows only",
+    "non_main_start_minus_current_minus_soft_raw": "checked sum residual for non-main rows; reserve balance, not exact hard casualties",
+    "participant_hard_total_raw": "checked sum the independent native participant ledger; not added to entry hard"
+  },
+  "native_function_calls_required": [],
+  "reference_only_existing_cache_boundary": "Existing side+0x98/+0xA0 tick-start caches may differ from retained-entry sums. This increment neither reads nor publishes caches/equality markers and does not use cache equality as a gate.",
+  "existing_functions_deliberately_not_called": [
+    "get_combat_side_strength 0x2651100",
+    "get_combat_regiment_strength 0x2657B50",
+    "can_order_combat_retreat 0x258AA10",
+    "get_combat_retreat_rule_state 0x28C2E10",
+    "roll RNG or phase effect execution"
+  ],
+  "zero_null_absence": {
+    "valid_zero": "Preserve zero width, zero signed advantage, zero current/soft/hard and empty valid vectors as actual observed values.",
+    "missing_or_deleted_combat": "Existing transition combat_not_found semantics remain; optional current_observation is null/unavailable rather than zero fake sides.",
+    "leaf_read_failure": "Expose optional unavailable/reason with no fabricated aggregates; retain successful original lifecycle and member arrays.",
+    "non_main_hard": "Never expose non-main residual as hard. If publishing per-entry hard, its raw is null and status unavailable for non-main entries."
+  },
+  "independently_useful_value": "Observes actual opposing sides weakening or entering pursuit in the current foreign fight; compare same Combat generation and participant ledger rows before deciding contact timing. Army integer strength alone cannot distinguish routed soft soldiers from permanent battle-entry hard losses.",
+  "claim_boundary": "No complete MC, predicted outgoing damage or casualty probability, effect replay, retreat authority, normal terminal proof, personal knight death, or .3 live casualty receipt is claimed.",
+  "implementation_boundary": "New ck3_12003_battle_current_state.cpp reader attached to existing transition handling; ck3_12002_battle.cpp and passive terminal source remain unmodified."
+}

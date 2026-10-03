@@ -6,6 +6,7 @@
 #include <array>
 #include <atomic>
 #include <charconv>
+#include <limits>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -147,6 +148,34 @@ bool ValidIds(const std::vector<std::int32_t> &values) noexcept {
   return true;
 }
 
+bool ValidCurrentSide(
+    const game::BattleCurrentSideObservationSnapshotV1 &side) noexcept {
+  if (side.derived_current_fighting_raw < 0 ||
+      side.derived_soft_casualties_raw < 0 ||
+      side.derived_main_fighting_entry_hard_casualties_raw < 0 ||
+      side.non_main_start_minus_current_minus_soft_raw < 0 ||
+      side.participant_hard_total_raw < 0) return false;
+  std::int64_t total = 0;
+  for (const auto &row : side.participant_hard_ledger) {
+    if (row.participant_character_id <= 0 || row.hard_casualties_raw < 0 ||
+        total > (std::numeric_limits<std::int64_t>::max)() -
+                    row.hard_casualties_raw) return false;
+    total += row.hard_casualties_raw;
+  }
+  return total == side.participant_hard_total_raw;
+}
+
+bool ValidCurrentObservation(
+    const game::BattleCurrentObservationSnapshotV1 &observation) noexcept {
+  if (observation.scale != 100'000) return false;
+  if (!observation.available) return !observation.unavailable_reason.empty();
+  return observation.unavailable_reason.empty() &&
+         observation.base_combat_width >= 0 &&
+         observation.final_combat_width >= 0 &&
+         ValidCurrentSide(observation.attacker) &&
+         ValidCurrentSide(observation.defender);
+}
+
 bool ValidateSnapshot(
     const game::BattleTransitionSnapshot &snapshot) noexcept {
   if (snapshot.snapshot_revision == 0 || snapshot.combat_id == -1 ||
@@ -165,7 +194,8 @@ bool ValidateSnapshot(
            snapshot.forced_winner_raw == -1 && !snapshot.finalized &&
            snapshot.battle_result_id == -1 &&
            snapshot.attacker_public_cunit_ids_in_stored_order.empty() &&
-           snapshot.defender_public_cunit_ids_in_stored_order.empty();
+           snapshot.defender_public_cunit_ids_in_stored_order.empty() &&
+           !snapshot.current_observation.has_value();
   }
   const bool phase_valid =
       (snapshot.phase_raw == 0 && snapshot.phase == "maneuver") ||
@@ -186,6 +216,8 @@ bool ValidateSnapshot(
   if (!snapshot.battle_transition_ready || snapshot.province_id <= 0 ||
       !phase_valid || snapshot.phase_day < 0 || !winner_valid ||
       !forced_winner_valid ||
+      (snapshot.current_observation &&
+       !ValidCurrentObservation(*snapshot.current_observation)) ||
       !ValidIds(snapshot.attacker_public_cunit_ids_in_stored_order) ||
       !ValidIds(snapshot.defender_public_cunit_ids_in_stored_order)) {
     return false;
@@ -211,6 +243,73 @@ void AppendNullableNumber(std::string &output, std::int32_t value,
   } else {
     output += "null";
   }
+}
+
+bool AppendCurrentSide(
+    std::string &output,
+    const game::BattleCurrentSideObservationSnapshotV1 &side) {
+  output += "{\"derived_current_fighting_raw\":";
+  if (!AppendNumber(output, side.derived_current_fighting_raw)) return false;
+  output += ",\"derived_soft_casualties_raw\":";
+  if (!AppendNumber(output, side.derived_soft_casualties_raw)) return false;
+  output += ",\"derived_main_fighting_entry_hard_casualties_raw\":";
+  if (!AppendNumber(output,
+                    side.derived_main_fighting_entry_hard_casualties_raw))
+    return false;
+  output += ",\"non_main_start_minus_current_minus_soft_raw\":";
+  if (!AppendNumber(output,
+                    side.non_main_start_minus_current_minus_soft_raw))
+    return false;
+  output += ",\"participant_hard_total_raw\":";
+  if (!AppendNumber(output, side.participant_hard_total_raw)) return false;
+  output += ",\"participant_hard_ledger\":[";
+  for (std::size_t index = 0; index < side.participant_hard_ledger.size(); ++index) {
+    if (index != 0) output.push_back(',');
+    const auto &row = side.participant_hard_ledger[index];
+    output += "{\"participant_character_id\":";
+    if (!AppendNumber(output, row.participant_character_id)) return false;
+    output += ",\"hard_casualties_raw\":";
+    if (!AppendNumber(output, row.hard_casualties_raw)) return false;
+    output.push_back('}');
+  }
+  output += "]}";
+  return true;
+}
+
+bool AppendCurrentObservation(
+    std::string &output,
+    const std::optional<game::BattleCurrentObservationSnapshotV1> &observation) {
+  if (!observation) {
+    output += "null";
+    return true;
+  }
+  output += "{\"status\":";
+  AppendJsonString(output, observation->available ? "available" : "unavailable");
+  output += ",\"unavailable_reason\":";
+  if (observation->available) output += "null";
+  else AppendJsonString(output, observation->unavailable_reason);
+  output += ",\"scale\":";
+  if (!AppendNumber(output, observation->scale)) return false;
+  if (!observation->available) {
+    output += ",\"base_combat_width\":null,\"final_combat_width\":null,"
+              "\"base_advantage_raw\":null,\"resolved_advantage_raw\":null,"
+              "\"attacker\":null,\"defender\":null}";
+    return true;
+  }
+  output += ",\"base_combat_width\":";
+  if (!AppendNumber(output, observation->base_combat_width)) return false;
+  output += ",\"final_combat_width\":";
+  if (!AppendNumber(output, observation->final_combat_width)) return false;
+  output += ",\"base_advantage_raw\":";
+  if (!AppendNumber(output, observation->base_advantage_raw)) return false;
+  output += ",\"resolved_advantage_raw\":";
+  if (!AppendNumber(output, observation->resolved_advantage_raw)) return false;
+  output += ",\"attacker\":";
+  if (!AppendCurrentSide(output, observation->attacker)) return false;
+  output += ",\"defender\":";
+  if (!AppendCurrentSide(output, observation->defender)) return false;
+  output.push_back('}');
+  return true;
 }
 
 } // namespace
@@ -413,6 +512,8 @@ std::string SerializeBattleTransitionV1(
           output, snapshot.defender_public_cunit_ids_in_stored_order)) {
     return {};
   }
+  output += ",\"current_observation\":";
+  if (!AppendCurrentObservation(output, snapshot.current_observation)) return {};
   output.push_back('}');
   return output;
 }

@@ -774,6 +774,8 @@ option(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1
 file(GLOB XAR_CK3_12002_SOURCES CONFIGURE_DEPENDS
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002*.cpp")
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "_test(_only)?\\.cpp$")
+list(APPEND XAR_CK3_12002_SOURCES
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_battle_current_state.cpp")
 # R11 owns only explicitly READY outcome production CPPs below.
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "/ck3_12002_sway_outcome.*\\.cpp$")
 # READY explicit source lists below own these namespaces.
@@ -7418,4 +7420,27 @@ if(BUILD_TESTING AND XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
       target_sources(${religion_target} PRIVATE ${XAR_G2_RELIGION_CONTEXT_FIXTURE_SOURCES})
     endif()
   endforeach()
+endif()
+
+if(BUILD_TESTING)
+  add_executable(xar_ck3_12003_battle_current_state_test
+    src/ck3_12002_battle.cpp
+    src/ck3_12002_battle_journal.cpp
+    src/ck3_12002_routes.cpp
+    src/ck3_12003_battle_current_state.cpp
+    src/battle_transition_v1_mailbox.cpp
+    src/ck3_12003_battle_current_state_test.cpp)
+  target_include_directories(xar_ck3_12003_battle_current_state_test PRIVATE include)
+  target_compile_features(xar_ck3_12003_battle_current_state_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12003_battle_current_state_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_battle_current_state_test PRIVATE
+      /W4 /WX /permissive- /EHsc)
+  endif()
+  target_link_libraries(xar_ck3_12003_battle_current_state_test PRIVATE kernel32)
+  file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/ck3_12003_battle_current_state_wire")
+  add_test(NAME xar_ck3_12003_battle_current_state_test
+    COMMAND xar_ck3_12003_battle_current_state_test
+      "${CMAKE_BINARY_DIR}/ck3_12003_battle_current_state_wire")
 endif()

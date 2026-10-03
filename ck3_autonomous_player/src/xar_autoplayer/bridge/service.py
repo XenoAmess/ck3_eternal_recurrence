@@ -12009,6 +12009,7 @@ class GameplayBridgeService:
             "queried_snapshot_id",
             "queried_revision",
             "queried_native_revision",
+            "current_observation",
         }
         if (
             not required_result_keys <= set(result)
@@ -12044,6 +12045,12 @@ class GameplayBridgeService:
             raise BridgeUnavailableError(
                 "battle-transition envelope status disagrees with its frame"
             )
+        if ("current_observation" in result) != ("current_observation" in normalized):
+            raise BridgeUnavailableError(
+                "battle-transition current observation mirror disagrees with its frame"
+            )
+        if "current_observation" in normalized:
+            mirror_keys.add("current_observation")
         lifecycle_mirrors = {
             key: copy.deepcopy(normalized[key]) for key in mirror_keys
         }

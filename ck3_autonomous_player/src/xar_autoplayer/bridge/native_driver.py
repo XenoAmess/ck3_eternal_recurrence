@@ -12965,6 +12965,11 @@ class NativeHeadlessGameplayDriver:
             "battle_transition_ready": normalized[
                 "battle_transition_ready"
             ],
+            **(
+                {"current_observation": copy.deepcopy(normalized["current_observation"])}
+                if "current_observation" in normalized
+                else {}
+            ),
             "queried_snapshot_id": starting.get("snapshot_id"),
             "queried_revision": starting.get("revision"),
             "queried_native_revision": native_revision,

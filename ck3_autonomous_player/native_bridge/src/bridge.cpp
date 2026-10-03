@@ -29,6 +29,7 @@
 #include "xar_bridge/ck3_12002_war_entry.hpp"
 #include "xar_bridge/ck3_12002_routes.hpp"
 #include "xar_bridge/ck3_12002_battle.hpp"
+#include "xar_bridge/ck3_12003_battle_current_state.hpp"
 #include "xar_bridge/ck3_12002_battle_journal.hpp"
 #include "xar_bridge/ck3_12002_province.hpp"
 #include "xar_bridge/ck3_12002_world.hpp"
@@ -10359,6 +10360,10 @@ bool ExecuteTypedQuery12002(
       } else if constexpr (Kind == QueryKind12002::battle_transition) {
         xar::ck3_12002::ReadBattleTransitionSnapshot(
             bindings, snapshot, query.transition_request, query.transition);
+        if (xar::game::IsCk3_12003Descriptor(envelope->game->descriptor())) {
+          xar::ck3_12003::AttachBattleCurrentObservationV1(
+              bindings, snapshot, query.transition);
+        }
         query.typed_result = true;
         query.transition.snapshot_revision = envelope->expected_snapshot_revision;
       } else if constexpr (Kind == QueryKind12002::battle_reinforcement) {
