@@ -1,5 +1,17 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-04：v46 七日路线与实际集结闭环
+
+累计 **4032/36524日**、接续 **+879日**、10月4日 **+7日**；10月3日冻结 **+777日**，自然继承0。v46七日执行前保存为h5510，实际 **7 calendar / 7 bounded time-save / 7 whole one-day OODA / 168h** 全部正常落盘，末批次h5532/raw53241096；随后独立兵力查询与零日保存形成最新 **h5534 / raw53241096 / 91,825,231B / SHA-256 `22e9028da99a4f77ba5b5485b912065f38aa9761fc9100a1adf63d4dd238f028`**。新增7日由Root计入一次，各文档消费和后续只读不再加日。
+
+- [实际行军与剩余路线](army-march-remaining-timeline-12003.md)、[解围原生输入](war-relief-siege-native-ai-12003.md)及[占领目标](war-occupation-targets-12003.md)：主军83886367在8754/moving7，沿完整8-hop route继续2640方向，无战斗或撤退。2640仍未被占领，但敌FullSiege318767158保持active，进度97.427%、ETA10日；尚无抵达、玩家接战或解围信用。七日末帧没有strength查询，兵力以随后独立查询为准。
+- [集结与补员实际闭环](army-regiment-replenishment-raised-reserve-12003.md)：after7当前native37/public2的独立兵力口确认新军167772189在2618、**123/123兵、1regiment、regular1、not_gathering/readytrue**；旧军83886367仍保留2259/2460兵、39regiments及8-hop路线。一次default raise→普通日推进→实际集结完成→独立兵力/保存已形成有限 **production-live loop**；当前123兵来自fresh getter，不把此前unraised reserve当已集结证据，也不外推为全量战争部署。
+- [原Sway实例只读状态](ck3-1.20.0.2-sway-state.md)：原FullID134217986/gen8/target34333的独立恢复查询GREEN，native5/public2/raw53240928、exact owner29829 jointrue、statuscontinue/CanContinue=true/terminalfalse；历史零日保存h5510独立保留。这是原实例状态 **production-live primitive**，没有新SwayStart、完成、终结或关系收益。旧004 runtime RED原始失败帧和原因仍丢失；f4cdcb66仅增强错误文本，重查GREEN不改写旧失败分类或证明capability修复。
+
+本包直接复用[七日sole消费回执](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/relief-v46/seven-day-consumption/ROOT-DELIVERY.json)、[集结最终回执](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-reinforcement-raise/runtime-v46-gathering-finished-consumption/ROOT-FINAL-DELIVERY.json)与[Sway独立恢复回执](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/sway-v46-original-readonly-recovery/ROOT-DELIVERY.json)。后继 **v47 / Source54 / published `1c67491` / 冻结g51** 的full build15115已正常exit0 **GREEN**：4Release/W4WX、jobs64、556TU/553unique/1073inputs、82.767049s，DLL8,915,968B/SHA-256 `c4ff4d1835356322c94ebe4443d354dbcbbb9854863703c2d931757641f295eb`。renderer一次full5534/save5534/10streams与official prepare已GREEN，环境SHA `2cf616eb269cbf338069fbb3bc69159ccb0d395417da064ba52b64d25b9356cd`；verify/rebind/cold尚未完成，不授v47 live信用。
+
+同source官方CI **37139457808 RED** 单列保留：existing publicCID schema测试直接取minimum触发KeyError，char-only subject的Optional生成union metadata wrapper；生产constraints未丢。仅test union/None分支修正待采用，不改变已完成v46七日帧，也不覆盖旧C1061与completion失败历史。中央日/周/交接报告由Root统一发布，当前目标和真实边界回链[统一进度](../autonomous-agent-progress/README.md)。下方旧阶段记录保留各自截止。
+
 ## 2026-10-04：v46 增援实读与战斗上下文施工
 
 v46/R0023/PID77476 由 source9772958/冻结g49 恢复至 raw53240928；原生 strict553TU/550unique/1066inputs、jobs64、78.506418s 与官方 CI37134271120均 GREEN。最新正常 SAVE h5509，91,443,885字节，SHA-256 `7ded957a3c703ceb5bd5bd3515444c5c04d01de0594da1812a2ba99440fabafb`；累计4025日、自然继承0，窗口最小化且非前台。
