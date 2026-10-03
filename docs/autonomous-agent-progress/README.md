@@ -1,5 +1,9 @@
 # CK3 自动游玩智能体进度中心
 
+## 2026-10-03T23:15:48+08:00 当前 v45 实机截止
+
+累计4025/36524、resume872、10月3日777，最新正常h5504/raw53240928。v45 R22/PID28944最小化cold、defaultRaise权限/预备人数和新增军队独立读回、living retention及无阻塞modal读取已实测；正常一日后新军仍0兵集结。主力仍2616→2640，无接战抵达解围。自然0/G2 5/8/NW 2/4保持。原生DLL7a/g47与Python补线451dde/g48分开绑定，四目标strict64jobs和exact-sourceCI GREEN。详见[10月3日日报](daily/2026-10-03.md)及[实机汇总](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v45/ROOT-ACTUAL-MILESTONE-H5504.json)；下面前序v43/v45pending段保留当时事实。
+
 ## 当前截点：v43 行军续32日，4024 个保存日（2026-10-03T22:58:42+08:00 实际补录）
 
 - **最新实机与保存**：v43/R0021/PID14124，compiled source `8e2cfbee4981af7f80398ec09129c1cf0f3dbe54` / frozen `Z:/g45`，原Robert29829/episode native-29829-2bc2d599f7f9/ordinary/xar_off/pact absent；minimized=true/foreground=false。最新正常 `h5490 / raw 53240904 / SHA-256 45a738d9082a9bab322c786a1c9c2c784f9468a13a4e664fe1a3a435bc15eeab` 来自holy只读SDK26432正常exit0，新增日0。累计 **4024/36524**、恢复 **+871**、10-03 **+776**，G2 **5/8**、NW **2/4**、自然终局 **0**、`percent_reporting_allowed=false`。[holy actual fields](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-holy-order/ACTUAL-V43-REPORT-FIELDS.json)。
