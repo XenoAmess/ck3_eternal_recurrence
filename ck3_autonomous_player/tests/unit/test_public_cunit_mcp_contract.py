@@ -27,6 +27,13 @@ class NoGameplayDriver:
 
 
 class PublicCUnitMcpTests(unittest.IsolatedAsyncioTestCase):
+    def _public_unit_integer_schema(self, schema):
+        if schema.get("type") == "integer":
+            return schema, False
+        branches = schema["anyOf"]
+        self.assertCountEqual([branch.get("type") for branch in branches], ["integer", "null"])
+        return next(branch for branch in branches if branch.get("type") == "integer"), True
+
     async def test_all_public_unit_facades_preserve_zero_and_reject_coercion(self):
         from mcp import Client
 
@@ -70,19 +77,10 @@ class PublicCUnitMcpTests(unittest.IsolatedAsyncioTestCase):
                     schema = tools[tool_name].input_schema["properties"][name]
                     if is_list:
                         schema = schema["items"]
-                    nullable = (
-                        tool_name == "ck3_query_battle_terminal_transition_v1"
-                        and name == "subject_public_cunit_id"
-                    )
-                    if nullable:
-                        self.assertEqual(
-                            {branch["type"] for branch in schema["anyOf"]},
-                            {"integer", "null"},
-                        )
-                        schema = next(
-                            branch for branch in schema["anyOf"]
-                            if branch["type"] == "integer"
-                        )
+                    schema, nullable = self._public_unit_integer_schema(schema)
+                    self.assertEqual(nullable, (tool_name, name) == (
+                        "ck3_query_battle_terminal_transition_v1", "subject_public_cunit_id",
+                    ))
                     self.assertEqual(schema["minimum"], 0)
                     self.assertEqual(schema["maximum"], 2**31-1)
                     valid_values = (0, 2**31-1, None) if nullable else (0, 2**31-1)
@@ -98,6 +96,16 @@ class PublicCUnitMcpTests(unittest.IsolatedAsyncioTestCase):
                                 arg for arg in call.args if type(arg) is type(argument) and arg == argument
                             )
                             self.assertEqual(forwarded, argument)
+                    if nullable:
+                        with self.subTest(tool=tool_name, name=name, value=None):
+                            before = method.call_count
+                            result = await client.call_tool(tool_name, {
+                                **base, "prior_combat_id": None, name: None, "character_ids": [1],
+                            })
+                            self.assertFalse(result.is_error)
+                            self.assertEqual(method.call_count, before+1)
+                            self.assertEqual(method.call_args.args[:2], (None, None))
+                            self.assertEqual(method.call_args.kwargs["character_ids"], [1])
                     invalid_values = (True, False, -1, 2**31, 2**32-1, 0.0, "0")
                     if not nullable:
                         invalid_values += (None,)
