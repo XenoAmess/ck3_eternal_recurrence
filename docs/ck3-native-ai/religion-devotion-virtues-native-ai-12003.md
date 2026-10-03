@@ -91,3 +91,7 @@ flowchart TD
 本包于2026-10-03实际补录；所引v27 preview和历史monthly资料保持原帧日期，不写为最新3563天末帧。17个native spans是本次新静态研究，一次读取冻结EXE哈希后落盘；旧月率／任务modifier ABI直接复用。原reflection `GetMaxPietyLevel`的receiver问题已经在本页修正为modifier data对象，不能复制早期探索名词当Character getter。
 
 没有新prod源码、fixture结果、live artifact、付费decision、trait修改或G2 credit。未完成项为上面一个有确定RVA／参数／scope的只读接线包和随后Robert paused观测；它们不再被宗教暂缓规则阻挡。日报／周报由ROOT的中央报告owner合并本页字段，Git提交／推送由ROOT执行；本分包不编辑共享索引与报告。
+
+## 2026-10-03T12:22 新 PID paused 实读
+
+本专题对应的新只读叶与真实缺口见[统一实读记录](g2-v33-paused-religion-and-event-observations-12003.md)，回链actor/date/native/public revisions和原capture。仅记录primitive，不增加动作、日数或完整OODA；历史fixture与封存状态保留原时点。

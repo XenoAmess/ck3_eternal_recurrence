@@ -165,3 +165,7 @@ flowchart TD
 新增focused实际 `/O2 /W4 /WX` 编译与执行为 **5 case / 15 C++运行断言 / 5生产JSON**，每份JSON经过更新后的生产Python normalizer保持字段；读取一个旧v33冻结wire验证可选subtree兼容性，未重跑原reader/MCP矩阵。新五场景覆盖：off-Faith县与owner-Faith县的不同目的、同Faith chaplain与当前真实冻结任务目标、具备Ministry三条件、仅flags成立但h_china属于他人、Faith getter失败独立unavailable。attempt-01新fixture将optional<uint32>与int比较而触发 `/WX C4389`，保留 **harness RED**；仅fixture改成unsigned literal，attempt-02 GREEN，生产源码未因失败修正。实际receipt为 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/county-conversion/v34-values-attempt-02/RESULT.json`，SHA-256 `26b07812dce49170c915ecd0127a63b33976222fe54394012d8658771440628c`。
 
 当前最高资格 **static-ready**；SDK/native callbacks均为明确fixture stub，production reader／serializer／Python normalizer是真实执行源码。旧clergy mailbox与已注册MCP路由保持原接线，不新增生产translation unit或产品flag；新增focused CMake target `xar_ck3_12003_county_conversion_values_test` 在既有clergy query flag之下。`open_kaishek` 引用commit `1643d03d3a8d2ae1547e352d724e2b1a721c98ba`，not-applicable边界如上。中央接续仍需组合构建和Robert真实同帧观测；当前县总民意、目的宗教输入不等于宗教民意component、反事实民意delta或真实转换收益。
+
+## 2026-10-03T12:22 新 PID paused 实读
+
+本专题对应的新只读叶与真实缺口见[统一实读记录](g2-v33-paused-religion-and-event-observations-12003.md)，回链actor/date/native/public revisions和原capture。仅记录primitive，不增加动作、日数或完整OODA；历史fixture与封存状态保留原时点。

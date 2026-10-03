@@ -72,3 +72,7 @@ flowchart TD
 实际记录：`2026-10-03T11:38:52+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
 
 交付回执：[event-scopes](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/event-scopes/ROOT-DELIVERY.json)。
+
+## 2026-10-03T12:22 新 PID paused 实读
+
+本专题对应的新只读叶与真实缺口见[统一实读记录](g2-v33-paused-religion-and-event-observations-12003.md)，回链actor/date/native/public revisions和原capture。仅记录primitive，不增加动作、日数或完整OODA；历史fixture与封存状态保留原时点。

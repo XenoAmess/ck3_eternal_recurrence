@@ -301,3 +301,7 @@ scope 的稳定语义标签来自 registry 解析后的 `type_key`，不能让�
 `type_key=value`、`subtype=0` 和原样 unavailable identity，并在 receipt 中保留
 实际 raw index。它仍不读取或猜测 value payload；cycle/case 数值继续由
 received-self Workforce provider 提供并与事件 full guard 互证。
+
+## 2026-10-03T12:22 新 PID paused 实读
+
+本专题对应的新只读叶与真实缺口见[统一实读记录](g2-v33-paused-religion-and-event-observations-12003.md)，回链actor/date/native/public revisions和原capture。仅记录primitive，不增加动作、日数或完整OODA；历史fixture与封存状态保留原时点。

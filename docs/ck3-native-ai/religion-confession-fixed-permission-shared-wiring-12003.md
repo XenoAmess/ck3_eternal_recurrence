@@ -30,3 +30,7 @@ CMake 宗教 Context production source list及两份既有 standalone mailbox fi
 首次native编译和运行均exit0；Python因外置投影漏冻结 `tools/build_release.py` 的import依赖出现 **harness RED**，已保留 `attempt01-RED`。补该依赖后仅重跑Python成功，已成功native构建与运行没有重复。既有8语义scenario GREEN、旧类型／税份额／Tenet矩阵均直接复用，无重跑。
 
 当前组合证据位于 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/confession/FOCUSED-RESULT.json`、`focused/native-false.json`、`focused/native-unavailable.json` 与 `attempt01-RED/`；封存leaf语义证据仍为 `artifacts/g2-maintainer-2026-10-02/resume-12003/religion-doctrine-gameplay-12003/confession-permission-leaf/FOCUSED-RESULT.json`。可应用补丁与逐文件hash见同外置目录的 `ROOT-DELIVERY.json`。主代理合入时与其他包逐hunk合并共享 mailbox、CMake和transport；之后进行一次严格组合构建与Robert新paused读回，再决定具体玩法入口。
+
+## 2026-10-03T12:22 新 PID paused 实读
+
+本专题对应的新只读叶与真实缺口见[统一实读记录](g2-v33-paused-religion-and-event-observations-12003.md)，回链actor/date/native/public revisions和原capture。仅记录primitive，不增加动作、日数或完整OODA；历史fixture与封存状态保留原时点。

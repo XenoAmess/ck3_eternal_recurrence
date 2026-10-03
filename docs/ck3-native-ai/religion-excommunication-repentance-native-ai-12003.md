@@ -138,3 +138,7 @@ Gold MCP 的参数只有 `expected_revision`，native key 固定为 `hof_ask_for
 本次新资格仅 **research**：没有独立绝罚 trait sample、current route/recipient/repentance/petition native terms、发送或解除结果；不存在 production-live repentance primitive/loop 或 complete。新增 SDK/pipe/game/window/source modifications/build/tests/paid/material/days/G2/Git 全为0，既有 holy-order final terms primitive 的真实资格保持。ROOT收到完整 day/week 字段、newdoc doc-only patch 和 pins 后统一发布，worker 不写中央报告或 canonical source。
 
 收尾采用说明：本页新增代码如有，仅封存为外置补丁，尚未应用到生产 v32；实际读取以本文标注的 artifact/date 为准。接续入口：[度假交接](../handover/2026-10-03-g2-religion-v32-maintainer-vacation-handoff.md)。
+
+## 2026-10-03T12:22 新 PID paused 实读
+
+本专题对应的新只读叶与真实缺口见[统一实读记录](g2-v33-paused-religion-and-event-observations-12003.md)，回链actor/date/native/public revisions和原capture。仅记录primitive，不增加动作、日数或完整OODA；历史fixture与封存状态保留原时点。

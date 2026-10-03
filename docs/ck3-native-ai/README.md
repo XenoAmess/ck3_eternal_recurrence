@@ -1,5 +1,8 @@
 # CK3 原生 AI 决策树索引
 
+实际接续 `2026-10-03T12:22:23+08:00`：v33新PID96112最小化冷恢复和多个宗教/事件只读叶已实读；派系完整割让与holy selected仍有真实故障，优先修复而非长期unknown。[实际字段与证据](g2-v33-paused-religion-and-event-observations-12003.md)。source/native6934与开发v34分别记账，无新增游戏日或完整宗教loop。
+
+
 **2026-10-03 11:29 用户已恢复工作：** 10个后台工作包并行接续，优先补当前派系scope与实际割让范围；奉献/德性/誓愿封存源码已采用，仍static-ready，v33尚未构建/部署，游戏仍关闭。3845保存天与未选择事件23保持。最新施工状态见[接续账本](../handover/2026-10-03-g2-v33-resume.md)；下方度假封存记录保留其当时事实。
 
 **2026-10-03 度假收尾：** CK3 已正常保存并关闭，罗贝尔累计3845天、save/full4639；派系事件23未选择。当前生产仍为 v32 / source `8cf176b4`。新代码只封存为外置补丁，没有部署 v33；恢复入口见[维护者交接](../handover/2026-10-03-g2-religion-v32-maintainer-vacation-handoff.md)和[补丁索引](../handover/2026-10-03-g2-religion-v32-packets/index.json)。
