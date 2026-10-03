@@ -1,5 +1,16 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 13:45 全局撤禁收口与一次真实拒绝后置
+
+最终全局扫描仅执行一次：482个tracked路径、1338处匹配；在前两批之后补齐9文件12处遗漏的现行授权文案（含CMake option说明和历史交接当前指令）。纯技术nonwar标识、历史OFF/失败和真实未实现能力不当作授权禁令。两批已发布43085c96、bf6a64c7官方CI均GREEN；本批继续普通commit/push。用户指定的原脏g2dlv交接与两份原AGENTS只镜像授权的精确句子，其余现场不覆写。
+
+已实际选择一次native3/API4拒绝：原事件23消失，faction33554465实际关联新WarID50331736，Robert29829为primary defender、对手70766、target2115。11/11原生后置检查GREEN；原直辖县2102/2111/2115仍由29829持有、2107仍是封臣32716，完整realm13县集合保持。新增敌军251658381、473、474已在2640战斗，玩家军队仍在2614；是否及何方正在胜利必须继续用实际CombatID/阶段观测。仅此事件处理取得 bounded production-live loop，战争本身未完成。
+
+保留harness RED：首attempt只完成snapshot与失败事件预读，缺必需event_instance_id，未发送任何选择；补齐参数后第二attempt只提交一次。raw53236608、原episode保持，无新增游戏日；这不是战斗胜利或日推进信用。当前全部战争授权成立，不再等待非战/战争域确认。下一批同时读取新增战争CB、8部队、财务及两目标全敌军接触时序，再执行最小战术循环。
+
+实际拒绝：[ACTUAL-REFUSAL.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-revolt-outcome/ACTUAL-REFUSAL.json)。撤禁最终分类：[FINAL-COVERAGE-CLASSIFICATION.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-authorization/final-coverage/FINAL-COVERAGE-CLASSIFICATION.json)。3845保存天、G2 5/8、NW 2/4、自然继承0保持；实际Root动作1，不能把新增战争视为完整战争能力。
+
+
 ## 13:23 全仓授权文档收口与实际防御战争输入
 
 八个原生/进度文档桶全部完成：原生87份审阅、59份授权修订、28份仅历史/技术事实的明确跳过；进度33份审阅、31份修订、2份技术证据跳过。主prompt/交接/中央报告及事件授权已普通推送43085c96。当前所有已识别 operative 非战/战争停工/其他维护者独占限制均按2026-10-03撤销；历史真实OFF、失败、模块名、哈希和能力等级不被抹掉。对纯prose不新增测试；JSON只改既有说明字段，结构已由分桶作者一次检查。
@@ -315,7 +326,7 @@ R10 的独立 1.20 rogue episode（actor29829）已自然推进 **31 个持久�
 
 R11 现有 **--nonwar-only** 正式 Council/LIFE/ECON/FAMILY 与 fresh government 消费、Sway 专属意见口及 Feast 实际 envelope 修复已通过必要的新 fixture，见[施工账本](g2-offline-implementation-2026-10-01.md)与[正式服务说明](../ck3-native-ai/ck3-1.20.0.2-nonwar-service-mode.md)。新 PID97312已恢复到 actor29829/raw53170104；首次 Law source／Sway专属意见／Sway completion **三口实际查询 RED** 保留于[首个 R11 attempt](Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/targeted-sdk-r11/r11-cold-law-and-sway-material-20261001T160813Z/result.json)。恢复 snapshot identity 不等于这三口已 qualified，也不闭合 CA1 cold。root 正继续实际修复与推进，文档／CI 收口不构成 G2 停点。
 
-宗教目前按各原生专题继续施工：Rite/Faith/Religion、doctrine/tenet、AI inputs 的 actual paused/read-only 结果已有记录，通用动作和完整宗教 OODA 仍按真实结果计。下方“宗教暂缓”和继续战争施工的段落属于其标注日期的历史；暂停研究的授权现已由用户明确解除，战争研究的停止指令仍有效。
+宗教目前按各原生专题继续施工：Rite/Faith/Religion、doctrine/tenet、AI inputs 的 actual paused/read-only 结果已有记录，通用动作和完整宗教 OODA 仍按真实结果计。下方“宗教暂缓”和继续战争施工的段落属于其标注日期的历史；宗教暂停研究的授权已由用户明确解除；2026-10-03 又取消全部非战约束，战争研究停止指令亦已撤销，后续战争研究、实现、策略和实机执行全面获准。
 
 
 ## 2026-10-01 15:49:34：非战争 G2 源码交付与实机准备
@@ -704,7 +715,7 @@ tyranny；健康、压力与生育；法律、政府、文化、创新与非宗�
 - 完整比较所有合法 CB、目标 title 价值、成本、双方 reserve、盟友接受/ETA、其它战争、truce、faction 与 succession 风险。
 - 实现 declare、call/join/offer war 及可验证 participant 后置状态。
 - planner 能在至少五个候选中选择目标/CB，也能选择“现在不打”，并处理进攻、防御、盟友与同时两战。
-- 宗教领域现已全面开放，faith/religion原生输入与圣战/大圣战相关宗教决策树可按exact-build深入研究，不再受opaque/minimal窄例外限制；当前战争研究/战争实机任务仍停止，Robert nonwar-only入口保持。
+- 宗教领域现已全面开放，faith/religion原生输入与圣战/大圣战相关宗教决策树可按exact-build深入研究，不再受opaque/minimal窄例外限制；2026-10-03 已撤销战争研究/战争实机任务停止与 nonwar-only 入口的授权限制；Robert 原普通战役唯一入口保持，直接推进当前 exact-build 的战争观测、策略和 typed 执行。
 
 ### P6：家庭、婚姻、教育、继承与王朝
 

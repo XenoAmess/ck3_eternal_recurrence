@@ -22,9 +22,9 @@
 - 验收口径必须写成 **fixture-definition/localization playset + production native bridge**。它不是 stock event，cold
   playset 也不是 production-only。
 
-宗教边界不由本夹具扩张。本夹具是 generic、非宗教 character event，不读取 faith/doctrine/tenet/fervor、改宗或改革。
-项目所有者只放行了两项与其他 OODA 域绑定的最小例外：战争闭环不得不使用的 holy-war 观测/动作，以及婚姻合法性或
-接受度不得不使用的最小 faith 原生调用；这两项均与本夹具无关，也不得扩成通用宗教研究。
+本夹具历史上验收的是 generic、非宗教 character event，未读取 faith/doctrine/tenet/fervor、改宗或改革；其证据范围不因授权更新而扩大。
+当时仅 holy-war 与婚姻相关最小 faith 原生调用获准的旧宗教范围，已于 2026-10-02 全面撤销；2026-10-03 又取消全部非战约束。
+当前通用宗教以及战争/战斗的原生研究、观测、实现、策略和实机执行均已获准，继续遵守 exact-build、原生 AI 研究优先、Robert 原普通战役唯一入口与最小化/不抢焦点，不以本夹具历史范围恢复旧禁令。
 
 ## Attempt1/Attempt2 已用冻结输入（历史；不得复用为下一 candidate）
 

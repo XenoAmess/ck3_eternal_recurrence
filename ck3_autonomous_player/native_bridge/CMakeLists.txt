@@ -722,11 +722,11 @@ option(XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1
 option(XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1
   "Compile the exact-build 1.20 full faction observation candidate" OFF)
 option(XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1
-  "Compile the completed, owner-deferred 1.20 war-cash candidate" OFF)
+  "Compile the completed 1.20 war-cash candidate; combat authorization restored 2026-10-03" OFF)
 option(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1
   "Compile the exact-build 1.20 family lineage and break-terms candidate" OFF)
 option(XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1
-  "Compile the owner-deferred 1.20 prewar candidate" OFF)
+  "Compile the 1.20 prewar candidate; combat authorization restored 2026-10-03" OFF)
 option(XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1
   "Compile the exact-build paused crown-law action candidate" OFF)
 option(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1

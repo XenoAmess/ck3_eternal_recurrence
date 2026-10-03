@@ -368,7 +368,7 @@ production 长跑中自然触发 one-life terminal，完成匹配结算，再经
   月报保持“未完成/重制中”。详细规范见 [`monthly/README.md`](monthly/README.md) 与 [`demos/README.md`](demos/README.md)。
 - 报告必须区分“已完成”“正在进行”“为什么做”“证据/测试”“未闭合”“下一步”。
 - live attempt 无论 GREEN 或 RED 都保留真实结论；不得通过修改预期、删去失败或把 harness 成功写成 capability 成功来美化状态。
-- 当前宗教研究已由2026-10-02最新用户指令全面开放；旧通用宗教/holy order暂缓及“只有圣战/婚姻两窄例外”限制全部撤销。原生AI树、exact-build只读观测和真实材料继续分级记录，授权本身不计完成；当前Robert唯一实机入口/nonwar-only保持。
+- 当前宗教研究已由2026-10-02最新用户指令全面开放；旧通用宗教/holy order暂缓及“只有圣战/婚姻两窄例外”限制全部撤销。原生AI树、exact-build只读观测和真实材料继续分级记录，授权本身不计完成；Robert唯一原普通战役实机入口保持；2026-10-03 已撤销 nonwar-only 与战争研究停止的授权限制，战争观测、策略和实机执行全面开放。
 
 ## 2026-10-03T03:27:52+08:00 战争第3期专项交付
 

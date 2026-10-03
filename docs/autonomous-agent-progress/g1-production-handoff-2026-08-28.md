@@ -198,7 +198,7 @@ stationary speed 3 已是 production 默认，不需要旧 canary flag。不要�
    不登记真实 blocker，也不回退 episode。
 2. 若发生真实 B0/B1：保留 `report.json` 与 `first-blocker.json`；冻结同 exact build 的原生 AI/ABI 证据，只做消除该故障的
    最小合法修复，然后从最新 checkpoint 继续同一 episode。
-3. speed 4/5、碾压局零暂停和更高吞吐继续是有价值的并行预研，但不得抢占会直接阻断 G1 的真实 B0/B1，也不得改变战争策略。
+3. speed 4/5、碾压局零暂停和更高吞吐仍是有价值的并行预研；该历史 G1 阶段要求不抢占直接阻断 G1 的真实 B0/B1，并按当时范围不改变战争策略。2026-10-03 项目所有者已取消全部非战约束，战争研究、实现、策略调整和实机执行全面获准，本条旧范围不再禁止后续战争施工。
 4. CharacterID `29829` 自然死亡后，**不能在死亡帧立刻宣告完成**。必须继续等待琉焰卿 Mod 产生 committed settlement，
    再读取并记录人生分数。
 5. 只有匹配本 episode 的 `terminal-settlement.json` 同时满足以下条件，才可标记 G1 GREEN：
