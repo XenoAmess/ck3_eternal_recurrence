@@ -1,5 +1,16 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-03：v39 四十九个实际日围城批次的当前入口
+
+最新正常保存为 **h5021 / raw53238336 / 累计3917日**（本次接续+764、10月3日+669），save91,105,707字节、SHA-256 `d6e9986ccf24fd85c853a08921cd4d200e2b279a33236a31619e8fc1ba88bab2`。本批37轮：前36轮各推进24h成功，第37轮请求7日、实际推进13日后报harness RED但正常保存；Root已按真实日期差计入49个calendar日，不补造这13日的中间逐日帧。
+
+- [Robert防御战争决策树](robert-defensive-war-loop-12003.md)：保留已发布的防御战争观察与决策入口。
+- [占领目标真实行](war-occupation-targets-12003.md)：2604/holding2400仍由30097占领，主战仍有17项敌占；尚未收复。
+- [holding围城观察与实际进度](war-occupation-holding-siege-observation-12003.md)：当前work9781290/32500000、remaining22718710（均Q100000）、ETA109、breach0/CanStartfalse；Robert军队仍在2604 sieging、空route、非战斗非撤退，围城尚未结束。
+- [外国战斗当前状态](battle-current-foreign-casualty-state-1.20.0.3-2026-10-03.md)：第35轮首次观察pursuit day0、winner attacker0但未final；第36轮pursuit day1仍未final；第37轮没有战斗查询；其后独立journal已捕获正常终结，Robert不在双方，无玩家胜利信用。
+
+独立终结实读已GREEN（journal normal_result/date53238096，query date53238336），v39现已正常exit0，末保存与总日数不变：[终结查询真实故障专题](battle-terminal-phase-date-production-fault-1.20.0.3-2026-10-03.md)。新v40/source02e88候选strict541TU、jobs64编译86.484875s及官方CI37119607735 GREEN；**尚未部署，不计live修复完成**。当前批次真实失败、正常保存与后续行动回链[接续报告](../handover/2026-10-03-g2-v33-resume.md)和[统一进度](../autonomous-agent-progress/README.md)；下方旧入口保留各自历史截止。
+
 ## 2026-10-03T19:17 v39围城观察与驻地一日实际入口
 
 v39/R0018/PID112516仍最小化、非前台；当前正常pair **h4831/raw53237160/3868日**。围城观察primitive已实读，驻地24h已实际推进并独立保存；首max64零日horizon RED与旧dateguard RED保留，未完成64日、17项仍敌占、未获围城结束或胜利。

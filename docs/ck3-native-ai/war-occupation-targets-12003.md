@@ -214,3 +214,12 @@ Root 随后只发送一次实际 day advance。它成功使 raw53237136→532371
 同一 **FullSiege503316492 / player Army83886367 / holding2400 / province2604** 的 fresh 读数为 current_work **351500**、total_work **32500000**、remaining_work **32148500**，scale均 **100000**；progress_fraction **1081/100000**，native days_left **183**。此前首 actual h4824/raw53237136 的 work175750、progress540/100000、ETA184保留为历史当帧值。一日实际工作增量175750并未完成围城；ETA仍是原生当前估计，不承诺收复日期。
 
 breach_level仍0、native CanStartAssault仍false，holding2400仍由敌方30097占领，守方被对側占领的holding仍17。此次没有突击、occupation17→16、收复、围城结束或战争终结；有限围城观测 primitive 加上一日保存后变化，不冒充完整战争 OODA。Robert29829 原普通战役与 exact .3 绑定不变，游戏保持 minimized=true/foreground=false。下一项仍按真实 paused work/ETA、contact 与 occupation输入推进正常围城，后续 batch 和 current 由 Root 独立记账。
+
+
+## 2026-10-03：v39 后续49日围城仍未收复目标2604
+
+在先前h4831/raw53237160/3868日保存基线后，Root的后续正常围城批实际保存了49个calendar日。37轮中36轮为完整24h观察/推进/正常保存对，末轮请求7日却实际推进13日后harness RED并正常保存；source仍RED，36 bounded counter与49实际日必须分开，不造末13日的中间逐日帧。当前Root确认总3917/resume764/Oct3增量669，纯文档消费0新增日。
+
+当前末pair **h5021 / raw53238336 / 91,105,707B / SHA-256 `d6e9986ccf24fd85c853a08921cd4d200e2b279a33236a31619e8fc1ba88bab2`**；最终同帧native164/public153的真实 occupation+siege查询仍观察到War16777231/holding2400/province2604敌占人30097、守方对侧占领数17。FullSiege503316492的 current_work9781290/total32500000/remaining22718710（Q100000），native ETA109、breach0、CanStartAssault=false；玩家army83886367仍sieging3、emptyroute、noncombat/nonretreat。围城work已增长，但没有收复、围城结束、玩家胜利或完整战争OODA。
+
+完整循环边界、首max64 0日RED、旧dateguard首日成功/h4831历史、末13日RED interval及证据CSV见 [holding siege observation](war-occupation-holding-siege-observation-12003.md)。此次有限围城loop有36个完整单日对与49个真实落盘日；consumer GREEN不把source RED改写为成功。没有重播或因文档采纳新增动作/天数，后续fresh terminal与实际推进由Root独立记账。

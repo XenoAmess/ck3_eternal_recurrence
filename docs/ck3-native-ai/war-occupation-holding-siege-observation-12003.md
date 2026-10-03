@@ -1,6 +1,6 @@
 # Occupied-holding actual siege observation on CK3 1.20.0.3
 
-2026-10-03. Exact CK3 **1.20.0.3 Crozier**, Steam build **25652598**, EXE SHA **94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6**. Historical implementation baseline **g40 / 0ad923525ef899b836a823dfe983db49030789f2**. Current v39 actual observer is a **production-live primitive**, source **fca9daf1aa517ca5a5c185cc2c0736287ad26847 / g41**, DLL SHA **ba650ab1d42aa17d9d2e94f2f3a92db7b644c36a7b9348c6a18e541fe7a4153e**; the initial actual and one saved day below retain separate frames. The ordinary Robert 29829 campaign remains the only actual entry. Warfare authorization is fully open.
+2026-10-03. Exact CK3 **1.20.0.3 Crozier**, Steam build **25652598**, EXE SHA **94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6**. Historical implementation baseline **g40 / 0ad923525ef899b836a823dfe983db49030789f2**. Current v39 actual observer is a **production-live primitive**, source **fca9daf1aa517ca5a5c185cc2c0736287ad26847 / g41**, DLL SHA **ba650ab1d42aa17d9d2e94f2f3a92db7b644c36a7b9348c6a18e541fe7a4153e**; the initial actual, first saved day and later49-day batch below retain separate frames. Current finite normal-siege observation/advance/save loop includes36 complete bounded one-day pairs and one saved13-day RED interval; current saved date is raw53238336/h5021, cumulative3917 days. The ordinary Robert 29829 campaign remains the only actual entry. Warfare authorization is fully open.
 
 ## Actual milestone and necessary observation
 
@@ -104,3 +104,20 @@ Root 随后只发送一次实际 day advance。它成功使 raw53237136→532371
 同一 **FullSiege503316492 / player Army83886367 / holding2400 / province2604** 的 fresh 读数为 current_work **351500**、total_work **32500000**、remaining_work **32148500**，scale均 **100000**；progress_fraction **1081/100000**，native days_left **183**。此前首 actual h4824/raw53237136 的 work175750、progress540/100000、ETA184保留为历史当帧值。一日实际工作增量175750并未完成围城；ETA仍是原生当前估计，不承诺收复日期。
 
 breach_level仍0、native CanStartAssault仍false，holding2400仍由敌方30097占领，守方被对側占领的holding仍17。此次没有突击、occupation17→16、收复、围城结束或战争终结；有限围城观测 primitive 加上一日保存后变化，不冒充完整战争 OODA。Robert29829 原普通战役与 exact .3 绑定不变，游戏保持 minimized=true/foreground=false。下一项仍按真实 paused work/ETA、contact 与 occupation输入推进正常围城，后续 batch 和 current 由 Root 独立记账。
+
+
+## 2026-10-03：v39 正常围城批实际49日，末多日 interval 保留 RED
+
+Root 继续在同一个 Robert29829 ordinary campaign 上运行 [actual-stationary-siege-batch-2604-02/result.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/siege-v39/actual-stationary-siege-batch-2604-02/result.json)。该 source 批次终态 **RED / actual_attempt_failed_requires_root**，但37轮中前36轮均实际推进24小时、完成观察及正常保存；末 day37 请求7日，实际 raw53238024→53238336，推进312小时即13日后触发 harness RED，仍正常保存。全批从raw53237160到53238336共1176小时，**49个真实 calendar 日**。36是完整 bounded one-day 保存对数量，不是总实际日数；最后13日中没有逐日帧，不能制造13个单日 loop 成功或把 requested7当实际7。未重播已完成的时间推进。
+
+Root 已按全部真实落盘 calendar 日确认当前累计 **3917日 / resume764 / 2026-10-03增量669**。前一已存基线3868/h4831包含此前到达后的单独首围城日；本批只增加实际49日。仅按36个完整 bounded 单日对得到3904/resume751/Oct3增量656，是独立 loop 覆盖计数，不替代当前总数。纯文件消费和文档合并增加0日。
+
+末正常 pair为 **h5021 / raw53238336 / 91,105,707 B / SHA-256 `d6e9986ccf24fd85c853a08921cd4d200e2b279a33236a31619e8fc1ba88bab2`**。最终当帧 native revision164/public revision153 中，玩家 CUnit83886367仍在province2604，state=sieging/code3、route=[]/complete-empty、in_combat=false、retreating=false。同帧目标 **War16777231 / holding2400 / province2604 / FullSiege503316492** 仍由敌方30097占领；守方原生对侧占领holding仍17，没有17→16。
+
+末目标 current_work为 **9781290**、total_work **32500000**、remaining_work **22718710**，scale均 **100000**；native days_left **109**、breach_level0、native CanStartAssault=false。实际work变化已经观测，不能将ETA109保证为收复日期，也不能从这次work增长推定收复或围城终结。目标 rich 后态是最终同帧真实查询，未把13日 interval 前的值冒充末帧。完整 Q100000、原生revision/date及holding/occupation字段保留在 normal-siege-lane 的 CSV 和 `LATEST-ACTUAL-SIEGE-STATE.json`。
+
+当前有限能力为 **production-live bounded normal-siege observation/advance/save loop**：完整36个单日对具有实际观察/推进/保存，整批另有正常落盘的13日 RED interval。末 harness RED 仍是当前批次结果，consumer文档交付 GREEN 不改变它。保持首次max64请求 contact-horizon003 RED/advance未发/0日/h4827，以及旧 expected-date guard 在唯一首日推进成功后报 RED、独立新日期正常保存h4831的历史记录。不把0日失败、旧首日或本批49日重复累计。
+
+目标尚未收复，没有突击、围城结束、玩家战斗胜利、战争胜利或完整战争 OODA credit。外国战斗首次终结/撤退由平行 foreign-battle 专题独立记录，不将其因果归于玩家围城，也不因外国战斗证据索引另增保存日。exact .3、source fca9daf1aa517ca5a5c185cc2c0736287ad26847/g41及原普通战役绑定不变；后续实际推进与fresh terminal观察由Root分包记录。
+
+证据复用 [normal-siege-lane/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/stationary-siege-v39-second-batch-consumption/normal-siege-lane/ROOT-DELIVERY.json)、同目录 `NATIVE-SIEGE-OBSERVATION-APPEND.md`、`dayweekfields.md`、`SOURCE-PINS.json`、`daily-normal-pairs-army.csv`、`target-siege-occupation-rich.csv` 与 `all-holding-occupation-rich.csv`。本lane仅消费已闭合实证并交付两条现有专题 projection，未研究、重测、执行 SDK/游戏/state/window/Git 或修改共享源；canonical采用与commit/push由Root完成。

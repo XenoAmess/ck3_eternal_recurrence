@@ -1,5 +1,11 @@
 # .3 battle terminal：v35 实际序列化故障与定向修复
 
+## 2026-10-03T19:50 外国正常终结实际资格
+
+随后 **一次实际terminal查询 GREEN**、正常SDK关闭：journal **event18/latest20** 捕获外国Combat1577058305 **normal_result / terminal_date53238096 / phase3 / winner0**，attacker70766、defender30097、Result1493172226、wipe=false，ordered sides真实保持。当前query日期是raw53238336，终结事件日期另为53238096；prior与result对象已absent、province不含该combat，subject@2640 noactive/backlink，coordinator50331823的successor assignment_reopened，已观察真实正常终结分支，晋级有限 **production-live primitive**。journal内finalized_before=false是当时捕获的旧字段，不据此把当前写成仍active。battle_warscore为not_recorded_by_native/allnull、hard_loss_inputs=null，Robert不在双方，不授伤亡、玩家战分/胜利或完整战斗loop。一次dispatch后mailbox failure0/readytrue、exception0，无save/retry/rearm，增加0日；旧v37真实AV和v38 active/member实际资格保留。[独立真正terminal实际](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v39/actual-terminal-after-pursuit-v39-01/result.json)；[单次健康mailbox消费](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/v39-terminal-after-pursuit/faultstate/ROOT-DELIVERY.json)
+
+以下旧故障、static fixture、active/member证据保持原阶段事实。
+
 ## 2026-10-03T18:02 当前实际资格：v38 active lifecycle 与 foreign AI membership
 
 有限 `production-live primitive` 已在v38/PID107772/source `0ad923525ef899b836a823dfe983db49030789f2` 实机验收：一次terminal查询返回ready/available，Combat1577058305@2640为main/day4、`active_not_terminal`、winner−1/finalizedfalse、journal0/not_observed；subject251658381的真实CArmy167772260 及coordinator50331823、stack/subunit0/0、blockedbyactivecombattrue均实读。相邻快照date53236800保持，query后mailbox failure0/readytrue、exceptioncode0/image none/RVA null，SDK正常关闭，无save/retry/rearm。当前active phase_day与真实foreign helper路径已通过，正常/no-normal终结journal的date/day、winner、人物结果及完整终战loop仍未实测。[完整语义与pins](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/v38-terminal-fixed/semantics/ROOT-DELIVERY.json)；[post-query执行器状态](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/v38-terminal-fixed/faultstate/ROOT-DELIVERY.json)
@@ -102,3 +108,39 @@ CombatID、真实 subject，与 snapshot/transition 同步保存。战斗未结�
 实际记录：`2026-10-03T16:29:33+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
 
 交付回执：[v37-seh-location](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-casualty-outcomes/v36-terminal-live/ROOT-DELIVERY.json)。
+
+## 2026-10-03T19:43 v39：真实正常终结 journal 与战后状态
+
+本场外国战斗的正常终结查询已达 `production-live primitive`：Root唯一一次terminal请求返回
+ready/available，真实journal event18/normal_result、captured date/day、旧Combat删除及战后foreign AI
+membership均可读。相较v38 active baseline，这是自然终结后的真实增量；未验收no_normal_result分支，
+没有Robert参战、玩家胜利、数值伤亡或完整玩家战斗OODA信用。v35/v36/v37失败记录继续保留。
+
+实际目录：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v39/actual-terminal-after-pursuit-v39-01/`。
+result于2026-10-03T11:42:49.343645–11:43:04.603146 UTC完成GREEN，terminal_query_count1，
+无save/retry/rearm，normal_sdk_close=true。001/003相邻snapshot均native166/public2、date53238336 paused、
+Robert29829 alive/same episode；002绑定fresh revision2。diagnostics PID112516、exact .3/build-match/SHA匹配，
+after mailbox ready=true/failure0/exception none、published/completed126。读查询让history total5021→5022，
+日期与军事状态不变；这不是新玩家军事动作。
+
+完整逐字段值、ordered sides、subject身份和原始pins保留在本包 [ACTUAL-TERMINAL-SEMANTICS.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/v39-terminal-after-pursuit/semantics/ACTUAL-TERMINAL-SEMANTICS.json)。subject251658381@2640/CArmy167772260无active/backlink、blocked=false；native AI membership仍observed、coordinator50331823、stack0/subunit0，successor=subject_assignment_reopened、matching[]/selected null，没有继承战斗提交动作。
+
+phase3或敌军撤退本身不能证明正常终结；本次有observed journal与normal_result、captured winner/date，
+同时独立读取旧Combat移除、subject backlink清空，因而可确认已经结束。journal的finalized_before=false
+是捕获时的字段，不能反向覆盖这个真实终结证据。prior.result对象当前已经删除，也不妨碍被动journal
+保留当时ResultID1493172226及双方成员；不能把非空ResultID本身当胜利证据。
+
+攻击方70766的CUnits获本场外国战斗胜利。双方在Robert快照中都属于enemy：owner70766为war50331736
+enemy，owner30097/35357为war16777231 enemy；Robert军83886367不在捕获的两侧成员中，仍在2604
+sieging、in_combat=false。当前defender军50331920/83886484在2634退向2631/8754；这些是相邻快照的
+真实战后状态，不是本consumer执行的动作。subject251658381与473在2640 sieging；474在当前快照未列出，
+仅凭遗漏不能认定删除、伤亡或人物死亡。
+
+hard_loss_inputs与snapshot soldiers均null；wipe=false只记录非wipe，不能写零损失。
+battle_warscore状态not_recorded_by_native且WarID、row、delta及所有原生值均null；Robert独立战争总分
+（-35/0/0）不能冒充此战的战分变化。没有死亡、被俘、骑士或指挥官结果证据。本次真实闭合的是
+正常终结date/day投影、历史身份与removal、战后subject/foreign membership查询；其余能力保持既有边界。
+
+consumer交付：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/v39-terminal-after-pursuit/semantics/ROOT-DELIVERY.json`，
+附ACTUAL-INPUT-PINS、完整语义及日/周字段。仅消费Root已经完成的五份actual文件，没有SDK、重复测试、
+共享source/state/Git或窗口操作。Root继续既定军事主线，中央文档负责人统一topic与报告并记录commit/push。
