@@ -12576,6 +12576,10 @@ void RunConnectedSession(
             } else
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+            if (xar::ck3_12002::IsPlayerCountyConversionTaskActionPrivateStep12003(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::bridge::JsonUnsignedField(incoming.payload, "expected_revision", expected_revision);
+            } else
             if (xar::ck3_12002::IsPlayerClergyAppointmentPrivateStep12002(step)) {
               current_revision_allowed = true;
               xar::ck3_12002::PlayerClergyAppointmentRequest12002 request{};

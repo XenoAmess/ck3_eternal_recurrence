@@ -168,6 +168,12 @@ Environment BindCountyConversionImage12003(
 // or reassigned. The numeric core is called with a null GUI breakdown.
 bool ReadCountyConversion12003(const Environment &environment,
     std::uint64_t capture_epoch, Observation &output) noexcept;
+
+// Internal owning-thread action seam. Reuses the actual clergy registry and
+// definition lookup; addresses remain native and never enter the wire DTO.
+bool ReadCountyConversionCommandMaterial12003(const Environment &environment,
+    const Observation &current, const void *&conversion_type,
+    std::optional<std::uint16_t> &current_target_scope_tag) noexcept;
 std::string SerializeCountyConversion12003(const Observation &value);
 const char *CountyConversionFailureKey(Failure value) noexcept;
 

@@ -1,0 +1,324 @@
+{
+  "schema": "xar.ck3.county-conversion-command-12003-native-contract.v1",
+  "game_version": "1.20.0.3",
+  "steam_build": "25652598",
+  "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "source_head_read": "19b508ae4fa8e3ab09f4e8631fcf0340d69939c2",
+  "status": "research",
+  "live_execution_performed": false,
+  "command": {
+    "class": "CChangeCouncilTaskCommand",
+    "type_code": "0x2E4B",
+    "size": 80,
+    "alignment": 8,
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "uintptr_t",
+        "value": "module_base+0x476DC68",
+        "name": "primary_vtable"
+      },
+      {
+        "offset": "0x08",
+        "type": "uint8",
+        "value": 0,
+        "name": "flags"
+      },
+      {
+        "offset": "0x0C/0x10/0x14",
+        "type": "uint32[3]",
+        "value": [
+          0,
+          0,
+          0
+        ],
+        "name": "native_metadata"
+      },
+      {
+        "offset": "0x18",
+        "type": "uintptr_t",
+        "value": "module_base+0x476DC38",
+        "name": "secondary_vtable"
+      },
+      {
+        "offset": "0x20",
+        "type": "int32",
+        "value": "actual_current_active_task_full_generation_id",
+        "name": "old_task_full_id"
+      },
+      {
+        "offset": "0x28",
+        "type": "const TaskType*",
+        "value": "actual definition whose key equals task_conversion",
+        "name": "new_task_type"
+      },
+      {
+        "offset": "0x30",
+        "type": "int32",
+        "value": "actual current clergy incumbent full generation CharacterID",
+        "name": "incumbent"
+      },
+      {
+        "offset": "0x34",
+        "type": "int32",
+        "value": "actual played-character owner full generation CharacterID",
+        "name": "owner"
+      },
+      {
+        "offset": "0x38",
+        "type": "uint16",
+        "value": 8,
+        "name": "target_tag_Province"
+      },
+      {
+        "offset": "0x40",
+        "type": "int64",
+        "value": "sign extended actual candidate ProvinceID",
+        "name": "target_province"
+      },
+      {
+        "offset": "0x48",
+        "type": "uint8",
+        "value": 0,
+        "name": "scope_trailing_flag"
+      }
+    ],
+    "other_reserved_bytes": "zero initialized; no owned heap/string/vector/GUI fields"
+  },
+  "construction": {
+    "native_caller_rva": "0xCEFBF0",
+    "direct_construct_range": "0xCEFCD7..0xCEFD1D",
+    "caller_sha256": "3e3881df7712505a6ccce8c191cd2c24a109b396fd6bff60c84a0382c7509f74",
+    "no_op": "old type equals proposed type and current target Province equals proposed Province",
+    "old_progress_kind_zero": "direct typed construction and channel0x0E submit",
+    "old_progress_kind_nonzero": "vanilla replacement-confirmation UI, represented in typed contract by explicit replacement acceptance",
+    "scope_producer_rva": "0xCEFA80",
+    "scope_producer_semantics": "county type1 checks actual tag8 Province scopes via31ACEF0; no UI invoked by proposed provider"
+  },
+  "final_legality_reused": {
+    "rva": "0x2996690",
+    "full_function_sha256": "25c7109cf4f6a45c8c8629092bbe2b47c06550bb2972fb7c540bdf574d8dd3d5",
+    "canonical_file": "Z:/g35/ck3_autonomous_player/native_bridge/research/county_conversion_dispatch12003_abi.json",
+    "canonical_file_sha256": "4d989ac14f930f019fcf5be7aae6799c310e36df9eaf58d94d66c0aa3f24f736",
+    "new_predicate_research_or_tests": 0
+  },
+  "ownership_and_submit": {
+    "recommended_existing_helper": "xar::ck3_12002::SubmitCommandCopy(existing mapped .3 CommandBindings,&command,0x0E)",
+    "native_ui_submit_copy_rva": "0x9E16B0",
+    "primary_clone_slot": "0x40",
+    "clone_rva": "0x2996CB0",
+    "clone_full_function_sha256": "4b88c4c2fbb4bee34564211ea1ee974f82c9ba8207075806907fd6950476ea42",
+    "native_allocate_rva": "0x4223BB4",
+    "native_deleting_destructor_rva": "0x2996610",
+    "native_release_rva": "0x4223F64",
+    "command_manager_embedded_rva": "0x5CC1240",
+    "queue_owned_rva": "0x37F06F0",
+    "channel_flags": 14,
+    "queue_updates": "bit3 in channel makes native clone flags OR0x20, then manager metadata and ownership queue",
+    "source_value_lifetime": "caller owned stack value; never pass source to deleting destructor",
+    "clone_lifetime": "game allocation, native queue consumes owning pointer; existing helper destroys only residual native ownership",
+    "ack_scope": "queue accepted/rejected only, never task applied"
+  },
+  "execute": {
+    "secondary_this_offset": "0x18",
+    "secondary_execute_slot": "0x08",
+    "secondary_execute_rva": "0x2996640",
+    "actual_task_resolver": "registry5D1DEA0 with full generation match",
+    "apply_rva": "0x31B4000",
+    "apply_sha256": "9f733e919cf9a169914704c6d71cefcc409718f900228204e353f862b1dd2bcb",
+    "apply_signature": "void MS-x64(actual ActiveTask* RCX,const32byte TaskScopes* RDX,actual TaskType* R8)",
+    "known_sequence": [
+      "real Province target resolved",
+      "31B5180 old-task cleanup",
+      "write type+18 and scopes+40..5F",
+      "clear progress+20, status+38, extra+60",
+      "24D6040 county attach with actual task ID",
+      "31B6010 or31B4AE0 incumbent handling",
+      "31B5000"
+    ],
+    "task_id_note": "outer apply path neither allocates a new task nor writes+10 FullTaskID; independent after ID is read, same before/after ID is allowed",
+    "not_called_directly": "provider must submit genuine command, never call apply as a script-like bypass",
+    "unknown": "exact nested cancel/start scripted hook ordering; no new action gate inferred"
+  },
+  "public_request_proposal": {
+    "submit_step": "submit-player-county-conversion-task-private-v1",
+    "result_step": "query-player-county-conversion-task-result-private-v1",
+    "required": [
+      "action_id",
+      "expected_revision",
+      "target_county_title_id",
+      "expected_active_task_id",
+      "expected_incumbent_character_id",
+      "replace_existing_task"
+    ],
+    "implicit": [
+      "played_character owner",
+      "fixed task_conversion definition",
+      "candidate actual ProvinceID"
+    ],
+    "do_not_accept": [
+      "TaskType pointer",
+      "arbitrary task key",
+      "arbitrary owner",
+      "script effect"
+    ],
+    "same_target_status": "already_active_noop",
+    "submit_statuses": [
+      "not_submitted",
+      "queue_rejected",
+      "queued_verification_pending"
+    ]
+  },
+  "independent_readback": {
+    "producer": "fresh owning application-main mailbox transaction after submit; existing current clergy seat resolver and county current-state reader",
+    "existing_resolver": "religion_rite_governance12002_clergy.cpp::ResolveCurrentClergySeat12002",
+    "existing_current_reader": "ck3_12003_county_conversion.cpp::ReadCurrent/PublishCurrent",
+    "fields": [
+      "actual post ActiveTask full generation ID",
+      "actual task owner FullID+44",
+      "actual incumbent FullID+40",
+      "actual task type key from Type*+18",
+      "actual tag8+48",
+      "actual ProvinceID+50",
+      "independent County identity",
+      "progress+20/current progress kind",
+      "observed date",
+      "capture epoch"
+    ],
+    "assignment_material_predicate": "fresh actor and owner/role bindings match, actual task_conversion key and actual tag8 Province/County match requested candidate",
+    "do_not_require": [
+      "post task ID differs from pre task ID",
+      "date advance",
+      "immediate progress increment",
+      "immediate County Faith/Rite change"
+    ],
+    "long_term_conversion_separate": true
+  },
+  "native_evidence": [
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\county-task-command-native\\NATIVE-SPANS-0x2996640_0x50-0x2C45A80-0x2996610-0x2996CB0-0x37F06F0_0x100.json",
+      "sha256": "eebaa850cef9794a332cb1b8b32e02e7e7d48d5d273dac0d31a3def9dc725fb3",
+      "spans": [
+        {
+          "requested_rva": "0x2996640",
+          "start_rva": "0x2996640",
+          "end_rva": "0x2996690",
+          "size": 80,
+          "sha256": "27cef09ff0d984f06bf57906175410273ed2034044cc85698035ab1248ad5d7e",
+          "complete_pdata_entry": false
+        },
+        {
+          "requested_rva": "0x2c45a80",
+          "start_rva": "0x2c45a80",
+          "end_rva": "0x2c45f2f",
+          "size": 1199,
+          "sha256": "c3751c5a5447175e59a21db35ece0b4666e0067daba5e2944beedf700c5d7c4f",
+          "complete_pdata_entry": true
+        },
+        {
+          "requested_rva": "0x2996610",
+          "start_rva": "0x2996610",
+          "end_rva": "0x299663b",
+          "size": 43,
+          "sha256": "0845471e240a739e9fc9d1901b5fc709dcd625ce0b93a76c0241c4072535983f",
+          "complete_pdata_entry": true
+        },
+        {
+          "requested_rva": "0x2996cb0",
+          "start_rva": "0x2996cb0",
+          "end_rva": "0x2996d3e",
+          "size": 142,
+          "sha256": "4b88c4c2fbb4bee34564211ea1ee974f82c9ba8207075806907fd6950476ea42",
+          "complete_pdata_entry": true
+        },
+        {
+          "requested_rva": "0x37f06f0",
+          "start_rva": "0x37f06f0",
+          "end_rva": "0x37f07f0",
+          "size": 256,
+          "sha256": "3c5519441ea511e2f4f9bd8e3151bd2952d590b0021b7ddea0bf9a9dcff30d9c",
+          "complete_pdata_entry": false
+        }
+      ]
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\county-task-command-native\\NATIVE-SPANS-0x31B4000.json",
+      "sha256": "7bd25dead2a8b53c490d33253a7f4f068f8895b61ff56dbb890e3e0ee2367993",
+      "spans": [
+        {
+          "requested_rva": "0x31b4000",
+          "start_rva": "0x31b4000",
+          "end_rva": "0x31b4199",
+          "size": 409,
+          "sha256": "9f733e919cf9a169914704c6d71cefcc409718f900228204e353f862b1dd2bcb",
+          "complete_pdata_entry": true
+        }
+      ]
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\county-task-command-native\\NATIVE-SPANS-0xCEFA80_0x170-0x9E16B0-0x2996640_0x40-0x2996D50_0x60-0xCEFBF0.json",
+      "sha256": "49666bc3948c48e0c1b7a79346a4ee15975e3c14ba96ef1427c488c8e920082c",
+      "spans": [
+        {
+          "requested_rva": "0xcefa80",
+          "start_rva": "0xcefa80",
+          "end_rva": "0xcefbf0",
+          "size": 368,
+          "sha256": "ba13aa22bb5ecce035071656cf07839203efdbf618c67afdc8c16a902e8323c8",
+          "complete_pdata_entry": false
+        },
+        {
+          "requested_rva": "0x9e16b0",
+          "start_rva": "0x9e16b0",
+          "end_rva": "0x9e1728",
+          "size": 120,
+          "sha256": "5048d599b10a65e292fc7c179cf2516943fec8cbb30d29d73beea4844c828c18",
+          "complete_pdata_entry": true
+        },
+        {
+          "requested_rva": "0x2996640",
+          "start_rva": "0x2996640",
+          "end_rva": "0x2996680",
+          "size": 64,
+          "sha256": "c0759fc3c425c02fd9ed5b1df105a0e84aa3eb911aea15144c2d9a24627da363",
+          "complete_pdata_entry": false
+        },
+        {
+          "requested_rva": "0x2996d50",
+          "start_rva": "0x2996d50",
+          "end_rva": "0x2996db0",
+          "size": 96,
+          "sha256": "d96c4ebebfa576f1d30849f934f314d9bba5358b50a85c5869944de93a56d93b",
+          "complete_pdata_entry": false
+        },
+        {
+          "requested_rva": "0xcefbf0",
+          "start_rva": "0xcefbf0",
+          "end_rva": "0xcefe07",
+          "size": 535,
+          "sha256": "3e3881df7712505a6ccce8c191cd2c24a109b396fd6bff60c84a0382c7509f74",
+          "complete_pdata_entry": true
+        }
+      ]
+    }
+  ],
+  "current_boundaries": {
+    "native_action_production_implemented": false,
+    "native_action_registered": false,
+    "new_fixtures": 0,
+    "new_game_calls": 0,
+    "new_actions": 0,
+    "new_game_days": 0,
+    "new_g2_credit": 0,
+    "existing_v34_observations_reused": true,
+    "legacy11906_pending_steward_abi_not_reused_as_gate": true
+  },
+  "implementation_entry": {
+    "native_reuse": "export an internal conversion-input/current-task seam from existing county_conversion TU to reuse private TaskType/ReadCurrent, or provide exact equivalent with existing clergy Seat resolver; avoid decoding a normalized Python DTO as native pointers",
+    "action_provider": "new ck3_12003_county_conversion_action.hpp/.cpp, genuine80-byte command plus existing SubmitCommandCopy",
+    "mailbox": "new submit/result owning mailbox following existing ck3_12003_religion_conversion_action_mailbox.cpp source pattern",
+    "router": "register actual two native private steps in existing bridge dispatch; existing pattern source alone is not registration",
+    "python": "new typed transport/normalizer and registered submit/result MCP using same existing frame envelope",
+    "validation": "one new focused provider→mailbox→Python fixture; reuse old county/value/final-predicate GREEN, then ROOT combinationDLL and actual dispatch/result"
+  }
+}

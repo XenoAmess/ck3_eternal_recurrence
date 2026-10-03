@@ -3120,6 +3120,34 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def submit_county_conversion_task_private_v1(
+        self, *, expected_revision: int, expected_active_task_id: int,
+        expected_incumbent_character_id: int, province_id: int,
+        replace_existing_task: bool, action_id: str,
+        timeout_seconds: float = 30.0,
+    ) -> dict[str, object]:
+        from .county_conversion_task_private_action_v1 import submit_county_conversion_task_private_v1
+
+        return submit_county_conversion_task_private_v1(
+            self, expected_revision=expected_revision,
+            expected_active_task_id=expected_active_task_id,
+            expected_incumbent_character_id=expected_incumbent_character_id,
+            province_id=province_id, replace_existing_task=replace_existing_task,
+            action_id=action_id, timeout_seconds=timeout_seconds,
+        )
+
+    def query_county_conversion_task_result_private_v1(
+        self, *, expected_revision: int, submitted_request_id: str, action_id: str,
+        timeout_seconds: float = 30.0,
+    ) -> dict[str, object]:
+        from .county_conversion_task_private_action_v1 import query_county_conversion_task_result_private_v1
+
+        return query_county_conversion_task_result_private_v1(
+            self, expected_revision=expected_revision,
+            submitted_request_id=submitted_request_id, action_id=action_id,
+            timeout_seconds=timeout_seconds,
+        )
+
     def query_player_religion_conversion_outcome_private_v1(
         self, *, expected_revision: int, target_rite_id: int,
     ) -> dict[str, object]:

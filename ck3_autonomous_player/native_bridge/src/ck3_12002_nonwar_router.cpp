@@ -149,6 +149,7 @@ void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &out) noexcept 
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
   out.clergy = &ExecutePlayerClergyAppointmentMailbox12002;
+  out.county_conversion_task_action = &ExecutePlayerCountyConversionTaskActionMailbox12003;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
   out.religion_conversion = &ExecutePlayerReligionConversionTermsMailbox12002;
@@ -282,6 +283,7 @@ bool IsNonwarPrivateStep12002(std::string_view step) noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
   if (IsPlayerClergyAppointmentPrivateStep12002(step)) return true;
+  if (IsPlayerCountyConversionTaskActionPrivateStep12003(step)) return true;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
   if (IsPlayerReligionConversionTermsPrivateStep12002(step)) return true;
@@ -496,6 +498,9 @@ bool HandleNonwarPrivate12002(
           step, payload, request_id, serialized, failure);
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+    if (IsPlayerCountyConversionTaskActionPrivateStep12003(step))
+      return HandlePlayerCountyConversionTaskActionPrivate12003(state.county_conversion_task_action,
+          native, mailbox, published, revision, step, payload, request_id, serialized, failure);
     if (IsPlayerClergyAppointmentPrivateStep12002(step))
       return HandlePlayerClergyAppointmentPrivate12002(native, mailbox, published, revision,
           step, payload, request_id, serialized, failure);

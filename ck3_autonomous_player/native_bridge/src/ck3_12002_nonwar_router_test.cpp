@@ -22,6 +22,7 @@ std::size_t gift_calls = 0;
 std::size_t sway_calls = 0;
 std::size_t prisoner_calls = 0;
 std::size_t religion_calls = 0;
+std::size_t county_task_calls = 0;
 std::size_t fallback_calls = 0;
 std::size_t draft_groups_calls = 0;
 constexpr std::string_view draft_groups_step = "query-player-religion-draft-groups-v1";
@@ -356,6 +357,26 @@ bool HandlePlayerRiteGovernancePrivate12002(const game::GameAdapter &adapter,
 #endif
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+bool IsPlayerCountyConversionTaskActionPrivateStep12003(std::string_view step) noexcept {
+  return step == kPlayerCountyConversionTaskSubmitStep12003 ||
+      step == kPlayerCountyConversionTaskResultStep12003;
+}
+bool ExecutePlayerCountyConversionTaskActionMailbox12003(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerCountyConversionTaskActionPrivate12003(
+    PlayerCountyConversionTaskActionMailboxState12003 &state,
+    const game::GameAdapter &adapter, ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  CheckForwarded(adapter, mailbox, published, revision, step, payload,
+                 request_id, serialized, failure);
+  Check(&state == &expected.state->county_conversion_task_action,
+        "county task action forwards persistent ledger identity");
+  ++county_task_calls;
+  serialized = "county-task-action-forwarded";
+  return true;
+}
 bool IsPlayerClergyAppointmentPrivateStep12002(std::string_view step) noexcept {
   return step == readonly_steps[1];
 }
@@ -372,6 +393,19 @@ bool HandlePlayerClergyAppointmentPrivate12002(const game::GameAdapter &adapter,
 #endif
 
 #if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+bool IsPlayerReligionConversionActionPrivateStep12003(std::string_view step) noexcept {
+  return step == kPlayerReligionConversionSubmitStep12003 ||
+      step == kPlayerReligionConversionResultStep12003;
+}
+bool ExecutePlayerReligionConversionActionMailbox12003(void *,
+    const ck3_11906::MainThreadExecutionStampV1 &) noexcept { return false; }
+bool HandlePlayerReligionConversionActionPrivate12003(
+    PlayerReligionConversionActionMailboxState12003 &,
+    const game::GameAdapter &, ck3_11906::MainThreadQueryMailboxV1 &,
+    const game::Snapshot &, std::uint64_t, std::string_view,
+    std::string_view, std::string_view, std::string &, std::string &) noexcept {
+  return false;
+}
 bool IsPlayerReligionConversionTermsPrivateStep12002(std::string_view step) noexcept {
   return step == readonly_steps[2];
 }
@@ -1062,8 +1096,55 @@ bool HandlePlayerHolyOrderSelectedTitleTermsPrivate12003(
   return 0;
 }
 
+[[maybe_unused]] int RunCountyTaskRouterIncrement() {
+  using namespace xar;
+  using namespace xar::ck3_12002;
+  RouterAdapter adapter;
+  ck3_11906::MainThreadQueryMailboxV1 mailbox{};
+  game::Snapshot published{};
+  published.date_raw = 53236608;
+  published.played_character_id = 29829;
+  NonwarPrivateState12002 state{};
+  state.faction_query_sequence = 42;
+  NonwarMailboxExecutorsV1 executors{};
+  PopulateNonwarRouterExecutors12002(executors);
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+  constexpr bool enabled = true;
+  Check(executors.county_conversion_task_action == &ExecutePlayerCountyConversionTaskActionMailbox12003,
+        "county action exact callback registered");
+#else
+  constexpr bool enabled = false;
+  Check(executors.county_conversion_task_action == nullptr,
+        "disabled county action callback absent");
+#endif
+  constexpr std::array<std::string_view, 2> steps{
+      "county-conversion-task-submit-private-v1", "county-conversion-task-result-private-v1"};
+  for (const auto step : steps) {
+    Check(IsNonwarPrivateStep12002(step) == enabled, "county action exact selector visibility");
+    const std::string request_id = "county-router-" + std::to_string(checks);
+    constexpr std::string_view payload = R"json({"action_id":"county-fixture","expected_revision":916})json";
+    expected = {&adapter, &mailbox, &published, &state, 916, step, payload, request_id};
+    std::string serialized = "stale-output", failure = "stale-failure";
+    Check(HandleNonwarPrivate12002(adapter, mailbox, published, 916,
+        step, payload, request_id, state, serialized, failure) == enabled,
+        "county action canonical selector forwards once");
+    Check(serialized == (enabled ? "county-task-action-forwarded" : ""),
+          "county action result returned unchanged");
+    Check(failure.empty(), "county action success failure returned unchanged");
+    Check(state.faction_query_sequence == 42, "unrelated worker ledger retained");
+    Check(!IsNonwarPrivateStep12002(std::string(step) + "-unregistered"),
+          "county action suffix alias not admitted");
+  }
+  Check(county_task_calls == (enabled ? 2u : 0u), "exact county submit/result routing count");
+  std::cout << "{\"status\":\"GREEN\",\"scope\":\"county task route increment\",\"checks\":"
+            << checks << ",\"old_router_matrix_reexecuted\":false,\"live_verified\":false}\n";
+  return 0;
+}
+
 int main() {
-#if defined(XAR_G2_ROUTER_INCREMENT_SWAY_OPINION_ONLY)
+#if defined(XAR_G2_ROUTER_INCREMENT_COUNTY_TASK_ACTION_ONLY)
+  return RunCountyTaskRouterIncrement();
+#elif defined(XAR_G2_ROUTER_INCREMENT_SWAY_OPINION_ONLY)
   return RunSwayOpinionRouterIncrement();
 #elif defined(XAR_G2_ROUTER_INCREMENT_AI_REFORM_INPUTS_ONLY)
   return RunAIReformInputsRouterIncrement();

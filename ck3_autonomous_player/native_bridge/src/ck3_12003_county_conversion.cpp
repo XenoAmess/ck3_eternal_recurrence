@@ -738,6 +738,32 @@ bool ReadCountyConversion12003(const Environment &e, std::uint64_t epoch,
   }
 }
 
+bool ReadCountyConversionCommandMaterial12003(const Environment &e,
+    const Observation &observation, const void *&type,
+    std::optional<std::uint16_t> &scope_tag) noexcept {
+  type = nullptr; scope_tag.reset();
+  try {
+    CurrentState current{};
+    std::uint16_t tag = 0;
+    if (!observation.available || !observation.active_task_id ||
+        !observation.incumbent_character_id ||
+        ReadCurrent(e, observation.owner_character_id, current) != Failure::none ||
+        !current.seat.task || !current.seat.incumbent ||
+        current.seat.task_id != *observation.active_task_id ||
+        current.seat.incumbent_character_id != *observation.incumbent_character_id ||
+        current.key != observation.current_task_key ||
+        current.province != observation.current_target_province_id ||
+        current.county_title != observation.current_target_county_title_id ||
+        !TaskType(e, current.seat, type) ||
+        !At(e, current.seat.task, 0x48, tag)) {
+      type = nullptr;
+      return false;
+    }
+    scope_tag = tag;
+    return true;
+  } catch (...) { type = nullptr; scope_tag.reset(); return false; }
+}
+
 const char *CountyConversionFailureKey(Failure failure) noexcept {
   switch (failure) {
   case Failure::none: return "none";

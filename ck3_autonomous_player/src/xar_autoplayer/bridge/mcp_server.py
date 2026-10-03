@@ -1749,6 +1749,31 @@ def create_server(
             """Read native candidate appointment and reassignment observations."""
             return driver.query_player_clergy_appointment_private_v1(expected_revision=expected_revision, candidate_character_id=candidate_character_id)
 
+        @server.tool()
+        def ck3_submit_county_conversion_task(
+            expected_revision: int, expected_active_task_id: int,
+            expected_incumbent_character_id: int, province_id: int,
+            replace_existing_task: bool, action_id: str,
+        ) -> dict[str, object]:
+            """Queue one selected conversion task; verify its actual assignment separately."""
+            return service.submit_county_conversion_task_private_v1(
+                expected_revision=expected_revision,
+                expected_active_task_id=expected_active_task_id,
+                expected_incumbent_character_id=expected_incumbent_character_id,
+                province_id=province_id, replace_existing_task=replace_existing_task,
+                action_id=action_id,
+            )
+
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_county_conversion_task_result(
+            expected_revision: int, submitted_request_id: str, action_id: str,
+        ) -> dict[str, object]:
+            """Read current native task assignment for the retained submitted request."""
+            return service.query_county_conversion_task_result_private_v1(
+                expected_revision=expected_revision,
+                submitted_request_id=submitted_request_id, action_id=action_id,
+            )
+
     if getattr(driver, "allow_private_player_rite_members_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_rite_members_v1(

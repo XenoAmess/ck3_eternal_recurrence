@@ -222,3 +222,74 @@ flowchart TD
 生产实现沿现有`ck3_query_player_clergy_appointment_v1`的`county_conversion`子树增加可选`task_dispatch`；没有新增MCP、product flag、SDK参数或生产translation unit。exact .3 binder启用2996690 final validator；旧离线fixture默认不启用扩展，因此旧case无需重跑。每个候选调用一次原生final validator，发布真实bool、已在同一县执行相同任务与替换现有任务前置。`task_dispatch.status=available`表示完整候选的最终资格均读取成功，`eligibility_inputs_complete=true`与县顶层`action_eligibility_complete=true`同步；真实nativefalse仍是可用拒绝。getter缺失/读取失败仅使该扩展unavailable、不清空已闭合的县候选和月率。任务wide shown/valid为false时，已知无可派遣候选而非资格unknown。Python保留有/无value_inputs与task_dispatch的旧形状兼容，完整映射原生真假。
 
 独占`v35-dispatch-attempt-01/RESULT.json`首次 **GREEN**：MSVC `/O2 /W4 /WX`，**4新case / 14 C++运行断言 / 4实际production reader→serializer→Python normalizer JSON**。case覆盖目标有效但命令拒绝、native true且当前已在同县（no-op/无需替换）、新getter缺失时base查询可用、task-wide hidden已知阻点。旧7case county矩阵、5case value矩阵和任何v33/v34 actual帧均未重跑。没有整DLL构建、SDK/pipe、窗口、游戏、Git mutation、动作、游戏日或G2 credit；新扩展 **static-ready**，实际Robert最终dispatch bool仍等待ROOT组合native与paused查询。typed command构造/submit/执行后task-target验证尚未实现，不把本次输入完整称为完整改宗OODA。
+
+## 2026-10-03：县改宗 typed 命令构造、玩家队列与独立结果
+
+本节为 exact CK3 **1.20.0.3 / Steam25652598** 离线原生研究；EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。复用已闭合的县候选、TaskType 和 `CChangeCouncilTaskCommand` final validator `2996690`；不重跑县/价值/资格矩阵，也未连接 CK3、SDK、pipe 或窗口。读取实现基线为 `Z:/g35` commit `19b508ae4fa8e3ab09f4e8631fcf0340d69939c2`。必要性是：只读最终资格已施工，但尚无把可派遣候选交给原生玩家命令队列并读回实际任务的动作。完整 ABI、字节证据、研究方案、图和交付回执位于 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/county-task-command-native/`。
+
+### 原生生产与提交链
+
+`StartCouncilTaskIn` 的反射 callback `CEFFD0` 到达 `CEFBF0`。此处实际参数含新 TaskType、目标 Province 与当前 ActiveTask。相同 type 与相同目标先返回 no-op；其他请求依据**旧** TaskType 的 `+54 progress_kind` 分支：0 直接构造命令，非 0 建立原版中止/替换确认对象。这个确认是任务进度机会成本的 UI 流程；typed action 可以用明确的 `replace_existing_task=true` 表示接受替换，随后使用同一命令格式与 final validator，无需建立窗口。当前 v34 已观测的 `task_religious_relations` 为 infinite/progress_kind 0，进入直接分支；未来帧须重新读取，不固化这个旧事实。
+
+`CEFBF0` 的 `CEFCD7–CEFD1D` 确证完整命令值：
+
+| Offset | 类型 / 实际生产值 |
+|---|---|
+| `00` | primary vtable `module+476DC68` |
+| `08` | flags byte 0 |
+| `0C/10/14` | 三个原生命令 metadata uint32 均 0 |
+| `18` | secondary vtable `module+476DC38` |
+| `20` | 旧 ActiveTask **完整 generation ID**，不是 TaskType index |
+| `28` | 从原生定义数据库取得的 `task_conversion` TaskType* |
+| `30/34` | incumbent / owner 完整 CharacterID |
+| `38` | target tag uint16 8（Province） |
+| `40` | sign-extended ProvinceID int64 |
+| `48` | scopes trailing flag byte 0，其余保留区零初始化 |
+
+对象为 80 bytes、8-byte 对齐。该命令不拥有字符串、vector、GUI pointer 或额外堆对象；新 TaskType 为当前 exact-build 的定义对象。`CEFA80` 对 county 类型以 `31ACEF0(type,scopes,nullptr)` 检查实际 Province scopes；现有县 final validator 已再次覆盖目标与角色最终资格，因此 action 可以直接构造同一 scopes，调用 `2996690` 后只提交一次，不能用 CanReassign 的真假取代最终派遣 bool。
+
+真实 UI caller 用 channel **`0x0E`** 调用 `9E16B0`。后者先经 primary vtable `+40` 调用 clone `2996CB0`，由游戏 allocator 分配 80 bytes 并复制 flags/metadata/TaskID/type/scopes；再把 clone ownership 移交给嵌入式 manager **`module+5CC1240`** 的 **`37F06F0`**。manager 在 channel bit 3 为 1 时为 clone 置原生 flags `0x20`，更新自身 metadata 后排队。其 true/false 仅表示队列接收/拒绝。已有 `ck3_12002_commands.cpp::SubmitCommandCopy` 完整复现 clone、ownership move、queue 与剩余 native deleting destructor；.3 adapter 已按已审阅 .2/.3 对应复用该绑定。新县动作应复用它与 channel `0x0E`，无需调用 `CEFBF0`、GUI callback、脚本 effect 或内部 apply 函数。
+
+### 实际执行与任务身份
+
+secondary vtable `+08` 为 `2996640`，RCX 是命令对象 `+18`。该函数完整解析旧 FullTaskID，从 secondary `+10` 取新 type、从 `+18` 取 scopes，tailcall **`31B4000(actual ActiveTask*,scopes,newType*)`**。`31B4000` 首先确认 county target 能解析成真正 Province，然后调用旧任务清理 `31B5180`；在同一 task 对象上写 type `+18` 和 scopes `+40..5F`，归零进度 `+20`、状态 byte `+38` 和 `+60` 字段。county 分支把实际 task ID 交给 county 挂载函数 `24D6040`，随后走 incumbent 处理与 `31B5000`。
+
+该外层执行路径没有重新分配 ActiveTask 或写它的 `+10 FullTaskID`；成功结果**不能要求 task ID 一定变化**。结果必须从 registry 重新解析执行后的实际 FullTaskID，再读 task owner `+44`、incumbent `+40`、type `+18` 的真实 key、scope tag `+48` 与实际 ProvinceID `+50`；允许 ID 与提交前相同。内部旧取消 hook / 新开始 hook 的精确脚本调用时序未在本包展开，继续画 unknown；它不阻止以真实 task-target 读取完成一次派遣结果验证。不得直接调用 `31B4000` 绕过原生命令队列。
+
+现有 `ResolveCurrentClergySeat12002` 已从当前玩家 landed task-ID vector 完整解析 `councillor_court_chaplain` 的 registry task，检查 owner、incumbent 和完整 ID；`ck3_12003_county_conversion.cpp::ReadCurrent/PublishCurrent` 已发布 actual FullTaskID、任务 key、incumbent、current target Province/County、进度。可以抽取/复用该 owning-thread observer 供 action 的 before 和独立 result，避免新建第二份角色枚举或伪 task。结果形状应明确保留 owner FullID，或者把现有 clergy 上层实际 owner context 与 county 子树一同返回。
+
+### 最小 typed action 契约与施工入口
+
+建议 native step `submit-player-county-conversion-task-private-v1` 与独立结果 step `query-player-county-conversion-task-result-private-v1`，对应一个提交 MCP 和一个只读结果 MCP。请求仅含 `action_id`、fresh `expected_revision`、`target_county_title_id`、当前实际 `expected_active_task_id`、当前实际 `expected_incumbent_character_id` 和 `replace_existing_task`；actor 从当前真实 played character 获取，task 固定 `task_conversion`，不能由请求提供任意 TaskType pointer、任务 key、owner 或脚本。target Province 从当前真实候选读取，不能由 county title ID 猜算。
+
+原有 mailbox 对 revision、paused owning application-main frame 和 played actor 的绑定直接复用；final bool false 是可用拒绝。旧 task/type/incumbent/target 与 request 绑定不同则返回当前真实失配，same task/same Province 为 no-op；非 no-op 且 policy 未接受替换则返回 replacement_required。通过后构造一次上表命令，调用 `SubmitCommandCopy` 一次。ACK 只发布 `queued_verification_pending` / `queue_rejected` / `not_submitted` / `already_active_noop`，记录 before native epoch、FullTaskID、owner、incumbent、task key、target、progress 和 native final bool。
+
+结果查询使用**新的已完成 owning mailbox 事务**，与原提交 request/action ID 关联，从上述真实 observer 读取 after，比较同一玩家 owner、实际 incumbent、`task_conversion`、tag8 与目标 Province/County，并保留执行后的实际 FullTaskID、进度及日期。匹配可标 `task_assignment_material_observed`；仅 ACK 或未处理队列时仍 pending。派遣成功不等于该县已经改宗，也不要求日期推进或 percentage 立即增加；县 Faith/Rite 的长期改变须随后由现有 county readback 与自然运行单独验证。
+
+具体落点：新增轻量 `.3 county_conversion_action` 文件使用已存在县 Environment/Seat/TaskType 接线；新增 owning mailbox 按 `ck3_12003_religion_conversion_action_mailbox.cpp` 的 submit/result 模式；在当前 bridge 私有 router 注册这两个 step，Python transport/normalizer/MCP 按同一 envelope 接线；CMake 把实际新 TU 纳入现有 clergy/religion feature 组。旧 `steward_develop_county_action_v1` 的 DTO/收据可以参考，但其 1.19 专用 binder 与历史未认证状态不得直接沿用。当前已有 paid-religion action 文件只是可复用的源模式，不能据此宣称县动作已注册或可执行。
+
+```mermaid
+flowchart TD
+    Q[Fresh existing clergy/county query: true final bool] --> B[Real current FullTaskID / conversion Type / incumbent owner Province scopes]
+    B --> V[2996690 final validator]
+    V --> N{same task + same Province?}
+    N -- yes --> X[already active no-op]
+    N -- no, policy accepts replacement --> C[80-byte command / flags0 / both native vtables]
+    C --> S[SubmitCommandCopy / clone2996CB0 / channel0x0E]
+    S --> M[37F06F0 native manager owns clone / queue ACK]
+    M --> E[secondary2996640 / actual ActiveTask / 31B4000 writes type + scopes]
+    E --> O[Fresh registry + current clergy seat / actual owner incumbent FullTaskID type Province]
+    O -. action implementation + Robert actual receipt pending .-> R[task_assignment_material_observed]
+    E -. exact script hook internals unexpanded .-> H[old cancel / new start hook order unknown]
+    R -. natural monthly progress and county Faith/Rite change later .-> L[Full conversion outcome]
+```
+
+状态为 **research**：本包 construction/submit/apply ABI 静态闭合，生产动作未实现、未编译、未注册，actual0、动作0、游戏日0、G2 credit0。计划与图经 `native_research_plan.py check/render` 检查文件结构与所声明证据，不把该检查当作语义或实机验收。后续只需新增动作 producer→mailbox→Python 的一次 focused fixture与新的组合 DLL，并由 ROOT 对同一 Robert 29829 原 episode 做一次真实 dispatch/readback；既有县候选、价值和 final predicate GREEN 直接复用。
+
+## 2026-10-03T14:51 接续源码采用
+
+v35五县最终native许可皆true、旧ActiveTaskFullID7162/owner29829/incumbent56513，剩余缺口是实际操作。本包按已落盘exact .3 80字节CChangeCouncilTaskCommand→native clone→owned SubmitCommandCopy channel14提交，重用当前clergy/type observer，独立读取真实task type/scopes/owner/incumbent/province/county；执行原对象允许FullTaskID相同。有限progress替换显式携带replace_existing_task，派遣不代表县已经改宗。10TU core严格/O2+8cases12checks、registeredMCP到实际driver/normalizer16checks、生产flags6TU、router14/32聚焦GREEN；两处真实mailbox绑定遗漏在实机前修复。既有clergypermit/flags重用，下一组合DLL一次实际派遣及结果验证。
+
+实际记录：`2026-10-03T14:51:35+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
+
+交付回执：[county-conversion-native-task-action-adoption](Z:\ck3_mod_rewrite_process_assets\g2-resume-20261003\county-task-command-provider\ROOT-DELIVERY.json)。

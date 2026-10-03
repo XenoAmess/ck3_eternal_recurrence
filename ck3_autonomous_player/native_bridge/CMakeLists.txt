@@ -873,7 +873,10 @@ if(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_clergy.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_clergy_mailbox.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_county_conversion.cpp")
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_county_conversion.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_county_conversion_task_action_v1.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_county_conversion_task_action_serializer.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_county_conversion_task_action_mailbox.cpp")
 endif()
 if(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
@@ -2314,6 +2317,26 @@ if(BUILD_TESTING)
     add_test(NAME ${router_target} COMMAND ${router_target})
   endforeach()
 
+  foreach(county_router_variant IN ITEMS default clergy)
+    set(county_router_target "xar_ck3_12003_county_task_router_${county_router_variant}_test")
+    add_executable(${county_router_target}
+      src/ck3_12002_nonwar_router.cpp
+      src/ck3_12003_abi_profile.cpp
+      src/ck3_12002_nonwar_router_test.cpp)
+    target_link_libraries(${county_router_target} PRIVATE xar_bridge_protocol)
+    target_include_directories(${county_router_target} PRIVATE include src)
+    target_compile_definitions(${county_router_target} PRIVATE
+      XAR_G2_ROUTER_INCREMENT_COUNTY_TASK_ACTION_ONLY=1)
+    if(county_router_variant STREQUAL "clergy")
+      target_compile_definitions(${county_router_target} PRIVATE
+        XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1=1)
+    endif()
+    if(MSVC)
+      target_compile_options(${county_router_target} PRIVATE /W4 /WX /permissive- /EHsc /utf-8)
+    endif()
+    add_test(NAME ${county_router_target} COMMAND ${county_router_target})
+  endforeach()
+
   if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
     file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/religion-mailbox-wire")
     file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/repentance-mailbox-wire")
@@ -2680,6 +2703,28 @@ if(BUILD_TESTING)
     endif()
     add_test(NAME xar_ck3_12003_county_conversion_dispatch_test
       COMMAND xar_ck3_12003_county_conversion_dispatch_test "${CMAKE_BINARY_DIR}/county-conversion-dispatch")
+
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/county-conversion-task-action")
+    add_executable(xar_ck3_12003_county_conversion_task_action_v1_test
+      src/ck3_12002.cpp
+      src/ck3_12002_commands.cpp
+      src/ck3_12002_council_candidates.cpp
+      src/council_composition_candidates_public_v1.cpp
+      src/council_composition_candidates_public_v1_serializer.cpp
+      src/religion_rite_governance12002_clergy.cpp
+      src/ck3_12003_county_conversion.cpp
+      src/ck3_12003_county_conversion_task_action_v1.cpp
+      src/ck3_12003_county_conversion_task_action_serializer.cpp
+      src/ck3_12003_county_conversion_task_action_v1_test.cpp)
+    target_include_directories(xar_ck3_12003_county_conversion_task_action_v1_test PRIVATE include)
+    target_link_libraries(xar_ck3_12003_county_conversion_task_action_v1_test PRIVATE xar_bridge_protocol user32)
+    if(MSVC)
+      target_compile_options(xar_ck3_12003_county_conversion_task_action_v1_test PRIVATE
+        /O2 /UNDEBUG /W4 /WX /Gy /permissive- /EHsc /utf-8)
+      target_link_options(xar_ck3_12003_county_conversion_task_action_v1_test PRIVATE /OPT:REF)
+    endif()
+    add_test(NAME xar_ck3_12003_county_conversion_task_action_v1_test
+      COMMAND xar_ck3_12003_county_conversion_task_action_v1_test "${CMAKE_BINARY_DIR}/county-conversion-task-action")
   endif()
 
   if(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)

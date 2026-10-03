@@ -45,6 +45,7 @@ struct NonwarMailboxExecutorsV1 {
   ck3_11906::MainThreadQueryExecutorV1 holy_order_selected_title_terms = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 rite_governance = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 clergy = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 county_conversion_task_action = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 religion_conversion = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 religion_conversion_action = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 religion_doctrines = nullptr;

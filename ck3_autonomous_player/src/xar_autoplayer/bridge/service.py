@@ -548,6 +548,33 @@ class GameplayBridgeService:
         return submit(expected_revision=expected_revision, war_id=war_id,
                       recipient_character_id=recipient_character_id)
 
+    def submit_county_conversion_task_private_v1(
+        self, *, expected_revision: int, expected_active_task_id: int,
+        expected_incumbent_character_id: int, province_id: int,
+        replace_existing_task: bool, action_id: str,
+    ) -> dict[str, object]:
+        """Queue one selected county task; its ACK does not verify assignment."""
+        submit = getattr(self.driver, "submit_county_conversion_task_private_v1", None)
+        if not callable(submit):
+            raise UnsupportedStepError("selected backend cannot submit county conversion tasks")
+        return submit(
+            expected_revision=expected_revision,
+            expected_active_task_id=expected_active_task_id,
+            expected_incumbent_character_id=expected_incumbent_character_id,
+            province_id=province_id, replace_existing_task=replace_existing_task,
+            action_id=action_id,
+        )
+
+    def query_county_conversion_task_result_private_v1(
+        self, *, expected_revision: int, submitted_request_id: str, action_id: str,
+    ) -> dict[str, object]:
+        """Read the task actually retained by the native player and incumbent."""
+        read = getattr(self.driver, "query_county_conversion_task_result_private_v1", None)
+        if not callable(read):
+            raise UnsupportedStepError("selected backend cannot read county conversion task results")
+        return read(expected_revision=expected_revision,
+                    submitted_request_id=submitted_request_id, action_id=action_id)
+
     def capabilities(self) -> dict[str, object]:
         return self.driver.capabilities()
 
