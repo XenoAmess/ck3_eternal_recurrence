@@ -881,6 +881,157 @@ def reuse_render(args):
           "narration": ref(audio), "human_signoff": "not-provided"})
 
 
+def encoded_chunk_reuse(run, timeline, edit):
+    """Validate explicitly frozen old chunks; never guess changed picture parity."""
+    import ast
+    plan = read(Path(run) / "sources/live-source.json").get("reuse_encoded_chunks")
+    require(isinstance(plan, dict) and plan.get("schema") == "ck3.episode03.encoded-chunk-reuse/v1",
+            "Reuse requires its explicit frozen live-source plan")
+    previous = Path(plan["previous_run"]).resolve()
+    require(previous != Path(run).resolve(), "Reuse must name an immutable earlier run")
+    verified = {}
+    def checked(pin):
+        path = str(Path(pin["path"]).resolve()).casefold()
+        identity = (pin["bytes"], pin["sha256"].upper())
+        require(path not in verified or verified[path][0] == identity, "Conflicting reuse pin for one resolved path")
+        if path not in verified:
+            verified[path] = (identity, exact(pin))
+        return verified[path][1]
+    old_timeline = read(checked(plan["timeline"])["path"])
+    old_edit = read(checked(plan["edit"])["path"])
+    old_fonts = read(checked(plan["fonts"])["path"])
+    require(read(Path(run) / "fonts.json") == old_fonts, "Reuse font policy changed")
+    for pin in pins(old_fonts):
+        checked(pin)
+    require((timeline["voice"], timeline["rate"], timeline["fps"], timeline["width"], timeline["height"]) ==
+            (old_timeline["voice"], old_timeline["rate"], old_timeline["fps"], old_timeline["width"], old_timeline["height"]),
+            "Reuse voice, frame clock or output dimensions changed")
+    historical = read(checked(plan["input_freeze"])["path"])
+    old_script = next(pin for pin in historical["scripts"] if Path(pin["path"]).name == "production.py")
+    preserved_script = previous / "sources" / (Path(old_script["path"]).parent.name + "-production.py")
+    require(ref(preserved_script)["sha256"] == old_script["sha256"], "Historical producer snapshot differs")
+    old_tree, current_tree = ast.parse(preserved_script.read_text(encoding="utf-8")), ast.parse(Path(__file__).read_text(encoding="utf-8"))
+    for name in ("render_native_chunk", "native_plate", "_native_ass_text", "_frame_ass_timestamp"):
+        before = next(n for n in old_tree.body if isinstance(n, ast.FunctionDef) and n.name == name)
+        after = next(n for n in current_tree.body if isinstance(n, ast.FunctionDef) and n.name == name)
+        require(ast.dump(before, include_attributes=False) == ast.dump(after, include_attributes=False),
+                "Reuse picture/subtitle rendering code changed: " + name)
+    current_scripts = read(Path(run) / "input-freeze.json")["scripts"]
+    for old in historical["scripts"]:
+        if Path(old["path"]).name in ("production.py", "composer.py"):
+            continue
+        candidates = [p for p in current_scripts if Path(p["path"]).name == Path(old["path"]).name]
+        require(len(candidates) == 1 and candidates[0]["bytes"] == old["bytes"] and
+                candidates[0]["sha256"] == old["sha256"], "Reuse legacy renderer/palette source changed")
+        checked(candidates[0])
+    old_lookup = {c["id"]: c for c in old_timeline["chapters"]}
+    new_lookup = {c["id"]: c for c in timeline["chapters"]}
+    producer, _ = _legacy(run)
+    def picture_signature(shot):
+        fields = ("kind", "source_binding", "start", "source_duration", "source_time_base", "viewport_xywh",
+                  "source_crop_xyxy", "fitted_source_xywh", "presentation")
+        signature = {key: shot.get(key) for key in fields}
+        if signature["source_binding"]:
+            signature["source_binding"] = {**signature["source_binding"],
+                "path": str(Path(signature["source_binding"]["path"]).resolve())}
+        for key in ("plate", "hold_label", "rendered_image"):
+            if shot.get(key):
+                checked(shot[key])
+                signature[key] = {field: shot[key][field] for field in ("bytes", "sha256")}
+        if shot.get("source_binding"):
+            checked(shot["source_binding"])
+        consumed = shot.get("rendered_image") if shot["kind"] == "native-still" else shot.get("source_binding")
+        require(consumed is not None and str(Path(shot["image"]).resolve()).casefold() ==
+                str(Path(consumed["path"]).resolve()).casefold(), "Reuse consumed image differs from its verified pin")
+        return signature
+    reused, evidence, seen = {}, [], set()
+    for selected in plan["chunks"]:
+        chapter_id, keys = selected["chapter_id"], selected["cue_keys"]
+        require(keys and chapter_id in new_lookup and chapter_id in old_lookup, "Reuse chapter is absent")
+        new_chapter, old_chapter = new_lookup[chapter_id], old_lookup[chapter_id]
+        all_new_keys = [cue["key"] for cue in new_chapter["utterances"]]
+        require(keys[0] in all_new_keys, "Reuse first cue disappeared")
+        first = all_new_keys.index(keys[0])
+        require(all_new_keys[first:first + len(keys)] == keys, "Reuse chunk was split or reordered by insertion")
+        new_items = new_chapter["utterances"][first:first + len(keys)]
+        old_items = [next(cue for cue in old_chapter["utterances"] if cue["key"] == key) for key in keys]
+        old_receipt = read(checked(selected["visual_receipt"])["path"])
+        require([cue["key"] for cue in old_receipt["cues"]] == keys, "Reuse cue vector differs from original receipt")
+        checked(selected["picture"])
+        require(selected["picture"] == old_receipt["output"], "Reuse encoded picture differs from its source receipt")
+        for before, after in zip(old_items, new_items):
+            require(not seen.intersection((after["key"],)), "Reuse selected a cue twice")
+            seen.add(after["key"])
+            for field in ("id", "key", "zh", "en", "duration_frames", "audio_contract", "voice", "rate", "prepared_pcm_samples", "claim_ids", "shot_ids",
+                          "primary_shot_id", "facts", "live_fact_bindings", "research_source_ids", "conditional", "evidence_level"):
+                require(before.get(field) == after.get(field), "Reuse cue text/audio contract changed: " + field)
+            require(before["local_start_frame"] - old_items[0]["local_start_frame"] ==
+                    after["local_start_frame"] - new_items[0]["local_start_frame"], "Reuse local frame spacing changed")
+            for cue in (before, after):
+                checked(cue["tts_trimmed"])
+            require(before["tts_trimmed"] == after["tts_trimmed"], "Reuse original PCM bytes or path changed")
+            require(picture_signature(old_edit["utterances"][before["key"]]) ==
+                    picture_signature(edit["utterances"][after["key"]]), "Reuse source/crop/presentation changed")
+        relative = [{**cue, "local_start": (cue["local_start_frame"] - new_items[0]["local_start_frame"]) / 30,
+                     "duration": cue["duration_frames"] / 30} for cue in new_items]
+        expected_ass = producer.subtitles({**new_chapter, "utterances": relative}, edit).encode("utf-8")
+        old_ass = Path(checked(selected["subtitles"])["path"]).read_bytes()
+        require(old_ass == expected_ass, "Reuse current ASS bytes differ from the burned original")
+        frame_count = sum(cue["duration_frames"] for cue in new_items)
+        require(frame_count == old_receipt["duration_frames"], "Reuse encoded cue frame total changed")
+        group = (chapter_id, keys[0])
+        require(group not in reused, "Reuse selected an old chunk twice")
+        reused[group] = {"selected": selected, "receipt": old_receipt, "items": new_items, "frame_count": frame_count}
+        evidence.append({"chapter_id": chapter_id, "cue_keys": keys, "picture": selected["picture"],
+                         "original_visual_receipt": selected["visual_receipt"], "subtitles": selected["subtitles"],
+                         "new_global_start_frame": new_items[0]["global_start_frame"], "duration_frames": frame_count})
+    return reused, {"kind": "exact-encoded-chunk-reuse", "previous_run": str(previous), "frozen_plan": plan,
+                    "reused_chunks": evidence, "scope": "Same encoded picture/ASS and original WAVs; new global timeline. Final AAC/BGM is mixed once afresh.",
+                    "human_signoff": "not-provided"}
+
+
+def copy_encoded_chunk(run, chapter, index, record):
+    """Copy immutable picture/subtitles, preserving the original source-decode lineage."""
+    root = Path(run) / "chapters" / chapter["id"] / f"chunk-{index:02d}"
+    root.mkdir(parents=True, exist_ok=False)
+    selected, old = record["selected"], record["receipt"]
+    for pin, output in ((selected["picture"], root / "chunk.mp4"), (selected["subtitles"], root / "subtitles.ass")):
+        with Path(pin["path"]).open("rb") as source, output.open("xb") as target:
+            shutil.copyfileobj(source, target)
+        copied = ref(output)
+        require(copied["bytes"] == pin["bytes"] and copied["sha256"] == pin["sha256"].upper(), "Copied reuse bytes differ")
+    receipt_path = root / "visual-render-receipt.json"
+    write(receipt_path, {**old, "output": ref(root / "chunk.mp4"),
+                        "reuse_lineage": {"source_output": selected["picture"], "source_ass": selected["subtitles"],
+                                          "source_visual_receipt": selected["visual_receipt"],
+                                          "new_global_start_frame": record["items"][0]["global_start_frame"],
+                                          "source_decode_was_historical": True}, "human_signoff": "not-provided"})
+    return {**ref(root / "chunk.mp4"), "duration_expected": record["frame_count"] / 30,
+            "visual_render_receipt": ref(receipt_path)}
+
+
+def encoded_reuse_tasks(timeline, edit, reused):
+    """Preserve reusable units; only inserted/split units use the existing renderer."""
+    tasks = []
+    for chapter in timeline["chapters"]:
+        items, pos, index = chapter["utterances"], 0, 1
+        while pos < len(items):
+            record = reused.get((chapter["id"], items[pos]["key"]))
+            if record:
+                group = items[pos:pos + len(record["items"])]
+            else:
+                group = [items[pos]]
+                native = edit["utterances"][items[pos]["key"]]["kind"].startswith("native-")
+                while pos + len(group) < len(items) and len(group) < 8:
+                    next_item = items[pos + len(group)]
+                    if (chapter["id"], next_item["key"]) in reused or native != edit["utterances"][next_item["key"]]["kind"].startswith("native-"):
+                        break
+                    group.append(next_item)
+            tasks.append((chapter, index, group))
+            pos, index = pos + len(group), index + 1
+    return tasks
+
+
 def render(args):
     run = args.run.resolve()
     require_ready(run)
@@ -899,7 +1050,14 @@ def render(args):
             group.append(cue)
         if group:
             tasks.append((chapter, index, group))
+    reused = {}
+    if getattr(args, "reuse_encoded_chunks", False):
+        reused, reuse_evidence = encoded_chunk_reuse(run, timeline, edit)
+        tasks = encoded_reuse_tasks(timeline, edit, reused)
+        write(run / "reuse-encoded-chunks.json", reuse_evidence)
     for chapter, index, items in tasks:
+        if (chapter["id"], items[0]["key"]) in reused:
+            continue
         for cue in items:
             exact(cue["tts_trimmed"])
             shot = edit["utterances"][cue["key"]]
@@ -911,6 +1069,9 @@ def render(args):
                 if shot.get(name):
                     exact(shot[name])
     def render_task(row):
+        record = reused.get((row[0]["id"], row[2][0]["key"]))
+        if record:
+            return copy_encoded_chunk(run, row[0], row[1], record)
         renderer = render_native_chunk if edit["utterances"][row[2][0]["key"]]["kind"].startswith("native-") else producer.render_chunk
         return renderer(run, row[0], edit, row[2], row[1])
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as pool:
@@ -1028,6 +1189,8 @@ def main():
     sub.choices["build"].add_argument("--workdir", required=True, type=Path)
     sub.choices["reuse-render"].add_argument("--previous-run", required=True, type=Path)
     sub.choices["reuse-render"].add_argument("--previous-timeline-sha256", required=True)
+    sub.choices["render"].add_argument("--reuse-encoded-chunks", action="store_true",
+                                      help="Use only explicitly frozen, exact old chunks from live-source.reuse_encoded_chunks")
     args = parser.parse_args()
     require(getattr(args, "workers", 1) > 0, "Worker count must be positive")
     failed_root = getattr(args, "run", getattr(args, "output_dir", None))

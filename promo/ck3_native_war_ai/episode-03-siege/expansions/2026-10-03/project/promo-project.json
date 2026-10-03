@@ -1,0 +1,1652 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-war-ai-episode03-siege-expansion-20261003",
+    "title": "一座城究竟是怎样被攻下的？扩充版"
+  },
+  "pipeline": {
+    "adapter": "ck3-native-war-ai-v1",
+    "preset": "ck3-native-war-ai-longform-zh-v2"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN",
+      "en"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": 1860
+  },
+  "chapters": [
+    {
+      "id": "opening",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "为什么人数占优，还要等几个月？",
+        "en": "Why wait months with so many soldiers?"
+      },
+      "cues": [
+        {
+          "id": "E3A03-001",
+          "narration": {
+            "zh": "五千多名士兵围着一座城，守军只有四百多。为什么还要等几个月？攻城武器、城墙缺口和强攻堡垒，分别能改变什么？"
+          },
+          "subtitles": {
+            "zh": "五千多名士兵围着一座城，守军只有四百多。为什么还要等几个月？攻城武器、城墙缺口和强攻堡垒，分别能改变什么？",
+            "en": "Over 5,000 soldiers besiege just over 400 defenders. Why wait months? What changes with siege weapons, a wall breach or an assault?"
+          }
+        },
+        {
+          "id": "E3A03-002",
+          "narration": {
+            "zh": "这一期，从军队抵达一直看到城破。先读围攻窗口，再看真实变化，最后把这座城的结果接回整场战争。"
+          },
+          "subtitles": {
+            "zh": "这一期，从军队抵达一直看到城破。先读围攻窗口，再看真实变化，最后把这座城的结果接回整场战争。",
+            "en": "Follow the army's arrival through capture: read the siege window, watch actual changes, then connect the holding's result to the war."
+          }
+        },
+        {
+          "id": "E3A03-003",
+          "narration": {
+            "zh": "从一零六六年的威廉开始。他正在进行诺曼人征服英格兰的战争；这次跟着他的军队渡海，围攻南撒克逊的刘易斯。"
+          },
+          "subtitles": {
+            "zh": "从一零六六年的威廉开始。他正在进行诺曼人征服英格兰的战争；这次跟着他的军队渡海，围攻南撒克逊的刘易斯。",
+            "en": "Begin with William in 1066, during the Norman conquest of England. Follow his army across the Channel to besiege Lewes in South Seaxe."
+          }
+        },
+        {
+          "id": "E3A03-004",
+          "narration": {
+            "zh": "这次使用一点二零点零点三原版。城防等级、守军、攻城武器和围攻事件，分别影响不同的环节；下面的规则也限定在这一版。"
+          },
+          "subtitles": {
+            "zh": "这次使用一点二零点零点三原版。城防等级、守军、攻城武器和围攻事件，分别影响不同的环节；下面的规则也限定在这一版。",
+            "en": "This is vanilla 1.20.0.3. Fort level, garrison, siege weapons and events affect different parts of the siege; the rules here are specific to this build."
+          }
+        },
+        {
+          "id": "E3A03-006",
+          "narration": {
+            "zh": "剩余天数是按当前情况估算的。守军、每日围攻进展或事件效果变了，估计也会变；它并不是围攻开始时就定下来的倒计时。"
+          },
+          "subtitles": {
+            "zh": "剩余天数是按当前情况估算的。守军、每日围攻进展或事件效果变了，估计也会变；它并不是围攻开始时就定下来的倒计时。",
+            "en": "Remaining days estimate the current state. Changes to the garrison, daily progress or events can change it; it is not a countdown fixed when the siege began."
+          }
+        },
+        {
+          "id": "E3A03-007",
+          "narration": {
+            "zh": "前两期讲过战争和战斗。这次只记住一点：打赢敌军，和占领一座据点，都会推进战争，但它们不是同一件事。"
+          },
+          "subtitles": {
+            "zh": "前两期讲过战争和战斗。这次只记住一点：打赢敌军，和占领一座据点，都会推进战争，但它们不是同一件事。",
+            "en": "Earlier episodes covered war and battles. Keep one distinction: defeating an army and occupying a holding advance the war in different ways."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "siege_start",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "先确认：军队真的在围攻",
+        "en": "First confirm the siege is actually under way"
+      },
+      "cues": [
+        {
+          "id": "E3A03-008",
+          "narration": {
+            "zh": "主力从诺曼底渡海，先抵达英格兰南岸。新招募的射石机还在另一支军队里，尚未参加刘易斯的围攻；买下来和真正到场是两步。"
+          },
+          "subtitles": {
+            "zh": "主力从诺曼底渡海，先抵达英格兰南岸。新招募的射石机还在另一支军队里，尚未参加刘易斯的围攻；买下来和真正到场是两步。",
+            "en": "The main force lands first from Normandy. Newly recruited mangonels remain in another army; recruitment and arrival at Lewes are separate steps."
+          }
+        },
+        {
+          "id": "E3A03-009",
+          "narration": {
+            "zh": "一零六七年一月十日，刘易斯围攻战正在推进。守军四百二十，实际参加这次围攻的兵力五千六百六十。"
+          },
+          "subtitles": {
+            "zh": "一零六七年一月十日，刘易斯围攻战正在推进。守军四百二十，实际参加这次围攻的兵力五千六百六十。",
+            "en": "On 10 January 1067, the siege of Lewes is progressing: 420 defenders face 5,660 eligible participating soldiers."
+          }
+        },
+        {
+          "id": "E3A03-010",
+          "narration": {
+            "zh": "人数检查比较两边：真正参加这次围攻的士兵，和要塞现有守军。不是拿全地图兵力，也不是照搬军队的名义人数。"
+          },
+          "subtitles": {
+            "zh": "人数检查比较两边：真正参加这次围攻的士兵，和要塞现有守军。不是拿全地图兵力，也不是照搬军队的名义人数。",
+            "en": "The troop check compares eligible siege participants with the fort's current garrison, rather than map-wide forces or nominal army strength."
+          }
+        },
+        {
+          "id": "E3A03-011",
+          "narration": {
+            "zh": "在已经存在的围攻中，假设守军四百二十、实际参围四百一十九。虽然只差一人，仍会卡在人数不足这一项。"
+          },
+          "subtitles": {
+            "zh": "在已经存在的围攻中，假设守军四百二十、实际参围四百一十九。虽然只差一人，仍会卡在人数不足这一项。",
+            "en": "In an existing siege, 419 eligible besiegers against 420 defenders fail the troop check, even though they are only one short."
+          }
+        },
+        {
+          "id": "E3A03-012",
+          "narration": {
+            "zh": "两边刚好都是四百二十，当前围攻就不因人数太少受阻。但还得符合其他条件，不能听成相等一定能开始、或一直推进。"
+          },
+          "subtitles": {
+            "zh": "两边刚好都是四百二十，当前围攻就不因人数太少受阻。但还得符合其他条件，不能听成相等一定能开始、或一直推进。",
+            "en": "At 420 against 420, insufficient numbers do not block this siege check. Other conditions still matter; equality alone does not guarantee starting or continued progress."
+          }
+        },
+        {
+          "id": "E3A03-013",
+          "narration": {
+            "zh": "行军或进入战斗，也可能影响围攻。进展停住，先读窗口的原因，再决定增加兵力、停下行军，还是处理附近的敌军。"
+          },
+          "subtitles": {
+            "zh": "行军或进入战斗，也可能影响围攻。进展停住，先读窗口的原因，再决定增加兵力、停下行军，还是处理附近的敌军。",
+            "en": "Movement or battle can affect a siege. Read why progress stopped before choosing more troops, halting movement or dealing with nearby enemies."
+          }
+        },
+        {
+          "id": "E3A03-014",
+          "narration": {
+            "zh": "这一次，我们人数足够，围攻进展也确实增加。军队站在城外，和军队正在围攻，是两回事；读完条件，再看窗口有没有真实推进。"
+          },
+          "subtitles": {
+            "zh": "这一次，我们人数足够，围攻进展也确实增加。军队站在城外，和军队正在围攻，是两回事；读完条件，再看窗口有没有真实推进。",
+            "en": "Here there are enough troops and siege progress is increasing. Standing outside a holding and conducting its siege are different; confirm progress in the window."
+          }
+        },
+        {
+          "id": "E3A03-016",
+          "narration": {
+            "zh": "再读城防等级、守军和围攻进展。它们告诉我们离城破还有多远；兵力比对方多多少，不能独自回答要等多久。"
+          },
+          "subtitles": {
+            "zh": "再读城防等级、守军和围攻进展。它们告诉我们离城破还有多远；兵力比对方多多少，不能独自回答要等多久。",
+            "en": "Read fort level, garrison and siege progress to see how far capture is. The numerical advantage alone does not tell you how long to wait."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "inputs",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "剩余天数为什么会往回跳？",
+        "en": "Why does the time estimate increase?"
+      },
+      "cues": [
+        {
+          "id": "E3A03-017",
+          "narration": {
+            "zh": "刘易斯城防三级，起初守军四百二十。城防等级影响所需进展，也会检查攻城武器是否有足够的围攻等级。"
+          },
+          "subtitles": {
+            "zh": "刘易斯城防三级，起初守军四百二十。城防等级影响所需进展，也会检查攻城武器是否有足够的围攻等级。",
+            "en": "Lewes has fort level 3 and initially 420 defenders. Fort level affects required progress and checks whether the weapons have a sufficient siege tier."
+          }
+        },
+        {
+          "id": "E3A03-018",
+          "narration": {
+            "zh": "进展提示列出已经累积的数值和需要达到的总数。为了算清楚，下面分别叫它累计进展和所需总进展，这是两种讲解用的称呼。"
+          },
+          "subtitles": {
+            "zh": "进展提示列出已经累积的数值和需要达到的总数。为了算清楚，下面分别叫它累计进展和所需总进展，这是两种讲解用的称呼。",
+            "en": "The progress tooltip lists the accumulated value and required total. For explanation, call them accumulated progress and required total progress."
+          }
+        },
+        {
+          "id": "E3R01-001",
+          "narration": {
+            "zh": "同样显示每天二点多，一座城还差几十点，另一座还差几百点，等的时间当然不同。每日速度只有放在还差多少进展旁边，才有完整意义。"
+          },
+          "subtitles": {
+            "zh": "同样显示每天二点多，一座城还差几十点，另一座还差几百点，等的时间当然不同。每日速度只有放在还差多少进展旁边，才有完整意义。",
+            "en": "Two sieges showing roughly two progress per day can have very different waits if one needs tens more points and the other hundreds. Read the rate beside the remaining work."
+          }
+        },
+        {
+          "id": "E3A03-019",
+          "narration": {
+            "zh": "用个简单示例：需要四百点，已经累积二百点，就是完成一半。把两个数一起看，才知道进度条为什么在这里。"
+          },
+          "subtitles": {
+            "zh": "用个简单示例：需要四百点，已经累积二百点，就是完成一半。把两个数一起看，才知道进度条为什么在这里。",
+            "en": "For a simple example, 200 accumulated out of 400 required is halfway. Both values explain where the progress bar sits."
+          }
+        },
+        {
+          "id": "E3A03-020",
+          "narration": {
+            "zh": "所需总进展以一百为基础，再加城防等级乘七十五、乘守军比例。城防相同，守军状态不同，需要完成的总数也可能不同。"
+          },
+          "subtitles": {
+            "zh": "所需总进展以一百为基础，再加城防等级乘七十五、乘守军比例。城防相同，守军状态不同，需要完成的总数也可能不同。",
+            "en": "Required total progress is 100 plus fort level times 75 times the garrison ratio. The same fort can require different totals as its garrison changes."
+          }
+        },
+        {
+          "id": "E3A03-021",
+          "narration": {
+            "zh": "守军比例看当前守军占有效上限的多少，最多按满员算。越接近满员，城防增加的那部分进展就越完整。"
+          },
+          "subtitles": {
+            "zh": "守军比例看当前守军占有效上限的多少，最多按满员算。越接近满员，城防增加的那部分进展就越完整。",
+            "en": "The garrison ratio compares current strength with its effective maximum, capped at full. A fuller garrison gives the fort term more weight."
+          }
+        },
+        {
+          "id": "E3A03-022",
+          "narration": {
+            "zh": "例如城防四级、守军满员。一百加四乘七十五，共四百点。这是规则示例；刘易斯城防三级，不能直接套成它的当日数值。"
+          },
+          "subtitles": {
+            "zh": "例如城防四级、守军满员。一百加四乘七十五，共四百点。这是规则示例；刘易斯城防三级，不能直接套成它的当日数值。",
+            "en": "For a full garrison at fort level four, 100 plus four times 75 is 400. This is a rule example; Lewes has fort level three."
+          }
+        },
+        {
+          "id": "E3A03-023",
+          "narration": {
+            "zh": "仍是四级城防，守军比例只有一半，城防增加的部分也减半。总数变成二百五十，已有进展离终点就更近。"
+          },
+          "subtitles": {
+            "zh": "仍是四级城防，守军比例只有一半，城防增加的部分也减半。总数变成二百五十，已有进展离终点就更近。",
+            "en": "At fort level four with a half-full garrison ratio, halve the fort term. The required total becomes 250, bringing accumulated progress closer to capture."
+          }
+        },
+        {
+          "id": "E3A03-024",
+          "narration": {
+            "zh": "所需总数会随守军状态变化。刚开始看到需要四百点，不代表后面的每一天，终点都固定在同样的四百。"
+          },
+          "subtitles": {
+            "zh": "所需总数会随守军状态变化。刚开始看到需要四百点，不代表后面的每一天，终点都固定在同样的四百。",
+            "en": "The required total changes with garrison state. A starting requirement of 400 need not remain 400 for every later day."
+          }
+        },
+        {
+          "id": "E3A03-025",
+          "narration": {
+            "zh": "进度条走得更快，可能是每日进展更多，也可能是所需总数变少。百分比本身分不清；打开提示，才能看到哪一项变了。"
+          },
+          "subtitles": {
+            "zh": "进度条走得更快，可能是每日进展更多，也可能是所需总数变少。百分比本身分不清；打开提示，才能看到哪一项变了。",
+            "en": "A faster bar can mean more daily progress or a lower required total. Open the tooltip to distinguish the change."
+          }
+        },
+        {
+          "id": "E3A03-026",
+          "narration": {
+            "zh": "一月十日，刘易斯累计进展二点四六，所需总数约三百零五点四三，还不到百分之一。城外人数占优，城内仍有很长一段要围。"
+          },
+          "subtitles": {
+            "zh": "一月十日，刘易斯累计进展二点四六，所需总数约三百零五点四三，还不到百分之一。城外人数占优，城内仍有很长一段要围。",
+            "en": "On 10 January, Lewes has 2.46 progress out of about 305.43, under one percent. Despite the army's advantage, capture remains far away."
+          }
+        },
+        {
+          "id": "E3A03-033",
+          "narration": {
+            "zh": "数值看清之后，让日历走一天。先看真实进展，再解释兵力和攻城武器的作用。"
+          },
+          "subtitles": {
+            "zh": "数值看清之后，让日历走一天。先看真实进展，再解释兵力和攻城武器的作用。",
+            "en": "Let one day pass, observe the progress, then examine the roles of troops and siege weapons."
+          }
+        },
+        {
+          "id": "E3A03-034",
+          "narration": {
+            "zh": "每日围攻进展提示列着基础、兵士和围攻士兵等明细；当时总数显示二点四。查看这些项，比只凭人头判断快慢更可靠。"
+          },
+          "subtitles": {
+            "zh": "每日围攻进展提示列着基础、兵士和围攻士兵等明细；当时总数显示二点四。查看这些项，比只凭人头判断快慢更可靠。",
+            "en": "The daily-progress tooltip lists Base, Men-at-Arms and Besieging Soldiers, with a displayed total of 2.4. Read the breakdown rather than headcount alone."
+          }
+        },
+        {
+          "id": "E3A03-050",
+          "narration": {
+            "zh": "一月十日到十一日，完整过了一天。两端参围兵力五千六百六十、守军四百二十，所需总数也没有变化。"
+          },
+          "subtitles": {
+            "zh": "一月十日到十一日，完整过了一天。两端参围兵力五千六百六十、守军四百二十，所需总数也没有变化。",
+            "en": "From 10 to 11 January, one full day passes with the same 5,660 besiegers, 420 defenders and required total at both endpoints."
+          }
+        },
+        {
+          "id": "E3A03-051",
+          "narration": {
+            "zh": "累计进展二点四六到四点九二，一天净增二点四六。这是这一日的真实变化，不是每场围攻都固定如此。"
+          },
+          "subtitles": {
+            "zh": "累计进展二点四六到四点九二，一天净增二点四六。这是这一日的真实变化，不是每场围攻都固定如此。",
+            "en": "Progress rises from 2.46 to 4.92, a net daily gain of 2.46. This is the observed day rather than a fixed rate for every siege."
+          }
+        },
+        {
+          "id": "E3A03-053",
+          "narration": {
+            "zh": "界面约二点四，前后数值显示净增二点四六，预计从一百二十四变成一百二十三天。先确认围攻在推进，再比较之后的变化。"
+          },
+          "subtitles": {
+            "zh": "界面约二点四，前后数值显示净增二点四六，预计从一百二十四变成一百二十三天。先确认围攻在推进，再比较之后的变化。",
+            "en": "The UI shows about 2.4, the values gain 2.46, and the estimate falls from 124 to 123 days. The siege is progressing."
+          }
+        },
+        {
+          "id": "E3A06-001",
+          "narration": {
+            "zh": "一月十三日，守军读数由四百二十变成四百六十，需要达到的总进展增加到三百二十五。数字确实改变了，但仅凭这组画面，不能说明守军增加的原因。"
+          },
+          "subtitles": {
+            "zh": "一月十三日，守军读数由四百二十变成四百六十，需要达到的总进展增加到三百二十五。数字确实改变了，但仅凭这组画面，不能说明守军增加的原因。",
+            "en": "On 13 January, the garrison reads 460 rather than 420, and required total progress rises to 325. These readings establish the change, but not its cause."
+          }
+        },
+        {
+          "id": "E3A06-002",
+          "narration": {
+            "zh": "这一天仍增加二点四六进展，预计却从一百二十二天延后到一百二十九天。军队没有白围一天，只是按当前要求，离终点又远了一些。"
+          },
+          "subtitles": {
+            "zh": "这一天仍增加二点四六进展，预计却从一百二十二天延后到一百二十九天。军队没有白围一天，只是按当前要求，离终点又远了一些。",
+            "en": "Progress still gains 2.46 that day, but the estimate rises from 122 to 129 days. The day was not wasted; the current requirement places the target farther away."
+          }
+        },
+        {
+          "id": "E3A06-003",
+          "narration": {
+            "zh": "所以看到剩余天数突然增加，不必先怀疑军队不再推进。对照守军、累计进展和所需总数，才能分清是速度变了，还是需要完成的进展变了。"
+          },
+          "subtitles": {
+            "zh": "所以看到剩余天数突然增加，不必先怀疑军队不再推进。对照守军、累计进展和所需总数，才能分清是速度变了，还是需要完成的进展变了。",
+            "en": "When remaining days jump, compare the garrison, accumulated progress and required total. Distinguish a changed rate from a changed requirement."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "first_stage",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "另一支军队与攻城武器，怎样改变推进？",
+        "en": "What changes when another army and its weapons arrive?"
+      },
+      "cues": [
+        {
+          "id": "E3A03-027",
+          "narration": {
+            "zh": "更多参围士兵可以影响兵力项，攻城武器另有贡献。因此另一支军队到场，要看带来多少人，也要看带来什么武器。"
+          },
+          "subtitles": {
+            "zh": "更多参围士兵可以影响兵力项，攻城武器另有贡献。因此另一支军队到场，要看带来多少人，也要看带来什么武器。",
+            "en": "More eligible soldiers affect the troop term, while siege weapons contribute separately. Check an arriving army's equipment as well as its strength."
+          }
+        },
+        {
+          "id": "E3A03-035",
+          "narration": {
+            "zh": "提示里的兵士、围攻士兵不是同一项：兵士来自军团的围攻贡献，围攻士兵看参围兵力比守军多多少。别把两个名字混成一个数。"
+          },
+          "subtitles": {
+            "zh": "提示里的兵士、围攻士兵不是同一项：兵士来自军团的围攻贡献，围攻士兵看参围兵力比守军多多少。别把两个名字混成一个数。",
+            "en": "Men-at-Arms and Besieging Soldiers are separate tooltip terms: regiment siege contributions and the bonus from eligible troops exceeding the garrison."
+          }
+        },
+        {
+          "id": "E3A03-028",
+          "narration": {
+            "zh": "最初，攻城武器一栏显示六十，是已有部队的合计。它不是刚招募那团射石机的数量；新团还没有到刘易斯。"
+          },
+          "subtitles": {
+            "zh": "最初，攻城武器一栏显示六十，是已有部队的合计。它不是刚招募那团射石机的数量；新团还没有到刘易斯。",
+            "en": "Initially the siege-weapons field shows 60 from existing troops. That is not the new mangonel regiment, which has not reached Lewes yet."
+          }
+        },
+        {
+          "id": "E3A03-029",
+          "narration": {
+            "zh": "射石机招募提示显示每日围攻进展增加零点三，有效最大城防十级。一个是推进贡献，一个是能应付的城防范围。"
+          },
+          "subtitles": {
+            "zh": "射石机招募提示显示每日围攻进展增加零点三，有效最大城防十级。一个是推进贡献，一个是能应付的城防范围。",
+            "en": "The mangonel tooltip shows +0.3 daily siege progress and an effective fort limit of 10: contribution and fort coverage are separate properties."
+          }
+        },
+        {
+          "id": "E3A03-030",
+          "narration": {
+            "zh": "新团规模一，每规模军团士兵数是十人，初始只有五人。军团补员和整支军队抵达围攻地点，要分开看，不能都含糊地叫增援。"
+          },
+          "subtitles": {
+            "zh": "新团规模一，每规模军团士兵数是十人，初始只有五人。军团补员和整支军队抵达围攻地点，要分开看，不能都含糊地叫增援。",
+            "en": "The new regiment has size one, ten soldiers per size, and initially five. Distinguish its replenishment from the army's arrival at the siege."
+          }
+        },
+        {
+          "id": "E3A06-004",
+          "narration": {
+            "zh": "招募时，金钱从七百二十八变为六百六十八点六，支出五十九点四。成立军团是第一步，接着还得行军到场。"
+          },
+          "subtitles": {
+            "zh": "招募时，金钱从七百二十八变为六百六十八点六，支出五十九点四。成立军团是第一步，接着还得行军到场。",
+            "en": "Recruitment changes gold from 728 to 668.6, a cost of 59.4. Creating the regiment is the first step; its army must still arrive."
+          }
+        },
+        {
+          "id": "E3A03-031",
+          "narration": {
+            "zh": "攻城武器贡献按当前士兵数所占的规模换算，再乘有效围攻数值，最后逐军团相加；不能把原始人数直接乘满规模面板值。"
+          },
+          "subtitles": {
+            "zh": "攻城武器贡献按当前士兵数所占的规模换算，再乘有效围攻数值，最后逐军团相加；不能把原始人数直接乘满规模面板值。",
+            "en": "Scale each regiment's effective siege value by its current soldiers divided by soldiers per size, then add the regiments. Do not multiply the full-size value by raw headcount."
+          }
+        },
+        {
+          "id": "E3A06-005",
+          "narration": {
+            "zh": "每规模十人，当前五人，按半个规模算；当前十人才是完整规模。因此刚建立和满员以后，不能当成相同的贡献。"
+          },
+          "subtitles": {
+            "zh": "每规模十人，当前五人，按半个规模算；当前十人才是完整规模。因此刚建立和满员以后，不能当成相同的贡献。",
+            "en": "With ten soldiers per size, five soldiers fill half of size one, and ten fill it completely. A newly formed and a full regiment contribute differently."
+          }
+        },
+        {
+          "id": "E3A03-032",
+          "narration": {
+            "zh": "每日围攻进展和有效最大城防，分别回答推进多少、能应付多高城防。比较武器，别只读其中一个数。"
+          },
+          "subtitles": {
+            "zh": "每日围攻进展和有效最大城防，分别回答推进多少、能应付多高城防。比较武器，别只读其中一个数。",
+            "en": "Daily siege progress and the maximum effective fort level answer different questions: contribution and coverage. Read both when comparing weapons."
+          }
+        },
+        {
+          "id": "E3A06-006",
+          "narration": {
+            "zh": "超过有效城防，不等于整场围攻自动停止。接下来要看城防跨了哪些门槛，我们的围攻等级能不能覆盖。"
+          },
+          "subtitles": {
+            "zh": "超过有效城防，不等于整场围攻自动停止。接下来要看城防跨了哪些门槛，我们的围攻等级能不能覆盖。",
+            "en": "Exceeding the effective fort limit does not automatically stop the siege. Check reached fort thresholds against the available siege tier."
+          }
+        },
+        {
+          "id": "E3A03-040",
+          "narration": {
+            "zh": "城防还会检查围攻等级能否覆盖已达到的门槛。每道没有覆盖的门槛，都给速度再乘一层惩罚。"
+          },
+          "subtitles": {
+            "zh": "城防还会检查围攻等级能否覆盖已达到的门槛。每道没有覆盖的门槛，都给速度再乘一层惩罚。",
+            "en": "Fort level checks whether the siege tier covers reached thresholds. Each uncovered threshold adds another multiplicative speed penalty."
+          }
+        },
+        {
+          "id": "E3A03-041",
+          "narration": {
+            "zh": "这一版的门槛是四、六、十一、十六、三十一。达到就检查，例如四级已经达到第一道，不必再高一级。"
+          },
+          "subtitles": {
+            "zh": "这一版的门槛是四、六、十一、十六、三十一。达到就检查，例如四级已经达到第一道，不必再高一级。",
+            "en": "This build's thresholds are 4, 6, 11, 16 and 31. The check starts at the threshold itself: level four reaches the first."
+          }
+        },
+        {
+          "id": "E3A03-042",
+          "narration": {
+            "zh": "每道无法覆盖的门槛，都乘零点七。两道无法覆盖，就连续乘两次，不是从原速度减去两份相同数值。"
+          },
+          "subtitles": {
+            "zh": "每道无法覆盖的门槛，都乘零点七。两道无法覆盖，就连续乘两次，不是从原速度减去两份相同数值。",
+            "en": "Each uncovered threshold multiplies speed by 0.7. Two thresholds mean two multiplications, rather than two equal subtractions."
+          }
+        },
+        {
+          "id": "E3A03-043",
+          "narration": {
+            "zh": "城防四级，达到第一道门槛。没有足够围攻等级覆盖，速度乘零点七，剩下原来的七成。"
+          },
+          "subtitles": {
+            "zh": "城防四级，达到第一道门槛。没有足够围攻等级覆盖，速度乘零点七，剩下原来的七成。",
+            "en": "At fort level four, without a siege tier covering the first threshold, speed is multiplied by 0.7, retaining seventy percent."
+          }
+        },
+        {
+          "id": "E3A03-044",
+          "narration": {
+            "zh": "城防六级达到两道门槛。两道都覆盖不了，零点七乘零点七，最后是原速度的百分之四十九。"
+          },
+          "subtitles": {
+            "zh": "城防六级达到两道门槛。两道都覆盖不了，零点七乘零点七，最后是原速度的百分之四十九。",
+            "en": "At fort level six, if neither reached threshold is covered, 0.7 times 0.7 leaves forty-nine percent of the original speed."
+          }
+        },
+        {
+          "id": "E3A03-045",
+          "narration": {
+            "zh": "最高可用围攻等级是一，第一道能覆盖，第二道不能。面对六级城防，这时只乘一次零点七。"
+          },
+          "subtitles": {
+            "zh": "最高可用围攻等级是一，第一道能覆盖，第二道不能。面对六级城防，这时只乘一次零点七。",
+            "en": "With highest eligible siege tier one, the first threshold is covered but the second is not. Against level six, apply 0.7 once."
+          }
+        },
+        {
+          "id": "E3A03-047",
+          "narration": {
+            "zh": "计算每日进展时，最后还有零点五的下限。示例里修正后是零点三七，日速也会提高到零点五；是否受阻是另外一项检查。"
+          },
+          "subtitles": {
+            "zh": "计算每日进展时，最后还有零点五的下限。示例里修正后是零点三七，日速也会提高到零点五；是否受阻是另外一项检查。",
+            "en": "Daily-rate calculation ends with a 0.5 minimum. A calculated 0.37 becomes 0.5; whether the siege is blocked is a separate check."
+          }
+        },
+        {
+          "id": "E3A03-048",
+          "narration": {
+            "zh": "预计天数按还差多少进展和当前速度计算。例如总数四百、已做二百、每日二点，余下二百点就预计要一百天。"
+          },
+          "subtitles": {
+            "zh": "预计天数按还差多少进展和当前速度计算。例如总数四百、已做二百、每日二点，余下二百点就预计要一百天。",
+            "en": "The estimate uses remaining progress and the current rate. With 400 required, 200 done and two daily, the remaining 200 takes an estimated 100 days."
+          }
+        },
+        {
+          "id": "E3A03-049",
+          "narration": {
+            "zh": "算出一百点二天，就按一百零一天考虑。最后那一点进展还没完成，不能提前当成城已被占领。"
+          },
+          "subtitles": {
+            "zh": "算出一百点二天，就按一百零一天考虑。最后那一点进展还没完成，不能提前当成城已被占领。",
+            "en": "An estimate of 100.2 days rounds up to 101. The last fraction still needs completing before capture."
+          }
+        },
+        {
+          "id": "E3A06-008",
+          "narration": {
+            "zh": "另一军队到场，也看兵力、武器和随后一天的进展。日末人数变多，不代表新兵力在这一整天都已参围。"
+          },
+          "subtitles": {
+            "zh": "另一军队到场，也看兵力、武器和随后一天的进展。日末人数变多，不代表新兵力在这一整天都已参围。",
+            "en": "For an arriving army, compare troops, weapons and the next day's progress. An endpoint increase does not mean the new troops were there throughout."
+          }
+        },
+        {
+          "id": "E3A03-077",
+          "narration": {
+            "zh": "另一支军队带着新射石机过来，这里说的是行军到场。不是军团在原地补员，也不是点击合军，才凭空多出兵员。"
+          },
+          "subtitles": {
+            "zh": "另一支军队带着新射石机过来，这里说的是行军到场。不是军团在原地补员，也不是点击合军，才凭空多出兵员。",
+            "en": "Another army arrives with the new mangonels. This means reaching the siege, rather than replenishing in place or creating soldiers by merging."
+          }
+        },
+        {
+          "id": "E3A03-078",
+          "narration": {
+            "zh": "一月二十日，参围兵力从五千六百六十到六千七百四十六，增加一千零八十六。随后再看完整一天的推进量。"
+          },
+          "subtitles": {
+            "zh": "一月二十日，参围兵力从五千六百六十到六千七百四十六，增加一千零八十六。随后再看完整一天的推进量。",
+            "en": "On 20 January, eligible strength rises from 5,660 to 6,746, an increase of 1,086. Then inspect the next full day's progress."
+          }
+        },
+        {
+          "id": "E3A06-010",
+          "narration": {
+            "zh": "抵达日，累计进展二十四点六到二十七点零六，仍净增二点四六。当天最后有更多人，不代表他们从当天开始就全在围攻。"
+          },
+          "subtitles": {
+            "zh": "抵达日，累计进展二十四点六到二十七点零六，仍净增二点四六。当天最后有更多人，不代表他们从当天开始就全在围攻。",
+            "en": "Arrival day rises from 24.6 to 27.06, still gaining 2.46. More troops at the endpoint does not mean they participated from the day's start."
+          }
+        },
+        {
+          "id": "E3A06-011",
+          "narration": {
+            "zh": "到一月二十一日，净增二点七八，来到二十九点八四。两军还没合并，窗口已显示攻城武器六十九、每日围攻进展二点七。"
+          },
+          "subtitles": {
+            "zh": "到一月二十一日，净增二点七八，来到二十九点八四。两军还没合并，窗口已显示攻城武器六十九、每日围攻进展二点七。",
+            "en": "By 21 January, progress gains 2.78 and reaches 29.84. Before the armies merge, the window already shows 69 weapons and 2.7 daily progress."
+          }
+        },
+        {
+          "id": "E3R01-005",
+          "narration": {
+            "zh": "一月二十一日，提示里兵士加一点四，围攻士兵加零点三。它们分开列出；都不是全军人数，也不是单独一项就等于最终每日进展。"
+          },
+          "subtitles": {
+            "zh": "一月二十一日，提示里兵士加一点四，围攻士兵加零点三。它们分开列出；都不是全军人数，也不是单独一项就等于最终每日进展。",
+            "en": "On 21 January, the tooltip shows Men-at-Arms +1.4 and Besieging Soldiers +0.3. Neither is army headcount or the entire daily rate."
+          }
+        },
+        {
+          "id": "E3A06-012",
+          "narration": {
+            "zh": "合军后的下一日，也净增二点七八，来到三十二点六二。更多推进早于合军出现；合并是组织已有军队，不是新增兵员或速度奖励。"
+          },
+          "subtitles": {
+            "zh": "合军后的下一日，也净增二点七八，来到三十二点六二。更多推进早于合军出现；合并是组织已有军队，不是新增兵员或速度奖励。",
+            "en": "The day after merging also gains 2.78, reaching 32.62. The higher gain preceded the merge, which organizes existing troops rather than creating strength or a speed reward."
+          }
+        },
+        {
+          "id": "E3X01-001",
+          "narration": {
+            "zh": "刚才的援军带来了人，也带来了攻城武器。现在把兵团拆开，看这些野驴炮参与围攻时，每日提示具体多了哪一项。新录对照另算，不拿它补拆原案二点七八的净增。"
+          },
+          "subtitles": {
+            "zh": "刚才的援军带来了人，也带来了攻城武器。现在把兵团拆开，看这些野驴炮参与围攻时，每日提示具体多了哪一项。新录对照另算，不拿它补拆原案二点七八的净增。",
+            "en": "Reinforcements brought troops and weapons. Separate the Onagers and inspect the daily rows. This new comparison does not explain the original 2.78 net gain."
+          }
+        },
+        {
+          "id": "E3X01-002",
+          "narration": {
+            "zh": "回到三月八日暂停存档。同一座刘易斯，城防等级三，守军四百六十，累计进展也没走。这次不推进日历，只改哪些兵团实际参与，再看每日提示怎样变化。"
+          },
+          "subtitles": {
+            "zh": "回到三月八日暂停存档。同一座刘易斯，城防等级三，守军四百六十，累计进展也没走。这次不推进日历，只改哪些兵团实际参与，再看每日提示怎样变化。",
+            "en": "Return to the paused March 8 save: the same Lewes siege, Fort Level 3 and 460 defenders, with no work advanced. Change which regiments participate while paused and inspect the daily tooltip."
+          }
+        },
+        {
+          "id": "E3X01-003",
+          "narration": {
+            "zh": "军队重整里有三队野驴炮，每队二十人。把它们拆成一支六十人的军队，主力还剩五千四百八十八人。另一支带有额外攻城武器的部队也暂不参与，先看留下来的主力。"
+          },
+          "subtitles": {
+            "zh": "军队重整里有三队野驴炮，每队二十人。把它们拆成一支六十人的军队，主力还剩五千四百八十八人。另一支带有额外攻城武器的部队也暂不参与，先看留下来的主力。",
+            "en": "Split three 20-soldier Onager regiments into a force of 60, leaving 5,488 in the main army. Exclude the other weapon-carrying force to inspect the main army."
+          }
+        },
+        {
+          "id": "E3X01-004",
+          "narration": {
+            "zh": "给带武器的两队下移动命令，主力留在原地。暂停时它们还在这座城，并没有抵达别省，却已经不计入围攻。原生读回参围五千四百八十八；围窗里缓存的旧人数，这里不用。"
+          },
+          "subtitles": {
+            "zh": "给带武器的两队下移动命令，主力留在原地。暂停时它们还在这座城，并没有抵达别省，却已经不计入围攻。原生读回参围五千四百八十八；围窗里缓存的旧人数，这里不用。",
+            "en": "Order both weapon forces to move. They remain here while paused but stop contributing. Native eligible strength is 5,488; exclude the stale siege-pane count."
+          }
+        },
+        {
+          "id": "E3X01-005",
+          "narration": {
+            "zh": "这时显示没有攻城武器，每日进度一点二：基础加一点零，围攻士兵加零点二。普通士兵并非毫无作用，人数这一项已经在帮忙；只是这时没有有效器械的那一项。"
+          },
+          "subtitles": {
+            "zh": "这时显示没有攻城武器，每日进度一点二：基础加一点零，围攻士兵加零点二。普通士兵并非毫无作用，人数这一项已经在帮忙；只是这时没有有效器械的那一项。",
+            "en": "No siege weapons: daily 1.2 is Base +1.0 and Besieging Soldiers +0.2. Ordinary troops already help through the headcount row."
+          }
+        },
+        {
+          "id": "E3X01-006",
+          "narration": {
+            "zh": "接着选回这支六十人的野驴炮，实际点击停止移动。不必先走到别省再回来，清掉行军路线后就在原地重新参与。读回参围五千五百四十八，是主力加上这六十人。"
+          },
+          "subtitles": {
+            "zh": "接着选回这支六十人的野驴炮，实际点击停止移动。不必先走到别省再回来，清掉行军路线后就在原地重新参与。读回参围五千五百四十八，是主力加上这六十人。",
+            "en": "Click Stop Movement for the 60 Onager soldiers. Clearing their route restores participation here, without travel elsewhere. Eligible strength is now 5,548."
+          }
+        },
+        {
+          "id": "E3X01-007",
+          "narration": {
+            "zh": "悬停兵种图标：野驴炮，每天加零点二，有效最大五级城防。本例三级，能够有效参与。换器械或换城，再读完整提示，别假定所有型号上限相同。"
+          },
+          "subtitles": {
+            "zh": "悬停兵种图标：野驴炮，每天加零点二，有效最大五级城防。本例三级，能够有效参与。换器械或换城，再读完整提示，别假定所有型号上限相同。",
+            "en": "Hover Onagers: +0.2 per day, effective up to Fort Level 5. This fort is Level 3. Check the full tooltip for other weapons; they need not share this limit."
+          }
+        },
+        {
+          "id": "E3X01-008",
+          "narration": {
+            "zh": "重新看每日进度，变成二点四。展开提示，基础加一点零，兵士加一点二，围攻士兵加零点二。本例野驴炮的贡献在兵士这一项里读；不要把兵士和普通人数的围攻士兵混成同一项。"
+          },
+          "subtitles": {
+            "zh": "重新看每日进度，变成二点四。展开提示，基础加一点零，兵士加一点二，围攻士兵加零点二。本例野驴炮的贡献在兵士这一项里读；不要把兵士和普通人数的围攻士兵混成同一项。",
+            "en": "Daily 2.4 shows Base +1.0, Men-at-Arms +1.2 and Besieging Soldiers +0.2. This case’s Onager contribution and ordinary headcount are separate rows."
+          }
+        },
+        {
+          "id": "E3X01-009",
+          "narration": {
+            "zh": "前后人数也多了六十，所以这不是人头完全一样的实验。二点四和一点二是两种编成当时的总提示；不能把差值直接写成器械单独的全部增益，更不能说所有城都会快一倍。"
+          },
+          "subtitles": {
+            "zh": "前后人数也多了六十，所以这不是人头完全一样的实验。二点四和一点二是两种编成当时的总提示；不能把差值直接写成器械单独的全部增益，更不能说所有城都会快一倍。",
+            "en": "Headcount also rose by 60. The 1.2 and 2.4 totals describe unmatched formations, not an isolated weapons-only gain or a universal doubling of siege speed."
+          }
+        },
+        {
+          "id": "E3X01-010",
+          "narration": {
+            "zh": "给这座城配兵，先看参围人数够不够，再看武器是否有效。普通士兵和有效攻城武器都能帮忙，作用列在不同项目；打开完整提示，看这次增加了什么。"
+          },
+          "subtitles": {
+            "zh": "给这座城配兵，先看参围人数够不够，再看武器是否有效。普通士兵和有效攻城武器都能帮忙，作用列在不同项目；打开完整提示，看这次增加了什么。",
+            "en": "Check enough eligible troops and effective weapons for this fort. More ordinary soldiers and effective weapons can both help, through different rows in the full tooltip."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "phase_changes",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "围攻事件和城墙缺口",
+        "en": "Siege events and breaches in the walls"
+      },
+      "cues": [
+        {
+          "id": "E3A03-054",
+          "narration": {
+            "zh": "围攻事件有不同作用：有的缩短事件间隔，有的直接增加进展，有的提高每日进展。先看事件名称，再看它改了哪一项。"
+          },
+          "subtitles": {
+            "zh": "围攻事件有不同作用：有的缩短事件间隔，有的直接增加进展，有的提高每日进展。先看事件名称，再看它改了哪一项。",
+            "en": "Events differ: some shorten the interval, some add progress, and others increase daily progress. Read the event name before its effect."
+          }
+        },
+        {
+          "id": "E3A03-055",
+          "narration": {
+            "zh": "普通每日进展先加入；达到所需总数，就完成围攻。否则到了事件结算时，再按事件类型处理，不是每次都额外加进展。"
+          },
+          "subtitles": {
+            "zh": "普通每日进展先加入；达到所需总数，就完成围攻。否则到了事件结算时，再按事件类型处理，不是每次都额外加进展。",
+            "en": "Daily progress is added first and can complete the siege. Otherwise a due event resolves by type, rather than always adding extra progress."
+          }
+        },
+        {
+          "id": "E3A03-056",
+          "narration": {
+            "zh": "事件间隔以二十天为基础，修正和城墙缺口会改变它。等待事件时，普通每日进展仍然继续累积。"
+          },
+          "subtitles": {
+            "zh": "事件间隔以二十天为基础，修正和城墙缺口会改变它。等待事件时，普通每日进展仍然继续累积。",
+            "en": "Event intervals start from twenty days and change with modifiers and breaches. Ordinary daily progress continues between events."
+          }
+        },
+        {
+          "id": "E3A03-057",
+          "narration": {
+            "zh": "进度条突然跳一截，先看最近事件，再看所需总数。不要只凭这一跳，就把它当成每日速度突然翻倍。"
+          },
+          "subtitles": {
+            "zh": "进度条突然跳一截，先看最近事件，再看所需总数。不要只凭这一跳，就把它当成每日速度突然翻倍。",
+            "en": "If the bar jumps, check the latest event and required total before concluding that daily speed doubled."
+          }
+        },
+        {
+          "id": "E3A03-058",
+          "narration": {
+            "zh": "一月二十七日，城墙出现小缺口，前一天还没有。这个新状态，给我们打开了考虑强攻堡垒的选择。"
+          },
+          "subtitles": {
+            "zh": "一月二十七日，城墙出现小缺口，前一天还没有。这个新状态，给我们打开了考虑强攻堡垒的选择。",
+            "en": "On 27 January, the walls have a small breach where the previous day had none. That new state opens the possibility of assaulting the fort."
+          }
+        },
+        {
+          "id": "E3A03-059",
+          "narration": {
+            "zh": "城墙破损是事件，小缺口和大缺口是状态。粮食、疾病、守军逃亡和僵持的效果又不同，不能都当成同一种加速。"
+          },
+          "subtitles": {
+            "zh": "城墙破损是事件，小缺口和大缺口是状态。粮食、疾病、守军逃亡和僵持的效果又不同，不能都当成同一种加速。",
+            "en": "Breach is an event; Small Breach and Large Breach are wall states. Starvation, Disease Outbreak, Desertion and Stalemate have different effects."
+          }
+        },
+        {
+          "id": "E3A03-060",
+          "narration": {
+            "zh": "小缺口缩短事件间隔百分之十，大缺口缩短百分之三十。改变的是事件间隔，不是把城防等级直接清零。"
+          },
+          "subtitles": {
+            "zh": "小缺口缩短事件间隔百分之十，大缺口缩短百分之三十。改变的是事件间隔，不是把城防等级直接清零。",
+            "en": "Small and large breaches reduce the event interval by ten and thirty percent. They change the interval rather than simply erasing fort level."
+          }
+        },
+        {
+          "id": "E3A03-061",
+          "narration": {
+            "zh": "只算缺口修正，二十天分别变成十八天、十四天。实际还会有其他修正，所以小缺口不保证下一次事件恰好十八天后。"
+          },
+          "subtitles": {
+            "zh": "只算缺口修正，二十天分别变成十八天、十四天。实际还会有其他修正，所以小缺口不保证下一次事件恰好十八天后。",
+            "en": "With only the breach modifier, twenty days becomes eighteen or fourteen. Other modifiers mean a small breach does not guarantee an event eighteen days later."
+          }
+        },
+        {
+          "id": "E3A03-063",
+          "narration": {
+            "zh": "粮食满仓变为缺粮，增加当时所需总进展的百分之五；再变为断粮，又增加当时总数的百分之十五，是另加的一笔。"
+          },
+          "subtitles": {
+            "zh": "粮食满仓变为缺粮，增加当时所需总进展的百分之五；再变为断粮，又增加当时总数的百分之十五，是另加的一笔。",
+            "en": "A supply shortage adds five percent of the current required total. Starvation adds another fifteen percent of the then-current total."
+          }
+        },
+        {
+          "id": "E3A03-064",
+          "narration": {
+            "zh": "示例里，两次总数都是四百、还没完成围攻。首次增加二十点，第二次另加六十点，不是把首次增加改成六十。"
+          },
+          "subtitles": {
+            "zh": "示例里，两次总数都是四百、还没完成围攻。首次增加二十点，第二次另加六十点，不是把首次增加改成六十。",
+            "en": "If both totals are 400 and the siege is unfinished, first add twenty and then another sixty. The later gain does not replace the earlier one."
+          }
+        },
+        {
+          "id": "E3A03-065",
+          "narration": {
+            "zh": "疾病蔓延使每日进展增加百分之十，疾病猖獗是百分之二十。按当前状态算二十，不把两个状态叠成三十。"
+          },
+          "subtitles": {
+            "zh": "疾病蔓延使每日进展增加百分之十，疾病猖獗是百分之二十。按当前状态算二十，不把两个状态叠成三十。",
+            "en": "Spreading disease adds ten percent to the daily-rate multiplier; rampant disease adds twenty. Use the current state, rather than stacking them into thirty."
+          }
+        },
+        {
+          "id": "E3A03-066",
+          "narration": {
+            "zh": "守军逃亡额外增加五点围攻进展。这里不是百分之五，也不是说画面已经证明刚好少了五名守军。"
+          },
+          "subtitles": {
+            "zh": "守军逃亡额外增加五点围攻进展。这里不是百分之五，也不是说画面已经证明刚好少了五名守军。",
+            "en": "Desertion adds five progress points, not five percent or evidence that exactly five defenders disappeared."
+          }
+        },
+        {
+          "id": "E3A03-067",
+          "narration": {
+            "zh": "事件机会会随攻城武器、城防和当前状态改变。先过滤哪些事件还能出现，再算它们的机会，不是固定不变的概率表。"
+          },
+          "subtitles": {
+            "zh": "事件机会会随攻城武器、城防和当前状态改变。先过滤哪些事件还能出现，再算它们的机会，不是固定不变的概率表。",
+            "en": "Weapons, forts and current states change which events remain eligible and their chances. This is not a permanently fixed probability table."
+          }
+        },
+        {
+          "id": "E3A03-068",
+          "narration": {
+            "zh": "这次小缺口出现的一日，净增二点七八进展。那是整天的变化，不能全部当成城墙破损额外送出的奖励。"
+          },
+          "subtitles": {
+            "zh": "这次小缺口出现的一日，净增二点七八进展。那是整天的变化，不能全部当成城墙破损额外送出的奖励。",
+            "en": "This small-breach day gains 2.78 progress overall. The entire day's gain is not an extra wall-damage reward."
+          }
+        },
+        {
+          "id": "E3A03-074",
+          "narration": {
+            "zh": "没有合格围攻等级，这次抽取就不给城墙破损机会。想等出缺口再强攻，先看武器条件，不能把一直等当成保证。"
+          },
+          "subtitles": {
+            "zh": "没有合格围攻等级，这次抽取就不给城墙破损机会。想等出缺口再强攻，先看武器条件，不能把一直等当成保证。",
+            "en": "Without an eligible siege tier, this draw gives wall damage no chance. Check the weapons rather than assuming waiting guarantees a breach."
+          }
+        },
+        {
+          "id": "E3A03-075",
+          "narration": {
+            "zh": "僵持不增加额外事件进展，但当天普通进展已经先加入。“事件没有帮忙”，不等于“这一天完全没推进”。"
+          },
+          "subtitles": {
+            "zh": "僵持不增加额外事件进展，但当天普通进展已经先加入。“事件没有帮忙”，不等于“这一天完全没推进”。",
+            "en": "Stalemate adds no extra event progress, but daily progress has already been applied. An unhelpful event does not mean a whole day without progress."
+          }
+        },
+        {
+          "id": "E3A03-076",
+          "narration": {
+            "zh": "缺口、粮食和疾病达到最高状态，就不再抽同类升级。能出现的事件变了，其余事件之间的机会也随之改变。"
+          },
+          "subtitles": {
+            "zh": "缺口、粮食和疾病达到最高状态，就不再抽同类升级。能出现的事件变了，其余事件之间的机会也随之改变。",
+            "en": "At their maximum level, breach, food and disease upgrades are excluded. Changing the eligible events changes the remaining chances."
+          }
+        },
+        {
+          "id": "E3A03-073",
+          "narration": {
+            "zh": "一月二十九日，进展五十二点零八，总数三百二十五，预计九十九天。围攻事件一栏另显示十六天，两处天数要分开读。"
+          },
+          "subtitles": {
+            "zh": "一月二十九日，进展五十二点零八，总数三百二十五，预计九十九天。围攻事件一栏另显示十六天，两处天数要分开读。",
+            "en": "On 29 January, progress is 52.08 of 325 and the estimate is 99 days. The event display also shows sixteen days; read these separately."
+          }
+        },
+        {
+          "id": "E3A06-009",
+          "narration": {
+            "zh": "十六天是当前围攻事件间隔，不是从现在还剩十六天。小缺口会缩短间隔，但不能用它独自解释其他所有修正。"
+          },
+          "subtitles": {
+            "zh": "十六天是当前围攻事件间隔，不是从现在还剩十六天。小缺口会缩短间隔，但不能用它独自解释其他所有修正。",
+            "en": "Sixteen days is the current event interval, not sixteen days still to wait. The small breach affects it but does not explain every modifier."
+          }
+        },
+        {
+          "id": "E3A03-070",
+          "narration": {
+            "zh": "强攻堡垒可以按，和现在值得按，是两回事。先比较它预计增加的进展、可能损失的兵力，再决定继续等还是强攻。"
+          },
+          "subtitles": {
+            "zh": "强攻堡垒可以按，和现在值得按，是两回事。先比较它预计增加的进展、可能损失的兵力，再决定继续等还是强攻。",
+            "en": "An available assault is not automatically worthwhile. Compare projected progress and manpower losses before choosing waiting or assault."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "continuation",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "继续等，还是强攻堡垒？",
+        "en": "Keep waiting, or assault the fort?"
+      },
+      "cues": [
+        {
+          "id": "E3A03-080",
+          "narration": {
+            "zh": "有了缺口，比较继续等与强攻堡垒。当前还要等多久、预计会少多少兵，放在一起看才好选择。"
+          },
+          "subtitles": {
+            "zh": "有了缺口，比较继续等与强攻堡垒。当前还要等多久、预计会少多少兵，放在一起看才好选择。",
+            "en": "With a breach, compare waiting with assault. Read the current time estimate alongside projected troop losses before choosing."
+          }
+        },
+        {
+          "id": "E3A03-081",
+          "narration": {
+            "zh": "强攻需要城墙缺口，参围兵力不能少于守军，围攻本身还要能够进行。只看到缺口，不保证按钮就可用。"
+          },
+          "subtitles": {
+            "zh": "强攻需要城墙缺口，参围兵力不能少于守军，围攻本身还要能够进行。只看到缺口，不保证按钮就可用。",
+            "en": "Assault requires a breach, enough eligible troops and a siege able to continue. A breach alone does not guarantee an available button."
+          }
+        },
+        {
+          "id": "E3A03-082",
+          "narration": {
+            "zh": "一月二十九日，小缺口、参围六千七百四十六，强攻堡垒可用。我们这次只试一天，之后重新判断。"
+          },
+          "subtitles": {
+            "zh": "一月二十九日，小缺口、参围六千七百四十六，强攻堡垒可用。我们这次只试一天，之后重新判断。",
+            "en": "On 29 January, a small breach and 6,746 eligible soldiers make assault available. We try one day, then reassess."
+          }
+        },
+        {
+          "id": "E3A03-083",
+          "narration": {
+            "zh": "预估每天额外增加十三点六进展、损失一百六十八。十三点六是进展数值，不是直接增加十三点六个百分点。"
+          },
+          "subtitles": {
+            "zh": "预估每天额外增加十三点六进展、损失一百六十八。十三点六是进展数值，不是直接增加十三点六个百分点。",
+            "en": "The preview shows 13.6 extra progress daily and 168 projected losses. That is progress, not 13.6 percentage points of the bar."
+          }
+        },
+        {
+          "id": "E3A03-084",
+          "narration": {
+            "zh": "预计损失看参围兵力与缺口状态。小缺口按百分之二点五，大缺口按百分之一，缺口大小也影响强攻的预计代价。"
+          },
+          "subtitles": {
+            "zh": "预计损失看参围兵力与缺口状态。小缺口按百分之二点五，大缺口按百分之一，缺口大小也影响强攻的预计代价。",
+            "en": "Projected losses use eligible strength and breach state: 2.5 percent for a small breach and one percent for a large breach."
+          }
+        },
+        {
+          "id": "E3A03-085",
+          "narration": {
+            "zh": "一千名参围士兵的示例，分别是二十五、十的预计损失。这是在解释按钮预估，不是本次实战损失。"
+          },
+          "subtitles": {
+            "zh": "一千名参围士兵的示例，分别是二十五、十的预计损失。这是在解释按钮预估，不是本次实战损失。",
+            "en": "For an example of 1,000 eligible soldiers, projected losses are 25 or ten. These explain the preview rather than this siege's observed losses."
+          }
+        },
+        {
+          "id": "E3A03-086",
+          "narration": {
+            "zh": "预估只描述现在。兵力、守军变了，再看按钮，数字也可能变；继续强攻之前，要重新判断代价。"
+          },
+          "subtitles": {
+            "zh": "预估只描述现在。兵力、守军变了，再看按钮，数字也可能变；继续强攻之前，要重新判断代价。",
+            "en": "The preview describes the present state. If troops or garrison change, recheck the button and reassess the cost before continuing."
+          }
+        },
+        {
+          "id": "E3R01-003",
+          "narration": {
+            "zh": "想更快拿城，也得问自己能否承担这批兵力损失。按钮给出的是当前预估，不是一份保证；兵力用掉之后，后续战斗和围攻还要继续考虑。"
+          },
+          "subtitles": {
+            "zh": "想更快拿城，也得问自己能否承担这批兵力损失。按钮给出的是当前预估，不是一份保证；兵力用掉之后，后续战斗和围攻还要继续考虑。",
+            "en": "Faster capture also raises a manpower question. The button gives a current projection rather than a guarantee; consider the force needed for later battles and sieges."
+          }
+        },
+        {
+          "id": "E3A03-087",
+          "narration": {
+            "zh": "按下强攻堡垒，窗口显示强攻进行中。一月二十九日到三十日，我们看这场围攻实际过一天的结果。"
+          },
+          "subtitles": {
+            "zh": "按下强攻堡垒，窗口显示强攻进行中。一月二十九日到三十日，我们看这场围攻实际过一天的结果。",
+            "en": "Start the assault and the window shows it in progress. Follow this siege from 29 to 30 January to see the actual one-day result."
+          }
+        },
+        {
+          "id": "E3A03-088",
+          "narration": {
+            "zh": "进展五十二点零八到六十八点四六，净增十六点三八。参围兵力六千七百四十六到六千五百七十八，净少一百六十八。"
+          },
+          "subtitles": {
+            "zh": "进展五十二点零八到六十八点四六，净增十六点三八。参围兵力六千七百四十六到六千五百七十八，净少一百六十八。",
+            "en": "Progress rises from 52.08 to 68.46, gaining 16.38. Eligible strength falls from 6,746 to 6,578, a net decrease of 168."
+          }
+        },
+        {
+          "id": "E3A06-014",
+          "narration": {
+            "zh": "这次兵力净少，恰好符合开始时的预估。十六点三八却是整日总进展，不全是强攻额外值；下一天也不保证重复相同结果。"
+          },
+          "subtitles": {
+            "zh": "这次兵力净少，恰好符合开始时的预估。十六点三八却是整日总进展，不全是强攻额外值；下一天也不保证重复相同结果。",
+            "en": "The net troop decrease matches this preview. The 16.38 is the day's total gain, not entirely extra assault progress or a guarantee about the next day."
+          }
+        },
+        {
+          "id": "E3A06-015",
+          "narration": {
+            "zh": "下一次预估已经是十三点二进展、一百六十四损失。军队状态变了，预计收益和代价也跟着变。"
+          },
+          "subtitles": {
+            "zh": "下一次预估已经是十三点二进展、一百六十四损失。军队状态变了，预计收益和代价也跟着变。",
+            "en": "The next preview is already 13.2 progress and 164 losses. A changed army state changes the projected gains and costs."
+          }
+        },
+        {
+          "id": "E3A06-016",
+          "narration": {
+            "zh": "停止强攻后，进展仍是六十八点四六，预计九十三天。后面恢复普通围攻，之前积累的进展并没有被抹掉。"
+          },
+          "subtitles": {
+            "zh": "停止强攻后，进展仍是六十八点四六，预计九十三天。后面恢复普通围攻，之前积累的进展并没有被抹掉。",
+            "en": "After stopping, progress remains 68.46 and the estimate is 93 days. Ordinary siege resumes without erasing the accumulated progress."
+          }
+        },
+        {
+          "id": "E3X01-011",
+          "narration": {
+            "zh": "原案的一天强攻，刚才已经看过。现在用同一份三月八日存档，另做两条路线：普通围攻观察八天，强攻观察一天。各自重新开始，实际看怎么开启、怎么停止。"
+          },
+          "subtitles": {
+            "zh": "原案的一天强攻，刚才已经看过。现在用同一份三月八日存档，另做两条路线：普通围攻观察八天，强攻观察一天。各自重新开始，实际看怎么开启、怎么停止。",
+            "en": "We have seen the original assault day. Two new routes use the same March 8 save: ordinary siege observed for eight days, assault for one. Each starts independently, showing how to start and stop."
+          }
+        },
+        {
+          "id": "E3X01-012",
+          "narration": {
+            "zh": "先别按。城墙要有缺口，参围人数不能少于守军，围攻也不能正因移动或战斗受阻。把鼠标放到强攻堡垒上，读它现在能否使用；按钮若灰着，就先看原因。"
+          },
+          "subtitles": {
+            "zh": "先别按。城墙要有缺口，参围人数不能少于守军，围攻也不能正因移动或战斗受阻。把鼠标放到强攻堡垒上，读它现在能否使用；按钮若灰着，就先看原因。",
+            "en": "Check before clicking: a breach, enough eligible soldiers and no movement or combat blocking the siege. Hover over Assault Fort. If it is disabled, read the reason first."
+          }
+        },
+        {
+          "id": "E3X01-013",
+          "narration": {
+            "zh": "这次是三月八日，城墙有小缺口，参围六千六百一十四人，守军四百六十人。强攻堡垒按钮可用。先核对城墙、人数和按钮提示，再决定要不要按。"
+          },
+          "subtitles": {
+            "zh": "这次是三月八日，城墙有小缺口，参围六千六百一十四人，守军四百六十人。强攻堡垒按钮可用。先核对城墙、人数和按钮提示，再决定要不要按。",
+            "en": "It is March 8, 1067: a Small Breach, 6,614 besieging soldiers and 460 defenders. Assault Fort is available. Check the walls, strength and tooltip before deciding."
+          }
+        },
+        {
+          "id": "E3X01-014",
+          "narration": {
+            "zh": "第一条路线不按强攻堡垒，让普通围攻继续。从三月八日走到十六日，实际观察八天。别把这个窗口当一天，也别用预计结束日期代替已经过去的日子。"
+          },
+          "subtitles": {
+            "zh": "第一条路线不按强攻堡垒，让普通围攻继续。从三月八日走到十六日，实际观察八天。别把这个窗口当一天，也别用预计结束日期代替已经过去的日子。",
+            "en": "Leave Assault Fort untouched. Ordinary siege runs from March 8 to 16: eight elapsed days, not one. Read actual dates rather than an estimated finish."
+          }
+        },
+        {
+          "id": "E3X01-015",
+          "narration": {
+            "zh": "八天后，进展一百六十二点七一到一百八十四点八七，净增二十二点一六。参围仍六千六百一十四，守军四百六十到四百八十四，原因未知，不拆成单一贡献。"
+          },
+          "subtitles": {
+            "zh": "八天后，进展一百六十二点七一到一百八十四点八七，净增二十二点一六。参围仍六千六百一十四，守军四百六十到四百八十四，原因未知，不拆成单一贡献。",
+            "en": "Eight days: work 162.71 to 184.87, net +22.16; besiegers stay 6,614. Garrison 460 to 484 has an unknown cause, so this is not a single-factor result."
+          }
+        },
+        {
+          "id": "E3X01-016",
+          "narration": {
+            "zh": "再看同一存档起点的另一条路线。日历回到三月八日，进展一百六十二点七一，守军四百六十。两段各自选择，不是先围八天，再接着强攻；现在切到独立录下的强攻路线。"
+          },
+          "subtitles": {
+            "zh": "再看同一存档起点的另一条路线。日历回到三月八日，进展一百六十二点七一，守军四百六十。两段各自选择，不是先围八天，再接着强攻；现在切到独立录下的强攻路线。",
+            "en": "The other route reloads the same March 8 save: work 162.71, garrison 460. These are independent choices, not eight ordinary days followed by assault."
+          }
+        },
+        {
+          "id": "E3X01-017",
+          "narration": {
+            "zh": "停着读完整提示：强攻预计每天额外增加十三点四进展、减员一百六十五人。这是眼前状态的预估，不是已经发生的伤亡，也不保证以后每天都一样。先看代价，再按。"
+          },
+          "subtitles": {
+            "zh": "停着读完整提示：强攻预计每天额外增加十三点四进展、减员一百六十五人。这是眼前状态的预估，不是已经发生的伤亡，也不保证以后每天都一样。先看代价，再按。",
+            "en": "Paused preview: +13.4 extra progress and 165 casualties per day. These are current forecasts, not losses already suffered or fixed costs for every later day."
+          }
+        },
+        {
+          "id": "E3X01-018",
+          "narration": {
+            "zh": "现在实际点击强攻堡垒。按钮变成停止强攻，每日进展显示十六点一。此时仍然暂停，进展和兵力没有因为这次点击就变化。要看一天的代价，还得让日历走。"
+          },
+          "subtitles": {
+            "zh": "现在实际点击强攻堡垒。按钮变成停止强攻，每日进展显示十六点一。此时仍然暂停，进展和兵力没有因为这次点击就变化。要看一天的代价，还得让日历走。",
+            "en": "Click Assault Fort: Stop Assault appears and daily progress shows 16.1. Still paused, work and strength have not changed. Let a day pass to see the cost."
+          }
+        },
+        {
+          "id": "E3X01-019",
+          "narration": {
+            "zh": "从三月八日完整走到九日，再暂停。读回的累计进展从一百六十二点七一到一百七十八点八八，净增十六点一七；参围兵力从六千六百一十四到六千四百四十九，净少一百六十五。"
+          },
+          "subtitles": {
+            "zh": "从三月八日完整走到九日，再暂停。读回的累计进展从一百六十二点七一到一百七十八点八八，净增十六点一七；参围兵力从六千六百一十四到六千四百四十九，净少一百六十五。",
+            "en": "Advance from March 8 to March 9 and pause. Readback shows accumulated progress rising from 162.71 to 178.88, a net 16.17. Besieging strength falls from 6,614 to 6,449, a net loss of 165."
+          }
+        },
+        {
+          "id": "E3X01-020",
+          "narration": {
+            "zh": "普通这边标八天，强攻这边标一天，别用两段净量直接算速度倍数。先看界面的眼前预估：普通二点七每天，开启强攻后十六点一每天；再看各自实际付出的时间和兵力。"
+          },
+          "subtitles": {
+            "zh": "普通这边标八天，强攻这边标一天，别用两段净量直接算速度倍数。先看界面的眼前预估：普通二点七每天，开启强攻后十六点一每天；再看各自实际付出的时间和兵力。",
+            "en": "Label normal as eight days and assault as one; their net gains give no causal speed ratio. UI estimates are 2.7 normally and 16.1 at assault start."
+          }
+        },
+        {
+          "id": "E3X01-021",
+          "narration": {
+            "zh": "十六点一七是这整天的净推进，不是纯强攻贡献。普通推进和事件也可能同时发生；没有分开记录，就不把差值叫纯强攻贡献，也不把净少的士兵全部叫强攻阵亡。"
+          },
+          "subtitles": {
+            "zh": "十六点一七是这整天的净推进，不是纯强攻贡献。普通推进和事件也可能同时发生；没有分开记录，就不把差值叫纯强攻贡献，也不把净少的士兵全部叫强攻阵亡。",
+            "en": "16.17 is the whole day’s net advance, not pure assault gain. Without separated records, neither the advance nor every net missing soldier is assault-only."
+          }
+        },
+        {
+          "id": "E3X01-022",
+          "narration": {
+            "zh": "现在实际点击停止强攻。按钮恢复强攻堡垒，每日进展回到二点七。日期还是三月九日，累计进展一百七十八点八八，参围六千四百四十九；停下不会退回已经取得的进展。"
+          },
+          "subtitles": {
+            "zh": "现在实际点击停止强攻。按钮恢复强攻堡垒，每日进展回到二点七。日期还是三月九日，累计进展一百七十八点八八，参围六千四百四十九；停下不会退回已经取得的进展。",
+            "en": "Click Stop Assault: daily progress returns to 2.7. Still March 9, with 178.88 work and 6,449 besiegers. Stopping preserves progress; Assault Fort is available again."
+          }
+        },
+        {
+          "id": "E3X01-023",
+          "narration": {
+            "zh": "如果重新开启，先读这时的提示：预计额外进展十三点零、每天减员一百六十一。兵力变了，预估也变了；第一次的十三点四和一百六十五，不能当整场围攻固定不变的代价。"
+          },
+          "subtitles": {
+            "zh": "如果重新开启，先读这时的提示：预计额外进展十三点零、每天减员一百六十一。兵力变了，预估也变了；第一次的十三点四和一百六十五，不能当整场围攻固定不变的代价。",
+            "en": "Before restarting, read +13.0 extra progress and 161 casualties per day. Strength changed, so the first 13.4 and 165 forecast is not fixed for the siege."
+          }
+        },
+        {
+          "id": "E3X01-024",
+          "narration": {
+            "zh": "愿意等，就继续普通围攻；想加快，先读代价，再按强攻堡垒。不想继续承担代价，就按停止强攻。现在回到原案，看刘易斯怎样城破。"
+          },
+          "subtitles": {
+            "zh": "愿意等，就继续普通围攻；想加快，先读代价，再按强攻堡垒。不想继续承担代价，就按停止强攻。现在回到原案，看刘易斯怎样城破。",
+            "en": "Wait with ordinary siege, or read the cost and start assault for faster advance. Press Stop Assault if its cost is too high. Now return to the original Lewes case."
+          }
+        },
+        {
+          "id": "E3A03-089",
+          "narration": {
+            "zh": "后面不再强攻，继续围住刘易斯。要等的是围攻完成、据点被占领，不是某一次事件出现，就当作已经城破。"
+          },
+          "subtitles": {
+            "zh": "后面不再强攻，继续围住刘易斯。要等的是围攻完成、据点被占领，不是某一次事件出现，就当作已经城破。",
+            "en": "Continue besieging Lewes without further assault. Wait for completion and occupation rather than treating an event as capture."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "capture",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "一直看到刘易斯被占领",
+        "en": "Follow Lewes through actual capture"
+      },
+      "cues": [
+        {
+          "id": "E3A06-017",
+          "narration": {
+            "zh": "四月十五日，城墙已有大缺口，它会让事件间隔缩短百分之三十，最新事件是僵持。本次展示的是拍到的状态，并未录齐所有事件。"
+          },
+          "subtitles": {
+            "zh": "四月十五日，城墙已有大缺口，它会让事件间隔缩短百分之三十，最新事件是僵持。本次展示的是拍到的状态，并未录齐所有事件。",
+            "en": "By 15 April, the walls have a large breach, whose effect shortens the event interval by thirty percent; the latest event is stalemate. Not every event was recorded."
+          }
+        },
+        {
+          "id": "E3A06-018",
+          "narration": {
+            "zh": "这时守军四百八十四、参围六千三百八十四，每日进展显示二点七。围到后期，预计天数仍按当前情况重新读。"
+          },
+          "subtitles": {
+            "zh": "这时守军四百八十四、参围六千三百八十四，每日进展显示二点七。围到后期，预计天数仍按当前情况重新读。",
+            "en": "The UI shows 484 defenders, 6,384 besiegers and 2.7 daily progress. Even late in the siege, read the estimate from the current state."
+          }
+        },
+        {
+          "id": "E3A03-090",
+          "narration": {
+            "zh": "四月二十一日，城还没被占领。进展三百二十三点六三，总数三百二十五，还差一点三七；接近完成，仍不是完成。"
+          },
+          "subtitles": {
+            "zh": "四月二十一日，城还没被占领。进展三百二十三点六三，总数三百二十五，还差一点三七；接近完成，仍不是完成。",
+            "en": "On 21 April the holding is not captured: progress is 323.63 of 325, with 1.37 remaining. Nearly complete is not complete."
+          }
+        },
+        {
+          "id": "E3A06-019",
+          "narration": {
+            "zh": "最后三天，二十日还差四点一三，二十一日差一点三七，二十二日才出现占领。把最后这段连续看完，才不会提前认定城破。"
+          },
+          "subtitles": {
+            "zh": "最后三天，二十日还差四点一三，二十一日差一点三七，二十二日才出现占领。把最后这段连续看完，才不会提前认定城破。",
+            "en": "Across the last three days, 4.13 remains on the 20th, 1.37 on the 21st, and occupation appears on the 22nd. Follow through rather than declaring capture early."
+          }
+        },
+        {
+          "id": "E3A03-091",
+          "narration": {
+            "zh": "最后把画面留给日历、围攻窗口与地图。城破发生时，让游戏显示结果，不先替它宣布胜利。"
+          },
+          "subtitles": {
+            "zh": "最后把画面留给日历、围攻窗口与地图。城破发生时，让游戏显示结果，不先替它宣布胜利。",
+            "en": "Stay with the date, siege window and map. Let the game show capture rather than declaring victory in advance."
+          }
+        },
+        {
+          "id": "E3A03-092",
+          "narration": {
+            "zh": "四月二十二日，刘易斯围攻战获胜。南撒克逊铺上蓝色占领斜线，通知说我们现在控制这里；等待终于变成实际占领。"
+          },
+          "subtitles": {
+            "zh": "四月二十二日，刘易斯围攻战获胜。南撒克逊铺上蓝色占领斜线，通知说我们现在控制这里；等待终于变成实际占领。",
+            "en": "On 22 April, Lewes's siege is won. Blue occupation stripes cover South Seaxe and the notice says we control it: waiting has become occupation."
+          }
+        },
+        {
+          "id": "E3A03-094",
+          "narration": {
+            "zh": "城内守军显示二十五，占领者是威廉。不是只凭守军变少判断，而是地图和占领状态一起确认：这次确实拿下了。"
+          },
+          "subtitles": {
+            "zh": "城内守军显示二十五，占领者是威廉。不是只凭守军变少判断，而是地图和占领状态一起确认：这次确实拿下了。",
+            "en": "The garrison shows 25 and William is the occupier. The map and occupation state together confirm capture, rather than a lower garrison alone."
+          }
+        },
+        {
+          "id": "E3A03-095",
+          "narration": {
+            "zh": "占领说的是当前由谁控制，不是永久换了领主。围攻胜利后，军事控制和领地持有者，仍要分别看。"
+          },
+          "subtitles": {
+            "zh": "占领说的是当前由谁控制，不是永久换了领主。围攻胜利后，军事控制和领地持有者，仍要分别看。",
+            "en": "Occupation identifies current control, not a permanent ownership transfer. After victory, distinguish military control from the legal holder."
+          }
+        },
+        {
+          "id": "E3A03-096",
+          "narration": {
+            "zh": "伯爵领可能有多座设防地产。拿下首府，还要看其他设防地产；全部都被占领，才满足全伯爵领占领。"
+          },
+          "subtitles": {
+            "zh": "伯爵领可能有多座设防地产。拿下首府，还要看其他设防地产；全部都被占领，才满足全伯爵领占领。",
+            "en": "A county can contain several fortified holdings. After taking the capital, check the others: all fortified holdings must be occupied for full county occupation."
+          }
+        },
+        {
+          "id": "E3A03-097",
+          "narration": {
+            "zh": "南撒克逊仍列着伯爵领持有者利奥夫温，同时显示我们占领。原来的归属，与现在的军事控制，就这样并排显示。"
+          },
+          "subtitles": {
+            "zh": "南撒克逊仍列着伯爵领持有者利奥夫温，同时显示我们占领。原来的归属，与现在的军事控制，就这样并排显示。",
+            "en": "South Seaxe still lists Leofwine as county holder while showing our occupation: legal ownership and current military control appear side by side."
+          }
+        },
+        {
+          "id": "E3X01-025",
+          "narration": {
+            "zh": "原案四月二十二日，刘易斯围攻获胜。现在切到另录的城破后操作：这次三月二十日陷落，地图、地产和战争面板都属于新演示，不替换原案数字。"
+          },
+          "subtitles": {
+            "zh": "原案四月二十二日，刘易斯围攻获胜。现在切到另录的城破后操作：这次三月二十日陷落，地图、地产和战争面板都属于新演示，不替换原案数字。",
+            "en": "Original Lewes fell on April 22. This separate demonstration fell on March 20. Its map, holdings and war panel do not replace the original values."
+          }
+        },
+        {
+          "id": "E3X01-026",
+          "narration": {
+            "zh": "先看地图占领斜线和通知：围攻获胜，你现在控制了南撒克逊，战利品九金币。奖励和战争分数分开读，也别把整个余额变化都算成这九枚金币。"
+          },
+          "subtitles": {
+            "zh": "先看地图占领斜线和通知：围攻获胜，你现在控制了南撒克逊，战利品九金币。奖励和战争分数分开读，也别把整个余额变化都算成这九枚金币。",
+            "en": "Read the occupation stripes and notice: Siege Won, we now control South Seaxe, with nine gold in loot. Keep the reward separate from war score; it does not explain every change to the gold balance."
+          }
+        },
+        {
+          "id": "E3X01-027",
+          "narration": {
+            "zh": "点开刘易斯，页面写为你所占领，城防三级、守军二十五。持有者却仍是肯特公爵利奥夫温。当前军事控制改变了，头衔没有因为城破就转给威廉。"
+          },
+          "subtitles": {
+            "zh": "点开刘易斯，页面写为你所占领，城防三级、守军二十五。持有者却仍是肯特公爵利奥夫温。当前军事控制改变了，头衔没有因为城破就转给威廉。",
+            "en": "Open Lewes. It says Occupied by You, with Fort Level 3 and 25 garrison soldiers. Its holder is still Duke Leofwine of Kent. Military control changed; capture did not transfer the title to William."
+          }
+        },
+        {
+          "id": "E3X01-028",
+          "narration": {
+            "zh": "伯爵领里逐页看：刘易斯城堡、奇切斯特神殿、黑斯廷斯城市，都写为你所占领。阿伦德尔目前没有地产；它的占领状态不能算成又攻下一座城堡。"
+          },
+          "subtitles": {
+            "zh": "伯爵领里逐页看：刘易斯城堡、奇切斯特神殿、黑斯廷斯城市，都写为你所占领。阿伦德尔目前没有地产；它的占领状态不能算成又攻下一座城堡。",
+            "en": "Lewes castle, Chichester temple and Hastings city each show our occupation. Arundel is an empty holding slot; its occupation label is not another captured castle."
+          }
+        },
+        {
+          "id": "E3X01-029",
+          "narration": {
+            "zh": "这次有城防和守军栏的是刘易斯，另外两页没有。本县三处已建地产都逐个查过。换成还有另一座设防地产的伯爵领，仍要逐处查，别照搬这个县。"
+          },
+          "subtitles": {
+            "zh": "这次有城防和守军栏的是刘易斯，另外两页没有。本县三处已建地产都逐个查过。换成还有另一座设防地产的伯爵领，仍要逐处查，别照搬这个县。",
+            "en": "Lewes has fort and garrison rows; the other two pages do not. All three built holdings were checked here. Inspect counties with another fortified holding separately."
+          }
+        },
+        {
+          "id": "E3X01-030",
+          "narration": {
+            "zh": "再打开诺曼人征服英格兰。总栏加百分之十三，占领明细加百分之十三点二，来源列南撒克逊。这是本场明细，不是每攻一城固定加十三。"
+          },
+          "subtitles": {
+            "zh": "再打开诺曼人征服英格兰。总栏加百分之十三，占领明细加百分之十三点二，来源列南撒克逊。这是本场明细，不是每攻一城固定加十三。",
+            "en": "Norman Conquest of England: total +13%, occupation detail +13.2%, listing South Seaxe. This is this war’s breakdown, not a fixed score for every captured holding."
+          }
+        },
+        {
+          "id": "E3X01-031",
+          "narration": {
+            "zh": "占据目标那项仍是零，提示没有占据目标。占领地产和占据战争目标分别读；战争还没赢，不能因城破，就把强制执行要求当成已经达成。"
+          },
+          "subtitles": {
+            "zh": "占据目标那项仍是零，提示没有占据目标。占领地产和占据战争目标分别读；战争还没赢，不能因城破，就把强制执行要求当成已经达成。",
+            "en": "Objective score is zero, with No Objective Occupied. Read it separately from holding occupation. The war continues; one capture does not establish Enforce Demands."
+          }
+        },
+        {
+          "id": "E3X01-032",
+          "narration": {
+            "zh": "城破后，先查谁占领，再查本县各处地产，最后回战争面板。新演示到这里结束；下面回到原案，读取四月十九日至二十二日保存的战争结果。"
+          },
+          "subtitles": {
+            "zh": "城破后，先查谁占领，再查本县各处地产，最后回战争面板。新演示到这里结束；下面回到原案，读取四月十九日至二十二日保存的战争结果。",
+            "en": "Check the occupier, this county’s holdings, then the war panel. The new demonstration ends here; return to the original war readings from April 19 to 22."
+          }
+        },
+        {
+          "id": "E3A06-020",
+          "narration": {
+            "zh": "获胜通知还列出战利品，数值是九。它是金钱收入，和军事占领、战争分数是不同的结果，别混成同一种进度。"
+          },
+          "subtitles": {
+            "zh": "获胜通知还列出战利品，数值是九。它是金钱收入，和军事占领、战争分数是不同的结果，别混成同一种进度。",
+            "en": "The victory notice lists loot of nine gold. Money, military occupation and war score are different outcomes, not one interchangeable progress value."
+          }
+        },
+        {
+          "id": "E3A03-105",
+          "narration": {
+            "zh": "从一月十日拍到围攻，到四月二十二日确认占领，记录跨一百零二天。我们看到了另一军队到场、城墙缺口和一次短强攻。"
+          },
+          "subtitles": {
+            "zh": "从一月十日拍到围攻，到四月二十二日确认占领，记录跨一百零二天。我们看到了另一军队到场、城墙缺口和一次短强攻。",
+            "en": "The record spans 102 days, from the siege observed on 10 January to occupation on 22 April: another army arrives, breaches develop and one short assault is tried."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "war_bridge",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "城拿下了，战争还没结束",
+        "en": "The holding is captured; the war continues"
+      },
+      "cues": [
+        {
+          "id": "E3A03-106",
+          "narration": {
+            "zh": "城拿下，最后短看战争面板，读这次真实变化。这里不再把前两期的战争分数，从头讲一遍。"
+          },
+          "subtitles": {
+            "zh": "城拿下，最后短看战争面板，读这次真实变化。这里不再把前两期的战争分数，从头讲一遍。",
+            "en": "With the holding captured, briefly read the actual change in the war panel without repeating the earlier scoring lessons."
+          }
+        },
+        {
+          "id": "E3A03-098",
+          "narration": {
+            "zh": "每座城没有通用的固定占领分。计分要看占领范围和宣战理由；这次拿城有什么结果，回当前战争面板看。"
+          },
+          "subtitles": {
+            "zh": "每座城没有通用的固定占领分。计分要看占领范围和宣战理由；这次拿城有什么结果，回当前战争面板看。",
+            "en": "There is no universal fixed occupation score per holding. Read this war's result in context of its occupied territory and casus belli."
+          }
+        },
+        {
+          "id": "E3A03-100",
+          "narration": {
+            "zh": "比较四月十九日和二十二日，占领分项从零来到十三，说明这段时间有了占领进展。但不能把十三当成以后每座城的固定面值。"
+          },
+          "subtitles": {
+            "zh": "比较四月十九日和二十二日，占领分项从零来到十三，说明这段时间有了占领进展。但不能把十三当成以后每座城的固定面值。",
+            "en": "Comparing 19 and 22 April, occupation score rises from 0 to 13. That records a change over these three days rather than a fixed value for every holding."
+          }
+        },
+        {
+          "id": "E3A06-021",
+          "narration": {
+            "zh": "占领提示里，南撒克逊细项十三点二，主面板整数总分十三。明细与主显示的精度不同，两处一起读。"
+          },
+          "subtitles": {
+            "zh": "占领提示里，南撒克逊细项十三点二，主面板整数总分十三。明细与主显示的精度不同，两处一起读。",
+            "en": "The tooltip lists South Seaxe at 13.2, while the main panel shows the integer 13. Read the detail and summary together."
+          }
+        },
+        {
+          "id": "E3A03-108",
+          "narration": {
+            "zh": "十九日四项都是零；二十二日，占领十三，战斗、囚禁、计时仍是零，总分十三。两次记录相隔三天。"
+          },
+          "subtitles": {
+            "zh": "十九日四项都是零；二十二日，占领十三，战斗、囚禁、计时仍是零，总分十三。两次记录相隔三天。",
+            "en": "All four components are zero on the 19th. On the 22nd, occupation is 13 and battle, imprisonment and ticking remain zero. The readings are three days apart."
+          }
+        },
+        {
+          "id": "E3A03-109",
+          "narration": {
+            "zh": "这三天没隔离其他地方的占领。因此确认分项变了，不把全部十三分都武断地归给这座城独自贡献。"
+          },
+          "subtitles": {
+            "zh": "这三天没隔离其他地方的占领。因此确认分项变了，不把全部十三分都武断地归给这座城独自贡献。",
+            "en": "Other occupations were not isolated over those three days. We confirm the component changed without assigning every point solely to this holding."
+          }
+        },
+        {
+          "id": "E3A03-110",
+          "narration": {
+            "zh": "控制战争目标，可能积累计时分数；看目标控制了多久，不是战争多久。本次计时仍是零，就不假装已经增长。"
+          },
+          "subtitles": {
+            "zh": "控制战争目标，可能积累计时分数；看目标控制了多久，不是战争多久。本次计时仍是零，就不假装已经增长。",
+            "en": "Controlling the objective can generate ticking score based on time held, not total war age. Here that component remains zero."
+          }
+        },
+        {
+          "id": "E3A03-111",
+          "narration": {
+            "zh": "总分十三，强制执行要求仍不可用。城拿下了，战争还没结束；本期停在围攻胜利，不展开和谈。"
+          },
+          "subtitles": {
+            "zh": "总分十三，强制执行要求仍不可用。城拿下了，战争还没结束；本期停在围攻胜利，不展开和谈。",
+            "en": "At a total of 13, enforce demands is still unavailable. The holding is taken but the war continues; stop here without expanding into peace negotiations."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "closing",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "下一场围攻，先看这几项",
+        "en": "What to check in the next siege"
+      },
+      "cues": [
+        {
+          "id": "E3A03-113",
+          "narration": {
+            "zh": "下一次先看能否围攻：比较真正参围的士兵和守军，再读其他阻碍。人数占优，不代替全部条件。"
+          },
+          "subtitles": {
+            "zh": "下一次先看能否围攻：比较真正参围的士兵和守军，再读其他阻碍。人数占优，不代替全部条件。",
+            "en": "First check whether the siege can continue: compare eligible besiegers with the garrison and read other blockers. Numbers alone are not every condition."
+          }
+        },
+        {
+          "id": "E3A03-114",
+          "narration": {
+            "zh": "再看累计进展、所需总数和每日进展。城防可能让终点更远，也可能让速度受罚；三项一起看，才理解要等多久。"
+          },
+          "subtitles": {
+            "zh": "再看累计进展、所需总数和每日进展。城防可能让终点更远，也可能让速度受罚；三项一起看，才理解要等多久。",
+            "en": "Read accumulated progress, the required total and daily progress together. Forts can increase the target and penalize speed; together these explain the wait."
+          }
+        },
+        {
+          "id": "E3A03-115",
+          "narration": {
+            "zh": "分清变化的来源：军队到场、事件直接加进展、疾病提高日速、缺口缩短间隔。这些不是同一种加成，别混着计算。"
+          },
+          "subtitles": {
+            "zh": "分清变化的来源：军队到场、事件直接加进展、疾病提高日速、缺口缩短间隔。这些不是同一种加成，别混着计算。",
+            "en": "Distinguish an arriving army, extra event progress, disease rate bonuses and shorter breach intervals. They are not one interchangeable bonus."
+          }
+        },
+        {
+          "id": "E3A03-116",
+          "narration": {
+            "zh": "有了缺口，再比较强攻。先读当前预计进展和损失，行动后重看；第一天的预估，不保证整个过程都如此。"
+          },
+          "subtitles": {
+            "zh": "有了缺口，再比较强攻。先读当前预计进展和损失，行动后重看；第一天的预估，不保证整个过程都如此。",
+            "en": "With a breach, read the current assault projections, then reassess after acting. The first preview does not guarantee the whole process."
+          }
+        },
+        {
+          "id": "E3A03-117",
+          "narration": {
+            "zh": "城破后，确认占领者、查看其他设防地产，再打开战争面板。控制、持有者和战争分数，分别回答不同问题。"
+          },
+          "subtitles": {
+            "zh": "城破后，确认占领者、查看其他设防地产，再打开战争面板。控制、持有者和战争分数，分别回答不同问题。",
+            "en": "After capture, check the occupier and remaining fortified holdings, then the war panel. Control, ownership and score answer different questions."
+          }
+        },
+        {
+          "id": "E3A03-118",
+          "narration": {
+            "zh": "本场记住三个对比：守军读数变了，预计延后；另一军队到场后，下一天推进更多；小缺口打开强攻选择。它们不是同一条原因。"
+          },
+          "subtitles": {
+            "zh": "本场记住三个对比：守军读数变了，预计延后；另一军队到场后，下一天推进更多；小缺口打开强攻选择。它们不是同一条原因。",
+            "en": "Remember three comparisons: changed garrison with a longer estimate, a higher gain after another army arrives, and a small breach enabling assault. These are different changes."
+          }
+        },
+        {
+          "id": "E3R01-004",
+          "narration": {
+            "zh": "守军增加的原因，以及事件间隔的全部修正，这次还没有追清。边界会列在研究说明里；未知的部分，不用猜测补成已经证明的规则。"
+          },
+          "subtitles": {
+            "zh": "守军增加的原因，以及事件间隔的全部修正，这次还没有追清。边界会列在研究说明里；未知的部分，不用猜测补成已经证明的规则。",
+            "en": "The garrison increase's cause and the full set of event-interval modifiers remain unresolved. Our research notes state those limits without presenting guesses as facts."
+          }
+        }
+      ],
+      "artifact_ids": []
+    }
+  ]
+}
