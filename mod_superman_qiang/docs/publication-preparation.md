@@ -8,6 +8,11 @@
 - 独立的完整Steam Change Notes草稿：[superman_qiang_change_notes.txt](../../workshop/superman_qiang_change_notes.txt)。
 - 首发真实玩法图清单：[superman_qiang_screenshots.md](../../workshop/superman_qiang_screenshots.md)，目前待GREEN截图。
 - 正式候选本地冻结工具：[prepare_publication.py](../tools/prepare_publication.py)。它调用已有严格manifest校验和native plan本地校验，绑定tag、commit、正式21文件库存、实机报告SHA与封面，冻结主描述及完整notes的字符数、行数和SHA。不会加载Steam DLL、切换模式或上传。
+- 匿名公开读回工具：[verify_publication.py](../tools/verify_publication.py)。它复用现有完整notes解码比较器，另核对精确item/AppID/owner/可见性/tags、公开封面、media库存、原图字节与解码像素，并保全原始匿名响应；真实图片审阅仍单独记录。
+
+该helper当前尚无已证明的DLC/required-mod机器字段。报告分别给出`metadata_notes_cover_media_ok`与`dlc_and_required_mods.state=not_observed`，两个实际ID数组保持`null`，不把API缺字段当成无依赖。后者未观察时整体`ok=false`，其余公开核对通过会标记`pending_dependency_observation`。正式发布窗口必须从同一item的真实匿名Page DOM/sidebar记录“Required DLC”与“Required items”的实际解析规则、页面正文SHA和两个ID数组，由最终发布报告合并判断；本准备包不新增未必要的原生能力。
+
+2026-10-04的只读准备核对确认Steam公开页确有两个独立栏目，一手正例分别为[Royal Court Event Pack](https://steamcommunity.com/sharedfiles/filedetails/?id=3360676953)与[CFP/EPE韩语补丁](https://steamcommunity.com/sharedfiles/filedetails/?id=3538192508)。本机三次匿名原HTML请求均收到HTTP429，正文与SHA保留在`D:/ck3-experience-drain-feasibility-20261004/publication-dependencies-research-01/`；没有从这些失败响应推断任何依赖状态，也没有重试或改变Steam模式。
 
 产品机制仍在实机验证，文案是可审阅草稿。最终属性转移和数值边界确定后再冻结；之后有字节变更必须创建新的冻结目录，不能覆盖旧输入。
 
