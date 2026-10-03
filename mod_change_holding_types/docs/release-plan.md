@@ -22,3 +22,9 @@
 本产品的结果与另一个法理征服维护版分别验收；其中任何一方通过不能替代另一方。
 
 截至本次记录，R0001为SDK工具对象处理harness RED、未测产品；R0002仍在进行，exact-build handshake成功，但本次DLL没有frontend route capability。[实机边界记录](live-attempt-status-2026-10-03.md)保留原始证据与缺口，发布门仍待实际玩家入口和状态验收。
+
+## 2026-10-03 补记：R0004 英文视觉与未完成语言门
+
+[R0004 报告](live-R0004-visual-route-2026-10-03/README.md) 确认英文六名称、城市说明、Trani目标及成本400；完整警告仍被tooltip遮挡，名为unobscured的末帧也不满足门禁。debug French按钮／控制台路线后HUD仍英文，分类为测试路线 FAIL，产品法语及其余六语视觉均未测，后续应新run冷启动每种语言。debug原版 `is_ai` trigger perspective 诊断及产品调用上下文完整保留，没有改 runtime。实际session-final与bus-release证明清理／屏幕释放；R0003 register回执误覆盖另见 [追加勘误](corrections-2026-10-03.md)。
+
+当前发布状态仍 pending：已有真实城市GUI执行／付款和 R0003 保存重载／干净十项矩阵；剩余完整警告、七语冷载视觉以及正式上传／公开全文Change Notes／fresh缓存／永久changelog，不把R0004路线失败或部分英文截图写成正式release完成。

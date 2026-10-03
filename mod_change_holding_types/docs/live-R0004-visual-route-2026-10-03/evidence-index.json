@@ -1,0 +1,80 @@
+{
+  "schema": "cht.archived-core-evidence-index.v1",
+  "report_sha256": "2e490db1092bc614c844dce519588c75f2c8f1ea380b2e44e971504e6ac927a4",
+  "captured_evidence_root": "C:\\workspace\\two-mod-maintenance-20261003\\holding-R0004-visual-route-candidate",
+  "evidence_in_repository": false,
+  "files": [
+    {
+      "path": "session-final.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\session\\session-final.json",
+      "size": 3641,
+      "sha256": "419d8f3435f0077451097aa4910b149c8be535914d2a4bdf21f17178bcb37a6f"
+    },
+    {
+      "path": "bus-release.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\session\\bus-release.json",
+      "size": 1200,
+      "sha256": "8e666a7aee31a0f3cf0f4b20c9f977da155d5dc4c75949180c52cdb27d0ddb74"
+    },
+    {
+      "path": "stop.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\session\\stop.json",
+      "size": 120,
+      "sha256": "3a8f14b3746cc7fbc5fd4f2f030b4cf10db7558b5926a4206294ece9265b9efd"
+    },
+    {
+      "path": "production.manifest.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\production.manifest.json",
+      "size": 3371,
+      "sha256": "645f55fe732d0f4494505953cee9e06e6565634834c828bb9af6d3938823ee29"
+    },
+    {
+      "path": "error-log-snapshot.log",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\state\\profile\\logs\\error.log",
+      "size": 17871,
+      "sha256": "942099609612c98a09cf4a3d68e28b29889445dce8572fbd84ac4c8cf1c6e529"
+    },
+    {
+      "path": "en-holding-list-01.png",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\session\\screens\\en-holding-list-01.png",
+      "size": 2502150,
+      "sha256": "6e13e9b2b61f2dcddd80f60174cb1ffef3d7b212dbf4847964ca9d6c16a7248d"
+    },
+    {
+      "path": "en-city-full-01.png",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\session\\screens\\en-city-full-01.png",
+      "size": 2559735,
+      "sha256": "0364c0e0a14dc06dd8eb5b1f95236245b800a94de59c9b442ad1f07d89c802ac"
+    },
+    {
+      "path": "en-warning-unobscured-01.png",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\session\\screens\\en-warning-unobscured-01.png",
+      "size": 2549660,
+      "sha256": "183d9d506512b8eb89c8ce6424056849b6373acc4a013265a1fa5abfcbb1e60e"
+    },
+    {
+      "path": "console-french-executed-01.png",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\session\\screens\\console-french-executed-01.png",
+      "size": 2074100,
+      "sha256": "9c5b5dcb9f99313aa086fea9f832b18e8ea482a684bdb3cad7e502196f0a701b"
+    },
+    {
+      "path": "french-decisions-01.png",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\session\\screens\\french-decisions-01.png",
+      "size": 2549118,
+      "sha256": "140f866206fc2de52252dc180790b6954a8f9f4e8b25751443d32d4ff90688e2"
+    },
+    {
+      "path": "language-menu-french-result-02.png",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\session\\screens\\language-menu-french-result-02.png",
+      "size": 2188235,
+      "sha256": "fe355e94563333f5552ffdc3e33bcb61ee71bddc756ab13b8efbd9971b1bbc19"
+    },
+    {
+      "path": "R0003-register-current-CAS-error.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\screen-register.json",
+      "size": 678,
+      "sha256": "2b1c4cb0b70cde57993cafb8aff2c4154c44370b890c09efa27d1b57ebf9d539"
+    }
+  ]
+}

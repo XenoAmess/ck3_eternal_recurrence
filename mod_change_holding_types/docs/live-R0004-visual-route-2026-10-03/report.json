@@ -1,0 +1,169 @@
+{
+  "schema": "cht.visual-language-route-attempt.v1",
+  "run_id": "bf-202609141645-5434332d4d--change-holding-types--R0004",
+  "recorded_at_utc": "2026-10-03T01:37:27.732084+00:00",
+  "classification": "ENGLISH_PARTIAL_VISUAL_CONFIRMED_LANGUAGE_SWITCH_ROUTE_FAILED",
+  "release_ready": false,
+  "nine_language_visual_complete": false,
+  "game": {
+    "version": "1.20.0.3",
+    "steam_build": "25652598",
+    "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+    "scope": "Exact pinned build only"
+  },
+  "launch": {
+    "debug_mode": true,
+    "pid": 5680,
+    "command": [
+      "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "-gdpr-compliant",
+      "-userdir=C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\state\\profile",
+      "-loadsave=xar_checkpoint",
+      "-debug_mode"
+    ]
+  },
+  "runtime_unchanged_from_R0003": true,
+  "production_git_sha": "69ac45e7019ac989858e4f2c167c0bc64fa9a745",
+  "english_visual": {
+    "review": "Read-only review of raw screenshots by holding_conversion agent, plus root operator",
+    "six_decision_names_readable": true,
+    "city_title_description_target_and_cost_readable": true,
+    "cost": 400,
+    "default_target": "Trani / 特拉尼",
+    "warning_present": true,
+    "warning_unobscured": false,
+    "warning_filename_is_not_proof": "en-warning-unobscured-01.png still has a tooltip covering the warning; root reported the cursor movement was rejected"
+  },
+  "language_switch": {
+    "route_status": "FAIL",
+    "product_language_status": "NOT_TESTED",
+    "target": "french",
+    "routes": [
+      "debug built-in Language window French button",
+      "console switchlanguage french"
+    ],
+    "observed_HUD_after": "english",
+    "outcome_basis": "French attempt screenshot still shows English vanilla HUD/decisions; the route failed to provide a French-rendered product test",
+    "does_not_prove": [
+      "Product French locale PASS",
+      "Product French locale FAIL",
+      "Any other added language visually tested"
+    ]
+  },
+  "debug_diagnostic": {
+    "retained": true,
+    "kind": "Trigger Localization (database)",
+    "trigger": "is_ai",
+    "missing_perspective": "first_not",
+    "definition_source": "common/trigger_localization/00_debug_triggers.txt:5 (vanilla)",
+    "calling_context": "common/decisions/00_convert_holdings_decisions.txt:116 (ch_convert_holding_to_city_decision:is_valid)",
+    "fallback": "NOT_is_ai_trigger",
+    "root_cause_and_gameplay_effect": "Not established by this debug localization diagnostic",
+    "runtime_fix_applied": false,
+    "other_error_sources": "Captured error.log also contains vanilla court scene cultures and gui/debug/debug_menus.gui errors; this attempt is not labelled clean-error-log"
+  },
+  "cleanup": {
+    "status": "PROVEN",
+    "session_status": "session-ended",
+    "cleanup_proven": true,
+    "tree_gone": true,
+    "job_active_processes_final": 0,
+    "ck3_exit_code": 1,
+    "meaning": "Managed termination verified; this does not claim normal game return code zero",
+    "screen_resources_released": true,
+    "bus_task_state": "done",
+    "bus_release_sha256": "8e666a7aee31a0f3cf0f4b20c9f977da155d5dc4c75949180c52cdb27d0ddb74"
+  },
+  "R0003_receipt_correction": {
+    "file": "R0003/screen-register.json",
+    "previously_observed_size": 1256,
+    "previously_observed_sha256": "cb9f3da41f009dd5de1733350f9a3155d1d6dddcf7f745d08430d74a2eab4f67",
+    "current_size": 678,
+    "current_sha256": "2b1c4cb0b70cde57993cafb8aff2c4154c44370b890c09efa27d1b57ebf9d539",
+    "current_code": "CAS_CONFLICT",
+    "current_reason": "screen claim requires a new task registration",
+    "fact": "Root reported a registration retry mistakenly overwrote the original R0003 receipt with this CAS-error result",
+    "original_bytes_recovered": false,
+    "scope": "Do not reinterpret current file as the original successful registration receipt; state/effect snapshots remain separately frozen"
+  },
+  "pending": [
+    "New independent cold launch per language using pre-launch language settings and actual HUD language verification",
+    "Stable unobscured warning/full detail capture",
+    "Seven additional language visual tests and review remain pending",
+    "Workshop upload/public full Change Notes/fresh cache/permanent changelog"
+  ],
+  "evidence": [
+    {
+      "path": "session-final.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\session\\session-final.json",
+      "size": 3641,
+      "sha256": "419d8f3435f0077451097aa4910b149c8be535914d2a4bdf21f17178bcb37a6f"
+    },
+    {
+      "path": "bus-release.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\session\\bus-release.json",
+      "size": 1200,
+      "sha256": "8e666a7aee31a0f3cf0f4b20c9f977da155d5dc4c75949180c52cdb27d0ddb74"
+    },
+    {
+      "path": "stop.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\session\\stop.json",
+      "size": 120,
+      "sha256": "3a8f14b3746cc7fbc5fd4f2f030b4cf10db7558b5926a4206294ece9265b9efd"
+    },
+    {
+      "path": "production.manifest.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\production.manifest.json",
+      "size": 3371,
+      "sha256": "645f55fe732d0f4494505953cee9e06e6565634834c828bb9af6d3938823ee29"
+    },
+    {
+      "path": "error-log-snapshot.log",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\state\\profile\\logs\\error.log",
+      "size": 17871,
+      "sha256": "942099609612c98a09cf4a3d68e28b29889445dce8572fbd84ac4c8cf1c6e529"
+    },
+    {
+      "path": "en-holding-list-01.png",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\session\\screens\\en-holding-list-01.png",
+      "size": 2502150,
+      "sha256": "6e13e9b2b61f2dcddd80f60174cb1ffef3d7b212dbf4847964ca9d6c16a7248d"
+    },
+    {
+      "path": "en-city-full-01.png",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\session\\screens\\en-city-full-01.png",
+      "size": 2559735,
+      "sha256": "0364c0e0a14dc06dd8eb5b1f95236245b800a94de59c9b442ad1f07d89c802ac"
+    },
+    {
+      "path": "en-warning-unobscured-01.png",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\session\\screens\\en-warning-unobscured-01.png",
+      "size": 2549660,
+      "sha256": "183d9d506512b8eb89c8ce6424056849b6373acc4a013265a1fa5abfcbb1e60e"
+    },
+    {
+      "path": "console-french-executed-01.png",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\session\\screens\\console-french-executed-01.png",
+      "size": 2074100,
+      "sha256": "9c5b5dcb9f99313aa086fea9f832b18e8ea482a684bdb3cad7e502196f0a701b"
+    },
+    {
+      "path": "french-decisions-01.png",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\session\\screens\\french-decisions-01.png",
+      "size": 2549118,
+      "sha256": "140f866206fc2de52252dc180790b6954a8f9f4e8b25751443d32d4ff90688e2"
+    },
+    {
+      "path": "language-menu-french-result-02.png",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0004\\session\\screens\\language-menu-french-result-02.png",
+      "size": 2188235,
+      "sha256": "fe355e94563333f5552ffdc3e33bcb61ee71bddc756ab13b8efbd9971b1bbc19"
+    },
+    {
+      "path": "R0003-register-current-CAS-error.json",
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--change-holding-types--R0003\\screen-register.json",
+      "size": 678,
+      "sha256": "2b1c4cb0b70cde57993cafb8aff2c4154c44370b890c09efa27d1b57ebf9d539"
+    }
+  ]
+}
