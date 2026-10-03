@@ -116,6 +116,82 @@ bool AddPower(std::int64_t &sum, std::int64_t value) noexcept {
   return true;
 }
 
+game::ArmyRegimentReplenishmentSnapshot Replenishment(
+    const ArmyBindings &bindings, void *army_regiment, std::int32_t army_regiment_id) {
+  game::ArmyRegimentReplenishmentSnapshot result{};
+  result.army_regiment_id = army_regiment_id;
+  // Native D14960 resolves this representative persistent regiment from the
+  // FIRST DATA RECORD. +20 is data, not an array of record pointers. Further
+  // record stride is not closed; the DTO preserves +2C count and coverage.
+  const auto count = Load<std::int32_t>(army_regiment, 0x2C);
+  if (count < 0) {
+    result.unavailable_reason = "army_regiment_record_count_invalid";
+    return result;
+  }
+  result.native_data_record_count = count;
+  if (count == 0) {
+    result.unavailable_reason = "army_regiment_first_record_absent";
+    return result;
+  }
+  void *data = Load<void *>(army_regiment, 0x20);
+  if (data == nullptr) {
+    result.unavailable_reason = "army_regiment_first_record_unreadable";
+    return result;
+  }
+  const auto persistent_id = Load<std::int32_t>(data, 0x08);
+  void *persistent = Resolve(bindings.persistent_regiment_storage_slot, persistent_id);
+  if (persistent == nullptr) {
+    result.unavailable_reason = "persistent_regiment_not_found";
+    return result;
+  }
+  if (Load<std::uint32_t>(persistent, 0x14) != 0x52656769U) {
+    result.unavailable_reason = "persistent_regiment_identity_invalid";
+    return result;
+  }
+  std::vector<void *> matching;
+  for (std::int32_t index = 0; index < 7; ++index) {
+    void *chunk = static_cast<std::byte *>(persistent) + 0x18 +
+                  static_cast<std::size_t>(index) * 0x24;
+    if (Load<std::int32_t>(chunk, 0x10) != army_regiment_id) continue;
+    if (Load<std::int32_t>(chunk, 0x08) != persistent_id) {
+      result.chunks.clear();
+      result.unavailable_reason = "regiment_chunk_backlink_mismatch";
+      return result;
+    }
+    const auto current = Load<std::int32_t>(chunk, 0x04);
+    const auto maximum = Load<std::int32_t>(chunk, 0x00);
+    if (current < 0 || maximum < 0) {
+      result.chunks.clear();
+      result.unavailable_reason = "regiment_chunk_soldiers_invalid";
+      return result;
+    }
+    matching.push_back(chunk);
+    game::ArmyRegimentReplenishmentChunk row{};
+    row.persistent_regiment_id = persistent_id;
+    row.chunk_index = index;
+    row.current_soldiers = current;
+    row.maximum_soldiers = maximum;
+    row.state_raw = Load<std::int32_t>(chunk, 0x18);
+    result.chunks.push_back(row);
+  }
+  if (matching.empty()) {
+    result.unavailable_reason = "first_record_army_regiment_chunk_not_found";
+    return result;
+  }
+  std::int64_t monthly_fraction = 0;
+  bindings.get_regiment_monthly_replenishment_fraction(persistent, &monthly_fraction);
+  for (std::size_t index = 0; index < matching.size(); ++index) {
+    auto &row = result.chunks[index];
+    // 262C700 may return true before its internal 2657F10 call. Preserve the
+    // two native answers separately; no artificial conjunction or forecast.
+    row.native_can_replenish = bindings.can_regiment_replenish(persistent, matching[index]);
+    row.native_chunk_can_replenish = bindings.can_chunk_replenish(matching[index]);
+    row.persistent_monthly_replenishment_fraction_raw = monthly_fraction;
+  }
+  result.available = true;
+  return result;
+}
+
 game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
                                    const ArmyStrengthScope &scope) {
   game::ArmyStrengthSnapshot result{};
@@ -198,6 +274,29 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
       std::int64_t raw = 0;
       bindings.get_army_attrition_fraction(army, &raw, nullptr);
       result.current_attrition_fraction_raw = raw;
+    }
+    if (bindings.get_army_monthly_supply_change != nullptr &&
+        bindings.game_state_slot != nullptr && *bindings.game_state_slot != nullptr) {
+      void *game_data = Load<void *>(*bindings.game_state_slot, 0xA0);
+      void *province = Load<void *>(unit, 0x20);
+      if (province != nullptr &&
+          Province(game_data, Load<std::int32_t>(province, 0x10)) == province) {
+        std::int64_t raw = 0;
+        bindings.get_army_monthly_supply_change(army, &raw, province, nullptr);
+        result.current_supply_change_monthly_raw = raw;
+      }
+    }
+    if (bindings.persistent_regiment_storage_slot != nullptr &&
+        bindings.can_regiment_replenish != nullptr &&
+        bindings.can_chunk_replenish != nullptr &&
+        bindings.get_regiment_monthly_replenishment_fraction != nullptr) {
+      result.regiment_replenishment.emplace();
+      result.regiment_replenishment->reserve(static_cast<std::size_t>(count));
+      for (std::int32_t i = 0; i < count; ++i) {
+        const auto id = Load<std::int32_t>(ids, static_cast<std::size_t>(i) * 4);
+        result.regiment_replenishment->push_back(
+            Replenishment(bindings, Resolve(bindings.regiment_storage_slot, id), id));
+      }
     }
   }
   return result;

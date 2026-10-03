@@ -61,6 +61,20 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
     result.armies.get_army_attrition_fraction =
         reinterpret_cast<decltype(result.armies.get_army_attrition_fraction)>(
             image_base + ck3_12002::kArmyAttritionFractionRva12003);
+    result.armies.persistent_regiment_storage_slot = reinterpret_cast<void **>(
+        image_base + ck3_12002::kPersistentRegimentStorageSlotRva12003);
+    result.armies.can_regiment_replenish =
+        reinterpret_cast<decltype(result.armies.can_regiment_replenish)>(
+            image_base + ck3_12002::kRegimentCanReplenishRva12003);
+    result.armies.can_chunk_replenish =
+        reinterpret_cast<decltype(result.armies.can_chunk_replenish)>(
+            image_base + ck3_12002::kChunkCanReplenishRva12003);
+    result.armies.get_regiment_monthly_replenishment_fraction =
+        reinterpret_cast<decltype(result.armies.get_regiment_monthly_replenishment_fraction)>(
+            image_base + ck3_12002::kRegimentMonthlyReplenishmentRva12003);
+    result.armies.get_army_monthly_supply_change =
+        reinterpret_cast<decltype(result.armies.get_army_monthly_supply_change)>(
+            image_base + ck3_12002::kArmyMonthlySupplyChangeRva12003);
   }
   return result;
 }

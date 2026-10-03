@@ -142,8 +142,36 @@ enum class ArmyStrengthScopeRole {
   active_war_enemy,
 };
 
+// Read-only observations from the first persistent-regiment data record.
+// Each chunk is independently matched back to the actual CArmyRegiment;
+// these native predicates and monthly fraction are not a future soldier count.
+struct ArmyRegimentReplenishmentChunk {
+  std::int32_t persistent_regiment_id = -1;
+  std::int32_t chunk_index = 0;
+  std::int32_t current_soldiers = 0;
+  std::int32_t maximum_soldiers = 0;
+  std::int32_t state_raw = 0;
+  bool native_can_replenish = false;
+  bool native_chunk_can_replenish = false;
+  std::int64_t persistent_monthly_replenishment_fraction_raw = 0;
+
+  friend bool operator==(const ArmyRegimentReplenishmentChunk &,
+                         const ArmyRegimentReplenishmentChunk &) = default;
+};
+
+struct ArmyRegimentReplenishmentSnapshot {
+  bool available = false;
+  std::int32_t army_regiment_id = -1;
+  std::optional<std::int32_t> native_data_record_count;
+  std::string unavailable_reason;
+  std::vector<ArmyRegimentReplenishmentChunk> chunks;
+
+  friend bool operator==(const ArmyRegimentReplenishmentSnapshot &,
+                         const ArmyRegimentReplenishmentSnapshot &) = default;
+};
+
 // One generation-checked aggregate over a public CUnit and its exact CArmy /
-// CRegiment graph. A row is atomic: when any component ID, native array,
+// CArmyRegiment graph. A row is atomic: when any component ID, native array,
 // public-ID identity predicate or checked sum cannot be validated, available
 // is false and
 // every numeric aggregate must remain uninterpretable. The base-power raw
@@ -169,6 +197,12 @@ struct ArmyStrengthSnapshot {
   // The .2 adapter leaves the new optional getter bindings unassigned.
   std::optional<std::int64_t> current_supply_capacity_raw;
   std::optional<std::int64_t> current_attrition_fraction_raw;
+  // Signed native monthly supply change Q100000, not troop replenishment.
+  std::optional<std::int64_t> current_supply_change_monthly_raw;
+  // Omitted when the exact-build persistent-regiment binding is unavailable.
+  // Only the first native data record is observed, not all persistent records.
+  std::optional<std::vector<ArmyRegimentReplenishmentSnapshot>>
+      regiment_replenishment;
 
   friend bool operator==(const ArmyStrengthSnapshot &,
                          const ArmyStrengthSnapshot &) = default;

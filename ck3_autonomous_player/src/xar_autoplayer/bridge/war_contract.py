@@ -247,10 +247,11 @@ _ARMY_STRENGTH_SUPPLY_FIELD_PAIRS = (
     ("current_supply_raw", "current_supply_scale"),
     ("current_supply_capacity_raw", "current_supply_capacity_scale"),
     ("current_attrition_fraction_raw", "current_attrition_fraction_scale"),
+    ("current_supply_change_monthly_raw", "current_supply_change_monthly_scale"),
 )
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS = _ARMY_STRENGTH_ROW_KEYS | {
     key for pair in _ARMY_STRENGTH_SUPPLY_FIELD_PAIRS for key in pair
-}
+} | {"regiment_replenishment"}
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
     "active_war_ally",
@@ -1730,6 +1731,101 @@ def _normalize_army_strength_row(
         "unavailable_reason": unavailable_reason,
     }
     result.update(observed_supply)
+    if "regiment_replenishment" in value:
+        if status != "available":
+            raise ValueError(f"native unavailable {name} cannot publish regiment_replenishment")
+        result["regiment_replenishment"] = _normalize_regiment_replenishment(
+            value["regiment_replenishment"], name=f"{name}.regiment_replenishment"
+        )
+    return result
+
+
+def _normalize_regiment_replenishment(
+    value: object, *, name: str
+) -> list[dict[str, object]]:
+    if not isinstance(value, list):
+        raise ValueError(f"native {name} must be an array")
+    result: list[dict[str, object]] = []
+    for index, regiment in enumerate(value):
+        item_name = f"{name}[{index}]"
+        if not isinstance(regiment, dict) or set(regiment) != {
+            "army_regiment_id", "native_data_record_count", "status", "source",
+            "unavailable_reason", "chunks"
+        }:
+            raise ValueError(f"native {item_name} schema is malformed")
+        army_regiment_id = _optional_non_negative_int32(
+            regiment["army_regiment_id"], f"{item_name}.army_regiment_id"
+        )
+        if army_regiment_id is None:
+            raise ValueError(f"native {item_name}.army_regiment_id is required")
+        native_data_record_count = _optional_non_negative_int32(
+            regiment["native_data_record_count"], f"{item_name}.native_data_record_count"
+        )
+        status = regiment["status"]
+        if not isinstance(status, str) or status not in {"available", "unavailable"}:
+            raise ValueError(f"native {item_name}.status is malformed")
+        if regiment["source"] != "native_first_record":
+            raise ValueError(f"native {item_name}.source must be native_first_record")
+        chunks = regiment["chunks"]
+        reason = regiment["unavailable_reason"]
+        if not isinstance(chunks, list):
+            raise ValueError(f"native {item_name}.chunks must be an array")
+        if status == "available":
+            if (reason is not None or not chunks
+                    or native_data_record_count is None or native_data_record_count < 1):
+                raise ValueError(f"native available {item_name} is incomplete")
+        elif (chunks or not isinstance(reason, str) or not reason):
+            raise ValueError(f"native unavailable {item_name} requires empty chunks and a reason")
+        result.append({
+            "army_regiment_id": army_regiment_id,
+            "native_data_record_count": native_data_record_count,
+            "status": status,
+            "source": "native_first_record",
+            "unavailable_reason": reason,
+            "chunks": [
+                _normalize_regiment_replenishment_chunk(
+                    chunk, name=f"{item_name}.chunks[{chunk_index}]"
+                )
+                for chunk_index, chunk in enumerate(chunks)
+            ],
+        })
+    return result
+
+
+def _normalize_regiment_replenishment_chunk(
+    value: object, *, name: str
+) -> dict[str, object]:
+    if not isinstance(value, dict) or set(value) != {
+        "persistent_regiment_id", "chunk_index", "current_soldiers",
+        "maximum_soldiers", "state_raw", "native_can_replenish",
+        "native_chunk_can_replenish",
+        "persistent_monthly_replenishment_fraction_raw",
+        "persistent_monthly_replenishment_fraction_scale",
+    }:
+        raise ValueError(f"native {name} schema is malformed")
+    result: dict[str, object] = {}
+    for key in ("persistent_regiment_id", "chunk_index", "current_soldiers", "maximum_soldiers"):
+        number = _optional_non_negative_int32(value[key], f"{name}.{key}")
+        if number is None:
+            raise ValueError(f"native {name}.{key} is required")
+        result[key] = number
+    if int(result["chunk_index"]) > 6:
+        raise ValueError(f"native {name}.chunk_index must be in range 0..6")
+    result["state_raw"] = _signed_int32(value["state_raw"], f"{name}.state_raw")
+    for key in ("native_can_replenish", "native_chunk_can_replenish"):
+        result[key] = _strict_bool(value[key], f"{name}.{key}")
+    raw_key = "persistent_monthly_replenishment_fraction_raw"
+    raw = value[raw_key]
+    if (isinstance(raw, bool) or not isinstance(raw, int)
+            or not -(2**63) <= raw <= 2**63 - 1):
+        raise ValueError(f"native {name}.{raw_key} must be signed int64")
+    scale_key = "persistent_monthly_replenishment_fraction_scale"
+    scale = value[scale_key]
+    if (isinstance(scale, bool) or not isinstance(scale, int)
+            or scale != CK3_FIXED_POINT_SCALE):
+        raise ValueError(f"native {name}.{scale_key} must be {CK3_FIXED_POINT_SCALE}")
+    result[raw_key] = raw
+    result[scale_key] = CK3_FIXED_POINT_SCALE
     return result
 
 

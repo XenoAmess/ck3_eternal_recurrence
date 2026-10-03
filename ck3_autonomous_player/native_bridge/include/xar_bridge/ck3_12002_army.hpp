@@ -16,6 +16,11 @@ inline constexpr std::uintptr_t kArmyCurrentSoldiersRva12002 = 0x2A95740;
 inline constexpr std::uintptr_t kArmyMaximumSoldiersRva12002 = 0x24E0450;
 inline constexpr std::uintptr_t kArmySupplyCapacityRva12003 = 0x2C53C10;
 inline constexpr std::uintptr_t kArmyAttritionFractionRva12003 = 0x24E2E50;
+inline constexpr std::uintptr_t kPersistentRegimentStorageSlotRva12003 = 0x5D1EB68;
+inline constexpr std::uintptr_t kRegimentCanReplenishRva12003 = 0x262C700;
+inline constexpr std::uintptr_t kChunkCanReplenishRva12003 = 0x2657F10;
+inline constexpr std::uintptr_t kRegimentMonthlyReplenishmentRva12003 = 0x262CAD0;
+inline constexpr std::uintptr_t kArmyMonthlySupplyChangeRva12003 = 0x24E51A0;
 
 struct ArmyBindings {
   bool enabled = false;
@@ -29,6 +34,14 @@ struct ArmyBindings {
   // Exact .3 only; the native optional-breakdown argument is always null.
   std::int64_t *(*get_army_supply_capacity)(std::int64_t *, void *, void *) = nullptr;
   std::int64_t *(*get_army_attrition_fraction)(void *, std::int64_t *, void *) = nullptr;
+  // Persistent CRegiment (magic Regi), not regiment_storage_slot's CArmyRegiment.
+  // Closed only for exact .3; the .2 adapter leaves this subdomain unassigned.
+  void **persistent_regiment_storage_slot = nullptr;
+  bool (*can_regiment_replenish)(void *, void *) = nullptr;
+  bool (*can_chunk_replenish)(void *) = nullptr;
+  std::int64_t *(*get_regiment_monthly_replenishment_fraction)(void *, std::int64_t *) = nullptr;
+  // Supplies/month, signed Q100000, at the current validated CProvince.
+  std::int64_t *(*get_army_monthly_supply_change)(void *, std::int64_t *, void *, void *) = nullptr;
 };
 
 ArmyBindings BindArmyImage(std::uintptr_t image_base,
