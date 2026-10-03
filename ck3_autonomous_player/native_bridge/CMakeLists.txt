@@ -834,6 +834,9 @@ if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_hof_gold_context.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_hof_gold_mailbox.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_hof_gold_wire.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_repentance_context.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_repentance_mailbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_repentance_wire.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_holy_order_context.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_holy_order_mailbox.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_holy_order_wire.cpp"
@@ -2257,6 +2260,23 @@ if(BUILD_TESTING)
 
   if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
     file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/religion-mailbox-wire")
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/repentance-mailbox-wire")
+    add_executable(xar_ck3_12003_player_repentance_context_test
+      src/ck3_12003_player_repentance_context.cpp
+      src/ck3_12003_player_repentance_wire.cpp
+      src/ck3_12002_phase_character.cpp
+      src/ck3_12003_player_repentance_context_test.cpp)
+    target_include_directories(xar_ck3_12003_player_repentance_context_test PRIVATE include)
+    target_compile_definitions(xar_ck3_12003_player_repentance_context_test PRIVATE
+      XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1=1)
+    if(MSVC)
+      target_compile_options(xar_ck3_12003_player_repentance_context_test PRIVATE
+        /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+    endif()
+    add_test(NAME xar_ck3_12003_player_repentance_context_test
+      COMMAND xar_ck3_12003_player_repentance_context_test
+        "${CMAKE_BINARY_DIR}/repentance-mailbox-wire")
+
     add_executable(xar_ck3_12002_religion_mailbox_test
       src/ck3_12002.cpp
       src/ck3_12002_religion_context.cpp

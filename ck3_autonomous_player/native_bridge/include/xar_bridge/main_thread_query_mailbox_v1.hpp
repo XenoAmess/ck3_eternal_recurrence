@@ -371,6 +371,7 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_religion12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_holy_order_loan12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_head_of_faith_gold12003 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_repentance12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_holy_order_context12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_sway_outcome_opinion12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_ai_reform_inputs12002 = nullptr;
@@ -580,6 +581,7 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_religion12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_holy_order_loan12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_head_of_faith_gold12003 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_repentance12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_holy_order_context12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_sway_outcome_opinion12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_ai_reform_inputs12002 = nullptr;

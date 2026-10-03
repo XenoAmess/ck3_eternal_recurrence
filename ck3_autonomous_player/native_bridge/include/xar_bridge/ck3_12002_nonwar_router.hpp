@@ -39,6 +39,7 @@
 #include "xar_bridge/ck3_12002_religion_mailbox.hpp"
 #include "xar_bridge/ck3_12003_holy_order_loan_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_hof_gold_mailbox.hpp"
+#include "xar_bridge/ck3_12003_player_repentance_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_holy_order_mailbox.hpp"
 #include "xar_bridge/ck3_12003_holy_order_selected_title_terms_mailbox.hpp"
 #endif

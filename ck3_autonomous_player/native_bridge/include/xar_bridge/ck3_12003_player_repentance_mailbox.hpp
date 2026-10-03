@@ -1,0 +1,39 @@
+﻿#pragma once
+
+#include "xar_bridge/ck3_12002_query_mailbox.hpp"
+#include "xar_bridge/ck3_12003_player_repentance_context.hpp"
+
+namespace xar::ck3_12003 {
+
+inline constexpr std::string_view kPlayerRepentancePrivateStep12003 =
+    "query-player-repentance-context-v1";
+inline constexpr std::string_view kPlayerRepentanceDomainKey12003 =
+    "player_repentance_context_v1";
+inline constexpr std::string_view kPlayerRepentanceBackend12003 =
+    "ck3-1.20.0.3-native-player-repentance-context-v1";
+
+struct PlayerRepentanceMailboxContext12003 {
+  ck3_12002::QueryMailboxEnvelope envelope{};
+  religion::repentance::Bindings bindings{};
+  religion::repentance::Context observation{};
+  bool completed = false;
+  std::string failure;
+};
+
+bool IsPlayerRepentancePrivateStep12003(std::string_view step) noexcept;
+bool ParsePlayerRepentanceRevision12003(
+    std::string_view payload, std::uint64_t &expected_revision) noexcept;
+bool ExecutePlayerRepentanceMailbox12003(
+    void *, const ck3_11906::MainThreadExecutionStampV1 &) noexcept;
+std::string SerializePlayerRepentanceResult12003(
+    const PlayerRepentanceMailboxContext12003 &, std::string_view request_id);
+bool RunPlayerRepentanceMailbox12003(PlayerRepentanceMailboxContext12003 &,
+    std::string_view request_id, std::string &serialized,
+    std::string &failure) noexcept;
+bool HandlePlayerRepentancePrivate12003(const game::GameAdapter &,
+    ck3_11906::MainThreadQueryMailboxV1 &, const game::Snapshot &published,
+    std::uint64_t revision, std::string_view step, std::string_view payload,
+    std::string_view request_id, std::string &serialized,
+    std::string &failure) noexcept;
+
+} // namespace xar::ck3_12003

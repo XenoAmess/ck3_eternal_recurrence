@@ -12454,6 +12454,10 @@ void RunConnectedSession(
               current_revision_allowed = true;
               revision_parsed = xar::ck3_12003::ParsePlayerHeadOfFaithGoldRevision12003(incoming.payload, expected_revision);
             } else
+            if (xar::ck3_12003::IsPlayerRepentancePrivateStep12003(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::ck3_12003::ParsePlayerRepentanceRevision12003(incoming.payload, expected_revision);
+            } else
             if (xar::ck3_12003::IsPlayerHolyOrderContextPrivateStep12003(step)) {
               current_revision_allowed = true;
               revision_parsed = xar::ck3_12003::ParsePlayerHolyOrderContextRevision12003(incoming.payload, expected_revision);

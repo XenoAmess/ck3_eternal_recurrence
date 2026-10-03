@@ -2896,6 +2896,19 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def query_player_repentance_context_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read one ordinary native repentance request; never send it."""
+        from .player_repentance_context_private_transport import (
+            query_player_repentance_context_private_v1,
+        )
+
+        return query_player_repentance_context_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
     def query_player_religion_doctrines_private_v1(
         self, *, expected_revision: int,
     ) -> dict[str, object]:

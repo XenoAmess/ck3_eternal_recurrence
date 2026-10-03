@@ -822,6 +822,22 @@ bool HandleSwayOutcomeEventV1(const game::GameAdapter &adapter,
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
 namespace xar::ck3_12003 {
+// Repentance route spies satisfy the dispatcher-only source recipe.
+bool IsPlayerRepentancePrivateStep12003(std::string_view step) noexcept {
+  return step == kPlayerRepentancePrivateStep12003;
+}
+bool HandlePlayerRepentancePrivate12003(
+    const game::GameAdapter &adapter, ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  CheckForwarded(adapter, mailbox, published, revision, step, payload,
+                 request_id, serialized, failure);
+  Check(step == kPlayerRepentancePrivateStep12003,
+        "repentance exact selector reaches the owning handler");
+  serialized = "repentance-forwarded";
+  return true;
+}
 bool IsPlayerHolyOrderSelectedTitleTermsPrivateStep12003(std::string_view step) noexcept {
   return step == kPlayerHolyOrderSelectedTitleTermsPrivateStep12003;
 }

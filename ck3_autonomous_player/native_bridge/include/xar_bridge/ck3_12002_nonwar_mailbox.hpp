@@ -40,6 +40,7 @@ struct NonwarMailboxExecutorsV1 {
   ck3_11906::MainThreadQueryExecutorV1 religion = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 holy_order_loan = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 head_of_faith_gold = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 repentance = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 holy_order_context = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 rite_governance = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 clergy = nullptr;
