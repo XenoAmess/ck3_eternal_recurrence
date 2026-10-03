@@ -88,6 +88,41 @@ void ReadRow(const MilitaryBindings &bindings, const MilitaryWorldAccess &world,
 }
 } // namespace
 
+PrewarDefaultMusterStatusV1 ReadPlayerDefaultRaiseV1(
+    const MilitaryBindings &bindings, const MilitaryWorldAccess &world,
+    PlayerDefaultRaiseObservationV1 &output) noexcept {
+  output = {};
+  if (!bindings.enabled || world.read_snapshot == nullptr ||
+      world.resolve_character == nullptr || world.resolve_province == nullptr ||
+      bindings.get_character_capital == nullptr ||
+      bindings.resolve_raise_province == nullptr ||
+      bindings.construct_raise == nullptr || bindings.validate_raise == nullptr ||
+      bindings.destroy_raise == nullptr || bindings.raise_primary == 0 ||
+      bindings.raise_secondary == 0) {
+    return output.status;
+  }
+  game::Snapshot snapshot{};
+  if (!world.read_snapshot(world.context, snapshot)) return output.status;
+  output.date_raw = snapshot.date_raw;
+  output.actor.character_id = snapshot.played_character_id;
+  if (!snapshot.paused) {
+    output.status = PrewarDefaultMusterStatusV1::requires_paused;
+    return output.status;
+  }
+  if (!snapshot.map_ready || !snapshot.has_played_character ||
+      !snapshot.played_character_alive || snapshot.played_character_id <= 0) {
+    output.status = PrewarDefaultMusterStatusV1::invalid_request;
+    return output.status;
+  }
+  ReadRow(bindings, world, output.actor);
+  output.default_raise_legality_ready =
+      output.actor.native_default_raise_legal.has_value();
+  output.status = output.default_raise_legality_ready
+                      ? PrewarDefaultMusterStatusV1::available
+                      : PrewarDefaultMusterStatusV1::partial;
+  return output.status;
+}
+
 PrewarDefaultMusterStatusV1 ReadPrewarDefaultMusterV1(
     const MilitaryBindings &bindings, const MilitaryWorldAccess &world,
     const PrewarDefaultMusterRequestV1 &request,

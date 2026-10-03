@@ -7841,6 +7841,14 @@ class NativeHeadlessGameplayDriver:
             return self._execute_native_war_step(
                 step, expected_revision=expected_revision
             )
+        if step == "query-player-default-raise-v1":
+            starting = self.take_snapshot()
+            if starting.get("paused") is not True:
+                raise BridgeUnavailableError("native default raise query requires a paused snapshot")
+            return self._execute_primitive_step(
+                step, expected_revision=expected_revision,
+                required_capability="game.command.query-player-default-raise-v1",
+            )
         if commander_subject is not None:
             starting = self.take_snapshot()
             if starting.get("paused") is not True:
@@ -27283,7 +27291,7 @@ def _action_steps(
         else []
     )
     controllable = controllable_armies(armies)
-    if advertise_raise_troops and wars and not controllable:
+    if advertise_raise_troops and wars:
         steps.add(RAISE_TROOPS_STEP)
     if expand_enforce_demands:
         steps.update(

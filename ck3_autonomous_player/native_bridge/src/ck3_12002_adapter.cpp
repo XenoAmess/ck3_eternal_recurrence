@@ -226,6 +226,13 @@ public:
       std::int32_t id) const noexcept override {
     return ck3_12002::SubmitAcknowledgePendingInteraction(bindings_.events, id);
   }
+  ck3_12002::PrewarDefaultMusterStatusV1 ReadPlayerDefaultRaise(
+      ck3_12002::PlayerDefaultRaiseObservationV1 &output) const noexcept {
+    output = {};
+    if (!IsCk3_12003Descriptor(*descriptor_)) return output.status;
+    return ck3_12002::ReadPlayerDefaultRaiseV1(
+        bindings_.military, WorldAccess(), output);
+  }
   RaiseTroopsResult submit_raise_troops_default() const noexcept override {
     return ck3_12002::SubmitRaiseTroopsDefault(bindings_.military, WorldAccess());
   }
@@ -485,6 +492,14 @@ ResumeSubmitResult SubmitCk3_12002ResumeMapObserved(
   const auto *native = dynamic_cast<const Ck3_12002Adapter *>(&adapter);
   return native == nullptr ? ResumeSubmitResult::unavailable
                            : native->SubmitObservedResume(observed_snapshot);
+}
+
+ck3_12002::PrewarDefaultMusterStatusV1 ReadCk3_12003PlayerDefaultRaiseV1(
+    const GameAdapter &adapter,
+    ck3_12002::PlayerDefaultRaiseObservationV1 &output) noexcept {
+  output = {};
+  const auto *native = dynamic_cast<const Ck3_12002Adapter *>(&adapter);
+  return native == nullptr ? output.status : native->ReadPlayerDefaultRaise(output);
 }
 
 std::unique_ptr<GameAdapter> CreateCk3_12002AdapterFromBindings(

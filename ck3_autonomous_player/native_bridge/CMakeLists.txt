@@ -1060,6 +1060,8 @@ add_library(xar_ck3_12002_runtime STATIC
   src/ck3_12003_war_occupation.cpp
   src/ck3_12003_title_holder.cpp
   src/ck3_12003_commander_mailbox.cpp
+  src/ck3_12002_prewar_muster.cpp
+  src/ck3_12003_default_raise_mailbox.cpp
   src/ck3_12003_commander_assignment.cpp
   src/ck3_12003_commander_assignment_mailbox.cpp
   src/ck3_12003_family_terminal_events.cpp

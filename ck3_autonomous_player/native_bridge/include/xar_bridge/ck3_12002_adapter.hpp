@@ -12,6 +12,7 @@
 #include "xar_bridge/ck3_12002_family.hpp"
 #endif
 #include "xar_bridge/ck3_12002_military.hpp"
+#include "xar_bridge/ck3_12002_prewar_muster.hpp"
 #include "xar_bridge/ck3_12002_phase.hpp"
 #include "xar_bridge/ck3_12002_settlement.hpp"
 
@@ -55,6 +56,10 @@ PauseSubmitResult SubmitCk3_12002PauseMapObserved(
     const GameAdapter &adapter, const Snapshot &observed_snapshot) noexcept;
 ResumeSubmitResult SubmitCk3_12002ResumeMapObserved(
     const GameAdapter &adapter, const Snapshot &observed_snapshot) noexcept;
+
+ck3_12002::PrewarDefaultMusterStatusV1 ReadCk3_12003PlayerDefaultRaiseV1(
+    const GameAdapter &adapter,
+    ck3_12002::PlayerDefaultRaiseObservationV1 &output) noexcept;
 
 const AdapterDescriptor &Ck3_12002AdapterDescriptor() noexcept;
 std::unique_ptr<GameAdapter>

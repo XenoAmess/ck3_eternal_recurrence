@@ -46,6 +46,19 @@ struct PrewarDefaultMusterObservationV1 {
   bool future_supply_ready = false;
 };
 
+struct PlayerDefaultRaiseObservationV1 {
+  PrewarDefaultMusterStatusV1 status = PrewarDefaultMusterStatusV1::unavailable;
+  std::int32_t date_raw = 0;
+  PrewarDefaultMusterRowV1 actor;
+  bool default_raise_legality_ready = false;
+};
+
+// Actor-only query for ordinary play, including existing raised armies and
+// active wars. The final native validator decides legality; nothing submits.
+PrewarDefaultMusterStatusV1 ReadPlayerDefaultRaiseV1(
+    const MilitaryBindings &bindings, const MilitaryWorldAccess &world,
+    PlayerDefaultRaiseObservationV1 &output) noexcept;
+
 // Executes only the existing 1.20 native selection, temporary construction,
 // final validation and temporary destruction. No submission callback is used.
 PrewarDefaultMusterStatusV1 ReadPrewarDefaultMusterV1(

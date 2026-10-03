@@ -1,6 +1,7 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
+#include "xar_bridge/ck3_12003_default_raise_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 #include <windows.h>
 #include <utility>
@@ -26,6 +27,7 @@ const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
     std::vector<std::string_view> result(existing.begin(), existing.end());
     result.push_back(ck3_11906::kStewardDevelopCountyCandidatesV1Capability);
     result.push_back(ck3_12003::kArmyCommanderCandidatesCapability);
+    result.push_back(ck3_12003::kPlayerDefaultRaiseCapabilityV1);
     result.push_back(kWarOccupationTargetsV1Capability);
     result.push_back(kTitleHolderV1Capability);
     result.push_back(kProjectedContactScopeV1Capability);

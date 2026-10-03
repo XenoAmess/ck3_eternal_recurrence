@@ -2437,6 +2437,13 @@ def create_server(
         )
 
     @server.tool(annotations=read_only_tool)
+    def ck3_query_player_default_raise_v1(
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read the player's final native default raise legality, including during war."""
+        return service.query_player_default_raise_v1(expected_revision=expected_revision)
+
+    @server.tool(annotations=read_only_tool)
     def ck3_query_army_commander_candidates_v1(
         army_id: PublicCUnitId,
         expected_revision: int | None = None,
