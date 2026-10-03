@@ -83,6 +83,8 @@ struct WarExposure {
   bool caller_is_primary_war_leader = false;
   bool recipient_was_called = false;
   bool native_target_can_be_picked = false;
+  // False is an observed picker rejection; selected-context terms stay unavailable.
+  bool native_selected_target_context_available = false;
   bool native_complete_can_send = false;
   // This is the exact native CallAlly UI row gate, which is separate from
   // full CanSend. Neither is a prediction that the recipient will join.

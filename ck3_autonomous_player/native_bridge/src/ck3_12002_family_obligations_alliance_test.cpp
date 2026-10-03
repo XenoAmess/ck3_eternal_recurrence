@@ -77,6 +77,7 @@ void *Construct(void *context, void *definition, std::int32_t first,
   Put(context, 0, definition);
   Put(context, a::kContextActorOffset, first);
   Put(context, a::kContextRecipientOffset, second);
+  Put(context, a::kContextSpecialInstanceOffset, active);
   ++active->constructions;
   return context;
 }
@@ -93,8 +94,9 @@ void Finalize(void *context) {
 void Destroy(void *) { ++active->destructions; }
 bool Pick(void *context, const void *target, void *diagnostics) {
   Check(diagnostics == nullptr && Get<void *>(context, a::kContextSpecialInstanceOffset) == active &&
-        std::memcmp(target, static_cast<const std::byte *>(context) + a::kContextTargetOffset, 16) == 0,
-        "target predicate is evaluated on the finalized exact target");
+        Get<std::uint16_t>(target, 0) == a::kWarTargetType &&
+        Get<std::uint16_t>(context, a::kContextTargetOffset) == 0,
+        "native picker evaluates explicit candidate before selected target writes");
   ++active->target_gates;
   return active->pick;
 }
@@ -249,7 +251,7 @@ void EmptyAndReadFailures() {
         reason == "active_war_full_id_unavailable", "stale generation is not another war's ID");
   f.first_wars[0] = own_war; f.identity_drift = true;
   Check(!a::Read(f.bindings, f.frame, actor, ally, snapshot, &reason) &&
-        reason == "call_ally_finalized_context_identity_unavailable" && f.constructions == f.destructions,
+        reason == "call_ally_finalized_actor_identity_unavailable" && f.constructions == f.destructions,
         "native role drift remains unavailable and disposable context is released");
   f.identity_drift = false; f.acceptance_unavailable = true;
   Check(!a::Read(f.bindings, f.frame, actor, ally, snapshot, &reason) &&

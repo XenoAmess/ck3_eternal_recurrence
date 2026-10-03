@@ -2154,8 +2154,16 @@ if(BUILD_TESTING)
       src/ck3_12003_abi_profile.cpp
       src/ck3_12003_adapter.cpp
       src/ck3_12003_call_ally_mailbox_test.cpp)
+    add_executable(xar_ck3_12002_family_obligations_no_entry_test
+      src/ck3_12002.cpp
+      src/ck3_12002_commands.cpp
+      src/ck3_12002_context.cpp
+      src/ck3_12002_family_obligations_alliance.cpp
+      src/ck3_12002_family_obligations_wire.cpp
+      src/ck3_12002_family_obligations_no_entry_test.cpp)
     foreach(call_ally_target IN ITEMS
-        xar_ck3_12002_call_ally_sender_test xar_ck3_12003_call_ally_mailbox_test)
+        xar_ck3_12002_call_ally_sender_test xar_ck3_12003_call_ally_mailbox_test
+        xar_ck3_12002_family_obligations_no_entry_test)
       target_include_directories(${call_ally_target} PRIVATE include)
       target_compile_definitions(${call_ally_target} PRIVATE
         NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
@@ -2169,6 +2177,9 @@ if(BUILD_TESTING)
     target_link_libraries(xar_ck3_12003_call_ally_mailbox_test PRIVATE user32)
     add_test(NAME xar_ck3_12002_call_ally_sender_test
       COMMAND xar_ck3_12002_call_ally_sender_test)
+    add_test(NAME xar_ck3_12002_family_obligations_no_entry_test
+      COMMAND xar_ck3_12002_family_obligations_no_entry_test
+        "${CMAKE_BINARY_DIR}/ck3_12002_call_ally_no_entry.json")
     add_test(NAME xar_ck3_12003_call_ally_mailbox_test
       COMMAND xar_ck3_12003_call_ally_mailbox_test
         "${CMAKE_BINARY_DIR}/ck3_12003_call_ally_to_war_submit.json"

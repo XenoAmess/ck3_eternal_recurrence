@@ -236,6 +236,7 @@ int main(int argc, char **argv) {
       quote.alliance.second_character_id = recipient_id;
       quote.alliance.first_has_second = quote.alliance.second_has_first = true;
       family_obligations_alliance::WarExposure row{};
+      row.native_selected_target_context_available = true;
       row.war_id = war_id;
       row.caller_character_id = row.primary_defender_character_id = actor_id;
       row.recipient_character_id = recipient_id;

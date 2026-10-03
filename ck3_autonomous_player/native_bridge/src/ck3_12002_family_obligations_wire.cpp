@@ -51,11 +51,18 @@ void Wars(std::string &wire, const std::vector<family_obligations_alliance::WarE
     wire += ",\"recipient_was_called\":"; Boolean(wire, r.recipient_was_called);
     wire += ",\"native_target_can_be_picked\":"; Boolean(wire, r.native_target_can_be_picked);
     wire += ",\"native_target_row_selectable\":"; Boolean(wire, r.native_target_row_selectable);
-    wire += ",\"native_complete_can_send\":"; Boolean(wire, r.native_complete_can_send);
-    wire += ",\"send_cost_raw\":"; Numbers(wire, r.send_cost_raw);
-    wire += ",\"recipient_acceptance_raw\":" + std::to_string(r.recipient_acceptance_raw);
-    wire += ",\"recipient_answer_status_raw\":" + std::to_string(r.recipient_answer_status_raw);
-    wire += ",\"native_auto_accept\":"; Boolean(wire, r.native_auto_accept);
+    wire += ",\"native_selected_target_context_available\":";
+    Boolean(wire, r.native_selected_target_context_available);
+    if (r.native_selected_target_context_available) {
+      wire += ",\"native_complete_can_send\":"; Boolean(wire, r.native_complete_can_send);
+      wire += ",\"send_cost_raw\":"; Numbers(wire, r.send_cost_raw);
+      wire += ",\"recipient_acceptance_raw\":" + std::to_string(r.recipient_acceptance_raw);
+      wire += ",\"recipient_answer_status_raw\":" + std::to_string(r.recipient_answer_status_raw);
+      wire += ",\"native_auto_accept\":"; Boolean(wire, r.native_auto_accept);
+    } else {
+      wire += ",\"native_complete_can_send\":null,\"send_cost_raw\":null,"
+          "\"recipient_acceptance_raw\":null,\"recipient_answer_status_raw\":null,\"native_auto_accept\":null";
+    }
     wire += '}';
   }
   wire += ']';

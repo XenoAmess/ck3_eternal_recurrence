@@ -95,19 +95,31 @@ bool Terms(const Bindings &b, void *definition, WarExposure &row,
   } cleanup{b.context, context};
   WarTarget target{};
   target.full_war_id = static_cast<std::uint32_t>(row.war_id);
+  if (Load<std::int32_t>(context, kContextActorOffset) != row.caller_character_id ||
+      Load<std::int32_t>(context, kContextRecipientOffset) != row.recipient_character_id)
+    return Fail(reason, "call_ally_constructed_roles_identity_unavailable");
+  // The native UI checks the requested candidate in a copied scope before
+  // writing its selected WarTarget. An unpickable war has no selected terms.
+  row.native_target_can_be_picked = b.can_pick_war_target(context, &target, nullptr);
+  row.native_selected_target_context_available = false;
+  row.native_target_row_selectable = row.native_target_can_be_picked &&
+      row.recipient_side == Side::absent && !row.recipient_was_called;
+  if (!row.native_target_can_be_picked) return true;
   Store(context, kContextTargetOffset, target);
   b.context.refresh(context, true);
   b.context.finalize(context);
-  if (Load<std::int32_t>(context, kContextActorOffset) != row.caller_character_id ||
-      Load<std::int32_t>(context, kContextRecipientOffset) != row.recipient_character_id ||
-      Load<std::uint16_t>(context, kContextTargetOffset) != kWarTargetType ||
-      Load<std::uint64_t>(context, kContextTargetTokenOffset) != target.full_war_id ||
-      Load<void *>(context, kContextSpecialInstanceOffset) == nullptr)
-    return Fail(reason, "call_ally_finalized_context_identity_unavailable");
-  row.native_target_can_be_picked = b.can_pick_war_target(context, &target, nullptr);
+  if (Load<std::int32_t>(context, kContextActorOffset) != row.caller_character_id)
+    return Fail(reason, "call_ally_finalized_actor_identity_unavailable");
+  if (Load<std::int32_t>(context, kContextRecipientOffset) != row.recipient_character_id)
+    return Fail(reason, "call_ally_finalized_recipient_identity_unavailable");
+  if (Load<std::uint16_t>(context, kContextTargetOffset) != kWarTargetType)
+    return Fail(reason, "call_ally_finalized_target_type_unavailable");
+  if (Load<std::uint64_t>(context, kContextTargetTokenOffset) != target.full_war_id)
+    return Fail(reason, "call_ally_finalized_target_token_unavailable");
+  if (Load<void *>(context, kContextSpecialInstanceOffset) == nullptr)
+    return Fail(reason, "call_ally_finalized_special_instance_unavailable");
+  row.native_selected_target_context_available = true;
   row.native_complete_can_send = b.context.validate(context, nullptr);
-  row.native_target_row_selectable = row.native_target_can_be_picked &&
-      row.recipient_side == Side::absent && !row.recipient_was_called;
   b.context.evaluate_cost(static_cast<const std::byte *>(definition) + 0x40,
       static_cast<const std::byte *>(context) + 8, row.send_cost_raw.data());
   if (b.context.recipient_answer_score(context, &row.recipient_acceptance_raw) !=
@@ -327,6 +339,11 @@ CommandSubmitResult SubmitCallAlly(const Bindings &b, const CoreSnapshotPrefix &
     ~Cleanup() { b.destroy(context); }
   } cleanup{b.context, context};
   WarTarget target{}; target.full_war_id = static_cast<std::uint32_t>(request.war_id);
+  if (Load<std::int32_t>(context, kContextActorOffset) != frame.played_character_id ||
+      Load<std::int32_t>(context, kContextRecipientOffset) != request.recipient_character_id)
+    return reject("call_ally_constructed_roles_identity_unavailable");
+  if (!b.can_pick_war_target(context, &target, nullptr))
+    return reject("call_ally_selected_war_target_not_pickable");
   Store(context, kContextTargetOffset, target);
   b.context.refresh(context, true); b.context.finalize(context);
   const auto same_context = [&](const void *copy) {
@@ -337,8 +354,7 @@ CommandSubmitResult SubmitCallAlly(const Bindings &b, const CoreSnapshotPrefix &
         Load<std::uint64_t>(copy, kContextTargetTokenOffset) == target.full_war_id &&
         Load<void *>(copy, kContextSpecialInstanceOffset) != nullptr;
   };
-  if (!same_context(context) || !b.can_pick_war_target(context, &target, nullptr) ||
-      !b.context.validate(context, nullptr))
+  if (!same_context(context) || !b.context.validate(context, nullptr))
     return reject("call_ally_final_native_selected_target_rejected");
   receipt.selected_target_native_legal = true;
   b.context.evaluate_cost(static_cast<const std::byte *>(definition) + 0x40,

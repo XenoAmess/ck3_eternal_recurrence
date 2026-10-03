@@ -90,7 +90,25 @@ def normalize_family_obligations_private_v1(
                             or row.get("recipient_character_id") != recipient
                             or row.get("caller_side") not in {"attacker", "defender"}
                             or row.get("recipient_side") not in {"attacker", "defender", "absent"}
-                            or any(type(row.get(key)) is not bool for key in ("caller_is_primary_war_leader", "recipient_was_called", "native_target_can_be_picked", "native_target_row_selectable", "native_complete_can_send", "native_auto_accept"))
+                            or any(type(row.get(key)) is not bool for key in
+                                   ("caller_is_primary_war_leader", "recipient_was_called",
+                                    "native_target_can_be_picked", "native_target_row_selectable"))):
+                        raise ValueError("family alliance war native terms are malformed")
+                    # Older fully sampled rows have no availability field. Their
+                    # complete value shape is still required by the true branch.
+                    selected_context_available = row.get("native_selected_target_context_available", True)
+                    if type(selected_context_available) is not bool:
+                        raise ValueError("family alliance selected context availability is malformed")
+                    if not selected_context_available:
+                        if (row["native_target_can_be_picked"] is not False
+                                or row["native_target_row_selectable"] is not False
+                                or any(key not in row or row[key] is not None for key in
+                                       ("native_complete_can_send", "send_cost_raw",
+                                        "recipient_acceptance_raw", "native_auto_accept",
+                                        "recipient_answer_status_raw"))):
+                            raise ValueError("family alliance unselected war terms must remain unobserved")
+                    elif (any(type(row.get(key)) is not bool for key in
+                              ("native_complete_can_send", "native_auto_accept"))
                             or type(row.get("recipient_acceptance_raw")) is not int
                             or type(row.get("recipient_answer_status_raw")) is not int
                             or row["recipient_answer_status_raw"] not in {0, 1, 2}
