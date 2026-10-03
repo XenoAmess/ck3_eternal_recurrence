@@ -2870,6 +2870,19 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def query_player_holy_order_selected_title_terms_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read fixed holy-order decision candidates and per-title native final quotes."""
+        from .player_holy_order_selected_title_terms_private_transport import (
+            query_player_holy_order_selected_title_terms_private_v1,
+        )
+
+        return query_player_holy_order_selected_title_terms_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
     def query_player_head_of_faith_gold_context_private_v1(
         self, *, expected_revision: int,
     ) -> dict[str, object]:

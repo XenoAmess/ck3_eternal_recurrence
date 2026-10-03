@@ -40,6 +40,7 @@
 #include "xar_bridge/ck3_12003_holy_order_loan_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_hof_gold_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_holy_order_mailbox.hpp"
+#include "xar_bridge/ck3_12003_holy_order_selected_title_terms_mailbox.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_epidemic_treatment_mailbox.hpp"

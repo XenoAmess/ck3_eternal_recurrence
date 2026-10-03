@@ -268,6 +268,7 @@ bool IsNonwarPrivateStep12002(std::string_view step) noexcept {
   if (IsPlayerHolyOrderLoanPrivateStep12003(step)) return true;
   if (ck3_12003::IsPlayerHeadOfFaithGoldPrivateStep12003(step)) return true;
   if (ck3_12003::IsPlayerHolyOrderContextPrivateStep12003(step)) return true;
+  if (ck3_12003::IsPlayerHolyOrderSelectedTitleTermsPrivateStep12003(step)) return true;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1)
   if (IsFamilyObligationsPrivateStep12002(step)) return true;
@@ -619,6 +620,9 @@ bool HandleNonwarPrivate12002(
           revision, step, payload, request_id, serialized, failure);
     if (ck3_12003::IsPlayerHolyOrderContextPrivateStep12003(step))
       return ck3_12003::HandlePlayerHolyOrderContextPrivate12003(native, mailbox, published,
+          revision, step, payload, request_id, serialized, failure);
+    if (ck3_12003::IsPlayerHolyOrderSelectedTitleTermsPrivateStep12003(step))
+      return ck3_12003::HandlePlayerHolyOrderSelectedTitleTermsPrivate12003(native, mailbox, published,
           revision, step, payload, request_id, serialized, failure);
 #endif
 #if defined(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1)

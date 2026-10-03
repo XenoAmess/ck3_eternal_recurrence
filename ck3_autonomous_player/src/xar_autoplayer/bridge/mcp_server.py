@@ -1650,6 +1650,15 @@ def create_server(
             )
 
         @server.tool(annotations=read_only_tool)
+        def ck3_query_player_holy_order_selected_title_terms_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read native holy-order candidate estates and per-title final terms; no action."""
+            return driver.query_player_holy_order_selected_title_terms_private_v1(
+                expected_revision=expected_revision,
+            )
+
+        @server.tool(annotations=read_only_tool)
         def ck3_query_player_head_of_faith_gold_context_v1(
             expected_revision: int,
         ) -> dict[str, object]:

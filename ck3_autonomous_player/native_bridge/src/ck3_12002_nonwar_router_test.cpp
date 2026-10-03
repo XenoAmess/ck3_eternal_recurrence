@@ -820,6 +820,24 @@ bool HandleSwayOutcomeEventV1(const game::GameAdapter &adapter,
 
 } // namespace xar::ck3_12002
 
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+namespace xar::ck3_12003 {
+bool IsPlayerHolyOrderSelectedTitleTermsPrivateStep12003(std::string_view step) noexcept {
+  return step == kPlayerHolyOrderSelectedTitleTermsPrivateStep12003;
+}
+bool HandlePlayerHolyOrderSelectedTitleTermsPrivate12003(
+    const game::GameAdapter &adapter, ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  CheckForwarded(adapter, mailbox, published, revision, step, payload,
+                 request_id, serialized, failure);
+  serialized = "holy-order-selected-title-terms-forwarded";
+  return true;
+}
+} // namespace xar::ck3_12003
+#endif
+
 // The R7 probe executes only the new path/default-OFF behavior. The prior
 // full main below remains available; its frozen R6 receipt supplies old coverage.
 [[maybe_unused]] int RunDraftGroupsRouterIncrement() {
