@@ -575,5 +575,122 @@ class RuntimeEpisodeIdentityTests(unittest.TestCase):
                 asyncio.run(client.execute(self.event_steps()))
             self.assertFalse(any(name == "ck3_select_event_option" for name, _ in calls))
 
+class WriterEventBoundaryTests(unittest.TestCase):
+    def client_case(self, temporary, *, offset=1, event=True, pause_event=False, owner_change=None, instance_change=False, speed_event=False, speed_owner=None):
+        from copy import deepcopy
+        client = PlanClient(None, Namespace(output=Path(temporary) / "report.json", command_timeout=1,
+                                            poll_interval=0), {"steps": []}, lambda: None)
+        state = {"map_ready": True, "paused": True, "speed": 1, "active_event": None,
+                 "played_character": {"character_id": 31254, "alive": True, "source": "native"},
+                 "episode_character_id": 31254, "episode_run_id": "actual-episode",
+                 "one_life_terminal": False, "backend_id": "native-headless", "source": "injected-dll-named-pipe",
+                 "snapshot_id": "native:7", "revision": 8, "native_revision": 7, "date_raw": 53144328,
+                 "local_player_id": 1, "diagnostics": {"bridge_pid": 1208, "connection_generation": 1}}
+        client.episode_identity = {"runtime_character_id": 31254, "episode_run_id": "actual-episode",
+                                   "bridge_pid": 1208, "connection_generation": 1}
+        capabilities = {"snapshot": True, "action_steps": ["pause-map", "resume-map", "set-speed-1",
+                                                               "query-current-event-window-context-v1"],
+                        "current_event_window_context_v1_query_supported": True}
+        calls, running = [], False
+        async def call(name, arguments=None):
+            nonlocal running
+            calls.append((name, deepcopy(arguments)))
+            if name == "ck3_get_capabilities":
+                return deepcopy(capabilities)
+            if name == "ck3_take_snapshot":
+                if running and not state["paused"]:
+                    state["date_raw"] = 53144328 + offset
+                    if event:
+                        state["active_event"] = {"instance_id": 1073741859, "event_id": "raw-observation"}
+                return deepcopy(state)
+            if name == "ck3_execute_step":
+                primitive = arguments["step"]
+                if primitive == "resume-map":
+                    running, state["paused"] = True, False
+                elif primitive == "pause-map":
+                    state["paused"] = True
+                    if running and pause_event:
+                        state["active_event"] = {"instance_id": 1073741859, "event_id": "raw-observation"}
+                    if running and owner_change:
+                        state["diagnostics"][owner_change] += 1
+                    if running and instance_change:
+                        state["active_event"]["instance_id"] += 1
+                elif primitive == "set-speed-1":
+                    state["speed"] = 1
+                    if speed_event:
+                        state["active_event"] = {"instance_id": 1073741859, "event_id": "during-speed"}
+                    if speed_owner:
+                        state["diagnostics"][speed_owner] += 1
+                else:
+                    raise AssertionError("Unsupported primitive " + primitive)
+                return {"step": primitive, "accepted": True}
+            raise AssertionError("Unexpected tool " + name)
+        client.call = call
+        client.tools = {name: {"inputSchema": {"properties": {}}} for name in
+                        ("ck3_get_capabilities", "ck3_take_snapshot", "ck3_execute_step",
+                         "ck3_query_current_event_window_context_v1")}
+        return client, capabilities, calls
+
+    def test_capability_and_explicit_boundary_contract_reject_before_game_mutation(self):
+        for missing in ("pause-map", "resume-map", "set-speed-1", "query-current-event-window-context-v1", "typed-query", "opt-in"):
+            with self.subTest(missing=missing), tempfile.TemporaryDirectory() as temporary:
+                client, caps, calls = self.client_case(temporary)
+                step = {"days": 1, "allow_event_boundary": True}
+                if missing == "typed-query":
+                    caps["current_event_window_context_v1_query_supported"] = False
+                elif missing == "opt-in":
+                    step.pop("allow_event_boundary")
+                else:
+                    caps["action_steps"].remove(missing)
+                with self.assertRaises(ValueError):
+                    asyncio.run(client.advance_event_boundary(step))
+                self.assertFalse(any(name == "ck3_execute_step" for name, _ in calls))
+
+    def test_event_observation_retains_early_progress_and_default_advance_dispatch(self):
+        for offset, event, pause_event, complete, status in ((1, True, False, False, "event_before_target"),
+                                                            (24, True, False, True, "event_at_target"),
+                                                            (24, False, True, True, "event_at_target"),
+                                                            (24, False, False, True, "target_date_reached")):
+            with self.subTest(offset=offset, event=event, pause_event=pause_event), tempfile.TemporaryDirectory() as temporary:
+                client, _, calls = self.client_case(temporary, offset=offset, event=event, pause_event=pause_event)
+                result = asyncio.run(client.advance_event_boundary({"days": 1, "allow_event_boundary": True}))
+                self.assertEqual(result["requested_interval_complete"], complete)
+                self.assertEqual(result["progress_status"], status)
+                self.assertTrue(result["after"]["paused"])
+                self.assertEqual(result["selected_event_options"], 0)
+                self.assertEqual([args["step"] for name, args in calls if name == "ck3_execute_step"],
+                                 ["pause-map", "set-speed-1", "resume-map", "pause-map"])
+                if event or pause_event:
+                    self.assertEqual(result["event_boundary"]["active_event"]["instance_id"], 1073741859)
+                    self.assertEqual(result["event_resolution"], "typed_query_required")
+        with tempfile.TemporaryDirectory() as temporary:
+            client, _, _ = self.client_case(temporary)
+            client.advance = mock.AsyncMock(return_value={"legacy": True})
+            client.advance_event_boundary = mock.AsyncMock(side_effect=AssertionError("Unrequested opt-in"))
+            asyncio.run(client.execute([{"id": "legacy", "kind": "advance_day", "days": 17}]))
+            client.advance.assert_awaited_once()
+            client.advance_event_boundary.assert_not_called()
+
+    def test_speed_readback_event_or_owner_change_prevents_any_resume(self):
+        for mode in ("event", "bridge_pid", "connection_generation"):
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as temporary:
+                client, _, calls = self.client_case(temporary, speed_event=mode == "event",
+                                                    speed_owner=mode if mode != "event" else None)
+                with self.assertRaises(ValueError):
+                    asyncio.run(client.advance_event_boundary({"days": 1, "allow_event_boundary": True}))
+                self.assertEqual([args["step"] for name, args in calls if name == "ck3_execute_step"],
+                                 ["pause-map", "set-speed-1"])
+
+    def test_paused_boundary_rejects_owner_or_full_instance_change(self):
+        for mode in ("bridge_pid", "connection_generation", "instance"):
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as temporary:
+                client, _, calls = self.client_case(temporary, owner_change=mode if mode != "instance" else None,
+                                                    instance_change=mode == "instance")
+                with self.assertRaises(ValueError):
+                    asyncio.run(client.advance_event_boundary({"days": 1, "allow_event_boundary": True}))
+                self.assertEqual(sum(name == "ck3_execute_step" and args["step"] == "resume-map" for name, args in calls), 1)
+                self.assertEqual([args["step"] for name, args in calls if name == "ck3_execute_step"][-1], "pause-map")
+
+
 if __name__ == "__main__":
     unittest.main()

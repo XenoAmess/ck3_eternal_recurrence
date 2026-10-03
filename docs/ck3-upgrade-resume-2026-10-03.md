@@ -53,3 +53,5 @@ R0003已实际续跑，但首个Bookmarks route是加载瞬态：随后树为 `_
 10-04 后续已采用[真实episode锚点](ck3-upgrade-native-startup-2026-10-03.md#后续身份锚点修复)，四项新增边界检查PASS；旧nativeID不再作为执行输入。采用时新writer/noheir纯输入及动态计划待实际运行，七cell仍0/7。[R0007全58条日志分类](ck3-1.20-aub-ted-log-continuation-2026-10-03.md#r0007-3-空夹具地图日志)完整保留，无明确AUB/TED引用并不代表caller/根因已闭合。
 
 10-04 01:26 [主版 R0006](ck3-upgrade-native-startup-2026-10-03.md#主版-r0006真实契约入口推进接口拒绝)真实三规则应用、普通地图、动态episode锚点、契约/首世/不领祝福三窗口通过。推进 phase 的 composite 不在冻结 f4 runtime，派发前拒绝；全局 RED 保留。尚无死亡、存档、持久化或 reader，七cell仍0/7。containment后CK3零、CAS1813释放。下一新run先核全链实际接口；[显式 fixture Start policy](ck3-native-ai/frontend-fixture-start-policy-2026-10-04.md)的21项新检查通过，运行仍NOT_RUN。
+
+随后[时间推进修正](ck3-upgrade-native-startup-2026-10-03.md#下一-writer-的时间推进修正)以真实cap核定缺少 exact-one-day、普通life-advance存在；新增显式day-or-event观察分支及4项新边界检查，默认逻辑不变。source实际定时器补齐两天后offer与加分后的第三天death提示，独立04a/04b/06b后态逐项读取。新纯输入prepared，仍不记writer/reader或七cell通过；闭包与字节不变压缩收据已保全。

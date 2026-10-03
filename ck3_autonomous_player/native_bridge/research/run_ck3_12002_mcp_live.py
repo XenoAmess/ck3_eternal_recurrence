@@ -507,6 +507,95 @@ class PlanClient:
         return {"before": before, "running_successor": reached, "after": after,
                 "requested_days": row.get("days", 1), "elapsed_hours": int(after["date_raw"]) - start}
 
+    async def advance_event_boundary(self, step: dict[str, object]) -> dict[str, object]:
+        """Explicit time-or-event observation; an early event is never one-day proof."""
+        if step.get("allow_event_boundary") is not True or type(step.get("days", 1)) is not int or step.get("days", 1) != 1:
+            raise ValueError("event-boundary advance requires explicit opt-in and days=1")
+        required_tools = {"ck3_get_capabilities", "ck3_take_snapshot", "ck3_execute_step", "ck3_query_current_event_window_context_v1"}
+        if not required_tools <= set(self.tools) or self.episode_identity is None:
+            raise ValueError("event-boundary advance lacks actual MCP tools or episode anchor")
+        capabilities = await self.call("ck3_get_capabilities")
+        primitives = {"pause-map", "resume-map", "set-speed-1"}
+        if (not isinstance(capabilities, dict) or capabilities.get("snapshot") is not True or
+                not primitives <= set(capabilities.get("action_steps", [])) or
+                capabilities.get("current_event_window_context_v1_query_supported") is not True or
+                "query-current-event-window-context-v1" not in capabilities.get("action_steps", [])):
+            raise ValueError("event-boundary advance lacks actual native primitives or typed event observer")
+        identity_keys = ("runtime_character_id", "episode_run_id", "bridge_pid", "connection_generation")
+        def same_episode(snapshot: object, *, paused: bool = True) -> None:
+            if paused:
+                frame = episode_identity_frame(snapshot)
+            else:
+                if not isinstance(snapshot, dict) or not isinstance(snapshot.get("played_character"), dict) or not isinstance(snapshot.get("diagnostics"), dict):
+                    raise ValueError("running advance lacks actual player/owner binding")
+                player, owner = snapshot["played_character"], snapshot["diagnostics"]
+                if snapshot.get("map_ready") is not True or player.get("alive") is not True or snapshot.get("episode_character_id") != player.get("character_id"):
+                    raise ValueError("running advance left its alive anchored map")
+                frame = {"runtime_character_id": player.get("character_id"), "episode_run_id": snapshot.get("episode_run_id"),
+                         "bridge_pid": owner.get("bridge_pid"), "connection_generation": owner.get("connection_generation")}
+            if any(frame[key] != self.episode_identity[key] for key in identity_keys):
+                raise ValueError("event-boundary advance crossed the anchored episode/PID/generation")
+        before = await self.fresh()
+        same_episode(before)
+        if before.get("active_event") is not None:
+            raise ValueError("event-boundary advance requires no existing active event")
+        await self.invoke("ck3_execute_step", {"step": "pause-map"})
+        before = await self.wait_snapshot({"paused": True}, self.args.command_timeout)
+        same_episode(before)
+        if before.get("active_event") is not None:
+            raise ValueError("an event appeared before time advance; query it first")
+        start, target = int(before["date_raw"]), int(before["date_raw"]) + 24
+        await self.invoke("ck3_execute_step", {"step": "set-speed-1"})
+        before_resume = await self.wait_snapshot({"speed": 1, "paused": True}, self.args.command_timeout)
+        same_episode(before_resume)
+        if before_resume.get("active_event") is not None:
+            raise ValueError("an event appeared while setting speed; query it before resume")
+        boundary = reached = None
+        deadline = time.monotonic() + float(step.get("timeout", self.args.command_timeout))
+        try:
+            await self.invoke("ck3_execute_step", {"step": "resume-map"})
+            while time.monotonic() < deadline:
+                current = await self.fresh()
+                same_episode(current, paused=False)
+                if current.get("active_event") is not None:
+                    boundary = current
+                    break
+                if int(current["date_raw"]) >= target:
+                    reached = current
+                    break
+                await asyncio.sleep(self.args.poll_interval)
+            if boundary is None and reached is None:
+                raise TimeoutError("running map reached neither target date nor event boundary")
+        finally:
+            owner = self.snapshot.get("diagnostics", {})
+            if (isinstance(owner, dict) and owner.get("bridge_pid") == self.episode_identity["bridge_pid"] and
+                    owner.get("connection_generation") == self.episode_identity["connection_generation"]):
+                await self.invoke("ck3_execute_step", {"step": "pause-map"})
+        after = await self.wait_snapshot({"paused": True}, self.args.command_timeout)
+        same_episode(after)
+        if boundary is None and after.get("active_event") is not None:
+            boundary = after
+        if boundary is not None:
+            event = boundary.get("active_event")
+            after_event = after.get("active_event")
+            if (not isinstance(event, dict) or type(event.get("instance_id")) is not int or event["instance_id"] <= 0 or
+                    not isinstance(after_event, dict) or after_event.get("instance_id") != event["instance_id"] or
+                    int(after["date_raw"]) < int(boundary["date_raw"])):
+                raise ValueError("paused event boundary lost its full instance or date")
+            observed = int(boundary["date_raw"])
+            progress = "event_before_target" if observed < target else "event_at_target" if observed == target else "event_after_target"
+            interval_complete = observed >= target and int(after["date_raw"]) >= target
+        else:
+            if int(after["date_raw"]) < target:
+                raise RuntimeError("pause readback preceded the requested date")
+            progress, interval_complete = "target_date_reached", True
+        return {"before": before, "running_successor": reached, "event_boundary": boundary, "after": after,
+                "requested_days": 1, "target_date_raw": target, "elapsed_hours": int(after["date_raw"]) - start,
+                "progress_status": progress, "requested_interval_complete": interval_complete,
+                "event_resolution": "typed_query_required" if boundary is not None else "none",
+                "preflight": {"native_primitives": sorted(primitives), "typed_event_query_supported": True},
+                "selected_event_options": 0}
+
     async def write_inbox(self, row: dict[str, object]) -> dict[str, object]:
         if not self.args.fixture_profile:
             raise ValueError("write-inbox requires the explicit --fixture-profile option")
@@ -573,7 +662,7 @@ class PlanClient:
                 if kind == "episode_identity_anchor":
                     result = await self.bind_episode_identity()
                 elif kind == "advance_day":
-                    result = await self.advance(step)
+                    result = await self.advance_event_boundary(step) if step.get("allow_event_boundary") is True else await self.advance(step)
                 elif kind in {"write-inbox", "write_inbox"}:
                     result = await self.write_inbox(step)
                 elif kind == "wait_snapshot":

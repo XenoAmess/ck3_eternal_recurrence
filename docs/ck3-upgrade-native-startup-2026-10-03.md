@@ -125,3 +125,13 @@ R0007实读原生ID差异已回链原版bookmark/history来源：罗贝尔的scr
 [原报告](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--eternal-recurrence--R0006/native-report.json) SHA `6268aa22a8b5be3824b4e94b0d925e5a90c7c82236f9eb1036166a8d42d2fe34`，实际 RED、cleanup_ok=true、managed thread finished。17:26:56 UTC关闭后 CK3/harness均消失，keeper failure=null/thread退出，最后1811，CAS1813释放；这是 containment，未证明 normal quit/flush。10条静态 unused variable（五种各两次）保留，不能称零日志。下一尝试先核实际注册接口及所有后续 phase，再用新纯输入 profile；不重发旧失败 phase。
 
 另已采用[独立夹具开局 policy](ck3-native-ai/frontend-fixture-start-policy-2026-10-04.md)，21项新边界检查通过，实机仍 NOT_RUN；不改变普通罗贝尔入口，也不把业务角色绑定写成产品通过。
+
+## 下一 writer 的时间推进修正
+
+R0006 实际 registry/capabilities 捕获 SHA `1c8f04c0f18459ec9a1adf0916adbf5afd5219c02f03dd63974e54da2d2f2ace`：普通 `life-advance` composite 确实存在，缺的是 `life-advance-one-day`，没有 `ck3_advance_until`。不能把较新的代码或相近名称当作现有能力。新路径使用既有 `advance_day` 的显式 `allow_event_boundary=true` 分支：先查实际工具及 pause/resume/speed1/typed-event 能力、原 episode/PID/generation，暂停及速度独立读回后再继续；途中只观察到目标日期或真实事件，finally 仅向仍匹配的 owner 发暂停。速度读回时新事件或 owner 改变会在 Resume 前拒绝。
+
+早于目标的事件保留实际日期、elapsed hours、目标日期和 full instance，`requested_interval_complete=false`；从不自动选项，也不记作完整一天。默认 advance、anchor、invoke 原逻辑保持原样。三项新聚焦检查加一项后续速度等待 guard 检查通过，后者有 event/PID/generation 三 subcase；旧通过检查未重跑。两个 patch SHA `a0e54fb36dd80d0263cf6831e81a939d0ecb63abb6c9fa1addbdb9218788c2d7`、`d73eecd0a5662518d4313e61ef68b02fd5feb4e1cffab739a6d9395458d7ad91`；采用检查均0。
+
+实际 fixture 源还证明初次 initializer 的 days1、再到 offer 的 days1，以及加分后到死亡提示的 days1。旧计划缺少后一次推进，不能只修工具名就重跑。新04a/04b/06b分别有限推进并读取后态，未来 event definition/ROOT/onceflag仍逐阶段核；意外生产事件不自动关闭。全新7文件 state、空58bytes tutorial、无runtime复制的 preparation SHA `9bf3934f98661e4fed152657150ed87113cf2dcd61ac5d1e733c37954efa8a54`，plan-contract SHA `f56fc8c8eb369603760487c5f7b0abf824bbb284819b701aa8dc1c86c0865410`，位于 `C:/workspace/ck3-upgrade-20261004/courtier-runtime-identity-agent-01/writer-timeline-candidate-02/inputs/main-writer/`。实际捕获的工具资格与源定时器只证明新输入合理；尚无死亡或持久化结果。
+
+R0006完整3794文件 manifest index SHA `0cf8e4d1398190033f483e989cffdae4c3fab22e142d4f497bab8410811f30f9`；全10条日志正确追加分类 SHA `71abf69b7caa5e2f27b2912c4749a7093bb0080bdc2169fbecc1d6261483977a`。首分类器错用 prefix 顺序的RED保留，不改原文。新closed state已经压缩，归因回收0；经授权另对已结束组合build的338份obj/pdb做 NTFS compression，所有bytes/path/mtime/SHA保持、DLL及injector连metadata也未变，allocatedsize实际回收42,704,896B，收据 SHA `6c24359178f1803de22d8c91028da20b18305c7760a6ebd9185d052c79dde4e8`。没有删除或重新编码任何过程资产。
