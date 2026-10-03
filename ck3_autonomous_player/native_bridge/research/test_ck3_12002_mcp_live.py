@@ -754,5 +754,81 @@ class WriterEventBoundaryTests(unittest.TestCase):
                 self.assertEqual([args["step"] for name, args in calls if name == "ck3_execute_step"][-1], "pause-map")
 
 
+class AtomicReportWriteTests(unittest.TestCase):
+    def test_enospc_keeps_last_complete_report_and_each_failed_partial(self):
+        import errno
+        import run_ck3_12002_mcp_live as harness
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "report.json"
+            original = b'{"status":"RUNNING","phase":"last-complete"}\n'
+            output.write_bytes(original)
+            original_open = Path.open
+
+            class FullDiskStream:
+                def __init__(self, stream):
+                    self.stream = stream
+                def __enter__(self):
+                    return self
+                def __exit__(self, *args):
+                    self.stream.close()
+                def write(self, value):
+                    self.stream.write(value[:13])
+                    self.stream.flush()
+                    raise OSError(errno.ENOSPC, "injected full disk")
+
+            def injected_open(path, *args, **kwargs):
+                stream = original_open(path, *args, **kwargs)
+                if path.name.startswith(".report.json.partial-") and args and args[0] == "x":
+                    return FullDiskStream(stream)
+                return stream
+
+            preserved = {}
+            with mock.patch.object(Path, "open", injected_open):
+                for attempt in range(2):
+                    with self.assertRaises(OSError) as failure:
+                        harness.write_atomic_report(output, {"status": "RED", "attempt": attempt})
+                    self.assertEqual(failure.exception.errno, errno.ENOSPC)
+                    self.assertEqual(output.read_bytes(), original)
+                    partials = list(Path(directory).glob(".report.json.partial-*"))
+                    self.assertEqual(len(partials), attempt + 1)
+                    for partial in partials:
+                        self.assertGreater(partial.stat().st_size, 0)
+                        if partial in preserved:
+                            self.assertEqual(partial.read_bytes(), preserved[partial])
+                        preserved[partial] = partial.read_bytes()
+            self.assertEqual(json.loads(output.read_text(encoding="utf-8")),
+                             {"status": "RUNNING", "phase": "last-complete"})
+
+    def test_success_flushes_and_syncs_before_atomic_json_replacement(self):
+        import run_ck3_12002_mcp_live as harness
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "report.json"
+            original = b'{"status":"RUNNING","phase":"before"}\n'
+            output.write_bytes(original)
+            intended = {"status": "RED", "error": "真实错误", "steps": [{"ok": False}]}
+            real_fsync, real_replace = os.fsync, os.replace
+            events = []
+
+            def synced(fd):
+                self.assertEqual(output.read_bytes(), original)
+                events.append("fsync")
+                return real_fsync(fd)
+
+            def installed(partial, target):
+                self.assertEqual(events, ["fsync"])
+                self.assertEqual(output.read_bytes(), original)
+                self.assertEqual(Path(partial).parent, output.parent)
+                self.assertEqual(json.loads(Path(partial).read_text(encoding="utf-8")), intended)
+                events.append("replace")
+                return real_replace(partial, target)
+
+            with mock.patch.object(harness.os, "fsync", side_effect=synced), \
+                    mock.patch.object(harness.os, "replace", side_effect=installed):
+                harness.write_atomic_report(output, intended)
+            self.assertEqual(events, ["fsync", "replace"])
+            self.assertEqual(json.loads(output.read_text(encoding="utf-8")), intended)
+            self.assertEqual(list(Path(directory).glob(".report.json.partial-*")), [])
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -177,3 +177,5 @@ error.log仍保留10条原五种unused-variable各两次，2,380 bytes/SHA `2a92
 [闭合报告](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--eternal-recurrence--R0009/native-report.json) SHA `4e4a080b8204a26b08a042d10d74d53dd56c7208d91cf24acb7b1f26e61b6b97`，cleanup_ok/threadfinished true、CK3/harness零，keeper停止1899/CAS1900释放。结果证明实际跨进程纪录导入子链；没有正常quit/flush、产品GUI或完整七cell信用。
 
 低空间另对12个精确已闭合旧日志/JSON做字节不变NTFS metadata压缩，实际allocated共回收504,406,016B，三份报告SHA依次 `49cfb2d441f407e8d1a8ff9286c8451fc77f7b76d09ef69d749e0423c618926f`、`d3c4a4dad0183161c9bc86af2b5ec5992e11a63f60caca075c18d74085bff516`、`7d63f8b2954c5911d6fddf2cb38041382772af8c1a6c37686dc4119a114361fc`；全部流式SHA/path/size/mtime不变。未删除、重编码或改变旧RED；不把全盘容量波动全归因于压缩。完成本轮后按用户新优先切白绮独立版，RMTM/Ox/no-heir后续暂缓，准备和原生缺口保留。
+
+R0009 最终日志分类补记：error.log 19,795B 有 68 条（unused 10、原版 court-scene invalid-culture 57、no-culture 1）；game.log 重复同一文化家族，不另加 58 条。实际 importer 条件通过不代表日志零错误，原版报错位置不证明全部 caller/根因。精确文件、双次索引和分类保存在 `C:/workspace/ck3-upgrade-20261004/main-r0009-preserve-agent-01/final-packet-05.json`，SHA `1beecb17dbbec7a7bad6b1369eb575cf882663bb107b980b97a0441e2affa6a9`；原失败 marker matcher 与更正记录均保留。

@@ -61,3 +61,5 @@ R0003已实际续跑，但首个Bookmarks route是加载瞬态：随后树为 `_
 02:35 [主版R0008](ck3-upgrade-native-startup-2026-10-03.md#主版-r0008实际死亡结算与文件持久化)实际写入子链33/33通过并闭包：三次有界日推进、真实死亡前存档、单次原角色死亡、原episode结算2.97/新纪录2及75-byte真实教程两次稳定SHA一致。原生消费者实际读到source/commit/ready；10条引擎unused-variable日志原样保留，不称零错误。受管containment不是正常quit/flush；冷reader、无继承人GUI及完整七cell仍未完成，完整产品0/10。新reader只从此次闭合实际报告和精确教程字节生成；因C盘仅约36MB，先做精确已闭合材料的字节不变存储压缩，恢复足够容量后再新run。
 
 03:03 [主版R0009](ck3-upgrade-native-startup-2026-10-03.md#主版-r0009新进程实际导入纪录)12/12实际通过并闭包：新进程、新世界、新episode在自然首日真实条件读到import_consumed1/imported2/inheritance100，原教程75B保持精确SHA。writer→reader持久化子链已有实际证明，完整七cell/GUI仍未收口。新的用户指令优先白绮独立版，接续先solo核心、再双加载顺序，RMTM/Ox/no-heir暂缓；不能把尚缺的GUI入口和元数据诊断隐藏为产品全通过。
+
+10-04 [白绮独立版实机接续](ck3-1.20.0.3-vivhite-compatibility-2026-10-04.md)：R0001 原生 23/23、29 必需标记及 3 生产 guard 各一次，取消/119/120/348/保留重开/实际 Rite 核心通过；GUI credit=false，441 条夹具提示预览错误与 2 条 unused 保留。R0002 original-first 在核心执行前发生磁盘 Errno28，0-byte 原报告和 stderr 保留，环境 RED、CAS1937 释放。已闭合旧输入与日志只做字节不变 NTFS 压缩，空间约 730MB；新 attempt 前先补报告原子保存、再新纯输入，双顺序尚未通过。

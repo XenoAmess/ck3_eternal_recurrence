@@ -1243,6 +1243,16 @@ async def prepare_rules_diagnostic_bookmarks(
     return result
 
 
+def write_atomic_report(path: Path, report: dict[str, object]) -> None:
+    """Install one complete report; preserve old report and partial on failure."""
+    partial = path.with_name(f".{path.name}.partial-{uuid.uuid4().hex}")
+    with partial.open("x", encoding="utf-8") as stream:
+        stream.write(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(partial, path)
+
+
 async def run(args: argparse.Namespace) -> dict[str, object]:
     from mcp import ClientSession, StdioServerParameters
     from mcp.client.stdio import stdio_client
@@ -1263,7 +1273,7 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
         "server_stderr": str(stderr_path), "session": session_state, "error": None}
 
     def write() -> None:
-        args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        write_atomic_report(args.output, report)
 
     frontend_rules_plan = None
     if args.frontend_rules_plan is not None:
