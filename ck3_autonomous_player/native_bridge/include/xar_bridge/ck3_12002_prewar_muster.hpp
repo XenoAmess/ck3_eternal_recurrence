@@ -51,6 +51,11 @@ struct PlayerDefaultRaiseObservationV1 {
   std::int32_t date_raw = 0;
   PrewarDefaultMusterRowV1 actor;
   bool default_raise_legality_ready = false;
+  // Native complete actor ArmyComposition aggregate, integer headcount.
+  // Read independently from final raise legality; zero is observable.
+  std::optional<std::int32_t> unraised_soldiers;
+  bool unraised_troops_ready = false;
+  std::string_view unraised_troops_failure = "unavailable";
 };
 
 // Actor-only query for ordinary play, including existing raised armies and

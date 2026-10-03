@@ -12653,27 +12653,48 @@ void RunConnectedSession(
             }
           }
         };
+        bool early_step_dispatched = false;
         if (!xar::bridge::JsonStringField(
                 incoming.payload, "step", step,
                 xar::ck3_11906::kTacticalDailySentinelMaximumArmStepBytesV1)) {
           connected = write_frame(
               pipe, CommandResultFrame(request_id, "", false,
                                        "native gameplay step is missing"));
+          early_step_dispatched = true;
+        }
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
-        } else if (state.experimental_combat_phase_trace &&
-                   state.experimental_combat_phase_trace->stage ==
-                       xar::ck3_11906::CombatPhaseEventTraceManagedStageV1::
-                           armed_waiting_for_one_day &&
-                   step != xar::ck3_11906::
-                               kCombatPhaseEventTraceManagedFinishStepV1 &&
-                   step != "resume-map" && step != "pause-map" &&
-                   step != "set-speed-1") {
+        if (!early_step_dispatched && state.experimental_combat_phase_trace &&
+            state.experimental_combat_phase_trace->stage ==
+                xar::ck3_11906::CombatPhaseEventTraceManagedStageV1::
+                    armed_waiting_for_one_day &&
+            step != xar::ck3_11906::
+                        kCombatPhaseEventTraceManagedFinishStepV1 &&
+            step != "resume-map" && step != "pause-map" &&
+            step != "set-speed-1") {
           connected = write_frame(
               pipe, CommandResultFrame(request_id, step, false,
                                        "experimental trace permits only exact-day timeline controls and finish"));
+          early_step_dispatched = true;
+        }
 #endif
-        } else if (xar::game::IsReviewedCrozierAdapter(game) &&
-                   step == "fixture-run-inbox-v1") {
+        // Dispatch these disjoint queries before the long native step chain
+        // so MSVC does not count their branches toward its nesting limit.
+        if (!early_step_dispatched &&
+            step == xar::ck3_12003::kPlayerDefaultRaiseStepV1) {
+          connected = write_frame(pipe, RunPlayerDefaultRaiseQuery12003(
+              game, state, request_id, step, incoming.payload));
+          early_step_dispatched = true;
+        }
+        if (!early_step_dispatched &&
+            xar::game::IsReviewedCrozierAdapter(game) &&
+            TypedQueryKind12002(step).has_value()) {
+          connected = write_frame(pipe, RunTypedQuery12002(
+              game, state, request_id, step, incoming.payload));
+          early_step_dispatched = true;
+        }
+        if (!early_step_dispatched) {
+        if (xar::game::IsReviewedCrozierAdapter(game) &&
+            step == "fixture-run-inbox-v1") {
           std::uint64_t expected_revision = 0;
           auto *worker = dynamic_cast<const xar::ck3_12002::WorkerAdapter *>(&game);
           if (!xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
@@ -12720,9 +12741,6 @@ void RunConnectedSession(
             response += "}}";
             connected = write_frame(pipe, response);
           }
-        } else if (step == xar::ck3_12003::kPlayerDefaultRaiseStepV1) {
-          connected = write_frame(pipe, RunPlayerDefaultRaiseQuery12003(
-              game, state, request_id, step, incoming.payload));
         } else if (xar::game::IsCk3_12003Descriptor(game.descriptor()) &&
                    (step.starts_with(xar::ck3_12003::
                                          kArmyCommanderAssignmentStepPrefix) ||
@@ -12745,10 +12763,6 @@ void RunConnectedSession(
                   : RunArmyCommanderCandidatesQuery12003(
                         game, state, request_id, step, incoming.payload);
           connected = write_frame(pipe, response);
-        } else if (xar::game::IsReviewedCrozierAdapter(game) &&
-                   TypedQueryKind12002(step).has_value()) {
-          connected = write_frame(pipe, RunTypedQuery12002(
-              game, state, request_id, step, incoming.payload));
         } else if (xar::game::IsReviewedCrozierAdapter(game) &&
                    xar::ck3_12002::IsNonwarPrivateStep12002(step)) {
           std::uint64_t expected_revision = 0;
@@ -24895,6 +24909,7 @@ void RunConnectedSession(
           }
         } else {
           execute_native_step_tail();
+        }
         }
         }
       }

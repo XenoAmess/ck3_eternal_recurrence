@@ -1,0 +1,58 @@
+{
+  "illegal": {
+    "step": "query-player-default-raise-v1",
+    "accepted": true,
+    "status": "completed",
+    "read_only": true,
+    "query_sequence": 1,
+    "snapshot_revision": 11,
+    "date_raw": 53238336,
+    "player_default_raise": {
+      "schema": "ck3_12003_player_default_raise_v1",
+      "game_version": "1.20.0.3",
+      "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "status": "available",
+      "snapshot_revision": 11,
+      "date_raw": 53238336,
+      "actor_character_id": 29829,
+      "default_raise_province_id": 2610,
+      "native_default_raise_legal": false,
+      "default_raise_legality_ready": true,
+      "failure": "none",
+      "unraised_troops_status": "unavailable",
+      "unraised_soldiers": null,
+      "unraised_troops_ready": false,
+      "unraised_troops_failure": "historical_fixture_reserve_not_sampled",
+      "unraised_troops_scale": 1,
+      "unraised_troops_scope": "native_all_actor_categories"
+    }
+  },
+  "legal": {
+    "step": "query-player-default-raise-v1",
+    "accepted": true,
+    "status": "completed",
+    "read_only": true,
+    "query_sequence": 2,
+    "snapshot_revision": 11,
+    "date_raw": 53238336,
+    "player_default_raise": {
+      "schema": "ck3_12003_player_default_raise_v1",
+      "game_version": "1.20.0.3",
+      "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "status": "available",
+      "snapshot_revision": 11,
+      "date_raw": 53238336,
+      "actor_character_id": 29829,
+      "default_raise_province_id": 2610,
+      "native_default_raise_legal": true,
+      "default_raise_legality_ready": true,
+      "failure": "none",
+      "unraised_troops_status": "unavailable",
+      "unraised_soldiers": null,
+      "unraised_troops_ready": false,
+      "unraised_troops_failure": "historical_fixture_reserve_not_sampled",
+      "unraised_troops_scale": 1,
+      "unraised_troops_scope": "native_all_actor_categories"
+    }
+  }
+}

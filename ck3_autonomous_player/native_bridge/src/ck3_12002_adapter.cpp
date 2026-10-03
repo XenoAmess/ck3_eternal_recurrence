@@ -2,6 +2,7 @@
 
 #include <windows.h>
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12003_army_reserve.hpp"
 #include "xar_bridge/ck3_12003_war_occupation.hpp"
 #include "xar_bridge/ck3_12003_title_holder.hpp"
 #include "xar_bridge/ck3_12002_war_cash_treasury.hpp"
@@ -93,6 +94,9 @@ public:
       const AdapterDescriptor &descriptor = kDescriptor) noexcept
       : bindings_(std::move(bindings)), descriptor_(&descriptor) {
     if (IsCk3_12003Descriptor(descriptor)) {
+      reserve_bindings_ = ck3_12003::BindPlayerArmyReserveImageV1(
+          reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+          descriptor.executable_sha256);
       title_holder_bindings_ = ck3_12003::BindTitleHolderImageV1(
           reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
           descriptor.executable_sha256);
@@ -230,8 +234,10 @@ public:
       ck3_12002::PlayerDefaultRaiseObservationV1 &output) const noexcept {
     output = {};
     if (!IsCk3_12003Descriptor(*descriptor_)) return output.status;
-    return ck3_12002::ReadPlayerDefaultRaiseV1(
+    const auto status = ck3_12002::ReadPlayerDefaultRaiseV1(
         bindings_.military, WorldAccess(), output);
+    ck3_12003::ReadPlayerUnraisedTroopsV1(reserve_bindings_, WorldAccess(), output);
+    return status;
   }
   RaiseTroopsResult submit_raise_troops_default() const noexcept override {
     return ck3_12002::SubmitRaiseTroopsDefault(bindings_.military, WorldAccess());
@@ -446,6 +452,7 @@ private:
             ResolveCharacter, ResolveUnit, ResolveProvince, ResolveSiege};
   }
   Ck3_12002AdapterBindings bindings_;
+  ck3_12003::PlayerArmyReserveBindingsV1 reserve_bindings_{};
   ck3_12003::TitleHolderBindingsV1 title_holder_bindings_{};
   ck3_12003::WarOccupationTargetsBindingsV1 occupation_bindings_{};
   const AdapterDescriptor *descriptor_;

@@ -36,4 +36,19 @@ def normalize_player_default_raise_v1(value: object, *, snapshot: Mapping[str, o
             or ready != (legal is not None) or (status == "available") != ready
             or ready and (province is None or value["failure"] != "none")):
         raise ValueError("native default raise final legality/readiness is malformed")
+    reserve_status = value.get("unraised_troops_status")
+    reserve_ready = value.get("unraised_troops_ready")
+    soldiers = value.get("unraised_soldiers")
+    reserve_failure = value.get("unraised_troops_failure")
+    if (reserve_status not in {"available", "unavailable"}
+            or type(reserve_ready) is not bool
+            or reserve_ready != (reserve_status == "available")
+            or value.get("unraised_troops_scale") != 1
+            or type(value.get("unraised_troops_scale")) is not int
+            or value.get("unraised_troops_scope") != "native_all_actor_categories"
+            or reserve_ready and (type(soldiers) is not int or not 0 <= soldiers <= 2**31-1
+                                  or reserve_failure != "none")
+            or not reserve_ready and (soldiers is not None or not isinstance(reserve_failure,str)
+                                      or not reserve_failure or reserve_failure == "none")):
+        raise ValueError("native all-unraised troop observation is malformed")
     return dict(value)

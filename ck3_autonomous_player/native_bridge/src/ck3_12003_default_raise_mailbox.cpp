@@ -58,7 +58,12 @@ std::string SerializePlayerDefaultRaiseV1(
       (row.native_default_raise_legal ? std::string(*row.native_default_raise_legal ? "true" : "false") : "null") +
       ",\"default_raise_legality_ready\":" +
       (observation.default_raise_legality_ready ? "true" : "false") +
-      ",\"failure\":" + Quote(row.failure) + "}}";
+      ",\"failure\":" + Quote(row.failure) +
+      ",\"unraised_troops_status\":" + Quote(observation.unraised_troops_ready ? "available" : "unavailable") +
+      ",\"unraised_soldiers\":" + (observation.unraised_soldiers ? std::to_string(*observation.unraised_soldiers) : "null") +
+      ",\"unraised_troops_ready\":" + (observation.unraised_troops_ready ? "true" : "false") +
+      ",\"unraised_troops_failure\":" + Quote(observation.unraised_troops_failure) +
+      ",\"unraised_troops_scale\":1,\"unraised_troops_scope\":\"native_all_actor_categories\"}}";
   return out;
 }
 } // namespace xar::ck3_12003
