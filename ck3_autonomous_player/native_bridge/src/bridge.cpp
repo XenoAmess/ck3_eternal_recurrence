@@ -15188,7 +15188,12 @@ void RunConnectedSession(
               if (response.empty()) response = CommandResultFrame(request_id, step, false, "typed_ui_owner_submission_or_completion_failed");
               connected = xar::bridge::WriteFrame(pipe, response);
             }
-          } else if (step == xar::ck3_11906::kFrontendGuiRouteV1Step ||
+          } else if (
+#if defined(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
+              step == xar::ck3_11906::kFrontendGameRulesV1Step ||
+              step == xar::ck3_11906::kFrontendOpenGameRulesV1Step ||
+#endif
+              step == xar::ck3_11906::kFrontendGuiRouteV1Step ||
               step == xar::ck3_11906::kFrontendGuiTreeInspectionV1Step ||
               step == xar::ck3_11906::
                           kFrontendCoatOfArmsTreeInspectionV1Step ||
@@ -15241,6 +15246,12 @@ void RunConnectedSession(
               if (step == xar::ck3_11906::kFrontendGuiRouteV1Step) {
                 query.operation =
                     xar::ck3_11906::FrontendGuiRouteOperationV1::query;
+#if defined(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
+              } else if (step == xar::ck3_11906::kFrontendGameRulesV1Step) {
+                query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::query_game_rules;
+              } else if (step == xar::ck3_11906::kFrontendOpenGameRulesV1Step) {
+                query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::open_game_rules;
+#endif
               } else if (step == xar::ck3_11906::
                                      kFrontendGuiTreeInspectionV1Step) {
                 query.operation = xar::ck3_11906::
@@ -15402,6 +15413,14 @@ void RunConnectedSession(
                                                         inspect_coat_of_arms_pattern_grid) {
                     response = FrontendGuiTreeInspectionResultFrame(
                         request_id, step, query.result.tree_inspection);
+#if defined(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
+                  } else if (query.operation == xar::ck3_11906::FrontendGuiRouteOperationV1::query_game_rules) {
+                    response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"";
+                    response += request_id;
+                    response += "\",\"ok\":true,\"result\":";
+                    response += xar::ck3_11906::SerializeFrontendGameRulesV1(query.result.game_rules);
+                    response += '}';
+#endif
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
                   } else if (query.operation == xar::ck3_11906::
                                                     FrontendGuiRouteOperationV1::

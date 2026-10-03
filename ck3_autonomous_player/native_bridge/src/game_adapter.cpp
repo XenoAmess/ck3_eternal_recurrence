@@ -420,6 +420,10 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = ck3_11906::kCoatOfArmsDesignerProbeV1Capability;
   } else if (step == ck3_11906::kCoatOfArmsDesignerExportV1Step) {
     capability = ck3_11906::kCoatOfArmsDesignerExportV1Capability;
+  } else if (step == ck3_11906::kFrontendGameRulesV1Step) {
+    capability = ck3_11906::kFrontendGameRulesV1Capability;
+  } else if (step == ck3_11906::kFrontendOpenGameRulesV1Step) {
+    capability = ck3_11906::kFrontendOpenGameRulesV1Capability;
   } else if (step == ck3_11906::kFrontendGuiRouteV1Step) {
     capability = ck3_11906::kFrontendGuiRouteV1Capability;
   } else if (step == ck3_11906::kIngameUiNavigationV1Step) {

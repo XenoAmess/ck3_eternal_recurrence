@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#include "xar_bridge/frontend_game_rules_v1.hpp"
 #include "xar_bridge/frontend_bookmark_model_probe_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_action_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
@@ -176,6 +177,8 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   start_lobby_selected_character = 17,
   select_supported_bookmark = 18,
   ingame_ui = 19,
+  query_game_rules = 20,
+  open_game_rules = 21,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {
@@ -196,6 +199,7 @@ struct FrontendGuiRouteResultV1 {
   FrontendBookmarkModelProbeV1 bookmark_model_probe{};
   FrontendBookmarkSelectionV1 bookmark_selection{};
   FrontendBookmarkChangeV1 bookmark_change{};
+  FrontendGameRulesObservationV1 game_rules{};
 };
 
 struct FrontendGuiRouteMailboxContextV1 {

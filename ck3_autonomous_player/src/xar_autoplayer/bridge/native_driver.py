@@ -390,6 +390,13 @@ from .coat_of_arms_source_export_contract import (
     normalize_coat_of_arms_source_export_v1_result,
     normalize_native_coat_of_arms_source_export_v1_result,
 )
+from .frontend_game_rules_contract import (
+    QUERY_FRONTEND_GAME_RULE_SELECTIONS_V1_CAPABILITY,
+    QUERY_FRONTEND_GAME_RULE_SELECTIONS_V1_STEP,
+    ACTIVATE_FRONTEND_GAME_RULES_V1_CAPABILITY,
+    ACTIVATE_FRONTEND_GAME_RULES_V1_STEP,
+    normalize_frontend_game_rule_selections_v1,
+)
 from .frontend_gui_route_contract import (
     ACTIVATE_FRONTEND_COAT_OF_ARMS_CUSTOM_MODE_V1_CAPABILITY,
     ACTIVATE_FRONTEND_COAT_OF_ARMS_CUSTOM_MODE_V1_STEP,
@@ -5798,6 +5805,48 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 f"native coat-of-arms export projection is malformed: {error}"
             ) from error
+
+    def query_frontend_game_rule_selections_v1(self) -> dict[str, object]:
+        """Read current native rules-window choices; Apply is not proven here."""
+        before = frontend_gui_route_binding_from_capabilities(self.capabilities())
+        raw = self._execute_primitive_step(
+            QUERY_FRONTEND_GAME_RULE_SELECTIONS_V1_STEP,
+            expected_revision=0,
+            required_capability=QUERY_FRONTEND_GAME_RULE_SELECTIONS_V1_CAPABILITY,
+            allow_frontend_revision_zero=True,
+        )
+        after = frontend_gui_route_binding_from_capabilities(self.capabilities())
+        if before != after:
+            raise BridgeUnavailableError("native game rules query crossed its frontend binding")
+        try:
+            result = normalize_frontend_game_rule_selections_v1(raw)
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native game rules observation is malformed: {error}") from error
+        return {**result, "binding": after, "query_sequence": max(1, int(self._request_sequence))}
+
+    def activate_frontend_game_rules_v1(self) -> dict[str, object]:
+        """Invoke vanilla Bookmarks rules button once, then independently query."""
+        initial = self.query_frontend_game_rule_selections_v1()
+        if initial["ready"] is True:
+            return {"status": "observed", "dispatch_invoked": False, "observation": initial}
+        if self.query_frontend_gui_route_v1()["route"] != "bookmarks":
+            raise BridgeUnavailableError("native game rules opener requires Bookmarks")
+        self._execute_primitive_step(
+            ACTIVATE_FRONTEND_GAME_RULES_V1_STEP,
+            expected_revision=0,
+            required_capability=ACTIVATE_FRONTEND_GAME_RULES_V1_CAPABILITY,
+            allow_frontend_revision_zero=True,
+        )
+        deadline = time.monotonic() + 5.0
+        while True:
+            current = self.query_frontend_game_rule_selections_v1()
+            if current["ready"] is True:
+                if current["binding"] != initial["binding"]:
+                    raise BridgeUnavailableError("native game rules opener crossed its frontend binding")
+                return {"status": "observed", "dispatch_invoked": True, "observation": current}
+            if time.monotonic() >= deadline:
+                raise BridgeUnavailableError("native game rules window selection model was not observed after one button invocation")
+            time.sleep(0.05)
 
     def query_frontend_gui_route_v1(self) -> dict[str, object]:
         """Read the current CK3 frontend page on the native main thread."""

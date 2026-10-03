@@ -325,6 +325,7 @@ from .coat_of_arms_framebuffer import (
     capture_and_compare_coat_of_arms_framebuffer_v1,
     prepare_ck3_framebuffer_capture_v1,
 )
+from .frontend_game_rules_contract import normalize_frontend_game_rule_selections_v1
 from .frontend_gui_route_contract import (
     frontend_gui_route_binding_from_capabilities,
 )
@@ -10235,6 +10236,30 @@ class GameplayBridgeService:
             ],
             "loaded_feature_manifest": normalized,
         }
+
+    def query_frontend_game_rule_selections_v1(self) -> dict[str, object]:
+        query = getattr(self.driver, "query_frontend_game_rule_selections_v1", None)
+        if not callable(query):
+            raise UnsupportedStepError("selected backend has no native game rules observer")
+        try:
+            return normalize_frontend_game_rule_selections_v1(query())
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native game rules observation is malformed: {error}") from error
+
+    def activate_frontend_game_rules_v1(self) -> dict[str, object]:
+        activate = getattr(self.driver, "activate_frontend_game_rules_v1", None)
+        if not callable(activate):
+            raise UnsupportedStepError("selected backend has no native game rules opener")
+        result = activate()
+        if not isinstance(result, dict) or result.get("status") != "observed":
+            raise BridgeUnavailableError("native game rules opener was not observed")
+        try:
+            observed = normalize_frontend_game_rule_selections_v1(result.get("observation"))
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native game rules opener observation is malformed: {error}") from error
+        if observed["ready"] is not True:
+            raise BridgeUnavailableError("native game rules opener returned unavailable selections")
+        return {**result, "observation": observed}
 
     def query_frontend_gui_route_v1(self) -> dict[str, object]:
         """Read CK3's current frontend page through the native GUI tree."""

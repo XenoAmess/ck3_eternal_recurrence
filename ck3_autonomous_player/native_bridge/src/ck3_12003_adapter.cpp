@@ -46,6 +46,10 @@ const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
     result.push_back(ck3_11906::kFrontendGuiSelectSupported1066CharacterV1Capability);
     result.push_back(ck3_11906::kFrontendGuiStartSelectedBookmarkV1Capability);
 #endif
+#if defined(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
+    result.push_back(ck3_11906::kFrontendGameRulesV1Capability);
+    result.push_back(ck3_11906::kFrontendOpenGameRulesV1Capability);
+#endif
     return result;
   }();
   static const AdapterDescriptor descriptor{

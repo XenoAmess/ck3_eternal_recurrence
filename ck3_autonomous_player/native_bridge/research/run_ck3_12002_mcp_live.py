@@ -723,11 +723,23 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                             report["frontend_bootstrap"]["entry_tree"] = entry_tree
                             write()
                             if args.frontend_diagnostic_only:
-                                report["frontend_bootstrap"]["status"] = "READ_ONLY_ROUTE_AND_TREE_OBSERVED_NO_ACTIONS"
+                                if args.frontend_rules_diagnostic:
+                                    if entry_route != "bookmarks":
+                                        raise RuntimeError("rules diagnostic requires independently observed Bookmarks; no New Game is dispatched")
+                                    rules_open = await client.call("ck3_activate_frontend_game_rules_v1")
+                                    report["frontend_bootstrap"]["rules_open"] = rules_open
+                                    write()
+                                    rules_observation = await client.call("ck3_query_frontend_game_rule_selections_v1")
+                                    report["frontend_bootstrap"]["rules_observation"] = rules_observation
+                                    write()
+                                    if not isinstance(rules_observation, dict) or rules_observation.get("ready") is not True:
+                                        raise RuntimeError("native rules diagnostic did not observe real selected setting objects")
+                                    report["frontend_bootstrap"]["rules_status"] = "ACTUAL_SELECTED_SETTINGS_OBSERVED_APPLY_AND_START_NOT_REQUESTED"
+                                report["frontend_bootstrap"]["status"] = "READ_ONLY_ROUTE_AND_TREE_OBSERVED_NO_START"
                                 write()
                                 if args.hold_seconds:
                                     await client.hold(args.hold_seconds)
-                                raise RuntimeError("Frontend diagnostic only; no New Game, selection, Start or product test requested")
+                                raise RuntimeError("Frontend diagnostic only; no New Game, ruler selection, Apply, Start or product test requested")
                             if entry_route == "main_menu":
                                 opened = await client.call("ck3_activate_frontend_new_game_v1")
                                 report["frontend_bootstrap"]["new_game"] = opened
@@ -833,6 +845,8 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--cold-start-checkpoint", action="store_true")
     result.add_argument("--frontend-robert-bootstrap", action="store_true",
                         help="Use existing typed native stock Robert start before map readiness; no desktop input")
+    result.add_argument("--frontend-rules-diagnostic", action="store_true",
+                        help="Only with diagnostic-only: directly open native rules and query actual choices before hold; no Apply/Start")
     result.add_argument("--frontend-diagnostic-only", action="store_true",
                         help="Capture typed entry route/tree and hold; never dispatch a frontend action")
     result.add_argument("--allow-verified-direct-bookmarks", action="store_true",
@@ -853,6 +867,10 @@ def parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = parser().parse_args()
+    if args.frontend_rules_diagnostic and not (args.frontend_diagnostic_only and args.frontend_robert_bootstrap):
+        raise SystemExit("--frontend-rules-diagnostic requires --frontend-diagnostic-only and --frontend-robert-bootstrap")
+    if (args.frontend_diagnostic_only or args.allow_verified_direct_bookmarks) and not args.frontend_robert_bootstrap:
+        raise SystemExit("frontend diagnostic/direct-entry options require --frontend-robert-bootstrap")
     if args.frontend_robert_bootstrap and (args.cold_start_checkpoint or args.sdk_smoke_test or args.sdk_error_smoke_test):
         raise SystemExit("frontend Robert bootstrap requires a fresh actual game session, not cold checkpoint or SDK fixture")
     if args.sdk_error_smoke_test:

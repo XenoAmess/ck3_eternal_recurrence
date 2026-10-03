@@ -118,6 +118,36 @@ bool InspectActiveRouteTree(FrontendGuiRouteMailboxContextV1 &query) noexcept {
                                query.result.tree_inspection);
 }
 
+#if defined(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
+bool InspectGameRules(FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  auto &result = query.result.game_rules;
+  if (query.environment.gui_abi_revision != GuiAbiRevisionV1::crozier12003) {
+    result.unavailable_reason = "exact_12003_game_rules_environment_unverified";
+    return true;
+  }
+  if (!ResolveRoute(query, query.result) ||
+      query.result.route != FrontendGuiRouteV1::bookmarks) {
+    result.unavailable_reason = "bookmarks_route_unavailable";
+    return true;
+  }
+  ZhongguoScoreboardAccessV1 access{};
+  void *root = nullptr;
+  void *widget = nullptr;
+  std::string name;
+  void *vtable = nullptr;
+  bool visible = false, enabled = false;
+  if (!ResolveNamedGuiWidgetV1(query.environment, access, "game_rules",
+                               "game_rules", root, widget) || !root ||
+      widget != root ||
+      !ReadGuiWidgetRuntimeV1(access, root, name, vtable, visible, enabled) ||
+      name != "game_rules" || !visible) {
+    result.unavailable_reason = "visible_game_rules_root_unverified";
+    return true;
+  }
+  return ProbeFrontendGameRulesV1(query.environment, access, root, result);
+}
+#endif
+
 bool InspectBookmarkModel(FrontendGuiRouteMailboxContextV1 &query) noexcept {
   if (!ResolveRoute(query, query.result) ||
       query.result.route != FrontendGuiRouteV1::bookmarks) {
@@ -710,6 +740,11 @@ bool ExecuteFrontendGuiRouteMailboxV1(
     }
     return true;
   }
+#if defined(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
+  if (query->operation == FrontendGuiRouteOperationV1::query_game_rules) {
+    return InspectGameRules(*query);
+  }
+#endif
   if (query->operation == FrontendGuiRouteOperationV1::inspect_tree) {
     return InspectActiveRouteTree(*query);
   }
@@ -735,6 +770,14 @@ bool ExecuteFrontendGuiRouteMailboxV1(
       FrontendGuiRouteOperationV1::select_supported_bookmark) {
     return DispatchSelectSupportedBookmark(*query);
   }
+#if defined(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
+  if (query->operation == FrontendGuiRouteOperationV1::open_game_rules) {
+    if (query->environment.gui_abi_revision != GuiAbiRevisionV1::crozier12003)
+      return false;
+    return DispatchFixedNamedWidget(*query, FrontendGuiRouteV1::bookmarks,
+                                    "frontend_bookmarks", "game_rules_button");
+  }
+#endif
   if (query->operation == FrontendGuiRouteOperationV1::open_new_game) {
     return DispatchOpenNewGame(*query);
   }

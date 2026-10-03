@@ -3114,6 +3114,16 @@ def create_server(
         )
 
     @server.tool()
+    def ck3_query_frontend_game_rule_selections_v1() -> dict[str, object]:
+        """Read actual native rules-window choices; excludes Apply verification."""
+        return service.query_frontend_game_rule_selections_v1()
+
+    @server.tool()
+    def ck3_activate_frontend_game_rules_v1() -> dict[str, object]:
+        """Open vanilla Bookmarks game rules and verify native selected objects."""
+        return service.activate_frontend_game_rules_v1()
+
+    @server.tool()
     def ck3_query_frontend_gui_route_v1() -> dict[str, object]:
         """Read CK3's current native frontend route; no OCR or input."""
         return _ck3_query_frontend_gui_route_v1(service)
@@ -3798,6 +3808,12 @@ def create_server(
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_export_coat_of_arms_source_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_frontend_game_rule_selections_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_activate_frontend_game_rules_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_frontend_gui_route_v1"

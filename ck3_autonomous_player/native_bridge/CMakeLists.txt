@@ -384,6 +384,17 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1
+  "Admit exact .3 frontend current game-rule selection observation"
+  OFF
+)
+if(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1 AND
+   (NOT XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1 OR
+    NOT XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1))
+  message(FATAL_ERROR "Frontend rules candidate requires existing FEUDAL frontend admission")
+endif()
+
+option(
   XAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1
   "Bind the exact-build supported 1066 bookmark candidate to Duke Robert"
   OFF
@@ -1080,6 +1091,7 @@ if(MSVC)
     /W4 /permissive- /EHsc)
 endif()
 foreach(private_option IN ITEMS
+    XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1
     XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1
     XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1
     XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1
@@ -1238,6 +1250,7 @@ add_library(xar_ck3_bridge SHARED
   src/event_window_context_v1_serializer.cpp
   src/frontend_bookmark_model_probe_v1.cpp
   src/frontend_gui_route_v1.cpp
+  src/frontend_game_rules_v1.cpp
   src/game_adapter.cpp
   src/government_runtime_adapter_observer_v1.cpp
   src/government_runtime_adapter_source_adapter_v1.cpp
@@ -1808,6 +1821,10 @@ if(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1
   )
+endif()
+if(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1=1)
 endif()
 if(XAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
@@ -3450,6 +3467,19 @@ if(BUILD_TESTING)
       COMMAND xar_ck3_marriage_candidate_alliance_projection_v1_test)
   endif()
   find_package(Python3 COMPONENTS Interpreter REQUIRED)
+
+  add_executable(xar_ck3_frontend_game_rules_v1_test
+    src/frontend_game_rules_v1.cpp
+    src/frontend_game_rules_v1_test.cpp)
+  target_include_directories(xar_ck3_frontend_game_rules_v1_test PRIVATE include)
+  target_compile_definitions(xar_ck3_frontend_game_rules_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_frontend_game_rules_v1_test PRIVATE
+      /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_frontend_game_rules_v1
+    COMMAND xar_ck3_frontend_game_rules_v1_test)
 
   add_executable(xar_ck3_frontend_bookmark_model_probe_v1_test
     src/frontend_bookmark_model_probe_v1.cpp

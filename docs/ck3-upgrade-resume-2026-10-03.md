@@ -33,3 +33,5 @@
 21:28 本机续跑增量见 [`.3` 原生启动 R0002](ck3-upgrade-native-startup-2026-10-03.md)。已建立真实 MCP/native 会话，但首个可用 route=`bookmarks` 被驱动拒绝，NewGame/Start 均未调用；AUB 仍未到地图。受管 containment 完成、CK3 为零、屏幕 CAS 已释放。现修复实际前端 tree/条件广告阻点，再使用新 run；准备、加载观察和清理完成都不提升产品通过口径。
 
 此前准备器提交 `00af1b285` 的[官方 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37124590688)及 TED guard 提交 `6440948e7` 的[官方 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37124685230)均实际完成 success；官方 CI 不提供实机通过。本次记录包的 Python-only validator 通过，未重跑已复用的 parser/L0。
+
+后续前端接线修复已普通推送 `6e11ba8dd`；[规则窗口真实读取接口](ck3-native-ai/frontend-game-rules-1.20.0.3-2026-10-03.md)已完成有限离线验证与组合DLL，待新独立诊断run读取实际值。[RMTM/Ox新冷profile](ck3-1.20-rmtm-ox-native-preparation-2026-10-03.md)也已完成文件准备，仍runtime NOT_RUN。当前native缺口是规则选择/Apply/应用后读回、通用决议/产品GUI模型与必要持久化动作；旧ingame UI的工具schema不能替代 `.3` ABI/能力验证。
