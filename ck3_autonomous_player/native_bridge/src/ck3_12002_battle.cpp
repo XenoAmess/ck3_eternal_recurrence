@@ -680,8 +680,10 @@ bool TerminalSample(const BattleBindings &b, const game::Snapshot &scope,
     p.terminal_kind = e.suppress_normal_result_envelopes
                           ? game::BattleTerminalKindV1::no_normal_result
                           : game::BattleTerminalKindV1::normal_result;
+    p.terminal_date_raw = e.observed_date_raw;
     p.suppress_normal_result_envelopes = e.suppress_normal_result_envelopes;
     p.phase_raw = e.phase_raw;
+    p.phase_day = e.phase_day;
     p.winner_raw = e.winner_raw;
     p.finalized_before = e.finalized_before;
     p.daily_guard_raw = e.daily_guard_raw;
@@ -728,6 +730,7 @@ bool TerminalSample(const BattleBindings &b, const game::Snapshot &scope,
     auto &p = o.prior;
     p.terminal_kind = game::BattleTerminalKindV1::active_not_terminal;
     p.phase_raw = t.phase_raw;
+    p.phase_day = t.phase_day;
     p.winner_raw = t.winner_raw;
     p.finalized_before = t.finalized;
     p.daily_guard_raw = At<std::uint8_t>(prior, 0x705);

@@ -216,6 +216,7 @@ bool CaptureTerminalUnsafe(void *combat, bool suppress_normal_result_envelopes,
   event.battle_result_id = LoadAt<std::int32_t>(combat, kCombatResultIdOffset);
   event.suppress_normal_result_envelopes = suppress_normal_result_envelopes;
   event.phase_raw = LoadAt<std::int32_t>(combat, kCombatPhaseOffset);
+  event.phase_day = LoadAt<std::int32_t>(combat, kBattlePhaseDayOffset);
   event.winner_raw = LoadAt<std::int32_t>(combat, kCombatWinnerOffset);
   const auto finalized_raw =
       LoadAt<std::uint8_t>(combat, kCombatFinalizedOffset);

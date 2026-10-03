@@ -99,10 +99,13 @@ soft 是战斗中已溃散兵员；它可以在追击中转成 hard，战后可�
    的 current/max 人数。journal 的真实 `war_id`、`winner_is_war_attacker` 与 attacker-relative delta 决定
    战分归属，combat attacker 不能自动当作 war attacker；当前多战争场景不可按目标省份猜归属。
 
-当前 .3 terminal reader 没有填 `prior.terminal_date_raw`、`prior.phase_day`、`hard_loss_inputs`；
-结果发生日期先以实际前后 snapshot 区间及现有 journal 结果记录，不能倒填精确 tick。
-这三个空字段不妨碍上述真实胜负、战分、败退/后续状态和军队兵力里程碑；本工作不扩展 producer 或重复旧矩阵。
-若后续决策确实依赖精确 terminal hard-loss/date，再沿当前 finalizer journal 增补同一查询。
+2026-10-03 v35 实机 terminal baseline RED 纠正了此前“空字段不阻断”的判断：
+`prior.phase_day` 是 active 与 observed terminal 的现有序列化必需字段，observed terminal 还必须有
+`prior.terminal_date_raw`。原 .3 reader 未投影它们，导致 `typed query result is inconsistent`，
+因此该查询不能作为当时已可用的胜负/战分/战后状态观测。最小修复沿现有 native reader/journal
+投影真实 phase day 与捕获日期；外部 focused reader→serializer→Python 两场已 GREEN，仍待新 DLL
+paused live 验收。`hard_loss_inputs` 仍是可选缺口，未在本修复扩大 producer。
+详见 [v35 terminal 实际故障与定向修复](battle-terminal-phase-date-production-fault-1.20.0.3-2026-10-03.md)。
 
 ## Root 查询配方与报告
 

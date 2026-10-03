@@ -35,6 +35,7 @@ struct BattleTerminalJournalEventV1 {
   std::int32_t province_id = -1;
   bool suppress_normal_result_envelopes = false;
   std::int32_t phase_raw = -1;
+  std::int32_t phase_day = -1;
   std::int32_t winner_raw = -1;
   bool finalized_before = false;
   std::uint8_t daily_guard_raw = 0;
