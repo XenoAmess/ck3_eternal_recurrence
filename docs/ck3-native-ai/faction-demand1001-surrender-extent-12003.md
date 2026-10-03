@@ -39,3 +39,11 @@ flowchart TD
 证据：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/faction-extent/FOCUSED-RESULT.json`，producer SHA256 `2152b1b54bb20a6140a864a7d970d2a686fe5a3f765ed0cf5a88291105413d6b`。Attempt01 harness RED：最后夹具误破坏既有 alerts 同样依赖的头衔 identity；改为仅新父链 generation 后，Attempt02 native 六帧通过，但最小外置投影缺 runtime tools 导致 Python import harness RED。两份原 result/compile.log 保留；补齐外置运行环境后复用同一 native binary/producer 完成 Python 校验，没有为 harness import 修复重编 native。
 
 实际 Robert loss IDs 尚待 root 组合构建和原事件同帧读取；不选择 API3/4、不运行游戏、不调用 pipe、不使用窗口。kingdom future receiver/capital 和两特殊 branch 没有宣称闭合，后续只读输入已有具体树与 ABI 入口；本包不给日数、动作或 G2/NW完成信用。
+
+## 2026-10-03T12:25 接续源码采用
+
+真实v33 PID96112派系割让返回 surrender_title_collection_unavailable；确定性生产reader复现该RED。exact .3 immediate-liege 0x28BFC70 在0x28BFC9D对独立有地领主返回自身，现有campaign已正确接受，新割让reader误判为循环。最小修复接受self终止，并在后续title失败时保留已成功读取的state-faith/pair-war谓词。118-byte原生span SHA d7675380a1279ba5242feb3bb6053302519af85c32e56e2338ea6015e76f545c 已先冻结到ABI/原生树。新增3聚焦帧生产reader→serializer→Python normalizer /W4 /WX /O2 GREEN，保留此前fixture include harness RED，不重跑旧6帧。无新MCP/CMake/产品flag；原actual仍RED，下一v34组合DLL实际暂停帧待验。
+
+实际记录：`2026-10-03T12:25:54+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
+
+交付回执：[faction-independent-liege-fix](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/faction-extent/ROOT-INDEPENDENT-LIEGE-DELIVERY.json)。

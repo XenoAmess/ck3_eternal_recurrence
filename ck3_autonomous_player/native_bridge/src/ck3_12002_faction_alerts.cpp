@@ -485,7 +485,9 @@ bool ReadSurrenderTitle(
           std::int32_t liege_id = -1;
           if (!InvokeLiege(environment.immediate_liege, holder, liege) ||
               (liege && !Read(access, liege, 0x18, liege_id))) return false;
-          if (!liege || liege_id == -1) {
+          // Native 1.20.0.3 RVA 0x28BFC70 returns self for a landed
+          // independent character; campaign ReadLieges uses the same terminal.
+          if (!liege || liege == holder || liege_id == -1) {
             output.top_liege_character_id = holder_id;
             break;
           }
@@ -752,8 +754,12 @@ bool ReadSample(const PlayerFactionAlertsNativeEnvironmentV1 &environment,
       game::FactionSurrenderImpactV1 impact;
       if (!ReadSurrenderImpact(environment, access, actor, source.row, impact)) {
         const auto reason = impact.unavailable_reason;
+        const auto state_faith = impact.government_allows_state_faith;
+        const auto pair_war = impact.leader_at_war_with_target;
         impact = {};
         impact.unavailable_reason = reason;
+        impact.government_allows_state_faith = state_faith;
+        impact.leader_at_war_with_target = pair_war;
       }
       source.row.surrender_impact = std::move(impact);
     }

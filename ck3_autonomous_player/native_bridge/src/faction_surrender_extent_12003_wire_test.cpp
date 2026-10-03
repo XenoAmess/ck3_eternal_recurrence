@@ -80,6 +80,7 @@ bool Emit(ImpactFixture &fixture) {
 }
 } // namespace
 
+#ifndef XAR_SURRENDER_EXTENT_FIXTURE_NO_MAIN
 int main() {
   ImpactFixture fixture;
   // Two ROOT realm counties in the same duchy; only one is a faction member.
@@ -101,3 +102,4 @@ int main() {
   if (!Emit(fixture)) return 6;
   return 0;
 }
+#endif
