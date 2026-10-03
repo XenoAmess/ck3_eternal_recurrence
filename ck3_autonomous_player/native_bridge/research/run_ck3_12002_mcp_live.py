@@ -519,7 +519,7 @@ class PlanClient:
         if (not isinstance(capabilities, dict) or capabilities.get("snapshot") is not True or
                 not primitives <= set(capabilities.get("action_steps", [])) or
                 capabilities.get("current_event_window_context_v1_query_supported") is not True or
-                "query-current-event-window-context-v1" not in capabilities.get("action_steps", [])):
+                "game.command.query-current-event-window-context-v1" not in capabilities.get("bridge_capabilities", [])):
             raise ValueError("event-boundary advance lacks actual native primitives or typed event observer")
         identity_keys = ("runtime_character_id", "episode_run_id", "bridge_pid", "connection_generation")
         def same_episode(snapshot: object, *, paused: bool = True) -> None:

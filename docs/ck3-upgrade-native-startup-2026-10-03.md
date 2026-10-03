@@ -135,3 +135,15 @@ R0006 实际 registry/capabilities 捕获 SHA `1c8f04c0f18459ec9a1adf0916adbf5af
 实际 fixture 源还证明初次 initializer 的 days1、再到 offer 的 days1，以及加分后到死亡提示的 days1。旧计划缺少后一次推进，不能只修工具名就重跑。新04a/04b/06b分别有限推进并读取后态，未来 event definition/ROOT/onceflag仍逐阶段核；意外生产事件不自动关闭。全新7文件 state、空58bytes tutorial、无runtime复制的 preparation SHA `9bf3934f98661e4fed152657150ed87113cf2dcd61ac5d1e733c37954efa8a54`，plan-contract SHA `f56fc8c8eb369603760487c5f7b0abf824bbb284819b701aa8dc1c86c0865410`，位于 `C:/workspace/ck3-upgrade-20261004/courtier-runtime-identity-agent-01/writer-timeline-candidate-02/inputs/main-writer/`。实际捕获的工具资格与源定时器只证明新输入合理；尚无死亡或持久化结果。
 
 R0006完整3794文件 manifest index SHA `0cf8e4d1398190033f483e989cffdae4c3fab22e142d4f497bab8410811f30f9`；全10条日志正确追加分类 SHA `71abf69b7caa5e2f27b2912c4749a7093bb0080bdc2169fbecc1d6261483977a`。首分类器错用 prefix 顺序的RED保留，不改原文。新closed state已经压缩，归因回收0；经授权另对已结束组合build的338份obj/pdb做 NTFS compression，所有bytes/path/mtime/SHA保持、DLL及injector连metadata也未变，allocatedsize实际回收42,704,896B，收据 SHA `6c24359178f1803de22d8c91028da20b18305c7760a6ebd9185d052c79dde4e8`。没有删除或重新编码任何过程资产。
+
+## 主版 R0007：动态资格列表不能替代观察能力
+
+10-04 01:59–02:06（Asia/Shanghai）运行 `4-8e1c2f1861--eternal-recurrence--R0007`，execution `19c07772-cd0e-4560-9313-d05adbc55fec`，clean HEAD `08ec99a3003f87e4102cf08215055fcbe7aeed04`。当前 root v9 harness97,466bytes/SHA `8e41512b02b2899e824925ecbe02fb25c2622d121698356bbbacd78434982501` 单独冻结；native source/DLL仍旧完成组合。新离线图直接审阅 nonce `6579fbb22805`、UTC17:59:12及同图Steam离线标签，PNG SHA `01a5af358d4c370651ff8d2f3638c04d2ed221a53e34a4747de06d1b639d2abd`；未把冻结背景说成实时。第一次inspect错误地给 `--task-bus` 目录而非CLI文件，失败收据保留，另一次正确文件路径inspect/recover成功，未改Steam模式/重启ToDesk。
+
+三规则89对实际应用、stock Robert paused地图、动态anchor和01/02/03三事件均通过。episode `native-31254-cbb71a48c000`、原角色31254、PID18044/generation1，初帧native:3/public4/native3/date53144328。祝福退出真实 rendered3/native4，窗口关闭后，04a 的新增cap前置却拒绝。实际无事件响应仍有 snapshot=true、三个time primitive、query_supported=true以及 HELLO `game.command.query-current-event-window-context-v1`；只是 `action_steps` 按 paused/active_event/fullinstance 动态移除了当前不可执行的 query。这是新增检查的误判，**没有发出 pause/speed/resume，也没有死亡/存档/持久化**。
+
+[原报告](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--eternal-recurrence--R0007/native-report.json) SHA `631b262b391178015e7f7d794302d055a8ce3db2372103eb42f4ceca4e4d83d0`，全局RED保留。18:06:36 UTC已containment关闭，cleanup_ok/threadfinished true；CK318044/harness1392均消失，keeper最后1841/failure=null/thread退出、CAS1842释放。writer/reader与七cell仍0。
+
+v10仅把观察器能力判据改为实际注册tool、query_supported及 HELLO bridge_capabilities；三个time primitive仍须当前可执行，出现事件后实际query仍核 paused/fullinstance/revision/ROOT。patch SHA `000efc8681d73934ac9fc23fbafadedda7b718b189746714a0732c2e0d207027`。四项受影响旧检查与一项绑定实际R0007无事件响应的新增检查在同一次focused run全部PASS；新增负向证明缺HELLO能力或注册工具时任何mutation前拒绝。其余10个PlanClient方法AST原样，旧v9失败及输入不改写；下一run再取实际结果。
+
+磁盘存储只做字节保留处理：八份已闭合profile03/04存档各68,450,662bytes/SHA `52e8d94ef42e6d3f61c83e9cef92da8a5898347e51947fa76577ee637cf4341e`，NTFS压缩前后完整SHA/path/size/mtime相同，actual allocatedsize回收323,551,232B，报告SHA `69e52fea7b42775872310690242c8431add8a3ef0f69ee45fb92034fd2628766`。没有重新编码、删除或假定SAV文件是plain格式。

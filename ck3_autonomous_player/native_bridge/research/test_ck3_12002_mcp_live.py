@@ -588,8 +588,8 @@ class WriterEventBoundaryTests(unittest.TestCase):
                  "local_player_id": 1, "diagnostics": {"bridge_pid": 1208, "connection_generation": 1}}
         client.episode_identity = {"runtime_character_id": 31254, "episode_run_id": "actual-episode",
                                    "bridge_pid": 1208, "connection_generation": 1}
-        capabilities = {"snapshot": True, "action_steps": ["pause-map", "resume-map", "set-speed-1",
-                                                               "query-current-event-window-context-v1"],
+        capabilities = {"snapshot": True, "action_steps": ["pause-map", "resume-map", "set-speed-1"],
+                        "bridge_capabilities": ["game.command.query-current-event-window-context-v1"],
                         "current_event_window_context_v1_query_supported": True}
         calls, running = [], False
         async def call(name, arguments=None):
@@ -631,13 +631,75 @@ class WriterEventBoundaryTests(unittest.TestCase):
                          "ck3_query_current_event_window_context_v1")}
         return client, capabilities, calls
 
+    def test_actual_r7_no_event_capability_projection_admits_time_and_rejects_missing_observer(self):
+        # Sanitized actual paused/no-event R7 response at 2026-10-03T18:06:33.914833Z.
+        # Capture SHA256 de3c569146c3b1bb39c6926c92e979460370d5fc3cd052eb794296dad927ca76.
+        # Keep the actual action list; only unrelated HELLO capabilities are omitted.
+        actual_no_event = (
+        {'action_steps': ['activate-frontend-game-rules-v1',
+                          'activate-frontend-new-game-v1',
+                          'activate-frontend-select-supported-1066-character-v1',
+                          'activate-frontend-start-selected-bookmark-v1',
+                          'apply-and-hide-frontend-game-rules-v1',
+                          'hide-frontend-game-rules-v1',
+                          'inspect-frontend-gui-tree-v1',
+                          'inspect-gui-window-tree-v1',
+                          'life-advance',
+                          'pause-map',
+                          'probe-frontend-bookmark-model-v1',
+                          'query-army-strengths-v1',
+                          'query-arrange-marriage-choices',
+                          'query-campaign-root-context-v1',
+                          'query-declarable-wars',
+                          'query-frontend-applied-game-rules-v1',
+                          'query-frontend-game-rule-selections-v1',
+                          'query-frontend-game-rules-window-v1',
+                          'query-frontend-gui-route-v1',
+                          'query-loaded-feature-manifest-v1',
+                          'query-steward-develop-county-candidates-v1',
+                          'resume-map',
+                          'save-checkpoint',
+                          'select-frontend-game-rule-v1',
+                          'set-speed-1',
+                          'set-speed-2',
+                          'set-speed-3',
+                          'set-speed-4',
+                          'set-speed-5'],
+         'bridge_capabilities': ['game.command.query-current-event-window-context-v1'],
+         'current_event_window_context_v1_query_supported': True,
+         'snapshot': True}
+        )
+        self.assertNotIn("query-current-event-window-context-v1", actual_no_event["action_steps"])
+        with tempfile.TemporaryDirectory() as temporary:
+            client, caps, calls = self.client_case(temporary)
+            caps.clear()
+            caps.update(actual_no_event)
+            result = asyncio.run(client.advance_event_boundary({"days": 1, "allow_event_boundary": True}))
+            self.assertEqual(result["progress_status"], "event_before_target")
+            self.assertFalse(result["requested_interval_complete"])
+            self.assertEqual(sum(name == "ck3_execute_step" and args["step"] == "resume-map" for name, args in calls), 1)
+        for missing in ("backend-observer-capability", "registered-observer-tool"):
+            with self.subTest(missing=missing), tempfile.TemporaryDirectory() as temporary:
+                client, caps, calls = self.client_case(temporary)
+                caps.clear()
+                caps.update(actual_no_event)
+                if missing == "backend-observer-capability":
+                    caps["bridge_capabilities"] = []
+                else:
+                    client.tools.pop("ck3_query_current_event_window_context_v1")
+                with self.assertRaises(ValueError):
+                    asyncio.run(client.advance_event_boundary({"days": 1, "allow_event_boundary": True}))
+                self.assertFalse(any(name == "ck3_execute_step" for name, _ in calls))
+
     def test_capability_and_explicit_boundary_contract_reject_before_game_mutation(self):
-        for missing in ("pause-map", "resume-map", "set-speed-1", "query-current-event-window-context-v1", "typed-query", "opt-in"):
+        for missing in ("pause-map", "resume-map", "set-speed-1", "observer-capability", "typed-query", "opt-in"):
             with self.subTest(missing=missing), tempfile.TemporaryDirectory() as temporary:
                 client, caps, calls = self.client_case(temporary)
                 step = {"days": 1, "allow_event_boundary": True}
                 if missing == "typed-query":
                     caps["current_event_window_context_v1_query_supported"] = False
+                elif missing == "observer-capability":
+                    caps["bridge_capabilities"] = []
                 elif missing == "opt-in":
                     step.pop("allow_event_boundary")
                 else:

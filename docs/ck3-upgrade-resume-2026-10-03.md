@@ -55,3 +55,5 @@ R0003已实际续跑，但首个Bookmarks route是加载瞬态：随后树为 `_
 10-04 01:26 [主版 R0006](ck3-upgrade-native-startup-2026-10-03.md#主版-r0006真实契约入口推进接口拒绝)真实三规则应用、普通地图、动态episode锚点、契约/首世/不领祝福三窗口通过。推进 phase 的 composite 不在冻结 f4 runtime，派发前拒绝；全局 RED 保留。尚无死亡、存档、持久化或 reader，七cell仍0/7。containment后CK3零、CAS1813释放。下一新run先核全链实际接口；[显式 fixture Start policy](ck3-native-ai/frontend-fixture-start-policy-2026-10-04.md)的21项新检查通过，运行仍NOT_RUN。
 
 随后[时间推进修正](ck3-upgrade-native-startup-2026-10-03.md#下一-writer-的时间推进修正)以真实cap核定缺少 exact-one-day、普通life-advance存在；新增显式day-or-event观察分支及4项新边界检查，默认逻辑不变。source实际定时器补齐两天后offer与加分后的第三天death提示，独立04a/04b/06b后态逐项读取。新纯输入prepared，仍不记writer/reader或七cell通过；闭包与字节不变压缩收据已保全。
+
+02:06 [主版R0007](ck3-upgrade-native-startup-2026-10-03.md#主版-r0007动态资格列表不能替代观察能力)再次实际通过规则、地图、anchor及三生产事件。04a把无事件时动态隐藏的query action误作backend能力，发出任何time primitive前拒绝，全局RED保留；无死亡或持久化，CK3零/CAS1842释放。v10改核真实HELLO能力+注册tool，受影响4项及真实no-event向量新增1项聚焦PASS；下一新state/run才能推进，不重写旧报告。
