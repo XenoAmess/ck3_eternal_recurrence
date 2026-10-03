@@ -11,7 +11,7 @@ import struct
 
 from runtime_data import (EN, EXE_SHA256, GAME_VERSION, HOOKS, MINIMUM_AGE,
                           ROMANCE_SOURCE_SHA256, SEX_EXPERIENCE_MAXIMUM,
-                          SEX_EXPERIENCE_VARIABLE, SKILLS, ZH)
+                          SEX_EXPERIENCE_VARIABLE, SKILL_BALANCE_MAXIMUM, SKILLS, ZH)
 
 MOD_ROOT = Path(__file__).resolve().parents[1]
 PINNED_ROOT = Path(__file__).resolve().parent / "vanilla_hooks"
@@ -183,59 +183,96 @@ def scoped_compare(value_name: str, expression: str) -> str:
 
 
 def probe_effects() -> str:
-    chunks = [HEADER, "# Temporary probes preserve skill totals; the selected point is transferred as one pair.\n",
-              "# Positive effective skills avoid masked floor changes. No assumed native skill ceiling.\n"]
+    chunks = [HEADER, "# Eligibility checks only read character skills/balances and set temporary flags.\n",
+              "# Transfer balances are original modifier points; base skills are never changed.\n"]
     for skill in SKILLS:
+        balance = f"sxad_{skill}_balance"
         chunks.append(f"""
 sxad_probe_{skill}_effect = {{
     save_temporary_scope_value_as = {{ name = sxad_can_{skill} value = 0 }}
     if = {{
         limit = {{
-            {skill} > 0
-            scope:sxad_donor = {{ {skill} > 0 }}
-        }}
-        scope:sxad_donor = {{
-            save_temporary_scope_value_as = {{ name = sxad_donor_before_{skill} value = {skill} }}
-            add_{skill}_skill = -1
-            if = {{
-                limit = {{ {scoped_compare(f'sxad_donor_before_{skill}', f'{skill} < scope:sxad_donor_before_{skill}')} }}
-                add_{skill}_skill = 1
-                scope:sxad_receiver = {{
-                    save_temporary_scope_value_as = {{ name = sxad_receiver_before_{skill} value = {skill} }}
-                    add_{skill}_skill = 1
-                    if = {{
-                        limit = {{ {scoped_compare(f'sxad_receiver_before_{skill}', f'{skill} > scope:sxad_receiver_before_{skill}')} }}
-                        add_{skill}_skill = -1
-                        save_temporary_scope_value_as = {{ name = sxad_can_{skill} value = 1 }}
-                    }}
+            trigger_if = {{
+                limit = {{ has_variable = {balance} }}
+                var:{balance} >= -{SKILL_BALANCE_MAXIMUM}
+                var:{balance} < {SKILL_BALANCE_MAXIMUM}
+            }}
+            trigger_else = {{ always = yes }}
+            scope:sxad_donor = {{
+                {skill} > 0
+                trigger_if = {{
+                    limit = {{ has_variable = {balance} }}
+                    var:{balance} > -{SKILL_BALANCE_MAXIMUM}
+                    var:{balance} <= {SKILL_BALANCE_MAXIMUM}
                 }}
+                trigger_else = {{ always = yes }}
             }}
         }}
+        save_temporary_scope_value_as = {{ name = sxad_can_{skill} value = 1 }}
     }}
 }}
+
+# Current character owns the signed balance. Scale is sampled when assigned.
+sxad_rebuild_{skill}_modifier_effect = {{
+    remove_character_modifier = sxad_{skill}_gain_modifier
+    remove_character_modifier = sxad_{skill}_loss_modifier
+    if = {{
+        limit = {{ has_variable = {balance} }}
+        if = {{
+            limit = {{ var:{balance} > 0 }}
+            add_character_modifier = sxad_{skill}_gain_modifier
+        }}
+        else_if = {{
+            limit = {{ var:{balance} < 0 }}
+            add_character_modifier = sxad_{skill}_loss_modifier
+        }}
+    }}
+    force_character_skill_recalculation = yes
+}}
 """)
+    chunks.append("\nsxad_rebuild_skill_modifiers_effect = {\n")
+    for skill in SKILLS:
+        chunks.append(f"    sxad_rebuild_{skill}_modifier_effect = yes\n")
+    chunks.append("}\n")
     return "".join(chunks)
 
 
 def transfer_effects() -> str:
     chunks = [HEADER]
     for skill in SKILLS:
+        balance = f"sxad_{skill}_balance"
         chunks.append(f"""
 # Current scope is receiver. This independently checked helper is also the random branch.
 sxad_transfer_{skill}_effect = {{
     save_temporary_scope_as = sxad_receiver
     $DONOR$ = {{ save_temporary_scope_as = sxad_donor }}
+    force_character_skill_recalculation = yes
+    scope:sxad_donor = {{ force_character_skill_recalculation = yes }}
     sxad_probe_{skill}_effect = yes
     if = {{
         limit = {{ {scoped_compare(f'sxad_can_{skill}', f'scope:sxad_can_{skill} = 1')} }}
-        scope:sxad_donor = {{ add_{skill}_skill = -1 }}
-        add_{skill}_skill = 1
+        if = {{
+            limit = {{ has_variable = {balance} }}
+            change_variable = {{ name = {balance} add = 1 }}
+        }}
+        else = {{ set_variable = {{ name = {balance} value = 1 }} }}
+        scope:sxad_donor = {{
+            if = {{
+                limit = {{ has_variable = {balance} }}
+                change_variable = {{ name = {balance} add = -1 }}
+            }}
+            else = {{ set_variable = {{ name = {balance} value = -1 }} }}
+        }}
+        sxad_rebuild_{skill}_modifier_effect = yes
+        scope:sxad_donor = {{ sxad_rebuild_{skill}_modifier_effect = yes }}
     }}
 }}
 """)
     chunks.append("\nsxad_select_transfer_effect = {\n"
                   "    save_temporary_scope_as = sxad_receiver\n"
-                  "    $DONOR$ = { save_temporary_scope_as = sxad_donor }\n")
+                  "    $DONOR$ = { save_temporary_scope_as = sxad_donor }\n"
+                  "    force_character_skill_recalculation = yes\n"
+                  "    scope:sxad_donor = { force_character_skill_recalculation = yes }\n")
     for skill in SKILLS:
         chunks.append(f"    sxad_probe_{skill}_effect = yes\n")
     chunks.append("    if = {\n        limit = {\n            OR = {\n")
@@ -265,6 +302,62 @@ sxad_experience_value = {{
 """
     for skill in SKILLS:
         result += f"\nsxad_{skill}_value = {{ value = {skill} }}\n"
+        balance = f"sxad_{skill}_balance"
+        result += f"""
+sxad_{skill}_balance_value = {{
+    value = 0
+    if = {{
+        limit = {{ has_variable = {balance} }}
+        add = var:{balance}
+    }}
+}}
+
+sxad_{skill}_gain_scale = {{
+    value = 0
+    if = {{
+        limit = {{ has_variable = {balance} }}
+        if = {{
+            limit = {{ var:{balance} > 0 }}
+            add = var:{balance}
+        }}
+    }}
+}}
+
+sxad_{skill}_loss_scale = {{
+    value = 0
+    if = {{
+        limit = {{ has_variable = {balance} }}
+        if = {{
+            limit = {{ var:{balance} < 0 }}
+            add = var:{balance}
+            multiply = -1
+        }}
+    }}
+}}
+"""
+    return result
+
+
+def skill_balance_modifiers() -> str:
+    result = HEADER + "# Definition-local scale is evaluated in the receiving character scope.\n"
+    for skill in SKILLS:
+        result += f"""
+sxad_{skill}_gain_modifier = {{
+    {skill} = 1
+    scale = {{
+        value = sxad_{skill}_gain_scale
+        desc = sxad_absorbed_skill_modifier
+    }}
+}}
+
+sxad_{skill}_loss_modifier = {{
+    {skill} = -1
+    scale = {{
+        value = sxad_{skill}_loss_scale
+        desc = sxad_drained_skill_modifier
+    }}
+}}
+"""
     return result
 
 
@@ -376,6 +469,7 @@ def render_outputs(game_root: Path | None = None) -> dict[str, bytes]:
         "common/scripted_effects/sxad_probe_skill_effects.txt": probe_effects(),
         "common/scripted_effects/sxad_transfer_effects.txt": transfer_effects(),
         "common/script_values/sxad_values.txt": values(),
+        "common/modifiers/sxad_skill_balance_modifiers.txt": skill_balance_modifiers(),
         "common/traits/sxad_traits.txt": trait(),
         "common/character_interactions/sxad_interactions.txt": interaction(),
         "events/sxad_events.txt": events(),

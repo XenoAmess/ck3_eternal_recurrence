@@ -4,12 +4,13 @@ from __future__ import annotations
 
 from dataclasses import replace
 from pathlib import Path
+import re
 import shutil
 import tempfile
 import unittest
 from unittest.mock import patch
 
-from product import SOURCE, spec
+from product import RUNTIME_FILES, SOURCE, spec
 import validate_static
 
 
@@ -70,6 +71,59 @@ class SupermanStaticContractTests(unittest.TestCase):
     def test_strings_and_comments_do_not_inflate_top_level_count(self) -> None:
         blocks = validate_static.top_level_blocks('sxad_one = { log = "{quoted}" # {comment}\n nested = {} }\n sxad_two = {}\n')
         self.assertEqual([block.key for block in blocks], ["sxad_one", "sxad_two"])
+
+    def test_ledger_contract_mutations_are_red(self) -> None:
+        texts = {relative: (self.source / relative).read_text(encoding="utf-8-sig")
+                 for relative in RUNTIME_FILES if Path(relative).suffix in {".txt", ".gui", ".mod"}}
+        self.assertEqual(validate_static.ledger_contract(texts)["errors"], [])
+
+        def change_block(relative, key, pattern, replacement):
+            source = texts[relative]
+            block = next(block for block in validate_static.top_level_blocks(source) if block.key == key)
+            body, count = re.subn(pattern, replacement, source[block.start:block.end], count=1)
+            self.assertEqual(count, 1, (relative, key, pattern))
+            return source[:block.start] + body + source[block.end:]
+
+        cases = []
+        for skill in validate_static.LEDGER_SKILLS:
+            balance = f"sxad_{skill}_balance"
+            transfer = f"sxad_transfer_{skill}_effect"
+            probe = f"sxad_probe_{skill}_effect"
+            cases.extend((
+                (skill + "/nonconserved-increment", validate_static.TRANSFER_FILE,
+                 change_block(validate_static.TRANSFER_FILE, transfer, r"\badd\s*=\s*1\b", "add = 2")),
+                (skill + "/nonconserved-initialization", validate_static.TRANSFER_FILE,
+                 change_block(validate_static.TRANSFER_FILE, transfer, r"\bvalue\s*=\s*-1\b", "value = 1")),
+                (skill + "/wrong-modifier-point", validate_static.MODIFIER_FILE,
+                 change_block(validate_static.MODIFIER_FILE, f"sxad_{skill}_gain_modifier", rf"\b{skill}\s*=\s*1\b", f"{skill} = 2")),
+                (skill + "/wrong-loss-scale-sign", validate_static.VALUES_FILE,
+                 change_block(validate_static.VALUES_FILE, f"sxad_{skill}_loss_scale", r"\bmultiply\s*=\s*-1\b", "multiply = 1")),
+                (skill + "/zero-receiver-excluded", validate_static.PROBE_FILE,
+                 change_block(validate_static.PROBE_FILE, probe, r"\blimit\s*=\s*\{", f"limit = {{ {skill} > 0")),
+                (skill + "/zero-donor-allowed", validate_static.PROBE_FILE,
+                 change_block(validate_static.PROBE_FILE, probe, rf"\b{skill}\s*>\s*0\b", f"{skill} >= 0")),
+                (skill + "/receiver-saturation-bypassed", validate_static.PROBE_FILE,
+                 change_block(validate_static.PROBE_FILE, probe, rf"var:{balance}\s*<\s*1000000\b", f"var:{balance} <= 1000000")),
+                (skill + "/donor-saturation-bypassed", validate_static.PROBE_FILE,
+                 change_block(validate_static.PROBE_FILE, probe, rf"var:{balance}\s*>\s*-1000000\b", f"var:{balance} >= -1000000")),
+            ))
+        cases.extend((
+            ("base-skill-write", validate_static.PROBE_FILE, texts[validate_static.PROBE_FILE] + "\nadd_diplomacy_skill = 1\n"),
+            ("missing-receiver-rebuild", validate_static.TRANSFER_FILE,
+             change_block(validate_static.TRANSFER_FILE, "sxad_transfer_diplomacy_effect", r"\bsxad_rebuild_diplomacy_modifier_effect\s*=\s*yes\b", "")),
+            ("missing-rebuild-refresh", validate_static.PROBE_FILE,
+             change_block(validate_static.PROBE_FILE, "sxad_rebuild_diplomacy_modifier_effect", r"\bforce_character_skill_recalculation\s*=\s*yes\b", "")),
+            ("unequal-random-weight", validate_static.TRANSFER_FILE,
+             change_block(validate_static.TRANSFER_FILE, "sxad_select_transfer_effect", r"\b1\s*=\s*\{", "2 = {")),
+            ("query-ledger-write", "events/sxad_events.txt", texts["events/sxad_events.txt"] + "\nset_variable = { name = sxad_diplomacy_balance value = 1 }\n"),
+            ("experience-ceiling-reduced", "common/scripted_effects/sxad_experience_effects.txt",
+             texts["common/scripted_effects/sxad_experience_effects.txt"].replace("92233720368547", "100")),
+        ))
+        for name, relative, changed in cases:
+            with self.subTest(contract=name):
+                # The independent ledger contract receives the mutated source;
+                # generator byte-parity cannot make this negative check pass.
+                self.assertTrue(validate_static.ledger_contract({**texts, relative: changed})["errors"])
 
 
 if __name__ == "__main__":

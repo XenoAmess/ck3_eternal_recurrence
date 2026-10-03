@@ -425,5 +425,265 @@
       "D:\\ck3-experience-drain-feasibility-20261004\\sync_localization_skill_tokens.py"
     ],
     "driver_sha256": "5fde74e3e46d42e2b1c2ee3618b5f0c060d4005a7bd6966175bc55afca144fe8"
-  }
+  },
+  "deltas": [
+    {
+      "attempt": "D:\\ck3-experience-drain-feasibility-20261004\\localization-20261004\\attempt-03-modifier-balance",
+      "translation_manifest": {
+        "schema": "sxad.minimax-localization-delta-attempt.v1",
+        "model": "MiniMax-M3",
+        "interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+        "api_key_state": "configured",
+        "source": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\localization\\simp_chinese\\sxad_l_simp_chinese.yml",
+        "source_sha256": "a61f0411f95387115be9bce51d51286e6e5f2bf255838f23cac9ab8b686f60f8",
+        "reference": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\localization\\english\\sxad_l_english.yml",
+        "reference_sha256": "0f5c5b0afdaaff35ff80e1931b8c538d8b87d8d0103cd75fc3108b3720eaeda6",
+        "previous_source": "D:\\ck3-experience-drain-feasibility-20261004\\localization-20261004\\attempt-02-scope-skill-values\\sxad_l_simp_chinese.yml",
+        "previous_source_sha256": "b4c808e3a67e21b1bc6d344580488c815c0fab245d81cf88851beed72078d448",
+        "candidate_tool": "D:\\workspace\\ck3_eternal_recurrence\\tools\\translate_localization_minimax.py",
+        "candidate_tool_sha256": "774e41a9268c775ca8c0c7a3efa503abedbd11a70185fcc95006cdf499e63115",
+        "driver": "D:\\ck3-experience-drain-feasibility-20261004\\translation_increment_driver.py",
+        "driver_sha256": "a6aeb9e2551e363db331a85c1e5233851b471e4ae4525794556e65d174614956",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\translate_localization_minimax.py",
+          "--source",
+          "D:\\ck3-experience-drain-feasibility-20261004\\localization-20261004\\attempt-03-modifier-balance\\sxad_l_simp_chinese.yml",
+          "--source-language",
+          "Simplified Chinese",
+          "--reference",
+          "D:\\ck3-experience-drain-feasibility-20261004\\localization-20261004\\attempt-03-modifier-balance\\sxad_l_english.yml",
+          "--reference-language",
+          "English",
+          "--context",
+          "CK3 Superman Qiang mod UI. Higher prior sexual experience transfers one modifier point in the same random skill, increasing the recipient and decreasing the donor. Original base skills are preserved. Vanilla percentage modifiers and rounding still apply, so character-sheet totals may not visibly change by exactly one point per transfer. Translate only supplied strings and preserve every scope, icon, number-format, and formatting token exactly.",
+          "--workers",
+          "4",
+          "--max-completion-tokens",
+          "5000",
+          "--key",
+          "trait_sxad_sex_experience_desc",
+          "--key",
+          "sxad.1.desc",
+          "--key",
+          "sxad_absorbed_skill_modifier",
+          "--key",
+          "sxad_drained_skill_modifier",
+          "--target",
+          "french=French (France)",
+          "--target",
+          "german=German",
+          "--target",
+          "polish=Polish",
+          "--target",
+          "japanese=Japanese",
+          "--target",
+          "spanish=Spanish (Spain)",
+          "--target",
+          "russian=Russian",
+          "--target",
+          "korean=Korean"
+        ],
+        "selected_keys": [
+          "trait_sxad_sex_experience_desc",
+          "sxad.1.desc",
+          "sxad_absorbed_skill_modifier",
+          "sxad_drained_skill_modifier"
+        ],
+        "literal_keys": [
+          "sxad_diplomacy_gain_modifier",
+          "sxad_diplomacy_loss_modifier",
+          "sxad_martial_gain_modifier",
+          "sxad_martial_loss_modifier",
+          "sxad_stewardship_gain_modifier",
+          "sxad_stewardship_loss_modifier",
+          "sxad_intrigue_gain_modifier",
+          "sxad_intrigue_loss_modifier",
+          "sxad_learning_gain_modifier",
+          "sxad_learning_loss_modifier",
+          "sxad_prowess_gain_modifier",
+          "sxad_prowess_loss_modifier"
+        ],
+        "intentional_empty_keys": [],
+        "targets": [
+          "french",
+          "german",
+          "polish",
+          "japanese",
+          "spanish",
+          "russian",
+          "korean"
+        ],
+        "previous_files": [
+          {
+            "language": "french",
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\localization\\french\\sxad_l_french.yml",
+            "sha256": "f8d628b8033945ee0f06d0d368632c3d8f1b63e8f2b3ae98eea3fbf6b7a00a75"
+          },
+          {
+            "language": "german",
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\localization\\german\\sxad_l_german.yml",
+            "sha256": "7d653ec6137bc3163a5b13d25f4912eccdbe5a91a22c03bc0c47c7978a88dc97"
+          },
+          {
+            "language": "polish",
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\localization\\polish\\sxad_l_polish.yml",
+            "sha256": "221b6ee8ff5983c3ac554f54c5fee5cbd818197624f2adcefc64eb43176beaa3"
+          },
+          {
+            "language": "japanese",
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\localization\\japanese\\sxad_l_japanese.yml",
+            "sha256": "f1e620ad650adc77c2a643ddf480d3d471463df8f313944f2f1eb06f2559f834"
+          },
+          {
+            "language": "spanish",
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\localization\\spanish\\sxad_l_spanish.yml",
+            "sha256": "af55f39cdc097394c8c2c985e706c9bfe6169f8495cf3e1ea9cf2cf6fa8b5014"
+          },
+          {
+            "language": "russian",
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\localization\\russian\\sxad_l_russian.yml",
+            "sha256": "382d04caab5a78ed123960901b6f3743b6892f057924ea8f03e7d14de94a4912"
+          },
+          {
+            "language": "korean",
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\localization\\korean\\sxad_l_korean.yml",
+            "sha256": "f0ed9843fd4fd69170b15720ffdc6034bf0b0fae8d066db44d60346f86127864"
+          }
+        ],
+        "open_kaishek_prevalidation": {
+          "status": "not-applicable",
+          "reason": "This step parses YML and protects localization tokens, without evaluating CK3 scripted effects or finite runtime."
+        },
+        "non_chinese_scope": "format-only; no semantic, native-speaker or game/UI acceptance"
+      },
+      "generation_result": {
+        "exit_code": 0,
+        "candidate_sha256": "12ec14de06cdd43c58832e849b95e5520096a6ba9aec66a795d3ebc4c1e18e99",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "format_result": {
+        "schema": "sxad.localization-delta-format-result.v1",
+        "source_sha256": "a61f0411f95387115be9bce51d51286e6e5f2bf255838f23cac9ab8b686f60f8",
+        "reference_sha256": "0f5c5b0afdaaff35ff80e1931b8c538d8b87d8d0103cd75fc3108b3720eaeda6",
+        "translated_languages": [
+          "french",
+          "german",
+          "polish",
+          "japanese",
+          "spanish",
+          "russian",
+          "korean"
+        ],
+        "translated_delta_entries": 28,
+        "selected_keys": [
+          "trait_sxad_sex_experience_desc",
+          "sxad.1.desc",
+          "sxad_absorbed_skill_modifier",
+          "sxad_drained_skill_modifier"
+        ],
+        "literal_keys": [
+          "sxad_diplomacy_gain_modifier",
+          "sxad_diplomacy_loss_modifier",
+          "sxad_martial_gain_modifier",
+          "sxad_martial_loss_modifier",
+          "sxad_stewardship_gain_modifier",
+          "sxad_stewardship_loss_modifier",
+          "sxad_intrigue_gain_modifier",
+          "sxad_intrigue_loss_modifier",
+          "sxad_learning_gain_modifier",
+          "sxad_learning_loss_modifier",
+          "sxad_prowess_gain_modifier",
+          "sxad_prowess_loss_modifier"
+        ],
+        "intentional_empty_keys": [],
+        "checks": [
+          {
+            "language": "simp_chinese",
+            "path": "localization/simp_chinese/sxad_l_simp_chinese.yml",
+            "key_count": 24,
+            "sha256": "a61f0411f95387115be9bce51d51286e6e5f2bf255838f23cac9ab8b686f60f8",
+            "status": "format-certified",
+            "live_verified": false
+          },
+          {
+            "language": "english",
+            "path": "localization/english/sxad_l_english.yml",
+            "key_count": 24,
+            "sha256": "0f5c5b0afdaaff35ff80e1931b8c538d8b87d8d0103cd75fc3108b3720eaeda6",
+            "status": "format-certified",
+            "live_verified": false
+          },
+          {
+            "language": "french",
+            "path": "localization/french/sxad_l_french.yml",
+            "key_count": 24,
+            "sha256": "da3c09c73ada071d18859d2bba2eabe897fd49204bc663b2aeb58927ee16f29e",
+            "status": "format-certified",
+            "live_verified": false
+          },
+          {
+            "language": "german",
+            "path": "localization/german/sxad_l_german.yml",
+            "key_count": 24,
+            "sha256": "121b4cc9e3a454852a3f88c0acf2830263a5ba68f780131240dba0f8b5e2caf1",
+            "status": "format-certified",
+            "live_verified": false
+          },
+          {
+            "language": "polish",
+            "path": "localization/polish/sxad_l_polish.yml",
+            "key_count": 24,
+            "sha256": "d36b32bae867bf67de4faeb226064f914421464f399fb0790748f5cf3b519dca",
+            "status": "format-certified",
+            "live_verified": false
+          },
+          {
+            "language": "japanese",
+            "path": "localization/japanese/sxad_l_japanese.yml",
+            "key_count": 24,
+            "sha256": "f53950734991b3652d87e8e81fb9096855a489667273d1e2cac78838097d1d88",
+            "status": "format-certified",
+            "live_verified": false
+          },
+          {
+            "language": "spanish",
+            "path": "localization/spanish/sxad_l_spanish.yml",
+            "key_count": 24,
+            "sha256": "5968b3b84b150235bb4fb052dcc263a1e6752cc8fd7360ca7bc6e71788b84945",
+            "status": "format-certified",
+            "live_verified": false
+          },
+          {
+            "language": "russian",
+            "path": "localization/russian/sxad_l_russian.yml",
+            "key_count": 24,
+            "sha256": "ac7774c8951760656076448693f6421a84bd4c16074a40e8dca249cc97716f59",
+            "status": "format-certified",
+            "live_verified": false
+          },
+          {
+            "language": "korean",
+            "path": "localization/korean/sxad_l_korean.yml",
+            "key_count": 24,
+            "sha256": "32cb0453632c19e3e7fe6322ce64d6a4d0a7c6cab51932ee75f1f7cb66a2a66e",
+            "status": "format-certified",
+            "live_verified": false
+          }
+        ],
+        "coverage": [
+          "UTF-8 BOM",
+          "exact header",
+          "parse",
+          "key set",
+          "duplicate keys",
+          "protected scope/format/icon/escape tokens",
+          "intentional empty keys"
+        ],
+        "non_chinese_scope": "format-only; no semantic, native-speaker or game/UI acceptance",
+        "simp_chinese_semantic_and_live_acceptance": "owned by root/native product acceptance; not assessed by this format step"
+      }
+    }
+  ]
 }

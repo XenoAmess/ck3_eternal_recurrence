@@ -18,6 +18,7 @@ LANGUAGES = ("english", "simp_chinese", "french", "german", "japanese", "korean"
 # generator outputs, never from a directory glob.
 RUNTIME_FILES = frozenset({
     "common/character_interactions/sxad_interactions.txt",
+    "common/modifiers/sxad_skill_balance_modifiers.txt",
     "common/script_values/sxad_values.txt",
     "common/scripted_effects/sxad_experience_effects.txt",
     "common/scripted_effects/sxad_probe_skill_effects.txt",

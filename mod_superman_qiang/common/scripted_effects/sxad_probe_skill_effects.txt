@@ -1,177 +1,264 @@
 ﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
-# Temporary probes preserve skill totals; the selected point is transferred as one pair.
-# Positive effective skills avoid masked floor changes. No assumed native skill ceiling.
+# Eligibility checks only read character skills/balances and set temporary flags.
+# Transfer balances are original modifier points; base skills are never changed.
 
 sxad_probe_diplomacy_effect = {
     save_temporary_scope_value_as = { name = sxad_can_diplomacy value = 0 }
     if = {
         limit = {
-            diplomacy > 0
-            scope:sxad_donor = { diplomacy > 0 }
-        }
-        scope:sxad_donor = {
-            save_temporary_scope_value_as = { name = sxad_donor_before_diplomacy value = diplomacy }
-            add_diplomacy_skill = -1
-            if = {
-                limit = { trigger_if = { limit = { exists = scope:sxad_donor_before_diplomacy } diplomacy < scope:sxad_donor_before_diplomacy }
-trigger_else = { always = no } }
-                add_diplomacy_skill = 1
-                scope:sxad_receiver = {
-                    save_temporary_scope_value_as = { name = sxad_receiver_before_diplomacy value = diplomacy }
-                    add_diplomacy_skill = 1
-                    if = {
-                        limit = { trigger_if = { limit = { exists = scope:sxad_receiver_before_diplomacy } diplomacy > scope:sxad_receiver_before_diplomacy }
-trigger_else = { always = no } }
-                        add_diplomacy_skill = -1
-                        save_temporary_scope_value_as = { name = sxad_can_diplomacy value = 1 }
-                    }
+            trigger_if = {
+                limit = { has_variable = sxad_diplomacy_balance }
+                var:sxad_diplomacy_balance >= -1000000
+                var:sxad_diplomacy_balance < 1000000
+            }
+            trigger_else = { always = yes }
+            scope:sxad_donor = {
+                diplomacy > 0
+                trigger_if = {
+                    limit = { has_variable = sxad_diplomacy_balance }
+                    var:sxad_diplomacy_balance > -1000000
+                    var:sxad_diplomacy_balance <= 1000000
                 }
+                trigger_else = { always = yes }
             }
         }
+        save_temporary_scope_value_as = { name = sxad_can_diplomacy value = 1 }
     }
+}
+
+# Current character owns the signed balance. Scale is sampled when assigned.
+sxad_rebuild_diplomacy_modifier_effect = {
+    remove_character_modifier = sxad_diplomacy_gain_modifier
+    remove_character_modifier = sxad_diplomacy_loss_modifier
+    if = {
+        limit = { has_variable = sxad_diplomacy_balance }
+        if = {
+            limit = { var:sxad_diplomacy_balance > 0 }
+            add_character_modifier = sxad_diplomacy_gain_modifier
+        }
+        else_if = {
+            limit = { var:sxad_diplomacy_balance < 0 }
+            add_character_modifier = sxad_diplomacy_loss_modifier
+        }
+    }
+    force_character_skill_recalculation = yes
 }
 
 sxad_probe_martial_effect = {
     save_temporary_scope_value_as = { name = sxad_can_martial value = 0 }
     if = {
         limit = {
-            martial > 0
-            scope:sxad_donor = { martial > 0 }
-        }
-        scope:sxad_donor = {
-            save_temporary_scope_value_as = { name = sxad_donor_before_martial value = martial }
-            add_martial_skill = -1
-            if = {
-                limit = { trigger_if = { limit = { exists = scope:sxad_donor_before_martial } martial < scope:sxad_donor_before_martial }
-trigger_else = { always = no } }
-                add_martial_skill = 1
-                scope:sxad_receiver = {
-                    save_temporary_scope_value_as = { name = sxad_receiver_before_martial value = martial }
-                    add_martial_skill = 1
-                    if = {
-                        limit = { trigger_if = { limit = { exists = scope:sxad_receiver_before_martial } martial > scope:sxad_receiver_before_martial }
-trigger_else = { always = no } }
-                        add_martial_skill = -1
-                        save_temporary_scope_value_as = { name = sxad_can_martial value = 1 }
-                    }
+            trigger_if = {
+                limit = { has_variable = sxad_martial_balance }
+                var:sxad_martial_balance >= -1000000
+                var:sxad_martial_balance < 1000000
+            }
+            trigger_else = { always = yes }
+            scope:sxad_donor = {
+                martial > 0
+                trigger_if = {
+                    limit = { has_variable = sxad_martial_balance }
+                    var:sxad_martial_balance > -1000000
+                    var:sxad_martial_balance <= 1000000
                 }
+                trigger_else = { always = yes }
             }
         }
+        save_temporary_scope_value_as = { name = sxad_can_martial value = 1 }
     }
+}
+
+# Current character owns the signed balance. Scale is sampled when assigned.
+sxad_rebuild_martial_modifier_effect = {
+    remove_character_modifier = sxad_martial_gain_modifier
+    remove_character_modifier = sxad_martial_loss_modifier
+    if = {
+        limit = { has_variable = sxad_martial_balance }
+        if = {
+            limit = { var:sxad_martial_balance > 0 }
+            add_character_modifier = sxad_martial_gain_modifier
+        }
+        else_if = {
+            limit = { var:sxad_martial_balance < 0 }
+            add_character_modifier = sxad_martial_loss_modifier
+        }
+    }
+    force_character_skill_recalculation = yes
 }
 
 sxad_probe_stewardship_effect = {
     save_temporary_scope_value_as = { name = sxad_can_stewardship value = 0 }
     if = {
         limit = {
-            stewardship > 0
-            scope:sxad_donor = { stewardship > 0 }
-        }
-        scope:sxad_donor = {
-            save_temporary_scope_value_as = { name = sxad_donor_before_stewardship value = stewardship }
-            add_stewardship_skill = -1
-            if = {
-                limit = { trigger_if = { limit = { exists = scope:sxad_donor_before_stewardship } stewardship < scope:sxad_donor_before_stewardship }
-trigger_else = { always = no } }
-                add_stewardship_skill = 1
-                scope:sxad_receiver = {
-                    save_temporary_scope_value_as = { name = sxad_receiver_before_stewardship value = stewardship }
-                    add_stewardship_skill = 1
-                    if = {
-                        limit = { trigger_if = { limit = { exists = scope:sxad_receiver_before_stewardship } stewardship > scope:sxad_receiver_before_stewardship }
-trigger_else = { always = no } }
-                        add_stewardship_skill = -1
-                        save_temporary_scope_value_as = { name = sxad_can_stewardship value = 1 }
-                    }
+            trigger_if = {
+                limit = { has_variable = sxad_stewardship_balance }
+                var:sxad_stewardship_balance >= -1000000
+                var:sxad_stewardship_balance < 1000000
+            }
+            trigger_else = { always = yes }
+            scope:sxad_donor = {
+                stewardship > 0
+                trigger_if = {
+                    limit = { has_variable = sxad_stewardship_balance }
+                    var:sxad_stewardship_balance > -1000000
+                    var:sxad_stewardship_balance <= 1000000
                 }
+                trigger_else = { always = yes }
             }
         }
+        save_temporary_scope_value_as = { name = sxad_can_stewardship value = 1 }
     }
+}
+
+# Current character owns the signed balance. Scale is sampled when assigned.
+sxad_rebuild_stewardship_modifier_effect = {
+    remove_character_modifier = sxad_stewardship_gain_modifier
+    remove_character_modifier = sxad_stewardship_loss_modifier
+    if = {
+        limit = { has_variable = sxad_stewardship_balance }
+        if = {
+            limit = { var:sxad_stewardship_balance > 0 }
+            add_character_modifier = sxad_stewardship_gain_modifier
+        }
+        else_if = {
+            limit = { var:sxad_stewardship_balance < 0 }
+            add_character_modifier = sxad_stewardship_loss_modifier
+        }
+    }
+    force_character_skill_recalculation = yes
 }
 
 sxad_probe_intrigue_effect = {
     save_temporary_scope_value_as = { name = sxad_can_intrigue value = 0 }
     if = {
         limit = {
-            intrigue > 0
-            scope:sxad_donor = { intrigue > 0 }
-        }
-        scope:sxad_donor = {
-            save_temporary_scope_value_as = { name = sxad_donor_before_intrigue value = intrigue }
-            add_intrigue_skill = -1
-            if = {
-                limit = { trigger_if = { limit = { exists = scope:sxad_donor_before_intrigue } intrigue < scope:sxad_donor_before_intrigue }
-trigger_else = { always = no } }
-                add_intrigue_skill = 1
-                scope:sxad_receiver = {
-                    save_temporary_scope_value_as = { name = sxad_receiver_before_intrigue value = intrigue }
-                    add_intrigue_skill = 1
-                    if = {
-                        limit = { trigger_if = { limit = { exists = scope:sxad_receiver_before_intrigue } intrigue > scope:sxad_receiver_before_intrigue }
-trigger_else = { always = no } }
-                        add_intrigue_skill = -1
-                        save_temporary_scope_value_as = { name = sxad_can_intrigue value = 1 }
-                    }
+            trigger_if = {
+                limit = { has_variable = sxad_intrigue_balance }
+                var:sxad_intrigue_balance >= -1000000
+                var:sxad_intrigue_balance < 1000000
+            }
+            trigger_else = { always = yes }
+            scope:sxad_donor = {
+                intrigue > 0
+                trigger_if = {
+                    limit = { has_variable = sxad_intrigue_balance }
+                    var:sxad_intrigue_balance > -1000000
+                    var:sxad_intrigue_balance <= 1000000
                 }
+                trigger_else = { always = yes }
             }
         }
+        save_temporary_scope_value_as = { name = sxad_can_intrigue value = 1 }
     }
+}
+
+# Current character owns the signed balance. Scale is sampled when assigned.
+sxad_rebuild_intrigue_modifier_effect = {
+    remove_character_modifier = sxad_intrigue_gain_modifier
+    remove_character_modifier = sxad_intrigue_loss_modifier
+    if = {
+        limit = { has_variable = sxad_intrigue_balance }
+        if = {
+            limit = { var:sxad_intrigue_balance > 0 }
+            add_character_modifier = sxad_intrigue_gain_modifier
+        }
+        else_if = {
+            limit = { var:sxad_intrigue_balance < 0 }
+            add_character_modifier = sxad_intrigue_loss_modifier
+        }
+    }
+    force_character_skill_recalculation = yes
 }
 
 sxad_probe_learning_effect = {
     save_temporary_scope_value_as = { name = sxad_can_learning value = 0 }
     if = {
         limit = {
-            learning > 0
-            scope:sxad_donor = { learning > 0 }
-        }
-        scope:sxad_donor = {
-            save_temporary_scope_value_as = { name = sxad_donor_before_learning value = learning }
-            add_learning_skill = -1
-            if = {
-                limit = { trigger_if = { limit = { exists = scope:sxad_donor_before_learning } learning < scope:sxad_donor_before_learning }
-trigger_else = { always = no } }
-                add_learning_skill = 1
-                scope:sxad_receiver = {
-                    save_temporary_scope_value_as = { name = sxad_receiver_before_learning value = learning }
-                    add_learning_skill = 1
-                    if = {
-                        limit = { trigger_if = { limit = { exists = scope:sxad_receiver_before_learning } learning > scope:sxad_receiver_before_learning }
-trigger_else = { always = no } }
-                        add_learning_skill = -1
-                        save_temporary_scope_value_as = { name = sxad_can_learning value = 1 }
-                    }
+            trigger_if = {
+                limit = { has_variable = sxad_learning_balance }
+                var:sxad_learning_balance >= -1000000
+                var:sxad_learning_balance < 1000000
+            }
+            trigger_else = { always = yes }
+            scope:sxad_donor = {
+                learning > 0
+                trigger_if = {
+                    limit = { has_variable = sxad_learning_balance }
+                    var:sxad_learning_balance > -1000000
+                    var:sxad_learning_balance <= 1000000
                 }
+                trigger_else = { always = yes }
             }
         }
+        save_temporary_scope_value_as = { name = sxad_can_learning value = 1 }
     }
+}
+
+# Current character owns the signed balance. Scale is sampled when assigned.
+sxad_rebuild_learning_modifier_effect = {
+    remove_character_modifier = sxad_learning_gain_modifier
+    remove_character_modifier = sxad_learning_loss_modifier
+    if = {
+        limit = { has_variable = sxad_learning_balance }
+        if = {
+            limit = { var:sxad_learning_balance > 0 }
+            add_character_modifier = sxad_learning_gain_modifier
+        }
+        else_if = {
+            limit = { var:sxad_learning_balance < 0 }
+            add_character_modifier = sxad_learning_loss_modifier
+        }
+    }
+    force_character_skill_recalculation = yes
 }
 
 sxad_probe_prowess_effect = {
     save_temporary_scope_value_as = { name = sxad_can_prowess value = 0 }
     if = {
         limit = {
-            prowess > 0
-            scope:sxad_donor = { prowess > 0 }
-        }
-        scope:sxad_donor = {
-            save_temporary_scope_value_as = { name = sxad_donor_before_prowess value = prowess }
-            add_prowess_skill = -1
-            if = {
-                limit = { trigger_if = { limit = { exists = scope:sxad_donor_before_prowess } prowess < scope:sxad_donor_before_prowess }
-trigger_else = { always = no } }
-                add_prowess_skill = 1
-                scope:sxad_receiver = {
-                    save_temporary_scope_value_as = { name = sxad_receiver_before_prowess value = prowess }
-                    add_prowess_skill = 1
-                    if = {
-                        limit = { trigger_if = { limit = { exists = scope:sxad_receiver_before_prowess } prowess > scope:sxad_receiver_before_prowess }
-trigger_else = { always = no } }
-                        add_prowess_skill = -1
-                        save_temporary_scope_value_as = { name = sxad_can_prowess value = 1 }
-                    }
+            trigger_if = {
+                limit = { has_variable = sxad_prowess_balance }
+                var:sxad_prowess_balance >= -1000000
+                var:sxad_prowess_balance < 1000000
+            }
+            trigger_else = { always = yes }
+            scope:sxad_donor = {
+                prowess > 0
+                trigger_if = {
+                    limit = { has_variable = sxad_prowess_balance }
+                    var:sxad_prowess_balance > -1000000
+                    var:sxad_prowess_balance <= 1000000
                 }
+                trigger_else = { always = yes }
             }
         }
+        save_temporary_scope_value_as = { name = sxad_can_prowess value = 1 }
     }
+}
+
+# Current character owns the signed balance. Scale is sampled when assigned.
+sxad_rebuild_prowess_modifier_effect = {
+    remove_character_modifier = sxad_prowess_gain_modifier
+    remove_character_modifier = sxad_prowess_loss_modifier
+    if = {
+        limit = { has_variable = sxad_prowess_balance }
+        if = {
+            limit = { var:sxad_prowess_balance > 0 }
+            add_character_modifier = sxad_prowess_gain_modifier
+        }
+        else_if = {
+            limit = { var:sxad_prowess_balance < 0 }
+            add_character_modifier = sxad_prowess_loss_modifier
+        }
+    }
+    force_character_skill_recalculation = yes
+}
+
+sxad_rebuild_skill_modifiers_effect = {
+    sxad_rebuild_diplomacy_modifier_effect = yes
+    sxad_rebuild_martial_modifier_effect = yes
+    sxad_rebuild_stewardship_modifier_effect = yes
+    sxad_rebuild_intrigue_modifier_effect = yes
+    sxad_rebuild_learning_modifier_effect = yes
+    sxad_rebuild_prowess_modifier_effect = yes
 }

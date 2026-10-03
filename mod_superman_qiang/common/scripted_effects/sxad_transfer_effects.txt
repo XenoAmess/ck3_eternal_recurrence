@@ -4,12 +4,26 @@
 sxad_transfer_diplomacy_effect = {
     save_temporary_scope_as = sxad_receiver
     $DONOR$ = { save_temporary_scope_as = sxad_donor }
+    force_character_skill_recalculation = yes
+    scope:sxad_donor = { force_character_skill_recalculation = yes }
     sxad_probe_diplomacy_effect = yes
     if = {
         limit = { trigger_if = { limit = { exists = scope:sxad_can_diplomacy } scope:sxad_can_diplomacy = 1 }
 trigger_else = { always = no } }
-        scope:sxad_donor = { add_diplomacy_skill = -1 }
-        add_diplomacy_skill = 1
+        if = {
+            limit = { has_variable = sxad_diplomacy_balance }
+            change_variable = { name = sxad_diplomacy_balance add = 1 }
+        }
+        else = { set_variable = { name = sxad_diplomacy_balance value = 1 } }
+        scope:sxad_donor = {
+            if = {
+                limit = { has_variable = sxad_diplomacy_balance }
+                change_variable = { name = sxad_diplomacy_balance add = -1 }
+            }
+            else = { set_variable = { name = sxad_diplomacy_balance value = -1 } }
+        }
+        sxad_rebuild_diplomacy_modifier_effect = yes
+        scope:sxad_donor = { sxad_rebuild_diplomacy_modifier_effect = yes }
     }
 }
 
@@ -17,12 +31,26 @@ trigger_else = { always = no } }
 sxad_transfer_martial_effect = {
     save_temporary_scope_as = sxad_receiver
     $DONOR$ = { save_temporary_scope_as = sxad_donor }
+    force_character_skill_recalculation = yes
+    scope:sxad_donor = { force_character_skill_recalculation = yes }
     sxad_probe_martial_effect = yes
     if = {
         limit = { trigger_if = { limit = { exists = scope:sxad_can_martial } scope:sxad_can_martial = 1 }
 trigger_else = { always = no } }
-        scope:sxad_donor = { add_martial_skill = -1 }
-        add_martial_skill = 1
+        if = {
+            limit = { has_variable = sxad_martial_balance }
+            change_variable = { name = sxad_martial_balance add = 1 }
+        }
+        else = { set_variable = { name = sxad_martial_balance value = 1 } }
+        scope:sxad_donor = {
+            if = {
+                limit = { has_variable = sxad_martial_balance }
+                change_variable = { name = sxad_martial_balance add = -1 }
+            }
+            else = { set_variable = { name = sxad_martial_balance value = -1 } }
+        }
+        sxad_rebuild_martial_modifier_effect = yes
+        scope:sxad_donor = { sxad_rebuild_martial_modifier_effect = yes }
     }
 }
 
@@ -30,12 +58,26 @@ trigger_else = { always = no } }
 sxad_transfer_stewardship_effect = {
     save_temporary_scope_as = sxad_receiver
     $DONOR$ = { save_temporary_scope_as = sxad_donor }
+    force_character_skill_recalculation = yes
+    scope:sxad_donor = { force_character_skill_recalculation = yes }
     sxad_probe_stewardship_effect = yes
     if = {
         limit = { trigger_if = { limit = { exists = scope:sxad_can_stewardship } scope:sxad_can_stewardship = 1 }
 trigger_else = { always = no } }
-        scope:sxad_donor = { add_stewardship_skill = -1 }
-        add_stewardship_skill = 1
+        if = {
+            limit = { has_variable = sxad_stewardship_balance }
+            change_variable = { name = sxad_stewardship_balance add = 1 }
+        }
+        else = { set_variable = { name = sxad_stewardship_balance value = 1 } }
+        scope:sxad_donor = {
+            if = {
+                limit = { has_variable = sxad_stewardship_balance }
+                change_variable = { name = sxad_stewardship_balance add = -1 }
+            }
+            else = { set_variable = { name = sxad_stewardship_balance value = -1 } }
+        }
+        sxad_rebuild_stewardship_modifier_effect = yes
+        scope:sxad_donor = { sxad_rebuild_stewardship_modifier_effect = yes }
     }
 }
 
@@ -43,12 +85,26 @@ trigger_else = { always = no } }
 sxad_transfer_intrigue_effect = {
     save_temporary_scope_as = sxad_receiver
     $DONOR$ = { save_temporary_scope_as = sxad_donor }
+    force_character_skill_recalculation = yes
+    scope:sxad_donor = { force_character_skill_recalculation = yes }
     sxad_probe_intrigue_effect = yes
     if = {
         limit = { trigger_if = { limit = { exists = scope:sxad_can_intrigue } scope:sxad_can_intrigue = 1 }
 trigger_else = { always = no } }
-        scope:sxad_donor = { add_intrigue_skill = -1 }
-        add_intrigue_skill = 1
+        if = {
+            limit = { has_variable = sxad_intrigue_balance }
+            change_variable = { name = sxad_intrigue_balance add = 1 }
+        }
+        else = { set_variable = { name = sxad_intrigue_balance value = 1 } }
+        scope:sxad_donor = {
+            if = {
+                limit = { has_variable = sxad_intrigue_balance }
+                change_variable = { name = sxad_intrigue_balance add = -1 }
+            }
+            else = { set_variable = { name = sxad_intrigue_balance value = -1 } }
+        }
+        sxad_rebuild_intrigue_modifier_effect = yes
+        scope:sxad_donor = { sxad_rebuild_intrigue_modifier_effect = yes }
     }
 }
 
@@ -56,12 +112,26 @@ trigger_else = { always = no } }
 sxad_transfer_learning_effect = {
     save_temporary_scope_as = sxad_receiver
     $DONOR$ = { save_temporary_scope_as = sxad_donor }
+    force_character_skill_recalculation = yes
+    scope:sxad_donor = { force_character_skill_recalculation = yes }
     sxad_probe_learning_effect = yes
     if = {
         limit = { trigger_if = { limit = { exists = scope:sxad_can_learning } scope:sxad_can_learning = 1 }
 trigger_else = { always = no } }
-        scope:sxad_donor = { add_learning_skill = -1 }
-        add_learning_skill = 1
+        if = {
+            limit = { has_variable = sxad_learning_balance }
+            change_variable = { name = sxad_learning_balance add = 1 }
+        }
+        else = { set_variable = { name = sxad_learning_balance value = 1 } }
+        scope:sxad_donor = {
+            if = {
+                limit = { has_variable = sxad_learning_balance }
+                change_variable = { name = sxad_learning_balance add = -1 }
+            }
+            else = { set_variable = { name = sxad_learning_balance value = -1 } }
+        }
+        sxad_rebuild_learning_modifier_effect = yes
+        scope:sxad_donor = { sxad_rebuild_learning_modifier_effect = yes }
     }
 }
 
@@ -69,18 +139,34 @@ trigger_else = { always = no } }
 sxad_transfer_prowess_effect = {
     save_temporary_scope_as = sxad_receiver
     $DONOR$ = { save_temporary_scope_as = sxad_donor }
+    force_character_skill_recalculation = yes
+    scope:sxad_donor = { force_character_skill_recalculation = yes }
     sxad_probe_prowess_effect = yes
     if = {
         limit = { trigger_if = { limit = { exists = scope:sxad_can_prowess } scope:sxad_can_prowess = 1 }
 trigger_else = { always = no } }
-        scope:sxad_donor = { add_prowess_skill = -1 }
-        add_prowess_skill = 1
+        if = {
+            limit = { has_variable = sxad_prowess_balance }
+            change_variable = { name = sxad_prowess_balance add = 1 }
+        }
+        else = { set_variable = { name = sxad_prowess_balance value = 1 } }
+        scope:sxad_donor = {
+            if = {
+                limit = { has_variable = sxad_prowess_balance }
+                change_variable = { name = sxad_prowess_balance add = -1 }
+            }
+            else = { set_variable = { name = sxad_prowess_balance value = -1 } }
+        }
+        sxad_rebuild_prowess_modifier_effect = yes
+        scope:sxad_donor = { sxad_rebuild_prowess_modifier_effect = yes }
     }
 }
 
 sxad_select_transfer_effect = {
     save_temporary_scope_as = sxad_receiver
     $DONOR$ = { save_temporary_scope_as = sxad_donor }
+    force_character_skill_recalculation = yes
+    scope:sxad_donor = { force_character_skill_recalculation = yes }
     sxad_probe_diplomacy_effect = yes
     sxad_probe_martial_effect = yes
     sxad_probe_stewardship_effect = yes

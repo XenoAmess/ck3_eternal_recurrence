@@ -1,0 +1,98 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
+# Definition-local scale is evaluated in the receiving character scope.
+
+sxad_diplomacy_gain_modifier = {
+    diplomacy = 1
+    scale = {
+        value = sxad_diplomacy_gain_scale
+        desc = sxad_absorbed_skill_modifier
+    }
+}
+
+sxad_diplomacy_loss_modifier = {
+    diplomacy = -1
+    scale = {
+        value = sxad_diplomacy_loss_scale
+        desc = sxad_drained_skill_modifier
+    }
+}
+
+sxad_martial_gain_modifier = {
+    martial = 1
+    scale = {
+        value = sxad_martial_gain_scale
+        desc = sxad_absorbed_skill_modifier
+    }
+}
+
+sxad_martial_loss_modifier = {
+    martial = -1
+    scale = {
+        value = sxad_martial_loss_scale
+        desc = sxad_drained_skill_modifier
+    }
+}
+
+sxad_stewardship_gain_modifier = {
+    stewardship = 1
+    scale = {
+        value = sxad_stewardship_gain_scale
+        desc = sxad_absorbed_skill_modifier
+    }
+}
+
+sxad_stewardship_loss_modifier = {
+    stewardship = -1
+    scale = {
+        value = sxad_stewardship_loss_scale
+        desc = sxad_drained_skill_modifier
+    }
+}
+
+sxad_intrigue_gain_modifier = {
+    intrigue = 1
+    scale = {
+        value = sxad_intrigue_gain_scale
+        desc = sxad_absorbed_skill_modifier
+    }
+}
+
+sxad_intrigue_loss_modifier = {
+    intrigue = -1
+    scale = {
+        value = sxad_intrigue_loss_scale
+        desc = sxad_drained_skill_modifier
+    }
+}
+
+sxad_learning_gain_modifier = {
+    learning = 1
+    scale = {
+        value = sxad_learning_gain_scale
+        desc = sxad_absorbed_skill_modifier
+    }
+}
+
+sxad_learning_loss_modifier = {
+    learning = -1
+    scale = {
+        value = sxad_learning_loss_scale
+        desc = sxad_drained_skill_modifier
+    }
+}
+
+sxad_prowess_gain_modifier = {
+    prowess = 1
+    scale = {
+        value = sxad_prowess_gain_scale
+        desc = sxad_absorbed_skill_modifier
+    }
+}
+
+sxad_prowess_loss_modifier = {
+    prowess = -1
+    scale = {
+        value = sxad_prowess_loss_scale
+        desc = sxad_drained_skill_modifier
+    }
+}

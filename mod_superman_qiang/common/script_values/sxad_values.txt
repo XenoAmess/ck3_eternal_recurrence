@@ -11,12 +11,198 @@ sxad_experience_value = {
 
 sxad_diplomacy_value = { value = diplomacy }
 
+sxad_diplomacy_balance_value = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_diplomacy_balance }
+        add = var:sxad_diplomacy_balance
+    }
+}
+
+sxad_diplomacy_gain_scale = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_diplomacy_balance }
+        if = {
+            limit = { var:sxad_diplomacy_balance > 0 }
+            add = var:sxad_diplomacy_balance
+        }
+    }
+}
+
+sxad_diplomacy_loss_scale = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_diplomacy_balance }
+        if = {
+            limit = { var:sxad_diplomacy_balance < 0 }
+            add = var:sxad_diplomacy_balance
+            multiply = -1
+        }
+    }
+}
+
 sxad_martial_value = { value = martial }
+
+sxad_martial_balance_value = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_martial_balance }
+        add = var:sxad_martial_balance
+    }
+}
+
+sxad_martial_gain_scale = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_martial_balance }
+        if = {
+            limit = { var:sxad_martial_balance > 0 }
+            add = var:sxad_martial_balance
+        }
+    }
+}
+
+sxad_martial_loss_scale = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_martial_balance }
+        if = {
+            limit = { var:sxad_martial_balance < 0 }
+            add = var:sxad_martial_balance
+            multiply = -1
+        }
+    }
+}
 
 sxad_stewardship_value = { value = stewardship }
 
+sxad_stewardship_balance_value = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_stewardship_balance }
+        add = var:sxad_stewardship_balance
+    }
+}
+
+sxad_stewardship_gain_scale = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_stewardship_balance }
+        if = {
+            limit = { var:sxad_stewardship_balance > 0 }
+            add = var:sxad_stewardship_balance
+        }
+    }
+}
+
+sxad_stewardship_loss_scale = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_stewardship_balance }
+        if = {
+            limit = { var:sxad_stewardship_balance < 0 }
+            add = var:sxad_stewardship_balance
+            multiply = -1
+        }
+    }
+}
+
 sxad_intrigue_value = { value = intrigue }
+
+sxad_intrigue_balance_value = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_intrigue_balance }
+        add = var:sxad_intrigue_balance
+    }
+}
+
+sxad_intrigue_gain_scale = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_intrigue_balance }
+        if = {
+            limit = { var:sxad_intrigue_balance > 0 }
+            add = var:sxad_intrigue_balance
+        }
+    }
+}
+
+sxad_intrigue_loss_scale = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_intrigue_balance }
+        if = {
+            limit = { var:sxad_intrigue_balance < 0 }
+            add = var:sxad_intrigue_balance
+            multiply = -1
+        }
+    }
+}
 
 sxad_learning_value = { value = learning }
 
+sxad_learning_balance_value = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_learning_balance }
+        add = var:sxad_learning_balance
+    }
+}
+
+sxad_learning_gain_scale = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_learning_balance }
+        if = {
+            limit = { var:sxad_learning_balance > 0 }
+            add = var:sxad_learning_balance
+        }
+    }
+}
+
+sxad_learning_loss_scale = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_learning_balance }
+        if = {
+            limit = { var:sxad_learning_balance < 0 }
+            add = var:sxad_learning_balance
+            multiply = -1
+        }
+    }
+}
+
 sxad_prowess_value = { value = prowess }
+
+sxad_prowess_balance_value = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_prowess_balance }
+        add = var:sxad_prowess_balance
+    }
+}
+
+sxad_prowess_gain_scale = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_prowess_balance }
+        if = {
+            limit = { var:sxad_prowess_balance > 0 }
+            add = var:sxad_prowess_balance
+        }
+    }
+}
+
+sxad_prowess_loss_scale = {
+    value = 0
+    if = {
+        limit = { has_variable = sxad_prowess_balance }
+        if = {
+            limit = { var:sxad_prowess_balance < 0 }
+            add = var:sxad_prowess_balance
+            multiply = -1
+        }
+    }
+}

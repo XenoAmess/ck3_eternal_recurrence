@@ -470,3 +470,20 @@ CK3 **1.20.0.3** 原版 `events/_events.info:62–66` 明确 fullscreen_event �
 | 现象 | 原因 | 解法 |
 |---|---|---|
 | 不可用决议的悬浮框以紫色显示 `character_var_equal has no localization`；把完整业务 trigger 包进 `custom_description` 后，该界面又可能直接显示自定义键缺少本地化 | `is_valid` 和 `is_valid_showing_failures_only` 同时调用含 `var:<name> = current_year` 的共享 trigger。CK3 在展示失败原因时展开后一条路径，并尝试把内部变量比较谓词渲染成本地化条件；R635、R636 分别实证两种泄露 | 对照 exact-build 原版范式，把完整业务合法性只保留在 `is_valid`；`is_valid_showing_failures_only` 只放适合直接展示的条件。若业务说明已由决议描述完整承载，可令展示路径为 `always = yes`，避免展开内部变量树。必须用静态合同继续锁住业务 trigger，并在同一存档实测按钮仍不可用、技术键消失。R637 复验 GREEN，日志增量 0 |
+
+## Character modifier 的变量缩放快照（2026-10-04，CK3 1.20.0.3 原版源级确证）
+
+| 现象 | 原因 | 解法 |
+| --- | --- | --- |
+| 角色账本已经更新，既有属性 modifier 仍保留旧数值；尝试把 `scale` 或 `multiplier` 塞进 `add_character_modifier` 参数却没有原版依据 | character modifier 的 `scale = { value = <script value> desc = <loc> }` 位于静态 modifier 定义，root 是接受者，在赋予 modifier 时计算一次，并在整个有效期保持 | 更新账本后按名称删除旧 modifier，再普通 `add_character_modifier = <key>` 重建；0 清除投影。需要正负效果时使用属性 +1/-1 的两种静态 modifier及各自非负 scale，避免依赖未确证的负 scale。同 effect 写后重建读取新值、重复重建不叠加和存档重载仍须实机验证 |
+
+本机 **1.20.0.3 / build 25652598** 的一手出处及完整文件 SHA-256：
+
+| 原版来源（相对 `game/`） | 合同出处 | 完整文件 SHA-256 |
+| --- | --- | --- |
+| `common/modifiers/_modifiers.info:12–23` | 定义内 scale、赋予时一次计算、接受者 root、有效期保持 | `530ffc0e27d061c716d417d6f726d6227a7ea573f1c0073d61c71eaf6e090800` |
+| `common/modifiers/00_story_cycle_pet_animal_modifiers.txt:127–145` | 原版 `diplomacy = 1` 读取角色变量作 scale | `6f3d644d32b890dcc0dd3248e5a19b6c2eae393af38eccad96f3e35436c01e71` |
+| `common/scripted_effects/00_animal_effects.txt:1429–1431、1548` | 按名称删除与普通赋予的实际调用 | `bfa1aac3780c9c0822ba1e2abc0a8c7bea885b89d8cd2e808651eef2351dd5e2` |
+| `common/modifiers/07_ep3_modifiers.txt:1356–1359` | 静态 `diplomacy = -1` 先例 | `c4a7815e1d5f787699ffc4705a6f39ab742796e3493fce979e348f90147c4a9b` |
+
+这条记录源于 [《超人强》账本合同](../../mod_superman_qiang/docs/skill-boundaries-reference.md)，只确证原版源级语法和缩放生命周期；新模组的对应实机验收仍 **pending**。原始修正点守恒不能替代有效技能守恒：原版百分比与整数运算仍可使显示变化为 0 或 2。历史基础技能试扣 RED 和原生缓存研究继续见 [角色技能读回专题](../ck3-native-ai/character-skill-trigger-readback-1.20.0.3-2026-10-04.md)。

@@ -27,5 +27,122 @@
       "sha256": "5da1a0f7c635a01fdc1698cfd96194ff1b4e9703bf0080889db0591d3aacfb17"
     }
   ],
-  "boundary": "Offline RTTI/disassembly evidence only; no live refresh, base limits, transfer or mod acceptance claimed."
+  "boundary": "Original and new offline EXE artifacts are read-only, no CK3 started by extractor. R0006 separately indexes actual pre-fix native-save RED evidence. Refresh-patched transfer remains pending fresh live acceptance.",
+  "add_skill_refresh_artifacts": [
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/add-skill-refresh-contracts.json",
+      "bytes": 4152,
+      "sha256": "3bd4d0b24989d182b698b6b4fddadf0dd3fe253a14664a83f01870b63bd0fc8e"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/bounded-function-28c3bc0.txt",
+      "bytes": 770,
+      "sha256": "d8f574bd4b3d031ca9ffbe9f185163d8ddb086f21f9ce3665f66b4599a31d64a"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/bounded-function-2a3e140.txt",
+      "bytes": 498,
+      "sha256": "c5ac52887b95b92d79ea1f307fc6cb118117d7d10f6012698bfe6f95bd3f1dd1"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/bounded-function-2d5f440.txt",
+      "bytes": 2771,
+      "sha256": "1c7e9241b0c00b29b41e03e6a5f5a7422c19c1e3b872f884dc140ef447ed42db"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/bounded-function-2d67bf0.txt",
+      "bytes": 736,
+      "sha256": "b5eade8993d20bbb293014d73f12833591d935d3b93004fe773d2c6dc375096b"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/effect-contracts.json",
+      "bytes": 1649,
+      "sha256": "e5b305f102fb3739beba735bdbe614aaaf23d168a43807f79426c2f034164397"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/extract-4697af984259e2eddd42ebb67c7f756948dfcc86a5dc79bb0fdcb55c60d1ee95.py",
+      "bytes": 5060,
+      "sha256": "4697af984259e2eddd42ebb67c7f756948dfcc86a5dc79bb0fdcb55c60d1ee95"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/function-28c3ae0.txt",
+      "bytes": 7237,
+      "sha256": "6cfaf5b6df2675ec041e40ac577e200ee81d3d3740ea5e64c3692297866f42ea"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/function-28c3bc0.txt",
+      "bytes": 7279,
+      "sha256": "f0dcc9eed847aae6d5f60d0c7ac78845b17724e81bb71361d2b5cca7044f7d81"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/function-28c3d80.txt",
+      "bytes": 7302,
+      "sha256": "9ac84162cf3ff6bdff42235e8a31037142e45353d6e73278b0505cae97e7669d"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/function-28c3f60.txt",
+      "bytes": 6758,
+      "sha256": "bcf742bae1fbf4f42f05fa2351bd4ce4486e6b12f1b53847a7805df2a2d561c0"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/function-291c010.txt",
+      "bytes": 7015,
+      "sha256": "78dec5c8baf8997244052424283a248e623b9d6c87116d3a66e661823b0016d9"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/function-291c0d0.txt",
+      "bytes": 6760,
+      "sha256": "c440d43bc4665385978a6cc7a5897ddc2a56df2a4d089d8a1c87d618c38292db"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/function-2a3e140.txt",
+      "bytes": 7048,
+      "sha256": "8c1595677bba7ba305c644f28b04d32da236ce944e63c0776818a0983dd2c0d9"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/function-2ba95e0.txt",
+      "bytes": 7306,
+      "sha256": "e156f2a57890119e688e4267b9a01912c94759ed3b8619fba89be6942ae9d4c9"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/function-2cecc20.txt",
+      "bytes": 7593,
+      "sha256": "ebecd9fd478cd096b76269c1b8d952ffe595152008e038779c0a12ceb441ada6"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/function-2d5f440.txt",
+      "bytes": 7568,
+      "sha256": "5a2248f3ce12e14c5c80207badb3072a199c9b648192b9d9538b98203c61ad88"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/function-2d67bf0.txt",
+      "bytes": 7260,
+      "sha256": "a87d6730a3f059b7d5ea312e578447f17241783e52ee3984dece9e9b3dd3fb2d"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/function-a06630.txt",
+      "bytes": 8333,
+      "sha256": "efa4cefb8b3d5e2b6f6d059ca0475a73039f18fdbe0083838a026e052e66807b"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/R0006-leaked-base-readback-summary.json",
+      "bytes": 7083,
+      "sha256": "4ceaebc0a7c8fbf379e55c3b50c183b9247dc2eb7c8c7c5c98403fc012dd025d"
+    },
+    {
+      "path": "D:/ck3-superman-add-skill-readonly-20261004/window-291c0d0-1200.txt",
+      "bytes": 46111,
+      "sha256": "81c7a21aaa6416f56ed3249090041376586c52df30858b7394de13eec0c3711e"
+    }
+  ],
+  "live_leak_readback_artifact": {
+    "path": "D:/ck3-experience-drain-feasibility-20261004/desktop-3fevhd2-1c74096080--superman-qiang--R0006/save-readback-a01/fixture-readback.json",
+    "bytes": 101458,
+    "sha256": "32ac37f0f8f3f99e42362cf23fdd2aa227a69124bf57de85e7dcd1e90d6d496f"
+  },
+  "open_kaishek_force_refresh_precheck": {
+    "path": "D:/ck3-superman-force-refresh-precheck-A0001/receipt.json",
+    "bytes": 3855,
+    "sha256": "ecff32a3428031b73328d2a66bad3f9fe0cd95f7e71e42236e8a3e57266a693f"
+  }
 }
