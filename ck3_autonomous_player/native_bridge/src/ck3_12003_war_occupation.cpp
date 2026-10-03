@@ -91,6 +91,8 @@ WarOccupationTargetsBindingsV1 BindWarOccupationTargetsImageV1(
   b.character_storage_slot = reinterpret_cast<void **>(
       image_base + ck3_12002::kCharacterStorageSlotRva);
   b.vector_allocator = reinterpret_cast<void *>(image_base + 0x54DEBB8);
+  b.war_occupation_context_fallback_slot = reinterpret_cast<void **>(
+      image_base + 0x5D1DE08);
   b.get_war_occupation_context = reinterpret_cast<decltype(b.get_war_occupation_context)>(
       image_base + 0x2C13840);
   b.collect_territory_participants = reinterpret_cast<decltype(b.collect_territory_participants)>(
@@ -150,7 +152,12 @@ WarOccupationTargetsReadResultV1 ReadWarOccupationTargetsV1(
   if (!ValidateParticipants(b, *attacker) || !ValidateParticipants(b, *defender))
     return fail("war_participant_graph_unavailable");
   void *context = b.get_war_occupation_context(war_id);
-  if (context == nullptr || Load<std::int32_t>(context, 0x28) != war_id)
+  // Native no-match lookup returns the exact default object; the native score
+  // caller passes it to the same collector without a WarID backlink match.
+  void *fallback = b.war_occupation_context_fallback_slot == nullptr ? nullptr
+      : *b.war_occupation_context_fallback_slot;
+  if (context == nullptr ||
+      (context != fallback && Load<std::int32_t>(context, 0x28) != war_id))
     return fail("war_occupation_context_unavailable");
   const bool liege_related = b.war_participants_are_liege_related(war);
 

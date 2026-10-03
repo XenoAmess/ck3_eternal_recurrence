@@ -31,6 +31,7 @@ struct WarOccupationTargetsBindingsV1 {
   ck3_12002::ProvinceBindings provinces;
   void **character_storage_slot = nullptr;
   void *vector_allocator = nullptr;
+  void **war_occupation_context_fallback_slot = nullptr;
   void *(*get_war_occupation_context)(std::int32_t war_id) = nullptr;
   void (*collect_territory_participants)(
       void *context, std::int32_t primary_territory_character_id,

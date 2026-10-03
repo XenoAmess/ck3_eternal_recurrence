@@ -60,6 +60,8 @@ struct Fixture {
   void *game_state_slot = game_state.data();
   void *character_slot = character_store.data();
   void *title_slot = title_store.data();
+  void *context_return = context.data();
+  void *context_fallback_slot = nullptr;
   std::int32_t war_id = kWar;
   bool empty_collection = false;
   bool invalid_collection = false;
@@ -162,7 +164,7 @@ void Release(void *allocator, void *data, std::uint64_t alignment) {
 void *GetContext(std::int32_t war_id) {
   CallbackCheck(war_id == active->war_id, "native context lookup receives full WarID");
   ++active->context_calls;
-  return active->context.data();
+  return active->context_return;
 }
 void CollectTerritory(void *context, std::int32_t primary,
                       const WarOccupationPointerVector *territory,
@@ -246,6 +248,7 @@ WarOccupationTargetsBindingsV1 Bindings(Fixture &fixture) {
   bindings.provinces.is_occupied = IsOccupied;
   bindings.vector_allocator = fixture.allocator.data();
   bindings.get_war_occupation_context = GetContext;
+  bindings.war_occupation_context_fallback_slot = &fixture.context_fallback_slot;
   bindings.collect_territory_participants = CollectTerritory;
   bindings.collect_holding_titles = CollectHoldings;
   bindings.count_holding = CountHolding;
@@ -384,7 +387,52 @@ int main(int argc, char **argv) {
       CheckCallbacks(fixture);
       Emit(directory / "available-war-zero.json", output, result);
     }
-    std::cout << "PASS checks=" << checks << " cases=6\n";
+    {
+      Fixture fixture;
+      Put(fixture.context, 0x28, std::int32_t{-1});
+      fixture.context_fallback_slot = fixture.context.data();
+      Output output{};
+      const auto result = ReadWarOccupationTargetsV1(Bindings(fixture), fixture.Scope(),
+                                                      kWar, output);
+      Check(result == Result::available && output.available && output.collection_complete &&
+                output.rows.size() == 5 && output.side_counts.size() == 2,
+            "exact native fallback context with unmatched WarID reaches the real occupation collector");
+      Check(fixture.context_calls == 2 && fixture.territory_calls == 2 &&
+                fixture.holding_calls == 2 && fixture.count_calls == 6,
+            "fallback is consumed by native territory and per-holding callbacks, not relabeled empty");
+      CheckCallbacks(fixture);
+      Emit(directory / "available-native-fallback-context.json", output, result);
+    }
+    {
+      Fixture fixture;
+      Put(fixture.context, 0x28, std::int32_t{-1});
+      Output output{};
+      const auto result = ReadWarOccupationTargetsV1(Bindings(fixture), fixture.Scope(),
+                                                      kWar, output);
+      Check(result == Result::unavailable && !output.available && !output.collection_complete &&
+                output.unavailable_reason == "war_occupation_context_unavailable" &&
+                output.rows.empty() && output.side_counts.empty(),
+            "unmatched context outside the exact native fallback remains the observed read failure");
+      Check(fixture.context_calls == 1 && fixture.territory_calls == 0 && fixture.count_calls == 0,
+            "foreign unmatched context does not reach a territory collector");
+      CheckCallbacks(fixture);
+      Emit(directory / "unavailable-foreign-context.json", output, result);
+    }
+    {
+      Fixture fixture;
+      fixture.context_return = nullptr;
+      Output output{};
+      const auto result = ReadWarOccupationTargetsV1(Bindings(fixture), fixture.Scope(),
+                                                      kWar, output);
+      Check(result == Result::unavailable && !output.available && !output.collection_complete &&
+                output.unavailable_reason == "war_occupation_context_unavailable",
+            "null context remains an unavailable observation");
+      Check(fixture.context_calls == 1 && fixture.territory_calls == 0 && fixture.count_calls == 0,
+            "null context cannot reach a territory collector");
+      CheckCallbacks(fixture);
+      Emit(directory / "unavailable-null-context.json", output, result);
+    }
+    std::cout << "PASS checks=" << checks << " cases=9\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << "RED " << error.what() << '\n';

@@ -50,8 +50,17 @@
     "get_war_occupation_context": {
       "rva": "0x2C13840",
       "abi": "void* (int32 full_war_id)",
-      "backlink": "returned context+0x28 == full WarID",
-      "source_call": "0x2C0DE3E"
+      "backlink": "nonnull returned pointer is either a full-WarID matching context (+0x28), or exactly the native default context stored at image+0x5D1DE08",
+      "source_call": "0x2C0DE3E",
+      "fallback_pointer_slot_rva": "0x5D1DE08",
+      "fallback_load_instruction": "0x2C1384C mov r11,[rip+0x310A5B5]; next instruction0x2C13853",
+      "fallback_return_instruction": "0x2C138B8 mov rax,r11",
+      "original_caller": "0x2C0DE43 stores return inrbx; 0x2C0DEDC passesrbx asRCX; 0x2C0DEDF calls collector without an added WarID backlink gate",
+      "prior_interpretation_correction": {
+        "prior": "returned context+0x28 == full WarID",
+        "actual_trigger": "v36 three actual wars returned war_occupation_context_unavailable",
+        "reason": "Native no-match default branch is legitimate and was omitted by our reader."
+      }
     },
     "collect_territory_participants": {
       "rva": "0x2C0D390",
@@ -121,5 +130,18 @@
     "Exact full native AI final target rank/tie/simultaneous-war allocation, not needed for this query.",
     "Current held-goal clock/ratio is not implemented by this holding collector.",
     "Loaded CB scale/cap/capital/full-occupation input projection is outside this minimal target enumeration."
-  ]
+  ],
+  "actual_v36_fallback_repair": {
+    "source": "existing frozen .3 assembly; no new EXE extraction",
+    "date_raw": 53236728,
+    "root_saved_days": 3850,
+    "new_saved_days": 0,
+    "live_repair_verified": false,
+    "war_ids": [
+      16777231,
+      129,
+      50331736
+    ],
+    "causal_boundary": "Actual v36 payload reports only war_occupation_context_unavailable, without distinguishing null from a nonmatching context. Frozen native instructions directly prove rejecting the legitimate default context is incorrect. The three actual RED queries are consistent with that omitted branch; whether this repair resolves all three requires Root next paused real query."
+  }
 }

@@ -75,3 +75,11 @@ The six cases cover a populated opposing-side/outside-war collection with origin
 For Robert defending, recovery candidates are the **defender-territory** rows with a genuinely occupied holding, attacker-side occupier and `counted_occupied_by_opposing_side=true`. This is a post-tree minimal selection input, not a copied native final rank. A geographically occupied2640 owned by30097 would be opposing-side occupation for War16777231, while it could be `outside_war` for War129 or War50331736. Keep that war-scoped distinction when selecting a target and interpreting score deltas.
 
 The latest coordinator-reported progress at packet assembly was the fourth bounded day, raw53236704/cumulative3849; a fifth day was still in progress. This lane adds zero new days or actions and does not modify the first-day frozen raw53236632 artifact. Central progress accounting remains Root-owned.
+
+## 2026-10-03T16:27 接续源码采用
+
+v36三场occupation实际均context_unavailable/collection_completefalse，不能把rows空认定没有收复目标。冻结exact .3原生2C13840在找不到matchedwarcontext时返回RIP slot5D1DE08指向的合法fallback；stock occupation getter2C0DE43→2C0DEDF把该返回值直接交territorycollector2C0D390，没有要求fallback+28等于WarID。我方reader此前多加backlink要求误拒该合法分支。最小候选允许真实WarID匹配context或exact native fallback slot identity；null/其他非匹配仍读失败，保持Python合法空集语义和既有开关/接口。真实三场到底null还是fallback尚未有区分，故只记代码错误已证、与当前失败一致，因果和实际holding目标待新DLL确认。6TU严格O2 DNDEBUG W4 WX、9case/53显式nativeCheck、86 registeredMCPrequire首次GREEN，用时15.8秒；不重跑旧矩阵。下一actual查询3wars，只有available且complete才选enemy-occupiedprovince收复；2610本来未占领，只计防守部署。
+
+实际记录：`2026-10-03T16:27:56+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
+
+交付回执：[v37-occupation-fallback](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-goal-capture-execution/actual-v36-01/ROOT-FALLBACK-DELIVERY.json)。

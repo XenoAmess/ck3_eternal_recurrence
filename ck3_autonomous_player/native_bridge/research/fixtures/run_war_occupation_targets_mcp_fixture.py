@@ -148,6 +148,10 @@ async def check_packets():
             require(absent["occupying_character_id"] is None and
                     absent["is_occupied"] is False and absent["occupier_side"] == "none",
                     "native legal occupation absence remains null, not a zero-ID occupant")
+        elif path.stem == "available-native-fallback-context":
+            require(expected["available"] is True and expected["collection_complete"] is True and
+                    len(expected["rows"]) == 5 and len(expected["side_counts"]) == 2,
+                    "actual native fallback yields observed holding rows through registered MCP")
         elif path.stem.startswith("available-empty") or path.stem == "available-war-zero":
             require(expected["available"] is True and expected["collection_complete"] is True and
                     expected["rows"] == [] and expected["unavailable_reason"] is None,
