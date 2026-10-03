@@ -1,6 +1,6 @@
 # 1.20.0.2 当前玩家 Doctrine 与布尔参数实际只读 query
 
-本包遵守项目所有者恢复宗教研究、停止战争研究的最新指令。它只观测实际 played Character 的宗教状态，不执行宗教动作，也不修改自动玩家策略。冻结 CK3 为 **1.20.0.2 Crozier / Steam build 25588574**；EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`，大小 `101039736` bytes。
+本包按 2026-10-01 当时恢复宗教研究、停止战争研究的指令施工；战争停研授权限制已于 2026-10-03 撤销。它只观测实际 played Character 的宗教状态，不执行宗教动作，也不修改自动玩家策略。冻结 CK3 为 **1.20.0.2 Crozier / Steam build 25588574**；EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`，大小 `101039736` bytes。
 
 实际原生树先由 [Faith/main Rite 来源](religion_doctrine12002_intrinsic.md)、[actor Rite 有效集合](religion_doctrine12002_rite.md) 与 [两套布尔参数](religion_doctrine12002_tenet.md) 冻结。本包组合这些真实生产 reader，不手写 Doctrine 同组 merge。当前 Faith 的 Doctrine 查询走它的 **main Rite**；当前角色采用的 Rite 可以不同，两个集合与两个参数集合都保留。
 

@@ -43,4 +43,4 @@ flowchart TD
 
 完整 source manifest 为 `Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/religion-reform/final-source-package.json`，含精确44路径/SHA、六个组件回执、report fields和保留失败。首批36的 `ready-source-package.json` 保留原字节，候选新增7文件与本页单独交付；没有回写旧 artifact。
 
-后续依次是 root 将这些库接入同一只读 native/MCP 路径，在真实 paused 帧读取现存宗教模型，并在真实创建窗口已物化时验 positive 草案资格/报价/候选。当前没有 headless 新草案 builder、宗教 typed action、独立创建结果、next turn或cold资格。其它资源费用未证明的部分保持明确缺口；Rare AI调度与通用 AI create caller仍是具体下一研究入口。G2 credit与整局资格不增加，战争继续停止。
+后续依次是 root 将这些库接入同一只读 native/MCP 路径，在真实 paused 帧读取现存宗教模型，并在真实创建窗口已物化时验 positive 草案资格/报价/候选。当前没有 headless 新草案 builder、宗教 typed action、独立创建结果、next turn或cold资格。其它资源费用未证明的部分保持明确缺口；Rare AI调度与通用 AI create caller仍是具体下一研究入口。G2 credit与整局资格不增加；战争停研授权限制已于 2026-10-03 撤销，后续战争研究、实现、策略和实机可继续，未完成能力仍按真实证据记录。

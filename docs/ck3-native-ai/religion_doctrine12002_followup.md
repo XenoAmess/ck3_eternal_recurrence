@@ -1,6 +1,6 @@
 # 1.20.0.2 Doctrine 最终选择门与数值参数后续施工
 
-计划记录：2026-10-01 17:21（Asia/Shanghai）。本页是在已冻结 73 个 Doctrine / Tenet 原生域文件之后的后续包，不改写其 source pins 或原验证结果。项目所有者允许继续宗教研究，战争、圣战与 holy order 继续停止。
+计划记录：2026-10-01 17:21（Asia/Shanghai）。本页是在已冻结 73 个 Doctrine / Tenet 原生域文件之后的后续包，不改写其 source pins 或原验证结果。当时项目所有者允许继续宗教研究，战争、圣战与 holy order 暂停；这些授权限制已由 2026-10-02 全面宗教授权和 2026-10-03 全面战争授权撤销，后续施工按真实能力与 exact-build 证据推进。
 
 已交 baseline 为 [四个实际私有只读 query](religion_doctrine12002_private_queries.md)：当前双 Rite Doctrine / 布尔参数、普通有向 hostility、Doctrine 知识、Core / personal Tenet rows。这些独立 primitive 已 `static-ready`，不代表 Doctrine 完整候选列表和最终选择门已完成，也不代表数值参数已求值。
 
