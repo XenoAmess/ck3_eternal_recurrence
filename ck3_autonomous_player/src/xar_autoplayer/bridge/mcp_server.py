@@ -331,6 +331,9 @@ def load_driver(
             save_dir=selected_save_dir(),
             war31_one_shot_surrender_gate=war31_one_shot_surrender_gate,
             succession_lifecycle_binding=succession_lifecycle_binding,
+            allow_private_current_timeline_blocker_query=(
+                allow_private_death_succession_modal_continue
+            ),
             allow_private_death_succession_modal_continue=(
                 allow_private_death_succession_modal_continue
             ),
