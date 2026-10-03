@@ -13209,6 +13209,10 @@ void RunConnectedSession(
           xar::ck3_11906::TacticalDailySentinelArmRequestV1
               tactical_sentinel_request{};
           std::uint64_t tactical_sentinel_cancel_generation = 0;
+          // Keep dispatch chains in bounded sequential segments. A matched
+          // handler remains handled even if it rejects or closes the pipe.
+          // Add another guarded segment when extending this dispatcher.
+          bool native_step_dispatched = true;
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
           if (step == xar::ck3_11906::kScopedCharacterVariableMonitorBeginV1 ||
               step == xar::ck3_11906::kScopedCharacterVariableMonitorFinishV1) {
@@ -15699,7 +15703,12 @@ void RunConnectedSession(
               if (connected) connected = write_frame(pipe, response);
             }
           }
-          } else if (step == "pause-map") {
+        } else {
+          native_step_dispatched = false;
+        }
+        if (!native_step_dispatched) {
+          native_step_dispatched = true;
+        if (step == "pause-map") {
           xar::game::Snapshot command_observation{};
           const auto result =
               xar::game::SubmitPauseMap(game, &command_observation);
@@ -17786,7 +17795,13 @@ void RunConnectedSession(
                                         state_revision, checkpoint_submission,
                                         published_checkpoint_sequence);
           }
-        } else if (step == xar::ck3_11906::kCampaignRootContextV1Step) {
+        } else {
+          native_step_dispatched = false;
+        }
+        }
+        if (!native_step_dispatched) {
+          native_step_dispatched = true;
+        if (step == xar::ck3_11906::kCampaignRootContextV1Step) {
           std::uint64_t expected_revision = 0;
           if (!xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
                   incoming.payload, expected_revision)) {
@@ -20452,7 +20467,13 @@ void RunConnectedSession(
               }
             }
           }
-        } else if (step == xar::ck3_11906::kLoadedFeatureManifestV1Step) {
+        } else {
+          native_step_dispatched = false;
+        }
+        }
+        if (!native_step_dispatched) {
+          native_step_dispatched = true;
+        if (step == xar::ck3_11906::kLoadedFeatureManifestV1Step) {
           std::uint64_t expected_revision = 0;
           if (!xar::ck3_11906::ParseLoadedFeatureManifestExpectedRevisionV1(
                   incoming.payload, expected_revision)) {
@@ -21739,7 +21760,13 @@ void RunConnectedSession(
             }
           }
 #endif
-        } else if (step == "query-declarable-wars") {
+        } else {
+          native_step_dispatched = false;
+        }
+        }
+        if (!native_step_dispatched) {
+          native_step_dispatched = true;
+        if (step == "query-declarable-wars") {
           declarable_wars.clear();
           if (!xar::game::ReadDeclarableWars(game, declarable_wars)) {
             connected = write_frame(
@@ -24065,7 +24092,13 @@ void RunConnectedSession(
           connected = write_frame(pipe, response);
           }
 #endif
-        } else if (step.starts_with(
+        } else {
+          native_step_dispatched = false;
+        }
+        }
+        if (!native_step_dispatched) {
+          native_step_dispatched = true;
+        if (step.starts_with(
                        xar::ck3_11906::
                            kBattleTerminalTransitionV1StepPrefix)) {
           xar::game::BattleTerminalTransitionRequestV1 terminal_request{};
@@ -24945,6 +24978,7 @@ void RunConnectedSession(
           }
         } else {
           execute_native_step_tail();
+        }
         }
         }
         }
