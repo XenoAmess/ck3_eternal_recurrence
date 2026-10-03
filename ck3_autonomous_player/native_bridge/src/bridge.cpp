@@ -3103,6 +3103,11 @@ void AppendArmyStrength(
   }
   result += ",\"ai_base_power_scale\":";
   result += SignedNumber(strength.ai_base_power_scale);
+  if (strength.available && strength.current_supply_raw.has_value()) {
+    result += ",\"current_supply_raw\":";
+    result += SignedNumber(*strength.current_supply_raw);
+    result += ",\"current_supply_scale\":100000";
+  }
   result += ",\"unavailable_reason\":";
   if (strength.available) {
     result += "null";

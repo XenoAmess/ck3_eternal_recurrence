@@ -236,6 +236,9 @@ _ARMY_STRENGTH_ROW_KEYS = {
     "ai_base_power_scale",
     "unavailable_reason",
 }
+_ARMY_STRENGTH_SUPPLY_ROW_KEYS = _ARMY_STRENGTH_ROW_KEYS | {
+    "current_supply_raw", "current_supply_scale",
+}
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
     "active_war_ally",
@@ -1618,8 +1621,23 @@ def army_strength_query_status(
 def _normalize_army_strength_row(
     value: object, *, name: str
 ) -> dict[str, object]:
-    if not isinstance(value, dict) or set(value) != _ARMY_STRENGTH_ROW_KEYS:
+    if not isinstance(value, dict) or set(value) not in (
+        _ARMY_STRENGTH_ROW_KEYS, _ARMY_STRENGTH_SUPPLY_ROW_KEYS
+    ):
         raise ValueError(f"native {name} schema is malformed")
+    supply_present = "current_supply_raw" in value
+    current_supply_raw = value.get("current_supply_raw")
+    if supply_present:
+        if current_supply_raw is not None and (
+            isinstance(current_supply_raw, bool)
+            or not isinstance(current_supply_raw, int)
+            or not -(2**63) <= current_supply_raw <= 2**63 - 1
+        ):
+            raise ValueError(f"native {name}.current_supply_raw must be signed int64 or null")
+        if value.get("current_supply_scale") != CK3_FIXED_POINT_SCALE:
+            raise ValueError(f"native {name}.current_supply_scale must be {CK3_FIXED_POINT_SCALE}")
+        if value.get("status") != "available" and current_supply_raw is not None:
+            raise ValueError(f"native unavailable {name}.current_supply_raw must be null")
     status = value.get("status")
     if status not in {"available", "unavailable"}:
         raise ValueError(f"native {name}.status is malformed")
@@ -1681,7 +1699,7 @@ def _normalize_army_strength_row(
             raise ValueError(
                 f"native unavailable {name} requires a reason"
             )
-    return {
+    result = {
         "status": status,
         "army_id": public_cunit_id(value.get("army_id"), f"{name}.army_id"),
         "native_carmy_id": native_carmy_id,
@@ -1694,6 +1712,10 @@ def _normalize_army_strength_row(
         "ai_base_power_scale": CK3_FIXED_POINT_SCALE,
         "unavailable_reason": unavailable_reason,
     }
+    if supply_present:
+        result["current_supply_raw"] = current_supply_raw
+        result["current_supply_scale"] = CK3_FIXED_POINT_SCALE
+    return result
 
 
 def move_army_step(army_id: int, province_id: int) -> str:

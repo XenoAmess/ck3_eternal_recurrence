@@ -159,6 +159,9 @@ struct ArmyStrengthSnapshot {
   std::int64_t ai_base_power_raw = 0;
   std::int64_t ai_base_power_scale = 100'000;
   std::string unavailable_reason;
+  // Additive .2/.3 current supply observation, signed Q100000. No value is
+  // synthesized for other builds or an unresolved CUnit/CArmy backlink.
+  std::optional<std::int64_t> current_supply_raw;
 
   friend bool operator==(const ArmyStrengthSnapshot &,
                          const ArmyStrengthSnapshot &) = default;
