@@ -72,7 +72,10 @@ bool ExecuteDeathSuccessionModalContinueMailboxV1(
     ++query->executor_invocations;
     query->execution_stamp = stamp;
     game::Snapshot snapshot{};
-    if (!ReadSnapshot(query->bindings, snapshot) ||
+    const bool snapshot_read = query->selected_game != nullptr
+        ? game::ReadSnapshot(*query->selected_game, snapshot)
+        : ReadSnapshot(query->bindings, snapshot);
+    if (!snapshot_read ||
         snapshot != query->expected_snapshot || !snapshot.paused ||
         !snapshot.map_ready || !snapshot.has_played_character ||
         !snapshot.played_character_alive ||
@@ -94,10 +97,13 @@ bool ExecuteDeathSuccessionModalContinueMailboxV1(
         query->request.expected_played_character_id;
     read_request.paused = true;
     game::CurrentTimelineBlockerContextV1 timeline{};
-    if (ReadCurrentTimelineBlockerContextNativeV1(
-            query->bindings, query->environment, query->access, read_request,
-            timeline) !=
-        game::ReadCurrentTimelineBlockerContextResultV1::available) {
+    const auto read_result = query->selected_game != nullptr
+        ? ck3_12003::ReadCurrentTimelineBlockerContextNative12003V1(
+              query->succession12003, read_request, timeline)
+        : ReadCurrentTimelineBlockerContextNativeV1(
+              query->bindings, query->environment, query->access, read_request,
+              timeline);
+    if (read_result != game::ReadCurrentTimelineBlockerContextResultV1::available) {
       SetUnavailable(*query, timeline.unavailable_reason.empty()
                                  ? "timeline_query_unavailable"
                                  : timeline.unavailable_reason);
@@ -105,8 +111,13 @@ bool ExecuteDeathSuccessionModalContinueMailboxV1(
           DeathSuccessionModalContinueMailboxCompletionV1::completed;
       return true;
     }
-    (void)ExecuteDeathSuccessionModalContinueNativeV1(
-        query->environment, query->request, timeline, query->receipt);
+    if (query->selected_game != nullptr) {
+      (void)ck3_12003::ExecuteDeathSuccessionModalContinueNative12003V1(
+          query->succession12003, query->request, timeline, query->receipt);
+    } else {
+      (void)ExecuteDeathSuccessionModalContinueNativeV1(
+          query->environment, query->request, timeline, query->receipt);
+    }
     query->completion =
         DeathSuccessionModalContinueMailboxCompletionV1::completed;
     return true;

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "xar_bridge/ck3_11906.hpp"
+#include "xar_bridge/game_adapter.hpp"
+#include "xar_bridge/ck3_12003_succession_modal.hpp"
 #include "xar_bridge/current_timeline_blocker_context_v1.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
@@ -26,6 +28,8 @@ struct CurrentTimelineBlockerContextMailboxContextV1 {
   MainThreadQueryMailboxV1 *mailbox = nullptr;
   MainThreadQueryTicketV1 ticket{};
   Bindings bindings{};
+  const game::GameAdapter *selected_game = nullptr;
+  ck3_12003::SuccessionModalBindings12003 succession12003{};
   ZhongguoScoreboardNativeEnvironmentV1 environment{};
   ZhongguoScoreboardAccessV1 access{};
   CurrentTimelineBlockerReadRequestV1 request{};

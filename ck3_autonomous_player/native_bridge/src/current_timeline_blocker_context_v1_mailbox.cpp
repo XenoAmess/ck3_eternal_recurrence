@@ -116,7 +116,10 @@ bool ExecuteCurrentTimelineBlockerContextMailboxQueryV1(
     ++query->executor_invocations;
     query->execution_stamp = stamp;
     game::Snapshot snapshot{};
-    if (!ReadSnapshot(query->bindings, snapshot) ||
+    const bool snapshot_read = query->selected_game != nullptr
+        ? game::ReadSnapshot(*query->selected_game, snapshot)
+        : ReadSnapshot(query->bindings, snapshot);
+    if (!snapshot_read ||
         snapshot != query->expected_snapshot || !snapshot.paused ||
         !snapshot.has_played_character ||
         snapshot.played_character_id != query->request.played_character_id ||
@@ -127,9 +130,12 @@ bool ExecuteCurrentTimelineBlockerContextMailboxQueryV1(
           CurrentTimelineBlockerContextMailboxCompletionV1::frame_changed;
       return true;
     }
-    query->read_result = ReadCurrentTimelineBlockerContextNativeV1(
-        query->bindings, query->environment, query->access, query->request,
-        query->result);
+    query->read_result = query->selected_game != nullptr
+        ? ck3_12003::ReadCurrentTimelineBlockerContextNative12003V1(
+              query->succession12003, query->request, query->result)
+        : ReadCurrentTimelineBlockerContextNativeV1(
+              query->bindings, query->environment, query->access, query->request,
+              query->result);
     if (ValidTypedResult(*query, stamp)) {
       query->completion =
           CurrentTimelineBlockerContextMailboxCompletionV1::completed;

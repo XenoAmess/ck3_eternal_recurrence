@@ -296,3 +296,196 @@ pair for its pre-death save. The last physically frozen compatible pair is the
 R0074 checkpoint/driver (save SHA-256 `B836D93E...92683`, driver SHA-256
 `4C7278F0...364D3`). Do not stitch the R0075 files or claim a cold restore
 until a real paired checkpoint is produced by the new version.
+
+## 2026-10-03: war-time natural succession, exact 1.20.0.3 modal ABI migration
+
+The current original Robert ordinary campaign can retain its living-ruler
+expectation and re-query the current player, heirs, wars and owners. The current timeline/typed Close provider now selects the exact .3 adapter
+while retaining the historical 1.19.0.6 route. This package closes the minimum .3
+controller acquisition, predicate bodies and normal Close command path as static
+construction inputs. It does not claim a natural succession has occurred.
+
+This is an **engine-transition** tree, not an NPC-choice tree. The actor starts as
+Robert 29829 in campaign/episode `native-29829-2bc2d599f7f9`, ordinary,
+`xar_off`, pact absent, and becomes the genuinely observed current successor only
+after the retained transition matches. The campaign is retained; its current
+player reference is refreshed. No `die`, new seed, process, SDK, desktop input,
+window activation or runtime sample was used by this file-only research lane.
+
+### Frozen inputs and evidence boundary
+
+- Exact CK3 **1.20.0.3 / Steam build 25652598**, EXE
+  `Z:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe`, SHA-256
+  `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`.
+- [Native byte/RTTI/function pins](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-time-natural-succession/native-tree/modal-pins-12003.json)
+  freezes eight complete function bodies, their bounds, disassembly and hashes.
+  `HasOpenSuccession` is a leaf without `.pdata`; its complete body ends at the
+  final `ret`. The command executor spans two contiguous unwind fragments,
+  including its direct branch targets and cleanup through the final `ret`.
+- [Source manifest](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-time-natural-succession/native-tree/source-manifest.json)
+  contains read-time copies and SHA-256 for 20 sources. Capture HEAD was
+  `8e2cfbee4981af7f80398ec09129c1cf0f3dbe54` before and after capture. These bytes
+  are not represented as the initial task HEAD `1e28400d` or the earlier
+  coordinator reference `6440948e`.
+- Stock `.3` `game/gui/window_succession_event.gui` SHA-256 is
+  `eabeebd8fd0d71dfae4e0ba6108001a936db5251a55643522a04f66ce5433b00`.
+  The correct source is the installed Steam game tree. All line references below
+  refer to the corresponding frozen copy, not a later mutable working tree.
+- Full function behavior is recovered, but the reflection registration associating
+  the literal names `IsPausedBySuccession` and `HasOpenSuccession` to these .3
+  functions was not independently recovered. The name association remains an
+  inference from the complete player-row predicate behavior, adjacency and the
+  established old contract. The extra condition inside the global pause predicate
+  is executed by the native function; its semantic label is unclosed.
+
+### Current player, heir and war reading semantics
+
+`native_bridge/src/ck3_12002_campaign.cpp:21–30,422–495` reads the current local
+player, not a fixed Robert ID: game state `+0xA0` to GameData, Jomini `+0x18` to
+players and players `+0x1F0` to local PlayerID; GameData `+0x222E8` contains the
+player manager with entries `+0x58`, count `+0x64`. The uniquely matching row has
+PlayerID `+0xD8` and full generation-bearing CharacterID `+0xB0`. Character storage
+resolution round-trips the complete ID at Character `+0x18`; death marker
+`+0x1D0 == null` means currently alive. `ReadPrimaryTitle` at `:499–530` calls the
+native primary-title resolver and checks the returned title identity. The
+implementation filename and nominal header remain `.2`; `.3` reuse is explicit
+in `ck3_12003_adapter.cpp:50–56`, guarded by the exact .3 descriptor/EXE, and the
+campaign dispatch is at frozen `bridge.cpp:10356–10367`. Merely renaming a `.2`
+header would not establish .3 qualification.
+
+`ck3_12002_nonwar_realm.cpp:187–230` preserves the ordered native primary-title
+successor vector, validates unique full IDs and never predicts heirs by family
+heuristics. `:233–358` validates actual current held-title ownership, reports each
+county-or-higher title's first native successor, and preserves a legal empty
+successor list as null. The modern offsets in
+`include/xar_bridge/ck3_12002_nonwar_realm.hpp:10–15` are Character land state
+`+0x1C0`, land-state held titles `+0x1E0`, Title holder `+0x128`, and Title successor
+data/capacity/count `+0x150/+0x158/+0x15C`. The heir vector is the current native
+prediction; it is not the actual post-death title result. Continue to use the
+existing retained expectation/matched contract rather than reconstruct it here.
+
+`ck3_12002_world.cpp:202–271,274–298` computes active wars against the **current**
+`played_character_id`: native attackers at War `+0x20`, defenders `+0x80`, primary
+leaders `+0x288/+0x28C`; membership must be exactly one side. War IDs carry their
+generation and storage index; an ended war `+0x358 != 0` is excluded. Player
+armies are selected only when `army.owner_character_id` equals that current
+player. Allied/enemy armies are recomputed using each army's current owner and
+native membership. Score is also re-oriented to the current player side.
+
+`ck3_12003_war_occupation.cpp:109–153,165–182` likewise binds its actor from the
+fresh scope, resolves the current war and side, reads current leader IDs and
+participant vectors, and derives current holder/occupier and known-army inputs.
+After matched inheritance, fresh paused world/campaign/war-occupation reads are
+therefore necessary before reuse of a war target or army action. Predecessor
+cached `player_side`, leadership, holders, owners and army IDs are not sufficient.
+The engine's death-time war transfer/cancellation/ownership mutation is **unknown**.
+Its next reverse entry is the death/player-switch writer of participant and
+leader fields `War+0x20/+0x80/+0x288/+0x28C`, plus army-owner writes, if an actual
+fresh-frame decision still needs a cause. Fresh existing queries already answer
+what the new player currently owns and participates in. A disappeared war is not
+proof of victory, surrender or a battle credit.
+
+The coordinator already closed limited living retention with
+[actual plan consumption](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v41/actual-post-recapture-retain-v41-01/003-ck3_plan_turn.json)
+and [normalizer delivery](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-time-natural-succession/actual-retention-v41-01/ROOT-DELIVERY.json):
+normal h5364/raw53240136, available expectation `native:310`, revision 2, original
+episode retained, primary heir 38822; titles 2102,2111,2115,2141,2142 predict
+38822 and 2173 predicts 38988 (`split_successors`). This is a **production-live
+living-retention primitive** supplied by the coordinator, not a new runtime sample
+from this lane. Natural inheritance and .3 modal/Close actual remain **0**.
+
+### Minimum .3 controller and command ABI
+
+| Input/operation | Exact .3 value | Closed meaning |
+|---|---|---|
+| Root slot | `0x5C6A520` | Root `+0x10` is the idler base subobject |
+| Runtime cast | `0x4260E94` | `CIdlerGfxBase` TD `0x5514438` to `CIngameInterfaceIdlerGfx` TD `0x5514460` |
+| Ingame handler | idler `+0x88` | Exact getter `0x10EC150..0x10EC1E9` |
+| Handler identity | TD `0x5694B50`, primary vtable `0x44BA890` | `CIngameInterfaceHandler`, COL `0x4A59270`, offset 0; secondary `0x44BA908` offset `0x58` is excluded |
+| Succession controller | handler `+0x260`, primary vtable `0x4522D90` | Constructor caller `0xB07CD0..0xB07D85` installs it; handler `+0x268` is lineage, excluded |
+| Controller identity | TD `0x572F5A8`, COL `0x4AFB330` offset 0 | Secondary vtable `0x4522E60` offset `0x10` is excluded |
+| IsOpen | vslot `+0x38`, target `0x10D8BC0..0x10D8C5B` | Normal controller method, current source uses this slot for admission |
+| Normal Close | vslot `+0x88`, target `0x10D8900..0x10D8B11` | Calls generic hide then creates and queues the real close command |
+| Generic hide | vslot `+0x20`, target `0x110B0E0` | View hide alone does not establish player-row clearing |
+| Close command RTTI | TD `0x5A03450`, primary vtable `0x4760510`, secondary `0x47605A8` | Secondary subobject offset `0x18`; executor in its `+0x08` slot |
+| Close executor | `0x2894C40..0x2894D26` | Matches current row, character and native opaque token before clearing `row+0x260` |
+| Global pause predicate | `0xA7C440..0xA7C4C1` | Executes extra native condition then scans active succession rows |
+| Per-character predicate | `0xA7C4D0..0xA7C531` | Null Character is false; otherwise matches Character `+0x18` against row `+0xB0` then tests row `+0x260` |
+| Current GUI | root slot `0x5CB87F8`, top-level find `0x3AAB100` | Existing `GuiAbiRevisionV1::crozier12003` binder, no new GUI framework |
+
+The Close method first requires controller int32 `+0x1BC == 0` and byte `+0x300
+== 0` before queueing. These are shifted from the old `+0x1EC/+0x330`; their
+semantic names need not be guessed because the native Close owns their behavior.
+It captures the current CharacterID from global `0x54DBC00` and the native opaque
+token from `0x5CC162C`, clones the RTTI-identified command and queues it via
+`0x37F06F0` (manager `0x5CC1240`, channel flags 7). The provider calls the normal
+Close; it must not synthesize either field or directly write row-active bytes.
+
+The executor reads GameData via state slot `0x5C68C50` / `+0xA0`, scans player-row
+data/count at `GameData+0x22340/+0x2234C` (old `+0x1D548/+0x1D554`), requires the
+row marker at `+0xDC == 0x506c496e`, character `+0xB0` and token `+0xD8` matches,
+and an active `+0x260`. Its secondary-this fields `+0x08/+0x0C` correspond to the
+whole command's `+0x20/+0x24`. It then sets row `+0x260=0`; if row `+0x2C8` is
+active it calls `0xAFF2B0` with **the embedded address** `row+0x268` and clears
+`+0x2C8`. This address is not a loaded cleanup pointer. The global predicate
+calls `0x29C5F30(GameData+0x34480, 0)` first; if false it returns false without the
+row scan. Preserve that function call rather than replacing it with a field-only
+approximation.
+
+Stock .3 GUI retains all eight named query routes:
+`succession_event_window:6`, `bottom:875`, visible/enabled `close_button:315/901`,
+`menu_button:947`, `succession_select_destiny_window:962`, `continue_button:1195`,
+`continue_button_random:1205`, `cancel_button:1049`. Bottom `close_button` is
+visible for a valid heir and non-ecclesiastical government and runs animation
+`ruler_transition_reset`; state `:19–21` calls normal Close on finish. Lineage
+`:315–319` calls normal Close directly. `menu_button` is visible without a valid
+heir. Ecclesiastical controls exist at `:917/928`; this .3 migration keeps the
+existing eight-route DTO, and does not claim that it handles those additional
+government-specific paths.
+
+### Provider and existing SDK entry
+
+The `.3` implementation is `ck3_12003_succession_modal.hpp/.cpp`. Its selected-adapter application-main callback captures the current game snapshot and uses the existing `crozier12003` GUI binder with the exact functions above. Timeline query and typed Close reuse the current DTO, wire steps, serializers and Python transports. The old 1.19.0.6 branch keeps its own binder. The `.3` branch does not call `ck3_11906::BindCurrentProcess` or synthesize a close command/token.
+
+The existing typed facades are registered as `ck3_query_current_timeline_blocker_context_v1(expected_revision)` and `ck3_continue_death_succession_modal_v1(expected_revision, expected_played_character_id, expected_episode_run_id)`. The existing native build option `XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1=ON` pairs with stdio option `--private-death-succession-modal-continue`, which carries the existing runtime allow field through parser, main and driver loading. These options select the implementation. The ordinary current-player query and matched episode continuation are already separate executable entries.
+
+The new focused check is **static-ready**: MSVC `/O2 /MD /W4 /WX` invokes the new production image binder, current character/GUI reads and controller resolver/executor against a fixture-owned mapped image and callbacks, then the production serializers. Python `-B -O` consumes those packets through the registered facades and existing transports/normalizer. A subsequent narrow check covers the final parser/main loader expression/driver allow argument/actual server registry; the native success was reused. The fixture does not execute CK3 predicate/Open/Close instructions, a real native driver constructor, stdio transport loop, SDK or game. A corrected invalid synthetic pipe spelling is retained as harness RED.
+
+Receipts: [production package](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-time-natural-succession/registered-recipe/modal-provider-12003/ROOT-DELIVERY.json), [native and packet consumer](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-time-natural-succession/modal-fixture-12003/attempt01/result.json), [final CLI and loader](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-time-natural-succession/modal-fixture-12003/cli-loader-supplement/result.json). Full bridge build and `.3` paused live acceptance remain Root work; they must use the same actual ordinary campaign.
+
+### Natural transition and readiness
+
+Living expectation retention is the separately observed primitive recorded above. On a genuine natural `played_character_changed`, existing planning first reconciles the retained estate, then `continue-as-reconciled-successor` binds the already-played successor with zero CK3 command/restart. Preserve the predecessor expectation/reconciliation externally. Query the new current player, wars and controllable armies before further war actions; old Robert army/war IDs are joins only. Re-read the current chaplain/task, and retain old Sway owner mismatch without restarting the old instance. The [successor frontier recipe](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-time-natural-succession/frontier-recipe/RECIPE.json) enumerates current registered arguments.
+
+Current `.3` modal query/Close and natural successor counts remain **0**. A normal paused query with no modal may qualify its read primitive; it does not qualify Close. The natural modal branch needs one observed typed Close, a later independent cleared root and both predicates false, actual successor gameplay/date movement and a physical normal successor pair. A distinct-process successor restore is separate evidence. No artificial death or new seed substitutes for that chain. The later cold restore clears a living-frame expectation, so refresh it in the new current paused frame.
+
+Complete war inheritance mutation and literal predicate-name registration remain explicit unknowns. Existing fresh current-player queries answer the current side, leadership and ownership without waiting for those causal writers. These unknowns do not stop current war gameplay. The historical [R0075 build mismatch](succession-transition-v1.md#r0075-ordinary-natural-succession-native-build-mismatch-red) remains failure evidence; it is not an acceptance result for the new exact build.
+
+The [frozen research plan](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-time-natural-succession/native-tree/plan.json) and generated graph bind file evidence and declarations. The checker proves record consistency, not CK3 semantics or live readiness. The static engine-transition graph is:
+
+```mermaid
+flowchart TD
+    n0["Fresh current application-main query"]
+    n1["Unique local PlayerID row → full CharacterID and alive"]
+    n2["Native ordered heirs and actual held-title first heirs"]
+    n3["Fresh current-player war membership, leaders and army owners"]
+    n4["Original Robert campaign naturally reaches death; actual 0"]
+    n5["Engine war/army inheritance mutation; unknown writer"]
+    n6["Existing eight-widget DTO using crozier GUI binder"]
+    n7["Root → cast → handler+260 → normal succession controller"]
+    n8["Normal Close vslot+88 queues native CCloseSuccessionCommand"]
+    n9["Executor matches native character/token and clears row+260"]
+    n10["Whole native global/per-character row predicate behavior"]
+    n11["Literal reflection names → predicate registration mapping"]
+    n0 -->|"current-player [static-confirmed] Read current local row; no fixed Robert ID"| n1
+    n1 -->|"native-heirs [static-confirmed] Read native title successor vector and current holder"| n2
+    n1 -->|"current-war [static-confirmed] Recompute side/leaders/army ownership with current player"| n3
+    n4 -. "natural-writer [unknown] Natural death-time transfer/cancellation/owner writes" .-> n5
+    n5 -->|"refresh-after-death [static-confirmed] Fresh queries expose resulting state regardless of mutation cause"| n0
+    n0 -->|"eight-routes [static-confirmed] Current GUI names unchanged; exact crozier environment needed"| n6
+    n6 -->|"controller-acquisition [static-confirmed] Cast/getter and constructor prove handler succession field"| n7
+    n7 -->|"normal-close [static-confirmed] CSuccessionEventWindow Close+88 constructs real command"| n8
+    n8 -->|"command-row-clear [static-confirmed] Full native command executor matches current row/token"| n9
+    n9 -->|"row-predicates [static-confirmed] Same row-active inputs; global native extra condition retained"| n10
+    n11 -. "predicate-reflection-name [unknown] Names inferred from behavior; exact registration unknown" .-> n10
+```

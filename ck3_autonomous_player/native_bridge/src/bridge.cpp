@@ -10496,6 +10496,12 @@ public:
       // owned command submitter, followed by a separate read-only observer.
       environment.permitted_executor_sexdenary =
           &xar::ck3_12003::ExecuteArmyCommanderAssignmentMailbox;
+#if defined(XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1)
+      environment.permitted_executor_quattuorquadragintary =
+          &xar::ck3_11906::ExecuteCurrentTimelineBlockerContextMailboxQueryV1;
+      environment.permitted_executor_quinquadragintary =
+          &xar::ck3_11906::ExecuteDeathSuccessionModalContinueMailboxV1;
+#endif
     }
     environment.snapshot_observer_callback = &xar::ck3_12002::ObserveAdapterSnapshot12002;
     environment.snapshot_observer_context = observer_;
@@ -21507,12 +21513,17 @@ void RunConnectedSession(
               xar::ck3_11906::
                   CurrentTimelineBlockerContextMailboxContextV1 query{};
               query.mailbox = &g_main_thread_query_mailbox_v1;
-              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
-              query.environment =
-                  xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(
-                      reinterpret_cast<std::uintptr_t>(
-                          GetModuleHandleW(nullptr)),
-                      true);
+              if (xar::game::IsCk3_12003Descriptor(game.descriptor())) {
+                query.selected_game = &game;
+                query.succession12003 = xar::ck3_12003::BindSuccessionModalImage12003(
+                    reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+                    game.descriptor().executable_sha256);
+              } else {
+                query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+                query.environment =
+                    xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(
+                        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), true);
+              }
               query.request.snapshot_revision = expected_revision;
               query.request.date_raw = current_snapshot.date_raw;
               query.request.played_character_id =
@@ -21636,12 +21647,17 @@ void RunConnectedSession(
               xar::ck3_11906::DeathSuccessionModalContinueMailboxContextV1
                   action{};
               action.mailbox = &g_main_thread_query_mailbox_v1;
-              action.bindings = xar::ck3_11906::BindCurrentProcess(true);
-              action.environment =
-                  xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(
-                      reinterpret_cast<std::uintptr_t>(
-                          GetModuleHandleW(nullptr)),
-                      true);
+              if (xar::game::IsCk3_12003Descriptor(game.descriptor())) {
+                action.selected_game = &game;
+                action.succession12003 = xar::ck3_12003::BindSuccessionModalImage12003(
+                    reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+                    game.descriptor().executable_sha256);
+              } else {
+                action.bindings = xar::ck3_11906::BindCurrentProcess(true);
+                action.environment =
+                    xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(
+                        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), true);
+              }
               action.request = request;
               action.expected_snapshot = current_snapshot;
               const auto submit =

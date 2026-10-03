@@ -304,6 +304,7 @@ def load_driver(
     pipe_name: str | None = None,
     war31_one_shot_surrender_gate: War31OneShotSurrenderGate | None = None,
     succession_lifecycle_binding: dict[str, object] | None = None,
+    allow_private_death_succession_modal_continue: bool = False,
 ) -> GameplayBridgeDriver:
     """Load a daemon driver without coupling MCP to a concrete game bridge."""
     def selected_state_dir() -> Path:
@@ -330,6 +331,9 @@ def load_driver(
             save_dir=selected_save_dir(),
             war31_one_shot_surrender_gate=war31_one_shot_surrender_gate,
             succession_lifecycle_binding=succession_lifecycle_binding,
+            allow_private_death_succession_modal_continue=(
+                allow_private_death_succession_modal_continue
+            ),
         )
     if succession_lifecycle_binding is not None:
         raise ValueError("explicit succession lifecycle requires native-headless driver")
@@ -1175,7 +1179,7 @@ def _ck3_query_current_timeline_blocker_context_v1(
     service: GameplayBridgeService,
     expected_revision: int,
 ) -> dict[str, object]:
-    """Private read-only seam; intentionally absent from the MCP tool list."""
+    """Read the existing private timeline context through the opted-in MCP facade."""
     return service.query_current_timeline_blocker_context_v1(
         expected_revision=expected_revision,
     )
@@ -1256,7 +1260,7 @@ def _ck3_continue_death_succession_modal_v1(
     expected_played_character_id: int,
     expected_episode_run_id: str,
 ) -> dict[str, object]:
-    """Private R776 seam; intentionally absent from the MCP tool list."""
+    """Continue one exact successor modal through the existing typed private transport."""
     return service.continue_death_succession_modal_private_v1(
         expected_revision=expected_revision,
         expected_played_character_id=expected_played_character_id,
@@ -2236,6 +2240,25 @@ def create_server(
             if len(json.dumps(frame, ensure_ascii=False).encode("utf-8")) > 8 * 1024 * 1024:
                 raise RuntimeError("native semantic snapshot exceeds the 8 MiB read bound")
             return frame
+
+    if getattr(driver, "allow_private_death_succession_modal_continue", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_current_timeline_blocker_context_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read the current native succession blocker on this paused frame."""
+            return _ck3_query_current_timeline_blocker_context_v1(service, expected_revision)
+
+        @server.tool()
+        def ck3_continue_death_succession_modal_v1(
+            expected_revision: int,
+            expected_played_character_id: int,
+            expected_episode_run_id: str,
+        ) -> dict[str, object]:
+            """Close once, observe material clearance, and prove successor time advance."""
+            return _ck3_continue_death_succession_modal_v1(
+                service, expected_revision, expected_played_character_id, expected_episode_run_id,
+            )
 
     @server.tool()
     def ck3_get_one_life_settlement() -> dict[str, object]:
@@ -3921,6 +3944,10 @@ def parser() -> argparse.ArgumentParser:
         help="enable the local stdio-only native frame read without command history",
     )
     result.add_argument(
+        "--private-death-succession-modal-continue", action="store_true",
+        help="enable the compiled native succession blocker read and typed modal Close",
+    )
+    result.add_argument(
         "--private-current-first-heir-relationship-query",
         action="store_true",
         help="enable the local stdio-only read of the current first-heir relation",
@@ -4225,6 +4252,9 @@ def main(argv: list[str] | None = None) -> int:
         pipe_name=args.pipe_name,
         war31_one_shot_surrender_gate=war31_gate,
         succession_lifecycle_binding=succession_lifecycle_binding,
+        allow_private_death_succession_modal_continue=(
+            args.private_death_succession_modal_continue
+        ),
     )
     driver.nonwar_only = args.nonwar_only
     if args.private_semantic_snapshot_readonly:

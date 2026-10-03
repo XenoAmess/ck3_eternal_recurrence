@@ -2,6 +2,8 @@
 
 #include "xar_bridge/death_succession_modal_continue_v1.hpp"
 #include "xar_bridge/ck3_11906.hpp"
+#include "xar_bridge/game_adapter.hpp"
+#include "xar_bridge/ck3_12003_succession_modal.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
 #include <cstdint>
@@ -26,6 +28,8 @@ struct DeathSuccessionModalContinueMailboxContextV1 {
   MainThreadQueryMailboxV1 *mailbox = nullptr;
   MainThreadQueryTicketV1 ticket{};
   Bindings bindings{};
+  const game::GameAdapter *selected_game = nullptr;
+  ck3_12003::SuccessionModalBindings12003 succession12003{};
   ZhongguoScoreboardNativeEnvironmentV1 environment{};
   ZhongguoScoreboardAccessV1 access{};
   DeathSuccessionModalContinueRequestV1 request{};
