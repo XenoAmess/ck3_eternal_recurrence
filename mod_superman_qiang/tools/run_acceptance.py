@@ -31,12 +31,17 @@ def utc() -> str: return datetime.now(timezone.utc).isoformat()
 def prepare(args) -> dict:
     output=args.output.resolve()
     if output.exists(): raise ValueError('output must be a new external directory')
-    for source in (args.production,args.dll,args.injector,args.game/'binaries/ck3.exe'):
+    vanilla=getattr(args,'vanilla',False)
+    if vanilla and (args.production is not None or args.fixture is not None):
+        raise ValueError('vanilla preparation must not mount production or fixture mods')
+    if not vanilla and args.production is None:
+        raise ValueError('production input required unless --vanilla is explicit')
+    for source in (args.dll,args.injector,args.game/'binaries/ck3.exe') + (() if vanilla else (args.production,)):
         if not source.exists():raise ValueError('missing preparation input: '+str(source))
     output.mkdir(parents=True)
     profile=output/'state/profile'
     profile.mkdir(parents=True)
-    mounts=[('product',args.production)]
+    mounts=[] if vanilla else [('product',args.production)]
     if args.fixture is not None:mounts.append(('fixture',args.fixture))
     for name,source in mounts:
         target=profile/'mod-content'/name
@@ -79,12 +84,13 @@ def prepare(args) -> dict:
     if args.fixture is not None:
         fixture_manifest=args.fixture.parent/f'{args.fixture.name}.fixture.json'
         shutil.copy2(fixture_manifest,output/'fixture.json')
-    production_manifest=args.production.parent/f'{args.production.name}.manifest.json'
-    shutil.copy2(production_manifest,output/'production.manifest.json')
+    if not vanilla:
+        production_manifest=args.production.parent/f'{args.production.name}.manifest.json'
+        shutil.copy2(production_manifest,output/'production.manifest.json')
     inputs={p.relative_to(profile).as_posix():sha(p) for p in profile.rglob('*') if p.is_file()}
     game_exe=args.game/'binaries/ck3.exe'
     source_head=os.environ['SXAD_SOURCE_COMMIT'] if 'SXAD_SOURCE_COMMIT' in os.environ else subprocess.check_output(['git','rev-parse','HEAD'],cwd=REPO,text=True).strip()
-    data={'schema':'sxad.native-acceptance-preparation.v1','prepared_at_utc':utc(),'game_dir':str(args.game.resolve()),'game_exe_sha256':sha(game_exe),'game_version':'1.20.0.3','profile':str(profile),'input_sha256':inputs,'production_source':str(args.production.resolve()),'fixture_source':str(args.fixture.resolve()) if args.fixture is not None else None,'native_dll':{'path':str(args.dll.resolve()),'sha256':sha(args.dll)},'native_injector':{'path':str(args.injector.resolve()),'sha256':sha(args.injector)},'python':sys.executable,'python_version':sys.version,'warm_cache_directories':warm,'warm_cache_source':str(real.resolve()),'desktop_size':[width,height],'repository_head':source_head,'runner_sha256':sha(Path(__file__)),'ck3_launch_attempted':False}
+    data={'schema':'sxad.native-acceptance-preparation.v1','prepared_at_utc':utc(),'game_dir':str(args.game.resolve()),'game_exe_sha256':sha(game_exe),'game_version':'1.20.0.3','profile':str(profile),'input_sha256':inputs,'production_source':str(args.production.resolve()) if not vanilla else None,'vanilla':vanilla,'fixture_source':str(args.fixture.resolve()) if args.fixture is not None else None,'native_dll':{'path':str(args.dll.resolve()),'sha256':sha(args.dll)},'native_injector':{'path':str(args.injector.resolve()),'sha256':sha(args.injector)},'python':sys.executable,'python_version':sys.version,'warm_cache_directories':warm,'warm_cache_source':str(real.resolve()),'desktop_size':[width,height],'repository_head':source_head,'runner_sha256':sha(Path(__file__)),'ck3_launch_attempted':False}
     data['checkpoint_input']=checkpoint_input
     write(output/'preparation.json',data)
     (output/'inbox').mkdir();(output/'receipts').mkdir()
@@ -250,6 +256,8 @@ def live(args) -> dict:
         if handle is not None:
             report['shutdown']=stop_tracked(handle,require_running=False)
         report['post_shutdown_inventory']=ck3_process_inventory();report['finished_at_utc']=utc()
+        report['completion_scope']='native session reached holding state and completed controlled cleanup; product mechanism/UI/persistence acceptance requires independent gates'
+        report['ok']=bool(not report.get('error') and (report.get('interaction') or {}).get('status')=='controlled_stop' and (report.get('shutdown') or {}).get('cleanup_proven') and not report['post_shutdown_inventory']['processes'])
         write(run/'report.json',report)
     return report
 
@@ -261,10 +269,14 @@ def main() -> int:
     parser.add_argument('--skip-warm-cache',action='store_true')
     parser.add_argument('--warm-cache-source',type=Path)
     parser.add_argument('--checkpoint',type=Path)
+    parser.add_argument('--vanilla',action='store_true',help='Prepare a genuine unmodded profile for existing-save installation acceptance')
     parser.add_argument('--task-bus',default=r'D:\workspace\.codex-task-bus\bin\codex_task_bus.py');parser.add_argument('--screen-task')
     args=parser.parse_args()
     if args.mcp_server:return mcp_server(args.run_dir)
-    try:print(json.dumps(prepare(args) if args.prepare else live(args),ensure_ascii=False,indent=2))
+    try:
+        result=prepare(args) if args.prepare else live(args)
+        print(json.dumps(result,ensure_ascii=False,indent=2))
+        if args.live and not result.get('ok'):return 1
     except (OSError,ValueError,RuntimeError,TimeoutError) as error:parser.exit(1,f'SXAD ACCEPTANCE FAILED: {error}\n')
     return 0
 if __name__=='__main__':raise SystemExit(main())
