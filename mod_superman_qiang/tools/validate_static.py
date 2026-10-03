@@ -25,7 +25,7 @@ from translate_localization_minimax import TranslationError, assert_protected_to
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 TEST_MARKERS = re.compile(
-    r"(?i)\b(?:sxadt[._\w]*|sxad_test[._\w]*|sxad_acceptance[._\w]*|selftest|test_only|acceptance_only|XAR_ACCEPTANCE_ONLY_BEGIN|XAR_ACCEPTANCE_ONLY_END)\b"
+    r"(?i)\b(?:sxadt[._\w]*|sxat[._\w]*|sxad_test[._\w]*|sxad_acceptance[._\w]*|selftest|test_only|acceptance_only|XAR_ACCEPTANCE_ONLY_BEGIN|XAR_ACCEPTANCE_ONLY_END)\b"
 )
 
 

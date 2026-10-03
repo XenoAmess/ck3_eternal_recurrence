@@ -42,8 +42,12 @@ class SupermanStaticContractTests(unittest.TestCase):
 
     def test_acceptance_marker_leak_is_red(self) -> None:
         relative = "common/scripted_effects/sxad_experience_effects.txt"
-        self.append(relative, "\nsxadt_injected_effect = {}\n")
-        self.assertIn(f"acceptance marker leaked into runtime: {relative}", self.validate()["errors"])
+        path = self.source / relative
+        original = path.read_bytes()
+        for marker in ("sxadt_injected_effect", "sxat_injected_effect"):
+            with self.subTest(marker=marker):
+                path.write_bytes(original + f"\n{marker} = {{}}\n".encode("utf-8"))
+                self.assertIn(f"acceptance marker leaked into runtime: {relative}", self.validate()["errors"])
 
     def test_scripted_effect_count_over_twenty_is_red(self) -> None:
         relative = "common/scripted_effects/sxad_experience_effects.txt"
