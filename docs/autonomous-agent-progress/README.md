@@ -1,5 +1,16 @@
 # CK3 自动游玩智能体进度中心
 
+## 最新截点：2640收复与回复日后态（2026-10-04T06:57:59+08:00 实际补录）
+
+**地理纠正：玩家首都是2619／县2142；2640是县2115的头衔首府。旧交接和报告称2640为玩家首都有误，历史原文保留并据此纠正。** 本轮实际收复2640的bounded loop成立，不是玩家首都收复，也不授全战胜利。
+
+相对4180/h6059，38+47+3=88个正常保存日/2112h，累计 **4268/36524、resume +1115、10-03冻结+777、10-04 +243**；G2 5/8、NW2/4、自然继承0。最新normal **h6267/raw53246760/93381860B/SHA-256 e5f1e0538a26f0b675dcf5dac3fca6b561b684e44b29cd2423aab50a150c3518**，Robert原episode/存活/军2640regular/事件互动null按最终独立帧记账；事件24 h6147零日清除保留，traits未读。
+
+第3个答复等待日SDK64107正常closed0/GREEN；独立active_wars仍16777231/50331736/129，玩家相对分数12/−13/−29，单次白和平提案仍pending，和平终态信用0。 旧collector读wars键得到[]属于omit，已更正active_wars投影，不能当和平。reply day01 expected-date mismatch HARNESS RED及纯读回补保存、无再次advance的边界保留。Python g56/210943a7已真实hot，官方CI37158023572 GREEN；native仍R25/g54/889821f5/PID66464，v50/g55诊断候选未部署，horizon根因未查明。 未闭运行批次未来信用0。
+
+实证：[47日收复账本](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/recapture-v49/siege02-sealed-day-consumption/ROOT-DELIVERY.json)、[第3日正常保存及战争后态](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v51/ROOT-ACTUAL-REPLY-DAY-03-RECEIPT.json)、[事件24零日处理](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/r25-v49-event24-select-zero-days/ROOT-DELIVERY.json)、[军需历史帧](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/siege-cache-trend-r25/ROOT-DELIVERY.json)。
+
+
 ## 当前截点：抵达2640并开始我方围城，4180日（2026-10-04T05:56:22+08:00 实际补录）
 
 actual02正常保存 **64日/1536h**，与前55日合计119日；累计 **4180/36524、resume +1027、10-03冻结 +777、10-04 +155**，G2 5/8、NW2/4、自然继承0。最终锁 **h6059/raw53244648**；主军83886367在2640、state3 sieging、空路线，无combat/retreat。真实抵达及fresh ownSiege首次在day38/raw53244024出现，不能沿用旧forecast44000。

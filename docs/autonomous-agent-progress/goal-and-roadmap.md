@@ -1,5 +1,18 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 当前主线：2640已收复，战争按独立后态记账（2026-10-04T06:57:59+08:00 实际补录）
+
+**纠正地理：实际玩家capital为2619／县2142；2640是县2115的title capital。此前称“玩家首都收复”不准确。** 本轮我方围城→2640收复的production-live bounded loop保留，地理称谓纠正不抹除实际收复，也不外推全战胜利；历史原文追加本纠正。
+
+当前 **4268/36524、resume +1115、10-04 +243**，10-03冻结777、G2 5/8、NW2/4、自然继承0；相对4180阶段38+47+3=88日/2112h，最后normal **h6267/raw53246760/SHA-256 e5f1e0538a26f0b675dcf5dac3fca6b561b684e44b29cd2423aab50a150c3518**。零日事件24保存独立保留，traits效果未读；day01 harness日期匹配RED和纯读回补保存不重复计时。
+
+下一步依据当前独立war/reply与合法军务值继续：第3个答复等待日SDK64107正常closed0/GREEN；独立active_wars仍16777231/50331736/129，玩家相对分数12/−13/−29，单次白和平提案仍pending，和平终态信用0。 原onceoffer不重发，错误collector的[]不是和平证据。Python g56/210943a7已真实hot，官方CI37158023572 GREEN；native仍R25/g54/889821f5/PID66464，v50/g55诊断候选未部署，horizon根因未查明。 运行批次无未来预算信用；首个收复后1日、day02及后续真实日各按normal保存计，缺字段不靠旧摘要猜补。
+
+下一施工入口为玩家当前首都2619的实际占领、敌我兵力及路线观测；Root后续查询不计入本次固定截点。
+
+实证：[47日收复账本](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/recapture-v49/siege02-sealed-day-consumption/ROOT-DELIVERY.json)、[第3日正常保存及战争后态](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v51/ROOT-ACTUAL-REPLY-DAY-03-RECEIPT.json)、[事件24零日处理](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/r25-v49-event24-select-zero-days/ROOT-DELIVERY.json)、[军需历史帧](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/siege-cache-trend-r25/ROOT-DELIVERY.json)。
+
+
 ## 当前主线：已抵达并围城，首都尚未收复（2026-10-04T05:56:22+08:00 实际补录）
 
 累计 **4180/36524、resume +1027、10-04 +155**，10-03冻结+777；G2 5/8、NW2/4、自然继承0。新批64个正常保存日/1536h与原55日合计119日，最后正常 **h6059/raw53244648**。day38/raw53244024才首次实读抵达及我方围城，预测时间不能代替该实证。

@@ -1,5 +1,16 @@
 # 一代人自治：阻塞与能力债账本
 
+## 2026-10-04T06:57:59+08:00 地理更正与目标2640收复增量
+
+**更正：Robert当前首都是2619／县2142；2640是县2115的头衔首府。** 旧交接将2640误称“玩家首都”，原文保留为当时误标；本次能力是目标2640实际收复的限定production-live loop，不是玩家首都收复或整战胜利。47日STOPrecapture独立after occupiedfalse/occupiernull/activeSiegenull及正常保存成立。
+
+累计4268/36524、恢复1115、Oct4+243，Oct3冻结777，G2 5/8、NW2/4、自然0。相对已pub4180，38+47+3=88保存日/2112h；事件24/index0→独立eventnull/h6147零日清除保留，traits后验未读。最新normal h6267/raw53246760/93381860B/SHA `e5f1e0538a26f0b675dcf5dac3fca6b561b684e44b29cd2423aab50a150c3518`。
+
+第3个答复等待日SDK64107正常closed0/GREEN；独立active_wars仍16777231/50331736/129，玩家相对分数12/−13/−29，单次白和平提案仍pending，和平终态信用0。 原37833 capture mismatch HARNESS RED与零重advance的独立补保存分列保留；首次collector误用wars键而得[]已修正，遗漏不计和平。Python g56/210943a7已真实hot，官方CI37158023572 GREEN；native仍R25/g54/889821f5/PID66464，v50/g55诊断候选未部署，horizon根因未查明。 下一P0依据真实active wars/AI回复推进合法战争动作并独立核验后态；未关闭预算零信用，旧RED与另机追加全部保留。
+
+实证：[47日收复账本](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/recapture-v49/siege02-sealed-day-consumption/ROOT-DELIVERY.json)、[第3日正常保存及战争后态](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v51/ROOT-ACTUAL-REPLY-DAY-03-RECEIPT.json)、[事件24零日处理](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/r25-v49-event24-select-zero-days/ROOT-DELIVERY.json)、[军需历史帧](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/siege-cache-trend-r25/ROOT-DELIVERY.json)。
+
+
 ## 当前增量：首都已实际抵达并由我军围城
 
 锁h6059/raw53244648/93304379B/SHA `80d6eaa28b6cf0ee57c32f7f777f5d7d00ef7464ed6dc222514a74187513040f`。actual02已关闭、64正常保存日/1536h，与前55日共119日；累计4180/36524、恢复1027、Oct4+155、Oct3冻结777。首次actual arrival+own siege是day38/raw53244024，非forecast44000。主83886367在2640/state3 sieging、空route0、无combat/retreat；首都仍敌70766占领，ownSiege385875999/playertrue、ETA128估计、CanStartfalse。
