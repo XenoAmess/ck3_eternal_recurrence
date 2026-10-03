@@ -1,0 +1,33 @@
+1.0.0 — 独立维护版首次发布 / Initial maintained baseline
+
+基于白绮的 Change the holding types（上游 Workshop 3337428403）建立独立维护版，适配 CK3 1.20.0.3。维护版使用新的 Workshop 物品，请用本版替换原作，不要同时加载。
+
+新增与修复：
+- 更新 CK3 1.20 的地产选择器实现：使用当前原版 title_valid 与 DecisionViewWidgetSelectBarony 接口。
+- 修正决议总体资格检查的人物作用域；原生选择器继续使用其自己的 ruler 作用域。
+- 六个转换决议及生产效果明确只允许真人玩家执行，目标须为已有、本人直辖、未出租且无在建的男爵领。
+- 补充不兼容建筑可能丢失的提示，并说明政府兼容性和继承规则继续生效。
+
+保留原作功能：
+- 六种目标：城堡、城市、神殿、部落、游牧聚落、神殿城塞；每次只转换所选一个地产。
+- 保留六个公开决议 ID 与目标校验 ID，保留成年、可行动、和平及原有革新条件。
+- 保留原作个人金币费用 main_building_tier_1_cost；当前原版基准为 400 金币，请以决议窗口显示为准。
+
+兼容与限制：
+- 这是新维护产品的 initial baseline，没有上一公开维护版本。
+- 转换使用原版 set_holding_type；不兼容建筑可能丢失，不保证所有建筑和等级都被保留。
+- 本 mod 不提供政府改制功能，地产收益与继承继续遵循原版规则。
+- 不增加牧民聚落作为目标类型，不改变原作的六类目标范围。
+- 保留旧存档相关的公开决议 ID；请用维护版替换原作并保留转换前存档。原作与维护版不能同时加载。
+- 原作者署名与上游来源保持；预览图沿用原作者 thumbnail.png。
+
+English:
+Initial independent XenoAmess-maintained baseline of Baiqi's Change the holding types for CK3 1.20.0.3. The maintenance item is separate from upstream Workshop 3337428403; replace the original rather than loading both.
+
+Updated the holding selector to the current title_valid and DecisionViewWidgetSelectBarony interfaces and corrected the actor scope used by decision-wide eligibility. Decisions and production effects are explicitly limited to human players and an existing, directly held, unleased barony with no ongoing construction.
+
+Retained the six original target types, public decision and predicate IDs, adult/availability/peace and innovation requirements, and personal-gold main_building_tier_1_cost. The CK3 1.20.0.3 baseline is 400 gold; use the cost shown by the decision window.
+
+Added clear warnings that incompatible buildings may be lost. The mod provides no government-reform feature and does not guarantee preservation of every building and level; government compatibility and inheritance rules remain in effect. Herder settlements are not added as a new target. The original author's credit, source link and preview image are retained.
+
+• 补充1张本版本简体中文玩法实机图，功能/运行文件不变。

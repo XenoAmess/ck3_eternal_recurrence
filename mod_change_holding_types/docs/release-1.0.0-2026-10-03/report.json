@@ -1,0 +1,267 @@
+{
+  "schema": "ck3.independent_mod.publication.v1",
+  "product": "mod_change_holding_types",
+  "title": "地产类型转换（XenoAmess维护版）",
+  "version": "1.0.0",
+  "initial_baseline": true,
+  "previous_maintained_version": null,
+  "previous_tag": null,
+  "previous_commit": null,
+  "workshop_item_id": "3812510834",
+  "upstream_item_id_source_only": "3337428403",
+  "app_id": 1158310,
+  "owner_steam_id64": "76561198273714027",
+  "source_commit": "dc53f4a183d4a753c0c5eeb3623f7f060b59f231",
+  "tag": "change-holding-types-v1.0.0",
+  "release_date": "2026-10-03",
+  "uploaded_at_utc": "2026-10-03T11:11:58.276426+00:00",
+  "native_create": {
+    "app_id": 1158310,
+    "create_result": 1,
+    "created_at": "2026-10-03T11:11:45.661523+00:00",
+    "item_id": "3812510834",
+    "legal_agreement_required": false,
+    "operation": "create",
+    "operation_id": "mod_change_holding_types-1.0.0-create-final-01",
+    "payload_sha256": "8d7df8051bef8163833b0493c166c77e964e7a60650a95b3487f0c28eabc3f37",
+    "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+    "stage": "complete",
+    "steam_result": 1,
+    "submitted_at": "2026-10-03T11:11:58.276426+00:00",
+    "updated_at": "2026-10-03T11:11:58.276471+00:00"
+  },
+  "native_media_update": {
+    "additional_preview_changes": {
+      "add": [
+        {
+          "path": "C:\\workspace\\two-mod-maintenance-20261003\\holding-workshop-media-candidate-R0001\\01-cn-gameplay.jpg",
+          "sha256": "7f09f551de6a5062a8d89f4d38823012e480dd105fccf1dd990892734111a489",
+          "size": 782501
+        }
+      ],
+      "remove_indices": [],
+      "update": []
+    },
+    "additional_previews_before": {
+      "app_id": 1158310,
+      "item_id": "3812510834",
+      "previews": []
+    },
+    "app_id": 1158310,
+    "created_at": "2026-10-03T11:18:08.062554+00:00",
+    "item_id": "3812510834",
+    "legal_agreement_required": false,
+    "operation": "update",
+    "operation_id": "mod_change_holding_types-1.0.0-media-final-01",
+    "payload_sha256": "4ada9eeb30eb0922e771692bb3ed221fc13c08aebebcf7d6ee64625d492d08f1",
+    "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+    "stage": "complete",
+    "steam_result": 1,
+    "submitted_at": "2026-10-03T11:18:17.824903+00:00",
+    "updated_at": "2026-10-03T11:18:17.824944+00:00"
+  },
+  "format_ci_success": true,
+  "chinese_live_acceptance": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_change_holding_types\\docs\\live-R0005-cn-2026-10-03\\report.json",
+    "bytes": 8422,
+    "sha256": "0b59a81d25e7ae19bae3b34100a9652dd82527b46b946d7ff3b71ee2d7ede164"
+  },
+  "chinese_live_summary": "R0005中文冷加载后12项唯一状态断言通过，六类转换、同类／AI／非男爵领保护通过；六个中文决议名、400金币和完整警示可见。R0002中文GUI实际选择罗斯萨诺，1246→846扣除400金币；R0005验证该存档状态保持。R0005五个实际日志截面error.log均0字节。",
+  "only_simplified_chinese_live_acceptance": true,
+  "other_eight_languages_format_only": true,
+  "id_bound_formal_build": {
+    "product": "mod_change_holding_types",
+    "new_item_id": "3812510834",
+    "source_commit": "dc53f4a183d4a753c0c5eeb3623f7f060b59f231",
+    "tag": "change-holding-types-v1.0.0",
+    "manifest": {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-product-formal-release-with-ids-R0001\\mod_change_holding_types.manifest.json",
+      "bytes": 3404,
+      "sha256": "0c75419e45bd1006966930f022a38be890cdbc5a9a2a0d471c2d5ac2b163d229"
+    },
+    "zip": {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-product-formal-release-with-ids-R0001\\mod_change_holding_types.zip",
+      "bytes": 49396,
+      "sha256": "58eeea830aebfda11faabadc11b48ea3d1aa732d1179438a652b9a6ec068ba72"
+    },
+    "runtime_file_count": 17,
+    "runtime_and_zip_identical_to_uploaded_cn_accepted_build": true
+  },
+  "fresh_subscribed_cache_exact": true,
+  "cache_game_rerun": false,
+  "anonymous_full_notes_B": {
+    "title_exact": true,
+    "description_exact": true,
+    "description_characters": 1853,
+    "description_sha256": "C7A76080286FEB9451F0B4979A91B4F8E25563E10AEA6A0D56AAB3F2966C8B1F",
+    "expected_description_sha256": "C7A76080286FEB9451F0B4979A91B4F8E25563E10AEA6A0D56AAB3F2966C8B1F",
+    "change_notes_exact": true,
+    "changelog_entry_id": "1791025918",
+    "change_notes_characters": 1993,
+    "change_notes_lines": 33,
+    "change_notes_sha256": "70A06BF884BDCC2CF0245367FC156D6B08D3BBE020695EF68A8640D4EFE3138A",
+    "expected_change_notes_characters": 1993,
+    "expected_change_notes_lines": 33,
+    "expected_change_notes_sha256": "70A06BF884BDCC2CF0245367FC156D6B08D3BBE020695EF68A8640D4EFE3138A",
+    "time_updated": 1791025918,
+    "file_size": "101540",
+    "ok": true,
+    "product": "mod_change_holding_types",
+    "item_id": "3812510834",
+    "anonymous_batch_api_source": "C:\\workspace\\two-mod-maintenance-20261003\\public-notes-B-holding-get-R0003\\anonymous-metadata-batch.raw",
+    "current_owner_app_visibility_exact": true
+  },
+  "anonymous_full_notes_A_predecessor": {
+    "title_exact": true,
+    "description_exact": true,
+    "description_characters": 1853,
+    "description_sha256": "C7A76080286FEB9451F0B4979A91B4F8E25563E10AEA6A0D56AAB3F2966C8B1F",
+    "expected_description_sha256": "C7A76080286FEB9451F0B4979A91B4F8E25563E10AEA6A0D56AAB3F2966C8B1F",
+    "change_notes_exact": true,
+    "changelog_entry_id": "1791025918",
+    "change_notes_characters": 1962,
+    "change_notes_lines": 31,
+    "change_notes_sha256": "67C8117CC3C611098717A02864915EE67974CFAAB1FB16CB0129293F3155F56B",
+    "expected_change_notes_characters": 1962,
+    "expected_change_notes_lines": 31,
+    "expected_change_notes_sha256": "67C8117CC3C611098717A02864915EE67974CFAAB1FB16CB0129293F3155F56B",
+    "time_updated": 1791025918,
+    "file_size": "101540",
+    "ok": true
+  },
+  "notes_B_replaces_same_existing_entry_A": true,
+  "native_notes_B_not_public_owner_edit_required": true,
+  "media_count": 1,
+  "media_native_order_byte_pixel_and_direct_image_review_pass": true,
+  "steam_offline_direct_fresh_review": {
+    "path": "C:\\workspace\\two-mod-maintenance-20261003\\steam-publication-execution-R0004\\frames\\post-publication-offline\\root-visual-review.json",
+    "bytes": 913,
+    "sha256": "a496a65175e3891606c77ac1817d1c108b4964b8365d83bb03487112a882f0b1"
+  },
+  "no_ck3_launcher_running_at_screen_release": true,
+  "external_evidence_preserved": [
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-mod-minimal-publication-R0002\\mod_change_holding_types\\bound-final\\native-create-receipt.json",
+      "bytes": 549,
+      "sha256": "89eb4d4105d9960240f6b74f317fdc24eb79ad6c7d7da6eded3bdea7c6258eff"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-mod-minimal-publication-R0002\\mod_change_holding_types\\media-update-R0001\\native-media-update-receipt.json",
+      "bytes": 986,
+      "sha256": "0704cb5bac8e6f153081f95a8196d66c37b702bee82ce6c623032d1daefb1085"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-mod-minimal-publication-R0002\\mod_change_holding_types\\steam-change-notes-create-A.txt",
+      "bytes": 2935,
+      "sha256": "1114ada1e29128e02c0a70fb707fdf54ca65beee14c7cd5d8b6ea7e706bbff99"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-mod-minimal-publication-R0002\\mod_change_holding_types\\steam-change-notes-media-B.txt",
+      "bytes": 3018,
+      "sha256": "569244caed2fae9f77e0cdd9ece4fcd05270db4c337758d1a607d32032e93a4b"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-mod-minimal-publication-R0002\\mod_change_holding_types\\notes-A-and-B-freeze.json",
+      "bytes": 1981,
+      "sha256": "5c2215b6bd958a4f9af62bfb380b5a85c8a1427e9d0fed8bd68221866ef7c7f4"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-mod-minimal-publication-R0002\\mod_change_holding_types\\post-create-R0001\\public-A-R0001\\verification.json",
+      "bytes": 758,
+      "sha256": "940ab1d0fe97cf3d9452aed796e37870c9cd90fceb057c9d38c8791e8400f78f"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\public-notes-B-holding-get-R0003\\mod_change_holding_types-verification.json",
+      "bytes": 1037,
+      "sha256": "172eb93c6db08fb8317ba8d6accb324b2aa00b88a7c99b4855040b14570a5b97"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\public-notes-B-holding-get-R0003\\mod_change_holding_types-changelog.raw",
+      "bytes": 53435,
+      "sha256": "dcc7d83a4922ed43e5ceb1fd9fb126c5bf5c92f2843eb3bc656d3e628a2a1b39"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\holding-cache-manifest-verification-R0001\\report.json",
+      "bytes": 2081,
+      "sha256": "5c1667577b15aaddcef493d18df907c0168bf83ac0dee8ab75f7f9447d400ab5"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-product-formal-release-with-ids-R0001\\mod_change_holding_types-id-binding.json",
+      "bytes": 803,
+      "sha256": "0f2ff3e6427c7cd6cdf5c558849c77f0099dee38615ce7984fcd188aa335311d"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-product-formal-release-with-ids-R0001\\mod_change_holding_types.manifest.json",
+      "bytes": 3404,
+      "sha256": "0c75419e45bd1006966930f022a38be890cdbc5a9a2a0d471c2d5ac2b163d229"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\ci-dc53f4a1-urllib-R0001\\report.json",
+      "bytes": 733,
+      "sha256": "9184db0e9ec8ec5f4140c67153c7949bbf5467a6edbf0d8ca948d7a13db40ca3"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\holding-owner-notes-replacement-R0003\\save-receipt.json",
+      "bytes": 706,
+      "sha256": "28ffc2a43641d412e73245a71871ebae42c5c0fedfb56413000ce619885e565a"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\holding-public-media-R0001\\public-media-report.json",
+      "bytes": 5203,
+      "sha256": "e6f69762764758bf5cf91c74b0b9033482730d6039a0b11389f1f6dc71c4e7b1"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\holding-public-media-R0001\\root-cdn-image-review.json",
+      "bytes": 601,
+      "sha256": "633c3861879798be53a4b9fa60dddbb9c93c63c232793a4ca6956d62b1be4d91"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\steam-publication-execution-R0004\\frames\\post-publication-offline\\root-visual-review.json",
+      "bytes": 913,
+      "sha256": "a496a65175e3891606c77ac1817d1c108b4964b8365d83bb03487112a882f0b1"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\publication-lease-keeper-R0003\\release.json",
+      "bytes": 1289,
+      "sha256": "8c9e50179b71377ddb9c251b3c515c4a574cc83f8e823f8518c954fe40aa3e37"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_change_holding_types\\docs\\live-R0005-cn-2026-10-03\\report.json",
+      "bytes": 8422,
+      "sha256": "0b59a81d25e7ae19bae3b34100a9652dd82527b46b946d7ff3b71ee2d7ede164"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\holding-subscribe-command-R0001\\stdout.bin",
+      "bytes": 5093,
+      "sha256": "157bf055f918e220efad83608977171d2406c2799f7e407aa433244e85f755c3"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\holding-fresh-download-command-R0001\\stdout.bin",
+      "bytes": 2781,
+      "sha256": "52de28d1328aa574a100d3888213a5198f350afb3059a1e518ccfa0cc363d905"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\holding-public-media-R0001\\public-media.jpg",
+      "bytes": 782501,
+      "sha256": "7f09f551de6a5062a8d89f4d38823012e480dd105fccf1dd990892734111a489"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\holding-owner-notes-replacement-R0003\\full-owner-field-readback.txt",
+      "bytes": 3051,
+      "sha256": "ab4f70640f9c13c25729bb1bf2ab74a5591d9bcc8e43ea477ab833654677d189"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-product-formal-release-with-ids-R0001\\mod_change_holding_types.zip",
+      "bytes": 49396,
+      "sha256": "58eeea830aebfda11faabadc11b48ea3d1aa732d1179438a652b9a6ec068ba72"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\steam-publication-execution-R0004\\frames\\post-publication-offline\\probe-1\\steam-moved.png",
+      "bytes": 327530,
+      "sha256": "8ed557bdf6678951198b9cac3a33447ccdb61f89a0bb8b3dac36a970a842db3d"
+    }
+  ],
+  "known_limits": "原作和维护版只能启用其一。转换可能损失不兼容建筑，不能解除原版政体与继承规则，也不承诺全部建筑保留。R0005未重新执行原生400金币交易，该交易来自R0002中文实机；R0005冷加载复验其保存状态。原版条件Is not AI仍为英文，不声称全部原版界面均已中文化。未覆盖全部DLC／时代／长期存档或多人联机。",
+  "report_captured_at_utc": "2026-10-03T12:16:51.460986+00:00",
+  "packaging_completion_boundary": "At packaging time all publication/Chinese acceptance/cache/offline gates were verified; the resulting master delivery identity is recorded externally after commit and push."
+}

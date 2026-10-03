@@ -262,5 +262,12 @@
     }
   ],
   "known_limits": "仅支持玩家进攻。与上游公开CB ID相同，原作和维护版只能启用其一。建议用于新战争；本轮保存重载限于新宣战公国战争。未独立验收旧版大圣战迁移、自动军队、并发战争、原生议和按钮或多人真人赔款。最终结算证据链仍有93条动态文本格式诊断、来源未定位，并保留原版加载／旅行诊断；不宣称日志零错误。",
-  "completion_boundary": "All publication/Chinese acceptance/cache/offline gates verified; repository commit and push are the remaining delivery action, whose commit identity is recorded externally."
+  "packaging_completion_boundary": "All publication/Chinese acceptance/cache/offline gates verified; repository commit and push are the remaining delivery action, whose commit identity is recorded externally.",
+  "repository_delivery_addendum": {
+    "recorded_at_utc": "2026-10-03T12:16:19.655390+00:00",
+    "publication_records_and_changelog_pushed_to_master_commit": "65ad9b843197a63da1a2606c13867855a806ccbf",
+    "original_packaging_boundary_is_historical_not_current_pending_status": true,
+    "original_source_tag_unchanged": true,
+    "exact_original_receipt_bytes_preserved_by_product_scoped_gitattributes": true
+  }
 }

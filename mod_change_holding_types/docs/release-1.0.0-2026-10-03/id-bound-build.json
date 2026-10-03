@@ -1,0 +1,18 @@
+{
+  "product": "mod_change_holding_types",
+  "new_item_id": "3812510834",
+  "source_commit": "dc53f4a183d4a753c0c5eeb3623f7f060b59f231",
+  "tag": "change-holding-types-v1.0.0",
+  "manifest": {
+    "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-product-formal-release-with-ids-R0001\\mod_change_holding_types.manifest.json",
+    "bytes": 3404,
+    "sha256": "0c75419e45bd1006966930f022a38be890cdbc5a9a2a0d471c2d5ac2b163d229"
+  },
+  "zip": {
+    "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-product-formal-release-with-ids-R0001\\mod_change_holding_types.zip",
+    "bytes": 49396,
+    "sha256": "58eeea830aebfda11faabadc11b48ea3d1aa732d1179438a652b9a6ec068ba72"
+  },
+  "runtime_file_count": 17,
+  "runtime_and_zip_identical_to_uploaded_cn_accepted_build": true
+}

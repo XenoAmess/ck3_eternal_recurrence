@@ -1,0 +1,18 @@
+{
+  "product": "mod_change_holding_types",
+  "item_id": "3812510834",
+  "entry_id": "1791025918",
+  "url": "https://steamcommunity.com/sharedfiles/editchangelogentry/3812510834/1791025918/",
+  "old_field_matches_frozen_A_or_B": true,
+  "new_fulltext_editor_readback_exact_B": true,
+  "set_value_called_this_attempt": true,
+  "keyboard_calls": 0,
+  "mouse_calls": 0,
+  "semantic_value_pattern": true,
+  "semantic_save_invoke": true,
+  "new_bytes_sha256": "569244caed2fae9f77e0cdd9ece4fcd05270db4c337758d1a607d32032e93a4b",
+  "save_invoked_at_utc": "2026-10-03T11:48:49.057127+00:00",
+  "anonymous_readback_required": true,
+  "save_invoke_returned": true,
+  "public_success_claimed": false
+}

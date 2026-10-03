@@ -1,0 +1,44 @@
+{
+  "schema": "ck3.independent_mod.full_create_and_media_notes.v1",
+  "status": "FROZEN_PENDING_REAL_PUBLICATION",
+  "prepared_at_utc": "2026-10-03T10:38:43.632401+00:00",
+  "original_a_source": {
+    "path": "C:/workspace/ck3_eternal_recurrence/mod_change_holding_types/docs/change-notes-1.0.0.txt",
+    "size": 2935,
+    "sha256": "1114ada1e29128e02c0a70fb707fdf54ca65beee14c7cd5d8b6ea7e706bbff99"
+  },
+  "notes_a": {
+    "artifact": {
+      "path": "C:/workspace/two-mod-maintenance-20261003/two-mod-minimal-publication-R0002/mod_change_holding_types/steam-change-notes-create-A.txt",
+      "size": 2935,
+      "sha256": "1114ada1e29128e02c0a70fb707fdf54ca65beee14c7cd5d8b6ea7e706bbff99"
+    },
+    "normalized_characters": 1962,
+    "normalized_lines": 31,
+    "normalized_sha256": "67C8117CC3C611098717A02864915EE67974CFAAB1FB16CB0129293F3155F56B"
+  },
+  "notes_b": {
+    "artifact": {
+      "path": "C:/workspace/two-mod-maintenance-20261003/two-mod-minimal-publication-R0002/mod_change_holding_types/steam-change-notes-media-B.txt",
+      "size": 3018,
+      "sha256": "569244caed2fae9f77e0cdd9ece4fcd05270db4c337758d1a607d32032e93a4b"
+    },
+    "normalized_characters": 1993,
+    "normalized_lines": 33,
+    "normalized_sha256": "70A06BF884BDCC2CF0245367FC156D6B08D3BBE020695EF68A8640D4EFE3138A"
+  },
+  "added_player_visible_line": "• 补充1张本版本简体中文玩法实机图，功能/运行文件不变。",
+  "version_relation": "same 1.0.0 initial-baseline publication; no prior maintained version",
+  "create_operation_id": null,
+  "create_public_entry_id": null,
+  "media_operation_id": null,
+  "media_public_entry_id": null,
+  "release_source_tag_moved": false,
+  "steam_api_init_calls": 0,
+  "screen_calls": 0,
+  "original_pair_freeze": {
+    "path": "C:/workspace/two-mod-maintenance-20261003/holding-final-notes-A-B-R0001/notes-A-and-B-freeze.json",
+    "size": 1678,
+    "sha256": "350d58dcd1fca0d5f8754f2bea8a6fcbeb41f7d83ffd335f995ace6b1b32c9ad"
+  }
+}

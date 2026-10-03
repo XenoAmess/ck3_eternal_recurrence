@@ -1,0 +1,22 @@
+{
+  "title_exact": true,
+  "description_exact": true,
+  "description_characters": 1853,
+  "description_sha256": "C7A76080286FEB9451F0B4979A91B4F8E25563E10AEA6A0D56AAB3F2966C8B1F",
+  "expected_description_sha256": "C7A76080286FEB9451F0B4979A91B4F8E25563E10AEA6A0D56AAB3F2966C8B1F",
+  "change_notes_exact": true,
+  "changelog_entry_id": "1791025918",
+  "change_notes_characters": 1993,
+  "change_notes_lines": 33,
+  "change_notes_sha256": "70A06BF884BDCC2CF0245367FC156D6B08D3BBE020695EF68A8640D4EFE3138A",
+  "expected_change_notes_characters": 1993,
+  "expected_change_notes_lines": 33,
+  "expected_change_notes_sha256": "70A06BF884BDCC2CF0245367FC156D6B08D3BBE020695EF68A8640D4EFE3138A",
+  "time_updated": 1791025918,
+  "file_size": "101540",
+  "ok": true,
+  "product": "mod_change_holding_types",
+  "item_id": "3812510834",
+  "anonymous_batch_api_source": "C:\\workspace\\two-mod-maintenance-20261003\\public-notes-B-holding-get-R0003\\anonymous-metadata-batch.raw",
+  "current_owner_app_visibility_exact": true
+}

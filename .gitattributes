@@ -1,5 +1,13 @@
 * text=auto eol=lf
 
+# Keep the original independent-mod publication receipts and anonymous HTTP bytes.
+mod_de_jure_conquest/docs/release-1.0.0-2026-10-03/*.json -text whitespace=cr-at-eol
+mod_de_jure_conquest/docs/release-1.0.0-2026-10-03/*.html -text whitespace=cr-at-eol
+mod_de_jure_conquest/docs/release-1.0.0-2026-10-03/*.txt -text whitespace=cr-at-eol
+mod_change_holding_types/docs/release-1.0.0-2026-10-03/*.json -text whitespace=cr-at-eol
+mod_change_holding_types/docs/release-1.0.0-2026-10-03/*.html -text whitespace=cr-at-eol
+mod_change_holding_types/docs/release-1.0.0-2026-10-03/*.txt -text whitespace=cr-at-eol
+
 # Keep Episode03 frozen editorial bytes reproducible across Git checkouts.
 promo/ck3_native_war_ai/episode-03-siege/project/live-source.json -text whitespace=cr-at-eol
 promo/ck3_native_war_ai/episode-03-siege/project/review-story-episode03.json -text whitespace=cr-at-eol

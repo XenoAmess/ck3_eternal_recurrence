@@ -1,33 +1,33 @@
 {
-  "product": "mod_de_jure_conquest",
-  "item_id": "3812510217",
+  "product": "mod_change_holding_types",
+  "item_id": "3812510834",
   "download_result": {
     "app_id": 1158310,
     "callback": {
       "app_id": 1158310,
       "callback_id": 3406,
-      "item_id": "3812510217",
+      "item_id": "3812510834",
       "result": 1
     },
     "dll_path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\steam_api64.dll",
     "dll_sha256": "1db3fd414039d3e5815a5721925dd2e0a3a9f2549603c6cab7c49b84966a1af3",
     "download_info": {
       "available": true,
-      "downloaded_bytes": 13312,
-      "total_bytes": 13312
+      "downloaded_bytes": 13008,
+      "total_bytes": 13008
     },
-    "elapsed_seconds": 7.122,
+    "elapsed_seconds": 65.456,
     "expected_cache_absent_before_start": true,
-    "expected_cache_path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3812510217",
+    "expected_cache_path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3812510834",
     "fresh_cache_requested": true,
-    "ignored_callbacks": 29,
+    "ignored_callbacks": 67,
     "install_info": {
-      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3812510217",
-      "size_on_disk": 147202,
-      "timestamp": 1791025832
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3812510834",
+      "size_on_disk": 101540,
+      "timestamp": 1791025918
     },
     "isolated_worker": true,
-    "item_id": "3812510217",
+    "item_id": "3812510834",
     "ok": true,
     "schema": "ck3_workshop_mcp.steam_native.download.v1",
     "started": true,
@@ -43,16 +43,17 @@
     "status": "complete",
     "timeout_seconds": 300.0,
     "worker_exit_code": 0,
-    "worker_pid": 19320
+    "worker_pid": 13136
   },
   "verification_argv": [
     "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
     "-B",
-    "mod_de_jure_conquest/tools/build_release.py",
+    "mod_change_holding_types/tools/build_release.py",
     "--verify",
-    "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3812510217",
+    "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3812510834",
     "--manifest",
-    "C:\\workspace\\two-mod-maintenance-20261003\\two-product-formal-release-R0001\\mod_de_jure_conquest.manifest.json"
+    "C:\\workspace\\two-mod-maintenance-20261003\\two-product-formal-release-R0001\\mod_change_holding_types.manifest.json",
+    "--release-localization"
   ],
   "returncode": 0,
   "cache_manifest_verified": true,

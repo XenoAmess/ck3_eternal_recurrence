@@ -30,3 +30,7 @@ R0001的harness RED、R0002的真实GUI付款与fixture diagnostic、R0003重载
 当前简体中文实机最终签核已完成，仍待正式上传／公开全文Change Notes／fresh缓存／永久changelog；历史R0004外语路线及英文警告截图不作为中文签核。九语格式检查保留，外语实机和语义／术语审阅计划取消。
 
 当前验收范围以[语言验收政策](localization-acceptance-policy-2026-10-03.md)为准：**只进行简体中文实机验收；其他八种语言只做格式检查，不进行语义／术语审阅或外语实机验收。**
+
+## 2026-10-03 正式发布追加记录
+
+维护版新Workshop ID为 [3812510834](https://steamcommunity.com/sharedfiles/filedetails/?id=3812510834)，版本1.0.0。中文实机、正式构建、完整Change Notes匿名回读、实机媒体、全新订阅缓存逐文件复核与Steam离线恢复均已通过，完整事实见[发布报告](release-1.0.0-2026-10-03/README.md)。此前阶段记录和失败attempt按原样保留。

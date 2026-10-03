@@ -1,0 +1,13 @@
+{
+  "reviewer": "/root",
+  "reviewed_at_utc": "2026-10-03T11:38:36.079291+00:00",
+  "image": {
+    "path": "C:\\workspace\\two-mod-maintenance-20261003\\holding-public-media-R0001\\public-media.jpg",
+    "bytes": 782501,
+    "sha256": "7f09f551de6a5062a8d89f4d38823012e480dd105fccf1dd990892734111a489"
+  },
+  "direct_downloaded_image_review": true,
+  "observations": "六种中文地产转换决议、城市目标特拉尼、400金币及完整红色建筑/政体/继承警示可见；原版 Is not AI 英文条件仍保留。",
+  "result": "PASS",
+  "public_page_browser_review": false
+}

@@ -1,0 +1,95 @@
+{
+  "files": [
+    {
+      "path": "common/decision_group_types/ch_decision_group_types.txt",
+      "sha256": "3ef2e04eb222acdd87bfcbff3cff18f9d32b547b62e83e778a9631d7494cadf0",
+      "size": 56
+    },
+    {
+      "path": "common/decisions/00_convert_holdings_decisions.txt",
+      "sha256": "35f1a8bbd75cebe1a6da09c0462134f53ca8a1db06340c6c3e031d986531e0c1",
+      "size": 8147
+    },
+    {
+      "path": "common/scripted_effects/cht_conversion_effects.txt",
+      "sha256": "2d9b4ce2c97d5d2be26221d466c5150e0b11e416bad63c835f73fce24ce8eb15",
+      "size": 1928
+    },
+    {
+      "path": "common/scripted_triggers/00_convert_holdings_scripted_triggers.txt",
+      "sha256": "bbe005b827d0fc4425a50cc30b0eaf551f8eff33b30fbd5f3f469d7a63958898",
+      "size": 1412
+    },
+    {
+      "path": "common/trigger_localization/00_convert_holdings_requirement_triggers.txt",
+      "sha256": "505d5f52e0770ec74d1724b69830b910b15b88712e1d7b02cdb79df2156ea360",
+      "size": 699
+    },
+    {
+      "path": "descriptor.mod",
+      "sha256": "c5301c5d8a286b3666d98915fd4a9240e143dc6930f849c9741c43a9bcf96e70",
+      "size": 140
+    },
+    {
+      "path": "gui/decision_view_widgets/decision_view_widget_ch_convert_holding.gui",
+      "sha256": "b496d5997d8a1ef43feb253951673ef8668388b1c36d3056ee47dc45afbe730e",
+      "size": 2856
+    },
+    {
+      "path": "localization/english/00_convert_holdings_l_english.yml",
+      "sha256": "58ce77b1023693ed2dd0c3757c37b105f079a5ec55b2ae324b8980c6b338c461",
+      "size": 5339
+    },
+    {
+      "path": "localization/french/00_convert_holdings_l_french.yml",
+      "sha256": "550b216ab0f55e3e4c49af63efc5d64832b89145ea14916131000c5de37b4dad",
+      "size": 5577
+    },
+    {
+      "path": "localization/german/00_convert_holdings_l_german.yml",
+      "sha256": "be61439a63ec9aa8790dfc39bfb463d1c57ac07606d1b69de48254d495ce0a6e",
+      "size": 5639
+    },
+    {
+      "path": "localization/japanese/00_convert_holdings_l_japanese.yml",
+      "sha256": "60e460938aa2e54801439af0cc95b3dabeaeecd143bb0ba02296281f6c651222",
+      "size": 5655
+    },
+    {
+      "path": "localization/korean/00_convert_holdings_l_korean.yml",
+      "sha256": "7bf7964306bfc8180392cedafb99aab1d4821fdbdfa178ca141d0762e9488e6c",
+      "size": 6008
+    },
+    {
+      "path": "localization/polish/00_convert_holdings_l_polish.yml",
+      "sha256": "d08f204d772788e7a0a07387a044a16acd00791a82d17f27d64f60e81dcd1fc5",
+      "size": 5550
+    },
+    {
+      "path": "localization/russian/00_convert_holdings_l_russian.yml",
+      "sha256": "c265ea01c4de7114458b343d68aecad9ddb2e8f5e703222abd82aa773fa5e83b",
+      "size": 7295
+    },
+    {
+      "path": "localization/simp_chinese/00_convert_holdings_l_simp_chinese.yml",
+      "sha256": "87223ea400c45e166c4f127d5b8cc34d57bea6fdddd9b089d583029d1b23ac34",
+      "size": 4919
+    },
+    {
+      "path": "localization/spanish/00_convert_holdings_l_spanish.yml",
+      "sha256": "5f90075faa751c31901b897a579cfd1d0230d4b64df9ecde751baa73142dbd73",
+      "size": 5576
+    },
+    {
+      "path": "thumbnail.png",
+      "sha256": "26ce48cd711b6a6ca65661c4511f4499da3ed72b80d1bf3b855a49e65d529071",
+      "size": 34744
+    }
+  ],
+  "format_version": 1,
+  "git_sha": "dc53f4a183d4a753c0c5eeb3623f7f060b59f231",
+  "git_tag": "change-holding-types-v1.0.0",
+  "mod_version": "1.0.0",
+  "product_id": "mod_change_holding_types",
+  "workshop_item_id": "3812510834"
+}

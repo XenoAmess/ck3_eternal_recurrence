@@ -1,0 +1,90 @@
+{
+  "schema": "ck3.independent_mod.anonymous_media_readback.v1",
+  "observed_at_utc": "2026-10-03T11:21:49.139902+00:00",
+  "product_id": "mod_change_holding_types",
+  "workshop_item_id": "3812510834",
+  "media_binding": {
+    "path": "C:/workspace/two-mod-maintenance-20261003/two-mod-minimal-publication-R0002/mod_change_holding_types/media-update-R0001/media-update-bindings.json",
+    "size": 3755,
+    "sha256": "8e3c603dbf39c1d4bb8d17df980ae1fb897a9c0028c0a526cd1992e8345a8a8b"
+  },
+  "native_query_after": {
+    "path": "C:/workspace/two-mod-maintenance-20261003/holding-previews-after-command-R0001/stdout.bin",
+    "size": 841,
+    "sha256": "e3f2c2801dd4f2b2631d093a15265352f8ca5c709cc2bf34a41607429561c43d"
+  },
+  "native_index_type_filename": {
+    "index": 0,
+    "type": 0,
+    "original_filename": "01-cn-gameplay.jpg"
+  },
+  "status": "BYTE_PIXEL_NATIVE_ORDER_AND_ANONYMOUS_HTML_REFERENCE_PASS",
+  "steam_api_init_calls": 0,
+  "screen_calls": 0,
+  "manual_public_page_visual_review": "not-recorded",
+  "cdn_response": {
+    "requested_url": "https://images.steamusercontent.com/ugc/12813075279875554831/0720E24EE6FE599C581FADD17BDAAE28674F9557/",
+    "final_url": "https://images.steamusercontent.com/ugc/12813075279875554831/0720E24EE6FE599C581FADD17BDAAE28674F9557/",
+    "http_status": 200,
+    "headers": {
+      "Content-Type": "image/jpeg",
+      "X-GUploader-UploadID": "AP6rU83r0Sa5Uad8qLKqfZbz1nlTAbdDx2FGqruLAeS8apqD5EJdIPvByGl71-tcugERHXAD",
+      "Last-Modified": "Sat, 03 Oct 2026 11:18:17 GMT",
+      "ETag": "\"e981465b41a978e47400f22c90b858cd\"",
+      "x-goog-generation": "1791026297043830",
+      "x-goog-metageneration": "1",
+      "x-goog-stored-content-encoding": "identity",
+      "x-goog-stored-content-length": "782501",
+      "Content-Disposition": "inline; filename*=UTF-8''3812510834_preview_01-cn-gameplay.jpg;",
+      "x-goog-hash": "md5=6YFGW0GpeOR0APIskLhYzQ==",
+      "x-goog-storage-class": "REGIONAL",
+      "Accept-Ranges": "bytes",
+      "Content-Length": "782501",
+      "Access-Control-Expose-Headers": "x-goog-content-length-range",
+      "Server": "UploadServer",
+      "Cache-Control": "private, max-age=604800",
+      "Expires": "Sat, 10 Oct 2026 11:21:50 GMT",
+      "Date": "Sat, 03 Oct 2026 11:21:50 GMT",
+      "Connection": "close",
+      "Access-Control-Allow-Origin": "*"
+    },
+    "body": {
+      "path": "C:/workspace/two-mod-maintenance-20261003/holding-public-media-R0001/public-media.jpg",
+      "size": 782501,
+      "sha256": "7f09f551de6a5062a8d89f4d38823012e480dd105fccf1dd990892734111a489"
+    },
+    "request_cookie_or_authorization": false
+  },
+  "dimensions": [
+    1920,
+    1080
+  ],
+  "exact_uploaded_jpeg_bytes": true,
+  "decoded_pixels_equal": true,
+  "public_item_response": {
+    "requested_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812510834",
+    "final_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812510834",
+    "http_status": 200,
+    "headers": {
+      "Server": "nginx",
+      "Content-Type": "text/html; charset=UTF-8",
+      "X-Frame-Options": "SAMEORIGIN",
+      "Content-Security-Policy": "default-src blob: data: https: 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://community.fastly.steamstatic.com/ https://cdn.fastly.steamstatic.com/steamcommunity/public/assets/ https://api.steampowered.com/ https://recaptcha.net https://www.google.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://www.gstatic.com/recaptcha/ https://www.youtube.com/ https://s.ytimg.com https://player.vimeo.com; object-src 'none'; connect-src 'self' https://community.fastly.steamstatic.com/ https://store.steampowered.com/ https://checkout.steampowered.com/ wss://community.steam-api.com/websocket/ https://api.steampowered.com/ https://login.steampowered.com/ https://help.steampowered.com/ https://steam.tv/ https://steamcommunity.com/ https://*.valvesoftware.com https://*.steambeta.net https://*.discovery.beta.steamserver.net https://*.steamcontent.com https://steambroadcast.akamaized.net https://steambroadcast-test.akamaized.net https://broadcast.st.dl.eccdnx.com https://lv.queniujq.cn https://steambroadcastchat.akamaized.net http://127.0.0.1:27060 ws://127.0.0.1:27060 https://video.steamstatic.com https://steamvideo-a.akamaihd.net/video/ https://sketchfab.com; frame-ancestors 'self' https://steamloopback.host ;",
+      "Expires": "Mon, 26 Jul 1997 05:00:00 GMT",
+      "Cache-Control": "no-cache",
+      "Vary": "Accept-Encoding",
+      "Date": "Sat, 03 Oct 2026 11:21:52 GMT",
+      "Transfer-Encoding": "chunked",
+      "Connection": "Transfer-Encoding",
+      "Set-Cookie": "steamCountry=JP%7Ca44f4e4b9308876c85427801c67dd634; path=/; secure; HttpOnly; SameSite=None"
+    },
+    "body": {
+      "path": "C:/workspace/two-mod-maintenance-20261003/holding-public-media-R0001/public-item.html",
+      "size": 61228,
+      "sha256": "006720c9a806f5622b03f8f74f1c072b0896faea3bb7c4753c07f02003ff4336"
+    },
+    "request_cookie_or_authorization": false
+  },
+  "public_item_html_references_exact_media_path": true,
+  "html_reference_check": "unescaped exact CDN path presence; raw HTML preserved; does not claim a visual review"
+}

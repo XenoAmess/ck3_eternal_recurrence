@@ -1,8 +1,8 @@
 # 地产类型转换（XenoAmess维护版）
 
-这是 `Change the holding types` 的独立第三方维护工作目录。上游 Workshop `3337428403` 只用于注明来源；未来维护版必须创建新的 Workshop 物品。
+这是 `Change the holding types` 的独立第三方维护工作目录。上游 Workshop `3337428403` 只用于注明来源；维护版新物品为 `3812510834`；后续更新仅针对维护版。
 
-当前状态（2026-10-03）：上游字节、CK3 1.20.0.3代码适配与九语格式L0已完成；已有功能与过程证据保留，[R0005简体中文实机最终验收](docs/live-R0005-cn-2026-10-03/README.md)已GREEN，Workshop发布闭环待完成。**实机只验简体中文；其他八语只检查格式，不做语义／术语审阅或外语实机。** 现行要求见[语言验收政策](docs/localization-acceptance-policy-2026-10-03.md)。
+当前状态（2026-10-03）：**1.0.0已公开发布至[新维护版Workshop物品 3812510834](https://steamcommunity.com/sharedfiles/filedetails/?id=3812510834)**。CK3 1.20.0.3中文实机验收、正式构建、完整更新说明匿名回读、中文媒体及全新订阅缓存复核通过；Steam已恢复离线。**只实机验收简体中文，其他八语仅格式检查。** 详细结果和已知限制见[正式发布报告](docs/release-1.0.0-2026-10-03/README.md)。历史外语实机和失败attempt仅保留为诊断证据，不作为中文签核。
 
 - [功能分析](docs/function-analysis.md)
 - [来源冻结记录](docs/upstream.md)

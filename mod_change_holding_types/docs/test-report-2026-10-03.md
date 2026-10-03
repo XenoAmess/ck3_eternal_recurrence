@@ -50,3 +50,7 @@ attempt03 在相同 runtime bytes 上补齐共享来源allowlist检查、严格�
 [R0005最终报告](live-R0005-cn-2026-10-03/README.md)绑定源提交`3f023e5ff00f87f8df3a8adde1a72400c36851ec`及本机1.20.0.3／build25652598。新鲜离线准入后，以简体中文冷载R0002转换保存；只读两项和生产effect组合12项原生日志PASS，五次error.log均0bytes，同日暂停、金币846。已亲阅中文六决议名称、城市400费用显示、特拉尼及完整无tooltip遮挡的建筑损失／政府继承警告。R0005未再次执行决议付款；R0002实际GUI扣款400的历史证据单独保留。
 
 PID19216已受管停止；Job tree_gone／cleanup_proven=true、final0，freshCK3[]；CAS2475 done／resources[]。原始run永久保留，历史报告不改写。其他八语仅格式检查，无新的外语实机或语义签核。本产品中文实机门已完成；Workshop上传、全文Change Notes公开回读、fresh缓存及永久changelog仍待正式交付。发布文本见[冻结记录](release-text-freeze-2026-10-03.json)。
+
+## 2026-10-03 正式发布追加记录
+
+维护版新Workshop ID为 [3812510834](https://steamcommunity.com/sharedfiles/filedetails/?id=3812510834)，版本1.0.0。中文实机、正式构建、完整Change Notes匿名回读、实机媒体、全新订阅缓存逐文件复核与Steam离线恢复均已通过，完整事实见[发布报告](release-1.0.0-2026-10-03/README.md)。此前阶段记录和失败attempt按原样保留。

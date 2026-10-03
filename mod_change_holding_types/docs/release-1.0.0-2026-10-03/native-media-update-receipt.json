@@ -1,0 +1,30 @@
+{
+  "additional_preview_changes": {
+    "add": [
+      {
+        "path": "C:\\workspace\\two-mod-maintenance-20261003\\holding-workshop-media-candidate-R0001\\01-cn-gameplay.jpg",
+        "sha256": "7f09f551de6a5062a8d89f4d38823012e480dd105fccf1dd990892734111a489",
+        "size": 782501
+      }
+    ],
+    "remove_indices": [],
+    "update": []
+  },
+  "additional_previews_before": {
+    "app_id": 1158310,
+    "item_id": "3812510834",
+    "previews": []
+  },
+  "app_id": 1158310,
+  "created_at": "2026-10-03T11:18:08.062554+00:00",
+  "item_id": "3812510834",
+  "legal_agreement_required": false,
+  "operation": "update",
+  "operation_id": "mod_change_holding_types-1.0.0-media-final-01",
+  "payload_sha256": "4ada9eeb30eb0922e771692bb3ed221fc13c08aebebcf7d6ee64625d492d08f1",
+  "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+  "stage": "complete",
+  "steam_result": 1,
+  "submitted_at": "2026-10-03T11:18:17.824903+00:00",
+  "updated_at": "2026-10-03T11:18:17.824944+00:00"
+}
