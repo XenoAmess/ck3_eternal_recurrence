@@ -141,6 +141,11 @@ public:
   read_combat_simulation_inputs_v3(
       const CombatSimulationInputsRequest &request,
       CombatSimulationInputsV3Snapshot &output) const noexcept = 0;
+  virtual ReadWarOccupationTargetsV1Result read_war_occupation_targets_v1(
+      std::int32_t, WarOccupationTargetsV1 &output) const noexcept {
+    output = {};
+    return ReadWarOccupationTargetsV1Result::unavailable;
+  }
   virtual ReadWarTerminationOptionsResult read_war_termination_options(
       std::int32_t war_id,
       WarTerminationOptionsSnapshot &output) const noexcept = 0;
@@ -365,6 +370,11 @@ inline ReadCombatSimulationInputsV3Result ReadCombatSimulationInputsV3(
     const GameAdapter &game, const CombatSimulationInputsRequest &request,
     CombatSimulationInputsV3Snapshot &output) noexcept {
   return game.read_combat_simulation_inputs_v3(request, output);
+}
+inline ReadWarOccupationTargetsV1Result ReadWarOccupationTargetsV1(
+    const GameAdapter &game, std::int32_t war_id,
+    WarOccupationTargetsV1 &output) noexcept {
+  return game.read_war_occupation_targets_v1(war_id, output);
 }
 inline ReadWarTerminationOptionsResult ReadWarTerminationOptions(
     const GameAdapter &game, std::int32_t war_id,

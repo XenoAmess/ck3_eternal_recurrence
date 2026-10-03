@@ -360,6 +360,14 @@ from .settlement_contract import (
     normalize_one_life_settlement,
     settlement_ready_for_episode,
 )
+from .war_occupation_targets_contract import (
+    QUERY_WAR_OCCUPATION_TARGETS_V1_CAPABILITY,
+    QUERY_WAR_OCCUPATION_TARGETS_V1_STEP_PREFIX,
+    normalize_war_occupation_targets_v1,
+    parse_query_war_occupation_targets_v1_step,
+    query_war_occupation_targets_v1_step,
+    war_occupation_query_scope,
+)
 from .war_contract import (
     BATTLE_DECISION_EPOCH_ADVANCE_STEP,
     COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
@@ -3899,6 +3907,62 @@ class GameplayBridgeService:
                 step, expected_revision=expected_revision
             ),
             "war_id": war_id,
+        }
+
+    def query_war_occupation_targets_v1(
+        self, war_id: int, *, expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read actual native eligible holdings and occupation sides for a war."""
+        step = query_war_occupation_targets_v1_step(war_id)
+        snapshot = self.snapshot()
+        try:
+            actor_id, player_side = war_occupation_query_scope(snapshot, war_id)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        revision = snapshot.get("revision")
+        if type(revision) is not int or revision < 0:
+            raise BridgeUnavailableError("occupation targets lack a public revision")
+        if expected_revision is not None:
+            if type(expected_revision) is not int or expected_revision < 0:
+                raise ValueError("expected_revision must be a non-negative integer")
+            if expected_revision != revision:
+                raise PreSubmissionRevisionMismatchError(
+                    f"occupation revision mismatch: expected {expected_revision}, current {revision}"
+                )
+        capabilities = self.capabilities().get("bridge_capabilities")
+        if not isinstance(capabilities, list) or QUERY_WAR_OCCUPATION_TARGETS_V1_CAPABILITY not in capabilities:
+            raise UnsupportedStepError("selected backend cannot query native war occupation targets")
+        result = self.execute_step(step, expected_revision=revision)
+        if (
+            not isinstance(result, dict)
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") not in {"available", "unavailable"}
+            or type(result.get("query_sequence")) is not int
+            or not 1 <= result["query_sequence"] <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError("occupation targets returned a malformed query envelope")
+        try:
+            value = normalize_war_occupation_targets_v1(
+                result.get("war_occupation_targets_v1"),
+                expected_war_id=war_id,
+                expected_actor_character_id=actor_id,
+                expected_snapshot_revision=snapshot.get("native_revision"),
+                expected_date_raw=snapshot.get("date_raw"),
+                expected_player_side=player_side,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native occupation targets are malformed: {error}") from error
+        if (result["status"] == "available") != value["available"]:
+            raise BridgeUnavailableError("occupation query status disagrees with collection availability")
+        return {
+            **result,
+            "war_id": war_id,
+            "war_occupation_targets_v1": value,
+            "read_only": True,
+            "queried_snapshot_id": snapshot.get("snapshot_id"),
+            "queried_revision": revision,
+            "queried_native_revision": snapshot.get("native_revision"),
         }
 
     def query_war_termination_options(

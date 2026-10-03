@@ -3521,6 +3521,16 @@ def create_server(
             expected_revision=expected_revision,
         )
 
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_war_occupation_targets_v1(
+        war_id: Annotated[int, Field(strict=True, ge=0, le=2**31 - 1)],
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read this war's native eligible holding and occupation collection."""
+        return service.query_war_occupation_targets_v1(
+            war_id, expected_revision=expected_revision,
+        )
+
     @server.tool()
     def ck3_query_war_termination_options(
         war_id: int,

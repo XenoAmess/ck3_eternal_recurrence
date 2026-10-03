@@ -1,0 +1,110 @@
+#include "xar_bridge/war_occupation_targets_v1_serializer.hpp"
+
+#include "xar_bridge/ck3_12003.hpp"
+
+namespace xar::game {
+namespace {
+
+std::string Quote(std::string_view value) {
+  constexpr char hex[] = "0123456789abcdef";
+  std::string out = "\"";
+  for (const unsigned char byte : value) {
+    if (byte == '"' || byte == '\\') {
+      out += '\\';
+      out += static_cast<char>(byte);
+    } else if (byte < 0x20) {
+      out += "\\u00";
+      out += hex[byte >> 4];
+      out += hex[byte & 15];
+    } else {
+      out += static_cast<char>(byte);
+    }
+  }
+  return out + '"';
+}
+
+std::string NullableId(std::int32_t value) {
+  return value < 0 ? "null" : std::to_string(value);
+}
+
+const char *Bool(bool value) noexcept { return value ? "true" : "false"; }
+
+std::string ObservableBool(bool observable, bool value) {
+  return observable ? Bool(value) : "null";
+}
+
+} // namespace
+
+std::string SerializeWarOccupationTargetsV1(
+    const WarOccupationTargetsV1 &observation,
+    ReadWarOccupationTargetsV1Result read_result, std::uint64_t query_sequence,
+    std::uint64_t snapshot_revision, std::string_view step) {
+  const bool available =
+      read_result == ReadWarOccupationTargetsV1Result::available &&
+      observation.available && observation.collection_complete;
+  const std::string_view status = available ? "available" : "unavailable";
+  const auto reason = available ? std::string("null") : Quote(
+      observation.unavailable_reason.empty()
+          ? std::string_view("native_reader_unavailable")
+          : observation.unavailable_reason);
+  std::string out = "{\"step\":" + Quote(step) +
+      ",\"accepted\":true,\"status\":" + Quote(status) +
+      ",\"read_only\":true,\"query_sequence\":" +
+      std::to_string(query_sequence) +
+      ",\"snapshot_revision\":" + std::to_string(snapshot_revision) +
+      ",\"date_raw\":" + std::to_string(observation.date_raw) +
+      ",\"backend_id\":\"native-headless\",\"war_occupation_targets_v1\":{"
+      "\"schema\":\"xar.ck3.war-occupation-targets.v1\",\"schema_version\":1,"
+      "\"game_version\":\"1.20.0.3\",\"executable_sha256\":" +
+      Quote(ck3_12003::kExecutableSha256) +
+      ",\"status\":" + Quote(status) +
+      ",\"snapshot_revision\":" + std::to_string(snapshot_revision) +
+      ",\"date_raw\":" + std::to_string(observation.date_raw) +
+      ",\"actor_character_id\":" + NullableId(observation.actor_character_id) +
+      ",\"war_id\":" + NullableId(observation.war_id) +
+      ",\"player_side\":" + Quote(observation.player_side) +
+      ",\"primary_attacker_character_id\":" +
+      NullableId(observation.primary_attacker_character_id) +
+      ",\"primary_defender_character_id\":" +
+      NullableId(observation.primary_defender_character_id) +
+      ",\"available\":" + Bool(available) +
+      ",\"unavailable_reason\":" + reason +
+      ",\"collection_complete\":" + Bool(
+          available && observation.collection_complete) +
+      ",\"side_counts\":[";
+  bool first = true;
+  for (const auto &side : observation.side_counts) {
+    if (!first) out += ',';
+    first = false;
+    out += "{\"territory_side\":" + Quote(side.territory_side) +
+        ",\"eligible\":" + std::to_string(side.eligible) +
+        ",\"occupied\":" + std::to_string(side.occupied) +
+        ",\"native_candidate_count\":" +
+        std::to_string(side.native_candidate_count) +
+        ",\"collection_complete\":" + Bool(side.collection_complete) + '}';
+  }
+  out += "],\"rows\":[";
+  first = true;
+  for (const auto &row : observation.rows) {
+    if (!first) out += ',';
+    first = false;
+    out += "{\"holding_title_id\":" + NullableId(row.holding_title_id) +
+        ",\"province_id\":" + NullableId(row.province_id) +
+        ",\"legal_holder_character_id\":" +
+        NullableId(row.legal_holder_character_id) +
+        ",\"territory_side\":" + Quote(row.territory_side) +
+        ",\"occupation_observable\":" + Bool(row.occupation_observable) +
+        ",\"is_occupied\":" + ObservableBool(
+            row.occupation_observable, row.is_occupied) +
+        ",\"occupying_character_id\":" +
+        (row.occupation_observable && row.is_occupied
+            ? NullableId(row.occupying_character_id) : std::string("null")) +
+        ",\"occupier_side\":" + Quote(row.occupier_side) +
+        ",\"counted_occupied_by_opposing_side\":" + ObservableBool(
+            row.occupation_observable,
+            row.counted_occupied_by_opposing_side) + '}';
+  }
+  return out + "]}}";
+}
+
+} // namespace xar::game

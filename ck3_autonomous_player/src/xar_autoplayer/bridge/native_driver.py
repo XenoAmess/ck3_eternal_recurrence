@@ -501,6 +501,14 @@ from .h3937_date_hold import (
     is_army_move_control_step,
     is_date_control_step,
 )
+from .war_occupation_targets_contract import (
+    QUERY_WAR_OCCUPATION_TARGETS_V1_CAPABILITY,
+    QUERY_WAR_OCCUPATION_TARGETS_V1_STEP_PREFIX,
+    normalize_war_occupation_targets_v1,
+    parse_query_war_occupation_targets_v1_step,
+    query_war_occupation_targets_v1_step,
+    war_occupation_query_scope,
+)
 from .war_contract import (
     ARMY_ROUTES_CAPABILITY,
     BATTLE_DECISION_EPOCH_ADVANCE_STEP,
@@ -7400,6 +7408,13 @@ class NativeHeadlessGameplayDriver:
             raise UnsupportedStepError(
                 "malformed or incomplete route-contact horizon advance step"
             )
+        occupation_war_id = parse_query_war_occupation_targets_v1_step(step)
+        if (
+            isinstance(step, str)
+            and step.startswith(QUERY_WAR_OCCUPATION_TARGETS_V1_STEP_PREFIX)
+            and occupation_war_id is None
+        ):
+            raise UnsupportedStepError("malformed full WarID occupation-targets query")
         war_entry_targets = parse_query_war_entry_assessments_step(step)
         if (
             isinstance(step, str)
@@ -7993,6 +8008,10 @@ class NativeHeadlessGameplayDriver:
                 step,
                 option_number=event_option_number,
                 expected_revision=expected_revision,
+            )
+        if occupation_war_id is not None:
+            return self._execute_war_occupation_targets_v1_query(
+                step, expected_revision=expected_revision,
             )
         if war_entry_targets is not None:
             bridge_capabilities = set(
@@ -12002,6 +12021,65 @@ class NativeHeadlessGameplayDriver:
             "query_sequence": query_sequence,
             "queried_snapshot_id": starting.get("snapshot_id"),
             "queried_revision": starting.get("revision"),
+            "queried_native_revision": starting.get("native_revision"),
+        }
+
+    def _execute_war_occupation_targets_v1_query(
+        self, step: str, *, expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read the native occupation collector for one active war; never act."""
+        war_id = parse_query_war_occupation_targets_v1_step(step)
+        if war_id is None:
+            raise UnsupportedStepError("malformed full WarID occupation-targets query")
+        starting = self.take_snapshot()
+        try:
+            actor_id, player_side = war_occupation_query_scope(starting, war_id)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        revision = starting.get("revision")
+        if type(revision) is not int or revision < 0:
+            raise BridgeUnavailableError("occupation targets lack a public revision")
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=expected_revision if expected_revision is not None else revision,
+            required_capability=QUERY_WAR_OCCUPATION_TARGETS_V1_CAPABILITY,
+        )
+        if (
+            not isinstance(result, dict)
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") not in {"available", "unavailable"}
+            or type(result.get("query_sequence")) is not int
+            or not 1 <= result["query_sequence"] <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError("native occupation targets returned a malformed envelope")
+        try:
+            value = normalize_war_occupation_targets_v1(
+                result.get("war_occupation_targets_v1"),
+                expected_war_id=war_id,
+                expected_actor_character_id=actor_id,
+                expected_snapshot_revision=starting.get("native_revision"),
+                expected_date_raw=starting.get("date_raw"),
+                expected_player_side=player_side,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native occupation targets are malformed: {error}") from error
+        if (result["status"] == "available") != value["available"]:
+            raise BridgeUnavailableError("native occupation status disagrees with collection availability")
+        current = self.take_snapshot()
+        if not _same_paused_native_frame(starting, current):
+            raise BridgeUnavailableError("native occupation targets crossed a paused frame")
+        try:
+            if war_occupation_query_scope(current, war_id) != (actor_id, player_side):
+                raise ValueError("war participant identity changed")
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        return {
+            **result,
+            "war_occupation_targets_v1": value,
+            "read_only": True,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": revision,
             "queried_native_revision": starting.get("native_revision"),
         }
 
@@ -26881,6 +26959,10 @@ def _action_steps(
         elif capability == QUERY_PROVINCE_LOCAL_SIEGE_CAPABILITY:
             # Explicit callers provide a canonical ProvinceID; never expose
             # the adapter's -N template as an executable action.
+            continue
+        elif capability == QUERY_WAR_OCCUPATION_TARGETS_V1_CAPABILITY:
+            # The caller supplies the current full WarID; the -N template is
+            # a capability, never an executable action literal.
             continue
         elif capability == QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY:
             expand_termination_queries = True

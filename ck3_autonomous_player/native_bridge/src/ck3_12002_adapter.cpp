@@ -2,6 +2,7 @@
 
 #include <windows.h>
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12003_war_occupation.hpp"
 #include "xar_bridge/ck3_12002_war_cash_treasury.hpp"
 #include "xar_bridge/ck3_12002_actor_resources.hpp"
 
@@ -90,6 +91,11 @@ public:
   explicit Ck3_12002Adapter(Ck3_12002AdapterBindings bindings,
       const AdapterDescriptor &descriptor = kDescriptor) noexcept
       : bindings_(std::move(bindings)), descriptor_(&descriptor) {
+    if (IsCk3_12003Descriptor(descriptor)) {
+      occupation_bindings_ = ck3_12003::BindWarOccupationTargetsImageV1(
+          reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+          descriptor.executable_sha256);
+    }
     // Both callbacks borrow this member, never the temporary binding bundle.
     bindings_.events.submit_context = &bindings_.commands;
     bindings_.events.submit_command = ck3_12002::SubmitCommandCopyCompat;
@@ -319,6 +325,17 @@ public:
     return ck3_12002::ReadCombatSimulationInputsV3(bindings_.phase, scope,
                                                   request, output);
   }
+  ReadWarOccupationTargetsV1Result read_war_occupation_targets_v1(
+      std::int32_t war, WarOccupationTargetsV1 &output) const noexcept override {
+    output = {};
+    if (!IsCk3_12003Descriptor(*descriptor_))
+      return ReadWarOccupationTargetsV1Result::unavailable;
+    Snapshot scope{};
+    if (!read_snapshot(scope))
+      return ReadWarOccupationTargetsV1Result::unavailable;
+    return ck3_12003::ReadWarOccupationTargetsV1(
+        occupation_bindings_, scope, war, output);
+  }
   ReadWarTerminationOptionsResult read_war_termination_options(
       std::int32_t war, WarTerminationOptionsSnapshot &output) const noexcept override {
     return ck3_12002::ReadWarTerminationOptions(bindings_.diplomacy, war, output);
@@ -407,6 +424,7 @@ private:
             ResolveCharacter, ResolveUnit, ResolveProvince, ResolveSiege};
   }
   Ck3_12002AdapterBindings bindings_;
+  ck3_12003::WarOccupationTargetsBindingsV1 occupation_bindings_{};
   const AdapterDescriptor *descriptor_;
 };
 

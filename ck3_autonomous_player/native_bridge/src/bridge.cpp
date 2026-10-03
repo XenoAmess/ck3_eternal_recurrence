@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12002_adapter.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
+#include "xar_bridge/war_occupation_targets_v1_serializer.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 #include "xar_bridge/ck3_12002_lifestyle.hpp"
 #include "xar_bridge/ck3_12002_family.hpp"
@@ -11140,6 +11141,7 @@ struct WorkerState {
   }
 #endif
   std::uint64_t war_termination_query_sequence = 0;
+  std::uint64_t war_occupation_targets_query_sequence = 0;
   std::uint64_t war_prisoner_release_pairs_query_sequence = 0;
   std::uint64_t outbound_war_white_peace_status_query_sequence = 0;
   std::uint64_t war_termination_terms_query_sequence = 0;
@@ -12040,6 +12042,65 @@ std::string RunArmyCommanderCandidatesQuery12003(
   return response;
 }
 
+std::string RunWarOccupationTargetsQueryV1(
+    const xar::game::GameAdapter &game, WorkerState &state,
+    std::string_view request_id, std::string_view step,
+    std::string_view payload) {
+  std::int32_t war_id = -1;
+  std::uint64_t expected_revision = 0;
+  if (!xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
+      !xar::game::ParseWarOccupationTargetsStepV1(step, war_id) ||
+      !xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
+          payload, expected_revision)) {
+    return CommandResultFrame(request_id, step, false,
+        "war-occupation query identity or revision is malformed");
+  }
+  xar::game::Snapshot admission{};
+  if (expected_revision != state.state_revision || state.state_revision == 0 ||
+      !state.previous_snapshot.has_value() ||
+      !xar::game::ReadSnapshot(game, admission) ||
+      admission != *state.previous_snapshot) {
+    return CommandResultFrame(request_id, step, false, "state_changed");
+  }
+  if (!admission.paused || !admission.map_ready ||
+      !admission.has_played_character || !admission.played_character_alive) {
+    return CommandResultFrame(request_id, step, false,
+        "war-occupation query requires a ready paused living player");
+  }
+  const bool active_war = std::any_of(
+      admission.active_wars.begin(), admission.active_wars.end(),
+      [war_id](const auto &war) { return war.war_id == war_id; });
+  if (!active_war) {
+    return CommandResultFrame(request_id, step, false, "active_war_not_found");
+  }
+  xar::game::WarOccupationTargetsV1 observation{};
+  const auto read_result = xar::game::ReadWarOccupationTargetsV1(
+      game, war_id, observation);
+  xar::game::Snapshot completion{};
+  if (!xar::game::ReadSnapshot(game, completion) || completion != admission) {
+    return CommandResultFrame(request_id, step, false,
+        "war-occupation completion snapshot changed");
+  }
+  if (read_result == xar::game::ReadWarOccupationTargetsV1Result::unavailable &&
+      observation.unavailable_reason == "not_read") {
+    // A failed semantic mailbox read is not a legal empty collector result.
+    observation.date_raw = admission.date_raw;
+    observation.actor_character_id = admission.played_character_id;
+    observation.war_id = war_id;
+    observation.unavailable_reason = "typed_mailbox_read_unavailable";
+  }
+  const auto result = xar::game::SerializeWarOccupationTargetsV1(
+      observation, read_result, ++state.war_occupation_targets_query_sequence,
+      expected_revision, step);
+  std::string response =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(response, request_id);
+  response += ",\"ok\":true,\"result\":";
+  response += result;
+  response += '}';
+  return response;
+}
+
 void RunConnectedSession(
     HANDLE pipe, const xar::game::GameAdapter &game, WorkerState &state,
     WarEntryApplicationMainMailboxWorkerLifetime &mailbox_lifetime) noexcept {
@@ -12537,13 +12598,19 @@ void RunConnectedSession(
                    (step.starts_with(xar::ck3_12003::
                                          kArmyCommanderAssignmentStepPrefix) ||
                     step.starts_with(xar::ck3_12003::
-                                         kArmyCommanderCandidatesStepPrefix))) {
-          const auto response = step.starts_with(xar::ck3_12003::
-                                     kArmyCommanderAssignmentStepPrefix)
-              ? RunArmyCommanderAssignment12003(
+                                         kArmyCommanderCandidatesStepPrefix) ||
+                    step.starts_with(xar::game::
+                                         kWarOccupationTargetsV1StepPrefix))) {
+          const auto response = step.starts_with(xar::game::
+                                      kWarOccupationTargetsV1StepPrefix)
+              ? RunWarOccupationTargetsQueryV1(
                     game, state, request_id, step, incoming.payload)
-              : RunArmyCommanderCandidatesQuery12003(
-                    game, state, request_id, step, incoming.payload);
+              : step.starts_with(xar::ck3_12003::
+                                      kArmyCommanderAssignmentStepPrefix)
+                  ? RunArmyCommanderAssignment12003(
+                        game, state, request_id, step, incoming.payload)
+                  : RunArmyCommanderCandidatesQuery12003(
+                        game, state, request_id, step, incoming.payload);
           connected = write_frame(pipe, response);
         } else if (xar::game::IsReviewedCrozierAdapter(game) &&
                    TypedQueryKind12002(step).has_value()) {

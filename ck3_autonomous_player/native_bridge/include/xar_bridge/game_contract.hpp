@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/war_occupation_targets_v1.hpp"
+
 #include <array>
 #include <cstdint>
 #include <optional>

@@ -1,0 +1,125 @@
+{
+  "schema": "xar.ck3.war-occupation-targets-12003-native-abi/v1",
+  "build": {
+    "game_version": "1.20.0.3",
+    "steam_build": 25652598,
+    "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+  },
+  "live_called_by_this_lane": false,
+  "source_proof": {
+    "prior": "ck3_autonomous_player/native_bridge/research/episode03_occupation_war_score_12003_static.json",
+    "spans": [
+      {
+        "start_rva": "0x2c0ddb0",
+        "end_rva": "0x2c0ee63",
+        "sha256": "0abae9dc472c80fce5f417051ee6cb13dbd558be70ff1d6f40b02433599200ed"
+      },
+      {
+        "start_rva": "0x2c0d390",
+        "end_rva": "0x2c0d3c3",
+        "sha256": "62c1065cff628b79bc5bfd05cc50fa1d4734dff72a1b44a493a5d9eeab876a37"
+      },
+      {
+        "start_rva": "0x2c0d3c3",
+        "end_rva": "0x2c0d5a4",
+        "sha256": "6f2f41262151e58b1b4bcf3665ddd9afdd2c7030caf5991003597b6e8bdf477c"
+      },
+      {
+        "start_rva": "0x2c0d5b0",
+        "end_rva": "0x2c0d7e4",
+        "sha256": "4fe4d4cd41163855de506fe7190acb6e193e0b7995c6e52528207fc3f77e95f2"
+      },
+      {
+        "start_rva": "0x2c13840",
+        "end_rva": "0x2c138c1",
+        "sha256": "20222897cd6f5a6d949e04071a2bba28964e4d3f6e5e9e22f001e329deafbbe5"
+      },
+      {
+        "start_rva": "0x2ba0dc0",
+        "end_rva": "0x2ba10c6",
+        "sha256": "6e120c9351cd2136108c58ffb0ee093a7371de0ca09d829099651a1a608dd6e4"
+      },
+      {
+        "start_rva": "0x24977c0",
+        "end_rva": "0x2497889",
+        "sha256": "0aee16c397083daa3b3e6543066d394a8727dd71a3063c92e68f556e16ebef89"
+      }
+    ]
+  },
+  "functions": {
+    "get_war_occupation_context": {
+      "rva": "0x2C13840",
+      "abi": "void* (int32 full_war_id)",
+      "backlink": "returned context+0x28 == full WarID",
+      "source_call": "0x2C0DE3E"
+    },
+    "collect_territory_participants": {
+      "rva": "0x2C0D390",
+      "abi": "void (context*, int32 primary_territory_character_id, const PointerVector* territory_participants, const PointerVector* opposing_participants, PointerVector* owned_output)",
+      "source_call": "0x2C0DEDF",
+      "fifth_parameter": "stack arg before call [rsp+0x20]",
+      "output_elements": "CWarParticipant*, full CharacterID at +0x08"
+    },
+    "collect_holding_titles": {
+      "rva": "0x2BA0DC0",
+      "abi": "void (CCharacter*, PointerVector* owned_output)",
+      "source_call": "0x2C0DFFA",
+      "output_elements": "CLandedTitle* (barony title), full title ID at +0x10",
+      "actual_reverse_join": "collector resolves province+0x738 full TitleID through CLandedTitle storage and checks title+0x10; title has valid holder+0x128"
+    },
+    "count_holding": {
+      "rva": "0x2C0D5B0",
+      "abi": "void (CLandedTitle*, const PointerVector* opposing_participants, const PointerVector* selected_territory_participants, bool skip_holder_filter, NativeCounts* output)",
+      "source_call": "0x2C0E037",
+      "counts_layout": {
+        "occupied_int32": 0,
+        "eligible_int32": 4
+      },
+      "fifth_parameter": "stack arg before call [rsp+0x20]",
+      "skip_holder_filter": "false only for defender-territory pass when 0x24977C0(war) is true; true otherwise"
+    },
+    "liege_related": {
+      "rva": "0x24977C0",
+      "abi": "bool (CWar*)",
+      "source_call": "0x2C0DEEC"
+    }
+  },
+  "vector": {
+    "size": 24,
+    "data_offset": 0,
+    "capacity_int32_offset": 8,
+    "count_int32_offset": 12,
+    "allocator_offset": 16,
+    "borrowed_war_participant_vectors": {
+      "attacker": "CWar+0x28",
+      "defender": "CWar+0x88"
+    },
+    "owned_allocator": "image+0x54DEBB8, existing reviewed native allocator object",
+    "release": "allocator->vtable+0x10 (allocator*,data*,uint64 alignment=8)",
+    "allocation": "native collectors append/reallocate through allocator vtable+0x08; reader owns returned data and releases it once"
+  },
+  "row_joins": {
+    "holding_identity": "CLandedTitle+0x10 full TitleID; holding_title_id itself names the native holding, no second invented ID",
+    "legal_holder": "CLandedTitle+0x128 -> full CCharacter storage resolution/magic",
+    "template_receiver": "CLandedTitle+0x48 -> template; template+0x64 barony tier1; template+0x88 ProvinceID",
+    "template_receiver_instructions": [
+      "0x2C0D71D mov rax,[r13+0x48]",
+      "0x2C0D721 movsxd rcx,[rax+0x88]"
+    ],
+    "province_backlink": "existing title_province getter(title) must equal ResolveObjectiveProvince(templateProvinceID), Province+0x738 must equal the same FullTitleID (actual BA0DC0 native reverse join)",
+    "occupation": "existing ProvinceOccupiedGetter + Province+0x73C full occupier; full CharacterID resolution",
+    "war_side": "existing contains_participant on CWar+0x20/+0x80; preserve outside_war"
+  },
+  "semantics": {
+    "row_order": "defender territory pass then attacker territory; native selected-participant/holding stored order; duplicates preserved",
+    "eligible": "only row occurrences whose actual count_holding increments eligible",
+    "occupied": "same helper occupied counter, distinguished from physical is_occupied",
+    "real_empty": "available=true + collection_complete=true + both side_counts complete with zero + rows[]",
+    "failure": "available=false + collection_complete=false + typed reason; rows/side_counts cleared; requested actor/date/WarID retained"
+  },
+  "remaining_unknown": [
+    "Exact full native AI final target rank/tie/simultaneous-war allocation, not needed for this query.",
+    "Current held-goal clock/ratio is not implemented by this holding collector.",
+    "Loaded CB scale/cap/capital/full-occupation input projection is outside this minimal target enumeration."
+  ]
+}

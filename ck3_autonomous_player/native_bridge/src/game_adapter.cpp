@@ -1,5 +1,6 @@
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/game_adapter.hpp"
+#include "xar_bridge/war_occupation_targets_v1_serializer.hpp"
 #include "xar_bridge/combat_phase_event_trace_v1.hpp"
 #if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
 #include "xar_bridge/ai_terminal_reentry_dispatch_observer_v1.hpp"
@@ -582,7 +583,11 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
       capability = ck3_11906::kTacticalDailySentinelStatusCapabilityV1;
     }
   }
-  if (capability.empty() &&
+  std::int32_t occupation_war_id = -1;
+  if (capability.empty() && ParseWarOccupationTargetsStepV1(
+          step, occupation_war_id)) {
+    capability = kWarOccupationTargetsV1Capability;
+  } else if (capability.empty() &&
       step.starts_with("query-war-termination-options-")) {
     capability = "game.command.query-war-termination-options-N";
   } else if (capability.empty() && IsCanonicalPositiveIdStep(

@@ -1055,6 +1055,7 @@ add_library(xar_ck3_12002_runtime STATIC
   ${XAR_CK3_12002_SOURCES}
   src/ck3_12003_adapter.cpp
   src/ck3_12003_commander.cpp
+  src/ck3_12003_war_occupation.cpp
   src/ck3_12003_commander_mailbox.cpp
   src/ck3_12003_commander_assignment.cpp
   src/ck3_12003_commander_assignment_mailbox.cpp
@@ -1297,6 +1298,7 @@ add_library(xar_ck3_bridge SHARED
   src/title_map_navigation_v1_serializer.cpp
   src/war_entry_assessments_v1.cpp
   src/war_entry_assessments_v1_serializer.cpp
+  src/war_occupation_targets_v1_serializer.cpp
   src/war_entry_assessments_v1_mailbox.cpp
   src/zhongguo_case_snapshot_v1.cpp
   src/zhongguo_case_snapshot_v1_mailbox.cpp
