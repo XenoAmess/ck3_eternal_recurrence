@@ -1,8 +1,8 @@
 # CK3 1.20.0.3：圣骑士团身份、创建与雇佣只读施工树
 
-2026-10-03 后台磁盘研究；readiness 为 **research**。游戏固定 `1.20.0.3 Crozier / Steam25652598`，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`，复用此前 intake 的完整版本证据。此次仅读 frozen EXE 和原版数据，没有重算 EXE、连接 CK3/SDK/pipe、访问窗口、运行新 fixture 或修改运行源码。Robert29829 仍是唯一实机入口；宗教全面授权允许本专题研究，独立战争执行开关保持 OFF。
+2026-10-03 初始后台磁盘研究的 readiness 为 **research**；其后 ROOT 已把当前组织／军事雇佣条款查询合入 v32，并在 Robert paused 帧闭合 **production-live primitive**，详见下方实机增量与[实现／实机专题](religion-holy-order-context-native-query-12003.md)。创建／撤租 selected-title context 和原生 AI chooser 仍为 research。游戏固定 `1.20.0.3 Crozier / Steam25652598`，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`，复用此前 intake 的完整版本证据。初始研究仅读 frozen EXE 和原版数据，没有重算 EXE、连接 CK3/SDK/pipe、访问窗口、运行新 fixture 或修改运行源码；本轮实机增量仅读 ROOT CLOSED artifact。Robert29829 仍是唯一实机入口；宗教全面授权允许本专题研究，独立战争执行开关保持 OFF。
 
-本页补充组织身份与雇佣的 exact-build 入口。创建、军事／修道分流、AI authored 创建权重、索地、主动修道出租、撤租和解散的 stock 全树直接复用[成立、赞助与地产专题](religion-holy-order-patronage-native-ai-12003.md)，不重复审阅同一规则。借款实际费用和 ledger 与组织雇佣分开，见[借贷只读专题](religion-holy-order-loan-native-observation-12003.md)。下述 native 函数仍未实现成 bridge/MCP，不能写成 static-ready 或 live。
+本页补充组织身份与雇佣的 exact-build 入口。创建、军事／修道分流、AI authored 创建权重、索地、主动修道出租、撤租和解散的 stock 全树直接复用[成立、赞助与地产专题](religion-holy-order-patronage-native-ai-12003.md)，不重复审阅同一规则。借款实际费用和 ledger 与组织雇佣分开，见[借贷只读专题](religion-holy-order-loan-native-observation-12003.md)。下述 manager 身份与军事 final leaf 现已实现为同一宗教 opt-in 的 `ck3_query_player_holy_order_context_v1`，并实读到当前组织与实际军事行；这不提升未实现的创建／撤租、雇佣动作或 AI chooser readiness。
 
 ## 当前组织身份有了具体原生读取路径
 
@@ -60,6 +60,19 @@ GUI 仍有一个已知文案陷阱：英文 `HOLY_ORDER_COOLTIP_PATRON` 实际�
 
 下一段只读施工应沿 `DecisionViewWidgetSelectBarony.HasValidTitles/GetCurrentTitle`、`LeaseOutBaroniesWindow.GetTitles`及独立`DecisionViewWidgetSelectTitleOfTier`，闭合实际候选producer、暂存selected上下文和named scope导出，再复用上述final条款。`OnSelectCapital/OnConfirm`仅是磁盘caller搜索词，不调用它们打开窗口。CanTake第四参数的具体类型仍unknown，不猜成widget或title pointer。完整recipe见外置 `create-stock/RESEARCH.md`。
 
+### v32 后台增量：selected title getter 与候选 caller
+
+外置 `create-selected-context/RESEARCH.md`／`REPORT-FIELDS.json` 记录新增有限磁盘定位，复用已闭合 decision final ABI、stock 规则与当前 `production-source-8cf176b4`，未重跑旧 fixture。无窗口地产基线可直接复用 `ck3_12002_construction_held.cpp:163–246`：Character+`1C0` landstate 的 +`1E0` held-title vector，经既有 Title manager/fullref resolver、holder+`128`、definition+`48`／tier+`64` 得到亲持地产。现成 `ReadHeldBaronies` output 已过滤到 tier1；它只是军事创建的亲持候选下界，不能代替完整 realm／subrealm 合法集合。修道 county reader 应保留 tier2，不从已过滤的 barony 列表反推县。源码仍名 12002 的 `.3` bindings 沿现有 migration 复用。
+
+| 新闭合入口 | 当前 exact-build 数据流 | 尚缺的施工点 |
+| --- | --- | --- |
+| `GetCurrentTitle` registration `30AFC0` → callback `18D3740` → `18D29E0` | controller+`18` 参数对象的 +`28` named rows／count+`34`，stride24；row name key 匹配 controller+`24`，row+`8` 的16-byte token 必须 kind5，token+`8` 是 Title fullref，然后由既有 Title manager 解析并比较完整 ID。 | 参数对象 constructor、name key 初始化／setter、插入与 export 生命周期尚未闭合。不能直接往 controller 塞 Title pointer 或把字符串 hash 当实际 name key。 |
+| `HasValidTitles` registration `30B20B` → callback `18D3780` → `18D2A90` | controller+`8` wrapper 中 +`D0` decision／+`D8` actor；decision+`1E20` 对象的 +`40` 给出 widget，再调用 widget vtable+`40`，参数 `(widget, actor, out_title_vector, controller+18 params, 1)`。输出是4-byte Title refs，count 在 out+`C`；最终 bool=count!=0。 | 沿 derived widget constructor 定位 vtable+`40` 的具体 candidate producer。第五参数仅闭合 literal1，含义 unknown，不能称为 limit1 或假设 flag0 返回全候选。 |
+
+getter 完整 span `18D29E0..18D2A89`，169 B，SHA `11a7658a791141329b3a9d7fc55d0ef47b12d4a1b37c35639de1d984c6724d48`；candidate caller 完整 span `18D2A90..18D2BC2`，306 B，SHA `4660d00d57dbe1432a84ab1672db844f21ed1cad9371a72d9edb5da292cbd1dc`。registration slices、callbacks 和原始字节位于上述外置目录 `native/SPANS-*.json`。
+
+当前 HoF／gift helper `373AD10` 的既有 scope clone 只保留已经存在的 named actor／recipient，并替换 root Character；它没有新增 named Title 的 setter，不能把已有互动 scope 当 `barony`／`title` 注入口。下一段小实现路线明确为 **固定三种 decision → derived widget 无窗口 candidate producer → 当前 title 的真实 named parameter 插入／export → 复用 final gate/cost/afford/reason**。组织集合与地产候选集合职责分开；已有 lease 也不代表对 Robert 可撤销。该新增 selected-title 路径仍为 **research**，没有把 controller getter 或候选下界称作创建／撤租已可用。
+
 ```mermaid
 flowchart TD
     A[exact build / 当前Robert] --> M[真实HolyOrder manager entries]
@@ -68,18 +81,32 @@ flowchart TD
     P --> G[2619C50最终CanHire与实际理由]
     P --> Q[26198E0实际十槽费用]
     Q --> C[310E710原生CanAfford]
-    G --> R[未来逐项只读条款]
+    G --> R[已注册逐项只读条款MCP]
     C --> R
     G -. 命名子资格与AIchooser unknown .-> AI[原生检查频率/评分/排序]
-    R -. provider与Robert paused尚未执行 .-> V[production-live primitive]
+    R --> V[Robert paused实际组织与军事条款production-live primitive]
     A --> D[复用创建/撤租definition与stock树]
     D --> B[军事barony / 修道county分流]
-    B -. candidate与暂存scope export ABI unknown .-> S[选中title evaluation context]
+    B --> K[18D29E0 named Title token kind5 getter]
+    B --> W[18D2A90 widget vtable40 candidate caller]
+    W -. concrete candidate target unknown .-> CT[候选Title fullref集合]
+    CT -. parameter插入与export unknown .-> S[选中title evaluation context]
+    K -. constructor与name setter unknown .-> S
     S --> F[复用最终gate/cost/reason]
     V -. action未实现/独立结果未采集 .-> O[雇主与资源结果 / next turn / cold]
     O -. 多战争release unknown .-> E[完整生命周期]
 ```
 
-最优下一增量为 **同一宗教 MCP opt-in内的当前组织／租约集合＋军事组织逐项final hire许可、费用与理由**。它先解锁当前赞助、地产和财政判断，再研究实际候选producer与原生AI选择；无需打开军队或宗教窗口。ROOT在Robert真实paused帧验收之后，才设计依赖这些输入的策略。创建／撤租另按selected-title依赖施工；此次没有paid action、组织变化、游戏天数或G2/NW完成信用。
+原先最优下一增量——**同一宗教 MCP opt-in内的当前组织／租约集合＋军事组织逐项final hire许可、费用与理由**——已由 v32 实现并完成一次 Robert paused 查询。它解锁当前赞助、地产和财政判断，无需打开军队或宗教窗口；下一只读工作沿实际 selected-title 候选 producer 与 scope export 继续。创建／撤租另按该依赖施工，原生 AI chooser 仍 unknown。此次没有 paid action、组织变化、游戏天数或 G2/NW 完成信用。
+
+## v32 的 Robert paused 实机增量
+
+ROOT 使用 `production-source-8cf176b4`，严格构建与 CI GREEN 后冷启动 minimized 新 PID `109732`。`actual-v32-religion-type-tax-holy-order-01/result.json` 已 CLOSED、退出 0／GREEN；本 lane 才一次读取 holy 的 `002-ck3_query_player_holy_order_context_v1.json`（7049 B，SHA `1041c5cea507bc900d8c7cc10f36f4be724c23a75395856b31ca6bee1ddbcdbd`）。该实际注册调用耗时 2.421s；Robert `29829`、raw date `53236176`、native revision `4`／public revision `2`、capture epoch `17503`。初末帧保持 paused，没有推进或操作。
+
+实际 manager 集合 `available=true`，共 **5 个组织：1 军事、4 非军事**。组织 full ID 为 `0..4`；非军事 `0..3` 的 `military_terms=null`，不能称作可军雇。它们的原始 rite ref 为 `4294967295`，不自行映射 faith。当前军事组织 **order4 / rite15**，founder 与 native dynamic patron 均 `31100`，employer `39004`，租约 title `7558`。此处 founder==patron 是该帧真实结果，不修改两种身份的原生含义。
+
+order4 的军事条款 `available=true`，最终原生 **can_hire=false／can_afford=true**；完整十槽原始成本为 `[0,0,10600000,0,0,0,0,0,0,0]`，即 **106 虔诚**。两条 hire 原生理由分别为“被绝罚的统治者无法雇佣骑士团”“他们已经被雇佣”；支付理由已采样且合法为空。控制码、tooltip token、换行与 raw 值均原样保存在实际 artifact；不是 Python 重建费用或从可支付推导许可。初末虔诚均 `37145000` raw，没有发生支付。
+
+身份／全部军事行 final terms 的复制汇总见 `artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-systems-12003/actual-v32/HOLY-ORDER-OBSERVATION.json`；细目和原始证据链接见实现专题。当前集合和实在军事条款可记 **production-live primitive**；尚无 hire／创建／撤租／release action 或完整 loop。合法 available 空集合的语义仍保留，但此次确实观察到 5 行。
 
 外置总交付 `REPORT-FIELDS.json`／`DELIVERY.json`汇集两条子lane、原生byte pins和本页hash，由ROOT合并当天／当周报告并统一commit/push。探索中无匹配的literal引用和误选的非合同spans保留在外置目录，但不作为上述getter合同证据；原生AI未闭合分支不冒充live或complete。

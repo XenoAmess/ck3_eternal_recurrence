@@ -1117,3 +1117,79 @@ The combined delivery is `m7-robert/V31-CURRENT-COLD-NORMAL30-REPORT-FIELDS-01.j
 also referencing the cached preceding cold/eight-day cutoff. No old failure
 raw, opaque rehash, current state, pending query, SDK/game, tests or Git were
 used for this increment.
+
+## Actual v31 budget29, v32 cold and following7, 2026-10-03
+
+The next v31 window closed `turn-budget-boundary` (Root observed exit0),
+saving29 days rather than completing its request
+of30 days. Its32 formal rows are the three
+existing family-result reads (Guy betrothal, alliance result and first-heir
+typed marriage) followed by29 `life-advance` steps, with0 modal-consumer
+rows. All32 actual returned plans use the preserved goal and government
+context. They read results, rather than resubmitting marriages or claiming
+new action rewards. This intermediate durable cutoff is3827/resume674/day03+579
+at raw53236176, save/full4594.
+The checkpoint is90,931,077 bytes/SHA-256 `75deda82c678759ae5fdd7ba1e853ad0b09df71263bd9737cacd62a7e5dbd298`;
+driver is55,318,366 bytes/SHA-256 `fc3008d717d9985a1b8e4c95a5b06608855dca7e0ecaa1c9eb88c9066af6a992`.
+The29-day budget boundary remains partial against its30-day target.
+
+Root's separate prestop checkpoint then supplies current
+full4595/save4595 for official v32
+continuation. Prepare/rebind/preflight completed GREEN. New GAME
+109732 is distinct from old GAME97992;
+the actual qualified cold result closed `GREEN` with scope
+`ordinary_paused_goal_checkpoint_baseline`. At unchanged raw53236176, the same Robert29829,
+original episode, saved `dynasty_continuity` goal and all six ledger pins
+verify; ten opaque streams carry through the current-pair path.
+Source full4595 restores normally to
+full4596/saveanchor4595.
+The carried checkpoint is90,931,077 bytes/SHA-256
+`60f734e20c9d0b8d50e21d968ea051c297cc435807c02b2fd55e3136a9660176`; rebind preserves its bytes. The new after-close driver
+is55,320,033 bytes/SHA-256
+`eabe34ab17a79612b04e635f8977a83c51d6a96e90cc404d89d977f96fdd0559`. This cold scope skips
+government/next-plan, executes no planned step and adds0 days or slots.
+
+Public runtime source is `8cf176b436b6b0024fb591d4114b92448146181a`, native metadata source
+is `8cf176b436b6b0024fb591d4114b92448146181a`, and actual compiler source is
+`8cf176b436b6b0024fb591d4114b92448146181a`. The new environment is
+`a659ee553736c3a9429a961711411090ed6b53931a9c1a202f057b3179397486`. DLL is8,213,504
+bytes/SHA-256 `c709e1991d221abac1a066528968c437346a65ed8e401b04195323273c98a52a`; manifest is
+238,388 bytes/SHA-256 `48b3dc6d93d5c224bf25a0fdd1b404874ba586030973cf8e7e019f17366ea6f2`.
+Root reports strict969raw/505TUs/502uniqueCPP/0reuse and CI run37087106124
+SUCCESS. The strict tool session97058 is not a timing value or game PID.
+Those build/CI facts remain separate from the actual paused cold baseline.
+Managed startup requests minimization.
+
+The new same-PID v32 following window has now closed
+`normal-time-target-reached` (Root observed exit0), saving exactly7
+days from raw53236176 to raw53236344.
+It contains10 formal rows, including
+7 `life-advance` steps and
+3 existing
+family-result queries, with0 modal-consumer rows.
+Its actual returned plans use the saved goal on10
+rows and government context on10
+rows. The final Robert29829 frame remains alive and paused in the original
+episode; goal `reconciled_successions=0`
+and `last_succession=null` remain.
+
+The new fixed cutoff is3834/36524 durable days,681 new days this iteration
+and586 saved days in the current day03 stage. Save and full history are
+both4611, checkpoint90,886,952 bytes/SHA-256
+`1927e6392eac3baeed592a27650546884e0bf8437d677a2e249a99a092b5d6b6`; final driver is55,520,371 bytes/SHA-256
+`b538eadac58ffdf58a9989bcf3a5e87ff0160acb75c9ecf80e2c282ad7960e9a`. The normal continuation supplies actual goal/government
+execution evidence without replaying applied ledger actions. Global G2
+stays5/8, nonwar2/4 and M7 `in_progress`, with0 new natural-succession or
+matrix credit. Upcoming three religion queries and a new normal100 window
+are outside this cutoff; no future amount, paid outcome or time count is
+filled here, and no religion domain readiness is inferred from build/CI.
+
+Exact new following evidence is
+`m7-robert/v32-religion-type-tax-following-normal7-01/result.json`, extracted
+once to `m7-robert/V32-NORMAL7-STAGE-FIELDS-01.json`. The earlier29-day window
+and actual v32 cold metadata were already cached in
+`m7-robert/V31-NORMAL29-REPORT-FIELDS-01.json` and
+`m7-robert/V32-CURRENT-COLD-NORMAL29-CACHED-REPORT-FIELDS-01.json`.
+Combined delivery is `m7-robert/V32-CURRENT-COLD-NORMAL29-AND7-REPORT-FIELDS-01.json`.
+This increment reused those caches, did not reread old raw/opaque streams or
+pending query outputs, and used no current state, SDK/game, tests or Git.

@@ -1,13 +1,13 @@
 # CK3 1.20.0.3：罗贝尔的教义／信条玩法输入与忏悔入口
 
-2026-10-03。本页的原生教义／信条研究保留原始证据；固定决议 **`pam_decision_confession`** 的显示、最终资格、费用、支付能力和最终理由已沿现有宗教 Context MCP 发布，并经 ROOT 的 v29 罗贝尔实机只读验收达到 **production-live primitive**。该帧 `is_shown=false / can_take=false / affordable=true`，四项费用为零，最终文本只有通用“你未满足所有要求”。查询可用不代表决议可用；未执行忏悔，也没有实测减压或宗教收益。`has_at_least_tenet_status` 注册／求值子链仍复用此前 exact EXE 静态闭合。
+2026-10-03，阶段截止累计3834游戏日。固定决议 **`pam_decision_confession`** 的独立最终条款已在 v29 达到 **production-live primitive**，新增实际修行类型在 v32 同一宗教 Context 查询实读。ROOT 随后一次调用三个现成只读方法：当前罗贝尔的类型为 `christian_fulfillment`，当前运行期 `by_god_alone` 功能位为true；忏悔仍 `is_shown=false / can_take=false / affordable=true`、四项费用为零、仅通用“你未满足所有要求”。现成 TenetRows 实际输出两项Core，没有固定 `tenet_confession` 的有效许可状态，不能把缺行解释成false。因此具体隐藏原因尚未直接闭合，下一施工是补这个固定原生状态。未执行忏悔，也没有实测减压或宗教收益。
 
 宗教领域按项目所有者最新授权全面开放。罗贝尔唯一测试入口和独立战争暂停继续有效。ROOT 独占源码集成与实机；本 worker 只完成后台研究、外置独占 leaf／fixture 及本轮 actual 离线提取，没有启动、附加或操作 CK3，没有 SDK／pipe／窗口／Git 操作，没有付费、任命、改宗、改革或军事动作。
 
 ## 版本与可复用实际基线
 
 游戏为 **1.20.0.3 Crozier／Steam build 25652598**，冻结 EXE SHA-256
-`94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。新增 PE 研究读取 `artifacts/migrations/2026-10-02/installed-build/binaries/ck3.exe`，复用既有版本冻结，不重跑全 ABI 验证。源码输入为不可变 `production-source-f30579bf`，完整 commit `f30579bf6405e183192c96ea6b9bc35dddd11eec`；14 个当前 stock 文件、20 个行窗、5 个实际源文件及新 PE 材料的哈希在 [SOURCE-PROOF](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-doctrine-gameplay-12003/SOURCE-PROOF.json)。
+`94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。新增 PE 研究读取 `artifacts/migrations/2026-10-02/installed-build/binaries/ck3.exe`，复用既有版本冻结，不重跑全 ABI 验证。首轮研究输入为不可变 `production-source-f30579bf`，完整 commit `f30579bf6405e183192c96ea6b9bc35dddd11eec`；14 个当前 stock 文件、20 个行窗、5 个实际源文件及新 PE 材料的哈希在 [SOURCE-PROOF](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-doctrine-gameplay-12003/SOURCE-PROOF.json)。当前 v32 actual 绑定另列如下，不把历史研究源码当当前运行源码。
 
 先读 [原生索引](README.md)、[身份／现行教义](religion-native-ai-faith-identity-12003.md)、[Doctrine 总览](religion_doctrine12002_overview.md)、[Core／personal Tenet](religion_doctrine12002_tenet_rows.md)、[personal flags](religion_doctrine12002_personal_parameters.md)、[原生婚姻](ck3-1.20.0.2-marriage.md)、[治理意见](religion-governance-opinion-native-ai-12003.md)与[神秘共融最终条款](religion-mystical-communion-native-final-terms-12003.md)。已有婚姻／家族 G2 证据、原生 provider、fixtures 和迁移结果直接复用，没有新增婚姻验收。
 
@@ -33,6 +33,32 @@ ROOT 于 **2026-10-03 08:28:20–08:28:23（Asia/Shanghai）**执行一次既有
 
 这次解锁了实际价值：自动玩家能够确认当前没有可执行忏悔入口，且支付能力不是该帧返回的失败项，从而避免盲目尝试。它没有证明隐藏是由 DLC、fulfillment 类型还是 Rite许可造成，也没有证明 cooldown／chaplain／角色状态中的哪一项失败。当前只有只读 primitive；typed submit、`.0001.a` 及 stress／SF 后置尚未实现或验收，不能称 production-live loop、完整宗教能力或 G2 完成。
 
+## v32：当前修行类型、运行期功能与许可缺口
+
+ROOT 首次 v32 [宗教 Context 原包](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v32-religion-type-tax-holy-order-01/001-ck3_query_player_religion_context_v1.json)在 raw53236176／epoch17175 实读新 `player_spiritual_fulfillment_type`：`available=true`、实际key为 `christian_fulfillment`、`has_christian_fulfillment_type=true`，与该包既有忏悔条款共享 actor／date／epoch。该原包只有宗教 Context 与圣骑士团两条查询，没有 TenetRows。此结果及哈希已冻结于 [首轮 v32 提取](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-doctrine-gameplay-12003/confession-actual-v32/CONFESSION-ACTUAL.json)，没有借用不同PID／source／日期的 v30 功能位补成同帧结论。
+
+正常 following7 与 Sway following2 完成后，ROOT 在 paused **raw53236344** 执行 [现成三查询配置](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-doctrine-gameplay-12003/confession-actual-v32/ROOT-CONFESSION-VISIBILITY-THREE-CALLS.json)：宗教 Context、TenetRows、LoadedFeatureManifest各一次。[Official result](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v32-confession-permission-runtime-01/result.json)为 **GREEN／CLOSED／EXIT0**，初末 paused、actor与日期相同，native revision28；worker只提取完成的原包。
+
+| 当前输入／绑定 | v32 当前 paused 实际结果 |
+| --- | --- |
+| source／native／prepared env选定revision | 三者为 `8cf176b436b6b0024fb591d4114b92448146181a`；v32 DLL SHA `c709e1991d221abac1a066528968c437346a65ed8e401b04195323273c98a52a` |
+| environment／PID | env `a659ee553736c3a9429a961711411090ed6b53931a9c1a202f057b3179397486`；PID109732（ROOT提供） |
+| actor／日期／revision | Robert29829／raw53236344；public revision2、native revision28 |
+| 宗教 Context 与新type sibling | epoch **80779**；type available=true、key `christian_fulfillment`、Christian谓词true；忏悔条款与type在这个查询内同epoch |
+| 忏悔 native final terms | available=true；shown=false、CanTake=false、affordable=true；gold／treasury／prestige／piety均0、scale100000；理由仍原样通用 `\u0016warning_icon!\u0015X 你未满足所有要求\u0015!` |
+| 现成 TenetRows | epoch **81105**；available=true；current Rite152、main Rite152；实际Core及有效rows为 `tenet_armed_pilgrimages=4`、`tenet_communion=4`，personal为空；固定 `tenet_confession` **无行**，其许可状态尚未观测 |
+| 现成运行期feature | `native_index43 / cstring16745 / by_god_alone / enabled=true`；effective flags available、same_frame_ready/actionable_ready=true；当前public输出没有capture_epoch，按该query的native revision28／date与原包独立绑定 |
+
+三个查询共享实际 paused actor／日期／native revision；宗教 Context与TenetRows的capture_epoch不同，LoadedFeatureManifest不公开epoch，不将它们写成一次capture。当前feature true来自新查询，v30／PID57484／raw53234568只保留历史证据。Store entitlement独立unavailable不改变这个实际运行期功能位；descriptor／script key数量也不代替它。
+
+完整选定证据及源/native/env绑定见 [当前三输入 proof](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-doctrine-gameplay-12003/confession-actual-v32/current-visibility-three-inputs/CONFESSION-VISIBILITY-ACTUAL.json)、[SOURCE-NATIVE-ENV](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-doctrine-gameplay-12003/confession-actual-v32/current-visibility-three-inputs/SOURCE-NATIVE-ENV.json)及 [实际 TenetRows 原包](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v32-confession-permission-runtime-01/002-ck3_query_player_religion_tenets_v1.json)。两项显示输入已经直接读到true；剩余许可缺口是真实观测范围不足，查询整体available不能代替所需字段已完成，也不能由最终hidden倒填许可false。该局身份和1066 authored permitted列表同样不能补这个状态。
+
+生产reader源码进一步确定该缺口的原因：现 `effective_tenet_states` 只合并 current Rite Core、main Rite Core、main Rite+788状态条目及personal集合，没有全Tenet定义库枚举或current Rite非Core的独立完整集合。因此当前两项Core／personal空不能回答任意非Core固定Tenet的有效许可。native稳定key仍是完整 `tenet_confession`，没有去前缀。五个source pin与逐字producer窗口见 [固定definition复用研究](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-doctrine-gameplay-12003/confession-visibility/native-inputs-research/fixed-tenet-resolution/FIXED-TENET-RESOLUTION-NOTE.md)。现 `ReadCurrentDraftTenetSources12002` 没有draft时早退，不能为了这个玩家查询制造或打开draft；只复用其定义库／key读取输入。
+
+新增type leaf直接复用现成 progress Bindings 的 **DBslot5D1F6D0→TypeForCharacter3181BF0**；exact trigger确实沿actual played Character消费此来源。稳定key布局由 `SSpiritualFulfillmentType` 完整构造 `[0x3180830,0x318096B)`证明：Type+18为MSVC string、size+28、capacity+30，capacity≤15使用inline，否则使用heap pointer。依据及字节SHA见 [native-inputs-research](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-doctrine-gameplay-12003/confession-visibility/native-inputs-research/ROOT-DELIVERY.json)，没有把localized GetName、Faith身份或SF数值当类型key。
+
+独占新type header／cpp与Python normalizer定义9字段可选 `player_spiritual_fulfillment_type`，不增加binder、RVA、flag、MCP方法或框架；同原宗教 Context／actual actor读取。新focused native reader／serializer／现成renderer与production Python normalizer首轮GREEN（1 case／两场景；compile6.83s、run0），随后 shared owner的唯一新增组合fixture／真实NativeDriver decoder首轮GREEN，ROOT strict／CI及本次actual也已GREEN。静态投影见 [type leaf交付](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-doctrine-gameplay-12003/confession-visibility/ROOT-DELIVERY.json)，shared组合见 [owner receipt](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-same-context-type-tax-v32/OWNER-RECEIPT.json)。这里只增加新type的 **production-live primitive** 信用；没有重新验收closed getter／旧fixtures／婚姻矩阵，没有忏悔submit、减压或完整loop信用。
+
 ## 已有观测应如何用于玩法
 
 现成 Doctrine query 已分别保留 actor Rite 与 Faith main Rite 的有效 rows／完整布尔参数；Tenet query 有 Core、main-Rite 状态及玩家 personal 条目；personal 参数是独立的实际拥有集合。`Character+B4` 是 full RiteID，Faith 最终由 Rite 解析。三种来源不能合并，也不能把 Tenet 是否 Core 代替其原生有效许可状态。
@@ -43,7 +69,7 @@ ROOT 于 **2026-10-03 08:28:20–08:28:23（Asia/Shanghai）**执行一次既有
 | 性别继承法与 Council | `20_doctrines.txt:763–805` 发布 `male_dominated_law`、`male_dominated_council` 等不同参数；`00_succession_laws.txt:2024–2079` 的 male-preference `can_keep` 保留政府、liege 同步、Rite 与文化分支，`can_have`／`can_pass` 是独立条件 | Doctrine 参数是输入；不能写成“Catholic 自动允许某法”。实际当前法与最终资格复用既有 law／government queries；不把 realm Crown Authority 的完成证据扩成所有继承法已完成 |
 | 政治成本 | confession Tenet 的 authored `character_modifier` 为 `tyranny_gain_mult=-0.1`、`dread_decay_mult=0.15`；personal modifier 另有 scheme secrecy 两项 | 核心 Tenet／个人拥有集合有现成口；这些定义不是当前 Robert 的已生效总倍率或已实现政治收益，不把 Core 和 personal 两来源的 modifier 混用 |
 | 教会经济 | `20_doctrines.txt:1110–1168` 的 temporal lease 参数与 lay ownership／allowed holding types 分开；Christian defaults 又把 ecclesiastical government 与 lease contract 分开定义 | 机制身份不是当前税／征召兵收入。复用[治理意见](religion-governance-opinion-native-ai-12003.md)与对应教会收入 owner 的最终 consumer，不在本页重建 endorsement 或旧版收入公式 |
-| 减压／宗教维护 | `pam_decision_confession` 消费当前 Christian fulfillment 类型、至少 permitted 的 confession 状态、DLC、神职现任／可用性、角色状态与五年冷却；实际结果在事件选项 | 固定决议 final terms 已在 v29 实读：显示／资格false、affordtrue、cost0。显示层逐项失败来源和真实结果仍未观测；不以 Context 身份或旧 SF=5 代替实际条款 |
+| 减压／宗教维护 | `pam_decision_confession` 消费当前 Christian fulfillment 类型、至少 permitted 的 confession 状态、DLC、神职现任／可用性、角色状态与五年冷却；实际结果在事件选项 | v32 当前类型与运行期功能位实读true，final terms仍显示／资格false、affordtrue、cost0；有效confession许可缺行，应补固定原生状态，不能以Core列表／Context身份／旧SF代替 |
 
 Catholic 的 authored seed 更说明为什么需要读有效状态：`00_faith_types.txt:535–542` 与 `history/faiths/00_christianity.txt:77–138` 指向 `roman_rite`；1054 的 DLC Core setup 列 apostolic succession、communion、peace of God，1066 的 **permitted** 列表另含 confession。`00_rite_types.txt:1–33` 还有 DLC／fallback 选择。它们是当前安装 stock 的初始化定义；可能受到加载、DLC、历史演化、礼仪变更影响，不能断言当前 Robert 的 Core 或 permission 一定等于其中一份列表。
 
@@ -54,8 +80,13 @@ Catholic 的 authored seed 更说明为什么需要读有效状态：`00_faith_t
 ```mermaid
 flowchart TD
     P[实际 Robert played Character／exact .3 owning frame] --> ID[现成 Context：actor Rite／Faith／main Rite]
-    ID --> T[现成 Tenet rows／原生 GetTenetStatus]
-    T --> S[显示：Christian fulfillment<br/>root Rite confession至少permitted<br/>PAM DLC]
+    P --> TYPE[新type sibling：实际christian_fulfillment<br/>v32当前Christian=true／epoch80779]
+    ID --> T[现成TenetRows：当前Rite152<br/>epoch81105只有两项Core／无confession行]
+    T -. 固定许可尚未实际发布 .-> PERM[unknown：tenet_confession有效状态<br/>下一fixed definition＋GetTenetStatus]
+    P --> DLC[当前LoadedFeatureManifest<br/>runtime43/by_god_alone=true<br/>native revision28；不公开epoch]
+    TYPE --> S[stock is_shown三条件 conjunction]
+    PERM -. 尚缺输入 .-> S
+    DLC --> S
     P --> V[最终条件：非excommunicated／有chaplain<br/>alive／非activity／非prison／chaplain available<br/>五年cooldown与原生最终控制]
     S --> NS[原生 IsShown3103400]
     V --> NT[原生 CanTake3103510<br/>保留最终原因文本]
@@ -63,8 +94,8 @@ flowchart TD
     NS --> Q[已发布固定忏悔条款sibling]
     NT --> Q
     COST --> Q
-    Q --> LIVE[v29 Robert实际：shown=false／CanTake=false<br/>affordable=true／四项cost0<br/>reason仅通用unmet]
-    S -. 该帧各显示谓词尚未分解 .-> WHY[unknown：fulfillment type／许可／DLC<br/>下一最小观测入口]
+    Q --> LIVE[v32 Robert实际：shown=false／CanTake=false<br/>affordable=true／四项cost0<br/>reason仅通用unmet]
+    S -. 不由hidden倒填缺失许可 .-> WHY[具体隐藏原因未直接闭合<br/>固定有效许可为最高优先施工]
     Q -. submit／动作未实现或执行 .-> E[pam_decision_events.0001<br/>immediate绑定chaplain／secret]
     E --> A[.0001.a才执行stress／SF与随机结果]
     A --> BONUS[现成personal flag<br/>改变收益／hook／意见／义务分支权重]
@@ -116,8 +147,8 @@ stock `ai_potential` 为 stress level ≥1，`ai_will_do` 基础35，stress leve
 
 同一选项还可能以50%的独立random揭露自己secret给chaplain，再进入带条件和weight modifiers的random list：虔诚、chaplain获得hook、chaplain意见−25、发现廷臣secret、intrigue XP及pilgrimage／High Almoner／不同Faith配偶或子女转换／五年不战争等义务。personal confession bonus改变其中多项权重，hook／意见／部分义务的factor可为0。原始权重40／5／10等**不是固定百分比**，因为条件会移除分支、modifier会改权重；本页没有计算当前期望值或推荐动作。该列表作为忏悔结果合同保留，不开展军事或其他owner的策略研究。
 
-当前 v29 阻点为实际 `is_shown=false / can_take=false`，尚未获得具体失败谓词。下一项最高价值观测入口应分解 **stock is_shown 的三个输入**，沿同一个 played actor／epoch读取 Christian fulfillment 类型、实际 Rite152 的 confession 至少permitted结果、原生 PAM DLC feature。有效 Rite／Tenet与personal bonus先消费现成查询；DLC只读取原生运行期 `by_god_alone` entitlement，不能用“已安装30个descriptor”代替实际拥有／mount或授权，也不能把10世纪初始化列表当当前许可。已闭合 permitted trigger／GetTenetStatus可直接复用；fulfillment-type与DLC原生入口仍需对应exact调用链定位，未闭合字段标unknown并记录到同一 Context 的最小 sibling 扩展计划。无需先扩 generic decision reason框架或所有宗教动作。
+当前 v32 阻点仍为实际 `is_shown=false / can_take=false`。类型与原生PAM功能位已在当前paused帧直接读到true；最高优先缺口缩为 **实际 Rite152 对固定 `tenet_confession` 的有效状态**。已有TenetRows整体可用，却只实际发布两项Core且personal为空，不能以缺行／不属于Core代替不许可。下一最小施工复用现成 TenetSources 的 **DBslot5D1DEB8 → DB+EF0 definition pointer array（data+0／capacity+8／count+0C，stride8）**，逐项使用现 `CopyTenetDefinitionKey12002` byte-equal解析固定definition，再对当前actual Rite调用现 `TenetRowsBindings::tenet_state`／已closed `GetTenetStatus24F88A0`；可沿现有宗教Context可选sibling或既有Tenet query固定补行发布。保留native状态0／1／2／3／4，permitted严格使用closed分支的3／4；definition未解析或getter读取失败是unavailable，合法0不是读取失败。现mailbox的 `.3` reviewed descriptor admission及binding可直接复用，无需新泛化框架／flag、DLC getter、ABI重审或旧fixture重跑。
 
-取得这三个实际输入后，才能定位隐藏来源并选择具体可玩提升；不以 generic unmet 猜 chaplain、cooldown、DLC或 Rite是否许可，不建议为制造可见性盲目改宗／换礼仪／购买DLC。如未来实际显示且最终资格为true，再实现一次typed decision submit、`.0001.a` 及独立stress／SF／资源／关系或penalty结果；following、save与规定cold按真实artifact另记。现成事件管道可复用，未分类event不得凭“只有一个选项”盲点。native AI scheduler／final desire仍未知，但不阻碍窄玩家观测入口继续交付。
+固定许可状态补齐并实读后，先与既有最终IsShown／CanTake核对，再选择具体可玩提升。当前三查询只排除了两项已读true的显示输入；它没有直接提供许可结果或进一步分解CanTake的通用理由，不以generic unmet猜chaplain／cooldown，也不为制造可见性盲目改宗／换礼仪／购买DLC。如未来实际显示且最终资格为true，再实现一次typed decision submit、`.0001.a` 及独立stress／SF／资源／关系或penalty结果；following、save与规定cold按真实artifact另记。现成事件管道可复用，未分类event不得凭“只有一个选项”盲点。native AI scheduler／final desire仍未知，但不阻碍窄玩家观测入口继续交付。
 
-日报／周报汇总：历史研究完成20个stock行窗／14文件与4个新完整native函数；独占忏悔leaf及 projected normalizer 首轮静态测试已交付，由ROOT集成发布并在 v29／d1b5 Robert actual 达到 **production-live primitive（只读）**。本轮只做已冻结actual的离线提取与专题更新，**0新测试／SDK或MCP调用／动作／游戏日／G2 credit**；paid submit、stress／SF净收益和完整loop未验收。ROOT负责共享日报／周报、commit与push；独占 [REPORT-FIELDS](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-doctrine-gameplay-12003/confession-actual-v29/REPORT-FIELDS.json)提供可核验字段。本页不修改README或中央报告。
+日报／周报汇总：历史研究与独占忏悔条款在v29已达只读primitive；新增type leaf在v32／8cf176b4 Robert actual达到 **production-live primitive**，当前三个existing只读queries使Christian=true、runtime43=true有各自新帧证据，具体Rite许可仍缺。阶段3834只收口这些真实增量，下一fixed状态施工独立推进。本轮worker只做配置与actual离线提取／专题更新，**0新测试／SDK或MCP调用／动作／游戏日／G2 credit**；ROOT实际调用的次数与artifact单独记账，不能把worker的0记成ROOT未查询。paid submit、stress／SF净收益和完整loop未验收。ROOT负责共享日报／周报、blocker ledger、commit与push；独占 [REPORT-FIELDS](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-doctrine-gameplay-12003/confession-actual-v32/current-visibility-three-inputs/REPORT-FIELDS.json)与交付包提供可核验字段。本页不修改README或中央报告。

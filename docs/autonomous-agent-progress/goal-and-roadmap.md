@@ -1,5 +1,23 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 10:26 当前主线补录：v32，3834持久日与宗教决策输入
+
+实际补录 **2026-10-03T10:26:56+08:00 Asia/Shanghai**，当前cutoff不含随后normal100；Robert 29829 原 episode 已持久化 **3834/36524 天**，本次恢复累计 **681 天**，10-03 已保存 **586 天**；原始 G2 **5/8**、NW **2/4**，自然继承 **0**。本阶段比已发布 3798 截点新增 **36＝29＋7 天**。所有能力分母、原 M2/M5 与 NW-LIFE/NW-FAMILY 完成状态保持；`percent_reporting_allowed=false`。
+
+实际运行 source/native/compiled `8cf176b436b6b0024fb591d4114b92448146181a`、v32、PID **109732**，env `a659ee553736c3a9429a961711411090ed6b53931a9c1a202f057b3179397486`；最终 paused raw **53236344**，save/full **4611**。前一 v31 normal 请求 30、实际保存 29，`turn-budget-boundary`、32 formal＝3 既有 Family 结果查询＋29 life-advance，0 modal；当前 v32 following7 实际保存 7、10 formal＝3 既有 Family 结果查询＋7 life-advance，0 modal，正常达到该 7 日目标。共 42 个正式计划使用实际 saved goal/government context。新 PID 冷恢复 full4596/save4595、六 ledger 与十条 stream 保持，仅恢复既有状态，新增日数为 0。[M7 冷恢复与 29＋7 日闭包](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/V32-CURRENT-COLD-NORMAL29-AND7-REPORT-FIELDS-01.json)。
+
+本轮新完成输入为同 existing MCP 宗教类型与教会税率 primitive：53236176同帧effective0.075/configuredcap0.25、final教会收入0.21240/0.70804金月，支出与收益策略仍需要实际关系／费用／final legality。告解三查询在53236344确认 Christian=true、runtime feature43=true，固定 Rite confession permission尚未发布；shownfalse/takefalse、affordabletrue/四费用0与通用原因只能支持当前可见性观测，不能补造具体失败条件或动作。[同口类型／税率聚合字段](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-law/religion-same-context-type-tax-v32/actual-aggregate-qualified/REPORT-FIELDS.json)；[教会税率与收入实测](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-church-income-12003/actual-v32-tax-income-01/REPORT-FIELDS.json)；[告解三项输入实测](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-doctrine-gameplay-12003/confession-actual-v32/current-visibility-three-inputs/REPORT-FIELDS.json)。
+
+军事圣骑士团id4 terms available、hirefalse/affordtrue、106虔诚；五组织为一个军事加四个非军事，原生文本条目不替代唯一失败条件。[圣骑士团组织与雇佣条件](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-systems-12003/actual-v32/REPORT-FIELDS.json)。政府语义读取已在following7实际消费，inclusive计时不作为受控提速或新功能信用。[政府语义读取实际路径](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/recent-loop-cost-12003/actual-v32-government-semantic-01/REPORT-FIELDS.json)。Sway53236344当前328/353、op−8、无专属modifier/terminal，冷帧55%及旧hiddenfailureseq1分来源保留，不重Start。[Sway 后续材料](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m4-sway/robert-v32-first-next-material-after-normal7-01/REPORT-FIELDS-20261003.json)；[Sway 新 PID 冷恢复](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m4-sway/robert-v31-prestop-v32-cold-01/REPORT-FIELDS-20261003.json)。
+
+宗教全域授权与旧暂缓禁令撤销已公开交付，沿用用户授权；Catholic 身份保持，未改宗、告解、朝圣、雇佣或付费。新增观测只按各自 primitive 记录，整体宗教 OODA、M4/M6/M7 仍未完成。Family 三步骤消费既有 Guy 婚约／not_allied 与首继承人婚姻材料，无本轮提议或新联盟；LIFE 原 TaxMan 窄合同及原 M2/global M5 完成状态保留。原 capability/harness RED 与各历史帧材料完整保留，本轮不倒改历史失败，也不复跑旧检查。
+
+下一步按具体缺口补同口固定 Rite 告解 permission/status 只读叶，再获取当前最终条件；教会收益策略需实际 lessee→玩家好感及相关费用／final legality，朝圣 headless quote/holy-site qualification 继续独立施工。Sway 保持原 scheme 等真实收益／终态，不重 Start。ROOT 后续 normal100 的新进度另阶段记账，本次固定3834，所有未闭合源码与未来动作均未提升 readiness。
+
+最新保存90,886,952B，SHA-256 `1927e6392eac3baeed592a27650546884e0bf8437d677a2e249a99a092b5d6b6`；配对 driver55,520,371B，SHA-256 `b538eadac58ffdf58a9989bcf3a5e87ff0160acb75c9ecf80e2c282ad7960e9a`。前一29日 normal 的4594保存与新cold4595保存分别保留，未把恢复锚点作新推进。
+
+上阶段中央报告已真实公开 `e859965831b1ef227e13635472b0163b2c35cb91`（owned `55cb8542bcebadb34a24a64e4d0a5ee1c2179fb2`），[3798 截点实际发布回执](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/day03-v31-religion-normal134-progress-published.json)；[e859 文档 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37086673129) SUCCESS 09:41:16。新 source `8cf176b436b6b0024fb591d4114b92448146181a` 已公开，严格 fresh969inputs/505TUs/502uniqueCPP/0reuse、flags不变；[8cf 官方 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37087106124) SUCCESS 09:48:02。CI、严格编译、冷恢复与实际 domain 查询分别记账，CI不授予live。当前这五份报告发布由ROOT负责，发布后事实回执位于 `artifacts/g2-maintainer-2026-10-02/resume-12003/day03-v32-religion-3834-progress-published.json`；文档最终 HEAD 不冒充编译 HEAD。保留上游 war/video 各段，不制作日报／周报视频。
+
 ## 10-03 09:29 固定3798日：原婚约兑现与新原生输入边界
 
 2026-10-03T09:29:27+08:00 Asia/Shanghai真实补录：已发布3664截点后新增 **134保存日＝94恢复保存＋2部分完成＋8正常完成＋30正常完成**，当前原Robert **3798/36524**、resume **645保存日**、10-03 **550保存日**。raw **53235480**，最新配对save **4534**，v31 cold full **4535**。actor29829 / episode `native-29829-2bc2d599f7f9` / typed dynasty_continuity reconciled_successions **0**。G2 **5/8**、NW **2/4**；原M2/M5/NW-FAMILY/NW-LIFE complete和机器percent_reporting_allowed=false保持。婚姻与新宗教只读输入具备实际价值，不另记全项完成或把cold额外算游戏日。

@@ -1,5 +1,17 @@
 # CK3 自动游玩智能体进度中心
 
+## 当前滚动截点：v32，3834天（2026-10-03T10:26:56+08:00 实际补录）
+
+Robert 29829 原 episode 已持久化 **3834/36524 天**，本次恢复累计 **681 天**，10-03 已保存 **586 天**；原始 G2 **5/8**、NW **2/4**，自然继承 **0**。本阶段比已发布 3798 截点新增 **36＝29＋7 天**。所有能力分母、原 M2/M5 与 NW-LIFE/NW-FAMILY 完成状态保持；`percent_reporting_allowed=false`。
+
+运行 source/native/compiled `8cf176b436b6b0024fb591d4114b92448146181a`，PID109732；最新 paired save/full4611、paused raw53236344。已关闭增量29＋7＝36天，其中前29日窗口 budget boundary 未完成所请求30日，后7日窗口已达到目标。新PID冷恢复六ledger/十stream保持且0新增日。[M7 冷恢复与 29＋7 日闭包](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/V32-CURRENT-COLD-NORMAL29-AND7-REPORT-FIELDS-01.json)。
+
+新增同口宗教类型／税率只读 primitive：effective税率0.075、configured cap0.25，final教会收入0.21240/0.70804金月，均不是实现收益。告解 Christian=true、runtime feature43=true，固定 Rite permission尚未发布，finalshown/takefalse的具体隐藏条件仍未闭合；军事圣骑士团id4当前hirefalse/affordtrue/106虔诚，无付费。[教会税率与收入实测](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-church-income-12003/actual-v32-tax-income-01/REPORT-FIELDS.json)；[告解三项输入实测](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-doctrine-gameplay-12003/confession-actual-v32/current-visibility-three-inputs/REPORT-FIELDS.json)；[圣骑士团组织与雇佣条件](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-systems-12003/actual-v32/REPORT-FIELDS.json)。
+
+政府新语义读取已在正常循环消费，只是只读路径优化；Sway 当前328/353、op−8，独立专属modifier合法absence，仍无收益/terminal。[政府语义读取实际路径](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/recent-loop-cost-12003/actual-v32-government-semantic-01/REPORT-FIELDS.json)；[Sway 后续材料](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m4-sway/robert-v32-first-next-material-after-normal7-01/REPORT-FIELDS-20261003.json)。
+
+宗教全域授权已公开撤禁，Catholic保持；整体M4/M6/M7未完成。下一补固定告解permission与当前决策价值输入，后续normal100另阶段记录。五份报告由ROOT选择性发布，编译head与最终docshead分列；[3798 截点实际发布回执](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/day03-v31-religion-normal134-progress-published.json)和[8cf 官方 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37087106124)提供既有真实发布／CI身份，上游war/video历史段完整保留。
+
 ## 10-03 09:29 3798日／resume645：首继承婚姻与宗教只读输入
 
 2026-10-03T09:29:27+08:00 Asia/Shanghai真实补录：已发布3664截点后新增 **134保存日＝94恢复保存＋2部分完成＋8正常完成＋30正常完成**，当前原Robert **3798/36524**、resume **645保存日**、10-03 **550保存日**。raw **53235480**，最新配对save **4534**，v31 cold full **4535**。actor29829 / episode `native-29829-2bc2d599f7f9` / typed dynasty_continuity reconciled_successions **0**。G2 **5/8**、NW **2/4**；原M2/M5/NW-FAMILY/NW-LIFE complete和机器percent_reporting_allowed=false保持。婚姻与新宗教只读输入具备实际价值，不另记全项完成或把cold额外算游戏日。 [日报](daily/2026-10-03.md) / [W40](weekly/2026-W40.md)。v31 source/native/db463118/new97992/full4535/save4534/raw53235480，saveSHAfedf0860bf8943cae80170faacb9e67f9d4c801fdcbe5656bf2aa6aee54da1ee，afterdriverSHAf112cef01c875defe6d730eb9d86952723fba6165975ab949c0fbeaaaeff11b5。

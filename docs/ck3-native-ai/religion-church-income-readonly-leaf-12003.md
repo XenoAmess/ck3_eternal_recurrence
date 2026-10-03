@@ -88,8 +88,16 @@ ROOT 的 `actual-v29-religion-three-leaves-01/result.json` 为 `GREEN`，唯一 
 
 窄 readout 与原始文件 pins 位于 `artifacts/g2-maintainer-2026-10-02/resume-12003/religion-church-income-12003/actual-v29-church-income-01/ACTUAL-CHURCH-INCOME.json`；同目录 `REPORT-FIELDS.json` 交给 ROOT 合并当日、当周报告。
 
-## 下一项可施工只读输入
+## v29 时记录的下一只读入口
 
 若下一决策要改善当前 church income，优先闭合 **`GetTheocraticRulerIncomeRules`**：exact `.3` literal 已冻结在 RVA `0x48C8D98`，相邻 `GetTheocraticRulerMaxTaxSplit` literal 为 `0x48C8DB8`。下一步仅沿该较晚注册链定位实际 callback / consumer 与 receiver ABI，取得 **当前原生有效 ruler tax share 及 IncomeRules literal**，再放入现有 church sibling。实际 receiver 和 native 参数以该 caller 为准；不要根据名字猜签名或用 authored 25% 作为当前有效份额。
 
-该入口应连接实际 lease title / lessee / ruler 源；已有 `Title.GetTheocraticLessee` 链 `0xA9620 → 0xD8A9C0 → 0x2C42840` 可用于逐源解析 actual lessee，不能固定为旧祭司56513。如此才能区分本帧生效的 personal / fixed obligations、override、有效 lessee→ruler opinion 等输入，并判断某个改善关系动作是否影响当前份额。callback ABI 与这些本帧输入目前尚未发布，记录为下一施工依赖；它们不倒退或阻塞已完成的 current / maximum 只读 primitive。任何经济动作与可见收益确认都须另以操作前后实绩记录，不能由 maximum-current 替代。
+该入口应连接实际 lease title / lessee / ruler 源；已有 `Title.GetTheocraticLessee` 链 `0xA9620 → 0xD8A9C0 → 0x2C42840` 可用于逐源解析 actual lessee，不能固定为旧祭司56513。如此才能区分本帧生效的 personal / fixed obligations、override、有效 lessee→ruler opinion 等输入，并判断某个改善关系动作是否影响当前份额。该段记录时callback ABI与这些本帧输入尚未发布；v32已发布income-selected当前有效份额与原生规则文本，见下节及新tax专题。尚未发布的具体意见/obligations/action条款仍是相关决策的施工依赖；它们不倒退或阻塞已完成的 current / maximum 只读 primitive。任何经济动作与可见收益确认都须另以操作前后实绩记录，不能由 maximum-current 替代。
+
+## v32 同一宗教查询的税份额与收入
+
+ROOT 新包已 GREEN/CLOSED，source/native `8cf176b436b6b0024fb591d4114b92448146181a`，独立environment SHA `a659ee553736c3a9429a961711411090ed6b53931a9c1a202f057b3179397486`，PID `109732`，Robert29829 / date raw 53236176 / epoch 17175，本帧 current raw21240 / maximum raw70804，即 **0.2124 / 0.70804 gold/month**；这是新暂停帧独立确认，原v29的金额与source/date/epoch记录继续保留。
+
+同包 `player_church_tax_inputs` 发布income context Character `29829` / Faith `23`、actual direct lessee `56513`、native current effective ruler share raw `7500` = fraction `0.075` 以及完整原生所选规则文本。它通过native3stage消费者读取，未从两个收入金额的比值推算份额。详见 [新税输入专题](religion-church-tax-inputs-readonly-leaf-12003.md) 与 [same-frame readout](../../artifacts/g2-maintainer-2026-10-02/resume-12003/religion-church-income-12003/actual-v32-tax-income-01/ACTUAL-V32-TAX-INCOME-READOUT.json)。
+
+两项monthly income继续为独立production-live primitive，税输入也已完成其自身只读primitive；没有经济动作或收入改善，maximum−current不计收益，未因此声明整个经济策略loop完成。

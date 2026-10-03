@@ -70,12 +70,12 @@ flowchart LR
 
 ## Qualification and next validation
 
-This is a Python leaf source change, `static-ready`, with one successful
+The initial Python leaf source qualification was `static-ready`, with one successful
 `compile(..., 'exec')` syntax check of the exact proposed source. The existing
 semantic helper already underlies qualified planning and native query callers;
 no mirror tests or old suite was repeated. ROOT owns canonical application,
-commit/push, new-head CI, and the next ordinary paused government query. That
-actual query will validate the changed path without replaying old game stages.
+commit/push, new-head CI, and ordinary paused government queries. The new v32
+closed-run qualification below validates the changed path without replaying old game stages.
 Do not claim a new `production-live loop` or completed gameplay capability from
 this optimization alone.
 
@@ -90,3 +90,54 @@ Evidence and source pins: external
 `REPORT-FIELDS.json`, and `MEASURED-SUMMARY.json`. Exact game build is
 1.20.0.3 / Steam build 25652598, EXE SHA-256
 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`.
+
+## v32 actual production path qualification
+
+After ROOT confirmed managed finite run 41074 CLOSED with exit code 0, a single
+offline extraction read the new result, Driver timing aggregate, and the first
+completed turn trace from
+`m7-robert/v32-religion-type-tax-following-normal7-01`. The actual source is
+`production-source-8cf176b4`; ROOT identifies managed CK3 PID 109732. The window
+completed **7 actual days, 10 formal turns, and 0 natural modals**, ended paused at
+raw date 53236344, and reports `normal-time-target-reached`. ROOT's saved campaign
+accounting is 3,834 cumulative days / 681 continuation days / day-03 +586; those
+days belong to the campaign runner, not to this optimization's credit.
+
+The first formal turn is
+`query-player-child-default-marriage-result-v1-private`, with zero time advance.
+Its ordinary nonwar plan includes an **available** government context and native
+adapter result for Robert 29829 at raw date 53236176. Public query revision is 2,
+native revision is 5, and both queried and post snapshot IDs are `native:5`.
+`same_frame_ready`, `core_adapter_ready`, and ordinary goal-context readiness are
+true, with the same exact 1.20.0.3 EXE identity and no unavailable reason. This is
+the changed government's actual production path returning through its original
+normalizer and frame/build/actor checks; it is not an ACK substituted for a query.
+
+| New v32 Driver aggregate | Count | Inclusive seconds |
+| --- | ---: | ---: |
+| Government query | 10 | 11.9845279 |
+| Internal semantic snapshot, all callers | 355 | 0.5338419 |
+| Public `take_snapshot`, all callers | 105 | 86.1559378 |
+| Explicit history-omitted snapshot | 36 | 0.0493137 |
+
+The timer window is 144.2540125 seconds. Counts and durations above are aggregate
+and inclusive; overlapping methods must not be added. The published source has
+two semantic reads per government query, so the 10 actual query calls imply 20
+reads through that source path. **20 is a source-derived count, not an independent
+per-caller timer**; 355 is the directly measured whole-Driver semantic count.
+No additional caller or policy is modified.
+
+The leaf has now passed actual production-path qualification. This adds no new
+gameplay milestone, government policy, complete OODA loop, or G2/NW completion
+credit. The prior v30 thirty-day window and this v32 seven-day window differ in
+game state and formal action mix. Their durations are retained as observations,
+without a controlled speedup percentage or an equal-condition wall-clock claim.
+Existing cadence, timeline speed selection, native flags, and frame checks are
+preserved. No old benchmark, fixture, L0 suite, SDK call, or game action was
+repeated by the extractor.
+
+Evidence:
+`recent-loop-cost-12003/actual-v32-government-semantic-01/REPORT-FIELDS.json`,
+`EXTRACTION-REPORT.json`, and `DELIVERY.json` pin the new result and single turn.
+The report status is `production-live primitive` qualification for the changed
+read-only query leaf; its new gameplay/loop-credit field remains false.

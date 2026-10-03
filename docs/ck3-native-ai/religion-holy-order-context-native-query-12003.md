@@ -1,11 +1,11 @@
 # Holy-order current-player query implementation — CK3 1.20.0.3
 
-This addendum belongs with `docs/ck3-native-ai/religion-holy-order-systems-native-ai-12003.md`. The canonical research document is frozen for ROOT publication; this file remains external until ROOT copies it. The native source tree was researched before this implementation. Existing creation/patronage and hire ABI evidence are reused, without another ABI audit.
+This addendum belongs with `docs/ck3-native-ai/religion-holy-order-systems-native-ai-12003.md`. ROOT adopted the 17-file query implementation into production v32 and immutable `production-source-8cf176b4`; strict build and CI were GREEN before the paused Robert acceptance below. The native source tree was researched before this implementation. Existing creation/patronage and hire ABI evidence are reused, without another ABI audit.
 
 ## Build and current scope
 
 - CK3 `1.20.0.3`, Steam build `25652598`, executable SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`.
-- Immutable source preimage: `production-source-db463118`.
+- Implementation preimage: `production-source-db463118`; accepted production source: `production-source-8cf176b4`, v32.
 - Current live acceptance target remains Robert, played character `29829`. The public query accepts only `expected_revision`; callers cannot select a different character.
 - Reuses `allow_private_player_religion_context_query` and native `XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1`. No new feature flag, no action, no war switch change.
 - Tool: `ck3_query_player_holy_order_context_v1`. Native step: `query-player-holy-order-context-v1`. Domain: `player_holy_order_context_v1`. Schema: `ck3_12003_player_holy_order_context_v1`.
@@ -44,12 +44,34 @@ The external package contains one focused production-reader/serializer fixture a
 
 The native reader fixture covers manager holes, legal empty and unavailable collections, full references, a dynamic patron distinct from the founder, leases, two military and one nonmilitary organisation, ten signed resource costs, independent hire/affordability answers, and literal native reasons. The initial fixture failure expected `\\n` where production correctly emitted valid JSON `\\u000a`; the historical RED remains preserved, and only the fixture expectation changed. This was a fixture failure, not evidence that the capability failed in CK3.
 
-External focused fixture success supports `static-ready`. ROOT still owns source merge, the production DLL build, and one paused Robert observation through the published route. No CK3 process, game state, SDK session, pipe, screen, or window was used by this lane. This is not `fixture-live`, a production-live primitive, a gameplay loop, or completion of holy-order strategy.
+The external fixtures established `static-ready`; ROOT then adopted and built the source, cold-started the minimized production process, and completed one registered paused Robert query. The collection and the present military organisation's final hire/cost/affordability observations now qualify as a `production-live primitive`. This lane only read ROOT's CLOSED disk artifacts. It did not connect to CK3, the SDK or a pipe, or perform screen/window operations. No hire action, gameplay loop, creation/revocation capability, or complete holy-order strategy is claimed.
+
+## Paused Robert production observation — v32
+
+ROOT closed `actual-v32-religion-type-tax-holy-order-01/result.json` GREEN, exit 0, before this lane read it. The actual holy-order call is `002-ck3_query_player_holy_order_context_v1.json` (7049 bytes, SHA-256 `1041c5cea507bc900d8c7cc10f36f4be724c23a75395856b31ca6bee1ddbcdbd`). The call took 2.421 seconds. Both initial and final ROOT snapshots remained paused at raw date `53236176`, Robert `29829`, native revision `4` / public revision `2`. ROOT identified the new cold PID as `109732` and the prepared environment SHA-256 as `a659ee553736c3a9429a961711411090ed6b53931a9c1a202f057b3179397486`. Native capture epoch was `17503`.
+
+The collection is **available**, with five organisations: one military and four nonmilitary. This is a world-manager collection, not a claim that Robert founded or can hire every row.
+
+| Order full ID | Military | Rite raw reference | Founder | Current patron | Employer | Current leased-title IDs |
+| --- | --- | --- | --- | --- | --- | --- |
+| 0 | false | 4294967295 | null | 35923 | null | 5477, 11878 |
+| 1 | false | 4294967295 | null | 29097 | null | 2317, 423, 699 |
+| 2 | false | 4294967295 | null | 31899 | null | 134 |
+| 3 | false | 4294967295 | null | 35649 | null | 14541 |
+| 4 | true | 15 | 31100 | 31100 | 39004 | 7558 |
+
+The four nonmilitary rows have `military_terms: null`. They are not evidence of military hire availability. Their raw rite value is `UINT32_MAX`; it is preserved as the actual native value and is not assigned an invented faith identity.
+
+The single military row, order `4`, has `military_terms.available=true`, native `can_hire=false`, and independent native `can_afford=true`. Its complete signed raw resource vector is `[0,0,10600000,0,0,0,0,0,0,0]`, scale `100000`: an evaluated piety cost of **106**. Both native reason sinks were sampled. The hire reason states “被绝罚的统治者无法雇佣骑士团” and “他们已经被雇佣”; the affordability reason is a legitimate empty string. The original control markers, tooltip tokens and newline remain unchanged in the artifact. Robert's initial and final piety remained `37145000` raw; this readonly query did not pay the quoted cost or hire the order.
+
+Copied identities and every military final-term field are pinned in `artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-systems-12003/actual-v32/HOLY-ORDER-OBSERVATION.json`. The raw artifact remains the evidence; the copied summary does not replace it. A future available empty manager would still be a valid zero-organisation observation, distinct from unavailable; this accepted frame actually contained five rows.
 
 ## Next concrete work
 
-ROOT can merge the source patch, build with the existing religion opt-in, and make one paused current-player query for Robert. Verify that the returned collection is available and that every present military organisation has sampled hire/cost/affordability terms, preserving a legitimate zero-order state if that is the actual world state. Keep the paused artifact and report the real readiness outcome. Query failure or a military field left unreadable becomes the next direct getter repair task, rather than a substitute strategy.
+The current native query already resolves the real hire blocker separately from affordability. The next selected-title reader can reuse the existing held-title collection and final decision getters while explicitly constructing the controller's barony/title context. Parent policy work can consume the observed final terms after consulting the native tree. No hire should be inferred from affordability alone.
 
 The separate creation/revocation task must construct the actual native selected-title context: `scope:barony` for military order creation/revocation and `scope:title` for the monastic county selector. A root-only decision quote does not settle these selected-title branches. The existing stock tree and final decision leaf provide its next implementation entry; this current collection query does not claim those branches complete. Native chooser ranking remains explicitly unknown and does not prevent the final hire leaf from being observed.
 
-Daily and weekly reporting fields are provided externally for ROOT to merge into the shared reports. Commit/push and production acceptance are pending ROOT; this child does not mutate Git or shared files.
+The parallel v32 disk research narrowed that next entry: `GetCurrentTitle` resolves a named kind5 Title token via `18D29E0`; `HasValidTitles` calls the actual widget's vtable+`40` candidate producer via `18D2A90`, supplying the real actor and selected-parameter object. The concrete virtual target and parameter constructor/name setter/export remain unknown. Existing `construction_held.cpp` gives a reusable personal-domain title source, but its barony-only output is not the complete decision candidate set; a monastic county query must retain tier2 separately. The exact spans and source pins are recorded in the systems topic and external `create-selected-context/RESEARCH.md`. No selection UI is needed for this research, and no creation/revocation query or action is yet claimed.
+
+Daily and weekly reporting fields and this document's post-update pins are provided externally for ROOT to merge into the shared reports. Production query acceptance is closed; commit/push and shared-report publication remain ROOT-owned. This child does not mutate Git or shared source/report files.

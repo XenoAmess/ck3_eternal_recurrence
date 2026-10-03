@@ -1,6 +1,6 @@
 # 教会当前税份额与原生规则只读叶：CK3 1.20.0.3
 
-本叶提供当前玩家教会收入所选 direct ruler tax rule 的真实角色、有效税份额及原生规则文本，让后续关系与宗教经济决策有可用输入。它沿既有 `query-player-religion-context-v1` 发布独立 optional sibling `player_church_tax_inputs`；数值是收入分配 **fraction**，不是 gold/month。独立实现及定向验证已达到 **static-ready**，共享接线与该叶 production paused artifact 尚待 ROOT 发布验收。
+本叶提供当前玩家教会收入所选 direct ruler tax rule 的真实角色、有效税份额及原生规则文本，让后续关系与宗教经济决策有可用输入。它沿既有 `query-player-religion-context-v1` 发布独立 optional sibling `player_church_tax_inputs`；数值是收入分配 **fraction**，不是 gold/month。独立实现、共享接线和罗贝尔同帧正式实读已经闭合，本叶达到 **production-live primitive**；本次没有策略动作或收入改善信用。
 
 精确目标为 CK3 **1.20.0.3 / Steam 25652598**，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。实现以 immutable `production-source-db463118`、完整commit `db46311827eeffe24f5a093ecc9461e12c828b40` 为基线，既有religion实现沿用已冻结d1链；新shared接线由所属代理独立交付。本叶仅有新header/cpp、Python normalizer与本专题。ROOT基线冻结为 `robert-religion-hof-gold-fix-v31-source-freeze.json`，runtime DLL manifest为 `binaries/native-nonwar-12003-religion-hof-gold-fix-v31/manifest.json`，均位于本轮resume-12003目录；这些证明基线，不是新tax-input leaf的build/live证据。源码入口为 [header](../../ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_church_tax_inputs.hpp)、[native reader / serializer](../../ck3_autonomous_player/native_bridge/src/ck3_12003_church_tax_inputs.cpp)、[Python normalizer](../../ck3_autonomous_player/src/xar_autoplayer/bridge/player_church_tax_inputs.py)。
 
@@ -58,7 +58,7 @@ flowchart TD
     TXT --> COPY[完整复制后856050析构一次]
     S3 --> OPT[player_church_tax_inputs optional sibling]
     COPY --> OPT
-    OPT -. pending: ROOT接线与Robert paused实读 .-> LIVE[本帧actual share / roles / rules]
+    OPT --> LIVE[v32 Robert实际同帧 share / roles / rules]
     LIVE -. unknown: 具体经济动作及结果未执行 .-> GAIN[收入变化与净收益]
 ```
 
@@ -97,6 +97,36 @@ Python normalizer按这21个actual keys解码并保留原始值，同时对照�
 
 实际 Python unique normalizer 一次消费上述 C++ serializer 的6份真实叶JSON，55项检查 GREEN；与固定fixture context `actor301989891/date704123/epoch73` 对照，保留1111/2222/3333份额、96667剩余额度、合法0/空文本和具体不存在状态。这些都是合成测试值，不是Robert当前份额。独立receipt为 [native focused result](../../artifacts/g2-maintainer-2026-10-02/resume-12003/religion-church-income-12003/effective-share-12003/implementation/NATIVE-FOCUS-RESULT.json) 与 [normalizer focused result](../../artifacts/g2-maintainer-2026-10-02/resume-12003/religion-church-income-12003/effective-share-12003/implementation/NORMALIZER-FOCUS-RESULT.json)。
 
-本 unique fixture 仅覆盖 actual leaf serializer / resolver / normalizer，完整 production mailbox、build identity renderer 与 NativeDriver transport由shared接线所属代理的唯一new combined case另行覆盖；不得把本节提升为该完整链或live。ROOT随后通过Robert唯一paused入口读取actual，才允许把本组件提升到production-live primitive；已有v29月收入证据继续沿用原artifact。没有新游戏动作、推进日、收入改善或G2信用。
+本 unique fixture 仅覆盖 actual leaf serializer / resolver / normalizer，完整 production mailbox、build identity renderer 与 NativeDriver transport由shared接线所属代理的唯一new combined case另行覆盖；不得把本节提升为该完整链或live。上述focused记录形成时仍待ROOT paused实读；本次v32 actual增量见下节，已有v29月收入证据继续沿用原artifact。没有新游戏动作、推进日、收入改善或G2信用。
 
 原生研究输入为本包 `CHURCH-EFFECTIVE-SHARE-NATIVE-TREE.md`、`callback/format-clarification/ROOT-DELIVERY.json`、`sources/ROOT-DELIVERY.json`及复用的旧share consumer冻结指令。研究证明constructor、角色和计算入口已闭合；实现与实机证据各自保存，不用研究receipt代替执行结果。
+
+## v32 罗贝尔同帧真实税份额与收入
+
+2026-10-03，ROOT 的新 `actual-v32-religion-type-tax-holy-order-01` 既有宗教查询已经 **GREEN/CLOSED**；正式 driver close 已返回。source/native `8cf176b436b6b0024fb591d4114b92448146181a`，独立environment SHA `a659ee553736c3a9429a961711411090ed6b53931a9c1a202f057b3179397486`，PID `109732`，Robert29829 / date raw 53236176 / epoch 17175。本专题仅离线消费已经关闭的新包，没有增加实机查询或动作。税21字段与月收入10字段均 available=true、reason=null，与旧religion context同actor/date/epoch。该税输入叶现为 **production-live primitive**。
+
+| 字段 | 本帧 native 实际值 |
+| --- | --- |
+| played faith / rite / religion | `23` / `152` / `8` |
+| income context Character / Faith | `29829` / `23` |
+| actual direct lessee | `56513`；按本帧owner LandedState原生引用解析 |
+| lease-liege / top-direct | `29097` / `29097`；-1为原生无该角色 |
+| lease-liege prior share | raw `25000` = fraction `0.25` |
+| top-direct prior share | raw `0` = fraction `0` |
+| remaining before ruler | raw `75000` = fraction `0.75` |
+| current effective ruler share | raw `7500` = fraction **`0.075`**；直接来自native current消费者 |
+| configured ruler ceiling | raw `25000` = fraction `0.25`；不是扣完上级分配后的effective maximum |
+| current / maximum monthly income | raw `21240` / `70804` = **0.2124 / 0.70804 gold/month** |
+| scales / tax units | Q100000；tax share=fraction，月收入=gold/month |
+
+所选收入规则的本帧原生最终文本如下，以JSON string literal完整保留UTF-8、markup与换行；`\u0015`是原生markup控制符的可见转义，不从文案解析或推导numeric share：
+
+```json
+"•主教\u0015high 斯特芬\u0015!对\u0015V 你\u0015!的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,opinion 好感\u0015!\u0015!：\u0015positive_value +7%\u0015!"
+```
+
+该原生文本把当前来源显示为主教斯特芬对你的好感贡献 `+7%`；numeric current消费者直接返回7500/Q100000，即7.5%。显示文本与精确数值各自保留，不能把显示百分数反推为exact opinion，也不能把configured25%当成当前有效份额。
+
+[新实际readout与原始包pins](../../artifacts/g2-maintainer-2026-10-02/resume-12003/religion-church-income-12003/actual-v32-tax-income-01/ACTUAL-V32-TAX-INCOME-READOUT.json) 保存以上same-frame值及完整text。actual direct lessee是原生租借角色；本query未另发布该角色的council job title或意见数值，不能由ID、收入比值或markup推断任职与意见。原v29 .21165/.70554的证据仍明确归属其旧source、PID/date/epoch。
+
+本增量确认观测口可用，未执行任何赠礼、拉拢、换任、教义变更或经济动作；最大收入减当前收入不是已实现收益，也无production-live loop、推进日或G2完成信用。下一项必要只读输入可固定在本帧actual lessee56513→played ruler29829的真实native opinion及当前关系动作最终cost/合法性；已有native opinion入口 `0x28BC490` 与final approval消费者 `0x31C1470` 可复用研究，但未发布的签名/DTO仍须沿exact consumer闭合后施工。若具体动作还需要来源归因，再补local/indirect来源；不要求先完成全枚举。

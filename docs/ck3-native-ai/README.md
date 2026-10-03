@@ -10,8 +10,8 @@
 - [神秘共融的原生最终条款](religion-mystical-communion-native-final-terms-12003.md)：同一宗教查询的独立字段实读available，当前决议隐藏／不可执行／可负担，费用100虔诚；原生理由仅返回“你未满足所有要求”，不猜具体未满足的条件。当前为只读production-live primitive，没有付费动作。
 - [普通本人改宗](religion-conversion-native-ai-12003.md)：复用现有候选、条款、理由、输入和结果查询，实机取得Orthodox主Rite153候选并读取最终条款；候选Faith规则true，paid最终can_convert=false，未执行转换。当前Rite和费用、知识等输入回链实际记录，不用候选资格代替最终合法性。
 - [教士与议会任务](religion-clergy-council-native-ai-12003.md)：v28 在罗贝尔同一存档的新 PID24044 实读现任56513的独立 `native_can_fire=false`，与 `CanReassign=false` 分别保留；原生结果 available，当前职位与角色有效。该口为只读 production-live primitive，完整动作资格仍 false，没有任免或任务收益。默认完整历史 SDK 快照超时保留为 harness RED，既有有限快照路径完成两条真实注册查询。
-- [教义、信条与忏悔](religion-doctrine-gameplay-native-ai-12003.md)：新版实际决议为 `pam_decision_confession`，广告参数不能代替 permitted 许可或最终决议判定；下一叶复用已有决议 ABI 读取实际条款。当前为 research。
-- [教会收入](religion-church-income-native-ai-12003.md)：新版租赁契约包含个人、固定与地方义务；读取当前／最高月收入必须使用玩家 receiver，不能拿现任祭司收入替代。当前原生树及最小 getter 为 research，没有收入改善信用。
+- [教义、信条与忏悔](religion-doctrine-gameplay-native-ai-12003.md)：新版实际决议为 `pam_decision_confession`；v32 已实读 `christian_fulfillment` 类型、当前功能标志 43 和最终决议条款，当前仍隐藏且不可执行。类型查询为只读 production-live primitive；固定信条 `tenet_confession` 的许可状态尚未发布，已有信条集合不含该项不能当作许可为 false，下一项是补齐固定定义状态读取。
+- [教会收入](religion-church-income-native-ai-12003.md)：新版租赁契约包含个人、固定与地方义务；v32 的[税份额输入](religion-church-tax-inputs-readonly-leaf-12003.md)和当前／最高月收入已在罗贝尔暂停帧验收。实际有效税份额 7.5%，月收入 0.21240／0.70804 金；份额来自原生 getter，不能从收入比值反推。当前为只读 production-live primitive，没有收入改善信用。
 - [奉献等级、德性与罪性](religion-devotion-virtues-native-ai-12003.md)：累计等级进度与可花费虔诚分开，动态上限和当前 Rite 的德性判定已有具体原生读取入口。当前为 research，贫穷誓愿的静态收益不是罗贝尔实际合法性或收益。
 - [热忱与县改宗](religion-fervor-county-conversion-native-ai-12003.md)：已闭合任务最终月率与真实县目标的施工入口；完成百分比、Faith 热忱和同名县 modifier 分别处理。当前为 research，尚未切换宗教任务。
 
@@ -21,11 +21,11 @@
 
 [成年通知 coming_of_age.1002](ck3-1.20.0.3-coming-of-age1002.md)已从实际阻塞事件和新版原文闭合唯一 native0/API1 选项，v30 实际消费原通知22、独立确认窗口消失并保存，恢复正常推进。按钮只确认既有成长通知，不计教育特质、解除监护或 M2 材料收益。证据：`artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/v30-coming-age1002-resolve-save-01/result.json`。
 
-[圣骑士团创建与雇佣](religion-holy-order-systems-native-ai-12003.md)已形成新版原生研究树，闭合动态赞助者、租约、最终雇佣许可、费用与支付能力入口；[专用只读查询](religion-holy-order-context-native-query-12003.md)实现及必要 native／mailbox／registered-route 验证已完成，现为 static-ready，待 v32 当前罗贝尔实机读取。研究不依赖打开 Military/Faith 窗口，尚无实机组织集合或雇佣收益。
+[圣骑士团创建与雇佣](religion-holy-order-systems-native-ai-12003.md)及[专用只读查询](religion-holy-order-context-native-query-12003.md)已完成 v32 罗贝尔实机读取：组织集合包含 1 个军事组织和 4 个非军事组织，军事组织的原生最终雇佣条款可用，当前不能雇佣、可以负担、费用为 106 虔诚。现为只读 production-live primitive；所选地产的创建／撤租条款仍待实现，没有雇佣动作或收益。
 
 同一宗教 MCP 新增精神满足类型 key 与当前教会税规则／份额两个 sibling，复用既有 progress bindings、Tenet 状态和运行期 DLC 输入；必要组合 mailbox／生产解码已通过，v32 实机尚待完成。它们补足告解显示原因及教会收入决策的实际字段，没有新宗教动作或收入信用。
 
-[政府只读语义快照](government-readonly-semantic-capture-12003.md)修复实际正常循环的两处完整历史复制：每30轮预计移除60次复制，全部身份／构建校验、1/7/30步长及游戏速度保持。当前 static-ready，未承诺实测提速，下一正式政府查询用于验证修改路径。
+[政府只读语义快照](government-readonly-semantic-capture-12003.md)修复实际正常循环的两处完整历史复制，保留全部身份／构建校验、1/7/30步长及游戏速度。v32 后继 7 天正常窗口已验证政府 context 与 native adapter 可用；实际 10 次政府查询，语义读取累计计时与完整快照计时分别记录，不承诺跨窗口提速比例。
 
 当前实际能力与计划回链[统一进度](../autonomous-agent-progress/README.md)。宗教全面授权不等于宗教全域完成；上述原生研究、静态实现、实机观测和完整动作闭环分别记账。
 

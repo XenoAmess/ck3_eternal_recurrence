@@ -1,5 +1,7 @@
 # 1.20.0.3 教会租约、意见与罗贝尔的实际经济输入
 
+**v32 实机增量（2026-10-03）：**[income-selected税输入叶](religion-church-tax-inputs-readonly-leaf-12003.md) 已由ROOT在source/native `8cf176b436b6b0024fb591d4114b92448146181a`，独立environment SHA `a659ee553736c3a9429a961711411090ed6b53931a9c1a202f057b3179397486`，PID `109732`、Robert29829 / date raw 53236176 / epoch 17175正式读取为 `production-live primitive`：context Character/Faith `29829`/`23`，actual direct lessee `56513`，native current ruler share raw `7500` / Q100000 = fraction `0.075`；同帧current raw21240 / maximum raw70804，即 **0.2124 / 0.70804 gold/month**。完整原生IncomeRules随21字段发布，未从income ratio推算份额，没有动作或收益；v29记录保持其历史source/frame归属。
+
 本页研究正文是 2026-10-03 的 **research / file-only** 增量，服务罗贝尔29829当前封建本世的经济决策。新版原版已把基督教教会租约指定为 `ecclesiastical_lease`，采用教区层级；世俗统治者的 authored 最高税份额是25%，实际份额还受教会情势的 personal／fixed obligations、local secular power、现任 lessee 的意见与 override 影响。不能把旧版“提高祭司意见即可获得固定比例税收”的记忆直接写入策略。研究阶段闭合原生数值 getter，最小施工先取得玩家本人教会来源的当前／最高月收入；当时没有实机新收入、任命、赠礼或收益结论。
 
 **v29 实机增量（2026-10-03）：**独立 [church income 只读叶](religion-church-income-readonly-leaf-12003.md) 已由 ROOT 在 source/native/env `d1b5b4c5583fa428d9226d4ebe4431e0c8db3579`、PID120436、Robert29829 / raw53234568 paused frame 正式读取并 `GREEN/CLOSED`：current raw21165、maximum raw70554、Q100000，即 **0.21165 / 0.70554 gold/month**。该叶现为 `production-live primitive`；最大与当前之差不是已实现收入或净收益。本次没有经济动作或政策收益，树中尚未闭合的有效份额／IncomeRules 分支继续作为下一项只读施工入口，详见该叶的实际帧与下一入口章节。
@@ -61,7 +63,7 @@ flowchart TD
     H --> F
     F --> I[各份额最终ceiling 去负与remaining截断]
     I --> J[原生当前角色income expenses net 与levies]
-    J -. 当前Robert未新增实读 .-> K[unknown 当前可改善的教会来源月收入]
+    J -->|gross income部分已实读| K[v32 owner0.21240金月 max0.70804; direct当前份额7.5%]
     K -. 需要实际动作条款与前后帧 .-> L[unknown 赠礼或关系改善的真实收益]
 ```
 
@@ -91,7 +93,7 @@ receiver必须写进字段合同。Income／max／balance要以当前played **ow
 
 `0xD02190`以实际lessee为receiver，经court／liege context读取当前Rite→Faith→lease contract。final `0x31C1470(contract,lessee,ruler,tooltip=nullptr)`依次检查双方特殊关系 `Character+0x15C`同值非-1、合同hook-strength `+0x66D`与原生hook判断、lessee→ruler native opinion `0x28BC490`是否≥contract threshold `+0x668`，并在意见不够时考虑lessee另一个原生owner关系 `Character+0x1B8→+0x168`等于ruler。该owner关系的具体游戏名尚未闭合，保留opaque；可以直接调用最终bool而不猜身份或在Python复算。stock给min opinion1是合同显示／判断输入，不是“税收=1%”的公式，也不证明本帧approvaltrue。
 
-Title的actual lessee getter为 `0xA9620 → 0xD8A9C0 → 0x2C42840`：自动lease行从 `Title+0x130 / +0x128`的角色及其land-state取lessee，普通lease行走 `Title+0x12C`的title holder。contract getter `0xA9780 → 0xD8AA20 → 0xD88AB0`也依据actual lease选择当前holder的Rite／Faith合同。因此全lease列表必须按actual title来源判断，不能仅以holding type为church就写入56513。`GetTheocraticRulerIncomeRules`与`GetTheocraticRulerMaxTaxSplit` literal已定位到 `0x48C8D98 / 0x48C8DB8`，其较晚注册callback尚未闭合；它们是后续详细份额／原因的具体入口，不阻塞先读已有的最终角色income。
+Title的actual lessee getter为 `0xA9620 → 0xD8A9C0 → 0x2C42840`：自动lease行从 `Title+0x130 / +0x128`的角色及其land-state取lessee，普通lease行走 `Title+0x12C`的title holder。contract getter `0xA9780 → 0xD8AA20 → 0xD88AB0`也依据actual lease选择当前holder的Rite／Faith合同。因此全lease列表必须按actual title来源判断，不能仅以holding type为church就写入56513。`GetTheocraticRulerIncomeRules`与`GetTheocraticRulerMaxTaxSplit` literal已定位到 `0x48C8D98 / 0x48C8DB8`，原初研究时其较晚注册callback尚未闭合；后续v32已闭合late callback、选定TaxRule消费者和owned原生规则文本，见新tax专题及下节same-frame实读，尚未发布的意见/obligations/action输入单独继续施工。
 
 ## 一个可立即施工的最小只读叶
 
@@ -121,4 +123,4 @@ flowchart LR
 
 首次只需与风险相称的一次focused native→genuine wire→现有Python decoder验证，然后ROOT在Robert唯一入口同一暂停帧读取新字段。没有理由重跑RR、CanFire、construction wartime quote、完整L0或旧ABI矩阵。实际当前income的只读primitive可以独立交付；关系动作仍需真实当前意见、cost／合法性、当前合同分支、动作前后结果与正常月份的收入观察。一次native maximum、一次ACK、authored 0.25或某个建筑税额均不授予实现收益或完整经济loop资格。
 
-本增量新增 **provider实现0、focused tests0、live calls0、actions0、游戏日0、G2 credit0**。较早RR／clergy live资格保持原artifact归属，战争执行开关不变。一个PE检查命令因第三个RVA多写两位而退出1，发生在纯文件读取阶段；纠正参数后冻结所需字节窗，没有触及游戏，也不是能力RED或测试失败。ROOT负责后续实现、paused实际值、中央日报／周报合并与正常commit／push。
+原初研究增量新增 **provider实现0、focused tests0、live calls0、actions0、游戏日0、G2 credit0**；后续native实现与v29/v32正式实读分别归属对应专题及actual包。较早RR／clergy live资格保持原artifact归属，战争执行开关不变。一个PE检查命令因第三个RVA多写两位而退出1，发生在纯文件读取阶段；纠正参数后冻结所需字节窗，没有触及游戏，也不是能力RED或测试失败。ROOT负责后续实现、paused实际值、中央日报／周报合并与正常commit／push。
