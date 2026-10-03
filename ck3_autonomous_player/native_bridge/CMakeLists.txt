@@ -2222,8 +2222,9 @@ if(BUILD_TESTING)
        (fixture_name MATCHES "^ck3_12002_war_cash" AND
         NOT XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1) OR
        fixture_name MATCHES "^ck3_12002_(sway_completion|sway_outcome|epidemic)" OR
-       fixture_name STREQUAL "ck3_12002_family_obligations_alliance_test" OR
-       fixture_name STREQUAL "ck3_12002_call_ally_sender_test" OR
+        fixture_name STREQUAL "ck3_12002_family_obligations_alliance_test" OR
+        fixture_name STREQUAL "ck3_12002_family_obligations_no_entry_test" OR
+        fixture_name STREQUAL "ck3_12002_call_ally_sender_test" OR
        (fixture_name MATCHES "^ck3_12002_religion" AND
         (NOT XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1 OR
          NOT fixture_name STREQUAL "ck3_12002_religion_context_test")) OR

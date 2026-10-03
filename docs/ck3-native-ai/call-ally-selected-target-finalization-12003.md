@@ -63,3 +63,11 @@ Artifact root: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/call-ally-n
 - Parent `../ROOT-READ-FIX-DELIVERY.json` and `../ROOT-READ-FIX-PROJECTION-MANIFEST.json` pin the combined implementation, docs and verification receipts. `../focused-fixture/result.json` records the five native cases; the actual emitted fixture wire SHA-256 is `93fab1b3bb643a533c6393ed2caf9cd6cf7a76e64925269315bb61d245e18cb0`. `../context-identity/normalizer/ROOT-NORMALIZER-DELIVERY.json` pins the six dict cases and the registered-chain consumption result.
 
 `CALL-ALLY-SPECIAL-DISCOVERY.json` records a bounded unsuccessful static name search. The lone raw integer-byte match at `0xBD0BAA` is a call displacement in an unrelated sorting function, not a call-ally registration. Its extracted window is exploratory evidence only and supports no semantic claim. No prior full ABI verifier or fixture matrix was rerun.
+
+## 2026-10-03T15:41 接续源码采用
+
+统一fresh v36配置在0TU阶段RED：手工xar_ck3_12002_family_obligations_no_entry_test与原有ck3_12002_*_test.cpp GLOB foreach同时add_executable/add_test；原冻结9476/g36及完整失败日志/cache留存。这是新增夹具遗漏已有skip list，而非原生ABI或游戏失败；当前v35/PID13408/raw53236728/3850保存日不变。g37仅加一条fixture_name STREQUAL排除，与已手工alliance/sender条目并排，保留手工目标全部flags/includes/link/tests。原独立native/MCP GREEN复用，不加测试或安全边界；下一新fresh目录严格四targets/64jobs/115flags完整构建负责验证这次实际配置修复。
+
+实际记录：`2026-10-03T15:41:34+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
+
+交付回执：[v36-cmake-fixture-target-registration-fix](Z:\ck3_mod_rewrite_process_assets\g2-resume-20261003\runtime-preparation\v36\BUILD-RESULT.json)。
