@@ -1,5 +1,14 @@
 # 一代人自治：阻塞与能力债账本
 
+## 当前增量：首都已实际抵达并由我军围城
+
+锁h6059/raw53244648/93304379B/SHA `80d6eaa28b6cf0ee57c32f7f777f5d7d00ef7464ed6dc222514a74187513040f`。actual02已关闭、64正常保存日/1536h，与前55日共119日；累计4180/36524、恢复1027、Oct4+155、Oct3冻结777。首次actual arrival+own siege是day38/raw53244024，非forecast44000。主83886367在2640/state3 sieging、空route0、无combat/retreat；首都仍敌70766占领，ownSiege385875999/playertrue、ETA128估计、CanStartfalse。
+
+fresh兵力3801/4231、47团；30/47首条补员仅partial，不推全军补员或伤亡。War167白和legal/quote可读，recipientanswer不可用；defender动作gate仅支持attacker的真实故障正修，未send。v50 full/CI GREEN仍static未部署，horizon原因未查明。P0继续我方围城至独立occupier变化/正常保存闭环，同时并行修horizon诊断和defender白和，不阻life。68437未来64日零信用，未记首都收复；旧正文、RED和另机追加保留。
+
+实证：[64日账本](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/recapture-v49/actual02-sealed-day-consumption/ROOT-DELIVERY.json)、[零日正常保存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/r25-v49-capital-siege-zero-days/ROOT-DELIVERY.json)、[军需实读](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/actual-capital-arrival-health-v49/ROOT-DELIVERY.json)、[v50严格构建](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v50/ROOT-ACTUAL-V50-STATIC-BUILD-RECEIPT.json)。
+
+
 ## 当前增量：55日已保存，horizon故障不关闭收复主线
 
 root60709已closed/exit1；实际55保存日、1320h，累计4116/36524、恢复963、Oct4+91，Oct3冻结777。最新正常h5895/raw53243112/92485865B，SHA `5c8ff107bff0e7187c3f3ee936121908f335cc5b79a58f7143bb9445b11b9477`。day56 horizon typed query报“application-main typed query failed or its snapshot changed”，RED为0h/0日，无推进，不能把64预算写成完成。

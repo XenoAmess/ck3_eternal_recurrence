@@ -1,5 +1,16 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 当前主线：已抵达并围城，首都尚未收复（2026-10-04T05:56:22+08:00 实际补录）
+
+累计 **4180/36524、resume +1027、10-04 +155**，10-03冻结+777；G2 5/8、NW2/4、自然继承0。新批64个正常保存日/1536h与原55日合计119日，最后正常 **h6059/raw53244648**。day38/raw53244024才首次实读抵达及我方围城，预测时间不能代替该实证。
+
+主军83886367在2640、sieging、路线空、无combat/retreat；首都敌占70766而ownSiege385875999/playertrue并存，ETA128仅估计，不能写收复或围城终态。下一步依据原生战争树、实际围城进展与fresh补给决定继续围城或合法外交；兵力3801/4231、47兵团，补员30/47行只是部分观测，不由差额推伤亡。WP167合法资格/报价可读，但recipient answer unavailable，defender typed gate仅attacker正在v51修复；其余两WPfalse、三enforcefalse，未发送。
+
+v50/g55诊断候选full strict/CI GREEN尚未deploy，horizon cause仍unknown，不把静态诊断当已解实际故障或新增门禁。R25仍g54/8898/PID66464；SDK68437 future64和terms另零日save均不改本次锚点。旧六入口与另机append原样保留。
+
+实证：[64日账本](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/recapture-v49/actual02-sealed-day-consumption/ROOT-DELIVERY.json)、[零日正常保存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/r25-v49-capital-siege-zero-days/ROOT-DELIVERY.json)、[军需实读](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/actual-capital-arrival-health-v49/ROOT-DELIVERY.json)、[v50严格构建](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v50/ROOT-ACTUAL-V50-STATIC-BUILD-RECEIPT.json)。
+
+
 ## 当前主线：55日持久续行，首都仍敌占（2026-10-04T05:07:15+08:00 实际补录）
 
 累计 **4116/36524、resume +963、10-04 +91**，10-03冻结+777；最后正常 **h5895/raw53243112**。64日预算实际保存55日/1320h后exit1，第56日horizon typed query失败或snapshot changed，0推进；保留该RED与已成功保存，不能把请求预算写成完成日数。最终封存字段由Root锁定，不追中间前缀或重核旧包。
