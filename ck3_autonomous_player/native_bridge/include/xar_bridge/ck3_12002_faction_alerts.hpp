@@ -40,6 +40,10 @@ using NativeCountyOpinionInt32_12003 = std::int32_t(XAR_FACTION_12002_CALL *)(
 using NativeFactionBool12002 = bool(XAR_FACTION_12002_CALL *)(void *faction);
 using NativeFactionDanger12002 = bool(XAR_FACTION_12002_CALL *)(
     void *ignored, void *faction);
+using NativeFactionRelation12003 = void *(XAR_FACTION_12002_CALL *)(
+    void *left, void *right);
+using NativeGovernmentAllowsMask12003 = std::uint64_t(XAR_FACTION_12002_CALL *)(
+    const std::int32_t *identifier);
 
 #undef XAR_FACTION_12002_CALL
 
@@ -70,6 +74,11 @@ struct PlayerFactionAlertsNativeEnvironmentV1 {
   bool county_observations_12003 = false;
   NativeCountyOpinionInt32_12003 county_opinion = nullptr;
   CountyFactionFinalBindings12003 county_faction_finals;
+  bool surrender_observations_12003 = false;
+  NativeCampaignRootCharacterResolverV1 government = nullptr;
+  NativeFactionRelation12003 pair_relation = nullptr;
+  NativeGovernmentAllowsMask12003 government_allows_mask = nullptr;
+  const std::int32_t *state_faith_identifier = nullptr;
 };
 
 struct PlayerFactionAlertsAccessV1 {

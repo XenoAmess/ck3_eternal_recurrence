@@ -84,7 +84,7 @@ _TARGETING_FACTION_FIELDS: Final = {
     "dangerous_by_stock_rule",
     "danger_reason",
 }
-_TARGETING_FACTION_OPTIONAL_FIELDS: Final = {"county_member_observations"}
+_TARGETING_FACTION_OPTIONAL_FIELDS: Final = {"county_member_observations", "surrender_impact"}
 _COUNTY_MEMBER_OBSERVATION_FIELDS: Final = {
     "county_title_id",
     "capital_province_id",
@@ -328,6 +328,62 @@ def _provenance(value: object) -> dict[str, str]:
     }
 
 
+def _surrender_title(value: object, field: str) -> dict[str, object]:
+    fields = {"title_id", "tier_raw", "de_jure_parent_title_id", "duchy_title_id",
+              "kingdom_title_id", "holder_character_id", "top_liege_character_id"}
+    if not isinstance(value, dict) or set(value) != fields:
+        raise ValueError(f"{field} must contain the surrender title fields")
+    return {
+        "title_id": _positive_int32(value["title_id"], f"{field}.title_id"),
+        "tier_raw": _int(value["tier_raw"], f"{field}.tier_raw", minimum=1, maximum=5),
+        **{key: _nullable_positive_int32(value[key], f"{field}.{key}")
+           for key in fields - {"title_id", "tier_raw"}},
+    }
+
+
+def _surrender_impact(value: object, field: str) -> dict[str, object]:
+    scalar_bools = {"ordinary_branch_title_sets_ready", "county_loss_complete", "kingdom_outcome_complete"}
+    optional_bools = {"government_allows_state_faith", "leader_at_war_with_target"}
+    id_lists = {"player_subrealm_county_title_ids", "player_direct_title_loss_ids",
+                "player_remaining_direct_county_title_ids"}
+    title_lists = {"member_counties", "seized_counties", "seized_duchies"}
+    fields = scalar_bools | optional_bools | id_lists | title_lists | {
+        "status", "unavailable_reason", "kingdoms", "unresolved_branches"}
+    if not isinstance(value, dict) or set(value) != fields:
+        raise ValueError(f"{field} must contain the surrender impact fields")
+    if value["status"] not in {"available", "unavailable"}:
+        raise ValueError(f"{field}.status is unsupported")
+    out = {"status": value["status"], "unavailable_reason": value["unavailable_reason"]}
+    if out["unavailable_reason"] is not None:
+        out["unavailable_reason"] = _stable_key(out["unavailable_reason"], f"{field}.unavailable_reason")
+    out.update({key: _bool(value[key], f"{field}.{key}") for key in scalar_bools})
+    out.update({key: None if value[key] is None else _bool(value[key], f"{field}.{key}")
+                for key in optional_bools})
+    out.update({key: _sorted_unique_ids(value[key], f"{field}.{key}") for key in id_lists})
+    for key in title_lists:
+        if not isinstance(value[key], list):
+            raise ValueError(f"{field}.{key} must be a list")
+        out[key] = [_surrender_title(row, f"{field}.{key}[{index}]")
+                    for index, row in enumerate(value[key])]
+    if not isinstance(value["kingdoms"], list) or not isinstance(value["unresolved_branches"], list):
+        raise ValueError(f"{field}.kingdoms and unresolved_branches must be lists")
+    out["kingdoms"] = []
+    for index, kingdom in enumerate(value["kingdoms"]):
+        key = f"{field}.kingdoms[{index}]"
+        if not isinstance(kingdom, dict) or set(kingdom) != {
+            "title", "de_jure_county_title_ids", "seized_county_title_ids", "strict_majority_from_seized_counties"}:
+            raise ValueError(f"{key} must contain the kingdom impact fields")
+        out["kingdoms"].append({
+            "title": _surrender_title(kingdom["title"], f"{key}.title"),
+            "de_jure_county_title_ids": _sorted_unique_ids(kingdom["de_jure_county_title_ids"], f"{key}.de_jure_county_title_ids"),
+            "seized_county_title_ids": _sorted_unique_ids(kingdom["seized_county_title_ids"], f"{key}.seized_county_title_ids"),
+            "strict_majority_from_seized_counties": _bool(kingdom["strict_majority_from_seized_counties"], f"{key}.strict_majority_from_seized_counties"),
+        })
+    out["unresolved_branches"] = [_stable_key(row, f"{field}.unresolved_branches")
+                                  for row in value["unresolved_branches"]]
+    return out
+
+
 def _targeting_faction(value: object, index: int) -> dict[str, object]:
     field = f"targeting_factions[{index}]"
     if (
@@ -445,6 +501,8 @@ def _targeting_faction(value: object, index: int) -> dict[str, object]:
                 f"{observations_field} must follow county_member_title_ids order"
             )
         normalized["county_member_observations"] = observations
+    if "surrender_impact" in value:
+        normalized["surrender_impact"] = _surrender_impact(value["surrender_impact"], f"{field}.surrender_impact")
     return normalized
 
 

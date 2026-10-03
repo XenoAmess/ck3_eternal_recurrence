@@ -386,6 +386,83 @@ void AppendCountyMemberObservation(
   output.push_back('}');
 }
 
+void AppendSurrenderTitle(std::string &output,
+                          const game::FactionSurrenderTitleV1 &title) {
+  output += "{\"title_id\":" + Number(title.title_id) +
+            ",\"tier_raw\":" + Number(title.tier_raw) +
+            ",\"de_jure_parent_title_id\":";
+  AppendOptionalInt32(output, title.de_jure_parent_title_id);
+  output += ",\"duchy_title_id\":";
+  AppendOptionalInt32(output, title.duchy_title_id);
+  output += ",\"kingdom_title_id\":";
+  AppendOptionalInt32(output, title.kingdom_title_id);
+  output += ",\"holder_character_id\":";
+  AppendOptionalInt32(output, title.holder_character_id);
+  output += ",\"top_liege_character_id\":";
+  AppendOptionalInt32(output, title.top_liege_character_id);
+  output.push_back('}');
+}
+
+void AppendSurrenderTitles(std::string &output,
+                           const std::vector<game::FactionSurrenderTitleV1> &titles) {
+  output.push_back('[');
+  for (std::size_t index = 0; index < titles.size(); ++index) {
+    if (index) output.push_back(',');
+    AppendSurrenderTitle(output, titles[index]);
+  }
+  output.push_back(']');
+}
+
+void AppendSurrenderImpact(std::string &output,
+                          const game::FactionSurrenderImpactV1 &impact) {
+  output += "{\"status\":";
+  AppendJsonString(output, impact.status);
+  output += ",\"unavailable_reason\":";
+  AppendOptionalString(output, impact.unavailable_reason);
+  output += ",\"government_allows_state_faith\":";
+  AppendOptionalBool(output, impact.government_allows_state_faith);
+  output += ",\"leader_at_war_with_target\":";
+  AppendOptionalBool(output, impact.leader_at_war_with_target);
+  output += ",\"ordinary_branch_title_sets_ready\":";
+  output += impact.ordinary_branch_title_sets_ready ? "true" : "false";
+  output += ",\"county_loss_complete\":";
+  output += impact.county_loss_complete ? "true" : "false";
+  output += ",\"kingdom_outcome_complete\":";
+  output += impact.kingdom_outcome_complete ? "true" : "false";
+  output += ",\"player_subrealm_county_title_ids\":";
+  AppendInt32Array(output, impact.player_subrealm_county_title_ids);
+  output += ",\"member_counties\":";
+  AppendSurrenderTitles(output, impact.member_counties);
+  output += ",\"seized_counties\":";
+  AppendSurrenderTitles(output, impact.seized_counties);
+  output += ",\"seized_duchies\":";
+  AppendSurrenderTitles(output, impact.seized_duchies);
+  output += ",\"player_direct_title_loss_ids\":";
+  AppendInt32Array(output, impact.player_direct_title_loss_ids);
+  output += ",\"player_remaining_direct_county_title_ids\":";
+  AppendInt32Array(output, impact.player_remaining_direct_county_title_ids);
+  output += ",\"kingdoms\":[";
+  for (std::size_t index = 0; index < impact.kingdoms.size(); ++index) {
+    if (index) output.push_back(',');
+    const auto &kingdom = impact.kingdoms[index];
+    output += "{\"title\":";
+    AppendSurrenderTitle(output, kingdom.title);
+    output += ",\"de_jure_county_title_ids\":";
+    AppendInt32Array(output, kingdom.de_jure_county_title_ids);
+    output += ",\"seized_county_title_ids\":";
+    AppendInt32Array(output, kingdom.seized_county_title_ids);
+    output += ",\"strict_majority_from_seized_counties\":";
+    output += kingdom.strict_majority_from_seized_counties ? "true" : "false";
+    output.push_back('}');
+  }
+  output += "],\"unresolved_branches\":[";
+  for (std::size_t index = 0; index < impact.unresolved_branches.size(); ++index) {
+    if (index) output.push_back(',');
+    AppendJsonString(output, impact.unresolved_branches[index]);
+  }
+  output += "]}";
+}
+
 void AppendTargetingRow(std::string &output,
                         const game::PlayerTargetingFactionV1 &row) {
   output += "{\"faction_id\":" + Number(row.faction_id) +
@@ -427,6 +504,10 @@ void AppendTargetingRow(std::string &output,
       AppendCountyMemberObservation(output, row.county_member_observations[index]);
     }
     output.push_back(']');
+  }
+  if (row.surrender_impact) {
+    output += ",\"surrender_impact\":";
+    AppendSurrenderImpact(output, *row.surrender_impact);
   }
   output += ",\"dangerous_by_stock_rule\":";
   output += row.dangerous_by_stock_rule ? "true" : "false";

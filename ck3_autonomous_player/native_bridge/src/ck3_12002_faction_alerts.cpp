@@ -441,6 +441,231 @@ bool ReadSubrealmCountyIds(
   return true;
 }
 
+void SortUnique(std::vector<std::int32_t> &ids) {
+  std::sort(ids.begin(), ids.end());
+  ids.erase(std::unique(ids.begin(), ids.end()), ids.end());
+}
+
+bool ReadSurrenderTitle(
+    const PlayerFactionAlertsNativeEnvironmentV1 &environment,
+    const PlayerFactionAlertsAccessV1 &access, std::int32_t title_id,
+    game::FactionSurrenderTitleV1 &output) {
+  output = {};
+  output.title_id = title_id;
+  std::vector<std::int32_t> visited;
+  auto current_id = title_id;
+  for (int depth = 0; depth < 8; ++depth) {
+    if (std::find(visited.begin(), visited.end(), current_id) != visited.end())
+      return false;
+    visited.push_back(current_id);
+    void *title = nullptr, *definition = nullptr;
+    std::int32_t tier = -1, parent_id = -1;
+    if (!Resolve(access, environment.landed_title_storage_slot,
+                 environment.landed_title_fallback_slot, current_id, 0x10, title) ||
+        !title || !Read(access, title, 0x48, definition) || !definition ||
+        !Read(access, definition, 0x64, tier) || tier < 1 || tier > 5 ||
+        !Read(access, title, 0x108, parent_id)) return false;
+    if (depth == 0) {
+      output.tier_raw = tier;
+      if (parent_id > 0) output.de_jure_parent_title_id = parent_id;
+      std::int32_t holder_id = -1;
+      if (!Read(access, title, 0x128, holder_id)) return false;
+      if (holder_id > 0) {
+        void *holder = nullptr;
+        if (!Resolve(access, environment.character_storage_slot,
+                     environment.character_fallback_slot, holder_id, 0x18, holder) ||
+            !holder) return false;
+        output.holder_character_id = holder_id;
+        std::vector<std::int32_t> lieges;
+        for (int hop = 0; hop < 64; ++hop) {
+          if (std::find(lieges.begin(), lieges.end(), holder_id) != lieges.end())
+            return false;
+          lieges.push_back(holder_id);
+          void *liege = nullptr;
+          std::int32_t liege_id = -1;
+          if (!InvokeLiege(environment.immediate_liege, holder, liege) ||
+              (liege && !Read(access, liege, 0x18, liege_id))) return false;
+          if (!liege || liege_id == -1) {
+            output.top_liege_character_id = holder_id;
+            break;
+          }
+          void *round_trip = nullptr;
+          if (!Resolve(access, environment.character_storage_slot,
+                       environment.character_fallback_slot, liege_id, 0x18,
+                       round_trip) || round_trip != liege) return false;
+          holder = liege; holder_id = liege_id;
+        }
+        if (!output.top_liege_character_id) return false;
+      }
+    }
+    if (tier == 3) output.duchy_title_id = current_id;
+    if (tier == 4) output.kingdom_title_id = current_id;
+    if (parent_id <= 0) return true;
+    current_id = parent_id;
+  }
+  return false;
+}
+
+bool ReadDeJureCountyIds(
+    const PlayerFactionAlertsNativeEnvironmentV1 &environment,
+    const PlayerFactionAlertsAccessV1 &access, std::int32_t title_id,
+    std::vector<std::int32_t> &output) {
+  output.clear();
+  std::vector<std::int32_t> pending{title_id};
+  for (std::size_t cursor = 0; cursor < pending.size(); ++cursor) {
+    if (pending.size() > kMaximumMembers) return false;
+    void *title = nullptr, *definition = nullptr;
+    std::int32_t tier = -1;
+    if (!Resolve(access, environment.landed_title_storage_slot,
+                 environment.landed_title_fallback_slot, pending[cursor], 0x10,
+                 title) || !title || !Read(access, title, 0x48, definition) ||
+        !definition || !Read(access, definition, 0x64, tier)) return false;
+    if (tier == 2) { output.push_back(pending[cursor]); continue; }
+    if (tier < 2 || tier > 5) return false;
+    std::vector<std::int32_t> children;
+    if (!ReadIdSpan(access, title, 0x110, children)) return false;
+    for (auto child : children) {
+      void *object = nullptr;
+      std::int32_t parent = -1;
+      if (!Resolve(access, environment.landed_title_storage_slot,
+                   environment.landed_title_fallback_slot, child, 0x10, object) ||
+          !object || !Read(access, object, 0x108, parent) ||
+          parent != pending[cursor] ||
+          std::find(pending.begin(), pending.end(), child) != pending.end())
+        return false;
+      pending.push_back(child);
+    }
+  }
+  SortUnique(output);
+  return true;
+}
+
+bool InvokeSurrenderPredicates(
+    const PlayerFactionAlertsNativeEnvironmentV1 &environment,
+    const PlayerFactionAlertsAccessV1 &access, void *actor, void *leader,
+    game::FactionSurrenderImpactV1 &output) noexcept {
+  if (!environment.government || !environment.government_allows_mask ||
+      !environment.state_faith_identifier || !environment.pair_relation || !leader)
+    return false;
+  std::int32_t identifier = -1;
+  if (!Read(access, environment.state_faith_identifier, 0, identifier) ||
+      identifier < 0) return false;
+  void *government = nullptr, *relation = nullptr;
+  std::uint64_t mask = 0;
+#if defined(_MSC_VER)
+  __try {
+#endif
+    government = environment.government(actor);
+    mask = environment.government_allows_mask(&identifier);
+    relation = environment.pair_relation(leader, actor);
+#if defined(_MSC_VER)
+  } __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+#endif
+  std::uint64_t features = 0;
+  std::int32_t war_id = -1;
+  if (!government || !mask || !Read(access, government, 0x40, features) ||
+      !relation || !Read(access, relation, 0x20, war_id)) return false;
+  output.government_allows_state_faith = (features & mask) == mask;
+  if (war_id == -1) {
+    output.leader_at_war_with_target = false;
+    return true;
+  }
+  void *war = nullptr;
+  std::uint8_t ended = 0;
+  if (war_id <= 0 || !Resolve(access, environment.war_storage_slot,
+                              environment.war_fallback_slot, war_id, 8, war) ||
+      !war || !Read(access, war, 0x358, ended) || ended > 1) return false;
+  output.leader_at_war_with_target = ended == 0;
+  return true;
+}
+
+bool ReadSurrenderImpact(
+    const PlayerFactionAlertsNativeEnvironmentV1 &environment,
+    const PlayerFactionAlertsAccessV1 &access, void *actor,
+    const game::PlayerTargetingFactionV1 &faction,
+    game::FactionSurrenderImpactV1 &output) {
+  output = {};
+  output.unavailable_reason = "surrender_title_collection_unavailable";
+  if (!faction.leader_character_id) return false;
+  void *leader = nullptr;
+  if (!Resolve(access, environment.character_storage_slot,
+               environment.character_fallback_slot, *faction.leader_character_id,
+               0x18, leader) || !leader) return false;
+  if (!InvokeSurrenderPredicates(environment, access, actor, leader, output)) {
+    output.unavailable_reason = "surrender_branch_predicates_unavailable";
+    return false;
+  }
+  if (!ReadSubrealmCountyIds(environment, access, faction.target_character_id,
+                            output.player_subrealm_county_title_ids)) return false;
+  std::vector<std::int32_t> duchies, seized_ids, kingdom_ids;
+  for (const auto county_id : faction.county_member_title_ids) {
+    game::FactionSurrenderTitleV1 title;
+    if (!ReadSurrenderTitle(environment, access, county_id, title) ||
+        title.tier_raw != 2 || !title.duchy_title_id) return false;
+    duchies.push_back(*title.duchy_title_id);
+    output.member_counties.push_back(std::move(title));
+  }
+  SortUnique(duchies);
+  for (const auto duchy_id : duchies) {
+    game::FactionSurrenderTitleV1 title;
+    std::vector<std::int32_t> counties;
+    if (!ReadSurrenderTitle(environment, access, duchy_id, title) ||
+        title.tier_raw != 3 ||
+        !ReadDeJureCountyIds(environment, access, duchy_id, counties)) return false;
+    if (title.kingdom_title_id) kingdom_ids.push_back(*title.kingdom_title_id);
+    if (title.holder_character_id == faction.target_character_id)
+      output.player_direct_title_loss_ids.push_back(duchy_id);
+    output.seized_duchies.push_back(std::move(title));
+    for (auto county_id : counties)
+      if (std::binary_search(output.player_subrealm_county_title_ids.begin(),
+                             output.player_subrealm_county_title_ids.end(), county_id))
+        seized_ids.push_back(county_id);
+  }
+  SortUnique(seized_ids); SortUnique(kingdom_ids);
+  for (const auto county_id : seized_ids) {
+    game::FactionSurrenderTitleV1 title;
+    if (!ReadSurrenderTitle(environment, access, county_id, title) ||
+        title.tier_raw != 2 ||
+        title.top_liege_character_id != faction.target_character_id) return false;
+    if (title.holder_character_id == faction.target_character_id)
+      output.player_direct_title_loss_ids.push_back(county_id);
+    output.seized_counties.push_back(std::move(title));
+  }
+  for (const auto county_id : output.player_subrealm_county_title_ids) {
+    game::FactionSurrenderTitleV1 title;
+    if (!ReadSurrenderTitle(environment, access, county_id, title)) return false;
+    if (title.holder_character_id == faction.target_character_id &&
+        !std::binary_search(seized_ids.begin(), seized_ids.end(), county_id))
+      output.player_remaining_direct_county_title_ids.push_back(county_id);
+  }
+  SortUnique(output.player_direct_title_loss_ids);
+  for (const auto kingdom_id : kingdom_ids) {
+    game::FactionSurrenderKingdomV1 kingdom;
+    if (!ReadSurrenderTitle(environment, access, kingdom_id, kingdom.title) ||
+        kingdom.title.tier_raw != 4 ||
+        !ReadDeJureCountyIds(environment, access, kingdom_id,
+                            kingdom.de_jure_county_title_ids)) return false;
+    for (auto county_id : kingdom.de_jure_county_title_ids)
+      if (std::binary_search(seized_ids.begin(), seized_ids.end(), county_id))
+        kingdom.seized_county_title_ids.push_back(county_id);
+    kingdom.strict_majority_from_seized_counties =
+        kingdom.seized_county_title_ids.size() * 2 >
+        kingdom.de_jure_county_title_ids.size();
+    output.kingdoms.push_back(std::move(kingdom));
+  }
+  output.ordinary_branch_title_sets_ready = true;
+  output.county_loss_complete = output.government_allows_state_faith == false &&
+                               output.leader_at_war_with_target == false;
+  if (output.government_allows_state_faith == true)
+    output.unresolved_branches.push_back("state_faith_ruler_and_title_transfer");
+  if (output.leader_at_war_with_target == true)
+    output.unresolved_branches.push_back("leader_war_occupation_county_expansion");
+  output.unresolved_branches.push_back("kingdom_receiver_capital_and_existing_direct_counties");
+  output.status = "available";
+  output.unavailable_reason.reset();
+  return true;
+}
+
 bool ReadCountyExposures(
     const PlayerFactionAlertsNativeEnvironmentV1 &environment,
     const PlayerFactionAlertsAccessV1 &access, std::int32_t actor_id,
@@ -522,6 +747,16 @@ bool ReadSample(const PlayerFactionAlertsNativeEnvironmentV1 &environment,
     source.leader_identity_round_trip = source.row.leader_character_id.has_value();
     source.war_identity_round_trip = source.row.faction_war_id.has_value();
     source.member_identities_round_trip = true;
+    if (environment.surrender_observations_12003 &&
+        source.row.faction_type_key == "populist_faction") {
+      game::FactionSurrenderImpactV1 impact;
+      if (!ReadSurrenderImpact(environment, access, actor, source.row, impact)) {
+        const auto reason = impact.unavailable_reason;
+        impact = {};
+        impact.unavailable_reason = reason;
+      }
+      source.row.surrender_impact = std::move(impact);
+    }
     output.targeting_factions.push_back(std::move(source));
   }
   return ReadCountyExposures(environment, access, actor_id, output);
@@ -589,6 +824,17 @@ void BindCountyMemberObservations12003(
       : nullptr;
   environment.county_faction_finals = BindCountyFactionFinals12003(
       environment.module_base, environment.county_observations_12003);
+  environment.surrender_observations_12003 = environment.county_observations_12003;
+  if (environment.surrender_observations_12003) {
+    environment.government = reinterpret_cast<NativeCampaignRootCharacterResolverV1>(
+        environment.module_base + 0x28C2E10);
+    environment.pair_relation = reinterpret_cast<NativeFactionRelation12003>(
+        environment.module_base + 0x28BC270);
+    environment.government_allows_mask = reinterpret_cast<NativeGovernmentAllowsMask12003>(
+        environment.module_base + 0x22CA060);
+    environment.state_faith_identifier = reinterpret_cast<const std::int32_t *>(
+        environment.module_base + 0x5C78AC0);
+  }
 }
 
 bool ReadCountyMemberOpinion12003(

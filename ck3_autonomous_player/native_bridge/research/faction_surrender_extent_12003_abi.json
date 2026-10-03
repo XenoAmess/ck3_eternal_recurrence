@@ -1,0 +1,34 @@
+{
+  "schema": "xar.ck3.faction-surrender-extent-12003.abi.v1",
+  "game_version": "1.20.0.3",
+  "steam_build": 25652598,
+  "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "production_source_commit": "8cf176b436b6b0024fb591d4114b92448146181a",
+  "get_de_jure_liege": {
+    "registration_rva": "0x45A17C",
+    "getter_rva": "0x2316080",
+    "wrapper_rva": "0x23160C0",
+    "title_parent_full_id_offset": "0x108",
+    "registry_slot_rva": "0x5D1DAF8",
+    "fallback_slot_rva": "0x5D1DAE0",
+    "full_id_roundtrip_offset": "0x10"
+  },
+  "government_allows": {
+    "trigger_eval_rva": "0x2B1F3F0",
+    "character_government_rva": "0x28C2E10",
+    "government_mask_offset": "0x40",
+    "state_faith_identifier_slot_rva": "0x5C78AC0",
+    "identifier_to_mask_rva": "0x22CA060"
+  },
+  "is_at_war_with": {
+    "trigger_eval_rva": "0x2B33540",
+    "pure_pair_relation_lookup_rva": "0x28BC270",
+    "relation_full_war_id_offset": "0x20",
+    "war_ended_offset": "0x358"
+  },
+  "existing_reused_readers": ["ReadSubrealmCountyIds", "ReadIdSpan", "Resolve", "NativeCampaignRootCharacterResolverV1 immediate_liege"],
+  "new_query": false,
+  "wire": "targeting_factions[].surrender_impact",
+  "game_action": false,
+  "paused_live_observed": false
+}

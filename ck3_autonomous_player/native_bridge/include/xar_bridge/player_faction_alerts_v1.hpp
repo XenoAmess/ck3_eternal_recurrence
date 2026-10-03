@@ -59,6 +59,47 @@ struct PlayerFactionCountyMemberObservationV1 {
                          const PlayerFactionCountyMemberObservationV1 &) = default;
 };
 
+struct FactionSurrenderTitleV1 {
+  std::int32_t title_id = -1;
+  std::int32_t tier_raw = -1;
+  std::optional<std::int32_t> de_jure_parent_title_id;
+  std::optional<std::int32_t> duchy_title_id;
+  std::optional<std::int32_t> kingdom_title_id;
+  std::optional<std::int32_t> holder_character_id;
+  std::optional<std::int32_t> top_liege_character_id;
+  friend bool operator==(const FactionSurrenderTitleV1 &,
+                         const FactionSurrenderTitleV1 &) = default;
+};
+
+struct FactionSurrenderKingdomV1 {
+  FactionSurrenderTitleV1 title;
+  std::vector<std::int32_t> de_jure_county_title_ids;
+  std::vector<std::int32_t> seized_county_title_ids;
+  bool strict_majority_from_seized_counties = false;
+  friend bool operator==(const FactionSurrenderKingdomV1 &,
+                         const FactionSurrenderKingdomV1 &) = default;
+};
+
+struct FactionSurrenderImpactV1 {
+  std::string status = "unavailable";
+  std::optional<std::string> unavailable_reason;
+  std::optional<bool> government_allows_state_faith;
+  std::optional<bool> leader_at_war_with_target;
+  bool ordinary_branch_title_sets_ready = false;
+  bool county_loss_complete = false;
+  bool kingdom_outcome_complete = false;
+  std::vector<std::int32_t> player_subrealm_county_title_ids;
+  std::vector<FactionSurrenderTitleV1> member_counties;
+  std::vector<FactionSurrenderTitleV1> seized_counties;
+  std::vector<FactionSurrenderTitleV1> seized_duchies;
+  std::vector<std::int32_t> player_direct_title_loss_ids;
+  std::vector<std::int32_t> player_remaining_direct_county_title_ids;
+  std::vector<FactionSurrenderKingdomV1> kingdoms;
+  std::vector<std::string> unresolved_branches;
+  friend bool operator==(const FactionSurrenderImpactV1 &,
+                         const FactionSurrenderImpactV1 &) = default;
+};
+
 struct PlayerTargetingFactionV1 {
   std::int32_t faction_id = -1;
   std::string faction_type_key;
@@ -77,6 +118,7 @@ struct PlayerTargetingFactionV1 {
   std::vector<std::int32_t> character_member_ids;
   std::vector<std::int32_t> county_member_title_ids;
   std::vector<PlayerFactionCountyMemberObservationV1> county_member_observations;
+  std::optional<FactionSurrenderImpactV1> surrender_impact;
   bool dangerous_by_stock_rule = false;
   std::string danger_reason;
 
