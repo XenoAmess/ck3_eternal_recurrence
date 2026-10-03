@@ -64,3 +64,5 @@ R0005真实Bookmarks超过512节点，旧截断拒绝保持。新预算为2048�
 原 `result.json` 的Release断言收据筛选只识别 `/c`，实际CMake MSVC命令使用 `-c`，故原收据RED保留。单独脚本只重新读取同一冻结raw log（SHA `2624cdbb86f48aea8bc085c9a8a1d2cc8562e32aed3e9490eac348a549608f45`），另存 `result.checked-release-flags.json`：四个测试目标10条实际compile argv均在 `/DNDEBUG` 后有 `/UNDEBUG`。没有重建、替换二进制或重跑测试；纠正只属于收据解析。实机与七cell仍0/7。主仓Python-only检查通过。
 
 10-04 00:09 [R0006实际观察](../ck3-upgrade-native-startup-2026-10-03.md#r0006完整书签树与实际规则选中值)已完成一次typed NewGame、完整1846行Bookmarks、规则打开及三次独立86对GUI选中值读取，283行规则scope完整。85项准备默认值一致，额外安装规则单列来源。Apply/actual-instance/Start仍未运行；可选第四只读control工具名错误导致全局RED保留，不影响之前原语的独立证据，亦不提升产品通过口径。
+
+10-04 00:30 [R0007](../ck3-upgrade-native-startup-2026-10-03.md#r0007实际规则提交与普通罗贝尔地图)实际完成一次Apply→Hide、独立窗口关闭与actual-instance86对完整比对，再以新Bookmarks证明进入stockRobert暂停地图。默认难度Select是实读验证的no-op，Next次数0。实际playerID31254只属于该run；未来业务ROOT动态绑定。启动原语报告GREEN，产品/七cell仍未增；死亡modal关闭、正常quit缺口不变。

@@ -47,3 +47,5 @@ R0003已实际续跑，但首个Bookmarks route是加载瞬态：随后树为 `_
 23:53 新独立组合DLL实际编译完成，新预算聚焦项PASS；DLL SHA `bac25eb4de967bd9be9603c8983ab672052dabbd74ec8d8e42cef1e97a501065`。原Release-command筛选收据RED保留，另存对同一raw log的纠正PASS；未重建。接续跨至10-04仍用独立run，计划先诊断规则窗而不Start。产品实机与七cell仍0/7。
 
 10-04 00:09 [R0006](ck3-upgrade-native-startup-2026-10-03.md#r0006完整书签树与实际规则选中值)实际越过512预算阻点：1846行完整Bookmarks，规则打开及独立86对GUI选中值、283行完整rules树。85项prepared defaults一致，extra安装规则单列。追加第四只读工具名错误在派发前拒绝，全局RED保留；没有Select/Apply/Start/产品通过。CK3零与CAS1764释放已读回。下一新run测试显式规则提交、实际实例与普通Robert地图；正常退出/教程flush尚无typed能力，不能用containment替代。
+
+10-04 00:30 [R0007](ck3-upgrade-native-startup-2026-10-03.md#r0007实际规则提交与普通罗贝尔地图)启动原语实际GREEN：默认难度Select no-op、一次Apply/Hide及later actual-instance86对一致、窗口关闭、新Bookmarks proof、stockRobert Start与paused地图。实际角色31254，旧29829固定计划正在改为当次解析；未启用AUB或执行产品验收，七cell仍0/7。真实错误日志另待分类；containment/CK3零/CAS1781释放已读回。settle真实文件判据已复核，可在实际writer成功后用同SHA字节冷reader，不将清理冒称flush。
