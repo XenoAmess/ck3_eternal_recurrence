@@ -24,6 +24,63 @@ from run_ck3_12002_mcp_live import (
 
 
 class OfflinePlanTests(unittest.TestCase):
+    def test_explicit_rules_diagnostic_new_game_is_once_and_default_dispatches_nothing(self):
+        import run_ck3_12002_mcp_live as harness
+        route = {"schema": "ck3-frontend-gui-route-v1", "accepted": True, "route": "main_menu"}
+        tree = {"schema": "ck3-frontend-gui-tree-inspection-v1", "accepted": True,
+                "status": "available", "scope_root_name": "mainmenu_panel_bottom",
+                "root_available": True, "read_only": True, "truncated": False,
+                "widget_count": 2, "widgets": [
+                    {"runtime_name": "mainmenu_panel_bottom", "child_path": "", "vtable_rva": 1,
+                     "effective_visible": True, "enabled": True},
+                    {"runtime_name": "new_game_button", "child_path": "1", "vtable_rva": 2,
+                     "effective_visible": True, "enabled": True}]}
+        proof = {"consecutive_consistent_observations": 2}
+        bookmarks = dict(route, route="bookmarks")
+        bookmark_tree = dict(tree, scope_root_name="frontend_bookmarks", widgets=[
+            dict(tree["widgets"][0], runtime_name="frontend_bookmarks"),
+            dict(tree["widgets"][1], runtime_name="game_rules_button")])
+        class Client:
+            def __init__(self, fail=False):
+                self.calls = []
+                self.fail = fail
+                self.packets = iter([bookmarks, bookmark_tree, bookmarks] * 2)
+            async def call(self, name):
+                self.calls.append(name)
+                if name == "ck3_activate_frontend_new_game_v1":
+                    if self.fail:
+                        raise RuntimeError("callback result lost after request")
+                    return {"status": "verified"}
+                return next(self.packets)
+        def invoke(client, report, allowed):
+            return asyncio.run(harness.prepare_rules_diagnostic_bookmarks(
+                client, route=route, tree=tree, proof=proof, allow_new_game=allowed,
+                report=report, write=lambda: None, timeout=1))
+        default = Client()
+        with self.assertRaises(RuntimeError):
+            invoke(default, {"frontend_bootstrap": {"attempts": []}}, False)
+        self.assertEqual(default.calls, [])
+        client = Client()
+        report = {"frontend_bootstrap": {"attempts": []}}
+        result = invoke(client, report, True)
+        self.assertEqual(result[0]["route"], "bookmarks")
+        self.assertEqual(result[2]["consecutive_consistent_observations"], 2)
+        self.assertEqual(client.calls.count("ck3_activate_frontend_new_game_v1"), 1)
+        self.assertTrue(all(name in {"ck3_activate_frontend_new_game_v1", "ck3_query_frontend_gui_route_v1",
+                                    "ck3_inspect_frontend_gui_tree_v1"} for name in client.calls))
+        self.assertFalse(report["frontend_bootstrap"]["diagnostic_new_game_request"]["retry_allowed"])
+        self.assertEqual(len(report["frontend_bootstrap"]["attempts"]), 2)
+        failed = Client(fail=True)
+        failed_report = {"frontend_bootstrap": {"attempts": []}}
+        with self.assertRaises(RuntimeError):
+            invoke(failed, failed_report, True)
+        with self.assertRaises(RuntimeError):
+            invoke(failed, failed_report, True)
+        self.assertEqual(failed.calls, ["ck3_activate_frontend_new_game_v1"])
+        self.assertIn("diagnostic_new_game_request", failed_report["frontend_bootstrap"])
+        parsed = harness.parser().parse_args([])
+        self.assertFalse(parsed.frontend_rules_diagnostic_new_game)
+
     def test_frontend_readiness_rejects_transient_route_tree_and_resets_streak(self):
         import run_ck3_12002_mcp_live as harness
         from copy import deepcopy

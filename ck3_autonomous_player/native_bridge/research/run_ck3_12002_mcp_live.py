@@ -713,6 +713,49 @@ async def wait_for_consistent_frontend(
         await asyncio.sleep(min(poll_interval, remaining))
 
 
+async def prepare_rules_diagnostic_bookmarks(
+    client, *, route, tree, proof, allow_new_game: bool, report, write,
+    timeout: float, managed_done=None,
+):
+    """Optionally dispatch one explicit New Game, then prove stable Bookmarks.
+
+    A callback error or unverified ACK is retained and never retried. This
+    diagnostic path cannot select a ruler, apply rules, or dispatch Start.
+    """
+    if proof.get("consecutive_consistent_observations") != 2:
+        raise RuntimeError("rules diagnostic requires two consistent entry observations")
+    if route.get("route") == "bookmarks":
+        require_consistent_frontend_observation(route, tree, route, require_rules_button=True)
+        return route, tree, proof
+    if not allow_new_game:
+        raise RuntimeError("rules diagnostic requires independently observed Bookmarks; no New Game is dispatched")
+    require_consistent_frontend_observation(route, tree, route)
+    if route.get("route") != "main_menu":
+        raise RuntimeError("explicit diagnostic New Game requires a verified main menu")
+    bootstrap = report["frontend_bootstrap"]
+    if "diagnostic_new_game_request" in bootstrap:
+        raise RuntimeError("diagnostic New Game has already been submitted; retry is forbidden")
+    bootstrap["diagnostic_new_game_request"] = {
+        "tool": "ck3_activate_frontend_new_game_v1", "args": {},
+        "entry_route": route, "entry_tree": tree, "entry_proof": proof,
+        "retry_allowed": False,
+    }
+    write()
+    opened = await client.call("ck3_activate_frontend_new_game_v1")
+    bootstrap["diagnostic_new_game_result"] = opened
+    write()
+    if not isinstance(opened, dict) or opened.get("status") != "verified":
+        raise RuntimeError("diagnostic native New Game did not independently verify Bookmarks; action is not retried")
+    result = await wait_for_consistent_frontend(
+        client, report=report, write=write, timeout=timeout,
+        managed_done=managed_done, require_route="bookmarks", require_rules_button=True,
+    )
+    bootstrap.update(diagnostic_bookmarks_route=result[0],
+                     diagnostic_bookmarks_tree=result[1], diagnostic_bookmarks_proof=result[2])
+    write()
+    return result
+
+
 async def run(args: argparse.Namespace) -> dict[str, object]:
     from mcp import ClientSession, StdioServerParameters
     from mcp.client.stdio import stdio_client
@@ -808,7 +851,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                                 route, entry_tree, entry_proof = await wait_for_consistent_frontend(
                                     client, report=report, write=write, timeout=args.readiness_timeout,
                                     managed_done=done if supervisor is not None else None,
-                                    require_route="bookmarks" if args.frontend_rules_diagnostic else None,
+                                    require_route="bookmarks" if (args.frontend_rules_diagnostic
+                                        and not args.frontend_rules_diagnostic_new_game) else None,
                                     require_rules_button=args.frontend_rules_diagnostic,
                                 )
                             except Exception as error:
@@ -825,9 +869,13 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                             write()
                             if args.frontend_diagnostic_only:
                                 if args.frontend_rules_diagnostic:
-                                    if entry_route != "bookmarks":
-                                        raise RuntimeError("rules diagnostic requires independently observed Bookmarks; no New Game is dispatched")
                                     try:
+                                        route, entry_tree, entry_proof = await prepare_rules_diagnostic_bookmarks(
+                                            client, route=route, tree=entry_tree, proof=entry_proof,
+                                            allow_new_game=args.frontend_rules_diagnostic_new_game,
+                                            report=report, write=write, timeout=args.readiness_timeout,
+                                            managed_done=done if supervisor is not None else None,
+                                        )
                                         rules_open = await client.call("ck3_activate_frontend_game_rules_v1")
                                         report["frontend_bootstrap"]["rules_open"] = rules_open
                                         write()
@@ -845,11 +893,14 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                                             await client.hold(args.hold_seconds)
                                         raise
                                     report["frontend_bootstrap"]["rules_status"] = "ACTUAL_SELECTED_SETTINGS_OBSERVED_APPLY_AND_START_NOT_REQUESTED"
-                                report["frontend_bootstrap"]["status"] = "READ_ONLY_ROUTE_AND_TREE_OBSERVED_NO_START"
+                                report["frontend_bootstrap"]["status"] = ("EXPLICIT_NEW_GAME_RULES_DIAGNOSTIC_NO_START"
+                                    if args.frontend_rules_diagnostic_new_game else "READ_ONLY_ROUTE_AND_TREE_OBSERVED_NO_START")
                                 write()
                                 if args.hold_seconds:
                                     await client.hold(args.hold_seconds)
-                                raise RuntimeError("Frontend diagnostic only; no New Game, ruler selection, Apply, Start or product test requested")
+                                raise RuntimeError("Frontend diagnostic only; explicit New Game requested="
+                                    + str(args.frontend_rules_diagnostic_new_game)
+                                    + "; no ruler selection, Apply, Start or product test requested")
                             if entry_route == "main_menu":
                                 opened = await client.call("ck3_activate_frontend_new_game_v1")
                                 report["frontend_bootstrap"]["new_game"] = opened
@@ -969,8 +1020,10 @@ def parser() -> argparse.ArgumentParser:
                         help="Use existing typed native stock Robert start before map readiness; no desktop input")
     result.add_argument("--frontend-rules-diagnostic", action="store_true",
                         help="Only with diagnostic-only: directly open native rules and query actual choices before hold; no Apply/Start")
+    result.add_argument("--frontend-rules-diagnostic-new-game", action="store_true",
+                        help="Only with rules diagnostic: allow one typed New Game from proven stable main menu; no selection/Apply/Start")
     result.add_argument("--frontend-diagnostic-only", action="store_true",
-                        help="Capture typed entry route/tree and hold; never dispatch a frontend action")
+                        help="Capture typed entry route/tree and hold; frontend mutations require separate explicit diagnostic flags")
     result.add_argument("--allow-verified-direct-bookmarks", action="store_true",
                         help="Allow direct Bookmarks only after complete typed ordinary picker tree admission")
     result.add_argument("--fixture-profile", action="store_true",
@@ -989,6 +1042,9 @@ def parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = parser().parse_args()
+    if args.frontend_rules_diagnostic_new_game and not (args.frontend_rules_diagnostic
+            and args.frontend_diagnostic_only and args.frontend_robert_bootstrap):
+        raise SystemExit("--frontend-rules-diagnostic-new-game requires --frontend-rules-diagnostic, --frontend-diagnostic-only and --frontend-robert-bootstrap")
     if args.frontend_rules_diagnostic and not (args.frontend_diagnostic_only and args.frontend_robert_bootstrap):
         raise SystemExit("--frontend-rules-diagnostic requires --frontend-diagnostic-only and --frontend-robert-bootstrap")
     if (args.frontend_diagnostic_only or args.allow_verified_direct_bookmarks) and not args.frontend_robert_bootstrap:

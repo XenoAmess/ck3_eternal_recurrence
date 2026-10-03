@@ -37,3 +37,5 @@
 后续前端接线修复已普通推送 `6e11ba8dd`；[规则窗口真实读取接口](ck3-native-ai/frontend-game-rules-1.20.0.3-2026-10-03.md)已完成有限离线验证与组合DLL，待新独立诊断run读取实际值。[RMTM/Ox新冷profile](ck3-1.20-rmtm-ox-native-preparation-2026-10-03.md)也已完成文件准备，仍runtime NOT_RUN。当前native缺口是规则选择/Apply/应用后读回、通用决议/产品GUI模型与必要持久化动作；旧ingame UI的工具schema不能替代 `.3` ABI/能力验证。
 
 R0003已实际续跑，但首个Bookmarks route是加载瞬态：随后树为 `_root_`/截断/不可见，下一路由不可用，原生规则打开命令未派发。新增[route/tree一致等待修复与证据](ck3-upgrade-native-startup-2026-10-03.md#r0003瞬态路由不能证明可操作窗口)，单一聚焦回归PASS，真实规则值仍 NOT_RUN。当次清理是现有 job containment；没有正常退出，不能用来证明教程落盘。CK3=0、keeper停止与CAS释放均已读回；新验证继续用新run及新userdir。
+
+[R0004](ck3-upgrade-native-startup-2026-10-03.md#r0004真实入口是主菜单)越过加载瞬态，实际稳定主菜单树完整且NewGame可用；规则诊断的零NewGame范围导致Bookmarks等待超时。hold四只读查询实际PASS，产品仍NOT_RUN。现增加独立显式诊断flag，下一run可按真实主菜单→一次NewGame→稳定Bookmarks→规则查询验证，角色选择/Apply/Start不在该范围。此前三接线提交的官方CI均success，详细链接见同一专题。

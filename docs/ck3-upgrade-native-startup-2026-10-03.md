@@ -1,4 +1,4 @@
-# 兼容接续：本机 `.3` 原生启动 R0002 / R0003
+# 兼容接续：本机 `.3` 原生启动 R0002–R0004
 
 本包接续 [2026-10-03 接手记录](ck3-upgrade-resume-2026-10-03.md)，只记录真实准备与首次启动。主/白绮七 cell 仍为 `.3` 实机 **0/7**；AUB 没有到地图、政策菜单或自动建造循环。
 
@@ -55,3 +55,17 @@ R0002 最终 state/live 的1950文件另保存于 `aub-empty-agent-02/r0002-clos
 永久 harness 修复为 route→完整、可见且匹配 scope 的 tree→route，连续两次一致后才 ready；遇 unavailable、截断或不可见立即清零 streak。规则诊断另核对唯一、可见且 enabled 的 `game_rules_button`，不以固定等待时长证明 ready。每次失败 observation仍保存；等待或打开失败先保留有限诊断 hold，最终维持原 RED，不重发已派发动作。该 hold 的 `frontend_read_only` plan仅允许四个无参数只读 query，避免地图尚未建立时的 after_snapshot阻断维护；其他 plan合同不变。
 
 新聚焦回归覆盖本次原始瞬态、不可见 root、streak清零与两次一致放行，PASS；旧 SDK/episode/tree测试未重复。报告 `courtier-agent-02/frontend-v4-focused-validation-01/report.json` SHA `05c12093a0257827b66f2cc358d27c26b7b89e697e6a876256f6779a3f863fe2`。外置 v4 final SHA `47c0f77e8a9ba10fb68d3a538402e9ba138c48a50b44608333b3aad9c2da92b5`；只改 Python 等待，不需新DLL。下一验证使用新的 profile/run，不能改写 R0003为通过。
+
+## R0004：真实入口是主菜单
+
+新 run **`4-8e1c2f1861--auto-upgrade-buildings--R0004`** 使用相同完成DLL、上述v4和新 profile05，preparation SHA `a5af09b7dd13d52a1178100068499e05327f56bbf4c6c6ccad825af99ee8169a`。profile仅从相同17生产文件、空fixture1文件、85规则纯输入构造，未复制profile04的运行缓存。原R0003的1949文件另存ZIP并逐项读回，SHA `a200fbc69b828b0530e5f3e20b6fe4f3d19d159078b852892fbefb06c4d53f1d`，原目录保留。
+
+固定 clean source `2c28a7bec5235db0baa46fa4286fa09a0224664f`；screen task a03。当次14:58:42 UTC原图直接读到nonce `b79d1bc00c39`及同图Steam“离线模式”，PNG SHA `d07205e7682a315c9c3d209d91511fd46762f0b57b198cba794929788e8609df`，没有扩张冻结背景的新鲜度结论。14:58:59实际启动CK3 PID9636。
+
+此次驱动保留加载瞬态后继续读取，最终稳定在 `main_menu`，实际 `mainmenu_panel_bottom` scope完整、未截断、246widgets，唯一 `new_game_button` 当前可见且enabled。原rules-only诊断要求Bookmarks且不允许NewGame，所以543次观察后超时；没有派发任何游戏输入。这个结果证明此前Bookmarks不是稳定初始入口，不能靠延长等待到达规则页。最终报告SHA `a4b30c27909e5a938b420c5771f0bf070a8643ba7fe173c3388e1eacba52ddb4`。
+
+90秒hold中实际执行了四项 `frontend_read_only` 控制：route/tree/rules/pipe均返回ok，未触发地图after_snapshot。规则 query明确ready=false/`bookmarks_route_unavailable`，不记规则通过。15:05:31受管containment完成，exit1/job1→0，随后本机CK3=0；keeper最后1729、failure=null/thread退出，15:06:39 CAS释放1730。仍无正常退出、战役Start、地图或产品通过。
+
+永久harness新增显式 `--frontend-rules-diagnostic-new-game`，仅与bootstrap+diagnostic-only+rules-diagnostic共用：从两次一致的真实主菜单调用一次已有typed NewGame，保全request-before-call；回调异常或未verified ACK均禁止重试；再等两次一致的Bookmarks tree，才打开/读取规则。默认rules诊断保持零NewGame；没有角色选择、Apply或Start。新单一聚焦测试覆盖默认零动作、显式一次动作及回调丢失不重试，CLI两路径与孤flag拒绝PASS，旧测试未重跑。外置v5 SHA `c78246a124b56188b45d898b791a5eeca6e5ea614fc9102ce252f3f02b985b72`，报告 `courtier-agent-02/frontend-v5-focused-validation-01/report.json`。下一新run才可验证该动作。
+
+前端接线 `6e11ba8dd` 的[官方CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37128219251)、规则读取 `57dee2e90` 的[官方CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37129633661)、一致等待 `2c28a7bec` 的[官方CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37131442194)实际均success，不能替代上面的实机边界。
