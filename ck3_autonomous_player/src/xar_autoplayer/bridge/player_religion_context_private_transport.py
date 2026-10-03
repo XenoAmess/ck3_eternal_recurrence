@@ -5,6 +5,10 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 from .driver import BridgeUnavailableError
+from .player_spiritual_fulfillment_type import (
+    normalize_player_spiritual_fulfillment_type_v1,
+)
+from .player_church_tax_inputs import normalize_player_church_tax_inputs_v1
 from .g2_private_query_transport import (
     private_g2_query_metadata_v1, read_private_g2_native_query_v1,
 )
@@ -337,6 +341,20 @@ def query_player_religion_context_private_v1(
                     result["player_church_income_profile"], current_context=value,
                 )
             )
+        fulfillment_type_fields = {}
+        if "player_spiritual_fulfillment_type" in result:
+            fulfillment_type_fields["player_spiritual_fulfillment_type"] = (
+                normalize_player_spiritual_fulfillment_type_v1(
+                    result["player_spiritual_fulfillment_type"], current_context=value,
+                )
+            )
+        church_tax_fields = {}
+        if "player_church_tax_inputs" in result:
+            church_tax_fields["player_church_tax_inputs"] = (
+                normalize_player_church_tax_inputs_v1(
+                    result["player_church_tax_inputs"], current_context=value,
+                )
+            )
         expected_status = "observed" if value["available"] else "unavailable"
         if result.get("status") != expected_status:
             raise ValueError("native player religion context envelope lost its source status")
@@ -344,7 +362,8 @@ def query_player_religion_context_private_v1(
         raise BridgeUnavailableError(str(error)) from error
     return {
         **value, **progress_fields, **decision_fields, **pilgrimage_fields,
-        **confession_fields, **church_income_fields, **private_native_provenance(before),
+        **confession_fields, **church_income_fields, **fulfillment_type_fields, **church_tax_fields,
+        **private_native_provenance(before),
         **private_g2_query_metadata_v1(before),
         "snapshot_revision": result["snapshot_revision"],
         "query_date_raw": result["date_raw"],

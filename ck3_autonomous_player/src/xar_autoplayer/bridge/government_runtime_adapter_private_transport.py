@@ -83,7 +83,9 @@ def query_government_runtime_adapter_private_v1(
         raise UnsupportedStepError("private government runtime adapter query is disabled")
     if type(expected_revision) is not int or expected_revision <= 0:
         raise ValueError("expected_revision must be positive")
-    before = driver.take_snapshot()
+    read = (getattr(driver, "take_internal_semantic_snapshot", None)
+            or getattr(driver, "take_snapshot"))
+    before = read()
     actor = before.get("played_character")
     native_revision = before.get("native_revision")
     if (before.get("revision") != expected_revision or before.get("paused") is not True
@@ -107,7 +109,7 @@ def query_government_runtime_adapter_private_v1(
         value = normalize_government_runtime_adapter_v1(envelope.get("government_runtime_adapter"), snapshot=before)
     except ValueError as error:
         raise BridgeUnavailableError(str(error)) from error
-    after = driver.take_snapshot()
+    after = read()
     if (after.get("paused") is not True or after.get("date_raw") != before.get("date_raw")
             or after.get("played_character") != actor):
         raise BridgeUnavailableError("government runtime adapter crossed its paused player frame")

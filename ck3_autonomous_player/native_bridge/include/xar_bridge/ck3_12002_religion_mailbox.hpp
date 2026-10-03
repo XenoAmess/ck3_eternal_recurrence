@@ -3,10 +3,12 @@
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12002_religion_context.hpp"
 #include "xar_bridge/ck3_12003_spiritual_fulfillment_progress.hpp"
+#include "xar_bridge/ck3_12003_spiritual_fulfillment_type.hpp"
 #include "xar_bridge/ck3_12003_mystical_communion_decision_terms.hpp"
 #include "xar_bridge/ck3_12003_pilgrimage_activity_type_terms.hpp"
 #include "xar_bridge/ck3_12003_confession_decision_terms.hpp"
 #include "xar_bridge/ck3_12003_church_income_profile.hpp"
+#include "xar_bridge/ck3_12003_church_tax_inputs.hpp"
 
 namespace xar::ck3_12002 {
 
@@ -23,6 +25,7 @@ struct PlayerReligionMailboxContext12002 {
   religion::Context observation{};
   religion::fulfillment_progress12003::Bindings progress_bindings{};
   religion::fulfillment_progress12003::Progress progress{};
+  ck3_12003::religion::fulfillment_type::Type spiritual_fulfillment_type{};
   ck3_12003::religion::mystical_communion::Bindings mystical_communion_bindings{};
   ck3_12003::religion::mystical_communion::Terms mystical_communion_terms{};
   ck3_12003::religion::pilgrimage::Bindings pilgrimage_bindings{};
@@ -31,6 +34,8 @@ struct PlayerReligionMailboxContext12002 {
   ck3_12003::religion::confession::Terms confession_terms{};
   ck3_12003::religion::church_income::Bindings church_income_bindings{};
   ck3_12003::religion::church_income::Terms church_income_terms{};
+  ck3_12003::religion::church_tax_inputs::Bindings church_tax_bindings{};
+  ck3_12003::religion::church_tax_inputs::Terms church_tax_inputs{};
   bool completed = false;
   std::string failure;
 };

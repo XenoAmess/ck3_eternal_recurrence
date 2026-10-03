@@ -136,6 +136,7 @@ void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &out) noexcept 
   out.religion = &ExecutePlayerReligionMailbox12002;
   out.holy_order_loan = &ExecutePlayerHolyOrderLoanMailbox12003;
   out.head_of_faith_gold = &ck3_12003::ExecutePlayerHeadOfFaithGoldMailbox12003;
+  out.holy_order_context = &ck3_12003::ExecutePlayerHolyOrderContextMailbox12003;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1)
   out.family_obligations = &ExecuteFamilyObligationsMailbox12002;
@@ -266,6 +267,7 @@ bool IsNonwarPrivateStep12002(std::string_view step) noexcept {
   if (IsPlayerReligionPrivateStep12002(step)) return true;
   if (IsPlayerHolyOrderLoanPrivateStep12003(step)) return true;
   if (ck3_12003::IsPlayerHeadOfFaithGoldPrivateStep12003(step)) return true;
+  if (ck3_12003::IsPlayerHolyOrderContextPrivateStep12003(step)) return true;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1)
   if (IsFamilyObligationsPrivateStep12002(step)) return true;
@@ -614,6 +616,9 @@ bool HandleNonwarPrivate12002(
           revision, step, payload, request_id, serialized, failure);
     if (ck3_12003::IsPlayerHeadOfFaithGoldPrivateStep12003(step))
       return ck3_12003::HandlePlayerHeadOfFaithGoldPrivate12003(native, mailbox, published,
+          revision, step, payload, request_id, serialized, failure);
+    if (ck3_12003::IsPlayerHolyOrderContextPrivateStep12003(step))
+      return ck3_12003::HandlePlayerHolyOrderContextPrivate12003(native, mailbox, published,
           revision, step, payload, request_id, serialized, failure);
 #endif
 #if defined(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1)

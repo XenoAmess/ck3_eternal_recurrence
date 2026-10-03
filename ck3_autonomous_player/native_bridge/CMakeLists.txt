@@ -819,12 +819,17 @@ if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_pilgrimage_activity_type_terms.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_confession_decision_terms.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_church_income_profile.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_spiritual_fulfillment_type.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_church_tax_inputs.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_holy_order_loan_context.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_holy_order_loan_mailbox.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_holy_order_loan_wire.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_hof_gold_context.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_hof_gold_mailbox.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_hof_gold_wire.cpp")
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_hof_gold_wire.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_holy_order_context.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_holy_order_mailbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_holy_order_wire.cpp")
 endif()
 if(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
@@ -2251,6 +2256,8 @@ if(BUILD_TESTING)
       src/ck3_12003_pilgrimage_activity_type_terms.cpp
       src/ck3_12003_confession_decision_terms.cpp
       src/ck3_12003_church_income_profile.cpp
+      src/ck3_12003_spiritual_fulfillment_type.cpp
+      src/ck3_12003_church_tax_inputs.cpp
       src/ck3_12002_religion_mailbox_test.cpp)
     target_include_directories(xar_ck3_12002_religion_mailbox_test PRIVATE include)
     target_link_libraries(xar_ck3_12002_religion_mailbox_test PRIVATE
@@ -2265,6 +2272,39 @@ if(BUILD_TESTING)
     add_test(NAME xar_ck3_12002_religion_mailbox_test
       COMMAND xar_ck3_12002_religion_mailbox_test
         "${CMAKE_BINARY_DIR}/religion-mailbox-wire")
+
+    # One synthetic owner case covers both new siblings through the real mailbox.
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/religion-type-tax-mailbox-wire")
+    add_executable(xar_ck3_12003_religion_type_tax_mailbox_test
+      src/ck3_12002.cpp
+      src/ck3_12002_religion_context.cpp
+      src/ck3_12002_query_mailbox.cpp
+      src/ck3_12003_abi_profile.cpp
+      src/ck3_12003_adapter.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/ck3_12002_religion_mailbox.cpp
+      src/ck3_12003_spiritual_fulfillment_progress.cpp
+      src/ck3_12003_mystical_communion_decision_terms.cpp
+      src/ck3_12003_pilgrimage_activity_type_terms.cpp
+      src/ck3_12003_confession_decision_terms.cpp
+      src/ck3_12003_church_income_profile.cpp
+      src/ck3_12003_spiritual_fulfillment_type.cpp
+      src/ck3_12003_church_tax_inputs.cpp
+      src/ck3_12003_religion_type_tax_mailbox_test.cpp)
+    target_include_directories(xar_ck3_12003_religion_type_tax_mailbox_test PRIVATE include)
+    target_link_libraries(xar_ck3_12003_religion_type_tax_mailbox_test PRIVATE
+      xar_bridge_protocol user32)
+    target_compile_definitions(xar_ck3_12003_religion_type_tax_mailbox_test PRIVATE
+      XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1=1
+      XAR_RELIGION_MAILBOX_STANDALONE_ADAPTER=1
+      XAR_RELIGION_TYPE_TAX_STANDALONE_RENDERER=1)
+    if(MSVC)
+      target_compile_options(xar_ck3_12003_religion_type_tax_mailbox_test PRIVATE
+        /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+    endif()
+    add_test(NAME xar_ck3_12003_religion_type_tax_mailbox_test
+      COMMAND xar_ck3_12003_religion_type_tax_mailbox_test
+        "${CMAKE_BINARY_DIR}/religion-type-tax-mailbox-wire")
   endif()
 
   # R3 named mailbox fixtures use owner standalone source recipes.

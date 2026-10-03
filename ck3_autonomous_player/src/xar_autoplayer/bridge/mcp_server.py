@@ -1641,6 +1641,15 @@ def create_server(
             )
 
         @server.tool(annotations=read_only_tool)
+        def ck3_query_player_holy_order_context_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read native holy-order patronage, leases and independent military hire terms."""
+            return driver.query_player_holy_order_context_private_v1(
+                expected_revision=expected_revision,
+            )
+
+        @server.tool(annotations=read_only_tool)
         def ck3_query_player_head_of_faith_gold_context_v1(
             expected_revision: int,
         ) -> dict[str, object]:

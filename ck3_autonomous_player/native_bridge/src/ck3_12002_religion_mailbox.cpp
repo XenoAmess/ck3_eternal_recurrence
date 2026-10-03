@@ -81,6 +81,11 @@ bool ExecutePlayerReligionMailbox12002(
         query.progress_bindings,
         out.available ? ResolveCoreCharacter(query.bindings.core, out.played_character_id) : nullptr,
         out, query.progress);
+    // Reuse the exact progress binding for an independent stable type key.
+    (void)ck3_12003::religion::fulfillment_type::ReadPlayerSpiritualFulfillmentType12003(
+        query.progress_bindings,
+        out.available ? ResolveCoreCharacter(query.bindings.core, out.played_character_id) : nullptr,
+        out, query.spiritual_fulfillment_type);
     // The fixed decision read is independent of Faith Context and loan numerics.
     (void)ck3_12003::religion::mystical_communion::ReadPlayerMysticalCommunionDecisionTerms12003(
         query.mystical_communion_bindings,
@@ -106,6 +111,12 @@ bool ExecutePlayerReligionMailbox12002(
         ResolveCoreCharacter(query.bindings.core, static_cast<std::int32_t>(frame.played_character_id)),
         static_cast<std::int32_t>(frame.played_character_id),
         static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.church_income_terms);
+    // The selected native church tax rule is a separate optional observation.
+    (void)ck3_12003::religion::church_tax_inputs::ReadPlayerChurchTaxInputs12003(
+        query.church_tax_bindings,
+        ResolveCoreCharacter(query.bindings.core, static_cast<std::int32_t>(frame.played_character_id)),
+        static_cast<std::int32_t>(frame.played_character_id),
+        static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.church_tax_inputs);
     query.completed = true;
     (void)FinishQueryMailbox(*envelope);
     return true;
@@ -142,7 +153,13 @@ std::string SerializePlayerReligionResult12002(
           query.confession_terms) +
       ",\"player_church_income_profile\":" +
       ck3_12003::religion::church_income::SerializePlayerChurchIncomeProfile12003(
-          query.church_income_terms) + "}}";
+          query.church_income_terms) +
+      ",\"player_spiritual_fulfillment_type\":" +
+      ck3_12003::religion::fulfillment_type::SerializePlayerSpiritualFulfillmentType12003(
+          query.spiritual_fulfillment_type) +
+      ",\"player_church_tax_inputs\":" +
+      ck3_12003::religion::church_tax_inputs::SerializePlayerChurchTaxInputs12003(
+          query.church_tax_inputs) + "}}";
 }
 
 bool RunPlayerReligionMailbox12002(PlayerReligionMailboxContext12002 &query,
@@ -223,6 +240,9 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
             image_base, adapter.descriptor().executable_sha256);
     query.church_income_bindings =
         ck3_12003::religion::church_income::BindPlayerChurchIncomeProfileImage12003(
+            image_base, adapter.descriptor().executable_sha256);
+    query.church_tax_bindings =
+        ck3_12003::religion::church_tax_inputs::BindPlayerChurchTaxInputsImage12003(
             image_base, adapter.descriptor().executable_sha256);
     return RunPlayerReligionMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_handler_exception"; return false; }

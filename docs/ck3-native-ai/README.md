@@ -21,7 +21,11 @@
 
 [成年通知 coming_of_age.1002](ck3-1.20.0.3-coming-of-age1002.md)已从实际阻塞事件和新版原文闭合唯一 native0/API1 选项，v30 实际消费原通知22、独立确认窗口消失并保存，恢复正常推进。按钮只确认既有成长通知，不计教育特质、解除监护或 M2 材料收益。证据：`artifacts/g2-maintainer-2026-10-02/resume-12003/m2-events/v30-coming-age1002-resolve-save-01/result.json`。
 
-[圣骑士团创建与雇佣](religion-holy-order-systems-native-ai-12003.md)已形成新版原生研究树，闭合动态赞助者、租约、最终雇佣许可、费用与支付能力入口；现为 research，只读查询实现正在施工。研究不依赖打开 Military/Faith 窗口，尚无罗贝尔实机组织集合或雇佣收益。
+[圣骑士团创建与雇佣](religion-holy-order-systems-native-ai-12003.md)已形成新版原生研究树，闭合动态赞助者、租约、最终雇佣许可、费用与支付能力入口；[专用只读查询](religion-holy-order-context-native-query-12003.md)实现及必要 native／mailbox／registered-route 验证已完成，现为 static-ready，待 v32 当前罗贝尔实机读取。研究不依赖打开 Military/Faith 窗口，尚无实机组织集合或雇佣收益。
+
+同一宗教 MCP 新增精神满足类型 key 与当前教会税规则／份额两个 sibling，复用既有 progress bindings、Tenet 状态和运行期 DLC 输入；必要组合 mailbox／生产解码已通过，v32 实机尚待完成。它们补足告解显示原因及教会收入决策的实际字段，没有新宗教动作或收入信用。
+
+[政府只读语义快照](government-readonly-semantic-capture-12003.md)修复实际正常循环的两处完整历史复制：每30轮预计移除60次复制，全部身份／构建校验、1/7/30步长及游戏速度保持。当前 static-ready，未承诺实测提速，下一正式政府查询用于验证修改路径。
 
 当前实际能力与计划回链[统一进度](../autonomous-agent-progress/README.md)。宗教全面授权不等于宗教全域完成；上述原生研究、静态实现、实机观测和完整动作闭环分别记账。
 
