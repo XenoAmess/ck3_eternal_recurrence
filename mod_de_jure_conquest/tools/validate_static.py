@@ -123,6 +123,9 @@ def validate(game: Path | None = DEFAULT_GAME, *, release_localization: bool = F
             cost = one(cb, "cost").value
             scalar(one(cost, "piety").value, "value", contract["piety"])
             scalar(one(one(cost, "prestige").value, "add").value, "value", contract["prestige"])
+            scalar(one(cb, "mutually_exclusive_titles").value, "always", "yes")
+            declaration = one(cb, "on_declaration").value
+            scalar(one(declaration, "djc_join_de_jure_defenders").value, "WAR", "root.war")
             for key in ["war_name", "cb_name", "on_victory_desc", "on_white_peace_desc", "on_defeat_desc"]:
                 loc_key = one(cb, key).value.strip('"')
                 if loc_key not in english:
@@ -137,14 +140,22 @@ def validate(game: Path | None = DEFAULT_GAME, *, release_localization: bool = F
             branch = one(effect.value, "if").value
             scalar(one(branch, "limit").value, "exists", "$WAR$")
         raw_hook = (SOURCE / "common/on_action/greatwar.txt").read_text(encoding="utf-8-sig")
-        if "scope:war.casus_belli = {" not in raw_hook or "primary_attacker = { is_ai = no }" not in raw_hook:
-            raise ValueError("war-start hook lacks CB scope or player guard")
+        if "primary_attacker = { is_ai = no }" not in raw_hook:
+            raise ValueError("compatibility war-start hook lacks player guard")
+        if "scope:war.casus_belli = {" in raw_hook:
+            raise ValueError("war-start hook must not reconstruct the native declaration target list")
         raw_effects = (SOURCE / "common/scripted_effects/djc_war_effects.txt").read_text(encoding="utf-8-sig")
         for fragment in ["top_liege = {", "NOT = { is_participant_in_war = scope:djc_current_war }", "this != scope:attacker", "NOT = { is_vassal_or_below_of = scope:attacker }", "is_defender_in_war = scope:djc_current_war", "resolve_title_and_vassal_change = scope:change"]:
             if fragment not in raw_effects:
                 raise ValueError(f"title/participant contract missing: {fragment}")
         if "vassals_taken" in raw_effects:
             raise ValueError("unused upstream temporary vassal list must not return")
+        joining = one(one(effects, "djc_join_de_jure_defenders").value, "if").value
+        native_goals = one(joining, "every_in_list").value
+        scalar(native_goals, "list", "target_titles")
+        goal_capture = one(one(native_goals, "scope:djc_current_war").value, "set_variable").value
+        scalar(goal_capture, "name", "djc_goal_title")
+        scalar(goal_capture, "value", "scope:djc_native_goal")
     except (OSError, KeyError, AttributeError, ValueError) as error:
         errors.append(str(error))
     vanilla = {}

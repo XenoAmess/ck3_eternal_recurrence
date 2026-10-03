@@ -11,11 +11,16 @@
 | 日常 L0 | GREEN | 外置 `de-jure-static-R0003/report.json`，实核9文件，最终allowlist16 |
 | 双语严格 parser | PASS | 共享 `parse_ck3_localization` 两语各15 key |
 | 正式其他七语 | format-certified | 主执行者生成候选并认证键／占位符；不代表七语界面实机 |
-| 正式16文件静态 | GREEN | 最终canonical LF输入的 [R0002永久副本](release-static-2026-10-03-R0002.json)，release_localization=true，完整16文件 |
-| 可复现构建 | 16文件PASS | 公共builder双构建manifest／ZIP一致；尚非tag绑定发布包 |
-| 外置夹具生成 | parser PASS | `de-jure-fixture-R0002`，9真实CB战争场景／72预期PASS；未执行 |
+| 正式16文件静态 | GREEN | 生产参战方修复后的 [R0003永久副本](release-static-2026-10-03-R0003.json)，release_localization=true，完整16文件；R0002保留为旧候选 |
+| 可复现构建 | 16文件PASS | 修复候选公共builder双构建manifest／ZIP一致；[精确hash](production-repair-review-2026-10-03-R0001.json)，尚非tag绑定发布包 |
+| 外置夹具生成 | parser／生成一致性 PASS；live NOT_RUN | `de-jure-fixture-R0004`，保留namespace修复并改读CB回调捕获的每war目标，9真实CB战争场景／72预期PASS |
 | Open Kaishek 确定性子集 | NOT_RUN | 本工作包未找到 sibling checkout；完整探测由主执行者协调 |
-| CK3／Workshop／缓存／Change Notes | NOT_RUN | 尚无实机GREEN或发布事实 |
+| CK3 首次加载 | HARNESS_RED | R0001真实日志发现27条fixture文件namespace缺失；[原始快照与修复](fixture-initial-load-red-2026-10-03.md)，runtime改动0，R0003待clean实机 |
+| CK3 公国 GUI 宣战费用 | 已实测，预览与总扣款不同 | R0001原生010→014实际扣50威望／300虔诚，预览50／200；[原数值勘误与证据](duchy-live-red-2026-10-03.md) |
+| CK3 王国 GUI 宣战费用 | PASS（该场景） | R0001原生017→018同paused日期实际扣250威望／1000虔诚，战争5／k_sicily目标2189；[三档报告](gui-declaration-fees-2026-10-03.md) |
+| CK3 帝国 GUI 宣战费用 | 已实测，预览与总扣款不同 | R0001原生019→020实际扣1250威望／5100虔诚，预览1250／5000；原版宣战效果有匹配-100机制，但未直接回读该分支执行 |
+| CK3 公国参战方／列表断言 | PRODUCTION_RED，修复候选待实机 | 原生016分项probe实证Naples未加入，两callback列表为空；[完整诊断与新候选](duchy-live-red-2026-10-03.md)，原R0001未改 |
+| Workshop／缓存／Change Notes | NOT_RUN | 尚无实机GREEN或发布事实 |
 
 所有外置 artifact 位于 `C:/workspace/two-mod-maintenance-20261003/`。`de-jure-static-R0001`、`R0002`、`R0003` 报告与 fixture `R0001`、`R0002` 独立保留；没有覆盖历史 attempt。R0003 `checked_runtime_file_count=9`、`runtime_allowlist_count=16`、`release_localization=false`、`live=NOT_RUN`。
 
@@ -27,7 +32,9 @@
 
 主执行者提供 `C:/workspace/two-mod-maintenance-20261003/mod_de_jure_conquest-release-static-R0002.json`，现以精确bytes另存为 [release-static-2026-10-03-R0002.json](release-static-2026-10-03-R0002.json)。源文件与仓库副本SHA-256均为 `54cbd92efdb19c4918f5ce28348539ec1618b847ccf6ee12863c0572924d4738`，结果GREEN、16文件、正式九语，`live=NOT_RUN`。旧R0001／R0004等报告未改写。
 
-这里canonical LF指最终运行文件输入；报告JSON本身保留来源CRLF字节，没有重新序列化。只读比较确认当前16个runtime hash全部与该报告一致，未执行新的static／build／live。发布文本与源码一致性复核、完整草稿字符数／行数／SHA及精确文件记录见 [复核说明](release-documentation-review-2026-10-03.md) 与 [机器回执](release-documentation-review-2026-10-03.json)。
+这里canonical LF指该次运行文件输入；报告JSON本身保留来源CRLF字节，没有重新序列化。该轮只读比较确认当时16个runtime hash全部与该报告一致，没有重复static／build／live。随后真实R0001参战方RED授权5个runtime脚本最小修复，当前静态来源为R0003，旧R0002不能绑定新候选。发布文本与源码一致性复核、完整草稿字符数／行数／SHA及精确文件记录见 [复核说明](release-documentation-review-2026-10-03.md) 与 [机器回执](release-documentation-review-2026-10-03.json)。本轮修复实现既有文案中的参战方范围，未修改文案／费用／本地化。
+
+随后R0001三档GUI费用审计证实，CB预览与实际操作总扣款可能不同：公国50／300（预览50／200），王国250／1000，帝国1250／5100（预览1250／5000）。见 [逐项证据、原公国数值勘误与条件机制](gui-declaration-fees-2026-10-03.md)。因此仅更新发布草稿的费用说明，明确保留原版宣战附加后果。当前Notes为1243字符／31行／3151bytes，BBCode为1161字符／31行／2787bytes；精确SHA及冻结边界见 [新文本冻结R0002](release-text-freeze-2026-10-03-R0002.json)。旧文本复核继续原样保留，不再绑定当前草稿；当前16个runtime逐hash仍与static R0003一致，没有新增runtime改动或重复测试。
 
 两个翻译输入失败由主执行者保留：上游 yml 的仅空白行和EN行尾空格不满足共享 parser。逐行规范化后直接以同一生产 parser 验证15 key，不更改公共parser。该失败属于输入格式，不是CK3产品RED。
 

@@ -70,6 +70,7 @@ duchy_de_jure_greatwar = {
 	}
 	on_declaration = {
 		on_declared_war = yes
+		djc_join_de_jure_defenders = { WAR = root.war }
 	}
 	on_victory_desc = DJC_VICTORY_DESC
 	on_victory = {

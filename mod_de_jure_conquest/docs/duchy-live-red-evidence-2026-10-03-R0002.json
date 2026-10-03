@@ -1,0 +1,225 @@
+{
+  "schema": "djc.actual-readonly-probe-evidence.v1",
+  "preserved_files": 33,
+  "files": [
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\state\\profile\\logs\\error.log",
+      "preserved": "state/profile/logs/error.log",
+      "size": 11884,
+      "sha256": "666c95f231b62ddb163dd5560ec206b4f276425ce6829bd5f6c3addca997a81e"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\state\\profile\\logs\\debug.log",
+      "preserved": "state/profile/logs/debug.log",
+      "size": 1177039,
+      "sha256": "284a78553ae7f7732772c8c005abc8b923f87fd112656a5ff7a1bd0d4bc9d3a7"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\state\\profile\\logs\\game.log",
+      "preserved": "state/profile/logs/game.log",
+      "size": 8878,
+      "sha256": "fe30ba33327bc9da20fe2d4fca2bb0ffe3d2da63fcf31e278c78ac573bc0fb0d"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\010-djc-after-query-result.json",
+      "preserved": "session/010-djc-after-query-result.json",
+      "size": 22027,
+      "sha256": "d1c7f5d8f2edc0a8f5ff843f52362d5df18893b52b08700735c0827dd01b34fe"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\014-djc-duchy-after-result.json",
+      "preserved": "session/014-djc-duchy-after-result.json",
+      "size": 24665,
+      "sha256": "3cf3c8dbea7413f3e2a055c53d616142dc8de700aee03886270c10e1140e0f0a"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\015-djc-duchy-postconditions-result.json",
+      "preserved": "session/015-djc-duchy-postconditions-result.json",
+      "size": 1196,
+      "sha256": "83b58d8652618110c7ad287d1a827fa9daebf21497cd26d4b23a952582b43ec2"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production.manifest.json",
+      "preserved": "production.manifest.json",
+      "size": 3003,
+      "sha256": "2b8257bc6b0416ad1abd2c107cf3c1600d4ea94d2796d5d61791a420ea57eff6"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\live-run-identity.json",
+      "preserved": "live-run-identity.json",
+      "size": 570,
+      "sha256": "36893e4a560171f8e0a6064c2936b83d09e950b00e85ec22697c7c0abbce8695"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-duchy-preview-01.png",
+      "preserved": "session/screens/djc-duchy-preview-01.png",
+      "size": 2885166,
+      "sha256": "4c0df59db667642f45b6f874a8a99dcad91fadc28ae9c068144faa0bb010a9fb"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-duchy-preview-01.json",
+      "preserved": "session/screens/djc-duchy-preview-01.json",
+      "size": 613,
+      "sha256": "cfd42d81534e741d7bfbc17894ed41e21a29052f7ff27d00abb6f247cdcd3c4d"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-duchy-declared-01.png",
+      "preserved": "session/screens/djc-duchy-declared-01.png",
+      "size": 3225925,
+      "sha256": "72369823d03bf046f90a952c4cfcd58da545cfbcb72b7b3e5dfd3956e34ef3f9"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-duchy-declared-01.json",
+      "preserved": "session/screens/djc-duchy-declared-01.json",
+      "size": 614,
+      "sha256": "d47274585552e352825fda8482a8ff5a55187f4457fd96f3f5b5de7135b6b7f9"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-duchy-ui-declare-01.png",
+      "preserved": "session/screens/djc-duchy-ui-declare-01.png",
+      "size": 3048826,
+      "sha256": "03781e8a5e9cdb926eda9ca01de689fc0000ea1f3f65d5bb480a88150a13937f"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-duchy-ui-declare-01.command.json",
+      "preserved": "session/screens/djc-duchy-ui-declare-01.command.json",
+      "size": 778,
+      "sha256": "6bd20012cb9f0a40e7594931aff4624047faaf2fdcaceed261443c77e89d87c9"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\common\\casus_belli_types\\duchy_de_jure_greatwar.txt",
+      "preserved": "production/common/casus_belli_types/duchy_de_jure_greatwar.txt",
+      "size": 5478,
+      "sha256": "ce5bfa79231fbfb0e57637f85ea5ae00b9ff1409afc010de23b38aa54451c033"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\common\\casus_belli_types\\empire_de_jure_greatwar.txt",
+      "preserved": "production/common/casus_belli_types/empire_de_jure_greatwar.txt",
+      "size": 5484,
+      "sha256": "db0a5ea2f1e3c945b2d930d385b00b42a8847023965c2cc6d145404042cdbc58"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\common\\casus_belli_types\\kingdom_de_jure_greatwar.txt",
+      "preserved": "production/common/casus_belli_types/kingdom_de_jure_greatwar.txt",
+      "size": 5487,
+      "sha256": "bf863027112bfcfa452e94c6dbd35d34def43b358d77fc4a84eb7a5b8e24000d"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\common\\on_action\\greatwar.txt",
+      "preserved": "production/common/on_action/greatwar.txt",
+      "size": 824,
+      "sha256": "8adc9843fd8d28acc730d6ba39109dedcb3d7b463f9c975195761c8c3b44a191"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\common\\scripted_effects\\djc_war_effects.txt",
+      "preserved": "production/common/scripted_effects/djc_war_effects.txt",
+      "size": 2318,
+      "sha256": "9b153afd7fc918872067c3ead72a4c0a1334bdee833e2701eb5e6a694923d10a"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\descriptor.mod",
+      "preserved": "production/descriptor.mod",
+      "size": 155,
+      "sha256": "359e9378843b2532e156f4701179a1dd963dc7dd131a6c5e8d52dab96aaa63d7"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\localization\\english\\greatwar_l_english.yml",
+      "preserved": "production/localization/english/greatwar_l_english.yml",
+      "size": 1584,
+      "sha256": "719ad53ee0b238afae6ab70691492e2b5e8d3095fbde27263bb080b693d0399a"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\localization\\french\\greatwar_l_french.yml",
+      "preserved": "production/localization/french/greatwar_l_french.yml",
+      "size": 1656,
+      "sha256": "1e55cc07cf6ba1f75b6aa50af1ac2f74aa9c7d505e2dd03f8415f62fef500d34"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\localization\\german\\greatwar_l_german.yml",
+      "preserved": "production/localization/german/greatwar_l_german.yml",
+      "size": 1758,
+      "sha256": "b66ec0b5fc618bf5806881dcb610cd6a786afae358fbad7b2c58d268118ad986"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\localization\\japanese\\greatwar_l_japanese.yml",
+      "preserved": "production/localization/japanese/greatwar_l_japanese.yml",
+      "size": 1459,
+      "sha256": "5fff5dfffe35b7a855866d33717d95cb2fdfe6faf97dc5dc0c8b6e3c24e4a9f7"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\localization\\korean\\greatwar_l_korean.yml",
+      "preserved": "production/localization/korean/greatwar_l_korean.yml",
+      "size": 1543,
+      "sha256": "509518ba720053649f2a3202084797755811e88046d73cc33bddbdf965985d89"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\localization\\polish\\greatwar_l_polish.yml",
+      "preserved": "production/localization/polish/greatwar_l_polish.yml",
+      "size": 1563,
+      "sha256": "0063629bac05538d8c980cd0fd09840aab31f0b5fcff75873f619a76f17378a2"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\localization\\russian\\greatwar_l_russian.yml",
+      "preserved": "production/localization/russian/greatwar_l_russian.yml",
+      "size": 2389,
+      "sha256": "ac6920c019027f7b80a1add1079f5e27d057b72b04d56115a701078207cd59a6"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\localization\\simp_chinese\\greatwar_l_simp_chinese.yml",
+      "preserved": "production/localization/simp_chinese/greatwar_l_simp_chinese.yml",
+      "size": 1430,
+      "sha256": "214c3afcd66a5c534d9b44b5bc429579d9f3bb75265f765732b4cf4adbb553b2"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\localization\\spanish\\greatwar_l_spanish.yml",
+      "preserved": "production/localization/spanish/greatwar_l_spanish.yml",
+      "size": 1608,
+      "sha256": "98c680f4f36e689314b132b8fd0497d584e990347335bb198ffd34c8df262e55"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\thumbnail.png",
+      "preserved": "production/thumbnail.png",
+      "size": 111868,
+      "sha256": "7b9d9de50b9a8a9fdf83bc89996330ea12f28a4a2396006d733043a8840c0465"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\djc-duchy-ui-postconditions-01.txt",
+      "preserved": "djc-duchy-ui-postconditions-01.txt",
+      "size": 736,
+      "sha256": "b21d7dad3b7d6581df748cac8d529452eac42b2dea61ff6f226d01ccefb4f541"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\016-djc-readonly-probe-result.json",
+      "preserved": "session/016-djc-readonly-probe-result.json",
+      "size": 1196,
+      "sha256": "551f19e7dbacee5c673f398512c4f855abe839d143c9571608aa02e8b3618227"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\djc-duchy-readonly-scope-probe-R0001.txt",
+      "preserved": "readonly-probe/djc-duchy-readonly-scope-probe-R0001.txt",
+      "size": 3158,
+      "sha256": "8a5deaba22800c15c0c20dfc2c58d186dda64f91eaf69131c98bd3e350e8b13a"
+    }
+  ],
+  "actual_probe": {
+    "passed": [
+      "using-duchy-CB",
+      "war-capua-holder-defender",
+      "war-capua-topliege-defender",
+      "primary-defender-is-capua-holder",
+      "character-capua-defender"
+    ],
+    "failed": [
+      "war-napoli-holder-defender",
+      "war-napoli-topliege-defender",
+      "character-napoli-defender",
+      "cb-list-has-d-capua",
+      "war-list-has-d-capua"
+    ],
+    "target_list_enum_entries": 0,
+    "participant_scope_count": 2
+  },
+  "result": "PRODUCTION_RED",
+  "runtime_in_run": "unchanged R0001 candidate; no Naples defender",
+  "repair_candidate_live": "NOT_RUN"
+}

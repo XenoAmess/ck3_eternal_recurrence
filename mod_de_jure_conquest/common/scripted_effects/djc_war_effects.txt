@@ -1,4 +1,5 @@
 ﻿# THIS/ROOT are the current CB; target_titles is a native CB-local list.
+# target_titles is available in the native callback, not a persistent CB field.
 # WAR must be this CB's exact war, never an arbitrary war of the attacker.
 djc_join_de_jure_defenders = {
     if = {
@@ -6,6 +7,12 @@ djc_join_de_jure_defenders = {
         $WAR$ = { save_temporary_scope_as = djc_current_war }
         every_in_list = {
             list = target_titles
+            # All three CBs select exactly one native target. Keep its identity
+            # on this war for later readback without recreating callback lists.
+            save_temporary_scope_as = djc_native_goal
+            scope:djc_current_war = {
+                set_variable = { name = djc_goal_title value = scope:djc_native_goal }
+            }
             every_de_jure_county = {
                 holder ?= {
                     top_liege = {

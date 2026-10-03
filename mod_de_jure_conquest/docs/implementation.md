@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | 重复 icon 字段 | 各保留一个 | 重复键检查通过 |
 | 大圣战标记与自有防守方收集并存 | 普通战争模式，自有 hook 继续收集防守者 | 原版大圣战单独定义；自动军队恢复尚未实证 |
-| War scope 遍历 CB-local `target_titles` | 进入 `scope:war.casus_belli` 再读列表 | 当前原版 `war_on_actions.txt` 使用这一作用域 |
+| War scope 遍历 callback `target_titles` | 三CB `on_declaration` 直接调用 helper，传精确 `root.war`；原生单目标同时保存为每war的 `djc_goal_title` | R0001实测原方案漏加Naples；原版结束回调的示例不能证明普通inbox或child hook持有该列表，见 [诊断与修复](duchy-live-red-2026-10-03.md) |
 | 每县 holder 加入防守方 | 改取 top liege，排除攻击者／自有封臣／已参战者 | 独立领主集合待实机读回 |
 | hook 没有玩家资格闸 | 外层战争存在性与主攻击者 `is_ai=no` | 三个 CB 同时保留 `is_ai=no` 并新增 `ai=no` |
 | 无 liege 的独立角色仍访问 liege | 用不同 top-liege 条件 | 避免不存在的关系读取 |

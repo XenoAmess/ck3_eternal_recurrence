@@ -1,0 +1,45 @@
+{
+  "schema": "djc.minimum-production-repair-review.v1",
+  "upstream_live_attempt": "bf-202609141645-5434332d4d--de-jure-conquest--R0001",
+  "actual_red": "Naples absent from duchy war; native callback target_titles absent in ordinary inbox",
+  "runtime_changed_files": [
+    "common/casus_belli_types/duchy_de_jure_greatwar.txt",
+    "common/casus_belli_types/empire_de_jure_greatwar.txt",
+    "common/casus_belli_types/kingdom_de_jure_greatwar.txt",
+    "common/on_action/greatwar.txt",
+    "common/scripted_effects/djc_war_effects.txt"
+  ],
+  "runtime_unchanged_files": [
+    "descriptor.mod",
+    "localization/english/greatwar_l_english.yml",
+    "localization/french/greatwar_l_french.yml",
+    "localization/german/greatwar_l_german.yml",
+    "localization/japanese/greatwar_l_japanese.yml",
+    "localization/korean/greatwar_l_korean.yml",
+    "localization/polish/greatwar_l_polish.yml",
+    "localization/russian/greatwar_l_russian.yml",
+    "localization/simp_chinese/greatwar_l_simp_chinese.yml",
+    "localization/spanish/greatwar_l_spanish.yml",
+    "thumbnail.png"
+  ],
+  "declaration_contract": "all three CBs call helper with root.war in native on_declaration",
+  "goal_readback_contract": "single selected callback title stored on exact war as djc_goal_title; absent capture yields fixture FAIL",
+  "fixture_output": "C:\\workspace\\two-mod-maintenance-20261003\\de-jure-fixture-R0004",
+  "fixture_files": 7,
+  "fixture_generation_exact": true,
+  "fixture_parser": "PASS",
+  "fixture_expected_pass_markers": 72,
+  "fixture_contract_unchanged": true,
+  "static": {
+    "source": "C:\\workspace\\two-mod-maintenance-20261003\\mod_de_jure_conquest-release-static-R0003.json",
+    "sha256": "f45cd67906032e98df70a399466cb58c7fdc3bce27663e07f8abbdf30b4f61cb",
+    "result": "GREEN"
+  },
+  "build_check": {
+    "file_count": 16,
+    "manifest_sha256": "f765f2c56799c5aab1ef531ef69aec112774b5bec50796f14eaaa59ba9aa28ad",
+    "zip_sha256": "8ed44c081ff53f54e6d267c35425da9e7ec3cd976f7476b7faf7936d1d6b87f1"
+  },
+  "candidate_live": "NOT_RUN",
+  "publication": "NOT_RUN"
+}

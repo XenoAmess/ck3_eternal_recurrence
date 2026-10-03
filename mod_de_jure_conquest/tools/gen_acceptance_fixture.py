@@ -62,7 +62,6 @@ djct.1 = {
         set_variable = { name = djct_napoli_holder value = title:c_napoli.holder }
         set_variable = { name = djct_roma_holder value = title:c_roma.holder }
         set_variable = { name = djct_firenze_holder value = title:c_firenze.holder }
-        set_variable = { name = djct_outside_holder value = title:c_vannes.holder }
         set_variable = { name = djct_owned_holder value = title:c_apulia.holder }
         add_prestige = 100000
         add_piety = 100000
@@ -84,7 +83,7 @@ djct.1 = {
     markers = []
     stage = 10
     for tier_index, (tier, goal, county_a, county_b, holder_a, holder_b) in enumerate(TIERS):
-        events = ["# GENERATED FILE: tools/gen_acceptance_fixture.py; never upload."]
+        events = ["# GENERATED FILE: tools/gen_acceptance_fixture.py; never upload.\nnamespace = djct"]
         for outcome_index, outcome in enumerate(OUTCOMES):
             cb = f"{tier}_de_jure_greatwar"
             label = f"{tier}_{outcome}"
@@ -131,7 +130,7 @@ djct.{stage+1} = {{
         if = {{
             limit = {{ has_variable = djct_current_war }}
             {check(f'var:djct_current_war = {{ using_cb = {cb} is_attacker = root is_defender = root.var:djct_case_primary.top_liege is_defender = root.var:djct_case_secondary.top_liege }}', label+'_native_participants')}
-            {check(f'var:djct_current_war.casus_belli = {{ any_in_list = {{ list = target_titles this = title:{goal} }} }}', label+'_native_goal')}
+            {check(f'var:djct_current_war = {{ trigger_if = {{ limit = {{ has_variable = djc_goal_title }} var:djc_goal_title = title:{goal} }} trigger_else = {{ always = no }} }}', label+'_native_goal')}
             var:djct_current_war = {{ end_war = {outcome} }}
             remove_variable = djct_current_war
             trigger_event = {{ id = djct.{stage+2} days = 1 }}

@@ -1,0 +1,29 @@
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.40' (file: events/djct_kingdom.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.10' (file: events/djct_duchy.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.70' (file: events/djct_empire.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.41' (file: events/djct_kingdom.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.71' (file: events/djct_empire.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.11' (file: events/djct_duchy.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.42' (file: events/djct_kingdom.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.72' (file: events/djct_empire.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.50' (file: events/djct_kingdom.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.12' (file: events/djct_duchy.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.80' (file: events/djct_empire.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.20' (file: events/djct_duchy.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.51' (file: events/djct_kingdom.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.81' (file: events/djct_empire.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.52' (file: events/djct_kingdom.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.21' (file: events/djct_duchy.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.82' (file: events/djct_empire.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.60' (file: events/djct_kingdom.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.22' (file: events/djct_duchy.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.90' (file: events/djct_empire.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.30' (file: events/djct_duchy.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.61' (file: events/djct_kingdom.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.62' (file: events/djct_kingdom.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.91' (file: events/djct_empire.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.31' (file: events/djct_duchy.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.92' (file: events/djct_empire.txt) is not defined in this file - it might not load properly.
+[09:37:34][E][jomini_eventmanager.cpp:599]: Namespace 'djct' used in event 'djct.32' (file: events/djct_duchy.txt) is not defined in this file - it might not load properly.
+[09:38:07][E][jomini_effect.cpp:1146]: Variable 'djct_outside_holder' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[09:39:00][E][jomini_effect.cpp:1146]: Variable 'djct_outside_holder' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count

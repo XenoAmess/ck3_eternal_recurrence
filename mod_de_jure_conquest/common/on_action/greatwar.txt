@@ -18,9 +18,8 @@ de_jure_greatwar_start = {
                         primary_attacker = { is_ai = no }
                     }
                 }
-                scope:war.casus_belli = {
-                    djc_join_de_jure_defenders = { WAR = scope:war }
-                }
+                # Compatibility hook; declaration owns the native target list.
+                djc_join_de_jure_defenders = { WAR = scope:war }
             }
         }
     }

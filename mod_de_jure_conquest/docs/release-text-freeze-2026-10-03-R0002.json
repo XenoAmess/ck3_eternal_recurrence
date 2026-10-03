@@ -1,0 +1,30 @@
+{
+  "schema": "djc.release-text-freeze.v1",
+  "attempt": "R0002",
+  "files": [
+    {
+      "path": "mod_de_jure_conquest/docs/steam-change-notes-1.0.0.txt",
+      "bytes": 3151,
+      "characters": 1243,
+      "lines": 31,
+      "sha256": "1227a3c7f893f5be1143ab5f0cd7c548918c5651b9291b3318a26a7601bb73a4",
+      "role": "Steam Change Notes",
+      "status": "frozen publication draft; not submitted"
+    },
+    {
+      "path": "mod_de_jure_conquest/docs/workshop-description.bbcode",
+      "bytes": 2787,
+      "characters": 1161,
+      "lines": 31,
+      "sha256": "dbce409f470ad3e2ec48871873a77b0dc6e7c275e5e14f7f9683b9f2debeeeb5",
+      "role": "Workshop BBCode description",
+      "status": "frozen publication draft; not submitted"
+    }
+  ],
+  "reason": "Actual GUI debit review: preview is CB cost; vanilla declaration effects can charge an additional100 piety",
+  "runtime_current_matches_R0003_static": true,
+  "runtime_new_changes": 0,
+  "supersedes_text_identity_only": "release-documentation-review-2026-10-03.json; old report retained",
+  "candidate_live": "NOT_RUN",
+  "publication": "NOT_RUN"
+}

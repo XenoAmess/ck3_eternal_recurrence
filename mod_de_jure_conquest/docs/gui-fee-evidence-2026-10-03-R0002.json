@@ -1,0 +1,475 @@
+{
+  "schema": "djc.gui-fee-evidence.v1",
+  "run": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001",
+  "runtime_source": "R0001 frozen 9112 candidate; before defender repair",
+  "checks": [
+    {
+      "tier": "duchy",
+      "before": "010",
+      "after": "014",
+      "same_paused_date": true,
+      "date_raw": 53144328,
+      "raw": {
+        "prestige": {
+          "before": 10220000000,
+          "after": 10215000000,
+          "scale": 100000
+        },
+        "piety": {
+          "before": 10015000000,
+          "after": 9985000000,
+          "scale": 100000
+        }
+      },
+      "actual_total_debit": {
+        "prestige": 50.0,
+        "piety": 300.0
+      },
+      "war_id": 4,
+      "targeted_title_ids": [
+        2221
+      ],
+      "primary_opponent_character_id": 32512,
+      "displayed_piety": 200,
+      "displayed_prestige": 50,
+      "result": "OBSERVED_DISCREPANCY: total piety debit exceeds displayed CB cost by100; exact-preview total assertion NOT_PASS"
+    },
+    {
+      "tier": "kingdom",
+      "before": "017",
+      "after": "018",
+      "same_paused_date": true,
+      "date_raw": 53144328,
+      "raw": {
+        "prestige": {
+          "before": 10215000000,
+          "after": 10190000000,
+          "scale": 100000
+        },
+        "piety": {
+          "before": 9985000000,
+          "after": 9885000000,
+          "scale": 100000
+        }
+      },
+      "actual_total_debit": {
+        "prestige": 250.0,
+        "piety": 1000.0
+      },
+      "war_id": 5,
+      "targeted_title_ids": [
+        2189
+      ],
+      "primary_opponent_character_id": 32909,
+      "displayed_piety": 1000,
+      "displayed_prestige": 250,
+      "result": "PASS observed total equals preview for this scenario"
+    },
+    {
+      "tier": "empire",
+      "before": "019",
+      "after": "020",
+      "same_paused_date": true,
+      "date_raw": 53144328,
+      "raw": {
+        "prestige": {
+          "before": 10190000000,
+          "after": 10065000000,
+          "scale": 100000
+        },
+        "piety": {
+          "before": 9885000000,
+          "after": 9375000000,
+          "scale": 100000
+        }
+      },
+      "actual_total_debit": {
+        "prestige": 1250.0,
+        "piety": 5100.0
+      },
+      "war_id": 6,
+      "targeted_title_ids": [
+        1295
+      ],
+      "primary_opponent_character_id": 34954,
+      "displayed_piety": 5000,
+      "displayed_prestige": 1250,
+      "result": "OBSERVED_DISCREPANCY: total piety debit exceeds displayed CB cost by100; exact-preview total assertion NOT_PASS"
+    }
+  ],
+  "source_contracts": {
+    "common/scripted_effects/00_war_effects.txt": {
+      "lines": [
+        289,
+        303
+      ],
+      "meaning": "on_declared_war conditional same-faith Peace of God rite penalty",
+      "sha256": "f811d12ccb11f3aae2f61b234e930e20880be9b7c065bb9f4557400bd711722b"
+    },
+    "common/script_values/00_basic_values.txt": {
+      "lines": [
+        1131,
+        1149
+      ],
+      "meaning": "medium_piety_value=100; medium_piety_loss=0-medium_piety_value",
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef"
+    },
+    "common/religion/tenet_types/00_pam_tenets.txt": {
+      "lines": [
+        72,
+        77
+      ],
+      "meaning": "tenet exposes same-faith war piety penalty parameter",
+      "sha256": "5d57cf371aedf4d2266286b8fe30d7f0c90eb8d4079019712c907a4b954ce02a"
+    },
+    "history/characters/norman.txt": {
+      "lines": [
+        467,
+        502,
+        938,
+        966
+      ],
+      "meaning": "Robert and Richard initial roman_rite; static history does not prove live predicate",
+      "sha256": "588a012e567f6acc9e032a162b9995bb7424b535ff50cfaea459cf10a1c0132b"
+    }
+  },
+  "extra_piety_source_assessment": {
+    "source_mechanism": "on_declared_war same-faith Peace of God conditional add_piety=medium_piety_loss (-100)",
+    "condition": "defender.faith equals attacker.faith, attacker.rite has tenet_peace_of_god_same_faith_war_piety_penalty",
+    "amount_matches_observed_extra": true,
+    "actual_R0001_branch_predicate_readback": "NOT_CAPTURED",
+    "actual_R0001_branch_execution_trace": "NOT_CAPTURED",
+    "causal_status": "SOURCE_SUPPORTED_CANDIDATE; no claim of direct branch proof",
+    "constraint": "Duchy and empire actual totals each exceed preview by100; branch predicates were not directly captured, so static history and matching arithmetic alone do not prove causal execution"
+  },
+  "prior_audit_attempt": "de-jure-fee-evidence-R0001/failure.json (wrong inherited duchy expected200)",
+  "files": [
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\010-djc-after-query-result.json",
+      "preserved": "session/010-djc-after-query-result.json",
+      "size": 22027,
+      "sha256": "d1c7f5d8f2edc0a8f5ff843f52362d5df18893b52b08700735c0827dd01b34fe"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\014-djc-duchy-after-result.json",
+      "preserved": "session/014-djc-duchy-after-result.json",
+      "size": 24665,
+      "sha256": "3cf3c8dbea7413f3e2a055c53d616142dc8de700aee03886270c10e1140e0f0a"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\017-djc-kingdom-before-result.json",
+      "preserved": "session/017-djc-kingdom-before-result.json",
+      "size": 24667,
+      "sha256": "9f5b94f46dea85059f4fb1bfa5dd914c265bc00bcaefd9767f4af81461372603"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\018-djc-kingdom-after-result.json",
+      "preserved": "session/018-djc-kingdom-after-result.json",
+      "size": 38903,
+      "sha256": "febaf58972488c7337e20a7c1166bc9919e5972e47c0dc77aa2942e6f9be8f06"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\019-djc-empire-before-result.json",
+      "preserved": "session/019-djc-empire-before-result.json",
+      "size": 38903,
+      "sha256": "73795d9e9c26a7891cea79401f4d4b9ee9ab0bd8286309cad24d4d92c3edc8f3"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\020-djc-empire-after-result.json",
+      "preserved": "session/020-djc-empire-after-result.json",
+      "size": 184475,
+      "sha256": "22fa9d2c36bab2aad289ff50275bb7b01b5f9e34ca6c5b2f756b440c24d96fe7"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\common\\casus_belli_types\\duchy_de_jure_greatwar.txt",
+      "preserved": "production/common/casus_belli_types/duchy_de_jure_greatwar.txt",
+      "size": 5478,
+      "sha256": "ce5bfa79231fbfb0e57637f85ea5ae00b9ff1409afc010de23b38aa54451c033"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\common\\casus_belli_types\\empire_de_jure_greatwar.txt",
+      "preserved": "production/common/casus_belli_types/empire_de_jure_greatwar.txt",
+      "size": 5484,
+      "sha256": "db0a5ea2f1e3c945b2d930d385b00b42a8847023965c2cc6d145404042cdbc58"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\common\\casus_belli_types\\kingdom_de_jure_greatwar.txt",
+      "preserved": "production/common/casus_belli_types/kingdom_de_jure_greatwar.txt",
+      "size": 5487,
+      "sha256": "bf863027112bfcfa452e94c6dbd35d34def43b358d77fc4a84eb7a5b8e24000d"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\common\\on_action\\greatwar.txt",
+      "preserved": "production/common/on_action/greatwar.txt",
+      "size": 824,
+      "sha256": "8adc9843fd8d28acc730d6ba39109dedcb3d7b463f9c975195761c8c3b44a191"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\common\\scripted_effects\\djc_war_effects.txt",
+      "preserved": "production/common/scripted_effects/djc_war_effects.txt",
+      "size": 2318,
+      "sha256": "9b153afd7fc918872067c3ead72a4c0a1334bdee833e2701eb5e6a694923d10a"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\descriptor.mod",
+      "preserved": "production/descriptor.mod",
+      "size": 155,
+      "sha256": "359e9378843b2532e156f4701179a1dd963dc7dd131a6c5e8d52dab96aaa63d7"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\localization\\english\\greatwar_l_english.yml",
+      "preserved": "production/localization/english/greatwar_l_english.yml",
+      "size": 1584,
+      "sha256": "719ad53ee0b238afae6ab70691492e2b5e8d3095fbde27263bb080b693d0399a"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\localization\\french\\greatwar_l_french.yml",
+      "preserved": "production/localization/french/greatwar_l_french.yml",
+      "size": 1656,
+      "sha256": "1e55cc07cf6ba1f75b6aa50af1ac2f74aa9c7d505e2dd03f8415f62fef500d34"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\localization\\german\\greatwar_l_german.yml",
+      "preserved": "production/localization/german/greatwar_l_german.yml",
+      "size": 1758,
+      "sha256": "b66ec0b5fc618bf5806881dcb610cd6a786afae358fbad7b2c58d268118ad986"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\localization\\japanese\\greatwar_l_japanese.yml",
+      "preserved": "production/localization/japanese/greatwar_l_japanese.yml",
+      "size": 1459,
+      "sha256": "5fff5dfffe35b7a855866d33717d95cb2fdfe6faf97dc5dc0c8b6e3c24e4a9f7"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\localization\\korean\\greatwar_l_korean.yml",
+      "preserved": "production/localization/korean/greatwar_l_korean.yml",
+      "size": 1543,
+      "sha256": "509518ba720053649f2a3202084797755811e88046d73cc33bddbdf965985d89"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\localization\\polish\\greatwar_l_polish.yml",
+      "preserved": "production/localization/polish/greatwar_l_polish.yml",
+      "size": 1563,
+      "sha256": "0063629bac05538d8c980cd0fd09840aab31f0b5fcff75873f619a76f17378a2"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\localization\\russian\\greatwar_l_russian.yml",
+      "preserved": "production/localization/russian/greatwar_l_russian.yml",
+      "size": 2389,
+      "sha256": "ac6920c019027f7b80a1add1079f5e27d057b72b04d56115a701078207cd59a6"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\localization\\simp_chinese\\greatwar_l_simp_chinese.yml",
+      "preserved": "production/localization/simp_chinese/greatwar_l_simp_chinese.yml",
+      "size": 1430,
+      "sha256": "214c3afcd66a5c534d9b44b5bc429579d9f3bb75265f765732b4cf4adbb553b2"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\localization\\spanish\\greatwar_l_spanish.yml",
+      "preserved": "production/localization/spanish/greatwar_l_spanish.yml",
+      "size": 1608,
+      "sha256": "98c680f4f36e689314b132b8fd0497d584e990347335bb198ffd34c8df262e55"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production\\thumbnail.png",
+      "preserved": "production/thumbnail.png",
+      "size": 111868,
+      "sha256": "7b9d9de50b9a8a9fdf83bc89996330ea12f28a4a2396006d733043a8840c0465"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\production.manifest.json",
+      "preserved": "production.manifest.json",
+      "size": 3003,
+      "sha256": "2b8257bc6b0416ad1abd2c107cf3c1600d4ea94d2796d5d61791a420ea57eff6"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-duchy-declared-01.json",
+      "preserved": "session/screens/djc-duchy-declared-01.json",
+      "size": 614,
+      "sha256": "d47274585552e352825fda8482a8ff5a55187f4457fd96f3f5b5de7135b6b7f9"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-duchy-declared-01.png",
+      "preserved": "session/screens/djc-duchy-declared-01.png",
+      "size": 3225925,
+      "sha256": "72369823d03bf046f90a952c4cfcd58da545cfbcb72b7b3e5dfd3956e34ef3f9"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-duchy-preview-01.json",
+      "preserved": "session/screens/djc-duchy-preview-01.json",
+      "size": 613,
+      "sha256": "cfd42d81534e741d7bfbc17894ed41e21a29052f7ff27d00abb6f247cdcd3c4d"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-duchy-preview-01.png",
+      "preserved": "session/screens/djc-duchy-preview-01.png",
+      "size": 2885166,
+      "sha256": "4c0df59db667642f45b6f874a8a99dcad91fadc28ae9c068144faa0bb010a9fb"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-duchy-select-01.command.json",
+      "preserved": "session/screens/djc-duchy-select-01.command.json",
+      "size": 781,
+      "sha256": "6d0cfb30abe5e678d510541a39c939ce87e2d8501c978f20f53724f915d14588"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-duchy-select-01.png",
+      "preserved": "session/screens/djc-duchy-select-01.png",
+      "size": 2870371,
+      "sha256": "fb555644c6d4193c49ca5e7c9050c24641eec9fc5c61b494293cb59393d0978e"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-duchy-ui-declare-01.command.json",
+      "preserved": "session/screens/djc-duchy-ui-declare-01.command.json",
+      "size": 778,
+      "sha256": "6bd20012cb9f0a40e7594931aff4624047faaf2fdcaceed261443c77e89d87c9"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-duchy-ui-declare-01.png",
+      "preserved": "session/screens/djc-duchy-ui-declare-01.png",
+      "size": 3048826,
+      "sha256": "03781e8a5e9cdb926eda9ca01de689fc0000ea1f3f65d5bb480a88150a13937f"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-empire-declared-01.json",
+      "preserved": "session/screens/djc-empire-declared-01.json",
+      "size": 615,
+      "sha256": "ff64d5bebc7ececf6575f7fce8686dcdf2f2821862b215d32c0822dc4551ebdf"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-empire-declared-01.png",
+      "preserved": "session/screens/djc-empire-declared-01.png",
+      "size": 3242782,
+      "sha256": "86a77c4c4cbcff97dbc7107dbfb89b3591c45c1cf46495eb4729c354233ec575"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-empire-preview-01.json",
+      "preserved": "session/screens/djc-empire-preview-01.json",
+      "size": 614,
+      "sha256": "24d2d1c6d95e79f2fb5b882c516443037b53d2830f390662bfa6a53163efac37"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-empire-preview-01.png",
+      "preserved": "session/screens/djc-empire-preview-01.png",
+      "size": 2909879,
+      "sha256": "285587605d151d95e87ee4815a30a961a1b925f6edbc99c59fec273dc6a45108"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-empire-select-01.command.json",
+      "preserved": "session/screens/djc-empire-select-01.command.json",
+      "size": 777,
+      "sha256": "b00bc6c9a2581661e9771cb1c73e044ba18fdab30fb44555a938c5a6b03674e3"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-empire-select-01.png",
+      "preserved": "session/screens/djc-empire-select-01.png",
+      "size": 2896380,
+      "sha256": "73ab3e4f73a9df54e2a87de61e50fdb0d42b66f12a3c61a5686974e1c3fcb488"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-empire-ui-declare-01.command.json",
+      "preserved": "session/screens/djc-empire-ui-declare-01.command.json",
+      "size": 780,
+      "sha256": "69668612b2de5cc8afbb16f992ff6201c72a8f8fc3518d5504af1f8fb1a607e5"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-empire-ui-declare-01.png",
+      "preserved": "session/screens/djc-empire-ui-declare-01.png",
+      "size": 3065346,
+      "sha256": "267ade6f39eb8924770693f4551017c94a846b8b93f359bda9fbfceda61330f2"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-kingdom-declared-01.json",
+      "preserved": "session/screens/djc-kingdom-declared-01.json",
+      "size": 616,
+      "sha256": "f417eea35a0033d3e7067ddc626dfd4fea94f158019ba0289c4375d9fc5c48f3"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-kingdom-declared-01.png",
+      "preserved": "session/screens/djc-kingdom-declared-01.png",
+      "size": 3233762,
+      "sha256": "19aaf4f1a0577b5ec68c2d16c966e0d8224c5b03131559583e3727aaf223e81f"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-kingdom-preview-01.json",
+      "preserved": "session/screens/djc-kingdom-preview-01.json",
+      "size": 615,
+      "sha256": "46cc1544a8239c215ee7d3590bacad36b8031678b67edf1196681a8f6071fa60"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-kingdom-preview-01.png",
+      "preserved": "session/screens/djc-kingdom-preview-01.png",
+      "size": 2913413,
+      "sha256": "34f8763045a237b6edb397cc92143ffb041ee4f0d9d3cf37545b42ddf1ed3b3e"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-kingdom-select-01.command.json",
+      "preserved": "session/screens/djc-kingdom-select-01.command.json",
+      "size": 777,
+      "sha256": "14c6bf15e6dfaa62404d66c8d9d637cd8a193a271f01ffd8dd17abf81ae04eed"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-kingdom-select-01.png",
+      "preserved": "session/screens/djc-kingdom-select-01.png",
+      "size": 2899478,
+      "sha256": "6745692fdcfe151fee1aa8d72d75ac79bf5921141f9e7c263767f1835a90f729"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-kingdom-ui-declare-01.command.json",
+      "preserved": "session/screens/djc-kingdom-ui-declare-01.command.json",
+      "size": 782,
+      "sha256": "a0b85f6cc9746e5d7e313b5895c147d2216d4271fa49366fcd0f74ee32fa0c57"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\session\\screens\\djc-kingdom-ui-declare-01.png",
+      "preserved": "session/screens/djc-kingdom-ui-declare-01.png",
+      "size": 3036535,
+      "sha256": "7c9f26f8fcf921d31a91da7a0bb79e97c2bb235e72c492264479d9d4729c5272"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\state\\profile\\logs\\error.log",
+      "preserved": "state/profile/logs/error.log",
+      "size": 11884,
+      "sha256": "666c95f231b62ddb163dd5560ec206b4f276425ce6829bd5f6c3addca997a81e"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\state\\profile\\logs\\debug.log",
+      "preserved": "state/profile/logs/debug.log",
+      "size": 1177242,
+      "sha256": "3bf4a352c0d57ad1b59904dd11fe3f63107ea0c28cb70d5ef528780f18167035"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0001\\state\\profile\\logs\\game.log",
+      "preserved": "state/profile/logs/game.log",
+      "size": 9013,
+      "sha256": "824131e3cc7fc7eaa888f1f0b8ca6df25001aba341074b3bfafbd0da5b22ebe4"
+    },
+    {
+      "source": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_war_effects.txt",
+      "preserved": "vanilla/common/scripted_effects/00_war_effects.txt",
+      "size": 75993,
+      "sha256": "f811d12ccb11f3aae2f61b234e930e20880be9b7c065bb9f4557400bd711722b"
+    },
+    {
+      "source": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_basic_values.txt",
+      "preserved": "vanilla/common/script_values/00_basic_values.txt",
+      "size": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef"
+    },
+    {
+      "source": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\tenet_types\\00_pam_tenets.txt",
+      "preserved": "vanilla/common/religion/tenet_types/00_pam_tenets.txt",
+      "size": 52920,
+      "sha256": "5d57cf371aedf4d2266286b8fe30d7f0c90eb8d4079019712c907a4b954ce02a"
+    },
+    {
+      "source": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\history\\characters\\norman.txt",
+      "preserved": "vanilla/history/characters/norman.txt",
+      "size": 158165,
+      "sha256": "588a012e567f6acc9e032a162b9995bb7424b535ff50cfaea459cf10a1c0132b"
+    }
+  ],
+  "preserved_file_count": 54,
+  "candidate_repair_live": "NOT_RUN",
+  "publication": "NOT_RUN"
+}

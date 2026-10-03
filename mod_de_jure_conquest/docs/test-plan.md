@@ -37,7 +37,7 @@
 
 ## 当前外置脚本矩阵
 
-`tools/gen_acceptance_fixture.py` 已输出 `C:/workspace/two-mod-maintenance-20261003/de-jure-fixture-R0002/`，仅1066罗贝尔1128真人入口自动触发。三档各执行胜利／白和／战败，共9场，72个预期PASS及一个DONE。读原生 can_declare_war、战争侧／CB目标列表、县持有人与战争退出；d_capua用capua／napoli，k_sicily包含玩家apulia，e_italy用roma／firenze，vannes作为目标外观察点。
+`tools/gen_acceptance_fixture.py` 当前已输出 `C:/workspace/two-mod-maintenance-20261003/de-jure-fixture-R0004/`，仅1066罗贝尔1128真人入口自动触发。R0001加载的fixture namespace／未使用变量RED及最小修复见 [永久记录](fixture-initial-load-red-2026-10-03.md)，旧输出保留。三档各执行胜利／白和／战败，共9场，72个预期PASS及一个DONE。读原生 can_declare_war、战争侧、生产CB宣战回调捕获在确切war上的目标变量、县持有人与战争退出。目标断言有存在性guard，捕获缺失明确FAIL，不把fixture预设目标写成生产读回。d_capua用capua／napoli，k_sicily包含玩家apulia，e_italy用roma／firenze，vannes作为目标外观察点。[R0001生产参战方RED及修复](duchy-live-red-2026-10-03.md) 已另存，新fixture尚未实机。
 
 此fixture通过生产CB与on_action，`start_war`用于搭场，`end_war`调用实际结算。它没有覆盖正常宣战扣款、原生议和合法性、并发战争、自动军队、低威望、重载；根执行者另补原生UI／MCP。`verify_fixture_log.py --log <debug.log> --contract <fixture-contract.json> --report <fresh.json>` 只证明markers，完整报告仍须绑定runtime／EXE／日志诊断／受保护资料／进程退出。
 

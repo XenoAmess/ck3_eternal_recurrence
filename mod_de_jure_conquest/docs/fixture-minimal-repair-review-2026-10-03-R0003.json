@@ -1,0 +1,152 @@
+{
+  "schema": "djc.fixture-minimal-repair-review.v1",
+  "reviewed_utc": "2026-10-03T01:50:03.956583+00:00",
+  "initial_live_attempt": "C:/workspace/two-mod-maintenance-20261003/bf-202609141645-5434332d4d--de-jure-conquest--R0001",
+  "initial_load_result": "HARNESS_RED",
+  "namespace_diagnostics": 27,
+  "unused_variable_diagnostics_observed": 2,
+  "initial_error_log_snapshot": {
+    "path": "mod_de_jure_conquest/docs/fixture-initial-load-red-2026-10-03-R0001.log",
+    "sha256": "3ebe46f33a7e7f46f10229a9f158fbff580429e35a6dae3c535c2ee8a5b3be8b",
+    "size": 5195
+  },
+  "fix": "Declare namespace=djct in each generated event file; remove unused outside-holder assignment only.",
+  "fixture_R0003_path": "C:/workspace/two-mod-maintenance-20261003/de-jure-fixture-R0003",
+  "fixture_file_count": 7,
+  "changed_fixture_files": [
+    "events/djct_duchy.txt",
+    "events/djct_empire.txt",
+    "events/djct_init.txt",
+    "events/djct_kingdom.txt"
+  ],
+  "structure_parser": "PASS",
+  "generated_byte_consistency": "PASS",
+  "per_event_file_namespace": "PASS",
+  "expected_markers_unchanged": 72,
+  "old_fixture_R0002_preserved": true,
+  "runtime_exact_match_to_R0001": true,
+  "runtime_file_count": 16,
+  "runtime_changes": 0,
+  "live_R0003": "NOT_RUN",
+  "fees_R0001": "IN_PROGRESS_BY_ROOT",
+  "game_requests_by_child": 0,
+  "fixture_files": [
+    {
+      "path": "common/on_action/djct_on_actions.txt",
+      "size": 452,
+      "sha256": "dbe6324b39d8d5ab7ce29a5a4119cefa112ebd17efbee42501ad51dc790ce6de"
+    },
+    {
+      "path": "descriptor.mod",
+      "size": 95,
+      "sha256": "de5e22deb48fb351f927db26d6a8d181785c4d005c3e5ff7782bf3e3b722cf7c"
+    },
+    {
+      "path": "events/djct_duchy.txt",
+      "size": 13294,
+      "sha256": "e25a231d9c3905b1e65da4f4229e3d13c21ff219741b8f9be224eeaf1c82a2c9"
+    },
+    {
+      "path": "events/djct_empire.txt",
+      "size": 13372,
+      "sha256": "e133e83a64b95aaad4d18895777ad3ccdc45a6be75c8f09b5033f5572d6e649a"
+    },
+    {
+      "path": "events/djct_init.txt",
+      "size": 1146,
+      "sha256": "45de1ca26e202c2201fc5fe3565f73fe4af70f58ca4c1d94883bef938b156484"
+    },
+    {
+      "path": "events/djct_kingdom.txt",
+      "size": 13450,
+      "sha256": "ae3977a2883d1bd1054749a9c365670f64f15b3bd33dc9e576e192e097e09575"
+    },
+    {
+      "path": "fixture-contract.json",
+      "size": 3355,
+      "sha256": "b468336b8ec47224790cadc5026f67b32a1d31ca594bd607d3d69035bbe7b09e"
+    }
+  ],
+  "runtime_files": [
+    {
+      "path": "localization/english/greatwar_l_english.yml",
+      "size": 1584,
+      "sha256": "719ad53ee0b238afae6ab70691492e2b5e8d3095fbde27263bb080b693d0399a"
+    },
+    {
+      "path": "common/scripted_effects/djc_war_effects.txt",
+      "size": 2318,
+      "sha256": "9b153afd7fc918872067c3ead72a4c0a1334bdee833e2701eb5e6a694923d10a"
+    },
+    {
+      "path": "localization/japanese/greatwar_l_japanese.yml",
+      "size": 1459,
+      "sha256": "5fff5dfffe35b7a855866d33717d95cb2fdfe6faf97dc5dc0c8b6e3c24e4a9f7"
+    },
+    {
+      "path": "thumbnail.png",
+      "size": 111868,
+      "sha256": "7b9d9de50b9a8a9fdf83bc89996330ea12f28a4a2396006d733043a8840c0465"
+    },
+    {
+      "path": "localization/russian/greatwar_l_russian.yml",
+      "size": 2389,
+      "sha256": "ac6920c019027f7b80a1add1079f5e27d057b72b04d56115a701078207cd59a6"
+    },
+    {
+      "path": "localization/polish/greatwar_l_polish.yml",
+      "size": 1563,
+      "sha256": "0063629bac05538d8c980cd0fd09840aab31f0b5fcff75873f619a76f17378a2"
+    },
+    {
+      "path": "common/casus_belli_types/empire_de_jure_greatwar.txt",
+      "size": 5484,
+      "sha256": "db0a5ea2f1e3c945b2d930d385b00b42a8847023965c2cc6d145404042cdbc58"
+    },
+    {
+      "path": "common/on_action/greatwar.txt",
+      "size": 824,
+      "sha256": "8adc9843fd8d28acc730d6ba39109dedcb3d7b463f9c975195761c8c3b44a191"
+    },
+    {
+      "path": "localization/french/greatwar_l_french.yml",
+      "size": 1656,
+      "sha256": "1e55cc07cf6ba1f75b6aa50af1ac2f74aa9c7d505e2dd03f8415f62fef500d34"
+    },
+    {
+      "path": "descriptor.mod",
+      "size": 155,
+      "sha256": "359e9378843b2532e156f4701179a1dd963dc7dd131a6c5e8d52dab96aaa63d7"
+    },
+    {
+      "path": "localization/korean/greatwar_l_korean.yml",
+      "size": 1543,
+      "sha256": "509518ba720053649f2a3202084797755811e88046d73cc33bddbdf965985d89"
+    },
+    {
+      "path": "localization/spanish/greatwar_l_spanish.yml",
+      "size": 1608,
+      "sha256": "98c680f4f36e689314b132b8fd0497d584e990347335bb198ffd34c8df262e55"
+    },
+    {
+      "path": "localization/german/greatwar_l_german.yml",
+      "size": 1758,
+      "sha256": "b66ec0b5fc618bf5806881dcb610cd6a786afae358fbad7b2c58d268118ad986"
+    },
+    {
+      "path": "localization/simp_chinese/greatwar_l_simp_chinese.yml",
+      "size": 1430,
+      "sha256": "214c3afcd66a5c534d9b44b5bc429579d9f3bb75265f765732b4cf4adbb553b2"
+    },
+    {
+      "path": "common/casus_belli_types/duchy_de_jure_greatwar.txt",
+      "size": 5478,
+      "sha256": "ce5bfa79231fbfb0e57637f85ea5ae00b9ff1409afc010de23b38aa54451c033"
+    },
+    {
+      "path": "common/casus_belli_types/kingdom_de_jure_greatwar.txt",
+      "size": 5487,
+      "sha256": "bf863027112bfcfa452e94c6dbd35d34def43b358d77fc4a84eb7a5b8e24000d"
+    }
+  ]
+}
