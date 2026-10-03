@@ -9,6 +9,9 @@
 #include "xar_bridge/ck3_12003_confession_decision_terms.hpp"
 #include "xar_bridge/ck3_12003_church_income_profile.hpp"
 #include "xar_bridge/ck3_12003_church_tax_inputs.hpp"
+#include "xar_bridge/ck3_12003_player_devotion_profile.hpp"
+#include "xar_bridge/ck3_12003_player_rite_virtue_sin_profile.hpp"
+#include "xar_bridge/ck3_12003_vow_of_poverty_terms.hpp"
 
 namespace xar::ck3_12002 {
 
@@ -36,6 +39,12 @@ struct PlayerReligionMailboxContext12002 {
   ck3_12003::religion::church_income::Terms church_income_terms{};
   ck3_12003::religion::church_tax_inputs::Bindings church_tax_bindings{};
   ck3_12003::religion::church_tax_inputs::Terms church_tax_inputs{};
+  religion::devotion_profile12003::Bindings devotion_bindings{};
+  religion::devotion_profile12003::Profile devotion_profile{};
+  religion::rite_virtue_sin_profile12003::Bindings rite_virtue_sin_bindings{};
+  religion::rite_virtue_sin_profile12003::Profile rite_virtue_sin_profile{};
+  ck3_12003::religion::vow_of_poverty_terms12003::Bindings vow_of_poverty_bindings{};
+  ck3_12003::religion::vow_of_poverty_terms12003::Terms vow_of_poverty_terms{};
   bool completed = false;
   std::string failure;
 };

@@ -117,6 +117,17 @@ bool ExecutePlayerReligionMailbox12002(
         ResolveCoreCharacter(query.bindings.core, static_cast<std::int32_t>(frame.played_character_id)),
         static_cast<std::int32_t>(frame.played_character_id),
         static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.church_tax_inputs);
+    // Three independent read-only religion inputs share the actual owner frame.
+    auto *religion_actor = ResolveCoreCharacter(query.bindings.core,
+        static_cast<std::int32_t>(frame.played_character_id));
+    (void)religion::devotion_profile12003::ReadPlayerDevotionProfile12003(
+        query.devotion_bindings, religion_actor, out, query.devotion_profile);
+    (void)religion::rite_virtue_sin_profile12003::ReadPlayerRiteVirtueSinProfile12003(
+        query.rite_virtue_sin_bindings, religion_actor, out, query.rite_virtue_sin_profile);
+    (void)ck3_12003::religion::vow_of_poverty_terms12003::ReadVowOfPovertyTerms12003(
+        query.vow_of_poverty_bindings, religion_actor,
+        static_cast<std::int32_t>(frame.played_character_id),
+        static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.vow_of_poverty_terms);
     query.completed = true;
     (void)FinishQueryMailbox(*envelope);
     return true;
@@ -159,7 +170,13 @@ std::string SerializePlayerReligionResult12002(
           query.spiritual_fulfillment_type) +
       ",\"player_church_tax_inputs\":" +
       ck3_12003::religion::church_tax_inputs::SerializePlayerChurchTaxInputs12003(
-          query.church_tax_inputs) + "}}";
+          query.church_tax_inputs) +
+      ",\"player_piety_devotion_profile\":" +
+      religion::devotion_profile12003::SerializePlayerDevotionProfile12003(query.devotion_profile) +
+      ",\"player_rite_virtue_sin_profile\":" +
+      religion::rite_virtue_sin_profile12003::SerializePlayerRiteVirtueSinProfile12003(query.rite_virtue_sin_profile) +
+      ",\"player_vow_of_poverty_terms\":" +
+      ck3_12003::religion::vow_of_poverty_terms12003::SerializeVowOfPovertyTerms12003(query.vow_of_poverty_terms) + "}}";
 }
 
 bool RunPlayerReligionMailbox12002(PlayerReligionMailboxContext12002 &query,
@@ -243,6 +260,13 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
             image_base, adapter.descriptor().executable_sha256);
     query.church_tax_bindings =
         ck3_12003::religion::church_tax_inputs::BindPlayerChurchTaxInputsImage12003(
+            image_base, adapter.descriptor().executable_sha256);
+    query.devotion_bindings =
+        religion::devotion_profile12003::BindPlayerDevotionProfileImage12003(image_base, adapter.descriptor());
+    query.rite_virtue_sin_bindings =
+        religion::rite_virtue_sin_profile12003::BindPlayerRiteVirtueSinProfileImage12003(image_base, adapter.descriptor());
+    query.vow_of_poverty_bindings =
+        ck3_12003::religion::vow_of_poverty_terms12003::BindVowOfPovertyTermsImage12003(
             image_base, adapter.descriptor().executable_sha256);
     return RunPlayerReligionMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_handler_exception"; return false; }

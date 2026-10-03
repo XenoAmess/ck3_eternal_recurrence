@@ -1,5 +1,7 @@
 # 奉献等级、当前 Rite 德性与贫穷誓愿：最小原生观测实现
 
+**2026-10-03 11:29 接续采用：** 用户恢复工作后，原封存12代码路径已采用到 `Z:/g33` 集成源码，CMake、同actor religion mailbox和三个Python sibling接线完整。复用原两case/55checks与两genuine wire GREEN，无新源码语义、无重复验证。组合DLL和Robert4639新暂停帧尚待ROOT完成，状态仍为static-ready。此前“未参与v32”事实保持；新源码采用不等于部署或live。见[接续账本](../handover/2026-10-03-g2-v33-resume.md)。
+
 真实原生输入树已先冻结于 [宗教奉献与德性研究](religion-devotion-virtues-native-ai-12003.md)。本轮将三个实际决策依赖落到只读 reader，通过同一既有 `query_player_religion_context_private_v1(expected_revision=...)` 查询返回；没有宗教自动动作。验证状态是 **static-ready / synthetic fixture**，没有罗贝尔暂停帧证据，不能写成 `production-live primitive`。
 
 构建绑定：CK3 **1.20.0.3 Crozier**，Steam **25652598**，EXE SHA-256 **94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6**。实现基于 immutable `production-source-8cf176b4` 的外部投影；它没有参与 v32 的运行。

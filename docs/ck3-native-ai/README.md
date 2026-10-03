@@ -1,5 +1,7 @@
 # CK3 原生 AI 决策树索引
 
+**2026-10-03 11:29 用户已恢复工作：** 10个后台工作包并行接续，优先补当前派系scope与实际割让范围；奉献/德性/誓愿封存源码已采用，仍static-ready，v33尚未构建/部署，游戏仍关闭。3845保存天与未选择事件23保持。最新施工状态见[接续账本](../handover/2026-10-03-g2-v33-resume.md)；下方度假封存记录保留其当时事实。
+
 **2026-10-03 度假收尾：** CK3 已正常保存并关闭，罗贝尔累计3845天、save/full4639；派系事件23未选择。当前生产仍为 v32 / source `8cf176b4`。新代码只封存为外置补丁，没有部署 v33；恢复入口见[维护者交接](../handover/2026-10-03-g2-religion-v32-maintainer-vacation-handoff.md)和[补丁索引](../handover/2026-10-03-g2-religion-v32-packets/index.json)。
 
 收尾采用的专题：[民粹独立要求](ck3-1.20.0.3-faction-demand1001-populist.md)、[标题scope](ck3-1.20.0.3-event-scope-landed-title.md)、[派系scope](event-faction-scope25-12003.md)、[奉献与德性](religion-devotion-virtues-observation-12003.md)、[悔罪原生树](religion-excommunication-repentance-native-ai-12003.md)、[圣骑士团所选地产](religion-holy-order-selected-title-native-ai-12003.md)、[朝圣候选与活动报价](religion-pilgrimage-headless-candidate-activity-quote-native-ai-12003.md)。各页区分研究、组件fixture和实际暂停帧，未接入部分继续按交接记录施工。
