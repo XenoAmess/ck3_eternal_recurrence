@@ -24,6 +24,46 @@ from run_ck3_12002_mcp_live import (
 
 
 class OfflinePlanTests(unittest.TestCase):
+    def test_frontend_readiness_rejects_transient_route_tree_and_resets_streak(self):
+        import run_ck3_12002_mcp_live as harness
+        from copy import deepcopy
+        route = {"schema": "ck3-frontend-gui-route-v1", "accepted": True, "route": "bookmarks"}
+        unavailable = dict(route, route="unavailable")
+        tree = {"schema": "ck3-frontend-gui-tree-inspection-v1", "accepted": True,
+                "status": "available", "scope_root_name": "frontend_bookmarks",
+                "root_available": True, "read_only": True, "truncated": False,
+                "widget_count": 2, "widgets": [
+                    {"runtime_name": "frontend_bookmarks", "child_path": "", "vtable_rva": 1,
+                     "effective_visible": True, "enabled": True},
+                    {"runtime_name": "game_rules_button", "child_path": "1", "vtable_rva": 2,
+                     "effective_visible": True, "enabled": True}]}
+        # The actual R0003 packet was route=bookmarks, tree=_root_ truncated,
+        # followed by unavailable. It must never admit a rules opener.
+        transient = dict(tree, scope_root_name="_root_", truncated=True)
+        with self.assertRaises(RuntimeError):
+            harness.require_consistent_frontend_observation(route, transient, unavailable, require_rules_button=True)
+        invisible = deepcopy(tree)
+        invisible["widgets"][0]["effective_visible"] = False
+        with self.assertRaises(RuntimeError):
+            harness.require_consistent_frontend_observation(route, invisible, route, require_rules_button=True)
+        packets = iter([route, transient, unavailable, route, tree, route,
+                        unavailable, route, tree, route, route, tree, route])
+        calls = []
+        class Client:
+            async def call(self, name):
+                calls.append(name)
+                return next(packets)
+        report = {"frontend_bootstrap": {"attempts": []}}
+        result = asyncio.run(harness.wait_for_consistent_frontend(
+            Client(), report=report, write=lambda: None, timeout=1,
+            require_route="bookmarks", require_rules_button=True, poll_interval=0))
+        self.assertEqual(result[2]["consecutive_consistent_observations"], 2)
+        attempts = report["frontend_bootstrap"]["attempts"]
+        self.assertEqual([row.get("consecutive_consistent_observations", 0) for row in attempts], [0, 1, 0, 1, 2])
+        self.assertEqual(attempts[0]["tree"]["scope_root_name"], "_root_")
+        self.assertTrue(attempts[0]["tree"]["truncated"])
+        self.assertTrue(all(name in {"ck3_query_frontend_gui_route_v1", "ck3_inspect_frontend_gui_tree_v1"} for name in calls))
+
     def test_unknown_or_incomplete_tree_never_admits_direct_bookmarks(self):
         # Unit fixtures exercise admission only; real runs must obtain native
         # tree/model observations before selecting or starting a character.

@@ -27,6 +27,8 @@
 
 ## 后续仍需真实观察
 
+R0003的实际诊断没有达到controller：加载中一次route=`bookmarks`之后，树是截断的 `_root_`且窗口不可见，下一route不可用；Python opener在原生打开命令派发前拒绝。具体原始报告与后续一致等待修复见[启动接续](../ck3-upgrade-native-startup-2026-10-03.md#r0003瞬态路由不能证明可操作窗口)。不能据此次query的unavailable判断真实规则模型不可用。
+
 下一独立run必须重新领取屏幕、审阅当次Steam离线原图、核对准确二进制/源/用户目录与本机能力，然后读取真实85项默认值或361三个规则。准备文件中的`LastAppliedRules`、原生调用ACK、synthetic数据及schema通过都不等于实际选择。尚缺选择目标规则、Apply/Hide按钮资格及应用后规则读回；这些后续候选不修改现已冻结的DLL或旧证据。
 
 原版Apply/Close按钮没有name，不能伪造名字来走fixedInvoke。后续需实际规则scope树、原生child_path与可见/可用状态，或同等真实资格读回；已找到Apply/Hide函数RVA也不授权绕过原版IsHost/NotGameStarted条件。该工作包没有派生出新的Workshop发布、B1成绩或主/白绮七cell通过。

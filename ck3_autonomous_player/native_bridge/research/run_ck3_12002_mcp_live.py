@@ -532,6 +532,14 @@ class PlanClient:
                 elif kind == "finish_hold":
                     self.report["hold_finished_by_control_plan"] = True
                     result = {"hold_finished": True}
+                elif kind == "frontend_read_only":
+                    name = step["tool"]
+                    if name not in {"ck3_query_frontend_gui_route_v1", "ck3_inspect_frontend_gui_tree_v1",
+                                    "ck3_query_frontend_game_rule_selections_v1", "ck3_migration_pipe_diagnostics"}:
+                        raise ValueError("frontend_read_only plan cannot dispatch an action")
+                    if step.get("args"):
+                        raise ValueError("frontend_read_only diagnostics take no game-frame arguments")
+                    result = await self.call(name)
                 else:
                     name = "ck3_migration_raw_step" if kind == "raw_step" else step["tool"]
                     arguments = step.get("args", {})
@@ -544,7 +552,8 @@ class PlanClient:
                     if actual != expected:
                         raise ValueError(f"result {path} expected {expected!r}, received {actual!r}")
                 self.results[str(row["id"])] = result
-                row["after_snapshot"] = await self.fresh()
+                if kind != "frontend_read_only":
+                    row["after_snapshot"] = await self.fresh()
                 row["ok"] = True
             except Exception as error:
                 row["error"] = f"{type(error).__name__}: {error}"
@@ -604,6 +613,104 @@ def require_verified_bookmarks_picker(tree: object) -> dict[str, object]:
         raise RuntimeError("native ordinary character picker control is not active")
     return {"status": "ORDINARY_BOOKMARKS_TREE_VERIFIED", "widgets": proof,
             "selection_identity": "Existing typed start must independently prove exact stock Robert model before mutation"}
+
+
+def require_consistent_frontend_observation(
+    route_before: object, tree: object, route_after: object,
+    *, require_rules_button: bool = False,
+) -> dict[str, object]:
+    """A route packet is ready only with a complete, visible matching scope."""
+    if not isinstance(route_before, dict) or not isinstance(route_after, dict):
+        raise RuntimeError("native frontend route observations are not objects")
+    for route in (route_before, route_after):
+        if not (route.get("schema") == "ck3-frontend-gui-route-v1"
+                and route.get("accepted") is True
+                and route.get("route") in {"main_menu", "bookmarks"}):
+            raise RuntimeError("native frontend route is not an admitted entry")
+    if route_before["route"] != route_after["route"]:
+        raise RuntimeError("native frontend route changed across its tree observation")
+    route_name = route_after["route"]
+    scope = "frontend_bookmarks" if route_name == "bookmarks" else "mainmenu_panel_bottom"
+    if not isinstance(tree, dict) or not (
+        tree.get("schema") == "ck3-frontend-gui-tree-inspection-v1"
+        and tree.get("accepted") is True and tree.get("status") == "available"
+        and tree.get("scope_root_name") == scope
+        and tree.get("root_available") is True and tree.get("read_only") is True
+        and tree.get("truncated") is False and isinstance(tree.get("widgets"), list)
+        and tree.get("widget_count") == len(tree["widgets"])
+    ):
+        raise RuntimeError("native frontend tree is incomplete or does not match its entry route")
+    names = [scope]
+    if route_name == "main_menu":
+        names.append("new_game_button")
+    elif require_rules_button:
+        names.append("game_rules_button")
+    else:
+        names.append("pick_any_character_button")
+    widgets = {}
+    for name in names:
+        matches = [row for row in tree["widgets"] if isinstance(row, dict) and row.get("runtime_name") == name]
+        if len(matches) != 1 or not isinstance(matches[0].get("vtable_rva"), int) or matches[0]["vtable_rva"] <= 0:
+            raise RuntimeError("native frontend tree does not uniquely resolve " + name)
+        row = matches[0]
+        if row.get("effective_visible") is not True:
+            raise RuntimeError("native frontend entry widget is not currently visible: " + name)
+        if name != scope and row.get("enabled") is not True:
+            raise RuntimeError("native frontend entry control is not enabled: " + name)
+        widgets[name] = row
+    if widgets[scope].get("child_path") != "":
+        raise RuntimeError("native frontend tree root is not its declared scope")
+    return {"status": "CONSISTENT_VISIBLE_FRONTEND_SCOPE", "route": route_name,
+            "scope_root_name": scope, "widgets": widgets}
+
+
+async def wait_for_consistent_frontend(
+    client: PlanClient, *, report: dict[str, object], write: object,
+    timeout: float, managed_done: object = None, require_route: str | None = None,
+    require_rules_button: bool = False, poll_interval: float = 0.25,
+) -> tuple[dict[str, object], dict[str, object], dict[str, object]]:
+    """Require two consecutive route/tree/route packets; retain every attempt."""
+    deadline = time.monotonic() + timeout
+    previous_key = None
+    streak = 0
+    while True:
+        row: dict[str, object] = {"at": now(), "ready": False}
+        report["frontend_bootstrap"]["attempts"].append(row)
+        write()
+        if managed_done is not None and managed_done.is_set():
+            row["error"] = "managed session ended before consistent frontend readiness"
+            write()
+            raise RuntimeError(row["error"])
+        try:
+            row["route_before"] = await client.call("ck3_query_frontend_gui_route_v1")
+            route_before = row["route_before"]
+            if not isinstance(route_before, dict) or route_before.get("route") not in {"main_menu", "bookmarks"}:
+                raise RuntimeError("native frontend is still unavailable or outside the admitted entry routes")
+            row["tree"] = await client.call("ck3_inspect_frontend_gui_tree_v1")
+            row["route_after"] = await client.call("ck3_query_frontend_gui_route_v1")
+            proof = require_consistent_frontend_observation(
+                route_before, row["tree"], row["route_after"],
+                require_rules_button=require_rules_button,
+            )
+            if require_route is not None and proof["route"] != require_route:
+                raise RuntimeError("native frontend entry has not reached requested route: " + require_route)
+            key = json.dumps({"route": proof["route"], "scope": proof["scope_root_name"],
+                              "widgets": proof["widgets"]}, sort_keys=True)
+            streak = streak + 1 if previous_key == key else 1
+            previous_key = key
+            row.update(ready=True, proof=proof, consecutive_consistent_observations=streak)
+            write()
+            if streak >= 2:
+                return row["route_after"], row["tree"], {**proof, "consecutive_consistent_observations": streak}
+        except Exception as error:
+            row["error"] = f"{type(error).__name__}: {error}"
+            previous_key, streak = None, 0
+            write()
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError("native frontend did not produce two consistent complete visible route/tree observations")
+        # Poll spacing does not establish readiness; only the native packets do.
+        await asyncio.sleep(min(poll_interval, remaining))
 
 
 async def run(args: argparse.Namespace) -> dict[str, object]:
@@ -697,43 +804,46 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                             report["frontend_bootstrap"] = {"status": "RUNNING", "uses_ocr": False,
                                 "uses_keyboard": False, "uses_mouse": False, "attempts": []}
                             write()
-                            frontend_deadline = time.monotonic() + args.readiness_timeout
-                            while True:
-                                if supervisor is not None and done.is_set():
-                                    raise RuntimeError("managed session ended before native frontend readiness")
-                                try:
-                                    route = await client.call("ck3_query_frontend_gui_route_v1")
-                                except Exception as error:
-                                    report["frontend_bootstrap"]["attempts"].append({
-                                        "at": now(), "error": f"{type(error).__name__}: {error}"})
+                            try:
+                                route, entry_tree, entry_proof = await wait_for_consistent_frontend(
+                                    client, report=report, write=write, timeout=args.readiness_timeout,
+                                    managed_done=done if supervisor is not None else None,
+                                    require_route="bookmarks" if args.frontend_rules_diagnostic else None,
+                                    require_rules_button=args.frontend_rules_diagnostic,
+                                )
+                            except Exception as error:
+                                report["frontend_bootstrap"].update(
+                                    status="FRONTEND_READINESS_FAILED_NO_ACTION", error=f"{type(error).__name__}: {error}")
+                                write()
+                                if args.hold_seconds and not done.is_set():
+                                    report["frontend_diagnostic_hold"] = {"reason": "frontend readiness failure", "seconds": args.hold_seconds}
                                     write()
-                                else:
-                                    report["frontend_bootstrap"]["attempts"].append({"at": now(), "route": route})
-                                    write()
-                                    if isinstance(route, dict) and route.get("route") in {"main_menu", "bookmarks"}:
-                                        break
-                                    if isinstance(route, dict) and route.get("route") not in {"unavailable", "main_menu"}:
-                                        raise RuntimeError("fresh ordinary Robert bootstrap observed another native frontend route: " + str(route))
-                                if time.monotonic() >= frontend_deadline:
-                                    raise TimeoutError("native frontend route did not become main_menu")
-                                await asyncio.sleep(1)
+                                    await client.hold(args.hold_seconds)
+                                raise
                             entry_route = route["route"]
-                            report["frontend_bootstrap"]["entry_route"] = route
-                            entry_tree = await client.call("ck3_inspect_frontend_gui_tree_v1")
-                            report["frontend_bootstrap"]["entry_tree"] = entry_tree
+                            report["frontend_bootstrap"].update(entry_route=route, entry_tree=entry_tree, entry_proof=entry_proof)
                             write()
                             if args.frontend_diagnostic_only:
                                 if args.frontend_rules_diagnostic:
                                     if entry_route != "bookmarks":
                                         raise RuntimeError("rules diagnostic requires independently observed Bookmarks; no New Game is dispatched")
-                                    rules_open = await client.call("ck3_activate_frontend_game_rules_v1")
-                                    report["frontend_bootstrap"]["rules_open"] = rules_open
-                                    write()
-                                    rules_observation = await client.call("ck3_query_frontend_game_rule_selections_v1")
-                                    report["frontend_bootstrap"]["rules_observation"] = rules_observation
-                                    write()
-                                    if not isinstance(rules_observation, dict) or rules_observation.get("ready") is not True:
-                                        raise RuntimeError("native rules diagnostic did not observe real selected setting objects")
+                                    try:
+                                        rules_open = await client.call("ck3_activate_frontend_game_rules_v1")
+                                        report["frontend_bootstrap"]["rules_open"] = rules_open
+                                        write()
+                                        rules_observation = await client.call("ck3_query_frontend_game_rule_selections_v1")
+                                        report["frontend_bootstrap"]["rules_observation"] = rules_observation
+                                        write()
+                                        if not isinstance(rules_observation, dict) or rules_observation.get("ready") is not True:
+                                            raise RuntimeError("native rules diagnostic did not observe real selected setting objects")
+                                    except Exception as error:
+                                        report["frontend_bootstrap"].update(status="RULES_DIAGNOSTIC_FAILED", error=f"{type(error).__name__}: {error}")
+                                        write()
+                                        if args.hold_seconds and not done.is_set():
+                                            report["frontend_diagnostic_hold"] = {"reason": "rules diagnostic failure", "seconds": args.hold_seconds}
+                                            write()
+                                            await client.hold(args.hold_seconds)
+                                        raise
                                     report["frontend_bootstrap"]["rules_status"] = "ACTUAL_SELECTED_SETTINGS_OBSERVED_APPLY_AND_START_NOT_REQUESTED"
                                 report["frontend_bootstrap"]["status"] = "READ_ONLY_ROUTE_AND_TREE_OBSERVED_NO_START"
                                 write()
@@ -746,8 +856,11 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                                 write()
                                 if not isinstance(opened, dict) or opened.get("status") != "verified":
                                     raise RuntimeError("native New Game did not independently verify Bookmarks")
-                                entry_tree = await client.call("ck3_inspect_frontend_gui_tree_v1")
-                                report["frontend_bootstrap"]["bookmarks_tree"] = entry_tree
+                                route, entry_tree, entry_proof = await wait_for_consistent_frontend(
+                                    client, report=report, write=write, timeout=args.readiness_timeout,
+                                    managed_done=done if supervisor is not None else None, require_route="bookmarks",
+                                )
+                                report["frontend_bootstrap"].update(bookmarks_tree=entry_tree, bookmarks_proof=entry_proof)
                                 write()
                             elif not args.allow_verified_direct_bookmarks:
                                 raise RuntimeError("direct bookmarks tree preserved; explicit guarded direct-entry option required")
@@ -790,6 +903,15 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                             await client.hold(args.hold_seconds)
                     except BaseException as error:
                         report["error"] = f"{type(error).__name__}: {error}"
+                        if (args.frontend_robert_bootstrap and args.hold_seconds
+                                and report.get("phase") == "native-frontend-robert-bootstrap"
+                                and not done.is_set() and "frontend_diagnostic_hold" not in report):
+                            report["frontend_diagnostic_hold"] = {"reason": report["error"], "seconds": args.hold_seconds}
+                            write()
+                            try:
+                                await client.hold(args.hold_seconds)
+                            except BaseException as hold_error:
+                                report["frontend_diagnostic_hold_error"] = f"{type(hold_error).__name__}: {hold_error}"
                     finally:
                         try:
                             report["snapshot_final"] = await client.fresh()

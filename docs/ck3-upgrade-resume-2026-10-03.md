@@ -35,3 +35,5 @@
 此前准备器提交 `00af1b285` 的[官方 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37124590688)及 TED guard 提交 `6440948e7` 的[官方 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37124685230)均实际完成 success；官方 CI 不提供实机通过。本次记录包的 Python-only validator 通过，未重跑已复用的 parser/L0。
 
 后续前端接线修复已普通推送 `6e11ba8dd`；[规则窗口真实读取接口](ck3-native-ai/frontend-game-rules-1.20.0.3-2026-10-03.md)已完成有限离线验证与组合DLL，待新独立诊断run读取实际值。[RMTM/Ox新冷profile](ck3-1.20-rmtm-ox-native-preparation-2026-10-03.md)也已完成文件准备，仍runtime NOT_RUN。当前native缺口是规则选择/Apply/应用后读回、通用决议/产品GUI模型与必要持久化动作；旧ingame UI的工具schema不能替代 `.3` ABI/能力验证。
+
+R0003已实际续跑，但首个Bookmarks route是加载瞬态：随后树为 `_root_`/截断/不可见，下一路由不可用，原生规则打开命令未派发。新增[route/tree一致等待修复与证据](ck3-upgrade-native-startup-2026-10-03.md#r0003瞬态路由不能证明可操作窗口)，单一聚焦回归PASS，真实规则值仍 NOT_RUN。当次清理是现有 job containment；没有正常退出，不能用来证明教程落盘。CK3=0、keeper停止与CAS释放均已读回；新验证继续用新run及新userdir。

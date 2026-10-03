@@ -1,4 +1,4 @@
-# 兼容接续：本机 `.3` 原生启动 R0002
+# 兼容接续：本机 `.3` 原生启动 R0002 / R0003
 
 本包接续 [2026-10-03 接手记录](ck3-upgrade-resume-2026-10-03.md)，只记录真实准备与首次启动。主/白绮七 cell 仍为 `.3` 实机 **0/7**；AUB 没有到地图、政策菜单或自动建造循环。
 
@@ -43,3 +43,15 @@ Run **`4-8e1c2f1861--auto-upgrade-buildings--R0002`**，执行目录 `C:/workspa
 只读诊断选项保全 route/tree并有限 hold，禁止发出 Start，结果不计战役或产品验收。三个聚焦离线检查通过：已有 SDK error 路径、fixture episode queue，以及新 picker admission 的有效输入/截断/错误 scope/缺失 Start/重复 Start。已跑结果在 `frontend-tree-harness-v2-validation-01/report.json`，回归测试并入原测试文件；没有重复运行。当前主线 harness 与外置 v2 的文本归一化内容及 Python AST 相同，字节差仅为换行；实际 run仍各自绑定原始 bytes。
 
 R0002 最终 state/live 的1950文件另保存于 `aub-empty-agent-02/r0002-closed-packet-01/closed-state-and-live.zip`，逐文件解包读回 SHA相同；原目录保留。新 profile04 准备于 `aub-empty-agent-02/native/profiles/aub-production-empty-fixture-profile-04`，preparation SHA `807771332e6b167e2072283eb40648003106e9270beb6e50218f8f603e80f138`，17+空1文件与85 defaults复用精确来源、未复用旧 runtime state。仍是准备状态。
+
+## R0003：瞬态路由不能证明可操作窗口
+
+新 run **`4-8e1c2f1861--auto-upgrade-buildings--R0003`** 使用上述 profile04 和[已完成的规则组合DLL](ck3-native-ai/frontend-game-rules-1.20.0.3-2026-10-03.md)，外置 v3 harness SHA `7a19371d8e9db3ef13f3d169cd6ee748a73f06b70effb0cdeac16d2eea24ee8f`。固定 clean checkout `57dee2e9072ba25aa03913f75f505210b2a4b6b1`，screen task `ck3-upgrade-screen-20261003-a02`。14:28:54 UTC 直接审阅新 challenge 原图中的 `bd716d1761fb` 与同图 Steam“离线模式”；PNG SHA `0ac3b89ab6ada22e73da450e715c23cbc2730dc7bdc1f0c159dae67834fc490a`。背景时钟仍停滞，证据范围仍只限 challenge 像素和同图离线标识，没有切在线或重启 ToDesk。
+
+14:29 UTC 实际启动 CK3 PID18028。14:30:39 的首个 positive route=`bookmarks` 后，原生树返回 `scope_root_name=_root_`、`truncated=true`、512 widgets，Bookmarks/picker/Start 实际不可见；规则 query 为 `bookmarks_route_unavailable`，下一次 route 也不可用。Python opener 在派发原生打开命令前拒绝。故真实规则选项、规则 controller、NewGame、Apply、Start 均 **NOT_RUN**；这次不是原生 Apply 失败或产品脚本失败。最终 `native-report.json` SHA `6ed5394f31436923a6e49bfa7bf49b589d66a2b5a92ce24276bf5cec0bd40ff5`，61 次启动观察与全部 wire/stdios保留在新的 run 目录，旧 R0002未覆盖。
+
+受管结束仍为 containment：exit1、清理前活动游戏1、最终0、cleanup=true；现有 runtime 的 `stop_tracked` 在 job 仍活动时执行 TerminateJobObject，没有正常 quit 尝试。不能把此结果记为正常退出或持久化 flush。14:49:39 UTC 再次核验 CK3=0，keeper thread退出、failure=null，按 last_sequence1711成功 CAS释放为1713，随后才修改主 checkout。
+
+永久 harness 修复为 route→完整、可见且匹配 scope 的 tree→route，连续两次一致后才 ready；遇 unavailable、截断或不可见立即清零 streak。规则诊断另核对唯一、可见且 enabled 的 `game_rules_button`，不以固定等待时长证明 ready。每次失败 observation仍保存；等待或打开失败先保留有限诊断 hold，最终维持原 RED，不重发已派发动作。该 hold 的 `frontend_read_only` plan仅允许四个无参数只读 query，避免地图尚未建立时的 after_snapshot阻断维护；其他 plan合同不变。
+
+新聚焦回归覆盖本次原始瞬态、不可见 root、streak清零与两次一致放行，PASS；旧 SDK/episode/tree测试未重复。报告 `courtier-agent-02/frontend-v4-focused-validation-01/report.json` SHA `05c12093a0257827b66f2cc358d27c26b7b89e697e6a876256f6779a3f863fe2`。外置 v4 final SHA `47c0f77e8a9ba10fb68d3a538402e9ba138c48a50b44608333b3aad9c2da92b5`；只改 Python 等待，不需新DLL。下一验证使用新的 profile/run，不能改写 R0003为通过。
