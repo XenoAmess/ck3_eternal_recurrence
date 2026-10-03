@@ -7898,6 +7898,14 @@ class NativeHeadlessGameplayDriver:
                 step, expected_revision=expected_revision,
                 required_capability="game.command.query-player-default-raise-v1",
             )
+        if step == "query-player-mercenary-context-v1":
+            starting = self.take_snapshot()
+            if starting.get("paused") is not True:
+                raise BridgeUnavailableError("native mercenary context query requires a paused snapshot")
+            return self._execute_primitive_step(
+                step, expected_revision=expected_revision,
+                required_capability="game.command.query-player-mercenary-context-v1",
+            )
         if commander_subject is not None:
             starting = self.take_snapshot()
             if starting.get("paused") is not True:

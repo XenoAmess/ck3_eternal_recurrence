@@ -4153,6 +4153,49 @@ class GameplayBridgeService:
                 "queried_revision": revision,
                 "queried_native_revision": snapshot.get("native_revision")}
 
+    def query_player_mercenary_context_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read native mercenary candidates, hire terms and arrival location for the current player."""
+        from .player_mercenary_context import (
+            CAPABILITY, STEP, normalize_player_mercenary_context_v1,
+            player_mercenary_context_frame_binding,
+        )
+        snapshot = self.snapshot()
+        player = snapshot.get("played_character")
+        if (snapshot.get("paused") is not True or snapshot.get("map_ready") is not True
+                or not isinstance(player, dict) or player.get("alive") is not True):
+            raise BridgeUnavailableError("mercenary context query requires a living paused player")
+        revision = snapshot.get("revision")
+        if type(revision) is not int or revision < 0:
+            raise BridgeUnavailableError("mercenary context query lacks public revision")
+        if expected_revision is not None:
+            if type(expected_revision) is not int or expected_revision < 0:
+                raise ValueError("expected_revision must be a non-negative integer")
+            if expected_revision != revision:
+                raise PreSubmissionRevisionMismatchError("mercenary context query revision is stale")
+        capabilities = self.capabilities().get("bridge_capabilities")
+        if not isinstance(capabilities, list) or CAPABILITY not in capabilities:
+            raise UnsupportedStepError("selected backend cannot query native mercenary context legality")
+        result = self.execute_step(STEP, expected_revision=revision)
+        if (not isinstance(result, dict) or result.get("step") != STEP
+                or result.get("accepted") is not True or result.get("status") != "completed"
+                or result.get("read_only") is not True or type(result.get("query_sequence")) is not int
+                or result["query_sequence"] <= 0
+                or result.get("snapshot_revision") != snapshot.get("native_revision")
+                or result.get("date_raw") != snapshot.get("date_raw")):
+            raise BridgeUnavailableError("native mercenary context returned malformed envelope")
+        try:
+            normalized = normalize_player_mercenary_context_v1(result.get("player_mercenary_context"), snapshot=snapshot)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        if player_mercenary_context_frame_binding(self.snapshot()) != player_mercenary_context_frame_binding(snapshot):
+            raise BridgeUnavailableError("mercenary context query crossed its paused frame or episode")
+        return {**result, "player_mercenary_context": normalized,
+                "queried_snapshot_id": snapshot.get("snapshot_id"),
+                "queried_revision": revision,
+                "queried_native_revision": snapshot.get("native_revision")}
+
     def query_army_commander_candidates_v1(
         self,
         army_id: int,

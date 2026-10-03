@@ -166,3 +166,45 @@ flowchart TD
 没有声明补员动作、完整未集结reserve、全军净月补员、战斗胜利或新游戏日。当前 SDK 的 defaultRaise012 RED 由其 owner 处理，与本叶首记录真实已读区分记录。当前补给三数值 actual 见 [容量/损耗专题](army-current-supply-capacity-attrition-12003.md) 的同日追加。
 
 Root 本次协调收口的累计保存日为3992，自然继承0；本健康查询与文件整合新增0日。该计日来自 Root 总账，不由补给、兵数或月贡献推算；2248/2461 的差额不作为24小时损耗或战斗伤亡。
+
+## Exact .3 gathering remaining days: 2026-10-03 numeric closure
+
+This increment closes the previously name-only `Army.GetGatheringDaysLeft` entrance. Status is **research / exact static ABI closed**; source projection and production observation are owned by the coordinator. It does not claim a new live sample. Read-only source is frozen `Z:/g47`, HEAD `7a0bef46588292d26c74716a39fe02b348d3ee65`; exact build is CK3 **1.20.0.3**, Steam **25652598**, EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`.
+
+The bridge-callable leaf is **RVA `0x24E9070`**, signature **`std::int32_t (*)(const void* actual_carmy)`** on Windows x64: **RCX = actual CArmy**, **EAX = signed int32 game days, scale 1**. There is no hidden output pointer or fixed-point result. The entire leaf is **`[0x24E9070,0x24E90E9)`**, **121 bytes**, SHA-256 **`8ea314c82d44c11c275c31d0f4394521efe1da910bd29d53d87d0398d75881fd`**. It performs no calls or stores. The full span ends in RET followed by seven INT3 bytes; the next function starts at `0x24E90F0`. Two independent lanes recovered identical full bytes and return/date arithmetic.
+
+| Evidence | Exact closure |
+| --- | --- |
+| Name and registration | String `GetGatheringDaysLeft` at `0x4736AE8`; MOVUPS name copy at `0x4EA703`; `0x4EA77E` loads callback `0x24EA330`, registration call `0x4EA789`. Full initializer `[0x4EA690,0x4EA809)`, 377 B, SHA `be4263ce77e88e6d969ac78f8f8962c6cf463f1de38ffb7dc01a5b858e33992d`. |
+| GUI callback | `[0x24EA330,0x24EA368)`, 56 B, SHA `86f34e580feee5ef5cfa00b60eea1c6105b849ee471614da4636b36584fbeecf`. Calls the core at `0x24EA342`; writes integer expression output and returns bool AL. Use the numeric core for the bridge. |
+| Independent receiver caller | Native state formatter `[0xD19270,0xD19A04)`, SHA `ba35034a660cecc0d0cc2775d1454596abb2c74d9ce039414897910aae1e15f3`. State 5 branch `0xD19437` reads CUnit `+0x178`, resolves CArmy through store `0x5D1DE48` and object full ID `+0x10`; call `0xD19477` invokes the same core with actual CArmy in RCX. EAX goes to an integer formatter. |
+
+The core reads the current native raw date through global slot **`0x5C68C50`**, gathering record pointer array **CArmy `+0x50`**, and signed record count **`+0x5C`**. For each record, its first signed raw date participates in a maximum initially seeded with the current date. Its precise result is:
+
+```text
+D(raw) = trunc_toward_zero((int32(raw) - 0x29C55C0) / 24)
+days_left = max(0, D(max(current_raw_date, record_raw_dates)) - D(current_raw_date))
+```
+
+The signed division-by-24 multiply/shift/sign correction occurs separately for the two dates. A day boundary can therefore produce a positive result when fewer than 24 raw time units remain. The production reader should invoke the native core rather than reproduce this arithmetic or infer remaining time from movement ETA, progress fraction, the 40.0 gathering speed, or the AI's 180-day raise cooldown.
+
+Reuse the existing strength-reader receiver during its paused owning-thread sample: public **CUnit full ID** through store `0x5D1E380` and object `+0x10`; internal CArmy full ID at **CUnit `+0x178`** through store `0x5D1DE48` and object `+0x10`; existing **CArmy `+0x124` == public CUnit ID** branch. Bind the core in the current exact `.3` adapter and invoke it inside that branch. The callback does not receive a CUnit, GUI context, or temporary composition object. No additional army magic or military-action gate is required.
+
+The core has **no gathering-state test**. The native state formatter applies it in **state 5**, so the same strength query should publish a signed integer for a resolved state-5 army, including **valid zero**. Other states publish **null / `not_gathering`**; a failed binding or receiver read remains a separate unavailable status. Zero is neither a read failure nor proof that troops already attached or reached the capital.
+
+```mermaid
+flowchart TD
+  Snapshot[Fresh public CUnit and actual state] --> Join[Existing full-ID CUnit to CArmy join and backlink]
+  Join --> State{Existing native state code 5?}
+  State -->|yes| Core[Call CArmy core 24E9070]
+  Core --> Days[Integer remaining days; valid zero]
+  State -->|no| Other[null / not_gathering]
+  Days --> Observe[Read actual regiments, current soldiers and position]
+  Observe --> Input[Current inputs for waiting and reinforcements]
+  Days -. Root next paused query .-> Pending[Actual countdown value not sampled by this lane]
+  Input -. future transit outcomes .-> Arrival[Actual delivered troops and arrival remain observed separately]
+```
+
+Root's supplied raise frame contains public CUnit `167772189` -> CArmy `83886088`, province `2618`, state 5, regiments/current/max all **0**. This lane did not refresh that frame or read its countdown. The callable closure removes the numeric-field construction gap; Root owns the next actual query and normal-day observation. Reserve 123 remains a separate unraised quantity.
+
+Evidence package: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-reinforcement-raise/runtime-v45-gathering-observation/native-days/ROOT-DELIVERY.json`, including `getter-lane/EVIDENCE.md`, complete body/caller pins, `abi-lane/RECEIVER-INTEGRATION.md`, and day/week fields. No SDK, game/window interaction, shared source mutation, Git, old fixtures, native invocation, repeated raise, or build was performed by these research lanes.

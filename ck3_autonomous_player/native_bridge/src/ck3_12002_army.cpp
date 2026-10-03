@@ -264,6 +264,18 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
   // Exact .3 selector 0x2587254 consumes this signed Q100000 operand.
   // The reviewed .2/.3 adapter binding owns the executable identity gate.
   if (Load<std::int32_t>(army, 0x124) == scope.army_id) {
+    if (bindings.get_army_gathering_days_left != nullptr &&
+        bindings.get_unit_state != nullptr) {
+      const auto state = bindings.get_unit_state(unit);
+      if (state == 5) {
+        // Native EAX is whole remaining game days, already clamped at zero.
+        // The receiver is the resolved CArmy, never its public CUnit.
+        result.gathering_days_left = bindings.get_army_gathering_days_left(army);
+        result.gathering_days_status = game::ArmyGatheringDaysStatus::available;
+      } else if (state >= 1 && state <= 9) {
+        result.gathering_days_status = game::ArmyGatheringDaysStatus::not_gathering;
+      }
+    }
     result.current_supply_raw = Load<std::int64_t>(army, 0x180);
     if (bindings.get_army_supply_capacity != nullptr) {
       std::int64_t raw = 0;

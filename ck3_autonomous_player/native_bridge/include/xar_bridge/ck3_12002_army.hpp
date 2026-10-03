@@ -21,6 +21,7 @@ inline constexpr std::uintptr_t kRegimentCanReplenishRva12003 = 0x262C700;
 inline constexpr std::uintptr_t kChunkCanReplenishRva12003 = 0x2657F10;
 inline constexpr std::uintptr_t kRegimentMonthlyReplenishmentRva12003 = 0x262CAD0;
 inline constexpr std::uintptr_t kArmyMonthlySupplyChangeRva12003 = 0x24E51A0;
+inline constexpr std::uintptr_t kArmyGatheringDaysLeftRva12003 = 0x24E9070;
 
 struct ArmyBindings {
   bool enabled = false;
@@ -42,6 +43,8 @@ struct ArmyBindings {
   std::int64_t *(*get_regiment_monthly_replenishment_fraction)(void *, std::int64_t *) = nullptr;
   // Supplies/month, signed Q100000, at the current validated CProvince.
   std::int64_t *(*get_army_monthly_supply_change)(void *, std::int64_t *, void *, void *) = nullptr;
+  // Exact .3 native CArmy receiver, integral remaining days (scale 1).
+  std::int32_t (*get_army_gathering_days_left)(void *) = nullptr;
 };
 
 ArmyBindings BindArmyImage(std::uintptr_t image_base,

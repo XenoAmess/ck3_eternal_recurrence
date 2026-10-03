@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 #include "xar_bridge/ck3_12003_default_raise_mailbox.hpp"
+#include "xar_bridge/ck3_12003_player_mercenary_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 #include <windows.h>
 #include <utility>
@@ -28,6 +29,7 @@ const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
     result.push_back(ck3_11906::kStewardDevelopCountyCandidatesV1Capability);
     result.push_back(ck3_12003::kArmyCommanderCandidatesCapability);
     result.push_back(ck3_12003::kPlayerDefaultRaiseCapabilityV1);
+    result.push_back(ck3_12003::kPlayerMercenaryContextCapabilityV1);
     result.push_back(kWarOccupationTargetsV1Capability);
     result.push_back(kTitleHolderV1Capability);
     result.push_back(kProjectedContactScopeV1Capability);
@@ -88,6 +90,9 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
     result.armies.get_army_monthly_supply_change =
         reinterpret_cast<decltype(result.armies.get_army_monthly_supply_change)>(
             image_base + ck3_12002::kArmyMonthlySupplyChangeRva12003);
+    result.armies.get_army_gathering_days_left =
+        reinterpret_cast<decltype(result.armies.get_army_gathering_days_left)>(
+            image_base + ck3_12002::kArmyGatheringDaysLeftRva12003);
   }
   return result;
 }

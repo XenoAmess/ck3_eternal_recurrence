@@ -249,9 +249,14 @@ _ARMY_STRENGTH_SUPPLY_FIELD_PAIRS = (
     ("current_attrition_fraction_raw", "current_attrition_fraction_scale"),
     ("current_supply_change_monthly_raw", "current_supply_change_monthly_scale"),
 )
+_ARMY_STRENGTH_GATHERING_DAYS_KEYS = {
+    "gathering_days_left",
+    "gathering_days_status",
+    "gathering_days_ready",
+}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS = _ARMY_STRENGTH_ROW_KEYS | {
     key for pair in _ARMY_STRENGTH_SUPPLY_FIELD_PAIRS for key in pair
-} | {"regiment_replenishment"}
+} | {"regiment_replenishment"} | _ARMY_STRENGTH_GATHERING_DAYS_KEYS
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
     "active_war_ally",
@@ -1731,6 +1736,7 @@ def _normalize_army_strength_row(
         "unavailable_reason": unavailable_reason,
     }
     result.update(observed_supply)
+    result.update(_normalize_army_gathering_days(value, name=name))
     if "regiment_replenishment" in value:
         if status != "available":
             raise ValueError(f"native unavailable {name} cannot publish regiment_replenishment")
@@ -1738,6 +1744,28 @@ def _normalize_army_strength_row(
             value["regiment_replenishment"], name=f"{name}.regiment_replenishment"
         )
     return result
+
+
+def _normalize_army_gathering_days(
+    value: dict[str, object], *, name: str
+) -> dict[str, object]:
+    if not _ARMY_STRENGTH_GATHERING_DAYS_KEYS.intersection(value):
+        return {}
+    if not _ARMY_STRENGTH_GATHERING_DAYS_KEYS <= value.keys():
+        raise ValueError(f"native {name} gathering-days fields are incomplete")
+    status = value["gathering_days_status"]
+    if status not in {"available", "not_gathering", "unavailable"}:
+        raise ValueError(f"native {name}.gathering_days_status is malformed")
+    days = _optional_non_negative_int32(
+        value["gathering_days_left"], f"{name}.gathering_days_left"
+    )
+    ready = _strict_bool(value["gathering_days_ready"], f"{name}.gathering_days_ready")
+    if (status == "available") != (days is not None):
+        raise ValueError(f"native {name}.gathering_days_left disagrees with its status")
+    if ready is not (status != "unavailable"):
+        raise ValueError(f"native {name}.gathering_days_ready disagrees with its status")
+    return {"gathering_days_left": days, "gathering_days_status": status,
+            "gathering_days_ready": ready}
 
 
 def _normalize_regiment_replenishment(

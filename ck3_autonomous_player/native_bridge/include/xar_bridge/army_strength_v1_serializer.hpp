@@ -138,6 +138,28 @@ inline void AppendArmyStrengthV1(
     }
     result += ']';
   }
+  result += ",\"gathering_days_left\":";
+  if (strength.gathering_days_status == ArmyGatheringDaysStatus::available &&
+      strength.gathering_days_left.has_value()) {
+    result += number(*strength.gathering_days_left);
+  } else {
+    result += "null";
+  }
+  result += ",\"gathering_days_status\":\"";
+  switch (strength.gathering_days_status) {
+  case ArmyGatheringDaysStatus::available:
+    result += "available";
+    break;
+  case ArmyGatheringDaysStatus::not_gathering:
+    result += "not_gathering";
+    break;
+  case ArmyGatheringDaysStatus::unavailable:
+    result += "unavailable";
+    break;
+  }
+  result += "\",\"gathering_days_ready\":";
+  result += strength.gathering_days_status != ArmyGatheringDaysStatus::unavailable
+                ? "true" : "false";
   result += ",\"unavailable_reason\":";
   if (strength.available) {
     result += "null";

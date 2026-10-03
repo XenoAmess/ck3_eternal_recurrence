@@ -2470,6 +2470,13 @@ def create_server(
         return service.query_player_default_raise_v1(expected_revision=expected_revision)
 
     @server.tool(annotations=read_only_tool)
+    def ck3_query_player_mercenary_context_v1(
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read the player's native mercenary candidates, hire terms, prices and arrival location."""
+        return service.query_player_mercenary_context_v1(expected_revision=expected_revision)
+
+    @server.tool(annotations=read_only_tool)
     def ck3_query_army_commander_candidates_v1(
         army_id: PublicCUnitId,
         expected_revision: int | None = None,

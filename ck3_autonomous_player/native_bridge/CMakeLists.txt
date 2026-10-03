@@ -1073,6 +1073,12 @@ add_library(xar_ck3_12002_runtime STATIC
   src/ck3_12003_commander_mailbox.cpp
   src/ck3_12002_prewar_muster.cpp
   src/ck3_12003_default_raise_mailbox.cpp
+  src/ck3_12003_mercenary_candidates.cpp
+  src/ck3_12003_mercenary_final_terms.cpp
+  src/ck3_12003_mercenary_position.cpp
+  src/ck3_12003_player_mercenary_context.cpp
+  src/ck3_12003_player_mercenary_wire.cpp
+  src/ck3_12003_player_mercenary_mailbox.cpp
   src/ck3_12003_army_reserve.cpp
   src/ck3_12003_commander_assignment.cpp
   src/ck3_12003_commander_assignment_mailbox.cpp
@@ -1090,6 +1096,23 @@ if(MSVC)
   target_compile_options(xar_ck3_12002_runtime PRIVATE
     /W4 /permissive- /EHsc)
 endif()
+add_executable(xar_ck3_12003_player_mercenary_context_test
+  src/ck3_12003_player_mercenary_context_test.cpp
+  src/ck3_12003_player_mercenary_context.cpp
+  src/ck3_12003_player_mercenary_wire.cpp
+  src/ck3_12003_mercenary_candidates.cpp
+  src/ck3_12003_mercenary_final_terms.cpp
+  src/ck3_12003_mercenary_position.cpp)
+target_include_directories(xar_ck3_12003_player_mercenary_context_test PRIVATE include)
+target_compile_definitions(xar_ck3_12003_player_mercenary_context_test PRIVATE NOMINMAX)
+if(MSVC)
+  target_compile_options(xar_ck3_12003_player_mercenary_context_test PRIVATE
+    /W4 /WX /permissive- /EHsc /utf-8)
+endif()
+add_test(NAME ck3_12003_player_mercenary_context
+  COMMAND xar_ck3_12003_player_mercenary_context_test
+    "${CMAKE_CURRENT_BINARY_DIR}/ck3_12003_player_mercenary_context_wire.json")
+
 foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1
     XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1

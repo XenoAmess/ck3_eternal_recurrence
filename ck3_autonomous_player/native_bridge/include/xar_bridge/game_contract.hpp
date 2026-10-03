@@ -176,6 +176,12 @@ struct ArmyRegimentReplenishmentSnapshot {
 // is false and
 // every numeric aggregate must remain uninterpretable. The base-power raw
 // value is CK3's AI metric, not a combat prediction or win probability.
+enum class ArmyGatheringDaysStatus {
+  unavailable,
+  not_gathering,
+  available,
+};
+
 struct ArmyStrengthSnapshot {
   bool available = false;
   std::int32_t army_id = -1;
@@ -203,6 +209,11 @@ struct ArmyStrengthSnapshot {
   // Only the first native data record is observed, not all persistent records.
   std::optional<std::vector<ArmyRegimentReplenishmentSnapshot>>
       regiment_replenishment;
+  // Exact .3 CArmy native remaining gathering days. Zero is observable while
+  // gathering; not_gathering is an observed absence, with no invented days.
+  std::optional<std::int32_t> gathering_days_left;
+  ArmyGatheringDaysStatus gathering_days_status =
+      ArmyGatheringDaysStatus::unavailable;
 
   friend bool operator==(const ArmyStrengthSnapshot &,
                          const ArmyStrengthSnapshot &) = default;
