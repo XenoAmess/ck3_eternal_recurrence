@@ -6,6 +6,8 @@
 #include "xar_bridge/ck3_12003_spiritual_fulfillment_type.hpp"
 #include "xar_bridge/ck3_12003_mystical_communion_decision_terms.hpp"
 #include "xar_bridge/ck3_12003_pilgrimage_activity_type_terms.hpp"
+#include "xar_bridge/ck3_12003_pilgrimage_activity_terms.hpp"
+#include "xar_bridge/ck3_12003_pilgrimage_candidate_route.hpp"
 #include "xar_bridge/ck3_12003_confession_decision_terms.hpp"
 #include "xar_bridge/ck3_12003_confession_rite_permission.hpp"
 #include "xar_bridge/ck3_12003_church_income_profile.hpp"
@@ -13,6 +15,8 @@
 #include "xar_bridge/ck3_12003_player_devotion_profile.hpp"
 #include "xar_bridge/ck3_12003_player_rite_virtue_sin_profile.hpp"
 #include "xar_bridge/ck3_12003_vow_of_poverty_terms.hpp"
+
+#include <vector>
 
 namespace xar::ck3_12002 {
 
@@ -34,6 +38,10 @@ struct PlayerReligionMailboxContext12002 {
   ck3_12003::religion::mystical_communion::Terms mystical_communion_terms{};
   ck3_12003::religion::pilgrimage::Bindings pilgrimage_bindings{};
   ck3_12003::religion::pilgrimage::Terms pilgrimage_terms{};
+  ck3_12003::religion::pilgrimage_activity_terms::Bindings pilgrimage_activity_bindings{};
+  ck3_12003::religion::pilgrimage_activity_terms::Terms pilgrimage_activity_terms{};
+  ck3_12003::religion::pilgrimage_route::Bindings pilgrimage_route_bindings{};
+  std::vector<ck3_12003::religion::pilgrimage_route::Terms> pilgrimage_candidate_routes;
   ck3_12003::religion::confession::Bindings confession_bindings{};
   ck3_12003::religion::confession::Terms confession_terms{};
   ck3_12003::religion::confession_permission::Bindings confession_permission_bindings{};

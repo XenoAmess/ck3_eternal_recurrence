@@ -9,6 +9,10 @@ from .player_spiritual_fulfillment_type import (
     normalize_player_spiritual_fulfillment_type_v1,
 )
 from .player_church_tax_inputs import normalize_player_church_tax_inputs_v1
+from .player_pilgrimage_headless_activity_terms import (
+    normalize_player_pilgrimage_candidate_routes_v1,
+    normalize_player_pilgrimage_headless_activity_terms_v1,
+)
 from .player_confession_rite_permission import (
     normalize_player_confession_rite_permission_v1,
 )
@@ -333,6 +337,19 @@ def query_player_religion_context_private_v1(
             pilgrimage_fields["player_pilgrimage_activity_type_terms"] = (
                 normalize_player_pilgrimage_activity_type_terms_v1(
                     result["player_pilgrimage_activity_type_terms"], current_context=value,
+                )
+            )
+        if "player_pilgrimage_headless_activity_terms" in result:
+            pilgrimage_fields["player_pilgrimage_headless_activity_terms"] = (
+                normalize_player_pilgrimage_headless_activity_terms_v1(
+                    result["player_pilgrimage_headless_activity_terms"], current_context=value,
+                )
+            )
+        if "player_pilgrimage_candidate_routes" in result:
+            pilgrimage_fields["player_pilgrimage_candidate_routes"] = (
+                normalize_player_pilgrimage_candidate_routes_v1(
+                    result["player_pilgrimage_candidate_routes"], current_context=value,
+                    activity_terms=pilgrimage_fields.get("player_pilgrimage_headless_activity_terms"),
                 )
             )
         confession_fields = {}

@@ -6,6 +6,7 @@
 #include "xar_bridge/protocol.hpp"
 
 #include <windows.h>
+#include <utility>
 
 namespace xar::ck3_12002 {
 namespace {
@@ -105,6 +106,21 @@ bool ExecutePlayerReligionMailbox12002(
         ResolveCoreCharacter(query.bindings.core, static_cast<std::int32_t>(frame.played_character_id)),
         static_cast<std::int32_t>(frame.played_character_id),
         static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.pilgrimage_terms);
+    // Discover actual Faith candidates and quote owned local configurations.
+    // Route defaults are a separate observation; neither is a live planner.
+    auto *pilgrimage_actor = out.available
+        ? ResolveCoreCharacter(query.bindings.core, out.played_character_id) : nullptr;
+    (void)ck3_12003::religion::pilgrimage_activity_terms::ReadPlayerPilgrimageActivityTerms12003(
+        query.pilgrimage_activity_bindings, pilgrimage_actor, out,
+        query.pilgrimage_activity_terms);
+    query.pilgrimage_candidate_routes.clear();
+    for (const auto &candidate : query.pilgrimage_activity_terms.candidates) {
+      ck3_12003::religion::pilgrimage_route::Terms route;
+      (void)ck3_12003::religion::pilgrimage_route::ReadPlayerPilgrimageCandidateRoute12003(
+          query.pilgrimage_route_bindings, pilgrimage_actor, out.played_character_id,
+          out.date_raw, out.capture_epoch, candidate.province_id, route);
+      query.pilgrimage_candidate_routes.push_back(std::move(route));
+    }
     // Independent fixed confession and church-income components use the
     // same resolved current player/frame; neither gates existing Context.
     (void)ck3_12003::religion::confession::ReadPlayerConfessionDecisionTerms12003(
@@ -147,6 +163,13 @@ std::string SerializePlayerReligionResult12002(
     const PlayerReligionMailboxContext12002 &query, std::string_view request_id) {
   if (!query.completed || !query.envelope.frame_stable || !query.failure.empty()) return {};
   const auto &frame = query.envelope.expected_snapshot;
+  std::string pilgrimage_routes = "[";
+  for (const auto &route : query.pilgrimage_candidate_routes) {
+    if (pilgrimage_routes.size() > 1) pilgrimage_routes += ',';
+    pilgrimage_routes +=
+        ck3_12003::religion::pilgrimage_route::SerializePlayerPilgrimageCandidateRoute12003(route);
+  }
+  pilgrimage_routes += ']';
   return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" + Quote(request_id) +
       ",\"ok\":true,\"result\":{\"step\":" + Quote(kPlayerReligionPrivateStep12002) +
       ",\"accepted\":true,\"status\":" + Quote(query.observation.available ? "observed" : "unavailable") +
@@ -165,6 +188,10 @@ std::string SerializePlayerReligionResult12002(
       ",\"player_pilgrimage_activity_type_terms\":" +
       ck3_12003::religion::pilgrimage::SerializePlayerPilgrimageActivityTypeTerms12003(
           query.pilgrimage_terms) +
+      ",\"player_pilgrimage_headless_activity_terms\":" +
+      ck3_12003::religion::pilgrimage_activity_terms::SerializePlayerPilgrimageActivityTerms12003(
+          query.pilgrimage_activity_terms) +
+      ",\"player_pilgrimage_candidate_routes\":" + pilgrimage_routes +
       ",\"player_confession_decision_terms\":" +
       ck3_12003::religion::confession::SerializePlayerConfessionDecisionTerms12003(
           query.confession_terms) +
@@ -260,6 +287,12 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
             image_base, adapter.descriptor().executable_sha256);
     query.pilgrimage_bindings =
         ck3_12003::religion::pilgrimage::BindPlayerPilgrimageActivityTypeTermsImage12003(
+            image_base, adapter.descriptor().executable_sha256);
+    query.pilgrimage_activity_bindings =
+        ck3_12003::religion::pilgrimage_activity_terms::BindPlayerPilgrimageActivityTermsImage12003(
+            image_base, adapter.descriptor().executable_sha256);
+    query.pilgrimage_route_bindings =
+        ck3_12003::religion::pilgrimage_route::BindPlayerPilgrimageCandidateRouteImage12003(
             image_base, adapter.descriptor().executable_sha256);
     query.confession_bindings =
         ck3_12003::religion::confession::BindPlayerConfessionDecisionTermsImage12003(
