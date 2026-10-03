@@ -145,6 +145,28 @@ bool NativeInsertionIndex(const void *type, factory::PhaseRowView view,
   return true;
 }
 
+bool CaptureActivityQuote(const Bindings &b, OwnedActivityConfig &config,
+                          void *actor, ActivityQuoteTerms &out,
+                          std::string &failure) {
+  if (!CaptureOptions(b, config, out.default_options_used) ||
+      !CapturePhases(config, out.configured_phases)) {
+    failure = "native_config_readback_unavailable"; return false;
+  }
+  out.native_config_date_raw = Load<std::int32_t>(config.get(), 0x20);
+  out.activity_cost_raw_slots = {};
+  b.activity_cost(config.get(), out.activity_cost_raw_slots.data());
+  NativeReason reason(b);
+  out.affordable = b.activity_affordable(out.activity_cost_raw_slots.data(), actor,
+                                       reason.get());
+  std::string literal;
+  out.affordability_reasons_available = reason.copy(literal);
+  if (!out.affordability_reasons_available) {
+    failure = "native_activity_affordability_reasons_unavailable"; return false;
+  }
+  out.affordability_reasons = std::move(literal);
+  return true;
+}
+
 bool BuildActivityQuote(const Bindings &b, const void *type, void *actor,
                         std::int32_t actor_id, const factory::PhaseChoice &phase,
                         ActivityQuoteTerms &out, std::string &failure) {
@@ -163,23 +185,46 @@ bool BuildActivityQuote(const Bindings &b, const void *type, void *actor,
   Store<const void *>(row, 0, phase.phase_definition);
   Store<std::int32_t>(row, 8, phase.province_id);
   b.config_normalize(config.get());
-  if (!CaptureOptions(b, config, out.default_options_used) ||
-      !CapturePhases(config, out.configured_phases)) {
-    failure = "native_config_readback_unavailable"; return false;
+  return CaptureActivityQuote(b, config, actor, out, failure);
+}
+
+bool BuildDefaultActivityQuote(const Bindings &b, const void *type, void *actor,
+    std::int32_t actor_id, std::int32_t province_id,
+    ActivityQuoteTerms &out, std::string &failure) {
+  // Exact11B4CF0 does not insert a placeholder when ordinary phase count is
+  // zero. The genuine single-location caller selects an existing default row.
+  if (Load<std::uint8_t>(type, 0x3BED) == 0 || Load<std::int32_t>(type, 0x98C) != 0) {
+    failure = "native_default_only_location_configuration_unavailable"; return false;
   }
-  out.native_config_date_raw = Load<std::int32_t>(config.get(), 0x20);
-  out.activity_cost_raw_slots = {};
-  b.activity_cost(config.get(), out.activity_cost_raw_slots.data());
-  NativeReason reason(b);
-  out.affordable = b.activity_affordable(out.activity_cost_raw_slots.data(), actor,
-                                       reason.get());
-  std::string literal;
-  out.affordability_reasons_available = reason.copy(literal);
-  if (!out.affordability_reasons_available) {
-    failure = "native_activity_affordability_reasons_unavailable"; return false;
+  OwnedActivityConfig config(b);
+  if (!config.initialize(type, actor_id)) {
+    failure = "native_local_config_unavailable"; return false;
   }
-  out.affordability_reasons = std::move(literal);
-  return true;
+  const auto view = config.phases();
+  if (view.count <= 0 || !view.data) {
+    failure = "native_default_pickable_phase_unavailable"; return false;
+  }
+  void *selected = nullptr;
+  for (std::int32_t i = 0; i < view.count; ++i) {
+    auto *row = const_cast<std::byte *>(view.data) + static_cast<std::size_t>(i) * view.stride;
+    const void *definition = Load<const void *>(row);
+    // Exact11B5950 skips only predefined rows whose location source is not
+    // pickable. Retain its first-row ordering rather than choosing by an ID.
+    if (definition && Load<std::int32_t>(definition, 0x1160) != 0 &&
+        Load<std::uint8_t>(definition, 0x69C) != 0) continue;
+    if (!definition || Load<std::uint8_t>(definition, 0x69C) == 0 ||
+        Load<std::int32_t>(definition, 0x1160) != 0) {
+      failure = "native_default_pickable_phase_unavailable"; return false;
+    }
+    selected = row;
+    break;
+  }
+  if (!selected) { failure = "native_default_pickable_phase_unavailable"; return false; }
+  // Exact11B6C80 writes the already selected row+8, then23FC580 propagates
+  // native single-location defaults. No ordinary offer or new phase is made.
+  Store<std::int32_t>(selected, 8, province_id);
+  b.config_normalize(config.get());
+  return CaptureActivityQuote(b, config, actor, out, failure);
 }
 
 PredicateTerms CopyPredicate(const factory::PredicateResult &value) {
@@ -334,6 +379,20 @@ bool ReadPlayerPilgrimageActivityTerms12003(const Bindings &b, void *actor,
       result.total_cap_applies = candidate.total_cap_applies;
       result.total_cap_allows = candidate.total_cap_allows;
       result.can_select = candidate.can_select;
+      if (!candidate.phase_choices.empty()) {
+        result.default_quote_unavailable_reason = "native_optional_phase_choices_present";
+      } else if (!candidate.can_select || !*candidate.can_select) {
+        result.default_quote_unavailable_reason = "native_destination_not_selectable";
+      } else {
+        ActivityQuoteTerms quote;
+        std::string failure;
+        if (BuildDefaultActivityQuote(b, type, actor, context.played_character_id,
+              candidate.province_id, quote, failure)) result.default_activity_quote = std::move(quote);
+        else {
+          result.default_quote_unavailable_reason = std::move(failure);
+          all_quotes_available = false;
+        }
+      }
       for (const auto &choice : candidate.phase_choices) {
         PhaseTerms phase;
         phase.phase_definition_index = choice.phase_definition_index;
@@ -404,6 +463,11 @@ std::string SerializePlayerPilgrimageActivityTerms12003(const Terms &t) {
         << ",\"total_cap_applies\":" << candidate.total_cap_applies
         << ",\"total_cap_allows\":"; WriteOptional(out, candidate.total_cap_allows);
     out << ",\"can_select\":"; WriteOptional(out, candidate.can_select);
+    out << ",\"default_quote_unavailable_reason\":";
+    WriteOptional(out, candidate.default_quote_unavailable_reason);
+    out << ",\"default_activity_quote\":";
+    if (candidate.default_activity_quote) WriteActivityQuote(out, *candidate.default_activity_quote);
+    else out << "null";
     out << ",\"phase_choices\":[";
     bool first_phase = true;
     for (const auto &phase : candidate.phase_choices) {

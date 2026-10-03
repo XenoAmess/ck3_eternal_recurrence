@@ -905,3 +905,5 @@ flowchart TD
 实际记录：`2026-10-03T11:51:26+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
 
 交付回执：[pilgrimage-journey](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/pilgrimage-journey/ROOT-DELIVERY.json)。
+
+朝圣实际空offers的原生解释和默认阶段报价入口：[default-phase native tree](religion-pilgrimage-default-phase-quote-12003.md)。新增focused native/MCP GREEN不替代下一暂停帧报价。

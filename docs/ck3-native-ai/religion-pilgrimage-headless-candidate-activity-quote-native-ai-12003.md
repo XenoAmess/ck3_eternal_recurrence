@@ -97,3 +97,11 @@ flowchart TD
 ## 2026-10-03T12:22 新 PID paused 实读
 
 本专题对应的新只读叶与真实缺口见[统一实读记录](g2-v33-paused-religion-and-event-observations-12003.md)，回链actor/date/native/public revisions和原capture。仅记录primitive，不增加动作、日数或完整OODA；历史fixture与封存状态保留原时点。
+
+## 2026-10-03T12:35 接续源码采用
+
+实际v33五候选/五route成功但offers为空、quote为0。exact .3 1A721E0有意跳过predefined phase，stock朝圣只有predefined；原版11B6C80沿已有kind0 phase写真实ProvinceID并23FC580规范化，single_location/ordinary-count0分支不插placeholder。原生树先冻结，再仅3生产文件新增 candidate.default_activity_quote 和独立reason；保持 phase_choices=[]，不硬编码definition35054，只在fresh owned native config给真实默认row选址，调用既有十槽signed费用/afford/reasons与清理。新增native mailbox→serializer→.3 renderer 1case/131checks GREEN，same genuine wire registered MCP 1request GREEN；旧矩阵不重跑。仍是activity-only quote，不等于整旅程费用/CanStart/返程或收益，实机默认报价待下一v34暂停帧。
+
+实际记录：`2026-10-03T12:35:10+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
+
+交付回执：[pilgrimage-default-phase-quote](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/pilgrimage/default-phase-quote/ROOT-DELIVERY.json)。

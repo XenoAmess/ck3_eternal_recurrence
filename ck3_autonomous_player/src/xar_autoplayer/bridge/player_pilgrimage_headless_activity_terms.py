@@ -150,12 +150,17 @@ def normalize_player_pilgrimage_headless_activity_terms_v1(
     if not isinstance(candidates, list):
         raise ValueError("native pilgrimage factory candidate array is malformed")
     for candidate in candidates:
-        candidate = _object(candidate, {
+        candidate_keys = {
             "holy_site_id", "title_id", "province_id", "location_predicate",
             "same_province_phase_count", "same_province_cap_applies", "same_province_phase_cap",
             "same_province_cap_allows", "total_cap_applies", "total_cap_allows", "can_select",
             "phase_choices",
-        }, "factory candidate")
+        }
+        default_quote_keys = {"default_activity_quote", "default_quote_unavailable_reason"}
+        # The schema-v1 extension is a pair. Earlier native packets omit both.
+        if isinstance(candidate, dict) and default_quote_keys.intersection(candidate):
+            candidate_keys |= default_quote_keys
+        candidate = _object(candidate, candidate_keys, "factory candidate")
         for key in ("holy_site_id", "title_id"):
             _integer(candidate[key], 32, key, unsigned=True)
         for key in ("province_id", "same_province_phase_count"):
@@ -166,6 +171,15 @@ def normalize_player_pilgrimage_headless_activity_terms_v1(
         for key in ("total_cap_allows", "can_select"):
             _boolean(candidate[key], key, nullable=True)
         _predicate(candidate["location_predicate"], "destination location")
+        if "default_activity_quote" in candidate:
+            if candidate["default_activity_quote"] is None:
+                reason = candidate["default_quote_unavailable_reason"]
+                if not isinstance(reason, str) or not reason:
+                    raise ValueError("unavailable native pilgrimage default activity quote lost its reason")
+            else:
+                if candidate["default_quote_unavailable_reason"] is not None:
+                    raise ValueError("native pilgrimage default activity quote has an unavailable reason")
+                _quote(candidate["default_activity_quote"])
         if not isinstance(candidate["phase_choices"], list):
             raise ValueError("native pilgrimage phase choices are malformed")
         for phase in candidate["phase_choices"]:

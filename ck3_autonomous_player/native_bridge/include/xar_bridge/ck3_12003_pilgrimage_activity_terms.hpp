@@ -81,6 +81,10 @@ struct CandidateTerms {
   std::optional<std::int32_t> same_province_phase_cap;
   bool same_province_cap_allows = true, total_cap_applies = false;
   std::optional<bool> total_cap_allows, can_select;
+  // Default-only pilgrimage has no ordinary phase offers. Quote its genuine
+  // existing predefined row after assigning this candidate's native location.
+  std::optional<ActivityQuoteTerms> default_activity_quote;
+  std::optional<std::string> default_quote_unavailable_reason;
   std::vector<PhaseTerms> phase_choices;
 };
 struct Terms {
