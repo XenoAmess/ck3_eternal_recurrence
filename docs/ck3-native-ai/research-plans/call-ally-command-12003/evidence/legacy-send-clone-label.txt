@@ -1,0 +1,41 @@
+02968220 mov qword ptr [rsp + 8], rbx
+02968225 push rdi
+02968226 sub rsp, 0x20
+0296822A mov r8, qword ptr [rcx + 0x348]
+02968231 mov rdi, rcx
+02968234 mov rdx, qword ptr [rcx + 0x340]
+0296823B add rcx, 8
+0296823F call 0x2967ff0
+02968244 mov rbx, qword ptr [rdi + 8]
+02968248 test rbx, rbx
+0296824B je 0x2968289
+0296824D call 0x89da60
+02968252 cmp rbx, qword ptr [rax + 0xfe0]
+02968259 jne 0x2968289
+0296825B mov eax, dword ptr [rip + 0x2b7399f]
+02968261 cmp dword ptr [rdi + 0x2e0], eax
+02968267 jne 0x2968289
+02968269 mov rcx, qword ptr [rip + 0x33022b0]
+02968270 test rcx, rcx
+02968273 je 0x2968289
+02968275 mov rax, qword ptr [rcx]
+02968278 xor r9d, r9d
+0296827B xor r8d, r8d
+0296827E mov edx, 0x3e4a
+02968283 call qword ptr [rax + 0xa0]
+02968289 mov rbx, qword ptr [rsp + 0x30]
+0296828E add rsp, 0x20
+02968292 pop rdi
+02968293 ret 
+02968294 int3 
+02968295 int3 
+02968296 int3 
+02968297 int3 
+02968298 int3 
+02968299 int3 
+0296829A int3 
+0296829B int3 
+0296829C int3 
+0296829D int3 
+0296829E int3 
+0296829F int3 

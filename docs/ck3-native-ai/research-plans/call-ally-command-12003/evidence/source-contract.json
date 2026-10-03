@@ -1,0 +1,188 @@
+{
+  "source_head": "19b508ae4fa8e3ab09f4e8631fcf0340d69939c2",
+  "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "files": [
+    {
+      "path": "exact-chain.json",
+      "source": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\SOURCE-AND-EXACT-CHAIN.json",
+      "sha256": "8f35bf7a1bc3ee528fd7e8b43fb509d9d4b38721d2f785784275d9cf6daa6690"
+    },
+    {
+      "path": "selected-war.txt",
+      "source": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\select_war-disassembly.txt",
+      "sha256": "1b0d9c727074c22c4aaad7cd84ce6d273baabd08d81b704ee402a199c2f0ddf6"
+    },
+    {
+      "path": "send-constructor.txt",
+      "source": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\send_constructor-disassembly.txt",
+      "sha256": "3db1114328f94a65389d04363a5621d50b678425db249cff72da40c63147e3ad"
+    },
+    {
+      "path": "legacy-send-clone-label.txt",
+      "source": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\send_clone-disassembly.txt",
+      "sha256": "355fc1aebcb2fd6398c4641c96ba67b3e90cc01d3fe51db62306250bedcaaa22"
+    },
+    {
+      "path": "basic-context.txt",
+      "source": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\basic_context-disassembly.txt",
+      "sha256": "6de5d8e24531f0c2c22067b6a852e705678db566612efb247aa100164cf47635"
+    },
+    {
+      "path": "call-ally-stock.txt",
+      "source": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\current-call-ally-stock.txt",
+      "sha256": "ce59d7e662a856a3693a1cdace5bdd056831d8f3c6b4f192afe4d9a8a8584171"
+    },
+    {
+      "path": "sender-source.cpp.txt",
+      "source": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\projection\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_family_obligations_alliance.cpp",
+      "sha256": "3a5b02b8090e94cfc03a874133e20e4d4956d5018baa59515fa6980d17772577"
+    },
+    {
+      "path": "sender-interface.hpp.txt",
+      "source": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\projection\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_family_obligations_alliance.hpp",
+      "sha256": "f44f6c03115f3a968866ccc82c39c1349ccf7b116712afc5a4981b25f22bcab7"
+    },
+    {
+      "path": "owning-queue.cpp.txt",
+      "source": "Z:\\g36\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_commands.cpp",
+      "sha256": "8d5806d2b57dc8d115bc6cb52ca7e4b6374e6be4b546ab813ea3b3b889324c2a"
+    },
+    {
+      "path": "owning-queue.hpp.txt",
+      "source": "Z:\\g36\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_commands.hpp",
+      "sha256": "c2a783d4f49c880e5b9691486fbfa816504460a352e720be01c49f0725350fe1"
+    },
+    {
+      "path": "native-delivery.json",
+      "source": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\ROOT-NATIVE-DELIVERY.json",
+      "sha256": "dde89b1048708843c3a4e2d758a5c0dce495ed87c5d7929554fee11e5326897b"
+    },
+    {
+      "path": "native-focused-result.json",
+      "source": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\focused-fixture\\result.json",
+      "sha256": "2c4547f89c6460eec0181ea3048c8440b702c258cc3d07df27f729100e4c4479"
+    }
+  ],
+  "contract": {
+    "interaction": "call_ally_interaction",
+    "actor": "current paused played_character_id",
+    "request_fields": [
+      "recipient_character_id",
+      "war_id",
+      "expected_send_cost_raw[10]"
+    ],
+    "receipt_fields": [
+      "selected_target_native_legal",
+      "copied_context_identity_verified",
+      "send_cost_sampled",
+      "actual_send_cost_raw[10]"
+    ],
+    "result": "CommandSubmitResult::{unavailable,rejected,submitted}",
+    "context_size_hex": "0x338",
+    "command_size_hex": "0x368",
+    "selected_target": {
+      "type": 16,
+      "context_type_offset_hex": "0x2F0",
+      "context_full_id_offset_hex": "0x2F8"
+    },
+    "context_roles": {
+      "actor": "0x2D8",
+      "recipient": "0x2DC",
+      "special_instance": "0x330"
+    },
+    "queue_flags_hex": "0x0E",
+    "queue_is_world_outcome": false,
+    "cost_is_all_accept_time_cost": false,
+    "outgoing_mcp_at_source_head": "Historical source19b508ae has no outgoing call-ally tool. The subsequent g36 typed sender publishes ck3_submit_call_ally_to_war_private_v1; owning mailbox and registered MCP fixtures are static-ready, with no actual submission here.",
+    "send_cost_sampled": "false until evaluator called; serializer must preserve false/null as unobserved rather than a zero quote",
+    "actual_send_cost_raw_semantics": "Immediate reevaluated compiled native send quote, never actual payment"
+  },
+  "terminology_correction": {
+    "preserved_original_span_name": "send_clone",
+    "preserved_original_rva": "0x2968220",
+    "correct_role": "secondary vtable +0x08 continuation; calls 0x2967FF0",
+    "actual_owning_clone": "primary vtable +0x40 -> 0x86D760"
+  },
+  "game_touched": false,
+  "sdk_touched": false,
+  "live_execution": false,
+  "native_fixture": {
+    "status": "GREEN",
+    "test_cases": 6,
+    "result_sha256": "2c4547f89c6460eec0181ea3048c8440b702c258cc3d07df27f729100e4c4479",
+    "reused_without_rerun_by_docs_lane": true,
+    "previous_native_attempt": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\focused-fixture\\attempt01-green"
+  },
+  "typed_transport_adoption": {
+    "readiness": "static-ready",
+    "root_reported_source_commit": "b1af488",
+    "target_tree_read_only": "Z:/g36",
+    "native_sender_abi_changed": false,
+    "tool": "ck3_submit_call_ally_to_war_private_v1",
+    "step": "submit-call-ally-to-war-v1-private",
+    "existing_permit": "allow_private_family_obligations_query",
+    "new_feature_flags": [],
+    "new_executor_allowlist_slots": [],
+    "source_images": [
+      {
+        "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_family_obligations_alliance.cpp",
+        "sha256": "3a5b02b8090e94cfc03a874133e20e4d4956d5018baa59515fa6980d17772577",
+        "matches_transport_postimage": true
+      },
+      {
+        "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_family_obligations_alliance.hpp",
+        "sha256": "f44f6c03115f3a968866ccc82c39c1349ccf7b116712afc5a4981b25f22bcab7",
+        "matches_transport_postimage": true
+      },
+      {
+        "path": "ck3_autonomous_player/native_bridge/src/ck3_12003_call_ally_private_action.cpp",
+        "sha256": "3290314d45e7320037bdb7ced6e4ba03a78373d43b6d999a6b1a403061d56db7",
+        "matches_transport_postimage": true
+      },
+      {
+        "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_call_ally_private_action.hpp",
+        "sha256": "851bcee8f2256ec513b81721fb7ebee6945c8edaafebe9dcf6b61d05c9b8a9df",
+        "matches_transport_postimage": true
+      },
+      {
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/call_ally_to_war_private_action_v1.py",
+        "sha256": "f19ad8fc366bca50a6738ad8e7bce1214f17d88acc9b5f831723a2b0e735f0a1",
+        "matches_transport_postimage": true
+      }
+    ],
+    "delivery": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/call-ally-wire-mcp/ROOT-DELIVERY.json",
+    "delivery_sha256": "a78882209cfacf6fb3a7a025a65284d93ebcd436755c37d09dd7ef90cff139e7",
+    "source_patch_sha256": "c3c55be21f28313e9914de1ed9f719624011f2df40c96e2bd2958f9a0ab46e5f",
+    "focused_results_reused_without_rerun": {
+      "native_sender": {
+        "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\focused-fixture\\result.json",
+        "sha256": "2c4547f89c6460eec0181ea3048c8440b702c258cc3d07df27f729100e4c4479",
+        "new_cases": 6,
+        "status": "GREEN"
+      },
+      "owning_mailbox_parser_native_wire": {
+        "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-wire-mcp\\native-test-projection\\build-02\\result.json",
+        "sha256": "48a960201d0f9d770d7e75342b4e82ac3145e866a2a801c1462b43ef799f10f6",
+        "output_checks": 9,
+        "status": "GREEN",
+        "sender_stubbed": true
+      },
+      "python_registered_mcp": {
+        "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-wire-mcp\\python-projection\\FOCUSED-TEST-RESULT.json",
+        "sha256": "bb7a3f2b4152ee4c22ade59cab7d77200d9ef6b50834450a75ac355518900eb8",
+        "focused_cases": 6,
+        "status": "GREEN"
+      }
+    },
+    "registered_tool_arguments": [
+      "expected_revision",
+      "war_id",
+      "recipient_character_id"
+    ],
+    "quote_binding": "Tool reads current same-revision FAMILY selected-pair row and copies all ten native cost slots into the typed request.",
+    "revision_binding": "Public expected_revision is checked against paused player frame and mapped to native_revision for the owning mailbox.",
+    "ack_boundary": "queued invitation only; actual participation, actual reply and resource debit require independent observation",
+    "dll_uptake_and_actual_submission": "pending Root; this documentation lane does not attach or execute"
+  },
+  "evidence_bytes": "Original archived evidence bytes, including CRLF and BOM, are retained without normalization."
+}

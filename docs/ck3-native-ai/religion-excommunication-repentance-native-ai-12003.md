@@ -1,5 +1,7 @@
 # CK3 1.20.0.3：Robert 解除绝罚的原生树与只读施工交接
 
+当前资格更新（v35，2026-10-03 14:17 实读）：独立绝罚、五个当前角色源、两实际候选和两一般请愿决议的最终条款已为 **production-live primitive**；解除决策仍 **NOT_READY**。29097 / 56513 均 Shown=false / CanSend=false；一般请愿的 unselected 报价不能当作悔罪选项。完整 actual frame、结果与边界见[当前候选专题的 v35 实读](religion-repentance-recipient-candidates-12003.md)。以下 research / static-ready 与尚未实现的措辞保留其各段原始时点，不能覆盖本次明确的生产观测增量。
+
 2026-10-03，readiness **research**。v32 Robert29829 的军事 holy-order 原生 final reason 含“被绝罚的统治者无法雇佣”及“已经被雇佣”，因此冻结这条具体悔罪路径有实际用途；本包没有独立 trait 实测、悔罪请求或解除结果。
 
 exact build为 Steam1.20.0.3/25652598，EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。实际必要性只消费 [v32 compact REPORT](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/religion-holy-order-systems-12003/actual-v32/REPORT-FIELDS.json)，没有读取旧 raw 或重复游戏。该帧 PID109732、actor29829、date53236176、native4/public2、epoch17503，冻结runtime `production-source-8cf176b4`，environment SHA `a659ee553736c3a9429a961711411090ed6b53931a9c1a202f057b3179397486`。

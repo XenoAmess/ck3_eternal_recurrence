@@ -1,0 +1,60 @@
+02968170 mov qword ptr [rsp + 0x18], rbx
+02968175 mov qword ptr [rsp + 0x20], rsi
+0296817A mov qword ptr [rsp + 8], rcx
+0296817F push rdi
+02968180 sub rsp, 0x20
+02968184 mov rdi, rdx
+02968187 mov rsi, rcx
+0296818A mov byte ptr [rcx + 8], 0
+0296818E xor eax, eax
+02968190 mov qword ptr [rcx + 0xc], rax
+02968194 mov dword ptr [rcx + 0x14], eax
+02968197 lea rax, [rip + 0x1b23b42]
+0296819E mov qword ptr [rcx], rax
+029681A1 lea rax, [rip + 0x1b23b08]
+029681A8 mov qword ptr [rcx + 0x18], rax
+029681AC add rcx, 0x20
+029681B0 call 0x3076b80
+029681B5 nop 
+029681B6 mov ebx, dword ptr [rdi + 0x2d8]
+029681BC lea rdx, [rsp + 0x38]
+029681C1 mov rcx, rdi
+029681C4 call 0x307c360
+029681C9 lea rcx, [rsi + 0x358]
+029681D0 mov r8d, ebx
+029681D3 mov rdx, qword ptr [rax]
+029681D6 call 0x2bf7850
+029681DB mov ebx, dword ptr [rdi + 0x2d8]
+029681E1 lea rdx, [rsp + 0x38]
+029681E6 mov rcx, rdi
+029681E9 call 0x307c460
+029681EE lea rcx, [rsi + 0x360]
+029681F5 mov r8d, ebx
+029681F8 mov rdx, qword ptr [rax]
+029681FB call 0x2bf7850
+02968200 nop 
+02968201 mov rax, rsi
+02968204 mov rbx, qword ptr [rsp + 0x40]
+02968209 mov rsi, qword ptr [rsp + 0x48]
+0296820E add rsp, 0x20
+02968212 pop rdi
+02968213 ret 
+02968214 int3 
+02968215 int3 
+02968216 int3 
+02968217 int3 
+02968218 int3 
+02968219 int3 
+0296821A int3 
+0296821B int3 
+0296821C int3 
+0296821D int3 
+0296821E int3 
+0296821F int3 
+02968220 mov qword ptr [rsp + 8], rbx
+02968225 push rdi
+02968226 sub rsp, 0x20
+0296822A mov r8, qword ptr [rcx + 0x348]
+02968231 mov rdi, rcx
+02968234 mov rdx, qword ptr [rcx + 0x340]
+0296823B add rcx, 8

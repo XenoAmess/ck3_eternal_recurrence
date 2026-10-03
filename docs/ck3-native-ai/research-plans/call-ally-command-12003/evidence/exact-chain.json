@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "source_tree": "Z:\\g35",
+  "source_head": "19b508ae4fa8e3ab09f4e8631fcf0340d69939c2",
+  "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "exact_build": "1.20.0.3 / Steam25652598",
+  "spans": [
+    {
+      "name": "select_war",
+      "rva": "0x1398930",
+      "size": 560,
+      "bytes_sha256": "8f13215cec359aedef2de6aef3379a0beb0b2432bdb9ea74e97f0d1efa970d8e",
+      "disassembly": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\select_war-disassembly.txt"
+    },
+    {
+      "name": "send_constructor",
+      "rva": "0x2968170",
+      "size": 208,
+      "bytes_sha256": "702a28c4d5e6ee0faa9b2610a492b46cc2daef3c0761a47e2bac3adf685f5f97",
+      "disassembly": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\send_constructor-disassembly.txt"
+    },
+    {
+      "name": "send_clone",
+      "rva": "0x2968220",
+      "size": 128,
+      "bytes_sha256": "b967eac88516a9eddebdf3349d984522e4a2d9deae304fdbc7e9c44becaa2f02",
+      "disassembly": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\send_clone-disassembly.txt"
+    },
+    {
+      "name": "send_destructor",
+      "rva": "0x29677a0",
+      "size": 256,
+      "bytes_sha256": "5b76b5ab6d1c346696020b74915a0a756e073417f120f64b14dbc45ff6071672",
+      "disassembly": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\send_destructor-disassembly.txt"
+    },
+    {
+      "name": "basic_context",
+      "rva": "0x3076c90",
+      "size": 448,
+      "bytes_sha256": "43e6b1c6f2d59d9432a1a9ff5e2aa7ef254dc3900442a80e9aab8a30b9ae8589",
+      "disassembly": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\basic_context-disassembly.txt"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "sha256": "ee2a7bed8f2fcc6866ed047b313e43ef177933291ffe81adc13f8e7af7ae093d"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "sha256": "79a39d9fd68880ba74ebfd81fc8ec265db93e9ad508a654ddce0c6c3bf8adc3b"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_family_obligations_alliance.cpp",
+      "sha256": "67df11d782b790f158eec91f978515cd9b5bf8f4b38871ff35818304cd90c11b"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_family.cpp",
+      "sha256": "d64c630609847ea31f02dd45dbe6154bbd8729a3a401f666af7023a1b8bd3b2d"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_commands.cpp",
+      "sha256": "8d5806d2b57dc8d115bc6cb52ca7e4b6374e6be4b546ab813ea3b3b889324c2a"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_context.hpp",
+      "sha256": "473131c2e2d0d5ecbbe283f4e2efb6da6d3e86fcd2b38ae5500e73b0500f6095"
+    }
+  ],
+  "stock_file": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_alliance.txt",
+  "stock_file_sha256": "11e852967499e73c8bfbf9d6fe222278db66bb88cb674ea04f3758c86f35f1b4",
+  "stock_block_sha256": "dc0afc1701cbc865058d9e1730b71174adc65ed742ab133f9a92cef32caac96b",
+  "evidence_scope": "new exact-build static windows and source contract; accepted .3 reuse records reused; no live execution",
+  "game_touched": false,
+  "sdk_touched": false,
+  "git_mutated": false
+}

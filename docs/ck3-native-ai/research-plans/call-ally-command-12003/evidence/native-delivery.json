@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "work_package": "outgoing selected-war call_ally native sender",
+  "source_head": "19b508ae4fa8e3ab09f4e8631fcf0340d69939c2",
+  "target_development_tree": "Z:\\g36",
+  "status": "GREEN",
+  "readiness": "static-ready native sender only",
+  "native_patch": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\NATIVE-SENDER.patch",
+  "native_patch_sha256": "593f8413cc267a67dc024ca35e15ab42aea50a8ce0c7e4c058b8b06d2766ec30",
+  "native_manifest": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\PROJECTION-MANIFEST.json",
+  "test_patch": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\TEST-ONLY.patch",
+  "test_projection": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\projection\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_call_ally_sender_test.cpp",
+  "test_scope": "6 focused cases through actual changed native submitter, existing core snapshot and owning queue implementation",
+  "test_result": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\focused-fixture\\result.json",
+  "test_result_sha256": "2c4547f89c6460eec0181ea3048c8440b702c258cc3d07df27f729100e4c4479",
+  "exact_source_evidence": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\call-ally-native-action\\SOURCE-AND-EXACT-CHAIN.json",
+  "request": {
+    "recipient_character_id": "signed generation-bearing int32, invalid sentinel -1 only",
+    "war_id": "signed generation-bearing int32, invalid sentinel -1 only",
+    "expected_send_cost_raw": "10 signed int64 slots in native order; raw scale100000"
+  },
+  "owner_binding": "current paused map, living played full actor, local player, date and speed must match incoming ownerframe; outgoing actor never selected by request",
+  "receipt_fields": [
+    "selected_target_native_legal",
+    "copied_context_identity_verified",
+    "send_cost_sampled",
+    "actual_send_cost_raw"
+  ],
+  "native_status_values": [
+    "unavailable",
+    "rejected",
+    "submitted"
+  ],
+  "acked_does_not_prove": [
+    "native execute",
+    "recipient final acceptance",
+    "selected war participation",
+    "any troop arrival",
+    "actual resource payment"
+  ],
+  "native_entry": {
+    "construct_context": "0x3076C90",
+    "context_size": "0x338",
+    "target_type": 16,
+    "target_offset": "0x2F0",
+    "full_war_id_token_offset": "0x2F8",
+    "refresh": "0x3078A60",
+    "finalize": "0x3078C90",
+    "complete_can_send": "0x307C040",
+    "send_constructor": "0x2968170",
+    "send_command_size": "0x368",
+    "copied_context_offset": "0x20",
+    "source_primary_vtable": "0x448BCE0",
+    "source_secondary_vtable": "0x448BCB0",
+    "native_clone": "primary vtable +0x40 / 0x86D760",
+    "manager": "0x5CC1240",
+    "owning_queue": "0x37F06F0",
+    "channel_flags": "0x0E"
+  },
+  "integration_remaining": "owning application-main mailbox, exact request/revision transport, native wire response and registered MCP are handled by parallel call_ally_wire_mcp lane; newDLL and real owner paused observation/action still pending",
+  "live_execution": false,
+  "ck3_sdk_pipe_windows_touched": false,
+  "git_mutated": false,
+  "knowledge_and_report_ownership": "call_ally_tree_docs child supplies native tree/research-plan and Root day/week fields; call_ally_postcondition child supplies existing MCP independent membership/resource contract",
+  "native_span_label_correction": "SOURCE-AND-EXACT-CHAIN span legacy name send_clone at0x2968220 is not owningclone proof; it is the secondary virtualslot1 context-dependent continuation. The primary+0x40 nativeclone is0x86D760 from accepted manifest."
+}

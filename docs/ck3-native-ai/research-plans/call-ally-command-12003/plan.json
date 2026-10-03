@@ -1,0 +1,281 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "call-ally-command-12003",
+  "question": "How does a current-player call_ally command bind its selected war and native owning queue, and what independent state proves accepted support?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.3 / Steam25652598",
+    "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "human",
+    "owner_scope": "Root current player Robert29829 only; workers use isolated file projections",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "Current episode native-29829-2bc2d599f7f9 and exact current full recipient/WarIDs; no cached pointer reuse",
+    "producer_trigger": "not-applicable",
+    "producer": "File-only current stock, exact disassembly, accepted ABI reuse and sender source projection",
+    "caller": "Registered typed ck3_submit_call_ally_to_war_private_v1 and owning-thread SubmitCallAlly are static-ready; this lane performs file-only documentation adoption.",
+    "consumer": "Root source adoption and future fresh query -> submit -> independent outcome evaluation",
+    "cache_lifetime": "Native source19b508ae exact .3 baseline plus subsequent typed g36 source images; each command context is disposable per owning-thread request.",
+    "expected_signal": "Offline source/ABI chain only; no queue ACK or live participant is sampled here",
+    "zero_sample_meaning": "No runtime samples requested or collected; no rejection or successful call is inferred",
+    "stop_condition": "Generate plan/check/graph once; do not attach, advance, queue or operate windows",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "chain",
+      "layer": "exact-build",
+      "path": "evidence/exact-chain.json",
+      "sha256": "8f35bf7a1bc3ee528fd7e8b43fb509d9d4b38721d2f785784275d9cf6daa6690",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "supports": "Frozen .3 exact disassembly/source fingerprints; original labels preserved."
+    },
+    {
+      "id": "select",
+      "layer": "exact-build",
+      "path": "evidence/selected-war.txt",
+      "sha256": "1b0d9c727074c22c4aaad7cd84ce6d273baabd08d81b704ee402a199c2f0ddf6",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "supports": "UI writes type16 plus selected full WarID; wrapper offsets differ from standalone context."
+    },
+    {
+      "id": "ctor",
+      "layer": "exact-build",
+      "path": "evidence/send-constructor.txt",
+      "sha256": "3db1114328f94a65389d04363a5621d50b678425db249cff72da40c63147e3ad",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "supports": "CSend constructor at2968170 copies context at+20 and adds score fields."
+    },
+    {
+      "id": "copy",
+      "layer": "exact-build",
+      "path": "evidence/accepted-owning-copy-reuse.json",
+      "sha256": "67b0b811cc1526505274171f4db86cb0fcdcbc9c998f9840f55e6fe01e9f47d7",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "supports": "Accepted .3 reuse: actual primary+40 owning clone86D760; original continuation label corrected."
+    },
+    {
+      "id": "contract",
+      "layer": "source-contract",
+      "path": "evidence/source-contract.json",
+      "sha256": "1ee913e8c4aa3f106d245562277f565328e6b88d284c51d5a3eb215597ad7975",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "supports": "Native sender contract, matching current typed source pins and existing registered MCP/mailbox focused receipts; no actual runtime call."
+    },
+    {
+      "id": "sender",
+      "layer": "source-contract",
+      "path": "evidence/sender-source.cpp.txt",
+      "sha256": "3a5b02b8090e94cfc03a874133e20e4d4956d5018baa59515fa6980d17772577",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "supports": "SubmitCallAlly owning-thread frame, selected target, final legality/cost, copied identities, queue and cleanup."
+    },
+    {
+      "id": "queue",
+      "layer": "source-contract",
+      "path": "evidence/owning-queue.cpp.txt",
+      "sha256": "8d5806d2b57dc8d115bc6cb52ca7e4b6374e6be4b546ab813ea3b3b889324c2a",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "supports": "Native cloning, ownership handoff and residual deleting destructor; ACK is queue status only."
+    },
+    {
+      "id": "stock",
+      "layer": "source-contract",
+      "path": "evidence/call-ally-stock.txt",
+      "sha256": "ce59d7e662a856a3693a1cdace5bdd056831d8f3c6b4f192afe4d9a8a8584171",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "supports": "Current stock target, autoaccept/accept and decline branches."
+    },
+    {
+      "id": "fixture",
+      "layer": "offline-fixture",
+      "path": "evidence/native-focused-result.json",
+      "sha256": "2c4547f89c6460eec0181ea3048c8440b702c258cc3d07df27f729100e4c4479",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "supports": "Actual modified native sender, existing core/queue: 6 focused cases GREEN under /O2 /W4 /WX; no live action."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "frame",
+      "label": "Current paused player and fresh observation revision"
+    },
+    {
+      "id": "war",
+      "label": "Resolve full recipient and WarID; player is primary leader"
+    },
+    {
+      "id": "context",
+      "label": "Construct standalone call_ally context and selected type16 WarTarget"
+    },
+    {
+      "id": "legal",
+      "label": "Refresh/finalize and complete native selected-target CanSend"
+    },
+    {
+      "id": "cost",
+      "label": "Reevaluate all ten immediate native send costs against observed quote"
+    },
+    {
+      "id": "send",
+      "label": "Construct CSend with deep-copied definition/roles/target"
+    },
+    {
+      "id": "queue",
+      "label": "Primary+0x40 native clone; manager ownership transfer flags0x0E"
+    },
+    {
+      "id": "transport",
+      "label": "Registered outgoing MCP/mailbox and expected-revision binding"
+    },
+    {
+      "id": "outcome",
+      "label": "Independent newer participant, called-state and actual resource readback"
+    },
+    {
+      "id": "support",
+      "label": "Observed allied army and later actual support in selected war"
+    }
+  ],
+  "edges": [
+    {
+      "id": "selected",
+      "from": "frame",
+      "to": "war",
+      "label": "Full IDs, current primary leader, absent recipient and not previously called",
+      "status": "static-confirmed",
+      "evidence": [
+        "contract",
+        "sender",
+        "stock"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "bind",
+      "from": "war",
+      "to": "context",
+      "label": "Standalone basic context3076C90 and WarTarget type16/fullID",
+      "status": "static-confirmed",
+      "evidence": [
+        "select",
+        "contract",
+        "sender"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "validate",
+      "from": "context",
+      "to": "legal",
+      "label": "Refresh3078A60, finalize3078C90, picker307A690 and final CanSend307C040",
+      "status": "static-confirmed",
+      "evidence": [
+        "contract",
+        "sender"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "quote",
+      "from": "legal",
+      "to": "cost",
+      "label": "Native evaluator310CEE0 sets send_cost_sampled; compares ten signed slots; unobserved differs from legal zero quote",
+      "status": "static-confirmed",
+      "evidence": [
+        "contract",
+        "sender"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "copy_identity",
+      "from": "cost",
+      "to": "send",
+      "label": "Constructor2968170; roles/target/special instance and auxiliary roles reread in copied context",
+      "status": "static-confirmed",
+      "evidence": [
+        "ctor",
+        "contract",
+        "sender"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "owning_queue",
+      "from": "send",
+      "to": "queue",
+      "label": "Actual primary+40 clone86D760, move ownership and native residual destruction",
+      "status": "static-confirmed",
+      "evidence": [
+        "copy",
+        "contract",
+        "queue",
+        "sender"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "typed_transport",
+      "from": "queue",
+      "to": "transport",
+      "label": "Registered typed MCP and same-revision FAMILY quote -> owning mailbox -> native receipt",
+      "status": "static-confirmed",
+      "evidence": [
+        "contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "accepted_outcome",
+      "from": "transport",
+      "to": "outcome",
+      "label": "Call pending/autoaccept/accept/decline transition and independent participant/resource state",
+      "status": "unknown",
+      "evidence": [
+        "stock",
+        "contract"
+      ],
+      "open_question": "Future Root must independently observe selected-war participation and actual paid resources; queue submission is insufficient."
+    },
+    {
+      "id": "army_support",
+      "from": "outcome",
+      "to": "support",
+      "label": "Separate spawned/raised/arrived ally army and useful battle contribution",
+      "status": "unknown",
+      "evidence": [
+        "contract"
+      ],
+      "open_question": "Participant membership does not prove an allied army has arrived or fought."
+    }
+  ],
+  "cases": [
+    {
+      "id": "cost_change",
+      "question": "Can native-cost drift reject before submission?",
+      "status": "pending",
+      "evidence": [
+        "sender"
+      ]
+    },
+    {
+      "id": "fresh_selected_war",
+      "question": "Can current fullIDs and selected-war identity be observed after owning copy?",
+      "status": "pending",
+      "evidence": [
+        "sender"
+      ]
+    },
+    {
+      "id": "independent_outcome",
+      "question": "Does a real submitted call add the selected recipient to Robert defensive-war participants and charge actual costs?",
+      "status": "pending",
+      "evidence": [
+        "stock"
+      ]
+    }
+  ]
+}

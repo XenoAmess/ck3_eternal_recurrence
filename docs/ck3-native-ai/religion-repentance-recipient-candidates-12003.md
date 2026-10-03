@@ -48,3 +48,32 @@ flowchart TD
 验证artifact：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/repentance/candidate-focused-attempt-01/{RESULT.json,PYTHON-CANDIDATES-REGISTERED-RESULT.json,HARNESS-ATTEMPT-01-RED.json}`；请愿leaf为 `native-pam/focused-attempt-02/RESULT.json`。可复用consumer：`research/repentance12003_candidates_registered_wire_tests.py <wire-dir> <report-path>`；CMake新target为 `xar_ck3_12003_repentance_recipient_candidates_test` 与 `xar_ck3_12003_repentance_petition_decision_terms_test`。这些是synthetic callbacks的生产reader/wire证明，没有真实 paused候选、策略、动作或loop credit。
 
 本增量基于 `Z:/g35` 的source head `5b2030b09041dbfcea11104e15d155a3b9aac1d6`，仅外置独占projection修改。ROOT负责shared hunk合入、strict组合build和新实际候选sample。实际sample后如果有限候选都不可请求，下一施工为stock vassal/de-jure fallback实际collection和编译named PAM/petition trigger入口；不能拿head隐藏结束解除绝罚决策。
+
+## 2026-10-03 14:17（Asia/Shanghai）：v35 当前角色候选与一般请愿决议实读
+
+`ck3_query_player_repentance_context_v1` 新 sidecars达到 **production-live primitive**。actual artifact为 `Z:\ck3_mod_rewrite_process_assets\g2-resume-20261003\runtime-preparation\v35\actual-new-leaves-v35-01/012-ck3_query_player_repentance_context_v1.json`，SHA-256 `018634db4795da75cc90ff72d6d550262d65fc2180cf0f1eec3699978c98f887`。绑定 `Z:/g35` source `19b508ae4fa8e3ab09f4e8631fcf0340d69939c2`、DLL SHA-256 `e0c5e715a72a4defb6c4ccec503235821bca519db41d547b2ea10a994037ee91`、PID13408、actor29829、episode `native-29829-2bc2d599f7f9`、date53236608、epoch35754、public/native revision2。before011/after013的actor/episode/date/paused一致。批次result为RED，但这条悔罪query明确 `isError=false/status=observed/available=true`，不冒充整批GREEN，不把其他query RED归到悔罪能力。
+
+独立 `excommunicated=true`；Faith23 / Rite/mainRite152；旧 head preview继续 Shown=false、CanSend=false。新增角色实测：
+
+| 原生角色源 | actual full ID / 当前title链 | 资格 |
+| --- | --- | --- |
+| court chaplain superior | 29097 | production-live primitive |
+| capital clerical-region holder | -1；barony2143 → county2142 → clerical title -1 | production-live primitive，合法缺席 |
+| actor superior | 29097 | production-live primitive，只是角色源，未冒充theocracy preferred selector |
+| religious head or challenger | 29097 | production-live primitive，由原生final getter得当前authority |
+| court chaplain | 56513 | production-live primitive |
+
+去重后两actual candidates均完整取得原生final context：
+
+| requested recipient / 来源 | final 六角色 | Shown / CanSend | recipient score / outer raw | ordinary request ready |
+| --- | --- | --- | --- | --- |
+| 29097；chaplain superior、actor superior、head-or-challenger | `(29829,29097,-1,-1,-1,29829)` | false / false | -23 / 2 | false |
+| 56513；chaplain | `(29829,56513,-1,-1,-1,29829)` | false / false | +55 / 0 | false |
+
+两候选options均declared2、selected0、all_unselected=true；on_send十资源全0、auto_accept=false；intermediary角色-1且raw score10000000（operand100）。实际没有recipient redirect。接受度+55不能覆盖Shown/CanSend=false，outer0/2不映射收到的interaction答案；没有已观测可请求的ordinary入口，`first_observed_ordinary_legal_recipient_character_id=null`、`any_observed_ordinary_request_terms_ready=false`。这里null是已经完成有限候选评估后没有合法项，而不是未实现的观测placeholder。
+
+`petition_head_of_faith_decision` 与 `petition_antipope_decision` 两一般决议都available=true、Shown=false、CanTake=false、affordable=true，完整native CanTake reason已保存。unselected-root十资源全0，`selection_context/quote_context=unselected_player_root`、`repentance_option_quote_ready=false`。这些general决议不是已选择悔罪widget的quote；formatted reason保留原文，不能从条件组反推PAM/recent/绝罚单项布尔。独立trait=true仍是当前绝罚证据。
+
+该生产观测增量闭合了五个当前角色源、两actual候选和两general petition finalterms，解除决策仍 **NOT_READY**。下一最高依赖为 exact compiled PAM/requires-petition/mainRite clergy route，以及stock `every_vassal_or_below` / `every_clerical_region_in_dejure_title` fallback collection；后者只读实际FullID后复用同reader。随后接 `pope_excom` **character flag**、recent modifier、CanSend reason sink和选择 `scope:petition_head_of_faith_repentance` 的正确setup/cost。不能因为当前两候选全部隐藏而停止观测。这个package没有动作、解除、雇佣、推进日或完整loop credit。逐叶qualification与evidence pins见 `Z:\ck3_mod_rewrite_process_assets\g2-resume-20261003\repentance\actual-v35-01-analysis/OBSERVATION-QUALIFICATION.json`。
+
+本次 query 在 date53236608 取得，只增加上述只读资格。后续军务推进后的当前总进度3846/36524、date53236632，不改变这条历史 sample 的时间；本文整合不追加游戏日、发送、解除或 loop 信用。

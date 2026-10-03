@@ -293,3 +293,25 @@ v35五县最终native许可皆true、旧ActiveTaskFullID7162/owner29829/incumben
 实际记录：`2026-10-03T14:51:35+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
 
 交付回执：[county-conversion-native-task-action-adoption](Z:\ck3_mod_rewrite_process_assets\g2-resume-20261003\county-task-command-provider\ROOT-DELIVERY.json)。
+
+## 2026-10-03：v35 实际最终派遣资格与五县价值
+
+ROOT 在真实 paused v35 中读取 `ck3_query_player_clergy_appointment_v1`，014 查询 **GREEN**。该回执绑定 Robert **29829**、原 episode `native-29829-2bc2d599f7f9`、date raw **53236608**、snapshot `native:2`、public/native revision **2/2**、capture epoch **36128**、PID **13408**。live DLL 源码冻结于 `19b508ae4fa8e3ab09f4e8631fcf0340d69939c2`；exact build 仍为 **1.20.0.3 / Steam25652598**，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。这是保存下来的当帧结果，不能把后续 date **53236632** 或累计 **3846/36524** 的进度倒填到该帧。
+
+实际 owner29829、incumbent56513、ActiveTask **FullID7162**，当前为 `task_religious_relations` / type0 / infinite、未冻结、无县目标。`decision_inputs_complete=true`、`task_dispatch.eligibility_inputs_complete=true`、县 `action_eligibility_complete=true`；五个候选的最终 native command predicate 均为 **true**。外层 clergy appointment `action_eligibility_complete=false` 是另一项任命资格，不能据此拒绝这些任务派遣。
+
+| Province / FullTitleID | 亲持 / holder | 当前 Faith / Rite | 目的 Faith / Rite | 县当前总民意 | 预测 pp/月 | final can_dispatch | 已在该县执行 / 需要替换 |
+|---|---|---|---|---|---|---|---|
+| 2635 / 2102 | true / 29829 | 157 / 13 | 23 / 152 | -56 | 1.09917 | true | false / true |
+| 2638 / 2111 | true / 29829 | 157 / 13 | 23 / 152 | -75 | 1.17175 | true | false / true |
+| 2640 / 2115 | true / 29829 | 157 / 13 | 23 / 152 | -65 | 1.17175 | true | false / true |
+| 2627 / 2165 | false / 32716 | 24 / 153 | 23 / 152 | -68 | 1.20804 | true | false / true |
+| 2629 / 2173 | true / 29829 | 24 / 153 | 23 / 152 | -44 | 1.22013 | true | false / true |
+
+五项均是许可的非 no-op 目标，且均须替换当前 RR。亲持目标中 **2629 / 2173** 的原生预测月率最高，为 **1.22013 百分点/月**；这是候选价值观测，未记录已选择或派遣，也不是原生 AI 的实际选择。民意是当前县域聚合值，不是宗教组件、改宗后的反事实 delta 或实际收益。预测月率与现有 RR 的机会成本分别记账，不能把旧 RR 帧的 0.45 piety/月当成本帧重新实读值。
+
+当前实际 FullTaskID、owner、incumbent、Province 的 packet binding 已闭合；**FullTaskID7162 不能换成 TaskTypeID**。本查询没有提交 typed 命令、切换任务或读回新目标。该结果把最终资格观测提升为 **production-live primitive**；typed provider 的静态实现另行记账，完整派遣 OODA 仍需新的实际提交和独立 task/type/owner/incumbent/target 读回。成功派遣也不等于县 Faith/Rite 已转换。
+
+014 查询所属批次因独立 `ck3_query_battle_terminal_transition_v1` 返回 “typed query result is inconsistent” 而保留 RED；这不改变本县查询 GREEN。该真实战斗字段故障及其修复归战斗专题，不在这里重复验收。此次文件整合复用既有实际 consumer，新增 SDK / pipe / 窗口 / 动作 / 游戏日 / G2 credit 均为 **0**。
+
+实际证据：[014 查询](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v35/actual-new-leaves-v35-01/014-ck3_query_player_clergy_appointment_v1.json)，SHA-256 `11575973d6372e9a823d49093aed6b376508758940687dde5180f0668ce5c718`；[013 fresh snapshot](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v35/actual-new-leaves-v35-01/013-ck3_take_snapshot.json)，SHA-256 `602d23ea797389085fd753186150e5055307a26c8515324c0091bb5f2c1e1704`；[实际 consumer](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/county-conversion/actual-new-leaves-v35-01/COUNTY-DISPATCH-ACTUAL-CONSUMER.json)，SHA-256 `f04d878746bb4184370dbfb1290b3cc1de03ffe20c9673306f6fe84fdba2fa57`。

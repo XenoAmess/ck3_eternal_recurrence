@@ -1,5 +1,7 @@
 # CK3 1.20.0.3：绝罚与普通悔罪请求只读接口
 
+当前资格更新（v35，2026-10-03 14:17 实读）：独立绝罚、五个当前角色源、两实际候选和两一般请愿决议的最终条款已为 **production-live primitive**；解除决策仍 **NOT_READY**。29097 / 56513 均 Shown=false / CanSend=false；一般请愿的 unselected 报价不能当作悔罪选项。完整 actual frame、结果与边界见[当前候选专题的 v35 实读](religion-repentance-recipient-candidates-12003.md)。以下 research / static-ready 与尚未实现的措辞保留其各段原始时点，不能覆盖本次明确的生产观测增量。
+
 2026-10-03，readiness **static-ready**；外置源码投影基线 `8cf176b436b6b0024fb591d4114b92448146181a`。尚未应用生产、组合 DLL 或取得 Robert 新 paused sample。
 
 原生研究输入完整复用[绝罚/悔罪41段树](religion-excommunication-repentance-native-ai-12003.md)及其 `STOCK-TERMS.json`，没有重查已修 HoF 金额故障。实际必要性是 v32 order4 final hire reason 里的绝罚阻点，但本接口独立读 trait，不从该文本推定 trait=true。

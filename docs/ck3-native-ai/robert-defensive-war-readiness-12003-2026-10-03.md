@@ -2,7 +2,7 @@
 
 2026-10-03，项目所有者撤销所有非战约束，并要求继续战争与战斗研究。旧交接的 `--nonwar-only`、战争研究暂停和 `WAR_CASH/PREWAR` OFF 不再构成政策；具体 native producer 是否已经实现、exact-build 是否闭合、当前 native 命令是否合法仍按实际字段判断。本文不改变 Robert 唯一入口、原 campaign/episode、最小化不抢焦点和 native AI 研究优先。
 
-冻结 CK3 **1.20.0.3 / Steam build 25652598**，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。现有 v34 actual runtime 是 source/native `5b2030b09041dbfcea11104e15d155a3b9aac1d6`、PID119724；开发树的后续源码与实际 DLL 分开记账。本包只消费已保存文件并生成后续 query 配置，没有 SDK、窗口、游戏动作或新增日期。
+冻结 CK3 **1.20.0.3 / Steam build 25652598**，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。最初的 v34 actual runtime 是 source/native `5b2030b09041dbfcea11104e15d155a3b9aac1d6`、PID119724；后续 v35 实测见本文末尾。开发树的后续源码与实际 DLL 分开记账。本包只消费已保存文件并生成后续 query 配置，没有 SDK、窗口、游戏动作或新增日期。
 
 ## 当前帧先处理真实战场
 
@@ -100,3 +100,19 @@ v34 对实际敌方领袖30097、32750的战略查询均RED。迁移同时丢失
 实际记录：`2026-10-03T13:56:08+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
 
 交付回执：[war-entry-active-scope-adoption](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-native-readiness/permits/war-entry-fault/ROOT-DELIVERY.json)。
+
+## v35：已交战对手的战略查询实际恢复
+
+Root在最小化新PID13408/source-native `19b508ae4fa8e3ab09f4e8631fcf0340d69939c2` 的同一Robert episode、raw53236608暂停帧，只运行已修复的新leaf：`actual-new-leaves-v35-01/018`对30097、020对32750、022对新populist对手70766。三次single-target query均`status=available`、`readiness.ready=true`，分别query_sequence1/2/3；每call独立fresh snapshot绑定public2/native2，actual provenance发布当前1.20.0.3 exact SHA。原v34两个真实RED已由新DLL一次paused GREEN闭合；失败attempt保留，不重跑其他已GREEN军务。当前最高状态为**production-live primitive**，不是完整战争决策loop。
+
+| requested target | native effective target | actor base/network/total | target base/network/total | native target/actor ratio |
+| --- | --- | --- | --- | --- |
+| 30097 | 29097 | 64761 / 0 / 64761 | 127520 / 50800 / 178320 | 2.75350 |
+| 32750 | 32750 | 64761 / 0 / 64761 | 63080 / 0 / 63080 | 0.97404 |
+| 70766 | 70766 | 64761 / 0 / 64761 | 71520 / 0 / 71520 | 1.10436 |
+
+表中power来自raw/100000，ratio直接来自native，不是Python自行用人数计算的胜率。30097被原生估算映射到effective29097（当前信仰领袖）；这不证明Pope的全部部队或network已经加入实际War16777231。Network贡献是原生战略entry估算，不能写成已答应参战的盟友。三行target adjustment均0；distance_raw分别0/29900000/7400000，native_flags221/93/29、双向AI entry分别4/0、0/0、0/0原样保存，未闭合含义不补枚举。实际DTO没有底层native调用计数，只能记三个registered query及其sequence，不能把离线fixture的two-call计数套给实机。
+
+完整Root batch仍为RED：独立`ck3_query_battle_terminal_transition_v1`报告typed-query-result-inconsistent；这不污染三个独立war-entry GREEN，也不能抹去该失败。正常save026为history4677，90958031字节/SHA `68763fa1e189a6541b44b86061e9f7df780e5486201522a43236605d3d4a7994`，actor/date/episode未变。本只读batch未增加游戏日或部队动作。机器字段和原始snapshot/query/hello/save pins见 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-native-readiness/actual-v35-war-entry/ACTUAL.json`；下一步消费战略输入与当前actual route/contact/physical composition，继续已授权战争OODA。
+
+这份实测回执保留当时的终结 query RED。其真实生产字段遗漏与已采用的最小修复另见[终结 phase/date 故障专题](battle-terminal-phase-date-production-fault-1.20.0.3-2026-10-03.md)；源码修复和后续新 DLL 实测状态分别记账，不改写本批次的原始失败。
