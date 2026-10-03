@@ -23,6 +23,7 @@
 - [on_actions-events.md](on_actions-events.md) — on_action 覆盖/合并行为、开局钩子选择、effect 与事件的并发陷阱、延迟事件的 root 失效
 - [variables-scriptvalues.md](variables-scriptvalues.md) — 变量体系：global_var 的读写上下文差异、save_scope_value_as 显示链路、script value 数学
 - [sex-experience-attribute-drain-feasibility-1.20.0.3.md](sex-experience-attribute-drain-feasibility-1.20.0.3.md) — 新独立模组的性行为事件捕获、经验持久记录与特质展示、随机属性转移设计；CK3 1.20.0.3 源码研究，尚未实机
+- [《超人强》产品规则](../mod_superman_qiang/docs/product-contract.md) / [测试验收方案](../mod_superman_qiang/docs/test-plan.md) / [首轮静态报告](../mod_superman_qiang/docs/static-validation-2026-10-04.md) / [发布方案](../mod_superman_qiang/docs/release-plan.md) — 工坊标题《超人强：越超人越强》；变量记录经验，明确事件中的同项随机属性转移，独立开发与发布。
 - [testing-workflow.md](testing-workflow.md) — 实测流程：debug_mode 启动、日志断点标记法、tutorial.txt 验证、GUI 可视化调试面板
 - [acceptance-runner-latency.md](acceptance-runner-latency.md) — 场景测试 runner 暂停弹窗延迟：按场景量化瓶颈、证据边界、两级恢复与验收建议
 - [courtier-creator.md](courtier-creator.md) — 付费自定义廷臣 v2：七页生成目录、数值步进、动态来处、玩家隔离状态与原子扣金（CK3 1.19.0.6 实机 GREEN）

@@ -130,6 +130,18 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test Auto Upgrade Buildings release tooling
         run: python tools/test_build_auto_upgrade_buildings_release.py
+      - name: Test and validate Superman Qiang without CK3
+        run: |
+          python tools/test_independent_mod_release.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_superman_qiang/tools/test_build_release.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_superman_qiang/tools/test_runtime.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_superman_qiang/tools/validate_static.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_superman_qiang/tools/build_release.py --check
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test machine- and mod-scoped CK3 live-run IDs
         run: python tools/test_ck3_live_run_id.py
       - name: Test Reclaim the Motherland release tooling
