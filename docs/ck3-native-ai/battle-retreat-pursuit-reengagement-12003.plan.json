@@ -1,0 +1,203 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "battle-retreat-pursuit-12003-20261003",
+  "question": "After the actual foreign normal_result, which native retreat state prevents immediate reengagement, which existing read-only route fields describe it, and what minimal player pursuit decision can reuse those fields?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.3",
+    "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+    "steam_build": "25652598"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Foreign Combat1577058305 attacker70766 and defenders30097/35357; Robert29829 is outside both sides and remains sieging at2604.",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "Complete CUnit/CArmy/Combat/result IDs bind to the current ordinary Robert episode; a later frame must resolve each ID again and never infer destruction from absence.",
+    "producer_trigger": "not-applicable",
+    "producer": "Existing Root terminal journal event18 and paused snapshot; exact installed EXE retreat state/control flow is read from disk only.",
+    "caller": "This package consumes saved Root v39 terminal and day37 snapshots; no new game caller, SDK session or mutation is executed.",
+    "consumer": "Existing MCP snapshot, strength, reinforcement-assignment route signal and a Root-owned future movement decision.",
+    "cache_lifetime": "Saved artifacts are immutable evidence; current retreat state and route are frame-bound and must be queried after further ordinary advancement.",
+    "expected_signal": "Actual terminal_date_raw53238096 separate from query53238336; enemy retreating true and distinct stored route tails2631/8754; exact native retreat reentry branch, or a concrete unresolved getter.",
+    "zero_sample_meaning": "No new samples are planned or collected. A null AI-bound route signal does not mean zero travel time, no path, no retreat or no pursuit opportunity.",
+    "stop_condition": "One bounded file-only study of the actual saved event plus the exact-build retreat/reentry fields; Root receives the existing-query recipe and any minimal actionable gap.",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "actual_terminal",
+      "layer": "live-observation",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\runtime-preparation\\v39\\actual-terminal-after-pursuit-v39-01\\002-ck3_query_battle_terminal_transition_v1.json",
+      "sha256": "0066e2ef80ea49e158f87c9c27bf2e4431d3a91e73ecdf0a86abecb1705b2010",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "supports": "Reused actual Root foreign terminal event or current paused army/retreat scope; this package adds no live observation.",
+      "session": "v39 R0018 PID112516, ordinary Robert episode native-29829-2bc2d599f7f9",
+      "frame": "query date_raw53238336; terminal event date_raw53238096; day37 paused saved after-state",
+      "identity": "Combat1577058305; Robert CUnit83886367; enemy CUnits50331920/83886484"
+    },
+    {
+      "id": "actual_retreat_snapshot",
+      "layer": "live-observation",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\military-ooda-continuation\\siege-v39\\actual-stationary-siege-batch-2604-02\\day-37\\005-ck3_take_snapshot.json",
+      "sha256": "e8085c7055ff0de74fd8ea5c4d2ea4e8c0c4d93e5229d20e78bb012d8f7cddea",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "supports": "Reused actual Root foreign terminal event or current paused army/retreat scope; this package adds no live observation.",
+      "session": "v39 R0018 PID112516, ordinary Robert episode native-29829-2bc2d599f7f9",
+      "frame": "query date_raw53238336; terminal event date_raw53238096; day37 paused saved after-state",
+      "identity": "Combat1577058305; Robert CUnit83886367; enemy CUnits50331920/83886484"
+    },
+    {
+      "id": "actual_facts",
+      "layer": "live-observation",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-retreat-pursuit\\policy\\ACTUAL-EVIDENCE.json",
+      "sha256": "0d1b5a92914b123eefb72dae7cacb7adda86768b0e93e16f7cb41b89cb811886",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "supports": "Reused actual Root foreign terminal event or current paused army/retreat scope; this package adds no live observation.",
+      "session": "v39 R0018 PID112516, ordinary Robert episode native-29829-2bc2d599f7f9",
+      "frame": "query date_raw53238336; terminal event date_raw53238096; day37 paused saved after-state",
+      "identity": "Combat1577058305; Robert CUnit83886367; enemy CUnits50331920/83886484"
+    },
+    {
+      "id": "native_tree",
+      "layer": "source-contract",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-retreat-pursuit\\native-tree\\TREE\\NATIVE-TREE.md",
+      "sha256": "c510cefeac52b3d9013128103e8032df4fd21291bcf88ca56a9667a0c1bcd61a",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "supports": "Exact .3 disassembly interpretations for positive retreat state in ordinary movement/combat predicates, route-count lock release, and bounded coordinator update reuse; external native EVIDENCE.json pins the inspected bytes and sources."
+    },
+    {
+      "id": "native_fragments",
+      "layer": "exact-build",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-retreat-pursuit\\native-tree\\contact-entry-and-arrival.json",
+      "sha256": "0de2de7378a2dc0d16284e12279a22da196c8c2fa7ea4de8cbdd8968eec1ea75",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "supports": "Bounded current installed EXE contact gate and arrival fragments; byte identity supports the exact-build binding but does not alone prove semantics."
+    },
+    {
+      "id": "own_policy",
+      "layer": "source-contract",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-retreat-pursuit\\policy\\PURSUIT-POLICY.md",
+      "sha256": "24dbd7543d99f5bdc75dc1b7649c6ac2a783aa5c0ae2800b1f4685b053cb27b2",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "supports": "Minimal declared own pursuit policy is derived after the native tree was frozen, without claiming an observed native choice or a player action."
+    },
+    {
+      "id": "actual_timeline_50331920",
+      "layer": "live-observation",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\runtime-preparation\\v40\\actual-retreat-composition-v40-01\\004-ck3_query_battle_reinforcement_assignment_v1.json",
+      "sha256": "d2f9c7102a43f0dfcd6a2d983da610a6d130b0381ef496dd7fc2def7561d5079",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "supports": "Root actual existing-query payload is available/native_ready; bound AI membership and complete current committed route timeline are published independently of helping assignment.",
+      "session": "v40 R0019 PID28788, Z:/g42 source02e88d57fcef399368f34b23f497d3e8565af95d",
+      "frame": "paused native:9 public revision2 date_raw53238336; query source game_version/executable_sha256 null, exact build attached via Root runtime freeze",
+      "identity": "Selected public CUnit50331920; native CArmy33554713"
+    },
+    {
+      "id": "actual_timeline_83886484",
+      "layer": "live-observation",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\runtime-preparation\\v40\\actual-retreat-composition-v40-01\\006-ck3_query_battle_reinforcement_assignment_v1.json",
+      "sha256": "4094bfe5446c80c88814bc84903950e6c319cd2f5e70d6f9d0f179f08f8b7c41",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "supports": "Root actual existing-query payload is available/native_ready; bound AI membership and complete current committed route timeline are published independently of helping assignment.",
+      "session": "v40 R0019 PID28788, Z:/g42 source02e88d57fcef399368f34b23f497d3e8565af95d",
+      "frame": "paused native:9 public revision2 date_raw53238336; query source game_version/executable_sha256 null, exact build attached via Root runtime freeze",
+      "identity": "Selected public CUnit83886484; native CArmy150995083"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "foreign_terminal",
+      "label": "Actual foreign normal_result / attacker70766 winner"
+    },
+    {
+      "id": "retreat",
+      "label": "Current enemy CUnits50331920/83886484 retreating@2634"
+    },
+    {
+      "id": "stored_routes",
+      "label": "Distinct committed route tails2631/8754; player still sieging2604"
+    },
+    {
+      "id": "reengagement",
+      "label": "Native retreat completion and reengagement conditions"
+    },
+    {
+      "id": "player_decision",
+      "label": "Fresh route/state observations before an own pursuit decision"
+    },
+    {
+      "id": "native_timeline",
+      "label": "Actual available AI-bound committed route timing; final estimates51/42 days"
+    }
+  ],
+  "edges": [
+    {
+      "id": "actual_result",
+      "from": "foreign_terminal",
+      "to": "retreat",
+      "label": "Independent journal outcome and later actual paused enemy state",
+      "status": "live-confirmed",
+      "evidence": [
+        "actual_terminal",
+        "actual_retreat_snapshot"
+      ]
+    },
+    {
+      "id": "actual_routes",
+      "from": "retreat",
+      "to": "stored_routes",
+      "label": "Complete current routes are already published; old routes do not predict future state",
+      "status": "live-confirmed",
+      "evidence": [
+        "actual_retreat_snapshot"
+      ]
+    },
+    {
+      "id": "native_reentry",
+      "from": "retreat",
+      "to": "reengagement",
+      "label": "Positive +0x170 rejects ordinary move/contact and opposing candidate; raw3 clears when the remaining route reaches zero before arrival handling",
+      "status": "static-confirmed",
+      "evidence": [
+        "native_tree",
+        "native_fragments"
+      ]
+    },
+    {
+      "id": "fresh_player_decision",
+      "from": "stored_routes",
+      "to": "player_decision",
+      "label": "Preserve current productive siege; refresh enemy state/route and strength before a selected legal pursuit/contact action",
+      "status": "counter-policy",
+      "evidence": [
+        "native_tree",
+        "own_policy",
+        "actual_retreat_snapshot"
+      ]
+    },
+    {
+      "id": "published_timing",
+      "from": "stored_routes",
+      "to": "native_timeline",
+      "label": "Existing two MCP queries provide route arrival dates and first-edge Q100000 durations even with no_assignment",
+      "status": "live-confirmed",
+      "evidence": [
+        "actual_timeline_50331920",
+        "actual_timeline_83886484"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "foreign_no_player_credit",
+      "question": "Did Robert win or participate in this battle?",
+      "status": "observed",
+      "evidence": [
+        "actual_terminal",
+        "actual_retreat_snapshot"
+      ],
+      "result": "Robert remains outside both ordered sides and sieges2604; player victory credit0."
+    }
+  ]
+}
