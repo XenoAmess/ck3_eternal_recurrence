@@ -158,10 +158,52 @@ def restart_running_service(timeout_seconds: int) -> dict:
     return service_state()
 
 
+def require_steam_window_identity(hwnd: int, pid: int) -> None:
+    if steam_offline_fresh_frame._steam_windows() != [(hwnd, pid)]:
+        raise RuntimeError("selected Steam window identity changed during recovery")
+
+
+def uia_set_steam_focus(hwnd: int, pid: int) -> None:
+    """Focus only the selected Steam UIA root; the caller verifies foreground."""
+    try:
+        from pywinauto import Desktop
+    except ImportError as exc:
+        raise RuntimeError("UI Automation dependency is unavailable") from exc
+    try:
+        element = Desktop(backend="uia").window(handle=hwnd).wrapper_object().element_info.element
+        if (int(element.CurrentProcessId) != pid
+                or int(element.CurrentNativeWindowHandle) != hwnd):
+            raise RuntimeError("UI Automation root differs from the selected Steam window")
+        # Resolving the root can take time; bind the live HWND/PID again
+        # immediately before the only UIA action.
+        require_steam_window_identity(hwnd, pid)
+        element.SetFocus()
+    except Exception as exc:
+        raise RuntimeError(f"UI Automation could not focus selected Steam window: {exc}") from exc
+
+
+def wait_steam_foreground(hwnd: int) -> bool:
+    # Windows can apply either native or UIA activation asynchronously.
+    deadline = time.monotonic() + 2.0
+    while win32gui.GetForegroundWindow() != hwnd:
+        if time.monotonic() >= deadline:
+            return False
+        time.sleep(0.05)
+    return True
+
+
 def capture_fresh_frame(output_dir: Path, hwnd: int, bring_forward: bool,
                         clock_reference: Path | None = None,
-                        clock_rect: tuple[int, int, int, int] | None = None) -> dict:
+                        clock_rect: tuple[int, int, int, int] | None = None,
+                        *, expected_steam_pid: int | None = None) -> dict:
+    windows = steam_offline_fresh_frame._steam_windows()
+    if len(windows) != 1 or windows[0][0] != hwnd:
+        raise RuntimeError("selected Steam window identity changed during recovery")
+    steam_pid = windows[0][1] if expected_steam_pid is None else expected_steam_pid
+    require_steam_window_identity(hwnd, steam_pid)
     previous = win32gui.GetForegroundWindow()
+    activation = {"method": "already_foreground", "steam_hwnd": hwnd,
+                  "steam_pid": steam_pid, "previous_foreground_hwnd": previous}
     if previous != hwnd:
         if not bring_forward:
             raise RuntimeError("Steam is not foreground; pass --bring-steam-forward under the screen lease")
@@ -171,15 +213,23 @@ def capture_fresh_frame(output_dir: Path, hwnd: int, bring_forward: bool,
         try:
             win32gui.SetForegroundWindow(hwnd)
         except pywintypes.error as exc:
-            raise RuntimeError("could not make Steam foreground") from exc
+            activation["native_error"] = str(exc)
         # Windows may apply SetForegroundWindow after the call returns.  A
         # single immediate read falsely rejected a healthy Steam window in
         # attempt 088, even though the next preflight saw it in front.
-        deadline = time.monotonic() + 2.0
-        while win32gui.GetForegroundWindow() != hwnd:
-            if time.monotonic() >= deadline:
-                raise RuntimeError("could not make Steam foreground")
-            time.sleep(0.05)
+        if wait_steam_foreground(hwnd):
+            activation["method"] = "SetForegroundWindow"
+        else:
+            require_steam_window_identity(hwnd, steam_pid)
+            try:
+                uia_set_steam_focus(hwnd, steam_pid)
+            except RuntimeError as exc:
+                raise RuntimeError(f"could not make Steam foreground: {exc}") from exc
+            if not wait_steam_foreground(hwnd):
+                raise RuntimeError("could not make Steam foreground after UI Automation SetFocus")
+            activation["method"] = "IUIAutomationElement.SetFocus"
+    require_steam_window_identity(hwnd, steam_pid)
+    activation["verified_foreground_hwnd"] = hwnd
     receipt = None
     try:
         if clock_reference is None:
@@ -187,6 +237,8 @@ def capture_fresh_frame(output_dir: Path, hwnd: int, bring_forward: bool,
         else:
             receipt = steam_offline_fresh_frame.capture(
                 output_dir, clock_reference=clock_reference, clock_rect=clock_rect)
+        require_steam_window_identity(hwnd, steam_pid)
+        receipt["foreground_activation"] = activation
         return receipt
     finally:
         if previous != hwnd and win32gui.IsWindow(previous):
@@ -304,11 +356,14 @@ def recover(args: argparse.Namespace) -> dict:
                     clock_reference = getattr(args, "stale_clock_reference", None)
                     clock_rect = getattr(args, "stale_clock_rect", None)
                     if clock_reference is None:
-                        receipt = capture_fresh_frame(probe_dir, hwnd, args.bring_steam_forward)
+                        receipt = capture_fresh_frame(
+                            probe_dir, hwnd, args.bring_steam_forward,
+                            expected_steam_pid=steam_pid)
                     else:
                         receipt = capture_fresh_frame(
                             probe_dir, hwnd, args.bring_steam_forward,
-                            clock_reference=clock_reference, clock_rect=tuple(clock_rect))
+                            clock_reference=clock_reference, clock_rect=tuple(clock_rect),
+                            expected_steam_pid=steam_pid)
                     frame_reference = getattr(args, "stale_frame_reference", None)
                     if frame_reference is not None:
                         reject_repeated_frame(frame_reference, receipt, probe_dir)
@@ -332,8 +387,7 @@ def recover(args: argparse.Namespace) -> dict:
                         break
                     restarted = restart_running_service(args.service_timeout_seconds)
                     record("todesk_restarted", state=restarted)
-            if not any(pid == steam_pid for _, pid in steam_offline_fresh_frame._steam_windows()):
-                raise RuntimeError("Steam UI process identity changed during recovery")
+            require_steam_window_identity(hwnd, steam_pid)
         except (OSError, ValueError, RuntimeError, TimeoutError, subprocess.SubprocessError) as exc:
             outcome = "recovery_error"
             fields = {"error_type": type(exc).__name__, "error": str(exc)}

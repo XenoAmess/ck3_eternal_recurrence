@@ -42,3 +42,15 @@ More Tenets Slots(XA) v10 发布完成后，屏幕独占 root 多次点击官方
 重新打开 Steam 时保留 `-cef-disable-gpu`，再用官方菜单进入离线，约 8 秒后的新原图明确显示“离线模式”。本次窗口水平位置从 40 移至 80 时画面实时变化，随后审阅新图，CK3 仍为 0。该位移是当次画面响应证据，坐标不是后续通用默认值。最终 `steam-offline-verification.json` 于 `2026-10-02T22:29:12Z` 记录 PASS，审阅 PNG SHA-256 为 `ae469ee6cfa4529bd6dabc46462ced4e1681b479a0be4c51a2e559117b2c264a`。具体收据和原图留在独立项目的 [v10 发布报告](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/master/docs/workshop/publication-v10.md)，这里不复制完整进程命令行、上传 URL、机器路径或产物。
 
 这次闭环验证的是“正常退出、取消已核对的本机孤儿报告窗口、重新打开、官方菜单切换、鲜图读回”的组合路径，没有隔离 A/B，不能认定 CrashReporter 是菜单无反应的单一根因。操作没有注销账号、接管远端游戏、启动 CK3或结束其他游戏。后续遇到相同现象时仍先核对当前进程、报告窗口归属和屏幕占用；本文没有新增自动离线 MCP，也没有将上述桌面取证工具扩为模式控制工具。框架作者仅记录 root 提供的实证，没有执行此次 Steam 或桌面操作。
+
+## 2026-10-04 原生置前被拒绝时的 UIA 聚焦补充
+
+《超人强》启动前离线预检的 `offline-a06/events.jsonl` 保留了唯一 Steam 窗口 `HWND=460192`、`PID=1896`，以及 `SetForegroundWindow` 被拒绝后 `could not make Steam foreground` 的失败结果。随后屏幕执行者以已有 `pywinauto` 的 UIA backend 获取同一 HWND 的 `IUIAutomationElement` 并调用 `SetFocus()`；外置 `steam-uia-focus-a01/receipt.json` 记录执行者不是管理员，前台 HWND 从 `33294390` 实读变为 `460192`，没有鼠标或键盘操作。该操作记录在 `D:/ck3-experience-drain-feasibility-20261004/steam_uia_focus_a01.py`，未覆盖原失败 attempt。
+
+同次后续 `offline-a07/recovery.json` 于 `2026-10-03T19:53:05Z` 报 `fresh_frame_needs_offline_visual_review`，Steam 仍为上述 HWND/PID，ToDesk 服务仍运行。该 attempt 的原始新图 `probe-1/steam-moved.png` 为 857,295 字节，SHA-256 `DEB98EF078E63C0AC1BEE38A9397935B946336931046DA6BCC3DA6F72D6032D4`。root 对此图直接审阅离线标识后继续预检；这证明当次 UIA 聚焦路径可用，未以提权或重启服务处理单纯置前失败。
+
+通用工具现在先保留原生 `SetForegroundWindow` 与最多两秒的前台实读等待；若目标仍未在前台，才在现有独占屏幕及 `--bring-steam-forward` 授权下，尝试对已选中的 Steam HWND 调用 UIA `SetFocus()`。它沿用本机已安装的 `pywinauto`，按需导入，不新增依赖安装。前检 PID 会传入采集函数；当前唯一 Steam HWND/PID、UIA 根的 `CurrentNativeWindowHandle`/`CurrentProcessId` 必须一致，解析根后及动作前后再次复核活窗口身份。UIA 返回仍不能证明置前成功：工具继续等候并实读 `GetForegroundWindow()`，未达到原目标便拒绝采集。依赖不可用、身份变化或前台仍不正确均保留明确失败，不触发 ToDesk stale 重启分支。
+
+成功的 `fresh_frame` 事件回执额外记录 `foreground_activation`，包含方法、前台变化和已核验的 Steam HWND/PID；原生拒绝时保留 `native_error`。原有 `steam-frame-freshness.json` 的图像证据合同保持不变，离线状态仍必须直接审阅新图。
+
+此补丁只完成离线模拟校验，没有再次聚焦窗口、采集桌面、切换 Steam 模式或运行 CK3。`tools/.venv/Scripts/python.exe tools/test_desktop_steam_offline_recovery.py` 的 29 项测试通过，其中新增覆盖原生拒绝后的 UIA 成功、缺少 UIA、目标 PID 变化、UIA 根 HWND/PID 不符、解析期间身份变化、正确根聚焦，以及 UIA ACK 后前台仍错误时拒绝采集。上述当次实机成功发生于独立脚本；不能将模拟通过写成新补丁已在游戏运行期间实机复验。

@@ -8,8 +8,10 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 import time
+from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
 import pywintypes
@@ -189,7 +191,8 @@ class DesktopRecoveryTests(unittest.TestCase):
 
     def test_foreground_activation_waits_for_async_window_switch(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
-            with (patch.object(recovery.win32gui, "GetForegroundWindow",
+            with (patch.object(freshness, "_steam_windows", return_value=[(123, 456)]),
+                  patch.object(recovery.win32gui, "GetForegroundWindow",
                                side_effect=[999, 999, 123]),
                   patch.object(recovery.win32gui, "ShowWindow"),
                   patch.object(recovery.win32gui, "SetForegroundWindow") as activate,
@@ -205,7 +208,8 @@ class DesktopRecoveryTests(unittest.TestCase):
 
     def test_minimized_steam_is_restored_before_fresh_capture(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
-            with (patch.object(recovery.win32gui, "GetForegroundWindow",
+            with (patch.object(freshness, "_steam_windows", return_value=[(123, 456)]),
+                  patch.object(recovery.win32gui, "GetForegroundWindow",
                                side_effect=[999, 123]),
                   patch.object(recovery.win32gui, "IsIconic", return_value=True),
                   patch.object(recovery.win32gui, "ShowWindow") as show,
@@ -219,17 +223,22 @@ class DesktopRecoveryTests(unittest.TestCase):
 
     def test_foreground_denial_becomes_recovery_runtime_error(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
-            with (patch.object(recovery.win32gui, "GetForegroundWindow", return_value=999),
+            with (patch.object(freshness, "_steam_windows", return_value=[(123, 456)]),
+                  patch.object(recovery.win32gui, "GetForegroundWindow", return_value=999),
                   patch.object(recovery.win32gui, "IsIconic", return_value=True),
                   patch.object(recovery.win32gui, "ShowWindow"),
                   patch.object(recovery.win32gui, "SetForegroundWindow",
-                               side_effect=pywintypes.error(0, "SetForegroundWindow", "denied"))):
+                               side_effect=pywintypes.error(0, "SetForegroundWindow", "denied")),
+                  patch.object(recovery, "wait_steam_foreground", return_value=False),
+                  patch.object(recovery, "uia_set_steam_focus",
+                               side_effect=RuntimeError("UI Automation unavailable"))):
                 with self.assertRaisesRegex(RuntimeError, "could not make Steam foreground"):
                     recovery.capture_fresh_frame(Path(temp), 123, True)
 
     def test_foreground_restore_denial_keeps_fresh_frame_receipt(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
-            with (patch.object(recovery.win32gui, "GetForegroundWindow",
+            with (patch.object(freshness, "_steam_windows", return_value=[(123, 456)]),
+                  patch.object(recovery.win32gui, "GetForegroundWindow",
                                side_effect=[999, 123]),
                   patch.object(recovery.win32gui, "ShowWindow"),
                   patch.object(recovery.win32gui, "SetForegroundWindow",
@@ -241,6 +250,133 @@ class DesktopRecoveryTests(unittest.TestCase):
                 receipt = recovery.capture_fresh_frame(Path(temp), 123, True)
         self.assertTrue(receipt["moving_edge_changed"])
         self.assertIn("SetForegroundWindow", receipt["foreground_restore_error"])
+
+    def test_native_foreground_denial_uses_uia_and_reads_actual_foreground(self) -> None:
+        current = {"hwnd": 999}
+
+        def focus(hwnd: int, pid: int) -> None:
+            self.assertEqual((hwnd, pid), (123, 456))
+            current["hwnd"] = hwnd
+
+        with tempfile.TemporaryDirectory() as temp:
+            with (patch.object(freshness, "_steam_windows", return_value=[(123, 456)]),
+                  patch.object(recovery.win32gui, "GetForegroundWindow",
+                               side_effect=lambda: current["hwnd"]),
+                  patch.object(recovery.win32gui, "IsIconic", return_value=False),
+                  patch.object(recovery.win32gui, "ShowWindow"),
+                  patch.object(recovery.win32gui, "SetForegroundWindow",
+                               side_effect=pywintypes.error(5, "SetForegroundWindow", "denied")),
+                  patch.object(recovery.win32gui, "IsWindow", return_value=False),
+                  patch.object(recovery.time, "monotonic", side_effect=[0.0, 3.0, 3.0]),
+                  patch.object(recovery, "uia_set_steam_focus", side_effect=focus) as uia,
+                  patch.object(freshness, "capture", return_value={"moving_edge_changed": True}) as capture):
+                receipt = recovery.capture_fresh_frame(Path(temp), 123, True,
+                                                      expected_steam_pid=456)
+        uia.assert_called_once_with(123, 456)
+        capture.assert_called_once()
+        self.assertEqual(receipt["foreground_activation"]["method"],
+                         "IUIAutomationElement.SetFocus")
+        self.assertEqual(receipt["foreground_activation"]["verified_foreground_hwnd"], 123)
+        self.assertIn("denied", receipt["foreground_activation"]["native_error"])
+
+    def test_uia_dependency_missing_does_not_capture(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            with (patch.object(freshness, "_steam_windows", return_value=[(123, 456)]),
+                  patch.object(recovery.win32gui, "GetForegroundWindow", return_value=999),
+                  patch.object(recovery.win32gui, "IsIconic", return_value=False),
+                  patch.object(recovery.win32gui, "ShowWindow"),
+                  patch.object(recovery.win32gui, "SetForegroundWindow",
+                               side_effect=pywintypes.error(5, "SetForegroundWindow", "denied")),
+                  patch.object(recovery, "wait_steam_foreground", return_value=False),
+                  patch.dict(sys.modules, {"pywinauto": None}),
+                  patch.object(freshness, "capture") as capture):
+                with self.assertRaisesRegex(RuntimeError, "UI Automation dependency is unavailable"):
+                    recovery.capture_fresh_frame(Path(temp), 123, True)
+        capture.assert_not_called()
+
+    def test_changed_target_identity_before_uia_does_not_focus_or_capture(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            with (patch.object(freshness, "_steam_windows",
+                               side_effect=[[(123, 456)], [(123, 456)], [(123, 789)]]),
+                  patch.object(recovery.win32gui, "GetForegroundWindow", return_value=999),
+                  patch.object(recovery.win32gui, "IsIconic", return_value=False),
+                  patch.object(recovery.win32gui, "ShowWindow"),
+                  patch.object(recovery.win32gui, "SetForegroundWindow"),
+                  patch.object(recovery, "wait_steam_foreground", return_value=False),
+                  patch.object(recovery, "uia_set_steam_focus") as uia,
+                  patch.object(freshness, "capture") as capture):
+                with self.assertRaisesRegex(RuntimeError, "selected Steam window identity changed"):
+                    recovery.capture_fresh_frame(Path(temp), 123, True)
+        uia.assert_not_called()
+        capture.assert_not_called()
+
+    def test_uia_ack_with_wrong_foreground_does_not_capture(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            with (patch.object(freshness, "_steam_windows", return_value=[(123, 456)]),
+                  patch.object(recovery.win32gui, "GetForegroundWindow", return_value=999),
+                  patch.object(recovery.win32gui, "IsIconic", return_value=False),
+                  patch.object(recovery.win32gui, "ShowWindow"),
+                  patch.object(recovery.win32gui, "SetForegroundWindow"),
+                  patch.object(recovery.time, "monotonic", side_effect=[0.0, 3.0, 3.0, 6.0]),
+                  patch.object(recovery, "uia_set_steam_focus") as uia,
+                  patch.object(freshness, "capture") as capture):
+                with self.assertRaisesRegex(RuntimeError, "foreground after UI Automation SetFocus"):
+                    recovery.capture_fresh_frame(Path(temp), 123, True)
+        uia.assert_called_once_with(123, 456)
+        capture.assert_not_called()
+
+    def test_preflight_pid_change_is_rejected_before_native_activation(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            with (patch.object(freshness, "_steam_windows", return_value=[(123, 789)]),
+                  patch.object(recovery.win32gui, "ShowWindow") as show,
+                  patch.object(recovery.win32gui, "SetForegroundWindow") as native,
+                  patch.object(recovery, "uia_set_steam_focus") as uia,
+                  patch.object(freshness, "capture") as capture):
+                with self.assertRaisesRegex(RuntimeError, "selected Steam window identity changed"):
+                    recovery.capture_fresh_frame(Path(temp), 123, True,
+                                                 expected_steam_pid=456)
+        show.assert_not_called()
+        native.assert_not_called()
+        uia.assert_not_called()
+        capture.assert_not_called()
+
+    def test_uia_root_hwnd_and_pid_must_match_selected_window(self) -> None:
+        for root_hwnd, root_pid in ((999, 456), (123, 789)):
+            with self.subTest(hwnd=root_hwnd, pid=root_pid):
+                element = Mock(CurrentNativeWindowHandle=root_hwnd,
+                               CurrentProcessId=root_pid)
+                desktop = Mock()
+                desktop.return_value.window.return_value.wrapper_object.return_value.element_info.element = element
+                with (patch.dict(sys.modules, {"pywinauto": SimpleNamespace(Desktop=desktop)}),
+                      patch.object(recovery, "require_steam_window_identity") as identity):
+                    with self.assertRaisesRegex(RuntimeError, "UI Automation root differs"):
+                        recovery.uia_set_steam_focus(123, 456)
+                element.SetFocus.assert_not_called()
+                identity.assert_not_called()
+
+    def test_uia_checks_live_identity_after_resolving_root_before_set_focus(self) -> None:
+        element = Mock(CurrentNativeWindowHandle=123, CurrentProcessId=456)
+        desktop = Mock()
+        desktop.return_value.window.return_value.wrapper_object.return_value.element_info.element = element
+        with (patch.dict(sys.modules, {"pywinauto": SimpleNamespace(Desktop=desktop)}),
+              patch.object(recovery, "require_steam_window_identity",
+                           side_effect=RuntimeError("selected Steam window identity changed")) as identity):
+            with self.assertRaisesRegex(RuntimeError, "selected Steam window identity changed"):
+                recovery.uia_set_steam_focus(123, 456)
+        desktop.assert_called_once_with(backend="uia")
+        desktop.return_value.window.assert_called_once_with(handle=123)
+        identity.assert_called_once_with(123, 456)
+        element.SetFocus.assert_not_called()
+
+    def test_uia_sets_focus_only_on_the_matching_root(self) -> None:
+        element = Mock(CurrentNativeWindowHandle=123, CurrentProcessId=456)
+        desktop = Mock()
+        desktop.return_value.window.return_value.wrapper_object.return_value.element_info.element = element
+        with (patch.dict(sys.modules, {"pywinauto": SimpleNamespace(Desktop=desktop)}),
+              patch.object(recovery, "require_steam_window_identity") as identity):
+            recovery.uia_set_steam_focus(123, 456)
+        identity.assert_called_once_with(123, 456)
+        element.SetFocus.assert_called_once_with()
 
     def test_stale_screen_record_is_ignored_only_when_its_pid_is_dead(self) -> None:
         old = {**task("old"), "stale": True, "pid": 2696}
