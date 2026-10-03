@@ -1,0 +1,301 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-relief-siege-12003",
+  "question": "Which current exact-build native siege/relief score branches are closed, and what existing observations support the minimum Robert relief-versus-own-siege or one-day assault choice?",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.20.0.3",
+    "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "Native .3 AI scoring branches only; current Robert29829 episode/date are root-provided read-only targeting baseline, not a new observation.",
+    "identity_kind": "definition-key",
+    "identity_lifetime": "This exact EXE and current stock bytes only; future runtime rows must independently bind actor/full WarID/ProvinceID/SiegeID/native/public revisions/date/session.",
+    "producer_trigger": "not-applicable",
+    "producer": "Current stock defines and exact PE registration/consumer bytes; no game producer invocation.",
+    "caller": "Offline extractor reads PE pdata instruction spans; existing root-owned MCP registrations are recipes only.",
+    "consumer": "Native decision tree and input ledger; ROOT may use the bounded own-policy construction after actual paused queries.",
+    "cache_lifetime": "Frozen file bytes only; not a runtime cache, new build/source requires separate evidence.",
+    "expected_signal": "Ordered exclusive tactical bonus branch, signed day/progress/occupation comparisons, registered query field availability and explicit open AI assault desirability branch.",
+    "zero_sample_meaning": "No new runtime samples were requested or collected. Source availability is not current Robert availability; null is not false or zero.",
+    "stop_condition": "Stop at siege/relief/assault inputs; do not duplicate route or battle damage work, submit gameplay, alter source, run prose tests or repeat episode03 GREEN.",
+    "runtime_window_ref": "None: FILE-ONLY delegated research; ROOT owns all process/MCP/game/Windows actions."
+  },
+  "evidence": [
+    {
+      "id": "stock-ai",
+      "layer": "source-contract",
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\ai\\00_ai.txt",
+      "sha256": "3af5d4100789bad56570e05c5852f35783605813957de7a5129d23142a116120",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Current relief/continuation/break/near-victory and help numeric definitions; native comparisons override stale comments."
+    },
+    {
+      "id": "stock-stances",
+      "layer": "source-contract",
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\ai_war_stances\\00_ai_war_stances.txt",
+      "sha256": "4f5aa322c4d7272338f4c7b111b7462d4a1fec886e93e7178084d318ceb8e294",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Current defender objective priorities and ordered blocks; not actual Robert stance."
+    },
+    {
+      "id": "stock-info",
+      "layer": "source-contract",
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\ai_war_stances\\_ai_war_stances.info",
+      "sha256": "0f01aaab6922fdca19b87a4421768f83b0c75534a128a73af8cecadd52f6205e",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Definitions of war goal/enemy/defend fallback objectives."
+    },
+    {
+      "id": "exact-ai",
+      "layer": "exact-build",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-relief-siege-ai\\projection\\docs\\ck3-native-ai\\research-plans\\war-relief-siege-12003\\exact-proof.json",
+      "sha256": "40c8d5e4cd02c733ac3c1defcc56553bf2d28a519e0be01a6d5dca405617c27b",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Current .3 registration slots, positive consumer branch instructions and direct call anchors; no machine execution."
+    },
+    {
+      "id": "semantic-ledger",
+      "layer": "source-contract",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-relief-siege-ai\\projection\\docs\\ck3-native-ai\\war-relief-siege-native-ai-12003.md",
+      "sha256": "dd3073932146de2db61da9866354b5e47c8afe48e240f2c3b7e75a4487aac5f1",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Manual interpretation of exact consumer instructions, ordered branches and honest observation boundaries."
+    },
+    {
+      "id": "siege-study",
+      "layer": "source-contract",
+      "path": "Z:\\g35\\docs\\ck3-native-ai\\episode03-siege-progress-1.20.0.3.md",
+      "sha256": "f03e27d000202ad67489126c8a3a5946a5a49b9692a1149595dd8fb1a954b948",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Existing ordinary siege exact formulas/getter and observation boundaries reused."
+    },
+    {
+      "id": "assault-study",
+      "layer": "source-contract",
+      "path": "Z:\\g35\\docs\\ck3-native-ai\\episode03-assault-1.20.0.3.md",
+      "sha256": "fffa08845817596dc5b801a3c55ba4d30ecf510f9b14642bb70304554c2d7163",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Existing .3 start/stop legality and one-day projections reused."
+    },
+    {
+      "id": "episode-live-ledger",
+      "layer": "source-contract",
+      "path": "Z:\\g35\\docs\\ck3-native-ai\\episode03-william-lewes-live-2026-10-03.md",
+      "sha256": "9743d0107f20d256380a8d6d7da6f9e67ca4bda0b0f6643a9fab376aaaa2ec4e",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Reviewed existing live evidence ledger: William, not Robert; no new live evidence in this packet."
+    },
+    {
+      "id": "mcp-registration",
+      "layer": "source-contract",
+      "path": "Z:\\g35\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "sha256": "eb01ef4704914ec5f207065712a6d3c8a01423c77c049681c9f02edb59d61158",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Existing snapshot/war/army/contact/battle-control/reinforcement/assault tools and arguments."
+    },
+    {
+      "id": "adapter-registration",
+      "layer": "source-contract",
+      "path": "Z:\\g35\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_adapter.cpp",
+      "sha256": "73d66ca49908aeabc9a172fe61214da797465bfa5b8a790c2573c73d4a37b38e",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Inherited objective siege and route-contact capabilities; lacks province-local-siege advertisement."
+    },
+    {
+      "id": "route-contract",
+      "layer": "source-contract",
+      "path": "Z:\\g35\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_contract.py",
+      "sha256": "b8f157fc5d0f14e50cc28d805c78795337b6b24061a978a0ad44a69289ccd87d",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Exact sorted-hostile route-contact query grammar."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "stance",
+      "label": "Current stock side/stance/objective priorities"
+    },
+    {
+      "id": "pair",
+      "label": "1A05200 army/province score inputs"
+    },
+    {
+      "id": "local",
+      "label": "1A140C0 ordered exclusive +500/+190/+80/+70"
+    },
+    {
+      "id": "siegecost",
+      "label": "1A070F0 continue +80 / break -100 x native ratio"
+    },
+    {
+      "id": "leave",
+      "label": "1A1B9B0 leave-siege branch; days >30 and weapons membership"
+    },
+    {
+      "id": "help",
+      "label": "19F29D0 progress >=0.6 selects 1.7 rather than 1.5"
+    },
+    {
+      "id": "selector",
+      "label": "Unknown complete current-build candidate ranking and final assignment"
+    },
+    {
+      "id": "legal",
+      "label": "Existing exact .3 assault validator and projections"
+    },
+    {
+      "id": "aiassault",
+      "label": "Unknown autonomous AI assault utility/caller"
+    },
+    {
+      "id": "observe",
+      "label": "Existing registered same-frame target/army/contact queries"
+    },
+    {
+      "id": "policy",
+      "label": "Own policy: goal urgency plus contact/ETA; one-day assault slice"
+    }
+  ],
+  "edges": [
+    {
+      "id": "source-priority",
+      "from": "stance",
+      "to": "pair",
+      "label": "stock supplies priority; producer/candidate mapping remains open",
+      "status": "inference",
+      "evidence": [
+        "stock-stances",
+        "stock-info"
+      ],
+      "open_question": "Close current .3 expansion, exact stance choice and candidate flags before exact AI emulation."
+    },
+    {
+      "id": "local-call",
+      "from": "pair",
+      "to": "local",
+      "label": "1A0584E calls local scorer",
+      "status": "static-confirmed",
+      "evidence": [
+        "exact-ai",
+        "semantic-ledger"
+      ]
+    },
+    {
+      "id": "stack-call",
+      "from": "pair",
+      "to": "siegecost",
+      "label": "1A05A62 calls stack/province modifier",
+      "status": "static-confirmed",
+      "evidence": [
+        "exact-ai",
+        "semantic-ledger"
+      ]
+    },
+    {
+      "id": "leave-input",
+      "from": "siegecost",
+      "to": "leave",
+      "label": "1A081D2 consumes native leave-siege bool",
+      "status": "static-confirmed",
+      "evidence": [
+        "exact-ai",
+        "semantic-ledger"
+      ]
+    },
+    {
+      "id": "help-progress",
+      "from": "pair",
+      "to": "help",
+      "label": "independent help branch reads current native siege progress",
+      "status": "static-confirmed",
+      "evidence": [
+        "exact-ai",
+        "stock-ai"
+      ]
+    },
+    {
+      "id": "ranking",
+      "from": "siegecost",
+      "to": "selector",
+      "label": "full .3 selector not migrated by this packet",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Reuse prior 1.19 target-selection research as locator, then relocate current-build producer/sort/commit only if exact score emulation is requested."
+    },
+    {
+      "id": "assault-desire",
+      "from": "selector",
+      "to": "aiassault",
+      "label": "legality is not NPC choice",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Trace 1436930 ownership and assault kind0E constructors/dispatch; direct-call census does not exclude indirect AI calls."
+    },
+    {
+      "id": "query-contract",
+      "from": "legal",
+      "to": "observe",
+      "label": "existing current objective siege/assault schema and MCP",
+      "status": "static-confirmed",
+      "evidence": [
+        "assault-study",
+        "mcp-registration",
+        "adapter-registration"
+      ]
+    },
+    {
+      "id": "bounded-policy",
+      "from": "observe",
+      "to": "policy",
+      "label": "minimal player policy after current inputs; no exact AI rank gate",
+      "status": "counter-policy",
+      "evidence": [
+        "siege-study",
+        "assault-study",
+        "episode-live-ledger",
+        "mcp-registration"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "exclusive-bonus",
+      "question": "Can relief +190 and contact +80 be added?",
+      "status": "not-applicable",
+      "evidence": [
+        "exact-ai",
+        "stock-ai"
+      ],
+      "reason": "Answered by static branch interpretation; no new live case requested or sampled."
+    },
+    {
+      "id": "days-boundary",
+      "question": "Does the no-weapons day branch allow equality at30?",
+      "status": "not-applicable",
+      "evidence": [
+        "exact-ai",
+        "stock-ai"
+      ],
+      "reason": "Answered by signed static comparison; no new runtime equality fixture performed."
+    },
+    {
+      "id": "robert-choice",
+      "question": "Was Robert relief or own siege executed here?",
+      "status": "not-applicable",
+      "evidence": [],
+      "reason": "FILE-ONLY work, no new MCP reads or actions."
+    },
+    {
+      "id": "assault-desire-case",
+      "question": "Is NPC autonomous assault utility closed?",
+      "status": "pending",
+      "evidence": [
+        "exact-ai",
+        "assault-study"
+      ]
+    }
+  ]
+}

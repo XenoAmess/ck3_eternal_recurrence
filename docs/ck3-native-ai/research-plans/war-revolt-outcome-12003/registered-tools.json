@@ -1,0 +1,205 @@
+[
+  {
+    "name": "ck3_get_capabilities",
+    "description": "List the current bridge backend and gameplay steps it implements.",
+    "inputSchema": {
+      "properties": {},
+      "type": "object",
+      "title": "ck3_get_capabilitiesArguments"
+    },
+    "outputSchema": {
+      "type": "object",
+      "additionalProperties": true,
+      "title": "ck3_get_capabilitiesDictOutput"
+    }
+  },
+  {
+    "name": "ck3_take_snapshot",
+    "description": "Return the session snapshot; opt out of the full native transcript.",
+    "inputSchema": {
+      "properties": {
+        "include_native_command_history": {
+          "default": true,
+          "title": "Include Native Command History",
+          "type": "boolean"
+        }
+      },
+      "type": "object",
+      "title": "ck3_take_snapshotArguments"
+    },
+    "outputSchema": {
+      "type": "object",
+      "additionalProperties": true,
+      "title": "ck3_take_snapshotDictOutput"
+    }
+  },
+  {
+    "name": "ck3_execute_step",
+    "description": "Execute one semantic gameplay step through the selected backend.",
+    "inputSchema": {
+      "properties": {
+        "step": {
+          "title": "Step",
+          "type": "string"
+        },
+        "expected_revision": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Revision"
+        },
+        "expected_h2743_frame": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected H2743 Frame"
+        }
+      },
+      "required": [
+        "step"
+      ],
+      "type": "object",
+      "title": "ck3_execute_stepArguments"
+    },
+    "outputSchema": {
+      "type": "object",
+      "additionalProperties": true,
+      "title": "ck3_execute_stepDictOutput"
+    }
+  },
+  {
+    "name": "ck3_raise_troops_default",
+    "description": "Raise troops at CK3's native default rally point.",
+    "inputSchema": {
+      "properties": {
+        "expected_revision": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Revision"
+        }
+      },
+      "type": "object",
+      "title": "ck3_raise_troops_defaultArguments"
+    },
+    "outputSchema": {
+      "type": "object",
+      "additionalProperties": true,
+      "title": "ck3_raise_troops_defaultDictOutput"
+    }
+  },
+  {
+    "name": "ck3_query_army_strengths",
+    "description": "Read soldiers and AI base power; never interpret them as win odds.",
+    "inputSchema": {
+      "properties": {
+        "army_ids": {
+          "items": {
+            "maximum": 2147483647,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "title": "Army Ids",
+          "type": "array"
+        },
+        "expected_revision": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Revision"
+        }
+      },
+      "required": [
+        "army_ids"
+      ],
+      "type": "object",
+      "title": "ck3_query_army_strengthsArguments"
+    },
+    "outputSchema": {
+      "type": "object",
+      "additionalProperties": true,
+      "title": "ck3_query_army_strengthsDictOutput"
+    }
+  },
+  {
+    "name": "ck3_query_player_faction_alerts_v1",
+    "description": "Read native player-faction alert rows and planner projection.",
+    "inputSchema": {
+      "properties": {
+        "expected_revision": {
+          "title": "Expected Revision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "expected_revision"
+      ],
+      "type": "object",
+      "additionalProperties": false,
+      "title": "ck3_query_player_faction_alerts_v1Arguments"
+    },
+    "outputSchema": {
+      "type": "object",
+      "additionalProperties": true,
+      "title": "ck3_query_player_faction_alerts_v1DictOutput"
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "ck3_query_current_event_window_context_v1",
+    "description": "Read shown options and typed indicators; full preview stays unavailable.",
+    "inputSchema": {
+      "properties": {
+        "event_instance_id": {
+          "title": "Event Instance Id",
+          "type": "integer"
+        },
+        "expected_revision": {
+          "title": "Expected Revision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "event_instance_id",
+        "expected_revision"
+      ],
+      "type": "object",
+      "title": "ck3_query_current_event_window_context_v1Arguments"
+    },
+    "outputSchema": {
+      "type": "object",
+      "additionalProperties": true,
+      "title": "ck3_query_current_event_window_context_v1DictOutput"
+    }
+  }
+]

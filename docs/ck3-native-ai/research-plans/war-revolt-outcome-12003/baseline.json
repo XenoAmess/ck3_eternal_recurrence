@@ -1,0 +1,646 @@
+{
+  "schema": "xar.g2.populist-refusal-baseline.v1",
+  "exact_build": {
+    "version": "1.20.0.3",
+    "steam_build": "25652598",
+    "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+    "basis": "Root-provided exact-build binding; no repeated EXE read"
+  },
+  "episode_run_id": "native-29829-2bc2d599f7f9",
+  "snapshot_id": "native:3",
+  "revision": 2,
+  "native_revision": 3,
+  "date_raw": 53236608,
+  "paused": true,
+  "actor_character_id": 29829,
+  "event_instance_id": 23,
+  "event_definition_key": "faction_demand.1001",
+  "saved_scopes": {
+    "faction": {
+      "status": "available",
+      "kind": "faction",
+      "faction_id": 33554465
+    },
+    "peasant_county": {
+      "status": "available",
+      "kind": "landed_title",
+      "title_id": 2102
+    },
+    "faction_target": {
+      "status": "available",
+      "kind": "character",
+      "character_id": 29829
+    },
+    "target_title": {
+      "status": "available",
+      "kind": "landed_title",
+      "title_id": 2115
+    },
+    "peasant_leader": {
+      "status": "available",
+      "kind": "character",
+      "character_id": 70766
+    },
+    "new_title": {
+      "status": "available",
+      "kind": "landed_title",
+      "title_id": 16795606
+    },
+    "faction_leader": {
+      "status": "available",
+      "kind": "character",
+      "character_id": 70766
+    }
+  },
+  "shown_options": [
+    {
+      "rendered_index": 0,
+      "native_option_index": 2,
+      "shown": true,
+      "enabled": true,
+      "fallback": false,
+      "cancel": false,
+      "resolved_name": "行吧，我要你们这些聒噪的刁民也没用！",
+      "unavailable_reason": "",
+      "effect_indicators": {
+        "status": "available",
+        "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+        "complete_effect_set": false,
+        "rows": []
+      },
+      "effect_preview": {
+        "status": "unavailable",
+        "reason": "indicator_subset_has_no_completeness_signal"
+      },
+      "resource_deltas": {
+        "status": "unavailable"
+      },
+      "relationship_deltas": {
+        "status": "unavailable"
+      }
+    },
+    {
+      "rendered_index": 1,
+      "native_option_index": 3,
+      "shown": true,
+      "enabled": true,
+      "fallback": false,
+      "cancel": false,
+      "resolved_name": "你想要自由？去阴间找去吧！",
+      "unavailable_reason": "",
+      "effect_indicators": {
+        "status": "available",
+        "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+        "complete_effect_set": false,
+        "rows": []
+      },
+      "effect_preview": {
+        "status": "unavailable",
+        "reason": "indicator_subset_has_no_completeness_signal"
+      },
+      "resource_deltas": {
+        "status": "unavailable"
+      },
+      "relationship_deltas": {
+        "status": "unavailable"
+      }
+    }
+  ],
+  "faction": {
+    "faction_id": 33554465,
+    "faction_type_key": "populist_faction",
+    "target_character_id": 29829,
+    "leader_character_id": 70766,
+    "leader_is_human": false,
+    "special_character_id": null,
+    "special_title_id": null,
+    "faction_at_war": false,
+    "faction_war_id": null,
+    "power": {
+      "raw": 16197900,
+      "scale": 100000
+    },
+    "power_threshold": {
+      "raw": 7500000,
+      "scale": 100000
+    },
+    "discontent": {
+      "raw": 10000000,
+      "scale": 100000
+    },
+    "discontent_per_month": {
+      "raw": 1300000,
+      "scale": 100000
+    },
+    "months_until_max_discontent": 0,
+    "character_member_ids": [
+      70766
+    ],
+    "county_member_title_ids": [
+      2102,
+      2111,
+      2115
+    ],
+    "dangerous_by_stock_rule": true,
+    "danger_reason": "non_peasant_discontent_increasing",
+    "county_member_observations": [
+      {
+        "county_title_id": 2102,
+        "capital_province_id": 2635,
+        "holder_character_id": 29829,
+        "county_opinion": {
+          "raw": -56,
+          "scale": 1
+        },
+        "native_county_join_score": {
+          "raw": 30300000,
+          "scale": 100000
+        },
+        "can_add_county": true,
+        "removal_queued": false,
+        "native_leave_score_threshold": {
+          "raw": 5,
+          "scale": 1
+        },
+        "opinion_status": "available",
+        "native_final_status": "available"
+      },
+      {
+        "county_title_id": 2111,
+        "capital_province_id": 2638,
+        "holder_character_id": 29829,
+        "county_opinion": {
+          "raw": -75,
+          "scale": 1
+        },
+        "native_county_join_score": {
+          "raw": 45500000,
+          "scale": 100000
+        },
+        "can_add_county": true,
+        "removal_queued": false,
+        "native_leave_score_threshold": {
+          "raw": 5,
+          "scale": 1
+        },
+        "opinion_status": "available",
+        "native_final_status": "available"
+      },
+      {
+        "county_title_id": 2115,
+        "capital_province_id": 2640,
+        "holder_character_id": 29829,
+        "county_opinion": {
+          "raw": -65,
+          "scale": 1
+        },
+        "native_county_join_score": {
+          "raw": 37500000,
+          "scale": 100000
+        },
+        "can_add_county": true,
+        "removal_queued": false,
+        "native_leave_score_threshold": {
+          "raw": 5,
+          "scale": 1
+        },
+        "opinion_status": "available",
+        "native_final_status": "available"
+      }
+    ],
+    "surrender_impact": {
+      "status": "available",
+      "unavailable_reason": null,
+      "ordinary_branch_title_sets_ready": true,
+      "county_loss_complete": true,
+      "kingdom_outcome_complete": false,
+      "government_allows_state_faith": false,
+      "leader_at_war_with_target": false,
+      "player_remaining_direct_county_title_ids": [
+        2142,
+        2173
+      ],
+      "player_direct_title_loss_ids": [
+        2102,
+        2111,
+        2115
+      ],
+      "player_subrealm_county_title_ids": [
+        2102,
+        2107,
+        2111,
+        2115,
+        2128,
+        2142,
+        2147,
+        2151,
+        2161,
+        2165,
+        2169,
+        2173,
+        2399
+      ],
+      "member_counties": [
+        {
+          "title_id": 2102,
+          "tier_raw": 2,
+          "de_jure_parent_title_id": 2101,
+          "duchy_title_id": 2101,
+          "kingdom_title_id": 2100,
+          "holder_character_id": 29829,
+          "top_liege_character_id": 29829
+        },
+        {
+          "title_id": 2111,
+          "tier_raw": 2,
+          "de_jure_parent_title_id": 2101,
+          "duchy_title_id": 2101,
+          "kingdom_title_id": 2100,
+          "holder_character_id": 29829,
+          "top_liege_character_id": 29829
+        },
+        {
+          "title_id": 2115,
+          "tier_raw": 2,
+          "de_jure_parent_title_id": 2101,
+          "duchy_title_id": 2101,
+          "kingdom_title_id": 2100,
+          "holder_character_id": 29829,
+          "top_liege_character_id": 29829
+        }
+      ],
+      "seized_counties": [
+        {
+          "title_id": 2102,
+          "tier_raw": 2,
+          "de_jure_parent_title_id": 2101,
+          "duchy_title_id": 2101,
+          "kingdom_title_id": 2100,
+          "holder_character_id": 29829,
+          "top_liege_character_id": 29829
+        },
+        {
+          "title_id": 2107,
+          "tier_raw": 2,
+          "de_jure_parent_title_id": 2101,
+          "duchy_title_id": 2101,
+          "kingdom_title_id": 2100,
+          "holder_character_id": 32716,
+          "top_liege_character_id": 29829
+        },
+        {
+          "title_id": 2111,
+          "tier_raw": 2,
+          "de_jure_parent_title_id": 2101,
+          "duchy_title_id": 2101,
+          "kingdom_title_id": 2100,
+          "holder_character_id": 29829,
+          "top_liege_character_id": 29829
+        },
+        {
+          "title_id": 2115,
+          "tier_raw": 2,
+          "de_jure_parent_title_id": 2101,
+          "duchy_title_id": 2101,
+          "kingdom_title_id": 2100,
+          "holder_character_id": 29829,
+          "top_liege_character_id": 29829
+        }
+      ],
+      "seized_duchies": [
+        {
+          "title_id": 2101,
+          "tier_raw": 3,
+          "de_jure_parent_title_id": 2100,
+          "duchy_title_id": 2101,
+          "kingdom_title_id": 2100,
+          "holder_character_id": null,
+          "top_liege_character_id": null
+        }
+      ],
+      "kingdoms": [
+        {
+          "title": {
+            "title_id": 2100,
+            "tier_raw": 4,
+            "de_jure_parent_title_id": 1207,
+            "duchy_title_id": null,
+            "kingdom_title_id": 2100,
+            "holder_character_id": null,
+            "top_liege_character_id": null
+          },
+          "de_jure_county_title_ids": [
+            2102,
+            2107,
+            2111,
+            2115,
+            2119,
+            2122,
+            2128,
+            2133,
+            2137,
+            2142,
+            2147,
+            2151,
+            2156,
+            2161,
+            2165,
+            2169,
+            2173
+          ],
+          "seized_county_title_ids": [
+            2102,
+            2107,
+            2111,
+            2115
+          ],
+          "strict_majority_from_seized_counties": false
+        }
+      ],
+      "unresolved_branches": [
+        "kingdom_receiver_capital_and_existing_direct_counties"
+      ]
+    }
+  },
+  "active_wars": [
+    {
+      "war_id": 16777231,
+      "player_side": "defender",
+      "primary_opponent_character_id": 30097,
+      "player_is_primary_war_leader": true,
+      "enemy_primary_default_raise_province_id": 2609,
+      "targeted_title_ids": [
+        2128
+      ],
+      "war_objective_province_ids": [
+        2610
+      ],
+      "objective_province_states": [
+        {
+          "province_id": 2610,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 400,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        }
+      ],
+      "player_relative_war_score": -39,
+      "allied_armies": [
+        {
+          "army_id": 83886367,
+          "owner_character_id": 29829,
+          "soldiers": null,
+          "current_province_id": 2614,
+          "move_target_province_id": null,
+          "move_target_observable": false,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "regular",
+          "army_state_code": 1,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        }
+      ],
+      "enemy_armies": [
+        {
+          "army_id": 50331920,
+          "owner_character_id": 30097,
+          "soldiers": null,
+          "current_province_id": 2640,
+          "move_target_province_id": null,
+          "move_target_observable": false,
+          "controllable": false,
+          "source": "native",
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        },
+        {
+          "army_id": 83886484,
+          "owner_character_id": 35357,
+          "soldiers": null,
+          "current_province_id": 2640,
+          "move_target_province_id": null,
+          "move_target_observable": false,
+          "controllable": false,
+          "source": "native",
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        },
+        {
+          "army_id": 67109295,
+          "owner_character_id": 36116,
+          "soldiers": null,
+          "current_province_id": 3078,
+          "move_target_province_id": 2640,
+          "move_target_observable": true,
+          "controllable": false,
+          "source": "native",
+          "route_province_ids": [
+            3085,
+            3086,
+            3091,
+            3092,
+            3120,
+            3119,
+            3116,
+            3106,
+            3103,
+            3102,
+            3097,
+            3098,
+            2523,
+            8650,
+            1109,
+            8651,
+            1038,
+            1036,
+            8653,
+            2643,
+            2641,
+            2640
+          ],
+          "route_read_status": "complete_nonempty",
+          "route_source_count": 22,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "moving",
+          "army_state_code": 7,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        }
+      ],
+      "source": "native"
+    },
+    {
+      "war_id": 129,
+      "player_side": "defender",
+      "primary_opponent_character_id": 32750,
+      "player_is_primary_war_leader": true,
+      "enemy_primary_default_raise_province_id": 4562,
+      "targeted_title_ids": [
+        2115
+      ],
+      "war_objective_province_ids": [
+        2640
+      ],
+      "objective_province_states": [
+        {
+          "province_id": 2640,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 7,
+          "garrison_size": 1350,
+          "besieging_strength": 1664,
+          "siege_observable": true,
+          "active_siege": {
+            "siege_id": 318767158,
+            "besieging_army_id": 50331920,
+            "player_army_besieging": false,
+            "progress_fraction": {
+              "raw": 44133,
+              "scale": 100000
+            },
+            "current_work": {
+              "raw": 27583600,
+              "scale": 100000
+            },
+            "total_work": {
+              "raw": 62500000,
+              "scale": 100000
+            },
+            "remaining_work": {
+              "raw": 34916400,
+              "scale": 100000
+            },
+            "days_left": 218,
+            "assault_observable": true,
+            "breach_level": 2,
+            "walls_breached": true,
+            "assault_in_progress": false,
+            "can_start_assault": false,
+            "can_stop_assault": false,
+            "assault_daily_progress": {
+              "raw": 340000,
+              "scale": 100000
+            },
+            "assault_daily_casualties": 16
+          }
+        }
+      ],
+      "player_relative_war_score": 0,
+      "allied_armies": [
+        {
+          "army_id": 83886367,
+          "owner_character_id": 29829,
+          "soldiers": null,
+          "current_province_id": 2614,
+          "move_target_province_id": null,
+          "move_target_observable": false,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "regular",
+          "army_state_code": 1,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        }
+      ],
+      "enemy_armies": [
+        {
+          "army_id": 16777683,
+          "owner_character_id": 32750,
+          "soldiers": null,
+          "current_province_id": 4573,
+          "move_target_province_id": null,
+          "move_target_observable": false,
+          "controllable": false,
+          "source": "native",
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "gathering",
+          "army_state_code": 5,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        }
+      ],
+      "source": "native"
+    }
+  ],
+  "player_armies": [
+    {
+      "army_id": 83886367,
+      "owner_character_id": 29829,
+      "soldiers": null,
+      "current_province_id": 2614,
+      "move_target_province_id": null,
+      "move_target_observable": false,
+      "controllable": true,
+      "source": "native",
+      "route_province_ids": [],
+      "route_read_status": "complete_empty",
+      "route_source_count": 0,
+      "in_combat": false,
+      "retreating": false,
+      "army_state": "regular",
+      "army_state_code": 1,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null
+    }
+  ],
+  "actual_artifacts": [
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\runtime-preparation\\v34\\actual-paused-v34-01\\003-ck3_take_snapshot.json",
+      "sha256": "1400e83978744165d4967870ca3a94e77af2eb0732c2e5648e9f1b1c122e788b"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\runtime-preparation\\v34\\actual-paused-v34-01\\004-ck3_query_current_event_window_context_v1.json",
+      "sha256": "8489ad88595bc8408db7eeb95b9d4e7606ec37701240d886b59c27c4a43e3ddc"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\runtime-preparation\\v34\\actual-paused-v34-01\\006-ck3_query_player_faction_alerts_v1.json",
+      "sha256": "b874330725e4de8730d6eb302f02644b589a2f175faf334659c45f7dae5264d3"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\runtime-preparation\\v34\\actual-paused-v34-01\\tools.json",
+      "sha256": "18849ed92ad92f954a1d448f824a333336fa8ec3c85aea304d85edf11481317e"
+    }
+  ]
+}

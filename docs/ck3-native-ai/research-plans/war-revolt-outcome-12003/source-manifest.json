@@ -1,0 +1,122 @@
+{
+  "schema": "xar.g2.populist-refusal-stock-inputs.v1",
+  "recorded_at": "2026-10-03T13:18:27.971960+08:00",
+  "exact_build": {
+    "version": "1.20.0.3",
+    "steam_build": "25652598",
+    "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+    "basis": "Root-provided exact-build binding; no repeated EXE read"
+  },
+  "installed_stock_root": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+  "source_correction": "Initial repo-reference reads used an older tree. Final source slices use the installed .3 tree and its eb17720c faction_demands hash.",
+  "sources": [
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_civil_war.txt",
+      "relative_path": "common/casus_belli_types/00_civil_war.txt",
+      "sha256": "a9f5d844413bd7acfd4d4b1611877ac34e78eb293f309c0e7a41f27aca3a0047",
+      "block_key": "populist_war",
+      "first_line": 664,
+      "last_line": 953,
+      "slice_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-revolt-outcome\\stock-slices\\populist-war-cb.txt",
+      "slice_sha256": "be26ae3e446c4f2177063adf800fd875f6b14122c1c961193d79d1ebc274372b"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\factions\\00_populist_faction.txt",
+      "relative_path": "common/factions/00_populist_faction.txt",
+      "sha256": "c67853a56bcea26ed90427cdba7ed4a51968ee085ec88e34fe2976ce5437dd4d",
+      "block_key": "on_war_start",
+      "first_line": 1033,
+      "last_line": 1103,
+      "slice_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-revolt-outcome\\stock-slices\\populist-on-war-start.txt",
+      "slice_sha256": "726a64883bef1b872eead44e9f728c6855ef2a91ca25dec826f3e40247bffd1d"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_faction_effects.txt",
+      "relative_path": "common/scripted_effects/00_faction_effects.txt",
+      "sha256": "c7f853b9c8cf836cfc6b635c58bfa3c31a686528e99f5628e320a1d97a5efc70",
+      "block_key": "spawn_popular_revolt_troops",
+      "first_line": 1182,
+      "last_line": 1374,
+      "slice_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-revolt-outcome\\stock-slices\\spawn-popular-revolt-troops.txt",
+      "slice_sha256": "8f23b590d6c9f2aa6c7e0106e3d2885db59f78883585cef29edbcd90c075bd4e"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_faction_effects.txt",
+      "relative_path": "common/scripted_effects/00_faction_effects.txt",
+      "sha256": "c7f853b9c8cf836cfc6b635c58bfa3c31a686528e99f5628e320a1d97a5efc70",
+      "block_key": "setup_populist_leader_effect",
+      "first_line": 1788,
+      "last_line": 1941,
+      "slice_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-revolt-outcome\\stock-slices\\setup-populist-leader.txt",
+      "slice_sha256": "3e777fb9d913511ceba797379b5a50bfac0b9b1eea355449526fb349c5093590"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_faction_values.txt",
+      "relative_path": "common/script_values/00_faction_values.txt",
+      "sha256": "3c5d7ab206e13562eb985fe98380d75c5e0c1870e89e8cc909c74917f37f1f58",
+      "block_key": "county_levies_to_raise",
+      "first_line": 92,
+      "last_line": 112,
+      "slice_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-revolt-outcome\\stock-slices\\levies-to-raise.txt",
+      "slice_sha256": "51805c9575c0167aff958a0fec58a1bb7b6283a1ae77c65b96fdd64993b60c2f"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_faction_values.txt",
+      "relative_path": "common/script_values/00_faction_values.txt",
+      "sha256": "3c5d7ab206e13562eb985fe98380d75c5e0c1870e89e8cc909c74917f37f1f58",
+      "block_key": "county_maa_to_raise",
+      "first_line": 144,
+      "last_line": 154,
+      "slice_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-revolt-outcome\\stock-slices\\maa-to-raise.txt",
+      "slice_sha256": "227c1449273c97df6e48a792662372d1a613e9aa4d6a29685e89f31cd74e225b"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\03_dlc_fp2_scripted_effects.txt",
+      "relative_path": "common/scripted_effects/03_dlc_fp2_scripted_effects.txt",
+      "sha256": "ef890b3c5a3b1e772308e36457acd74baebbb2a214a2f1a9c9cc441c1d2c8369",
+      "block_key": "generate_troops_from_revolt_county_modifiers_effect",
+      "first_line": 1205,
+      "last_line": 1275,
+      "slice_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-revolt-outcome\\stock-slices\\financed-revolt-extra-troops.txt",
+      "slice_sha256": "861c3124517a0be70cf842b831d909da57eb777257009576a3ff4d0c89413ae9"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\faction_on_actions.txt",
+      "relative_path": "common/on_action/faction_on_actions.txt",
+      "sha256": "a4e3eda2f31cb08d29deae1a1cdbd89256973a81fc1a1d4df00d9cf5bbcb68fb",
+      "block_key": "on_faction_demand_rejected",
+      "first_line": 105,
+      "last_line": 105,
+      "slice_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-revolt-outcome\\stock-slices\\rejected-on-action.txt",
+      "slice_sha256": "0f6e55722a58d52120441d72925f9865daec68ab91f85b1d462359f7c4dca7a7"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\factions\\faction_demands.txt",
+      "relative_path": "events/factions/faction_demands.txt",
+      "sha256": "eb17720ca9d48acfb8cc24e5f61edc62fd2d4d2d599561c92854fc762104eccd",
+      "first_line": 1336,
+      "last_line": 1358,
+      "slice_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-revolt-outcome\\stock-slices\\refusal-effects.txt",
+      "slice_sha256": "9e408c109424873560f6e7912fec837518b958c2e092a300c0e4b959b6eae8d1"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\factions\\faction_demands.txt",
+      "relative_path": "events/factions/faction_demands.txt",
+      "sha256": "eb17720ca9d48acfb8cc24e5f61edc62fd2d4d2d599561c92854fc762104eccd",
+      "first_line": 1415,
+      "last_line": 1428,
+      "slice_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-revolt-outcome\\stock-slices\\event-after.txt",
+      "slice_sha256": "c1aa569c57af76cf8f3a29eee6302efb7e0c40ae38dbd84b73b161a7d28a8b10"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\factions\\00_populist_faction.txt",
+      "relative_path": "common/factions/00_populist_faction.txt",
+      "sha256": "c67853a56bcea26ed90427cdba7ed4a51968ee085ec88e34fe2976ce5437dd4d",
+      "first_line": 1,
+      "last_line": 12,
+      "slice_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-revolt-outcome\\stock-slices\\faction-cb-key.txt",
+      "slice_sha256": "deb674f0649ae99ffddf5c153cb2dc20d84314d3b369d53dd4f44d27885ccb90"
+    }
+  ],
+  "no_live_calls": true
+}

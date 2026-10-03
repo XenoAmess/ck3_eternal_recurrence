@@ -1,0 +1,337 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "battle-readiness-12003-20261003",
+  "question": "Which existing exact .3 native observations can drive the current Robert battle loop, and which concrete missing fields prevent contextual commander assessment and resumed forecast?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.3",
+    "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "File-only preparation for root-owned Robert29829 campaign; actual full CUnit/Combat/Province identities must come from root's current paused frame.",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "One actual paused native/public revision, current exact build and session; reload, deletion, changed date, route or membership invalidates comparison.",
+    "producer_trigger": "not-applicable",
+    "producer": "This package reads pinned producer/reader sources and existing ABI comparison only; it neither waits for daily production nor connects to CK3.",
+    "caller": "Root's existing public battle v1/combat v2 MCP methods, only when advertised by its actual loaded .3 hello; no child runtime call.",
+    "consumer": "Root tactical readiness/query preparation; no child counter-policy or new gameplay command.",
+    "cache_lifetime": "Frozen file pins only; root live values are separately bound to their actual frame and never copied from historical episode IDs.",
+    "expected_signal": "Current advertised query signatures, full battle phase/loss/commander/retreat/terminal projections, and explicit absent selected-next-roll/active-resume/full-phase operands.",
+    "zero_sample_meaning": "No new live sample in this offline package does not imply no battle, no candidate or a zero casualty/roll/event probability. Core ABI GREEN is not .3 live.",
+    "stop_condition": "One source review and existing result reuse, one record render; root-owned current query is the next live step, not a child sampling loop.",
+    "runtime_window_ref": "Root delegation 2026-10-03; root sole game/SDK/pipe/Git owner. This package authorizes and performs no runtime observation."
+  },
+  "evidence": [
+    {
+      "id": "adapter3",
+      "layer": "source-contract",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\evidence\\adapter3.cpp",
+      "sha256": "f255c46744b7fc4cfd591b664ce791a4b78a0aa97ff06e132336602e935d2559",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Independent exact .3 SHA gate and inherited .2 production capability descriptor."
+    },
+    {
+      "id": "adapter2",
+      "layer": "source-contract",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\evidence\\adapter2.cpp",
+      "sha256": "73d66ca49908aeabc9a172fe61214da797465bfa5b8a790c2573c73d4a37b38e",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Advertised battle v1/combat v2 primitives, and non-advertised full v3 despite its adapter method."
+    },
+    {
+      "id": "battle",
+      "layer": "source-contract",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\evidence\\battle.cpp",
+      "sha256": "ae42c96618abd2a074b08e4757c5d735ebc10baafcadeb55d5afc3452eec6922",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Manual source review of full IDs, phases, side Entry60/owner loss ledgers, current rolls/advantage, native four-gate legality, terminal and reinforcement readers."
+    },
+    {
+      "id": "combat",
+      "layer": "source-contract",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\evidence\\combat.cpp",
+      "sha256": "3181428b014f85a3c0780f3ed53a920225febbc2bffcf9438669a875f02d6818",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Candidate commander and contextual roll bounds arithmetic; distinguishes hypothetical army commander from actual selected combat commander."
+    },
+    {
+      "id": "combat-header",
+      "layer": "source-contract",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\evidence\\combat-header.hpp",
+      "sha256": "2e61eacd566150578ff4b4d1641ea3c7b3a2350f5ea5594a31cc72ebe47d5e28",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Existing modifier/terrain/define bindings for explicit observation construction entry."
+    },
+    {
+      "id": "contract",
+      "layer": "source-contract",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\evidence\\contract.hpp",
+      "sha256": "4f21ec25e9a15b956c0c3a6a12981d427709125332a3e4a3fa9006c16258939f",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Existing version-neutral next-roll DTO and battle/counter fields, with unavailable defaults not claimed observed."
+    },
+    {
+      "id": "public-mcp",
+      "layer": "source-contract",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\evidence\\public-mcp.py",
+      "sha256": "eb01ef4704914ec5f207065712a6d3c8a01423c77c049681c9f02edb59d61158",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Exact public MCP method names and argument signatures; Python method existence does not prove native advertisement or a live result."
+    },
+    {
+      "id": "reuse",
+      "layer": "source-contract",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\evidence\\reuse.json",
+      "sha256": "ff7a5b1a8208d7ce0358be3cd2fec9f455a4ba116ccf1b25c4ccf0f0b64dd119",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Permanent exact .3 mapping of reviewed .2 battle/combat/phase/advantage/definitions contracts."
+    },
+    {
+      "id": "core-comparison",
+      "layer": "offline-fixture",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\evidence\\core-comparison.json",
+      "sha256": "5bd80588c3021bf300edda12a63b8d96fbefdb484f0d869ee129d0fc5a81876d",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Reuse existing .3 unchanged ABI comparison for battle/combat/phase/advantage/definitions; no new ABI scan or live credit."
+    },
+    {
+      "id": "stock-defines",
+      "layer": "source-contract",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\evidence\\stock-defines.txt",
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Current installed NCombat constants and comments; file values are distinct from actual runtime playset values."
+    },
+    {
+      "id": "stock-commander-events",
+      "layer": "source-contract",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\evidence\\stock-commander-events.txt",
+      "sha256": "1a6eac4a0714c947a822193e60af589aec31fa92857558df0616a45317654871",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Current installed commander event source; runtime loaded evaluator and future selected row remain unobserved."
+    },
+    {
+      "id": "stock-knight-events",
+      "layer": "source-contract",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\evidence\\stock-knight-events.txt",
+      "sha256": "6307140e6f0543d9c44cacf40771710032a050279b82b0074a86df7b68e3cadf",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Current installed knight event source; separates character events from numeric troop casualty ledger."
+    },
+    {
+      "id": "semantic-ledger",
+      "layer": "source-contract",
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\evidence\\semantic-ledger.md",
+      "sha256": "cad760c96f89f99d5e60fe90ca0c892a23bc7e4e34a5ca34422eaa05af1458fa",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "supports": "Manually authored .3 observation interpretation, candidate/selected distinction, actual missing fields and next construction entries; no future odds or new live claim."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "exact",
+      "label": "Exact .3 gate + unchanged reviewed ABI"
+    },
+    {
+      "id": "identity",
+      "label": "Paused CUnit to reciprocal CArmy to full Combat"
+    },
+    {
+      "id": "phase",
+      "label": "Phase/day/winner and two stored-order sides"
+    },
+    {
+      "id": "ledger",
+      "label": "Entry60 stats/current/soft/main-hard and owner-hard"
+    },
+    {
+      "id": "commander",
+      "label": "Actual selected commander/current rolls/current advantage"
+    },
+    {
+      "id": "retreat",
+      "label": "Four retreat gates + actual owner scope"
+    },
+    {
+      "id": "terminal",
+      "label": "Journal/result/removal/backlink/residual"
+    },
+    {
+      "id": "primitives",
+      "label": "Public existing battle v1 primitives: static-ready .3"
+    },
+    {
+      "id": "live",
+      "label": "Root actual .3 paused battle and postconditions pending"
+    },
+    {
+      "id": "rollgap",
+      "label": "Missing selected next-roll context in .2/.3 reader"
+    },
+    {
+      "id": "forecast",
+      "label": "Future refreshed counters/advantage/casualty/events/joins unknown"
+    }
+  ],
+  "edges": [
+    {
+      "id": "bind",
+      "from": "exact",
+      "to": "identity",
+      "label": "Reviewed .3 adapter inherits battle reader",
+      "status": "static-confirmed",
+      "evidence": [
+        "adapter3",
+        "adapter2",
+        "reuse",
+        "core-comparison",
+        "battle"
+      ]
+    },
+    {
+      "id": "sides",
+      "from": "identity",
+      "to": "phase",
+      "label": "Full-generation and dual paused samples",
+      "status": "static-confirmed",
+      "evidence": [
+        "battle",
+        "semantic-ledger"
+      ]
+    },
+    {
+      "id": "losses",
+      "from": "phase",
+      "to": "ledger",
+      "label": "Native stored fields; main-only hard derivation",
+      "status": "static-confirmed",
+      "evidence": [
+        "battle",
+        "semantic-ledger"
+      ]
+    },
+    {
+      "id": "rolls",
+      "from": "phase",
+      "to": "commander",
+      "label": "Actual selected identity and retained current roll/advantage",
+      "status": "static-confirmed",
+      "evidence": [
+        "battle",
+        "semantic-ledger"
+      ]
+    },
+    {
+      "id": "legal",
+      "from": "phase",
+      "to": "retreat",
+      "label": "Native gate equality and full-side/owner-subset arrays",
+      "status": "static-confirmed",
+      "evidence": [
+        "battle",
+        "semantic-ledger"
+      ]
+    },
+    {
+      "id": "end",
+      "from": "phase",
+      "to": "terminal",
+      "label": "Prior full Combat query and passive journal",
+      "status": "static-confirmed",
+      "evidence": [
+        "battle",
+        "semantic-ledger"
+      ]
+    },
+    {
+      "id": "ledger-query",
+      "from": "ledger",
+      "to": "primitives",
+      "label": "Existing public MCP control signature",
+      "status": "static-confirmed",
+      "evidence": [
+        "public-mcp",
+        "adapter2"
+      ]
+    },
+    {
+      "id": "retreat-query",
+      "from": "retreat",
+      "to": "primitives",
+      "label": "Public preview/order composition; no action here",
+      "status": "static-confirmed",
+      "evidence": [
+        "public-mcp",
+        "semantic-ledger"
+      ]
+    },
+    {
+      "id": "terminal-query",
+      "from": "terminal",
+      "to": "primitives",
+      "label": "Public terminal query signature",
+      "status": "static-confirmed",
+      "evidence": [
+        "public-mcp",
+        "adapter2"
+      ]
+    },
+    {
+      "id": "new-live",
+      "from": "primitives",
+      "to": "live",
+      "label": "Actual .3 frame and hold/retreat/terminal postcondition",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Root's current Robert .3 actual battle artifact and desired primitive have not been supplied to this child."
+    },
+    {
+      "id": "selected-roll",
+      "from": "commander",
+      "to": "rollgap",
+      "label": "Read current selected identity + actual terrain through v2 arithmetic",
+      "status": "unknown",
+      "evidence": [
+        "battle",
+        "combat",
+        "contract"
+      ],
+      "open_question": "Existing next-roll DTO remains not_sampled in the .2/.3 battle reader; candidate v2 bounds cannot substitute selected combat context."
+    },
+    {
+      "id": "continued",
+      "from": "ledger",
+      "to": "forecast",
+      "label": "Same-sample active operands and refreshed future transitions",
+      "status": "unknown",
+      "evidence": [
+        "battle",
+        "semantic-ledger"
+      ],
+      "open_question": "Active resume richer leaves, complete phase/event feedback, future actual join and exact resumed trace are not supplied; existing current ledger is sufficient only for observed comparison and primitives."
+    }
+  ],
+  "cases": [
+    {
+      "id": "root-paused-battle",
+      "question": "Does actual .3 current Robert battle-control return ready with full same-frame identities?",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "component-prerequisite",
+      "question": "Is a missing future forecast field an actual immediate battle action prerequisite in root's current frame?",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "child-live",
+      "question": "Did this child execute a runtime query or game action?",
+      "status": "not-applicable",
+      "reason": "File-only owner; root exclusively operates runtime.",
+      "evidence": []
+    }
+  ]
+}

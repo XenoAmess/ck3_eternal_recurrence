@@ -1,0 +1,390 @@
+{
+  "schema": "xar.army-target-triage-12003.static.v1",
+  "build": "1.20.0.3-steam25652598",
+  "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "exe_bytes": 101039736,
+  "source_manifest": {
+    "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+    "exe_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "sources": [
+      {
+        "source": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\ai_war_stances\\_ai_war_stances.info",
+        "snapshot": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\_ai_war_stances.info",
+        "sha256": "0f01aaab6922fdca19b87a4421768f83b0c75534a128a73af8cecadd52f6205e",
+        "bytes": 5663
+      },
+      {
+        "source": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\ai_war_stances\\00_ai_war_stances.txt",
+        "snapshot": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\00_ai_war_stances.txt",
+        "sha256": "4f5aa322c4d7272338f4c7b111b7462d4a1fec886e93e7178084d318ceb8e294",
+        "bytes": 3303
+      },
+      {
+        "source": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\ai\\00_ai.txt",
+        "snapshot": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\00_ai.txt",
+        "sha256": "3af5d4100789bad56570e05c5852f35783605813957de7a5129d23142a116120",
+        "bytes": 66860
+      }
+    ],
+    "live_execution": false
+  },
+  "registrations": {
+    "UPDATE_WAR_STANCE_TICK": {
+      "value": "30",
+      "string_rva": "0x45aee08",
+      "registration_span": [
+        "0x1a55af0",
+        "0x1a55d47",
+        "0x512dce0"
+      ],
+      "global_slot_rva": "0x5c68644",
+      "registration_dump": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\UPDATE_WAR_STANCE_TICK-reg-2.asm.txt",
+      "dump_sha256": "4402baa9121e51f12839cfc4186f6b717fe1d66e95abf79fcb393674d032192a"
+    },
+    "UPDATE_TARGETS_TICK": {
+      "value": "7",
+      "string_rva": "0x45aedd0",
+      "registration_span": [
+        "0x1a56170",
+        "0x1a563c7",
+        "0x512dce0"
+      ],
+      "global_slot_rva": "0x5c68640",
+      "registration_dump": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\UPDATE_TARGETS_TICK-reg-2.asm.txt",
+      "dump_sha256": "9749309aa840a8ca0018a8873a57b46c3b571535cef8853572199985015e98ec"
+    },
+    "UPDATE_TARGETS_TICK_LOPSIDED": {
+      "value": "14",
+      "string_rva": "0x45aede8",
+      "registration_span": [
+        "0x1a564b0",
+        "0x1a56707",
+        "0x512dce0"
+      ],
+      "global_slot_rva": "0x5c68634",
+      "registration_dump": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\UPDATE_TARGETS_TICK_LOPSIDED-reg-2.asm.txt",
+      "dump_sha256": "889711b560e190281d9056847fdddbf0ea2097494369aa15725dfe75711cc527"
+    },
+    "LOPSIDED_WAR_RATIO_THRESHOLD": {
+      "value": "0.33",
+      "string_rva": "0x45ae3e0",
+      "registration_span": [
+        "0x1a5bac0",
+        "0x1a5bb45",
+        "0x512dcd8"
+      ],
+      "global_slot_rva": "0x5c686f8",
+      "registration_dump": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\LOPSIDED_WAR_RATIO_THRESHOLD-reg-2.asm.txt",
+      "dump_sha256": "cc182d8c290f9f847de31120f4890aea25964e87a27b010412eba03d0fa8fbd7"
+    },
+    "COMBAT_RATIO_THRESHOLD": {
+      "value": "0.5",
+      "string_rva": "0x45aefb0",
+      "registration_span": [
+        "0x1a567f0",
+        "0x1a56875",
+        "0x512dcd8"
+      ],
+      "global_slot_rva": "0x5c68650",
+      "registration_dump": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\COMBAT_RATIO_THRESHOLD-reg-2.asm.txt",
+      "dump_sha256": "4ad9ce2b186919636e4cb71ab10189688ec442d64a610e40a3f0d8e249e24f70"
+    },
+    "COMBAT_RATIO_THRESHOLD_DESPERATE": {
+      "value": "0.4",
+      "string_rva": "0x45aefc8",
+      "registration_span": [
+        "0x1a56960",
+        "0x1a569e5",
+        "0x512dcd8"
+      ],
+      "global_slot_rva": "0x5c686f0",
+      "registration_dump": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\COMBAT_RATIO_THRESHOLD_DESPERATE-reg-2.asm.txt",
+      "dump_sha256": "4ef91bd19245ac77e27b2d6838e7a000cbdbe219ff929c7ba3b7932f9c1dd7eb"
+    },
+    "MIN_GOALS_PER_STACK": {
+      "value": "10",
+      "string_rva": "0x45af040",
+      "registration_span": [
+        "0x1a57ea0",
+        "0x1a580f7",
+        "0x512dce0"
+      ],
+      "global_slot_rva": "0x5c68674",
+      "registration_dump": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\MIN_GOALS_PER_STACK-reg-2.asm.txt",
+      "dump_sha256": "c65f2d3b04e44c4e8559efb582dd513cdf268dbca62a8206faa017381e8ed3b3"
+    },
+    "IDEAL_ENEMY_POWER_TO_TARGET": {
+      "value": "0.5",
+      "string_rva": "0x45af178",
+      "registration_span": [
+        "0x1a58d60",
+        "0x1a58de5",
+        "0x512dcd8"
+      ],
+      "global_slot_rva": "0x5c686c0",
+      "registration_dump": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\IDEAL_ENEMY_POWER_TO_TARGET-reg-2.asm.txt",
+      "dump_sha256": "d4ebe100ec38f82604dd537cee3a01d353d24cfb5285b2fafd8a3c9ad2a47eef"
+    },
+    "TARGET_SCORE_IS_SIEGING": {
+      "value": "500",
+      "string_rva": "0x45ae428",
+      "registration_span": [
+        "0x1a5deb0",
+        "0x1a5e107",
+        "0x512dce0"
+      ],
+      "global_slot_rva": "0x5c68734",
+      "registration_dump": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\TARGET_SCORE_IS_SIEGING-reg-2.asm.txt",
+      "dump_sha256": "dea0e37e8839c907a2a16b79db98c725b4accf5ddf5a45b07841b2c46a97b67a"
+    },
+    "TARGET_SCORE_WOULD_LIFT_SIEGE": {
+      "value": "190",
+      "string_rva": "0x45ae610",
+      "registration_span": [
+        "0x1a5e1f0",
+        "0x1a5e447",
+        "0x512dce0"
+      ],
+      "global_slot_rva": "0x5c68728",
+      "registration_dump": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\TARGET_SCORE_WOULD_LIFT_SIEGE-reg-2.asm.txt",
+      "dump_sha256": "45d2a899faef0371b6284363947740e67cd0c1630f456acc81aac7078cfed10e"
+    },
+    "TARGET_SCORE_WOULD_START_COMBAT": {
+      "value": "80",
+      "string_rva": "0x45ae630",
+      "registration_span": [
+        "0x1a5e530",
+        "0x1a5e787",
+        "0x512dce0"
+      ],
+      "global_slot_rva": "0x5c6872c",
+      "registration_dump": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\TARGET_SCORE_WOULD_START_COMBAT-reg-2.asm.txt",
+      "dump_sha256": "1194b88ee23cf7d34fc34671ed0c0b92c9ce330bf32d695c5bfbf1c980da4c54"
+    },
+    "TARGET_SCORE_WOULD_START_SIEGE": {
+      "value": "70",
+      "string_rva": "0x45ae5c8",
+      "registration_span": [
+        "0x1a5e870",
+        "0x1a5eac7",
+        "0x512dce0"
+      ],
+      "global_slot_rva": "0x5c68720",
+      "registration_dump": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\TARGET_SCORE_WOULD_START_SIEGE-reg-2.asm.txt",
+      "dump_sha256": "50230dcc05cc3cd6610aab5ffc6a040e7f593986361341e9995891e9899dcdc3"
+    },
+    "TARGET_SCORE_CURRENT": {
+      "value": "100",
+      "string_rva": "0x45ae770",
+      "registration_span": [
+        "0x1a5ff30",
+        "0x1a60187",
+        "0x512dce0"
+      ],
+      "global_slot_rva": "0x5c686d8",
+      "registration_dump": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\TARGET_SCORE_CURRENT-reg-2.asm.txt",
+      "dump_sha256": "9a9eb2e55951d69ff932b8add8ba6cabba9641487c08b02511662e9cf71c0058"
+    },
+    "TARGET_SCORE_FURTHER_AWAY": {
+      "value": "-100",
+      "string_rva": "0x45ae710",
+      "registration_span": [
+        "0x1a60270",
+        "0x1a604c7",
+        "0x512dce0"
+      ],
+      "global_slot_rva": "0x5c686d0",
+      "registration_dump": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\TARGET_SCORE_FURTHER_AWAY-reg-2.asm.txt",
+      "dump_sha256": "21ce33ef678b02390b7a366c7526099dbca268f28dfb79155bcd7b9617a88b4c"
+    }
+  },
+  "anchors": [
+    {
+      "rva": "0x19fc7d3",
+      "bytes": "c7411443574941",
+      "mnemonic": "mov",
+      "operands": "dword ptr [rcx + 0x14], 0x41495743"
+    },
+    {
+      "rva": "0x19ff5c8",
+      "bytes": "ff8e9c000000",
+      "mnemonic": "dec",
+      "operands": "dword ptr [rsi + 0x9c]"
+    },
+    {
+      "rva": "0x19ff788",
+      "bytes": "e8b3570000",
+      "mnemonic": "call",
+      "operands": "0x1a04f40"
+    },
+    {
+      "rva": "0x1a05000",
+      "bytes": "e8fb010000",
+      "mnemonic": "call",
+      "operands": "0x1a05200"
+    },
+    {
+      "rva": "0x1a050f5",
+      "bytes": "4c894860",
+      "mnemonic": "mov",
+      "operands": "qword ptr [rax + 0x60], r9"
+    },
+    {
+      "rva": "0x1a057dd",
+      "bytes": "e89e080000",
+      "mnemonic": "call",
+      "operands": "0x1a06080"
+    },
+    {
+      "rva": "0x1a0584e",
+      "bytes": "e86de80000",
+      "mnemonic": "call",
+      "operands": "0x1a140c0"
+    },
+    {
+      "rva": "0x1a05a62",
+      "bytes": "e889160000",
+      "mnemonic": "call",
+      "operands": "0x1a070f0"
+    },
+    {
+      "rva": "0x1a05b4a",
+      "bytes": "e801390000",
+      "mnemonic": "call",
+      "operands": "0x1a09450"
+    },
+    {
+      "rva": "0x1a14265",
+      "bytes": "7416",
+      "mnemonic": "je",
+      "operands": "0x1a1427d"
+    },
+    {
+      "rva": "0x1a14275",
+      "bytes": "8b15b9442504",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [rip + 0x42544b9]"
+    },
+    {
+      "rva": "0x1a14280",
+      "bytes": "7916",
+      "mnemonic": "jns",
+      "operands": "0x1a14298"
+    },
+    {
+      "rva": "0x1a14290",
+      "bytes": "8b1592442504",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [rip + 0x4254492]"
+    },
+    {
+      "rva": "0x1a1429a",
+      "bytes": "7416",
+      "mnemonic": "je",
+      "operands": "0x1a142b2"
+    },
+    {
+      "rva": "0x1a142aa",
+      "bytes": "8b157c442504",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [rip + 0x425447c]"
+    },
+    {
+      "rva": "0x1a142b6",
+      "bytes": "7437",
+      "mnemonic": "je",
+      "operands": "0x1a142ef"
+    },
+    {
+      "rva": "0x1a142c6",
+      "bytes": "8b1554442504",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [rip + 0x4254454]"
+    },
+    {
+      "rva": "0x1a07f30",
+      "bytes": "486305a1072604",
+      "mnemonic": "movsxd",
+      "operands": "rax, dword ptr [rip + 0x42607a1]"
+    },
+    {
+      "rva": "0x1a0805b",
+      "bytes": "4863056e062604",
+      "mnemonic": "movsxd",
+      "operands": "rax, dword ptr [rip + 0x426066e]"
+    },
+    {
+      "rva": "0x1a095f2",
+      "bytes": "443b057bf02504",
+      "mnemonic": "cmp",
+      "operands": "r8d, dword ptr [rip + 0x425f07b]"
+    },
+    {
+      "rva": "0x1a09786",
+      "bytes": "e855f70b00",
+      "mnemonic": "call",
+      "operands": "0x1ac8ee0"
+    },
+    {
+      "rva": "0x1a04c97",
+      "bytes": "0f9cc0",
+      "mnemonic": "setl",
+      "operands": "al"
+    }
+  ],
+  "disassemblies": [
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\slice-019fc7b0.asm.txt",
+      "sha256": "816318481b9ca07da390ccc59f3f7650354d6cb571350dcfaada7ebc5b32c879"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\slice-019ff515.asm.txt",
+      "sha256": "7cc1e753f0c7a2780706da0238ff92fa5605b9810b88c393e71e2fccd6b6b6c8"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\slice-019ff740.asm.txt",
+      "sha256": "62c901e33707204ad6c95bc6dd283ffba043147a37cd807ba82366f6f4b1f1f9"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\slice-01a04930.asm.txt",
+      "sha256": "5c968a19f52f9904dabdcfed6cc939a92cc94117abc7c77639e4dd98d992ee24"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\slice-01a04f40.asm.txt",
+      "sha256": "c9c7b2092985b2ff0a91623e336b61a6da7a749b79447426761942ad77fa644b"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\slice-01a05200.asm.txt",
+      "sha256": "56214e99de2e6f0dc9933f3989d6adac4270e30a4a1f0c2c2618ba6b6aad0a28"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\slice-01a140c0.asm.txt",
+      "sha256": "fdf697f3401db973a6f95f92e301db72d840695b9f5cbda2a719bc439004ba9e"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\slice-01a070f0.asm.txt",
+      "sha256": "b3d360e6b15f92afabc2852b8935b840dcda82d1610a8efc510acb415e06c0b5"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\slice-01a0909e.asm.txt",
+      "sha256": "3a409580c3b14a7d579363bb4a4cdfd8af233a088180f092b28a2419e0b54f9c"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\slice-01a09450.asm.txt",
+      "sha256": "fb7ffd57acef3fc0dd891f9475ad98d6c87bdcd3e9ff2b7ce14e51929918fbc5"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\slice-01a1cb00.asm.txt",
+      "sha256": "d3459fd861b5bf3c4f40de5cb5fae0b153f4646f7b60bf0c34d642dcb02e4401"
+    }
+  ],
+  "layer": "exact-build-static-extraction-with-human-source-contract",
+  "semantic_review_doc": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-native-target-ai\\docs\\ck3-native-ai\\army-target-triage-1.20.0.3.md",
+  "live_execution_performed": false,
+  "limitations": [
+    "Disassembly may include embedded jump-table bytes after returns; only named instruction anchors and reviewed code regions support semantics.",
+    "PE unwind records may split logical functions.",
+    "Registered stock values are loaded runtime slots, not proof of an unmodified current runtime define value.",
+    "No live AI coordinator, final target choice, path-admission predicate or simultaneous-war allocation observed."
+  ]
+}

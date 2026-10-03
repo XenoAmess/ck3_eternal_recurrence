@@ -914,3 +914,21 @@ flowchart TD
 ## 2026-10-03 战争授权和当前两场防御战争
 
 [Robert .3防御战争原生树与实际输入](robert-defensive-war-readiness-12003-2026-10-03.md)回链现有两WarID、真实CB、五部队与正常save4653。当前战争已全面授权，实际读取与未实现字段独立分级；核心军事MCP不依赖旧WAR_CASH/PREWAR。
+
+## 2026-10-03 战争授权后的并行研究与v34实际观测
+
+2026-10-03 战争授权后的九包并行研究、v34 宗教／派系实读及拒绝事件后的战斗发现入口。各页保留自己的暂停基线；九包的拒绝前记录不回写为拒绝后的数据。未编译的功能叶和准备好的调用均不代表新增生产循环，后续动作使用 ROOT 的新鲜帧。
+
+- [动员入口](war-mobilization-12003.md)：`static-ready` 调用合同；罗贝尔新动员后态待实机。
+- [移动、截击与撤退](war-movement-1.20.0.3-readiness-2026-10-03.md)：`static-ready` 路线查询准备；罗贝尔 ETA、命令和后态待实机。
+- [战斗观测与 readiness](battle-readiness-1.20.0.3-2026-10-03.md)、[罗贝尔冻结帧](battle-current-robert-1.20.0.3-2026-10-03.md)：`static-ready` 原生查询树；真实接战、hold、撤退和终局待实机。
+- [战争结束条件](war-end-conditions-1.20.0.3-2026-10-03.md)：`static-ready` 终战树；复用罗贝尔同帧 options 的 `production-live primitive`，终战结果待实机。
+- [军费与雇佣](ck3-1.20.0.3-war-finance-and-hire.md)：`research`；现有财务读口优先，雇佣候选／报价／typed 动作仍为施工入口。
+- [原生目标评分](army-target-triage-1.20.0.3.md)：`research`；当前构建已闭合的局部分支与未知候选／分配边界。
+- [解围、自方围城与强攻](war-relief-siege-native-ai-12003.md)：`research`；原生阈值与 William 第三期实机证据复用，罗贝尔动作待实机。
+- [民粹拒绝事件到战争的原生树](research-plans/war-revolt-outcome-12003/native-graph.md)：`research/source-ready`；复用事件前身份，拒绝／新 WarID／兵力后态待实机。
+- [军队与当前兵力](army-1.20.0.2-migration.md)：新增 `.3` 罗贝尔五军同帧 `production-live primitive` 证据；军种组成和完整战争循环未由该次读取证明。
+- [v34 宗教、派系与事件实读](g2-v34-paused-religion-and-faction-observations-12003.md)：五项查询和历史 save4647 的 `production-live primitive`；后续军事 save4653 单独记录，不覆盖历史锚点。
+- [圣骑士团选中地产条款](religion-holy-order-selected-title-native-ai-12003.md)：九项真实报价／资格／理由为 `production-live primitive`，当前 eligible=0；乱码结论已更正为 worker 显示误读，typed 动作与收益未完成。
+- [朝圣默认阶段实测](religion-pilgrimage-headless-candidate-activity-quote-native-ai-12003.md)：五个活动报价为 `production-live primitive`，只追加“v34 默认阶段报价实际验收”，全旅程、CanStart 与完成结果仍待。
+- [从敌军发现既有战斗](battle-hostile-existing-combat-discovery-1.20.0.3-2026-10-03.md)：复用 ROOT 拒绝后 War50331736 与 route-entry2634；已有 v2→CombatID→transition 查询配方，真实 provider 结果仍待。

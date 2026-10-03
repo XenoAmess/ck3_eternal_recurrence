@@ -177,3 +177,48 @@ v34已有县改宗价值输入，但最终派遣资格未读取。本包用exact
 实际记录：`2026-10-03T14:00:49+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
 
 交付回执：[county-dispatch-final-input-adoption](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/county-conversion/TASK-DISPATCH-ROOT-DELIVERY.json)。
+
+## 2026-10-03：县任务派遣 final eligibility 原生树（实现前 research）
+
+v34 actual Robert paused 帧已发布完整 `value_inputs`，actor29829/date53236608/PID119724，5个候选的目标Faith23/目的Rite152与当前holder县总民意真实可读，`decision_inputs_complete=true`。实际当前 chaplain56513仍执行RR；县DTO固定`action_eligibility_complete=false`，因为尚未读取任务派遣的最终命令校验器。这是当前具体输入缺口，不能用既有appointment CanReassign=false或单独target_valid代替。
+
+先按 exact .3 EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6` 闭合原生树，再施工只读输入。原版 GUI `window_council.gui:872–873` 的 `GuiPotentialCouncilTask.CanSelect` 是 wrapper+88缓存（reflection11617E0）；更新函数1158280组合incumbent/first-target/shown/valid，并不检查更换角色CanReassign。`GetPlayer.IsCouncilTaskValid`命名路径仅到2C48970目标校验，仍不等于完整命令最终资格。
+
+真正派遣路径为 `StartCouncilTaskIn` reflection CEFFD0 → CEFBF0。CEFBF0先获得当前实际ActiveTask，构造 **CChangeCouncilTaskCommand / type0x2E4B / 0x50 bytes**，或对已有非infinite任务使用原版替换确认。RTTI TypeDescriptor5A13F80（literal5A13F90）、primary COL4E21C88（offset0）及secondary COL4E21CB0（offset24）均指同一typed命令；primary vtable476DC68+30为最终validator2996690，clone2996CB0按0x50分配并复制同一字段，typeleaf2996D40返回0x2E4B。
+
+```cpp
+using ChangeCouncilTaskFinalValidator = bool (*)(
+    const void* command_validation_packet, void* nullable_tooltip);
+// exact .3 RVA 0x2996690, tooltip=nullptr;
+// +0x20 actual old ActiveTask fullID; +0x28 new actual TaskType*;
+// +0x30 32-byte scopes: +0 incumbent fullID, +4 owner fullID,
+// +8 target tag8, +0x10 actual ProvinceID (native int64), +0x18 flag0.
+```
+
+final function2996690–29967C6为**310 bytes**，SHA-256 `25c7109cf4f6a45c8c8629092bbe2b47c06550bb2972fb7c540bdf574d8dd3d5`；`.pdata`分成6690–6716、6716–67B4、67B4–67C6，后两段UNW_FLAG_CHAININFO链接第一段，因此不能只冻结首134字节。函数首先从原生ActiveTask registry完整匹配+20 fullID/tag`AcCl`；然后调用31ACEF0(newtype,scopes,null)；最后按scopes完整解析incumbent/owner，并在29967AF tailcall **2C47A20(owner,incumbent,newtype,tooltip)**。该1180-byte完整函数SHA `91f80726627872688c647079e5f2b3b4260abb6f2fc94a812b676fe72529345b`，检查same-character、28BFC70的实际court owner、2917560已有council position、29175C0匹配newtype position、31AC530任务角色资格。原生false是读取成功的拒绝，不能变成unavailable。
+
+```mermaid
+flowchart TD
+    V34[v34 value_inputs完整 / 当前RR / action资格缺口] --> T[actual current ActiveTask + task_conversion Type]
+    T --> P[只读0x50-byte validator input packet / 真实owner incumbent Province]
+    P --> C[2996690 CChangeCouncilTaskCommand final validator / null tooltip]
+    C --> I{old task fullID与AcCl匹配?}
+    I -- no --> F[原生false]
+    I -- yes --> L[31ACEF0实际scope目标 final]
+    L -- false --> F
+    L -- true --> A[2C47A20 owner incumbent task资格]
+    A --> B[每县原生最终bool]
+    B --> Q[同一clergy MCP只读task_dispatch输入]
+    Q -. typed构造提交与执行后task验证未实现 .-> O[县改宗OODA仍pending]
+```
+
+最小provider只调用上述validator，不调用clone、command ctor、submit、替换confirmation、脚本effect、GUI窗口或虚拟方法。校验器未读取packet前0x20 bytes或vptr，仅读取已列字段；使用栈上验证输入，无需构造原生命令或伪ActiveTask。只读路径会按现有paused owning reader取真实currenttask/type/scopes；per-candidate发布`native_final_can_dispatch`、`already_active_at_target`和`replacement_required`。输入完整与原生许可结果独立：全部结果求值成功可令县`action_eligibility_complete=true`，即使某结果为false；它只表示原生资格输入完整，不能冒充typed动作已实现或已提交。外层clergy appointment资格仍为独立false。当前RR改为conversion需要替换实际旧task，其机会成本按已闭合RR专题记账。
+
+本节为file-only research；没有新实机调用、旧county/value矩阵重跑或动作信用。具体ABI冻结与调用足迹见[县任务派遣exact .3 ABI](../../ck3_autonomous_player/native_bridge/research/county_conversion_dispatch12003_abi.json)；下一施工为同MCP输入+一次新生产reader/serializer/normalizer聚焦夹具，随后由ROOT做组合native build及actual paused查询。
+
+
+### 派遣资格只读输入施工与一次focused fixture
+
+生产实现沿现有`ck3_query_player_clergy_appointment_v1`的`county_conversion`子树增加可选`task_dispatch`；没有新增MCP、product flag、SDK参数或生产translation unit。exact .3 binder启用2996690 final validator；旧离线fixture默认不启用扩展，因此旧case无需重跑。每个候选调用一次原生final validator，发布真实bool、已在同一县执行相同任务与替换现有任务前置。`task_dispatch.status=available`表示完整候选的最终资格均读取成功，`eligibility_inputs_complete=true`与县顶层`action_eligibility_complete=true`同步；真实nativefalse仍是可用拒绝。getter缺失/读取失败仅使该扩展unavailable、不清空已闭合的县候选和月率。任务wide shown/valid为false时，已知无可派遣候选而非资格unknown。Python保留有/无value_inputs与task_dispatch的旧形状兼容，完整映射原生真假。
+
+独占`v35-dispatch-attempt-01/RESULT.json`首次 **GREEN**：MSVC `/O2 /W4 /WX`，**4新case / 14 C++运行断言 / 4实际production reader→serializer→Python normalizer JSON**。case覆盖目标有效但命令拒绝、native true且当前已在同县（no-op/无需替换）、新getter缺失时base查询可用、task-wide hidden已知阻点。旧7case county矩阵、5case value矩阵和任何v33/v34 actual帧均未重跑。没有整DLL构建、SDK/pipe、窗口、游戏、Git mutation、动作、游戏日或G2 credit；新扩展 **static-ready**，实际Robert最终dispatch bool仍等待ROOT组合native与paused查询。typed command构造/submit/执行后task-target验证尚未实现，不把本次输入完整称为完整改宗OODA。

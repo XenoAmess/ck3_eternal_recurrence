@@ -1,0 +1,62 @@
+{
+  "schema": "xar.g2.populist-refusal-recipes.v1",
+  "stage": "static-ready; afterstate pending",
+  "event_choice_root_only": {
+    "tool": "ck3_execute_step",
+    "arguments_template": {
+      "step": "select-event-option-4",
+      "expected_revision": "$fresh_public_revision"
+    },
+    "binding": {
+      "event_instance_id": 23,
+      "faction_id": 33554465,
+      "target_title_id": 2115,
+      "native_option_index": 3,
+      "rendered_index": 1
+    },
+    "not_executed_by_this_lane": true
+  },
+  "afterstate_reads": [
+    {
+      "tool": "ck3_take_snapshot",
+      "arguments": {
+        "include_native_command_history": false
+      },
+      "purpose": "New full WarID, event transition, player side, target title and actual army identities"
+    },
+    {
+      "tool": "ck3_query_player_faction_alerts_v1",
+      "arguments_template": {
+        "expected_revision": "$after_snapshot_public_revision"
+      },
+      "purpose": "Bind saved FactionID 33554465 to actual faction_war_id"
+    },
+    {
+      "tool": "ck3_execute_step",
+      "arguments_template": {
+        "step": "query-war-prisoner-release-pairs-v1-$actual_faction_war_id",
+        "expected_revision": "$fresh_public_revision"
+      },
+      "purpose": "Existing generic read-only scan publishes actual CB key, both primaries and complete participant IDs; it sends no release"
+    },
+    {
+      "tool": "ck3_query_army_strengths",
+      "arguments_template": {
+        "army_ids": "$deduplicated_allied_and_enemy_full_CUnitIDs",
+        "expected_revision": "$fresh_public_revision"
+      },
+      "purpose": "Read actual soldiers and AI base power, without converting power into win probability"
+    }
+  ],
+  "mobilization": {
+    "tool_registered": true,
+    "tool": "ck3_raise_troops_default",
+    "arguments_template": {
+      "expected_revision": "$fresh_public_revision"
+    },
+    "current_public_step_available": false,
+    "current_reason": "Existing controllable CUnit83886367 means the public wars-and-no-controllable-army advertisement predicate is false.",
+    "future_predicate": "Only use if fresh capabilities advertise raise-troops-default. Native validator remains final legal decision; verify a new controllable full CUnitID afterwards.",
+    "no_hypothetical_roster_or_muster_count": true
+  }
+}

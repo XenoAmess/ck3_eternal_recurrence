@@ -105,3 +105,19 @@ flowchart TD
 实际记录：`2026-10-03T12:35:10+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
 
 交付回执：[pilgrimage-default-phase-quote](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/pilgrimage/default-phase-quote/ROOT-DELIVERY.json)。
+
+## v34 默认阶段报价实际验收
+
+ROOT提供 `runtime-preparation/v34/actual-paused-v34-01/012-ck3_query_player_religion_context_v1.json`（关联snapshot011、PID119724、source/native `5b203 frozen g34`、environment前缀`12ced0ab`）。本lane只读消费该冻结文件一次：50377 B，SHA-256 `e6a7962a83a5e848bcf55c0869fc28e1f8a6bd901c3a98b30413530da11d996f`。同帧actor29829、DateRaw53236608、capture epoch9487，五个candidate的 `default_activity_quote` 全部取得真实原生输出，故默认阶段活动报价从 `static-ready` 升为 **`production-live primitive`**。原v33零报价记录仍保留为已被修复的实际缺口。
+
+| HolySite ID | Title ID | Province ID | 原生活动gold raw（Q100000） | 原生affordable | 真实默认阶段readback |
+| --- | --- | --- | --- | --- | --- |
+| 0 | 8768 | 5965 | 10000000（100 gold） | true | PhaseDef35319／Province5965／predefined=true／order0 |
+| 1 | 2410 | 2577 | 7000000（70 gold） | true | PhaseDef35319／Province2577／predefined=true／order0 |
+| 2 | 778 | 2088 | 10000000（100 gold） | true | PhaseDef35319／Province2088／predefined=true／order0 |
+| 3 | 7888 | 1785 | 11000000（110 gold） | true | PhaseDef35319／Province1785／predefined=true／order0 |
+| 4 | 267 | 1503 | 11000000（110 gold） | true | PhaseDef35319／Province1503／predefined=true／order0 |
+
+所有其他九个费用槽均是本次原生实际合法零值；treasury slot6也为0。五个 `can_select=true`，五个quote unavailable reason为null，五个 `affordability_reasons_available=true`、完整literal reasons为空串。五组普通阶段 `phase_choices=[]` 原样保留，不用默认quote伪造普通offer。实际PhaseDef本次index35319，未沿用v33的35054，正是按本帧真实定义配置/readback的结果。
+
+完整signed raw10、默认选项、configured phase、独立可负担性和理由归档在外置 `default-phase-quote/actual-v34/ACTUAL-PROOF.json`；日报、周报及专题字段在同目录 `REPORT-FIELDS.json`。本消费者未读取新进程、未重发SDK/query、未操作窗口、pipe或Git。上述价格仍为 native默认配置的**活动费用**；全旅程、实际travel service/options、返程排程、CanStart、付费提交、完成及净成长均没有新增信用，G2/M6和完整宗教loop增量仍为0。

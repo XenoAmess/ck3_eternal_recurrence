@@ -2,7 +2,7 @@
 
 2026-10-03 当前工作包收尾。冻结 Steam `25652598`、EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`，源码输入为 immutable `production-source-8cf176b4`。既有创建／赞助 stock 树、决议 final ABI、v32 组织查询及 Robert 实机证据直接复用。本专题为新的 selected-title 原生研究与独立只读读取器；两篇已 release 的组织／雇佣专题没有修改。
 
-当前状态：**static-ready；candidate／参数／scope export／final quote leaf 已闭合，唯一联合 focused case GREEN**。本页与六个 unique native 文件保持外置，由 ROOT 采纳；尚未接新 MCP 或部署，不声称 selected-title production-live。
+当前状态：**production-live primitive；v34新PID真实paused查询GREEN，三个固定决议与全部九个候选的选中地产报价/资格/原生理由完整实读**。当前native可执行候选为0，typed action及收益after-state未实现，不声称自动策略循环或complete。
 
 ## 三个固定原版决议
 
@@ -70,8 +70,8 @@ flowchart TD
   G --> R
   K --> R
   F --> R
-  R -. 未接MCP/未实机 .-> L[未来Robert paused selected artifact]
-  L -. 未授权本包施工action .-> O[未来创建/撤租结果loop]
+  R --> L[v34 Robert paused selected query GREEN]
+  L -. typed action及after-state未实现 .-> O[未来创建/撤租结果loop]
   C -. native AI最终选址ranking不属于此leaf .-> AI[chooser/utility unknown]
 ```
 
@@ -96,3 +96,24 @@ GREEN receipt 为外置 `selected-title-parameters/fixture/attempt-02/RESULT.jso
 实际记录：`2026-10-03T12:31:35+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
 
 交付回执：[holy-selected-executor-fix](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/holy-order-title/actual-analysis/mailbox-submit-fix/ROOT-DELIVERY.json)。
+
+
+## 2026-10-03 v34 实际 paused selected query GREEN
+
+ROOT以source/native前缀 `5b203`、environment前缀 `12ced0ab`、新PID119724执行只读查询。实际帧为Robert29829、raw date53236608、native revision3、public queried revision2、capture epoch9147，`available=true`、`status=observed`。capture010对应snapshot009；本批五项查询整体GREEN并正常save由ROOT提供，worker仅消费冻结文件，不操作SDK、pipe、CK3、窗口或Git。
+
+| 固定 decision | isShown | 实际原生候选，按FullTitle顺序 | title_valid／CanTake／CanAfford |
+| --- | --- | --- | --- |
+| `create_holy_order_decision` | true | barony tier1：2144、2176、2117、2104、2114 | 五项均为true／false／false |
+| `cancel_holy_order_lease_decision` | false | barony tier1：available-empty，0项 | 没有候选，无逐Title条款 |
+| `create_holy_order_monastic_decision` | false | county tier2：2102、2111、2115、2142 | 四项均为true／false／false |
+
+九个实际候选的完整signed十槽报价均为 `[50000000,0,100000000,0,0,0,0,0,0,0]`，scale100000，即500金币与1000虔诚，其他八槽实际为0。资源顺序为gold、prestige、piety、renown、influence、herd、treasury、treasury_or_gold、merit、barter_goods。该报价来自当前Robert选中地产的真实native evaluator，不是fixture的合成11／42／25；这些fixture值实际写在index3 renown，不能当成Robert实机报价。
+
+CanTake与CanAfford的18条reason均sampled且中文文字完整，实际包含“你处于战争”“你未满足所有要求”以及“缺少虔诚629”，并保留原生格式控制符与war／piety_i token。这些是当前资格解释输入，不表示已穷尽所有失败条件。先前worker报告的U+FFFD／中文乱码结论已更正：严格UTF-8解析原始capture及完整原生body后，18条literal的U+FFFD计数为0；原因是PowerShell 5.1默认GB2312显示层误读。原交付的部分新中文报告文案还受ASCII OutputEncoding影响，本次采用直接UTF-8文件写入替代。原capture、原始字段和旧报告均保留。没有生产文本损坏的实证，不新增生产fix或测试矩阵。
+
+实际reader按String32长度逐字节复制；serializer只转义JSON控制符，保留UTF-8非ASCII字节；native协议按完整payload字节长度写帧，Python endpoint在整帧读取后执行严格 `payload.decode("utf-8")`，normalizer原样返回literal。对应只读定位与更正回执见外置 `reason-encoding-correction/REASON-ENCODING-DIAGNOSIS.json`。
+
+当前输入完整度为3／3决议、3／3候选集合、9／9完整Title，包含独立visibility、title_valid、CanTake、CanAfford、十槽signed报价与reason。撤租的available-empty是已观测的合法空集。所有候选CanTake=false且CanAfford=false，结合独立isShown判定，当前native可执行候选为0。能力为production-live primitive；未交付typed action、after-state收益或完整OODA，不能记录建团收益。
+
+原始实际artifact：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v34/actual-paused-v34-01/010-ck3_query_player_holy_order_selected_title_terms_v1.json`，23359 bytes，SHA-256 `f239a9fc46ae843ed50ebe8e15be3795e66cd98488239597980e7a749a658628`。v33实际executor admission RED由最小注册修复与v34新PID真实查询关闭；原v33 capability RED、诊断wrapper筛选失败与focused harness失败均保留。更正交付回执：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/holy-order-title/actual-analysis/reason-encoding-correction/ROOT-DELIVERY.json`。
