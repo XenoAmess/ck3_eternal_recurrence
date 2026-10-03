@@ -1,5 +1,21 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-03T17:16：Robert v37 实际能力与证据入口
+
+最近 v37/R0016/PID62452 已最小化实测并正常exit0回收，allocator completed-red；source f425/冻结g39，3853保存日、raw53236800/h4747，strict及官方CI37110280135 GREEN。R15任命、派遣和第8日抵达已独立完成；v37只读primitive、三preview曝光RED及terminal真实0xC0000005/bridgeRVA5413773分别记账。
+
+- [统帅一次任命闭环](army-commander-assignment-provider-12003.md)：实际 commander29829，限定 production-live loop。
+- [县任务派遣与原生月率](religion-fervor-county-conversion-native-ai-12003.md)：task_conversion/2629/2173，派遣闭环不等于县Faith改变。
+- [实际行军与抵达时间线](army-march-remaining-timeline-12003.md)：第6/7日仍移动，第8日实际抵达2610，旧7日预计不作实际时刻。
+- [完整占领与收复目标](war-occupation-targets-12003.md)：三战争104行真实集合；新2604/2625/2629 preview exposure RED正在既有路径最小修复。
+- [独立头衔持有人](title-holder-observation-12003.md)：2128 holder33435、2115 holder29829，真实前态不作战争后态。
+- [外国战斗当前损失与优势](battle-current-foreign-casualty-state-1.20.0.3-2026-10-03.md)：current_observation为production-live primitive；Robert未入战，terminal另验。
+- [悔罪完整恢复输入](religion-repentance-recovery-inputs-12003.md)：19候选与typed PAM源完整，当前均不合法，无解除动作。
+- [圣骑士团当前兵数](religion-holy-order-current-soldiers-native-observation-12003.md)：军事order4=1008兵但CanHirefalse，未雇佣或支付。
+
+当前来源、normal checkpoint及后续施工统一回链[进度入口](../autonomous-agent-progress/README.md)；下方旧版本状态和战争OFF仅保留历史事实，不能作为当前限制。
+
+
 **2026-10-03 当前战争授权：** 项目所有者明确命令取消任何非战约束并研究战斗。原 nonwar-only、战争研究停止、战争执行 OFF、仅由其他维护者施工、WAR_CASH/PREWAR 永久关闭等授权限制全部失效；允许战争原生研究、观测、实现、策略和实机执行，不再仅因战争请求确认。旧配置 OFF、失败和零动作均保留为当时事实，不能继续当作禁令。Robert29829 原 ordinary campaign、原生 AI 研究优先、exact-build、玩家限定、真实 readiness 和最小化无焦点继续执行。授权不等于全部能力已完成。
 
 
@@ -14,7 +30,7 @@
 
 ## 2026-10-03：宗教观测与当前原生施工入口
 
-宗教领域已全面开放；罗贝尔唯一入口、最小化后台执行及独立战争暂停继续有效。当前 exact build 为 CK3 1.20.0.3／Steam25652598，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。新增专题沿已有原生树施工，不把原生最终判定、真实费用或结果观测替换成脚本猜测。
+宗教与战争领域均已全面开放；罗贝尔唯一入口、exact-build与最小化后台执行继续有效，旧战争暂停不再构成授权限制。当前 exact build 为 CK3 1.20.0.3／Steam25652598，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。新增专题沿已有原生树施工，不把原生最终判定、真实费用或结果观测替换成脚本猜测。
 
 - [精神满足度与维护](religion-spiritual-growth-and-maintenance-native-ai-12003.md)：罗贝尔实机读到当前值5、等级3／7及58.333%进度；这是当前成长输入，不是月变化或新增长收益。
 - [宗教关系任务的月度虔诚贡献](religious-relations-task-value-native-ai-12003.md)：当前任务原生贡献0.45、角色汇总月变化0.4375分别实读，不按差值猜测修正项。
@@ -25,7 +41,7 @@
 - [教义、信条与忏悔](religion-doctrine-gameplay-native-ai-12003.md)：新版实际决议为 `pam_decision_confession`；v32 已实读 `christian_fulfillment` 类型、当前功能标志 43 和最终决议条款，当前仍隐藏且不可执行。类型查询为只读 production-live primitive；固定信条 `tenet_confession` 的许可状态尚未发布，已有信条集合不含该项不能当作许可为 false，下一项是补齐固定定义状态读取。
 - [教会收入](religion-church-income-native-ai-12003.md)：新版租赁契约包含个人、固定与地方义务；v32 的[税份额输入](religion-church-tax-inputs-readonly-leaf-12003.md)和当前／最高月收入已在罗贝尔暂停帧验收。实际有效税份额 7.5%，月收入 0.21240／0.70804 金；份额来自原生 getter，不能从收入比值反推。当前为只读 production-live primitive，没有收入改善信用。
 - [奉献等级、德性与罪性](religion-devotion-virtues-native-ai-12003.md)：累计等级进度与可花费虔诚分开，动态上限和当前 Rite 的德性判定已有具体原生读取入口。当前为 research，贫穷誓愿的静态收益不是罗贝尔实际合法性或收益。
-- [热忱与县改宗](religion-fervor-county-conversion-native-ai-12003.md)：已闭合任务最终月率与真实县目标的施工入口；完成百分比、Faith 热忱和同名县 modifier 分别处理。当前为 research，尚未切换宗教任务。
+- [热忱与县改宗](religion-fervor-county-conversion-native-ai-12003.md)：已闭合任务最终月率与真实县目标的施工入口；完成百分比、Faith 热忱和同名县 modifier 分别处理。R15已完成一次task_conversion派遣并独立验证2629/2173；派遣为production-live loop，县Faith改变仍待实际观察。
 
 [朝圣类型判定](religion-pilgrimage-native-inputs-12003.md)、忏悔最终决议条款和[教会当前／最高月收入](religion-church-income-readonly-leaf-12003.md)已在同一宗教 MCP 的罗贝尔实际暂停帧验收：PID120436、raw date53234568、source/native/env d1b5b4c5。当前最高为 production-live primitive（只读）；CanPlan=true，忏悔 shown=false/can_take=false，教会当前／最高月收入分别为0.21165／0.70554金。朝圣 CanPlan 不代表所选目的地的完整 CanStart／费用／旅行时间，最高月收入也不代表已取得收入改善。证据：`artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v29-religion-three-leaves-01/result.json`。
 
@@ -43,7 +59,7 @@
 
 ## 2026-10-03：战争第 3 期刘易斯围城实机与机制研究
 
-本次用户单独明确要求继续研究并完成战争系列视频；授权只覆盖这项交付，不改变 Robert 主线的非战争运行政策。CK3 **1.20.0.3 / Steam build25652598** 的[威廉刘易斯实机专题](episode03-william-lewes-live-2026-10-03.md)及[精确证据索引](episode03-william-lewes-evidence-index.json)记录自然102日围城、一天相邻读回、器械增援、正常合军、一次强攻开关与4月22日占领结果。
+本段保留当时战争系列视频交付的授权和实机范围；2026-10-03最新授权已全面开放Robert主线战争与战斗，旧非战争运行限制不再生效。CK3 **1.20.0.3 / Steam build25652598** 的[威廉刘易斯实机专题](episode03-william-lewes-live-2026-10-03.md)及[精确证据索引](episode03-william-lewes-evidence-index.json)记录自然102日围城、一天相邻读回、器械增援、正常合军、一次强攻开关与4月22日占领结果。
 
 规则研究入口：[普通推进及总工作量](episode03-siege-progress-1.20.0.3.md)、[阶段事件](episode03-siege-events-1.20.0.3.md)、[强攻](episode03-assault-1.20.0.3.md)、[占领与战争分数](episode03-occupation-war-score-1.20.0.3.md)。未知倍率、完整事件抽取调度及战争占领分母继续按未知记录；一天净变化不能扩大为隔离因果。为这次真实流程修复的公开军队ID0、路由和进程回收见[源码与验证边界](episode03-public-unit-zero-recovery-2026-10-03.md)。视频入口为[第3期项目说明](../../promo/ck3_native_war_ai/episode-03-siege/README.md)。这些结果不增加 Robert 保存日、G2 或非战争里程碑信用。
 

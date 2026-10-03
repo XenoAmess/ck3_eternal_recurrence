@@ -1,6 +1,6 @@
 # CK3 1.20.0.3：绝罚与普通悔罪请求只读接口
 
-当前资格更新（v35，2026-10-03 14:17 实读）：独立绝罚、五个当前角色源、两实际候选和两一般请愿决议的最终条款已为 **production-live primitive**；解除决策仍 **NOT_READY**。29097 / 56513 均 Shown=false / CanSend=false；一般请愿的 unselected 报价不能当作悔罪选项。完整 actual frame、结果与边界见[当前候选专题的 v35 实读](religion-repentance-recipient-candidates-12003.md)。以下 research / static-ready 与尚未实现的措辞保留其各段原始时点，不能覆盖本次明确的生产观测增量。
+当前资格更新（v37，2026-10-03 实读）：独立绝罚仍为 true；19 个去重 actual 候选、完整 realm/de-jure 来源、当前 flag/modifier/rank/held-clerical 与 typed PAM/mainRite 路由已为 **production-live primitive**。`ordinary_recovery_decision_inputs_ready=true`，19 个普通 final Shown/CanSend 全为 false，因此当前完整集合没有合法普通请求；这不是读取失败，也不是已解除绝罚。Fresh Faith/mainRite 的 central-sacraments=false 已闭合一个共同 visibility 必要条件。一般请愿仍是 unselected-player-root，selected 悔罪项报价尚未完成；当前 requires-petition=false、两一般 decision 隐藏，不为此帧扩张 selected-item lane。详见[完整输入专题的 actual v37](religion-repentance-recovery-inputs-12003.md)。v35/v36 以及以下 research/static-ready 段落保留各自原始时点与失败事实，不覆盖这次生产观测增量。
 
 2026-10-03，readiness **static-ready**；外置源码投影基线 `8cf176b436b6b0024fb591d4114b92448146181a`。尚未应用生产、组合 DLL 或取得 Robert 新 paused sample。
 

@@ -168,3 +168,19 @@ Source `6b0e6bdfa6b18396394ce8f12301e464825f1f46`，DLL `bdb08f2e6cc7bc5afd4d651
 本分析仅文件消费；ROOT累计3850日，本lane零新增日、动作、SDK/pipe/window/Git/shared-source操作；旧测试零重跑。逐包SHA、counter和资格存于同目录OBSERVATION-QUALIFICATION.json。
 
 运行时负责人追加源码闭合：实际512为 `main_thread_query_failure_executor_exception`；executor SEH catch置该flag（其hpp132/cpp1782证据）。后续Submit在非零flags时直接`infrastructure_failed`（cpp1433/1463），Reclaim只回idle不清flags；因此实际持续seq13/readyfalse对应共同executor异常后的拒绝，悔罪叶没有被执行。具体最初battle terminal异常由该owner修复；本lane无悔罪产品代码修改。
+
+## 2026-10-03 actual v37：完整普通恢复决策输入已可用，当前没有合法请求
+
+实机artifact `Z:\ck3_mod_rewrite_process_assets\g2-resume-20261003\runtime-preparation\v37\actual-new-leaves-v37-01` 的014 packet SHA `12601d01a4fbb90293f2d42ebdc22f953a669d83d577f9eaeb35bfbf174bab5a`，178627bytes，MCP isError=false。Source `f42522f7f176ad67b000d66341a17a02a3f82ae7` / DLL `e6c114d82d31900d0a07bf6c43eb89a26f3fd55e2ffb3a3c9a1b5385af7c4585` / ROOT PID62452。actor29829，episode native-29829-2bc2d599f7f9，DateRaw53236800，epoch11125；请求public revision2正确映射native revision3。013/015前后暂停、身份/episode/date相同；mailbox ready=true/failure0，published/completed/executed5→6，证明这次新reader真实执行。ROOT维持窗口最小化、foreground=false；本lane只消费保存文件。
+
+本次新增 source/raw/PAM/completeness 资格提升为 **production-live primitive**。五当前角色完整：chaplain superior/actor superior/authority29097、capital clerical holder=-1、chaplain56513；barony2143/county2142/region=-1。Realm遍历18nodes，17个actual fallback角色；primary title2141的de-jure遍历4nodes，合法空集合。合计19个去重actual候选，每个普通 final identity/六角色、Shown/CanSend、full10 declared cost、autoaccept和接受度都available；全部Shown=false/CanSend=false，full10均0、autoaccept均false，recipient score/outer status仍是preview，不是发送许可。
+
+`ordinary_candidate_collection_complete=true`、`ordinary_recovery_decision_inputs_ready=true`、`ordinary_request_route_currently_absent=true`；legal recipient=null是完整集合没有可发送项的确定结果，不是漏读或长期null占位。Stock preferred selector的过滤/顺序仍未声明完成，观测集合是已冻结stock两源的actual superset。
+
+独立excommunicated=true；pope_excom flag=false、最高held tier3、any-held clerical=false。recent_excommunication和promised_pilgrimage modifier均available且present=false；expiry/remaining null是合法不存在，不能倒推默认到期日，也不能宣称已实测有modifier的到期日期路径。PAM feature=true、Christian/mainRite spiritual-head=true、authority存在，requires-petition=false、need-hof=false、archbishop=false；head29097的PAM ordinary clause=false，其余18候选PAM条款true。
+
+至少一个共同visibility必要条件已经闭合：fresh Faith23/mainRite152有效doctrine的central-sacraments=false。冻结S18等价Faith/mainRite的`doctrine_sacraments_central` membership；S01普通互动和S04/S05一般petition的is_shown均要求该条件=true。本次19 nativeShown=false及两decision nativeShown/CanTake=false与之相符；不能把正接受度或zero declared cost当可发送，换recipient或等待不存在的冷却也不解除这项条件。本文不把它称为每个CanSend false的唯一原因。
+
+两一般petition仍是unselected-player-root，native costs均0/affordable=true，reasons完整保存；`selected_repentance_petition_terms_ready=false`保留诚实边界。当前requires-petition=false且两一般decision隐藏，新增selected item primitive并非这帧解除普通决策所必需，没有依据派生额外native lane。若以后fresh Faith/mainRite/rank改变使petition相关，再从已冻结selected widget/setup/final quote入口续接。本次不是解除绝罚动作、恢复loop或G2完成。
+
+R14/v36共同executor_exception512导致下游未执行的失败artifact原样保留；本次新PID实际成功与该attempt分开记。ROOT累计3853日，本lane0新增日/SDK/State/pipe/window/shared/Git/动作；没有重跑旧测试。全部逐候选表、每叶资格和source证据回链在本目录OBSERVATION-QUALIFICATION.json/CANDIDATE-MATRIX.json。

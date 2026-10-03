@@ -1,6 +1,6 @@
 # CK3 1.20.0.3：圣骑士团雇佣条款与当前兵数
 
-当前增量状态：**static-ready**。原生当前兵数getter已按exact `.3`命名注册、独立caller与完整控制流闭合，并接入既有当前玩家holy-order查询。一份必要的生产reader→完整command_result serializer→生产Python normalizer场景GREEN；尚未部署或采集新增兵数字段的实际paused帧，不能声称当前Robert获得了增援。
+当前增量状态：**production-live primitive**。原生当前兵数getter已按exact `.3`命名注册、独立caller与完整控制流闭合，并接入既有当前玩家holy-order查询。v37实际paused frame实读唯一军事order4当前1008兵，CanHire=false、CanAfford=true、真实106虔诚报价；当前无可雇佣holy-order增援。一次必要的生产reader→完整command_result serializer→生产Python normalizer GREEN复用，当前观察不计Robert新增兵数或完整军事loop。
 
 当前施工由真实军事需求触发：ROOT任务创建时已实读Robert29829/raw53236680、3848保存天、己方2334兵，防御战争16777231、129、50331736；三日已完成，第四日当时正在ROOT执行，本lane不预记。所有宗教、战争与战斗授权已全面开放，费用是已授权的游戏资源；没有等待战争许可或旧宗教禁令。worker及两个子lane只读磁盘并写独占projection，没有SDK、CK3、pipe、窗口或Git操作。
 
@@ -41,7 +41,7 @@ flowchart TD
   S --> C
   C --> J[原生产command_result＋Python normalizer]
   J --> Q[既有ck3_query_player_holy_order_context_v1]
-  Q -. 新兵数字段尚未实机 .-> L[ROOT后续实际paused验收]
+  Q --> L[v37实际paused：order4当前1008兵、CanHire=false]
   R -. native AI chooser unknown .-> U[评分与排序]
   L -. typed hire与独立after-state未实现 .-> O[实际新增军力/扣款结果]
 ```
@@ -66,7 +66,7 @@ flowchart TD
 
 一次必要的focused case采用两个军事与一个非军事fake manager对象：1234与0分别走新生产getter binding/reader→完整command_result serializer→生产normalizer；同时保留can_hire=false/can_afford=true的独立意义，非军事仍null，旧wire可省略extension。严格MSVC `/std:c++20 /EHsc /W4 /WX /utf-8 /MT` 编译/链接、native运行与normalizer全部GREEN，4.089秒。只有原生getter函数体和输入内存是offline夹具，不接游戏，不将此数值/73虔诚合成费用记为Robert live。已有32 checks/3 scenarios、registered route及v32实际query GREEN按原pins复用，旧矩阵没有重跑。
 
-证据：[focused RESULT.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/holy-order-title/hire-military-observation/focused/attempt-01/RESULT.json)、[MCP inventory](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/holy-order-title/hire-military-observation/mcp-inventory/INVENTORY.json)。新增兵数仍为static-ready；现有hire/费用口的production-live primitive来自v32历史实际证据，不替代当前第三/第四日同帧读取。
+证据：[focused RESULT.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/holy-order-title/hire-military-observation/focused/attempt-01/RESULT.json)、[MCP inventory](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/holy-order-title/hire-military-observation/mcp-inventory/INVENTORY.json)。以上focused交付时新增兵数为static-ready，现有hire/费用primitive复用v32历史证据；下方v37同帧实际结果将新增兵数晋级production-live primitive，历史费用不能替代这次原生报价。
 
 ## 当前军事判断边界
 
@@ -88,3 +88,22 @@ ROOT以source/native前缀 `6b0` 的v36新DLL完成strict与cold GREEN后，执�
 当前total saved days为ROOT提供的3850；worker新增日/雇佣/支付/玩家兵力收益/G2增量均0。没有实读合法组织，未触发typed hire执行口施工；宗教、战争及游戏资源支出授权已经开放，不存在permission等待。ROOT正常stop后以同v36/R15避开terminal恢复价值动作；共同故障恢复后的正常同帧原口读取：全部完整军事行can_hire=false即可判当前无可用增援；只有真实合法且可支付候选出现时才继续必要typed hire与独立after-state。
 
 保留actual失败与日报周报字段：[actual-v36/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/holy-order-title/hire-military-observation/actual-v36/ROOT-DELIVERY.json)。本包只新增专题append和外置报告，不修改共享源码、不运行SDK/游戏/pipe/窗口/Git。
+
+
+## v37 实际paused：当前1008兵，最终雇佣资格false
+
+ROOT的唯一SDK batch `runtime-preparation/v37/actual-new-leaves-v37-01` 最终GREEN，并正常save history4743。016 `ck3_query_player_holy_order_context_v1(expected_revision=2)` 返回complete/isError=false。Robert29829/raw53236800、capture_epoch11469、query native3，当前组织集合available=true，共5行：0/1/2/3均非军事，保留military_terms=null；order4是唯一军事组织，完整新兵数getter结果available=true/current_soldiers=1008。新增字段由static-ready晋级production-live primitive，解除实际增援规模的观察缺口。
+
+| 同帧军事order4输入 | 真实读取 |
+| --- | --- |
+| 身份 | HolyOrderID4、Rite15、founder/patron31100、employer39004、leased title7558 |
+| 最终雇佣资格 | CanHire=false，原生理由同时包括绝罚统治者无法雇佣与他们已经被雇佣 |
+| 原生十槽报价 | `[0,0,10600000,0,0,0,0,0,0,0]`，scale100000，即106虔诚 |
+| 独立可支付 | CanAfford=true，原生reason available=true/空字符串 |
+| 原生当前军团兵数 | troop_strength.available=true、current_soldiers=1008，不带scale |
+
+全部军事行最终CanHire=false，因此**当前无可雇佣holy-order增援**。1008是该组织当前兵数，不是Robert获得了1008兵；可支付106虔诚不能覆盖最终资格。理由是多个当前条件，不能声称消除绝罚就一定可雇佣，因为同帧还明确already hired。没有当前合法候选，按实际价值不启动typed hire executor/pipe/MCP施工；宗教、战争及游戏资源支出授权完全开放，不涉及permission等待。
+
+冻结source/native `f42522f7f176ad67b000d66341a17a02a3f82ae7`，DLL SHA-256 `e6c114d82d31900d0a07bf6c43eb89a26f3fd55e2ffb3a3c9a1b5385af7c4585`，exact EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`；PID62452，窗口minimized=true/foreground=false，environment `379428efeeec70b789017c889f41667c86453d91259ef5628398c11f6fec4d7f`。总保存天数由ROOT提供为3853，worker新增日/雇佣/支付/玩家兵数收益/G2增量均0。实际完整body、原始SDK、snapshot/冻结/窗口/正常checkpoint pins与日报周报字段见 [actual-v37/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/holy-order-title/hire-military-observation/actual-v37/ROOT-DELIVERY.json)。报价与兵数均来自这份实际frame，不是早期v32报价、v34建团费用或1234/73合成夹具。
+
+前一v36/R14 attempt保留SDK RED与共同terminal executor_exception512/seq13不增长的归因；当时032 holy reader没有执行，不能据其判断getter失效。新v37冷恢复后的当前口完整实读，未重复旧测试，也不补其它理论修复。ROOT继续当前其它合法战争价值动作；未来自然状态变化出现CanHire=true且CanAfford=true候选时，才沿已闭合雇佣树接必要typed动作与独立扣款/employer/新增军队after-state。

@@ -1,5 +1,7 @@
 # CK3 1.20.0.3：热忱、县改宗与祭司任务机会成本
 
+**2026-10-03 16:23 R15 当前能力：** Robert 29829 的一次县任务“观察 → 选择 → typed 提交 → 独立 task/owner/incumbent/target 读回”已实机 GREEN，限定为 **production-live loop（县任务派遣）**。目标 Province2629 / FullTitle2173；FullTaskID7162 保持不变而实际类型已变为 `task_conversion`。县转换完成仍为 false，游戏日和 G2 credit 增量均为 0；下文带时间的 research/static-ready 记录保留为各阶段事实，最新实机证据见页末 R15 节。
+
 **2026-10-03 11:32 接续采用：** component→glue的13代码路径已采用到集成源码，复用现 `ck3_query_player_clergy_appointment_v1` 返回独立 `county_conversion`。原component7case/28断言/7JSON、fullwire7断言与注册MCP21断言GREEN直接复用，无新语义/重复验证；原RED保留。目标Faith/Rite与实际县价值未补造，组合DLL/Robert暂停帧仍待完成，状态static-ready。见[接续账本](../handover/2026-10-03-g2-v33-resume.md)。
 
 2026-10-03 **research / file-only**。宗教领域已全面开放，本页聚焦罗贝尔领地中 `task_conversion` 的真实目标、最终月进度率和宗教民意价值。复用[祭司与任务合法性](religion-clergy-council-native-ai-12003.md)、[ReligiousRelations 价值](religious-relations-task-value-native-ai-12003.md)及[宗教治理／意见](religion-governance-opinion-native-ai-12003.md)，不重做 Task 身份解析、CanFire、既有 RR 实机、旧 ABI verifier 或夹具。
@@ -315,3 +317,90 @@ ROOT 在真实 paused v35 中读取 `ck3_query_player_clergy_appointment_v1`，0
 014 查询所属批次因独立 `ck3_query_battle_terminal_transition_v1` 返回 “typed query result is inconsistent” 而保留 RED；这不改变本县查询 GREEN。该真实战斗字段故障及其修复归战斗专题，不在这里重复验收。此次文件整合复用既有实际 consumer，新增 SDK / pipe / 窗口 / 动作 / 游戏日 / G2 credit 均为 **0**。
 
 实际证据：[014 查询](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v35/actual-new-leaves-v35-01/014-ck3_query_player_clergy_appointment_v1.json)，SHA-256 `11575973d6372e9a823d49093aed6b376508758940687dde5180f0668ce5c718`；[013 fresh snapshot](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v35/actual-new-leaves-v35-01/013-ck3_take_snapshot.json)，SHA-256 `602d23ea797389085fd753186150e5055307a26c8515324c0091bb5f2c1e1704`；[实际 consumer](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/county-conversion/actual-new-leaves-v35-01/COUNTY-DISPATCH-ACTUAL-CONSUMER.json)，SHA-256 `f04d878746bb4184370dbfb1290b3cc1de03ffe20c9673306f6fe84fdba2fa57`。
+
+## 2026-10-03 16:23：R15 一次真实县任务派遣闭环
+
+ROOT 的 [实际 packet](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/county-task-command-provider/actual-r15-dispatch-01/result.json) 于 **2026-10-03T16:23:37.614355+08:00** 记录 **GREEN**：一次 fresh clergy 查询、一次 typed 提交、一次独立结果查询，随后 normal save。复用已通过的原生 ABI、focused fixture 与组合 DLL；本节只消费冻结的 8 份 MCP packet，不新增 SDK、pipe、窗口操作、测试矩阵或游戏日。当前资格为 **production-live loop，仅限这一次县任务派遣**：观察、确定候选、操作和独立验证均已闭合。原 harness 的组件标签 `production-live primitive` 原样保留在回执中；它与此处限定的动作闭环粒度分别记账，均不表示完整县改宗或整局自动玩家完成。
+
+实际 snapshot diagnostics 的 hello/heartbeat/pong 均绑定 **PID 66772**，不是旧延期配方中保留的 PID90596 注记。ROOT 的 R15 normal 冷恢复保持同一 `Z:/g37` source **6b0** / v36 DLL，最小化 true、foreground false；本包 `window_operations=0`。Robert **29829** / 原 episode `native-29829-2bc2d599f7f9` / date raw **53236728** / ordinary campaign / `xar_off`；exact build **1.20.0.3 Crozier / Steam25652598**、EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。当帧中央累计日数 3850 是已有基线，本动作 **game_days_added=0 / G2 credit=0**。
+
+### 同帧原生候选、真实月率与选择
+
+`ck3_query_player_clergy_appointment_v1(expected_revision=2, candidate_character_id=56513)` 在 owning capture epoch **35674** 返回 available；public/native revision **2/7**、snapshot `native:7`，date53236728。实际 owner29829 / incumbent56513 / FullTaskID7162 为 `task_religious_relations`，progress_kind0、未冻结、无县目标；当前 conversion 月率与百分比都是合法 null，不能填零伪装已经运行转换。县 shown/valid、候选集合完整、value decision inputs 与 final-dispatch inputs complete 均为 true。外层任命 `native_can_reassign=false / native_can_fire=false / action_eligibility_complete=false` 仍为独立结果；县任务 `action_eligibility_complete=true` 与五项最终 native_can_dispatch=true 已实际读取。
+
+| Province / FullTitleID | 亲持 / holder | 当前 Faith / Rite | 目的 Faith / Rite | 当前县总民意 | 原生预测月率 raw / scale = pp/月 | final can_dispatch |
+|---|---|---|---|---|---|---|
+| 2635 / 2102 | true / 29829 | 157 / 13 | 23 / 152 | -56 | 109917 / 100000 = 1.09917 | true |
+| 2638 / 2111 | true / 29829 | 157 / 13 | 23 / 152 | -75 | 117175 / 100000 = 1.17175 | true |
+| 2640 / 2115 | true / 29829 | 157 / 13 | 23 / 152 | -65 | 117175 / 100000 = 1.17175 | true |
+| 2627 / 2165 | false / 32716 | 24 / 153 | 23 / 152 | -68 | 120804 / 100000 = 1.20804 | true |
+| 2629 / 2173 | true / 29829 | 24 / 153 | 23 / 152 | -44 | 122013 / 100000 = 1.22013 | true |
+
+五项都为非 no-op 并需替换当前 RR。选取 **2629 / 2173**，因为它实际为 Robert 亲持、当前 native 最终许可为 true，且是当帧亲持候选中最高月率；当前 Faith24 / Rite153，目的 Faith23 / Rite152，当前总民意 **−44**，Faith/Rite change 均 true。此规则是树落盘后的最小玩家策略；原生 authored AI 目标选择仍没有在此包证明为“最快县”。
+
+`native_monthly_rate_raw=122013 / native_monthly_rate_scale=100000` 是原生 numeric evaluator 对该 proposed scope 的真实结果，即 **1.22013 百分点/月**。它不是从经过的游戏日反推，也不是派遣后 current-task 月率的独立观测：本次 compact after TaskState 没有发布 current monthly rate。没有推算保证 ETA、转换后民意收益或真实热忱/发展变化。接受 RR 机会成本通过 `replace_existing_task=true` 显式记录；本帧没有新读取 RR piety 贡献或换任务后的损失，旧 0.45 piety/月仍只属于原帧。
+
+### 一次原生 owning clone 提交与独立任务结果
+
+实际 MCP 请求如下；FullTaskID 与实际 incumbent 来自本帧，省与县身份分别使用各自原生 ID。
+
+```json
+{
+  "expected_revision": 2,
+  "expected_active_task_id": 7162,
+  "expected_incumbent_character_id": 56513,
+  "province_id": 2629,
+  "replace_existing_task": true,
+  "action_id": "robert-county2173-v36-retry02"
+}
+```
+
+提交 request **`county-task-ae9547df94204ecca7a3d0d3bccfea59`**，action **`robert-county2173-v36-retry02`**。native submission capture epoch **36048** / native revision7 / date53236728 的 final can_dispatch=true；`native_submit_copy_called=true`、channel **14 (0x0E)**，沿既有 `SubmitCommandCopy` owning clone/queue 路径仅调用一次。此时 status **`queued_verification_pending`**，material_result=false，不能用 ACK 宣称任务已改变。
+
+随后 `ck3_query_county_conversion_task_result` 用同一 request/action ID 在新的 owning capture epoch **36414** 读取真实 registry/current clergy task；它晚于提交 epoch，日期仍53236728。结果 **`task_assignment_material_observed`**、assignment_matches=true、verification_pending=false：
+
+| 独立实际字段 | 提交前 | 执行后 |
+|---|---|---|
+| owner / incumbent FullID | 29829 / 56513 | 29829 / 56513 |
+| ActiveTask FullID | 7162 | **7162** |
+| actual TaskType key | `task_religious_relations` | **`task_conversion`** |
+| target scope tag | 0 | **8 (Province)** |
+| actual Province / county FullTitleID | null / null | **2629 / 2173** |
+| progress_kind / percentage progress raw | 0 / null | **1 / 0** |
+| capture epoch | 36048 | **36414** |
+
+`actual_task_id_unchanged=true` 与原生 `31B4000` 修改同一 ActiveTask 的已闭合路径一致；ID 不变没有被误判为失败。after 是独立 owning query 的真实 type/scopes/owner/incumbent 读回，不是回显提交参数或 final validator 的 ACK。`county_conversion_completed=false`，进度仍 0；本回执只证明任务已开始指向该县，没有证明县 Faith/Rite 已变化、月进度已增长或完成副作用已发生。
+
+```mermaid
+flowchart TD
+    Q[Fresh clergy epoch35674 / RR7162 / owner29829 inc56513] --> C[Five real candidates / final true / evaluated monthly rates]
+    C --> P[Select direct2629 county2173 / 1.22013 pp per month]
+    P --> S[Explicit replacement true / one owning clone submit epoch36048]
+    S --> A[queued_verification_pending / ACK only]
+    A --> R[Independent result epoch36414 / task_conversion tag8 province2629 county2173]
+    R --> I[Same FullTaskID7162 / same owner29829 incumbent56513 / progress0]
+    I --> L[One county-task dispatch production-live loop closed]
+    L -. natural progress and county Faith Rite outcome still pending .-> O[County conversion completion]
+```
+
+### Normal save 与保留的失败边界
+
+`ck3_save_checkpoint` 返回 accepted=true，normal checkpoint **saved / overwrite_confirmed=true / native-autosave-command-v1**，date53236728、save sequence3、history_index **4721**。文件 `[xar_checkpoint.ck3](<Z:/ck3_mod_rewrite_process_assets/g2-robert-mainline-12003-v36-r15-20261003/state/profile/save games/xar_checkpoint.ck3>)` 为 **90873919 bytes**，SHA-256 **`6563b807534b4c65c2a8bdeb79421cb9a8b230a23cae180927cab0ace6af51ca`**；episode/actor仍匹配原普通战役，environment SHA `ebe75c3a088b64704dad39a1d11ae0bf184d47fc2bf3f5848f122b4c622eb846`。保存前 007 snapshot 的 command-history export 为 omitted / total_count4720 / included0，不能把它冒称完整 history export。immutable episode seed 保留原件，不给本包新增 bootstrap、rewind 或 G2 信用。
+
+早先 PID90596 的实际 failure512=`executor_exception`、main-thread mailbox not-ready、private seq13 停止增长，以及 ROOT commander attempt005 unavailable/busy 的失败和 normal save 继续保留。县配方当时为 [prepared-deferred-root-runtime-recovery](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/county-task-command-provider/V36-RETRY02-ACTION-DELIVERY.json)，县 SDK attempt0；该历史记录没有改写成成功。R15 经 ROOT 的 normal 冷恢复后才执行本次 fresh-read/once-submit/result；共同故障的具体恢复归运行时专题。本次没有盲重试或自动重复提交。
+
+后续在主线自然运行后，复用现有 clergy/county 观测读取真实 current monthly rate、百分比/frozen 和 county Faith/Rite/民意；按真实结果校准目标价值与 RR 机会成本，观察阻断、随机副作用与完成效果。本包已有成功证据不重跑；长期县转换结果仍 pending。
+
+实际来源与哈希：
+
+| 冻结文件 | SHA-256 |
+|---|---|
+| [001 fresh snapshot](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/county-task-command-provider/actual-r15-dispatch-01/001-ck3_take_snapshot.json) | `71968b263c34dbbbe9dad872791bde9d845a92858fc78fdeb8da3cec7aa2395f` |
+| [002 fresh clergy](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/county-task-command-provider/actual-r15-dispatch-01/002-ck3_query_player_clergy_appointment_v1.json) | `8485c7f28056e73532c13dea5a046ebeaab338344222ac76d06c54ab7df2fea0` |
+| [004 one submit](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/county-task-command-provider/actual-r15-dispatch-01/004-ck3_submit_county_conversion_task.json) | `81c8bd9831827cc3e6620b26dcdeec02481562943b442996d9bee7fe8c3ada79` |
+| [006 independent result](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/county-task-command-provider/actual-r15-dispatch-01/006-ck3_query_county_conversion_task_result.json) | `aefc492ff9a304116d473df02650b009b8a6bc6cca6181377e7b88793f9f8dd5` |
+| [008 normal save](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/county-task-command-provider/actual-r15-dispatch-01/008-ck3_save_checkpoint.json) | `dc6b56a0934bb4fd175d0988c31b223248482474687ba2c9bc9d2ede5455987d` |
+| [Root GREEN receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/county-task-command-provider/actual-r15-dispatch-01/result.json) | `fa4f53390d687d5c7a46fa18c369142bf59b10b64e4eb842f069c561f4c260c0` |
+| [全 packet 文件消费账本](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/county-task-command-provider/actual-r15-evidence/COUNTY-TASK-R15-ACTUAL-CONSUMER.json) | `f9a0a407fcd378af6dd3fdbd7027339b9bf5f6ae65bf7414c0c4afa7bf5f3943` |
+
+本节报告字段由 ROOT 合并日报/周报；县功能源码采用 commit/push `8fb41d1`，本次文档合入/commit/push 仍由 ROOT 负责。此前 focused GREEN 和失败 artifact 原样复用，没有新增测试数量或额外游戏动作信用。

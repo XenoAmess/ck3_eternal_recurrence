@@ -1,6 +1,8 @@
 # CK3 1.20.0.3 玩家军队的 typed 将领任命
 
-2026-10-03，状态 `static-ready`；10 个 native cases / 29 项断言与 4 个注册 MCP cases GREEN，没有 SDK 或实机任命动作。当前功能必要性是 Robert `29829` 的真实军队 `83886367` 已观察到 commander absent。此包补齐名单之后的正式任命动作，并复用名单查询独立读回；不得把单个 queue ACK 写成已任命或战斗胜利。
+2026-10-03，当前状态 **`production-live loop`（当前单军统帅任命）**。R15 已完成真实候选观察、动态选择、一次正式玩家命令及独立读回，Robert `29829` 已任命到军队 `83886367`；实机证据与前次 RED 保留在下文。战斗循环与收益尚未由本项证明。
+
+原始静态交付基线：10 个 native cases / 29 项断言与 4 个注册 MCP cases GREEN，当时没有 SDK 或实机任命动作。原功能必要性为该军 commander absent；本包补齐名单之后的正式任命动作，并复用名单查询独立读回。
 
 构建为 CK3 **1.20.0.3 / Steam 25652598**，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。原生策略与命令施工输入先于实现落盘于 [候选与最终资格](commander-candidates-and-assignment-12003.md)、[正式玩家命令](commander-player-assignment-12003.md)；本包不猜候选，也不直接写 `CArmy+0x120`。
 
@@ -27,9 +29,10 @@ flowchart TD
     R --> M{matches requested?}
     M -->|yes| O["verified commander assignment"]
     M -->|no/unavailable| U["pending; preserve real result"]
-    O -. "Root has not executed this source" .-> L["unknown live result / combat benefit"]
+    O --> L["R15 actual commander assignment loop GREEN"]
+    L -. "not established by assignment" .-> B["unknown combat benefit"]
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
-    class L unknown;
+    class B unknown;
 ```
 
 ## 验证与后续
@@ -40,7 +43,7 @@ Focused fixture 使用真实 production reader、command submit、serializer、t
 
 `open_kaishek` 预验为 `not-applicable`：此包处理 exact-build native C++ ABI 和 MCP wire，不运行其 parser、Paradox 脚本或 finite-runtime 支持语义；确定性子集由本包 focused production fixture 执行。没有游戏日推进、SDK/window 操作或 G2 信用。
 
-剩余由 Root 合入并构建新的冻结 DLL，读取 Robert 当帧真实候选，再根据已冻结原生质量字段做单军最小策略、执行一次 typed 任命并保存独立后置 artifact。原生全军排序、auto-commander bits、大表 tie-order 与目标地形质量尚不由本最小策略复刻，质量差距继续记入原生专题和 blocker ledger；它们不构成这项单军合法任命的额外门禁。
+静态交付时的后续（已由下文 R15 实测完成）：由 Root 合入并构建新的冻结 DLL，读取 Robert 当帧真实候选，再根据已冻结原生质量字段做单军最小策略、执行一次 typed 任命并保存独立后置 artifact。原生全军排序、auto-commander bits、大表 tie-order 与目标地形质量尚不由本最小策略复刻，质量差距继续记入原生专题和 blocker ledger；它们不构成这项单军合法任命的额外门禁。
 
 ## v36 实际名单与首个任命 attempt（2026-10-03）
 
@@ -57,3 +60,17 @@ Root随后仅发送一次 `ck3_assign_army_commander_v1(army_id=83886367,command
 这与已进入callback之后的 `army-commander assignment execution unresolved; query actual commander` 或native queue接受后的 `submitted_verification_pending` 不同。本attempt没有queue ACK，也没有独立post-command commander读回，因此任命仍未完成，不能记production-live assignment primitive/loop。正常checkpoint `4714` GREEN，SHA `8a9e4345edb07ba6b6e118a6ad4eee12daecf21ab58bee095a346ff1d80119a5`，同date/actor/episode；它不证明任命结果。
 
 外置 `commander-assignment-provider/actual-v36-new-leaves-01/ACTUAL-ASSIGNMENT-CLASSIFICATION.json` 保存actual packet、源码branch与文件hash。保留once失败attempt，不重发；Root恢复共同mailbox后先执行已经准备的 `selection/READBACK-ONLY-CALLS.json`。只有读取当前实际commander后仍需任命，才用新fresh名单/revision绑定下一次动作。本项worker未连接SDK、未操作窗口/Git、未重跑旧测试；没有新增游戏日、G2或战斗胜利信用。
+
+## R15 实际统帅任命循环（2026-10-03）
+
+本项当前状态升级为 **`production-live loop`：观察 → 选择 → 正式任命 → 独立统帅读回**，范围为 Robert 的当前单军统帅任命。它不代表战斗循环、胜率预测、战斗收益或整代 OODA 已完成。以下 R15 结果接续并保留上节 R14 的 `not_submitted` RED；没有把失败 attempt 覆盖成成功。
+
+R14 的 common mailbox 在任命动作前已有 `failure=512`，确切 error 证明该次请求未发布、未进入 native command queue。Root 正常关闭 R14 后，从最新正常 checkpoint **4714**（SHA `8a9e4345edb07ba6b6e118a6ad4eee12daecf21ab58bee095a346ff1d80119a5`）冷恢复 R15。此次复用 source/native compile head `6b0e6bdfa6b18396394ce8f12301e464825f1f46`、`Z:/g37` 及同一 DLL，SHA `bdb08f2e6cc7bc5afd4d65119e8d19ca5cf19fba50c1e356eb8fa892c1702c16`；没有借冷恢复重放旧动作或改回较早存档。PID `66772` 仅为这次 capture 的历史身份，窗口实测 minimized=true、foreground=false。同 actor `29829`、episode `native-29829-2bc2d599f7f9`、paused `date_raw=53236728`。
+
+Root 首先重挂既有四条 Sway recorder，再执行现成 READBACK-ONLY 配置。`commander-assignment-provider/actual-r15-readback-01/result.json` 全批 GREEN；名单 query **012** 为 available，native/public revision **3/2**、query sequence **1**，同 public CUnit `83886367` → internal CArmy `50331794`、owner `29829`，current commander 仍为合法 **absent**。19/19 候选完整、final mode-1 资格与质量可观测，19/19 can_assign=true。实际选择输入仍是 Robert `29829=29/29`，次高 `34867=28/28`；外置 `actual-r15-selection-01/SELECTION.json` 从这份新查询动态选择 Robert，没有把后态 34/34 倒填成选择输入。选择规则为最高 native base quality，再 generic advantage，同分保留原生 collection 顺序；其单军策略质量边界与上文一致。动作前 diagnostics failure=0、ready=true。只读阶段正常 checkpoint **4717**，SHA `e3225e4f6934bd177f4eedaf5377a296df7e054824bb12437d09632858904e3f`。
+
+Root 随后在新会话仅发一次 fresh `ck3_assign_army_commander_v1(army_id=83886367,commander_character_id=29829,expected_revision=2)`。`actual-r15-assignment-01/004-ck3_assign_army_commander_v1.json` **GREEN**，outer status **`commander_assigned_verified`**、command sequence `1`；submitted native/public revision **5/2**。native DTO 真实观察到 final eligibility=true、packet validation=true、command_submitted=true。其 inner `status=submitted`、`verification_pending=true` 与 `native_submission_status=submitted_verification_pending` 保留提交时含义，不能单凭它们计成功。
+
+成功依据是同一 typed service 随后的**独立只读** `commander_readback`：query sequence **2**、native/public revision **5/2**、同 paused date，实际 current commander 为 available / **`29829`**；public army `83886367`、internal CArmy `50331794`、actual owner `29829` 全部匹配。`commander_assignment_verification` 的 verified、army_context_matches、commander_matches 均为 true。它复用已有 native CArmy commander FullID/getter 对照，未根据请求人物 ID 合成读回。后态 Robert 的两个质量 getter 为 **34/34**，而该行 final mode-1 can_assign=false，另18行仍 true；后置资格是当前原生规则状态，不能用该 false 推翻已独立证实的任命身份。29/29 → 34/34 只记两次实测，未查明变化原因，不改称独立 martial、一般 getter 等价或胜率。
+
+成功批次 initial/final 均 actor/date/paused 一致，全批 GREEN，正常 checkpoint **4720**（90,873,582 bytes），SHA **`c36ea27922a6bb5c627aa2b4b4e3a4ec40ddadad872a426a9c92eb20029612f0`**。本循环推进 **0 游戏日**，没有战斗胜利、围城完成或 G2 完成信用。外置 `commander-assignment-provider/actual-r15-live-loop-delivery-01/ACTUAL-R15-COMMANDER-LIVE-LOOP.json` 保存 before query、fresh selection、真实 command/readback、R15 source/DLL/checkpoint 和窗口 pins。原 native/MCP focused GREEN 直接复用，无旧测试重跑；本文件消费 worker 的 SDK、窗口、Git 操作均为0。下一步由 Root 沿当前普通战役继续军事 OODA；该军统帅已读回，无需重发任命。当前原生全军 owner-priority/group/tie/目标地形质量差距仍保留，不能把本次单军任命循环外推为整套战斗策略。

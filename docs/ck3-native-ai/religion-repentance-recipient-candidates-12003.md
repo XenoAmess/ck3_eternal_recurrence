@@ -77,3 +77,11 @@ flowchart TD
 该生产观测增量闭合了五个当前角色源、两actual候选和两general petition finalterms，解除决策仍 **NOT_READY**。下一最高依赖为 exact compiled PAM/requires-petition/mainRite clergy route，以及stock `every_vassal_or_below` / `every_clerical_region_in_dejure_title` fallback collection；后者只读实际FullID后复用同reader。随后接 `pope_excom` **character flag**、recent modifier、CanSend reason sink和选择 `scope:petition_head_of_faith_repentance` 的正确setup/cost。不能因为当前两候选全部隐藏而停止观测。这个package没有动作、解除、雇佣、推进日或完整loop credit。逐叶qualification与evidence pins见 `Z:\ck3_mod_rewrite_process_assets\g2-resume-20261003\repentance\actual-v35-01-analysis/OBSERVATION-QUALIFICATION.json`。
 
 本次 query 在 date53236608 取得，只增加上述只读资格。后续军务推进后的当前总进度3846/36524、date53236632，不改变这条历史 sample 的时间；本文整合不追加游戏日、发送、解除或 loop 信用。
+
+## 2026-10-03 actual v37：当前角色加完整 fallback 集合
+
+后续同一 MCP 在 source `f42522f7f176ad67b000d66341a17a02a3f82ae7`、PID62452、Robert29829、episode `native-29829-2bc2d599f7f9`、paused DateRaw53236800 / epoch11125 实读成功，public revision2 映射 native revision3。五当前角色保持完整；新增 realm 来源遍历18 nodes、17个实际 fallback 角色，primary title2141的 de-jure 来源遍历4 nodes后合法为空。两源与当前角色去重为19个 actual candidates，每项 native final六角色、Shown/CanSend、十资源、autoaccept、接受度均可用；全部 Shown=false / CanSend=false。
+
+`ordinary_candidate_collection_complete=true`、`ordinary_recovery_decision_inputs_ready=true`，当前 `ordinary_request_route_currently_absent=true`。因此已补齐 v35 所列普通恢复决定的必要来源和路由输入；完整集合没有合法普通请求是确定的当前负结论。Stock preferred selector的过滤/顺序仍未复刻，不以源 superset 冒充 selector。Faith/mainRite central-sacraments=false 是已闭合的共同 visibility 必要条件；换成正接受度人物、等待本帧不存在的 modifier 冷却，均不能据此宣称可发送。
+
+完整 raw/PAM/候选表、合法 null、当前无需 selected petition 的原因及 source/packet pins 见[恢复输入专题的 actual v37](religion-repentance-recovery-inputs-12003.md)，以及 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/repentance/actual-v37-01-analysis/{OBSERVATION-QUALIFICATION.json,CANDIDATE-MATRIX.md}`。014 packet SHA `12601d01a4fbb90293f2d42ebdc22f953a669d83d577f9eaeb35bfbf174bab5a`；新增观察资格为 **production-live primitive**，未增加解除、发送、游戏日、恢复 loop 或 G2 信用。v35 有限候选旧帧和 v36 下游未执行的 RED 保留各自日期事实。

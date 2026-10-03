@@ -1,6 +1,6 @@
 # CK3 1.20.0.3: native occupation targets for Robert's defensive wars
 
-2026-10-03. The typed readonly query `ck3_query_war_occupation_targets_v1(war_id,expected_revision)` now exposes native eligible holdings with exact holding/title/province, legal holder, occupying character and physical war-side identities. It is **static-ready**; Root's actual paused Robert query remains pending. The exact build is CK3 1.20.0.3 / Steam25652598, EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`.
+2026-10-03. The typed readonly query `ck3_query_war_occupation_targets_v1(war_id,expected_revision)` now exposes native eligible holdings with exact holding/title/province, legal holder, occupying character and physical war-side identities. Initial implementation was static-ready. The v36 context-unavailable attempts remain historical RED; the v37 paused Robert capture below makes the complete occupation collection a **production-live primitive**. Actual movement to a recovery holding remains a separate capability. The exact build is CK3 1.20.0.3 / Steam25652598, EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`.
 
 ## Concrete gameplay dependency
 
@@ -10,7 +10,7 @@ The extension preserves native participant-to-holding order and repeated occurre
 
 ## Existing execution and independent results
 
-Keep the already committed route for CUnit83886367 from2614 to2610; adopting this package does not resend the move. Root's bounded day loop refreshes the current route/contact horizon and independently reads army/date/paused state. Once an actual fresh frame places the army at2610, query `ck3_query_actual_contact_scope(subject_army_id=83886367,target_province_id=2610,expected_revision=R)` and `ck3_query_battle_control_snapshot_v1(subject_army_id=83886367,expected_revision=R)`. The actual-contact query applies to the army's current province, not a remote preview.
+The original route for CUnit83886367 from2614 to2610 was retained without resending the move. Root's bounded day loop refreshed the route/contact horizon and independently read army/date/paused state; actual day8 at raw53236800 now observes arrival at2610, regular code1 and a complete empty route. The [march timing and arrival topic](army-march-remaining-timeline-12003.md) preserves day6/day7 as moving observations. A fresh stationary decision may use `ck3_query_actual_contact_scope(subject_army_id=83886367,target_province_id=2610,expected_revision=R)` and `ck3_query_battle_control_snapshot_v1(subject_army_id=83886367,expected_revision=R)`. The actual-contact query applies to the army's current province, not a remote preview.
 
 For each current full WarID16777231/129/50331736, `ck3_query_war_termination_options(war_id=W,expected_revision=R)` already reads independent native total and four score components. Use a fresh public revision; the driver maps it to the native admission revision. The four components are attacker-relative, so Robert's defender interpretation negates them. WarID-scoped attribution is essential when multiple wars share physical province2640.
 
@@ -83,3 +83,51 @@ v36三场occupation实际均context_unavailable/collection_completefalse，不�
 实际记录：`2026-10-03T16:27:56+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
 
 交付回执：[v37-occupation-fallback](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-goal-capture-execution/actual-v36-01/ROOT-FALLBACK-DELIVERY.json)。
+
+## 2026-10-03：v37 首次实际读到三场完整 occupation holding 集合
+
+Root `runtime-preparation/v37/actual-new-leaves-v37-01` 已终态GREEN。本lane纯文件消费三份occupation与两份title-holder以及最终paused snapshot；没有SDK、state修改、窗口、Git、共享源或重复测试。exact1.20.0.3 EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`，Robert29829/episode `native-29829-2bc2d599f7f9`，raw日期53236800，public revision2/native revision3，`native:3`，connection generation2。Root累计3853天，本消费增量0。
+
+三份结果均payload `available=true,collection_complete=true,unavailable_reason=null`，并且有35/31/38条真实非空holding rows。这是实际collector结果，不是仅transport成功或fallback空容器：此前v36三场context-unavailable RED保留，v37读取到的具体holding/holder/occupier解除目标集合缺口。
+
+| WarID | Defender native eligible / occupied / candidate | Attacker native eligible / occupied / candidate | 实际rows | 本战争对侧占领可收复rows |
+|---|---|---|---:|---:|
+| 16777231 | 31 / 17 / 31 | 4 / 0 / 4 | 35 | 17 |
+| 50331736 | 31 / 0 / 31 | 0 / 0 / 0 | 31 | 0 |
+| 129 | 31 / 0 / 31 | 7 / 0 / 7 | 38 | 0 |
+
+主war16777231真实有17个defender holding被30097占领，全部occupier_side=attacker且counted_occupied_by_opposing_side=true；原生31 eligible中的这17次计数不是从declared目标首府推出来。以下保留原native行序，index从0开始，不排序、去重或以county title猜barony holding：
+
+| Native row index | ProvinceID | Full holding TitleID | Legal holder CharacterID | Occupier CharacterID | Territory side | Occupier side | 原生opposing占领计数 |
+|---:|---:|---:|---:|---:|---|---|---|
+| 3 | 2633 | 2108 | 32716 | 30097 | defender | attacker | true |
+| 4 | 2634 | 2109 | 43698 | 30097 | defender | attacker | true |
+| 5 | 2639 | 2110 | 32716 | 30097 | defender | attacker | true |
+| 8 | 2627 | 2166 | 32716 | 30097 | defender | attacker | true |
+| 9 | 2626 | 2167 | 43710 | 30097 | defender | attacker | true |
+| 10 | 8751 | 2168 | 32716 | 30097 | defender | attacker | true |
+| 13 | 2628 | 2170 | 32716 | 30097 | defender | attacker | true |
+| 14 | 2630 | 2171 | 43711 | 30097 | defender | attacker | true |
+| 15 | 2629 | 2174 | 29829 | 30097 | defender | attacker | true |
+| 16 | 2625 | 2175 | 29829 | 30097 | defender | attacker | true |
+| 17 | 8753 | 2176 | 43712 | 30097 | defender | attacker | true |
+| 18 | 2631 | 2162 | 34867 | 30097 | defender | attacker | true |
+| 19 | 2623 | 2148 | 34333 | 30097 | defender | attacker | true |
+| 20 | 2624 | 2149 | 34333 | 30097 | defender | attacker | true |
+| 21 | 2621 | 2150 | 43707 | 30097 | defender | attacker | true |
+| 29 | 2604 | 2400 | 33435 | 30097 | defender | attacker | true |
+| 30 | 8759 | 2402 | 43755 | 30097 | defender | attacker | true |
+
+War50331736与129中相同17项地理occupied=true、occupier仍30097，但occupier_side均outside_war、`counted_occupied_by_opposing_side`均false；它们的defender native occupied=0。解放这些holding是主war16777231的占领输入变化，不能自动算成叛军或宗教战争各自17项战分贡献。全三场全部104条原始rows与各自主战者/actual side/全部counters保留在 `ROOT-DELIVERY.json`，没有把另外两场的7项或0项attacker eligible当主war的领地。
+
+实际最小preview候选可从表中取一项：province2604/holding2400/legalholder33435/occupier30097；或Robert本人持有的province2629/holding2174、province2625/holding2175。这些只是已实测属于主war真实敌占集合的候选，没有距离最短、军队可达、无敌军、能启动围城或应当最先攻打的断言。Root与native lane挑一项，用当帧revision做一次preview，再依据真正路线/接触输入决定移动。
+
+当前army83886367实际在2610，regular状态、route=[]、in_combat=false、retreating=false；这是此前已经完成的到达，消费不增加arrival credit。目标2610未占领、无siege，其真实holding为Title2129，legal holder33435；另外actual title-holder query确认county2128持有人33435，holder_is_player=false，但immediate/top liege均Robert29829且holder_in_player_realm=true。不能把‘守方己方领地’写成‘Robert直接持有县2128’，也不能把2610部署写成收复。另一county2115实际由Robert29829持有，holder_is_player=true；它的首府holding2116/province2640当前同样未占领。
+
+当前world玩家总分仍16777231=-38、50331736=0、129=0。**本v37批没有任何termination query，final snapshot的war_termination_options=[]；因此本次没有fresh四分项、victory/WP/surrender CanSend。** v36历史options的occupation110/ticking-72及三场CanSend，不能冒充raw53236800的当前读数。Native n/N现在有真实结果，原生integer occupation公式仍依赖loaded CB/capital/special路径，不把17/31直接外算成某个固定分数或推定收复一座给多少分。
+
+Readiness：新occupation目标集合与title-holder成为production-live primitive；没有新增recapture、siege/battle结果、终战或完整loop credit。三场集合实际输入已经可用于下一项策略决策，而行动的native move/siege predicate仍由Root实测。证据来源及SHA见 `SOURCE-PINS.json`；专题追加、日报/周报字段仅外部交付，canonical合并与commit/push由Root负责。
+
+### Fresh recovery preview exposure remains separate
+
+After the complete target collection, Root attempted the existing `preview-move-army-83886367-to-2604`, `...-to-2625` and `...-to-2629` literals at the same raw53236800. All three returned the actual `native DLL does not implement gameplay step` error in `war-goal-capture-execution/actual-v37-previews-01/result.json`; the normal checkpoint remained GREEN, history4747/SHA-256 `b5e311543062571113816a93be3b1b3e4b9d6f7c332f11d85beb96fde3e18f66`. This is a concrete exposure blocker for those fresh recovery previews, not evidence that their native paths are unreachable or illegal. The occupation collection and title-holder observations retain their actual GREEN readiness; no move, additional day or recovery result was produced. The owning implementation lane is repairing the existing target path; this documentation merge adds no code, ABI or separate gate.
