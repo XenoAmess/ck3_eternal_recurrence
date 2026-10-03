@@ -38,7 +38,7 @@
 1. **圣地**：儒家五处圣地为曲阜、长安、洛阳、汴梁、青城山，见 `faith_types/00_faith_types.txt:1406–1415`。天主教同样列五处，不能把圣地数量列为儒家缺项。
 2. **朝圣**：“当地仪式”仍有 `can_go_on_pilgrimage`、`basic_pilgrimage_rewards` 和地方圣坛供奉；见 `20_doctrines.txt:1710–1729`。对应奖励、支出和宗教风味有差别，不等于朝圣系统消失。
 3. **普通圣战**：儒家默认核心教义没有 `holy_wars_forbidden`。`common/casus_belli_types/00_religious_war.txt:20–29,600–610,1240–1247` 分别在伯爵领／公国／王国圣战门禁排除天朝制。宗教敌意和其他角色／目标条件仍需满足；不能把天朝制限制归为儒家宗教全面禁止圣战。
-4. **创建／修改礼仪**：`00_religious_triggers.txt:3021–3247` 的通用入口未按儒家或华夏宗教作整体禁止；成年、和平、身份、次数、领袖关系等其他条件仍适用。宗教领袖属于主礼仪级教义，见 `doctrine_group_types/00_doctrine_group_types.txt:70–73`。自定义教义可能补上部分差异，不能因此推断获得显式检查基督教身份的系统。
+4. **创建／修改礼仪**：`00_religious_triggers.txt:3021–3247` 的通用入口未按儒家或华夏宗教作整体禁止；成年、和平、身份、次数、领袖关系等其他条件仍适用。宗教领袖教义组设置 `main_rite = yes`，见 `doctrine_group_types/00_doctrine_group_types.txt:70–73`；但 `_doctrine_group_types.info:12–14` 说明该标记仅用于界面警告，实际权限须查脚本，不能据此断言附属礼仪绝对不能有领袖。自定义教义可能补上部分差异，不能因此推断获得显式检查基督教身份的系统。
 5. **加冕与葬礼**：通用加冕门禁见 `common/scripted_triggers/10_ach_scripted_triggers.txt:1`，通用葬礼门禁见 `common/activities/activity_types/funeral.txt:10–23`；儒家的家族仪式仍有自己的葬礼路线。DLC／等级／政体条件不应写成宗教整体禁用。
 6. **圣人／先祖与圣物**：`common/scripted_triggers/pam_saint_triggers.txt:45–59` 只对基督教追加Dulia条件，非基督教不要求尊崇先祖核心信条；`:78–82` 为非教区信仰使用圣地的路径。`common/decisions/dlc_decisions/pam/pam_saint_decisions.txt:82–90,556–568` 的封圣、提取圣物没有基督教身份硬限制，仍需DLC、合格先祖／圣者、地点、角色等条件。因此不能笼统写“儒家没有圣人、封圣和圣物”。基督教守护圣人与Dulia强化须另列。
 7. **拆除教廷**：`80_major_decisions_roman.txt:1009–1029` 按首都地区、天主教对自己的敌意、现教宗身份等判断，没有儒家宗教排除。不能把这个针对天主教的决议错当成天主教独占。
@@ -49,7 +49,7 @@
 
 科举、官僚、功绩、王朝循环等大量东亚玩法由政府、文化、地区及 DLC 共同控制；不能把全部天朝玩法当作儒家信仰独占，也不能用它们逐项抵消教会系统的缺口。经典研习决议的实际条件见 `common/decisions/dlc_decisions/tgp/tgp_china_decisions.txt:925–950`。
 
-基于本清单的历史风味与开发方案见[《礼治天下》儒家风味扩展规划书](ck3-confucian-flavor-mod-plan.md)。其中玩法为拟议设计，原型、开发与实机验证状态均单独说明。
+基于本清单的历史风味与开发方案见[《礼与道》儒家宗教与礼仪重构规划书](ck3-confucian-flavor-mod-plan.md)，跨朝代学派与新信条见[设计清单](ck3-confucian-rites-and-tenets-design-list.md)。其中玩法为拟议设计，原型、开发与实机验证状态均单独说明。
 
 ## 证据边界
 
