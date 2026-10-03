@@ -116,8 +116,7 @@ bool Terms(const Bindings &b, void *definition, WarExposure &row,
     return Fail(reason, "call_ally_finalized_target_type_unavailable");
   if (Load<std::uint64_t>(context, kContextTargetTokenOffset) != target.full_war_id)
     return Fail(reason, "call_ally_finalized_target_token_unavailable");
-  if (Load<void *>(context, kContextSpecialInstanceOffset) == nullptr)
-    return Fail(reason, "call_ally_finalized_special_instance_unavailable");
+  // Native special-interaction payload is optional for this genuine selected context.
   row.native_selected_target_context_available = true;
   row.native_complete_can_send = b.context.validate(context, nullptr);
   b.context.evaluate_cost(static_cast<const std::byte *>(definition) + 0x40,
@@ -351,8 +350,7 @@ CommandSubmitResult SubmitCallAlly(const Bindings &b, const CoreSnapshotPrefix &
         Load<std::int32_t>(copy, kContextActorOffset) == frame.played_character_id &&
         Load<std::int32_t>(copy, kContextRecipientOffset) == request.recipient_character_id &&
         Load<std::uint16_t>(copy, kContextTargetOffset) == kWarTargetType &&
-        Load<std::uint64_t>(copy, kContextTargetTokenOffset) == target.full_war_id &&
-        Load<void *>(copy, kContextSpecialInstanceOffset) != nullptr;
+        Load<std::uint64_t>(copy, kContextTargetTokenOffset) == target.full_war_id;
   };
   if (!same_context(context) || !b.context.validate(context, nullptr))
     return reject("call_ally_final_native_selected_target_rejected");
@@ -369,7 +367,9 @@ CommandSubmitResult SubmitCallAlly(const Bindings &b, const CoreSnapshotPrefix &
   const bool constructed = b.context.construct_send_command(native_command, context) == native_command;
   const void *const copy = static_cast<const std::byte *>(native_command) + 0x20;
   bool identity = constructed && Load<std::uintptr_t>(native_command, 0) == b.context.send_primary_vtable &&
-      Load<std::uintptr_t>(native_command, 0x18) == b.context.send_secondary_vtable && same_context(copy);
+      Load<std::uintptr_t>(native_command, 0x18) == b.context.send_secondary_vtable && same_context(copy) &&
+      (Load<void *>(copy, kContextSpecialInstanceOffset) == nullptr) ==
+          (Load<void *>(context, kContextSpecialInstanceOffset) == nullptr);
   for (const auto offset : {0x2E0U, 0x2E4U, 0x2E8U, 0x2ECU})
     identity = identity && Load<std::int32_t>(copy, offset) == Load<std::int32_t>(context, offset);
   receipt.copied_context_identity_verified = identity;
