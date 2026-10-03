@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_routes.hpp"
+#include "xar_bridge/ck3_12002_combat.hpp"
 #include "xar_bridge/game_contract.hpp"
 
 namespace xar::ck3_12002 {
@@ -57,6 +58,9 @@ struct BattleBindings {
   std::int64_t *(*read_route_edge_duration)(void *, std::int64_t *,
                                             std::int32_t) = nullptr;
   RouteBindings route_bindings{};
+  // Independently nullable leaf: existing control observations remain useful
+  // when selected next-roll inputs were not bound in a fixture or build.
+  CombatBindings commander_roll_context{};
 };
 
 BattleBindings BindBattleImage(std::uintptr_t image_base,

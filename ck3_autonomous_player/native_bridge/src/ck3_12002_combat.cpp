@@ -1536,6 +1536,32 @@ game::CombatCounterResolutionSnapshot ReadCounterResolution(
 
 } // namespace
 
+game::BattleControlNextRollBoundsSnapshot ReadSelectedCommanderNextRollBounds(
+    const CombatBindings &bindings, std::int32_t province_id, void *terrain,
+    std::int32_t selected_character_id) noexcept {
+  game::BattleControlNextRollBoundsSnapshot output{};
+  if (!bindings.enabled || bindings.character_storage_slot == nullptr ||
+      bindings.get_character_modifier_aggregator == nullptr ||
+      bindings.read_character_modifier == nullptr ||
+      bindings.commander_min_roll == nullptr ||
+      bindings.commander_max_roll == nullptr) {
+    output.unavailable_reason = "commander_roll_bindings_unavailable";
+    return output;
+  }
+  game::CombatCommanderSnapshot commander{};
+  commander.character_id = selected_character_id;
+  commander.status = selected_character_id == -1
+      ? game::CombatObservationStatus::absent
+      : game::CombatObservationStatus::available;
+  const auto context = ReadCommanderRollContext(
+      bindings, province_id, terrain, commander);
+  output.available = context.available;
+  output.effective_min_roll = context.effective_min_roll;
+  output.effective_max_roll = context.effective_max_roll;
+  output.unavailable_reason = context.unavailable_reason;
+  return output;
+}
+
 CombatBindings BindCombatImage(std::uintptr_t image_base,
                               std::string_view executable_sha256) noexcept {
   CombatBindings result{};

@@ -224,6 +224,7 @@ bool Bucket(const BattleBindings &b, const void *side, std::size_t offset,
 }
 bool Side(const BattleBindings &b, const void *combat, std::size_t off,
           std::int32_t id, std::int32_t index,
+          std::int32_t province_id, void *terrain, bool roll_applicable,
           game::BattleControlSideSnapshot &out) {
   auto *p = static_cast<const std::byte *>(combat) + off;
   out.side_index = index;
@@ -239,6 +240,15 @@ bool Side(const BattleBindings &b, const void *combat, std::size_t off,
        !Resolve(b.character_storage_slot, out.selected_commander_character_id,
                 0x18)))
     return false;
+  if (roll_applicable) {
+    out.selected_commander_next_roll_bounds =
+        ReadSelectedCommanderNextRollBounds(
+            b.commander_roll_context, province_id, terrain,
+            out.selected_commander_character_id);
+  } else {
+    out.selected_commander_next_roll_bounds.unavailable_reason =
+        "next_main_roll_not_applicable_in_phase";
+  }
   std::int64_t levy{}, maa{};
   if (!Bucket(b, p, 0x28, "levy", out, out.levy_entries, levy) ||
       !Bucket(b, p, 0x40, "men_at_arms", out, out.men_at_arms_entries, maa))
@@ -392,10 +402,32 @@ bool ControlSample(const BattleBindings &b, const game::Snapshot &scope,
   out.roll_cadence_counter = At<std::int32_t>(combat, 0x6E4);
   out.base_advantage_raw = At<std::int64_t>(combat, 0x6C8);
   out.resolved_advantage_raw = At<std::int64_t>(combat, 0x710);
-  return Side(b, combat, 0x20, cid, 0, out.attacker) &&
-         Side(b, combat, 0x368, cid, 1, out.defender) &&
-         Retreat(b, scope, combat, army, out) &&
-         !At<std::uint8_t>(combat, kBattleDailyGuardOffset);
+  const bool roll_applicable = out.phase_raw == 1 && !out.finalized;
+  auto *province = Province(b, At<void *>(combat, 0x6B8));
+  if (province == nullptr || At<std::int32_t>(province, 0x10) != out.province_id)
+    return false;
+  const auto get_terrain = b.commander_roll_context.get_province_terrain;
+  void *terrain = roll_applicable && get_terrain != nullptr
+      ? get_terrain(province) : nullptr;
+  if (!Side(b, combat, 0x20, cid, 0, out.province_id, terrain,
+            roll_applicable, out.attacker) ||
+      !Side(b, combat, 0x368, cid, 1, out.province_id, terrain,
+            roll_applicable, out.defender) ||
+      !Retreat(b, scope, combat, army, out) ||
+      At<std::uint8_t>(combat, kBattleDailyGuardOffset))
+    return false;
+  if (Province(b, At<void *>(combat, 0x6B8)) != province)
+    return false;
+  if (roll_applicable && get_terrain != nullptr &&
+      get_terrain(province) != terrain) {
+    out.attacker.selected_commander_next_roll_bounds = {};
+    out.defender.selected_commander_next_roll_bounds = {};
+    out.attacker.selected_commander_next_roll_bounds.unavailable_reason =
+        "combat_terrain_changed";
+    out.defender.selected_commander_next_roll_bounds.unavailable_reason =
+        "combat_terrain_changed";
+  }
+  return true;
 }
 bool Route(const BattleBindings &b, const void *unit,
            game::BattleReinforcementRouteSnapshot &out) {
@@ -939,6 +971,7 @@ BattleBindings BindBattleImage(std::uintptr_t base,
   b.read_route_edge_duration =
       reinterpret_cast<decltype(b.read_route_edge_duration)>(base + 0x24AB060);
   b.route_bindings = BindRouteImage(base, sha);
+  b.commander_roll_context = BindCombatImage(base, sha);
   b.province_context = b.game_state_slot;
   b.resolve_province = NativeProvince;
   return b;

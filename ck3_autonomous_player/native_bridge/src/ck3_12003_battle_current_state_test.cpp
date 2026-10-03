@@ -1,4 +1,4 @@
-#include "xar_bridge/ck3_12002_battle.hpp"
+﻿#include "xar_bridge/ck3_12002_battle.hpp"
 #include "xar_bridge/ck3_12002_battle_journal.hpp"
 
 #include <array>
@@ -567,7 +567,272 @@ void AbsentCombat(const std::string &prefix) {
 }
 } // namespace
 
+#include "xar_bridge/ck3_12002_combat.hpp"
+#ifdef XAR_SELECTED_ROLL_WIRE_FIXTURE
+#include "xar_bridge/battle_control_snapshot_v1_mailbox.hpp"
+#endif
+#include <functional>
+#ifdef XAR_SELECTED_ROLL_WIRE_FIXTURE
+// Unused legacy mailbox leaves are linked by the production serializer TU.
+// The focused cases invoke ck3_12002's real reader directly.
+namespace xar::ck3_11906 {
+game::BattleControlSnapshotStatus ReadBattleControlSnapshot(
+    const Bindings &, const game::BattleControlRequest &,
+    game::BattleControlSnapshot &output) noexcept {
+  output = {};
+  return output.status;
+}
+bool ReadCurrentBattleKnightV1(
+    const Bindings &, const game::Snapshot &,
+    const game::BattleControlSnapshot &,
+    const game::CurrentBattleKnightRequestV1 &,
+    game::CurrentBattleKnightSnapshotV1 &output) noexcept {
+  output = {};
+  return false;
+}
+} // namespace xar::ck3_11906
+#endif
+
+namespace {
+constexpr std::int32_t kRollSelected0 = 0x01000003;
+constexpr std::int32_t kRollSelected1 = 0x01000004;
+constexpr std::int32_t kRollCandidate0 = 0x01000005;
+constexpr std::int32_t kRollCandidate1 = 0x01000006;
+
+void RequireRoll(bool condition, const std::string &description) {
+  if (!condition) {
+    throw std::runtime_error(description);
+  }
+}
+
+struct SelectedRollFixture {
+  Fixture battle;
+  Bytes<0x220> selected0{}, selected1{}, candidate0{}, candidate1{};
+  Bytes<0x860> army_province{};
+  Bytes<0x790> terrain{};
+  std::array<std::array<std::int64_t, 4>, 2> modifiers{{
+      {100'000, 200'000, 300'000, 400'000},
+      {-100'000, 0, 100'000, 200'000}}};
+  std::int32_t minimum_roll = 0, maximum_roll = 10;
+  int terrain_queries = 0, modifier_queries = 0, candidate_queries = 0;
+  bool wrong_province = false;
+  static SelectedRollFixture *current;
+
+  static void *ProvinceResolver(void *context, std::int32_t id) {
+    auto &f = *static_cast<SelectedRollFixture *>(context);
+    if (id == 2640) return f.battle.province.data();
+    if (id == 2639) return f.army_province.data();
+    return nullptr;
+  }
+  static void *ProvinceTerrain(void *province) {
+    auto &f = *current;
+    ++f.terrain_queries;
+    if (province != f.battle.province.data()) {
+      f.wrong_province = true;
+      return nullptr;
+    }
+    return f.terrain.data();
+  }
+  static void *Aggregator(void *character) {
+    auto &f = *current;
+    if (character == f.candidate0.data() || character == f.candidate1.data()) {
+      ++f.candidate_queries;
+    }
+    return character;
+  }
+  static std::int64_t *Modifier(void *aggregator, std::int64_t *output,
+                               std::int32_t index) {
+    auto &f = *current;
+    ++f.modifier_queries;
+    std::size_t entry = 4;
+    if (index == 0x115) entry = 0;
+    if (index == 0x116) entry = 1;
+    if (index == 0x200) entry = 2;
+    if (index == 0x201) entry = 3;
+    if (entry == 4) return nullptr;
+    if (aggregator == f.selected0.data()) {
+      *output = f.modifiers[0][entry];
+    } else if (aggregator == f.selected1.data()) {
+      *output = f.modifiers[1][entry];
+    } else {
+      ++f.candidate_queries;
+      *output = 99'900'000;
+    }
+    return output;
+  }
+  static void *RuleState(void *owner) {
+    return owner == current->battle.char0.data()
+               ? current->battle.rules.data() : nullptr;
+  }
+  static bool Retreat(void *combat, void *, void *sink) {
+    if (sink != nullptr) return false;
+    auto &f = current->battle;
+    auto *side = static_cast<std::byte *>(combat) + 0x20;
+    const auto days = (f.scope.date_raw - Get<std::int32_t>(f.result.data(), 0x2C)) / 24;
+    return !Get<std::uint8_t>(side, 0xC0) &&
+           (Get<std::uint8_t>(side, 0xC1) || days > f.minimum) &&
+           Get<std::int32_t>(combat, 0x6B0) < 2 &&
+           (Get<std::uint32_t>(f.rules.data(), 0x40) & (1U << 10));
+  }
+  void Character(Bytes<0x220> &object, std::int32_t id) {
+    Put(object, 0x18, id);
+    Put<std::uint32_t>(object, 0x1C, 0x43686172U);
+    battle.characters.Set(id, object.data());
+  }
+  SelectedRollFixture() {
+    current = this;
+    Character(selected0, kRollSelected0);
+    Character(selected1, kRollSelected1);
+    Character(candidate0, kRollCandidate0);
+    Character(candidate1, kRollCandidate1);
+    Put(battle.combat, 0x94, kRollSelected0);
+    Put(battle.combat, 0x3DC, kRollSelected1);
+    Put(battle.army0, 0x120, kRollCandidate0);
+    Put(battle.army1, 0x120, kRollCandidate1);
+    Put<std::int32_t>(army_province, 0x10, 2639);
+    Put<std::uint32_t>(army_province, 0x85C, 0x50726F76U);
+    battle.province_rows[2639] = army_province.data();
+    Put(battle.unit0, 0x20, army_province.data());
+    Put(battle.unit1, 0x20, army_province.data());
+    Put<std::uint16_t>(terrain, 0x776, 0x200);
+    Put<std::uint16_t>(terrain, 0x778, 0x201);
+    battle.b.resolve_province = ProvinceResolver;
+    battle.b.province_context = this;
+    battle.b.get_combat_retreat_rule_state = RuleState;
+    battle.b.can_order_combat_retreat = Retreat;
+    auto &context = battle.b.commander_roll_context;
+    context.enabled = true;
+    context.game_state_slot = &battle.g;
+    context.character_storage_slot = &battle.characters.root;
+    context.get_province_terrain = ProvinceTerrain;
+    context.get_character_modifier_aggregator = Aggregator;
+    context.read_character_modifier = Modifier;
+    context.commander_min_roll = &minimum_roll;
+    context.commander_max_roll = &maximum_roll;
+  }
+};
+SelectedRollFixture *SelectedRollFixture::current = nullptr;
+
+struct RollExpectation {
+  bool available = true;
+  std::int32_t minimum = 0, maximum = 0;
+  const char *reason = "";
+};
+
+void CheckRollBounds(const BattleControlNextRollBoundsSnapshot &bounds,
+                     const RollExpectation &expected, const std::string &label) {
+  RequireRoll(bounds.available == expected.available, label + " availability");
+  RequireRoll(bounds.effective_min_roll == expected.minimum &&
+              bounds.effective_max_roll == expected.maximum, label + " endpoints");
+  RequireRoll(bounds.unavailable_reason == expected.reason, label + " reason: " + bounds.unavailable_reason);
+}
+
+int RunSelectedCommanderRollFixtures(const char *output_directory) {
+  try {
+#ifdef XAR_SELECTED_ROLL_WIRE_FIXTURE
+    std::string cases;
+#else
+    (void)output_directory;
+#endif
+    int case_count = 0;
+    const auto add = [&](const char *name,
+                         const std::function<void(SelectedRollFixture &)> &configure,
+                         std::array<RollExpectation, 2> expected) {
+      SelectedRollFixture f;
+      configure(f);
+      BattleControlSnapshot snapshot;
+      const auto result = ReadBattleControlSnapshot(f.battle.b, f.battle.scope,
+                                                    {0x01000001}, snapshot);
+      const std::string prefix = std::string(name) + ": ";
+      RequireRoll(result == BattleControlSnapshotStatus::available, prefix + "reader status");
+      RequireRoll(!f.wrong_province, prefix + "terrain queried outside actual combat province");
+      RequireRoll(f.candidate_queries == 0, prefix + "army candidate queried");
+      CheckRollBounds(snapshot.attacker.selected_commander_next_roll_bounds, expected[0], prefix + "attacker");
+      CheckRollBounds(snapshot.defender.selected_commander_next_roll_bounds, expected[1], prefix + "defender");
+      RequireRoll(snapshot.province_id == 2640 && Get<std::int32_t>(f.army_province.data(), 0x10) == 2639,
+                  prefix + "actual combat province identity");
+      RequireRoll(snapshot.attacker.selected_commander_character_id != Get<std::int32_t>(f.battle.army0.data(), 0x120),
+                  prefix + "actual selected differs from army candidate");
+#ifdef XAR_SELECTED_ROLL_WIRE_FIXTURE
+      // Production application-main mailbox assigns this transport revision.
+      snapshot.snapshot_revision = static_cast<std::uint64_t>(case_count + 1);
+      const auto battle_wire = xar::ck3_11906::SerializeBattleControlSnapshotV1(snapshot);
+      const auto resume_wire = xar::ck3_11906::SerializeActiveCombatResumeInputsV1(snapshot);
+      RequireRoll(!battle_wire.empty() && !resume_wire.empty(), prefix + "production serialization");
+      if (case_count) cases += ',';
+      cases += "{\"name\":\"" + std::string(name) + "\",\"expected_reader_status\":\"available\"";
+      cases += ",\"battle_control_snapshot\":" + battle_wire;
+      cases += ",\"active_combat_resume_inputs_v1\":" + resume_wire;
+      cases += ",\"expected_bounds\":[";
+      for (std::size_t side = 0; side != 2; ++side) {
+        if (side) cases += ',';
+        cases += expected[side].available
+                     ? "[" + std::to_string(expected[side].minimum) + "," + std::to_string(expected[side].maximum) + "]"
+                     : "null";
+      }
+      cases += "],\"expected_unavailable_reasons\":[";
+      for (std::size_t side = 0; side != 2; ++side) {
+        if (side) cases += ',';
+        cases += expected[side].available ? "null" : "\"" + std::string(expected[side].reason) + "\"";
+      }
+      cases += "],\"selected_character_modifier_raw\":[";
+      for (std::size_t side = 0; side != 2; ++side) {
+        if (side) cases += ',';
+        cases += "[" + std::to_string(f.modifiers[side][0]) + "," + std::to_string(f.modifiers[side][1]) + "]";
+      }
+      cases += "],\"terrain_modifier_raw\":[";
+      for (std::size_t side = 0; side != 2; ++side) {
+        if (side) cases += ',';
+        cases += "[" + std::to_string(f.modifiers[side][2]) + "," + std::to_string(f.modifiers[side][3]) + "]";
+      }
+      cases += "],\"actual_selected_character_ids\":[" + std::to_string(kRollSelected0) + "," + std::to_string(kRollSelected1);
+      cases += "],\"army_candidate_character_ids\":[" + std::to_string(kRollCandidate0) + "," + std::to_string(kRollCandidate1);
+      cases += "],\"actual_combat_province_id\":2640,\"army_current_province_id\":2639,\"terrain_query_count\":" + std::to_string(f.terrain_queries);
+      cases += ",\"modifier_query_count\":" + std::to_string(f.modifier_queries) + "}";
+#endif
+      ++case_count;
+    };
+    const std::array<RollExpectation, 2> baseline{{{true, 4, 16, ""}, {true, 0, 12, ""}}};
+    const std::array<RollExpectation, 2> inapplicable{{
+        {false, 0, 0, "next_main_roll_not_applicable_in_phase"},
+        {false, 0, 0, "next_main_roll_not_applicable_in_phase"}}};
+    add("actual_selected_differs_from_army_candidate", [](auto &) {}, baseline);
+    add("signed_fractional_modifiers_truncate_toward_zero", [](auto &f) {
+      f.modifiers[0] = {-150'000, -250'001, 299'999, 499'999};
+    }, {{{true, 1, 12, ""}, {true, 0, 12, ""}}});
+    add("valid_absent_selected_commander", [](auto &f) {
+      Put<std::int32_t>(f.battle.combat, 0x94, -1);
+      Put<std::int32_t>(f.battle.combat, 0x3DC, -1);
+    }, {{{true, 0, 0, ""}, {true, 0, 0, ""}}});
+    add("maneuver_phase", [](auto &f) { Put<std::int32_t>(f.battle.combat, 0x6B0, 0); }, inapplicable);
+    add("finalized_main_phase", [](auto &f) { Put<std::uint8_t>(f.battle.combat, 0x704, 1); }, inapplicable);
+    add("unbound_commander_roll_context", [](auto &f) { f.battle.b.commander_roll_context = {}; }, {{{false, 0, 0, "commander_roll_bindings_unavailable"}, {false, 0, 0, "commander_roll_bindings_unavailable"}}});
+#ifdef XAR_SELECTED_ROLL_WIRE_FIXTURE
+    const std::string payload = "{\"schema_version\":1,\"actual\":0,\"executable_sha256\":\"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6\",\"cases\":[" + cases + "]}";
+    if (output_directory && *output_directory) {
+      std::ofstream output(std::string(output_directory) + "/actual_selected_roll_cases.json", std::ios::binary);
+      RequireRoll(static_cast<bool>(output), "open wire output");
+      output << payload << '\n';
+      RequireRoll(static_cast<bool>(output), "write wire output");
+    }
+#endif
+    std::cout << "Actual-selected commander next-roll-bounds focused fixtures GREEN: " << case_count << " new cases; actual=0\n";
+    return 0;
+  } catch (const std::exception &error) {
+    std::cerr << "Actual-selected commander next-roll-bounds focused fixture RED: " << error.what() << '\n';
+    return 1;
+  }
+}
+} // namespace
+
 int main(int argc, char **argv) {
+  if (argc > 1 && std::string_view(argv[1]) == "--selected-roll-only") {
+    return RunSelectedCommanderRollFixtures(argc > 2 ? argv[2] : "");
+  }
+  if (RunSelectedCommanderRollFixtures("") != 0) {
+    return 1;
+  }
+
   if (argc != 2) return 2;
   int failures = 0;
   for (const auto &item : std::array{

@@ -7426,6 +7426,7 @@ endif()
 if(BUILD_TESTING)
   add_executable(xar_ck3_12003_battle_current_state_test
     src/ck3_12002_battle.cpp
+    src/ck3_12002_combat.cpp
     src/ck3_12002_battle_journal.cpp
     src/ck3_12002_routes.cpp
     src/ck3_12003_battle_current_state.cpp
@@ -7444,4 +7445,8 @@ if(BUILD_TESTING)
   add_test(NAME xar_ck3_12003_battle_current_state_test
     COMMAND xar_ck3_12003_battle_current_state_test
       "${CMAKE_BINARY_DIR}/ck3_12003_battle_current_state_wire")
+  file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/ck3_12003_selected_roll_wire")
+  add_test(NAME xar_ck3_12003_selected_commander_next_roll_bounds
+    COMMAND xar_ck3_12003_battle_current_state_test --selected-roll-only
+      "${CMAKE_BINARY_DIR}/ck3_12003_selected_roll_wire")
 endif()
