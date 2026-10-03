@@ -1,9 +1,7 @@
-# CK3 1.19.0.6: reflected death-succession Close ABI
+# Reflected death-succession Close ABI: 1.19.0.6 and 1.20.0.3
 
 `continue-death-succession-modal-v1` is the private typed action for retiring the
-active succession row after a natural death. Its corrected exact-build ABI is
-**static-ready; paused live acceptance is pending**. It remains absent from the
-public capability registry and MCP tool list.
+active succession row after a natural death. The corrected Close remains **static-ready; actual Close acceptance is pending**. The exact 1.20.0.3 living-player no-open-modal readonly query is now a **production-live primitive**. The existing opt-in MCP tools are registered under `--private-death-succession-modal-continue`; the private wire remains absent from the public native capability registry. Neither registration nor a living query is a Close acceptance result.
 
 R780 disproved the previous action mapping. Calling controller vslot `+0x20`
 returned a strict ACK and made the visible root disappear, but eight later
@@ -13,7 +11,7 @@ game-view hide operation. The GUI reflection method
 `SuccessionEventWindow.Close` uses the common action slot `+0x88`, which this
 controller overrides with succession-specific command submission.
 
-## Frozen build and source path
+## Historical 1.19.0.6 frozen build and source path
 
 - CK3: `1.19.0.6`
 - `ck3.exe` SHA-256:
@@ -163,12 +161,43 @@ flowchart TD
 
 The semantic name of the succession-instance token and the exact names of two
 internal `0xFD4870` state guards remain unknown. Neither is required by the
-minimum ABI because CK3's reflected Close owns both. The corrected vslot
-`+0x88` still needs one frozen-build paused live acceptance before the private
-wire can be considered live, and registration or capability advertisement
-remains prohibited until that gate passes.
+minimum ABI because CK3's reflected Close owns both. The corrected Close vslot `+0x88` still lacks an actual material Close result in the current ordinary campaign. The current opt-in .3 registration and readonly primitive below do not promote that action to live. The 1.19.0.6 RVAs above remain historical exact-build evidence and must not be used as .3 addresses.
 
 The earlier close-ABI artifact remains useful only for controller acquisition
 and generic-hide evidence. Its own note that the GUI reflection Close was not
 uniquely located is now resolved by this revision; it must not be cited as
 evidence that vslot `+0x20` is the reflected action.
+
+## Current 1.20.0.3 provider and opted-in entry
+
+The .3 provider reuses the same DTO, serializers and transports with the selected `ck3_12003_succession_modal` adapter. Exact build: CK3 1.20.0.3 / Steam25652598 / EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. The full recovered .3 controller/predicate/normal-command tree, literal-name association boundary and native byte pins are in [succession transition migration](succession-transition-v1.md#2026-10-03-war-time-natural-succession-exact-12003-modal-abi-migration). The older addresses in this document apply only to the frozen 1.19.0.6 branch.
+
+The existing native option is `XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1=ON`; the existing MCP option is `--private-death-succession-modal-continue`. Current registered contracts are:
+
+- `ck3_query_current_timeline_blocker_context_v1(expected_revision)` — readonly, expected_revision is the fresh public snapshot revision; response binding separately carries native revision.
+- `ck3_continue_death_succession_modal_v1(expected_revision, expected_played_character_id, expected_episode_run_id)` — existing typed action, conditional on an actually observed supported current death/succession modal.
+
+An available `identity=none` plus both available native predicates false is a valid living-frame result. Its unavailable/null `can_continue` with `no_supported_timeline_surface_visible` is legal, and no Close is submitted. Top-level unavailable with null predicate values is a different state and is not evidence of no modal. For a real `death_succession_modal`, use the current naturally played actor and episode, the actual available can_continue/predicate values and the existing typed transport; later independent root/predicate clearance and actual date movement remain required for material action credit.
+
+
+## Actual v45 living retention and no-open-modal readonly primitive
+
+Root's actual v45/R22 game PID28944 retained the living Robert expectation in SDK16649 `011-ck3_plan_turn.json`. Its bound frame is `native:3`, public revision2/native3/date53240904, Robert29829 alive, episode `native-29829-2bc2d599f7f9`, ordinary `xar_off`/no pact. The available expectation predicts primary successor38822; titles2102,2111,2115,2141(primary),2142→38822 and2173→38988, risk `split_successors`. The goal still has reconciled_successions0. Plan phase `native_war_termination_query` returned `query-war-termination-options-16777231` as a proposal; plan_turn did not execute it. Normal SAVE17 is h5494/date53240904, SHA `29ec388a745bf6827e9f79624b37dd3c9cd5d66b9914d2fd92ec7015b87ef7b2`.
+
+That same SDK16649 normalclosed with exit1 because `015-ck3_query_current_timeline_blocker_context_v1.json` returned `private timeline-blocker query is disabled`; original Sway4, retention11, reserve13 and SAVE17 were GREEN. The native request was never sent: the existing transport checks `allow_private_current_timeline_blocker_query` first. The MCP loader had passed `allow_private_death_succession_modal_continue` to registration/Close but omitted the independent timeline-query constructor bool. The focused static CLI-loader fixture replaced the real constructor and did not cover this actual default-disabled query gate. The [original failed packet](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v45/actual-sway-retention-reserve-modal-01/015-ck3_query_current_timeline_blocker_context_v1.json) remains capability RED with its successful preceding primitive results preserved.
+
+Root published the necessary one-path Python fix `451dde9915b6bac042f1cfc28364b2a4548f12e6`: the native-headless loader now passes the existing modal bool into the existing `allow_private_current_timeline_blocker_query` constructor parameter. The actual MCP entry is the separate Python freeze `Z:/g48/ck3_autonomous_player/mcp_server.py`; the running native DLL remains v45/g47 source `7a0bef46588292d26c74716a39fe02b348d3ee65` with the existing native manifest. No game restart, native rebuild, new CLI or Sway/retention/reserve replay was needed.
+
+SDK36249 then normalclosed GREEN after only the modal readonly query and normal SAVE. Query004 uses public expected_revision2 and binds `native:10`, native revision10/date53240904, query_sequence1/observation_revision90761. The available `current_timeline_blocker_context` reports `identity=none`, native `blocks_simulation=false` and `has_open_succession=false`. `can_continue` is legally unavailable/null with `no_supported_timeline_surface_visible`, because no supported modal is visible; this is a successful current no-open-modal observation, not a failed read or Close entrance. Evidence source is the exact stock GUI plus native widget state. Normal SAVE006 is h5499/date53240904, size91526523 bytes, SHA `fd7cad467288a372cae5da01de137d5da874d27e22fb0af79d96385cf0089eab`, with the same Robert episode/lifecycle.
+
+These two current results qualify **production-live primitives** for living expectation retention and the exact .3 living-player no-open-modal readonly query. They do not qualify a naturally switched successor, real modal admission, typed Close, clearance/date proof, successor gameplay loop or successor cold restore. Those current-campaign actual counts remain0, and the retention/query package adds0 calendar days. Root resumes the current war work; unfinished SDK52833 is not included in this receipt. Evidence: [actual query004](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v45/actual-modal-readonly-after-python-fix-01/004-ck3_query_current_timeline_blocker_context_v1.json), [normal SAVE006](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v45/actual-modal-readonly-after-python-fix-01/006-ck3_save_checkpoint.json), [combined file-consumption receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-time-natural-succession/actual-v45-consumption/ACTUAL-V45-LIVING-QUERY-RECEIPT.json).
+
+```mermaid
+flowchart LR
+    L["v45 living Robert: retained expectation, production-live primitive"] --> Q["SDK36249 exact .3 readonly query, production-live primitive"]
+    Q --> N["identity none; both native predicates false; no Close"]
+    N --> W["continue current war gameplay"]
+    L -. "real player change not yet observed" .-> S["natural successor reconciliation, actual0"]
+    S -. "actual death modal not yet observed" .-> C["typed Close and independent clearance/date proof, actual0"]
+    C -. "not yet observed" .-> P["successor gameplay and normal pair, actual0"]
+```
