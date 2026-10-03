@@ -1,5 +1,7 @@
 # 战争维护交接：2026-09-28
 
+**2026-10-03 战争授权更新。** 项目所有者明确命令“取消任何的非战约束”，并要求研究战斗。原战争研究停止、nonwar-only、战争执行暂缓、战争只能交由其他维护者等现行限制全部撤销；战斗、军队、行军、围城、战争理由、宣战、防御战争、议和及相关原生 AI、只读 bridge/MCP、策略、实现和实机验收均可继续。不得仅因涉及战争再次要求授权。本文历史冻结配置的 OFF、旧尝试 RED、当时未提交动作与未实现能力保留原事实，不能继承为当前禁战规则，也不能把开放授权写成能力已经完成。继续保持罗贝尔 actor29829、episode `native-29829-2bc2d599f7f9` 的原 ordinary campaign 与自然继承线，原生 AI 研究优先、exact-build 绑定、ROOT 唯一实机/pipe/Git owner，以及最小化、无焦点、无桌面输入。当前续接身份和保存锚点以[最新接续记录](2026-10-03-g2-v33-resume.md)为准，本文较早 episode、PID 和存档仅供历史证据。
+
 本次按项目所有者要求，收完手上的 H2825 战俘去留请求后停止领取新工作。本页供下一位执行者从仓库和外置证据继续；它不是实机 GREEN 或囚犯动作授权。
 
 ## 已交付的可复核事实
@@ -11,9 +13,9 @@
 
 ## 接口与接手条件
 
-- 需求源：[WAR-PRISONER-RETENTION-H2825 请求](../autonomous-agent-progress/coordination/war-requests/requests/WAR-PRISONER-RETENTION-H2825-20260928.json)；交付状态以相应[响应](../autonomous-agent-progress/coordination/war-requests/responses/WAR-PRISONER-RETENTION-H2825-20260928.json)为准。非战争消费方只可在新交付进入 master 后，用**同一个** `snapshot_id`、public/native revision、日期、玩家 ID 与 episode 的私有囚犯集合做 join；帧漂移即 `unavailable`。候选配对不等于终战按钮可用或已经释放。此请求也不授权任何囚犯动作。
+- 需求源：[WAR-PRISONER-RETENTION-H2825 请求](../autonomous-agent-progress/coordination/war-requests/requests/WAR-PRISONER-RETENTION-H2825-20260928.json)；交付状态以相应[响应](../autonomous-agent-progress/coordination/war-requests/responses/WAR-PRISONER-RETENTION-H2825-20260928.json)为准。非战争消费方只可在新交付进入 master 后，用**同一个** `snapshot_id`、public/native revision、日期、玩家 ID 与 episode 的私有囚犯集合做 join；帧漂移即 `unavailable`。候选配对不等于终战按钮可用或已经释放。该只读请求当时没有提交任何囚犯动作；当前战争相关动作授权按页首 2026-10-03 更新执行，合法性和真实后置仍需相应观测。
 - 若后续需要实机证明一般 PoW，必须用新桥接 DLL、受管精确 source pair 创建**新 attempt**；先领取 `ck3-screen:acquired`，依据当次新鲜 Steam 画面目视确认“离线模式”，按仓库桌面恢复合同保存回执。仅查询 `query-war-prisoner-release-pairs-v1-16777231` 及相同暂停帧的囚犯/终战选项，记录原始 payload、结果、SHA 和退出/存档未变证据。不得恢复曾导致崩溃的 `query-war-termination-exit-terms-v2` loaded-effect preview。当前没有这项 live 证据；下一位不得把编译通过当作实机通过。
-- 历史 WAR31 匹配检查点的一次投降授权只属于当时明确匹配的检查点，**不外推**到 H2825 或其他战争。其他战争、击杀/增援/终局研究与视频不是本次临走前新增范围；是否继续以届时的任务需求和证据为准。
+- 历史 WAR31 的一次投降执行事实只属于当时明确匹配的检查点，不能当作 H2825 或其他战争已经执行的证据。其他战争、击杀/增援/终局研究没有在本次临走前新增；2026-10-03 所有者已开放战争研究、实现及实机，接手者按当前真实任务和证据继续，不再继承当时的范围限制。
 
 ## 机器与仓库边界
 

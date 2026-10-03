@@ -1,5 +1,7 @@
 # 2026-09-29 非战争维护者休假交接
 
+**2026-10-03 战争授权更新。** 项目所有者明确命令“取消任何的非战约束”，并要求研究战斗。原战争研究停止、nonwar-only、战争执行暂缓、战争只能交由其他维护者等现行限制全部撤销；战斗、军队、行军、围城、战争理由、宣战、防御战争、议和及相关原生 AI、只读 bridge/MCP、策略、实现和实机验收均可继续。不得仅因涉及战争再次要求授权。本文历史冻结配置的 OFF、旧尝试 RED、当时未提交动作与未实现能力保留原事实，不能继承为当前禁战规则，也不能把开放授权写成能力已经完成。继续保持罗贝尔 actor29829、episode `native-29829-2bc2d599f7f9` 的原 ordinary campaign 与自然继承线，原生 AI 研究优先、exact-build 绑定、ROOT 唯一实机/pipe/Git owner，以及最小化、无焦点、无桌面输入。当前续接身份和保存锚点以[最新接续记录](2026-10-03-g2-v33-resume.md)为准，本文较早 episode、PID 和存档仅供历史证据。
+
 > 本文按 2026-09-29 晚间（Asia/Shanghai）的已核证据写成。项目所有者要求温和收口在途工作并停止新工作；以下“下一步”供接手者使用，不表示本执行者已经启动。先看 [G2 主进度页](../autonomous-agent-progress/g2-requirements-and-execution.md)、[09-29 日报](../autonomous-agent-progress/daily/2026-09-29.md)、[W40 周报](../autonomous-agent-progress/weekly/2026-W40.md) 及 `docs/project-state/current-state.json`；实时 PID、owner、RED 必须查该状态投影指向的 live source，不能由本文代替。
 
 ## 停机与能力边界
@@ -32,7 +34,7 @@ NW-ECON 另有 `Z:\nw-econ-h3928-wartime-readonly-candidate-20260929\CANDIDATE-I
 
 - 宾客**逐规则来源**：现有 planner `+0x1590` 把同优先级规则合并，不能反推候选 38293 属于哪个 authored rule。[草稿 PR #665](https://github.com/XenoAmess/ck3_eternal_recurrence/pull/665) head `24769baa0ba512138691985f4e6bf5ac35c6203a`，分支 `nw_activity_guest_rule_provenance_20260929`、工作树 `Z:\gtrp_20260929`；Debug DLL 编译与两项聚焦 CTest 2/2 通过，官方 PR CI 在本文收口时仍运行。它只在自然刷新时被动记录已 active 规则的临时成员，不额外执行 scripted effect。规则 inactive 或无自然刷新保持 typed unknown；**未实机、未合入**，分支/worktree 保留，不为填字段擅自激活。
 - 宾客对主办者好感：草稿 PR [#664](https://github.com/XenoAmess/ck3_eternal_recurrence/pull/664)，head `1f16756aaeea3707f4be3e09a655bb015faa3362`，分支 `NW-FEAST-GUEST-VALUE-R0373`，工作树 `Z:\m6-feast-guest-value-read-20260929`。复用原版 `ReadGiftOpinionExact11906V1` 的独立模块/transport 与聚焦测试已推送，PR 官方静态检查成功，但 **bridge.cpp/CMake/mailbox 尚未接通**；未合入、未实机、分支/worktree 必须保留。源码文档明示缺口，不把草稿视为 MCP 可用。
-- 固定战争交互目录是 `C:\Users\xenoa\OneDrive\WAR`，战争同事在另一台机器。最新本机已读回复 `NW-ACTIVITY-R0368-ARMY-ROLE-DEPENDENCY-20260929/RECEIVER-RESPONSE-NW-R0368-ROLE-QUERY-REVIEWED-SOURCE-v6.json`：其 4996e2763 是已复审**源码**，原生构建/fixture、DLL 和 live 军职行仍 pending；R0368 原帧 commander/knight、safe release 仍 unknown，不能据本地化提示自行清军职或宣称宴会可 Start，也不能把 Robert 战争 RED 当作解除。战争公式/路线继续由战争维护者负责。
+- 固定战争交互目录是 `C:\Users\xenoa\OneDrive\WAR`，战争同事在另一台机器。最新本机已读回复 `NW-ACTIVITY-R0368-ARMY-ROLE-DEPENDENCY-20260929/RECEIVER-RESPONSE-NW-R0368-ROLE-QUERY-REVIEWED-SOURCE-v6.json`：其 4996e2763 是已复审**源码**，原生构建/fixture、DLL 和 live 军职行仍 pending；R0368 原帧 commander/knight、safe release 仍 unknown，不能据本地化提示自行清军职或宣称宴会可 Start，也不能把 Robert 战争 RED 当作解除。战争公式、路线与军事能力可由当前执行者按原生研究优先规则继续研究和实现；原战争维护者的已交付证据与接口直接复用，不再以人员分工阻止推进。
 - PRV008 原冻结 GO 只覆盖 actor31853、episode native-31853-af642d76cb41 的普通封建有界路径；ZIP SHA-256 `B9952E544C78D51F650FCBF252D2DE81B1E005B0EA5081880AEE9FDECC2BD9F3`。本次未改动 `Z:\ck3_mod_rewrite\.task-tmp\PRV008-FROZEN-EARLY-PAIR`、release 或 qualification；跨机器真实获取性本次未验证。新 Robert/非战争候选不能借 PRV008 资格。
 - 根工作区 `Z:\ck3_mod_rewrite` 是历史脏现场，且本机该目录若干近期 tracked docs 文件缺失；本次写文档只在独立 Z 盘源码 worktree，不能在根目录 reset/clean。受管 temp/cache/build 均在非 C 盘。旧 #624/#622 等因工具策略拒绝而残留的工作树不得绕过拒绝强清。
 
@@ -41,7 +43,7 @@ NW-ECON 另有 `Z:\nw-econ-h3928-wartime-readonly-candidate-20260929\CANDIDATE-I
 1. 先查本文收口更新、`git fetch origin master` 后核 exact SHA/PR/官方 CI，再查状态投影 live source 与本机 CK3/injector/operator 实际 PID。只消费已匹配的制品；无 PID 不等于别的机器或账号可启动。
 2. 优先用上面的冻结 H3928 宾客规则**只读**候选在唯一窗口做一次有界实机；正常加载后最小化。独立核同帧规则 active、窗口绑定、Stage2 receipt、save/date/gold 不变及进程回收。若 `window_unbound`，先定位原版绑定路径；不要凭 group count 猜成员。
 3. 之后处理已合入但未实机的 H3928 家庭伴随读、战时建设只读候选。家庭必须重新官方配对/no-launch；经济只用 `state-b`，仍须确认战争现金占用，不能只因可负担就开工。生活方式只在新角色/新日期有真实点数时做配对正例；不重复 H3928 同日 0 点读数。
-4. 保留原 h90 派生建设检查钟和有效 checkpoint，继续到完工/效果独立读回；不拿开工 receipt 或预测 +0.35/月冒充收益。Robert 战争日期门待战争维护者把军职等能力实际构建、实机并交付 master 后按同帧合同消费。
+4. 保留原 h90 派生建设检查钟和有效 checkpoint，继续到完工/效果独立读回；不拿开工 receipt 或预测 +0.35/月冒充收益。该历史 Robert 战争日期门的能力缺口按真实生产入口补齐并实测；当前执行者可继续军职与战争能力施工，并按同帧合同消费，不再把等待指定维护者作为授权前置。
 5. 每个新动作仍需正式观察、合法性/价值、typed 提交、独立后置、下一 turn 与必要 cold restore。合入后核精确官方 master CI、blob 和临时分支/worktree 清理；进度页同步真实能力边界，G2 定义与计数不改。
 
 ## 收口更新

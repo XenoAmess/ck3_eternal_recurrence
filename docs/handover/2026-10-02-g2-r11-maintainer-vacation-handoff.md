@@ -1,6 +1,8 @@
 # 2026-10-02 G2／CK3 1.20.0.2 维护者休假交接
 
-2026-10-02 授权更新：项目所有者已全面开放 faith/religion、rite、doctrine、tenet、fervor、改宗、宗教改革、clergy、holy order、圣战与大圣战的深入研究与实现。下列冻结记录中的旧宗教暂缓仅保留当时事实，已全部撤销；详见[当前授权](../../AGENTS.md)。开放不自动提升能力等级，也不改变罗贝尔唯一测试入口、战争研究停止及执行OFF、玩家限定或最小化后台操作约束。
+**2026-10-03 战争授权更新。** 项目所有者明确命令“取消任何的非战约束”，并要求研究战斗。原战争研究停止、nonwar-only、战争执行暂缓、战争只能交由其他维护者等现行限制全部撤销；战斗、军队、行军、围城、战争理由、宣战、防御战争、议和及相关原生 AI、只读 bridge/MCP、策略、实现和实机验收均可继续。不得仅因涉及战争再次要求授权。本文历史冻结配置的 OFF、旧尝试 RED、当时未提交动作与未实现能力保留原事实，不能继承为当前禁战规则，也不能把开放授权写成能力已经完成。继续保持罗贝尔 actor29829、episode `native-29829-2bc2d599f7f9` 的原 ordinary campaign 与自然继承线，原生 AI 研究优先、exact-build 绑定、ROOT 唯一实机/pipe/Git owner，以及最小化、无焦点、无桌面输入。当前续接身份和保存锚点以[最新接续记录](2026-10-03-g2-v33-resume.md)为准，本文较早 episode、PID 和存档仅供历史证据。
+
+2026-10-02 授权更新：项目所有者已全面开放 faith/religion、rite、doctrine、tenet、fervor、改宗、宗教改革、clergy、holy order、圣战与大圣战的深入研究与实现。下列冻结记录中的旧宗教暂缓仅保留当时事实，已全部撤销；详见[当前授权](../../AGENTS.md)。开放不自动提升能力等级；2026-10-03 战争研究停止和执行暂缓已撤销。罗贝尔唯一测试入口、玩家限定与最小化后台操作继续有效，历史冻结 OFF 不作为当前禁战规则。
 
 后续施工入口：先沿[宗教整合](../ck3-native-ai/ck3-1.20.0.2-religion-integration.md)、[教义与Tenet](../ck3-native-ai/religion_doctrine12002_overview.md)和[改革](../ck3-native-ai/religion-reform12002-overview.md)的原生树与已有只读查询补齐当前exact-build输入；自然宗教事件按真实选项、作用域与效果接回事件消费者。Holy order等未闭合分支继续定位原生资格、成本、对象状态及结果查询，先交付只读bridge/MCP，再据罗贝尔paused材料设计和验证策略；旧版实机证据不自动继承。
 
@@ -16,7 +18,7 @@
 
 ## 现行授权与分工
 
-用户已明确恢复宗教研究，并于2026-10-02再次授权宗教领域全面深入研究与实现；旧宗教暂缓、两项窄例外和holy order暂缓全部撤销。**停止战争相关研究**与禁止抢占 Steam focus继续作为独立约束；宗教开放不改变战争执行开关、罗贝尔唯一测试入口或玩家限定。未来获准继续实机时使用已有 managed-session 的直接 `ck3.exe` 启动，禁止旧 `steam_focus.py` 或 Steam 界面启动路径。
+用户已明确恢复宗教研究，并于2026-10-02再次授权宗教领域全面深入研究与实现；旧宗教暂缓、两项窄例外和holy order暂缓全部撤销。2026-10-03 项目所有者已撤销**停止战争相关研究**和全部非战执行限制，战争原生研究、实现、策略与实机可继续，不再要求战争领域再授权。禁止抢占 Steam focus、罗贝尔唯一测试入口和玩家限定继续有效；旧战争执行开关只描述该 R11 冻结配置。未来获准继续实机时使用已有 managed-session 的直接 `ck3.exe` 启动，禁止旧 `steam_focus.py` 或 Steam 界面启动路径。
 
 64并行用于互不冲突的文件／逆向／编译工作，游戏、pipe、UI、进程与 Git 由一个协调者串行操作。共享源路径明确指定单一 owner；不要把64并行解释为64个游戏进程。当前休假指令优先，不再派生新工作。右下角 Toast 的持续清理授权仍有效。
 
@@ -54,7 +56,7 @@ R11 最终原生 manifest：`B/nonwar-integration-r11/integration-build-manifest
 - candidate injector：`b31c4e2bdefa1e4bafc4410dd8b6c7094345b816380fddf84641084586e3a9cb`。
 - 新增 `permitted_executor_sway_outcome_opinion12002` 只开放 `query-sway-outcome-opinion-v1-private`，不是新的动作／事件入口。
 
-正式 MCP 计划在 `B/r11-file-only/prepared/MCP-NONWAR-OODA-NEXT-PLAN.json`，SHA-256 `25c75d9778529858c2c318645c1079b5bf6c92ac5fa2d90e8008d3ec7867c95f`：37项只读加明确 nonwar/Council 消费。`--nonwar-only` 属于 MCP/native-auto-run，native-session 不接受这个参数。
+正式 MCP 计划在 `B/r11-file-only/prepared/MCP-NONWAR-OODA-NEXT-PLAN.json`，SHA-256 `25c75d9778529858c2c318645c1079b5bf6c92ac5fa2d90e8008d3ec7867c95f`：37项只读加明确 nonwar/Council 消费。该 R11 历史计划的 `--nonwar-only` 属于 MCP/native-auto-run，native-session 不接受这个参数；当前战争候选撤销该非战限制并记录实际 argv，不修改旧计划哈希或把历史输入改称已启用。
 
 **原 `prepared/NEXT-LIVE-PHASES.json` 仍绑定初始 h139。** 本次生成了 `B/r11-vacation-closeout/NEXT-LIVE-PHASES-LATEST-H165.json`，只把原阶段 argv 的预期 save／driver pins 指向最新配对，未执行。下一维护者先读该文件；若要采用更晚源码，使用已有官方 profile/rebind 流程保留 full165 与账本，再做当次 preflight/allocator。不要重放 hardcoded h139 的旧准备器，也不要直接调用仍引用旧计划的 `run_live_phase_r11.py`。
 
@@ -118,12 +120,12 @@ R10实际 Open 成功、stage1／selectedFeast／widget visible+attached；旧 P
 
 | 项目 | 状态 | 玩家可见验收／交接缺口 |
 | --- | --- | --- |
-| M0 三出口比较 | complete（历史） | 同一暂停帧比较继续／白和／投降，独立战后和cold；战争研究停止，复用历史 |
+| M0 三出口比较 | complete（历史） | 同一暂停帧比较继续／白和／投降，独立战后和cold；复用历史；2026-10-03 战争研究已开放，按新实际任务继续 |
 | M1 实体和turn bundle | complete（历史） | ruler／title／capital／liege／vassals／neighbor及最小警报；迁移新查询不能自动重授全部广矩阵 |
 | M2 自然事件 | in_progress | 三个真实自然事件，含两个多选，验证材料变化；本次没有新增该矩阵。晚提交.1007/.0030原生stress条件metadata在source static-ready，未进入9ce live |
 | M3 继承和生存 | complete（历史） | 自然死亡前预测、核对真实继承、接任后继续；这不替代M7广资格 |
 | M4 和平治理 | in_progress | 同一两游戏年窗口：建设、合法Council重派、真实封臣／派系干预；现建设报价已观测，旧private建设loop有效，当前seed有war／army守卫，最佳Council不应降级，Sway收益未出现 |
-| M5 家庭／外交／战争 | in_progress | 至少五合法候选比较，完整选定路径材料后置；已有五婚约候选、一次婚约、双向关系与冷恢复窄loop，但双方8岁、无联盟／成年履约；不扩战争研究 |
+| M5 家庭／外交／战争 | in_progress | 至少五合法候选比较，完整选定路径材料后置；已有五婚约候选、一次婚约、双向关系与冷恢复窄loop，但双方8岁、无联盟／成年履约；战争研究与实现已全面开放，按当前实际价值推进 |
 | M6 谋略／制度／活动 | in_progress | 一scheme、一囚犯或制度动作、一非宗教决议或法律项目、一完整活动生命周期；CA1法律子项已闭合，其余不能省略 |
 | M7 多身份长局 | in_progress | 多ruler／seed／government；checkpoint及自然继承后恢复同一高层intent。当前feudal44feature已读，ordinary目标hook静态ready，Robert实际恢复与第二seed未完成 |
 
@@ -160,9 +162,9 @@ R10实际 Open 成功、stage1／selectedFeast／widget visible+attached；旧 P
 
 1. 阅读最终配对／交付回执；保持full165和原账本，选明确冻结源码与匹配native候选。通过已有官方prepare/rebind与最新pins进入下一次paused新PID。
 2. 先独立读取当前campaign root／关键材料，针对formal-r11-02第11调用实际RED做最小定位。已生效的CA1／perk／婚约零重发；技能cold与CA1cold分开记录。
-3. 恢复正式nonwar turn和正常时间策略；Sway fresh progress／终态／独立modifier与下一回合消费，同时处理真实自然M2事件。无自然事件不能制造fixture来增加M2信用。
+3. 恢复适合当前状态的正式回合与正常时间策略，按已开放的战争研究和执行路径接续；Sway fresh progress／终态／独立modifier与下一回合消费，同时处理真实自然M2事件。无自然事件不能制造fixture来增加M2信用。
 4. fresh Feast planner资格、预算、费用，合法时一次Start并观察完整结束；同窗口推进有实际价值的和平建设／Council机会／封臣干预。继续尊重原生合法与既有当前策略，不为凑计数降级内阁。
-5. 当前seed的窄链稳定后才接旧Robert官方1.20ordinary兼容恢复及多seed／government长期intent与自然继承矩阵。宗教按真实决策依赖施工，战争研究仍停止。
+5. 当前seed的窄链稳定后才接旧Robert官方1.20ordinary兼容恢复及多seed／government长期intent与自然继承矩阵。宗教与战争均按真实决策依赖施工，战争研究、实现及实机已开放。
 
 这些是依赖顺序，没有承诺自然Sway、成年婚姻或百年矩阵的墙钟日期。跨当前查询故障、自然触发、预算资格与旧save兼容后才可估工期；不能把余进度单位直接换算为固定天数。
 

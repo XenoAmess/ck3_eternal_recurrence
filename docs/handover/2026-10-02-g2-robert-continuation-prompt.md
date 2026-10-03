@@ -1,11 +1,13 @@
 # 罗贝尔G2接续 prompt
 
+**2026-10-03 战争授权更新。** 项目所有者明确命令“取消任何的非战约束”，并要求研究战斗。原战争研究停止、nonwar-only、战争执行暂缓、战争只能交由其他维护者等现行限制全部撤销；战斗、军队、行军、围城、战争理由、宣战、防御战争、议和及相关原生 AI、只读 bridge/MCP、策略、实现和实机验收均可继续。不得仅因涉及战争再次要求授权。本文历史冻结配置的 OFF、旧尝试 RED、当时未提交动作与未实现能力保留原事实，不能继承为当前禁战规则，也不能把开放授权写成能力已经完成。继续保持罗贝尔 actor29829、episode `native-29829-2bc2d599f7f9` 的原 ordinary campaign 与自然继承线，原生 AI 研究优先、exact-build 绑定、ROOT 唯一实机/pipe/Git owner，以及最小化、无焦点、无桌面输入。当前续接身份和保存锚点以[最新接续记录](2026-10-03-g2-v33-resume.md)为准，本文较早 episode、PID 和存档仅供历史证据。
+
 配套[现状与行动计划](2026-10-02-g2-robert-current-state-action-plan.md)保留2026-10-02 23:26基线，并同步2026-10-03的6443实际接续。沿ROOT最新配对与actual回执，不回滚历史基线。
 
 ## 协调者总 prompt
 
 ```text
-继续Z:/ck3_mod_rewrite的G2自动玩家与最新CK3任务。用户最新明确：“从现在开始，允许全方位深入宗教领域研究，全局搜索打破类似宗教暂缓禁令”。该授权覆盖旧AGENTS/handover/nativeREADME/roadmap/prompt的宗教pause、holy order暂缓、仅圣战/婚姻例外。全面Faith/Rite/Religion/doctrine/tenet/fervor/组织/改宗/改革/神职/教廷/holy order/AI/bridge/MCP/策略/实机全部开放，不等再授权、不暗留窄限制。历史当时暂缓保留事实，但不约束现行任务。先读当前AGENTS、配套计划、nativeREADME和机器需求，用户最新授权优先。
+继续Z:/ck3_mod_rewrite的G2自动玩家与最新CK3任务。用户最新明确：“从现在开始，允许全方位深入宗教领域研究，全局搜索打破类似宗教暂缓禁令”。该宗教授权覆盖旧AGENTS/handover/nativeREADME/roadmap/prompt的宗教pause、holy order暂缓、仅圣战/婚姻例外。2026-10-03用户再明确“取消任何的非战约束”，并要求研究战斗：战争研究停止、nonwar-only、WAR_CASH/PREWAR不得启用及等待战争维护者等限制全部撤销。战斗、军队、路线、围城、CB、宣战、防御、议和与相关原生AI/bridge/MCP/策略/实现/实机均开放，不仅因战争再问权限；旧OFF仍只描述历史构建，当前能力以真实构建和实机为准。全面Faith/Rite/Religion/doctrine/tenet/fervor/组织/改宗/改革/神职/教廷/holy order/AI/bridge/MCP/策略/实机全部开放，不等再授权、不暗留窄限制。历史当时暂缓保留事实，但不约束现行任务。先读当前AGENTS、配套计划、nativeREADME和机器需求，用户最新授权优先。
 
 顺序：冻结exact build→原生AI/脚本树与Mermaid→必要实际观测→counter-policy→Robert生产实机OODA。授权不代表宗教full readiness完成。原event13 rite_growth.0010已由6443唯一选择native0/API1，独立religionMCP同日精神满足度0→500000/Q100000=+5，faith23/rite152/actor29829保持；generic event material不替代此独立宗教材料。下一正常fresh Guy/30日与后续v21，原event不再重复选择，M2整项信用仍不变。
 
@@ -24,7 +26,7 @@
 - ROOTpacket HERE/m7-robert/robert-mainline-v20-current-review-01/ROOT-PACKET.json，samegoal/sixledgers/newPIDcold已GREEN；Swaycold4/Feast同ongoingcold复用，不重复。
 - 历史基线h4130/raw53222280及其save/driver保留；宗教选择后ROOT已更新sourcepair，不将旧h4130/旧hash硬绑定为current，沿ROOT较晚实际配对。
 - 历史b03 normal6日后的rite blocker保留；6443解除它的实际result HERE/m2-events/robert-rite0010-6443a516-actual-select-01/result.json status event_selected_material_recorded。独立religionMCP BEFORE native23 raw0、AFTER native26 raw500000，同date53222280；before/after包分别HERE/m2-events/robert-rite-fulfillment-before-01和after-01，文件001-ck3_query_player_religion_context_v1.json。0新日/0焦点输入。
-- v19/412/h4031属历史，不用旧计划重attach/启动/回滚。当前nonwar模式、WAR_CASH/PREWAR OFF保持，flags不能当宗教禁令。
+- v19/412/h4031属历史，不用旧计划重attach/启动/回滚。该历史v20采用nonwar模式、WAR_CASH/PREWAR OFF；2026-10-03这些非战约束已撤销，新候选按真实战争依赖启用和验收，旧flags不能作为战争或宗教禁令。
 
 实际状态：
 - CA1/Steward窄动作-material-next-cold已闭合，不重发法律或任命。
@@ -40,7 +42,7 @@
 现在执行：
 1. M2独占rite leaf的有限实际材料parser/next字段，复用6443唯一native0/API1及独立满足度+5；ROOT继续normal fresh Guy/30日并保存最新pair，不重选event13。宗教native owner继续query/ABI/数据链，共享文件单owner。不要猜效果/造触发/套.2地址/新seed。
 2. Council解释propernext精确输出，依据ledger/receipt/normalnext一次收口；不掩饰未解状态、不重发任命。
-3. modal解除后normal nonwar/finite/原1-7-30接续原Feast/Sway与Familyfresh路径。Family保留event/Council/LIFE/Construction/Family优先序，37909只按attempted语义排除，不预选新pair，无新动作前不报婚配价值。
+3. modal解除后按当前真实游戏状态接续正式回合/finite/原1-7-30及原Feast/Sway与Familyfresh路径；战争观测、策略和typed动作已获授权，军事状态决定所需回合路径，不再固定nonwar-only。Family保留event/Council/LIFE/Construction/Family优先序，37909只按attempted语义排除，不预选新pair，无新动作前不报婚配价值。
 4. 全面宗教拆身份关系、组织成员领袖、doctrine最终约束、tenet数字/个人参数、改宗合法性费用结果、改革AI/成本/选择、神职/holy order、当前eventconsumer。各包原生树→同MCP观测→策略→Robertlive，不停在长期null/unknown，不将全矩阵加给当前leaf。
 5. 全仓现行旧禁令清理由inventory owner独占，中央8报告/索引由requirements owner独占，其他交字段。现行prompt/非目标/门禁全面撤销旧religionpause/only圣战婚姻；旧历史标当时状态不抹事实，不抢其他owner文件。
 6. 其它construction/council/faction/lifecycle/goal独立推进。自然多选/terminal/成年/死亡按本次fullinstance唯一操作、独立material、next/规定cold计信用。新actual RED只修生产真实分支，不扩理论安全协议/审计。
@@ -55,7 +57,7 @@
 
 ```text
 工作包{名称}，唯一可写{canonical清单}+{新artifact目录}；ROOT sole Game/window/process/SDK/pipe/state/Git。你不触游戏/liveSDK/pipe/save/profile/driver/ledger，不提交推送，不抢owner文件。
-最新用户全面授权宗教，撤销旧pause、holyorderpause、圣战/婚姻only限制。原生树/exact .3版本→必要实际观测→counter-policy→Robertlive；旧.2是输入，不套旧地址或称新fullreadiness。
+最新用户全面授权宗教，撤销旧pause、holyorderpause、圣战/婚姻only限制；2026-10-03又明确撤销全部非战约束并要求战斗研究，战争研究/实现/策略/实机可继续，不再因战争询问权限。原生树/exact .3版本→必要实际观测→counter-policy→Robertlive；旧.2是输入，不套旧地址或称新fullreadiness。
 当前Robert29829/episode native-29829-2bc2d599f7f9/ordinary/xar_off/goal；v20PID94488，Python6443/nativeenv4ee，宗教选择后pair由ROOT更新，旧h4130只作历史。
 输入{真实包/commit}；输出{可见价值/解除实际阻点}；验收{一次focused生产路径/ROOTactual配置}。
 共享bridge/CMake/driver/service只patch。缺字段确实阻决策就补口，不长期unknown，不加理论门禁。无实机不造live。回报结果/实际身份/时点/文件SHA/source/tests/artifact/资格/RED/剩余依赖/ROOT下一唯一操作/日报周报字段。旧proof/CI/fixture复用。
@@ -115,7 +117,7 @@ Sway原134217986gen8→34333/v20cold4closed，无收益terminal，batch按需tar
 ### M7：长局、禁令清理、报告
 
 ```text
-ROOT当前6443Python/4eenative/v20PID94488，原rite event已唯一选择并独立满足度+5，沿更新pair做fresh Guy/normal30日；不重选、不硬pin旧h4130。normalnonwar/finite/1-7-30与全面宗教并行保持。
+ROOT当前6443Python/4eenative/v20PID94488，原rite event已唯一选择并独立满足度+5，沿更新pair做fresh Guy/normal30日；不重选、不硬pin旧h4130。正式回合/finite/1-7-30与全面宗教及战争研究并行；按当前战争状态选择实际路径，旧nonwar-only不再是约束。
 Nativebuild只为真实变更 strict/W4WX/jobs64，准确绑定对象复用，ROOT officialadopt/newPID；纯Pythonattach现env，不误记来源。
 现行禁令inventory全仓撤销religionpause/holyorderpause/only圣战婚姻门禁，历史标当时不抹事实；文件由ROOT划分，不抢M2/native/Family/Feast/计划doc。
 Requirements唯一写中央8报告/索引；他人交字段。G2 4/8、NW1/4、Robert3248/36524（8.89%仅持久日）、goal0，无实测宗教fullreadiness不造完成。旧性能/CI/proof复用，无同类actual计时不报速度收益。
@@ -127,4 +129,4 @@ Requirements唯一写中央8报告/索引；他人交字段。G2 4/8、NW1/4、R
 包名；实际时间/PID/actor/episode/date；Python/native/environment身份；可见结果；资格；唯一action/fullID或0动作；material/next/cold已闭/未观察/RED；必要验证与复用入口；artifact/source/SHA；保留失败原因；持久新增日/完整pair；原G2/NW合同贡献；剩余依赖/ROOT唯一下一步/T0范围与自然不可承诺项；日报周报/commit push字段。
 ```
 
-宗教授权已生效，继续已授权后台实机；完成包普通提交推送，主线持续。用户后续游戏/窗口权限按最新明确指令调整，不因旧宗教禁令、理论风险或已retired Guy pending自行停止。
+宗教与战争授权已生效，继续已授权后台实机；完成包普通提交推送，主线持续。用户后续游戏/窗口权限按最新明确指令调整，不因旧宗教禁令、理论风险或已retired Guy pending自行停止。

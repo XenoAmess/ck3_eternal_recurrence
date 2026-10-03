@@ -12,7 +12,7 @@
 
 ## 23:33 Robert v20冷恢复、健康材料及正式新增6日：累计3248天
 
-2026-10-02 23:33:53 Asia/Shanghai最新用户明确授权：“从现在开始，允许你进行全方位的深入的宗教领域研究。你需要全局搜索，打破任何你发现的 类似‘宗教领域暂缓’ 的禁令。”本次八份中央文档中所有现行宗教暂缓、holy order暂缓及“只有婚姻/圣战两项窄例外”限制全部撤销；下方dated历史段中的旧限制只记录当时权限，当前均已失效。通用faith/religion、doctrine/tenet/fervor、改宗/宗教改革、holy order及相应原生AI树、只读bridge/MCP和策略研究可按真实价值施工。授权不等于能力完成；Robert唯一入口、nonwar-only当前执行、玩家限定与发布规则保持。
+2026-10-02 23:33:53 Asia/Shanghai最新用户明确授权：“从现在开始，允许你进行全方位的深入的宗教领域研究。你需要全局搜索，打破任何你发现的 类似‘宗教领域暂缓’ 的禁令。”本次八份中央文档中所有现行宗教暂缓、holy order暂缓及“只有婚姻/圣战两项窄例外”限制全部撤销；下方dated历史段中的旧限制只记录当时权限，当前均已失效。通用faith/religion、doctrine/tenet/fervor、改宗/宗教改革、holy order及相应原生AI树、只读bridge/MCP和策略研究可按真实价值施工。2026-10-03 项目所有者已取消全部非战限制，全面授权战争与战斗的研究、原生观测、实现、策略及实机执行。 `nonwar-only` 和战争执行 OFF 不再构成授权限制。原生 AI 研究优先、exact-build 绑定、Robert 29829 原普通战役唯一入口、玩家限定及最小化/不抢焦点继续执行；授权不代表能力已完成。 发布规则保持。
 
 2026-10-02 23:33:53 Asia/Shanghai实际流程增量：唯一Robert原ordinary/Steamoffline/minimizedno-focus，root独占实机；v20/native4ee933pins/487TU严格build及官方prepare/stage/rebind/preflight后真实新PID94488同goal/六ledger/full4114 anchor4113冷恢复成立。currentPythonb03沿用native/env4ee。原活动窗口冷query未物化的0selection attempt保留，通过现成explicitnative OpenActivityView呈现再typed选择，不偷偷在readonly里mutate，不重复Start。
 
@@ -70,7 +70,7 @@ Sway本Robert合法目标34333为实际县领/Spymaster、opinion−10，两read
 
 Family direct2当前读GREEN：first38822↔38718双向betrothal/material/cold true；Guy38988↔37909仍pending/materialfalse，native当前子女/关系binding verified、age13<16/House-Dynasty174，active outbound id−469762048/age3，当前.3 cutoff7而非历史10。可正常时间等待原结果，不能3日就timeout、手填ledger或重发proposal；原三family ledgers本阶段未修改，无成人婚姻/联盟新完成，Murchad已完成路径不移植。[当前Family判读](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m5-family/robert-v16-current-family-assessment.json)。
 
-Feast已有真正planner Begin→generic stage1确认→5个合法location→选当前capital2619→Stage5 nativeCanStart true/cost100gold；普通close_family guest37265实际member/nativefiltered/positivejoin93/travel0/早到/qualified true，cash1206.59426/floor200。唯一hold是war1且war_cash_reserve_unobserved，冻结producer为None，不能把当前军费读数冒充future upper reserve。maintenance observer施工中，未清除budget hold；Start/debit/fullActivity/attendance/terminal/reward皆未发生，0M2/M6complete。建设当前ordinary war/army hold保持，未有建设材料或净收益；不为本包扩战争研究。[Feast当前字段](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-feast/robert-feast/actual-v16-hosted-review-01/report-fields.json)。
+Feast已有真正planner Begin→generic stage1确认→5个合法location→选当前capital2619→Stage5 nativeCanStart true/cost100gold；普通close_family guest37265实际member/nativefiltered/positivejoin93/travel0/早到/qualified true，cash1206.59426/floor200。唯一hold是war1且war_cash_reserve_unobserved，冻结producer为None，不能把当前军费读数冒充future upper reserve。maintenance observer施工中，未清除budget hold；Start/debit/fullActivity/attendance/terminal/reward皆未发生，0M2/M6complete。建设当前ordinary war/army hold保持，未有建设材料或净收益；该历史阶段未扩展战争研究；2026-10-03 全面战争授权后，缺失战争输入与策略可直接施工。[Feast当前字段](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m6-feast/robert-feast/actual-v16-hosted-review-01/report-fields.json)。
 
 真实public SDK stdio finite snapshot已production-live primitive：Python/runtime `dd4772c02b8183b9e7c5efe72fe01649e4f67be1`、native仍v16；False参数返回complete/isError=false，history总4041但[]/included0/export omitted，保存packet54,567B、compact CallToolResult45,467B、DTO18,907B（不称raw JSONRPC wire）。actor/episode/date/paused/mapready/exact.3 provenance完整，server正常closed exit0；life-advance已列advertised actions/composites，但该snapshot包没有推进时间。原90秒tools/call timeout RED保留，不由此claim完整public OODA或整局G2。[实际stdio分析](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/robert-sdk-history-export-01/ACTUAL-STDIO-ANALYSIS.json)。
 
@@ -84,7 +84,7 @@ Feast已有真正planner Begin→generic stage1确认→5个合法location→选
 
 v16恢复原Robert actor29829/episode `native-29829-2bc2d599f7f9`，raw53220000、alive/paused/map_ready，普通xar_off与原typed dynasty_continuity goal/reconciled_successions0保持。第一gov direct query3.931秒RED保留；同PID后续现有注册MCP真正available feudal/core_landed、44features、requirements_met/sameframe/core_adapter_ready全true，无源码修补或重复旧矩阵。[本批capture](Z:/ck3_mod_rewrite/artifacts/g2-maintainer-2026-10-02/resume-12003/m7-robert/actual-v16-multidomain-01/capture-01/result.json)16项registered reads全GREEN、normal driver close返回，checkpoint_requested=false。本批新增日期、动作和自然继承均0；新baseline checkpoint/newPID cold及正式next仍需各自新证据，当前观察提升production-live primitive，不宣称完整恢复OODA/complete。
 
-当前实体/root实际6核心Council都有holder，domain5/6、1 targeting faction，收入3.73295是这批当前原生读值；薄帧stress0/gold120659426/Q100000=1206.59426、war1/army1、active_event和visible pending interaction为null。建设材料尚未发布，现有普通建设consumer保持战时hold；这些战争状态是现成决策输入，没有继续战争研究或行动。M1历史complete不重复加信用，告警/时限未由当前输入完整发布，不能说已清空。
+当前实体/root实际6核心Council都有holder，domain5/6、1 targeting faction，收入3.73295是这批当前原生读值；薄帧stress0/gold120659426/Q100000=1206.59426、war1/army1、active_event和visible pending interaction为null。建设材料尚未发布，现有普通建设consumer保持战时hold；该历史阶段将这些战争状态作为现成决策输入，没有继续战争研究或行动；2026-10-03 已全面开放后续战争施工和执行。M1历史complete不重复加信用，告警/时限未由当前输入完整发布，不能说已清空。
 
 M3当前真实main heir38822；6个县级及以上头衔中5个→38822，县2173→Guy38988，仍split_successors，goal0succession不变。`realm_law_governance_snapshot_v1 Normalize()`把继承数组按数字排序用于法律baseline比较，root主头衔列表保留原生优先级；不能把排序列表首ID30253代替真实main heir。当前CA1 legal207prestige只证明资格/报价，不证明消除分割继承、自然死亡或继承后continuation；历史M3 complete保持但无新信用。
 

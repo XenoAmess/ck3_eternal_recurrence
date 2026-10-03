@@ -1,5 +1,7 @@
 # G2 罗贝尔：当前现状与行动计划
 
+**2026-10-03 战争授权更新。** 项目所有者明确命令“取消任何的非战约束”，并要求研究战斗。原战争研究停止、nonwar-only、战争执行暂缓、战争只能交由其他维护者等现行限制全部撤销；战斗、军队、行军、围城、战争理由、宣战、防御战争、议和及相关原生 AI、只读 bridge/MCP、策略、实现和实机验收均可继续。不得仅因涉及战争再次要求授权。本文历史冻结配置的 OFF、旧尝试 RED、当时未提交动作与未实现能力保留原事实，不能继承为当前禁战规则，也不能把开放授权写成能力已经完成。继续保持罗贝尔 actor29829、episode `native-29829-2bc2d599f7f9` 的原 ordinary campaign 与自然继承线，原生 AI 研究优先、exact-build 绑定、ROOT 唯一实机/pipe/Git owner，以及最小化、无焦点、无桌面输入。当前续接身份和保存锚点以[最新接续记录](2026-10-03-g2-v33-resume.md)为准，本文较早 episode、PID 和存档仅供历史证据。
+
 更新截点：**2026-10-02 23:26（Asia/Shanghai）**，依据 ROOT 已闭合实机回执与项目所有者最新授权。较晚 actual 回执覆盖本文会话定位信息，历史失败和配对保留。可复制的执行文本见[接续 prompt](2026-10-02-g2-robert-continuation-prompt.md)。
 
 **2026-10-03实际增量**：functional/live Python已为 `6443a5160c1369b5e64b2d22e3a27f87902ec256`，native/environment仍4ee/v20/PID94488。原event13 `rite_growth.0010`已唯一native0/API1；独立宗教MCP同日精神满足度0→500000/Q100000=+5，actor29829/faith23/rite152保持。generic event material不能代替独立满足度材料。ROOT已更新选择后的sourcepair，旧h4130/旧hash只作下方历史基线；下一normal fresh Guy/30日及后续v21，不重选原event。宗教全面开放与G2/NW资格不变。
@@ -12,7 +14,7 @@
 
 **罗贝尔仍是当前唯一测试入口。** 保持原 ordinary campaign、同一高层 intent 与自然 successor，不创建 Murchad、rogue、Clan、Tribal 或新 seed。用户已释放 CK3、Steam 离线；继续最小化后台，不抢游戏/Steam/其它窗口焦点，不用物理输入。ROOT 独占 Game、window、process、SDK、pipe、state 和 Git。
 
-当前运行仍用现有 nonwar 模式、`WAR_CASH/PREWAR` OFF；这些开关状态不能被解释为宗教研究禁令。不要为填并发数重开已完成历史战争矩阵或重复广审计。
+2026-10-03 项目所有者已明确撤销全部非战约束并要求战斗研究：战争研究停止、固定 nonwar-only、`WAR_CASH/PREWAR` 必须 OFF 及战争只能留给指定维护者等安排全部取消。战斗、军队、行军、围城、CB、宣战、防御战争、议和及相关原生 AI/bridge/MCP/策略/实现/实机均可继续，不因战争再问授权。该历史 v20 的 OFF 仍是原配置事实，新候选按真实依赖启用与验收；不为填并发数重跑已完成矩阵或广审计。
 
 ## 当前可接续基线
 
@@ -95,7 +97,7 @@ flowchart TD
 2. **P0 Council收口**：解释proper next精确输出，依据实际ledger/receipt/正常下一回合一次收口；需要cold按本包约定一次。不得重发43696或重测Steward/CA1。
 3. **P1活动与家庭**：续Feast83886111/Sway原实例；Guy已retired，用child-default正常fresh路径比较，保持event/Council等优先序。无新提案前不认婚配信用。
 4. **P1全面宗教**：身份/关系、组织/成员/领袖、doctrine/tenet/fervor、改宗/改革、神职/holy order等各自原生树、数据口、策略、实机独立推进。历史.2输入不替代.3版本/RVA/receiver闭合。
-5. **P2长期循环**：现有normal nonwar服务、finite外置记录器、原1/7/30策略与完整配对。自然机会按本次实例唯一动作、材料、next、规定cold验收；新actual RED仅修真实生产支路，不扩理论安全门禁。
+5. **P2长期循环**：按当前状态使用正式回合服务、finite外置记录器、原1/7/30策略与完整配对；战争输入/策略/typed执行已授权，旧nonwar-only不再限制选择路径。自然机会按本次实例唯一动作、材料、next、规定cold验收；新actual RED仅修真实生产支路，不扩理论安全门禁。
 
 ## 八个M与64并发安排
 

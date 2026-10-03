@@ -74,6 +74,8 @@ def build_faction_demand1001_decision_context_v1(
 
     Each read has its own native revision. The caller supplies both expected
     revisions; equality between the sequential read revisions is not assumed.
+    Owner authorization on 2026-10-03 enables combat research and war execution.
+    This builder remains read-only; action readiness is independent of authorization.
     No option is selected or submitted, including when county losses are ready.
     """
     context: dict[str, object] = {
@@ -88,7 +90,7 @@ def build_faction_demand1001_decision_context_v1(
         "binding_ready": False, "readonly_review_ready": False,
         "complete_acceptance_outcome_ready": False, "action_execution_ready": False,
         "selected_option_number": None, "selected_native_option_index": None,
-        "automatic_selection": False, "war_execution_authorized": False,
+        "automatic_selection": False, "war_execution_authorized": True,
         "missing_observations": [], "unavailable_reason": None,
         "acceptance": None, "refusal": None,
     }
@@ -114,7 +116,7 @@ def build_faction_demand1001_decision_context_v1(
     options = {row["native_option_index"]: row for row in recognition["native_option_mapping"]}
     context["refusal"] = {**options[3], "effect": "faction_start_war",
         "source_outcome": "Saved faction requests a war against faction_target using target_title",
-        "war_execution_authorized": False, "actual_war_id": None, "exact_cb_key": None,
+        "war_execution_authorized": True, "actual_war_id": None, "exact_cb_key": None,
         "notification": "Conditional popular_faction_vassal_targets recipients receive faction_demand.0099",
         "execution_ready": False, "stress_effect": "none_explicit_in_reviewed_native3_or_common_after"}
     scopes = {row["name"]: row["scope"] for row in event["saved_scopes"]}

@@ -1,6 +1,6 @@
 # G2 八项里程碑：仍可后台施工的实际缺口
 
-2026-10-02 授权更新：项目所有者已全面开放 faith/religion、rite、doctrine、tenet、fervor、改宗、宗教改革、clergy、holy order、圣战与大圣战的深入研究与实现。下列冻结记录中的旧宗教暂缓仅保留当时事实，已全部撤销；详见[当前授权](../../AGENTS.md)。开放不自动提升能力等级，也不改变罗贝尔唯一测试入口、战争研究停止及执行OFF、玩家限定或最小化后台操作约束。
+2026-10-02 授权更新：项目所有者已全面开放 faith/religion、rite、doctrine、tenet、fervor、改宗、宗教改革、clergy、holy order、圣战与大圣战的深入研究与实现。下列冻结记录中的旧宗教暂缓仅保留当时事实，已全部撤销；详见[当前授权](../../AGENTS.md)。2026-10-03 项目所有者已取消全部非战限制，全面授权战争与战斗的研究、原生观测、实现、策略及实机执行。 旧战争研究停止、执行OFF、非战范围及战争维护者独占规则均已撤销；冻结产物中的OFF/零动作仍保留为当时事实。原生 AI 研究优先、exact-build 绑定、Robert 29829 原普通战役唯一入口、玩家限定和最小化/不抢焦点继续执行；授权不等于能力完成。
 
 后续施工入口：先沿[宗教整合](../ck3-native-ai/ck3-1.20.0.2-religion-integration.md)、[教义与Tenet](../ck3-native-ai/religion_doctrine12002_overview.md)和[改革](../ck3-native-ai/religion-reform12002-overview.md)的原生树与已有只读查询补齐当前exact-build输入；自然宗教事件按真实选项、作用域与效果接回事件消费者。Holy order等未闭合分支继续定位原生资格、成本、对象状态及结果查询，先交付只读bridge/MCP，再据罗贝尔paused材料设计和验证策略；旧版实机证据不自动继承。
 
@@ -32,9 +32,9 @@
 ## 第二波：M5 的共享资源与长期输入
 
 - **战争现金来源。** [正式 collector](../../ck3_autonomous_player/src/xar_autoplayer/m5_formal_proposal_collector.py)第 231 行明确没有 runtime producer；[金额模块](../../ck3_autonomous_player/src/xar_autoplayer/m5_war_cash_resource_v1.py)只是外部输入→收据。[R0266 原生账本](../ck3-native-ai/r0266-war-cash-resource-2026-09-28.md)第 24／28 行已给出维护资源 helper，下层虚表目标和经济槽位仍未闭合。后台可继续 1.20 exact 来源逆向、只读 producer 和现有收据适配；当前维护、未来期限与政策储备分别保留语义，不以净月收入猜战争成本。
-- **多战争资源聚合。** 同一 collector 第 159／257 行明确仅支持一场、返回 `multiple_wars_cash_aggregation_unavailable`。在真实来源闭合后，为全部 WarID 聚合共享军队、pending 金钱、盟友／角色占用与期限。共享军费先闭合归属再合并，不能简单按 WarID 重复相加；沿用现有预留与 dispatcher，不改变战争意愿或解除 owner/date hold。
+- **多战争资源聚合。** 同一 collector 第 159／257 行明确仅支持一场、返回 `multiple_wars_cash_aggregation_unavailable`。在真实来源闭合后，为全部 WarID 聚合共享军队、pending 金钱、盟友／角色占用与期限。共享军费先闭合归属再合并，不能简单按 WarID 重复相加；沿用现有预留与 dispatcher；2026-10-03已取消战争意愿与执行的非战授权限制，策略调整先依据原生树和真实输入，具体现场/date hold按当时运行事实协调。
 - **婚配长期结果与义务。** [机会选择器](../../ck3_autonomous_player/src/xar_autoplayer/m5_observed_opportunity_selector.py)第 271 行仍将 `child_dynasty_result`、`alliance_result`、`alliance_war_obligation`、`betrothal_break_cost` 列为 unpriced。人物家系／年龄／生育 provider 已交付；下一项是候选 lineality 的结果、解除婚约代价与具体联盟战争义务的原生最终结果口，先原生树／ABI／query，再策略消费。
-- **真实参战与未来补给。** [joint shortlist](../../ck3_autonomous_player/src/xar_autoplayer/m5_joint_shortlist.py)第 23–24 行及 [prewar 专题](../ck3-native-ai/prewar-encounter-inputs.md)第 557、731–741 行仍缺 declaration-bound participants/allies 与假设集结／未来路线来源。可以后台追原生最终结果与实现只读 provider；既有 current-army supply 不等于未来补给。该域由 war owner 负责源链与政策，不接管其现场。
+- **真实参战与未来补给。** [joint shortlist](../../ck3_autonomous_player/src/xar_autoplayer/m5_joint_shortlist.py)第 23–24 行及 [prewar 专题](../ck3-native-ai/prewar-encounter-inputs.md)第 557、731–741 行仍缺 declaration-bound participants/allies 与假设集结／未来路线来源。可以后台追原生最终结果与实现只读 provider；既有 current-army supply 不等于未来补给。该域旧 war owner 独占源链与政策的分工限制已于2026-10-03撤销；后续可直接推进原生树、只读provider、策略与Robert原战役实机，现场操作仍按当前唯一实例协调。
 
 已有分析 intake、shortlist、budget selector、dispatcher、正式 proposal collector 和单次 pending 预留不能重报为“联合策略完全未实现”。历史已有 1 建设＋5 婚配的同帧 eligible 提案；缺口也不能简写成“还没有五候选”。
 
@@ -52,7 +52,7 @@
 1. **普通 campaign 高层目标续接。** [driver](../../ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py)当前保存 episode/checkpoint/history/succession expectation/lifecycle，继承新建 episode；[现有 plan](../../ck3_autonomous_player/src/xar_autoplayer/strategy.py)第 19926、19970、20007 行是 one-life-visible-outcomes-v1，死亡结束该 episode，reader 仅接受 `one_life_roguelike`。可复用 priority/focus 消费链与 persisted-v2，补普通 campaign 语义目标／进度在 checkpoint 和继承后的保留及下一 plan 消费。已有 [继承合同测试](../../ck3_autonomous_player/tests/unit/test_succession_transition_contract.py)第 520／644 行覆盖 persist→restore→successor→formal auto_turn，可扩同一 fixture。不能只加一个永不消费的 schema 字段，也不复制 driver 或继承系统。
 2. **GOV observer 的新版封建消费。** [既有 binder](../../ck3_autonomous_player/native_bridge/include/xar_bridge/government_runtime_adapter_bridge_binder_v1.hpp)锁旧版本；[observer](../../ck3_autonomous_player/native_bridge/src/government_runtime_adapter_observer_v1.cpp)的 44-key profile 含 `barter_troops`，而 [新版 producer](../../ck3_autonomous_player/native_bridge/src/ck3_12002_features.cpp)已移除它、加入 `by_god_alone`。数量同为 44 不能视为同一输入。沿现有 observer/source adapter/binder，先完成新版真实 feature producer→feudal core selector→默认关闭的私有调用链；其它政府保持既有 `adapter_spec_ready_not_implemented`。不重建 registry 或宣称 18 政府实现齐全。
 
-高层目标收益校准、独立 seeds、跨政府及百年／整局资格需要实际材料。离线 replay 不增加这些分母，也不解除战争或其他 owner 的 hold。
+高层目标收益校准、独立 seeds、跨政府及百年／整局资格需要实际材料。离线 replay 不增加这些分母；2026-10-03已撤销战争授权限制，实际现场占用仍按当前运行事实协调。
 
 ## 并行与验收安排
 

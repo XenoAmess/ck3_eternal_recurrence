@@ -1,6 +1,8 @@
 # 战争与战争视频维护交接：2026-09-29
 
-项目所有者要求把手上的工作收至可交接阶段后休假，停止开启新工作。本页记录截至 2026-09-29 20:57（北京时间）的事实、证据和接手边界；它不授权游戏日期、行军、攻击、投降、活动开始或外部发布。接手者应先读 [2026-09-28 交接](2026-09-28-war-maintainer-vacation-handoff.md)、当前 `AGENTS.md`、对应 WAR 请求和各 Draft PR，再核对最新 `master` 与固定 OneDrive `C:/Users/1/OneDrive/WAR/`。
+**2026-10-03 战争授权更新。** 项目所有者明确命令“取消任何的非战约束”，并要求研究战斗。原战争研究停止、nonwar-only、战争执行暂缓、战争只能交由其他维护者等现行限制全部撤销；战斗、军队、行军、围城、战争理由、宣战、防御战争、议和及相关原生 AI、只读 bridge/MCP、策略、实现和实机验收均可继续。不得仅因涉及战争再次要求授权。本文历史冻结配置的 OFF、旧尝试 RED、当时未提交动作与未实现能力保留原事实，不能继承为当前禁战规则，也不能把开放授权写成能力已经完成。继续保持罗贝尔 actor29829、episode `native-29829-2bc2d599f7f9` 的原 ordinary campaign 与自然继承线，原生 AI 研究优先、exact-build 绑定、ROOT 唯一实机/pipe/Git owner，以及最小化、无焦点、无桌面输入。当前续接身份和保存锚点以[最新接续记录](2026-10-03-g2-v33-resume.md)为准，本文较早 episode、PID 和存档仅供历史证据。
+
+项目所有者要求把手上的工作收至可交接阶段后休假，停止开启新工作。本页记录截至 2026-09-29 20:57（北京时间）的历史事实与证据；当时没有执行新的游戏日期、行军、攻击、投降或活动开始。当前战争研究和执行授权按页首 2026-10-03 更新，不再继承本页旧停工或禁战安排；外部发布仍按其任务授权执行。接手者应先读 [2026-09-28 交接](2026-09-28-war-maintainer-vacation-handoff.md)、当前 `AGENTS.md`、对应 WAR 请求和各 Draft PR，再核对最新 `master` 与固定 OneDrive `C:/Users/1/OneDrive/WAR/`。
 
 ## 首要阻塞：R0271 / H3937 围城参与者
 
@@ -10,7 +12,7 @@ Robert 正式续跑仍 **RED**。H3937 原存档 SHA-256 `92A06F540E98A767D3E1DB
 
 本次 a05 官方无启动准入为 READY，清单在 `D:/ck3-research-artifacts/war-h3937-combined-no-launch-20260929/attempt-05/`：admission SHA-256 `86FAE45B641E5CC6E87C0D59DC42529A1C7D2EB1110ED567CAACD1460C9BE5DE`，operator manifest `8DF7489C75D132E2BCB35D73CE21A644B8BC0A154DE5DBDB9597103DC024D27E`。启动前两张不同随机码的原始桌面截图均经直接目视确认 Steam 显示“离线模式”；屏幕准备目录为 `D:/ck3-research-artifacts/war-h3937-combined-live-20260929/screen-attempt-05/`。GO 回执 SHA-256 `1AA70593C9B02EDC5197549A8077725F6153CBBD04E33365C807C269EEAF1F5C`，只授权这一轮只读尝试。
 
-**a05 实际仍为 RED**：`D:/ck3-research-artifacts/war-h3937-combined-live-20260929/attempt-05/outer-report.json` SHA-256 `5B2514281736D2D489535152CCD777CAB5DEA59A7CF443CD6F763EA7046F24D5`。桥接传输已连接、原生适配器报告 ready，但 600 秒内未出现语义游戏快照；最后心跳 `date_raw=0`、`paused=false`、`executed_requests=0`。因此六条只读查询均未执行，`query_actions=0`、`gameplay_actions=0`、`frame=null`，没有围城参战集合或完整实体军队清单。`NativeReadinessTimeoutError: semantic game state unavailable` 是这一轮精确错误。截图 `readiness-timeout-desktop.png` 已目视检查，画面是 Codex 桌面而非游戏，不能据此推断游戏内状态。外层与 supervisor 均证明受管清场、原存档和配对资产哈希不变；完成回执 `completion.json` 指向同一外层报告。未来只能建**全新 attempt** 查明为何存档冷载未发布语义快照，不得把 a05 改写为 GREEN 或原地热重试。日期、移动、攻击和 Robert 正式续跑仍禁止。
+**a05 实际仍为 RED**：`D:/ck3-research-artifacts/war-h3937-combined-live-20260929/attempt-05/outer-report.json` SHA-256 `5B2514281736D2D489535152CCD777CAB5DEA59A7CF443CD6F763EA7046F24D5`。桥接传输已连接、原生适配器报告 ready，但 600 秒内未出现语义游戏快照；最后心跳 `date_raw=0`、`paused=false`、`executed_requests=0`。因此六条只读查询均未执行，`query_actions=0`、`gameplay_actions=0`、`frame=null`，没有围城参战集合或完整实体军队清单。`NativeReadinessTimeoutError: semantic game state unavailable` 是这一轮精确错误。截图 `readiness-timeout-desktop.png` 已目视检查，画面是 Codex 桌面而非游戏，不能据此推断游戏内状态。外层与 supervisor 均证明受管清场、原存档和配对资产哈希不变；完成回执 `completion.json` 指向同一外层报告。未来只能建**全新 attempt** 查明为何存档冷载未发布语义快照，不得把 a05 改写为 GREEN 或原地热重试。日期、移动、攻击和 Robert 正式续跑在该 a05 尝试当时没有执行；a05 的真实读取故障保留并按必要范围修复，不能将该历史 RED 继承为当前全局禁战或 Robert 续跑禁令。
 
 本地 #612 的 a05 六读 HEAD `219477ac1` 尚未推到该 PR；远端 [Draft PR #612](https://github.com/XenoAmess/ck3_eternal_recurrence/pull/612) 的已验证 HEAD 为 `9b54496a5e2cb4b57f4548926a72ed9d30299d46`。接手时先对比远端和本地提交，不要把本地实机 RED 当作已发布结论。R0271 先前风险研究表明场外敌军可能早于我方到达目标；现有首路点预览不能证明抵达时的参战集合。
 

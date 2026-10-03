@@ -1,12 +1,14 @@
 # 2026-10-01 非战争 1.20 runner 离线准备
 
+**2026-10-03 战争授权更新。** 项目所有者明确命令“取消任何的非战约束”，并要求研究战斗。原战争研究停止、nonwar-only、战争执行暂缓、战争只能交由其他维护者等现行限制全部撤销；战斗、军队、行军、围城、战争理由、宣战、防御战争、议和及相关原生 AI、只读 bridge/MCP、策略、实现和实机验收均可继续。不得仅因涉及战争再次要求授权。本文历史冻结配置的 OFF、旧尝试 RED、当时未提交动作与未实现能力保留原事实，不能继承为当前禁战规则，也不能把开放授权写成能力已经完成。继续保持罗贝尔 actor29829、episode `native-29829-2bc2d599f7f9` 的原 ordinary campaign 与自然继承线，原生 AI 研究优先、exact-build 绑定、ROOT 唯一实机/pipe/Git owner，以及最小化、无焦点、无桌面输入。当前续接身份和保存锚点以[最新接续记录](2026-10-03-g2-v33-resume.md)为准，本文较早 episode、PID 和存档仅供历史证据。
+
 本包接续 [09-30 休假交接](2026-09-30-nonwar-maintainer-vacation-handoff.md)，交付 **static-ready 的命令准备器、实际新 Z 盘 production profile 与原样复制的真实 1.20 save/full-driver pair**。最终 file-only 准备于 2026-10-01 12:50（Asia/Shanghai）完成，绑定已提交源码和已冻结 DLL；具体 receipt 与下一阶段入口见文末。默认工具只生成 metadata；显式模式复用生产准备核心，只写全新的隔离 profile。两种模式均不运行 operator、CK3、named pipe、桌面、进程查询或 live allocator。工具实际实现于 [run_nonwar_12002_offline.py](../../tools/run_nonwar_12002_offline.py)，配置为 [ck3-1.20.0.2-nonwar-runner.json](../../ck3_autonomous_player/configs/ck3-1.20.0.2-nonwar-runner.json)。
 
 ## 保留的身份与资格
 
 - G2 仍为 **3/8**，Robert 仍为 **3,153/36,524** 持久游戏日；首整局、百年、独立种子没有本包增量。Robert h4025/raw53220000、BA5/Guy/首继承人/prisoner ledger 均保留为 1.19.0.6 原始证据。本工具不读取、复制、截尾或重新绑定这些资产。
 - 1.20 MCP 迁移中的 R2、死亡换局及其 Character29829 不构成 Robert 延续证明。CharacterID 相同不能替代 episode、合法 save/full driver/profile/ledger 的对应关系。
-- H3937 日期 hold 的 release、原战争责任人的接口与六项读口不由新命令计划解除；新计划不改正式战争意愿、不修改旧 owner/任务总线、不调用另一台机器 endpoint。
+- 该历史文件计划没有解除 H3937 日期 hold，也没有修改当时正式战争意愿、旧 owner/任务总线或另一台机器 endpoint。2026-10-03 非战限制已撤销，当前执行者可沿本机实际生产接口补战争观测、修复真实阻点并继续策略与实机；保留历史 hold 和六项读取结果，不把旧计划的范围当作新授权限制。
 - 本配置只生成独立 1.20 pair 的施工入口。若要迁移 Robert h4025，仍由原 official prepare/restore 判断兼容并保留全部未完成 action ledger；本包没有该次游戏格式转换或 cold 资格。
 
 ## 两条已有生产路径

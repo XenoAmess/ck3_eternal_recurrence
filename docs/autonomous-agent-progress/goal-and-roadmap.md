@@ -1,5 +1,18 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 13:16 取消非战限制，战斗原生研究与实机并行
+
+**2026-10-03 当前战争授权：** 项目所有者明确命令取消任何非战约束并研究战斗。原 nonwar-only、战争研究停止、战争执行 OFF、仅由其他维护者施工、WAR_CASH/PREWAR 永久关闭等授权限制全部失效；允许战争原生研究、观测、实现、策略和实机执行，不再仅因战争请求确认。旧配置 OFF、失败和零动作均保留为当时事实，不能继续当作禁令。Robert29829 原 ordinary campaign、原生 AI 研究优先、exact-build、玩家限定、真实 readiness 和最小化无焦点继续执行。授权不等于全部能力已完成。
+
+已对164个匹配 tracked prompt/文档/配置分桶：87个原生专题、33个进度/计划文档与其余44个路径。交接维护者扫描38份交接，12份34处限制已更新；主prompt组14份28处文案与两配置说明已更新；事件consumer三个真实授权字段改为true，六个既有聚焦用例一次GREEN，独立 action_execution_ready、自动选择与完整后果边界没有冒充完成。其余分桶及各战争专题并行交付，逐包应用，不等待战争维护者归来。
+
+Root已移除当前SDK计划的 `--nonwar-only`，同v34/PID119724保持最小化暂停，并读取现有两场防御战争及五支部队：能力/warstate/两终战预览/ArmyStrength均GREEN；两个strategic war-entry真实RED已交给最小生产修复，成功输入独立保留。事件23尚未选择，无新增游戏日或战斗动作。先复用现成core军事能力，WAR_CASH/PREWAR的历史OFF不作为授权条件，也不盲目启用没有 .3 producer的旧flags。
+
+新增并行工作：prompt/交接/八文档桶、军力、动员、战斗阶段、行军、补给、终战、军事财务、民粹战争后置、CB观测、原生AI目标/围城救援/盟友支援，及原县派遣与悔罪工作。Root独占SDK/game/pipe/Git，文件工作均外置投影。3845保存天、G2 5/8、NW 2/4与自然继承0保持；战争全面授权不增加milestone。
+
+现场计划：[MCP-WAR-AUTHORIZED-PLAN.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-native-readiness/MCP-WAR-AUTHORIZED-PLAN.json)；实际军事实读：[result.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-native-readiness/actual-paused-war-v34-01/result.json)。历史非战账本均须按本条最新授权解读。
+
+
 ## 12:22 v33 最小化冷恢复与真实只读能力
 
 实际记录 `2026-10-03T12:22:23+08:00`。四目标 fresh-cache `/W4 /WX` 构建 GREEN：522 次编译、519 个独立源、1002 个实际输入，115 flags＝63 ON / 52 OFF；source/native/compiled `6934feb12b7da876b1ec9b639cf32d024a6d4e38`，冻结 `Z:/g33`。DLL SHA `470af75b2113822b53ad7d9e82f8d1cff5918a174b1a53af9213ea26d8db8d51`，最终 manifest SHA `f5c69bf69b73df3cac710670fa1b069fcbd7be058d88d52217012d729bce8c06`；environment `8660ca2f27a20e0a02fa2bbcaa1b443d767b99f3c1acbc19f9c6cc452ce1801f`。开发源码另在 `Z:/g34`，已发布县 v34 `9be27840c8c6d86004b155374c783f7dbce1b9f8` 不当作当前 DLL 的来源。

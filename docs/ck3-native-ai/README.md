@@ -1,5 +1,8 @@
 # CK3 原生 AI 决策树索引
 
+**2026-10-03 当前战争授权：** 项目所有者明确命令取消任何非战约束并研究战斗。原 nonwar-only、战争研究停止、战争执行 OFF、仅由其他维护者施工、WAR_CASH/PREWAR 永久关闭等授权限制全部失效；允许战争原生研究、观测、实现、策略和实机执行，不再仅因战争请求确认。旧配置 OFF、失败和零动作均保留为当时事实，不能继续当作禁令。Robert29829 原 ordinary campaign、原生 AI 研究优先、exact-build、玩家限定、真实 readiness 和最小化无焦点继续执行。授权不等于全部能力已完成。
+
+
 实际接续 `2026-10-03T12:22:23+08:00`：v33新PID96112最小化冷恢复和多个宗教/事件只读叶已实读；派系完整割让与holy selected仍有真实故障，优先修复而非长期unknown。[实际字段与证据](g2-v33-paused-religion-and-event-observations-12003.md)。source/native6934与开发v34分别记账，无新增游戏日或完整宗教loop。
 
 

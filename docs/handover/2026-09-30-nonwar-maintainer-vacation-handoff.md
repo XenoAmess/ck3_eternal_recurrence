@@ -1,12 +1,14 @@
 # 2026-09-30 非战争维护者休假交接
 
+**2026-10-03 战争授权更新。** 项目所有者明确命令“取消任何的非战约束”，并要求研究战斗。原战争研究停止、nonwar-only、战争执行暂缓、战争只能交由其他维护者等现行限制全部撤销；战斗、军队、行军、围城、战争理由、宣战、防御战争、议和及相关原生 AI、只读 bridge/MCP、策略、实现和实机验收均可继续。不得仅因涉及战争再次要求授权。本文历史冻结配置的 OFF、旧尝试 RED、当时未提交动作与未实现能力保留原事实，不能继承为当前禁战规则，也不能把开放授权写成能力已经完成。继续保持罗贝尔 actor29829、episode `native-29829-2bc2d599f7f9` 的原 ordinary campaign 与自然继承线，原生 AI 研究优先、exact-build 绑定、ROOT 唯一实机/pipe/Git owner，以及最小化、无焦点、无桌面输入。当前续接身份和保存锚点以[最新接续记录](2026-10-03-g2-v33-resume.md)为准，本文较早 episode、PID 和存档仅供历史证据。
+
 > 本文按用户完成手上事项、停止新工作并交接的要求，在R0407实际终态后写成。root于2026-09-30 10:02:05 UTC确认wrapper已退出0。文档源码基线fb32a5ca52aa51324abb0583c551223d4b8fcfd5；实际source7eb/profileba885/native-origin-debe分别记账，最新现场沿实际证据/live source核实。
 
 ## 用户最新范围与接手规则
 
 - 仓库导航已通过exact master树定位：[状态投影 current-state.json](../project-state/current-state.json)、[G2要求JSON](../autonomous-agent-progress/g2-requirements-v1.json)、[G2要求与执行索引](../autonomous-agent-progress/g2-requirements-and-execution.md)。状态投影只指向live source，不能替代现场身份；本文不改这些文件。
 - 本次仅收口既有 **BA5 候选、3 paused query、婚配动作 OFF、日期推进 OFF**，随后交付文档；没有后续婚配动作、日期推进或新 cold 包。下文“下一步”留给接手者，不表示本执行者已启动。
-- 非战争仍以 LIFE → ECON → FAMILY 为常规优先级，JOINT 并行；本轮婚约 application 观测缺口曾升为 P0，已由 R0407 窄关闭。战争公式、路线与模型维护留给战争维护者，本执行者只消费 master 已交付接口。不扩宗教策略或全矩阵。
+- 历史非战争路径采用 LIFE → ECON → FAMILY 的常规优先级，JOINT 并行；本轮婚约 application 观测缺口曾升为 P0，已由 R0407 窄关闭。当前执行者可继续战争公式、路线、军队模型、相关观测与策略研究实现，复用 master 已交付接口；2026-10-02 宗教已全面开放，2026-10-03 非战限制已全部撤销，按当前真实决策依赖推进。
 - **用户已明确撤销检查别人机器 CK3 的要求**：不要询问或检查另一台战争机器。沿本机现有 owner、受管进程、冻结制品和正式实例队列操作；不得根据本文旧状态抢占本机实例。
 - CK3 默认最小化，只有必要加载/视觉验收/输入阶段短时显示；等待代码、CI或外部结果时最小化。当前身份、owner、RED、心跳与窗口状态以实际 live source 和终态回执为准，不由 PID 存活或旧报告推断。
 - 所有新源码/temp/cache/build/日志在实际可写非 C 盘，进程级 TEMP/TMP 与所需工具缓存一并绑定，不改 HOME/USERPROFILE。根 `Z:\ck3_mod_rewrite` 是历史脏现场，不能 reset、全量 stash/clean 或覆盖。
@@ -60,7 +62,7 @@ R0407 turn2正式checkpoint **h4025/raw53220000/actor29829**，turn3query随后�
 
 - #762仅去除生产消费者多defender的残留单军条件，模型未改。实际R0404–R0405消费已交付有界路线：短步move与contact-safe advance；没有完整EU数值投影、远处2630 siege接战或全面战争资格，`COMBAT_ENTRY_EU_ACTIVATION_ENABLED=false`没有擅自翻开。
 - **H3937 generic episodewide hold** 的scope/owner/certifier/date-release接口尚未定位，最新source仅按episode阻止同episode日期/move。任务总线已登记war-contact378、cash379、current-pair380及协调waiting382；没有改他们状态或永久hold，没有宣称owner已回复。screen release不等于date release，六项原始安全读口仍未实读0/6。
-- 这是实际主线日期阻点，不影响paused query或独立源码推进；正常短步旧cfb日期证据不自动解除新hold。先沿已授权任务总线取得原责任人的精确frame/接口与release证明，再由正式合同恢复目标，不重建战争模型或以unknown永久停掉全部非战争包。
+- 这是实际主线日期阻点，不影响paused query或独立源码推进；正常短步旧cfb日期证据不自动解除新hold。接手者沿当前真实生产入口核对该历史 hold 的精确 frame 与接口；若缺口仍阻止战争决策，继续补观测、修复并实测，再由正式合同恢复目标。战争模型研究和实现已开放，不以等待指定维护者或长期 unknown 停掉全部工作。
 
 - 启动前root安全fetch已核上游 **fb32a5ca52aa51324abb0583c551223d4b8fcfd5**：新actor army-role私有query default-OFF及R0368 helpers，四共享native diff没有68/69改，Python0变化，本次3 paused query不调用新warstep。一次影响记录 `D:\ck3_task_tmp\nonwar-ba5-freeze-upstream-impact-20260930.json`；首shellquote失败未写、随后apply_patch记录成功，这是metadata失败而非游戏RED。冻结制品没有为这项无关增量重建或热换。
 
@@ -94,7 +96,7 @@ R0407 turn2正式checkpoint **h4025/raw53220000/actor29829**，turn3query随后�
 2. 核本机owner/受管进程、窗口与官方freeze；**不查别人机器**。Robert继续最新合法配对，由official restore判profile/save/driver兼容，不把新master热换进旧live/DLL，也不固定下一轮编号。
 3. 复用已通过BA5私有current-betrothal观测，不重做registration修复。当前双方14<16/CanSend=false/not_ready与Guy pending，保持负结果不重发；只在正常游玩状态改变、原生完整CanSend与价值成立后沿既有formal trial/default-OFF合同提交，再证实际婚姻、下一turn及规定cold恢复。首继承人沿具体关系/提案权限，不借玩家本人权限。
 4. LIFE有有效focus/0点继续正常策略；新角色首帧或真实点数及时评估。ECON独立合法和平建设按原成本/储备/收益先做一项，战时未知预算只约束相关比较；JOINT资源只预留一次。自然事件/议会/派系仅沿正常机会采集。
-5. 对主线date/move先取得H3937原owner/certifier接口和精确release证明；战争问题留原维护者，非战争缺口独立修复。每次交付按真实观测→策略/合法价值→typed动作→独立后置→下一turn→规定checkpoint/cold恢复，exactmaster官方CI后立即清临时源码。
+5. 对仍可复现的主线 date/move 阻点先定位其生产接口和实际原因；当前执行者可修复战争缺口并取得独立后置，复用旧维护者材料，不再因人员分工或旧非战约束停止推进。每次交付按真实观测→策略/合法价值→typed动作→独立后置→下一turn→规定checkpoint/cold恢复，exactmaster官方CI后立即清临时源码。
 
 ## 实际证据入口
 

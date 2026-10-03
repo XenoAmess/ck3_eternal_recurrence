@@ -107,6 +107,8 @@ class FactionDemand1001ContextTests(unittest.TestCase):
         self.assertEqual(knowledge["status"], "available")
         self.assertTrue(knowledge["contract"]["selection_deferred"])
         self.assertIsNone(knowledge["contract"]["selected_native_option_index"])
+        self.assertTrue(knowledge["analysis"]["option_semantics"]["3"]["war_execution_authorized"])
+        self.assertIn("2026-10-03", knowledge["analysis"]["selection_boundary"])
         event, _ = _frames()
         decision = recommend_registered_vanilla_event_option_v1(event,
             played_character_id=29829, snapshot_option_count=4)
@@ -127,7 +129,11 @@ class FactionDemand1001ContextTests(unittest.TestCase):
         self.assertEqual(context["acceptance"]["player_direct_county_and_duchy_loss_ids"], [102, 201])
         self.assertEqual(context["acceptance"]["player_remaining_direct_county_title_ids"], [103])
         self.assertFalse(context["complete_acceptance_outcome_ready"])
-        self.assertFalse(context["action_execution_ready"] or context["war_execution_authorized"])
+        self.assertFalse(context["action_execution_ready"])
+        self.assertTrue(context["war_execution_authorized"])
+        self.assertTrue(context["refusal"]["war_execution_authorized"])
+        self.assertFalse(context["refusal"]["execution_ready"])
+        self.assertFalse(context["automatic_selection"])
         self.assertIsNone(context["selected_option_number"])
         self.assertEqual(context["binding"]["faction_snapshot_revision"], 65)
 
