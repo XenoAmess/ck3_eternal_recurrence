@@ -1,0 +1,124 @@
+{
+  "schema": "ck3.episode03.revision-delivery/v1",
+  "completed_at": "2026-10-03T08:58:58.328820+08:00",
+  "chapter_count": 9,
+  "cue_count": 120,
+  "duration_frames": 40055,
+  "fps": 30,
+  "raw_playback_seconds": 729.3,
+  "raw_end_hold_seconds": 6.2,
+  "still_seconds": 599.6666666666666,
+  "evidence": {
+    "final_artifact": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\revision-production-a03\\final-artifact.json",
+      "bytes": 1080,
+      "sha256": "67764B018D691C6E53AE9433AA3105FA22DAC5DEEA50C4D4D7F80656769DA37F"
+    },
+    "subject": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\revision-native-build-a03\\CK3-War-AI-Episode03-Siege-Revision01.mp4",
+      "bytes": 201367051,
+      "sha256": "BDC3483B29F6F11DBF7D045E5E0E204CA5071B33744853948798A03122E45A66"
+    },
+    "machine_audit": {
+      "path": "C:\\ck3-war-episode03-revision-20261003-a01\\revision-media-audit-a01\\media-report.json",
+      "bytes": 693713,
+      "sha256": "88488237984D61603F53F4EBD5016E6D2559B916FBBC8FF85B7A65696400C025"
+    },
+    "ai_encoded_frame_review": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\root-final-encoded-frame-review-a01.json",
+      "bytes": 21097,
+      "sha256": "BD1CFFB549C1E75034051464BD6463B458B18F1D6C085BC536D876BF0D1CE050"
+    },
+    "delivery": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\revision-onedrive-delivery-a01\\delivery-result.json",
+      "bytes": 1864,
+      "sha256": "71576799E3A2233316E97C47066CFC4F00EA0C39622CDC716B0CC94DFEC4F6B6"
+    },
+    "timeline": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\revision-production-a03\\timeline.json",
+      "bytes": 557284,
+      "sha256": "48EE1A17BD49630EB69CD3D8DB8F0D54D14893DECD58E03954EF455862820870"
+    },
+    "input_freeze": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\revision-production-a03\\input-freeze.json",
+      "bytes": 6798,
+      "sha256": "107DE355E5CC76063BBBA83BEBDA0FBFD76401E1077609F34FCEC58A4B804B78"
+    },
+    "root_source_advance": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\root-source-freeze-a03.json",
+      "bytes": 5373,
+      "sha256": "FB5175D95CB651CFE087621417E6A9B19620CC941C6C2E9D8BC6191C2A8C8F1D"
+    },
+    "final_binding_review": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\final-bindings-independent-a01-h3937\\report.md",
+      "bytes": 3675,
+      "sha256": "17117ED28CF958CA7863FB06B212B861A9306163AC2DBAA95F41DE35E6A10BC9"
+    },
+    "editorial_review": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\editorial\\final-editorial-a06-readonly-a01\\report.md",
+      "bytes": 3666,
+      "sha256": "A3A4DFCE7DF61782C222E4D84486653A5A5EC01F42B62D406B35EB70D6219A45"
+    },
+    "subtitle_punctuation_review": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\visual-plan\\subtitle-punctuation-refinement-a01\\report.json",
+      "bytes": 50325,
+      "sha256": "2993245187781078E91E4ADF3A8F61A5CA276F217105CC8A57CF3EC0CA57137D"
+    },
+    "integer_source_pts_fixture": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\visual-plan\\integer-source-pts-candidate-a04\\fixture-report.json",
+      "bytes": 27061,
+      "sha256": "93DAB3E5994B1746B0082D9644DC4E9C3AA3DDA24D47CD6685EEBFFC52AB0E9A"
+    },
+    "independent_integer_pts_review": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\visual-plan\\integer-source-pts-independent-a01-h3937\\report.md",
+      "bytes": 2859,
+      "sha256": "BC6DDE01C7DF6EC5083685F41500F67AC1EB5EB104C860C95C34B1555D2543F6"
+    },
+    "environment": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\revision-production-a03\\sources\\environment.json",
+      "bytes": 10467,
+      "sha256": "A0816DD4D02FC26E3C52F4D4761ECB52CB04D6525040C2ACFEF897124FCD1369"
+    },
+    "source_fixes_mainline": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\revision-validated-source-fixes-mainline-a03\\pushed-package.json",
+      "bytes": 1439,
+      "sha256": "80E71B70C43AE2CDDC7B303D7CC24390F3A8514F31A302E44FFB4577A0E720F9"
+    },
+    "producer_handoff": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\production-execution-revision-a03\\producer-handoff.json",
+      "bytes": 9193,
+      "sha256": "B48E16B61A8E31C51703352EB9EEBD025C2D16DB6BCCE77D9DD602FAD6634E6E"
+    },
+    "source_fixes_exact_ci": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\newresearch-integration\\revision-source-fixes-ci-attempt-a03\\official-exactsha-final-receipt.json",
+      "bytes": 24372,
+      "sha256": "0BF6030073C47942755286C8C561B78D59731AA144CC8BE7641B41CAB45D28BF"
+    },
+    "independent_encoded_frame_review_json": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\independent-final-encoded-semantic-review-a01\\final-encoded-semantic-review-a01.json",
+      "bytes": 257304,
+      "sha256": "F274530953781D2FAA928B04F5972B0F24FFA95CA02411DF13ADCA37245D56CF"
+    },
+    "independent_encoded_frame_review_markdown": {
+      "path": "D:\\ck3-war-episode03-revision-20261003-a01\\independent-final-encoded-semantic-review-a01\\final-encoded-semantic-review-a01.md",
+      "bytes": 5149,
+      "sha256": "6B9216E2BFFB0FB96754F63B1A048EFFC2D5F91BC334B1494CB0BDFB368FD8C1"
+    },
+    "native_audit_performance_diagnosis": {
+      "path": "C:\\ck3-war-episode03-revision-20261003-a01\\revision-media-audit-execution-a01\\native-finalization-performance-a01.json",
+      "bytes": 2334,
+      "sha256": "42A77FC93A6A9CE21266BE929AA688B03E1117073C024A991455E8AE27438000"
+    }
+  },
+  "machine_condition_status": "PASS",
+  "ai_review": "PASS_PENDING_HUMAN_REVIEW",
+  "onedrive_status": "CLIENT_METADATA_IN_SYNC_REMOTE_UNVERIFIED",
+  "human_signoff": "not-provided",
+  "source_package_commit": "b18161f6e1b01acf804d6b9274e859568bccffdc",
+  "readability_limits": [
+    "The original assault preview tooltip extends beyond the left panel in cue 083 and E3A06-015: 13.6/13.2 is visible, while the complete native loss text 168/164 cannot be read there. Those source-verified values remain clear on the summary card and subtitles; this review does not approve full tooltip readability.",
+    "Some retained original numeric screenshots are lower resolution than the new 1080p UI captures. Static explanation and explicitly paused demonstration spans remain in the revised film."
+  ],
+  "all_process_assets_retained": true,
+  "robert_g2_credit_change": 0
+}
