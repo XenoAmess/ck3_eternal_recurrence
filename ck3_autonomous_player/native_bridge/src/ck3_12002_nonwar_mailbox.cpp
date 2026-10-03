@@ -95,6 +95,7 @@ void RegisterNonwarMailboxExecutorsV1(
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
   environment.permitted_executor_religion12002 = executors.religion;
   environment.permitted_executor_holy_order_loan12003 = executors.holy_order_loan;
+  environment.permitted_executor_head_of_faith_gold12003 = executors.head_of_faith_gold;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
   environment.permitted_executor_triquinquagintary = executors.prisoner_collection;

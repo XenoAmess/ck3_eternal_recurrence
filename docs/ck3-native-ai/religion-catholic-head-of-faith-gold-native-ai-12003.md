@@ -1,8 +1,8 @@
 # Catholic clergy financial requests, CK3 1.20.0.3
 
-Readiness: **research / exact stock tree and specific native construction inputs closed**. Robert `29829` is the only test entry; Catholic is ROOT's current baseline. This topic has made **no game query, interaction, letter acknowledgement, resource transfer, SDK build or shared source/Git edit**. It does not establish Robert's current shown/CanSend/quote/acceptance. Religion is fully authorized; the remaining dependency is the concrete readonly leaf described below.
+Readiness: **static-ready / exact stock tree, native reader, mailbox, production serializer and registered MCP route implemented**. Robert `29829` is the only test entry; Catholic is ROOT's current baseline. The external implementation has existing GREEN native fixture, mailbox object compilation and registered-service fixture evidence, all without a real CK3 query. **v30 actual paused capture is pending ROOT**; this topic is not a production-live primitive or loop. It has performed no interaction, letter acknowledgement, resource transfer, SDK deployment or shared source/Git edit. Synthetic fixture values do not establish Robert's current shown/CanSend/quote/acceptance. Religion is fully authorized.
 
-Exact target is Steam `1.20.0.3`, build `25652598`, EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. Native/public source input is immutable `f30579bf6405e183192c96ea6b9bc35dddd11eec`, at `artifacts/g2-maintainer-2026-10-02/resume-12003/production-source-f30579bf`. The existing exact EXE freeze is reused; this task does not rehash it. External packet is `artifacts/g2-maintainer-2026-10-02/resume-12003/religion-head-of-faith-gold-12003/`.
+Exact target is Steam `1.20.0.3`, build `25652598`, EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. Research and the existing fixture inputs use immutable `f30579bf6405e183192c96ea6b9bc35dddd11eec`, at `artifacts/g2-maintainer-2026-10-02/resume-12003/production-source-f30579bf`. The delivered implementation is file-only rebased onto immutable `d1b5b4c5583fa428d9226d4ebe4431e0c8db3579`, at `artifacts/g2-maintainer-2026-10-02/resume-12003/production-source-d1b5b4c5`. The existing exact EXE freeze is reused; this task does not rehash it. External packet is `artifacts/g2-maintainer-2026-10-02/resume-12003/religion-head-of-faith-gold-12003/`.
 
 ## Primary route: Ask Head of Faith for Gold
 
@@ -55,15 +55,17 @@ flowchart TD
     ER --> QS[Clone named scopes, use effective cleric as current root]
     QS --> Q[Native hof_ask_for_gold_request_value]
     OP --> F[Stock-qualified on-accept piety250, no hook selected]
-    SH -.-> ACT[unknown: current Robert paused leaf artifact]
-    CS -.-> ACT
-    CO -.-> ACT
-    AC -.-> ACT
-    Q -.-> ACT
+    SH --> LEAF[Implemented readonly reader, mailbox and production serializer]
+    CS --> LEAF
+    CO --> LEAF
+    AC --> LEAF
+    Q --> LEAF
+    LEAF --> ROUTE[Registered MCP and NativeDriver route: synthetic fixture GREEN]
+    ROUTE -.-> ACT[unknown: v30 current Robert paused artifact pending ROOT]
     ACT -.-> OODA[unknown: future request, reply, independent balances and liabilities]
 ```
 
-Solid arrows describe source-confirmed construction/evaluation dependencies. Dashed arrows retain the unobserved current frame and future action boundary; they do not authorize stopping before the leaf is built.
+Solid arrows describe source-confirmed construction/evaluation dependencies and the implemented fixture-tested route. Dashed arrows retain the unobserved current frame and future action boundary. Implementation is complete as an external patch package; actual evaluation in the running exact CK3 process remains pending.
 
 ## Exact native inputs and existing machinery
 
@@ -98,9 +100,9 @@ Independent shown is now exact closed in `native/SHOWN-PROOF.json`: **menu visib
 
 The old generic `character_interaction_preview_v1` remains a private **1.19.0.6** core with a six-key allowlist excluding this request, without current `.3` wiring, shown, effective receiver or final proceeds. Editing its SHA/allowlist alone does not implement this leaf. The current specific machinery above supplies a smaller implementation seam.
 
-## Smallest production leaf to build next
+## Implemented smallest production leaf
 
-Implement one bounded `ck3_query_player_head_of_faith_gold_context_v1(expected_revision)` through the current religion opt-in, owner/main-thread mailbox, NativeDriver, existing service and MCP router. Actor is the current played character. Requested receiver is the current Faith head from the existing heads provider; native redirect determines the effective cleric. No arbitrary receiver list is required.
+The external package implements one bounded `ck3_query_player_head_of_faith_gold_context_v1(expected_revision)` through the existing `allow_private_player_religion_context_query` opt-in, owner/main-thread mailbox, NativeDriver and registered MCP service. Actor is the current played character. Requested receiver is the current Faith head from the existing heads provider; native redirect determines the effective cleric. No arbitrary receiver list, new flag or service framework was added.
 
 | Output group | Concrete construction and qualification |
 |---|---|
@@ -115,7 +117,25 @@ Implement one bounded `ck3_query_player_head_of_faith_gold_context_v1(expected_r
 
 Fields must retain their own sampled status. A definition/context/evaluator failure must not present early-return false/zero defaults as current legality, costs, acceptance or quote. The existing loan v25/v26 failures already established that lesson; do not rerun them. A completely observed negative ordinary request is useful: it identifies actual readiness, receiver, final Q and acceptance without sending anything.
 
-The concrete external construction plan and source pins are in `native/READONLY-LEAF-PATCH-PLAN.md` and `DELIVERY.json`. ROOT remains sole shared source/Git/SDK/game owner. Implement and focus-test the new registered MCP→service→NativeDriver→main owner→native reader→production serializer path once, then capture one real paused Robert artifact. Only that changes this topic to **production-live primitive**; no current source proof, synthetic callback, schema or transport ACK counts as live. Any subsequent action must independently verify reply, resource balances and liabilities.
+The original construction inputs remain in `native/READONLY-LEAF-PATCH-PLAN.md` and the research `DELIVERY.json`. Completed implementation, exact source pins, preserved attempt receipts and the rebased source projection are described below. ROOT remains sole shared source/Git/SDK/game owner. The next necessary verification is one real paused Robert capture through the published v30 route. Only a successfully sampled actual body changes this topic to **production-live primitive**; source proof, synthetic callback, schema or transport ACK do not count as live. Any subsequent action must independently verify reply, resource balances and liabilities.
+
+### Implementation and existing verification receipts
+
+All paths in this subsection are relative to the external topic packet. `IMPLEMENTATION/DELIVERY.json` freezes the completed 16-path package: six new files and ten modified existing files. Its combined patch SHA is `857aa70b5f61c0028fecf37b39e1a6b6d5671816cc21fe67915f9654b9316f49`. The new native context, mailbox and wire TUs use the existing religion compile opt-in; no action is exposed.
+
+| Existing verification | Result and honest scope | Receipt |
+|---|---|---|
+| Production native reader and serializer fixture | GREEN synthetic callbacks; real production code emits the complete command-result envelope | `IMPLEMENTATION/fixture/attempt-02/native-command-result.json`, SHA `2d3a39a57d8bbe660ad40a3853f8e07c5cbabbfb419b57b93c26abe6fbe5207a` |
+| New production mailbox source object | GREEN strict MSVC `/std:c++20 /W4 /WX` compilation; no game contact | `IMPLEMENTATION/GLUE-PROJECTION/mailbox-object-build/result.json`; object SHA `44dfe79860966f26d05fd3f3d563828a758749f001edd3e81bba74132d0d652e` |
+| Registered service → NativeDriver → private transport → existing protocol ingest/wait | GREEN, one tool call consumes the unchanged native envelope; no Python-invented wire or real CK3 query | `IMPLEMENTATION/REGISTERED-SERVICE-ATTEMPT02.json` |
+
+The native/registered fixtures distinguish requested head `501` from effective cleric `777`, retain actor `29829` and secondary recipient `888`, and evaluate Q with root/recipient `777` and named actor `29829`. Their synthetic quote is raw `12345000`, scale `100000`; shown is true while final CanSend is false. Declared costs are all zero while the ordinary acceptance consequence remains separately **stock-qualified** piety raw `25000000` (=250). This demonstrates routing, role/scope preservation and fee qualification; none of these values are Robert observations. No test-case total is inferred from these receipts.
+
+Historical attempts remain intact. Native `fixture/attempt-01` was harness RED for the fixture's optional unsigned-ID versus signed-ID comparison under `/WX`; the production reader/wire objects were already GREEN. `attempt-02` fixed the fixture comparison and reused those objects. `IMPLEMENTATION/REGISTERED-SERVICE-RESULT.json` retains the first route RED: the adapter expected null success reasons while the production serializer emits `"none"`. The adapter was corrected to accept the existing native success convention, and `REGISTERED-SERVICE-ATTEMPT02.json` is the GREEN route receipt. These are historical harness/adapter failures, not real-game capability failures, and were not rerun during rebase or this documentation update.
+
+The file-only d1 rebase is frozen by `IMPLEMENTATION/REBASE-d1b5b4c5/DELIVERY.json`, SHA `968d37319d903062b02e57ac68706b06891243579cca9237c2c14c1ffdcc1c15`. Its `rebased.patch` is 54,980 bytes, SHA `fd2817dd3e1a4aaca62e727cad4f718f1b0bc03264727f6cf064db10668adcd0`. The directory includes `sourcepaths.txt`, `SOURCE-BEFORE.json`, `PROJECTED-PINS.json`, `SOURCE-PINS.json`, `REBASE-METADATA.json` and `ROOT-PROJECTION`. All six added files retain their previously verified hashes. The CMake context adaptation retains v29 pilgrimage, confession and church-income TUs, inserts the existing HoF context/mailbox/wire TUs, and changes no compilation flag. This was patch adaptation only: no test, build, ABI research, SDK session, live query or canonical source/Git operation was performed.
+
+**v30 actual pending:** ROOT has received the rebased package for its aggregate application/publication and exact source freeze. A published source/DLL, successful tool registration or cold-query transport alone will not establish current shown, CanSend, acceptance or amount. The next artifact must contain independently sampled actual groups from paused Robert `29829`; no request, resource transfer or reply loop is included in this package.
 
 ## Narrow reverse route: Seek Indulgences
 
@@ -129,6 +149,6 @@ Here the interaction tooltip does not apply the effect: it triggers letter`relig
 
 ## Publication and continuing work
 
-The research packet freezes exact stock and native construction inputs, closes the two missing head getters, and names the next native/MCP implementation with actual entry points. It does not stop at missing observations: ROOT's next work item is the specific ordinary-request leaf, followed by its one paused actual capture. Church income/devotion owners remain independent parallel dependencies; this task adds no war operations or global framework.
+The research packet freezes exact stock and native construction inputs and closes the two missing head getters. The ordinary-request native/MCP leaf is now implemented as a complete external package with the existing three GREEN verification receipts. ROOT's next work item is v30 integration and its one paused actual capture. Church income/devotion owners remain independent parallel dependencies; this task adds no war operations or global framework.
 
-External `REPORT-FIELDS.json` supplies the daily/weekly ledger owner with readiness, source/artifact paths, absent tests/live/actions, closed getter gap and remaining implementation/capture work. Git/publication pins belong to ROOT's aggregate commit; this subagent makes no Git change.
+External research `REPORT-FIELDS.json` retains the original source-only delivery facts; `IMPLEMENTATION/REPORT-FIELDS.json` and the new `IMPLEMENTATION/DOC-DELIVERY.json` supply the implementation/documentation increment for the daily/weekly ledger owner. Readiness is static-ready; production-live primitive, production-live loop and complete remain unclaimed. Git/publication pins belong to ROOT's aggregate commit; this subagent makes no Git change.

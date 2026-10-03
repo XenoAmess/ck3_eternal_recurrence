@@ -12450,6 +12450,10 @@ void RunConnectedSession(
               current_revision_allowed = true;
               revision_parsed = xar::ck3_12002::ParsePlayerHolyOrderLoanRevision12003(incoming.payload, expected_revision);
             } else
+            if (xar::ck3_12003::IsPlayerHeadOfFaithGoldPrivateStep12003(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::ck3_12003::ParsePlayerHeadOfFaithGoldRevision12003(incoming.payload, expected_revision);
+            } else
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
             if (xar::ck3_12002::IsPlayerRiteGovernancePrivateStep12002(step)) {

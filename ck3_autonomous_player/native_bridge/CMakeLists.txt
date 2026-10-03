@@ -821,7 +821,10 @@ if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_church_income_profile.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_holy_order_loan_context.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_holy_order_loan_mailbox.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_holy_order_loan_wire.cpp")
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_holy_order_loan_wire.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_hof_gold_context.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_hof_gold_mailbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_hof_gold_wire.cpp")
 endif()
 if(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES

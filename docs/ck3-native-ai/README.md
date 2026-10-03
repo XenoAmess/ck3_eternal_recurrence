@@ -15,9 +15,11 @@
 - [奉献等级、德性与罪性](religion-devotion-virtues-native-ai-12003.md)：累计等级进度与可花费虔诚分开，动态上限和当前 Rite 的德性判定已有具体原生读取入口。当前为 research，贫穷誓愿的静态收益不是罗贝尔实际合法性或收益。
 - [热忱与县改宗](religion-fervor-county-conversion-native-ai-12003.md)：已闭合任务最终月率与真实县目标的施工入口；完成百分比、Faith 热忱和同名县 modifier 分别处理。当前为 research，尚未切换宗教任务。
 
-[朝圣类型判定](religion-pilgrimage-native-inputs-12003.md)、忏悔最终决议条款和[教会当前／最高月收入](religion-church-income-readonly-leaf-12003.md)已进入同一宗教 MCP 的三个独立只读 sibling 实现。新原生叶与生产解码的必要验证已通过，当前最高为 static-ready；严格构建和罗贝尔当前暂停帧仍待验收。朝圣 CanPlan 不代表所选目的地的完整 CanStart／费用／旅行时间，最高月收入也不代表已取得收入改善。
+[朝圣类型判定](religion-pilgrimage-native-inputs-12003.md)、忏悔最终决议条款和[教会当前／最高月收入](religion-church-income-readonly-leaf-12003.md)已在同一宗教 MCP 的罗贝尔实际暂停帧验收：PID120436、raw date53234568、source/native/env d1b5b4c5。当前最高为 production-live primitive（只读）；CanPlan=true，忏悔 shown=false/can_take=false，教会当前／最高月收入分别为0.21165／0.70554金。朝圣 CanPlan 不代表所选目的地的完整 CanStart／费用／旅行时间，最高月收入也不代表已取得收入改善。证据：`artifacts/g2-maintainer-2026-10-02/resume-12003/actual-v29-religion-three-leaves-01/result.json`。
 
-[向信仰领袖请求资助](religion-catholic-head-of-faith-gold-native-ai-12003.md)已闭合新版原生领袖、实际收件人重定向、独立显示、最终发送与金额计算入口；普通请求的声明成本和接受后的250虔诚效果费用分别记账。当前为 research，专用读取叶正在下一包施工，没有请求或资金收益。
+[向信仰领袖请求资助](religion-catholic-head-of-faith-gold-native-ai-12003.md)已闭合新版原生领袖、实际收件人重定向、独立显示、最终发送与金额计算入口；普通请求的声明成本和接受后的250虔诚效果费用分别记账。专用只读查询实现和必要 native／mailbox／registered-service fixture 已通过，当前为 static-ready；下一包 v30 严格构建与当前罗贝尔实机读取尚待完成，没有请求或资金收益。
+
+[成年通知 coming_of_age.1002](ck3-1.20.0.3-coming-of-age1002.md)已从实际阻塞事件和新版原文闭合唯一 native0/API1 选项。最小注册处理器与一次完整生产路径 fixture 为 static-ready，等待当前通知消费。按钮只确认既有成长通知，不计教育特质、解除监护或 M2 材料收益。
 
 当前实际能力与计划回链[统一进度](../autonomous-agent-progress/README.md)。宗教全面授权不等于宗教全域完成；上述原生研究、静态实现、实机观测和完整动作闭环分别记账。
 

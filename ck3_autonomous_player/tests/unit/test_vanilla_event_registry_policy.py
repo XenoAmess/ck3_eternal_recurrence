@@ -2599,5 +2599,158 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
         self.assertEqual(after["played_character"]["stress_points"], 7)
 
 
+    def test_coming_age1002_actual_notice_uses_service_and_observed_advance(self) -> None:
+        from test_pending_character_interaction_context_v1_bridge import _FakeEndpoint, _semantic_snapshot
+        from xar_autoplayer.bridge.event_window_context_contract import normalize_current_event_window_context_v1
+        from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+        from xar_autoplayer.bridge.service import GameplayBridgeService
+        from xar_autoplayer.bridge.version_identity import CK3_12003
+
+        player, event_id, date_raw, native_revision = 29829, 22, 53234568, 152
+        # The only current natural root/educated_child/option projection. This
+        # local endpoint fixture does not claim new live or education material.
+        context = \
+        {'schema': 'current-event-window-context-v1',
+         'schema_version': 1,
+         'status': 'available',
+         'snapshot_revision': 152,
+         'date_raw': 53234568,
+         'current_event_instance_id': 22,
+         'window_match_count': 1,
+         'unavailable_reason': None,
+         'event_definition_key': 'coming_of_age.1002',
+         'calculated_event_id': 3831002,
+         'runtime_stats_ordinal': 6272,
+         'root_scope': {'status': 'available',
+                        'raw_type_index': 4,
+                        'type_key': 'character',
+                        'subtype': 0,
+                        'typed_identity': {'status': 'available',
+                                           'kind': 'character',
+                                           'character_id': 29829}},
+         'saved_scopes': [{'name': 'educated_child',
+                           'name_identifier': 28611,
+                           'scope': {'status': 'available',
+                                     'raw_type_index': 4,
+                                     'type_key': 'character',
+                                     'subtype': 0,
+                                     'typed_identity': {'status': 'available',
+                                                        'kind': 'character',
+                                                        'character_id': 38822}}}],
+         'options': [{'rendered_index': 0,
+                      'native_option_index': 0,
+                      'shown': True,
+                      'enabled': True,
+                      'fallback': False,
+                      'cancel': False,
+                      'resolved_name': '他们成长得很快。',
+                      'unavailable_reason': '',
+                      'effect_indicators': {'status': 'available',
+                                            'coverage': 'played-character-event-icon-indicators-1.20.0.3-v1',
+                                            'complete_effect_set': False,
+                                            'rows': []},
+                      'effect_preview': {'status': 'unavailable',
+                                         'reason': 'indicator_subset_has_no_completeness_signal'},
+                      'resource_deltas': {'status': 'unavailable'},
+                      'relationship_deltas': {'status': 'unavailable'}}],
+         'readiness': {'event_definition_identity_ready': True,
+                       'root_scope_ready': True,
+                       'saved_scopes_ready': True,
+                       'option_presentation_ready': True,
+                       'effect_indicators_ready': True,
+                       'effect_preview_ready': False,
+                       'semantic_decision_ready': False},
+         'provenance': {'root': 'module+0x5C6A520->+0x10',
+                        'idler_vtable_rva': '0x44BC408',
+                        'manager_offset': '+0x28',
+                        'backend_id': 'ck3-1.20.0.3-native-event-window-v1'}}
+        context = normalize_current_event_window_context_v1(
+            context, expected_event_instance_id=event_id, expected_date_raw=date_raw,
+            expected_snapshot_revision=native_revision,
+        )
+        self.assertEqual(len(context["saved_scopes"]), 1)
+        self.assertEqual(context["saved_scopes"][0]["name"], "educated_child")
+        self.assertEqual(context["saved_scopes"][0]["scope"]["typed_identity"]["character_id"], 38822)
+        self.assertEqual([row["native_option_index"] for row in context["options"]], [0])
+        self.assertFalse(context["readiness"]["effect_preview_ready"])
+        knowledge = query_vanilla_event_knowledge_v1("coming_of_age.1002", CK3_12003.game_version)
+        self.assertEqual(knowledge["status"], "available")
+        self.assertFalse(knowledge["analysis"]["new_live_evidence"])
+
+        endpoint = _FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(endpoint.pipe_name, endpoint=endpoint, command_timeout_seconds=0.1)
+        endpoint.publish({
+            "type": "hello", "protocol_version": 1, "bridge_version": "0.1.0",
+            "pid": 7878, "session_generation": 0,
+            "game_version": CK3_12003.game_version,
+            "expected_ck3_version": CK3_12003.game_version,
+            "executable_sha256": CK3_12003.executable_sha256,
+            "capabilities": ["game.state.snapshot", "game.command.select-event-option-N"],
+        })
+        before_wire = _semantic_snapshot(native_revision)
+        before_wire["state"].update({
+            "date_raw": date_raw,
+            "played_character": {"character_id": player, "alive": True, "stress_points": 7},
+            "active_event": {"instance_id": event_id, "option_count": 1},
+            "pending_character_interaction": None,
+        })
+        endpoint.publish(before_wire)
+        before = driver.take_snapshot()
+        history = [{
+            "command": QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP, "ok": True,
+            "result": {
+                "step": QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP, "accepted": True,
+                "status": "available", "snapshot_revision": native_revision,
+                "current_event_instance_id": event_id, "date_raw": date_raw,
+                "current_event_window_context": context,
+                "queried_snapshot_id": before["snapshot_id"], "queried_revision": before["revision"],
+                "queried_native_revision": native_revision,
+            },
+        }]
+        plan = choose_one_life_turn(history, snapshot=before,
+            action_steps={QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP, "select-event-option-1"})
+        self.assertEqual(plan["phase"], "active_event_registry_choice")
+        self.assertEqual(plan["selected_step"], "select-event-option-1")
+        decision = plan["event_decision"]
+        self.assertEqual(decision["failed_checks"], [])
+        self.assertEqual(decision["selected_native_option_index"], 0)
+        self.assertEqual(decision["selected_option_number"], 1)
+        self.assertEqual(decision["choice_effect_profile"]["selected_option_effects"], [])
+        self.assertEqual(decision["choice_effect_profile"]["common_after_effects"], [])
+        self.assertIsNone(decision["choice_effect_profile"]["observable_postcondition"])
+        self.assertIsNone(plan.get("event_material_postcondition"))
+
+        selected_requests = []
+        def answer(request):
+            if request.get("type") != "execute_step":
+                return
+            selected_requests.append(request)
+            self.assertEqual(request["step"], "select-event-option-1")
+            endpoint.publish({"type": "command_result", "protocol_version": 1,
+                              "request_id": request["request_id"], "ok": True,
+                              "result": {"accepted": True}})
+            after_wire = copy.deepcopy(before_wire)
+            after_wire["revision"] = native_revision + 1
+            after_wire["snapshot_id"] = f"native:{native_revision + 1}"
+            after_wire["state"]["active_event"] = None
+            endpoint.publish(after_wire)
+        endpoint.send_hook = answer
+        service = GameplayBridgeService(driver)
+        result = service.select_event_option(decision["selected_option_number"],
+            event_instance_id=event_id, expected_revision=before["revision"])
+        self.assertEqual(len(selected_requests), 1)
+        selection = result["event_selection"]
+        self.assertEqual(selection["selected_native_option_index"], 0)
+        self.assertTrue(selection["postcondition_verified"])
+        self.assertEqual(selection["old_event_instance_id"], event_id)
+        self.assertIsNone(selection["new_event_instance_id"])
+        after = service.snapshot()
+        self.assertTrue(after["paused"])
+        self.assertEqual(after["played_character"]["character_id"], player)
+        self.assertEqual(after["date_raw"], date_raw)
+        self.assertEqual(after["played_character"]["stress_points"], 7)
+
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1640,6 +1640,15 @@ def create_server(
                 expected_revision=expected_revision,
             )
 
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_head_of_faith_gold_context_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read native ordinary clergy-gold terms, acceptance and separate effect fee."""
+            return driver.query_player_head_of_faith_gold_context_private_v1(
+                expected_revision=expected_revision,
+            )
+
     if getattr(driver, "allow_private_player_religion_doctrines_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_religion_doctrines_v1(expected_revision: int) -> dict[str, object]:

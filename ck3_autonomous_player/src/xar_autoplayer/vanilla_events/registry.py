@@ -341,6 +341,7 @@ def query_vanilla_event_knowledge_v1(
         from .records_travel_completion1000_12003 import TRAVEL_COMPLETION1000_12003_RECORDS
         from .records_religion_rite_growth_12003 import RELIGION_RITE_GROWTH_12003_RECORDS
         from .records_feast_0801_12003 import FEAST_0801_12003_RECORDS
+        from .records_coming_age1002_12003 import COMING_AGE1002_12003_RECORDS
 
         notice = MARRIAGE_NOTICE_12003_RECORDS.get(event_definition_key)
         if notice is None:
@@ -363,6 +364,8 @@ def query_vanilla_event_knowledge_v1(
             notice = RELIGION_RITE_GROWTH_12003_RECORDS.get(event_definition_key)
         if notice is None:
             notice = FEAST_0801_12003_RECORDS.get(event_definition_key)
+        if notice is None:
+            notice = COMING_AGE1002_12003_RECORDS.get(event_definition_key)
         if notice is not None:
             return _knowledge_response(
                 status="available",
