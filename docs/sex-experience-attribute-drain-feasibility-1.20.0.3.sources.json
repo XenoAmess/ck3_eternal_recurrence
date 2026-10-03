@@ -1,0 +1,119 @@
+{
+  "date": "2026-10-04",
+  "evidence_level": "source-inspected; no new mod implementation or engine acceptance",
+  "scope": "Only explicitly executed sexual-activity events; character-variable experience counting confirmed by user on 2026-10-04.",
+  "game_version": "1.20.0.3",
+  "steam_build_id": "25652598",
+  "timestamp_utc": "2026-10-03T18:33:36.185435+00:00",
+  "sources": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\launcher\\launcher-settings.json",
+      "bytes": 1335,
+      "sha256": "9cd6ff96f8092f2d21e1491b37e8344aa287faf69850563128ca1b117244a214"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "bytes": 101039736,
+      "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_romance_effects.txt",
+      "bytes": 26323,
+      "sha256": "a4a88fa0f36e95e865dcdd077dcb64f5985db1b9a441fcca1795494abda66211"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_scheme_scripted_effects.txt",
+      "bytes": 424808,
+      "sha256": "57e30da751f6fd4c4513d6fec3e7aec008ffcf621ca2c79c3aa472197b4d3456"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\_on_actions.info",
+      "bytes": 5863,
+      "sha256": "2bfbbf903d55a2417c988caf1479ef0ff91719c55128ce6357bca3d2c8e9b25f"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\child_birth_on_actions.txt",
+      "bytes": 36996,
+      "sha256": "0fd4e08b9b4edb209ad491afec498b24e0258d88d8d4d506d074377517ef7ccf"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_memory_types\\_character_memories.info",
+      "bytes": 2787,
+      "sha256": "644f0d24a17f21ab1686e05a1753244a5bfbbc4686631f16914803fbdcf7c5cf"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_memory_types\\character_memories_1.txt",
+      "bytes": 104504,
+      "sha256": "68357d1404ac4078f78c9b3ae7084c5535cb737ce96f4fe4592ea0525d564267"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\traits\\_traits.info",
+      "bytes": 13221,
+      "sha256": "40bcad43995d91d35cda894151c0c098519835f2780cf2d4368ba84c06ff8c3b"
+    }
+  ],
+  "hook_searches": [
+    {
+      "argv": [
+        "rg",
+        "-n",
+        "\\bon_sex\\b",
+        "game/common/on_action"
+      ],
+      "cwd": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+      "exit_code": 1,
+      "match_lines": 0,
+      "interpretation": "No definition found in the inspected on_action sources; not an exhaustive proof of engine hook absence."
+    },
+    {
+      "argv": [
+        "rg",
+        "-n",
+        "\\bon_character_memory_created\\b",
+        "game/common/on_action"
+      ],
+      "cwd": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+      "exit_code": 1,
+      "match_lines": 0,
+      "interpretation": "No definition found in the inspected on_action sources; not an exhaustive proof of engine hook absence."
+    },
+    {
+      "argv": [
+        "rg",
+        "-n",
+        "had_sex_with_effect",
+        "game/events",
+        "game/common/scripted_effects"
+      ],
+      "cwd": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+      "exit_code": 0,
+      "match_lines": 257,
+      "interpretation": "Occurrences include definitions, comments and tooltip-only calls; this is not a count of actual sexual acts."
+    },
+    {
+      "argv": [
+        "rg",
+        "-n",
+        "had_sex_with_unknown_effect",
+        "game/events",
+        "game/common/scripted_effects"
+      ],
+      "cwd": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+      "exit_code": 0,
+      "match_lines": 14,
+      "interpretation": "Occurrences include definitions, comments and tooltip-only calls; this is not a count of actual sexual acts."
+    }
+  ],
+  "external_artifact": "D:/ck3-experience-drain-feasibility-20261004/inputs-and-hook-searches.json",
+  "web_primary_reference": {
+    "title": "Secrecy Private Information Reforged — author-maintained Workshop description",
+    "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3491370441",
+    "use": "Independent precedent for viewing sexual-activity statistics and overriding the same effects; not imported source, licensing authorization or validation of this proposed mod."
+  },
+  "pending": [
+    "Exact engine trait-XP storage clamp: source documents level thresholds 0..100, not an executed add_trait_xp clamp test.",
+    "Variable precision and engine numerical ceiling: not researched; do not claim unlimited count.",
+    "Base-skill floor, effective-skill modifiers and recipient saturation require an engine fixture.",
+    "Same-key scripted effect override precedence and event/tooltip non-duplication require an engine fixture."
+  ]
+}
