@@ -32,7 +32,7 @@ GUI 仍有一个已知文案陷阱：英文 `HOLY_ORDER_COOLTIP_PATRON` 实际�
 3. **费用**：`GetCostDescForPlayer` registration `CC7623..CC7655` → callback **`CC7330`**。它取得实际 played Character，再调用 **`26198E0(order, out80, actor)`**，随后用现成 cost description renderer `310E440`。`26198E0` 返回 out pointer，明确写满80 bytes，即十槽 int64 原生 resource cost；它不是旧决议 evaluate 的 void-return ABI。provider可直接读取这十槽，复用已有 resource槽映射及 Q100000，不解析费用文案。
 4. **独立支付能力**：最终 gate 在 `261A173..261A18E` 调上述 `26198E0`，再调用 **`310E710(cost80, actor, native_reason_sink)`**。该真实 caller给出 actor及reason参数；不重用签名不同的 decision CanAfford `310B3B0`，也不把 CanBeHired=false误解成余额不足。
 
-关键完整 spans：`2619C50..261A1C3`（1395B，SHA `aead2d84550189d1aeff30801a480822927fc07d320485a05d6001352743afa4`）；`26198E0..2619980`（160B，SHA `600271fa8a0f2b1d6b8630921d81c6f4b6c0eee121e9478082e18b508b6b8d10`）；其真实成本子函数 `2619980..2619C32`（690B，SHA `ef5e17e22ff4d6e046e38567f935354521d1f8faef15a1c9022bfc3668b2046b`）。最终 leaf 内仍有 `261BCC0`、`261C120` 等未命名子资格分支，本页保留为 unknown，**不会因此阻止调用已闭合的原生最终 bool／理由／费用**。
+关键完整 spans：`2619C50..261A1C3`（1395B，SHA `aead2d84550189d1aeff30801a480822927fc07d320485a05d6001352743afa4`）；`26198E0..2619980`（160B，SHA `600271fa8a0f2b1d6b8630921d81c6f4b6c0eee121e9478082e18b508b6b8d10`）；其真实成本子函数 `2619980..2619C32`（690B，SHA `ef5e17e22ff4d6e046e38567f935354521d1f8faef15a1c9022bfc3668b2046b`）。2026-10-03 的[战争雇佣资格增量](religion-holy-order-war-eligibility-12003.md)已闭合 `261BCC0`／`261BF10` 的普通雇主同 Faith 与绝罚检查，以及 `261C120`／`261BFB0` 的当前战争对侧成员和双向 Faith hostility loaded 阈值链。它没有 CB 白名单，也不只看 primary attacker；同 Faith 不要求同 Rite。其余未命名资格与原生 AI chooser 分支仍按各自证据边界保留，**不会阻止调用已闭合的原生最终 bool／理由／费用**。
 
 成本子函数实际重新求 GetPatron，并比较当前 **order+80 employer full Character ref**：patron正常hire和从他人召回分开选原生 multiplier；随后使用当前 actor、组织军团、文化匹配、realm大小输入及 loaded费用函数求值、取整，再写入 piety资源槽。原生 multiplier与当前 modifier决定真实数值，不能用“patron base multiplier0”推出所有召回免费。`26198E0` 还有 order title holder 本人费用零分支，须与 patron分支保留，不能合并。
 
@@ -83,7 +83,7 @@ flowchart TD
     Q --> C[310E710原生CanAfford]
     G --> R[已注册逐项只读条款MCP]
     C --> R
-    G -. 命名子资格与AIchooser unknown .-> AI[原生检查频率/评分/排序]
+    G -. AIchooser unknown .-> AI[原生检查频率/评分/排序]
     R --> V[Robert paused实际组织与军事条款production-live primitive]
     A --> D[复用创建/撤租definition与stock树]
     D --> B[军事barony / 修道county分流]
