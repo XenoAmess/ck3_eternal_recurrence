@@ -57,6 +57,34 @@ def _validate_send_diagnostics(row: Mapping[str, object], selected: bool) -> Non
     # replace the existing predictive answer (flags1,1) or native CanSend.
 
 
+_C88_FAILURE_DESCRIPTION_KEYS = (
+    "native_c88_failure_description_status",
+    "native_c88_failure_description_text",
+)
+
+
+def _validate_c88_failure_description(row: Mapping[str, object], selected: bool) -> None:
+    # The additive description is absent in frozen older FAMILY observations.
+    if not any(key in row for key in _C88_FAILURE_DESCRIPTION_KEYS):
+        return
+    if any(key not in row for key in _C88_FAILURE_DESCRIPTION_KEYS):
+        raise ValueError("family native C88 failure description is incomplete")
+    status, text = (row[key] for key in _C88_FAILURE_DESCRIPTION_KEYS)
+    if not selected:
+        if status is not None or text is not None:
+            raise ValueError("family unselected C88 failure description must remain unobserved")
+        return
+    if row.get("native_first_failed_send_stage") != "definition_c88":
+        if status != "not_applicable" or text is not None:
+            raise ValueError("family C88 failure description is bound to another native stage")
+    elif ((status == "observed" and isinstance(text, str))
+          or (status == "unavailable" and text is None)):
+        # Preserve native markup/context and legitimate empty output verbatim.
+        return
+    else:
+        raise ValueError("family sampled C88 failure description is malformed")
+
+
 def _id(value: object) -> bool:
     return type(value) is int and 0 < value < (1 << 32)
 
@@ -157,6 +185,7 @@ def normalize_family_obligations_private_v1(
                             or any(type(raw) is not int for raw in row["send_cost_raw"])):
                         raise ValueError("family alliance war native terms are malformed")
                     _validate_send_diagnostics(row, selected_context_available)
+                    _validate_c88_failure_description(row, selected_context_available)
     collection = value.get("current_native_allies")
     if enumerate_current_allies:
         if (not isinstance(collection, Mapping)

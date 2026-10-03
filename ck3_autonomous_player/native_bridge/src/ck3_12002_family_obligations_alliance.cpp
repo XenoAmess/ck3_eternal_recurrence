@@ -83,6 +83,56 @@ Side ReadSide(const Bindings &b, const void *war, std::int32_t id) noexcept {
   const bool defender = b.contains_participant(base + 0x80, id);
   return attacker ? Side::attacker : defender ? Side::defender : Side::absent;
 }
+void C88FailureDescription(const Bindings &b, void *definition, void *context,
+                           WarExposure &row) {
+  if (row.native_first_failed_send_stage != "definition_c88") return;
+  row.native_c88_failure_description_status = "unavailable";
+  if (!b.description_allocate || !b.description_deallocate ||
+      !b.description_construct || !b.describe_trigger || !b.description_format ||
+      !b.description_format_parameters || !b.description_destroy ||
+      !b.description_string_destroy) return;
+  struct alignas(8) NativeString {
+    std::array<std::byte, 0x20> bytes{};
+  } text;
+  Store<std::size_t>(text.bytes.data(), 0x18, 15);
+  struct TextCleanup {
+    const Bindings &bindings;
+    void *text;
+    ~TextCleanup() { bindings.description_string_destroy(text); }
+  } text_cleanup{b, text.bytes.data()};
+  void *const storage = b.description_allocate(kDescriptionSize);
+  if (storage == nullptr) return;
+  void *description = b.description_construct(storage);
+  struct DescriptionCleanup {
+    const Bindings &bindings;
+    void *&owner;
+    ~DescriptionCleanup() {
+      // Stock ally caller reloads this very owning slot after formatting.
+      if (owner != nullptr) {
+        bindings.description_destroy(owner);
+        bindings.description_deallocate(owner, kDescriptionSize);
+      }
+    }
+  } description_cleanup{b, description};
+  const auto compiled = static_cast<const std::byte *>(definition) + 0xC88;
+  auto *const scope = static_cast<std::byte *>(context) + 8;
+  (void)b.describe_trigger(compiled, scope, description);
+  Store<std::uint8_t>(description, 0xD0, 0);
+  // 02,02,00 are the stock ally caller's immutable parameters. The formatter
+  // prepares the D0=0 description internally; no extra prepare calls are made.
+  b.description_format(&description, b.description_format_parameters,
+                       text.bytes.data());
+  const auto size = Load<std::size_t>(text.bytes.data(), 0x10);
+  const auto capacity = Load<std::size_t>(text.bytes.data(), 0x18);
+  if (size > capacity) return;
+  const auto *value = capacity < 16
+      ? reinterpret_cast<const char *>(text.bytes.data())
+      : Load<const char *>(text.bytes.data(), 0);
+  if (size != 0 && value == nullptr) return;
+  if (size == 0) row.native_c88_failure_description_text.clear();
+  else row.native_c88_failure_description_text.assign(value, size);
+  row.native_c88_failure_description_status = "observed";
+}
 bool SendDiagnostics(const Bindings &b, void *definition, void *context,
                      WarExposure &row, std::string_view *reason) noexcept {
   void *const actor = ResolveCoreCharacter(b.core, row.caller_character_id);
@@ -143,6 +193,7 @@ bool SendDiagnostics(const Bindings &b, void *definition, void *context,
     // its remaining branch (e.g. nonzero future costs); never authorize send.
     row.native_first_failed_send_stage = "complete_can_send_other";
   }
+  C88FailureDescription(b, definition, context, row);
   return true;
 }
 bool Terms(const Bindings &b, void *definition, WarExposure &row,
@@ -325,6 +376,14 @@ Bindings BindImage(std::uintptr_t base, std::string_view sha) noexcept {
   b.pair_restriction = reinterpret_cast<PairRestriction>(base + kPairRestrictionRva);
   b.diplomatic_range = reinterpret_cast<DiplomaticRange>(base + kDiplomaticRangeRva);
   b.contains_participant = reinterpret_cast<ContainsParticipant>(base + kContainsParticipantRva);
+  b.description_allocate = reinterpret_cast<DescriptionAllocate>(base + kDescriptionAllocateRva);
+  b.description_deallocate = reinterpret_cast<DescriptionDeallocate>(base + kDescriptionDeallocateRva);
+  b.description_construct = reinterpret_cast<DescriptionConstruct>(base + kDescriptionConstructRva);
+  b.describe_trigger = reinterpret_cast<DescribeTrigger>(base + kDescribeTriggerRva);
+  b.description_format = reinterpret_cast<DescriptionFormat>(base + kDescriptionFormatRva);
+  b.description_format_parameters = reinterpret_cast<const void *>(base + kDescriptionFormatParametersRva);
+  b.description_destroy = reinterpret_cast<DescriptionDestroy>(base + kDescriptionDestroyRva);
+  b.description_string_destroy = reinterpret_cast<DescriptionDestroy>(base + kDescriptionStringDestroyRva);
   return b;
 }
 

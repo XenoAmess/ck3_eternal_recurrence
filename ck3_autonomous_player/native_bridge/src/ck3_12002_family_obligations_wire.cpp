@@ -77,6 +77,12 @@ void Wars(std::string &wire, const std::vector<family_obligations_alliance::WarE
       wire += ",\"native_send_already_considering_blocked\":"; Boolean(wire, r.native_send_already_considering_blocked);
       wire += ",\"native_send_definition_gate_results\":"; Booleans(wire, r.native_send_definition_gate_results);
       wire += ",\"native_first_failed_send_stage\":"; String(wire, r.native_first_failed_send_stage);
+      wire += ",\"native_c88_failure_description_status\":";
+      String(wire, r.native_c88_failure_description_status);
+      wire += ",\"native_c88_failure_description_text\":";
+      if (r.native_c88_failure_description_status == "observed")
+        String(wire, r.native_c88_failure_description_text);
+      else wire += "null";
     } else {
       wire += ",\"native_complete_can_send\":null,\"send_cost_raw\":null,"
           "\"recipient_acceptance_raw\":null,\"recipient_answer_status_raw\":null,\"native_auto_accept\":null,"
@@ -84,7 +90,8 @@ void Wars(std::string &wire, const std::vector<family_obligations_alliance::WarE
           "\"native_send_setup_passed\":null,\"native_send_availability_passed\":null,"
           "\"native_send_pair_restriction_blocked\":null,\"native_send_diplomatic_range_passed\":null,"
           "\"native_send_already_considering_blocked\":null,\"native_send_definition_gate_results\":null,"
-          "\"native_first_failed_send_stage\":null";
+          "\"native_first_failed_send_stage\":null,\"native_c88_failure_description_status\":null,"
+          "\"native_c88_failure_description_text\":null";
     }
     wire += '}';
   }

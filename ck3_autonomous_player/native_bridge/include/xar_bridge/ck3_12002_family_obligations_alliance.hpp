@@ -6,6 +6,7 @@
 
 #include <array>
 #include <cstdint>
+#include <string>
 #include <string_view>
 #include <vector>
 
@@ -26,6 +27,15 @@ inline constexpr std::uintptr_t kPairRestrictionRva = 0x2BF5E30;
 inline constexpr std::uintptr_t kDiplomaticRangeRva = 0x307D6E0;
 inline constexpr std::array<std::size_t, 7> kSendDefinitionGateOffsets{
     0xAE8, 0xC88, 0xE28, 0x1168, 0xFC8, 0xD58, 0xEF8};
+inline constexpr std::uintptr_t kDescriptionAllocateRva = 0x4223BB4;
+inline constexpr std::uintptr_t kDescriptionDeallocateRva = 0x4223F64;
+inline constexpr std::uintptr_t kDescriptionConstructRva = 0x37C66E0;
+inline constexpr std::uintptr_t kDescribeTriggerRva = 0x372E4F0;
+inline constexpr std::uintptr_t kDescriptionFormatRva = 0x375DCC0;
+inline constexpr std::uintptr_t kDescriptionFormatParametersRva = 0x4441B00;
+inline constexpr std::uintptr_t kDescriptionDestroyRva = 0x219FE20;
+inline constexpr std::uintptr_t kDescriptionStringDestroyRva = 0x856050;
+inline constexpr std::size_t kDescriptionSize = 0xD8;
 inline constexpr std::uintptr_t kWasCalledRva = 0x2497770;
 inline constexpr std::uintptr_t kContainsParticipantRva = 0x2494B60;
 inline constexpr std::size_t kCharacterFamilyOffset = 0x1A8;
@@ -53,6 +63,12 @@ using ContextAvailability = bool (*)(void *, void *);
 using SendPrecheck = bool (*)(void *, std::uint8_t, std::uint8_t, void *);
 using PairRestriction = bool (*)(void *, void *, void *, void *);
 using DiplomaticRange = bool (*)(void *, const void *);
+using DescriptionAllocate = void *(*)(std::size_t);
+using DescriptionDeallocate = void (*)(void *, std::size_t);
+using DescriptionConstruct = void *(*)(void *);
+using DescribeTrigger = bool (*)(const void *, void *, void *);
+using DescriptionFormat = void (*)(void **, const void *, void *);
+using DescriptionDestroy = void (*)(void *);
 using WasCalled = bool (*)(const void *, std::int32_t);
 using ContainsParticipant = bool (*)(const void *, std::int32_t);
 
@@ -85,6 +101,16 @@ struct Bindings {
   PairRestriction pair_restriction = nullptr;
   DiplomaticRange diplomatic_range = nullptr;
   ContainsParticipant contains_participant = nullptr;
+  // Optional reason output uses the same exact-build binding as the Boolean
+  // diagnostics. It adds no startup flag or sender authorization condition.
+  DescriptionAllocate description_allocate = nullptr;
+  DescriptionDeallocate description_deallocate = nullptr;
+  DescriptionConstruct description_construct = nullptr;
+  DescribeTrigger describe_trigger = nullptr;
+  DescriptionFormat description_format = nullptr;
+  const void *description_format_parameters = nullptr;
+  DescriptionDestroy description_destroy = nullptr;
+  DescriptionDestroy description_string_destroy = nullptr;
 };
 
 enum class Side : std::uint8_t { attacker, defender, absent };
@@ -123,6 +149,10 @@ struct WarExposure {
   // Observed definition trigger results: AE8,C88,E28,1168,FC8,D58,EF8.
   std::array<bool, 7> native_send_definition_gate_results{};
   std::string_view native_first_failed_send_stage = "none";
+  // This is the native description of the failed C88 condition group. Native
+  // markup/context is preserved; it is not a synthetic list of failed keys.
+  std::string_view native_c88_failure_description_status = "not_applicable";
+  std::string native_c88_failure_description_text;
 };
 
 struct Snapshot {
