@@ -45,3 +45,34 @@ The native diplomacy header, sender and `ck3_12002_diplomacy_test.cpp` hashes ma
 Existing NativeHeadlessGameplayDriver tests check exact old WarID disappearance for enforce and distinguish white-peace/surrender `submitted_pending` from applied. Registered MCP fixture actually calls enforce through a callback driver; it only lists the other two tools. These complementary fixtures are not one native-sender-to-SDK end-to-end run. No concrete production sender defect was found, so no fixture was repeated and no new component was created.
 
 Completed: confirmed reusable mechanical senders and legal100score victory scope; delivered once-submission and independent material-readback recipe. Why: preserve military delivery pace using established primitives. Readiness: native/static-ready actions, existing Robert options production-live primitive; Robert termination remains live-pending, with no victory/OODA credit. Test/artifact: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-settlement-typed-action/ROOT-DELIVERY.json` indexes source hashes, retained native/ABI evidence and child reports. RED: no new capability defect; current defender negotiated/surrender observation/policy gaps remain documented. Next: continue combat and later enforce an observed native legal100score, collecting actual postconditions. Commit/push: coordinator-owned adoption pending; this lane changes only isolated external artifacts.
+
+## 2026-10-04: current defender de-jure white-peace proposal
+
+The retained Root query at date53244648, public2/native493, actor29829, ordinary episode `native-29829-2bc2d599f7f9` observes War16777231 (`individual_county_de_jure_cb/index17`): primary defender Robert, opposing primary30097, player score+7. White-peace context construction, final native CanSend and availability are true; raw AI quote163736/Q100000=+1.63736, auto_acceptfalse. CB-specific terms and final recipient response are typed unavailable/null. War50331736 and129 still have unavailable white peace and victory; no result is inferred from those saved negative rows. The real three leaves were consumed once and pinned at `war-settlement-typed-action/next-paused-war-options-r25/actual-three-war-consumed-01/ROOT-DELIVERY.json`.
+
+### Native role/input tree reused before policy expansion
+
+The exact .3 reused reader and sender already resolve full W, paused/living current player, exactly one participant side and primary leadership. White peace reads loaded CB permission bit7, identifies the opposing primary through the actual physical player side, constructs special-index3 context, and runs `0x307C040` CanSend. Raw acceptance from `0x307C460` and observable auto-accept are proposal inputs. The current .3 reader does not publish a final recipient evaluator; its missing response is not an execution restriction. Submission independently rereads these real inputs, reconstructs the context and reruns native CanSend before the owned queue packet. No native ABI, sender, DTO, flag or protocol extension is required for the current defender proposal.
+
+```mermaid
+flowchart TD
+    S[Exact .3 paused actor/full W/actual side/primary role] --> P[Loaded CB permits white peace]
+    P --> C[Native special3 context/opposing primary]
+    C --> V[Native CanSend and raw AI quote]
+    V --> B[Same-frame options binding/current primary defender de-jure17]
+    B --> D[Root chooses one useful positive-quote proposal]
+    D --> N[Existing sender rereads current roles/context/native CanSend]
+    N --> A[Queue receipt: submission only]
+    A --> R[Independent paused actual war/status/title/resource readback]
+    R -->|Exact old W absent after known proposal| E[Observed white-peace end-state; retain actual outcome context]
+    R -->|W remains| U[Pending/rejected/unresolved as actually observed; continue military work]
+    V -. Final reply not projected .-> F[Unknown prediction quality; preserve response null]
+```
+
+### Minimal functional extension and honest quality boundary
+
+g54 `_white_peace_readiness` only dispatches two primary-attacker slices, so a legal current defender proposal is omitted from `action_steps`; named MCP and generic execute both reject it before reaching the native sender. This is missing functional coverage, not a remaining nonwar or religion authorization rule. Reading claim-only terms cannot change Robert's role and is unnecessary for this white-peace proposal. The source extension adds the actual current primary-defender de-jure17 branch, using existing same-frame options and positive observable native quote, while reusing the published `ck3_offer_white_peace(war_id, expected_revision)` sender. Unknown CB terms and recipient_response do not become gates. Original attacker behavior and native final predicate remain in force; the quote is never called an accepted answer.
+
+The selected counter-policy is deliberately a chosen current proposal, not a full final-reply predictor. It has not adopted the absent .3 final evaluator or previewed every CB effect. If repeated actual proposals demonstrate that prediction quality is insufficient, the construction entry is that exact .3 final evaluator projected through the existing options MCP; no generic gate or new protocol is introduced now. A still-active W after submission is a real game outcome to record, not proof that ACK meant peace. Current title-holder publication can independently observe target2128 after resolution, and snapshot gold/prestige/piety/campaign scope can measure material changes.
+
+Root-only action recipe: at its next actual pause refresh only War16777231 options, choose the proposal from current legal/positive data, send the existing named action at most once, independently observe exact old W absence or remaining status plus other wars50331736/129, target2128 holder/lieges, resources and any actual event/answer, then save a normal checkpoint once. Prepared call files are in `war-settlement-typed-action/white-peace-current-defender-g54/`. Before actual execution there is no peace/day/victory credit. Fixture readiness and exact source hashes are supplied by that package receipt; genuine native-memory fixtures and in-process registered MCP are not actual CK3 settlement.

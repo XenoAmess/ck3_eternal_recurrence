@@ -8557,7 +8557,7 @@ class NativeHeadlessGameplayDriver:
             if step not in capabilities["action_steps"]:
                 raise BridgeUnavailableError(
                     "native white_peace submission lacks fresh same-frame "
-                    "claim_cb decision readiness"
+                    "white-peace decision readiness"
                 )
             return self._execute_native_war_step(
                 step, expected_revision=expected_revision
@@ -18561,8 +18561,9 @@ class NativeHeadlessGameplayDriver:
                             "ai_acceptance", {}
                         ).get("raw"),
                     }
-                    if evidence.get("variant")
-                    == "de_jure_no_safe_route"
+                    if evidence.get("variant") in {
+                        "de_jure_no_safe_route", "defender_de_jure_white_peace"
+                    }
                     else {}
                 ),
                 "remaining_active_war": (
@@ -29327,16 +29328,90 @@ def _de_jure_no_safe_route_white_peace_readiness(
     }
 
 
+def _defender_de_jure_white_peace_readiness(
+    snapshot: dict[str, object], war_id: int
+) -> tuple[bool, str, dict[str, object]]:
+    """Allow a chosen native-legal defender de-jure white-peace proposal.
+
+    The native AI quote is a proposal input, not an observed recipient answer.
+    CB-specific terms and a projected final answer are not required to send.
+    """
+    if snapshot.get("paused") is not True:
+        return False, "snapshot_not_paused", {}
+    war = _war_by_id(snapshot, war_id)
+    if not isinstance(war, dict):
+        return False, "war_not_active", {}
+    options = _termination_cache_row(
+        snapshot, "war_termination_options", war_id
+    )
+    if not isinstance(options, dict):
+        return False, "termination_options_missing", {}
+    diagnostics = snapshot.get("diagnostics")
+    connection_generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    expected_binding = {
+        "queried_snapshot_id": snapshot.get("snapshot_id"),
+        "queried_revision": snapshot.get("revision"),
+        "queried_native_revision": snapshot.get("native_revision"),
+        "queried_connection_generation": connection_generation,
+        "episode_run_id": snapshot.get("episode_run_id"),
+    }
+    if any(options.get(key) != expected for key, expected in expected_binding.items()):
+        return False, "termination_evidence_not_same_frame", {}
+    casus_belli = options.get("active_casus_belli_identity")
+    rows = options.get("options")
+    white_peace = rows.get("white_peace") if isinstance(rows, dict) else None
+    acceptance = white_peace.get("ai_acceptance") if isinstance(white_peace, dict) else None
+    if not (
+        war.get("player_side") == "defender"
+        and war.get("player_is_primary_war_leader") is True
+        and options.get("player_side") == "defender"
+        and options.get("player_is_primary_war_leader") is True
+        and options.get("player_relative_war_score") == war.get("player_relative_war_score")
+        and options.get("active_casus_belli_present") is True
+        and isinstance(casus_belli, dict)
+        and casus_belli.get("canonical_key") == "individual_county_de_jure_cb"
+        and casus_belli.get("database_index") == 17
+        and options.get("cb_allows_white_peace") is True
+        and isinstance(white_peace, dict)
+        and white_peace.get("outcome") == "white_peace"
+        and white_peace.get("hostage_variant") == "none"
+        and white_peace.get("context_constructed") is True
+        and white_peace.get("native_validator_passed") is True
+        and white_peace.get("available") is True
+        and white_peace.get("ai_acceptance_observable") is True
+        and isinstance(acceptance, dict)
+        and type(acceptance.get("raw")) is int
+        and acceptance["raw"] > 0
+    ):
+        return False, "defender_de_jure_white_peace_not_ready", {}
+    return True, "ready", {
+        "variant": "defender_de_jure_white_peace",
+        "war": war,
+        "options": options,
+        "white_peace": white_peace,
+    }
+
+
 def _white_peace_readiness(
     snapshot: dict[str, object], war_id: int
 ) -> tuple[bool, str, dict[str, object]]:
+    defender_de_jure = _defender_de_jure_white_peace_readiness(snapshot, war_id)
+    if defender_de_jure[0]:
+        return defender_de_jure
     de_jure = _de_jure_no_safe_route_white_peace_readiness(snapshot, war_id)
     if de_jure[0]:
         return de_jure
     claim = _claim_cb_white_peace_readiness(snapshot, war_id)
     if claim[0]:
         return claim
-    return False, f"de_jure={de_jure[1]}; claim={claim[1]}", {}
+    return False, (
+        f"defender_de_jure={defender_de_jure[1]}; "
+        f"de_jure={de_jure[1]}; claim={claim[1]}"
+    ), {}
 
 
 def _de_jure_emergency_surrender_readiness(
