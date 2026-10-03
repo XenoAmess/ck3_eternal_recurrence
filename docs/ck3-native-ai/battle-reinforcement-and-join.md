@@ -863,3 +863,11 @@ Owner 的新源码回放已保存两条 source case、三种 before/after 组合
 另一个“assigned helper 已在目标、empty path、native move target=null、ETA=now”source case仅为 **research**。Stationary serializer patch的源码回放可生成 positive DTO，但未修改的 Python consumer 报 `aligned route does not satisfy its independent native-slot and route-final target gates` **RED**；stationary/combined patches留作外置研究，均不采用，不归为上述实际 004/006 的原因，也不增加 readiness。原生 AI assignment-to-join、玩家接战、胜负与完整 OODA 均未在本增量完成。
 
 完整原生树、source pins、actual RED hashes及回放见 [owner TREE](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-reinforcement-query-fault-v47/native-model/TREE.md) 和 [owner ROOT-DELIVERY](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-reinforcement-query-fault-v47/native-model/ROOT-DELIVERY.json)。Root负责 combined build/cold-query 与最终 commit/push；本 lane 为零 tests/build/SDK/Git/shared writes/window operations/game days。
+
+## 2026-10-04：R25 增援指派查询的合法负结果
+
+[production-live primitive, negative] Robert 原普通战役在暂停 date raw `53241792` 查询玩家 CUnit `83886367`，正式 structured response 返回 `accepted=true`、`status=unavailable`、`unavailable_reason=subject_not_ai_managed`、`battle_reinforcement_assignment_ready=false`。public queried/source revision 均为 `2`，native snapshot/queried/source revision 均为 `5`；四处 wrapper 是同一次查询的镜像。九组 optional identity/payload 全为 null，metadata 与镜像一致，无 `typed query result is inconsistent`，证明此前失败样本残留 partial DTO 的可靠性修复已通过一次真实查询。
+
+这个负结果限定于该帧的**原生 AI 增援指派绑定**：`route=null` 表示本查询未发布路线，不能推断手动军队没有真实路线；现有 route getter/horizon/snapshot 仍可供 Root 继续移动与推进。[冻结缓存证据](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-reinforcement-query-fault-v47/actual-v49-007/CACHED-PARSED-007.json) 对应 raw 007 SHA-256 `a2a1ab2401d0ade004c17dad4ce1b627b1d41c20d1090b50041b2c462c660998`。Root 独立运行上下文为 R25 / PID `66464` / native 与 Python `g54/889821f5`，SDK session `38881` 正常关闭、退出码 `0`；响应自身 build/SHA 字段为 null。此次确认的是合法负观测与查询故障修复，完整增援指派或战斗循环能力状态不变。
+
+原004/006及history5559/5560 generic RED继续保留，旧native body与各次个体原因未补回；新007只证明这一合法负结果类的实际可靠性修复。新增游戏日/动作0；Root后续h5707记账与封包内runtime h5702上下文分别保留。

@@ -82,3 +82,11 @@ Python已有 `native_driver.py:11988` preview分支以`**route_preview`复制完
 两个修改adapter translation units也各首次实际 `/O2 /DNDEBUG /W4 /WX` compile **GREEN**。此前一次compile harness误匹配production build target、compiler尚未启动/无obj，HARNESS-RED artifact保留；修target后并行首编验证，不重nativeproducer/registered GREEN，也未编bridge完整TU或fullbuild。
 
 Root采用external7path源码和本篇后，在下一正常boundary统一冻结/strict DLL构建部署，再用当前真实军队→2640 preview实读两row。只有真实paused body观察到scale1有效值才升级为production-live primitive；后续实际换省/战后驻留outcome独立核验，不以ACK或fixture冒充。当前reader无需等待完整AI补给目标utility排序；具体字段已解锁可施工并待真实读取，而不是长期null schema终态。
+
+## 2026-10-04 v49 actual province supply preview
+
+The observer is **production-live primitive**. Root R25 / PID66464 / g54 source889821f5, paused date53241792, returned accepted/available for `preview-move-army-83886367-to-2640` at native:5/public2/native5/gen3. Public CUnit83886367 resolves to CArmy50331794; actual owner and commander are both29829. Current Province2618 has native limit **5330** and aggregate usage **3901**; target2640 has limit **3080** and usage **0**, both available at whole-soldier scale1.
+
+Target usage0 is a legal reading of current native supply-eligible units, excludes the future incoming subject, and does not establish absence of enemies or garrison. It does not predict post-arrival usage or food stock. This leaf has no ETA; timing remains with the existing route/horizon lane, while after-arrival stock/monthly change/attrition remain actual army-strength observations.
+
+Sole owner receipt: [actual-province-supply-preview-v49/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/actual-province-supply-preview-v49/ROOT-DELIVERY.json), raw leaf SHA-256 `f6e8a1d455491202657437702e05e1706331020dce1bbb120e7b11a9fb11cf55`. SDK38881 normally closed exit0/all GREEN; this documentation increment reuses only sealed fields, adds0 world days and claims no move, arrival, recapture or complete OODA. Earlier static/fixture evidence and its retained harness RED remain historical.
