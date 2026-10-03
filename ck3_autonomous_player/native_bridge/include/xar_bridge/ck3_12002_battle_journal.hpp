@@ -13,6 +13,12 @@ namespace xar::ck3_12002 {
 
 inline constexpr std::uintptr_t kBattleTerminalFinalizerRvaV1 = 0x258CD50;
 inline constexpr std::uintptr_t kBattleWarscoreWriterRvaV1 = 0x249A940;
+inline constexpr std::uintptr_t kBattleSideResultProjectorRvaV1 = 0x2667E90;
+inline constexpr std::uintptr_t kBattleCharacterResultAppendRvaV1 = 0x1423980;
+inline constexpr std::size_t kBattleSideResultProjectorPatchBytesV1 = 16;
+inline constexpr std::size_t kBattleCharacterResultAppendPatchBytesV1 = 14;
+inline constexpr std::size_t kBattleTerminalMaximumCharacterRowsV1 = 128;
+inline constexpr std::size_t kBattleTerminalMaximumCharacterKeyBytesV1 = 128;
 inline constexpr std::size_t kBattleTerminalFinalizerPatchBytesV1 = 16;
 inline constexpr std::size_t kBattleWarscoreWriterPatchBytesV1 = 16;
 inline constexpr std::size_t kBattleTerminalAbsoluteJumpBytesV1 = 14;
@@ -25,6 +31,18 @@ enum BattleTerminalJournalCaptureFailureV1 : std::uint32_t {
   battle_terminal_capture_failure_identity = 1U << 1,
   battle_terminal_capture_failure_bounds = 1U << 2,
   battle_terminal_capture_failure_reentry = 1U << 3,
+};
+
+struct BattleTerminalCharacterResultRowV1 {
+  std::int32_t native_row_index = -1;
+  std::int32_t left_character_id = -1;
+  std::int32_t right_character_id = -1;
+  std::array<char, kBattleTerminalMaximumCharacterKeyBytesV1> key{};
+  std::uint32_t key_size = 0;
+  bool key_observable = false;
+  std::int32_t type_raw = 0;
+  bool side0 = false;
+  bool target_right = false;
 };
 
 struct BattleTerminalJournalEventV1 {
@@ -44,6 +62,14 @@ struct BattleTerminalJournalEventV1 {
   bool side_loss_inputs_observable = false;
   std::array<game::BattleTerminalSideLossInputsSnapshotV1, 2>
       side_loss_inputs_in_native_order{};
+  std::array<bool, 2> side_final_result_observed{};
+  std::array<game::BattleTerminalSideFinalResultSnapshotV1, 2>
+      side_final_results_in_native_order{};
+  std::array<std::int32_t, 2> selected_commander_character_ids{-1, -1};
+  bool character_result_rows_observable = false;
+  std::uint32_t character_result_row_count = 0;
+  std::array<BattleTerminalCharacterResultRowV1,
+             kBattleTerminalMaximumCharacterRowsV1> character_result_rows{};
   std::int32_t attacker_primary_participant_character_id = -1;
   std::int32_t defender_primary_participant_character_id = -1;
   std::uint32_t attacker_public_cunit_count = 0;
@@ -132,6 +158,8 @@ struct BattleTerminalJournalInstallEnvironmentV1 {
   BattleBindings bindings{};
   std::uintptr_t terminal_target_override = 0;
   std::uintptr_t warscore_target_override = 0;
+  std::uintptr_t side_result_target_override = 0;
+  std::uintptr_t character_append_target_override = 0;
   void *memory_context = nullptr;
   BattleTerminalVirtualAllocV1 virtual_alloc_override = nullptr;
   BattleTerminalVirtualFreeV1 virtual_free_override = nullptr;
@@ -146,12 +174,20 @@ struct BattleTerminalJournalDetourStateV1 {
       battle_terminal_install_failure_none};
   std::uintptr_t terminal_target = 0;
   std::uintptr_t warscore_target = 0;
+  std::uintptr_t side_result_target = 0;
+  std::uintptr_t character_append_target = 0;
   void *terminal_trampoline = nullptr;
   void *warscore_trampoline = nullptr;
+  void *side_result_trampoline = nullptr;
+  void *character_append_trampoline = nullptr;
   std::array<std::uint8_t, kBattleTerminalFinalizerPatchBytesV1>
       terminal_original{};
   std::array<std::uint8_t, kBattleWarscoreWriterPatchBytesV1>
       warscore_original{};
+  std::array<std::uint8_t, kBattleSideResultProjectorPatchBytesV1>
+      side_result_original{};
+  std::array<std::uint8_t, kBattleCharacterResultAppendPatchBytesV1>
+      character_append_original{};
   void *memory_context = nullptr;
   BattleTerminalVirtualFreeV1 virtual_free = nullptr;
   BattleTerminalVirtualProtectV1 virtual_protect = nullptr;
@@ -185,6 +221,16 @@ bool CaptureBattleTerminalJournalEntryV1(
 
 using BattleTerminalOriginalV1 = void(__fastcall *)(void *, bool);
 using BattleWarscoreWriterOriginalV1 = void(__fastcall *)(void *, void *);
+using BattleSideResultOriginalV1 = void(__fastcall *)(void *, void *);
+using BattleCharacterResultAppendOriginalV1 = void *(__fastcall *)(void *, void *);
+// Fixture-only initialization of the same typed original callbacks; no wire command.
+void InitializeBattleTerminalJournalFixtureOriginalsV1(
+    BattleTerminalOriginalV1 terminal, BattleSideResultOriginalV1 side_result,
+    BattleCharacterResultAppendOriginalV1 append) noexcept;
+extern "C" void __fastcall
+XarBattleSideResultHook12002V1(void *output, void *side) noexcept;
+extern "C" void *__fastcall
+XarBattleCharacterResultAppendHook12002V1(void *container, void *source) noexcept;
 
 extern "C" void __fastcall
 XarBattleTerminalHook12002V1(void *combat,

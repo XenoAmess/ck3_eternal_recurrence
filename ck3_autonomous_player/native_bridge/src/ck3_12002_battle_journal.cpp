@@ -17,6 +17,13 @@ constexpr std::array<std::uint8_t, kBattleWarscoreWriterPatchBytesV1>
     kWarscorePrologue{0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x6C,
                       0x24, 0x18, 0x56, 0x57, 0x41, 0x54, 0x41, 0x56};
 
+constexpr std::array<std::uint8_t, kBattleSideResultProjectorPatchBytesV1>
+    kSideResultPrologue{0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x48, 0x83,
+                        0xEC, 0x30, 0x8B, 0x42, 0x74, 0x45, 0x33, 0xF6};
+constexpr std::array<std::uint8_t, kBattleCharacterResultAppendPatchBytesV1>
+    kCharacterAppendPrologue{0x40, 0x53, 0x41, 0x56, 0x41, 0x57, 0x48,
+                             0x83, 0xEC, 0x30, 0x48, 0x63, 0x41, 0x0C};
+
 constexpr std::size_t kComponentStorageSlotsOffset = 0x20;
 constexpr std::size_t kComponentStorageCapacityOffset = 0x2C;
 constexpr std::size_t kComponentStorageSlotSize = 0x10;
@@ -82,6 +89,8 @@ std::atomic<std::uint32_t> g_warscore_unattributed_failures{0};
 std::atomic<BattleTerminalJournalDetourStateV1 *> g_active_state{nullptr};
 std::atomic<BattleTerminalOriginalV1> g_original_terminal{nullptr};
 std::atomic<BattleWarscoreWriterOriginalV1> g_original_warscore{nullptr};
+std::atomic<BattleSideResultOriginalV1> g_original_side_result{nullptr};
+std::atomic<BattleCharacterResultAppendOriginalV1> g_original_character_append{nullptr};
 
 template <typename Value>
 Value LoadAt(const void *base, std::size_t offset) noexcept {
@@ -288,6 +297,40 @@ bool ReadTerminalSideLossInputs(
   return true;
 }
 
+bool ReadCharacterResultRows(void *result,
+                             BattleTerminalJournalEventV1 &event) noexcept {
+  const auto *const header = static_cast<const std::byte *>(result) + 0x188;
+  const auto *const rows = LoadAt<const std::byte *>(header, 0);
+  const auto capacity = LoadAt<std::int32_t>(header, 8);
+  const auto count = LoadAt<std::int32_t>(header, 0x0C);
+  if (capacity < 0 || count < 0 || count > capacity ||
+      count > static_cast<std::int32_t>(event.character_result_rows.size()) ||
+      (count > 0 && rows == nullptr)) return false;
+  for (std::int32_t index = 0; index < count; ++index) {
+    const auto *const row = rows + static_cast<std::size_t>(index) * 0x38;
+    auto &saved = event.character_result_rows[static_cast<std::size_t>(index)];
+    saved.native_row_index = index;
+    saved.left_character_id = LoadAt<std::int32_t>(row, 8);
+    saved.right_character_id = LoadAt<std::int32_t>(row, 0x0C);
+    const auto size = LoadAt<std::uint64_t>(row, 0x20);
+    const auto string_capacity = LoadAt<std::uint64_t>(row, 0x28);
+    const auto *const data = string_capacity < 16
+        ? reinterpret_cast<const char *>(row + 0x10)
+        : LoadAt<const char *>(row, 0x10);
+    saved.key_observable = size <= saved.key.size() && size <= string_capacity &&
+        (size == 0 || data != nullptr);
+    saved.key_size = saved.key_observable ? static_cast<std::uint32_t>(size) : 0;
+    if (saved.key_observable && size > 0)
+      std::memcpy(saved.key.data(), data, static_cast<std::size_t>(size));
+    saved.type_raw = LoadAt<std::int32_t>(row, 0x30);
+    saved.side0 = LoadAt<std::uint8_t>(row, 0x34) != 0;
+    saved.target_right = LoadAt<std::uint8_t>(row, 0x35) != 0;
+  }
+  event.character_result_row_count = static_cast<std::uint32_t>(count);
+  event.character_result_rows_observable = true;
+  return true;
+}
+
 bool CaptureTerminalUnsafe(void *combat, bool suppress_normal_result_envelopes,
                            BattleTerminalJournalEventV1 &event) noexcept {
   if (combat == nullptr ||
@@ -314,6 +357,8 @@ bool CaptureTerminalUnsafe(void *combat, bool suppress_normal_result_envelopes,
       LoadAt<std::int32_t>(attacker, kCombatSidePrimaryCharacterIdOffset);
   event.defender_primary_participant_character_id =
       LoadAt<std::int32_t>(defender, kCombatSidePrimaryCharacterIdOffset);
+  event.selected_commander_character_ids = {
+      LoadAt<std::int32_t>(attacker, 0x74), LoadAt<std::int32_t>(defender, 0x74)};
   if (!suppress_normal_result_envelopes) {
     const bool attacker_observed = ReadTerminalSideLossInputs(
         attacker, 0, event.side_loss_inputs_in_native_order[0]);
@@ -342,6 +387,10 @@ bool CaptureTerminalUnsafe(void *combat, bool suppress_normal_result_envelopes,
     if (result == nullptr) {
       event.capture_failure_flags |= battle_terminal_capture_failure_identity;
     } else {
+      if (!suppress_normal_result_envelopes &&
+          !ReadCharacterResultRows(result, event)) {
+        event.capture_failure_flags |= battle_terminal_capture_failure_bounds;
+      }
       event.wipe_raw_observable = true;
       event.wipe_raw =
           LoadAt<std::uint8_t>(result, kBattleResultWipeOffset) != 0;
@@ -369,6 +418,48 @@ bool CaptureTerminalUnsafe(void *combat, bool suppress_normal_result_envelopes,
     }
   }
   return event.capture_failure_flags == battle_terminal_capture_failure_none;
+}
+
+bool FindTerminalByResult(std::int32_t result_id,
+                          BattleTerminalJournalEventV1 &event) noexcept {
+  const auto latest = g_terminal_ring.latest_sequence.load(std::memory_order_acquire);
+  const auto oldest = latest <= kBattleTerminalJournalCapacityV1
+      ? 1 : latest - kBattleTerminalJournalCapacityV1 + 1;
+  for (auto sequence = latest; sequence >= oldest && sequence > 0; --sequence) {
+    BattleTerminalJournalEventV1 candidate{};
+    if (ReadPublished(g_terminal_ring, sequence, candidate) &&
+        candidate.battle_result_id == result_id) {
+      event = candidate;
+      return true;
+    }
+  }
+  return false;
+}
+
+void PublishObservedIncrement(BattleTerminalJournalEventV1 &event) noexcept {
+  if (g_terminal_ring.capture_in_progress.exchange(1, std::memory_order_acq_rel) != 0)
+    return;
+  Publish(g_terminal_ring, event);
+  g_terminal_ring.capture_in_progress.store(0, std::memory_order_release);
+}
+
+struct SideResultAssociationV1 {
+  std::int32_t result_id = -1;
+  std::int32_t side_index = -1;
+};
+bool ReadSideResultAssociation(void *output, void *side,
+                               SideResultAssociationV1 &association) noexcept {
+  if (!output || !side) return false;
+  const auto *const combat = LoadAt<const std::byte *>(side, kCombatSideBackPointerOffset);
+  if (!combat) return false;
+  association.side_index = side == combat + kCombatAttackerSideOffset ? 0
+      : side == combat + kCombatDefenderSideOffset ? 1 : -1;
+  if (association.side_index < 0) return false;
+  association.result_id = LoadAt<std::int32_t>(combat, kCombatResultIdOffset);
+  void *const result = ResolveStoredComponent(g_bindings.battle_result_storage_slot,
+      association.result_id, kBattleResultIdOffset);
+  return result && output == static_cast<std::byte *>(result) +
+      (association.side_index == 0 ? 0xE8 : 0x138);
 }
 
 struct WarscorePreObservationV1 {
@@ -595,6 +686,14 @@ void FreeTrampolines(BattleTerminalJournalDetourStateV1 &state) noexcept {
       (void)state.virtual_free(state.memory_context, state.terminal_trampoline,
                                0, MEM_RELEASE);
     }
+    if (state.side_result_trampoline != nullptr) {
+      (void)state.virtual_free(state.memory_context, state.side_result_trampoline,
+                               0, MEM_RELEASE);
+    }
+    if (state.character_append_trampoline != nullptr) {
+      (void)state.virtual_free(state.memory_context, state.character_append_trampoline,
+                               0, MEM_RELEASE);
+    }
     if (state.warscore_trampoline != nullptr) {
       (void)state.virtual_free(state.memory_context, state.warscore_trampoline,
                                0, MEM_RELEASE);
@@ -602,6 +701,8 @@ void FreeTrampolines(BattleTerminalJournalDetourStateV1 &state) noexcept {
   }
   state.terminal_trampoline = nullptr;
   state.warscore_trampoline = nullptr;
+  state.side_result_trampoline = nullptr;
+  state.character_append_trampoline = nullptr;
 }
 
 template <typename Record>
@@ -774,7 +875,22 @@ bool InstallBattleTerminalJournalV1(
       environment.warscore_target_override != 0
           ? environment.warscore_target_override
           : environment.module_base + kBattleWarscoreWriterRvaV1;
-  if (std::memcmp(reinterpret_cast<const void *>(state.terminal_target),
+  // Existing two-entry offline fixtures retain their original install surface.
+  const bool install_result_observers = !environment.offline_fixture ||
+      environment.side_result_target_override != 0 ||
+      environment.character_append_target_override != 0;
+  state.side_result_target = environment.side_result_target_override != 0
+      ? environment.side_result_target_override
+      : environment.module_base + kBattleSideResultProjectorRvaV1;
+  state.character_append_target = environment.character_append_target_override != 0
+      ? environment.character_append_target_override
+      : environment.module_base + kBattleCharacterResultAppendRvaV1;
+  if ((install_result_observers &&
+       (std::memcmp(reinterpret_cast<const void *>(state.side_result_target),
+                    kSideResultPrologue.data(), kSideResultPrologue.size()) != 0 ||
+        std::memcmp(reinterpret_cast<const void *>(state.character_append_target),
+                    kCharacterAppendPrologue.data(), kCharacterAppendPrologue.size()) != 0)) ||
+      std::memcmp(reinterpret_cast<const void *>(state.terminal_target),
                   kTerminalPrologue.data(), kTerminalPrologue.size()) != 0 ||
       std::memcmp(reinterpret_cast<const void *>(state.warscore_target),
                   kWarscorePrologue.data(), kWarscorePrologue.size()) != 0) {
@@ -821,6 +937,30 @@ bool InstallBattleTerminalJournalV1(
     g_active_state.store(nullptr, std::memory_order_release);
     return false;
   }
+  if (install_result_observers) {
+    state.side_result_trampoline = allocate(state.memory_context,
+        kBattleSideResultProjectorPatchBytesV1 + kBattleTerminalAbsoluteJumpBytesV1,
+        MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+    state.character_append_trampoline = allocate(state.memory_context,
+        kBattleCharacterResultAppendPatchBytesV1 + kBattleTerminalAbsoluteJumpBytesV1,
+        MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+    if (!state.side_result_trampoline || !state.character_append_trampoline ||
+        !FillTrampoline(state.side_result_trampoline, kSideResultPrologue,
+                        state.side_result_target + kBattleSideResultProjectorPatchBytesV1) ||
+        !FillTrampoline(state.character_append_trampoline, kCharacterAppendPrologue,
+                        state.character_append_target + kBattleCharacterResultAppendPatchBytesV1) ||
+        !MakeExecutable<kBattleSideResultProjectorPatchBytesV1>(state, state.side_result_trampoline) ||
+        !MakeExecutable<kBattleCharacterResultAppendPatchBytesV1>(state, state.character_append_trampoline)) {
+      AddInstallFailure(state, battle_terminal_install_failure_allocation);
+      FreeTrampolines(state);
+      g_active_state.store(nullptr, std::memory_order_release);
+      return false;
+    }
+  }
+  g_original_side_result.store(reinterpret_cast<BattleSideResultOriginalV1>(
+      state.side_result_trampoline), std::memory_order_release);
+  g_original_character_append.store(reinterpret_cast<BattleCharacterResultAppendOriginalV1>(
+      state.character_append_trampoline), std::memory_order_release);
   g_original_terminal.store(
       reinterpret_cast<BattleTerminalOriginalV1>(state.terminal_trampoline),
       std::memory_order_release);
@@ -843,7 +983,29 @@ bool InstallBattleTerminalJournalV1(
   const bool warscore_installed =
       terminal_installed && WritePatch(state, state.warscore_target,
                                        kWarscorePrologue, warscore_patch);
-  if (!terminal_installed || !warscore_installed) {
+  std::array<std::uint8_t, kBattleSideResultProjectorPatchBytesV1> side_result_patch{};
+  std::array<std::uint8_t, kBattleCharacterResultAppendPatchBytesV1> character_append_patch{};
+  side_result_patch.fill(0x90);
+  character_append_patch.fill(0x90);
+  WriteAbsoluteJump(side_result_patch.data(), reinterpret_cast<std::uintptr_t>(
+      &XarBattleSideResultHook12002V1));
+  WriteAbsoluteJump(character_append_patch.data(), reinterpret_cast<std::uintptr_t>(
+      &XarBattleCharacterResultAppendHook12002V1));
+  const bool side_result_installed = warscore_installed &&
+      (!install_result_observers || WritePatch(state, state.side_result_target,
+                                               kSideResultPrologue, side_result_patch));
+  const bool character_append_installed = side_result_installed &&
+      (!install_result_observers || WritePatch(state, state.character_append_target,
+                                               kCharacterAppendPrologue, character_append_patch));
+  if (!terminal_installed || !warscore_installed || !character_append_installed) {
+    if (install_result_observers && side_result_installed &&
+        !WritePatch(state, state.side_result_target, side_result_patch, kSideResultPrologue))
+      AddInstallFailure(state, battle_terminal_install_failure_rollback);
+    if (warscore_installed &&
+        !WritePatch(state, state.warscore_target, warscore_patch, kWarscorePrologue))
+      AddInstallFailure(state, battle_terminal_install_failure_rollback);
+    g_original_side_result.store(nullptr, std::memory_order_release);
+    g_original_character_append.store(nullptr, std::memory_order_release);
     if (terminal_installed && !WritePatch(state, state.terminal_target,
                                           terminal_patch, kTerminalPrologue)) {
       AddInstallFailure(state, battle_terminal_install_failure_rollback);
@@ -858,6 +1020,10 @@ bool InstallBattleTerminalJournalV1(
               kTerminalPrologue.size());
   std::memcpy(state.warscore_original.data(), kWarscorePrologue.data(),
               kWarscorePrologue.size());
+  if (install_result_observers) {
+    state.side_result_original = kSideResultPrologue;
+    state.character_append_original = kCharacterAppendPrologue;
+  }
   state.installed.store(1, std::memory_order_release);
   return true;
 }
@@ -866,6 +1032,67 @@ bool BattleTerminalJournalInstalledV1() noexcept {
   const auto *const state = g_active_state.load(std::memory_order_acquire);
   return state != nullptr &&
          state->installed.load(std::memory_order_acquire) != 0;
+}
+
+void InitializeBattleTerminalJournalFixtureOriginalsV1(
+    BattleTerminalOriginalV1 terminal, BattleSideResultOriginalV1 side_result,
+    BattleCharacterResultAppendOriginalV1 append) noexcept {
+  g_original_terminal.store(terminal, std::memory_order_release);
+  g_original_side_result.store(side_result, std::memory_order_release);
+  g_original_character_append.store(append, std::memory_order_release);
+}
+
+extern "C" void __fastcall
+XarBattleSideResultHook12002V1(void *output, void *side) noexcept {
+  SideResultAssociationV1 association{};
+  const bool associated = FaultBoundary([&]() noexcept {
+    return ReadSideResultAssociation(output, side, association);
+  });
+  const auto original = g_original_side_result.load(std::memory_order_acquire);
+  if (!original) return;
+  original(output, side);
+  if (!associated) return;
+  BattleTerminalJournalEventV1 event{};
+  if (!FindTerminalByResult(association.result_id, event) ||
+      event.suppress_normal_result_envelopes) return;
+  const bool captured = FaultBoundary([&]() noexcept {
+    const auto index = static_cast<std::size_t>(association.side_index);
+    auto &saved = event.side_final_results_in_native_order[index];
+    saved.side_index = association.side_index;
+    saved.selected_commander_character_id = LoadAt<std::int32_t>(output, 8);
+    saved.baseline_raw_q100000 = LoadAt<std::int64_t>(output, 0x10);
+    saved.survivors_raw_q100000 = LoadAt<std::int64_t>(output, 0x18);
+    event.side_final_result_observed[index] = true;
+    return true;
+  });
+  if (!captured) event.capture_failure_flags |= battle_terminal_capture_failure_memory;
+  PublishObservedIncrement(event);
+}
+
+extern "C" void *__fastcall
+XarBattleCharacterResultAppendHook12002V1(void *container, void *source) noexcept {
+  void *result = nullptr;
+  std::int32_t result_id = -1;
+  const bool associated = FaultBoundary([&]() noexcept {
+    if (!container) return false;
+    result = static_cast<std::byte *>(container) - 0x188;
+    result_id = LoadAt<std::int32_t>(result, kBattleResultIdOffset);
+    return ResolveStoredComponent(g_bindings.battle_result_storage_slot,
+        result_id, kBattleResultIdOffset) == result;
+  });
+  const auto original = g_original_character_append.load(std::memory_order_acquire);
+  if (!original) return nullptr;
+  void *const returned = original(container, source);
+  if (!associated) return returned;
+  BattleTerminalJournalEventV1 event{};
+  if (!FindTerminalByResult(result_id, event) || event.suppress_normal_result_envelopes)
+    return returned;
+  const bool captured = FaultBoundary([&]() noexcept {
+    return ReadCharacterResultRows(result, event);
+  });
+  if (!captured) event.capture_failure_flags |= battle_terminal_capture_failure_memory;
+  PublishObservedIncrement(event);
+  return returned;
 }
 
 extern "C" void __fastcall

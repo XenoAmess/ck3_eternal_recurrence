@@ -747,6 +747,64 @@ std::string SerializeBattleTerminalTransitionV1(
   } else {
     output += "null";
   }
+  output += ",\"side_final_results_in_native_order\":";
+  if (prior.side_final_results_in_native_order) {
+    output.push_back('[');
+    bool first = true;
+    for (const auto &row : *prior.side_final_results_in_native_order) {
+      if (!first) output.push_back(','); first = false;
+      output += "{\"side_index\":";
+      if (!AppendNumber(output, row.side_index)) return {};
+      output += ",\"selected_commander_character_id\":";
+      if (!AppendNumber(output, row.selected_commander_character_id)) return {};
+      output += ",\"baseline_raw_q100000\":";
+      if (!AppendNumber(output, row.baseline_raw_q100000)) return {};
+      output += ",\"survivors_raw_q100000\":";
+      if (!AppendNumber(output, row.survivors_raw_q100000)) return {};
+      output.push_back('}');
+    }
+    output.push_back(']');
+  } else output += "null";
+  output += ",\"character_result_rows_in_native_order\":";
+  if (prior.character_result_rows_in_native_order) {
+    output.push_back('[');
+    bool first = true;
+    for (const auto &row : *prior.character_result_rows_in_native_order) {
+      if (!first) output.push_back(','); first = false;
+      output += "{\"native_row_index\":";
+      if (!AppendNumber(output, row.native_row_index)) return {};
+      output += ",\"left_character_id\":";
+      if (!AppendNumber(output, row.left_character_id)) return {};
+      output += ",\"right_character_id\":";
+      if (!AppendNumber(output, row.right_character_id)) return {};
+      output += ",\"key\":";
+      if (row.key) AppendJsonString(output, *row.key); else output += "null";
+      output += ",\"type_raw\":";
+      if (!AppendNumber(output, row.type_raw)) return {};
+      output += ",\"side0\":"; output += row.side0 ? "true" : "false";
+      output += ",\"target_right\":"; output += row.target_right ? "true" : "false";
+      output.push_back('}');
+    }
+    output.push_back(']');
+  } else output += "null";
+  output += ",\"character_custody_in_observed_order\":";
+  if (prior.character_custody_in_observed_order) {
+    output.push_back('[');
+    bool first = true;
+    for (const auto &row : *prior.character_custody_in_observed_order) {
+      if (!first) output.push_back(','); first = false;
+      output += "{\"character_id\":";
+      if (!AppendNumber(output, row.character_id)) return {};
+      output += ",\"status\":";
+      AppendJsonString(output, row.status == game::BattleTerminalCustodyStatusV1::observed
+          ? "observed" : row.status == game::BattleTerminalCustodyStatusV1::none
+          ? "none" : "unavailable");
+      output += ",\"actual_jailer_character_id\":";
+      if (!AppendOptionalNumber(output, row.actual_jailer_character_id)) return {};
+      output.push_back('}');
+    }
+    output.push_back(']');
+  } else output += "null";
   output += ",\"daily_guard_raw\":";
   if (!AppendOptionalNumber(output, prior.daily_guard_raw)) return {};
   output += ",\"province_id\":";

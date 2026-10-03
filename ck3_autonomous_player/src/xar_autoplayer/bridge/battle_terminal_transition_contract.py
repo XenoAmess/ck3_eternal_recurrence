@@ -64,7 +64,9 @@ _PRIOR_FIELDS: Final = {
     "battle_warscore",
 }
 _PRIOR_OPTIONAL_EXTENSION_FIELDS: Final = {
-    "hard_loss_inputs", "side_loss_inputs_in_native_order"
+    "hard_loss_inputs", "side_loss_inputs_in_native_order",
+    "side_final_results_in_native_order", "character_result_rows_in_native_order",
+    "character_custody_in_observed_order",
 }
 _SIDE_LOSS_FIELDS: Final = {
     "side_index",
@@ -709,6 +711,69 @@ def _normalize_prior(
                 raise ValueError("terminal side-loss inputs disagree")
             side_loss_inputs.append({"side_index": side_index, **quantities})
 
+    side_final_results = None
+    rows = prior.get("side_final_results_in_native_order")
+    if rows is not None:
+        if terminal_kind != "normal_result" or not isinstance(rows, list) or len(rows) != 2:
+            raise ValueError("terminal final-side results require two normal-result sides")
+        side_final_results = []
+        for index, value in enumerate(rows):
+            row = _exact_dict(value, "terminal final-side result", {
+                "side_index", "selected_commander_character_id",
+                "baseline_raw_q100000", "survivors_raw_q100000",
+            })
+            if _integer(row["side_index"], "final-side index", minimum=0, maximum=1) != index:
+                raise ValueError("terminal final-side order changed")
+            commander = _integer(row["selected_commander_character_id"],
+                "final-side commander", minimum=-1, maximum=2**31 - 1)
+            side_final_results.append({"side_index": index,
+                "selected_commander_character_id": commander,
+                **{key: _integer(row[key], f"final-side {key}", minimum=0, maximum=2**63 - 1)
+                   for key in ("baseline_raw_q100000", "survivors_raw_q100000")}})
+    character_rows = None
+    rows = prior.get("character_result_rows_in_native_order")
+    if rows is not None:
+        if terminal_kind != "normal_result" or not isinstance(rows, list):
+            raise ValueError("terminal character rows require a normal-result list")
+        character_rows = []
+        for index, value in enumerate(rows):
+            row = _exact_dict(value, "terminal character row", {
+                "native_row_index", "left_character_id", "right_character_id",
+                "key", "type_raw", "side0", "target_right",
+            })
+            if _integer(row["native_row_index"], "character row index", minimum=0, maximum=2**31 - 1) != index:
+                raise ValueError("terminal character row order changed")
+            if row["key"] is not None and not isinstance(row["key"], str):
+                raise ValueError("terminal character row key must be owned text")
+            character_rows.append({"native_row_index": index, "key": row["key"],
+                **{key: _integer(row[key], f"character row {key}", minimum=-1, maximum=2**31 - 1)
+                   for key in ("left_character_id", "right_character_id")},
+                "type_raw": _integer(row["type_raw"], "character row type", minimum=-(2**31), maximum=2**31 - 1),
+                "side0": _optional_boolean(row["side0"], "character row side0"),
+                "target_right": _optional_boolean(row["target_right"], "character row target_right")})
+            if character_rows[-1]["side0"] is None or character_rows[-1]["target_right"] is None:
+                raise ValueError("terminal character row bool is absent")
+    character_custody = None
+    rows = prior.get("character_custody_in_observed_order")
+    if rows is not None:
+        if terminal_kind != "normal_result" or not isinstance(rows, list):
+            raise ValueError("terminal custody requires a normal-result list")
+        character_custody = []
+        for value in rows:
+            row = _exact_dict(value, "terminal character custody", {
+                "character_id", "status", "actual_jailer_character_id",
+            })
+            character_id = _integer(row["character_id"], "custody character", minimum=1, maximum=2**31 - 1)
+            status = row["status"]
+            jailer = _optional_integer(row["actual_jailer_character_id"], "custody jailer", minimum=-1, maximum=2**31 - 1)
+            if (status not in {"observed", "none", "unavailable"}
+                or (status == "observed" and (jailer is None or jailer <= 0))
+                or (status == "none" and jailer != -1)
+                or (status == "unavailable" and jailer is not None)):
+                raise ValueError("terminal custody state disagrees")
+            character_custody.append({"character_id": character_id, "status": status,
+                                      "actual_jailer_character_id": jailer})
+
     observed_fields = (
         terminal_date_raw,
         suppress,
@@ -811,6 +876,13 @@ def _normalize_prior(
         normalized["hard_loss_inputs"] = hard_loss_inputs
     if "side_loss_inputs_in_native_order" in prior:
         normalized["side_loss_inputs_in_native_order"] = side_loss_inputs
+    for key, result in (
+        ("side_final_results_in_native_order", side_final_results),
+        ("character_result_rows_in_native_order", character_rows),
+        ("character_custody_in_observed_order", character_custody),
+    ):
+        if key in prior:
+            normalized[key] = result
     return normalized
 
 

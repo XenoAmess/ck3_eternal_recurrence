@@ -731,6 +731,50 @@ bool TerminalSample(const BattleBindings &b, const game::Snapshot &scope,
             loss.hard_loss_raw_q100000};
       }
     }
+    if (e.side_final_result_observed[0] && e.side_final_result_observed[1])
+      p.side_final_results_in_native_order = e.side_final_results_in_native_order;
+    if (e.character_result_rows_observable) {
+      p.character_result_rows_in_native_order.emplace();
+      for (std::uint32_t i = 0; i < e.character_result_row_count; ++i) {
+        const auto &row = e.character_result_rows[i];
+        std::optional<std::string> key;
+        if (row.key_observable) key.emplace(row.key.data(), row.key_size);
+        p.character_result_rows_in_native_order->push_back({
+            row.native_row_index, row.left_character_id, row.right_character_id,
+            std::move(key), row.type_raw,
+            row.side0, row.target_right});
+      }
+      std::vector<std::int32_t> ids;
+      const auto add_id = [&](std::int32_t id) {
+        if (id > 0 && std::find(ids.begin(), ids.end(), id) == ids.end()) ids.push_back(id);
+      };
+      add_id(e.attacker_primary_participant_character_id);
+      add_id(e.defender_primary_participant_character_id);
+      for (const auto id : e.selected_commander_character_ids) add_id(id);
+      for (const auto &row : *p.character_result_rows_in_native_order) {
+        add_id(row.left_character_id);
+        add_id(row.right_character_id);
+      }
+      p.character_custody_in_observed_order.emplace();
+      for (const auto id : ids) {
+        game::BattleTerminalCharacterCustodySnapshotV1 custody{};
+        custody.character_id = id;
+        void *const character = Resolve(b.character_storage_slot, id, 0x18);
+        if (character) {
+          void *const extension = At<void *>(character, 0x1B0);
+          void *const relation = extension ? At<void *>(extension, 0x288) : nullptr;
+          const auto jailer = relation ? At<std::int32_t>(relation, 0) : -1;
+          if (jailer == -1) {
+            custody.status = game::BattleTerminalCustodyStatusV1::none;
+            custody.actual_jailer_character_id = -1;
+          } else if (jailer > 0 && Resolve(b.character_storage_slot, jailer, 0x18)) {
+            custody.status = game::BattleTerminalCustodyStatusV1::observed;
+            custody.actual_jailer_character_id = jailer;
+          }
+        }
+        p.character_custody_in_observed_order->push_back(std::move(custody));
+      }
+    }
     p.daily_guard_raw = e.daily_guard_raw;
     p.province_id = e.province_id;
     p.battle_result_id = e.battle_result_id;

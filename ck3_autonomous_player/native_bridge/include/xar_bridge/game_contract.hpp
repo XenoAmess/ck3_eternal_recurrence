@@ -1878,6 +1878,36 @@ struct BattleTerminalSideLossInputsSnapshotV1 {
       default;
 };
 
+struct BattleTerminalSideFinalResultSnapshotV1 {
+  std::int32_t side_index = -1;
+  std::int32_t selected_commander_character_id = -1;
+  std::int64_t baseline_raw_q100000 = 0;
+  std::int64_t survivors_raw_q100000 = 0;
+  friend bool operator==(const BattleTerminalSideFinalResultSnapshotV1 &,
+                         const BattleTerminalSideFinalResultSnapshotV1 &) = default;
+};
+
+struct BattleTerminalCharacterResultRowSnapshotV1 {
+  std::int32_t native_row_index = -1;
+  std::int32_t left_character_id = -1;
+  std::int32_t right_character_id = -1;
+  std::optional<std::string> key;
+  std::int32_t type_raw = 0;
+  bool side0 = false;
+  bool target_right = false;
+  friend bool operator==(const BattleTerminalCharacterResultRowSnapshotV1 &,
+                         const BattleTerminalCharacterResultRowSnapshotV1 &) = default;
+};
+
+enum class BattleTerminalCustodyStatusV1 { observed, none, unavailable };
+struct BattleTerminalCharacterCustodySnapshotV1 {
+  std::int32_t character_id = -1;
+  BattleTerminalCustodyStatusV1 status = BattleTerminalCustodyStatusV1::unavailable;
+  std::optional<std::int32_t> actual_jailer_character_id;
+  friend bool operator==(const BattleTerminalCharacterCustodySnapshotV1 &,
+                         const BattleTerminalCharacterCustodySnapshotV1 &) = default;
+};
+
 struct BattleTerminalPriorSnapshotV1 {
   std::int32_t combat_id = -1;
   BattleTerminalKindV1 terminal_kind =
@@ -1891,6 +1921,12 @@ struct BattleTerminalPriorSnapshotV1 {
   std::optional<BattleTerminalHardLossInputsSnapshotV1> hard_loss_inputs;
   std::optional<std::array<BattleTerminalSideLossInputsSnapshotV1, 2>>
       side_loss_inputs_in_native_order;
+  std::optional<std::array<BattleTerminalSideFinalResultSnapshotV1, 2>>
+      side_final_results_in_native_order;
+  std::optional<std::vector<BattleTerminalCharacterResultRowSnapshotV1>>
+      character_result_rows_in_native_order;
+  std::optional<std::vector<BattleTerminalCharacterCustodySnapshotV1>>
+      character_custody_in_observed_order;
   std::optional<std::uint8_t> daily_guard_raw;
   std::optional<std::int32_t> province_id;
   std::optional<std::int32_t> battle_result_id;
