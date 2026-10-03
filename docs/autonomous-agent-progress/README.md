@@ -1,5 +1,15 @@
 # CK3 自动游玩智能体进度中心
 
+## 当前截点：4116日已保存，第56日查询RED（2026-10-04T05:07:15+08:00 实际补录）
+
+累计 **4116/36524、resume +963、10-03冻结 +777、10-04 +91**。helper60709请求64日，实际保存 **55日/1320h** 后closed/exit1；第56日horizon typed query报“application-main typed query failed or its snapshot changed”，该次0h/0日、未推进。最终正常锁为 **h5895/raw53243112**，同Robert原episode，保存字节与完整SHA见[最终字段](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/progress-current-six-v49-recapture64/lane-a/FINAL-FIELDS.json)。
+
+封存主军83886367在2626，moving向2640，剩四跳 [2627,2633,2634,2640]，无combat/retreat、未抵达。首都仍敌占70766，active enemySiege452984850/war16777683/playerfalse、garrison85、ETA53日，不能记我方围城或收复。末帧Robert存活、event/interaction均null；故障按实际查询处理，前55日正常保存不回退。SDK66198显式逐日skip-route-horizon/max64仍运行，未来日与结果信用0；三路horizon修复并行，不阻现有推进。原六入口d255及新两原生专题4c5e44e的发布与旧玩法历史保留，本段不重投影旧里程碑。
+
+
+实际55日ledger与第56失败：[sole cached delivery](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/recapture-v49/sealed-day-consumption/ROOT-DELIVERY.json)；本次采用与6前像SHA见[ROOT-DELIVERY](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/progress-current-six-v49-recapture64/ROOT-DELIVERY.json)。
+
+
 ## 最新短增量：玩家首战胜利、v49/R25 已实机部署
 
 真实编制 **2026-10-04T04:56:11.084525+08:00（Asia/Shanghai）**，固定截止正常关闭的 **SDK38881**；累计 **4061/36524 已保存日 / resume908 / Oct3正式冻结777 / Oct4新增36**，G2 **5/8**、NW **2/4**、自然继承 **0**。最新正常保存 **h5707 / raw53241792 / 92,162,450 B / SHA-256 `2f8446a5f45d0844c1621ab087c57a7d8e4ecde33ea0528d2896df1873f1175f`**。

@@ -1,5 +1,15 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 当前主线：55日持久续行，首都仍敌占（2026-10-04T05:07:15+08:00 实际补录）
+
+累计 **4116/36524、resume +963、10-04 +91**，10-03冻结+777；最后正常 **h5895/raw53243112**。64日预算实际保存55日/1320h后exit1，第56日horizon typed query失败或snapshot changed，0推进；保留该RED与已成功保存，不能把请求预算写成完成日数。最终封存字段由Root锁定，不追中间前缀或重核旧包。
+
+主军83886367在2626向2640行军，完整四跳 [2627,2633,2634,2640]，无combat/retreat、尚未到达；首都占领者70766，当前围城452984850属enemy/playerfalse，war16777683、驻军85、ETA53日。该状态不授我方围城、收复、解围或新战斗胜利。下一步通过现有显式逐日skip-route-horizon推进，并消费实际路线、目标归属和独立保存；已发生的horizon故障由Root三路最小修复并行处理，不增加life前置。运行中的SDK66198/max64无未来信用。首战、合军、v49 live及其他历史沿原正文保留，新增专题发布不代替新的游戏结果。
+
+
+实际55日ledger与第56失败：[sole cached delivery](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/recapture-v49/sealed-day-consumption/ROOT-DELIVERY.json)；本次采用与6前像SHA见[ROOT-DELIVERY](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/progress-current-six-v49-recapture64/ROOT-DELIVERY.json)。
+
+
 ## 最新短增量：玩家首战胜利、v49/R25 已实机部署
 
 真实编制 **2026-10-04T04:56:11.084525+08:00（Asia/Shanghai）**，固定截止正常关闭的 **SDK38881**；累计 **4061/36524 已保存日 / resume908 / Oct3正式冻结777 / Oct4新增36**，G2 **5/8**、NW **2/4**、自然继承 **0**。最新正常保存 **h5707 / raw53241792 / 92,162,450 B / SHA-256 `2f8446a5f45d0844c1621ab087c57a7d8e4ecde33ea0528d2896df1873f1175f`**。

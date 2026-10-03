@@ -1,5 +1,15 @@
 # 一代人自治：阻塞与能力债账本
 
+## 当前增量：55日已保存，horizon故障不关闭收复主线
+
+root60709已closed/exit1；实际55保存日、1320h，累计4116/36524、恢复963、Oct4+91，Oct3冻结777。最新正常h5895/raw53243112/92485865B，SHA `5c8ff107bff0e7187c3f3ee936121908f335cc5b79a58f7143bb9445b11b9477`。day56 horizon typed query报“application-main typed query failed or its snapshot changed”，RED为0h/0日，无推进，不能把64预算写成完成。
+
+末帧paused/native230/pub222、Robert alive、event/interaction均null。主83886367在2626，moving四跳[2627,2633,2634,2640]，无combat/retreat、未抵达；首都仍敌70766占领，garrison85，敌Siege452984850/playerfalse/ETA53。敌活动不计我方siege或收复。P0继续actual capital recapture；SDK66198 explicit-day skip-route-horizon/max64运行中，未来0信用，horizon最小修并行，不阻已有life入口。旧RED与全部历史保留。
+
+
+实际55日ledger与第56失败：[sole cached delivery](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/recapture-v49/sealed-day-consumption/ROOT-DELIVERY.json)；本次采用与6前像SHA见[ROOT-DELIVERY](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/progress-current-six-v49-recapture64/ROOT-DELIVERY.json)。
+
+
 ## 最新短增量：玩家首战胜利、v49/R25 已实机部署
 
 真实编制 **2026-10-04T04:56:11.084525+08:00（Asia/Shanghai）**，固定截止正常关闭的 **SDK38881**；累计 **4061/36524 已保存日 / resume908 / Oct3正式冻结777 / Oct4新增36**，G2 **5/8**、NW **2/4**、自然继承 **0**。最新正常保存 **h5707 / raw53241792 / 92,162,450 B / SHA-256 `2f8446a5f45d0844c1621ab087c57a7d8e4ecde33ea0528d2896df1873f1175f`**。
