@@ -1,0 +1,165 @@
+{
+  "schema": "superman-qiang.workshop-gameplay-media.v1",
+  "status": "prepared_from_GREEN_existing_save_gate_not_published",
+  "recorded_utc": "2026-10-03T23:18:54.576684+00:00",
+  "product": "superman-qiang",
+  "order": 1,
+  "title": "正常角色查看性经验 / View a character's experience",
+  "source_acceptance_run": "desktop-3fevhd2-1c74096080--superman-qiang--R0013",
+  "source_acceptance_gate": {
+    "path": "C:/ck3-superman-qiang-20261004/acceptance/desktop-3fevhd2-1c74096080--superman-qiang--R0013/existing-save-installation-gate-a01.json",
+    "bytes": 2571,
+    "sha256": "070a7e9cb4a747bd5ff0d5e83f438eb0cd9c0bb201f1dbef0f1898ea179b6367"
+  },
+  "source_gate_ok": true,
+  "source_acceptance_result": "GREEN",
+  "result_scope": "genuine unmodded saved game then A4-only load, absent XP/net displayed 0, base/traits/SXAD fields preserved after normal view; no sex action performed in R13; first new count behavior composed with R9 original effect matrix",
+  "game_version": "1.20.0.3",
+  "game_exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "native_dll_sha256": "ad3bbb4e7bc19f2737bba10c468d26cabcae4058c6c2ae4f3b8675e95c5b8518",
+  "production_manifest": {
+    "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/docs/build-evidence-2026-10-04-L0-A0004/mod_superman_qiang.manifest.json",
+    "bytes": 4048,
+    "sha256": "63b0bc75a4c13bfdb343d77d621617eb425c204af081f00658454b193f261aac"
+  },
+  "production_runtime_match": {
+    "compared_files": 22,
+    "different_files": [],
+    "source": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\mod_superman_qiang",
+    "preparation": {
+      "path": "C:/ck3-superman-qiang-20261004/acceptance/desktop-3fevhd2-1c74096080--superman-qiang--R0013/preparation.json",
+      "bytes": 471486,
+      "sha256": "9019088e7b9d268b4bb61dc5baf72191552f74580617285bf47e70a308c47f95"
+    }
+  },
+  "enabled_mods": [
+    "mod/sxad_product.mod"
+  ],
+  "fixture_source": null,
+  "before_checkpoint": {
+    "source": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0012\\save-readback-a01\\checkpoint.ck3",
+    "sha256": "b6f341c9879b572a0eb4325f96fd0338433d0fc4c9fa36fa4dfc0fbebb61506e",
+    "size": 68930809,
+    "load_save_name": "xar_checkpoint"
+  },
+  "after_checkpoint": {
+    "status": "saved",
+    "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0013\\state\\profile\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 68963772,
+    "sha256": "6c70b6b1c2ab0b7ea49e1c8960505440e16118b79a68a85d2c4bd36fbc9154f8",
+    "date_raw": 53144328,
+    "overwrite_confirmed": true,
+    "strategy": "native-autosave-command-v1",
+    "episode_projection": "native_campaign",
+    "succession_lifecycle": null,
+    "history_index": 2,
+    "episode_character_id": null,
+    "episode_run_id": null
+  },
+  "character_state_changes_after_normal_view": [],
+  "raw_source": {
+    "path": "C:/ck3-superman-qiang-20261004/acceptance/r13-ui-production-only-event-a01/screen.png",
+    "bytes": 1071131,
+    "sha256": "dbb4b4085b775fcc93b9b2a1f13de82a2a6f4b562886f4409356a0561450e5cf",
+    "tracked_path": "images/superman_qiang_gameplay_experience.png",
+    "width": 1024,
+    "height": 768,
+    "format": "PNG"
+  },
+  "direct_visual_review": {
+    "source_completed": true,
+    "output_completed": true,
+    "reviewers": [
+      "/root",
+      "/root/superman_art"
+    ],
+    "method": "Both agents directly viewed the original source and the exact candidate JPEG; root confirmed output review by message.",
+    "subject": "Robert, age 51; native root/subject character ID 31254",
+    "experience_text": "0",
+    "current_skills_diplomacy_martial_stewardship_intrigue_learning_prowess": [
+      5,
+      24,
+      11,
+      11,
+      7,
+      21
+    ],
+    "net_attribute_change": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "fixture_or_debug_text_visible": false,
+    "notes": "超人强·性经验记录 title, experience, effective skills, zero net changes, full rules paragraph and 知道了 option readable. Normal character panel visible. No generated content, graphical edits, resizing or crop."
+  },
+  "projection": {
+    "method": "full_frame_jpeg",
+    "crop_left_top_right_bottom": [
+      0,
+      0,
+      1024,
+      768
+    ],
+    "cropped": false,
+    "resized": false,
+    "reencoded": true,
+    "quality": 90,
+    "optimize": true,
+    "progressive": true,
+    "subsampling": 0,
+    "output": {
+      "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/01_experience_view.jpg",
+      "bytes": 170086,
+      "sha256": "d0d0adbaf28445d0aa1ced1de5351374337c6921a67919a9743bbf2dbb2eaa8d",
+      "tracked_path": "workshop/superman_qiang_media/01_experience_view.jpg",
+      "width": 1024,
+      "height": 768,
+      "format": "JPEG",
+      "mode": "RGB"
+    },
+    "native_strict_max_bytes": 1048576,
+    "source_byte_preservation_reason_not_used": "The raw PNG is 1,071,131 bytes, exceeding the strict native 1 MiB media limit."
+  },
+  "tool": {
+    "path": "D:/workspace/ck3_eternal_recurrence/tools/compose_superman_qiang_workshop_media.py",
+    "bytes": 4350,
+    "sha256": "4b93c5c59509710c5906aaa5250847e4adede23ccbc8676f329ca75fb9ec39b9",
+    "command": "tools\\.venv\\Scripts\\python.exe tools/compose_superman_qiang_workshop_media.py --gate C:/ck3-superman-qiang-20261004/acceptance/desktop-3fevhd2-1c74096080--superman-qiang--R0013/existing-save-installation-gate-a01.json --check",
+    "pillow_version": "12.3.0",
+    "encoding_contract_source": "tools/compose_tributary_expansion_directives_workshop_media.py::rendered_bytes",
+    "external_candidate": {
+      "path": "C:/ck3-superman-qiang-20261004/workshop-media-r13-a02/01_experience_view.jpg",
+      "bytes": 170086,
+      "sha256": "d0d0adbaf28445d0aa1ced1de5351374337c6921a67919a9743bbf2dbb2eaa8d"
+    },
+    "image_generation_used": false
+  },
+  "public_workshop_verification": {
+    "item_id": null,
+    "entry_index": null,
+    "cdn_url": null,
+    "uploaded": false,
+    "verified": false
+  },
+  "deterministic_rebuild_check": {
+    "path": "C:/ck3-superman-qiang-20261004/workshop-media-r13-a03/rebuild-check.json",
+    "bytes": 667,
+    "sha256": "a54ff530cac4220825289280458b1d43b32a0af70b2a236a007d0164d60de4fc",
+    "exit_code": 0,
+    "output_byte_identical": true,
+    "stdout": {
+      "path": "C:/ck3-superman-qiang-20261004/workshop-media-r13-a03/rebuild-check.stdout.txt",
+      "bytes": 873,
+      "sha256": "2f58691b2b6c242e723f68c26269682664ee234b534c45c3d2e96b2202510e69"
+    },
+    "stderr": {
+      "path": "C:/ck3-superman-qiang-20261004/workshop-media-r13-a03/rebuild-check.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}
