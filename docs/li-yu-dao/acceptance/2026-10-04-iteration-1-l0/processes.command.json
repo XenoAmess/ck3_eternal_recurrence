@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "tasklist",
+    "/FO",
+    "CSV",
+    "/NH"
+  ],
+  "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+  "execution": "COMPLETED",
+  "finished_at": "2026-10-03T19:35:35.896669+00:00",
+  "returncode": 0,
+  "started_at": "2026-10-03T19:35:35.617239+00:00",
+  "stderr": {
+    "path": "processes.stderr.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size": 0
+  },
+  "stdout": {
+    "path": "processes.stdout.txt",
+    "sha256": "6f910f90acbdd5f9c2f8fa62a201c6cfada5f107cd1944fe0df9f5aa0d466870",
+    "size": 9906
+  },
+  "timeout_seconds": 60
+}

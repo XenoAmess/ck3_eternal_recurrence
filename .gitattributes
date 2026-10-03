@@ -5,6 +5,10 @@ mod_superman_qiang/docs/build-evidence-*/** -text whitespace=cr-at-eol
 mod_superman_qiang/docs/live-R*/** -text whitespace=cr-at-eol
 mod_superman_qiang/docs/release-*/** -text whitespace=cr-at-eol
 
+# Keep Li Yu Dao acceptance logs and their frozen SHA-256 bindings exact.
+docs/li-yu-dao/acceptance/** -text whitespace=cr-at-eol
+mod_li_yu_dao/fixtures/native_cycle/*.json -text whitespace=cr-at-eol
+
 # Keep the original independent-mod publication receipts and anonymous HTTP bytes.
 mod_de_jure_conquest/docs/release-1.0.0-2026-10-03/*.json -text whitespace=cr-at-eol
 mod_de_jure_conquest/docs/release-1.0.0-2026-10-03/*.html -text whitespace=cr-at-eol

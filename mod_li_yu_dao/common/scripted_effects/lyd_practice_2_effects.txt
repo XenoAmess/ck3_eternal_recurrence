@@ -1,0 +1,104 @@
+﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
+lyd_practice_xunzi_c_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_xunzi
+            gold >= 0
+        }
+        add_piety = -20 change_stress = 10
+        add_character_flag = lyd_practice_xunzi_completed
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_zhengxuan_a_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_zhengxuan
+            gold >= 15
+        }
+        add_gold = -15 add_piety = 30 add_learning_lifestyle_xp = 40
+        add_character_flag = lyd_practice_zhengxuan_completed
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_zhengxuan_b_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_zhengxuan
+            gold >= 10
+        }
+        add_gold = -10 add_piety = 20 add_learning_lifestyle_xp = 25
+        add_character_flag = lyd_practice_zhengxuan_completed
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_zhengxuan_c_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_zhengxuan
+            gold >= 30
+        }
+        add_gold = -30 add_piety = -20 add_prestige = 15
+        add_character_flag = lyd_practice_zhengxuan_completed
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_wangsu_a_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_wangsu
+            gold >= 15
+        }
+        add_gold = -15 add_piety = 30 add_learning_lifestyle_xp = 40
+        add_character_flag = lyd_practice_wangsu_completed
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_wangsu_b_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_wangsu
+            gold >= 10
+        }
+        add_gold = -10 add_piety = 20 add_learning_lifestyle_xp = 25
+        add_character_flag = lyd_practice_wangsu_completed
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_wangsu_c_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_wangsu
+            gold >= 25
+        }
+        add_gold = -25 add_piety = -20 add_prestige = 10
+        add_character_flag = lyd_practice_wangsu_completed
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_jingshu_a_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_jingshu
+            gold >= 15
+        }
+        add_gold = -15 add_piety = 30 add_learning_lifestyle_xp = 45
+        add_character_flag = lyd_practice_jingshu_completed
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}

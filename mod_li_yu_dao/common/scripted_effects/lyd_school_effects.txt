@@ -1,0 +1,64 @@
+﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
+lyd_adopt_kongmen_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_kongmen } }
+        set_character_rite = rite:lyd_rite_kongmen
+        add_character_flag = { flag = lyd_school_cooldown days = 365 }
+    }
+}
+
+lyd_adopt_mengzi_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_mengzi } }
+        set_character_rite = rite:lyd_rite_mengzi
+        add_character_flag = { flag = lyd_school_cooldown days = 365 }
+    }
+}
+
+lyd_adopt_xunzi_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_xunzi } }
+        set_character_rite = rite:lyd_rite_xunzi
+        add_character_flag = { flag = lyd_school_cooldown days = 365 }
+    }
+}
+
+lyd_adopt_zhengxuan_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_zhengxuan } }
+        set_character_rite = rite:lyd_rite_zhengxuan
+        add_character_flag = { flag = lyd_school_cooldown days = 365 }
+    }
+}
+
+lyd_adopt_wangsu_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_wangsu } }
+        set_character_rite = rite:lyd_rite_wangsu
+        add_character_flag = { flag = lyd_school_cooldown days = 365 }
+    }
+}
+
+lyd_adopt_jingshu_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_jingshu } }
+        set_character_rite = rite:lyd_rite_jingshu
+        add_character_flag = { flag = lyd_school_cooldown days = 365 }
+    }
+}
+
+lyd_adopt_zhuxi_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_zhuxi } }
+        set_character_rite = rite:lyd_rite_zhuxi
+        add_character_flag = { flag = lyd_school_cooldown days = 365 }
+    }
+}
+
+lyd_adopt_lujiuyuan_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_lujiuyuan } }
+        set_character_rite = rite:lyd_rite_lujiuyuan
+        add_character_flag = { flag = lyd_school_cooldown days = 365 }
+    }
+}

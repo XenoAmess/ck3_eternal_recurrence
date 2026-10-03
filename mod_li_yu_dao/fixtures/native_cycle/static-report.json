@@ -1,0 +1,70 @@
+{
+  "status": "GREEN",
+  "scope": "structure/localization/guard contracts only",
+  "live_status": "NOT_RUN",
+  "errors": [],
+  "contracts": {
+    "player actor": true,
+    "join guard": true,
+    "detach guard": true,
+    "explicit pair": true,
+    "preserved anchor": true,
+    "dynamic result": true,
+    "persistent dynamic reference": true,
+    "five-year Rite timer": true,
+    "marked title cleanup": true,
+    "three rounds": true,
+    "delayed checks": true,
+    "AI decision weights": true,
+    "no native on_action override": true,
+    "no global define changes": true,
+    "no hidden content convergence": true
+  },
+  "payload": [
+    {
+      "path": "common/decisions/lyd_np_decisions.txt",
+      "bytes": 1770,
+      "sha256": "7a95bec62bcc6533c7fcdef7331b76a359ec4dedac29d5bc99888b2c53757db2"
+    },
+    {
+      "path": "common/religion/faith_types/lyd_np_faiths.txt",
+      "bytes": 641,
+      "sha256": "bcd46bd4407ae43dcaf84b505a08c2d883c2e52726587e7ae9cd088d88c62870"
+    },
+    {
+      "path": "common/religion/rite_types/lyd_np_rites.txt",
+      "bytes": 845,
+      "sha256": "ba76cd96f18ba0f75d9932c6e50dcd4067abfd465364731c10e7bcfc211b058c"
+    },
+    {
+      "path": "common/scripted_effects/lyd_np_effects.txt",
+      "bytes": 8225,
+      "sha256": "4f11d1ae816e349ee2f4c736939819c0964dc1ddcecd75545026ef5eeeae4d70"
+    },
+    {
+      "path": "common/scripted_triggers/lyd_np_triggers.txt",
+      "bytes": 2790,
+      "sha256": "4c487386b018af6b2a0c918ee5cf89dad908b483eba44b696b47c303fcdaf445"
+    },
+    {
+      "path": "descriptor.mod",
+      "bytes": 125,
+      "sha256": "b82a694df94b885c0438d55bb3f1d5ed2fdde6b624131633b5ae56cfabe101f1"
+    },
+    {
+      "path": "events/lyd_np_events.txt",
+      "bytes": 3739,
+      "sha256": "9e2086e8373a11f6dc7c4ff4f9cf342d6d87b60adba45dd68e5797f9452b9457"
+    },
+    {
+      "path": "localization/english/lyd_np_l_english.yml",
+      "bytes": 2296,
+      "sha256": "26acb8c79ff2c790a62b8905e725250153141731c14719259a52c02d555ad723"
+    },
+    {
+      "path": "localization/simp_chinese/lyd_np_l_simp_chinese.yml",
+      "bytes": 1993,
+      "sha256": "d7d4381c8bb172e4a32041588e43f1838e1bc861902153df3a2d1f10eec2d907"
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+# Acceptance-only fixture. Character-root entry points; never invoked by an on_action or AI loop.
+# All new titles are marked and only marked fixture head titles may be destroyed.
+
+lyd_np_fail_effect = {
+    set_variable = { name = lyd_np_failed value = yes }
+    debug_log = "LYD_NP_FAIL"
+    debug_log_scopes = yes
+    assert_if = { limit = { always = yes } text = "LYD_NP postcondition failed; inspect preceding phase marker and scopes" }
+}
+
+# Character scope; caller already follows their fixture rite. Reuse an existing binding, otherwise the native helper.
+lyd_np_ensure_temporal_head_effect = {
+    save_scope_as = lyd_np_head_candidate
+    if = {
+        limit = { faith = { NOT = { exists = religious_head_title } } }
+        set_up_dynamic_temporal_hof_title_effect = { NEW_HOLDER = scope:lyd_np_head_candidate }
+    }
+    faith.religious_head_title ?= { set_variable = { name = lyd_np_owned_head value = yes } }
+}
+
+# Faith scope. Native merge clears the binding; explicitly destroy only this fixture's title.
+# CLEANER is a Character, since native destroy_title examples use Character scope.
+lyd_np_clear_fixture_head_effect = {
+    if = {
+        limit = { exists = religious_head_title }
+        religious_head_title = { save_scope_as = lyd_np_old_head_title }
+        root = { set_variable = { name = lyd_np_old_head_title value = scope:lyd_np_old_head_title } }
+        remove_religious_head_title = yes
+        if = {
+            limit = { scope:lyd_np_old_head_title = { has_variable = lyd_np_owned_head } }
+            $CLEANER$ = { destroy_title = scope:lyd_np_old_head_title }
+        }
+        else = {
+            debug_log = "LYD_NP_UNMARKED_HEAD_NOT_DESTROYED"
+            root = { lyd_np_fail_effect = yes }
+        }
+    }
+}
+
+# Fresh, disposable save only. Requires two created rites, and a landed adult male direct vassal.
+lyd_np_initialize_effect = {
+    if = {
+        limit = {
+            lyd_np_actor_trigger = yes
+            NOT = { has_variable = lyd_np_initialized }
+            exists = rite:lyd_np_anchor_rite
+            exists = rite:lyd_np_branch_rite
+            any_vassal = { is_landed = yes is_adult = yes is_female = no highest_held_title_tier >= tier_county }
+        }
+        random_vassal = {
+            limit = { is_landed = yes is_adult = yes is_female = no highest_held_title_tier >= tier_county }
+            save_scope_as = lyd_np_branch_holder
+        }
+        set_variable = { name = lyd_np_branch_holder value = scope:lyd_np_branch_holder }
+        set_character_rite = rite:lyd_np_anchor_rite
+        lyd_np_ensure_temporal_head_effect = yes
+        scope:lyd_np_branch_holder = {
+            set_character_rite = rite:lyd_np_branch_rite
+            capital_county = {
+                set_county_rite = rite:lyd_np_branch_rite
+                save_scope_as = lyd_np_branch_county
+            }
+            lyd_np_ensure_temporal_head_effect = yes
+        }
+        set_variable = { name = lyd_np_branch_county value = scope:lyd_np_branch_county }
+        set_variable = { name = lyd_np_completed_cycles value = 0 }
+        set_variable = { name = lyd_np_completed_joins value = 0 }
+        set_variable = { name = lyd_np_latest_faith value = faith:lyd_np_branch_faith }
+        set_variable = { name = lyd_np_initialized value = yes }
+        trigger_event = { id = lyd_np.0002 days = 1 }
+    }
+    else = { debug_log = "LYD_NP_INITIALIZE_REJECTED" }
+}
+
+lyd_np_join_effect = {
+    if = {
+        limit = { lyd_np_join_ready_trigger = yes }
+        set_variable = { name = lyd_np_transition_busy value = yes }
+        rite:lyd_np_branch_rite = { faith = { save_scope_as = lyd_np_absorbed_faith } }
+        set_variable = { name = lyd_np_old_faith value = scope:lyd_np_absorbed_faith }
+        rite:lyd_np_branch_rite = {
+            save_scope_value_as = { name = lyd_np_pair_divergence_before value = "divergence(root.faith.main_rite)" }
+        }
+        scope:lyd_np_absorbed_faith = { lyd_np_clear_fixture_head_effect = { CLEANER = root } }
+        if = {
+            limit = { NOT = { has_variable = lyd_np_failed } }
+            rite:lyd_np_branch_rite = {
+                set_parent_faith = { target = faith:lyd_np_anchor_faith main = no include_derived = no }
+                set_can_convert_to_rite = yes
+                set_variable = { name = lyd_np_transition_cooldown value = yes years = 5 }
+                save_scope_as = lyd_np_moving_rite
+                save_scope_value_as = { name = lyd_np_pair_divergence_after value = "divergence(root.faith.main_rite)" }
+            }
+            debug_log = "LYD_NP_JOIN_APPLIED"
+            debug_log_scopes = yes
+            trigger_event = { id = lyd_np.0101 days = 1 }
+            trigger_event = { id = lyd_np.0130 days = 30 }
+        }
+    }
+    else = { debug_log = "LYD_NP_JOIN_REJECTED" }
+}
+
+lyd_np_detach_effect = {
+    if = {
+        limit = { lyd_np_detach_ready_trigger = yes }
+        set_variable = { name = lyd_np_transition_busy value = yes }
+        var:lyd_np_branch_holder = {
+            # Character-scope invocation plus returned Faith scope follows native event-war usage.
+            detach_rite_to_new_faith = { target = rite:lyd_np_branch_rite save_scope_as = lyd_np_new_faith }
+            if = {
+                limit = {
+                    exists = scope:lyd_np_new_faith
+                    faith = scope:lyd_np_new_faith
+                    rite:lyd_np_branch_rite = { this = faith.main_rite }
+                }
+                lyd_np_ensure_temporal_head_effect = yes
+            }
+        }
+        if = {
+            limit = { exists = scope:lyd_np_new_faith }
+            set_variable = { name = lyd_np_latest_faith value = scope:lyd_np_new_faith }
+            rite:lyd_np_branch_rite = {
+                set_can_convert_to_rite = yes
+                set_variable = { name = lyd_np_transition_cooldown value = yes years = 5 }
+                save_scope_as = lyd_np_moving_rite
+            }
+            debug_log = "LYD_NP_DETACH_APPLIED"
+            debug_log_scopes = yes
+            trigger_event = { id = lyd_np.0201 days = 1 }
+            trigger_event = { id = lyd_np.0230 days = 30 }
+        }
+        else = {
+            debug_log = "LYD_NP_DETACH_RETURN_SCOPE_MISSING"
+            lyd_np_fail_effect = yes
+        }
+    }
+    else = { debug_log = "LYD_NP_DETACH_REJECTED" }
+}
+
+lyd_np_assert_join_effect = {
+    if = {
+        limit = {
+            lyd_np_joined_postcondition_trigger = yes
+            exists = var:lyd_np_branch_county
+            var:lyd_np_branch_county = { rite = rite:lyd_np_branch_rite faith = faith:lyd_np_anchor_faith }
+            NOT = { lyd_np_detach_ready_trigger = yes }
+            NOT = { lyd_np_join_ready_trigger = yes }
+        }
+        debug_log = "$PASS_MARKER$"
+    }
+    else = { debug_log = "$FAIL_MARKER$" lyd_np_fail_effect = yes }
+}
+
+lyd_np_assert_detach_effect = {
+    if = {
+        limit = {
+            lyd_np_detached_postcondition_trigger = yes
+            exists = var:lyd_np_branch_county
+            var:lyd_np_branch_county = { rite = rite:lyd_np_branch_rite faith = root.var:lyd_np_latest_faith }
+            NOT = { lyd_np_detach_ready_trigger = yes }
+            NOT = { lyd_np_join_ready_trigger = yes }
+        }
+        debug_log = "$PASS_MARKER$"
+    }
+    else = { debug_log = "$FAIL_MARKER$" lyd_np_fail_effect = yes }
+}
+
+# Test-only administrative bypass. Records a blocked ready-trigger BEFORE clearing only the timer.
+# This verifies repeated native operations and cooldown presence, not five-year natural expiry.
+lyd_np_acceptance_clear_cooldown_effect = {
+    if = {
+        limit = { has_variable = lyd_np_acceptance_mode lyd_np_initialized_trigger = yes }
+        if = {
+            limit = { rite:lyd_np_branch_rite = { has_variable = lyd_np_transition_cooldown } }
+            if = {
+                limit = { NOT = { lyd_np_transition_ready_trigger = yes } }
+                debug_log = "LYD_NP_COOLDOWN_BLOCK_PASS"
+            }
+            else = { debug_log = "LYD_NP_COOLDOWN_BLOCK_FAIL" lyd_np_fail_effect = yes }
+            rite:lyd_np_branch_rite = { remove_variable = lyd_np_transition_cooldown }
+            debug_log = "LYD_NP_ACCEPTANCE_ONLY_COOLDOWN_CLEARED"
+        }
+    }
+}

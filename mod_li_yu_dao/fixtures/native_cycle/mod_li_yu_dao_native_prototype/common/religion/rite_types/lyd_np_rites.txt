@@ -1,0 +1,22 @@
+# Both types are created at bookmark initialization, with explicit parent/main mappings.
+# Identical doctrines/cores isolate reparent/detach from doctrinal divergence.
+# Override no_head on the RITE: merely adding faith doctrine is insufficient when the religion fills its group.
+lyd_np_anchor_rite = {
+    faith = lyd_np_anchor_faith
+    color = { 0.59 0.35 0.12 }
+    icon = jingxue
+    create = yes
+    convert = yes
+    tenets = { tenet_benevolent_governance tenet_harmonious_society tenet_pursuit_of_knowledge }
+    doctrines = { doctrine_temporal_head }
+}
+
+lyd_np_branch_rite = {
+    faith = lyd_np_branch_faith
+    color = { 0.39 0.59 0.12 }
+    icon = jingxue
+    create = yes
+    convert = yes
+    tenets = { tenet_benevolent_governance tenet_harmonious_society tenet_pursuit_of_knowledge }
+    doctrines = { doctrine_temporal_head }
+}

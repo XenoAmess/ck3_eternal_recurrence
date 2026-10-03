@@ -1,0 +1,22 @@
+# Acceptance-only fixture. Do not publish or copy into production unchanged.
+lyd_np_anchor_faith = {
+    main_rite = lyd_np_anchor_rite
+    faith_details = {
+        religion = confucianism_religion
+        color = { 150 90 30 }
+        icon = jingxue
+    }
+    eminent_holy_sites = { qufu chang_an }
+    holy_sites = { luoyang bianliang mount_qingcheng }
+}
+
+lyd_np_branch_faith = {
+    main_rite = lyd_np_branch_rite
+    faith_details = {
+        religion = confucianism_religion
+        color = { 100 150 30 }
+        icon = jingxue
+    }
+    eminent_holy_sites = { qufu chang_an }
+    holy_sites = { luoyang bianliang mount_qingcheng }
+}
