@@ -88,6 +88,17 @@ class LocalizationContractTests(unittest.TestCase):
         )
         self.assertEqual(smoke.fixture_source_errors(), [])
 
+    def test_non_chinese_format_check_accepts_identical_english_text(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="oxls-format-test-") as name:
+            source = Path(name)
+            shutil.copytree(smoke.CANONICAL_SOURCE / "localization", source / "localization")
+            english = source / smoke.LANGUAGE_BY_KEY["l_english"].localization_path
+            french = source / smoke.LANGUAGE_BY_KEY["l_french"].localization_path
+            french.write_bytes(english.read_bytes().replace(b"l_english:", b"l_french:", 1))
+            self.assertEqual(smoke.localization_errors(source), [])
+            french.write_bytes(french.read_bytes().replace(b"[ox_here_warrior.GetShortUIName|U]", b"[wrong_scope.GetShortUIName|U]"))
+            self.assertTrue(any("token" in error for error in smoke.localization_errors(source)))
+
     def test_fixture_registers_the_gui_file_and_window_name(self) -> None:
         registry = (
             smoke.FIXTURE_SOURCE
@@ -278,6 +289,32 @@ class SurfaceEvidenceTests(unittest.TestCase):
 
 
 class ModeContractTests(unittest.TestCase):
+    def test_cli_defaults_to_chinese_and_rejects_retired_live_selections(self) -> None:
+        self.assertEqual(smoke.build_parser().parse_args([]).language, "l_simp_chinese")
+        for language in ("all", *(key for key in smoke.LANGUAGE_BY_KEY if key != "l_simp_chinese")):
+            with self.subTest(language=language), mock.patch("sys.stderr"):
+                with self.assertRaises(SystemExit) as error:
+                    smoke.build_parser().parse_args(["--language", language])
+                self.assertEqual(error.exception.code, 2)
+
+    def test_non_chinese_api_request_fails_before_any_environment_access(self) -> None:
+        with mock.patch.object(smoke.terminal, "steam_userdata_root", side_effect=AssertionError("environment must not be touched")) as environment:
+            for language in ("all", *(key for key in smoke.LANGUAGE_BY_KEY if key != "l_simp_chinese")):
+                for preflight_only in (False, True):
+                    with self.subTest(language=language, preflight_only=preflight_only):
+                        with self.assertRaisesRegex(acceptance.RunnerError, "only l_simp_chinese"):
+                            smoke.main(selected_language=language, preflight_only=preflight_only)
+            environment.assert_not_called()
+
+    def test_direct_non_chinese_cell_fails_before_creating_output_or_launching(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="oxls-reject-test-") as name:
+            target = Path(name)
+            with mock.patch.object(smoke.acceptance, "configure_runtime_userdir", side_effect=AssertionError("runtime must not be touched")) as runtime:
+                with self.assertRaisesRegex(acceptance.RunnerError, "only l_simp_chinese"):
+                    smoke.run_cell(smoke.LANGUAGE_BY_KEY["l_french"], {}, target / "artifacts", target / "userdir", smoke.CANONICAL_SOURCE, None, False)
+                runtime.assert_not_called()
+            self.assertEqual(list(target.iterdir()), [])
+
     def test_workshop_mode_requires_manifest_before_environment_access(self) -> None:
         with mock.patch.object(
             smoke.terminal,
@@ -321,12 +358,13 @@ class BootstrapTests(unittest.TestCase):
     def test_bootstrap_writes_language_and_exact_load_order(self) -> None:
         with tempfile.TemporaryDirectory(prefix="oxls-bootstrap-test-") as name:
             userdir = Path(name) / "userdir"
-            details = smoke.bootstrap_userdir(
-                userdir,
-                smoke.CANONICAL_SOURCE,
-                workshop_item_id=None,
-                language="l_korean",
-            )
+            with mock.patch.object(acceptance, "declared_vanilla_rule_defaults", return_value=[("synthetic_rule", "synthetic_default")]):
+                details = smoke.bootstrap_userdir(
+                    userdir,
+                    smoke.CANONICAL_SOURCE,
+                    workshop_item_id=None,
+                    language="l_simp_chinese",
+                )
             self.assertEqual(
                 json.loads((userdir / "dlc_load.json").read_text(encoding="utf-8"))[
                     "enabled_mods"
@@ -335,7 +373,7 @@ class BootstrapTests(unittest.TestCase):
             )
             self.assertEqual(
                 smoke.configured_language(userdir / "pdx_settings.txt"),
-                "l_korean",
+                "l_simp_chinese",
             )
             self.assertEqual(
                 set(details["targets"]), {"product", "fixture"}

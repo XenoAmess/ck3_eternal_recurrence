@@ -1,0 +1,381 @@
+{
+  "schema": "djc.language-policy-audit.v1",
+  "utc": "2026-10-03T04:56:40.424445+00:00",
+  "status": "CURRENT_POLICY_ALIGNED",
+  "authority": "User explicitly requires Simplified Chinese real-game only; other eight languages format checks only, overriding generic internationalization workflow.",
+  "scope": "all product files, including docs, release drafts, Python tools, runtime localization and historical reports; shared parent policy handled by root",
+  "prompt_template_files": [],
+  "changes": [
+    "remove old formal language review requirement from adaptation plan",
+    "remove validator rejection of non-Chinese text equal to English; retain header, syntax and key format checks",
+    "explicitly cancel non-Chinese semantic, terminology, native-speaker, translation-completeness and game-live requirements across current policy and release drafts",
+    "refreeze changed Steam Notes and BBCode without overwriting prior freezes"
+  ],
+  "focused_validation": "language-format-policy-check-2026-10-03.json",
+  "historic_evidence": "immutable original records retained; remaining_live_scope/native_speaker_reviewed/review_decisions do not schedule future gates",
+  "fixture_generator_sha256_unchanged": "91ee3ce38fd7494357250d8e7a72e1b83af4ef261fe90116f3f7d4141ce13505",
+  "semantic_markers": 72,
+  "fixture_reexecution": false,
+  "runtime_changes": 0,
+  "full_runtime_static_repeated": false,
+  "build_repeated": false,
+  "game_requests": 0,
+  "Steam_operations": 0,
+  "Git_operations": 0,
+  "files": [
+    {
+      "path": "common/casus_belli_types/duchy_de_jure_greatwar.txt",
+      "size": 5528,
+      "sha256": "2bf55d811901828136416689e75917219d00440d5e63ad8aab2d5db4c6d5aeb1",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "common/casus_belli_types/empire_de_jure_greatwar.txt",
+      "size": 5534,
+      "sha256": "dfd554edc5d42be3cbc76b1ced8555f3fa1e25f499189649e4f8e7c693ec0363",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "common/casus_belli_types/kingdom_de_jure_greatwar.txt",
+      "size": 5537,
+      "sha256": "dfff8ebedc4f8bcf744b198324b1be5faa7ab9076d3956fe548e6ddf236ae56d",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "common/on_action/greatwar.txt",
+      "size": 839,
+      "sha256": "c9e7aa7c3092e633f74413b861357ea9fd0bb7cd6004ef0d38bbe6c3424356cf",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "common/scripted_effects/djc_war_effects.txt",
+      "size": 2751,
+      "sha256": "963e10b91a9f2b4df60396a32b06b6ccce46f3db051d5340d6e1e35b0897941f",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "descriptor.mod",
+      "size": 155,
+      "sha256": "359e9378843b2532e156f4701179a1dd963dc7dd131a6c5e8d52dab96aaa63d7",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "docs/adaptation-plan.md",
+      "size": 3781,
+      "sha256": "bf4460010e5cdbf20c940f5ec113705200bd2a1381f937716ff9a4642bc691d9",
+      "classification": "current documentation or release draft"
+    },
+    {
+      "path": "docs/duchy-live-red-2026-10-03.md",
+      "size": 5475,
+      "sha256": "c0c17531f067e072efa7e07c215b3c6c9ae82f283ed85dd98b8201279a00865b",
+      "classification": "current documentation or release draft"
+    },
+    {
+      "path": "docs/duchy-live-red-evidence-2026-10-03-R0001.json",
+      "size": 11333,
+      "sha256": "f7b7aea05dfef287abcf9ba97080861c77c43a022e29da9c8396cb490ca35875",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/duchy-live-red-evidence-2026-10-03-R0002.json",
+      "size": 12085,
+      "sha256": "9aa9ebcecddf9019bd19a05fb4843999ff9e92a3c84b0702e63d590c04ed3110",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/fixture-initial-load-red-2026-10-03-R0001.log",
+      "size": 5166,
+      "sha256": "ad79f61d746bd9f464952ed9a54fdbac0beb9af870ab8af00aa87d037d10bfcd",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/fixture-initial-load-red-2026-10-03.md",
+      "size": 2342,
+      "sha256": "00652b64d7e66d46486b44ac04ef160ff1682d018659f1ebbcbc368c971706c0",
+      "classification": "current documentation or release draft"
+    },
+    {
+      "path": "docs/fixture-minimal-repair-review-2026-10-03-R0003.json",
+      "size": 5260,
+      "sha256": "b64f271d4c8c08459dab53f70a4afba8ef678e979d4ed6d8e7b1a76db3a06f24",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/fixture-repair-review-2026-10-03-R0005-CN.json",
+      "size": 3482,
+      "sha256": "5678501dae87071dc417610383a60a720ebb435e127bc5965eacbe3c4b08536d",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/functional-analysis.md",
+      "size": 3609,
+      "sha256": "ed37c9b1fde90cf179fb4f8c3edbef4a40ac1b973b4349180316430cc5351662",
+      "classification": "current documentation or release draft"
+    },
+    {
+      "path": "docs/gui-declaration-fees-2026-10-03.md",
+      "size": 4178,
+      "sha256": "56b505a0a44e44326de64ba3a2d5b5605099a7662d0bab4e82b0722f6c0b644d",
+      "classification": "current documentation or release draft"
+    },
+    {
+      "path": "docs/gui-fee-evidence-2026-10-03-R0002.json",
+      "size": 23477,
+      "sha256": "4a5f32f0383381cf22389051b3c699e81e0f377285a528945e8753cadd9afc19",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/implementation.md",
+      "size": 3959,
+      "sha256": "762c8d33e8add0593082fea71e23c5c4f2b0ca8291e0bad32f0e1fe36b5ffac2",
+      "classification": "current documentation or release draft"
+    },
+    {
+      "path": "docs/language-acceptance-policy.md",
+      "size": 2205,
+      "sha256": "ab56fd74f3b32dbbf52ad765a6d4375e2c78b5da4dfab1ca4822c731924ab1e8",
+      "classification": "current documentation or release draft"
+    },
+    {
+      "path": "docs/language-format-policy-check-2026-10-03.json",
+      "size": 6778,
+      "sha256": "2090993e40d7f9dbfd8a14285a6e767344b07f9ccc3428e0bad96694934737c7",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/localization-coverage-2026-10-03.json",
+      "size": 6861,
+      "sha256": "fd7aae86334b6b41f96eb7557b0d4f78bef2f363586cb7df58a29c363e78f706",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/localization-coverage-initial-2026-10-03.json",
+      "size": 6902,
+      "sha256": "6141d982e220f309bbab07f608cb29f5131e4a548a26187225c0b6ecc41ba0db",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/matrix-native-eligibility-red-2026-10-03.md",
+      "size": 7138,
+      "sha256": "920f89adb71ea13db4f6d7a278ae7a348672dd82560c3ead1756fa5f7f1ab24a",
+      "classification": "current documentation or release draft"
+    },
+    {
+      "path": "docs/matrix-red-evidence-2026-10-03-R0002.json",
+      "size": 34966,
+      "sha256": "9eaf83345b815392c9032c7ceb493ad50ca32e729ac680c77de543f26282b7b1",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/native-truce-contract-2026-10-03.json",
+      "size": 4555,
+      "sha256": "7928bdc3877274218b6ef83ce741e0fa4cdf2cd64d9dc47033049e5bf8f745c7",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/production-repair-review-2026-10-03-R0001.json",
+      "size": 2082,
+      "sha256": "bd4cb5f7ff3884538c7d6b06ef5a21401978c6b608245000f1e15a0fbbe8c3cf",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/r2-gui-english-diagnostic-2026-10-03.json",
+      "size": 23370,
+      "sha256": "d83e7160ca4ff4363caeb72a0fd3d74c9db5ecb25764edb2e43fcb92bd8fea30",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/release-changelog-1.0.0-draft.md",
+      "size": 1126,
+      "sha256": "4343b3b6862a730b4cfb615564f1f9ac2c6aaa3788bc9d3a66043d7bb67938f2",
+      "classification": "current documentation or release draft"
+    },
+    {
+      "path": "docs/release-documentation-review-2026-10-03.json",
+      "size": 1503,
+      "sha256": "a0c5135625d8c32c4f82eefc2df8ea2ab5d02389a99a40e898690b6729725a41",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/release-documentation-review-2026-10-03.md",
+      "size": 3583,
+      "sha256": "9fc036b202d7a4774b5542d4c3f29f09b8a081f5f667e33b93ab8b005081539b",
+      "classification": "current documentation or release draft"
+    },
+    {
+      "path": "docs/release-plan.md",
+      "size": 3246,
+      "sha256": "b628fb120f09914d2a930b779e6b6698b57623a99124f156a57843f181c187fe",
+      "classification": "current documentation or release draft"
+    },
+    {
+      "path": "docs/release-preflight-2026-10-03.md",
+      "size": 1589,
+      "sha256": "9ce508c32dfa6dec1dfa92f7c0f34f94198aa73824e26fccafb656d27e18d2f2",
+      "classification": "current documentation or release draft"
+    },
+    {
+      "path": "docs/release-static-2026-10-03-R0002.json",
+      "size": 2597,
+      "sha256": "7d2dc434ed5aedf593617e400b1348708f9ae40632769f5bcec264182e05526d",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/release-static-2026-10-03-R0003.json",
+      "size": 2597,
+      "sha256": "54a7f945971180b5cac1b028bd034fca0b53336beda8f9aaea4f2aff6115bc1a",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/release-static-2026-10-03.json",
+      "size": 2630,
+      "sha256": "8c9daf623be4cfadca5b0667667a34ad162cb2da3f73167af10509d0308b22a7",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/release-text-freeze-2026-10-03-R0002.json",
+      "size": 1111,
+      "sha256": "e8fdd0f7054e94724e5499d7e6bc24825200c9510f970f910cb67909a2111e4d",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/release-text-freeze-2026-10-03-R0003.json",
+      "size": 1022,
+      "sha256": "baba862818b370c9d4f975019a5e616c5da3d7e48f66045b32c584f1334ac18f",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/steam-change-notes-1.0.0.txt",
+      "size": 3169,
+      "sha256": "115baac85ebed22dd6ed82995dee323c8432b21bbc4127353803fea434bd49e8",
+      "classification": "current documentation or release draft"
+    },
+    {
+      "path": "docs/test-plan.md",
+      "size": 6178,
+      "sha256": "f0671889149a1ca77da98158d0b79b271a75496d9a68f03099dcc75a53fac83e",
+      "classification": "current documentation or release draft"
+    },
+    {
+      "path": "docs/test-report.md",
+      "size": 11793,
+      "sha256": "cf5e0e2f3a95c687ce226c05ab31316365c0f8b88a3e3737854961a119c2c5ee",
+      "classification": "current documentation or release draft"
+    },
+    {
+      "path": "docs/upstream-source-manifest-2026-10-03.json",
+      "size": 1972,
+      "sha256": "c1f8375f805070dfd91b477a8d27367dc85453b5f47c4744d6781d274ca5bf1c",
+      "classification": "frozen evidence or report; no future language gate"
+    },
+    {
+      "path": "docs/upstream.md",
+      "size": 3790,
+      "sha256": "83f45aa02a0e5ef4d4e50e545d60753230928c4a1950cac575de5ce72b81adab",
+      "classification": "current documentation or release draft"
+    },
+    {
+      "path": "docs/workshop-description.bbcode",
+      "size": 2835,
+      "sha256": "c89297bc7a225c4a3476f89023b2a4720571e6f35cb3b90c01124edab23b4a52",
+      "classification": "current documentation or release draft"
+    },
+    {
+      "path": "localization/english/greatwar_l_english.yml",
+      "size": 1584,
+      "sha256": "719ad53ee0b238afae6ab70691492e2b5e8d3095fbde27263bb080b693d0399a",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "localization/french/greatwar_l_french.yml",
+      "size": 1656,
+      "sha256": "1e55cc07cf6ba1f75b6aa50af1ac2f74aa9c7d505e2dd03f8415f62fef500d34",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "localization/german/greatwar_l_german.yml",
+      "size": 1758,
+      "sha256": "b66ec0b5fc618bf5806881dcb610cd6a786afae358fbad7b2c58d268118ad986",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "localization/japanese/greatwar_l_japanese.yml",
+      "size": 1459,
+      "sha256": "5fff5dfffe35b7a855866d33717d95cb2fdfe6faf97dc5dc0c8b6e3c24e4a9f7",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "localization/korean/greatwar_l_korean.yml",
+      "size": 1543,
+      "sha256": "509518ba720053649f2a3202084797755811e88046d73cc33bddbdf965985d89",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "localization/polish/greatwar_l_polish.yml",
+      "size": 1563,
+      "sha256": "0063629bac05538d8c980cd0fd09840aab31f0b5fcff75873f619a76f17378a2",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "localization/russian/greatwar_l_russian.yml",
+      "size": 2389,
+      "sha256": "ac6920c019027f7b80a1add1079f5e27d057b72b04d56115a701078207cd59a6",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "localization/simp_chinese/greatwar_l_simp_chinese.yml",
+      "size": 1430,
+      "sha256": "214c3afcd66a5c534d9b44b5bc429579d9f3bb75265f765732b4cf4adbb553b2",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "localization/spanish/greatwar_l_spanish.yml",
+      "size": 1608,
+      "sha256": "98c680f4f36e689314b132b8fd0497d584e990347335bb198ffd34c8df262e55",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "README.md",
+      "size": 2514,
+      "sha256": "d180d82d9b1a8e5263956bff7194ec4d27a47fab1b499da9efca8374572533e6",
+      "classification": "current documentation or release draft"
+    },
+    {
+      "path": "thumbnail.png",
+      "size": 111868,
+      "sha256": "7b9d9de50b9a8a9fdf83bc89996330ea12f28a4a2396006d733043a8840c0465",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "tools/build_release.py",
+      "size": 2657,
+      "sha256": "4435a0fac2353a78c91415fb1d9b03c6dc8b7ab384100681f9c5c29f4fcde2e8",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "tools/gen_acceptance_fixture.py",
+      "size": 10140,
+      "sha256": "91ee3ce38fd7494357250d8e7a72e1b83af4ef261fe90116f3f7d4141ce13505",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "tools/product.py",
+      "size": 1314,
+      "sha256": "d80efdededbe646c256857669b764c7648eb58dccf0c4767cec2eec20ab1346f",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "tools/validate_static.py",
+      "size": 10954,
+      "sha256": "cefc6f6db7702627182d7f38933dccd0b015c17dd92a2eb1c8a8e3a5f8cca2f6",
+      "classification": "current runtime or tooling"
+    },
+    {
+      "path": "tools/verify_fixture_log.py",
+      "size": 2604,
+      "sha256": "f52dfa10eb981ea4842a997cca70dc31a6ba93b6d3e22623f6f8fb2a0136ca5f",
+      "classification": "current runtime or tooling"
+    }
+  ]
+}

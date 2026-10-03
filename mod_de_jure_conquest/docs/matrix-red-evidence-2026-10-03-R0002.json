@@ -1,0 +1,686 @@
+{
+  "schema": "djc.live.matrix-red-evidence.v1",
+  "frozen_at_utc": "2026-10-03T04:29:25.393262+00:00",
+  "status": "RED",
+  "phase": "R2 clean-reloaded scripted settlement matrix",
+  "runtime_candidate_commit": "86302d2889d75f032554f4051babc6d4f17c9b3a",
+  "runtime_fixture_identity": "linked exact prior GUI phase manifest: 16 production + 7 fixture R0004, unchanged session",
+  "initial_snapshot": {
+    "date_raw": 53144328,
+    "paused": true,
+    "played_character": {
+      "character_id": 31254,
+      "alive": true,
+      "source": "native",
+      "stress_points": 0,
+      "betrothed_id": null,
+      "primary_spouse_id": 36311,
+      "spouse_ids": [
+        36311
+      ]
+    },
+    "played_character_prestige": {
+      "raw": 220000000,
+      "scale": 100000
+    },
+    "played_character_piety": {
+      "raw": 15000000,
+      "scale": 100000
+    },
+    "active_wars": []
+  },
+  "begin_count": 1,
+  "done_count": 0,
+  "actual_pass_markers": [
+    "duchy_attacker_ai_unavailable",
+    "duchy_attacker_distinct_realms",
+    "duchy_attacker_native_eligibility",
+    "duchy_attacker_native_participants",
+    "duchy_attacker_native_goal",
+    "duchy_attacker_county_ownership",
+    "duchy_attacker_war_ended",
+    "duchy_attacker_outside_and_owned_unchanged",
+    "duchy_white_peace_ai_unavailable",
+    "duchy_white_peace_distinct_realms"
+  ],
+  "actual_fail_markers": [
+    "duchy_white_peace_native_eligibility"
+  ],
+  "first_cell": {
+    "outcome": "duchy attacker victory",
+    "markers": 8,
+    "status": "PASS"
+  },
+  "second_cell": {
+    "outcome": "duchy white peace",
+    "native_eligibility": "FAIL",
+    "post_fail_forced_script_start": true,
+    "war_id": 16777220,
+    "targeted_title_ids": [
+      2221
+    ]
+  },
+  "final_snapshot": {
+    "date_raw": 53144448,
+    "paused": true,
+    "played_character": {
+      "character_id": 31254,
+      "alive": true,
+      "source": "native",
+      "stress_points": 0,
+      "betrothed_id": null,
+      "primary_spouse_id": 36311,
+      "spouse_ids": [
+        36311
+      ]
+    },
+    "active_wars": [
+      {
+        "war_id": 16777220,
+        "player_side": "attacker",
+        "primary_opponent_character_id": 32512,
+        "player_is_primary_war_leader": true,
+        "enemy_primary_default_raise_province_id": 2154,
+        "targeted_title_ids": [
+          2221
+        ],
+        "war_objective_province_ids": [
+          2606,
+          2608
+        ],
+        "objective_province_states": [
+          {
+            "province_id": 2606,
+            "occupation_observable": true,
+            "is_occupied": false,
+            "occupying_character_id": null,
+            "fort_level": 3,
+            "garrison_size": 516,
+            "besieging_strength": 0,
+            "siege_observable": true,
+            "active_siege": null
+          },
+          {
+            "province_id": 2608,
+            "occupation_observable": true,
+            "is_occupied": false,
+            "occupying_character_id": null,
+            "fort_level": 6,
+            "garrison_size": 1161,
+            "besieging_strength": 0,
+            "siege_observable": true,
+            "active_siege": null
+          }
+        ],
+        "player_relative_war_score": 0,
+        "allied_armies": [],
+        "enemy_armies": [
+          {
+            "army_id": 16777228,
+            "owner_character_id": 32909,
+            "soldiers": null,
+            "current_province_id": 2608,
+            "move_target_province_id": null,
+            "move_target_observable": false,
+            "controllable": false,
+            "source": "native",
+            "route_province_ids": [],
+            "in_combat": false,
+            "retreating": false,
+            "army_state": "regular",
+            "army_state_code": 1,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null
+          }
+        ],
+        "source": "native"
+      }
+    ]
+  },
+  "diagnostics": {
+    "error_bytes": 17358,
+    "sha256": "5eed2d9d612a16c2ff11d39695be8ef6016985d888ba7dfda63c3a43b7f66942",
+    "byte_identical_to_pre_matrix_error_log": true,
+    "new_diagnostic_bytes": 0,
+    "existing_initial_load_court_scene_diagnostics": 58,
+    "same_holder_new_diagnostics": 0
+  },
+  "candidate_diagnosis": {
+    "truce": "production victory invokes installed native add_truce_attacker_victory_effect, which creates one-way attacker-to-primary-defender truce; fixture resets counties/resources but no truce",
+    "status": "source-grounded candidate; direct current has_truce probe not yet executed by this agent",
+    "alternative": "read-only probe also checks reset original holders/top lieges and same-player realm; not infer absent data"
+  },
+  "limits": [
+    "GUI white peace aftermath was discarded by actual normal LoadGame clean reload before matrix",
+    "first victory is actual scripted production CB settlement; not native peace button coverage",
+    "no completed nine-cell matrix",
+    "old generator logs eligibility FAIL then still calls start_war; later checks cannot erase this RED",
+    "no new diagnostic same-holder guard justified by this actual run",
+    "archive creation did not send game requests or change repository"
+  ],
+  "files": [
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\de-jure-R0002-gui-phase-R0001\\manifest-and-review.json",
+      "path": "prior-gui-phase-manifest-and-review.json",
+      "size": 23821,
+      "sha256": "e04de3fda6ebea70611696c1b00e04f08e5508acddba2c92a2af2b09f5e39d80"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\debug-final.log",
+      "path": "session/matrix-native-events-R0001/debug-final.log",
+      "size": 531335,
+      "sha256": "ca1d653818969d82b0eb87bf425a2f29d198d107d3e6f4f4311be2195f430b9d"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\error-final.log",
+      "path": "session/matrix-native-events-R0001/error-final.log",
+      "size": 17358,
+      "sha256": "5eed2d9d612a16c2ff11d39695be8ef6016985d888ba7dfda63c3a43b7f66942"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\event-matrix-R0001-001.stderr",
+      "path": "session/matrix-native-events-R0001/event-matrix-R0001-001.stderr",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\event-matrix-R0001-001.stdout",
+      "path": "session/matrix-native-events-R0001/event-matrix-R0001-001.stdout",
+      "size": 844,
+      "sha256": "be21f287b05023622b8843ad1767035f7bdc64d0970b8f3531c262fb41084ee3"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\event-matrix-R0001-002-arguments.json",
+      "path": "session/matrix-native-events-R0001/event-matrix-R0001-002-arguments.json",
+      "size": 70,
+      "sha256": "47a4766b3804e455141062ccd1f737409f14aa6a6c1a2d31bd92b1ac0f644838"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\event-matrix-R0001-002.stderr",
+      "path": "session/matrix-native-events-R0001/event-matrix-R0001-002.stderr",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\event-matrix-R0001-002.stdout",
+      "path": "session/matrix-native-events-R0001/event-matrix-R0001-002.stdout",
+      "size": 2149,
+      "sha256": "166b83d9d844b64a590bde007196514f6940782087aa9cf7922aec3c91f6a273"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\event-matrix-R0001-003.stderr",
+      "path": "session/matrix-native-events-R0001/event-matrix-R0001-003.stderr",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\event-matrix-R0001-003.stdout",
+      "path": "session/matrix-native-events-R0001/event-matrix-R0001-003.stdout",
+      "size": 844,
+      "sha256": "4a37360ae36d3917df1ce08634ddad7bc4ad404d0698bd5d860bc107aa4b2643"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\event-matrix-R0001-004-arguments.json",
+      "path": "session/matrix-native-events-R0001/event-matrix-R0001-004-arguments.json",
+      "size": 48,
+      "sha256": "ddef062e4cacb94459423ff1352264992a1f02834a69613fa95afe5279f1ff6d"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\event-matrix-R0001-004.stderr",
+      "path": "session/matrix-native-events-R0001/event-matrix-R0001-004.stderr",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\event-matrix-R0001-004.stdout",
+      "path": "session/matrix-native-events-R0001/event-matrix-R0001-004.stdout",
+      "size": 310,
+      "sha256": "054d8f6c1318a5eac8ee2fa73c7d9ff1aff589702de156054286961f57098b61"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\event-matrix-R0001-005.stderr",
+      "path": "session/matrix-native-events-R0001/event-matrix-R0001-005.stderr",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\event-matrix-R0001-005.stdout",
+      "path": "session/matrix-native-events-R0001/event-matrix-R0001-005.stdout",
+      "size": 845,
+      "sha256": "247d1f8b1bcfe0d750d270f29540ab149948815eaf7d4f730986f0018dbb3a48"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\event-matrix-R0001-006.stderr",
+      "path": "session/matrix-native-events-R0001/event-matrix-R0001-006.stderr",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\event-matrix-R0001-006.stdout",
+      "path": "session/matrix-native-events-R0001/event-matrix-R0001-006.stdout",
+      "size": 309,
+      "sha256": "8631e435d6e2ae16319f74b6766fca7d01e81015c5557307a39d34289d577aa5"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\event-matrix-R0001-007.stderr",
+      "path": "session/matrix-native-events-R0001/event-matrix-R0001-007.stderr",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\event-matrix-R0001-007.stdout",
+      "path": "session/matrix-native-events-R0001/event-matrix-R0001-007.stdout",
+      "size": 1029,
+      "sha256": "e10afcf7800c53ee237b2637e4f838db8af171cb789d9b9386d6c60b3544baad"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\observation.json",
+      "path": "session/matrix-native-events-R0001/observation.json",
+      "size": 267,
+      "sha256": "583dab30aea6bd269d0a9036123941f323621b23764c50d4250e97333303473d"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-native-events-R0001\\trace.json",
+      "path": "session/matrix-native-events-R0001/trace.json",
+      "size": 1567,
+      "sha256": "49416a5d330e9c0e5045d1ffd9e92b815d8aee42124938270f95e1422e88c98f"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-observer-R0001\\017-matrix-sentinel-pause.stderr",
+      "path": "session/matrix-observer-R0001/017-matrix-sentinel-pause.stderr",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-observer-R0001\\017-matrix-sentinel-pause.stdout",
+      "path": "session/matrix-observer-R0001/017-matrix-sentinel-pause.stdout",
+      "size": 1166,
+      "sha256": "a797fcc4478addd6e5bdda9c609191aeaa5f61c471143bb53128b48c2eab5c03"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-observer-R0001\\018-matrix-sentinel-frame.stderr",
+      "path": "session/matrix-observer-R0001/018-matrix-sentinel-frame.stderr",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-observer-R0001\\018-matrix-sentinel-frame.stdout",
+      "path": "session/matrix-observer-R0001/018-matrix-sentinel-frame.stdout",
+      "size": 850,
+      "sha256": "1aea78acc6345f089066a4d644a0a0c598c17adc4e5101b92bdf96c7ce5563d1"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-observer-R0001\\debug-at-observation.log",
+      "path": "session/matrix-observer-R0001/debug-at-observation.log",
+      "size": 529383,
+      "sha256": "d4f1c5a88fdc840e4e752c8a2bb1876154b94c9d416e4efbbd34b2fcd01f2f3f"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\matrix-observer-R0001\\observation.json",
+      "path": "session/matrix-observer-R0001/observation.json",
+      "size": 345,
+      "sha256": "bc42e564858f16b9b338f6c75fc3b6f43a25c41ff6c63b3c61a471795502dfb3"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\event-matrix-R0001-001-result.json",
+      "path": "session/event-matrix-R0001-001-result.json",
+      "size": 23100,
+      "sha256": "d46052886fde1f66ed6e6fe3ff5c0b6def6ef35979577b4ad5a0117197e2d37d"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\event-matrix-R0001-002-result.json",
+      "path": "session/event-matrix-R0001-002-result.json",
+      "size": 5002,
+      "sha256": "baa382ee5afea207ede27fbb7c44b16f767c0ac80e805d0bc6ce677c9827d695"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\event-matrix-R0001-003-result.json",
+      "path": "session/event-matrix-R0001-003-result.json",
+      "size": 22556,
+      "sha256": "b035a649112649d423a302480c2f28bc45ad273deac71d837666c9f5ed4d68cf"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\event-matrix-R0001-004-result.json",
+      "path": "session/event-matrix-R0001-004-result.json",
+      "size": 902,
+      "sha256": "be7bcfbedf30fff18b6a732aae7490f09959b538546518a6991a0a7d2cfacbc2"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\event-matrix-R0001-005-result.json",
+      "path": "session/event-matrix-R0001-005-result.json",
+      "size": 22564,
+      "sha256": "17e1e09a32048d86234186132e69e11b5d78127c805f3e89449dd671d41039bb"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\event-matrix-R0001-006-result.json",
+      "path": "session/event-matrix-R0001-006-result.json",
+      "size": 867,
+      "sha256": "7fcad249c679bca15fdfea15de6c85ff79d316c92adab566f2fdd1091af15540"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\event-matrix-R0001-007-result.json",
+      "path": "session/event-matrix-R0001-007-result.json",
+      "size": 26592,
+      "sha256": "3ef86cff0f5710ea79bedffecde5ffa20dc36f2576b220974344e68ca771f711"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\014-clean-reloaded-result.json",
+      "path": "session/014-clean-reloaded-result.json",
+      "size": 22032,
+      "sha256": "9b3899759797d3f3fd3ff52963eedae3194097058a2d019ff816bcd9c5c3e0ec"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\015-matrix-start-result.json",
+      "path": "session/015-matrix-start-result.json",
+      "size": 870,
+      "sha256": "0ad6ecc47f2e124e2fed3bc81423309aed8ff614d89b4a4349ed4e274ef76323"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\016-matrix-initial-frame-result.json",
+      "path": "session/016-matrix-initial-frame-result.json",
+      "size": 22544,
+      "sha256": "d9c98bbf4b415efc20104796c8dc55ea61677d5992a61062a41f8924a19badbd"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\017-matrix-sentinel-pause-result.json",
+      "path": "session/017-matrix-sentinel-pause-result.json",
+      "size": 2755,
+      "sha256": "b863fa3f4a14ad34c54aae2e52301f786c9117ec4a4822601e12edfda29763e6"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\018-matrix-sentinel-frame-result.json",
+      "path": "session/018-matrix-sentinel-frame-result.json",
+      "size": 23100,
+      "sha256": "4f0bc85cf9a79b7f090c2ae2305ae5a87f8cad40a6177313bcd4c5e2736b281c"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\warm-reload-clean-input.json",
+      "path": "session/warm-reload-clean-input.json",
+      "size": 629,
+      "sha256": "9e7b1c8a70ab9971f7d56262c8e8def868848b81b0e08cd269ec619b8bf40145"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\session-final.json",
+      "path": "session/session-final.json",
+      "size": 3558,
+      "sha256": "34853133c630bb46ebcdcf76462c6fc8d65368c4860a2bd6b9d22f86431f8663"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\stop.json",
+      "path": "session/stop.json",
+      "size": 131,
+      "sha256": "25c23142d4910c2b0d604b231f7ca94690ab10a933dbf5f9d112f281cf356ed9"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\bus-release.json",
+      "path": "session/bus-release.json",
+      "size": 1200,
+      "sha256": "9e79c5837fadc69d1f06d820c3f8d3663f5e243e393675476fd72204ca014dcd"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\requests\\event-matrix-R0001-001.json",
+      "path": "session/requests/event-matrix-R0001-001.json",
+      "size": 102,
+      "sha256": "f897cba2a03072bb21f42950d3ef0b0b2b0e52765bb2c4aceda87d1c789da581"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\requests\\event-matrix-R0001-002.json",
+      "path": "session/requests/event-matrix-R0001-002.json",
+      "size": 136,
+      "sha256": "96f686b3e2a205e08bcb1fc796b209bc7d4dcf859fe8b88e67a583f310899fbb"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\requests\\event-matrix-R0001-003.json",
+      "path": "session/requests/event-matrix-R0001-003.json",
+      "size": 102,
+      "sha256": "f897cba2a03072bb21f42950d3ef0b0b2b0e52765bb2c4aceda87d1c789da581"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\requests\\event-matrix-R0001-004.json",
+      "path": "session/requests/event-matrix-R0001-004.json",
+      "size": 107,
+      "sha256": "3a7d687c89447f0892260d4e1643786fdc172d071129c3282636a4ad1c4eeaf7"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\requests\\event-matrix-R0001-005.json",
+      "path": "session/requests/event-matrix-R0001-005.json",
+      "size": 102,
+      "sha256": "f897cba2a03072bb21f42950d3ef0b0b2b0e52765bb2c4aceda87d1c789da581"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\requests\\event-matrix-R0001-006.json",
+      "path": "session/requests/event-matrix-R0001-006.json",
+      "size": 81,
+      "sha256": "b9291459c47a87190b82dd4bf63f5ab49d5b1ae0afc9adcf12789a6cd960c865"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\requests\\event-matrix-R0001-007.json",
+      "path": "session/requests/event-matrix-R0001-007.json",
+      "size": 102,
+      "sha256": "f897cba2a03072bb21f42950d3ef0b0b2b0e52765bb2c4aceda87d1c789da581"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\requests\\014-clean-reloaded.json",
+      "path": "session/requests/014-clean-reloaded.json",
+      "size": 102,
+      "sha256": "f897cba2a03072bb21f42950d3ef0b0b2b0e52765bb2c4aceda87d1c789da581"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\requests\\015-matrix-start.json",
+      "path": "session/requests/015-matrix-start.json",
+      "size": 82,
+      "sha256": "9579a6f59c26cd47ca002a3e27423e3ae5a8070539bbe6232b5c35dfc9e76d27"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\requests\\016-matrix-initial-frame.json",
+      "path": "session/requests/016-matrix-initial-frame.json",
+      "size": 102,
+      "sha256": "f897cba2a03072bb21f42950d3ef0b0b2b0e52765bb2c4aceda87d1c789da581"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\requests\\017-matrix-sentinel-pause.json",
+      "path": "session/requests/017-matrix-sentinel-pause.json",
+      "size": 81,
+      "sha256": "b9291459c47a87190b82dd4bf63f5ab49d5b1ae0afc9adcf12789a6cd960c865"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\requests\\018-matrix-sentinel-frame.json",
+      "path": "session/requests/018-matrix-sentinel-frame.json",
+      "size": 102,
+      "sha256": "f897cba2a03072bb21f42950d3ef0b0b2b0e52765bb2c4aceda87d1c789da581"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\initial-clean-load-01.command.json",
+      "path": "session/screens/initial-clean-load-01.command.json",
+      "size": 781,
+      "sha256": "1555d2ad002d198b67521ca4f950fb14d008a79775c1ced0b7eb8504ad27cdce"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\initial-clean-load-01.png",
+      "path": "session/screens/initial-clean-load-01.png",
+      "size": 2021831,
+      "sha256": "18acdc5ad9bdc7b90949c785aaa5d9ce68cd341fe16ba72aa0850f3a93b5d506"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\initial-clean-loading-01.json",
+      "path": "session/screens/initial-clean-loading-01.json",
+      "size": 618,
+      "sha256": "192eb09abdf0a7b2963e06f371b860bbaf31afbf452cb0175b45c25291004a61"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\initial-clean-loading-01.png",
+      "path": "session/screens/initial-clean-loading-01.png",
+      "size": 1673412,
+      "sha256": "4288daa686ba54f281eafc6abdc567357dbe2a698df1e3485a625b4e1975fc1c"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\initial-clean-loading-02.json",
+      "path": "session/screens/initial-clean-loading-02.json",
+      "size": 618,
+      "sha256": "8feebadd9b987aee7a94090cf7ec80f1f24a70f6da0af759e182c8aa4ec1e24d"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\initial-clean-loading-02.png",
+      "path": "session/screens/initial-clean-loading-02.png",
+      "size": 3233892,
+      "sha256": "0ba9db66261f94ad1cd73cd2af5a246efad5fcf990ced6f8a15d74277faf9c73"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\load-clean-dialog-open-01.command.json",
+      "path": "session/screens/load-clean-dialog-open-01.command.json",
+      "size": 772,
+      "sha256": "ef2bda02ed517415ee9ace6dba813502e59d21d9a792af2ae16c026184b8d0b3"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\load-clean-dialog-open-01.png",
+      "path": "session/screens/load-clean-dialog-open-01.png",
+      "size": 2038314,
+      "sha256": "b0dddc5e1c9a3c673cf52c793cb2b9835b2244bd2407c1790d26fefffa17a1a7"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\load-dialog-01.json",
+      "path": "session/screens/load-dialog-01.json",
+      "size": 608,
+      "sha256": "facd02968efe9466bc291c93fd302ac6fa2b04cb22c0d6d8a206e44adfa751fc"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\load-dialog-01.png",
+      "path": "session/screens/load-dialog-01.png",
+      "size": 1834636,
+      "sha256": "4fbc44f5204a86d33444f7edd63113faf71a4038aa707fd921cd21e9c4554ae4"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\load-status-01.json",
+      "path": "session/screens/load-status-01.json",
+      "size": 608,
+      "sha256": "81790064ca8d6fd5ce2faa1b569f9a9b67657bbf62a370f344a68720f0de80f9"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\load-status-01.png",
+      "path": "session/screens/load-status-01.png",
+      "size": 3376732,
+      "sha256": "889d8e46430846ebbfa9adff77adfa9567931135d0e4bfac35def7a5ffd3510a"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\load-status-02.json",
+      "path": "session/screens/load-status-02.json",
+      "size": 608,
+      "sha256": "9c071446b581e78028cc714ee7e25a3b2e7668358fed12bf77fccbc21fc431c7"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\load-status-02.png",
+      "path": "session/screens/load-status-02.png",
+      "size": 3391310,
+      "sha256": "9fd39a2972082683a4aba28a7d055cb391b0e6d46e501ee083379820d820a822"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\load-status-03.json",
+      "path": "session/screens/load-status-03.json",
+      "size": 608,
+      "sha256": "8add5663878ecfe9aa5cd58059b429c5cf27626393f233b126bc70ca2ce80871"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\load-status-03.png",
+      "path": "session/screens/load-status-03.png",
+      "size": 3310800,
+      "sha256": "37b4c59c5d967bfa85e88bc2eba81624d2aa35cb96c528a5f3a80047328c5db0"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\load-status-04.json",
+      "path": "session/screens/load-status-04.json",
+      "size": 608,
+      "sha256": "244cea036b7d390b4150e18df3b1cd4622c0ec84e36b7b9c47c7c0079c7df765"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\load-status-04.png",
+      "path": "session/screens/load-status-04.png",
+      "size": 3310822,
+      "sha256": "c08beb74b0d53e6c696d9c2431498782a037672e99d48f9ffb19c36c80c4925e"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\load-status-05.json",
+      "path": "session/screens/load-status-05.json",
+      "size": 608,
+      "sha256": "107cad82f687c1af38ff6be458f0d9b2ecdee12724b1b499b58b652cca61af7f"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\load-status-05.png",
+      "path": "session/screens/load-status-05.png",
+      "size": 3310676,
+      "sha256": "eef3c5f5316a4b08e8944707457a9e5d8911cc6cfbd439d87f8301a3ee428c81"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\load-status-06.json",
+      "path": "session/screens/load-status-06.json",
+      "size": 608,
+      "sha256": "079aa20f1c1d3969934014b2928287b8b4439b3294bedacde3190be204b5a752"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\load-status-06.png",
+      "path": "session/screens/load-status-06.png",
+      "size": 3226467,
+      "sha256": "cb98bc2f23195402b3e618faaeb8da1ff3cb69a6aa255f31c836b4655331666b"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\matrix-stage-01.json",
+      "path": "session/screens/matrix-stage-01.json",
+      "size": 609,
+      "sha256": "790d5e38e0fdc3921ec5f2b37b2dbff7d9ca529893c6f3de2a6fca826b8c469b"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\session\\screens\\matrix-stage-01.png",
+      "path": "session/screens/matrix-stage-01.png",
+      "size": 3142455,
+      "sha256": "f881223b23bd20a6d984236242f1e2d237d516233d649f53d57f1a613f45be06"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\drive_matrix_events.py",
+      "path": "external-source/drive_matrix_events.py",
+      "size": 3541,
+      "sha256": "7ba9a69cad11007a0672f3ced10d010bc40cc316f4e6ccb3b0943c3408c9efd8"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\djc-fixture-truce-readonly-R0001.txt",
+      "path": "external-source/djc-fixture-truce-readonly-R0001.txt",
+      "size": 3231,
+      "sha256": "1478828c1b739d623c5191d15f5684b39f560d4b5b8d090027568baa6de07244"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\djc-fixture-truce-readonly-R0001.json",
+      "path": "external-source/djc-fixture-truce-readonly-R0001.json",
+      "size": 4614,
+      "sha256": "8752282d983134153906c8ca7b2c8047d32079d0fd826c792b9d25e7af920ace"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\de-jure-read-save-queue-exact-R0002.json",
+      "path": "external-source/de-jure-read-save-queue-exact-R0002.json",
+      "size": 297793,
+      "sha256": "ddadb9980e610dca26bd855071f03a28ce9230e560bb89fc19b5ba5debca0673"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\state\\profile\\logs\\error.log",
+      "path": "state/profile/logs/error.log",
+      "size": 17358,
+      "sha256": "5eed2d9d612a16c2ff11d39695be8ef6016985d888ba7dfda63c3a43b7f66942"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\state\\profile\\logs\\debug.log",
+      "path": "state/profile/logs/debug.log",
+      "size": 531335,
+      "sha256": "ca1d653818969d82b0eb87bf425a2f29d198d107d3e6f4f4311be2195f430b9d"
+    },
+    {
+      "source": "C:\\workspace\\two-mod-maintenance-20261003\\bf-202609141645-5434332d4d--de-jure-conquest--R0002\\state\\profile\\logs\\game.log",
+      "path": "state/profile/logs/game.log",
+      "size": 19614,
+      "sha256": "2d24358405e05ca0f7ca2ae0fed877df3757289bd8da9d860121cc27c0e4f606"
+    },
+    {
+      "source": "C:\\workspace\\ck3_eternal_recurrence\\mod_de_jure_conquest\\tools\\gen_acceptance_fixture.py",
+      "path": "generator/gen_acceptance_fixture.py",
+      "size": 8932,
+      "sha256": "a66b6005c9848e9d75f6ddf40d43f09c97434f7b9c624b62daa5c8b17c15babe"
+    }
+  ]
+}

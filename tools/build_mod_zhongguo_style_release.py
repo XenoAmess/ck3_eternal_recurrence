@@ -66,11 +66,12 @@ LOCALIZATION_AUDIT_RELATIVE_PATH = PurePosixPath(
     "docs/release-localization-audit.json"
 )
 LOCALIZATION_AUDIT_CHECKS = (
+    "utf8_bom",
+    "header",
+    "syntax",
     "key_order",
     "protected_tokens",
-    "quality",
-    "no_english_placeholders",
-    "target_script",
+    "value_encoding",
 )
 LOCALIZATION_FAMILIES = ("zg361", "zg361_mechanisms")
 LOCALIZATION_SOURCE_LANGUAGES = ("english", "simp_chinese")
@@ -393,7 +394,12 @@ def _verify_localization_audit_entries(
 
 
 def verify_release_localization_audit(source: Path) -> dict[str, object]:
-    """Require a current GREEN audit covering all release translation files."""
+    """Require a current GREEN format audit, with exact source/target bytes and inventory.
+
+    The report does not certify non-Chinese translation meaning, terminology, or
+    real-game acceptance. Historical semantic-check labels are not the current
+    format contract and must not be relabeled without running a fresh audit.
+    """
     source = Path(source).resolve()
     path = source / LOCALIZATION_AUDIT_RELATIVE_PATH
     try:

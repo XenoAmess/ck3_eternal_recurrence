@@ -14,6 +14,8 @@ import tempfile
 import zipfile
 from pathlib import Path, PurePosixPath
 
+from translate_localization_minimax import TranslationError, assert_protected_tokens
+
 
 ROOT = Path(__file__).resolve().parents[1]
 PRODUCT_ID = "mod_reclaim_the_motherland"
@@ -236,7 +238,7 @@ def _localization_entries(path: Path, language: str) -> dict[str, str]:
 
 
 def release_localization_errors(source: Path) -> list[str]:
-    """Require complete, translated localization for a formal release."""
+    """Check localization format; only Simplified Chinese has content gates."""
 
     matrix: dict[str, dict[str, str]] = {}
     errors: list[str] = []
@@ -269,7 +271,7 @@ def release_localization_errors(source: Path) -> list[str]:
             )
             continue
         for key, value in values.items():
-            if not value.strip():
+            if language == "simp_chinese" and not value.strip():
                 errors.append(f"{language} localization is empty: {key}")
             if sorted(LOCALIZATION_PROTECTED_TOKEN.findall(value)) != sorted(
                 LOCALIZATION_PROTECTED_TOKEN.findall(english[key])
@@ -277,16 +279,10 @@ def release_localization_errors(source: Path) -> list[str]:
                 errors.append(
                     f"{language} localization changes CK3 formatting tokens: {key}"
                 )
-        if language not in LOCALIZATION_SOURCE_LANGUAGES:
-            placeholders = sorted(
-                key
-                for key, value in values.items()
-                if value == english[key] and not key.startswith("rmtm_later_dynn_title_")
-            )
-            if placeholders:
-                errors.append(
-                    f"{language} still contains English placeholder values: {placeholders}"
-                )
+        try:
+            assert_protected_tokens(english, values)
+        except TranslationError as error:
+            errors.append(f"{language} localization changes protected tokens: {error}")
     return errors
 
 
@@ -337,7 +333,7 @@ def release_identity(source: Path) -> dict[str, str]:
     localization_errors = release_localization_errors(source)
     if localization_errors:
         raise ValueError(
-            "formal release localization is incomplete:\n"
+            "formal release localization format validation failed:\n"
             + "\n".join(localization_errors)
         )
     return {"mod_version": version, "git_tag": tag, "git_sha": git_sha()}

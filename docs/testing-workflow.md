@@ -1,5 +1,9 @@
 # 实测工作流程（CK3 mod 调试）
 
+2026-10-03 当前语言范围：真实游戏验收统一只使用简体中文；英文及其他语言只检查 key 集合、UTF-8/BOM/header、占位符、保护 token、转义及可解析性。
+下文旧版多语言人工审校、母语、布局或截断要求保留为历史，相关非中文门禁已退役，不安排逐语言实机或冷启动。
+既有非中文过程证据保持原始结果；后续以 [当前本地化工作流](localization-workflow.md) 为准。
+
 2026-10-01 当前所有者偏好：游戏使用原生runner脚本直接启动 `ck3.exe`；不得为Steam离线状态截图切换Steam焦点。优先复用已有明确离线证据；CK3实机由root唯一操作，后台代理只做源码/静态/文件准备。婚姻提议需独立双向关系与实际checkpoint/cold读回，队列接受不代替结果。
 
 2026-10-02 本轮起，所有者进一步要求不占用其窗口焦点、最小化执行。本次 G2 实机停止前台恢复与桌面点击；沿 native-headless 进行查询、命令和存档，不能沿用下面历史视觉流程中的前台恢复作为自动回退。冷加载活动视图未物化时，应接通游戏内部 presentation 调用，再独立查询事件窗口；不得重发活动 Start。
@@ -729,7 +733,7 @@ live variant；production runner 实际从共享条目解析一个真实 encount
 - 数值是否符合最初产品意图仍需人工平衡审阅；冻结契约能阻止未审阅的 `50→500` 或 ID 重排，但不能证明首次冻结前的设计值天然正确。
 - 付费廷臣尚未独立验证无地玩家交付、跨进程配置保留和九语言窗口截断；`xar_final85_courtier_creator_20260821` 已在最终树覆盖登陆玩家的完整功能链及真实非默认文化/信仰。
 - 长期平衡只有 `synthetic --balance-smoke-pairs 2` 的短烟测证据；kind 4 自然死亡、40 年/14 对/pair 10 和四夹具串行矩阵均未完成，但这些只属于非门禁 soak/stability/telemetry，不证明数值平衡。
-- 九语言已有源文本，不等于母语级术语/人格审核或游戏内窗口截断验收。
+- 九语言已有源文本不等于母语或游戏内验收；这是历史覆盖边界。按 2026-10-03 用户指令，后续非中文只做格式检查，语义、术语和窗口截断不列待补门禁。
 
 ### 关键事实（2026-08-17 实证，血泪）
 
@@ -1351,11 +1355,14 @@ for line in Path(".../logs/debug.log").read_text(encoding="utf-8", errors="repla
 
 GUI state + `ExecuteConsoleCommand` 可以在进游戏后自动执行控制台命令（打标记、设变量、触发事件）。注意：窗口必须注册；`ExecuteConsoleCommand` 在 state 的 on_start 里可用性未完全验证（本项目后来改用真实链路测试，最终定型为上文的全自动验收 runner）。
 
-## Ox Here 多语言原生 UI smoke
+## 历史：Ox Here 多语言原生 UI smoke（非中文路线已退役）
 
-`tools/run_ox_here_loc_smoke.py` 的 Workshop 模式先用 sidecar 严格验证 numeric cache leaf，再只在一次性 userdir
-副本中移除 launcher 注入的 descriptor ID。每个语言必须使用新的 CK3 进程，并依次保留决议列表、详情、拒绝
-tooltip、招募 tooltip、二阶段确认和到庭事件截图；每张画面自动拒绝 raw `ox_here_*` key。
+2026-10-03 起仅简体中文允许实机，其他语言只做格式检查；不得沿旧 `all` 默认值或非中文选项执行本节历史矩阵。
+当前工具默认 `l_simp_chinese`，CLI、`main()` 与直接 `run_cell()` 均拒绝 `all`／非中文实机选择。
+现有 `--preflight` 还检查中文实机环境，不宣称其为非中文纯格式路径；其他语言通过已有离线格式校验。
+旧 `tools/run_ox_here_loc_smoke.py` Workshop 模式先用 sidecar 严格验证 numeric cache leaf，再只在一次性 userdir
+副本中移除 launcher 注入的 descriptor ID。当时每个语言使用新的 CK3 进程，并依次保留决议列表、详情、拒绝
+tooltip、招募 tooltip、二阶段确认和到庭事件截图；每张画面自动拒绝 raw `ox_here_*` key。该过程保留为历史，不列当前非中文门禁。
 
 2026-08-27 实机发现两个不能写死成单次坐标/单行 footer 的 harness 事实：CK3 偶尔会吞掉第一次 Decisions HUD
 点击，所以必须以语言专属 ASCII anchor 的真实出现确认窗口已打开并有限重试；波兰语额外显示社区翻译版本行，会把

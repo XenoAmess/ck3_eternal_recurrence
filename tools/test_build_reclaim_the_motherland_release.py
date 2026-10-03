@@ -4,13 +4,16 @@
 from __future__ import annotations
 
 import json
+import re
 import shutil
 import tempfile
 import unittest
 import zipfile
 from pathlib import Path
+from unittest import mock
 
 import build_reclaim_the_motherland_release as release
+import validate_reclaim_the_motherland_static as static
 
 
 REVISION = "a" * 40
@@ -105,22 +108,64 @@ class BuildReclaimTheMotherlandReleaseTests(unittest.TestCase):
             with self.subTest(item_id=item_id), self.assertRaises(ValueError):
                 release.normalize_workshop_item_id(item_id)
 
-    def test_release_localization_rejects_placeholders(self) -> None:
+    def test_release_localization_accepts_foreign_english_values(self) -> None:
         self.assertEqual([], release.release_localization_errors(self.source))
         french = self.source / "localization/french/rmtm_l_french.yml"
         english = self.source / "localization/english/rmtm_l_english.yml"
         french.write_bytes(
             english.read_bytes().replace(b"l_english:", b"l_french:", 1)
         )
-        self.assertTrue(
-            any(
-                "English placeholder" in item
-                for item in release.release_localization_errors(self.source)
-            )
-        )
+        self.assertEqual([], release.release_localization_errors(self.source))
         for item_id in ("0", "01", "-1", "abc", str(2**64)):
             with self.subTest(item_id=item_id), self.assertRaises(ValueError):
                 release.normalize_workshop_item_id(item_id)
+
+    def test_release_localization_rejects_missing_key(self) -> None:
+        french = self.source / "localization/french/rmtm_l_french.yml"
+        lines = french.read_text(encoding="utf-8-sig").splitlines()
+        french.write_text("\n".join(lines[:1] + lines[2:]) + "\n", encoding="utf-8-sig")
+        self.assertTrue(any("key mismatch" in error for error in release.release_localization_errors(self.source)))
+
+    def test_release_localization_rejects_changed_format_and_placeholder_tokens(self) -> None:
+        french = self.source / "localization/french/rmtm_l_french.yml"
+        original = french.read_bytes()
+        changed_scope = original.replace(b"[rmtm_loyal_notable.GetFirstName]", b"[different.GetFirstName]")
+        first_value = re.search(rb'( rule_rmtm_hegemon_fate:0 ")([^"]+)(")', original)
+        assert first_value is not None
+        changed_format = original[:first_value.start(2)] + b"#P " + original[first_value.start(2):first_value.end(2)] + b"#!" + original[first_value.end(2):]
+        for data in (changed_scope, changed_format):
+            with self.subTest(data=data):
+                french.write_bytes(data)
+                self.assertTrue(any("tokens" in error for error in release.release_localization_errors(self.source)))
+
+    def test_release_localization_keeps_foreign_parser_and_encoding_strict(self) -> None:
+        french = self.source / "localization/french/rmtm_l_french.yml"
+        original = french.read_bytes()
+        duplicate = original.splitlines()[1] + b"\n"
+        for data in (original.removeprefix(b"\xef\xbb\xbf"), original.replace(b"l_french:", b"l_german:", 1), original + b' malformed:0 "unterminated\n', original + duplicate, original + b"\xff"):
+            with self.subTest(data=data):
+                french.write_bytes(data)
+                self.assertTrue(release.release_localization_errors(self.source))
+
+    def test_release_localization_retains_chinese_content_requirement(self) -> None:
+        chinese = self.source / "localization/simp_chinese/rmtm_l_simp_chinese.yml"
+        text = chinese.read_text(encoding="utf-8-sig")
+        text = re.sub(r'( rule_rmtm_hegemon_fate:0 ")[^"]+("\n)', r'\1\2', text)
+        chinese.write_text(text, encoding="utf-8-sig")
+        self.assertTrue(any("simp_chinese localization is empty" in error for error in release.release_localization_errors(self.source)))
+
+    def test_static_localization_keeps_chinese_semantics_and_foreign_format_only(self) -> None:
+        english = self.source / "localization/english/rmtm_l_english.yml"
+        text = english.read_text(encoding="utf-8-sig").replace("Fate of the Chinese Hegemon", "Arbitrary natural text").replace("The realm lies divided, yet its embers endure.", "A vanilla effect and acceptance percentage.")
+        english.write_text(text, encoding="utf-8-sig")
+        french = self.source / "localization/french/rmtm_l_french.yml"
+        french.write_bytes(english.read_bytes().replace(b"l_english:", b"l_french:", 1))
+        with mock.patch.object(static, "MOD", self.source):
+            self.assertEqual([], static.localization_errors(release_localization=True))
+            chinese = self.source / "localization/simp_chinese/rmtm_l_simp_chinese.yml"
+            text = chinese.read_text(encoding="utf-8-sig").replace("中华霸权统治者的命运", "不符合中文约定")
+            chinese.write_text(text, encoding="utf-8-sig")
+            self.assertTrue(any("Simplified Chinese contract mismatch" in error for error in static.localization_errors(release_localization=True)))
 
     def test_manifest_verification_and_tamper_detection(self) -> None:
         staging, manifest_path, _, _ = self.build()

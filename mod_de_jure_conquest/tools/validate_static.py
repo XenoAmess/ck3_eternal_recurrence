@@ -44,7 +44,7 @@ def descendants(block: Block):
 
 
 def localization(path: Path) -> dict[str, str]:
-    # Use the same strict parser as formal translation, before extra checks.
+    # File format only: no translation-quality, terminology or live-language gate.
     parse_ck3_localization(path)
     value = path.read_text(encoding="utf-8-sig")
     language = path.parent.name
@@ -101,8 +101,6 @@ def validate(game: Path | None = DEFAULT_GAME, *, release_localization: bool = F
                 entries = localization(SOURCE / f"localization/{language}/greatwar_l_{language}.yml")
                 if entries.keys() != english.keys():
                     raise ValueError(f"release localization keys differ: {language}")
-                if language not in {"english", "simp_chinese"} and entries == english:
-                    raise ValueError(f"release localization is an English placeholder: {language}")
         for tier, contract in CB_CONTRACT.items():
             top = scripts[f"common/casus_belli_types/{tier}_de_jure_greatwar.txt"]
             if [entry.key for entry in top.entries] != [f"{tier}_de_jure_greatwar"]:
@@ -180,7 +178,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--game", type=Path, default=DEFAULT_GAME)
     parser.add_argument("--no-installed-game", action="store_true")
-    parser.add_argument("--release-localization", action="store_true")
+    parser.add_argument("--release-localization", action="store_true", help="check all nine localization file formats and keys; no semantic review or game launch")
     parser.add_argument("--report", type=Path)
     args = parser.parse_args()
     result = validate(None if args.no_installed_game else args.game, release_localization=args.release_localization)

@@ -9,3 +9,5 @@
 [证据索引](evidence-index.json) 给出保留快照根、逐文件 size 与 SHA-256；报告中的相对 evidence 路径以外置 `C:/workspace/two-mod-maintenance-20261003/holding-R0002-verification-candidate/` 为根。本目录仅归档报告与索引；七份原生日志、状态快照、inbox 脚本和生产 manifest 永久保留在该外置目录。索引的 `source` 是最初运行来源，复核时采用保留快照，避免后续运行现场改变原文件。
 
 夹具的最小修复、生成器同步和逐文件一致验证见 [修复说明](../fixture-initialization-fix-2026-10-03.md)。此前 R0001／R0002 的早期边界记录与旧静态报告均未覆盖。
+
+当前范围更正：[只进行简体中文实机；其他八语只检查格式](../localization-acceptance-policy-2026-10-03.md)。同目录冻结report里的多语pending／未来提示是历史计划，已撤销；原字节和SHA不改，也不把未执行外语步骤记为PASS。

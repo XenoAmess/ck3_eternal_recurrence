@@ -409,195 +409,23 @@ KANA = re.compile(r"[ぁ-んァ-ン]")
 HANGUL = re.compile(r"[가-힣]")
 CYRILLIC = re.compile(r"[А-Яа-яЁё]")
 LATIN_WORD = re.compile(r"[A-Za-z][A-Za-z'-]*")
-LANGUAGE_PROMPT_SUFFIX = {
-    "japanese": (
-        " Write only natural modern Japanese. The Simplified Chinese reference is "
-        "meaning-only: never copy its wording or simplified glyph forms. Translate every "
-        "sentence fully with normal Japanese kana and kanji. Never leave Latin fragments "
-        "such as backfill, blocker, cliff, cohort, leaver, manager, nomination, narrative, "
-        "onboarding, owner, override, rent seeking, scapegoat, sponsor, one, or usal, and render Chinese management compounds "
-        "as natural Japanese. Sample audit means 抜き取り検査, never a lottery. Internal inversion "
-        "means an internal pay/reward inversion, never sexual or psychological perversion. 工時 is "
-        "not natural Japanese; use 作業時間 or 労働時間. Translate toil, throughput, and golden "
-        "handcuffs into natural Japanese. A reversed rating means an evaluation was overturned, "
-        "not merely withdrawn or cancelled. In "
-        "policy #353, preserve the explicit compliance-over-capacity motive. Use 最下位 for the "
-        "bottom-ranked tier or person, never the Chinese-style 末位/末端 or the list-tail word 末尾. "
-        "Never output 本層; use この階層 or 現在の階層. "
-        "For reversals in policies #32, #76, and #359, use 評価の覆り or 判定の覆り, never 翻案. "
-        "Policy #119 must name the requester, selector, and final approver. Translate vesting as "
-        "権利確定 or 段階的権利確定 rather than retaining Latin text. Translate Stay Interview "
-        "as 定着面談 or 在籍継続面談, SLA as サービス水準合意, and WIP as 進行中作業; do not "
-        "retain the English acronym in parentheses."
-        " For the fourfold 3.25 settlement, use 地方国庫 for local treasury, 個人の金 or "
-        "個人の所持金 for personal gold, 功徳 for merit, and 俸給 or 俸禄 for salary. Use "
-        "natural 俸給減額 for salary reduction, never literal compounds such as 地方財庫, "
-        "地方財務, 自国庫, 個人資金, 人事評価 -60, 功績, or 俸禄減成."
-    ),
-    "korean": (
-        " Write only natural modern Korean in Hangul. The Simplified Chinese reference is "
-        "meaning-only: never copy Chinese wording and never use Hanja. Jingcha means a "
-        "periodic large-scale administrative performance review of officials, never police. "
-        "Celestial government is not the Japanese emperor. In zg361_demoted_desc only, salary "
-        "halved must explicitly remain 절반 or 50%. Translate cohort as 평가 집단 or 평가군 and translate every English "
-        "management term (including governance, sponsor, owner, blocker, backfill, offer, cohort, "
-        "vesting, cliff, ramp, delivery, override, and disciplinary) into idiomatic Hangul. Translate Good/Bad "
-        "Leaver labels into natural Hangul rather than retaining English. Owner must be 담당자 or "
-        "책임자 and blocker must be 방해 요인 or 차단자; never output those Latin spellings. "
-        "Down-weight suspected mutual "
-        "boosters by lowering those people's evaluation weight. Rent seeking is 지대 추구, "
-        "a rating-not-guaranteed clause must say 등급 미보장, and crisis overrides are "
-        "temporary rule exceptions or bypasses rather than redefinitions. Use a consistent "
-        "concise 해라체 UI register rather than switching to 합니다체. In policy #351, controls "
-        "means a control group (대조군 or 통제군), not generic control. A second raise within "
-        "the same grade is pay calibration, not promotion; dual credit means attributing performance "
-        "credit to both lines, and personal contribution growth is not personal development. Avoid "
-        "duplicated adverbs such as 즉시 ... 즉시."
-        " For core keys zg361.2.desc, zg361.3.desc, and zg361.4.desc, write 평가군 or "
-        "평가 집단 and never output the Latin spelling cohort. Bottom-tier elimination is 최하위 "
-        "탈락 or 최하위 퇴출, never 말년 퇴출 or 말등 탈락. A hard organizational charter is "
-        "강경 헌장, never 헌법. In the current 3.25 text, preserve all four Arabic-numbered "
-        "consequences: local treasury -50, personal gold -25, merit -60 where supported, and "
-        "salary -25% for one year where applicable. In policy #361, immediate delivery means "
-        "immediate work delivery or 납품/성과 인도, never food/package 배달. Translate SLA as "
-        "서비스 수준 협약 and WIP as 진행 중 작업, without retaining the English acronyms. "
-        "Never mix Cyrillic or any other foreign script into Korean."
-        " In policy #21, short raise means a temporary pay/salary increase such as 단기 녹봉 "
-        "인상, never a promotion or 승급. In #263, temporary loan means temporary secondment: "
-        "use exactly the meaning 임시 파견을 무기한 연장하고, 프로젝트 종료 후에야 소속을 "
-        "결정한다; never 차관 or 책임자를 정한다. In #283, the promotion has happened but its pay has not "
-        "caught up; write No.283 · 무급 승진의 급여 반영 기한 or an equally explicit natural "
-        "Korean title, never 무승급."
-    ),
-    "russian": (
-        " Write natural Russian in Cyrillic. Never copy Chinese reference fragments or leave "
-        "English source phrases untranslated. Translate backfill, owner, sponsor, override, toil, cliff, and "
-        "Good/Bad Leaver into idiomatic Russian. Never output the Latin word cohort; translate it as "
-        "группа оценки or пул оценки, and "
-        "translate non-crisis as вне кризиса rather than pre-crisis. "
-        "Waiving proven performers means releasing them from a test or assessment, never releasing "
-        "or firing the people themselves. Preserve scope, resources, and signed accountability as "
-        "distinct rule inputs; do not replace them with schedule or signed choice. In policy #351, "
-        "controls means контрольная группа."
-        " For core keys zg361.2.desc, zg361.3.desc, and zg361.4.desc, write оценочная "
-        "группа and never output the Latin spelling cohort. In policies #295 and #296, "
-        "cliff is a waiting period before benefits vest; use a natural Russian phrase for "
-        "that waiting period and never output the Latin spelling cliff. For a 3.25 result, preserve "
-        "all four Arabic-numbered consequences: local treasury -50, personal gold -25, merit -60 "
-        "where supported, and salary -25% for one year where applicable. In #202 translate named "
-        "supporters fully into natural Russian. Translate skip-level "
-        "review as проверка вышестоящим руководителем and SLA as соглашение об уровне услуг, "
-        "without retaining the English spelling. Translate Stay Interview as интервью по удержанию "
-        "without an English parenthetical."
-        " In policy #21, short raise must explicitly be a short-term increase in жалованье, "
-        "зарплата, or оклад, never an unspecified promotion; render repeatedly as неоднократно "
-        "or repeatedly recurring in natural Russian, with no Latin word."
-    ),
-    "french": (
-        " Never copy Chinese reference fragments or leave English source phrases untranslated. "
-        "When down-weighting suspected mutual boosters, lower the evaluation weight of the "
-        "people suspected of rating one another too highly, not the suspicion itself. Render "
-        "this explicitly as the evaluation weight assigned to personnes soupçonnées de se surnoter "
-        "mutuellement; the people must be the grammatical object. Render "
-        "high performers as people or employees, never an untranslated English label. Do not "
-        "mix Spanish or Portuguese words into French. Translate backfill, owner, override, toil, cliff, "
-        "and Good/Bad Leaver rather than retaining English. In policy #351, controls means a control "
-        "group (groupe témoin or groupe de contrôle), not generic controls."
-        " In policies #295 and #296, cliff is the initial waiting period before benefits "
-        "vest; use délai de carence or another natural French phrase and never output cliff. "
-        "Translate sponsor as parrain or responsable, ramp-up as montée en compétence, low "
-        "performer as salarié peu performant, and packaging as mise en scène or présentation."
-        " Translate skip-level as entretien avec le supérieur indirect, output as résultats, SLA "
-        "as accord de niveau de service, and WIP as travail en cours, without retaining English "
-        "spellings. Translate Stay Interview as entretien de fidélisation or entretien de rétention "
-        "without an English parenthetical. In policy #85 use offres or ensembles de renouvellement, "
-        "never the Franglais packages. In #136 produce a grammatical title for a small cross-manager "
-        "pre-calibration meeting. Bottom-tier elimination means elimination of the lowest-ranked "
-        "tier or person: use niveau le plus bas, échelon le plus bas, or les moins bien classés, "
-        "never dernier tiers (bottom third) or vague dernier niveau. In policy #130, rebrand means "
-        "requalifier or rebaptiser, never rebailler."
-    ),
-    "german": (
-        " Never copy Chinese reference fragments or leave English source phrases untranslated. "
-        "Use idiomatic German rather than English ledger/reserve/Offer/Owner/Blocker/Backfill/Toil/Shared "
-        "Services fragments, and give ledger "
-        "instructions a complete verb. Translate Performer as Leistungsträger or another natural "
-        "person noun. In policy #351, controls means a Kontrollgruppe. Address the player "
-        "consistently as informal singular du/dein, never Sie/Ihr/euer, and translate Bottom Tier. "
-        "Leapfrog promotion means promoting a person over a rank or level, never skipping the person. "
-        "In policies #27 and #339, translate owner as Verantwortlicher and blocker as Hindernis "
-        "or Blockierer; never output the Latin spellings owner or blocker. In policy #205, "
-        "translate toil as unnötige Routinearbeit or Arbeitslast and never output toil. In "
-        "policies #295 and #296, cliff is a Sperrfrist or Wartefrist before benefits vest; "
-        "never output the Latin spelling cliff. For the specifically requested policy keys, "
-        "also localize Policy, Review, Reset, Narrative, Template, Vesting, Peers, Manager, "
-        "Credit, Star, Output, Ramp-up, Mismatch, Skip-Level, Low Performer, Cohort, Service, "
-        "and Override instead of leaving those English words inside German compounds. For #84, "
-        "#85, and #296, use Anwartschaft or Anspruchserwerb instead of Vesting. For #121, use "
-        "hierarchieübergreifende Überprüfung instead of Skip-Level-Review. For #277, use "
-        "leistungsschwacher Mitarbeiter instead of Low Performer. For #347, use manuelle "
-        "Ermessensanpassung instead of Override. In #85, use vergleichbare Beschäftigte or "
-        "Kollegen instead of Peers. Also localize remaining English: Richtlinie for Policy, "
-        "Übersicht for Dashboard/Cockpit, Überlastung for Burnout, Ausgangswert for Baseline, "
-        "Neufestsetzung for Reset, Zwischengespräch for Mid-Cycle Check-in, hierarchieübergreifend "
-        "for Skip-Level, Personalbeauftragter for Steward, Überprüfung for Review, Vorlage for "
-        "Template, Führungskraft for Manager, Leistung or Ergebnis for Output, Prüfung for Audit, "
-        "Gehaltsumkehr for Pay Inversion, Nachwuchspool for Pipeline, Fehlbesetzung for Mismatch, "
-        "Spitzenkraft for Star, Einarbeitung for Ramp, Bindung for Retention, beschreibend for "
-        "Narrative, and Dienstgütevereinbarung for SLA. In #119 name HC-Anfragender, "
-        "Auswahlverantwortlicher, and Genehmiger as three people. Translate Stay Interview as "
-        "Bindungsgespräch or Bleibegespräch without an English parenthetical. Translate Performance "
-        "Improvement Plan as Leistungsverbesserungsplan (PIP), and Work-in-Progress Limit as a natural "
-        "German limit on laufende/gleichzeitige Arbeit. In #347, bearer is the distinct person bearing "
-        "the consequence or burden (Lastenträger/Träger der Folgen), not merely Verantwortlicher. "
-        "In #341, use fully paired German quotation marks such as „Phase eins abgeschlossen“ or no "
-        "quotation marks; never add an ASCII quotation mark."
-    ),
-    "polish": (
-        " Never copy Chinese reference fragments or leave English source phrases untranslated. "
-        "Translate backfill as obsadzenie zastępstwa or uzupełnienie wakatu, and translate "
-        "deliverable, deadline, realm, override, toil, cliff, Good/Bad Leaver, credit, and visible hero "
-        "credit into idiomatic Polish. In "
-        "performance-attribution contexts, credit means uznanie or zasługa, never financial kredyt. When "
-        "a reorganization requires superior ownership, the superior must take responsibility for "
-        "the list rather than merely supervise it. In policy #351, controls means grupa kontrolna."
-        " Translate baseline as punkt odniesienia, reset as ponowne ustalenie, coaching as rozmowa "
-        "rozwojowa, skip-level review as przegląd przez przełożonego wyższego szczebla, and SLA as "
-        "umowa o poziomie usług; do not retain the English spelling. Translate Stay Interview as "
-        "rozmowa retencyjna without an English parenthetical. In #283, promotion always means the "
-        "career advancement awans, never a sales promotion or promocja. Preserve the No.283 title number."
-    ),
-    "spanish": (
-        " Never copy Chinese reference fragments or leave English source phrases untranslated. "
-        "Translate backfill as cobertura de la vacante or reemplazo, and translate bonuses, offer, "
-        "owner, blocker, override, toil, rent seeking, cliff, Good/Bad Leaver, ledger, organizational wording, and "
-        "visible hero credit into idiomatic Spanish. Render "
-        "high performers as people or employees, not the abstract phrase Altos Rendimientos. "
-        "Reward nominations are candidaturas, not appointments; dual credit is shared attribution, "
-        "not financial credit; superior ownership means taking responsibility, not property ownership. "
-        "In policy #351, controls means grupo de control. In policies #295 and #296, cliff "
-        "is the initial waiting period before benefits vest; use periodo de carencia or another "
-        "natural Spanish phrase and never output cliff. Translate vesting as consolidación de "
-        "derechos. Manager override means a small manual discretionary adjustment budget "
-        "(ajuste manual o discrecional), never cancellation or anulación. Translate skip-level "
-        "review as revisión por el superior indirecto, steward as responsable, output as resultados, "
-        "ramp-up as incorporación, individual contributor as especialista individual, manager as "
-        "responsable, SLA as acuerdo de nivel de servicio, and WIP as trabajo en curso; do not "
-        "retain the English spellings or acronyms. In #29 translate claw back rewards as recuperar or "
-        "reclamar las recompensas. In #344 keep crédito and bonificación as two separate, correctly "
-        "spaced nouns."
-        " In policy #21, short raise is an aumento salarial temporal, not a vague promotion, and "
-        "repeatedly unrewarded 3.75 talent must remain no recompensado, never premiado."
-    ),
-}
+FORMAT_CONTEXT = (
+    "Only Simplified Chinese has real-game acceptance. All other languages, including "
+    "English, have format-only release checks: key coverage/order, valid encoding and "
+    "syntax, header/BOM, and protected tokens. Translation meaning, terminology, tone, "
+    "target script, and equality with English are outside these checks."
+)
+LANGUAGE_PROMPT_SUFFIX = {language: FORMAT_CONTEXT for language in LANGUAGES}
+
 AUDIT_FORMAT_VERSION = 1
 AUDIT_PRODUCT_ID = "mod_zhongguo_style"
 AUDIT_CHECKS = (
+    "utf8_bom",
+    "header",
+    "syntax",
     "key_order",
     "protected_tokens",
-    "quality",
-    "no_english_placeholders",
-    "target_script",
+    "value_encoding",
 )
 DEFAULT_AUDIT_REPORT = MOD_ROOT / "docs" / "release-localization-audit.json"
 
@@ -830,6 +658,9 @@ def is_translatable_english(value: str) -> bool:
 def candidate_residuals(
     english: dict[str, str], candidate: dict[str, str], language: str | None = None
 ) -> list[str]:
+    """Keep the Chinese content check; other languages have no content gate."""
+    if language != "simp_chinese":
+        return []
     return [
         key
         for key, value in candidate.items()
@@ -856,7 +687,9 @@ def copied_english_phrase(source: str, candidate: str, words: int = 4) -> str | 
 
 
 def targeted_quality_errors(key: str, value: str, language: str) -> list[str]:
-    """Reject concrete semantic and mixed-language regressions found in review."""
+    """Check Chinese mechanics text; non-Chinese release checks are format only."""
+    if language != "simp_chinese":
+        return []
     errors: list[str] = []
     folded = value.casefold()
     residual_visible = minimax.PROTECTED.sub("", value).casefold()
@@ -1239,60 +1072,15 @@ def candidate_quality_errors(
     candidate: dict[str, str],
     language: str,
 ) -> list[str]:
-    """Reject structurally valid output that copied the reference or wrong script."""
+    """Check value encoding for all languages and mechanics text only for Chinese."""
     errors: list[str] = []
     for key, value in candidate.items():
-        source = english[key]
-        reference = chinese[key]
         if "\ufffd" in value:
             errors.append(f"{key}: contains U+FFFD")
-        if (
-            value == reference
-            and value != source
-            and is_translatable_english(source)
-        ):
-            errors.append(f"{key}: copied Simplified Chinese reference verbatim")
-        source_visible = minimax.PROTECTED.sub("", source)
-        candidate_visible = minimax.PROTECTED.sub("", value)
-        source_copy_text = TECHNICAL_WORDS.sub("", source_visible)
-        candidate_copy_text = TECHNICAL_WORDS.sub("", candidate_visible)
-        phrase = copied_english_phrase(source_copy_text, candidate_copy_text)
-        if phrase is not None:
-            errors.append(f"{key}: copied English phrase {phrase!r}")
-
-        visible = candidate_visible
-        visible_length = len(re.sub(r"\s+", "", visible))
-        if language == "japanese":
-            forbidden = sorted(set(value) & JAPANESE_SIMPLIFIED_CHINESE)
-            if forbidden:
-                errors.append(
-                    f"{key}: contains Simplified Chinese glyphs {''.join(forbidden)!r}"
-                )
-            if CYRILLIC.search(visible):
-                errors.append(f"{key}: Japanese output contains Cyrillic text")
-            if visible_length >= 15 and CJK.search(value) and KANA.search(value) is None:
-                errors.append(f"{key}: long Japanese text contains no kana")
-        elif language == "korean":
-            if CJK.search(value) or KANA.search(value):
-                errors.append(f"{key}: Korean output contains CJK/kana text")
-            if CYRILLIC.search(visible):
-                errors.append(f"{key}: Korean output contains Cyrillic text")
-            if visible_length >= 15 and HANGUL.search(value) is None:
-                errors.append(f"{key}: long Korean text contains no Hangul")
-        elif language == "russian":
-            if CJK.search(value) or KANA.search(value) or HANGUL.search(value):
-                errors.append(f"{key}: Russian output contains East Asian text")
-            if visible_length >= 15 and CYRILLIC.search(value) is None:
-                errors.append(f"{key}: long Russian text contains no Cyrillic")
-        else:
-            if (
-                CJK.search(value)
-                or KANA.search(value)
-                or HANGUL.search(value)
-                or CYRILLIC.search(value)
-            ):
-                errors.append(f"{key}: Latin-script output contains foreign-script text")
-        errors.extend(targeted_quality_errors(key, value, language))
+        if "\r" in value or "\n" in value:
+            errors.append(f"{key}: contains a literal newline")
+        if language == "simp_chinese":
+            errors.extend(targeted_quality_errors(key, value, language))
     return errors
 
 
@@ -1305,12 +1093,14 @@ def assert_candidate_quality(
     errors = candidate_quality_errors(english, chinese, candidate, language)
     if errors:
         raise ReleaseLocalizationError(
-            f"{language} quality gate failed: " + "; ".join(errors[:12])
+            f"{language} localization validation failed: " + "; ".join(errors[:12])
         )
 
 
 def request_key_context(source: dict[str, str], language: str) -> str:
-    """Add narrow, authoritative instructions for source values changed at release freeze."""
+    """Scope non-Chinese requests to format; retain Chinese mechanics instructions."""
+    if language != "simp_chinese":
+        return " " + FORMAT_CONTEXT
     keys = set(source)
     notes: list[str] = []
     if "zg361_review_now_decision_tooltip" in keys:
@@ -1344,57 +1134,28 @@ def request_key_context(source: dict[str, str], language: str) -> str:
             "English ledger boilerplate: a limited bonus pool funds top-rating rewards, 3.75 gets "
             "a bonus or short raise, 3.5 stays unchanged, and 3.25 keeps the fourfold penalty"
         )
-    if language == "korean" and keys & {
-        "zg361_grade_325_desc",
-        "zg361.4.desc",
-    }:
-        notes.append(
-            "in Korean use 네 가지 조치 or 네 가지 책임 for fourfold consequence, 공덕 for "
-            "merit, and 녹봉 for salary; never copy 问责, 俸禄, 贤能, or any CJK glyph"
-        )
-    if language == "japanese" and "zg361_grade_325_desc" in keys:
-        notes.append(
-            "in Japanese begin zg361_grade_325_desc with 今回の評価結果 or 今期の評価結果; "
-            "never use the Chinese-style 今周期 or 考核"
-        )
-    if language == "japanese" and "zg361.4.desc" in keys:
-        notes.append(
-            "in Japanese zg361.4.desc must say もう一度3.25を取れば or an equally grammatical "
-            "passive equivalent; never the ungrammatical 3.25 を付けば"
-        )
-    if language == "japanese" and "zg361m.14.a" in keys:
-        notes.append(
-            "in Japanese zg361m.14.a must say 俸給減額の停止 or 俸給控除の停止; "
-            "never 俸禄停止, which wrongly means stopping salary itself"
-        )
-    if language == "japanese" and keys & OFFICIAL_RESOURCE_KEYS:
-        notes.append(
-            "for every explicit fourfold resource in these keys, use CK3 1.19.0.6 official "
-            "Japanese terminology exactly: 地方国庫 for local treasury, 個人の金 or "
-            "個人の所持金 for personal gold, and 功徳 for merit; never 地方財務, 個人資金, "
-            "個人金貨, 人事評価, or 功績"
-        )
-    if language == "japanese" and "zg361m.18.a" in keys:
-        notes.append(
-            "in Japanese zg361m.18.a begins with 精算時 or 決算時 for accounting settlement; "
-            "never 決済時, which means a payment transaction"
-        )
-    if language == "korean" and "zg361m.14.a" in keys:
-        notes.append(
-            "in Korean zg361m.14.a must say 녹봉 감액 중단 or 봉급 공제 중단; never "
-            "봉록 중단, which wrongly means stopping salary itself. End concisely with 각각 "
-            "대조·기록한다 or an equivalent 한다 form; never 합니다 and never repeat 항목을 항목별로"
-        )
-    if language == "korean" and keys & OFFICIAL_RESOURCE_KEYS:
-        notes.append(
-            "for every explicit fourfold resource in these keys, use CK3 1.19.0.6 Korean "
-            "terminology: 지방 국고 or 지방 금고, 개인 금화, and 공덕; never 공적 or 업적 "
-            "for the merit resource"
-        )
     if not notes:
         return ""
     return " CRITICAL EXACT-KEY REQUIREMENTS: " + "; ".join(notes) + "."
 
+
+
+def candidate_request_prompt(
+    source: dict[str, str], reference: dict[str, str], language: str, context: str
+) -> str:
+    """Retain normal translation generation while declaring the format-only audit scope."""
+    prompt_source = {
+        key: TRANSLATION_SOURCE_OVERRIDES.get(key, value)
+        for key, value in source.items()
+    }
+    return minimax.make_prompt(
+        "English", ("Simplified Chinese",), LANGUAGES.get(language, language),
+        context + " This is a strict flat-string JSON batch using raw CK3/YML string values. "
+        "Escape JSON correctly so decoded values retain every raw CK3 backslash/quote "
+        "sequence. Values must contain no literal carriage return, newline, or U+FFFD. "
+        + FORMAT_CONTEXT,
+        prompt_source, (reference,), PROTECTED_TERMS,
+    )
 
 def request_with_bisection(
     language: str,
@@ -1410,9 +1171,7 @@ def request_with_bisection(
 
     def request_subset(keys: tuple[str, ...]) -> dict[str, str]:
         source = {key: english[key] for key in keys}
-        prompt_source = {
-            key: TRANSLATION_SOURCE_OVERRIDES.get(key, source[key]) for key in keys
-        }
+
         reference = {key: chinese[key] for key in keys}
         subset_digest = hashlib.sha256(
             json.dumps(keys, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
@@ -1431,33 +1190,14 @@ def request_with_bisection(
             )
             write_new_or_equal(target, payload)
 
-        single_key_quality_attempts = 3 if len(keys) == 1 else 1
+        single_key_format_attempts = 3 if len(keys) == 1 else 1
         last_error: minimax.TranslationError | ReleaseLocalizationError | None = None
-        for quality_attempt in range(single_key_quality_attempts):
+        for format_attempt in range(single_key_format_attempts):
             try:
                 _, result = minimax.request_candidate(
                     language,
                     LANGUAGES[language],
-                    minimax.make_prompt(
-                        "English",
-                        ("Simplified Chinese",),
-                        LANGUAGES[language],
-                        spec.context
-                        + " This is a strict flat-string JSON batch using raw CK3/YML string values. "
-                        "Every source \\\" sequence is a protected two-character token: a backslash followed "
-                        "by a quote. Encode it as \\\\\\\" in JSON so the decoded JSON string still contains "
-                        "the original \\\" token; never normalize it to an ordinary unescaped quote. "
-                        "For the current 3.25 fourfold-settlement keys, retain Arabic numerals and all "
-                        "four distinct consequences exactly: local treasury -50 when present, personal "
-                        "gold -25, merit -60 where supported, and salary -25% for one year where applicable. "
-                        "An upheld appeal refunds the three immediate charges and stops only future salary "
-                        "deductions; already settled salary months are not refunded."
-                        + request_key_context(source, language)
-                        + LANGUAGE_PROMPT_SUFFIX[language],
-                        prompt_source,
-                        (reference,),
-                        PROTECTED_TERMS,
-                    ),
+                    candidate_request_prompt(source, reference, language, spec.context),
                     source,
                     api_key,
                     max_tokens,
@@ -1473,7 +1213,7 @@ def request_with_bisection(
                 return result
             except ReleaseLocalizationError as error:
                 last_error = error
-                if quality_attempt + 1 < single_key_quality_attempts:
+                if format_attempt + 1 < single_key_format_attempts:
                     continue
                 if len(keys) == 1:
                     raise
@@ -1487,7 +1227,7 @@ def request_with_bisection(
                 if (
                     len(keys) == 1
                     and not transport_failure
-                    and quality_attempt + 1 < single_key_quality_attempts
+                    and format_attempt + 1 < single_key_format_attempts
                 ):
                     continue
                 if len(keys) == 1 or transport_failure:
@@ -1707,7 +1447,7 @@ def candidate_value_errors(
     source = {key: english_value}
     reference = {key: chinese_value}
     candidate = {key: candidate_value}
-    if "\n" in candidate_value:
+    if "\r" in candidate_value or "\n" in candidate_value:
         errors.append(f"{key}: contains a literal newline")
     try:
         minimax.assert_protected_tokens(source, candidate, PROTECTED_TERMS)
@@ -2675,8 +2415,8 @@ def audit_candidate_artifact(root: Path) -> int:
             "complete_index_hashes",
             "key_order",
             "protected_tokens",
-            "quality",
-            "no_english_placeholders",
+            "strict_json",
+            "value_encoding",
         ],
     }
     report_path = root / "audit" / "candidate-audit.json"
@@ -2777,10 +2517,22 @@ def apply_candidates(root: Path) -> int:
     }
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
     write_new_or_equal(root / "apply" / f"{stamp}.json", json_bytes(apply_record))
-    print(f"GREEN: applied reviewed candidates to {len(changed)} authority/target files")
+    print(f"GREEN: applied format-checked candidates to {len(changed)} authority/target files")
     print("NEXT: run gen_361_mechanisms.py to render the seven generated yml files")
     return 0
 
+
+
+def parse_language_localization(path: Path, language: str) -> dict[str, str]:
+    """Use the shared strict parser and verify the file declares its expected language."""
+    values = minimax.parse_ck3_localization(path)
+    headers = [
+        line for line in path.read_text(encoding="utf-8-sig").splitlines()
+        if minimax.HEADER.fullmatch(line)
+    ]
+    if headers != [f"l_{language}:"]:
+        raise ReleaseLocalizationError(f"wrong localization header for {language}: {path}")
+    return values
 
 def audit(write_report: Path | None = None) -> int:
     errors: list[str] = []
@@ -2792,7 +2544,7 @@ def audit(write_report: Path | None = None) -> int:
     for language in LANGUAGES:
         language_report: dict[str, object] = {}
         for source_name, spec in SOURCES.items():
-            english = minimax.parse_ck3_localization(spec.english)
+            english = parse_language_localization(spec.english, "english")
             target_path = (
                 MOD_ROOT
                 / "localization"
@@ -2800,7 +2552,7 @@ def audit(write_report: Path | None = None) -> int:
                 / spec.english.name.replace("_english.yml", f"_{language}.yml")
             )
             target_paths.append(target_path)
-            target = minimax.parse_ck3_localization(target_path)
+            target = parse_language_localization(target_path, language)
             if tuple(target) != tuple(english):
                 errors.append(f"key/order mismatch: {target_path}")
                 continue
@@ -2809,24 +2561,14 @@ def audit(write_report: Path | None = None) -> int:
             except minimax.TranslationError as error:
                 errors.append(f"{target_path}: {error}")
             try:
-                chinese = minimax.parse_ck3_localization(spec.chinese)
+                chinese = parse_language_localization(spec.chinese, "simp_chinese")
                 assert_candidate_quality(english, chinese, target, language)
             except ReleaseLocalizationError as error:
                 errors.append(f"{target_path}: {error}")
-            residuals = candidate_residuals(english, target, language)
-            if residuals:
-                errors.append(f"English placeholders in {target_path}: {residuals[:12]}")
-            target_chars = {
-                "japanese": len(re.findall(r"[ぁ-んァ-ン一-龯]", "".join(target.values()))),
-                "korean": len(re.findall(r"[가-힣]", "".join(target.values()))),
-                "russian": len(re.findall(r"[А-Яа-яЁё]", "".join(target.values()))),
-            }.get(language)
-            if target_chars == 0:
-                errors.append(f"no expected target-script characters in {target_path}")
+
             language_report[source_name] = {
                 "entries": len(target),
-                "exact_english_residuals": len(residuals),
-                "target_script_characters": target_chars,
+                "validation_scope": "format_only",
                 "sha256": sha256(target_path),
             }
         report["languages"][language] = language_report
@@ -2840,7 +2582,7 @@ def audit(write_report: Path | None = None) -> int:
         write_atomic(write_report.resolve(), json_bytes(canonical))
         print(f"GREEN: wrote release-localization audit report to {write_report.resolve()}")
     print(json.dumps(report, ensure_ascii=False, indent=2))
-    print("GREEN: seven-language structure, tokens, scripts, and English-placeholder audit passed")
+    print("GREEN: seven-language format audit passed (encoding, header/BOM, syntax, keys, tokens)")
     return 0
 
 

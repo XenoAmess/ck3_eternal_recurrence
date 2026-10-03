@@ -1,0 +1,173 @@
+{
+  "schema": "djc.language-format-policy-check.v1",
+  "utc": "2026-10-03T04:53:46.061619+00:00",
+  "status": "PASS",
+  "checks": [
+    {
+      "case": "valid syntax/key set with French values identical to English",
+      "expected": "PASS",
+      "actual": "PASS",
+      "key_count": 15,
+      "scope": "actual changed release-localization branch only"
+    },
+    {
+      "case": "missing localization key",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "error": "release localization keys differ: french"
+    },
+    {
+      "case": "incorrect language header",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "error": "wrong localization header: greatwar_l_french.yml"
+    }
+  ],
+  "policy": "Only Simplified Chinese real-game acceptance; other eight file format only. No semantic/terminology/native-speaker/translation-completeness requirement.",
+  "validator_sha256": "cefc6f6db7702627182d7f38933dccd0b015c17dd92a2eb1c8a8e3a5f8cca2f6",
+  "fixture_generator_sha256_unchanged": "91ee3ce38fd7494357250d8e7a72e1b83af4ef261fe90116f3f7d4141ce13505",
+  "semantic_marker_contract": 72,
+  "fixture_generator_reexecuted": false,
+  "runtime_changes": 0,
+  "full_runtime_static_repeated": false,
+  "build_repeated": false,
+  "game_requests": 0,
+  "git_commands": 0,
+  "input_inventory": [
+    {
+      "path": "invalid-language-header\\localization\\english\\greatwar_l_english.yml",
+      "size": 1584,
+      "sha256": "719ad53ee0b238afae6ab70691492e2b5e8d3095fbde27263bb080b693d0399a"
+    },
+    {
+      "path": "invalid-language-header\\localization\\french\\greatwar_l_french.yml",
+      "size": 1583,
+      "sha256": "c55549009b29ed92a79d303b0a7414d47b848f8faf91324350d28a9436268838"
+    },
+    {
+      "path": "invalid-language-header\\localization\\german\\greatwar_l_german.yml",
+      "size": 1758,
+      "sha256": "b66ec0b5fc618bf5806881dcb610cd6a786afae358fbad7b2c58d268118ad986"
+    },
+    {
+      "path": "invalid-language-header\\localization\\japanese\\greatwar_l_japanese.yml",
+      "size": 1459,
+      "sha256": "5fff5dfffe35b7a855866d33717d95cb2fdfe6faf97dc5dc0c8b6e3c24e4a9f7"
+    },
+    {
+      "path": "invalid-language-header\\localization\\korean\\greatwar_l_korean.yml",
+      "size": 1543,
+      "sha256": "509518ba720053649f2a3202084797755811e88046d73cc33bddbdf965985d89"
+    },
+    {
+      "path": "invalid-language-header\\localization\\polish\\greatwar_l_polish.yml",
+      "size": 1563,
+      "sha256": "0063629bac05538d8c980cd0fd09840aab31f0b5fcff75873f619a76f17378a2"
+    },
+    {
+      "path": "invalid-language-header\\localization\\russian\\greatwar_l_russian.yml",
+      "size": 2389,
+      "sha256": "ac6920c019027f7b80a1add1079f5e27d057b72b04d56115a701078207cd59a6"
+    },
+    {
+      "path": "invalid-language-header\\localization\\simp_chinese\\greatwar_l_simp_chinese.yml",
+      "size": 1430,
+      "sha256": "214c3afcd66a5c534d9b44b5bc429579d9f3bb75265f765732b4cf4adbb553b2"
+    },
+    {
+      "path": "invalid-language-header\\localization\\spanish\\greatwar_l_spanish.yml",
+      "size": 1608,
+      "sha256": "98c680f4f36e689314b132b8fd0497d584e990347335bb198ffd34c8df262e55"
+    },
+    {
+      "path": "invalid-missing-key\\localization\\english\\greatwar_l_english.yml",
+      "size": 1584,
+      "sha256": "719ad53ee0b238afae6ab70691492e2b5e8d3095fbde27263bb080b693d0399a"
+    },
+    {
+      "path": "invalid-missing-key\\localization\\french\\greatwar_l_french.yml",
+      "size": 1445,
+      "sha256": "d9880ddd413db998a28e99d9c07976eb3d51f85105ccc61ff9ff149b438b5b1e"
+    },
+    {
+      "path": "invalid-missing-key\\localization\\german\\greatwar_l_german.yml",
+      "size": 1758,
+      "sha256": "b66ec0b5fc618bf5806881dcb610cd6a786afae358fbad7b2c58d268118ad986"
+    },
+    {
+      "path": "invalid-missing-key\\localization\\japanese\\greatwar_l_japanese.yml",
+      "size": 1459,
+      "sha256": "5fff5dfffe35b7a855866d33717d95cb2fdfe6faf97dc5dc0c8b6e3c24e4a9f7"
+    },
+    {
+      "path": "invalid-missing-key\\localization\\korean\\greatwar_l_korean.yml",
+      "size": 1543,
+      "sha256": "509518ba720053649f2a3202084797755811e88046d73cc33bddbdf965985d89"
+    },
+    {
+      "path": "invalid-missing-key\\localization\\polish\\greatwar_l_polish.yml",
+      "size": 1563,
+      "sha256": "0063629bac05538d8c980cd0fd09840aab31f0b5fcff75873f619a76f17378a2"
+    },
+    {
+      "path": "invalid-missing-key\\localization\\russian\\greatwar_l_russian.yml",
+      "size": 2389,
+      "sha256": "ac6920c019027f7b80a1add1079f5e27d057b72b04d56115a701078207cd59a6"
+    },
+    {
+      "path": "invalid-missing-key\\localization\\simp_chinese\\greatwar_l_simp_chinese.yml",
+      "size": 1430,
+      "sha256": "214c3afcd66a5c534d9b44b5bc429579d9f3bb75265f765732b4cf4adbb553b2"
+    },
+    {
+      "path": "invalid-missing-key\\localization\\spanish\\greatwar_l_spanish.yml",
+      "size": 1608,
+      "sha256": "98c680f4f36e689314b132b8fd0497d584e990347335bb198ffd34c8df262e55"
+    },
+    {
+      "path": "valid-english-content\\localization\\english\\greatwar_l_english.yml",
+      "size": 1584,
+      "sha256": "719ad53ee0b238afae6ab70691492e2b5e8d3095fbde27263bb080b693d0399a"
+    },
+    {
+      "path": "valid-english-content\\localization\\french\\greatwar_l_french.yml",
+      "size": 1583,
+      "sha256": "7efb8bacb4a598395d9f567a67af67a108adad4a9b324b98762a1c1659132ebb"
+    },
+    {
+      "path": "valid-english-content\\localization\\german\\greatwar_l_german.yml",
+      "size": 1758,
+      "sha256": "b66ec0b5fc618bf5806881dcb610cd6a786afae358fbad7b2c58d268118ad986"
+    },
+    {
+      "path": "valid-english-content\\localization\\japanese\\greatwar_l_japanese.yml",
+      "size": 1459,
+      "sha256": "5fff5dfffe35b7a855866d33717d95cb2fdfe6faf97dc5dc0c8b6e3c24e4a9f7"
+    },
+    {
+      "path": "valid-english-content\\localization\\korean\\greatwar_l_korean.yml",
+      "size": 1543,
+      "sha256": "509518ba720053649f2a3202084797755811e88046d73cc33bddbdf965985d89"
+    },
+    {
+      "path": "valid-english-content\\localization\\polish\\greatwar_l_polish.yml",
+      "size": 1563,
+      "sha256": "0063629bac05538d8c980cd0fd09840aab31f0b5fcff75873f619a76f17378a2"
+    },
+    {
+      "path": "valid-english-content\\localization\\russian\\greatwar_l_russian.yml",
+      "size": 2389,
+      "sha256": "ac6920c019027f7b80a1add1079f5e27d057b72b04d56115a701078207cd59a6"
+    },
+    {
+      "path": "valid-english-content\\localization\\simp_chinese\\greatwar_l_simp_chinese.yml",
+      "size": 1430,
+      "sha256": "214c3afcd66a5c534d9b44b5bc429579d9f3bb75265f765732b4cf4adbb553b2"
+    },
+    {
+      "path": "valid-english-content\\localization\\spanish\\greatwar_l_spanish.yml",
+      "size": 1608,
+      "sha256": "98c680f4f36e689314b132b8fd0497d584e990347335bb198ffd34c8df262e55"
+    }
+  ]
+}

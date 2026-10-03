@@ -50,10 +50,12 @@ Python MCP `tools.json` 中存在 `ck3_query_frontend_gui_route_v1` wrapper；�
 
 [R0003 冻结核验报告](live-R0003-reload-2026-10-03/README.md) 已记录实际 ready snapshot002：人物 `31254`、同日 `53144328`、暂停、金币 `846`，保存 bytes 与 R0002 保存源 size／SHA 一致。原生日志证明 Rossano 的玩家直辖城市结果持久化，未选中首都仍为城堡。修正后的 fixture02 十项生产矩阵 PASS，连同两项保存状态共十二 PASS，START／END／AI actor 完整；捕获 error.log 为零字节。R0002 原错误继续保留。
 
-英文截图已观察六名称、费用400和条件；完整 warning 的无遮挡稳定截图及七语视觉尚待 R0004 独立结果，母语审阅未完成。结论只适用本机固定 `1.20.0.3` EXE/build，不外推整个 `1.20.*` 系列，也不代表发布、公开 Change Notes、缓存或 changelog 已交付。早期 Taranto 地名误记以 [追加勘误](corrections-2026-10-03.md) 更正为 Trani／特拉尼，原候选不覆盖。
+英文截图已观察六名称、费用400和条件，这是历史过程记录，不能替代中文最终签核。依最新用户指令，七语视觉与母语／语义／术语审阅不属于当前验收。结论只适用本机固定 `1.20.0.3` EXE/build，不外推整个 `1.20.*` 系列，也不代表发布、公开 Change Notes、缓存或 changelog 已交付。早期 Taranto 地名误记以 [追加勘误](corrections-2026-10-03.md) 更正为 Trani／特拉尼，原候选不覆盖。
 
-## 2026-10-03 补记：R0004 英文视觉与未完成语言门
+## 2026-10-03 补记：R0004历史英文过程
 
-[R0004 报告](live-R0004-visual-route-2026-10-03/README.md) 确认英文六名称、城市说明、Trani目标及成本400；完整警告仍被tooltip遮挡，名为unobscured的末帧也不满足门禁。debug French按钮／控制台路线后HUD仍英文，分类为测试路线 FAIL，产品法语及其余六语视觉均未测，后续应新run冷启动每种语言。debug原版 `is_ai` trigger perspective 诊断及产品调用上下文完整保留，没有改 runtime。实际session-final与bus-release证明清理／屏幕释放；R0003 register回执误覆盖另见 [追加勘误](corrections-2026-10-03.md)。
+[R0004 报告](live-R0004-visual-route-2026-10-03/README.md) 确认英文六名称、城市说明、Trani目标及成本400；完整警告仍被tooltip遮挡，名为unobscured的末帧也不满足门禁。debug French按钮／控制台路线后HUD仍英文，分类为测试路线 FAIL，产品法语及其余六语视觉均未测，外语冷启动计划现已取消；历史路线失败保持原记录。debug原版 `is_ai` trigger perspective 诊断及产品调用上下文完整保留，没有改 runtime。实际session-final与bus-release证明清理／屏幕释放；R0003 register回执误覆盖另见 [追加勘误](corrections-2026-10-03.md)。
 
-当前发布状态仍 pending：已有真实城市GUI执行／付款和 R0003 保存重载／干净十项矩阵；剩余完整警告、七语冷载视觉以及正式上传／公开全文Change Notes／fresh缓存／永久changelog，不把R0004路线失败或部分英文截图写成正式release完成。
+当前待简体中文实机最终签核及正式上传／公开全文Change Notes／fresh缓存／永久changelog。已有功能与历史英文证据保留，其他八语只检查格式；外语实机和语义／术语审阅计划已取消。
+
+当前验收范围以[语言验收政策](localization-acceptance-policy-2026-10-03.md)为准：**只进行简体中文实机验收；其他八种语言只做格式检查，不进行语义／术语审阅或外语实机验收。**

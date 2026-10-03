@@ -140,7 +140,7 @@ manager-scope portfolio 在 owner 上分别冻结 `ah_expected` 与 `ai_expected
 
 ## 九、本地化边界
 
-简中和英文是本轮创作文案。法、德、日、韩、波、俄、西只复制 English structural placeholders，保持九语言文件可加载；这七份不是 release-grade 翻译。正式发版前再按仓库发布流程完成七语审计和实机抽检。
+简中和英文是本轮创作文案。法、德、日、韩、波、俄、西只复制 English structural placeholders，保持九语言文件可解析；这七份不是目标语言翻译。按 2026-10-03 用户指令，正式发版前真实游戏和语义验收只使用简体中文，英文及其他语言只检查 key 集合、UTF-8/BOM/header、占位符、保护 token、转义及可解析性。非中文语义、术语、母语或实机抽检计划退役，不作为发布门禁。
 
 ## 十、静态验收
 

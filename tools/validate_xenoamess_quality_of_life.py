@@ -444,7 +444,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--release-localization",
         action="store_true",
-        help="reject English placeholders in all seven target languages",
+        help="check all nine localization file formats, keys and CK3 formatting tokens",
     )
     args = parser.parse_args(argv)
     errors = release.release_source_errors(MOD)

@@ -1,0 +1,30 @@
+{
+  "schema": "djc.release-text-freeze.v1",
+  "utc": "2026-10-03T04:55:10.819195+00:00",
+  "status": "DRAFT_NOT_PUBLISHED",
+  "reason": "explicit user language policy: only Simplified Chinese actual game acceptance, other eight file format only",
+  "files": [
+    {
+      "path": "mod_de_jure_conquest/docs/steam-change-notes-1.0.0.txt",
+      "sha256": "115baac85ebed22dd6ed82995dee323c8432b21bbc4127353803fea434bd49e8",
+      "bytes": 3169,
+      "characters": 1249,
+      "lines": 31,
+      "status": "DRAFT_NOT_PUBLISHED"
+    },
+    {
+      "path": "mod_de_jure_conquest/docs/workshop-description.bbcode",
+      "sha256": "c89297bc7a225c4a3476f89023b2a4720571e6f35cb3b90c01124edab23b4a52",
+      "bytes": 2835,
+      "characters": 1177,
+      "lines": 31,
+      "status": "DRAFT_NOT_PUBLISHED"
+    }
+  ],
+  "old_freezes_preserved": [
+    "release-text-freeze-2026-10-03-R0002.json",
+    "release-documentation-review-2026-10-03.json"
+  ],
+  "live": "CN complete acceptance pending",
+  "publication": "NOT_PUBLISHED"
+}

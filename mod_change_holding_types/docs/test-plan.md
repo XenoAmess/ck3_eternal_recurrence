@@ -1,18 +1,18 @@
 # 地产类型转换测试计划
 
-日期：2026-10-03。L0 已执行，实机与发布层尚待执行；结果见 [当前测试报告](test-report-2026-10-03.md)。
+日期：2026-10-03。九语格式L0已执行；本次**只进行简体中文实机验收，其他八语只做格式检查，不做语义／术语审阅**。已发生结果与中文最终签核状态见[当前测试报告](test-report-2026-10-03.md)，[语言政策](localization-acceptance-policy-2026-10-03.md)替代旧多语计划。
 
 ## L0 离线
 
-- 原始来源 manifest、维护 diff、UTF-8 BOM、括号／引号、descriptor 和本地化 key 检查。
+- 原始来源manifest、维护diff、UTF-8 BOM、括号／引号、descriptor与本地化key检查。九语仅检查BOM／header／key集合与唯一性／版本与引号／换行／保护token格式，其他八语不增加语义、术语或实机检查。
 - 使用本机 `open_kaishek` 覆盖的确定性语法子集进行 parse／round-trip，记录工具 commit、profile/version、fixture SHA 与不支持项。无可运行工具时单列 environment RED，不把替代括号检查写成完整引擎语法证明。
 - 逐项核验源代码引用的 holding、building、trigger/effect、GUI 或决议接口是否存在于冻结 exact build。
 - 验证入口明确 `is_ai = no`；effect 同时核验玩家／拥有关系。相同类型、非直辖、出租、空地及在建边界按源码形成明确合同。
 - 按 runtime allowlist 双构建，比较 manifest 与 ZIP bytes，验证 docs、tools、测试符号不入 staging，上游 ID 不入 canonical descriptor。
 
-## 隔离 CK3 关键矩阵
+## 仅简体中文的隔离 CK3 关键矩阵
 
-固定入口：1066 Robert the Fox／Robert Guiscard，原版 bookmark key `bookmark_rags_to_riches_duke_robert`、history ID `1128`。不把当前上游来源分析换成其他角色场景。
+启动前固定游戏语言为 `l_simp_chinese`，实际原版HUD与产品界面必须确认是简体中文；仅配置值或命令ACK不能证明语言。六名称、城市说明与完整无遮挡建筑／政府／继承警告、目标与费用读回均在简体中文界面完成。固定入口：1066 Robert the Fox／Robert Guiscard，原版 bookmark key `bookmark_rags_to_riches_duke_robert`、history ID `1128`。不把当前上游来源分析换成其他角色场景。
 
 场景在取得源码后以实际入口和政策细化；不要为了枚举数量测试全部转换排列。
 
@@ -28,7 +28,7 @@
 
 所有功能断言用原生 MCP／paused snapshot／fixture marker／日志状态，OCR 断言数为 0；截图只作为玩家视角补充。必须测试正式生产 effect，不用测试 effect 直接替代产品机制。有语义能力缺口时保存具体失败和可施工入口，由父任务协调现有 MCP。
 
-已生成外置 `holding-live-fixture-01`，声明 10 个 PASS marker、START／END 及实际 AI actor 到达 marker。六个正路径调用决议自身引用的 `cht_convert_to_*_effect`；另验证同类型不再转换、AI effect 阻止和非男爵领 predicate 拒绝。夹具初始化会将隔离玩家首都地产置为城堡并在矩阵最后恢复为城堡；这是测试初始条件，不能被写作产品正常开局行为。该矩阵不覆盖决议费用、GUI 选择或存档重载。
+原 `holding-live-fixture-01`永久保留；后继`holding-live-fixture-02`修复重复设置城堡初始化并由生成器精确复现，声明10个PASS marker、START／END 及实际 AI actor 到达 marker。六个正路径调用决议自身引用的 `cht_convert_to_*_effect`；另验证同类型不再转换、AI effect 阻止和非男爵领 predicate 拒绝。夹具初始化会将隔离玩家首都地产置为城堡并在矩阵最后恢复为城堡；这是测试初始条件，不能被写作产品正常开局行为。该矩阵不覆盖决议费用、GUI 选择或存档重载。
 
 ## 实机前后环境
 
@@ -38,4 +38,4 @@ Steam 默认离线；在本机 task bus poll、领取唯一 CK3 排他槽并直�
 
 ## 发布验收
 
-只有本产品的关键路径实机 GREEN、必要语言与正式构建门通过后才上传。新物品 ID 与上游 ID 分离；公开标题／描述与完整 Steam Change Notes 分别精确回读，逐文件验证 freshly downloaded subscription cache，重建无 ID staging。仓库永久 initial-baseline changelog 提交并推送到 `master` 后才能标记 release 完成。
+只有本产品简体中文关键路径实机GREEN、九语格式与正式构建门通过后才上传。英文和其他语言实机／语义／术语审阅均不是本次发布门。新物品 ID 与上游 ID 分离；公开标题／描述与完整 Steam Change Notes 分别精确回读，逐文件验证 freshly downloaded subscription cache，重建无 ID staging。仓库永久 initial-baseline changelog 提交并推送到 `master` 后才能标记 release 完成。

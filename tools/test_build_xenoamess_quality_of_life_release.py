@@ -114,7 +114,7 @@ class XqolReleaseTests(unittest.TestCase):
                 with self.subTest(old=old), self.assertRaisesRegex(ValueError, "must not reuse"):
                     self.build(root, source, parent=old, workshop_item_id=old)
 
-    def test_formal_localization_gate_rejects_placeholders_and_token_drift(self):
+    def test_formal_localization_gate_accepts_english_text_and_rejects_format_drift(self):
         with self.fixture() as (_, source):
             for language in release.LOCALIZATION_LANGUAGES:
                 value = (
@@ -133,8 +133,25 @@ class XqolReleaseTests(unittest.TestCase):
             french.write_bytes(
                 codecs.BOM_UTF8 + b'l_french:\n line:0 "Source #P enabled#!"\n'
             )
+            self.assertEqual([], release.release_localization_errors(source))
+
+            french.write_bytes(
+                codecs.BOM_UTF8 + b'l_french:\n wrong_key:0 "Source #P enabled#!"\n'
+            )
             self.assertTrue(
-                any("English placeholder" in error for error in release.release_localization_errors(source))
+                any("key mismatch" in error for error in release.release_localization_errors(source))
+            )
+
+            french.write_bytes(b'l_french:\n line:0 "Source #P enabled#!"\n')
+            self.assertTrue(
+                any("UTF-8 BOM" in error for error in release.release_localization_errors(source))
+            )
+
+            french.write_bytes(
+                codecs.BOM_UTF8 + b'l_german:\n line:0 "Source #P enabled#!"\n'
+            )
+            self.assertTrue(
+                any("header mismatch" in error for error in release.release_localization_errors(source))
             )
 
             french.write_bytes(

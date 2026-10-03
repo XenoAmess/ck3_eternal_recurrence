@@ -12,7 +12,7 @@
 | 产品 L0／可复现构建 | GREEN（正式九语候选） | [正式静态 R0003](release-static-R0003-2026-10-03.json)，17运行文件；canonical LF double-build manifest／ZIP bytes一致 |
 | Open Kaishek 离线加速器 | environment unavailable | [来源预验回执](holding-kaishek-source-01.json)：`open_kaishek-root-missing`，没有工具执行或引擎语义 GREEN |
 | 外置实机夹具准备 | 已冻结；结果待实机回执 | [fixture manifest](holding-live-fixture-01.fixture.json)，10 PASS声明＋START／END＋AI actor到达，声明不等于结果 |
-| 产品 CK3 实机验收 | R0002进行中，未GREEN | [R0001／R0002边界记录](live-attempt-status-2026-10-03.md)：R0001 harness RED；R0002 exact-build handshake成功但DLL frontend route capability缺失 |
+| 产品 CK3 实机验收 | 中文最终签核待完成 | [实际过程与限制](live-attempt-status-2026-10-03.md)：R0002GUI付款、R0003重载／干净矩阵保留；英文过程不替代中文签核，其他八语只做格式检查 |
 | 新 Workshop 发布／缓存／Change Notes | 未执行 | 没有创建、上传或公开发布事实 |
 
 首次静态 [attempt01](holding-static-attempt-01.json) 为 harness RED：结构扫描器把同名参数化 trigger 调用与顶层定义一并计数，误报 7 个定义。修复当前层 block 识别后 attempt02 GREEN；失败报告仍保留，没有修改为 GREEN。
@@ -25,7 +25,7 @@ attempt03 在相同 runtime bytes 上补齐共享来源allowlist检查、严格�
 
 九语canonical LF候选已另行完成：[正式静态R0003](release-static-R0003-2026-10-03.json)绑定 commit `1734e7e50c87955179393ebf854cc4f3567c805d`，17文件、`release_localization=true`、零错误；报告原字节SHA-256为 `8a4310e95dd23ea4a5d2051395149ede2c9f9819faab0ba7a46d52b9c35b2c42`。父任务双构建结果为manifest SHA `950d63627d87cc8b3139ec77d5a97e9e917989d0dd0b395add143fe0c0d4ba35`、ZIP SHA `e72508770b964de9026c986b58be8b4bb12a43b5cf1686c0493b8a3e08728776`。这些是正式候选静态事实，不能写成已上传或实机通过。
 
-[九语覆盖报告](localization-coverage-2026-10-03.json)保留MiniMax候选修正、44key完整覆盖和token／格式边界；它明确没有九语实机和母语审阅。旧CN/EN报告和失败attempt继续保留。
+[九语覆盖报告](localization-coverage-2026-10-03.json)保留MiniMax候选修正、44key完整覆盖和token／格式边界；现行要求仅简体中文实机；其他八语只检查格式，不安排语义／术语审阅或外语实机。旧CN/EN报告和失败attempt继续保留。
 
 本报告不把页面评论当作确定根因，也不把自动升级建筑历史结果当成本产品验收。实机与发布结果应另存当次实际命令与回执，再追加日期记录；失败 attempt 不覆盖。
 
@@ -35,10 +35,12 @@ attempt03 在相同 runtime bytes 上补齐共享来源allowlist检查、严格�
 
 [R0003 冻结核验报告](live-R0003-reload-2026-10-03/README.md) 已记录实际 ready snapshot002：人物 `31254`、同日 `53144328`、暂停、金币 `846`，保存 bytes 与 R0002 保存源 size／SHA 一致。原生日志证明 Rossano 的玩家直辖城市结果持久化，未选中首都仍为城堡。修正后的 fixture02 十项生产矩阵 PASS，连同两项保存状态共十二 PASS，START／END／AI actor 完整；捕获 error.log 为零字节。R0002 原错误继续保留。
 
-英文截图已观察六名称、费用400和条件；完整 warning 的无遮挡稳定截图及七语视觉尚待 R0004 独立结果，母语审阅未完成。结论只适用本机固定 `1.20.0.3` EXE/build，不外推整个 `1.20.*` 系列，也不代表发布、公开 Change Notes、缓存或 changelog 已交付。早期 Taranto 地名误记以 [追加勘误](corrections-2026-10-03.md) 更正为 Trani／特拉尼，原候选不覆盖。
+英文截图已观察六名称、费用400和条件，这是历史过程记录，不能替代中文最终签核。依最新用户指令，七语视觉与母语／语义／术语审阅不属于当前验收。结论只适用本机固定 `1.20.0.3` EXE/build，不外推整个 `1.20.*` 系列，也不代表发布、公开 Change Notes、缓存或 changelog 已交付。早期 Taranto 地名误记以 [追加勘误](corrections-2026-10-03.md) 更正为 Trani／特拉尼，原候选不覆盖。
 
-## 2026-10-03 补记：R0004 英文视觉与未完成语言门
+## 2026-10-03 补记：R0004历史英文过程
 
-[R0004 报告](live-R0004-visual-route-2026-10-03/README.md) 确认英文六名称、城市说明、Trani目标及成本400；完整警告仍被tooltip遮挡，名为unobscured的末帧也不满足门禁。debug French按钮／控制台路线后HUD仍英文，分类为测试路线 FAIL，产品法语及其余六语视觉均未测，后续应新run冷启动每种语言。debug原版 `is_ai` trigger perspective 诊断及产品调用上下文完整保留，没有改 runtime。实际session-final与bus-release证明清理／屏幕释放；R0003 register回执误覆盖另见 [追加勘误](corrections-2026-10-03.md)。
+[R0004 报告](live-R0004-visual-route-2026-10-03/README.md) 确认英文六名称、城市说明、Trani目标及成本400；完整警告仍被tooltip遮挡，名为unobscured的末帧也不满足门禁。debug French按钮／控制台路线后HUD仍英文，分类为测试路线 FAIL，产品法语及其余六语视觉均未测，外语冷启动计划现已取消；历史路线失败保持原记录。debug原版 `is_ai` trigger perspective 诊断及产品调用上下文完整保留，没有改 runtime。实际session-final与bus-release证明清理／屏幕释放；R0003 register回执误覆盖另见 [追加勘误](corrections-2026-10-03.md)。
 
-当前发布状态仍 pending：已有真实城市GUI执行／付款和 R0003 保存重载／干净十项矩阵；剩余完整警告、七语冷载视觉以及正式上传／公开全文Change Notes／fresh缓存／永久changelog，不把R0004路线失败或部分英文截图写成正式release完成。
+当前待简体中文实机最终签核及正式上传／公开全文Change Notes／fresh缓存／永久changelog。已有功能与历史英文证据保留，其他八语只检查格式；外语实机和语义／术语审阅计划已取消。
+
+当前验收范围以[语言验收政策](localization-acceptance-policy-2026-10-03.md)为准：**只进行简体中文实机验收；其他八种语言只做格式检查，不进行语义／术语审阅或外语实机验收。**

@@ -12,7 +12,7 @@
 
 ## 发布闭环
 
-1. 完成三档 CB、负路径和并发战争矩阵，确认 exact runtime hash；按仓库发布策略完成简中／英文与其他发布语言审阅。
+1. 仅以简体中文完成真实游戏功能验收，确认 exact runtime hash；其他八语只完成基本格式、键与占位符规范检查，不要求语义、术语、母语审阅、翻译完成度或真实游戏验收。三档CB与未覆盖边界按最终测试报告明确记录，实际RED不得发布。
 2. 准备 Workshop 完整描述、主视觉、initial baseline Change Notes 和永久 changelog 草稿；冻结 Change Notes 字符数、行数、SHA-256。
 3. 对冻结 commit 建正式版本 tag；从该身份构建，无 remote ID 的上传 staging。
 4. 新建本维护版物品，并把正式 staging 上传；保存 `EResult`、新 item ID 与 receipt。不能凭上传 API 成功宣称发布已完成。
@@ -26,3 +26,5 @@
 ## 2026-10-03发布准备复核
 
 完整说明与BBCode已对照最终源码复核，现仍为草稿；三档费用、玩家限定、独立新物品、胜利范围、战败赔款条件与存档限制均明确。九语状态为format-certified，未新增实机或发布事实。最终canonical LF运行输入的 [16文件静态报告](release-static-2026-10-03-R0002.json) 已精确另存，旧报告保留；[文案复核说明](release-documentation-review-2026-10-03.md) 记录草稿冻结和仍待交付的发布层事项。
+
+2026-10-03后续用户明确修正验收语言：只用简体中文做真实游戏验收，英文及其他七语只做基本规范检查。现有英文R0002调试证据保留，不计入简中签核，不再设置后续多语言实机门禁。当前R0002矩阵RED与R0005-CN夹具准备见 [记录](matrix-native-eligibility-red-2026-10-03.md)，完整验收和发布仍待完成。

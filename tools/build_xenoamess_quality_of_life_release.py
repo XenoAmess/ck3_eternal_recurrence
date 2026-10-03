@@ -208,7 +208,7 @@ def _localization_entries(path: Path, language: str) -> dict[str, str]:
 
 
 def release_localization_errors(source: Path) -> list[str]:
-    """Require translated target-language values for a formal release."""
+    """Check localization file syntax, keys and CK3 formatting tokens for release."""
 
     source = Path(source)
     matrix: dict[str, dict[str, str]] = {}
@@ -237,12 +237,6 @@ def release_localization_errors(source: Path) -> list[str]:
                 LOCALIZATION_PROTECTED_TOKEN.findall(english[key])
             ):
                 errors.append(f"{language} localization changes CK3 formatting tokens: {key}")
-        if language not in LOCALIZATION_SOURCE_LANGUAGES:
-            placeholders = sorted(key for key, value in values.items() if value == english[key])
-            if placeholders:
-                errors.append(
-                    f"{language} still contains English placeholder values: {placeholders}"
-                )
     return errors
 
 
@@ -494,7 +488,7 @@ def main(argv: list[str] | None = None) -> int:
             localization_errors = release_localization_errors(args.source)
             if localization_errors:
                 raise ValueError(
-                    "formal release localization is incomplete:\n"
+                    "formal release localization format failed:\n"
                     + "\n".join(localization_errors)
                 )
         identity = release_identity(args.source) if args.release else {"git_sha": _require_full_revision(git_sha()), "mod_version": descriptor_version(args.source), "git_tag": None}

@@ -1,5 +1,9 @@
 # 天朝特色 361 制发布签核表
 
+2026-10-03 语言范围修订：本表的已发布版本审阅／实机事实保留为历史，不继承为后续多语言门禁。
+后续真实游戏和语义验收只使用简体中文；英文及其他语言只检查 key 集合、UTF-8/BOM/header、占位符、保护 token、转义及可解析性。
+下文历史中英人工审阅、七语术语／语义抽检和九语界面要求的非中文部分已退役；未勾选的非中文旧项不再阻塞后续发布。
+
 本表是 `mod_zhongguo_style` 的正式发布门禁与上传记录。任何未勾选项都表示尚未完成；设计完成、静态 GREEN、
 fixture GREEN 和 CK3 实机 GREEN 必须分开记录，不能互相代替。0.3.0 已创建并公开新的 Workshop 物品
 `3792585972`；它不是、也未复用 `3784706360`、`3787304042` 或 `3790635143`。八图 media strip 已按
@@ -14,7 +18,7 @@ fixture GREEN 和 CK3 实机 GREEN 必须分开记录，不能互相代替。0.3
 - [x] `descriptor.mod` 的版本、名称、`supported_version` 与本次文案一致。
 - [x] `descriptor.mod` 恰好含一行 `picture="thumbnail.png"`，无 BOM、无 `remote_file_id`。
 - [x] `thumbnail.png` 为可解码的 640×640 PNG，低于 1,000,000 字节；在 Steam 小卡片尺寸下人工确认标题可读。
-- [x] 简中与英文逐条人工审阅完成；法、德、日、韩、波、俄、西七种发布译文依照根目录 `docs/localization-workflow.md` 完成，并通过自动化检查与独立分层抽检；README/BBCode 明确说明这不等同于完整母语审校签字。
+- [x] 历史 0.3.0：简中与英文逐条人工审阅完成；法、德、日、韩、波、俄、西七种发布译文依照当时工作流完成，并通过自动化检查与独立分层抽检；README/BBCode 说明这不等同于完整母语审校签字。该历史结果不设后续非中文审阅门禁。
 - [x] `docs/release-localization-audit.json` 为当前 4 个源文件与 14 个发布目标文件的 GREEN 哈希快照；任一文案改动后已重跑审计。
 - [x] 所有运行时 `.txt` / `.gui` / `.yml` 带 UTF-8 BOM；README、BBCode 和 JSON 可读且无意外 BOM。
 - [x] 当前候选已提交；正式 clean worktree 无 tracked dirty，HEAD `393253276481916f026c4c28e9bbab6da2877275` 带 annotated tag `zhongguo-361-v0.3.0`。

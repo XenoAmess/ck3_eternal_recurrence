@@ -21,7 +21,9 @@
 
 将本目录作为 mod 源目录注册到 CK3 启动器即可。`descriptor.mod` 针对 CK3 `1.19.0.6`。
 
-本目录提供简体中文、英文、法文、德文、日文、韩文、波兰文、俄文和西班牙文。七种发布语言先由 MiniMax-M3 生成最小 key-value 候选，再由当前模型逐条进行语义、术语、占位符和格式审核；这属于模型代行的发布审核，不冒充母语译者认证。
+本目录提供简体中文、英文、法文、德文、日文、韩文、波兰文、俄文和西班牙文。2026-10-03 起真实游戏和语义验收只使用简体中文；英文及其他语言只检查 key 集合、UTF-8/BOM/header、占位符、保护 token、转义及可解析性。非中文语义、术语、母语与界面审阅不作发布门禁；过去 MiniMax-M3 候选和模型审阅结果保留为历史。
+
+`tools/run_ox_here_loc_smoke.py` 默认只选择 `l_simp_chinese`，在进入环境和创建输出之前拒绝 `all` 或非中文选择；`--preflight` 是中文实机环境预检，不等于纯格式命令。其他语言使用既有离线格式校验，不安排逐语言实机。
 
 `thumbnail.png` 由仓库源图 `images/ox_here_key_art.png` 通过 `tools/compose_ox_here_key_art.py` 压制为 640×640、低于 1 MB 的发布缩略图。正式发布只能使用 `tools/build_ox_here_release.py` 生成的 22 文件 staging，不能直接上传本源目录。
 

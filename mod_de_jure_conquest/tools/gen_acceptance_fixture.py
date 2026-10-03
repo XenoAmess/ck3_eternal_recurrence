@@ -106,20 +106,36 @@ djct.{stage} = {{
         }}
         resolve_title_and_vassal_change = scope:djct_reset_change
         var:djct_case_primary = {{ add_prestige = 100000 add_piety = 100000 add_prestige_level = 5 }}
+        # Fixture isolation: native settlement creates attacker-to-primary-defender truce.
+        if = {{
+            limit = {{ has_truce = var:djct_case_primary.top_liege }}
+            debug_log = "DJCT: DIAGNOSTIC {label}_player_to_primary_truce_before TRUE"
+            cancel_truce_one_way = var:djct_case_primary.top_liege
+        }}
+        else = {{ debug_log = "DJCT: DIAGNOSTIC {label}_player_to_primary_truce_before FALSE" }}
+        if = {{
+            limit = {{ has_truce = var:djct_case_primary.top_liege }}
+            debug_log = "DJCT: DIAGNOSTIC {label}_player_to_primary_truce_after TRUE"
+        }}
+        else = {{ debug_log = "DJCT: DIAGNOSTIC {label}_player_to_primary_truce_after FALSE" }}
         {check(f'var:djct_case_primary = {{ NOT = {{ can_declare_war = {{ defender = root casus_belli = {cb} target_titles = {{ title:{goal} }} }} }} }}', label+'_ai_unavailable')}
         {check(f'var:djct_case_primary.top_liege != var:djct_case_secondary.top_liege', label+'_distinct_realms')}
-        {check(f'can_declare_war = {{ defender = var:djct_case_primary.top_liege casus_belli = {cb} target_titles = {{ title:{goal} }} }}', label+'_native_eligibility')}
-        start_war = {{ cb = {cb} target = var:djct_case_primary.top_liege target_title = title:{goal} }}
-        every_character_war = {{
-            limit = {{ using_cb = {cb} is_attacker = root }}
-            save_scope_as = djct_created_war
-        }}
         if = {{
-            limit = {{ exists = scope:djct_created_war }}
-            set_variable = {{ name = djct_current_war value = scope:djct_created_war }}
-            trigger_event = {{ id = djct.{stage+1} days = 1 }}
+            limit = {{ can_declare_war = {{ defender = var:djct_case_primary.top_liege casus_belli = {cb} target_titles = {{ title:{goal} }} }} }}
+            debug_log = "DJCT: TEST PASS {label}_native_eligibility"
+            start_war = {{ cb = {cb} target = var:djct_case_primary.top_liege target_title = title:{goal} }}
+            every_character_war = {{
+                limit = {{ using_cb = {cb} is_attacker = root }}
+                save_scope_as = djct_created_war
+            }}
+            if = {{
+                limit = {{ exists = scope:djct_created_war }}
+                set_variable = {{ name = djct_current_war value = scope:djct_created_war }}
+                trigger_event = {{ id = djct.{stage+1} days = 1 }}
+            }}
+            else = {{ debug_log = "DJCT: TEST FAIL {label}_war_created" }}
         }}
-        else = {{ debug_log = "DJCT: TEST FAIL {label}_war_created" }}
+        else = {{ debug_log = "DJCT: TEST FAIL {label}_native_eligibility" }}
     }}
 }}
 '''
@@ -159,7 +175,8 @@ djct.{stage+2} = {{
     files["fixture-contract.json"] = (json.dumps({
         "schema": "djc.external-acceptance.v1", "player_history_id": 1128,
         "layer": "scripted-war-production-CB", "markers": markers,
-        "claims_excluded": ["native declare-war UI", "normal declaration cost debit", "automatic army behavior", "save/reload", "concurrent-war regression"],
+        "claims_excluded": ["native declare-war UI", "normal declaration cost debit", "native peace entry", "production persisted truce duration", "automatic army behavior", "save/reload", "concurrent-war regression"],
+        "fixture_isolation": "restore original target county holders, refill resources, read truce before/after and cancel only player-to-current-primary-top-liege truce between cases; failed native eligibility does not start a war",
         "requires_done_marker": "DJCT: TEST DONE scripted-war-1128",
         "live": "NOT_RUN",
     }, ensure_ascii=False, indent=2) + "\n").encode()

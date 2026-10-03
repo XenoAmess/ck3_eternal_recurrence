@@ -1,6 +1,6 @@
 # 1.0.0 候选源码适配记录
 
-状态：2026-10-03，源码／日常 L0 完成，实机 **NOT_RUN**。来源和 exact-build 输入见 [upstream.md](upstream.md)。
+状态：2026-10-03，源码／日常 L0 完成，简中R0001费用已实测；R0002英文仅作诊断，完整简中功能验收待完成。来源和 exact-build 输入见 [upstream.md](upstream.md)。其他八语只做基本格式／键／占位符规范检查。
 
 | 冻结源码现象 | 候选修改 | 依据／边界 |
 | --- | --- | --- |
@@ -25,3 +25,5 @@
 正式 16 文件：3 CB、1 hook、1 effect 文件（2 helper）、9 yml、descriptor、thumbnail。`tools/product.py` 冻结合同；自身 builder 复用公共原语，拒绝覆盖旧 staging，正式 build 要求产品 clean 与 `de-jure-conquest-v1.0.0` HEAD tag。docs／tools／原始 bytes 不入包。
 
 `tools/gen_acceptance_fixture.py` 只生成外置 attempt，并先 parse 源码；`tools/verify_fixture_log.py` 只核精确 marker。夹具不进 production，不启动游戏、上传或制造人工签核。
+
+R0002实际调试证实修复后的公国普通宣战有三名真实参战方、原生目标捕获正确；九格第一场胜利通过，第二格宣战资格失败。2026-10-03本轮只修外置夹具生成器：恢复县后按原版 `cancel_truce_one_way` 合同清除玩家向当格主守方的定向停战，记录前后真实条件，资格失败停止该格。72条语义marker保持不变，生产16文件改动0；[完整失败、诊断边界与修复](matrix-native-eligibility-red-2026-10-03.md)。

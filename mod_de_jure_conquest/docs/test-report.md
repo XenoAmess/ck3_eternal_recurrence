@@ -1,6 +1,6 @@
 # 当前测试报告
 
-日期：2026-10-03。当前结论：**1.0.0 候选源码、16文件正式语言静态与可复现构建通过；实机与发布待完成。**
+日期：2026-10-03。当前结论：**1.0.0 候选源码、16文件正式语言静态与可复现构建通过；简中R0001费用已实测，完整简中功能验收与发布待完成。** 用户已明确只用简体中文做真实游戏验收，其他八语只做基本格式／键／占位符规范检查。R0002英文实机保留为诊断，不作为简中签核。
 
 ## 当前结果
 
@@ -13,13 +13,14 @@
 | 正式其他七语 | format-certified | 主执行者生成候选并认证键／占位符；不代表七语界面实机 |
 | 正式16文件静态 | GREEN | 生产参战方修复后的 [R0003永久副本](release-static-2026-10-03-R0003.json)，release_localization=true，完整16文件；R0002保留为旧候选 |
 | 可复现构建 | 16文件PASS | 修复候选公共builder双构建manifest／ZIP一致；[精确hash](production-repair-review-2026-10-03-R0001.json)，尚非tag绑定发布包 |
-| 外置夹具生成 | parser／生成一致性 PASS；live NOT_RUN | `de-jure-fixture-R0004`，保留namespace修复并改读CB回调捕获的每war目标，9真实CB战争场景／72预期PASS |
+| 外置夹具生成 | parser／生成一致性 PASS；新夹具live NOT_RUN | `de-jure-fixture-R0005-CN`，72条语义合同不变；每格定向停战前后实读，资格失败停止；[修复复核](fixture-repair-review-2026-10-03-R0005-CN.json) |
 | Open Kaishek 确定性子集 | NOT_RUN | 本工作包未找到 sibling checkout；完整探测由主执行者协调 |
 | CK3 首次加载 | HARNESS_RED | R0001真实日志发现27条fixture文件namespace缺失；[原始快照与修复](fixture-initial-load-red-2026-10-03.md)，runtime改动0，R0003待clean实机 |
 | CK3 公国 GUI 宣战费用 | 已实测，预览与总扣款不同 | R0001原生010→014实际扣50威望／300虔诚，预览50／200；[原数值勘误与证据](duchy-live-red-2026-10-03.md) |
 | CK3 王国 GUI 宣战费用 | PASS（该场景） | R0001原生017→018同paused日期实际扣250威望／1000虔诚，战争5／k_sicily目标2189；[三档报告](gui-declaration-fees-2026-10-03.md) |
 | CK3 帝国 GUI 宣战费用 | 已实测，预览与总扣款不同 | R0001原生019→020实际扣1250威望／5100虔诚，预览1250／5000；原版宣战效果有匹配-100机制，但未直接回读该分支执行 |
-| CK3 公国参战方／列表断言 | PRODUCTION_RED，修复候选待实机 | 原生016分项probe实证Naples未加入，两callback列表为空；[完整诊断与新候选](duchy-live-red-2026-10-03.md)，原R0001未改 |
+| CK3 公国参战方／列表断言 | R0002英文诊断通过，简中待验 | 原R0001实际PRODUCTION_RED保留；候选86302普通GUI后实际四项PASS、三真实参战方；[诊断回执](r2-gui-english-diagnostic-2026-10-03.json) |
+| CK3 结算矩阵 | R0002调试矩阵HARNESS_RED；新简中矩阵待验 | clean LoadGame确认无GUI白和后态；第一格8项PASS，第二格native eligibility FAIL；[实际失败与最小修复](matrix-native-eligibility-red-2026-10-03.md) |
 | Workshop／缓存／Change Notes | NOT_RUN | 尚无实机GREEN或发布事实 |
 
 所有外置 artifact 位于 `C:/workspace/two-mod-maintenance-20261003/`。`de-jure-static-R0001`、`R0002`、`R0003` 报告与 fixture `R0001`、`R0002` 独立保留；没有覆盖历史 attempt。R0003 `checked_runtime_file_count=9`、`runtime_allowlist_count=16`、`release_localization=false`、`live=NOT_RUN`。
@@ -34,13 +35,15 @@
 
 这里canonical LF指该次运行文件输入；报告JSON本身保留来源CRLF字节，没有重新序列化。该轮只读比较确认当时16个runtime hash全部与该报告一致，没有重复static／build／live。随后真实R0001参战方RED授权5个runtime脚本最小修复，当前静态来源为R0003，旧R0002不能绑定新候选。发布文本与源码一致性复核、完整草稿字符数／行数／SHA及精确文件记录见 [复核说明](release-documentation-review-2026-10-03.md) 与 [机器回执](release-documentation-review-2026-10-03.json)。本轮修复实现既有文案中的参战方范围，未修改文案／费用／本地化。
 
-随后R0001三档GUI费用审计证实，CB预览与实际操作总扣款可能不同：公国50／300（预览50／200），王国250／1000，帝国1250／5100（预览1250／5000）。见 [逐项证据、原公国数值勘误与条件机制](gui-declaration-fees-2026-10-03.md)。因此仅更新发布草稿的费用说明，明确保留原版宣战附加后果。当前Notes为1243字符／31行／3151bytes，BBCode为1161字符／31行／2787bytes；精确SHA及冻结边界见 [新文本冻结R0002](release-text-freeze-2026-10-03-R0002.json)。旧文本复核继续原样保留，不再绑定当前草稿；当前16个runtime逐hash仍与static R0003一致，没有新增runtime改动或重复测试。
+随后R0001三档GUI费用审计证实，CB预览与实际操作总扣款可能不同：公国50／300（预览50／200），王国250／1000，帝国1250／5100（预览1250／5000）。见 [逐项证据、原公国数值勘误与条件机制](gui-declaration-fees-2026-10-03.md)。因此仅更新发布草稿的费用说明，明确保留原版宣战附加后果。该次Notes为1243字符／31行／3151bytes，BBCode为1161字符／31行／2787bytes；当时精确SHA及冻结边界见 [文本冻结R0002](release-text-freeze-2026-10-03-R0002.json)。旧文本复核继续原样保留，不再绑定当前草稿；当前16个runtime逐hash仍与static R0003一致，没有新增runtime改动或重复测试。
 
 两个翻译输入失败由主执行者保留：上游 yml 的仅空白行和EN行尾空格不满足共享 parser。逐行规范化后直接以同一生产 parser 验证15 key，不更改公共parser。该失败属于输入格式，不是CK3产品RED。
 
 完整原版 `00_landed_titles.txt` 的匿名嵌套数组不在建筑用途parser覆盖范围，本次未声称其整体parse成功。随后用已有具名block extractor读取 d_capua、k_sicily、e_italy：d_capua含capua／napoli；k_sicily含玩家apulia；e_italy含roma／firenze；vannes都在目标外。
 
 夹具Actor为1066罗贝尔 `history_id=1128`，不是诺曼底角色。经原版 `start_war`／`end_war` 调用生产CB与hook，读取资格、参战者、目标、持有人和战争退出；没有直接调用生产胜利helper冒充结算。脚本开战不证明宣战UI扣款，强制end_war不证明原生议和合法性，矩阵也未覆盖并发战争／自动军队／保存重载／低威望边界；按 [test-plan.md](test-plan.md) 后续追加。
+
+2026-10-03后续R0002仅用英文调试，不能计入用户要求的简中签核；其他八语不要求实机。R0002实际公国参战方修复通过，但clean LoadGame后的串行九格在第二格资格失败，永久报告与R0005-CN最小修复见 [新增记录](matrix-native-eligibility-red-2026-10-03.md)。本轮只修外置夹具生成器，production16文件hash仍一致，未重复不变的static或构建，也未写入R0003实机或发布事实。
 
 ## 来源取得前的历史记录
 
@@ -70,3 +73,16 @@
 另执行外置 `de_jure_vanilla_research.py`，用仓库已有 Clausewitz parser 解析两份原版 CB 文件，读取顶层字段和选定结算块，结果通过。当前 `C:/workspace/open_kaishek` 不存在；尚未进行完整工具探测，因此不把这次路径检查写成 Open Kaishek 产品／语义 RED。
 
 新增任何通过事实时追加精确 attempt 与 hash，不能用此报告把计划变成完成。自动升级建筑的旧版本验收不得外推到本产品或 CK3 1.20.0.3。
+
+## 仅简中实机、其他八语仅格式的全面政策修正
+
+2026-10-03用户再次明确：简体中文承担真实游戏验收，其他八语仅格式检查，不要求语义、术语、母语审阅或翻译完成度。已审计本产品README、全部文档／发布草稿和五个Python工具；没有独立翻译prompt或语言审阅模板。当前政策与历史证据边界见 [language-acceptance-policy.md](language-acceptance-policy.md)。适配计划中的发布语言评审要求已删除。
+
+正式静态工具不再以非简中文案等于英文为拒绝条件。只验证变更的语言分支：格式／键合格且正文与英文相同通过，缺key及错误语言header仍拒绝；[精确受控检查](language-format-policy-check-2026-10-03.json) 记录输入和工具hash，没有重复全量runtime static／构建，没有游戏、Steam或Git调用。五份工具中只有validator本轮修改；夹具生成器与72条合同保持此前冻结，16生产文件不变。
+
+发布草稿同步说明仅简中实机、其他八语仅格式，并另存 [文本冻结R0003](release-text-freeze-2026-10-03-R0003.json)。旧文本冻结和历史审阅回执保留，不绑定新草稿。
+
+| 当前草稿 | UTF-8 bytes | LF字符 | 行 | SHA-256 |
+| --- | ---: | ---: | ---: | --- |
+| [steam-change-notes-1.0.0.txt](steam-change-notes-1.0.0.txt) | 3169 | 1249 | 31 | `115baac85ebed22dd6ed82995dee323c8432b21bbc4127353803fea434bd49e8` |
+| [workshop-description.bbcode](workshop-description.bbcode) | 2835 | 1177 | 31 | `c89297bc7a225c4a3476f89023b2a4720571e6f35cb3b90c01124edab23b4a52` |

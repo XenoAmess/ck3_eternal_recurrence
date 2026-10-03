@@ -373,6 +373,13 @@ def validate(*, release_localization: bool = False) -> list[str]:
                 f"runtime does not reference required localization: {localization_reference}"
             )
 
+    errors.extend(localization_errors(release_localization=release_localization))
+    return errors
+
+
+def localization_errors(*, release_localization: bool = False) -> list[str]:
+    """Check locale structure and Simplified Chinese content without game checks."""
+    errors: list[str] = []
     localized: dict[str, dict[str, str]] = {}
     for language, header in LANGUAGES.items():
         entries: dict[str, str] = {}
@@ -396,7 +403,7 @@ def validate(*, release_localization: bool = False) -> list[str]:
             entries.update(file_entries)
         if set(entries) != LOC_KEYS | GENERATED_TITLE_LOC_KEYS:
             errors.append(f"localization key inventory mismatch: {language}")
-        if any(not item.strip() for item in entries.values()):
+        if language == "simp_chinese" and any(not item.strip() for item in entries.values()):
             errors.append(f"blank localization value: {relative}")
         invalid_namespace = sorted(
             key
@@ -421,22 +428,9 @@ def validate(*, release_localization: bool = False) -> list[str]:
         "rmtm_claim_restoration_decision": "宣称复辟",
         "rmtm_restoration_title_prefix": "后",
     }
-    required_english = {
-        "rule_rmtm_hegemon_fate": "Fate of the Chinese Hegemon",
-        "rule_rmtm_pro_hegemon_choice": "The Choice of the Loyalists",
-        "setting_rmtm_divided_hearts": "Divided Hearts",
-        "setting_rmtm_unwavering_loyalty": "Unwavering Loyalty",
-        "setting_rmtm_reclaim_the_motherland": "Reclaim the Motherland",
-        "setting_rmtm_vanilla_shattering": "Vanilla Shattering",
-        "rmtm_claim_restoration_decision": "Proclaim the Restoration",
-        "rmtm_restoration_title_prefix": "Later ",
-    }
     for key, expected in required_chinese.items():
         if chinese.get(key) != expected:
             errors.append(f"Simplified Chinese contract mismatch: {key}")
-    for key, expected in required_english.items():
-        if english.get(key) != expected:
-            errors.append(f"English contract mismatch: {key}")
     narrative_keys = (
         "rmtm_claim_restoration_decision_desc",
         "rmtm_claim_restoration_decision_tooltip",
@@ -444,7 +438,6 @@ def validate(*, release_localization: bool = False) -> list[str]:
     )
     forbidden_narrative_copy = {
         "simp_chinese": ("验收", "原版", "效果", "销毁", "百分比", "相同份额"),
-        "english": ("acceptance", "vanilla", "effect", "destroy", "percentage", "same share"),
     }
     for language, forbidden_terms in forbidden_narrative_copy.items():
         entries = localized.get(language, {})
@@ -466,7 +459,7 @@ def validate(*, release_localization: bool = False) -> list[str]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--release-localization", action="store_true")
+    parser.add_argument("--release-localization", action="store_true", help="check all locale formats; non-Chinese semantics and English-identical values are not gates")
     args = parser.parse_args()
     errors = validate(release_localization=args.release_localization)
     if errors:

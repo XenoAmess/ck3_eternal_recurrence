@@ -1,11 +1,16 @@
 ﻿#!/usr/bin/env python3
-"""Run fresh-process CK3 localization smoke cells for all Ox Here languages.
+"""Run Simplified Chinese CK3 localization smoke for Ox Here.
 
 The live matrix copies either the canonical source or an exact Workshop cache
 leaf into a disposable ``-userdir``.  It never loads or edits the supplied
 Workshop tree in place.  A tiny external fixture contributes a locale-specific
 ASCII row locator and observes the production warrior after delivery; it does not
 replace the production decision or event.
+
+Other languages receive format checks only.  The historical multilingual live
+selection is retired; neither ``all`` nor a non-Chinese locale may launch CK3.
+``--preflight`` checks the Chinese live environment without launching a game;
+the existing ``localization_errors`` helper checks all source locales offline.
 """
 
 from __future__ import annotations
@@ -31,6 +36,7 @@ import build_ox_here_release
 import run_acceptance as acceptance
 import run_terminal_acceptance as terminal
 import run_vivhite_acceptance as isolated
+from translate_localization_minimax import TranslationError, assert_protected_tokens
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -130,6 +136,7 @@ LANGUAGES = (
     LanguageSpec("l_korean", "korean", "korean", "LOC SMOKE KOREAN"),
 )
 LANGUAGE_BY_KEY = {spec.key: spec for spec in LANGUAGES}
+LIVE_LANGUAGE = "l_simp_chinese"
 EXPECTED_FIXTURE_LOC_KEYS = frozenset(
     {
         "oxls_anchor_decision",
@@ -208,17 +215,22 @@ def localization_errors(source: Path) -> list[str]:
                 f"{language} localization key mismatch: missing={missing}, extra={extra}"
             )
         for key, value in values.items():
-            if not value.strip():
+            if language == LIVE_LANGUAGE and not value.strip():
                 errors.append(f"{language} localization is empty: {key}")
             rendered_literal = re.sub(r"\[[^\]]+\]", "", value)
-            if re.search(
+            if language == LIVE_LANGUAGE and re.search(
                 r"\box_here(?:[_.][a-z0-9_]+)", rendered_literal.lower()
             ):
                 errors.append(f"{language} localization exposes a raw key in {key}")
         for key in ("ox_here_arrival_event_desc", "ox_here_arrival_event_desc_champion"):
             if values.get(key, "").count("[ox_here_warrior.GetShortUIName|U]") != 1:
                 errors.append(f"{language} does not preserve the warrior token in {key}")
-        if language != "l_english":
+        if keys == frozenset(english):
+            try:
+                assert_protected_tokens(english, values)
+            except TranslationError as error:
+                errors.append(f"{language}: {error}")
+        if language == LIVE_LANGUAGE:
             unchanged = sorted(
                 key for key in EXPECTED_LOC_KEYS if values.get(key) == english.get(key)
             )
@@ -822,7 +834,7 @@ def navigate_lobby_fixed(artifacts: Path, debug_log: Path) -> None:
         except acceptance.RunnerError as error:
             last_error = error
     raise acceptance.RunnerError(
-        f"fixed multilingual lobby route was not accepted: {last_error}"
+        f"fixed Simplified Chinese lobby route was not accepted: {last_error}"
     )
 
 
@@ -1021,8 +1033,9 @@ def exercise_product_surfaces(
         },
         "runtime_assertion_boundary": (
             "raw ox_here_ keys are automatically rejected in every captured surface; "
-            "positive multilingual text is screenshot/model-review evidence because the "
-            "bundled OCR model is not a reliable positive oracle for every CK3 script"
+            "positive Simplified Chinese text is screenshot/model-review evidence because "
+            "the bundled OCR model is not a reliable positive oracle for every surface; "
+            "other languages receive format checks only"
         ),
     }
 
@@ -1060,6 +1073,7 @@ def run_cell(
     workshop_item_id: str | None,
     keep_userdir: bool,
 ) -> dict[str, object]:
+    validate_live_language(language.key)
     started = time.perf_counter()
     started_at = datetime.now(timezone.utc).isoformat()
     artifacts.mkdir(parents=True)
@@ -1312,16 +1326,25 @@ def preflight(
     return matrix
 
 
+def validate_live_language(language: str) -> None:
+    if language != LIVE_LANGUAGE:
+        raise acceptance.RunnerError(
+            "CK3 live localization acceptance permits only l_simp_chinese; "
+            "other languages receive format checks only, and all is retired"
+        )
+
+
 def main(
     workshop_cache: str | None = None,
     manifest_path: str | None = None,
-    selected_language: str = "all",
+    selected_language: str = LIVE_LANGUAGE,
     artifacts_dir: str | None = None,
     keep_userdirs: bool = False,
     preflight_only: bool = False,
 ) -> int:
     global OPEN_KAISHEK_PREFLIGHT_RESULT
     OPEN_KAISHEK_PREFLIGHT_RESULT = None
+    validate_live_language(selected_language)
     validate_mode_arguments(workshop_cache, manifest_path)
     steam_root = terminal.steam_userdata_root()
     source = (
@@ -1339,10 +1362,6 @@ def main(
     if preflight_only:
         print("OX HERE LOCALIZATION SMOKE PREFLIGHT: GREEN")
         return 0
-    if selected_language != "all" and selected_language not in LANGUAGE_BY_KEY:
-        raise acceptance.RunnerError(
-            f"unsupported language selection: {selected_language}"
-        )
     if artifacts_dir:
         artifacts = Path(artifacts_dir).expanduser().resolve()
         if artifacts.exists():
@@ -1368,11 +1387,7 @@ def main(
     source_before = isolated.tree_snapshot(source)
     artifacts.mkdir()
     userdirs.mkdir()
-    chosen = (
-        LANGUAGES
-        if selected_language == "all"
-        else (LANGUAGE_BY_KEY[selected_language],)
-    )
+    chosen = (LANGUAGE_BY_KEY[LIVE_LANGUAGE],)
     reports: list[dict[str, object]] = []
     result = "RED"
     error_reason = None
@@ -1492,8 +1507,9 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--language",
-        choices=("all", *LANGUAGE_BY_KEY),
-        default="all",
+        choices=(LIVE_LANGUAGE,),
+        default=LIVE_LANGUAGE,
+        help="live/preflight selection is Simplified Chinese only; all is retired",
     )
     parser.add_argument("--artifacts-dir")
     parser.add_argument("--keep-userdirs", action="store_true")

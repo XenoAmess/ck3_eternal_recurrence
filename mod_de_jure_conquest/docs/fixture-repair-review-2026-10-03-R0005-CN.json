@@ -1,0 +1,91 @@
+{
+  "schema": "djc.external.fixture-repair.v1",
+  "checked_at_utc": "2026-10-03T04:34:46.222700+00:00",
+  "status": "STATIC_PASS_LIVE_NOT_RUN",
+  "release_language_gate": "simp_chinese real-game only; remaining eight basic format/key/placeholder checks",
+  "source_generator": "C:\\workspace\\ck3_eternal_recurrence\\mod_de_jure_conquest\\tools\\gen_acceptance_fixture.py",
+  "source_generator_sha256": "91ee3ce38fd7494357250d8e7a72e1b83af4ef261fe90116f3f7d4141ce13505",
+  "new_fixture": "C:\\workspace\\two-mod-maintenance-20261003\\de-jure-fixture-R0005-CN",
+  "old_fixture_preserved": "C:\\workspace\\two-mod-maintenance-20261003\\de-jure-fixture-R0004",
+  "old_prepared_unrun_candidate_preserved": "C:\\workspace\\two-mod-maintenance-20261003\\de-jure-fixture-R0005",
+  "source_contract_receipt": "C:\\workspace\\two-mod-maintenance-20261003\\djc-fixture-truce-readonly-R0001.json",
+  "actual_red_evidence": "C:\\workspace\\two-mod-maintenance-20261003\\de-jure-R0002-matrix-red-R0001\\manifest-and-review.json",
+  "parser_scripts": [
+    "common/on_action/djct_on_actions.txt",
+    "events/djct_init.txt",
+    "events/djct_duchy.txt",
+    "events/djct_kingdom.txt",
+    "events/djct_empire.txt"
+  ],
+  "guarded_native_eligibility_war_starts": [
+    "djct.10",
+    "djct.20",
+    "djct.30",
+    "djct.40",
+    "djct.50",
+    "djct.60",
+    "djct.70",
+    "djct.80",
+    "djct.90"
+  ],
+  "generation_repeat_exact": true,
+  "semantic_markers": 72,
+  "semantic_marker_contract_unchanged": true,
+  "changes": [
+    "conditioned one-way truce cancel from player to current primary top liege after county reset",
+    "actual native has_truce TRUE/FALSE diagnostic before and after cancel",
+    "failed native can_declare_war logs existing FAIL marker and starts/schedules no war",
+    "disclose native peace and persisted truce duration outside fixture coverage"
+  ],
+  "changed_fixture_files": [
+    "events/djct_duchy.txt",
+    "events/djct_empire.txt",
+    "events/djct_kingdom.txt",
+    "fixture-contract.json"
+  ],
+  "runtime_changes": 0,
+  "runtime_rebuild_repeated": false,
+  "files": [
+    {
+      "path": "common/on_action/djct_on_actions.txt",
+      "size": 452,
+      "sha256": "dbe6324b39d8d5ab7ce29a5a4119cefa112ebd17efbee42501ad51dc790ce6de"
+    },
+    {
+      "path": "descriptor.mod",
+      "size": 95,
+      "sha256": "de5e22deb48fb351f927db26d6a8d181785c4d005c3e5ff7782bf3e3b722cf7c"
+    },
+    {
+      "path": "events/djct_duchy.txt",
+      "size": 15847,
+      "sha256": "ef61aeb9bb02cac16d1938ef9e045382d0c9cef396a43a11aa454d154ae8990d"
+    },
+    {
+      "path": "events/djct_empire.txt",
+      "size": 15937,
+      "sha256": "93174b14c83d1b0516876877f99386d80b71c2636e06472ec10ad24bf02656c0"
+    },
+    {
+      "path": "events/djct_init.txt",
+      "size": 1146,
+      "sha256": "45de1ca26e202c2201fc5fe3565f73fe4af70f58ca4c1d94883bef938b156484"
+    },
+    {
+      "path": "events/djct_kingdom.txt",
+      "size": 16027,
+      "sha256": "5a1d7a57623b9cb83fdf8d41e6efd4141814aa22031356adf0d7eac6770a75c6"
+    },
+    {
+      "path": "fixture-contract.json",
+      "size": 3652,
+      "sha256": "ff7759d3b705edff6624eea55e7aac9acd668d772930bb55b1dde85ccca63701"
+    }
+  ],
+  "limits": [
+    "Not live green",
+    "R2 source-grounded truce diagnosis has no direct pre-failure has_truce read",
+    "R3 actual diagnostics must verify truce presence/removal and unchanged 72 semantic assertions",
+    "No same-holder guard: R2 actual diagnostics had zero delta"
+  ]
+}

@@ -593,26 +593,20 @@ def validate(
             errors.append(f"localization key inventory mismatch: {relative}")
         if any(not item.strip() for item in entries.values()):
             errors.append(f"blank localization value: {relative}")
-        if "15" not in entries.get("enable_auto_build_desc", ""):
+        if language == "simp_chinese" and "15" not in entries.get("enable_auto_build_desc", ""):
             errors.append(f"visible 15-upgrade limit missing: {relative}")
         for key, item in entries.items():
-            if key.endswith("_confirm") and r"\n" in item:
+            if language == "simp_chinese" and key.endswith("_confirm") and r"\n" in item:
                 errors.append(f"policy confirmation contains a forced line break: {relative}:{key}")
-            if key.endswith("_choice_tooltip") and item == key:
+            if language == "simp_chinese" and key.endswith("_choice_tooltip") and item == key:
                 errors.append(f"raw policy tooltip key remains visible: {relative}:{key}")
         localized_entries[language] = entries
 
     english_entries = localized_entries.get("english", {})
     for language, _ in languages:
         entries = localized_entries.get(language, {})
-        if release_localization and language not in {"english", "simp_chinese"}:
-            for key in sorted(LOC_KEYS & english_entries.keys() & entries.keys()):
-                if entries[key] == english_entries[key]:
-                    errors.append(f"English localization placeholder remains: {language}:{key}")
         for key in sorted(LOC_KEYS & english_entries.keys() & entries.keys()):
             tokens = (r"\n",)
-            if language != "simp_chinese":
-                tokens += ("CK3", "1.19.0.6", "Mandala")
             for token in tokens:
                 if entries[key].count(token) != english_entries[key].count(token):
                     errors.append(
@@ -783,7 +777,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--release-localization",
         action="store_true",
-        help="reject English placeholders in the seven non-authoring languages",
+        help="check localization file formats, keys and escaped tokens; no non-Chinese content-quality gate",
     )
     args = parser.parse_args(argv)
     errors, vanilla_checked = validate(

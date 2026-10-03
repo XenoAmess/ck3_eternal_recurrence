@@ -1,0 +1,59 @@
+{
+  "path": "C:\\workspace\\two-mod-maintenance-20261003\\djc-fixture-truce-readonly-R0001.txt",
+  "size": 3231,
+  "sha256": "1478828c1b739d623c5191d15f5684b39f560d4b5b8d090027568baa6de07244",
+  "parser": "PASS",
+  "live": "NOT_EXECUTED",
+  "mutation": "temporary scopes and logs only; no war/resource/title/event/truce changes",
+  "scope_limitation": "condition values observe current post-failure frame, not missing pre-start historical frame",
+  "sources": {
+    "events/councillor_task_events/chancellor_task_events.txt": {
+      "sha256": "2daf2a31ac27be420c555003005df12631b381accfc85110834fd78b0938ad12",
+      "size": 46181,
+      "excerpts": [
+        {
+          "first_line": 607,
+          "last_line": 626,
+          "text": "\t\t}\n\t\tset_variable = {\n\t\t\tname = had_chancellor_task_side_effect\n\t\t\tvalue = yes\n\t\t\tdays = chancellor_task_side_effect_cooldown\n\t\t}\n\t\trandom_truce_target = {\n\t\t\tlimit = {\n\t\t\t\tchancellor_task_1102_target_trigger = yes\n\t\t\t}\n\t\t\tsave_scope_as = target\n\t\t}\n\t}\n\n\toption = {\n\t\tname = chancellor_task.1102.a\n\t\tcancel_truce_one_way = scope:target\n\t}\n}\n"
+        }
+      ]
+    },
+    "common/scripted_effects/10_dlc_tgp_japan_scripted_effects.txt": {
+      "sha256": "cf6fa3ec4e072dc3ec0bb79985443860f868536e120d1b88d9ca64eb4850022f",
+      "size": 158095,
+      "excerpts": [
+        {
+          "first_line": 3380,
+          "last_line": 3398,
+          "text": "\t\t\t}\n\t\t}\n\t}\n\tif = {\n\t\tlimit = { exists = scope:title_scope.holder }\n\t\thidden_effect = {\n\t\t\tscope:title_scope.holder = { save_scope_as = main_defender }\n\t\t\tscope:super_soryo = {\n\t\t\t\tif = {\n\t\t\t\t\tlimit = {\n\t\t\t\t\t\tany_truce_target = { this = scope:main_defender }\n\t\t\t\t\t}\n\t\t\t\t\tcancel_truce_both_ways = scope:main_defender\n\t\t\t\t}\n\t\t\t}\n\t\t\tstart_war = {\n\t\t\t#lets make sure this is appropriate for Japan\n\t\t\t\tcb = domination_cb\n\t\t\t\ttarget = scope:main_defender"
+        },
+        {
+          "first_line": 3486,
+          "last_line": 3502,
+          "text": "\t\t\t\t\tlist = war_targets\n\t\t\t\t\torder_by = current_military_strength\n\t\t\t\t\tsave_scope_as = main_defender\n\t\t\t\t}\n\t\t\t}\n\t\t\tscope:super_soryo = {\n\t\t\t\tif = {\n\t\t\t\t\tlimit = {\n\t\t\t\t\t\tany_truce_target = { this = scope:main_defender }\n\t\t\t\t\t}\n\t\t\t\t\tcancel_truce_both_ways = scope:main_defender\n\t\t\t\t}\n\t\t\t}\n\t\t\tstart_war = {\n\t\t\t\tcb = domination_cb\n\t\t\t\ttarget = scope:main_defender\n\t\t\t\ttarget_title = scope:title_scope"
+        }
+      ]
+    },
+    "common/scripted_effects/00_war_effects.txt": {
+      "sha256": "f811d12ccb11f3aae2f61b234e930e20880be9b7c065bb9f4557400bd711722b",
+      "size": 75993,
+      "excerpts": [
+        {
+          "first_line": 1970,
+          "last_line": 1992,
+          "text": "\t\t\t\t\t\thouse ?= scope:defender.house\n\t\t\t\t\t}\n\t\t\t\t\tadd_opinion = {\n\t\t\t\t\t\ttarget = scope:defender\n\t\t\t\t\t\tmodifier = antagonistic_house_disapproves_war_defeat_opinion\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\tscope:attacker = {\n\t\thidden_effect = {\n\t\t\tadd_truce_one_way = {\n\t\t\t\tcharacter = scope:defender\n\t\t\t\tdays = standard_truce_duration_days\n\t\t\t\twar = root.war\n\t\t\t\tresult = victory\n\t\t\t}\n\t\t}\n\t}\n\t# Feud\n\tscope:attacker.house = {\n\t\tchange_house_relation_feud_score_effect = {"
+        },
+        {
+          "first_line": 2125,
+          "last_line": 2145,
+          "text": "\t\t\t\t\t}\n\t\t\t\t\tadd_opinion = {\n\t\t\t\t\t\ttarget = scope:defender\n\t\t\t\t\t\tmodifier = antagonistic_house_disapproves_war_white_peace_opinion\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\thidden_effect = {\n\t\tscope:attacker = {\n\t\t\tadd_truce_one_way = {\n\t\t\t\tcharacter = scope:defender\n\t\t\t\tdays = standard_truce_duration_days\n\t\t\t\twar = root.war\n\t\t\t\tresult = white_peace\n\t\t\t}\n\t\t}\n\t}\n\tscope:attacker = {\n\t\tif = {"
+        },
+        {
+          "first_line": 2215,
+          "last_line": 2235,
+          "text": "\t\t\t\t\t\tmodifier = antagonistic_house_disapproves_war_defeat_opinion\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\thidden_effect = {\n\t\tscope:attacker = {\n\t\t\tadd_truce_one_way = {\n\t\t\t\tcharacter = scope:defender\n\t\t\t\tdays = standard_truce_duration_days\n\t\t\t\twar = root.war\n\t\t\t\tresult = defeat\n\t\t\t}\n\t\t}\n\t}\n\tscope:defender = {\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\tany_vassal = {\n\t\t\t\t\tvassal_stance = zealot"
+        }
+      ]
+    }
+  }
+}

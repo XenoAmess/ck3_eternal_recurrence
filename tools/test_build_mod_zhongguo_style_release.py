@@ -487,6 +487,45 @@ class ZhongGuo361ReleaseTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "annotated tag"):
                     release.release_identity(source)
 
+    def test_formal_localization_audit_accepts_format_checks_and_rejects_old_semantic_checks(self):
+        with self.fixture() as (_, source):
+            report = self.write_localization_audit(source)
+            document = json.loads(report.read_text(encoding="utf-8"))
+            document["checks"] = [
+                "utf8_bom", "header", "syntax", "key_order",
+                "protected_tokens", "value_encoding",
+            ]
+            report.write_text(json.dumps(document), encoding="utf-8")
+            accepted = release.verify_release_localization_audit(source)
+            self.assertEqual(document["checks"], accepted["checks"])
+
+            document["checks"] = [
+                "key_order", "protected_tokens", "quality",
+                "no_english_placeholders", "target_script",
+            ]
+            report.write_text(json.dumps(document), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "identity/check set mismatch"):
+                release.verify_release_localization_audit(source)
+
+    def test_formal_localization_audit_rejects_stale_sha_and_missing_referenced_files(self):
+        for inventory in ("source_files", "target_files"):
+            with self.subTest(inventory=inventory), self.fixture() as (_, source):
+                report = self.write_localization_audit(source)
+                document = json.loads(report.read_text(encoding="utf-8"))
+                record = document[inventory][0]
+                record["sha256"] = "0" * 64
+                report.write_text(json.dumps(document), encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, "audit is stale"):
+                    release.verify_release_localization_audit(source)
+
+                self.write_localization_audit(source)
+                missing = source / PurePosixPath(record["path"]).relative_to(
+                    release.PRODUCT_ID
+                )
+                missing.unlink()
+                with self.assertRaisesRegex(ValueError, "references missing file"):
+                    release.verify_release_localization_audit(source)
+
     def test_formal_localization_audit_requires_exact_current_4_plus_14_inventory(self):
         with self.fixture() as (_, source):
             with self.assertRaisesRegex(ValueError, "requires localization audit report"):

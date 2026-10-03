@@ -4,6 +4,12 @@ This matrix records the one-time source audit performed on 2026-09-02.  The
 offline gate is an accelerator only; it never upgrades a run to CK3 live,
 paused-snapshot, MCP, or production readiness.
 
+Language scope update, 2026-10-03: real-game acceptance uses Simplified Chinese only.
+Other languages receive format checks only: exact keys, UTF-8/BOM/header, placeholders,
+protected tokens, escapes and parseability. The historical per-language Ox Here live
+matrix below is retired for non-Chinese languages; its old entry points do not authorize
+new multilingual runs or add semantic, terminology, manual UI or truncation gates.
+
 | Entry point | CK3/desktop boundary | Offline decision | Hook and evidence |
 | --- | --- | --- | --- |
 | `tools/run_acceptance.py` | Base XAR debug/live runner | Parser + validator over `XenoAmess_s_Eternal_Recurrence`, fixture `none` | Direct call at the start of `preflight()`; result is retained in `report.json` |
@@ -12,7 +18,7 @@ paused-snapshot, MCP, or production readiness.
 | `tools/run_ox_here_acceptance.py` | Ox Here non-debug cell | Parser + validator over the checked-in `ox_here_acceptance` fixture, fixture `none` | Direct call at the start of `preflight()`; result is included in the cell report |
 | `tools/run_zhongguo_acceptance.py` | ZhongGuo 361 native/MCP and promo modes | `ck3-1.19.0.6-zg361` profile with the configured runtime root and `synthetic-361-014` | Existing direct adapter call at the start of `preflight()`; result is copied to `open_kaishek-preflight.json` |
 | `tools/run_zg361_phase2_seed_capture.py` | Direct phase-two native-session/CK3 seed capture | `ck3-1.19.0.6-zg361` over the frozen product root plus `synthetic-361-014` | Direct adapter call in both no-launch `run_preflight()` and capture `run_capture()`; the latter runs before supervisor startup and writes `open_kaishek-preflight.json` |
-| `tools/run_ox_here_loc_smoke.py` | Fresh-process CK3 localization matrix (desktop + launch per language) | Parser + validator over the checked-in `ox_here_loc_smoke` fixture, fixture `none` | Direct call at the start of `preflight()`; result is included in the matrix report |
+| `tools/run_ox_here_loc_smoke.py` | Historical fresh-process localization matrix; subsequent live acceptance is Simplified Chinese only | Parser + validator over the checked-in `ox_here_loc_smoke` fixture, fixture `none` | Direct call at the start of `preflight()`; result is included in the matrix report; non-Chinese live routes are retired |
 | `ck3_autonomous_player/native_bridge/research/run_*_live_acceptance.py` | Native bridge/save/checkpoint live probes | Not applicable for the current profile: these steps exercise native save/bridge semantics, for which the current offline profile has no deterministic source/fixture subset | Keep the live boundary and evidence requirements unchanged; do not add no-op CLI calls |
 
 The terminal wrapper does not call the adapter itself because doing so would

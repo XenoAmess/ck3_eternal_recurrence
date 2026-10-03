@@ -9,7 +9,7 @@
 | 运行合同审阅 | 完成源码层 | 三档 CB、参与方与结算的源码分析 |
 | 最小版本适配 | 完成候选 | 1.0.0 源码、变更记录与公开 ID 保留 |
 | 离线解析／L0／可复现构建 | 完整16文件通过 | 正式九语format-certified、双构建manifest／ZIP一致；未tag发布 |
-| 隔离 CK3 实机 | 未运行 | source／runtime／fixture hash 绑定报告 |
+| 隔离 CK3 实机 | 简中费用已实测，完整简中验收待完成 | source／runtime／fixture hash 绑定报告；英文历史调试不计入简中签核 |
 | 分别发布与公开回读 | 未运行 | 新物品 ID、缓存验证、Change Notes 与 changelog |
 
 ## 取得来源后的施工顺序
@@ -19,7 +19,7 @@
 3. 保留公开存档 ID；只给内部无公开合同 helper 增加本产品命名空间。禁止为统一风格无故改玩家现有政策、成本或地域范围。
 4. 对真实过时 token、作用域错误、战前描述和参战者收集实施最小修复；尽量使用 exact-build 原版的战争和头衔交接路径，不把帝国征服简化成未经授权的普通单领主战争。
 5. 新增入口必须双重保护：`ai = no` 与攻击者资格 `is_ai = no`；胜利 helper 绑定当前 CB 的战争，不能寻找攻击者任意战争。
-6. 运行源码只用 UTF-8 BOM；descriptor 无 BOM、无路径和任何 remote ID。日常只创作简中／英文；其他语言如需保持完整结构则注明英文占位，正式发布语言评审按仓库要求另行完成。
+6. 运行源码只用 UTF-8 BOM；descriptor 无 BOM、无路径和任何 remote ID。本任务真实游戏验收仅简体中文；英文及其他七语只做格式、键与占位符规范检查，不要求翻译完成度、语义、术语、母语审阅或实机。以用户明确指令和 [当前语言政策](language-acceptance-policy.md) 为准，不继承通用国际化流程的额外语言门禁。
 7. 明确 release allowlist；产品 docs／tools／fixture 不进 staging。依照现有 manifest／ZIP 机制复用通用实现，新增本产品构建入口。
 8. 按测试计划执行正负矩阵；每个失败 attempt 独立保留，不改写成 GREEN。游戏加载输入改变才重启，纯 runner 修复优先保留同一进程热重试。
 
@@ -31,4 +31,4 @@
 
 ## 当前施工状态
 
-候选实现见 [implementation.md](implementation.md)。已生成外置 9 战争／72 断言夹具并通过结构 parser；尚未执行 CK3。原版 CB 的 Python parser 通过；Open Kaishek 工具探测与受支持子集由主执行者统一协调，不能冒充已完成。
+候选实现见 [implementation.md](implementation.md)。已生成外置 9 战争／72 断言夹具并通过结构 parser；简中R0001费用已实测，英文R0002仅作调试；新简中完整矩阵待验。原版 CB 的 Python parser 通过；Open Kaishek 工具探测与受支持子集由主执行者统一协调，不能冒充已完成。
