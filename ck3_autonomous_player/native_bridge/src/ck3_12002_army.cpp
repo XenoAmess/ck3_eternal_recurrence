@@ -187,8 +187,19 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
   result.ai_base_power_raw = power;
   // Exact .3 selector 0x2587254 consumes this signed Q100000 operand.
   // The reviewed .2/.3 adapter binding owns the executable identity gate.
-  if (Load<std::int32_t>(army, 0x124) == scope.army_id)
+  if (Load<std::int32_t>(army, 0x124) == scope.army_id) {
     result.current_supply_raw = Load<std::int64_t>(army, 0x180);
+    if (bindings.get_army_supply_capacity != nullptr) {
+      std::int64_t raw = 0;
+      bindings.get_army_supply_capacity(&raw, army, nullptr);
+      result.current_supply_capacity_raw = raw;
+    }
+    if (bindings.get_army_attrition_fraction != nullptr) {
+      std::int64_t raw = 0;
+      bindings.get_army_attrition_fraction(army, &raw, nullptr);
+      result.current_attrition_fraction_raw = raw;
+    }
+  }
   return result;
 }
 

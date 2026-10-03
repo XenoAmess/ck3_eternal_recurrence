@@ -49,9 +49,20 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
     std::uintptr_t image_base, std::string_view executable_sha256) noexcept {
   // core-comparison.json proves every production binding against this exact
   // .3 EXE. Reuse the reviewed layout without changing any .2 binder's gate.
-  return BindCk3_12002AdapterImage(image_base,
+  auto result = BindCk3_12002AdapterImage(image_base,
       executable_sha256 == ck3_12003::kExecutableSha256
           ? std::string_view(ck3_12002::kExecutableSha256) : std::string_view{});
+  // These numeric GUI getter ABIs are closed only for exact .3. Do not install
+  // them in BindArmyImage: that binder also serves the unchanged .2 adapter.
+  if (result.armies.enabled) {
+    result.armies.get_army_supply_capacity =
+        reinterpret_cast<decltype(result.armies.get_army_supply_capacity)>(
+            image_base + ck3_12002::kArmySupplyCapacityRva12003);
+    result.armies.get_army_attrition_fraction =
+        reinterpret_cast<decltype(result.armies.get_army_attrition_fraction)>(
+            image_base + ck3_12002::kArmyAttritionFractionRva12003);
+  }
+  return result;
 }
 
 std::unique_ptr<GameAdapter> CreateCk3_12003Adapter(

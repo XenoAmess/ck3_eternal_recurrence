@@ -164,6 +164,11 @@ struct ArmyStrengthSnapshot {
   // Additive .2/.3 current supply observation, signed Q100000. No value is
   // synthesized for other builds or an unresolved CUnit/CArmy backlink.
   std::optional<std::int64_t> current_supply_raw;
+  // Exact .3 native GUI numeric getters, signed Q100000. Attrition is the
+  // current native fraction, not a soldier-loss count or a net future forecast.
+  // The .2 adapter leaves the new optional getter bindings unassigned.
+  std::optional<std::int64_t> current_supply_capacity_raw;
+  std::optional<std::int64_t> current_attrition_fraction_raw;
 
   friend bool operator==(const ArmyStrengthSnapshot &,
                          const ArmyStrengthSnapshot &) = default;

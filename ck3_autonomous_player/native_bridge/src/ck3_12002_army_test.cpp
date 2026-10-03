@@ -1,8 +1,12 @@
 ﻿#include "xar_bridge/ck3_12002_army.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/public_unit_id.hpp"
+#include "xar_bridge/army_strength_v1_serializer.hpp"
 
 #include <array>
+#include <charconv>
+#include <stdexcept>
+#include <string_view>
 #include <cstring>
 #include <iostream>
 #include <limits>
@@ -55,7 +59,7 @@ bool Test() {
   std::array<std::byte, 0x30> units{}, armies{}, regiments{};
   std::array<std::byte, 0x30> unit_slots{}, army_slots{}, regiment_slots{};
   std::array<std::byte, 0x180> u1{}, u2{};
-  std::array<std::byte, 0x50> army{};
+  std::array<std::byte, 0x190> army{};
   std::array<std::byte, 0x50> r1{}, r2{};
   std::array<std::byte, 0x18> p1{}, p2{};
   std::array<void *, 3> provinces{nullptr, p1.data(), p2.data()};
@@ -268,9 +272,188 @@ bool Test() {
              "exact image binding")) return false;
   return Check(!BindArmyImage(0x140000000, "old build").enabled, "old build rejected");
 }
+
+void Require(bool condition, const char *label) {
+  if (!condition) throw std::runtime_error(label);
+}
+
+void *supply_fixture_army = nullptr;
+std::int64_t supply_fixture_capacity = 0;
+std::int64_t supply_fixture_attrition = 0;
+std::int32_t supply_fixture_capacity_calls = 0;
+std::int32_t supply_fixture_attrition_calls = 0;
+
+std::int64_t *SupplyCapacity(std::int64_t *output, void *army,
+                             void *detail) {
+  Require(army == supply_fixture_army && output != nullptr && detail == nullptr,
+          "native capacity ABI: out, CArmy, null detail");
+  ++supply_fixture_capacity_calls;
+  *output = supply_fixture_capacity;
+  return output;
+}
+
+std::int64_t *AttritionFraction(void *army, std::int64_t *output,
+                               void *detail) {
+  Require(army == supply_fixture_army && output != nullptr && detail == nullptr,
+          "native attrition ABI: CArmy, out, null detail");
+  ++supply_fixture_attrition_calls;
+  *output = supply_fixture_attrition;
+  return output;
+}
+
+std::string FixtureNumber(std::int64_t value) {
+  std::array<char, 32> buffer{};
+  const auto result = std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+  Require(result.ec == std::errc{}, "numeric serializer");
+  return std::string(buffer.data(), result.ptr);
+}
+
+void FixtureArray(std::string &output, const std::vector<std::int32_t> &values) {
+  output += '[';
+  for (std::size_t index = 0; index < values.size(); ++index) {
+    if (index != 0) output += ',';
+    output += FixtureNumber(values[index]);
+  }
+  output += ']';
+}
+
+void FixtureString(std::string &output, std::string_view value) {
+  constexpr char hex[] = "0123456789ABCDEF";
+  output += '"';
+  for (const unsigned char character : value) {
+    if (character == '"' || character == '\\') {
+      output += '\\';
+      output += static_cast<char>(character);
+    } else if (character < 0x20U) {
+      output += "\\u00";
+      output += hex[(character >> 4U) & 0x0FU];
+      output += hex[character & 0x0FU];
+    } else {
+      output += static_cast<char>(character);
+    }
+  }
+  output += '"';
+}
+
+void EmitSupplyCase(std::string_view name,
+                    const xar::game::ArmyStrengthSnapshot &row) {
+  std::string wire = "{\"case\":";
+  FixtureString(wire, name);
+  wire += ",\"army_strengths\":[";
+  xar::game::AppendArmyStrengthV1(
+      wire, row, FixtureNumber, FixtureArray, FixtureString);
+  wire += "]}";
+  std::cout << wire << '\n';
+}
+
+void SupplyFixture() {
+  using namespace xar;
+  using namespace xar::ck3_12002;
+  constexpr std::int32_t public_id = 0x01000001;
+  constexpr std::int32_t native_id = 0x02000001;
+  constexpr std::int32_t regiment_id = 0x03000001;
+  std::array<std::byte, 0x180> unit{};
+  std::array<std::byte, 0x190> army{};
+  std::array<std::byte, 0x50> regiment{};
+  std::array<std::byte, 0x30> units{}, armies{}, regiments{};
+  std::array<std::byte, 0x20> unit_slots{}, army_slots{}, regiment_slots{};
+  std::array<std::int32_t, 1> regiment_ids{regiment_id};
+  Put(unit, 0x10, public_id);
+  Put(unit, 0x178, native_id);
+  Put(army, 0x10, native_id);
+  Put(army, 0x124, public_id);
+  Put(army, 0x38, static_cast<void *>(regiment_ids.data()));
+  Put(army, 0x40, std::int32_t{1});
+  Put(army, 0x44, std::int32_t{1});
+  Put(regiment, 0x10, regiment_id);
+  Put(regiment, 0x14, std::uint32_t{0x41725267});
+  Put(regiment, 0x38, std::int32_t{900});
+  Put(regiment, 0x3C, std::int32_t{1500});
+  Put(regiment, 0x40, std::int64_t{35000000});
+  Put(unit_slots, 0x18, static_cast<void *>(unit.data()));
+  Put(army_slots, 0x18, static_cast<void *>(army.data()));
+  Put(regiment_slots, 0x18, static_cast<void *>(regiment.data()));
+  Put(units, 0x20, static_cast<void *>(unit_slots.data()));
+  Put(units, 0x2C, std::int32_t{2});
+  Put(armies, 0x20, static_cast<void *>(army_slots.data()));
+  Put(armies, 0x2C, std::int32_t{2});
+  Put(regiments, 0x20, static_cast<void *>(regiment_slots.data()));
+  Put(regiments, 0x2C, std::int32_t{2});
+  void *units_ptr = units.data(), *armies_ptr = armies.data(), *regiments_ptr = regiments.data();
+  ArmyBindings bindings{};
+  bindings.enabled = true;
+  bindings.unit_storage_slot = &units_ptr;
+  bindings.internal_army_storage_slot = &armies_ptr;
+  bindings.regiment_storage_slot = &regiments_ptr;
+  bindings.get_army_current_soldiers = Current;
+  bindings.get_army_maximum_soldiers = Maximum;
+  bindings.get_army_supply_capacity = SupplyCapacity;
+  bindings.get_army_attrition_fraction = AttritionFraction;
+  reg_objects = {nullptr, regiment.data(), nullptr};
+  supply_fixture_army = army.data();
+  std::array<ArmyStrengthScope, 1> scope{{{public_id, game::ArmyStrengthScopeRole::player, {42}}}};
+  std::vector<game::ArmyStrengthSnapshot> rows;
+  struct Case { const char *name; std::int64_t supply; std::int64_t capacity; std::int64_t attrition; };
+  for (const auto &item : std::array<Case, 3>{{
+      {"observed", 5'500'000, 12'500'000, 2'500},
+      {"legal_zero", 0, 0, 0},
+      {"signed_current_supply", -100'001, 15'000'000, 1'000}}}) {
+    Put(army, 0x180, item.supply);
+    supply_fixture_capacity = item.capacity;
+    supply_fixture_attrition = item.attrition;
+    const auto before_capacity = supply_fixture_capacity_calls;
+    const auto before_attrition = supply_fixture_attrition_calls;
+    Require(ReadArmyStrengthsForScope(bindings, scope, rows) == game::ReadArmyStrengthsResult::available && rows.size() == 1,
+            "genuine production strength reader");
+    const auto &row = rows[0];
+    Require(row.available && row.current_soldiers == 900 && row.maximum_soldiers == 1500 &&
+            row.current_supply_raw == item.supply && row.current_supply_capacity_raw == item.capacity &&
+            row.current_attrition_fraction_raw == item.attrition,
+            "production result keeps exact raw values including zero");
+    Require(supply_fixture_capacity_calls == before_capacity + 1 && supply_fixture_attrition_calls == before_attrition + 1,
+            "one call per genuine native getter, correct ABI");
+    EmitSupplyCase(item.name, row);
+  }
+  bindings.get_army_supply_capacity = nullptr;
+  bindings.get_army_attrition_fraction = nullptr;
+  Require(ReadArmyStrengthsForScope(bindings, scope, rows) == game::ReadArmyStrengthsResult::available,
+          "older adapter remains available without new getter bindings");
+  Require(rows[0].current_supply_raw == -100'001 && !rows[0].current_supply_capacity_raw.has_value() &&
+          !rows[0].current_attrition_fraction_raw.has_value(),
+          "unassigned getter is unobserved, not synthesized zero");
+  EmitSupplyCase("legacy_getters_unassigned", rows[0]);
+  const auto bound12002 = BindArmyImage(0x140000000, kExecutableSha256);
+  Require(bound12002.enabled && bound12002.get_army_supply_capacity == nullptr &&
+          bound12002.get_army_attrition_fraction == nullptr,
+          "genuine .2 binder never installs unproved .3 getters");
+  bindings.get_army_supply_capacity = SupplyCapacity;
+  bindings.get_army_attrition_fraction = AttritionFraction;
+  const auto before_capacity = supply_fixture_capacity_calls;
+  const auto before_attrition = supply_fixture_attrition_calls;
+  Put(army, 0x124, std::int32_t{0x04000001});
+  Require(ReadArmyStrengthsForScope(bindings, scope, rows) == game::ReadArmyStrengthsResult::available &&
+          !rows[0].current_supply_raw.has_value() && !rows[0].current_supply_capacity_raw.has_value() &&
+          !rows[0].current_attrition_fraction_raw.has_value(),
+          "current supply and new getters share exact CArmy backlink");
+  Require(supply_fixture_capacity_calls == before_capacity && supply_fixture_attrition_calls == before_attrition,
+          "no getter called on unresolved backlink");
+  EmitSupplyCase("backlink_unobserved", rows[0]);
+  Put(army, 0x124, public_id);
+  Put(army, 0x10, std::int32_t{0x05000001});
+  Require(ReadArmyStrengthsForScope(bindings, scope, rows) == game::ReadArmyStrengthsResult::partial &&
+          !rows[0].available && !rows[0].current_supply_capacity_raw.has_value() &&
+          !rows[0].current_attrition_fraction_raw.has_value(),
+          "partial production row keeps unobserved values separate");
+  EmitSupplyCase("native_carmy_not_found", rows[0]);
+}
+
 } // namespace
 
-int main() {
+int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--supply-fixture") {
+    SupplyFixture();
+    return 0;
+  }
   if (!Test()) return 1;
   std::cout << "CK3 1.20.0.2 army offline fixtures passed\n";
   return 0;

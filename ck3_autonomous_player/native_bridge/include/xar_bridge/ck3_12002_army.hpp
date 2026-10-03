@@ -14,6 +14,8 @@ inline constexpr std::uintptr_t kRegimentStorageSlotRva12002 = 0x5D1F340;
 inline constexpr std::uintptr_t kUnitStateRva12002 = 0xD19140;
 inline constexpr std::uintptr_t kArmyCurrentSoldiersRva12002 = 0x2A95740;
 inline constexpr std::uintptr_t kArmyMaximumSoldiersRva12002 = 0x24E0450;
+inline constexpr std::uintptr_t kArmySupplyCapacityRva12003 = 0x2C53C10;
+inline constexpr std::uintptr_t kArmyAttritionFractionRva12003 = 0x24E2E50;
 
 struct ArmyBindings {
   bool enabled = false;
@@ -24,6 +26,9 @@ struct ArmyBindings {
   std::int32_t (*get_unit_state)(void *) = nullptr;
   std::int32_t (*get_army_current_soldiers)(void *, std::uint8_t) = nullptr;
   std::int32_t (*get_army_maximum_soldiers)(void *) = nullptr;
+  // Exact .3 only; the native optional-breakdown argument is always null.
+  std::int64_t *(*get_army_supply_capacity)(std::int64_t *, void *, void *) = nullptr;
+  std::int64_t *(*get_army_attrition_fraction)(void *, std::int64_t *, void *) = nullptr;
 };
 
 ArmyBindings BindArmyImage(std::uintptr_t image_base,

@@ -6,6 +6,7 @@
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 #include "xar_bridge/war_occupation_targets_v1_serializer.hpp"
 #include "xar_bridge/title_holder_v1_serializer.hpp"
+#include "xar_bridge/army_strength_v1_serializer.hpp"
 #include "xar_bridge/projected_contact_scope_v1_serializer.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 #include "xar_bridge/ck3_12002_lifestyle.hpp"
@@ -3062,68 +3063,8 @@ void AppendArmyArray(
 void AppendArmyStrength(
     std::string &result,
     const xar::game::ArmyStrengthSnapshot &strength) {
-  result += "{\"status\":\"";
-  result += strength.available ? "available" : "unavailable";
-  result += "\",\"army_id\":";
-  result += SignedNumber(strength.army_id);
-  result += ",\"native_carmy_id\":";
-  if (strength.native_carmy_id_observable) {
-    result += SignedNumber(strength.native_carmy_id);
-  } else {
-    result += "null";
-  }
-  result += ",\"scope_role\":\"";
-  switch (strength.scope_role) {
-  case xar::game::ArmyStrengthScopeRole::player:
-    result += "player";
-    break;
-  case xar::game::ArmyStrengthScopeRole::active_war_ally:
-    result += "active_war_ally";
-    break;
-  case xar::game::ArmyStrengthScopeRole::active_war_enemy:
-    result += "active_war_enemy";
-    break;
-  }
-  result += "\",\"war_ids\":";
-  AppendInt32Array(result, strength.war_ids);
-  result += ",\"regiment_count\":";
-  if (strength.available) {
-    result += SignedNumber(strength.regiment_count);
-  } else {
-    result += "null";
-  }
-  result += ",\"current_soldiers\":";
-  if (strength.available) {
-    result += SignedNumber(strength.current_soldiers);
-  } else {
-    result += "null";
-  }
-  result += ",\"maximum_soldiers\":";
-  if (strength.available) {
-    result += SignedNumber(strength.maximum_soldiers);
-  } else {
-    result += "null";
-  }
-  result += ",\"ai_base_power_raw\":";
-  if (strength.available) {
-    result += SignedNumber(strength.ai_base_power_raw);
-  } else {
-    result += "null";
-  }
-  result += ",\"ai_base_power_scale\":";
-  result += SignedNumber(strength.ai_base_power_scale);
-  if (strength.available && strength.current_supply_raw.has_value()) {
-    result += ",\"current_supply_raw\":";
-    result += SignedNumber(*strength.current_supply_raw);
-    result += ",\"current_supply_scale\":100000";
-  }
-  result += ",\"unavailable_reason\":";
-  if (strength.available) {
-    result += "null";
-  } else {
-    AppendJsonString(result, strength.unavailable_reason);
-  }
-  result += '}';
+  xar::game::AppendArmyStrengthV1(
+      result, strength, SignedNumber, AppendInt32Array, AppendJsonString);
 }
 
 std::string_view CombatStatusName(

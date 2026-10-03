@@ -243,8 +243,13 @@ _ARMY_STRENGTH_ROW_KEYS = {
     "ai_base_power_scale",
     "unavailable_reason",
 }
+_ARMY_STRENGTH_SUPPLY_FIELD_PAIRS = (
+    ("current_supply_raw", "current_supply_scale"),
+    ("current_supply_capacity_raw", "current_supply_capacity_scale"),
+    ("current_attrition_fraction_raw", "current_attrition_fraction_scale"),
+)
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS = _ARMY_STRENGTH_ROW_KEYS | {
-    "current_supply_raw", "current_supply_scale",
+    key for pair in _ARMY_STRENGTH_SUPPLY_FIELD_PAIRS for key in pair
 }
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
@@ -1628,23 +1633,28 @@ def army_strength_query_status(
 def _normalize_army_strength_row(
     value: object, *, name: str
 ) -> dict[str, object]:
-    if not isinstance(value, dict) or set(value) not in (
-        _ARMY_STRENGTH_ROW_KEYS, _ARMY_STRENGTH_SUPPLY_ROW_KEYS
-    ):
+    if (not isinstance(value, dict)
+            or not _ARMY_STRENGTH_ROW_KEYS <= value.keys()
+            or not value.keys() <= _ARMY_STRENGTH_SUPPLY_ROW_KEYS):
         raise ValueError(f"native {name} schema is malformed")
-    supply_present = "current_supply_raw" in value
-    current_supply_raw = value.get("current_supply_raw")
-    if supply_present:
-        if current_supply_raw is not None and (
-            isinstance(current_supply_raw, bool)
-            or not isinstance(current_supply_raw, int)
-            or not -(2**63) <= current_supply_raw <= 2**63 - 1
+    observed_supply = {}
+    for raw_key, scale_key in _ARMY_STRENGTH_SUPPLY_FIELD_PAIRS:
+        if (raw_key in value) != (scale_key in value):
+            raise ValueError(f"native {name}.{raw_key} requires its scale")
+        if raw_key not in value:
+            continue
+        raw = value[raw_key]
+        if raw is not None and (
+            isinstance(raw, bool) or not isinstance(raw, int)
+            or not -(2**63) <= raw <= 2**63 - 1
         ):
-            raise ValueError(f"native {name}.current_supply_raw must be signed int64 or null")
-        if value.get("current_supply_scale") != CK3_FIXED_POINT_SCALE:
-            raise ValueError(f"native {name}.current_supply_scale must be {CK3_FIXED_POINT_SCALE}")
-        if value.get("status") != "available" and current_supply_raw is not None:
-            raise ValueError(f"native unavailable {name}.current_supply_raw must be null")
+            raise ValueError(f"native {name}.{raw_key} must be signed int64 or null")
+        if value[scale_key] != CK3_FIXED_POINT_SCALE:
+            raise ValueError(f"native {name}.{scale_key} must be {CK3_FIXED_POINT_SCALE}")
+        if value.get("status") != "available" and raw is not None:
+            raise ValueError(f"native unavailable {name}.{raw_key} must be null")
+        observed_supply[raw_key] = raw
+        observed_supply[scale_key] = CK3_FIXED_POINT_SCALE
     status = value.get("status")
     if status not in {"available", "unavailable"}:
         raise ValueError(f"native {name}.status is malformed")
@@ -1719,9 +1729,7 @@ def _normalize_army_strength_row(
         "ai_base_power_scale": CK3_FIXED_POINT_SCALE,
         "unavailable_reason": unavailable_reason,
     }
-    if supply_present:
-        result["current_supply_raw"] = current_supply_raw
-        result["current_supply_scale"] = CK3_FIXED_POINT_SCALE
+    result.update(observed_supply)
     return result
 
 
