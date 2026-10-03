@@ -1,5 +1,21 @@
 # CK3 自动游玩智能体进度中心
 
+## 15:34 最新军事保存截点：五个单日 OODA
+
+截至本次实际保存，累计 **3850/36524** 日、resume+697、10月3日+602；`raw53236728`，正常保存 `h4701`，SHA `662f8ce9e40d515ccceea97466585e2e66e6e9c01cfcc135f8dede0a7f7cca4f`。第三日3848/h4692记录保留为历史截点，不重复计日。当前v35/Robert29829/episode `native-29829-2bc2d599f7f9`/PID13408继续最小化不抢焦点；新统帅、县任务、召盟修复、占领收复目标、悔罪恢复及圣骑士团兵数能力已源码采用并聚焦GREEN，待统一新DLL实测。G2 5/8、NW2/4和自然继承0保持；推进ACK不能当作抵达、战争胜利或宗教结果。原始第五日证据：`Z:\ck3_mod_rewrite_process_assets\g2-resume-20261003\battle-observation-schedule\actual-fifth-day-v35-01\result.json`。
+
+## 当前截点：v35，3848 个保存日（2026-10-03T15:07:18+08:00 实际补录）
+
+Robert **29829** 原 ordinary campaign / episode `native-29829-2bc2d599f7f9` 已持久化 **3848/36524 天**；resume 累计新增 **695 天**、10-03 新增 **600 天**。G2 **5/8**、NW **2/4**、自然继承 **0** 与 `percent_reporting_allowed=false` 保持；完整一代人、百年和整局资格没有因新增只读字段或命令包增加。当前 live 为 **v35 / PID13408 / source-native `19b508ae4fa8e3ab09f4e8631fcf0340d69939c2`**，游戏最小化、暂停且不占前台；本更新基准开发树 `Z:/g36` **3802702** 与当前 DLL 身份分开记录。
+
+最新正常配对为 **raw53236680 / save4692**，save SHA-256 `f992cd3f865972df85862abb2d8539b4bb8060a6cbd2b8f0ab889d4491678e02`。拒绝派系最后通牒后，原三个直辖县2102/2111/2115保留、新防御战争50331736实际成立；随后军队83886367一次移动至2610的命令及三次独立的一日观察→操作→验证→保存均已完成。三日分别计入3846、3847和3848，只计一次；玩家目前仍在2614、沿 `[2610]` 移动，尚未证明抵达、玩家参战或战争胜利。[第三个一日闭环与正常保存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/actual-third-day-v35-01/result.json)。第二日3847/raw53236656/save4687及原save SHA `b51c572538c5205d3dfdf90d1aad1b3f91d4001b59e0c4d41dffb435e139f407`保留为[此前冻结截点](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/actual-second-day-v35-consumed01/ROOT-DELIVERY.json)。
+
+真实外部战斗1577058305位于2640，第三日读回为 maneuver / phase_day3 / winner none / finalized false，Robert不在双方；fresh ArmyStrength八行available，玩家仍2334、War129的敌军16777683为2436，不能复用此前2305当当前值。三场战争的 strategic war-entry 和五县最终改宗派遣资格已取得 `production-live primitive`；它们不是战斗胜率或县信仰改变。统帅候选与任命、县任务typed派遣、召盟typed发送、当前补给及 terminal字段最小修复已合入开发源并取得 `static-ready`，仍需新 v36 DLL 和原存档 paused 验收；命令ACK不能替代原生任命、实际参战或支付后置。[当前能力与下一施工顺序](goal-and-roadmap.md)；[实际阻点与质量债](one-generation-blocker-ledger.md)。
+
+现有盟友34730/37689/38718的名单枚举为 `production-live primitive`，三份实际recipient terms却均为 capability RED：`call_ally_finalized_context_identity_unavailable`；CanSend、费用、回答和分战争条款缺失，不能改写成false/零或有效军援。悔罪新source/recovery/PAM接线已取得28个scene、5个wire的静态GREEN，旧actual恢复NOT_READY保持，新输入尚未paused实测；占领状态与收复目标观测亦在并行施工。缺口沿原MCP补齐，再恢复对应策略。
+
+用户2026-10-03明确撤销全部非战限制，最终授权文档批次已普通发布；`nonwar-only`、WAR OFF、战争研究停止或交由其他维护者等历史文字均不是当前禁令。Robert唯一原战役、exact-build、原生AI研究优先、玩家限定及最小化不抢焦点继续执行。[全局撤禁最终分类](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-authorization/final-coverage/FINAL-COVERAGE-CLASSIFICATION.json)。下方带日期的STOP、未选择、3845与旧授权段落保留为对应历史截点。
+
 ## 13:16 取消非战限制，战斗原生研究与实机并行
 
 **2026-10-03 当前战争授权：** 项目所有者明确命令取消任何非战约束并研究战斗。原 nonwar-only、战争研究停止、战争执行 OFF、仅由其他维护者施工、WAR_CASH/PREWAR 永久关闭等授权限制全部失效；允许战争原生研究、观测、实现、策略和实机执行，不再仅因战争请求确认。旧配置 OFF、失败和零动作均保留为当时事实，不能继续当作禁令。Robert29829 原 ordinary campaign、原生 AI 研究优先、exact-build、玩家限定、真实 readiness 和最小化无焦点继续执行。授权不等于全部能力已完成。

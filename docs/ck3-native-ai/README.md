@@ -950,3 +950,12 @@ flowchart TD
 - [Dated eight-army strength capture](army-1.20.0.2-migration.md)
 - [Dated actual terrain and hypothetical-entry inputs](battle-current-robert-1.20.0.3-2026-10-03.md)
 - [Observed hostile CombatID and actual ordered sides](battle-hostile-existing-combat-discovery-1.20.0.3-2026-10-03.md)
+
+## 2026-10-03 战争与宗教并行接续
+
+- [玩家统帅候选与资格](commander-candidates-and-assignment-12003.md)、[玩家任命原生链](commander-player-assignment-12003.md)、[typed任命provider](army-commander-assignment-provider-12003.md)。
+- [战争占领与收复目标](war-occupation-targets-12003.md)、[战争结算typed动作与实测边界](war-settlement-typed-actions-12003.md)。
+- [召盟owned命令](ck3-1.20.0.3-call-ally-command.md)、[原生WarPicker顺序与合法无入口](call-ally-selected-target-finalization-12003.md)。
+- [悔罪来源与恢复输入](religion-repentance-recovery-inputs-12003.md)。
+
+以上新增实现已聚焦static-ready；actual当前军务五日OODA与新DLL能力实测分开记录，详见统一进度入口。

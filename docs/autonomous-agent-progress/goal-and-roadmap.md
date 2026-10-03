@@ -1,5 +1,29 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 15:34 最新军事保存截点：五个单日 OODA
+
+截至本次实际保存，累计 **3850/36524** 日、resume+697、10月3日+602；`raw53236728`，正常保存 `h4701`，SHA `662f8ce9e40d515ccceea97466585e2e66e6e9c01cfcc135f8dede0a7f7cca4f`。第三日3848/h4692记录保留为历史截点，不重复计日。当前v35/Robert29829/episode `native-29829-2bc2d599f7f9`/PID13408继续最小化不抢焦点；新统帅、县任务、召盟修复、占领收复目标、悔罪恢复及圣骑士团兵数能力已源码采用并聚焦GREEN，待统一新DLL实测。G2 5/8、NW2/4和自然继承0保持；推进ACK不能当作抵达、战争胜利或宗教结果。原始第五日证据：`Z:\ck3_mod_rewrite_process_assets\g2-resume-20261003\battle-observation-schedule\actual-fifth-day-v35-01\result.json`。
+
+## 当前截点：v35，3848 个保存日（2026-10-03T15:07:18+08:00 实际补录）
+
+当前唯一战役为 Robert29829 / `native-29829-2bc2d599f7f9`，ordinary / `xar_off` / pact absent；持久化 **3848/36524 天**，resume **695 天**、10-03 **600 天**，G2 **5/8**、NW **2/4**、自然继承 **0**，`percent_reporting_allowed=false`。实际 v35/PID13408/source-native `19b508ae4fa8e3ab09f4e8631fcf0340d69939c2` 继续最小化暂停、不抢焦点。新实现合入开发源，本更新读取 `Z:/g36` **3802702** 基准，不冒充当前live DLL；exact CK3 **1.20.0.3 / Steam25652598**、EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6` 保持。
+
+已完成一次真实拒绝最后通牒→事件23消失→保留直辖县2102/2111/2115→新War50331736的后置闭环。军队83886367一次提交move→2610后，三次各一日的全敌军时序观察、正常推进、独立状态读回及保存均GREEN；最新第三次 **raw53236656→53236680 / save4692**，save SHA-256 `f992cd3f865972df85862abb2d8539b4bb8060a6cbd2b8f0ab889d4491678e02`。[第三日实际包](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/actual-third-day-v35-01/result.json)。此前第二次 **raw53236632→53236656 / save4687**、原SHA `b51c572538c5205d3dfdf90d1aad1b3f91d4001b59e0c4d41dffb435e139f407`仍是[3847天冻结截点](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/actual-second-day-v35-consumed01/ROOT-DELIVERY.json)。这是已验证的 bounded `production-live loop`，尚未抵达2610、玩家尚未参战、战争尚未结束；h-7表示七个hostile IDs，不表示放行七个游戏日。
+
+| 能力 / 当前用途 | 已取得的真实等级与边界 | 下一项可交付 |
+| --- | --- | --- |
+| 防御战争、军队路线与逐日循环 | 三场真实防御战争16777231/129/50331736；两目标原生路线7/89日；move一次及三个独立一日循环为 `production-live loop`。第三日玩家仍2614 moving `[2610]` | 保留既有路线；每次推进依据当前完整敌军时序，读回抵达/状态并正常保存；不借查询字段计战争胜利 |
+| 战略战力与实际战斗观测 | 三场war-entry的实际查询已GREEN，为 `production-live primitive`。外部Combat1577058305@2640为maneuver/day3、无winner/finalization，双方均非Robert；fresh Strength八行available，玩家2334、War129敌军16777683为2436 | 继续观测真实阶段/参加者；战略base、人数和假设阵容不能代替胜率或当前战斗结果 |
+| 统帅候选与正式任命 | 候选getter、玩家mode1最终资格和typed owned-command任命已合入源，聚焦验证GREEN，最高 `static-ready`；实际军队当前统帅缺位 | v36同帧查询真实合法候选；提交一次正式任命后独立读回同CUnit/CArmy/owner的实际commander，再计任命闭环 |
+| 县改宗任务 | 五县最终native派遣资格和价值输入已实际available，为 `production-live primitive`；typed任务替换/结果查询为 `static-ready` | v36取得fresh资格后正式派遣，独立读回type/target/owner/incumbent；ActiveTaskID可以合法保持7162，派遣不等于县Faith/Rite已转变 |
+| 当前补给与终结结果 | 当前signed supply字段和battle terminal phase/day/date最小修复已合入源，均 `static-ready`；原v35 terminal serialization实际RED保留 | v36用现有ArmyStrength读取当前补给；用当前完整CombatID和实际subject取得terminal基线，真实finalizer与后态另计；不把已分配BattleResultID当终结 |
+| 召盟参战 | 34730/37689/38718名单枚举为 `production-live primitive`；三份recipient terms均capability RED，具体原因为 `call_ally_finalized_context_identity_unavailable`。typed sender为 `static-ready` | 先修实际context缺口并观察同帧final CanSend/费用/回答/WarID；存在合法实际机会时发送一次，再独立观察参战和资源支付。三位has_realm_data=false不证明最终CanSend=false |
+| 悔罪与占领/收复目标 | 悔罪角色/两候选/两petition的已成功只读字段保留，旧actual恢复资格仍NOT_READY；新source/recovery/PAM输入接线28scene/5wire GREEN，最高 `static-ready`；占领/收复目标观测在并行施工 | 新v36同MCP实际验收新增输入后执行策略；占领/收复观测沿exact-build原生树补齐。不以静态GREEN、长期null或ACK当作恢复已完成 |
+
+源码先合入、冻结组合DLL、官方prepare/rebind及原最新配对冷恢复后，再做上述实际验收；Root独占SDK/game/pipe/Git/桌面，独立原生研究、接线和文档包在外置投影高并发施工。既有focused GREEN和失败artifact直接复用，不增加无实证的全局前置。当前native目标ranking/tie、求援比率、敌未来意图和Monte Carlo仍为质量债，替换入口保留在[阻点账本](one-generation-blocker-ledger.md)及原生专题；它们不阻断已合法的逐日循环。
+
+全部战争与宗教研究/实现/执行已授权。全局非战prompt/交接撤禁最终批次已普通发布，[最终分类](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-authorization/final-coverage/FINAL-COVERAGE-CLASSIFICATION.json)留存；下方各日期的nonwar、WAR OFF、STOP、未选事件和旧天数只作为当时事实，不构成当前授权或能力结论。新增三日和本页更新没有新增G2/NW整项、自然继承、百年或完整campaign信用。
+
 ## 13:45 全局撤禁收口与一次真实拒绝后置
 
 最终全局扫描仅执行一次：482个tracked路径、1338处匹配；在前两批之后补齐9文件12处遗漏的现行授权文案（含CMake option说明和历史交接当前指令）。纯技术nonwar标识、历史OFF/失败和真实未实现能力不当作授权禁令。两批已发布43085c96、bf6a64c7官方CI均GREEN；本批继续普通commit/push。用户指定的原脏g2dlv交接与两份原AGENTS只镜像授权的精确句子，其余现场不覆写。
