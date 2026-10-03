@@ -1,5 +1,10 @@
 * text=auto eol=lf
 
+# Preserve Superman Qiang's hash-bound raw build, live and publication evidence.
+mod_superman_qiang/docs/build-evidence-*/** -text whitespace=cr-at-eol
+mod_superman_qiang/docs/live-R*/** -text whitespace=cr-at-eol
+mod_superman_qiang/docs/release-*/** -text whitespace=cr-at-eol
+
 # Keep the original independent-mod publication receipts and anonymous HTTP bytes.
 mod_de_jure_conquest/docs/release-1.0.0-2026-10-03/*.json -text whitespace=cr-at-eol
 mod_de_jure_conquest/docs/release-1.0.0-2026-10-03/*.html -text whitespace=cr-at-eol

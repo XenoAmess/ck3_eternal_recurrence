@@ -1,0 +1,51 @@
+{
+  "schema": "superman-qiang.official-ci-final.v1",
+  "runs": [
+    {
+      "run_id": 37147338623,
+      "query_started_at_utc": "2026-10-03T19:26:14.640009+00:00",
+      "query_completed_at_utc": "2026-10-03T19:26:16.518328+00:00",
+      "argv": [
+        "gh",
+        "run",
+        "view",
+        "37147338623",
+        "--json",
+        "url,status,conclusion,headSha"
+      ],
+      "result": {
+        "conclusion": "success",
+        "headSha": "ebeb394634cc2a1e1ebd013b56c3e6952f4ce88e",
+        "status": "completed",
+        "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37147338623"
+      },
+      "stdout_path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\build-evidence-2026-10-04-L0-A0001\\official-ci-37147338623-final.stdout.json",
+      "stdout_sha256": "9f6b6ea73e60c9703887e5f97367963b9f0bef539d0920db14607e5f28bf4404"
+    },
+    {
+      "run_id": 37147208568,
+      "query_started_at_utc": "2026-10-03T19:26:17.072556+00:00",
+      "query_completed_at_utc": "2026-10-03T19:26:20.666440+00:00",
+      "argv": [
+        "gh",
+        "run",
+        "view",
+        "37147208568",
+        "--json",
+        "url,status,conclusion,headSha"
+      ],
+      "result": {
+        "conclusion": "success",
+        "headSha": "f643b32e6146dce73f77fedfefd8471da59fb04f",
+        "status": "completed",
+        "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37147208568"
+      },
+      "stdout_path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\build-evidence-2026-10-04-L0-A0001\\official-ci-37147208568-final.stdout.json",
+      "stdout_sha256": "9467d03d6cef6df321c5c043ac4374d0c5e0a4fe1062c7e369bb7b0178851ba7"
+    }
+  ],
+  "evidence_layer": "official-github-l0-workflow-conclusion",
+  "tests_rerun": false,
+  "ck3_started": false,
+  "native_acceptance_inferred": false
+}

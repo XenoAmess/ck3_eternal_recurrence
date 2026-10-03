@@ -1,0 +1,15 @@
+test_bom_and_utf8_contract_rejects_bad_script_localization_and_descriptor (__main__.IndependentModReleaseTests.test_bom_and_utf8_contract_rejects_bad_script_localization_and_descriptor) ... ok
+test_build_does_not_overwrite_output_or_write_inside_source (__main__.IndependentModReleaseTests.test_build_does_not_overwrite_output_or_write_inside_source) ... ok
+test_extra_runtime_source_file_is_rejected_without_creating_output (__main__.IndependentModReleaseTests.test_extra_runtime_source_file_is_rejected_without_creating_output) ... ok
+test_manifest_rejects_wrong_product_duplicate_inventory_and_boolean_size (__main__.IndependentModReleaseTests.test_manifest_rejects_wrong_product_duplicate_inventory_and_boolean_size) ... ok
+test_original_product_has_no_upstream_identity_and_accepts_a_new_item (__main__.IndependentModReleaseTests.test_original_product_has_no_upstream_identity_and_accepts_a_new_item) ... ok
+test_production_projection_and_archive_have_only_reviewed_runtime (__main__.IndependentModReleaseTests.test_production_projection_and_archive_have_only_reviewed_runtime) ... ok
+test_runtime_identity_never_reuses_upstream_or_inner_remote_id (__main__.IndependentModReleaseTests.test_runtime_identity_never_reuses_upstream_or_inner_remote_id) ... ok
+test_second_build_matches_manifest_and_zip_even_after_source_mtime_change (__main__.IndependentModReleaseTests.test_second_build_matches_manifest_and_zip_even_after_source_mtime_change) ... ok
+test_specs_reject_escape_case_collision_and_source_only_runtime_paths (__main__.IndependentModReleaseTests.test_specs_reject_escape_case_collision_and_source_only_runtime_paths) ... ok
+test_verifier_rejects_same_size_changed_bytes_missing_and_extra_files (__main__.IndependentModReleaseTests.test_verifier_rejects_same_size_changed_bytes_missing_and_extra_files) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.604s
+
+OK

@@ -1,0 +1,31 @@
+{
+  "schema": "xar.ck3.character-skill-trigger-readback.evidence.v1",
+  "game_version": "1.20.0.3",
+  "steam_build": 25652598,
+  "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "read_only": true,
+  "ck3_started": false,
+  "artifacts": [
+    {
+      "path": "D:/ck3-superman-skill-trigger-readonly-20261004/contracts.json",
+      "bytes": 7170,
+      "sha256": "19b9b1ae2a585310e0c20c2a8ba8c563e45e145610f62f92b191d66e94cec1e1"
+    },
+    {
+      "path": "D:/ck3-superman-skill-trigger-readonly-20261004/rtti-and-disassembly.txt",
+      "bytes": 114891,
+      "sha256": "cd4d1a7ed7a7a03af8e25a5d601ca0f8d23913b0c89abf7fe3e62674f7b27841"
+    },
+    {
+      "path": "D:/ck3-superman-skill-trigger-readonly-20261004/selected-disassemblies.txt",
+      "bytes": 6761,
+      "sha256": "972af2745819dee29bc64bf6294a24c95dc1b051da201dcbf712bfdc309238cb"
+    },
+    {
+      "path": "D:/ck3-superman-skill-trigger-readonly-20261004.py",
+      "bytes": 4862,
+      "sha256": "5da1a0f7c635a01fdc1698cfd96194ff1b4e9703bf0080889db0591d3aacfb17"
+    }
+  ],
+  "boundary": "Offline RTTI/disassembly evidence only; no live refresh, base limits, transfer or mod acceptance claimed."
+}
