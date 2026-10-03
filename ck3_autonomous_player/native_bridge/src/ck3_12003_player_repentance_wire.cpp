@@ -14,6 +14,28 @@ std::string Quote(std::string_view text) {
   }
   return out + '"';
 }
+std::string OrdinaryDecisionReadiness(const PlayerRepentanceMailboxContext12003 &query) {
+  const auto &candidate = query.candidate_observation;
+  const bool complete = candidate.fallback_sources_sampled &&
+      candidate.source_candidate_evaluation_complete;
+  const bool ready = query.observation.player_excommunication.available &&
+      query.recovery_observation.available && query.pam_observation.available && complete;
+  const bool legal = candidate.first_observed_ordinary_legal_recipient_character_id.has_value();
+  std::string out = "{\"schema\":\"ck3_12003_ordinary_repentance_decision_readiness_v1\""
+      ",\"read_only\":true,\"capture_epoch\":" + std::to_string(candidate.capture_epoch) +
+      ",\"date_raw\":" + std::to_string(candidate.date_raw) +
+      ",\"played_character_id\":" + std::to_string(candidate.played_character_id) +
+      ",\"ordinary_candidate_collection_complete\":" + (complete ? "true" : "false") +
+      ",\"ordinary_recovery_decision_inputs_ready\":" + (ready ? "true" : "false") +
+      ",\"any_observed_ordinary_request_terms_ready\":" + (legal ? "true" : "false") +
+      ",\"ordinary_request_route_currently_absent\":";
+  out += ready ? (legal ? "false" : "true") : "null";
+  out += ",\"first_observed_ordinary_legal_recipient_character_id\":";
+  out += legal ? std::to_string(*candidate.first_observed_ordinary_legal_recipient_character_id) : "null";
+  out += ",\"selected_repentance_petition_terms_ready\":false"
+      ",\"scope\":\"ordinary_request_candidate_set_and_current_route_inputs\"}";
+  return out;
+}
 } // namespace
 
 std::string SerializePlayerRepentanceResult12003(
@@ -25,9 +47,20 @@ std::string SerializePlayerRepentanceResult12003(
     observation.pop_back();
     observation += ",\"recipient_candidates\":" +
         religion::repentance_candidates::SerializeRepentanceRecipientCandidates12003(query.candidate_observation);
+    if (query.fallback_observation.capture_epoch != 0)
+      observation += ",\"repentance_fallback_sources\":" +
+          religion::repentance_fallback::SerializeRepentanceFallback12003(query.fallback_observation);
+    if (query.recovery_observation.capture_epoch != 0)
+      observation += ",\"repentance_recovery_inputs\":" +
+          religion::repentance_recovery_inputs::SerializePlayerRepentanceRecoveryInputs12003(query.recovery_observation);
+    if (query.pam_observation.capture_epoch != 0)
+      observation += ",\"repentance_pam_route\":" +
+          religion::repentance_pam_route::SerializeRepentancePamRoute12003(query.pam_observation);
     if (query.petition_observation.capture_epoch != 0)
       observation += ",\"petition_decision_terms\":" +
           religion::repentance_petition::SerializePlayerRepentancePetitionDecisionTerms12003(query.petition_observation);
+    if (query.recovery_observation.capture_epoch != 0 && query.pam_observation.capture_epoch != 0)
+      observation += ",\"ordinary_recovery_readiness\":" + OrdinaryDecisionReadiness(query);
     observation += "}";
   }
   return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" + Quote(request_id) +

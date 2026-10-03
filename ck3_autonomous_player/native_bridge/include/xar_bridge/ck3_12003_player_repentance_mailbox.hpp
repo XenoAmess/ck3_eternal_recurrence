@@ -4,6 +4,8 @@
 #include "xar_bridge/ck3_12003_player_repentance_context.hpp"
 #include "xar_bridge/ck3_12003_repentance_recipient_candidates.hpp"
 #include "xar_bridge/ck3_12003_repentance_petition_decision_terms.hpp"
+#include "xar_bridge/ck3_12003_repentance_recovery_inputs.hpp"
+#include "xar_bridge/ck3_12003_repentance_pam_route.hpp"
 
 namespace xar::ck3_12003 {
 
@@ -20,6 +22,17 @@ struct PlayerRepentanceMailboxContext12003 {
   religion::repentance::Context observation{};
   religion::repentance_candidates::Bindings candidate_bindings{};
   religion::repentance_candidates::Context candidate_observation{};
+  religion::repentance_fallback::Bindings fallback_bindings{};
+  religion::repentance_fallback::Context fallback_observation{};
+  religion::repentance_recovery_inputs::Bindings recovery_bindings{};
+  religion::repentance_recovery_inputs::Context recovery_observation{};
+  ck3_12002::religion::Bindings route_religion_bindings{};
+  ck3_12002::religion::doctrine12002::TenetParameterBindings route_parameter_bindings{};
+  ck3_12002::religion::Context route_religion_observation{};
+  ck3_12002::religion::doctrine12002::TenetParameterContext route_parameter_observation{};
+  ck3_12002::religion::doctrine12002::FaithMainRiteDoctrines route_doctrine_observation{};
+  religion::repentance_pam_route::Bindings pam_bindings{};
+  religion::repentance_pam_route::Context pam_observation{};
   religion::repentance_petition::Bindings petition_bindings{};
   religion::repentance_petition::Terms petition_observation{};
   bool completed = false;

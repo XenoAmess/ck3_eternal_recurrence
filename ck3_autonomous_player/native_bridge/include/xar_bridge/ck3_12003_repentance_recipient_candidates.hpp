@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_12003_player_repentance_context.hpp"
+#include "xar_bridge/ck3_12003_repentance_fallback.hpp"
 #include "xar_bridge/religion_rite_governance12002_clergy.hpp"
 
 #include <vector>
@@ -40,6 +41,10 @@ struct Candidate {
 };
 struct Context {
   bool available = false;
+  bool fallback_sources_sampled = false;
+  bool fallback_source_traversal_complete = false;
+  bool source_candidate_evaluation_complete = false;
+  std::size_t fallback_new_candidate_count = 0;
   const char *unavailable_reason = "bindings_unavailable";
   std::uint64_t capture_epoch = 0;
   std::int32_t date_raw = 0;
@@ -58,5 +63,9 @@ bool ReadRepentanceRecipientCandidates12003(const Bindings &,
     const repentance::Bindings &, void *played_character,
     std::int32_t actor, std::int32_t date, std::uint64_t epoch,
     Context &) noexcept;
+// Merge observed stock fallback roles; duplicate current IDs reuse their terms.
+bool AppendRepentanceFallbackRecipients12003(const repentance::Bindings &,
+    void *played_character, std::int32_t actor, std::int32_t date,
+    std::uint64_t epoch, const repentance_fallback::Context &, Context &) noexcept;
 std::string SerializeRepentanceRecipientCandidates12003(const Context &);
 } // namespace xar::ck3_12003::religion::repentance_candidates

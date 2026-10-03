@@ -61,6 +61,35 @@ bool ExecutePlayerRepentanceMailbox12003(
     (void)religion::repentance_candidates::ReadRepentanceRecipientCandidates12003(
         query.candidate_bindings, query.bindings, character, actor,
         static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.candidate_observation);
+    (void)religion::repentance_fallback::ReadRepentanceFallback12003(query.fallback_bindings,
+        character, actor, static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.fallback_observation);
+    (void)religion::repentance_candidates::AppendRepentanceFallbackRecipients12003(query.bindings,
+        character, actor, static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch,
+        query.fallback_observation, query.candidate_observation);
+    (void)religion::repentance_recovery_inputs::ReadPlayerRepentanceRecoveryInputs12003(
+        query.recovery_bindings, character, actor, static_cast<std::int32_t>(frame.date_raw),
+        stamp.pump_epoch, query.recovery_observation);
+    (void)ck3_12002::religion::ReadPlayedReligionContext12002(
+        query.route_religion_bindings, stamp.pump_epoch, query.route_religion_observation);
+    (void)ck3_12002::religion::doctrine12002::ReadPlayedTenetParameters12002(
+        query.route_religion_bindings, query.route_parameter_bindings, stamp.pump_epoch,
+        query.route_parameter_observation);
+    (void)ck3_12002::religion::doctrine12002::ReadPlayedFaithMainRiteDoctrines12002(
+        query.route_religion_bindings, stamp.pump_epoch, query.route_doctrine_observation);
+    religion::repentance_pam_route::RawRouteInputs raw_route{};
+    raw_route.available = query.recovery_observation.pope_excom.available &&
+        query.recovery_observation.highest_held_title_tier.available &&
+        query.recovery_observation.any_held_title_has_clerical_region.available;
+    raw_route.capture_epoch = query.recovery_observation.capture_epoch;
+    raw_route.date_raw = query.recovery_observation.date_raw;
+    raw_route.played_character_id = query.recovery_observation.played_character_id;
+    raw_route.pope_excom = query.recovery_observation.pope_excom.value;
+    raw_route.highest_held_title_tier = query.recovery_observation.highest_held_title_tier.value;
+    raw_route.any_held_title_has_clerical_region = query.recovery_observation.any_held_title_has_clerical_region.value;
+    (void)religion::repentance_pam_route::ReadRepentancePamRoute12003(query.pam_bindings,
+        character, actor, static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch,
+        query.route_religion_observation, query.route_parameter_observation,
+        query.route_doctrine_observation, query.candidate_observation, raw_route, query.pam_observation);
     (void)religion::repentance_petition::ReadPlayerRepentancePetitionDecisionTerms12003(
         query.petition_bindings, character, actor, static_cast<std::int32_t>(frame.date_raw),
         stamp.pump_epoch, query.petition_observation);
@@ -142,6 +171,14 @@ bool HandlePlayerRepentancePrivate12003(const game::GameAdapter &adapter,
     query.candidate_bindings = religion::repentance_candidates::BindRepentanceRecipientCandidatesImage12003(
         image_base, adapter.descriptor().executable_sha256, interaction.core,
         ck3_12002::religion::clergy::BindClergyAppointmentImage12002(image_base, reviewed_sha));
+    query.fallback_bindings = religion::repentance_fallback::BindRepentanceFallbackImage12003(
+        image_base, adapter.descriptor().executable_sha256);
+    query.recovery_bindings = religion::repentance_recovery_inputs::BindPlayerRepentanceRecoveryInputsImage12003(
+        image_base, adapter.descriptor().executable_sha256);
+    query.route_religion_bindings = ck3_12002::religion::BindReligionContextImage12002(image_base, reviewed_sha);
+    query.route_parameter_bindings = ck3_12002::religion::doctrine12002::BindTenetParameters12002(image_base, reviewed_sha);
+    query.pam_bindings = religion::repentance_pam_route::BindRepentancePamRouteImage12003(
+        image_base, adapter.descriptor().executable_sha256);
     query.petition_bindings = religion::repentance_petition::BindPlayerRepentancePetitionDecisionTermsImage12003(
         image_base, adapter.descriptor().executable_sha256);
     return RunPlayerRepentanceMailbox12003(query, request_id, serialized, failure);

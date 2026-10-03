@@ -1,0 +1,56 @@
+{
+  "schema": "ck3_12003_optional_scalar_equality_v1",
+  "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "evidence_reused_exe_freeze": true,
+  "frozen_before_formula_implementation": true,
+  "type": "CJominiEventTargetComparisonTrigger",
+  "operator_token": "0x7E1",
+  "spans": [
+    {
+      "name": "optional-equality-token",
+      "rva": "0x44717a0",
+      "bytes": 16,
+      "sha256": "794c3edeeb84dfd669ddda8c9bc6a4d25e42adf98d68d128a201f586b49cc4e9"
+    },
+    {
+      "name": "optional-equality-literal",
+      "rva": "0x49b7dc0",
+      "bytes": 3,
+      "sha256": "e68d6d761d789c85b12eaab06e65f4ad37c6db53af0451f4400d30b0962c6ee0"
+    },
+    {
+      "name": "optional-equality-vtable-slot",
+      "rva": "0x492b458",
+      "bytes": 8,
+      "sha256": "35fc2e5a864725431927b1d94ba0c867395b4ea3846e9ad4039e2a522ffb5d89"
+    },
+    {
+      "name": "optional-equality-evaluate",
+      "rva": "0x3731990",
+      "bytes": 1018,
+      "sha256": "3434474ba65576aef4438fc54688f771f3b5212629be704e7badc5bdf1b34a14"
+    },
+    {
+      "name": "character-scope-type-registration",
+      "rva": "0x43fb20",
+      "bytes": 189,
+      "sha256": "dfd526ee057a0cfe9928c88c94563610338f0493ab2fa4ab92c5f882b4e53f5f"
+    },
+    {
+      "name": "character-scope-is-valid",
+      "rva": "0x22565b0",
+      "bytes": 91,
+      "sha256": "5f6633186b58d997ce5dc71d55026be7e5474f69363856ca9aab1edce4bdb497"
+    }
+  ],
+  "trace": [
+    "37319AC token 0x7E1 forces left validity evaluation before equality",
+    "37319EA resolves left event target; 3731A27 calls type record +0x10 validity; false returns false at 3731AC2",
+    "43FB3F registers kind4, 43FB4C takes 22565B0, 43FBA3/43FBB2 place that callback at native descriptor +0x10",
+    "22565B0 resolves full Character ID via generation storage, checks Char tag and ID != -1; absent returns false",
+    "3731B92 resolves right; kind0 returns false; mismatched scope kind also false",
+    "3731C28 token arithmetic selects equality; 3731C34 subtype and 3731C44 full64 payload must both equal"
+  ],
+  "formula_semantics": "Known absent character (-1) makes scalar ?= false, including absent==absent. Present current candidates compare full IDs. This is not optional block skipping.",
+  "runtime_contact": false
+}

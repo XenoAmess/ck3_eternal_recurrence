@@ -1,0 +1,256 @@
+{
+  "schema": "repentance_pam_route_12003_native_inputs_v1",
+  "frozen_at_utc": "2026-10-03T06:32:18.406173+00:00",
+  "frozen_before_leaf_implementation": true,
+  "game_version": "1.20.0.3",
+  "steam_build": 25652598,
+  "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "exact_executable_identity_reused": true,
+  "new_whole_executable_hash": false,
+  "evaluator": "stock_exact_typed_inputs",
+  "compiled_named_trigger_invoked": false,
+  "stock_index": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-excommunication-12003\\stock-terms\\STOCK-TERMS.json",
+    "bytes": 50999,
+    "sha256": "1bfeb7a76de93ca9252bb363e0ba189d0d1ec2aac34c79a1785e9f0ed99ca7fa"
+  },
+  "source_spans": [
+    {
+      "id": "S01",
+      "key": "declaration_of_repentance_interaction",
+      "source": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_religious_interactions.txt",
+      "relative": "common/character_interactions/00_religious_interactions.txt",
+      "first_line": 2808,
+      "last_line": 3161,
+      "source_file_bytes": 285647,
+      "source_file_sha256": "63afe4538725929fb20bc20cbbbbc86705dba55a384755949431419265db0ac6",
+      "span_bytes": 8513,
+      "span_sha256": "887ec65a0bc5de10fa28011a59977d93287b535eb4d509c6917b0bba0fae7d91",
+      "frozen_span": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-excommunication-12003\\stock-terms\\source-spans\\01-declaration_of_repentance_interaction.txt"
+    },
+    {
+      "id": "S06",
+      "key": "petition_head_of_faith_faith_qualifies_trigger",
+      "source": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\11_petition_head_of_faith_triggers.txt",
+      "relative": "common/scripted_triggers/11_petition_head_of_faith_triggers.txt",
+      "first_line": 2,
+      "last_line": 7,
+      "source_file_bytes": 11796,
+      "source_file_sha256": "fc97363df17b7bdbe1b16a60e66dd15a7cdf3e3e93fe7fb3b1fffe1424217a88",
+      "span_bytes": 161,
+      "span_sha256": "f61c9e155f83a368ffca05184584473223114b274a00a2cf15fa2f1f03a3eb41",
+      "frozen_span": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-excommunication-12003\\stock-terms\\source-spans\\06-petition_head_of_faith_faith_qualifies_trigger.txt"
+    },
+    {
+      "id": "S08",
+      "key": "petition_head_of_faith_repentance_requires_petition_trigger",
+      "source": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\11_petition_head_of_faith_triggers.txt",
+      "relative": "common/scripted_triggers/11_petition_head_of_faith_triggers.txt",
+      "first_line": 62,
+      "last_line": 76,
+      "source_file_bytes": 11796,
+      "source_file_sha256": "fc97363df17b7bdbe1b16a60e66dd15a7cdf3e3e93fe7fb3b1fffe1424217a88",
+      "span_bytes": 528,
+      "span_sha256": "efce89daf56419e214999b713b5e28b69192bc30de4a1743b387eb96ebd30330",
+      "frozen_span": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-excommunication-12003\\stock-terms\\source-spans\\08-petition_head_of_faith_repentance_requires_petition_trigger.txt"
+    },
+    {
+      "id": "S15",
+      "key": "need_hof_for_clergy_interaction_trigger",
+      "source": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_religious_triggers.txt",
+      "relative": "common/scripted_triggers/00_religious_triggers.txt",
+      "first_line": 3354,
+      "last_line": 3362,
+      "source_file_bytes": 88549,
+      "source_file_sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+      "span_bytes": 209,
+      "span_sha256": "25a9a601ae1438a94d8ae9b48a49282fb488ee298615b68498b8f40bff8d192d",
+      "frozen_span": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-excommunication-12003\\stock-terms\\source-spans\\15-need_hof_for_clergy_interaction_trigger.txt"
+    },
+    {
+      "id": "S17",
+      "key": "pam_is_archbishop_or_higher_trigger",
+      "source": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\pam_scripted_triggers.txt",
+      "relative": "common/scripted_triggers/pam_scripted_triggers.txt",
+      "first_line": 1239,
+      "last_line": 1244,
+      "source_file_bytes": 186187,
+      "source_file_sha256": "0ad98f123b6739593b9ab2c170d0e8c9b3d9d941baa9d3580296dd2139b2ea6e",
+      "span_bytes": 147,
+      "span_sha256": "6ae84886987f56808ef6f42adafa483acee097d7ce42a4569a1a1720f1737519",
+      "frozen_span": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-excommunication-12003\\stock-terms\\source-spans\\17-pam_is_archbishop_or_higher_trigger.txt"
+    },
+    {
+      "id": "S18",
+      "key": "faith_has_sacraments_central_trigger",
+      "source": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\pam_scripted_triggers.txt",
+      "relative": "common/scripted_triggers/pam_scripted_triggers.txt",
+      "first_line": 1083,
+      "last_line": 1088,
+      "source_file_bytes": 186187,
+      "source_file_sha256": "0ad98f123b6739593b9ab2c170d0e8c9b3d9d941baa9d3580296dd2139b2ea6e",
+      "span_bytes": 171,
+      "span_sha256": "79cb026a8596c544cf572e7eaf65186ec99fbd94e416cb5c5c11ff5008212d1f",
+      "frozen_span": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-excommunication-12003\\stock-terms\\source-spans\\18-faith_has_sacraments_central_trigger.txt"
+    }
+  ],
+  "pam_dlc_source": {
+    "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_has_dlc_scripted_triggers.txt",
+    "bytes": 2631,
+    "sha256": "8bad67efdc979e6e3358cc055c462a2051cbc27b9ff2594e92b01e3f021f2066",
+    "first_line": 95,
+    "last_line": 97,
+    "fragment": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\repentance\\native-pam\\v36\\has-pam-dlc-stock.txt",
+      "bytes": 61,
+      "sha256": "a177f04399f2c142d69db8104e6821da194077a5cfcfde7450582a289778cec6"
+    }
+  },
+  "religious_authority_source": {
+    "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\11_petition_head_of_faith_triggers.txt",
+    "bytes": 11796,
+    "sha256": "fc97363df17b7bdbe1b16a60e66dd15a7cdf3e3e93fe7fb3b1fffe1424217a88",
+    "first_line": 10,
+    "last_line": 16,
+    "fragment": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\repentance\\native-pam\\v36\\petition-authority-stock.txt",
+      "bytes": 213,
+      "sha256": "9275ced19a03a85f147de04af9fa876257531df5d140e9bb8284a63b2e40219b"
+    }
+  },
+  "fixed_feature_input": {
+    "feature_key": "by_god_alone",
+    "feature_index": 43,
+    "cstring_id": "0x4169",
+    "root_slot_rva": "0x5CB87F8",
+    "bits_offset": "0x2B0",
+    "enum_table_rva": "0x47334C0",
+    "registration_record_rva": "0x46FFD50",
+    "literal_rva": "0x46DDB00",
+    "record_sha256": "d04f2bd08ad385f01f2b38a17698470fdee8e218e6f1e591b2986a092ef88a48",
+    "table_sha256": "5d484034e9d69feb423b38479dfb7c158758928bc37af48e559a711439f50615",
+    "new_exact3_byte_spans": [
+      {
+        "name": "pam-feature-initializer",
+        "rva": "0x2292681",
+        "bytes": 121,
+        "sha256": "f767e780d7b1ee71dabba4d5b7d2584cf2fffbad765b7740b15c6bae0903e9f9"
+      },
+      {
+        "name": "pam-feature-root-consumer",
+        "rva": "0x8c2120",
+        "bytes": 7,
+        "sha256": "9910d3f5221fed98d31c7970a6bd3a7fb14636f13c5952495171daf3148ab488"
+      }
+    ],
+    "old_semantic_checks_exact3_matched": [
+      {
+        "purpose": "feature_root",
+        "rva": "0x8c2120",
+        "bytes": "48 8B 05 D1 66 3F 05",
+        "instruction": "mov rax, qword ptr [rip + 0x53f66d1]",
+        "rip_targets": [
+          "0x5cb87f8"
+        ]
+      },
+      {
+        "purpose": "feature_bits_zero",
+        "rva": "0x229268a",
+        "bytes": "48 89 47 20",
+        "instruction": "mov qword ptr [rdi + 0x20], rax",
+        "rip_targets": []
+      },
+      {
+        "purpose": "feature_count_zero",
+        "rva": "0x229268e",
+        "bytes": "44 89 77 28",
+        "instruction": "mov dword ptr [rdi + 0x28], r14d",
+        "rip_targets": []
+      },
+      {
+        "purpose": "feature_bit_test",
+        "rva": "0x22926e5",
+        "bytes": "48 8B 4C D7 20",
+        "instruction": "mov rcx, qword ptr [rdi + rdx*8 + 0x20]",
+        "rip_targets": []
+      },
+      {
+        "purpose": "feature_bit_write",
+        "rva": "0x22926f2",
+        "bytes": "48 89 44 D7 20",
+        "instruction": "mov qword ptr [rdi + rdx*8 + 0x20], rax",
+        "rip_targets": []
+      },
+      {
+        "purpose": "feature_enabled_counter",
+        "rva": "0x22926f7",
+        "bytes": "FF 47 28",
+        "instruction": "inc dword ptr [rdi + 0x28]",
+        "rip_targets": []
+      }
+    ]
+  },
+  "provider_source_pins": [
+    {
+      "path": "Z:\\g36\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_religion_context.hpp",
+      "bytes": 3474,
+      "sha256": "a871b0923b4a84a473c28a7595c72b959d26ecfabd5f3c51c412c66e8cf37aae"
+    },
+    {
+      "path": "Z:\\g36\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_religion_context.cpp",
+      "bytes": 8920,
+      "sha256": "cc49540b7a4ddbbd3f0e2fbb6dabf0ae2b51b46454777eaa129829194a2d9126"
+    },
+    {
+      "path": "Z:\\g36\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\religion_doctrine12002_tenet.hpp",
+      "bytes": 2084,
+      "sha256": "e75fcc5bbf66b58fa40166d477a3da88093f92b8f8625a8c75c6eaa5f9ff920c"
+    },
+    {
+      "path": "Z:\\g36\\ck3_autonomous_player\\native_bridge\\src\\religion_doctrine12002_tenet.cpp",
+      "bytes": 7496,
+      "sha256": "2a031dc6132c02fd3bac368034af0d2e3e00228f1475f8ecb551f56c89a5a440"
+    },
+    {
+      "path": "Z:\\g36\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\religion_doctrine12002_intrinsic.hpp",
+      "bytes": 2203,
+      "sha256": "34dd4e52d731e6c3e24cac956869218efc6512fd431e63d0fcfec729b7703df3"
+    },
+    {
+      "path": "Z:\\g36\\ck3_autonomous_player\\native_bridge\\src\\religion_doctrine12002_intrinsic.cpp",
+      "bytes": 6337,
+      "sha256": "2c79488a5a5e665c7fba6a2dc8db761f9ae7ce5ee298e617778d2ee12c2a8bb1"
+    },
+    {
+      "path": "Z:\\g36\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003_repentance_recipient_candidates.hpp",
+      "bytes": 2612,
+      "sha256": "af7998d619bc0a1703f78991bc1e272eed5d893dae41391125cfc32b127a59df"
+    },
+    {
+      "path": "Z:\\g36\\ck3_autonomous_player\\native_bridge\\src\\ck3_12003_repentance_recipient_candidates.cpp",
+      "bytes": 10464,
+      "sha256": "ae89a4c4f02fc3796806181e3e83ab2aeb390e02997c61f5f86778e3693f531e"
+    }
+  ],
+  "providers": {
+    "religion": "Fresh ReadPlayedReligionContext12002 from same actual .3 owner; typed current actor Faith/mainRite/religion key",
+    "parameters": "Fresh ReadPlayedTenetParameters12002; complete Faith.main_rite boolean parameter set, not actor own Rite or personal tenets",
+    "doctrines": "Fresh ReadPlayedFaithMainRiteDoctrines12002; Faith.HasDoctrine/GetDoctrines use actual main Rite effective array +7A0/+7AC",
+    "candidates": "Fresh same-owner ReadRepentanceRecipientCandidates12003 gives authority and capital clerical holder full IDs",
+    "raw": "Fresh sibling recovery_bits supplies pope_excom, highest held tier, any held title has clerical region"
+  },
+  "formulas": {
+    "faith_qualifies": "religion_key == christianity_religion && Faith.main_rite has spiritual_head_of_faith parameter",
+    "requires_petition": "faith_qualifies && authority_exists && (pope_excom || capital_holder_equals_authority || capital_holder_equals_actor || highest_held_tier >= 4)",
+    "need_hof": "has_pam_dlc ? highest_held_tier >= 4 : highest_held_tier >= 5",
+    "archbishop_or_higher": "any_held_title_has_clerical_region || authority_equals_actor",
+    "pam_ordinary_gate": "!(has_pam_dlc && faith_qualifies) || (!need_hof && !requires_petition && !(recipient_equals_authority && !archbishop_or_higher))",
+    "faith_sacraments_central": "current Faith main Rite contains doctrine_sacraments_central; Faith.HasDoctrine also delegates there"
+  },
+  "scope_limit": "PAM route predicates only; broader_clergy, trait, all native final validity and request outcomes remain independent",
+  "sources_read_only": true,
+  "game": false,
+  "sdk": false,
+  "pipe": false,
+  "window": false
+}

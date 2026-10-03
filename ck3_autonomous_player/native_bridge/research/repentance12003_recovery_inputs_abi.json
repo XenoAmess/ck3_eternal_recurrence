@@ -1,0 +1,161 @@
+{
+  "schema": "xar.ck3.repentance-recovery-inputs-abi/v1",
+  "game_version": "1.20.0.3",
+  "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "exe": "Z:\\ck3_mod_rewrite\\artifacts\\migrations\\2026-10-02\\installed-build\\binaries\\ck3.exe",
+  "file_size": 101039736,
+  "readiness": "research",
+  "native_live_verified": false,
+  "spans": [
+    {
+      "name": "character_flag_evaluator",
+      "start_rva": "0x2b7a630",
+      "end_rva_exclusive": "0x2b7a748",
+      "bytes": 280,
+      "sha256": "3b10fa02c4bc737ad3e9af8ed535890bb085c1311171c9192fa8e288bab79fc0"
+    },
+    {
+      "name": "flag_collection_getter",
+      "start_rva": "0x1d67200",
+      "end_rva_exclusive": "0x1d672ad",
+      "bytes": 173,
+      "sha256": "dd9b64b4ac9bd8edf01b70379b4b9e57d26975068d064fa8810bb337ed094326"
+    },
+    {
+      "name": "existing_string_atom_lookup",
+      "start_rva": "0x3f8a3a0",
+      "end_rva_exclusive": "0x3f8a4a9",
+      "bytes": 265,
+      "sha256": "a1438489090ee176b9084a543728b304941b9d95315dc6fad628a505f52ec58b"
+    },
+    {
+      "name": "highest_held_tier_getter",
+      "start_rva": "0x28ac6b0",
+      "end_rva_exclusive": "0x28ac73c",
+      "bytes": 140,
+      "sha256": "36d515a2643515bc264052d0c428c7c2ecf51277bd95519852fd51caea68221f"
+    },
+    {
+      "name": "highest_held_tier_property",
+      "start_rva": "0x2b55f20",
+      "end_rva_exclusive": "0x2b55f29",
+      "bytes": 9,
+      "sha256": "1593199902ee77196e9279234ad4510ae29a6ba01f1d4dad157ac0f2ba314d3d"
+    },
+    {
+      "name": "has_clerical_region_evaluator",
+      "start_rva": "0x2b4ab50",
+      "end_rva_exclusive": "0x2b4aba4",
+      "bytes": 84,
+      "sha256": "61ba3c716ae1ab2d53a7f79ac8f897f1c929d3b220ed036c38c0cf4c2e12f33e"
+    },
+    {
+      "name": "character_modifier_presence",
+      "start_rva": "0x1afa160",
+      "end_rva_exclusive": "0x1afa1fe",
+      "bytes": 158,
+      "sha256": "040b27134804ee85f45e857503b7663a55af4089b29b3eaf36fa86a73e3e1b45"
+    },
+    {
+      "name": "character_modifier_duration",
+      "start_rva": "0x1af9340",
+      "end_rva_exclusive": "0x1af94f3",
+      "bytes": 435,
+      "sha256": "9f43af3c317e902413009e831cbe9966c6a17d520f9bf133d414b4d3481c2aca"
+    },
+    {
+      "name": "character_modifier_expiry_removal",
+      "start_rva": "0x2ac5c90",
+      "end_rva_exclusive": "0x2ac5db0",
+      "bytes": 288,
+      "sha256": "dc38a02f532e3c7589e5dda498c3283fd4e999ab9b48e0f8415921ab5bf04d9a"
+    },
+    {
+      "name": "static_modifier_database_getter",
+      "start_rva": "0x8fd4e0",
+      "end_rva_exclusive": "0x8fd537",
+      "bytes": 87,
+      "sha256": "3c918cdccfa4c4af20d328cd07ad127970f86c186a12b996dc0270ea4c55da6c"
+    },
+    {
+      "name": "static_modifier_lookup",
+      "start_rva": "0xab8d20",
+      "end_rva_exclusive": "0xab8e61",
+      "bytes": 321,
+      "sha256": "ea605b3aaa76ed39e41f7119c2b8b816c02bb9384b2b925f65f0c987fc097369"
+    },
+    {
+      "name": "stable_key_hash",
+      "start_rva": "0x3f7e240",
+      "end_rva_exclusive": "0x3f7e2e0",
+      "bytes": 160,
+      "sha256": "07a44ede541c41ad258fb2bc3e542984c9165ebb822cfa55a8466649f0074a50"
+    }
+  ],
+  "stock_reused": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-excommunication-12003\\stock-terms\\STOCK-TERMS.json",
+      "bytes": 50999,
+      "sha256": "1bfeb7a76de93ca9252bb363e0ba189d0d1ec2aac34c79a1785e9f0ed99ca7fa"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-excommunication-12003\\stock-terms\\source-spans\\01-declaration_of_repentance_interaction.txt",
+      "bytes": 8513,
+      "sha256": "887ec65a0bc5de10fa28011a59977d93287b535eb4d509c6917b0bba0fae7d91"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-excommunication-12003\\stock-terms\\source-spans\\08-petition_head_of_faith_repentance_requires_petition_trigger.txt",
+      "bytes": 528,
+      "sha256": "efce89daf56419e214999b713b5e28b69192bc30de4a1743b387eb96ebd30330"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-excommunication-12003\\stock-terms\\source-spans\\31-pam_offer_pilgrimage_effect.txt",
+      "bytes": 472,
+      "sha256": "76087eff456df4b5ab3ac9e9d80b97a53e52becf0513bbd3c5655d29f38ea6a2"
+    }
+  ],
+  "necessity": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\runtime-preparation\\v35\\actual-new-leaves-v35-01\\012-ck3_query_player_repentance_context_v1.json",
+    "bytes": 32457,
+    "sha256": "018634db4795da75cc90ff72d6d550262d65fc2180cf0f1eec3699978c98f887",
+    "reason": "v35 both observed ordinary candidates final Shown/CanSend false; general petition decision final CanTake false; actual stock route/cooldown inputs required"
+  },
+  "bindings": {
+    "existing_atom": "uint32_t* (void* pool,uint32_t* out,const NativeStringView*) @0x3F8A3A0",
+    "character_flags": "void* (void* script_data) @0x1D67200; skip index -1 empty default",
+    "highest_held_title_tier": "int32_t (void* Character) @0x28AC6B0, raw native highest tier, no primary projection",
+    "modifier_database": "void* () @0x8FD4E0",
+    "stable_hash": "uint32_t (void*,const char*,uint32_t) @0x3F7E240",
+    "modifier_lookup": "void* (void*,int32_t) @0xAB8D20"
+  },
+  "layouts": {
+    "character_identity": "0x18",
+    "character_magic": "0x1C Char",
+    "character_script_data": "0x1B0",
+    "character_dummy": "0x1A5",
+    "flag_rows": "0x10",
+    "flag_count": "0x1C",
+    "flag_stride": "0x20",
+    "flag_key": "row+0x08",
+    "modifier_rows": "script_data+0x188",
+    "modifier_count": "script_data+0x194",
+    "modifier_stride": "0x48",
+    "modifier_definition": "row+0x00",
+    "modifier_expiry": "row+0x08 signed int32 DateRaw",
+    "title_storage_slot": "0x5D1DAF8",
+    "storage_rows": "0x20",
+    "storage_count": "0x2C",
+    "storage_stride": "0x10",
+    "storage_object": "row+0x08",
+    "title_identity": "0x10",
+    "title_holder": "0x128; existing reviewed current-clergy ABI reused",
+    "title_clerical_region_type": "0x328 equals 4; native has_clerical_region evaluator"
+  },
+  "semantics": {
+    "pope_excom": "character flag, not variable; registered absent key and empty FlagSet => observed false",
+    "modifiers": "exact loaded static definitions; presence is native first matching row, actual expiry from same row; absent has null expiry",
+    "remaining_days": "same duration-trigger calculation: trunc((expiry_date_raw-0x29C55C0)/24) - trunc((current_date_raw-0x29C55C0)/24); do not infer presence from expiry",
+    "any_held_clerical": "complete loaded native Title storage holder scan; title holder equals current played full ID and native title+0x328==4. Boolean only; no stock collection ordering or preferred bishop claim",
+    "scope": "current played actor, same paused application-main parent date/epoch; no commands/effects/flag writes"
+  }
+}

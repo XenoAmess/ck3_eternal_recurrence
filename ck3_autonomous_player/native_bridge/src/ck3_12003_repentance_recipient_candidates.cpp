@@ -177,6 +177,47 @@ bool ReadRepentanceRecipientCandidates12003(const Bindings &b,
   out.unavailable_reason = out.available ? "none" : "one_or_more_role_sources_unavailable";
   return out.available;
 }
+bool AppendRepentanceFallbackRecipients12003(const repentance::Bindings &request,
+    void *player, std::int32_t actor, std::int32_t date, std::uint64_t epoch,
+    const repentance_fallback::Context &fallback, Context &out) noexcept {
+  out.fallback_sources_sampled = true;
+  out.fallback_source_traversal_complete = fallback.available && fallback.complete_source_traversal &&
+      fallback.played_character_id == actor && fallback.date_raw == date && fallback.capture_epoch == epoch;
+  if (out.played_character_id != actor || out.date_raw != date || out.capture_epoch != epoch ||
+      fallback.played_character_id != actor || fallback.date_raw != date || fallback.capture_epoch != epoch)
+    return false;
+  for (const auto &role : fallback.candidates) {
+    const auto id = role.character_id;
+    if (id == -1 || id == actor) continue;
+    auto existing = std::find_if(out.candidates.begin(), out.candidates.end(),
+        [id](const Candidate &c) { return c.requested_recipient_character_id == id; });
+    if (existing == out.candidates.end()) {
+      Candidate candidate{}; candidate.requested_recipient_character_id = id;
+      (void)repentance::ReadRepentanceRecipientContext12003(request, player, actor, date, epoch, id, candidate.terms);
+      if (!out.first_observed_ordinary_legal_recipient_character_id && candidate.terms.available &&
+          candidate.terms.player_excommunication.value.value_or(false) &&
+          candidate.terms.shown.value.value_or(false) && candidate.terms.can_send.value.value_or(false))
+        out.first_observed_ordinary_legal_recipient_character_id = id;
+      out.candidates.push_back(std::move(candidate));
+      existing = std::prev(out.candidates.end());
+      ++out.fallback_new_candidate_count;
+    }
+    for (const auto &source : role.sources) {
+      const char *alias = nullptr;
+      if (source == repentance_fallback::kRealmSource) alias = repentance_fallback::kRealmSource.data();
+      if (source == repentance_fallback::kDejureSource) alias = repentance_fallback::kDejureSource.data();
+      if (!alias) continue;
+      if (std::none_of(existing->sources.begin(), existing->sources.end(),
+          [alias](const char *seen) { return std::string_view(seen) == alias; }))
+        existing->sources.push_back(alias);
+    }
+  }
+  out.source_candidate_evaluation_complete = out.available && out.fallback_source_traversal_complete &&
+      std::all_of(out.candidates.begin(), out.candidates.end(),
+          [](const Candidate &c) { return c.terms.available; });
+  return out.source_candidate_evaluation_complete;
+}
+
 std::string SerializeRepentanceRecipientCandidates12003(const Context &c) {
   std::ostringstream out;
   out << "{\"schema\":\"ck3_12003_repentance_recipient_candidates_v1\",\"available\":"
@@ -184,8 +225,14 @@ std::string SerializeRepentanceRecipientCandidates12003(const Context &c) {
   Quote(out, c.unavailable_reason);
   out << ",\"capture_epoch\":" << c.capture_epoch << ",\"date_raw\":" << c.date_raw
       << ",\"played_character_id\":" << c.played_character_id
-      << ",\"coverage\":\"native_current_roles_only\",\"complete_stock_preferred_selector\":false"
-      << ",\"roles\":[";
+      << ",\"coverage\":";
+  Quote(out, c.fallback_sources_sampled ? "native_current_roles_and_stock_fallback" : "native_current_roles_only");
+  out << ",\"complete_stock_preferred_selector\":false";
+  if (c.fallback_sources_sampled)
+    out << ",\"fallback_source_traversal_complete\":" << (c.fallback_source_traversal_complete ? "true" : "false")
+        << ",\"source_candidate_evaluation_complete\":" << (c.source_candidate_evaluation_complete ? "true" : "false")
+        << ",\"fallback_new_candidate_count\":" << c.fallback_new_candidate_count;
+  out << ",\"roles\":[";
   for (std::size_t i = 0; i < c.roles.size(); ++i) {
     if (i) out << ',';
     const auto &r = c.roles[i];

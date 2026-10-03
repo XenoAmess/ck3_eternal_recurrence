@@ -113,7 +113,7 @@ def normalize_player_repentance_context_v1(
                 or candidates.get("capture_epoch") != value["capture_epoch"]
                 or candidates.get("date_raw") != value["date_raw"]
                 or candidates.get("played_character_id") != value["played_character_id"]
-                or candidates.get("coverage") != "native_current_roles_only"
+                or candidates.get("coverage") not in ("native_current_roles_only", "native_current_roles_and_stock_fallback")
                 or candidates.get("complete_stock_preferred_selector") is not False):
             raise ValueError("native repentance candidate scope differs from the queried frame")
         roles = candidates.get("roles")
@@ -142,6 +142,70 @@ def normalize_player_repentance_context_v1(
         if (candidates.get("first_observed_ordinary_legal_recipient_character_id") != first
                 or candidates.get("any_observed_ordinary_request_terms_ready") is not (first is not None)):
             raise ValueError("native repentance candidate readiness differs from final terms")
+    if _candidate_recipient is None:
+        extensions = {
+            "repentance_fallback_sources": "ck3_12003_repentance_fallback_sources_v1",
+            "repentance_recovery_inputs": "ck3_12003_repentance_recovery_inputs_v1",
+            "repentance_pam_route": "ck3_12003_repentance_pam_route_v1",
+            "ordinary_recovery_readiness": "ck3_12003_ordinary_repentance_decision_readiness_v1",
+        }
+        for key, schema in extensions.items():
+            if key not in value:
+                continue
+            sidecar = value[key]
+            if (not isinstance(sidecar, Mapping) or sidecar.get("schema") != schema
+                    or sidecar.get("capture_epoch") != value["capture_epoch"]
+                    or sidecar.get("played_character_id") != value["played_character_id"]
+                    or sidecar.get("date_raw") != value["date_raw"]):
+                raise ValueError(f"native repentance sidecar differs from its owner frame: {key}")
+        raw_inputs = value.get("repentance_recovery_inputs")
+        if isinstance(raw_inputs, Mapping):
+            for key in ("pope_excom", "any_held_title_has_clerical_region"):
+                group = _sampled_group(raw_inputs, key)
+                if (group["available"] and type(group.get("value")) is not bool) or (
+                        not group["available"] and group.get("value") is not None):
+                    raise ValueError(f"native repentance raw route input is malformed: {key}")
+            tier = _sampled_group(raw_inputs, "highest_held_title_tier")
+            if (tier["available"] and type(tier.get("value")) is not int) or (
+                    not tier["available"] and tier.get("value") is not None):
+                raise ValueError("native repentance highest title tier is malformed")
+            for key in ("recent_excommunication", "promised_pilgrimage_to_clergy"):
+                group = _sampled_group(raw_inputs, key)
+                if (group["available"] and type(group.get("present")) is not bool) or (
+                        not group["available"] and group.get("present") is not None):
+                    raise ValueError(f"native repentance modifier sample is malformed: {key}")
+                for field in ("expiry_date_raw", "remaining_calendar_days"):
+                    if group.get(field) is not None and type(group[field]) is not int:
+                        raise ValueError(f"native repentance modifier expiry is malformed: {key}")
+        pam = value.get("repentance_pam_route")
+        if isinstance(pam, Mapping):
+            if pam.get("evaluator") != "stock_exact_typed_inputs" or pam.get("compiled_named_trigger_invoked") is not False:
+                raise ValueError("native repentance PAM route evaluator is malformed")
+            for key in ("has_pam_dlc", "faith_qualifies_for_pam_clergy_route",
+                        "religious_authority_exists", "capital_clerical_holder_is_religious_authority",
+                        "capital_clerical_holder_is_actor", "petition_head_of_faith_repentance_requires_petition",
+                        "need_hof_for_clergy_interaction", "is_archbishop_or_higher",
+                        "faith_has_central_sacraments", "faith_main_rite_spiritual_head_of_faith"):
+                group = _sampled_group(pam, key)
+                if (group["available"] and type(group.get("value")) is not bool) or (
+                        not group["available"] and group.get("value") is not None):
+                    raise ValueError(f"native repentance PAM input is malformed: {key}")
+        readiness = value.get("ordinary_recovery_readiness")
+        if isinstance(readiness, Mapping):
+            candidates = value.get("recipient_candidates")
+            if not isinstance(candidates, Mapping) or not isinstance(raw_inputs, Mapping) or not isinstance(pam, Mapping):
+                raise ValueError("native ordinary repentance readiness lost its input groups")
+            complete = candidates.get("source_candidate_evaluation_complete") is True
+            decision_ready = (trait["available"] and raw_inputs.get("available") is True
+                              and pam.get("available") is True and complete)
+            legal = candidates.get("any_observed_ordinary_request_terms_ready") is True
+            if (readiness.get("ordinary_candidate_collection_complete") is not complete
+                    or readiness.get("ordinary_recovery_decision_inputs_ready") is not decision_ready
+                    or readiness.get("any_observed_ordinary_request_terms_ready") is not legal
+                    or readiness.get("ordinary_request_route_currently_absent") != (not legal if decision_ready else None)
+                    or readiness.get("first_observed_ordinary_legal_recipient_character_id") != candidates.get("first_observed_ordinary_legal_recipient_character_id")
+                    or readiness.get("selected_repentance_petition_terms_ready") is not False):
+                raise ValueError("native ordinary repentance decision readiness differs from observed inputs")
     # The production reader owns group sampling/legality/quote evaluation. Keep
     # the complete native result intact, including false values and null values
     # for unreached groups; effect costs and PAM route are separate stock inputs.

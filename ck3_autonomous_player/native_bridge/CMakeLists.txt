@@ -849,6 +849,9 @@ if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_repentance_context.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_clergy.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_repentance_recipient_candidates.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_repentance_fallback.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_repentance_recovery_inputs.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_repentance_pam_route.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_repentance_petition_decision_terms.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_repentance_mailbox.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_repentance_wire.cpp"
@@ -2350,6 +2353,9 @@ if(BUILD_TESTING)
       src/ck3_12003_repentance_recipient_candidates.cpp
       src/ck3_12003_player_repentance_context.cpp
       src/ck3_12003_player_repentance_wire.cpp
+      src/ck3_12003_repentance_fallback.cpp
+      src/ck3_12003_repentance_recovery_inputs.cpp
+      src/ck3_12003_repentance_pam_route.cpp
       src/ck3_12002_phase_character.cpp
       src/ck3_12003_player_repentance_context_test.cpp)
     add_executable(xar_ck3_12003_repentance_petition_decision_terms_test
@@ -2375,6 +2381,9 @@ if(BUILD_TESTING)
       src/ck3_12003_repentance_petition_decision_terms.cpp
       src/ck3_12003_mystical_communion_decision_terms.cpp
       src/ck3_12003_player_repentance_wire.cpp
+      src/ck3_12003_repentance_fallback.cpp
+      src/ck3_12003_repentance_recovery_inputs.cpp
+      src/ck3_12003_repentance_pam_route.cpp
       src/ck3_12003_repentance_recipient_candidates_test.cpp)
     target_include_directories(xar_ck3_12003_repentance_recipient_candidates_test PRIVATE include)
     target_compile_definitions(xar_ck3_12003_repentance_recipient_candidates_test PRIVATE
@@ -2387,6 +2396,43 @@ if(BUILD_TESTING)
     add_test(NAME xar_ck3_12003_repentance_recipient_candidates_test
       COMMAND xar_ck3_12003_repentance_recipient_candidates_test
         "${CMAKE_BINARY_DIR}/repentance-candidates-wire")
+
+    add_executable(xar_ck3_12003_repentance_fallback_test
+      src/ck3_12003_repentance_fallback.cpp
+      src/ck3_12003_repentance_fallback_test.cpp)
+    add_executable(xar_ck3_12003_repentance_recovery_inputs_test
+      src/ck3_12003_repentance_recovery_inputs.cpp
+      src/ck3_12003_repentance_recovery_inputs_test.cpp)
+    add_executable(xar_ck3_12003_repentance_pam_route_test
+      src/ck3_12003_repentance_pam_route.cpp
+      src/ck3_12003_repentance_pam_route_test.cpp)
+    add_executable(xar_ck3_12003_repentance_fallback_merge_test
+      src/ck3_12002_phase_character.cpp
+      src/ck3_12003_player_repentance_context.cpp
+      src/ck3_12003_repentance_recipient_candidates.cpp
+      src/ck3_12003_repentance_petition_decision_terms.cpp
+      src/ck3_12003_mystical_communion_decision_terms.cpp
+      src/ck3_12003_repentance_fallback.cpp
+      src/ck3_12003_repentance_recovery_inputs.cpp
+      src/ck3_12003_repentance_pam_route.cpp
+      src/ck3_12003_player_repentance_wire.cpp
+      src/ck3_12003_repentance_fallback_merge_test.cpp)
+    foreach(repentance_v36_test
+        xar_ck3_12003_repentance_fallback_test
+        xar_ck3_12003_repentance_recovery_inputs_test
+        xar_ck3_12003_repentance_pam_route_test
+        xar_ck3_12003_repentance_fallback_merge_test)
+      target_include_directories(${repentance_v36_test} PRIVATE include)
+      target_compile_definitions(${repentance_v36_test} PRIVATE
+        XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1=1)
+      if(MSVC)
+        target_compile_options(${repentance_v36_test} PRIVATE
+          /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+      endif()
+      add_test(NAME ${repentance_v36_test} COMMAND ${repentance_v36_test}
+        "${CMAKE_BINARY_DIR}/repentance-v36-wire")
+    endforeach()
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/repentance-v36-wire")
 
     target_include_directories(xar_ck3_12003_player_repentance_context_test PRIVATE include)
     target_compile_definitions(xar_ck3_12003_player_repentance_context_test PRIVATE

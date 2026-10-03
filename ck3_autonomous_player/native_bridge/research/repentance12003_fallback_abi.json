@@ -1,0 +1,182 @@
+{
+  "schema": "xar.ck3.repentance-fallback-sources-abi/v1",
+  "game_version": "1.20.0.3",
+  "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "readiness": "research",
+  "live_verified": false,
+  "spans": [
+    {
+      "name": "vassal_or_below_registration",
+      "start_rva": "0x36de80",
+      "end_rva_exclusive": "0x36ded5",
+      "sha256": "E0EA071F1D70AE8DC82A53132A45423642F672FC6C93C31820E2F2A8AFF6B726",
+      "byte_count": 85
+    },
+    {
+      "name": "vassal_iterator_entry",
+      "start_rva": "0x1bff470",
+      "end_rva_exclusive": "0x1bff4fe",
+      "sha256": "D4BE9A7F12000CB4A01AFC29FECD06FAC55B8C3B9D61555151A6527640979770",
+      "byte_count": 142
+    },
+    {
+      "name": "vassal_recursive_source",
+      "start_rva": "0x1be2830",
+      "end_rva_exclusive": "0x1be2a70",
+      "sha256": "F096F67C0259AD827067E2969AECF01C10F0923A4A25807EE77506967C3D9260",
+      "byte_count": 576
+    },
+    {
+      "name": "clerical_region_in_dejure_registration",
+      "start_rva": "0x372490",
+      "end_rva_exclusive": "0x3724e5",
+      "sha256": "773C1CA4E20E0246C3411F99EF53F4FAD54BE8DC387C811E204DF3A252E4ED62",
+      "byte_count": 85
+    },
+    {
+      "name": "clerical_region_list_builder",
+      "start_rva": "0x1cfb850",
+      "end_rva_exclusive": "0x1cfbac1",
+      "sha256": "255817D39DFD872B588F9B664D105F849CB072FDB8BF91BDF0BC36369F509268",
+      "byte_count": 625
+    },
+    {
+      "name": "dejure_county_collector",
+      "start_rva": "0x2bf3f80",
+      "end_rva_exclusive": "0x2bf4039",
+      "sha256": "04BEC880577313366D17063A72F74F897A67BB7D8E8EECC0C2FF525ABCB922E6",
+      "byte_count": 185
+    },
+    {
+      "name": "dejure_child_span_getter",
+      "start_rva": "0xd55cc0",
+      "end_rva_exclusive": "0xd55cc8",
+      "sha256": "58B2B689C0BEA2457457EBCFDE476FC9ED459FF95C24EC5734AFFC56A9A8DA18",
+      "byte_count": 8
+    },
+    {
+      "name": "county_active_state_getter",
+      "start_rva": "0x1b756f0",
+      "end_rva_exclusive": "0x1b7571d",
+      "sha256": "A8D444323B87799F62ED8AFEF17661552401D356D5D555BBA9A5EA7CB2435546",
+      "byte_count": 45
+    },
+    {
+      "name": "county_states_to_unique_clerical_regions",
+      "start_rva": "0x2c60ca0",
+      "end_rva_exclusive": "0x2c60fc2",
+      "sha256": "D1ACA49EA4460E6752DB49FB9E7E9B585DB5642A228B622098F0EF610823D858",
+      "byte_count": 802
+    }
+  ],
+  "edges": [
+    {
+      "name": "vassal_scope_to_source",
+      "rva": "0x1bff4f9",
+      "target_rva": "0x1be2830",
+      "instruction_size": 5,
+      "displacement_offset": 1
+    },
+    {
+      "name": "vassal_recursion",
+      "rva": "0x1be2a17",
+      "target_rva": "0x1be2830",
+      "instruction_size": 5,
+      "displacement_offset": 1
+    },
+    {
+      "name": "clergy_list_counties",
+      "rva": "0x1cfb9b8",
+      "target_rva": "0x2bf3f80",
+      "instruction_size": 5,
+      "displacement_offset": 1
+    },
+    {
+      "name": "clergy_list_regions",
+      "rva": "0x1cfb9c9",
+      "target_rva": "0x2c60ca0",
+      "instruction_size": 5,
+      "displacement_offset": 1
+    },
+    {
+      "name": "county_active_state",
+      "rva": "0x2bf3f99",
+      "target_rva": "0x1b756f0",
+      "instruction_size": 5,
+      "displacement_offset": 1
+    },
+    {
+      "name": "dejure_children",
+      "rva": "0x2bf3fc0",
+      "target_rva": "0xd55cc0",
+      "instruction_size": 5,
+      "displacement_offset": 1
+    },
+    {
+      "name": "dejure_recursion",
+      "rva": "0x2bf401b",
+      "target_rva": "0x2bf3f80",
+      "instruction_size": 5,
+      "displacement_offset": 1
+    },
+    {
+      "name": "region_map_reused",
+      "rva": "0x2c60d12",
+      "target_rva": "0x2a0cb90",
+      "instruction_size": 5,
+      "displacement_offset": 1
+    }
+  ],
+  "reused_prior_abi": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\repentance\\native-superior\\REPENTANCE-CURRENT-CLERGY-ABI.json",
+    "sha256": "C8A6707B4B84EF101B0E61895AE97048184E1071086F4409050164CDA7C8872B",
+    "rechecked": false
+  },
+  "reused_stock": {
+    "path": "Z:\\ck3_mod_rewrite\\artifacts\\g2-maintainer-2026-10-02\\resume-12003\\religion-excommunication-12003\\stock-terms\\source-spans\\21-excommunicated_recovery_find_cleric_effect.txt",
+    "sha256": "B51C04C5FEE368E6DB1E51BD0D3DD9DAC0BA48AE813198BCED79ABCB4F7079F4",
+    "rechecked": false
+  },
+  "layouts": {
+    "character_land": "0x1C0",
+    "land_contract_ids": "0x218",
+    "land_contract_count": "0x224",
+    "contract_identity": "0x8",
+    "contract_character_pointer": "0x20",
+    "contract_storage_slot_rva": "0x5D1EB88",
+    "title_dejure_children": "0x110",
+    "title_dejure_child_count": "0x11C",
+    "title_definition": "0x48",
+    "definition_tier": "0x64",
+    "title_holder_id": "0x128",
+    "title_storage_slot_rva": "0x5D1DAF8",
+    "storage_rows": "0x20",
+    "storage_count": "0x2C",
+    "storage_stride": 16,
+    "storage_pointer_offset": 8
+  },
+  "bindings": {
+    "character_primary_title": {
+      "rva": "0x289DA30",
+      "signature": "void* (void* Character)",
+      "basis": "existing pinned .3 state_rite/campaign getter; reused"
+    },
+    "clerical_region_title": {
+      "rva": "0x1B9C9E0",
+      "signature": "Scope16* (void* ignored, Scope16* out, const Scope16** input)",
+      "basis": "prior current-clergy proof, reused"
+    }
+  },
+  "tree": {
+    "stock_fallback_condition": "No saved repentance_cleric after earlier current-role attempts",
+    "realm": "Every full vassal ContractID in current actor land vector; resolve full contract, obtain actual Character*, emit and recurse into its land contracts.",
+    "dejure": "Current primary title; tier<2 emits no county; tier2 maps its capital active county state; tier>2 recursively traverses de-jure children. Each mapped clerical region produces its title holder. Original map drops -1 and unique-sorts region IDs.",
+    "collector": "Equivalent read-only unfiltered source traversal. Role identities retained; stock preferred qualification/filter and saved-scope selection remain separate native interaction gates."
+  },
+  "unknown": [
+    "No live collection in this work package.",
+    "Stock preferred filters and first-qualified saved-scope selection are not implemented.",
+    "Optional native vassal list government context filter is not applied; collector explicitly emits current recursive contract owner identities.",
+    "Traversal order is deterministic collector DFS, not a claim of stock temporary-list selection order."
+  ]
+}
