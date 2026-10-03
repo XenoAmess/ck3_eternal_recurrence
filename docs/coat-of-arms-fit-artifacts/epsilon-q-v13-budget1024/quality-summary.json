@@ -1,0 +1,324 @@
+{
+  "schema": "ck3-coa-epsilon-q-regression-summary-v1",
+  "status": "browser-passed-quality-target-missed-native-pending",
+  "root": "..\\docs\\coat-of-arms-fit-artifacts\\epsilon-q-v13-budget1024",
+  "baseline": "..\\docs\\coat-of-arms-fit-artifacts\\delta-q-final-multires-v1\\report.json",
+  "budget": 1024,
+  "objective": {
+    "scales": [
+      96,
+      230,
+      512
+    ],
+    "weights": {
+      "96": 0.2,
+      "230": 0.45,
+      "512": 0.35
+    },
+    "contract": "epsilon-q-e0-perceptual-v2-96-230-512-w20-45-35-v1"
+  },
+  "rows": [
+    {
+      "id": "picture-01",
+      "status": "browser-passed-native-mcp-pending",
+      "algorithm": "ck3-coa-browser-fit-v13-epsilon-direct-multiscale",
+      "finalizationContract": "full-dds-epsilon-multiscale-joint-contour-v5",
+      "baselineKind": "delta-q-v9-historical",
+      "layerBudget": 1024,
+      "drawnInstances": 710,
+      "utf8Bytes": 277871,
+      "fitElapsedMilliseconds": 427336,
+      "selectedVariant": "joint-refinement",
+      "incumbentLoss": 0.03155517166079736,
+      "selectedLossAgainstCurrentSearch": 0.02886384269040824,
+      "baselineByScale": {
+        "96": 0.02656672052851327,
+        "230": 0.028837223941398392,
+        "512": 0.031469406337416884
+      },
+      "currentSearchIncumbentByScale": {
+        "96": 0.028026412208810282,
+        "230": 0.031218759001873854,
+        "512": 0.03400413619483449
+      },
+      "selectedByScale": {
+        "96": 0.026595161732901752,
+        "230": 0.02833922897835835,
+        "512": 0.030834735153047528
+      },
+      "baselineLoss": 0.029304387097427845,
+      "selectedLoss": 0.02886384269040824,
+      "relativeImprovement": 0.015033394336313259,
+      "scaleNonRegression": false,
+      "currentSearchScaleNonRegression": true,
+      "jointAcceptedMoves": 4,
+      "contourAccepted": true,
+      "parseErrors": 0,
+      "serializeParseExact": true,
+      "fitAndEditorPreviewByteIdentical": true
+    },
+    {
+      "id": "picture-02",
+      "status": "browser-passed-native-mcp-pending",
+      "algorithm": "ck3-coa-browser-fit-v13-epsilon-direct-multiscale",
+      "finalizationContract": "full-dds-epsilon-multiscale-joint-contour-v5",
+      "baselineKind": "delta-q-v9-historical",
+      "layerBudget": 1024,
+      "drawnInstances": 771,
+      "utf8Bytes": 303604,
+      "fitElapsedMilliseconds": 490132,
+      "selectedVariant": "joint-refinement",
+      "incumbentLoss": 0.028808542118868203,
+      "selectedLossAgainstCurrentSearch": 0.025229598442693985,
+      "baselineByScale": {
+        "96": 0.029923162428353665,
+        "230": 0.028556748877846407,
+        "512": 0.022656790325086978
+      },
+      "currentSearchIncumbentByScale": {
+        "96": 0.03290726715322502,
+        "230": 0.030585637118785515,
+        "512": 0.024181577099342048
+      },
+      "selectedByScale": {
+        "96": 0.02787995556681458,
+        "230": 0.02746486674010226,
+        "512": 0.02084119227510014
+      },
+      "baselineLoss": 0.026765046094482058,
+      "selectedLoss": 0.025229598442693985,
+      "relativeImprovement": 0.05736764459018156,
+      "scaleNonRegression": true,
+      "currentSearchScaleNonRegression": true,
+      "jointAcceptedMoves": 4,
+      "contourAccepted": true,
+      "parseErrors": 0,
+      "serializeParseExact": true,
+      "fitAndEditorPreviewByteIdentical": true
+    },
+    {
+      "id": "picture-03",
+      "status": "browser-passed-native-mcp-pending",
+      "algorithm": "ck3-coa-browser-fit-v13-epsilon-direct-multiscale",
+      "finalizationContract": "full-dds-epsilon-multiscale-joint-contour-v5",
+      "baselineKind": "delta-q-v9-historical",
+      "layerBudget": 1024,
+      "drawnInstances": 1024,
+      "utf8Bytes": 401694,
+      "fitElapsedMilliseconds": 359147,
+      "selectedVariant": "joint-refinement",
+      "incumbentLoss": 0.026770538129816418,
+      "selectedLossAgainstCurrentSearch": 0.02676590032338601,
+      "baselineByScale": {
+        "96": 0.020465604052411834,
+        "230": 0.029372474493570572,
+        "512": 0.027028010849220848
+      },
+      "currentSearchIncumbentByScale": {
+        "96": 0.020465604052411834,
+        "230": 0.029372474493570572,
+        "512": 0.027028010849220848
+      },
+      "selectedByScale": {
+        "96": 0.0204441508493802,
+        "230": 0.029372060056078363,
+        "512": 0.027027551795070593
+      },
+      "baselineLoss": 0.026770538129816418,
+      "selectedLoss": 0.02676590032338601,
+      "relativeImprovement": 0.0001732429287718123,
+      "scaleNonRegression": true,
+      "currentSearchScaleNonRegression": true,
+      "jointAcceptedMoves": 4,
+      "contourAccepted": true,
+      "parseErrors": 0,
+      "serializeParseExact": true,
+      "fitAndEditorPreviewByteIdentical": true
+    },
+    {
+      "id": "picture-04",
+      "status": "browser-passed-native-mcp-pending",
+      "algorithm": "ck3-coa-browser-fit-v13-epsilon-direct-multiscale",
+      "finalizationContract": "full-dds-epsilon-multiscale-joint-contour-v5",
+      "baselineKind": "delta-q-v9-historical",
+      "layerBudget": 1024,
+      "drawnInstances": 905,
+      "utf8Bytes": 358186,
+      "fitElapsedMilliseconds": 527155,
+      "selectedVariant": "joint-refinement",
+      "incumbentLoss": 0.04861932114108502,
+      "selectedLossAgainstCurrentSearch": 0.039263363521955766,
+      "baselineByScale": {
+        "96": 0.03205787695826857,
+        "230": 0.04332608093368112,
+        "512": 0.0409103067087394
+      },
+      "currentSearchIncumbentByScale": {
+        "96": 0.041173250281404436,
+        "230": 0.05197349126237063,
+        "512": 0.04856171433353528
+      },
+      "selectedByScale": {
+        "96": 0.03415093793512535,
+        "230": 0.040729930568125024,
+        "512": 0.04029916336935553
+      },
+      "baselineLoss": 0.04022691915986901,
+      "selectedLoss": 0.039263363521955766,
+      "relativeImprovement": 0.023953006047614477,
+      "scaleNonRegression": false,
+      "currentSearchScaleNonRegression": true,
+      "jointAcceptedMoves": 4,
+      "contourAccepted": true,
+      "parseErrors": 0,
+      "serializeParseExact": true,
+      "fitAndEditorPreviewByteIdentical": true
+    },
+    {
+      "id": "picture-05",
+      "status": "browser-passed-native-mcp-pending",
+      "algorithm": "ck3-coa-browser-fit-v13-epsilon-direct-multiscale",
+      "finalizationContract": "full-dds-epsilon-multiscale-joint-contour-v5",
+      "baselineKind": "delta-q-v9-historical",
+      "layerBudget": 1024,
+      "drawnInstances": 920,
+      "utf8Bytes": 359950,
+      "fitElapsedMilliseconds": 666968,
+      "selectedVariant": "joint-refinement",
+      "incumbentLoss": 0.035866826018346426,
+      "selectedLossAgainstCurrentSearch": 0.03264432608911355,
+      "baselineByScale": {
+        "96": 0.025489701424271725,
+        "230": 0.0387605920200427,
+        "512": 0.032059367420074765
+      },
+      "currentSearchIncumbentByScale": {
+        "96": 0.028847438476914827,
+        "230": 0.040651936258553935,
+        "512": 0.03372562001889767
+      },
+      "selectedByScale": {
+        "96": 0.02353614358760701,
+        "230": 0.03785147207224676,
+        "512": 0.031154099825946035
+      },
+      "baselineLoss": 0.03376098529089973,
+      "selectedLoss": 0.03264432608911355,
+      "relativeImprovement": 0.03307543284547363,
+      "scaleNonRegression": true,
+      "currentSearchScaleNonRegression": true,
+      "jointAcceptedMoves": 4,
+      "contourAccepted": true,
+      "parseErrors": 0,
+      "serializeParseExact": true,
+      "fitAndEditorPreviewByteIdentical": true
+    },
+    {
+      "id": "picture-06",
+      "status": "browser-passed-native-mcp-pending",
+      "algorithm": "ck3-coa-browser-fit-v13-epsilon-direct-multiscale",
+      "finalizationContract": "full-dds-epsilon-multiscale-joint-contour-v5",
+      "baselineKind": "delta-q-v9-historical",
+      "layerBudget": 1024,
+      "drawnInstances": 1024,
+      "utf8Bytes": 381493,
+      "fitElapsedMilliseconds": 534428,
+      "selectedVariant": "joint-refinement",
+      "incumbentLoss": 0.01514438074733591,
+      "selectedLossAgainstCurrentSearch": 0.01514288172357749,
+      "baselineByScale": {
+        "96": 0.0064103275944443,
+        "230": 0.018356654417357926,
+        "512": 0.01600520211610281
+      },
+      "currentSearchIncumbentByScale": {
+        "96": 0.0064103275944443,
+        "230": 0.018356654417357926,
+        "512": 0.01600520211610281
+      },
+      "selectedByScale": {
+        "96": 0.006409125828924821,
+        "230": 0.018354262410080036,
+        "512": 0.016004681352161456
+      },
+      "baselineLoss": 0.01514438074733591,
+      "selectedLoss": 0.01514288172357749,
+      "relativeImprovement": 0.00009898217585981964,
+      "scaleNonRegression": true,
+      "currentSearchScaleNonRegression": true,
+      "jointAcceptedMoves": 4,
+      "contourAccepted": true,
+      "parseErrors": 0,
+      "serializeParseExact": true,
+      "fitAndEditorPreviewByteIdentical": true
+    },
+    {
+      "id": "picture-07",
+      "status": "browser-passed-native-mcp-pending",
+      "algorithm": "ck3-coa-browser-fit-v13-epsilon-direct-multiscale",
+      "finalizationContract": "full-dds-epsilon-multiscale-joint-contour-v5",
+      "baselineKind": "delta-q-v9-historical",
+      "layerBudget": 1024,
+      "drawnInstances": 978,
+      "utf8Bytes": 381707,
+      "fitElapsedMilliseconds": 804334,
+      "selectedVariant": "joint-refinement",
+      "incumbentLoss": 0.04124196695412051,
+      "selectedLossAgainstCurrentSearch": 0.031015706649624178,
+      "baselineByScale": {
+        "96": 0.03306923374362563,
+        "230": 0.03346504298676656,
+        "512": 0.03187419015654762
+      },
+      "currentSearchIncumbentByScale": {
+        "96": 0.04060561772496222,
+        "230": 0.041554399831985965,
+        "512": 0.04120389567066966
+      },
+      "selectedByScale": {
+        "96": 0.029459135277251945,
+        "230": 0.03205349529683434,
+        "512": 0.030570876315995234
+      },
+      "baselineLoss": 0.03282908264756174,
+      "selectedLoss": 0.031015706649624178,
+      "relativeImprovement": 0.05523687693028628,
+      "scaleNonRegression": true,
+      "currentSearchScaleNonRegression": true,
+      "jointAcceptedMoves": 4,
+      "contourAccepted": true,
+      "parseErrors": 0,
+      "serializeParseExact": true,
+      "fitAndEditorPreviewByteIdentical": true
+    }
+  ],
+  "aggregates": {
+    "totalFitMilliseconds": 3809500,
+    "totalFitMinutes": 63.49166666666667,
+    "maximumFitMilliseconds": 804334,
+    "medianRelativeImprovement": 0.023953006047614477,
+    "generationLatencyRole": "diagnostic-only"
+  },
+  "evidenceChecks": {
+    "caseCountMatches": true,
+    "exactCaseSet": true,
+    "budgetMatches": true,
+    "withinLayerBudget": true,
+    "algorithmMatches": true,
+    "finalizationMatches": true,
+    "parseSerializePassed": true,
+    "previewProjectionPassed": true,
+    "finiteThreeScaleMetrics": true,
+    "currentSearchPreservedAtEveryScale": true
+  },
+  "qualityTargets": {
+    "requestedMedianRelativeImprovement": 0.1,
+    "measuredMedianRelativeImprovement": 0.023953006047614477,
+    "medianTargetMet": false,
+    "requestedImprovedCases": 5,
+    "measuredImprovedCases": 7,
+    "improvedCasesTargetMet": true,
+    "allScalesNonRegressingAgainstBaseline": false,
+    "hardExampleFivePercentMet": false
+  }
+}

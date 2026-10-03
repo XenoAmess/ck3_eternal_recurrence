@@ -77,3 +77,7 @@ Delta-Q r19 已证明既有 renderer/serializer 路径的 Browser→CK3 与 Copy
 - [Epsilon-Q 原规划与执行结论](../coat_of_arms_editer_of_ck3/docs/fitting-quality-epsilon-q-plan.md)
 
 人工逐图偏好审阅仍是 `pending-human-review`。自动指标和原生一致性各自只证明其声明的边界，不替代真人观感判断。
+
+## 历史实验保全（2026-10-03）
+
+先前未跟踪的 17 组早期拟合、预算对比和消融实验已归档：465 个文件保留原始字节、原始质量失败及原生待验状态，完整索引与 SHA-256 清单见 [Epsilon-Q 历史实验归档](coat-of-arms-fit-artifacts/epsilon-q-experiment-archive-20261003/README.md)。本次文件完整性检查不改变上文正式结论或原生验收边界。

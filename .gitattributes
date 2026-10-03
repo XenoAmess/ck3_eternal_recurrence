@@ -92,3 +92,22 @@ promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-2026100
 promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0139-current-research-originals/** -text whitespace=-blank-at-eol,cr-at-eol
 # Original save-block unified diffs intentionally contain context space before tabs.
 promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0139-current-research-originals/independent-facts/full-block-projection-a01/*-complete-diff.txt -text whitespace=-blank-at-eol,-space-before-tab,cr-at-eol
+
+# Preserve exact historical Epsilon-Q experiment bytes and their SHA-256 archive.
+docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused-r2/** -text whitespace=cr-at-eol
+docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused/** -text whitespace=cr-at-eol
+docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128/** -text whitespace=cr-at-eol
+docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/** -text whitespace=cr-at-eol
+docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/** -text whitespace=cr-at-eol
+docs/coat-of-arms-fit-artifacts/epsilon-q-v11-holdout/** -text whitespace=cr-at-eol
+docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/** -text whitespace=cr-at-eol
+docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-ablation/** -text whitespace=cr-at-eol
+docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/** -text whitespace=cr-at-eol
+docs/coat-of-arms-fit-artifacts/epsilon-q-v11-smoke-picture05-complete/** -text whitespace=cr-at-eol
+docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/** -text whitespace=cr-at-eol
+docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj256-ablation/** -text whitespace=cr-at-eol
+docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/** -text whitespace=cr-at-eol
+docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/** -text whitespace=cr-at-eol
+docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/** -text whitespace=cr-at-eol
+docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/** -text whitespace=cr-at-eol
+docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/** -text whitespace=cr-at-eol

@@ -1,0 +1,129 @@
+{
+  "schema": "ck3-coa-epsilon-q-regression-summary-v1",
+  "status": "red",
+  "root": "..\\docs\\coat-of-arms-fit-artifacts\\epsilon-q-v11-joint2048-archive-ablation",
+  "baseline": "same-run-search-incumbent",
+  "budget": 128,
+  "objective": {
+    "scales": [
+      96,
+      230,
+      512
+    ],
+    "weights": {
+      "96": 0.2,
+      "230": 0.45,
+      "512": 0.35
+    },
+    "contract": "epsilon-q-e0-perceptual-v2-96-230-512-w20-45-35-v1"
+  },
+  "rows": [
+    {
+      "id": "picture-02",
+      "status": "browser-passed-native-mcp-pending",
+      "algorithm": "ck3-coa-browser-fit-v11-epsilon-quality-first",
+      "finalizationContract": "full-dds-epsilon-multiscale-joint-contour-v4",
+      "baselineKind": "same-run-search-incumbent",
+      "layerBudget": 128,
+      "drawnInstances": 128,
+      "utf8Bytes": 45687,
+      "fitElapsedMilliseconds": 176924,
+      "selectedVariant": "joint-refinement",
+      "incumbentLoss": 0.034654549294588416,
+      "selectedLossAgainstCurrentSearch": 0.0332063957781502,
+      "baselineByScale": {
+        "96": 0.041957794403953974,
+        "230": 0.036798764470162504,
+        "512": 0.02772441829206998
+      },
+      "currentSearchIncumbentByScale": {
+        "96": 0.041957794403953974,
+        "230": 0.036798764470162504,
+        "512": 0.02772441829206998
+      },
+      "selectedByScale": {
+        "96": 0.039641402613376835,
+        "230": 0.03575873527068396,
+        "512": 0.026247669667620138
+      },
+      "baselineLoss": 0.034654549294588416,
+      "selectedLoss": 0.0332063957781502,
+      "relativeImprovement": 0.04178826578086127,
+      "scaleNonRegression": true,
+      "currentSearchScaleNonRegression": true,
+      "jointAcceptedMoves": 16,
+      "contourAccepted": true,
+      "parseErrors": 0,
+      "serializeParseExact": true,
+      "fitAndEditorPreviewByteIdentical": true
+    },
+    {
+      "id": "picture-04",
+      "status": "browser-passed-native-mcp-pending",
+      "algorithm": "ck3-coa-browser-fit-v11-epsilon-quality-first",
+      "finalizationContract": "full-dds-epsilon-multiscale-joint-contour-v4",
+      "baselineKind": "same-run-search-incumbent",
+      "layerBudget": 128,
+      "drawnInstances": 127,
+      "utf8Bytes": 44901,
+      "fitElapsedMilliseconds": 179443,
+      "selectedVariant": "joint-refinement",
+      "incumbentLoss": 0.057240160962997465,
+      "selectedLossAgainstCurrentSearch": 0.05485060833758208,
+      "baselineByScale": {
+        "96": 0.06580542372763765,
+        "230": 0.05728904541420015,
+        "512": 0.0522828736602282
+      },
+      "currentSearchIncumbentByScale": {
+        "96": 0.06580542372763765,
+        "230": 0.05728904541420015,
+        "512": 0.0522828736602282
+      },
+      "selectedByScale": {
+        "96": 0.06302377499994553,
+        "230": 0.05510594196616448,
+        "512": 0.049851941293768444
+      },
+      "baselineLoss": 0.057240160962997465,
+      "selectedLoss": 0.05485060833758208,
+      "relativeImprovement": 0.04174608500769404,
+      "scaleNonRegression": true,
+      "currentSearchScaleNonRegression": true,
+      "jointAcceptedMoves": 16,
+      "contourAccepted": true,
+      "parseErrors": 0,
+      "serializeParseExact": true,
+      "fitAndEditorPreviewByteIdentical": true
+    }
+  ],
+  "aggregates": {
+    "totalFitMilliseconds": 356367,
+    "totalFitMinutes": 5.93945,
+    "maximumFitMilliseconds": 179443,
+    "medianRelativeImprovement": 0.041767175394277656,
+    "generationLatencyRole": "diagnostic-only"
+  },
+  "evidenceChecks": {
+    "caseCountMatches": false,
+    "exactCaseSet": false,
+    "budgetMatches": true,
+    "withinLayerBudget": true,
+    "algorithmMatches": true,
+    "finalizationMatches": true,
+    "parseSerializePassed": true,
+    "previewProjectionPassed": true,
+    "finiteThreeScaleMetrics": true,
+    "currentSearchPreservedAtEveryScale": true
+  },
+  "qualityTargets": {
+    "requestedMedianRelativeImprovement": 0.05,
+    "measuredMedianRelativeImprovement": 0.041767175394277656,
+    "medianTargetMet": false,
+    "requestedImprovedCases": 5,
+    "measuredImprovedCases": 2,
+    "improvedCasesTargetMet": false,
+    "allScalesNonRegressingAgainstBaseline": true,
+    "hardExampleFivePercentMet": null
+  }
+}

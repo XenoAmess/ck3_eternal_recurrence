@@ -1,0 +1,2518 @@
+{
+  "schema": "ck3-epsilon-q-historical-experiment-archive-v1",
+  "archived_at_utc": "2026-10-03T15:42:34.003659+00:00",
+  "purpose": "Preserve previously untracked Epsilon-Q historical experiment artifacts and their original reported statuses.",
+  "paths_relative_to": "repository-root",
+  "original_bytes_preserved": true,
+  "files": 465,
+  "bytes": 57612127,
+  "formats": {
+    ".png": 251,
+    ".txt": 167,
+    ".json": 47
+  },
+  "report_count": 43,
+  "original_statuses": {
+    "browser-passed-native-mcp-pending": 42,
+    "browser-passed-quality-target-missed-native-pending": 2,
+    "measured-quality-target-met": 1,
+    "red": 2
+  },
+  "validation": {
+    "result": "PASS",
+    "checks": [
+      "465 file sizes and SHA-256 match the pre-sync inventory",
+      "251 PNGs decode and verify",
+      "167 texts decode as UTF-8",
+      "47 JSONs parse"
+    ],
+    "scope": "Artifact integrity only; original quality failures and pending native acceptance remain as reported.",
+    "receipt_sha256": "81DC61249DDB44C0AA120DFD258C1190B2ECBE7C0B35DF749036EE7DA0D602C3"
+  },
+  "experiments": [
+    {
+      "directory": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused-r2",
+      "files": 11,
+      "bytes": 1003394,
+      "report_count": 1,
+      "statuses": {
+        "browser-passed-native-mcp-pending": 1
+      }
+    },
+    {
+      "directory": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused",
+      "files": 11,
+      "bytes": 1002080,
+      "report_count": 1,
+      "statuses": {
+        "browser-passed-native-mcp-pending": 1
+      }
+    },
+    {
+      "directory": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128",
+      "files": 9,
+      "bytes": 877932,
+      "report_count": 1,
+      "statuses": {
+        "browser-passed-native-mcp-pending": 1
+      }
+    },
+    {
+      "directory": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128",
+      "files": 33,
+      "bytes": 3235248,
+      "report_count": 3,
+      "statuses": {
+        "browser-passed-native-mcp-pending": 3
+      }
+    },
+    {
+      "directory": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128",
+      "files": 78,
+      "bytes": 7295062,
+      "report_count": 7,
+      "statuses": {
+        "browser-passed-native-mcp-pending": 7,
+        "browser-passed-quality-target-missed-native-pending": 1
+      }
+    },
+    {
+      "directory": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-holdout",
+      "files": 1,
+      "bytes": 160170,
+      "report_count": 1,
+      "statuses": {
+        "measured-quality-target-met": 1
+      }
+    },
+    {
+      "directory": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation",
+      "files": 22,
+      "bytes": 2231172,
+      "report_count": 2,
+      "statuses": {
+        "browser-passed-native-mcp-pending": 2
+      }
+    },
+    {
+      "directory": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-ablation",
+      "files": 11,
+      "bytes": 1109276,
+      "report_count": 1,
+      "statuses": {
+        "browser-passed-native-mcp-pending": 1
+      }
+    },
+    {
+      "directory": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation",
+      "files": 23,
+      "bytes": 2219884,
+      "report_count": 2,
+      "statuses": {
+        "browser-passed-native-mcp-pending": 2,
+        "red": 1
+      }
+    },
+    {
+      "directory": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-smoke-picture05-complete",
+      "files": 11,
+      "bytes": 1075757,
+      "report_count": 1,
+      "statuses": {
+        "browser-passed-native-mcp-pending": 1
+      }
+    },
+    {
+      "directory": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128",
+      "files": 78,
+      "bytes": 7338535,
+      "report_count": 7,
+      "statuses": {
+        "browser-passed-native-mcp-pending": 7,
+        "red": 1
+      }
+    },
+    {
+      "directory": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj256-ablation",
+      "files": 11,
+      "bytes": 1122849,
+      "report_count": 1,
+      "statuses": {
+        "browser-passed-native-mcp-pending": 1
+      }
+    },
+    {
+      "directory": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation",
+      "files": 22,
+      "bytes": 2262723,
+      "report_count": 2,
+      "statuses": {
+        "browser-passed-native-mcp-pending": 2
+      }
+    },
+    {
+      "directory": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation",
+      "files": 22,
+      "bytes": 2255530,
+      "report_count": 2,
+      "statuses": {
+        "browser-passed-native-mcp-pending": 2
+      }
+    },
+    {
+      "directory": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation",
+      "files": 22,
+      "bytes": 2256946,
+      "report_count": 2,
+      "statuses": {
+        "browser-passed-native-mcp-pending": 2
+      }
+    },
+    {
+      "directory": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024",
+      "files": 78,
+      "bytes": 17130218,
+      "report_count": 7,
+      "statuses": {
+        "browser-passed-native-mcp-pending": 7,
+        "browser-passed-quality-target-missed-native-pending": 1
+      }
+    },
+    {
+      "directory": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024",
+      "files": 22,
+      "bytes": 5035351,
+      "report_count": 2,
+      "statuses": {
+        "browser-passed-native-mcp-pending": 2
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused-r2/picture-03/canonical-preview-230.png",
+      "bytes": 64923,
+      "sha256": "5BC27DF09D6EBD313DA4204628455A136D7EACDA30E88BC2377A51DCD4E49BEC"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused-r2/picture-03/coat_of_arms.txt",
+      "bytes": 45245,
+      "sha256": "CD503FB00BEDE4931734A4DFFF98F409946CE686E930AADADC4B54114C6C64AE"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused-r2/picture-03/editor-preview-panel.png",
+      "bytes": 190148,
+      "sha256": "BABC2FD6C7F9F2D23ADF0D6417BD5585601D9DDE892E63D711E9FD314ED460EA"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused-r2/picture-03/input-and-fit-report.png",
+      "bytes": 342321,
+      "sha256": "A8120C79F73BD894C7DEA752A0F7D24B9D7EB8C3B1F52AF973DA1DB17AD1D389"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused-r2/picture-03/pareto-candidate-01.png",
+      "bytes": 64923,
+      "sha256": "5BC27DF09D6EBD313DA4204628455A136D7EACDA30E88BC2377A51DCD4E49BEC"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused-r2/picture-03/pareto-candidate-01.txt",
+      "bytes": 45245,
+      "sha256": "CD503FB00BEDE4931734A4DFFF98F409946CE686E930AADADC4B54114C6C64AE"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused-r2/picture-03/pareto-candidate-02.png",
+      "bytes": 63885,
+      "sha256": "A94AD96A701BC8884595EFECF5CAA980A6AF1C89983235725BCFA73F4C518CE0"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused-r2/picture-03/pareto-candidate-02.txt",
+      "bytes": 40114,
+      "sha256": "A0C795C48F8568B77C51CEAC845ED7B2D8E3F999F924D4AE518D959C018765F0"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused-r2/picture-03/pareto-candidate-03.png",
+      "bytes": 64240,
+      "sha256": "AD9BDD15A637C82B1CCC7DAFC6ACDCBBC3DD5B0A36BC647D916C894440F7F202"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused-r2/picture-03/pareto-candidate-03.txt",
+      "bytes": 45553,
+      "sha256": "B96D9BA8BF5632B551EF81C50DE050C39B3617961BA9C7BD991AB8128DEE4503"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused-r2/picture-03/report.json",
+      "bytes": 36797,
+      "sha256": "5053796792C97EA0B45E5766EC7C9943D7F4BAFBBA3BDCB3AF73742D7F1C59E3"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused/picture-03/canonical-preview-230.png",
+      "bytes": 64953,
+      "sha256": "81D3D102275E440BFACF49E2D250B85EF5F294A3CF9B757DA99F64C71B9530F0"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused/picture-03/coat_of_arms.txt",
+      "bytes": 45230,
+      "sha256": "39E6A6E5780D9F9C5F62926D687E39A16B2A9FF47A54F129576E8EDB84307DC7"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused/picture-03/editor-preview-panel.png",
+      "bytes": 188821,
+      "sha256": "56DB5399182BB0A6E258D650BB7393C852CDC7EE4F7A137FC84C16C3DD0357AA"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused/picture-03/input-and-fit-report.png",
+      "bytes": 343714,
+      "sha256": "F75E9DD4A74AB91BB6605AF09962382DF24B8850E2188F6A04923218EA8C4E6A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused/picture-03/pareto-candidate-01.png",
+      "bytes": 64953,
+      "sha256": "81D3D102275E440BFACF49E2D250B85EF5F294A3CF9B757DA99F64C71B9530F0"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused/picture-03/pareto-candidate-01.txt",
+      "bytes": 45230,
+      "sha256": "39E6A6E5780D9F9C5F62926D687E39A16B2A9FF47A54F129576E8EDB84307DC7"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused/picture-03/pareto-candidate-02.png",
+      "bytes": 63885,
+      "sha256": "A94AD96A701BC8884595EFECF5CAA980A6AF1C89983235725BCFA73F4C518CE0"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused/picture-03/pareto-candidate-02.txt",
+      "bytes": 40114,
+      "sha256": "A0C795C48F8568B77C51CEAC845ED7B2D8E3F999F924D4AE518D959C018765F0"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused/picture-03/pareto-candidate-03.png",
+      "bytes": 64240,
+      "sha256": "AD9BDD15A637C82B1CCC7DAFC6ACDCBBC3DD5B0A36BC647D916C894440F7F202"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused/picture-03/pareto-candidate-03.txt",
+      "bytes": 45553,
+      "sha256": "B96D9BA8BF5632B551EF81C50DE050C39B3617961BA9C7BD991AB8128DEE4503"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128-focused/picture-03/report.json",
+      "bytes": 35387,
+      "sha256": "FAA6613099A2F00AAFE6EAF624C33687342B151B002A4AFBC028C4AAAD870EE4"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128/picture-03/canonical-preview-230.png",
+      "bytes": 64240,
+      "sha256": "AD9BDD15A637C82B1CCC7DAFC6ACDCBBC3DD5B0A36BC647D916C894440F7F202"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128/picture-03/coat_of_arms.txt",
+      "bytes": 45185,
+      "sha256": "71574CBFE626AB580E707A642F09FB88A64BFA085E171228576C33AE7C007049"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128/picture-03/editor-preview-panel.png",
+      "bytes": 180835,
+      "sha256": "BA376FF438401C52F38F7148C8863D9520437E6E8BCB131A0BAE4FB3C4C410A3"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128/picture-03/input-and-fit-report.png",
+      "bytes": 340726,
+      "sha256": "C03D1805C9DFD36B8C93A66E7DDAC75D28D723791B5CB1B607944B7B627DAB38"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128/picture-03/pareto-candidate-01.png",
+      "bytes": 64240,
+      "sha256": "AD9BDD15A637C82B1CCC7DAFC6ACDCBBC3DD5B0A36BC647D916C894440F7F202"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128/picture-03/pareto-candidate-01.txt",
+      "bytes": 45185,
+      "sha256": "71574CBFE626AB580E707A642F09FB88A64BFA085E171228576C33AE7C007049"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128/picture-03/pareto-candidate-02.png",
+      "bytes": 63885,
+      "sha256": "A94AD96A701BC8884595EFECF5CAA980A6AF1C89983235725BCFA73F4C518CE0"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128/picture-03/pareto-candidate-02.txt",
+      "bytes": 40114,
+      "sha256": "A0C795C48F8568B77C51CEAC845ED7B2D8E3F999F924D4AE518D959C018765F0"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-smoke-128/picture-03/report.json",
+      "bytes": 33522,
+      "sha256": "D8065F8B4BDB8A75DD75DFC4239C6F43990DF366F091A8B9962D89CE23BA5875"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-01/canonical-preview-230.png",
+      "bytes": 64486,
+      "sha256": "2F3546A3A43441BF5428F7E69BA15D8CC83751AF6032F7150EFF96B97B5B02B6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-01/coat_of_arms.txt",
+      "bytes": 44961,
+      "sha256": "72FADCF846DE234533121C5D094251D8F480E79F5060AC5BC4609435C97BEBDB"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-01/editor-preview-panel.png",
+      "bytes": 190288,
+      "sha256": "99B10AD922DE9B5EBD41DE23E2CD1C71532100AC4AFED1E34A48C59A2B500BDE"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-01/input-and-fit-report.png",
+      "bytes": 354213,
+      "sha256": "64003352F1545F80BC5ED39F4A16424B1B8BC2AD93101CB7B9A7488CA0BAFB83"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-01/pareto-candidate-01.png",
+      "bytes": 64486,
+      "sha256": "2F3546A3A43441BF5428F7E69BA15D8CC83751AF6032F7150EFF96B97B5B02B6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-01/pareto-candidate-01.txt",
+      "bytes": 44961,
+      "sha256": "72FADCF846DE234533121C5D094251D8F480E79F5060AC5BC4609435C97BEBDB"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-01/pareto-candidate-02.png",
+      "bytes": 64513,
+      "sha256": "29BB476B17423AA58FE613E0B34B219E0523B82841BEA236E618E2962020EE48"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-01/pareto-candidate-02.txt",
+      "bytes": 45336,
+      "sha256": "0EFFEA152ECB56906A8CF4876F6AABF384DDDD66D1CA2988547D64B19C5CDFF6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-01/pareto-candidate-03.png",
+      "bytes": 64367,
+      "sha256": "8CF45340A9B389CC96522A52DBD60F95B06DB39510690C2534494FDD4DBBCC62"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-01/pareto-candidate-03.txt",
+      "bytes": 45694,
+      "sha256": "C6507D9C59B54C971508FF764E455AED0EDE43E2F54EF7DB7E5D7DA580FBDA5E"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-01/report.json",
+      "bytes": 36888,
+      "sha256": "8ADBB64490D031A14CE540C29212DE988265038850801D55D5DD1EF6B1926AA3"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-02/canonical-preview-230.png",
+      "bytes": 73238,
+      "sha256": "610EDED1D514CC9344E4797BD47B95D896001446554C846CAFF37A03C6E6BD07"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-02/coat_of_arms.txt",
+      "bytes": 45429,
+      "sha256": "E3677EAC6E03506386D314FB6FA303FED70D296F0D24462B4E70C0F4BBC63C55"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-02/editor-preview-panel.png",
+      "bytes": 214303,
+      "sha256": "BD2A75AF910B8ED9B6060BD26A58006614FA03F069B2823480280C3AEE95D385"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-02/input-and-fit-report.png",
+      "bytes": 368308,
+      "sha256": "BE232BAC2A908E2720CE3550321D5A1585211693AE37F2A403DFAECADB260967"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-02/pareto-candidate-01.png",
+      "bytes": 73238,
+      "sha256": "610EDED1D514CC9344E4797BD47B95D896001446554C846CAFF37A03C6E6BD07"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-02/pareto-candidate-01.txt",
+      "bytes": 45429,
+      "sha256": "E3677EAC6E03506386D314FB6FA303FED70D296F0D24462B4E70C0F4BBC63C55"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-02/pareto-candidate-02.png",
+      "bytes": 72860,
+      "sha256": "E31B8D18229BB56B401EF3EC9D5AF02DBE17256FCC16DA9E957D74C31547465A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-02/pareto-candidate-02.txt",
+      "bytes": 45067,
+      "sha256": "06BAB737B579F91596B908BD6C634E703DD3B5FF29DE1945742E7C5305B8DDE6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-02/pareto-candidate-03.png",
+      "bytes": 72514,
+      "sha256": "75D02C2C45AA1B4D5D78FE46EF7DC8F6E41A6B8362682C3E1B13731F141001FE"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-02/pareto-candidate-03.txt",
+      "bytes": 43057,
+      "sha256": "32D632FB0EDFE57FE64B346DE84158701C85DF31DF879FB0C1A5BCD004FD3020"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-02/report.json",
+      "bytes": 39454,
+      "sha256": "2581E177F3BACEBAFFB084D847BA654A1B428994C77B81AC071887B7764B6295"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-04/canonical-preview-230.png",
+      "bytes": 78425,
+      "sha256": "8FCB610BC19F38231C8FFA3AA1C34DEFF420F051DD1DD9EAA020173367DB8C85"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-04/coat_of_arms.txt",
+      "bytes": 44883,
+      "sha256": "D1C7AB3A059784B793521AE407F3E6F3953659CC93A5F004E6BF0316424FEBB9"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-04/editor-preview-panel.png",
+      "bytes": 232957,
+      "sha256": "B4C4F24E1D2FDFDF25F4E4A2E5A9ACB394DCEA7C1DE9D260FC9B470C73BBCBF3"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-04/input-and-fit-report.png",
+      "bytes": 356771,
+      "sha256": "B544F37D5F3807592794E0F84EF39F5F1869E95D64A951389C9C33C7D6E48F37"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-04/pareto-candidate-01.png",
+      "bytes": 78425,
+      "sha256": "8FCB610BC19F38231C8FFA3AA1C34DEFF420F051DD1DD9EAA020173367DB8C85"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-04/pareto-candidate-01.txt",
+      "bytes": 44883,
+      "sha256": "D1C7AB3A059784B793521AE407F3E6F3953659CC93A5F004E6BF0316424FEBB9"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-04/pareto-candidate-02.png",
+      "bytes": 80346,
+      "sha256": "3CB1D221E925B87A9F382231E648D96461FAE2FFF7E023F7F296CA32215C4D15"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-04/pareto-candidate-02.txt",
+      "bytes": 42256,
+      "sha256": "1921047F7B127ECBE2090251B3A8F974D870D95B042EFDBCBC7127382A9F438A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-04/pareto-candidate-03.png",
+      "bytes": 78646,
+      "sha256": "19885C606D527B6EB6A60FB2C4FFBD9A78C389524CF3552D7A1FA8F6E86C748A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-04/pareto-candidate-03.txt",
+      "bytes": 45278,
+      "sha256": "931E47394E55836F38087F3D66A2FBBF7C03CA939A83C4EE187BE764F7BCF51A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v10-budget128/picture-04/report.json",
+      "bytes": 39288,
+      "sha256": "5C73AC21629BB6F1B7601A7529D08563C20B8AE5A8B52BF213B1F2F0352194C0"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-01/canonical-preview-230.png",
+      "bytes": 64486,
+      "sha256": "2F3546A3A43441BF5428F7E69BA15D8CC83751AF6032F7150EFF96B97B5B02B6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-01/coat_of_arms.txt",
+      "bytes": 44961,
+      "sha256": "72FADCF846DE234533121C5D094251D8F480E79F5060AC5BC4609435C97BEBDB"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-01/editor-preview-panel.png",
+      "bytes": 189364,
+      "sha256": "795D3B6A114B4798901EAD879DCECF1DAD4CF70409CF50C845788AADA83AFD68"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-01/input-and-fit-report.png",
+      "bytes": 349147,
+      "sha256": "69F7B037EDD6B9EBBE9A1F351565428F011C38BD2A27E3F5EBC083D8E7250FC7"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-01/pareto-candidate-01.png",
+      "bytes": 64486,
+      "sha256": "2F3546A3A43441BF5428F7E69BA15D8CC83751AF6032F7150EFF96B97B5B02B6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-01/pareto-candidate-01.txt",
+      "bytes": 44961,
+      "sha256": "72FADCF846DE234533121C5D094251D8F480E79F5060AC5BC4609435C97BEBDB"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-01/pareto-candidate-02.png",
+      "bytes": 64513,
+      "sha256": "29BB476B17423AA58FE613E0B34B219E0523B82841BEA236E618E2962020EE48"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-01/pareto-candidate-02.txt",
+      "bytes": 45336,
+      "sha256": "0EFFEA152ECB56906A8CF4876F6AABF384DDDD66D1CA2988547D64B19C5CDFF6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-01/pareto-candidate-03.png",
+      "bytes": 64367,
+      "sha256": "8CF45340A9B389CC96522A52DBD60F95B06DB39510690C2534494FDD4DBBCC62"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-01/pareto-candidate-03.txt",
+      "bytes": 45694,
+      "sha256": "C6507D9C59B54C971508FF764E455AED0EDE43E2F54EF7DB7E5D7DA580FBDA5E"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-01/report.json",
+      "bytes": 46191,
+      "sha256": "18A66AC10B0B6BD61384324E1219A675DEABDCFDC55054C289A822C81BA023DA"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-02/canonical-preview-230.png",
+      "bytes": 74390,
+      "sha256": "1C108B2E843C1909B3C20C19F710210E94F72B59E1648A03620755B7A47C101F"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-02/coat_of_arms.txt",
+      "bytes": 45658,
+      "sha256": "E8B89DAEC3077C1D6F681F862F4B7B28D30C26D87C90E822B2E9F84964D10DD7"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-02/editor-preview-panel.png",
+      "bytes": 202502,
+      "sha256": "1B589D6A37E84380884E8021D454E2302A522CE87683DB7263FA77AB77603BBB"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-02/input-and-fit-report.png",
+      "bytes": 363397,
+      "sha256": "013283A1A5278B8D24F1B664F1C9E51E42860030F04F76326ADA2DAC41D2794E"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-02/pareto-candidate-01.png",
+      "bytes": 74390,
+      "sha256": "1C108B2E843C1909B3C20C19F710210E94F72B59E1648A03620755B7A47C101F"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-02/pareto-candidate-01.txt",
+      "bytes": 45658,
+      "sha256": "E8B89DAEC3077C1D6F681F862F4B7B28D30C26D87C90E822B2E9F84964D10DD7"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-02/pareto-candidate-02.png",
+      "bytes": 74356,
+      "sha256": "1DB6ADE8E2CA3D69B4E107131A94286F8184E6AE2A98E7DC7B68D03EB4B31B38"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-02/pareto-candidate-02.txt",
+      "bytes": 45621,
+      "sha256": "1CC6C46FF45926CC2C9B13B270CC3EEFF08D05649C3221F8C62E667BA0E2CC0A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-02/pareto-candidate-03.png",
+      "bytes": 74423,
+      "sha256": "851EA53D791A9EA819CA68E6D948526537A7DBFAA3ABEA6EAA3B74CA19937054"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-02/pareto-candidate-03.txt",
+      "bytes": 45264,
+      "sha256": "9FA6E6AC6C5CE349EFE5B85CD4E31C83B00830AEE89B08B818AB022A0580EFA8"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-02/report.json",
+      "bytes": 48738,
+      "sha256": "6AEC2C4AFA78EF026FC404271B91C6742DBE6201D8A8C185A433A207FB4E82F5"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-03/canonical-preview-230.png",
+      "bytes": 64923,
+      "sha256": "5BC27DF09D6EBD313DA4204628455A136D7EACDA30E88BC2377A51DCD4E49BEC"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-03/coat_of_arms.txt",
+      "bytes": 45245,
+      "sha256": "CD503FB00BEDE4931734A4DFFF98F409946CE686E930AADADC4B54114C6C64AE"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-03/editor-preview-panel.png",
+      "bytes": 189120,
+      "sha256": "39EF462D2AEF22B2079E1C6F3CF83503B9377E694296DCDF523BD5FA21A01B7B"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-03/input-and-fit-report.png",
+      "bytes": 335045,
+      "sha256": "E07E9008676BFB0091F3EEC267B9DCF36CD93D1C7C2FBB18A21FDA8466D2BB82"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-03/pareto-candidate-01.png",
+      "bytes": 64923,
+      "sha256": "5BC27DF09D6EBD313DA4204628455A136D7EACDA30E88BC2377A51DCD4E49BEC"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-03/pareto-candidate-01.txt",
+      "bytes": 45245,
+      "sha256": "CD503FB00BEDE4931734A4DFFF98F409946CE686E930AADADC4B54114C6C64AE"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-03/pareto-candidate-02.png",
+      "bytes": 63885,
+      "sha256": "A94AD96A701BC8884595EFECF5CAA980A6AF1C89983235725BCFA73F4C518CE0"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-03/pareto-candidate-02.txt",
+      "bytes": 40114,
+      "sha256": "A0C795C48F8568B77C51CEAC845ED7B2D8E3F999F924D4AE518D959C018765F0"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-03/pareto-candidate-03.png",
+      "bytes": 64240,
+      "sha256": "AD9BDD15A637C82B1CCC7DAFC6ACDCBBC3DD5B0A36BC647D916C894440F7F202"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-03/pareto-candidate-03.txt",
+      "bytes": 45553,
+      "sha256": "B96D9BA8BF5632B551EF81C50DE050C39B3617961BA9C7BD991AB8128DEE4503"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-03/report.json",
+      "bytes": 46027,
+      "sha256": "7CBEFD9CF34CD46BEC1B15D0863F7A832EA876440101F6893063F56ABC01E81F"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-04/canonical-preview-230.png",
+      "bytes": 78425,
+      "sha256": "8FCB610BC19F38231C8FFA3AA1C34DEFF420F051DD1DD9EAA020173367DB8C85"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-04/coat_of_arms.txt",
+      "bytes": 44883,
+      "sha256": "D1C7AB3A059784B793521AE407F3E6F3953659CC93A5F004E6BF0316424FEBB9"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-04/editor-preview-panel.png",
+      "bytes": 233413,
+      "sha256": "CD595EB3C7FEBF93D46927F7691399EA5F45DDA4B95AC27FBDEF56DB8EB8428D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-04/input-and-fit-report.png",
+      "bytes": 349373,
+      "sha256": "2D5E6C9616BB578072CC2F626E073A3ACB0CA7CE08AB18DC547A828194686152"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-04/pareto-candidate-01.png",
+      "bytes": 78425,
+      "sha256": "8FCB610BC19F38231C8FFA3AA1C34DEFF420F051DD1DD9EAA020173367DB8C85"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-04/pareto-candidate-01.txt",
+      "bytes": 44883,
+      "sha256": "D1C7AB3A059784B793521AE407F3E6F3953659CC93A5F004E6BF0316424FEBB9"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-04/pareto-candidate-02.png",
+      "bytes": 80346,
+      "sha256": "3CB1D221E925B87A9F382231E648D96461FAE2FFF7E023F7F296CA32215C4D15"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-04/pareto-candidate-02.txt",
+      "bytes": 42256,
+      "sha256": "1921047F7B127ECBE2090251B3A8F974D870D95B042EFDBCBC7127382A9F438A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-04/pareto-candidate-03.png",
+      "bytes": 78646,
+      "sha256": "19885C606D527B6EB6A60FB2C4FFBD9A78C389524CF3552D7A1FA8F6E86C748A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-04/pareto-candidate-03.txt",
+      "bytes": 45278,
+      "sha256": "931E47394E55836F38087F3D66A2FBBF7C03CA939A83C4EE187BE764F7BCF51A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-04/report.json",
+      "bytes": 48551,
+      "sha256": "D7C959B367DB50CD28F2CA7A674C018CC1BE818CDA0A1E5B9F4227BE880062B7"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-05/canonical-preview-230.png",
+      "bytes": 73050,
+      "sha256": "80614D285D8173F5A55E5C70DF0515FCA44BA23BD9E25777FFCEF0FD5EEBDABB"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-05/coat_of_arms.txt",
+      "bytes": 44143,
+      "sha256": "99256D881AF83DBE94AA0CD00F9F6C863D11DA3360D85B58C6907678785B8B2D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-05/editor-preview-panel.png",
+      "bytes": 217940,
+      "sha256": "5AB1534B94F03AF58B9F15C76D6ABED0BCEF4C6697E3D6D806973DFCF9066E45"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-05/input-and-fit-report.png",
+      "bytes": 343240,
+      "sha256": "DBA6EC7B4A73477B10B34B1E1274D79FC01CDE2D10C05A2695EFACEFCBCEC86D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-05/pareto-candidate-01.png",
+      "bytes": 73050,
+      "sha256": "80614D285D8173F5A55E5C70DF0515FCA44BA23BD9E25777FFCEF0FD5EEBDABB"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-05/pareto-candidate-01.txt",
+      "bytes": 44143,
+      "sha256": "99256D881AF83DBE94AA0CD00F9F6C863D11DA3360D85B58C6907678785B8B2D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-05/pareto-candidate-02.png",
+      "bytes": 74472,
+      "sha256": "67A54101D7BDCF3FDFCF06B2ABB144680CD344B2F5938F081D9DA842D8C7C3C0"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-05/pareto-candidate-02.txt",
+      "bytes": 37534,
+      "sha256": "72CE54316C9721221A8C227B50D3D47C1F75479D1FAF7929BDA649AAF0AEC9E9"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-05/pareto-candidate-03.png",
+      "bytes": 74324,
+      "sha256": "4B9EAC763E4E6EE1AB00FD4C8BDF2D840B916A1900BE5986E0F52BB336A9A7D7"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-05/pareto-candidate-03.txt",
+      "bytes": 45278,
+      "sha256": "B31910C84471E0096CFBD25CC17F098873D2B957A3CC7933AB19B7EB7B4C421B"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-05/report.json",
+      "bytes": 48583,
+      "sha256": "487E3B700CDE56B083C7C8BC17C65A5C3BEEEDD86CB8061FC99D55CBECE5AC0D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-06/canonical-preview-230.png",
+      "bytes": 42076,
+      "sha256": "3EFDA18021C6753299B0013B4D6F7AA2B27E42941F2506097AC05372FB5CBEB9"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-06/coat_of_arms.txt",
+      "bytes": 45389,
+      "sha256": "71D549CD075EEF3C41CB56CA80D4D12395413D229EFA9C6A6A0CA927DD5F6517"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-06/editor-preview-panel.png",
+      "bytes": 177978,
+      "sha256": "0561CC1AC0C1DC773EB79D2F62BE875F39497B6F72CA17F80FB762DB028269F7"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-06/input-and-fit-report.png",
+      "bytes": 310000,
+      "sha256": "24849EA87D98EDF6B1A184B4A1CBD8F83ABF4CC70CB5B11C6B931A3A7FEB9C06"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-06/pareto-candidate-01.png",
+      "bytes": 42076,
+      "sha256": "3EFDA18021C6753299B0013B4D6F7AA2B27E42941F2506097AC05372FB5CBEB9"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-06/pareto-candidate-01.txt",
+      "bytes": 45389,
+      "sha256": "71D549CD075EEF3C41CB56CA80D4D12395413D229EFA9C6A6A0CA927DD5F6517"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-06/pareto-candidate-02.png",
+      "bytes": 41978,
+      "sha256": "8D4C4FED690C7A4CC25A5DF21B3E07F56C7F1471A1FFBDE005935F40F631EB83"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-06/pareto-candidate-02.txt",
+      "bytes": 45379,
+      "sha256": "E5175DDAF44D2406A04AE6BA99E4FB1AF1269DD28397DC567C289AAF28D7EF3C"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-06/pareto-candidate-03.png",
+      "bytes": 41281,
+      "sha256": "6FFF4B9CD1FA5332933E4F213A233991E772B0EC86A609B9EFE330553776B199"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-06/pareto-candidate-03.txt",
+      "bytes": 45639,
+      "sha256": "3201F1D1186A46402B7F3EBB79D23C9114F93ACC23E724AD79CA585CBE8EA166"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-06/report.json",
+      "bytes": 49233,
+      "sha256": "C81297CE5C64CA860492A1458C918329DB88A99FBE2887B24613132A40452C7C"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-07/canonical-preview-230.png",
+      "bytes": 73800,
+      "sha256": "AF9E99A4A339DCB39B288590B2A440D559C2F6B12C2D2CB10E04ED97FC87991A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-07/coat_of_arms.txt",
+      "bytes": 45107,
+      "sha256": "D29C382607E6C8F03B3C96777C386A377413BCB9E4D453F14603B8887044FD16"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-07/editor-preview-panel.png",
+      "bytes": 197781,
+      "sha256": "3A0173985664C8ACBDD4AB5A5EAA629DA72F68C8E9ABBC59BCCF89FDAEFAA841"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-07/input-and-fit-report.png",
+      "bytes": 356668,
+      "sha256": "1FACEFF1658BB220DD204B2D57DD9BA4AB98704ED5B669AE5306515942D3EA75"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-07/pareto-candidate-01.png",
+      "bytes": 73800,
+      "sha256": "AF9E99A4A339DCB39B288590B2A440D559C2F6B12C2D2CB10E04ED97FC87991A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-07/pareto-candidate-01.txt",
+      "bytes": 45107,
+      "sha256": "D29C382607E6C8F03B3C96777C386A377413BCB9E4D453F14603B8887044FD16"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-07/pareto-candidate-02.png",
+      "bytes": 73443,
+      "sha256": "3133E88FB196EF263A5675ABAE6112BE40E8E75A7A7C4BCF613DDDC31E5BDFAA"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-07/pareto-candidate-02.txt",
+      "bytes": 45063,
+      "sha256": "0302174A485BA108F4044C795BC1E735FDC601163BB20885DD2196C3F1D4B209"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-07/pareto-candidate-03.png",
+      "bytes": 73328,
+      "sha256": "F549C016E911685D4FD1343D4AB0AC2B3ECDD897F0A714865C25FFA8CB9EAA31"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-07/pareto-candidate-03.txt",
+      "bytes": 44721,
+      "sha256": "B599D49102EF7021D9EE6890D1BF8FD0A5F0D467708A1B4A02CAE7D09C5FB3AF"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/picture-07/report.json",
+      "bytes": 46177,
+      "sha256": "AAA9E494D8958ECA3C9EDB4A3E941C62176D09742F069B306615FCB01D59FF40"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-budget128/quality-summary.json",
+      "bytes": 11190,
+      "sha256": "70545BAB6179CE51449B91CCB2C624C500F94B22A9C6FCE9F154C852A41B275B"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-holdout/report.json",
+      "bytes": 160170,
+      "sha256": "ED859E5FF4D6FC274E50C2D37EDE203981D44DD898FA020D7CAD5985029F81E8"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-02/canonical-preview-230.png",
+      "bytes": 74553,
+      "sha256": "C1C45D29C721A56D81B0984A7EB4EEEA6F6FD457A85CF54380D225530F3783FD"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-02/coat_of_arms.txt",
+      "bytes": 45660,
+      "sha256": "666A6FD9C1118C04A19034EA6EDDC2CE9A973F4CD0A4843158B8A0A2B914CDFA"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-02/editor-preview-panel.png",
+      "bytes": 214979,
+      "sha256": "6E036DC694FC6A45D57D87B93D2ABAD19CA781BFE3C7392B2B73D3A705DCFD83"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-02/input-and-fit-report.png",
+      "bytes": 363731,
+      "sha256": "1888D01936FBD37D56EB848BAF41B2AB4B4CF6168D3E3B4DB28D069A317856A1"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-02/pareto-candidate-01.png",
+      "bytes": 74553,
+      "sha256": "C1C45D29C721A56D81B0984A7EB4EEEA6F6FD457A85CF54380D225530F3783FD"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-02/pareto-candidate-01.txt",
+      "bytes": 45660,
+      "sha256": "666A6FD9C1118C04A19034EA6EDDC2CE9A973F4CD0A4843158B8A0A2B914CDFA"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-02/pareto-candidate-02.png",
+      "bytes": 74423,
+      "sha256": "851EA53D791A9EA819CA68E6D948526537A7DBFAA3ABEA6EAA3B74CA19937054"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-02/pareto-candidate-02.txt",
+      "bytes": 45264,
+      "sha256": "9FA6E6AC6C5CE349EFE5B85CD4E31C83B00830AEE89B08B818AB022A0580EFA8"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-02/pareto-candidate-03.png",
+      "bytes": 74020,
+      "sha256": "E2834B85ADC47F4A0A526158B865E34B035FFFE4228D8659016E8EE50845E2A6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-02/pareto-candidate-03.txt",
+      "bytes": 42380,
+      "sha256": "81AA40CD0F907698BC7CBFDCD4B9636295C76C92B5A11B75C26881AC7BCD5BBE"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-02/report.json",
+      "bytes": 50671,
+      "sha256": "FAC313A7E2E510D4A5C92BBF0B76163D47255F65B3AD0730C3208A586495D980"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-04/canonical-preview-230.png",
+      "bytes": 77983,
+      "sha256": "CFACAD48DD72A84A5E649A9C9A6E98FB4B63C61D8121B12713442B4EBD871A7B"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-04/coat_of_arms.txt",
+      "bytes": 44916,
+      "sha256": "4D8991F2239DC6506E98D960757FF3BF379655C1610B528A6752E8ED7377BF21"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-04/editor-preview-panel.png",
+      "bytes": 232930,
+      "sha256": "6BDF4FB6ECC59A21C39ECB41D02A6400EACDCBEF155AB76F5E3246A229A42126"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-04/input-and-fit-report.png",
+      "bytes": 349478,
+      "sha256": "A98AAE6C4188CD66AA12965BBE0B100659AD4CC481E15C7DAF691705E41CE467"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-04/pareto-candidate-01.png",
+      "bytes": 77983,
+      "sha256": "CFACAD48DD72A84A5E649A9C9A6E98FB4B63C61D8121B12713442B4EBD871A7B"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-04/pareto-candidate-01.txt",
+      "bytes": 44916,
+      "sha256": "4D8991F2239DC6506E98D960757FF3BF379655C1610B528A6752E8ED7377BF21"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-04/pareto-candidate-02.png",
+      "bytes": 80346,
+      "sha256": "3CB1D221E925B87A9F382231E648D96461FAE2FFF7E023F7F296CA32215C4D15"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-04/pareto-candidate-02.txt",
+      "bytes": 42256,
+      "sha256": "1921047F7B127ECBE2090251B3A8F974D870D95B042EFDBCBC7127382A9F438A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-04/pareto-candidate-03.png",
+      "bytes": 78646,
+      "sha256": "19885C606D527B6EB6A60FB2C4FFBD9A78C389524CF3552D7A1FA8F6E86C748A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-04/pareto-candidate-03.txt",
+      "bytes": 45278,
+      "sha256": "931E47394E55836F38087F3D66A2FBBF7C03CA939A83C4EE187BE764F7BCF51A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint1024-ablation/picture-04/report.json",
+      "bytes": 50546,
+      "sha256": "EBE1EED96A72CF64EDA7C3444C7DC607D51CBBF3C1E10BA344321C57BBB26DFA"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-ablation/picture-02/canonical-preview-230.png",
+      "bytes": 74389,
+      "sha256": "DD246A9C4A1DFB59DA9C7EABB910892F88A4CAEDEF819B720FEF292BCD5C687B"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-ablation/picture-02/coat_of_arms.txt",
+      "bytes": 45718,
+      "sha256": "24A12DEA5CE4CFED070598E051842C0A4E2F29DD73863085B34C6C60DE0D7B3C"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-ablation/picture-02/editor-preview-panel.png",
+      "bytes": 214449,
+      "sha256": "3689E8B447C2EDB3172651879E6D5D4C854F141AE2D2250F64D884DB751DC03E"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-ablation/picture-02/input-and-fit-report.png",
+      "bytes": 363941,
+      "sha256": "C306657FBBD41B40EFDFFBE5745BE44CEB6F06045A66ADDAF0226007EB2A4BFF"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-ablation/picture-02/pareto-candidate-01.png",
+      "bytes": 74389,
+      "sha256": "DD246A9C4A1DFB59DA9C7EABB910892F88A4CAEDEF819B720FEF292BCD5C687B"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-ablation/picture-02/pareto-candidate-01.txt",
+      "bytes": 45718,
+      "sha256": "24A12DEA5CE4CFED070598E051842C0A4E2F29DD73863085B34C6C60DE0D7B3C"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-ablation/picture-02/pareto-candidate-02.png",
+      "bytes": 74423,
+      "sha256": "851EA53D791A9EA819CA68E6D948526537A7DBFAA3ABEA6EAA3B74CA19937054"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-ablation/picture-02/pareto-candidate-02.txt",
+      "bytes": 45264,
+      "sha256": "9FA6E6AC6C5CE349EFE5B85CD4E31C83B00830AEE89B08B818AB022A0580EFA8"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-ablation/picture-02/pareto-candidate-03.png",
+      "bytes": 74020,
+      "sha256": "E2834B85ADC47F4A0A526158B865E34B035FFFE4228D8659016E8EE50845E2A6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-ablation/picture-02/pareto-candidate-03.txt",
+      "bytes": 42380,
+      "sha256": "81AA40CD0F907698BC7CBFDCD4B9636295C76C92B5A11B75C26881AC7BCD5BBE"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-ablation/picture-02/report.json",
+      "bytes": 54585,
+      "sha256": "BBBE7C28006FA90F9E67093712158591B873A1506EE939F15E15D7B87F192616"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-02/canonical-preview-230.png",
+      "bytes": 74815,
+      "sha256": "07FF371BCA75587C744E730C00A253970B5E69A59338B4A8AA69E267611E6B50"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-02/coat_of_arms.txt",
+      "bytes": 45687,
+      "sha256": "3490C1433B6287F7EDD580AC700FA7E373B31CD2F38E7BB8EC3A711173466CD7"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-02/editor-preview-panel.png",
+      "bytes": 204291,
+      "sha256": "3A224C25A4ECFD19C29BE320E4200DD290015BA91B07AF1E390C64B41B6F778E"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-02/input-and-fit-report.png",
+      "bytes": 364156,
+      "sha256": "D71540EBF4E0E4C1BA54B4CC21AB80BEFC40B92B024E7101B3C50262CA59685A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-02/pareto-candidate-01.png",
+      "bytes": 74815,
+      "sha256": "07FF371BCA75587C744E730C00A253970B5E69A59338B4A8AA69E267611E6B50"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-02/pareto-candidate-01.txt",
+      "bytes": 45687,
+      "sha256": "3490C1433B6287F7EDD580AC700FA7E373B31CD2F38E7BB8EC3A711173466CD7"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-02/pareto-candidate-02.png",
+      "bytes": 74578,
+      "sha256": "2F51D3F30C1F6FC922FF8704B213A3B30A4B043F0E67FADD6AF223895A02C3F8"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-02/pareto-candidate-02.txt",
+      "bytes": 45660,
+      "sha256": "69168EDB2539BC672FDF49C9BD15AD8803B3565D74007BB79C76590C484DD480"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-02/pareto-candidate-03.png",
+      "bytes": 74423,
+      "sha256": "851EA53D791A9EA819CA68E6D948526537A7DBFAA3ABEA6EAA3B74CA19937054"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-02/pareto-candidate-03.txt",
+      "bytes": 45264,
+      "sha256": "9FA6E6AC6C5CE349EFE5B85CD4E31C83B00830AEE89B08B818AB022A0580EFA8"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-02/report.json",
+      "bytes": 58144,
+      "sha256": "5DD7A9F1C6AE01939993291B7F86709B2582071AA59FFB6FE71641771C02F32D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-04/canonical-preview-230.png",
+      "bytes": 77975,
+      "sha256": "3948BB672C93EB87D7A4D9F910B6D1CCAB79FCA1C074F00C03021774D3443427"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-04/coat_of_arms.txt",
+      "bytes": 44901,
+      "sha256": "BB61703B083098E837EF076FEF20299D860EC6F2F6E383ED3D3B45EC5F18C06F"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-04/editor-preview-panel.png",
+      "bytes": 209046,
+      "sha256": "EA133B87197EBC7905720FF7D0103ABEC24AB45D63D2F8C96F7D44C92196B48C"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-04/input-and-fit-report.png",
+      "bytes": 349278,
+      "sha256": "0EE6A3766CD75AB1C27246738A7C0212804936F3FD7BD34D655ACEEEB1D5E498"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-04/pareto-candidate-01.png",
+      "bytes": 77975,
+      "sha256": "3948BB672C93EB87D7A4D9F910B6D1CCAB79FCA1C074F00C03021774D3443427"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-04/pareto-candidate-01.txt",
+      "bytes": 44901,
+      "sha256": "BB61703B083098E837EF076FEF20299D860EC6F2F6E383ED3D3B45EC5F18C06F"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-04/pareto-candidate-02.png",
+      "bytes": 77983,
+      "sha256": "CFACAD48DD72A84A5E649A9C9A6E98FB4B63C61D8121B12713442B4EBD871A7B"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-04/pareto-candidate-02.txt",
+      "bytes": 45085,
+      "sha256": "18D4E294DA80254384BC8B851ED1C30532412B48CA9EB7FB95D55F83B53AB725"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-04/pareto-candidate-03.png",
+      "bytes": 78063,
+      "sha256": "7FA6D5C7EC2153D5DEB122E8B9714374EAF37C684C45BF61C80423BF269B98EB"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-04/pareto-candidate-03.txt",
+      "bytes": 45085,
+      "sha256": "CB3DD0E4D181CEA0C40BD150AF2B75FA8BE126AC1297BDC7A2CA139C3AB70A88"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/picture-04/report.json",
+      "bytes": 57870,
+      "sha256": "C50B63FB487E7EC83D2943ABE8458BCEE7F844B54F3CC0CA776D7EB444F383B2"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-joint2048-archive-ablation/quality-summary.json",
+      "bytes": 4202,
+      "sha256": "5593F3019AAE4AABD3CB5033577EF5B07565E7E06631C1F06635D59BA8F344DB"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-smoke-picture05-complete/picture-05/canonical-preview-230.png",
+      "bytes": 73050,
+      "sha256": "80614D285D8173F5A55E5C70DF0515FCA44BA23BD9E25777FFCEF0FD5EEBDABB"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-smoke-picture05-complete/picture-05/coat_of_arms.txt",
+      "bytes": 44143,
+      "sha256": "99256D881AF83DBE94AA0CD00F9F6C863D11DA3360D85B58C6907678785B8B2D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-smoke-picture05-complete/picture-05/editor-preview-panel.png",
+      "bytes": 217940,
+      "sha256": "5AB1534B94F03AF58B9F15C76D6ABED0BCEF4C6697E3D6D806973DFCF9066E45"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-smoke-picture05-complete/picture-05/input-and-fit-report.png",
+      "bytes": 343240,
+      "sha256": "DBA6EC7B4A73477B10B34B1E1274D79FC01CDE2D10C05A2695EFACEFCBCEC86D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-smoke-picture05-complete/picture-05/pareto-candidate-01.png",
+      "bytes": 73050,
+      "sha256": "80614D285D8173F5A55E5C70DF0515FCA44BA23BD9E25777FFCEF0FD5EEBDABB"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-smoke-picture05-complete/picture-05/pareto-candidate-01.txt",
+      "bytes": 44143,
+      "sha256": "99256D881AF83DBE94AA0CD00F9F6C863D11DA3360D85B58C6907678785B8B2D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-smoke-picture05-complete/picture-05/pareto-candidate-02.png",
+      "bytes": 74472,
+      "sha256": "67A54101D7BDCF3FDFCF06B2ABB144680CD344B2F5938F081D9DA842D8C7C3C0"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-smoke-picture05-complete/picture-05/pareto-candidate-02.txt",
+      "bytes": 37534,
+      "sha256": "72CE54316C9721221A8C227B50D3D47C1F75479D1FAF7929BDA649AAF0AEC9E9"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-smoke-picture05-complete/picture-05/pareto-candidate-03.png",
+      "bytes": 74324,
+      "sha256": "4B9EAC763E4E6EE1AB00FD4C8BDF2D840B916A1900BE5986E0F52BB336A9A7D7"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-smoke-picture05-complete/picture-05/pareto-candidate-03.txt",
+      "bytes": 45278,
+      "sha256": "B31910C84471E0096CFBD25CC17F098873D2B957A3CC7933AB19B7EB7B4C421B"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v11-smoke-picture05-complete/picture-05/report.json",
+      "bytes": 48583,
+      "sha256": "487E3B700CDE56B083C7C8BC17C65A5C3BEEEDD86CB8061FC99D55CBECE5AC0D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-01/canonical-preview-230.png",
+      "bytes": 64748,
+      "sha256": "7DF4A42CC49AAEF7820A460E8CA196B66B31EE1536ABE9C9B17BFA0DA9A1A8ED"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-01/coat_of_arms.txt",
+      "bytes": 45014,
+      "sha256": "6E505910FE42C8F04EAA869189112D6219CCA6B67ADE94DF8A7DB00216E6F0E0"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-01/editor-preview-panel.png",
+      "bytes": 191788,
+      "sha256": "9A732CF5A522C9970ADCE4D2D10E5E86269B410087DBB4FB8750AD2EA8289269"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-01/input-and-fit-report.png",
+      "bytes": 350275,
+      "sha256": "DB5F9E3D8D870279D6EA16419641DE20CD5D36B1A23790BFF5EA85F2027000EC"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-01/pareto-candidate-01.png",
+      "bytes": 64748,
+      "sha256": "7DF4A42CC49AAEF7820A460E8CA196B66B31EE1536ABE9C9B17BFA0DA9A1A8ED"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-01/pareto-candidate-01.txt",
+      "bytes": 45014,
+      "sha256": "6E505910FE42C8F04EAA869189112D6219CCA6B67ADE94DF8A7DB00216E6F0E0"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-01/pareto-candidate-02.png",
+      "bytes": 64513,
+      "sha256": "29BB476B17423AA58FE613E0B34B219E0523B82841BEA236E618E2962020EE48"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-01/pareto-candidate-02.txt",
+      "bytes": 45336,
+      "sha256": "0EFFEA152ECB56906A8CF4876F6AABF384DDDD66D1CA2988547D64B19C5CDFF6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-01/pareto-candidate-03.png",
+      "bytes": 63906,
+      "sha256": "B9B144AFF9A9D5595C42D912EF0FEC6DB3D0C618548F0ED5DAB7EAAD67314E8B"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-01/pareto-candidate-03.txt",
+      "bytes": 45638,
+      "sha256": "4A98EEBFC9E5069F3031ABDF6D8BCDA7FA1A614C4E969A09F33FEF7AF1EE7B38"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-01/report.json",
+      "bytes": 52104,
+      "sha256": "343C2FF0A1A731DE25556DB04E27B437E8B7B1C33CC88BAE6738BF12F7AE130A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-02/canonical-preview-230.png",
+      "bytes": 74815,
+      "sha256": "07FF371BCA75587C744E730C00A253970B5E69A59338B4A8AA69E267611E6B50"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-02/coat_of_arms.txt",
+      "bytes": 45687,
+      "sha256": "3490C1433B6287F7EDD580AC700FA7E373B31CD2F38E7BB8EC3A711173466CD7"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-02/editor-preview-panel.png",
+      "bytes": 205135,
+      "sha256": "F38BB672649E07C066620FCD5217E7C4517928458993E3D4A4A4403A92329520"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-02/input-and-fit-report.png",
+      "bytes": 364643,
+      "sha256": "8D429BB056CECBE27B48716AFBAE29599A83BBEC7B43757AFB45EE42F8148716"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-02/pareto-candidate-01.png",
+      "bytes": 74815,
+      "sha256": "07FF371BCA75587C744E730C00A253970B5E69A59338B4A8AA69E267611E6B50"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-02/pareto-candidate-01.txt",
+      "bytes": 45687,
+      "sha256": "3490C1433B6287F7EDD580AC700FA7E373B31CD2F38E7BB8EC3A711173466CD7"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-02/pareto-candidate-02.png",
+      "bytes": 74578,
+      "sha256": "2F51D3F30C1F6FC922FF8704B213A3B30A4B043F0E67FADD6AF223895A02C3F8"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-02/pareto-candidate-02.txt",
+      "bytes": 45660,
+      "sha256": "69168EDB2539BC672FDF49C9BD15AD8803B3565D74007BB79C76590C484DD480"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-02/pareto-candidate-03.png",
+      "bytes": 74423,
+      "sha256": "851EA53D791A9EA819CA68E6D948526537A7DBFAA3ABEA6EAA3B74CA19937054"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-02/pareto-candidate-03.txt",
+      "bytes": 45264,
+      "sha256": "9FA6E6AC6C5CE349EFE5B85CD4E31C83B00830AEE89B08B818AB022A0580EFA8"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-02/report.json",
+      "bytes": 58149,
+      "sha256": "98BFA48A9DF54CBA5004077FC852776A925CBFEAD8A4642170FCEB4B574D5E31"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-03/canonical-preview-230.png",
+      "bytes": 65142,
+      "sha256": "569A4EE848D1165C822334F21F682B122F75F7B086AFE377C3598C44199C46F6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-03/coat_of_arms.txt",
+      "bytes": 45316,
+      "sha256": "DD65F15878FD076639DE8A6B90356EC5A82DF7A49E549A22291DD31C6C2CEADA"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-03/editor-preview-panel.png",
+      "bytes": 191820,
+      "sha256": "09EFD7C655694C792286FD3B5A3278A35BBDE17DAE0E4931911170BD4E52D940"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-03/input-and-fit-report.png",
+      "bytes": 335555,
+      "sha256": "1FD45DDE07C7094D6803ABEA6B23CFF19E30F6CEB1B964336B8FEFE5807F274C"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-03/pareto-candidate-01.png",
+      "bytes": 65142,
+      "sha256": "569A4EE848D1165C822334F21F682B122F75F7B086AFE377C3598C44199C46F6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-03/pareto-candidate-01.txt",
+      "bytes": 45316,
+      "sha256": "DD65F15878FD076639DE8A6B90356EC5A82DF7A49E549A22291DD31C6C2CEADA"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-03/pareto-candidate-02.png",
+      "bytes": 65090,
+      "sha256": "BD05A6953BA5E06D30279A460795077050DC1353817A6939E3BA839CAD1F63B3"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-03/pareto-candidate-02.txt",
+      "bytes": 45670,
+      "sha256": "AE5A9FCCF886C81B865C03B65F3BFB56F234E83F0AA6BBC0218A8F22645B0745"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-03/pareto-candidate-03.png",
+      "bytes": 64762,
+      "sha256": "37D2F60E5A1044E9ACFDE52C834F814EF436500228669525845DF7B1DEF95F42"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-03/pareto-candidate-03.txt",
+      "bytes": 45607,
+      "sha256": "A257409EE302980DC92FD8F6D9230F5DCC2EC6F74DEE01F8562ECAB954047961"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-03/report.json",
+      "bytes": 51985,
+      "sha256": "F0C749391558A3F7809374E0EAD53ED2222A1E31F5D09784029D1F5FE89502D4"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-04/canonical-preview-230.png",
+      "bytes": 77975,
+      "sha256": "3948BB672C93EB87D7A4D9F910B6D1CCAB79FCA1C074F00C03021774D3443427"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-04/coat_of_arms.txt",
+      "bytes": 44901,
+      "sha256": "BB61703B083098E837EF076FEF20299D860EC6F2F6E383ED3D3B45EC5F18C06F"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-04/editor-preview-panel.png",
+      "bytes": 209067,
+      "sha256": "EDE27FD49921A22CD5293DFD584CC2E55ED9E7C2F52CDEDE980F2E897541E0A8"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-04/input-and-fit-report.png",
+      "bytes": 349769,
+      "sha256": "F8B0586716F6CA413DBB0515D15A8DB67B0E9934547A9AA061F49955DFB29E0D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-04/pareto-candidate-01.png",
+      "bytes": 77975,
+      "sha256": "3948BB672C93EB87D7A4D9F910B6D1CCAB79FCA1C074F00C03021774D3443427"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-04/pareto-candidate-01.txt",
+      "bytes": 44901,
+      "sha256": "BB61703B083098E837EF076FEF20299D860EC6F2F6E383ED3D3B45EC5F18C06F"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-04/pareto-candidate-02.png",
+      "bytes": 77983,
+      "sha256": "CFACAD48DD72A84A5E649A9C9A6E98FB4B63C61D8121B12713442B4EBD871A7B"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-04/pareto-candidate-02.txt",
+      "bytes": 45085,
+      "sha256": "18D4E294DA80254384BC8B851ED1C30532412B48CA9EB7FB95D55F83B53AB725"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-04/pareto-candidate-03.png",
+      "bytes": 78063,
+      "sha256": "7FA6D5C7EC2153D5DEB122E8B9714374EAF37C684C45BF61C80423BF269B98EB"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-04/pareto-candidate-03.txt",
+      "bytes": 45085,
+      "sha256": "CB3DD0E4D181CEA0C40BD150AF2B75FA8BE126AC1297BDC7A2CA139C3AB70A88"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-04/report.json",
+      "bytes": 57875,
+      "sha256": "8B5ECC9C028B846DAD04DCF77559E150B132BA6D2DC187AD359086CBF2454FD4"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-05/canonical-preview-230.png",
+      "bytes": 73275,
+      "sha256": "9F36B2FEA658386FAD44229E2B1B1F209BCE332E1A369DC1FF4B5386A84E242A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-05/coat_of_arms.txt",
+      "bytes": 44211,
+      "sha256": "39EC971CE53A65C7A189B1316F941BED78A899913BAA5A5E031875A27DC3B733"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-05/editor-preview-panel.png",
+      "bytes": 200322,
+      "sha256": "5C2F0E435DEED016F292DE196F5956F1FE6CE9DC844634A1FD42303D7601B247"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-05/input-and-fit-report.png",
+      "bytes": 343518,
+      "sha256": "4FC54CD3041BFA4F5DDA571608DB80A3737AFC77E4E1C59C2836E3466D52158E"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-05/pareto-candidate-01.png",
+      "bytes": 73275,
+      "sha256": "9F36B2FEA658386FAD44229E2B1B1F209BCE332E1A369DC1FF4B5386A84E242A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-05/pareto-candidate-01.txt",
+      "bytes": 44211,
+      "sha256": "39EC971CE53A65C7A189B1316F941BED78A899913BAA5A5E031875A27DC3B733"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-05/pareto-candidate-02.png",
+      "bytes": 73260,
+      "sha256": "775016FB17BC1D12360F0C3E9838911AA121611479A16E1FC30B205B7267E545"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-05/pareto-candidate-02.txt",
+      "bytes": 45391,
+      "sha256": "996C2F9BD2872F662CF63EF295BF7D56B10139DBEAB127D50F3F8DE825ABBA63"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-05/pareto-candidate-03.png",
+      "bytes": 73267,
+      "sha256": "3F651C091E7377872B64F1B5E2F217EADA062BC060317BF366DE6E2A20DEBBC6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-05/pareto-candidate-03.txt",
+      "bytes": 45391,
+      "sha256": "BDF0EAB209AF8BC8316CCC053190CDEDB24E5C2CB2BE3AD7E1F095412D885EC1"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-05/report.json",
+      "bytes": 57737,
+      "sha256": "C271FBC6BFD573B825201F489E213DA6D4A551126409327C5B4D36513038A6C5"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-06/canonical-preview-230.png",
+      "bytes": 44310,
+      "sha256": "8D638955CDCC6C2B4AA321D687627953D1A045CFAFAF2B90CD7F6DF41791E5FE"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-06/coat_of_arms.txt",
+      "bytes": 45468,
+      "sha256": "9237CCF8FD6B6A24C5354EB10739B04574D5D85CDAE4DE0EBB17971AC94BB122"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-06/editor-preview-panel.png",
+      "bytes": 172267,
+      "sha256": "45B6C4EE61C1AD9C1A5013D486D4E7B816871520DD339AE3AC0D251786138D25"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-06/input-and-fit-report.png",
+      "bytes": 310732,
+      "sha256": "06FEF800BB8D25B8067257372C7EA8FCDA97C27DF3B34C10A8E0270F834A1B37"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-06/pareto-candidate-01.png",
+      "bytes": 44310,
+      "sha256": "8D638955CDCC6C2B4AA321D687627953D1A045CFAFAF2B90CD7F6DF41791E5FE"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-06/pareto-candidate-01.txt",
+      "bytes": 45468,
+      "sha256": "9237CCF8FD6B6A24C5354EB10739B04574D5D85CDAE4DE0EBB17971AC94BB122"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-06/pareto-candidate-02.png",
+      "bytes": 43375,
+      "sha256": "097F825053BA22A0B42C04D78FA129480D2CB84C81831FBEE3325A6C9BDB8597"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-06/pareto-candidate-02.txt",
+      "bytes": 45767,
+      "sha256": "19091F4E7799EF25B7D805755EF7A2DCE3BDFD9C4E7310CF3C8FEC74C7645E9A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-06/pareto-candidate-03.png",
+      "bytes": 41978,
+      "sha256": "8D4C4FED690C7A4CC25A5DF21B3E07F56C7F1471A1FFBDE005935F40F631EB83"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-06/pareto-candidate-03.txt",
+      "bytes": 45379,
+      "sha256": "E5175DDAF44D2406A04AE6BA99E4FB1AF1269DD28397DC567C289AAF28D7EF3C"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-06/report.json",
+      "bytes": 58522,
+      "sha256": "05D7344F571A7A1DE8DC2FE0FC0B34567E5CBAF3F1234C6F78C197F0311996D4"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-07/canonical-preview-230.png",
+      "bytes": 73862,
+      "sha256": "8F1748F3C9F016704C82F9282C29FC294E6A5138449943D9156FE563B635CF46"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-07/coat_of_arms.txt",
+      "bytes": 45160,
+      "sha256": "33EAD2AE73CA4266BD17081AE413A2847882813D7AB0F793CFBC48BA79891BD8"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-07/editor-preview-panel.png",
+      "bytes": 199539,
+      "sha256": "537AE06DBF4273CAF1A51753525981B3A6A8BF1522625FCDDC2C36CB1AD9F882"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-07/input-and-fit-report.png",
+      "bytes": 356847,
+      "sha256": "57EEC70A47DCEC07B031098348CAE73BAE2549A42D765244A72FCD198AB9AACE"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-07/pareto-candidate-01.png",
+      "bytes": 73862,
+      "sha256": "8F1748F3C9F016704C82F9282C29FC294E6A5138449943D9156FE563B635CF46"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-07/pareto-candidate-01.txt",
+      "bytes": 45160,
+      "sha256": "33EAD2AE73CA4266BD17081AE413A2847882813D7AB0F793CFBC48BA79891BD8"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-07/pareto-candidate-02.png",
+      "bytes": 73851,
+      "sha256": "8352F1FE3F5D1BB9A56244C3A655333C0A311B6D08E0F17812EE42626FDE604B"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-07/pareto-candidate-02.txt",
+      "bytes": 45160,
+      "sha256": "364F37BD7D8352A3FADFB7A2DC1A33448B3DFC2BF972D2AB8110EFE3CC06E141"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-07/pareto-candidate-03.png",
+      "bytes": 73328,
+      "sha256": "F549C016E911685D4FD1343D4AB0AC2B3ECDD897F0A714865C25FFA8CB9EAA31"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-07/pareto-candidate-03.txt",
+      "bytes": 44721,
+      "sha256": "B599D49102EF7021D9EE6890D1BF8FD0A5F0D467708A1B4A02CAE7D09C5FB3AF"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/picture-07/report.json",
+      "bytes": 52401,
+      "sha256": "17BD9CB7906F50D19E21734E8A6529457B8249E58697CD0C7428A9D022462411"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-budget128/quality-summary.json",
+      "bytes": 11186,
+      "sha256": "07E628AC1CE7B7D9DE57D7A8D56531D53168F320F62D3D39347946D01D2035F9"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj256-ablation/picture-02/canonical-preview-230.png",
+      "bytes": 74843,
+      "sha256": "7808EDD12292CC2163CBB70D240ED53991611FD6FC9B0946D797F2080E0E3447"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj256-ablation/picture-02/coat_of_arms.txt",
+      "bytes": 45686,
+      "sha256": "C72BC5CF9230E72AF348829663F7BB86E08776FF639BD2D34287F37BDC27C163"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj256-ablation/picture-02/editor-preview-panel.png",
+      "bytes": 217479,
+      "sha256": "1ACF73B6AF44520748E60E35F9A11BB107C2B0E3D5816D557FB4F639E239FA0D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj256-ablation/picture-02/input-and-fit-report.png",
+      "bytes": 364073,
+      "sha256": "05752D746D62084E06721312FA92E3BE71E7B3156FAF139F87B89A05DAEC53FB"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj256-ablation/picture-02/pareto-candidate-01.png",
+      "bytes": 74843,
+      "sha256": "7808EDD12292CC2163CBB70D240ED53991611FD6FC9B0946D797F2080E0E3447"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj256-ablation/picture-02/pareto-candidate-01.txt",
+      "bytes": 45686,
+      "sha256": "C72BC5CF9230E72AF348829663F7BB86E08776FF639BD2D34287F37BDC27C163"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj256-ablation/picture-02/pareto-candidate-02.png",
+      "bytes": 74423,
+      "sha256": "851EA53D791A9EA819CA68E6D948526537A7DBFAA3ABEA6EAA3B74CA19937054"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj256-ablation/picture-02/pareto-candidate-02.txt",
+      "bytes": 45264,
+      "sha256": "9FA6E6AC6C5CE349EFE5B85CD4E31C83B00830AEE89B08B818AB022A0580EFA8"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj256-ablation/picture-02/pareto-candidate-03.png",
+      "bytes": 74020,
+      "sha256": "E2834B85ADC47F4A0A526158B865E34B035FFFE4228D8659016E8EE50845E2A6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj256-ablation/picture-02/pareto-candidate-03.txt",
+      "bytes": 42380,
+      "sha256": "81AA40CD0F907698BC7CBFDCD4B9636295C76C92B5A11B75C26881AC7BCD5BBE"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj256-ablation/picture-02/report.json",
+      "bytes": 64152,
+      "sha256": "6FE1CE69184970A5B38375CDC3CB62ECE05512FC128315F99D2D7DB17AB48D45"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-02/canonical-preview-230.png",
+      "bytes": 74853,
+      "sha256": "36F3344A41FC6B6B8AEDEFB1A66079E6FDA0DAB5B605D772867796A81BEBCF31"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-02/coat_of_arms.txt",
+      "bytes": 45687,
+      "sha256": "C1F9400622DCE8689DC8CE166B7A884DCE3CAE98D2C810543F84DA3327E3AB55"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-02/editor-preview-panel.png",
+      "bytes": 204347,
+      "sha256": "F9A55F4D097004D5126A22121C4D8F01DF054367112413776ACA1455EE0A6845"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-02/input-and-fit-report.png",
+      "bytes": 364429,
+      "sha256": "1DCF18D7275CC5784F3F3B336DF380FC559A8FA5401F568060432D79BB6F6582"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-02/pareto-candidate-01.png",
+      "bytes": 74853,
+      "sha256": "36F3344A41FC6B6B8AEDEFB1A66079E6FDA0DAB5B605D772867796A81BEBCF31"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-02/pareto-candidate-01.txt",
+      "bytes": 45687,
+      "sha256": "C1F9400622DCE8689DC8CE166B7A884DCE3CAE98D2C810543F84DA3327E3AB55"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-02/pareto-candidate-02.png",
+      "bytes": 74849,
+      "sha256": "BB1D2DB0FBA95D0E507D1BDD6C4246D361D7A44154C9F4DDA90B85BDB2AB1F9E"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-02/pareto-candidate-02.txt",
+      "bytes": 45686,
+      "sha256": "1BD0241C45A9E854A16C385601F07B753D8EADEA4CCD50F21415D8214EB50540"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-02/pareto-candidate-03.png",
+      "bytes": 74423,
+      "sha256": "851EA53D791A9EA819CA68E6D948526537A7DBFAA3ABEA6EAA3B74CA19937054"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-02/pareto-candidate-03.txt",
+      "bytes": 45264,
+      "sha256": "9FA6E6AC6C5CE349EFE5B85CD4E31C83B00830AEE89B08B818AB022A0580EFA8"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-02/report.json",
+      "bytes": 65566,
+      "sha256": "EB3363C69CD4B6B5014C0605C57F805829D84BD27B71A5BC0AF04F82E4E4F822"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-04/canonical-preview-230.png",
+      "bytes": 78058,
+      "sha256": "BAF59391B0925DD110317C1563D8902B2E0A541223B79A67CCE8F5BB5B85C4E4"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-04/coat_of_arms.txt",
+      "bytes": 44928,
+      "sha256": "7975E3FD39EE4A5DF10B5FC524BD3CD6D10AE2FCC0D79BA0E5A341F120D2F43F"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-04/editor-preview-panel.png",
+      "bytes": 239969,
+      "sha256": "1AF686034DA7A12A2B7292B652DF212868C0F34EAC56B22798265DBFED2EA6FA"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-04/input-and-fit-report.png",
+      "bytes": 349738,
+      "sha256": "28A28D8B504C846E943DB05A830EE9A5733C9D5DC7D0015787DD1BC708F3D75A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-04/pareto-candidate-01.png",
+      "bytes": 78058,
+      "sha256": "BAF59391B0925DD110317C1563D8902B2E0A541223B79A67CCE8F5BB5B85C4E4"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-04/pareto-candidate-01.txt",
+      "bytes": 44928,
+      "sha256": "7975E3FD39EE4A5DF10B5FC524BD3CD6D10AE2FCC0D79BA0E5A341F120D2F43F"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-04/pareto-candidate-02.png",
+      "bytes": 78310,
+      "sha256": "05A5371F52D63ACECB79E3CFF40A8E6F2C4A8627CE0F66E2E0C41BD6B99A1836"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-04/pareto-candidate-02.txt",
+      "bytes": 45097,
+      "sha256": "2BD5939927EAED00CE2A8B61F294730F1411A0C19E9EA60DD87D9DAE98FB2959"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-04/pareto-candidate-03.png",
+      "bytes": 80346,
+      "sha256": "3CB1D221E925B87A9F382231E648D96461FAE2FFF7E023F7F296CA32215C4D15"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-04/pareto-candidate-03.txt",
+      "bytes": 42256,
+      "sha256": "1921047F7B127ECBE2090251B3A8F974D870D95B042EFDBCBC7127382A9F438A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-directj512-ablation/picture-04/report.json",
+      "bytes": 65391,
+      "sha256": "C311B1B73CADA40E6A8ED3EA89155E6B01EB037AACB7DE160C131FDB88A24354"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-02/canonical-preview-230.png",
+      "bytes": 74858,
+      "sha256": "26F6AD77057DCA9DE82FE25ABD0B00FBE994F43985859599EF89716408016D1E"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-02/coat_of_arms.txt",
+      "bytes": 45686,
+      "sha256": "D834B6AEA4E2BDC475ED0678C5FEFFC8E97682CE900B93DA3AF1FFC304F7C26B"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-02/editor-preview-panel.png",
+      "bytes": 200482,
+      "sha256": "5B79F2596359B9BB32F974059A84D98653595272B6E0F29EE8483599FB9F4E7A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-02/input-and-fit-report.png",
+      "bytes": 364750,
+      "sha256": "E4C90929AE7D4BBF3BD96E66D6BDE4B6E583922B5830FA957EAE6DDE2CDC8D8C"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-02/pareto-candidate-01.png",
+      "bytes": 74858,
+      "sha256": "26F6AD77057DCA9DE82FE25ABD0B00FBE994F43985859599EF89716408016D1E"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-02/pareto-candidate-01.txt",
+      "bytes": 45686,
+      "sha256": "D834B6AEA4E2BDC475ED0678C5FEFFC8E97682CE900B93DA3AF1FFC304F7C26B"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-02/pareto-candidate-02.png",
+      "bytes": 74892,
+      "sha256": "938E4A689E2F8EAE33321ED8308B0BDA1C5239750A0377CBF20C78E75E67570C"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-02/pareto-candidate-02.txt",
+      "bytes": 45686,
+      "sha256": "DAF00A4650B9C273B20F54C624C3EBFFE3ADA11DF7A42029940A07332A8E2C68"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-02/pareto-candidate-03.png",
+      "bytes": 74800,
+      "sha256": "D9F68FB16158B05BCAD9D7BD10A0647B901632EC176940495DE677194B9E514F"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-02/pareto-candidate-03.txt",
+      "bytes": 45686,
+      "sha256": "7E2CC013BEC603798E78505A847AE531D23497F766AC5123C0DB22FEDA70B3EB"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-02/report.json",
+      "bytes": 64262,
+      "sha256": "6E73D34FDC5235835C3FC48BCB91F34EC9D582CE09FF27766F9D2779AAC53254"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-04/canonical-preview-230.png",
+      "bytes": 78254,
+      "sha256": "D7B5349AB5E182956DEBAB2315A4C858956247B0FC150196B1140B9AE5B0477D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-04/coat_of_arms.txt",
+      "bytes": 44913,
+      "sha256": "4C68E19FAC6765E10CAD45056B0C2D1D1183D83CE11B1213F61DB171F4D28808"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-04/editor-preview-panel.png",
+      "bytes": 238852,
+      "sha256": "A1AF770C51997D9D1072FB1DDF1A733EF32C10C799CB780B7BAAC86A1A9177E0"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-04/input-and-fit-report.png",
+      "bytes": 348687,
+      "sha256": "FC36069A633DABF555CEAD62AD012561EA591FE4736F89A7745C690E4CCD01D7"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-04/pareto-candidate-01.png",
+      "bytes": 78254,
+      "sha256": "D7B5349AB5E182956DEBAB2315A4C858956247B0FC150196B1140B9AE5B0477D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-04/pareto-candidate-01.txt",
+      "bytes": 44913,
+      "sha256": "4C68E19FAC6765E10CAD45056B0C2D1D1183D83CE11B1213F61DB171F4D28808"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-04/pareto-candidate-02.png",
+      "bytes": 78324,
+      "sha256": "0AF19E255D222D2E255341723F9A4D631ECDF46E26FEBD51AD5A94C8B069CDAF"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-04/pareto-candidate-02.txt",
+      "bytes": 45082,
+      "sha256": "6FA9E31640776080F74267204F6B1412B372CAAB7AB91887ECE7DC1905643D35"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-04/pareto-candidate-03.png",
+      "bytes": 80346,
+      "sha256": "3CB1D221E925B87A9F382231E648D96461FAE2FFF7E023F7F296CA32215C4D15"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-04/pareto-candidate-03.txt",
+      "bytes": 42256,
+      "sha256": "1921047F7B127ECBE2090251B3A8F974D870D95B042EFDBCBC7127382A9F438A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/picture-04/report.json",
+      "bytes": 64003,
+      "sha256": "92CA18FF3D9FC2C1ACDFD4BFB5B7FA313466C8DE827039C4824468795CCF4E54"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-02/canonical-preview-230.png",
+      "bytes": 74800,
+      "sha256": "D9F68FB16158B05BCAD9D7BD10A0647B901632EC176940495DE677194B9E514F"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-02/coat_of_arms.txt",
+      "bytes": 45686,
+      "sha256": "7E2CC013BEC603798E78505A847AE531D23497F766AC5123C0DB22FEDA70B3EB"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-02/editor-preview-panel.png",
+      "bytes": 216515,
+      "sha256": "0364C3E4388B77A29D83C4F9FCC151D723DCBFE216521AF91A4EFB245B26948A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-02/input-and-fit-report.png",
+      "bytes": 364797,
+      "sha256": "47CAD40F0F4C22659E96FDEEDAA59196C8FEB1C25C7435EFB9CF55F9E742CAAC"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-02/pareto-candidate-01.png",
+      "bytes": 74800,
+      "sha256": "D9F68FB16158B05BCAD9D7BD10A0647B901632EC176940495DE677194B9E514F"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-02/pareto-candidate-01.txt",
+      "bytes": 45686,
+      "sha256": "7E2CC013BEC603798E78505A847AE531D23497F766AC5123C0DB22FEDA70B3EB"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-02/pareto-candidate-02.png",
+      "bytes": 74423,
+      "sha256": "851EA53D791A9EA819CA68E6D948526537A7DBFAA3ABEA6EAA3B74CA19937054"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-02/pareto-candidate-02.txt",
+      "bytes": 45264,
+      "sha256": "9FA6E6AC6C5CE349EFE5B85CD4E31C83B00830AEE89B08B818AB022A0580EFA8"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-02/pareto-candidate-03.png",
+      "bytes": 74020,
+      "sha256": "E2834B85ADC47F4A0A526158B865E34B035FFFE4228D8659016E8EE50845E2A6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-02/pareto-candidate-03.txt",
+      "bytes": 42380,
+      "sha256": "81AA40CD0F907698BC7CBFDCD4B9636295C76C92B5A11B75C26881AC7BCD5BBE"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-02/report.json",
+      "bytes": 61822,
+      "sha256": "CA74B4984C9C4740D5EF6EF9BC9F8BCB3219FE2F1247A72B60454FC2F0C2EF2E"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-04/canonical-preview-230.png",
+      "bytes": 78324,
+      "sha256": "0AF19E255D222D2E255341723F9A4D631ECDF46E26FEBD51AD5A94C8B069CDAF"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-04/coat_of_arms.txt",
+      "bytes": 44913,
+      "sha256": "0D55C6BC596C44276C18D0F112CB053149213F6FF45E2DBD4E376014CDB5DCA2"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-04/editor-preview-panel.png",
+      "bytes": 232916,
+      "sha256": "E62948590B4605082CC2FE0562E29419C94C6B0449612752D2FA4FF0D9D6C99C"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-04/input-and-fit-report.png",
+      "bytes": 349223,
+      "sha256": "69F61F210934B0DDAE71D00863DA661603BDAD13BF823FFD423CB709A44F116E"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-04/pareto-candidate-01.png",
+      "bytes": 78324,
+      "sha256": "0AF19E255D222D2E255341723F9A4D631ECDF46E26FEBD51AD5A94C8B069CDAF"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-04/pareto-candidate-01.txt",
+      "bytes": 44913,
+      "sha256": "0D55C6BC596C44276C18D0F112CB053149213F6FF45E2DBD4E376014CDB5DCA2"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-04/pareto-candidate-02.png",
+      "bytes": 80346,
+      "sha256": "3CB1D221E925B87A9F382231E648D96461FAE2FFF7E023F7F296CA32215C4D15"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-04/pareto-candidate-02.txt",
+      "bytes": 42256,
+      "sha256": "1921047F7B127ECBE2090251B3A8F974D870D95B042EFDBCBC7127382A9F438A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-04/pareto-candidate-03.png",
+      "bytes": 78646,
+      "sha256": "19885C606D527B6EB6A60FB2C4FFBD9A78C389524CF3552D7A1FA8F6E86C748A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-04/pareto-candidate-03.txt",
+      "bytes": 45278,
+      "sha256": "931E47394E55836F38087F3D66A2FBBF7C03CA939A83C4EE187BE764F7BCF51A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/picture-04/report.json",
+      "bytes": 61614,
+      "sha256": "08199AB06560B090278B4DB5B97A8CF3424139B89F95C1384BB71093ED5203BD"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-01/canonical-preview-230.png",
+      "bytes": 71652,
+      "sha256": "00365EFCB4DAB7C763F1AF3EBCA8C85D3664A05CA42F34D2E4F323D387F85F25"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-01/coat_of_arms.txt",
+      "bytes": 277871,
+      "sha256": "E2BCA918C9A3625ABF7EDA7B3007C0E4EDC29C151C530DEA7FFB021841161514"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-01/editor-preview-panel.png",
+      "bytes": 215755,
+      "sha256": "4E31AD83A223EECBEAA5D753D87F0AB1C33015A0149897F8A47D5E2A67C166F4"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-01/input-and-fit-report.png",
+      "bytes": 523443,
+      "sha256": "697D356CC097DF120EC1895AC992D6A597A3FAE1BED3AA03F7C267556E986FF6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-01/pareto-candidate-01.png",
+      "bytes": 71652,
+      "sha256": "00365EFCB4DAB7C763F1AF3EBCA8C85D3664A05CA42F34D2E4F323D387F85F25"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-01/pareto-candidate-01.txt",
+      "bytes": 277871,
+      "sha256": "E2BCA918C9A3625ABF7EDA7B3007C0E4EDC29C151C530DEA7FFB021841161514"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-01/pareto-candidate-02.png",
+      "bytes": 71148,
+      "sha256": "653F75569DCC11AEC62BBEEF7E242EF8ACAE04BEF9F59EAC5A865A2B2D228DCF"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-01/pareto-candidate-02.txt",
+      "bytes": 278933,
+      "sha256": "ECBDB5C28BD470A2BECE077B638D550F65A9CE59E0ED842B164576A7D6872F31"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-01/pareto-candidate-03.png",
+      "bytes": 71674,
+      "sha256": "011E2254DED720D273EB45A1E9C09EE46BD5C313F932A790BD693C579F940E61"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-01/pareto-candidate-03.txt",
+      "bytes": 264014,
+      "sha256": "7684BEA8426954E92DCC97F1299D1D52B95805F44BC9123053019F585A77EBF1"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-01/report.json",
+      "bytes": 62664,
+      "sha256": "1D900AF55C259F55CED00C6953766FAEF52930ACC5EA3DEBC403123B32CEA408"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-02/canonical-preview-230.png",
+      "bytes": 85398,
+      "sha256": "EE2E794542900B8CAE34BF539C9D53F5BAB75BB1FCC74DB93FDF12FB83A1F65A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-02/coat_of_arms.txt",
+      "bytes": 303604,
+      "sha256": "9928CB78727384A3C70706EBE9BFA4834318A1A8683D30133AD5B5B7111739C4"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-02/editor-preview-panel.png",
+      "bytes": 224940,
+      "sha256": "EF5663364D42C3AC5AC91D004BD52A841AE7B55D687099CDBFF940C16AFB796D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-02/input-and-fit-report.png",
+      "bytes": 513824,
+      "sha256": "5F714D7D43253221422C0CDF11C6A7C29866B21510CDDE4FC9726B6401021DD8"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-02/pareto-candidate-01.png",
+      "bytes": 85398,
+      "sha256": "EE2E794542900B8CAE34BF539C9D53F5BAB75BB1FCC74DB93FDF12FB83A1F65A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-02/pareto-candidate-01.txt",
+      "bytes": 303604,
+      "sha256": "9928CB78727384A3C70706EBE9BFA4834318A1A8683D30133AD5B5B7111739C4"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-02/pareto-candidate-02.png",
+      "bytes": 85319,
+      "sha256": "E32F15E37E52B2FE2608E85A35406EAEAB474CB55CEEB7DFD4BCFF69D47E5576"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-02/pareto-candidate-02.txt",
+      "bytes": 304006,
+      "sha256": "0E5F379639CE26297463ED2710081D201ADA3CBDD899C1C275FB8A06888B3781"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-02/pareto-candidate-03.png",
+      "bytes": 85552,
+      "sha256": "84A3CDEE486CBA1CF9A0DD710EDBB2635AF3D260E7A780B1A86DD624F159203F"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-02/pareto-candidate-03.txt",
+      "bytes": 304004,
+      "sha256": "861D4D2986E6E1242608D157A90149D7A947EF45821650D9C72D851D54C0CD19"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-02/report.json",
+      "bytes": 63381,
+      "sha256": "50D8DE8625FA061FEE95C8823016BA4943E6DDBC0CA4951897C7B6C260960908"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-03/canonical-preview-230.png",
+      "bytes": 68562,
+      "sha256": "B6F7F389BCFD61D392F821EDBE8CE650429A61209A0E6E2037D6FFB03D5BD4FA"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-03/coat_of_arms.txt",
+      "bytes": 401694,
+      "sha256": "082F8C1C982E911903DE4D86F93E4D06D54F5AC4650448CACC269C44FAFDEE26"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-03/editor-preview-panel.png",
+      "bytes": 218260,
+      "sha256": "3175FFE7DA1054DF7D0737D43A0AF8F4970B6E65DE248FE0E11579FE28CE8EA7"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-03/input-and-fit-report.png",
+      "bytes": 481567,
+      "sha256": "A476105254B7D1C3502027BAAB763EA878859141A18898F12DB58DD816FE2608"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-03/pareto-candidate-01.png",
+      "bytes": 68562,
+      "sha256": "B6F7F389BCFD61D392F821EDBE8CE650429A61209A0E6E2037D6FFB03D5BD4FA"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-03/pareto-candidate-01.txt",
+      "bytes": 401694,
+      "sha256": "082F8C1C982E911903DE4D86F93E4D06D54F5AC4650448CACC269C44FAFDEE26"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-03/pareto-candidate-02.png",
+      "bytes": 64272,
+      "sha256": "D660F3B5CD5F46E521CB42CB2CC13BD53B51982103A1A045712B986C5562D1B3"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-03/pareto-candidate-02.txt",
+      "bytes": 318847,
+      "sha256": "F95BDB54DF8AD74232CC7539B53D0F9014EE9332D6D793351751D7F63639AAE8"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-03/pareto-candidate-03.png",
+      "bytes": 64107,
+      "sha256": "EAC5DD7293E9874247525F40C8ADE7035AFE129F140E09D4690767B90E0DE03D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-03/pareto-candidate-03.txt",
+      "bytes": 326671,
+      "sha256": "24241333CF20EF4F6D4FB94DB8A86586D32247CF2C66F233A69E925635C3D0D3"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-03/report.json",
+      "bytes": 60287,
+      "sha256": "68806166C1968791AE28AA255CDE67E3B5861534D2F2B1807C0B7E31148A69EB"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-04/canonical-preview-230.png",
+      "bytes": 92702,
+      "sha256": "B9BF128042EEFA4DDA5688D9557AA5716126F21D6E53C5CF6CF8076E2716F665"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-04/coat_of_arms.txt",
+      "bytes": 358186,
+      "sha256": "CB405CAD479FBC2392EF2ED5560ADE8F7EB2ED418A8BA42371E0F1E1CA340A02"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-04/editor-preview-panel.png",
+      "bytes": 257623,
+      "sha256": "3088BE4512D39F6067C840EB788F4CB6BFDCE8A00836C606AD6F52B4B9FB1F11"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-04/input-and-fit-report.png",
+      "bytes": 507180,
+      "sha256": "E49D2D1AE87AB3E4F05A7DB561A524693F2172ED6B2F44E570F6FFB612980114"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-04/pareto-candidate-01.png",
+      "bytes": 92702,
+      "sha256": "B9BF128042EEFA4DDA5688D9557AA5716126F21D6E53C5CF6CF8076E2716F665"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-04/pareto-candidate-01.txt",
+      "bytes": 358186,
+      "sha256": "CB405CAD479FBC2392EF2ED5560ADE8F7EB2ED418A8BA42371E0F1E1CA340A02"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-04/pareto-candidate-02.png",
+      "bytes": 92615,
+      "sha256": "45E489E82A6233E558BBA2FBD1535440FCF0B2D041B7D7705277C79E2CA1D95A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-04/pareto-candidate-02.txt",
+      "bytes": 357785,
+      "sha256": "C8E5151227404FF630EBF8646384D92F0876557C4F96A06ABB25419670061524"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-04/pareto-candidate-03.png",
+      "bytes": 92881,
+      "sha256": "9F79D8753B3F35DD58D689BD6EAFD804763F0F33EB7B2B9C782DA42A325B2C90"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-04/pareto-candidate-03.txt",
+      "bytes": 361801,
+      "sha256": "E4AE7F9DAFBC889F7A4F295E207D3889F37963539036101B9E71982B5A2D197D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-04/report.json",
+      "bytes": 62448,
+      "sha256": "865541F87648415FA53DEE73997BAA3EAAC0E1945BE50B635F6B353E0DD4220C"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-05/canonical-preview-230.png",
+      "bytes": 73080,
+      "sha256": "A68C4182997F770F1A85AA1ED3DAFE01AE21BFB5C75FFCBC4872D923FF19D99D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-05/coat_of_arms.txt",
+      "bytes": 359950,
+      "sha256": "78006E663EDE84F6979362A009554AAD1767A08EFBE10CF7EA5E47CB96130C84"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-05/editor-preview-panel.png",
+      "bytes": 215467,
+      "sha256": "3E7F6817B5801DF26A1662DFAB2F38126ACBE3B721E1054A0AFF2CAD70664B28"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-05/input-and-fit-report.png",
+      "bytes": 502917,
+      "sha256": "288EA7CAC95A60FF5614454AEE24BF3B6F05CE9C8ADC324E58889D613E3E0EE2"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-05/pareto-candidate-01.png",
+      "bytes": 73080,
+      "sha256": "A68C4182997F770F1A85AA1ED3DAFE01AE21BFB5C75FFCBC4872D923FF19D99D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-05/pareto-candidate-01.txt",
+      "bytes": 359950,
+      "sha256": "78006E663EDE84F6979362A009554AAD1767A08EFBE10CF7EA5E47CB96130C84"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-05/pareto-candidate-02.png",
+      "bytes": 73028,
+      "sha256": "32F39FB1A0FD96A70FBEB11D08BE5E146196BCAC5E0B9FD171927847967AB266"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-05/pareto-candidate-02.txt",
+      "bytes": 361439,
+      "sha256": "51C4FD8A8B64DD57AB6662202F8EF2C40EE4518829994A312494EA9BEC5351B6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-05/pareto-candidate-03.png",
+      "bytes": 73051,
+      "sha256": "B14F53D2D4F91E384F2E10BBE65422AB48626B7E48B3C47A0086E6910D2EEEB4"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-05/pareto-candidate-03.txt",
+      "bytes": 361438,
+      "sha256": "18A4934A4AE7585E6FCFA6A5E765608412FCE6B365696CE8707C13C46C2E8029"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-05/report.json",
+      "bytes": 63172,
+      "sha256": "46130163B814907816A042642B1172C2CBA023442A7631AD880C7C59BEE1293E"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-06/canonical-preview-230.png",
+      "bytes": 43451,
+      "sha256": "636A9BE5847DF80D366470C7A4EE880FC4E7130700070811D242774AD7004A7D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-06/coat_of_arms.txt",
+      "bytes": 381493,
+      "sha256": "9C8583659BAEE08E560EEE37C045D8079C23C1DD1397D3EC6A2F9A46D4DF9891"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-06/editor-preview-panel.png",
+      "bytes": 186836,
+      "sha256": "69F470AD196B09935739346D378309D4F029C8D0B5B5B38A13275419D87B1A46"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-06/input-and-fit-report.png",
+      "bytes": 420061,
+      "sha256": "A4EA9580C91E070F1DB27B295866B8927EA28ED986550BD584636FC31B503001"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-06/pareto-candidate-01.png",
+      "bytes": 43451,
+      "sha256": "636A9BE5847DF80D366470C7A4EE880FC4E7130700070811D242774AD7004A7D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-06/pareto-candidate-01.txt",
+      "bytes": 381493,
+      "sha256": "9C8583659BAEE08E560EEE37C045D8079C23C1DD1397D3EC6A2F9A46D4DF9891"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-06/pareto-candidate-02.png",
+      "bytes": 43429,
+      "sha256": "88136EE36C9BAB6BDD8D70CD803A01818A5FDC8D59D6BF931404CFD542145195"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-06/pareto-candidate-02.txt",
+      "bytes": 399465,
+      "sha256": "0C8A98010C0241E6EA28676C39DE14D030B0F0272B95D133AC5092DDDB28170A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-06/pareto-candidate-03.png",
+      "bytes": 43100,
+      "sha256": "8C6E718E15BB799B307AF2F36AF76210017F80CEEABF0801FC4F60E86C27E9E0"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-06/pareto-candidate-03.txt",
+      "bytes": 282214,
+      "sha256": "D0EBB96735B5295EBB7BE69471C81604A926DB6C2E79EA3F8B5688C2D609848B"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-06/report.json",
+      "bytes": 56559,
+      "sha256": "45FBAE930EB3FDF96FFAB40C0340E002F697122B35B1194C3B504DC1B202C047"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-07/canonical-preview-230.png",
+      "bytes": 89450,
+      "sha256": "7FBE356CD49F603F06775F00AA7E45AD3EB9202ED75B8C9BD14EFBAA6EBCD6D6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-07/coat_of_arms.txt",
+      "bytes": 381707,
+      "sha256": "26D90783D75F8E3E9CDF6FEC458B6915C2E1EA13AD5473AE00BC73763F400196"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-07/editor-preview-panel.png",
+      "bytes": 244581,
+      "sha256": "3774D4B59E7D2E9A841222A41F2C111FDC9F8CDD5B26D368CD40359C425B0D83"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-07/input-and-fit-report.png",
+      "bytes": 490674,
+      "sha256": "AEA515419A14B46C7412EC783582725F4040170A33E9635C26236BC4B0DB80A0"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-07/pareto-candidate-01.png",
+      "bytes": 89450,
+      "sha256": "7FBE356CD49F603F06775F00AA7E45AD3EB9202ED75B8C9BD14EFBAA6EBCD6D6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-07/pareto-candidate-01.txt",
+      "bytes": 381707,
+      "sha256": "26D90783D75F8E3E9CDF6FEC458B6915C2E1EA13AD5473AE00BC73763F400196"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-07/pareto-candidate-02.png",
+      "bytes": 89340,
+      "sha256": "DA43DC4F9C3F41AD279899865FB06EE7C6172519728267015AB2E73CF80D12D4"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-07/pareto-candidate-02.txt",
+      "bytes": 381835,
+      "sha256": "9C26619B1CE4AE704B83926959CDA2864A92E95A1BD1D4D879E6A37D1011C33C"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-07/pareto-candidate-03.png",
+      "bytes": 89641,
+      "sha256": "4C4751A32F518168C41D08323917675483560569BB750E3AD2191163F2DA5D93"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-07/pareto-candidate-03.txt",
+      "bytes": 365673,
+      "sha256": "498799A001572D738AE8C292F5787BFFB1139F3F914304A6D22A11882728B205"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/picture-07/report.json",
+      "bytes": 62410,
+      "sha256": "B281410B9EDE21E4B202FEA1D6AEB1A816D02488A5A1DE417D6803C5F33FE96D"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/quality-summary.json",
+      "bytes": 11287,
+      "sha256": "ADB40A3057F3B28B0FE1884AA81C7279C86FF13C8649B5E78681F2D6B307F7DE"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-01/canonical-preview-230.png",
+      "bytes": 69924,
+      "sha256": "FE27BE720AB2F9457FF896CFEE487AF552849F38AA04A37B7798F26017B5D7AA"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-01/coat_of_arms.txt",
+      "bytes": 289491,
+      "sha256": "8F94E7CC0D1F0967394715A4692F1FC88492A2B10163BBA9A0F1D106DF9B5C7B"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-01/editor-preview-panel.png",
+      "bytes": 225430,
+      "sha256": "348B4555B93F83392F6D8AD572BF38EDCDCEFED90FDDCAAFBAC6210F54E73778"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-01/input-and-fit-report.png",
+      "bytes": 523133,
+      "sha256": "D026E1CF725E6E3970C335E35EEEA59A817946FC6B6CB689C6754593A8F4919A"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-01/pareto-candidate-01.png",
+      "bytes": 69924,
+      "sha256": "FE27BE720AB2F9457FF896CFEE487AF552849F38AA04A37B7798F26017B5D7AA"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-01/pareto-candidate-01.txt",
+      "bytes": 289491,
+      "sha256": "8F94E7CC0D1F0967394715A4692F1FC88492A2B10163BBA9A0F1D106DF9B5C7B"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-01/pareto-candidate-02.png",
+      "bytes": 69927,
+      "sha256": "1DF064DB1CB1C69CA1D1B9693951950A38D41560E7B13558F30E20D563E43F17"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-01/pareto-candidate-02.txt",
+      "bytes": 290930,
+      "sha256": "716398EE6CA8CC79F728F0AB79431F1B8B37F99BE757D00908811CDE4F87ABD6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-01/pareto-candidate-03.png",
+      "bytes": 69543,
+      "sha256": "ED6B5A445AE37DE71A6ECFD6743B834B20CB7C6E4AB98A7BF2365DE280E93026"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-01/pareto-candidate-03.txt",
+      "bytes": 403673,
+      "sha256": "9C72B6A61022F69BF8753E47632E9596D0A2E9260EBDAD489883CF7575940EC6"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-01/report.json",
+      "bytes": 64338,
+      "sha256": "4D927E8181B55DF99D9A476D15CC626750B4EDD855F756EDE760D0A675483236"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-04/canonical-preview-230.png",
+      "bytes": 84528,
+      "sha256": "3A8A3376053D64ABEAF20C8DA96DD3493EB06BC8FF5A5104A314AAAD84447854"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-04/coat_of_arms.txt",
+      "bytes": 383258,
+      "sha256": "01FA4FA69450D8937C7FC532B704726F210DB2A728B52F5A8DB288C746D96077"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-04/editor-preview-panel.png",
+      "bytes": 227566,
+      "sha256": "F19AD238915290288BE37FE5DDD83D96D959F1FA3B2F46E1A0C83C44264D4424"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-04/input-and-fit-report.png",
+      "bytes": 505478,
+      "sha256": "EC94243CE41C30B057E6B24307B7251D49C4717ABEC2D207C7BE61204940CA14"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-04/pareto-candidate-01.png",
+      "bytes": 84528,
+      "sha256": "3A8A3376053D64ABEAF20C8DA96DD3493EB06BC8FF5A5104A314AAAD84447854"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-04/pareto-candidate-01.txt",
+      "bytes": 383258,
+      "sha256": "01FA4FA69450D8937C7FC532B704726F210DB2A728B52F5A8DB288C746D96077"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-04/pareto-candidate-02.png",
+      "bytes": 84538,
+      "sha256": "AE40A8E8806E253C4F3AF5001F5B8B68AB51521B97FB9AD69122D4A814CF3C3B"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-04/pareto-candidate-02.txt",
+      "bytes": 383627,
+      "sha256": "963D65D890F959F3537578800AB38217CD667E44E97C4FCDDF586C880982A8EC"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-04/pareto-candidate-03.png",
+      "bytes": 84511,
+      "sha256": "9F46E4EB7F73EFF7595592FA473F8582D51C62B4A9FCCB2FEA999FB256AC8D8F"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-04/pareto-candidate-03.txt",
+      "bytes": 383228,
+      "sha256": "EE866DD06D70B6BD4A8F2BAD8B3F472B2FDF48529B4EF1BA3EF3FC3F883CBBCE"
+    },
+    {
+      "path": "docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/picture-04/report.json",
+      "bytes": 65027,
+      "sha256": "E0E64BF1E83A0346C520EDD9FAF91AEB6707D682BCF5678022AF3B833DA89A19"
+    }
+  ]
+}
