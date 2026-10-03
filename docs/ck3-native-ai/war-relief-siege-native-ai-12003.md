@@ -159,3 +159,17 @@ Root选主军83886367赴2618，watch capital2640、occupation-role=relief。实�
 已有externalcounter入口`current-preparation-v47/helper/root_sdk_counter_transit_days.py`（SHA22e24726740b19b012b9f5bc6b6a87718651457f43a0127b36cd960077ec027a）保留route endpoint与occupation province分离。Root策略依据实际capitaloccupation切recapture；此role在起步occupiedtrue时继续观察、已见实际占领且后来fresh解除才计收复。defaultrelief仍首个occupiedtrue STOP handback，不能用于反攻占领中的资本而反复0day停止。军队主体由fresh实际survivor publicCUnit继承，任何own实际接战仍选择真实subject交Root。尚无反攻move、arrival、siege或收复证据；ready为prepared，不新增平台或授权门禁。
 
 可核验输入：`post-battle-v49/war-state-consumption/COMPACT-WAR-STATE.json`；soleowner raw008 reference SHA326602aed6f5f0e4d8f4acfa4484233d62df758e249c8e7b7fef5127bd9ec159；本包`post-battle-v49/war-report/ROOT-DAY-WEEK-FIELDS.json`与`ROOT-DELIVERY.json`。本报告只读ownedcompact，SDK/raw/其他snapshot/strength/merge/window/shared/source/Git/tests均0。
+
+### 2026-10-04 R25 首府到场围城观测
+
+同一暂停帧 `date_raw=53244648` 的现成 `ck3_query_war_occupation_targets_v1` 查询（v49/R25，`Z:/g54`，source `889821f5a8f55e5d6a2a2f724d7693e3575118a7`，native revision 491）已由对应生产 normalizer 唯一消费一次，结果 GREEN。Root 的 SDK 43780 已正常关闭、exit 0；endpoint 未发布 `paused`，该字段保持 null，暂停绑定复用 Root 的 expected guard。
+
+`War 50331736` 的首府 `province 2640 / holding 2116` 法定持有人仍为 Robert 29829，实际仍由敌方 70766 占领。当前 fort 7、garrison 85、参与围城军力 3801；新观测到我方 public army 83886367 正围攻 `FullSiege 385875999`。进度 `21610/100000=21.610%`，work `3125471/14462500`、remaining `11337029`（均 Q100000），原生本帧 ETA 为 128 日；这是条件观测值，不是固定完成期限，也不由此反推普通围城 daily work 或当前指挥官 phase。准备时 garrison 25 是旧帧值，不能继续作为现状。
+
+当前 `assault_observable=true`、`breach_level=0`、`walls_breached=false`、`CanStart=false`、`CanStop=false`，assault progress/casualties preview 均为 0。因此本帧不生成 assault 配置，支持继续既有有限普通围城推进并在新帧观察；分军决策仍须合并军力与补给 owner 的独立结果。该 War 的 defender 原生候选 31、敌占 2，attacker 候选 0、敌占 0，两侧 `collection_complete=true`；这些计数仅属于此 War。
+
+本次复用既有原生围城树和查询，只消费 occupation 006，不读取 strength/control/SAVE，不重复原树、指挥官候选或旧测试。新增信用限于真实首府围城观测 primitive：新增 SDK/game action/day/窗口操作/收复/G2 完成信用均为 0，未发生强攻或收复。
+
+Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v49/actual-capital-siege-and-strength-01/006-ck3_query_war_occupation_targets_v1.json`；sealed proof `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/siege-efficiency-inputs/recapture-capital-r25/actual-capital-occupation-01/ACTUAL-CAPITAL-PROOF.json`。
+
+Root independently confirms actual army83886367 arrival at capital2640 from the already consumed movement/control4 summary. C cutoff is normal h6059/raw53244648, total4180/resume1027/Oct4+155 (Oct3 frozen777). The55+64=119 normal saved calendar days were already credited by Root; this adoption adds0 days. Capital recapture and whole-war victory remain unobserved. Current runtime is g54/source889821; later diagnostic CPP publication f84f9911 is static-ready and does not change this live evidence binding.

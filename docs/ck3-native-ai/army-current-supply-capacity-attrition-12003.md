@@ -166,3 +166,26 @@ flowchart TD
 2640 首都/两战 shared goal 和2635 本人 holding2103 的敌围城比较继续由 `war_counter_campaign` 消费 fresh022 enemy 与既有路线/接触查询；本包 health 只给当前2604输入。当前损耗0、月贡献+20支持继续当前移动/解围决策，不能生成目的地补给保证，也不新增等待满补给或完整未来预测门禁。native 首记录补员实际覆盖见 [补员专题](army-regiment-replenishment-raised-reserve-12003.md) 的同日追加。此 primitive 不宣称完整 resupply AI 排序、全军净补兵或 attrition outcome loop 已完成。
 
 Root 本次协调收口的累计保存日为3992，自然继承0；本健康查询与文件整合新增0日。该计日来自 Root 总账，不由补给、兵数或月贡献推算；2248/2461 的差额不作为24小时损耗或战斗伤亡。
+
+## 2026-10-04 R25：有限 AI 预计占用分支与真实到场军需
+
+复用 exact 1.20.0.3 / Steam25652598 / EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`，本轮闭合最小 incoming producer：`1A05398 → 19F1F70(stack,flags0) → EAX/R12D → 1A05633 row+0x18`。它遍历 stack subunit 的 lock-held CUnit，army type 解析 CArmy/regiments，再累加 `2A95740(flags0)` 的有效当前 whole soldiers；flags0不做`2A956D0` bit2资格过滤，故 incoming 是 stack 全部当前兵数，而候选省另一项才是相关己方／同战侧 eligible。公开单军3901与当前省usage都不能未经stack membership绑定替代此值。
+
+有限评分链 `1A05200 → 1A05A62 → 1A070F0` 在候选省unitcount=0（`1A0758A/92`）或其他eligible≤0（`1A0781B/2C`）时绕过补给比较；否则`1A07832/35`相加、`1A0784E → 247BEC0`以fallback commander求limit，严格signed `>`（`1A07853/55`）仅跳过该stack/candidate评分行。玩家preview的真实commander29829上下文与该fallback上下文分列；旧2640 limit3080/usage0是preview原帧，不是将来3901已驻的用量，也不是新的到场省级实读。有限分支不推出统一禁入或必须拆军。
+
+```mermaid
+flowchart TD
+    I["19F1F70 flags0: stack全部当前兵数 → row+18"] --> C
+    S["1A070F0 candidate scoring"] --> Z{"unitcount0 / other eligible≤0?"}
+    Z -->|yes| B["绕过此补给比较"]
+    Z -->|no| C{"incoming + other eligible > fallback limit?"}
+    C -->|yes| X["仅跳过此评分组合"]
+    C -->|no| B
+    B -. "research: 最终围城/邻省分配" .-> U["1A028C0等现有入口"]
+```
+
+正常半拆现口 `ck3_execute_step("split-army-half-83886367", expected_revision=<fresh>)` 已有；提交时`296CF60(kind1,nativeCArmyID,fresh playedCharacterID,nullptr)`做最终predicate，无新adapter或named tool。`action_steps`只证明入口，实际拆分仍需fresh roster识别保留／新ID，再读strengths、各军province-supply preview与同省siege；本轮未执行半拆。AIstack membership、移除subunit后的围城反事实和最终邻省selector仍标research，继续现合法单军移动；是否拆军须结合实际消耗和保留围城质量的收益，不增加门禁。既有[目标评分树](army-target-triage-1.20.0.3.md)、[围城树](war-relief-siege-native-ai-12003.md)、[军务命令](war-mobilization-12003.md)直接复用。
+
+Root其后SDK43780正常closed0/GREEN的独立 paused query（raw53244648，`native:491`、public2/native491、seq53）已由soleowner一次消费：`83886367/CArmy50331794` **3801/4231、reg47、supply106.97852/cap300、monthly change−4.54545、attrition fraction0.01**；gathering为not_gathering/null/readytrue。补员47行中30available、17为recordcount0 unavailable；30 observed firstrecord chunks的两个独立bool分别14T/16F与0T/30F，6行multirecord仍partial，不AND、不合成为整军月补人数。该body未发布currentprovince/currentcommander，不跨帧冒用旧preview值；3901→3801差值不造combatcasualty或唯一损失原因。负month与非零attr是新实际成本输入，query本身不授拆军、围城收益或完整loop信用。
+
+研究树与三lane receipt：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/native-ai-overcapacity-r25/ROOT-DELIVERY.json`；新health primitive：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/actual-capital-arrival-health-v49/ROOT-DELIVERY.json`（raw leaf SHA `273b058597dc101cac84ff3f6d2541e058cfdc6dd9e3f99db08765a0ffbbef76`）。两phase新增SDK、测试、自然日、窗口操作、策略代码均为0；仅新actual phase原始叶消费1次，research phase原始叶消费0次。

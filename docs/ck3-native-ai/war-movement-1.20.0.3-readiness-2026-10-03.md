@@ -191,3 +191,13 @@ Root独占SDK54091，existing `ck3_move_army(83886367,2640,expected_revision=2)`
 本次实际移动使用 v43 / R21 / PID 14124 的已冷恢复运行时，编译源码为 `Z:/g45` / source prefix `8e2`；本专题的 g38 文档前像与随后 Root 修复提交 不替代该编译绑定。实际正常关闭的 SDK 54091 与独立 afterframe、正常存档共同证明 有限派遣及路线读回；命令 ACK 本身不授予抵达、接战或解围成果。
 
 独立009同帧目标2640在war50331736和129均实际可观察，`is_occupied=false`，同一敌FullSiege318767158（public CUnit473、player=false）仍存在；fort7/garrison1350/besieging_strength2534/progress70337（Q100000，70.337%）/原生ETA106/breach2/CanStartfalse。两war只映射一个siege，不能重复计数。该事实不代表解除敌方围城。
+
+## 2026-10-04：v49 day 56 路线接触查询失败，日推进信用保持封存
+
+[actual RED, cause unknown] 已封存的前 55 天仍为 `1320` raw hours；SDK `60709` 在 day 56 的 advance 请求之前，`query-route-contact-horizon-v1-83886367-to-2640-h-9-…` 返回 `application-main typed query failed or its snapshot changed`。`h-9` 是九个 hostile IDs 的数量，不改变既有下一日接触区间合同。独立 before/final 均为 native `230` / public `222` / DateRaw `53243112`，保持暂停、地图就绪、Robert `29829` 存活，并正常保存；SDK 正常关闭，退出码 `1`。此失败日新增 `0` raw hours / `0` saved days，不能把外国围城计作玩家战斗成果。
+
+现有原生链为 committed/native route timeline → all-hostile next-day intervals → `ReadRouteContactHorizon` 两样本 → `status==available` → application-main completion 条件。失败 leaf 未保留原生 body 或已有诊断对象，因此不能从通用错误或相同前后 revision 推断具体 snapshot drift、reader status 或 provider 分支；原生与 parser 专线仅补最小诊断保留与源码复现。[树与封存证据入口](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/route-horizon-query-fault-v49/tree-report/ROOT-DELIVERY.json) 绑定 raw 002 SHA-256 `c6550652bc9fbd3bcd31f72094871d8d78424bb4731f0d313f31b8b213afe6ef`。Root 已授权的 SDK `66198` 跳过该查询继续按日推进，不因本报告增加门禁；现有移动能力与真实封存信用保持原状态。
+
+原生专线已排除“最多八支敌军”：header/parser 上限为 `64`，DTO 使用动态 vector，reader 接受 `1–64` 并迭代所有 scope 行，因此本次九支不超容量。当前仅选 `bridge.cpp` 一文件的已有失败详情错误文本候选，Python 候选未选；实际具体失败 enum 仍未知，不能声称 availability 已修复或查询 GREEN。集成后消费下一次自然需要的查询，检查 positive availability 或保留下来的失败原因，不重放旧失败调用。
+
+诊断 source 已由 Root 单 CPP 发布为 `f84f99114aac86eaa54f136c64a908b668b105ee`（15+/5−），当前资格仍为 **diagnostic static-ready**：[原生一文件补丁](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/route-horizon-query-fault-v49/native-producer/ROOT-DELIVERY.json) 在 stable typedfalse 时使用既有 reader detail，在 outer frame_stablefalse 时使用既有 `route-contact completion snapshot changed` 错误文本；其他拒绝保持原行为。四 TU focused 源码验证 GREEN；[未修改 Python 的两项消费验证](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/route-horizon-query-fault-v49/typed-parser/ROOT-DELIVERY.json) 仍严格拒绝失败且 route normalizer 调用为 `0`。Python 候选未选，未改 schema。实际 R25 仍为 native8898/g54；新 v50/g55 pending、not live；旧实际缺失 enum 不回填，不称 horizon 观测已修复、错误已解决或根因已确定。
