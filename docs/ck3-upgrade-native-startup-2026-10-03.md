@@ -105,3 +105,9 @@ R0002 最终 state/live 的1950文件另保存于 `aub-empty-agent-02/r0002-clos
 地图snapshot计划一项PASS，全局[报告](C:/workspace/ck3-upgrade-20261003/live/4-8e1c2f1861--auto-upgrade-buildings--R0007/native-report.json)实际GREEN，SHA `784ade90c4eccecd900d10f97dcdf89c83d41a3cda5933347f3bfa1779e22a23`；[原语汇总](C:/workspace/ck3-upgrade-20261003/live/4-8e1c2f1861--auto-upgrade-buildings--R0007/primitive-summary.json) SHA `f4224e26fc5b4a8d8deb515fc249d5df192991d33480cb77acfcc6e03d73d942`。该GREEN只覆盖上述启动原语，未启用AUB、未验策略/功能或任何主/白绮cell。真实error.log17,415bytes保留待单独分类，不能把harness GREEN写成无错误。
 
 16:30:52 UTC完成；containment仍exit1/job1→0，CK3零/harness消失、keeper最后1780/failure=null/thread退出、CAS1781释放，未正常quit。只读源码复核确认settle的持久化判据直接read_bytes真实tutorial.txt、校验精确纪录token与连续两次同size/SHA；实际达到该判据后可用同bytes冷reader，无需虚构正常退出。目前该持久化仍未运行。现master已有独立 `.3` succession-modal provider，完成的f4组合没有采用且flag OFF；不是说所有当前master都没有该分支。
+
+## 后续身份锚点修复
+
+R0007实读原生ID差异已回链原版bookmark/history来源：罗贝尔的script/history ID为1128，native31254是当次runtime CharacterID；旧29829不属于可跨build固定身份。两个prepared fixture content无29829硬编码，错误在旧执行plan/reader helper。永久harness新增显式 `kind=episode_identity_anchor`：首次actual paused/alive one-life snapshot→现成campaign-root(expected同revision)→第二snapshot完整帧一致后，才保存唯一episode/PID/generation/实际角色锚点；禁止重绑。事件ROOT及settle来源引用该episode，死亡后不会改成继承人。仅显式 `expect` 的 `{"$ref":...}`启用动态比较，旧literal行为保持，没有引入不存在的 `$before` 语法。
+
+最小两文件补丁SHA `33759c8cf69200df404c81c733bb0a2eda4206cf566acb87f8dc05f6966c387c`，四项新聚焦身份检查PASS，覆盖nativeID变化、错误ROOT/stale revision、PID/generation连续性、死亡后原episode及literal兼容。初稿测试patch换行导致apply-check RED保留，LF最终包装check PASS，检查未重跑。外置v8 SHA `5e3bfb5347dacf8285cee2349e2c3655e756075562ab53c57e5b55cdcdd10f5f`来自同字节永久harness；旧v7/10计划及完成native源/DLL均保持原样。新writer/noheir计划位于 `C:/workspace/ck3-upgrade-20261004/courtier-runtime-identity-agent-01/execution-plans-runtime-v8-01/`，尚未执行，实际窗口必须逐phase读回后才提交下一输入。

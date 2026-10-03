@@ -440,5 +440,140 @@ class OfflinePlanTests(unittest.TestCase):
             self.assertNotIn("debug_log", inbox.read_text(encoding="utf-8-sig"))
 
 
+
+class RuntimeEpisodeIdentityTests(unittest.TestCase):
+    def client_case(self, directory, character=31254, *, campaign_mismatch=False, event_mismatch=False, stale_query=False):
+        import copy
+        args = Namespace(output=Path(directory) / "report.json", command_timeout=1)
+        report, calls = {"steps": []}, []
+        client = PlanClient(None, args, report, lambda: None)
+        state = {"map_ready": True, "paused": True, "backend_id": "native-headless",
+                 "source": "injected-dll-named-pipe", "played_character":
+                 {"character_id": character, "alive": True, "source": "native"},
+                 "episode_character_id": character, "episode_run_id": "episode-original",
+                 "one_life_terminal": False, "revision": 47, "native_revision": 17,
+                 "snapshot_id": "native:17", "date_raw": 53144328, "local_player_id": 1,
+                 "active_event": {"instance_id": 1073741859}, "diagnostics":
+                 {"bridge_pid": 17001, "connection_generation": 3, "hello":
+                  {"expected_ck3_version": "1.20.0.3", "expected_ck3_sha256": "CURRENT-EXACT-SHA"}}}
+        query_revision = 47
+        async def call(name, arguments=None):
+            calls.append((name, copy.deepcopy(arguments)))
+            if name == "ck3_take_snapshot":
+                return copy.deepcopy(state)
+            if name == "ck3_query_campaign_root_context_v1":
+                self.assertEqual(arguments, {"expected_revision": 47})
+                return {"status": "available", "campaign_root_context_ready": True,
+                        "binding": {"snapshot_id": "native:17", "revision": 47,
+                                    "native_revision": 17, "date_raw": 53144328, "expected_revision": 47},
+                        "build": {"version": "1.20.0.3", "exe_sha256": "CURRENT-EXACT-SHA"},
+                        "campaign_root_context": {"player_character_id": character + 1 if campaign_mismatch else character,
+                                                  "player_character_alive": True, "local_player_id": 1,
+                                                  "snapshot_revision": 17, "date_raw": 53144328}}
+            if name == "ck3_query_current_event_window_context_v1":
+                self.assertEqual(arguments, {"event_instance_id": 1073741859, "expected_revision": query_revision})
+                return {"queried_revision": query_revision + int(stale_query),
+                        "current_event_window_context": {"current_event_instance_id": 1073741859,
+                            "event_definition_key": "cca120.12", "root_scope": {"type_key": "character",
+                            "typed_identity": {"status": "available", "kind": "character",
+                                               "character_id": character + 1 if event_mismatch else character}}}}
+            if name == "ck3_select_event_option":
+                self.assertEqual(arguments, {"option_number": 1, "event_instance_id": 1073741859,
+                                             "expected_revision": query_revision})
+                state.update(one_life_terminal=True, revision=48, native_revision=18, snapshot_id="native:18")
+                state["played_character"] = {"character_id": 88001, "alive": True, "source": "native"}
+                raise RuntimeError("callback result unavailable after actual death submission")
+            if name == "ck3_settle_one_life":
+                return {"episode_character_id": character, "one_life_settlement": {"source_character_id": character}}
+            if name == "literal":
+                return {"name": "$legacy", "object": {"value": "$legacy"}}
+            raise AssertionError("Unexpected tool " + name)
+        client.call = call
+        client.tools = {"ck3_query_campaign_root_context_v1": {"inputSchema": {"properties": {"expected_revision": {}}}},
+                        "ck3_query_current_event_window_context_v1": {"inputSchema": {"properties": {"expected_revision": {}}}},
+                        "ck3_select_event_option": {"inputSchema": {"properties": {"expected_revision": {}}}}}
+        return client, report, calls, state
+
+    def event_steps(self):
+        return [
+            {"id": "frame", "tool": "ck3_take_snapshot", "expect": {
+                "played_character.character_id": {"$ref": "episode.runtime_character_id"},
+                "episode_character_id": {"$ref": "episode.episode_character_id"},
+                "diagnostics.bridge_pid": {"$ref": "episode.bridge_pid"},
+                "diagnostics.connection_generation": {"$ref": "episode.connection_generation"}}},
+            {"id": "event-query", "tool": "ck3_query_current_event_window_context_v1", "args": {
+                "event_instance_id": "$results.frame.active_event.instance_id", "expected_revision": "$results.frame.revision"},
+             "expect": {"current_event_window_context.event_definition_key": "cca120.12",
+                        "current_event_window_context.root_scope.typed_identity.character_id": {"$ref": "episode.runtime_character_id"},
+                        "current_event_window_context.current_event_instance_id": {"$ref": "results.frame.active_event.instance_id"},
+                        "queried_revision": {"$ref": "results.frame.revision"}}},
+            {"id": "death-once", "tool": "ck3_select_event_option", "continue_on_error": True,
+             "args": {"option_number": 1, "event_instance_id": "$results.event-query.current_event_window_context.current_event_instance_id",
+                      "expected_revision": "$results.event-query.queried_revision"}},
+            {"id": "terminal", "tool": "ck3_take_snapshot", "expect": {"one_life_terminal": True,
+                "episode_character_id": {"$ref": "episode.episode_character_id"}}},
+            {"id": "settle", "tool": "ck3_settle_one_life", "expect": {
+                "episode_character_id": {"$ref": "episode.episode_character_id"},
+                "one_life_settlement.source_character_id": {"$ref": "episode.runtime_character_id"}}}]
+
+    def test_dynamic_episode_keeps_original_settlement_source_after_heir_change(self):
+        for character in (31254, 78651):
+            with self.subTest(character=character), tempfile.TemporaryDirectory() as temporary:
+                client, report, calls, state = self.client_case(temporary, character)
+                asyncio.run(client.execute([{"id": "anchor", "kind": "episode_identity_anchor", "expect": {"verified": True}}]))
+                report["steps"][0]["result"]["runtime_character_id"] = 99999
+                self.assertEqual(client.episode_identity["runtime_character_id"], character)
+                asyncio.run(client.execute(self.event_steps()))
+                self.assertEqual(sum(name == "ck3_select_event_option" for name, _ in calls), 1)
+                self.assertEqual(state["played_character"]["character_id"], 88001)
+                self.assertEqual(client.episode_identity["runtime_character_id"], character)
+                self.assertFalse(report["steps"][3]["ok"])
+                self.assertTrue(report["steps"][-1]["ok"])
+                self.assertEqual(report["steps"][-1]["resolved_expect"]["one_life_settlement.source_character_id"], character)
+                with self.assertRaisesRegex(ValueError, "already anchored"):
+                    asyncio.run(client.bind_episode_identity())
+
+    def test_wrong_campaign_or_event_root_and_stale_revision_prevent_death_submission(self):
+        for mode in ("campaign_mismatch", "event_mismatch", "stale_query"):
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as temporary:
+                client, report, calls, _ = self.client_case(temporary, **{mode: True})
+                with self.assertRaises(ValueError):
+                    asyncio.run(client.execute([{"id": "anchor", "kind": "episode_identity_anchor"}] + self.event_steps()))
+                self.assertFalse(any(name == "ck3_select_event_option" for name, _ in calls))
+                self.assertFalse(report["steps"][-1]["ok"])
+
+    def test_anchor_rejects_boolean_zero_missing_identity_and_pid_generation_changes(self):
+        for invalid in (True, 0, None):
+            with self.subTest(invalid=invalid), tempfile.TemporaryDirectory() as temporary:
+                client, _, calls, state = self.client_case(temporary)
+                state["played_character"]["character_id"] = invalid
+                state["episode_character_id"] = invalid
+                with self.assertRaises(ValueError):
+                    asyncio.run(client.bind_episode_identity())
+                self.assertFalse(any(name == "ck3_query_campaign_root_context_v1" for name, _ in calls))
+        for changed in ("bridge_pid", "connection_generation"):
+            with self.subTest(changed=changed), tempfile.TemporaryDirectory() as temporary:
+                client, _, calls, state = self.client_case(temporary)
+                original = client.call
+                async def crossed(name, arguments=None):
+                    result = await original(name, arguments)
+                    if name == "ck3_query_campaign_root_context_v1":
+                        state["diagnostics"][changed] += 1
+                    return result
+                client.call = crossed
+                with self.assertRaisesRegex(ValueError, "frame changed"):
+                    asyncio.run(client.bind_episode_identity())
+                self.assertIsNone(client.episode_identity)
+
+    def test_only_explicit_expect_refs_resolve_and_missing_anchor_blocks_followup(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            client, report, calls, _ = self.client_case(temporary)
+            asyncio.run(client.execute([{"id": "literal", "tool": "literal", "expect": {
+                "name": "$legacy", "object": {"value": "$legacy"}}}]))
+            self.assertTrue(report["steps"][0]["ok"])
+            with self.assertRaises(TypeError):
+                asyncio.run(client.execute(self.event_steps()))
+            self.assertFalse(any(name == "ck3_select_event_option" for name, _ in calls))
+
 if __name__ == "__main__":
     unittest.main()

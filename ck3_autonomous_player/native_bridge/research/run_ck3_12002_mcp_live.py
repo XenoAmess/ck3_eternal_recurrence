@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import copy
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -335,12 +336,43 @@ def fixture_session(spec: object, config: object, args: argparse.Namespace,
     return report
 
 
+def episode_identity_frame(snapshot: object) -> dict[str, object]:
+    """Admit an actual paused, alive native one-life frame, never a history ID."""
+    if not isinstance(snapshot, dict):
+        raise ValueError("episode anchor snapshot is not an object")
+    played = snapshot.get("played_character")
+    diagnostics = snapshot.get("diagnostics")
+    if not isinstance(played, dict) or not isinstance(diagnostics, dict):
+        raise ValueError("episode anchor lacks player or native binding")
+    character = played.get("character_id")
+    pid, generation = diagnostics.get("bridge_pid"), diagnostics.get("connection_generation")
+    if (type(character) is not int or not 1 <= character <= 2**31 - 1 or
+            snapshot.get("map_ready") is not True or snapshot.get("paused") is not True or
+            played.get("alive") is not True or played.get("source") != "native" or
+            type(snapshot.get("episode_character_id")) is not int or snapshot.get("episode_character_id") != character or
+            snapshot.get("one_life_terminal") is not False or
+            not isinstance(snapshot.get("episode_run_id"), str) or not snapshot["episode_run_id"] or
+            snapshot.get("backend_id") != "native-headless" or snapshot.get("source") != "injected-dll-named-pipe" or
+            type(pid) is not int or pid <= 0 or type(generation) is not int or generation <= 0):
+        raise ValueError("episode anchor requires one alive native player and matching immutable episode")
+    frame = {key: snapshot.get(key) for key in
+             ("snapshot_id", "revision", "native_revision", "date_raw", "local_player_id", "episode_run_id")}
+    if (not isinstance(frame["snapshot_id"], str) or not frame["snapshot_id"] or
+            type(frame["revision"]) is not int or frame["revision"] < 0 or
+            type(frame["native_revision"]) is not int or frame["native_revision"] <= 0 or
+            type(frame["date_raw"]) is not int or type(frame["local_player_id"]) is not int):
+        raise ValueError("episode anchor lacks an exact native frame")
+    return {**frame, "runtime_character_id": character,
+            "bridge_pid": pid, "connection_generation": generation}
+
+
 class PlanClient:
     def __init__(self, session: object, args: argparse.Namespace, report: dict[str, object], write: object) -> None:
         self.session, self.args, self.report, self.write = session, args, report, write
         self.tools: dict[str, dict[str, object]] = {}
         self.results: dict[str, object] = {}
         self.snapshot: dict[str, object] = {}
+        self.episode_identity: dict[str, object] | None = None
         self.consumed_control_plans: set[tuple[str, int]] = set()
         self.control_plan_execution_depth = 0
         self.calls = JsonLines(args.output.with_suffix(".mcp-calls.jsonl"))
@@ -375,6 +407,35 @@ class PlanClient:
         self.snapshot = value
         return value
 
+    async def bind_episode_identity(self) -> dict[str, object]:
+        if self.episode_identity is not None:
+            raise ValueError("episode identity is already anchored; never rebind after death or restart")
+        before = await self.fresh()
+        frame = episode_identity_frame(before)
+        root = await self.call("ck3_query_campaign_root_context_v1", {"expected_revision": frame["revision"]})
+        if not isinstance(root, dict):
+            raise ValueError("episode anchor campaign root is not an object")
+        expected_binding = {key: frame[key] for key in ("snapshot_id", "revision", "native_revision", "date_raw")}
+        expected_binding["expected_revision"] = frame["revision"]
+        context = root.get("campaign_root_context", {})
+        hello = before["diagnostics"].get("hello", {})
+        if (root.get("status") != "available" or root.get("campaign_root_context_ready") is not True or
+                root.get("binding") != expected_binding or not isinstance(context, dict) or
+                context.get("player_character_id") != frame["runtime_character_id"] or
+                context.get("player_character_alive") is not True or
+                context.get("local_player_id") != frame["local_player_id"] or
+                context.get("snapshot_revision") != frame["native_revision"] or
+                context.get("date_raw") != frame["date_raw"] or
+                root.get("build") != {"version": hello.get("expected_ck3_version"),
+                                      "exe_sha256": hello.get("expected_ck3_sha256")}):
+            raise ValueError("episode anchor campaign root crossed its exact snapshot/player/build")
+        after = await self.fresh()
+        if episode_identity_frame(after) != frame:
+            raise ValueError("episode anchor native frame changed across campaign-root query")
+        self.episode_identity = copy.deepcopy({**frame, "episode_character_id": frame["runtime_character_id"],
+                                               "verified": True, "snapshot": before, "campaign_root": root})
+        return copy.deepcopy(self.episode_identity)
+
     async def invoke(self, name: str, arguments: object = None, *, fresh_revision: bool = True) -> object:
         properties = self.tools.get(name, {}).get("inputSchema", {}).get("properties", {})
         needs_snapshot = fresh_revision and "expected_revision" in properties
@@ -385,7 +446,7 @@ class PlanClient:
             if isinstance(row, dict) and isinstance(row.get("army_id"), int)
         ][:64]
         context = {"revision": self.snapshot.get("revision"), "snapshot": self.snapshot,
-                   "army_ids": army_ids, "results": self.results}
+                   "army_ids": army_ids, "results": self.results, "episode": self.episode_identity}
         resolved = resolve(arguments or {}, context)
         if needs_snapshot and "expected_revision" not in resolved:
             resolved["expected_revision"] = self.snapshot["revision"]
@@ -498,7 +559,9 @@ class PlanClient:
             self.write()
             try:
                 kind = step.get("kind", "tool")
-                if kind == "advance_day":
+                if kind == "episode_identity_anchor":
+                    result = await self.bind_episode_identity()
+                elif kind == "advance_day":
                     result = await self.advance(step)
                 elif kind in {"write-inbox", "write_inbox"}:
                     result = await self.write_inbox(step)
@@ -549,6 +612,11 @@ class PlanClient:
                     result = await self.invoke(name, arguments, fresh_revision=step.get("fresh_revision", True))
                 row["result"] = result
                 for path, expected in step.get("expect", {}).items():
+                    # Only explicit $ref expectations opt in; legacy literals stay literal.
+                    if isinstance(expected, dict) and set(expected) == {"$ref"}:
+                        expected = resolve(expected, {"snapshot": self.snapshot, "result": result,
+                                                       "results": self.results, "episode": self.episode_identity})
+                    row.setdefault("resolved_expect", {})[path] = expected
                     actual = lookup(result, path)
                     if actual != expected:
                         raise ValueError(f"result {path} expected {expected!r}, received {actual!r}")
