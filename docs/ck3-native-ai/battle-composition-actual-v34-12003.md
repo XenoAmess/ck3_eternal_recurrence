@@ -58,3 +58,19 @@ flowchart TD
 源语义定位为 frozen `ck3_12002_combat.cpp:544`（counter absent）、`:1730`（骑士 membership 去重）、`:1751`（目标地理）、`:1763`（hypothetical width）、`:1768`（native resolution）、`:1841`（先判 v2 observation ready，再追加全模拟缺口）。安装 stock 的 `00_maa_types.txt` 定义这些普通类型，`07_ep3_maa_types.txt:67` 定义 conrois；final effective stats 使用本次实际查询，不用 stock base 值覆盖。
 
 本工作包没有新增 SDK、游戏动作、窗口操作、测试或 Git 修改；复用现有 available 实机证据。后续由 Root 消费独立 existing-combat transition，使用实际 route/horizon 决定移动，再在自然推进与真实接触后刷新组成/阶段，完成观察 → 决策 → 操作 → 验证。完整模拟缺口是施工入口，不是已撤销非战授权规则。
+
+## 2026-10-03：v40 真实目标省军队组成只读输入
+
+Root 于 v40 / R0019 / PID28788、frozen g42 / source `02e88d57fcef399368f34b23f497d3e8565af95d` 的 Robert29829 原普通战役，在 raw53238336 调用既有 registered `ck3_query_combat_simulation_inputs` v2：target2604、entry2605、player public CUnit83886367、current War16777231 敌军50331920。这是 explicit hypothetical contact，只将当前真实军团组成在指定目标省求值；远程敌军和 caller 指定的 attacker/defender role 不代表实际接战。
+
+该实机叶确实返回玩家军队40条真实 RegimentID，全部 identity/kind/effective_stats 可读，native CArmy50331794、owner29829。每条 `current_soldiers` / `maximum_soldiers`、MAA type 和 `siege_value_raw` / scale100000 已逐项保留为CSV；具名 pikemen_unit、armored_footmen、bowmen 的目标省 siege raw 均15000，具名 light_horsemen/conrois、levy及无 MAA type 的相应行均为合法0。无 MAA type 的可用 men_at_arms 行不能猜成普通招募兵种或围城器械。没有将 siege raw 求和为整支军队每日围城工作。
+
+当前实际 commander 为 Robert29829，generic advantage34，target2604 的 effective roll bounds0..10，均 status available。`input_observation_ready=true`，`monte_carlo_ready=false`；四个缺域仍为 damage_to_casualty_allocation、pursuit_transition、battle_end_and_retreat_transition、phase_event_rng_and_effects。当前部分只读输入为 production-live primitive，不是玩家战斗、实际contact、胜率或全场战斗OODA。
+
+查询 source.game_version / executable_sha256 在此 service 结果中为真实null并保留；exact .3 / EXE SHA 的归属来自 Root 同一runtime packet和受管实机，消费者没有伪填这两个查询字段。纯文件消费者先因假设这两个元数据必非null而报 harness RED，随后根据实际返回允许并记录该合法缺失，仅重新消费同一已存在叶一次，没有重发游戏query或推进时间。
+
+独立纯文件消费 GREEN / 96显式Require，无removable assert，未重跑已GREEN的rich-siege或旧combat矩阵。证据：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v40/actual-retreat-composition-v40-01/008-ck3_query_combat_simulation_inputs.json`；消费者 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/siege-efficiency-inputs/production-validation/actual-composition-v40-01/ROOT-DELIVERY.json`、同目录 `ACTUAL-COMPOSITION-PROOF.json`、`ACTUAL-COMPOSITION-SUMMARY.json` 与 `PLAYER-REGIMENT-SIEGE-VALUES.csv`。
+
+同次 Root 独立正常保存 h5034 / raw53238336 / 91,105,480B / SHA `7ebe6682539b7e5477566a4613afc2b36356e0880ed94a0d7f9c4a3b62758983`；累计3917日 / resume764 / 2026-10-03增量669保持不变。本纯文件lane 0 SDK / 0游戏 / 0窗口 / 0 Git写 / 0新日 / 0收复、战斗或战争胜利信用。将领 siege-phase modifier 新候选源码属于另外的 source/static 包，此 actual 旧口未发布该新字段，不混为已实机读回或已加速围城。
+
+Root 同轮 R0019 / PID28788 已正常退出 `exit 0`。本文前面的 v34 表格和目标2640仍属于其原帧；本段 target2604 的当前实际输入不回填旧表。

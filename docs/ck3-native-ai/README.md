@@ -1,5 +1,20 @@
 # CK3 原生 AI 决策树索引
 
+### 撤退原生树与当前编成的实际边界
+
+[撤退、追击及再接战原生树](battle-retreat-pursuit-reengagement-12003.md)的独立三路径文档包已发布 `0fd88714b154c69bef90c3265a7dc0c56dcbb916`，现有双route查询实读ETA51/42日，不代表撤退解除或固定保护期。[当前目标省编成](battle-composition-actual-v34-12003.md)为target2604/entry2605指定的hypothetical contact，真实40军团与Robert advantage34/roll0..10可读，MC仍false，未接战或算胜率。
+
+## 2026-10-03：v40 已验证查询与正常关闭的当前入口
+
+v40/R0019/PID28788运行时最小化且非前台，现已正常stop，controller46063 exit0、completed-green。末正常pair为 **h5034 / raw53238336 / 累计3917日**（接续+764、10月3日+669；本轮零新增日），save91,105,480字节、SHA-256 `7ebe6682539b7e5477566a4613afc2b36356e0880ed94a0d7f9c4a3b62758983`。旧8-ID strength请求包含已脱离当前scope的474，harness RED保留；重新派生当前7-ID scope后查询GREEN。
+
+- [召盟最终CanSendfalse原因](call-ally-final-cansend-false-12003.md)：九行原因字段实读、零null，全部C88=false且其余六项通过；C88为`is_valid_showing_failures_only`。组内具体触发原因未采集，当前只读primitive，没有发送或取得盟军。
+- [当前军队补给源](m5-primary-current-army-supply-source-2026-09-16.md)：Robert当前2290/2461兵、supply100、40个regiments、战略base74829。当前值实读不说明人数变化的原因。
+- [移动与撤退原生输入](war-movement-1.20.0.3-readiness-2026-10-03.md)及[实际编成](battle-composition-actual-v34-12003.md)：retreat004/006与composition008查询GREEN；两支敌军退往2631/8754，ETA51/42日均为estimate。只读primitive，不代表撤退已解除、我方获胜或终结结果已确认。
+- [Robert防御战争决策树](robert-defensive-war-loop-12003.md)：保留当前战争观察与决策入口；[围城与占领](war-occupation-holding-siege-observation-12003.md)沿先前49实际日的冻结证据继续，不由本轮查询增加完成信用。
+
+后继v41/sourcecd5db/冻结g43严格541TU（538unique、1041inputs）、jobs64编译84.544788s GREEN，DLL SHA-256 `779f2a9f7b2ce404a9dc44b480f32697970ed19e19d7a19138e4a52096999c32`。官方prepare/verify/stage与h5034 renderer已GREEN，随后R0020/PID62988 cold、Sway4、occupation/current7strength实际GREEN，SDK21537正常close；SDK20431显式单日最多64轮已启动尚未终态，0预计日，不提前授单日推进loop资格。最新保存、失败与后续施工回链[接续报告](../handover/2026-10-03-g2-v33-resume.md)和[统一进度](../autonomous-agent-progress/README.md)；下方入口保留各自历史截止。
+
 ## 2026-10-03：v39 四十九个实际日围城批次的当前入口
 
 最新正常保存为 **h5021 / raw53238336 / 累计3917日**（本次接续+764、10月3日+669），save91,105,707字节、SHA-256 `d6e9986ccf24fd85c853a08921cd4d200e2b279a33236a31619e8fc1ba88bab2`。本批37轮：前36轮各推进24h成功，第37轮请求7日、实际推进13日后报harness RED但正常保存；Root已按真实日期差计入49个calendar日，不补造这13日的中间逐日帧。

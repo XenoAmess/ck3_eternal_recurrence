@@ -124,3 +124,13 @@ paused live 验收。`hard_loss_inputs` 仍是可选缺口，未在本修复扩�
 首次作战主线先验收实际军事结果；
 被俘与死亡只有在真实人物/羁押或事件证据出现后才计入，不因普通兵员 hard loss、骑士 entry 减少或
 人物从一侧数组消失自动认定。
+
+## 2026-10-03 v40：败军现有路线实读，零日增量
+
+Root 的实际 `004` / `006` 查询在同一暂停日期 `date_raw=53238336` 读取两支败军；runtime 为 `v40` / `R0019` / PID `28788`，冻结源 `Z:/g42` / `02e88d57fcef399368f34b23f497d3e8565af95d`。复用 owner 已消费的 `battle-retreat-pursuit/query-increment/actual-v40-01/ROOT-DELIVERY.json` 与 `DAY-WEEK-FIELDS.json`，本段不重测原生树、终结或游戏状态。Exact build 仍为本文的 `1.20.0.3` / Steam `25652598` / Root EXE freeze。
+
+`50331920` 仍在 `2634` 撤退，已提交路线为 `2633→2627→2626→8753→2629→2630→2631`，最终 move target `2631`；对应原生 arrival raw 数组为 `[53238480,53238720,53238936,53239080,53239272,53239440,53239560]`，相对本帧的预计到达分别为 `[6,16,25,31,39,46,51]` 日。`83886484` 同样仍在 `2634` 撤退，路线为 `1032→8645→8754`、move target `8754`，arrival raw `[53238960,53239104,53239344]`，预计 `[26,32,42]` 日。两行 `status=available`、coordinator `16777247`、`route_alignment=no_assignment`，assignment ETA 均合法 `null`。完整已提交 route/ETA 与原生 AI membership 已可读取，无需为这两条 timeline 新增 API。
+
+两军的 `asking_for_help` / `assigned_to_help` / `asking_changed_last_evaluation` 均为 false；`cross_coordinator_request_valid_raw=0`，power basis 与 cross request power 保留 `null`。首条 route edge 的 remaining duration Q100000 分别为 `638752` 与 `2559441`，不替换已发布的 rounded arrival dates。该增量是两支实际败军路线与 AI membership 的 **production-live primitive**；ETA 是当前预计，不能证明撤退解除、保护期、实际到达、追击动作、玩家接战或胜率。原生继续/撤退树及策略仍由对应 owner 维护，见 [撤退锁、接触过滤与再交战原生树](battle-retreat-pursuit-reengagement-12003.md)。
+
+本轮 latest normal pair 为 `h5034` / raw `53238336` / `91105480` B / save SHA-256 `7ebe6682539b7e5477566a4613afc2b36356e0880ed94a0d7f9c4a3b62758983`，R0019 / PID28788 已正常退出 `exit 0`。读取新增 `0` 日：累计仍 `3917/36524`，恢复后 `764` 日，2026-10-03 增量 `669` 日。未计撤退解除、收复、玩家胜利或完整战争完成；下一步在真实日期推进后重读撤退、位置和 route，继续以当前围城实际 outcome 决策。
