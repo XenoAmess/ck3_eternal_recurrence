@@ -1,5 +1,7 @@
 # G2 全游戏自治需求与执行记录
 
+2026-10-03 授权更新：项目所有者已取消全部非战限制，全面授权战争与战斗的原生 AI 研究、只读 bridge/MCP、实现、策略及实机执行。旧 nonwar-only、战争停研、执行 OFF 和仅由其他维护者施工的授权限制全部撤销；历史 OFF、零动作、RED 与当时分工仍按原证据保留，不再构成后续禁令。 Robert 29829 原普通战役仍为唯一自动游玩测试入口；原生 AI 研究优先、exact-build 绑定、玩家限定及最小化/不抢焦点继续执行。授权不增加能力、里程碑、持久游戏日或 G2/NW credit。 旧 NW 队列与技术标识继续描述其原工作包，当前执行者不再只消费其他维护者的战争交付。
+
 本页状态摘要更新于 **2026-09-29（Asia/Shanghai）**。8 项里程碑的定义、分母、状态和通过条件以
 [`g2-requirements-v1.json`](g2-requirements-v1.json) 为准；工作包投影见
 [`current-state.json`](../project-state/current-state.json)，当前 PID、owner、RED 须按其中声明的
@@ -100,7 +102,7 @@ WAR/R0345 V3 receiver ACK SHA-256 `436F9C17CE4304D472AC52563FBB13CA51D199FBA16E4
 - G2 固定完成数 **3/8**：M0、M1、M3 complete；M2、M4 in progress；M5–M7 not started。局部动作或只读能力不自动改变里程碑状态。
 - 正式 Robert 最近可恢复持久配对为 **h3911/raw53219928、3,150/36,524 游戏日**；百年门 **0/1**、首整局 **0/1**、独立种子 **0/2**。派生 h90 日期不计入 Robert。R0321 从 h3860 继续，前 26/27 turn 成功，持久 **+6 日**；第 27 turn 因战争接触同帧 forecast producer `unavailable`、encounter scope 不匹配而阻断，**0 新非战争动作**，整轮仍为 RED，不提升 G2 里程碑。正式报告 `Z:\ck3_mod_rewrite\.task-tmp\M7-ROBERT-H3860-a6d1\run-formal-36\formal-report.txt` SHA-256 `7A7774C59DA6099B0A1FFD650AB21A29407BD8B22B1056C7B6F5053251A5CF30`；H3911 save SHA-256 `5EFB3B3CF3EE7368C6C12D4C984B4A0366AA8A971409165016E3DC24725A4746`、源 driver SHA-256 `DE09EA8B3648FAE89F90E5459991BC66AE52154971948DB39C353D05EEAAEE33`，配对身份 SHA-256 `FDE4CC3A64DF5BB5D83F7B132FE5CC2985D31ACA28F0883A1C6245C197B5915E`、官方 no-launch 报告 SHA-256 `1067E8468BE61A6B0240E12B145FD173D6DCD4E786FED3991E7E436253E75712` 为 `ready`。R0319 的 36/36 合格结果仍见[日报](daily/2026-09-28.md)。
 - R0311–R0313 的囚犯 47028 私有 `current_gold` 路线已有一次 typed 提交、实际 **7 金**与释放、下一正式查询及新 PID 冷恢复的窄范围闭环；公共 M6 query/action/ad 与完整 M6 仍未开放。Emma 的旧 `not_player_child` 读数已由 #504 的原生 `is_child_of` 预门替换；R0323 同帧读到真实亲子与默认五角色 Can Send/最终答复阳性。#508/R0324 读到 Emma37265 与 Gerard37267 的默认婚配母系未生效，政策不提交；#510/R0325 读到 `selected=true` 的母系选项最终 Can Send/答复阳性且若接受可成婚。R0324/R0325 均是**只读、0 动作/日期**，唯一潜在联盟 pair 的 `would_attempt_if_accepted=false`。R0328 对该 subject-bound 选项完成一次私有 typed 提交，native ACK accepted、持久 ledger `receipt_pending`；#515 完成 child sidecar 复制接线。R0329 新 PID 原生读到提案 `pending/outbound active`、无重复提交，随后战终查询恢复；第三步安全截停造成 wrapper `cold_result_not_qualified` 分类 RED。R0352 再读该 Robert 提案仍 pending，资格外层 RED 保留；R0357 新 PID 又读 pending，并通过结果专用资格，**Robert 这笔婚姻、联盟及日期推进仍未发生**。另有 R0351 派生 h90 场景实际订婚与联盟，R0354 新 PID 冷读已证实，仍不提升完整家庭门。详见[09-29 日报](daily/2026-09-29.md)。
-- 当前非战争执行顺序为 **NW-LIFE → NW-ECON → NW-FAMILY**，**NW-JOINT** 同帧资源分配并行接线。R0321 多帧生活方式机会复核均为有效财富 focus、未用点数 **0**，无可证明漏消费；R0326 在 Robert 战时同帧读到合法且预计增收的空槽农庄，但 M5 战争现金七字段缺项、`cost_ready/action_ready=false`，未开工或实收；#505 的 `selected_step=null` 修复分支在该帧未走到。R0351 在**独立派生 h90** 用正式 M5 选择器开工一项农庄，并选出继承人订婚且读到实际双向联盟；R0354 新 PID 又读回三项状态且继续正式 turn，R0370 新 PID 冷读仍见同槽施工中、订婚与双向联盟保持，派生再推进 28 天，但恢复复查重置到期门且未读到完工收益，不能外推到 Robert 战时现金比较。Emma 母系选项已提交且待物质后置及恢复，不能从 ACK 推断已婚；R0327 派系只读在当前窄政策下无直属有地成员赠礼目标，未进入成本/合法动作。联合比较不能把战争现金缺项当零。战争研究由维护者负责，非战争执行者只消费已交付入口。PRV008 冻结资格与这些新候选分开。
+- 当前非战争执行顺序为 **NW-LIFE → NW-ECON → NW-FAMILY**，**NW-JOINT** 同帧资源分配并行接线。R0321 多帧生活方式机会复核均为有效财富 focus、未用点数 **0**，无可证明漏消费；R0326 在 Robert 战时同帧读到合法且预计增收的空槽农庄，但 M5 战争现金七字段缺项、`cost_ready/action_ready=false`，未开工或实收；#505 的 `selected_step=null` 修复分支在该帧未走到。R0351 在**独立派生 h90** 用正式 M5 选择器开工一项农庄，并选出继承人订婚且读到实际双向联盟；R0354 新 PID 又读回三项状态且继续正式 turn，R0370 新 PID 冷读仍见同槽施工中、订婚与双向联盟保持，派生再推进 28 天，但恢复复查重置到期门且未读到完工收益，不能外推到 Robert 战时现金比较。Emma 母系选项已提交且待物质后置及恢复，不能从 ACK 推断已婚；R0327 派系只读在当前窄政策下无直属有地成员赠礼目标，未进入成本/合法动作。联合比较不能把战争现金缺项当零。该 09-29 阶段的战争研究由维护者负责，非战争执行者只消费已交付入口；2026-10-03 已撤销此分工限制，当前执行者可直接补齐战争研究、观测、实现与策略。PRV008 冻结资格与这些新候选分开。
 
 ## 口径纠正
 
@@ -294,7 +296,7 @@ event-context-v2 effect visitor 与更多事件仍是扩展债，不再作为这
 `26/26` GREEN，详见 [`event-campaign-utility.md`](../ck3-native-ai/event-campaign-utility.md)。
 
 战争 controller 的既有成熟执行器继续保留；assigned reinforcement、terminal 长尾与更多 CB 改为真实 encounter 驱动。
-2026-10-02 最新授权已全面开放宗教：faith/religion、rite、doctrine、tenet、fervor、改宗、宗教改革、教士与 holy order 均可按 exact-build 原生树、只读 MCP、Robert paused 观测及正式动作后置推进。此前两项窄例外限制已撤销；现有战争执行开关与战争研究停止约束独立保留，授权不增加 G2 credit 或把未实现的宗教策略称为完成。
+2026-10-02 最新授权已全面开放宗教：faith/religion、rite、doctrine、tenet、fervor、改宗、宗教改革、教士与 holy order 均可按 exact-build 原生树、只读 MCP、Robert paused 观测及正式动作后置推进。此前两项窄例外限制已撤销；2026-10-03 项目所有者另已取消全部非战限制并全面授权战争与战斗研究、观测、实现、策略及实机执行，旧战争停研及执行 OFF 不再构成授权限制。授权不增加 G2 credit 或把未实现的宗教/战争策略称为完成。
 
 ## 报告规则
 
@@ -677,4 +679,4 @@ construction and a real vassal/faction intervention. Global G2 stays `1/8`.
 
 ## 2026-09-29 晚间交接更新
 
-用户要求当前执行者收口并停止新工作。R0373 仍为本机最后一场 CK3：已读到角色38293的宴会邀请前候选，未邀请或 Start。后续 #657 LIFE 同日重试、#658/#660 私有规则只读、#663 家庭同帧只读、#662 战时建设只读为源码/测试与配对增量；冻结的宾客规则和建设候选均未运行，#664/#665 为未合入草稿。**G2 仍 3/8，Robert H3911/raw53219928、3,150/36,524 日，长期门 0/1、0/1、0/2。** 当前 master、官方 CI、证据哈希、待清理分支和接手命令见[非战争休假交接](../handover/2026-09-29-nonwar-maintainer-vacation-handoff.md)。当前 PID/owner/RED 仍须从 live source 实时核查。
+09-29 当时用户要求当前执行者收口并停止新工作；这是历史休假交接，后续已由恢复任务及 2026-10-03 完整战争授权接续。该交接时 R0373 为本机最后一场 CK3：已读到角色38293的宴会邀请前候选，未邀请或 Start。后续 #657 LIFE 同日重试、#658/#660 私有规则只读、#663 家庭同帧只读、#662 战时建设只读为源码/测试与配对增量；冻结的宾客规则和建设候选均未运行，#664/#665 为未合入草稿。**G2 仍 3/8，Robert H3911/raw53219928、3,150/36,524 日，长期门 0/1、0/1、0/2。** 当前 master、官方 CI、证据哈希、待清理分支和接手命令见[非战争休假交接](../handover/2026-09-29-nonwar-maintainer-vacation-handoff.md)。当前 PID/owner/RED 仍须从 live source 实时核查。

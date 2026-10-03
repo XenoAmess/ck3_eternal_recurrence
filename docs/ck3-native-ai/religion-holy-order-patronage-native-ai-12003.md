@@ -1,6 +1,6 @@
 # CK3 1.20.0.3：holy order 成立、赞助与地产原生树
 
-2026-10-03 离线研究。宗教领域已按项目所有者 2026-10-02 授权全面开放，holy order 也在其中；本页聚焦成立、patronage、地产租约、财政和解散。当前 readiness 为 **research**。本包没有连接游戏、SDK 或 pipe，没有占用窗口、成立或解散组织、出租地产、借款、改变日期或修改运行源码。Robert 29829 仍是唯一实机入口；战争研究停止与 `WAR_CASH/PREWAR` OFF 保持，本页不研究雇佣、集结或战场策略。
+2026-10-03 离线研究。宗教领域已按项目所有者 2026-10-02 授权全面开放，holy order 也在其中；本页聚焦成立、patronage、地产租约、财政和解散。当前 readiness 为 **research**。本包没有连接游戏、SDK 或 pipe，没有占用窗口、成立或解散组织、出租地产、借款、改变日期或修改运行源码。Robert 29829 仍是唯一原始 campaign 实机入口；2026-10-03 项目所有者已全面授权当前执行者开展战争研究、实现、现金政策及实机运行，旧战争研究停止、`WAR_CASH/PREWAR` OFF 和非战争限定授权已撤销。本页已记录的研究尚未闭合雇佣、集结或战场策略，不因授权提升 readiness。
 
 ## 冻结输入
 
@@ -127,7 +127,7 @@ flowchart TD
 
 1. 从 exact-build `HolyOrder.GetPatron/GetFounder/GetLeasedTitles`、stock `holy_order_patron/num_leased_titles/leader.capital_county` 对应 reflection 注册与 caller，闭合同 Faith/current actor 相关组织集合和身份。新增同一 MCP 的只读组织/租约 context：order opaque ID、type、leader、founder、current patron、capital county、每个实际 lease 的 title/holder/lessee 和合法零值。先让 Robert 能真实判断“我当前赞助什么、有哪些地产出租”。
 2. 当前没有 generic decision MCP，需闭合当前 exact-build final observation；从 `DecisionViewWidgetSelectBarony.HasValidTitles/GetCurrentTitle/OnSelectCapital` 和 `LeaseOutBaroniesWindow.GetTitles` 追具体 title候选 producer、selected-context、native final gates/cost/reasons。修道县选择另追 `select_county_title_in_realm`，避免用军事barony reader套县空槽。旧 found-kingdom库只作为调用模型参考。只读 output 必须反映真实 current candidate和具体成本；未实现字段不能长期为 null且宣称资格已完成。
-3. 原生树/只读输入落盘并取得 Robert paused snapshot 后，才选择一个实际合法且有价值的非战争 route。若自然索地事件先出现，沿原事件合法选项与独立租约/资源/opinion material扩充该叶；不为研究制造事件，不用另一个ruler取得live。主动lease需finalaccept和donation选择，普通revoke需最后一处lease的native结果，PAM解散需真实religious-head权限。
+3. 原生树/只读输入落盘并取得 Robert paused snapshot 后，才选择一个实际合法且有价值的 route。本页已记录的候选为 patronage/租约等路线；军事路线可沿 2026-10-03 全面战争授权补齐原生树、观测与实机验收。若自然索地事件先出现，沿原事件合法选项与独立租约/资源/opinion material扩充该叶；不为研究制造事件，不用另一个ruler取得live。主动lease需finalaccept和donation选择，普通revoke需最后一处lease的native结果，PAM解散需真实religious-head权限。
 4. 成立/出租/撤销后，用独立 order/lease与resource查询、正常时间推进、完整checkpoint和规定cold验证业务结果。ACK、通知文本、函数名、stock effect或本页 research 都不增加 G2、NW loop或完成一局计数。
 
 最优下一只读增量是 **current actor 的 patroned orders及其capital/leases**，它立即为地产授予、宗教财政与现有组织机会提供决策价值。尚未闭合的真实输入列为施工，不恢复旧“holy order 暂缓”拒绝。native patron重算、AI最终检查/utility、movement/monastic请求调度、创建与销毁ABI、borrow ledger和所有live结果保持 **unknown/research**。

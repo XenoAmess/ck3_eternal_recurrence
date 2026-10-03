@@ -1,6 +1,8 @@
 # G2 CK3 玩法覆盖与 Native/MCP 缺口研究
 
-2026-10-02 授权更新：项目所有者已全面开放 faith/religion、rite、doctrine、tenet、fervor、改宗、宗教改革、clergy、holy order、圣战与大圣战的深入研究与实现。下列冻结记录中的旧宗教暂缓仅保留当时事实，已全部撤销；详见[当前授权](../../AGENTS.md)。开放不自动提升能力等级，也不改变罗贝尔唯一测试入口、战争研究停止及执行OFF、玩家限定或最小化后台操作约束。
+2026-10-03 授权更新：项目所有者已取消全部非战限制，全面授权战争与战斗的原生 AI 研究、只读 bridge/MCP、实现、策略及实机执行。旧 nonwar-only、战争停研、执行 OFF 和仅由其他维护者施工的授权限制全部撤销；历史 OFF、零动作、RED 与当时分工仍按原证据保留，不再构成后续禁令。 Robert 29829 原普通战役仍为唯一自动游玩测试入口；原生 AI 研究优先、exact-build 绑定、玩家限定及最小化/不抢焦点继续执行。授权不增加能力、里程碑、持久游戏日或 G2/NW credit。 下文 09-12 的先后顺序属于当时研究建议，不再要求先完成全部和平底座才开展完整战争；当前战争观测与策略缺口按真实决策依赖直接推进。
+
+2026-10-02 授权更新：项目所有者已全面开放 faith/religion、rite、doctrine、tenet、fervor、改宗、宗教改革、clergy、holy order、圣战与大圣战的深入研究与实现。下列冻结记录中的旧宗教暂缓仅保留当时事实，已全部撤销；详见[当前授权](../../AGENTS.md)。宗教授权不自动提升能力等级；罗贝尔唯一测试入口、玩家限定及最小化后台操作继续执行。原战争研究停止与执行 OFF 的授权限制已于 2026-10-03 撤销，后续全面开放战争研究、实现、策略和实机执行。
 
 后续施工入口：先沿[宗教整合](../ck3-native-ai/ck3-1.20.0.2-religion-integration.md)、[教义与Tenet](../ck3-native-ai/religion_doctrine12002_overview.md)和[改革](../ck3-native-ai/religion-reform12002-overview.md)的原生树与已有只读查询补齐当前exact-build输入；自然宗教事件按真实选项、作用域与效果接回事件消费者。Holy order等未闭合分支继续定位原生资格、成本、对象状态及结果查询，先交付只读bridge/MCP，再据罗贝尔paused材料设计和验证策略；旧版实机证据不自动继承。
 
@@ -12,14 +14,14 @@
 
 它离“会玩 CK3”仍有明显距离。CK3 的主循环是角色、家族、领地、封臣、继承、外交、战争与事件共同构成的跨代资源配置，而当前 planner 的可用信息和动作主要集中在既有战争。和平时期最常见、对存续最关键的选择——继承、子女、婚姻质量、经济建设、内阁、封臣与派系、健康与压力——多数仍是 `visual-narrow`、`implemented` 或 `absent`。官方对 CK3 的产品定义本身就把血统、顾问、继承人、婚姻联盟、谋略与领地治理和战争放在同一层级；战争只是其中一种手段。[^1]
 
-日报中的 `T1=90%` 只表示 `GEN-034` 这个窄工作包接近收口，不能解释为整套 G2 自动玩家已经完成 90%。下一阶段应先完成它剩余的三项输入，用一个真实的三路战争退出 OODA 收口当前工作包。此后停止继续横向扩展单一 CB 的微观 ABI，转向四个会阻断几乎所有整局目标的公共底座：
+日报中的 `T1=90%` 只表示 `GEN-034` 这个窄工作包接近收口，不能解释为整套 G2 自动玩家已经完成 90%。下一阶段应先完成它剩余的三项输入，用一个真实的三路战争退出 OODA 收口当前工作包。09-12 当时建议此后停止继续横向扩展单一 CB 的微观 ABI，转向四个会阻断几乎所有整局目标的公共底座；该旧排序不约束 2026-10-03 已获完整授权的战争研究与施工：
 
 1. 通用实体发现与批量 world/realm state；
 2. 自然事件的 scope、结构化 effects 与结果验证；
 3. 继承、家庭、健康、压力和正统性组成的生存连续性；
 4. 经济、领地、内阁、封臣和派系组成的和平治理闭环。
 
-完整战争 controller 应在这四项之后继续补齐补给、损耗、军备、盟友、多战争和完整终战语义。活动、旅行、宫廷和各政府/DLC 应由 runtime feature 与当前角色身份按需启用，不应一次横向铺开。当前 playset 的一次 production-live manifest 显示 44/44 effective feature flag 全为 true、29 个 runtime DLC key 可见，说明这些域最终都要覆盖；这份单 PID 证据不等于每个 feature 已经完成，也不能反推账户 entitlement。[loaded-feature-manifest.md](../ck3-native-ai/loaded-feature-manifest.md)
+09-12 当时建议完整战争 controller 在这四项之后补齐补给、损耗、军备、盟友、多战争和完整终战语义；2026-10-03 起可按当前实际战争决策依赖直接补齐，不再以和平底座全部完成为战争施工前置。活动、旅行、宫廷和各政府/DLC 应由 runtime feature 与当前角色身份按需启用，不应一次横向铺开。当前 playset 的一次 production-live manifest 显示 44/44 effective feature flag 全为 true、29 个 runtime DLC key 可见，说明这些域最终都要覆盖；这份单 PID 证据不等于每个 feature 已经完成，也不能反推账户 entitlement。[loaded-feature-manifest.md](../ck3-native-ai/loaded-feature-manifest.md)
 
 ## 资料边界与判断口径
 

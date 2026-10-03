@@ -2,7 +2,7 @@
 
 2026-10-03，阶段截止累计3834游戏日。固定决议 **`pam_decision_confession`** 的独立最终条款已在 v29 达到 **production-live primitive**，新增实际修行类型在 v32 同一宗教 Context 查询实读。ROOT 随后一次调用三个现成只读方法：当前罗贝尔的类型为 `christian_fulfillment`，当前运行期 `by_god_alone` 功能位为true；忏悔仍 `is_shown=false / can_take=false / affordable=true`、四项费用为零、仅通用“你未满足所有要求”。现成 TenetRows 实际输出两项Core，没有固定 `tenet_confession` 的有效许可状态，不能把缺行解释成false。因此具体隐藏原因尚未直接闭合，下一施工是补这个固定原生状态。未执行忏悔，也没有实测减压或宗教收益。
 
-宗教领域按项目所有者最新授权全面开放。罗贝尔唯一测试入口和独立战争暂停继续有效。ROOT 独占源码集成与实机；本 worker 只完成后台研究、外置独占 leaf／fixture 及本轮 actual 离线提取，没有启动、附加或操作 CK3，没有 SDK／pipe／窗口／Git 操作，没有付费、任命、改宗、改革或军事动作。
+宗教领域按项目所有者最新授权全面开放；2026-10-03 战争研究、实现、策略及实机运行也已全面授权，旧独立战争暂停与非战争限定已撤销。罗贝尔 29829 唯一原始 campaign 入口、exact-build、原生 AI 研究优先及最小化/noFocus 规则继续有效；授权不改变本页能力状态。ROOT 独占源码集成与实机；本 worker 只完成后台研究、外置独占 leaf／fixture 及本轮 actual 离线提取，没有启动、附加或操作 CK3，没有 SDK／pipe／窗口／Git 操作，没有付费、任命、改宗、改革或军事动作。
 
 ## 版本与可复用实际基线
 

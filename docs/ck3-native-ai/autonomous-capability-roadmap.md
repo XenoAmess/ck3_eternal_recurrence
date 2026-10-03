@@ -51,8 +51,10 @@ gameplay 能力，
 宗教/信仰领域已由项目所有者于 **2026-10-02 全面开放**。faith/religion、rite、doctrine、tenet、fervor、改宗、宗教改革、教士、
 圣战/大圣战和 holy order 均可深入研究、补只读 bridge/MCP、设计策略并进行 Robert 实机验收。此前暂缓及两项窄例外规则已撤销；
 历史 artifact 和旧失败原因仍保留当时事实，不再作为当前施工拒绝。新增能力继续遵守原生 AI 研究优先、exact-build 绑定与真实
-观测评级，未实现字段须列出可施工入口。此授权不代表宗教全域完成，也不改变 Robert 唯一测试入口、战争研究停止或
-`WAR_CASH/PREWAR` OFF；下列战争里程碑是能力债，当前不因此启动战争研究或动作。
+观测评级，未实现字段须列出可施工入口。项目所有者于 **2026-10-03 撤销全部仅非战争施工限制**，全面授权战争与战斗的原生研究、
+实现、策略和实机验收，并允许高并发研究与施工。此前战争暂停、战争工作仅限委派研究及 `WAR_CASH/PREWAR` 必须 OFF 的授权限制
+均已撤销；冻结包的实际 OFF 配置和旧失败原因仍保留为历史证据。权限变化不提升 readiness 或完成数。后续实机继续以唯一原普通
+罗贝尔 Robert `29829` campaign 为入口，遵守原生 AI 研究优先、exact-build 绑定及最小化/noFocus；游戏、SDK、pipe 与窗口由 ROOT 单一 owner 串行操作。
 
 本次盘点以这些实现入口为准，后续 capability 变化必须同步更新本页：
 
@@ -163,7 +165,7 @@ snapshot 展开 generation-bound literal，不能把 DLL template 本身当成�
 
 - `offer-white-peace-N` 只对当前 GEN-004 primary-attacker `claim_cb` 最窄 counter-policy 解冻并 production-live；
   `surrender-war-N`、其它 CB/角色、人质组合与通用 structured exit/campaign policy 仍冻结；
-- combat v2/v3 可返回输入，不等于已有胜率，也没有授权主动接战；
+- combat v2/v3 可返回输入，不等于已有胜率；2026-10-03 已授权主动接战的研究、实现、策略与实机验收，具体能力仍按真实输入和结果分级；
 - MCP 提供 typed snapshot、planner、auto-turn、save/restore、event、marriage、declaration、army move、assault、
   disband、enforce、combat query 与 termination query；split/merge、route preview/contact 等仍主要经
   `ck3_execute_step` + capability literal 使用，后续应补成 first-class typed tools；
@@ -228,7 +230,7 @@ snapshot 展开 generation-bound literal，不能把 DLL template 本身当成�
 
 - 从和平状态由 planner 自主选择并宣告一场有效用依据的战争，再一直打到胜/和/降并处理战后；
 - 一次不可避免接敌的“预测 → 接战/绕行/增援/撤退 → 实际战斗结果”闭环；
-- 盟友召集/加入、多个战争、补给/损耗、海运、佣兵、raid 与圣战/大圣战完整战争 OODA；骑士团宗教研究已获授权，实际动作仍依其独立执行开关与 readiness；
+- 盟友召集/加入、多个战争、补给/损耗、海运、佣兵、raid 与圣战/大圣战完整战争 OODA；这些领域已全面授权，实际动作仍需对应原生合法性、观测、接线与独立结果证据；
 - 通用事件、经济、内阁、生活方式、继承、婚姻、外交、封臣、派系、谋略、文化、宗教、活动/旅行等长期自治；婚姻信仰输入优先复用原生判定，缺观测继续补同一 MCP；
 - 自然死亡完整终验，以及普通 campaign 跨继承继续。
 
@@ -390,13 +392,13 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 - 观测：gold/prestige/piety/legitimacy/renown、income/expense breakdown、domain holdings/buildings/slots/construction、control/development、
   councilors/tasks、levy/MAA/reinforcement、knights/commanders、mercenary 与 holy-order 市场。既有 piety 余额不是完整宗教成本；
   holy-order 的可雇佣性、费用、租赁与军队身份须按 exact build 补原生树及只读 provider。
-- 动作：建造/升级/取消、council assign/task/target、lifestyle/focus/perk、招募/升级/解散 MAA、knight/commander 管理、雇佣兵与骑士团；骑士团研究已获授权，真实动作须其自身合法性与独立结果可观测后执行，战争开关保持原状态。
+- 动作：建造/升级/取消、council assign/task/target、lifestyle/focus/perk、招募/升级/解散 MAA、knight/commander 管理、雇佣兵与骑士团；真实动作须其自身合法性与独立结果可观测后执行。2026-10-03 已撤销战争执行 OFF 的授权限制，现有冻结开关值仍记录实际构建事实。
 - 策略：维护应急与战争 runway，按边际收益、时间和暴露风险选择建设/军备/发展；和平期不再只是 `life-advance` 等事件。
 - 验证：至少 10 年 production 自治，完成多轮建设、council 重派与军备调整，财政不因 planner 自己的选择破产；随后用已建军备完成一战。
 
 ### P5：智能宣战、联盟与多战争调度
 
-- 原生 AI 树：扩充 war-declaration/prewar 树的财政、CB cost、ally willingness、participant join ETA、multi-war 与 truce 分支；宗教授权不再限制圣战/大圣战的研究范围，但本项战争研究仍按当前停止指令保留为能力债。
+- 原生 AI 树：扩充 war-declaration/prewar 树的财政、CB cost、ally willingness、participant join ETA、multi-war 与 truce 分支；2026-10-03 已授权本项及圣战/大圣战研究、实现、策略与实机验收，未闭合分支继续作为可施工能力债。
 - 观测：所有合法 CB 的成本/收益、目标 title 价值、双方可动员 reserve、盟友/宗主可召性与接受度、其它战争占用、truce/faction/
   succession 风险及 participant arrival bounds。
 - 动作：declare、call ally/house member、offer/join war、hire/raise/assign、拒绝不值当的盟友战争；所有请求均有后置 participant 验证。
@@ -436,7 +438,7 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 
 - 原生 AI 树：当前建立 `laws-and-government.md`、`culture-and-innovations.md`、`decisions.md`，覆盖 authority/law、
   culture fascination/tradition/hybrid/diverge 和 major decision 触发/权重；全面研究 faith/religion/rite、doctrine/tenet/fervor、
-  convert/reform、教士任务及 holy-order 树，保留圣战战争研究的独立停止约束。
+  convert/reform、教士任务及 holy-order 树；2026-10-03 已撤销圣战战争研究的旧停止约束。
 - 观测：补齐 government、laws、authority、succession law、culture/traditions/acceptance、innovations、decision eligibility/cost/effect，
   以及当前/主 Rite→Faith→Religion、doctrine/tenet 集合、fervor、改宗/改革候选与费用。已有身份查询不能替代尚缺的实际决策输入。
 - 动作：change law/authority、culture action、fascination、decision、convert/reform/convert county 与教士任务；每项先闭合原生最终合法性、
@@ -486,8 +488,8 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 | 3 | events / notifications / interactions | exact `pay_ransom` reject 为 `live-loop`；typed pending/ordinary white-peace binding 为 `live-primitive`，notification ACK/current-window 为 fixture-live；semantic decision 未闭合 | 50-key 长跑中语义选择且无漏答。 |
 | 4 | economy / domain / buildings | domain capacity 为 R639 两场景 `live-primitive`；holdings/buildings/construction 观测与动作仍 `absent` | 十年通用财政与建设循环。 |
 | 5 | council / lifestyle / development / control | active council task 观测为 R639 两场景 `live-primitive`；lifestyle 原生树为 LIFE1 `research`；council reassignment、focus/perk 观测与语义动作仍 `absent` | 多 council task 与 perk 路线按 realm 目标动态调整。 |
-| 6 | army composition / supply / mercenary / holy order | 常规军备 `research`/partial input；holy order 已授权，原生市场/费用/动作链待实现 | 先补 holy-order exact-build 只读市场与合法性；军事动作继续服从独立战争开关。 |
-| 7 | war entry / CB / ally / multi-war / holy war | tree + native power production-live；不完整证据下 `NO_DECLARE` continuation live，智能宣战仍 blocked | 能比较普通与圣战候选并自主选择宣战或不战；宗教输入研究已全面授权，战争工作当前保持停止。 |
+| 6 | army composition / supply / mercenary / holy order | 常规军备 `research`/partial input；holy order 已授权，原生市场/费用/动作链待实现 | 先补 holy-order exact-build 只读市场与合法性，再按真实能力接线与结果观测执行；旧战争 OFF 授权限制已撤销。 |
+| 7 | war entry / CB / ally / multi-war / holy war | tree + native power production-live；不完整证据下 `NO_DECLARE` continuation live，智能宣战仍 blocked | 能比较普通与圣战候选并自主选择宣战或不战；2026-10-03 已全面授权战争研究、实现、策略与实机验收，缺失输入继续施工。 |
 | 8 | marriage / alliance | ID-only `implemented` | 多候选联合评分并验证关系/联盟结果；信仰合法性/接受度优先原生最终判定，缺观测继续施工。 |
 | 9 | children / education / dynasty | `visual-narrow` | 多子女教育与王朝资源规划。 |
 | 10 | succession / titles / laws | `visual-narrow` | 预测并缓解 partition，普通 campaign 跨继承。 |
@@ -500,7 +502,7 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 | 17 | decisions / laws / government | decision OCR read-only `visual-narrow` | 动态选择并执行 major decision/法律。 |
 | 18 | activities / travel | `absent` | 规划、旅行、事件与返程完整闭环。 |
 | 19 | royal court / positions / artifacts / accolades | combat accolade input only `research` | enabled feature 各一条 OODA。 |
-| 20 | raids / embark / special wars / great holy wars | `absent`；宗教研究全面授权，战争工作仍停止 | 保留 feature-gated 特殊战争 OODA 能力债；圣战研究与执行分别遵守当前战争开关。 |
+| 20 | raids / embark / special wars / great holy wars | `absent`；宗教与战争研究、实现、策略和实机验收已全面授权 | 施工 feature-gated 特殊战争 OODA 能力债；圣战研究与执行按原生树、真实观测和具体 readiness 推进。 |
 | 21 | save / restore / process ownership | `live-loop` | 长跑和域场景持续复用；只修实际故障。 |
 | 22 | death settlement / next episode | primitive `live` | 自然死亡完整结算、下一 episode；另有跨继承 campaign。 |
 | 23 | long-horizon goals / learning / memory | minimal booleans `implemented` | 多域层次规划与 outcome 校准通过整局矩阵。 |

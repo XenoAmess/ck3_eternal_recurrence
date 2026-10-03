@@ -1,6 +1,6 @@
 # 1.20.0.2 `physician_epidemic_events.1000`：医师抗疫争议源码迁移
 
-2026-10-01。当前结论是 **source-reviewed / bounded consumer static-ready**：复用既有新版 registry 消费契约，没有修改 policy、registry 或生产 ABI，没有新增实机资格。项目所有者已允许宗教研究、停止战争研究；本专题只追踪当前医师事件的直接输入与实际新增 fulfillment 后果。
+2026-10-01。当前结论是 **source-reviewed / bounded consumer static-ready**：复用既有新版 registry 消费契约，没有修改 policy、registry 或生产 ABI，没有新增实机资格。当时项目所有者已允许宗教研究、停止战争研究；本专题只追踪该医师事件的直接输入与实际新增 fulfillment 后果。2026-10-03 旧战争研究停止限制已撤销，项目所有者已全面授权战争与战斗的研究、原生观测、实现、策略及实机执行；这一授权不改变本专题的 source-reviewed/static-ready 证据范围。
 
 游戏冻结为 CK3 **1.20.0.2 Crozier / Steam build 25588574**，EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`。旧 R0089 属于 1.19.0.6，不能换版本号当作新版 live。旧记录见 [事件树](physician-epidemic-events-1000.md)与[固定修正 presence](physician-epidemic-modifier-presence-v1.md)；已经完成的通用迁移见 [1.20 非战争事件](ck3-1.20.0.2-nonwar-events.md)。
 

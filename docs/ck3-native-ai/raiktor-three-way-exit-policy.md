@@ -693,9 +693,13 @@ input. The continuation runner now consumes that checkpoint-bound receipt
 instead of issuing the same query again after cold load. It admits only the
 adjacent successful query/save pair, the exact checkpoint hash/date and the
 same restored event instance before the registry can authorize selection. The
-live command allowance is consequently one event selection plus one successor
-save; time and every war-exit action remain forbidden. This is static-ready
-until the next single bounded live attempt.
+historical command allowance for that checkpoint-bound continuation was one
+event selection plus one successor save, with time and war-exit actions excluded
+from that runner. Its readiness remained static-ready pending its bounded live
+attempt. Current authority, 2026-10-03, covers war research, implementation, policy
+and live execution by the current executor; the former global war pause and
+nonwar-only authorization are revoked. This does not change recorded artifacts
+or qualify unimplemented capabilities.
 
 ## 2026-09-17 R839 production terminal and R846 recovery boundary
 

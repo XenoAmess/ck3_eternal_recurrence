@@ -14,7 +14,7 @@
 
 原生研究入口保持为[候选 producer](ck3-1.20.0.2-council-candidates.md)、[最终门](ck3-1.20.0.2-council-gates.md)、[任命与独立回执](ck3-1.20.0.2-council-assignment.md)和[正式消费者](ck3-1.20.0.2-council-private-formal-consumer.md)。本页记录已迁移的 Steam `1.20.0.3` / build `25652598` 实测消费，不把旧版静态资格外推为新版 live，也不新增原生 AI 总分或收入预测。
 
-新版实际 EXE SHA-256：`94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。普通玩家 actor `31853`，episode `native-31853-af642d76cb41`，`ordinary_campaign_succession` / `xar_off` / 无典当，现有正式入口保留 `--nonwar-only`。
+新版实际 EXE SHA-256：`94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。普通玩家 actor `31853`，episode `native-31853-af642d76cb41`，`ordinary_campaign_succession` / `xar_off` / 无典当，该次正式验收入口使用 `--nonwar-only`。这是原 Murchad artifact 的历史配置，不能改写为后续授权限制。2026-10-03 项目所有者已取消全部非战限制并全面授权战争与战斗的研究、原生观测、实现、策略及实机执行；后续仍以 Robert `29829` 原普通战役为唯一测试入口，不将本次 Murchad 证据扩写为新的实机入口。
 
 ```mermaid
 flowchart TD

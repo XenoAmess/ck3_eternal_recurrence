@@ -5,12 +5,14 @@ The 1.20.0.2 migration is documented in
 This page retains the legacy exact-build inputs and historical acceptance.
 The dual-build implementation preserves its legacy default profile.
 
-Current authority, 2026-10-02: the project owner has fully opened religion
-research and implementation, including faith, rite, doctrine, tenet, fervor,
-conversion, reform, clergy and holy orders. Earlier religion deferrals are
-superseded. This page retains its frozen 1.19.0.6 evidence; authorization adds
-no implemented government adapter or live qualification. Robert remains the
-only live test entry, and existing war execution switches remain unchanged.
+Current authority, 2026-10-03: the project owner has fully opened religion and
+war research, implementation, policy and live execution. Earlier religion
+deferrals, war pauses, execution-OFF restrictions and nonwar-only authorization
+are revoked. This page retains its frozen 1.19.0.6 evidence; authorization adds
+no implemented government adapter or live qualification. Robert 29829 remains
+the sole original campaign entry; exact-build binding, native-AI-first research
+and minimized/noFocus live operation remain required. Historical switch values
+retain their actual recorded state.
 
 ## Status and scope
 

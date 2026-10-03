@@ -1,5 +1,7 @@
 # G2 非战争方向休假交接（2026-09-28）
 
+> 2026-10-03 授权更新：项目所有者已撤销非战争限定、战争停研及战争只能由另一维护者承担的后续约束，全面授权战争原生研究、实现、bridge/MCP、策略、战斗执行与实机验收，并允许按候选需要启用战争执行开关。历史 OFF/false、零动作、readiness、计数、失败与证据哈希仍是当时事实，授权不等于能力完成。正式测试仍沿 Robert（actor29829）唯一原始 campaign 及合法继承，先研究原生 AI、绑定 exact build，并保持最小化后台运行与 noFocus。 本文件保留 09-28 交付快照；下文旧分工不能作为继续停研或仅消费战争模型的指令。
+
 > 截止：2026-09-28 09:40（Asia/Shanghai），R0269 已完成、进程已回收。接班时以本文件的证据定位为入口，再读取 [G2 验收合同](g2-requirements-v1.json)、[当前包状态](../project-state/current-state.json)及其声明的本机 live source。文档中的 PID、owner 与远端 HEAD 均是记录时快照，不能代替接班时的实时核查。
 
 ## 1. 本轮交付与真实能力边界
@@ -30,7 +32,7 @@ R0269 的正式 job 为 `robert-h3326-nonwar-prisoner-m5-observation-36`，唯�
 | NW-FAMILY | 首继承人订婚已成立，家庭 sidecar `pending=null`；双方仍未结盟。现有消费者避免重复提案；当前无可证实的新婚配漏消费。下一位未婚继承人出现真实竞争候选时，核本人提案资格、宗族归属、接受条件与长期义务，再提交并独立验证。 |
 | 囚犯/其他 | WarID 16777231 现有三囚犯 34486/44484/47028 的赎金为 `option_unavailable`；R0268 亲子谓词均 false。战俘保留条款仍未知。master `98be422` 新增的 `prisoner_war_retention.py` 是只读 Python join，尚无通用原生 PoW 数据源或正式 caller；现有释放动作核心也缺生产 exact command adapter。有证据的三囚犯帧均在战时，旧和平 h115/h133 无囚犯集合，故没有可证明的和平释放漏消费。不要仅凭释放的原版 +20 好感推定当前净收益。 |
 
-战争研究由另一机器的战争维护者承担。本执行者只消费已交付模型/资源输入，保持 `COMBAT_ENTRY_EU_ACTIVATION_ENABLED=false` 所属独立合同，不重建战争模型。Git 跨机器需求通道为 [war-requests/README](coordination/war-requests/README.md) 下的 `requests/`、`responses/`、`evidence/`：已提交 [同帧战争现金请求](coordination/war-requests/requests/WAR-ROBERT-R0266-JOINT-CASH-20260928.json)及[静态接口回应](coordination/war-requests/responses/WAR-ROBERT-R0266-JOINT-CASH-20260928.json)，回应的 `live_evidence=null`，不能据此批准建设。[囚犯保留请求](coordination/war-requests/requests/WAR-PRISONER-RETENTION-H2825-20260928.json)仍需原生通用数据源及正式接线；新源码在当前候选中未生产有效战俘配对。接班时先读最新 master 增量和同一请求的新增回应，不重复建请求或用本机 MCP 访问对方机器。
+2026-09-28 当时由另一机器的战争维护者承担研究，本执行者只消费已交付模型/资源输入，`COMBAT_ENTRY_EU_ACTIVATION_ENABLED=false` 是当时合同状态。2026-10-03 所有者已撤销该后续分工限制，本执行者可以研究、实现与验证战争模型、资源观测、策略及战斗执行，并按冻结候选配置启用该开关。Git 跨机器需求通道为 [war-requests/README](coordination/war-requests/README.md) 下的 `requests/`、`responses/`、`evidence/`：已提交 [同帧战争现金请求](coordination/war-requests/requests/WAR-ROBERT-R0266-JOINT-CASH-20260928.json)及[静态接口回应](coordination/war-requests/responses/WAR-ROBERT-R0266-JOINT-CASH-20260928.json)，回应的 `live_evidence=null`，不能据此批准建设。[囚犯保留请求](coordination/war-requests/requests/WAR-PRISONER-RETENTION-H2825-20260928.json)仍需原生通用数据源及正式接线；新源码在当前候选中未生产有效战俘配对。接班时先读最新 master 增量和同一请求的新增回应，不重复建请求或用本机 MCP 访问对方机器。
 
 ## 4. 制品传输、保护范围与状态门
 
@@ -48,6 +50,6 @@ H2825 的原始 save、driver、完整 sidecar 与对应 DLL 已经由战争同�
 
 先前 #421/#424/#427 等部分源码 worktree 或临时缓存的清理被自动审批以 `blocked by policy` 拒绝，保留原状，**不能换工具绕过**。接班者可依据原包记录和最新审批策略处理；这些包不因远端合入而被写成完整 DONE。冻结运行资产和不可变证据独立保留，不按 `.task-tmp` 名称删除。
 
-下一执行者先按本机 `operator_get_status` 核实际实例/owner/RED，再用最新原始配对和新冻结候选执行官方 no-launch；在源码层面先处理真实观测缺项与可行动机会。继续生活方式、建设经济、家庭与联合资源分配的优先级；只有当前非宗教模态事件实际挡住操作时提为 P0。约 30 分钟在安全边界同步 master，并只重验受影响接口。每个新增动作都需要独立游戏后置、下一 turn、规定的 checkpoint 与新 PID 冷恢复。战争模型与 PoW 原生数据源交给战争维护者，通过 Git 请求/回应交换，不由本机跨机调用对方 MCP。
+下一执行者先按本机 `operator_get_status` 核实际实例/owner/RED，再用最新原始配对和新冻结候选执行官方 no-launch；在源码层面先处理真实观测缺项与可行动机会。按真实战争与其他可行动机会推进；当前任何模态事件实际挡住操作时均可提为 P0。约 30 分钟在安全边界同步 master，并只重验受影响接口。每个新增动作都需要独立游戏后置、下一 turn、规定的 checkpoint 与新 PID 冷恢复。战争模型与 PoW 原生数据源可由本执行者研究、实现和实机验证，也可通过 Git 请求/回应协作；不由本机跨机调用对方 MCP。
 
 本次 H3326 候选源码 worktree `Z:\h3326-nextcandidate-20260928\src` 在 R0269 终止、H3388 配对完成后核查为 clean 且无独有提交；本地临时分支与 worktree 已移除，远端同名分支不存在。候选索引、正式报告及 H3326/H3388 冻结运行资产均保留。

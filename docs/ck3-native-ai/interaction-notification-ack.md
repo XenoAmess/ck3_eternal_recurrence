@@ -9,9 +9,10 @@
   `CReplyCharacterInteractionCommand(reply=4)` acknowledge 路径。互动的 costs、exchange、effect preview 和
   generic target typed payload 不在 ACK 合法性内，也不因通知可关闭而变成已知语义。
 - [historical-coverage] 本文冻结证据没有读取、分类或实现宗教专用分支；这些语义在旧查询中保持 opaque compatibility。
-- [current-authority 2026-10-02] 宗教、信仰、教义、信条、热情、改宗、改革、圣战与教团研究和实现已全面授权，
-  原宗教暂缓撤销。尚未观测的分支需按当前构建补原生定义、最终判定与只读 bridge/MCP，不因通用 ACK 成功
-  冒称宗教效果已知。战争研究停止、执行 OFF 和罗贝尔唯一入口仍独立有效。
+- [current-authority 2026-10-03] 宗教领域已全面开放，项目所有者现已授权战争研究、实现、策略与实机验收，
+  撤销原宗教暂缓、战争研究停止、非战争限定及执行 OFF 的旧授权约束。尚未观测的分支需按当前构建补原生定义、
+  最终判定与只读 bridge/MCP，不因通用 ACK 成功冒称效果已知。历史 OFF、零动作和旧 fixture 范围仍保留证据资格；
+  后续仍遵守罗贝尔 `29829` 原 campaign 唯一入口、exact-build、原生 AI 研究优先、最小化后台且不抢焦点。
 - [implementation-confirmed] production bridge 的普通 accept/reject 行为保持不变；新增能力只让已经自动结算、
   `+0x5C6 != 0` 的本地通知可被发现、typed query 和严格 ACK。它不是通用 reply/mutator 入口。
 - [live-confirmed fixture-scoped] 非宗教 definition-only fixture 已以非负 full ID `738197506` 完成 fresh-cold

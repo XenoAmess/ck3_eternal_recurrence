@@ -6,7 +6,8 @@
 > 本文的历史研究与 fixture 覆盖普通、非宗教角色互动的 engine-generic 能力及普通白和平互动。
 > 项目所有者于 2026-10-02 全面开放宗教研究与实现，原宗教暂缓限制已撤销。旧证据未拆解的
 > 宗教修正仍标记为未观测的 opaque 输入；当前可沿 exact-build 原生接受度调用链补观测、bridge/MCP
-> 与罗贝尔实机结果，不能把授权当成该能力已完成。战争研究停止和战争执行 OFF 仍独立有效。
+> 与罗贝尔实机结果，不能把授权当成该能力已完成。2026-10-03 项目所有者已全面开放战争研究、
+> 实现、策略及实机运行；战争研究停止、执行 OFF 和非战争限定的旧授权限制已撤销。
 
 ## 1. 结论先行
 
@@ -613,4 +614,4 @@ acceptance，以及 war-exit 的 resource/claim/truce/prisoner/hostage dynamic t
 这些 `unknown` 是明确的逆向施工入口，不是把字段长期留为 null 的完成状态。2026-10-02 宗教授权已全面
 开放；宗教输入可从当前构建的 interaction definition 与原生最终接受度的实际调用分支入手，定位 faith/rite、
 doctrine/tenet/fervor 对具体提案的输入，增加同帧只读 bridge/MCP，再用罗贝尔 paused snapshot 验收并实现策略。
-旧静态/fixture 结果继续按原范围引用；宗教授权不提升 readiness，也不解除独立的战争研究停止与执行 OFF。
+旧静态/fixture 结果继续按原范围引用；2026-10-03 的全面战争授权已撤销战争研究停止、执行 OFF 和非战争限定。当前执行者可继续补战争原生树、同帧观测、策略和实机验收；授权不提升 readiness，罗贝尔 29829 唯一原始 campaign、exact-build、原生 AI 研究优先及最小化/noFocus 规则继续有效。

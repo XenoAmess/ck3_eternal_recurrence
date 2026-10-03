@@ -73,6 +73,6 @@ flowchart TD
 
 本次 source 比较 receipt 位于 `Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/events12002/health1101/source-comparison-receipt.json`，10 个块和 2 个 ill 分支通过；生成脚本与 proof/dataset SHA 都在 receipt。首轮 helper 把 `death_chance_dying_health` 定义误定位到 `10_health_values.txt`，产生 **harness RED**；实际定义在 `00_basic_values.txt`，修正文件定位后本次比较通过。失败保存在同目录 `attempt-001-harness-red.json`，没有 capability RED、生产代码修复或游戏动作。
 
-新版剩余验收只在正常非战争继续过程中自然遇到 `.1101` 时采集：当前完整投影 → 一次现有 typed acknowledgement → 独立下一 paused instance 缺席 → 下一正式 turn 消费缺席。自然阳性未出现时不启动专门等待 worker；没有额外疾病收益主张。本包不增加 G2 credit、游戏日或 whole-campaign readiness。
+新版剩余验收在原普通罗贝尔 `29829` campaign 的正常继续过程中自然遇到 `.1101` 时采集：当前完整投影 → 一次现有 typed acknowledgement → 独立下一 paused instance 缺席 → 下一正式 turn 消费缺席。2026-10-03 已撤销仅非战争及战争暂停限制，战争与战斗研究、实现、策略和实机验收全面开放；该自然事件验收也可随战争期间的正常继续完成。实机保持原生 AI 研究优先、exact-build 绑定和最小化/noFocus，由 ROOT 单一 owner 操作。自然阳性未出现时不启动专门等待 worker；没有额外疾病收益主张。本包不增加 G2 credit、游戏日或 whole-campaign readiness。
 
 可再生成入口为 [event12002_health_1101.py](../../ck3_autonomous_player/native_bridge/research/event12002_health_1101.py)，参数是 `--old-game-root`、`--new-game-root`、`--source-root`、`--output` 和 `--artifact-dir`；旧 game root 是 `Z:/Crusader Kings III/Crusader Kings III_1.19.0.6_20260604/game`，新 game root 是冻结 `artifacts/migrations/2026-09-30/post-update-1.20.0.2/installation/game`。

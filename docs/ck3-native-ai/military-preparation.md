@@ -1,6 +1,6 @@
 # 和平期军事准备：原生 AI 树与首个只读合同
 
-> **2026-10-02 授权覆盖：** 宗教领域已全面开放；旧暂缓理由仅记录当时状态。未实现的观测与 exact-build/readiness 缺口继续列为可施工项，不代表完整 combat v3 已就绪。罗贝尔唯一入口、战争研究停止及 `WAR_CASH/PREWAR=OFF` 保持有效。
+> **2026-10-03 最新授权覆盖：** 2026-10-03 项目所有者已取消全部非战限制，全面授权战争与战斗的研究、原生观测、实现、策略及实机执行。宗教领域的 2026-10-02 全面授权继续有效；旧“战争研究停止”和 `WAR_CASH/PREWAR=OFF` 授权限制已撤销，历史构建参数与实机零动作记录仍作为当时事实保留。Robert `29829` 原普通战役唯一入口、原生 AI 研究优先、exact-build 绑定、玩家限定及最小化/不抢焦点继续执行；授权不代表相关能力已完成。未实现输入和 readiness 缺口继续作为可施工项，不代表完整 combat v3 已就绪。
 
 > 2026-09-23 增量：[W1 军力缓存与特殊部队](war-film-declaration-power-cache-2026-09-23.md) 补充最新的精确静态调用链和剩余未知；旧历史证据保留。
 
@@ -341,7 +341,7 @@ flowchart TD
 
 [static-confirmed] GUI 的 `MilitaryView.GetAllMercenaries`、`GetHiredMercenaries` 与 `MercenaryCompany.IsHired / IsHiredByLocalPlayer / WillGoInDebt / WillGoInBankruptcy / GetCostDesc` 证明玩家界面能呈现市场、可用性、费用、组成和雇佣状态；这些名字尚未形成无窗口 ABI。原版 AI 的已确认支出树只证明战时 overmatch 和续约参数，未证明完整候选排序。
 
-[research-open] 2026-10-02 已全面开放 holy order 与通用 faith/religion 域研究，原“仅圣战窄例外”的限制撤销。本文尚未实现 `NHolyOrder` 候选观测、piety/信仰输入与原生最终合法性查询；可施工入口是 holy-order model 的实际 owner、只读查询调用链和 exact-build 字段绑定。mercenary GUI 邻接仅是定位线索，不能作为 native ABI 或已完成能力的证据；现行战争研究停止与执行开关保持不变。
+[research-open] 2026-10-02 已全面开放 holy order 与通用 faith/religion 域研究，原“仅圣战窄例外”的限制撤销。本文尚未实现 `NHolyOrder` 候选观测、piety/信仰输入与原生最终合法性查询；可施工入口是 holy-order model 的实际 owner、只读查询调用链和 exact-build 字段绑定。mercenary GUI 邻接仅是定位线索，不能作为 native ABI 或已完成能力的证据；2026-10-03 项目所有者已全面授权战争与战斗研究、原生观测、实现、策略及实机执行，旧战争研究停止和执行 OFF 的授权限制已撤销；该授权不补齐本文尚未实现的 holy-order 观测或动作。
 
 ## 第一只读合同：`military-preparation-summary-v1`
 
@@ -451,7 +451,7 @@ flowchart TD
 - [unknown] levy/MAA 月恢复的修正项与月 tick 内顺序；本文不做时间预测器。
 - [unknown] 骑士 eligible roster、default-by-prowess 的 exact comparator、强制/禁止与 AI 的关系、其他招募来源；统帅候选与换将策略。
 - [unknown] mercenary market 的无 GUI owner、距离/文化过滤调用链、最终费用 core、AI 公司排序与和平合约处理。
-- [research-open / not-implemented] holy order、通用 faith/doctrine/tenet/fervor、改宗与宗教改革已获全面研究授权，旧禁令不再限制后续只读合同施工。本文尚未提供这些观测与动作；需先冻结目标构建、闭合对应原生树和字段 ABI，再按真实 paused artifact 验收。宗教授权不恢复当前已停止的战争研究或开启战争执行开关。
+- [research-open / not-implemented] holy order、通用 faith/doctrine/tenet/fervor、改宗与宗教改革已获全面研究授权，旧禁令不再限制后续只读合同施工。本文尚未提供这些观测与动作；需先冻结目标构建、闭合对应原生树和字段 ABI，再按真实 paused artifact 验收。2026-10-03 最新授权已撤销战争研究停止和执行 OFF 的权限限制，并全面开放战争与战斗的研究、原生观测、实现、策略及实机执行；历史开关配置保留为当时事实，不限制后续施工。
 - [non-goal] 本文不实现猜测策略，不把原版 AI 概率当我方选择概率，不把 GUI presence 当 native ABI，不启动 CK3，也不改变现有 turn bundle、resource contract 或 action protocol。
 
 

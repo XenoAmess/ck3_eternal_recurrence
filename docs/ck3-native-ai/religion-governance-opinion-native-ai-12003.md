@@ -1,6 +1,8 @@
 # CK3 1.20.0.3：宗教关系意见与神职治理输入
 
-本页为 **research / file-only** 输入账本。宗教领域已由项目所有者全面开放；这里只研究廷臣／封臣的定向意见、clergy approval 与治理决策实际使用的宗教输入，不制定通用 counter-policy。realm-priest 候选、任免和任务树由独立 Council owner 维护；已经闭合的 Chancellor 替换和冷恢复不在本包重审。`WAR_CASH/PREWAR` 保持 OFF，本包不转入军事执行。
+本页为 **research / file-only** 输入账本。宗教领域已由项目所有者全面开放；本页已记录的研究是廷臣／封臣的定向意见、clergy approval 与治理决策实际使用的宗教输入，尚未制定通用 counter-policy。realm-priest 候选、任免和任务树由独立 Council owner 维护；已经闭合的 Chancellor 替换和冷恢复不在本包重审。本包记录的 `WAR_CASH/PREWAR` 为 OFF，未进行军事执行。
+
+> **2026-10-03 授权覆盖：** 项目所有者已授权战争研究、实现、策略和实机验收，撤销战争暂停、非战争限定及要求 `WAR_CASH/PREWAR=OFF` 的旧授权约束。上述 OFF 与未执行状态保留历史事实，本页 `research` 资格和未实现观测不因此升级。后续仍遵守罗贝尔 `29829` 原 campaign 唯一入口、exact-build、原生 AI 研究优先、最小化后台且不抢焦点。
 
 ## 冻结与已发布材料
 

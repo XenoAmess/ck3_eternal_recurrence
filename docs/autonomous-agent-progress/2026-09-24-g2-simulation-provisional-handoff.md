@@ -1,6 +1,8 @@
 # G2 自动游玩：2026-09-24 模拟试用交接
 
-本页是本轮收口快照。用户在 2026-09-24 明确要求：**现有不完美战斗模型要在有界场景投入使用，并用真实结果持续拟合；完成在途工作、commit/push、停止开新工作，然后交接。** 不要把完整 exact 模拟当成唯一开工条件，也不要把研究模型的条件胜率误报为已校准真实胜率。后续新工作须由接班人按自己的授权启动。本页不替代 [G2 合同](g2-requirements-v1.json)、[现行状态投影](../project-state/current-state.json)、[当日日报](daily/2026-09-24.md)及冻结实机证据。
+> **2026-10-03 授权更新（不改写本页历史）**：项目所有者已取消全部非战约束，全面授权战争与战斗的原生研究、只读观测、实现、策略及实机执行；此前 `nonwar-only`、战争研究停止/暂缓、战争执行 OFF 和仅由其他维护者施工的授权限制均已撤销。下文当时的分工、OFF、零动作、RED、构建参数、G2/NW 里程碑和 readiness 继续作为历史事实保留，技术模块/路径/ID 与冻结哈希不变。后续测试入口仍为 Robert 29829 原普通战役，并遵守 exact-build 绑定、原生 AI 研究优先、玩家限定、最小化且不抢窗口焦点。授权本身不产生完成或 live 信用。
+
+本页是本轮收口快照。用户在 2026-09-24 明确要求：**现有不完美战斗模型要在有界场景投入使用，并用真实结果持续拟合；完成在途工作、commit/push、停止开新工作，然后交接。** 不要把完整 exact 模拟当成唯一开工条件，也不要把研究模型的条件胜率误报为已校准真实胜率。当时后续新工作须由接班人按自己的授权启动；2026-10-03 项目所有者已全面授权战争/战斗研究、实现、策略和实机执行，旧停工与非战授权边界不再限制后续施工。本页不替代 [G2 合同](g2-requirements-v1.json)、[现行状态投影](../project-state/current-state.json)、[当日日报](daily/2026-09-24.md)及冻结实机证据。
 
 ## 用户当前可获得的版本与边界
 
@@ -44,7 +46,7 @@ PR #242 原 tip 完整值为 `08f7b2d946dcc2115d985e0c53831594f5309fe6`；rebase
 - 2026-09-24 当日日报 PR #239 已经 protected PASS、普通 FF 入远端 master `32043891306e40226346aa466c7fc5f1a4f69636`，原 feature 远端/本地 branch 与源码 worktree 已按相同 tip 核验清理。PR #240 是 R0220 原生树证据，原 tip `19126a4e9a3cbd52474c1bab896b51e59ff76768` 经 rebase 成 `2d48c24fb5bbe565727d465489e745968c1eba24`，受影响文档 blob `dd4e8f21328b5bea2079bd6c56653e881c0513f6` 未变；protected PASS、普通 FF 入远端 master `2d48c24`，远端/本地 feature branch 与源码 worktree 已核对清理。PR #241 为私有 default muster 读口，原 tip `2bb1f9071d25d6a63dc38269c0d931b871b19887` 先 rebase 成 `113b84056a3e8e86de0bc363b0a83daa2c9d5966`，再随 master 更新成 `63800f4af270a33afdcd30a9e08ac959d473f53e`，10 个受影响文件 blob 两次 rebase 后均未变；normal/`-O` 各10/10、Debug/Release native fixture 及最终 protected checks 通过，普通 FF 入远端 master `63800f4`，GitHub PR 状态 `MERGED`，该 feature 远端/本地 branch 与源码 worktree 已核 tip 清理。私有读口仍 OFF，无实机读回。
 - PR #242 原 tip `08f7b2d946dcc2115d985e0c53831594f5309fe6` → 最终 `d8cb86f4c66de00cca7ada3c4d9ac6e89451a0e5`，4 个受影响文件 blob 恒定；CLA/签名/双 static 全 PASS、normal/`-O` 各4/4，普通 FF master、PR MERGED，远端/本地 feature 和隔离源码 worktree 已清。模型仅静态接线，实机动作与后置仍待。
 - R0220、R0221、R0188、R0207 与 PRV008 原始配对和冻结索引均为运行/证据资产，保留；源码工作树集成后清理。R0215 后置 driver 虽合法配对，checkpoint anchor 仍是原 tick 前 raw53192376，+24 只有未保存尾部，不能当新日期来源；只读 audit `Z:\ck3_mod_rewrite_process_assets\g2-combat-natural-knight-event-r0215-post-20260924\checks\SOURCE-PAIR-AUDIT.json`。`COMBAT-WINNER-ONLY-B0` 未提交草稿仅重投影旧 4096 次，未提供新能力，已归档为 obsolete/unqualified 的 `Z:\ck3_mod_rewrite_process_assets\g2-combat-winner-only-abandoned-draft-20260924\MANIFEST.json`（SHA-256 `249B643FEFE433518152CE5199CD9F0EE48975EA2CD5B0FFE10595233D563C5E`）；隔离源码 worktree、本地分支已核验清理，远端从无该分支。R0188 研究重放材料作为证据保留，不当作可用胜率。
-- 用户已要求本轮不再新开工作。接班前完成在途提交、受保护检查、rebase-only FF master、按 exact tip 清理源码 feature/worktree，保留上述运行资产；网络/权限/工具拒绝须逐项写明而非报告 DONE。所有新 Windows temp/cache/build/worktree 仅用实际非 C 盘。现有 #221 worktree 缓存与 #225 空目录清理曾受工具策略拒绝，不能换工具绕过。
+- 用户当时要求本轮不再新开工作（2026-10-03 已授权恢复战争/战斗施工及实机执行）。接班前完成在途提交、受保护检查、rebase-only FF master、按 exact tip 清理源码 feature/worktree，保留上述运行资产；网络/权限/工具拒绝须逐项写明而非报告 DONE。所有新 Windows temp/cache/build/worktree 仅用实际非 C 盘。现有 #221 worktree 缓存与 #225 空目录清理曾受工具策略拒绝，不能换工具绕过。
 - 接班人重新核验真实远端 master、全部受管 CK3/injector/operator/watchdog、owner/残树、EXE/DLL、官方 save/driver/profile 和持久 allocator。R0221 结束时本机进程/owner 为0是历史快照，不是下一轮启动凭据。当前无新轮次待启动。`open_kaishek` 仍无已证明需同步的破坏性公共接口改变；私有读口 OFF。
 
 ## 接班后首先确认

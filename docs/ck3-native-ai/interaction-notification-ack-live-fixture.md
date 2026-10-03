@@ -22,8 +22,10 @@
   `738197506` 为非负数，所以该 GREEN 不覆盖 signed-negative ID。
 - [historical-coverage] 本夹具当时未读取或实现 faith、doctrine、tenet、fervor、conversion、reformation、holy-war
   等宗教专用语义，Attempt 8 的证据范围保持不变。项目所有者于 2026-10-02 已全面开放宗教研究与实现，
-  原暂缓限制撤销；尚未覆盖的宗教分支可沿当前构建补原生树、bridge/MCP 和实机结果。罗贝尔唯一入口、
-  战争研究停止及战争执行 OFF 仍独立有效，本授权不增加旧夹具的 readiness。
+  原暂缓限制撤销；尚未覆盖的宗教分支可沿当前构建补原生树、bridge/MCP 和实机结果。2026-10-03 项目所有者
+  又取消全部非战限制，全面授权战争与战斗的研究、原生观测、实现、策略及实机执行；旧战争研究停止和战争执行 OFF
+  的授权限制已撤销，历史 fixture 配置与零动作记录保留。Robert `29829` 原普通战役唯一入口、原生 AI 研究优先、
+  exact-build 绑定、玩家限定及最小化/不抢焦点继续执行；授权不增加旧夹具的 readiness。
 
 ## 原生生成、持久化与清理树
 

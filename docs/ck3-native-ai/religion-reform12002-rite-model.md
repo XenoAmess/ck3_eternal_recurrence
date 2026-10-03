@@ -1,6 +1,8 @@
 # CK3 1.20.0.2 Rite 创建／派生模型与当前状态观测
 
-本包响应项目所有者 2026-10-01 恢复宗教研究、停止战争研究的指令，只处理非战争 Rite 模型。冻结游戏为 **1.20.0.2 Crozier / Steam25588574**，EXE SHA-256 **`AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`**，大小 `101039736` bytes。原版结构基线见 [religion stock](ck3-1.20.0.2-religion-stock.md)，当前 Rite→Faith→Religion 身份解析见 [religion context](ck3-1.20.0.2-religion-context.md)。
+本包于 2026-10-01 按当时恢复宗教研究、停止战争研究的指令完成 Rite 模型切片。冻结游戏为 **1.20.0.2 Crozier / Steam25588574**，EXE SHA-256 **`AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`**，大小 `101039736` bytes。原版结构基线见 [religion stock](ck3-1.20.0.2-religion-stock.md)，当前 Rite→Faith→Religion 身份解析见 [religion context](ck3-1.20.0.2-religion-context.md)。
+
+> **2026-10-03 授权覆盖：** 宗教领域已全面开放；项目所有者现已授权战争研究、实现、策略和实机验收，旧战争暂停与非战争限定已撤销。本页历史工作切片、exact-build 身份与 `static-ready` 资格保持其证据边界，授权不代表创建、改宗或完整战争能力已经实现。后续仍遵守罗贝尔 `29829` 原 campaign 唯一入口、exact-build、原生 AI 研究优先、最小化后台且不抢焦点。
 
 结论：现存 Rite 与创建界面的 draft 复用原生 divergence 求值器，但使用不同输入；创建成新 Faith 的阈值与现存 Faith 的异端阈值也是两个独立原生值。当前玩家 Rite 的 **main 状态、创始者／领袖 full refs、实际 divergence、实际异端阈值**已实现只读 provider 与实际 C++ serializer，组件为 **`static-ready`**。没有本包 paused/live artifact；没有创建／编辑／改宗动作、counter-policy 或战争研究。
 

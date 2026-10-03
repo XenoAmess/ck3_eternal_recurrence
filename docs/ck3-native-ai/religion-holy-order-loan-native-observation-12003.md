@@ -1,6 +1,6 @@
 # CK3 1.20.0.3：圣骑士团借贷只读最终判定与偿还条款
 
-2026-10-03。本增量接续已发布的 [holy-order 成立／赞助原生树](religion-holy-order-patronage-native-ai-12003.md)，把非战争财政中明确缺少的借贷观测口落实为最小 native provider；不重复该领域库存。宗教与 holy order 已全面授权，Robert 29829 仍是唯一测试入口。战争研究停止，`WAR_CASH/PREWAR` OFF，本包不涉及军事雇佣或部队操作。
+2026-10-03。本增量接续已发布的 [holy-order 成立／赞助原生树](religion-holy-order-patronage-native-ai-12003.md)，把财政中明确缺少的借贷观测口落实为最小 native provider；不重复该领域库存。宗教与 holy order 已全面授权；项目所有者于 2026-10-03 又全面授权战争与战斗研究、实现、策略和实机验收，撤销旧仅非战争、战争暂停及 `WAR_CASH/PREWAR` 必须 OFF 的授权限制。该借贷包未涉及军事雇佣或部队操作，冻结包的实际 OFF 配置保留历史事实，不限制后续施工。readiness 不因授权升级；唯一原普通罗贝尔 Robert `29829` campaign、原生 AI 研究优先、exact-build 绑定和最小化/noFocus 继续有效，实机由 ROOT 单一 owner 操作。
 
 可见价值是让当前帧回答三件事：**现在能否申请贷款、原生会求出多少金额、现有本金是否能准确偿还**。普通 gold/income snapshot 无法回答 final decision、冷却、合格首领是否存在或现有债务的实际本金。必须补观测，不继续把这些缺口留作长期 `unknown`。
 

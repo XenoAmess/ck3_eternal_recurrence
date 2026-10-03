@@ -910,3 +910,7 @@ flowchart TD
 交付回执：[pilgrimage-journey](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/pilgrimage-journey/ROOT-DELIVERY.json)。
 
 朝圣实际空offers的原生解释和默认阶段报价入口：[default-phase native tree](religion-pilgrimage-default-phase-quote-12003.md)。新增focused native/MCP GREEN不替代下一暂停帧报价。
+
+## 2026-10-03 战争授权和当前两场防御战争
+
+[Robert .3防御战争原生树与实际输入](robert-defensive-war-readiness-12003-2026-10-03.md)回链现有两WarID、真实CB、五部队与正常save4653。当前战争已全面授权，实际读取与未实现字段独立分级；核心军事MCP不依赖旧WAR_CASH/PREWAR。

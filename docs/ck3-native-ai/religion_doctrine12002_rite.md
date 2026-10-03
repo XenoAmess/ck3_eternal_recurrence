@@ -1,6 +1,6 @@
 # CK3 1.20.0.2：玩家当前 Rite 的有效 Doctrine
 
-状态：原生字段与同组优先级 `static-confirmed`；实际 reader/serializer 已 `static-ready`，没有实机证据。游戏冻结为 `1.20.0.2 Crozier / Steam25588574`，EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`。本包遵守项目所有者 2026-10-01 开放宗教、停止战争研究的指令，仅提供当前玩家非战争宗教观测。
+状态：原生字段与同组优先级 `static-confirmed`；实际 reader/serializer 已 `static-ready`，没有实机证据。游戏冻结为 `1.20.0.2 Crozier / Steam25588574`，EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`。本包在 2026-10-01 当时遵守开放宗教、停止战争研究的旧指令，实际只交付玩家非战争宗教观测。2026-10-03 项目所有者已撤销战争暂停与非战争限定，当前执行者获战争研究、实现、策略及实机运行全面授权；旧证据范围与 static-ready 状态不因此提升。
 
 ## 当前有效状态与来源
 

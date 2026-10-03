@@ -14,9 +14,11 @@
   `ck3_autonomous_player/tests/unit/test_pending_character_interaction_special_war_binding_live_acceptance.py`。
 - 本 fixture 的历史覆盖仍是普通 `claim_cb`。十槽成本中的 `piety` 只作为 engine-generic raw resource key 透传，
   该证据没有验证 faith、doctrine、tenet、fervor、改宗、宗教改革、圣战或教团语义。
-- [current-authority 2026-10-02] 项目所有者已全面开放宗教研究与实现，撤销原有暂缓和两项窄例外限制。宗教专项
+- [current-authority 2026-10-03] 项目所有者已全面开放宗教领域，现已进一步授权战争研究、实现、策略与实机验收，
+  撤销原宗教暂缓、两项窄例外、战争研究停止、非战争限定及战争执行开关 OFF 的旧授权约束。宗教专项
   pending 的施工入口是冻结当前构建的 concrete subtype/定义与原生最终判定，再补 typed term、只读 bridge/MCP
-  和罗贝尔实机结果；本旧夹具不代替这些新证据。战争研究停止、战争执行开关 OFF 与罗贝尔唯一入口仍独立有效。
+  和罗贝尔实机结果；本旧夹具不代替这些新证据。历史 OFF 与零动作是当时事实，授权不升级旧夹具或未实现能力；
+  后续仍遵守罗贝尔 `29829` 原 campaign 唯一入口、exact-build、原生 AI 研究优先、最小化后台且不抢焦点。
 
 本计划是 [pending-interaction-special-war-binding.md](pending-interaction-special-war-binding.md) 的 paused-live
 执行合同，并复用

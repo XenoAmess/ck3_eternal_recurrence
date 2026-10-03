@@ -2,7 +2,7 @@
 
 必要性是实际候选输入：当前宗教 popup 的 choices 仅覆盖那个 widget 的作用域，不是全部已加载 Doctrine；原版文本扫描也不能覆盖玩家实际启用模组的定义。此包读取游戏已经加载的 `CDoctrineTypeDatabase` 完整条目，给 current/selection 查询提供定义输入账本。注册表条目不等于该角色、该 Rite 或该 popup 的最终合法 choices。
 
-冻结为 CK3 1.20.0.2 Crozier / Steam25588574，EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`。只做已授权非战争宗教只读观测；没有宗教操作、战争或 holy order 研究。
+冻结为 CK3 1.20.0.2 Crozier / Steam25588574，EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`。该首包实际只做宗教注册表的只读观测，没有宗教操作、战争或 holy order 研究。2026-10-03 项目所有者已取消全部非战限制并全面授权战争与战斗的研究、原生观测、实现、策略及实机执行；旧范围仅记录首包事实，不能作为后续禁令。授权不改变本 provider 的 static-ready 等级或补齐尚未实现的观测与动作。
 
 ## 原生树与复用证据
 

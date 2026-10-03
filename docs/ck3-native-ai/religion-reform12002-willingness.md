@@ -1,5 +1,7 @@
 # CK3 1.20.0.2：原生 AI 改革入口与 Faith 主 Rite 状态
 
+> **2026-10-03 授权更新：** 项目所有者已全面开放宗教与战争研究、实现、策略及实机运行，旧非战争限定和战争暂停已撤销。下段保留 2026-10-01 当时授权范围与实际未研究内容，不能作为当前限制；既有 exact-build、Robert 29829 唯一原始 campaign 和能力 readiness 仍按实证判断。
+
 2026-10-01 16:31（Asia/Shanghai）更新。项目所有者已开放非战争宗教研究；本包没有访问 CK3 进程、pipe、Steam 或桌面，也没有研究战争、圣战或 holy order。
 
 状态：原生调用链与 stock 后果为 **`research / static-confirmed`**；独立当前状态 reader **`static-ready`**。没有 paused/live、宗教动作、完整改革 OODA 或 AI 下一动作预测资格。

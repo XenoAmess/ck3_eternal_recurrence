@@ -32,7 +32,7 @@
 fervor、改宗、宗教改革或教团语义，该覆盖边界继续保留。项目所有者于 2026-10-02 全面开放宗教研究与实现，
 原宗教暂缓、仅圣战与婚姻窄例外的限制已撤销。宗教专项互动的下一施工入口是当前 exact-build 的 concrete
 subtype/定义、原生最终判定与 typed terms，再接只读 bridge/MCP、策略和罗贝尔实机验收；旧三种普通 war-exit
-subtype 的结果不能外推为这些能力已完成。战争研究停止和战争执行开关 OFF 仍是独立约束，本次宗教授权不解除它们。
+subtype 的结果不能外推为这些能力已完成。2026-10-03 项目所有者已取消全部非战限制，全面授权战争与战斗的研究、原生观测、实现、策略及实机执行。旧战争研究停止和战争执行开关 OFF 的授权限制已撤销，历史开关与零动作记录仍保留。Robert `29829` 原普通战役唯一入口、原生 AI 研究优先、exact-build 绑定、玩家限定及最小化/不抢焦点继续执行；授权不代表相关能力已完成。
 
 ## 冻结输入
 
@@ -293,7 +293,7 @@ interaction_semantic_decision_ready = false
 ```
 
 victory 与 defeat 仍各需独立 fixture；white-peace live 不能替代另外两个 outcome 的 vptr/key/side
-组合验证。圣战属于允许的战争域窄例外，但不得混入这份普通 `claim_cb` live 矩阵；它需要自己的最小战争切片与证据。
+组合验证。历史授权曾把圣战列为战争域窄例外；该窄限制已由 2026-10-02 宗教全面授权及 2026-10-03 战争全面授权覆盖。圣战的实际证据仍需与这份普通 `claim_cb` live 矩阵区分，不能用普通 white-peace 的结果冒充圣战的最小战争切片与证据。
 
 ## G2 长跑：Raiktor 防守方主动白和
 
@@ -357,7 +357,7 @@ CB white-peace permission。两者必须命中同一 snapshot/public revision/na
 | `0x78` view 的 typed row key/value/polarity | `0x24B11D0` typed consumers/GUI registration | 不发布 row 或文本解析结果 |
 | 三 outcome 的完整 dynamic resource/claim/truce/prisoner/hostage rows | 已闭合 WarID join 后逐类 typed reader | `special_outcome_terms_ready=false` |
 | 其它普通 special subtype 的 concrete layouts | 各 subtype 自己的 RTTI/factory/accessor | `opaque_other`，不按相邻 vtable 猜 |
-| 宗教专用 subtype/语义 | 圣战走独立 war-OODA 最小切片；婚姻走独立最小原生判定；其余等待 owner 解禁 | 本普通切片不读取、不推断 |
+| 宗教专用 subtype/语义 | 宗教已于 2026-10-02 全面开放，战争与战斗已于 2026-10-03 全面开放；按当前 exact-build 的 concrete subtype、原生判定和 typed terms 继续施工，无需等待 owner 解禁 | 本普通切片尚未读取或实现，不推断；授权不增加 readiness |
 
 本切片已经消除旧账本中“从 `special_data` payload 直接读 white-peace WarID”的错误施工方向，并已完成
 type + active-War binding 的最小 production query；普通 white-peace paused live 也已闭合。下一步是分别补 victory/defeat

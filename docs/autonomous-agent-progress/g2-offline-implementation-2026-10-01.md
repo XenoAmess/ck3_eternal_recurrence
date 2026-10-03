@@ -1,30 +1,32 @@
 # G2 后台实施账本：2026-10-01
 
-2026-10-02 授权更新：项目所有者已全面开放 faith/religion、rite、doctrine、tenet、fervor、改宗、宗教改革、clergy、holy order、圣战与大圣战的深入研究与实现。下列冻结记录中的旧宗教暂缓仅保留当时事实，已全部撤销；详见[当前授权](../../AGENTS.md)。开放不自动提升能力等级，也不改变罗贝尔唯一测试入口、战争研究停止及执行OFF、玩家限定或最小化后台操作约束。
+> 2026-10-03 授权更新：项目所有者已撤销非战争限定、战争停研及战争只能由另一维护者承担的后续约束，全面授权战争原生研究、实现、bridge/MCP、策略、战斗执行与实机验收，并允许按候选需要启用战争执行开关。历史 OFF/false、零动作、readiness、计数、失败与证据哈希仍是当时事实，授权不等于能力完成。正式测试仍沿 Robert（actor29829）唯一原始 campaign 及合法继承，先研究原生 AI、绑定 exact build，并保持最小化后台运行与 noFocus。 本页保留 10-01 各轮候选与停止记录；下文历史战争停止、非战争候选范围和未来停工指令不再约束后续施工。
+
+2026-10-02 授权更新：项目所有者已全面开放 faith/religion、rite、doctrine、tenet、fervor、改宗、宗教改革、clergy、holy order、圣战与大圣战的深入研究与实现。下列冻结记录中的旧宗教暂缓仅保留当时事实，已全部撤销；详见[当前授权](../../AGENTS.md)。开放不自动提升能力等级，也不改变罗贝尔唯一测试入口、玩家限定或最小化后台操作约束；战争停研与执行OFF的后续限制已由2026-10-03授权撤销。
 
 后续施工入口：先沿[宗教整合](../ck3-native-ai/ck3-1.20.0.2-religion-integration.md)、[教义与Tenet](../ck3-native-ai/religion_doctrine12002_overview.md)和[改革](../ck3-native-ai/religion-reform12002-overview.md)的原生树与已有只读查询补齐当前exact-build输入；自然宗教事件按真实选项、作用域与效果接回事件消费者。Holy order等未闭合分支继续定位原生资格、成本、对象状态及结果查询，先交付只读bridge/MCP，再据罗贝尔paused材料设计和验证策略；旧版实机证据不自动继承。
 
 真实开始记录时间：2026-10-01T14:33:47+08:00。用户明确要求继续并提高并行，且不得占用 CK3。基线为 `9e37d3df4227578fb754d71278810c9492ca948b`，施工树 `Z:/ck3_mod_rewrite/.task-tmp/g2src`；旧 migration 与范围核对树保持冻结。本页承接[八项施工图](g2-offline-work-map-2026-10-01.md)，记录实际施工与交付，不将计划当作完成。
 
-## 15:22:18 用户调整后的当前范围
+## 15:22:18 当时用户调整后的范围（后续战争限制已于2026-10-03撤销）
 
-用户已明确允许本机CK3实机，并解除宗教研究暂缓，同时要求停止战争相关研究。WAR-CASH/PREWAR所有子线程已停止；已验证历史和失败artifact保留，不继续future cash、参战、集结或供给来源研究。尚未验证的prewar mailbox/supply草稿从当前candidate排除，不能沿用早期两步fixture的GREEN或其错误static-ready标签。Family已完成alliance历史冻结；当前新family query只消费子代House与退婚terms。
+用户当时已明确允许本机CK3实机，并解除宗教研究暂缓，同时要求停止战争相关研究。WAR-CASH/PREWAR所有子线程当时已停止，已验证历史和失败artifact保留；2026-10-03已撤销后续停研限制，future cash、参战、集结、供给来源、战争实现与策略可继续研究和实机验收。尚未验证的prewar mailbox/supply草稿从当前candidate排除，不能沿用早期两步fixture的GREEN或其错误static-ready标签。Family已完成alliance历史冻结；当前新family query只消费子代House与退婚terms。
 
-宗教当前新线程沿1.20原版数据与exact原生链研究Rite/Faith/Religion及最终判定，不开展战争分支。非战争council/faction/gift/Sway/law/Feast/prisoner/GOV与目标记忆继续集成。实际游戏由root串行操作，其它源码线程仍只做文件/fixture，首次新snapshot与材料结果以前不升级live。早期全程禁止CK3及宗教暂缓的段落是当时边界，当前以本段新用户指令为准。
+宗教当时新线程沿1.20原版数据与exact原生链研究Rite/Faith/Religion及最终判定，当时未开展战争分支；2026-10-03授权已覆盖后续战争分支。非战争council/faction/gift/Sway/law/Feast/prisoner/GOV与目标记忆继续集成。实际游戏由root串行操作，其它源码线程仍只做文件/fixture，首次新snapshot与材料结果以前不升级live。早期全程禁止CK3、宗教暂缓及本段战争停止均是当时边界，后续以2026-10-02宗教与2026-10-03战争授权为准。
 
 15:12:37实际inventory显示本机无CK3，Steam在15:20:26已完成原生窗口可逆位移与新像素证明，并经人工图像审阅明确显示“Steam当前处于离线模式”和“上线”按钮；未点击上线。首轮环境missing psutil为environment RED，已在同一项目解释器补齐必要live依赖，未修改产品代码。初次fresh-frame输出目录未创建为harness错误，随后同一入口完成。准确输入/哈希在 `Z:/ck3_mod_rewrite/artifacts/g2-offline-2026-10-01/live-preflight/`。
 
-## 当前施工
+## 当时施工（2026-10-01）
 
 | 工作包 | 实际范围 | 初始状态 | 实机边界 |
 | --- | --- | --- | --- |
 | M4 council | 新版候选、四类最终 gate、typed 任命与独立读取 | 正在实现 | paused 候选/门互证、任命后置及 next/cold |
 | M4 faction | 完整身份、成员、原生 power/discontent/danger | 正在实现 | 真实派系同帧查询 |
 | M4 gift | 原生最终发送、费用、好感预览、typed 操作 | 正在实现，依赖 faction | 合法接收者及 gold/opinion 后置 |
-| M5 war cash | 原生维护/费用来源、实际 producer | 用户要求停研；完成部分冻结 | 实际战争资源同帧互证 |
-| M5 multiwar | 共享军队与全 WarID 的资源聚合，复用预留 | 用户要求停研；完成部分冻结 | 实际资源争用与联合选择 |
+| M5 war cash | 原生维护/费用来源、实际 producer | 当时用户要求停研；完成部分冻结；2026-10-03起允许继续 | 实际战争资源同帧互证 |
+| M5 multiwar | 共享军队与全 WarID 的资源聚合，复用预留 | 当时用户要求停研；完成部分冻结；2026-10-03起允许继续 | 实际资源争用与联合选择 |
 | M5 family obligation | 婚配最终家系、解除婚约成本、联盟战争义务 | 正在实现 | 新版合法关系与具体义务互证 |
-| M5 prewar | 真实绑定参与者、原生集结与未来路线输入 | 用户要求停研；完成部分冻结 | 合格战前场景；未闭合输入保留明确账本 |
+| M5 prewar | 真实绑定参与者、原生集结与未来路线输入 | 当时用户要求停研；完成部分冻结；2026-10-03起允许继续 | 合格战前场景；未闭合输入保留明确账本 |
 | M6 Sway | 活跃实例、好感、最终发送、typed start、终止语义 | 正在实现 | 实例/提交/完成收益与 next/cold |
 | M6 law | active/candidate/final terms、费用、已有 LAW8 源操作 | 正在实现 | 有价值的合法法律后置与资源变化 |
 | M6 prisoner | 既有囚犯列表、赎金 final terms、typed 操作与独立结果迁移 | 正在实现，14:35追加 | 真实合法赎金、人物与国库后置 |
@@ -38,7 +40,7 @@
 
 唯一新 build 输入是冻结 CK3 `1.20.0.2 Crozier / Steam 25588574`，EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`。实际 provider 必须先有当前原生树与 exact ABI，再进入同一 MCP 和必要生产路径 fixture。共享 candidate/default 构建、源文件及二进制 manifest 由中央收口；不重跑不受影响的已 GREEN 矩阵。
 
-所有运行只使用文件、编译器、mock/fixture；不枚举或查询 CK3 进程，不连接游戏 pipe，不操作游戏、桌面、Steam或当前 profile。全部临时文件、日志与构建在 Z 盘。新私有动作沿既有默认关闭约定，ACK 不能作为结果；不会通过零填 unknown、变更战争意愿或解除 owner/date hold 来造 readiness。
+本页后台源码线程只使用文件、编译器、mock/fixture；不枚举或查询 CK3 进程，不连接游戏 pipe，不操作游戏、桌面、Steam或当前 profile。全部临时文件、日志与构建在 Z 盘。新私有动作沿既有默认关闭约定，ACK 不能作为结果；不会通过零填 unknown、变更战争意愿或解除 owner/date hold 来造 readiness。
 
 G2 仍 `3/8`，Robert `3153/36524`，新增游戏日为零。此初期记录的宗教/holy order 暂缓与婚姻、战争最小 opaque 输入范围属于当时事实；2026-10-02已全面开放宗教研究与实现，后续不受该旧范围约束。其它政府仍保留既有未实现边界。每包在必要验证完成后独立提交并普通 fast-forward 推送，剩余包继续施工。
 
@@ -116,7 +118,7 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 
 ### 15:40:14 Family lineage preview and betrothal break terms
 
-33个非战争文件实现实际UI子女house预览、父母full House/Dynasty与解约final CanSend/费用/原生条件；不把预览当作出生结果。Od/O2生产wire各4案例和实际SDK6案例通过。另7文件仅归档用户停止战争研究前已验证的联盟历史源，候选未注册战争reader，MCP不提供ally参数，停止继续开发。当前非战争暂停观测、真实解约及cold仍待验收。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\family-obligations\final-source-package.json
+33个非战争文件实现实际UI子女house预览、父母full House/Dynasty与解约final CanSend/费用/原生条件；不把预览当作出生结果。Od/O2生产wire各4案例和实际SDK6案例通过。另7文件仅归档用户停止战争研究前已验证的联盟历史源，候选未注册战争reader，MCP不提供ally参数，当时停止继续开发；2026-10-03已撤销该后续限制，联盟战争查询可继续实现与实机验收。当前非战争暂停观测、真实解约及cold仍待验收。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\family-obligations\final-source-package.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
 
@@ -211,7 +213,7 @@ Feast17文件首包接入 exact-build provenance、实际原生 terminal flags �
 
 ### 15:52:34 Nonwar candidate supervised cold-session plan
 
-更正最新授权scope（宗教允许研究／战争停止），将本轮NEXT从自主lifetime/next改为exact preflight→root监督native-session cold→实际MCP paused读口。真实CLI parser新受影响1案例通过，native-session没有虚构start-paused参数；暂停只能实际snapshot确认并必要时显式pause后再读。不是已launch／已验证binary。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\runner-paused-supervision-argv-plan.json
+当时更正授权scope（宗教允许研究／战争停止；该后续停研限制已于2026-10-03撤销），将本轮NEXT从自主lifetime/next改为exact preflight→root监督native-session cold→实际MCP paused读口。真实CLI parser新受影响1案例通过，native-session没有虚构start-paused参数；暂停只能实际snapshot确认并必要时显式pause后再读。不是已launch／已验证binary。证据：Z:\ck3_mod_rewrite\artifacts\g2-offline-2026-10-01\runner-paused-supervision-argv-plan.json
 
 本包按精确清单独立提交和普通FF交付；公共接线及其它原生包继续后台。无CK3/进程/pipe/桌面/Steam操作，没有新增live、游戏日或G2成绩。
 
@@ -726,7 +728,7 @@ RED与边界：第七次pause-map返回map unavailable，实际推进超过单�
 
 测试与artifact：[当前完整进度](../ck3-1.20.0.2-migration-progress-2026-10-01.md)，actual目录B/targeted-sdk-r4/cold-religion-family-sway-readonly-20261001T110102Z、B/family-live-next/root-first-heir-read-r4-02-after-day7、B/family-live-next/root-first-heir-checkpoint-r4-01、B/construction-live-next/root-r4-completed-slot-vm-read-02。官方1495与第27/32阶段真PASS；整体CI最后Python-only handover示例仍需修复后cloud completion。
 
-能力变化：新增production-live primitive读回与一次订婚结果，普通Robert3153/36524、G2 3/8不变，尚非完整OODA长局。Commit/push：source9ab836a5→master42d7467，后续实际增量5fff9356→b5c7c76；本正文随本次Git交付。下一步：由h94恢复R6、复核婚约与新增只读入口，再推进经济空槽与普通一代；宗教开放，战争研究停止，Steam焦点禁止，所有游戏启动直接脚本执行。
+能力变化：新增production-live primitive读回与一次订婚结果，普通Robert3153/36524、G2 3/8不变，尚非完整OODA长局。Commit/push：source9ab836a5→master42d7467，后续实际增量5fff9356→b5c7c76；本正文随本次Git交付。下一步：由h94恢复R6、复核婚约与新增只读入口，再推进经济空槽与普通一代；宗教开放；当时战争研究停止，该后续限制已于2026-10-03撤销，战争研究、实现、策略与实机均获授权；Steam焦点禁止，所有游戏启动直接脚本执行。
 
 ### 19:51:02 Fix checkpoint handover Python command example
 

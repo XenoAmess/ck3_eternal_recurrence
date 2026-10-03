@@ -18,7 +18,7 @@
 - [static-confirmed] `static-confirmed` 表示原版 `.info`/defines 直接声明，或 exact-build 反汇编闭合；
   `live-confirmed` 表示 production bridge 在真实 paused frame 中互证；`inference` 表示已证事实的策略解释；
   `unknown` 表示尚未闭合，Mermaid 中一律画成虚线。
-- [authorized; implementation incomplete] 项目所有者 2026-10-02 已全面开放宗教/信仰研究与实现，撤销 2026-08-26 的暂缓要求。宗教事件、改宗、改革、教义、信条、热情、rite 与 holy order 均可沿本篇共用引擎入口继续施工；先落盘原生内容树与 exact-build 输入，再补只读查询和罗贝尔实机证据。授权不提升已有 readiness，也不改变罗贝尔唯一测试入口、战争执行开关或停止战争研究的要求。
+- [authorized; implementation incomplete] 项目所有者 2026-10-02 已全面开放宗教/信仰研究与实现，撤销 2026-08-26 的暂缓要求。宗教事件、改宗、改革、教义、信条、热情、rite 与 holy order 均可沿本篇共用引擎入口继续施工；先落盘原生内容树与 exact-build 输入，再补只读查询和罗贝尔实机证据。2026-10-03 项目所有者又全面开放战争研究、实现、策略及实机运行，撤销战争暂停、执行 OFF 和非战争限定的旧授权限制。授权不提升已有 readiness；罗贝尔 29829 唯一原始 campaign 入口、exact-build 绑定、原生 AI 研究优先及最小化/noFocus 实机规则继续有效。
 
 本文区分三件事，避免再把一个裸命令冒充完整能力：
 
