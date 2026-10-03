@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "dc53f4a183d4a753c0c5eeb3623f7f060b59f231"
+    },
+    "last_sequence": 2504,
+    "next_step": "",
+    "pid": 18800,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "Native publication work ended; new offline PNG directly reviewed; no CK3/launcher",
+    "task_id": "ck3-two-mods-publication-20261003-r0003",
+    "updated_at_utc": "2026-10-03T11:50:51.785830+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 2504,
+    "event_id": "0a11ffa7b71648438914db23347e9564",
+    "timestamp_utc": "2026-10-03T11:50:51.786776+00:00",
+    "kind": "completed",
+    "task_id": "ck3-two-mods-publication-20261003-r0003",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "Native publication work ended; new offline PNG directly reviewed; no CK3/launcher",
+    "next_step": "",
+    "resources": [],
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "dc53f4a183d4a753c0c5eeb3623f7f060b59f231"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "sha": "dc53f4a183d4a753c0c5eeb3623f7f060b59f231",
+  "runs": [
+    {
+      "workflowName": "Official Runner CI",
+      "databaseId": 37117295585,
+      "headSha": "dc53f4a183d4a753c0c5eeb3623f7f060b59f231",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37117295585"
+    },
+    {
+      "workflowName": "Independent Maintained Mods",
+      "databaseId": 37117295549,
+      "headSha": "dc53f4a183d4a753c0c5eeb3623f7f060b59f231",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37117295549"
+    }
+  ],
+  "both_success": true
+}

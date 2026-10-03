@@ -1,0 +1,44 @@
+{
+  "schema": "ck3.independent_mod.full_create_and_media_notes.v1",
+  "status": "FROZEN_PENDING_REAL_PUBLICATION",
+  "prepared_at_utc": "2026-10-03T10:13:37.745290+00:00",
+  "original_a_source": {
+    "path": "C:/workspace/two-mod-maintenance-20261003/djc-final-docs-freeze-R0001/notes-A.txt",
+    "size": 3521,
+    "sha256": "e854d04d8b387ce486f59192fa1fe2bdf94c8bb3a8399ab083cdd449b8486c7b"
+  },
+  "notes_a": {
+    "artifact": {
+      "path": "C:/workspace/two-mod-maintenance-20261003/two-mod-minimal-publication-R0002/mod_de_jure_conquest/steam-change-notes-create-A.txt",
+      "size": 3521,
+      "sha256": "e854d04d8b387ce486f59192fa1fe2bdf94c8bb3a8399ab083cdd449b8486c7b"
+    },
+    "normalized_characters": 1362,
+    "normalized_lines": 32,
+    "normalized_sha256": "B336CE7DD42BE864B0778102AC63631F48FD47815E417B2C2210B10CFF036F56"
+  },
+  "notes_b": {
+    "artifact": {
+      "path": "C:/workspace/two-mod-maintenance-20261003/two-mod-minimal-publication-R0002/mod_de_jure_conquest/steam-change-notes-media-B.txt",
+      "size": 3604,
+      "sha256": "b334b2906a42cd67f49fbc1cb152a511b4df10cfb4bab6eaac2f544ddc14dc1c"
+    },
+    "normalized_characters": 1393,
+    "normalized_lines": 34,
+    "normalized_sha256": "A73B35C633D4AF7D6B9A84597D9CA28D17AC992BDD3128F671D6A178C7CF0057"
+  },
+  "added_player_visible_line": "• 补充1张本版本简体中文玩法实机图，功能/运行文件不变。",
+  "version_relation": "same 1.0.0 initial-baseline publication; no prior maintained version",
+  "create_operation_id": null,
+  "create_public_entry_id": null,
+  "media_operation_id": null,
+  "media_public_entry_id": null,
+  "release_source_tag_moved": false,
+  "steam_api_init_calls": 0,
+  "screen_calls": 0,
+  "original_pair_freeze": {
+    "path": "C:/workspace/two-mod-maintenance-20261003/djc-final-notes-A-B-R0001/notes-A-and-B-freeze.json",
+    "size": 1663,
+    "sha256": "958d2ee8b16c624c86367e67bd1430d2f6f51955ea86ff5285860b088eda95ab"
+  }
+}

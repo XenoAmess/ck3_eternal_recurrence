@@ -1,0 +1,18 @@
+{
+  "title_exact": true,
+  "description_exact": true,
+  "description_characters": 1301,
+  "description_sha256": "C372F7F222E2E1FD0D9268197563EC3C1612F855AE2BE8C667C0BE2838578910",
+  "expected_description_sha256": "C372F7F222E2E1FD0D9268197563EC3C1612F855AE2BE8C667C0BE2838578910",
+  "change_notes_exact": true,
+  "changelog_entry_id": "1791025832",
+  "change_notes_characters": 1362,
+  "change_notes_lines": 32,
+  "change_notes_sha256": "B336CE7DD42BE864B0778102AC63631F48FD47815E417B2C2210B10CFF036F56",
+  "expected_change_notes_characters": 1362,
+  "expected_change_notes_lines": 32,
+  "expected_change_notes_sha256": "B336CE7DD42BE864B0778102AC63631F48FD47815E417B2C2210B10CFF036F56",
+  "time_updated": 1791025832,
+  "file_size": "147202",
+  "ok": true
+}

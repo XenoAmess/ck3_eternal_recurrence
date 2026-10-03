@@ -1,0 +1,22 @@
+{
+  "title_exact": true,
+  "description_exact": true,
+  "description_characters": 1301,
+  "description_sha256": "C372F7F222E2E1FD0D9268197563EC3C1612F855AE2BE8C667C0BE2838578910",
+  "expected_description_sha256": "C372F7F222E2E1FD0D9268197563EC3C1612F855AE2BE8C667C0BE2838578910",
+  "change_notes_exact": true,
+  "changelog_entry_id": "1791025832",
+  "change_notes_characters": 1393,
+  "change_notes_lines": 34,
+  "change_notes_sha256": "A73B35C633D4AF7D6B9A84597D9CA28D17AC992BDD3128F671D6A178C7CF0057",
+  "expected_change_notes_characters": 1393,
+  "expected_change_notes_lines": 34,
+  "expected_change_notes_sha256": "A73B35C633D4AF7D6B9A84597D9CA28D17AC992BDD3128F671D6A178C7CF0057",
+  "time_updated": 1791025832,
+  "file_size": "147202",
+  "ok": true,
+  "product": "mod_de_jure_conquest",
+  "item_id": "3812510217",
+  "anonymous_batch_api_source": "C:\\workspace\\two-mod-maintenance-20261003\\public-notes-B-get-R0004\\anonymous-metadata-batch.raw",
+  "current_owner_app_visibility_exact": true
+}

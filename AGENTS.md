@@ -17,8 +17,8 @@
 - `mod_tributary_expansion_directives/` — “驱策朝贡国 / Tributary Expansion Directives”独立版源目录；Workshop item id：**3801490405**；正式发布只使用 `build_tributary_expansion_directives_release.py` 生成的 16 文件 staging
 - `mod_celestial_commerce_corruption/` — “天朝制允许经商&贪腐框架（XenoAmess维护版）”源码；维护版 Workshop item id：**3804807463**；上游 **3596263413** 仅作来源身份，禁止作为维护版发布目标；正式上传只使用 `build_celestial_commerce_corruption_release.py` 生成的 22 文件 staging；上游未携带许可证，仓库所有者已于 2026-09-20 明确确认取得原作者再分发与发布许可，授权原件待补档
 - `mod_auto_upgrade_buildings/` — “自动升级建筑（XenoAmess维护版）”源码；维护版 Workshop item id：**3800124956**；上游 **3596580780** 仅作来源身份，禁止作为维护版发布目标；正式上传只使用 `build_auto_upgrade_buildings_release.py` 生成的 17 文件 staging，维护与验收见 `docs/auto-upgrade-buildings-*.md`
-- `mod_de_jure_conquest/` — “公国/王国/帝国法理征服（XenoAmess维护版）”；上游 **3600021457** 仅作来源，维护版必须创建新物品；功能、适配、测试和发布记录在其 `docs/`；正式上传只用其 `tools/build_release.py` 生成的 16 文件 staging。
-- `mod_change_holding_types/` — “地产类型转换（XenoAmess维护版）”；上游 **3337428403** 仅作来源，维护版必须创建新物品；功能、适配、测试和发布记录在其 `docs/`；正式上传只用其 `tools/build_release.py --release-localization` 生成的 17 文件 staging。
+- `mod_de_jure_conquest/` — “公国/王国/帝国法理征服（XenoAmess维护版）”；维护版 Workshop item id：**3812510217**；上游 **3600021457** 仅作来源，禁止作为发布目标；功能、适配、测试和发布记录在其 `docs/`；正式上传只用其 `tools/build_release.py` 生成的 16 文件 staging。
+- `mod_change_holding_types/` — “地产类型转换（XenoAmess维护版）”；维护版 Workshop item id：**3812510834**；上游 **3337428403** 仅作来源，禁止作为发布目标；功能、适配、测试和发布记录在其 `docs/`；正式上传只用其 `tools/build_release.py --release-localization` 生成的 17 文件 staging。
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
 - `coat_of_arms_editer_of_ck3/` — 独立 Vue 3 家徽编辑器；正式站点由 GitHub Pages Actions 构建，禁止把 CK3、MCP 或 Java 后端变成线上运行依赖

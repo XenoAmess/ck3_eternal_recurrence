@@ -1,0 +1,30 @@
+{
+  "additional_preview_changes": {
+    "add": [
+      {
+        "path": "C:\\workspace\\two-mod-maintenance-20261003\\djc-workshop-media-candidate-R0001\\01-cn-gameplay.jpg",
+        "sha256": "7a68863d992eb4feab43ecf5b93db10e10b540312007b8f7e0b51e94119d606b",
+        "size": 717646
+      }
+    ],
+    "remove_indices": [],
+    "update": []
+  },
+  "additional_previews_before": {
+    "app_id": 1158310,
+    "item_id": "3812510217",
+    "previews": []
+  },
+  "app_id": 1158310,
+  "created_at": "2026-10-03T11:16:59.963297+00:00",
+  "item_id": "3812510217",
+  "legal_agreement_required": false,
+  "operation": "update",
+  "operation_id": "mod_de_jure_conquest-1.0.0-media-final-01",
+  "payload_sha256": "69ac47a7faff1a456857b81abf79b6680de0fe3a271dee8746748212f39cad77",
+  "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+  "stage": "complete",
+  "steam_result": 1,
+  "submitted_at": "2026-10-03T11:17:09.496299+00:00",
+  "updated_at": "2026-10-03T11:17:09.496341+00:00"
+}

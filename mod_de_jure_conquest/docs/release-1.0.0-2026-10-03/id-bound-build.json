@@ -1,0 +1,18 @@
+{
+  "product": "mod_de_jure_conquest",
+  "new_item_id": "3812510217",
+  "source_commit": "dc53f4a183d4a753c0c5eeb3623f7f060b59f231",
+  "tag": "de-jure-conquest-v1.0.0",
+  "manifest": {
+    "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-product-formal-release-with-ids-R0001\\mod_de_jure_conquest.manifest.json",
+    "bytes": 3032,
+    "sha256": "13d586066e50edf97359db08b264fe72ee5afb0c099aa730d06ebe8c4677237a"
+  },
+  "zip": {
+    "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-product-formal-release-with-ids-R0001\\mod_de_jure_conquest.zip",
+    "bytes": 125941,
+    "sha256": "8ed44c081ff53f54e6d267c35425da9e7ec3cd976f7476b7faf7936d1d6b87f1"
+  },
+  "runtime_file_count": 16,
+  "runtime_and_zip_identical_to_uploaded_cn_accepted_build": true
+}

@@ -89,3 +89,7 @@
 | --- | ---: | ---: | ---: | --- |
 | [steam-change-notes-1.0.0.txt](steam-change-notes-1.0.0.txt) | 3169 | 1249 | 31 | `115baac85ebed22dd6ed82995dee323c8432b21bbc4127353803fea434bd49e8` |
 | [workshop-description.bbcode](workshop-description.bbcode) | 2835 | 1177 | 31 | `c89297bc7a225c4a3476f89023b2a4720571e6f35cb3b90c01124edab23b4a52` |
+
+## 2026-10-03 正式发布追加记录
+
+维护版新Workshop ID为 [3812510217](https://steamcommunity.com/sharedfiles/filedetails/?id=3812510217)，版本1.0.0。中文实机、正式构建、完整Change Notes匿名回读、实机媒体、全新订阅缓存逐文件复核与Steam离线恢复均已通过，完整事实见[发布报告](release-1.0.0-2026-10-03/README.md)。此前阶段记录和失败attempt按原样保留。

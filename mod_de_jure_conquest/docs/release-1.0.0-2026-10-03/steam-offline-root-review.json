@@ -1,0 +1,20 @@
+{
+  "reviewer": "/root",
+  "reviewed_at_utc": "2026-10-03T11:50:51.345339+00:00",
+  "image": {
+    "path": "C:\\workspace\\two-mod-maintenance-20261003\\steam-publication-execution-R0004\\frames\\post-publication-offline\\probe-1\\steam-moved.png",
+    "bytes": 327530,
+    "sha256": "8ed557bdf6678951198b9cac3a33447ccdb61f89a0bb8b3dac36a970a842db3d"
+  },
+  "freshness_evidence": {
+    "path": "C:\\workspace\\two-mod-maintenance-20261003\\steam-publication-execution-R0004\\frames\\post-publication-offline\\probe-1\\steam-frame-freshness.json",
+    "bytes": 1308,
+    "sha256": "edeb4625dc29f2bb2a98863a3f51f8ef70bff292801e315df9729dadc14240e7"
+  },
+  "direct_image_review": true,
+  "steam_footer": "离线模式",
+  "visible_desktop_time": "2026-10-03 19:49",
+  "offline_visually_confirmed": true,
+  "ck3_launcher_processes": [],
+  "browser_owner_editor_operated_while_steam_offline": true
+}

@@ -1,0 +1,90 @@
+{
+  "files": [
+    {
+      "path": "common/casus_belli_types/duchy_de_jure_greatwar.txt",
+      "sha256": "2bf55d811901828136416689e75917219d00440d5e63ad8aab2d5db4c6d5aeb1",
+      "size": 5528
+    },
+    {
+      "path": "common/casus_belli_types/empire_de_jure_greatwar.txt",
+      "sha256": "dfd554edc5d42be3cbc76b1ced8555f3fa1e25f499189649e4f8e7c693ec0363",
+      "size": 5534
+    },
+    {
+      "path": "common/casus_belli_types/kingdom_de_jure_greatwar.txt",
+      "sha256": "dfff8ebedc4f8bcf744b198324b1be5faa7ab9076d3956fe548e6ddf236ae56d",
+      "size": 5537
+    },
+    {
+      "path": "common/on_action/greatwar.txt",
+      "sha256": "c9e7aa7c3092e633f74413b861357ea9fd0bb7cd6004ef0d38bbe6c3424356cf",
+      "size": 839
+    },
+    {
+      "path": "common/scripted_effects/djc_war_effects.txt",
+      "sha256": "963e10b91a9f2b4df60396a32b06b6ccce46f3db051d5340d6e1e35b0897941f",
+      "size": 2751
+    },
+    {
+      "path": "descriptor.mod",
+      "sha256": "359e9378843b2532e156f4701179a1dd963dc7dd131a6c5e8d52dab96aaa63d7",
+      "size": 155
+    },
+    {
+      "path": "localization/english/greatwar_l_english.yml",
+      "sha256": "719ad53ee0b238afae6ab70691492e2b5e8d3095fbde27263bb080b693d0399a",
+      "size": 1584
+    },
+    {
+      "path": "localization/french/greatwar_l_french.yml",
+      "sha256": "1e55cc07cf6ba1f75b6aa50af1ac2f74aa9c7d505e2dd03f8415f62fef500d34",
+      "size": 1656
+    },
+    {
+      "path": "localization/german/greatwar_l_german.yml",
+      "sha256": "b66ec0b5fc618bf5806881dcb610cd6a786afae358fbad7b2c58d268118ad986",
+      "size": 1758
+    },
+    {
+      "path": "localization/japanese/greatwar_l_japanese.yml",
+      "sha256": "5fff5dfffe35b7a855866d33717d95cb2fdfe6faf97dc5dc0c8b6e3c24e4a9f7",
+      "size": 1459
+    },
+    {
+      "path": "localization/korean/greatwar_l_korean.yml",
+      "sha256": "509518ba720053649f2a3202084797755811e88046d73cc33bddbdf965985d89",
+      "size": 1543
+    },
+    {
+      "path": "localization/polish/greatwar_l_polish.yml",
+      "sha256": "0063629bac05538d8c980cd0fd09840aab31f0b5fcff75873f619a76f17378a2",
+      "size": 1563
+    },
+    {
+      "path": "localization/russian/greatwar_l_russian.yml",
+      "sha256": "ac6920c019027f7b80a1add1079f5e27d057b72b04d56115a701078207cd59a6",
+      "size": 2389
+    },
+    {
+      "path": "localization/simp_chinese/greatwar_l_simp_chinese.yml",
+      "sha256": "214c3afcd66a5c534d9b44b5bc429579d9f3bb75265f765732b4cf4adbb553b2",
+      "size": 1430
+    },
+    {
+      "path": "localization/spanish/greatwar_l_spanish.yml",
+      "sha256": "98c680f4f36e689314b132b8fd0497d584e990347335bb198ffd34c8df262e55",
+      "size": 1608
+    },
+    {
+      "path": "thumbnail.png",
+      "sha256": "7b9d9de50b9a8a9fdf83bc89996330ea12f28a4a2396006d733043a8840c0465",
+      "size": 111868
+    }
+  ],
+  "format_version": 1,
+  "git_sha": "dc53f4a183d4a753c0c5eeb3623f7f060b59f231",
+  "git_tag": "de-jure-conquest-v1.0.0",
+  "mod_version": "1.0.0",
+  "product_id": "mod_de_jure_conquest",
+  "workshop_item_id": "3812510217"
+}

@@ -1,0 +1,266 @@
+{
+  "schema": "ck3.independent_mod.publication.v1",
+  "product": "mod_de_jure_conquest",
+  "title": "公国／王国／帝国法理征服（XenoAmess维护版）",
+  "version": "1.0.0",
+  "initial_baseline": true,
+  "previous_maintained_version": null,
+  "previous_tag": null,
+  "previous_commit": null,
+  "workshop_item_id": "3812510217",
+  "upstream_item_id_source_only": "3600021457",
+  "app_id": 1158310,
+  "owner_steam_id64": "76561198273714027",
+  "source_commit": "dc53f4a183d4a753c0c5eeb3623f7f060b59f231",
+  "tag": "de-jure-conquest-v1.0.0",
+  "release_date": "2026-10-03",
+  "uploaded_at_utc": "2026-10-03T11:10:32.401334+00:00",
+  "native_create": {
+    "app_id": 1158310,
+    "create_result": 1,
+    "created_at": "2026-10-03T11:10:19.706202+00:00",
+    "item_id": "3812510217",
+    "legal_agreement_required": false,
+    "operation": "create",
+    "operation_id": "mod_de_jure_conquest-1.0.0-create-final-01",
+    "payload_sha256": "3b7ddd2d7f8f8f1bf4f80c465aaf3dea386464cd64367e575bf3b68cef31c8e2",
+    "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+    "stage": "complete",
+    "steam_result": 1,
+    "submitted_at": "2026-10-03T11:10:32.401334+00:00",
+    "updated_at": "2026-10-03T11:10:32.401383+00:00"
+  },
+  "native_media_update": {
+    "additional_preview_changes": {
+      "add": [
+        {
+          "path": "C:\\workspace\\two-mod-maintenance-20261003\\djc-workshop-media-candidate-R0001\\01-cn-gameplay.jpg",
+          "sha256": "7a68863d992eb4feab43ecf5b93db10e10b540312007b8f7e0b51e94119d606b",
+          "size": 717646
+        }
+      ],
+      "remove_indices": [],
+      "update": []
+    },
+    "additional_previews_before": {
+      "app_id": 1158310,
+      "item_id": "3812510217",
+      "previews": []
+    },
+    "app_id": 1158310,
+    "created_at": "2026-10-03T11:16:59.963297+00:00",
+    "item_id": "3812510217",
+    "legal_agreement_required": false,
+    "operation": "update",
+    "operation_id": "mod_de_jure_conquest-1.0.0-media-final-01",
+    "payload_sha256": "69ac47a7faff1a456857b81abf79b6680de0fe3a271dee8746748212f39cad77",
+    "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+    "stage": "complete",
+    "steam_result": 1,
+    "submitted_at": "2026-10-03T11:17:09.496299+00:00",
+    "updated_at": "2026-10-03T11:17:09.496341+00:00"
+  },
+  "format_ci_success": true,
+  "chinese_live_acceptance": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_de_jure_conquest\\docs\\cn-live-acceptance-2026-10-03-R0003.json",
+    "bytes": 38245,
+    "sha256": "73677db83085621bc8ad47b47e7b89178c6d50b8f4aebf4b88590200ee216f49"
+  },
+  "chinese_live_summary": "中文普通公国宣战、实际费用与次级防守者、新战争保存重载通过；三档胜利／白和平／战败九格共72项综合语义断言通过。",
+  "only_simplified_chinese_live_acceptance": true,
+  "other_eight_languages_format_only": true,
+  "id_bound_formal_build": {
+    "product": "mod_de_jure_conquest",
+    "new_item_id": "3812510217",
+    "source_commit": "dc53f4a183d4a753c0c5eeb3623f7f060b59f231",
+    "tag": "de-jure-conquest-v1.0.0",
+    "manifest": {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-product-formal-release-with-ids-R0001\\mod_de_jure_conquest.manifest.json",
+      "bytes": 3032,
+      "sha256": "13d586066e50edf97359db08b264fe72ee5afb0c099aa730d06ebe8c4677237a"
+    },
+    "zip": {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-product-formal-release-with-ids-R0001\\mod_de_jure_conquest.zip",
+      "bytes": 125941,
+      "sha256": "8ed44c081ff53f54e6d267c35425da9e7ec3cd976f7476b7faf7936d1d6b87f1"
+    },
+    "runtime_file_count": 16,
+    "runtime_and_zip_identical_to_uploaded_cn_accepted_build": true
+  },
+  "fresh_subscribed_cache_exact": true,
+  "cache_game_rerun": false,
+  "anonymous_full_notes_B": {
+    "title_exact": true,
+    "description_exact": true,
+    "description_characters": 1301,
+    "description_sha256": "C372F7F222E2E1FD0D9268197563EC3C1612F855AE2BE8C667C0BE2838578910",
+    "expected_description_sha256": "C372F7F222E2E1FD0D9268197563EC3C1612F855AE2BE8C667C0BE2838578910",
+    "change_notes_exact": true,
+    "changelog_entry_id": "1791025832",
+    "change_notes_characters": 1393,
+    "change_notes_lines": 34,
+    "change_notes_sha256": "A73B35C633D4AF7D6B9A84597D9CA28D17AC992BDD3128F671D6A178C7CF0057",
+    "expected_change_notes_characters": 1393,
+    "expected_change_notes_lines": 34,
+    "expected_change_notes_sha256": "A73B35C633D4AF7D6B9A84597D9CA28D17AC992BDD3128F671D6A178C7CF0057",
+    "time_updated": 1791025832,
+    "file_size": "147202",
+    "ok": true,
+    "product": "mod_de_jure_conquest",
+    "item_id": "3812510217",
+    "anonymous_batch_api_source": "C:\\workspace\\two-mod-maintenance-20261003\\public-notes-B-get-R0004\\anonymous-metadata-batch.raw",
+    "current_owner_app_visibility_exact": true
+  },
+  "anonymous_full_notes_A_predecessor": {
+    "title_exact": true,
+    "description_exact": true,
+    "description_characters": 1301,
+    "description_sha256": "C372F7F222E2E1FD0D9268197563EC3C1612F855AE2BE8C667C0BE2838578910",
+    "expected_description_sha256": "C372F7F222E2E1FD0D9268197563EC3C1612F855AE2BE8C667C0BE2838578910",
+    "change_notes_exact": true,
+    "changelog_entry_id": "1791025832",
+    "change_notes_characters": 1362,
+    "change_notes_lines": 32,
+    "change_notes_sha256": "B336CE7DD42BE864B0778102AC63631F48FD47815E417B2C2210B10CFF036F56",
+    "expected_change_notes_characters": 1362,
+    "expected_change_notes_lines": 32,
+    "expected_change_notes_sha256": "B336CE7DD42BE864B0778102AC63631F48FD47815E417B2C2210B10CFF036F56",
+    "time_updated": 1791025832,
+    "file_size": "147202",
+    "ok": true
+  },
+  "notes_B_replaces_same_existing_entry_A": true,
+  "native_notes_B_not_public_owner_edit_required": true,
+  "media_count": 1,
+  "media_native_order_byte_pixel_and_direct_image_review_pass": true,
+  "steam_offline_direct_fresh_review": {
+    "path": "C:\\workspace\\two-mod-maintenance-20261003\\steam-publication-execution-R0004\\frames\\post-publication-offline\\root-visual-review.json",
+    "bytes": 913,
+    "sha256": "a496a65175e3891606c77ac1817d1c108b4964b8365d83bb03487112a882f0b1"
+  },
+  "no_ck3_launcher_running_at_screen_release": true,
+  "external_evidence_preserved": [
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-mod-minimal-publication-R0002\\mod_de_jure_conquest\\bound-final\\native-create-receipt.json",
+      "bytes": 545,
+      "sha256": "e8d16e66af46ac2f0f9ef5046670f5d41b1a219ae33d4d454fae636b92629885"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-mod-minimal-publication-R0002\\mod_de_jure_conquest\\media-update-R0001\\native-media-update-receipt.json",
+      "bytes": 978,
+      "sha256": "b527a42047ec66cdf55460a2369ad0f06f188439d71ea1bd036710bcf7675e6a"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-mod-minimal-publication-R0002\\mod_de_jure_conquest\\steam-change-notes-create-A.txt",
+      "bytes": 3521,
+      "sha256": "e854d04d8b387ce486f59192fa1fe2bdf94c8bb3a8399ab083cdd449b8486c7b"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-mod-minimal-publication-R0002\\mod_de_jure_conquest\\steam-change-notes-media-B.txt",
+      "bytes": 3604,
+      "sha256": "b334b2906a42cd67f49fbc1cb152a511b4df10cfb4bab6eaac2f544ddc14dc1c"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-mod-minimal-publication-R0002\\mod_de_jure_conquest\\notes-A-and-B-freeze.json",
+      "bytes": 1962,
+      "sha256": "d5e34cfe4704b12916fc2c8b4e141250a50d8c14386756e035c1125b7a7aa334"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-mod-minimal-publication-R0002\\mod_de_jure_conquest\\post-create-R0001\\public-A-R0001\\verification.json",
+      "bytes": 758,
+      "sha256": "fbbc8a470f0992178790992434da9720d40bad647d8884ed8c6064929bbe8ea0"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\public-notes-B-get-R0004\\mod_de_jure_conquest-verification.json",
+      "bytes": 1025,
+      "sha256": "440344506f0bdb27d43c6902dab2dc13533d4b3bd403a9b347d28944a1feef86"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\public-notes-B-get-R0004\\mod_de_jure_conquest-changelog.raw",
+      "bytes": 54382,
+      "sha256": "27ae1495a33a1c0c66024727c9412db5dbf034b47ab52c5ecd452cf67ecb5d0c"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\djc-cache-manifest-verification-R0001\\report.json",
+      "bytes": 2037,
+      "sha256": "3fdaca2ac5d15dff833c63ac4204780ac11af9802bfacd0820f53cd98c4ed9be"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-product-formal-release-with-ids-R0001\\mod_de_jure_conquest-id-binding.json",
+      "bytes": 788,
+      "sha256": "a98e1892a9ced03b15922b0429ef4068047fd2dfb88d1b24c6dea7e69a821b6c"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-product-formal-release-with-ids-R0001\\mod_de_jure_conquest.manifest.json",
+      "bytes": 3032,
+      "sha256": "13d586066e50edf97359db08b264fe72ee5afb0c099aa730d06ebe8c4677237a"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\ci-dc53f4a1-urllib-R0001\\report.json",
+      "bytes": 733,
+      "sha256": "9184db0e9ec8ec5f4140c67153c7949bbf5467a6edbf0d8ca948d7a13db40ca3"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\djc-owner-notes-replacement-R0003\\save-receipt.json",
+      "bytes": 703,
+      "sha256": "f1b1c615179b89203298c61e54197ea23d9f51ca8ada18ad16598c19d0a33469"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\djc-public-media-R0001\\public-media-report.json",
+      "bytes": 5426,
+      "sha256": "ede2cb551f0bc99d1534c60f17272e43c1464a94f9c48a84fb826b537e588efd"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\djc-public-media-R0001\\root-cdn-image-review.json",
+      "bytes": 548,
+      "sha256": "8ffa37b85f348d6d9ac10dfbd4d86bf4ec7a6ec8051e0a978cc8c0ac1a50464e"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\steam-publication-execution-R0004\\frames\\post-publication-offline\\root-visual-review.json",
+      "bytes": 913,
+      "sha256": "a496a65175e3891606c77ac1817d1c108b4964b8365d83bb03487112a882f0b1"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\publication-lease-keeper-R0003\\release.json",
+      "bytes": 1289,
+      "sha256": "8c9e50179b71377ddb9c251b3c515c4a574cc83f8e823f8518c954fe40aa3e37"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_de_jure_conquest\\docs\\cn-live-acceptance-2026-10-03-R0003.json",
+      "bytes": 38245,
+      "sha256": "73677db83085621bc8ad47b47e7b89178c6d50b8f4aebf4b88590200ee216f49"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\djc-subscribe-command-R0001\\stdout.bin",
+      "bytes": 5093,
+      "sha256": "ce9df0ffd0889f0bee5a37e095a9e577ff148e092f6b152153e1a166fdcbd4a5"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\djc-fresh-download-command-R0001\\stdout.bin",
+      "bytes": 2779,
+      "sha256": "5b0df9faf473369a34e89e15ec7ec000106c6971aadab2e325f2b6ec401b58dd"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\djc-public-media-R0001\\public-media.jpg",
+      "bytes": 717646,
+      "sha256": "7a68863d992eb4feab43ecf5b93db10e10b540312007b8f7e0b51e94119d606b"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\djc-owner-notes-replacement-R0003\\full-owner-field-readback.txt",
+      "bytes": 3638,
+      "sha256": "54d1778fd729979f87376c61a4e6db2a53136e1bf0d1d552f05b8e933d06b1cc"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\two-product-formal-release-with-ids-R0001\\mod_de_jure_conquest.zip",
+      "bytes": 125941,
+      "sha256": "8ed44c081ff53f54e6d267c35425da9e7ec3cd976f7476b7faf7936d1d6b87f1"
+    },
+    {
+      "path": "C:\\workspace\\two-mod-maintenance-20261003\\steam-publication-execution-R0004\\frames\\post-publication-offline\\probe-1\\steam-moved.png",
+      "bytes": 327530,
+      "sha256": "8ed557bdf6678951198b9cac3a33447ccdb61f89a0bb8b3dac36a970a842db3d"
+    }
+  ],
+  "known_limits": "仅支持玩家进攻。与上游公开CB ID相同，原作和维护版只能启用其一。建议用于新战争；本轮保存重载限于新宣战公国战争。未独立验收旧版大圣战迁移、自动军队、并发战争、原生议和按钮或多人真人赔款。最终结算证据链仍有93条动态文本格式诊断、来源未定位，并保留原版加载／旅行诊断；不宣称日志零错误。",
+  "completion_boundary": "All publication/Chinese acceptance/cache/offline gates verified; repository commit and push are the remaining delivery action, whose commit identity is recorded externally."
+}
