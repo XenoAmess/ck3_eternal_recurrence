@@ -133,3 +133,75 @@ continue this movement work package.
 External source and actual pins, the existing-query recipe and this documentation
 projection are retained under
 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-march-progress-actual/`.
+
+## v38: the next movement order toward Province2604
+
+This is a separate, completed **movement-command loop**, frozen immediately
+after the order at raw53236800. The earlier eight-day march and independently
+observed arrival at2610 remain the historical completed journey above. The
+v38 frame starts from that stationary province; it does not replay or recount
+those eight days.
+
+Root selected Province2604 for public CUnit83886367 in War16777231, using the
+fresh occupation-target observation and successful v38 route preview. The
+selection evidence and occupation meanings belong to
+[the occupation-target topic](war-occupation-targets-12003.md). The preview
+reported origin2610 and path `[2605,2604]`. The selection generator's
+`SELECTED-ACTUAL-SUMMARY.json` is explicitly `prepared-only`; the following
+actual SDK packets supply the execution evidence.
+
+| Completed actual observation or action | Result and boundary |
+| --- | --- |
+| Paused pre-move frame at raw53236800 | Robert29829 / episode `native-29829-2bc2d599f7f9`; current2610, regular code1, target null, complete empty route |
+| Existing route-contact query, native revision7 | Complete proposed route `[2605,2604]`; estimated prefix arrivals raw53236944 and raw53237112 |
+| Current hostile scope | Seven IDs `[473,474,16777683,50331920,67109295,83886484,251658381]`, derived from the fresh frame |
+| One-day horizon | Interval raw53236800 to53236824, `one_day_contact_free=true`, no conflicts; `h-7` counts hostile IDs and does not mean seven simulation days |
+| Exactly one `move-army-83886367-to-2604` | `accepted=true`, `status=submitted`, `war_action.status=moving`, submitted at raw53236800 |
+| Separate `ck3_take_snapshot` readback | Current2610, target2604, moving code7, complete nonempty route `[2605,2604]`, source count2, controllable, no combat and no retreat; snapshot `native:8`, public revision3 |
+| Final frame and normal checkpoint | Still paused at raw53236800; history4759, saved SHA-256 `189d84b62c273aef8e98059b33975c277e84824f58549967bcbe8ce3e4513789` |
+
+The two published arrival dates are whole-day estimates of six days to2605
+and thirteen days to2604 from this frame. Neither the proposed timeline nor
+the acknowledged command proves an arrival, a thirteen-day contact-free
+journey, a siege or a recovery of occupation. The independent readback proves
+that the selected order became the army's stored moving route. Its current
+province remains2610. The next bounded day requires a fresh committed-route
+horizon and another independent paused observation under the existing tree;
+it must not infer progress from the acknowledgment alone or resubmit this
+order merely because the army has not yet arrived.
+
+The actual capture is GREEN at
+`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/recapture-v38/root-selected-2604-01/actual-selected-move/result.json`.
+The completed record includes the horizon, the single movement order, the
+separate snapshot and the normal checkpoint. It used v38 R0017 / PID107772,
+frozen source `0ad923525ef899b836a823dfe983db49030789f2` at `Z:/g40`; the
+Root-owned candidate build retained the exact EXE binding above. Root reports
+strict541-TU compilation with jobs64 in73.42814 seconds and successful official
+CI37113104087. These preparation results do not add a gameplay result.
+
+Readiness is **production-live loop for selecting, dispatching and independently
+reading back this movement command**. Arrival2604, occupation recovery, siege
+success, combat victory, war termination and full campaign completion remain
+unobserved here. This capture adds zero simulation days: saved gameplay remains
+3853 at this frozen frame. Any later Root advance belongs to a separate actual
+packet and must update the current report without rewriting this checkpoint.
+This documentation lane performs no SDK, state, window or shared-source action;
+Root retains exclusive ownership and the minimized, unfocused execution rule.
+
+<!-- Append to existing docs/ck3-native-ai/army-march-remaining-timeline-12003.md after the existing zero-day selected-move projection, preserving that prior frame. Link war-occupation-targets-12003.md, army-target-triage-1.20.0.3.md and war-relief-siege-native-ai-12003.md without editing their owned projections. No new native tree. -->
+
+## 2026-10-03 2604 route dispatch 后首个 bounded day：production-live movement loop
+
+在本专题先前 zero-day selected move 投影的原帧之后追加这份首日事实，保留该先前帧。继 [PUB2 enemy-held candidate publication](war-occupation-targets-12003.md) → actual Root choose 2604 → one move → independent committed route 的有限 production-live loop 后，Root 在 exact 1.20.0.3 / g40 / v38、Robert 29829 原普通战役上完成此 route 的首个 bounded military day。native timeline 与 route 输入沿用本专题，回链既有 [army target triage](army-target-triage-1.20.0.3.md) 与 [war relief / siege](war-relief-siege-native-ai-12003.md)，不新建树或附加门禁。
+
+冻结源：[actual-first-route-day-2604-01/result.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/recapture-v38/actual-first-route-day-2604-01/result.json)，typed `002 fresh horizon → 003 exact one-day advance → 004 independent snapshot → 005 foreign transition → 006 final snapshot → 007 normal save` 均 GREEN。实际 date **53236800 → 53236824**，24 raw hours / 1 game day、final paused/map_ready true、snapshot `native:14` / public 5 / native 14。
+
+新的 pre-advance committed-route horizon 绑定 `native:11` / public 2 / native 11，已观察 locked-edge effective origin 2605、完整 route `[2605,2604]` 和全当前非退敌七 IDs；使用 current native timeline / opposite-edge geometry，不复用单 move 前的 native7 horizon。原生 arrival raw dates `[53236944,53237112]` 是查询时预测；本日独立 own army 83886367 仍 current 2610、moving/code7、target2604 observable true、`complete_nonempty/source_count2`、combat/retreat false，没有到达。
+
+foreign battle 1577058305（province2640）实际 main/day5，observation available，resolved advantage raw700000/scale100000（+7 points），winner/forced winner none，finalized false；attacker `[251658381,473,474]`、defender `[50331920,83886484]`，不包含 Robert own army。own/enemy/phase/side 没有 material 变化，本日未重查 strengths，不将 snapshot soldiers null 当成合法零兵，也不新增每日强制查询。
+
+**Military moving readiness 现为 one-bounded-day production-live movement loop**：observed committed route → fresh native contact decision → exact one-day operation → independent observed date/route → normal save。这个范围已从上一份 dispatch artifact 的 primitive/first-day-pending 推进，仍不等于 arrival、siege、occupation count 17→16、recapture、victory 或 complete war。
+
+正常保存 h4764、SHA-256 `91ee0cebb347e32cec7fccb1c581a0c2661b22bd26cf90f6a12c29025f3b5422`、90840300 bytes、raw53236824。Root 累计 total3854 / resume701 / Oct3 606；本真实一天已由 Root 计入，纯文件消费者不重计。Root 从 raw53236824 带 prior-first-result 接续 batch16；后续日数/到达/围城状态要消费后续真实产物，文档不阻断执行。
+
+原始 packet SHA-256 与冻结消费索引：[ACTUAL-FIRST-ROUTE-DAY-CONSUMED.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/recapture-v38/first-day-consumed/ACTUAL-FIRST-ROUTE-DAY-CONSUMED.json)。本 lane 无 SDK/game/window/Git/shared-source/test 操作，专题与日报/周报由 actual merge owner 合入。

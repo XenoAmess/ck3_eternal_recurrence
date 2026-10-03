@@ -1,6 +1,6 @@
 # CK3 1.20.0.3: native occupation targets for Robert's defensive wars
 
-2026-10-03. The typed readonly query `ck3_query_war_occupation_targets_v1(war_id,expected_revision)` now exposes native eligible holdings with exact holding/title/province, legal holder, occupying character and physical war-side identities. Initial implementation was static-ready. The v36 context-unavailable attempts remain historical RED; the v37 paused Robert capture below makes the complete occupation collection a **production-live primitive**. Actual movement to a recovery holding remains a separate capability. The exact build is CK3 1.20.0.3 / Steam25652598, EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`.
+2026-10-03. The typed readonly query `ck3_query_war_occupation_targets_v1(war_id,expected_revision)` now exposes native eligible holdings with exact holding/title/province, legal holder, occupying character and physical war-side identities. The v36 context-unavailable attempts and v37 preview exposure failures remain historical RED. The v37 paused Robert capture makes the complete occupation collection a **production-live primitive**; the v38 capture below additionally makes holding fort/garrison fields and three fresh recovery route previews production-live primitives. Root selected province2604 from those observed inputs; actual movement and recovery outcomes remain separately observed capabilities. The exact build is CK3 1.20.0.3 / Steam25652598, EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`.
 
 ## Concrete gameplay dependency
 
@@ -147,3 +147,46 @@ v37 对2604/2625/2629的三个真实预览在Python admission失败，尚未调�
 实际记录：`2026-10-03T17:27:15+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
 
 交付回执：[occupation-route-targets-v38](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-goal-capture-execution/native-target-gaps/actual-v37-preview-admission-01/ROOT-LF-DELIVERY.json)。
+
+
+## 2026-10-03：v38 实读全部收复候选的堡垒/驻军及三个原生路线预览
+
+Root 的 [actual-v38-previews-01/result.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-goal-capture-execution/actual-v38-previews-01/result.json) 终态 GREEN：一次 fresh 主 war16777231 occupation 查询以及三个原生 route preview 均成功。此次暂停读取绑定 Robert29829、episode `native-29829-2bc2d599f7f9`、raw53236800、公用 revision2、native revision5、connection generation3。v38/R0017 的冻结源码为 `0ad923525ef899b836a823dfe983db49030789f2`（g40）；Root 记录严格组合构建541TU、jobs64、73.42814秒及官方 CI37113104087 GREEN。该批观察时累计3853天；纯文件消费没有新增游戏日或动作，后续 current 由 Root 的独立工作包更新。
+
+这一次实际 occupation 仍 `available=true,collection_complete=true`，共35条原始 holding rows，守方 native eligible31/occupied17/candidate31，攻方4/0/4。17条收复候选均实际 `is_occupied=true`、occupier30097、`occupier_side=attacker`、`counted_occupied_by_opposing_side=true`；每项的 fort_level/garrison_size 均为非 null 的原生实数。合法 fort_level0 明确保留为0，不能把它解释为读取失败。下面保持原 native 行序：
+
+| Native row index | ProvinceID | Full holding TitleID | Legal holder CharacterID | Fort level | Garrison size |
+|---:|---:|---:|---:|---:|---:|
+| 3 | 2633 | 2108 | 32716 | 3 | 121 |
+| 4 | 2634 | 2109 | 43698 | 0 | 150 |
+| 5 | 2639 | 2110 | 32716 | 0 | 150 |
+| 8 | 2627 | 2166 | 32716 | 3 | 217 |
+| 9 | 2626 | 2167 | 43710 | 0 | 150 |
+| 10 | 8751 | 2168 | 32716 | 0 | 150 |
+| 13 | 2628 | 2170 | 32716 | 4 | 500 |
+| 14 | 2630 | 2171 | 43711 | 0 | 150 |
+| 15 | 2629 | 2174 | 29829 | 4 | 405 |
+| 16 | 2625 | 2175 | 29829 | 0 | 150 |
+| 17 | 8753 | 2176 | 43712 | 0 | 150 |
+| 18 | 2631 | 2162 | 34867 | 3 | 400 |
+| 19 | 2623 | 2148 | 34333 | 3 | 400 |
+| 20 | 2624 | 2149 | 34333 | 0 | 150 |
+| 21 | 2621 | 2150 | 43707 | 0 | 150 |
+| 29 | 2604 | 2400 | 33435 | 3 | 400 |
+| 30 | 8759 | 2402 | 43755 | 0 | 150 |
+
+三个既有 `preview-move-army-83886367-to-<ProvinceID>` 步骤现在均 `accepted=true,status=available`，原生 preview origin2610/army83886367/previewed_date_raw53236800 与当帧实际输入一致。路线数组是原生可达路径，hop 数是数组长度；报文未发布这些路径的实际行军天数、敌军接触时刻、围城 CanStart 或胜率，不能从 hop 数外算 ETA：
+
+| Preview target ProvinceID | Full holding TitleID | Fort level | Garrison size | Observed hops | Native route from2610 |
+|---:|---:|---:|---:|---:|---|
+| 2604 | 2400 | 3 | 400 | 2 | `2605 → 2604` |
+| 2625 | 2175 | 0 | 150 | 7 | `2614 → 2618 → 2624 → 2631 → 2630 → 2629 → 2625` |
+| 2629 | 2174 | 4 | 405 | 6 | `2614 → 2618 → 2624 → 2631 → 2630 → 2629` |
+
+Root 采用最小确定策略，选择三份实际预览中 hop 最少的2604：holding2400/legalholder33435，敌方30097占领，fort3/garrison400，原生路径2610→2605→2604。Robert 本人持有的2625/2175虽 fort0/garrison150，但这次实际路径有7hop；2629/2174为 fort4/garrison405、6hop。选择2604解锁一个已验证敌占目标的短路径尝试，没有声称它在全17项或原生完整 target rank 中最优。未采用的全17路线比较、原生最终优先级/平局处理、多战争协作以及未来 active siege/work 的真实查询仍是有施工入口的质量差距。移动命令、after-state 和逐日接触观察由 [march timing topic](army-march-remaining-timeline-12003.md) 的独立实际 artifact 说明；选中或 preview 成功均不等于抵达、收复、围城启动或战分变化。
+
+v37 三个同目标 preview 的真实 RED 原样保留在上节：当时是 Python admission 暴露缺口，未调用原生，不是路径非法。已采用的 fort/garrison getter 研究和 target publication 修复也保留为此前源码阶段；本 v38 actual 批只把已实现的新字段/三个 preview 提升到 **production-live primitive**，没有把此前 RED 改写为成功，没有新增战争终结、recapture 或完整攻城 loop credit。
+
+本 preview 批正常存档独立记录为 history4755/SHA-256 `098220c27dcdbe5e7de50c1a7706906b2d18497e3a9a397bb3b4429ca151c90d`、raw53236800。协调者在文档派发时另给出后续 latest normal pair history4759/SHA-256 `189d84b62c273aef8e98059b33975c277e84824f58549967bcbe8ce3e4513789`；它不被冒充为本 preview 批的 checkpoint，也不因本文件消费而回退。最新移动/推进后的 pair 与 current 计数始终由 Root 更新。
+
+各实际 packet、历史 v37 RED 和冻结 runtime 构建输入的 SHA-256 见 [occupation-preview/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/actual-v38-doc-merge/occupation-preview/ROOT-DELIVERY.json)。本 lane 只交付外部文档 projection 与规范 LF 补丁，未运行 SDK、游戏、state、窗口、共享源、Git mutation 或重复测试；canonical 文档采用和 commit/push 由 Root 完成。

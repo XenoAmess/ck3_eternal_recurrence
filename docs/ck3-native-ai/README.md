@@ -1,5 +1,16 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-03T18:02：v38真实军务输入与2604第一路线日
+
+本次冻结报告截至R0017/PID107772/h4764/raw53236824、3854日；运行最小化不抢焦点，source0ad9235/冻结g40，strict与官方CI37113104087 GREEN。
+
+- [召盟完整所选条款](call-ally-v38-terms-production-live.md)：9个final CanSendfalse、sampled费用0，只读primitive；未发送。
+- [占领目标与native预览](war-occupation-targets-12003.md)：17真实fort/garrison与三个previewavailable，2604选定2hop；不授收复信用。
+- [实际派遣与逐日路线](army-march-remaining-timeline-12003.md)：一次move与首个24h路线OODA已验证，仍2610moving，未到2604或围城。
+- [coordinator修复后的真实资格](ai-war-coordinator-storage-terminal-fault-1.20.0.3-2026-10-03.md)及[active phase/day边界](battle-terminal-phase-date-production-fault-1.20.0.3-2026-10-03.md)：一次active/member查询GREEN且postdiaghealthy，真正terminal journal/winner另验。
+
+主战foreignCombat当前main/day5/优势+7不代表Robert参战或哪方胜利；后续实际推进另追加，三份[进度索引](../autonomous-agent-progress/README.md)由其owner收口。
+
 ## 2026-10-03T17:16：Robert v37 实际能力与证据入口
 
 最近 v37/R0016/PID62452 已最小化实测并正常exit0回收，allocator completed-red；source f425/冻结g39，3853保存日、raw53236800/h4747，strict及官方CI37110280135 GREEN。R15任命、派遣和第8日抵达已独立完成；v37只读primitive、三preview曝光RED及terminal真实0xC0000005/bridgeRVA5413773分别记账。

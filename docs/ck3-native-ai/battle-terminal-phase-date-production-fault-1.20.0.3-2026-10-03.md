@@ -1,5 +1,11 @@
 # .3 battle terminal：v35 实际序列化故障与定向修复
 
+## 2026-10-03T18:02 当前实际资格：v38 active lifecycle 与 foreign AI membership
+
+有限 `production-live primitive` 已在v38/PID107772/source `0ad923525ef899b836a823dfe983db49030789f2` 实机验收：一次terminal查询返回ready/available，Combat1577058305@2640为main/day4、`active_not_terminal`、winner−1/finalizedfalse、journal0/not_observed；subject251658381的真实CArmy167772260 及coordinator50331823、stack/subunit0/0、blockedbyactivecombattrue均实读。相邻快照date53236800保持，query后mailbox failure0/readytrue、exceptioncode0/image none/RVA null，SDK正常关闭，无save/retry/rearm。当前active phase_day与真实foreign helper路径已通过，正常/no-normal终结journal的date/day、winner、人物结果及完整终战loop仍未实测。[完整语义与pins](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/v38-terminal-fixed/semantics/ROOT-DELIVERY.json)；[post-query执行器状态](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/v38-terminal-fixed/faultstate/ROOT-DELIVERY.json)
+
+### 先前投影、fixture与失败记录（保留当时资格）
+
 状态：`static-ready`；2026-10-03 实际 RED 已保留，修复尚无新 DLL 的 paused live 成功。
 此前将缺失 phase/day/date 当作“不阻断”的结论错误；生产 serializer 会拒绝，不能声称该 terminal
 观测已完成。独立 transition/horizon 仍可用于尚在进行中的有界战争 OODA。
