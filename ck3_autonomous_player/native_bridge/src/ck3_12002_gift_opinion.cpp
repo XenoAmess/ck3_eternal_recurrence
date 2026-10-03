@@ -287,16 +287,21 @@ bool ReadNamedInteractionFixed12002(
                           b.named_secondary_vtable, stable_hash,
                           canonical_key)) return false;
   alignas(16) std::array<std::byte, 0x168> scope{};
-  alignas(16) std::array<std::byte, 0x118> support118{};
-  alignas(16) std::array<std::byte, 0x2A8> support2a8{};
+  // Native 310CEE0/37616A0: both support vectors and the scope slot
+  // belong to one 0x3D8 scratch object; the first constructor writes +0x120.
+  alignas(16) std::array<std::byte, 0x3D8> scratch{};
   alignas(16) std::array<std::byte, 0x28> internal{};
   if (b.clone_scope(scope.data(), interaction_scope) != scope.data()) return false;
   Store(scope.data(), 0, std::uint16_t{4});
   Store(scope.data(), 8, static_cast<std::uint64_t>(root_id));
-  const bool support_ok = b.construct_support_118(support118.data()) == support118.data() &&
-      b.construct_support_2a8(support2a8.data()) == support2a8.data();
-  void *scope_pointer = scope.data(), *support_pointer = support118.data();
+  void *support_pointer = scratch.data();
+  void *support_second = scratch.data() + 0x128;
+  const bool support_ok = b.construct_support_118(support_pointer) == support_pointer &&
+      b.construct_support_2a8(support_second) == support_second;
+  void *scope_pointer = scope.data();
+  Store(scratch.data(), 0x3D0, scope_pointer);
   Store(internal.data(), 0, scope_pointer);
+  Store(internal.data(), 8, scope_pointer);
   Store(internal.data(), 0x10, scope_pointer);
   Store(internal.data(), 0x18, support_pointer);
   std::uint8_t flag = 0;
@@ -323,8 +328,8 @@ bool ReadNamedInteractionFixed12002(
                 b.evaluate_fixed(definition, &second, internal.data(), nullptr,
                                 source.data()) == &second && first == second;
   }
-  const bool released = DestroyEvaluation(b, scope.data(), support118.data(),
-                                          support2a8.data());
+  const bool released = DestroyEvaluation(b, scope.data(), support_pointer,
+                                          support_second);
   if (!evaluated || !released || b.named_database() != database ||
       b.lookup_named(database, stable_hash) != definition ||
       !DefinitionIdentity(definition, b.named_primary_vtable,
