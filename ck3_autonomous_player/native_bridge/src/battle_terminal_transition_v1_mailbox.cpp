@@ -722,6 +722,31 @@ std::string SerializeBattleTerminalTransitionV1(
   } else {
     output += "null";
   }
+  output += ",\"side_loss_inputs_in_native_order\":";
+  if (prior.side_loss_inputs_in_native_order.has_value()) {
+    output.push_back('[');
+    bool first = true;
+    for (const auto &loss : *prior.side_loss_inputs_in_native_order) {
+      if (!first) output.push_back(',');
+      first = false;
+      output += "{\"side_index\":";
+      if (!AppendNumber(output, loss.side_index)) return {};
+      output += ",\"baseline_raw_q100000\":";
+      if (!AppendNumber(output, loss.baseline_raw_q100000)) return {};
+      output += ",\"stored_current_fighting_raw_q100000\":";
+      if (!AppendNumber(output, loss.stored_current_fighting_raw_q100000)) return {};
+      output += ",\"levy_soft_raw_q100000\":";
+      if (!AppendNumber(output, loss.levy_soft_raw_q100000)) return {};
+      output += ",\"men_at_arms_soft_raw_q100000\":";
+      if (!AppendNumber(output, loss.men_at_arms_soft_raw_q100000)) return {};
+      output += ",\"hard_loss_raw_q100000\":";
+      if (!AppendNumber(output, loss.hard_loss_raw_q100000)) return {};
+      output.push_back('}');
+    }
+    output.push_back(']');
+  } else {
+    output += "null";
+  }
   output += ",\"daily_guard_raw\":";
   if (!AppendOptionalNumber(output, prior.daily_guard_raw)) return {};
   output += ",\"province_id\":";

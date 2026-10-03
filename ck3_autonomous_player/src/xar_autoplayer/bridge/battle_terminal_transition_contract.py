@@ -63,7 +63,17 @@ _PRIOR_FIELDS: Final = {
     "defender_public_cunit_ids_in_stored_order",
     "battle_warscore",
 }
-_PRIOR_FIELDS_WITH_LOSS: Final = _PRIOR_FIELDS | {"hard_loss_inputs"}
+_PRIOR_OPTIONAL_EXTENSION_FIELDS: Final = {
+    "hard_loss_inputs", "side_loss_inputs_in_native_order"
+}
+_SIDE_LOSS_FIELDS: Final = {
+    "side_index",
+    "baseline_raw_q100000",
+    "stored_current_fighting_raw_q100000",
+    "levy_soft_raw_q100000",
+    "men_at_arms_soft_raw_q100000",
+    "hard_loss_raw_q100000",
+}
 _HARD_LOSS_FIELDS: Final = {
     "losing_side_index",
     "baseline_raw",
@@ -514,10 +524,10 @@ def _normalize_prior(
     expected_prior_combat_id: int,
     event_status: str,
 ) -> dict[str, object]:
-    prior_fields = (
-        _PRIOR_FIELDS_WITH_LOSS
-        if isinstance(value, dict) and "hard_loss_inputs" in value
-        else _PRIOR_FIELDS
+    prior_fields = _PRIOR_FIELDS | (
+        _PRIOR_OPTIONAL_EXTENSION_FIELDS & value.keys()
+        if isinstance(value, dict)
+        else set()
     )
     prior = _exact_dict(
         value, "battle_terminal_transition.prior", prior_fields
@@ -661,6 +671,44 @@ def _normalize_prior(
             raise ValueError("terminal hard-loss inputs disagree")
         hard_loss_inputs = {"losing_side_index": side_index, **quantities}
 
+    side_loss_inputs = None
+    if prior.get("side_loss_inputs_in_native_order") is not None:
+        rows = prior["side_loss_inputs_in_native_order"]
+        if not isinstance(rows, list) or len(rows) != 2:
+            raise ValueError("terminal side-loss inputs must contain both sides")
+        if terminal_kind != "normal_result":
+            raise ValueError("terminal side-loss inputs require a normal result")
+        side_loss_inputs = []
+        for expected_side_index, value in enumerate(rows):
+            loss = _exact_dict(
+                value,
+                "battle_terminal_transition.prior.side_loss_inputs_in_native_order",
+                _SIDE_LOSS_FIELDS,
+            )
+            side_index = _integer(
+                loss["side_index"], "terminal side-loss side_index",
+                minimum=0, maximum=1,
+            )
+            quantities = {
+                key: _integer(
+                    loss[key], f"terminal side-loss {key}",
+                    minimum=0, maximum=2**63 - 1,
+                )
+                for key in _SIDE_LOSS_FIELDS - {"side_index"}
+            }
+            if (
+                side_index != expected_side_index
+                or quantities["hard_loss_raw_q100000"] != max(
+                    0,
+                    quantities["baseline_raw_q100000"]
+                    - quantities["stored_current_fighting_raw_q100000"]
+                    - quantities["levy_soft_raw_q100000"]
+                    - quantities["men_at_arms_soft_raw_q100000"],
+                )
+            ):
+                raise ValueError("terminal side-loss inputs disagree")
+            side_loss_inputs.append({"side_index": side_index, **quantities})
+
     observed_fields = (
         terminal_date_raw,
         suppress,
@@ -761,6 +809,8 @@ def _normalize_prior(
     }
     if "hard_loss_inputs" in prior:
         normalized["hard_loss_inputs"] = hard_loss_inputs
+    if "side_loss_inputs_in_native_order" in prior:
+        normalized["side_loss_inputs_in_native_order"] = side_loss_inputs
     return normalized
 
 

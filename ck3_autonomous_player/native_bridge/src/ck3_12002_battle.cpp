@@ -686,6 +686,19 @@ bool TerminalSample(const BattleBindings &b, const game::Snapshot &scope,
     p.phase_day = e.phase_day;
     p.winner_raw = e.winner_raw;
     p.finalized_before = e.finalized_before;
+    if (e.side_loss_inputs_observable) {
+      p.side_loss_inputs_in_native_order = e.side_loss_inputs_in_native_order;
+      if (e.winner_raw == 0 || e.winner_raw == 1) {
+        const auto losing_side_index = 1 - e.winner_raw;
+        const auto &loss = e.side_loss_inputs_in_native_order[
+            static_cast<std::size_t>(losing_side_index)];
+        p.hard_loss_inputs = game::BattleTerminalHardLossInputsSnapshotV1{
+            losing_side_index, loss.baseline_raw_q100000,
+            loss.stored_current_fighting_raw_q100000,
+            loss.levy_soft_raw_q100000, loss.men_at_arms_soft_raw_q100000,
+            loss.hard_loss_raw_q100000};
+      }
+    }
     p.daily_guard_raw = e.daily_guard_raw;
     p.province_id = e.province_id;
     p.battle_result_id = e.battle_result_id;

@@ -41,6 +41,9 @@ struct BattleTerminalJournalEventV1 {
   std::uint8_t daily_guard_raw = 0;
   bool wipe_raw_observable = false;
   bool wipe_raw = false;
+  bool side_loss_inputs_observable = false;
+  std::array<game::BattleTerminalSideLossInputsSnapshotV1, 2>
+      side_loss_inputs_in_native_order{};
   std::int32_t attacker_primary_participant_character_id = -1;
   std::int32_t defender_primary_participant_character_id = -1;
   std::uint32_t attacker_public_cunit_count = 0;

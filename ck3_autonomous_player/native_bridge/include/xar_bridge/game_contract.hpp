@@ -1824,6 +1824,21 @@ struct BattleTerminalHardLossInputsSnapshotV1 {
       default;
 };
 
+// Native finalizer-entry inputs, in Q100000 troop-count units.
+// The cached fighting current is not a finalized survivor total.
+struct BattleTerminalSideLossInputsSnapshotV1 {
+  std::int32_t side_index = -1;
+  std::int64_t baseline_raw_q100000 = 0;
+  std::int64_t stored_current_fighting_raw_q100000 = 0;
+  std::int64_t levy_soft_raw_q100000 = 0;
+  std::int64_t men_at_arms_soft_raw_q100000 = 0;
+  std::int64_t hard_loss_raw_q100000 = 0;
+
+  friend bool operator==(const BattleTerminalSideLossInputsSnapshotV1 &,
+                         const BattleTerminalSideLossInputsSnapshotV1 &) =
+      default;
+};
+
 struct BattleTerminalPriorSnapshotV1 {
   std::int32_t combat_id = -1;
   BattleTerminalKindV1 terminal_kind =
@@ -1835,6 +1850,8 @@ struct BattleTerminalPriorSnapshotV1 {
   std::optional<std::int32_t> winner_raw;
   std::optional<bool> finalized_before;
   std::optional<BattleTerminalHardLossInputsSnapshotV1> hard_loss_inputs;
+  std::optional<std::array<BattleTerminalSideLossInputsSnapshotV1, 2>>
+      side_loss_inputs_in_native_order;
   std::optional<std::uint8_t> daily_guard_raw;
   std::optional<std::int32_t> province_id;
   std::optional<std::int32_t> battle_result_id;
