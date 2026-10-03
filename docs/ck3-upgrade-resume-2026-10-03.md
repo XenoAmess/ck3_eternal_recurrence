@@ -29,3 +29,7 @@
 旧廷臣 continuous driver 固定 d19e794/.2 helper，导航使用 RapidOCR。它不能因收到继续指令而直接视为 .3 正式 MCP 路径。需要采用实际 .3 frozen source/binary 并确认可用的原生 UI 能力；规则、死亡、冷载入及教程 bytes 的业务结果继续独立读回。七 cell 的 .3 实机目前 **0/7**。
 
 旧 AUB93/TED85 错误及 strict RED 保留；361 原规则停止仍是启动驱动未完成，功能 **NOT_RUN**。主要工作包历史 **3/10** 只描述前任 .2 已列范围，不能换算成本次 .3 产品通过率。没有 Workshop 上传、发布 tag、七语发布审计或人工 approval。
+
+21:28 本机续跑增量见 [`.3` 原生启动 R0002](ck3-upgrade-native-startup-2026-10-03.md)。已建立真实 MCP/native 会话，但首个可用 route=`bookmarks` 被驱动拒绝，NewGame/Start 均未调用；AUB 仍未到地图。受管 containment 完成、CK3 为零、屏幕 CAS 已释放。现修复实际前端 tree/条件广告阻点，再使用新 run；准备、加载观察和清理完成都不提升产品通过口径。
+
+此前准备器提交 `00af1b285` 的[官方 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37124590688)及 TED guard 提交 `6440948e7` 的[官方 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37124685230)均实际完成 success；官方 CI 不提供实机通过。本次记录包的 Python-only validator 通过，未重跑已复用的 parser/L0。
