@@ -1,0 +1,5 @@
+{"id":"fixture-a12/common/modifiers/sxat_modifiers.txt","line":1,"exitCode":0,"result":{"status":"PARSED","bytes":424,"tokens":138,"blocks":6,"diagnostics":[],"roundTrip":true}}
+{"id":"fixture-a12/common/on_action/sxat_on_actions.txt","line":2,"exitCode":0,"result":{"status":"PARSED","bytes":362,"tokens":150,"blocks":9,"diagnostics":[],"roundTrip":true}}
+{"id":"fixture-a12/common/script_values/sxat_values.txt","line":3,"exitCode":0,"result":{"status":"PARSED","bytes":2622,"tokens":803,"blocks":34,"diagnostics":[],"roundTrip":true}}
+{"id":"fixture-a12/descriptor.mod","line":4,"exitCode":0,"result":{"status":"PARSED","bytes":93,"tokens":16,"blocks":0,"diagnostics":[],"roundTrip":true}}
+{"id":"fixture-a12/events/sxat_events.txt","line":5,"exitCode":0,"result":{"status":"PARSED","bytes":283501,"tokens":100094,"blocks":4694,"diagnostics":[],"roundTrip":true}}

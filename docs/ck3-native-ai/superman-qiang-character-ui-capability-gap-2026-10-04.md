@@ -49,3 +49,9 @@ tool list 和 capability 回执位于 `D:/ck3-experience-drain-feasibility-20261
 6. 查看前后经验、六项修正、已记录计数与双方身份保持一致；正常关闭窗口后再保存／重载并复核。每次点击、原图、MCP 业务读回和 save 数值均绑定到同次 run，保留失败过程。
 
 L3 只有以上真实入口和读回闭合后才能记为 GREEN。工坊媒体使用另一次纯模组正常玩家流程的干净实机截图，保留原图 SHA、裁切来源与公开回读；夹具事件截图和宣传封面不代替这张产品实机图。
+
+## R0007 的真实 capability 拒绝
+
+后续 R0007 屏幕执行者在取得新鲜 snapshot revision 后，真正调用 `ck3_query_ingame_ui_window_v1`。原始 MCP 回执 `D:/ck3-experience-drain-feasibility-20261004/desktop-3fevhd2-1c74096080--superman-qiang--R0007/receipts/0053-810-character-window-response.json` 为 340 字节，SHA-256 `babc86fbf8b643133e905ae728e536989b99b12e40ce7c81f039122e7453316f`，`is_error=true`，正文明确 `capability_not_available: typed UI has no desktop fallback`。该证据补齐了上文 R0006 仅有 capability 缺席与拒绝源码的边界。较早请求的旧 revision 拒绝另行保留，不能把它称作能力缺失。
+
+只读核对记录保存在 `C:/ck3-superman-qiang-20261004/r7-ui-gap-evidence-a01/record.json`。屏幕执行者随后开始正常角色肖像菜单入口；在它交付完整事件身份、目标 saved scope、实际经验文本和存档对照前，此文不宣称 UI 已 GREEN。本文作者仅读取回执并记录 SHA，没有进行桌面或游戏操作。

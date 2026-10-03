@@ -1,0 +1,522 @@
+{
+  "schema": "superman-qiang.archived-localization-build.v1",
+  "archived_at_utc": "2026-10-03T21:46:52.710704+00:00",
+  "attempt_report": {
+    "schema": "superman-qiang.localization-affected-build.v1",
+    "started_at_utc": "2026-10-03T21:39:22.000593+00:00",
+    "interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "runtime_inputs": [
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\common\\character_interactions\\sxad_interactions.txt",
+        "size": 921,
+        "sha256": "2b81d6cdde8512197c60edbee473a9b235d3c9fec8479a82d2f39f581bb82a7e"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\common\\modifiers\\sxad_skill_balance_modifiers.txt",
+        "size": 2040,
+        "sha256": "6d97fa914b5b6a9c49baa537359866e35ac0139a40b6be7efb3d3a191995a42f"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\common\\script_values\\sxad_values.txt",
+        "size": 4651,
+        "sha256": "63fab3a51d616e848c9ea15ba3b19eeb8779ca141c1f853b88cbdb1fe7903468"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\common\\scripted_effects\\sxad_experience_effects.txt",
+        "size": 2872,
+        "sha256": "3ba408a0320378b6f09c4d16880d925a16aab07a5904847e0e59af2a183e8a50"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\common\\scripted_effects\\sxad_probe_skill_effects.txt",
+        "size": 9604,
+        "sha256": "2bf2599cebd91659b58b8adad1241f136394af252a03f3123c9250ef9e07719a"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\common\\scripted_effects\\sxad_transfer_effects.txt",
+        "size": 10285,
+        "sha256": "2141d3bc944fffa0dfbd62d5d34238baddafc649c861ed0e47a0e775ebf63323"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\common\\scripted_effects\\zz_sxad_had_sex_with_effect.txt",
+        "size": 9868,
+        "sha256": "46e066aa7e7e81ab2f6292e9650a479de9e8c7ae7e5808d35868396bf99c4ba2"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\common\\scripted_effects\\zz_sxad_had_sex_with_unknown_effect.txt",
+        "size": 1353,
+        "sha256": "afaab280b0be669bf019203e2b3d16f97f087daa5b682338fdcb3bbfaca75fe1"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\common\\traits\\sxad_traits.txt",
+        "size": 482,
+        "sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\descriptor.mod",
+        "size": 153,
+        "sha256": "52be9ae5db1310a2d8a846bd754621e1461fa30d70c0fb2187f5b1fe8dbd8e06"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\events\\sxad_events.txt",
+        "size": 390,
+        "sha256": "a3e84da90696f3b246f8301d744ebe8dd04d7441ebdc31d426cda04e80da9cb0"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\gfx\\interface\\icons\\traits\\sxad_sex_experience.dds",
+        "size": 57728,
+        "sha256": "7f4c9f2925ac10d6803261ae0e28ec0b417b3a9917664b5297e45a955c4de5b5"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\localization\\english\\sxad_l_english.yml",
+        "size": 3987,
+        "sha256": "d16c7f9cd076096cc39f2734b496119d23d3630aa9dab23f16c3d07b3c49a59b"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\localization\\french\\sxad_l_french.yml",
+        "size": 4501,
+        "sha256": "bde1db01f5e5b7cb391eba0b2affce817ec8a49d9ededf471665d31fb069c3e2"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\localization\\german\\sxad_l_german.yml",
+        "size": 4356,
+        "sha256": "66a54d3e970e615d460877c319ee7fd6211a861ad3f2ece783ff3ae49b609d5f"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\localization\\japanese\\sxad_l_japanese.yml",
+        "size": 4199,
+        "sha256": "7b29d4811b16eedbb5e4af655aa58b604d3f777131531bc45be9472cb39f8451"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\localization\\korean\\sxad_l_korean.yml",
+        "size": 3758,
+        "sha256": "a31d5ba52ff3591c843d76f817fe8ce2c15c4bfe916c5f918dd6417450f023e6"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\localization\\polish\\sxad_l_polish.yml",
+        "size": 4331,
+        "sha256": "dab3e3ebd984dd9ecaaea69d9ebc4cd018cb4aaf441266f7361c4a448f156079"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\localization\\russian\\sxad_l_russian.yml",
+        "size": 5633,
+        "sha256": "cac22ed9a85c79893c73eb910a8493a63a1738cebe1374f6b675ba4f0a2f868a"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\localization\\simp_chinese\\sxad_l_simp_chinese.yml",
+        "size": 3736,
+        "sha256": "29ac11c5a8ad6c2f5b115974658d6d32616fdcf03081bbd24ddaff06c285e25a"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\localization\\spanish\\sxad_l_spanish.yml",
+        "size": 4208,
+        "sha256": "52303622d7fb968fe64fea7671bd021c337212bbf46ec63acf757b89c1e2bfa1"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\thumbnail.png",
+        "size": 778046,
+        "sha256": "732deee357a6d322340fa9e6bb6d7b619b8c9da44b3c68711c23154079df863f"
+      }
+    ],
+    "source_context": "Frozen source bytes; actual candidate build occurs after root Git alignment.",
+    "unchanged_checks_not_repeated": [
+      "8 AST/static tests",
+      "5 release tests",
+      "double-build"
+    ],
+    "previous_affected_checks": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0003\\build-report.json",
+    "phases": [
+      {
+        "name": "fixture-parser-precheck",
+        "argv": [
+          "java",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "batch",
+          "--file",
+          "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\fixture-grammar-corpus.jsonl"
+        ],
+        "started_at_utc": "2026-10-03T21:39:22.156298+00:00",
+        "completed_at_utc": "2026-10-03T21:39:22.865014+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\fixture-parser-precheck.stdout.txt",
+          "size": 872,
+          "sha256": "63c7ef8de97db2497716fc37632a74e1c00f49a2eff110eb35d6556ca71520e1"
+        },
+        "stderr": {
+          "path": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\fixture-parser-precheck.stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "name": "generated-parity",
+        "argv": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "mod_superman_qiang/tools/gen_runtime.py",
+          "--check"
+        ],
+        "started_at_utc": "2026-10-03T21:39:22.875615+00:00",
+        "completed_at_utc": "2026-10-03T21:39:23.198397+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\generated-parity.stdout.txt",
+          "size": 26,
+          "sha256": "442bf75bfa7ddc391ea07388e171964135569c3706ad8ddfbf8a9e5337b3897f"
+        },
+        "stderr": {
+          "path": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\generated-parity.stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "name": "static-validation",
+        "argv": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "mod_superman_qiang/tools/validate_static.py",
+          "--report",
+          "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\static-validation.json"
+        ],
+        "started_at_utc": "2026-10-03T21:39:23.213582+00:00",
+        "completed_at_utc": "2026-10-03T21:39:24.235166+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\static-validation.stdout.txt",
+          "size": 4991,
+          "sha256": "dcd6bed839d3468ac5eaaafb0657d4210dd0e8bfe4de4aa12fa7af3e05b28ccd"
+        },
+        "stderr": {
+          "path": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\static-validation.stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "name": "candidate-build",
+        "argv": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "mod_superman_qiang/tools/build_release.py",
+          "--output",
+          "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\mod_superman_qiang"
+        ],
+        "started_at_utc": "2026-10-03T21:46:25.551142+00:00",
+        "completed_at_utc": "2026-10-03T21:46:26.959100+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\candidate-build.stdout.txt",
+          "size": 384,
+          "sha256": "0d7bb11bb176be143f01c141d5d69f7074f11e1eb3ae1fad271b7bcde1f47400"
+        },
+        "stderr": {
+          "path": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\candidate-build.stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "name": "manifest-verify",
+        "argv": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "mod_superman_qiang/tools/build_release.py",
+          "--verify",
+          "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\mod_superman_qiang",
+          "--manifest",
+          "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\mod_superman_qiang.manifest.json"
+        ],
+        "started_at_utc": "2026-10-03T21:46:26.975011+00:00",
+        "completed_at_utc": "2026-10-03T21:46:27.234873+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\manifest-verify.stdout.txt",
+          "size": 30,
+          "sha256": "76dbc1e5dbc9bdc1cd178f8441e309bf87d32d99cc57a37b72811e26b44c0a2d"
+        },
+        "stderr": {
+          "path": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\manifest-verify.stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    ],
+    "status": "GREEN",
+    "ck3_started": false,
+    "runtime_byte_comparison": {
+      "path": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\runtime-byte-comparison.json",
+      "size": 15641,
+      "sha256": "66b1a84451138e24440b2da6ec8479733ccc98aa3a9ab440eec87404cb03ebdd"
+    },
+    "fixture_parser_inputs": [
+      {
+        "path": "D:\\ck3-experience-drain-feasibility-20261004\\fixture-a12\\common\\modifiers\\sxat_modifiers.txt",
+        "size": 427,
+        "sha256": "ec56567e870899e7c68d31b1791f24abfe400b8363d5e37917e294fd5a848b25"
+      },
+      {
+        "path": "D:\\ck3-experience-drain-feasibility-20261004\\fixture-a12\\common\\on_action\\sxat_on_actions.txt",
+        "size": 365,
+        "sha256": "35120c39842a0a4c5983f601ee9baba209610b544882990b7fc4f97dd6104651"
+      },
+      {
+        "path": "D:\\ck3-experience-drain-feasibility-20261004\\fixture-a12\\common\\script_values\\sxat_values.txt",
+        "size": 2625,
+        "sha256": "74151e33f9f86808a63e29c68f02ebd803467ba90b9f887fb3036d4a534093d8"
+      },
+      {
+        "path": "D:\\ck3-experience-drain-feasibility-20261004\\fixture-a12\\descriptor.mod",
+        "size": 93,
+        "sha256": "8493a1ef666bd2654aa06f03d3c403887cfe5239f4e768c565f49736b8836ef5"
+      },
+      {
+        "path": "D:\\ck3-experience-drain-feasibility-20261004\\fixture-a12\\events\\sxat_events.txt",
+        "size": 283504,
+        "sha256": "a26eaf6e376708ee2eb9660bb5a8f47fe1c6538a7d5989a639c9639ab6866068"
+      }
+    ],
+    "fixture_manifest": {
+      "path": "D:\\ck3-experience-drain-feasibility-20261004\\fixture-a12.fixture.json",
+      "size": 30486,
+      "sha256": "2b34e778c0f3d94a1782a3f7bb09cd447222be80a434c89c2774f3b446448fe7"
+    },
+    "fixture_parser": {
+      "grammar_supported": true,
+      "file_count": 5,
+      "jar": {
+        "path": "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+        "size": 365313,
+        "sha256": "7262e771ad3e1f5d724d663ac259a20e2a7df0c491d4c125f56cb4c3a604e75c"
+      },
+      "corpus": {
+        "path": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\fixture-grammar-corpus.jsonl",
+        "size": 292785,
+        "sha256": "f22202a19d5dfa8e3a5fdb43cb5e5453275342b7259b133cbd1673799984fa11"
+      },
+      "native_effect_context_certified": false
+    },
+    "completed_at_utc": "2026-10-03T21:46:27.252943+00:00",
+    "changed_runtime_file_count": 9,
+    "unchanged_runtime_file_count": 13,
+    "candidate_build_started_at_utc": "2026-10-03T21:46:25.551067+00:00",
+    "runtime_file_count": 22,
+    "git_sha": "2873141e76177f52e218aa7da05e75cbdd312fc1",
+    "git_tag": null,
+    "manifest": {
+      "path": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\mod_superman_qiang.manifest.json",
+      "size": 4048,
+      "sha256": "63b0bc75a4c13bfdb343d77d621617eb425c204af081f00658454b193f261aac"
+    },
+    "zip": {
+      "path": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\mod_superman_qiang.zip",
+      "size": 802525,
+      "sha256": "551901e384931fb5d465f0eaca3327ef357d004d4e290b7bc205c24cc40c3564"
+    },
+    "runtime_files": [
+      {
+        "path": "common/character_interactions/sxad_interactions.txt",
+        "sha256": "2b81d6cdde8512197c60edbee473a9b235d3c9fec8479a82d2f39f581bb82a7e",
+        "size": 921
+      },
+      {
+        "path": "common/modifiers/sxad_skill_balance_modifiers.txt",
+        "sha256": "6d97fa914b5b6a9c49baa537359866e35ac0139a40b6be7efb3d3a191995a42f",
+        "size": 2040
+      },
+      {
+        "path": "common/script_values/sxad_values.txt",
+        "sha256": "63fab3a51d616e848c9ea15ba3b19eeb8779ca141c1f853b88cbdb1fe7903468",
+        "size": 4651
+      },
+      {
+        "path": "common/scripted_effects/sxad_experience_effects.txt",
+        "sha256": "3ba408a0320378b6f09c4d16880d925a16aab07a5904847e0e59af2a183e8a50",
+        "size": 2872
+      },
+      {
+        "path": "common/scripted_effects/sxad_probe_skill_effects.txt",
+        "sha256": "2bf2599cebd91659b58b8adad1241f136394af252a03f3123c9250ef9e07719a",
+        "size": 9604
+      },
+      {
+        "path": "common/scripted_effects/sxad_transfer_effects.txt",
+        "sha256": "2141d3bc944fffa0dfbd62d5d34238baddafc649c861ed0e47a0e775ebf63323",
+        "size": 10285
+      },
+      {
+        "path": "common/scripted_effects/zz_sxad_had_sex_with_effect.txt",
+        "sha256": "46e066aa7e7e81ab2f6292e9650a479de9e8c7ae7e5808d35868396bf99c4ba2",
+        "size": 9868
+      },
+      {
+        "path": "common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt",
+        "sha256": "afaab280b0be669bf019203e2b3d16f97f087daa5b682338fdcb3bbfaca75fe1",
+        "size": 1353
+      },
+      {
+        "path": "common/traits/sxad_traits.txt",
+        "sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d",
+        "size": 482
+      },
+      {
+        "path": "descriptor.mod",
+        "sha256": "52be9ae5db1310a2d8a846bd754621e1461fa30d70c0fb2187f5b1fe8dbd8e06",
+        "size": 153
+      },
+      {
+        "path": "events/sxad_events.txt",
+        "sha256": "a3e84da90696f3b246f8301d744ebe8dd04d7441ebdc31d426cda04e80da9cb0",
+        "size": 390
+      },
+      {
+        "path": "gfx/interface/icons/traits/sxad_sex_experience.dds",
+        "sha256": "7f4c9f2925ac10d6803261ae0e28ec0b417b3a9917664b5297e45a955c4de5b5",
+        "size": 57728
+      },
+      {
+        "path": "localization/english/sxad_l_english.yml",
+        "sha256": "d16c7f9cd076096cc39f2734b496119d23d3630aa9dab23f16c3d07b3c49a59b",
+        "size": 3987
+      },
+      {
+        "path": "localization/french/sxad_l_french.yml",
+        "sha256": "bde1db01f5e5b7cb391eba0b2affce817ec8a49d9ededf471665d31fb069c3e2",
+        "size": 4501
+      },
+      {
+        "path": "localization/german/sxad_l_german.yml",
+        "sha256": "66a54d3e970e615d460877c319ee7fd6211a861ad3f2ece783ff3ae49b609d5f",
+        "size": 4356
+      },
+      {
+        "path": "localization/japanese/sxad_l_japanese.yml",
+        "sha256": "7b29d4811b16eedbb5e4af655aa58b604d3f777131531bc45be9472cb39f8451",
+        "size": 4199
+      },
+      {
+        "path": "localization/korean/sxad_l_korean.yml",
+        "sha256": "a31d5ba52ff3591c843d76f817fe8ce2c15c4bfe916c5f918dd6417450f023e6",
+        "size": 3758
+      },
+      {
+        "path": "localization/polish/sxad_l_polish.yml",
+        "sha256": "dab3e3ebd984dd9ecaaea69d9ebc4cd018cb4aaf441266f7361c4a448f156079",
+        "size": 4331
+      },
+      {
+        "path": "localization/russian/sxad_l_russian.yml",
+        "sha256": "cac22ed9a85c79893c73eb910a8493a63a1738cebe1374f6b675ba4f0a2f868a",
+        "size": 5633
+      },
+      {
+        "path": "localization/simp_chinese/sxad_l_simp_chinese.yml",
+        "sha256": "29ac11c5a8ad6c2f5b115974658d6d32616fdcf03081bbd24ddaff06c285e25a",
+        "size": 3736
+      },
+      {
+        "path": "localization/spanish/sxad_l_spanish.yml",
+        "sha256": "52303622d7fb968fe64fea7671bd021c337212bbf46ec63acf757b89c1e2bfa1",
+        "size": 4208
+      },
+      {
+        "path": "thumbnail.png",
+        "sha256": "732deee357a6d322340fa9e6bb6d7b619b8c9da44b3c68711c23154079df863f",
+        "size": 778046
+      }
+    ],
+    "tag_created": false,
+    "github_release_created": false,
+    "steam_published": false
+  },
+  "original_byte_archive": [
+    {
+      "path": "build-evidence-2026-10-04-L0-A0004/build-report.json",
+      "size": 17373,
+      "sha256": "ffa7a2701caf19c8a59d79266febb8cbbccc38d5086fc41aa7eed0d690c3ff24"
+    },
+    {
+      "path": "build-evidence-2026-10-04-L0-A0004/candidate-build.stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build-evidence-2026-10-04-L0-A0004/candidate-build.stdout.txt",
+      "size": 384,
+      "sha256": "0d7bb11bb176be143f01c141d5d69f7074f11e1eb3ae1fad271b7bcde1f47400"
+    },
+    {
+      "path": "build-evidence-2026-10-04-L0-A0004/check-report.json",
+      "size": 10890,
+      "sha256": "ce50ea8a88c235620b603ad341a90cfb1a473cfeb670f595356c506ed51ccacc"
+    },
+    {
+      "path": "build-evidence-2026-10-04-L0-A0004/fixture-grammar-corpus.jsonl",
+      "size": 292785,
+      "sha256": "f22202a19d5dfa8e3a5fdb43cb5e5453275342b7259b133cbd1673799984fa11"
+    },
+    {
+      "path": "build-evidence-2026-10-04-L0-A0004/fixture-parser-precheck.stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build-evidence-2026-10-04-L0-A0004/fixture-parser-precheck.stdout.txt",
+      "size": 872,
+      "sha256": "63c7ef8de97db2497716fc37632a74e1c00f49a2eff110eb35d6556ca71520e1"
+    },
+    {
+      "path": "build-evidence-2026-10-04-L0-A0004/generated-parity.stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build-evidence-2026-10-04-L0-A0004/generated-parity.stdout.txt",
+      "size": 26,
+      "sha256": "442bf75bfa7ddc391ea07388e171964135569c3706ad8ddfbf8a9e5337b3897f"
+    },
+    {
+      "path": "build-evidence-2026-10-04-L0-A0004/manifest-verify.stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build-evidence-2026-10-04-L0-A0004/manifest-verify.stdout.txt",
+      "size": 30,
+      "sha256": "76dbc1e5dbc9bdc1cd178f8441e309bf87d32d99cc57a37b72811e26b44c0a2d"
+    },
+    {
+      "path": "build-evidence-2026-10-04-L0-A0004/mod_superman_qiang.manifest.json",
+      "size": 4048,
+      "sha256": "63b0bc75a4c13bfdb343d77d621617eb425c204af081f00658454b193f261aac"
+    },
+    {
+      "path": "build-evidence-2026-10-04-L0-A0004/runtime-byte-comparison.json",
+      "size": 15641,
+      "sha256": "66b1a84451138e24440b2da6ec8479733ccc98aa3a9ab440eec87404cb03ebdd"
+    },
+    {
+      "path": "build-evidence-2026-10-04-L0-A0004/static-validation.json",
+      "size": 4991,
+      "sha256": "dcd6bed839d3468ac5eaaafb0657d4210dd0e8bfe4de4aa12fa7af3e05b28ccd"
+    },
+    {
+      "path": "build-evidence-2026-10-04-L0-A0004/static-validation.stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build-evidence-2026-10-04-L0-A0004/static-validation.stdout.txt",
+      "size": 4991,
+      "sha256": "dcd6bed839d3468ac5eaaafb0657d4210dd0e8bfe4de4aa12fa7af3e05b28ccd"
+    }
+  ],
+  "capture_method": "Actual subprocess stdout/stderr bytes copied unchanged; no transcription or test rerun.",
+  "retained_external_zip": {
+    "path": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\mod_superman_qiang.zip",
+    "size": 802525,
+    "sha256": "551901e384931fb5d465f0eaca3327ef357d004d4e290b7bc205c24cc40c3564"
+  },
+  "source_stage": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\mod_superman_qiang",
+  "reason": "R0007 normal character-query UI exposed invalid localization datatype; all nine event descriptions remove only the 14 saved-scope scope: prefixes, with 13 other runtime files unchanged.",
+  "native_acceptance_inferred": false,
+  "formal_release_inferred": false
+}
