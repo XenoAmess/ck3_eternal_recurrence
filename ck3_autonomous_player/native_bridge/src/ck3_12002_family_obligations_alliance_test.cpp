@@ -116,6 +116,10 @@ std::int64_t *Answer(void *, std::int64_t *output) {
   *output = active->acceptance;
   return active->acceptance_unavailable ? nullptr : output;
 }
+std::uint8_t FinalAnswer(void *, std::uint8_t first, std::uint8_t second, void *a, void *b) {
+  Check(first == 1 && second == 1 && a == nullptr && b == nullptr, "native final-answer query flags");
+  return 2;
+}
 bool Trigger(void *, const void *) { return false; }
 
 Fixture::Fixture() {
@@ -164,7 +168,7 @@ Fixture::Fixture() {
   bindings.war_fallback_slot = &war_fallback; bindings.interaction_missing_slot = &interaction_missing;
   bindings.is_allied = Allied; bindings.key_hash = Hash; bindings.lookup_definition = Lookup;
   bindings.can_pick_war_target = Pick; bindings.was_called = Called;
-  bindings.contains_participant = Contains;
+  bindings.contains_participant = Contains; bindings.final_answer = FinalAnswer;
 }
 
 void PositiveProductionPath() {
@@ -188,7 +192,7 @@ void PositiveProductionPath() {
         "exact participant graph copied to portable IDs");
   Check(offensive.native_complete_can_send && offensive.native_target_row_selectable &&
         offensive.send_cost_raw[0] == 100'000 && defensive.send_cost_raw[0] == 200'000 &&
-        offensive.send_cost_raw[9] == 1'000'000 && offensive.recipient_acceptance_raw == -2'500'000,
+        offensive.send_cost_raw[9] == 1'000'000 && offensive.recipient_acceptance_raw == -2'500'000 && offensive.recipient_answer_status_raw == 2,
         "target-bound real ten-cost vector and negative native acceptance");
   Check(f.constructions == 3 && f.destructions == 3 && f.refreshes == 3 && f.finalizations == 3 &&
         f.validates == 3 && f.cost_reads == 3 && f.target_gates == 3 && f.answer_reads == 3,

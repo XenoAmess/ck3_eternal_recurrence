@@ -11,6 +11,7 @@ struct FamilyObligationsMailboxContext12002 {
   QueryMailboxEnvelope envelope{};
   family_obligations_lineage::Bindings lineage_bindings{};
   FamilyObligationsBreakBindingsV1 break_bindings{};
+  family_obligations_alliance::Bindings alliance_bindings{};
   FamilyObligationsObservation12002 observation{};
   std::string failure;
   bool completed = false;

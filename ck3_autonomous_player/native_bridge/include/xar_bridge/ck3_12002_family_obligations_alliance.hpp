@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12002_context.hpp"
 #include "xar_bridge/ck3_12002_diplomacy.hpp"
+#include "xar_bridge/ck3_12002_family_query_abi.hpp"
 
 #include <array>
 #include <cstdint>
@@ -19,7 +20,12 @@ inline constexpr std::uintptr_t kDefinitionLookupRva = 0xA055E0;
 inline constexpr std::uintptr_t kCanPickWarTargetRva = 0x307A690;
 inline constexpr std::uintptr_t kWasCalledRva = 0x2497770;
 inline constexpr std::uintptr_t kContainsParticipantRva = 0x2494B60;
+inline constexpr std::size_t kCharacterFamilyOffset = 0x1A8;
+inline constexpr std::size_t kCharacterRelationsOffset = 0x1B0;
 inline constexpr std::size_t kCharacterRealmOffset = 0x1C0;
+inline constexpr std::size_t kFamilyBetrothedOffset = 0x10;
+inline constexpr std::size_t kFamilySpousesOffset = 0x20;
+inline constexpr std::size_t kRelationsRowsOffset = 0x20;
 inline constexpr std::size_t kRealmWarIdsOffset = 0x318;
 inline constexpr std::size_t kContextActorOffset = 0x2D8;
 inline constexpr std::size_t kContextRecipientOffset = 0x2DC;
@@ -33,6 +39,7 @@ using IsAllied = bool (*)(const void *, const void *);
 using DefinitionKeyHash = std::uint32_t (*)(const void *, const char *, std::uint32_t);
 using DefinitionLookup = void *(*)(void *, std::int32_t);
 using CanPickWarTarget = bool (*)(void *, const void *, void *);
+using FinalAnswer = std::uint8_t (*)(void *, std::uint8_t, std::uint8_t, void *, void *);
 using WasCalled = bool (*)(const void *, std::int32_t);
 using ContainsParticipant = bool (*)(const void *, std::int32_t);
 
@@ -57,6 +64,7 @@ struct Bindings {
   DefinitionLookup lookup_definition = nullptr;
   CanPickWarTarget can_pick_war_target = nullptr;
   WasCalled was_called = nullptr;
+  FinalAnswer final_answer = nullptr;
   ContainsParticipant contains_participant = nullptr;
 };
 
@@ -82,6 +90,7 @@ struct WarExposure {
   std::array<std::int64_t, 10> send_cost_raw{};
   std::int64_t recipient_acceptance_raw = 0;
   bool native_auto_accept = false;
+  std::uint8_t recipient_answer_status_raw = 0;
 };
 
 struct Snapshot {
@@ -94,6 +103,26 @@ struct Snapshot {
   std::vector<WarExposure> first_wars;
   std::vector<WarExposure> second_wars;
 };
+
+struct CurrentAlly {
+  std::int32_t character_id = -1;
+  bool player_has_ally = false;
+  bool ally_has_player = false;
+  bool has_realm_data = false;
+};
+
+struct CurrentAlliesSnapshot {
+  std::int32_t played_character_id = -1;
+  std::vector<std::int32_t> source_character_ids;
+  std::vector<std::int32_t> unresolved_source_character_ids;
+  std::vector<std::int32_t> dead_source_character_ids;
+  std::vector<CurrentAlly> allies;
+};
+
+// Actual stored source IDs, then full-generation resolution and native
+// IsAllied in both directions. Membership is separate from war-call legality.
+bool ReadCurrentAllies(const Bindings &, const CoreSnapshotPrefix &,
+                       CurrentAlliesSnapshot &, std::string_view *reason = nullptr) noexcept;
 
 Bindings BindImage(std::uintptr_t image_base,
                    std::string_view executable_sha256) noexcept;

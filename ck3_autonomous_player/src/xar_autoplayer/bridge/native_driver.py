@@ -3217,9 +3217,10 @@ class NativeHeadlessGameplayDriver:
         )
 
     def query_family_obligations_private_v1(
-        self, *, expected_revision: int, subject_character_id: int,
-        candidate_character_id: int, request_matrilineal_option: bool = False,
-        break_recipient_character_id: int | None = None,
+        self, *, expected_revision: int, subject_character_id: int | None = None,
+        candidate_character_id: int | None = None, request_matrilineal_option: bool = False,
+        break_recipient_character_id: int | None = None, ally_character_id: int | None = None,
+        enumerate_current_allies: bool = False,
     ) -> dict[str, object]:
         """Read native child-house preview and sampled betrothal-break penalties."""
         from .family_obligations_private_transport import query_family_obligations_private_v1
@@ -3228,7 +3229,8 @@ class NativeHeadlessGameplayDriver:
             self, expected_revision=expected_revision, subject_character_id=subject_character_id,
             candidate_character_id=candidate_character_id,
             request_matrilineal_option=request_matrilineal_option,
-            break_recipient_character_id=break_recipient_character_id,
+            break_recipient_character_id=break_recipient_character_id, ally_character_id=ally_character_id,
+            enumerate_current_allies=enumerate_current_allies,
             timeout_seconds=self.command_timeout_seconds,
         )
 

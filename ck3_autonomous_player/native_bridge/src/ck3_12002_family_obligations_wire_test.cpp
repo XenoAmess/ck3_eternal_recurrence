@@ -36,13 +36,13 @@ int main(int argc, char **argv) {
         wire.find("wire\\\"request\\u000a") != std::string::npos,
         "legal no-lineage identity and escaped request preserved");
     o.request.ally_character_id = 0x01000004;
-    Require(FamilyObligationsQueryStatus12002(o) == "available",
-        "deferred war lane does not block actual nonwar query");
+    Require(FamilyObligationsQueryStatus12002(o) == "partial",
+        "missing requested war source preserves independently available family lane");
+    o.alliance_available = true;
     wire = SerializeFamilyObligationsResult12002("deferred", o);
-    Require(wire.find("\"status\":\"deferred_by_owner\"") != std::string::npos &&
-        wire.find("war_research_deferred_by_owner") != std::string::npos &&
-        wire.find("first_wars") == std::string::npos,
-        "owner-deferred war lane cannot masquerade as observed empty wars");
+    Require(wire.find("\"first_wars\":[]") != std::string::npos &&
+        wire.find("deferred_by_owner") == std::string::npos,
+        "available empty native wars are distinct from an unavailable source");
     o.request.break_recipient_character_id = 0x01000005;
     o.break_terms.status = FamilyObligationsBreakStatusV1::available;
     o.break_terms.final_legality_sampled = true;
@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
       output << wire << '\n';
       Require(static_cast<bool>(output), "wire fixture output");
     }
-    o.lineage_available = false;
+    o.lineage_available = false; o.alliance_available = false;
     o.break_terms.status = FamilyObligationsBreakStatusV1::unavailable;
     Require(FamilyObligationsQueryStatus12002(o) == "unavailable", "missing actual sources never become empty complete data");
     std::cout << "PASS family obligations wire: lane availability, native negative gates, full IDs and distinct send/outcome costs\n";

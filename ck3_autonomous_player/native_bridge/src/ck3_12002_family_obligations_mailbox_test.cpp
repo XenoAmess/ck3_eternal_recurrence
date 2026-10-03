@@ -215,9 +215,10 @@ int main(int argc, char **argv) {
     Prepare(adapter, mailbox, query, stamp);
     ExecuteFamilyObligationsMailbox12002(&query.envelope, stamp);
     Check(query.completed && query.envelope.frame_stable && query.observation.lineage_available &&
-          FamilyObligationsQueryStatus12002(query.observation) == "available" &&
-          SerializeFamilyObligationsObservation12002(query.observation).find("deferred_by_owner") != std::string::npos,
-          "deferred war lane never executes and preserves actual child lineage");
+          FamilyObligationsQueryStatus12002(query.observation) == "partial" &&
+          !query.observation.alliance_available &&
+          SerializeFamilyObligationsObservation12002(query.observation).find("alliance_war_binding_unavailable") != std::string::npos,
+          "unbound requested war source stays unavailable and preserves actual child lineage");
     query.observation.request.ally_character_id = -1;
     query.observation.request.break_recipient_character_id = candidate_id;
     query.break_bindings.enabled = query.break_bindings.interaction.enabled = true;

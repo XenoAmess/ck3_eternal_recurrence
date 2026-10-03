@@ -34,13 +34,19 @@ bool ParseFamilyObligationsPrivateRequest12002(
     std::string_view payload, FamilyObligationsRequest12002 &out) noexcept {
   out = {};
   try {
-    if (!CharacterId(payload, "subject_character_id", out.subject_character_id, true) ||
-        !CharacterId(payload, "candidate_character_id", out.candidate_character_id, true) ||
+    if (HasField(payload, "enumerate_current_allies") &&
+        !bridge::JsonBooleanField(payload, "enumerate_current_allies", out.enumerate_current_allies)) return false;
+    if (!CharacterId(payload, "subject_character_id", out.subject_character_id, false) ||
+        !CharacterId(payload, "candidate_character_id", out.candidate_character_id, false) ||
         !CharacterId(payload, "ally_character_id", out.ally_character_id, false) ||
         !CharacterId(payload, "break_recipient_character_id", out.break_recipient_character_id, false) ||
-        out.subject_character_id == out.candidate_character_id) return false;
+        ((out.subject_character_id > 0) != (out.candidate_character_id > 0)) ||
+        (out.subject_character_id > 0 && out.subject_character_id == out.candidate_character_id) ||
+        (out.subject_character_id <= 0 && out.ally_character_id <= 0 && !out.enumerate_current_allies) ||
+        (out.break_recipient_character_id > 0 && out.subject_character_id <= 0)) return false;
     if (HasField(payload, "request_matrilineal_option") &&
         !bridge::JsonBooleanField(payload, "request_matrilineal_option", out.request_matrilineal_option)) return false;
+    if (out.request_matrilineal_option && out.subject_character_id <= 0) return false;
     if (HasField(payload, "expected_snapshot_revision") &&
         (!bridge::JsonUnsignedField(payload, "expected_snapshot_revision", out.expected_snapshot_revision) ||
          out.expected_snapshot_revision == 0)) return false;
@@ -60,10 +66,30 @@ bool ExecuteFamilyObligationsMailbox12002(
     o.frame = envelope->expected_snapshot;
     o.snapshot_revision = envelope->expected_snapshot_revision;
     std::string_view reason;
-    o.lineage_available = family_obligations_lineage::Read(query.lineage_bindings,
-        r.subject_character_id, r.candidate_character_id, r.request_matrilineal_option,
-        o.lineage, &reason);
-    o.lineage_reason = std::string(reason);
+    if (r.subject_character_id > 0) {
+      o.lineage_available = family_obligations_lineage::Read(query.lineage_bindings,
+          r.subject_character_id, r.candidate_character_id, r.request_matrilineal_option,
+          o.lineage, &reason);
+      o.lineage_reason = std::string(reason);
+    }
+    if (r.ally_character_id > 0 || r.enumerate_current_allies) {
+      CoreSnapshotPrefix prefix{};
+      prefix.clock = {o.frame.date_raw, o.frame.speed, o.frame.paused};
+      prefix.map_ready = o.frame.map_ready;
+      prefix.has_played_character = o.frame.has_played_character;
+      prefix.played_character_id = o.frame.played_character_id;
+      prefix.played_character_alive = o.frame.played_character_alive;
+      if (r.ally_character_id > 0) {
+        o.alliance_available = family_obligations_alliance::Read(query.alliance_bindings,
+            prefix, o.frame.played_character_id, r.ally_character_id, o.alliance, &reason);
+        o.alliance_reason = std::string(reason);
+      }
+      if (r.enumerate_current_allies) {
+        o.current_allies_available = family_obligations_alliance::ReadCurrentAllies(
+            query.alliance_bindings, prefix, o.current_allies, &reason);
+        o.current_allies_reason = std::string(reason);
+      }
+    }
     if (r.break_recipient_character_id > 0)
       o.break_terms = ReadFamilyObligationsBreakTermsV1(query.break_bindings,
           r.subject_character_id, r.break_recipient_character_id);
@@ -106,7 +132,10 @@ bool HandleFamilyObligationsPrivate12002(
     query.envelope.typed_context = &query;
     query.observation.request = request;
     const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-    query.lineage_bindings = family_obligations_lineage::BindImage(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    if (request.subject_character_id > 0)
+      query.lineage_bindings = family_obligations_lineage::BindImage(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    if (request.ally_character_id > 0 || request.enumerate_current_allies)
+      query.alliance_bindings = family_obligations_alliance::BindImage(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     if (request.break_recipient_character_id > 0)
       query.break_bindings = BindFamilyObligationsBreakImageV1(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     if (ck3_11906::TrySubmitMainThreadQueryV1(mailbox, &ExecuteFamilyObligationsMailbox12002,

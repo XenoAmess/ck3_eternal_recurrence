@@ -28,6 +28,38 @@ template <typename T> void Numbers(std::string &wire, const T &values) {
   }
   wire += ']';
 }
+std::string_view SideName(family_obligations_alliance::Side side) {
+  using Side = family_obligations_alliance::Side;
+  return side == Side::attacker ? "attacker" : side == Side::defender ? "defender" : "absent";
+}
+void Wars(std::string &wire, const std::vector<family_obligations_alliance::WarExposure> &rows) {
+  wire += '[';
+  bool first = true;
+  for (const auto &r : rows) {
+    if (!first) wire += ',';
+    first = false;
+    wire += "{\"war_id\":"; Id(wire, r.war_id);
+    wire += ",\"caller_character_id\":"; Id(wire, r.caller_character_id);
+    wire += ",\"recipient_character_id\":"; Id(wire, r.recipient_character_id);
+    wire += ",\"caller_side\":"; String(wire, SideName(r.caller_side));
+    wire += ",\"recipient_side\":"; String(wire, SideName(r.recipient_side));
+    wire += ",\"primary_attacker_character_id\":"; Id(wire, r.primary_attacker_character_id);
+    wire += ",\"primary_defender_character_id\":"; Id(wire, r.primary_defender_character_id);
+    wire += ",\"attacker_character_ids\":"; Numbers(wire, r.attacker_character_ids);
+    wire += ",\"defender_character_ids\":"; Numbers(wire, r.defender_character_ids);
+    wire += ",\"caller_is_primary_war_leader\":"; Boolean(wire, r.caller_is_primary_war_leader);
+    wire += ",\"recipient_was_called\":"; Boolean(wire, r.recipient_was_called);
+    wire += ",\"native_target_can_be_picked\":"; Boolean(wire, r.native_target_can_be_picked);
+    wire += ",\"native_target_row_selectable\":"; Boolean(wire, r.native_target_row_selectable);
+    wire += ",\"native_complete_can_send\":"; Boolean(wire, r.native_complete_can_send);
+    wire += ",\"send_cost_raw\":"; Numbers(wire, r.send_cost_raw);
+    wire += ",\"recipient_acceptance_raw\":" + std::to_string(r.recipient_acceptance_raw);
+    wire += ",\"recipient_answer_status_raw\":" + std::to_string(r.recipient_answer_status_raw);
+    wire += ",\"native_auto_accept\":"; Boolean(wire, r.native_auto_accept);
+    wire += '}';
+  }
+  wire += ']';
+}
 bool BreakAvailable(const FamilyObligationsObservation12002 &o) {
   return o.break_terms.status == FamilyObligationsBreakStatusV1::available ||
       o.break_terms.status == FamilyObligationsBreakStatusV1::no_betrothal;
@@ -36,7 +68,14 @@ bool BreakAvailable(const FamilyObligationsObservation12002 &o) {
 
 std::string_view FamilyObligationsQueryStatus12002(
     const FamilyObligationsObservation12002 &o) noexcept {
-  unsigned requested = 1, available = o.lineage_available ? 1U : 0U;
+  unsigned requested = o.request.subject_character_id > 0 ? 1U : 0U;
+  unsigned available = requested && o.lineage_available ? 1U : 0U;
+  if (o.request.ally_character_id > 0) {
+    ++requested; if (o.alliance_available) ++available;
+  }
+  if (o.request.enumerate_current_allies) {
+    ++requested; if (o.current_allies_available) ++available;
+  }
   if (o.request.break_recipient_character_id > 0) {
     ++requested; if (BreakAvailable(o)) ++available;
   }
@@ -56,7 +95,8 @@ std::string SerializeFamilyObligationsObservation12002(
   wire += ",\"map_ready\":"; Boolean(wire, o.frame.map_ready);
   wire += ",\"played_character_alive\":"; Boolean(wire, o.frame.played_character_alive);
   wire += "},\"native_child_house_preview\":{\"status\":";
-  String(wire, o.lineage_available ? "available" : "unavailable");
+  String(wire, o.request.subject_character_id <= 0 ? "not_requested" :
+      o.lineage_available ? "available" : "unavailable");
   wire += ",\"reason\":"; String(wire, o.lineage_reason);
   wire += ",\"subject_character_id\":"; Id(wire, o.request.subject_character_id);
   wire += ",\"candidate_character_id\":"; Id(wire, o.request.candidate_character_id);
@@ -71,12 +111,42 @@ std::string SerializeFamilyObligationsObservation12002(
     wire += ",\"dynasty_id\":"; Id(wire, r.native_preview_lineage.dynasty_id);
   }
   wire += "},\"alliance_obligations\":{\"status\":";
-  String(wire, o.request.ally_character_id <= 0 ? "not_requested" : "deferred_by_owner");
+  String(wire, o.request.ally_character_id <= 0 ? "not_requested" :
+      o.alliance_available ? "available" : "unavailable");
   wire += ",\"reason\":";
-  String(wire, o.request.ally_character_id <= 0 ? std::string_view{} :
-      "war_research_deferred_by_owner");
+  String(wire, o.request.ally_character_id <= 0 ? std::string_view{} : o.alliance_reason);
   wire += ",\"first_character_id\":"; Id(wire, o.frame.played_character_id);
   wire += ",\"second_character_id\":"; Id(wire, o.request.ally_character_id);
+  if (o.request.ally_character_id > 0 && o.alliance_available) {
+    wire += ",\"first_has_second\":"; Boolean(wire, o.alliance.first_has_second);
+    wire += ",\"second_has_first\":"; Boolean(wire, o.alliance.second_has_first);
+    wire += ",\"raw_scale\":100000,\"send_cost_slot_keys\":[\"gold\",\"prestige\",\"piety\",\"renown\",\"influence\",\"herd\",\"treasury\",\"treasury_or_gold\",\"merit\",\"barter_goods\"]";
+    wire += ",\"first_wars\":"; Wars(wire, o.alliance.first_wars);
+    wire += ",\"second_wars\":"; Wars(wire, o.alliance.second_wars);
+  }
+  wire += "},\"current_native_allies\":{\"status\":";
+  String(wire, !o.request.enumerate_current_allies ? "not_requested" :
+      o.current_allies_available ? "available" : "unavailable");
+  wire += ",\"reason\":"; String(wire, o.current_allies_reason);
+  wire += ",\"played_character_id\":"; Id(wire, o.frame.played_character_id);
+  if (o.request.enumerate_current_allies && o.current_allies_available) {
+    const auto &c = o.current_allies;
+    wire += ",\"source_character_ids\":"; Numbers(wire, c.source_character_ids);
+    wire += ",\"unresolved_source_character_ids\":"; Numbers(wire, c.unresolved_source_character_ids);
+    wire += ",\"dead_source_character_ids\":"; Numbers(wire, c.dead_source_character_ids);
+    wire += ",\"allies\":[";
+    bool first = true;
+    for (const auto &a : c.allies) {
+      if (!first) wire += ',';
+      first = false;
+      wire += "{\"character_id\":"; Id(wire, a.character_id);
+      wire += ",\"player_has_ally\":"; Boolean(wire, a.player_has_ally);
+      wire += ",\"ally_has_player\":"; Boolean(wire, a.ally_has_player);
+      wire += ",\"has_realm_data\":"; Boolean(wire, a.has_realm_data);
+      wire += '}';
+    }
+    wire += ']';
+  }
   const auto &b = o.break_terms;
   wire += "},\"betrothal_break_terms\":{\"status\":";
   String(wire, o.request.break_recipient_character_id <= 0 ? "not_requested" :

@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12002_family_obligations_lineage.hpp"
 #include "xar_bridge/ck3_12002_family_obligations_break.hpp"
+#include "xar_bridge/ck3_12002_family_obligations_alliance.hpp"
 #include "xar_bridge/game_adapter.hpp"
 
 #include <string>
@@ -20,6 +21,7 @@ struct FamilyObligationsRequest12002 {
   std::int32_t ally_character_id = -1;
   std::int32_t break_recipient_character_id = -1;
   bool request_matrilineal_option = false;
+  bool enumerate_current_allies = false;
   std::uint64_t expected_snapshot_revision = 0;
 };
 
@@ -31,10 +33,16 @@ struct FamilyObligationsObservation12002 {
   FamilyObligationsBreakTermsV1 break_terms{};
   std::string lineage_reason;
   bool lineage_available = false;
+  family_obligations_alliance::Snapshot alliance{};
+  std::string alliance_reason;
+  bool alliance_available = false;
+  family_obligations_alliance::CurrentAlliesSnapshot current_allies{};
+  std::string current_allies_reason;
+  bool current_allies_available = false;
 };
 
-// Availability covers requested nonwar lanes only. The owner has deferred
-// alliance-war research; an ally argument does not execute a native war read.
+// Availability covers each explicitly requested native lane. An ally-only
+// request needs no unrelated marriage pair and never sends an interaction.
 std::string_view FamilyObligationsQueryStatus12002(
     const FamilyObligationsObservation12002 &) noexcept;
 std::string SerializeFamilyObligationsObservation12002(

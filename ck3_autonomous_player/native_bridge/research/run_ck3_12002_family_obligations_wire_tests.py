@@ -18,6 +18,7 @@ SOURCES = {
              'ck3_12002_family_obligations_wire_test.cpp'],
     'mailbox': ['ck3_12002_family_obligations_wire.cpp',
                 'ck3_12002_family_obligations_mailbox.cpp',
+                'ck3_12002_family_obligations_alliance.cpp',
                 'ck3_12002_family_obligations_lineage.cpp',
                 'ck3_12002_family_obligations_break.cpp',
                 'ck3_12002_family_obligations_break_penalty.cpp',
@@ -68,7 +69,8 @@ def run(build: Path) -> dict:
             assert preview['selected_matrilineal_option'] is True
             assert preview['effective_matrilineal_if_accepted'] is False
         else:
-            assert observation['alliance_obligations']['status'] == 'deferred_by_owner'
+            assert observation['alliance_obligations']['status'] == 'available'
+            assert observation['alliance_obligations']['first_wars'] == []
             penalty = observation['betrothal_break_terms']['outcome_resource_penalty']
             assert penalty['stock_prestige_effect_raw'] == -8000000
             assert not penalty['effects_complete']

@@ -23,7 +23,7 @@ bool Ready(const Bindings &b) noexcept {
   const auto &c = b.context;
   return b.enabled && b.core.enabled && c.enabled && b.is_allied && b.key_hash &&
       b.lookup_definition && b.construct_context && b.can_pick_war_target &&
-      b.was_called && b.contains_participant && b.war_storage_slot &&
+      b.was_called && b.final_answer && b.contains_participant && b.war_storage_slot &&
       b.war_fallback_slot && b.interaction_missing_slot &&
       c.interaction_database_slot && c.refresh && c.finalize && c.validate &&
       c.destroy && c.recipient_answer_score && c.evaluate_cost && c.evaluate_trigger;
@@ -113,6 +113,9 @@ bool Terms(const Bindings &b, void *definition, WarExposure &row,
   if (b.context.recipient_answer_score(context, &row.recipient_acceptance_raw) !=
       &row.recipient_acceptance_raw)
     return Fail(reason, "call_ally_native_acceptance_unavailable");
+  row.recipient_answer_status_raw = b.final_answer(context, 1, 1, nullptr, nullptr);
+  if (row.recipient_answer_status_raw > 2)
+    return Fail(reason, "call_ally_native_final_answer_unavailable");
   void *const trigger = Load<void *>(definition, 0x2290);
   if (trigger != nullptr) {
     row.native_auto_accept = b.context.evaluate_trigger(
@@ -160,7 +163,69 @@ bool Wars(const Bindings &b, void *definition, void *caller, std::int32_t caller
   }
   return true;
 }
+bool SourceIds(const void *container, std::size_t stride,
+               std::vector<std::int32_t> &ids) noexcept {
+  const auto data = Load<const std::byte *>(container, 0);
+  const auto capacity = Load<std::int32_t>(container, 8);
+  const auto count = Load<std::int32_t>(container, 0xC);
+  if (count < 0 || capacity < count || capacity > 65'536 || (count && data == nullptr))
+    return false;
+  for (std::int32_t index = 0; index < count; ++index) {
+    const auto id = Load<std::int32_t>(data, static_cast<std::size_t>(index) * stride);
+    if (id != -1) ids.push_back(id);
+  }
+  return true;
+}
 } // namespace
+
+bool ReadCurrentAllies(const Bindings &b, const CoreSnapshotPrefix &frame,
+                       CurrentAlliesSnapshot &output, std::string_view *reason) noexcept {
+  output = {};
+  if (reason != nullptr) *reason = {};
+  if (!b.enabled || !b.core.enabled || !b.is_allied)
+    return Fail(reason, "current_allies_binding_unavailable");
+  if (!frame.clock.paused || !frame.map_ready || !frame.has_played_character ||
+      !frame.played_character_alive)
+    return Fail(reason, "paused_played_character_frame_required");
+  void *const player = ResolveCoreCharacter(b.core, frame.played_character_id);
+  if (player == nullptr || Load<void *>(player, kCharacterDeathDataOffset) != nullptr)
+    return Fail(reason, "current_allies_player_full_id_unavailable");
+  CurrentAlliesSnapshot value{};
+  value.played_character_id = frame.played_character_id;
+  const auto family = Load<const std::byte *>(player, kCharacterFamilyOffset);
+  if (family != nullptr) {
+    if (!SourceIds(family + kFamilySpousesOffset, 4, value.source_character_ids))
+      return Fail(reason, "current_allies_spouse_id_container_unavailable");
+    const auto betrothed = Load<std::int32_t>(family, kFamilyBetrothedOffset);
+    if (betrothed != -1) value.source_character_ids.push_back(betrothed);
+  }
+  const auto relations = Load<const std::byte *>(player, kCharacterRelationsOffset);
+  if (relations != nullptr &&
+      !SourceIds(relations + kRelationsRowsOffset, 16, value.source_character_ids))
+    return Fail(reason, "current_allies_relation_id_container_unavailable");
+  auto &ids = value.source_character_ids;
+  std::sort(ids.begin(), ids.end());
+  ids.erase(std::unique(ids.begin(), ids.end()), ids.end());
+  for (const auto id : ids) {
+    if (id == frame.played_character_id) continue;
+    void *const candidate = ResolveCoreCharacter(b.core, id);
+    if (candidate == nullptr) {
+      value.unresolved_source_character_ids.push_back(id);
+      continue;
+    }
+    if (Load<void *>(candidate, kCharacterDeathDataOffset) != nullptr) {
+      value.dead_source_character_ids.push_back(id);
+      continue;
+    }
+    const bool forward = b.is_allied(player, candidate);
+    const bool reverse = b.is_allied(candidate, player);
+    if (forward && reverse)
+      value.allies.push_back({id, forward, reverse,
+                             Load<void *>(candidate, kCharacterRealmOffset) != nullptr});
+  }
+  output = std::move(value);
+  return true;
+}
 
 Bindings BindImage(std::uintptr_t base, std::string_view sha) noexcept {
   Bindings b{};
@@ -177,6 +242,7 @@ Bindings BindImage(std::uintptr_t base, std::string_view sha) noexcept {
   b.lookup_definition = reinterpret_cast<DefinitionLookup>(base + kDefinitionLookupRva);
   b.can_pick_war_target = reinterpret_cast<CanPickWarTarget>(base + kCanPickWarTargetRva);
   b.was_called = reinterpret_cast<WasCalled>(base + kWasCalledRva);
+  b.final_answer = reinterpret_cast<FinalAnswer>(base + family_query_abi::kEvaluateAnswerRva);
   b.contains_participant = reinterpret_cast<ContainsParticipant>(base + kContainsParticipantRva);
   return b;
 }
