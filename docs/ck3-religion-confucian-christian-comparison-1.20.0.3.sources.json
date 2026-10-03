@@ -1,0 +1,558 @@
+{
+  "schema": "ck3.religion_static_source_comparison.v1",
+  "captured_at_utc": "2026-10-03T13:14:01.971631+00:00",
+  "method": "Disk-only UTF-8 source reads; actual doctrine/decision/interaction/activity gates inspected. Static definitions are not runtime availability or live acceptance.",
+  "game_root": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III",
+  "version": "1.20.0.3",
+  "version_name": "1.20.0.3 (Crozier)",
+  "steam_build_id": "25652598",
+  "ck3_exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "launcher_settings_sha256": "9cd6ff96f8092f2d21e1491b37e8344aa287faf69850563128ca1b117244a214",
+  "interpreter": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "python_version": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+  "source_count": 39,
+  "source_files": [
+    {
+      "game_relative_path": "common/activities/activity_types/coronation.txt",
+      "bytes": 132014,
+      "sha256": "104419ec16e37dbec01494756a48d8943e471a1f40693ac17b4db4228d83907c",
+      "lines": 4854
+    },
+    {
+      "game_relative_path": "common/activities/activity_types/funeral.txt",
+      "bytes": 43887,
+      "sha256": "ef706bdf4469ac0374aaf2e03451121de95422e05d6e6d30739b47c6113c78b3",
+      "lines": 1801
+    },
+    {
+      "game_relative_path": "common/buildings/pam_buildings.txt",
+      "bytes": 15770,
+      "sha256": "7a2ba4e1b411dece338acff332c95cb4282611b93b3eedd5cd079ea3cc27f0c1",
+      "lines": 542
+    },
+    {
+      "game_relative_path": "common/casus_belli_types/00_religious_war.txt",
+      "bytes": 114768,
+      "sha256": "5c4b6af8742f65a720529434a2997e83ec93b6cfa8d594204ca914ae6c359d33",
+      "lines": 4586
+    },
+    {
+      "game_relative_path": "common/character_interactions/00_marriage_interactions.txt",
+      "bytes": 170817,
+      "sha256": "9481fd44a078f2d06034dd4a2107fe183f231d2b49d8b90f106c1d54f7a501f0",
+      "lines": 6902
+    },
+    {
+      "game_relative_path": "common/character_interactions/00_religious_interactions.txt",
+      "bytes": 285647,
+      "sha256": "63afe4538725929fb20bc20cbbbbc86705dba55a384755949431419265db0ac6",
+      "lines": 12379
+    },
+    {
+      "game_relative_path": "common/character_interactions/pam_interactions.txt",
+      "bytes": 724542,
+      "sha256": "2db73b0da8572e218f1a677a91ff4281a890ade115e6dc40e696ecb59c0b1049",
+      "lines": 28989
+    },
+    {
+      "game_relative_path": "common/decisions/00_holy_order_decisions.txt",
+      "bytes": 27897,
+      "sha256": "137cc1b2daa7a7f615e597cd1623cc0c9d29052e63ca73ccbf94e5db38c34e4f",
+      "lines": 1260
+    },
+    {
+      "game_relative_path": "common/decisions/10_religious_decisions.txt",
+      "bytes": 77332,
+      "sha256": "6ef6123e5f0ae31789f8f854043ba4d11278af0470871ba77d3df0cffc2da30c",
+      "lines": 3167
+    },
+    {
+      "game_relative_path": "common/decisions/80_major_decisions_roman.txt",
+      "bytes": 36990,
+      "sha256": "0b0097b04371deb61414609792d396865cd38e681303fbe51d836beca40574e6",
+      "lines": 1482
+    },
+    {
+      "game_relative_path": "common/decisions/dlc_decisions/pam/bulls_decisions.txt",
+      "bytes": 23585,
+      "sha256": "ceb85581321c9fc41b6c6d43960cc2e642eb82797ba3fc6842b8b882681301c4",
+      "lines": 945
+    },
+    {
+      "game_relative_path": "common/decisions/dlc_decisions/pam/pam_antipope_decisions.txt",
+      "bytes": 13445,
+      "sha256": "01564604392c6ce5a9fcec9827c98ce3b62d2ebcdb61401055647cd6ae154bd8",
+      "lines": 572
+    },
+    {
+      "game_relative_path": "common/decisions/dlc_decisions/pam/pam_decisions.txt",
+      "bytes": 162367,
+      "sha256": "fe113568051ccf2243f08543a522bc5afeb3e25e6fb97e5440d2fae7a4cb7a64",
+      "lines": 6517
+    },
+    {
+      "game_relative_path": "common/decisions/dlc_decisions/pam/pam_saint_decisions.txt",
+      "bytes": 19543,
+      "sha256": "38ed7a963c1609573ce4f38a9b4c15c1bc6e7fb55f49048c6f17d329aa152232",
+      "lines": 646
+    },
+    {
+      "game_relative_path": "common/decisions/dlc_decisions/tgp/tgp_china_decisions.txt",
+      "bytes": 40036,
+      "sha256": "072444146da97fccec96e124115727a2a595eb291a508d2bb8d74d8d7692a038",
+      "lines": 1649
+    },
+    {
+      "game_relative_path": "common/great_projects/types/01_pam_projects.txt",
+      "bytes": 151141,
+      "sha256": "12435798910a8c821615a42640336526443582e5484472eb35dd6eab37603c80",
+      "lines": 6432
+    },
+    {
+      "game_relative_path": "common/religion/doctrine_group_types/00_doctrine_group_types.txt",
+      "bytes": 5215,
+      "sha256": "276100fe6e99ef17805da9992b4e8f38d648315dd8a30238b5fb42d113bd7456",
+      "lines": 325
+    },
+    {
+      "game_relative_path": "common/religion/doctrine_types/20_doctrines.txt",
+      "bytes": 54665,
+      "sha256": "ff663a8f6c5233628dbf6774b28412b918338fec823fe0f534c4cd03c8580504",
+      "lines": 2392
+    },
+    {
+      "game_relative_path": "common/religion/doctrine_types/40_doctrines_special.txt",
+      "bytes": 12160,
+      "sha256": "1c6a23f1363b1bdf9c6ebe919d8defc7d3daeb3bda0eece0cd1fbf1f0506d823",
+      "lines": 489
+    },
+    {
+      "game_relative_path": "common/religion/faith_types/00_faith_types.txt",
+      "bytes": 118526,
+      "sha256": "c1b94cd6cf2cc47824a43112965e9a1e1a669530090b44b1cd702245914e84df",
+      "lines": 4867
+    },
+    {
+      "game_relative_path": "common/religion/religion_types/00_christianity.txt",
+      "bytes": 29656,
+      "sha256": "d3f521850ab6aa7643bbb4e5c644ac5a70b8e5a8d1184a20aee7f9a509a9ae02",
+      "lines": 336
+    },
+    {
+      "game_relative_path": "common/religion/religion_types/00_confucianism.txt",
+      "bytes": 28527,
+      "sha256": "aec90b9dde7890a38454b2333f069f327df5824508417c29dde300c84476c507",
+      "lines": 291
+    },
+    {
+      "game_relative_path": "common/religion/rite_types/00_rite_types.txt",
+      "bytes": 45201,
+      "sha256": "3123e46d154cc35a72986979d3db951accf31fdbb03bf65d54b9261a3451dbce",
+      "lines": 2012
+    },
+    {
+      "game_relative_path": "common/religion/rite_types/01_christian_heresy_rite_types.txt",
+      "bytes": 6276,
+      "sha256": "fc70155dd6008addea5efb5a520b426863f57ca58dd61efa9b2cd61536df94bb",
+      "lines": 256
+    },
+    {
+      "game_relative_path": "common/religion/rite_types/02_mainline_rite_types.txt",
+      "bytes": 20547,
+      "sha256": "fb7530f0d702477da65bba558a5c15f7b59157785df3dea87d284344628ffe49",
+      "lines": 1236
+    },
+    {
+      "game_relative_path": "common/religion/tenet_types/00_pam_tenets.txt",
+      "bytes": 52920,
+      "sha256": "5d57cf371aedf4d2266286b8fe30d7f0c90eb8d4079019712c907a4b954ce02a",
+      "lines": 2494
+    },
+    {
+      "game_relative_path": "common/religion/tenet_types/00_tenet_types.txt",
+      "bytes": 130228,
+      "sha256": "d9e18a077d81f18f030d795ef45cb4aa5b7db246007043d5b0fe401baaf88abd",
+      "lines": 5958
+    },
+    {
+      "game_relative_path": "common/scripted_triggers/00_great_holy_war_triggers.txt",
+      "bytes": 4073,
+      "sha256": "7e449bcfa18bc02cf97cffff950d7b6f2d97aab7e0e93110db6c39d5e26505ba",
+      "lines": 145
+    },
+    {
+      "game_relative_path": "common/scripted_triggers/00_has_dlc_scripted_triggers.txt",
+      "bytes": 2631,
+      "sha256": "8bad67efdc979e6e3358cc055c462a2051cbc27b9ff2594e92b01e3f021f2066",
+      "lines": 131
+    },
+    {
+      "game_relative_path": "common/scripted_triggers/00_religious_triggers.txt",
+      "bytes": 88549,
+      "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+      "lines": 3599
+    },
+    {
+      "game_relative_path": "common/scripted_triggers/10_ach_scripted_triggers.txt",
+      "bytes": 10938,
+      "sha256": "81788d152dc2608ad8f23285cac23c6981ea37e786bf7b38d0d94403697b012c",
+      "lines": 498
+    },
+    {
+      "game_relative_path": "common/scripted_triggers/pam_antipope_triggers.txt",
+      "bytes": 7948,
+      "sha256": "6457fd56e3ba27e1ca5a9cd7913322c1502806505d62c360da5b13d6acec038a",
+      "lines": 278
+    },
+    {
+      "game_relative_path": "common/scripted_triggers/pam_saint_triggers.txt",
+      "bytes": 9151,
+      "sha256": "dd7fbd07e58363edd152570317c0b2d86d4d4ae4e31ba6c70325a3d700610b9b",
+      "lines": 230
+    },
+    {
+      "game_relative_path": "common/scripted_triggers/pam_scripted_triggers.txt",
+      "bytes": 186187,
+      "sha256": "0ad98f123b6739593b9ab2c170d0e8c9b3d9d941baa9d3580296dd2139b2ea6e",
+      "lines": 6937
+    },
+    {
+      "game_relative_path": "common/situation/situations/pam_christian_situation.txt",
+      "bytes": 86853,
+      "sha256": "5a2d6720a3564afdc20e9f9f6f9122d43cdecd80e42e5bb31632da3865c74cbc",
+      "lines": 1992
+    },
+    {
+      "game_relative_path": "common/spiritual_fulfillment/00_spiritual_fulfillment_types.txt",
+      "bytes": 4275,
+      "sha256": "0fcd8d191368560718b4950e3a2d2171125031d3fff7054f96f0f1d200ad31e1",
+      "lines": 178
+    },
+    {
+      "game_relative_path": "localization/simp_chinese/dlc/pam/pam_game_concepts_l_simp_chinese.yml",
+      "bytes": 43748,
+      "sha256": "930338fd47cf6495748b403bbded34eda444c7cfecce6ac02f0858c111f29c3b",
+      "lines": 292
+    },
+    {
+      "game_relative_path": "localization/simp_chinese/religion/religion_confucianism_l_simp_chinese.yml",
+      "bytes": 4238,
+      "sha256": "2d57f918fed67006302b1d2f26db60620a145227a45aee151d7271bab92c5c92",
+      "lines": 81
+    },
+    {
+      "game_relative_path": "localization/simp_chinese/religion/religion_core_tenets_l_simp_chinese.yml",
+      "bytes": 66475,
+      "sha256": "a6178bfe35faf7f4b58ea034d1d8df3a33e38d2020fe66675007ec162f9ca602",
+      "lines": 518
+    }
+  ],
+  "predefined_counts": {
+    "christian_faiths": 19,
+    "confucian_faiths": 1,
+    "christian_rites": 27,
+    "confucian_rites": 2
+  },
+  "inventory_method": "Enumerate top-level faith and rite blocks in original *.txt files and associate their declared religion / faith; includes historical and heresy definitions, excludes runtime-created entries.",
+  "predefined_inventory": {
+    "faiths": [
+      {
+        "id": "christian_faith",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 453
+      },
+      {
+        "id": "catholic",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 535
+      },
+      {
+        "id": "orthodox",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 656
+      },
+      {
+        "id": "miaphysitism",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 741
+      },
+      {
+        "id": "armenian_apostolic",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 817
+      },
+      {
+        "id": "conversos",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 893
+      },
+      {
+        "id": "cathar",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 930
+      },
+      {
+        "id": "waldensian",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 962
+      },
+      {
+        "id": "lollard",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 985
+      },
+      {
+        "id": "hussite",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 1009
+      },
+      {
+        "id": "joachimite",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 1033
+      },
+      {
+        "id": "iconoclast",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 1056
+      },
+      {
+        "id": "bogomilist",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 1086
+      },
+      {
+        "id": "paulician",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 1123
+      },
+      {
+        "id": "nestorian",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 1156
+      },
+      {
+        "id": "messalian",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 1201
+      },
+      {
+        "id": "adamites",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 1234
+      },
+      {
+        "id": "bosnian_church",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 1287
+      },
+      {
+        "id": "adoptionist",
+        "religion": "christianity_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 1368
+      },
+      {
+        "id": "confucian_faith",
+        "religion": "confucianism_religion",
+        "file": "common/religion/faith_types/00_faith_types.txt",
+        "line": 1398
+      }
+    ],
+    "rites": [
+      {
+        "id": "roman_rite",
+        "faith": "christian_faith",
+        "file": "common/religion/rite_types/00_rite_types.txt",
+        "line": 1
+      },
+      {
+        "id": "insular_celtic",
+        "faith": "christian_faith",
+        "file": "common/religion/rite_types/00_rite_types.txt",
+        "line": 35
+      },
+      {
+        "id": "mozarabic_church",
+        "faith": "christian_faith",
+        "file": "common/religion/rite_types/00_rite_types.txt",
+        "line": 148
+      },
+      {
+        "id": "ambrosian_rite",
+        "faith": "christian_faith",
+        "file": "common/religion/rite_types/00_rite_types.txt",
+        "line": 173
+      },
+      {
+        "id": "beneventan_rite",
+        "faith": "christian_faith",
+        "file": "common/religion/rite_types/00_rite_types.txt",
+        "line": 204
+      },
+      {
+        "id": "carolingian_christianity",
+        "faith": "christian_faith",
+        "file": "common/religion/rite_types/00_rite_types.txt",
+        "line": 234
+      },
+      {
+        "id": "byzantine_rite",
+        "faith": "christian_faith",
+        "file": "common/religion/rite_types/00_rite_types.txt",
+        "line": 264
+      },
+      {
+        "id": "georgian_rite",
+        "faith": "christian_faith",
+        "file": "common/religion/rite_types/00_rite_types.txt",
+        "line": 293
+      },
+      {
+        "id": "slavic_rite",
+        "faith": "christian_faith",
+        "file": "common/religion/rite_types/00_rite_types.txt",
+        "line": 316
+      },
+      {
+        "id": "coptic_rite",
+        "faith": "miaphysitism",
+        "file": "common/religion/rite_types/00_rite_types.txt",
+        "line": 344
+      },
+      {
+        "id": "antiochian_rite",
+        "faith": "miaphysitism",
+        "file": "common/religion/rite_types/00_rite_types.txt",
+        "line": 425
+      },
+      {
+        "id": "ethiopian_rite",
+        "faith": "miaphysitism",
+        "file": "common/religion/rite_types/00_rite_types.txt",
+        "line": 456
+      },
+      {
+        "id": "armenian_rite",
+        "faith": "armenian_apostolic",
+        "file": "common/religion/rite_types/00_rite_types.txt",
+        "line": 486
+      },
+      {
+        "id": "jingxue",
+        "faith": "confucian_faith",
+        "file": "common/religion/rite_types/00_rite_types.txt",
+        "line": 1182
+      },
+      {
+        "id": "daoxue",
+        "faith": "confucian_faith",
+        "file": "common/religion/rite_types/00_rite_types.txt",
+        "line": 1197
+      },
+      {
+        "id": "cathar_rite",
+        "faith": "cathar",
+        "file": "common/religion/rite_types/01_christian_heresy_rite_types.txt",
+        "line": 10
+      },
+      {
+        "id": "waldensian_rite",
+        "faith": "waldensian",
+        "file": "common/religion/rite_types/01_christian_heresy_rite_types.txt",
+        "line": 40
+      },
+      {
+        "id": "lollard_rite",
+        "faith": "lollard",
+        "file": "common/religion/rite_types/01_christian_heresy_rite_types.txt",
+        "line": 64
+      },
+      {
+        "id": "hussite_rite",
+        "faith": "hussite",
+        "file": "common/religion/rite_types/01_christian_heresy_rite_types.txt",
+        "line": 88
+      },
+      {
+        "id": "joachimite_rite",
+        "faith": "joachimite",
+        "file": "common/religion/rite_types/01_christian_heresy_rite_types.txt",
+        "line": 112
+      },
+      {
+        "id": "iconoclast_rite",
+        "faith": "iconoclast",
+        "file": "common/religion/rite_types/01_christian_heresy_rite_types.txt",
+        "line": 137
+      },
+      {
+        "id": "bogomilist_rite",
+        "faith": "bogomilist",
+        "file": "common/religion/rite_types/01_christian_heresy_rite_types.txt",
+        "line": 156
+      },
+      {
+        "id": "paulician_rite",
+        "faith": "paulician",
+        "file": "common/religion/rite_types/01_christian_heresy_rite_types.txt",
+        "line": 183
+      },
+      {
+        "id": "messalian_rite",
+        "faith": "messalian",
+        "file": "common/religion/rite_types/01_christian_heresy_rite_types.txt",
+        "line": 206
+      },
+      {
+        "id": "adoptionist_rite",
+        "faith": "adoptionist",
+        "file": "common/religion/rite_types/01_christian_heresy_rite_types.txt",
+        "line": 238
+      },
+      {
+        "id": "conversos",
+        "faith": "conversos",
+        "file": "common/religion/rite_types/02_mainline_rite_types.txt",
+        "line": 129
+      },
+      {
+        "id": "nestorian",
+        "faith": "nestorian",
+        "file": "common/religion/rite_types/02_mainline_rite_types.txt",
+        "line": 151
+      },
+      {
+        "id": "adamites",
+        "faith": "adamites",
+        "file": "common/religion/rite_types/02_mainline_rite_types.txt",
+        "line": 170
+      },
+      {
+        "id": "bosnian_church",
+        "faith": "bosnian_church",
+        "file": "common/religion/rite_types/02_mainline_rite_types.txt",
+        "line": 206
+      }
+    ]
+  },
+  "live_acceptance": "not performed"
+}
