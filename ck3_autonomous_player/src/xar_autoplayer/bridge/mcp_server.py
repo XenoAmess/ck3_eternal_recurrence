@@ -393,6 +393,18 @@ def _ck3_query_war_entry_assessments(
     )
 
 
+def _ck3_query_projected_contact_scope_v1(
+    service: GameplayBridgeService, subject_army_id: PublicCUnitId,
+    target_province_id: int, incoming_entry_province_id: int,
+    expected_revision: IngameUiRevisionV1,
+) -> dict[str, object]:
+    """Read a hypothetical arrival against current target state."""
+    return service.query_projected_contact_scope_v1(
+        subject_army_id, target_province_id, incoming_entry_province_id,
+        expected_revision=expected_revision,
+    )
+
+
 def _ck3_query_actual_contact_scope(
     service: GameplayBridgeService,
     subject_army_id: PublicCUnitId,
@@ -2457,6 +2469,19 @@ def create_server(
         return service.query_army_strengths(
             army_ids,
             expected_revision=expected_revision,
+        )
+
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_projected_contact_scope_v1(
+        subject_army_id: PublicCUnitId,
+        target_province_id: Annotated[int, Field(strict=True, ge=1, le=2**31 - 1)],
+        incoming_entry_province_id: Annotated[int, Field(strict=True, ge=1, le=2**31 - 1)],
+        expected_revision: IngameUiRevisionV1,
+    ) -> dict[str, object]:
+        """Project arrival against current target state; no move or future battle claim."""
+        return _ck3_query_projected_contact_scope_v1(
+            service, subject_army_id, target_province_id, incoming_entry_province_id,
+            expected_revision,
         )
 
     @server.tool()

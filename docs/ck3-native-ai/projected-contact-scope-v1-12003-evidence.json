@@ -1,0 +1,767 @@
+{
+  "schema": "xar.projected-contact-scope-v1-12003.docs.v1",
+  "date": "2026-10-03",
+  "status": "static-ready",
+  "source_baseline": {
+    "path": "Z:\\g38",
+    "owner_supplied_head": "02e",
+    "git_head_verified_by_delegate": false,
+    "read_only": true
+  },
+  "exact_build": {
+    "game_version": "1.20.0.3",
+    "steam_build": "25652598",
+    "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+  },
+  "frozen_inputs": {
+    "index": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\NATIVE-INPUT-FREEZE.json",
+      "bytes": 3487,
+      "sha256": "c206027c3a98030cfbab0dd54495d5c1ffe81ca12a2cc349622b291cf6a9a7a1"
+    },
+    "native_input_tree_frozen_before_implementation": true,
+    "pins_reused_from_freeze": [
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\native-strength\\TOPIC-CANDIDATE.md",
+        "bytes": 12613,
+        "sha256": "7631b00c4f494529f7624ddd149b2461dc5fc84b497c221c309da9db0cc0c20d"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\native-strength\\NATIVE-EVIDENCE.json",
+        "bytes": 11505,
+        "sha256": "0f4f4eaa6e14b4f790231b81a973c29588bb3f597339129b15f3dca77d717cad"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\native-strength\\REPORT-FIELDS.json",
+        "bytes": 2016,
+        "sha256": "712ef97883d3170a555a2a2e32acfb19fc675ef9d8fc9f34a034c3a11fb08d42"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\REMOTE-CONTACT-MINIMUM.md",
+        "bytes": 9182,
+        "sha256": "ccc745e44645e058ab6ff5dba005917830c2ff178fabbe297555b4bd31062756"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\PROJECTED-CONTACT-CONTRACT.hpp",
+        "bytes": 2078,
+        "sha256": "dd01199882ec21b680a824704d62501733452a63c5e69120eed484441e4ec8fe"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\IMPLEMENTATION-CONTRACT.md",
+        "bytes": 5715,
+        "sha256": "761d1a7a2f5de06a6b15a01e8680f726c565e23ed39cb1dfe5c7d5e3c46d3f3b"
+      },
+      {
+        "path": "Z:\\g38\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_routes.cpp",
+        "bytes": 77463,
+        "sha256": "40051dedbc427419b130eedecd42a45b899f794c9cd249482bb43ae8a77470e4"
+      },
+      {
+        "path": "Z:\\g38\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_routes.hpp",
+        "bytes": 3570,
+        "sha256": "89ef47854c15e9508790c62c3779072b1e871025e24a958ca6c47f389013d23a"
+      },
+      {
+        "path": "Z:\\g38\\ck3_autonomous_player\\native_bridge\\src\\ck3_12003_adapter.cpp",
+        "bytes": 4383,
+        "sha256": "00d462e1e16776084a97ce97982edebedcdd05ff86f411cd36878eebf93ce424"
+      },
+      {
+        "path": "Z:\\g38\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+        "bytes": 1266470,
+        "sha256": "4c01bbe447e6161a0a06148a30144f0874b74e8953f2f27c8ed4f14ad5228c8e"
+      },
+      {
+        "path": "Z:\\g38\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+        "bytes": 1269635,
+        "sha256": "8dfedf834941c064b30b120c71f5dc33efed554d84b77de2c9757ccb85f7e8fa"
+      },
+      {
+        "path": "Z:\\g38\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+        "bytes": 568948,
+        "sha256": "977719bc4c0fa083dbce3146d54369d76d7d57aa64c8e0862e4b2955252b2135"
+      },
+      {
+        "path": "Z:\\g38\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+        "bytes": 169248,
+        "sha256": "e086465158d789c7e00460a47a1cd3e1347678417a8a438eeea94c8d02a2d93c"
+      }
+    ],
+    "composition_recipe": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\composition\\RECIPE.md",
+      "bytes": 8769,
+      "sha256": "e0fd6a7ff3120686b7786f22426575f8c7e50a07aa90c235a550a53076071496"
+    },
+    "current_overlay_preimage_amendment": {
+      "receipt": {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\INPUT-AMENDMENT.json",
+        "bytes": 924,
+        "sha256": "6a011b94577d8cd82c6397e0e8dda3bb59c10fe4433e1a1e603751253a249da8"
+      },
+      "content": {
+        "schema": "xar.projected-contact-input-amendment.v1",
+        "frozen_input_receipt": "NATIVE-INPUT-FREEZE.json",
+        "reason": "Owner source changed while lanes were running; original native research freeze remains historical. Python projected query additions were produced from the actual current owner file and preserve that owner delta.",
+        "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+        "frozen_sha256": "8dfedf834941c064b30b120c71f5dc33efed554d84b77de2c9757ccb85f7e8fa",
+        "actual_overlay_preimage_sha256": "75ce828c8b914f8dc5bd4efb9cd7c9f1dcf698a87d9fb84a335ad21e8f88444b",
+        "baseline_root": "Z:/g38",
+        "source_owner_supplied_head": "02e",
+        "delegate_owner_source_writes": false,
+        "integration": "Use the lane manifest and minimal LF hunks against the current source; do not replace the owner file with an earlier frozen copy.",
+        "status": "accepted-owner-source-amendment"
+      }
+    },
+    "all_current_code_pins_equal_historical_freeze_claimed": false
+  },
+  "public_contract": {
+    "tool": "ck3_query_projected_contact_scope_v1",
+    "arguments": [
+      "subject_army_id",
+      "target_province_id",
+      "incoming_entry_province_id",
+      "expected_revision"
+    ],
+    "literal": "query-projected-contact-scope-v1-<subject>-to-<target>-from-<entry>",
+    "capability": "game.command.query-projected-contact-scope-v1-N",
+    "reply_object": "projected_contact_scope",
+    "scope_kind": "hypothetical_arrival_against_current_target_state",
+    "public_army_id_kind": "full CUnitID; valid zero and generations preserved",
+    "province_ids": "positive integers",
+    "revision": "fresh mandatory public revision through existing source/native/public binding",
+    "read_only": true,
+    "new_feature_flag_permit_or_mutator": false,
+    "available_none_is_complete": true,
+    "actual_contact_scope_ready_published": false,
+    "native_ai_power_share_published": false,
+    "win_odds_published": false,
+    "expected_initiator_json_shape_root_confirmed": {
+      "observable": "non-null bool",
+      "none_or_join": {
+        "projected_initiator_is_defender_observable": false,
+        "projected_initiator_is_defender": null
+      },
+      "create_new": "observable true and derived bool; legitimate false preserved",
+      "observed_fixture_packet_pending": false
+    }
+  },
+  "dto_fields": [
+    "status",
+    "scope_kind",
+    "snapshot_revision",
+    "date_raw",
+    "subject_army_id",
+    "subject_native_carmy_id",
+    "subject_owner_character_id",
+    "subject_current_province_id",
+    "target_province_id",
+    "incoming_entry_province_id",
+    "observed_target_public_cunit_ids",
+    "observed_target_combat_ids",
+    "transition_kind",
+    "selected_current_combat_id",
+    "selected_current_combat_array_index",
+    "projected_subject_side",
+    "projected_initiator_is_defender_observable",
+    "projected_initiator_is_defender",
+    "incoming_adjacency_kind_raw",
+    "projected_attacker_army_ids",
+    "projected_defender_army_ids",
+    "contact_projection_inputs_complete"
+  ],
+  "status_names": [
+    "available",
+    "requires_paused",
+    "subject_army_not_found",
+    "subject_army_not_controllable",
+    "subject_in_combat",
+    "subject_not_contact_eligible",
+    "target_province_not_found",
+    "incoming_entry_province_not_found",
+    "invalid_entry_target_adjacency",
+    "relation_unavailable",
+    "state_changed",
+    "unavailable"
+  ],
+  "current_source_evidence": [
+    {
+      "source": "ck3_autonomous_player/native_bridge/src/ck3_12002_routes.cpp",
+      "line": 1404,
+      "contract": "actual current Province must be target"
+    },
+    {
+      "source": "ck3_autonomous_player/native_bridge/src/ck3_12002_routes.cpp",
+      "line": 1432,
+      "contract": "raw target/mode and incoming native eligibility gates"
+    },
+    {
+      "source": "ck3_autonomous_player/native_bridge/src/ck3_12002_routes.cpp",
+      "line": 1455,
+      "contract": "actual Province array must contain incoming"
+    },
+    {
+      "source": "ck3_autonomous_player/native_bridge/src/ck3_12002_routes.cpp",
+      "line": 1461,
+      "contract": "last forward-hostility-XOR current combat; loser filter before selection only"
+    },
+    {
+      "source": "ck3_autonomous_player/native_bridge/src/ck3_12002_routes.cpp",
+      "line": 1523,
+      "contract": "reverse native relations derive join side; append incoming preserving stored order"
+    },
+    {
+      "source": "ck3_autonomous_player/native_bridge/src/ck3_12002_routes.cpp",
+      "line": 1549,
+      "contract": "first eligible hostile seed excludes losers/empty/retreating/active-combat opponents"
+    },
+    {
+      "source": "ck3_autonomous_player/native_bridge/src/ck3_12002_routes.cpp",
+      "line": 1608,
+      "contract": "ordered opponent rescan uses seed owner or reverse hostility without loser filter"
+    },
+    {
+      "source": "ck3_autonomous_player/native_bridge/src/ck3_12002_routes.cpp",
+      "line": 1652,
+      "contract": "holder and fallback native initiator-role predicates"
+    },
+    {
+      "source": "ck3_autonomous_player/native_bridge/src/ck3_12002_routes.cpp",
+      "line": 1346,
+      "contract": "actual incoming current/prior adjacency; projected explicit edge remains incoming edge"
+    },
+    {
+      "source": "ck3_autonomous_player/native_bridge/src/ck3_12002_routes.cpp",
+      "line": 1856,
+      "contract": "paused double sample and clock match"
+    },
+    {
+      "source": "ck3_autonomous_player/native_bridge/src/ck3_12003_adapter.cpp",
+      "line": 46,
+      "contract": "exact .3 SHA dispatch to reviewed shared layout"
+    }
+  ],
+  "current_reviewed_binding_rvas": {
+    "game_state": "0x5C68C50",
+    "cunit_storage": "0x5D1E380",
+    "carmy_storage": "0x5D1DE48",
+    "character_storage": "0x5C67568",
+    "combat_storage": "0x5D1DE70",
+    "battle_result_storage": "0x5D1FFE0",
+    "hostility": "0x2C09640",
+    "army_empty": "0x24E83C0",
+    "army_active_combat": "0x24E8360",
+    "province_holder": "0x247D030",
+    "holder_defender": "0x2C09810",
+    "fallback_defender": "0x2C164E0"
+  },
+  "current_province_layout": {
+    "unit_data": "0x740",
+    "unit_count": "0x74C",
+    "combat_data": "0x758",
+    "combat_count": "0x764",
+    "fort_level": "0x850"
+  },
+  "native_strength_reuse": {
+    "existing_query": "ck3_query_army_strengths",
+    "summary_getter_rva": "0x2C3E850",
+    "native_ai_power_share_rva_research_only": "0x1AC7540",
+    "final_entry_consumer_rva_research_only": "0x1AC92B2",
+    "predictor_invoked_by_this_query": false,
+    "boundary": "AI base power, diagnostic aggregates and native estimated power share are distinct; none is win probability"
+  },
+  "actual_vs_projected": {
+    "actual_observed": [
+      "incoming identity/owner/current Province",
+      "target current ordered units and combats",
+      "native current relations/holder predicate operands",
+      "explicit entry-to-target native adjacency"
+    ],
+    "hypothetical": [
+      "incoming position at target in caller-owned unsigned iteration list",
+      "possible selected current-combat join or new-contact opponent set",
+      "incoming role and ordered projected sides"
+    ],
+    "unchanged_actual_contract": [
+      "subject currently at target",
+      "actual target membership",
+      "actual unit adjacency",
+      "paused consistency and full-generation identity checks"
+    ],
+    "none": "available, complete, empty projected sides; no selected current CombatID; no claim of future contact-free travel",
+    "incoming_defender_entry": "incoming edge is defender edge; do not rename it v2 attacker entry"
+  },
+  "campaign_context_parent_supplied_only": {
+    "character_id": 29829,
+    "public_cunit_id": 83886367,
+    "current_province_id": 2604,
+    "state": "normal siege",
+    "foreign_combat_id": 1577058305,
+    "foreign_combat_province_id": 2640,
+    "foreign_owners": [
+      70766,
+      30097,
+      35357
+    ],
+    "robert_in_foreign_combat": false,
+    "bound_live_revision": null,
+    "bound_live_date_raw": null,
+    "delegated_live_frame_acquired": false
+  },
+  "central_fixture": {
+    "status": "GREEN",
+    "native_receipt": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\fixture\\focused-attempt-02\\RESULT.json",
+      "bytes": 7403,
+      "sha256": "d1b300959a231e78a0ec19fd7017e7e04ff566c16a67e9c74fc1440139f60cef"
+    },
+    "registered_mcp_receipt": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\fixture\\focused-attempt-02\\REGISTERED-MCP-RESULT.json",
+      "bytes": 23048,
+      "sha256": "5b47af2168fe0e2ae2bd00a795e05b4cef8569cdc916070b48de3a7ed3ee5062"
+    },
+    "native_cases_green": 10,
+    "registered_mcp_cases_green": 10,
+    "native_exit_code": 0,
+    "native_sources": [
+      {
+        "name": "production-reader",
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\combined\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_routes.cpp",
+        "sha256": "a7276d1ea692ffdbbc44ec4479ebf50c6ad28608273c5acf3420c5dac684dbc2"
+      },
+      {
+        "name": "production-serializer",
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\combined\\ck3_autonomous_player\\native_bridge\\src\\projected_contact_scope_v1_serializer.cpp",
+        "sha256": "b59a33555e4202e40db1561e496c77cecd158177f689c4bf981f4e7d27e61b20"
+      },
+      {
+        "name": "focused-case",
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\fixture\\projected_contact_scope_v1_production_test.cpp",
+        "sha256": "4892b1d5e5e52a2c026ae1a70eb40ac34c766cebf656a75161d3029efb0c4153"
+      }
+    ],
+    "native_wire_pins": [
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\fixture\\focused-attempt-02\\wire\\both-hostile-xor-none.json",
+        "sha256": "669a9c4fb0ac2e95d8c07e6e21c2a4e936648f4b8e161e2b179a638037ae7301"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\fixture\\focused-attempt-02\\wire\\compatible-join-stored-order.json",
+        "sha256": "d0e773a4ad756742078e0a565daa2d0c112b6d79db421b963faaf9124a61efc1"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\fixture\\focused-attempt-02\\wire\\finalized-losers-excluded-none.json",
+        "sha256": "669a9c4fb0ac2e95d8c07e6e21c2a4e936648f4b8e161e2b179a638037ae7301"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\fixture\\focused-attempt-02\\wire\\full-generation-mismatch.json",
+        "sha256": "9399f153a1d1546e52701b55f7ee650453074f119dc39632c9b3227c5fe646b4"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\fixture\\focused-attempt-02\\wire\\invalid-entry-edge.json",
+        "sha256": "01af39cdce673e0e070ac07a9c2b2a7540aca82f921fe1dcdec5c0bbf869ba4f"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\fixture\\focused-attempt-02\\wire\\public-cunit-zero.json",
+        "sha256": "a0b616992325a4e100e46b78fe108d704d886c89c65276de914e415e471bf059"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\fixture\\focused-attempt-02\\wire\\remote-create-new.json",
+        "sha256": "e84dfdbccbcec3260e3729a9ef0b658a28f7b8894fb4d2a7f08891443fda4a1b"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\fixture\\focused-attempt-02\\wire\\remote-holder-defender.json",
+        "sha256": "f5dc3fde121a2982005253543b2afdfce5c0c6abfd6b595d28d2a5b24bffb736"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\fixture\\focused-attempt-02\\wire\\retreating-opponent-excluded.json",
+        "sha256": "c575ea4a6eb8e6e4f297156e412503cc6960997e3853383cec41a06b7dc7289f"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\fixture\\focused-attempt-02\\wire\\unavailable-native-bindings.json",
+        "sha256": "2075a12cdcd0086adbe6d88609f379adfe2a1849c9b2c2cf8ad085dd61a22a76"
+      }
+    ],
+    "native_objects_reused": [
+      "production-serializer",
+      "production-reader"
+    ],
+    "legacy_main_imported_or_invoked": false,
+    "transport_boundary": "existing FakeEndpoint; production native inner JSON is preserved",
+    "public_revision": 2,
+    "native_revision": 41,
+    "full_dll_build": false,
+    "game_contacted": false,
+    "old_matrix_rerun": false,
+    "production_path": [
+      "native reader",
+      "native serializer",
+      "Python normalizer",
+      "service",
+      "registered MCP"
+    ],
+    "required_cases": [
+      "remote create",
+      "holder defender",
+      "compatible join preserving stored order",
+      "both-hostile XOR valid none",
+      "opponent exclusion",
+      "actual subject-not-at-target unchanged",
+      "public CUnit0",
+      "full-generation mismatch",
+      "fixture-owned real arrays and positions unchanged"
+    ],
+    "performed_by_documentation_lane": false,
+    "first_red_retained_by_owner": {
+      "native": {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\fixture\\focused-attempt-01\\RESULT.json",
+        "bytes": 5932,
+        "sha256": "e2c4afc169b0b266b5ceeceb94514a891f765c5eed01ebf1e15ea06e6995e2f3"
+      },
+      "native_reason": "harness C4715 under /WX: legacy main renamed without explicit return; production reader and serializer compiled successfully",
+      "registered_mcp": {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\battle-terrain-actual\\future-engagement\\implementation-02e\\fixture\\focused-attempt-02\\REGISTERED-MCP-ATTEMPT-01-RED.json",
+        "bytes": 411,
+        "sha256": "cf00c95543030b2504f54a3490436e4e3e48eb1c5d2652e3206349ed640cd806"
+      },
+      "registered_mcp_reason": "harness ModuleNotFoundError: No module named build_release",
+      "classification": "harness REDs; no capability RED established"
+    },
+    "registered_case_summaries": [
+      {
+        "case": "both-hostile-xor-none",
+        "status": "GREEN",
+        "native_status": "available",
+        "registered_mcp_is_error": false,
+        "full_native_body_preserved": true,
+        "projected_contact_scope": {
+          "status": "available",
+          "scope_kind": "hypothetical_arrival_against_current_target_state",
+          "snapshot_revision": 41,
+          "date_raw": 43823104,
+          "subject_army_id": 16777217,
+          "subject_native_carmy_id": 16777217,
+          "subject_owner_character_id": 16777217,
+          "subject_current_province_id": 2,
+          "target_province_id": 3,
+          "incoming_entry_province_id": 2,
+          "observed_target_public_cunit_ids": [
+            16777218,
+            16777219
+          ],
+          "observed_target_combat_ids": [
+            16777217
+          ],
+          "transition_kind": "none",
+          "selected_current_combat_id": null,
+          "selected_current_combat_array_index": null,
+          "projected_subject_side": "none",
+          "projected_initiator_is_defender_observable": false,
+          "projected_initiator_is_defender": null,
+          "incoming_adjacency_kind_raw": 2,
+          "projected_attacker_army_ids": [],
+          "projected_defender_army_ids": [],
+          "contact_projection_inputs_complete": true
+        }
+      },
+      {
+        "case": "compatible-join-stored-order",
+        "status": "GREEN",
+        "native_status": "available",
+        "registered_mcp_is_error": false,
+        "full_native_body_preserved": true,
+        "projected_contact_scope": {
+          "status": "available",
+          "scope_kind": "hypothetical_arrival_against_current_target_state",
+          "snapshot_revision": 41,
+          "date_raw": 43823104,
+          "subject_army_id": 16777217,
+          "subject_native_carmy_id": 16777217,
+          "subject_owner_character_id": 16777217,
+          "subject_current_province_id": 2,
+          "target_province_id": 3,
+          "incoming_entry_province_id": 2,
+          "observed_target_public_cunit_ids": [
+            16777218,
+            16777219,
+            16777220,
+            16777221
+          ],
+          "observed_target_combat_ids": [
+            16777217,
+            16777218
+          ],
+          "transition_kind": "join_existing",
+          "selected_current_combat_id": 16777218,
+          "selected_current_combat_array_index": 1,
+          "projected_subject_side": "attacker",
+          "projected_initiator_is_defender_observable": false,
+          "projected_initiator_is_defender": null,
+          "incoming_adjacency_kind_raw": 2,
+          "projected_attacker_army_ids": [
+            16777221,
+            16777220,
+            16777217
+          ],
+          "projected_defender_army_ids": [
+            16777219,
+            16777218
+          ],
+          "contact_projection_inputs_complete": true
+        }
+      },
+      {
+        "case": "finalized-losers-excluded-none",
+        "status": "GREEN",
+        "native_status": "available",
+        "registered_mcp_is_error": false,
+        "full_native_body_preserved": true,
+        "projected_contact_scope": {
+          "status": "available",
+          "scope_kind": "hypothetical_arrival_against_current_target_state",
+          "snapshot_revision": 41,
+          "date_raw": 43823104,
+          "subject_army_id": 16777217,
+          "subject_native_carmy_id": 16777217,
+          "subject_owner_character_id": 16777217,
+          "subject_current_province_id": 2,
+          "target_province_id": 3,
+          "incoming_entry_province_id": 2,
+          "observed_target_public_cunit_ids": [
+            16777218,
+            16777219
+          ],
+          "observed_target_combat_ids": [
+            16777217
+          ],
+          "transition_kind": "none",
+          "selected_current_combat_id": null,
+          "selected_current_combat_array_index": null,
+          "projected_subject_side": "none",
+          "projected_initiator_is_defender_observable": false,
+          "projected_initiator_is_defender": null,
+          "incoming_adjacency_kind_raw": 2,
+          "projected_attacker_army_ids": [],
+          "projected_defender_army_ids": [],
+          "contact_projection_inputs_complete": true
+        }
+      },
+      {
+        "case": "full-generation-mismatch",
+        "status": "GREEN",
+        "native_status": "subject_army_not_found",
+        "registered_mcp_is_error": true,
+        "full_native_body_preserved": null,
+        "projected_contact_scope": null
+      },
+      {
+        "case": "invalid-entry-edge",
+        "status": "GREEN",
+        "native_status": "invalid_entry_target_adjacency",
+        "registered_mcp_is_error": true,
+        "full_native_body_preserved": null,
+        "projected_contact_scope": null
+      },
+      {
+        "case": "public-cunit-zero",
+        "status": "GREEN",
+        "native_status": "available",
+        "registered_mcp_is_error": false,
+        "full_native_body_preserved": true,
+        "projected_contact_scope": {
+          "status": "available",
+          "scope_kind": "hypothetical_arrival_against_current_target_state",
+          "snapshot_revision": 41,
+          "date_raw": 43823104,
+          "subject_army_id": 0,
+          "subject_native_carmy_id": 16777217,
+          "subject_owner_character_id": 16777217,
+          "subject_current_province_id": 2,
+          "target_province_id": 3,
+          "incoming_entry_province_id": 2,
+          "observed_target_public_cunit_ids": [
+            16777218,
+            16777219
+          ],
+          "observed_target_combat_ids": [],
+          "transition_kind": "create_new",
+          "selected_current_combat_id": null,
+          "selected_current_combat_array_index": null,
+          "projected_subject_side": "attacker",
+          "projected_initiator_is_defender_observable": true,
+          "projected_initiator_is_defender": false,
+          "incoming_adjacency_kind_raw": 2,
+          "projected_attacker_army_ids": [
+            0
+          ],
+          "projected_defender_army_ids": [
+            16777218,
+            16777219
+          ],
+          "contact_projection_inputs_complete": true
+        }
+      },
+      {
+        "case": "remote-create-new",
+        "status": "GREEN",
+        "native_status": "available",
+        "registered_mcp_is_error": false,
+        "full_native_body_preserved": true,
+        "projected_contact_scope": {
+          "status": "available",
+          "scope_kind": "hypothetical_arrival_against_current_target_state",
+          "snapshot_revision": 41,
+          "date_raw": 43823104,
+          "subject_army_id": 16777217,
+          "subject_native_carmy_id": 16777217,
+          "subject_owner_character_id": 16777217,
+          "subject_current_province_id": 2,
+          "target_province_id": 3,
+          "incoming_entry_province_id": 2,
+          "observed_target_public_cunit_ids": [
+            16777218,
+            16777219
+          ],
+          "observed_target_combat_ids": [],
+          "transition_kind": "create_new",
+          "selected_current_combat_id": null,
+          "selected_current_combat_array_index": null,
+          "projected_subject_side": "attacker",
+          "projected_initiator_is_defender_observable": true,
+          "projected_initiator_is_defender": false,
+          "incoming_adjacency_kind_raw": 2,
+          "projected_attacker_army_ids": [
+            16777217
+          ],
+          "projected_defender_army_ids": [
+            16777218,
+            16777219
+          ],
+          "contact_projection_inputs_complete": true
+        }
+      },
+      {
+        "case": "remote-holder-defender",
+        "status": "GREEN",
+        "native_status": "available",
+        "registered_mcp_is_error": false,
+        "full_native_body_preserved": true,
+        "projected_contact_scope": {
+          "status": "available",
+          "scope_kind": "hypothetical_arrival_against_current_target_state",
+          "snapshot_revision": 41,
+          "date_raw": 43823104,
+          "subject_army_id": 16777217,
+          "subject_native_carmy_id": 16777217,
+          "subject_owner_character_id": 16777217,
+          "subject_current_province_id": 2,
+          "target_province_id": 3,
+          "incoming_entry_province_id": 2,
+          "observed_target_public_cunit_ids": [
+            16777218,
+            16777219
+          ],
+          "observed_target_combat_ids": [],
+          "transition_kind": "create_new",
+          "selected_current_combat_id": null,
+          "selected_current_combat_array_index": null,
+          "projected_subject_side": "defender",
+          "projected_initiator_is_defender_observable": true,
+          "projected_initiator_is_defender": true,
+          "incoming_adjacency_kind_raw": 2,
+          "projected_attacker_army_ids": [
+            16777218,
+            16777219
+          ],
+          "projected_defender_army_ids": [
+            16777217
+          ],
+          "contact_projection_inputs_complete": true
+        }
+      },
+      {
+        "case": "retreating-opponent-excluded",
+        "status": "GREEN",
+        "native_status": "available",
+        "registered_mcp_is_error": false,
+        "full_native_body_preserved": true,
+        "projected_contact_scope": {
+          "status": "available",
+          "scope_kind": "hypothetical_arrival_against_current_target_state",
+          "snapshot_revision": 41,
+          "date_raw": 43823104,
+          "subject_army_id": 16777217,
+          "subject_native_carmy_id": 16777217,
+          "subject_owner_character_id": 16777217,
+          "subject_current_province_id": 2,
+          "target_province_id": 3,
+          "incoming_entry_province_id": 2,
+          "observed_target_public_cunit_ids": [
+            16777218,
+            16777219
+          ],
+          "observed_target_combat_ids": [],
+          "transition_kind": "create_new",
+          "selected_current_combat_id": null,
+          "selected_current_combat_array_index": null,
+          "projected_subject_side": "attacker",
+          "projected_initiator_is_defender_observable": true,
+          "projected_initiator_is_defender": false,
+          "incoming_adjacency_kind_raw": 2,
+          "projected_attacker_army_ids": [
+            16777217
+          ],
+          "projected_defender_army_ids": [
+            16777219
+          ],
+          "contact_projection_inputs_complete": true
+        }
+      },
+      {
+        "case": "unavailable-native-bindings",
+        "status": "GREEN",
+        "native_status": "unavailable",
+        "registered_mcp_is_error": true,
+        "full_native_body_preserved": null,
+        "projected_contact_scope": null
+      }
+    ]
+  },
+  "root_production_paused_query": {
+    "status": "pending",
+    "runtime": null,
+    "source_commit": null,
+    "artifact_path": null,
+    "artifact_sha256": null,
+    "public_revision": null,
+    "native_revision": null,
+    "date_raw": null,
+    "transition_kind": null,
+    "subject_current_province_id": null,
+    "target_province_id": null,
+    "incoming_entry_province_id": null,
+    "contact_projection_inputs_complete": null
+  },
+  "readiness": {
+    "research": true,
+    "static_ready": true,
+    "fixture_live": false,
+    "production_live_primitive": false,
+    "production_live_loop": false,
+    "complete": false,
+    "promotion": "central native and registered MCP receipts GREEN establish static-ready; production-live primitive awaits Root actual paused .3 receipt; none can establish read-only availability"
+  },
+  "remaining_observation_and_quality_seams": [
+    "target movement/relations/reinforcement changes before ETA",
+    "selected opponent attacker's entry when incoming role is defender or joins existing combat",
+    "complete constructor advantage sources and battle outcome simulation",
+    "native AI predictor player stack/coordinator context and complete mode/lane semantics"
+  ],
+  "delegate_actions": {
+    "tests": 0,
+    "git_commands": 0,
+    "sdk_calls": 0,
+    "game_days": 0,
+    "window_operations": 0,
+    "strategy_changes": 0
+  }
+}

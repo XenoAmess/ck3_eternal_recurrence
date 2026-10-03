@@ -68,6 +68,12 @@ from .war_entry_contract import (
     require_war_entry_assessment_targets,
     war_entry_assessment_target_scopes,
 )
+from .projected_contact_contract import (
+    QUERY_PROJECTED_CONTACT_SCOPE_V1_CAPABILITY,
+    normalize_projected_contact_scope,
+    projected_contact_subject_scope,
+    query_projected_contact_scope_v1_step,
+)
 from .actual_contact_contract import query_actual_contact_scope_step
 from .army_commander_candidates import (
     QUERY_ARMY_COMMANDER_CANDIDATES_V1_CAPABILITY,
@@ -11619,6 +11625,57 @@ class GameplayBridgeService:
             ],
             "pending_character_interaction_context": normalized,
         }
+
+    def query_projected_contact_scope_v1(
+        self, subject_army_id: int, target_province_id: int,
+        incoming_entry_province_id: int, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Project arrival against current target state without a move or odds claim."""
+        step = query_projected_contact_scope_v1_step(
+            subject_army_id, target_province_id, incoming_entry_province_id,
+        )
+        if type(expected_revision) is not int or not 0 <= expected_revision <= 2**64 - 1:
+            raise ValueError("expected_revision must be a non-negative uint64")
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError("projected-contact queries require a paused snapshot")
+        if snapshot.get("revision") != expected_revision:
+            raise PreSubmissionRevisionMismatchError("projected-contact source revision is stale")
+        try:
+            subject = projected_contact_subject_scope(snapshot, subject_army_id)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        native_revision = snapshot.get("native_revision")
+        date_raw = snapshot.get("date_raw")
+        if (type(native_revision) is not int or not 1 <= native_revision <= 2**64 - 1
+                or type(date_raw) is not int or not -(2**31) <= date_raw <= 2**31 - 1):
+            raise BridgeUnavailableError("projected-contact query lacks native revision/date")
+        bridge_capabilities = self.capabilities().get("bridge_capabilities")
+        if (not isinstance(bridge_capabilities, list)
+                or QUERY_PROJECTED_CONTACT_SCOPE_V1_CAPABILITY not in bridge_capabilities):
+            raise UnsupportedStepError("selected backend cannot query projected contact scope v1")
+        result = self.execute_step(step, expected_revision=expected_revision)
+        if (not isinstance(result, dict) or result.get("step") != step
+                or result.get("accepted") is not True or result.get("status") != "available"
+                or type(result.get("query_sequence")) is not int
+                or not 1 <= result["query_sequence"] <= 2**64 - 1
+                or result.get("snapshot_revision") != native_revision
+                or result.get("queried_revision") != expected_revision
+                or result.get("queried_native_revision") != native_revision):
+            raise BridgeUnavailableError("native projected-contact query returned a malformed envelope")
+        try:
+            scope = normalize_projected_contact_scope(
+                result.get("projected_contact_scope"), expected_subject_army_id=subject_army_id,
+                expected_target_province_id=target_province_id,
+                expected_incoming_entry_province_id=incoming_entry_province_id,
+                expected_date_raw=date_raw, expected_snapshot_revision=native_revision,
+                expected_subject_current_province_id=subject["current_province_id"],
+                expected_subject_owner_character_id=subject["owner_character_id"],
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        # Complete none is a legitimate observation; v2 composition is separate.
+        return {**result, "projected_contact_scope": scope}
 
     def query_actual_contact_scope(
         self,

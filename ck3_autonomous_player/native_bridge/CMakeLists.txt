@@ -1303,6 +1303,7 @@ add_library(xar_ck3_bridge SHARED
   src/war_entry_assessments_v1_serializer.cpp
   src/war_occupation_targets_v1_serializer.cpp
   src/title_holder_v1_serializer.cpp
+  src/projected_contact_scope_v1_serializer.cpp
   src/war_entry_assessments_v1_mailbox.cpp
   src/zhongguo_case_snapshot_v1.cpp
   src/zhongguo_case_snapshot_v1_mailbox.cpp

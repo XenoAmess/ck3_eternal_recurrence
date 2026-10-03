@@ -6,6 +6,7 @@
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 #include "xar_bridge/war_occupation_targets_v1_serializer.hpp"
 #include "xar_bridge/title_holder_v1_serializer.hpp"
+#include "xar_bridge/projected_contact_scope_v1_serializer.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 #include "xar_bridge/ck3_12002_lifestyle.hpp"
 #include "xar_bridge/ck3_12002_family.hpp"
@@ -6859,6 +6860,26 @@ std::string ActualContactScopeResultFrame(
   return result;
 }
 
+std::string ProjectedContactScopeResultFrame(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
+    const xar::game::ProjectedContactScopeSnapshot &scope) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":true,\"status\":\"available\",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(scope.snapshot_revision);
+  result += ",\"projected_contact_scope\":";
+  result += xar::game::SerializeProjectedContactScopeV1Snapshot(scope);
+  result += ",\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
 std::string BattleControlSnapshotResultFrame(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence,
@@ -10177,6 +10198,8 @@ struct TypedQuery12002 {
   std::uintptr_t image_base = 0;
   xar::game::RouteContactHorizonRequest route_request{};
   xar::game::ActualContactScopeRequest actual_request{};
+  bool projected_contact_query = false;
+  xar::game::ProjectedContactScopeRequest projected_request{};
   xar::game::CombatSimulationInputsRequest combat_request{};
   xar::game::BattleControlRequest battle_request{};
   xar::game::BattleTransitionRequest transition_request{};
@@ -10191,6 +10214,7 @@ struct TypedQuery12002 {
   std::uint64_t title_dispatch_ticket = 0;
   xar::game::RouteContactHorizonSnapshot route{};
   xar::game::ActualContactScopeSnapshot actual{};
+  xar::game::ProjectedContactScopeSnapshot projected{};
   xar::game::CombatSimulationInputsV3Snapshot combat{};
   xar::game::ReadCombatSimulationInputsV3Result combat_result =
       xar::game::ReadCombatSimulationInputsV3Result::unavailable;
@@ -10332,10 +10356,20 @@ bool ExecuteTypedQuery12002(
       query.route.snapshot_revision = envelope->expected_snapshot_revision;
     } else if constexpr (Kind == QueryKind12002::actual_contact) {
       const auto bindings = xar::ck3_12002::BindRouteImage(query.image_base, sha);
-      query.typed_result = xar::ck3_12002::ReadActualContactScope(
-          bindings, snapshot, query.actual_request, query.actual) ==
-          xar::game::ActualContactScopeStatus::available;
-      query.actual.snapshot_revision = envelope->expected_snapshot_revision;
+      if (query.projected_contact_query) {
+        // Read-only projected contact shares the existing contact executor.
+        query.typed_result =
+            xar::game::IsCk3_12003Descriptor(envelope->game->descriptor()) &&
+            xar::ck3_12002::ReadProjectedContactScope(
+                bindings, snapshot, query.projected_request, query.projected) ==
+                xar::game::ProjectedContactScopeStatus::available;
+        query.projected.snapshot_revision = envelope->expected_snapshot_revision;
+      } else {
+        query.typed_result = xar::ck3_12002::ReadActualContactScope(
+            bindings, snapshot, query.actual_request, query.actual) ==
+            xar::game::ActualContactScopeStatus::available;
+        query.actual.snapshot_revision = envelope->expected_snapshot_revision;
+      }
     } else if constexpr (Kind == QueryKind12002::combat_v3) {
       query.combat_result = xar::ck3_12002::ReadCombatSimulationInputsV3(
           xar::ck3_12002::BindPhaseImage(query.image_base, sha), snapshot,
@@ -11035,6 +11069,7 @@ struct WorkerState {
   std::uint64_t war_entry_assessment_query_sequence = 0;
   std::uint64_t route_contact_horizon_query_sequence = 0;
   std::uint64_t actual_contact_scope_query_sequence = 0;
+  std::uint64_t projected_contact_scope_query_sequence = 0;
   std::uint64_t battle_control_snapshot_query_sequence = 0;
   std::uint64_t current_battle_knight_query_sequence = 0;
   std::uint64_t battle_transition_query_sequence = 0;
@@ -11573,7 +11608,8 @@ std::optional<QueryKind12002> TypedQueryKind12002(std::string_view step) {
     return QueryKind12002::war_entry;
   if (step.starts_with(xar::ck3_11906::kRouteContactHorizonV1StepPrefix))
     return QueryKind12002::route;
-  if (step.starts_with(xar::ck3_11906::kActualContactScopeV1StepPrefix))
+  if (step.starts_with(xar::ck3_11906::kActualContactScopeV1StepPrefix) ||
+      step.starts_with(xar::game::kProjectedContactScopeV1StepPrefix))
     return QueryKind12002::actual_contact;
   if (step.starts_with("query-combat-simulation-inputs-v3-") ||
       step.starts_with(xar::ck3_12002::kPhaseNonreligiousDiagnosticStepPrefix))
@@ -11615,7 +11651,11 @@ bool ParseTypedQuery12002(std::string_view step, std::string_view payload,
     parsed = xar::ck3_11906::ParseRouteContactHorizonV1Step(step, query.route_request);
     break;
   case QueryKind12002::actual_contact:
-    parsed = xar::ck3_11906::ParseActualContactScopeV1Step(step, query.actual_request);
+    query.projected_contact_query =
+        step.starts_with(xar::game::kProjectedContactScopeV1StepPrefix);
+    parsed = query.projected_contact_query
+        ? xar::game::ParseProjectedContactScopeV1Step(step, query.projected_request)
+        : xar::ck3_11906::ParseActualContactScopeV1Step(step, query.actual_request);
     break;
   case QueryKind12002::combat_v3:
     if (step.starts_with(xar::ck3_12002::kPhaseNonreligiousDiagnosticStepPrefix)) {
@@ -11689,7 +11729,8 @@ std::string TypedQueryFailureFrame12002(
   response += ",\"typed_query_failure_v1\":{\"stage\":\"";
   response += stage;
   response += "\",\"query_type\":\"";
-  response += query_names[static_cast<std::size_t>(kind)];
+  response += step.starts_with(xar::game::kProjectedContactScopeV1StepPrefix)
+      ? "projected_contact" : query_names[static_cast<std::size_t>(kind)];
   response += "\",\"wait_result\":\"";
   response += wait_names[static_cast<std::size_t>(wait)];
   response += "\",\"wait_completed\":";
@@ -11727,6 +11768,11 @@ std::string RunTypedQuery12002(
   query.image_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
   if (!ParseTypedQuery12002(step, payload, query)) {
     return CommandResultFrame(request_id, step, false, "typed query request is malformed");
+  }
+  if (query.projected_contact_query &&
+      !xar::game::IsCk3_12003Descriptor(game.descriptor())) {
+    return CommandResultFrame(request_id, step, false,
+                              "projected contact requires the exact 1.20.0.3 adapter");
   }
   if (query.envelope.expected_snapshot_revision != state.state_revision ||
       state.state_revision == 0 || !state.previous_snapshot.has_value() ||
@@ -11827,8 +11873,12 @@ std::string RunTypedQuery12002(
     response = RouteContactHorizonResultFrame(request_id, step,
         ++state.route_contact_horizon_query_sequence, query.route); break;
   case QueryKind12002::actual_contact:
-    response = ActualContactScopeResultFrame(request_id, step,
-        ++state.actual_contact_scope_query_sequence, query.actual); break;
+    response = query.projected_contact_query
+        ? ProjectedContactScopeResultFrame(request_id, step,
+            ++state.projected_contact_scope_query_sequence, query.projected)
+        : ActualContactScopeResultFrame(request_id, step,
+            ++state.actual_contact_scope_query_sequence, query.actual);
+    break;
   case QueryKind12002::combat_v3:
     response = CombatSimulationInputsV3ResultFrame(request_id, step,
         ++state.combat_inputs_query_sequence, query.combat_result, query.combat, true);

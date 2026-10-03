@@ -7,6 +7,7 @@
 #include <vector>
 #include "xar_bridge/frontend_gui_route_v1.hpp"
 #include "xar_bridge/steward_develop_county_candidates_v1.hpp"
+#include "xar_bridge/projected_contact_scope_v1_serializer.hpp"
 
 namespace xar::game {
 namespace {
@@ -27,6 +28,7 @@ const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
     result.push_back(ck3_12003::kArmyCommanderCandidatesCapability);
     result.push_back(kWarOccupationTargetsV1Capability);
     result.push_back(kTitleHolderV1Capability);
+    result.push_back(kProjectedContactScopeV1Capability);
     result.push_back(ck3_12003::kArmyCommanderAssignmentCapability);
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1) && \
     defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)

@@ -114,6 +114,13 @@ from .war_entry_contract import (
     require_war_entry_assessment_targets,
     war_entry_assessment_target_scopes,
 )
+from .projected_contact_contract import (
+    QUERY_PROJECTED_CONTACT_SCOPE_V1_CAPABILITY,
+    QUERY_PROJECTED_CONTACT_SCOPE_V1_STEP_PREFIX,
+    normalize_projected_contact_scope,
+    parse_query_projected_contact_scope_v1_step,
+    projected_contact_subject_scope,
+)
 from .actual_contact_contract import (
     QUERY_ACTUAL_CONTACT_SCOPE_CAPABILITY,
     QUERY_ACTUAL_CONTACT_SCOPE_STEP_PREFIX,
@@ -2313,6 +2320,10 @@ class NativeHeadlessGameplayDriver:
                 QUERY_ACTUAL_CONTACT_SCOPE_CAPABILITY
                 in bridge_capabilities
             ),
+            "projected_contact_scope_v1_query_supported": (
+                QUERY_PROJECTED_CONTACT_SCOPE_V1_CAPABILITY
+                in bridge_capabilities
+            ),
             "battle_control_snapshot_v1_query_supported": (
                 QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY
                 in bridge_capabilities
@@ -4119,6 +4130,10 @@ class NativeHeadlessGameplayDriver:
             ),
             "actual_contact_scope_query_supported": (
                 QUERY_ACTUAL_CONTACT_SCOPE_CAPABILITY
+                in bridge_capabilities
+            ),
+            "projected_contact_scope_v1_query_supported": (
+                QUERY_PROJECTED_CONTACT_SCOPE_V1_CAPABILITY
                 in bridge_capabilities
             ),
             "battle_control_snapshot_v1_query_supported": (
@@ -7293,6 +7308,13 @@ class NativeHeadlessGameplayDriver:
             and commander_assignment is None
         ):
             raise UnsupportedStepError("malformed army commander assignment v1 step")
+        projected_contact_query = parse_query_projected_contact_scope_v1_step(step)
+        if (
+            isinstance(step, str)
+            and step.startswith(QUERY_PROJECTED_CONTACT_SCOPE_V1_STEP_PREFIX)
+            and projected_contact_query is None
+        ):
+            raise UnsupportedStepError("malformed projected-contact scope v1 query step")
         actual_contact_query = parse_query_actual_contact_scope_step(step)
         if (
             isinstance(step, str)
@@ -7731,6 +7753,13 @@ class NativeHeadlessGameplayDriver:
                 )
             return self._execute_active_combat_retreat_v1_order(
                 step, expected_revision=expected_revision
+            )
+        if projected_contact_query is not None:
+            bridge_capabilities = set(_string_list(capabilities.get("bridge_capabilities")))
+            if QUERY_PROJECTED_CONTACT_SCOPE_V1_CAPABILITY not in bridge_capabilities:
+                raise UnsupportedStepError("native DLL cannot query projected contact scope v1")
+            return self._execute_projected_contact_scope_v1_query(
+                step, expected_revision=expected_revision,
             )
         if actual_contact_query is not None:
             bridge_capabilities = set(
@@ -10732,6 +10761,66 @@ class NativeHeadlessGameplayDriver:
         self._record_command(H2743_PREACTION_EXISTING_TRUCE_STEP,
                              ok=True, result=result)
         return result
+
+    def _execute_projected_contact_scope_v1_query(
+        self, step: str, *, expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read one hypothetical arrival without moving the actual subject."""
+        _validate_revision(expected_revision, "expected_revision")
+        request = parse_query_projected_contact_scope_v1_step(step)
+        if request is None:
+            raise UnsupportedStepError("malformed projected-contact scope v1 query step")
+        subject_id, target_id, entry_id = request
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError("projected-contact queries require a paused snapshot")
+        if starting.get("revision") != expected_revision:
+            raise PreSubmissionRevisionMismatchError("projected-contact source revision is stale")
+        try:
+            subject = projected_contact_subject_scope(starting, subject_id)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        native_revision = starting.get("native_revision")
+        if type(native_revision) is not int or not 1 <= native_revision <= 2**64 - 1:
+            raise BridgeUnavailableError("projected-contact query lacks a native revision")
+        date_raw = _date_raw(starting, "projected-contact starting snapshot")
+        result = self._execute_primitive_step(
+            step, expected_revision=expected_revision,
+            required_capability=QUERY_PROJECTED_CONTACT_SCOPE_V1_CAPABILITY,
+        )
+        if (set(result) != {"step", "accepted", "status", "query_sequence",
+                           "snapshot_revision", "projected_contact_scope", "backend_id"}
+                or result.get("step") != step or result.get("accepted") is not True
+                or result.get("status") != "available"
+                or type(result.get("snapshot_revision")) is not int
+                or result.get("snapshot_revision") != native_revision
+                or type(result.get("query_sequence")) is not int
+                or not 1 <= result["query_sequence"] <= 2**64 - 1):
+            raise BridgeUnavailableError("native projected-contact query returned a malformed envelope")
+        try:
+            scope = normalize_projected_contact_scope(
+                result.get("projected_contact_scope"), expected_subject_army_id=subject_id,
+                expected_target_province_id=target_id, expected_incoming_entry_province_id=entry_id,
+                expected_date_raw=date_raw, expected_snapshot_revision=native_revision,
+                expected_subject_current_province_id=subject["current_province_id"],
+                expected_subject_owner_character_id=subject["owner_character_id"],
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        current = self.take_snapshot()
+        if not _same_paused_native_frame(starting, current):
+            raise BridgeUnavailableError("native projected-contact query crossed a snapshot revision")
+        return {
+            **result, "projected_contact_scope": scope,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+            "queried_connection_generation": (
+                starting.get("diagnostics", {}).get("connection_generation")
+                if isinstance(starting.get("diagnostics"), dict) else None
+            ),
+            "queried_episode_run_id": starting.get("episode_run_id"),
+        }
 
     def _execute_native_war_step(
         self, step: str, *, expected_revision: int | None,
@@ -26917,6 +27006,10 @@ def _action_steps(
             expand_preview_move_armies = True
         elif capability == QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY:
             expand_route_contact_horizons = True
+        elif capability == QUERY_PROJECTED_CONTACT_SCOPE_V1_CAPABILITY:
+            # Target and incoming edge are supplied by the typed read-only
+            # query; never advertise the N placeholder as a planner choice.
+            continue
         elif capability == QUERY_ACTUAL_CONTACT_SCOPE_CAPABILITY:
             expand_actual_contact_scopes = True
         elif capability == QUERY_ARMY_COMMANDER_CANDIDATES_V1_CAPABILITY:

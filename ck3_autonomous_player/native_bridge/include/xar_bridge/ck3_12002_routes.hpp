@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/game_contract.hpp"
+#include "xar_bridge/projected_contact_scope_v1.hpp"
 
 #include <cstdint>
 #include <string_view>
@@ -79,5 +80,12 @@ game::ActualContactScopeStatus ReadActualContactScope(
     const RouteBindings &, const game::Snapshot &paused_scope,
     const game::ActualContactScopeRequest &,
     game::ActualContactScopeSnapshot &) noexcept;
+
+// Hypothetical arrival against current target state. The real incoming unit
+// stays at its current Province; only a caller-owned membership list is used.
+game::ProjectedContactScopeStatus ReadProjectedContactScope(
+    const RouteBindings &, const game::Snapshot &paused_scope,
+    const game::ProjectedContactScopeRequest &,
+    game::ProjectedContactScopeSnapshot &) noexcept;
 
 } // namespace xar::ck3_12002
