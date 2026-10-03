@@ -8,6 +8,13 @@ from .public_unit_contract import (
     public_cunit_id,
 )
 
+from .title_holder_contract import (
+    QUERY_TITLE_HOLDER_V1_CAPABILITY,
+    QUERY_TITLE_HOLDER_V1_STEP_PREFIX,
+    parse_query_title_holder_v1_step,
+    query_title_holder_v1_step,
+)
+
 from collections.abc import Iterable
 
 from .version_identity import (
@@ -4071,6 +4078,7 @@ def is_native_war_step(step: object) -> bool:
         or parse_query_war_prisoner_release_pairs_v1_step(step) is not None
         or parse_query_outbound_war_white_peace_status_step(step) is not None
         or parse_query_war_termination_terms_step(step) is not None
+        or parse_query_title_holder_v1_step(step) is not None
         or parse_surrender_war_step(step) is not None
         or parse_offer_white_peace_step(step) is not None
     )

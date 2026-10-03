@@ -1,0 +1,123 @@
+{
+  "schema": "xar.ck3.title-holder12003.abi.v1",
+  "baseline_head": "6b0e6bdfa6b18396394ce8f12301e464825f1f46",
+  "status": "static-ready",
+  "game_version": "1.20.0.3",
+  "steam_build_id": "25652598",
+  "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "new_native_scan_executed": false,
+  "native_functions_executed": false,
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12003_war_occupation.cpp",
+      "sha256": "66d0a2c5284c32d86c1ea400ec6a26ada5e7a2038895b6c5a155e0bf9666b596"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_province.cpp",
+      "sha256": "975c9db6743af49fbddc8fbc3afc12fde20265fa5a112dfe6fe656e84f3e1c15"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_campaign.cpp",
+      "sha256": "97946e8457a2ee625ee095b0bab43d078f051bd1b18648363e188348aaf2af85"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_nonwar_realm.cpp",
+      "sha256": "368bf0f6b96017bbb92f768e5a0d33afcaf87c4e60cef8e4733b12403b108aa6"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_campaign.hpp",
+      "sha256": "75262fb30a42559e2584a0ecc705c37810f5fdb5cf93d714d3b9789787fb10b8"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_province.hpp",
+      "sha256": "963d92d6b8e4e2d13939703de6e61b62b8864c8ed6db72d6049f4a2c23ee29cf"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/ck3_1_20_0_2_campaign.json",
+      "sha256": "d8bfdf02a15e4f1500b6a9868fe18e96f84ba918593642dd20f96d500246781f"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/ck3_1_20_0_2_nonwar_realm.json",
+      "sha256": "1eac35fe91f9a0e5881e2829782ecab8a0c85b7fecf44bffe34645ab57f1d322"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/ck3_1_20_0_3_abi_reuse.json",
+      "sha256": "ff7a5b1a8208d7ce0358be3cd2fec9f455a4ba116ccf1b25c4ccf0f0b64dd119"
+    }
+  ],
+  "reused_artifacts": [
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-battle-phase\\evidence\\core-comparison.json",
+      "sha256": "5bd80588c3021bf300edda12a63b8d96fbefdb484f0d869ee129d0fc5a81876d"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-goal-capture-execution\\native-target-gaps\\WAR-OCCUPATION-TARGETS-12003-ABI.json",
+      "sha256": "492ac2924779336b32344526ab23a9bd36a8b4eb75c5f9a61e8d8d22ecd5a9a7"
+    }
+  ],
+  "bindings": {
+    "landed_title_storage_slot": "0x5D1DAF8",
+    "character_storage_slot": "0x5C67568",
+    "character_fallback_slot": "0x5C67570",
+    "immediate_liege": {
+      "rva": "0x28BFC70",
+      "signature": "void *(void *)"
+    },
+    "top_liege": {
+      "rva": "0x28BFDA0",
+      "signature": "void *(void *)"
+    }
+  },
+  "layouts": {
+    "storage_objects": "0x20",
+    "storage_capacity": "0x2C",
+    "storage_index_mask": "0xFFFFFF",
+    "storage_entry_stride": "0x10",
+    "storage_entry_object": "0x08",
+    "title_full_id": "0x10",
+    "title_template": "0x48",
+    "template_tier": "0x64",
+    "title_actual_legal_holder_full_id": "0x128",
+    "character_full_id": "0x18",
+    "character_magic": "0x1C",
+    "character_magic_value": "0x43686172"
+  },
+  "semantics": {
+    "tiers": {
+      "1": "barony",
+      "2": "county",
+      "3": "duchy",
+      "4": "kingdom",
+      "5": "empire",
+      "6": "hegemony"
+    },
+    "unheld": "Only native holder FullID -1 denotes legal absence; 0 remains an ID.",
+    "independent": "Immediate liege null, native fallback or self is legal absence; top-liege must resolve to holder self.",
+    "in_player_realm": "Traverse the actual native immediate-liege chain and resolve every FullID; true iff it reaches actor. Equal top-liege alone is insufficient.",
+    "unavailable": "Missing or mismatched title/holder/liege generation or unresolved required getter remains unavailable, never false or unheld."
+  },
+  "unresolved": [
+    "Full settlement CB effect consequences and recipient final response are outside this single current title-holder primitive."
+  ],
+  "live_verified": false,
+  "focused_fixture": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-settlement-typed-action\\title-holder\\fixture\\build-03\\RESULT.json",
+    "bytes": 14599,
+    "sha256": "86763c5aa8693d99c512d1d3f952b849d9eb31a4f53f853145fcabdd01ae375b",
+    "native_assertions": 62,
+    "native_cases": 8,
+    "strict_translation_units": 9,
+    "memory_fixture": "synthetic native memory and getter seams",
+    "ck3_executable_functions_executed": false
+  },
+  "typed_production_wire_fixture": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261003\\war-settlement-typed-action\\title-holder\\typed\\python-focused-02\\RESULT.json",
+    "bytes": 518,
+    "sha256": "3d66d28d791ea283898c333a1a586ae933dbd8d0526af8d3e3a9c9ac6f98211d",
+    "focused_tests": 3,
+    "producer_packets_consumed": 8,
+    "registered_mcp": true,
+    "offline_sdk_fixture": true,
+    "live_sdk_connected": false
+  }
+}

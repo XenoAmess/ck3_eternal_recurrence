@@ -3,6 +3,7 @@
 #include <windows.h>
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12003_war_occupation.hpp"
+#include "xar_bridge/ck3_12003_title_holder.hpp"
 #include "xar_bridge/ck3_12002_war_cash_treasury.hpp"
 #include "xar_bridge/ck3_12002_actor_resources.hpp"
 
@@ -92,6 +93,9 @@ public:
       const AdapterDescriptor &descriptor = kDescriptor) noexcept
       : bindings_(std::move(bindings)), descriptor_(&descriptor) {
     if (IsCk3_12003Descriptor(descriptor)) {
+      title_holder_bindings_ = ck3_12003::BindTitleHolderImageV1(
+          reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+          descriptor.executable_sha256);
       occupation_bindings_ = ck3_12003::BindWarOccupationTargetsImageV1(
           reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
           descriptor.executable_sha256);
@@ -325,6 +329,17 @@ public:
     return ck3_12002::ReadCombatSimulationInputsV3(bindings_.phase, scope,
                                                   request, output);
   }
+  ReadTitleHolderV1Result read_title_holder_v1(
+      std::int32_t title_id, TitleHolderV1 &output) const noexcept override {
+    output = {};
+    if (!IsCk3_12003Descriptor(*descriptor_))
+      return ReadTitleHolderV1Result::unavailable;
+    Snapshot scope{};
+    if (!read_snapshot(scope))
+      return ReadTitleHolderV1Result::unavailable;
+    return ck3_12003::ReadTitleHolderV1(
+        title_holder_bindings_, scope, title_id, output);
+  }
   ReadWarOccupationTargetsV1Result read_war_occupation_targets_v1(
       std::int32_t war, WarOccupationTargetsV1 &output) const noexcept override {
     output = {};
@@ -424,6 +439,7 @@ private:
             ResolveCharacter, ResolveUnit, ResolveProvince, ResolveSiege};
   }
   Ck3_12002AdapterBindings bindings_;
+  ck3_12003::TitleHolderBindingsV1 title_holder_bindings_{};
   ck3_12003::WarOccupationTargetsBindingsV1 occupation_bindings_{};
   const AdapterDescriptor *descriptor_;
 };

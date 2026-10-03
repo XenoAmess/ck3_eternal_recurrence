@@ -11,7 +11,7 @@ namespace {
 enum class SemanticOperation {
   select_event, reply, acknowledge, raise, move, disband, split, merge, assault_start, assault_stop, declare, marriage, enforce, surrender, white_peace,
   preview, declarations, declarations_for_target, marriage_choices, family_candidates, strengths, combat_v2, combat_v3,
-  occupation_targets, termination_options, termination_terms, exit_terms, marriage_diagnostic,
+  title_holder, occupation_targets, termination_options, termination_terms, exit_terms, marriage_diagnostic,
   fixture_run_inbox
 };
 
@@ -49,6 +49,7 @@ struct WorkerAdapter::SemanticRequest {
   std::vector<game::ArmyStrengthSnapshot> strengths;
   game::CombatSimulationInputsSnapshot combat_v2{};
   game::CombatSimulationInputsV3Snapshot combat_v3{};
+  game::TitleHolderV1 title_holder{};
   game::WarOccupationTargetsV1 occupation_targets{};
   game::WarTerminationOptionsSnapshot termination_options{};
   game::WarTerminationTermsSnapshot termination_terms{};
@@ -260,6 +261,7 @@ bool ExecuteSemanticAdapter12002(void *opaque,
     case SemanticOperation::strengths: request.result = static_cast<std::int32_t>(native.read_army_strengths(request.strengths)); break;
     case SemanticOperation::combat_v2: request.result = static_cast<std::int32_t>(native.read_combat_simulation_inputs(request.combat_request, request.combat_v2)); break;
     case SemanticOperation::combat_v3: request.result = static_cast<std::int32_t>(native.read_combat_simulation_inputs_v3(request.combat_request, request.combat_v3)); break;
+    case SemanticOperation::title_holder: request.result = static_cast<std::int32_t>(native.read_title_holder_v1(request.id, request.title_holder)); break;
     case SemanticOperation::occupation_targets: request.result = static_cast<std::int32_t>(native.read_war_occupation_targets_v1(request.id, request.occupation_targets)); break;
     case SemanticOperation::termination_options: request.result = static_cast<std::int32_t>(native.read_war_termination_options(request.id, request.termination_options)); break;
     case SemanticOperation::termination_terms: request.result = static_cast<std::int32_t>(native.read_war_termination_terms(request.id, request.termination_terms)); break;
@@ -447,6 +449,16 @@ game::ReadCombatSimulationInputsV3Result WorkerAdapter::read_combat_simulation_i
   request.combat_request = input;
   if (!Run(request)) return game::ReadCombatSimulationInputsV3Result::unavailable;
   output = std::move(request.combat_v3); return static_cast<game::ReadCombatSimulationInputsV3Result>(request.result);
+}
+game::ReadTitleHolderV1Result WorkerAdapter::read_title_holder_v1(
+    std::int32_t title_id, game::TitleHolderV1 &output) const noexcept {
+  output = {};
+  SemanticRequest request{};
+  request.operation = SemanticOperation::title_holder;
+  request.id = title_id;
+  if (!Run(request)) return game::ReadTitleHolderV1Result::unavailable;
+  output = std::move(request.title_holder);
+  return static_cast<game::ReadTitleHolderV1Result>(request.result);
 }
 game::ReadWarOccupationTargetsV1Result WorkerAdapter::read_war_occupation_targets_v1(
     std::int32_t war_id, game::WarOccupationTargetsV1 &output) const noexcept {

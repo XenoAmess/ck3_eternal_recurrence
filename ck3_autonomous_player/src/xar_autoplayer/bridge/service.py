@@ -368,6 +368,12 @@ from .war_occupation_targets_contract import (
     query_war_occupation_targets_v1_step,
     war_occupation_query_scope,
 )
+from .title_holder_contract import (
+    QUERY_TITLE_HOLDER_V1_CAPABILITY,
+    normalize_title_holder_v1,
+    query_title_holder_v1_step,
+    title_holder_query_actor,
+)
 from .war_contract import (
     BATTLE_DECISION_EPOCH_ADVANCE_STEP,
     COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
@@ -3907,6 +3913,60 @@ class GameplayBridgeService:
                 step, expected_revision=expected_revision
             ),
             "war_id": war_id,
+        }
+
+    def query_title_holder_v1(
+        self, title_id: int, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read one current native holder without restricting the title to this player."""
+        step = query_title_holder_v1_step(title_id)
+        if type(expected_revision) is not int or expected_revision < 0:
+            raise ValueError("expected_revision must be a non-negative integer")
+        snapshot = self.snapshot()
+        try:
+            actor_id = title_holder_query_actor(snapshot)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        revision = snapshot.get("revision")
+        if type(revision) is not int or revision < 0:
+            raise BridgeUnavailableError("title holder query lacks a public revision")
+        if expected_revision != revision:
+            raise PreSubmissionRevisionMismatchError(
+                f"title holder revision mismatch: expected {expected_revision}, current {revision}"
+            )
+        capabilities = self.capabilities().get("bridge_capabilities")
+        if not isinstance(capabilities, list) or QUERY_TITLE_HOLDER_V1_CAPABILITY not in capabilities:
+            raise UnsupportedStepError("selected backend cannot query a native title holder")
+        result = self.execute_step(step, expected_revision=revision)
+        if (
+            not isinstance(result, dict)
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") not in {"available", "unavailable"}
+            or type(result.get("query_sequence")) is not int
+            or not 1 <= result["query_sequence"] <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError("title holder query returned a malformed envelope")
+        try:
+            value = normalize_title_holder_v1(
+                result.get("title_holder"),
+                expected_title_id=title_id,
+                expected_actor_character_id=actor_id,
+                expected_snapshot_revision=snapshot.get("native_revision"),
+                expected_date_raw=snapshot.get("date_raw"),
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native title holder query is malformed: {error}") from error
+        if (result["status"] == "available") != value["available"]:
+            raise BridgeUnavailableError("title holder query status disagrees with availability")
+        return {
+            **result,
+            "title_id": title_id,
+            "title_holder": value,
+            "read_only": True,
+            "queried_snapshot_id": snapshot.get("snapshot_id"),
+            "queried_revision": revision,
+            "queried_native_revision": snapshot.get("native_revision"),
         }
 
     def query_war_occupation_targets_v1(

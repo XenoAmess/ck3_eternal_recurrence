@@ -68,6 +68,8 @@ public:
       const game::CombatSimulationInputsRequest &, game::CombatSimulationInputsSnapshot &) const noexcept override;
   game::ReadCombatSimulationInputsV3Result read_combat_simulation_inputs_v3(
       const game::CombatSimulationInputsRequest &, game::CombatSimulationInputsV3Snapshot &) const noexcept override;
+  game::ReadTitleHolderV1Result read_title_holder_v1(
+      std::int32_t, game::TitleHolderV1 &) const noexcept override;
   game::ReadWarOccupationTargetsV1Result read_war_occupation_targets_v1(
       std::int32_t, game::WarOccupationTargetsV1 &) const noexcept override;
   game::ReadWarTerminationOptionsResult read_war_termination_options(

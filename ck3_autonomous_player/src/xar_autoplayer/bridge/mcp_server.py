@@ -3522,6 +3522,16 @@ def create_server(
         )
 
     @server.tool(annotations=read_only_tool)
+    def ck3_query_title_holder_v1(
+        title_id: int,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read the actual holder and realm relationships of one native TitleID."""
+        return service.query_title_holder_v1(
+            title_id, expected_revision=expected_revision,
+        )
+
+    @server.tool(annotations=read_only_tool)
     def ck3_query_war_occupation_targets_v1(
         war_id: Annotated[int, Field(strict=True, ge=0, le=2**31 - 1)],
         expected_revision: int | None = None,

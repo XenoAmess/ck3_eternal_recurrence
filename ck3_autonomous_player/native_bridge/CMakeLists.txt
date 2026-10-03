@@ -1056,6 +1056,7 @@ add_library(xar_ck3_12002_runtime STATIC
   src/ck3_12003_adapter.cpp
   src/ck3_12003_commander.cpp
   src/ck3_12003_war_occupation.cpp
+  src/ck3_12003_title_holder.cpp
   src/ck3_12003_commander_mailbox.cpp
   src/ck3_12003_commander_assignment.cpp
   src/ck3_12003_commander_assignment_mailbox.cpp
@@ -1299,6 +1300,7 @@ add_library(xar_ck3_bridge SHARED
   src/war_entry_assessments_v1.cpp
   src/war_entry_assessments_v1_serializer.cpp
   src/war_occupation_targets_v1_serializer.cpp
+  src/title_holder_v1_serializer.cpp
   src/war_entry_assessments_v1_mailbox.cpp
   src/zhongguo_case_snapshot_v1.cpp
   src/zhongguo_case_snapshot_v1_mailbox.cpp
@@ -2136,6 +2138,22 @@ endif()
 
 include(CTest)
 if(BUILD_TESTING)
+  add_executable(xar_ck3_12003_title_holder_test
+    src/ck3_12002_province.cpp
+    src/ck3_12003_title_holder.cpp
+    src/title_holder_v1_serializer.cpp
+    src/ck3_12003_title_holder_test.cpp)
+  target_include_directories(xar_ck3_12003_title_holder_test PRIVATE include)
+  target_compile_definitions(xar_ck3_12003_title_holder_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_title_holder_test PRIVATE
+      /W4 /WX /Gy /permissive- /EHsc)
+    target_link_options(xar_ck3_12003_title_holder_test PRIVATE /OPT:REF)
+  endif()
+  add_test(NAME xar_ck3_12003_title_holder_test
+    COMMAND xar_ck3_12003_title_holder_test
+      "${CMAKE_BINARY_DIR}/ck3_12003_title_holder_wire")
   if(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1 AND
      XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
     add_executable(xar_ck3_12002_call_ally_sender_test

@@ -1,6 +1,7 @@
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/war_occupation_targets_v1_serializer.hpp"
+#include "xar_bridge/title_holder_v1_serializer.hpp"
 #include "xar_bridge/combat_phase_event_trace_v1.hpp"
 #if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
 #include "xar_bridge/ai_terminal_reentry_dispatch_observer_v1.hpp"
@@ -582,6 +583,10 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     } else if (step == ck3_11906::kTacticalDailySentinelStatusStepV1) {
       capability = ck3_11906::kTacticalDailySentinelStatusCapabilityV1;
     }
+  }
+  std::int32_t requested_title_id = -1;
+  if (capability.empty() && ParseTitleHolderStepV1(step, requested_title_id)) {
+    capability = kTitleHolderV1Capability;
   }
   std::int32_t occupation_war_id = -1;
   if (capability.empty() && ParseWarOccupationTargetsStepV1(

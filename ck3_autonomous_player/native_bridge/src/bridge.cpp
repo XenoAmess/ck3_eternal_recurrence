@@ -5,6 +5,7 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 #include "xar_bridge/war_occupation_targets_v1_serializer.hpp"
+#include "xar_bridge/title_holder_v1_serializer.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 #include "xar_bridge/ck3_12002_lifestyle.hpp"
 #include "xar_bridge/ck3_12002_family.hpp"
@@ -11145,6 +11146,7 @@ struct WorkerState {
 #endif
   std::uint64_t war_termination_query_sequence = 0;
   std::uint64_t war_occupation_targets_query_sequence = 0;
+  std::uint64_t title_holder_query_sequence = 0;
   std::uint64_t war_prisoner_release_pairs_query_sequence = 0;
   std::uint64_t outbound_war_white_peace_status_query_sequence = 0;
   std::uint64_t war_termination_terms_query_sequence = 0;
@@ -12049,6 +12051,58 @@ std::string RunArmyCommanderCandidatesQuery12003(
   return response;
 }
 
+std::string RunTitleHolderQueryV1(
+    const xar::game::GameAdapter &game, WorkerState &state,
+    std::string_view request_id, std::string_view step,
+    std::string_view payload) {
+  std::int32_t title_id = -1;
+  std::uint64_t expected_revision = 0;
+  if (!xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
+      !xar::game::ParseTitleHolderStepV1(step, title_id) ||
+      !xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
+          payload, expected_revision)) {
+    return CommandResultFrame(request_id, step, false,
+        "title-holder query identity or revision is malformed");
+  }
+  xar::game::Snapshot admission{};
+  if (expected_revision != state.state_revision || state.state_revision == 0 ||
+      !state.previous_snapshot.has_value() ||
+      !xar::game::ReadSnapshot(game, admission) ||
+      admission != *state.previous_snapshot) {
+    return CommandResultFrame(request_id, step, false, "state_changed");
+  }
+  if (!admission.paused || !admission.map_ready ||
+      !admission.has_played_character || !admission.played_character_alive) {
+    return CommandResultFrame(request_id, step, false,
+        "title-holder query requires a ready paused living player");
+  }
+  xar::game::TitleHolderV1 observation{};
+  const auto read_result = xar::game::ReadTitleHolderV1(
+      game, title_id, observation);
+  xar::game::Snapshot completion{};
+  if (!xar::game::ReadSnapshot(game, completion) || completion != admission) {
+    return CommandResultFrame(request_id, step, false,
+        "title-holder completion snapshot changed");
+  }
+  if (read_result == xar::game::ReadTitleHolderV1Result::unavailable &&
+      observation.unavailable_reason == "not_read") {
+    observation.date_raw = admission.date_raw;
+    observation.actor_character_id = admission.played_character_id;
+    observation.title_id = title_id;
+    observation.unavailable_reason = "typed_mailbox_read_unavailable";
+  }
+  const auto result = xar::game::SerializeTitleHolderV1(
+      observation, read_result, ++state.title_holder_query_sequence,
+      expected_revision, step);
+  std::string response =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(response, request_id);
+  response += ",\"ok\":true,\"result\":";
+  response += result;
+  response += '}';
+  return response;
+}
+
 std::string RunWarOccupationTargetsQueryV1(
     const xar::game::GameAdapter &game, WorkerState &state,
     std::string_view request_id, std::string_view step,
@@ -12607,8 +12661,12 @@ void RunConnectedSession(
                     step.starts_with(xar::ck3_12003::
                                          kArmyCommanderCandidatesStepPrefix) ||
                     step.starts_with(xar::game::
-                                         kWarOccupationTargetsV1StepPrefix))) {
-          const auto response = step.starts_with(xar::game::
+                                         kWarOccupationTargetsV1StepPrefix) ||
+                     step.starts_with(xar::game::kTitleHolderV1StepPrefix))) {
+          const auto response = step.starts_with(xar::game::kTitleHolderV1StepPrefix)
+              ? RunTitleHolderQueryV1(
+                    game, state, request_id, step, incoming.payload)
+              : step.starts_with(xar::game::
                                       kWarOccupationTargetsV1StepPrefix)
               ? RunWarOccupationTargetsQueryV1(
                     game, state, request_id, step, incoming.payload)
