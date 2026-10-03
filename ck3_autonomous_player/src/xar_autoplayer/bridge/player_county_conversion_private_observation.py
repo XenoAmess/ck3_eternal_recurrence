@@ -43,7 +43,8 @@ def normalize_player_county_conversion_v1(
     value: object, *, snapshot: Mapping[str, object], clergy: Mapping[str, object],
 ) -> dict[str, object]:
     """Preserve raw rates, generation-bearing Rite IDs and independent statuses."""
-    if (not isinstance(value, dict) or set(value) not in (_KEYS, _KEYS | {"value_inputs"})
+    if (not isinstance(value, dict) or not _KEYS <= set(value)
+            or set(value) - _KEYS - {"value_inputs", "task_dispatch"}
             or value["schema"] != SCHEMA or type(value["schema_version"]) is not int
             or value["schema_version"] != 1):
         raise ValueError("native county conversion schema is malformed")
@@ -59,7 +60,7 @@ def normalize_player_county_conversion_v1(
             or not isinstance(value["failure"], str) or not value["failure"]
             or value["task_key"] != "task_conversion"
             or not isinstance(value["current_task_key"], str)
-            or value["action_eligibility_complete"] is not False
+            or type(value["action_eligibility_complete"]) is not bool
             or type(value["fixed_point_scale"]) is not int or value["fixed_point_scale"] != 100000
             or type(value["percentage_progress_maximum_raw"]) is not int
             or value["percentage_progress_maximum_raw"] != 10000000):
@@ -111,9 +112,14 @@ def normalize_player_county_conversion_v1(
             raise ValueError("native county conversion differs from its queried player frame")
     if "value_inputs" in value:
         _normalize_value_inputs(value["value_inputs"], value)
+    if "task_dispatch" in value:
+        _normalize_task_dispatch(value["task_dispatch"], value)
+    elif value["action_eligibility_complete"] is not False:
+        raise ValueError("native county dispatch eligibility is not observed")
     # A rejected target, a legal empty collection, a frozen current task and a
     # failed component retain their own raw fields. Rates remain separate from
-    # percentage progress; no action readiness, ETA or opinion gain is inferred.
+    # percentage progress. Native eligibility inputs do not imply an action
+    # transport exists, or infer an ETA or opinion gain.
     return deepcopy(value)
 
 
@@ -164,3 +170,33 @@ def _normalize_value_inputs(values: object, county: Mapping[str, object]) -> Non
                 or (target is not None and (target["province_id"] != county["current_target_province_id"]
                     or target["county_title_id"] != county["current_target_county_title_id"]))):
             raise ValueError("native county value current target differs")
+
+
+def _normalize_task_dispatch(dispatch: object, county: Mapping[str, object]) -> None:
+    keys = {"status", "failure", "candidates", "eligibility_inputs_complete"}
+    row_keys = {"province_id", "county_title_id", "native_final_can_dispatch",
+                "already_active_at_target", "replacement_required"}
+    if (not isinstance(dispatch, dict) or set(dispatch) != keys
+            or dispatch["status"] not in ("available", "unavailable")
+            or not isinstance(dispatch["failure"], str) or not dispatch["failure"]
+            or type(dispatch["eligibility_inputs_complete"]) is not bool
+            or dispatch["eligibility_inputs_complete"] != (dispatch["status"] == "available")
+            or county["action_eligibility_complete"] != dispatch["eligibility_inputs_complete"]):
+        raise ValueError("native county dispatch eligibility is malformed")
+    rows = dispatch["candidates"]
+    if not isinstance(rows, list):
+        raise ValueError("native county dispatch candidates are malformed")
+    for row in rows:
+        if not isinstance(row, dict) or set(row) != row_keys:
+            raise ValueError("native county dispatch row is malformed")
+        for key in ("province_id", "county_title_id"):
+            _integer(row[key], -(1 << 31), (1 << 31) - 1, key)
+        for key in ("native_final_can_dispatch", "already_active_at_target", "replacement_required"):
+            if type(row[key]) is not bool:
+                raise ValueError("native county dispatch boolean is malformed")
+    if dispatch["status"] == "available":
+        if dispatch["failure"] != "none" or len(rows) != county["candidate_count"]:
+            raise ValueError("native county dispatch inputs are incomplete")
+        for row, candidate in zip(rows, county["candidates"], strict=True):
+            if any(row[key] != candidate[key] for key in ("province_id", "county_title_id")):
+                raise ValueError("native county dispatch candidate identity differs")

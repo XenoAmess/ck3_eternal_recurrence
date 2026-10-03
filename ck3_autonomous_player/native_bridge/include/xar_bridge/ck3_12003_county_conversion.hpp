@@ -14,6 +14,7 @@ inline constexpr std::string_view kTaskKey = "task_conversion";
 inline constexpr std::int64_t kFixedPointScale = 100'000;
 inline constexpr std::uintptr_t kMonthlyRateRva = 0x31ADC60;
 inline constexpr std::uintptr_t kCountyRiteRva = 0x24D6350;
+inline constexpr std::uintptr_t kTaskDispatchValidatorRva = 0x2996690;
 
 using NativeVector = ck3_12002::CouncilCandidatesNativeVectorV1;
 using HashKey = std::int32_t (*)(void *, const char *, std::uint32_t);
@@ -28,6 +29,7 @@ using CountyRiteGetter = const void *(*)(const void *);
 using ObjectGetter = const void *(*)(const void *);
 using IdentifierName = const std::string *(*)(std::int32_t);
 using CountyOpinionGetter = std::int32_t (*)(const void *);
+using ChangeCouncilTaskFinalValidator = bool (*)(const void *, void *);
 
 struct Environment {
   bool exact_build_admitted = false;
@@ -60,6 +62,8 @@ struct Environment {
   IdentifierName identifier_name = nullptr;
   CountyOpinionGetter county_opinion = nullptr;
   void **government_fallback_slot = nullptr;
+  bool task_dispatch_enabled = false;
+  ChangeCouncilTaskFinalValidator final_task_validator = nullptr;
 };
 
 enum class Failure {
@@ -113,6 +117,20 @@ struct ValueInputs {
   std::vector<CountyValueInputs> candidates;
 };
 
+struct TaskDispatchCandidate {
+  std::int32_t province_id = -1;
+  std::int32_t county_title_id = -1;
+  bool native_final_can_dispatch = false;
+  bool already_active_at_target = false;
+  bool replacement_required = false;
+};
+
+struct TaskDispatch {
+  bool available = false;
+  std::string failure = "active_task_or_incumbent_absent";
+  std::vector<TaskDispatchCandidate> candidates;
+};
+
 struct Observation {
   bool available = false;
   Failure failure = Failure::bindings_unavailable;
@@ -139,6 +157,7 @@ struct Observation {
   bool candidate_collection_complete = false;
   std::vector<Candidate> candidates;
   std::optional<ValueInputs> value_inputs;
+  std::optional<TaskDispatch> task_dispatch;
 };
 
 Environment BindCountyConversionImage12003(

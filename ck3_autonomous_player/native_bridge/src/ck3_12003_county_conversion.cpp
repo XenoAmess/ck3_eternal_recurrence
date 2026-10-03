@@ -29,6 +29,20 @@ struct TaskScopes {
 static_assert(sizeof(TaskScopes) == 0x20);
 static_assert(offsetof(TaskScopes, target) == 0x10);
 
+// Read-only input layout used by the exact native command validator. It does
+// not inspect the prefix/vptr, invoke a virtual method or submit this packet.
+struct ChangeTaskValidationPacket {
+  std::array<std::byte, 0x20> unused_prefix{};
+  std::int32_t active_task_id = -1;
+  std::uint32_t padding = 0;
+  const void *task_type = nullptr;
+  TaskScopes scopes{};
+};
+static_assert(sizeof(ChangeTaskValidationPacket) == 0x50);
+static_assert(offsetof(ChangeTaskValidationPacket, active_task_id) == 0x20);
+static_assert(offsetof(ChangeTaskValidationPacket, task_type) == 0x28);
+static_assert(offsetof(ChangeTaskValidationPacket, scopes) == 0x30);
+
 bool Bytes(const Environment &e, const void *address, void *out,
            std::size_t size) noexcept {
   if (!address || !out) return false;
@@ -455,12 +469,20 @@ Failure Candidates(const Environment &e, const CurrentState &current,
   TaskScopes scopes{};
   scopes.incumbent = current.seat.incumbent_character_id;
   scopes.owner = out.owner_character_id;
+  auto *dispatch = out.task_dispatch ? &*out.task_dispatch : nullptr;
+  bool dispatch_evaluating = dispatch && e.final_task_validator &&
+      (e.offline_fixture || reinterpret_cast<std::uintptr_t>(e.final_task_validator) ==
+          e.module_base + kTaskDispatchValidatorRva);
+  if (dispatch) dispatch->failure = dispatch_evaluating ? "none" : "bindings_unavailable";
   bool shown = false, valid = false;
   if (!Invoke(e.shown, shown, type, static_cast<const void *>(&scopes)) ||
       !Invoke(e.valid, valid, type, static_cast<const void *>(&scopes), nullptr))
     return Failure::native_evaluation_unavailable;
   out.native_task_shown = shown; out.native_task_valid = valid;
-  if (!shown || !valid) return Failure::none;
+  if (!shown || !valid) {
+    if (dispatch_evaluating) dispatch->available = true;
+    return Failure::none;
+  }
   alignas(16) std::array<std::byte, ck3_12002::kCouncilCandidatesAllocatorSize12002> allocator{};
   OwnedVector owned{e};
   auto &vector = owned.vector;
@@ -502,6 +524,28 @@ Failure Candidates(const Environment &e, const CurrentState &current,
         }
         row.native_monthly_rate_raw = rate;
       }
+      if (dispatch_evaluating) {
+        ChangeTaskValidationPacket packet{};
+        packet.active_task_id = current.seat.task_id;
+        packet.task_type = type;
+        packet.scopes = scopes;
+        packet.scopes.target_tag = 8;
+        packet.scopes.target = row.province_id;
+        TaskDispatchCandidate input{};
+        input.province_id = row.province_id;
+        input.county_title_id = row.county_title_id;
+        input.already_active_at_target = current.key == kTaskKey &&
+            current.province == row.province_id;
+        input.replacement_required = !input.already_active_at_target;
+        if (!Invoke(e.final_task_validator, input.native_final_can_dispatch,
+            static_cast<const void *>(&packet), nullptr)) {
+          dispatch->failure = "native_final_validator_unavailable";
+          dispatch->candidates.clear();
+          dispatch_evaluating = false;
+        } else {
+          dispatch->candidates.push_back(input);
+        }
+      }
       out.candidates.push_back(row);
     }
   }
@@ -513,6 +557,14 @@ Failure Candidates(const Environment &e, const CurrentState &current,
   });
   out.candidate_collection_evaluated = true;
   out.candidate_collection_complete = true;
+  if (dispatch_evaluating) {
+    std::sort(dispatch->candidates.begin(), dispatch->candidates.end(),
+        [](const auto &a, const auto &b) {
+          return static_cast<std::uint32_t>(a.county_title_id) <
+              static_cast<std::uint32_t>(b.county_title_id);
+        });
+    dispatch->available = true;
+  }
   return Failure::none;
 }
 
@@ -628,6 +680,9 @@ Environment BindCountyConversionImage12003(std::uintptr_t base,
   e.identifier_name = reinterpret_cast<IdentifierName>(base + 0x3F4F900);
   e.county_opinion = reinterpret_cast<CountyOpinionGetter>(base + 0x24D4CB0);
   e.government_fallback_slot = reinterpret_cast<void **>(base + 0x5D1E2A8);
+  e.task_dispatch_enabled = true;
+  e.final_task_validator = reinterpret_cast<ChangeCouncilTaskFinalValidator>(
+      base + kTaskDispatchValidatorRva);
   return e;
 }
 
@@ -654,6 +709,7 @@ bool ReadCountyConversion12003(const Environment &e, std::uint64_t epoch,
     auto failure = ReadCurrent(e, out.owner_character_id, current);
     if (failure != Failure::none) return Failed(out, failure);
     PublishCurrent(current, out);
+    if (e.task_dispatch_enabled) out.task_dispatch.emplace();
     if (current.seat.task && current.seat.incumbent) {
       const void *type = nullptr;
       if (!TaskType(e, current.seat, type)) return Failed(out, Failure::task_type_unavailable);
@@ -779,7 +835,26 @@ std::string SerializeCountyConversion12003(const Observation &v) {
     }
     o << "],\"decision_inputs_complete\":" << values.available << '}';
   }
-  o << ",\"action_eligibility_complete\":false}";
+  if (v.task_dispatch) {
+    const auto &dispatch = *v.task_dispatch;
+    o << ",\"task_dispatch\":{\"status\":\""
+      << (dispatch.available ? "available" : "unavailable") << "\",\"failure\":";
+    JsonString(o, dispatch.failure);
+    o << ",\"candidates\":[";
+    bool dispatch_comma = false;
+    for (const auto &row : dispatch.candidates) {
+      if (dispatch_comma) o << ',';
+      dispatch_comma = true;
+      o << "{\"province_id\":" << row.province_id
+        << ",\"county_title_id\":" << row.county_title_id
+        << ",\"native_final_can_dispatch\":" << row.native_final_can_dispatch
+        << ",\"already_active_at_target\":" << row.already_active_at_target
+        << ",\"replacement_required\":" << row.replacement_required << '}';
+    }
+    o << "],\"eligibility_inputs_complete\":" << dispatch.available << '}';
+  }
+  o << ",\"action_eligibility_complete\":"
+    << (v.task_dispatch && v.task_dispatch->available) << '}';
   return o.str();
 }
 

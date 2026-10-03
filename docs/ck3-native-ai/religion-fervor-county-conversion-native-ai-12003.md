@@ -169,3 +169,11 @@ flowchart TD
 ## 2026-10-03T12:22 新 PID paused 实读
 
 本专题对应的新只读叶与真实缺口见[统一实读记录](g2-v33-paused-religion-and-event-observations-12003.md)，回链actor/date/native/public revisions和原capture。仅记录primitive，不增加动作、日数或完整OODA；历史fixture与封存状态保留原时点。
+
+## 2026-10-03T14:00 接续源码采用
+
+v34已有县改宗价值输入，但最终派遣资格未读取。本包用exact .3原生CChangeCouncilTaskCommand校验器0x2996690，区分任命CanReassign、县目标有效性与最终任务派遣；80字节packet携带实际旧FullTaskID和原生任务类型、owner/role/目标省份。现有clergy MCP的county_conversion新增task_dispatch，每县分别发布can_dispatch、already_active与replacement；inputs_complete只表示原生资格已求值。原生树和ABI先于实现落盘，新增4场景14断言及4份生产serializer到normalizer JSON首次GREEN；不重复旧矩阵。typed派遣动作尚未实现。
+
+实际记录：`2026-10-03T14:00:49+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
+
+交付回执：[county-dispatch-final-input-adoption](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/county-conversion/TASK-DISPATCH-ROOT-DELIVERY.json)。
