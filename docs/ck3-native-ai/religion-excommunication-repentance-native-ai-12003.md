@@ -142,3 +142,11 @@ Gold MCP 的参数只有 `expected_revision`，native key 固定为 `hof_ask_for
 ## 2026-10-03T12:22 新 PID paused 实读
 
 本专题对应的新只读叶与真实缺口见[统一实读记录](g2-v33-paused-religion-and-event-observations-12003.md)，回链actor/date/native/public revisions和原capture。仅记录primitive，不增加动作、日数或完整OODA；历史fixture与封存状态保留原时点。
+
+## 2026-10-03T12:54 接续源码采用
+
+actual玩家绝罚=true但Faithhead29097普通请求hidden/CanSend=false；先冻结exact .3原生preferred角色树、17code spans/8edges/4vtables/5literals再接有限当前角色。existing悔罪MCP新增chaplain superior、capital clerical holder、actor superior、native head-or-challenger、当前chaplain五源FullID及去重候选的逐原生六角色/final Shown/CanSend/十费用/接受度。第一observed合法recipient不冒充完整stock preferred selector；另外两固定一般请愿决议保持unselected root报价，repentance_option_quote_ready=false。pope_excom是character flag，纠正旧variable措辞。11必要units严格编译、新链接、4新角色采集场景与4生产registered MCP wire GREEN，复用petition4/133，不重跑旧head/trait矩阵。保留runner link KeyError harness RED。源码static-ready等待新DLL实际候选；完整fallback/PAM named trigger/悔罪option选择仍有原生入口，无send/解除/收益/游戏日。
+
+实际记录：`2026-10-03T12:54:53+08:00`。源码已采用；严格组合DLL和Robert暂停实读仍待完成，不能记为live或增加日数/动作/收益/G2信用。ROOT负责正常commit/push。
+
+交付回执：[repentance-v35-role-candidates](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/repentance/V35-ROOT-DELIVERY.json)。

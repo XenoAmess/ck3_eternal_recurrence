@@ -32,6 +32,7 @@ def _sampled_group(value: Mapping[str, object], key: str) -> Mapping[str, object
 
 def normalize_player_repentance_context_v1(
     value: object, *, snapshot: Mapping[str, object],
+    _candidate_recipient: int | None = None,
 ) -> dict[str, object]:
     """Preserve independently sampled native groups and single-trait and final request terms."""
     if not isinstance(value, dict) or value.get("schema") != SCHEMA:
@@ -93,15 +94,54 @@ def normalize_player_repentance_context_v1(
     if (trait["available"] and type(trait.get("value")) is not bool) or (
             not trait["available"] and trait.get("value") is not None):
         raise ValueError("native repentance single-trait sample is malformed")
+    source = "faith_religious_head_holder_candidate" if _candidate_recipient is None else "native_role_candidate"
+    scope = "faith_head_only" if _candidate_recipient is None else "one_observed_role"
     if (value.get("definition_key") != "declaration_of_repentance_interaction"
-            or value.get("recipient_source") != "faith_religious_head_holder_candidate"
-            or value.get("candidate_scope") != "faith_head_only"):
+            or value.get("recipient_source") != source
+            or value.get("candidate_scope") != scope
+            or (_candidate_recipient is not None and identity.get("requested_recipient_character_id") != _candidate_recipient)):
         raise ValueError("native repentance key/candidate source is malformed")
     ready = (value["available"] and trait.get("value") is True
              and value["shown"].get("value") is True
              and value["can_send"].get("value") is True)
     if type(value.get("ordinary_request_terms_ready")) is not bool or value["ordinary_request_terms_ready"] != ready:
         raise ValueError("native repentance readiness differs from final native terms")
+    if _candidate_recipient is None and "recipient_candidates" in value:
+        candidates = value["recipient_candidates"]
+        if (not isinstance(candidates, Mapping)
+                or candidates.get("schema") != "ck3_12003_repentance_recipient_candidates_v1"
+                or candidates.get("capture_epoch") != value["capture_epoch"]
+                or candidates.get("date_raw") != value["date_raw"]
+                or candidates.get("played_character_id") != value["played_character_id"]
+                or candidates.get("coverage") != "native_current_roles_only"
+                or candidates.get("complete_stock_preferred_selector") is not False):
+            raise ValueError("native repentance candidate scope differs from the queried frame")
+        roles = candidates.get("roles")
+        rows = candidates.get("candidates")
+        if not isinstance(roles, list) or len(roles) != 5 or not isinstance(rows, list):
+            raise ValueError("native repentance candidate role collection is malformed")
+        for role in roles:
+            if (not isinstance(role, Mapping) or type(role.get("available")) is not bool
+                    or (role["available"] and type(role.get("character_id")) is not int)
+                    or (not role["available"] and role.get("character_id") is not None)):
+                raise ValueError("native repentance candidate role sample is malformed")
+        first = None
+        seen = set()
+        for row in rows:
+            if not isinstance(row, Mapping) or type(row.get("requested_recipient_character_id")) is not int:
+                raise ValueError("native repentance candidate identity is malformed")
+            recipient = row["requested_recipient_character_id"]
+            if recipient in seen or not isinstance(row.get("sources"), list) or not row["sources"]:
+                raise ValueError("native repentance candidate aliases are malformed")
+            seen.add(recipient)
+            terms = normalize_player_repentance_context_v1(
+                row.get("terms"), snapshot=snapshot, _candidate_recipient=recipient & 0xffffffff,
+            )
+            if first is None and terms["ordinary_request_terms_ready"]:
+                first = recipient
+        if (candidates.get("first_observed_ordinary_legal_recipient_character_id") != first
+                or candidates.get("any_observed_ordinary_request_terms_ready") is not (first is not None)):
+            raise ValueError("native repentance candidate readiness differs from final terms")
     # The production reader owns group sampling/legality/quote evaluation. Keep
     # the complete native result intact, including false values and null values
     # for unreached groups; effect costs and PAM route are separate stock inputs.

@@ -20,6 +20,16 @@ std::string SerializePlayerRepentanceResult12003(
     const PlayerRepentanceMailboxContext12003 &query, std::string_view request_id) {
   if (!query.completed || !query.envelope.frame_stable || !query.failure.empty()) return {};
   const auto &frame = query.envelope.expected_snapshot;
+  auto observation = rep::SerializeRepentanceContext12003(query.observation);
+  if (query.candidate_observation.capture_epoch != 0) {
+    observation.pop_back();
+    observation += ",\"recipient_candidates\":" +
+        religion::repentance_candidates::SerializeRepentanceRecipientCandidates12003(query.candidate_observation);
+    if (query.petition_observation.capture_epoch != 0)
+      observation += ",\"petition_decision_terms\":" +
+          religion::repentance_petition::SerializePlayerRepentancePetitionDecisionTerms12003(query.petition_observation);
+    observation += "}";
+  }
   return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" + Quote(request_id) +
       ",\"ok\":true,\"result\":{\"step\":" + Quote(kPlayerRepentancePrivateStep12003) +
       ",\"accepted\":true,\"status\":" + Quote(query.observation.available ? "observed" : "unavailable") +
@@ -29,7 +39,7 @@ std::string SerializePlayerRepentanceResult12003(
       ",\"backend_id\":" + Quote(kPlayerRepentanceBackend12003) +
       ",\"snapshot_revision\":" + std::to_string(query.envelope.expected_snapshot_revision) +
       ",\"date_raw\":" + std::to_string(frame.date_raw) +
-      ",\"player_repentance_context\":" + rep::SerializeRepentanceContext12003(query.observation) + "}}";
+      ",\"player_repentance_context\":" + observation + "}}";
 }
 
 } // namespace xar::ck3_12003

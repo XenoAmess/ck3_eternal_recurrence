@@ -91,6 +91,8 @@ struct AcceptancePreview {
   std::optional<std::uint8_t> outer_status;
 };
 struct Context {
+  const char *recipient_source = "faith_religious_head_holder_candidate";
+  const char *candidate_scope = "faith_head_only";
   bool available = false;
   const char *unavailable_reason = "bindings_unavailable";
   std::uint64_t capture_epoch = 0;
@@ -115,6 +117,11 @@ Bindings BindRepentanceImage12003(std::uintptr_t module_base,
 bool ReadRepentanceContext12003(const Bindings &, void *played_character,
     std::int32_t played_character_id, std::int32_t date_raw,
     std::uint64_t capture_epoch, Context &) noexcept;
+// Read an actual role-derived candidate through the same final native context.
+bool ReadRepentanceRecipientContext12003(const Bindings &, void *played_character,
+    std::int32_t played_character_id, std::int32_t date_raw,
+    std::uint64_t capture_epoch, std::int32_t requested_recipient_character_id,
+    Context &) noexcept;
 std::string SerializeRepentanceContext12003(const Context &);
 
 } // namespace xar::ck3_12003::religion::repentance

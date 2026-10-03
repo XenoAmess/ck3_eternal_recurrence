@@ -2,6 +2,8 @@
 
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_repentance_context.hpp"
+#include "xar_bridge/ck3_12003_repentance_recipient_candidates.hpp"
+#include "xar_bridge/ck3_12003_repentance_petition_decision_terms.hpp"
 
 namespace xar::ck3_12003 {
 
@@ -16,6 +18,10 @@ struct PlayerRepentanceMailboxContext12003 {
   ck3_12002::QueryMailboxEnvelope envelope{};
   religion::repentance::Bindings bindings{};
   religion::repentance::Context observation{};
+  religion::repentance_candidates::Bindings candidate_bindings{};
+  religion::repentance_candidates::Context candidate_observation{};
+  religion::repentance_petition::Bindings petition_bindings{};
+  religion::repentance_petition::Terms petition_observation{};
   bool completed = false;
   std::string failure;
 };

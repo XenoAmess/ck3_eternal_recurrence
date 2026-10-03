@@ -163,10 +163,14 @@ Bindings BindRepentanceImage12003(std::uintptr_t base, std::string_view sha,
   return b;
 }
 
-bool ReadRepentanceContext12003(const Bindings &b, void *player,
+bool ReadRepentanceRecipientContext12003(const Bindings &b, void *player,
     std::int32_t actor, std::int32_t date, std::uint64_t epoch,
-    Context &out) noexcept {
+    std::int32_t requested, Context &out) noexcept {
   out = {};
+  if (requested != -1) {
+    out.recipient_source = "native_role_candidate";
+    out.candidate_scope = "one_observed_role";
+  }
   out.capture_epoch = epoch;
   out.date_raw = date;
   out.played_character_id = actor;
@@ -201,7 +205,8 @@ bool ReadRepentanceContext12003(const Bindings &b, void *player,
   out.identity.faith_main_rite_id = heads.faith_main_rite_id;
   out.identity.head_title_id = heads.faith_religious_head_title_id;
   out.identity.requested_recipient_character_id =
-      heads.faith_religious_head_holder_character_id;
+      requested == -1 ? heads.faith_religious_head_holder_character_id :
+      std::optional<std::uint32_t>{static_cast<std::uint32_t>(requested)};
   if (!heads_read || heads.capture_epoch != epoch || heads.date_raw != date ||
       heads.played_character_id != actor) {
     out.identity.reason = "head_identity_unavailable";
@@ -345,6 +350,12 @@ bool ReadRepentanceContext12003(const Bindings &b, void *player,
   return out.available;
 }
 
+bool ReadRepentanceContext12003(const Bindings &b, void *player,
+    std::int32_t actor, std::int32_t date, std::uint64_t epoch,
+    Context &out) noexcept {
+  return ReadRepentanceRecipientContext12003(b, player, actor, date, epoch, -1, out);
+}
+
 std::string SerializeRepentanceContext12003(const Context &c) {
   std::ostringstream out;
   out << "{\"schema\":"; Quote(out, kSchema);
@@ -357,8 +368,9 @@ std::string SerializeRepentanceContext12003(const Context &c) {
       c.date_raw << ",\"played_character_id\":" << c.played_character_id <<
       ",\"definition_key\":"; Quote(out, kInteractionKey);
   out << ",\"definition_stable_hash\":"; Optional(out, c.definition_stable_hash);
-  out << ",\"recipient_source\":\"faith_religious_head_holder_candidate\","
-      "\"candidate_scope\":\"faith_head_only\",\"player_excommunication\":{";
+  out << ",\"recipient_source\":"; Quote(out, c.recipient_source);
+  out << ",\"candidate_scope\":"; Quote(out, c.candidate_scope);
+  out << ",\"player_excommunication\":{";
   BoolFields(out, c.player_excommunication);
   out << "},\"identity\":{"; SampleFields(out, c.identity);
 #define XAR_HOF_ID(name) out << ",\"" #name "\":"; Optional(out, c.identity.name)

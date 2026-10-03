@@ -58,6 +58,12 @@ bool ExecutePlayerRepentanceMailbox12003(
     auto *character = ResolvePlayed(query.bindings, actor);
     (void)rep::ReadRepentanceContext12003(query.bindings, character, actor,
         static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.observation);
+    (void)religion::repentance_candidates::ReadRepentanceRecipientCandidates12003(
+        query.candidate_bindings, query.bindings, character, actor,
+        static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.candidate_observation);
+    (void)religion::repentance_petition::ReadPlayerRepentancePetitionDecisionTerms12003(
+        query.petition_bindings, character, actor, static_cast<std::int32_t>(frame.date_raw),
+        stamp.pump_epoch, query.petition_observation);
     query.completed = true;
     (void)ck3_12002::FinishQueryMailbox(*envelope);
     return true;
@@ -133,6 +139,11 @@ bool HandlePlayerRepentancePrivate12003(const game::GameAdapter &adapter,
         image_base, adapter.descriptor().executable_sha256, interaction, heads,
         &ck3_12002::religion::head::ReadPlayedRiteHeads12002,
         ck3_12002::phase_character::BindImage(image_base, reviewed_sha));
+    query.candidate_bindings = religion::repentance_candidates::BindRepentanceRecipientCandidatesImage12003(
+        image_base, adapter.descriptor().executable_sha256, interaction.core,
+        ck3_12002::religion::clergy::BindClergyAppointmentImage12002(image_base, reviewed_sha));
+    query.petition_bindings = religion::repentance_petition::BindPlayerRepentancePetitionDecisionTermsImage12003(
+        image_base, adapter.descriptor().executable_sha256);
     return RunPlayerRepentanceMailbox12003(query, request_id, serialized, failure);
   } catch (...) { failure = "player_repentance_handler_exception"; return false; }
 }
