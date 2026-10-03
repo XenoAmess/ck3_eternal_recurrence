@@ -287,7 +287,7 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
 - 每次降级选择记录缺失字段、候选集合、采用的 deterministic rule 与后置状态。
 - 首轮目标是继续游戏与保住可恢复性，不声称选择最优。
 - 若动作后没有可观察的预期状态变化，立即记为 blocker；ACK 不计成功。
-- 宗教继续冻结；仅圣战战争 OODA 与婚姻必要判定允许最小 faith 输入。
+- 上述宗教冻结与两项窄例外是历史授权边界，已由 2026-10-02 全面宗教授权及 2026-10-03 全面战争授权撤销；后续按真实能力与 exact-build 证据推进。
 
 ## 首轮验收阶梯
 

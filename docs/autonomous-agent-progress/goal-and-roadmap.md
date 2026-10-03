@@ -315,7 +315,7 @@ currentpair4192/4191/date53222952、新38520及六ledger/goal0已恢复；原20t
 
 ## 23:33 Robert v20冷恢复、健康材料及正式新增6日：累计3248天
 
-2026-10-02 23:33:53 Asia/Shanghai最新用户明确授权：“从现在开始，允许你进行全方位的深入的宗教领域研究。你需要全局搜索，打破任何你发现的 类似‘宗教领域暂缓’ 的禁令。”本次八份中央文档中所有现行宗教暂缓、holy order暂缓及“只有婚姻/圣战两项窄例外”限制全部撤销；下方dated历史段中的旧限制只记录当时权限，当前均已失效。通用faith/religion、doctrine/tenet/fervor、改宗/宗教改革、holy order及相应原生AI树、只读bridge/MCP和策略研究可按真实价值施工。授权不等于能力完成；Robert唯一入口、nonwar-only当前执行、玩家限定与发布规则保持。
+2026-10-02 23:33:53 Asia/Shanghai最新用户明确授权：“从现在开始，允许你进行全方位的深入的宗教领域研究。你需要全局搜索，打破任何你发现的 类似‘宗教领域暂缓’ 的禁令。”本次八份中央文档中所有现行宗教暂缓、holy order暂缓及“只有婚姻/圣战两项窄例外”限制全部撤销；下方dated历史段中的旧限制只记录当时权限，当前均已失效。通用faith/religion、doctrine/tenet/fervor、改宗/宗教改革、holy order及相应原生AI树、只读bridge/MCP和策略研究可按真实价值施工。授权不等于能力完成；2026-10-03 已撤销 nonwar-only 的执行授权限制，战争与战斗研究、实现、策略和实机全面开放；Robert 原普通战役唯一入口、玩家限定与发布规则保持。
 
 2026-10-02 23:33:53 Asia/Shanghai当前closed截点：唯一Robert originalordinary、Steam离线/最小化no-focus、root实机独占，上一8doc actualpublica6b1727833e33b500d9d288cef6ea43b1a952574。新native **4ee/v20** 487TU/933pins严格83.79s后实际新PID94488冷恢复samegoal/六ledger；currentPython **b03/nativeenv4ee** 分列，b03官方CI37023469750 SUCCESS。原fowl.0003/instance12 sole native0/API1真实clear，独立health3.80962→4.30962 **＋0.5**，随后正式 **＋6 saved日**；**Robert3248/36524、本次95新增日**，raw53222280/fullsave4130，G2 **4/8=50%**、NW **1/4=25%**、typedgoal0succession不变。该窗口requested30只actual6，在新natural **rite_growth.0010/13** 消费者尚未适配处暂停；最新用户已全面开放宗教研究并撤销旧限制，原13适配与原生宗教树/只读采集并行，权限不补M2两multi或live。
 
@@ -899,6 +899,6 @@ GEN-034 子包进度另按 `4/4` 汇报：A/B/C/D 均已完成；
 
 ## 宗教领域当前全面开放
 
-2026-10-02 23:33:53 Asia/Shanghai最新用户明确授权：“从现在开始，允许你进行全方位的深入的宗教领域研究。你需要全局搜索，打破任何你发现的 类似‘宗教领域暂缓’ 的禁令。”本次八份中央文档中所有现行宗教暂缓、holy order暂缓及“只有婚姻/圣战两项窄例外”限制全部撤销；下方dated历史段中的旧限制只记录当时权限，当前均已失效。通用faith/religion、doctrine/tenet/fervor、改宗/宗教改革、holy order及相应原生AI树、只读bridge/MCP和策略研究可按真实价值施工。授权不等于能力完成；Robert唯一入口、nonwar-only当前执行、玩家限定与发布规则保持。
+2026-10-02 23:33:53 Asia/Shanghai最新用户明确授权：“从现在开始，允许你进行全方位的深入的宗教领域研究。你需要全局搜索，打破任何你发现的 类似‘宗教领域暂缓’ 的禁令。”本次八份中央文档中所有现行宗教暂缓、holy order暂缓及“只有婚姻/圣战两项窄例外”限制全部撤销；下方dated历史段中的旧限制只记录当时权限，当前均已失效。通用faith/religion、doctrine/tenet/fervor、改宗/宗教改革、holy order及相应原生AI树、只读bridge/MCP和策略研究可按真实价值施工。授权不等于能力完成；2026-10-03 已撤销 nonwar-only 的执行授权限制，战争与战斗研究、实现、策略和实机全面开放；Robert 原普通战役唯一入口、玩家限定与发布规则保持。
 
 原生树、exact-build输入与实际paused材料按既有readiness分级；缺少新live不能以授权、schema、源码或fixture冒充完成。原午夜计划和旧日期段中的宗教权限仅为历史记录，不作为当前门禁。
