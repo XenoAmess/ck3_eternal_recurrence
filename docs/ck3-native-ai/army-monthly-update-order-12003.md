@@ -284,3 +284,37 @@ Root cumulative ledger is4643 global/resume1490/Oct4+618, including exactly24
 new normal saved days in this loop. This consumer advanced0days. The CI runner's
 separate missing timing-TU failure and its Oct4 upstream fix/local affected-step
 verification retain their own failure and source receipts.
+
+## 2026-10-04 追加：拆分后的实际供给时钟继承与下一桶观察窗
+
+本条只信用本次 `native-live-main-case-a01` 的独立暂停 JSON。拆前 `health-before-halt-a01` 是 query2 / `native:4` / public revision5 / native4；拆后 `health-after-split-a01` 是 query3 / `native:6` / public revision7 / native6，并与 `after-split-snapshot-a01` 精确绑定。两个端点均暂停在 raw date **53147160**。主军 public0/native0，拆出的新军 public170/native161。其 owner33388、同日出现的新军身份由独立 snapshot 绑定；兵员分配与同省 usage 由 split 专题另行记账。
+
+这两个独立端点与拆后两军的 `+188/+190` 四值完全相同：
+
+| 字段 | 拆前主军0 | 拆后主军0 | 拆后新军170/native161 |
+| --- | ---: | ---: | ---: |
+| last_supply_update_date_storage_raw64 (`+188`) | 300333821678253472 | 300333821678253472 | 300333821678253472 |
+| last_supply_update_date_raw (low32) | 53147040 | 53147040 | 53147040 |
+| grace_anchor_date_storage_raw64 (`+190`) | 300061168564366016 | 300061168564366016 | 300061168564366016 |
+| grace_anchor_date_raw (low32) | 53144256 | 53144256 | 53144256 |
+
+因此，这次拆分的新军**继承主军上次供给更新时间与宽限锚点，没有把它们重置为拆分当天**。这与 exact `.3` clone `296B948..94F` copy+188、`296B964..96B` copy+190 的既有原生证据一致。新军的历史 `+188` 是复制值，不能把它写成“新军五天前实际更新过”；以后必须在同 public170/native161 身份上独立读到 `+188` 变化，才能信用新军本身的新成功写入。
+
+实际 clock 还读到：当前 stored signed **D389465**，当前 unsigned(D)%30 **phase5**；主军实际 CArmy* membership 是 **bucket0**，新军是 **bucket11**，loaded grace均为 **30**，两军 `not_gathering`。当前 signed age operand `(53147160−53144256)/24=121`，严格大于30。这是已经满足的当前年龄条件；未来 context/gathering/callback 仍需实际验证。
+
+在同一 actual pointer membership、连续 admitted D+1/date+24、callback admission 未变的条件下，下一**dispatch opportunity**为：
+
+| 实际军队 | 实际桶 | 条件距离 | 条件目标D | 条件目标raw date |
+| --- | ---: | ---: | ---: | ---: |
+| 新军 public170/native161 | 11 | +6 admitted days | 389471 | 53147304 |
+| 主军 public0/native0 | 0 | +25 admitted days | 389490 | 53147760 |
+
+此表是条件预测，尚无这些未来日的实际触发证据；它使用已观察的 manager CArmy* bucket，不使用 public ID%30、native ID%30 或 forecast30天栅格。任何未来 stock/loss 数量均不在此预测。
+
+最小后续观察：Root 在新军 raw **53147280**（+5日）独立暂停，保全 snapshot、new strength query、两军 clock和供给状态；再推进一个 admitted day 到 raw **53147304**（+6日），重新独立暂停、重新 query。先验证实际 D389470→389471、phase10→11、newArmy身份与bucket11持续，再检查新军 `+188` 是否变为新 admitted date。若 `+188` 成功变化但 stock未变，保留成功写入事实并检查当时rate/cap/context；若 `+188` 不变，保留“本观察对未见成功更新时间变化”，不得归咎为某一单一原因。
+
+主军的可选独立边界为 raw **53147736**（+24日）→**53147760**（+25日）；若需要继续排除采样错位，本轮最大边界 raw **53147880**（+30日），不滚动延长。Reload、合并/再次拆分、FullID变化、桶变化、战斗/退却/省份或 gathering/grace 变化时，结束原单变量预测，保存端点并由 Root 明确建立新观察。正常游戏变化仍可作为素材，只降低原因归属强度。
+
+身份边界：health `source.game_version/executable_sha256` 为 null；不能把这些 null 当成自身携带 exact EXE 身份。这里回链同 attempt `starting-transport-a01` 的 hello（PID20624、connection_generation1、`.3` expected SHA、`ck3_build_match=true`），与 Root 受管启动/部署证明组成 exact build 证据链。本分析 lane 仅离线读取既有 JSON，SDK、屏幕、进程读取、游戏操作和主仓修改均为0；新观察仍待 Root 执行。
+
+原始来源 SHA：拆前 health `394c7ff61f08c2f3f316a92b9fda6f4fe44add842dcad881bdda3bef35b67b10`；拆后 health `405eeac3650652db55c617ee8bd3977b8a51f3c09a35fdf32dee60ab8cabd87f`；完整源账、冻结 raw bytes、条件计划与结构校验在 `C:/ck3-war-episode04-research-20261004-a01/supply-live-split-a01/`。

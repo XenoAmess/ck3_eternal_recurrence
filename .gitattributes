@@ -144,3 +144,6 @@ docs/coat-of-arms-fit-artifacts/epsilon-q-v12-high256-ablation/** -text whitespa
 docs/coat-of-arms-fit-artifacts/epsilon-q-v12-medium512-ablation/** -text whitespace=cr-at-eol
 docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget1024/** -text whitespace=cr-at-eol
 docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/** -text whitespace=cr-at-eol
+
+# Preserve native cash serializer fixture bytes bound by their original provenance SHA-256.
+ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_war_cash_*.json -text whitespace=cr-at-eol

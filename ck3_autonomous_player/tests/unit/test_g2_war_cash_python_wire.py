@@ -105,6 +105,27 @@ class WarCashPythonWireTests(unittest.TestCase):
         self.assertEqual(result["status"], "unavailable")
         self.assertEqual(result["unavailable_reason"], value["unavailable_reason"])
 
+    def test_current_cash_preserves_public_cunit_zero(self):
+        value = wire("current-resources-normal")
+        value["player_army_ids"] = [0, 16777220, 166]
+        driver = WarCashNativeWireDriver(value)
+        result = driver.query_war_cash_current_resources_private_v1(expected_revision=72)
+        self.assertEqual(result["player_army_ids"], [0, 16777220, 166])
+        self.assertEqual(result["current_treasury"], value["current_treasury"])
+        self.assertEqual(result["military_expenses"], value["military_expenses"])
+        self.assertEqual(len(driver.requests), 1)
+
+    def test_current_cash_still_rejects_zero_war_identity(self):
+        value = wire("current-resources-normal")
+        value["player_army_ids"] = [0, 16777220, 166]
+        value["active_war_ids"] = [0]
+        for row in value["military_expenses"].values():
+            row["war_ids"] = [0]
+        driver = WarCashNativeWireDriver(value)
+        with self.assertRaisesRegex(Exception, "war cash resource identities are malformed"):
+            driver.query_war_cash_current_resources_private_v1(expected_revision=72)
+        self.assertEqual(len(driver.requests), 1)
+
     def test_new_observation_cli_flags_default_off(self):
         args = parser().parse_args([])
         self.assertFalse(args.private_war_cash_queries)

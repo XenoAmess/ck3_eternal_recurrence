@@ -272,3 +272,23 @@ Receipt：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-reinforceme
 最初外置镜像缺主树`tools/build_release`导致import失败，保留为environment RED；显式供应主树tools只读路径后，同一主venv验证通过，未将环境缺失记为业务代码RED。所有旧输入、失败和中间编译产物保留。此包没有SDK、游戏/窗口操作、DLL构建/部署或新实机样本；readiness为**offline production-reader fixture**，不是production-live。
 
 下一步由正式操作者冻结新runtime、严格构建并在真实paused query验证完整逐团数组。P0-LOSS采样绑定session/date/revision、public CUnit/native CArmy及完整actual FullID，分别保存逐团current/max、补给/容量/月贡献/当前损耗，并记录战斗、补员、集结和编成变化。端点人数差只记净变化；确切损耗因果要结合执行链和排除混杂。P0-REFILL用同一军队真实补给恢复的连续镜头对照实际兵数；人数端点不变可以说明两项状态不同，不能证明过程完全未补员。详细最小案例、native plan及日/周字段保全在`D:/ck3-war-episode04-research-20261004-a01/refill/`。
+
+
+## 2026-10-04 R0161：完整actual逐团人数首次实读
+
+Root独立William主案，人物33388，R0161；source `f8530f4aeb64735dbeae4831f3bc6c315276bb88`，DLL SHA `726d0f1970b4df4f7fc30bc641f31d0183b197efbebd1c1d9c240f2a6233b3f5`，CK3 1.20.0.3 / Steam25652598及EXE SHA保持本专题绑定。EXE/DLL完整身份由`prepared-main-case-a01/prepared.json`核对，source由`capture-source-freeze-a02/manifest.json`核对；它们在`C:/ck3-war-episode04-research-20261004-a01/`。health叶内game_version/EXE SHA是null，未伪造其身份字段。actor/run绑定来自Root的实际运行报告。
+
+`operations-main-case-a01/starting-health-a01/002-000-health.response.json`实际`accepted=true/status=partial`，query1、public3/native2、snapshot`native:2`、raw date53147160、paused=true。源文件SHA `74a1ffd31f4c4718983f7844f3d90c08289bdc9463eb40154dfb81f4835dac24`。两条available行完整发布27个actual ArmyRegiment FullID，逐团scale均1；逐团current/max SUM分别精确等于该行原生整军getter。
+
+| public CUnit / native CArmy | actual团数 | actual current/max及SUM | 首record覆盖 | 补给/容量 | 月贡献 | 当前损耗 |
+| --- | ---: | --- | --- | --- | ---: | ---: |
+| 0 / 0 | 13 | 5660/5660，SUM相同 | 13 available，全为count1 | 82.99737/100 | −10 | 0.01即1% |
+| 16777220 / 16777220 | 14 | 1086/1087，SUM相同 | 9 available、5无首record | 291.22808/300 | 0 | 0 |
+
+第二军唯一actual缺员行为FullID53，9/10；该行当前两补员bool均false。FullID56–60各有actual1/1士兵，但首record count0、`army_regiment_first_record_absent`；这直接显示完整actual数组和persistent首记录查询的不同覆盖域。多record行为50/51/54/61/62/82，当前匹配首chunk兵数合计680，不能替代actual整军1086。主军本帧13个single-record匹配chunk合5660，不能将这种当前完整匹配外推为其他军的全record覆盖。
+
+主军13行两补员bool都false，且实际已经满员；不能据此说这支军永久不补员。第二军当前匹配chunk中`native_can_replenish=true`有7条，独立`native_chunk_can_replenish=true`为0条；仍不得人工AND或换算全军净月补兵。当前health没有发布`special_supply` flags，也不能将未映射的chunk state_raw1视作特殊补给标志。
+
+Army166为`native_carmy_not_found/unavailable`，是请求批次partial的独立行；没有观测到它的CArmy或兵数，不能记为第三支军或0兵。前两军完整actual数组达到**production-live primitive**，尚无补给恢复、实际补员或损耗前后因果loop。它们本帧月贡献分别−10和0，都不是已经取得正补给恢复的观察窗口。
+
+唯一消费输出、27行完整人数表、runtime绑定、native plan及日/周字段在`C:/ck3-war-episode04-research-20261004-a01/refill-live-review-a01/ROOT-DELIVERY.json`。native plan已`check --for-observation/render`，这里只提升具体源叶的实读，结构检查不代替语义或新实机。此消费lane没有SDK、进程/窗口读取、日期推进、测试或DLL部署，新游戏日0；Root正式录像与随后状态转移由各自新packet记录。

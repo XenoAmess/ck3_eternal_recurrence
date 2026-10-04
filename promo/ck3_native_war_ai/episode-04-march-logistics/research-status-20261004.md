@@ -92,3 +92,23 @@
 ## Root运行追加（2026-10-04）
 
 原生三目标严格构建完成；f853隔离测试失败为既有clock依赖遗漏，补齐其translation unit后本机原fixture通过。正式CI修复尚待本次提交复核。Root随后分配 `desktop-3fevhd2-1c74096080--vanilla--R0161`，在独立 `state-main-case-a01` 加载精确Jan11源存档。SDK于14:28:31UTC初始化；14:30:39首次地图snapshot尚不可用，保留loading原始错误，未推进游戏或录制。运行入口 `C:/ck3-war-episode04-research-20261004-a01/native-live-main-case-a01/`；这段初始化不为六项P0增加完成信用。
+
+
+## R0161实际研究与首段原片（2026-10-04 15:23 UTC追加）
+
+本节更新前文初始阶段状态，保留其当时事实。Root已在独立vanilla profile完成本期首次实机；人物William33388，CK3 1.20.0.3、冻结source f853及DLL完整SHA绑定，[证据索引](evidence/r0161-index.json)保存原始packet路径/尺寸/SHA。正式CI依赖修复fe3247e已在[run37209736858](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37209736858)通过。
+
+| 工作面 | 本次新增实际结果 | 仍缺 |
+| --- | --- | --- |
+| REFILL | 两支可用军27条actual逐团人数，SUM与原生整军5660/5660、1086/1087一致；缺首record仍保留actual人数 | 实际恢复补给与实际补员变化窗口 |
+| MOVE | Army0下令London后有完整四跳route；未锁定Halt后独立snapshot确认同省、route complete_empty、target null | 锁定停止、改道及实际抵达；非县战争目标1513的preview接口未受理，不能用失败作路线结论 |
+| SPLIT | 同日实际拆成2540/3120人；13团disjoint完整union且每团人数未变；同省1506原生usage仍5660/limit3680 | 分省、实际统帅读回、会合与真实合并后态 |
+| SUPPLY | 新public170/native161复制原+188/+190，实际manager bucket11；主军bucket0 | 新军+6日、主军+25日仅为条件dispatch预测，实际成功更新时间变化未见 |
+| TERM | 当前ArmyUI真实调用返回capability_not_available，已定位最小当前版本SelectUnit/GetArmy/GUI可见性ABI并施工 | 面板和11项tooltip拍摄 |
+| 费用 | 合法CUnit0被Python拒绝的真实错误已定位并修复；两项回归及9项focused suite通过 | 新绑定runtime的William NET/current/all-raised实读；原失败body=null |
+
+原片 `C:/ck3-war-episode04-research-20261004-a01/recordings/main-case-mechanics-a01/raw.mkv` 为2,514,097,740字节、SHA `4fd4af5ba5a2dcfc50e00a7e49885cc1b6bbeeabe03b4690888abc5ac6d40cd6`。录制实际26:26.500、1920×1080/30fps；正常结束exit0、Job进程树空。完整47,595帧及packet的媒体探测均通过，时间戳严格递增；这段包含暂停研究和机制操作，尚未划定clean spans，也未做1×人工成片审阅。原片时长不等于正式影片完成。
+
+本轮游戏日增量0，A/B/C共同出发档仍未冻结。下一独立attempt先补Army-only原生面板接口及费用新读，再以真实日期边界采供给/损耗，并等海上军自然到达、正常合军后冻结三臂共同checkpoint。B必须记录新军统帅与容量变化；不得把当前6746计划人数当将来合并实际人数。
+
+15:14 UTC受管SDK已退出，CK3/录制进程树空，原1024×768显示模式已恢复；15:16:49新nonce画面直接确认Steam“离线模式”，15:17:29 CAS释放屏幕。原Robert战役、第3期原始存档和失败attempt均保留。原生UI实现、独立日采样方案、ABC共同起点准备与媒体验证并行推进；只在新live环节重新取得排他屏幕。全文/TTS、正式成片、人工签核和交付均未新增完成信用。

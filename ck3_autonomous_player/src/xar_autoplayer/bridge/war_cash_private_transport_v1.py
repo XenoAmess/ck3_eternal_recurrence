@@ -45,7 +45,7 @@ def normalize_war_cash_current_resources_v1(value: object, *, snapshot: Mapping[
         raise ValueError("war cash current status is malformed")
     for key in ("active_war_ids", "player_army_ids"):
         ids = current.get(key)
-        if not isinstance(ids, list) or len(set(ids)) != len(ids) or any(type(value) is not int or value <= 0 for value in ids):
+        if not isinstance(ids, list) or len(set(ids)) != len(ids) or any(type(value) is not int or value < (0 if key == "player_army_ids" else 1) for value in ids):
             raise ValueError("war cash resource identities are malformed")
     for key in ("current_treasury", "player_monthly_net_income"):
         fixed = current.get(key)
