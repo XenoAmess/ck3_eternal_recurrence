@@ -1,0 +1,27 @@
+ M docs/autonomous-agent-progress/daily/2026-10-04.md
+ M docs/autonomous-agent-progress/weekly/2026-W40.md
+ M mod_superman_qiang/README.md
+ M mod_superman_qiang/common/character_interactions/sxad_interactions.txt
+ M mod_superman_qiang/docs/health-design-1.1.0.md
+ M mod_superman_qiang/docs/product-contract.md
+ M mod_superman_qiang/docs/test-plan.md
+ M mod_superman_qiang/docs/ui-review-1.1.0.md
+ M mod_superman_qiang/tools/gen_runtime.py
+ M mod_superman_qiang/tools/run_acceptance.py
+ M mod_superman_qiang/tools/test_runtime.py
+ M mod_superman_qiang/tools/validate_static.py
+ M workshop/superman_qiang_change_notes.txt
+ M workshop/superman_qiang_description.bbcode
+ M workshop/superman_qiang_screenshots.md
+?? docs/release-changelogs/superman-qiang/1.1.0.md
+?? images/superman_qiang_media_1_1_0/
+?? mod_superman_qiang/docs/ci-evidence-1.1.0-20261004-core-source/
+?? mod_superman_qiang/docs/live-R0019-health-1.1.0.md
+?? mod_superman_qiang/docs/live-R0020-health-reload-1.1.0.md
+?? mod_superman_qiang/docs/live-R0021-normal-ui-1.1.0.md
+?? mod_superman_qiang/tools/health_fixture_data.py
+?? mod_superman_qiang/tools/inspect_health_save_readback.py
+?? mod_superman_qiang/tools/prepare_health_fixture.py
+?? mod_superman_qiang/tools/verify_health_readback.py
+?? mod_superman_qiang/tools/verify_health_reload.py
+?? workshop/superman_qiang_media/v3/

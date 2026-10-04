@@ -9,6 +9,7 @@ sxad_view_experience_interaction = {
     use_diplomatic_range = no
     ignores_pending_interaction_block = yes
     auto_accept = yes
+    needs_confirmation = { always = no }
     is_shown = {
         scope:actor = { is_ai = no }
         scope:recipient = { is_alive = yes age >= 18 }

@@ -2,6 +2,10 @@
 
 All mounted inputs and failed attempts remain external. The live mode exposes a
 file inbox of actual MCP tool requests, retaining every request and response.
+The default fixture marker belongs to the historical v1.0.0 42-case matrix.
+For the v1.1.0 health matrix, select its baseline-ready marker explicitly, then
+save that baseline before choosing the actual fixture action event. Session
+completion never substitutes for the separate mechanism/UI/readback gates.
 """
 from __future__ import annotations
 import argparse
@@ -92,6 +96,7 @@ def prepare(args) -> dict:
     source_head=os.environ['SXAD_SOURCE_COMMIT'] if 'SXAD_SOURCE_COMMIT' in os.environ else subprocess.check_output(['git','rev-parse','HEAD'],cwd=REPO,text=True).strip()
     data={'schema':'sxad.native-acceptance-preparation.v1','prepared_at_utc':utc(),'game_dir':str(args.game.resolve()),'game_exe_sha256':sha(game_exe),'game_version':'1.20.0.3','profile':str(profile),'input_sha256':inputs,'production_source':str(args.production.resolve()) if not vanilla else None,'vanilla':vanilla,'fixture_source':str(args.fixture.resolve()) if args.fixture is not None else None,'native_dll':{'path':str(args.dll.resolve()),'sha256':sha(args.dll)},'native_injector':{'path':str(args.injector.resolve()),'sha256':sha(args.injector)},'python':sys.executable,'python_version':sys.version,'warm_cache_directories':warm,'warm_cache_source':str(real.resolve()),'desktop_size':[width,height],'repository_head':source_head,'runner_sha256':sha(Path(__file__)),'ck3_launch_attempted':False}
     data['checkpoint_input']=checkpoint_input
+    data['fixture_ready_marker']=getattr(args,'fixture_ready_marker','SXAT: END production-effect-matrix')
     write(output/'preparation.json',data)
     (output/'inbox').mkdir();(output/'receipts').mkdir()
     return data
@@ -181,20 +186,20 @@ async def interact(run: Path, handle, data: dict, timeout: float) -> dict:
                         await call('ck3_query_frontend_gui_route_v1')
                         await asyncio.sleep(.5)
             # Delayed block boundaries release CK3's event recursion stack.
-            # Completion comes from the exact END marker, not elapsed time.
+            # Fixture readiness comes from its explicit marker, not elapsed time.
             deadline=time.monotonic()+(300 if run_matrix else 0)
             fixture_seen=False
             while time.monotonic()<deadline:
                 await asyncio.sleep(.25)
                 snapshot=await call('ck3_take_snapshot',{'include_native_command_history':False})
                 logs=Path(data['profile'])/'logs'
-                fixture_seen=any('SXAT: END production-effect-matrix' in p.read_text(encoding='utf-8',errors='replace') for p in logs.glob('*.log'))
+                fixture_seen=any(data.get('fixture_ready_marker','SXAT: END production-effect-matrix') in p.read_text(encoding='utf-8',errors='replace') for p in logs.glob('*.log'))
                 if fixture_seen:break
             if run_matrix or not snapshot.get('paused'):
                 await call('ck3_execute_step',{'step':'pause-map','expected_revision':snapshot['revision']})
             snapshot=await call('ck3_take_snapshot',{'include_native_command_history':False})
             write(run/'after-fixture-snapshot.json',snapshot)
-            write(run/'fixture-progress.json',{'end_seen':fixture_seen,'at_utc':utc(),'date_raw':snapshot.get('date_raw')})
+            write(run/'fixture-progress.json',{'ready_marker':data.get('fixture_ready_marker','SXAT: END production-effect-matrix'),'ready_marker_seen':fixture_seen,'end_seen':fixture_seen if data.get('fixture_ready_marker','SXAT: END production-effect-matrix')=='SXAT: END production-effect-matrix' else None,'at_utc':utc(),'date_raw':snapshot.get('date_raw')})
             print('FIXTURE_MATRIX_END_SEEN',fixture_seen,flush=True)
             print('SESSION_HOLDING_FOR_INBOX',flush=True)
             write(run/'ready.json',{'at_utc':utc(),'pid':handle.process.pid,'uses_ocr':False})
@@ -268,6 +273,7 @@ def main() -> int:
     parser.add_argument('--run-dir',type=Path);parser.add_argument('--run-id');parser.add_argument('--timeout',type=float,default=1200)
     parser.add_argument('--skip-warm-cache',action='store_true')
     parser.add_argument('--warm-cache-source',type=Path)
+    parser.add_argument('--fixture-ready-marker',default='SXAT: END production-effect-matrix',help='Historical v1.0.0 default; v1.1.0 health uses SXAT: BASELINE_READY health-1.1.0 and requires a saved baseline before actions')
     parser.add_argument('--checkpoint',type=Path)
     parser.add_argument('--vanilla',action='store_true',help='Prepare a genuine unmodded profile for existing-save installation acceptance')
     parser.add_argument('--task-bus',default=r'D:\workspace\.codex-task-bus\bin\codex_task_bus.py');parser.add_argument('--screen-task')

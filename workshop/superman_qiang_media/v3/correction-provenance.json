@@ -1,0 +1,160 @@
+{
+  "schema": "superman-qiang.promotional-single-text-correction-provenance.v1",
+  "recorded_utc": "2026-10-04T04:52:42.871309+00:00",
+  "attempt": "art-1.1.0-P0002",
+  "full_prompt": "Use case: text-localization. Edit the supplied COMPLETE Chinese medieval marketing poster. Change ONLY the small gold text line directly below the parchment entry-point banner: replace '通知看次数，悬停看属性' with the exact Simplified Chinese text '通知查看次数与属性'. The new phrase must be accurately written, clearly readable, centered in the same location, with the same elegant gold typography and similar size. Do not mention hover or 悬停 anywhere. KEEP EVERYTHING ELSE unchanged: the complete wide composition, mature fully clothed adult king and queen, faces, crowns, robes, candlelit study, quill and illustrated open parchment ledger, crimson and antique-gold finish, the large title '超人强', tagline '越超人越强', main headline '每次经历' / '都会留下记录', parchment text '右键角色 → 查看性经验', the three statements '双方性经验各 +1', '同经验不吸取', '记录随存档保存', the short line '从启用模组时开始记录', all seven attribute medallions and exact labels '外交', '军事', '管理', '谋略', '学识', '勇武', '健康', and caption '宣传插画 · 规则示意'. Preserve the existing non-UI illustration; do not add any mock game UI, notification bubble, tooltip, panel, numbers, health bar, new characters, sexual activity, nudity, or new decoration. Only replace the specified short sentence, keep the established high-quality advertising layout and all other Chinese text.",
+  "generation_tool": "built-in tools.image_gen__imagegen",
+  "request": {
+    "path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0002/generation-request.json",
+    "sha256": "03972324a1b6c9be11b16ea7cdbe08dd65f92441ca93359024f2c557d0df1640",
+    "bytes": 1989
+  },
+  "input_history": {
+    "recorded_utc": "2026-10-04T04:48:11.420932+00:00",
+    "preserved": [
+      {
+        "source_repository_path": "images/superman_qiang_media_1_1_0/03_records.png",
+        "preserved_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0002/history/03_records.png",
+        "sha256": "aabe2b68ea5a799049fb0d52df51d367187174adbc77018ad934b423b7ffc774",
+        "bytes": 2612270
+      },
+      {
+        "source_repository_path": "workshop/superman_qiang_media/v3/03_records.jpg",
+        "preserved_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0002/history/03_records.jpg",
+        "sha256": "2051e0641effd7e4ecfe4f42189905a6cf347a555377fba3346b4132e267b9c7",
+        "bytes": 834736
+      },
+      {
+        "source_repository_path": "images/superman_qiang_media_1_1_0/generation-record.json",
+        "preserved_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0002/history/generation-record.json",
+        "sha256": "f06f831e3e810c91e3166d2aa0a90433e98488dde472cd5ab26d3ae496aed32e",
+        "bytes": 12781
+      },
+      {
+        "source_repository_path": "workshop/superman_qiang_media/v3/provenance.json",
+        "preserved_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0002/history/provenance.json",
+        "sha256": "e89b3c6fc407df5549c2530adb28c2ea8720db19be210722690e2ae736452924",
+        "bytes": 9977
+      },
+      {
+        "source_repository_path": "workshop/superman_qiang_media/v3/root-review.json",
+        "preserved_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0002/history/root-review.json",
+        "sha256": "aaff80d64df2c8e1d5bd5e7a31eaea2f294f159ab1bb8f4ee80c842ee390a43e",
+        "bytes": 2810
+      },
+      {
+        "source_repository_path": "tools/compose_superman_qiang_promotional_media.py",
+        "preserved_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0002/history/project_promotional_media.py",
+        "sha256": "82e5e0a6a80566e381e78ac67a7357bbf79babf4b318d05c48de445554cc976b",
+        "bytes": 4012
+      }
+    ],
+    "untouched_01_02": [
+      {
+        "repository_path": "images/superman_qiang_media_1_1_0/01_absorption.png",
+        "sha256": "759cd149c166cad2d5929f13e53638e488cece1629e4a72d7a13035e9d507671",
+        "bytes": 2529273
+      },
+      {
+        "repository_path": "workshop/superman_qiang_media/v3/01_absorption.jpg",
+        "sha256": "af7c226187d1024e62ed4ad881d2d07889a3c24d9715026442ccbd3ec835a238",
+        "bytes": 840984
+      },
+      {
+        "repository_path": "images/superman_qiang_media_1_1_0/02_transfer.png",
+        "sha256": "51c55f0694f4f59fb483eab9df6510fa340a801dd19c2506b678297f8359fd34",
+        "bytes": 2600306
+      },
+      {
+        "repository_path": "workshop/superman_qiang_media/v3/02_transfer.jpg",
+        "sha256": "e4f9360eda0d65f9eb46d96654ea0e81075c3ad41ec2da5d90f82742860b9066",
+        "bytes": 838222
+      }
+    ]
+  },
+  "source": {
+    "path": "D:/workspace/ck3_eternal_recurrence/images/superman_qiang_media_1_1_0/03_records.png",
+    "sha256": "29b34cff9a6fd7118968131439acf6cd4150b488a9a6333510ea494c24295f14",
+    "bytes": 2514596
+  },
+  "manifest": {
+    "path": "D:/workspace/ck3_eternal_recurrence/images/superman_qiang_media_1_1_0/generation-record.json",
+    "sha256": "f6050ffab91631410c1878de8f10527607602235cd5b7925868cfec9501fcf40",
+    "bytes": 18786
+  },
+  "projection": {
+    "source_path": "D:/workspace/ck3_eternal_recurrence/images/superman_qiang_media_1_1_0/03_records.png",
+    "source_sha256": "29b34cff9a6fd7118968131439acf6cd4150b488a9a6333510ea494c24295f14",
+    "source_bytes": 2514596,
+    "source_dimensions": [
+      1672,
+      941
+    ],
+    "source_crop_left_top_right_bottom": [
+      0.0,
+      0.25,
+      1672.0,
+      940.75
+    ],
+    "projection": "centered aspect-preserving crop and LANCZOS size projection",
+    "output_dimensions": [
+      1600,
+      900
+    ],
+    "output_format": "JPEG",
+    "output_mode": "RGB",
+    "quality": 95,
+    "optimize": true,
+    "progressive": true,
+    "subsampling": 0,
+    "output_sha256": "cbe8a7be4a3e72f57480e8031525ab2be551dda0d53bbc67f01356bf353c371f",
+    "output_bytes": 802191,
+    "content_editing": false,
+    "output_path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v3/03_records.jpg"
+  },
+  "existing_composer": {
+    "path": "D:/workspace/ck3_eternal_recurrence/tools/compose_superman_qiang_promotional_media.py",
+    "sha256": "82e5e0a6a80566e381e78ac67a7357bbf79babf4b318d05c48de445554cc976b",
+    "bytes": 4012
+  },
+  "projection_only_03": true,
+  "byte_identical_rebuild": true,
+  "01_02_untouched": [
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/images/superman_qiang_media_1_1_0/01_absorption.png",
+      "sha256": "759cd149c166cad2d5929f13e53638e488cece1629e4a72d7a13035e9d507671",
+      "bytes": 2529273
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v3/01_absorption.jpg",
+      "sha256": "af7c226187d1024e62ed4ad881d2d07889a3c24d9715026442ccbd3ec835a238",
+      "bytes": 840984
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/images/superman_qiang_media_1_1_0/02_transfer.png",
+      "sha256": "51c55f0694f4f59fb483eab9df6510fa340a801dd19c2506b678297f8359fd34",
+      "bytes": 2600306
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v3/02_transfer.jpg",
+      "sha256": "e4f9360eda0d65f9eb46d96654ea0e81075c3ad41ec2da5d90f82742860b9066",
+      "bytes": 838222
+    }
+  ],
+  "environment": {
+    "interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "pillow": "12.3.0"
+  },
+  "direct_final_JPEG_review": {
+    "reviewer": "/root/superman_art",
+    "result": "approved",
+    "sha256": "cbe8a7be4a3e72f57480e8031525ab2be551dda0d53bbc67f01356bf353c371f",
+    "scope": "Correct short Chinese sentence, preserved marketing art and seven labels"
+  },
+  "parent_review": "pending; parent owns separate actual review record",
+  "prior_v3_provenance_and_root_review_changed": false,
+  "runtime_or_UI_acceptance_claimed": false,
+  "CDN_or_publication_claimed": false,
+  "production_files_or_live_screens_modified": false
+}

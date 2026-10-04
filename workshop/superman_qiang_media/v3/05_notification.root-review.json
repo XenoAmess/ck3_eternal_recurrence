@@ -1,0 +1,45 @@
+{
+  "schema": "superman-qiang.normal-notification-media-root-review.v1",
+  "recorded_utc": "2026-10-04T05:39:16.167449+00:00",
+  "reviewer": "/root",
+  "result": "approved",
+  "method": "Direct tools.view_image of original full PNG and exact cropped final JPEG at original detail",
+  "source_sha256": "7b74e180a0bccf2bfdad678bff7bf363d77b57c37e9329de0283fa9f1a8840c6",
+  "final_sha256": "51ac5484e3a82bcac65c65c2fe3fe3d058c2868715980171192f1d1886c0d6ff",
+  "final_dimensions": [
+    785,
+    364
+  ],
+  "final_bytes": 138982,
+  "crop_left_top_right_bottom": [
+    0,
+    36,
+    785,
+    400
+  ],
+  "real_game_run": "desktop-3fevhd2-1c74096080--superman-qiang--R0022",
+  "normal_save_origin": "P0002 genuine seduce outcome, XP0 to1 on both characters, equal experience no transfer",
+  "recipient": {
+    "id": 32535,
+    "visible_name": "阿梅利娜",
+    "age": 48,
+    "experience": 1,
+    "current_skills": [
+      2,
+      3,
+      12,
+      12,
+      2,
+      0
+    ],
+    "current_health": "4.16622",
+    "health_net": "0.00000"
+  },
+  "gameplay_fixture_or_console_UI_present": false,
+  "direct_notification_observed_by_actual_runner": true,
+  "normal_character_panel_and_toast_both_legible": true,
+  "health_absorption_or_unequal_experience_demonstration_claimed": false,
+  "resized_or_content_edited_or_generated": false,
+  "whole_product_acceptance_or_publication_claimed": false,
+  "proof": "A0004 production22 only; normal menu selection without confirmation. Full native/input/save/cleanup gates retained by acceptance work package."
+}

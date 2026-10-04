@@ -1,0 +1,146 @@
+{
+  "schema": "sxad.static-validation.v1",
+  "status": "GREEN",
+  "errors": [],
+  "git_sha": "ff5b112d8bde46948538678b58705ad88b69e406",
+  "runtime_file_count": 22,
+  "source_files": [
+    {
+      "path": "common/character_interactions/sxad_interactions.txt",
+      "size": 1177,
+      "sha256": "49af8002a9d26eeb08b99073bb2393a6bd7c2e25f11610df990bcebbfe8e92d5"
+    },
+    {
+      "path": "common/modifiers/sxad_skill_balance_modifiers.txt",
+      "size": 2342,
+      "sha256": "c21257a41a0b83428b0840ea198bd62581d1b02879235a86d056bc98d81bf995"
+    },
+    {
+      "path": "common/script_values/sxad_values.txt",
+      "size": 5344,
+      "sha256": "fd7c4dfad2de83a6bcd7a3d0ab303835ead7a103abe5d954f0bb2e5a82b94a7d"
+    },
+    {
+      "path": "common/scripted_effects/sxad_experience_effects.txt",
+      "size": 2872,
+      "sha256": "3ba408a0320378b6f09c4d16880d925a16aab07a5904847e0e59af2a183e8a50"
+    },
+    {
+      "path": "common/scripted_effects/sxad_probe_skill_effects.txt",
+      "size": 11144,
+      "sha256": "e4d6e1d40b552440a5f5042d1d6833337cfb1b55565504e1cd5dea4ef12ab7cd"
+    },
+    {
+      "path": "common/scripted_effects/sxad_transfer_effects.txt",
+      "size": 11909,
+      "sha256": "7991c7000897755735fad9d6785ee3840811b3ad958a155675b9d67918a59458"
+    },
+    {
+      "path": "common/scripted_effects/zz_sxad_had_sex_with_effect.txt",
+      "size": 9868,
+      "sha256": "46e066aa7e7e81ab2f6292e9650a479de9e8c7ae7e5808d35868396bf99c4ba2"
+    },
+    {
+      "path": "common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt",
+      "size": 1353,
+      "sha256": "afaab280b0be669bf019203e2b3d16f97f087daa5b682338fdcb3bbfaca75fe1"
+    },
+    {
+      "path": "common/traits/sxad_traits.txt",
+      "size": 482,
+      "sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d"
+    },
+    {
+      "path": "descriptor.mod",
+      "size": 153,
+      "sha256": "7b0bae16d8d339bff9c9f2fb3cceee5fa2d4a2a0b3b1f2ce4da6a77347e41ca5"
+    },
+    {
+      "path": "events/sxad_events.txt",
+      "size": 243,
+      "sha256": "e21cfe6edc1a0f511eb90f0bc6083988e3a596cec947039268175b6652272701"
+    },
+    {
+      "path": "gfx/interface/icons/traits/sxad_sex_experience.dds",
+      "size": 57728,
+      "sha256": "7f4c9f2925ac10d6803261ae0e28ec0b417b3a9917664b5297e45a955c4de5b5"
+    },
+    {
+      "path": "localization/english/sxad_l_english.yml",
+      "size": 3324,
+      "sha256": "5422b387afa491de136372e4072f556ad76d2dc2f532563ddc70bc5453daf089"
+    },
+    {
+      "path": "localization/french/sxad_l_french.yml",
+      "size": 3450,
+      "sha256": "b137d300c787228c3cfa41fcfae7dca78ebe3caac9ad081e793d371ae009ec1b"
+    },
+    {
+      "path": "localization/german/sxad_l_german.yml",
+      "size": 3443,
+      "sha256": "4c5bfbd396fde27bdda47bcf5dd43bd12b0f6f30cee09b6b55541369c308eab9"
+    },
+    {
+      "path": "localization/japanese/sxad_l_japanese.yml",
+      "size": 3343,
+      "sha256": "ed7ab2fe996dabe694513f90a7e6d7fa8ee26d3701fcfe6059397784e9c58081"
+    },
+    {
+      "path": "localization/korean/sxad_l_korean.yml",
+      "size": 3309,
+      "sha256": "fa609dc5e373f5f327286d1e53dfa874715fb0d89ee92756b957cfcccadde960"
+    },
+    {
+      "path": "localization/polish/sxad_l_polish.yml",
+      "size": 3464,
+      "sha256": "67de102874b1d6537598389ba49643e0ecf7dcaac7db8d1882c6b9238338bd40"
+    },
+    {
+      "path": "localization/russian/sxad_l_russian.yml",
+      "size": 3732,
+      "sha256": "6fcc180ce7d2baae95e4c34e46645cd74f6cc2b4a46d85273432f265e914244f"
+    },
+    {
+      "path": "localization/simp_chinese/sxad_l_simp_chinese.yml",
+      "size": 3263,
+      "sha256": "11eb3d59e31cfd0cd417d67ac3803986a00bff0b298af5c42799a0472baecd6b"
+    },
+    {
+      "path": "localization/spanish/sxad_l_spanish.yml",
+      "size": 3405,
+      "sha256": "eb7c3a5143c32b498cc266d2af5ab8afe75371357a2ba3bdea7d20cb2446be21"
+    },
+    {
+      "path": "thumbnail.png",
+      "size": 785139,
+      "sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b"
+    }
+  ],
+  "scripted_effect_counts": {
+    "common/scripted_effects/sxad_experience_effects.txt": 3,
+    "common/scripted_effects/sxad_probe_skill_effects.txt": 15,
+    "common/scripted_effects/sxad_transfer_effects.txt": 8,
+    "common/scripted_effects/zz_sxad_had_sex_with_effect.txt": 1,
+    "common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt": 1
+  },
+  "localization_key_counts": {
+    "english": 25,
+    "simp_chinese": 25,
+    "french": 25,
+    "german": 25,
+    "japanese": 25,
+    "korean": 25,
+    "polish": 25,
+    "russian": 25,
+    "spanish": 25
+  },
+  "generated_file_count": 20,
+  "ledger_skills_checked": 6,
+  "transfer_attributes_checked": 7,
+  "vanilla_files": [],
+  "ck3_exe_sha256": null,
+  "game_root": null,
+  "game_version_contract": "1.20.0.3",
+  "evidence_layer": "static-structure-and-byte-contract",
+  "ck3_started": false
+}

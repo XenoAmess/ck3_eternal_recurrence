@@ -1,0 +1,8 @@
+{
+  "staging": "C:\\ck3-superman-qiang-1.1.0-20261004\\live-candidate-A0004\\mod_superman_qiang",
+  "manifest": "C:\\ck3-superman-qiang-1.1.0-20261004\\live-candidate-A0004\\mod_superman_qiang.manifest.json",
+  "archive": "C:\\ck3-superman-qiang-1.1.0-20261004\\live-candidate-A0004\\mod_superman_qiang.zip",
+  "file_count": 22,
+  "git_sha": "ff5b112d8bde46948538678b58705ad88b69e406",
+  "git_tag": null
+}

@@ -1,0 +1,289 @@
+{
+  "schema": "superman-qiang.marketing-generation-source.v1",
+  "recorded_utc": "2026-10-04T03:41:32.488580+00:00",
+  "product": "superman-qiang",
+  "intended_version": "1.1.0",
+  "attempt": "art-1.1.0-P0001",
+  "classification": "promotional_illustrations_and_rule_diagrams_not_gameplay",
+  "candidate_only": true,
+  "workshop_published": false,
+  "runtime_or_UI_acceptance_claimed": false,
+  "content_policy": "Two fully clothed clearly adult medieval characters; no explicit activity; no fake game UI.",
+  "prior_R13_media_used": false,
+  "old_P0002_fullscreen_record_media_used": false,
+  "cover_changed": false,
+  "all_generated_originals_retained": true,
+  "generator_attempts": 4,
+  "failed_generation_attempts": [],
+  "semantic_changes": {
+    "attribute_pool": [
+      "diplomacy",
+      "martial",
+      "stewardship",
+      "intrigue",
+      "learning",
+      "prowess",
+      "health"
+    ],
+    "selection": "equal weight among eligible transferable attributes",
+    "six_skill_modifier_transfer": "same skill donor -1 and recipient +1",
+    "health_modifier_transfer": "donor -0.00075 and recipient +0.00075",
+    "health_lifespan_claim": null,
+    "normal_entry": "right-click character -> 查看性经验",
+    "notification_copy": "通知查看次数与属性",
+    "UI_depiction": "none: illustrative ledger and written feature statement only"
+  },
+  "entries": [
+    {
+      "id": "01_absorption",
+      "kind": "selected_version_1_1_edit",
+      "selected": true,
+      "generator": "built-in tools.image_gen__imagegen",
+      "transparent_background": false,
+      "original_generated_path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-96a8dad6-e033-481f-955c-15e4c4cba147.png",
+      "preserved_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/generated/01_absorption.png",
+      "preserved_relative_path": "generated/01_absorption.png",
+      "sha256": "759cd149c166cad2d5929f13e53638e488cece1629e4a72d7a13035e9d507671",
+      "bytes": 2529273,
+      "dimensions": [
+        1672,
+        941
+      ],
+      "format": "PNG",
+      "mode": "RGB",
+      "prompt": "Use case: precise-object-edit, text-localization. Edit the supplied COMPLETE Chinese medieval promotional poster for version 1.1.0. Preserve the composition, excellent antique-gold and crimson finish, the same two clearly adult fully clothed king and queen, their faces, crowns, hands, robes, throne hall, gold energy flow, large exact brand '超人强', tagline '越超人越强', main exact lines '性经验较多者' and '吸取随机属性', and subtitle '成年角色之间的力量流转'. Make only the necessary advertised attribute-pool change: the eligible random pool now has SEVEN attributes, with health newly added. Add one original jewel-like green HEART health medallion to the floating attribute cluster so it contains seven distinct symbols for diplomacy, military, stewardship, intrigue, learning, prowess, and health. Keep the original six distinct symbols intact; arrange the cluster elegantly without obscuring faces or main text. Reflow the decorative bottom attribute strip to show exactly seven icon-and-label entries, in exact order: '外交', '军事', '管理', '谋略', '学识', '勇武', '健康'. The seventh icon is a simple heart. All seven labels must be accurately written and clearly readable, with consistent visual weight and no repeated or missing attribute. Preserve the small exact label '宣传插画 · 规则示意'. Do not add numbers, new UI, a health bar, life expectancy or months. No fake gameplay screenshot. No extra characters, sexual activity, nudity or young-looking people. The only substantive content edit is six attributes becoming seven including health; retain the premium original advertising layout.",
+      "references": [
+        {
+          "path": "D:/workspace/ck3_eternal_recurrence/images/superman_qiang_media_v1/01_absorption.png",
+          "sha256": "6d1230c42f5f4fa751f0f7b520ef3f7da1a68218e5c54844476d479aa3ceb01b",
+          "bytes": 2601769,
+          "dimensions": [
+            1672,
+            941
+          ],
+          "format": "PNG",
+          "mode": "RGB",
+          "preserved_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/history/v1_01_absorption.png",
+          "preserved_sha256": "6d1230c42f5f4fa751f0f7b520ef3f7da1a68218e5c54844476d479aa3ceb01b"
+        }
+      ]
+    },
+    {
+      "id": "02_transfer",
+      "kind": "selected_version_1_1_edit",
+      "selected": true,
+      "generator": "built-in tools.image_gen__imagegen",
+      "transparent_background": false,
+      "original_generated_path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-23b8c543-15b6-42f2-85ca-2ad6ef24c6d6.png",
+      "preserved_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/generated/02_transfer.png",
+      "preserved_relative_path": "generated/02_transfer.png",
+      "sha256": "51c55f0694f4f59fb483eab9df6510fa340a801dd19c2506b678297f8359fd34",
+      "bytes": 2600306,
+      "dimensions": [
+        1672,
+        941
+      ],
+      "format": "PNG",
+      "mode": "RGB",
+      "prompt": "Use case: precise-object-edit, text-localization. Edit the supplied complete Chinese medieval marketing poster accurately for version 1.1.0, keeping its red-and-gold style, same clearly adult fully clothed king and queen, faces, gold magical energy, brand '超人强', tagline '越超人越强', main headline '随机一项' / '一得一失', and explanatory sentence '性经验较多者，吸取对方一项属性修正'. Replace the current universal minus1/plus1 rule box with one polished CLEAR TWO-ROW RULE DIAGRAM labelled exactly '规则示意'. Both rows have a SINGLE LEFT-TO-RIGHT transfer arrow, from the less experienced person on the left to the more experienced person on the right. Shared column headings exactly '性经验较少' and '性经验较多'. First row label exactly '六项能力修正', and the values exactly '−1' on the left and '+1' on the right. Second row label exactly '健康修正', and the values exactly '−0.00075' on the left and '+0.00075' on the right. The numeric literal is ZERO point ZERO ZERO ZERO SEVEN FIVE; exactly 0.00075 with five decimal places, NOT 0.000075, 0.0075, 0.75 or 1. Keep health and ability amounts distinct and legible; both represent same-attribute original modifier transfers, not experience changes or guaranteed displayed skill changes. Do not say or draw that health transfers one point, one month, or fixed lifespan. Under the rule box, add one short clear line exactly '可转移项等权抽取'. Reflow the original six bottom medallions into seven equally styled original symbols and exact labels: '外交', '军事', '管理', '谋略', '学识', '勇武', '健康', with a heart for health. Add a seventh heart medallion to the floating attribute cluster too, keeping the existing six symbols. Preserve the concise note exactly '面板变化受原版修正影响' and clear caption exactly '宣传插画 · 规则示意'. Keep typography short, premium and readable, use generous spacing in the left information area, do not obscure the adult characters. This is an explicit marketing RULE DIAGRAM, not invented game UI. No fake screenshots, experience scores, debug or tests. No extra people, nudity or sexual activity. Make only these rule/health corrections, do not change the established visual identity.",
+      "references": [
+        {
+          "path": "D:/workspace/ck3_eternal_recurrence/images/superman_qiang_media_v1/02_transfer.png",
+          "sha256": "98f7a42dd1ed0aba18d20cb89a6168aea304a21c681553c06bed77eb71400d66",
+          "bytes": 2708172,
+          "dimensions": [
+            1672,
+            941
+          ],
+          "format": "PNG",
+          "mode": "RGB",
+          "preserved_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/history/v1_02_transfer.png",
+          "preserved_sha256": "98f7a42dd1ed0aba18d20cb89a6168aea304a21c681553c06bed77eb71400d66"
+        }
+      ]
+    },
+    {
+      "id": "03_records",
+      "kind": "selected_version_1_1_edit",
+      "selected": false,
+      "generator": "built-in tools.image_gen__imagegen",
+      "transparent_background": false,
+      "original_generated_path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-5c7592a9-7bef-422c-b5d6-5c7d71f9afd6.png",
+      "preserved_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/generated/03_records.png",
+      "preserved_relative_path": "generated/03_records.png",
+      "sha256": "aabe2b68ea5a799049fb0d52df51d367187174adbc77018ad934b423b7ffc774",
+      "bytes": 2612270,
+      "dimensions": [
+        1672,
+        941
+      ],
+      "format": "PNG",
+      "mode": "RGB",
+      "prompt": "Use case: precise-object-edit, text-localization. Edit the supplied complete Chinese medieval marketing poster minimally for version 1.1.0. KEEP its polished crimson-and-gold visual identity, same clearly adult fully clothed king and queen, mature faces, the atmospheric study, actual illustrative open parchment ledger and quill, large brand '超人强', tagline '越超人越强', large headline '每次经历' / '都会留下记录', and normal entry-point text exactly '右键角色 → 查看性经验'. Keep this as a NON-UI illustration. The new real product shows the selected character's count in a notification and attributes in its hover tooltip; do not draw or fabricate that game UI. Add only a clear short marketing-text line below the entry point, exactly '通知看次数，悬停看属性'. Preserve the three exact feature statements '双方性经验各 +1', '同经验不吸取', '记录随存档保存', and short line exactly '从启用模组时开始记录'. Reflow the six decorative bottom attribute medallions into seven with the exact labels in order '外交', '军事', '管理', '谋略', '学识', '勇武', '健康'; add an elegant original heart symbol for health, same size and style as the other six. Keep all copy concise, accurate, cleanly written and readable. Preserve clear caption exactly '宣传插画 · 规则示意'. Do not add a fake screenshot, a popup window, a tooltip mockup, a notification bubble, invented experience score, health values or life expectancy. No nudity, sexual activity, minors, extra people or unrelated words. Only add health and accurate notification/hover wording while preserving the established artistic composition.",
+      "references": [
+        {
+          "path": "D:/workspace/ck3_eternal_recurrence/images/superman_qiang_media_v1/03_records.png",
+          "sha256": "12b39b1fc7dc823d6c0111e7742dc53534b517bb2e070dfeda587af1cc2fd5ba",
+          "bytes": 2719417,
+          "dimensions": [
+            1672,
+            941
+          ],
+          "format": "PNG",
+          "mode": "RGB",
+          "preserved_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/history/v1_03_records.png",
+          "preserved_sha256": "12b39b1fc7dc823d6c0111e7742dc53534b517bb2e070dfeda587af1cc2fd5ba"
+        }
+      ],
+      "superseded_reason": "Parent actual R21 native notification displayed both count and attributes directly; hover disappearance provided no hover evidence.",
+      "superseded_in_attempt": "art-1.1.0-P0002"
+    },
+    {
+      "id": "03_records",
+      "kind": "selected_text_correction_after_native_UI_review",
+      "selected": true,
+      "generator": "built-in tools.image_gen__imagegen",
+      "transparent_background": false,
+      "original_generated_path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-5a294f0c-6910-4e92-82d2-9a0851cc517c.png",
+      "preserved_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0002/generated/03_records.png",
+      "preserved_relative_path": "generated/03_records.png",
+      "sha256": "29b34cff9a6fd7118968131439acf6cd4150b488a9a6333510ea494c24295f14",
+      "bytes": 2514596,
+      "dimensions": [
+        1672,
+        941
+      ],
+      "format": "PNG",
+      "mode": "RGB",
+      "prompt": "Use case: text-localization. Edit the supplied COMPLETE Chinese medieval marketing poster. Change ONLY the small gold text line directly below the parchment entry-point banner: replace '通知看次数，悬停看属性' with the exact Simplified Chinese text '通知查看次数与属性'. The new phrase must be accurately written, clearly readable, centered in the same location, with the same elegant gold typography and similar size. Do not mention hover or 悬停 anywhere. KEEP EVERYTHING ELSE unchanged: the complete wide composition, mature fully clothed adult king and queen, faces, crowns, robes, candlelit study, quill and illustrated open parchment ledger, crimson and antique-gold finish, the large title '超人强', tagline '越超人越强', main headline '每次经历' / '都会留下记录', parchment text '右键角色 → 查看性经验', the three statements '双方性经验各 +1', '同经验不吸取', '记录随存档保存', the short line '从启用模组时开始记录', all seven attribute medallions and exact labels '外交', '军事', '管理', '谋略', '学识', '勇武', '健康', and caption '宣传插画 · 规则示意'. Preserve the existing non-UI illustration; do not add any mock game UI, notification bubble, tooltip, panel, numbers, health bar, new characters, sexual activity, nudity, or new decoration. Only replace the specified short sentence, keep the established high-quality advertising layout and all other Chinese text.",
+      "references": [
+        {
+          "path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0002/history/03_records.png",
+          "sha256": "aabe2b68ea5a799049fb0d52df51d367187174adbc77018ad934b423b7ffc774",
+          "bytes": 2612270,
+          "dimensions": [
+            1672,
+            941
+          ],
+          "format": "PNG",
+          "mode": "RGB"
+        }
+      ],
+      "parent_final_JPEG_review": "pending",
+      "runtime_or_UI_acceptance_claimed": false
+    }
+  ],
+  "observed_design_source_snapshots": [
+    {
+      "repository_path": "mod_superman_qiang/tools/runtime_data.py",
+      "path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/design-source-snapshots/runtime_data.py",
+      "sha256": "a5ac79b55e74fafe279f8bf2ea14cc2d1c5c74ccb2b9252a623135aeeaba9f1a",
+      "bytes": 4116,
+      "scope": "observed static design source; not live acceptance"
+    },
+    {
+      "repository_path": "mod_superman_qiang/docs/ui-review-1.1.0.md",
+      "path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/design-source-snapshots/ui-review-1.1.0.md",
+      "sha256": "84c7a9c922560c52c254ed60c07b08b0569e46f293ce84d40c6219889cbde9b7",
+      "bytes": 10726,
+      "scope": "observed static design source; not live acceptance"
+    },
+    {
+      "repository_path": "mod_superman_qiang/common/character_interactions/sxad_interactions.txt",
+      "path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/design-source-snapshots/sxad_interactions.txt",
+      "sha256": "586b1c95ba5bc64eef7096364f60a8016cf1bc5f3887f3c8d374a8623447ba41",
+      "bytes": 1136,
+      "scope": "observed static design source; not live acceptance"
+    }
+  ],
+  "projector": {
+    "path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/project_promotional_media.py",
+    "sha256": "82e5e0a6a80566e381e78ac67a7357bbf79babf4b318d05c48de445554cc976b",
+    "bytes": 4012
+  },
+  "edit_requests": {
+    "path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/generation-requests.json",
+    "sha256": "c9d5bdefc067e997164e5e7ed56bb4e5394f66af7761adc2704a6cae43bbac09",
+    "bytes": 6557
+  },
+  "latest_attempt": "art-1.1.0-P0002",
+  "correction_history": [
+    {
+      "recorded_utc": "2026-10-04T04:51:30.404648+00:00",
+      "attempt": "art-1.1.0-P0002",
+      "only_artifact_changed": "03_records",
+      "old_copy": "通知看次数，悬停看属性",
+      "new_copy": "通知查看次数与属性",
+      "reason": "Parent actual R21 native notification displayed both count and attributes directly; hover disappearance provided no hover evidence.",
+      "request": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0002/generation-request.json",
+        "sha256": "03972324a1b6c9be11b16ea7cdbe08dd65f92441ca93359024f2c557d0df1640",
+        "bytes": 1989
+      },
+      "prior_manifest": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0002/history/generation-record.json",
+        "sha256": "f06f831e3e810c91e3166d2aa0a90433e98488dde472cd5ab26d3ae496aed32e",
+        "bytes": 12781
+      },
+      "old_source": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0002/history/03_records.png",
+        "sha256": "aabe2b68ea5a799049fb0d52df51d367187174adbc77018ad934b423b7ffc774",
+        "bytes": 2612270,
+        "dimensions": [
+          1672,
+          941
+        ],
+        "format": "PNG",
+        "mode": "RGB"
+      },
+      "old_output": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0002/history/03_records.jpg",
+        "sha256": "2051e0641effd7e4ecfe4f42189905a6cf347a555377fba3346b4132e267b9c7",
+        "bytes": 834736
+      },
+      "new_source": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0002/generated/03_records.png",
+        "sha256": "29b34cff9a6fd7118968131439acf6cd4150b488a9a6333510ea494c24295f14",
+        "bytes": 2514596,
+        "dimensions": [
+          1672,
+          941
+        ],
+        "format": "PNG",
+        "mode": "RGB"
+      },
+      "new_projection": {
+        "source_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0002/generated/03_records.png",
+        "source_sha256": "29b34cff9a6fd7118968131439acf6cd4150b488a9a6333510ea494c24295f14",
+        "source_bytes": 2514596,
+        "source_dimensions": [
+          1672,
+          941
+        ],
+        "source_crop_left_top_right_bottom": [
+          0.0,
+          0.25,
+          1672.0,
+          940.75
+        ],
+        "projection": "centered aspect-preserving crop and LANCZOS size projection",
+        "output_dimensions": [
+          1600,
+          900
+        ],
+        "output_format": "JPEG",
+        "output_mode": "RGB",
+        "quality": 95,
+        "optimize": true,
+        "progressive": true,
+        "subsampling": 0,
+        "output_sha256": "cbe8a7be4a3e72f57480e8031525ab2be551dda0d53bbc67f01356bf353c371f",
+        "output_bytes": 802191,
+        "content_editing": false,
+        "output_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0002/jpeg/03_records.jpg"
+      },
+      "parent_review": "pending",
+      "historical_previous_prompt_retained": true
+    }
+  ]
+}

@@ -1,0 +1,2326 @@
+{
+  "schema": "superman-qiang.incremental-live-acceptance.v1",
+  "product": "超人强：越超人越强",
+  "version": "1.1.0",
+  "workshop_item_id": "3812991990",
+  "at_utc": "2026-10-04T05:44:58.921621+00:00",
+  "live_acceptance_status": "GREEN",
+  "live_scope": "R19 targeted20 health mechanism + R20 actual cold reload + R21 direct body/holder trait/readonly + R22 no-confirm normal self/NPC + readonly. Not a new full42 v1.0 matrix.",
+  "candidate_L0_status": "GREEN",
+  "formal_tag_bound_build_status": "PENDING",
+  "publication_status": "PENDING",
+  "source_commit_base": "ff5b112d8bde46948538678b58705ad88b69e406",
+  "source_binding": "A4 same21 runtime plus actual frozen dirty no-confirm interaction49af8002; source snapshots/manifest bound. Later formal clean commit must establish exact22byte equivalence.",
+  "sdk_commit": "f643b32e6146dce73f77fedfefd8471da59fb04f",
+  "dll_sha256": "ad3bbb4e7bc19f2737bba10c468d26cabcae4058c6c2ae4f3b8675e95c5b8518",
+  "injector_sha256": "bf0c1bb12f9f091a315b5b05be69ae01c8e5bceecf47708f2faae692909f1d63",
+  "game_version": "1.20.0.3",
+  "game_exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "health_case_count": 20,
+  "health_cases": [
+    {
+      "case": "player-native-health-75",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 31254,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.1616",
+            "decimal": "4.1616",
+            "q100000_ticks": 416160
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              4,
+              9,
+              6,
+              6,
+              8,
+              3
+            ]
+          },
+          "health_balance_ticks": 75,
+          "health_before_ticks": 466160,
+          "health_immediate_after_ticks": 466235,
+          "health_after_ticks": 466235,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_gain_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        },
+        {
+          "role": "donor",
+          "character_id": 65838,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.87465",
+            "decimal": "4.87465",
+            "q100000_ticks": 487465
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": -75,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 499925,
+          "health_after_ticks": 499925,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_loss_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        75,
+        -75
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "health-flat-75",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65839,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.27153",
+            "decimal": "4.27153",
+            "q100000_ticks": 427153
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 75,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 500075,
+          "health_after_ticks": 500075,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_gain_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        },
+        {
+          "role": "donor",
+          "character_id": 65840,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.27319",
+            "decimal": "4.27319",
+            "q100000_ticks": 427319
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": -75,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 499925,
+          "health_after_ticks": 499925,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_loss_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        75,
+        -75
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "health-floor-below-3_00074",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65841,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.23757",
+            "decimal": "4.23757",
+            "q100000_ticks": 423757
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 0,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 500000,
+          "health_after_ticks": 500000,
+          "production_health_modifiers": []
+        },
+        {
+          "role": "donor",
+          "character_id": 65842,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true,
+            "literal_floor_baseline": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.02859",
+            "decimal": "4.02859",
+            "q100000_ticks": 402859
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 0,
+          "health_before_ticks": 300074,
+          "health_immediate_after_ticks": 300074,
+          "health_after_ticks": 300074,
+          "production_health_modifiers": []
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        0,
+        0
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "health-floor-at-3_00075",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65843,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.21413",
+            "decimal": "4.21413",
+            "q100000_ticks": 421413
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 75,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 500075,
+          "health_after_ticks": 500075,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_gain_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        },
+        {
+          "role": "donor",
+          "character_id": 65844,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true,
+            "literal_floor_baseline": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.93704",
+            "decimal": "4.93704",
+            "q100000_ticks": 493704
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": -75,
+          "health_before_ticks": 300075,
+          "health_immediate_after_ticks": 300000,
+          "health_after_ticks": 300000,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_loss_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        75,
+        -75
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "health-floor-same-day-repeat",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65845,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.52707",
+            "decimal": "4.52707",
+            "q100000_ticks": 452707
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 75,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 500075,
+          "health_after_ticks": 500075,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_gain_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        },
+        {
+          "role": "donor",
+          "character_id": 65846,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true,
+            "literal_floor_baseline": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.52482",
+            "decimal": "4.52482",
+            "q100000_ticks": 452482
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": -75,
+          "health_before_ticks": 300075,
+          "health_immediate_after_ticks": 300000,
+          "health_after_ticks": 300000,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_loss_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        75,
+        -75
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "health-penalty-mitigation",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65847,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.39133",
+            "decimal": "4.39133",
+            "q100000_ticks": 439133
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 75,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 500075,
+          "health_after_ticks": 500075,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_gain_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        },
+        {
+          "role": "donor",
+          "character_id": 65848,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.40825",
+            "decimal": "4.40825",
+            "q100000_ticks": 440825
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": -75,
+          "health_before_ticks": 1000000,
+          "health_immediate_after_ticks": 1000000,
+          "health_after_ticks": 1000000,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_loss_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        75,
+        -75
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "health-rebuild-idempotent",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65849,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.56193",
+            "decimal": "4.56193",
+            "q100000_ticks": 456193
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 75,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 500075,
+          "health_after_ticks": 500075,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_gain_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        },
+        {
+          "role": "donor",
+          "character_id": 65850,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.97414",
+            "decimal": "4.97414",
+            "q100000_ticks": 497414
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": -75,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 499925,
+          "health_after_ticks": 499925,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_loss_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        75,
+        -75
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "health-ledger-growth",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65851,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.41189",
+            "decimal": "4.41189",
+            "q100000_ticks": 441189
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 150,
+          "health_before_ticks": 500075,
+          "health_immediate_after_ticks": 500150,
+          "health_after_ticks": 500150,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_gain_modifier",
+              "scale_raw": "0.0015",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.0015",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.0015\n\t\t\t}",
+              "scale_q100000_ticks_exact": 150
+            }
+          ]
+        },
+        {
+          "role": "donor",
+          "character_id": 65852,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.3657",
+            "decimal": "4.3657",
+            "q100000_ticks": 436570
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": -150,
+          "health_before_ticks": 499925,
+          "health_immediate_after_ticks": 499850,
+          "health_after_ticks": 499850,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_loss_modifier",
+              "scale_raw": "0.0015",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.0015",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.0015\n\t\t\t}",
+              "scale_q100000_ticks_exact": 150
+            }
+          ]
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        75,
+        -75
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "health-ledger-to-zero",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65853,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.66466",
+            "decimal": "4.66466",
+            "q100000_ticks": 466466
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 0,
+          "health_before_ticks": 499925,
+          "health_immediate_after_ticks": 500000,
+          "health_after_ticks": 500000,
+          "production_health_modifiers": []
+        },
+        {
+          "role": "donor",
+          "character_id": 65854,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.82122",
+            "decimal": "4.82122",
+            "q100000_ticks": 482122
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 0,
+          "health_before_ticks": 500075,
+          "health_immediate_after_ticks": 500000,
+          "health_after_ticks": 500000,
+          "production_health_modifiers": []
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        75,
+        -75
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "health-upper-balance-block",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65855,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.5747",
+            "decimal": "4.5747",
+            "q100000_ticks": 457470
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 100000000000,
+          "health_before_ticks": 100000500000,
+          "health_immediate_after_ticks": 100000500000,
+          "health_after_ticks": 100000500000,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_gain_modifier",
+              "scale_raw": "1000000",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "1000000",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=1000000\n\t\t\t}",
+              "scale_q100000_ticks_exact": 100000000000
+            }
+          ]
+        },
+        {
+          "role": "donor",
+          "character_id": 65856,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.73938",
+            "decimal": "4.73938",
+            "q100000_ticks": 473938
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 0,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 500000,
+          "health_after_ticks": 500000,
+          "production_health_modifiers": []
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        0,
+        0
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "health-upper-balance-last",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65857,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.77129",
+            "decimal": "4.77129",
+            "q100000_ticks": 477129
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 100000000000,
+          "health_before_ticks": 100000499925,
+          "health_immediate_after_ticks": 100000500000,
+          "health_after_ticks": 100000500000,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_gain_modifier",
+              "scale_raw": "1000000",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "1000000",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=1000000\n\t\t\t}",
+              "scale_q100000_ticks_exact": 100000000000
+            }
+          ]
+        },
+        {
+          "role": "donor",
+          "character_id": 65858,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.32343",
+            "decimal": "4.32343",
+            "q100000_ticks": 432343
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": -75,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 499925,
+          "health_after_ticks": 499925,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_loss_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        75,
+        -75
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "health-lower-balance-block",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65859,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.68687",
+            "decimal": "4.68687",
+            "q100000_ticks": 468687
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 0,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 500000,
+          "health_after_ticks": 500000,
+          "production_health_modifiers": []
+        },
+        {
+          "role": "donor",
+          "character_id": 65860,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.33793",
+            "decimal": "4.33793",
+            "q100000_ticks": 433793
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": -100000000000,
+          "health_before_ticks": 600000,
+          "health_immediate_after_ticks": 600000,
+          "health_after_ticks": 600000,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_loss_modifier",
+              "scale_raw": "1000000",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "1000000",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=1000000\n\t\t\t}",
+              "scale_q100000_ticks_exact": 100000000000
+            }
+          ]
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        0,
+        0
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "health-lower-balance-last",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65861,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.33338",
+            "decimal": "4.33338",
+            "q100000_ticks": 433338
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 75,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 500075,
+          "health_after_ticks": 500075,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_gain_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        },
+        {
+          "role": "donor",
+          "character_id": 65862,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.45541",
+            "decimal": "4.45541",
+            "q100000_ticks": 445541
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": -100000000000,
+          "health_before_ticks": 600075,
+          "health_immediate_after_ticks": 600000,
+          "health_after_ticks": 600000,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_loss_modifier",
+              "scale_raw": "1000000",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "1000000",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=1000000\n\t\t\t}",
+              "scale_q100000_ticks_exact": 100000000000
+            }
+          ]
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        75,
+        -75
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "six-skill-diplomacy-regression",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65863,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.99141",
+            "decimal": "4.99141",
+            "q100000_ticks": 499141
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 0,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 500000,
+          "health_after_ticks": 500000,
+          "production_health_modifiers": []
+        },
+        {
+          "role": "donor",
+          "character_id": 65864,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.51957",
+            "decimal": "4.51957",
+            "q100000_ticks": 451957
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 0,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 500000,
+          "health_after_ticks": 500000,
+          "production_health_modifiers": []
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        0,
+        0
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "six-skill-prowess-regression",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65865,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.96078",
+            "decimal": "4.96078",
+            "q100000_ticks": 496078
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 0,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 500000,
+          "health_after_ticks": 500000,
+          "production_health_modifiers": []
+        },
+        {
+          "role": "donor",
+          "character_id": 65866,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.85779",
+            "decimal": "4.85779",
+            "q100000_ticks": 485779
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 0,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 500000,
+          "health_after_ticks": 500000,
+          "production_health_modifiers": []
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        0,
+        0
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "equal-experience-health-no-transfer",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65867,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.02276",
+            "decimal": "4.02276",
+            "q100000_ticks": 402276
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 0,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 500000,
+          "health_after_ticks": 500000,
+          "production_health_modifiers": []
+        },
+        {
+          "role": "donor",
+          "character_id": 65868,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.95772",
+            "decimal": "4.95772",
+            "q100000_ticks": 495772
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 0,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 500000,
+          "health_after_ticks": 500000,
+          "production_health_modifiers": []
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        0,
+        0
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "only-health-eligible-dispatch",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65869,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.57977",
+            "decimal": "4.57977",
+            "q100000_ticks": 457977
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 75,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 500075,
+          "health_after_ticks": 500075,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_gain_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        },
+        {
+          "role": "donor",
+          "character_id": 65870,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.7497",
+            "decimal": "4.7497",
+            "q100000_ticks": 474970
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": -75,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 499925,
+          "health_after_ticks": 499925,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_loss_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        75,
+        -75
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "health-zero-receiver",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65871,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.80039",
+            "decimal": "4.80039",
+            "q100000_ticks": 480039
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 75,
+          "health_before_ticks": 0,
+          "health_immediate_after_ticks": 75,
+          "health_after_ticks": 500075,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_gain_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        },
+        {
+          "role": "donor",
+          "character_id": 65872,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.22928",
+            "decimal": "4.22928",
+            "q100000_ticks": 422928
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": -75,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 499925,
+          "health_after_ticks": 499925,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_loss_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        75,
+        -75
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "health-negative-receiver",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65873,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.17536",
+            "decimal": "4.17536",
+            "q100000_ticks": 417536
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 75,
+          "health_before_ticks": -100000,
+          "health_immediate_after_ticks": -99925,
+          "health_after_ticks": 500075,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_gain_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        },
+        {
+          "role": "donor",
+          "character_id": 65874,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true,
+            "health_delta_exact": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.22389",
+            "decimal": "4.22389",
+            "q100000_ticks": 422389
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": -75,
+          "health_before_ticks": 500000,
+          "health_immediate_after_ticks": 499925,
+          "health_after_ticks": 499925,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_loss_modifier",
+              "scale_raw": "0.00075",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "0.00075",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=0.00075\n\t\t\t}",
+              "scale_q100000_ticks_exact": 75
+            }
+          ]
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        75,
+        -75
+      ],
+      "raw_conservation": true
+    },
+    {
+      "case": "health-reverse-capacity-boundaries",
+      "roles": [
+        {
+          "role": "receiver",
+          "character_id": 65875,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.29094",
+            "decimal": "4.29094",
+            "q100000_ticks": 429094
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": -99999999925,
+          "health_before_ticks": -99999500000,
+          "health_immediate_after_ticks": -99999499925,
+          "health_after_ticks": 600075,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_loss_modifier",
+              "scale_raw": "999999.99925",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "999999.99925",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_loss_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=999999.99925\n\t\t\t}",
+              "scale_q100000_ticks_exact": 99999999925
+            }
+          ]
+        },
+        {
+          "role": "donor",
+          "character_id": 65876,
+          "checks": {
+            "reference_same": true,
+            "alive": true,
+            "basehealth_unchanged": true,
+            "base_skills_unchanged": true,
+            "health_balance_exact": true,
+            "single_signed_scale_projection": true
+          },
+          "base_health_saved": {
+            "field": "alive_data.health",
+            "raw_text": "4.75418",
+            "decimal": "4.75418",
+            "q100000_ticks": 475418
+          },
+          "base_skills": {
+            "field": "skill",
+            "array": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10
+            ]
+          },
+          "health_balance_ticks": 99999999925,
+          "health_before_ticks": 100000500000,
+          "health_immediate_after_ticks": 100000499925,
+          "health_after_ticks": 100000499925,
+          "production_health_modifiers": [
+            {
+              "key": "sxad_health_gain_modifier",
+              "scale_raw": "999999.99925",
+              "scale_source_key": "multiplier",
+              "scale_default": null,
+              "scale_decimal": "999999.99925",
+              "raw_record": "\t\t\tmodifier={\n\t\t\t\tmodifier=\"sxad_health_gain_modifier\"\n\t\t\t\texpiration_date=9999.1.1\n\t\t\t\tmultiplier=999999.99925\n\t\t\t}",
+              "scale_q100000_ticks_exact": 99999999925
+            }
+          ]
+        }
+      ],
+      "pair_health_ledger_change_ticks": [
+        75,
+        -75
+      ],
+      "raw_conservation": true
+    }
+  ],
+  "plan_coverage": [
+    {
+      "id": "H0",
+      "status": "GREEN candidate L0",
+      "actual": "A3 L0 plus A4 unique interaction single-leaf parser/static/tests/build/verify; formal tag-bound gate pending",
+      "runs": []
+    },
+    {
+      "id": "H1",
+      "status": "GREEN targeted live",
+      "actual": "Forced health helper exact75 plus only-health-eligible and reverse production pair/7-candidate dispatcher actual health selection; no statistical claim",
+      "cases": [
+        "player-native-health-75",
+        "health-flat-75",
+        "only-health-eligible-dispatch",
+        "health-reverse-capacity-boundaries"
+      ],
+      "runs": [
+        "R0019"
+      ]
+    },
+    {
+      "id": "H2",
+      "status": "GREEN targeted live",
+      "actual": "3.00074/3.00075 plus same-day second call floor; both capacity directions and reverse departure saved",
+      "cases": [
+        "health-floor-below-3_00074",
+        "health-floor-at-3_00075",
+        "health-floor-same-day-repeat",
+        "health-upper-balance-block",
+        "health-upper-balance-last",
+        "health-lower-balance-block",
+        "health-lower-balance-last",
+        "health-reverse-capacity-boundaries"
+      ],
+      "runs": [
+        "R0019"
+      ]
+    },
+    {
+      "id": "H3",
+      "status": "GREEN targeted live",
+      "actual": "Native player exact75, all40 basehealth unchanged, raw signed scale conservation; negative mitigation, repeat rebuild, growth/flip/zero, immediate zero/negative",
+      "cases": [
+        "health-penalty-mitigation",
+        "health-rebuild-idempotent",
+        "health-ledger-growth",
+        "health-ledger-to-zero",
+        "health-zero-receiver",
+        "health-negative-receiver"
+      ],
+      "runs": [
+        "R0019"
+      ]
+    },
+    {
+      "id": "H4",
+      "status": "GREEN targeted live",
+      "actual": "New owned game process loads actual after checkpoint;40 characters signed decimal vars/base/scale and native466235 unchanged",
+      "runs": [
+        "R0020"
+      ]
+    },
+    {
+      "id": "H5",
+      "status": "GREEN scoped representative/composed regression",
+      "actual": "R19 actual equal XP counts6/6 no-health; actual diplomacy/prowess representative±1, pair counts6/2. Unchanged counter/anonymous/original hook contracts use historical1.0 evidence and A4 source comparison; no claim this20-case round reran anonymous or all7-candidates-empty native scenario.",
+      "runs": [
+        "R0019"
+      ],
+      "historical_reference": "acceptance-1.0.0-20261004.md"
+    },
+    {
+      "id": "U1",
+      "status": "GREEN targeted live",
+      "actual": "Actual70percent ordinary self/NPC one-menu-click directtoast; no confirmation;correct portrait/name/count,2rows6skills,health5decimals",
+      "runs": [
+        "R0021",
+        "R0022"
+      ]
+    },
+    {
+      "id": "U2",
+      "status": "GREEN scoped actual UI + source inventory",
+      "actual": "R21 holder trait actuallyhovered; R21/R22 before/after XP/7ledgers/modifiers/basehealth/6base/traits unchanged;14 modifier names/value source reviewed by inventory, not14 separately photographed windows. Bodydirect, toast-hover notclaimed.",
+      "runs": [
+        "R0021",
+        "R0022"
+      ]
+    },
+    {
+      "id": "U3",
+      "status": "GREEN raw gameplay source",
+      "actual": "R22 accepted exact unaltered native ordinary P2 XP1 screenshot. Public encoded strip/tag publication independently pending.",
+      "runs": [
+        "R0022"
+      ]
+    },
+    {
+      "id": "P1.1",
+      "status": "PENDING publication",
+      "actual": "No formaltag/build/upload/cache/changenotes credit from live session",
+      "runs": []
+    }
+  ],
+  "raw_refs": [
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/health-fixture-A0004.fixture.json",
+      "bytes": 21236,
+      "sha256": "a855829e86d8e31d975a0f99bd1a33155bdce3040aba9306cbf46cf6f5659c37"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/health-grammar-A0004/receipt.json",
+      "bytes": 5381,
+      "sha256": "35c5bef0132b7263446946f85b1970d94cfedfa434c8ddfa1173258fd1a57bbf"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0001/diagnostics-correction-A0002/receipt.json",
+      "bytes": 14372,
+      "sha256": "5724bbe1188bb47abf337d18b0f6c4c2d4406d9201cb96910c58ce1191f09832"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0001/diagnostics-after-stop-A0001/error.log",
+      "bytes": 49708,
+      "sha256": "c314bc73e252600ca82290d39bf78964e12be03bb377df51bd129ac95caa6955"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0002/preparation-failure-A0001.json",
+      "bytes": 560,
+      "sha256": "7969184b75fd6cde5d1c805eb1e9b43f3cd09eeeb1cd8a77e303d480481af9d6"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0002/injector-relink-A0001/receipt.json",
+      "bytes": 2391,
+      "sha256": "c12ed3834b25937baaf7bd61209e83bcc11a107fefa49afe0a269a8a578be9c6"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0002/independent-health-gate-A0001.json",
+      "bytes": 60733,
+      "sha256": "7a79afa74970a866da910e8d5c8ef2a4a46040e5c187a2c44228fbfb881f8acb"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0002/health-readback-baseline-A0001/health-readback.json",
+      "bytes": 111354,
+      "sha256": "b3b3d7879667336d779f3fb2f84f22a048f35242e3eb238938ff0df4661b61a7"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0002/health-readback-after-A0001/health-readback.json",
+      "bytes": 349887,
+      "sha256": "1597ab81760e75018298c5b738cd0fc2f832dacb20e42edbeb886216a8e1f4c0"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0002/session/receipts/inbox-001-native-health-baseline.json",
+      "bytes": 38186,
+      "sha256": "0f5e4f754557c31826d7b67c72b879abaa40757c099caefda930c9c680f7be66"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0002/session/receipts/inbox-014-native-health-after.json",
+      "bytes": 38195,
+      "sha256": "0a48d2d797f99800267b5acd87c97a6d4c30cdc6140be864f85ddb1a3356d4e5"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0003/health-reload-gate-A0001.json",
+      "bytes": 26821,
+      "sha256": "b19b429721653a06f32412585e58684dc0c8d56197197f0b2bec0fa37bf45726"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0003/health-readback-after-reload-A0001/health-readback.json",
+      "bytes": 349887,
+      "sha256": "89e0c9d5459d9c203f7a49a8eee549b7a300c865113b0a0f5c0c872cd185c4d1"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0003/session/receipts/inbox-001-native-health-after-reload.json",
+      "bytes": 38190,
+      "sha256": "cc7ec730e571054656d13a0283b3c2807426692b94610b02d220f7e04a95edf2"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0004/normal-readonly-gate-A0001.json",
+      "bytes": 4364,
+      "sha256": "e9a3dac1386b00eda284baed94678459d3c9e0e80fd34b81a2d5f1af641a463a"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0004/ui-player-toast70-A0001/screen.png",
+      "bytes": 1027904,
+      "sha256": "1a56329ddaaccaab418c7a9306f75f6a387c154f27ddb4a1ee7d254b9eadc9cc"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0004/ui-Amelina-trait70-A0001/screen.png",
+      "bytes": 1018902,
+      "sha256": "e23e70d65be9af543e79a3fcca4aba78ba6d938369b7e0c1fc2a7ba751f85679"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0004/ui-Amelina-confirm70-A0001/screen.png",
+      "bytes": 997696,
+      "sha256": "44dd68ee1caa4efb5c973b18f1d44750a931caf39134244b0cb8ec67eb7ff58b"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0005/normal-readonly-gate-A0001.json",
+      "bytes": 4462,
+      "sha256": "c9ac79b80f29e86d33b74814832eb175487e7aae167c83f6d3af399578cd9003"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0005/ui-player-direct-toast70-A0001/screen.png",
+      "bytes": 1261727,
+      "sha256": "e21af30e8bc608547c8ea67e78f672923e6107dd924fb64e596722817907a3e3"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0005/ui-NPC-direct-toast70-clean-A0002/screen.png",
+      "bytes": 1174248,
+      "sha256": "7b74e180a0bccf2bfdad678bff7bf363d77b57c37e9329de0283fa9f1a8840c6"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0005/screen-lease/release.json",
+      "bytes": 1135,
+      "sha256": "68eef882905932a8af5911faee9118a9e8e8f1aa8b984e3058950d0debc46335"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0005/game-stop-gate-A0001.json",
+      "bytes": 2214,
+      "sha256": "f367842139564b5a37f1f1855b19eac6ee9e6bb1f5ff90bf08f22b7b2a465a26"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0005/session/actual-pre-create-display-settings.json",
+      "bytes": 463,
+      "sha256": "8deb95db11d78f633a184513708ee3cc278cbf71cfc5a0b7582a49e188534846"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/integrated-tools-verification-A0001/receipt.json",
+      "bytes": 2342,
+      "sha256": "017c3b2fc221464e2a4dfb0600fe19ef6d86e5a2e02b9430758d9aade528a035"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/integrated-decoder-verification-A0001/health-readback.json",
+      "bytes": 349887,
+      "sha256": "bea88497e10282f00878995493eade2508d21cc22071f177d297557f094498e0"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-media-redo-20261004/root-native-health-delta-A0001.json",
+      "bytes": 2066,
+      "sha256": "224d0e6a049950675d374f7bd2b6ffdb9cb36cc77c102f2509119cecf59dccf6"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-media-redo-20261004/root-independent-health-saves-A0002.json",
+      "bytes": 13151,
+      "sha256": "a6074a5ab0907c8acfc0b7b0fff078f878d48d91360a009a7a13689bae16dda3"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-1.1.0-20261004/live-candidate-A0004/closure.json",
+      "bytes": 21149,
+      "sha256": "bcb3d75b31b158389a4aa4a22a7a0c34d6b4087982fc563de290de9079f5611b"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-1.1.0-20261004/live-candidate-A0004/runtime-byte-comparison.json",
+      "bytes": 8937,
+      "sha256": "f18f0174b91a180307ab0767747ec63efee3d87bfd53b89b04e08c00157029ec"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-1.1.0-20261004/live-candidate-A0004/mod_superman_qiang.manifest.json",
+      "bytes": 4058,
+      "sha256": "92dffc1e2dd66bc5a72dfa797632b320b5b6d8bf8a43ce4712a203b4e684fda5"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0002/session/preparation.json",
+      "bytes": 494600,
+      "sha256": "69c5fd47088ca8fcf2a8481ce1ac8b681b978b915710934d48cbd2c97ae28429"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0002/session/report.json",
+      "bytes": 8500,
+      "sha256": "5fe72a96ab63364c6c92cb5eab5e0a0b2d9605a942c37a09918e15f4beac72d4"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0002/stopped-log-archive-A0001/receipt.json",
+      "bytes": 4031,
+      "sha256": "8824a66537133a0a4d1fa7e18dfa9eedf6768add4f44e17b4a30d342e26fd751"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0002/offline-recovery-A0001/probe-1/steam-frame-freshness.json",
+      "bytes": 1204,
+      "sha256": "92d5b4d791389944902b8ae97473a64e0f28d0ba8cf2fc800fd2b833c37bbd34"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0003/session/preparation.json",
+      "bytes": 494586,
+      "sha256": "8e58f1823a2e8b8c5d4ff91a74dd230288a0dd6b0eb4015884caf2ff4ee7b901"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0003/session/report.json",
+      "bytes": 8535,
+      "sha256": "5f898c550791a472f5cc8c215412912b92eb2924e4008fc17f9a51bcb350038d"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0003/stopped-log-archive-A0001/receipt.json",
+      "bytes": 4020,
+      "sha256": "4480fe7c3346be576ba893c397e4323a7a61e66761b18b006ab8c95a13066d53"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0003/offline-recovery-A0001/probe-1/steam-frame-freshness.json",
+      "bytes": 1204,
+      "sha256": "33e3769aac071c6743575c554c57360ef1f56339a73179023569dbb702e79148"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0004/session/preparation.json",
+      "bytes": 494025,
+      "sha256": "f1b15efcb1f802ada287e93186f24aefde6c3ff1b9f987564f9e5d0e907edeb6"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0004/session/report.json",
+      "bytes": 8535,
+      "sha256": "bb4b88fbb543482567c1666ceba8954c2181d5c9c91ae8db62902afd30849708"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0004/stopped-log-archive-A0001/receipt.json",
+      "bytes": 4023,
+      "sha256": "c0e3f365d99bd8b35606b28748cea333f950f6725a62649a2261d367baecbe0a"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0004/offline-recovery-A0001/probe-1/steam-frame-freshness.json",
+      "bytes": 1203,
+      "sha256": "7625b18336d99458b9d99d5b3a1b5213e2a23db1d5ddbcb943293b84de080a29"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0005/session/preparation.json",
+      "bytes": 494031,
+      "sha256": "3468e62fa14a10ec9c1371afd52c79675dabfe3b85323576955474f7b86cbed3"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0005/session/report.json",
+      "bytes": 8526,
+      "sha256": "f91f21d373831074f57b169e704264fecf9a6e584752b53d98131a0d8733d262"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0005/stopped-log-archive-A0001/receipt.json",
+      "bytes": 3927,
+      "sha256": "aa2bc37d54276a8f5760efaf226b49ca8d103da3bbd31990d8bb45d2bc70580c"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0005/offline-recovery-A0001/probe-1/steam-frame-freshness.json",
+      "bytes": 1205,
+      "sha256": "fa35e254a48d6323902fd6dcf41f394945d810ffa6f47c01c8e764c03d9ef028"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v3/05_notification.jpg",
+      "bytes": 138982,
+      "sha256": "51ac5484e3a82bcac65c65c2fe3fe3d058c2868715980171192f1d1886c0d6ff"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v3/05_notification.raw.png",
+      "bytes": 1174248,
+      "sha256": "7b74e180a0bccf2bfdad678bff7bf363d77b57c37e9329de0283fa9f1a8840c6"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v3/05_notification.provenance.json",
+      "bytes": 2710,
+      "sha256": "84e7377357368bcd807c30c98c79378c8bedd36c4d179f32ea0c3b4fa2b88528"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v3/05_notification.root-review.json",
+      "bytes": 1549,
+      "sha256": "52a373f946d523d82c320d8cd3c369f5452a448d9c54c34b62d812f951f05782"
+    }
+  ],
+  "limitations": [
+    "Native health independentquery onlyplayer; NPC script getter +saved raw base/ledger/scale",
+    "No lifespan year/month guarantee",
+    "No seven-branch statisticaldistribution",
+    "No native retest all7empty or anonymous in this20case increment; unchanged counterpart histories explicitlyseparate",
+    "No14modifier-window each photographed; sourceinventory only",
+    "Only Chinese actualUI;9language formatchecks separate",
+    "Multiplayer/achievements/othergamebuilds untested",
+    "R19 unknown formatter14 remains unknown source; no zero-global-errors claim",
+    "R21 toast hover expired; not passed;bodydirect actual",
+    "R22 premature controller input dependency error retained,noCK3launch fromfailed controller"
+  ],
+  "final_game_inventory": {
+    "tasklist_returncode": 0,
+    "tasklist_pids": [],
+    "wmi_pids": [],
+    "native_pids": [],
+    "inventory_backend": "tasklist+toolhelp32",
+    "processes": []
+  },
+  "screen_released": true,
+  "final_screen_release": {
+    "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0005/screen-lease/release.json",
+    "bytes": 1135,
+    "sha256": "68eef882905932a8af5911faee9118a9e8e8f1aa8b984e3058950d0debc46335"
+  },
+  "normal_gameplay_media": {
+    "media_refs": [
+      {
+        "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v3/05_notification.jpg",
+        "bytes": 138982,
+        "sha256": "51ac5484e3a82bcac65c65c2fe3fe3d058c2868715980171192f1d1886c0d6ff"
+      },
+      {
+        "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v3/05_notification.raw.png",
+        "bytes": 1174248,
+        "sha256": "7b74e180a0bccf2bfdad678bff7bf363d77b57c37e9329de0283fa9f1a8840c6"
+      },
+      {
+        "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v3/05_notification.provenance.json",
+        "bytes": 2710,
+        "sha256": "84e7377357368bcd807c30c98c79378c8bedd36c4d179f32ea0c3b4fa2b88528"
+      },
+      {
+        "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v3/05_notification.root-review.json",
+        "bytes": 1549,
+        "sha256": "52a373f946d523d82c320d8cd3c369f5452a448d9c54c34b62d812f951f05782"
+      }
+    ],
+    "output_dimensions": [
+      785,
+      364
+    ],
+    "source_is_actual_R0022_production_only": true,
+    "source_target_character_id": 32535,
+    "source_true_XP": 1,
+    "actual_health_transfer_depicted": false,
+    "caption_scope": "Normal actual XP1 holder record display; no claim the same-XP gameplay pair absorbed health. Health mechanism tested separately with R19 fixture.",
+    "public_upload_status": "PENDING",
+    "root_direct_final_image_review": true
+  }
+}

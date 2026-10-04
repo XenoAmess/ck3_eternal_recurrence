@@ -1,0 +1,249 @@
+{
+  "schema": "superman-qiang.promotional-media-provenance.v3",
+  "recorded_utc": "2026-10-04T03:43:43.689161+00:00",
+  "intended_product_version": "1.1.0",
+  "run": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001",
+  "classification": "promotional_illustrations_and_rule_diagrams_not_gameplay",
+  "workshop_published": false,
+  "runtime_or_UI_acceptance_claimed": false,
+  "old_P0002_fullscreen_record_media_used": false,
+  "prior_R13_media_used": false,
+  "cover_changed": false,
+  "historical_v1_v2_assets_overwritten": false,
+  "generation_tool": "built-in tools.image_gen__imagegen",
+  "generation_record": {
+    "path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/generation-record.json",
+    "sha256": "f06f831e3e810c91e3166d2aa0a90433e98488dde472cd5ab26d3ae496aed32e",
+    "bytes": 12781
+  },
+  "generation_record_repository_path": "images/superman_qiang_media_1_1_0/generation-record.json",
+  "full_prompts_and_reference_hashes": "All three full edit prompts and exact input PNG SHA-256 values are in the generation record, including immutable copies of each v1 reference.",
+  "original_generated_pngs_preserved": true,
+  "source_preservation_script": {
+    "path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/preserve_generation_sources.py",
+    "sha256": "c90db243ba92562a3c2c5836c0a08846e7030774d331c5d741e4b6310b2165aa",
+    "bytes": 5156
+  },
+  "projection_script": {
+    "path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/project_promotional_media.py",
+    "sha256": "82e5e0a6a80566e381e78ac67a7357bbf79babf4b318d05c48de445554cc976b",
+    "bytes": 4012
+  },
+  "repository_projection_script": "tools/compose_superman_qiang_promotional_media.py",
+  "finalization_script": {
+    "path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/finalize_package.py",
+    "sha256": "7168d7d5af6c145e4f2de90854cbe232edd543159558704feb8756bc55e5c820",
+    "bytes": 6411
+  },
+  "environment": {
+    "interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "pillow": "12.3.0"
+  },
+  "observed_design_source_commit": "ff5b112d8bde46948538678b58705ad88b69e406",
+  "design_source_status": "Static design and observed source snapshots only; generated art does not prove real UI or mechanism acceptance.",
+  "content_changes": {
+    "attribute_pool": [
+      "diplomacy",
+      "martial",
+      "stewardship",
+      "intrigue",
+      "learning",
+      "prowess",
+      "health"
+    ],
+    "selection": "equal weight among eligible transferable attributes",
+    "six_skill_modifier_transfer": "same skill donor -1 and recipient +1",
+    "health_modifier_transfer": "donor -0.00075 and recipient +0.00075",
+    "health_lifespan_claim": null,
+    "normal_entry": "right-click character -> 查看性经验",
+    "notification_copy": "通知看次数，悬停看属性",
+    "UI_depiction": "none: illustrative ledger and written feature statement only"
+  },
+  "projection": [
+    {
+      "source_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/generated/01_absorption.png",
+      "source_sha256": "759cd149c166cad2d5929f13e53638e488cece1629e4a72d7a13035e9d507671",
+      "source_bytes": 2529273,
+      "source_dimensions": [
+        1672,
+        941
+      ],
+      "source_crop_left_top_right_bottom": [
+        0.0,
+        0.25,
+        1672.0,
+        940.75
+      ],
+      "projection": "centered aspect-preserving crop and LANCZOS size projection",
+      "output_dimensions": [
+        1600,
+        900
+      ],
+      "output_format": "JPEG",
+      "output_mode": "RGB",
+      "quality": 95,
+      "optimize": true,
+      "progressive": true,
+      "subsampling": 0,
+      "output_sha256": "af7c226187d1024e62ed4ad881d2d07889a3c24d9715026442ccbd3ec835a238",
+      "output_bytes": 840984,
+      "content_editing": false,
+      "output_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/jpeg/01_absorption.jpg"
+    },
+    {
+      "source_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/generated/02_transfer.png",
+      "source_sha256": "51c55f0694f4f59fb483eab9df6510fa340a801dd19c2506b678297f8359fd34",
+      "source_bytes": 2600306,
+      "source_dimensions": [
+        1672,
+        941
+      ],
+      "source_crop_left_top_right_bottom": [
+        0.0,
+        0.25,
+        1672.0,
+        940.75
+      ],
+      "projection": "centered aspect-preserving crop and LANCZOS size projection",
+      "output_dimensions": [
+        1600,
+        900
+      ],
+      "output_format": "JPEG",
+      "output_mode": "RGB",
+      "quality": 95,
+      "optimize": true,
+      "progressive": true,
+      "subsampling": 0,
+      "output_sha256": "e4f9360eda0d65f9eb46d96654ea0e81075c3ad41ec2da5d90f82742860b9066",
+      "output_bytes": 838222,
+      "content_editing": false,
+      "output_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/jpeg/02_transfer.jpg"
+    },
+    {
+      "source_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/generated/03_records.png",
+      "source_sha256": "aabe2b68ea5a799049fb0d52df51d367187174adbc77018ad934b423b7ffc774",
+      "source_bytes": 2612270,
+      "source_dimensions": [
+        1672,
+        941
+      ],
+      "source_crop_left_top_right_bottom": [
+        0.0,
+        0.25,
+        1672.0,
+        940.75
+      ],
+      "projection": "centered aspect-preserving crop and LANCZOS size projection",
+      "output_dimensions": [
+        1600,
+        900
+      ],
+      "output_format": "JPEG",
+      "output_mode": "RGB",
+      "quality": 95,
+      "optimize": true,
+      "progressive": true,
+      "subsampling": 0,
+      "output_sha256": "2051e0641effd7e4ecfe4f42189905a6cf347a555377fba3346b4132e267b9c7",
+      "output_bytes": 834736,
+      "content_editing": false,
+      "output_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/jpeg/03_records.jpg"
+    }
+  ],
+  "projection_stdout": {
+    "path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/projection-result.json",
+    "sha256": "c501f57f35b88ce77941aaa25ffc31863f15d2dc3a0a274c34afe45e403619b9",
+    "bytes": 3065
+  },
+  "byte_identical_rebuild": {
+    "passed": true,
+    "report": {
+      "path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/projection-check.json",
+      "sha256": "846b0521119433657382c7f0df242378e34bded1c7dc4a5121067a9d86ae7e8c",
+      "bytes": 3064
+    }
+  },
+  "content_editing_by_pillow": false,
+  "strict_size_limit_bytes": 1048576,
+  "repository_sources": [
+    {
+      "id": "01_absorption",
+      "path": "D:/workspace/ck3_eternal_recurrence/images/superman_qiang_media_1_1_0/01_absorption.png",
+      "sha256": "759cd149c166cad2d5929f13e53638e488cece1629e4a72d7a13035e9d507671",
+      "bytes": 2529273
+    },
+    {
+      "id": "02_transfer",
+      "path": "D:/workspace/ck3_eternal_recurrence/images/superman_qiang_media_1_1_0/02_transfer.png",
+      "sha256": "51c55f0694f4f59fb483eab9df6510fa340a801dd19c2506b678297f8359fd34",
+      "bytes": 2600306
+    },
+    {
+      "id": "03_records",
+      "path": "D:/workspace/ck3_eternal_recurrence/images/superman_qiang_media_1_1_0/03_records.png",
+      "sha256": "aabe2b68ea5a799049fb0d52df51d367187174adbc77018ad934b423b7ffc774",
+      "bytes": 2612270
+    }
+  ],
+  "repository_outputs": [
+    {
+      "id": "01_absorption",
+      "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v3/01_absorption.jpg",
+      "sha256": "af7c226187d1024e62ed4ad881d2d07889a3c24d9715026442ccbd3ec835a238",
+      "bytes": 840984
+    },
+    {
+      "id": "02_transfer",
+      "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v3/02_transfer.jpg",
+      "sha256": "e4f9360eda0d65f9eb46d96654ea0e81075c3ad41ec2da5d90f82742860b9066",
+      "bytes": 838222
+    },
+    {
+      "id": "03_records",
+      "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v3/03_records.jpg",
+      "sha256": "2051e0641effd7e4ecfe4f42189905a6cf347a555377fba3346b4132e267b9c7",
+      "bytes": 834736
+    }
+  ],
+  "build_argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "tools/compose_superman_qiang_promotional_media.py",
+    "--source-dir",
+    "images/superman_qiang_media_1_1_0",
+    "--output-dir",
+    "workshop/superman_qiang_media/v3",
+    "--manifest",
+    "images/superman_qiang_media_1_1_0/generation-record.json"
+  ],
+  "check_argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "tools/compose_superman_qiang_promotional_media.py",
+    "--source-dir",
+    "images/superman_qiang_media_1_1_0",
+    "--output-dir",
+    "workshop/superman_qiang_media/v3",
+    "--manifest",
+    "images/superman_qiang_media_1_1_0/generation-record.json",
+    "--check"
+  ],
+  "image_review": {
+    "reviewer": "/root/superman_art",
+    "method": "Direct tools.view_image inspection of every exact final JPEG at original detail",
+    "scope": "art content, Chinese copy, health decimals and direction, seven labels, no fabricated game UI",
+    "result": "approved",
+    "reviewed_sha256": [
+      "af7c226187d1024e62ed4ad881d2d07889a3c24d9715026442ccbd3ec835a238",
+      "e4f9360eda0d65f9eb46d96654ea0e81075c3ad41ec2da5d90f82742860b9066",
+      "2051e0641effd7e4ecfe4f42189905a6cf347a555377fba3346b4132e267b9c7"
+    ],
+    "parent_source_PNG_review": "Root directly inspected and accepted all three original generated PNGs; final JPEG review separately pending when this record was created."
+  },
+  "unrelated_environment_probe_attempt": {
+    "command": "tools\\.venv\\Scripts\\python.exe -c quoted JSON environment probe",
+    "exit_code": 1,
+    "error": "SyntaxError: unterminated string literal from cmd argument quoting",
+    "resolution": "Environment data collected directly in this file-based Python finalization script; no failed generation or projection."
+  }
+}

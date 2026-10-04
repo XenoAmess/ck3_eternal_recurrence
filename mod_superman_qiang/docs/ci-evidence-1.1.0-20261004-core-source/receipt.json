@@ -1,0 +1,18 @@
+{
+  "source_commit": "ff5b112d8bde46948538678b58705ad88b69e406",
+  "ci_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37174702065",
+  "ci_id": 37174702065,
+  "status": "SUCCESS",
+  "raw_sha256": "149a8557bc1c1f78b17498e9edc6f821f9574c99dfd41db62fd0cc490a822363",
+  "command": [
+    "gh",
+    "run",
+    "view",
+    "37174702065",
+    "--repo",
+    "XenoAmess/ck3_eternal_recurrence",
+    "--json",
+    "databaseId,status,conclusion,url,headSha,jobs,event,createdAt,updatedAt"
+  ],
+  "ck3_live_proven": false
+}

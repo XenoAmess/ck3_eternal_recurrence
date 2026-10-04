@@ -1,0 +1,14 @@
+[
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\_character_interactions.info",
+    "size": 33759,
+    "sha256": "cc2442a313a6b1a2a7fa02b92a094276edfe39c60835c3286172c5b6d7b70a37",
+    "snippet": "282: \t# Whether to bother opening a confirmation window to players when selected at all; true if not specified\n283: \t# If evaluated false, will proceed to run on_send / on_accept immediately when selected\n284: \t# Deprecated! Can be used to induce gamestate-changing effects which should ALWAYS be communicated to the player ahead of time! To be removed with TIT-64917\n285: \tneeds_confirmation = trigger"
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_tributary_interactions.txt",
+    "size": 153402,
+    "sha256": "64c7d42ba71fba033297709b69a3ccef341ab6fb9092b3dfc69052124f3622cb",
+    "snippet": "74: \t\t\tis_confederation_member = no\n75: \t\t\tis_at_war = no\n76: \t\t}\n77: \t}\n78: \n79: \tneeds_confirmation = {\n80: \t\tscope:recipient = { highest_held_title_tier < tier_hegemony } # acknowledging a hegemon requires a tribute mission; open the decision UI instead of confirming acceptance\n81: \t}\n82: \n83: \tgreeting = positive\n84: \tnotification_text = BECOME_TRIBUTARY_INTERACTION_NOTIFICATION"
+  }
+]

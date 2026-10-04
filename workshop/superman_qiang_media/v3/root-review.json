@@ -1,0 +1,61 @@
+{
+  "schema": "superman-qiang.promotional-media-root-review.v1",
+  "recorded_utc": "2026-10-04T03:44:49.345693+00:00",
+  "reviewer": "/root",
+  "review_authority": "parent agent art review; not a user review",
+  "result": "approved",
+  "method": "Parent directly viewed all three exact source PNG files, then directly viewed all three exact final JPEG paths before sending approval.",
+  "scope": "Chinese glyphs/copy, seven attributes, distinct six-skill plus/minus 1 and health plus/minus 0.00075, notification and hover copy, no fabricated gameplay UI, complete boundaries at 1600x900",
+  "runtime_or_UI_acceptance_claimed": false,
+  "public_CDN_or_Workshop_review_claimed": false,
+  "user_review_claimed": false,
+  "artifacts": [
+    {
+      "source_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/generated/01_absorption.png",
+      "source_sha256": "759cd149c166cad2d5929f13e53638e488cece1629e4a72d7a13035e9d507671",
+      "source_dimensions": [
+        1672,
+        941
+      ],
+      "final_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/jpeg/01_absorption.jpg",
+      "final_sha256": "af7c226187d1024e62ed4ad881d2d07889a3c24d9715026442ccbd3ec835a238",
+      "final_bytes": 840984,
+      "final_dimensions": [
+        1600,
+        900
+      ]
+    },
+    {
+      "source_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/generated/02_transfer.png",
+      "source_sha256": "51c55f0694f4f59fb483eab9df6510fa340a801dd19c2506b678297f8359fd34",
+      "source_dimensions": [
+        1672,
+        941
+      ],
+      "final_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/jpeg/02_transfer.jpg",
+      "final_sha256": "e4f9360eda0d65f9eb46d96654ea0e81075c3ad41ec2da5d90f82742860b9066",
+      "final_bytes": 838222,
+      "final_dimensions": [
+        1600,
+        900
+      ]
+    },
+    {
+      "source_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/generated/03_records.png",
+      "source_sha256": "aabe2b68ea5a799049fb0d52df51d367187174adbc77018ad934b423b7ffc774",
+      "source_dimensions": [
+        1672,
+        941
+      ],
+      "final_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0001/jpeg/03_records.jpg",
+      "final_sha256": "2051e0641effd7e4ecfe4f42189905a6cf347a555377fba3346b4132e267b9c7",
+      "final_bytes": 834736,
+      "final_dimensions": [
+        1600,
+        900
+      ]
+    }
+  ],
+  "parent_approval_message": "root已直接审3最终JPEG精确路径，接受实际内容字形/7项/数值/通知文案；1600×900没有裁坏边文，可记录root reviewed source paths SHA（时间用UTC当前实际）。",
+  "historical_provenance": "provenance.json records the earlier pending-parent-review state; this append-only separate record supplies the actual later approval."
+}

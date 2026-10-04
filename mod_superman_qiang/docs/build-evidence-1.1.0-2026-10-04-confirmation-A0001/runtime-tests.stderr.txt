@@ -1,0 +1,13 @@
+test_acceptance_marker_leak_is_red (__main__.SupermanStaticContractTests.test_acceptance_marker_leak_is_red) ... ok
+test_changed_generated_runtime_is_red (__main__.SupermanStaticContractTests.test_changed_generated_runtime_is_red) ... ok
+test_duplicate_and_missing_localization_references_are_red (__main__.SupermanStaticContractTests.test_duplicate_and_missing_localization_references_are_red) ... ok
+test_ledger_contract_mutations_are_red (__main__.SupermanStaticContractTests.test_ledger_contract_mutations_are_red) ... ok
+test_malformed_brace_returns_red_report (__main__.SupermanStaticContractTests.test_malformed_brace_returns_red_report) ... ok
+test_reviewed_source_is_green (__main__.SupermanStaticContractTests.test_reviewed_source_is_green) ... ok
+test_scripted_effect_count_over_twenty_is_red (__main__.SupermanStaticContractTests.test_scripted_effect_count_over_twenty_is_red) ... ok
+test_strings_and_comments_do_not_inflate_top_level_count (__main__.SupermanStaticContractTests.test_strings_and_comments_do_not_inflate_top_level_count) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 10.801s
+
+OK

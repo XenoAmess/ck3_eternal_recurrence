@@ -1,0 +1,14 @@
+{
+  "schema": "superman-qiang.source-integration-formatting.v1",
+  "recorded_utc": "2026-10-04T05:53:38.557178+00:00",
+  "path": "mod_superman_qiang/tools/health_fixture_data.py",
+  "change": "Remove only one extra trailing LF rejected by git diff --cached --check",
+  "before_sha256": "e635e29d832edea0ccefc22cc31bed485232d7607ba36062ae5b50fd4b5bcef5",
+  "after_sha256": "3cb17e1942a607bfb28f4f4da34baec19ae66c54e598c416b297acf43769d436",
+  "before_bytes": 4553,
+  "after_bytes": 4552,
+  "production22_files_changed": false,
+  "fixture_logic_changed": false,
+  "prior_tools_freeze_is_historical_unchanged": true,
+  "original_snapshot": "C:/ck3-superman-qiang-media-redo-20261004/source-integration-formatting-A0001/health_fixture_data.before.py"
+}

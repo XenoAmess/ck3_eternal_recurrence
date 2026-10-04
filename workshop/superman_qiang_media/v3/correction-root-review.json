@@ -1,0 +1,22 @@
+{
+  "schema": "superman-qiang.promotional-correction-root-review.v1",
+  "recorded_utc": "2026-10-04T04:55:26.242944+00:00",
+  "reviewer": "/root",
+  "result": "approved",
+  "method": "Direct tools.view_image inspection of exact final JPEG at original detail",
+  "viewed_path": "C:/ck3-superman-qiang-media-redo-20261004/art-1.1.0-P0002/jpeg/03_records.jpg",
+  "selected_repository_path": "workshop/superman_qiang_media/v3/03_records.jpg",
+  "final_sha256": "cbe8a7be4a3e72f57480e8031525ab2be551dda0d53bbc67f01356bf353c371f",
+  "bytes": 802191,
+  "dimensions": [
+    1600,
+    900
+  ],
+  "approved_copy": "通知查看次数与属性",
+  "scope": "Chinese sentence, seven attribute labels, adult king and queen, complete poster, explicit illustration label; no mock game UI",
+  "supersedes_03_only": "2051e0641effd7e4ecfe4f42189905a6cf347a555377fba3346b4132e267b9c7",
+  "01_02_prior_root_review_remains_applicable": true,
+  "historical_provenance_and_review_preserved": true,
+  "actual_UI_or_publication_or_user_review_claimed": false,
+  "correction_provenance_sha256": "1a7a7286d8c2da228ec5ebdb99fb8b0ca76f5ff4452d9d37214d810ceef9492e"
+}

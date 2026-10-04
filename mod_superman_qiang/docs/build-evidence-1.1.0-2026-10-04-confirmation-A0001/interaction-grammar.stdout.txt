@@ -1,0 +1,1 @@
+{"id":"common/character_interactions/sxad_interactions.txt","line":1,"exitCode":0,"result":{"status":"PARSED","bytes":1174,"tokens":312,"blocks":13,"diagnostics":[],"roundTrip":true}}

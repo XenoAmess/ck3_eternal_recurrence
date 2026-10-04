@@ -1,0 +1,72 @@
+{
+  "schema": "superman-qiang.real-gameplay-screenshot-projection.v1",
+  "recorded_utc": "2026-10-04T05:37:35.439968+00:00",
+  "status": "pending_direct_visual_and_capture_review",
+  "source_path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0005/ui-NPC-direct-toast70-clean-A0002/screen.png",
+  "source_sha256": "7b74e180a0bccf2bfdad678bff7bf363d77b57c37e9329de0283fa9f1a8840c6",
+  "source_bytes": 1174248,
+  "source_dimensions": [
+    1024,
+    768
+  ],
+  "source_format": "PNG",
+  "source_mode": "RGB",
+  "crop_left_top_right_bottom": [
+    0,
+    36,
+    785,
+    400
+  ],
+  "output_dimensions": [
+    785,
+    364
+  ],
+  "output_format": "JPEG",
+  "output_mode": "RGB",
+  "quality": 95,
+  "optimize": true,
+  "progressive": true,
+  "subsampling": 0,
+  "resized": false,
+  "content_edited": false,
+  "image_generation_used": false,
+  "output_bytes": 138982,
+  "output_sha256": "51ac5484e3a82bcac65c65c2fe3fe3d058c2868715980171192f1d1886c0d6ff",
+  "strict_max_bytes": 1048576,
+  "below_native_byte_limit": true,
+  "retained_raw_path": "C:/ck3-superman-qiang-media-redo-20261004/gameplay-1.1.0-P0003/05_notification.raw.png",
+  "output_path": "C:/ck3-superman-qiang-media-redo-20261004/gameplay-1.1.0-P0003/05_notification.jpg",
+  "capture_report": {
+    "path": "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0005/ui-NPC-direct-toast70-clean-A0002/receipt.json",
+    "bytes": 700,
+    "sha256": "dc171a737fb62ca3ab73e112022aefc25be11ca554c6ad0d03211653aae3ab06"
+  },
+  "capture_result_inferred": false,
+  "visual_review": "pending",
+  "published": false,
+  "tool": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\compose_superman_qiang_gameplay_media.py",
+    "sha256": "351ad9109e739e4441ce92359da044546971543b556595d2e6bbb94572653ea1",
+    "argv": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "tools\\compose_superman_qiang_gameplay_media.py",
+      "--source",
+      "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0005/ui-NPC-direct-toast70-clean-A0002/screen.png",
+      "--source-sha256",
+      "7b74e180a0bccf2bfdad678bff7bf363d77b57c37e9329de0283fa9f1a8840c6",
+      "--crop",
+      "0",
+      "36",
+      "785",
+      "400",
+      "--output-dir",
+      "C:/ck3-superman-qiang-media-redo-20261004/gameplay-1.1.0-P0003",
+      "--name",
+      "05_notification",
+      "--capture-report",
+      "C:/ck3-superman-qiang-110-20261004/acceptance/live-H0005/ui-NPC-direct-toast70-clean-A0002/receipt.json"
+    ],
+    "pillow_version": "12.3.0",
+    "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]"
+  }
+}
