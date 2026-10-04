@@ -413,3 +413,28 @@ The first focused attempt remains [run01](Z:/ck3_mod_rewrite_process_assets/g2-r
 Readiness is **static-ready**, with **zero new paused game observations** for this getter. Root's standdown baseline at raw date53251056 had no wars or own armies, so there was no ongoing battle frame to sample; Root's independent gameplay continues. This change adds no tool, flag, gate, command, game day, window action or historical value backfill. The next actual ongoing battle can use the unchanged snapshot -> `ck3_query_battle_control_snapshot_v1` recipe and feed the observed primary levy operand into the existing P1 model. Current inputs alone do not certify simulator parity, historical damage, or completed combat OODA.
 
 [Closed native tree](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-primary-levy-damage-inputs-v56/native-tree/TREE.md) and [sealed implementation receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-primary-levy-damage-inputs-v56/ROOT-DELIVERY.json) hold the source, patch and failure pins. Root integrates only section diffs; frozen full-file projections are fixture material and must not overwrite later knight/current-person changes.
+
+## Oct4 current injury/person fragment and real MAA knight-ID source
+
+Root has published the seven additive production paths at `6c2e26678c333a75a00819b4b8147e965f7cd5e2`. This source increment is **static-ready**, not a new observation of the fifth battle or its nine survivors. The fifth normal result above remains qualified independently. The exact `.3` freeze is unchanged; only its matching descriptor installs the new readonly leaves.
+
+The existing `ck3_query_battle_terminal_transition_v1` accepts an explicit bounded `character_ids` list. Public `prior_combat_id=null` and `subject_public_cunit_id=null` select current-character-only mode with a fresh public `expected_revision`. Its optional `character_observations[].current_person_state` preserves the old alive/custody fields and leaves historical `prior.character_custody` unchanged. Effective prowess reuses the signed int32 `Character+EC` value already published by `ReadCombatKnights`; TraitDatabase `89E5B0` and HasTrait `28BB1F0` reuse existing exact ABI coverage. Eight fixed flags are independently bool/null: `wounded_1/2/3`, `maimed`, `one_legged`, `one_eyed`, `disfigured`, `incapable`. Three successful false wounded reads give rank0; a unique true gives1/2/3; an unknown read or multiple true flags gives null with reason, preserving independent flags/prowess. Historical `type_raw=2` is not rank2 or universal injury severity; current state does not prove an old event's precise trait delta.
+
+For future `men_at_arms` Bucket samples, strict current RegimentID/side-CArmy binding now reads the existing `CArmyRegiment+148` source into the already published `knight_character_id_raw`. Canonical -1 is true none. Positive IDs reuse strict Character+18/Char tag and Character+1B8→link+F8 RegimentID backlink; invalid association retains the existing `state_changed` failure instead of fabricated none. Levy rows and the old58-entry cache are unchanged; a requested nine-person list is not a complete knight roster.
+
+```mermaid
+flowchart LR
+  I[Explicit current CharacterIDs] --> C[Strict Character fullID]
+  C --> P[Existing effective prowess +EC]
+  C --> T[8 existing TraitDB / HasTrait keys]
+  T --> W[Independent flags and unique wounded rank]
+  P --> M[Same terminal MCP optional current_person_state]
+  W --> M
+  R[Strict current MAA Regiment / side Army] --> K[+148 and existing Character backlink]
+  K --> B[Existing raw knight-ID field]
+  B -. no historical recovery / full roster .-> U[Old cache stays unchanged]
+```
+
+Existing proof: native two sourcecases GREEN; compile2/runtime2 because the first fixture expected the wrong failure enum, then only its test TU was corrected/relinked. Registered MCP1 query/9 rows GREEN under `-B -O`; the first Python process failed during fixture import before wire read/MCP calls, then only namespace loading was fixed. Both harness REDs are retained; capability RED0. Only one actual terminal serializer wire was consumed, and the Bucket case remained a native assertion. Fixture values are synthetic; new actual0. Original sealed receipt: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-casualty-outcomes/player-combat-1291845646-actual-terminal/numeric-person/native-injury-knight-readonly-research/ROOT-DELIVERY.json`, SHA `e42b03fe10cb958ecac190afa6908c09ce9e6ad3e15c30c69120f8443077860e`.
+
+The reusable two-case native source is [ck3_12003_battle_current_person_test.cpp](../../ck3_autonomous_player/native_bridge/src/ck3_12003_battle_current_person_test.cpp), with output directory argv. The [registered MCP runner](../../ck3_autonomous_player/tools/verify_battle_current_person_registered_mcp.py) consumes its `EXPECTED.json` and `bounded-current-person.json` using a parameterized repository tree/output. These two files only preserve already GREEN fixture logic; this file-only followup performs no rerun, full build, SDK, shared-source/Git operation, window action or game-day advance. Root owns the combined integration build/deploy and later genuine paused same-MCP observation.
