@@ -373,3 +373,35 @@ bounded slots0..7 address map"]
 Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-modifier-manager-consumer-v70/method-metadata/{ROOT-DELIVERY.json,BOUNDED-QWORD-CAPTURE.json,METHOD-ADDRESS-MAP.json,TREE.md,SOURCE-PINS.json,ACTUAL-READ-COST.json,EXACT-NEXT-PIN-RECIPE.json}`. The metadata packet's qualified consumer targets list is empty. A separate source lane is comparing these exact addresses with existing exact-build cached queue/forced-writer evidence; this metadata delivery supplies no result for that ongoing lookup.
 
 The next bounded body recipe requires an actual receiver-relative `+B0/+BC` queue-use or existing forced-writer ancestor edge before promoting a target to consumer status. At most two qualified actual bodies are allowed. The constructor-to-live-global binding and calendar admission remain open as recorded in v69. No further absolute `CC88` scan, calendar search, numerical module, empty fixture, test, live RPM, SDK, game/window action, shared mutation or Git operation was performed for this packet.
+
+
+## v71 — reachable method roles and direct primary helper (2026-10-05 / W41)
+
+Root adopted v70 at `4850873e489ba92053ced5cb00ac03eea339f22c`. This source increment preserves its exact 38,196-byte projection prefix (`b269c64e820fbc41606b84855f1041c92f2bcb7435d71d7f281c9506712a84fc`). Exact CK3 **1.20.0.3**, frozen EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6` remains the identity.
+
+A narrow lookup found no exact-RVA matches for the 10 new unique method targets in 18 specified exact-build cached text/pin files. Root explicitly authorized the now proved class/vtable-reachable targets as sufficient construction inputs for bounded body research. `.pdata` extents selected the two shortest exact-entry reachable methods: `1A2E130` (30 B) and `2A3D380` (34 B). Other pinned extents remain unread. No third body was captured.
+
+`1A2E130`, registered at secondary table `4780670` slot4, preserves the incoming receiver, calls `[incoming vptr+38]` at `1A2E13C`, reloads the receiver's vptr, restores that receiver, then tail-jumps `[post-call vptr+48]` at `1A2E14A`. The first dispatch binds to `2A3D380` when the incoming vptr is the identified secondary table. This is source-closed two-stage virtual dispatch order; the body performs no direct queue, Character EC or Entry stat read/write.
+
+The separately interpreted cached `2A3D380` body adjusts `RCX` from secondary to primary (`RCX-=8` at `2A3D389`), directly calls **`2A3E380`** at `2A3D38D`, and on normal return writes DWORD zero to `secondary+88` at `2A3D392`. That coordinate is `primary+90` (owner `CC68` under the identified embedding), distinct from destination queue `primary+B0/+BC`. The local field's meaning remains unknown. This body closes the direct primary-helper edge and reset order, with no direct queue consumption or `28C3BC0/28C3F60` call.
+
+```mermaid
+flowchart TD
+    V["CModifierManager secondary4780670 slot4"] --> W["1A2E130
+preserve receiver; call current vptr+38"]
+    W --> B["2A3D380 if incoming vptr4780670"]
+    B --> P["secondary RCX-8 = primary receiver"]
+    P --> C["38D direct call2A3E380"]
+    C --> Z["normal return: zero DWORD primary+90"]
+    Z --> R["1A2E130 reloads receiver vptr"]
+    R -. "post-call vptr target unresolved" .-> T["tail dispatch vptr+48"]
+    C -. "callee body unread" .-> Q["relative+B0/+BC consumer
+forced cache writer ancestry unknown"]
+    Q -. "numeric / frame / Entry order unknown" .-> E["future attribute feedback partial"]
+```
+
+The direct next source entry is **`2A3E380` with primary CModifierManager receiver**. The generic wrapper's later `+48` slot is a secondary, conditional entry: `47806B8` only if the reloaded vptr retains `4780670`. Neither body directly stores a vptr, but the unread direct helper prevents a preservation claim. Its actual body is a more concrete next seam than assigning a calendar or consumer role to the unknown virtual slot.
+
+Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-modifier-manager-method-role-v71/source/{ROOT-DELIVERY.json,SOURCE-RECEIPT.json,TREE.md,A-FIRST-METHOD-ROLE.json,INPUT-CONTRACT.json,READ-COST.json}` and `cached-second-role/{ROOT-DELIVERY.json,README.md,OCT5-W41-FIELDS.json}`. The preceding scoped cached lookup receipt is under `battle-modifier-manager-consumer-v70/source-qualification`.
+
+Actual new EXE reads total **1,124 B**: 1,044 B `.pdata`, 64 B unique code, 16 B unwind. Two functions shared an 8-byte unwind record which the capture script actually read twice; this repeated read remains recorded. B analyzed only A's cached 34-byte second body, adding zero EXE reads. `WRAPPER_ROLE_SOURCE_READY=true`, call/reset order is source-closed; destination drain, numeric callback, native date admission and Entry timing remain partial. No numerical module, fixture, test, SDK, live RPM, game/window action, shared mutation or Git operation was performed.
