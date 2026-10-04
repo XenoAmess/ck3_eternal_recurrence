@@ -1,0 +1,189 @@
+{
+  "files": [
+    {
+      "path": "candidate.patch",
+      "bytes": 74952,
+      "sha256": "bfb0672b10c76e7f6cb86b5d76fe95c1f152481e9583ca292e45526a2f5c617c"
+    },
+    {
+      "path": "checks/actual-frozen-regression/result.json",
+      "bytes": 799,
+      "sha256": "fb0e3eb486fdd896bbaefbafcb329deb87402349520b5863a193d92f8db32d5d"
+    },
+    {
+      "path": "checks/actual-frozen-regression/stderr.txt",
+      "bytes": 1128,
+      "sha256": "dc76f436d197acd2483cb13bd1da430e32cb0d7aaa00cbedb0edc70ed70c9f25"
+    },
+    {
+      "path": "checks/actual-frozen-regression/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checks/ai-player-gate-regression/result.json",
+      "bytes": 800,
+      "sha256": "f4915421f0d81831caa8669b6dfc3537bda5be74ad438032073880963defc2a8"
+    },
+    {
+      "path": "checks/ai-player-gate-regression/stderr.txt",
+      "bytes": 1454,
+      "sha256": "cd12f79e2c526992a95e1dea29ec2b4e5b6a0d47c97828827e67255f4c25d69e"
+    },
+    {
+      "path": "checks/ai-player-gate-regression/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checks/candidate-generated-check/result.json",
+      "bytes": 697,
+      "sha256": "50a2af3890a276f09e0c03a432d0e6c35899ddc713eaa1091eae6c0f6b5734ba"
+    },
+    {
+      "path": "checks/candidate-generated-check/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checks/candidate-generated-check/stdout.txt",
+      "bytes": 31,
+      "sha256": "3eda59fd3de7a88e5f71d602803fe66fe1eda9ef7132db19dca12826cae6ea58"
+    },
+    {
+      "path": "checks/candidate-integration/result.json",
+      "bytes": 686,
+      "sha256": "6cca03b3372d326a5480c618a3850541dd0b93cf6e8704f24104bf3aee3ed3cd"
+    },
+    {
+      "path": "checks/candidate-integration/stderr.txt",
+      "bytes": 2063,
+      "sha256": "d593f52ef923b2b0775bfa3b702d283719377da392fa5693e1f35046bdb163a8"
+    },
+    {
+      "path": "checks/candidate-integration/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checks/candidate-static/result.json",
+      "bytes": 673,
+      "sha256": "78165b8cc2417b5009526bba762952dbb591615a4e40afa59335106cfeac8a38"
+    },
+    {
+      "path": "checks/candidate-static/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checks/candidate-static/stdout.txt",
+      "bytes": 7829,
+      "sha256": "a5c597d34e7973c84cfa504cb35feecec4b478c36b8ad7eae087a069e8996cc7"
+    },
+    {
+      "path": "checks/hidden-wrapper-regression/result.json",
+      "bytes": 800,
+      "sha256": "16dc228ca513ba37fa8480ce2e3c4304f2842628841778d1c18e79517714ef36"
+    },
+    {
+      "path": "checks/hidden-wrapper-regression/stderr.txt",
+      "bytes": 1128,
+      "sha256": "01a8b079c0ca33484dcede554b561214dfe62ccce322c1ad672a4a56c6de8048"
+    },
+    {
+      "path": "checks/hidden-wrapper-regression/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checks/nested-prev-regression/result.json",
+      "bytes": 797,
+      "sha256": "4b6e6f6e39c5739c48a2d9adff07f87bc0e49dad5b8f9e2eb2b124d112a8182e"
+    },
+    {
+      "path": "checks/nested-prev-regression/stderr.txt",
+      "bytes": 1279,
+      "sha256": "53ee53d82fa531fa7dc6f2b8bb5bd718d5bb9a09f41cf9d03cbe9c4ddf30e662"
+    },
+    {
+      "path": "checks/nested-prev-regression/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checks/wrong-follower-identity/result.json",
+      "bytes": 798,
+      "sha256": "aad8d09e22c956ac748a83e10f25912227805ad8865290fc58dbe046a7de8fbf"
+    },
+    {
+      "path": "checks/wrong-follower-identity/stderr.txt",
+      "bytes": 1603,
+      "sha256": "df587225ef77c7f31d7b25016dd52beaeedb2bb18e0b39d7ed61c2f12c50e824"
+    },
+    {
+      "path": "checks/wrong-follower-identity/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "CHECKS.json",
+      "bytes": 6958,
+      "sha256": "fee745ddf5eca5dafb51a03b236cd1ef52221ca93662e01075045c3f9a42d85d"
+    },
+    {
+      "path": "INPUTS.json",
+      "bytes": 20298,
+      "sha256": "cd1659389065fe58a9b49c3e2f66b0017694792cdee6c3bd6e57711674414b1a"
+    },
+    {
+      "path": "MANIFEST.json",
+      "bytes": 3174,
+      "sha256": "d380dc1c73c0f6499adb176d4f0f1962cf40f1819c297b150e059768226a8c08"
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "bytes": 6614,
+      "sha256": "ffecf4aaff8cd7071659f10622cfa7334bd6f16bd41f999c28c82d9857734ee0"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/leadership_templates/common/scripted_triggers/lyd_c3_leadership_triggers.txt.in",
+      "bytes": 6702,
+      "sha256": "f1f0859ee2c0c3fc8beea000a5cc93a72c86371e8b5e54754aa81ef7b66b094c"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_content_leadership.py",
+      "bytes": 30723,
+      "sha256": "cf0587eca3826637150e8d04e7fd0fd42ad9de85ca2ef2c810fa5e4186695f3e"
+    },
+    {
+      "path": "observed-error.log",
+      "bytes": 840,
+      "sha256": "3c6efe65ca5e46aa5604eebbc3a401cf8a4bfe9cfac9184d36ffa7bbdd5319d5"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 2696,
+      "sha256": "c6242052712dadb5cb84c21cabd85de3e86759835ba8abf9bba3ebb1cc68ff4b"
+    },
+    {
+      "path": "vanilla/00_bastard_triggers-94-105.txt",
+      "bytes": 405,
+      "sha256": "0a5c66d8b923a8b3d17618c5bdf0e80e318a4b03d8431556508c449501cb7055"
+    },
+    {
+      "path": "vanilla/pam_scripted_triggers-1444-1453.txt",
+      "bytes": 314,
+      "sha256": "2d02f067c0cdc010fcf7235f8e072ab5a551603cbafe3e24da61e9be4e76423a"
+    },
+    {
+      "path": "vanilla/pam_scripted_triggers-6668-6684.txt",
+      "bytes": 600,
+      "sha256": "27f20d8e0158f7e538c8bf74dc0c634ec8cac0620cd3e2f6530d2cc0e5f2cb18"
+    },
+    {
+      "path": "vanilla/passive_rite_learning_triggers-113-130.txt",
+      "bytes": 570,
+      "sha256": "3f74121edd9dcf2c0a33d009a056ec728d0f4a21ae14788b6c02f8bac613de7a"
+    }
+  ]
+}

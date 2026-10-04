@@ -1,0 +1,64 @@
+{
+  "original_files": 7,
+  "original_bytes": 39858628,
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\exception.txt",
+      "relative": "userdir/crashes/ck3_20261004_192419/exception.txt",
+      "bytes": 993,
+      "sha256": "caf036abc82f9e39ec4b97dab97b75dacf9b2290a768c9fa5966a3a708bedf19",
+      "projected": true,
+      "projection": "crash/ck3_20261004_192419/exception.txt"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\logs\\debug.log",
+      "relative": "userdir/crashes/ck3_20261004_192419/logs/debug.log",
+      "bytes": 459398,
+      "sha256": "8f3e3796fe8978e296b2f087e1768d34b668629ffc87d4c8c1fae41c3953659e",
+      "projected": true,
+      "projection": "crash/ck3_20261004_192419/logs/debug.log"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\logs\\error.log",
+      "relative": "userdir/crashes/ck3_20261004_192419/logs/error.log",
+      "bytes": 840,
+      "sha256": "3c6efe65ca5e46aa5604eebbc3a401cf8a4bfe9cfac9184d36ffa7bbdd5319d5",
+      "projected": true,
+      "projection": "crash/ck3_20261004_192419/logs/error.log"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\logs\\game.log",
+      "relative": "userdir/crashes/ck3_20261004_192419/logs/game.log",
+      "bytes": 2127,
+      "sha256": "cbc4798cc9a714bcf16e4dc2ffd10ff803e6b40da0b0aa4c8399d996b0f7df37",
+      "projected": true,
+      "projection": "crash/ck3_20261004_192419/logs/game.log"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\meta.yml",
+      "relative": "userdir/crashes/ck3_20261004_192419/meta.yml",
+      "bytes": 1755,
+      "sha256": "da1316bc25aa8882de2e088915c49718df2cb115d10792b0ac7a403a110e99b0",
+      "projected": true,
+      "projection": "crash/ck3_20261004_192419/meta.yml"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\minidump.dmp",
+      "relative": "userdir/crashes/ck3_20261004_192419/minidump.dmp",
+      "bytes": 39386417,
+      "sha256": "9a458b182bb7e7976b8fdf4f5f1d2653c79489ee2fcc11418a969b05110b80de",
+      "projected": false,
+      "omission_reason": "原始约39MB minidump永久保留外置；小包仅收原件路径、bytes、SHA及32-byte header元数据，不复制dump、不推断函数或原因。"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\pdx_settings.txt",
+      "relative": "userdir/crashes/ck3_20261004_192419/pdx_settings.txt",
+      "bytes": 7098,
+      "sha256": "9dafa9fa3eb824f444a6adc85a9ffbd2c6094d5690c7c1c6969445a91123796b",
+      "projected": true,
+      "projection": "crash/ck3_20261004_192419/pdx_settings.txt"
+    }
+  ],
+  "originals_retained_external": true,
+  "dump_copied": false
+}

@@ -1,0 +1,48 @@
+﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
+lyd_practice_changzhou_c_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_changzhou
+            gold >= 5
+        }
+        remove_short_term_gold = 5 add_piety = -30 add_prestige = 25 add_stress = -10 add_learning_lifestyle_xp = 5
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_jingshi_a_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_jingshi
+            gold >= 15
+        }
+        remove_short_term_gold = 15 add_piety = 35 add_prestige = -10 add_stress = 15 add_learning_lifestyle_xp = 45
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_jingshi_b_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_jingshi
+            gold >= 35
+        }
+        remove_short_term_gold = 35 add_piety = 45 add_prestige = 15 add_stress = 5 add_learning_lifestyle_xp = 30
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_jingshi_c_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_jingshi
+            gold >= 10
+        }
+        remove_short_term_gold = 10 add_piety = -30 add_prestige = 30 add_stress = -10
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}

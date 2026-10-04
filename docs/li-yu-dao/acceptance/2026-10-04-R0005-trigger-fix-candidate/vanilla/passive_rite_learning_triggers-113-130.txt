@@ -1,0 +1,18 @@
+is_valid_passive_learning_rite_for_learner_trigger = {
+	this != $LEARNER$.rite
+	save_temporary_scope_as = passive_rite_learning_candidate_rite
+	$LEARNER$ = {
+		OR = {
+			any_character_tenet = {
+				knowledge_filter = unknown
+				passive_rite_learning_candidate_tenet_is_core_trigger = { RITE = scope:passive_rite_learning_candidate_rite }
+				count >= 1
+			}
+			any_character_doctrine = {
+				knowledge_filter = unknown
+				rite_filter = scope:passive_rite_learning_candidate_rite
+				passive_rite_learning_doctrine_is_learnable_trigger = yes
+				count >= 1
+			}
+		}
+	}

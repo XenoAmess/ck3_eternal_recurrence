@@ -1,0 +1,217 @@
+﻿# GENERATED FILE: acceptance-only R5 fixture using the stable lyd_r4 namespace; edit build_fixture.py.
+# SETUP changes only this acceptance world's graph and two newly-created NPCs.
+# It does not start a formal proposal, vote, sign, charge or mutate any production enable flag.
+lyd_r4_setup_effect = {
+    if = {
+        limit = { lyd_r4_setup_trigger = yes }
+        save_scope_as = lyd_r4_actor
+        faith = { save_scope_as = lyd_r4_initial_source_faith }
+        set_variable = { name = lyd_r4_initial_source_faith value = faith }
+        set_variable = { name = lyd_r4_setup_gold_before value = gold }
+        set_variable = { name = lyd_r4_setup_piety_before value = piety }
+        set_variable = { name = lyd_r4_setup_learning_before value = learning }
+        add_character_flag = lyd_r4_setup_attempted
+        set_variable = { name = lyd_r4_reset_count value = 0 }
+        debug_log = "LYD_R4_ACCEPTANCE_ONLY_SETUP_BEGIN_NO_CONSENT"
+        create_character = {
+            employer = root
+            age = 40 gender_female_chance = 0 culture = root.culture
+            faith = root.faith rite = rite:lyd_rite_zhuxi
+            trait = education_learning_4 learning = { 20 20 }
+            save_scope_as = lyd_r4_source_rep
+        }
+        if = {
+            limit = { exists = scope:lyd_r4_source_rep }
+            set_variable = { name = lyd_r4_source_rep value = scope:lyd_r4_source_rep }
+            scope:lyd_r4_source_rep = { add_character_flag = lyd_r4_created_source_rep }
+        }
+        create_character = {
+            employer = root
+            age = 40 gender_female_chance = 0 culture = root.culture
+            faith = root.faith rite = rite:lyd_rite_jingshu
+            trait = education_learning_4 learning = { 20 20 }
+            save_scope_as = lyd_r4_jingshu_rep
+        }
+        if = {
+            limit = { exists = scope:lyd_r4_jingshu_rep }
+            set_variable = { name = lyd_r4_jingshu_rep value = scope:lyd_r4_jingshu_rep }
+            scope:lyd_r4_jingshu_rep = {
+                add_character_flag = lyd_r4_created_jingshu_rep
+                # The Character effect's returned scope is a Faith, attested in R0002.
+                # The target is an existing NON-main production rite, never a fixture rite.
+                detach_rite_to_new_faith = {
+                    target = rite:lyd_rite_jingshu save_scope_as = lyd_r4_receiving_faith
+                }
+            }
+        }
+        if = {
+            limit = { exists = scope:lyd_r4_receiving_faith }
+            set_variable = { name = lyd_r4_receiving_faith value = scope:lyd_r4_receiving_faith }
+        }
+        if = {
+            limit = { lyd_r4_setup_postcondition_trigger = yes }
+            add_character_flag = lyd_r4_fixture_initialized
+            debug_log = "LYD_R4_SETUP_ACTUAL_GRAPH_POSTCONDITION_TRUE_NOT_FORMAL_CONSENT"
+            debug_log_scopes = yes
+            lyd_r4_read_status_effect = yes
+        }
+        else = {
+            debug_log = "LYD_R4_SETUP_ACTUAL_GRAPH_POSTCONDITION_FAILED_PRESERVE_PARTIAL_STATE"
+            debug_log_scopes = yes
+            trigger_event = lyd_r4_fixture.2
+        }
+    }
+}
+lyd_r4_qualification_effect = {
+    if = {
+        limit = { lyd_r4_qualification_trigger = yes }
+        save_scope_as = lyd_r4_actor
+        set_variable = { name = lyd_r4_learning_before value = learning }
+        set_variable = { name = lyd_r4_learning_delta value = { value = 15 subtract = var:lyd_r4_learning_before } }
+        set_variable = { name = lyd_r4_qualification_gold_before value = gold }
+        set_variable = { name = lyd_r4_qualification_piety_before value = piety }
+        debug_log = "LYD_R4_EXPLICIT_ACCEPTANCE_QUALIFICATION_NOT_PRODUCT_TRAINING_BEGIN"
+        debug_log_scopes = yes
+        # Native inline ScriptValue syntax: fp3_misc_decision_events.txt:2297-2300.
+        add_learning_skill = var:lyd_r4_learning_delta
+        set_variable = { name = lyd_r4_learning_after value = learning }
+        if = {
+            limit = {
+                learning = 15
+                learning = var:lyd_r4_learning_after
+                var:lyd_r4_learning_after = 15
+                gold = var:lyd_r4_qualification_gold_before
+                piety = var:lyd_r4_qualification_piety_before
+            }
+            debug_log = "LYD_R4_EXPLICIT_QUALIFICATION_ACTUAL_LEARNING_15_COST_ZERO"
+            debug_log_scopes = yes
+            trigger_event = lyd_r4_fixture.3
+        }
+        else = {
+            debug_log = "LYD_R4_QUALIFICATION_POSTCONDITION_FAILED_NO_FAKE_SUCCESS"
+            debug_log_scopes = yes
+            trigger_event = lyd_r4_fixture.2
+        }
+    }
+}
+lyd_r4_bind_actual_scopes_effect = {
+    save_scope_as = lyd_r4_actor
+    faith = { save_scope_as = lyd_r4_current_source_faith }
+    rite = { save_scope_as = lyd_r4_moving_rite }
+    var:lyd_r4_jingshu_rep = { save_scope_as = lyd_r4_jingshu_rep }
+    var:lyd_r4_source_rep = { save_scope_as = lyd_r4_source_rep }
+    rite:lyd_rite_jingshu.faith = { save_scope_as = lyd_r4_current_receiving_faith }
+}
+lyd_r4_read_status_effect = {
+    if = {
+        limit = { lyd_r4_player_trigger = yes has_character_flag = lyd_r4_fixture_initialized }
+        lyd_r4_bind_actual_scopes_effect = yes
+        set_variable = { name = lyd_r4_same_core value = 0 }
+        set_variable = { name = lyd_r4_both_no_head value = 0 }
+        set_variable = { name = lyd_r4_actor_qualified value = 0 }
+        set_variable = { name = lyd_r4_join_funds value = 0 }
+        set_variable = { name = lyd_r4_distinct_faiths value = 0 }
+        if = { limit = { lyd_c2_actor_trigger = yes } set_variable = { name = lyd_r4_actor_qualified value = 1 } }
+        if = { limit = { gold >= 300 piety >= 1500 } set_variable = { name = lyd_r4_join_funds value = 1 } }
+        if = {
+            limit = { faith != scope:lyd_r4_current_receiving_faith }
+            set_variable = { name = lyd_r4_distinct_faiths value = 1 }
+        }
+        if = {
+            limit = { faith = { lyd_c2_same_main_doctrines_trigger = { TARGET = scope:lyd_r4_current_receiving_faith } } }
+            set_variable = { name = lyd_r4_same_core value = 1 }
+        }
+        if = {
+            limit = {
+                faith = { NOT = { exists = religious_head } }
+                scope:lyd_r4_current_receiving_faith = { NOT = { exists = religious_head } }
+            }
+            set_variable = { name = lyd_r4_both_no_head value = 1 }
+        }
+        rite:lyd_rite_zhuxi = {
+            save_scope_value_as = { name = lyd_r4_pair_divergence value = "divergence(rite:lyd_rite_jingshu)" }
+        }
+        set_variable = { name = lyd_r4_pair_divergence value = scope:lyd_r4_pair_divergence }
+        # A real observational classification consumes the recorded snapshot.
+        # It never signs, approves, enables or overrides a production guard.
+        if = {
+            limit = {
+                var:lyd_r4_distinct_faiths = 1 var:lyd_r4_same_core = 1
+                var:lyd_r4_both_no_head = 1 var:lyd_r4_actor_qualified = 1
+                var:lyd_r4_join_funds = 1 var:lyd_r4_pair_divergence < 100
+            }
+            debug_log = "LYD_R4_ACTUAL_SNAPSHOT_MINIMAL_JOIN_PREREQUISITES_TRUE_NOT_FORMAL_APPROVAL"
+        }
+        else = {
+            debug_log = "LYD_R4_ACTUAL_SNAPSHOT_MINIMAL_JOIN_PREREQUISITES_FALSE_PRESERVE_BLOCK"
+        }
+        debug_log = "LYD_R4_ACTUAL_COMPATIBILITY_AND_OBJECT_SCOPE_SNAPSHOT_NO_OVERRIDE"
+        debug_log_scopes = yes
+        trigger_event = lyd_r4_fixture.1
+    }
+}
+lyd_r4_reset_effect = {
+    if = {
+        limit = { lyd_r4_reset_trigger = yes }
+        lyd_r4_bind_actual_scopes_effect = yes
+        set_variable = { name = lyd_r4_reset_gold_before value = gold }
+        set_variable = { name = lyd_r4_reset_piety_before value = piety }
+        debug_log = "LYD_R4_EXPLICIT_ACCEPTANCE_COOLDOWN_RESET_NOT_NATURAL_EXPIRY_BEGIN"
+        debug_log_scopes = yes
+        # Only this fixture's moving production rite; no proposal serials, consent or results.
+        rite:lyd_rite_zhuxi = {
+            remove_variable = lyd_c2_transition_cooldown
+            remove_variable = lyd_c2_retry_cooldown
+        }
+        if = {
+            limit = {
+                rite:lyd_rite_zhuxi = {
+                    NOT = { has_variable = lyd_c2_transition_cooldown }
+                    NOT = { has_variable = lyd_c2_retry_cooldown }
+                }
+                gold = var:lyd_r4_reset_gold_before piety = var:lyd_r4_reset_piety_before
+            }
+            change_variable = { name = lyd_r4_reset_count add = 1 }
+            debug_log = "LYD_R4_EXPLICIT_COOLDOWN_RESET_POSTCONDITION_TRUE_NOT_NATURAL_EXPIRY"
+            debug_log_scopes = yes
+            trigger_event = lyd_r4_fixture.4
+        }
+        else = {
+            debug_log = "LYD_R4_COOLDOWN_RESET_POSTCONDITION_FAILED"
+            debug_log_scopes = yes
+            trigger_event = lyd_r4_fixture.2
+        }
+    }
+}
+lyd_r4_resources_effect = {
+    if = {
+        limit = { lyd_r4_resources_trigger = yes }
+        save_scope_as = lyd_r4_actor
+        set_variable = { name = lyd_r4_gold_before value = gold }
+        set_variable = { name = lyd_r4_piety_before value = piety }
+        set_variable = { name = lyd_r4_gold_expected value = { value = var:lyd_r4_gold_before add = 2000 } }
+        set_variable = { name = lyd_r4_piety_expected value = { value = var:lyd_r4_piety_before add = 9000 } }
+        debug_log = "LYD_R4_EXPLICIT_ACCEPTANCE_RESOURCES_BEFORE_NOT_PRODUCT_REWARD"
+        debug_log_scopes = yes
+        add_gold = 2000
+        add_piety = 9000
+        set_variable = { name = lyd_r4_gold_after value = gold }
+        set_variable = { name = lyd_r4_piety_after value = piety }
+        # One-time even on a partial failure; never repeat to fabricate acceptance.
+        add_character_flag = lyd_r4_resources_prepared
+        if = {
+            limit = {
+                gold = var:lyd_r4_gold_expected piety = var:lyd_r4_piety_expected
+                gold = var:lyd_r4_gold_after piety = var:lyd_r4_piety_after
+            }
+            debug_log = "LYD_R4_EXPLICIT_ACCEPTANCE_RESOURCES_ACTUAL_PLUS_2000_GOLD_PLUS_9000_PIETY"
+            debug_log_scopes = yes
+            trigger_event = lyd_r4_fixture.5
+        }
+        else = {
+            debug_log = "LYD_R4_RESOURCE_PREPARATION_POSTCONDITION_FAILED_PRESERVE_PARTIAL_STATE"
+            debug_log_scopes = yes
+            trigger_event = lyd_r4_fixture.2
+        }
+    }
+}

@@ -1,0 +1,48 @@
+name: Li Yu Dao static checks
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'mod_li_yu_dao/**'
+      - 'tools/extract_auto_upgrade_buildings.py'
+      - 'docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/**'
+      - '.github/workflows/li-yu-dao-static.yml'
+  pull_request:
+    paths:
+      - 'mod_li_yu_dao/**'
+      - 'tools/extract_auto_upgrade_buildings.py'
+      - 'docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/**'
+      - '.github/workflows/li-yu-dao-static.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Check generated content and runtime
+        run: |
+          python mod_li_yu_dao/tools/gen_content.py --check
+          python mod_li_yu_dao/tools/gen_runtime.py --check
+      - name: Check product and builder
+        run: |
+          python mod_li_yu_dao/tools/validate_static.py --report /tmp/lyd-static.json
+          python mod_li_yu_dao/tools/test_build_release.py
+          python mod_li_yu_dao/tools/test_run_acceptance.py
+          python mod_li_yu_dao/tools/test_school_consent.py
+          python mod_li_yu_dao/tools/test_content_leadership.py
+          python mod_li_yu_dao/tools/build_release.py --check
+      - name: Preserve static report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: li-yu-dao-static-report
+          path: /tmp/lyd-static.json
+          if-no-files-found: ignore

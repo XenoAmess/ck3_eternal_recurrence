@@ -379,6 +379,45 @@ class ContentLeadershipIntegrationTests(unittest.TestCase):
                                      f"{interaction}: consent applied before acceptance")
                 self.assertFalse(any(e.key in {"destroy_title","set_religious_head_title","set_character_rite","set_parent_faith"} for e,_ in ops))
 
+    def test_c3_trigger_bindings_preserve_player_gate_and_follower_identity(self):
+        # Regressions observed by CK3 1.20.0.3 at R0005 cold load: hidden_trigger
+        # is not a trigger, and a global prev link cannot follow another prev.
+        for name, body in self.c.triggers.items():
+            if name.startswith("lyd_c3_"):
+                self.assertFalse(any(e.key == "hidden_trigger" for e,_ in walk(body)), name)
+                self.assertFalse(any("prev.prev" in e.key or isinstance(e.value,str) and "prev.prev" in e.value
+                                     for e,_ in walk(body)), name)
+        actor = self.c.triggers["lyd_c3_player_actor_trigger"]
+        self.assertTrue(contains_direct_fragment(actor,
+            "is_ai = no is_alive = yes is_adult = yes is_landed = yes NOT = { has_trait = incapable } religion = religion:confucianism_religion has_character_flag = lyd_enabled lyd_member_rite_trigger = yes"))
+        current = self.c.triggers["lyd_c3_round_current_trigger"]
+        self.assertTrue(contains_direct_fragment(current,
+            "$ACTOR$ = { save_temporary_scope_as = lyd_c3_checked_actor } scope:lyd_c3_checked_actor.var:lyd_c3_round_faith = { save_temporary_scope_as = lyd_c3_checked_faith }"))
+        rite_lists = [e.value for e,_ in walk(current) if e.key == "any_in_list" and
+                      isinstance(e.value,Block) and scalar(e.value,"variable") == "lyd_c3_rites"]
+        self.assertEqual(len(rite_lists),1)
+        self.assertEqual(scalar(rite_lists[0],"save_temporary_scope_as"),"lyd_c3_checked_rite")
+        rite_conditions = one(rite_lists[0],"NOT")
+        branches = blocks(one(rite_conditions,"OR"),"AND")
+        empty = next(b for b in branches if has(b,"var:lyd_c3_delegate_required","0"))
+        self.assertTrue(contains_direct_fragment(empty,
+            "var:lyd_c3_delegate_required = 0 rite_counties = 0 scope:lyd_c3_checked_faith = { NOT = { any_faith_character = { is_alive = yes rite = scope:lyd_c3_checked_rite } } }"),
+            "An empty-school exemption must test the captured rite in the captured round faith")
+        delegated = next(b for b in branches if has(b,"var:lyd_c3_delegate_required","1"))
+        self.assertTrue(contains_direct_fragment(delegated,
+            "exists = head_of_rite head_of_rite = var:lyd_c3_delegate var:lyd_c3_delegate = { is_alive = yes is_adult = yes rite = scope:lyd_c3_checked_rite NOT = { has_trait = incapable } }"))
+        represented = self.c.triggers["lyd_c3_rite_represented_trigger"]
+        self.assertTrue(contains_direct_fragment(represented,
+            "save_temporary_scope_as = lyd_c3_represented_rite faith = { save_temporary_scope_as = lyd_c3_represented_faith }"))
+        branches = blocks(one(represented,"OR"),"AND")
+        empty = next(b for b in branches if has(b,"rite_counties","0"))
+        self.assertTrue(contains_direct_fragment(empty,
+            "rite_counties = 0 scope:lyd_c3_represented_faith = { NOT = { any_faith_character = { is_alive = yes rite = scope:lyd_c3_represented_rite } } }"),
+            "A candidate rite with living followers cannot be silently treated as empty")
+        delegated = next(b for b in branches if has(b,"exists","head_of_rite"))
+        self.assertTrue(contains_direct_fragment(delegated,
+            "exists = head_of_rite head_of_rite = { is_alive = yes is_adult = yes rite = scope:lyd_c3_represented_rite NOT = { has_trait = incapable } }"))
+
     def test_council_callback_revalidates_serial_and_all_affected_players(self):
         context = self.c.triggers["lyd_c3_response_context_trigger"]
         actor_context = one(context,"scope:lyd_c3_actor")

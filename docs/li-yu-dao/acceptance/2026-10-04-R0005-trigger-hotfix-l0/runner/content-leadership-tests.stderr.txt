@@ -1,0 +1,16 @@
+test_c3_trigger_bindings_preserve_player_gate_and_follower_identity (__main__.ContentLeadershipIntegrationTests.test_c3_trigger_bindings_preserve_player_gate_and_follower_identity) ... ok
+test_catalogue_is_reachable_through_state_free_chooser_pages (__main__.ContentLeadershipIntegrationTests.test_catalogue_is_reachable_through_state_free_chooser_pages) ... ok
+test_council_callback_revalidates_serial_and_all_affected_players (__main__.ContentLeadershipIntegrationTests.test_council_callback_revalidates_serial_and_all_affected_players) ... ok
+test_every_selected_rite_dispatches_to_its_own_affordable_guarded_practice (__main__.ContentLeadershipIntegrationTests.test_every_selected_rite_dispatches_to_its_own_affordable_guarded_practice) ... ok
+test_legacy_event_ids_and_base_practice_rewards_are_preserved (__main__.ContentLeadershipIntegrationTests.test_legacy_event_ids_and_base_practice_rewards_are_preserved) ... ok
+test_migration_cleanup_runs_before_the_native_setter (__main__.ContentLeadershipIntegrationTests.test_migration_cleanup_runs_before_the_native_setter) ... ok
+test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor (__main__.ContentLeadershipIntegrationTests.test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor) ... ok
+test_owned_title_retirement_never_selects_other_held_titles (__main__.ContentLeadershipIntegrationTests.test_owned_title_retirement_never_selects_other_held_titles) ... ok
+test_personal_adoption_never_migrates_a_shared_rite_or_faith (__main__.ContentLeadershipIntegrationTests.test_personal_adoption_never_migrates_a_shared_rite_or_faith) ... ok
+test_player_initiation_and_recipient_consent_are_separate (__main__.ContentLeadershipIntegrationTests.test_player_initiation_and_recipient_consent_are_separate) ... ok
+test_shared_factory_has_one_formal_generator_owner (__main__.ContentLeadershipIntegrationTests.test_shared_factory_has_one_formal_generator_owner) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.130s
+
+OK

@@ -1,0 +1,18 @@
+{
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\minidump.dmp",
+  "bytes": 39386417,
+  "sha256": "9a458b182bb7e7976b8fdf4f5f1d2653c79489ee2fcc11418a969b05110b80de",
+  "signature_bytes_hex": "4d444d50",
+  "signature_ascii": "MDMP",
+  "version_raw": 2690754451,
+  "streams": 18,
+  "stream_directory_rva": 32,
+  "checksum_raw": 0,
+  "timestamp_raw": 1791113060,
+  "flags_raw": 6245,
+  "header32_hex": "4d444d5093a761a01200000020000000000000006437c26a6518000000000000",
+  "copied": false,
+  "symbolization": "NOT_RUN",
+  "cause": "NOT_PROVEN",
+  "boundary": "Header metadata and original exact hash only; no claim of dump diagnosis or function-level cause."
+}

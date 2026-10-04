@@ -1,0 +1,25 @@
+{
+  "at_utc": "2026-10-04T11:14:56.862723+00:00",
+  "sequence": 2692,
+  "owner": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "18b1944d1784d3e4ec57189c016335ef135b9b34"
+    },
+    "last_sequence": 2692,
+    "next_step": "Fresh-offline-and-load",
+    "pid": 15128,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "resources": [
+      "ck3-screen:acquired"
+    ],
+    "schema": "codex.task_bus.v1",
+    "state": "running",
+    "summary": "LYD-formal-R0005-isolated-live",
+    "task_id": "ck3-lyd-live-006-20261004",
+    "updated_at_utc": "2026-10-04T11:14:56.367339+00:00",
+    "age_seconds": 0,
+    "stale": false
+  }
+}

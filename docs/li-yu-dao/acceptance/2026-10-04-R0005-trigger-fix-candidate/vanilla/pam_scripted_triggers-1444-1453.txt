@@ -1,0 +1,10 @@
+# Kingdom of Heaven — no other character of your faith has a higher Piety Level (ties at same level allowed)
+pam_kingdom_of_heaven_has_highest_piety_level_in_faith_trigger = {
+	NOT = {
+		root.faith = {
+			any_faith_character = {
+				NOT = { this = root }
+				piety_level > root.piety_level
+			}
+		}
+	}

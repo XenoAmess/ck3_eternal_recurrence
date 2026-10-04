@@ -1,0 +1,8 @@
+{
+  "enabled_mods": [
+    "mod/lyd_production.mod",
+    "mod/lyd_fixture.mod",
+    "mod/lyd_i2_fixture.mod"
+  ],
+  "disabled_dlcs": []
+}

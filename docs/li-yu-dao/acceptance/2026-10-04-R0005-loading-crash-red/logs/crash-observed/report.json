@@ -1,0 +1,164 @@
+{
+  "utc": "2026-10-04T11:30:04.480392+00:00",
+  "termination": "CRASH_REPORTER_OBSERVED_AFTER_WM_CLOSE_REQUEST",
+  "cause": "NOT_PROVEN",
+  "ck3_processes": [],
+  "original_ck3_pid_present": false,
+  "normal_exit": false,
+  "crash_reporter": {
+    "pid": 2596,
+    "hwnd": 13829678,
+    "thread": 19440,
+    "exe": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\crash_reporter\\binaries\\CrashReporter.exe",
+    "create_time": 1791113061.814221
+  },
+  "source_head": "18b1944d1784d3e4ec57189c016335ef135b9b34",
+  "campaign_started": false,
+  "native_attach": false,
+  "mouse_or_keyboard_input": false,
+  "refused_coordinate_action": "desktop_coordinate_map.py rejected reviewed-region/HWND with --click before sending input; source: root tool output",
+  "logs": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\code_revisions.log",
+      "snapshot": "logs/code_revisions.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\custom_automated_stats.log",
+      "snapshot": "logs/custom_automated_stats.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\database_conflicts.log",
+      "snapshot": "logs/database_conflicts.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\debug.log",
+      "snapshot": "logs/debug.log",
+      "bytes": 459398,
+      "sha256": "8f3e3796fe8978e296b2f087e1768d34b668629ffc87d4c8c1fae41c3953659e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\dedicated_server.log",
+      "snapshot": "logs/dedicated_server.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\error.log",
+      "snapshot": "logs/error.log",
+      "bytes": 840,
+      "sha256": "3c6efe65ca5e46aa5604eebbc3a401cf8a4bfe9cfac9184d36ffa7bbdd5319d5"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\game.log",
+      "snapshot": "logs/game.log",
+      "bytes": 2127,
+      "sha256": "cbc4798cc9a714bcf16e4dc2ffd10ff803e6b40da0b0aa4c8399d996b0f7df37"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\gui_warnings.log",
+      "snapshot": "logs/gui_warnings.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\memory.log",
+      "snapshot": "logs/memory.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\message.log",
+      "snapshot": "logs/message.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\multiplayer.log",
+      "snapshot": "logs/multiplayer.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\pdxsdk.log",
+      "snapshot": "logs/pdxsdk.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\profile.log",
+      "snapshot": "logs/profile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\setup.log",
+      "snapshot": "logs/setup.log",
+      "bytes": 36864,
+      "sha256": "afbb389e412e6af1ddd6030be75db514cbf6a97766b2fa324cde705bada29f0a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\system.log",
+      "snapshot": "logs/system.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\text.log",
+      "snapshot": "logs/text.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "crashes": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\exception.txt",
+      "relative": "userdir/crashes/ck3_20261004_192419/exception.txt",
+      "bytes": 993,
+      "sha256": "caf036abc82f9e39ec4b97dab97b75dacf9b2290a768c9fa5966a3a708bedf19"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\logs\\debug.log",
+      "relative": "userdir/crashes/ck3_20261004_192419/logs/debug.log",
+      "bytes": 459398,
+      "sha256": "8f3e3796fe8978e296b2f087e1768d34b668629ffc87d4c8c1fae41c3953659e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\logs\\error.log",
+      "relative": "userdir/crashes/ck3_20261004_192419/logs/error.log",
+      "bytes": 840,
+      "sha256": "3c6efe65ca5e46aa5604eebbc3a401cf8a4bfe9cfac9184d36ffa7bbdd5319d5"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\logs\\game.log",
+      "relative": "userdir/crashes/ck3_20261004_192419/logs/game.log",
+      "bytes": 2127,
+      "sha256": "cbc4798cc9a714bcf16e4dc2ffd10ff803e6b40da0b0aa4c8399d996b0f7df37"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\meta.yml",
+      "relative": "userdir/crashes/ck3_20261004_192419/meta.yml",
+      "bytes": 1755,
+      "sha256": "da1316bc25aa8882de2e088915c49718df2cb115d10792b0ac7a403a110e99b0"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\minidump.dmp",
+      "relative": "userdir/crashes/ck3_20261004_192419/minidump.dmp",
+      "bytes": 39386417,
+      "sha256": "9a458b182bb7e7976b8fdf4f5f1d2653c79489ee2fcc11418a969b05110b80de"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\pdx_settings.txt",
+      "relative": "userdir/crashes/ck3_20261004_192419/pdx_settings.txt",
+      "bytes": 7098,
+      "sha256": "9dafa9fa3eb824f444a6adc85a9ffbd2c6094d5690c7c1c6969445a91123796b"
+    }
+  ],
+  "reporter_close": "WM_CLOSE requested; actual exit still requires readback",
+  "report_submission": "NOT_REQUESTED"
+}

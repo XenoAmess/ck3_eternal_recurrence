@@ -1,0 +1,76 @@
+{
+  "schema": "ck3.lyd.ci-observation-index.v1",
+  "files": [
+    {
+      "path": "all-runs.raw.json",
+      "bytes": 26961,
+      "sha256": "4c807435302d38623d17bdc670a13be3d46db0875f68bb36893a84b24d45ba61"
+    },
+    {
+      "path": "all-runs.request-receipt.json",
+      "bytes": 2296,
+      "sha256": "99b2c0523ab6fe1f047ee489e5e809496d23876108e3f7101acb1950c2e6c68c"
+    },
+    {
+      "path": "jobs-37197886887.raw.json",
+      "bytes": 13338,
+      "sha256": "9f07440e2fabca291e6b738e1536f172abcac95364ad045759faa5923530d865"
+    },
+    {
+      "path": "jobs-37197886887.request-receipt.json",
+      "bytes": 2242,
+      "sha256": "12852a750657b2caada123c0fd45fc51d0ac1a4712511a97e30d121be18ef1ba"
+    },
+    {
+      "path": "jobs-37197886947.raw.json",
+      "bytes": 2461,
+      "sha256": "f541be5a3496272f71563f09e5e3f7512bce49b0b0d742f96a525d69d93c329c"
+    },
+    {
+      "path": "jobs-37197886947.request-receipt.json",
+      "bytes": 2240,
+      "sha256": "31dbc4162550a5ec190313dfad512e0ea193d73dd8ceade4ddc104bb6c1f44cb"
+    },
+    {
+      "path": "lyd-tree.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lyd-tree.git.stdout",
+      "bytes": 41,
+      "sha256": "fec2743179a22385ed269cba19d1e4420aaf99dfd18bb747fd0a72ae694e5649"
+    },
+    {
+      "path": "report.json",
+      "bytes": 11410,
+      "sha256": "dbfd8594193b078e5c857421a6b087faae8726304a528f54e787a429d2b85b94"
+    },
+    {
+      "path": "source/ci_jobs_18b1944d_http_readonly.py",
+      "bytes": 7270,
+      "sha256": "731ee7338d1714671ef8bd82ec3faf2d6e75a4181bfd221a94b5d7890462d9b2"
+    },
+    {
+      "path": "workflow-1.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "workflow-1.git.stdout",
+      "bytes": 1601,
+      "sha256": "c05e16c2cf003505116a0af9a2f34437107077cebed4363e0521fa556f7caccf"
+    },
+    {
+      "path": "workflow-2.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "workflow-2.git.stdout",
+      "bytes": 24401,
+      "sha256": "73584dd98fe8af6ba5787f67ade7c82664e340ca18963a949f6b1d3e6e5fe69c"
+    }
+  ],
+  "self_boundary": "index excludes itself"
+}

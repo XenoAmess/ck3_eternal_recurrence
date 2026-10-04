@@ -1,0 +1,64 @@
+﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
+lyd_display_eligible_trigger = {
+    is_landed = yes
+    is_adult = yes
+}
+lyd_is_player_trigger = {
+    is_ai = no
+    is_alive = yes
+    lyd_display_eligible_trigger = yes
+}
+lyd_can_enter_display_trigger = {
+    lyd_display_eligible_trigger = yes
+    faith = { religion = religion:confucianism_religion }
+    custom_description = {
+        text = lyd_not_current_faith_head_tt
+        subject = root
+        NOT = { this = faith.religious_head }
+    }
+    custom_description = {
+        text = lyd_not_current_rite_head_tt
+        subject = root
+        NOT = { this = rite.head_of_rite }
+    }
+    OR = {
+        NOT = { has_character_flag = lyd_enabled }
+        NOT = { lyd_catalogue_rite_trigger = yes }
+    }
+}
+lyd_can_enter_trigger = {
+    lyd_is_player_trigger = yes
+    lyd_can_enter_display_trigger = yes
+}
+lyd_catalogue_rite_trigger = {
+    OR = { rite = rite:lyd_rite_kongmen rite = rite:lyd_rite_mengzi rite = rite:lyd_rite_xunzi rite = rite:lyd_rite_dongzhongshu rite = rite:lyd_rite_guwen rite = rite:lyd_rite_zhengxuan rite = rite:lyd_rite_wangsu rite = rite:lyd_rite_wangbi rite = rite:lyd_rite_guoxiang rite = rite:lyd_rite_jingshu rite = rite:lyd_rite_hanyu rite = rite:lyd_rite_liao rite = rite:lyd_rite_zhoudunyi rite = rite:lyd_rite_chengbrothers rite = rite:lyd_rite_zhangzai rite = rite:lyd_rite_shaoyong rite = rite:lyd_rite_wanganshi rite = rite:lyd_rite_sushi rite = rite:lyd_rite_huxiang rite = rite:lyd_rite_zhuxi rite = rite:lyd_rite_lujiuyuan rite = rite:lyd_rite_yongjia rite = rite:lyd_rite_yongkang rite = rite:lyd_rite_wucheng rite = rite:lyd_rite_chenxianzhang rite = rite:lyd_rite_zhanruoshui rite = rite:lyd_rite_wangyangming rite = rite:lyd_rite_jiangyou rite = rite:lyd_rite_taizhou rite = rite:lyd_rite_liuzongzhou rite = rite:lyd_rite_donglin rite = rite:lyd_rite_wangfuzhi rite = rite:lyd_rite_yanli rite = rite:lyd_rite_qianjia rite = rite:lyd_rite_changzhou rite = rite:lyd_rite_jingshi }
+}
+lyd_member_rite_trigger = {
+    lyd_catalogue_rite_trigger = yes
+}
+lyd_can_use_school_display_trigger = {
+    lyd_display_eligible_trigger = yes
+    has_character_flag = lyd_enabled
+    faith = { religion = religion:confucianism_religion }
+    lyd_catalogue_rite_trigger = yes
+}
+lyd_can_use_school_trigger = {
+    lyd_is_player_trigger = yes
+    lyd_can_use_school_display_trigger = yes
+}
+lyd_can_change_school_display_trigger = {
+    lyd_can_use_school_display_trigger = yes
+    NOT = { has_character_flag = lyd_school_cooldown }
+}
+lyd_can_change_school_trigger = {
+    lyd_is_player_trigger = yes
+    lyd_can_change_school_display_trigger = yes
+}
+lyd_can_study_display_trigger = {
+    lyd_can_use_school_display_trigger = yes
+    NOT = { has_character_flag = lyd_study_cooldown }
+}
+lyd_can_study_trigger = {
+    lyd_is_player_trigger = yes
+    lyd_can_study_display_trigger = yes
+}

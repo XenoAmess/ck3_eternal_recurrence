@@ -1,0 +1,14 @@
+[19:19:24][W][bookmark.cpp:280]: Bookmark character 'bookmark_hamburg_rimbert' has invalid dynasty and invalid dynasty house scripted
+[19:19:24][W][bookmark.cpp:280]: Bookmark character 'bookmark_adalwin_salzburg' has invalid dynasty and invalid dynasty house scripted
+[19:19:24][W][bookmark.cpp:280]: Bookmark character 'bookmark_lupus_aquileia' has invalid dynasty and invalid dynasty house scripted
+[19:19:25][W][holy_order_effect.cpp:99]: create_holy_order effect (%s): Both explicit holy order and random holy order requested, explicit holy order will take precedence
+[19:19:25][W][holy_order_effect.cpp:99]: create_holy_order effect (%s): Both explicit holy order and random holy order requested, explicit holy order will take precedence
+[19:19:25][W][holy_order_effect.cpp:99]: create_holy_order effect (%s): Both explicit holy order and random holy order requested, explicit holy order will take precedence
+[19:19:25][W][holy_order_effect.cpp:99]: create_holy_order effect (%s): Both explicit holy order and random holy order requested, explicit holy order will take precedence
+[19:19:25][W][holy_order_effect.cpp:99]: create_holy_order effect (%s): Both explicit holy order and random holy order requested, explicit holy order will take precedence
+[19:19:25][W][holy_order_effect.cpp:99]: create_holy_order effect (%s): Both explicit holy order and random holy order requested, explicit holy order will take precedence
+[19:19:25][W][holy_order_effect.cpp:99]: create_holy_order effect (%s): Both explicit holy order and random holy order requested, explicit holy order will take precedence
+[19:19:25][W][holy_order_effect.cpp:99]: create_holy_order effect (%s): Both explicit holy order and random holy order requested, explicit holy order will take precedence
+[19:19:25][W][holy_order_effect.cpp:99]: create_holy_order effect (%s): Both explicit holy order and random holy order requested, explicit holy order will take precedence
+[19:20:13][I][savegameitem.cpp:734]: Waited 3001 ms for 3 main menu portraits, ready: false
+[19:20:14][I][frontend_game_setup_view.cpp:638]: Requested 5 bookmark portraits

@@ -131,11 +131,14 @@ class BuildTests(unittest.TestCase):
     def test_r0001_boot_regressions_and_native_tier_interval(self) -> None:
         decisions = "common/decisions/lyd_decisions.txt"
         effects = "common/scripted_effects/lyd_notice_effects.txt"
+        triggers = "common/scripted_triggers/lyd_actor_triggers.txt"
         picture = 'picture = { reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds" }'
         mutants = (
             (effects, "add_stress = -5", "change_stress = -5", "unknown native effect change_stress"),
             (effects, "add_stress = -5", "has_same_core_doctrines = faith", "has_same_core_doctrines"),
             (effects, "add_stress = -5", '"divergence($ACTOR$.rite)" < 100', "divergence"),
+            (triggers, "is_ai = no", "hidden_trigger = { is_ai = no }", "R0005 native rejected hidden_trigger"),
+            (triggers, "is_ai = no", "is_ai = no faith = prev.prev", "R0005 native rejected consecutive prev"),
             (effects, "add_gold = 5", "add_gold = -5", "negative add_gold"),
             (decisions, picture, "", "decision picture"),
             (decisions, picture, 'picture = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"', "decision picture"),

@@ -1,0 +1,19 @@
+test_c3_trigger_bindings_preserve_player_gate_and_follower_identity (__main__.ContentLeadershipIntegrationTests.test_c3_trigger_bindings_preserve_player_gate_and_follower_identity) ... FAIL
+
+======================================================================
+FAIL: test_c3_trigger_bindings_preserve_player_gate_and_follower_identity (__main__.ContentLeadershipIntegrationTests.test_c3_trigger_bindings_preserve_player_gate_and_follower_identity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r5-c3-trigger-fix-candidate-001\candidate\mod_li_yu_dao\tools\test_content_leadership.py", line 414, in test_c3_trigger_bindings_preserve_player_gate_and_follower_identity
+    self.assertTrue(contains_direct_fragment(empty,
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "rite_counties = 0 scope:lyd_c3_represented_faith = { NOT = { any_faith_character = { is_alive = yes rite = scope:lyd_c3_represented_rite } } }"),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "A candidate rite with living followers cannot be silently treated as empty")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : A candidate rite with living followers cannot be silently treated as empty
+
+----------------------------------------------------------------------
+Ran 1 test in 0.088s
+
+FAILED (failures=1)

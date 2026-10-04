@@ -1,0 +1,47 @@
+{
+  "source": "logs/crash-observed/logs/error.log",
+  "bytes": 840,
+  "sha256": "3c6efe65ca5e46aa5604eebbc3a401cf8a4bfe9cfac9184d36ffa7bbdd5319d5",
+  "E_headers": 4,
+  "counts": {
+    "PRODUCT_C3_UNKNOWN_HIDDEN_TRIGGER": 1,
+    "PRODUCT_C3_INVALID_PREV_CHAIN": 3
+  },
+  "entries": [
+    {
+      "line": 1,
+      "category": "PRODUCT_C3_UNKNOWN_HIDDEN_TRIGGER",
+      "domain": "production-I3",
+      "raw_header": "[19:19:13][E][pdx_persistent_reader.cpp:216]: Error: \"Unknown trigger: hidden_trigger, near line: 3\" in file: \"common/scripted_triggers/lyd_c3_leadership_triggers.txt\" near line: 5"
+    },
+    {
+      "line": 2,
+      "category": "PRODUCT_C3_INVALID_PREV_CHAIN",
+      "domain": "production-I3",
+      "raw_header": "[19:19:13][E][jomini_eventtarget.cpp:150]: Link 'prev' is a global link but follows a 'prev' link. At 'file: common/scripted_triggers/lyd_c3_leadership_triggers.txt line: 71 (lyd_c3_round_current_trigger[args#3099453956])'"
+    },
+    {
+      "line": 3,
+      "category": "PRODUCT_C3_INVALID_PREV_CHAIN",
+      "domain": "production-I3",
+      "raw_header": "[19:19:13][E][jomini_eventtarget.cpp:150]: Link 'prev' is a global link but follows a 'prev' link. At 'file: common/scripted_triggers/lyd_c3_leadership_triggers.txt line: 71 (lyd_c3_round_current_trigger[args#753382873])'"
+    },
+    {
+      "line": 4,
+      "category": "PRODUCT_C3_INVALID_PREV_CHAIN",
+      "domain": "production-I3",
+      "raw_header": "[19:19:13][E][jomini_eventtarget.cpp:150]: Link 'prev' is a global link but follows a 'prev' link. At 'file: common/scripted_triggers/lyd_c3_leadership_triggers.txt line: 135 (lyd_c3_rite_represented_trigger)'"
+    }
+  ],
+  "earlier_R4_signatures_absent_in_this_actual_final_error": [
+    "has_same_core_doctrines",
+    "divergenceroot$",
+    "divergencescope:",
+    "Cannot specify both location and employer",
+    "Variable '",
+    "lyd_r4_fixture_effects.txt"
+  ],
+  "pre_exit_error_equal": true,
+  "final_userdir_error_equal": true,
+  "boundary": "Four actual final error.log headers; no duplicated game.log count. Absence of older signatures is not proof of runtime behavior. No causal link to later crash established."
+}

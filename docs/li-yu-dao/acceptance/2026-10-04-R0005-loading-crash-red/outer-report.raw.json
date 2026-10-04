@@ -1,0 +1,1759 @@
+{
+  "schema": "ck3.lyd.r0005-loading-crash-red.v1",
+  "utc": "2026-10-04T11:42:02.694719+00:00",
+  "commit": "18b1944d1784d3e4ec57189c016335ef135b9b34",
+  "lyd_tree": "77f74591f299874efcd20c2672f143c362e54caa",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0005",
+  "execution_id": "bf0a2e3a-f038-4fac-9ab1-f7b6d1ccba6d",
+  "task_id": "ck3-lyd-live-006-20261004",
+  "overall": "NATIVE_LOADING_RED_AND_CRASH_OBSERVED",
+  "official_L0": "SUCCESS",
+  "input_counts": {
+    "production": 59,
+    "entry_fixture": 7,
+    "i2_fixture": 7
+  },
+  "mounted_payload_byte_hashes_verified": true,
+  "i2_fixture_input": "r5-i2-fixture-candidate-001; frozen 36 -> 35+1 setup; not executed in this run",
+  "input_manifest_sha256": "f938644617764247bdec21eacd7023a5f93c0c79c5c48972b9483f9c20720692",
+  "actual_pid": 12524,
+  "actual_hwnd": 7406548,
+  "actual_process_create_time": 1791112663.962027,
+  "lobby_observed": {
+    "image": "screens/normal-exit-check.png",
+    "metadata": "run/normal-exit-check.json",
+    "utc": "2026-10-04T11:24:17.385850+00:00",
+    "direct_image_review": "CK3 actual main menu/lobby visible; no campaign or normal exit shown"
+  },
+  "normal_exit": false,
+  "termination": "CRASH_OBSERVED",
+  "cause": "NOT_PROVEN",
+  "close_request": {
+    "utc": "2026-10-04T11:21:44.417217+00:00",
+    "pid": 12524,
+    "hwnd": 7406548,
+    "action": "posted WM_CLOSE",
+    "business_result": "REQUIRES_ACTUAL_EXIT_READBACK"
+  },
+  "exception": {
+    "raw": "crash/ck3_20261004_192419/exception.txt",
+    "time_local": "2026-10-04 19:24:21",
+    "timezone": "Asia/Shanghai UTC+08",
+    "time_utc_derived": "2026-10-04T11:24:21Z",
+    "code": "C0000005",
+    "description": "EXCEPTION_ACCESS_VIOLATION",
+    "ck3_stack_function_names": "not available",
+    "cause": "NOT_PROVEN"
+  },
+  "refused_coordinate_action": {
+    "status": "ROOT_TOOL_OUTPUT_NOTE_ONLY",
+    "time_utc_root_reported": "2026-10-04T11:27:32Z",
+    "statement": "desktop_coordinate_map.py rejected reviewed-region/HWND with --click before sending input; source: root tool output",
+    "independent_raw_command_output_in_package": false,
+    "input_sent": false,
+    "business_click_claimed": false,
+    "normal_exit_credit": false,
+    "boundary": "Parent reports parameter validation refusal; no independent refusal receipt exists. Do not fabricate command execution proof or count it as a click."
+  },
+  "crash_reporter": {
+    "pid": 2596,
+    "hwnd": 13829678,
+    "thread": 19440,
+    "exe": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\crash_reporter\\binaries\\CrashReporter.exe",
+    "create_time": 1791113061.814221
+  },
+  "reporter_close": "semantic WM_CLOSE requested; later independent readback confirms CK3 and CrashReporter absent",
+  "report_submission": "NOT_REQUESTED",
+  "campaign_started": false,
+  "native_attached": false,
+  "native_tool_calls": 0,
+  "native_played_character_id": null,
+  "current_native_profile_present": false,
+  "profile_template_only": true,
+  "save_files": [],
+  "not_run": [
+    "ordinary Robert campaign identity",
+    "formal I1 entry/school/practice",
+    "formal I2 proposal/vote/player-consent/signature/cancel/reject/apply/repeated rounds",
+    "formal I3 teacher/head/challenger/lifecycle",
+    "formal I4 36-rite chooser/practice",
+    "D+1",
+    "D+30",
+    "save/reload"
+  ],
+  "error_classification": {
+    "source": "logs/crash-observed/logs/error.log",
+    "bytes": 840,
+    "sha256": "3c6efe65ca5e46aa5604eebbc3a401cf8a4bfe9cfac9184d36ffa7bbdd5319d5",
+    "E_headers": 4,
+    "counts": {
+      "PRODUCT_C3_UNKNOWN_HIDDEN_TRIGGER": 1,
+      "PRODUCT_C3_INVALID_PREV_CHAIN": 3
+    },
+    "entries": [
+      {
+        "line": 1,
+        "category": "PRODUCT_C3_UNKNOWN_HIDDEN_TRIGGER",
+        "domain": "production-I3",
+        "raw_header": "[19:19:13][E][pdx_persistent_reader.cpp:216]: Error: \"Unknown trigger: hidden_trigger, near line: 3\" in file: \"common/scripted_triggers/lyd_c3_leadership_triggers.txt\" near line: 5"
+      },
+      {
+        "line": 2,
+        "category": "PRODUCT_C3_INVALID_PREV_CHAIN",
+        "domain": "production-I3",
+        "raw_header": "[19:19:13][E][jomini_eventtarget.cpp:150]: Link 'prev' is a global link but follows a 'prev' link. At 'file: common/scripted_triggers/lyd_c3_leadership_triggers.txt line: 71 (lyd_c3_round_current_trigger[args#3099453956])'"
+      },
+      {
+        "line": 3,
+        "category": "PRODUCT_C3_INVALID_PREV_CHAIN",
+        "domain": "production-I3",
+        "raw_header": "[19:19:13][E][jomini_eventtarget.cpp:150]: Link 'prev' is a global link but follows a 'prev' link. At 'file: common/scripted_triggers/lyd_c3_leadership_triggers.txt line: 71 (lyd_c3_round_current_trigger[args#753382873])'"
+      },
+      {
+        "line": 4,
+        "category": "PRODUCT_C3_INVALID_PREV_CHAIN",
+        "domain": "production-I3",
+        "raw_header": "[19:19:13][E][jomini_eventtarget.cpp:150]: Link 'prev' is a global link but follows a 'prev' link. At 'file: common/scripted_triggers/lyd_c3_leadership_triggers.txt line: 135 (lyd_c3_rite_represented_trigger)'"
+      }
+    ],
+    "earlier_R4_signatures_absent_in_this_actual_final_error": [
+      "has_same_core_doctrines",
+      "divergenceroot$",
+      "divergencescope:",
+      "Cannot specify both location and employer",
+      "Variable '",
+      "lyd_r4_fixture_effects.txt"
+    ],
+    "pre_exit_error_equal": true,
+    "final_userdir_error_equal": true,
+    "boundary": "Four actual final error.log headers; no duplicated game.log count. Absence of older signatures is not proof of runtime behavior. No causal link to later crash established."
+  },
+  "offline_evidence": "fresh Steam moved PNG + independent movement receipt + root original-image review; no new Steam operation",
+  "settings_requested": {
+    "language": "l_simp_chinese",
+    "autosave": "NEVER",
+    "cloud_save": false,
+    "display_mode": "windowed",
+    "windowed_resolution": "1600x900"
+  },
+  "actual_post_run_settings_file": {
+    "language": "l_simp_chinese",
+    "display_mode": "windowed",
+    "windowed_resolution": "1600x900",
+    "autosave": "YEARLY",
+    "cloud_save": "no"
+  },
+  "actual_settings_campaign_UI": "NOT_RUN",
+  "lifecycle": {
+    "keeper_FINAL_sequence": 2698,
+    "keeper_thread_exited": true,
+    "keeper_screen_released_original_value": false,
+    "subsequent_CAS_sequence": 2699,
+    "CAS_resources": [],
+    "allocator_status": "completed-red",
+    "allocator_reason": "R0005-C3-loading-errors-crash-observed-after-WM-close-no-campaign-no-native-attach-reporter-closed",
+    "allocator_sequence": 5,
+    "both_processes_absent": true,
+    "normal_exit": false
+  },
+  "copied_originals": [
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\character_interactions\\lyd_c2_consent_interactions.txt",
+      "projection": "inputs/production/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "bytes": 805,
+      "sha256": "b0917c250f3c89d829c4b852417da4e87e80179d4d62329d99cd14c687f6f89c",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\character_interactions\\lyd_c3_teacher_interactions.txt",
+      "projection": "inputs/production/common/character_interactions/lyd_c3_teacher_interactions.txt",
+      "bytes": 3513,
+      "sha256": "abe1bb4f106292dc76a8ce7f58ef23572a4a931d353bde6556c0eb3fa61d3c99",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\character_interactions\\lyd_interactions.txt",
+      "projection": "inputs/production/common/character_interactions/lyd_interactions.txt",
+      "bytes": 127,
+      "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\decisions\\lyd_c2_consent_decisions.txt",
+      "projection": "inputs/production/common/decisions/lyd_c2_consent_decisions.txt",
+      "bytes": 1852,
+      "sha256": "e86389bf29a5728e7ac48d3c973878f557cb47c006f0f4c56119f8c76de62516",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\decisions\\lyd_c3_leadership_decisions.txt",
+      "projection": "inputs/production/common/decisions/lyd_c3_leadership_decisions.txt",
+      "bytes": 5845,
+      "sha256": "098dcb8a5505864e41d52f795fd3bbb3bcce4d5fee2cd1e0ff1f91faf2525673",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\decisions\\lyd_decisions.txt",
+      "projection": "inputs/production/common/decisions/lyd_decisions.txt",
+      "bytes": 1774,
+      "sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\on_action\\lyd_c3_lifecycle_on_actions.txt",
+      "projection": "inputs/production/common/on_action/lyd_c3_lifecycle_on_actions.txt",
+      "bytes": 544,
+      "sha256": "19c1773ebb82bbfe75d95a629f9ffda73a521c9afe0060cf55f438a2b96fe19b",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\religion\\faith_types\\lyd_faiths.txt",
+      "projection": "inputs/production/common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 424,
+      "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\religion\\rite_types\\lyd_rites.txt",
+      "projection": "inputs/production/common/religion/rite_types/lyd_rites.txt",
+      "bytes": 13017,
+      "sha256": "929fb9f7cc6df5a7e8a1acfcc07b43ace9a397bb22246e6884884d5920762a20",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\religion\\tenet_types\\lyd_tenets.txt",
+      "projection": "inputs/production/common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 19445,
+      "sha256": "410f0c593aa47bec13ae1d85fde9d956aae1a12bd6a2a4d6c1b4767cfc0c15de",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\script_values\\lyd_c2_consent_values.txt",
+      "projection": "inputs/production/common/script_values/lyd_c2_consent_values.txt",
+      "bytes": 533,
+      "sha256": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_c2_close_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_c2_close_effects.txt",
+      "bytes": 3384,
+      "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_c2_commit_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "bytes": 5885,
+      "sha256": "79d1c4b6ff7fcbff40357252e2d18808993b1d53158bcc47e0681776a06909c6",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_c2_head_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_c2_head_effects.txt",
+      "bytes": 1352,
+      "sha256": "cd1f2b8a9adb9816db16924fb20f6d6d559db479d1fe35f22b06bef611f0228b",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_c2_response_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_c2_response_effects.txt",
+      "bytes": 1369,
+      "sha256": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_c2_setup_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "bytes": 12049,
+      "sha256": "9cc7b2271437062cd03ef6ca1cb1856e874bf3fee648749df67f5e5eafab28eb",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_c2_snapshot_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "bytes": 20434,
+      "sha256": "ba5b02a594aab32e475cfc2bb6d368ed14a11b1316f60354a3a09585e052529d",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_c2_vote_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "bytes": 4832,
+      "sha256": "360659bd3f0e95be69391e8b685ec26945466cc59ee263e0f1c6cd62454b34e6",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_c3_challenger_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_c3_challenger_effects.txt",
+      "bytes": 6468,
+      "sha256": "af3c5cabc8e6123a5d76aeed59bf0e85db8e9bcf39c85118b0ab85ee746ea89c",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_c3_council_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_c3_council_effects.txt",
+      "bytes": 9658,
+      "sha256": "acf4747c19f9da99c314d8a16973f2b2abcf7f411d8320c8a0c1ac275690154b",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_c3_head_factory.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_c3_head_factory.txt",
+      "bytes": 1993,
+      "sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_c3_lifecycle_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+      "bytes": 5211,
+      "sha256": "94720db16153a862c91172d1a8174a6e91fe734d01353ce2f61132595403f651",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_c3_migration_hooks.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "bytes": 1366,
+      "sha256": "a13cec21b7e113e1d89a3a8228e760e30aa607704f65ae3db848208e22cac75b",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_entry_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_entry_effects.txt",
+      "bytes": 3415,
+      "sha256": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_practice_10_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_practice_10_effects.txt",
+      "bytes": 3002,
+      "sha256": "3ca648c00476c6360777685f95892ba881b370028aac6421f27dc327ddd6d873",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_practice_11_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_practice_11_effects.txt",
+      "bytes": 2887,
+      "sha256": "bbb2ffc2af52aa54b3753147e6adab8f3d3fa191cc32072094a354a4b145c7f1",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_practice_12_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_practice_12_effects.txt",
+      "bytes": 2948,
+      "sha256": "4a11f39e7ad438971f9197eea0250a82dcfa5320ab5308157c6aec33a1178949",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_practice_13_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_practice_13_effects.txt",
+      "bytes": 3035,
+      "sha256": "f20eab97c7fa78b98e986d427627b37578faff2fea17b0ddfad9c879b0f4d68c",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_practice_14_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_practice_14_effects.txt",
+      "bytes": 1526,
+      "sha256": "dba733183cc1c66355a44b6ce78e8f3d91ef35b0464ae7da6127dc8ebf7bbf92",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_practice_1_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_practice_1_effects.txt",
+      "bytes": 2798,
+      "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_practice_2_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_practice_2_effects.txt",
+      "bytes": 2703,
+      "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_practice_3_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_practice_3_effects.txt",
+      "bytes": 2756,
+      "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_practice_4_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_practice_4_effects.txt",
+      "bytes": 2990,
+      "sha256": "c4e215a15a98159b9f49d94937a0e81a7c1a5366e2fbe03b091f1962f27f1d52",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_practice_5_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_practice_5_effects.txt",
+      "bytes": 2901,
+      "sha256": "fcb35efef5e5e766befbd3caa5ad8dc7faf5baea3f1852254759ece65dd4fd38",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_practice_6_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_practice_6_effects.txt",
+      "bytes": 2926,
+      "sha256": "731324e20ebd99a8f20e2a1a97473b091d497ac37f33fdefad1a1c0810fb8ee9",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_practice_7_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_practice_7_effects.txt",
+      "bytes": 2972,
+      "sha256": "b5e27005dbea499d63716ba9956996ecd2948dade6d46833ad1df3596079de8f",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_practice_8_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_practice_8_effects.txt",
+      "bytes": 2912,
+      "sha256": "e6c9ad63b57f81e9ff57f0cc146859d2c9b281225f859ffefe101aad9c0a80bf",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_practice_9_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_practice_9_effects.txt",
+      "bytes": 2983,
+      "sha256": "f24b7fcff5d34c21e2186b498a4ef0e7dfcb810ee5bb8ff5321ac8d2cafd2cb0",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_school_2_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_school_2_effects.txt",
+      "bytes": 3902,
+      "sha256": "7d730f4fd8e01d9664b44dd8df607c56df1850425b0cc04ab834d891cc127491",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_school_3_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_school_3_effects.txt",
+      "bytes": 3877,
+      "sha256": "88230a78a2d27285b11a805c6762e78f2d3c2b472d1f61c862fd9117f0705eab",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_school_4_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_school_4_effects.txt",
+      "bytes": 3982,
+      "sha256": "e2c098a86e9f39fcec43bffc74b57f0573c60e59faf5db7edf872b197f253234",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_school_5_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_school_5_effects.txt",
+      "bytes": 1968,
+      "sha256": "24395a459573ef5f9ad0e066a88fb9d5e7895e04f5527e88103f1f5ab0a9414a",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_effects\\lyd_school_effects.txt",
+      "projection": "inputs/production/common/scripted_effects/lyd_school_effects.txt",
+      "bytes": 3872,
+      "sha256": "d9b1456c4a5e7610807ae7e61f4bbfdc8b432968d776befcbd32abd5e6dc6008",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+      "projection": "inputs/production/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "bytes": 15286,
+      "sha256": "0e32e31c4e4362710b5ae31c65981d70ae95e0023a20f55fc10788041d25f7c7",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt",
+      "projection": "inputs/production/common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "bytes": 6068,
+      "sha256": "bac466e78388dc5cfd9b0f2e26307b29144cb62cd70fb1f7774e992d958dce5e",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\common\\scripted_triggers\\lyd_player_triggers.txt",
+      "projection": "inputs/production/common/scripted_triggers/lyd_player_triggers.txt",
+      "bytes": 2885,
+      "sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\descriptor.mod",
+      "projection": "inputs/production/descriptor.mod",
+      "bytes": 139,
+      "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\events\\lyd_c2_consent_events.txt",
+      "projection": "inputs/production/events/lyd_c2_consent_events.txt",
+      "bytes": 6618,
+      "sha256": "aeb4ea2062ad58b6c537df2812a965bf85ea7ee525ffce48c6659e7ffb98616e",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\events\\lyd_c3_leadership_events.txt",
+      "projection": "inputs/production/events/lyd_c3_leadership_events.txt",
+      "bytes": 2145,
+      "sha256": "591f1c791c286916efcb179e9c340dc241da37e6a73d53e1c661e40b538c50e1",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\events\\lyd_events.txt",
+      "projection": "inputs/production/events/lyd_events.txt",
+      "bytes": 50504,
+      "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\history\\faiths\\lyd_faith_history.txt",
+      "projection": "inputs/production/history/faiths/lyd_faith_history.txt",
+      "bytes": 1171,
+      "sha256": "d3f44db69e11ad49f4707e3433df6c4c542073bc245042578ded3c30940df19d",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\localization\\english\\lyd_c2_consent_l_english.yml",
+      "projection": "inputs/production/localization/english/lyd_c2_consent_l_english.yml",
+      "bytes": 11218,
+      "sha256": "f12dddaf17f4098a47ba2080428b0097cd1b8cdf203a04a5ea6eea7c876a2d70",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\localization\\english\\lyd_c3_leadership_l_english.yml",
+      "projection": "inputs/production/localization/english/lyd_c3_leadership_l_english.yml",
+      "bytes": 5148,
+      "sha256": "309fc85912b7bdeadda9cee93ba31b2bdd4c45c1896654c25d682651ec1e4104",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\localization\\english\\lyd_content_l_english.yml",
+      "projection": "inputs/production/localization/english/lyd_content_l_english.yml",
+      "bytes": 66078,
+      "sha256": "833fcdb277cfa8a736aa94077a5df1adc0c16dbe6834ef89cdc0a62180337c98",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\localization\\english\\lyd_runtime_l_english.yml",
+      "projection": "inputs/production/localization/english/lyd_runtime_l_english.yml",
+      "bytes": 4450,
+      "sha256": "d76b648c16a763266ca202c97a00a48e24c72b7b3be291d288d5e2e4134fab0a",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\localization\\simp_chinese\\lyd_c2_consent_l_simp_chinese.yml",
+      "projection": "inputs/production/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "bytes": 9797,
+      "sha256": "6cf1eeb0008e7ce1cf8c7b087982a1097d436bdb78031674e5dccef918daa93f",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml",
+      "projection": "inputs/production/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "bytes": 4829,
+      "sha256": "b13674be2286e00b9ce32b14d007a3916b8ad4e46763f4a34ad80d03d96d2d30",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\localization\\simp_chinese\\lyd_content_l_simp_chinese.yml",
+      "projection": "inputs/production/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 52916,
+      "sha256": "a28e41c0d4d58116e9bb81882223fe73817cedd5ce9f808384d367180e577972",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\production\\localization\\simp_chinese\\lyd_runtime_l_simp_chinese.yml",
+      "projection": "inputs/production/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 3707,
+      "sha256": "cdfe4417a8dbd32e04c69a025c5adce08741c22526c4e647069169018c6a6fca",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\fixture\\common\\decisions\\lyd_r3_fixture_decisions.txt",
+      "projection": "inputs/fixture/common/decisions/lyd_r3_fixture_decisions.txt",
+      "bytes": 650,
+      "sha256": "bd731703217b10a6fde0a104a48c61be7f852c88a0538b41b250f50fd1ce6d93",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\fixture\\common\\scripted_effects\\lyd_r3_fixture_effects.txt",
+      "projection": "inputs/fixture/common/scripted_effects/lyd_r3_fixture_effects.txt",
+      "bytes": 768,
+      "sha256": "5a79a925992d3a55586e5558d5c6300d608986467259b3f9b1ec17c8f08096da",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\fixture\\common\\scripted_triggers\\lyd_r3_fixture_triggers.txt",
+      "projection": "inputs/fixture/common/scripted_triggers/lyd_r3_fixture_triggers.txt",
+      "bytes": 415,
+      "sha256": "bc0f586a245377fb1d2660651f04ce2c16f85fcc113250f323da4fd7fbbb5bda",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\fixture\\descriptor.mod",
+      "projection": "inputs/fixture/descriptor.mod",
+      "bytes": 123,
+      "sha256": "56257504a8f873e43a20ab5c3096c9607647e205d28db17f4c3b13cb54f94a8f",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\fixture\\events\\lyd_r3_fixture_events.txt",
+      "projection": "inputs/fixture/events/lyd_r3_fixture_events.txt",
+      "bytes": 707,
+      "sha256": "0f5cae24b3d938cc9ece2af2a8a889dbf42d8b234d41cdc94c6c16adc7f05a9b",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\fixture\\localization\\english\\lyd_r3_fixture_l_english.yml",
+      "projection": "inputs/fixture/localization/english/lyd_r3_fixture_l_english.yml",
+      "bytes": 1363,
+      "sha256": "c74004e936f793dc5d47b12a696f2a0a9f32662fd5938a4a16787e7926939d7f",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\fixture\\localization\\simp_chinese\\lyd_r3_fixture_l_simp_chinese.yml",
+      "projection": "inputs/fixture/localization/simp_chinese/lyd_r3_fixture_l_simp_chinese.yml",
+      "bytes": 1244,
+      "sha256": "257a24c7d74b5ededcd8930ba2d124faadf33ca4b54a3d7985a080190c8dd315",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\i2-fixture\\common\\decisions\\lyd_r4_fixture_decisions.txt",
+      "projection": "inputs/i2-fixture/common/decisions/lyd_r4_fixture_decisions.txt",
+      "bytes": 2736,
+      "sha256": "adfabd03a3ef3e437a7f30f1111cf746790475051e6f20f2d24fccc3e24e69d6",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\i2-fixture\\common\\scripted_effects\\lyd_r4_fixture_effects.txt",
+      "projection": "inputs/i2-fixture/common/scripted_effects/lyd_r4_fixture_effects.txt",
+      "bytes": 10470,
+      "sha256": "55a6310eb1a9abef2b08848f9630b7577c5c77d8c887d3647a89f69107b2095c",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\i2-fixture\\common\\scripted_triggers\\lyd_r4_fixture_triggers.txt",
+      "projection": "inputs/i2-fixture/common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      "bytes": 7886,
+      "sha256": "97f538545fbe3f00220acee85222f4f5b888faccdcf5e37559aee952c85fa8ba",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\i2-fixture\\descriptor.mod",
+      "projection": "inputs/i2-fixture/descriptor.mod",
+      "bytes": 123,
+      "sha256": "2b7f18a5ae3a30f68ad52de4013b85af507faf619e536e4225de30d698bf62a4",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\i2-fixture\\events\\lyd_r4_fixture_events.txt",
+      "projection": "inputs/i2-fixture/events/lyd_r4_fixture_events.txt",
+      "bytes": 1315,
+      "sha256": "5133367dac46a1a3da61937b2969a66f9998a58651525870eaaccf6e19c5f4ec",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\i2-fixture\\localization\\english\\lyd_r4_fixture_l_english.yml",
+      "projection": "inputs/i2-fixture/localization/english/lyd_r4_fixture_l_english.yml",
+      "bytes": 6132,
+      "sha256": "1714862e1989f76e3496d079a1039baab095a3205a125e323b9c03056f477677",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\content\\i2-fixture\\localization\\simp_chinese\\lyd_r4_fixture_l_simp_chinese.yml",
+      "projection": "inputs/i2-fixture/localization/simp_chinese/lyd_r4_fixture_l_simp_chinese.yml",
+      "bytes": 5528,
+      "sha256": "dfcdd7b67c01a3d022cd69323677733cddd68b78c3a694d29ca5311566339a5d",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\build-formal-i4-r0005.manifest.json",
+      "projection": "inputs/production.manifest.json",
+      "bytes": 10885,
+      "sha256": "f938644617764247bdec21eacd7023a5f93c0c79c5c48972b9483f9c20720692",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-entry-fixture-candidate-002\\fixture-render-report.json",
+      "projection": "inputs/entry-fixture-render-report.json",
+      "bytes": 1709,
+      "sha256": "1b49b5e1a67b26002cea073db79f708e88a1b5ec3324f2212b8285559d8ae3a3",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-i2-fixture-candidate-001\\fixture-render-report.json",
+      "projection": "inputs/i2-fixture-render-report.json",
+      "bytes": 12978,
+      "sha256": "82894a0701d451eaab2211617f2fa81e2354b66e9b7747069331f56d0865d040",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\PREPARED.json",
+      "projection": "inputs/PREPARED.json",
+      "bytes": 36052,
+      "sha256": "bb2558395dd0b2a54ef0da89286acc4068bbe0945396f939835172863aa8a819",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\mod\\lyd_fixture.mod",
+      "projection": "inputs/userdir-mod/lyd_fixture.mod",
+      "bytes": 201,
+      "sha256": "79d249b143d5337d83bc75ccdb5a2a993618181095edd92c1fc91117734d1792",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\mod\\lyd_i2_fixture.mod",
+      "projection": "inputs/userdir-mod/lyd_i2_fixture.mod",
+      "bytes": 204,
+      "sha256": "47dc2379998c4c9462c63ecbaf4a50a821379ee41105597a4b9267d4d5db2e3a",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\mod\\lyd_production.mod",
+      "projection": "inputs/userdir-mod/lyd_production.mod",
+      "bytes": 220,
+      "sha256": "857583ebb6a40373891a6dd5f10aaa09b9aae87de96085fb0cec9d5e3d4500a1",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\dlc_load.json",
+      "projection": "inputs/dlc_load.json",
+      "bytes": 137,
+      "sha256": "17d8df37281da17cd9373daa3dfa13ca702228171446c81f0596dafad2f97d57",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\pdx_settings.txt",
+      "projection": "inputs/pdx_settings.txt",
+      "bytes": 7098,
+      "sha256": "9dafa9fa3eb824f444a6adc85a9ffbd2c6094d5690c7c1c6969445a91123796b",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\tutorial.txt",
+      "projection": "inputs/tutorial.txt",
+      "bytes": 57,
+      "sha256": "de93ebed7d262c2450ac9fd18543e0890d8e5d3661cc773b62f707fc310a2075",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\after-normal-close.json",
+      "projection": "run/after-normal-close.json",
+      "bytes": 4298,
+      "sha256": "54c30cf4a2e5147cdb80241b81c1770afa9a0f9b88a574622e9acdbbbbfedab3",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\allocator-completed-red.stderr.txt",
+      "projection": "run/allocator-completed-red.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\allocator-completed-red.stdout.txt",
+      "projection": "run/allocator-completed-red.stdout.txt",
+      "bytes": 488,
+      "sha256": "f863c696b764a0a4a4080328a6b670184d98f2e353f38dc45d01d02677e28e65",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\ck3-stderr.txt",
+      "projection": "run/ck3-stderr.txt",
+      "bytes": 132,
+      "sha256": "2d979cdbfe9eed3ec4e84c0893899b0a437a6adb721095807ec5097c20804101",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\ck3-stdout.txt",
+      "projection": "run/ck3-stdout.txt",
+      "bytes": 4772806,
+      "sha256": "ecf3a13a438282f7d71b81378c2a48563143e7408fef2ef00d89cf714ac0b2f8",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crash-exit-processes-001.json",
+      "projection": "run/crash-exit-processes-001.json",
+      "bytes": 190,
+      "sha256": "6f8cdfe500d5afa029c462e0c97567ca59d103ddf76964c5c916516883ed363f",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crashed-exit-readback.json",
+      "projection": "run/crashed-exit-readback.json",
+      "bytes": 3862,
+      "sha256": "6a5e4d4ea6ae1271abdc487f94d1dd18b60740262a0a286bdf1e0c087041584e",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\exit-menu-readback.json",
+      "projection": "run/exit-menu-readback.json",
+      "bytes": 4097,
+      "sha256": "e030dfa5b263395b17020632a9776a7f5d9ab3fafa6c36d7581080ab436155e8",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\keeper-final.snapshot.json",
+      "projection": "run/keeper-final.snapshot.json",
+      "bytes": 387,
+      "sha256": "06267d2500c000b0b75b20bf18596f476f3b8854cc65305a6646ec9f47df5f44",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\launch.json",
+      "projection": "run/launch.json",
+      "bytes": 316,
+      "sha256": "f9a7e3820a4b4ba0e23141383cf49b0ca831efe24400264f40b51c673d392a11",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\live-run-id.json",
+      "projection": "run/live-run-id.json",
+      "bytes": 371,
+      "sha256": "0196f4600158c39091459d88d5ec0019daf0ce52124756a450a8a6788102147c",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-first.json",
+      "projection": "run/loading-first.json",
+      "bytes": 4293,
+      "sha256": "c33854c033ad2639be19419fba1015daca3735b576c714a7afcbf01953797ac1",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-second.json",
+      "projection": "run/loading-second.json",
+      "bytes": 4294,
+      "sha256": "cc8e2aa7c9728949afa0ebe8f3cd115d01e859138e5e7abdc2747127abb8d6c7",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\native-profile.template.json",
+      "projection": "run/native-profile.template.json",
+      "bytes": 734,
+      "sha256": "b2c01e992097f27130cf41991295f0965996d106780dd85db452708431ceba1e",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\normal-close-request.json",
+      "projection": "run/normal-close-request.json",
+      "bytes": 173,
+      "sha256": "1cf831c2c12a6e9999199ba339fc3d602b39f06a443b3461b7ead2b1344df3db",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\normal-exit-check.json",
+      "projection": "run/normal-exit-check.json",
+      "bytes": 4297,
+      "sha256": "1e318dd724e6601f4bc784ed3bd6ba96545d5a11399781e833eb51983439a5a8",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\offline-reviewed.json",
+      "projection": "run/offline-reviewed.json",
+      "bytes": 750,
+      "sha256": "e6ce4f559e0feaf26bf80ac97bbcd48c8f0342eba4867eb5f79912c620f6146c",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\prelaunch-check.json",
+      "projection": "run/prelaunch-check.json",
+      "bytes": 1211,
+      "sha256": "024d4412d34a02dd9a446f069f55a2aed5c7caad8adb828090386fec3ea784c5",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\prelaunch-poll.json",
+      "projection": "run/prelaunch-poll.json",
+      "bytes": 191,
+      "sha256": "6e6c3fc5e2278c81cadb0542bc70c38759b4b431cdb57481dde2663d3660df71",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\release-screen.stderr.txt",
+      "projection": "run/release-screen.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\release-screen.stdout.json",
+      "projection": "run/release-screen.stdout.json",
+      "bytes": 1219,
+      "sha256": "488e1b53f52fd324742895c9c3113efd499ed4d9d502805200b99943b4cc77ee",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\screen-prelaunch-all-notices.stderr.txt",
+      "projection": "run/screen-prelaunch-all-notices.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\screen-prelaunch-all-notices.stdout.json",
+      "projection": "run/screen-prelaunch-all-notices.stdout.json",
+      "bytes": 1935633,
+      "sha256": "b356cfeb9239708879208b68eccc349b4bd7a0d03f99d411fa9f01311473e95f",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\screen-register.json",
+      "projection": "run/screen-register.json",
+      "bytes": 1278,
+      "sha256": "e3f557262bb0262a524e23835e54f27d68dc73d796de4992ccead85b93e96ce3",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\screen-release-completed.json",
+      "projection": "run/screen-release-completed.json",
+      "bytes": 1177,
+      "sha256": "acdc8eb8900c53aac86d67fbfcc9ba2cdb31de1c5d2b6ba6bee6202222fbf212",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\steam-initial.json",
+      "projection": "run/steam-initial.json",
+      "bytes": 3854,
+      "sha256": "ef1b1d24ba6df3b0aeda60224cf838b27872e74aa99b32ae91575e898d4eab41",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\after-normal-close.png",
+      "projection": "screens/after-normal-close.png",
+      "bytes": 2007462,
+      "sha256": "ee5e29c5ee6903b115ce63ed29559f54aba84a7c5435e64f92e487f82a82a5d8",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crashed-exit-readback.png",
+      "projection": "screens/crashed-exit-readback.png",
+      "bytes": 327370,
+      "sha256": "c5333e1d0908616cb29c27f6937e6904f75a3a2918730ddd8cef9dd336f655a6",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\exit-menu-readback.png",
+      "projection": "screens/exit-menu-readback.png",
+      "bytes": 329297,
+      "sha256": "5a6eae4e856a59b68b878b5d6fc08d30f8d5882d11b7a05f39606ed3f7759827",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-first.png",
+      "projection": "screens/loading-first.png",
+      "bytes": 2610137,
+      "sha256": "2c80e67af1c4a03d88687528ce60fbf254c2c07a9e4f0464210e377bb3578cf6",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-second.png",
+      "projection": "screens/loading-second.png",
+      "bytes": 2610070,
+      "sha256": "f80aad46f56a8c6952ac98735018499b60eee635db2bf5bc7ca93fa1cfe1b7be",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\normal-exit-check.png",
+      "projection": "screens/normal-exit-check.png",
+      "bytes": 2007508,
+      "sha256": "ee08f2685be9f66aca472da058f8da74e49bb95d804a5b440f6ccaee727098a3",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\steam-initial.png",
+      "projection": "screens/steam-initial.png",
+      "bytes": 327277,
+      "sha256": "817a2e7683c3d364e185f16b8f8db1869e459708be821a92282bc44058ab4c67",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\steam-fresh-002\\steam-before.png",
+      "projection": "offline/steam-before.png",
+      "bytes": 327311,
+      "sha256": "7f0cf806ebbcdf18ed31c9d3cdeee62b99a84be79c2b5792dc1e36676e4314e4",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\steam-fresh-002\\steam-frame-freshness.json",
+      "projection": "offline/steam-frame-freshness.json",
+      "bytes": 1167,
+      "sha256": "84d4969eff4c55ab18c8e55b7a60a39fbe8b926b7bb1a369e13d57f7098bf834",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\steam-fresh-002\\steam-moved.png",
+      "projection": "offline/steam-moved.png",
+      "bytes": 327156,
+      "sha256": "c651743e75c3ad1b036e57af31b8e8daece1f8834993a5a02380673741f74df6",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-red-before-exit\\code_revisions.log",
+      "projection": "logs/pre-exit/code_revisions.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-red-before-exit\\custom_automated_stats.log",
+      "projection": "logs/pre-exit/custom_automated_stats.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-red-before-exit\\database_conflicts.log",
+      "projection": "logs/pre-exit/database_conflicts.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-red-before-exit\\debug.log",
+      "projection": "logs/pre-exit/debug.log",
+      "bytes": 459398,
+      "sha256": "8f3e3796fe8978e296b2f087e1768d34b668629ffc87d4c8c1fae41c3953659e",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-red-before-exit\\dedicated_server.log",
+      "projection": "logs/pre-exit/dedicated_server.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-red-before-exit\\error.log",
+      "projection": "logs/pre-exit/error.log",
+      "bytes": 840,
+      "sha256": "3c6efe65ca5e46aa5604eebbc3a401cf8a4bfe9cfac9184d36ffa7bbdd5319d5",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-red-before-exit\\game.log",
+      "projection": "logs/pre-exit/game.log",
+      "bytes": 2127,
+      "sha256": "cbc4798cc9a714bcf16e4dc2ffd10ff803e6b40da0b0aa4c8399d996b0f7df37",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-red-before-exit\\gui_warnings.log",
+      "projection": "logs/pre-exit/gui_warnings.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-red-before-exit\\memory.log",
+      "projection": "logs/pre-exit/memory.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-red-before-exit\\message.log",
+      "projection": "logs/pre-exit/message.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-red-before-exit\\multiplayer.log",
+      "projection": "logs/pre-exit/multiplayer.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-red-before-exit\\pdxsdk.log",
+      "projection": "logs/pre-exit/pdxsdk.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-red-before-exit\\profile.log",
+      "projection": "logs/pre-exit/profile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-red-before-exit\\report.json",
+      "projection": "logs/pre-exit/report.json",
+      "bytes": 2713,
+      "sha256": "01f00b47e3648ea995447b9526ed8fee64c32744f189a5f570929d7dffa8cf1e",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-red-before-exit\\setup.log",
+      "projection": "logs/pre-exit/setup.log",
+      "bytes": 36864,
+      "sha256": "afbb389e412e6af1ddd6030be75db514cbf6a97766b2fa324cde705bada29f0a",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-red-before-exit\\system.log",
+      "projection": "logs/pre-exit/system.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\loading-red-before-exit\\text.log",
+      "projection": "logs/pre-exit/text.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crash-observed-001\\logs\\code_revisions.log",
+      "projection": "logs/crash-observed/logs/code_revisions.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crash-observed-001\\logs\\custom_automated_stats.log",
+      "projection": "logs/crash-observed/logs/custom_automated_stats.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crash-observed-001\\logs\\database_conflicts.log",
+      "projection": "logs/crash-observed/logs/database_conflicts.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crash-observed-001\\logs\\debug.log",
+      "projection": "logs/crash-observed/logs/debug.log",
+      "bytes": 459398,
+      "sha256": "8f3e3796fe8978e296b2f087e1768d34b668629ffc87d4c8c1fae41c3953659e",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crash-observed-001\\logs\\dedicated_server.log",
+      "projection": "logs/crash-observed/logs/dedicated_server.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crash-observed-001\\logs\\error.log",
+      "projection": "logs/crash-observed/logs/error.log",
+      "bytes": 840,
+      "sha256": "3c6efe65ca5e46aa5604eebbc3a401cf8a4bfe9cfac9184d36ffa7bbdd5319d5",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crash-observed-001\\logs\\game.log",
+      "projection": "logs/crash-observed/logs/game.log",
+      "bytes": 2127,
+      "sha256": "cbc4798cc9a714bcf16e4dc2ffd10ff803e6b40da0b0aa4c8399d996b0f7df37",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crash-observed-001\\logs\\gui_warnings.log",
+      "projection": "logs/crash-observed/logs/gui_warnings.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crash-observed-001\\logs\\memory.log",
+      "projection": "logs/crash-observed/logs/memory.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crash-observed-001\\logs\\message.log",
+      "projection": "logs/crash-observed/logs/message.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crash-observed-001\\logs\\multiplayer.log",
+      "projection": "logs/crash-observed/logs/multiplayer.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crash-observed-001\\logs\\pdxsdk.log",
+      "projection": "logs/crash-observed/logs/pdxsdk.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crash-observed-001\\logs\\profile.log",
+      "projection": "logs/crash-observed/logs/profile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crash-observed-001\\logs\\setup.log",
+      "projection": "logs/crash-observed/logs/setup.log",
+      "bytes": 36864,
+      "sha256": "afbb389e412e6af1ddd6030be75db514cbf6a97766b2fa324cde705bada29f0a",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crash-observed-001\\logs\\system.log",
+      "projection": "logs/crash-observed/logs/system.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crash-observed-001\\logs\\text.log",
+      "projection": "logs/crash-observed/logs/text.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\crash-observed-001\\report.json",
+      "projection": "logs/crash-observed/report.json",
+      "bytes": 7497,
+      "sha256": "0cc688a1377a5fc45779c0eb205b4fa8edf7a6fce00bd64fbb7f4afe0fd39193",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\code_revisions.log",
+      "projection": "logs/final-userdir/code_revisions.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\custom_automated_stats.log",
+      "projection": "logs/final-userdir/custom_automated_stats.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\database_conflicts.log",
+      "projection": "logs/final-userdir/database_conflicts.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\debug.log",
+      "projection": "logs/final-userdir/debug.log",
+      "bytes": 459398,
+      "sha256": "8f3e3796fe8978e296b2f087e1768d34b668629ffc87d4c8c1fae41c3953659e",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\dedicated_server.log",
+      "projection": "logs/final-userdir/dedicated_server.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\error.log",
+      "projection": "logs/final-userdir/error.log",
+      "bytes": 840,
+      "sha256": "3c6efe65ca5e46aa5604eebbc3a401cf8a4bfe9cfac9184d36ffa7bbdd5319d5",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\game.log",
+      "projection": "logs/final-userdir/game.log",
+      "bytes": 2127,
+      "sha256": "cbc4798cc9a714bcf16e4dc2ffd10ff803e6b40da0b0aa4c8399d996b0f7df37",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\gui_warnings.log",
+      "projection": "logs/final-userdir/gui_warnings.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\memory.log",
+      "projection": "logs/final-userdir/memory.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\message.log",
+      "projection": "logs/final-userdir/message.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\multiplayer.log",
+      "projection": "logs/final-userdir/multiplayer.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\pdxsdk.log",
+      "projection": "logs/final-userdir/pdxsdk.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\profile.log",
+      "projection": "logs/final-userdir/profile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\setup.log",
+      "projection": "logs/final-userdir/setup.log",
+      "bytes": 36864,
+      "sha256": "afbb389e412e6af1ddd6030be75db514cbf6a97766b2fa324cde705bada29f0a",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\system.log",
+      "projection": "logs/final-userdir/system.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\logs\\text.log",
+      "projection": "logs/final-userdir/text.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0005\\FINAL.json",
+      "projection": "lifecycle/keeper-FINAL.json",
+      "bytes": 387,
+      "sha256": "06267d2500c000b0b75b20bf18596f476f3b8854cc65305a6646ec9f47df5f44",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0005\\READY.json",
+      "projection": "lifecycle/keeper-READY.json",
+      "bytes": 736,
+      "sha256": "6f9c91e52dc922f4f3f5c7362edf64f7516b5e21e8bf48892a723dd734b6c567",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0005\\INPUTS.json",
+      "projection": "lifecycle/keeper-INPUTS.json",
+      "bytes": 2356,
+      "sha256": "30d1ee3dd64021183fdef6a1f9fb320f0fc0a28c6b20dd633285fbcb43293a1c",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0005\\ADMITTED.json",
+      "projection": "lifecycle/keeper-ADMITTED.json",
+      "bytes": 664,
+      "sha256": "8183f64f0a1490a3406e1dfff6d9e24be7c1890583525151915d1f03916e030d",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0005\\STOP.request",
+      "projection": "lifecycle/keeper-STOP.request",
+      "bytes": 122,
+      "sha256": "18748ca61eedc80b838a0f287ecff5dfdc28b423663ac567424c9abdbeb27ca1",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\FINAL-CI-RECEIPT.json",
+      "projection": "ci/FINAL-CI-RECEIPT.json",
+      "bytes": 2863,
+      "sha256": "6f06b10b655f9349d470bfbfe04929d8b2214f63d83cd24c6458f71c5ed4c806",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\index.json",
+      "projection": "ci/index.json",
+      "bytes": 6664,
+      "sha256": "d16598ee90f92f30bde23e3d6ddd5e68ff20956fbb31e8622ee47a68b74fdcf8",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\001-initial\\all-runs.raw.json",
+      "projection": "ci/observations/001-initial/all-runs.raw.json",
+      "bytes": 26961,
+      "sha256": "4c807435302d38623d17bdc670a13be3d46db0875f68bb36893a84b24d45ba61",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\001-initial\\all-runs.request-receipt.json",
+      "projection": "ci/observations/001-initial/all-runs.request-receipt.json",
+      "bytes": 2296,
+      "sha256": "99b2c0523ab6fe1f047ee489e5e809496d23876108e3f7101acb1950c2e6c68c",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\001-initial\\index.json",
+      "projection": "ci/observations/001-initial/index.json",
+      "bytes": 2413,
+      "sha256": "3556a725fb9b7750f1fcac32beacf58e8729fb341074d0607a19703b6d352ddb",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\001-initial\\jobs-37197886887.raw.json",
+      "projection": "ci/observations/001-initial/jobs-37197886887.raw.json",
+      "bytes": 13338,
+      "sha256": "9f07440e2fabca291e6b738e1536f172abcac95364ad045759faa5923530d865",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\001-initial\\jobs-37197886887.request-receipt.json",
+      "projection": "ci/observations/001-initial/jobs-37197886887.request-receipt.json",
+      "bytes": 2242,
+      "sha256": "12852a750657b2caada123c0fd45fc51d0ac1a4712511a97e30d121be18ef1ba",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\001-initial\\jobs-37197886947.raw.json",
+      "projection": "ci/observations/001-initial/jobs-37197886947.raw.json",
+      "bytes": 2461,
+      "sha256": "f541be5a3496272f71563f09e5e3f7512bce49b0b0d742f96a525d69d93c329c",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\001-initial\\jobs-37197886947.request-receipt.json",
+      "projection": "ci/observations/001-initial/jobs-37197886947.request-receipt.json",
+      "bytes": 2240,
+      "sha256": "31dbc4162550a5ec190313dfad512e0ea193d73dd8ceade4ddc104bb6c1f44cb",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\001-initial\\lyd-tree.git.stderr",
+      "projection": "ci/observations/001-initial/lyd-tree.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\001-initial\\lyd-tree.git.stdout",
+      "projection": "ci/observations/001-initial/lyd-tree.git.stdout",
+      "bytes": 41,
+      "sha256": "fec2743179a22385ed269cba19d1e4420aaf99dfd18bb747fd0a72ae694e5649",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\001-initial\\report.json",
+      "projection": "ci/observations/001-initial/report.json",
+      "bytes": 11410,
+      "sha256": "dbfd8594193b078e5c857421a6b087faae8726304a528f54e787a429d2b85b94",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\001-initial\\source\\ci_jobs_18b1944d_http_readonly.py",
+      "projection": "ci/observations/001-initial/source/ci_jobs_18b1944d_http_readonly.py",
+      "bytes": 7270,
+      "sha256": "731ee7338d1714671ef8bd82ec3faf2d6e75a4181bfd221a94b5d7890462d9b2",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\001-initial\\workflow-1.git.stderr",
+      "projection": "ci/observations/001-initial/workflow-1.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\001-initial\\workflow-1.git.stdout",
+      "projection": "ci/observations/001-initial/workflow-1.git.stdout",
+      "bytes": 1601,
+      "sha256": "c05e16c2cf003505116a0af9a2f34437107077cebed4363e0521fa556f7caccf",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\001-initial\\workflow-2.git.stderr",
+      "projection": "ci/observations/001-initial/workflow-2.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\001-initial\\workflow-2.git.stdout",
+      "projection": "ci/observations/001-initial/workflow-2.git.stdout",
+      "bytes": 24401,
+      "sha256": "73584dd98fe8af6ba5787f67ade7c82664e340ca18963a949f6b1d3e6e5fe69c",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\002-terminal-check\\all-runs.raw.json",
+      "projection": "ci/observations/002-terminal-check/all-runs.raw.json",
+      "bytes": 26964,
+      "sha256": "817ff5dfbc2fbb3ea4a6298b603ce5828eaf7fdb5d0b5d21abd2ceecff60ce60",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\002-terminal-check\\all-runs.request-receipt.json",
+      "projection": "ci/observations/002-terminal-check/all-runs.request-receipt.json",
+      "bytes": 2291,
+      "sha256": "66ecb25be73e7d2376463cd2e6866349898d43e3dabf904e092712cf849db38c",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\002-terminal-check\\index.json",
+      "projection": "ci/observations/002-terminal-check/index.json",
+      "bytes": 2413,
+      "sha256": "2041288df4d7b10f6ef0aab106250050f83a85695fc3efa0ac4f903dfcd46a89",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\002-terminal-check\\jobs-37197886887.raw.json",
+      "projection": "ci/observations/002-terminal-check/jobs-37197886887.raw.json",
+      "bytes": 15599,
+      "sha256": "9f73871e8f1ca5e732de6d2ed0c728102c8b3c4d34eca591c728fb2f8a54c5bb",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\002-terminal-check\\jobs-37197886887.request-receipt.json",
+      "projection": "ci/observations/002-terminal-check/jobs-37197886887.request-receipt.json",
+      "bytes": 2241,
+      "sha256": "6faec86d24f262748a088014e108f57c64c0c94198dea53c5c53dc2deb5b6bef",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\002-terminal-check\\jobs-37197886947.raw.json",
+      "projection": "ci/observations/002-terminal-check/jobs-37197886947.raw.json",
+      "bytes": 2461,
+      "sha256": "f541be5a3496272f71563f09e5e3f7512bce49b0b0d742f96a525d69d93c329c",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\002-terminal-check\\jobs-37197886947.request-receipt.json",
+      "projection": "ci/observations/002-terminal-check/jobs-37197886947.request-receipt.json",
+      "bytes": 2239,
+      "sha256": "618f8e941199059c2b2cbc3afb91d2397ed8db9d0bcb9c79fb37a6b722f54f85",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\002-terminal-check\\lyd-tree.git.stderr",
+      "projection": "ci/observations/002-terminal-check/lyd-tree.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\002-terminal-check\\lyd-tree.git.stdout",
+      "projection": "ci/observations/002-terminal-check/lyd-tree.git.stdout",
+      "bytes": 41,
+      "sha256": "fec2743179a22385ed269cba19d1e4420aaf99dfd18bb747fd0a72ae694e5649",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\002-terminal-check\\report.json",
+      "projection": "ci/observations/002-terminal-check/report.json",
+      "bytes": 11423,
+      "sha256": "aa6d240aa0d6c0a26c57ef9e9723fbbec4ab88f0029300cc0e023432b315b94c",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\002-terminal-check\\source\\ci_jobs_18b1944d_http_readonly.py",
+      "projection": "ci/observations/002-terminal-check/source/ci_jobs_18b1944d_http_readonly.py",
+      "bytes": 7270,
+      "sha256": "731ee7338d1714671ef8bd82ec3faf2d6e75a4181bfd221a94b5d7890462d9b2",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\002-terminal-check\\workflow-1.git.stderr",
+      "projection": "ci/observations/002-terminal-check/workflow-1.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\002-terminal-check\\workflow-1.git.stdout",
+      "projection": "ci/observations/002-terminal-check/workflow-1.git.stdout",
+      "bytes": 1601,
+      "sha256": "c05e16c2cf003505116a0af9a2f34437107077cebed4363e0521fa556f7caccf",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\002-terminal-check\\workflow-2.git.stderr",
+      "projection": "ci/observations/002-terminal-check/workflow-2.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\observations\\002-terminal-check\\workflow-2.git.stdout",
+      "projection": "ci/observations/002-terminal-check/workflow-2.git.stdout",
+      "bytes": 24401,
+      "sha256": "73584dd98fe8af6ba5787f67ade7c82664e340ca18963a949f6b1d3e6e5fe69c",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\PENDING-001.md",
+      "projection": "ci/PENDING-001.md",
+      "bytes": 589,
+      "sha256": "fcbdb8c4a362e3a8d970fa8080460654a4c63bb2c7b8130695f6a13528d91b93",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\README.md",
+      "projection": "ci/README.md",
+      "bytes": 1557,
+      "sha256": "3bd7f610ef2e89e96ad643930304d929705df24a33942f2a7ff9de2f5eead773",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\source\\ci_jobs_18b1944d_http_readonly.py",
+      "projection": "ci/source/ci_jobs_18b1944d_http_readonly.py",
+      "bytes": 7270,
+      "sha256": "731ee7338d1714671ef8bd82ec3faf2d6e75a4181bfd221a94b5d7890462d9b2",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\source\\finalize_ci_readonly.py",
+      "projection": "ci/source/finalize_ci_readonly.py",
+      "bytes": 4212,
+      "sha256": "50325ec7c55ac915e8a5510fc34dfec8f432bc64f3dd78a8d87b15227b0fdcc6",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-closed-18b1944d-001\\source\\reused-template.py",
+      "projection": "ci/source/reused-template.py",
+      "bytes": 7165,
+      "sha256": "1ac9ef68aebe7e3540eedf503decc7c016284c561e60ac71c28f04551a00173c",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\prepare_r0005.py",
+      "projection": "source/helpers/prepare_r0005.py",
+      "bytes": 14519,
+      "sha256": "43b9481181a4aab448d46335fd60e610726580cdeb54ac39cc3519b4c5824cc0",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live_control_r0005.py",
+      "projection": "source/helpers/live_control_r0005.py",
+      "bytes": 5517,
+      "sha256": "3ae4f999968a470c6cfee63e33c79da53d419bc8cf67093747af6a33bd653c09",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen_lease_entry_r0005.py",
+      "projection": "source/helpers/screen_lease_entry_r0005.py",
+      "bytes": 7348,
+      "sha256": "0098efb0e212b5fc3b5cd708f1afdc5fcf72dfb7866c9087094baea277f50c74",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5_prelaunch_review.py",
+      "projection": "source/helpers/r5_prelaunch_review.py",
+      "bytes": 1967,
+      "sha256": "9d49e671498b05e8120665ac2c71084ca8e2cd18e7657c069ff62ae3a3e2553a",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5_normal_loading_exit.py",
+      "projection": "source/helpers/r5_normal_loading_exit.py",
+      "bytes": 1752,
+      "sha256": "6df2135ced833e1102fc637c40c24572b235b9a6bfae7cff8779b118aeacfab8",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5_preserve_crash_and_close_reporter.py",
+      "projection": "source/helpers/r5_preserve_crash_and_close_reporter.py",
+      "bytes": 2539,
+      "sha256": "55c8bbb921544be95c48f597234140a9c9d485ee039fc847fb66427358dc5c33",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\finalize_r0005_crash.py",
+      "projection": "source/helpers/finalize_r0005_crash.py",
+      "bytes": 2466,
+      "sha256": "e14c91ec90f4ffa32290a06858d6545c02e2f7b96d6a2fd9ebdf423013ebb09b",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\record_r5_status.py",
+      "projection": "source/helpers/record_r5_status.py",
+      "bytes": 909,
+      "sha256": "63c1fd103ca4050e44d7a96386a86a0777b3d4387eb860b146e4437872c34502",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\finalize_r0005.py",
+      "projection": "source/helpers/finalize_r0005.py",
+      "bytes": 2491,
+      "sha256": "5eb67b220b864ce3bd9ed2b81f9393c9bc75556380ad2b3bbe77390e0f95604f",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\prepare_r5_crash_red_package.py",
+      "projection": "source/prepare_r5_crash_red_package.py",
+      "bytes": 21040,
+      "sha256": "e717a859b598b4d55f90a0cb46cef0411e867865edd41f44d0d3fae78566202a",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\exception.txt",
+      "projection": "crash/ck3_20261004_192419/exception.txt",
+      "bytes": 993,
+      "sha256": "caf036abc82f9e39ec4b97dab97b75dacf9b2290a768c9fa5966a3a708bedf19",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\logs\\debug.log",
+      "projection": "crash/ck3_20261004_192419/logs/debug.log",
+      "bytes": 459398,
+      "sha256": "8f3e3796fe8978e296b2f087e1768d34b668629ffc87d4c8c1fae41c3953659e",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\logs\\error.log",
+      "projection": "crash/ck3_20261004_192419/logs/error.log",
+      "bytes": 840,
+      "sha256": "3c6efe65ca5e46aa5604eebbc3a401cf8a4bfe9cfac9184d36ffa7bbdd5319d5",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\logs\\game.log",
+      "projection": "crash/ck3_20261004_192419/logs/game.log",
+      "bytes": 2127,
+      "sha256": "cbc4798cc9a714bcf16e4dc2ffd10ff803e6b40da0b0aa4c8399d996b0f7df37",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\meta.yml",
+      "projection": "crash/ck3_20261004_192419/meta.yml",
+      "bytes": 1755,
+      "sha256": "da1316bc25aa8882de2e088915c49718df2cb115d10792b0ac7a403a110e99b0",
+      "mode": "exact-byte-copy"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir\\crashes\\ck3_20261004_192419\\pdx_settings.txt",
+      "projection": "crash/ck3_20261004_192419/pdx_settings.txt",
+      "bytes": 7098,
+      "sha256": "9dafa9fa3eb824f444a6adc85a9ffbd2c6094d5690c7c1c6969445a91123796b",
+      "mode": "exact-byte-copy"
+    }
+  ],
+  "builder_side_effects": {
+    "originals_modified": false,
+    "tracked_written": false,
+    "game_called": false,
+    "screen_called": false,
+    "ci_requeried": false,
+    "dump_copied": false,
+    "png_edited": false
+  }
+}

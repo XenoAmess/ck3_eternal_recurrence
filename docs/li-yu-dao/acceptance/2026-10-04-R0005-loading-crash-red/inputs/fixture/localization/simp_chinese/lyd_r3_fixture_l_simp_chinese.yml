@@ -1,0 +1,12 @@
+﻿l_simp_chinese:
+ # GENERATED FILE: edit build_fixture.py.
+ lyd_r3_fixture_initialize_decision:0 "【R3夹具】仅初始化当前玩家的原版儒家礼仪"
+ lyd_r3_fixture_initialize_decision_desc:0 "仅为本轮普通玩家入口验收，将当前角色设为原版儒家信仰在开局日期的主礼仪。不会启用《礼与道》，不会设置正式择师或研习冷却，不会建立宗主或改变NPC。随后须亲自使用正式产品入口。"
+ lyd_r3_fixture_initialize_decision_tooltip:0 "仅建立普通儒家玩家测试前置"
+ lyd_r3_fixture_initialize_decision_confirm:0 "只初始化本角色"
+ lyd_r3_fixture_initialized_t:0 "R3前置已实际核对"
+ lyd_r3_fixture_initialized_desc:0 "当前角色已实际属于原版儒家信仰及其开局主礼仪。正式产品的启用旗标和冷却仍未由夹具设置。接下来从正式“入儒门，习经礼”开始验收。"
+ lyd_r3_fixture_begin_formal:0 "开始验收正式入口"
+ lyd_r3_fixture_failed_t:0 "R3前置尚未建立"
+ lyd_r3_fixture_failed_desc:0 "礼仪或信仰的实际状态未达到夹具目标。本轮不能据此声称正式产品入口已经可验；请保留实际状态与记录。"
+ lyd_r3_fixture_record_failure:0 "保留失败记录"

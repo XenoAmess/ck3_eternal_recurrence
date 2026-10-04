@@ -1,0 +1,145 @@
+{
+  "schema": "lyd.r5-trigger-p0-offline-checks.v1",
+  "inputs_sha256": "cd1659389065fe58a9b49c3e2f66b0017694792cdee6c3bd6e57711674414b1a",
+  "test_sha256": "cf0587eca3826637150e8d04e7fd0fd42ad9de85ca2ef2c810fa5e4186695f3e",
+  "result": "PASS_OFFLINE",
+  "layer": "L0-candidate",
+  "native_loading": "NOT_RUN",
+  "game_calls": false,
+  "checks": [
+    {
+      "label": "actual-frozen-regression",
+      "utc": "2026-10-04T11:25:04.335872+00:00",
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001\\candidate\\mod_li_yu_dao\\tools\\test_content_leadership.py",
+        "ContentLeadershipIntegrationTests.test_c3_trigger_bindings_preserve_player_gate_and_follower_identity"
+      ],
+      "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001",
+      "rc": 1,
+      "expected_rc": 1,
+      "expectation_met": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "dc76f436d197acd2483cb13bd1da430e32cb0d7aaa00cbedb0edc70ed70c9f25",
+      "live": "NOT_RUN"
+    },
+    {
+      "label": "candidate-integration",
+      "utc": "2026-10-04T11:25:04.676773+00:00",
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001\\candidate\\mod_li_yu_dao\\tools\\test_content_leadership.py"
+      ],
+      "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001",
+      "rc": 0,
+      "expected_rc": 0,
+      "expectation_met": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "d593f52ef923b2b0775bfa3b702d283719377da392fa5693e1f35046bdb163a8",
+      "live": "NOT_RUN"
+    },
+    {
+      "label": "candidate-static",
+      "utc": "2026-10-04T11:25:04.934842+00:00",
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001\\candidate\\mod_li_yu_dao\\tools\\validate_static.py"
+      ],
+      "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001",
+      "rc": 0,
+      "expected_rc": 0,
+      "expectation_met": true,
+      "stdout_sha256": "a5c597d34e7973c84cfa504cb35feecec4b478c36b8ad7eae087a069e8996cc7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "live": "NOT_RUN"
+    },
+    {
+      "label": "candidate-generated-check",
+      "utc": "2026-10-04T11:25:05.007811+00:00",
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001\\candidate\\mod_li_yu_dao\\tools\\gen_leadership.py",
+        "--check"
+      ],
+      "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001",
+      "rc": 0,
+      "expected_rc": 0,
+      "expectation_met": true,
+      "stdout_sha256": "3eda59fd3de7a88e5f71d602803fe66fe1eda9ef7132db19dca12826cae6ea58",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "live": "NOT_RUN"
+    },
+    {
+      "label": "hidden-wrapper-regression",
+      "utc": "2026-10-04T11:25:05.371929+00:00",
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001\\candidate\\mod_li_yu_dao\\tools\\test_content_leadership.py",
+        "ContentLeadershipIntegrationTests.test_c3_trigger_bindings_preserve_player_gate_and_follower_identity"
+      ],
+      "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001",
+      "rc": 1,
+      "expected_rc": 1,
+      "expectation_met": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "01a8b079c0ca33484dcede554b561214dfe62ccce322c1ad672a4a56c6de8048",
+      "live": "NOT_RUN"
+    },
+    {
+      "label": "nested-prev-regression",
+      "utc": "2026-10-04T11:25:05.735252+00:00",
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001\\candidate\\mod_li_yu_dao\\tools\\test_content_leadership.py",
+        "ContentLeadershipIntegrationTests.test_c3_trigger_bindings_preserve_player_gate_and_follower_identity"
+      ],
+      "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001",
+      "rc": 1,
+      "expected_rc": 1,
+      "expectation_met": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "53ee53d82fa531fa7dc6f2b8bb5bd718d5bb9a09f41cf9d03cbe9c4ddf30e662",
+      "live": "NOT_RUN"
+    },
+    {
+      "label": "wrong-follower-identity",
+      "utc": "2026-10-04T11:25:06.096737+00:00",
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001\\candidate\\mod_li_yu_dao\\tools\\test_content_leadership.py",
+        "ContentLeadershipIntegrationTests.test_c3_trigger_bindings_preserve_player_gate_and_follower_identity"
+      ],
+      "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001",
+      "rc": 1,
+      "expected_rc": 1,
+      "expectation_met": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "df587225ef77c7f31d7b25016dd52beaeedb2bb18e0b39d7ed61c2f12c50e824",
+      "live": "NOT_RUN"
+    },
+    {
+      "label": "ai-player-gate-regression",
+      "utc": "2026-10-04T11:25:06.481097+00:00",
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001\\candidate\\mod_li_yu_dao\\tools\\test_content_leadership.py",
+        "ContentLeadershipIntegrationTests.test_c3_trigger_bindings_preserve_player_gate_and_follower_identity"
+      ],
+      "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001",
+      "rc": 1,
+      "expected_rc": 1,
+      "expectation_met": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "cd12f79e2c526992a95e1dea29ec2b4e5b6a0d47c97828827e67255f4c25d69e",
+      "live": "NOT_RUN"
+    }
+  ]
+}

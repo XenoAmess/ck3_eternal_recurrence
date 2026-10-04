@@ -1,0 +1,13 @@
+﻿# GENERATED FILE: acceptance fixture only; edit build_fixture.py.
+lyd_r3_fixture_display_trigger = {
+    is_adult = yes
+    is_landed = yes
+    NOT = { has_character_flag = lyd_r3_fixture_initialized }
+    NOT = { has_character_flag = lyd_enabled }
+    faith:confucian_faith = { exists = main_rite }
+}
+lyd_r3_fixture_actor_trigger = {
+    is_ai = no
+    is_alive = yes
+    lyd_r3_fixture_display_trigger = yes
+}

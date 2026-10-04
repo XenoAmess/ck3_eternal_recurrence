@@ -1,0 +1,83 @@
+{
+  "schema": "ck3.lyd.exact18b1944d-ci-closed.v1",
+  "recorded_at_utc": "2026-10-04T11:18:27.066055+00:00",
+  "commit": "18b1944d1784d3e4ec57189c016335ef135b9b34",
+  "lyd_tree": "77f74591f299874efcd20c2672f143c362e54caa",
+  "status": "OFFICIAL_L0_SUCCESS",
+  "terminal_observation": {
+    "path": "observations/002-terminal-check/report.json",
+    "bytes": 11423,
+    "sha256": "aa6d240aa0d6c0a26c57ef9e9723fbbec4ab88f0029300cc0e023432b315b94c"
+  },
+  "runs": [
+    {
+      "id": 37197886947,
+      "workflow_name": "Li Yu Dao static checks",
+      "head_sha": "18b1944d1784d3e4ec57189c016335ef135b9b34",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37197886947",
+      "path": ".github/workflows/li-yu-dao-static.yml",
+      "jobs": [
+        {
+          "id": 111423415049,
+          "name": "static",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-04T11:11:33Z",
+          "completed_at": "2026-10-04T11:12:04Z",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37197886947/job/111423415049",
+          "head_sha": "18b1944d1784d3e4ec57189c016335ef135b9b34"
+        }
+      ]
+    },
+    {
+      "id": 37197886887,
+      "workflow_name": "Official Runner CI",
+      "head_sha": "18b1944d1784d3e4ec57189c016335ef135b9b34",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37197886887",
+      "path": ".github/workflows/static-ci.yml",
+      "jobs": [
+        {
+          "id": 111423415040,
+          "name": "static",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-04T11:11:33Z",
+          "completed_at": "2026-10-04T11:17:30Z",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37197886887/job/111423415040",
+          "head_sha": "18b1944d1784d3e4ec57189c016335ef135b9b34"
+        }
+      ]
+    }
+  ],
+  "history": [
+    {
+      "report": {
+        "path": "observations/001-initial/report.json",
+        "bytes": 11410,
+        "sha256": "dbfd8594193b078e5c857421a6b087faae8726304a528f54e787a429d2b85b94"
+      },
+      "status": "OFFICIAL_RUNS_PENDING"
+    },
+    {
+      "report": {
+        "path": "observations/002-terminal-check/report.json",
+        "bytes": 11423,
+        "sha256": "aa6d240aa0d6c0a26c57ef9e9723fbbec4ab88f0029300cc0e023432b315b94c"
+      },
+      "status": "OFFICIAL_L0_SUCCESS"
+    }
+  ],
+  "all_observation_hashes_verified": true,
+  "all_success": true,
+  "live_acceptance": "NOT_COVERED",
+  "github_triggered": false,
+  "workflow_retried": false,
+  "tracked_written": false,
+  "game_called": false,
+  "screen_used": false,
+  "finalization_network_calls": 0
+}

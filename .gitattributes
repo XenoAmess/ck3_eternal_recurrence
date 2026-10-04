@@ -27,6 +27,11 @@ docs/li-yu-dao/acceptance/2026-10-04-native-load-fix-candidate/evidence/native-s
 docs/li-yu-dao/acceptance/2026-10-04-native-load-fix-candidate/evidence/native-source/common__scripted_triggers__passive_rite_learning_triggers.txt.excerpt.txt -text whitespace=-blank-at-eol,cr-at-eol
 docs/li-yu-dao/acceptance/2026-10-04-native-load-fix-candidate/candidate/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/character-36445.excerpt.txt -text whitespace=-space-before-tab,cr-at-eol
 mod_li_yu_dao/fixtures/native_cycle/*.json -text whitespace=cr-at-eol
+# Actual R0005 crash output and native trigger excerpt retain original trailing spaces.
+docs/li-yu-dao/acceptance/2026-10-04-R0005-loading-crash-red/crash/ck3_20261004_192419/exception.txt -text whitespace=-blank-at-eol,cr-at-eol
+docs/li-yu-dao/acceptance/2026-10-04-R0005-loading-crash-red/crash/ck3_20261004_192419/logs/debug.log -text whitespace=-blank-at-eol,cr-at-eol
+docs/li-yu-dao/acceptance/2026-10-04-R0005-loading-crash-red/crash/ck3_20261004_192419/meta.yml -text whitespace=-blank-at-eol,cr-at-eol
+docs/li-yu-dao/acceptance/2026-10-04-R0005-trigger-fix-candidate/vanilla/00_bastard_triggers-94-105.txt -text whitespace=-blank-at-eol,cr-at-eol
 
 # Keep the original independent-mod publication receipts and anonymous HTTP bytes.
 mod_de_jure_conquest/docs/release-1.0.0-2026-10-03/*.json -text whitespace=cr-at-eol

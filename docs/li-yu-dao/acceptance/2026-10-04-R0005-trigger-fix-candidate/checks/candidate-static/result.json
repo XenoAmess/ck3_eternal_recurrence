@@ -1,0 +1,16 @@
+{
+  "label": "candidate-static",
+  "utc": "2026-10-04T11:25:04.934842+00:00",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001\\candidate\\mod_li_yu_dao\\tools\\validate_static.py"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001",
+  "rc": 0,
+  "expected_rc": 0,
+  "expectation_met": true,
+  "stdout_sha256": "a5c597d34e7973c84cfa504cb35feecec4b478c36b8ad7eae087a069e8996cc7",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "live": "NOT_RUN"
+}

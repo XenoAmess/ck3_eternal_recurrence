@@ -1,0 +1,64 @@
+{
+  "schema": "lyd.r5-c3-trigger-p0-candidate.v1",
+  "base_head": "18b1944d1784d3e4ec57189c016335ef135b9b34",
+  "files": [
+    {
+      "path": "mod_li_yu_dao/common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "before_sha256": "bac466e78388dc5cfd9b0f2e26307b29144cb62cd70fb1f7774e992d958dce5e",
+      "after_sha256": "ffecf4aaff8cd7071659f10622cfa7334bd6f16bd41f999c28c82d9857734ee0",
+      "after_bytes": 6614
+    },
+    {
+      "path": "mod_li_yu_dao/tools/leadership_templates/common/scripted_triggers/lyd_c3_leadership_triggers.txt.in",
+      "before_sha256": "261bb91ad026b83d2248fb58e2ac705689fe4fd26a8fc594f910134b6375efd8",
+      "after_sha256": "f1f0859ee2c0c3fc8beea000a5cc93a72c86371e8b5e54754aa81ef7b66b094c",
+      "after_bytes": 6702
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_content_leadership.py",
+      "before_sha256": "0859d01cdcf4ae3d6dbf6b283b2ab58bd87d22550f8426b32b26974a0a4b0bfa",
+      "after_sha256": "cf0587eca3826637150e8d04e7fd0fd42ad9de85ca2ef2c810fa5e4186695f3e",
+      "after_bytes": 30723
+    }
+  ],
+  "native_loading": "NOT_RUN",
+  "current_source_changes": [],
+  "vanilla_sources": [
+    {
+      "source_path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\pam_scripted_triggers.txt",
+      "source_sha256": "0ad98f123b6739593b9ab2c170d0e8c9b3d9d941baa9d3580296dd2139b2ea6e",
+      "line_start": 6668,
+      "line_end": 6684,
+      "excerpt": "vanilla/pam_scripted_triggers-6668-6684.txt",
+      "excerpt_sha256": "27f20d8e0158f7e538c8bf74dc0c634ec8cac0620cd3e2f6530d2cc0e5f2cb18"
+    },
+    {
+      "source_path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\passive_rite_learning_triggers.txt",
+      "source_sha256": "4cde80d60a415b5dfef815d656f1b07c6d4d1582edc09cded9a91ed503224885",
+      "line_start": 113,
+      "line_end": 130,
+      "excerpt": "vanilla/passive_rite_learning_triggers-113-130.txt",
+      "excerpt_sha256": "3f74121edd9dcf2c0a33d009a056ec728d0f4a21ae14788b6c02f8bac613de7a"
+    },
+    {
+      "source_path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_bastard_triggers.txt",
+      "source_sha256": "69e5b2049521ddb477271bd3dfadceee058a483c61858fd048ec918d18581acf",
+      "line_start": 94,
+      "line_end": 105,
+      "excerpt": "vanilla/00_bastard_triggers-94-105.txt",
+      "excerpt_sha256": "0a5c66d8b923a8b3d17618c5bdf0e80e318a4b03d8431556508c449501cb7055"
+    },
+    {
+      "source_path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\pam_scripted_triggers.txt",
+      "source_sha256": "0ad98f123b6739593b9ab2c170d0e8c9b3d9d941baa9d3580296dd2139b2ea6e",
+      "line_start": 1444,
+      "line_end": 1453,
+      "excerpt": "vanilla/pam_scripted_triggers-1444-1453.txt",
+      "excerpt_sha256": "2d02f067c0cdc010fcf7235f8e072ab5a551603cbafe3e24da61e9be4e76423a"
+    }
+  ],
+  "observed_boot_error_headers": 4,
+  "tracked_writes": false,
+  "game_calls": false,
+  "ci_calls": false
+}

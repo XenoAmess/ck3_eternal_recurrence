@@ -1,0 +1,15 @@
+test_c3_trigger_bindings_preserve_player_gate_and_follower_identity (__main__.ContentLeadershipIntegrationTests.test_c3_trigger_bindings_preserve_player_gate_and_follower_identity) ... FAIL
+
+======================================================================
+FAIL: test_c3_trigger_bindings_preserve_player_gate_and_follower_identity (__main__.ContentLeadershipIntegrationTests.test_c3_trigger_bindings_preserve_player_gate_and_follower_identity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r5-c3-trigger-fix-candidate-001\candidate\mod_li_yu_dao\tools\test_content_leadership.py", line 387, in test_c3_trigger_bindings_preserve_player_gate_and_follower_identity
+    self.assertFalse(any(e.key == "hidden_trigger" for e,_ in walk(body)), name)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : lyd_c3_player_actor_trigger
+
+----------------------------------------------------------------------
+Ran 1 test in 0.096s
+
+FAILED (failures=1)

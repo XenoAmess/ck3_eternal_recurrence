@@ -1,0 +1,17 @@
+# Valid exile pool entry for the personal syncretism decision.
+pam_personal_syncretism_exile_rite_trigger = {
+	exists = var:converted_development
+	var:converted_development >= 1
+	NOT = { rite_has_parameter = unreformed }
+	exists = var:associated_culture
+	exists = var:associated_county
+	save_temporary_scope_as = rite_scope
+	trigger_if = {
+		limit = {
+			root = { exists = capital_province }
+			exists = var:associated_county
+		}
+		"root.capital_province.squared_distance(scope:rite_scope.var:associated_county.title_province)" <= squared_distance_mega
+	}
+	root = {
+		trigger_if = {

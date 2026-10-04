@@ -51,6 +51,8 @@ C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe mod_li
 
 R0004 冷启动为 `RED`，未开战役：[永久报告](../../docs/li-yu-dao/acceptance/2026-10-04-R0004-cold-loading-red/REPORT.md)。发现不支持的教义接口与 quoted divergence 参数展开，以及外置 NPC 创建参数冲突。修复后的保守 Doctrine 集合比较和固定目标 scope 必须在新冷载、真实分合及存档重载中证明；结构 L0 无权豁免这些场景。
 
+R0005 使用实际59生产文件及两套各7文件夹具，最终原生日志有4条I3 trigger错误；本轮没有此前R4对应错误。观察到大厅后游戏产生访问冲突崩溃，`normal_exit=false`，原因未证实。未进入战役、附加bridge或保存，正式流程继续 `NOT_RUN`；见[永久崩溃报告](../../docs/li-yu-dao/acceptance/2026-10-04-R0005-loading-crash-red/REPORT.md)。修复保留玩家与授权门禁，当前完整L0八项、102授权及11内容／领导检查通过；[正式静态报告](../../docs/li-yu-dao/2026-10-04-R0005-trigger-hotfix-l0.md)不替代新冷载。
+
 | 轮次／编号 | 场景 | 必须观察的实际结果 | 必须保留的证据 |
 | --- | --- | --- | --- |
 | M0-01 | 新建／加载；简体中文与DLC组合 | 产品确实从本次 staging加载；简中UI无LYD解析、scope、重复定义或缺本地化错误；入口符合玩家/DLC条件；英文只进行L0结构检查 | 加载配置、staging manifest、启动日志、简中真实UI |

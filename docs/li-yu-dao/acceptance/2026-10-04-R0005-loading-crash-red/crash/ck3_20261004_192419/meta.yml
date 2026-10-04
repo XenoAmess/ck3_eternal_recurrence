@@ -1,0 +1,56 @@
+# Crash Information
+AppName: Crusader Kings III 
+AppVersion: 1.20.0.3 
+SCMBranch: release/1.20.0 
+SCMCommit: 4fe04c7143e6288cf1da609145c22d0ddc3c8878 
+SCMTimeStamp: "2026-10-01 10:07:30 +0000" 
+DateTime: "2026-10-04 19:24:19 +0800" 
+BuildType: ReleaseLto 
+Platform: Windows 
+Store: steam 
+Architecture: 64-bit 
+OperatingSystem: Windows 10 x86_64 
+SystemLanguage: zh 
+CPUModel: Intel(R) Xeon(R) CPU E5-2696 v3 @ 2.30GHz 
+CPUSpeed: 2295 
+CPUPhysicalCores: 18 
+CPULogicalCores: 36 
+SystemMemory: 32609 
+GPUName: NVIDIA GeForce RTX 3060 Laptop GPU 
+GPUVendor: nVidia 
+GPUId: 9504 
+GPUDedicatedMemory: 6010 
+LaunchArguments: --debug_mode --gdpr-compliant --userdir="" 
+DLC_1: West Slavic Attire 
+DLC_2: Tours and Tournaments 
+DLC_3: North African Attire 
+DLC_4: Roads to Power 
+DLC_5: Legends of the Dead 
+DLC_6: Celestial Court Attire 
+DLC_7: The Northern Lords 
+DLC_8: All Under Heaven 
+DLC_9: Garments of the Holy Roman Empire 
+DLC_10: Legacy of Persia 
+DLC_11: The Royal Court 
+DLC_12: Fashion of the Abbasid Court 
+DLC_13: Songs of the Realm 
+DLC_14: Holy Buildings 
+DLC_15: Wards and Wardens 
+DLC_16: Coronations 
+DLC_17: East Asian Wonders 
+DLC_18: The Fate of Iberia 
+DLC_19: Elegance of the Empire 
+DLC_20: North Pacific Attire 
+DLC_21: Couture of the Capets 
+DLC_22: High Medieval Warfare Attire 
+DLC_23: Medieval Monuments 
+DLC_24: Wandering Nobles 
+DLC_25: Friends and Foes 
+DLC_26: Khans of the Steppe 
+DLC_27: Symbols of Authority 
+DLC_28: Crowns of the World 
+DLC_29: Arctic Attire 
+DLC_30: By God Alone 
+Mod_1: 礼与道 R3 普通玩家入口夹具（仅验收） 
+Mod_2: 礼与道：儒家礼仪与学统 / Rites and the Way 
+Mod_3: 礼与道 R4 合礼离析前置夹具（仅验收） 

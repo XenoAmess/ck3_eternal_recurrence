@@ -1,0 +1,186 @@
+{
+  "schema": "ck3.lyd.exact18b1944d-ci-final-index.v1",
+  "files": [
+    {
+      "path": "FINAL-CI-RECEIPT.json",
+      "bytes": 2863,
+      "sha256": "6f06b10b655f9349d470bfbfe04929d8b2214f63d83cd24c6458f71c5ed4c806"
+    },
+    {
+      "path": "observations/001-initial/all-runs.raw.json",
+      "bytes": 26961,
+      "sha256": "4c807435302d38623d17bdc670a13be3d46db0875f68bb36893a84b24d45ba61"
+    },
+    {
+      "path": "observations/001-initial/all-runs.request-receipt.json",
+      "bytes": 2296,
+      "sha256": "99b2c0523ab6fe1f047ee489e5e809496d23876108e3f7101acb1950c2e6c68c"
+    },
+    {
+      "path": "observations/001-initial/index.json",
+      "bytes": 2413,
+      "sha256": "3556a725fb9b7750f1fcac32beacf58e8729fb341074d0607a19703b6d352ddb"
+    },
+    {
+      "path": "observations/001-initial/jobs-37197886887.raw.json",
+      "bytes": 13338,
+      "sha256": "9f07440e2fabca291e6b738e1536f172abcac95364ad045759faa5923530d865"
+    },
+    {
+      "path": "observations/001-initial/jobs-37197886887.request-receipt.json",
+      "bytes": 2242,
+      "sha256": "12852a750657b2caada123c0fd45fc51d0ac1a4712511a97e30d121be18ef1ba"
+    },
+    {
+      "path": "observations/001-initial/jobs-37197886947.raw.json",
+      "bytes": 2461,
+      "sha256": "f541be5a3496272f71563f09e5e3f7512bce49b0b0d742f96a525d69d93c329c"
+    },
+    {
+      "path": "observations/001-initial/jobs-37197886947.request-receipt.json",
+      "bytes": 2240,
+      "sha256": "31dbc4162550a5ec190313dfad512e0ea193d73dd8ceade4ddc104bb6c1f44cb"
+    },
+    {
+      "path": "observations/001-initial/lyd-tree.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "observations/001-initial/lyd-tree.git.stdout",
+      "bytes": 41,
+      "sha256": "fec2743179a22385ed269cba19d1e4420aaf99dfd18bb747fd0a72ae694e5649"
+    },
+    {
+      "path": "observations/001-initial/report.json",
+      "bytes": 11410,
+      "sha256": "dbfd8594193b078e5c857421a6b087faae8726304a528f54e787a429d2b85b94"
+    },
+    {
+      "path": "observations/001-initial/source/ci_jobs_18b1944d_http_readonly.py",
+      "bytes": 7270,
+      "sha256": "731ee7338d1714671ef8bd82ec3faf2d6e75a4181bfd221a94b5d7890462d9b2"
+    },
+    {
+      "path": "observations/001-initial/workflow-1.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "observations/001-initial/workflow-1.git.stdout",
+      "bytes": 1601,
+      "sha256": "c05e16c2cf003505116a0af9a2f34437107077cebed4363e0521fa556f7caccf"
+    },
+    {
+      "path": "observations/001-initial/workflow-2.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "observations/001-initial/workflow-2.git.stdout",
+      "bytes": 24401,
+      "sha256": "73584dd98fe8af6ba5787f67ade7c82664e340ca18963a949f6b1d3e6e5fe69c"
+    },
+    {
+      "path": "observations/002-terminal-check/all-runs.raw.json",
+      "bytes": 26964,
+      "sha256": "817ff5dfbc2fbb3ea4a6298b603ce5828eaf7fdb5d0b5d21abd2ceecff60ce60"
+    },
+    {
+      "path": "observations/002-terminal-check/all-runs.request-receipt.json",
+      "bytes": 2291,
+      "sha256": "66ecb25be73e7d2376463cd2e6866349898d43e3dabf904e092712cf849db38c"
+    },
+    {
+      "path": "observations/002-terminal-check/index.json",
+      "bytes": 2413,
+      "sha256": "2041288df4d7b10f6ef0aab106250050f83a85695fc3efa0ac4f903dfcd46a89"
+    },
+    {
+      "path": "observations/002-terminal-check/jobs-37197886887.raw.json",
+      "bytes": 15599,
+      "sha256": "9f73871e8f1ca5e732de6d2ed0c728102c8b3c4d34eca591c728fb2f8a54c5bb"
+    },
+    {
+      "path": "observations/002-terminal-check/jobs-37197886887.request-receipt.json",
+      "bytes": 2241,
+      "sha256": "6faec86d24f262748a088014e108f57c64c0c94198dea53c5c53dc2deb5b6bef"
+    },
+    {
+      "path": "observations/002-terminal-check/jobs-37197886947.raw.json",
+      "bytes": 2461,
+      "sha256": "f541be5a3496272f71563f09e5e3f7512bce49b0b0d742f96a525d69d93c329c"
+    },
+    {
+      "path": "observations/002-terminal-check/jobs-37197886947.request-receipt.json",
+      "bytes": 2239,
+      "sha256": "618f8e941199059c2b2cbc3afb91d2397ed8db9d0bcb9c79fb37a6b722f54f85"
+    },
+    {
+      "path": "observations/002-terminal-check/lyd-tree.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "observations/002-terminal-check/lyd-tree.git.stdout",
+      "bytes": 41,
+      "sha256": "fec2743179a22385ed269cba19d1e4420aaf99dfd18bb747fd0a72ae694e5649"
+    },
+    {
+      "path": "observations/002-terminal-check/report.json",
+      "bytes": 11423,
+      "sha256": "aa6d240aa0d6c0a26c57ef9e9723fbbec4ab88f0029300cc0e023432b315b94c"
+    },
+    {
+      "path": "observations/002-terminal-check/source/ci_jobs_18b1944d_http_readonly.py",
+      "bytes": 7270,
+      "sha256": "731ee7338d1714671ef8bd82ec3faf2d6e75a4181bfd221a94b5d7890462d9b2"
+    },
+    {
+      "path": "observations/002-terminal-check/workflow-1.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "observations/002-terminal-check/workflow-1.git.stdout",
+      "bytes": 1601,
+      "sha256": "c05e16c2cf003505116a0af9a2f34437107077cebed4363e0521fa556f7caccf"
+    },
+    {
+      "path": "observations/002-terminal-check/workflow-2.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "observations/002-terminal-check/workflow-2.git.stdout",
+      "bytes": 24401,
+      "sha256": "73584dd98fe8af6ba5787f67ade7c82664e340ca18963a949f6b1d3e6e5fe69c"
+    },
+    {
+      "path": "PENDING-001.md",
+      "bytes": 589,
+      "sha256": "fcbdb8c4a362e3a8d970fa8080460654a4c63bb2c7b8130695f6a13528d91b93"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1557,
+      "sha256": "3bd7f610ef2e89e96ad643930304d929705df24a33942f2a7ff9de2f5eead773"
+    },
+    {
+      "path": "source/ci_jobs_18b1944d_http_readonly.py",
+      "bytes": 7270,
+      "sha256": "731ee7338d1714671ef8bd82ec3faf2d6e75a4181bfd221a94b5d7890462d9b2"
+    },
+    {
+      "path": "source/finalize_ci_readonly.py",
+      "bytes": 4212,
+      "sha256": "50325ec7c55ac915e8a5510fc34dfec8f432bc64f3dd78a8d87b15227b0fdcc6"
+    },
+    {
+      "path": "source/reused-template.py",
+      "bytes": 7165,
+      "sha256": "1ac9ef68aebe7e3540eedf503decc7c016284c561e60ac71c28f04551a00173c"
+    }
+  ],
+  "self_boundary": "index excludes itself"
+}

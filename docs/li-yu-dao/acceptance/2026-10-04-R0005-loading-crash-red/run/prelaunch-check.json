@@ -1,0 +1,31 @@
+{
+  "processes": [],
+  "time": "2026-10-04T11:17:43.796828+00:00",
+  "argv": [
+    "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "-debug_mode",
+    "-gdpr-compliant",
+    "-userdir=C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\userdir"
+  ],
+  "review": {
+    "utc": "2026-10-04T11:17:42.782087+00:00",
+    "image": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\steam-fresh-002\\steam-moved.png",
+    "image_sha256": "c651743e75c3ad1b036e57af31b8e8daece1f8834993a5a02380673741f74df6",
+    "fresh_frame_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-005\\steam-fresh-002\\steam-frame-freshness.json",
+    "steam_offline_confirmed": true,
+    "observed_label": "离线模式",
+    "observed_region_original_pixels": [
+      867,
+      1000,
+      62,
+      26
+    ],
+    "frame_freshness": "actual Steam HWND moved 20 px, changed new pixels; restored",
+    "reviewer": "root direct inspection of original 1920x1080 image",
+    "steam_ui_pid": 3028,
+    "steam_client_pid": 18100,
+    "game_started": false
+  },
+  "git_head": "18b1944d1784d3e4ec57189c016335ef135b9b34",
+  "git_status": ""
+}

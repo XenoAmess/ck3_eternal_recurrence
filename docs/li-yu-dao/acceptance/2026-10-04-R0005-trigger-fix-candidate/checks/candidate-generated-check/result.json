@@ -1,0 +1,17 @@
+{
+  "label": "candidate-generated-check",
+  "utc": "2026-10-04T11:25:05.007811+00:00",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001\\candidate\\mod_li_yu_dao\\tools\\gen_leadership.py",
+    "--check"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001",
+  "rc": 0,
+  "expected_rc": 0,
+  "expectation_met": true,
+  "stdout_sha256": "3eda59fd3de7a88e5f71d602803fe66fe1eda9ef7132db19dca12826cae6ea58",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "live": "NOT_RUN"
+}

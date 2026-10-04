@@ -1,0 +1,870 @@
+﻿# GENERATED FILE — edit tools/content_data.py and rerun tools/gen_content.py.
+# CK3 1.20.0.3; additive 36-tenet catalogue. No all-character modifiers.
+# Faith selection uses Faith scope. Personal selection has Character scope.
+# Faith can_pick has no unguarded is_ai check: its actor can be null.
+# Parameters are capability flags, not proof that practice events are connected.
+# Local divergence scaling is a prototype input; global defines are untouched.
+
+# T01: Revere Heaven and Its Charge
+lyd_tenet_reverent_heaven = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_reverent_heaven_practice
+	}
+	personal_tenet_parameters = {
+		lyd_reverent_heaven_practice
+	}
+}
+
+# T02: Sincerity in Solitude
+lyd_tenet_sincerity_solitude = {
+	icon = tenet_inner_journey
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_sincerity_solitude_practice
+	}
+	personal_tenet_parameters = {
+		lyd_sincerity_solitude_practice
+	}
+}
+
+# T03: Cultivation through Ritual and Music
+lyd_tenet_ritual_music = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_ritual_music_practice
+	}
+	personal_tenet_parameters = {
+		lyd_ritual_music_practice
+	}
+}
+
+# T04: Honor Ancestral Origins
+lyd_tenet_ancestral_reverence = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_ancestral_reverence_practice
+	}
+	personal_tenet_parameters = {
+		lyd_ancestral_reverence_practice
+	}
+}
+
+# T05: Names and Responsibilities
+lyd_tenet_names_duties = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_names_duties_practice
+	}
+	personal_tenet_parameters = {
+		lyd_names_duties_practice
+	}
+}
+
+# T06: Humaneness and Righteousness
+lyd_tenet_humaneness_righteousness = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_humaneness_righteousness_practice
+	}
+	personal_tenet_parameters = {
+		lyd_humaneness_righteousness_practice
+	}
+}
+
+# T07: Righteous Remonstrance
+lyd_tenet_righteous_remonstrance = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_righteous_remonstrance_practice
+	}
+	personal_tenet_parameters = {
+		lyd_righteous_remonstrance_practice
+	}
+}
+
+# T08: Honor Sages and Transmit the Way
+lyd_tenet_sage_transmission = {
+	icon = tenet_literalism
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_sage_transmission_practice
+	}
+	personal_tenet_parameters = {
+		lyd_sage_transmission_practice
+	}
+}
+
+# T09: Extend the Four Sprouts
+lyd_tenet_extend_sprouts = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_extend_sprouts_practice
+	}
+	personal_tenet_parameters = {
+		lyd_extend_sprouts_practice
+	}
+}
+
+# T10: Deliberate Moral Cultivation
+lyd_tenet_deliberate_cultivation = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_deliberate_cultivation_practice
+	}
+	personal_tenet_parameters = {
+		lyd_deliberate_cultivation_practice
+	}
+}
+
+# T11: Nourish Qi through Righteousness
+lyd_tenet_righteous_qi = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_righteous_qi_practice
+	}
+	personal_tenet_parameters = {
+		lyd_righteous_qi_practice
+	}
+}
+
+# T12: Reflect upon Portents
+lyd_tenet_portent_reflection = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_portent_reflection_practice
+	}
+	personal_tenet_parameters = {
+		lyd_portent_reflection_practice
+	}
+}
+
+# T13: Kinship within the Transformations of Qi
+lyd_tenet_qi_kinship = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_qi_kinship_practice
+	}
+	personal_tenet_parameters = {
+		lyd_qi_kinship_practice
+	}
+}
+
+# T14: Investigate Things and Principle
+lyd_tenet_investigate_principle = {
+	icon = tenet_literalism
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_investigate_principle_practice
+	}
+	personal_tenet_parameters = {
+		lyd_investigate_principle_practice
+	}
+}
+
+# T15: Reverent Attention and Cultivation
+lyd_tenet_reverent_attention = {
+	icon = tenet_inner_journey
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_reverent_attention_practice
+	}
+	personal_tenet_parameters = {
+		lyd_reverent_attention_practice
+	}
+}
+
+# T16: Illuminate the Original Heart
+lyd_tenet_original_heart = {
+	icon = tenet_inner_journey
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_original_heart_practice
+	}
+	personal_tenet_parameters = {
+		lyd_original_heart_practice
+	}
+}
+
+# T17: Extend Moral Knowledge
+lyd_tenet_innate_knowing = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_innate_knowing_practice
+	}
+	personal_tenet_parameters = {
+		lyd_innate_knowing_practice
+	}
+}
+
+# T18: The Unity of Knowing and Acting
+lyd_tenet_knowing_acting = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_knowing_acting_practice
+	}
+	personal_tenet_parameters = {
+		lyd_knowing_acting_practice
+	}
+}
+
+# T19: Ground Rites in the Classics
+lyd_tenet_textual_ritual = {
+	icon = tenet_literalism
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_textual_ritual_practice
+	}
+	personal_tenet_parameters = {
+		lyd_textual_ritual_practice
+	}
+}
+
+# T20: Interpret Classics Together
+lyd_tenet_classical_synthesis = {
+	icon = tenet_literalism
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_classical_synthesis_practice
+	}
+	personal_tenet_parameters = {
+		lyd_classical_synthesis_practice
+	}
+}
+
+# T21: Moral Judgment in the Annals
+lyd_tenet_annals_judgment = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_annals_judgment_practice
+	}
+	personal_tenet_parameters = {
+		lyd_annals_judgment_practice
+	}
+}
+
+# T22: Heaven Follows Its Course
+lyd_tenet_constant_heaven = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_constant_heaven_practice
+	}
+	personal_tenet_parameters = {
+		lyd_constant_heaven_practice
+	}
+}
+
+# T23: Calm the Heart and Restore Nature
+lyd_tenet_restore_nature = {
+	icon = tenet_inner_journey
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_restore_nature_practice
+	}
+	personal_tenet_parameters = {
+		lyd_restore_nature_practice
+	}
+}
+
+# T24: Cultivation in Ordinary Life
+lyd_tenet_ordinary_life = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_ordinary_life_practice
+	}
+	personal_tenet_parameters = {
+		lyd_ordinary_life_practice
+	}
+}
+
+# T25: Practice the Six Arts
+lyd_tenet_six_arts = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_six_arts_practice
+	}
+	personal_tenet_parameters = {
+		lyd_six_arts_practice
+	}
+}
+
+# T26: Find the Way through Texts
+lyd_tenet_philological_way = {
+	icon = tenet_literalism
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_philological_way_practice
+	}
+	personal_tenet_parameters = {
+		lyd_philological_way_practice
+	}
+}
+
+# T27: Moral Purpose and Practical Achievement
+lyd_tenet_moral_achievement = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_moral_achievement_practice
+	}
+	personal_tenet_parameters = {
+		lyd_moral_achievement_practice
+	}
+}
+
+# T28: Restrain Violence and Protect the People
+lyd_tenet_restrain_violence = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_restrain_violence_practice
+	}
+	personal_tenet_parameters = {
+		lyd_restrain_violence_practice
+	}
+}
+
+# T29: Examine Subtle Intentions
+lyd_tenet_subtle_intentions = {
+	icon = tenet_inner_journey
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_subtle_intentions_practice
+	}
+	personal_tenet_parameters = {
+		lyd_subtle_intentions_practice
+	}
+}
+
+# T30: Interpret Principles for Changing Times
+lyd_tenet_responsive_interpretation = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_responsive_interpretation_practice
+	}
+	personal_tenet_parameters = {
+		lyd_responsive_interpretation_practice
+	}
+}
+
+# T31: Contemplate Images and Change
+lyd_tenet_images_numbers = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_images_numbers_practice
+	}
+	personal_tenet_parameters = {
+		lyd_images_numbers_practice
+	}
+}
+
+# T32: Explore Profound Interpretation
+lyd_tenet_profound_interpretation = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_profound_interpretation_practice
+	}
+	personal_tenet_parameters = {
+		lyd_profound_interpretation_practice
+	}
+}
+
+# T33: Knowing and Acting Support Each Other
+lyd_tenet_knowing_acting_support = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_knowing_acting_support_practice
+	}
+	personal_tenet_parameters = {
+		lyd_knowing_acting_support_practice
+	}
+}
+
+# T34: The Ongoing Generation of Things
+lyd_tenet_ongoing_generation = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_ongoing_generation_practice
+	}
+	personal_tenet_parameters = {
+		lyd_ongoing_generation_practice
+	}
+}
+
+# T35: Quiet Cultivation and Self-Attainment
+lyd_tenet_quiet_self_attainment = {
+	icon = tenet_inner_journey
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_quiet_self_attainment_practice
+	}
+	personal_tenet_parameters = {
+		lyd_quiet_self_attainment_practice
+	}
+}
+
+# T36: Recognize Principle in Every Situation
+lyd_tenet_recognition_everywhere = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_recognition_everywhere_practice
+	}
+	personal_tenet_parameters = {
+		lyd_recognition_everywhere_practice
+	}
+}

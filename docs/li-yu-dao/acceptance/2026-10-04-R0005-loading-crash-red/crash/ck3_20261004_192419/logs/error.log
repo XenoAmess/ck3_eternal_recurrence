@@ -1,0 +1,4 @@
+[19:19:13][E][pdx_persistent_reader.cpp:216]: Error: "Unknown trigger: hidden_trigger, near line: 3" in file: "common/scripted_triggers/lyd_c3_leadership_triggers.txt" near line: 5
+[19:19:13][E][jomini_eventtarget.cpp:150]: Link 'prev' is a global link but follows a 'prev' link. At 'file: common/scripted_triggers/lyd_c3_leadership_triggers.txt line: 71 (lyd_c3_round_current_trigger[args#3099453956])'
+[19:19:13][E][jomini_eventtarget.cpp:150]: Link 'prev' is a global link but follows a 'prev' link. At 'file: common/scripted_triggers/lyd_c3_leadership_triggers.txt line: 71 (lyd_c3_round_current_trigger[args#753382873])'
+[19:19:13][E][jomini_eventtarget.cpp:150]: Link 'prev' is a global link but follows a 'prev' link. At 'file: common/scripted_triggers/lyd_c3_leadership_triggers.txt line: 135 (lyd_c3_rite_represented_trigger)'

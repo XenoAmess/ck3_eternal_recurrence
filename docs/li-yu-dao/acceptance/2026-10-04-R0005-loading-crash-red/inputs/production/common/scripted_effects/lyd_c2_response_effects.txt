@@ -1,0 +1,31 @@
+﻿# GENERATED FILE: edit mod_li_yu_dao/tools/school_consent_templates or tools/gen_school_consent.py.
+# Event-role responses always validate the captured proposal context.
+lyd_c2_head_yes_effect = {
+    if = {
+        limit = { lyd_c2_ballot_context_trigger = yes this = scope:lyd_c2_actor.var:lyd_c2_$SIDE$_head }
+        scope:lyd_c2_actor = { set_variable = { name = lyd_c2_$SIDE$_head_yes value = 1 } }
+    }
+}
+lyd_c2_source_head_reply_effect = {
+    if = {
+        limit = { lyd_c2_ballot_context_trigger = yes this = scope:lyd_c2_actor.var:lyd_c2_source_head }
+        scope:lyd_c2_actor = { set_variable = { name = lyd_c2_source_head_yes value = $YES$ } }
+    }
+}
+lyd_c2_peaceful_permission_effect = {
+    if = {
+        limit = { lyd_c2_ballot_context_trigger = yes this = scope:lyd_c2_actor.var:lyd_c2_source_head }
+        scope:lyd_c2_actor = { set_variable = { name = lyd_c2_old_permission value = $YES$ } }
+    }
+}
+lyd_c2_holder_endorse_effect = {
+    if = {
+        limit = { lyd_c2_holder_context_trigger = yes }
+        save_scope_as = lyd_c2_current_holder
+        scope:lyd_c2_holder_school = {
+            set_variable = { name = lyd_c2_endorser value = scope:lyd_c2_current_holder }
+            set_variable = { name = lyd_c2_holder_endorsed value = 1 }
+        }
+        scope:lyd_c2_actor = { lyd_c2_request_target_consent_effect = yes }
+    }
+}

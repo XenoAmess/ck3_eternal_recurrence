@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\run_acceptance.py",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-trigger-hotfix-l0-001\\runner"
+  ],
+  "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+  "started_at": "2026-10-04T11:41:25.655766+00:00",
+  "stdout": {
+    "bytes": 271,
+    "sha256": "e86ab2abc648c3c8184ca29a638a45f026530fdc056482077edcf19570ed9ac1"
+  },
+  "stderr": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "returncode": 2,
+  "finished_at": "2026-10-04T11:41:30.842841+00:00"
+}

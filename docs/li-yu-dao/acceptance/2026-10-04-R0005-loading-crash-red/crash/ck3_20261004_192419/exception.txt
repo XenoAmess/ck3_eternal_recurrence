@@ -1,0 +1,19 @@
+Application: Crusader Kings III 
+Version: 1.20.0.3 
+Date/Time: 2026-10-04 19:24:21
+
+Unhandled Exception C0000005 (EXCEPTION_ACCESS_VIOLATION) at address 0x00007FF6C5CA7E6B
+
+Stack Trace: 
+  1    ck3.exe                  (function-name not available) (+ 0)
+  2    ck3.exe                  (function-name not available) (+ 0)
+  3    ck3.exe                  (function-name not available) (+ 0)
+  4    ck3.exe                  (function-name not available) (+ 0)
+  5    ck3.exe                  (function-name not available) (+ 0)
+  6    ck3.exe                  (function-name not available) (+ 0)
+  7    ck3.exe                  (function-name not available) (+ 0)
+  8    ck3.exe                  (function-name not available) (+ 0)
+  9    ck3.exe                  (function-name not available) (+ 0)
+  10   KERNEL32.DLL             BaseThreadInitThunk (+ 20)
+  11   ntdll.dll                RtlUserThreadStart (+ 33)
+  12   ntdll.dll                RtlUserThreadStart (+ 33)

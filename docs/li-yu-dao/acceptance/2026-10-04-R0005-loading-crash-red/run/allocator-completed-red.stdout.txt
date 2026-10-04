@@ -1,0 +1,12 @@
+{
+  "schema": "xar.ck3-live-run-status.v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0005",
+  "execution_id": "bf0a2e3a-f038-4fac-9ab1-f7b6d1ccba6d",
+  "machine_id": "bf-202609141645-5434332d4d",
+  "mod_key": "li-yu-dao",
+  "sequence": 5,
+  "status": "completed-red",
+  "reason": "R0005-C3-loading-errors-crash-observed-after-WM-close-no-campaign-no-native-attach-reporter-closed",
+  "recorded_at_utc": "2026-10-04T11:32:51.810730+00:00",
+  "recorder_pid": 3160
+}

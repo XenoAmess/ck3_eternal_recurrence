@@ -1,0 +1,17 @@
+{
+  "label": "wrong-follower-identity",
+  "utc": "2026-10-04T11:25:06.096737+00:00",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001\\candidate\\mod_li_yu_dao\\tools\\test_content_leadership.py",
+    "ContentLeadershipIntegrationTests.test_c3_trigger_bindings_preserve_player_gate_and_follower_identity"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-c3-trigger-fix-candidate-001",
+  "rc": 1,
+  "expected_rc": 1,
+  "expectation_met": true,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "df587225ef77c7f31d7b25016dd52beaeedb2bb18e0b39d7ed61c2f12c50e824",
+  "live": "NOT_RUN"
+}

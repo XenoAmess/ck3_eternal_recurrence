@@ -1,0 +1,2 @@
+﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
+# No independent NPC interaction entry points in iteration 1.

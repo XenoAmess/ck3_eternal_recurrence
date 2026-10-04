@@ -1,5 +1,10 @@
 lyd_c3_player_actor_trigger = {
-    hidden_trigger = { is_ai = no is_alive = yes is_adult = yes is_landed = yes NOT = { has_trait = incapable } religion = religion:confucianism_religion }
+    is_ai = no
+    is_alive = yes
+    is_adult = yes
+    is_landed = yes
+    NOT = { has_trait = incapable }
+    religion = religion:confucianism_religion
     has_character_flag = lyd_enabled
     lyd_member_rite_trigger = yes
 }
@@ -37,6 +42,9 @@ lyd_c3_round_current_trigger = {
     faith.main_rite = var:lyd_c3_round_main
     faith = { has_doctrine_parameter = temporal_head_of_faith }
     lyd_c3_claim_current_trigger = yes
+    # Native temporary trigger scopes; no prev.prev global-link chains.
+    $ACTOR$ = { save_temporary_scope_as = lyd_c3_checked_actor }
+    scope:lyd_c3_checked_actor.var:lyd_c3_round_faith = { save_temporary_scope_as = lyd_c3_checked_faith }
     trigger_if = {
         limit = { has_variable = lyd_c3_round_head }
         exists = faith.religious_head
@@ -52,6 +60,7 @@ lyd_c3_round_current_trigger = {
     trigger_else = { NOT = { exists = faith.religious_head_title } }
     NOT = { any_in_list = {
         variable = lyd_c3_rites
+        save_temporary_scope_as = lyd_c3_checked_rite
         NOT = {
             faith = $ACTOR$.var:lyd_c3_round_faith
             var:lyd_c3_proposal_owner = $ACTOR$
@@ -62,12 +71,12 @@ lyd_c3_round_current_trigger = {
                     var:lyd_c3_delegate_required = 1
                     exists = head_of_rite
                     head_of_rite = var:lyd_c3_delegate
-                    var:lyd_c3_delegate = { is_alive = yes is_adult = yes rite = prev NOT = { has_trait = incapable } }
+                    var:lyd_c3_delegate = { is_alive = yes is_adult = yes rite = scope:lyd_c3_checked_rite NOT = { has_trait = incapable } }
                 }
                 AND = {
                     var:lyd_c3_delegate_required = 0
                     rite_counties = 0
-                    faith = { NOT = { any_faith_character = { is_alive = yes rite = prev.prev } } }
+                    scope:lyd_c3_checked_faith = { NOT = { any_faith_character = { is_alive = yes rite = scope:lyd_c3_checked_rite } } }
                 }
             }
         }
@@ -130,8 +139,10 @@ lyd_c3_teacher_target_trigger = {
     learning >= 12
 }
 lyd_c3_rite_represented_trigger = {
+    save_temporary_scope_as = lyd_c3_represented_rite
+    faith = { save_temporary_scope_as = lyd_c3_represented_faith }
     OR = {
-        AND = { rite_counties = 0 faith = { NOT = { any_faith_character = { is_alive = yes rite = prev.prev } } } }
-        AND = { exists = head_of_rite head_of_rite = { is_alive = yes is_adult = yes rite = prev NOT = { has_trait = incapable } } }
+        AND = { rite_counties = 0 scope:lyd_c3_represented_faith = { NOT = { any_faith_character = { is_alive = yes rite = scope:lyd_c3_represented_rite } } } }
+        AND = { exists = head_of_rite head_of_rite = { is_alive = yes is_adult = yes rite = scope:lyd_c3_represented_rite NOT = { has_trait = incapable } } }
     }
 }

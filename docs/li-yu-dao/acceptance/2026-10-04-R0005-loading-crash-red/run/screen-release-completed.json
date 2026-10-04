@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "18b1944d1784d3e4ec57189c016335ef135b9b34"
+    },
+    "last_sequence": 2699,
+    "next_step": "",
+    "pid": 19808,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R0005-loading-RED-crash-observed-no-campaign-reporter-closed",
+    "task_id": "ck3-lyd-live-006-20261004",
+    "updated_at_utc": "2026-10-04T11:31:23.772100+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 2699,
+    "event_id": "1259a5a1aa184731bdeae031313c91a3",
+    "timestamp_utc": "2026-10-04T11:31:23.773169+00:00",
+    "kind": "completed",
+    "task_id": "ck3-lyd-live-006-20261004",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R0005-loading-RED-crash-observed-no-campaign-reporter-closed",
+    "next_step": "",
+    "resources": [],
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "18b1944d1784d3e4ec57189c016335ef135b9b34"
+    }
+  }
+}
