@@ -1,5 +1,14 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 当前主线：有益Sway冷读回已闭合，2669截击待执行（2026-10-04T11:51:42+08:00 实际补录）
+
+**4395/36524、resume +1242、10-04 +370、10-03冻结+777**，G2 5/8、NW2/4、自然继承0，无新增日。R27 source39b55512/g58 cold GREEN、PID122268已实际启动，R26已closed；玩家capital2619／县2142解围与503胜利历史保留，旧2640为县2115头衔首府的纠正继续有效。
+
+SDK11235已closed GREEN，原四Sway、两target/opinion与2669 preview全通过；unique active134217986/gen8→34333 progress183/355、continue与CanContinue true、terminalfalse；独立opinion27/+25专用modifier present，新PID三ring attached/emptycursor0/gapfalse。一次干预→实际物质后态→后续正常日→冷重载读回的窄有益production-live loop已成立，完整scheme生命周期及M6/G2不加信用。2669预览已accepted/available，路线2619→[2614,8757,2669]，当前省limit6355/use3893、目标3285/use0仅观测primitive，未计move/arrival/未来日。v53/v54源码随R27已部署，真实battle来源rows仍未query，仅static-ready，不授MC/预测完成。
+
+证据：[R27部署](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v54/DEPLOYMENT-REPORT-DELIVERY.json)、[2669实际预览](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/intercept2669-preview-consumer/actual-preview-v54/ROOT-DELIVERY.json)；Sway唯一下游收据由Root sealed r27-actual-cold-six-consumption-01/ROOT-DELIVERY.json提供，不二读原artifact。
+
+
 ## 当前主线：首都2619解围后准备2669截击（2026-10-04T11:20:56+08:00 实际补录）
 
 **4395/36524、resume +1242、10-04 +370、10-03冻结+777**；新增30行军＋6战斗=36个保存日、864h，G2 5/8、NW2/4、自然继承0。真正玩家capital2619／县2142已抵达并解围；1728053248→1442840576为Robert DEF normal_result，wipe true且敌末值1、我军3893，不能改写为敌末值0。

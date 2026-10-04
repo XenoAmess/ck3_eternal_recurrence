@@ -1,5 +1,14 @@
 # 一代人自治：阻塞与能力债账本
 
+## R27新PID观测已验收，battle来源观测仍待实战（2026-10-04T11:51:42+08:00 实际补录）
+
+累计4395/36524、恢复1242、Oct4+370，Oct3冻结777，G2 5/8、NW2/4、自然0；新增日0。R27/g58/source39b55512/PID122268，四目标strict64/97.902307s、exact CI37174310922和cold SDK19745 closed GREEN；raw53249808/fullhistory6853/saveanchor6852，checkpoint仅已给SHA前缀ce6e3645，不造完整值。旧R26正常stop/closed；4395首都2619解围及503 victory_enforced历史保留。
+
+SDK11235已closed GREEN，原四Sway、两target/opinion与2669 preview全通过；unique active134217986/gen8→34333 progress183/355、continue与CanContinue true、terminalfalse；独立opinion27/+25专用modifier present，新PID三ring attached/emptycursor0/gapfalse。一次干预→实际物质后态→后续正常日→冷重载读回的窄有益production-live loop已成立，完整scheme生命周期及M6/G2不加信用。2669预览已accepted/available，路线2619→[2614,8757,2669]，当前省limit6355/use3893、目标3285/use0仅观测primitive，未计move/arrival/未来日。v53/v54源码随R27已部署，真实battle来源rows仍未query，仅static-ready，不授MC/预测完成。
+
+证据：[R27部署](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v54/DEPLOYMENT-REPORT-DELIVERY.json)、[2669实际预览](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/intercept2669-preview-consumer/actual-preview-v54/ROOT-DELIVERY.json)；Sway唯一下游收据由Root sealed r27-actual-cold-six-consumption-01/ROOT-DELIVERY.json提供，不二读原artifact。
+
+
 ## 当前增量：真正首都2619解围闭环，累计4395日（2026-10-04T11:20:56+08:00 实际补录）
 
 相对4359，30行军+6战斗=36正常保存日/864h；累计4395/36524、恢复1242、Oct4+370，Oct3冻结777，G2 5/8、NW2/4、自然0。锁h6844/raw53249808/SHA `675a6f104e0d620b210675f327165883fc0723c2e9b256e7a0ec760cc8a20706`。真正capital2619/county2142已实际抵达，C1728053248/Result1442840576 DEF Robert normal_result、cursor19→22，wipe=true且enemyfinal1，非0；fresh8987独立capital notoccupied/occupiernull/active_siegenull及主838regular2619/空route，限定解围production-live loop GREEN。旧2640仅county2115 seat更正保持。
