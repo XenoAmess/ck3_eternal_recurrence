@@ -569,3 +569,45 @@ This advances the real pending-object and execution-dispatch source chain. Sourc
 Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-modifier-manager-pending-dispatch-v75/source/{ROOT-DELIVERY.json,SOURCE-RECEIPT.json,TREE.md,READ-COST.json}` and `cached-worker-role/{ROOT-DELIVERY.json,TREE.md,ROLE.json,OCT5-W41-FIELDS.json}`. Actual new EXE reads: **2168 B = 1992 B code + 108 B exact `.pdata` rows + 68 B necessary unwind**, across two logical bodies and two physical code regions. A uniquely extracted both bodies; B interpreted only cached worker ASM with zero additional EXE read. No called body was followed.
 
 Concrete next entries are **`2A42110`** for the old-queue serial kernel, **`291BE30`** for pending-object initialization, **`2A3FCE0`**, and stage entries **`2A41560/2A41960`**. The parallel job vptr `4778480` is a proven metadata entrance, with no execute-slot target invented. A future bounded scope can choose the kernel or constructor to reach the actual updater; these are actual source entrances rather than a generic scan. No numerical module, test, SDK, live RPM, game/window action, shared mutation, Git operation, current EC prediction or Entry-day claim was produced.
+
+
+## v76 — actual serial callback and payload provenance (2026-10-05 / W41)
+
+Sequential source base is v75's 63,838-byte EOF projection (`3fdbec4e130eefa4c976954fd957b086a1c2ae93afc5c3cf71390dad18d41869`), preserved exactly. Root supplied actual v75 adoption/push `b9d8f0607fc08d206f031a5dc30d6d961471beec`. Exact CK3 **1.20.0.3**, frozen EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6` remains the identity.
+
+The proven v75 serial edge `2A41544 ->2A42110` was followed to exact body `2A42110..2A42291` (385 B). Its normal return is `2A42290`; all normal branches remain inside this range. Necessary unwind flags2 identify handler `4225A84`, unread, with no CHAININFO. The second conditional target `291BE30` was not read: this body does not dereference the allocated `0x2F8` objects, so their initializer does not resolve its current receiver.
+
+The body is a **per-index callback wrapper**. Incoming RCX is the original closure, preserved in R13; RDX points to signed DWORD start/end. It returns when start equals end. Otherwise EBX is the current index, incremented with wrap32 after each iteration until equality with end. There is no less-than termination check. This is the observed native loop, with no replacement model or new guard.
+
+Each iteration reloads qword `[original_closure+40]` as a captured-vector pointer. The callable header contains a payload pointer and the actual code address **`2A43CA0`**. That code address is produced by `LEA` at **`2A4214E`** (`nextIP2A42155 + displacement1B4B`). The three-qword payload is precise:
+
+| Payload offset | Actual value | Proven dereference / meaning |
+|---|---|---|
+| `+0` | address of a local pointer | local pointer value is **the address `original_closure+48`**, rather than the qword stored there; property meaning unknown |
+| `+8` | qword `[original_closure+40]` | captured-vector pointer; element semantics unread |
+| `+10` | address of local signed32 index | current EBX index |
+
+At **`2A42224`**, `3978C20` receives the copied callable header `{&payload, code=2A43CA0}`. That generic invocation interface was not followed; the callback's actual code address and inputs are already concrete without tracing framework bodies. The target `2A43CA0` itself remains unread.
+
+The body also saves, installs and restores opaque scope state. Three separate `3978850` observations supply flag `+30` bit0; `397C0B0` returns opaque objects whose `+1C` fields receive the current index, sentinel `-1` and restored index. These receiver objects have not been bound to Character, so those writes are not Character magic or effective attribute cache writes. No attribute multiply/add, model `+2F4`, Character EC, knight Entry update or native date operand was found in this body.
+
+```mermaid
+flowchart TD
+    D["v75 actualserial dispatch
+2A41544 ->2A42110"] --> R["originalclosure + start/end
+equality-terminated index loop"]
+    R --> P["reload capturedvector +40
+payload: indirect+48 / vector / indexptr"]
+    P --> C["LEA2A4214E pins code2A43CA0
+callable passed to3978C20"]
+    C -. "actual callback body unread" .-> W["2A43CA0
+next exact attribute/updater source entrance"]
+    R --> S["opaque scope flag/index
+save/install/restore"]
+    S -. "receiver not Character-bound" .-> U["no numeric cache claim"]
+    W -. "attribute formula / writer / Entry order unknown" .-> F["future numeric inputs remain explicit"]
+```
+
+Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-modifier-manager-attribute-kernel-v76/source/{ROOT-DELIVERY.json,SOURCE-RECEIPT.json,TREE.md,A-RECEIVER-CALLBACK-PINS.json,INPUT-CONTRACT.json,READ-COST.json}` and `cached-kernel-role/{ROOT-DELIVERY.json,TREE.md,ROLE.json,OCT5-W41-FIELDS.json}`. Actual new EXE reads: **441 B = 385 B code + 24 B exact `.pdata` rows + 32 B necessary unwind**, across one logical body and one physical region. Fifteen cached `.pdata` consults were reused. A uniquely captured the body and pinned receiver/callback ancestry; B interpreted only cached kernel ASM, with zero new EXE read. No other callee or framework body was read.
+
+Readiness advances to a complete normal index wrapper and exact callback payload/code provenance. Real attribute preparation, numeric formulas, cache commit, calendar cadence and Entry update order remain partial. The preferred next source entrance is **`2A43CA0`**, proven by the captured code-address producer and callable descriptor. No numerical API plan is supplied because the attribute formula is not yet observed. No model, test, SDK, live RPM, game/window action, shared mutation, Git operation, current EC prediction or Entry-day claim was produced.
