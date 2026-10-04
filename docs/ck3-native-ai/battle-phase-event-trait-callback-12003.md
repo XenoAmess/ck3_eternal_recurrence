@@ -232,3 +232,68 @@ Both matched branches pass the current model in RDX and `[[slot5C68C50]+A0]+CBD8
 The [current-build skill-cache research](character-skill-trigger-readback-1.20.0.3-2026-10-04.md), previously pinned by B at SHA-256 `dac0f0c4d392fcc50a92074a16a2c48f838aeaf9979f2e4de860cb2929da00bf`, describes `2A3E140` setting model+2F4 and adding the model to a pending vector. That existing source fact is reused, without reading its body again. `2A3E220`, the actual request-processing/drain caller and opaque predicate meaning remain specific next seams. They do not prove post-trait effective prowess or the Entry update day.
 
 Evidence: [v67 source ROOT](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-refresh-request-v67/source/ROOT-DELIVERY.json), 3927 B, SHA-256 `0772760f449eb93dff2689e2d3630375628ee63a6d7362a4db24d8e52e1217d4`, binds both cached target slices, the Mermaid tree, typed inputs and gaps. **Actual request targets ready=true; numeric SOURCE_READY=false.** Research increment complete, selected feature partial; no numeric model, case, live, full horizon, Monte Carlo or odds credit. `v67` names this work package; runtime adoption and commit/push require Root's separate actual receipt.
+
+## Actual request queue transition increment (2026-10-05, v68 A)
+
+Status: **research**, 2026-10-05 / 2026-W41. Queue core control/field writes are source-closed; numeric callback readiness remains **false**.
+
+```mermaid
+flowchart TD
+    T["reused actual add_trait ->2BAC030
+opaque predicate true ->28C3D40"] --> R["2A3E220 request
+receiver=manager+CBD8"]
+    R --> M{modelmagic2F0==43684D64}
+    M -->|yes| P["xchg pendingbyte2F4=1
+retainold; optional lock"]
+    M -->|no| E["commonexit369 unread"]
+    P --> O{oldpending!=0}
+    O -->|yes| F["search oldvector+98/A4
+managerCC70/CC7C"]
+    F -->|miss ornegativeindex| U["unlockjunction
+no destination check"]
+    F -->|found| S["swaplast pointer intoindex
+oldcount minus1"]
+    O -->|no| D["search destination+B0/BC
+managerCC88/CC94"]
+    S --> D
+    D -->|absent| A["880340 appendmodelpointer
+helperbody unread"]
+    D -->|present| U
+    A --> U
+    U --> E
+    B["B localforce28C3BC0
+removes CC70/CC7C
+then28C3F60 effectivecopy"] -. "same oldcontainer, not newdestination consumer" .-> F
+    D -. "unknown actualdrain/consume entry" .-> C["destinationqueue consumed
+cache and Entry timeunknown"]
+```
+
+The actual request has two adjacent PE unwind fragments: `2A3E220..240` (32 bytes) and `2A3E240..369` (297 bytes). The second's `UNW_FLAG_CHAININFO` links the first, so this is one logical request core with two physical code reads. The shared exit at `2A3E369` is not read, and this packet does not claim a complete function body. No direct helper body was read.
+
+With model magic valid, the core exchanges its pending byte at `+2F4` with1. When the old byte is nonzero it first searches the receiver's old vector `+98/+A4`; a miss exits before considering the destination. A found model is removed by replacing its slot with the last pointer and decrementing the count. Oldzero, or completed removal, proceeds to destination vector `+B0/+BC`; the append helper is called only when the search result represents absence. Both vectors contain model pointers with stride8 and signed32 counts. Optional lock-like indirect calls use receiver `+C8` under byte `+D8`.
+
+The receiver is the manager at `[[slot5C68C50]+A0]` plus `CBD8`. Its old vector therefore maps exactly to manager `CC70/CC7C`, the same container removed by B's independently sealed local forced-refresh path. The **destination** is manager **`CC88/CC94`**. B's `28C3BC0` removal of the old vector does not prove consumption of this destination. The opaque `2BAA710` predicate is not labeled fast, delayed or immediate.
+
+Read cost: two physical code fragments329 bytes,408 bytes of recorded `.pdata` reads, and36 bytes of new necessary chained-unwind metadata,773 bytes total. No generic/xref scan, old body/test reread, third physical code span, helper body, game/SDK/liveRPM/window action or full EXE hash was performed. There was no harness failure.
+
+Exact helper next entries are `A11F60` (pointer search) and `880340` (append). The highest-value remaining seam is the actual consumer of destination vector `CC88/CC94` and its cache-refresh callback/frame. No pending flag or enqueue operation stands in for completed Character effective stats, a knight Entry refresh, or an observable current MCP queue field. No numeric module/API or fixture is released.
+
+Sealed request source: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-refresh-queue-v68/request-source/ROOT-DELIVERY.json`, SHA-256 `195522878ed84fe3570d640232eed2c00504a63dada86be68efcab57707ddaa7`. Independent B local removal source: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-refresh-queue-v68/drain-source/ROOT-DELIVERY.json`, SHA-256 `6258c204ee56640faed443e54305a7ee79fee15930103e0dbd576687bfbdc4e9`. This candidate appends A only; parent publication joins the B increment into one MOD path.
+
+## Local old-queue consumer and remaining destination drain (v68 B)
+
+The independently sealed B source identifies **`28C3BC0` as a local old-vector removal consumer**, using only the existing v64 cache/disassembly and no new EXE/header/pdata/xref read or body decode. On its matched-model path it calls `291C0D0`, searches manager `CC70/CC7C`, compacts later pointers other than the current model in original order, adjusts the tail storage/count, then tail-calls `28C3F60`. This is the explicit forced-refresh path's local order; it is not an automatic drain invocation.
+
+```mermaid
+flowchart LR
+    A["A oldvector98/A4 = managerCC70/CC7C"] -. "same storage coordinates; no automatic caller edge" .-> O["B current-model removal fromCC70/CC7C"]
+    F["pinned explicit forcedrefresh"] --> C["28C3BC0 matchedmodel; call291C0D0"]
+    C --> O
+    O --> W["tail28C3F60 localCharacter cache copy"]
+    N["A destinationB0/BC = managerCC88/CC94"] -. "actual consumer/frame unknown" .-> W
+    W -. "post-trait operands and Entry timing unknown" .-> E["future traitstats unavailable"]
+```
+
+A's final core now proves the old-container binding that B had left provisional at its earlier seal. Its conditional old-queue swap removal and unique destination append are distinct from B's ordered local compaction. B has **no cached consumer pin for destination `CC88/CC94`**, nor an automatic parent/tick that invokes this forced path. The next high-value source seam is that destination's actual processing caller and admission/frame; a pending byte or queue move cannot stand in for completed effective prowess or six knight Entry attributes. Current effective integer0 remains legal; no predicted EC is derived from trait=True.
+
+B [ROOT source](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-refresh-queue-v68/drain-source/ROOT-DELIVERY.json):2612 B, SHA-256 `6258c204ee56640faed443e54305a7ee79fee15930103e0dbd576687bfbdc4e9`. Original A/B source bytes remain sealed. **QUEUE_CORE_CONTROL_SOURCE_READY=true; LOCAL_MODEL_VECTOR_CONSUMER_SOURCE_READY=true; numeric SOURCE_READY=false.** This research increment is complete and the feature remains partial, with no numeric model/API, case, live, complete horizon, MC or odds credit. Root adoption64–67 is independently recorded; this v68 publication has no supplied commit/push and claims no runtime change.
