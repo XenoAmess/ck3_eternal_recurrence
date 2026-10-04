@@ -99,3 +99,14 @@ readiness 为 `production-live primitive`；有限“单次提议 → 自然日 
 下一真实暂停停点复用现有只读口：`ck3_query_title_holder_v1(title_id=2128, expected_revision=<fresh public integer>)`；`ck3_query_campaign_root_context_v1(expected_revision=<fresh public integer>)` 整组读取已知 5 县 `2102/2111/2115/2142/2173` 与 duchy `2141`，不逐县重复查询。2128 不在本人 held partition，需独立 holder 读回。资源余额复用当停点已有 snapshot cache 的 `played_character_gold/prestige/piety` raw Q100000；必要时 Root 选择现有 `ck3_take_snapshot(include_native_command_history=false)`，收入不当余额，不新增 getter、门禁或 SDK 执行。后续结束类型与 stock effects 只按实际 published readback 陈述。
 
 DAY55 为 paused/map-ready、Robert alive，event/interaction 实际 author cache 为 null，normal checkpoint saved 且 matches final date；该 null 不证明对方接受。累计 `4323 / resume 1170 / 2026-10-04 +298`，本只读报告追加 0 天。仅复用 Root/owner decoded cache 与既有 receipts；不重消费日级 raw。
+
+
+## 2026-10-04：populist WarID 50331736 实测强制胜利结算
+
+Root 当前实际整战分为 100、玩家为 primary defender、CB4 `populist_war`。SDK43478 原生 termination options 的 player-victory context 为 `attacker_defeat`，context constructed / native validator / available 均 true，auto_accept observable / true；CB-specific terms 与 recipient_response unavailable/null 不构成 force 结算门禁。既有 g57 `ck3_enforce_demands` generic 路径无 CB 过滤，无需扩展白和平 CB17 分支或增加代码/测试。
+
+Root SDK73709 在同一新 action session fresh-query-bind 后只提交一次 `enforce-demands-50331736`，没有重放 closed43478 cache。实际 006 `/packet/structuredContent/war_action` 与 `war_victory` 均为 `{status: victory_enforced, war_id: 50331736}`；顶层 accepted/submitted 仅为 ACK。独立 007 current `active_wars` 仅余 `129`，确认 exact `50331736` 退出；129 为 primary defender、opponent32750、整战分 -24、target2115。两个实际 leaf 的 snapshot 为 `native:10`、public3；直接 date/actor/episode/native_revision 字段未发布，不补填。
+
+该限定分支达到 `production-live primitive`，有限“原生观察 → 选择一次 force → 实际提交 → 独立 exact WarID 退出”循环可 qualified 为 `production-live loop`；不代表全局战争策略或整局游玩 complete。Root normal SAVE 与查询为零日数事务，累计 4359 天；仅一次 force，不重发 167 或 503。旧 167 的结束类型仍 unknown。资源后态、CB terms、70766 实际羁押、33554465 targeting-alert 清理尚未读，不推断财富、囚禁或全局 faction object 销毁；后续只复用已有可用查询口，不作为本次 force 前置门禁。
+
+证据仅复用授权 raw lane 一次消费后的 cache：`actual-enforce-006-007-consumed-01/ROOT-DELIVERY.json` SHA `a643e23bfee8173e0943882d48bc305a1a5120479b4d1ce9c20c46e03c722e55`。006 raw SHA `4f9d70ec375bb9a61502a9bdead7455df0f92758369a3a43c1d635d06ec9a81c`，007 raw SHA `3a35b28ca5fdc74cbc26c713e594319c3d27dba29087f27b443d868ba9a9f12a`；本报告 lane 未读取这些 Root raw。
