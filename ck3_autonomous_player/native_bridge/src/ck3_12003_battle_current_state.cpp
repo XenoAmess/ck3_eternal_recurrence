@@ -527,6 +527,115 @@ void AttachBattleCurrentObservationV1(
   transition.current_observation = std::move(unavailable);
 }
 
+game::BattleNativeOwnerPrefixInputsV1 ReadOwnerNativePrefixInputsV1(
+    const ck3_12002::BattleBindings &bindings, std::int32_t owner_id) noexcept {
+  game::BattleNativeOwnerPrefixInputsV1 result{};
+  try {
+    if (!bindings.enabled || !bindings.native_activity_context_source_enabled ||
+        owner_id <= 0) {
+      result.unavailable_reason = "independent_owner_source_unbound";
+      return result;
+    }
+    const auto *character = Resolve(bindings.character_storage_slot, owner_id, 0x18);
+    if (!character) {
+      result.unavailable_reason = "independent_owner_character_unavailable";
+      return result;
+    }
+    const auto *land = At<const void *>(character, 0x1C0);
+    result.owner_land_present = land != nullptr;
+    if (!land) result.owner_necessary_condition = false;
+
+    const void *government{};
+    bool government_expression_observed = true;
+    if (At<std::uint32_t>(character, 0x1C) == 0x43686172U &&
+        At<std::int32_t>(character, 0x18) != -1) {
+      const auto *death_data = At<const void *>(character, 0x1D0);
+      if (death_data) government = At<const void *>(death_data, 0x88);
+      else if (land) government = At<const void *>(land, 0x3F8);
+      else {
+        // The getter's nonlanded receiver chain is outside this owner path.
+        government_expression_observed = false;
+        result.government_status = "owner_land_absent";
+      }
+    }
+    if (government_expression_observed && !government &&
+        bindings.native_activity_context_government_fallback_slot)
+      government = *bindings.native_activity_context_government_fallback_slot;
+    if (government) {
+      if (At<std::uint32_t>(government, 0x38) != 0x4744624FU) {
+        result.government_status = "invalid_magic";
+        result.owner_necessary_condition = false;
+      } else {
+        result.government_flags_40_raw = At<std::uint64_t>(government, 0x40);
+        result.government_bit41 =
+            (*result.government_flags_40_raw & (std::uint64_t{1} << 41)) != 0;
+        result.owner_necessary_condition = land != nullptr && *result.government_bit41;
+        result.government_status = "available";
+      }
+    }
+
+    // Observe PlIn independently even when the government's bit41 is false.
+    // This does not claim that native E(context) traversed its PlIn branch.
+    const void *game_data{};
+    if (bindings.game_state_slot && *bindings.game_state_slot)
+      game_data = At<const void *>(*bindings.game_state_slot, 0xA0);
+    const void *selected_plin{};
+    bool plin_membership_observed = false;
+    if (game_data) {
+      const auto *rows = At<const void *>(game_data, 0x22340);
+      const auto count = At<std::int32_t>(game_data, 0x2234C);
+      plin_membership_observed = count >= 0 && (count == 0 || rows != nullptr);
+      if (plin_membership_observed) {
+        for (std::int32_t i = 0; i < count; ++i) {
+          const auto *plin = At<const void *>(
+              rows, static_cast<std::size_t>(i) * sizeof(void *));
+          if (!plin) {
+            plin_membership_observed = false;
+            break;
+          }
+          if (At<std::int32_t>(plin, 0xB0) == owner_id) {
+            selected_plin = plin;
+            result.plin_selection = "owner_first_match";
+            break;
+          }
+        }
+      }
+    }
+    if (plin_membership_observed && !selected_plin) {
+      result.plin_selection = "native_fallback";
+      if (bindings.native_activity_context_plin_fallback_slot)
+        selected_plin = *bindings.native_activity_context_plin_fallback_slot;
+    }
+    if (plin_membership_observed && selected_plin) {
+      if (At<std::uint32_t>(selected_plin, 0xDC) != 0x506C496EU ||
+          At<std::int32_t>(selected_plin, 0xD8) == -1) {
+        result.plin_status = "invalid_identity_native_literal5";
+        result.plin_bit8 = false;
+      } else {
+        result.plin_flags_2f0_raw = At<std::uint16_t>(selected_plin, 0x2F0);
+        result.plin_bit8 = (*result.plin_flags_2f0_raw & (std::uint16_t{1} << 8)) != 0;
+        result.plin_status = "available";
+      }
+    }
+    const bool government_observed =
+        result.government_status == "available" || result.government_status == "invalid_magic";
+    const bool plin_observed = result.plin_status == "available" ||
+                              result.plin_status == "invalid_identity_native_literal5";
+    if (government_observed && plin_observed) {
+      result.status = "available";
+      result.unavailable_reason.clear();
+    } else if (!government_observed && plin_observed) {
+      result.unavailable_reason = "independent_owner_government_unavailable";
+    } else if (government_observed && !plin_observed) {
+      result.unavailable_reason = "independent_owner_plin_unavailable";
+    }
+  } catch (...) {
+    result.status = "unavailable";
+    result.unavailable_reason = "independent_owner_operands_unavailable";
+  }
+  return result;
+}
+
 game::BattleNativeActivityContextV1 ReadOwnerNativeActivityContextInputsV1(
     const ck3_12002::BattleBindings &bindings, std::int32_t owner_id) noexcept {
   game::BattleNativeActivityContextV1 result{};
@@ -535,6 +644,7 @@ game::BattleNativeActivityContextV1 ReadOwnerNativeActivityContextInputsV1(
       result.unavailable_reason = "activity_context_source_unbound";
       return result;
     }
+    result.owner_prefix_inputs = ReadOwnerNativePrefixInputsV1(bindings, owner_id);
     if (owner_id <= 0 || !bindings.game_state_slot ||
         !*bindings.game_state_slot) {
       result.unavailable_reason = "activity_context_game_state_unavailable";

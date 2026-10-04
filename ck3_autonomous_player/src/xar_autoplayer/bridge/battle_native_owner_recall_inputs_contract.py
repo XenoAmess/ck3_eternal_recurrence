@@ -102,12 +102,60 @@ def _activity_context_match(value: object, owner_id: int) -> dict[str, object]:
     }
 
 
+def _owner_prefix_inputs(value: object) -> dict[str, object] | None:
+    """Independent actual owner operands; no full E(context) or selection claim."""
+    if value is None:
+        return None
+    fields = {
+        "status", "unavailable_reason", "owner_land_present", "government_status",
+        "government_flags_40_raw", "government_bit41", "owner_necessary_condition",
+        "plin_selection", "plin_status", "plin_flags_2f0_raw", "plin_bit8",
+    }
+    if not isinstance(value, dict) or set(value) != fields:
+        raise ValueError("independent native owner prefix input fields are invalid")
+    status = value["status"]
+    reason = value["unavailable_reason"]
+    if status == "available":
+        if reason is not None:
+            raise ValueError("available independent owner inputs require a null reason")
+    elif status == "unavailable":
+        if not isinstance(reason, str) or not reason:
+            raise ValueError("unavailable independent owner inputs require a reason")
+    else:
+        raise ValueError("independent owner prefix input status is invalid")
+    if value["government_status"] not in {
+        "available", "unavailable", "invalid_magic", "owner_land_absent"
+    }:
+        raise ValueError("independent government status is invalid")
+    if value["plin_selection"] not in {
+        "owner_first_match", "native_fallback", "unresolved"
+    }:
+        raise ValueError("independent PlIn selection is invalid")
+    if value["plin_status"] not in {
+        "available", "unavailable", "invalid_identity_native_literal5"
+    }:
+        raise ValueError("independent PlIn status is invalid")
+    result = dict(value)
+    for field in ("owner_land_present", "government_bit41",
+                  "owner_necessary_condition", "plin_bit8"):
+        if value[field] is not None and not isinstance(value[field], bool):
+            raise ValueError(f"{field} must be bool or null")
+    result["government_flags_40_raw"] = _optional_integer(
+        value["government_flags_40_raw"], "government_flags_40_raw", 0, 2**64 - 1
+    )
+    result["plin_flags_2f0_raw"] = _optional_integer(
+        value["plin_flags_2f0_raw"], "plin_flags_2f0_raw", 0, 2**16 - 1
+    )
+    return result
+
+
+
 def _activity_context(value: object, owner_id: int) -> dict[str, object] | None:
     if value is None:
         return None
     fields = {"schema_version", "status", "unavailable_reason", "membership_observed",
               "matched_contexts_in_native_order"}
-    if not isinstance(value, dict) or set(value) != fields:
+    if not isinstance(value, dict) or set(value) - {"owner_prefix_inputs"} != fields:
         raise ValueError("native activity context fields are invalid")
     version = _integer(value["schema_version"], "native activity context schema_version", 1, 1)
     status = value["status"]
@@ -125,13 +173,16 @@ def _activity_context(value: object, owner_id: int) -> dict[str, object] | None:
     matches = value["matched_contexts_in_native_order"]
     if not isinstance(matches, list):
         raise ValueError("matched_contexts_in_native_order must be a list")
-    return {
+    result: dict[str, object] = {
         "schema_version": version,
         "status": status,
         "unavailable_reason": reason,
         "membership_observed": value["membership_observed"],
         "matched_contexts_in_native_order": [_activity_context_match(match, owner_id) for match in matches],
     }
+    if "owner_prefix_inputs" in value:
+        result["owner_prefix_inputs"] = _owner_prefix_inputs(value["owner_prefix_inputs"])
+    return result
 
 
 def _owner(value: object) -> dict[str, object]:

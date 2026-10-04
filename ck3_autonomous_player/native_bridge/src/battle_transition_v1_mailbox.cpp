@@ -246,6 +246,36 @@ bool AppendNativeActivityContextMatch(
   return true;
 }
 
+bool AppendNativeOwnerPrefixInputs(
+    std::string &output, const game::BattleNativeOwnerPrefixInputsV1 &inputs) {
+  output += "{\"status\":";
+  AppendJsonString(output, inputs.status);
+  output += ",\"unavailable_reason\":";
+  if (inputs.status == "available") output += "null";
+  else AppendJsonString(output, inputs.unavailable_reason);
+  output += ",\"owner_land_present\":";
+  AppendRecallNullableBool(output, inputs.owner_land_present);
+  output += ",\"government_status\":";
+  AppendJsonString(output, inputs.government_status);
+  output += ",\"government_flags_40_raw\":";
+  if (!AppendRecallNullableNumber(output, inputs.government_flags_40_raw)) return false;
+  output += ",\"government_bit41\":";
+  AppendRecallNullableBool(output, inputs.government_bit41);
+  output += ",\"owner_necessary_condition\":";
+  AppendRecallNullableBool(output, inputs.owner_necessary_condition);
+  output += ",\"plin_selection\":";
+  AppendJsonString(output, inputs.plin_selection);
+  output += ",\"plin_status\":";
+  AppendJsonString(output, inputs.plin_status);
+  output += ",\"plin_flags_2f0_raw\":";
+  if (!AppendRecallNullableNumber(output, inputs.plin_flags_2f0_raw)) return false;
+  output += ",\"plin_bit8\":";
+  AppendRecallNullableBool(output, inputs.plin_bit8);
+  output.push_back('}');
+  return true;
+}
+
+
 bool AppendNativeActivityContext(
     std::string &output, const game::BattleNativeActivityContextV1 &inputs) {
   output += "{\"schema_version\":";
@@ -264,7 +294,12 @@ bool AppendNativeActivityContext(
     first = false;
     if (!AppendNativeActivityContextMatch(output, context)) return false;
   }
-  output += "]}";
+  output += "]";
+  if (inputs.owner_prefix_inputs) {
+    output += ",\"owner_prefix_inputs\":";
+    if (!AppendNativeOwnerPrefixInputs(output, *inputs.owner_prefix_inputs)) return false;
+  }
+  output.push_back('}');
   return true;
 }
 
