@@ -317,3 +317,59 @@ Root sole SDK **74826** 正常closed/exit0、GREEN的实际选择body另确认 *
 trait尚未独立读回，不记clouded_eyes已添加或material effect信用；本文件consumer新增0日/动作。1.19 historical ABI、R193–R207实际能力及未闭合generic/fresh-cold/non-Character边界继续保留，本次.3 frame不扩大为通用semantic utility或整局OODA完成。独立frame与normal SAVE现已由Root唯一control owner封存，见下列锚点；本lane不重读其raw。
 
 Root已封独立frame/SAVE：normal **h6147／93428206B／SHA256 `3db05b5df4b982e4938af5bae0b079ce401afb9efaeae2c3420ea88b43a610cf`**；native **651**／public **3**／date_raw **53245560**，event=null、主军在2640围城。此选择与保存新增 **0日**，累计仍 **4218**；此前 **h6143／38日STOP** 保持原阶段归属，不被h6147替换。证据仅链接 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/r25-v49-event24-select-zero-days/ROOT-DELIVERY.json` 与 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/r25-v49-event24-select-zero-days/CACHED-FINAL-IDENTITY-CONTROL-SAVE-FIELDS.json`，未读取raw或这些receipt。资格仍为finite event acknowledgment loop；trait尚未后验，不记clouded_eyes已添加或material effect。
+
+
+# bookmark.1071：原生 AI 树与 Robert 选择理由
+
+原版静态来源为 `Z:/SteamLibrary/steamapps/common/Crusader Kings III/game/events/bookmark_events.txt` 的 `bookmark.1071`，本 lane 仅一次读取 1426–1810 内原生 `ai_chance` 与选项名。AI 摘录落在同目录 `STOCK-NATIVE-AI-EXCERPTS.json`，SHA-256 `c6279ee7542d369f364bb14835555577e8e7bf5b8ba2ae659612a81e7e329d39`；静态脚本证据不冒充执行结果。
+
+## 原生权重
+
+- a：lines 1636–1642，base 10；`title:e_byzantium.holder ?= { is_ai = no }` 时乘 0.1。
+- b：lines 1784–1790，base 100；同条件成立时乘 0.1。
+- c：lines 1798–1804，base 10；同条件成立时乘 10。
+
+```mermaid
+flowchart TD
+  E[bookmark.1071 AI choice] --> H{Byzantium holder is_ai = no?}
+  H -->|condition matches| P[a weight 1 / b weight 10 / c weight 100]
+  H -->|condition does not match| A[a weight 10 / b weight 100 / c weight 10]
+  H -. current holder AI flag not independently supplied .-> U[Keep both source branches]
+  P --> W[Native relative AI weights]
+  A --> W
+  W --> R[Robert policy uses goal and concrete option effects]
+  R --> B[b: immediate 3-county conquest war]
+  B --> C[Source-spawned 6 x 500 wartime troops]
+  B --> V{War result}
+  V -->|victory| T[setup_invasion_cb: 3 target titles]
+  T --> Q{Attacker court has raiktor variable courtier?}
+  Q -->|yes| Z[Transfer 3 titles to that courtier as Robert vassal]
+  Q -. current future victory recipient not observed .-> X[No current ownership credit]
+  V -->|defeat| D[GOLD_VALUE 5 reparations / massive prestige loss / attacker imprisonment]
+  V -. pending actual outcome .-> O[No war victory credit]
+```
+
+权重是原生 AI 的相对输入，不要求玩家策略照抄。Root 已给 Byzantium emperor `35991` 与 Raiktor `72315` 的 typed scope；本 lane 不据此猜 holder 的 AI 标志或其他 saved/global scope 含义。
+
+## 当前推荐
+
+推荐 **rendered/native index 1，b；SDK option_number 2**。Root sole-cache 的当前帧为 event instance `25 / bookmark.1071 / calc 1041071 / raw 53251272 / native:59 / public 2 / actor Robert 29829`，三个选项均 shown/enabled。UI 的 b 港口 claims 描述对应静态脚本中的立即 `raiktor_conquest_cb` 战争，目标为 `c_dyrrachion / c_avlonas / c_buthrotum`；不是先保存 claims、以后再决定宣战。
+
+选择理由：这三县征服直接服务 Robert 的领土与港口目标；两种接受方案均立即 start_war，并在 root capital 生成脚本编制 `6×500 =3000` 战时兵。原生常态权重也给予 b 更高比重。a 启动 `raiktor_claim_cb / e_byzantium`，核心是扶 Raiktor 皇位，Robert 收益为条件性的 Epirus de-jure title 分支；c 把 Raiktor 移到 pool，当前 option 不直接开启战争。战争领域已全面授权，因此不能以旧 nonwar 限制默认选择 c。当前 `no active wars / ownarmy []` 是 Root 帧事实，生成兵的脚本效果另列，均不能当作已获胜证据。
+
+成本与风险：effects lane 已核对两 CB 的 `cost = {}`，option 无直接 gold/piety/prestige 扣款；event trigger 的 gold≥100 是触发条件，不是扣费。b 胜利先处理三个 target titles，若 attacker court 有带 `raiktor` variable 的 courtier，再把三县转给他成为 Robert 的 vassal，不能提前声称 Robert 获得三县直辖。b 失败分支包括 `GOLD_VALUE 5` 的短期赔款、`-massive_prestige_value` 及由 defender 囚禁 attacker；a 失败为 `GOLD_VALUE 3` 与 claimant 失去 target claim，未发现同样显式的 imprisonment。b 的直接领土目标与该真实失败风险一起交给 Root 审阅；推荐不等于预判战果。旧 gold/piety/prestige 数值不作为当前可负担证明，不新采军力、不扩 observation gate。
+
+效果与 CB 解释复用 sibling effects lane 对同一原版 event 及 `00_event_war.txt` lines 2652–2948 的 source 核对；本 lane 不重复读取 effects、CB、localization 或 helper。其 CB source pin 为 `48ab66002f287f0828cac3dcb3160248f49cc336ad335d838a4dd6c3563c0baa`（owner 提供）。Root context cache SHA 为 `c6c6097806ebfccb658c2b74e9608aadc94ace1c527e5ed98b6ac0634d44ff5e`，本 lane 未打开该 cache 或原始 raw。选择 ACK、event 清空、战争创建、实际领土结果分别记账；本文件只有 source/static-ready 树和政策推荐，0 SDK/actions/new days，未宣称 claims、军队、战争或领土已实际生效。
+
+完整a/b/c效果、声明时条件关系变化与结算公式见 [source effects table](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/actual-v55-event25-bookmark1071-review/effects/SOURCE-EFFECTS-FACT-TABLE.md)。事件触发的gold>=100与两CB空cost不等于所有声明条件成本为0；当前truce、宗教、联盟等具体分支未从旧余额或全局scope猜测。六个spawn_army块未指定maintenance_multiplier或maintenance_scaling_factor，官方defines未闭合默认倍率，因此未证明维护免费。此单项未查明不新增执行gate；上述stock推演本身不授实际选择、兵数、claims、直辖县或胜利信用；真实后态在下文另列。
+
+
+### 同日实际选择与独立战争后态
+
+Root SDK51989正常关闭GREEN，实际选择event25的option_number2/native index1；唯一消费者按明确委派只读取004选择和005战态两原叶各一次。004 postcondition_verified=true，event25→null，native61/public2→native62/public3，PID57052/gen9/paused，gold655.61127、prestige2832.3818、stress0前后均相同。两叶未发布date字段，raw53251272沿用Root独立日期绑定，不伪造provider日期。
+
+初次005独立native62/public3确认新FullWar117440524：Robert为primary attacker，whole war score0，对手35991，targetTitleIDs[1333,1351,1358]、objective provinces[470,3711,472]。`raiktor_conquest_cb`是已选event.b的stock源码CB，当前war-state不发布DBCB key/numeric ID，不冒原生实读字段。实际玩家六支public fullID为[184549452, 301989972, 201326677, 301989975, 218103908, 285212781]，全owner29829/2619/regular1/controllable/noncombat/nonretreat/complete_empty route0/targetnull；soldiers全部null，实机总兵数未读，源码3000不作actual sum。敌268435597/owner35991在510/regular1，兵数同样null。P470当前已被第三方69281占领；其余两个目标未占，三者active_siege均null，不授夺地信用。
+
+事件清除与独立新战争/六军状态形成有限production-live event-choice→war-initiation observation loop，未包含本owner的新专用strength或normal save。累计4456/恢复1303/10月4日431不变，动作新增游戏日0；claims、直辖县、战斗或战争胜利均未证明。最短可复用缓存：[COMPACT-ACTUAL-CHOICE-AND-WAR.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/actual-v55-event25-bookmark1071-review/actual-choice-consumption/COMPACT-ACTUAL-CHOICE-AND-WAR.json)，含两原叶pins；Root及其他owner不必再读这两原始回执。
+
+后续Root专用军力查询与五次合军的独立后态已核验六支事件军：3000/3000兵、24regiments，源码3k因此获得后续actual验证；上述初次005的soldiers=null保留为当时事实，不作为终态缺口。另新军301989997仍gathering，其兵数与集结ETA未知，不合计到已核验事件军。该增量只复用Root已确认字段，未再读取原始回执、运行SDK或测试；累计4456/恢复1303/10月4日431不变，新增日0，未授新战斗或胜利信用。
