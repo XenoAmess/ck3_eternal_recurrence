@@ -58,6 +58,12 @@ std::string ActiveSiege(const WarOccupationTargetRowV1 &row) {
       ",\"ordinary_daily_progress\":" +
       (siege.ordinary_daily_progress_observable
           ? FixedPoint(siege.ordinary_daily_progress_raw) : std::string("null")) +
+      ",\"eligible_regiment_siege_work\":" +
+      (siege.eligible_regiment_siege_work_observable
+          ? FixedPoint(siege.eligible_regiment_siege_work_raw) : std::string("null")) +
+      ",\"highest_eligible_siege_tier\":" + ObservableInt(
+          siege.highest_eligible_siege_tier_observable,
+          siege.highest_eligible_siege_tier) +
       ",\"current_phase_length\":" +
       (siege.current_phase_length_observable
           ? FixedPoint(siege.current_phase_length_raw) : std::string("null")) +

@@ -772,7 +772,7 @@ def _normalize_active_siege(
             raise ValueError(
                 f"native {name}.assault_daily_casualties is required"
             )
-    return {
+    result = {
         "siege_id": _positive_int32_id(
             value.get("siege_id"), f"{name}.siege_id"
         ),
@@ -825,6 +825,20 @@ def _normalize_active_siege(
         "assault_daily_progress": assault_daily_progress,
         "assault_daily_casualties": assault_daily_casualties,
     }
+    # Preserve legacy key absence, failed-read null, and native measured zero
+    # as three distinct observations of the eligible regiment inputs.
+    if "eligible_regiment_siege_work" in value:
+        work = value["eligible_regiment_siege_work"]
+        result["eligible_regiment_siege_work"] = (
+            _fixed_point(work, f"{name}.eligible_regiment_siege_work")
+            if work is not None else None
+        )
+    if "highest_eligible_siege_tier" in value:
+        result["highest_eligible_siege_tier"] = _optional_non_negative_int32(
+            value["highest_eligible_siege_tier"],
+            f"{name}.highest_eligible_siege_tier",
+        )
+    return result
 
 
 def _fixed_point(

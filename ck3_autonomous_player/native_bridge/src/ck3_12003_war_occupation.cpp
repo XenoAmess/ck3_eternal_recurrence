@@ -276,6 +276,14 @@ WarOccupationTargetsReadResultV1 ReadWarOccupationTargetsV1(
           siege.ordinary_daily_progress_observable =
               rich.siege_ordinary_daily_progress_observable;
           siege.ordinary_daily_progress_raw = rich.siege_ordinary_daily_progress.raw;
+          siege.eligible_regiment_siege_work_observable =
+              rich.siege_eligible_regiment_siege_work_observable;
+          siege.eligible_regiment_siege_work_raw =
+              rich.siege_eligible_regiment_siege_work.raw;
+          siege.highest_eligible_siege_tier_observable =
+              rich.siege_highest_eligible_siege_tier_observable;
+          siege.highest_eligible_siege_tier =
+              rich.siege_highest_eligible_siege_tier;
           siege.current_phase_length_observable =
               rich.siege_current_phase_length_observable;
           siege.current_phase_length_raw = rich.siege_current_phase_length.raw;

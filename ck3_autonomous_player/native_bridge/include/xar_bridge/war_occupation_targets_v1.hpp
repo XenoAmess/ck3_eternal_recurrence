@@ -20,6 +20,11 @@ struct WarOccupationActiveSiegeV1 {
   std::int32_t days_left = 0;
   bool ordinary_daily_progress_observable = false;
   std::int64_t ordinary_daily_progress_raw = 0;
+  // Independent current native eligible-regiment inputs, before modifiers.
+  bool eligible_regiment_siege_work_observable = false;
+  std::int64_t eligible_regiment_siege_work_raw = 0;
+  bool highest_eligible_siege_tier_observable = false;
+  std::int32_t highest_eligible_siege_tier = 0;
   // Fresh getter output and the last prepared cache are separate observations.
   bool current_phase_length_observable = false;
   std::int64_t current_phase_length_raw = 0;
