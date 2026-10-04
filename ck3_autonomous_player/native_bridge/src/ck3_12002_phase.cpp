@@ -171,6 +171,249 @@ SideModifierSourceRows ReadSideModifierSources(
 }
 // END contextual side modifier source producer.
 
+// BEGIN contextual commander source producer (exact CK3 1.20.0.3).
+struct CommanderSourceNativeBindings {
+  bool (*army_gate)(void *) = nullptr;
+  void **null_army_slot = nullptr;
+};
+struct CommanderSourceObservation {
+  std::optional<game::ContextualAdvantageCommanderSourceInputsSnapshot> inputs;
+  std::optional<std::vector<game::ContextualAdvantageCommanderSourceSnapshot>> sources;
+};
+using CommanderSourceObservationsBySide = std::array<CommanderSourceObservation, 2>;
+
+bool ReadCommanderModifierCache(void *aggregator, std::uint16_t id,
+                                bool &present, std::int64_t &raw) noexcept {
+  present = false;
+  raw = 0;
+  if (!aggregator) return false;
+  const auto count = Load<std::int32_t>(aggregator, 0x74);
+  const auto *keys = Load<const std::uint16_t *>(aggregator, 0x68);
+  if (count < 0 || count > 65'536 || (count != 0 && !keys)) return false;
+  if (count == 0) return true;
+  const auto *found = std::lower_bound(keys, keys + count, id);
+  if (found == keys + count || *found != id) return true;
+  const auto *values = Load<const std::int64_t *>(aggregator, 0xD0);
+  if (!values) return false;
+  present = true;
+  raw = values[found - keys];
+  return true;
+}
+
+void *ResolveCommanderSourceArmy(void **slot, std::int32_t id) noexcept {
+  void *storage = slot ? *slot : nullptr;
+  if (!storage) return nullptr;
+  const auto index = static_cast<std::uint32_t>(id) & 0xFFFFFFU;
+  if (index >= Load<std::uint32_t>(storage, 0x2C)) return nullptr;
+  const void *data = Load<const void *>(storage, 0x20);
+  void *army = data ? Load<void *>(data, static_cast<std::size_t>(index) * 16 + 8)
+                    : nullptr;
+  return army && Load<std::int32_t>(army, 0x10) == id ? army : nullptr;
+}
+
+CommanderSourceObservation ReadCommanderSources(
+    const PhaseBindings &bindings, const void *combat_shell,
+    void *selected_character, std::int32_t side_index,
+    std::int32_t relation_kind, const CommanderSourceNativeBindings &native) noexcept {
+  if (!combat_shell || !selected_character || side_index < 0 || side_index > 1)
+    return {};
+  try {
+    game::ContextualAdvantageCommanderSourceInputsSnapshot inputs{};
+    inputs.selected_commander_character_id =
+        Load<std::int32_t>(selected_character, 0x18);
+    inputs.effective_martial = Load<std::int32_t>(selected_character, 0xDC);
+    inputs.own_primary_character_id = Load<std::int32_t>(combat_shell,
+        static_cast<std::size_t>(side_index) * 0x348 + 0x90);
+    inputs.opposing_primary_character_id = Load<std::int32_t>(combat_shell,
+        side_index == 0 ? 0x3D8 : 0x90);
+    inputs.relation_kind_raw = relation_kind;
+    inputs.primary_identity_matches = inputs.selected_commander_character_id ==
+                                      inputs.own_primary_character_id;
+    inputs.gathering_flag_raw = Load<std::uint8_t>(combat_shell,
+        static_cast<std::size_t>(side_index) * 0x348 + 0x364);
+    void *province = Load<void *>(combat_shell, 0x6B8);
+    void *province_data = province ? Load<void *>(province, 0x848) : nullptr;
+    if (province_data)
+      inputs.province_context_raw32 = Load<std::uint32_t>(province_data, 0x388);
+    void *aggregator = bindings.combat.get_character_modifier_aggregator
+        ? bindings.combat.get_character_modifier_aggregator(selected_character)
+        : nullptr;
+    std::vector<game::ContextualAdvantageCommanderSourceSnapshot> rows;
+    rows.reserve(7);
+    const auto make_row = [side_index](std::int32_t order, std::string_view kind,
+                                      std::string_view provenance) {
+      game::ContextualAdvantageCommanderSourceSnapshot row{};
+      row.side_index = side_index;
+      row.stage_order = order;
+      row.source_kind = kind;
+      row.source_provenance = provenance;
+      row.status = "unavailable";
+      return row;
+    };
+    auto martial = make_row(0, "effective_martial", "Character+0xDC signed32");
+    martial.status = "observed";
+    martial.predicate_observed = true;
+    martial.selected = true;
+    martial.contribution_raw = static_cast<std::int64_t>(inputs.effective_martial)
+                               * 100'000;
+    martial.accumulator_before_raw = 0;
+    martial.accumulator_after_raw = martial.contribution_raw;
+    rows.push_back(std::move(martial));
+
+    auto opposite = make_row(1, "opposing_primary_context",
+        "0x2589F37->0x2589020 selected Character/opposing primary CharacterID");
+    opposite.accumulator_before_raw = rows.front().contribution_raw;
+    opposite.skip_reason = "source_output_not_captured";
+    rows.push_back(std::move(opposite));
+    auto province_row = make_row(2, "province_raw_context",
+        "0x2589F64->0x25893F0 Province+0x848/data+0x388 raw32");
+    province_row.skip_reason = "source_output_not_captured";
+    rows.push_back(std::move(province_row));
+
+    auto army = make_row(3, "army_gated_modifier",
+        "Character aggregator cached1AE + native Army/null 0x24DFB70");
+    army.modifier_id = static_cast<std::uint16_t>(0x1AE);
+    bool present = false;
+    std::int64_t cached = 0;
+    if (!ReadCommanderModifierCache(aggregator, 0x1AE, present, cached)) {
+      army.skip_reason = "modifier_cache_unavailable";
+    } else {
+      inputs.army_gated_modifier_cache_present = present;
+      inputs.army_gated_modifier_cached_raw = cached;
+      army.modifier_raw = cached;
+      if (cached == 0) {
+        army.status = "observed";
+        army.predicate_observed = false;
+        army.selected = false;
+        army.contribution_raw = 0;
+        army.skip_reason = present ? "modifier_zero" : "modifier_absent";
+      } else {
+        void *link = Load<void *>(selected_character, 0x1B8);
+        if (!link) {
+          army.skip_reason = "army_link_unavailable";
+        } else {
+          const auto id = Load<std::int32_t>(link, 0xF4);
+          inputs.army_gated_modifier_source_army_id = id;
+          void *resolved = ResolveCommanderSourceArmy(
+              bindings.combat.army_internal_storage_slot, id);
+          inputs.army_gated_modifier_used_null_army = resolved == nullptr;
+          if (!resolved && native.null_army_slot) resolved = *native.null_army_slot;
+          if (!resolved) {
+            army.skip_reason = "army_resolution_unavailable";
+          } else {
+            inputs.army_gated_modifier_resolved_army_id =
+                Load<std::int32_t>(resolved, 0x10);
+            if (!native.army_gate) {
+              army.skip_reason = "army_gate_binding_unavailable";
+            } else {
+              const bool gate = native.army_gate(resolved);
+              inputs.army_gated_modifier_gate_result = gate;
+              army.status = "observed";
+              army.predicate_observed = gate;
+              army.selected = gate;
+              army.contribution_raw = gate ? cached : 0;
+              if (!gate) army.skip_reason = "army_gate_false";
+            }
+          }
+        }
+      }
+    }
+    rows.push_back(std::move(army));
+
+    auto primary = make_row(4, "primary_identity_modifier",
+        "own primary CharacterID equality -> Character aggregator mode0/Q100000");
+    primary.modifier_id = static_cast<std::uint16_t>(
+        side_index == 0 ? 0x1B1 : 0x1B0);
+    primary.predicate_observed = inputs.primary_identity_matches;
+    primary.selected = inputs.primary_identity_matches;
+    if (!inputs.primary_identity_matches) {
+      primary.status = "observed";
+      primary.contribution_raw = 0;
+      primary.skip_reason = "primary_identity_mismatch";
+    } else if (!aggregator || !bindings.advantage.read_modifier_value) {
+      primary.skip_reason = "modifier_reader_unavailable";
+    } else {
+      std::int64_t raw = 0;
+      if (bindings.advantage.read_modifier_value(&raw, aggregator,
+            static_cast<std::int32_t>(*primary.modifier_id), nullptr, 100'000, 0)
+          != &raw) {
+        primary.skip_reason = "modifier_read_failed";
+      } else {
+        primary.status = "observed";
+        primary.modifier_raw = raw;
+        primary.contribution_raw = raw;
+      }
+    }
+    rows.push_back(std::move(primary));
+
+    auto gathering = make_row(5, "gathering_loaded_rule",
+        "own side+0x344 / Character flag1A5 / loaded rules+0xEF0 effect+0x40");
+    if (inputs.gathering_flag_raw == 0) {
+      gathering.status = "observed";
+      gathering.predicate_observed = false;
+      gathering.selected = false;
+      gathering.contribution_raw = 0;
+      gathering.skip_reason = "not_gathering";
+    } else if (!aggregator || !bindings.advantage.has_modifier_flag) {
+      gathering.skip_reason = "modifier_flag_reader_unavailable";
+    } else {
+      const bool flag = bindings.advantage.has_modifier_flag(
+          static_cast<std::byte *>(aggregator) + 0x68, 0x1A5);
+      inputs.gathering_modifier_flag_1a5 = flag;
+      gathering.predicate_observed = !flag;
+      gathering.selected = !flag;
+      if (flag) {
+        gathering.status = "observed";
+        gathering.contribution_raw = 0;
+        gathering.skip_reason = "gathering_modifier_flag_present";
+      } else {
+        void *rules = bindings.advantage.get_rules ? bindings.advantage.get_rules()
+                                                  : nullptr;
+        void *effect = rules ? Load<void *>(rules, 0xEF0) : nullptr;
+        if (!effect) {
+          gathering.skip_reason = "loaded_gathering_rule_unavailable";
+        } else {
+          const auto points = Load<std::int32_t>(effect, 0x40);
+          inputs.gathering_rule_effect_points = points;
+          std::string key;
+          if (ReadSideSourceEffectKey(effect, key))
+            inputs.gathering_rule_source_key = std::move(key);
+          gathering.status = "observed";
+          gathering.contribution_raw = static_cast<std::int64_t>(points) * 100'000;
+        }
+      }
+    }
+    rows.push_back(std::move(gathering));
+
+    auto relation = make_row(6, "commander_relation_aggregate",
+        "0x25899C0 selected Character aggregator, original side/relation");
+    void *relation_aggregator = bindings.combat.get_character_modifier_aggregator
+        ? bindings.combat.get_character_modifier_aggregator(selected_character)
+        : nullptr;
+    if (!relation_aggregator || !bindings.side_modifier) {
+      relation.skip_reason = "relation_aggregate_reader_unavailable";
+    } else {
+      std::int64_t raw = 0;
+      if (bindings.side_modifier(const_cast<void *>(combat_shell), &raw,
+            relation_aggregator, side_index, relation_kind, nullptr) != &raw) {
+        relation.skip_reason = "relation_aggregate_read_failed";
+      } else {
+        relation.status = "observed";
+        relation.predicate_observed = true;
+        relation.selected = true;
+        relation.contribution_raw = raw;
+      }
+    }
+    rows.push_back(std::move(relation));
+    CommanderSourceObservation output{};
+    output.inputs = std::move(inputs);
+    output.sources = std::move(rows);
+    return output;
+  } catch (...) {
+    return {};
+  }
+}
+// END contextual commander source producer.
 using NativeFree = void (*)(void *, void *, std::size_t);
 bool FreePopulation(void *local) noexcept {
   void *data = Load<void *>(local, 0x38);
@@ -941,7 +1184,8 @@ static ReadNativeCombatPhaseResult ReadNativeCombatPhaseWithModifierSources(
     const PhaseBindings &bindings, const PhaseEnvironment &environment,
     const game::Snapshot &scope, const game::CombatSimulationInputsSnapshot &base,
     NativeCombatPhase &output, bool include_constructor_religion,
-    SideModifierSourceRowsBySide *modifier_sources) noexcept {
+    SideModifierSourceRowsBySide *modifier_sources,
+    CommanderSourceObservationsBySide *commander_sources) noexcept {
   output = {};
   if (!bindings.enabled || !bindings.construct_side || !bindings.populate_side ||
       !bindings.select_commander || !bindings.refresh_strength || !bindings.read_strength ||
@@ -1113,6 +1357,18 @@ static ReadNativeCombatPhaseResult ReadNativeCombatPhaseWithModifierSources(
           (*modifier_sources)[i] = ReadSideModifierSources(bindings.combat,
               local.shell.data(), target, static_cast<std::int32_t>(i),
               row.relation_kind_raw);
+        if (commander_sources) {
+          CommanderSourceNativeBindings source_bindings{};
+          if (bindings.image_base) {
+            source_bindings.army_gate = reinterpret_cast<bool (*)(void *)>(
+                bindings.image_base + 0x24DFB70);
+            source_bindings.null_army_slot = reinterpret_cast<void **>(
+                bindings.image_base + 0x5D1DE50);
+          }
+          (*commander_sources)[i] = ReadCommanderSources(bindings,
+              local.shell.data(), commanders[i], static_cast<std::int32_t>(i),
+              row.relation_kind_raw, source_bindings);
+        }
         resolved.sides.push_back(std::move(row));
       }
     }
@@ -1130,7 +1386,7 @@ ReadNativeCombatPhaseResult ReadNativeCombatPhase(
     const game::Snapshot &scope, const game::CombatSimulationInputsSnapshot &base,
     NativeCombatPhase &output, bool include_constructor_religion) noexcept {
   return ReadNativeCombatPhaseWithModifierSources(bindings, environment, scope,
-      base, output, include_constructor_religion, nullptr);
+      base, output, include_constructor_religion, nullptr, nullptr);
 }
 
 bool ReadContextualAdvantageInputs(
@@ -1159,9 +1415,11 @@ bool ReadContextualAdvantageInputs(
                                  ResolveEnvironmentRegiment};
     NativeCombatPhase native{};
     SideModifierSourceRowsBySide modifier_sources{};
+    CommanderSourceObservationsBySide commander_sources{};
     const auto result = ReadNativeCombatPhaseWithModifierSources(
         bindings, environment, scope, base, native,
-        bindings.advantage.constructor_religion.enabled, &modifier_sources);
+        bindings.advantage.constructor_religion.enabled, &modifier_sources,
+        &commander_sources);
     if (result != ReadNativeCombatPhaseResult::available) {
       std::string reason = native.unavailable_reason;
       if (reason.empty()) {
@@ -1191,6 +1449,8 @@ bool ReadContextualAdvantageInputs(
       side.target_conditionals_residual_raw = dynamic.target_conditionals_residual_raw;
       side.side_total_raw = dynamic.side_total_raw;
       side.side_modifier_sources = std::move(modifier_sources[i]);
+      side.commander_source_inputs = std::move(commander_sources[i].inputs);
+      side.commander_sources = std::move(commander_sources[i].sources);
       output.sides.push_back(std::move(side));
     }
     output.base_nonreligious_accumulator_raw = native.base_nonreligious_accumulator_raw;

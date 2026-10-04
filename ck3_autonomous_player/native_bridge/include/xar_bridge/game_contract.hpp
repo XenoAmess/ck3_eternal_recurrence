@@ -555,6 +555,52 @@ struct ContextualAdvantageSideModifierSourceSnapshot {
                          const ContextualAdvantageSideModifierSourceSnapshot &) = default;
 };
 
+// Inputs of the same selected Character's synthetic commander component.
+struct ContextualAdvantageCommanderSourceInputsSnapshot {
+  std::int32_t selected_commander_character_id = -1;
+  std::int32_t effective_martial = 0;
+  std::int32_t own_primary_character_id = -1;
+  std::int32_t opposing_primary_character_id = -1;
+  std::optional<std::uint32_t> province_context_raw32;
+  std::int32_t relation_kind_raw = 0;
+  std::optional<bool> army_gated_modifier_cache_present;
+  std::optional<std::int64_t> army_gated_modifier_cached_raw;
+  std::optional<std::int32_t> army_gated_modifier_source_army_id;
+  std::optional<std::int32_t> army_gated_modifier_resolved_army_id;
+  std::optional<bool> army_gated_modifier_used_null_army;
+  std::optional<bool> army_gated_modifier_gate_result;
+  bool primary_identity_matches = false;
+  std::uint8_t gathering_flag_raw = 0;
+  std::optional<bool> gathering_modifier_flag_1a5;
+  std::optional<std::int32_t> gathering_rule_effect_points;
+  std::optional<std::string> gathering_rule_source_key;
+
+  friend bool operator==(const ContextualAdvantageCommanderSourceInputsSnapshot &,
+                         const ContextualAdvantageCommanderSourceInputsSnapshot &) = default;
+};
+
+// Seven native caller stages. Uncaptured opaque helper outputs remain absent;
+// local before/after values are absent after an uncaptured contribution.
+struct ContextualAdvantageCommanderSourceSnapshot {
+  std::int32_t side_index = -1;
+  std::int32_t stage_order = -1;
+  std::string source_kind;
+  std::optional<std::uint16_t> modifier_id;
+  std::string status;
+  std::optional<bool> predicate_observed;
+  std::optional<bool> selected;
+  std::optional<std::int64_t> modifier_raw;
+  std::optional<std::int64_t> contribution_raw;
+  std::int64_t scale100000 = 100'000;
+  std::optional<std::int64_t> accumulator_before_raw;
+  std::optional<std::int64_t> accumulator_after_raw;
+  std::string skip_reason;
+  std::string source_provenance;
+
+  friend bool operator==(const ContextualAdvantageCommanderSourceSnapshot &,
+                         const ContextualAdvantageCommanderSourceSnapshot &) = default;
+};
+
 struct ContextualAdvantageSideSnapshot {
   std::int32_t side_index = -1;
   std::vector<std::int32_t> ordered_public_cunit_ids;
@@ -568,6 +614,10 @@ struct ContextualAdvantageSideSnapshot {
   // context totals and readiness are independent of this optional leaf.
   std::optional<std::vector<ContextualAdvantageSideModifierSourceSnapshot>>
       side_modifier_sources;
+  std::optional<ContextualAdvantageCommanderSourceInputsSnapshot>
+      commander_source_inputs;
+  std::optional<std::vector<ContextualAdvantageCommanderSourceSnapshot>>
+      commander_sources;
 
   friend bool operator==(const ContextualAdvantageSideSnapshot &,
                          const ContextualAdvantageSideSnapshot &) = default;

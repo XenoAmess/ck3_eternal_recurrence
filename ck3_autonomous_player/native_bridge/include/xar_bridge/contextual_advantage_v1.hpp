@@ -100,6 +100,94 @@ inline void AppendSideModifierSource(
   result += '}';
 }
 
+inline void AppendOptionalBool(std::string &result,
+                               const std::optional<bool> &value) {
+  result += value.has_value() ? (*value ? "true" : "false") : "null";
+}
+
+inline void AppendEntityId(std::string &result, std::int32_t value) {
+  result += value == -1 ? "null" : std::to_string(value);
+}
+
+inline void AppendOptionalEntityId(
+    std::string &result, const std::optional<std::int32_t> &value) {
+  if (value.has_value()) AppendEntityId(result, *value);
+  else result += "null";
+}
+
+inline void AppendCommanderSourceInputs(
+    std::string &result,
+    const xar::game::ContextualAdvantageCommanderSourceInputsSnapshot &inputs) {
+  result += "{\"selected_commander_character_id\":";
+  AppendEntityId(result, inputs.selected_commander_character_id);
+  result += ",\"effective_martial\":" + std::to_string(inputs.effective_martial);
+  result += ",\"own_primary_character_id\":";
+  AppendEntityId(result, inputs.own_primary_character_id);
+  result += ",\"opposing_primary_character_id\":";
+  AppendEntityId(result, inputs.opposing_primary_character_id);
+  result += ",\"province_context_raw32\":";
+  AppendOptionalNumber(result, inputs.province_context_raw32);
+  result += ",\"relation_kind_raw\":" + std::to_string(inputs.relation_kind_raw);
+  result += ",\"army_gated_modifier_cache_present\":";
+  AppendOptionalBool(result, inputs.army_gated_modifier_cache_present);
+  result += ",\"army_gated_modifier_cached_raw\":";
+  AppendOptionalNumber(result, inputs.army_gated_modifier_cached_raw);
+  result += ",\"army_gated_modifier_source_army_id\":";
+  AppendOptionalEntityId(result, inputs.army_gated_modifier_source_army_id);
+  result += ",\"army_gated_modifier_resolved_army_id\":";
+  AppendOptionalEntityId(result, inputs.army_gated_modifier_resolved_army_id);
+  result += ",\"army_gated_modifier_used_null_army\":";
+  AppendOptionalBool(result, inputs.army_gated_modifier_used_null_army);
+  result += ",\"army_gated_modifier_gate_result\":";
+  AppendOptionalBool(result, inputs.army_gated_modifier_gate_result);
+  result += ",\"primary_identity_matches\":";
+  result += inputs.primary_identity_matches ? "true" : "false";
+  result += ",\"gathering_flag_raw\":" +
+            std::to_string(static_cast<unsigned int>(inputs.gathering_flag_raw));
+  result += ",\"gathering_modifier_flag_1a5\":";
+  AppendOptionalBool(result, inputs.gathering_modifier_flag_1a5);
+  result += ",\"gathering_rule_effect_points\":";
+  AppendOptionalNumber(result, inputs.gathering_rule_effect_points);
+  result += ",\"gathering_rule_source_key\":";
+  if (inputs.gathering_rule_source_key.has_value()) {
+    AppendJsonString(result, *inputs.gathering_rule_source_key);
+  } else {
+    result += "null";
+  }
+  result += '}';
+}
+
+inline void AppendCommanderSource(
+    std::string &result,
+    const xar::game::ContextualAdvantageCommanderSourceSnapshot &source) {
+  result += "{\"side_index\":" + std::to_string(source.side_index);
+  result += ",\"stage_order\":" + std::to_string(source.stage_order);
+  result += ",\"source_kind\":";
+  AppendJsonString(result, source.source_kind);
+  result += ",\"modifier_id\":";
+  AppendOptionalNumber(result, source.modifier_id);
+  result += ",\"status\":";
+  AppendJsonString(result, source.status);
+  result += ",\"predicate_observed\":";
+  AppendOptionalBool(result, source.predicate_observed);
+  result += ",\"selected\":";
+  AppendOptionalBool(result, source.selected);
+  result += ",\"modifier_raw\":";
+  AppendOptionalNumber(result, source.modifier_raw);
+  result += ",\"contribution_raw\":";
+  AppendOptionalNumber(result, source.contribution_raw);
+  result += ",\"scale100000\":" + std::to_string(source.scale100000);
+  result += ",\"accumulator_before_raw\":";
+  AppendOptionalNumber(result, source.accumulator_before_raw);
+  result += ",\"accumulator_after_raw\":";
+  AppendOptionalNumber(result, source.accumulator_after_raw);
+  result += ",\"skip_reason\":";
+  AppendNullableString(result, source.skip_reason);
+  result += ",\"source_provenance\":";
+  AppendJsonString(result, source.source_provenance);
+  result += '}';
+}
+
 inline void AppendSide(
     std::string &result,
     const xar::game::ContextualAdvantageSideSnapshot &side) {
@@ -121,6 +209,24 @@ inline void AppendSide(
   result += ",\"target_conditionals_residual_raw\":" +
             std::to_string(side.target_conditionals_residual_raw);
   result += ",\"side_total_raw\":" + std::to_string(side.side_total_raw);
+  result += ",\"commander_source_inputs\":";
+  if (side.commander_source_inputs.has_value()) {
+    AppendCommanderSourceInputs(result, *side.commander_source_inputs);
+  } else {
+    result += "null";
+  }
+  result += ",\"commander_sources\":";
+  if (!side.commander_sources.has_value()) {
+    result += "null";
+  } else {
+    result += '[';
+    const auto &sources = *side.commander_sources;
+    for (std::size_t index = 0; index < sources.size(); ++index) {
+      if (index != 0) result += ',';
+      AppendCommanderSource(result, sources[index]);
+    }
+    result += ']';
+  }
   result += ",\"side_modifier_sources\":";
   if (!side.side_modifier_sources.has_value()) {
     result += "null";

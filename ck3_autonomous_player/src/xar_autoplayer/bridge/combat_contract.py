@@ -756,6 +756,114 @@ def _normalize_contextual_nonreligious_sources(
     return normalized
 
 
+def _normalize_contextual_commander_source_inputs(
+    value: object, *, name: str
+) -> dict[str, object] | None:
+    if value is None:
+        return None
+    row = _exact_object(value, {
+        "selected_commander_character_id", "effective_martial",
+        "own_primary_character_id", "opposing_primary_character_id",
+        "province_context_raw32", "relation_kind_raw",
+        "army_gated_modifier_cache_present", "army_gated_modifier_cached_raw",
+        "army_gated_modifier_source_army_id", "army_gated_modifier_resolved_army_id",
+        "army_gated_modifier_used_null_army", "army_gated_modifier_gate_result",
+        "primary_identity_matches", "gathering_flag_raw",
+        "gathering_modifier_flag_1a5", "gathering_rule_effect_points",
+        "gathering_rule_source_key",
+    }, name)
+    ids = {key: (None if row[key] is None else _signed_int32(row[key], f"{name}.{key}"))
+           for key in ("selected_commander_character_id", "own_primary_character_id",
+                       "opposing_primary_character_id", "army_gated_modifier_source_army_id",
+                       "army_gated_modifier_resolved_army_id")}
+    predicates = {key: (None if row[key] is None else _strict_bool(row[key], f"{name}.{key}"))
+                  for key in ("army_gated_modifier_cache_present",
+                              "army_gated_modifier_used_null_army",
+                              "army_gated_modifier_gate_result", "gathering_modifier_flag_1a5")}
+    context_bits = row["province_context_raw32"]
+    if context_bits is not None:
+        context_bits = _non_negative_int64(context_bits, f"{name}.province_context_raw32")
+        if context_bits > 2**32 - 1:
+            raise ValueError(f"native {name}.province_context_raw32 must be uint32 bits")
+    gathering = _non_negative_int32(row["gathering_flag_raw"], f"{name}.gathering_flag_raw")
+    if gathering > 255:
+        raise ValueError(f"native {name}.gathering_flag_raw must be uint8")
+    key = row["gathering_rule_source_key"]
+    if key is not None and not isinstance(key, str):
+        raise ValueError(f"native {name}.gathering_rule_source_key must be string or null")
+    return {
+        **ids,
+        "effective_martial": _signed_int32(row["effective_martial"], f"{name}.effective_martial"),
+        "province_context_raw32": context_bits,
+        "relation_kind_raw": _signed_int32(row["relation_kind_raw"], f"{name}.relation_kind_raw"),
+        **predicates,
+        "army_gated_modifier_cached_raw": (None if row["army_gated_modifier_cached_raw"] is None else
+            _signed_int64(row["army_gated_modifier_cached_raw"], f"{name}.army_gated_modifier_cached_raw")),
+        "primary_identity_matches": _strict_bool(row["primary_identity_matches"], f"{name}.primary_identity_matches"),
+        "gathering_flag_raw": gathering,
+        "gathering_rule_effect_points": (None if row["gathering_rule_effect_points"] is None else
+            _signed_int32(row["gathering_rule_effect_points"], f"{name}.gathering_rule_effect_points")),
+        "gathering_rule_source_key": key,
+    }
+
+
+_CONTEXTUAL_COMMANDER_SOURCE_ORDER = (
+    "effective_martial", "opposing_primary_context", "province_raw_context",
+    "army_gated_modifier", "primary_identity_modifier", "gathering_loaded_rule",
+    "commander_relation_aggregate",
+)
+
+
+def _normalize_contextual_commander_sources(
+    value: object, *, side_index: int, name: str
+) -> list[dict[str, object]] | None:
+    if value is None:
+        return None
+    sources = _array(value, name)
+    if len(sources) != len(_CONTEXTUAL_COMMANDER_SOURCE_ORDER):
+        raise ValueError(f"native {name} must publish seven ordered commander stages")
+    normalized = []
+    for index, (source, source_kind) in enumerate(zip(sources, _CONTEXTUAL_COMMANDER_SOURCE_ORDER)):
+        source_name = f"{name}[{index}]"
+        source = _exact_object(source, {
+            "side_index", "stage_order", "source_kind", "modifier_id", "status",
+            "predicate_observed", "selected", "modifier_raw", "contribution_raw",
+            "scale100000", "accumulator_before_raw", "accumulator_after_raw",
+            "skip_reason", "source_provenance",
+        }, source_name)
+        observed_side = _signed_int32(source["side_index"], f"{source_name}.side_index")
+        stage_order = _signed_int32(source["stage_order"], f"{source_name}.stage_order")
+        if observed_side != side_index or stage_order != index or source["source_kind"] != source_kind:
+            raise ValueError(f"native {source_name} commander stage order or side mismatch")
+        modifier_id = source["modifier_id"]
+        if modifier_id is not None:
+            modifier_id = _non_negative_int32(modifier_id, f"{source_name}.modifier_id")
+            if modifier_id > 65535:
+                raise ValueError(f"native {source_name}.modifier_id must be uint16")
+        status = source["status"]
+        if not isinstance(status, str) or status not in {"observed", "unavailable"}:
+            raise ValueError(f"native {source_name}.status is malformed")
+        predicates = {key: (None if source[key] is None else
+                           _strict_bool(source[key], f"{source_name}.{key}"))
+                      for key in ("predicate_observed", "selected")}
+        raw = {key: (None if source[key] is None else
+                     _signed_int64(source[key], f"{source_name}.{key}"))
+               for key in ("modifier_raw", "contribution_raw",
+                           "accumulator_before_raw", "accumulator_after_raw")}
+        scale = _signed_int64(source["scale100000"], f"{source_name}.scale100000")
+        _fixed_scale(scale, f"{source_name}.scale100000")
+        skip_reason = source["skip_reason"]
+        if skip_reason is not None:
+            skip_reason = _nonempty_string(skip_reason, f"{source_name}.skip_reason")
+        normalized.append({
+            "side_index": observed_side, "stage_order": stage_order,
+            "source_kind": source_kind, "modifier_id": modifier_id, "status": status,
+            **predicates, **raw, "scale100000": scale, "skip_reason": skip_reason,
+            "source_provenance": _nonempty_string(source["source_provenance"], f"{source_name}.source_provenance"),
+        })
+    return normalized
+
+
 def _normalize_contextual_side_modifier_sources(
     value: object, *, side_index: int, name: str
 ) -> list[dict[str, object]] | None:
@@ -972,6 +1080,12 @@ def _normalize_contextual_advantage(
             side_modifier_sources_present = (
                 isinstance(side, dict) and "side_modifier_sources" in side
             )
+            commander_source_inputs_present = (
+                isinstance(side, dict) and "commander_source_inputs" in side
+            )
+            commander_sources_present = (
+                isinstance(side, dict) and "commander_sources" in side
+            )
             side = _exact_object(
                 side,
                 {
@@ -979,7 +1093,9 @@ def _normalize_contextual_advantage(
                     "selected_commander_character_id", "relation_kind_raw",
                     "commander_dynamic_raw", "side_dynamic_raw",
                     "target_conditionals_residual_raw", "side_total_raw",
-                } | ({"side_modifier_sources"} if side_modifier_sources_present else set()),
+                } | ({"side_modifier_sources"} if side_modifier_sources_present else set())
+                  | ({"commander_source_inputs"} if commander_source_inputs_present else set())
+                  | ({"commander_sources"} if commander_sources_present else set()),
                 side_name,
             )
             side_index = _signed_int32(side["side_index"], f"{side_name}.side_index")
@@ -1017,6 +1133,14 @@ def _normalize_contextual_advantage(
                     side["side_modifier_sources"], side_index=side_index,
                     name=f"{side_name}.side_modifier_sources",
                 )} if side_modifier_sources_present else {}),
+                **({"commander_source_inputs": _normalize_contextual_commander_source_inputs(
+                    side["commander_source_inputs"],
+                    name=f"{side_name}.commander_source_inputs",
+                )} if commander_source_inputs_present else {}),
+                **({"commander_sources": _normalize_contextual_commander_sources(
+                    side["commander_sources"], side_index=side_index,
+                    name=f"{side_name}.commander_sources",
+                )} if commander_sources_present else {}),
             })
         if schema_version == 1 and total != base + normalized_sides[0]["side_total_raw"] - normalized_sides[1]["side_total_raw"]:
             raise ValueError(f"native {name} synthetic partial total mismatch")
