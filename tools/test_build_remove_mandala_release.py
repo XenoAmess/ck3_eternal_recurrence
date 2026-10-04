@@ -105,7 +105,7 @@ class BuildRemoveMandalaReleaseTests(unittest.TestCase):
         loaded = json.loads(manifest_path.read_text(encoding="utf-8"))
         self.assertEqual(loaded, manifest)
         self.assertEqual(loaded["product_id"], "mod_remove_mandala")
-        self.assertEqual(loaded["mod_version"], "1.0.0")
+        self.assertEqual(loaded["mod_version"], "1.0.1")
 
 
 if __name__ == "__main__":
