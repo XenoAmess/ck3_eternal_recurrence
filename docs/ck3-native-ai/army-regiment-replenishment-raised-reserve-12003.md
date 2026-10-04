@@ -302,3 +302,67 @@ Army166为`native_carmy_not_found/unavailable`，是请求批次partial的独立
 
 
 R0162范围补充：第三支实际军16777220在+15日1086→1076，max1087保持；五团减2/2/3/1/2，共10。此前“−31与−127两次”只属于拆分13团family，不能当全部27团变化计数。完整分组在 split-live-r0162-a01/seal-a02/ALL-ARMY-CHANGE-SUMMARY.json。
+
+## 2026-10-05 / W41 — complete persistent DATA mapping construction
+
+Root selected one increment to the existing `ck3_query_army_strengths`: complete persistent DATA records for each already resolved ArmyRegiment. The published `regiment_strengths` array already covers ArmyRegiment current/max; the published `regiment_replenishment` array explicitly covers the first persistent record. Neither substitutes for all stored DATA records. The sealed R31 coverage summary contains 28 readable first-record rows out of 41 ArmyRegiments, with their native DATA record counts summing to 42. That is evidence of additional stored records. The later R32 Clock24 terminal health is independently `3515/3884`; its 369-person aggregate deficit has not been assigned to those earlier records. No new actual frame was read for this construction.
+
+Exact 1.20.0.3 / Steam 25652598, EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`: the sealed `2633340` chain closes ArmyRegiment DATA `+20`, capacity/count `+28/+2C`, stride `0x10`, persistent full ID `record+8`, and chunk ordinal `record+C`. Resolve the full-generation `Regi` identity and the seven inline chunks at persistent `+18`, stride `0x24`; retain the stored index, persistent identity, ordinal and reciprocal ArmyRegiment identity. This supersedes the earlier first-record implementation's bounded stride coverage; its historical evidence remains valid.
+
+Each record exposes physical current/max/state separately from the native effective current used by `262C9D0`: state `3` with physical current `0` contributes maximum as effective current. The two native eligibility calls remain independent. The persistent `+148` prepared Q100000 fraction is an actual cached execution input; the fresh `262CAD0` result is a separate current getter. Neither rate is an observed army net refill. The cached fraction, when exposed, is part of the same complete-record observation and does not create a second query family or a forecast.
+
+A legitimate native count `0` produces an available empty record array. It supplies no persistent ID, dummy chunk, false eligibility or zero fraction. A record whose identity or reciprocal link cannot be resolved retains its stored index and its own unavailable status; this does not replace the parent army's observed health with null or invent an unavailable whole-army status. Complete DATA coverage still cannot invent a persistent source for a zero-record ArmyRegiment.
+
+```mermaid
+flowchart TD
+    A[Resolved ArmyRegiment and actual current/max] --> H[Native DATA base and count]
+    H -->|count zero| E[Available records empty]
+    H -->|count positive| R[Every stored record index and FullID/ordinal]
+    R --> I[Exact persistent identity and reciprocal inline chunk]
+    I --> P[Physical current/max/state]
+    P --> C[Native effective-current rule]
+    I --> B[Two independent native eligibility results]
+    I --> F[Prepared cache and separate fresh fraction]
+    C --> O[Actual record deficit association]
+    B --> O
+    F --> O
+    O -. later month conditions require a later observed frame .-> M[Normal future native allocation]
+```
+
+Source ledger: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-replenishment-current-input-v66/source-ledger/FULL-DATA-CONSTRUCTION-ENTRY.md`, 6100 bytes, SHA-256 `465ed3ba75ff112b586bf4afaea7c3a92d02a04053d82b59c1fa0f05fd1f89d7`. The ledger reuses the already sealed exact-build allocation and aggregate-refresh chain. Construction adds no game days, SDK calls, EXE reads, window interaction or automatic army action. Readiness and the final production contract are recorded with the source packet and its two new focused production cases; an actual paused query remains Root's next qualification step.
+
+
+### Published contract and two new production cases
+
+The frozen source packet adds `regiment_replenishment_records_v1` on the same army row. Native locator: `command_result.result.army_strengths[*].regiment_replenishment_records_v1`; normalized MCP locator: `structured_content.army_strengths[*].regiment_replenishment_records_v1`. Match army rows by `army_id` and the nested array by `army_regiment_id`; there is no additional wrapper. The old first-record array and its output remain unchanged.
+
+Each ArmyRegiment entry has `army_regiment_id`, `source="native_all_data_records"`, `status` (`available/partial/unavailable`), `ready`, `native_data_record_count`, `unavailable_reason`, and `records`. A readable native count zero yields available/ready true and `records=[]`. Each record retains `record_index`, `persistent_regiment_id`, `chunk_index`, `status`, `unavailable_reason`, `current_soldiers`, `maximum_soldiers`, `effective_current_soldiers`, `state_raw`, independent `native_can_replenish` / `native_chunk_can_replenish`, and separate `persistent_monthly_replenishment_fraction_raw` / `persistent_prepared_replenishment_fraction_raw` with their respective scale fields fixed to `100000`.
+
+Exactly two new production cases ran once through the actual parent strength reader and serializer. The first keeps a full first record and a deficient nonfirst record, independent predicates, prepared zero versus a positive fresh getter, and state3 physical zero versus effective maximum. The second retains legitimate empty coverage and a genuinely unavailable reciprocal record while the parent army remains available. Compile `/O2 /W4 /WX` exited 0 in 4.2596791 seconds; native execution checked 28 explicit requirements in 0.1056475 seconds; registered MCP `-B -O` consumed the same two native outputs and passed 20 checks in 4.3737575 seconds. No old Clock24/first-record case or matrix was rerun.
+
+Source readiness is **static-ready**. Frozen 11-path packet: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-replenishment-current-input-v66/full-data-observer/ROOT-ONLY-FULL-DATA-REPLENISHMENT-OBSERVATION-v66.patch`, 60072 bytes, SHA-256 `674f5db7b78085a5b92e6f9b803b1b1022fcebbba685e364dcfb343368e567e7`; parent publisher receipt 9118 bytes, SHA `30a53909f4bae54fb7751095018724ecc402d4b997c2c32cdacddd8bf5ed5b33`. The sole new production-case receipt is `full-data-observer/production-fixture/ROOT-DELIVERY.json`, SHA `50826652614d460ae96b8b2e93a3c326355a48b4618243d8b6f5af2bf26f70a0`. The packet includes the necessary new translation unit in the existing isolated army CI runner; no old CI step was rerun.
+
+### R34 actual existing-query coverage, before full DATA deployment
+
+Root's actual `014-ck3_query_army_strengths.json` was consumed as one complete buffer and converted to shared complete/cache subtrees. It is an independent frame: R34 / PID57600, source `bef2c4b7ba34cffc6abb6c22f7abd6325078dcc3`, native revision `3`, public revision `2`, paused raw date `53256120`. Query/global scope and all three army rows are available. The native source `game_version` and `executable_sha256` fields are actual null; the frozen Root runtime identity remains separate provenance.
+
+| Army | Actual current/max; regiments | Supply/cap; monthly change; attrition | First coverage; native DATA total | Deficit by ArmyRegiment record count |
+| --- | --- | --- | --- | --- |
+| Own `301989997` | `3515/3884`; `41` | `300/300`; `0`; `0.01` | `28` available / `13` absent; `42` | total `369`: `263` on count1, `106` on count>1, `0` on count0 |
+| Guard `184549452` | `3000/3000`; `24` | `100/100`; `+20`; `0` | `24` available; `24` | `0` |
+| Enemy `268435597` | `2772/4702`; `41` | `300/300`; `+20`; `0` | `38` available / `3` absent; `133` | total `1930`: `538` on count1, `1392` on count>1, `0` on count0 |
+
+The 13 own and 3 enemy unavailable first rows in this new frame all report `army_regiment_first_record_absent`. Their ArmyRegiment current/max difference is zero in this frame; this does not mean every future zero-record row is full. The `106` and `1392` are deficits of ArmyRegiments that contain multiple DATA records; they are **not** an attribution of all those deficits to unobserved nonfirst chunks. This now supplies a same-frame value basis for full DATA observation without changing the earlier R31/R32 evidence.
+
+All three are observed `not_gathering`, gathering ready true and days null. All three clock blocks are available/ready: current `D=394005`, selected bucket `15`; own/guard/enemy buckets `0/28/6`, and last-success raw dates `53255760/53255712/53255904`. Complete AI owner-recall subtrees are present and were handed to their independent sole cached consumer; this topic does not qualify their selection semantics.
+
+R34 has **no `regiment_replenishment_records_v1` field**: it predates the new packet. Existing health and clock observations are a **production-live primitive**; the new complete-record fields still need Root's deployment and independent paused query. The query is observed recovered after prior unavailable attempts; this leaf does not prove the cause of that recovery. No original raw was read by peer lanes.
+
+Original leaf SHA-256 `77e4cbb1797c89551ffb05553f46f4b06b04bff91661d47e219ad4583b07606d`. Full parsed result and domain caches are indexed by `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-replenishment-current-input-v66/actual-r34-health-consumption/ROOT-DELIVERY.json`, 9821 bytes, SHA `494fa07bf00177a7239f68cea6e1771a41eda864356f02b66dc26b24880ad51a`. Normal SAVE provenance from Root is h7763 / 96643979 bytes / SHA `49a44fddd1dc490dd67ddf70353df9cf915de0428d42cf22fc07fbd3745b084e`, environment `1d61c93015d5c48e9b74550ab7fcabbc8ad4cdabacffe03fbad5d310f55538e5`. Total saved game days remain Root's `4658`; this work adds `0`, including `0` Oct5 game-day credit. Oct5 / W41 report fields are in the respective source/fixture and actual-consumption receipts.
+
+
+### Root source adoption after this actual frame
+
+Root applied, committed and pushed the complete 11-path source packet as `324938d0b879f26a618b7704a520305b760f56ec`. The earlier document attempt had a real context conflict after independent upstream `cddb7e3d` changed this topic; it wrote zero shared files. This new append preserves the complete current upstream prefix and reuses the sealed source/test/R34 coverage text without another raw read or verification.
+
+Root subsequently completed 14 ordinary game days: total `4672`, resume `1519`, Oct5 `+14`, raw date `53256456`, normal h7807. Those later days do not change R34's earlier `4658`/Oct5 `0` query frame above. The new full DATA fields have not yet been queried from the next deployed native runtime, so source adoption and the later day credit do not confer full DATA production-live status. Root owns that independent paused query after the unified v62/g67 build/deployment.
