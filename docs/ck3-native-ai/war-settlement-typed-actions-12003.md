@@ -132,3 +132,39 @@ SDK7631 在新 Python `b5add463` 与已有 g59 原生 DLL 上，同一会话 fre
 SDK19250 两日48h均实际正常保存；helper 历史 RED 来自 war 消失后仍调用占领查询，service 报 `war occupation query requires one current full WarID participant row`，没有 native structured 结果。`complete_saved_days=1` 与实际 saved calendar2/bounded_success2 并存，不抹去第二日；当时累计4447/resume1294/Oct4+422。
 
 末帧我军83886367 regular@2669；玩家本两日首末 gold655.61127/prestige2832.3818/piety378.26250 相同，未推对手虔诚或物理清理。14个 leaf/day-result 由8线程各once消费，未重读 TOP；有限循环与失败证据见外置 `war-settlement-typed-action/war129-score40-wp-r27/actual-r28-consumption/reply-days02-03/ROOT-DELIVERY.json`（SHA `8528c3d11d766463f9cd7c1574f47f174efbb3efca99814742eb39a31d1ff6e6`）。后续继续既有军队与独立材料读回，不重发白和。
+
+
+> **历史研究说明（source-only）：** 以下封存复盘截点为 `date_raw 53251656 / 累计 4472 / resume 1319 / Oct4 +447`，当时 War117440524 的玩家为 primary attacker、score 0。当前 Root 已到 R30 正常保存累计 4504 的后续阶段；以下段落不是 R30/4504 的结算、战争结果或实际继任证据。文中的“当前”均指上述历史研究帧。`raiktor_conquest_cb` 是 `bookmark.1071.b` 的 stock 来源 key，不是已独立读取的 actual DB CB 字段；source 回调、继承配置和接口入口不提供新的 live 结果信用。
+
+### 2026-10-04：War117440524的结算与自然继承来源复盘
+
+Root当前摘要为raw53251656、global4472/res1319/Oct4+447，Robert29829年龄近63；War117440524为玩家primary attacker、score0、opponent35991。actual target title IDs为1333、1351、1358，goal province IDs为470、3711、472，两组身份不能互换。冻结CK3 1.20.0.3、EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`，Rootsource标签g61/f3；`bookmark.1071.b`的`raiktor_conquest_cb`是stock来源key，本增量没有独立读取当前CB数据库身份。此前事件选择源与actual六军3k已在33560bf6公开，不重复记功。
+
+| stock回调 | 来源中的角色、条件与结果 | 当前边界 |
+| --- | --- | --- |
+| on_victory | attacker court中有raiktor variable的random courtier成为vassal_to_be；执行conquest/invasion change，若该scope存在，再转交target titles。claimant去devoted并收100 gold。 | courtier、claimant、继承人是不同角色；不能固定为Robert或旧saved scope，100 gold不自动归玩家。 |
+| on_white_peace | white-peace truce；attacker prestige−100及条件stress、payout等helper。 | body无胜利的target transfer或失败的imprisonment；资源、stress与最终接受尚须实际后验。 |
+| on_defeat | attacker reparations条件取决于收入/身份/文化，prestige−750；defender监禁attacker并执行其他helper。 | 不预填赔款金额或监禁类型；死亡与其他结算不自动执行失败body。 |
+
+以上是stock callback scope，不是当前结果。配置`transfer_behavior=transfer`、双方`on_primary_*_death=inherit`、双方`*_allies_inherit=yes`（00_event_war2923–2929）支持继承续接；不指定actual heir、不保证未来同一完整WarID，也不使自然死亡自动等于胜、败或白和。`should_invalidate={}`且无custom on_invalidated effect仅关闭脚本层事实，不能推出native永不invalidate。
+
+原生结束入口复用已刊exact .3证据：`ck3_query_war_termination_options(war_id=W, expected_revision=R)`按fresh alive player、完整W、actual side/primary绑定loaded CB和context。enforce literal需玩家primary且player-relative score≥100，最终还要构建context并通过`0x307C040` CanSend；当前score0没有证明当帧最终CanEnforce为true。白和另需loaded CB permission bit7、special3 context与最终validator；stock回调、报价、auto_accept和recipient final answer是不同层，现published final reply evaluator未发布。已有enforce/white-peace/surrender sender重新绑定角色与context后提交；ACK/submitted_pending只证明提交，后续独立readback确认完整W与实际结果。W退出本身不区分胜败、白和或invalidation，其他CB旧回复日数也不能预测当前等待时长。
+
+```mermaid
+flowchart TD
+    S["stock CB来源配置"] --> O{"on_victory / white_peace / defeat"}
+    S --> D["primary death=inherit；双方allies inherit"]
+    D --> R["fresh player / 候选 / actual war roles重读"]
+    R -.-> H["实际继承者与未来完整WarID尚未观测"]
+    Q["fresh W / side / primary / loaded CB"] --> C["termination options / final context + CanSend"]
+    C --> A["已有sender提交；ACK只记提交"]
+    A --> F["独立snapshot + war-state + occupation后验"]
+    F -.-> E["按actual reply/outcome归因退出与物质结果"]
+    Q -.-> U["recipient final evaluator未发布"]
+```
+
+下一次可直接复用已有读取口：`ck3_query_campaign_root_context_v1(expected_revision=R)`的player_character_id/alive、primary_title、primary_title_succession_character_ids原生有序首项及held_title_partition[].first_heir_character_id；首项只是当前候选，`ck3_plan_turn`的succession_expectation也是预测。自然转换后以`ck3_take_snapshot()`、`ck3_get_war_state()`重读actual player、full active WarIDs、player_side/primary_opponent/player_is_primaryWarLeader；以`ck3_query_war_occupation_targets_v1(war_id=117440524)`确认当前holder/occupation，而不是把父角色旧归属沿用。已有`ck3_query_current_timeline_blocker_context_v1(expected_revision)`及death modal typed continuation可用于实际modal阶段，本包没有调用。
+
+death-time participant/primary/army-owner writer仍是已有逆向账本：War+0x20/+0x80、+0x288/+0x28C及ended+0x358的现代.3读取已刊，写入因果未闭；fresh查询已能读实际归属，只有实际决策需要归因时再沿writer入口补施工，不阻普通推进。本包source research完成，复用published static-ready接口；没有新增bridge/getter/policy、natural继任或war-ending live信用，消费者新增游戏天数、动作均0。
+
+来源只消费两份封存decoded短报告各一次：[stock scope](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war117440524-raiktor-conquest-ending-succession-review/stock-cb/SHORT-STOCK-CB-ENDING-SUCCESSION.md)（SHA873b2327f3f8b659e66f8064480b8d0969658205e5ef3058def35497e1059082），[native ending与继任接口](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war117440524-raiktor-conquest-ending-succession-review/native-ending/NATIVE-ENDING-APPLICABILITY-AND-HEIR-SEAMS.md)（SHA09817c11e6c380012f5fade8bfab8b44bbf94bf5ab6c85582f6679f97f7cb7f9）。本fragment建议追加war-settlement-typed-actions-12003.md，canonical目标由Root最后确认；本消费者未读写shared/canonical/sourceleaf、原eventoptions或raw，未调用SDK/Git/tests/window。
