@@ -239,6 +239,19 @@ public:
     ck3_12003::ReadPlayerUnraisedTroopsV1(reserve_bindings_, WorldAccess(), output);
     return status;
   }
+  bool ReadWarCashCurrentResources(
+      const Snapshot &snapshot,
+      ck3_12003::war_cash_current::ActorResources &output) const noexcept {
+    output = {};
+    if (!IsCk3_12003Descriptor(*descriptor_) || !snapshot.paused ||
+        !snapshot.map_ready || !snapshot.has_played_character ||
+        !snapshot.played_character_alive || snapshot.played_character_id <= 0)
+      return false;
+    return ck3_12003::war_cash_current::ReadActor(
+        bindings_.war_cash_current,
+        ck3_12002::ResolveCoreCharacter(bindings_.core, snapshot.played_character_id),
+        snapshot.played_character_id, output);
+  }
   RaiseTroopsResult submit_raise_troops_default() const noexcept override {
     return ck3_12002::SubmitRaiseTroopsDefault(bindings_.military, WorldAccess());
   }
@@ -519,6 +532,14 @@ ck3_12002::PrewarDefaultMusterStatusV1 ReadCk3_12003PlayerDefaultRaiseV1(
   output = {};
   const auto *native = dynamic_cast<const Ck3_12002Adapter *>(&adapter);
   return native == nullptr ? output.status : native->ReadPlayerDefaultRaise(output);
+}
+
+bool ReadCk3_12003WarCashCurrentResourcesV1(
+    const GameAdapter &adapter, const Snapshot &snapshot,
+    ck3_12003::war_cash_current::ActorResources &output) noexcept {
+  output = {};
+  const auto *native = dynamic_cast<const Ck3_12002Adapter *>(&adapter);
+  return native != nullptr && native->ReadWarCashCurrentResources(snapshot, output);
 }
 
 std::unique_ptr<GameAdapter> CreateCk3_12002AdapterFromBindings(

@@ -88,6 +88,10 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
   auto result = BindCk3_12002AdapterImage(image_base,
       executable_sha256 == ck3_12003::kExecutableSha256
           ? std::string_view(ck3_12002::kExecutableSha256) : std::string_view{});
+  // Current cash uses its actual .3 descriptor identity and native getters.
+  // The private MCP remains unadvertised; the .2 binder leaves this disabled.
+  result.war_cash_current = ck3_12003::war_cash_current::BindImage(
+      image_base, ck3_12003::kGameVersion, executable_sha256);
   // These numeric GUI getter ABIs are closed only for exact .3. Do not install
   // them in BindArmyImage: that binder also serves the unchanged .2 adapter.
   if (result.armies.enabled) {

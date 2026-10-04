@@ -13,6 +13,7 @@
 #endif
 #include "xar_bridge/ck3_12002_military.hpp"
 #include "xar_bridge/ck3_12002_prewar_muster.hpp"
+#include "xar_bridge/ck3_12003_war_cash_current_reader.hpp"
 #include "xar_bridge/ck3_12002_phase.hpp"
 #include "xar_bridge/ck3_12002_settlement.hpp"
 
@@ -40,6 +41,7 @@ struct Ck3_12002AdapterBindings {
   ck3_12002::CombatBindings combat;
   ck3_12002::PhaseBindings phase;
   ck3_12002::SettlementBindings settlement;
+  ck3_12003::war_cash_current::Bindings war_cash_current;
 };
 
 Ck3_12002AdapterBindings BindCk3_12002AdapterImage(
@@ -60,6 +62,10 @@ ResumeSubmitResult SubmitCk3_12002ResumeMapObserved(
 ck3_12002::PrewarDefaultMusterStatusV1 ReadCk3_12003PlayerDefaultRaiseV1(
     const GameAdapter &adapter,
     ck3_12002::PlayerDefaultRaiseObservationV1 &output) noexcept;
+
+bool ReadCk3_12003WarCashCurrentResourcesV1(
+    const GameAdapter &adapter, const Snapshot &snapshot,
+    ck3_12003::war_cash_current::ActorResources &output) noexcept;
 
 const AdapterDescriptor &Ck3_12002AdapterDescriptor() noexcept;
 std::unique_ptr<GameAdapter>

@@ -12,6 +12,7 @@
 #include "xar_bridge/contextual_advantage_v1.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 #include "xar_bridge/ck3_12003_default_raise_mailbox.hpp"
+#include "xar_bridge/ck3_12003_war_cash_current_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_mercenary_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_mercenary_hire_mailbox.hpp"
 #include "xar_bridge/ck3_12002_lifestyle.hpp"
@@ -10470,6 +10471,8 @@ public:
           &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
       nonwar.steward_develop_county = &xar::ck3_11906::
           ExecuteStewardDevelopCountyCandidatesMailboxQueryV1;
+      nonwar.warcash = &xar::ck3_12003::war_cash_current::
+          ExecuteCurrentResourcesMailboxV1;
     }
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
     nonwar.lifestyle = &xar::ck3_12002::lifestyle::ExecutePlayerLifestyleFormalWireMailbox12002V1;
@@ -12144,6 +12147,74 @@ std::string RunPlayerDefaultRaiseQuery12003(
   return response;
 }
 
+
+std::string RunWarCashCurrentResourcesQuery12003(
+    const xar::game::GameAdapter &game, WorkerState &state,
+    std::string_view request_id, std::string_view step,
+    std::string_view payload) {
+  xar::ck3_12003::war_cash_current::CurrentResourcesMailboxContextV1 query{};
+  query.envelope.game = &xar::ck3_12002::NativeAdapter12002(game);
+  query.envelope.mailbox = &g_main_thread_query_mailbox_v1;
+  query.envelope.typed_context = &query;
+  if (!xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
+      step != xar::ck3_12003::war_cash_current::kCurrentStepV1 ||
+      !xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
+          payload, query.envelope.expected_snapshot_revision)) {
+    return CommandResultFrame(request_id, step, false,
+                              "war-cash-current-resources query is malformed or unsupported");
+  }
+  if (query.envelope.expected_snapshot_revision != state.state_revision ||
+      state.state_revision == 0 || !state.previous_snapshot.has_value() ||
+      !xar::game::ReadSnapshot(game, query.envelope.expected_snapshot) ||
+      query.envelope.expected_snapshot != *state.previous_snapshot) {
+    return CommandResultFrame(request_id, step, false, "state_changed");
+  }
+  const auto &snapshot = query.envelope.expected_snapshot;
+  if (!snapshot.paused) {
+    return CommandResultFrame(request_id, step, false, "requires_paused");
+  }
+  if (!snapshot.map_ready) {
+    return CommandResultFrame(request_id, step, false, "map_not_ready");
+  }
+  const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,
+      &xar::ck3_12003::war_cash_current::ExecuteCurrentResourcesMailboxV1,
+      &query.envelope, query.envelope.ticket);
+  if (submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+    return CommandResultFrame(request_id, step, false,
+        "application-main war-cash-current-resources executor is unavailable or busy");
+  }
+  auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, query.envelope.ticket, 30'000);
+  while (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
+                     timeout_executor_already_running) {
+    wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1, query.envelope.ticket, 2'000);
+  }
+  xar::game::Snapshot after{};
+  const bool completed =
+      wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
+      query.completed && query.envelope.frame_stable &&
+      xar::game::ReadSnapshot(game, after) && after == snapshot;
+  const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, query.envelope.ticket);
+  if (reclaimed != xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed ||
+      !completed) {
+    return CommandResultFrame(request_id, step, false,
+        "application-main war-cash-current-resources query failed or its snapshot changed");
+  }
+  const auto result = xar::ck3_12003::war_cash_current::SerializeCurrentResourcesV1(
+      query.observation, snapshot, query.envelope.expected_snapshot_revision,
+      query.envelope.frame_stable);
+  std::string response =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(response, request_id);
+  response += ",\"ok\":true,\"result\":";
+  response += result;
+  response += '}';
+  return response;
+}
+
 std::string RunPlayerMercenaryContextQuery12003(
     const xar::game::GameAdapter &game, WorkerState &state,
     std::string_view request_id, std::string_view step,
@@ -12851,6 +12922,12 @@ void RunConnectedSession(
         }
         // Dispatch these disjoint queries before the long native step chain
         // so MSVC does not count their branches toward its nesting limit.
+        if (!early_step_dispatched &&
+            step == xar::ck3_12003::war_cash_current::kCurrentStepV1) {
+          connected = write_frame(pipe, RunWarCashCurrentResourcesQuery12003(
+              game, state, request_id, step, incoming.payload));
+          early_step_dispatched = true;
+        }
         if (!early_step_dispatched &&
             step == xar::ck3_12003::kPlayerDefaultRaiseStepV1) {
           connected = write_frame(pipe, RunPlayerDefaultRaiseQuery12003(

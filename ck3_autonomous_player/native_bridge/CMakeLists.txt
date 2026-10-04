@@ -1091,6 +1091,9 @@ add_library(xar_ck3_12002_runtime STATIC
   src/ck3_12003_commander_mailbox.cpp
   src/ck3_12002_prewar_muster.cpp
   src/ck3_12003_default_raise_mailbox.cpp
+  src/ck3_12003_war_cash_current_reader.cpp
+  src/ck3_12003_war_cash_current_serializer.cpp
+  src/ck3_12003_war_cash_current_mailbox.cpp
   src/ck3_12003_mercenary_candidates.cpp
   src/ck3_12003_mercenary_final_terms.cpp
   src/ck3_12003_mercenary_position.cpp
