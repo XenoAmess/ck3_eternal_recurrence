@@ -74,3 +74,14 @@ Root 随后在新会话仅发一次 fresh `ck3_assign_army_commander_v1(army_id=
 成功依据是同一 typed service 随后的**独立只读** `commander_readback`：query sequence **2**、native/public revision **5/2**、同 paused date，实际 current commander 为 available / **`29829`**；public army `83886367`、internal CArmy `50331794`、actual owner `29829` 全部匹配。`commander_assignment_verification` 的 verified、army_context_matches、commander_matches 均为 true。它复用已有 native CArmy commander FullID/getter 对照，未根据请求人物 ID 合成读回。后态 Robert 的两个质量 getter 为 **34/34**，而该行 final mode-1 can_assign=false，另18行仍 true；后置资格是当前原生规则状态，不能用该 false 推翻已独立证实的任命身份。29/29 → 34/34 只记两次实测，未查明变化原因，不改称独立 martial、一般 getter 等价或胜率。
 
 成功批次 initial/final 均 actor/date/paused 一致，全批 GREEN，正常 checkpoint **4720**（90,873,582 bytes），SHA **`c36ea27922a6bb5c627aa2b4b4e3a4ec40ddadad872a426a9c92eb20029612f0`**。本循环推进 **0 游戏日**，没有战斗胜利、围城完成或 G2 完成信用。外置 `commander-assignment-provider/actual-r15-live-loop-delivery-01/ACTUAL-R15-COMMANDER-LIVE-LOOP.json` 保存 before query、fresh selection、真实 command/readback、R15 source/DLL/checkpoint 和窗口 pins。原 native/MCP focused GREEN 直接复用，无旧测试重跑；本文件消费 worker 的 SDK、窗口、Git 操作均为0。下一步由 Root 沿当前普通战役继续军事 OODA；该军统帅已读回，无需重发任命。当前原生全军 owner-priority/group/tie/目标地形质量差距仍保留，不能把本次单军任命循环外推为整套战斗策略。
+
+## 2026-10-04 R28：港口战争当前军队将领有限闭环
+
+冻结帧 CUnit184549452→CArmy167772208、owner29829、@2619，raw53251272；任命前 native74/public2，29候选中27人正式mode-1 CanAssign=true。
+合法集合最高为34867：native base quality／generic advantage均28，次高32716为23；Robert29829虽33/33但CanAssign=false、reason=null，不猜拒绝原因。
+ROOT一次既有注册assign返回commander_assigned_verified；正式native validator／submission通过，独立verifier及后续注册候选查询均确认同一军队当前commander34867。
+独立post为native76/public2，同日；34867质量仍28/28、siege modifier raw−10000/Q100000。post CanAssign=false是再任命predicate，不否定实际已任命，原因仍未发布。
+movement-weight实读land4.95→5.25、naval26.25→33.75（Q100000 raw495000→525000／2625000→3375000）；emptyroute的edge仍not_applicable，不据此推ETA或整场围城收益。
+只将“观察→真实合法最高选择→typed assign→独立readback”这一单军任务记为production-live loop；战争／战斗／route／完整军团分配不由此完成，包内新增游戏日0。
+证据：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/commander-observer/actual-r28-current-army-01/R28-FINITE-COMMANDER-LOOP.json`；三raw各读一次，随后只用派生缓存，两条reason lane并行，没有新增SDK／测试／窗口／Git。
+native source edbe025c（g59）与Python source b5add463（g60）分开绑定，DLL SHA6e08a432bea5b6fc7f6cdd23bee99008a2212bb3a5793e6abebc2c8d82321135；ROOT后续正常gather日与本冻结包分账。
