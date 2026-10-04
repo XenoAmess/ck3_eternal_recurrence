@@ -312,3 +312,27 @@ h7376已由军务owner封存；Root独占的零日query收尾SAVE为h7378 / raw5
 96273938 B / SHA-256 `9dea6bdc2b602164d5c125d25889bae46ff63bf9b89da46297e8d2f4a60df2a6`。
 前瞻性依据是工具执行前已冻结的actual model0989及Root before-tool decision；后来建立的
 registry按真实生成时间保留，没有回填mtime，也不赋予事前注册信用。
+
+## R31 实机：后续32日的阶段状态变化（2026-10-04）
+
+同一R31 / PID73976 / frozen g63 `df6e5039a9dfa167c9f732a241cd60ca463df362`，
+新独立query在 raw53254056 / native140 / published2 / gen6 / sequence3 读到
+P472 / Siege251658324 / besieging Army301989997。与先前raw53253288缓存相比，
+实际 **disease_level0→1、desertion_count1→2**；其余state仍breach0/starvation0/stalemate0。
+这两项是32个正常日后实际原生对象的状态变化；本包未重构逐日发生时刻、先后顺序、
+当次选择或RNG，也没有重新运行条件事件模型来赋予完整phase-event OODA信用。
+
+当前 ordinary_daily_progress138792、current_phase_length1800000、prepared_phase_length1800000
+均Q100000，phase_counter9、can_advance=true；prepared_selected_phase_event_enum仍5，
+继续只按当前no-due缓存解释，不推下一roll或未来64日的事件。实际work9302032/total40000000/
+remaining30697968均Q100000，progress23255/Q100000、动态days_left222、B3621。
+本次未依据B或D变化反推健康、补员或病疫的数值因果，也未把当前D固定外推成完成日期。
+P472仍未占领、Fort4/garrison500，breach0/walls_breached=false/assault=false/
+can_start_assault=false；P470 Fort6/garrison598、P3711 Fort6/garrison565均未占且无active siege。
+
+此前一日prospective ordinary current-tick有限production-live loop（已采用`54f290f0`）保留，
+本次没有新增模型调用、事件执行/RNG重构、围城终态、占领或整战胜利信用。
+4572/恢复1419/Oct4+547沿用Root独占的+32日账，本consumer新增0日；normal SAVE anchor由Root
+独占TOP维护，本包没有读取TOP。新raw006只缓存一次，后续只用本缓存及前期sealed字段。
+短append补丁、当前字段和Oct4/W40报告统一封存在
+[r31-after32-phase-once/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/r29-route-actual/r31-after32-phase-once/ROOT-DELIVERY.json)。

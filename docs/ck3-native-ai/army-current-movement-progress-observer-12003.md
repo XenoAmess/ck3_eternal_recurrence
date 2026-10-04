@@ -326,3 +326,54 @@ siege completion or battle result. All shared source/Git/SDK/window operations
 and tests remain0 for this file consumer; its day credit is0. Current cache,
 historical comparison, one-topic patch and Oct4/W40 fields are indexed at
 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/movement-progress/first-cold-r31/ROOT-DELIVERY.json`.
+
+## R0031 current health after the new cross-month saved-day batch
+
+The distinct post-batch raw004 army-health body was consumed once:
+160615 bytes, SHA-256
+`f79e96708a3eeb1267b9fbe84680c7370292df24e0351887f9847875439932ed`.
+Actual source **native140 / public2 / raw53254056 / paused true**, query and
+scope available, selected/scope IDs184549452,301989997,268435597, same war
+117440524. Root binds this frame to actor29829/R0031/PID73976/g63-df6e and
+closed SDK78632. The preceding own cached health was at53253264; the actual
+interval is **792 raw hours /33 calendar days**. Root's new32-day batch has
+its own baseline and daily-save ledger; this comparison does not recalculate
+or add its calendar credit.
+
+| Public CUnit / unchanged CArmy | Soldiers before→current / max / regiments | Supply / cap | Monthly supply / attrition fraction | State / movement |
+|---|---|---|---|---|
+| 184549452 / 167772208 | 3000→3000 / 3000 / 24 | 100 / 100 | +20 / 0 | 1 / not_applicable |
+| 301989997 / 201326670 | 3657→3621 / 3884 / 41 | 300 / 300 | 0 / 0.01 | 3 / not_applicable |
+| 268435597 / 184549476 | 2459→2539 / 4702 / 41 | 300 / 300 | +20 / 0 | 1 / not_applicable |
+
+Own301's current **3621** is independent health confirmation of the generic
+siege B value Root supplied. Its observed net change is-36 soldiers, while
+enemy268's observed net change is+80; neither is assigned to cold restart or
+to a specific monthly operation order. Current army maxima and regiment
+counts are unchanged. All three current edge blocks remain not_applicable
+with null progress/duration getters and accumulated0. Cache raw values are
+525000,435000 and471000 respectively; those cache contents do not manufacture
+an active edge or effective march-speed claim.
+
+The current monthly-chunk cache preserves the original per-record fields:
+`persistent_regiment_id`, `chunk_index`, current/maximum soldiers, `state_raw`,
+`native_can_replenish`, `native_chunk_can_replenish` and persistent monthly
+replenishment raw/scale. Coverage is old18424 available records/chunks;
+own30128 available +13 unavailable regiment observations/chunks28;
+enemy26838 available +3 unavailable/chunks38. Full native data-record counts
+and their selected chunks remain distinct. First selected chunk monthly
+fractions are3000/100000,3675/100000 and1275/100000, with their actual
+native predicates retained. These current fractional rates and flags are
+inputs, not proof that a particular monthly operation executed or a complete
+per-army chunk sum. Exact source/month scheduler order is Root's existing
+parallel work package; no duplicate source audit or test is introduced here.
+
+Current health and empty-edge primitives remain live; the earlier finite
+arrival loop retains its evidence. This receipt does not assert a new siege
+completion or battle result. Root supplies current total4572 / resumed1419 /
+Oct4+547; normal-pair sealing belongs to Root and this consumer's day credit
+is0. Cached health comparison, full current replenishment sidecar, one-topic
+append and Oct4/W40 fields are indexed in
+`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/movement-progress/after32-r31/ROOT-DELIVERY.json`.
+No old raw body, TOP, SDK, game/window, build, test or shared/Git mutation was
+performed by this consumer.
