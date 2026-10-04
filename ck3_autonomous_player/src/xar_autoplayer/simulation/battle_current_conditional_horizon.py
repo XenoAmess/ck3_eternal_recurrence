@@ -32,7 +32,10 @@ from .battle_current_phase_transition import (
     CurrentMainPhaseTransitionInputs, project_current_main_phase_transition,
 )
 from .battle_current_pursuit import CurrentPursuitSourceContext, run_current_pursuit_ticks
-from .battle_current_terminal import project_current_terminal_accounting
+from .battle_current_terminal import TerminalBackingRegiment, project_current_terminal_accounting
+from .battle_selected_owner_subset_retreat_12003 import (
+    AdmittedSelectedOwnerRetreat12003, apply_selected_owner_subset_retreats_12003,
+)
 from .combat_core import DrawState
 
 
@@ -66,6 +69,9 @@ class ConditionalHorizonDay:
     Entry events are explicitly before admission. Main-script events are after
     the main exit check. ai_context['action_selected'] must be explicitly false
     for a body that would otherwise need an AI action/owner-subset adapter.
+    owner_retreats_before_admission explicitly places admitted callbacks
+    after entry events and before this row's calendar; it predicts no AI
+    choice or native callback timing and does not change body ai_context.
     """
 
     admission: DailyDateStageInput
@@ -78,6 +84,8 @@ class ConditionalHorizonDay:
     transition: CurrentMainPhaseTransitionInputs | None = None
     pursuit: CurrentPursuitSourceContext | None = None
     terminal: ConditionalTerminalInputs | None = None
+    owner_retreats_before_admission: tuple[AdmittedSelectedOwnerRetreat12003, ...] | None = None
+    owner_retreat_backing_by_army: Mapping[int, tuple[TerminalBackingRegiment, ...] | None] | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -238,6 +246,22 @@ def run_conditional_horizon(
                      "apply_closed_entry_events_12003 / explicit consequence refresh")
                 break
             state, winner = event.carried, event.modeled_winner_raw
+        if day.owner_retreats_before_admission:
+            owner_retreat = apply_selected_owner_subset_retreats_12003(
+                state, day.owner_retreats_before_admission,
+                backing_by_army=day.owner_retreat_backing_by_army,
+            )
+            row["stages"].append({"stage": "before_admission_owner_retreats",
+                "result": owner_retreat, "ai_selection_inferred": False,
+                "native_callback_timing_claimed": False})
+            # Preserve the primitive's installed prefix even if later operands
+            # are missing. Its separate retained/departed backing stays in trace.
+            state = owner_retreat.carried
+            row["state_after"] = state
+            if owner_retreat.typed_gaps:
+                gaps.extend(ConditionalHorizonGap(index, "before_admission_owner_retreats",
+                    gap.kind, gap.implementation_entry) for gap in owner_retreat.typed_gaps)
+                break
         condition = state.condition
         if condition.phase_raw != 3:
             forced = condition.source_snapshot.get("forced_winner_raw")

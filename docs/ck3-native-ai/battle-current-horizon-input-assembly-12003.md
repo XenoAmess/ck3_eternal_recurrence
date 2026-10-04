@@ -61,3 +61,21 @@ flowchart TD
 Manager presence is not inferred from phase3 or normal-result intent. Missing `None` and native winner sentinel `-1` remain distinct. The helper's suppressed, deferred or not-invoked branches do not demand a census they never consult.
 
 The one new affected-branch check passed **GREEN on its first attempt** through public `run_conditional_horizon`: the synthetic normal-manager case returned survivor raw 700000/300000 and loser hard raw 200000 once; a suppressed manager retained `None` census/receivers without typed gaps, and winner sentinel `-1` stayed intact. These are static fixture values. The same unique check has two GREEN executions: the original first pass and a required portable locator adjustment, with identical projected module bytes and no RED. There are no two distinct new cases. The original Oct 4 first-pass 2/2 assembly qualification remains historical and was not rerun or credited again. Readiness is **static-ready for this narrow terminal-manager composition; complete transition remains partial**. The [new focused receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-current-horizon-v61-composition/integration/NEW-FOCUSED-RECEIPT.json) pins this qualification. New days, actions and runtime/live observations are 0; current Root totals remain unknown.
+
+## 2026-10-05: explicit owner-retreat callbacks and qualified inputs
+
+`ConditionalHorizonDay` adds optional `owner_retreats_before_admission` and `owner_retreat_backing_by_army`. For explicitly supplied retreat events, the horizon calls adopted `apply_selected_owner_subset_retreats_12003` once after the day's admitted entry events and before calendar admission. It installs the returned carried state, including a committed prefix on a partial result, and preserves the full backing/result trace at `before_admission_owner_retreats`. Native typed-gap `kind` and `implementation_entry` are forwarded. `None` or empty events retain existing behavior. Body `ai_context` checks remain unchanged; no `action_selected=False` default is supplied.
+
+```mermaid
+flowchart LR
+  E[Explicit admitted entry events] --> R[Explicit owner-retreat events and backing]
+  Q[Same-frame positive qualification and stored-order H58 inputs] --> R
+  R --> S[Adopted selected-owner helper once]
+  S --> P[Retain carried committed prefix, full trace and typed gaps]
+  P --> C[Calendar admission and existing phase body]
+  U[264EA10 absent-row find/create/append body pending] -. separate source owner .-> S
+```
+
+This order is caller-declared composition. Native AI choice and schedule placement remain unresolved. The input ledger identifies **no new missing read-only input for the normal qualified branch**: current same-frame MAA qualification and the existing stored-order H58 recipe suffice. The highest remaining source gap is the independent knight source owner's `0x264EA10` native find/create/append body for an absent row; it does not require a new MCP/schema gate.
+
+Person alive/death guards are independent of `0x2634880` receiver qualification and Combat Entry removal. This hook consumes the adopted selected-owner predicate and Q/backing arithmetic; it infers no receiver, death, event or future input. The necessary new public-horizon case is **1 unique case / 1 execution / 1 attempt, GREEN**, with no RED or older assembly/manager-case rerun. Its synthetic qualified input transfers soft raw 100000 to hard raw 100000 and credits H58/Q once; qualified backing current 1, the other owner, date and draws remain unchanged. The [new focused receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-current-horizon-owner-qualified-composition-v61/integration/NEW-FOCUSED-RECEIPT.json) pins this qualification. The previously published manager composition and Oct 4 assembly qualification remain historical. Readiness is **static-ready for the explicit owner-retreat hook; complete transition, person/owner scheduling and full finalizer remain partial**. This document lane adds no tests, days, actions or runtime/live observations, and Root totals remain unknown.
