@@ -579,8 +579,56 @@ struct ContextualAdvantageCommanderSourceInputsSnapshot {
                          const ContextualAdvantageCommanderSourceInputsSnapshot &) = default;
 };
 
-// Seven native caller stages. Uncaptured opaque helper outputs remain absent;
-// local before/after values are absent after an uncaptured contribution.
+struct ContextualAdvantageCommanderOpposingPrimaryModifierSnapshot {
+  std::uint16_t modifier_id = 0;
+  std::optional<bool> cache_present;
+  std::optional<std::int64_t> modifier_raw;
+  std::optional<bool> selected;
+  std::optional<bool> predicate_observed;
+  std::optional<std::int64_t> contribution_raw;
+  std::string skip_reason;
+
+  friend bool operator==(const ContextualAdvantageCommanderOpposingPrimaryModifierSnapshot &,
+                         const ContextualAdvantageCommanderOpposingPrimaryModifierSnapshot &) = default;
+};
+
+struct ContextualAdvantageCommanderOpposingPrimaryDetailsSnapshot {
+  std::optional<std::uint32_t> selected_personal_rite_reference;
+  std::optional<std::uint32_t> opposing_primary_personal_rite_reference;
+  std::optional<bool> opposing_primary_character_used_fallback;
+  std::optional<bool> selected_rite_used_fallback;
+  std::optional<bool> opposing_primary_rite_used_fallback;
+  std::optional<bool> rite_pair_valid;
+  std::optional<std::uint8_t> directed_rite_hostility_level;
+  std::optional<std::int32_t> hostility_factor_count;
+  std::optional<std::int64_t> hostility_factor_raw;
+  std::optional<std::uint32_t> selected_personal_faith_reference;
+  std::optional<std::uint32_t> opposing_primary_personal_faith_reference;
+  std::optional<bool> selected_faith_used_fallback;
+  std::optional<bool> opposing_primary_faith_used_fallback;
+  std::optional<std::uint32_t> selected_religion_reference;
+  std::optional<std::uint32_t> opposing_primary_religion_reference;
+  std::optional<bool> religion_references_equal;
+  std::vector<ContextualAdvantageCommanderOpposingPrimaryModifierSnapshot> sources;
+
+  friend bool operator==(const ContextualAdvantageCommanderOpposingPrimaryDetailsSnapshot &,
+                         const ContextualAdvantageCommanderOpposingPrimaryDetailsSnapshot &) = default;
+};
+
+struct ContextualAdvantageCommanderProvinceDetailsSnapshot {
+  std::optional<bool> cache_present;
+  std::optional<std::uint32_t> selected_culture_reference;
+  std::optional<std::uint32_t> province_culture_reference;
+  std::optional<bool> selected_culture_used_fallback;
+  std::optional<bool> province_culture_used_fallback;
+  std::optional<bool> category1_pillar_equal;
+
+  friend bool operator==(const ContextualAdvantageCommanderProvinceDetailsSnapshot &,
+                         const ContextualAdvantageCommanderProvinceDetailsSnapshot &) = default;
+};
+
+// Seven native caller stages; local accumulators remain absent after any
+// required source contribution is unavailable.
 struct ContextualAdvantageCommanderSourceSnapshot {
   std::int32_t side_index = -1;
   std::int32_t stage_order = -1;
@@ -596,6 +644,10 @@ struct ContextualAdvantageCommanderSourceSnapshot {
   std::optional<std::int64_t> accumulator_after_raw;
   std::string skip_reason;
   std::string source_provenance;
+  std::optional<ContextualAdvantageCommanderOpposingPrimaryDetailsSnapshot>
+      opposing_primary_details;
+  std::optional<ContextualAdvantageCommanderProvinceDetailsSnapshot>
+      province_details;
 
   friend bool operator==(const ContextualAdvantageCommanderSourceSnapshot &,
                          const ContextualAdvantageCommanderSourceSnapshot &) = default;

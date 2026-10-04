@@ -89,3 +89,56 @@ missing/null 外壳在同一次运行中共五次消费，原生值／来源顺�
 0xFFFFFFFF、null Character、null Army 的实际 gate 与 −125001 贡献、false
 gate 的零贡献及 opaque 输出／后续 accumulator 的 null 均保真。这里只达到
 `static-ready`，零 SDK、游戏日、窗口、State、共享源码或完整 DLL 操作。
+
+## 2026-10-04 opposing-primary source helper2589020
+
+Saved bounded `.2` archive body2589020..ret25893E9 is reusable for exact `.3`
+SHA94B55397... through the already saved Oct2 complete runtime byte comparison;
+only four unrelated functions changed. No new EXE capture/census/live call was
+made. This helper sets signed64*out0 and reads real numeric effective Character
+modifiers **1A0/1A1**; both0 returns directly.
+
+1A0 uses **selected commander's personal Rite -> opposing primary Character's
+personal Rite**, calling existing directed final Rite getter2591CE0 if both
+native Rites are valid, else native sentinel4. Loaded count5451D34 and signed64
+factor array pointer5451D28 select the multiplier; outside-count factor0.
+The cached1A0 and factor use native signed Q100000 multiplication/truncation
+towards0. 1A1 resolves each Rite+4B8 Faith and compares each Faith+8C Religion
+reference; equality directly adds its cached qword. This is same Religion,
+not same Faith/Rite, and native fallback-reference equality is preserved.
+Tooltip-only evaluators do not replace actual cached source values.
+
+The same contextual MCP can add these real enums, personal Rite/Faith/Religion
+operands, directed byte and actual loaded factor, plus their two ordered raw
+contributions. Registration names/individual authored provenance and loaded
+define key remain dotted unknown. Stock HOSTILITY_COMBAT_MOD_MULT0/0/0.5/1 is
+an authoring reference; actual loaded raw factor must be observed. R26
+hypothetical commander21/41 is necessity evidence, not causal attribution.
+Readiness remains research and the unobserved opaque subtotal remains null.
+
+Owned source tree/receipt/contract:
+`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-contextual-opaque-helpers-research-v55/opposing-primary/ROOT-DELIVERY.json`.
+
+### 2026-10-04 v55：province raw helper 的真实消费类型与1AF条件
+
+只读复用 v54 caller、既有 `.2` bounded archive 和 `.2→.3` byte-comparison receipt；`25893F0..2589593 ret` 未落在四个 changed functions/ranges 中，未重新提取 EXE 或运行 census。helper 先读取选定 Character aggregator 的 cached enum`1AF`；缺项或 signed64值为0返回0。否则从 typed Culture storage`5D1E2F0`解 Character+B0 与目标`Province+848/data+388`的full ID，保持full generation检查和canonical Culture fallback`5D1E2E8`。这使目标 raw32 的**消费类型闭合为 CultureID位模式**，逻辑 C++ signedness仍不由mov r8d猜定。
+
+真实条件是两 Culture`+20 template→+128 resolved→+70 pillar span`的category1（span+8）指针相等，而非两CultureID相等；相等就返回cached1AF原始signed64 qword，不相等返回0。tooltip=null路径不调用`2C4D550`；nonnulltooltip虽求显示值，实际贡献仍是缓存值。category1的人类名称及1AF具名来源未闭合，不称heritage／ethos／某特质奖金。原输入字段与source kind名称不在本research中改动。
+
+下一同 MCP 最小实现是既有`ReadCommanderSources` stage2：复用cache helper读1AF与现有culture bindings，读取native fallback和内部pillar1 equality，按真实分支填现有modifier／guard／contribution字段；不重调opaque，不从21/41总数差倒填accumulator，不新增schema或gate。树／pin／完整分支账见`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-contextual-opaque-helpers-research-v55/province-context/`；最初caller-only缺档结论保存在initial-contract-only，由另一lane提供具体既有archive后已修正。状态 **research**，零代码／getter／SDK／测试／DLL／actual/cache读取／游戏／窗口／Git，未改或重测v54，Root R27运行继续。
+
+### 2026-10-04 v55：commander stage 1/2 的同口只读详情
+
+本增量复用施工前已落盘的 [v55 source ledger](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/v55-opaque-command-source-implementation/SOURCE-LEDGER.json) 与两份 exact-build 原生树，扩展现有 contextual commander sources，不新增 MCP、schema、flag 或 readiness gate。详细源树与证据边界沿本专题前文，相关来源观察入口回链 [战斗 context 来源说明](battle-contextual-source-explanation-12003-2026-10-04.md)。
+
+Stage 1 的 cached `1A0` 使用选定指挥官个人 Rite → 敌方 primary Character 个人 Rite 的定向 native hostility byte（含原生 sentinel 4）与实际加载的 count/倍率，再按 Q100000 有符号乘法向零截断；cached `1A1` 使用双方个人 Rite → Faith → Religion 原始引用相等，包括 native fallback。它不等价于同 Faith。Stage 2 的 cached `1AF` 使用 Character Culture 与 province raw32 所消费的 CultureID 位模式，经完整 generation 检查及 canonical fallback 后比较 category 1 pillar 指针；不同 CultureID 也可通过，贡献保留 cached signed64 原值。category 1 的人类名称、加载 modifier 名称及倍率 define key 仍未查明。
+
+Python 投影仅保留原生发布的 optional detail、原始符号、null/合法零、顺序和 provenance；已有七行 commander sources 的 stage 1/2 贡献和后续累积由 producer 的实际读值决定，不从总数差倒填。新 `opposing_primary_details` / `province_details` 缺字段时保持 missing、null 时保持 null；旧 g58 inputs17/七行原14键契约不变。现有 context totals、partial readiness、MCfalse 保持。
+
+唯一 focused fixture owner 的 producer → serializer → 原 registered MCP `-O` 链已通过三个原生上下文及仅新增详情的 missing/null，五次实际消费的业务 equality/readiness/trace 全 GREEN。本 Python lane 仅 AST/投影元数据，零注册执行。原 `registered-chain-01` 最后写回执时错误引用 `endpoint.requests` 导致 harness RED；原失败保留，修复只使用既有 `query_count` 恢复计数元数据，复用已通过的输出/trace，没有重复注册消费。最终小结果见 [CHECK-RESULT.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/v55-opaque-command-source-implementation/focused-fixture/registered-chain-01-receipt-repair/CHECK-RESULT.json)，SHA `1e133e70982950d6d69f0045c07ae6e2037c1f71a67a31f68f415234db709bcf`。
+
+状态与验证结果见 [Python delivery](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/v55-opaque-command-source-implementation/python-contract/ROOT-DELIVERY.json)。v55 新详情的静态生产路径 fixture 不代表新字段已在当前游戏部署或完成 live 归因。
+
+最新既有字段边界由 terrain 唯一 owner 转述：R27/g58/source39b 的 actualCombat1291845646@2669/native105/pub2/raw53250360，v53 side/v54 commander 取得首份 limited actual 资格。Robert martial23 + relation aggregate10 → observed subtotal33，对方 martial11 + relation aggregate10 → subtotal21；同帧 opaque stage1/2 仍 null，不能推断为0。原记录见 [ACTUAL-CRITICAL-CACHED.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-contextual-actual-next-v54/actual-combat1291845646/ACTUAL-CRITICAL-CACHED.json)，本 lane 没有读取它或重读 live/raw。v55 新 detail 仍待 Root 部署及 paused 实机验收。
+
+更早的 R26 hypothetical2619/native12/pub2/date53248944，commander raw2100000/4100000、side/residual0，只是另一帧的历史必要性证据；它不与 R27 actual33/21 混合，也不用于反推 stage1/2 来源。

@@ -157,6 +157,84 @@ inline void AppendCommanderSourceInputs(
   result += '}';
 }
 
+inline void AppendCommanderOpposingPrimaryDetails(
+    std::string &result,
+    const xar::game::ContextualAdvantageCommanderOpposingPrimaryDetailsSnapshot &details) {
+  result += "{";
+  result += "\"selected_personal_rite_reference\":";
+  AppendOptionalNumber(result, details.selected_personal_rite_reference);
+  result += ",\"opposing_primary_personal_rite_reference\":";
+  AppendOptionalNumber(result, details.opposing_primary_personal_rite_reference);
+  result += ",\"opposing_primary_character_used_fallback\":";
+  AppendOptionalBool(result, details.opposing_primary_character_used_fallback);
+  result += ",\"selected_rite_used_fallback\":";
+  AppendOptionalBool(result, details.selected_rite_used_fallback);
+  result += ",\"opposing_primary_rite_used_fallback\":";
+  AppendOptionalBool(result, details.opposing_primary_rite_used_fallback);
+  result += ",\"rite_pair_valid\":";
+  AppendOptionalBool(result, details.rite_pair_valid);
+  result += ",\"directed_rite_hostility_level\":";
+  AppendOptionalNumber(result, details.directed_rite_hostility_level);
+  result += ",\"hostility_factor_count\":";
+  AppendOptionalNumber(result, details.hostility_factor_count);
+  result += ",\"hostility_factor_raw\":";
+  AppendOptionalNumber(result, details.hostility_factor_raw);
+  result += ",\"selected_personal_faith_reference\":";
+  AppendOptionalNumber(result, details.selected_personal_faith_reference);
+  result += ",\"opposing_primary_personal_faith_reference\":";
+  AppendOptionalNumber(result, details.opposing_primary_personal_faith_reference);
+  result += ",\"selected_faith_used_fallback\":";
+  AppendOptionalBool(result, details.selected_faith_used_fallback);
+  result += ",\"opposing_primary_faith_used_fallback\":";
+  AppendOptionalBool(result, details.opposing_primary_faith_used_fallback);
+  result += ",\"selected_religion_reference\":";
+  AppendOptionalNumber(result, details.selected_religion_reference);
+  result += ",\"opposing_primary_religion_reference\":";
+  AppendOptionalNumber(result, details.opposing_primary_religion_reference);
+  result += ",\"religion_references_equal\":";
+  AppendOptionalBool(result, details.religion_references_equal);
+  result += ",\"sources\":[";
+  for (std::size_t index = 0; index < details.sources.size(); ++index) {
+    if (index != 0) result += ',';
+    const auto &source = details.sources[index];
+    result += "{\"modifier_id\":" + std::to_string(source.modifier_id);
+    result += ",\"cache_present\":";
+    AppendOptionalBool(result, source.cache_present);
+    result += ",\"modifier_raw\":";
+    AppendOptionalNumber(result, source.modifier_raw);
+    result += ",\"selected\":";
+    AppendOptionalBool(result, source.selected);
+    result += ",\"predicate_observed\":";
+    AppendOptionalBool(result, source.predicate_observed);
+    result += ",\"contribution_raw\":";
+    AppendOptionalNumber(result, source.contribution_raw);
+    result += ",\"skip_reason\":";
+    AppendNullableString(result, source.skip_reason);
+    result += '}';
+  }
+  result += ']';
+  result += '}';
+}
+
+inline void AppendCommanderProvinceDetails(
+    std::string &result,
+    const xar::game::ContextualAdvantageCommanderProvinceDetailsSnapshot &details) {
+  result += "{";
+  result += "\"cache_present\":";
+  AppendOptionalBool(result, details.cache_present);
+  result += ",\"selected_culture_reference\":";
+  AppendOptionalNumber(result, details.selected_culture_reference);
+  result += ",\"province_culture_reference\":";
+  AppendOptionalNumber(result, details.province_culture_reference);
+  result += ",\"selected_culture_used_fallback\":";
+  AppendOptionalBool(result, details.selected_culture_used_fallback);
+  result += ",\"province_culture_used_fallback\":";
+  AppendOptionalBool(result, details.province_culture_used_fallback);
+  result += ",\"category1_pillar_equal\":";
+  AppendOptionalBool(result, details.category1_pillar_equal);
+  result += '}';
+}
+
 inline void AppendCommanderSource(
     std::string &result,
     const xar::game::ContextualAdvantageCommanderSourceSnapshot &source) {
@@ -185,6 +263,14 @@ inline void AppendCommanderSource(
   AppendNullableString(result, source.skip_reason);
   result += ",\"source_provenance\":";
   AppendJsonString(result, source.source_provenance);
+  result += ",\"opposing_primary_details\":";
+  if (source.opposing_primary_details)
+    AppendCommanderOpposingPrimaryDetails(result, *source.opposing_primary_details);
+  else result += "null";
+  result += ",\"province_details\":";
+  if (source.province_details)
+    AppendCommanderProvinceDetails(result, *source.province_details);
+  else result += "null";
   result += '}';
 }
 

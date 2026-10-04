@@ -814,6 +814,93 @@ _CONTEXTUAL_COMMANDER_SOURCE_ORDER = (
 )
 
 
+def _normalize_contextual_commander_opposing_primary_details(
+    value: object, *, name: str
+) -> dict[str, object] | None:
+    if value is None:
+        return None
+    reference_keys = (
+        "selected_personal_rite_reference", "opposing_primary_personal_rite_reference",
+        "selected_personal_faith_reference", "opposing_primary_personal_faith_reference",
+        "selected_religion_reference", "opposing_primary_religion_reference",
+    )
+    predicate_keys = (
+        "opposing_primary_character_used_fallback", "selected_rite_used_fallback",
+        "opposing_primary_rite_used_fallback", "rite_pair_valid",
+        "selected_faith_used_fallback", "opposing_primary_faith_used_fallback",
+        "religion_references_equal",
+    )
+    row = _exact_object(value, set(reference_keys) | set(predicate_keys) | {
+        "directed_rite_hostility_level", "hostility_factor_count",
+        "hostility_factor_raw", "sources",
+    }, name)
+    references = {key: (None if row[key] is None else
+                       _non_negative_int64(row[key], f"{name}.{key}"))
+                  for key in reference_keys}
+    if any(value is not None and value > 2**32 - 1 for value in references.values()):
+        raise ValueError(f"native {name} references must be uint32 bits")
+    predicates = {key: (None if row[key] is None else
+                       _strict_bool(row[key], f"{name}.{key}"))
+                  for key in predicate_keys}
+    level = row["directed_rite_hostility_level"]
+    if level is not None:
+        level = _non_negative_int32(level, f"{name}.directed_rite_hostility_level")
+        if level > 255:
+            raise ValueError(f"native {name}.directed_rite_hostility_level must be uint8")
+    sources = _array(row["sources"], f"{name}.sources")
+    if len(sources) != 2:
+        raise ValueError(f"native {name}.sources must publish two ordered modifiers")
+    normalized_sources = []
+    for index, (source, expected_id) in enumerate(zip(sources, (416, 417))):
+        source_name = f"{name}.sources[{index}]"
+        source = _exact_object(source, {
+            "modifier_id", "cache_present", "modifier_raw", "selected",
+            "predicate_observed", "contribution_raw", "skip_reason",
+        }, source_name)
+        modifier_id = _non_negative_int32(source["modifier_id"], f"{source_name}.modifier_id")
+        if modifier_id != expected_id:
+            raise ValueError(f"native {source_name} modifier order mismatch")
+        observed = {key: (None if source[key] is None else
+                         _strict_bool(source[key], f"{source_name}.{key}"))
+                    for key in ("cache_present", "selected", "predicate_observed")}
+        raw = {key: (None if source[key] is None else
+                     _signed_int64(source[key], f"{source_name}.{key}"))
+               for key in ("modifier_raw", "contribution_raw")}
+        skip_reason = source["skip_reason"]
+        if skip_reason is not None:
+            skip_reason = _nonempty_string(skip_reason, f"{source_name}.skip_reason")
+        normalized_sources.append({
+            "modifier_id": modifier_id, **observed, **raw, "skip_reason": skip_reason,
+        })
+    return {
+        **references, **predicates, "directed_rite_hostility_level": level,
+        "hostility_factor_count": (None if row["hostility_factor_count"] is None else
+            _signed_int32(row["hostility_factor_count"], f"{name}.hostility_factor_count")),
+        "hostility_factor_raw": (None if row["hostility_factor_raw"] is None else
+            _signed_int64(row["hostility_factor_raw"], f"{name}.hostility_factor_raw")),
+        "sources": normalized_sources,
+    }
+
+
+def _normalize_contextual_commander_province_details(
+    value: object, *, name: str
+) -> dict[str, object] | None:
+    if value is None:
+        return None
+    reference_keys = ("selected_culture_reference", "province_culture_reference")
+    predicate_keys = ("cache_present", "selected_culture_used_fallback",
+                      "province_culture_used_fallback", "category1_pillar_equal")
+    row = _exact_object(value, set(reference_keys) | set(predicate_keys), name)
+    references = {key: (None if row[key] is None else
+                       _non_negative_int64(row[key], f"{name}.{key}"))
+                  for key in reference_keys}
+    if any(value is not None and value > 2**32 - 1 for value in references.values()):
+        raise ValueError(f"native {name} references must be uint32 bits")
+    return {**references, **{key: (None if row[key] is None else
+                                 _strict_bool(row[key], f"{name}.{key}"))
+                            for key in predicate_keys}}
+
+
 def _normalize_contextual_commander_sources(
     value: object, *, side_index: int, name: str
 ) -> list[dict[str, object]] | None:
@@ -825,12 +912,14 @@ def _normalize_contextual_commander_sources(
     normalized = []
     for index, (source, source_kind) in enumerate(zip(sources, _CONTEXTUAL_COMMANDER_SOURCE_ORDER)):
         source_name = f"{name}[{index}]"
+        detail_keys = {key for key in ("opposing_primary_details", "province_details")
+                       if isinstance(source, dict) and key in source}
         source = _exact_object(source, {
             "side_index", "stage_order", "source_kind", "modifier_id", "status",
             "predicate_observed", "selected", "modifier_raw", "contribution_raw",
             "scale100000", "accumulator_before_raw", "accumulator_after_raw",
             "skip_reason", "source_provenance",
-        }, source_name)
+        } | detail_keys, source_name)
         observed_side = _signed_int32(source["side_index"], f"{source_name}.side_index")
         stage_order = _signed_int32(source["stage_order"], f"{source_name}.stage_order")
         if observed_side != side_index or stage_order != index or source["source_kind"] != source_kind:
@@ -860,6 +949,12 @@ def _normalize_contextual_commander_sources(
             "source_kind": source_kind, "modifier_id": modifier_id, "status": status,
             **predicates, **raw, "scale100000": scale, "skip_reason": skip_reason,
             "source_provenance": _nonempty_string(source["source_provenance"], f"{source_name}.source_provenance"),
+            **({"opposing_primary_details": _normalize_contextual_commander_opposing_primary_details(
+                source["opposing_primary_details"], name=f"{source_name}.opposing_primary_details",
+            )} if "opposing_primary_details" in detail_keys else {}),
+            **({"province_details": _normalize_contextual_commander_province_details(
+                source["province_details"], name=f"{source_name}.province_details",
+            )} if "province_details" in detail_keys else {}),
         })
     return normalized
 

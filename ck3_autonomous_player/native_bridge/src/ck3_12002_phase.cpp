@@ -214,7 +214,10 @@ void *ResolveCommanderSourceArmy(void **slot, std::int32_t id) noexcept {
 CommanderSourceObservation ReadCommanderSources(
     const PhaseBindings &bindings, const void *combat_shell,
     void *selected_character, std::int32_t side_index,
-    std::int32_t relation_kind, const CommanderSourceNativeBindings &native) noexcept {
+    std::int32_t relation_kind, const CommanderSourceNativeBindings &native,
+    std::uint8_t (*rite_hostility)(void *, void *, void *) = nullptr,
+    const std::int32_t *hostility_factor_count = nullptr,
+    const std::int64_t *const *hostility_factors = nullptr) noexcept {
   if (!combat_shell || !selected_character || side_index < 0 || side_index > 1)
     return {};
   try {
@@ -260,14 +263,227 @@ CommanderSourceObservation ReadCommanderSources(
     martial.accumulator_after_raw = martial.contribution_raw;
     rows.push_back(std::move(martial));
 
+    const auto resolve_source = [](void **slot, void **fallback,
+        std::uint32_t id, std::size_t identity_offset, bool &used_fallback) {
+      void *storage = slot ? *slot : nullptr;
+      void *object = nullptr;
+      const auto index = id & 0xFFFFFFU;
+      if (storage && index < Load<std::uint32_t>(storage, 0x2C)) {
+        const void *data = Load<const void *>(storage, 0x20);
+        object = data ? Load<void *>(data, static_cast<std::size_t>(index) * 16 + 8)
+                      : nullptr;
+        if (object && Load<std::uint32_t>(object, identity_offset) != id)
+          object = nullptr;
+      }
+      used_fallback = object == nullptr;
+      return object ? object : (fallback ? *fallback : nullptr);
+    };
+    if (!rite_hostility && bindings.image_base)
+      rite_hostility = reinterpret_cast<std::uint8_t (*)(void *, void *, void *)>(
+          bindings.image_base + 0x2591CE0);
+    if (!hostility_factor_count && bindings.image_base)
+      hostility_factor_count = reinterpret_cast<const std::int32_t *>(
+          bindings.image_base + 0x5451D34);
+    if (!hostility_factors && bindings.image_base)
+      hostility_factors = reinterpret_cast<const std::int64_t *const *>(
+          bindings.image_base + 0x5451D28);
     auto opposite = make_row(1, "opposing_primary_context",
-        "0x2589F37->0x2589020 selected Character/opposing primary CharacterID");
-    opposite.accumulator_before_raw = rows.front().contribution_raw;
-    opposite.skip_reason = "source_output_not_captured";
+        "cached1A0 directed personal Rite hostility / cached1A1 Religion reference equality");
+    game::ContextualAdvantageCommanderOpposingPrimaryDetailsSnapshot opposite_details{};
+    opposite_details.sources.resize(2);
+    auto &hostility_source = opposite_details.sources[0];
+    auto &religion_source = opposite_details.sources[1];
+    hostility_source.modifier_id = static_cast<std::uint16_t>(0x1A0);
+    religion_source.modifier_id = static_cast<std::uint16_t>(0x1A1);
+    for (auto &source : opposite_details.sources) {
+      bool present = false;
+      std::int64_t raw = 0;
+      if (!ReadCommanderModifierCache(aggregator, source.modifier_id, present, raw)) {
+        source.skip_reason = "modifier_cache_unavailable";
+        continue;
+      }
+      source.cache_present = present;
+      source.modifier_raw = raw;
+      source.selected = raw != 0;
+      if (raw == 0) {
+        source.predicate_observed = false;
+        source.contribution_raw = 0;
+        source.skip_reason = present ? "modifier_zero" : "modifier_absent";
+      }
+    }
+    if (hostility_source.selected.value_or(false) ||
+        religion_source.selected.value_or(false)) {
+      bool character_fallback = false;
+      void *opposing_character = resolve_source(bindings.misc.character_store,
+          bindings.misc.character_fallback,
+          static_cast<std::uint32_t>(inputs.opposing_primary_character_id),
+          0x18, character_fallback);
+      opposite_details.opposing_primary_character_used_fallback = character_fallback;
+      opposite_details.selected_personal_rite_reference =
+          Load<std::uint32_t>(selected_character, 0xB4);
+      if (opposing_character)
+        opposite_details.opposing_primary_personal_rite_reference =
+            Load<std::uint32_t>(opposing_character, 0xB4);
+      bool selected_rite_fallback = false, opposing_rite_fallback = false;
+      const auto &religion = bindings.advantage.constructor_religion;
+      void *selected_rite = resolve_source(religion.rite_storage_slot,
+          religion.null_rite_slot, *opposite_details.selected_personal_rite_reference,
+          8, selected_rite_fallback);
+      void *opposing_rite = opposite_details.opposing_primary_personal_rite_reference
+          ? resolve_source(religion.rite_storage_slot, religion.null_rite_slot,
+              *opposite_details.opposing_primary_personal_rite_reference,
+              8, opposing_rite_fallback) : nullptr;
+      opposite_details.selected_rite_used_fallback = selected_rite_fallback;
+      if (opposite_details.opposing_primary_personal_rite_reference)
+        opposite_details.opposing_primary_rite_used_fallback = opposing_rite_fallback;
+      if (hostility_source.selected.value_or(false)) {
+        if (!selected_rite || !opposing_rite) {
+          hostility_source.skip_reason = "personal_rite_unavailable";
+        } else {
+          const bool valid = Load<std::uint32_t>(selected_rite, 0xC) == 0x52697465 &&
+              Load<std::uint32_t>(opposing_rite, 0xC) == 0x52697465 &&
+              Load<std::uint32_t>(selected_rite, 8) != 0xFFFFFFFFU &&
+              Load<std::uint32_t>(opposing_rite, 8) != 0xFFFFFFFFU;
+          opposite_details.rite_pair_valid = valid;
+          hostility_source.predicate_observed = valid;
+          if (valid && !rite_hostility) {
+            hostility_source.skip_reason = "directed_rite_hostility_unavailable";
+          } else {
+            const auto level = valid ? rite_hostility(
+                static_cast<std::byte *>(selected_rite) + 0x750,
+                selected_rite, opposing_rite) : std::uint8_t{4};
+            opposite_details.directed_rite_hostility_level = level;
+            if (!hostility_factor_count) {
+              hostility_source.skip_reason = "loaded_hostility_count_unavailable";
+            } else {
+              const auto count = *hostility_factor_count;
+              opposite_details.hostility_factor_count = count;
+              const bool outside = static_cast<std::int32_t>(level) >= count;
+              if (outside) {
+                opposite_details.hostility_factor_raw = 0;
+              } else if (hostility_factors && *hostility_factors) {
+                opposite_details.hostility_factor_raw = (*hostility_factors)[level];
+              }
+              if (!opposite_details.hostility_factor_raw) {
+                hostility_source.skip_reason = "loaded_hostility_factor_unavailable";
+              } else {
+                hostility_source.contribution_raw = SideSourceFixedMultiply(
+                    *hostility_source.modifier_raw,
+                    *opposite_details.hostility_factor_raw);
+                if (outside)
+                  hostility_source.skip_reason = "hostility_level_outside_loaded_count";
+                else if (*opposite_details.hostility_factor_raw == 0)
+                  hostility_source.skip_reason = "loaded_hostility_factor_zero";
+              }
+            }
+          }
+        }
+      }
+      if (religion_source.selected.value_or(false)) {
+        if (!selected_rite || !opposing_rite) {
+          religion_source.skip_reason = "personal_rite_unavailable";
+        } else {
+          opposite_details.selected_personal_faith_reference =
+              Load<std::uint32_t>(selected_rite, 0x4B8);
+          opposite_details.opposing_primary_personal_faith_reference =
+              Load<std::uint32_t>(opposing_rite, 0x4B8);
+          bool selected_faith_fallback = false, opposing_faith_fallback = false;
+          void *selected_faith = resolve_source(religion.faith_storage_slot,
+              religion.null_faith_slot, *opposite_details.selected_personal_faith_reference,
+              8, selected_faith_fallback);
+          void *opposing_faith = resolve_source(religion.faith_storage_slot,
+              religion.null_faith_slot,
+              *opposite_details.opposing_primary_personal_faith_reference,
+              8, opposing_faith_fallback);
+          opposite_details.selected_faith_used_fallback = selected_faith_fallback;
+          opposite_details.opposing_primary_faith_used_fallback = opposing_faith_fallback;
+          if (!selected_faith || !opposing_faith) {
+            religion_source.skip_reason = "personal_faith_unavailable";
+          } else {
+            opposite_details.selected_religion_reference =
+                Load<std::uint32_t>(selected_faith, 0x8C);
+            opposite_details.opposing_primary_religion_reference =
+                Load<std::uint32_t>(opposing_faith, 0x8C);
+            const bool equal = *opposite_details.selected_religion_reference ==
+                               *opposite_details.opposing_primary_religion_reference;
+            opposite_details.religion_references_equal = equal;
+            religion_source.predicate_observed = equal;
+            religion_source.contribution_raw = equal ? *religion_source.modifier_raw : 0;
+            if (!equal) religion_source.skip_reason = "religion_reference_mismatch";
+          }
+        }
+      }
+    }
+    if (hostility_source.selected && religion_source.selected) {
+      opposite.selected = *hostility_source.selected || *religion_source.selected;
+      opposite.predicate_observed = opposite.selected;
+    }
+    if (hostility_source.contribution_raw && religion_source.contribution_raw) {
+      opposite.status = "observed";
+      opposite.contribution_raw = SideSourceWrapAdd(
+          *hostility_source.contribution_raw, *religion_source.contribution_raw);
+      if (!opposite.selected.value_or(false)) opposite.skip_reason = "modifiers_zero";
+    } else {
+      opposite.skip_reason = "opposing_primary_source_unavailable";
+    }
+    opposite.opposing_primary_details = std::move(opposite_details);
     rows.push_back(std::move(opposite));
+
     auto province_row = make_row(2, "province_raw_context",
-        "0x2589F64->0x25893F0 Province+0x848/data+0x388 raw32");
-    province_row.skip_reason = "source_output_not_captured";
+        "cached1AF typed Culture references/native fallback/category1 pillar pointer equality");
+    province_row.modifier_id = static_cast<std::uint16_t>(0x1AF);
+    game::ContextualAdvantageCommanderProvinceDetailsSnapshot province_details{};
+    bool culture_cache_present = false;
+    std::int64_t culture_cached = 0;
+    if (!ReadCommanderModifierCache(aggregator, 0x1AF, culture_cache_present,
+                                   culture_cached)) {
+      province_row.skip_reason = "modifier_cache_unavailable";
+    } else {
+      province_details.cache_present = culture_cache_present;
+      province_row.modifier_raw = culture_cached;
+      if (culture_cached == 0) {
+        province_row.status = "observed";
+        province_row.predicate_observed = false;
+        province_row.selected = false;
+        province_row.contribution_raw = 0;
+        province_row.skip_reason = culture_cache_present ? "modifier_zero" : "modifier_absent";
+      } else if (!inputs.province_context_raw32) {
+        province_row.skip_reason = "province_culture_reference_unavailable";
+      } else {
+        province_details.selected_culture_reference =
+            Load<std::uint32_t>(selected_character, 0xB0);
+        province_details.province_culture_reference = inputs.province_context_raw32;
+        bool selected_fallback = false, province_fallback = false;
+        void *selected_culture = resolve_source(bindings.culture.culture_store,
+            bindings.culture.culture_fallback, *province_details.selected_culture_reference,
+            0x10, selected_fallback);
+        void *province_culture = resolve_source(bindings.culture.culture_store,
+            bindings.culture.culture_fallback, *province_details.province_culture_reference,
+            0x10, province_fallback);
+        province_details.selected_culture_used_fallback = selected_fallback;
+        province_details.province_culture_used_fallback = province_fallback;
+        const auto pillar_span = [](void *culture) -> const void * {
+          void *definition = culture ? Load<void *>(culture, 0x20) : nullptr;
+          void *resolved = definition ? Load<void *>(definition, 0x128) : nullptr;
+          return resolved ? Load<const void *>(resolved, 0x70) : nullptr;
+        };
+        const void *selected_span = pillar_span(selected_culture);
+        const void *province_span = pillar_span(province_culture);
+        if (!selected_span || !province_span) {
+          province_row.skip_reason = "culture_category1_operand_unavailable";
+        } else {
+          const bool equal = Load<const void *>(selected_span, 8) ==
+                             Load<const void *>(province_span, 8);
+          province_details.category1_pillar_equal = equal;
+          province_row.status = "observed";
+          province_row.predicate_observed = equal;
+          province_row.selected = equal;
+          province_row.contribution_raw = equal ? culture_cached : 0;
+          if (!equal) province_row.skip_reason = "culture_category1_mismatch";
+        }
+      }
+    }
+    province_row.province_details = std::move(province_details);
     rows.push_back(std::move(province_row));
 
     auto army = make_row(3, "army_gated_modifier",
@@ -405,6 +621,14 @@ CommanderSourceObservation ReadCommanderSources(
       }
     }
     rows.push_back(std::move(relation));
+    std::optional<std::int64_t> accumulator = 0;
+    for (auto &source : rows) {
+      source.accumulator_before_raw = accumulator;
+      accumulator = accumulator && source.contribution_raw
+          ? std::optional<std::int64_t>(SideSourceWrapAdd(
+              *accumulator, *source.contribution_raw)) : std::nullopt;
+      source.accumulator_after_raw = accumulator;
+    }
     CommanderSourceObservation output{};
     output.inputs = std::move(inputs);
     output.sources = std::move(rows);
