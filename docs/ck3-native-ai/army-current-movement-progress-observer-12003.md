@@ -104,3 +104,51 @@ the read primitive; only independently observed progress or arrival across
 normal saved days can qualify the corresponding movement loop. Existing
 successful march loops remain intact. Complete ETA, exact arrival tick,
 embark phase and native AI destination scoring are not supplied by this package.
+
+## R0029 prestop: actual five-public-unit health query, 2026-10-04
+
+The original four Sway reads preceded this distinct zero-day health frame.
+Root's prestop `012-ck3_query_army_strengths.json` is bound to **native169 /
+public2 / raw53252424 / paused true**, existing scope
+`player-and-active-war-participants`, accepted true and partial scope status.
+The request explicitly selected five public IDs. Its source version and EXE
+SHA fields are null; the surrounding Root runtime is R0029 / g61 frozen f3 /
+PID38372. These enclosing runtime facts are not fabricated payload fields.
+The raw body was consumed once into
+`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/movement-progress/prestop-r29/RAW012-CACHED-BODY.json`;
+its original160675 bytes have SHA-256
+`1de1ebf31b9243ca68ef91fb8510de899382b3466d4680f49a7ffec70189b079`.
+
+| Public CUnit | Observed CArmy | Published role | Soldiers / maximum | Regiments | Supply / capacity | Monthly supply change | Attrition fraction |
+|---:|---:|---|---:|---:|---:|---:|---:|
+| 184549452 | 167772208 | player | 3000 / 3000 | 24 | 95.45305 / 100 | +20 | 0 |
+| 301989997 | 201326670 | player | 3693 / 3884 | 41 | 300 / 300 | 0 | 0 |
+| 285212904 | null | player | null / null | null | unavailable | unavailable | unavailable |
+| 268435597 | 184549476 | active_war_enemy | 2459 / 4702 | 41 | 300 / 300 | 0 | 0 |
+| 100663351 | null | active_war_enemy | null / null | null | unavailable | unavailable | unavailable |
+
+All displayed supply, capacity, monthly change and attrition values divide
+their actual signed raw value by the published100000 scale. The unavailable
+rows report `native_carmy_not_found`; they are neither observed zero-soldier
+armies nor independently observed new CArmy formations. No soldiers total is
+constructed from five public IDs. This health response does not publish unit
+kind, exact army/fleet type or owner CharacterID, so the role labels cannot
+prove an owner identity or marine/land association.
+
+The deployed g61 `ck3_12002_army.cpp` health reader uses CUnit+0x178 to resolve
+CArmy (`Strength`, lines207–211). The already published
+[movement speed tree](army-movement-speed-composition-12003.md) separately
+describes a carrier path through CUnit+0x17C, CFleet+0x1C. That existing source
+distinction explains the limit of this health path; it does not prove that the
+two new public IDs are fleet shadows, new armies, replacements or duplicates.
+No new ABI audit, bridge code or test is required for this file consumption.
+
+The `current_movement_progress` block is **absent in all five rows**, as expected
+for the running R0029 f3 DLL. The new progress implementation committed by Root
+as `b513f020` remains **static-ready** pending its new DLL and paused observation;
+this receipt does not promote it to live. Existing health observations remain
+production-live primitives with their partial public-ID coverage. Root's
+enclosing calendar totals are4504 / resumed1351 / Oct4+479; this zero-day
+consumer adds no query, action or day credit. The reusable cache, summary,
+report fields and owned one-topic patch are indexed in this lane's
+`prestop-r29/ROOT-DELIVERY.json`.

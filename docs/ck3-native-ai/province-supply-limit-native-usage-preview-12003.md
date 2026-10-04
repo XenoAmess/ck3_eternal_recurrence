@@ -90,3 +90,13 @@ The observer is **production-live primitive**. Root R25 / PID66464 / g54 source8
 Target usage0 is a legal reading of current native supply-eligible units, excludes the future incoming subject, and does not establish absence of enemies or garrison. It does not predict post-arrival usage or food stock. This leaf has no ETA; timing remains with the existing route/horizon lane, while after-arrival stock/monthly change/attrition remain actual army-strength observations.
 
 Sole owner receipt: [actual-province-supply-preview-v49/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/actual-province-supply-preview-v49/ROOT-DELIVERY.json), raw leaf SHA-256 `f6e8a1d455491202657437702e05e1706331020dce1bbb120e7b11a9fb11cf55`. SDK38881 normally closed exit0/all GREEN; this documentation increment reuses only sealed fields, adds0 world days and claims no move, arrival, recapture or complete OODA. Earlier static/fixture evidence and its retained harness RED remain historical.
+
+## 2026-10-04 R29 new raised army route preview
+
+The existing province-supply observer remains **production-live primitive**. In Root R0029 / PID38372, frozen source `f3f365c53d3708f520e0142a1b81a484b0c31df3` (`Z:/g61`), `preview-move-army-301989997-to-472` returned accepted/available at paused raw date53251464, native:2/public2/native2/gen2 and episode `native-29829-2bc2d599f7f9`. Its actual route is **2619 → [8651,1038,472]**; public CUnit301989997 resolves to CArmy201326670, with owner and current commander both29829.
+
+Both province rows are available at scale1. Current2619 has native limit **6355** and current aggregate usage **6681** (326 above that current limit); target472 has native limit **4025** and current aggregate usage **0**. The target zero retains the existing current-state getter meaning: it excludes a future incoming army and supplies no prediction of post-arrival usage or food stock.
+
+This packet contains no army food stock/capacity/monthly-change values, movement fee or embark gold quote, ETA or movement-days value, or sea-route classification. Their absence does not establish a free move, a land/sea route, or an arrival time. This accepted result is a preview; it does not prove a move or arrival and adds **0 world days** (formal campaign total remains4464 at this cut).
+
+The sole raw016 consumer cached the body once and thereafter used only [r29-route-actual/raw016-once/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/r29-route-actual/raw016-once/ROOT-DELIVERY.json). No SDK, pipe, foreground interaction, additional query, native build, or repeated test was performed in this documentation package.
