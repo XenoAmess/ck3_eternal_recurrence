@@ -10407,6 +10407,34 @@ class GameplayBridgeService:
             )
         return result
 
+    def select_ingame_decision_item_v1(self, decision_key: str, *, expected_revision: int | None = None) -> dict[str, object]:
+        method = getattr(self.driver, "select_ingame_decision_item_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks the typed actual-row OnSelect")
+        result = method(decision_key, expected_revision=expected_revision)
+        if not isinstance(result, dict) or result.get("schema") != "ck3-ingame-decision-item-action-v1" or result.get("postcondition_verified") is not True or result.get("action") != "select":
+            raise BridgeUnavailableError("typed OnSelect lacks later actual selected detail proof")
+        return result
+
+    def confirm_ingame_decision_item_v1(self, decision_key: str, expected_window_kind: str, *, expected_revision: int | None = None) -> dict[str, object]:
+        method = getattr(self.driver, "confirm_ingame_decision_item_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks the typed fixed detail Confirm")
+        result = method(decision_key, expected_window_kind, expected_revision=expected_revision)
+        if not isinstance(result, dict) or result.get("schema") != "ck3-ingame-decision-item-action-v1" or result.get("postcondition_verified") is not True or result.get("action") != "confirm":
+            raise BridgeUnavailableError("typed Confirm lacks later actual inner modal proof")
+        return result
+
+    def query_ingame_decision_item_v1(self, decision_key: str, *, expected_revision: int | None = None) -> dict[str, object]:
+        """Observe one actual decision model identity; this does not qualify a widget action."""
+        method = getattr(self.driver, "query_ingame_decision_item_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks the typed decision model observer")
+        result = method(decision_key, expected_revision=expected_revision)
+        if not isinstance(result, dict) or result.get("schema") != "ck3-ingame-decision-item-v1" or result.get("read_only") is not True:
+            raise BridgeUnavailableError("typed decision model observer returned malformed data")
+        return result
+
     def open_ingame_decisions_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
         """Open only the exact .3 HUD Decisions entry and verify actual visibility."""
         method = getattr(self.driver, "open_ingame_decisions_v1", None)

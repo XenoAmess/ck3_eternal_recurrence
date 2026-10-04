@@ -7,6 +7,7 @@
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
 #include "xar_bridge/ingame_decisions_opener_v1.hpp"
+#include "xar_bridge/ingame_decision_item_v1.hpp"
 #include "xar_bridge/ck3_11906.hpp"
 
 #include <cstdint>
@@ -218,6 +219,8 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   query_applied_game_rules = 26,
   inspect_gui_window_tree = 27,
   open_ingame_decisions = 29, // 28 reserved for the independent DecisionView observer.
+  query_ingame_decision_item = 30,
+  action_ingame_decision_item = 31,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {
@@ -263,6 +266,8 @@ struct FrontendGuiRouteMailboxContextV1 {
   IngameUiRequestV1 ingame_request{};
   IngameUiResultV1 ingame_result{};
   IngameDecisionsOpenContextV1 ingame_decisions{};
+  IngameDecisionItemContextV1 ingame_decision_item{};
+  IngameDecisionItemActionContextV1 ingame_decision_action{};
 };
 
 bool ExecuteFrontendGuiRouteMailboxV1(

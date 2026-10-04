@@ -446,6 +446,12 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = ck3_11906::kIngameUiWindowQueryV1Capability;
   } else if (step == ck3_11906::kIngameDecisionsOpenV1Step) {
     capability = ck3_11906::kIngameDecisionsOpenV1Capability;
+  } else if (step == ck3_11906::kIngameDecisionItemQueryV1Step) {
+    capability = ck3_11906::kIngameDecisionItemQueryV1Capability;
+  } else if (step == ck3_11906::kIngameDecisionItemSelectV1Step) {
+    capability = ck3_11906::kIngameDecisionItemSelectV1Capability;
+  } else if (step == ck3_11906::kIngameDecisionItemConfirmV1Step) {
+    capability = ck3_11906::kIngameDecisionItemConfirmV1Capability;
   } else if (step == ck3_11906::kGuiWindowTreeInspectionV1Step) {
     capability = ck3_11906::kGuiWindowTreeInspectionV1Capability;
   } else if (step == ck3_11906::kFrontendGuiTreeInspectionV1Step) {

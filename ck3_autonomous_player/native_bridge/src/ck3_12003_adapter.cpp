@@ -64,6 +64,11 @@ const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
 
 #if defined(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1)
     result.push_back(ck3_11906::kIngameDecisionsOpenV1Capability);
+    result.push_back(ck3_11906::kIngameDecisionItemQueryV1Capability);
+#if defined(XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1)
+    result.push_back(ck3_11906::kIngameDecisionItemSelectV1Capability);
+    result.push_back(ck3_11906::kIngameDecisionItemConfirmV1Capability);
+#endif
 #endif
     return result;
   }();

@@ -801,6 +801,13 @@ bool ExecuteFrontendGuiRouteMailboxV1(
     return ExecuteIngameDecisionsOpenV1(query->ingame_decisions, *query->mailbox, stamp,
         query->environment, query->dispatch_environment);
   }
+  if (query->operation == FrontendGuiRouteOperationV1::query_ingame_decision_item) {
+    return ExecuteIngameDecisionItemQueryV1(query->ingame_decision_item, *query->mailbox, stamp, query->environment);
+  }
+  if (query->operation == FrontendGuiRouteOperationV1::action_ingame_decision_item) {
+    return ExecuteIngameDecisionItemActionV1(query->ingame_decision_action, *query->mailbox, stamp,
+        query->environment, query->dispatch_environment);
+  }
   if (query->operation == FrontendGuiRouteOperationV1::ingame_ui) {
     // Failure metadata is observed at this original application event boundary,
     // never copied from the caller's expected snapshot.

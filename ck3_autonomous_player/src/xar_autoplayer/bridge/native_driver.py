@@ -6321,6 +6321,153 @@ class NativeHeadlessGameplayDriver:
             "uses_mouse": False,
         }
 
+    def select_ingame_decision_item_v1(self, decision_key: str, *, expected_revision: int | None = None) -> dict[str, object]:
+        """Invoke the exact source OnSelect once on the unique actual model row."""
+        return self._decision_item_action_v1(decision_key, action="select", expected_revision=expected_revision)
+
+    def confirm_ingame_decision_item_v1(self, decision_key: str, expected_window_kind: str, *, expected_revision: int | None = None) -> dict[str, object]:
+        """Invoke the selected detail's fixed Confirm once, then read the actual inner modal."""
+        if expected_window_kind != "vivhite_courtier":
+            raise ValueError("unsupported fixed expected inner-modal census scope")
+        return self._decision_item_action_v1(decision_key, action="confirm", expected_revision=expected_revision,
+                                             expected_window_kind=expected_window_kind)
+
+    def _decision_item_action_v1(self, decision_key: str, *, action: str, expected_revision: int | None,
+                                 expected_window_kind: str | None = None) -> dict[str, object]:
+        from .ingame_decision_item_contract import validate_decision_key
+        from .ingame_decisions_open_contract import opening_binding
+        from .ingame_decision_item_action_contract import (
+            SELECT_STEP, SELECT_CAPABILITY, CONFIRM_STEP, CONFIRM_CAPABILITY,
+            normalize_decision_action, actual_selected_detail, actual_inner_modal_tree,
+        )
+        import hashlib
+        import os
+        validate_decision_key(decision_key)
+        if action not in {"select", "confirm"} or (action == "confirm" and expected_window_kind != "vivhite_courtier"):
+            raise ValueError("unsupported typed decision item action")
+        starting = self.take_snapshot()
+        try:
+            binding = opening_binding(starting)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        revision = int(starting["revision"])
+        if expected_revision is not None:
+            _validate_revision(expected_revision, "expected_revision")
+            if expected_revision != revision:
+                raise PreSubmissionRevisionMismatchError("decision action public revision changed")
+        step, capability = (SELECT_STEP, SELECT_CAPABILITY) if action == "select" else (CONFIRM_STEP, CONFIRM_CAPABILITY)
+        if capability not in set(_string_list(self.capabilities().get("bridge_capabilities"))):
+            raise UnsupportedStepError("native DLL does not advertise the exact .3 decision item action")
+        # Refuse an existing claim before any additional model observation. The
+        # exclusive create below still resolves a race between simultaneous callers.
+        claim_dir = self._native_driver_state_path().parent / "ingame-decision-item-actions"
+        identity = {"game_pid": binding["game_pid"], "actor_id": binding["played_character_id"],
+                    "episode_run_id": binding["episode_run_id"], "decision_key": decision_key, "action": action}
+        key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode("utf-8")).hexdigest()
+        claim = claim_dir / f"{key}.claim.json"
+        if claim.exists():
+            raise BridgeUnavailableError("decision item action already claimed for this episode; no retry")
+        before = self.query_ingame_decision_item_v1(decision_key)
+        if before.get("available") is not True:
+            raise BridgeUnavailableError("actual keyed decision row/owner is unavailable before action")
+        if action == "confirm" and not actual_selected_detail(before, binding, decision_key):
+            raise BridgeUnavailableError("actual selected detail definition/actor/visibility is unavailable before Confirm")
+        current = self.take_snapshot()
+        if opening_binding(current) != binding or not _same_paused_native_frame(starting, current):
+            raise BridgeUnavailableError("decision action before observation crossed its episode/frame")
+        # Claim identity deliberately excludes connection generation. Reconnect, missing ACK,
+        # or a changed expected panel cannot make this action for this actual episode repeatable.
+        claim_dir.mkdir(parents=True, exist_ok=True)
+        request_id = f"decision-{action}-{uuid.uuid4().hex}"
+        try:
+            with claim.open("x", encoding="utf-8", newline="\n") as stream:
+                json.dump({"schema": "ck3-ingame-decision-item-once-claim-v1", "request_id": request_id,
+                           "binding": binding, "decision_key": decision_key, "action": action,
+                           "expected_window_kind": expected_window_kind, "status": "claimed_result_unknown_no_retry"},
+                          stream, ensure_ascii=False, indent=2)
+                stream.write("\n"); stream.flush(); os.fsync(stream.fileno())
+        except FileExistsError as error:
+            raise BridgeUnavailableError("decision item action already claimed for this episode; no retry") from error
+        raw = None
+        try:
+            fields = {"decision_key": decision_key, "expected_player_character_id": binding["played_character_id"],
+                      "expected_game_pid": binding["game_pid"], "expected_connection_generation": binding["connection_generation"]}
+            if action == "confirm":
+                fields["expected_window_kind"] = expected_window_kind
+            raw = self._execute_primitive_step(step, expected_revision=revision, required_capability=capability,
+                                               request_fields=fields, protocol_request_id=request_id)
+            with claim.with_suffix(".result.json").open("x", encoding="utf-8", newline="\n") as stream:
+                json.dump({"request_id": request_id, "raw": raw}, stream, ensure_ascii=False, indent=2)
+                stream.write("\n"); stream.flush(); os.fsync(stream.fileno())
+            result = normalize_decision_action(raw, binding, decision_key, action)
+            # A missing or rejected action ACK never reaches these read-only observations.
+            # Confirm can remove its row from the list; its later proof uses the inner modal alone.
+            deadline = time.monotonic() + 5.0
+            later = None
+            while True:
+                current = self.take_snapshot()
+                if opening_binding(current) != binding or not _same_paused_native_frame(starting, current):
+                    raise BridgeUnavailableError("decision later observation crossed its episode/frame")
+                if action == "select":
+                    later = self.query_ingame_decision_item_v1(decision_key)
+                    verified = actual_selected_detail(later, binding, decision_key)
+                else:
+                    later = self.inspect_gui_window_tree_v1(expected_window_kind)
+                    verified = actual_inner_modal_tree(later, expected_window_kind)
+                ending = self.take_snapshot()
+                if opening_binding(ending) != binding or not _same_paused_native_frame(starting, ending):
+                    raise BridgeUnavailableError("decision after-read crossed its episode/frame")
+                if verified:
+                    break
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise BridgeUnavailableError("submitted decision action lacks its later actual postcondition; no retry")
+                time.sleep(min(0.1, remaining))
+            result.update({"postcondition_verified": True, "verification_pending": False,
+                           "status": "verified_selected_detail" if action == "select" else "verified_inner_modal_visible",
+                           "later_actual_observation": later, "native_ack": dict(raw), "action_request_id": request_id,
+                           "action_claim_path": str(claim), "episode_run_id": binding["episode_run_id"],
+                           "queried_revision": revision, "uses_mouse": False, "uses_keyboard": False, "uses_ocr": False})
+        except Exception as error:
+            self._record_command(step, ok=False, result={"raw": raw, "action_claim_path": str(claim)},
+                                 error=f"{type(error).__name__}: {error}")
+            raise
+        self._record_command(step, ok=True, result=result)
+        return result
+
+    def query_ingame_decision_item_v1(self, decision_key: str, *, expected_revision: int | None = None) -> dict[str, object]:
+        """Read actual .3 model key/owner and selected detail identity without action credit."""
+        from .ingame_decision_item_contract import STEP, CAPABILITY, validate_decision_key, normalize_decision_item
+        from .ingame_decisions_open_contract import opening_binding
+        validate_decision_key(decision_key)
+        starting = self.take_snapshot()
+        try:
+            binding = opening_binding(starting)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        revision = int(starting["revision"])
+        if expected_revision is not None:
+            _validate_revision(expected_revision, "expected_revision")
+            if expected_revision != revision:
+                raise PreSubmissionRevisionMismatchError("keyed decision query public revision changed")
+        raw = self._execute_primitive_step(
+            STEP, expected_revision=revision, required_capability=CAPABILITY,
+            request_fields={"decision_key": decision_key,
+                            "expected_player_character_id": binding["played_character_id"],
+                            "expected_game_pid": binding["game_pid"],
+                            "expected_connection_generation": binding["connection_generation"]},
+        )
+        try:
+            result = normalize_decision_item(raw, binding, decision_key)
+            ending = self.take_snapshot()
+            if opening_binding(ending) != binding or not _same_paused_native_frame(starting, ending):
+                raise ValueError("keyed decision query crossed its episode/frame")
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        result.update({"episode_run_id": binding["episode_run_id"], "queried_revision": revision,
+                       "uses_mouse": False, "uses_keyboard": False, "uses_ocr": False})
+        return result
+
     def open_ingame_decisions_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
         """Dispatch the fixed .3 HUD button once; observe later actual Decisions visibility."""
         from .ingame_decisions_open_contract import (
