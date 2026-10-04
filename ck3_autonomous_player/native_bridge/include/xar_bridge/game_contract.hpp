@@ -208,6 +208,18 @@ struct ArmyMovementProgressSnapshot {
                          const ArmyMovementProgressSnapshot &) = default;
 };
 
+// Complete actual CArmyRegiment membership from the same checked array and
+// current/maximum reads used by the aggregate. No persistent-record coverage
+// or replenishment cause is inferred from these whole-soldier counts.
+struct ArmyRegimentStrengthSnapshot {
+  std::int32_t army_regiment_id = -1;
+  std::int32_t current_soldiers = 0;
+  std::int32_t maximum_soldiers = 0;
+
+  friend bool operator==(const ArmyRegimentStrengthSnapshot &,
+                         const ArmyRegimentStrengthSnapshot &) = default;
+};
+
 struct ArmyStrengthSnapshot {
   bool available = false;
   std::int32_t army_id = -1;
@@ -220,6 +232,8 @@ struct ArmyStrengthSnapshot {
   std::int32_t maximum_soldiers = 0;
   std::int64_t ai_base_power_raw = 0;
   std::int64_t ai_base_power_scale = 100'000;
+  // Absent for older producers and unavailable rows; valid zero members use [].
+  std::optional<std::vector<ArmyRegimentStrengthSnapshot>> regiment_strengths;
   std::string unavailable_reason;
   // Additive .2/.3 current supply observation, signed Q100000. No value is
   // synthesized for other builds or an unresolved CUnit/CArmy backlink.

@@ -272,6 +272,8 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
     return result;
   }
   std::int64_t current = 0, maximum = 0, power = 0;
+  std::vector<game::ArmyRegimentStrengthSnapshot> regiment_strengths;
+  regiment_strengths.reserve(static_cast<std::size_t>(count));
   for (std::int32_t i = 0; i < count; ++i) {
     const auto id = Load<std::int32_t>(ids, static_cast<std::size_t>(i) * 4);
     void *regiment = Resolve(bindings.regiment_storage_slot, id);
@@ -299,6 +301,7 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
       result.unavailable_reason = "aggregate_overflow";
       return result;
     }
+    regiment_strengths.push_back({id, current_value, maximum_value});
   }
   const auto native_current = bindings.get_army_current_soldiers(
       static_cast<std::byte *>(army) + 0x38, 0);
@@ -313,6 +316,7 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
   result.current_soldiers = native_current;
   result.maximum_soldiers = native_maximum;
   result.ai_base_power_raw = power;
+  result.regiment_strengths = std::move(regiment_strengths);
   // Exact .3 selector 0x2587254 consumes this signed Q100000 operand.
   // The reviewed .2/.3 adapter binding owns the executable identity gate.
   if (Load<std::int32_t>(army, 0x124) == scope.army_id) {

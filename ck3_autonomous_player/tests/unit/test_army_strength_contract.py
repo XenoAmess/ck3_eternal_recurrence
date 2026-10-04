@@ -111,6 +111,32 @@ class ArmyStrengthContractTests(unittest.TestCase):
             with self.subTest(invalid=invalid), self.assertRaises(ValueError):
                 normalize_army_strengths([{**row, "native_carmy_id": invalid}])
 
+    def test_actual_regiment_strengths_preserve_ids_and_whole_soldiers(self) -> None:
+        row = _available_row(11, "player", [], regiment_count=2, current=900, maximum=1500)
+        row["regiment_strengths"] = [
+            {"army_regiment_id": 0x03000001, "current_soldiers": 600, "maximum_soldiers": 1000, "scale": 1},
+            {"army_regiment_id": 0, "current_soldiers": 300, "maximum_soldiers": 500, "scale": 1},
+        ]
+        self.assertEqual(normalize_army_strengths([row])[0]["regiment_strengths"], row["regiment_strengths"])
+        legacy = _available_row(11, "player", [])
+        self.assertNotIn("regiment_strengths", normalize_army_strengths([legacy])[0])
+        zero = _available_row(11, "player", [], regiment_count=0, current=0, maximum=0)
+        zero["regiment_strengths"] = []
+        self.assertEqual(normalize_army_strengths([zero])[0]["regiment_strengths"], [])
+
+    def test_actual_regiment_rows_require_complete_same_frame_counts(self) -> None:
+        row = _available_row(11, "player", [], regiment_count=1, current=600, maximum=1000)
+        item = {"army_regiment_id": 0x03000001, "current_soldiers": 600, "maximum_soldiers": 1000, "scale": 1}
+        for invalid in ([], [{**item, "current_soldiers": 599}], [{**item, "maximum_soldiers": 999}],
+                        [{**item, "scale": 100000}], [{**item, "scale": True}],
+                        [{**item, "army_regiment_id": None}], [{**item, "current_soldiers": True}]):
+            with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                normalize_army_strengths([{**row, "regiment_strengths": invalid}])
+        unavailable = _unavailable_row(11, "player", [])
+        unavailable["regiment_strengths"] = []
+        with self.assertRaises(ValueError):
+            normalize_army_strengths([unavailable])
+
     def test_frozen_capability_and_step_are_native_only(self) -> None:
         self.assertEqual(
             QUERY_ARMY_STRENGTHS_CAPABILITY,

@@ -63,6 +63,22 @@ inline void AppendArmyStrengthV1(
   }
   result += ",\"ai_base_power_scale\":";
   result += number(strength.ai_base_power_scale);
+  if (strength.available && strength.regiment_strengths.has_value()) {
+    result += ",\"regiment_strengths\":[";
+    bool first = true;
+    for (const auto &regiment : *strength.regiment_strengths) {
+      if (!first) result += ',';
+      first = false;
+      result += "{\"army_regiment_id\":";
+      result += number(regiment.army_regiment_id);
+      result += ",\"current_soldiers\":";
+      result += number(regiment.current_soldiers);
+      result += ",\"maximum_soldiers\":";
+      result += number(regiment.maximum_soldiers);
+      result += ",\"scale\":1}";
+    }
+    result += ']';
+  }
   if (strength.available && strength.current_supply_raw.has_value()) {
     result += ",\"current_supply_raw\":";
     result += number(*strength.current_supply_raw);

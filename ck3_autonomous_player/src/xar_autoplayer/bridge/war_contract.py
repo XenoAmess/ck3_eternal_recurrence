@@ -263,7 +263,7 @@ _ARMY_STRENGTH_GATHERING_DAYS_KEYS = {
 }
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS = _ARMY_STRENGTH_ROW_KEYS | {
     key for pair in _ARMY_STRENGTH_SUPPLY_FIELD_PAIRS for key in pair
-} | {"regiment_replenishment", "current_movement_progress",
+} | {"regiment_replenishment", "regiment_strengths", "current_movement_progress",
      "army_update_clock_v1", "native_owner_recall_inputs_v1"} | _ARMY_STRENGTH_GATHERING_DAYS_KEYS
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
@@ -1789,6 +1789,14 @@ def _normalize_army_strength_row(
         result["native_owner_recall_inputs_v1"] = normalize_battle_native_owner_recall_inputs_v1(
             value["native_owner_recall_inputs_v1"], lifecycle_status="available"
         )
+    if "regiment_strengths" in value:
+        if status != "available":
+            raise ValueError(f"native unavailable {name} cannot publish regiment_strengths")
+        result["regiment_strengths"] = _normalize_regiment_strengths(
+            value["regiment_strengths"], name=f"{name}.regiment_strengths",
+            regiment_count=regiment_count, current_soldiers=current_soldiers,
+            maximum_soldiers=maximum_soldiers,
+        )
     result.update(_normalize_army_gathering_days(value, name=name))
     if "current_movement_progress" in value:
         result["current_movement_progress"] = _normalize_current_movement_progress(
@@ -1800,6 +1808,34 @@ def _normalize_army_strength_row(
         result["regiment_replenishment"] = _normalize_regiment_replenishment(
             value["regiment_replenishment"], name=f"{name}.regiment_replenishment"
         )
+    return result
+
+
+def _normalize_regiment_strengths(
+    value: object, *, name: str, regiment_count: int,
+    current_soldiers: int, maximum_soldiers: int,
+) -> list[dict[str, int]]:
+    if not isinstance(value, list) or len(value) != regiment_count:
+        raise ValueError(f"native {name} must cover the observed regiment_count")
+    result = []
+    for index, row in enumerate(value):
+        item_name = f"{name}[{index}]"
+        if not isinstance(row, dict) or set(row) != {
+            "army_regiment_id", "current_soldiers", "maximum_soldiers", "scale",
+        }:
+            raise ValueError(f"native {item_name} schema is malformed")
+        fields = {
+            key: _optional_non_negative_int32(row[key], f"{item_name}.{key}")
+            for key in ("army_regiment_id", "current_soldiers", "maximum_soldiers")
+        }
+        if any(number is None for number in fields.values()):
+            raise ValueError(f"native {item_name} requires observed integer values")
+        if type(row["scale"]) is not int or row["scale"] != 1:
+            raise ValueError(f"native {item_name}.scale must be whole soldiers (1)")
+        result.append({**fields, "scale": 1})
+    if (sum(row["current_soldiers"] for row in result) != current_soldiers
+            or sum(row["maximum_soldiers"] for row in result) != maximum_soldiers):
+        raise ValueError(f"native {name} does not match the same-frame strength aggregate")
     return result
 
 

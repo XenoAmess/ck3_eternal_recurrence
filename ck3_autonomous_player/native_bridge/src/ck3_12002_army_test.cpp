@@ -177,6 +177,11 @@ bool Test() {
              strength.size() == 1 && strength[0].available && strength[0].current_soldiers == 900 &&
              strength[0].maximum_soldiers == 1500 && strength[0].ai_base_power_raw == 35802467 && strength[0].native_carmy_id == 0x02000001,
              "generation resolved army strength")) return false;
+  if (!Check(strength[0].regiment_strengths.has_value() &&
+             strength[0].regiment_strengths->size() == 2 &&
+             (*strength[0].regiment_strengths)[0] == game::ArmyRegimentStrengthSnapshot{regs[0], 600, 1000} &&
+             (*strength[0].regiment_strengths)[1] == game::ArmyRegimentStrengthSnapshot{regs[1], 300, 500},
+             "complete actual full-ID regiment strengths share the native aggregate")) return false;
   Put(r1, 0x10, std::int32_t{0x09000001});
   if (!Check(ReadArmyStrengthsForScope(bindings, scope, strength) == game::ReadArmyStrengthsResult::partial &&
              !strength[0].available && strength[0].unavailable_reason == "regiment_not_found", "stale regiment generation")) return false;
@@ -624,6 +629,10 @@ void ReplenishmentFixture() {
     const auto before = replenishment_fixture_regiment_calls + replenishment_fixture_chunk_calls +
                         replenishment_fixture_monthly_calls;
     const auto &row = read();
+    Require(row.regiment_strengths.has_value() && row.regiment_strengths->size() == 1 &&
+                row.regiment_strengths->front() ==
+                    game::ArmyRegimentStrengthSnapshot{army_regiment_id, 600, 1000},
+            "actual regiment counts remain complete when persistent first-record is absent");
     Require(row.regiment_replenishment.has_value() && row.regiment_replenishment->size() == 1,
             "unavailable subgraph keeps ArmyRegiment identity");
     const auto &item = row.regiment_replenishment->front();
