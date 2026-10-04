@@ -22,6 +22,7 @@ LOC_ROW = re.compile(r'^\s+([A-Za-z0-9_.-]+):[0-9]+\s+"((?:[^"\\]|\\.)*)"\s*(?:#
 PLACEHOLDER = re.compile(r"\$[^$\r\n]+\$|\[[^\]\r\n]+\]")
 LYD_ID = re.compile(r"(?:lyd_[A-Za-z0-9_]+|lyd\.[0-9]+)")
 LOC_FIELDS = frozenset({"title", "desc", "name", "confirm_text", "selection_tooltip", "custom_tooltip", "text"})
+INTERNAL_NAME_CONTAINERS = frozenset({"set_variable", "change_variable", "add_to_variable_list", "remove_list_variable", "save_scope_value_as"})
 META_FIELDS = frozenset({"namespace", "add_namespace"})
 NATIVE_TIERS = frozenset({"barony", "county", "duchy", "kingdom", "empire", "hegemony"})
 EFFECT_CONTAINERS = frozenset({"effect", "immediate", "after", "option", "on_send", "on_accept", "on_decline", "on_auto_accept"})
@@ -47,12 +48,13 @@ def player_guard(block: Block, triggers: dict[str, Block], seen: frozenset[str] 
     """Prove a positive player conjunct in the current/root/actor scope.
 
     A guard under NOT, a target scope or only one branch of OR is insufficient.
-    Parameterized or unusual gates are deliberately not guessed.
+    Parameterized helpers may prove a direct current-scope conjunct. Parameter
+    substitution never grants a target scope permission to count as the actor.
     """
     for entry in block.entries:
         if entry.key == "is_ai" and entry.operator == "=" and entry.value == "no":
             return True
-        if entry.key in triggers and entry.value == "yes" and entry.key not in seen:
+        if entry.key in triggers and (entry.value == "yes" or isinstance(entry.value, Block)) and entry.key not in seen:
             if player_guard(triggers[entry.key], triggers, seen | {entry.key}):
                 return True
         if isinstance(entry.value, Block):
@@ -219,7 +221,8 @@ def validate(source: Path = SOURCE) -> dict:
                         errors.append(f"unresolved {kind} reference: {relative}: {identifier}")
                 if entry.key in {"faith", "parent_faith", "main_rite", "rite", "core_tenet", "tenet", "rite_has_tenet"} and value.startswith(("lyd_", "tenet_lyd_")) and value not in known_ids:
                     errors.append(f"unresolved religious definition: {relative}: {value}")
-                if entry.key in LOC_FIELDS and (value.startswith("lyd_") or value.startswith("lyd.")) and value not in english:
+                internal_name = entry.key == "name" and bool(ancestors) and ancestors[-1] in INTERNAL_NAME_CONTAINERS
+                if entry.key in LOC_FIELDS and not internal_name and (value.startswith("lyd_") or value.startswith("lyd.")) and value not in english:
                     errors.append(f"unlocalized field: {relative}: {entry.key}={value}")
                 if entry.key in {"trigger_event", "id"} and re.fullmatch(r"lyd\.[0-9]+", value):
                     if value not in events:

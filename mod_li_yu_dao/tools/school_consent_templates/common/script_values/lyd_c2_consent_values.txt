@@ -1,0 +1,12 @@
+# Source: initiating Character scope. Target: each receiving Rite scope.
+# Integer comparisons avoid rounding a 2/3 mandate downward.
+lyd_c2_source_quorum_value = {
+    value = var:lyd_c2_source_yes
+    multiply = @QUORUM_DENOMINATOR@
+    subtract = { value = var:lyd_c2_source_total multiply = @QUORUM_NUMERATOR@ }
+}
+lyd_c2_target_quorum_value = {
+    value = var:lyd_c2_target_yes
+    multiply = @QUORUM_DENOMINATOR@
+    subtract = { value = var:lyd_c2_target_total multiply = @QUORUM_NUMERATOR@ }
+}

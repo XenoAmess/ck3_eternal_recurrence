@@ -1,0 +1,52 @@
+{
+  "schema": "lyd.native-primitive-admitted-projection-binding.v1",
+  "scope": "native-primitives-only",
+  "baseline_commit": "588492d3dbf473226664220b722a04b66ae54bae",
+  "authorized_by": "/root",
+  "prepared_by": "/root/confucian_history_plan",
+  "authorization": "Delegated instruction: Continue externaliteration2candidate audit+admission fromactualR0002 primitiveproofattestation-v2 andsave108; Acceptnativeprimitivesonly; formalapprovalstillNOT_LIVE.",
+  "primitives": [
+    "set_parent_faith",
+    "detach_rite_to_new_faith"
+  ],
+  "evidence_refs": [
+    {
+      "role": "native_attestation_v2",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\probe-audit-three-rounds\\native-primitive-attestation-candidate-v2.json",
+      "sha256": "50bad54b995723026bd26842f258376c86447547791357f6c5ad809750891b5d"
+    },
+    {
+      "role": "saved_graph_summary",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca\\three-rounds.summary.json",
+      "sha256": "a436aec37b9e71e05a47329c69354195ad69deade8711172e16b777d2aa1d1c5"
+    },
+    {
+      "role": "saved_artifact",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca\\xar_checkpoint.ck3",
+      "sha256": "ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca"
+    },
+    {
+      "role": "saved_projection",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca\\three-rounds.objects.complete.json",
+      "sha256": "79fd1567125594c96f8c086c33eb1550f1236660a2f256d1c50fdff710ffd613"
+    },
+    {
+      "role": "native_probe_effects",
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-04-R0002-native-cycles-formal-red\\source-r0002\\fixture\\common\\scripted_effects\\lyd_np_effects.txt",
+      "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d"
+    },
+    {
+      "role": "native_probe_triggers",
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-04-R0002-native-cycles-formal-red\\source-r0002\\fixture\\common\\scripted_triggers\\lyd_np_triggers.txt",
+      "sha256": "7c1bc919d2ddf3dfc5b59969ea1cb4b795e4a172e8ad1d984acadc048ed25cff"
+    },
+    {
+      "role": "native_title_factory_source",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_religion_effects.txt",
+      "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931"
+    }
+  ],
+  "consent_flow_live": "NOT_RUN",
+  "shared_narrow_head_factory_live": "NOT_RUN",
+  "boundary": "Binding and delegated admission of actual bounded native primitive evidence; not a new live or human approval receipt."
+}

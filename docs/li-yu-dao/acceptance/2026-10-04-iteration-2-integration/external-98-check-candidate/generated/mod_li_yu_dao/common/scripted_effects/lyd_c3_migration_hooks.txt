@@ -1,0 +1,32 @@
+﻿# GENERATED FILE: edit iteration2-nonce-candidate-002/source or tools/gen_school_consent.py.
+# Standalone I2 integration hooks. They never touch c2 locks/serial/electorates or native title ownership.
+# Rite ROOT, called from an already authorized player migration chain before the native setter.
+lyd_c3_before_rite_migration_effect = {
+    save_scope_as = lyd_c3_migrating_rite
+    faith = {
+        every_faith_character = {
+            limit = { rite = scope:lyd_c3_migrating_rite has_variable = lyd_c3_claim_rite var:lyd_c3_claim_rite = scope:lyd_c3_migrating_rite }
+            remove_variable = lyd_c3_claim_rite
+            remove_variable = lyd_c3_claim_faith
+            remove_character_flag = lyd_c3_claimant
+        }
+    }
+}
+# Faith ROOT. Read back actual head after a player-authorized migration/retirement; do not invent a successor.
+lyd_c3_reconcile_faith_roles_effect = {
+    if = {
+        limit = { has_variable = lyd_c3_recognized_leader }
+        if = {
+            limit = {
+                NOT = {
+                    exists = var:lyd_c3_recognized_leader
+                    exists = religious_head
+                    religious_head = var:lyd_c3_recognized_leader
+                    var:lyd_c3_recognized_leader = { is_alive = yes faith = prev }
+                }
+            }
+            remove_variable = lyd_c3_recognized_leader
+            set_variable = { name = lyd_c3_vacancy value = 1 }
+        }
+    }
+}

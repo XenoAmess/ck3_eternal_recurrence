@@ -1,0 +1,185 @@
+{
+  "schema": "lyd.c2.nonce-repair-candidate.v1",
+  "utc": "2026-10-04T08:02:24.558308+00:00",
+  "nonce_repair": "PASS_OFFLINE_ONLY",
+  "tests": 85,
+  "original_tests": 65,
+  "new_tests": 20,
+  "generated_files": 15,
+  "live": "NOT_RUN",
+  "runtime_admission": "R0002_NATIVE_PRIMITIVES_ONLY_NOT_NEW_CONSENT_OR_HEAD_FLOW",
+  "parent_candidate_unchanged": true,
+  "parent_input_files": 52,
+  "parent_input_manifest": "evidence/nonce-parent-input-manifest.json",
+  "offline_report": "evidence/offline-20261004T075815354477Z/offline-report.json",
+  "offline_report_sha256": "9eff4198cce7f8ef9123207298aa321b8c86f33f343b8aea799bc93ac3a8a6f0",
+  "offline_checkout": "9015d45e5f1bc06ca756d442c2c530e52e81749f",
+  "prior_nonce_attempt": {
+    "path": "evidence/offline-20261004T075141184664Z/offline-report.json",
+    "tests_passed": 83,
+    "result": "FAIL_OFFLINE",
+    "reason": "Existing root-owned tracked changes rejected the clean-checkout guard; historical report preserved."
+  },
+  "nonce_guards": [
+    "saved_actor",
+    "saved_moving_rite",
+    "rite_serial",
+    "terms_revision",
+    "persistent_actor_callback_nonce",
+    "vote_nonce",
+    "player_nonce"
+  ],
+  "entry_ids_unchanged": true,
+  "shared_c3_dependencies_unchanged": true,
+  "open_release_blocker": "Consent electorate excludes landless human players; all-affected-player contract needs separate scope correction.",
+  "not_proven": [
+    "native trigger/effect scope typing",
+    "consent delivery and AI response in CK3",
+    "saved scope and serial lifetime",
+    "list/tenet-status/doctrine iterator semantics",
+    "pair divergence before/after migration",
+    "characters/counties and head bindings",
+    "D+1/D+30 postconditions",
+    "natural cooldown expiry",
+    "save/load",
+    "DLC and UI"
+  ],
+  "no_zero_error_log_green": true,
+  "delta": [
+    {
+      "path": "source/common/scripted_effects/lyd_c2_close_effects.txt",
+      "sha256": "cc223af9e9f11c490399abfb6f7b0fd65d74eae1150aa0b425c7d7ff3954b54b",
+      "parent_sha256": "73d1b5b964dd0ce55cd5057827e7830644d60c98c91b011e0416d3b4e9e07969"
+    },
+    {
+      "path": "source/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "sha256": "e2dbec2af0062a6055644cb772ea43bc5a10b6dd8dd27039b436fe5f127d258a",
+      "parent_sha256": "32c57c35fc20593846bae883ca8a938006ff32879fdab2ee91e345db417bb923"
+    },
+    {
+      "path": "source/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "sha256": "a210922e59e82f7326ff7f24b2397b2094d16defd6c8c9d361cf2f580951cf8c",
+      "parent_sha256": "d2b09f0caf691461ddc37aca3671d318748145d23b83893da2ce728ae9bcf022"
+    },
+    {
+      "path": "source/common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "sha256": "2c6964221393059e807d74fdfb484834025a8c868d40570e89800bc9d3e7ba88",
+      "parent_sha256": "db96dc786cf804d66efeb56134d5c9089aa94ea89906c971146e1a0ead549290"
+    },
+    {
+      "path": "source/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "sha256": "abbda775ede3ef38e8c1479d4330bd0918ce9f0dbffdafc2eca21397cef7985c",
+      "parent_sha256": "311f89dddd5732e5eaa15b8aa16162626aad595935a94ee7dd3b4723f184b61a"
+    },
+    {
+      "path": "source/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "sha256": "e76b7d3bfce2efcab111ed11b24aa12bf9a86ed51e37e2849540bc9dbe273dc3",
+      "parent_sha256": "7299b1f971816334644137012e8718cc1a9b8eb38a1d99ce7e2628b1169a7d4f"
+    },
+    {
+      "path": "source/events/lyd_c2_consent_events.txt",
+      "sha256": "9a6dd545d1b8f0a9f1eec58eb5cdf12f5a69e5bad8b9b8b4dcaa76a5d3c94f68",
+      "parent_sha256": "8628c774ba05196b4b7806274bb03ba30a59896cde4ca933cca84629e4c91ac0"
+    },
+    {
+      "path": "tools/finalize_nonce_candidate.py",
+      "sha256": "52cf52540c2b0a4268e083ff2d0268398b9dc1d5771187aaaea5af797c54bf05",
+      "parent_sha256": null
+    },
+    {
+      "path": "tools/gen_school_consent.py",
+      "sha256": "b07d8562267922db18d10602ca58c23268028dd988a2452040cdb8f4cb4989b0",
+      "parent_sha256": "fb9b0858dabf0d0b0c0a1b7f7aca91bac8cd064e0ac09fc37f1b40a38164e810"
+    },
+    {
+      "path": "tools/run_offline_checks.py",
+      "sha256": "489ca606c57ec5cefeebb63c782e3a3edad4041311c443b582b7cea4e5889547",
+      "parent_sha256": "5b0d00589c4e547de3e95d7f8a14cdca1ec54e21b051c6357f057063728e4296"
+    },
+    {
+      "path": "tools/school_consent_callbacks.py",
+      "sha256": "23583d05e9daf00c6a3d874893a4171d4bf45c2fa464b18317d4223300ad15a2",
+      "parent_sha256": null
+    },
+    {
+      "path": "tools/school_consent_model.py",
+      "sha256": "c84dfa09dcf1efba23c372afbc2d208322e800b7007a5a70b1a4f242c297c15e",
+      "parent_sha256": "5846c84808faeb9413d9c7606a88eb22624d2d5a51da7cb955dd942377bad15f"
+    },
+    {
+      "path": "tools/test_school_consent.py",
+      "sha256": "1b532a9eef25f3f2b5f03f495988f2afcff670cd3b1c0f5b52117d2e06474e01",
+      "parent_sha256": "b1d14f0752e674ac772ebf1a41453263022b4622539a7ac087634e8e05026880"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "sha256": "294ed3262df59e4f651b54b92fa2200c71e9580642157d75de7a004a64c35719",
+      "parent_sha256": "3e8ff3142aa712a93ea5a85e0ff2f6701f999867cc7c144f7b60cac2781322b5"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/decisions/lyd_c2_consent_decisions.txt",
+      "sha256": "593b3db5cbe83e8f1b916d85422e3d477e807f2e1da2201dc8a48c56a5e8f950",
+      "parent_sha256": "a0289d53f54a7ac6849e45072e3be5c10464b421e242a5cbd85691342986145e"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/script_values/lyd_c2_consent_values.txt",
+      "sha256": "32d69b7aae57f45b256ea371c44cc7f2639a0cba7684732b756de7f2bc6ee1b6",
+      "parent_sha256": "5b463f79abf275469f3365dcb069ff3ce854e8c77b05ec264df83f54f0719998"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_close_effects.txt",
+      "sha256": "517f90f081c966dbbf2a72fe64ce3eff3618e5f89b005f9ef20027d2e0b94bdb",
+      "parent_sha256": "060b7816c48f51c2eb48576c2f5a447669534555f193753abe6267776f5b1e8c"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "sha256": "cec69ae8d607a411c74e5ee4514777334c59ad870eb224f21e6da0a0c7ba658f",
+      "parent_sha256": "25547d27d788cdaf08d0d3b21acd0b634c9e4b55275fc3e0cf380aad0da9b870"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_head_effects.txt",
+      "sha256": "3bfdc446745b0b1ab1d707d9aad1e2e40697efa7ccbbd1150521af9647429b0e",
+      "parent_sha256": "07c6d4a37899c33ee599a36172d27ca1f07d8d00c6fb3c299b5675cfcdd9108c"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "sha256": "bf6711fecc39c2c1eb5a3683f399f75c33b8d27fe6d3515eadbf1db43a306958",
+      "parent_sha256": "5a09a259c8050e38dbbb184222e6a7d8c08daf140152da77520dc198027076f9"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "sha256": "ceaac6cb842ccad58ab8f510f0081caf653fb47c7f4cc97561a52d4af8ec18ec",
+      "parent_sha256": "dd53a8ef4dfdc1db59bbf88419d14158cd050401001336667af5813408e340bb"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "sha256": "792633c377e84f2a5b1fbbb87d1738e865d2f712dc510787b83a49284695748b",
+      "parent_sha256": "c13a7095516bb5d3baadf4674928ca736d82e4c4e868305a228c78365e3c6b8c"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+      "sha256": "b031b4030bbc47efbfe7bb6d7d28bbb128f4b04d16ebd28792aa2e4ddd92e3f0",
+      "parent_sha256": "66ba6869bcf488403c7a613e8a3d91affc8b5faefe73bc8df7b6cc0e47f74b9e"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "sha256": "453a14fa26e48f5b2818ac6549f50bc3a7ac424c79fd33fc96a0aa248300c08d",
+      "parent_sha256": "051ded5ada9fd74756134214084654d78e654887cdde468e150d86e5c0811d91"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "sha256": "515cefbbb9e7d4400cb863ec5677ad142f72b050a27d7dc85bf5b095a80dbd36",
+      "parent_sha256": "1ad31086965661fbda29978838a7de62facd7ac1ce98805d97c8600edb4babba"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/events/lyd_c2_consent_events.txt",
+      "sha256": "0a5331fa4eb1328154ddba21615ee1822f65ba708bebdab8fe8723ce9267484e",
+      "parent_sha256": "f3a415d3e44fba3febc92ae45e3117c70b07cc1ec86e9910c945110e95696fb4"
+    },
+    {
+      "path": "docs/nonce-review-and-repair.md",
+      "sha256": "fbcebb17e74c486fb22d1168f9eafb204a9d5d718ec5f569943c587007814886",
+      "parent_sha256": null
+    }
+  ]
+}

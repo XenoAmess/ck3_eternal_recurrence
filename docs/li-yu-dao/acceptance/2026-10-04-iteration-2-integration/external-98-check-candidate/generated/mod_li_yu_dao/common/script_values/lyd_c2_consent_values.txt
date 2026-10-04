@@ -1,0 +1,13 @@
+﻿# GENERATED FILE: edit iteration2-nonce-candidate-002/source or tools/gen_school_consent.py.
+# Source: initiating Character scope. Target: each receiving Rite scope.
+# Integer comparisons avoid rounding a 2/3 mandate downward.
+lyd_c2_source_quorum_value = {
+    value = var:lyd_c2_source_yes
+    multiply = 3
+    subtract = { value = var:lyd_c2_source_total multiply = 2 }
+}
+lyd_c2_target_quorum_value = {
+    value = var:lyd_c2_target_yes
+    multiply = 3
+    subtract = { value = var:lyd_c2_target_total multiply = 2 }
+}

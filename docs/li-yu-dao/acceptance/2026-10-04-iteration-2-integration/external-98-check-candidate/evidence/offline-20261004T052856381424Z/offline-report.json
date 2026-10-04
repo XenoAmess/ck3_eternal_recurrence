@@ -1,0 +1,224 @@
+{
+  "result": "PASS_OFFLINE",
+  "layer": "model-and-structural-only",
+  "test_exit_code": 0,
+  "test_summary": [
+    "",
+    "----------------------------------------------------------------------",
+    "Ran 65 tests in 1.080s",
+    "",
+    "OK"
+  ],
+  "render": {
+    "candidate": "iteration2-school-consent",
+    "baseline_commit": "588492d3dbf473226664220b722a04b66ae54bae",
+    "game_reference": "1.20.0.3",
+    "result": "PASS_OFFLINE_RENDER",
+    "mismatches": [],
+    "native_primitive": "R0002_PRIMITIVES_ATTESTED_AND_SAVED_GRAPH_BOUND",
+    "native_admission_default": false,
+    "native_admission": {
+      "admitted": true,
+      "status": "R0002_PRIMITIVES_ATTESTED_AND_SAVED_GRAPH_BOUND",
+      "receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\iteration2-admitted-candidate-001\\evidence\\native-admission-binding.json",
+      "receipt_sha256": "86e82cb023d661e9c5bf0c02cc4bcfd7b161ec0a39f3e94679996aed7b02a5ab",
+      "evidence_refs": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\probe-audit-three-rounds\\native-primitive-attestation-candidate-v2.json",
+          "sha256": "50bad54b995723026bd26842f258376c86447547791357f6c5ad809750891b5d"
+        },
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca\\three-rounds.summary.json",
+          "sha256": "a436aec37b9e71e05a47329c69354195ad69deade8711172e16b777d2aa1d1c5"
+        },
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca\\xar_checkpoint.ck3",
+          "sha256": "ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca"
+        },
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca\\three-rounds.objects.complete.json",
+          "sha256": "79fd1567125594c96f8c086c33eb1550f1236660a2f256d1c50fdff710ffd613"
+        },
+        {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-04-R0002-native-cycles-formal-red\\source-r0002\\fixture\\common\\scripted_effects\\lyd_np_effects.txt",
+          "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d"
+        },
+        {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-04-R0002-native-cycles-formal-red\\source-r0002\\fixture\\common\\scripted_triggers\\lyd_np_triggers.txt",
+          "sha256": "7c1bc919d2ddf3dfc5b59969ea1cb4b795e4a172e8ad1d984acadc048ed25cff"
+        },
+        {
+          "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_religion_effects.txt",
+          "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931"
+        }
+      ],
+      "consent_flow_live": "NOT_RUN",
+      "shared_narrow_head_factory_live": "NOT_RUN",
+      "zero_error_acceptance": "NOT_CLAIMED_UNRESOLVED_ERROR_RECORDS",
+      "not_admitted": [
+        "authority/consent event graph",
+        "natural cooldown expiry",
+        "save/reload",
+        "main/last direct detach",
+        "shared narrowed factory",
+        "all doctrine/head combinations"
+      ]
+    },
+    "live": "NOT_RUN",
+    "files": {
+      "common/character_interactions/lyd_c2_consent_interactions.txt": "3e8ff3142aa712a93ea5a85e0ff2f6701f999867cc7c144f7b60cac2781322b5",
+      "common/decisions/lyd_c2_consent_decisions.txt": "a0289d53f54a7ac6849e45072e3be5c10464b421e242a5cbd85691342986145e",
+      "common/script_values/lyd_c2_consent_values.txt": "5b463f79abf275469f3365dcb069ff3ce854e8c77b05ec264df83f54f0719998",
+      "common/scripted_effects/lyd_c2_close_effects.txt": "060b7816c48f51c2eb48576c2f5a447669534555f193753abe6267776f5b1e8c",
+      "common/scripted_effects/lyd_c2_commit_effects.txt": "25547d27d788cdaf08d0d3b21acd0b634c9e4b55275fc3e0cf380aad0da9b870",
+      "common/scripted_effects/lyd_c2_head_effects.txt": "07c6d4a37899c33ee599a36172d27ca1f07d8d00c6fb3c299b5675cfcdd9108c",
+      "common/scripted_effects/lyd_c2_setup_effects.txt": "5a09a259c8050e38dbbb184222e6a7d8c08daf140152da77520dc198027076f9",
+      "common/scripted_effects/lyd_c2_snapshot_effects.txt": "dd53a8ef4dfdc1db59bbf88419d14158cd050401001336667af5813408e340bb",
+      "common/scripted_effects/lyd_c2_vote_effects.txt": "c13a7095516bb5d3baadf4674928ca736d82e4c4e868305a228c78365e3c6b8c",
+      "common/scripted_effects/lyd_c3_head_factory.txt": "66ba6869bcf488403c7a613e8a3d91affc8b5faefe73bc8df7b6cc0e47f74b9e",
+      "common/scripted_effects/lyd_c3_migration_hooks.txt": "051ded5ada9fd74756134214084654d78e654887cdde468e150d86e5c0811d91",
+      "common/scripted_triggers/lyd_c2_consent_triggers.txt": "1ad31086965661fbda29978838a7de62facd7ac1ce98805d97c8600edb4babba",
+      "events/lyd_c2_consent_events.txt": "f3a415d3e44fba3febc92ae45e3117c70b07cc1ec86e9910c945110e95696fb4",
+      "localization/english/lyd_c2_consent_l_english.yml": "f12dddaf17f4098a47ba2080428b0097cd1b8cdf203a04a5ea6eea7c876a2d70",
+      "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml": "6cf1eeb0008e7ce1cf8c7b087982a1097d436bdb78031674e5dccef918daa93f"
+    }
+  },
+  "check": {
+    "candidate": "iteration2-school-consent",
+    "baseline_commit": "588492d3dbf473226664220b722a04b66ae54bae",
+    "game_reference": "1.20.0.3",
+    "result": "PASS_OFFLINE_RENDER",
+    "mismatches": [],
+    "native_primitive": "R0002_PRIMITIVES_ATTESTED_AND_SAVED_GRAPH_BOUND",
+    "native_admission_default": false,
+    "native_admission": {
+      "admitted": true,
+      "status": "R0002_PRIMITIVES_ATTESTED_AND_SAVED_GRAPH_BOUND",
+      "receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\iteration2-admitted-candidate-001\\evidence\\native-admission-binding.json",
+      "receipt_sha256": "86e82cb023d661e9c5bf0c02cc4bcfd7b161ec0a39f3e94679996aed7b02a5ab",
+      "evidence_refs": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\probe-audit-three-rounds\\native-primitive-attestation-candidate-v2.json",
+          "sha256": "50bad54b995723026bd26842f258376c86447547791357f6c5ad809750891b5d"
+        },
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca\\three-rounds.summary.json",
+          "sha256": "a436aec37b9e71e05a47329c69354195ad69deade8711172e16b777d2aa1d1c5"
+        },
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca\\xar_checkpoint.ck3",
+          "sha256": "ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca"
+        },
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca\\three-rounds.objects.complete.json",
+          "sha256": "79fd1567125594c96f8c086c33eb1550f1236660a2f256d1c50fdff710ffd613"
+        },
+        {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-04-R0002-native-cycles-formal-red\\source-r0002\\fixture\\common\\scripted_effects\\lyd_np_effects.txt",
+          "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d"
+        },
+        {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-04-R0002-native-cycles-formal-red\\source-r0002\\fixture\\common\\scripted_triggers\\lyd_np_triggers.txt",
+          "sha256": "7c1bc919d2ddf3dfc5b59969ea1cb4b795e4a172e8ad1d984acadc048ed25cff"
+        },
+        {
+          "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_religion_effects.txt",
+          "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931"
+        }
+      ],
+      "consent_flow_live": "NOT_RUN",
+      "shared_narrow_head_factory_live": "NOT_RUN",
+      "zero_error_acceptance": "NOT_CLAIMED_UNRESOLVED_ERROR_RECORDS",
+      "not_admitted": [
+        "authority/consent event graph",
+        "natural cooldown expiry",
+        "save/reload",
+        "main/last direct detach",
+        "shared narrowed factory",
+        "all doctrine/head combinations"
+      ]
+    },
+    "live": "NOT_RUN",
+    "files": {
+      "common/character_interactions/lyd_c2_consent_interactions.txt": "3e8ff3142aa712a93ea5a85e0ff2f6701f999867cc7c144f7b60cac2781322b5",
+      "common/decisions/lyd_c2_consent_decisions.txt": "a0289d53f54a7ac6849e45072e3be5c10464b421e242a5cbd85691342986145e",
+      "common/script_values/lyd_c2_consent_values.txt": "5b463f79abf275469f3365dcb069ff3ce854e8c77b05ec264df83f54f0719998",
+      "common/scripted_effects/lyd_c2_close_effects.txt": "060b7816c48f51c2eb48576c2f5a447669534555f193753abe6267776f5b1e8c",
+      "common/scripted_effects/lyd_c2_commit_effects.txt": "25547d27d788cdaf08d0d3b21acd0b634c9e4b55275fc3e0cf380aad0da9b870",
+      "common/scripted_effects/lyd_c2_head_effects.txt": "07c6d4a37899c33ee599a36172d27ca1f07d8d00c6fb3c299b5675cfcdd9108c",
+      "common/scripted_effects/lyd_c2_setup_effects.txt": "5a09a259c8050e38dbbb184222e6a7d8c08daf140152da77520dc198027076f9",
+      "common/scripted_effects/lyd_c2_snapshot_effects.txt": "dd53a8ef4dfdc1db59bbf88419d14158cd050401001336667af5813408e340bb",
+      "common/scripted_effects/lyd_c2_vote_effects.txt": "c13a7095516bb5d3baadf4674928ca736d82e4c4e868305a228c78365e3c6b8c",
+      "common/scripted_effects/lyd_c3_head_factory.txt": "66ba6869bcf488403c7a613e8a3d91affc8b5faefe73bc8df7b6cc0e47f74b9e",
+      "common/scripted_effects/lyd_c3_migration_hooks.txt": "051ded5ada9fd74756134214084654d78e654887cdde468e150d86e5c0811d91",
+      "common/scripted_triggers/lyd_c2_consent_triggers.txt": "1ad31086965661fbda29978838a7de62facd7ac1ce98805d97c8600edb4babba",
+      "events/lyd_c2_consent_events.txt": "f3a415d3e44fba3febc92ae45e3117c70b07cc1ec86e9910c945110e95696fb4",
+      "localization/english/lyd_c2_consent_l_english.yml": "f12dddaf17f4098a47ba2080428b0097cd1b8cdf203a04a5ea6eea7c876a2d70",
+      "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml": "6cf1eeb0008e7ce1cf8c7b087982a1097d436bdb78031674e5dccef918daa93f"
+    }
+  },
+  "checkout_before": {
+    "head": "588492d3dbf473226664220b722a04b66ae54bae",
+    "tracked_diff": [],
+    "read_sources": {
+      "docs/ck3-confucian-repeatable-reunion-and-schism-design.md": "708d4aa5a11fa763958011d59c07112f946817f7498417c66d3db1cf58f0af60",
+      "docs/ck3-1.20.0.3-rites-split-and-reunion.md": "71d8b6d3ecfc570859b4497b116bee08a0fbd8732c53f00cfd67e302163dea03",
+      "mod_li_yu_dao/tools/gen_runtime.py": "9682f57163e79ada44eff2a4036091250e64cad3b24df3019a00e8a20c568ddb",
+      "mod_li_yu_dao/tools/content_data.py": "fbfdda2180c5a62f2bb9a24e0d3de53d040d788790b52fd0872642f0f39ab508",
+      "mod_li_yu_dao/common/scripted_effects/lyd_entry_effects.txt": "5deef0c786a0de1d53df129b93e8aec16469d82ddf50b6fbf063fd80fd8ee8c1",
+      "mod_li_yu_dao/common/scripted_triggers/lyd_player_triggers.txt": "942cc258ec6a0814695122701297a1b30e7854cb6f8aae72e3d3dbeef18f1c2b"
+    }
+  },
+  "checkout_after": {
+    "head": "588492d3dbf473226664220b722a04b66ae54bae",
+    "tracked_diff": [],
+    "read_sources": {
+      "docs/ck3-confucian-repeatable-reunion-and-schism-design.md": "708d4aa5a11fa763958011d59c07112f946817f7498417c66d3db1cf58f0af60",
+      "docs/ck3-1.20.0.3-rites-split-and-reunion.md": "71d8b6d3ecfc570859b4497b116bee08a0fbd8732c53f00cfd67e302163dea03",
+      "mod_li_yu_dao/tools/gen_runtime.py": "9682f57163e79ada44eff2a4036091250e64cad3b24df3019a00e8a20c568ddb",
+      "mod_li_yu_dao/tools/content_data.py": "fbfdda2180c5a62f2bb9a24e0d3de53d040d788790b52fd0872642f0f39ab508",
+      "mod_li_yu_dao/common/scripted_effects/lyd_entry_effects.txt": "5deef0c786a0de1d53df129b93e8aec16469d82ddf50b6fbf063fd80fd8ee8c1",
+      "mod_li_yu_dao/common/scripted_triggers/lyd_player_triggers.txt": "942cc258ec6a0814695122701297a1b30e7854cb6f8aae72e3d3dbeef18f1c2b"
+    }
+  },
+  "checkout_unchanged": true,
+  "checkout_is_pinned_clean": true,
+  "native_primitive": "R0002_PRIMITIVES_ATTESTED_AND_SAVED_GRAPH_BOUND",
+  "live": "NOT_RUN",
+  "not_proven": [
+    "native trigger/effect scope typing",
+    "consent delivery and AI response in CK3",
+    "saved scope and serial lifetime",
+    "list/tenet-status/doctrine iterator semantics",
+    "pair divergence before/after migration",
+    "characters/counties and head bindings",
+    "D+1/D+30 postconditions",
+    "natural cooldown expiry",
+    "save/load",
+    "DLC and UI"
+  ],
+  "authored_source_sha256": {
+    "tools/bind_native_evidence.py": "09db594ddfe38637083a871c0744643b903c3845ff2f8ed3da0263ab28b39090",
+    "tools/gen_school_consent.py": "fb9b0858dabf0d0b0c0a1b7f7aca91bac8cd064e0ac09fc37f1b40a38164e810",
+    "tools/native_admission_v2.py": "12ae206372448bcad9b1d16e2a18fa3f0e7989f18bd5fade389e1cfa4e00a2bf",
+    "tools/run_offline_checks.py": "5b0d00589c4e547de3e95d7f8a14cdca1ec54e21b051c6357f057063728e4296",
+    "tools/school_consent_data.py": "cc4a98f18d59c945399e6b0384b7784b438654bfc7aa2e04bbc72ca870f35ca3",
+    "tools/school_consent_model.py": "5846c84808faeb9413d9c7606a88eb22624d2d5a51da7cb955dd942377bad15f",
+    "tools/test_school_consent.py": "b1d14f0752e674ac772ebf1a41453263022b4622539a7ac087634e8e05026880",
+    "tools/vendor_migration_hooks.py": "0e789439eb9f5914fa0e8e1adb3c3fecfb396a0580cc865914344cfab00cb5ca",
+    "tools/vendor_shared_factory.py": "4aef3272cef878662476015c9a1c7475b7c1e60ec987b1207a426b2d9758090a",
+    "source/common/character_interactions/lyd_c2_consent_interactions.txt": "11b0744070d9b47790320363de04e82fb67e787297931f21c5639132084d9608",
+    "source/common/decisions/lyd_c2_consent_decisions.txt": "98c449965d22c7e65d5c7e3018d6573e0379880d5110fa063367f370270eb162",
+    "source/common/script_values/lyd_c2_consent_values.txt": "c0f01096ec25dbebde4ba0465648977e4b6c50403076875280d939640fea17ea",
+    "source/common/scripted_effects/lyd_c2_close_effects.txt": "73d1b5b964dd0ce55cd5057827e7830644d60c98c91b011e0416d3b4e9e07969",
+    "source/common/scripted_effects/lyd_c2_commit_effects.txt": "32c57c35fc20593846bae883ca8a938006ff32879fdab2ee91e345db417bb923",
+    "source/common/scripted_effects/lyd_c2_head_effects.txt": "d8fa17b0afac4e2ec18dfc2955fdc810b6f8763e92d15185858da9b8e50f5aa9",
+    "source/common/scripted_effects/lyd_c2_setup_effects.txt": "d2b09f0caf691461ddc37aca3671d318748145d23b83893da2ce728ae9bcf022",
+    "source/common/scripted_effects/lyd_c2_snapshot_effects.txt": "db96dc786cf804d66efeb56134d5c9089aa94ea89906c971146e1a0ead549290",
+    "source/common/scripted_effects/lyd_c2_vote_effects.txt": "311f89dddd5732e5eaa15b8aa16162626aad595935a94ee7dd3b4723f184b61a",
+    "source/common/scripted_effects/lyd_c3_head_factory.txt": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c",
+    "source/common/scripted_effects/lyd_c3_migration_hooks.txt": "501b36d0fc72538e3f3361c659458ed693d4f47f03eda02a6db51419e6c20bd5",
+    "source/common/scripted_triggers/lyd_c2_consent_triggers.txt": "7299b1f971816334644137012e8718cc1a9b8eb38a1d99ce7e2628b1169a7d4f",
+    "source/events/lyd_c2_consent_events.txt": "8628c774ba05196b4b7806274bb03ba30a59896cde4ca933cca84629e4c91ac0"
+  }
+}

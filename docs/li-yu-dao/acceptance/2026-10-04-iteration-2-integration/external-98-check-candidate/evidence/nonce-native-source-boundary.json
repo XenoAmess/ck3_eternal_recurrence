@@ -1,0 +1,32 @@
+{
+  "schema": "lyd.c2.nonce-native-gap-review.v1",
+  "source_root": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game",
+  "launcher_path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/launcher/launcher-settings.json",
+  "launcher_sha256": "9cd6ff96f8092f2d21e1491b37e8344aa287faf69850563128ca1b117244a214",
+  "launcher_version": "1.20.0.3 (Crozier)",
+  "launcher_raw_version": "1.20.0.3",
+  "files": {
+    "common/scripted_effects/pam_heresy_shared_effects.txt": "f6905cc0c6804b8e93df0180b3abbc67332e4c6fa234a7213bc917f137bcf46e",
+    "common/scripted_effects/pam_effects.txt": "fc4c77974a7844c31c1271dcc2ace24b17906620a832658919aa281e42a2b94f",
+    "common/scripted_effects/00_religion_effects.txt": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931",
+    "common/religion/rite_types/_rite_types.info": "60fd476d72be0941d9c6dff4e83834016d6e32d16e855f3b258389061850828f"
+  },
+  "text_search": {
+    "argv": [
+      "rg",
+      "-n",
+      "has_same_core_doctrines|has_same_core_tenets|same_core_tenet",
+      "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game"
+    ],
+    "observed_exit_code": 1,
+    "observed_stdout": "",
+    "observed_stderr": "",
+    "boundary": "Previously completed local text search; no matching text is not proof of missing engine API."
+  },
+  "doctrine_iterator": {
+    "source": "common/scripted_effects/pam_heresy_shared_effects.txt:50-65",
+    "boundary": "Original use is HoR-known rite doctrines; non-HoR representative completeness needs cold verification."
+  },
+  "exe_read": false,
+  "live": "NOT_RUN"
+}

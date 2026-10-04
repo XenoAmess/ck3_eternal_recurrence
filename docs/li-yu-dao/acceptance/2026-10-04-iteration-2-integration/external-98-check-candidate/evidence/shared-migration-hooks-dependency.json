@@ -1,0 +1,7 @@
+{
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\iteration3-leadership-candidate\\source\\common\\scripted_effects\\lyd_c3_migration_hooks.txt.in",
+  "source_sha256": "501b36d0fc72538e3f3361c659458ed693d4f47f03eda02a6db51419e6c20bd5",
+  "snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\iteration2-admitted-candidate-001\\source\\common\\scripted_effects\\lyd_c3_migration_hooks.txt",
+  "live": "NOT_RUN",
+  "boundary": "I3 hooks only; no c2 locks/serial/electorates/native-title mutation; load one shared definition."
+}

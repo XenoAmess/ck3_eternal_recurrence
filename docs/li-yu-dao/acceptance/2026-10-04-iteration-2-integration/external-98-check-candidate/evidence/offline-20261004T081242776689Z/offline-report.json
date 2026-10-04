@@ -1,0 +1,245 @@
+{
+  "result": "PASS_OFFLINE",
+  "layer": "model-and-structural-only",
+  "test_exit_code": 0,
+  "test_summary": [
+    "",
+    "----------------------------------------------------------------------",
+    "Ran 98 tests in 0.935s",
+    "",
+    "OK"
+  ],
+  "render": {
+    "candidate": "iteration2-school-consent",
+    "baseline_commit": "588492d3dbf473226664220b722a04b66ae54bae",
+    "game_reference": "1.20.0.3",
+    "result": "PASS_OFFLINE_RENDER",
+    "mismatches": [],
+    "native_primitive": "R0002_PRIMITIVES_PERMANENT_TRACKED_PROOF_BOUND",
+    "native_admission_default": false,
+    "native_admission": {
+      "admitted": true,
+      "status": "R0002_PRIMITIVES_PERMANENT_TRACKED_PROOF_BOUND",
+      "receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\iteration2-nonce-candidate-002\\tools\\reference\\native-primitive-tracked-admission.json",
+      "receipt_sha256": "558e6c6aee6364abee0d1065f09a35d782765a2ae469a14b62461d19b47d3dd6",
+      "evidence_refs": [
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/native-primitive-attestation-candidate-v2.json",
+          "sha256": "50bad54b995723026bd26842f258376c86447547791357f6c5ad809750891b5d"
+        },
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/three-rounds.summary.json",
+          "sha256": "a436aec37b9e71e05a47329c69354195ad69deade8711172e16b777d2aa1d1c5"
+        },
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/debug-marker-lines.raw.log",
+          "sha256": "8564747babb9b8b4d46992bfb17412f086acd60604596c401a8d6a5c6f5f2d10"
+        },
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/source-r0002/fixture/common/scripted_effects/lyd_np_effects.txt",
+          "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d"
+        },
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/source-r0002/fixture/common/scripted_triggers/lyd_np_triggers.txt",
+          "sha256": "7c1bc919d2ddf3dfc5b59969ea1cb4b795e4a172e8ad1d984acadc048ed25cff"
+        },
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/error-classification-addendum.json",
+          "sha256": "2f3a464edf7541aa3b813f5bf39d0400dc6e2fd29d36bea80fbd05f83fe84a48"
+        },
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/character-36445.excerpt.txt",
+          "sha256": "885419cc4df4e419e36805afab250ce73fa1d6c404a5d2b4ad3925909acdae42"
+        },
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/rite-151.excerpt.txt",
+          "sha256": "69f5483d4d944da4ebce92c6bddaccd1a74cfdbd9edd01823f9fa006e5904b98"
+        },
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/faith-108.excerpt.txt",
+          "sha256": "fc56c5494e2eae9984e2d6f3f79a5482a2cae93a80299f79043d7851394e9baf"
+        },
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/title-18417.excerpt.txt",
+          "sha256": "3e3010bfac4739e0b4e6a33f99b641e8662fa2904d581805d77abc42efb49cbb"
+        }
+      ],
+      "consent_flow_live": "NOT_RUN",
+      "shared_narrow_head_factory_live": "NOT_RUN",
+      "zero_error_acceptance": "NOT_CLAIMED_UNRESOLVED_ERROR_RECORDS",
+      "revalidation_level": "TRACKED_REPORT_AND_EXCERPTS_ONLY",
+      "raw_save_rehashed_this_run": false,
+      "boundary": "Original bound artifact/projection hashes are preserved facts; no new raw-save or native execution claim."
+    },
+    "live": "NOT_RUN",
+    "files": {
+      "common/character_interactions/lyd_c2_consent_interactions.txt": "ced791a744491bc4bfbdd280074e640a4565a7e0e9612c31af963242dd4ac9b3",
+      "common/decisions/lyd_c2_consent_decisions.txt": "6a962b7d6a42a70f501c640a09bc85299ada6134e5733b1732bf51066bb038bc",
+      "common/script_values/lyd_c2_consent_values.txt": "51b25e387e10e1fb4d4db0c1e95a66d7a105ecd0f15cd049441c4b717d5cd389",
+      "common/scripted_effects/lyd_c2_close_effects.txt": "da5c5d36c21224b0504da7d9a88ffdd683025a4b3a9d0c9a31bd90d42b85c51a",
+      "common/scripted_effects/lyd_c2_commit_effects.txt": "913247b459f20cf64d8023a5ef904f7f4788c581a37c560b3503d31d4690bd86",
+      "common/scripted_effects/lyd_c2_head_effects.txt": "58873e31dca711e6b56c70509071e2545398da97127f2a65bc360195d139c91b",
+      "common/scripted_effects/lyd_c2_setup_effects.txt": "dbf696f43e069f13e0ef6f06ebda17e73b3d03d6cb30671a45c0082088665ebd",
+      "common/scripted_effects/lyd_c2_snapshot_effects.txt": "f2297d9445f45a38a546febc3083fd1d0a1d1c60eab833402de776ec99110687",
+      "common/scripted_effects/lyd_c2_vote_effects.txt": "8a50935787fc006601bcbb116a114f4e42b8b10257bc2b6d0901b24a5a2b602a",
+      "common/scripted_effects/lyd_c3_head_factory.txt": "7ef0d7914d98d003f7c3d0dabb46f8596cb731bc9ae103ce63ca15bcffd2b19a",
+      "common/scripted_effects/lyd_c3_migration_hooks.txt": "6cd7186a8e214c0ebdb7bf9f808e6f3d19d565ae05df8bf78b83b6585c550750",
+      "common/scripted_triggers/lyd_c2_consent_triggers.txt": "ecb89ff7c5f99f2c60506f8e15565a2e687db26c30937322184f873adda8e240",
+      "events/lyd_c2_consent_events.txt": "7d8fe459eea9cd3cf4107386dd98dcc36b31495ea7b20372564bc2dda99e041c",
+      "localization/english/lyd_c2_consent_l_english.yml": "f12dddaf17f4098a47ba2080428b0097cd1b8cdf203a04a5ea6eea7c876a2d70",
+      "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml": "6cf1eeb0008e7ce1cf8c7b087982a1097d436bdb78031674e5dccef918daa93f"
+    }
+  },
+  "check": {
+    "candidate": "iteration2-school-consent",
+    "baseline_commit": "588492d3dbf473226664220b722a04b66ae54bae",
+    "game_reference": "1.20.0.3",
+    "result": "PASS_OFFLINE_RENDER",
+    "mismatches": [],
+    "native_primitive": "R0002_PRIMITIVES_PERMANENT_TRACKED_PROOF_BOUND",
+    "native_admission_default": false,
+    "native_admission": {
+      "admitted": true,
+      "status": "R0002_PRIMITIVES_PERMANENT_TRACKED_PROOF_BOUND",
+      "receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\iteration2-nonce-candidate-002\\tools\\reference\\native-primitive-tracked-admission.json",
+      "receipt_sha256": "558e6c6aee6364abee0d1065f09a35d782765a2ae469a14b62461d19b47d3dd6",
+      "evidence_refs": [
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/native-primitive-attestation-candidate-v2.json",
+          "sha256": "50bad54b995723026bd26842f258376c86447547791357f6c5ad809750891b5d"
+        },
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/three-rounds.summary.json",
+          "sha256": "a436aec37b9e71e05a47329c69354195ad69deade8711172e16b777d2aa1d1c5"
+        },
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/debug-marker-lines.raw.log",
+          "sha256": "8564747babb9b8b4d46992bfb17412f086acd60604596c401a8d6a5c6f5f2d10"
+        },
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/source-r0002/fixture/common/scripted_effects/lyd_np_effects.txt",
+          "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d"
+        },
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/source-r0002/fixture/common/scripted_triggers/lyd_np_triggers.txt",
+          "sha256": "7c1bc919d2ddf3dfc5b59969ea1cb4b795e4a172e8ad1d984acadc048ed25cff"
+        },
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/error-classification-addendum.json",
+          "sha256": "2f3a464edf7541aa3b813f5bf39d0400dc6e2fd29d36bea80fbd05f83fe84a48"
+        },
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/character-36445.excerpt.txt",
+          "sha256": "885419cc4df4e419e36805afab250ce73fa1d6c404a5d2b4ad3925909acdae42"
+        },
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/rite-151.excerpt.txt",
+          "sha256": "69f5483d4d944da4ebce92c6bddaccd1a74cfdbd9edd01823f9fa006e5904b98"
+        },
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/faith-108.excerpt.txt",
+          "sha256": "fc56c5494e2eae9984e2d6f3f79a5482a2cae93a80299f79043d7851394e9baf"
+        },
+        {
+          "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/title-18417.excerpt.txt",
+          "sha256": "3e3010bfac4739e0b4e6a33f99b641e8662fa2904d581805d77abc42efb49cbb"
+        }
+      ],
+      "consent_flow_live": "NOT_RUN",
+      "shared_narrow_head_factory_live": "NOT_RUN",
+      "zero_error_acceptance": "NOT_CLAIMED_UNRESOLVED_ERROR_RECORDS",
+      "revalidation_level": "TRACKED_REPORT_AND_EXCERPTS_ONLY",
+      "raw_save_rehashed_this_run": false,
+      "boundary": "Original bound artifact/projection hashes are preserved facts; no new raw-save or native execution claim."
+    },
+    "live": "NOT_RUN",
+    "files": {
+      "common/character_interactions/lyd_c2_consent_interactions.txt": "ced791a744491bc4bfbdd280074e640a4565a7e0e9612c31af963242dd4ac9b3",
+      "common/decisions/lyd_c2_consent_decisions.txt": "6a962b7d6a42a70f501c640a09bc85299ada6134e5733b1732bf51066bb038bc",
+      "common/script_values/lyd_c2_consent_values.txt": "51b25e387e10e1fb4d4db0c1e95a66d7a105ecd0f15cd049441c4b717d5cd389",
+      "common/scripted_effects/lyd_c2_close_effects.txt": "da5c5d36c21224b0504da7d9a88ffdd683025a4b3a9d0c9a31bd90d42b85c51a",
+      "common/scripted_effects/lyd_c2_commit_effects.txt": "913247b459f20cf64d8023a5ef904f7f4788c581a37c560b3503d31d4690bd86",
+      "common/scripted_effects/lyd_c2_head_effects.txt": "58873e31dca711e6b56c70509071e2545398da97127f2a65bc360195d139c91b",
+      "common/scripted_effects/lyd_c2_setup_effects.txt": "dbf696f43e069f13e0ef6f06ebda17e73b3d03d6cb30671a45c0082088665ebd",
+      "common/scripted_effects/lyd_c2_snapshot_effects.txt": "f2297d9445f45a38a546febc3083fd1d0a1d1c60eab833402de776ec99110687",
+      "common/scripted_effects/lyd_c2_vote_effects.txt": "8a50935787fc006601bcbb116a114f4e42b8b10257bc2b6d0901b24a5a2b602a",
+      "common/scripted_effects/lyd_c3_head_factory.txt": "7ef0d7914d98d003f7c3d0dabb46f8596cb731bc9ae103ce63ca15bcffd2b19a",
+      "common/scripted_effects/lyd_c3_migration_hooks.txt": "6cd7186a8e214c0ebdb7bf9f808e6f3d19d565ae05df8bf78b83b6585c550750",
+      "common/scripted_triggers/lyd_c2_consent_triggers.txt": "ecb89ff7c5f99f2c60506f8e15565a2e687db26c30937322184f873adda8e240",
+      "events/lyd_c2_consent_events.txt": "7d8fe459eea9cd3cf4107386dd98dcc36b31495ea7b20372564bc2dda99e041c",
+      "localization/english/lyd_c2_consent_l_english.yml": "f12dddaf17f4098a47ba2080428b0097cd1b8cdf203a04a5ea6eea7c876a2d70",
+      "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml": "6cf1eeb0008e7ce1cf8c7b087982a1097d436bdb78031674e5dccef918daa93f"
+    }
+  },
+  "checkout_before": {
+    "head": "598d7aee3159ee386fe6190b114efd500095395f",
+    "tracked_diff": [],
+    "read_sources": {
+      "docs/ck3-confucian-repeatable-reunion-and-schism-design.md": "708d4aa5a11fa763958011d59c07112f946817f7498417c66d3db1cf58f0af60",
+      "docs/ck3-1.20.0.3-rites-split-and-reunion.md": "71d8b6d3ecfc570859b4497b116bee08a0fbd8732c53f00cfd67e302163dea03",
+      "mod_li_yu_dao/tools/gen_runtime.py": "278715f15f8bbe67a2778336617c3c80e06ffab3d0eded0fdf6781d8cbba1360",
+      "mod_li_yu_dao/tools/content_data.py": "fbfdda2180c5a62f2bb9a24e0d3de53d040d788790b52fd0872642f0f39ab508",
+      "mod_li_yu_dao/common/scripted_effects/lyd_entry_effects.txt": "5deef0c786a0de1d53df129b93e8aec16469d82ddf50b6fbf063fd80fd8ee8c1",
+      "mod_li_yu_dao/common/scripted_triggers/lyd_player_triggers.txt": "7fece9d513763368e0c5abceb1ef0035b648fb92c289ffbce3a9eb66032b7d2a"
+    }
+  },
+  "checkout_after": {
+    "head": "598d7aee3159ee386fe6190b114efd500095395f",
+    "tracked_diff": [],
+    "read_sources": {
+      "docs/ck3-confucian-repeatable-reunion-and-schism-design.md": "708d4aa5a11fa763958011d59c07112f946817f7498417c66d3db1cf58f0af60",
+      "docs/ck3-1.20.0.3-rites-split-and-reunion.md": "71d8b6d3ecfc570859b4497b116bee08a0fbd8732c53f00cfd67e302163dea03",
+      "mod_li_yu_dao/tools/gen_runtime.py": "278715f15f8bbe67a2778336617c3c80e06ffab3d0eded0fdf6781d8cbba1360",
+      "mod_li_yu_dao/tools/content_data.py": "fbfdda2180c5a62f2bb9a24e0d3de53d040d788790b52fd0872642f0f39ab508",
+      "mod_li_yu_dao/common/scripted_effects/lyd_entry_effects.txt": "5deef0c786a0de1d53df129b93e8aec16469d82ddf50b6fbf063fd80fd8ee8c1",
+      "mod_li_yu_dao/common/scripted_triggers/lyd_player_triggers.txt": "7fece9d513763368e0c5abceb1ef0035b648fb92c289ffbce3a9eb66032b7d2a"
+    }
+  },
+  "checkout_unchanged": true,
+  "checkout_is_pinned_clean": true,
+  "native_primitive": "R0002_PRIMITIVES_PERMANENT_TRACKED_PROOF_BOUND",
+  "checkout_expected_head": "598d7aee3159ee386fe6190b114efd500095395f",
+  "primitive_evidence_baseline": "588492d3dbf473226664220b722a04b66ae54bae",
+  "live": "NOT_RUN",
+  "not_proven": [
+    "native trigger/effect scope typing",
+    "consent delivery and AI response in CK3",
+    "saved scope and serial lifetime",
+    "list/tenet-status/doctrine iterator semantics",
+    "pair divergence before/after migration",
+    "characters/counties and head bindings",
+    "D+1/D+30 postconditions",
+    "natural cooldown expiry",
+    "save/load",
+    "DLC and UI"
+  ],
+  "authored_source_sha256": {
+    "tools/bind_native_evidence.py": "09db594ddfe38637083a871c0744643b903c3845ff2f8ed3da0263ab28b39090",
+    "tools/finalize_nonce_candidate.py": "52cf52540c2b0a4268e083ff2d0268398b9dc1d5771187aaaea5af797c54bf05",
+    "tools/gen_school_consent.py": "cb6a7780e7c93d8e93963b81e625171ab61f350d28d2e7b3c8909364d657a82c",
+    "tools/native_admission_portable.py": "7da4839c191fb16e8de5a38b6879840e8d1434839fdb8054b065b283858263bc",
+    "tools/native_admission_v2.py": "12ae206372448bcad9b1d16e2a18fa3f0e7989f18bd5fade389e1cfa4e00a2bf",
+    "tools/reference/native-primitive-tracked-admission.json": "558e6c6aee6364abee0d1065f09a35d782765a2ae469a14b62461d19b47d3dd6",
+    "tools/run_offline_checks.py": "be2f4af33871b1ed3674e87b2088420b5cd7006a4651cac799373800b4f38eb9",
+    "tools/school_consent_callbacks.py": "23583d05e9daf00c6a3d874893a4171d4bf45c2fa464b18317d4223300ad15a2",
+    "tools/school_consent_data.py": "cc4a98f18d59c945399e6b0384b7784b438654bfc7aa2e04bbc72ca870f35ca3",
+    "tools/school_consent_model.py": "06d6d6c9846cbd127e108f935e036a11efaf2e1ca541120787701fe6606a1b42",
+    "tools/test_school_consent.py": "3e9c369913716ac8d1af3f1c855a4ebbfceaae826647249fd33bbb8c7741355e",
+    "tools/vendor_migration_hooks.py": "0e789439eb9f5914fa0e8e1adb3c3fecfb396a0580cc865914344cfab00cb5ca",
+    "tools/vendor_shared_factory.py": "4aef3272cef878662476015c9a1c7475b7c1e60ec987b1207a426b2d9758090a",
+    "tools/write_delta_report.py": "753fc42707a375aebcabac3251e2d2deece7ea44b253bd62da711543d3de1b42",
+    "source/common/character_interactions/lyd_c2_consent_interactions.txt": "11b0744070d9b47790320363de04e82fb67e787297931f21c5639132084d9608",
+    "source/common/decisions/lyd_c2_consent_decisions.txt": "98c449965d22c7e65d5c7e3018d6573e0379880d5110fa063367f370270eb162",
+    "source/common/script_values/lyd_c2_consent_values.txt": "c0f01096ec25dbebde4ba0465648977e4b6c50403076875280d939640fea17ea",
+    "source/common/scripted_effects/lyd_c2_close_effects.txt": "cc223af9e9f11c490399abfb6f7b0fd65d74eae1150aa0b425c7d7ff3954b54b",
+    "source/common/scripted_effects/lyd_c2_commit_effects.txt": "e2dbec2af0062a6055644cb772ea43bc5a10b6dd8dd27039b436fe5f127d258a",
+    "source/common/scripted_effects/lyd_c2_head_effects.txt": "d8fa17b0afac4e2ec18dfc2955fdc810b6f8763e92d15185858da9b8e50f5aa9",
+    "source/common/scripted_effects/lyd_c2_setup_effects.txt": "4618dbeb9ac5339155ebc7224c3e51b0c59e171fd8fa8876e30a1d5bf7f50a51",
+    "source/common/scripted_effects/lyd_c2_snapshot_effects.txt": "2c6964221393059e807d74fdfb484834025a8c868d40570e89800bc9d3e7ba88",
+    "source/common/scripted_effects/lyd_c2_vote_effects.txt": "abbda775ede3ef38e8c1479d4330bd0918ce9f0dbffdafc2eca21397cef7985c",
+    "source/common/scripted_effects/lyd_c3_head_factory.txt": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c",
+    "source/common/scripted_effects/lyd_c3_migration_hooks.txt": "501b36d0fc72538e3f3361c659458ed693d4f47f03eda02a6db51419e6c20bd5",
+    "source/common/scripted_triggers/lyd_c2_consent_triggers.txt": "2ce937bd247fb05da7e972f37b3fecf1fa56ded9701ed0583d05b6fce85c30dc",
+    "source/events/lyd_c2_consent_events.txt": "9a6dd545d1b8f0a9f1eec58eb5cdf12f5a69e5bad8b9b8b4dcaa76a5d3c94f68"
+  }
+}

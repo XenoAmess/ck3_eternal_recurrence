@@ -23,7 +23,7 @@ lyd_can_enter_display_trigger = {
     }
     OR = {
         NOT = { has_character_flag = lyd_enabled }
-        NOT = { faith = faith:lyd_common_faith }
+        NOT = { lyd_member_rite_trigger = yes }
     }
 }
 lyd_can_enter_trigger = {
@@ -33,7 +33,10 @@ lyd_can_enter_trigger = {
 lyd_can_use_school_display_trigger = {
     lyd_display_eligible_trigger = yes
     has_character_flag = lyd_enabled
-    faith = faith:lyd_common_faith
+    faith = { religion = religion:confucianism_religion }
+    lyd_member_rite_trigger = yes
+}
+lyd_member_rite_trigger = {
     OR = { rite = rite:lyd_rite_kongmen rite = rite:lyd_rite_mengzi rite = rite:lyd_rite_xunzi rite = rite:lyd_rite_zhengxuan rite = rite:lyd_rite_wangsu rite = rite:lyd_rite_jingshu rite = rite:lyd_rite_zhuxi rite = rite:lyd_rite_lujiuyuan }
 }
 lyd_can_use_school_trigger = {

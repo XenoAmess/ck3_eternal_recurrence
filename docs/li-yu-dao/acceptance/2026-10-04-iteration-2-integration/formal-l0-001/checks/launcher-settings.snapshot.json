@@ -1,0 +1,37 @@
+{
+	"formatVersion": 0,
+	"modsCompatibilityVersion": "1",
+	"gameId": "ck3",
+	"displayName": "Crusader Kings III",
+	"version": "1.20.0.3 (Crozier)",
+	"rawVersion": "1.20.0.3",
+	"distPlatform": "steam",
+	"gameDataPath": "%USER_DOCUMENTS%/Paradox Interactive/Crusader Kings III",
+	"dlcPath": "../game",
+	"ingameSettingsLayoutPath": "settings-layout.json",
+	"themeFile": "./assets/theme-settings.json",
+	"browserDlcUrl": "https://store.steampowered.com/dlc/1158310/",
+	"browserModUrl": "https://steamcommunity.com/app/1158310/workshop/",
+	"exePath": "../binaries/ck3.exe",
+	"exeArgs": [ "-gdpr-compliant" ],
+	"alternativeExecutables": [
+		{
+			"label": {
+				"de": "Spiel im Debug-Modus öffnen",
+				"en": "Open game in Debug Mode",
+				"es": "Abrir juego en modo de depuración",
+				"fr": "Ouvrir le jeu en mode débogage",
+				"ja": "デバッグモードでゲームを開",
+				"ko": "디버그 모드로 게임 열기",
+				"pl": "Uruchom grę w trybie debugowania",
+				"pt": "Abrir jogo em modo debug",
+				"ru": "Запустить игру в режиме разработчика",
+				"zh-hans": "以调试模式打开游戏",
+				"zh-hant": "以調試模式打開遊戲",
+				"tr": "Oyunu hata ayıklama modunda başlatın"
+			},
+			"exePath": "../binaries/ck3.exe",
+			"exeArgs": [ "-gdpr-compliant","-debug_mode" ]
+		}
+	]
+}

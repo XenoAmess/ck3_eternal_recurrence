@@ -1,0 +1,9 @@
+{
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\iteration3-leadership-candidate\\source\\common\\scripted_effects\\lyd_c3_head_factory.txt.in",
+  "source_sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c",
+  "snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\iteration2-admitted-candidate-001\\source\\common\\scripted_effects\\lyd_c3_head_factory.txt",
+  "live": "NOT_RUN",
+  "shared_interface": "lyd_c3_create_owned_temporal_head_effect",
+  "authorization_variable": "lyd_c3_head_creation_authorized",
+  "boundary": "Exactly one shared factory definition at integration; do not load duplicate snapshots alongside I3."
+}

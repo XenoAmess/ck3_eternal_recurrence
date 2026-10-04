@@ -1,0 +1,47 @@
+{
+  "admitted": true,
+  "status": "R0002_PRIMITIVES_ATTESTED_AND_SAVED_GRAPH_BOUND",
+  "receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\iteration2-admitted-candidate-001\\evidence\\native-admission-binding.json",
+  "receipt_sha256": "86e82cb023d661e9c5bf0c02cc4bcfd7b161ec0a39f3e94679996aed7b02a5ab",
+  "evidence_refs": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\probe-audit-three-rounds\\native-primitive-attestation-candidate-v2.json",
+      "sha256": "50bad54b995723026bd26842f258376c86447547791357f6c5ad809750891b5d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca\\three-rounds.summary.json",
+      "sha256": "a436aec37b9e71e05a47329c69354195ad69deade8711172e16b777d2aa1d1c5"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca\\xar_checkpoint.ck3",
+      "sha256": "ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca\\three-rounds.objects.complete.json",
+      "sha256": "79fd1567125594c96f8c086c33eb1550f1236660a2f256d1c50fdff710ffd613"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-04-R0002-native-cycles-formal-red\\source-r0002\\fixture\\common\\scripted_effects\\lyd_np_effects.txt",
+      "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-04-R0002-native-cycles-formal-red\\source-r0002\\fixture\\common\\scripted_triggers\\lyd_np_triggers.txt",
+      "sha256": "7c1bc919d2ddf3dfc5b59969ea1cb4b795e4a172e8ad1d984acadc048ed25cff"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_religion_effects.txt",
+      "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931"
+    }
+  ],
+  "consent_flow_live": "NOT_RUN",
+  "shared_narrow_head_factory_live": "NOT_RUN",
+  "zero_error_acceptance": "NOT_CLAIMED_UNRESOLVED_ERROR_RECORDS",
+  "not_admitted": [
+    "authority/consent event graph",
+    "natural cooldown expiry",
+    "save/reload",
+    "main/last direct detach",
+    "shared narrowed factory",
+    "all doctrine/head combinations"
+  ]
+}

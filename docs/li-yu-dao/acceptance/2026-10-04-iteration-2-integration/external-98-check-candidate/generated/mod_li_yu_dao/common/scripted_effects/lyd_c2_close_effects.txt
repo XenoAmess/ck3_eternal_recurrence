@@ -1,0 +1,89 @@
+﻿# GENERATED FILE: edit iteration2-nonce-candidate-002/source or tools/gen_school_consent.py.
+# Character scope. Remove only locks for this exact owner/serial.
+lyd_c2_release_locks_effect = {
+    save_scope_as = lyd_c2_actor
+    var:lyd_c2_moving_rite ?= {
+        if = {
+            limit = { has_variable = lyd_c2_proposal_owner var:lyd_c2_proposal_owner = scope:lyd_c2_actor var:lyd_c2_lock_serial = scope:lyd_c2_actor.var:lyd_c2_serial }
+            remove_variable = lyd_c2_proposal_owner
+        }
+    }
+    every_in_list = {
+        variable = lyd_c2_target_rites
+        if = {
+            limit = { has_variable = lyd_c2_proposal_owner var:lyd_c2_proposal_owner = scope:lyd_c2_actor var:lyd_c2_lock_serial = scope:lyd_c2_actor.var:lyd_c2_serial }
+            remove_variable = lyd_c2_proposal_owner
+        }
+    }
+    remove_variable = lyd_c2_active
+}
+lyd_c2_reject_round_effect = {
+    if = {
+        limit = { lyd_c2_current_proposal_trigger = { ACTOR = scope:lyd_c2_actor } }
+        var:lyd_c2_moving_rite = { set_variable = { name = lyd_c2_retry_cooldown value = 1 days = 365 } }
+        set_variable = { name = lyd_c2_result value = 2 }
+        lyd_c2_release_locks_effect = yes
+        trigger_event = lyd.228
+    }
+}
+lyd_c2_cancel_round_effect = {
+    if = {
+        limit = { is_ai = no has_variable = lyd_c2_active }
+        set_variable = { name = lyd_c2_result value = 3 }
+        lyd_c2_release_locks_effect = yes
+        trigger_event = lyd.228
+    }
+}
+# Current decisions can cancel an invalid/stale snapshot to release its locks.
+# Event callbacks must instead prove their captured generation and actual role.
+lyd_c2_event_cancel_round_effect = {
+    if = {
+        limit = { lyd_c2_initiator_event_context_trigger = yes }
+        lyd_c2_cancel_round_effect = yes
+    }
+}
+lyd_c2_event_holder_reject_effect = {
+    if = {
+        limit = { lyd_c2_holder_context_trigger = yes }
+        scope:lyd_c2_actor = { lyd_c2_reject_round_effect = yes }
+    }
+}
+lyd_c2_event_target_reject_effect = {
+    if = {
+        limit = {
+            lyd_c2_ballot_context_trigger = yes
+            this = scope:lyd_c2_actor.var:lyd_c2_target_rep
+            scope:lyd_c2_actor = { var:lyd_c2_source_signed = 1 }
+        }
+        scope:lyd_c2_actor = { lyd_c2_reject_round_effect = yes }
+    }
+}
+lyd_c2_event_head_reject_effect = {
+    if = {
+        limit = {
+            lyd_c2_ballot_context_trigger = yes
+            this = scope:lyd_c2_actor.var:lyd_c2_target_head
+        }
+        scope:lyd_c2_actor = { lyd_c2_reject_round_effect = yes }
+    }
+}
+lyd_c2_expire_round_effect = {
+    if = {
+        # Expiry may clean an otherwise invalid snapshot; do not use the
+        # current-proposal predicate, whose lock lifetime expires today.
+        limit = {
+            exists = scope:lyd_c2_actor
+            exists = scope:lyd_c2_event_school
+            this = scope:lyd_c2_actor
+            var:lyd_c2_moving_rite = scope:lyd_c2_event_school
+            var:lyd_c2_serial = scope:lyd_c2_event_serial
+            var:lyd_c2_terms_revision = scope:lyd_c2_event_terms
+            has_variable = lyd_c2_callback_nonce
+            var:lyd_c2_callback_nonce = scope:lyd_c2_event_nonce
+            var:lyd_c2_result = 0
+        }
+        set_variable = { name = lyd_c2_result value = 4 }
+        lyd_c2_release_locks_effect = yes
+        trigger_event = lyd.228
+    }
+}

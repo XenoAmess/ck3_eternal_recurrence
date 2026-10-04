@@ -4,7 +4,7 @@ lyd_enter_effect = {
         limit = { lyd_can_enter_trigger = yes }
         set_character_rite = rite:lyd_rite_kongmen
         if = {
-            limit = { rite = rite:lyd_rite_kongmen faith = faith:lyd_common_faith }
+            limit = { rite = rite:lyd_rite_kongmen faith = rite:lyd_rite_kongmen.faith }
             add_character_flag = lyd_enabled
             trigger_event = lyd.1
         }

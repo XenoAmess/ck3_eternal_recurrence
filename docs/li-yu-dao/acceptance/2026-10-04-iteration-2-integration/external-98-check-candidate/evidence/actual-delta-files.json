@@ -1,0 +1,177 @@
+{
+  "baseline": "C:\\workspace\\ck3_lyd_runtime_20261004\\iteration2-candidate",
+  "candidate": "C:\\workspace\\ck3_lyd_runtime_20261004\\iteration2-admitted-candidate-001",
+  "live": "NOT_RUN",
+  "authored": [
+    {
+      "path": "tools/bind_native_evidence.py",
+      "before_sha256": null,
+      "after_sha256": "09db594ddfe38637083a871c0744643b903c3845ff2f8ed3da0263ab28b39090",
+      "change": "added"
+    },
+    {
+      "path": "tools/gen_school_consent.py",
+      "before_sha256": "0b45037056c5852a43725fdadef64488493d4793530036a952a092cfdfb57b50",
+      "after_sha256": "fb9b0858dabf0d0b0c0a1b7f7aca91bac8cd064e0ac09fc37f1b40a38164e810",
+      "change": "modified"
+    },
+    {
+      "path": "tools/native_admission_v2.py",
+      "before_sha256": null,
+      "after_sha256": "12ae206372448bcad9b1d16e2a18fa3f0e7989f18bd5fade389e1cfa4e00a2bf",
+      "change": "added"
+    },
+    {
+      "path": "tools/run_offline_checks.py",
+      "before_sha256": "c2312a29faae04c5dd64cd8293c0f01c700b7db64719d83d7178a245c234812b",
+      "after_sha256": "5b0d00589c4e547de3e95d7f8a14cdca1ec54e21b051c6357f057063728e4296",
+      "change": "modified"
+    },
+    {
+      "path": "tools/school_consent_data.py",
+      "before_sha256": "134253246fffedb068ce593831bacd808ae9c354cd0e759007de50564866fcc5",
+      "after_sha256": "cc4a98f18d59c945399e6b0384b7784b438654bfc7aa2e04bbc72ca870f35ca3",
+      "change": "modified"
+    },
+    {
+      "path": "tools/school_consent_model.py",
+      "before_sha256": "89978ec130e11cfc8804d575d9b2c7e6bb27cec6e0b03dcd636348687d5dc9dd",
+      "after_sha256": "5846c84808faeb9413d9c7606a88eb22624d2d5a51da7cb955dd942377bad15f",
+      "change": "modified"
+    },
+    {
+      "path": "tools/test_school_consent.py",
+      "before_sha256": "c72b3e48ded0421f1e41fa870fecd730cb6755adeb008b136cfba8c8b4dd077e",
+      "after_sha256": "b1d14f0752e674ac772ebf1a41453263022b4622539a7ac087634e8e05026880",
+      "change": "modified"
+    },
+    {
+      "path": "tools/vendor_migration_hooks.py",
+      "before_sha256": null,
+      "after_sha256": "0e789439eb9f5914fa0e8e1adb3c3fecfb396a0580cc865914344cfab00cb5ca",
+      "change": "added"
+    },
+    {
+      "path": "tools/vendor_shared_factory.py",
+      "before_sha256": null,
+      "after_sha256": "4aef3272cef878662476015c9a1c7475b7c1e60ec987b1207a426b2d9758090a",
+      "change": "added"
+    },
+    {
+      "path": "tools/write_delta_report.py",
+      "before_sha256": null,
+      "after_sha256": "753fc42707a375aebcabac3251e2d2deece7ea44b253bd62da711543d3de1b42",
+      "change": "added"
+    },
+    {
+      "path": "source/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "before_sha256": "64bb6815b277a11a152cd686b05f0166c076080454cfeec09b8527b405836258",
+      "after_sha256": "32c57c35fc20593846bae883ca8a938006ff32879fdab2ee91e345db417bb923",
+      "change": "modified"
+    },
+    {
+      "path": "source/common/scripted_effects/lyd_c2_head_effects.txt",
+      "before_sha256": null,
+      "after_sha256": "d8fa17b0afac4e2ec18dfc2955fdc810b6f8763e92d15185858da9b8e50f5aa9",
+      "change": "added"
+    },
+    {
+      "path": "source/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "before_sha256": "3b8ae1116ad819f3bd8f6e33cf980fcb41c070036f3a5b407a875fe8dc874353",
+      "after_sha256": "d2b09f0caf691461ddc37aca3671d318748145d23b83893da2ce728ae9bcf022",
+      "change": "modified"
+    },
+    {
+      "path": "source/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "before_sha256": "9991d2ebd9349254b6eda0b11ce14caaf4fa641da248194cceed4101963857d0",
+      "after_sha256": "311f89dddd5732e5eaa15b8aa16162626aad595935a94ee7dd3b4723f184b61a",
+      "change": "modified"
+    },
+    {
+      "path": "source/common/scripted_effects/lyd_c3_head_factory.txt",
+      "before_sha256": null,
+      "after_sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c",
+      "change": "added"
+    },
+    {
+      "path": "source/common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "before_sha256": null,
+      "after_sha256": "501b36d0fc72538e3f3361c659458ed693d4f47f03eda02a6db51419e6c20bd5",
+      "change": "added"
+    },
+    {
+      "path": "source/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "before_sha256": "ae0d7b7791f4ea6c004d36d22b04fa60d79c617699f82ea48dcf81935e14e26c",
+      "after_sha256": "7299b1f971816334644137012e8718cc1a9b8eb38a1d99ce7e2628b1169a7d4f",
+      "change": "modified"
+    },
+    {
+      "path": "source/events/lyd_c2_consent_events.txt",
+      "before_sha256": "bf44e4da7d640fe17b34f5b0bc9cc5eb7730ed13a8e5e30b25ba601f76901856",
+      "after_sha256": "8628c774ba05196b4b7806274bb03ba30a59896cde4ca933cca84629e4c91ac0",
+      "change": "modified"
+    }
+  ],
+  "rendered": [
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "before_sha256": "fb7e31cdd4d4958cf85d348392c1eca8d678e38b544a7dfff495ac0668947ef0",
+      "after_sha256": "25547d27d788cdaf08d0d3b21acd0b634c9e4b55275fc3e0cf380aad0da9b870",
+      "change": "modified"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_head_effects.txt",
+      "before_sha256": null,
+      "after_sha256": "07c6d4a37899c33ee599a36172d27ca1f07d8d00c6fb3c299b5675cfcdd9108c",
+      "change": "added"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "before_sha256": "cb59b599e898c482d6b059ce3ff4d94f89f1d00a40a73d6a5f032145d3c4501a",
+      "after_sha256": "5a09a259c8050e38dbbb184222e6a7d8c08daf140152da77520dc198027076f9",
+      "change": "modified"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "before_sha256": "00ba6de0e8519cff6accfb63e335561f3bed9ef7c63e906afeb86cf9e898ac39",
+      "after_sha256": "c13a7095516bb5d3baadf4674928ca736d82e4c4e868305a228c78365e3c6b8c",
+      "change": "modified"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+      "before_sha256": null,
+      "after_sha256": "66ba6869bcf488403c7a613e8a3d91affc8b5faefe73bc8df7b6cc0e47f74b9e",
+      "change": "added"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "before_sha256": null,
+      "after_sha256": "051ded5ada9fd74756134214084654d78e654887cdde468e150d86e5c0811d91",
+      "change": "added"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "before_sha256": "70fd12b1b35d9c06cabd1572b3c9d8b7fdd46c48df43e8df10e549e3f0db51bc",
+      "after_sha256": "1ad31086965661fbda29978838a7de62facd7ac1ce98805d97c8600edb4babba",
+      "change": "modified"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/events/lyd_c2_consent_events.txt",
+      "before_sha256": "590a74d1b4f70679b447c23eeaf62eb14af016a8e1d6b93006b918629bc78dc3",
+      "after_sha256": "f3a415d3e44fba3febc92ae45e3117c70b07cc1ec86e9910c945110e95696fb4",
+      "change": "modified"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/localization/english/lyd_c2_consent_l_english.yml",
+      "before_sha256": "662832bab9b995e0bc15f2f5f02bba800b030d087f6b2c8d4de37abd4bbf4517",
+      "after_sha256": "f12dddaf17f4098a47ba2080428b0097cd1b8cdf203a04a5ea6eea7c876a2d70",
+      "change": "modified"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "before_sha256": "11e4323b00258de0696c27567ad8239f8e120dc906d3ef6d4ba447a03d8d2f33",
+      "after_sha256": "6cf1eeb0008e7ce1cf8c7b087982a1097d436bdb78031674e5dccef918daa93f",
+      "change": "modified"
+    }
+  ]
+}

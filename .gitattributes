@@ -7,6 +7,8 @@ mod_superman_qiang/docs/release-*/** -text whitespace=cr-at-eol
 
 # Keep Li Yu Dao acceptance logs and their frozen SHA-256 bindings exact.
 docs/li-yu-dao/acceptance/** -text whitespace=cr-at-eol
+mod_li_yu_dao/tools/reference/native-primitive-tracked-admission.json -text whitespace=cr-at-eol
+docs/li-yu-dao/acceptance/2026-10-04-iteration-2-integration/external-98-check-candidate/generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_snapshot_effects.txt whitespace=cr-at-eol,-blank-at-eol
 docs/li-yu-dao/acceptance/**/error.log -text whitespace=-blank-at-eof,cr-at-eol
 docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/*.excerpt.txt -text whitespace=-space-before-tab,cr-at-eol
 # Saved metadata and numbered source excerpts retain original indentation/spacing.

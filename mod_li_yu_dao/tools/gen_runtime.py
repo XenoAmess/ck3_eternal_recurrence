@@ -1,7 +1,7 @@
-"""Generate the first playable, player-initiated Confucian content iteration.
+"""Generate player entry, cultivation and school consent runtime content.
 
-This package provides the free-chronology sample. Native reunion/schism probes
-remain external until their CK3 semantics have been observed in the game.
+Primitive admission binds permanent native evidence. Generated consent flows
+still require their own cold-start, save-state and repeated-cycle acceptance.
 """
 
 from __future__ import annotations
@@ -80,7 +80,7 @@ lyd_can_enter_display_trigger = {
     }
     OR = {
         NOT = { has_character_flag = lyd_enabled }
-        NOT = { faith = faith:@PRODUCT_FAITH@ }
+        NOT = { lyd_member_rite_trigger = yes }
     }
 }
 lyd_can_enter_trigger = {
@@ -90,7 +90,10 @@ lyd_can_enter_trigger = {
 lyd_can_use_school_display_trigger = {
     lyd_display_eligible_trigger = yes
     has_character_flag = lyd_enabled
-    faith = faith:@PRODUCT_FAITH@
+    faith = { religion = religion:confucianism_religion }
+    lyd_member_rite_trigger = yes
+}
+lyd_member_rite_trigger = {
     @PRODUCT_RITE_GATE@
 }
 lyd_can_use_school_trigger = {
@@ -113,7 +116,7 @@ lyd_can_study_trigger = {
     lyd_is_player_trigger = yes
     lyd_can_study_display_trigger = yes
 }
-""".replace("@PRODUCT_FAITH@", PARENT_FAITH).replace(
+""".replace(
         "@PRODUCT_RITE_GATE@", "OR = { " + " ".join(f"rite = rite:{r.script_id}" for r in SAMPLE_RITES) + " }"))
     script("common/scripted_effects/lyd_entry_effects.txt", f"""
 lyd_enter_effect = {{
@@ -121,7 +124,7 @@ lyd_enter_effect = {{
         limit = {{ lyd_can_enter_trigger = yes }}
         set_character_rite = rite:{MAIN_RITE_ID}
         if = {{
-            limit = {{ rite = rite:{MAIN_RITE_ID} faith = faith:{PARENT_FAITH} }}
+            limit = {{ rite = rite:{MAIN_RITE_ID} faith = rite:{MAIN_RITE_ID}.faith }}
             add_character_flag = lyd_enabled
             trigger_event = lyd.1
         }}
@@ -300,6 +303,12 @@ lyd.10 = {
             escaped = value[column].replace("\\", "\\\\").replace('"', '\\"')
             lines.append(f' {key}:0 "{escaped}"')
         outputs[f"localization/{language}/lyd_runtime_l_{language}.yml"] = encoded("\n".join(lines) + "\n")
+    from gen_school_consent import DEFAULT_NATIVE_EVIDENCE, build_outputs as consent_outputs
+    consent = consent_outputs(native_evidence=DEFAULT_NATIVE_EVIDENCE)
+    duplicate = outputs.keys() & consent.keys()
+    if duplicate:
+        raise ValueError(f"Duplicate generated runtime paths: {sorted(duplicate)}")
+    outputs.update(consent)
     return outputs
 
 

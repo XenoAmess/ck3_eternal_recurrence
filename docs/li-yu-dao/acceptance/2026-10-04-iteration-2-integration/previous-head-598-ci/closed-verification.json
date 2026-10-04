@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.exact598-ci-receipt-verification.v1",
+  "recorded_at_utc": "2026-10-04T08:47:42.011552+00:00",
+  "commit": "598d7aee3159ee386fe6190b114efd500095395f",
+  "original_index": {
+    "path": "index.json",
+    "bytes": 1808,
+    "sha256": "4943d8d5018a37b7ea88ebe48384d30cb6cca1bb4abf9ce1e74ab2d6974bc8f1"
+  },
+  "report": {
+    "path": "report.json",
+    "bytes": 13744,
+    "sha256": "f5708f0fdf222defa2101b6c216d582dc1c46790c11b0e6f62b3b4d371a0356a"
+  },
+  "status": "EXACT_COMMIT_BOTH_OFFICIAL_RUNS_AND_JOBS_SUCCESS",
+  "indexed_original_files_verified": 10,
+  "prior_query_artifacts_preserved_and_verified": 15,
+  "live_acceptance": "NOT_COVERED",
+  "network_requests_in_finalization": 0
+}

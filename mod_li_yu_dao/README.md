@@ -14,11 +14,12 @@ python tools/gen_runtime.py
 python tools/validate_static.py
 python tools/test_build_release.py
 python tools/test_run_acceptance.py
+python tools/test_school_consent.py
 python tools/build_release.py --check
 python tools/run_acceptance.py --output <fresh-attempt>
 python tools/run_acceptance.py --preflight-only --output <another-fresh-attempt>
 ```
 
-只读runner保存当前游戏版本、EXE哈希及每条L0命令的原始输出；不启动游戏。退出码2表示live环境缺失，产品L0仍可单独为GREEN。宗主及可重复分合尚未正式实现；外置native探针单独记录，不作为产品通过。实机验收使用简体中文，英文只做L0结构检查。
+只读runner保存当前游戏版本、EXE哈希及每条L0命令的原始输出；不启动游戏。退出码2表示live环境缺失，产品L0仍可单独为GREEN。I2 已实现逐派表决、玩家同意、代表签署及可重复分合流程，正式实机验收待执行；宗师与争统另属 I3。原生分合准入绑定永久入库的 R0002 原语证据，不代表 I2 流程通过。实机验收使用简体中文，英文只做L0结构检查。
 
 开发版没有Workshop物品ID，不上传源目录；不得将测试夹具或探针加入正式staging。

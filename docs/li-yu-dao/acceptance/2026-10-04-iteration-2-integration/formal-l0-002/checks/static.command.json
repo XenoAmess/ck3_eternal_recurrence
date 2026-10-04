@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\validate_static.py",
+    "--source",
+    "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao",
+    "--report",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\iteration2-integrated-l0-002\\checks\\static-report.json"
+  ],
+  "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+  "execution": "COMPLETED",
+  "finished_at": "2026-10-04T09:13:04.494939+00:00",
+  "returncode": 0,
+  "started_at": "2026-10-04T09:13:04.301897+00:00",
+  "stderr": {
+    "path": "static.stderr.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size": 0
+  },
+  "stdout": {
+    "path": "static.stdout.txt",
+    "sha256": "7f3f421668384edbcb7193754c8edfb4532f9c00cfe4676324b67306c415cd70",
+    "size": 4641
+  },
+  "timeout_seconds": 60
+}

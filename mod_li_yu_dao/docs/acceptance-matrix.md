@@ -9,6 +9,7 @@
 ```text
 C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe mod_li_yu_dao/tools/test_build_release.py
 C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe mod_li_yu_dao/tools/test_run_acceptance.py
+C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe mod_li_yu_dao/tools/test_school_consent.py
 C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe mod_li_yu_dao/tools/gen_content.py --check
 C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe mod_li_yu_dao/tools/gen_runtime.py --check
 C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe mod_li_yu_dao/tools/validate_static.py --report <fresh-attempt>/static.json
@@ -43,7 +44,7 @@ C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe mod_li
 
 ## 分轮产品验收
 
-当前第一迭代声明玩家进入、选派与样板祭修。R0003 由普通非领袖玩家开始，独立存档已确认正式入门、取消修习与择师不改变人物块、择朱子礼仪以及一次朱子修习的实际费用、收益与冷却；这些只计代表路径通过。入门决议两条领袖条件缺本地化，整体 UI 仍为 RED；显示修正只有 L0 信用，待新冷载。自然冷却届满、存档重载、完整 8×3 修习和多人尚未执行。宗主与正式分合仍为 `NOT_IMPLEMENTED`，外置候选与原生探针分别记录，不能升级为正式产品通过。详见 [R0003 报告](../../docs/li-yu-dao/2026-10-04-R0003-formal-representative-ui-red.md)。失败重跑使用新 attempt，旧证据不改写。
+第一迭代声明玩家进入、选派与样板祭修。R0003 由普通非领袖玩家开始，独立存档已确认正式入门、取消修习与择师不改变人物块、择朱子礼仪以及一次朱子修习的实际费用、收益与冷却；这些只计代表路径通过。入门决议两条领袖条件缺本地化，整体 UI 仍为 RED；显示修正只有 L0 信用，待新冷载。自然冷却届满、存档重载、完整 8×3 修习和多人尚未执行。I2 正式分合已集成，运行状态仍 `NOT_RUN`；只绑定 R0002 原语准入，不能升级为流程通过。宗师、议定宗主与争统仍待 I3。详见 [R0003 报告](../../docs/li-yu-dao/2026-10-04-R0003-formal-representative-ui-red.md)。失败重跑使用新 attempt，旧证据不改写。
 
 | 轮次／编号 | 场景 | 必须观察的实际结果 | 必须保留的证据 |
 | --- | --- | --- | --- |

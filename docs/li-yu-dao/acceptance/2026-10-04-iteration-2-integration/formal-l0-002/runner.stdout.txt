@@ -1,0 +1,9 @@
+{
+  "result": "ENVIRONMENT_RED",
+  "exit_code": 2,
+  "report_directory": "C:\\workspace\\ck3_lyd_runtime_20261004\\iteration2-integrated-l0-002\\checks",
+  "live": {
+    "status": "NOT_RUN",
+    "reason": "this runner performs read-only preflight and L0 only"
+  }
+}

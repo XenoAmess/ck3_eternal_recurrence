@@ -1,0 +1,21 @@
+{
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\iteration2-candidate",
+  "sha256": {
+    "tools/gen_school_consent.py": "0b45037056c5852a43725fdadef64488493d4793530036a952a092cfdfb57b50",
+    "tools/run_offline_checks.py": "c2312a29faae04c5dd64cd8293c0f01c700b7db64719d83d7178a245c234812b",
+    "tools/school_consent_data.py": "134253246fffedb068ce593831bacd808ae9c354cd0e759007de50564866fcc5",
+    "tools/school_consent_model.py": "89978ec130e11cfc8804d575d9b2c7e6bb27cec6e0b03dcd636348687d5dc9dd",
+    "tools/test_school_consent.py": "c72b3e48ded0421f1e41fa870fecd730cb6755adeb008b136cfba8c8b4dd077e",
+    "source/events/lyd_c2_consent_events.txt": "bf44e4da7d640fe17b34f5b0bc9cc5eb7730ed13a8e5e30b25ba601f76901856",
+    "source/common/character_interactions/lyd_c2_consent_interactions.txt": "11b0744070d9b47790320363de04e82fb67e787297931f21c5639132084d9608",
+    "source/common/decisions/lyd_c2_consent_decisions.txt": "98c449965d22c7e65d5c7e3018d6573e0379880d5110fa063367f370270eb162",
+    "source/common/scripted_effects/lyd_c2_close_effects.txt": "73d1b5b964dd0ce55cd5057827e7830644d60c98c91b011e0416d3b4e9e07969",
+    "source/common/scripted_effects/lyd_c2_commit_effects.txt": "64bb6815b277a11a152cd686b05f0166c076080454cfeec09b8527b405836258",
+    "source/common/scripted_effects/lyd_c2_setup_effects.txt": "3b8ae1116ad819f3bd8f6e33cf980fcb41c070036f3a5b407a875fe8dc874353",
+    "source/common/scripted_effects/lyd_c2_snapshot_effects.txt": "db96dc786cf804d66efeb56134d5c9089aa94ea89906c971146e1a0ead549290",
+    "source/common/scripted_effects/lyd_c2_vote_effects.txt": "9991d2ebd9349254b6eda0b11ce14caaf4fa641da248194cceed4101963857d0",
+    "source/common/scripted_triggers/lyd_c2_consent_triggers.txt": "ae0d7b7791f4ea6c004d36d22b04fa60d79c617699f82ea48dcf81935e14e26c",
+    "source/common/script_values/lyd_c2_consent_values.txt": "c0f01096ec25dbebde4ba0465648977e4b6c50403076875280d939640fea17ea",
+    "docs/school-mandate-and-consent-candidate.md": "208250e6e8ce88472513cdeeee1ff2e06327873d4cb9366c6ced418324b1d553"
+  }
+}

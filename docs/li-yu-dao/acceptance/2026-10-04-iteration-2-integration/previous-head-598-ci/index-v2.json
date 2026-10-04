@@ -1,0 +1,72 @@
+{
+  "schema": "ck3.lyd.ci-closed-receipt-index.v2",
+  "commit": "598d7aee3159ee386fe6190b114efd500095395f",
+  "files": [
+    {
+      "path": "all-runs.raw.json",
+      "bytes": 26520,
+      "sha256": "47cdccd34adf87f912b69039878393f86b0a8d8e8daff35b82fe0dd14efa5e02"
+    },
+    {
+      "path": "all-runs.request-receipt.json",
+      "bytes": 2291,
+      "sha256": "6c16f954e109d67958108a1ae19d5adf089b492ca453b9366ebff3afe29bd9f8"
+    },
+    {
+      "path": "closed-verification.json",
+      "bytes": 711,
+      "sha256": "af8c018bb7a4d04ad6f54e62826368644e1d977ede04a32cc92d4555539a19b5"
+    },
+    {
+      "path": "index.json",
+      "bytes": 1808,
+      "sha256": "4943d8d5018a37b7ea88ebe48384d30cb6cca1bb4abf9ce1e74ab2d6974bc8f1"
+    },
+    {
+      "path": "jobs-37187917608.raw.json",
+      "bytes": 15599,
+      "sha256": "393de6e6a189a9064ab86ed9a0afe6a2b05660fbc2217f2a96cd7534ff078296"
+    },
+    {
+      "path": "jobs-37187917608.request-receipt.json",
+      "bytes": 2241,
+      "sha256": "aedc66c191ca9860c2e9afac9525f4d55f017bbf75bf205a7818daca8396a81e"
+    },
+    {
+      "path": "jobs-37187917621.raw.json",
+      "bytes": 2461,
+      "sha256": "c69c4ec8a4dbf0b1bd82b0ee390240ed8c3ee9792fbe8b1d97222befbbf8358e"
+    },
+    {
+      "path": "jobs-37187917621.request-receipt.json",
+      "bytes": 2239,
+      "sha256": "30b4c65fb6bed02b135504c242a47c6afe8ac9461ee7bcc3909e6f910c47e6f3"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1373,
+      "sha256": "d554715b9a77981144b7786b140f079cf55242b3b2337eac32d52a75fd0d3467"
+    },
+    {
+      "path": "report.json",
+      "bytes": 13744,
+      "sha256": "f5708f0fdf222defa2101b6c216d582dc1c46790c11b0e6f62b3b4d371a0356a"
+    },
+    {
+      "path": "source/ci_jobs_588492d_readonly.py",
+      "bytes": 6625,
+      "sha256": "9a26834e50302bd151e26be6f49fda40e04c124f7cc13866201522945e642418"
+    },
+    {
+      "path": "source/ci_jobs_598_http_readonly.py",
+      "bytes": 5968,
+      "sha256": "5743e521601f7245e9d5e30f306ff6c572fd802c9a980424322538a371930ee9"
+    },
+    {
+      "path": "source/ci_jobs_598d7aee_readonly.py",
+      "bytes": 7267,
+      "sha256": "6a311f5b45fb34e11a31fdf18a2f62943c1b3e6e54f15b87872822fc8f7026fd"
+    }
+  ],
+  "self_boundary": "index-v2 excludes itself; original index preserved"
+}

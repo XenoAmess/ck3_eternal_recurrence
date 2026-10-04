@@ -1,0 +1,284 @@
+{
+  "schema": "ck3.lyd.exact598-ci-closed-http-receipt.v1",
+  "commit": "598d7aee3159ee386fe6190b114efd500095395f",
+  "recorded_at_utc": "2026-10-04T08:31:50.897254+00:00",
+  "runs": [
+    {
+      "id": 37187917621,
+      "workflow_name": "Li Yu Dao static checks",
+      "head_sha": "598d7aee3159ee386fe6190b114efd500095395f",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37187917621",
+      "path": ".github/workflows/li-yu-dao-static.yml",
+      "jobs": [
+        {
+          "id": 111393741697,
+          "name": "static",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-04T08:07:46Z",
+          "completed_at": "2026-10-04T08:08:20Z",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37187917621/job/111393741697",
+          "head_sha": "598d7aee3159ee386fe6190b114efd500095395f"
+        }
+      ]
+    },
+    {
+      "id": 37187917608,
+      "workflow_name": "Official Runner CI",
+      "head_sha": "598d7aee3159ee386fe6190b114efd500095395f",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37187917608",
+      "path": ".github/workflows/static-ci.yml",
+      "jobs": [
+        {
+          "id": 111393741601,
+          "name": "static",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-04T08:07:46Z",
+          "completed_at": "2026-10-04T08:13:37Z",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37187917608/job/111393741601",
+          "head_sha": "598d7aee3159ee386fe6190b114efd500095395f"
+        }
+      ]
+    }
+  ],
+  "status": "ALL_OFFICIAL_RUNS_AND_JOBS_TERMINAL",
+  "all_terminal": true,
+  "requests": [
+    {
+      "name": "all-runs",
+      "url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/actions/runs?head_sha=598d7aee3159ee386fe6190b114efd500095395f&per_page=100",
+      "method": "GET",
+      "started_at_utc": "2026-10-04T08:31:48.106113+00:00",
+      "transport": "Python313 stdlib urllib HTTPS GET",
+      "authenticated": false,
+      "http_status": 200,
+      "response_headers": {
+        "Date": "Sun, 04 Oct 2026 08:31:49 GMT",
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "public, max-age=60, s-maxage=60",
+        "Vary": "Accept,Accept-Encoding, Accept, X-Requested-With",
+        "ETag": "W/\"96efdba8f55ff25c6900b595c50ef57ec59df23bfd428fd99094a050de002830\"",
+        "X-GitHub-Media-Type": "github.v3; format=json",
+        "x-github-api-version-selected": "2022-11-28",
+        "Access-Control-Expose-Headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset, Warning",
+        "Access-Control-Allow-Origin": "*",
+        "Strict-Transport-Security": "max-age=31536000; includeSubdomains; preload",
+        "X-Frame-Options": "deny",
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "0",
+        "Referrer-Policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+        "Content-Security-Policy": "default-src 'none'",
+        "Server": "github.com",
+        "Accept-Ranges": "bytes",
+        "X-RateLimit-Limit": "60",
+        "X-RateLimit-Remaining": "41",
+        "X-RateLimit-Used": "19",
+        "X-RateLimit-Resource": "core",
+        "X-RateLimit-Reset": "1791103223",
+        "Content-Length": "26520",
+        "X-GitHub-Request-Id": "A13C:39B777:106EE7:145D3F:6AC20EF5",
+        "x-github-edge-region": "westus3",
+        "connection": "close"
+      },
+      "final_url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/actions/runs?head_sha=598d7aee3159ee386fe6190b114efd500095395f&per_page=100",
+      "status": "HTTP_READ_SUCCEEDED",
+      "path": "all-runs.raw.json",
+      "bytes": 26520,
+      "sha256": "47cdccd34adf87f912b69039878393f86b0a8d8e8daff35b82fe0dd14efa5e02",
+      "finished_at_utc": "2026-10-04T08:31:49.479102+00:00"
+    },
+    {
+      "name": "jobs-37187917621",
+      "url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/actions/runs/37187917621/jobs?per_page=100",
+      "method": "GET",
+      "started_at_utc": "2026-10-04T08:31:49.481452+00:00",
+      "transport": "Python313 stdlib urllib HTTPS GET",
+      "authenticated": false,
+      "http_status": 200,
+      "response_headers": {
+        "Date": "Sun, 04 Oct 2026 08:31:50 GMT",
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "public, max-age=60, s-maxage=60",
+        "Vary": "Accept,Accept-Encoding, Accept, X-Requested-With",
+        "ETag": "W/\"8ab58cd010d4a2dc0a6c70d26504685a2aa5b6c96f1a61d127500d2838aff8a3\"",
+        "X-GitHub-Media-Type": "github.v3; format=json",
+        "x-github-api-version-selected": "2022-11-28",
+        "Access-Control-Expose-Headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset, Warning",
+        "Access-Control-Allow-Origin": "*",
+        "Strict-Transport-Security": "max-age=31536000; includeSubdomains; preload",
+        "X-Frame-Options": "deny",
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "0",
+        "Referrer-Policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+        "Content-Security-Policy": "default-src 'none'",
+        "Server": "github.com",
+        "Accept-Ranges": "bytes",
+        "X-RateLimit-Limit": "60",
+        "X-RateLimit-Remaining": "40",
+        "X-RateLimit-Used": "20",
+        "X-RateLimit-Resource": "core",
+        "X-RateLimit-Reset": "1791103223",
+        "Content-Length": "2461",
+        "X-GitHub-Request-Id": "A140:3C1F4E:10729B:1460BF:6AC20EF6",
+        "x-github-edge-region": "westus3",
+        "connection": "close"
+      },
+      "final_url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/actions/runs/37187917621/jobs?per_page=100",
+      "status": "HTTP_READ_SUCCEEDED",
+      "path": "jobs-37187917621.raw.json",
+      "bytes": 2461,
+      "sha256": "c69c4ec8a4dbf0b1bd82b0ee390240ed8c3ee9792fbe8b1d97222befbbf8358e",
+      "finished_at_utc": "2026-10-04T08:31:50.682910+00:00"
+    },
+    {
+      "name": "jobs-37187917608",
+      "url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/actions/runs/37187917608/jobs?per_page=100",
+      "method": "GET",
+      "started_at_utc": "2026-10-04T08:31:49.482696+00:00",
+      "transport": "Python313 stdlib urllib HTTPS GET",
+      "authenticated": false,
+      "http_status": 200,
+      "response_headers": {
+        "Date": "Sun, 04 Oct 2026 08:31:50 GMT",
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "public, max-age=60, s-maxage=60",
+        "Vary": "Accept,Accept-Encoding, Accept, X-Requested-With",
+        "ETag": "W/\"671db27d64d7aba582389094e592a81b01714da02290744f7b1d119ae23e866a\"",
+        "X-GitHub-Media-Type": "github.v3; format=json",
+        "x-github-api-version-selected": "2022-11-28",
+        "Access-Control-Expose-Headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset, Warning",
+        "Access-Control-Allow-Origin": "*",
+        "Strict-Transport-Security": "max-age=31536000; includeSubdomains; preload",
+        "X-Frame-Options": "deny",
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "0",
+        "Referrer-Policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+        "Content-Security-Policy": "default-src 'none'",
+        "Server": "github.com",
+        "Accept-Ranges": "bytes",
+        "X-RateLimit-Limit": "60",
+        "X-RateLimit-Remaining": "39",
+        "X-RateLimit-Used": "21",
+        "X-RateLimit-Resource": "core",
+        "X-RateLimit-Reset": "1791103223",
+        "Content-Length": "15599",
+        "X-GitHub-Request-Id": "A144:3C2A10:10C05F:14AE20:6AC20EF6",
+        "x-github-edge-region": "westus3",
+        "connection": "close"
+      },
+      "final_url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/actions/runs/37187917608/jobs?per_page=100",
+      "status": "HTTP_READ_SUCCEEDED",
+      "path": "jobs-37187917608.raw.json",
+      "bytes": 15599,
+      "sha256": "393de6e6a189a9064ab86ed9a0afe6a2b05660fbc2217f2a96cd7534ff078296",
+      "finished_at_utc": "2026-10-04T08:31:50.870890+00:00"
+    }
+  ],
+  "previous_exact_query_artifacts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-readonly-598d7aee-001\\all-runs.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-readonly-598d7aee-001\\all-runs.stdout.txt",
+      "bytes": 632,
+      "sha256": "c63681a6552fff013478243ddc2b4bf6834f63e1431415237fd5e3c5c6ca83de"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-readonly-598d7aee-001\\commit.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-readonly-598d7aee-001\\commit.stdout.txt",
+      "bytes": 1046530,
+      "sha256": "8f294a7a83ffb155212103f357b99760cb493710f3728984875b71c7d02b2d3f"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-readonly-598d7aee-001\\latest-lyd-runs.stderr.txt",
+      "bytes": 140,
+      "sha256": "97ce39d4da7312d7dd25dd418a892949fef588b9e2ffd5cd2513ef2cd729d6e9"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-readonly-598d7aee-001\\latest-lyd-runs.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-readonly-598d7aee-001\\lyd-runs.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-readonly-598d7aee-001\\lyd-runs.stdout.txt",
+      "bytes": 281,
+      "sha256": "73d52d004592e9bacc418174361358dd21b4153892ab72d58a7702bc6d7b3509"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-readonly-598d7aee-001\\report.json",
+      "bytes": 1087838,
+      "sha256": "6478f7318c4060cc78f8052e08cb90e170ed10e0d86aeba87ca404142bf0455c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-readonly-598d7aee-jobs-001\\all-runs.stderr.txt",
+      "bytes": 177,
+      "sha256": "e1b277d42055c22b8f2ca95d55426eca425ba49650df55216bac3c303da6a5ac"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-readonly-598d7aee-jobs-001\\all-runs.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-readonly-598d7aee-jobs-001\\observed-failure.json",
+      "bytes": 1115,
+      "sha256": "2b67357c8c73efb734805686f33802fef5110aa792ec49a6cf27b7c238d7f43c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-readonly-598d7aee-jobs-002\\all-runs.stderr.txt",
+      "bytes": 177,
+      "sha256": "e1b277d42055c22b8f2ca95d55426eca425ba49650df55216bac3c303da6a5ac"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-readonly-598d7aee-jobs-002\\all-runs.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-readonly-598d7aee-jobs-002\\report.json",
+      "bytes": 1002,
+      "sha256": "2aa6f336e40a10b1e6ad04cfc52cb03fc1cf166d6538aba8f820cbf12643eae9"
+    }
+  ],
+  "source_helpers": [
+    {
+      "path": "source/ci_jobs_598_http_readonly.py",
+      "sha256": "5743e521601f7245e9d5e30f306ff6c572fd802c9a980424322538a371930ee9",
+      "bytes": 5968,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci_jobs_598_http_readonly.py"
+    },
+    {
+      "path": "source/ci_jobs_588492d_readonly.py",
+      "sha256": "9a26834e50302bd151e26be6f49fda40e04c124f7cc13866201522945e642418",
+      "bytes": 6625,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci_jobs_588492d_readonly.py"
+    },
+    {
+      "path": "source/ci_jobs_598d7aee_readonly.py",
+      "sha256": "6a311f5b45fb34e11a31fdf18a2f62943c1b3e6e54f15b87872822fc8f7026fd",
+      "bytes": 7267,
+      "original": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci_jobs_598d7aee_readonly.py"
+    }
+  ],
+  "github_triggered": false,
+  "workflow_retried": false,
+  "tracked_written": false,
+  "game_called": false,
+  "boundary": "Exact official GitHub API GET results; L0 job states are separate from all product/CK3 live acceptance."
+}

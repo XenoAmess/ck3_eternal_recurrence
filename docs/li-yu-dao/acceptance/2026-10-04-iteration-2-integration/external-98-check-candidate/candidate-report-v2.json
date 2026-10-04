@@ -1,0 +1,150 @@
+{
+  "schema": "lyd.c2.all-affected-players-and-portable-admission-candidate.v1",
+  "utc": "2026-10-04T08:16:09.850840+00:00",
+  "status": "PASS_OFFLINE_ONLY_NOT_LIVE_ACCEPTED",
+  "tests": 98,
+  "preserved_nonce_tests": 85,
+  "generated_files": 15,
+  "offline_report": "evidence/offline-20261004T081242776689Z/offline-report.json",
+  "offline_report_sha256": "b7ebec56d88637c83dac318cce96033eb9665e96113bd78f8d0599ad40603821",
+  "read_only_checkout_head": "598d7aee3159ee386fe6190b114efd500095395f",
+  "checkout_unchanged": true,
+  "checkout_clean": true,
+  "parent_85_candidate_unchanged": true,
+  "parent_index_sha256": "2dabe694a43ca0a9530dcb0ec5d25bea426f0b11f40a65b7c57674b1c6afa544",
+  "parent_report_sha256": "c228a40b916314db7f7cb3b8a097320ac67ab7fde9acee78abc9a84b275afbb2",
+  "consent_scope": "Every alive human affected by global moving rite or receiving faith; landless/adventurers included; initiator landed; NPC scholar eligibility unchanged.",
+  "event_interface_changed": false,
+  "native_admission": "R0002_PRIMITIVES_PERMANENT_TRACKED_PROOF_BOUND",
+  "native_admission_revalidation_level": "TRACKED_REPORT_AND_EXCERPTS_ONLY",
+  "large_raw_save_rehashed_in_ci": false,
+  "strict_external_audit_preserved": true,
+  "new_consent_and_head_flow_live": "NOT_RUN",
+  "zero_error_acceptance": "NOT_CLAIMED",
+  "remaining_cold_gates": [
+    "native trigger/effect scope typing",
+    "consent delivery and AI response in CK3",
+    "saved scope and serial lifetime",
+    "list/tenet-status/doctrine iterator semantics",
+    "pair divergence before/after migration",
+    "characters/counties and head bindings",
+    "D+1/D+30 postconditions",
+    "natural cooldown expiry",
+    "save/load",
+    "DLC and UI"
+  ],
+  "native_core_trigger_and_nonHoR_iterator_semantics": "UNVERIFIED; source gap retained, no invented interface",
+  "integration_doc": "docs/player-scope-and-portable-integration.md",
+  "delta": [
+    {
+      "path": "source/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "sha256": "4618dbeb9ac5339155ebc7224c3e51b0c59e171fd8fa8876e30a1d5bf7f50a51",
+      "parent_sha256": "a210922e59e82f7326ff7f24b2397b2094d16defd6c8c9d361cf2f580951cf8c"
+    },
+    {
+      "path": "source/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "sha256": "2ce937bd247fb05da7e972f37b3fecf1fa56ded9701ed0583d05b6fce85c30dc",
+      "parent_sha256": "e76b7d3bfce2efcab111ed11b24aa12bf9a86ed51e37e2849540bc9dbe273dc3"
+    },
+    {
+      "path": "tools/gen_school_consent.py",
+      "sha256": "cb6a7780e7c93d8e93963b81e625171ab61f350d28d2e7b3c8909364d657a82c",
+      "parent_sha256": "b07d8562267922db18d10602ca58c23268028dd988a2452040cdb8f4cb4989b0"
+    },
+    {
+      "path": "tools/native_admission_portable.py",
+      "sha256": "7da4839c191fb16e8de5a38b6879840e8d1434839fdb8054b065b283858263bc",
+      "parent_sha256": null
+    },
+    {
+      "path": "tools/reference/native-primitive-tracked-admission.json",
+      "sha256": "558e6c6aee6364abee0d1065f09a35d782765a2ae469a14b62461d19b47d3dd6",
+      "parent_sha256": null
+    },
+    {
+      "path": "tools/run_offline_checks.py",
+      "sha256": "be2f4af33871b1ed3674e87b2088420b5cd7006a4651cac799373800b4f38eb9",
+      "parent_sha256": "489ca606c57ec5cefeebb63c782e3a3edad4041311c443b582b7cea4e5889547"
+    },
+    {
+      "path": "tools/school_consent_model.py",
+      "sha256": "06d6d6c9846cbd127e108f935e036a11efaf2e1ca541120787701fe6606a1b42",
+      "parent_sha256": "c84dfa09dcf1efba23c372afbc2d208322e800b7007a5a70b1a4f242c297c15e"
+    },
+    {
+      "path": "tools/test_school_consent.py",
+      "sha256": "3e9c369913716ac8d1af3f1c855a4ebbfceaae826647249fd33bbb8c7741355e",
+      "parent_sha256": "1b532a9eef25f3f2b5f03f495988f2afcff670cd3b1c0f5b52117d2e06474e01"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "sha256": "ced791a744491bc4bfbdd280074e640a4565a7e0e9612c31af963242dd4ac9b3",
+      "parent_sha256": "294ed3262df59e4f651b54b92fa2200c71e9580642157d75de7a004a64c35719"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/decisions/lyd_c2_consent_decisions.txt",
+      "sha256": "6a962b7d6a42a70f501c640a09bc85299ada6134e5733b1732bf51066bb038bc",
+      "parent_sha256": "593b3db5cbe83e8f1b916d85422e3d477e807f2e1da2201dc8a48c56a5e8f950"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/script_values/lyd_c2_consent_values.txt",
+      "sha256": "51b25e387e10e1fb4d4db0c1e95a66d7a105ecd0f15cd049441c4b717d5cd389",
+      "parent_sha256": "32d69b7aae57f45b256ea371c44cc7f2639a0cba7684732b756de7f2bc6ee1b6"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_close_effects.txt",
+      "sha256": "da5c5d36c21224b0504da7d9a88ffdd683025a4b3a9d0c9a31bd90d42b85c51a",
+      "parent_sha256": "517f90f081c966dbbf2a72fe64ce3eff3618e5f89b005f9ef20027d2e0b94bdb"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "sha256": "913247b459f20cf64d8023a5ef904f7f4788c581a37c560b3503d31d4690bd86",
+      "parent_sha256": "cec69ae8d607a411c74e5ee4514777334c59ad870eb224f21e6da0a0c7ba658f"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_head_effects.txt",
+      "sha256": "58873e31dca711e6b56c70509071e2545398da97127f2a65bc360195d139c91b",
+      "parent_sha256": "3bfdc446745b0b1ab1d707d9aad1e2e40697efa7ccbbd1150521af9647429b0e"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "sha256": "dbf696f43e069f13e0ef6f06ebda17e73b3d03d6cb30671a45c0082088665ebd",
+      "parent_sha256": "bf6711fecc39c2c1eb5a3683f399f75c33b8d27fe6d3515eadbf1db43a306958"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "sha256": "f2297d9445f45a38a546febc3083fd1d0a1d1c60eab833402de776ec99110687",
+      "parent_sha256": "ceaac6cb842ccad58ab8f510f0081caf653fb47c7f4cc97561a52d4af8ec18ec"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "sha256": "8a50935787fc006601bcbb116a114f4e42b8b10257bc2b6d0901b24a5a2b602a",
+      "parent_sha256": "792633c377e84f2a5b1fbbb87d1738e865d2f712dc510787b83a49284695748b"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+      "sha256": "7ef0d7914d98d003f7c3d0dabb46f8596cb731bc9ae103ce63ca15bcffd2b19a",
+      "parent_sha256": "b031b4030bbc47efbfe7bb6d7d28bbb128f4b04d16ebd28792aa2e4ddd92e3f0"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "sha256": "6cd7186a8e214c0ebdb7bf9f808e6f3d19d565ae05df8bf78b83b6585c550750",
+      "parent_sha256": "453a14fa26e48f5b2818ac6549f50bc3a7ac424c79fd33fc96a0aa248300c08d"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "sha256": "ecb89ff7c5f99f2c60506f8e15565a2e687db26c30937322184f873adda8e240",
+      "parent_sha256": "515cefbbb9e7d4400cb863ec5677ad142f72b050a27d7dc85bf5b095a80dbd36"
+    },
+    {
+      "path": "generated/mod_li_yu_dao/events/lyd_c2_consent_events.txt",
+      "sha256": "7d8fe459eea9cd3cf4107386dd98dcc36b31495ea7b20372564bc2dda99e041c",
+      "parent_sha256": "0a5331fa4eb1328154ddba21615ee1822f65ba708bebdab8fe8723ce9267484e"
+    },
+    {
+      "path": "docs/player-scope-and-portable-integration.md",
+      "sha256": "a4fe1bd38fcb7c40933e804e8dc9d6812105c0c8e5dd80ec6345fd2630a2a769",
+      "parent_sha256": null
+    }
+  ]
+}

@@ -32,12 +32,43 @@ def fixture(source: Path) -> None:
     }
     for relative, text in scripts.items():
         write(source / relative, text, bom=True)
+    # Keep the fixture minimal while covering every fixed production path.
+    for relative in release.REQUIRED_RUNTIME_FILES:
+        path = source / relative
+        if path.suffix == ".txt" and not path.exists():
+            write(path, "# Empty consent fixture\n", bom=True)
     for language in ("english", "simp_chinese"):
         write(source / f"localization/{language}/lyd_content_l_{language}.yml", f'l_{language}:\n lyd_rite:0 "School"\n lyd_rite_desc:0 "A tradition"\n lyd_tenet_name:0 "Learning"\n lyd_tenet_desc:0 "Learning practice"\n lyd_tenet_second_name:0 "Rites"\n lyd_tenet_second_desc:0 "Ritual practice"\n lyd_tenet_third_name:0 "Virtue"\n lyd_tenet_third_desc:0 "Virtue practice"\n', bom=True)
         write(source / f"localization/{language}/lyd_runtime_l_{language}.yml", f'l_{language}:\n lyd_open:0 "Open"\n lyd_request:0 "Request"\n lyd.1.t:0 "Discussion"\n lyd.1.d:0 "$lyd_open$ [ROOT.Char.GetName]"\n lyd.1.a:0 "Agree"\n', bom=True)
+        write(source / f"localization/{language}/lyd_c2_consent_l_{language}.yml", f'l_{language}:\n', bom=True)
 
 
 class BuildTests(unittest.TestCase):
+    def test_parameterized_guard_proves_only_current_actor(self) -> None:
+        parse = static.parse_clausewitz
+        helper = parse("is_ai = no faith = $TARGET$")
+        target_only = parse("$ACTOR$ = { is_ai = no }")
+        recipient_only = parse("scope:recipient = { is_ai = no }")
+        triggers = {"lyd_direct": helper, "lyd_indirect": target_only, "lyd_recipient": recipient_only}
+        self.assertTrue(static.player_guard(parse("lyd_direct = { TARGET = scope:recipient.faith }"), triggers))
+        self.assertFalse(static.player_guard(parse("lyd_indirect = { ACTOR = scope:recipient }"), triggers))
+        self.assertFalse(static.player_guard(parse("lyd_recipient = { ACTOR = root }"), triggers))
+        self.assertFalse(static.player_guard(parse("NOT = { lyd_direct = { TARGET = faith } }"), triggers))
+
+    def test_variable_names_are_internal_but_option_names_are_localized(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="lyd-variable-loc-") as directory:
+            source = Path(directory)
+            fixture(source)
+            effects = source / "common/scripted_effects/lyd_notice_effects.txt"
+            write(effects, effects.read_text(encoding="utf-8-sig").replace(
+                "add_stress = -5", "set_variable = { name = lyd_internal_only value = 1 } add_stress = -5"), bom=True)
+            self.assertEqual(static.validate(source)["result"], "GREEN")
+            events = source / "events/lyd_events.txt"
+            write(events, events.read_text(encoding="utf-8-sig").replace("name = lyd.1.a", "name = lyd_missing_option"), bom=True)
+            report = static.validate(source)
+            self.assertEqual(report["result"], "RED")
+            self.assertTrue(any("unlocalized field" in item and "lyd_missing_option" in item for item in report["errors"]))
+
     def test_reproducible_archive_and_fixture_exclusion(self) -> None:
         with tempfile.TemporaryDirectory(prefix="lyd-build-test-") as directory:
             base = Path(directory)

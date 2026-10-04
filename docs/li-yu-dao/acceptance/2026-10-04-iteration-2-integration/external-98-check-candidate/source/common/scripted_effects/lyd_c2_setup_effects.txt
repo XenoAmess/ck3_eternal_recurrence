@@ -1,0 +1,183 @@
+# ACTOR must be a live player. All snapshots belong to this round, not a faith ID.
+lyd_c2_reset_round_effect = {
+    @CLEAR_ROUND_FIELDS@
+    @CLEAR_ROUND_LISTS@
+}
+lyd_c2_start_round_effect = {
+    if = {
+    limit = { lyd_c2_actor_trigger = yes is_ai = no }
+    # Character scope, set by the already guarded join/detach entry.
+    save_scope_as = lyd_c2_actor
+    lyd_c2_reset_round_effect = yes
+    set_variable = { name = lyd_c2_active value = 1 days = @PROPOSAL_DAYS@ }
+    set_variable = { name = lyd_c2_kind value = $KIND$ }
+    set_variable = { name = lyd_c2_terms_revision value = 1 }
+    set_variable = { name = lyd_c2_result value = 0 }
+    # Persistent per-actor generation: rite serials alone can collide after the
+    # same player changes school. Never include this in reset_round fields.
+    if = { limit = { NOT = { has_variable = lyd_c2_callback_nonce } } set_variable = { name = lyd_c2_callback_nonce value = 0 } }
+    change_variable = { name = lyd_c2_callback_nonce add = 1 }
+    if = { limit = { NOT = { has_variable = lyd_c2_completed_joins } } set_variable = { name = lyd_c2_completed_joins value = 0 } }
+    if = { limit = { NOT = { has_variable = lyd_c2_completed_detaches } } set_variable = { name = lyd_c2_completed_detaches value = 0 } }
+    set_variable = { name = lyd_c2_source_faith value = faith }
+    set_variable = { name = lyd_c2_source_main value = faith.main_rite }
+    set_variable = { name = lyd_c2_moving_rite value = rite }
+    set_variable = { name = lyd_c2_source_singleton value = 0 }
+    if = { limit = { faith = { lyd_c2_single_rite_faith_trigger = yes } }
+        set_variable = { name = lyd_c2_source_singleton value = 1 }
+    }
+    if = { limit = { exists = rite.head_of_rite } set_variable = { name = lyd_c2_source_rite_head value = rite.head_of_rite } }
+    if = { limit = { exists = faith.religious_head }
+        set_variable = { name = lyd_c2_source_head value = faith.religious_head }
+        set_variable = { name = lyd_c2_source_head_title value = faith.religious_head_title }
+        faith.religious_head = {
+            every_held_title = {
+                limit = { this != scope:lyd_c2_actor.var:lyd_c2_source_head_title }
+                save_scope_as = lyd_c2_protected_title
+                scope:lyd_c2_actor = { add_to_variable_list = { name = lyd_c2_protected_head_titles target = scope:lyd_c2_protected_title } }
+            }
+        }
+    }
+    rite = {
+        save_scope_as = lyd_c2_event_school
+        if = { limit = { NOT = { has_variable = lyd_c2_proposal_serial } } set_variable = { name = lyd_c2_proposal_serial value = 0 } }
+        change_variable = { name = lyd_c2_proposal_serial add = 1 }
+        set_variable = { name = lyd_c2_lock_serial value = var:lyd_c2_proposal_serial }
+        set_variable = { name = lyd_c2_proposal_owner value = scope:lyd_c2_actor days = @PROPOSAL_DAYS@ }
+        scope:lyd_c2_actor = { set_variable = { name = lyd_c2_serial value = prev.var:lyd_c2_proposal_serial } }
+    }
+    save_scope_value_as = { name = lyd_c2_event_serial value = var:lyd_c2_serial }
+    save_scope_value_as = { name = lyd_c2_event_terms value = var:lyd_c2_terms_revision }
+    save_scope_value_as = { name = lyd_c2_event_nonce value = var:lyd_c2_callback_nonce }
+    set_variable = { name = lyd_c2_source_total value = 0 }
+    set_variable = { name = lyd_c2_target_total value = 0 }
+    set_variable = { name = lyd_c2_target_rite_total value = 0 }
+    set_variable = { name = lyd_c2_dormant_total value = 0 }
+    set_variable = { name = lyd_c2_source_yes value = 0 }
+    set_variable = { name = lyd_c2_target_yes value = 0 }
+    set_variable = { name = lyd_c2_player_total value = 0 }
+    set_variable = { name = lyd_c2_player_yes value = 0 }
+    if = {
+        limit = { var:lyd_c2_kind = 1 }
+        set_variable = { name = lyd_c2_target_rep value = scope:recipient }
+        set_variable = { name = lyd_c2_target_faith value = scope:recipient.faith }
+        set_variable = { name = lyd_c2_target_main value = scope:recipient.faith.main_rite }
+        if = {
+            limit = { exists = scope:recipient.faith.religious_head }
+            set_variable = { name = lyd_c2_target_head value = scope:recipient.faith.religious_head }
+        }
+        lyd_c2_collect_target_effect = yes
+    }
+    lyd_c2_collect_source_effect = yes
+    lyd_c2_snapshot_terms_effect = yes
+    trigger_event = lyd.200
+    trigger_event = { id = lyd.229 days = @PROPOSAL_DAYS@ }
+    }
+}
+lyd_c2_begin_join_effect = {
+    if = { limit = { lyd_c2_start_join_trigger = yes } scope:actor = { lyd_c2_start_round_effect = { KIND = 1 } } }
+}
+lyd_c2_begin_detach_effect = {
+    if = { limit = { lyd_c2_start_detach_trigger = yes } lyd_c2_start_round_effect = { KIND = 2 } }
+}
+# The initiator is proposed as the source representative; the selected recipient
+# is proposed as receiving representative. Their ballots authorize THESE people,
+# rather than treating sponsor or recipient selection as an existing mandate.
+lyd_c2_collect_source_effect = {
+    var:lyd_c2_source_faith = {
+        every_faith_character = {
+            limit = { rite = scope:lyd_c2_actor.var:lyd_c2_moving_rite }
+            save_scope_as = lyd_c2_voter
+            if = {
+                limit = { lyd_c2_elector_trigger = yes }
+                set_variable = { name = lyd_c2_elector_owner value = scope:lyd_c2_actor }
+                set_variable = { name = lyd_c2_elector_serial value = scope:lyd_c2_event_serial }
+                set_variable = { name = lyd_c2_elector_rite value = rite }
+                scope:lyd_c2_actor = {
+                    add_to_variable_list = { name = lyd_c2_source_electors target = scope:lyd_c2_voter }
+                    change_variable = { name = lyd_c2_source_total add = 1 }
+                }
+                trigger_event = lyd.210
+            }
+            if = {
+                limit = { is_ai = no is_alive = yes }
+                set_variable = { name = lyd_c2_affected_owner value = scope:lyd_c2_actor }
+                set_variable = { name = lyd_c2_affected_serial value = scope:lyd_c2_event_serial }
+                set_variable = { name = lyd_c2_affected_rite value = rite }
+                scope:lyd_c2_actor = {
+                    add_to_variable_list = { name = lyd_c2_players target = scope:lyd_c2_voter }
+                    change_variable = { name = lyd_c2_player_total add = 1 }
+                }
+                trigger_event = lyd.212
+            }
+        }
+    }
+}
+lyd_c2_collect_target_effect = {
+    var:lyd_c2_target_faith = {
+        every_faith_rite = {
+            save_scope_as = lyd_c2_target_school
+            set_variable = { name = lyd_c2_proposal_owner value = scope:lyd_c2_actor days = @PROPOSAL_DAYS@ }
+            set_variable = { name = lyd_c2_lock_serial value = scope:lyd_c2_actor.var:lyd_c2_serial }
+            set_variable = { name = lyd_c2_target_total value = 0 }
+            set_variable = { name = lyd_c2_target_yes value = 0 }
+            set_variable = { name = lyd_c2_target_followers value = 0 }
+            set_variable = { name = lyd_c2_holder_endorsed value = 0 }
+            remove_variable = lyd_c2_endorser
+            scope:lyd_c2_actor = {
+                add_to_variable_list = { name = lyd_c2_target_rites target = scope:lyd_c2_target_school }
+                change_variable = { name = lyd_c2_target_rite_total add = 1 }
+            }
+        }
+        every_faith_character = {
+            save_scope_as = lyd_c2_voter
+            if = { limit = { is_alive = yes }
+                set_variable = { name = lyd_c2_follower_owner value = scope:lyd_c2_actor }
+                set_variable = { name = lyd_c2_follower_serial value = scope:lyd_c2_event_serial }
+                set_variable = { name = lyd_c2_follower_rite value = rite }
+                rite = { change_variable = { name = lyd_c2_target_followers add = 1 } }
+                scope:lyd_c2_actor = { add_to_variable_list = { name = lyd_c2_target_followers target = scope:lyd_c2_voter } }
+            }
+            if = {
+                limit = { lyd_c2_elector_trigger = yes }
+                set_variable = { name = lyd_c2_elector_owner value = scope:lyd_c2_actor }
+                set_variable = { name = lyd_c2_elector_serial value = scope:lyd_c2_event_serial }
+                set_variable = { name = lyd_c2_elector_rite value = rite }
+                rite = { change_variable = { name = lyd_c2_target_total add = 1 } }
+                scope:lyd_c2_actor = {
+                    add_to_variable_list = { name = lyd_c2_target_electors target = scope:lyd_c2_voter }
+                    change_variable = { name = lyd_c2_target_total add = 1 }
+                }
+                trigger_event = lyd.211
+            }
+            if = {
+                limit = { is_ai = no is_alive = yes }
+                set_variable = { name = lyd_c2_affected_owner value = scope:lyd_c2_actor }
+                set_variable = { name = lyd_c2_affected_serial value = scope:lyd_c2_event_serial }
+                set_variable = { name = lyd_c2_affected_rite value = rite }
+                scope:lyd_c2_actor = {
+                    add_to_variable_list = { name = lyd_c2_players target = scope:lyd_c2_voter }
+                    change_variable = { name = lyd_c2_player_total add = 1 }
+                }
+                trigger_event = lyd.212
+            }
+        }
+        every_faith_rite = {
+            if = {
+                limit = { lyd_c2_dormant_receiving_rite_trigger = yes }
+                save_scope_as = lyd_c2_dormant_school
+                scope:lyd_c2_actor = {
+                    add_to_variable_list = { name = lyd_c2_dormant_rites target = scope:lyd_c2_dormant_school }
+                    change_variable = { name = lyd_c2_dormant_total add = 1 }
+                }
+            }
+            if = {
+                limit = { var:lyd_c2_target_total = 0 NOT = { lyd_c2_dormant_receiving_rite_trigger = yes } exists = head_of_rite }
+                save_scope_as = lyd_c2_holder_school
+                head_of_rite = {
+                    if = { limit = { is_alive = yes rite = scope:lyd_c2_holder_school } trigger_event = lyd.213 }
+                }
+            }
+        }
+    }
+}
