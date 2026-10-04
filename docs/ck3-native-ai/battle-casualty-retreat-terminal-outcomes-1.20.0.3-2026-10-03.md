@@ -180,3 +180,45 @@ consumer封包后只链接；本lane不重读origin。Root统一topic与日/周�
 本次短increment沿用已封真实normal_result；Root补充该结果 `wipe=false`。查询normal-save配对仍为 **h5697/date53241792**，不得用后续latest h5701替换。Root已发布的单场玩家战斗有限loop和06–09控制追加保持原归属；本页只补terminal/outcome组件，不新增whole-war或整代完成信用。v49 prep/verify stage GREEN与rebind30901 running是后续部署元数据，尚未新增本包live证据。
 
 Sealed increment source: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-casualty-outcomes/player-combat-1543503874-actual-terminal/ROOT-DELIVERY.json` and `reports/{TOPIC-APPEND.md,OCT4-W40-FIELDS.json}`. Only these sealed reports were consumed for this append; origin, raw, stock/source and the cancelled second query were not reread.
+
+## Oct4 second player battle: normal wipe result and the retained march
+
+状态增量为`production-live primitive`。主consumer已消费的schedule缓存记录玩家Combat1577058310@2629
+正常终结：journal event383>cursor358、date53248296、phase3/day0/winner1，defender primary Robert29829，
+defender CUnit83886367，attacker primary70766/CUnit150995107。wipe=true、final survivors enemy0/player3911；
+旧Combat严格解析失败、省份不再包含它，Result1711276040 retained/relevant_player_count1，subject已清combat、
+unblocked/no_successor。scheduler的STOPPED原因是actual_subject_left_combat_requires_root，保存了正常终态。
+
+captured hard账side0=136300000Q100000（1363兵员当量）、side1=2631980（26.3198）；final baseline1363/3920，
+survivors0/3911。player stored current fighting384688604（3846.88604）是缓存账，不能替代final survivor3911，
+也不能把baseline-minus-survivors代替hard。soft levy3806020/MAA873396分别保留原始Q；不启动差值一致性审计。
+army-strength若由别的owner提供则是整数人数，不能再次除Q。
+
+recorded War50331736/row0 value2137000Q、winner_is_war_attacker=false、combat_side0_is_war_attacker=true，
+该battle row对war attacker delta−2137000（−21.37）。缓存同帧whole-war current50331736=+11、War129=−25是
+独立观测；−21.37不等于整场战争当前分数，不从这份单帧缓存构造whole-war before/after变化或战争已结束结论。
+
+当前Robert29829和enemy actor70766均alive=true/custody none/jailer−1；原生character result rows是已读到的空列表。
+这证明两人的当前状态和本结果列表为空，不证明完整骑士死亡总数为0；army wipe不等于敌方actor死亡。
+没有重复字符query或捏造未观察knight IDs，人物结果不成为继续军事行军的额外门禁。
+
+原生terminal subject.movement_or_retreat_state_raw=0单独保留；真正current snapshot army_state moving/code7，
+main83886367在2629、in_combat=false/retreating=false，原route[2630,2631,2624,2619]完整非空且target2619。
+两字段不是同一enum，不能因raw0把main改称regular。已有树与实际后态支持保持这条已开放的march，
+不为终局重置路线或重复terminal query；此包记录结果与后态，不冒称新下达move或完整war/OODA loop。
+
+证据仅来自主consumer的SCHEDULE-CACHED-ORIGIN.json、ORIGIN-PIN.json；本worker未读rawday/control/SDK。
+Root正常h6549/save b17b038cd929782db8f11adffb8909c9680110d55266192a74a8bd4645273227，93567377B。
+本战已计9日=3+6；Root已计total4332/resume1179/Oct4+307，本包新增游戏日与动作0。Root继续既定march，
+其他topic、central/source/settlement由原owner整合；本lane不扩充研究或门禁。
+
+保留的历史 before 明细仅引用 numeric owner 已封包的
+`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-casualty-outcomes/player-combat-1577058310-actual-terminal/numeric-person/RETAINED-ENTRIES.json`
+（SHA-256 `cc271dfdfc4ca06c32d3e1643b29054a5f203d6c9bb5e04162a907ef1d02b62c`），
+而不重读 owner export/control：day06/native1124/public22/date53248272 的 51 typed entries
+是历史帧，不能冒充本终局 native1127/date53248296。32 MAA 行的 knight_character_id_raw 均为−1，
+positive knight IDs 为空；type_raw/prowess 尚未发布，因此不能推成完整骑士无死无俘。
+这些是 source actor 的既有观测扩展入口，不是本次 march 的前置条件，也不启动未知逆向或额外查询。
+该 before owner hard ledger（70766=51112494、Robert29829=2631980Q100000）与终局 side input 属不同 scope，
+不计算跨账差或一致性问题。历史 selected rolls 为 phase1/day5/cadence2、advantage−5400000Q100000；
+attacker current0/next0..0/commander null，defender Robert current6/next0..10；均不是终局后当前掷骰。
