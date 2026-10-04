@@ -8,6 +8,8 @@
 effect house = { set_house_aspiration = { type = aspect_of_creation level = 5 } }
 ```
 
+2026-10-04 语法复核：`effect` 是控制台命令前缀，后面直接接脚本，不写成 `effect =`。`house = { ... }` 切换到家族作用域；`type` 和 `level` 用空格分隔即可，不需要逗号。控制台前缀的公开示例可见 [CK3 Wiki 控制台文档镜像的 Scripting commands](https://github.com/jesec/ck3-modding-wiki/blob/master/wiki_pages/Console_commands.md#scripting-commands)，其中 `effect root = { ... }`、`effect root.culture = { ... }` 使用同一种结构。该复核仍为文档与原版脚本核对，不代表本命令已经实机执行。
+
 `type` 必须对应要保留或切换到的相位：
 
 | 相位 | type |
