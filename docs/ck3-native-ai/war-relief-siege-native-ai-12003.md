@@ -338,3 +338,24 @@ War `117440524`：玩家 attacker、primary leader，opponent `35991`，relative
 P472 rich siege由 own army `301989997` 执行：work raw `19739642 → 22003232`，增加 `2263590`（scale100000）；total `40000000`，remaining `17996768`，progress raw `49349 → 55008`，days left `135 → 120`。前后 strength均3515；breach0、walls_breached=false、assault_in_progress=false、can_start/stop_assault=false，assault progress/casualties0。Ordinary daily progress、phase length/counter/event/can_advance 等字段仍 `null`。
 
 本段 readiness 仅归于真实 calendar / map army / siege 进度。Native health observer unavailable（父已报告），**新增 clock 匹配信用0、recall信用0**；g64 已有24日 clock证据保持独立历史记录。未将 null、故障或失败字面值推为 clock 匹配。本作者原raw/TOP/SDK/source/Git/test访问均0。
+
+## R34：14 个完整普通存档日，failed15 零日保留
+
+此短包只合并父/子消费者缓存 `CACHED-DAY-01..14.json` 与 `CACHED-FAILED-DAY-15.json`。实际完成保存 **14 天 / 336h**，raw `53256120 → 53256456`；每完整日7工具leaf+1日结果，合计 **98 GREEN工具leaf＋14 GREEN结果＝112原JSON**，failed15 的5份原JSON单列。父账本更新为 **4672 / res1519 / Oct5+14**；Oct4冻结633。
+
+Failed15 的字面值为 `Error executing tool ck3_plan_turn: native gameplay step failed: application-main typed query failed or its snapshot changed`。该日 `0h / 0 saved days`，advance未提交。Before/after均 `native:61 / public58 / raw53256456 / paused=true / map_ready=true`。不将相同错误措辞推为与R33或health恢复同根因。
+
+| M7绑定 | History | Raw date | Bytes | SHA-256 |
+|---|---:|---:|---:|---|
+| day14 末完整 wholeSAVE | 7805 | 53256456 | 96642886 | `b9b908eb78e73d03bf0eebcac15d540c6331ae1ae3baca82773d8dc9e821b7bc` |
+| failed15 retained zero-day SAVE | 7807 | 53256456 | 96642886 | `ef14282b5d75ae1a08a99d5b43893c3822d883db62110c177430a68f1796a9c8` |
+
+两个绑定均saved；episode `native-29829-2bc2d599f7f9`、character29829、ordinary campaign/xar_off。Day14 final为 `native:60 / public57`；h7807不增加完成日信用。
+
+当前Robert29829存活、stress0、spouse34730；event及pending interaction为null。Own `301989997@472 sieging`、`184549452@2619 regular`；enemy `268435597(owner35991)@470 regular`。三军soldiers均null、move target均null且不可观测、route为空/complete_empty；无combat/retreat。完整字段在receipt逐值保留。
+
+War117440524：玩家attacker/primary leader、opponent35991、score0；target titles[1333,1351,1358]，objectives[470,3711,472]，enemy default raise province496。P470/P3711均fort6、garrison550/500、strength0、未占领且无siege。P472 fort4、garrison500、strength3515，**未占领**。
+
+P472 rich siege251658324由own301989997执行，current work **24615916/40000000**，remaining15384084，progress **61.539%**（raw61539/100000），ETA **102天**。本14日work `22003232→24615916`，增加2612684 raw；progress `55008→61539`，ETA `120→102`。**Day13实际work增加650906、ETA108→103**；其余13日各增加150906，strength全程3515。只记录数值，不猜event原因。Breach0、无突击；ordinary daily progress及phase字段继续null。
+
+First health014已由army_reinforcement独立缓存证明在**baseline raw53256120** restored available（父提供），该证据不回填之后日期或generic null。本14日不另增加health/counter能力、clock匹配或recall信用；g64历史24日clock证据保持独立。此缓存作者原raw/TOP/health014/source/Git/SDK/test访问均0。
