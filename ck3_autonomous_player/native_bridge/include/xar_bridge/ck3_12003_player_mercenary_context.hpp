@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12003_mercenary_candidates.hpp"
 #include "xar_bridge/ck3_12003_mercenary_final_terms.hpp"
+#include "xar_bridge/ck3_12003_mercenary_composition.hpp"
 #include "xar_bridge/ck3_12003_mercenary_position.hpp"
 
 #include <cstdint>
@@ -21,6 +22,7 @@ inline constexpr std::string_view kPlayerMercenaryContextExecutableSha256 =
 struct ContextBindings {
   CandidateBindings candidates;
   FinalTermsBindings final_terms;
+  CompositionBindings composition;
   xar::ck3_12003::MercenaryPositionBindingsV1 position;
   xar::ck3_12003::MercenaryPositionWorldV1 world;
 };
@@ -28,6 +30,7 @@ struct ContextBindings {
 struct Row {
   Candidate candidate;
   FinalTerms final_terms;
+  CompanyComposition composition;
   xar::ck3_12003::MercenaryPositionObservationV1 location;
 };
 

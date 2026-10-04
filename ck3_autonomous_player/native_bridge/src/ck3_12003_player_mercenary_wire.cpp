@@ -63,6 +63,8 @@ void WriteRow(std::ostream &out, const Row &row) {
   else Quote(out, candidate.troop_strength_unavailable_reason);
   out << "},\"final_terms\":"
       << SerializeMercenaryFinalTerms12003(row.final_terms)
+      << ",\"composition_v1\":"
+      << SerializeMercenaryComposition12003(row.composition)
       << ",\"location\":";
   Location(out, row.location);
   out << '}';

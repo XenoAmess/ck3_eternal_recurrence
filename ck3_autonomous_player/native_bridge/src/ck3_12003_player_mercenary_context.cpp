@@ -21,6 +21,8 @@ bool CopyCandidate(void *company, const Candidate &candidate, void *opaque) {
   (void)ck3_12003::ReadMercenaryPositionV1(
       visit.bindings->position, visit.bindings->world, visit.actor, company,
       row.location);
+  (void)ReadMercenaryComposition12003(visit.bindings->composition, company,
+                                      candidate.company_id, row.composition);
   visit.observation->rows.push_back(std::move(row));
   return true;
 }

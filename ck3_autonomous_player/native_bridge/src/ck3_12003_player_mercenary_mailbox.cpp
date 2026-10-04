@@ -50,6 +50,8 @@ bool BindPlayerMercenaryMailboxImageV1(PlayerMercenaryMailboxContextV1 &query,
       image_base, descriptor.executable_sha256);
   query.bindings.final_terms = mercenary::BindMercenaryFinalTermsImage12003(
       image_base, descriptor.executable_sha256);
+  query.bindings.composition = mercenary::BindMercenaryCompositionImage12003(
+      image_base, descriptor.executable_sha256);
   query.bindings.position.get_title_province =
       reinterpret_cast<decltype(query.bindings.position.get_title_province)>(
           image_base + kMercenaryTitleProvinceRvaV1);
@@ -61,7 +63,8 @@ bool BindPlayerMercenaryMailboxImageV1(PlayerMercenaryMailboxContextV1 &query,
   query.bindings.world.resolve_title = &ResolveMercenaryWorldTitle;
   query.bindings.world.resolve_province = &ResolveMercenaryWorldProvince;
   return query.core.enabled && query.provinces.enabled &&
-      query.bindings.candidates.enabled && query.bindings.final_terms.enabled;
+      query.bindings.candidates.enabled && query.bindings.final_terms.enabled &&
+      query.bindings.composition.enabled;
 }
 
 bool ExecutePlayerMercenaryMailboxV1(void *opaque,

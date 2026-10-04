@@ -1120,6 +1120,7 @@ add_library(xar_ck3_12002_runtime STATIC
   src/ck3_12003_war_cash_current_serializer.cpp
   src/ck3_12003_war_cash_current_mailbox.cpp
   src/ck3_12003_mercenary_candidates.cpp
+  src/ck3_12003_mercenary_composition.cpp
   src/ck3_12003_mercenary_final_terms.cpp
   src/ck3_12003_mercenary_position.cpp
   src/ck3_12003_player_mercenary_context.cpp
@@ -1150,6 +1151,7 @@ add_executable(xar_ck3_12003_player_mercenary_context_test
   src/ck3_12003_player_mercenary_context.cpp
   src/ck3_12003_player_mercenary_wire.cpp
   src/ck3_12003_mercenary_candidates.cpp
+  src/ck3_12003_mercenary_composition.cpp
   src/ck3_12003_mercenary_final_terms.cpp
   src/ck3_12003_mercenary_position.cpp)
 target_include_directories(xar_ck3_12003_player_mercenary_context_test PRIVATE include)

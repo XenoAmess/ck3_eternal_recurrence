@@ -74,6 +74,68 @@ def _strength(value: object) -> None:
         raise ValueError("native mercenary unavailable current soldiers is malformed")
 
 
+
+def _composition(value: object, company_id: object) -> bool:
+    if not isinstance(value, Mapping):
+        raise ValueError("native mercenary composition is malformed")
+    ready = _availability(value, "composition")
+    _integer(value.get("company_id"), 0, 2**32-1, "composition company full ID")
+    if value["company_id"] != company_id:
+        raise ValueError("native mercenary composition differs from candidate company")
+    holder_ready = value.get("holder_available")
+    holder_reason = value.get("holder_unavailable_reason")
+    if (type(holder_ready) is not bool
+            or holder_ready and holder_reason is not None
+            or not holder_ready and (not isinstance(holder_reason, str) or not holder_reason)):
+        raise ValueError("native mercenary holder availability is malformed")
+    _integer(value.get("holder_character_id"), 0, 2**32-1, "holder full ID",
+             nullable=not holder_ready)
+    if not holder_ready and value.get("holder_character_id") is not None:
+        raise ValueError("native mercenary unavailable holder ID is malformed")
+    # Holder and current employer are separate native identities.
+    _integer(value.get("regiment_count"), 0, 2**32-1, "regiment count",
+             nullable=not ready)
+    _integer(value.get("covered_regiment_count"), 0, 2**32-1, "covered regiment count")
+    for name in ("current_regiment_soldiers", "maximum_regiment_soldiers",
+                 "positive_siege_tier_current_soldiers"):
+        _integer(value.get(name), 0, 2**63-1, name, nullable=not ready)
+        if not ready and value.get(name) is not None:
+            raise ValueError("native mercenary incomplete composition has aggregate soldiers")
+    _integer(value.get("maximum_siege_tier_raw"), 0, 2**31-1,
+             "maximum company siege tier", nullable=not ready)
+    if not ready and value.get("maximum_siege_tier_raw") is not None:
+        raise ValueError("native mercenary incomplete composition has aggregate siege tier")
+    regiments = value.get("regiments")
+    if not isinstance(regiments, list) or len(regiments) != value["covered_regiment_count"]:
+        raise ValueError("native mercenary covered regiment collection is malformed")
+    if ready and value["covered_regiment_count"] != value["regiment_count"]:
+        raise ValueError("native mercenary complete composition lost regiments")
+    for regiment in regiments:
+        if not isinstance(regiment, Mapping):
+            raise ValueError("native mercenary regiment row is malformed")
+        _integer(regiment.get("ordinal"), 0, 2**32-1, "regiment ordinal")
+        _integer(regiment.get("persistent_regiment_id"), 0, 2**32-1,
+                 "persistent regiment full ID")
+        for name in ("current_soldiers", "maximum_soldiers"):
+            _integer(regiment.get(name), 0, 2**31-1, name)
+        status = regiment.get("type_status")
+        key = regiment.get("maa_type_key")
+        tier = regiment.get("siege_tier_raw")
+        if status == "available":
+            if not isinstance(key, str) or not key:
+                raise ValueError("native mercenary regiment type key is malformed")
+            _integer(tier, -(2**31), 2**31-1, "signed regiment siege tier")
+        elif status == "not_maa":
+            if key is not None or tier is not None:
+                raise ValueError("native mercenary non-MAA regiment invented type values")
+        else:
+            raise ValueError("native mercenary regiment type status is malformed")
+    # Preserve all partial rows, signed per-type tiers and copied native totals.
+    # The inventory maximum starts at zero; it is not an observed province K.
+    # Regiment sums exclude holder knights included in company current_soldiers.
+    return ready
+
+
 def _location(value: object) -> None:
     if not isinstance(value, Mapping):
         raise ValueError("native mercenary location is malformed")
@@ -112,6 +174,7 @@ def normalize_player_mercenary_context_v1(value: object, *, snapshot: Mapping[st
     rows = value.get("rows")
     if not isinstance(rows, list):
         raise ValueError("native mercenary candidate collection is malformed")
+    normalized_rows = []
     for row in rows:
         if not isinstance(row, Mapping):
             raise ValueError("native mercenary candidate row is malformed")
@@ -121,4 +184,18 @@ def normalize_player_mercenary_context_v1(value: object, *, snapshot: Mapping[st
         _strength(row.get("troop_strength"))
         _terms(row.get("final_terms"))
         _location(row.get("location"))
-    return dict(value)
+        composition_ready = (
+            _composition(row["composition_v1"], row["company_id"])
+            if "composition_v1" in row else False
+        )
+        terms_ready = row["final_terms"]["available"] is True
+        normalized_rows.append({
+            **row,
+            "readiness_v1": {
+                "composition_ready": composition_ready,
+                "hire_terms_ready": terms_ready,
+                "hire_ready": composition_ready and terms_ready
+                and row["final_terms"]["can_hire"] is True,
+            },
+        })
+    return {**value, "rows": normalized_rows}
