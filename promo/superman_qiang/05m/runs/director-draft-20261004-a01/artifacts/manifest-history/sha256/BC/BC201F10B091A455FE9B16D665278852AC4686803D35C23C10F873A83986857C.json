@@ -1,0 +1,57 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_run_manifest",
+  "run": {
+    "id": "director-draft-20261004-a01"
+  },
+  "project_config": {
+    "path": "artifacts/project-config/sha256/0C/0C65F4B11E9117ECDE11BE0A973950FFA88ED52FE4FC0729B75DDE404173242B.json",
+    "bytes": 14112,
+    "sha256": "0C65F4B11E9117ECDE11BE0A973950FFA88ED52FE4FC0729B75DDE404173242B"
+  },
+  "artifact_policy": {
+    "strategy": "append-only-content-addressed",
+    "raw_directory": "artifacts/raw",
+    "derived_directory": "artifacts/derived",
+    "manifest_history_directory": "artifacts/manifest-history",
+    "preserve_process_material": true
+  },
+  "phase_history": [],
+  "artifacts": [
+    {
+      "id": "director-md-a01",
+      "collection": "raw",
+      "role": "director-script",
+      "path": "artifacts/raw/sha256/9A/9A58DBD4112D2A44451D6CAD649F16C55CB38DD1212AE356CA438AD7C8F2620B.md",
+      "label": "director.md",
+      "bytes": 29221,
+      "sha256": "9A58DBD4112D2A44451D6CAD649F16C55CB38DD1212AE356CA438AD7C8F2620B",
+      "media_type": "text/markdown",
+      "source_name": "director.md"
+    },
+    {
+      "id": "director-json-a01",
+      "collection": "raw",
+      "role": "director-script",
+      "path": "artifacts/raw/sha256/3C/3C6333DAB1406954FAD3297C452704EF17D6C6D6248C03F4743145503FADF8F5.json",
+      "label": "director.json",
+      "bytes": 21289,
+      "sha256": "3C6333DAB1406954FAD3297C452704EF17D6C6D6248C03F4743145503FADF8F5",
+      "media_type": "application/json",
+      "source_name": "director.json"
+    },
+    {
+      "id": "production-brief-a01",
+      "collection": "raw",
+      "role": "production-brief",
+      "path": "artifacts/raw/sha256/FA/FAEF25B484F4969A87C92F865FFCB54F2D1989D269F7190D087697C4001F78F3.md",
+      "label": "production-brief.md",
+      "bytes": 7790,
+      "sha256": "FAEF25B484F4969A87C92F865FFCB54F2D1989D269F7190D087697C4001F78F3",
+      "media_type": "text/markdown",
+      "source_name": "production-brief.md"
+    }
+  ],
+  "audits": [],
+  "signoffs": []
+}

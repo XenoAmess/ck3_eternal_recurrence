@@ -1,0 +1,243 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "superman-qiang-02m",
+    "title": "《超人强》2分钟宣传片"
+  },
+  "pipeline": {
+    "adapter": "generic",
+    "preset": "default"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": 120
+  },
+  "chapters": [
+    {
+      "id": "SQ02-01",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "王冠之外"
+      },
+      "cues": [
+        {
+          "id": "SQ02-01-narration",
+          "narration": {
+            "zh-CN": "王冠能给你权力。可这座宫廷里，谁在变强，还得看另一份履历。"
+          },
+          "subtitles": {
+            "zh-CN": "王冠能给你权力。可这座宫廷里，谁在变强，还得看另一份履历。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQ02-02",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "给宫廷故事记上一笔"
+      },
+      "cues": [
+        {
+          "id": "SQ02-02-narration",
+          "narration": {
+            "zh-CN": "《超人强：越超人越强》。游戏明确结算一次成年角色间的性行为，双方就各记一次性经验。"
+          },
+          "subtitles": {
+            "zh-CN": "《超人强：越超人越强》。游戏明确结算一次成年角色间的性行为，双方就各记一次性经验。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQ02-03",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "真正的筹码是事前经验"
+      },
+      "cues": [
+        {
+          "id": "SQ02-03-narration",
+          "narration": {
+            "zh-CN": "先比这一次之前的经验。较多的一方，可以从较少的一方吸取一项合格属性。谁发起，都按这条规则。"
+          },
+          "subtitles": {
+            "zh-CN": "先比这一次之前的经验。较多的一方，可以从较少的一方吸取一项合格属性。谁发起，都按这条规则。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQ02-04",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "一次，只转移一项"
+      },
+      "cues": [
+        {
+          "id": "SQ02-04-narration",
+          "narration": {
+            "zh-CN": "六项能力，外加健康。合格的选项等权抽取，一次只转移一项：一人得，一人失。"
+          },
+          "subtitles": {
+            "zh-CN": "六项能力，外加健康。合格的选项等权抽取，一次只转移一项：一人得，一人失。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQ02-05",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "反转：成功，不等于吸取"
+      },
+      "cues": [
+        {
+          "id": "SQ02-05-narration",
+          "narration": {
+            "zh-CN": "但先别急着庆功。看这次真实勾引：事前经验都是零。结果双方各到一，属性没有吸取。"
+          },
+          "subtitles": {
+            "zh-CN": "但先别急着庆功。看这次真实勾引：事前经验都是零。结果双方各到一，属性没有吸取。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQ02-06",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "一份履历，一次选择"
+      },
+      "cues": [
+        {
+          "id": "SQ02-06-narration",
+          "narration": {
+            "zh-CN": "你的履历在哪儿？右键角色，选一次“查看性经验”，气泡直接出现。自己和别人，都能看。"
+          },
+          "subtitles": {
+            "zh-CN": "你的履历在哪儿？右键角色，选一次“查看性经验”，气泡直接出现。自己和别人，都能看。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQ02-07",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "读数能看见，括号要看懂"
+      },
+      "cues": [
+        {
+          "id": "SQ02-07-narration",
+          "narration": {
+            "zh-CN": "次数、当前属性，一眼可见。括号记的是累计净修正。这位阿梅利娜健康四点一六六二二，净变化为零。"
+          },
+          "subtitles": {
+            "zh-CN": "次数、当前属性，一眼可见。括号记的是累计净修正。这位阿梅利娜健康四点一六六二二，净变化为零。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQ02-08",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "健康，是数值基准"
+      },
+      "cues": [
+        {
+          "id": "SQ02-08-narration",
+          "narration": {
+            "zh-CN": "零点零零零七五，是健康修正的平衡基准。它不是多活一个月的承诺，寿命仍受年龄、疾病和随机判定影响。"
+          },
+          "subtitles": {
+            "zh-CN": "零点零零零七五，是健康修正的平衡基准。它不是多活一个月的承诺，寿命仍受年龄、疾病和随机判定影响。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQ02-09",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "把现有宫廷接着玩"
+      },
+      "cues": [
+        {
+          "id": "SQ02-09-narration",
+          "narration": {
+            "zh-CN": "旧存档也能接着玩，从启用时开始记录。玩家和电脑角色用同一套规则，旧事不回溯，经验不遗传。"
+          },
+          "subtitles": {
+            "zh-CN": "旧存档也能接着玩，从启用时开始记录。玩家和电脑角色用同一套规则，旧事不回溯，经验不遗传。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQ02-10",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "第二次反转：对面也许更老到"
+      },
+      "cues": [
+        {
+          "id": "SQ02-10-narration",
+          "narration": {
+            "zh-CN": "下次赴约前，先查查对方。经验更老到的人，可能就在对面。宫廷里的主动权，未必在王冠上。"
+          },
+          "subtitles": {
+            "zh-CN": "下次赴约前，先查查对方。经验更老到的人，可能就在对面。宫廷里的主动权，未必在王冠上。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQ02-11",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "王冠之外，履历说话"
+      },
+      "cues": [
+        {
+          "id": "SQ02-11-narration",
+          "narration": {
+            "zh-CN": "《超人强：越超人越强》。创意工坊搜索“超人强”。王冠之外，履历说话。"
+          },
+          "subtitles": {
+            "zh-CN": "《超人强：越超人越强》。创意工坊搜索“超人强”。王冠之外，履历说话。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    }
+  ]
+}

@@ -1,0 +1,701 @@
+{
+  "format_version": 1,
+  "kind": "superman_qiang_director_authoring_receipt",
+  "completed_at_utc": "2026-10-04T07:37:13.204936+00:00",
+  "interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "toolchain_version": "0.2.1",
+  "latest_release": "v0.2.1",
+  "highest_state": "director_authoring_validated",
+  "runs": [
+    {
+      "variant": "10m",
+      "duration_seconds": 600,
+      "scene_count": 24,
+      "continuous_timeline": true,
+      "narration_in_md_matches_json": true,
+      "han_characters": 2006,
+      "max_han_characters_per_second": 3.75,
+      "voice_timing": "text_budget_only; numeric readings and full audio timing pending actual narration",
+      "scenes": [
+        {
+          "id": "10M-01",
+          "start_seconds": 0,
+          "end_seconds": 24,
+          "han_characters": 74,
+          "han_characters_per_second": 3.08
+        },
+        {
+          "id": "10M-02",
+          "start_seconds": 24,
+          "end_seconds": 48,
+          "han_characters": 82,
+          "han_characters_per_second": 3.42
+        },
+        {
+          "id": "10M-03",
+          "start_seconds": 48,
+          "end_seconds": 72,
+          "han_characters": 81,
+          "han_characters_per_second": 3.38
+        },
+        {
+          "id": "10M-04",
+          "start_seconds": 72,
+          "end_seconds": 96,
+          "han_characters": 74,
+          "han_characters_per_second": 3.08
+        },
+        {
+          "id": "10M-05",
+          "start_seconds": 96,
+          "end_seconds": 120,
+          "han_characters": 81,
+          "han_characters_per_second": 3.38
+        },
+        {
+          "id": "10M-06",
+          "start_seconds": 120,
+          "end_seconds": 144,
+          "han_characters": 84,
+          "han_characters_per_second": 3.5
+        },
+        {
+          "id": "10M-07",
+          "start_seconds": 144,
+          "end_seconds": 168,
+          "han_characters": 85,
+          "han_characters_per_second": 3.54
+        },
+        {
+          "id": "10M-08",
+          "start_seconds": 168,
+          "end_seconds": 192,
+          "han_characters": 78,
+          "han_characters_per_second": 3.25
+        },
+        {
+          "id": "10M-09",
+          "start_seconds": 192,
+          "end_seconds": 218,
+          "han_characters": 77,
+          "han_characters_per_second": 2.96
+        },
+        {
+          "id": "10M-10",
+          "start_seconds": 218,
+          "end_seconds": 246,
+          "han_characters": 88,
+          "han_characters_per_second": 3.14
+        },
+        {
+          "id": "10M-11",
+          "start_seconds": 246,
+          "end_seconds": 272,
+          "han_characters": 80,
+          "han_characters_per_second": 3.08
+        },
+        {
+          "id": "10M-12",
+          "start_seconds": 272,
+          "end_seconds": 298,
+          "han_characters": 79,
+          "han_characters_per_second": 3.04
+        },
+        {
+          "id": "10M-13",
+          "start_seconds": 298,
+          "end_seconds": 324,
+          "han_characters": 86,
+          "han_characters_per_second": 3.31
+        },
+        {
+          "id": "10M-14",
+          "start_seconds": 324,
+          "end_seconds": 350,
+          "han_characters": 87,
+          "han_characters_per_second": 3.35
+        },
+        {
+          "id": "10M-15",
+          "start_seconds": 350,
+          "end_seconds": 376,
+          "han_characters": 89,
+          "han_characters_per_second": 3.42
+        },
+        {
+          "id": "10M-16",
+          "start_seconds": 376,
+          "end_seconds": 404,
+          "han_characters": 90,
+          "han_characters_per_second": 3.21
+        },
+        {
+          "id": "10M-17",
+          "start_seconds": 404,
+          "end_seconds": 430,
+          "han_characters": 95,
+          "han_characters_per_second": 3.65
+        },
+        {
+          "id": "10M-18",
+          "start_seconds": 430,
+          "end_seconds": 456,
+          "han_characters": 91,
+          "han_characters_per_second": 3.5
+        },
+        {
+          "id": "10M-19",
+          "start_seconds": 456,
+          "end_seconds": 480,
+          "han_characters": 83,
+          "han_characters_per_second": 3.46
+        },
+        {
+          "id": "10M-20",
+          "start_seconds": 480,
+          "end_seconds": 504,
+          "han_characters": 85,
+          "han_characters_per_second": 3.54
+        },
+        {
+          "id": "10M-21",
+          "start_seconds": 504,
+          "end_seconds": 528,
+          "han_characters": 90,
+          "han_characters_per_second": 3.75
+        },
+        {
+          "id": "10M-22",
+          "start_seconds": 528,
+          "end_seconds": 552,
+          "han_characters": 85,
+          "han_characters_per_second": 3.54
+        },
+        {
+          "id": "10M-23",
+          "start_seconds": 552,
+          "end_seconds": 576,
+          "han_characters": 87,
+          "han_characters_per_second": 3.62
+        },
+        {
+          "id": "10M-24",
+          "start_seconds": 576,
+          "end_seconds": 600,
+          "han_characters": 75,
+          "han_characters_per_second": 3.12
+        }
+      ],
+      "asset_ids": [
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06",
+        "A07",
+        "G01",
+        "G02",
+        "G03",
+        "G04",
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "S01",
+        "S02"
+      ],
+      "pending_asset_ids": [
+        "G01",
+        "G02",
+        "G03",
+        "G04",
+        "P01",
+        "P02",
+        "P03",
+        "P04"
+      ],
+      "config": {
+        "path": "promo/superman_qiang/10m/promo-project.json",
+        "bytes": 23974,
+        "sha256": "616487517cbc9fb88af7734844a30acc72c98ff0d58a004bac431aa008327613"
+      },
+      "director_markdown": {
+        "path": "promo/superman_qiang/10m/director.md",
+        "bytes": 41897,
+        "sha256": "423526be5711899a5a87225fab7fae144773e4c8751b6c1fcf77cba58d031625"
+      },
+      "director_json": {
+        "path": "promo/superman_qiang/10m/director.json",
+        "bytes": 34001,
+        "sha256": "5415c5f80e98227a8510479dfe50466dd9dbeb3a7242c0d99bb077c6dd0c36e4"
+      },
+      "run_manifest": {
+        "path": "promo/superman_qiang/10m/runs/director-draft-20261004-a02/run-manifest.json",
+        "bytes": 2923,
+        "sha256": "c58e94f7bcbd7357f31ae7c89b2b194b26e141357755c6a71fbf751a1e0d0cee"
+      },
+      "native_artifact_count": 5,
+      "full_authoring_validation": "passed",
+      "chapters": "all_planned",
+      "deliverable": "not_produced",
+      "signoff": "not_provided"
+    }
+  ],
+  "initialization_commands": [
+    {
+      "variant": "02m",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "init",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\02m",
+        "--project-id",
+        "superman-qiang-02m",
+        "--title",
+        "《超人强》2分钟宣传片",
+        "--adapter",
+        "generic",
+        "--preset",
+        "default",
+        "--run-id",
+        "planning-scaffold-20261004",
+        "--narration-locale",
+        "zh-CN",
+        "--subtitle-locale",
+        "zh-CN"
+      ],
+      "returncode": 0,
+      "stdout": "INITIALIZED: config=D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\02m\\promo-project.json; run=D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\02m\\runs\\planning-scaffold-20261004\\run-manifest.json\n",
+      "stderr": ""
+    },
+    {
+      "variant": "05m",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "init",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\05m",
+        "--project-id",
+        "superman-qiang-05m",
+        "--title",
+        "《超人强》5分钟玩法导览",
+        "--adapter",
+        "generic",
+        "--preset",
+        "default",
+        "--run-id",
+        "planning-scaffold-20261004",
+        "--narration-locale",
+        "zh-CN",
+        "--subtitle-locale",
+        "zh-CN"
+      ],
+      "returncode": 0,
+      "stdout": "INITIALIZED: config=D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\05m\\promo-project.json; run=D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\05m\\runs\\planning-scaffold-20261004\\run-manifest.json\n",
+      "stderr": ""
+    },
+    {
+      "variant": "10m",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "init",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m",
+        "--project-id",
+        "superman-qiang-10m",
+        "--title",
+        "《超人强》10分钟完整入门",
+        "--adapter",
+        "generic",
+        "--preset",
+        "default",
+        "--run-id",
+        "planning-scaffold-20261004",
+        "--narration-locale",
+        "zh-CN",
+        "--subtitle-locale",
+        "zh-CN"
+      ],
+      "returncode": 0,
+      "stdout": "INITIALIZED: config=D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\promo-project.json; run=D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\runs\\planning-scaffold-20261004\\run-manifest.json\n",
+      "stderr": ""
+    }
+  ],
+  "commands": [
+    {
+      "label": "10m-latest-before-run",
+      "argv": [
+        "gh",
+        "api",
+        "repos/XenoAmess/xar_promo_toolchain/releases/latest"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "d84902323a2c776cba55ba732629abf63a3b31530c3155cac2a31ba3555173d3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-config-before-start",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "validate",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\promo-project.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "22d225c4f55d7ca39f4592f8c3084bce3c038af316d5151f66c3ee5602d35af4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-scaffold-before-start",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "validate",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\runs\\director-draft-20261004-a01\\run-manifest.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "08fb269a58b23375a4e63c4f51b938d366f7a4279533b0c740b78f834bef8786",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-start-run",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "start-run",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\promo-project.json",
+        "--run-id",
+        "director-draft-20261004-a02"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "c18457d425af78dcd516f796656d4bc60bafb4494a14804c319d6558efafc1e6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-config-after-start",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "validate",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\promo-project.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "22d225c4f55d7ca39f4592f8c3084bce3c038af316d5151f66c3ee5602d35af4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-run-after-start",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "validate",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\runs\\director-draft-20261004-a02\\run-manifest.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "ccada310d794095f87eb455e81261a6c36f5101a2952f84da95082d2f0f5eab9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-preserve-1",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "preserve",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\director.md",
+        "--run-manifest",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\runs\\director-draft-20261004-a02\\run-manifest.json",
+        "--artifact-id",
+        "director-md-a02",
+        "--collection",
+        "raw",
+        "--role",
+        "director-script",
+        "--media-type",
+        "text/markdown"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "c7b542773c2cfb704bb60fdbd2c127388e09d58578bec8d38c0466adf6bdafff",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-config-after-preserve-1",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "validate",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\promo-project.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "22d225c4f55d7ca39f4592f8c3084bce3c038af316d5151f66c3ee5602d35af4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-run-after-preserve-1",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "validate",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\runs\\director-draft-20261004-a02\\run-manifest.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e0fc9443413c94fd4747aaff43098b5867d33d95f849e53a26cb16dd1512031b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-preserve-2",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "preserve",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\director.json",
+        "--run-manifest",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\runs\\director-draft-20261004-a02\\run-manifest.json",
+        "--artifact-id",
+        "director-json-a02",
+        "--collection",
+        "raw",
+        "--role",
+        "director-script",
+        "--media-type",
+        "application/json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "5f0c34cdcfa021bc5a8c262f32385847065d9e12215ef74d8d35dd8b942dfe21",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-config-after-preserve-2",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "validate",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\promo-project.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "22d225c4f55d7ca39f4592f8c3084bce3c038af316d5151f66c3ee5602d35af4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-run-after-preserve-2",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "validate",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\runs\\director-draft-20261004-a02\\run-manifest.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "23b2cc276218f1d9fba2577741e02ae761ff2ad6996f4dc17f188df0820c9a95",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-preserve-3",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "preserve",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\production-brief.md",
+        "--run-manifest",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\runs\\director-draft-20261004-a02\\run-manifest.json",
+        "--artifact-id",
+        "production-brief-a01",
+        "--collection",
+        "raw",
+        "--role",
+        "production-brief",
+        "--media-type",
+        "text/markdown"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "ff274d4650f0b068f6247575b1eac17154db7e8c20f6e975ec3b6394d141d2ed",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-config-after-preserve-3",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "validate",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\promo-project.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "22d225c4f55d7ca39f4592f8c3084bce3c038af316d5151f66c3ee5602d35af4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-run-after-preserve-3",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "validate",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\runs\\director-draft-20261004-a02\\run-manifest.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "b419d294a1be0818cf00b50c09fe7bef9740729362be5725d60813c64ebf12d3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-preserve-4",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "preserve",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\asset-and-claim-ledger.json",
+        "--run-manifest",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\runs\\director-draft-20261004-a02\\run-manifest.json",
+        "--artifact-id",
+        "asset-claim-ledger-a01",
+        "--collection",
+        "raw",
+        "--role",
+        "source-ledger",
+        "--media-type",
+        "application/json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "a845ac21000fb0291fce5e365d5b1ec7860ba56b6f87549a2b6e2262de7f755b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-config-after-preserve-4",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "validate",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\promo-project.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "22d225c4f55d7ca39f4592f8c3084bce3c038af316d5151f66c3ee5602d35af4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-run-after-preserve-4",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "validate",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\runs\\director-draft-20261004-a02\\run-manifest.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "bd20aaf499f8fd8b92c1b5476b24c0612de9b7a2bd8a8cee4d2acec092b48b24",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-preserve-5",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "preserve",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\evidence\\director-planning-20261004\\framework-version.json",
+        "--run-manifest",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\runs\\director-draft-20261004-a02\\run-manifest.json",
+        "--artifact-id",
+        "framework-version-a01",
+        "--collection",
+        "raw",
+        "--role",
+        "framework-provenance",
+        "--media-type",
+        "application/json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "64f8cbccbb1d6182f7724abe761bf591dcaee9057741b61330e1fed1c217427c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-config-after-preserve-5",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "validate",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\promo-project.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "22d225c4f55d7ca39f4592f8c3084bce3c038af316d5151f66c3ee5602d35af4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "10m-run-after-preserve-5",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-m",
+        "xar_promo",
+        "validate",
+        "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\10m\\runs\\director-draft-20261004-a02\\run-manifest.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "867baba760721effa4f03b93ae28aff0943132184202bc8b6a90aa8ba47cdb38",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "boundaries": [
+    "No media plan or build invoked",
+    "All actual media generation and capture remain pending",
+    "No automated audit, human review,signoff, export or publication claimed"
+  ],
+  "external_raw_directory": "C:\\ck3-superman-qiang-promo-20261004\\director-planning-A0002"
+}

@@ -1,0 +1,68 @@
+{
+  "format_version": 1,
+  "kind": "superman_qiang_promo_final_director_checks",
+  "checked_at_utc": "2026-10-04T07:40:08.433775+00:00",
+  "scope": "current_director_authoring_files",
+  "variants": [
+    {
+      "variant": "02m",
+      "duration_seconds": 120,
+      "scene_count": 11,
+      "han_characters": 380,
+      "source_bytes_equal_preserved_artifacts": true,
+      "current_config_cues_equal_director_script": true,
+      "display_timecodes_legal": true,
+      "native_full_authoring_evidence": "authoring-validation.json",
+      "run_manifest": {
+        "path": "promo/superman_qiang/02m/runs/director-draft-20261004-a01/run-manifest.json",
+        "bytes": 2922,
+        "sha256": "38a97ecfcb93233e02d8a4d4da8308a8a127eeca03ae09769f6633670360115d"
+      }
+    },
+    {
+      "variant": "05m",
+      "duration_seconds": 300,
+      "scene_count": 18,
+      "han_characters": 916,
+      "source_bytes_equal_preserved_artifacts": true,
+      "current_config_cues_equal_director_script": true,
+      "display_timecodes_legal": true,
+      "native_full_authoring_evidence": "authoring-validation.json",
+      "run_manifest": {
+        "path": "promo/superman_qiang/05m/runs/director-draft-20261004-a01/run-manifest.json",
+        "bytes": 2923,
+        "sha256": "c143f44c3ba2846ae97da08072a0a253a75b0b05a04d08030090b76d16f727ee"
+      }
+    },
+    {
+      "variant": "10m",
+      "duration_seconds": 600,
+      "scene_count": 24,
+      "han_characters": 2006,
+      "source_bytes_equal_preserved_artifacts": true,
+      "current_config_cues_equal_director_script": true,
+      "display_timecodes_legal": true,
+      "native_full_authoring_evidence": "authoring-validation-a02.json",
+      "run_manifest": {
+        "path": "promo/superman_qiang/10m/runs/director-draft-20261004-a02/run-manifest.json",
+        "bytes": 2923,
+        "sha256": "c58e94f7bcbd7357f31ae7c89b2b194b26e141357755c6a71fbf751a1e0d0cee"
+      }
+    }
+  ],
+  "source_documents_verified": 6,
+  "existing_images_verified": 7,
+  "markdown_local_links_checked": 36,
+  "selected_python_only_files": 72,
+  "selected_python_only_findings": [],
+  "state": "director_authoring_complete",
+  "media": "not_produced",
+  "manual_signoff": "not_provided",
+  "future_voice_check": "actual audio length, pacing and final image readability remain for production",
+  "initial_commands": 63,
+  "revision_commands": 21,
+  "external_process_directories": [
+    "C:/ck3-superman-qiang-promo-20261004/director-planning-A0001",
+    "C:/ck3-superman-qiang-promo-20261004/director-planning-A0002"
+  ]
+}

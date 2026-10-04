@@ -1,0 +1,46 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_run_manifest",
+  "run": {
+    "id": "director-draft-20261004-a01"
+  },
+  "project_config": {
+    "path": "artifacts/project-config/sha256/0D/0DEE5FB6B55DBFD132743122216E64528DCCC072FC07D8F9C1A9A122D74C6D4A.json",
+    "bytes": 7680,
+    "sha256": "0DEE5FB6B55DBFD132743122216E64528DCCC072FC07D8F9C1A9A122D74C6D4A"
+  },
+  "artifact_policy": {
+    "strategy": "append-only-content-addressed",
+    "raw_directory": "artifacts/raw",
+    "derived_directory": "artifacts/derived",
+    "manifest_history_directory": "artifacts/manifest-history",
+    "preserve_process_material": true
+  },
+  "phase_history": [],
+  "artifacts": [
+    {
+      "id": "director-md-a01",
+      "collection": "raw",
+      "role": "director-script",
+      "path": "artifacts/raw/sha256/E7/E762FFC93D117E8CD16EA9496591C1839F7FD18A712A2530BAAE0005C0C14C26.md",
+      "label": "director.md",
+      "bytes": 21694,
+      "sha256": "E762FFC93D117E8CD16EA9496591C1839F7FD18A712A2530BAAE0005C0C14C26",
+      "media_type": "text/markdown",
+      "source_name": "director.md"
+    },
+    {
+      "id": "director-json-a01",
+      "collection": "raw",
+      "role": "director-script",
+      "path": "artifacts/raw/sha256/E5/E5FEE10C5BED4DFD42AF18E39C8142FE29CFEA519023CE240751059052FB60AF.json",
+      "label": "director.json",
+      "bytes": 14080,
+      "sha256": "E5FEE10C5BED4DFD42AF18E39C8142FE29CFEA519023CE240751059052FB60AF",
+      "media_type": "application/json",
+      "source_name": "director.json"
+    }
+  ],
+  "audits": [],
+  "signoffs": []
+}

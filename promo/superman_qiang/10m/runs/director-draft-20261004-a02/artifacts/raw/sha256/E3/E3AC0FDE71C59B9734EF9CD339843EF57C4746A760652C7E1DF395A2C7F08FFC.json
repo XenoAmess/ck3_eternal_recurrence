@@ -1,0 +1,340 @@
+{
+  "format_version": 1,
+  "kind": "superman_qiang_promo_asset_and_claim_ledger",
+  "status": "director_authoring",
+  "product": {
+    "title": "超人强：越超人越强",
+    "version": "1.1.0",
+    "workshop_item_id": "3812991990",
+    "tag": "superman-qiang-v1.1.0",
+    "commit": "f7fde816e295a62807ab636ee2d93cf307ea69cf"
+  },
+  "sources": [
+    {
+      "id": "DOC01",
+      "scope": "发布1.1.0核心玩法与范围",
+      "path": "mod_superman_qiang/docs/product-contract.md",
+      "bytes": 7568,
+      "sha256": "530488697819efec242290486510757f9b286c5b102e3d28708225a19523dc66"
+    },
+    {
+      "id": "DOC02",
+      "scope": "健康步长、阈值、期望量级及寿命边界",
+      "path": "mod_superman_qiang/docs/health-design-1.1.0.md",
+      "bytes": 9441,
+      "sha256": "e22591917480f600c1e2caa76a0cee11ae13ce087dd309c30ad24da3bfec57fe"
+    },
+    {
+      "id": "DOC03",
+      "scope": "实际1.1.0发布、正式包和闭环",
+      "path": "mod_superman_qiang/docs/release-1.1.0-20261004/README.md",
+      "bytes": 6679,
+      "sha256": "fbd151503af280a2c553fa539fa4b3d2928e94814578de370c2ae1e760b65cc7"
+    },
+    {
+      "id": "DOC04",
+      "scope": "宣传插画与正常实机静帧的来源",
+      "path": "workshop/superman_qiang_screenshots.md",
+      "bytes": 6699,
+      "sha256": "220aef81cf3fe92e16608634993e9fac4fe116b28205e5041d3143c1fc176c70"
+    },
+    {
+      "id": "DOC05",
+      "scope": "相对1.0.0的玩家更新内容",
+      "path": "docs/release-changelogs/superman-qiang/1.1.0.md",
+      "bytes": 6167,
+      "sha256": "84fda7c4e0d4a90c80966f1df749f955dc48479d9df33b069a46a6ac0d5a37f6"
+    },
+    {
+      "id": "DOC06",
+      "scope": "查询、安装、存档、适配及兼容说明",
+      "path": "mod_superman_qiang/README.md",
+      "bytes": 4282,
+      "sha256": "4ff38f61258e3b6081d73feea60df969512048a42b7b737e3fe1b7c54cc9c74e"
+    }
+  ],
+  "assets": [
+    {
+      "id": "A01",
+      "state": "existing_still",
+      "kind": "promotional_illustration",
+      "use": "成年国王与成年王后主视觉",
+      "restriction": "插画身份不投射到真实角色；标宣传插画",
+      "provenance_source_ids": [
+        "DOC04"
+      ],
+      "path": "mod_superman_qiang/thumbnail.png",
+      "bytes": 785139,
+      "sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b"
+    },
+    {
+      "id": "A02",
+      "state": "existing_still",
+      "kind": "promotional_illustration",
+      "use": "七属性核心玩法海报",
+      "restriction": "海报不是实际转移录像；标宣传插画",
+      "provenance_source_ids": [
+        "DOC04"
+      ],
+      "path": "workshop/superman_qiang_media/v3/01_absorption.jpg",
+      "bytes": 840984,
+      "sha256": "af7c226187d1024e62ed4ad881d2d07889a3c24d9715026442ccbd3ec835a238"
+    },
+    {
+      "id": "A03",
+      "state": "existing_still",
+      "kind": "rule_illustration",
+      "use": "六能力±1、健康±0.00075",
+      "restriction": "标规则示意；不表示面板必定对称",
+      "provenance_source_ids": [
+        "DOC04"
+      ],
+      "path": "workshop/superman_qiang_media/v3/02_transfer.jpg",
+      "bytes": 838222,
+      "sha256": "e4f9360eda0d65f9eb46d96654ea0e81075c3ad41ec2da5d90f82742860b9066"
+    },
+    {
+      "id": "A04",
+      "state": "existing_still",
+      "kind": "promotional_illustration",
+      "use": "通知查看次数和属性",
+      "restriction": "不是新UI完整实机录像；标宣传插画",
+      "provenance_source_ids": [
+        "DOC04"
+      ],
+      "path": "workshop/superman_qiang_media/v3/03_records.jpg",
+      "bytes": 802191,
+      "sha256": "cbe8a7be4a3e72f57480e8031525ab2be551dda0d53bbc67f01356bf353c371f"
+    },
+    {
+      "id": "A05",
+      "state": "existing_still",
+      "kind": "normal_gameplay_still",
+      "use": "1.0.0正常成年角色勾引事件，规则沿用到1.1.0",
+      "restriction": "事前双方0，事后1；平手无吸取，不能演示健康或不平手转移",
+      "provenance_source_ids": [
+        "DOC04"
+      ],
+      "path": "workshop/superman_qiang_media/v2/04_natural_event.jpg",
+      "bytes": 159032,
+      "sha256": "0f4f7ebc49ae07fadcca65e4382498c2ee3110f6bd0116807066b76f36ad6356"
+    },
+    {
+      "id": "A06",
+      "state": "existing_still",
+      "kind": "normal_gameplay_still",
+      "use": "1.1.0阿梅利娜48岁NPC气泡，XP1、健康4.16622、净0",
+      "restriction": "仅证明普通查询；不是健康吸取证据",
+      "provenance_source_ids": [
+        "DOC04"
+      ],
+      "path": "workshop/superman_qiang_media/v3/05_notification.jpg",
+      "bytes": 138982,
+      "sha256": "51ac5484e3a82bcac65c65c2fe3fe3d058c2868715980171192f1d1886c0d6ff"
+    },
+    {
+      "id": "A07",
+      "state": "existing_still",
+      "kind": "normal_gameplay_still",
+      "use": "A06的完整原始桌面截图",
+      "restriction": "1024×768保比例；不改数字、不重绘UI",
+      "provenance_source_ids": [
+        "DOC04"
+      ],
+      "path": "workshop/superman_qiang_media/v3/05_notification.raw.png",
+      "bytes": 1174248,
+      "sha256": "7b74e180a0bccf2bfdad678bff7bf363d77b57c37e9329de0283fa9f1a8840c6"
+    },
+    {
+      "id": "S01",
+      "state": "reference_url",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990",
+      "restriction": "仅正式入口，尚无本轮网页录屏；结尾信息卡使用链接"
+    },
+    {
+      "id": "S02",
+      "state": "reference_url",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/superman-qiang-v1.1.0",
+      "restriction": "仅正式入口，尚无本轮网页录屏；结尾信息卡使用链接"
+    },
+    {
+      "id": "P01",
+      "state": "planned",
+      "kind": "gameplay_capture",
+      "description": "成年自己与NPC，一次右键查询直接出原生通知，干净开头结尾",
+      "restriction": "待拍/待制作，无当前媒体字节；规则动画标规则示意，游戏录像不能以测试夹具替代"
+    },
+    {
+      "id": "P02",
+      "state": "planned",
+      "kind": "gameplay_capture",
+      "description": "普通游戏明确性行为事件，真实前后经验与事件声音",
+      "restriction": "待拍/待制作，无当前媒体字节；规则动画标规则示意，游戏录像不能以测试夹具替代"
+    },
+    {
+      "id": "P03",
+      "state": "planned",
+      "kind": "gameplay_capture",
+      "description": "普通真实经验差距引发一次合格属性转移，前后净账本保持原读数",
+      "restriction": "待拍/待制作，无当前媒体字节；规则动画标规则示意，游戏录像不能以测试夹具替代"
+    },
+    {
+      "id": "P04",
+      "state": "planned",
+      "kind": "player_workflow_capture",
+      "description": "普通订阅、加载、旧档查询，网络发布取材另按当次授权和账号规则",
+      "restriction": "待拍/待制作，无当前媒体字节；规则动画标规则示意，游戏录像不能以测试夹具替代"
+    },
+    {
+      "id": "G01",
+      "state": "planned",
+      "kind": "rule_graphic",
+      "description": "事前比较、平手/不平手、事后各+1",
+      "restriction": "待拍/待制作，无当前媒体字节；规则动画标规则示意，游戏录像不能以测试夹具替代"
+    },
+    {
+      "id": "G02",
+      "state": "planned",
+      "kind": "rule_graphic",
+      "description": "七项合格等权与过滤，原始修正±1/±0.00075",
+      "restriction": "待拍/待制作，无当前媒体字节；规则动画标规则示意，游戏录像不能以测试夹具替代"
+    },
+    {
+      "id": "G03",
+      "state": "planned",
+      "kind": "rule_graphic",
+      "description": "25岁起始衰老期望量级，一月参考而非实际寿命换算",
+      "restriction": "待拍/待制作，无当前媒体字节；规则动画标规则示意，游戏录像不能以测试夹具替代"
+    },
+    {
+      "id": "G04",
+      "state": "planned",
+      "kind": "information_graphic",
+      "description": "成年/匿名、启用后记录、旧档兼容与下载卡",
+      "restriction": "待拍/待制作，无当前媒体字节；规则动画标规则示意，游戏录像不能以测试夹具替代"
+    }
+  ],
+  "claims": [
+    {
+      "id": "C01",
+      "statement": "较多事前经验吸取较少者一项合格属性；平手不吸取，双方仍各+1",
+      "source_ids": [
+        "DOC01"
+      ],
+      "planned_visual_ids": [
+        "G01",
+        "P02",
+        "P03"
+      ],
+      "boundary": "A05只覆盖平手自然事件静帧"
+    },
+    {
+      "id": "C02",
+      "statement": "七类候选在合格项中等权，能力或账本守卫可能过滤",
+      "source_ids": [
+        "DOC01",
+        "DOC02"
+      ],
+      "planned_visual_ids": [
+        "G02"
+      ],
+      "boundary": "不承诺健康永远1/7"
+    },
+    {
+      "id": "C03",
+      "statement": "六能力原始修正±1；基础值不改，原版百分比/取整/抵消影响面板",
+      "source_ids": [
+        "DOC01",
+        "DOC06"
+      ],
+      "planned_visual_ids": [
+        "G02",
+        "P03"
+      ],
+      "boundary": "不能保证面板严格对称±1"
+    },
+    {
+      "id": "C04",
+      "statement": "健康原始修正±0.00075，来源有效健康至少3.00075；不足只跳过健康",
+      "source_ids": [
+        "DOC02"
+      ],
+      "planned_visual_ids": [
+        "G02",
+        "G03"
+      ],
+      "boundary": "不能保证不生病、不会死或实际寿命最多变一个月"
+    },
+    {
+      "id": "C05",
+      "statement": "0.00078125是25岁起始年度衰老参数的一月期望量级，采用0.00075略低",
+      "source_ids": [
+        "DOC02"
+      ],
+      "planned_visual_ids": [
+        "G03"
+      ],
+      "boundary": "不是所有年龄或疾病条件下的通用健康寿命公式"
+    },
+    {
+      "id": "C06",
+      "statement": "一次选择查看性经验直接原生通知，只读；括号为累计净修正",
+      "source_ids": [
+        "DOC01",
+        "DOC06",
+        "DOC03"
+      ],
+      "planned_visual_ids": [
+        "A06",
+        "A07",
+        "P01"
+      ],
+      "boundary": "A06净0展示查询，不代表健康吸取"
+    },
+    {
+      "id": "C07",
+      "statement": "年满18且存活；启用后记录，0非处子，未知对象只给已知成年者计数",
+      "source_ids": [
+        "DOC01"
+      ],
+      "planned_visual_ids": [
+        "G04"
+      ],
+      "boundary": "婚姻怀孕出生不计，不能追溯/遗传/跨战役"
+    },
+    {
+      "id": "C08",
+      "statement": "1.0.0存档保留经验与六账本；缺失健康账本0；无其它模组/DLC硬依赖",
+      "source_ids": [
+        "DOC03",
+        "DOC05",
+        "DOC06"
+      ],
+      "planned_visual_ids": [
+        "P04",
+        "G04"
+      ],
+      "boundary": "实测1.20.0.3；多人、成就、其它补丁未验证；同接入点覆盖需合并"
+    },
+    {
+      "id": "C09",
+      "statement": "经验变量上限92,233,720,368,547，净账本单项±1,000,000",
+      "source_ids": [
+        "DOC01",
+        "DOC06"
+      ],
+      "planned_visual_ids": [
+        "G04"
+      ],
+      "boundary": "不把理论上限当实机跑完次数"
+    }
+  ],
+  "media_state": {
+    "selected_assets": "stills_only",
+    "new_gameplay_recording": "not_produced",
+    "narration_audio": "not_produced",
+    "music": "not_produced",
+    "deliverable_video": "not_produced",
+    "human_signoff": "not_provided"
+  }
+}

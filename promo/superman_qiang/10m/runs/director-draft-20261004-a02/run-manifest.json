@@ -1,0 +1,79 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_run_manifest",
+  "run": {
+    "id": "director-draft-20261004-a02"
+  },
+  "project_config": {
+    "path": "artifacts/project-config/sha256/61/616487517CBC9FB88AF7734844A30ACC72C98FF0D58A004BAC431AA008327613.json",
+    "bytes": 23974,
+    "sha256": "616487517CBC9FB88AF7734844A30ACC72C98FF0D58A004BAC431AA008327613"
+  },
+  "artifact_policy": {
+    "strategy": "append-only-content-addressed",
+    "raw_directory": "artifacts/raw",
+    "derived_directory": "artifacts/derived",
+    "manifest_history_directory": "artifacts/manifest-history",
+    "preserve_process_material": true
+  },
+  "phase_history": [],
+  "artifacts": [
+    {
+      "id": "director-md-a02",
+      "collection": "raw",
+      "role": "director-script",
+      "path": "artifacts/raw/sha256/42/423526BE5711899A5A87225FAB7FAE144773E4C8751B6C1FCF77CBA58D031625.md",
+      "label": "director.md",
+      "bytes": 41897,
+      "sha256": "423526BE5711899A5A87225FAB7FAE144773E4C8751B6C1FCF77CBA58D031625",
+      "media_type": "text/markdown",
+      "source_name": "director.md"
+    },
+    {
+      "id": "director-json-a02",
+      "collection": "raw",
+      "role": "director-script",
+      "path": "artifacts/raw/sha256/54/5415C5F80E98227A8510479DFE50466DD9DBEB3A7242C0D99BB077C6DD0C36E4.json",
+      "label": "director.json",
+      "bytes": 34001,
+      "sha256": "5415C5F80E98227A8510479DFE50466DD9DBEB3A7242C0D99BB077C6DD0C36E4",
+      "media_type": "application/json",
+      "source_name": "director.json"
+    },
+    {
+      "id": "production-brief-a01",
+      "collection": "raw",
+      "role": "production-brief",
+      "path": "artifacts/raw/sha256/FA/FAEF25B484F4969A87C92F865FFCB54F2D1989D269F7190D087697C4001F78F3.md",
+      "label": "production-brief.md",
+      "bytes": 7790,
+      "sha256": "FAEF25B484F4969A87C92F865FFCB54F2D1989D269F7190D087697C4001F78F3",
+      "media_type": "text/markdown",
+      "source_name": "production-brief.md"
+    },
+    {
+      "id": "asset-claim-ledger-a01",
+      "collection": "raw",
+      "role": "source-ledger",
+      "path": "artifacts/raw/sha256/E3/E3AC0FDE71C59B9734EF9CD339843EF57C4746A760652C7E1DF395A2C7F08FFC.json",
+      "label": "asset-and-claim-ledger.json",
+      "bytes": 11881,
+      "sha256": "E3AC0FDE71C59B9734EF9CD339843EF57C4746A760652C7E1DF395A2C7F08FFC",
+      "media_type": "application/json",
+      "source_name": "asset-and-claim-ledger.json"
+    },
+    {
+      "id": "framework-version-a01",
+      "collection": "raw",
+      "role": "framework-provenance",
+      "path": "artifacts/raw/sha256/8A/8ACEE40D206E465E9C56605F8B5CA04EE2A6E50F1EE7CC91C244505B49A60645.json",
+      "label": "framework-version.json",
+      "bytes": 1536,
+      "sha256": "8ACEE40D206E465E9C56605F8B5CA04EE2A6E50F1EE7CC91C244505B49A60645",
+      "media_type": "application/json",
+      "source_name": "framework-version.json"
+    }
+  ],
+  "audits": [],
+  "signoffs": []
+}

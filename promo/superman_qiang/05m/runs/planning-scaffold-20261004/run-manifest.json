@@ -1,0 +1,23 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_run_manifest",
+  "run": {
+    "id": "planning-scaffold-20261004"
+  },
+  "project_config": {
+    "path": "artifacts/project-config/sha256/89/89C94AB5CAC7B3549F1269116C8F20EF1D085C2332E66FCFE94685A9825AAAA7.json",
+    "bytes": 399,
+    "sha256": "89C94AB5CAC7B3549F1269116C8F20EF1D085C2332E66FCFE94685A9825AAAA7"
+  },
+  "artifact_policy": {
+    "strategy": "append-only-content-addressed",
+    "raw_directory": "artifacts/raw",
+    "derived_directory": "artifacts/derived",
+    "manifest_history_directory": "artifacts/manifest-history",
+    "preserve_process_material": true
+  },
+  "phase_history": [],
+  "artifacts": [],
+  "audits": [],
+  "signoffs": []
+}

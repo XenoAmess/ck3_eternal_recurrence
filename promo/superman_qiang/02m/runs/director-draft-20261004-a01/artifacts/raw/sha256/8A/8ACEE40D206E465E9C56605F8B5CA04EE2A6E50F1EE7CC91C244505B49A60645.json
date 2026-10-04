@@ -1,0 +1,35 @@
+{
+  "recorded_at_utc": "2026-10-04T07:20:22.646421+00:00",
+  "latest_release_checked": true,
+  "release_tag": "v0.2.1",
+  "release_id": 381034850,
+  "published_at": "2026-09-02T06:57:15Z",
+  "installed_version": "0.2.1",
+  "interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "wheel": {
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1-py3-none-any.whl",
+    "bytes": 190405,
+    "sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621"
+  },
+  "installed_direct_url": {
+    "archive_info": {
+      "hash": "sha256=f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+      "hashes": {
+        "sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621"
+      }
+    },
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1-py3-none-any.whl"
+  },
+  "external_raw_directory": "C:\\ck3-superman-qiang-promo-20261004\\director-planning-A0001",
+  "external_probe_bytes": 6667,
+  "external_probe_sha256": "f95593ea04e336b5aa63f093c50a057bf4bed7b3057ece0b3faeb27a28dd23c8",
+  "checked_help_commands": [
+    "top",
+    "init",
+    "start-run",
+    "preserve",
+    "validate"
+  ],
+  "skill_url": "https://github.com/XenoAmess/xar_promo_toolchain/blob/v0.2.1/codex-skill/promo-video-pipeline/SKILL.md"
+}

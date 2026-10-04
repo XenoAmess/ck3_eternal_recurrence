@@ -1,0 +1,2 @@
+# Preserve the exact bytes bound by native config, artifact and receipt hashes.
+* -text whitespace=cr-at-eol

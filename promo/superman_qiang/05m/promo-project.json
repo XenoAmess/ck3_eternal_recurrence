@@ -1,0 +1,383 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "superman-qiang-05m",
+    "title": "《超人强》5分钟玩法导览"
+  },
+  "pipeline": {
+    "adapter": "generic",
+    "preset": "default"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": 300
+  },
+  "chapters": [
+    {
+      "id": "05m_01",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "成功了，怎么没有吸取"
+      },
+      "cues": [
+        {
+          "id": "05m_01-narration",
+          "narration": {
+            "zh-CN": "勾引成功，却没有吸取属性。说好的越超人越强呢？别急，《超人强》的诀窍，要从赴约之前看起。"
+          },
+          "subtitles": {
+            "zh-CN": "勾引成功，却没有吸取属性。说好的越超人越强呢？别急，《超人强》的诀窍，要从赴约之前看起。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "05m_02",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "回到入场之前"
+      },
+      "cues": [
+        {
+          "id": "05m_02-narration",
+          "narration": {
+            "zh-CN": "先在工坊订阅，把模组加入启动器当前播放集并启用，再进入战役。新档旧档都能开始，这次我们就跟着一场普通勾引，记下第一笔。"
+          },
+          "subtitles": {
+            "zh-CN": "先在工坊订阅，把模组加入启动器当前播放集并启用，再进入战役。新档旧档都能开始，这次我们就跟着一场普通勾引，记下第一笔。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "05m_03",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "先认清这本账"
+      },
+      "cues": [
+        {
+          "id": "05m_03-narration",
+          "narration": {
+            "zh-CN": "双方都要在世且年满十八岁，玩家和人工智能用同一套账。只从启用之后记录，所以零次并不能说明这个人此前的经历。"
+          },
+          "subtitles": {
+            "zh-CN": "双方都要在世且年满十八岁，玩家和人工智能用同一套账。只从启用之后记录，所以零次并不能说明这个人此前的经历。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "05m_04",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "赴约前先查一次"
+      },
+      "cues": [
+        {
+          "id": "05m_04-narration",
+          "narration": {
+            "zh-CN": "赴约前，右键自己或对方，选一次“查看性经验”，原生通知就出来了，不用再确认。先看次数，别拿年龄、婚姻或人物印象代替它。"
+          },
+          "subtitles": {
+            "zh-CN": "赴约前，右键自己或对方，选一次“查看性经验”，原生通知就出来了，不用再确认。先看次数，别拿年龄、婚姻或人物印象代替它。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "05m_05",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "事前比较"
+      },
+      "cues": [
+        {
+          "id": "05m_05-narration",
+          "narration": {
+            "zh-CN": "已有事件的来源记录里，双方事前都是零。吸取方向看本次发生之前的经验：多的一方从少的一方取一项；经验相同，就没有转移。"
+          },
+          "subtitles": {
+            "zh-CN": "已有事件的来源记录里，双方事前都是零。吸取方向看本次发生之前的经验：多的一方从少的一方取一项；经验相同，就没有转移。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "05m_06",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "照常勾引，等待明确结算"
+      },
+      "cues": [
+        {
+          "id": "05m_06-narration",
+          "narration": {
+            "zh-CN": "接下来照常进行原版勾引，等游戏明确结算。模组不会把每天的夫妻生活自动加进去；结婚、怀孕、生孩子，也不等于多记一次。"
+          },
+          "subtitles": {
+            "zh-CN": "接下来照常进行原版勾引，等游戏明确结算。模组不会把每天的夫妻生活自动加进去；结婚、怀孕、生孩子，也不等于多记一次。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "05m_07",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "第一笔：双方零到一"
+      },
+      "cues": [
+        {
+          "id": "05m_07-narration",
+          "narration": {
+            "zh-CN": "现在回到开场。已有的正常游玩事件，确实勾引成功，双方从零记到一。平手没有吸取，可这次赴约仍然留在各自的记录里。"
+          },
+          "subtitles": {
+            "zh-CN": "现在回到开场。已有的正常游玩事件，确实勾引成功，双方从零记到一。平手没有吸取，可这次赴约仍然留在各自的记录里。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "05m_08",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "如果事前是八比二"
+      },
+      "cues": [
+        {
+          "id": "05m_08-narration",
+          "narration": {
+            "zh-CN": "换个规则例子：事前八次对两次，还有合格属性，八次的一方吸取，之后双方记成九次和三次。谁先发起，不会把方向倒过来。"
+          },
+          "subtitles": {
+            "zh-CN": "换个规则例子：事前八次对两次，还有合格属性，八次的一方吸取，之后双方记成九次和三次。谁先发起，不会把方向倒过来。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "05m_09",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "取哪一项，由合格池决定"
+      },
+      "cues": [
+        {
+          "id": "05m_09-narration",
+          "narration": {
+            "zh-CN": "吸取哪一项？外交、军事、管理、谋略、学识、勇武，再加健康。每次只选一项，当次合格的类别等权抽取，不能指定奖励。"
+          },
+          "subtitles": {
+            "zh-CN": "吸取哪一项？外交、军事、管理、谋略、学识、勇武，再加健康。每次只选一项，当次合格的类别等权抽取，不能指定奖励。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "05m_10",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "抽签之前还要筛选"
+      },
+      "cues": [
+        {
+          "id": "05m_10-narration",
+          "narration": {
+            "zh-CN": "来源者某项有效能力为零，或这次会让单项净账越界，就跳过它。健康还要求来源者当前至少三点零零零七五；筛掉类别后，健康的概率也会变。"
+          },
+          "subtitles": {
+            "zh-CN": "来源者某项有效能力为零，或这次会让单项净账越界，就跳过它。健康还要求来源者当前至少三点零零零七五；筛掉类别后，健康的概率也会变。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "05m_11",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "一笔能力转移"
+      },
+      "cues": [
+        {
+          "id": "05m_11-narration",
+          "narration": {
+            "zh-CN": "抽中六项能力，转移的是同项原始修正，一方加一，另一方减一。基础值不改；百分比、取整和惩罚抵消仍影响面板，显示不保证正负对称。"
+          },
+          "subtitles": {
+            "zh-CN": "抽中六项能力，转移的是同项原始修正，一方加一，另一方减一。基础值不改；百分比、取整和惩罚抵消仍影响面板，显示不保证正负对称。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "05m_12",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "健康不是寿命券"
+      },
+      "cues": [
+        {
+          "id": "05m_12-narration",
+          "narration": {
+            "zh-CN": "抽中健康，则是正负零点零零零七五。它略低于原版二十五岁起始衰老参数的一个月期望损失，只是平衡尺度；疾病、年龄和随机判定，还会决定实际寿命。"
+          },
+          "subtitles": {
+            "zh-CN": "抽中健康，则是正负零点零零零七五。它略低于原版二十五岁起始衰老参数的一个月期望损失，只是平衡尺度；疾病、年龄和随机判定，还会决定实际寿命。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "05m_13",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "真正的普通查询长这样"
+      },
+      "cues": [
+        {
+          "id": "05m_13-narration",
+          "narration": {
+            "zh-CN": "看这张真实通知：经验一次，健康四点一六六二二，括号里是零。它展示普通查询，没有发生健康吸取；也不能用这张图证明多活了多久。"
+          },
+          "subtitles": {
+            "zh-CN": "看这张真实通知：经验一次，健康四点一六六二二，括号里是零。它展示普通查询，没有发生健康吸取；也不能用这张图证明多活了多久。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "05m_14",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "把当前值与累计净账分开读"
+      },
+      "cues": [
+        {
+          "id": "05m_14-narration",
+          "narration": {
+            "zh-CN": "通知里的属性是当前值，括号才是本模组累计净修正，不是刚才那一次。查看只读；前后各看一次，才能把这一笔放回整个账本里。"
+          },
+          "subtitles": {
+            "zh-CN": "通知里的属性是当前值，括号才是本模组累计净修正，不是刚才那一次。查看只读；前后各看一次，才能把这一笔放回整个账本里。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "05m_15",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "下一封邀请，要先看方向"
+      },
+      "cues": [
+        {
+          "id": "05m_15-narration",
+          "narration": {
+            "zh-CN": "再赴约之前，你知道该看什么了。对方经验更高，你也可能成为来源；即使你经验更多，也只能随机取一项。没有合格项，双方仍各记一次。"
+          },
+          "subtitles": {
+            "zh-CN": "再赴约之前，你知道该看什么了。对方经验更高，你也可能成为来源；即使你经验更多，也只能随机取一项。没有合格项，双方仍各记一次。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "05m_16",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "旧档接着记"
+      },
+      "cues": [
+        {
+          "id": "05m_16-narration",
+          "narration": {
+            "zh-CN": "已有一点零版本的存档可以继续：原经验和六项净账保留，缺失的健康净账从零读起。记录随角色存档，但不追溯旧事、不遗传，也不跨战役。"
+          },
+          "subtitles": {
+            "zh-CN": "已有一点零版本的存档可以继续：原经验和六项净账保留，缺失的健康净账从零读起。记录随角色存档，但不追溯旧事、不遗传，也不跨战役。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "05m_17",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "开始玩之前的兼容提醒"
+      },
+      "cues": [
+        {
+          "id": "05m_17-narration",
+          "narration": {
+            "zh-CN": "从独立加载开始容易核对。无需其他模组或资料片；同样改写性行为结算的模组需要处理冲突。多人和成就尚未验证。"
+          },
+          "subtitles": {
+            "zh-CN": "从独立加载开始容易核对。无需其他模组或资料片；同样改写性行为结算的模组需要处理冲突。多人和成就尚未验证。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "05m_18",
+      "type": "director_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "把第一笔交给观众"
+      },
+      "cues": [
+        {
+          "id": "05m_18-narration",
+          "narration": {
+            "zh-CN": "轮到你的宫廷了：启用，查看双方，完成一次正常事件，再查看。入口在这里。下一封邀请送来时，你会先赴约，还是先看账？"
+          },
+          "subtitles": {
+            "zh-CN": "轮到你的宫廷了：启用，查看双方，完成一次正常事件，再查看。入口在这里。下一封邀请送来时，你会先赴约，还是先看账？"
+          }
+        }
+      ],
+      "artifact_ids": []
+    }
+  ]
+}
