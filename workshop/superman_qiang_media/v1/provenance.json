@@ -1,0 +1,255 @@
+{
+  "schema": "superman-qiang.promotional-media-source.v1",
+  "recorded_utc": "2026-10-04T01:19:10.905403+00:00",
+  "product": "superman-qiang",
+  "attempt": "art-P0001",
+  "status": "candidate_three_marketing_posters_awaiting_root_final_jpeg_review",
+  "title": "超人强：越超人越强",
+  "classification": "promotional_illustrations_and_rule_diagrams_not_gameplay",
+  "generation_mode": "built-in image_gen",
+  "fallback_api_used": false,
+  "generated_sources": {
+    "path": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/generation-record.json",
+    "bytes": 15016,
+    "sha256": "fdd7da724cd3e2b05b13d4be3fa76ac15c26c1f9f1b134c77c31bf03fafe0e1f"
+  },
+  "all_originals_and_drafts_preserved": true,
+  "prior_R13_media_used": false,
+  "only_publishing_projection_after_generation": true,
+  "posters": [
+    {
+      "source_path": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/generated/01_absorption.png",
+      "source_sha256": "6d1230c42f5f4fa751f0f7b520ef3f7da1a68218e5c54844476d479aa3ceb01b",
+      "source_bytes": 2601769,
+      "source_dimensions": [
+        1672,
+        941
+      ],
+      "source_crop_left_top_right_bottom": [
+        0.0,
+        0.25,
+        1672.0,
+        940.75
+      ],
+      "projection": "centered aspect-preserving crop and LANCZOS size projection",
+      "output_dimensions": [
+        1600,
+        900
+      ],
+      "output_format": "JPEG",
+      "output_mode": "RGB",
+      "quality": 95,
+      "optimize": true,
+      "progressive": true,
+      "subsampling": 0,
+      "output_sha256": "a649270045e66df4e522b42f2bc919a164db9573ece273d8e4e6aecef264b152",
+      "output_bytes": 858996,
+      "content_editing": false,
+      "output_path": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/jpeg/01_absorption.jpg",
+      "id": "01_absorption",
+      "generator": "built-in tools.image_gen__imagegen",
+      "prompt": "Use case: text-localization. Make only two precise typography corrections to the supplied complete medieval promotional poster. KEEP EVERYTHING ELSE UNCHANGED: image dimensions and full composition, two clearly adult king and queen, faces, hands, medieval robes, golden magic, exactly six attribute symbols, crimson-and-gold materials, title '超人强', tagline '越超人越强', second selling-point line '吸取随机属性', subtitle '成年角色之间的力量流转', six-label bottom strip '外交 · 军事 · 管理 · 谋略 · 学识 · 勇武'. Correction 1: replace ONLY the main first selling-point line currently '经验多的一方' with the exact Simplified Chinese text '性经验较多者'. It has six characters, so maintain the same font style, line footprint, strong gold size, alignment and location. Render every stroke precisely, especially the first character 性; do not omit it. Correction 2: the tiny bottom-right label must become clearly readable, with the exact text '宣传插画 · 规则示意'. Enlarge that caption just enough for legibility, approximately 24 to 28 px at this canvas size, positioning it along the lower-right margin in a subtle dark area without covering the six skill labels or figures. Do not add any other text, arrows, statistics, UI or numbers. This is promotional illustration, no gameplay claims. No other restyling or content changes.",
+      "original_generated_path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-36ca93fa-e1ac-4fbf-a720-b94f362d9481.png",
+      "reference_inputs": [
+        {
+          "path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-d5fa2499-fcb8-4ef0-8f93-cb03173e142f.png",
+          "sha256": "3b68b10ff74a1871509552909cf05bda421cd2320947282ca108ac5b726ca4d8",
+          "bytes": 2740927
+        }
+      ],
+      "promotional_illustration": true,
+      "gameplay_screenshot": false,
+      "gameplay_evidence_claimed": false,
+      "illustrative_experience_scores": false,
+      "caption": "宣传插画 · 规则示意",
+      "source_visual_review": {
+        "root": "approved_by_direct_view",
+        "superman_art": "approved_by_direct_view"
+      },
+      "jpeg_visual_review": {
+        "root": "pending_direct_view",
+        "superman_art": "approved_by_direct_view"
+      },
+      "small_preview": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/thumbnail-review/01_absorption.jpg",
+        "bytes": 89797,
+        "sha256": "c81ccbecddbd5e0beaa071cea0ce9c087c156ebcd89205df15e1696f1773d89f",
+        "dimensions": [
+          400,
+          225
+        ],
+        "purpose": "review_only_not_published"
+      },
+      "planned_repository_source": "images/superman_qiang_media_v1/01_absorption.png",
+      "planned_repository_output": "workshop/superman_qiang_media/v1/01_absorption.jpg"
+    },
+    {
+      "source_path": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/generated/02_transfer.png",
+      "source_sha256": "98f7a42dd1ed0aba18d20cb89a6168aea304a21c681553c06bed77eb71400d66",
+      "source_bytes": 2708172,
+      "source_dimensions": [
+        1672,
+        941
+      ],
+      "source_crop_left_top_right_bottom": [
+        0.0,
+        0.25,
+        1672.0,
+        940.75
+      ],
+      "projection": "centered aspect-preserving crop and LANCZOS size projection",
+      "output_dimensions": [
+        1600,
+        900
+      ],
+      "output_format": "JPEG",
+      "output_mode": "RGB",
+      "quality": 95,
+      "optimize": true,
+      "progressive": true,
+      "subsampling": 0,
+      "output_sha256": "2828b5ef356ab1bffa70090ced6cf56e153195122bc1c0b5799bf1c8dc6f38d1",
+      "output_bytes": 853870,
+      "content_editing": false,
+      "output_path": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/jpeg/02_transfer.jpg",
+      "id": "02_transfer",
+      "generator": "built-in tools.image_gen__imagegen",
+      "prompt": "Use case: ads-marketing. Create a complete professional Simplified Chinese promotional poster for an original medieval game mod, wide 16:9 landscape. The supplied image is a style and adult-character reference only; create a new composition rather than copy its lettering. Use consistent rich crimson velvet, luminous antique gold, subtle violet magic, medieval stonework and luxury realistic painterly finish. Two clearly adult fully clothed royal characters, bearded crowned king about 40 and mature crowned queen about 35, large and visually attractive on the right 45 percent. Elegant gold energy joins them. Left side is a clean high-contrast advertising infographic, not a game UI or fake screenshot. Top-left prominent gold brand wordmark exactly '超人强'; small tagline exactly '越超人越强'. Main ivory/gold headline, very large, two lines exactly '随机一项' and '一得一失'. Beneath, clear medium text exactly '性经验较多者，吸取对方一项属性修正'. Then a beautifully designed simple horizontal RULE DIAGRAM with a clearly visible label exactly '规则示意'. Diagram left label exactly '性经验较少', underneath a large '−1', and text exactly '同一项原始属性修正'; a single clear arrow points LEFT TO RIGHT toward the right label exactly '性经验较多' and a large '+1'. Keep the −1 and +1 tied to the same attribute repair/modifier, not experience and not the displayed total skill. Do not invent experience scores, levels, statistics or screenshots. Along a tasteful bottom strip, place exactly six original icon medallions with labels exactly '外交', '军事', '管理', '谋略', '学识', '勇武'. Near the strip, a readable short note exactly '面板变化受原版修正影响'. Bottom-right one clear caption exactly '宣传插画 · 规则示意'. All Chinese characters must be precise and readable, no pseudo-Chinese. Use the minus sign correctly; only one transfer arrow, clear conservation, no duplicate confusing arrows. Premium game advertisement hierarchy; short text, generous space, no long paragraphs. No test menus, no debug, no fixture, no benchmark, no nude or sexual acts, no childish people, no fake gameplay interface. Explicit promotional illustration.",
+      "original_generated_path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-8b49c677-acd9-4554-ace3-20a7980d96b4.png",
+      "reference_inputs": [
+        {
+          "path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-4f230895-8387-4f8d-a47e-c8a759dd1a07.png",
+          "sha256": "c2c66d8e88567e5fd6887b9715246cda15ed3680189140dc8b35a12d6a02b67f",
+          "bytes": 2531961
+        }
+      ],
+      "promotional_illustration": true,
+      "gameplay_screenshot": false,
+      "gameplay_evidence_claimed": false,
+      "illustrative_experience_scores": false,
+      "caption": "宣传插画 · 规则示意",
+      "source_visual_review": {
+        "root": "approved_by_direct_view",
+        "superman_art": "approved_by_direct_view"
+      },
+      "jpeg_visual_review": {
+        "root": "pending_direct_view",
+        "superman_art": "approved_by_direct_view"
+      },
+      "small_preview": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/thumbnail-review/02_transfer.jpg",
+        "bytes": 85881,
+        "sha256": "4aa82e4f79d5b98d9acbf84c6b13e0a1ec8d57259d427e976ae4a201cd392007",
+        "dimensions": [
+          400,
+          225
+        ],
+        "purpose": "review_only_not_published"
+      },
+      "planned_repository_source": "images/superman_qiang_media_v1/02_transfer.png",
+      "planned_repository_output": "workshop/superman_qiang_media/v1/02_transfer.jpg"
+    },
+    {
+      "source_path": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/generated/03_records.png",
+      "source_sha256": "12b39b1fc7dc823d6c0111e7742dc53534b517bb2e070dfeda587af1cc2fd5ba",
+      "source_bytes": 2719417,
+      "source_dimensions": [
+        1672,
+        941
+      ],
+      "source_crop_left_top_right_bottom": [
+        0.0,
+        0.25,
+        1672.0,
+        940.75
+      ],
+      "projection": "centered aspect-preserving crop and LANCZOS size projection",
+      "output_dimensions": [
+        1600,
+        900
+      ],
+      "output_format": "JPEG",
+      "output_mode": "RGB",
+      "quality": 95,
+      "optimize": true,
+      "progressive": true,
+      "subsampling": 0,
+      "output_sha256": "a9dfb7f795217b0c0c25c045d9821ce9c0b30285e7e5b0f2acee17faf1dfab97",
+      "output_bytes": 861548,
+      "content_editing": false,
+      "output_path": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/jpeg/03_records.jpg",
+      "id": "03_records",
+      "generator": "built-in tools.image_gen__imagegen",
+      "prompt": "Use case: ads-marketing. Create a complete professional Chinese promotional poster for the original medieval game mod '超人强', wide 16:9. The supplied illustration is a style and adult-character reference only. Keep a unified crimson velvet, antique gold, candlelit medieval palace style, realistic painterly premium game advertising quality. In the right half, show two clearly adult fully clothed nobles, a mature crowned king around 40 and a crowned queen around 35, calm dignified faces visible, beside an ornate writing desk and open parchment ledger with quill, visually evoking memories and recorded experiences. Their robes are fine embroidered medieval garments. No invented readable handwriting on the ledger, no fake game panel. Left half: strong professional typographic hierarchy with gold brand wordmark exactly '超人强', smaller tagline exactly '越超人越强'. Main headline extremely large and readable from a small preview, two lines exactly '每次经历' and '都会留下记录'. Below the headline, a crisp normal entry-point sequence exactly '右键角色 → 查看性经验'. Then three short evenly separated feature statements, all clearly readable and exact: '双方性经验各 +1', '同经验不吸取', '记录随存档保存'. Add a small tasteful line exactly '从启用模组时开始记录'. The entry-point sequence is an advertising graphic, not a fabricated game UI. Bottom strip with exactly six small original ability medallions labeled '外交', '军事', '管理', '谋略', '学识', '勇武', using simple original medieval symbols. Bottom-right readable caption exactly '宣传插画 · 规则示意'. Do not add any other numbers, invented statistics, badges or game windows. No tests, debug, fixture, console or benchmark. No nudity, sexual activity, minors, childish faces, other-product logos, or watermarks. Clear Chinese strokes, exact wording, compact elegant copy, generous breathing space. Fully original marketing illustration, no screenshot claims.",
+      "original_generated_path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-1bd874dc-9d2b-4b83-8170-7605ef264864.png",
+      "reference_inputs": [
+        {
+          "path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-4f230895-8387-4f8d-a47e-c8a759dd1a07.png",
+          "sha256": "c2c66d8e88567e5fd6887b9715246cda15ed3680189140dc8b35a12d6a02b67f",
+          "bytes": 2531961
+        }
+      ],
+      "promotional_illustration": true,
+      "gameplay_screenshot": false,
+      "gameplay_evidence_claimed": false,
+      "illustrative_experience_scores": false,
+      "caption": "宣传插画 · 规则示意",
+      "source_visual_review": {
+        "root": "approved_by_direct_view",
+        "superman_art": "approved_by_direct_view"
+      },
+      "jpeg_visual_review": {
+        "root": "pending_direct_view",
+        "superman_art": "approved_by_direct_view"
+      },
+      "small_preview": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/thumbnail-review/03_records.jpg",
+        "bytes": 86671,
+        "sha256": "6dd424157b5c0810f216b103014e75a735eed56c150f177494a14ba17b902f33",
+        "dimensions": [
+          400,
+          225
+        ],
+        "purpose": "review_only_not_published"
+      },
+      "planned_repository_source": "images/superman_qiang_media_v1/03_records.png",
+      "planned_repository_output": "workshop/superman_qiang_media/v1/03_records.jpg"
+    }
+  ],
+  "rebuild_tool": {
+    "path": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/project_marketing_media.py",
+    "bytes": 4012,
+    "sha256": "82e5e0a6a80566e381e78ac67a7357bbf79babf4b318d05c48de445554cc976b",
+    "argv": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "C:\\ck3-superman-qiang-media-redo-20261004\\art-P0001\\project_marketing_media.py",
+      "--source-dir",
+      "C:\\ck3-superman-qiang-media-redo-20261004\\art-P0001\\generated",
+      "--output-dir",
+      "C:\\ck3-superman-qiang-media-redo-20261004\\art-P0001\\jpeg",
+      "--manifest",
+      "C:\\ck3-superman-qiang-media-redo-20261004\\art-P0001\\generation-record.json",
+      "--check"
+    ],
+    "pillow_version": "12.3.0",
+    "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "check_exit_code": 0,
+    "stdout": {
+      "path": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/projection-check.stdout.json",
+      "bytes": 3028,
+      "sha256": "fac257cb2adda29ab280b51b2d7e1b5bd9daf34328355ee84ee4b00f61fc983a"
+    },
+    "stderr": {
+      "path": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/projection-check.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "public_workshop_verification": {
+    "uploaded": false,
+    "verified": false,
+    "cdn_urls": []
+  },
+  "repository_files_modified": [],
+  "desktop_or_game_actions": false
+}

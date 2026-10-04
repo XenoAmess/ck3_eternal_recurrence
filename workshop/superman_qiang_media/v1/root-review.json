@@ -1,0 +1,42 @@
+{
+  "schema": "superman-qiang.root-marketing-review.v1",
+  "reviewed_at_utc": "2026-10-04T01:21:38.018364+00:00",
+  "reviewer": "root",
+  "directly_viewed": true,
+  "decision": "approved",
+  "classification": "promotional illustrations and rule diagrams",
+  "prior_R13_media_used": false,
+  "notes": "All three exact final JPEG files directly viewed; accurate Chinese text, adult characters, legible main typography, correct same-skill -1/+1 rule diagram, record entry and visible illustration labels.",
+  "images": [
+    {
+      "id": "01_absorption",
+      "path": "workshop/superman_qiang_media/v1/01_absorption.jpg",
+      "size": 858996,
+      "sha256": "a649270045e66df4e522b42f2bc919a164db9573ece273d8e4e6aecef264b152",
+      "dimensions": [
+        1600,
+        900
+      ]
+    },
+    {
+      "id": "02_transfer",
+      "path": "workshop/superman_qiang_media/v1/02_transfer.jpg",
+      "size": 853870,
+      "sha256": "2828b5ef356ab1bffa70090ced6cf56e153195122bc1c0b5799bf1c8dc6f38d1",
+      "dimensions": [
+        1600,
+        900
+      ]
+    },
+    {
+      "id": "03_records",
+      "path": "workshop/superman_qiang_media/v1/03_records.jpg",
+      "size": 861548,
+      "sha256": "a9dfb7f795217b0c0c25c045d9821ce9c0b30285e7e5b0f2acee17faf1dfab97",
+      "dimensions": [
+        1600,
+        900
+      ]
+    }
+  ]
+}

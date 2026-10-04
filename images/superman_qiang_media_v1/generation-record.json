@@ -1,0 +1,144 @@
+{
+  "schema": "superman-qiang.marketing-generation-source.v1",
+  "recorded_utc": "2026-10-04T01:14:53.973183+00:00",
+  "product": "superman-qiang",
+  "attempt": "art-P0001",
+  "classification": "promotional_illustrations_and_rule_diagrams_not_gameplay",
+  "candidate_only": true,
+  "workshop_published": false,
+  "content_policy": "Two fully clothed clearly adult medieval characters; no explicit activity; no fake game UI or illustrative experience scores represented as gameplay.",
+  "prior_R13_media_used": false,
+  "all_generated_originals_retained": true,
+  "entries": [
+    {
+      "id": "00_base",
+      "kind": "generated_style_reference",
+      "selected": false,
+      "generator": "built-in tools.image_gen__imagegen",
+      "transparent_background": false,
+      "original_generated_path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-4f230895-8387-4f8d-a47e-c8a759dd1a07.png",
+      "preserved_path": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/history/00_base.png",
+      "preserved_relative_path": "history/00_base.png",
+      "sha256": "c2c66d8e88567e5fd6887b9715246cda15ed3680189140dc8b35a12d6a02b67f",
+      "bytes": 2531961,
+      "dimensions": [
+        1672,
+        941
+      ],
+      "format": "PNG",
+      "mode": "RGB",
+      "prompt": "Use case: ads-marketing. Create a new original premium historical fantasy game marketing illustration, wide 16:9 composition. Use the attached illustration only as a visual style and regal adult character reference, not an edit target. Scene: a cathedral-like medieval throne hall, dark crimson velvet, old gold ornament and candlelight, rich realistic painterly texture. Subjects: two unambiguously adult, fully clothed medieval nobles: a charismatic dark-haired crowned king about 40 with short beard and a dignified crowned queen about 35, both with mature adult facial structure, fine embroidered royal robes and calm confident expressions. Compose both figures large on the right 60 percent of the wide canvas, with handsome readable faces, king slightly forward and queen slightly behind, respectful natural spacing. A bright golden ribbon of magical attribute energy arcs between them with a few distinct jewel-like colored sparks, symbolically illustrating one adult ruler absorbing power from another. Emotional hook: power, ambition, mystique, intrigue. Left 40 percent should be deep burgundy shadow with subtle texture, mostly empty and suitable for large Chinese marketing typography added later; no important subjects there. Premium polished CK3-adjacent medieval key-art quality but entirely original, not an imitation of a named character. No typography, no letters, no UI, no numbers, no logos, no watermark, no frame. No nudity or sexual activity, no childish faces, no cartoon superhero costumes, no gore, no fake screenshot. Wide landscape marketing artwork, high detail, restrained dramatic lighting.",
+      "references": [
+        {
+          "path": "D:/workspace/ck3_eternal_recurrence/images/superman_qiang_key_art.png",
+          "sha256": "4dd30fc9e8c50064c709e3cb42479342e419202961f9a6c3b66e015569a6a617",
+          "bytes": 2669088
+        }
+      ]
+    },
+    {
+      "id": "01_first_draft",
+      "kind": "draft_edit",
+      "selected": false,
+      "generator": "built-in tools.image_gen__imagegen",
+      "transparent_background": false,
+      "original_generated_path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-d5fa2499-fcb8-4ef0-8f93-cb03173e142f.png",
+      "preserved_path": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/history/01_first_draft.png",
+      "preserved_relative_path": "history/01_first_draft.png",
+      "sha256": "3b68b10ff74a1871509552909cf05bda421cd2320947282ca108ac5b726ca4d8",
+      "bytes": 2740927,
+      "dimensions": [
+        1672,
+        941
+      ],
+      "format": "PNG",
+      "mode": "RGB",
+      "prompt": "Use case: ads-marketing, text-localization. Turn the supplied new original two-adult medieval illustration into a polished Chinese game-mod promotional poster, wide 16:9. Keep the two clearly adult fully-clothed king and queen on the right, their beautiful faces, crimson-and-antique-gold material quality, original six floating attribute symbols, and the golden energy flow. Preserve the illustration's full composition. Add exceptionally professional, crisp, correctly written Simplified Chinese typography in the available dark burgundy left area. This is a complete marketing poster, not a game screenshot or UI mockup. Typography hierarchy: upper left a very large luminous antique-gold brand name exactly '超人强'; underneath in medium gold exactly '越超人越强'. Below with comfortable breathing room, the main selling point in two large ivory/gold lines exactly '经验多的一方' and '吸取随机属性'. These two lines should be large enough to read from a small Workshop preview. Add a short small tasteful subtitle exactly '成年角色之间的力量流转'. Along a subtle dark full-width bottom band, write the six attributes clearly and evenly, exactly '外交 · 军事 · 管理 · 谋略 · 学识 · 勇武'. In a visibly readable small bottom-right caption, explicitly identify the image exactly '宣传插画 · 规则示意'. Text must be exact, straight, clean, elegant, complete, with proper Chinese strokes, never pseudo-Chinese. Do not add any other words or numbers. Avoid a busy UI, small paragraph text, test words, debug indicators, screenshots, fake gameplay panels, logos of other products or watermarks. No nudity or sexual activity. Image should look like a professional premium medieval game advertisement with compelling characters and short bold text, original artwork only.",
+      "references": [
+        {
+          "path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-4f230895-8387-4f8d-a47e-c8a759dd1a07.png",
+          "sha256": "c2c66d8e88567e5fd6887b9715246cda15ed3680189140dc8b35a12d6a02b67f",
+          "bytes": 2531961
+        }
+      ]
+    },
+    {
+      "id": "01_absorption",
+      "kind": "selected_edit",
+      "selected": true,
+      "generator": "built-in tools.image_gen__imagegen",
+      "transparent_background": false,
+      "original_generated_path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-36ca93fa-e1ac-4fbf-a720-b94f362d9481.png",
+      "preserved_path": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/generated/01_absorption.png",
+      "preserved_relative_path": "generated/01_absorption.png",
+      "sha256": "6d1230c42f5f4fa751f0f7b520ef3f7da1a68218e5c54844476d479aa3ceb01b",
+      "bytes": 2601769,
+      "dimensions": [
+        1672,
+        941
+      ],
+      "format": "PNG",
+      "mode": "RGB",
+      "prompt": "Use case: text-localization. Make only two precise typography corrections to the supplied complete medieval promotional poster. KEEP EVERYTHING ELSE UNCHANGED: image dimensions and full composition, two clearly adult king and queen, faces, hands, medieval robes, golden magic, exactly six attribute symbols, crimson-and-gold materials, title '超人强', tagline '越超人越强', second selling-point line '吸取随机属性', subtitle '成年角色之间的力量流转', six-label bottom strip '外交 · 军事 · 管理 · 谋略 · 学识 · 勇武'. Correction 1: replace ONLY the main first selling-point line currently '经验多的一方' with the exact Simplified Chinese text '性经验较多者'. It has six characters, so maintain the same font style, line footprint, strong gold size, alignment and location. Render every stroke precisely, especially the first character 性; do not omit it. Correction 2: the tiny bottom-right label must become clearly readable, with the exact text '宣传插画 · 规则示意'. Enlarge that caption just enough for legibility, approximately 24 to 28 px at this canvas size, positioning it along the lower-right margin in a subtle dark area without covering the six skill labels or figures. Do not add any other text, arrows, statistics, UI or numbers. This is promotional illustration, no gameplay claims. No other restyling or content changes.",
+      "references": [
+        {
+          "path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-d5fa2499-fcb8-4ef0-8f93-cb03173e142f.png",
+          "sha256": "3b68b10ff74a1871509552909cf05bda421cd2320947282ca108ac5b726ca4d8",
+          "bytes": 2740927
+        }
+      ]
+    },
+    {
+      "id": "02_transfer",
+      "kind": "selected_generation",
+      "selected": true,
+      "generator": "built-in tools.image_gen__imagegen",
+      "transparent_background": false,
+      "original_generated_path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-8b49c677-acd9-4554-ace3-20a7980d96b4.png",
+      "preserved_path": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/generated/02_transfer.png",
+      "preserved_relative_path": "generated/02_transfer.png",
+      "sha256": "98f7a42dd1ed0aba18d20cb89a6168aea304a21c681553c06bed77eb71400d66",
+      "bytes": 2708172,
+      "dimensions": [
+        1672,
+        941
+      ],
+      "format": "PNG",
+      "mode": "RGB",
+      "prompt": "Use case: ads-marketing. Create a complete professional Simplified Chinese promotional poster for an original medieval game mod, wide 16:9 landscape. The supplied image is a style and adult-character reference only; create a new composition rather than copy its lettering. Use consistent rich crimson velvet, luminous antique gold, subtle violet magic, medieval stonework and luxury realistic painterly finish. Two clearly adult fully clothed royal characters, bearded crowned king about 40 and mature crowned queen about 35, large and visually attractive on the right 45 percent. Elegant gold energy joins them. Left side is a clean high-contrast advertising infographic, not a game UI or fake screenshot. Top-left prominent gold brand wordmark exactly '超人强'; small tagline exactly '越超人越强'. Main ivory/gold headline, very large, two lines exactly '随机一项' and '一得一失'. Beneath, clear medium text exactly '性经验较多者，吸取对方一项属性修正'. Then a beautifully designed simple horizontal RULE DIAGRAM with a clearly visible label exactly '规则示意'. Diagram left label exactly '性经验较少', underneath a large '−1', and text exactly '同一项原始属性修正'; a single clear arrow points LEFT TO RIGHT toward the right label exactly '性经验较多' and a large '+1'. Keep the −1 and +1 tied to the same attribute repair/modifier, not experience and not the displayed total skill. Do not invent experience scores, levels, statistics or screenshots. Along a tasteful bottom strip, place exactly six original icon medallions with labels exactly '外交', '军事', '管理', '谋略', '学识', '勇武'. Near the strip, a readable short note exactly '面板变化受原版修正影响'. Bottom-right one clear caption exactly '宣传插画 · 规则示意'. All Chinese characters must be precise and readable, no pseudo-Chinese. Use the minus sign correctly; only one transfer arrow, clear conservation, no duplicate confusing arrows. Premium game advertisement hierarchy; short text, generous space, no long paragraphs. No test menus, no debug, no fixture, no benchmark, no nude or sexual acts, no childish people, no fake gameplay interface. Explicit promotional illustration.",
+      "references": [
+        {
+          "path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-4f230895-8387-4f8d-a47e-c8a759dd1a07.png",
+          "sha256": "c2c66d8e88567e5fd6887b9715246cda15ed3680189140dc8b35a12d6a02b67f",
+          "bytes": 2531961
+        }
+      ]
+    },
+    {
+      "id": "03_records",
+      "kind": "selected_generation",
+      "selected": true,
+      "generator": "built-in tools.image_gen__imagegen",
+      "transparent_background": false,
+      "original_generated_path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-1bd874dc-9d2b-4b83-8170-7605ef264864.png",
+      "preserved_path": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/generated/03_records.png",
+      "preserved_relative_path": "generated/03_records.png",
+      "sha256": "12b39b1fc7dc823d6c0111e7742dc53534b517bb2e070dfeda587af1cc2fd5ba",
+      "bytes": 2719417,
+      "dimensions": [
+        1672,
+        941
+      ],
+      "format": "PNG",
+      "mode": "RGB",
+      "prompt": "Use case: ads-marketing. Create a complete professional Chinese promotional poster for the original medieval game mod '超人强', wide 16:9. The supplied illustration is a style and adult-character reference only. Keep a unified crimson velvet, antique gold, candlelit medieval palace style, realistic painterly premium game advertising quality. In the right half, show two clearly adult fully clothed nobles, a mature crowned king around 40 and a crowned queen around 35, calm dignified faces visible, beside an ornate writing desk and open parchment ledger with quill, visually evoking memories and recorded experiences. Their robes are fine embroidered medieval garments. No invented readable handwriting on the ledger, no fake game panel. Left half: strong professional typographic hierarchy with gold brand wordmark exactly '超人强', smaller tagline exactly '越超人越强'. Main headline extremely large and readable from a small preview, two lines exactly '每次经历' and '都会留下记录'. Below the headline, a crisp normal entry-point sequence exactly '右键角色 → 查看性经验'. Then three short evenly separated feature statements, all clearly readable and exact: '双方性经验各 +1', '同经验不吸取', '记录随存档保存'. Add a small tasteful line exactly '从启用模组时开始记录'. The entry-point sequence is an advertising graphic, not a fabricated game UI. Bottom strip with exactly six small original ability medallions labeled '外交', '军事', '管理', '谋略', '学识', '勇武', using simple original medieval symbols. Bottom-right readable caption exactly '宣传插画 · 规则示意'. Do not add any other numbers, invented statistics, badges or game windows. No tests, debug, fixture, console or benchmark. No nudity, sexual activity, minors, childish faces, other-product logos, or watermarks. Clear Chinese strokes, exact wording, compact elegant copy, generous breathing space. Fully original marketing illustration, no screenshot claims.",
+      "references": [
+        {
+          "path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-4f230895-8387-4f8d-a47e-c8a759dd1a07.png",
+          "sha256": "c2c66d8e88567e5fd6887b9715246cda15ed3680189140dc8b35a12d6a02b67f",
+          "bytes": 2531961
+        }
+      ]
+    }
+  ]
+}
