@@ -10471,6 +10471,13 @@ class NativeHeadlessGameplayDriver:
             trace_raw_receipt = self._preserve_private_trace_native_frame(request, frame, snapshot)
         if frame.get("ok") is not True:
             native_error = frame.get("error")
+            typed_failure = frame.get("typed_query_failure_v1")
+            if isinstance(typed_failure, dict):
+                native_error = (
+                    (native_error if isinstance(native_error, str) else "unknown error")
+                    + "; typed_query_failure_v1="
+                    + json.dumps(typed_failure, sort_keys=True, separators=(",", ":"))
+                )
             raise _NativeCommandRejectedError(
                 native_error if isinstance(native_error, str) else "unknown error",
                 native_raw_return_receipt=trace_raw_receipt,
