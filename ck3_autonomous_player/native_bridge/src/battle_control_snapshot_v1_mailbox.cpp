@@ -970,6 +970,57 @@ bool AppendSide(std::string &output,
   return true;
 }
 
+bool AppendCurrentPursuitInputsV1(
+    std::string &output,
+    const std::optional<game::BattleControlCurrentPursuitInputsV1> &inputs) {
+  if (!inputs.has_value()) {
+    output += "null";
+    return true;
+  }
+  const auto &value = *inputs;
+  const auto append_optional = [&output](const auto &field) {
+    if (field.has_value())
+      return AppendNumber(output, *field);
+    output += "null";
+    return true;
+  };
+  output += "{\"scale\":";
+  if (!AppendNumber(output, value.scale))
+    return false;
+  output += ",\"source_combat_id\":";
+  if (!AppendNumber(output, value.source_combat_id))
+    return false;
+  output += ",\"pursuit_phase_days\":";
+  if (!AppendNumber(output, value.pursuit_phase_days))
+    return false;
+  output += ",\"base_toughness_multiplier_raw\":";
+  if (!AppendNumber(output, value.base_toughness_multiplier_raw))
+    return false;
+  output += ",\"minimum_pursuit_multiplier_raw\":";
+  if (!AppendNumber(output, value.minimum_pursuit_multiplier_raw))
+    return false;
+  output += ",\"pursuit_stat_multiplier_raw\":";
+  if (!AppendNumber(output, value.pursuit_stat_multiplier_raw))
+    return false;
+  output += ",\"losing_side_index\":";
+  if (!append_optional(value.losing_side_index))
+    return false;
+  output += ",\"initial_loser_levy_soft_raw\":";
+  if (!append_optional(value.initial_loser_levy_soft_raw))
+    return false;
+  output += ",\"initial_loser_maa_soft_raw\":";
+  if (!append_optional(value.initial_loser_maa_soft_raw))
+    return false;
+  output += ",\"losing_side_skip_pursuit\":";
+  if (value.losing_side_skip_pursuit.has_value()) {
+    output += *value.losing_side_skip_pursuit ? "true" : "false";
+  } else {
+    output += "null";
+  }
+  output.push_back('}');
+  return true;
+}
+
 bool AppendCurrentLossInputsV1(
     std::string &output,
     const std::optional<game::BattleControlCurrentLossInputsV1> &inputs) {
@@ -1747,6 +1798,14 @@ std::string SerializeBattleControlSnapshotV1(
   if (!AppendNumber(output, snapshot.roll_cadence_counter)) {
     return {};
   }
+  output += ",\"roll_cadence_interval\":";
+  if (snapshot.roll_cadence_interval.has_value()) {
+    if (!AppendNumber(output, *snapshot.roll_cadence_interval)) {
+      return {};
+    }
+  } else {
+    output += "null";
+  }
   output += ",\"base_advantage_raw\":";
   if (!AppendNumber(output, snapshot.base_advantage_raw)) {
     return {};
@@ -1761,6 +1820,10 @@ std::string SerializeBattleControlSnapshotV1(
   }
   output += ",\"defender\":";
   if (!AppendSide(output, snapshot.defender)) {
+    return {};
+  }
+  output += ",\"current_pursuit_inputs_v1\":";
+  if (!AppendCurrentPursuitInputsV1(output, snapshot.current_pursuit_inputs_v1)) {
     return {};
   }
   output += ",\"current_loss_inputs_v1\":";
@@ -1894,8 +1957,20 @@ std::string SerializeActiveCombatResumeInputsV1(
   if (!AppendNumber(output, snapshot.roll_cadence_counter)) {
     return {};
   }
+  output += ",\"roll_cadence_interval\":";
+  if (snapshot.roll_cadence_interval.has_value()) {
+    if (!AppendNumber(output, *snapshot.roll_cadence_interval)) {
+      return {};
+    }
+  } else {
+    output += "null";
+  }
   output += ",\"final_combat_width\":";
   if (!AppendNumber(output, snapshot.final_combat_width)) {
+    return {};
+  }
+  output += ",\"current_pursuit_inputs_v1\":";
+  if (!AppendCurrentPursuitInputsV1(output, snapshot.current_pursuit_inputs_v1)) {
     return {};
   }
   output += ",\"side_0_current_roll_points\":";

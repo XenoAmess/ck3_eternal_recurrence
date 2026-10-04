@@ -379,6 +379,33 @@ bool Retreat(const BattleBindings &b, const game::Snapshot &scope, void *combat,
                        24;
   return l.legal_now == l.native_boolean;
 }
+std::optional<game::BattleControlCurrentPursuitInputsV1> CurrentPursuitInputs(
+    const BattleBindings &b, const void *combat,
+    const game::BattleControlSnapshot &snapshot) {
+  if (!b.pursuit_phase_days || !b.base_toughness_multiplier ||
+      !b.minimum_pursuit_multiplier || !b.pursuit_stat_multiplier)
+    return std::nullopt;
+
+  game::BattleControlCurrentPursuitInputsV1 out{};
+  out.source_combat_id = snapshot.combat_id;
+  out.pursuit_phase_days = *b.pursuit_phase_days;
+  out.base_toughness_multiplier_raw = *b.base_toughness_multiplier;
+  out.minimum_pursuit_multiplier_raw = *b.minimum_pursuit_multiplier;
+  out.pursuit_stat_multiplier_raw = *b.pursuit_stat_multiplier;
+  // Pools are frozen only on entry into an active pursuit. Main-phase storage
+  // can contain zero or prior data and is not an observed initialized pool.
+  if (snapshot.phase_raw == 2 && !snapshot.finalized &&
+      (snapshot.winner_raw == 0 || snapshot.winner_raw == 1)) {
+    out.losing_side_index = 1 - snapshot.winner_raw;
+    const auto losing_side_offset = *out.losing_side_index == 0
+        ? kBattleAttackerSideOffset : kBattleDefenderSideOffset;
+    out.losing_side_skip_pursuit =
+        At<std::uint8_t>(combat, losing_side_offset + 0xC2) != 0;
+    out.initial_loser_levy_soft_raw = At<std::int64_t>(combat, 0x6E8);
+    out.initial_loser_maa_soft_raw = At<std::int64_t>(combat, 0x6F0);
+  }
+  return out;
+}
 std::optional<game::BattleControlCurrentLossInputsV1> CurrentLossInputs(
     const BattleBindings &b, void *combat, void *province,
     const game::BattleControlSnapshot &snapshot) {
@@ -476,6 +503,8 @@ bool ControlSample(const BattleBindings &b, const game::Snapshot &scope,
   out.base_combat_width = At<std::int32_t>(combat, 0x6C0);
   out.final_combat_width = At<std::int32_t>(combat, 0x6C4);
   out.roll_cadence_counter = At<std::int32_t>(combat, 0x6E4);
+  if (b.roll_cadence_interval != nullptr)
+    out.roll_cadence_interval = *b.roll_cadence_interval;
   out.base_advantage_raw = At<std::int64_t>(combat, 0x6C8);
   out.resolved_advantage_raw = At<std::int64_t>(combat, 0x710);
   const bool roll_applicable = out.phase_raw == 1 && !out.finalized;
@@ -493,6 +522,7 @@ bool ControlSample(const BattleBindings &b, const game::Snapshot &scope,
       At<std::uint8_t>(combat, kBattleDailyGuardOffset))
     return false;
   out.current_loss_inputs_v1 = CurrentLossInputs(b, combat, province, out);
+  out.current_pursuit_inputs_v1 = CurrentPursuitInputs(b, combat, out);
   if (Province(b, At<void *>(combat, 0x6B8)) != province)
     return false;
   if (roll_applicable && get_terrain != nullptr &&
@@ -1180,6 +1210,16 @@ BattleBindings BindBattleImage(std::uintptr_t base,
   b.ai_war_coordinator_vtable = base + 0x45AB0B8;
   b.minimum_days_before_manual_retreat = reinterpret_cast<const std::int32_t *>(
       base + kBattleMinimumRetreatDaysRva);
+  b.roll_cadence_interval = reinterpret_cast<const std::int32_t *>(
+      base + kBattleRollCadenceIntervalRva);
+  b.pursuit_phase_days = reinterpret_cast<const std::int32_t *>(
+      base + kBattlePursuitPhaseDaysRva);
+  b.base_toughness_multiplier = reinterpret_cast<const std::int64_t *>(
+      base + kBattleBaseToughnessMultiplierRva);
+  b.minimum_pursuit_multiplier = reinterpret_cast<const std::int64_t *>(
+      base + kBattleMinimumPursuitMultiplierRva);
+  b.pursuit_stat_multiplier = reinterpret_cast<const std::int64_t *>(
+      base + kBattlePursuitStatMultiplierRva);
   b.get_combat_side_strength =
       reinterpret_cast<decltype(b.get_combat_side_strength)>(
           base + kBattleSideStrengthRva);

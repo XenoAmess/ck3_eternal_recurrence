@@ -59,6 +59,8 @@ _SNAPSHOT_KEYS = {
     "defender",
 }
 _OPTIONAL_SNAPSHOT_KEYS = {
+    "roll_cadence_interval",
+    "current_pursuit_inputs_v1",
     "actual_hard_casualty_sides",
     "pursuit_modifier_sides",
     "active_counter_inputs_v1",
@@ -161,6 +163,20 @@ _PURSUIT_MODIFIER_SIDE_KEYS = {
     "pursuit_efficiency_raw",
     "retreat_losses_raw",
 }
+
+_CURRENT_PURSUIT_INPUT_KEYS = {
+    "scale",
+    "source_combat_id",
+    "pursuit_phase_days",
+    "base_toughness_multiplier_raw",
+    "minimum_pursuit_multiplier_raw",
+    "pursuit_stat_multiplier_raw",
+    "losing_side_index",
+    "initial_loser_levy_soft_raw",
+    "initial_loser_maa_soft_raw",
+}
+
+_OPTIONAL_CURRENT_PURSUIT_INPUT_KEYS = {"losing_side_skip_pursuit"}
 
 _CURRENT_LOSS_INPUT_KEYS = {
     "scale",
@@ -623,6 +639,14 @@ def normalize_battle_control_snapshot_v1(
         "attacker": attacker,
         "defender": defender,
     }
+    if "roll_cadence_interval" in value:
+        result["roll_cadence_interval"] = (
+            None if value["roll_cadence_interval"] is None
+            else _signed_int32(
+                value["roll_cadence_interval"],
+                "battle_control_snapshot.roll_cadence_interval",
+            )
+        )
     if actual_hard is not None:
         result["actual_hard_casualty_sides"] = actual_hard
     if pursuit_modifiers is not None:
@@ -638,7 +662,62 @@ def normalize_battle_control_snapshot_v1(
             attacker=attacker,
             defender=defender,
         )
+    if "current_pursuit_inputs_v1" in value:
+        result["current_pursuit_inputs_v1"] = _normalize_current_pursuit_inputs_v1(
+            value["current_pursuit_inputs_v1"], combat_id=combat_id
+        )
     return result
+
+
+def _normalize_current_pursuit_inputs_v1(
+    value: object, *, combat_id: int
+) -> dict[str, object] | None:
+    """Preserve runtime pursuit operands without claiming an executed loss tick."""
+    if value is None:
+        return None
+    name = "battle_control_snapshot.current_pursuit_inputs_v1"
+    if (
+        not isinstance(value, dict)
+        or not _CURRENT_PURSUIT_INPUT_KEYS <= set(value)
+        or set(value) - _CURRENT_PURSUIT_INPUT_KEYS - _OPTIONAL_CURRENT_PURSUIT_INPUT_KEYS
+    ):
+        raise ValueError(f"{name} has a malformed schema")
+    scale = _signed_int32(value["scale"], f"{name}.scale")
+    source_combat_id = _signed_int32(
+        value["source_combat_id"], f"{name}.source_combat_id"
+    )
+    if scale != 100_000 or source_combat_id != combat_id:
+        raise ValueError(f"{name} identity or scale disagrees")
+    normalized = {
+        "scale": scale,
+        "source_combat_id": source_combat_id,
+        "pursuit_phase_days": _signed_int32(
+            value["pursuit_phase_days"], f"{name}.pursuit_phase_days"
+        ),
+    }
+    for field in (
+        "base_toughness_multiplier_raw",
+        "minimum_pursuit_multiplier_raw",
+        "pursuit_stat_multiplier_raw",
+    ):
+        normalized[field] = _signed_int64(value[field], f"{name}.{field}")
+    for field, check in (
+        ("losing_side_index", _signed_int32),
+        ("initial_loser_levy_soft_raw", _signed_int64),
+        ("initial_loser_maa_soft_raw", _signed_int64),
+    ):
+        normalized[field] = (
+            None if value[field] is None else check(value[field], f"{name}.{field}")
+        )
+    if "losing_side_skip_pursuit" in value:
+        normalized["losing_side_skip_pursuit"] = (
+            None if value["losing_side_skip_pursuit"] is None
+            else _strict_bool(
+                value["losing_side_skip_pursuit"],
+                f"{name}.losing_side_skip_pursuit",
+            )
+        )
+    return normalized
 
 
 def _normalize_current_loss_inputs_v1(
@@ -933,11 +1012,16 @@ def normalize_active_combat_resume_inputs_v1(
             raise ValueError(f"{name}.source.{key} disagrees with battle frame")
 
     observed = value["observed"]
-    if not isinstance(observed, dict) or set(observed) not in (
-        _ACTIVE_RESUME_OBSERVED_KEYS,
-        _ACTIVE_RESUME_OBSERVED_KEYS_WITH_MAPPING,
-        _ACTIVE_RESUME_OBSERVED_KEYS_WITH_COUNTER,
-        _ACTIVE_RESUME_OBSERVED_KEYS_WITH_MAPPING_AND_COUNTER,
+    if (
+        not isinstance(observed, dict)
+        or set(observed) - {
+            "roll_cadence_interval", "current_pursuit_inputs_v1"
+        } not in (
+            _ACTIVE_RESUME_OBSERVED_KEYS,
+            _ACTIVE_RESUME_OBSERVED_KEYS_WITH_MAPPING,
+            _ACTIVE_RESUME_OBSERVED_KEYS_WITH_COUNTER,
+            _ACTIVE_RESUME_OBSERVED_KEYS_WITH_MAPPING_AND_COUNTER,
+        )
     ):
         raise ValueError(f"{name}.observed has a malformed schema")
     if observed["phase"] != parent["phase"]:
@@ -964,6 +1048,24 @@ def normalize_active_combat_resume_inputs_v1(
         actual = check(observed[key], f"{name}.observed.{key}")
         if actual != expected:
             raise ValueError(f"{name}.observed.{key} disagrees with battle frame")
+    if "roll_cadence_interval" in observed:
+        interval = observed["roll_cadence_interval"]
+        if interval is not None:
+            interval = _signed_int32(
+                interval, f"{name}.observed.roll_cadence_interval"
+            )
+        if interval != parent.get("roll_cadence_interval"):
+            raise ValueError(
+                f"{name}.observed.roll_cadence_interval disagrees with battle frame"
+            )
+    if "current_pursuit_inputs_v1" in observed:
+        pursuit = _normalize_current_pursuit_inputs_v1(
+            observed["current_pursuit_inputs_v1"], combat_id=parent["combat_id"]
+        )
+        if pursuit != parent.get("current_pursuit_inputs_v1"):
+            raise ValueError(
+                f"{name}.observed.current_pursuit_inputs_v1 disagrees with battle frame"
+            )
     for index, role in enumerate(("attacker", "defender")):
         commander_key = f"side_{index}_selected_commander_character_id"
         commander = _optional_positive_int32(

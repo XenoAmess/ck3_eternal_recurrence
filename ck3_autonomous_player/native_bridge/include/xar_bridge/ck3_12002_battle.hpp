@@ -15,6 +15,11 @@ inline constexpr std::uintptr_t kBattleResultFallbackRva = 0x5D1FFD8;
 inline constexpr std::uintptr_t kBattleSideStrengthRva = 0x2651100;
 inline constexpr std::uintptr_t kBattleEntryStrengthRva = 0x2657B50;
 inline constexpr std::uintptr_t kBattleCanRetreatRva = 0x258AA10;
+inline constexpr std::uintptr_t kBattleRollCadenceIntervalRva = 0x5C69B48;
+inline constexpr std::uintptr_t kBattlePursuitPhaseDaysRva = 0x5C69B74;
+inline constexpr std::uintptr_t kBattleBaseToughnessMultiplierRva = 0x5C699C0;
+inline constexpr std::uintptr_t kBattleMinimumPursuitMultiplierRva = 0x5C699A0;
+inline constexpr std::uintptr_t kBattlePursuitStatMultiplierRva = 0x5C699D0;
 inline constexpr std::uintptr_t kBattleDamageScalingRva = 0x5C69B90;
 inline constexpr std::uintptr_t kBattleMainHardConversionRva = 0x5C69BA0;
 inline constexpr std::uintptr_t kBattlePursuitHardConversionRva = 0x5C69BB0;
@@ -59,6 +64,12 @@ struct BattleBindings {
   std::uintptr_t ai_subunit_stack_vtable = 0;
   std::uintptr_t ai_war_coordinator_vtable = 0;
   const std::int32_t *minimum_days_before_manual_retreat = nullptr;
+  // Independently nullable runtime rule; zero is a native observation.
+  const std::int32_t *roll_cadence_interval = nullptr;
+  const std::int32_t *pursuit_phase_days = nullptr;
+  const std::int64_t *base_toughness_multiplier = nullptr;
+  const std::int64_t *minimum_pursuit_multiplier = nullptr;
+  const std::int64_t *pursuit_stat_multiplier = nullptr;
   std::int32_t (*get_combat_side_strength)(void *) = nullptr;
   std::int32_t (*get_combat_regiment_strength)(void *) = nullptr;
   bool (*can_order_combat_retreat)(void *, void *, void *) = nullptr;

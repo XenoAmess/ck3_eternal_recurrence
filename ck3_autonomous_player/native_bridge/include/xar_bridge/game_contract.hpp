@@ -1883,6 +1883,23 @@ struct BattleControlCurrentLossInputsV1 {
                          const BattleControlCurrentLossInputsV1 &) = default;
 };
 
+struct BattleControlCurrentPursuitInputsV1 {
+  std::int32_t scale = 100'000;
+  std::int32_t source_combat_id = -1;
+  std::int32_t pursuit_phase_days = 0;
+  std::int64_t base_toughness_multiplier_raw = 0;
+  std::int64_t minimum_pursuit_multiplier_raw = 0;
+  std::int64_t pursuit_stat_multiplier_raw = 0;
+  // Active pursuit and a recorded winner are required for initialized pools.
+  std::optional<std::int32_t> losing_side_index;
+  std::optional<std::int64_t> initial_loser_levy_soft_raw;
+  std::optional<std::int64_t> initial_loser_maa_soft_raw;
+  std::optional<bool> losing_side_skip_pursuit;
+
+  friend bool operator==(const BattleControlCurrentPursuitInputsV1 &,
+                         const BattleControlCurrentPursuitInputsV1 &) = default;
+};
+
 struct BattleControlSnapshot {
   BattleControlSnapshotStatus status =
       BattleControlSnapshotStatus::unavailable;
@@ -1919,6 +1936,8 @@ struct BattleControlSnapshot {
   std::int32_t base_combat_width = 0;
   std::int32_t final_combat_width = 0;
   std::int32_t roll_cadence_counter = 0;
+  // Null is unobserved; the loaded native interval may be zero.
+  std::optional<std::int32_t> roll_cadence_interval;
   std::int64_t base_advantage_raw = 0;
   std::int64_t resolved_advantage_raw = 0;
   BattleControlSideSnapshot attacker;
@@ -1932,6 +1951,8 @@ struct BattleControlSnapshot {
   BattleControlPursuitModifierSides pursuit_modifier_sides;
   // Null is an unobserved leaf; zero remains a native numeric observation.
   std::optional<BattleControlCurrentLossInputsV1> current_loss_inputs_v1;
+  // Runtime pursuit rules are independent nullable observations, not a gate.
+  std::optional<BattleControlCurrentPursuitInputsV1> current_pursuit_inputs_v1;
   bool battle_control_ready = false;
 
   friend bool operator==(const BattleControlSnapshot &,
