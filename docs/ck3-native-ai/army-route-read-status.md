@@ -45,3 +45,15 @@ The move above continued through Root's centrally credited 8+32 normal calendar 
 Root's later zero-day pre-stop SDK79664, normally closed GREEN, queried `ck3_query_war_occupation_targets_v1(117440524)` independently at raw53252424 / native169 / public2 / gen6. It returned accepted/available, read_only=true and a complete collection: defender337 eligible/0 counted occupied, attacker31/0. Goal Province470 (holding1334/legal32309) is now unoccupied, fort6/garrison550; 3711 (holding1352/legal32309) is unoccupied, fort6/garrison565; 472 (holding1359/legal31797) is unoccupied, fort4/garrison500. Each is defender territory with occupier=null/side none/count-opposing=false, besieging_strength0, siege_observable=true and **active_siege=null**. The earlier third-party occupation at470 is absent now; the change does not establish that our army recaptured it.
 
 None of these three rows contains a breach field or an active siege object, so breach is **not observed**, rather than zero. The running R29 DLL remains frozen `g61/f3f365c5`; the current source-tree movement observer at `b513f020` and any newer five siege operands are not credited as live by this packet. No arrival, siege, battle or war victory is added. Fresh three-goal evidence and the combined cached-only receipt are in [r29-route-actual/combined-r29-preview-moving-prestop-goals/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/r29-route-actual/combined-r29-preview-moving-prestop-goals/ROOT-DELIVERY.json).
+
+## 2026-10-04 R30 cold current-objective readback
+
+Root R0030 / PID120956, frozen `Z:/g62` source `d1b7f18d200cffd302815a05a12c1d3e958ab2de`, returned a fresh `ck3_query_war_occupation_targets_v1(117440524)` accepted/available/read_only at raw53252424 / native3 / public2 / gen2. The complete collection has defender337 eligible/0 counted occupied and attacker31/0. The current goal rows are:
+
+| Province | Occupied / occupier | Fort | Garrison | Besieging strength | Active siege |
+|---|---|---:|---:|---:|---|
+|470|false / null|6|550|0|null|
+|3711|false / null|6|565|0|null|
+|472|false / null|4|500|0|null|
+
+All three rows are observable defender territory, occupier side none and opposing-side occupation count=false; the whole368-row collection has no active siege. Breach is not published. With `active_siege=null`, the new five siege operands are **not applicable in this frame** and retain **static-ready** status pending an actual active-siege reading; cold deployment or fixture success does not supply live operand values. SDK59491 normally closed GREEN with normal SAVE; this zero-day query adds0 days, leaving formal4504 / resumed1351 / Oct4+479. Receipt: [r30-first-objectives-once/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/r29-route-actual/r30-first-objectives-once/ROOT-DELIVERY.json). The sole consumer cached raw014 once, did not read another child's health raw, and made no SDK/window/shared-source/Git mutation or repeated test.

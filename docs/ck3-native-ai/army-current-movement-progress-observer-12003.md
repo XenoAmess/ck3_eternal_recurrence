@@ -152,3 +152,66 @@ enclosing calendar totals are4504 / resumed1351 / Oct4+479; this zero-day
 consumer adds no query, action or day credit. The reusable cache, summary,
 report fields and owned one-topic patch are indexed in this lane's
 `prestop-r29/ROOT-DELIVERY.json`.
+
+## R0030: first actual paused movement-progress primitive, 2026-10-04
+
+This new frame supersedes the preceding predeployment readiness boundary for
+the selected available movement-progress inputs. Root deployed the unified
+g62/d1 source as **R0030**, execution
+`72457e9f-d8f2-4350-b08c-0f5683d37e5b`, native PID120956, DLL SHA-256
+`91cc62d12eb7839582254fce443bf5dea8c5518402867f2cab28b27cbc6938b7`,
+environment SHA-256
+`b17543f45334043db6725c4183ae3ab2f59fa7645de4ec7443ffe303b7eb6a29`.
+The original four Sway queries ran first, before any advance. The subsequent
+`012-ck3_query_army_strengths.json` selected exactly public IDs184549452,
+301989997 and268435597; all three health rows are available. The query's
+overall available result retains `scope_status=partial` for the wider scope;
+unrequested public IDs are not added to this receipt's health coverage.
+
+The actual source frame is **native3 / public2 / raw53252424 / paused true**.
+Payload version/EXE fields remain null; the deployment envelope above supplies
+the running identity rather than fabricating those fields. The original body
+was consumed **once**,161205 bytes, SHA-256
+`ac45d9b15b54c99351bb99ae9b5d6b5ff18517f810942584513f09bc475dd1bb`.
+Its frozen cache and parsed summary are indexed in
+`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/movement-progress/first-live-r30/ROOT-DELIVERY.json`.
+
+| Public CUnit / CArmy | Actual state raw | Movement status | Accumulated movement-weight raw | Cached edge-speed raw | Native progress raw / scale | First-edge remaining raw / scale |
+|---|---:|---|---:|---:|---|---|
+| 184549452 / 167772208 | 1 | not_applicable | 0 | 0 | null | null |
+| 301989997 / 201326670 | 4 | available | 451428 | 0 | 45142 / 100000 | 548572 / 100000 days |
+| 268435597 / 184549476 | 4 | available | 7350000 | 0 | 95454 / 100000 | 10144 / 100000 days |
+
+All three `unavailable_reason` fields are null. The old regular army's empty
+route correctly publishes not_applicable and null edge-getter operands instead
+of a zero remaining-time promise. New army301989997 has **45.142%** native
+first-edge progress and **5.48572 native days** remaining on that first edge.
+Root's enclosing snapshot places it in1038 with current committed route `[472]`;
+the health block itself does not serialize that path. Enemy268435597 has
+**95.454%** native first-edge progress and **0.10144 native days** remaining.
+The two cached edge-speed raw0 values are actual cache contents, not proof of
+zero current effective speed, a stuck army or missing getters. Accumulated
+movement-weight is not elapsed time.
+
+Selected health facts remain: old army3000/3000 soldiers and24 regiments;
+new player army3693/3884 and41; enemy2459/4702 and41. Supply/capacity are
+95.45305/100,300/300 and300/300 respectively; current attrition fraction is
+observed0 in all three. These are current observations, not battle win odds.
+
+The new native reader, DTO, serializer and existing production Python consumer
+now have **production-live primitive** evidence for both moving selected
+armies, with the independent old-empty-route not_applicable branch also
+observed. No additional callback binding or schema field is missing for this
+first-edge decision. The observed5.48572-day operand can inform a bounded
+normal-day window with independent arrival/contact re-observation; it is not
+an exact completion tick or a promised whole-route ETA. Only a later real
+advance and independently observed progress or arrival can qualify a new
+movement-progress loop. Exact arrival tick, complete future ETA, explicit
+embark phase and AI destination scoring remain outside this receipt.
+
+Root's closed SDK59491 completed a same-date normal SAVE after these original
+four queries, health, occupation and planning reads. Date53252424 and4504
+total saved calendar days are unchanged. This file-only consumer adds **0 SDK
+calls,0 actions,0 days and0 tests**, and leaves the original R0029 body untouched.
+The earlier focused HARNESS RED and successful actual two-case execution remain
+their own retained evidence; they were not rerun for this live receipt.
