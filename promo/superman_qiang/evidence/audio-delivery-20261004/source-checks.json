@@ -1,0 +1,13 @@
+{
+  "python_policy": "PASS",
+  "paths": [
+    "promo/superman_qiang/tools/player_trailer_composer.py",
+    "promo/superman_qiang/tools/prepare_render_run.py",
+    "promo/superman_qiang/tools/check_player_trailer.py",
+    "promo/superman_qiang/tools/check_audio_continuity.py",
+    "promo/superman_qiang/audio-revision-20261004.md"
+  ],
+  "findings": [],
+  "ten_scene_regression": "C:\\ck3-superman-qiang-promo-20261004\\audio-audit-independent-A0001\\ten-scene-trim-regression.json",
+  "old_movie_counterexample": "C:\\ck3-superman-qiang-promo-20261004\\audio-audit-independent-A0001\\old-a4-check\\audio-continuity-check.json"
+}

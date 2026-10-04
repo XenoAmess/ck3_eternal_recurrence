@@ -1,0 +1,320 @@
+{
+  "format_version": 1,
+  "kind": "superman_qiang_audio_continuity_check",
+  "created_at_utc": "2026-10-04T10:52:41.138428+00:00",
+  "result": "FAIL",
+  "movie_path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0004\\build\\deliverables\\superman-qiang-player-trailer.mp4",
+  "movie_sha256": "2d880ce2df313d2c9cdc343208e5d21aea16963654696718c8ca4e9055eeaf82",
+  "movie_bytes": 31431220,
+  "sample_rate": 48000,
+  "checks": {
+    "aac_packet_clock_has_no_sample_holes": false,
+    "aac_starts_at_sample_zero_after_encoder_priming": true,
+    "aac_packet_clock_covers_complete_movie": false,
+    "decoded_pcm_covers_all_planned_samples": false,
+    "timestamp_aligned_pcm_covers_all_planned_samples": false,
+    "nine_cuts_have_complete_windows_without_zero_holes": false,
+    "approved_a4_video_elementary_bytes_unchanged": true,
+    "retained_lossless_stems_and_explicit_policy_exist": false,
+    "lossless_stems_cover_exactly_all_planned_samples": false,
+    "lossless_mix_equals_music_plus_voice_before_master_gain": false,
+    "encoded_audio_matches_continuous_mix_with_constant_master_gain": false,
+    "music_gain_is_constant_across_all_nine_cuts": false
+  },
+  "diagnostics": {
+    "packet_clock": {
+      "time_base": "1/48000",
+      "packet_count": 6087,
+      "encoder_priming_skip_samples": 1024,
+      "first_content_sample": 0.0,
+      "end_sample": 6616192.0,
+      "gap_count": 10,
+      "gaps": [
+        {
+          "packet_index": 516,
+          "start_seconds": 10.986666666666666,
+          "next_seconds": 12.373333333333333,
+          "interval_samples": 66560.0,
+          "excess_samples": 65536.0,
+          "excess_seconds": 1.3653333333333333,
+          "container_reported_duration": 66560
+        },
+        {
+          "packet_index": 1060,
+          "start_seconds": 23.957333333333334,
+          "next_seconds": 24.84,
+          "interval_samples": 42368.0,
+          "excess_samples": 41344.0,
+          "excess_seconds": 0.8613333333333333,
+          "container_reported_duration": 42368
+        },
+        {
+          "packet_index": 1627,
+          "start_seconds": 36.91466666666667,
+          "next_seconds": 37.721333333333334,
+          "interval_samples": 38720.0,
+          "excess_samples": 37696.0,
+          "excess_seconds": 0.7853333333333333,
+          "container_reported_duration": 38720
+        },
+        {
+          "packet_index": 2100,
+          "start_seconds": 47.79066666666667,
+          "next_seconds": 48.49733333333333,
+          "interval_samples": 33920.0,
+          "excess_samples": 32896.0,
+          "excess_seconds": 0.6853333333333333,
+          "container_reported_duration": 33920
+        },
+        {
+          "packet_index": 2808,
+          "start_seconds": 63.58,
+          "next_seconds": 64.58533333333334,
+          "interval_samples": 48256.0,
+          "excess_samples": 47232.0,
+          "excess_seconds": 0.984,
+          "container_reported_duration": 48256
+        },
+        {
+          "packet_index": 3474,
+          "start_seconds": 78.772,
+          "next_seconds": 79.67333333333333,
+          "interval_samples": 43264.0,
+          "excess_samples": 42240.0,
+          "excess_seconds": 0.88,
+          "container_reported_duration": 43264
+        },
+        {
+          "packet_index": 4149,
+          "start_seconds": 94.052,
+          "next_seconds": 94.864,
+          "interval_samples": 38976.0,
+          "excess_samples": 37952.0,
+          "excess_seconds": 0.7906666666666666,
+          "container_reported_duration": 38976
+        },
+        {
+          "packet_index": 4838,
+          "start_seconds": 109.54133333333333,
+          "next_seconds": 110.40666666666667,
+          "interval_samples": 41536.0,
+          "excess_samples": 40512.0,
+          "excess_seconds": 0.844,
+          "container_reported_duration": 41536
+        },
+        {
+          "packet_index": 5344,
+          "start_seconds": 121.18,
+          "next_seconds": 121.94266666666667,
+          "interval_samples": 36608.0,
+          "excess_samples": 35584.0,
+          "excess_seconds": 0.7413333333333333,
+          "container_reported_duration": 36608
+        },
+        {
+          "packet_index": 5950,
+          "start_seconds": 134.84933333333333,
+          "next_seconds": 134.93733333333333,
+          "interval_samples": 4224.0,
+          "excess_samples": 3200.0,
+          "excess_seconds": 0.06666666666666667,
+          "container_reported_duration": 4224
+        }
+      ],
+      "method": "PTS intervals checked against 1024 AAC samples, never against an inflated container packet duration"
+    },
+    "sample_coverage": {
+      "planned_samples": 6656000,
+      "decoded_samples": 6232000,
+      "timestamp_aligned_samples": 6612992,
+      "decoded_shortfall_seconds": 8.833333333333334
+    },
+    "video_identity": {
+      "actual_elementary_sha256": "3fc75905835ea433cd2effe649a7c15fb6e28831334f0964e398ff65d1ed8596",
+      "reference_path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0004\\build\\deliverables\\superman-qiang-player-trailer.mp4",
+      "reference_movie_sha256": "2d880ce2df313d2c9cdc343208e5d21aea16963654696718c8ca4e9055eeaf82",
+      "reference_elementary_sha256": "3fc75905835ea433cd2effe649a7c15fb6e28831334f0964e398ff65d1ed8596"
+    },
+    "cuts": [
+      {
+        "scene": "SQP-02",
+        "cut_seconds": 12.266666666666667,
+        "window_seconds": [
+          11.266666666666667,
+          13.266666666666667
+        ],
+        "zero_holes": [
+          {
+            "start_seconds": 11.266666666666667,
+            "end_seconds": 12.373333333333333,
+            "duration_seconds": 1.1066666666666667
+          }
+        ],
+        "window_has_all_samples": true
+      },
+      {
+        "scene": "SQP-03",
+        "cut_seconds": 24.733333333333334,
+        "window_seconds": [
+          23.733333333333334,
+          25.733333333333334
+        ],
+        "zero_holes": [
+          {
+            "start_seconds": 23.978666666666665,
+            "end_seconds": 24.84,
+            "duration_seconds": 0.8613333333333333
+          }
+        ],
+        "window_has_all_samples": true
+      },
+      {
+        "scene": "SQP-04",
+        "cut_seconds": 37.7,
+        "window_seconds": [
+          36.7,
+          38.7
+        ],
+        "zero_holes": [
+          {
+            "start_seconds": 36.936,
+            "end_seconds": 37.721333333333334,
+            "duration_seconds": 0.7853333333333333
+          }
+        ],
+        "window_has_all_samples": true
+      },
+      {
+        "scene": "SQP-05",
+        "cut_seconds": 48.43333333333333,
+        "window_seconds": [
+          47.43333333333333,
+          49.43333333333333
+        ],
+        "zero_holes": [
+          {
+            "start_seconds": 47.812,
+            "end_seconds": 48.49733333333333,
+            "duration_seconds": 0.6853333333333333
+          }
+        ],
+        "window_has_all_samples": true
+      },
+      {
+        "scene": "SQP-06",
+        "cut_seconds": 64.5,
+        "window_seconds": [
+          63.5,
+          65.5
+        ],
+        "zero_holes": [
+          {
+            "start_seconds": 63.601333333333336,
+            "end_seconds": 64.58533333333334,
+            "duration_seconds": 0.984
+          }
+        ],
+        "window_has_all_samples": true
+      },
+      {
+        "scene": "SQP-07",
+        "cut_seconds": 79.56666666666666,
+        "window_seconds": [
+          78.56666666666666,
+          80.56666666666666
+        ],
+        "zero_holes": [
+          {
+            "start_seconds": 78.79333333333334,
+            "end_seconds": 79.67333333333333,
+            "duration_seconds": 0.88
+          }
+        ],
+        "window_has_all_samples": true
+      },
+      {
+        "scene": "SQP-08",
+        "cut_seconds": 94.8,
+        "window_seconds": [
+          93.8,
+          95.8
+        ],
+        "zero_holes": [
+          {
+            "start_seconds": 94.07333333333334,
+            "end_seconds": 94.864,
+            "duration_seconds": 0.7906666666666666
+          }
+        ],
+        "window_has_all_samples": true
+      },
+      {
+        "scene": "SQP-09",
+        "cut_seconds": 110.3,
+        "window_seconds": [
+          109.3,
+          111.3
+        ],
+        "zero_holes": [
+          {
+            "start_seconds": 109.56266666666667,
+            "end_seconds": 110.40666666666667,
+            "duration_seconds": 0.844
+          }
+        ],
+        "window_has_all_samples": true
+      },
+      {
+        "scene": "SQP-10",
+        "cut_seconds": 121.9,
+        "window_seconds": [
+          120.9,
+          122.9
+        ],
+        "zero_holes": [
+          {
+            "start_seconds": 121.20133333333334,
+            "end_seconds": 121.94266666666667,
+            "duration_seconds": 0.7413333333333333
+          }
+        ],
+        "window_has_all_samples": true
+      }
+    ]
+  },
+  "source_bindings": {
+    "timeline_path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0004\\build\\timeline.json",
+    "timeline_sha256": "6d17cffd2c8633a3af6a4b442fa2f5957d1f07929e06b2398b7705884acd718e",
+    "policy_path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0004\\build\\audio-mix-policy.json",
+    "policy_sha256": null,
+    "lossless_stems": [
+      {
+        "name": "mix",
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0004\\build\\intermediate\\continuous-mix.wav",
+        "sha256": null
+      },
+      {
+        "name": "music",
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0004\\build\\intermediate\\continuous-music.wav",
+        "sha256": null
+      },
+      {
+        "name": "voice",
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0004\\build\\intermediate\\continuous-voice.wav",
+        "sha256": null
+      }
+    ]
+  },
+  "thresholds": {
+    "timestamp_tolerance_samples": 2,
+    "zero_hole_minimum_seconds": 0.04,
+    "zero_sample_absolute_limit": 1e-07,
+    "fidelity_minimum_correlation": 0.98,
+    "fidelity_minimum_signal_to_error_db": 18,
+    "music_gain_median_tolerance_db": 0.25,
+    "music_gain_block_tolerance_db": 0.5
+  },
+  "scope": "Machine measurements on actual movie bytes, packet times, decoded samples and lossless stems; natural source-music dynamics remain in the reference.",
+  "human_full_playback": "not-recorded",
+  "manual_signoff_granted": false
+}

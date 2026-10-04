@@ -1,0 +1,1063 @@
+{
+  "format_version": 1,
+  "kind": "superman_qiang_audio_continuity_check",
+  "created_at_utc": "2026-10-04T11:00:47.858777+00:00",
+  "result": "PASS",
+  "movie_path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\超人强_越超人越强_宣传片_音频修复版_20261004_1cd9049a.mp4",
+  "movie_sha256": "1cd9049a95451a5bc8dde181416021970c145fe68e4b64c599e6b9d6620f52c9",
+  "movie_bytes": 31740736,
+  "sample_rate": 48000,
+  "checks": {
+    "aac_packet_clock_has_no_sample_holes": true,
+    "aac_starts_at_sample_zero_after_encoder_priming": true,
+    "aac_packet_clock_covers_complete_movie": true,
+    "decoded_pcm_covers_all_planned_samples": true,
+    "timestamp_aligned_pcm_covers_all_planned_samples": true,
+    "nine_cuts_have_complete_windows_without_zero_holes": true,
+    "approved_a4_video_elementary_bytes_unchanged": true,
+    "retained_lossless_stems_and_explicit_policy_exist": true,
+    "lossless_stems_cover_exactly_all_planned_samples": true,
+    "lossless_mix_equals_music_plus_voice_before_master_gain": true,
+    "encoded_audio_matches_continuous_mix_with_constant_master_gain": true,
+    "music_gain_is_constant_across_all_nine_cuts": true
+  },
+  "diagnostics": {
+    "packet_clock": {
+      "time_base": "1/48000",
+      "packet_count": 6501,
+      "encoder_priming_skip_samples": 1024,
+      "first_content_sample": 0.0,
+      "end_sample": 6656000.0,
+      "gap_count": 0,
+      "gaps": [],
+      "method": "PTS intervals checked against 1024 AAC samples, never against an inflated container packet duration"
+    },
+    "sample_coverage": {
+      "planned_samples": 6656000,
+      "decoded_samples": 6656000,
+      "timestamp_aligned_samples": 6656000,
+      "decoded_shortfall_seconds": 0.0
+    },
+    "video_identity": {
+      "actual_elementary_sha256": "3fc75905835ea433cd2effe649a7c15fb6e28831334f0964e398ff65d1ed8596",
+      "reference_path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0004\\build\\deliverables\\superman-qiang-player-trailer.mp4",
+      "reference_movie_sha256": "2d880ce2df313d2c9cdc343208e5d21aea16963654696718c8ca4e9055eeaf82",
+      "reference_elementary_sha256": "3fc75905835ea433cd2effe649a7c15fb6e28831334f0964e398ff65d1ed8596"
+    },
+    "mix_fidelity": {
+      "compared_samples": 6656000,
+      "master_gain_db": 1.0,
+      "correlation": 0.9999420633710757,
+      "signal_to_error_db": 39.333677145347956,
+      "fitted_gain_db_relative_to_expected": -0.008340765205004602,
+      "stem_sum_peak_error": 2.9802322387695312e-08
+    },
+    "cuts": [
+      {
+        "scene": "SQP-02",
+        "cut_seconds": 12.266666666666667,
+        "window_seconds": [
+          11.266666666666667,
+          13.266666666666667
+        ],
+        "zero_holes": [],
+        "window_has_all_samples": true,
+        "music_only_gain_blocks": [
+          {
+            "start_seconds": 11.266666666666667,
+            "gain_db_relative_to_music_stem": 1.0035463161706017,
+            "correlation": 0.9999566320397136
+          },
+          {
+            "start_seconds": 11.366666666666667,
+            "gain_db_relative_to_music_stem": 0.9896777738780304,
+            "correlation": 0.9999366705763459
+          },
+          {
+            "start_seconds": 11.466666666666667,
+            "gain_db_relative_to_music_stem": 0.9831172586292126,
+            "correlation": 0.9999382523246754
+          },
+          {
+            "start_seconds": 11.566666666666666,
+            "gain_db_relative_to_music_stem": 0.9861130065431556,
+            "correlation": 0.9999589601474326
+          },
+          {
+            "start_seconds": 11.666666666666666,
+            "gain_db_relative_to_music_stem": 0.9825060987527703,
+            "correlation": 0.9999154274714643
+          },
+          {
+            "start_seconds": 11.766666666666667,
+            "gain_db_relative_to_music_stem": 0.9969638891147182,
+            "correlation": 0.9999794666156733
+          },
+          {
+            "start_seconds": 11.866666666666667,
+            "gain_db_relative_to_music_stem": 0.9883690530199174,
+            "correlation": 0.9999286843346352
+          },
+          {
+            "start_seconds": 11.966666666666667,
+            "gain_db_relative_to_music_stem": 0.9796356585078478,
+            "correlation": 0.999897594222426
+          },
+          {
+            "start_seconds": 12.066666666666666,
+            "gain_db_relative_to_music_stem": 0.9874128386450056,
+            "correlation": 0.9999587989045513
+          },
+          {
+            "start_seconds": 12.166666666666666,
+            "gain_db_relative_to_music_stem": 0.9402697148455528,
+            "correlation": 0.9997349619018333
+          },
+          {
+            "start_seconds": 12.266666666666667,
+            "gain_db_relative_to_music_stem": 0.9605364081613753,
+            "correlation": 0.9995599518175208
+          },
+          {
+            "start_seconds": 12.366666666666667,
+            "gain_db_relative_to_music_stem": 0.9938416801516101,
+            "correlation": 0.9999011729747815
+          },
+          {
+            "start_seconds": 12.466666666666667,
+            "gain_db_relative_to_music_stem": 0.9878969960654472,
+            "correlation": 0.9999037105853195
+          },
+          {
+            "start_seconds": 12.566666666666666,
+            "gain_db_relative_to_music_stem": 0.9833504166380163,
+            "correlation": 0.9998874777665685
+          },
+          {
+            "start_seconds": 12.666666666666666,
+            "gain_db_relative_to_music_stem": 0.9671227603699122,
+            "correlation": 0.999900595336178
+          },
+          {
+            "start_seconds": 12.766666666666667,
+            "gain_db_relative_to_music_stem": 0.9861789077717953,
+            "correlation": 0.9999305702296991
+          },
+          {
+            "start_seconds": 12.866666666666667,
+            "gain_db_relative_to_music_stem": 0.9827650965275709,
+            "correlation": 0.9999409862069135
+          },
+          {
+            "start_seconds": 12.966666666666667,
+            "gain_db_relative_to_music_stem": 0.9911089859358193,
+            "correlation": 0.99993148650518
+          },
+          {
+            "start_seconds": 13.066666666666666,
+            "gain_db_relative_to_music_stem": 0.9834808033242104,
+            "correlation": 0.9999335248741328
+          }
+        ],
+        "median_music_gain_db": 0.9861130065431556,
+        "music_gain_range_db": 0.06327660132504898,
+        "steady_music_gain_pass": true
+      },
+      {
+        "scene": "SQP-03",
+        "cut_seconds": 24.733333333333334,
+        "window_seconds": [
+          23.733333333333334,
+          25.733333333333334
+        ],
+        "zero_holes": [],
+        "window_has_all_samples": true,
+        "music_only_gain_blocks": [
+          {
+            "start_seconds": 23.733333333333334,
+            "gain_db_relative_to_music_stem": 0.9816201831228334,
+            "correlation": 0.9999707892203824
+          },
+          {
+            "start_seconds": 23.833333333333332,
+            "gain_db_relative_to_music_stem": 0.9869903824631815,
+            "correlation": 0.9999578646460769
+          },
+          {
+            "start_seconds": 23.933333333333334,
+            "gain_db_relative_to_music_stem": 0.9887772953091057,
+            "correlation": 0.9999351860928972
+          },
+          {
+            "start_seconds": 24.033333333333335,
+            "gain_db_relative_to_music_stem": 0.9897799033259065,
+            "correlation": 0.9999157291422083
+          },
+          {
+            "start_seconds": 24.133333333333333,
+            "gain_db_relative_to_music_stem": 0.9848681520137558,
+            "correlation": 0.9999449982769831
+          },
+          {
+            "start_seconds": 24.233333333333334,
+            "gain_db_relative_to_music_stem": 0.994308651989511,
+            "correlation": 0.9999501968681516
+          },
+          {
+            "start_seconds": 24.333333333333332,
+            "gain_db_relative_to_music_stem": 0.9927608198522031,
+            "correlation": 0.9999653753144323
+          },
+          {
+            "start_seconds": 24.433333333333334,
+            "gain_db_relative_to_music_stem": 0.9831956644592276,
+            "correlation": 0.9996590000155007
+          },
+          {
+            "start_seconds": 24.533333333333335,
+            "gain_db_relative_to_music_stem": 0.987896247435095,
+            "correlation": 0.9999479722326783
+          },
+          {
+            "start_seconds": 24.633333333333333,
+            "gain_db_relative_to_music_stem": 0.9850403098843057,
+            "correlation": 0.99995804532563
+          },
+          {
+            "start_seconds": 24.733333333333334,
+            "gain_db_relative_to_music_stem": 0.9822514613599846,
+            "correlation": 0.9999311419865327
+          },
+          {
+            "start_seconds": 24.833333333333332,
+            "gain_db_relative_to_music_stem": 0.9883076059262629,
+            "correlation": 0.9999425279829727
+          },
+          {
+            "start_seconds": 24.933333333333334,
+            "gain_db_relative_to_music_stem": 0.990908496603138,
+            "correlation": 0.9999715495828174
+          },
+          {
+            "start_seconds": 25.033333333333335,
+            "gain_db_relative_to_music_stem": 0.9837490655571943,
+            "correlation": 0.9999331183505662
+          },
+          {
+            "start_seconds": 25.133333333333333,
+            "gain_db_relative_to_music_stem": 0.9830129386624433,
+            "correlation": 0.9999427918662915
+          },
+          {
+            "start_seconds": 25.233333333333334,
+            "gain_db_relative_to_music_stem": 0.993265436394143,
+            "correlation": 0.999969991327019
+          },
+          {
+            "start_seconds": 25.333333333333332,
+            "gain_db_relative_to_music_stem": 0.9817976384487892,
+            "correlation": 0.9999178073834795
+          },
+          {
+            "start_seconds": 25.433333333333334,
+            "gain_db_relative_to_music_stem": 0.9756189917591506,
+            "correlation": 0.9999303170589141
+          }
+        ],
+        "median_music_gain_db": 0.9860153461737435,
+        "music_gain_range_db": 0.01868966023036045,
+        "steady_music_gain_pass": true
+      },
+      {
+        "scene": "SQP-04",
+        "cut_seconds": 37.7,
+        "window_seconds": [
+          36.7,
+          38.7
+        ],
+        "zero_holes": [],
+        "window_has_all_samples": true,
+        "music_only_gain_blocks": [
+          {
+            "start_seconds": 36.7,
+            "gain_db_relative_to_music_stem": 0.9893263678402175,
+            "correlation": 0.9999279666152253
+          },
+          {
+            "start_seconds": 36.8,
+            "gain_db_relative_to_music_stem": 0.9821703346793632,
+            "correlation": 0.9999301615349455
+          },
+          {
+            "start_seconds": 36.9,
+            "gain_db_relative_to_music_stem": 0.9948484788567495,
+            "correlation": 0.999960698127507
+          },
+          {
+            "start_seconds": 37.0,
+            "gain_db_relative_to_music_stem": 0.983338292379568,
+            "correlation": 0.9999427240131987
+          },
+          {
+            "start_seconds": 37.1,
+            "gain_db_relative_to_music_stem": 0.9993046460243393,
+            "correlation": 0.9999746241053658
+          },
+          {
+            "start_seconds": 37.2,
+            "gain_db_relative_to_music_stem": 0.9906728260887896,
+            "correlation": 0.999977514738587
+          },
+          {
+            "start_seconds": 37.3,
+            "gain_db_relative_to_music_stem": 0.9776074720493102,
+            "correlation": 0.9999286727895682
+          },
+          {
+            "start_seconds": 37.4,
+            "gain_db_relative_to_music_stem": 0.9847188282168341,
+            "correlation": 0.9999230832631787
+          },
+          {
+            "start_seconds": 37.5,
+            "gain_db_relative_to_music_stem": 0.9845099837605397,
+            "correlation": 0.9999293910647301
+          },
+          {
+            "start_seconds": 37.6,
+            "gain_db_relative_to_music_stem": 0.9904168151671743,
+            "correlation": 0.9999523544705874
+          },
+          {
+            "start_seconds": 37.7,
+            "gain_db_relative_to_music_stem": 0.9887954516154793,
+            "correlation": 0.9998910513959287
+          },
+          {
+            "start_seconds": 37.8,
+            "gain_db_relative_to_music_stem": 0.9846211387394304,
+            "correlation": 0.9999422016260104
+          },
+          {
+            "start_seconds": 37.9,
+            "gain_db_relative_to_music_stem": 0.9911586952355612,
+            "correlation": 0.9999530696780594
+          },
+          {
+            "start_seconds": 38.0,
+            "gain_db_relative_to_music_stem": 0.9881624046991254,
+            "correlation": 0.9999083152697316
+          },
+          {
+            "start_seconds": 38.1,
+            "gain_db_relative_to_music_stem": 0.9774668357620864,
+            "correlation": 0.9999201875190852
+          },
+          {
+            "start_seconds": 38.2,
+            "gain_db_relative_to_music_stem": 0.9874583263041004,
+            "correlation": 0.9999319925117224
+          },
+          {
+            "start_seconds": 38.3,
+            "gain_db_relative_to_music_stem": 0.9815975301223012,
+            "correlation": 0.9998958000499167
+          }
+        ],
+        "median_music_gain_db": 0.9874583263041004,
+        "music_gain_range_db": 0.021837810262252955,
+        "steady_music_gain_pass": true
+      },
+      {
+        "scene": "SQP-05",
+        "cut_seconds": 48.43333333333333,
+        "window_seconds": [
+          47.43333333333333,
+          49.43333333333333
+        ],
+        "zero_holes": [],
+        "window_has_all_samples": true,
+        "music_only_gain_blocks": [
+          {
+            "start_seconds": 47.43333333333333,
+            "gain_db_relative_to_music_stem": 0.9861553857343615,
+            "correlation": 0.9999581838570017
+          },
+          {
+            "start_seconds": 47.53333333333333,
+            "gain_db_relative_to_music_stem": 0.9903276026634905,
+            "correlation": 0.9999641885122184
+          },
+          {
+            "start_seconds": 47.63333333333333,
+            "gain_db_relative_to_music_stem": 0.9842745694918976,
+            "correlation": 0.999950341519412
+          },
+          {
+            "start_seconds": 47.733333333333334,
+            "gain_db_relative_to_music_stem": 0.9868680759729416,
+            "correlation": 0.9999643228918418
+          },
+          {
+            "start_seconds": 47.833333333333336,
+            "gain_db_relative_to_music_stem": 0.990180633613079,
+            "correlation": 0.999966968008216
+          },
+          {
+            "start_seconds": 47.93333333333333,
+            "gain_db_relative_to_music_stem": 0.9922532964691887,
+            "correlation": 0.9999730958688627
+          },
+          {
+            "start_seconds": 48.03333333333333,
+            "gain_db_relative_to_music_stem": 0.986602311419882,
+            "correlation": 0.9999682683143688
+          },
+          {
+            "start_seconds": 48.13333333333333,
+            "gain_db_relative_to_music_stem": 0.9886647536028255,
+            "correlation": 0.9999704394571739
+          },
+          {
+            "start_seconds": 48.233333333333334,
+            "gain_db_relative_to_music_stem": 0.9938529597024885,
+            "correlation": 0.9999744271971789
+          },
+          {
+            "start_seconds": 48.333333333333336,
+            "gain_db_relative_to_music_stem": 0.9840308205190866,
+            "correlation": 0.9999660932072404
+          },
+          {
+            "start_seconds": 48.43333333333333,
+            "gain_db_relative_to_music_stem": 0.9911769025366961,
+            "correlation": 0.9999692151134676
+          },
+          {
+            "start_seconds": 48.53333333333333,
+            "gain_db_relative_to_music_stem": 0.9865915815797308,
+            "correlation": 0.999962088901736
+          },
+          {
+            "start_seconds": 48.63333333333333,
+            "gain_db_relative_to_music_stem": 0.9846915451463674,
+            "correlation": 0.9997965302917482
+          },
+          {
+            "start_seconds": 48.733333333333334,
+            "gain_db_relative_to_music_stem": 0.976562108612103,
+            "correlation": 0.9996761623963387
+          },
+          {
+            "start_seconds": 48.833333333333336,
+            "gain_db_relative_to_music_stem": 0.9777306454212198,
+            "correlation": 0.9997967352775268
+          },
+          {
+            "start_seconds": 48.93333333333333,
+            "gain_db_relative_to_music_stem": 0.9888595688124309,
+            "correlation": 0.9998549170513805
+          },
+          {
+            "start_seconds": 49.03333333333333,
+            "gain_db_relative_to_music_stem": 0.976495020630676,
+            "correlation": 0.9998508296327642
+          },
+          {
+            "start_seconds": 49.13333333333333,
+            "gain_db_relative_to_music_stem": 0.9819081656335531,
+            "correlation": 0.9998415192338688
+          },
+          {
+            "start_seconds": 49.233333333333334,
+            "gain_db_relative_to_music_stem": 0.9774084282593586,
+            "correlation": 0.9997845504140143
+          },
+          {
+            "start_seconds": 49.333333333333336,
+            "gain_db_relative_to_music_stem": 0.9892890643039192,
+            "correlation": 0.9999517757583439
+          }
+        ],
+        "median_music_gain_db": 0.9865969464998063,
+        "music_gain_range_db": 0.0173579390718126,
+        "steady_music_gain_pass": true
+      },
+      {
+        "scene": "SQP-06",
+        "cut_seconds": 64.5,
+        "window_seconds": [
+          63.5,
+          65.5
+        ],
+        "zero_holes": [],
+        "window_has_all_samples": true,
+        "music_only_gain_blocks": [
+          {
+            "start_seconds": 63.5,
+            "gain_db_relative_to_music_stem": 1.0004561876684566,
+            "correlation": 0.9999530040916327
+          },
+          {
+            "start_seconds": 63.6,
+            "gain_db_relative_to_music_stem": 0.9781415615455631,
+            "correlation": 0.9999005113717737
+          },
+          {
+            "start_seconds": 63.7,
+            "gain_db_relative_to_music_stem": 0.9851830231874759,
+            "correlation": 0.9999027805419054
+          },
+          {
+            "start_seconds": 63.8,
+            "gain_db_relative_to_music_stem": 0.9934821542829917,
+            "correlation": 0.9999196844655807
+          },
+          {
+            "start_seconds": 63.9,
+            "gain_db_relative_to_music_stem": 0.9783171148239023,
+            "correlation": 0.9995731537496672
+          },
+          {
+            "start_seconds": 64.0,
+            "gain_db_relative_to_music_stem": 0.9706089855300524,
+            "correlation": 0.9998776449410529
+          },
+          {
+            "start_seconds": 64.1,
+            "gain_db_relative_to_music_stem": 0.9719409177245593,
+            "correlation": 0.9998922327700484
+          },
+          {
+            "start_seconds": 64.2,
+            "gain_db_relative_to_music_stem": 0.986839143009811,
+            "correlation": 0.9999122797858433
+          },
+          {
+            "start_seconds": 64.3,
+            "gain_db_relative_to_music_stem": 0.9741548230706483,
+            "correlation": 0.9999201402393872
+          },
+          {
+            "start_seconds": 64.4,
+            "gain_db_relative_to_music_stem": 0.9834058242544942,
+            "correlation": 0.9999371239292503
+          },
+          {
+            "start_seconds": 64.5,
+            "gain_db_relative_to_music_stem": 0.9882168749868038,
+            "correlation": 0.9998278850549316
+          },
+          {
+            "start_seconds": 64.6,
+            "gain_db_relative_to_music_stem": 0.9820889655472727,
+            "correlation": 0.9999373878389924
+          },
+          {
+            "start_seconds": 64.7,
+            "gain_db_relative_to_music_stem": 0.9795466367685363,
+            "correlation": 0.9999292294912187
+          },
+          {
+            "start_seconds": 64.8,
+            "gain_db_relative_to_music_stem": 0.9704907570328609,
+            "correlation": 0.999830833211747
+          },
+          {
+            "start_seconds": 64.9,
+            "gain_db_relative_to_music_stem": 0.978528469910847,
+            "correlation": 0.9998999016075272
+          },
+          {
+            "start_seconds": 65.0,
+            "gain_db_relative_to_music_stem": 0.9794050289999402,
+            "correlation": 0.9999079050391553
+          },
+          {
+            "start_seconds": 65.1,
+            "gain_db_relative_to_music_stem": 0.9844246012088815,
+            "correlation": 0.9999210669585212
+          },
+          {
+            "start_seconds": 65.2,
+            "gain_db_relative_to_music_stem": 0.9882165943915028,
+            "correlation": 0.9999435589515706
+          },
+          {
+            "start_seconds": 65.3,
+            "gain_db_relative_to_music_stem": 0.9785058398222461,
+            "correlation": 0.9999263941355366
+          }
+        ],
+        "median_music_gain_db": 0.9795466367685363,
+        "music_gain_range_db": 0.029965430635595647,
+        "steady_music_gain_pass": true
+      },
+      {
+        "scene": "SQP-07",
+        "cut_seconds": 79.56666666666666,
+        "window_seconds": [
+          78.56666666666666,
+          80.56666666666666
+        ],
+        "zero_holes": [],
+        "window_has_all_samples": true,
+        "music_only_gain_blocks": [
+          {
+            "start_seconds": 78.56666666666666,
+            "gain_db_relative_to_music_stem": 0.976483360294772,
+            "correlation": 0.9998431028315402
+          },
+          {
+            "start_seconds": 78.66666666666667,
+            "gain_db_relative_to_music_stem": 0.9694864142488103,
+            "correlation": 0.9998630593106608
+          },
+          {
+            "start_seconds": 78.76666666666667,
+            "gain_db_relative_to_music_stem": 0.9641353346767035,
+            "correlation": 0.999702953438426
+          },
+          {
+            "start_seconds": 78.86666666666666,
+            "gain_db_relative_to_music_stem": 0.9723358946548427,
+            "correlation": 0.9998191951468944
+          },
+          {
+            "start_seconds": 78.96666666666667,
+            "gain_db_relative_to_music_stem": 0.979479826722528,
+            "correlation": 0.9998349188202676
+          },
+          {
+            "start_seconds": 79.06666666666666,
+            "gain_db_relative_to_music_stem": 0.9711039767438167,
+            "correlation": 0.9997143675733233
+          },
+          {
+            "start_seconds": 79.16666666666667,
+            "gain_db_relative_to_music_stem": 0.966358707943078,
+            "correlation": 0.9997890282489055
+          },
+          {
+            "start_seconds": 79.26666666666667,
+            "gain_db_relative_to_music_stem": 0.9891239735483016,
+            "correlation": 0.9997539335930873
+          },
+          {
+            "start_seconds": 79.36666666666666,
+            "gain_db_relative_to_music_stem": 0.9775688874979054,
+            "correlation": 0.999869455580794
+          },
+          {
+            "start_seconds": 79.46666666666667,
+            "gain_db_relative_to_music_stem": 0.9967261596464858,
+            "correlation": 0.9999368082812822
+          },
+          {
+            "start_seconds": 79.56666666666666,
+            "gain_db_relative_to_music_stem": 0.9875803354584178,
+            "correlation": 0.9999423183795201
+          },
+          {
+            "start_seconds": 79.66666666666667,
+            "gain_db_relative_to_music_stem": 1.0007677488236835,
+            "correlation": 0.9999616890444776
+          },
+          {
+            "start_seconds": 79.76666666666667,
+            "gain_db_relative_to_music_stem": 0.9845866445004675,
+            "correlation": 0.9999583931606237
+          },
+          {
+            "start_seconds": 79.86666666666666,
+            "gain_db_relative_to_music_stem": 0.9860407625191975,
+            "correlation": 0.9999527045782044
+          },
+          {
+            "start_seconds": 79.96666666666667,
+            "gain_db_relative_to_music_stem": 0.9912064928083486,
+            "correlation": 0.9996132179924881
+          },
+          {
+            "start_seconds": 80.06666666666666,
+            "gain_db_relative_to_music_stem": 0.9897771436543611,
+            "correlation": 0.9998912227090351
+          },
+          {
+            "start_seconds": 80.16666666666667,
+            "gain_db_relative_to_music_stem": 0.9926623047190433,
+            "correlation": 0.9998763284433826
+          },
+          {
+            "start_seconds": 80.26666666666667,
+            "gain_db_relative_to_music_stem": 0.813118159516157,
+            "correlation": 0.9939563711995063
+          }
+        ],
+        "median_music_gain_db": 0.9820332356114978,
+        "music_gain_range_db": 0.1876495893075265,
+        "steady_music_gain_pass": true
+      },
+      {
+        "scene": "SQP-08",
+        "cut_seconds": 94.8,
+        "window_seconds": [
+          93.8,
+          95.8
+        ],
+        "zero_holes": [],
+        "window_has_all_samples": true,
+        "music_only_gain_blocks": [
+          {
+            "start_seconds": 93.8,
+            "gain_db_relative_to_music_stem": 0.9892001292677621,
+            "correlation": 0.9999634166508968
+          },
+          {
+            "start_seconds": 93.9,
+            "gain_db_relative_to_music_stem": 1.001063325527929,
+            "correlation": 0.9999521992731025
+          },
+          {
+            "start_seconds": 94.0,
+            "gain_db_relative_to_music_stem": 0.9863109437833331,
+            "correlation": 0.9999387769808331
+          },
+          {
+            "start_seconds": 94.1,
+            "gain_db_relative_to_music_stem": 0.9848116439417316,
+            "correlation": 0.9999442243634507
+          },
+          {
+            "start_seconds": 94.2,
+            "gain_db_relative_to_music_stem": 0.9825918216044385,
+            "correlation": 0.9999280432407993
+          },
+          {
+            "start_seconds": 94.3,
+            "gain_db_relative_to_music_stem": 0.9818428633994307,
+            "correlation": 0.9999301158595085
+          },
+          {
+            "start_seconds": 94.4,
+            "gain_db_relative_to_music_stem": 0.9725552937048838,
+            "correlation": 0.9999059544915248
+          },
+          {
+            "start_seconds": 94.5,
+            "gain_db_relative_to_music_stem": 0.9822423428709874,
+            "correlation": 0.9998786889865607
+          },
+          {
+            "start_seconds": 94.6,
+            "gain_db_relative_to_music_stem": 0.9849579854265536,
+            "correlation": 0.9998499197898195
+          },
+          {
+            "start_seconds": 94.7,
+            "gain_db_relative_to_music_stem": 0.9503882411020816,
+            "correlation": 0.999191040040463
+          },
+          {
+            "start_seconds": 94.8,
+            "gain_db_relative_to_music_stem": 0.9921209410620156,
+            "correlation": 0.9995018606248337
+          },
+          {
+            "start_seconds": 94.9,
+            "gain_db_relative_to_music_stem": 0.9491081899666682,
+            "correlation": 0.9996471168228207
+          },
+          {
+            "start_seconds": 95.0,
+            "gain_db_relative_to_music_stem": 0.9466507525683532,
+            "correlation": 0.9992287906000934
+          },
+          {
+            "start_seconds": 95.1,
+            "gain_db_relative_to_music_stem": 0.9772950396204384,
+            "correlation": 0.9998966763933076
+          },
+          {
+            "start_seconds": 95.2,
+            "gain_db_relative_to_music_stem": 0.9906179413845934,
+            "correlation": 0.9999744326225964
+          },
+          {
+            "start_seconds": 95.3,
+            "gain_db_relative_to_music_stem": 0.9901464254897984,
+            "correlation": 0.9999683517190111
+          },
+          {
+            "start_seconds": 95.4,
+            "gain_db_relative_to_music_stem": 0.993528487530218,
+            "correlation": 0.9999768467121661
+          },
+          {
+            "start_seconds": 95.5,
+            "gain_db_relative_to_music_stem": 0.9859441350699192,
+            "correlation": 0.9999412030994104
+          },
+          {
+            "start_seconds": 95.6,
+            "gain_db_relative_to_music_stem": 0.9821199152622109,
+            "correlation": 0.9999282212788075
+          }
+        ],
+        "median_music_gain_db": 0.9848116439417316,
+        "music_gain_range_db": 0.05441257295957591,
+        "steady_music_gain_pass": true
+      },
+      {
+        "scene": "SQP-09",
+        "cut_seconds": 110.3,
+        "window_seconds": [
+          109.3,
+          111.3
+        ],
+        "zero_holes": [],
+        "window_has_all_samples": true,
+        "music_only_gain_blocks": [
+          {
+            "start_seconds": 109.3,
+            "gain_db_relative_to_music_stem": 0.9751072927022381,
+            "correlation": 0.9999462919090729
+          },
+          {
+            "start_seconds": 109.4,
+            "gain_db_relative_to_music_stem": 0.9878787454948121,
+            "correlation": 0.9999608672504144
+          },
+          {
+            "start_seconds": 109.5,
+            "gain_db_relative_to_music_stem": 0.9739268662305899,
+            "correlation": 0.9999414300115257
+          },
+          {
+            "start_seconds": 109.6,
+            "gain_db_relative_to_music_stem": 0.9717845761897004,
+            "correlation": 0.999953025414612
+          },
+          {
+            "start_seconds": 109.7,
+            "gain_db_relative_to_music_stem": 0.9905397462494959,
+            "correlation": 0.999967181026669
+          },
+          {
+            "start_seconds": 109.8,
+            "gain_db_relative_to_music_stem": 0.9871716255544776,
+            "correlation": 0.999963984528513
+          },
+          {
+            "start_seconds": 109.9,
+            "gain_db_relative_to_music_stem": 0.9816870080672656,
+            "correlation": 0.9999677754243566
+          },
+          {
+            "start_seconds": 110.0,
+            "gain_db_relative_to_music_stem": 0.9814955086996882,
+            "correlation": 0.9999686133172744
+          },
+          {
+            "start_seconds": 110.1,
+            "gain_db_relative_to_music_stem": 0.9897498651807741,
+            "correlation": 0.999966293570414
+          },
+          {
+            "start_seconds": 110.2,
+            "gain_db_relative_to_music_stem": 0.993029057609016,
+            "correlation": 0.9999597181751668
+          },
+          {
+            "start_seconds": 110.3,
+            "gain_db_relative_to_music_stem": 0.9887839730425205,
+            "correlation": 0.9999724649132158
+          },
+          {
+            "start_seconds": 110.4,
+            "gain_db_relative_to_music_stem": 0.9882697453104432,
+            "correlation": 0.9999679778366736
+          },
+          {
+            "start_seconds": 110.5,
+            "gain_db_relative_to_music_stem": 0.9906519002536512,
+            "correlation": 0.9999611420155625
+          },
+          {
+            "start_seconds": 110.6,
+            "gain_db_relative_to_music_stem": 0.9887138840359939,
+            "correlation": 0.9999714229513813
+          },
+          {
+            "start_seconds": 110.7,
+            "gain_db_relative_to_music_stem": 0.9895549696343643,
+            "correlation": 0.9999752755928412
+          },
+          {
+            "start_seconds": 110.8,
+            "gain_db_relative_to_music_stem": 0.9923494791173175,
+            "correlation": 0.9999653319002463
+          },
+          {
+            "start_seconds": 110.9,
+            "gain_db_relative_to_music_stem": 0.9904886400100701,
+            "correlation": 0.9999676477061037
+          },
+          {
+            "start_seconds": 111.0,
+            "gain_db_relative_to_music_stem": 0.9883313090239094,
+            "correlation": 0.9999793296223993
+          }
+        ],
+        "median_music_gain_db": 0.9885225965299517,
+        "music_gain_range_db": 0.021244481419315675,
+        "steady_music_gain_pass": true
+      },
+      {
+        "scene": "SQP-10",
+        "cut_seconds": 121.9,
+        "window_seconds": [
+          120.9,
+          122.9
+        ],
+        "zero_holes": [],
+        "window_has_all_samples": true,
+        "music_only_gain_blocks": [
+          {
+            "start_seconds": 120.9,
+            "gain_db_relative_to_music_stem": 0.9512538598939667,
+            "correlation": 0.9991600832650036
+          },
+          {
+            "start_seconds": 121.0,
+            "gain_db_relative_to_music_stem": 0.9381455784232485,
+            "correlation": 0.9979782467013731
+          },
+          {
+            "start_seconds": 121.1,
+            "gain_db_relative_to_music_stem": 0.9717617665067081,
+            "correlation": 0.9993248842172
+          },
+          {
+            "start_seconds": 121.2,
+            "gain_db_relative_to_music_stem": 0.959312177128625,
+            "correlation": 0.9993784787457198
+          },
+          {
+            "start_seconds": 121.3,
+            "gain_db_relative_to_music_stem": 0.9846372631387147,
+            "correlation": 0.9988674453229582
+          },
+          {
+            "start_seconds": 121.4,
+            "gain_db_relative_to_music_stem": 0.9564442234309731,
+            "correlation": 0.9985917287956799
+          },
+          {
+            "start_seconds": 121.5,
+            "gain_db_relative_to_music_stem": 0.9266672914885659,
+            "correlation": 0.9982205491764118
+          },
+          {
+            "start_seconds": 121.6,
+            "gain_db_relative_to_music_stem": 0.9584076699762062,
+            "correlation": 0.9992236429931719
+          },
+          {
+            "start_seconds": 121.7,
+            "gain_db_relative_to_music_stem": 0.9425679084415327,
+            "correlation": 0.9988227710550782
+          },
+          {
+            "start_seconds": 121.8,
+            "gain_db_relative_to_music_stem": 0.985799027193806,
+            "correlation": 0.9997404177611482
+          },
+          {
+            "start_seconds": 121.9,
+            "gain_db_relative_to_music_stem": 0.9837625644432629,
+            "correlation": 0.9997744966653785
+          },
+          {
+            "start_seconds": 122.0,
+            "gain_db_relative_to_music_stem": 0.904870137695697,
+            "correlation": 0.9986838247561592
+          },
+          {
+            "start_seconds": 122.1,
+            "gain_db_relative_to_music_stem": 0.9652611877601935,
+            "correlation": 0.999810660048545
+          },
+          {
+            "start_seconds": 122.2,
+            "gain_db_relative_to_music_stem": 0.9895893300650154,
+            "correlation": 0.9999649607641342
+          },
+          {
+            "start_seconds": 122.3,
+            "gain_db_relative_to_music_stem": 0.9519314960484343,
+            "correlation": 0.9995049499211925
+          },
+          {
+            "start_seconds": 122.4,
+            "gain_db_relative_to_music_stem": 0.9789884330008121,
+            "correlation": 0.9998181896500469
+          },
+          {
+            "start_seconds": 122.5,
+            "gain_db_relative_to_music_stem": 0.9791512705374893,
+            "correlation": 0.9999007410587853
+          },
+          {
+            "start_seconds": 122.6,
+            "gain_db_relative_to_music_stem": 0.938272329979805,
+            "correlation": 0.9986827979724202
+          },
+          {
+            "start_seconds": 122.7,
+            "gain_db_relative_to_music_stem": 0.9609577189647928,
+            "correlation": 0.9996469579789331
+          }
+        ],
+        "median_music_gain_db": 0.959312177128625,
+        "music_gain_range_db": 0.08471919236931835,
+        "steady_music_gain_pass": true
+      }
+    ]
+  },
+  "source_bindings": {
+    "timeline_path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\build\\timeline.json",
+    "timeline_sha256": "edf060db618ae1e03ba79fec5bc4e7f143e344c97339d25201dd04236b0aa560",
+    "policy_path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\build\\audio-mix-policy.json",
+    "policy_sha256": "aa1d6cb52ee2bde95c09670b5129c173380e9dc9ea6bbf99a843071a8da838b4",
+    "lossless_stems": [
+      {
+        "name": "mix",
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\build\\intermediate\\continuous-mix.wav",
+        "sha256": "7c857bddc3697491846407e3e19b62d3679db8458a2504b48d3333a61fa20b2e"
+      },
+      {
+        "name": "music",
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\build\\intermediate\\continuous-music.wav",
+        "sha256": "8f6deeb0d52a1c06ba5ef42cf7bdde0c0cee6e1f1b31f4f6e33efb02f2ed513a"
+      },
+      {
+        "name": "voice",
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\build\\intermediate\\continuous-voice.wav",
+        "sha256": "db0bfe01d509fda42f9c807df5af5f746112fbe1fbcf29d3109ce1bd699b3e9b"
+      }
+    ]
+  },
+  "thresholds": {
+    "timestamp_tolerance_samples": 2,
+    "zero_hole_minimum_seconds": 0.04,
+    "zero_sample_absolute_limit": 1e-07,
+    "fidelity_minimum_correlation": 0.98,
+    "fidelity_minimum_signal_to_error_db": 18,
+    "music_gain_median_tolerance_db": 0.25,
+    "music_gain_block_tolerance_db": 0.5
+  },
+  "scope": "Machine measurements on actual movie bytes, packet times, decoded samples and lossless stems; natural source-music dynamics remain in the reference.",
+  "human_full_playback": "not-recorded",
+  "manual_signoff_granted": false
+}

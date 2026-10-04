@@ -11,3 +11,6 @@
 原生run永久保留于 `C:\ck3-superman-qiang-promo-20261004\render-A0004\native-run\run-manifest.json`；914份过程文件的199,466,886字节ZIP已经保全进该run，原始目录仍在。原生验证PASS，146个artifact、零signoff。独立服务器字节回读与人工1×全片观看/听审签核未执行；本次是私有文件交付，没有发布到视频平台。
 
 首版与全部旧原图、31条字幕、旧run、失败plan、原ZIP/WAV、TTS请求和时间标记继续保留。A0003只读plan发现新原图路径漏入绑定清单，原run未改写、没有建build；修正准备脚本后新建A0004，正式原生plan/build成功。当前影片来自A0004，source commit为 `c9e8331d7f20fb9c87e9b5908b0a24079b93c8ba`，正式工具链版本0.2.1及wheel SHA见框架记录。
+
+
+2026-10-04 补充：用户指出转场音乐卡顿后，新增 packet/sample 检查发现本版实际音轨缺少8.833秒声音。上述18项通过不覆盖声音连续性；原始报告继续保留。修复与新增验收见[音频修复版](../audio-delivery-20261004/README.md)。

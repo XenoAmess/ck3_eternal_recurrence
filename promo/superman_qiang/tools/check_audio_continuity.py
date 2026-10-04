@@ -109,7 +109,7 @@ def check_audio_continuity(movie: Path, attempt: Path, output: Path) -> dict[str
     policy = json.loads(policy_path.read_bytes()) if policy_path.is_file() else {}
     master_gain_db = float(policy.get("master_gain_db", 1.0))
     master_gain = 10 ** (master_gain_db / 20)
-    reference = Path(policy.get("reference_video_path", str(DEFAULT_REFERENCE))).resolve()
+    reference = Path(policy.get("reference_video_path") or str(DEFAULT_REFERENCE)).resolve()
     checks: dict[str, bool] = {}
     diagnostics: dict[str, Any] = {}
     probe = json.loads(command("audio-packet-probe", [

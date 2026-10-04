@@ -1,0 +1,224 @@
+{
+  "kind": "independent-aac-gap-diagnosis",
+  "scope": "Actual packet time holes are measured against AAC frame sample count, not container-packet duration which can include holes. No human audition or signoff.",
+  "sample_rate": 48000,
+  "aac_samples_per_frame": 1024,
+  "normal_frame_seconds": 0.021333333333333333,
+  "timeline_seconds": 138.66666666666666,
+  "streams": {
+    "joined": {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0004\\build\\intermediate\\joined-narration.mp4",
+      "sha256": "d168fd5f796e9fe917d15039c322398c9429e4613b615e78673a05ae71e9d698",
+      "packet_count": 6086,
+      "decoded_samples": 6232000,
+      "decoded_pcm_seconds": 129.83333333333334,
+      "nominal_missing_pcm_seconds": 8.833333333333314,
+      "gap_count": 9,
+      "sum_excess_packet_intervals_seconds": 7.937332999999988,
+      "gaps": [
+        {
+          "index": 510,
+          "pts_before": 10.88,
+          "pts_next": 12.266667,
+          "interval_seconds": 1.3866669999999992,
+          "excess_vs_1024_samples_seconds": 1.3653336666666658,
+          "packet_reported_duration": "1.386667",
+          "nearest_scene_cut": 12.266666666666667,
+          "gap_end_vs_cut_seconds": 3.3333333249174757e-07
+        },
+        {
+          "index": 1054,
+          "pts_before": 23.850667,
+          "pts_next": 24.733333,
+          "interval_seconds": 0.8826659999999968,
+          "excess_vs_1024_samples_seconds": 0.8613326666666635,
+          "packet_reported_duration": "0.882667",
+          "nearest_scene_cut": 24.733333333333334,
+          "gap_end_vs_cut_seconds": -3.3333333604446125e-07
+        },
+        {
+          "index": 1625,
+          "pts_before": 36.893333,
+          "pts_next": 37.7,
+          "interval_seconds": 0.8066670000000045,
+          "excess_vs_1024_samples_seconds": 0.7853336666666711,
+          "packet_reported_duration": "0.806667",
+          "nearest_scene_cut": 37.7,
+          "gap_end_vs_cut_seconds": 0.0
+        },
+        {
+          "index": 2096,
+          "pts_before": 47.726667,
+          "pts_next": 48.433333,
+          "interval_seconds": 0.7066659999999985,
+          "excess_vs_1024_samples_seconds": 0.6853326666666651,
+          "packet_reported_duration": "0.706667",
+          "nearest_scene_cut": 48.43333333333334,
+          "gap_end_vs_cut_seconds": -3.3333333959717493e-07
+        },
+        {
+          "index": 2803,
+          "pts_before": 63.494667,
+          "pts_next": 64.5,
+          "interval_seconds": 1.0053330000000003,
+          "excess_vs_1024_samples_seconds": 0.9839996666666669,
+          "packet_reported_duration": "1.005333",
+          "nearest_scene_cut": 64.5,
+          "gap_end_vs_cut_seconds": 0.0
+        },
+        {
+          "index": 3468,
+          "pts_before": 78.665333,
+          "pts_next": 79.566667,
+          "interval_seconds": 0.9013339999999914,
+          "excess_vs_1024_samples_seconds": 0.8800006666666581,
+          "packet_reported_duration": "0.901333",
+          "nearest_scene_cut": 79.56666666666666,
+          "gap_end_vs_cut_seconds": 3.3333333249174757e-07
+        },
+        {
+          "index": 4145,
+          "pts_before": 93.988,
+          "pts_next": 94.8,
+          "interval_seconds": 0.8119999999999976,
+          "excess_vs_1024_samples_seconds": 0.7906666666666643,
+          "packet_reported_duration": "0.812000",
+          "nearest_scene_cut": 94.8,
+          "gap_end_vs_cut_seconds": 0.0
+        },
+        {
+          "index": 4832,
+          "pts_before": 109.434667,
+          "pts_next": 110.3,
+          "interval_seconds": 0.8653329999999926,
+          "excess_vs_1024_samples_seconds": 0.8439996666666593,
+          "packet_reported_duration": "0.865333",
+          "nearest_scene_cut": 110.3,
+          "gap_end_vs_cut_seconds": 0.0
+        },
+        {
+          "index": 5341,
+          "pts_before": 121.137333,
+          "pts_next": 121.9,
+          "interval_seconds": 0.7626670000000075,
+          "excess_vs_1024_samples_seconds": 0.7413336666666742,
+          "packet_reported_duration": "0.762667",
+          "nearest_scene_cut": 121.89999999999999,
+          "gap_end_vs_cut_seconds": 1.4210854715202004e-14
+        }
+      ]
+    },
+    "final": {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0004\\build\\deliverables\\superman-qiang-player-trailer.mp4",
+      "sha256": "2d880ce2df313d2c9cdc343208e5d21aea16963654696718c8ca4e9055eeaf82",
+      "packet_count": 6087,
+      "decoded_samples": 6232000,
+      "decoded_pcm_seconds": 129.83333333333334,
+      "nominal_missing_pcm_seconds": 8.833333333333314,
+      "gap_count": 10,
+      "sum_excess_packet_intervals_seconds": 8.003998666666657,
+      "gaps": [
+        {
+          "index": 516,
+          "pts_before": 10.986667,
+          "pts_next": 12.373333,
+          "interval_seconds": 1.386666,
+          "excess_vs_1024_samples_seconds": 1.3653326666666665,
+          "packet_reported_duration": "1.386667",
+          "nearest_scene_cut": 12.266666666666667,
+          "gap_end_vs_cut_seconds": 0.10666633333333309
+        },
+        {
+          "index": 1060,
+          "pts_before": 23.957333,
+          "pts_next": 24.84,
+          "interval_seconds": 0.8826670000000014,
+          "excess_vs_1024_samples_seconds": 0.8613336666666681,
+          "packet_reported_duration": "0.882667",
+          "nearest_scene_cut": 24.733333333333334,
+          "gap_end_vs_cut_seconds": 0.10666666666666558
+        },
+        {
+          "index": 1627,
+          "pts_before": 36.914667,
+          "pts_next": 37.721333,
+          "interval_seconds": 0.8066659999999999,
+          "excess_vs_1024_samples_seconds": 0.7853326666666666,
+          "packet_reported_duration": "0.806667",
+          "nearest_scene_cut": 37.7,
+          "gap_end_vs_cut_seconds": 0.021332999999998492
+        },
+        {
+          "index": 2100,
+          "pts_before": 47.790667,
+          "pts_next": 48.497333,
+          "interval_seconds": 0.7066659999999985,
+          "excess_vs_1024_samples_seconds": 0.6853326666666651,
+          "packet_reported_duration": "0.706667",
+          "nearest_scene_cut": 48.43333333333334,
+          "gap_end_vs_cut_seconds": 0.06399966666666046
+        },
+        {
+          "index": 2808,
+          "pts_before": 63.58,
+          "pts_next": 64.585333,
+          "interval_seconds": 1.0053330000000074,
+          "excess_vs_1024_samples_seconds": 0.983999666666674,
+          "packet_reported_duration": "1.005333",
+          "nearest_scene_cut": 64.5,
+          "gap_end_vs_cut_seconds": 0.08533300000000565
+        },
+        {
+          "index": 3474,
+          "pts_before": 78.772,
+          "pts_next": 79.673333,
+          "interval_seconds": 0.901332999999994,
+          "excess_vs_1024_samples_seconds": 0.8799996666666606,
+          "packet_reported_duration": "0.901333",
+          "nearest_scene_cut": 79.56666666666666,
+          "gap_end_vs_cut_seconds": 0.10666633333333664
+        },
+        {
+          "index": 4149,
+          "pts_before": 94.052,
+          "pts_next": 94.864,
+          "interval_seconds": 0.8119999999999976,
+          "excess_vs_1024_samples_seconds": 0.7906666666666643,
+          "packet_reported_duration": "0.812000",
+          "nearest_scene_cut": 94.8,
+          "gap_end_vs_cut_seconds": 0.06400000000000716
+        },
+        {
+          "index": 4838,
+          "pts_before": 109.541333,
+          "pts_next": 110.406667,
+          "interval_seconds": 0.8653340000000043,
+          "excess_vs_1024_samples_seconds": 0.844000666666671,
+          "packet_reported_duration": "0.865333",
+          "nearest_scene_cut": 110.3,
+          "gap_end_vs_cut_seconds": 0.10666700000000162
+        },
+        {
+          "index": 5344,
+          "pts_before": 121.18,
+          "pts_next": 121.942667,
+          "interval_seconds": 0.7626669999999933,
+          "excess_vs_1024_samples_seconds": 0.74133366666666,
+          "packet_reported_duration": "0.762667",
+          "nearest_scene_cut": 121.89999999999999,
+          "gap_end_vs_cut_seconds": 0.04266700000000867
+        },
+        {
+          "index": 5950,
+          "pts_before": 134.849333,
+          "pts_next": 134.937333,
+          "interval_seconds": 0.08799999999999386,
+          "excess_vs_1024_samples_seconds": 0.06666666666666053,
+          "packet_reported_duration": "0.088000",
+          "nearest_scene_cut": 121.89999999999999,
+          "gap_end_vs_cut_seconds": 13.037333000000004
+        }
+      ]
+    }
+  }
+}

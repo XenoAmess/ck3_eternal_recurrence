@@ -1,0 +1,15 @@
+{
+  "format_version": 1,
+  "kind": "superman_qiang_continuous_audio_policy",
+  "sample_rate": 48000,
+  "sample_count": 6656000,
+  "music_gain": 0.18,
+  "master_gain_db": 1.0,
+  "voice_sidechain_ducking": false,
+  "final_dynamic_loudnorm": false,
+  "segmented_aac_used_for_final_audio": false,
+  "reference_video_path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0004\\build\\deliverables\\superman-qiang-player-trailer.mp4",
+  "reference_video_sha256": "2d880ce2df313d2c9cdc343208e5d21aea16963654696718c8ca4e9055eeaf82",
+  "loudness_design_probe": "audio-mix-design-A0001: -17.47 LUFS / -3.44 dBTP before fixed +1dB",
+  "review_state": "pending-human-review"
+}

@@ -1,0 +1,79 @@
+{
+  "old_stream": [
+    {
+      "time_base": "1/15360",
+      "start_time": "0.021354",
+      "duration": "138.666667"
+    }
+  ],
+  "new_stream": [
+    {
+      "time_base": "1/15360",
+      "start_time": "0.000000",
+      "duration": "138.666667"
+    }
+  ],
+  "old_count": 4160,
+  "new_count": 4160,
+  "differences_new_minus_old": {
+    "pts": [
+      -328
+    ],
+    "dts": [
+      -328
+    ],
+    "duration": [
+      0
+    ],
+    "size": [
+      0
+    ]
+  },
+  "same_flags": true,
+  "old_first": [
+    {
+      "pts": 328,
+      "dts": -696,
+      "duration": 512,
+      "size": "1161",
+      "flags": "K__"
+    },
+    {
+      "pts": 840,
+      "dts": -184,
+      "duration": 512,
+      "size": "95206",
+      "flags": "___"
+    },
+    {
+      "pts": 2376,
+      "dts": 328,
+      "duration": 512,
+      "size": "168088",
+      "flags": "___"
+    }
+  ],
+  "new_first": [
+    {
+      "pts": 0,
+      "dts": -1024,
+      "duration": 512,
+      "size": "1161",
+      "flags": "K__"
+    },
+    {
+      "pts": 512,
+      "dts": -512,
+      "duration": 512,
+      "size": "95206",
+      "flags": "___"
+    },
+    {
+      "pts": 2048,
+      "dts": 0,
+      "duration": 512,
+      "size": "168088",
+      "flags": "___"
+    }
+  ]
+}

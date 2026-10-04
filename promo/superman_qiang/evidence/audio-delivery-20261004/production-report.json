@@ -1,0 +1,146 @@
+{
+  "format_version": 1,
+  "kind": "superman_qiang_continuous_audio_delivery",
+  "created_at_utc": "2026-10-04T11:08:25.953816+00:00",
+  "result": "DELIVERED_AND_MACHINE_CHECKED",
+  "movie_path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\超人强_越超人越强_宣传片_音频修复版_20261004_1cd9049a.mp4",
+  "movie_sha256": "1cd9049a95451a5bc8dde181416021970c145fe68e4b64c599e6b9d6620f52c9",
+  "movie_bytes": 31740736,
+  "duration_seconds": 138.666667,
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "native_run_manifest": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\native-run\\run-manifest.json",
+  "render_source_commit": "8a5c8a461760a140b7f0cc2142a9fd328b61a217",
+  "delivery_before_quality_check": true,
+  "client_sync_confirmed": true,
+  "remote_independent_readback_performed": false,
+  "unrequested_files_downloaded": false,
+  "machine_media_check_count": 30,
+  "machine_audio_check_count": 12,
+  "audio_packet_gaps": 0,
+  "decoded_samples": 6656000,
+  "planned_samples": 6656000,
+  "maximum_cut_music_gain_range_db": 0.1876495893075265,
+  "mix_fidelity": {
+    "compared_samples": 6656000,
+    "master_gain_db": 1.0,
+    "correlation": 0.9999420633710757,
+    "signal_to_error_db": 39.333677145347956,
+    "fitted_gain_db_relative_to_expected": -0.008340765205004602,
+    "stem_sum_peak_error": 2.9802322387695312e-08
+  },
+  "encoded_loudness_lufs": "-16.48",
+  "encoded_true_peak_dbfs": "-2.45",
+  "actual_visual_frames_match_previous_content": 28,
+  "video_packet_count": 4160,
+  "uniform_video_container_origin_shift_seconds": -0.021354166666666667,
+  "visual_scope": "Exact H264 elementary bytes, all packet intervals/sizes/flags, and 28 PNG frames at equivalent media-relative times match A4. Original +328/15360s container offset is rebased to zero.",
+  "initial_visual_comparison": "audio-final-frames-A0001 FAIL because it assumed identical absolute container origins. Preserved; follow-up measures the exact uniform clock shift and compares equivalent media-relative frames without tolerances.",
+  "root_contact_sheet_inspected": true,
+  "actual_qr": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990",
+  "review_state": "pending-human-review",
+  "human_full_1x_playback_signoff": false,
+  "prior_movie_retained": true,
+  "retention": {
+    "created_at_utc": "2026-10-04T11:07:04.391460+00:00",
+    "attempt": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005",
+    "archive": "C:\\ck3-superman-qiang-promo-20261004\\render-retention-A0005\\process-materials.zip",
+    "archive_sha256": "7dcbb70f95c2e7badd3c74ad6e864fcc6be43ce8d4d8321617aef370b5a355dd",
+    "archive_bytes": 1169783806,
+    "process_file_count": 1074,
+    "native_manifest": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\native-run\\run-manifest.json",
+    "native_manifest_sha256": "c8fee32575b2b7c5ca70364dbb83104827d9b7ddc51f3b6738610880285ce2e2",
+    "native_artifact_count": 160,
+    "signoff_count": 0,
+    "validation_passed": true,
+    "original_materials_retained": true
+  },
+  "evidence": [
+    {
+      "path": "delivery-confirmed.json",
+      "source_path": "C:\\ck3-superman-qiang-promo-20261004\\onedrive-delivery-A0005\\delivery-receipt.json",
+      "bytes": 1906,
+      "sha256": "d53d7d3915b9fe97d83c33c4108af38282c94c3bfd20615f9f1d82cddd68244b"
+    },
+    {
+      "path": "encoded-media-check.json",
+      "source_path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\native-run\\postflight\\encoded-media-check.json",
+      "bytes": 4183,
+      "sha256": "40ba216d6a3a376d44a20895742da24d510c9b4da54773cb79635782dc34d875"
+    },
+    {
+      "path": "audio-continuity-check.json",
+      "source_path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\native-run\\postflight\\audio-continuity\\audio-continuity-check.json",
+      "bytes": 38787,
+      "sha256": "30ddc5b3b39ca099d39d4d2301d458c98645cb75cacaee5938c91292e3220c5d"
+    },
+    {
+      "path": "visual-identity-check.json",
+      "source_path": "C:\\ck3-superman-qiang-promo-20261004\\audio-final-frames-A0002\\visual-identity-check.json",
+      "bytes": 14615,
+      "sha256": "bde825cd7b1444d045db986c9ba0668ed6ec09f7e91a6a55898ede883ece8f4e"
+    },
+    {
+      "path": "video-clock-diagnosis.json",
+      "source_path": "C:\\ck3-superman-qiang-promo-20261004\\audio-video-clock-diagnosis-A0001\\diagnosis.json",
+      "bytes": 1302,
+      "sha256": "b59ab223d84a6ee3f153b051f4e749182e9d164039a78d8fdfbe129b4f70bbc1"
+    },
+    {
+      "path": "old-a4-aac-gap-diagnosis.json",
+      "source_path": "C:\\ck3-superman-qiang-promo-20261004\\audio-audit-independent-A0001\\aac-gap-diagnosis.json",
+      "bytes": 8702,
+      "sha256": "a54b081d9a75a13bb5412725614da638ea3fdcfcfca59a509938cad3e8d4f7c3"
+    },
+    {
+      "path": "old-a4-counterexample.json",
+      "source_path": "C:\\ck3-superman-qiang-promo-20261004\\audio-audit-independent-A0001\\old-a4-check\\audio-continuity-check.json",
+      "bytes": 10643,
+      "sha256": "52b7815c9c269b49013a7601d75f5a2e3e9ca70aa2c80fde2915680191e83245"
+    },
+    {
+      "path": "ten-scene-production-regression.json",
+      "source_path": "C:\\ck3-superman-qiang-promo-20261004\\audio-full-render-regression-A0001\\production-audio-regression.json",
+      "bytes": 9999,
+      "sha256": "7782c25a419bf573c4563bb3532c43a184524ba82e7e9d52129d94c34970a9ca"
+    },
+    {
+      "path": "automated-audit.json",
+      "source_path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\native-run\\postflight\\automated-audit.json",
+      "bytes": 2178,
+      "sha256": "5f8788720892b4ce6d2b490022c10d132255a58a8fabeeb159804c65ea8856c3"
+    },
+    {
+      "path": "framework-version.json",
+      "source_path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\framework-version.json",
+      "bytes": 628,
+      "sha256": "58be67ee5f1d0ad599d3e94dc84cf6edb3e7fbcf1df7c9515ac87a0e0592380d"
+    },
+    {
+      "path": "audio-mix-policy.json",
+      "source_path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\build\\audio-mix-policy.json",
+      "bytes": 666,
+      "sha256": "aa1d6cb52ee2bde95c09670b5129c173380e9dc9ea6bbf99a843071a8da838b4"
+    },
+    {
+      "path": "build-command.json",
+      "source_path": "C:\\ck3-superman-qiang-promo-20261004\\audio-command-build-A0001\\native-build.command.json",
+      "bytes": 640,
+      "sha256": "e22aa54969854b3df9d317a3aa56fe7c6e71656eb99e9788026dd2b18c70cc68"
+    },
+    {
+      "path": "retention-receipt.json",
+      "source_path": "C:\\ck3-superman-qiang-promo-20261004\\render-retention-A0005\\retention-receipt.json",
+      "bytes": 716,
+      "sha256": "c2c58b21c412a27acf0dd53595ba6afe43b4be80336f40a7b6752328027267b8"
+    },
+    {
+      "path": "source-checks.json",
+      "source_path": "C:\\ck3-superman-qiang-promo-20261004\\audio-source-checks-A0001\\source-checks.json",
+      "bytes": 641,
+      "sha256": "965bd5d716f0ee624c6c4082a23ffe0a552b348e50adbf5d7f13a9ab6c7f85fd"
+    }
+  ],
+  "post_check_code_maintenance": "After A5 checks, changed nullable reference_video_path handling for future full renders. A5 executed the originally frozen checker; this null branch was not used."
+}
