@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from .army_replenishment_records_contract import normalize_regiment_replenishment_records_v1
+
 from .army_update_clock_contract import normalize_army_update_clock_v1
 from .battle_native_owner_recall_inputs_contract import (
     normalize_battle_native_owner_recall_inputs_v1,
@@ -264,7 +266,7 @@ _ARMY_STRENGTH_GATHERING_DAYS_KEYS = {
 }
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS = _ARMY_STRENGTH_ROW_KEYS | {
     key for pair in _ARMY_STRENGTH_SUPPLY_FIELD_PAIRS for key in pair
-} | {"regiment_replenishment", "regiment_strengths", "current_movement_progress",
+} | {"regiment_replenishment", "regiment_strengths", "regiment_replenishment_records_v1", "current_movement_progress",
      "army_update_clock_v1", "native_owner_recall_inputs_v1"} | _ARMY_STRENGTH_GATHERING_DAYS_KEYS
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
@@ -1784,6 +1786,10 @@ def _normalize_army_strength_row(
         "unavailable_reason": unavailable_reason,
     }
     result.update(observed_supply)
+    if "regiment_replenishment_records_v1" in value:
+        result["regiment_replenishment_records_v1"] = normalize_regiment_replenishment_records_v1(
+            value["regiment_replenishment_records_v1"]
+        )
     if "army_update_clock_v1" in value:
         result["army_update_clock_v1"] = normalize_army_update_clock_v1(value["army_update_clock_v1"])
     if "native_owner_recall_inputs_v1" in value:

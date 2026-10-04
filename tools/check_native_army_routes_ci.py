@@ -25,12 +25,14 @@ SOURCE = ROOT / "ck3_autonomous_player/native_bridge"
 TRANSLATION_UNITS = (
     "src/ck3_12002_army.cpp",
     "src/ck3_12003_army_supply_timing.cpp",
+    "src/ck3_12003_army_replenishment_records.cpp",
     "src/ck3_12002_army_test.cpp",
 )
 INPUTS = (
     *TRANSLATION_UNITS,
     "include/xar_bridge/ck3_12002_army.hpp",
     "include/xar_bridge/ck3_12003_army_supply_timing.hpp",
+    "include/xar_bridge/ck3_12003_army_replenishment_records.hpp",
     "include/xar_bridge/ck3_12002.hpp",
     "include/xar_bridge/ck3_12003.hpp",
     "include/xar_bridge/game_contract.hpp",

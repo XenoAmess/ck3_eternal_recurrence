@@ -2,6 +2,7 @@
 #include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_military.hpp"
+#include "xar_bridge/ck3_12003_army_replenishment_records.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -368,11 +369,16 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
         bindings.can_chunk_replenish != nullptr &&
         bindings.get_regiment_monthly_replenishment_fraction != nullptr) {
       result.regiment_replenishment.emplace();
+      result.regiment_replenishment_records_v1.emplace();
+      result.regiment_replenishment_records_v1->reserve(static_cast<std::size_t>(count));
       result.regiment_replenishment->reserve(static_cast<std::size_t>(count));
       for (std::int32_t i = 0; i < count; ++i) {
         const auto id = Load<std::int32_t>(ids, static_cast<std::size_t>(i) * 4);
         result.regiment_replenishment->push_back(
             Replenishment(bindings, Resolve(bindings.regiment_storage_slot, id), id));
+        result.regiment_replenishment_records_v1->push_back(
+            ck3_12003::ReadArmyRegimentReplenishmentRecordsV1(
+                bindings, Resolve(bindings.regiment_storage_slot, id), id));
       }
     }
   }

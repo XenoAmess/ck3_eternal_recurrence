@@ -154,6 +154,62 @@ inline void AppendArmyStrengthV1(
     }
     result += ']';
   }
+  if (strength.available && strength.regiment_replenishment_records_v1.has_value()) {
+    result += ",\"regiment_replenishment_records_v1\":[";
+    bool first_regiment = true;
+    for (const auto &regiment : *strength.regiment_replenishment_records_v1) {
+      if (!first_regiment) result += ',';
+      first_regiment = false;
+      result += "{\"army_regiment_id\":" + number(regiment.army_regiment_id);
+      result += ",\"source\":\"native_all_data_records\",\"status\":\"";
+      switch (regiment.status) {
+      case ArmyRegimentReplenishmentRecordsStatusV1::available: result += "available"; break;
+      case ArmyRegimentReplenishmentRecordsStatusV1::partial: result += "partial"; break;
+      default: result += "unavailable"; break;
+      }
+      result += "\",\"ready\":";
+      result += regiment.status == ArmyRegimentReplenishmentRecordsStatusV1::available ? "true" : "false";
+      result += ",\"native_data_record_count\":";
+      result += regiment.native_data_record_count.has_value() ? number(*regiment.native_data_record_count) : "null";
+      result += ",\"unavailable_reason\":";
+      if (regiment.unavailable_reason.empty()) result += "null";
+      else append_json_string(result,regiment.unavailable_reason);
+      result += ",\"records\":[";
+      bool first_record=true;
+      for (const auto &record : regiment.records) {
+        if (!first_record) result += ',';
+        first_record=false;
+        result += "{\"record_index\":" + number(record.record_index);
+        result += ",\"persistent_regiment_id\":" + number(record.persistent_regiment_id);
+        result += ",\"chunk_index\":" + number(record.chunk_index);
+        result += ",\"status\":\"";
+        result += record.available ? "available" : "unavailable";
+        result += "\",\"unavailable_reason\":";
+        if (record.unavailable_reason.empty()) result += "null";
+        else append_json_string(result,record.unavailable_reason);
+        const auto optional_number=[&](std::string_view key,const auto &value) {
+          result += ','; append_json_string(result,key); result += ':';
+          result += value.has_value() ? number(*value) : "null";
+        };
+        const auto optional_bool=[&](std::string_view key,const auto &value) {
+          result += ','; append_json_string(result,key); result += ':';
+          result += value.has_value() ? (*value ? "true" : "false") : "null";
+        };
+        optional_number("current_soldiers",record.current_soldiers);
+        optional_number("maximum_soldiers",record.maximum_soldiers);
+        optional_number("effective_current_soldiers",record.effective_current_soldiers);
+        optional_number("state_raw",record.state_raw);
+        optional_bool("native_can_replenish",record.native_can_replenish);
+        optional_bool("native_chunk_can_replenish",record.native_chunk_can_replenish);
+        optional_number("persistent_monthly_replenishment_fraction_raw",record.persistent_monthly_replenishment_fraction_raw);
+        optional_number("persistent_prepared_replenishment_fraction_raw",record.persistent_prepared_replenishment_fraction_raw);
+        result += ",\"persistent_monthly_replenishment_fraction_scale\":100000";
+        result += ",\"persistent_prepared_replenishment_fraction_scale\":100000}";
+      }
+      result += "]}";
+    }
+    result += ']';
+  }
   if (strength.current_movement_progress.has_value()) {
     const auto &movement = *strength.current_movement_progress;
     result += ",\"current_movement_progress\":{\"status\":\"";
