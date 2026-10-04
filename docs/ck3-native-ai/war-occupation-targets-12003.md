@@ -269,3 +269,49 @@ SDK 42475 closed exit 0 的末日 sealed cache（军事 soleconsumer 唯一读�
 Root/军事 owner 的本批真实计数为 47 日/1128h，累计 4265、resume 1112、Oct4 +240；本缓存消费者新增日、SDK、游戏操作、窗口、测试、shared/Git、重复收复及战争胜利信用均为 0。新指挥官 phase 未观测，未称强攻或加速收益。后续使用现有同军/战争/补给 owner 的当前结果选择下一目标，白和平与此围城收复独立记账。
 
 Cache: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/recapture-v49/siege02-sealed-day-consumption/DAY47-RECAPTURE-TERMINAL-CRITICAL.json`，SHA-256 `8474b2371e5b8ae2f188bb5bea737f93df06e2939fdc689124ecd9f3a8dad544`。Save h6254，93434316 B，SHA-256 `2388c9877fccdc160ba1c60db76347be2ff95390303ef4c001fae355b6a8a714`。
+
+## 2026-10-05: War117440524 ordinary siege completion and independent war readback
+
+Exact .3 / EXE SHA94B, Robert29829, ordinary episode native-29829-2bc2d599f7f9, runtime g68/R36. Root's first capture attempt SDK22430 reached only initial snapshot/diagnostics, then failed at harness line75 because the config was a plain list instead of OBJECT `{"calls":[...]}`; war queries0/save0/newday0, lastnormal8069 unchanged. This HARNESS RED remains preserved. Root wrapped only the outer container and corrected SDK17162 passed; `war117-current-g68/CAPTURE-CONFIG.json` is the object entry. The original child plain list is historical and must not be used directly as capture config. No native fault, source change or repeated test was involved.
+
+At raw53258424/native265/public2, the independent current-war reads returned primary attacker Robert vs35991, CB29 raiktor_conquest_cb, targets1333/1351/1358, age298d, score0 and four components0. Complete occupation was defender0/337 and attacker0/31. P472/holding1359 was unoccupied, legalholder31797, player siege251658324/army301989997, fort4/g500, progress94.731%, native days_left15, ordinary can_advance=true and can_start_assault=false. Root continued the existing normal siege for at most16 days. These actual options did not supply a superior terminal: enforce/WP native validatorsfalse; surrendertrue means attacker_defeat.
+
+Root's ordinary session62400 completed16 saved days/384h; capture was first observed on day11. Independent SDK95326 then read raw53258808/native332/public2: P472/holding1359 occupied=true/byRobert29829, occupier_side=attacker and counted_occupied_by_opposing_side=true, garrison25, besieging_strength0, active_siege=null. Legal holder31797 remains unchanged. Holding1360/province3710 also counts as Robert's occupation. Complete defender count is now2/337, attacker0/31, with368 holding rows. Current authoritative score is25, solely occupation25; battle/imprisonment/ticking remain0. The paired observation records a0→25 delta for this scene and does not establish a fixed per-castle gain.
+
+The finite ordinary continuation→actual occupation→independent current-war/score verification is **production-live loop** for this siege. War117440524 is still active, age314d; enforce/WP remain native unavailable, quote−74/−22.5, and surrender is available/autoaccept with attacker_defeat, quote876. Final reply and CB terms keep their existing unavailable state without blocking ordinary military progression. This is not battle victory, whole-war victory or legal title transfer.
+
+Next military input is the real remaining goal selection, using current target county IDs1333/1351/1358, completed holdings1359/1360, and existing actual county/route/contact mapping. Observed unoccupied province facts are471 fort4/g480,473 fort4/g404,474 fort4/g515,475 fort4/g500,470 fort6/g550. They are candidate facts, not a route/county ranking. Primary35991-held496/holding1223 is fort13/g4750 with stalled nonplayer siege; this schema does not mark capital identity. No first-row capital assumption or new observation gate is introduced. Militarysource receives the complete cached368 rows instead of re-reading raw leaves.
+
+Artifacts: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-settlement-typed-action/war117-current-g68/actual-siege-completed-01-consumption/ROOT-DELIVERY.json` pins both actual nodes, assigned new004/006, the cached next-target inputs, and the separate first HARNESS RED. Each new raw leaf was parsed once; old raw004/006, health, final/save leaves were not read. Accounting remains Root's4770 total/res1617/October5+112 at raw53258808; the16 days are already credited once, this consumer adds0. Latest normal zero-save metadata remains null until Root supplies it. No SDK/RPM/window/Git/shared source or test operation occurred in this consumption.
+
+### R37/v64 independent occupation confirmation, zero new-day credit
+
+Root's sole-consumed R37/v64 occupation cache independently confirms raw53258808 / native5 / public2 / connection3, available and complete368 rows, defender2/337 and attacker0/31. Holding1359/P472 and holding1360/P3710 remain occupied by Robert29829, counted_opposing=true and active_siege=null; holding1352/P3711 (legalholder32309, fort6/garrison500) and holding1334/P470 (sameholder, fort6/garrison550) remain unoccupied with active_siege=null. These four rows agree with the previous independent cache. This occupation leaf supplies no score: score25 is the prior actual native332 terms observation at the same raw date, not a fresh R37 score.
+
+The row schema has no new county/capital fields; the g69 county extension has not been loaded and supplies no actual mapping credit. Next target/preview/route joins remain Military-owned. Root4770/resume1617/October5+112 is reference accounting with the previous16 saved days already counted; this confirmation adds0 days and does not supply a new TOP/save pair. The prior EOF above was unadopted before this task and is included in this single merged patch. Evidence: [parent-owned R37 occupation cache](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-settlement-typed-action/war117-current-g68/actual-r37-occupation-01-consumption/CACHED-OCCUPATION-LEAF.json); this document lane reads no raw, preview, TOP/save or health body.
+
+## 2026-10-05：占领 holding 的县映射只读补口
+
+当前冻结源码为 Z:/g69，协调者提供 full HEADa14f3c5fab2079956ddccb7b614d5e3aa41d9bbc；exact CK3 1.20.0.3 / EXE SHA94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6。本段复用已闭合的 exact-build 字段链，不重复原生研究、RPM、SDK或旧夹具。协调者当前军事缓存报告368条 occupation holding 行，但尚无县映射；CB targeted titles1333/1351/1358不能据此推成某 holding 的县。现有470/3711目标 preview不受本映射缺口阻塞。holding1664对应的县目前仍未观测，不填写猜测值。
+
+最小源入口是现有占领 reader 已解析的 barony fullTitleID：title+0x10取得完整ID并经 ResolveObjectiveTitle 回读同一 title；title+0x48 definition、definition+0x64 tier1、definition+0x88 province 已有闭合（ck3_12003_war_occupation.cpp:216-245，行号为协调者读取时的冻结位置）。现有 ReadSurrenderTitle 已读取 title+0x108 的直系 de_jure_parent fullTitleID，并利用同一 definition tier 区分 title（ck3_12002_faction_alerts.cpp:449-470）。只需用同一 ResolveObjectiveTitle 解析该 parent，校验完整身份和其 definition tier2，发布县 fullTitleID；不需要再建 liege tree 或 county provider。缺 parent、完整ID解析失败或 tier不为2时，县字段保持 null，有效 holding/occupation 行、原生顺序和计数继续保留。
+
+```mermaid
+flowchart TD
+  H["现有有效barony holding: fullTitleID + tier1"] --> P["title+0x108: 直系de_jure_parent fullTitleID"]
+  P --> R["同一ResolveObjectiveTitle: fullID roundtrip"]
+  R --> T{"parent definition tier=2？"}
+  T -->|是| C["只读行发布county fullTitleID"]
+  R -->|未能解析| N["县字段null; 保留有效occupation与counts"]
+  T -->|否或缺失| N
+  C -.-> A["pending: Root下一revision paused production读回"]
+  U["unknown: 当前actual holding1664的county"] -.-> A
+```
+
+同一 `ck3_query_war_occupation_targets_v1(war_id, expected_revision)` 的行新增可选、可空 `county_title_id`，保持 v1 schema、参数和旗标。完整 parent TitleID 经现有 resolver 校验、其 definition tier 为2后才发布；旧 body 没有该 key 时归一化为 `None`。合法零值仅在真实完整ID解析且县 tier 验证成功后保留；映射失败保留原本可观察的 occupation 行和计数。
+
+唯一新增离线生产链路已 GREEN：一次生产 reader→一次 serializer 的6行原生顺序输出，18项显式 native Check，县列表 `[50334048,0,null,null,50334048,null]`；同一 genuine JSON 通过现有 registered MCP 与 service，Python `-O` 下41项显式 require，保留完整ID、重复行、side counts和occupation值。第二个 registered call只使用同一body副本删除新key验证旧body兼容；没有重读或重跑旧 native case。首轮6TU编译成功，link因缺现有 supply timing/replenishment production依赖而HARNESS RED；该attempt保留，复用6个已编对象并只新编2TU后完成8TU链接。所有失败判断均可在 `-O`/`-DNDEBUG` 下生效。
+
+资格为 **static-ready**，尚未部署或加载到 g69/v64，也没有新的 actual paused county映射。当前holding1664的县仍待Root下一revision一次实际occupation查询；470/3711已有实际目标预览继续独立推进。本工作包新增游戏日、收益、游戏SDK命令、窗口、共享修改和Git操作均为0。外部交付索引：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-goal-capture-execution/occupation-county-mapping-v64/ROOT-DELIVERY.json`。
+
+The county-mapping source package above was subsequently reviewed, adopted and pushed as `3f544df8fd64dcffe188afe7f15ea2095c8995f6` (Root supplied). Its frozen static evidence and first link HARNESS RED remain historical; the current runtime is still g69/a14 without live county fields, so source adoption grants no actual county mapping credit. The current 368-row comparison only changes nonplayer P496/holding1223 and P4893/holding8814 prepared_phase_length from18 to0; occupation counts and other progress/work fields remain unchanged, with the four current target rows agreeing. This cached comparison supplies no advance or native-fault attribution.
