@@ -12,8 +12,11 @@
   "encoding": "utf-8",
   "line_endings": "LF",
   "trailing_newline": false,
-  "status": "FROZEN_CANDIDATE_AWAITING_ACTUAL_1_20_0_3_ACCEPTANCE",
-  "published": false,
-  "entry_id": null,
-  "public_exact_readback": null
+  "status": "PUBLISHED_PUBLIC_FULLTEXT_VERIFIED",
+  "published": true,
+  "entry_id": "1791150129",
+  "public_exact_readback": true,
+  "release_tag": "remove-mandala-v1.0.1",
+  "release_commit": "94e6ec4d75f7a165ed8aad885d33f019c92b336d",
+  "published_at_utc": "2026-10-04T21:42:09.844955+00:00"
 }

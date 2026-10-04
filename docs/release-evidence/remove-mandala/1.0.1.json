@@ -1,0 +1,276 @@
+{
+  "schema": "ck3.workshop-release-evidence.v1",
+  "product": "remove-mandala",
+  "version": "1.0.1",
+  "workshop_item_id": "3797711947",
+  "release_tag": "remove-mandala-v1.0.1",
+  "release_commit": "94e6ec4d75f7a165ed8aad885d33f019c92b336d",
+  "published_at_utc": "2026-10-04T21:42:09.844955+00:00",
+  "public_change_notes": {
+    "schema": "steam-change-notes-frozen-candidate-v1",
+    "product_key": "remove-mandala",
+    "version": "1.0.1",
+    "previous_version": "1.0.0",
+    "workshop_item_id": "3797711947",
+    "text_file": "workshop/change_notes/remove-mandala/1.0.1.txt",
+    "bytes": 2693,
+    "characters": 1929,
+    "lines": 25,
+    "sha256": "a54b823c817e0aa26a0f3e84426d3523a2a5b280b7aab0e03c57586fec1c7657",
+    "encoding": "utf-8",
+    "line_endings": "LF",
+    "trailing_newline": false,
+    "status": "PUBLISHED_PUBLIC_FULLTEXT_VERIFIED",
+    "published": true,
+    "entry_id": "1791150129",
+    "public_exact_readback": true,
+    "release_tag": "remove-mandala-v1.0.1",
+    "release_commit": "94e6ec4d75f7a165ed8aad885d33f019c92b336d",
+    "published_at_utc": "2026-10-04T21:42:09.844955+00:00"
+  },
+  "build_and_cache": {
+    "schema": "mrm.actual-postpublish-local-verification.v1",
+    "completed_at_utc": "2026-10-04T21:51:26.370152+00:00",
+    "item_id": "3797711947",
+    "version": "1.0.1",
+    "tag": "remove-mandala-v1.0.1",
+    "release_commit": "94e6ec4d75f7a165ed8aad885d33f019c92b336d",
+    "cache_exact_files": 15,
+    "cache_exact_bytes": 777243,
+    "cache_descriptor_normalization_used": false,
+    "postpublish_rebuild_exact": true,
+    "manifest": {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\mrm-workshop-publish-1.0.1-01\\formal\\mod_remove_mandala-v1.0.1.manifest.json",
+      "bytes": 2741,
+      "sha256": "5e85c692effdbb44c7944a09dd53fefe217cd0a0628e98bd80f0de54ff79dd61"
+    },
+    "zip": {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\mrm-workshop-publish-1.0.1-01\\formal\\mod_remove_mandala-v1.0.1.zip",
+      "bytes": 776824,
+      "sha256": "86d4e24f6a6d87c6582268d688b6d299d350f5a2b9bbeed1ce9fa7f482a19f8e"
+    },
+    "outer_before_exists": false,
+    "outer_after": {
+      "path": "C:\\Users\\Administrator\\Documents\\Paradox Interactive\\Crusader Kings III\\mod\\mod_remove_mandala.mod",
+      "bytes": 254,
+      "sha256": "7d93a3ec498006dc82e0e48074de8fa4e85b6809edb243beac291f87c3b70da8"
+    },
+    "canonical_id_only_in_outer": true,
+    "steam_offline_visually_reviewed": true,
+    "offline_original": {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\mrm-workshop-publish-1.0.1-01\\offline-restored-fresh-02\\probe-1\\steam-moved.png",
+      "bytes": 393754,
+      "sha256": "7ff29bcc313f3ce1deb5a968b0c557a151375a12014f37ad3ac075d85b7375c9"
+    },
+    "files": {
+      "descriptor.mod": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3797711947\\descriptor.mod",
+        "bytes": 137,
+        "sha256": "018728348590a364b21d9154aec24a6d8278a30dec64d81e8073188f77e94d3b"
+      },
+      "thumbnail.png": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3797711947\\thumbnail.png",
+        "bytes": 770575,
+        "sha256": "e25dec879bf83fec2960a0c194e2f623cc2127902929a6e402ea2daf11e0415c"
+      },
+      "events/mrm_events.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3797711947\\events\\mrm_events.txt",
+        "bytes": 571,
+        "sha256": "afc24b47667fe358404db88c1cf9ac6e7134f017b68bbcd4af5b4b070b97d258"
+      },
+      "localization/english/mrm_l_english.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3797711947\\localization\\english\\mrm_l_english.yml",
+        "bytes": 442,
+        "sha256": "d84b2429db75323f44eb79e3cc9877299068349c9a427d06d8ae47f4917df5c0"
+      },
+      "localization/french/mrm_l_french.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3797711947\\localization\\french\\mrm_l_french.yml",
+        "bytes": 448,
+        "sha256": "f1fb0135ac2f4599e068a748d69bb8d91dab66a105454331537e4b9d1f04d19b"
+      },
+      "localization/german/mrm_l_german.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3797711947\\localization\\german\\mrm_l_german.yml",
+        "bytes": 486,
+        "sha256": "5bd279c345fb0797eec815701b98b3d24a0dfd598aed0e280eacecfbf2a3e604"
+      },
+      "localization/japanese/mrm_l_japanese.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3797711947\\localization\\japanese\\mrm_l_japanese.yml",
+        "bytes": 506,
+        "sha256": "a157af00d059965f2330f0e49c4b534e6328cc9b9840f911d8e6e6c5cfafb5ec"
+      },
+      "localization/korean/mrm_l_korean.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3797711947\\localization\\korean\\mrm_l_korean.yml",
+        "bytes": 470,
+        "sha256": "18bbc161a5f009e4fb22b00770c1181fe602fca3ecb34733ed5642b4011343d7"
+      },
+      "localization/polish/mrm_l_polish.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3797711947\\localization\\polish\\mrm_l_polish.yml",
+        "bytes": 466,
+        "sha256": "9d45391dde0c7780108c9b83531b86c40a9a44b103708426f486a4837da18867"
+      },
+      "localization/russian/mrm_l_russian.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3797711947\\localization\\russian\\mrm_l_russian.yml",
+        "bytes": 652,
+        "sha256": "218fcf8a51077711d84bfa18b92de98887df7dd867e83b4c4cf8a66883a5af66"
+      },
+      "localization/simp_chinese/mrm_l_simp_chinese.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3797711947\\localization\\simp_chinese\\mrm_l_simp_chinese.yml",
+        "bytes": 387,
+        "sha256": "6676321df938db0bd479dbb13540b7c09c3651bf4bc6cdcb3b3d16c26ade07c6"
+      },
+      "localization/spanish/mrm_l_spanish.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3797711947\\localization\\spanish\\mrm_l_spanish.yml",
+        "bytes": 446,
+        "sha256": "a01803e84ac2f2418444bcfa68491ce0d5f83837938e308ed02dbf07f2696767"
+      },
+      "common/game_rules/mrm_game_rules.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3797711947\\common\\game_rules\\mrm_game_rules.txt",
+        "bytes": 124,
+        "sha256": "1748485695ddb6f3ea92f4920e179d35bcf3526279d57b06140819b7e410fe3a"
+      },
+      "common/on_action/mrm_on_actions.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3797711947\\common\\on_action\\mrm_on_actions.txt",
+        "bytes": 1189,
+        "sha256": "129c94e5cf239de2a638b0e2ecd0017cbd7ae88f6eaf646af727b60d6c785eb2"
+      },
+      "common/scripted_effects/mrm_effects.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3797711947\\common\\scripted_effects\\mrm_effects.txt",
+        "bytes": 344,
+        "sha256": "57ef7c63b1faae6a1d968b7467a5ddb1b03ddfeb50977994be27262f253a4ea3"
+      }
+    }
+  },
+  "native_publish": {
+    "app_id": 1158310,
+    "created_at": "2026-10-04T21:42:02.103038+00:00",
+    "item_id": "3797711947",
+    "legal_agreement_required": false,
+    "operation": "update",
+    "operation_id": "remove-mandala-1.0.1-update-20261005-01",
+    "payload_sha256": "7da4642670a6a1f7ee22e60578fc3981944b721ef8e42f597b5b6408b9f47c3f",
+    "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+    "stage": "complete",
+    "steam_result": 1,
+    "submitted_at": "2026-10-04T21:42:09.844955+00:00",
+    "updated_at": "2026-10-04T21:42:09.845009+00:00"
+  },
+  "fresh_download": {
+    "app_id": 1158310,
+    "callback": {
+      "app_id": 1158310,
+      "callback_id": 3406,
+      "item_id": "3797711947",
+      "result": 1
+    },
+    "dll_path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\steam_api64.dll",
+    "dll_sha256": "1db3fd414039d3e5815a5721925dd2e0a3a9f2549603c6cab7c49b84966a1af3",
+    "download_info": {
+      "available": true,
+      "downloaded_bytes": 0,
+      "total_bytes": 0
+    },
+    "elapsed_seconds": 9.816,
+    "expected_cache_absent_before_start": true,
+    "expected_cache_path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3797711947",
+    "fresh_cache_requested": true,
+    "ignored_callbacks": 31,
+    "install_info": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3797711947",
+      "size_on_disk": 777243,
+      "timestamp": 1791150129
+    },
+    "isolated_worker": true,
+    "item_id": "3797711947",
+    "ok": true,
+    "schema": "ck3_workshop_mcp.steam_native.download.v1",
+    "started": true,
+    "state_flags": {
+      "download_pending": false,
+      "downloading": false,
+      "installed": true,
+      "legacy": false,
+      "needs_update": false,
+      "raw": 5,
+      "subscribed": true
+    },
+    "status": "complete",
+    "timeout_seconds": 300.0,
+    "worker_exit_code": 0,
+    "worker_pid": 19316
+  },
+  "public_exact": true,
+  "steam_offline_reviewed": true,
+  "screen_released_sequence": 2682,
+  "evidence_files": [
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\mrm-workshop-publish-1.0.1-01\\native-publish-receipt.json",
+      "bytes": 520,
+      "sha256": "c29ecc7335882187fcab19a6c215a95730b5a0577752e666e2e45fce19235255"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\mrm-workshop-publish-1.0.1-01\\native-publish-result-01.json",
+      "bytes": 745,
+      "sha256": "bd77cca484a5c65a6f817eca306710eeb62e75c39648b45f786c893373aacf10"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\mrm-workshop-publish-1.0.1-01\\anonymous-readback-01\\verification.json",
+      "bytes": 18747,
+      "sha256": "1fec35efd06647e99853d4e93d89f978c06a4e85dcd5a9fc3fb8b19b776aa1a7"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\mrm-workshop-publish-1.0.1-01\\fresh-download-after-cache-preservation-02\\native-download-result-01.json",
+      "bytes": 2763,
+      "sha256": "c4162086ad9e526b65eebeda90b2dbcc627303137dd88d81a12d4d0e9d9a24cc"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\mrm-workshop-publish-1.0.1-01\\postpublish-local-verification-01.json",
+      "bytes": 6006,
+      "sha256": "f661df3ad7d8ae7027ecaa1c0aa6fe249aafc3c358e8ff09e39b06fd1258955e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\mrm-workshop-publish-1.0.1-01\\screen-release-01.json",
+      "bytes": 1283,
+      "sha256": "9a53b1be1c0148c4d9093a3dcbe0ae7859deeaca215a7f7073ee1d435b54eadd"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\mrm-workshop-publish-1.0.1-01\\offline-restored-fresh-02\\recovery.json",
+      "bytes": 1481,
+      "sha256": "b5ec18be7e92851855ce20a57afe8d037549780a14adb3936e2a694cebcb7a01"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\mrm-workshop-publish-1.0.1-01\\old-cache-preservation-receipt-01.json",
+      "bytes": 2654,
+      "sha256": "f1c53df35c9b9913becab7d101496fc70845c70cb3f6b325b1f4254998f2d0c6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\mrm-workshop-publish-1.0.1-01\\native-download-result-01.json",
+      "bytes": 1936,
+      "sha256": "dda35aa24040c8680e45b890e5a13bd9660598594155a4b2b7cc01a80ec16d77"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\mrm-workshop-publish-1.0.1-01\\cache-verification-03.stdout.txt",
+      "bytes": 107,
+      "sha256": "313442605b9363e681084bfc266404207d1e9005af6c201e26dd636f9f3a9cb4"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\mrm-workshop-publish-1.0.1-01\\cache-verification-03.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\mrm-workshop-publish-1.0.1-01\\candidate-freeze-before-published-01.json",
+      "bytes": 599,
+      "sha256": "2426a408a365baded5365aa4217d4c3b45b4bf42ad8b3faa3f701b9bd8e6c507"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\remove-mandala-r2-log-boundary-agent-01\\closed-r2-full-body-comparison-02\\final-mrm-r2-comparison-packet-02.json",
+      "bytes": 1992311,
+      "sha256": "f1b5001e3959790df9c073fdb376456c08e93ef23f3228fb00952651f6858802"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\remove-mandala-r2-log-boundary-agent-01\\closed-r2-final-current-scope-receipt-03\\final-mrm-r2-current-scope-decision-receipt-03.json",
+      "bytes": 23474,
+      "sha256": "32e11b13af9a12589a1c39b207a637401919ad0605d88adcd4cd71862d975b2c"
+    }
+  ]
+}
