@@ -842,9 +842,11 @@ _WAR_TERMINATION_REVISION_RETRY_ERRORS = frozenset(
 
 class _NativeCommandRejectedError(BridgeUnavailableError):
     def __init__(self, native_error: str, *,
-                 native_raw_return_receipt: dict[str, object] | None = None) -> None:
+                 native_raw_return_receipt: dict[str, object] | None = None,
+                 native_request_id: str | None = None) -> None:
         self.native_error = native_error
         self.native_raw_return_receipt = native_raw_return_receipt
+        self.native_request_id = native_request_id
         message = f"native gameplay step failed: {native_error}"
         if native_raw_return_receipt is not None:
             message += "; original parsed return receipt=" + json.dumps(native_raw_return_receipt, sort_keys=True)
@@ -5373,11 +5375,13 @@ class NativeHeadlessGameplayDriver:
             self._rollback_war_failures_migration_required = False
         self._persist_driver_state()
 
-    def _ingame_ui_v1(self, operation: str, kind: str, subject_id: int, *, expected_revision: int) -> dict[str, object]:
+    def _ingame_ui_v1(self, operation: str, kind: str, subject_id: int, *, expected_revision: int,
+            army_tooltip_kind: str | None = None, army_tooltip_receipt: str | None = None) -> dict[str, object]:
         from .ingame_ui_contract import (NAVIGATE_STEP, QUERY_STEP, NAVIGATE_CAPABILITY,
             QUERY_CAPABILITY, validate_ui_request, normalize_ui_result,
             ingame_ui_build_binding, validate_ui_build_scope)
-        validate_ui_request(operation, kind, subject_id, expected_revision)
+        validate_ui_request(operation, kind, subject_id, expected_revision,
+            army_tooltip_kind=army_tooltip_kind, army_tooltip_receipt=army_tooltip_receipt)
         starting = self.take_snapshot()
         binding = _title_map_navigation_binding_from_snapshot(starting)
         if starting.get("paused") is not True or starting.get("map_ready") is not True:
@@ -5389,11 +5393,20 @@ class NativeHeadlessGameplayDriver:
         if isinstance(actor, bool) or not isinstance(actor, int) or actor <= 0:
             raise BridgeUnavailableError("native UI lacks the played actor")
         source_binding = ingame_ui_build_binding(starting)
-        validate_ui_build_scope(source_binding[0], operation, kind)
+        validate_ui_build_scope(source_binding[0], operation, kind, army_tooltip_kind=army_tooltip_kind)
         step = QUERY_STEP if operation == "query" else NAVIGATE_STEP
+        if army_tooltip_kind is not None:
+            capabilities = self.capabilities()
+            capability = QUERY_CAPABILITY if operation == "query" else NAVIGATE_CAPABILITY
+            if capabilities.get("backend_id") != "native-headless" or capability not in capabilities.get("bridge_capabilities", []):
+                raise UnsupportedStepError("capability_not_available: Army tooltip requires the exact native backend")
         fields = {"window_kind": kind, "subject_id": subject_id}
         if operation != "query":
             fields["operation"] = operation
+        if army_tooltip_kind is not None:
+            fields["army_tooltip_kind"] = army_tooltip_kind
+            if army_tooltip_receipt is not None:
+                fields["army_tooltip_receipt"] = army_tooltip_receipt
         raw = None
         try:
             raw = self._execute_primitive_step(step, expected_revision=expected_revision,
@@ -5407,7 +5420,8 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError("native UI crossed its paused session binding")
             result = normalize_ui_result(raw, operation=operation, kind=kind, subject_id=subject_id,
                 native_revision=int(starting["native_revision"]), date_raw=int(starting["date_raw"]), actor_id=actor,
-                expected_build=source_binding[0])
+                expected_build=source_binding[0], army_tooltip_kind=army_tooltip_kind,
+                army_tooltip_receipt=army_tooltip_receipt)
         except Exception as error:
             self._record_command(step, ok=False,
                 result={"raw_native_ui_result": copy.deepcopy(raw)} if raw is not None else None,
@@ -5424,6 +5438,18 @@ class NativeHeadlessGameplayDriver:
 
     def select_army_ui_v1(self, subject_army_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._ingame_ui_v1("select_army", "army", subject_army_id, expected_revision=expected_revision)
+
+    def hover_army_tooltip_v1(self, subject_army_id: int, tooltip_kind: str, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("hover_army_tooltip", "army", subject_army_id,
+            expected_revision=expected_revision, army_tooltip_kind=tooltip_kind)
+
+    def leave_army_tooltip_v1(self, subject_army_id: int, tooltip_kind: str, action_receipt: str, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("leave_army_tooltip", "army", subject_army_id,
+            expected_revision=expected_revision, army_tooltip_kind=tooltip_kind, army_tooltip_receipt=action_receipt)
+
+    def query_army_tooltip_v1(self, subject_army_id: int, tooltip_kind: str, action_receipt: str, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("query", "army", subject_army_id,
+            expected_revision=expected_revision, army_tooltip_kind=tooltip_kind, army_tooltip_receipt=action_receipt)
 
     def open_combat_window_v1(self, combat_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._ingame_ui_v1("open_combat", "combat", combat_id, expected_revision=expected_revision)
@@ -9317,10 +9343,108 @@ class NativeHeadlessGameplayDriver:
             raise UnsupportedStepError(
                 f"native Python bridge does not implement composite step {step}"
             )
+        if step == "pause-map":
+            return self._execute_generic_pause_map(expected_revision=expected_revision)
         return self._execute_primitive_step(
             step,
             expected_revision=expected_revision,
         )
+
+    def _execute_generic_pause_map(
+        self, *, expected_revision: int | None
+    ) -> dict[str, object]:
+        """Recover one explicit unavailable rejection without retrying actions."""
+        starting = self.take_internal_semantic_snapshot()
+        deadline = time.monotonic() + self.command_timeout_seconds
+        try:
+            # The first call retains the direct primitive's existing capability,
+            # expected revision and idempotent postcondition contracts.
+            return self._execute_primitive_step(
+                "pause-map", expected_revision=expected_revision,
+                timeout_seconds=max(0.001, deadline - time.monotonic()),
+            )
+        except _NativeCommandRejectedError as error:
+            if error.native_error != "CK3 map state is unavailable":
+                raise
+            recovery = {
+                "source": "generic_pause_map_unavailable_recovery",
+                "attempts": [{"request_id": error.native_request_id,
+                              "accepted": False, "status": "rejected",
+                              "error": error.native_error}],
+                "starting_snapshot_id": starting.get("snapshot_id"),
+                "starting_revision": starting.get("revision"),
+                "starting_native_revision": starting.get("native_revision"),
+                "starting_date_raw": starting.get("date_raw"),
+            }
+
+        def failed(reason: str) -> None:
+            result = {"step": "pause-map", "accepted": False,
+                      "status": "pause_recovery_failed", "backend_id": "native-headless",
+                      "map_control_recovery": {**recovery, "failure": reason}}
+            raise StepPostconditionError(
+                f"native pause-map recovery stopped: {reason}",
+                selected_step="pause-map", step_result=result
+            )
+
+        if starting.get("paused") is not False or _generic_pause_owner_binding(starting) is None:
+            failed("initial running exact-build owner binding unavailable")
+        remaining = max(0.0, deadline - time.monotonic())
+        refreshed = self._wait_for_life_advance_snapshot(
+            self.take_internal_semantic_snapshot(),
+            lambda row: int(row.get("revision", -1)) > int(starting["revision"]),
+            timeout_seconds=remaining,
+        )
+        recovery["refreshed_snapshot_id"] = refreshed.get("snapshot_id")
+        recovery["refreshed_revision"] = refreshed.get("revision")
+        recovery["refreshed_native_revision"] = refreshed.get("native_revision")
+        recovery["refreshed_date_raw"] = refreshed.get("date_raw")
+        if (int(refreshed.get("revision", -1)) <= int(starting["revision"])
+                or int(refreshed.get("native_revision", -1)) <= int(starting["native_revision"])):
+            failed("no fresh semantic frame after rejected pause")
+        if not _same_generic_pause_owner(starting, refreshed):
+            failed("runtime owner or event binding changed before retry")
+        if refreshed.get("paused") is True:
+            result = {"step": "pause-map", "accepted": True,
+                      "status": "already_paused", "backend_id": "native-headless"}
+            current = refreshed
+        elif refreshed.get("paused") is False:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                failed("total pause deadline exhausted before retry")
+            request_id = f"pause-recovery-{uuid.uuid4().hex}"
+            try:
+                # Only this independently bound idempotent retry may omit the
+                # caller's obsolete public revision. The wire still carries the
+                # freshly read native revision; native map/core gates stay intact.
+                result = self._execute_primitive_step(
+                    "pause-map", expected_revision=None, timeout_seconds=remaining,
+                    internal_semantic_snapshot=True, protocol_request_id=request_id,
+                    pause_recovery_source=starting,
+                )
+            except (BridgeUnavailableError, UnsupportedStepError) as error:
+                recovery["attempts"].append({"request_id": request_id,
+                    "accepted": False, "status": "failed", "error": str(error)})
+                failed("second pause request failed")
+            recovery["attempts"].append({"request_id": request_id, **result})
+            current = self._wait_for_life_advance_snapshot(
+                self.take_internal_semantic_snapshot(),
+                lambda row: row.get("paused") is True or not _same_generic_pause_owner(starting, row),
+                timeout_seconds=max(0.0, deadline - time.monotonic()),
+            )
+        else:
+            failed("refreshed pause state unavailable")
+        recovery.update(ending_snapshot_id=current.get("snapshot_id"),
+                        ending_revision=current.get("revision"),
+                        ending_native_revision=current.get("native_revision"),
+                        ending_date_raw=current.get("date_raw"),
+                        ending_paused=current.get("paused"),
+                        postcondition_verified=False)
+        if (current.get("paused") is not True
+                or not _same_generic_pause_owner(starting, current)
+                or int(current.get("revision", -1)) < int(refreshed["revision"])):
+            failed("same-owner paused map not observed after recovery")
+        recovery["postcondition_verified"] = True
+        return {**result, "map_control_recovery": recovery}
 
     def _record_command(
         self,
@@ -10332,6 +10456,7 @@ class NativeHeadlessGameplayDriver:
         internal_semantic_snapshot: bool = False,
         allow_frontend_revision_zero: bool = False,
         protocol_request_id: str | None = None,
+        pause_recovery_source: dict[str, object] | None = None,
     ) -> dict[str, object]:
         if not isinstance(step, str) or not step:
             raise ValueError("step must be a non-empty string")
@@ -10400,6 +10525,11 @@ class NativeHeadlessGameplayDriver:
                     "native gameplay revision mismatch: "
                     f"expected {expected_revision}, current {revision}"
                 )
+        if pause_recovery_source is not None:
+            if step != "pause-map" or not internal_semantic_snapshot or expected_revision is not None:
+                raise ValueError("pause recovery binding is restricted to an internal pause retry")
+            if snapshot.get("paused") is not False or not _same_generic_pause_owner(pause_recovery_source, snapshot):
+                raise BridgeUnavailableError("generic pause owner/event binding changed at retry submission")
         self._request_sequence += 1
         request_id = (
             protocol_request_id
@@ -10481,6 +10611,7 @@ class NativeHeadlessGameplayDriver:
             raise _NativeCommandRejectedError(
                 native_error if isinstance(native_error, str) else "unknown error",
                 native_raw_return_receipt=trace_raw_receipt,
+                native_request_id=request_id,
             )
         result = frame.get("result")
         if isinstance(result, dict):
@@ -26780,6 +26911,49 @@ def _retryable_life_advance_change(
         and refreshed.get("paused") == previous.get("paused")
         and refreshed.get("speed") == previous.get("speed")
     )
+
+
+def _generic_pause_owner_binding(snapshot: dict[str, object]) -> tuple[object, ...] | None:
+    """Strict binding for a direct pause recovery, not a gameplay retry gate."""
+    from .version_identity import require_exact_native_build
+
+    diagnostics = snapshot.get("diagnostics")
+    played = snapshot.get("played_character")
+    if not isinstance(diagnostics, dict) or not isinstance(played, dict):
+        return None
+    hello = diagnostics.get("hello")
+    if (not isinstance(hello, dict) or hello.get("ck3_build_match") is not True
+            or diagnostics.get("connected") is not True
+            or snapshot.get("map_ready") is not True
+            or snapshot.get("one_life_terminal_reason") is not None
+            or played.get("alive") is not True):
+        return None
+    actor = played.get("character_id")
+    if (type(actor) is not int or actor <= 0
+            or snapshot.get("episode_character_id") != actor
+            or not isinstance(snapshot.get("episode_run_id"), str)
+            or not snapshot["episode_run_id"]
+            or type(diagnostics.get("connection_generation")) is not int
+            or type(diagnostics.get("bridge_pid")) is not int):
+        return None
+    try:
+        build = require_exact_native_build(
+            hello.get("expected_ck3_version", hello.get("game_version")),
+            hello.get("expected_ck3_sha256", hello.get("executable_sha256")),
+        )
+        _date_raw(snapshot, "generic pause source")
+    except (ValueError, BridgeUnavailableError):
+        return None
+    return (build, diagnostics["connection_generation"], diagnostics["bridge_pid"],
+            hello.get("game_adapter_id"), snapshot["episode_run_id"], actor,
+            snapshot.get("local_player_id"), snapshot.get("speed"),
+            snapshot.get("active_event"), snapshot.get("pending_character_interaction"))
+
+
+def _same_generic_pause_owner(previous: dict[str, object], refreshed: dict[str, object]) -> bool:
+    binding = _generic_pause_owner_binding(previous)
+    return bool(binding is not None and binding == _generic_pause_owner_binding(refreshed)
+                and _date_raw(refreshed, "generic pause refresh") >= _date_raw(previous, "generic pause source"))
 
 
 def _retryable_life_advance_pause_owner(

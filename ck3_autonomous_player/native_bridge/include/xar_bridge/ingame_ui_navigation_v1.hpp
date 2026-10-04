@@ -24,7 +24,8 @@ inline constexpr std::uintptr_t kUiIdAnyTypeGetterRvaV1 = 0x998130;
 
 enum class IngameUiWindowKindV1 : std::uint32_t { character=0, army=1, combat=2, knights=3 };
 enum class IngameUiOperationV1 : std::uint32_t { query=0, open_character=1, select_army=2, open_combat=3, open_knights=4,
-  hover_left_knights=5, hover_right_knights=6, fit_combat_window=7 };
+  hover_left_knights=5, hover_right_knights=6, fit_combat_window=7,
+  hover_army_tooltip=8, leave_army_tooltip=9 };
 struct UiFloat2V1 { float x=0, y=0; };
 struct UiRectV1 { float x=0, y=0, width=0, height=0; };
 struct CombatUiGeometryV1 {
@@ -42,6 +43,12 @@ struct IngameUiRequestV1 {
   IngameUiOperationV1 operation = IngameUiOperationV1::query;
   IngameUiWindowKindV1 window_kind = IngameUiWindowKindV1::character;
   std::uint32_t subject_id = 0;
+  // Fixed semantic fields only; complete child paths stay provider-private.
+  std::string army_tooltip_kind;
+  std::string army_tooltip_receipt;
+  // Assigned by the bridge after public request parsing, never caller input.
+  std::uint64_t connection_generation = 0;
+  std::uint64_t native_revision = 0;
 };
 struct IngameUiGuiOwnerBindingV1 {
   void *context = nullptr;
@@ -94,6 +101,17 @@ inline constexpr std::size_t kUiArmyWindowHandlerSlot12003V1 = 0xC8;
 inline constexpr std::size_t kUiArmyWindowGuiRootOffset12003V1 = 0x60;
 bool IsIngameUiRequestSupportedV1(GuiAbiRevisionV1 revision,
     const IngameUiRequestV1 &request) noexcept;
+struct ArmyTooltipObservationV1 {
+  bool requested=false;
+  bool source_bound=false,hover_matches_source=false,active_stack_read=false;
+  bool active_root_available=false,cache_bytes_observed=false,leave_observed=false;
+  bool receipt_bound=false,later_owner_epoch_available=false;
+  std::string semantic_kind,receipt_id,source_child_path,tooltip_text_child_path;
+  std::uint64_t action_owner_epoch=0,later_owner_epoch=0;
+  std::int32_t active_count=-1,active_top_index=-1,active_top_locked=-1;
+  std::string observed_text,observed_text_sha256;
+  std::string status="unavailable",unavailable_reason;
+};
 struct IngameUiResultV1 {
   GuiAbiRevisionV1 gui_abi_revision = GuiAbiRevisionV1::legacy11906;
   bool available = false;
@@ -129,6 +147,7 @@ struct IngameUiResultV1 {
   std::uint32_t hovered_combat_id = 0;
   CombatUiGeometryV1 combat_geometry{};
   NamedGuiTreeInspectionV1 tree{};
+  ArmyTooltipObservationV1 army_tooltip{};
   std::string status = "unavailable";
   std::string unavailable_reason;
 };

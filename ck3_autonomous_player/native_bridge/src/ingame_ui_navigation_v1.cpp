@@ -8,6 +8,7 @@
 #pragma comment(lib,"bcrypt.lib")
 #include <array>
 #include <algorithm>
+#include <charconv>
 #include <cmath>
 #include <cstring>
 #include <filesystem>
@@ -512,6 +513,7 @@ bool ReadWindow(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *handler,
   }
   return true;
 }
+#include "army_tooltip_v1.inc"
 } // namespace
 
 bool ComputeCombatUiFitTranslationV1(const UiRectV1 &viewport,const UiRectV1 &content,UiFloat2V1 &delta) noexcept {
@@ -526,7 +528,13 @@ bool ComputeCombatUiFitTranslationV1(const UiRectV1 &viewport,const UiRectV1 &co
 }
 bool ValidateIngameUiRequestV1(const IngameUiRequestV1 &r) noexcept {
   const auto k=static_cast<std::uint32_t>(r.window_kind),o=static_cast<std::uint32_t>(r.operation);
-  if(k>3 || o>7 || r.subject_id==(std::numeric_limits<std::uint32_t>::max)())return false;
+  if(k>3 || o>9 || r.subject_id==(std::numeric_limits<std::uint32_t>::max)())return false;
+  if(!r.army_tooltip_kind.empty() || o==8 || o==9) {
+    return k==1 && (o==0 || o==8 || o==9) && r.subject_id<=static_cast<std::uint32_t>((std::numeric_limits<std::int32_t>::max)()) &&
+        (r.army_tooltip_kind=="supply_state" || r.army_tooltip_kind=="attrition") &&
+        (o==8?r.army_tooltip_receipt.empty():ArmyTooltipNonceValid(r.army_tooltip_receipt));
+  }
+  if(!r.army_tooltip_receipt.empty())return false;
   if(r.operation==IngameUiOperationV1::query)return r.subject_id==0;
   if(r.operation==IngameUiOperationV1::open_knights)return r.window_kind==IngameUiWindowKindV1::knights && r.subject_id==0;
   if (o==2 && k==1) return r.subject_id <= static_cast<std::uint32_t>((std::numeric_limits<std::int32_t>::max)());
@@ -534,9 +542,11 @@ bool ValidateIngameUiRequestV1(const IngameUiRequestV1 &r) noexcept {
 }
 bool IsIngameUiRequestSupportedV1(GuiAbiRevisionV1 revision,const IngameUiRequestV1 &r) noexcept {
   if(!ValidateIngameUiRequestV1(r))return false;
-  if(revision==GuiAbiRevisionV1::legacy11906)return true;
+  if(revision==GuiAbiRevisionV1::legacy11906)return r.army_tooltip_kind.empty() && r.army_tooltip_receipt.empty() &&
+      r.operation!=IngameUiOperationV1::hover_army_tooltip && r.operation!=IngameUiOperationV1::leave_army_tooltip;
   return revision==GuiAbiRevisionV1::crozier12003 && r.window_kind==IngameUiWindowKindV1::army &&
-      (r.operation==IngameUiOperationV1::query || r.operation==IngameUiOperationV1::select_army);
+      (r.operation==IngameUiOperationV1::query || r.operation==IngameUiOperationV1::select_army ||
+       r.operation==IngameUiOperationV1::hover_army_tooltip || r.operation==IngameUiOperationV1::leave_army_tooltip);
 }
 bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &r) noexcept {
   r={};std::string kind,operation;std::uint64_t id=0;
@@ -558,8 +568,14 @@ bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &
     else if(operation=="hover_left_knights")r.operation=IngameUiOperationV1::hover_left_knights;
     else if(operation=="hover_right_knights")r.operation=IngameUiOperationV1::hover_right_knights;
     else if(operation=="fit_combat_window")r.operation=IngameUiOperationV1::fit_combat_window;
+    else if(operation=="hover_army_tooltip")r.operation=IngameUiOperationV1::hover_army_tooltip;
+    else if(operation=="leave_army_tooltip")r.operation=IngameUiOperationV1::leave_army_tooltip;
     else return false;
   }
+  if(json.find("\"army_tooltip_kind\"")!=std::string_view::npos &&
+      !bridge::JsonStringField(json,"army_tooltip_kind",r.army_tooltip_kind,16))return false;
+  if(json.find("\"army_tooltip_receipt\"")!=std::string_view::npos &&
+      !bridge::JsonStringField(json,"army_tooltip_receipt",r.army_tooltip_receipt,32))return false;
   return ValidateIngameUiRequestV1(r);
 }
 std::string_view IngameUiWindowNameV1(IngameUiWindowKindV1 k) noexcept {
@@ -583,6 +599,7 @@ bool ExecuteIngameUiNavigationV1(const ZhongguoScoreboardNativeEnvironmentV1 &en
                                 const IngameUiGuiOwnerBindingV1 &gui_binding,IngameUiResultV1 &out) noexcept {
   out={};out.gui_abi_revision=env.gui_abi_revision;out.date_raw=snapshot.date_raw;out.paused=snapshot.paused;out.played_character_id=snapshot.played_character_id;
   out.pump_epoch=stamp.pump_epoch;out.thread_id=stamp.thread_id;
+  if(!request.army_tooltip_kind.empty()) {out.army_tooltip.requested=true;out.army_tooltip.semantic_kind=request.army_tooltip_kind;}
   if(!env.exact_build_admitted || env.offline_fixture_function_overrides || !env.module_base ||
       !ValidateIngameUiRequestV1(request) || !snapshot.paused || !snapshot.map_ready || !snapshot.has_played_character ||
       !stamp.paused || stamp.date_raw!=snapshot.date_raw || stamp.thread_id!=GetCurrentThreadId() || !stamp.pump_epoch) {
@@ -615,6 +632,10 @@ bool ExecuteIngameUiNavigationV1(const ZhongguoScoreboardNativeEnvironmentV1 &en
     out.unavailable_reason="knights_owner_differs_from_played_actor";return true;
   }
   if(request.operation==IngameUiOperationV1::query){
+    if(!request.army_tooltip_kind.empty()) {
+      try {return ArmyTooltipExecute(env,request,snapshot,stamp,gui_binding,handler,out);}
+      catch(...) {ArmyTooltipClearObservations(out.army_tooltip,"tooltip_readback_exception");out.unavailable_reason="tooltip_readback_exception";return true;}
+    }
     if(request.window_kind==IngameUiWindowKindV1::combat && out.subject_id_available && out.effective_visible) {
       if(!out.tree.truncated)ReadCombatGeometry(env,handler,out.current_subject_id,out.combat_geometry);
       else out.combat_geometry.unavailable_reason="target_census_truncated";
@@ -635,6 +656,10 @@ bool ExecuteIngameUiNavigationV1(const ZhongguoScoreboardNativeEnvironmentV1 &en
   }
   if(!ReadModalNavigationAdmission(context,out.modal_admission)) {
     out.unavailable_reason=out.modal_admission.unavailable_reason;return true;
+  }
+  if(!request.army_tooltip_kind.empty()) {
+    try {return ArmyTooltipExecute(env,request,snapshot,stamp,gui_binding,handler,out);}
+    catch(...) {ArmyTooltipClearObservations(out.army_tooltip,"tooltip_action_exception");out.unavailable_reason="tooltip_action_exception";return true;}
   }
   const auto expected=request.operation==IngameUiOperationV1::open_knights ? static_cast<std::uint32_t>(snapshot.played_character_id):request.subject_id;
   if((request.operation==IngameUiOperationV1::open_character || request.operation==IngameUiOperationV1::open_combat ||
@@ -771,6 +796,6 @@ std::string SerializeIngameUiResultV1(const IngameUiRequestV1 &r,const IngameUiR
     o<<"{\"runtime_name\":\""<<JsonEscape(w.runtime_name)<<"\",\"child_path\":\""<<JsonEscape(w.child_path)
      <<"\",\"depth\":"<<w.depth<<",\"child_count\":"<<w.child_count<<",\"vtable_rva\":"<<w.vtable_rva
      <<",\"effective_visible\":"<<w.effective_visible<<",\"enabled\":"<<w.enabled<<'}';
-  }o<<"]}}";return o.str();
+   }o<<"]}";SerializeArmyTooltip(o,v.army_tooltip,v.unavailable_reason);o<<'}';return o.str();
 }
 } // namespace xar::ck3_11906

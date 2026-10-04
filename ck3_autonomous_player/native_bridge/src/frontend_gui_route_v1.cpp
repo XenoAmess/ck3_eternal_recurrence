@@ -840,6 +840,8 @@ bool ExecuteFrontendGuiRouteMailboxV1(
     // never copied from the caller's expected snapshot.
     query->ingame_result = {};
     query->ingame_result.gui_abi_revision = query->environment.gui_abi_revision;
+    query->ingame_result.army_tooltip.requested = !query->ingame_request.army_tooltip_kind.empty();
+    query->ingame_result.army_tooltip.semantic_kind = query->ingame_request.army_tooltip_kind;
     query->ingame_result.date_raw = stamp.date_raw;
     query->ingame_result.paused = stamp.paused;
     query->ingame_result.pump_epoch = stamp.pump_epoch;
@@ -892,6 +894,13 @@ bool ExecuteFrontendGuiRouteMailboxV1(
       query->ingame_result.available = false;
       query->ingame_result.status = "unavailable";
       query->ingame_result.unavailable_reason = "current_gui_owner_binding_changed_after_navigation";
+    }
+    if(!query->ingame_result.available && query->ingame_result.army_tooltip.requested) {
+      const auto kind=query->ingame_request.army_tooltip_kind;
+      query->ingame_result.army_tooltip={};
+      query->ingame_result.army_tooltip.requested=true;
+      query->ingame_result.army_tooltip.semantic_kind=kind;
+      query->ingame_result.army_tooltip.unavailable_reason=query->ingame_result.unavailable_reason;
     }
     return true;
   }

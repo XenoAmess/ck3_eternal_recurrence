@@ -1,6 +1,8 @@
 """Four explicit native presentation routes; no planner/desktop fallback."""
 from __future__ import annotations
 import math
+import hashlib
+import re
 from collections.abc import Mapping
 from .public_unit_contract import public_cunit_id
 from .version_identity import CK3_11906, CK3_12003, NativeBuildIdentity, require_exact_native_build
@@ -11,16 +13,33 @@ NAVIGATE_CAPABILITY = "game.command.navigate-ingame-ui-v1"
 QUERY_CAPABILITY = "game.command.query-ingame-ui-window-v1"
 KINDS = {"character", "army", "combat", "knights"}
 OPERATIONS = {"open_character": "character", "select_army": "army", "open_combat": "combat", "open_knights": "knights",
-              "hover_left_knights":"combat", "hover_right_knights":"combat", "fit_combat_window":"combat"}
+              "hover_left_knights":"combat", "hover_right_knights":"combat", "fit_combat_window":"combat",
+              "hover_army_tooltip":"army", "leave_army_tooltip":"army"}
+ARMY_TOOLTIP_KINDS = {"supply_state", "attrition"}
 
 
-def validate_ui_request(operation: str, kind: str, subject_id: int, revision: int) -> None:
+def validate_ui_request(operation: str, kind: str, subject_id: int, revision: int, *,
+                        army_tooltip_kind: str | None = None,
+                        army_tooltip_receipt: str | None = None) -> None:
     if kind not in KINDS or (operation != "query" and OPERATIONS.get(operation) != kind):
         raise ValueError("unsupported typed UI operation/window")
     if isinstance(revision, bool) or not isinstance(revision, int) or not 0 <= revision < 2**64:
         raise ValueError("expected_revision must be uint64")
     if isinstance(subject_id, bool) or not isinstance(subject_id, int):
         raise ValueError("subject ID must be a full uint32 handle")
+    if army_tooltip_kind is not None:
+        if (not isinstance(army_tooltip_kind, str) or army_tooltip_kind not in ARMY_TOOLTIP_KINDS
+                or kind != "army" or operation not in {"query", "hover_army_tooltip", "leave_army_tooltip"}):
+            raise ValueError("unsupported army tooltip operation/kind")
+        public_cunit_id(subject_id, "subject public CUnitID")
+        if operation == "hover_army_tooltip":
+            if army_tooltip_receipt is not None:
+                raise ValueError("initial army tooltip hover has no caller receipt")
+        elif not isinstance(army_tooltip_receipt, str) or re.fullmatch(r"[0-9a-f]{32}", army_tooltip_receipt) is None:
+            raise ValueError("army tooltip requires a 32 lower-case hex action receipt")
+        return
+    if army_tooltip_receipt is not None or operation in {"hover_army_tooltip", "leave_army_tooltip"}:
+        raise ValueError("army tooltip operation/receipt requires its semantic kind")
     if operation in {"query", "open_knights"}:
         if subject_id != 0:
             raise ValueError("this operation has no caller-selected subject")
@@ -54,17 +73,27 @@ def ingame_ui_build_binding(snapshot: Mapping[str, object]) -> tuple[NativeBuild
     return build, True
 
 
-def validate_ui_build_scope(build: NativeBuildIdentity, operation: str, kind: str) -> None:
+def validate_ui_build_scope(build: NativeBuildIdentity, operation: str, kind: str, *,
+                            army_tooltip_kind: str | None = None) -> None:
     if build not in (CK3_11906, CK3_12003):
         raise ValueError("native UI exact build has no migrated presentation route")
+    if army_tooltip_kind is not None:
+        if build != CK3_12003 or kind != "army" or operation not in {"query", "hover_army_tooltip", "leave_army_tooltip"}:
+            raise ValueError("army tooltips require the exact current native Army route")
+        return
     if build == CK3_12003 and (kind != "army" or operation not in {"query", "select_army"}):
         raise ValueError("current native UI supports army query and select only")
 
 
 def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id: int,
                          native_revision: int, date_raw: int, actor_id: int,
-                         expected_build: NativeBuildIdentity = CK3_11906) -> dict[str, object]:
-    validate_ui_build_scope(expected_build, operation, kind)
+                         expected_build: NativeBuildIdentity = CK3_11906,
+                         army_tooltip_kind: str | None = None,
+                         army_tooltip_receipt: str | None = None) -> dict[str, object]:
+    validate_ui_build_scope(expected_build, operation, kind, army_tooltip_kind=army_tooltip_kind)
+    if army_tooltip_kind is not None:
+        validate_ui_request(operation, kind, subject_id, native_revision,
+            army_tooltip_kind=army_tooltip_kind, army_tooltip_receipt=army_tooltip_receipt)
     if not isinstance(value, dict) or value.get("schema") != "ck3-ingame-ui-window-v1":
         raise ValueError("native UI result schema unavailable")
     expected = {"window_kind": kind, "requested_subject_id": subject_id, "native_revision": native_revision,
@@ -126,7 +155,8 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
         if not value["thread_id"] or not value["pump_epoch"] or (not value["window_exists"] and not unopened_current_select_ack):
             raise ValueError("native UI lacks owner/target-window observation")
         if operation == "query":
-            if value.get("status") != "observed" or value["dispatch_invoked"] or value["verification_pending"]:
+            expected_pending = army_tooltip_kind is not None
+            if value.get("status") != "observed" or value["dispatch_invoked"] or value["verification_pending"] != expected_pending:
                 raise ValueError("query result must be independent and read only")
         elif not value["verification_pending"] or value.get("status") not in {
             "acknowledged_verification_pending", "already_visible_verification_pending", "already_layout_fitted_verification_pending"
@@ -197,7 +227,115 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
     elif (value["left_knight_count"]!=-1 or value["right_knight_count"]!=-1 or value["left_knight_breakdown"] or value["right_knight_breakdown"]):
         raise ValueError("unavailable tooltip must not retain readable numbers/text")
     normalize_combat_geometry(value,operation=operation,kind=kind)
+    normalize_army_tooltip_result(value, operation=operation, subject_id=subject_id,
+        tooltip_kind=army_tooltip_kind, action_receipt=army_tooltip_receipt)
     return dict(value)
+
+
+def normalize_army_tooltip_result(value: dict[str, object], *, operation: str,
+                                  subject_id: int, tooltip_kind: str | None,
+                                  action_receipt: str | None) -> None:
+    tooltip = value.get("army_tooltip")
+    if tooltip_kind is None:
+        if tooltip is not None:
+            raise ValueError("unsolicited army tooltip observations")
+        return
+    fields = {"schema", "semantic_kind", "receipt_id", "action_owner_epoch", "later_owner_epoch",
+        "cache_bytes_observed", "source_bound", "hover_matches_source", "active_stack_read", "active_count",
+        "active_top_index", "active_top_locked", "active_root_available", "source_child_path",
+        "tooltip_text_child_path", "leave_observed", "status", "unavailable_reason", "verification_pending",
+        "gui_update_epoch", "text_refresh_verified", "rendered_verified", "available", "observed_cache"}
+    if not isinstance(tooltip, dict) or not fields.issubset(tooltip):
+        raise ValueError("army tooltip complete observation contract missing")
+    if tooltip["schema"] != "ck3-army-tooltip-v1" or tooltip["semantic_kind"] != tooltip_kind:
+        raise ValueError("army tooltip semantic kind/schema differs")
+    for key in ("cache_bytes_observed", "source_bound", "hover_matches_source", "active_stack_read",
+                "active_root_available", "leave_observed", "verification_pending", "available",
+                "text_refresh_verified", "rendered_verified"):
+        if type(tooltip[key]) is not bool:
+            raise ValueError(f"army tooltip boolean missing: {key}")
+    if (tooltip["available"] or tooltip["text_refresh_verified"] or tooltip["rendered_verified"]
+            or tooltip["gui_update_epoch"] is not None):
+        raise ValueError("army tooltip cache cannot claim GUI refresh or rendered success")
+    if not isinstance(tooltip["unavailable_reason"], str):
+        raise ValueError("army tooltip unavailable reason missing")
+    nullable = ("receipt_id", "action_owner_epoch", "later_owner_epoch", "active_count", "active_top_index",
+        "active_top_locked", "source_child_path", "tooltip_text_child_path", "observed_cache")
+    evidence_flags = ("cache_bytes_observed", "source_bound", "hover_matches_source", "active_stack_read",
+        "active_root_available", "leave_observed")
+    if tooltip["status"] == "unavailable":
+        if (not tooltip["unavailable_reason"] or tooltip["verification_pending"]
+                or any(tooltip[key] is not None for key in nullable)
+                or any(tooltip[key] for key in evidence_flags)):
+            raise ValueError("unavailable army tooltip must clear all observations and receipt")
+        return
+    statuses = {"acknowledged_verification_pending", "cache_observed_verification_pending", "leave_observed_verification_pending"}
+    if tooltip["status"] not in statuses or not tooltip["verification_pending"] or not value["available"]:
+        raise ValueError("army tooltip evidence must remain verification pending")
+    if operation != "query" and not value["dispatch_invoked"]:
+        raise ValueError("army tooltip successful ACK lacks original dispatch")
+    if (not value["window_exists"] or not value["effective_visible"] or not value["subject_id_available"]
+            or value["current_subject_id"] != subject_id or value["tree"]["truncated"]):
+        raise ValueError("army tooltip is not bound to the requested visible full Army ID")
+    receipt = tooltip["receipt_id"]
+    if not isinstance(receipt, str) or re.fullmatch(r"[0-9a-f]{32}", receipt) is None:
+        raise ValueError("army tooltip native receipt malformed")
+    if operation == "query" and receipt != action_receipt:
+        raise ValueError("army tooltip query receipt differs from the requested action")
+    epoch = tooltip["action_owner_epoch"]
+    later = tooltip["later_owner_epoch"]
+    if isinstance(epoch, bool) or not isinstance(epoch, int) or not 0 < epoch < 2**64:
+        raise ValueError("army tooltip action owner epoch missing")
+    if later is not None and (isinstance(later, bool) or not isinstance(later, int) or not epoch <= later < 2**64):
+        raise ValueError("army tooltip later application owner epoch invalid")
+    if operation == "query" and (later is None or later <= epoch):
+        raise ValueError("army tooltip query requires a later application owner epoch")
+    for key in ("source_child_path", "tooltip_text_child_path"):
+        path = tooltip[key]
+        if path is not None and (not isinstance(path, str) or (path and any(
+                re.fullmatch(r"0|[1-9][0-9]*", part) is None for part in path.split("/")))):
+            raise ValueError("army tooltip internal child path malformed")
+    if not tooltip["source_bound"] or tooltip["source_child_path"] is None:
+        raise ValueError("army tooltip source is not independently bound")
+    count, index, locked = tooltip["active_count"], tooltip["active_top_index"], tooltip["active_top_locked"]
+    if not tooltip["active_stack_read"]:
+        if count is not None or index is not None or locked is not None or tooltip["active_root_available"]:
+            raise ValueError("unread army tooltip stack must keep nullable observations")
+    else:
+        if isinstance(count, bool) or not isinstance(count, int) or not 0 <= count < 2**31:
+            raise ValueError("army tooltip actual stack count missing")
+        if index is not None and (isinstance(index, bool) or not isinstance(index, int) or not 0 <= index < count):
+            raise ValueError("army tooltip active top index outside actual stack")
+        if locked is not None and type(locked) is not bool:
+            raise ValueError("army tooltip active lock observation malformed")
+        if tooltip["active_root_available"] and (index is None or locked is None):
+            raise ValueError("army tooltip active root lacks a top entry")
+    cache = tooltip["observed_cache"]
+    if tooltip["cache_bytes_observed"]:
+        if (operation != "query" or tooltip["status"] != "cache_observed_verification_pending"
+                or not tooltip["hover_matches_source"] or not tooltip["active_stack_read"]
+                or not tooltip["active_root_available"] or locked is not False
+                or tooltip["tooltip_text_child_path"] is None or tooltip["leave_observed"]):
+            raise ValueError("army tooltip cache evidence lacks its actual bound active source")
+        if not isinstance(cache, dict) or set(cache) != {"text", "utf8_bytes", "sha256"} or not isinstance(cache["text"], str):
+            raise ValueError("army tooltip observed cache must contain actual complete text bytes")
+        raw = cache["text"].encode("utf-8")
+        size, digest = cache["utf8_bytes"], cache["sha256"]
+        if (isinstance(size, bool) or not isinstance(size, int) or size != len(raw)
+                or not isinstance(digest, str) or re.fullmatch(r"[0-9a-fA-F]{64}", digest) is None
+                or digest.lower() != hashlib.sha256(raw).hexdigest()):
+            raise ValueError("army tooltip observed UTF8 size/SHA differs from complete text")
+    elif cache is not None or tooltip["tooltip_text_child_path"] is not None:
+        raise ValueError("unobserved army tooltip cache must remain explicit null")
+    if tooltip["status"] == "cache_observed_verification_pending" and not tooltip["cache_bytes_observed"]:
+        raise ValueError("army tooltip cache status needs actual cache byte evidence")
+    if tooltip["status"] == "leave_observed_verification_pending":
+        if operation != "query" or not tooltip["leave_observed"] or tooltip["hover_matches_source"] or not tooltip["active_stack_read"]:
+            raise ValueError("army tooltip leave observation lacks an independent later query")
+    elif tooltip["leave_observed"]:
+        raise ValueError("army tooltip leave evidence must keep its pending leave status")
+    if operation != "query" and tooltip["status"] != "acknowledged_verification_pending":
+        raise ValueError("army tooltip action ACK cannot claim a completed observation")
 
 
 def normalize_combat_geometry(value: dict[str, object], *, operation: str, kind: str) -> None:

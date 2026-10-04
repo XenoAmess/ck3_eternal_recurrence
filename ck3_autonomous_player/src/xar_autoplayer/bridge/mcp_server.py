@@ -13,6 +13,7 @@ from pydantic import Field
 IngameUiHandleV1 = Annotated[int, Field(strict=True, gt=0, lt=2**32 - 1)]
 PublicCUnitId = Annotated[int, Field(strict=True, ge=0, le=2**31 - 1)]
 IngameUiRevisionV1 = Annotated[int, Field(strict=True, ge=0, lt=2**64)]
+ArmyTooltipReceiptV1 = Annotated[str, Field(strict=True, min_length=32, max_length=32, pattern=r"^[0-9a-f]{32}$")]
 
 from xar_autoplayer.ck3_save_artifacts import Ck3ProfileArtifactInspector
 from xar_autoplayer.ck3_runtime_diagnostics import Ck3RuntimeDiagnosticsInspector
@@ -2970,6 +2971,21 @@ def create_server(
     def ck3_select_army_ui_v1(subject_army_id: PublicCUnitId, expected_revision: IngameUiRevisionV1) -> dict[str, object]:
         """Select a played army's public CUnitID through vanilla presentation routing."""
         return service.select_army_ui_v1(subject_army_id, expected_revision=expected_revision)
+
+    @server.tool()
+    def ck3_hover_army_tooltip_v1(subject_army_id: PublicCUnitId, tooltip_kind: Literal["supply_state", "attrition"], expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+        """Native Army tooltip enter on exact 1.20.0.3; ACK remains pending GUI and rendered verification."""
+        return service.hover_army_tooltip_v1(subject_army_id, tooltip_kind, expected_revision=expected_revision)
+
+    @server.tool()
+    def ck3_leave_army_tooltip_v1(subject_army_id: PublicCUnitId, tooltip_kind: Literal["supply_state", "attrition"], action_receipt: ArmyTooltipReceiptV1, expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+        """Native Army tooltip leave with a bound receipt; use its new receipt for later query."""
+        return service.leave_army_tooltip_v1(subject_army_id, tooltip_kind, action_receipt, expected_revision=expected_revision)
+
+    @server.tool()
+    def ck3_query_army_tooltip_v1(subject_army_id: PublicCUnitId, tooltip_kind: Literal["supply_state", "attrition"], action_receipt: ArmyTooltipReceiptV1, expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+        """Read actual native cache bytes for a bound Army tooltip receipt; freshness and pixels remain unverified."""
+        return service.query_army_tooltip_v1(subject_army_id, tooltip_kind, action_receipt, expected_revision=expected_revision)
 
     @server.tool()
     def ck3_open_combat_window_v1(combat_id: IngameUiHandleV1, expected_revision: IngameUiRevisionV1) -> dict[str, object]:

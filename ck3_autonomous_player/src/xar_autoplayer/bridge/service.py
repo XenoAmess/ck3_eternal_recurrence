@@ -9467,17 +9467,34 @@ class GameplayBridgeService:
             ],
         }
 
-    def _typed_ingame_ui_v1(self, operation: str, kind: str, subject_id: int, expected_revision: int) -> dict[str, object]:
-        from .ingame_ui_contract import QUERY_CAPABILITY, NAVIGATE_CAPABILITY, validate_ui_request
-        validate_ui_request(operation, kind, subject_id, expected_revision)
+    def _typed_ingame_ui_v1(self, operation: str, kind: str, subject_id: int, expected_revision: int,
+            *, army_tooltip_kind: str | None = None, army_tooltip_receipt: str | None = None) -> dict[str, object]:
+        from .ingame_ui_contract import (QUERY_CAPABILITY, NAVIGATE_CAPABILITY, validate_ui_request,
+            ingame_ui_build_binding, validate_ui_build_scope)
+        validate_ui_request(operation, kind, subject_id, expected_revision,
+            army_tooltip_kind=army_tooltip_kind, army_tooltip_receipt=army_tooltip_receipt)
         snapshot = self.snapshot()
         if snapshot.get("paused") is not True or snapshot.get("map_ready") is not True:
             raise BridgeUnavailableError("typed UI requires a paused map-ready snapshot")
         if snapshot.get("revision") != expected_revision:
             raise PreSubmissionRevisionMismatchError("typed UI public revision differs")
         capability = QUERY_CAPABILITY if operation == "query" else NAVIGATE_CAPABILITY
-        if capability not in self.capabilities().get("bridge_capabilities", []):
+        capabilities = self.capabilities()
+        if capability not in capabilities.get("bridge_capabilities", []):
             raise UnsupportedStepError("capability_not_available: typed UI has no desktop fallback")
+        if army_tooltip_kind is not None:
+            if capabilities.get("backend_id") != "native-headless":
+                raise UnsupportedStepError("capability_not_available: Army tooltip requires the exact native backend")
+            validate_ui_build_scope(ingame_ui_build_binding(snapshot)[0], operation, kind,
+                army_tooltip_kind=army_tooltip_kind)
+            method_name = {"hover_army_tooltip": "hover_army_tooltip_v1",
+                "leave_army_tooltip": "leave_army_tooltip_v1", "query": "query_army_tooltip_v1"}[operation]
+            method = getattr(self.driver, method_name, None)
+            if not callable(method):
+                raise UnsupportedStepError("selected backend lacks this typed UI method")
+            if operation == "hover_army_tooltip":
+                return method(subject_id, army_tooltip_kind, expected_revision=expected_revision)
+            return method(subject_id, army_tooltip_kind, army_tooltip_receipt, expected_revision=expected_revision)
         method_name = {"query": "query_ingame_ui_window_v1", "open_character": "open_character_window_v1",
             "select_army": "select_army_ui_v1", "open_combat": "open_combat_window_v1", "open_knights": "open_knights_window_v1",
             "hover_left_knights":"hover_combat_knights_v1", "hover_right_knights":"hover_combat_knights_v1",
@@ -9496,6 +9513,18 @@ class GameplayBridgeService:
 
     def select_army_ui_v1(self, subject_army_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._typed_ingame_ui_v1("select_army", "army", subject_army_id, expected_revision)
+
+    def hover_army_tooltip_v1(self, subject_army_id: int, tooltip_kind: str, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("hover_army_tooltip", "army", subject_army_id, expected_revision,
+            army_tooltip_kind=tooltip_kind)
+
+    def leave_army_tooltip_v1(self, subject_army_id: int, tooltip_kind: str, action_receipt: str, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("leave_army_tooltip", "army", subject_army_id, expected_revision,
+            army_tooltip_kind=tooltip_kind, army_tooltip_receipt=action_receipt)
+
+    def query_army_tooltip_v1(self, subject_army_id: int, tooltip_kind: str, action_receipt: str, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("query", "army", subject_army_id, expected_revision,
+            army_tooltip_kind=tooltip_kind, army_tooltip_receipt=action_receipt)
 
     def open_combat_window_v1(self, combat_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._typed_ingame_ui_v1("open_combat", "combat", combat_id, expected_revision)

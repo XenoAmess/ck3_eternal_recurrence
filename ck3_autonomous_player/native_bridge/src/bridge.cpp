@@ -15440,6 +15440,10 @@ void RunConnectedSession(
               else query.ingame_bindings = xar::ck3_11906::BindCurrentProcess(true);
               query.ingame_expected_snapshot = current_snapshot;
               query.ingame_request = ui_request;
+              // Process/connection identity is provider-owned, never parsed
+              // from caller fields; opaque tooltip receipts bind this lifetime.
+              query.ingame_request.connection_generation = connection_generation;
+              query.ingame_request.native_revision = state_revision;
               query.environment = xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(
                   reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), true, ui_abi);
               query.ingame_result.gui_abi_revision=ui_abi;

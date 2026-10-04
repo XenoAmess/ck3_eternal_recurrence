@@ -617,4 +617,292 @@ class CrozierArmyUiTests(unittest.TestCase):
                 self.assertEqual(len(driver.sent),1)
 
 
+HOVER_RECEIPT = "a" * 32
+LEAVE_RECEIPT = "b" * 32
+
+
+def army_tooltip_result(operation="query", subject=0, tooltip_kind="supply_state", *,
+                        phase="cache", receipt=HOVER_RECEIPT, text="#T 补给状态#!\n-2.5%\n"):
+    import hashlib
+    value = current_result(operation, subject)
+    value["verification_pending"] = True
+    tooltip = {"schema":"ck3-army-tooltip-v1", "semantic_kind":tooltip_kind,
+        "receipt_id":receipt, "action_owner_epoch":14, "later_owner_epoch":15 if operation == "query" else None,
+        "cache_bytes_observed":False, "source_bound":True, "hover_matches_source":False,
+        "active_stack_read":False, "active_count":None, "active_top_index":None,
+        "active_top_locked":None, "active_root_available":False, "source_child_path":"0/2",
+        "tooltip_text_child_path":None, "leave_observed":False,
+        "status":"acknowledged_verification_pending", "unavailable_reason":"",
+        "verification_pending":True, "gui_update_epoch":None, "text_refresh_verified":False,
+        "rendered_verified":False, "available":False, "observed_cache":None}
+    if phase == "cache":
+        tooltip.update(cache_bytes_observed=True, hover_matches_source=True, active_stack_read=True,
+            active_count=1, active_top_index=0, active_top_locked=False, active_root_available=True,
+            tooltip_text_child_path="0/1", status="cache_observed_verification_pending",
+            observed_cache={"text":text, "utf8_bytes":len(text.encode("utf-8")),
+                "sha256":hashlib.sha256(text.encode("utf-8")).hexdigest()})
+    elif phase == "leave":
+        tooltip.update(active_stack_read=True, active_count=0, leave_observed=True,
+            status="leave_observed_verification_pending")
+    elif phase == "unavailable":
+        value.update(accepted=False, available=False, status="unavailable", dispatch_invoked=False,
+            verification_pending=False, unavailable_reason="offline_source_binding_changed")
+        for key in ("receipt_id", "action_owner_epoch", "later_owner_epoch", "source_child_path"):
+            tooltip[key] = None
+        tooltip.update(source_bound=False, verification_pending=False, status="unavailable",
+            unavailable_reason="offline_source_binding_changed")
+    value["army_tooltip"] = tooltip
+    return value
+
+
+class ArmyTooltipTests(unittest.TestCase):
+    def normalize(self, value, operation="query", subject=0, tooltip_kind="supply_state", receipt=HOVER_RECEIPT):
+        from xar_autoplayer.bridge.version_identity import CK3_12003
+        return normalize_ui_result(value, operation=operation, kind="army", subject_id=subject,
+            native_revision=3, date_raw=53146848, actor_id=29829, expected_build=CK3_12003,
+            army_tooltip_kind=tooltip_kind, army_tooltip_receipt=None if operation == "hover_army_tooltip" else receipt)
+
+    def test_cache_bytes_are_exact_evidence_and_all_refresh_claims_remain_false(self):
+        for text in ("", "#T 补给状态#!\n-2.5%\n", "  汉字\r\n尾行\n", "literal\\n#P +0.0#!"):
+            raw=army_tooltip_result(text=text)
+            raw["army_tooltip"]["observed_cache"]["sha256"]=raw["army_tooltip"]["observed_cache"]["sha256"].upper()
+            with self.subTest(text=text):
+                got=self.normalize(raw)
+                self.assertEqual(got["army_tooltip"],raw["army_tooltip"])
+                self.assertFalse(got["army_tooltip"]["available"])
+                self.assertFalse(got["army_tooltip"]["text_refresh_verified"])
+                self.assertFalse(got["army_tooltip"]["rendered_verified"])
+                self.assertIsNone(got["army_tooltip"]["gui_update_epoch"])
+                self.assertTrue(got["verification_pending"])
+
+    def test_utf8_size_hash_and_complete_cache_keys_reject_mixed_text(self):
+        for key,changed in (("text","changed"),("utf8_bytes",True),("utf8_bytes",0),("sha256","0"*64),("sha256",None)):
+            raw=army_tooltip_result();raw["army_tooltip"]["observed_cache"][key]=changed
+            with self.subTest(key=key,changed=changed),self.assertRaises(ValueError):self.normalize(raw)
+        for cache in (None,{}, {"text":"", "utf8_bytes":0, "sha256":"0"*64, "pointer":100}):
+            raw=army_tooltip_result();raw["army_tooltip"]["observed_cache"]=cache
+            with self.subTest(cache=cache),self.assertRaises(ValueError):self.normalize(raw)
+
+    def test_refresh_gui_epoch_available_and_boolean_claims_reject(self):
+        for key,changed in (("available",True),("text_refresh_verified",True),("rendered_verified",True),
+                ("gui_update_epoch",15),("verification_pending",False),("source_bound",1),("cache_bytes_observed",1)):
+            raw=army_tooltip_result();raw["army_tooltip"][key]=changed
+            with self.subTest(key=key),self.assertRaises(ValueError):self.normalize(raw)
+
+    def test_source_stack_locked_root_and_visible_subject_must_match_actual_cache(self):
+        for key,changed in (("source_bound",False),("hover_matches_source",False),("active_stack_read",False),
+                ("active_count",None),("active_count",True),("active_top_index",1),("active_top_index",None),
+                ("active_top_locked",True),("active_top_locked",None),("active_root_available",False),
+                ("tooltip_text_child_path",None),("source_child_path","0//2"),("leave_observed",True)):
+            raw=army_tooltip_result();raw["army_tooltip"][key]=changed
+            with self.subTest(key=key),self.assertRaises(ValueError):self.normalize(raw)
+        for key,changed in (("current_subject_id",1),("subject_id_available",False),("effective_visible",False)):
+            raw=army_tooltip_result();raw[key]=changed
+            with self.subTest(key=key),self.assertRaises(ValueError):self.normalize(raw)
+        raw=army_tooltip_result();raw["tree"]["truncated"]=True
+        with self.assertRaises(ValueError):self.normalize(raw)
+
+    def test_query_requires_matching_lower_hex_receipt_and_later_application_epoch(self):
+        for key,changed in (("receipt_id",LEAVE_RECEIPT),("receipt_id","A"*32),("receipt_id",None),
+                ("action_owner_epoch",0),("action_owner_epoch",True),("later_owner_epoch",None),
+                ("later_owner_epoch",14),("later_owner_epoch",True),("later_owner_epoch",2**64)):
+            raw=army_tooltip_result();raw["army_tooltip"][key]=changed
+            with self.subTest(key=key),self.assertRaises(ValueError):self.normalize(raw)
+
+    def test_action_ack_is_pending_and_leave_rotates_receipt(self):
+        hover=army_tooltip_result("hover_army_tooltip",phase="ack")
+        self.assertEqual(self.normalize(hover,"hover_army_tooltip")["army_tooltip"]["receipt_id"],HOVER_RECEIPT)
+        leave=army_tooltip_result("leave_army_tooltip",phase="ack",receipt=LEAVE_RECEIPT)
+        got=self.normalize(leave,"leave_army_tooltip")
+        self.assertEqual(got["army_tooltip"]["receipt_id"],LEAVE_RECEIPT)
+        self.assertIsNone(got["army_tooltip"]["active_count"])
+        self.assertIsNone(got["army_tooltip"]["observed_cache"])
+        leave["dispatch_invoked"]=False
+        with self.assertRaises(ValueError):self.normalize(leave,"leave_army_tooltip")
+
+    def test_later_leave_observation_keeps_null_cache_and_nullable_top_entry(self):
+        raw=army_tooltip_result(phase="leave",receipt=LEAVE_RECEIPT)
+        got=self.normalize(raw,receipt=LEAVE_RECEIPT)
+        self.assertTrue(got["army_tooltip"]["leave_observed"])
+        self.assertFalse(got["army_tooltip"]["cache_bytes_observed"])
+        self.assertIsNone(got["army_tooltip"]["observed_cache"])
+        self.assertEqual(got["army_tooltip"]["active_count"],0)
+        self.assertIsNone(got["army_tooltip"]["active_top_index"])
+        self.assertIsNone(got["army_tooltip"]["active_top_locked"])
+        for key,changed in (("hover_matches_source",True),("leave_observed",False),("observed_cache",{})):
+            bad=copy.deepcopy(raw);bad["army_tooltip"][key]=changed
+            with self.subTest(key=key),self.assertRaises(ValueError):self.normalize(bad,receipt=LEAVE_RECEIPT)
+
+    def test_unavailable_clears_all_observations_and_receipt(self):
+        raw=army_tooltip_result(phase="unavailable")
+        self.assertFalse(self.normalize(raw)["army_tooltip"]["verification_pending"])
+        for key,changed in (("receipt_id",HOVER_RECEIPT),("action_owner_epoch",14),("active_count",0),
+                ("active_top_locked",False),("source_child_path",""),("observed_cache",{}),
+                ("source_bound",True),("unavailable_reason",""),("verification_pending",True)):
+            bad=copy.deepcopy(raw);bad["army_tooltip"][key]=changed
+            with self.subTest(key=key),self.assertRaises(ValueError):self.normalize(bad)
+
+    def test_request_receipt_kind_public_id_revision_are_strict_before_dispatch(self):
+        for subject,kind,receipt,revision in ((True,"supply_state",HOVER_RECEIPT,4),(-1,"attrition",HOVER_RECEIPT,4),
+                (2**31,"attrition",HOVER_RECEIPT,4),(0,"arbitrary",HOVER_RECEIPT,4),(0,True,HOVER_RECEIPT,4),
+                (0,"attrition","A"*32,4),(0,"attrition","0x1000",4),(0,"attrition",None,4),
+                (0,"attrition",True,4),(0,"attrition",HOVER_RECEIPT,True)):
+            driver=CurrentUiDriverFixture(army_tooltip_result())
+            with self.subTest(subject=subject,kind=kind,receipt=receipt,revision=revision),self.assertRaises(ValueError):
+                driver.query_army_tooltip_v1(subject,kind,receipt,expected_revision=revision)
+            self.assertFalse(driver.calls)
+        with self.assertRaises(ValueError):validate_ui_request("hover_army_tooltip","army",0,4,
+            army_tooltip_kind="attrition",army_tooltip_receipt=HOVER_RECEIPT)
+        with self.assertRaises(ValueError):validate_ui_request("query","army",0,4,army_tooltip_receipt=HOVER_RECEIPT)
+
+    def test_driver_wire_lifecycle_preserves_public_zero_and_returned_nonce(self):
+        for subject in (0,16777218,2**31-1):
+            for kind in ("supply_state","attrition"):
+                with self.subTest(subject=subject,kind=kind):
+                    driver=CurrentUiDriverFixture(army_tooltip_result("hover_army_tooltip",subject,kind,phase="ack"))
+                    hovered=driver.hover_army_tooltip_v1(subject,kind,expected_revision=4)
+                    self.assertEqual(driver.calls[-1][1]["request_fields"],{"window_kind":"army","subject_id":subject,
+                        "operation":"hover_army_tooltip","army_tooltip_kind":kind})
+                    driver.raw=army_tooltip_result(subject=subject,tooltip_kind=kind)
+                    driver.query_army_tooltip_v1(subject,kind,hovered["army_tooltip"]["receipt_id"],expected_revision=4)
+                    self.assertEqual(driver.calls[-1][0],"query-ingame-ui-window-v1")
+                    self.assertEqual(driver.calls[-1][1]["request_fields"],{"window_kind":"army","subject_id":subject,
+                        "army_tooltip_kind":kind,"army_tooltip_receipt":HOVER_RECEIPT})
+                    driver.raw=army_tooltip_result("leave_army_tooltip",subject,kind,phase="ack",receipt=LEAVE_RECEIPT)
+                    left=driver.leave_army_tooltip_v1(subject,kind,HOVER_RECEIPT,expected_revision=4)
+                    self.assertEqual(left["army_tooltip"]["receipt_id"],LEAVE_RECEIPT)
+                    driver.raw=army_tooltip_result(subject=subject,tooltip_kind=kind,phase="leave",receipt=LEAVE_RECEIPT)
+                    driver.query_army_tooltip_v1(subject,kind,left["army_tooltip"]["receipt_id"],expected_revision=4)
+                    self.assertEqual(driver.calls[-1][1]["request_fields"]["army_tooltip_receipt"],LEAVE_RECEIPT)
+
+    def test_old_missing_hello_legacy_and_unmigrated_build_never_dispatch(self):
+        from xar_autoplayer.bridge.version_identity import CK3_11906,CK3_12002
+        samples=[snapshot()]
+        for build in (CK3_11906,CK3_12002):
+            before=current_snapshot();before["diagnostics"]["hello"]={"expected_ck3_version":build.game_version,
+                "expected_ck3_sha256":build.executable_sha256};samples.append(before)
+        for before in samples:
+            driver=CurrentUiDriverFixture(army_tooltip_result())
+            with patch.object(driver,"take_snapshot",return_value=before),self.subTest(before=before),self.assertRaises(ValueError):
+                driver.query_army_tooltip_v1(0,"supply_state",HOVER_RECEIPT,expected_revision=4)
+            self.assertFalse(driver.calls)
+
+    def test_driver_exact_backend_and_existing_capability_gate_no_fallback(self):
+        for capability in ({"backend_id":"desktop","bridge_capabilities":["game.command.query-ingame-ui-window-v1"]},
+                {"backend_id":"native-headless","bridge_capabilities":[]}):
+            driver=CurrentUiDriverFixture(army_tooltip_result())
+            with patch.object(driver,"capabilities",return_value=capability),self.subTest(capability=capability),self.assertRaises(Exception):
+                driver.query_army_tooltip_v1(0,"supply_state",HOVER_RECEIPT,expected_revision=4)
+            self.assertFalse(driver.calls)
+
+    def test_driver_post_session_connection_hello_changes_preserve_raw_failure(self):
+        for key,changed in (("episode_run_id","other"),("date_raw",53146872),("played_character",{"character_id":33437}),
+                ("diagnostics",{"connection_generation":3, "hello":current_snapshot()["diagnostics"]["hello"]})):
+            end=current_snapshot();end[key]=changed
+            raw=army_tooltip_result();driver=CurrentUiDriverFixture(raw,end)
+            with self.subTest(key=key),self.assertRaises(BridgeUnavailableError):
+                driver.query_army_tooltip_v1(0,"supply_state",HOVER_RECEIPT,expected_revision=4)
+            self.assertEqual(driver.records[-1][1]["result"]["raw_native_ui_result"],raw)
+        end=current_snapshot();del end["diagnostics"]["hello"]
+        driver=CurrentUiDriverFixture(army_tooltip_result(),end)
+        with self.assertRaises(BridgeUnavailableError):driver.query_army_tooltip_v1(0,"supply_state",HOVER_RECEIPT,expected_revision=4)
+
+    def test_driver_invalid_return_keeps_unmodified_cache_in_history(self):
+        raw=army_tooltip_result();raw["army_tooltip"]["observed_cache"]["sha256"]="0"*64
+        driver=CurrentUiDriverFixture(raw)
+        with self.assertRaises(ValueError):driver.query_army_tooltip_v1(0,"supply_state",HOVER_RECEIPT,expected_revision=4)
+        self.assertEqual(driver.records[-1][1]["result"]["raw_native_ui_result"],raw)
+        self.assertEqual(driver.records[-1][1]["result"]["raw_native_ui_result"]["army_tooltip"]["observed_cache"]["text"],raw["army_tooltip"]["observed_cache"]["text"])
+
+    def test_real_primitive_retains_tooltip_failure_artifact(self):
+        import json
+        with tempfile.TemporaryDirectory() as temp:
+            raw=army_tooltip_result();raw["army_tooltip"]["text_refresh_verified"]=True
+            driver=CurrentPrimitiveUiFixture(raw,Path(temp))
+            with self.assertRaises(ValueError):driver.query_army_tooltip_v1(0,"supply_state",HOVER_RECEIPT,expected_revision=4)
+            saved=json.loads(next(Path(temp).rglob("native-ui-*.json")).read_text(encoding="utf-8"))
+            self.assertEqual(saved["original_parsed_command_result"]["result"],raw)
+            self.assertEqual(len(driver.sent),1)
+
+    def test_ordinary_query_keeps_no_tooltip_and_no_pending_verification(self):
+        from xar_autoplayer.bridge.version_identity import CK3_12003
+        raw=current_result()
+        self.assertFalse(normalize_ui_result(raw,operation="query",kind="army",subject_id=0,
+            native_revision=3,date_raw=53146848,actor_id=29829,expected_build=CK3_12003)["verification_pending"])
+        with self.assertRaises(ValueError):normalize_ui_result(army_tooltip_result(),operation="query",kind="army",subject_id=0,
+            native_revision=3,date_raw=53146848,actor_id=29829,expected_build=CK3_12003)
+        bad=army_tooltip_result();bad["verification_pending"]=False
+        with self.assertRaises(ValueError):self.normalize(bad)
+
+    def test_service_routes_exact_native_lifecycle_and_denies_other_builds(self):
+        from xar_autoplayer.bridge.service import GameplayBridgeService
+        driver=CurrentUiDriverFixture(army_tooltip_result("hover_army_tooltip",phase="ack"));service=GameplayBridgeService(driver)
+        hover=service.hover_army_tooltip_v1(0,"supply_state",expected_revision=4)
+        driver.raw=army_tooltip_result()
+        service.query_army_tooltip_v1(0,"supply_state",hover["army_tooltip"]["receipt_id"],expected_revision=4)
+        driver.raw=army_tooltip_result("leave_army_tooltip",phase="ack",receipt=LEAVE_RECEIPT)
+        self.assertEqual(service.leave_army_tooltip_v1(0,"supply_state",HOVER_RECEIPT,expected_revision=4)["army_tooltip"]["receipt_id"],LEAVE_RECEIPT)
+        legacy=DriverFixture(army_tooltip_result());legacy_service=GameplayBridgeService(legacy)
+        with self.assertRaises(ValueError):legacy_service.query_army_tooltip_v1(0,"supply_state",HOVER_RECEIPT,expected_revision=4)
+        self.assertFalse(legacy.calls)
+        with patch.object(driver,"capabilities",return_value={"backend_id":"desktop","bridge_capabilities":["game.command.query-ingame-ui-window-v1"]}),self.assertRaises(Exception):
+            service.query_army_tooltip_v1(0,"supply_state",HOVER_RECEIPT,expected_revision=4)
+
+
+class ArmyTooltipMcpTests(unittest.IsolatedAsyncioTestCase):
+    async def test_fixed_cold_registration_strict_schemas_and_real_service_lifecycle(self):
+        from mcp import Client
+        driver=CurrentUiDriverFixture(army_tooltip_result("hover_army_tooltip",phase="ack"))
+        server=create_server(driver)
+        self.assertEqual(driver.reads,0)
+        async with Client(server) as client:
+            names={tool.name:tool for tool in (await client.list_tools()).tools}
+            self.assertEqual(driver.reads,0)
+            for name in ("hover","leave","query"):
+                schema=names[f"ck3_{name}_army_tooltip_v1"].input_schema
+                required={"subject_army_id","tooltip_kind","expected_revision"}
+                if name != "hover":required.add("action_receipt")
+                self.assertEqual(set(schema["required"]),required)
+                self.assertEqual(schema["properties"]["subject_army_id"]["minimum"],0)
+                self.assertEqual(set(schema["properties"]["tooltip_kind"]["enum"]),{"supply_state","attrition"})
+                self.assertFalse(any(key in schema["properties"] for key in ("pointer","path","rva","connection_generation","native_revision")))
+                if name != "hover":self.assertEqual(schema["properties"]["action_receipt"]["pattern"],"^[0-9a-f]{32}$")
+            args={"subject_army_id":0,"tooltip_kind":"supply_state","expected_revision":4}
+            hover=await client.call_tool("ck3_hover_army_tooltip_v1",args)
+            self.assertFalse(hover.is_error)
+            receipt=hover.structured_content["army_tooltip"]["receipt_id"]
+            self.assertEqual(receipt,HOVER_RECEIPT)
+            driver.raw=army_tooltip_result()
+            query=await client.call_tool("ck3_query_army_tooltip_v1",{**args,"action_receipt":receipt})
+            self.assertFalse(query.is_error)
+            self.assertTrue(query.structured_content["army_tooltip"]["cache_bytes_observed"])
+            self.assertFalse(query.structured_content["army_tooltip"]["available"])
+            self.assertTrue(query.structured_content["verification_pending"])
+            driver.raw=army_tooltip_result("leave_army_tooltip",phase="ack",receipt=LEAVE_RECEIPT)
+            leave=await client.call_tool("ck3_leave_army_tooltip_v1",{**args,"action_receipt":receipt})
+            self.assertFalse(leave.is_error)
+            rotated=leave.structured_content["army_tooltip"]["receipt_id"]
+            self.assertEqual(rotated,LEAVE_RECEIPT)
+            driver.raw=army_tooltip_result(phase="leave",receipt=rotated)
+            after=await client.call_tool("ck3_query_army_tooltip_v1",{**args,"action_receipt":rotated})
+            self.assertFalse(after.is_error)
+            self.assertTrue(after.structured_content["army_tooltip"]["leave_observed"])
+            count=len(driver.calls)
+            for changes in ({"subject_army_id":True},{"subject_army_id":-1},{"tooltip_kind":"arbitrary"},
+                    {"expected_revision":True},{"action_receipt":"A"*32},{"action_receipt":"0x1000"}):
+                failed=await client.call_tool("ck3_query_army_tooltip_v1",{**args,"action_receipt":rotated,**changes})
+                self.assertTrue(failed.is_error)
+            self.assertEqual(len(driver.calls),count)
+
+    async def test_registered_interface_is_not_legacy_tooltip_capability(self):
+        from mcp import Client
+        driver=DriverFixture(army_tooltip_result());server=create_server(driver)
+        async with Client(server) as client:
+            self.assertIn("ck3_query_army_tooltip_v1",{tool.name for tool in (await client.list_tools()).tools})
+            failed=await client.call_tool("ck3_query_army_tooltip_v1",{"subject_army_id":0,"tooltip_kind":"attrition",
+                "action_receipt":HOVER_RECEIPT,"expected_revision":4})
+            self.assertTrue(failed.is_error)
+            self.assertFalse(driver.calls)
+
+
 if __name__=="__main__":unittest.main()

@@ -41,3 +41,12 @@ Strategy-advertised action targets and raw `execute_step` move literals retain t
 Root直接审阅1920×1080原图 `frames/arrived-army-panel-r0162-a01/desktop.png`（SHA3035050dcd8adc9bfc7eca4cf44a4c99d5f0f200340492529e7bd4b913884d84）：军队2413、损耗0%、补给82/100与下降箭头。它只证明这张当前原图，非整片观看。鼠标仍在Lewes生成的移动候选ETA9天不能当已经结束的主军路线ETA。native stock82.99737与GUI82是同一实际案例的两种显示精度。
 
 独立检查与像素来源在 `C:/ck3-war-episode04-research-20261004-a01/army-ui-live-r0162-a01/ROOT-DELIVERY03.json`。初始hidden和后续visible均保全。原版AF9000→AFB630只读解释已闭普通view6/combat view1A，精确sieging3→SiegeWindow分支仍未闭，不能先断言状态分支或ABI端口失败。此轮未生产Army tooltip完整文本、GUI更新epoch或hover/leave原图；P0-TERM十一项提示仍未全部拍齐。
+## 2026-10-05 Army tooltip 最小提供者
+
+在R0162的普通Army面板可见证据之后，新增 `ck3_hover_army_tooltip_v1`、`ck3_query_army_tooltip_v1`、`ck3_leave_army_tooltip_v1`，仅覆盖exact 1.20.0.3的 `supply_state` 与 `attrition`。使用原版hover setter `3AA6040(context, target/null)`，从完整当前Army树解析所属控件；公共Army ID 0合法。
+
+hover返回绑定当前连接、日期、full Army/owner/root/source及owner epoch的原生nonce。另一次query要求相同source为实际unlocked tooltip top，读取实际唯一可见 `TooltipText` 的完整UTF-8 cache两遍并保全字节/SHA。leave返回新nonce，另一次query确认所属source消失、先前实际观测root隐藏、同Army仍在。它不直接写hover指针，也不关闭Army面板。
+
+GUI更新epoch producer仍未查明：`gui_update_epoch=null`、`text_refresh_verified=false`、`rendered_verified=false`及nested `available=false`保持，实际cache单列为 `observed_cache`。后来一次application owner turn不能替代GUI更新或像素证据。Root在下一轮用新鲜snapshot确认玩家存活、无事件，并以真实画面另行核对文字；这些现场前提不能称为provider新增的独立完整门禁。
+
+最终native06与Python01 patch分别为 `196e1901400f8613688c8e0135d61a4bc31833a60f342874bf9b926637829acc`、`b791f68c621d466128287adf43a77c403d0aac626e1cd535913010cd0ad2f305`。外置候选、actual synthetic producer/mailbox检查及独立peer保存在 `C:/ck3-war-episode04-research-20261004-a01/army-tooltip-provider-a01/`。Root合入两个patch及safe-pause后，主树70项UI focused与16项pause focused通过，记录在 `root-code-checks-a01/`；Endpoint/local buffers不构成真实CK3 tooltip验收。正式DLL构建与下一次隔离实机另记。
