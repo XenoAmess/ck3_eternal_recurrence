@@ -156,7 +156,7 @@ def sha256(path: Path) -> str:
 def validate() -> list[str]:
     errors = builder.release_source_errors(MOD)
     expected_descriptor = (
-        'version="1.0.0"\n'
+        'version="1.0.1"\n'
         'tags={\n'
         '\t"Gameplay"\n'
         '\t"Balance"\n'
@@ -166,7 +166,7 @@ def validate() -> list[str]:
         '}\n'
         'name="天朝制允许经商&贪腐框架（XenoAmess维护版）"\n'
         'picture="thumbnail.png"\n'
-        'supported_version="1.20.0.2"\n'
+        'supported_version="1.20.0.3"\n'
     )
     if read_text("descriptor.mod").replace("\r\n", "\n") != expected_descriptor:
         errors.append("descriptor.mod fields or ordering differ from the release contract")

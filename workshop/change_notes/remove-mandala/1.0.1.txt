@@ -1,0 +1,25 @@
+肃清曼荼罗伪信 1.0.1 — CK3 1.20.0.3 维护更新
+相对上一公开版本 1.0.0。
+
+变更：
+• 版本更新为 1.0.1，兼容声明更新为 CK3 1.20.0.3，工坊说明同步更新。
+• 原生产业务脚本逐字不变；没有新增政体、地产转换策略或额外开关。
+• 保留默认开启的【肃清曼荼罗伪信】：开局、后一日及每月转曼荼罗统治者为村社制；开局、后两日及每年转寺庙城寨为城堡。
+• 保留成功 AI 转入曼荼罗后的统一政体变更拦截，立即转回村社制。
+• 九语本地化、主视觉和 15 文件发行范围保持不变；验收夹具不进入正式发行树。
+
+兼容与存档：推荐新开单人存档。启用本规则会在有效清理时有意转换匹配的政体与地产，城堡不兼容建筑可能随地产类型变化移除，这是原版引擎行为。没有新增脚本式存档迁移步骤。其他 mod 覆盖相同政体、地产、规则、事件或 on_action 键时，不保证兼容。
+验收范围：周期 dispatcher 采用加速日期检查，不能代称自然等待一年、关闭规则分支或独立保存/载入矩阵已验证。历史旧版本验收保留，不作为新版实机证据。
+
+Mandala Purge 1.0.1 — CK3 1.20.0.3 maintenance update
+Changes relative to the previous public version, 1.0.0.
+
+Changes:
+• Updates the mod version to 1.0.1, the compatibility declaration to CK3 1.20.0.3 and the Workshop description.
+• Production gameplay scripts are byte-identical. No government, holding-conversion policy or additional toggle is introduced.
+• Keeps the default-enabled Mandala Purge rule: Mandala rulers become Wanua at start, after one day and monthly; Temple Citadels become Castles at start, after two days and yearly.
+• Keeps the common government-change hook that immediately redirects successful AI transitions into Mandala back to Wanua.
+• Preserves all nine localizations, artwork and the 15-file release inventory. Acceptance fixtures remain outside the release tree.
+
+Compatibility and saves: a new single-player game is recommended. Enabling the rule intentionally converts matching governments and holdings at an eligible sweep. Holding conversion may remove buildings incompatible with Castles, as in vanilla CK3. No new scripted save-migration step is introduced. Compatibility with mods replacing the same government, holding, rule, event or on-action keys is not guaranteed.
+Acceptance scope: accelerated recurring-dispatcher checks do not prove a naturally elapsed year, the disabled-rule branch or an independent save/load matrix. Historical acceptance remains preserved and is not used as new-version live evidence.

@@ -1,0 +1,19 @@
+{
+  "status": "FROZEN_CANDIDATE_TEXT_NOT_PUBLISHED",
+  "product": "auto-upgrade-buildings",
+  "workshop_item_id": "3800124956",
+  "version": "4.0.3",
+  "previous_public_version": "4.0.2",
+  "previous_public_tag": "auto-upgrade-buildings-v4.0.2",
+  "previous_public_commit": "57faadc63e578f419ec4d0d1475264b3b3a86b9e",
+  "target_game_version": "1.20.0.3",
+  "notes_path": "workshop/change_notes/auto-upgrade-buildings/4.0.3.txt",
+  "unicode_characters": 387,
+  "lines": 15,
+  "utf8_bytes": 980,
+  "sha256": "eaf25277382f549c07fb1d97faa0bb61b72b28060b866d92d8e74feec53d9a40",
+  "line_endings": "LF",
+  "final_newline": false,
+  "public_entry_id": null,
+  "public_fulltext_verified": false
+}

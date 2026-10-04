@@ -39,7 +39,7 @@ Workshop。** 玩家应从具体产品入口安装；发布者应使用对应的
 
 | 产品 | 面向玩家的交付 | 当前边界 | 入口 |
 |---|---|---|---|
-| **琉焰卿的永恒轮回** | 一位统治者、一条命、一次结算；祝福与诅咒、本世契约、死亡计分和跨存档余烬构成 Roguelite / New Game+ | 旗舰公开产品；真人玩家专用 | [玩家手册](docs/products/eternal-recurrence.md) · [Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360) |
+| **琉焰卿的永恒轮回** | 一位统治者、一条命、一次结算；祝福与诅咒、本世契约、死亡计分和跨存档余烬构成 Roguelite / New Game+ | 公开版 `1.0.1`；源码 `1.0.2` 为 CK3 `1.20.0.3` 候选，剩余实机与发布尚未完成；真人玩家专用 | [玩家手册](docs/products/eternal-recurrence.md) · [候选状态](docs/ck3-1.20.0.3-eternal-recurrence-readiness-2026-10-05.md) · [Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360) |
 | **典造琉焰廷臣·白绮特供版** | 独立的付费廷臣定制、计价、创建与交付链 | 独立命名空间、独立发布线，可与旗舰双向共存 | [产品合同](docs/vivhite-courtier.md) · [Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3787304042) |
 | **天朝特色361制官员绩效考核** | 将 KPI、强制分布、京察、PIP、晋升和 361 项政策映射到天朝官僚体系 | Workshop 公开线与隔离开发线分开声明；不得把政策卡数量冒充 361 套小游戏 | [产品说明](mod_zhongguo_style/README.md) |
 | **牛来** | 召来特殊勇士并闭合廷臣、骑士、宫廷职位、关系与事件交付 | 小型独立 Mod；少数获明确授权允许 AI 低意愿使用的产品之一 | [产品说明](ox_here/README.md) |

@@ -1,0 +1,17 @@
+1.0.1 — CK3 1.20.0.3 兼容维护 / Compatibility maintenance
+
+中文
+- 将天朝政府覆盖更新为 CK3 1.20 的完整原版定义，保留新行政机制、属官发展、东亚庄园、天朝官僚、俸禄、军事与部院预算，以及原版 AI 传奇和可授予附庸的神权政府能力。
+- 经商扩展仍只增加 barter = yes；继续使用原版易货、商旅与活动规则。
+- 保留四档贪腐政策、对应特质和税率：75% 基础税率分别减至 70%、65%、60% 或 50%；本次不调整玩法数值。
+- 保留暂时收手、当前角色永久退出及三年决议冷却。
+- 更新 CK3 兼容声明与说明；九语本地化结构保持不变。
+- 可在原维护版存档上升级。修改模组列表前保留存档备份；与覆盖同一天朝政府的模组仍有冲突。
+
+English
+- Rebase the Celestial government override on CK3 1.20's complete definition, retaining current administrative, estate, bureaucracy, salary, military and ministry budget features, vassal development, AI legends and grantable theocratic governments.
+- Keep barter = yes as the sole added government rule, using the game's native barter, trading and activity systems.
+- Preserve all four corruption tiers and their 70%, 65%, 60% and 50% tax rates from the 75% base. No balance values change in this release.
+- Preserve temporary withdrawal, permanent character opt-out and the three-year decision cooldown.
+- Update the compatibility declaration and product description; retain the nine-language localization structure.
+- Existing maintained-edition saves can be upgraded. Keep a save backup when changing the mod list; mods replacing the same Celestial government remain incompatible.

@@ -1,4 +1,4 @@
-version="1.0.0"
+version="1.0.1"
 tags={
 	"Gameplay"
 	"Balance"
@@ -8,4 +8,4 @@ tags={
 }
 name="天朝制允许经商&贪腐框架（XenoAmess维护版）"
 picture="thumbnail.png"
-supported_version="1.20.0.2"
+supported_version="1.20.0.3"

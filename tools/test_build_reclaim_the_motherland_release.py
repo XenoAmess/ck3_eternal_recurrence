@@ -204,7 +204,7 @@ class BuildReclaimTheMotherlandReleaseTests(unittest.TestCase):
         loaded = json.loads(manifest_path.read_text(encoding="utf-8"))
         self.assertEqual(loaded, manifest)
         self.assertEqual(loaded["product_id"], "mod_reclaim_the_motherland")
-        self.assertEqual(loaded["mod_version"], "0.4.0")
+        self.assertEqual(loaded["mod_version"], "0.4.1")
         self.assertIsNone(loaded["workshop_item_id"])
         self.assertIsNone(loaded["git_tag"])
         self.assertEqual(release.product_tag("0.1.1"), "reclaim-motherland-v0.1.1")

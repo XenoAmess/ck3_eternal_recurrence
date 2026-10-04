@@ -1,0 +1,15 @@
+{
+  "path": "workshop/change_notes/ox-here/1.0.3.txt",
+  "bytes": 1600,
+  "characters": 1130,
+  "lines": 21,
+  "sha256": "bf8f774e66f834c114dba47378608b3e7b7871e4694287a5c841a9e843643e8a",
+  "normalization": "UTF-8, LF, no trailing newline",
+  "target_item_id": "3790635143",
+  "version": "1.0.3",
+  "frozen_before_submit": true,
+  "status": "DRAFT_NOT_SUBMITTED",
+  "use_condition": "Root may adopt only after actual 1.20.0.3 business and Chinese UI acceptance; any copy change requires a new freeze.",
+  "source_candidate": "C:\\workspace\\ck3-upgrade-20261005\\ox-release-readiness-agent-02\\steam-change-notes.txt.candidate",
+  "freeze_source_sha256": "dd7a79beaae4cc7f1f81ed951d2fa27b461e217fc85e62be81cc025410a19e48"
+}

@@ -1,0 +1,21 @@
+{
+  "status": "FROZEN_CANDIDATE_TEXT_NOT_PUBLISHED",
+  "product": "eternal-recurrence",
+  "workshop_item_id": "3784706360",
+  "version": "1.0.2",
+  "previous_public_version": "1.0.1",
+  "previous_public_tag": "v1.0.1",
+  "previous_public_commit": "e9cc6c82aa8c9c24518f4e9c2f118a074b1292f7",
+  "target_game_version": "1.20.0.3",
+  "notes_path": "workshop/change_notes/eternal-recurrence/1.0.2.txt",
+  "unicode_characters": 2016,
+  "lines": 19,
+  "utf8_bytes": 2852,
+  "sha256": "c6409bac33ffd2f057a6ebddc39a439f3119604cdfe0e9fc01ce4348771b6794",
+  "normalization": "UTF-8, LF, no trailing newline",
+  "frozen_before_submit": true,
+  "public_entry_id": null,
+  "public_fulltext_verified": false,
+  "publication_date": null,
+  "formal_release_tag": null
+}

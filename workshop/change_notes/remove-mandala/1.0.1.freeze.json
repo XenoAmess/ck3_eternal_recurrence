@@ -1,0 +1,19 @@
+{
+  "schema": "steam-change-notes-frozen-candidate-v1",
+  "product_key": "remove-mandala",
+  "version": "1.0.1",
+  "previous_version": "1.0.0",
+  "workshop_item_id": "3797711947",
+  "text_file": "workshop/change_notes/remove-mandala/1.0.1.txt",
+  "bytes": 2693,
+  "characters": 1929,
+  "lines": 25,
+  "sha256": "a54b823c817e0aa26a0f3e84426d3523a2a5b280b7aab0e03c57586fec1c7657",
+  "encoding": "utf-8",
+  "line_endings": "LF",
+  "trailing_newline": false,
+  "status": "FROZEN_CANDIDATE_AWAITING_ACTUAL_1_20_0_3_ACCEPTANCE",
+  "published": false,
+  "entry_id": null,
+  "public_exact_readback": null
+}

@@ -5,6 +5,14 @@ must be built with `py tools/build_tributary_expansion_directives_release.py`;
 this README and the research notes under `docs/` are excluded from Workshop
 staging. The formal runtime tree contains 16 files.
 
+The current source is the **1.0.1 maintenance candidate for CK3 1.20.0.3**.
+It updates release metadata while preserving the previous public 1.0.0 gameplay
+scripts, nine language files, and thumbnail. CK3 1.20.0.3 live acceptance and
+Workshop publication are pending; the compatibility declaration alone is not
+live acceptance. The two isolated core/UI inputs and historical coverage gaps
+are recorded in
+[`docs/ck3-1.20.0.2-tributary-expansion-directives-compatibility-2026-10-01.md`](../docs/ck3-1.20.0.2-tributary-expansion-directives-compatibility-2026-10-01.md).
+
 The mod lets a player suzerain issue a county-expansion directive to a direct
 AI tributary. A valid order costs 150 Prestige. The tributary may refuse, or
 accept and immediately declare a dedicated conquest war against the selected

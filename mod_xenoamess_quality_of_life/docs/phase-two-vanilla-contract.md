@@ -23,3 +23,11 @@ flowchart LR
 ```
 
 已知必须实机验证的边界：滑条点击与拖动在 0、1、49、50、51、99、100 的精度；异步批量改信最后一条答复是否只产生一次汇总；战争开始 scope alias 与全部免费候选去重；连续共享付款人的赎金余额重验；七种释放组合的原版等价后果。
+
+## 2026-10-05：1.20.0.3 防御合同方向勘误
+
+真实 Steam 1.20.0.3 原版 `00_alliance.txt`、`00_interaction_effects.txt` 与 `war_on_actions.txt` 均与上述 1.20.0.2 SHA 合同逐字节一致。重新审阅发现产品反向朝贡白名单把宗主援助朝贡者的保证条款误用为朝贡者援助宗主的义务。非盟友、非同家系、非摄政的向下召集现只认可目标实际合同的 `tributary_contract_tributary_forced_war_override`；向上的宗主保证分支保持原样。
+
+原版 `special_contracts.txt` 的 `suzerain_war_participation_guarantee` level 1 给出向上保证，`tributary_war_participation_obligation` level 1 给出向下强制参战义务。普通 `call_ally_interaction.is_shown` 的向下朝贡路径仍有法规与虔诚资格；本产品不能把宗主保证当作绕过这些资格的理由。原版防御 helper 本身不扣虔诚，因此这次勘误不声称发现实机扣费。强制合同可能先由原版自动参战，验收应检查真实参与人与去重，不能强求本产品调用次数为 1。
+
+这项源码与静态输入勘误尚未获得 .3 实机信用。原 regular/overlap/paid 三类旧矩阵保持原样；宗主保证=1、强制=0 的反向负例与强制=1 的正例使用独立新增夹具。19 项全部 stock 合同比较为 17 项 raw 相同、2 项不同，`pam_effects.txt` 与 `00_religious_triggers.txt` 的漂移未由本防御合同外推为语义相同。当前准备与边界见 [1.20.0.3 防御维护记录](../../docs/xqol-1.20.0.3-defense-maintenance-2026-10-05.md)。

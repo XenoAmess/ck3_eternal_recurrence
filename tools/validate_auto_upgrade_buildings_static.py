@@ -184,13 +184,13 @@ def validate(
     errors = builder.source_errors(MOD)
     descriptor = text("descriptor.mod").replace("\r\n", "\n")
     expected_descriptor = (
-        'version="4.0.2"\n'
+        'version="4.0.3"\n'
         'tags={\n\t"Balance"\n}\n'
         'name="自动升级建筑（XenoAmess维护版）"\n'
-        'supported_version="1.20.0.2"\n'
+        'supported_version="1.20.0.3"\n'
     )
     if descriptor != expected_descriptor:
-        errors.append("descriptor.mod differs from the 1.20.0.2 maintenance contract")
+        errors.append("descriptor.mod differs from the 4.0.3 / 1.20.0.3 maintenance contract")
 
     decisions = text("common/decisions/build_decision.txt")
     on_actions = text("common/on_action/aub_on_actions.txt")
@@ -754,7 +754,8 @@ def validate(
         workshop_description = WORKSHOP_DESCRIPTION.read_text(encoding="utf-8")
         for fragment in (
             "[h1]自动升级建筑（XenoAmess维护版）[/h1]",
-            "Version 4.0.2 · CK3 1.19.0.6",
+            "Version 4.0.3 · CK3 1.20.0.3",
+            "[h1]4.0.3 更新记录[/h1]",
             "[h1]4.0.2 更新记录[/h1]",
             "[h1]4.0.1 更新记录[/h1]",
             "[h1]原作、致谢与授权[/h1]",
@@ -793,7 +794,7 @@ def main(argv: list[str] | None = None) -> int:
         "AUTO UPGRADE BUILDINGS STATIC VALIDATION OK\n"
         f"Runtime files: {len(builder.RUNTIME_FILES)}\n"
         f"Building chains: {len(CHAINS)}\n"
-        f"Installed vanilla {EXPECTED_GAME_VERSION} metadata checked: {'yes' if vanilla_checked else 'not installed'}"
+        f"Frozen vanilla building inputs ({EXPECTED_GAME_VERSION} snapshot) checked against installed data: {'yes' if vanilla_checked else 'not installed'}"
     )
     return 0
 

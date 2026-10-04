@@ -1,0 +1,18 @@
+{
+  "status": "DRAFT / NOT_PUBLISHED / FROZEN_NOT_SUBMITTED",
+  "path": "workshop/change_notes/celestial-commerce-corruption/1.0.1.txt",
+  "bytes": 1708,
+  "characters": 1244,
+  "lines": 17,
+  "sha256": "2d74578e9feca3dac77e2efca4791c8cb90c469ad8145b6586d244e3302e0ae3",
+  "normalization": "UTF-8, LF, no trailing newline",
+  "target_item_id": "3804807463",
+  "version": "1.0.1",
+  "previous_public_version": "1.0.0",
+  "frozen_before_submit": true,
+  "prepared_at_utc": "2026-10-04T18:03:27.388598+00:00",
+  "actual_12003_acceptance": "PENDING",
+  "submission": "PENDING",
+  "public_readback": "PENDING",
+  "public_entry_id": null
+}

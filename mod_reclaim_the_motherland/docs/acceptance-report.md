@@ -1,5 +1,7 @@
 # 重整河山 0.4.0 验收报告
 
+> 2026-10-05：`0.4.1` / CK3 `1.20.0.3` 是当前维护候选，**NOT_RUN / NOT_PUBLISHED**。本页原 `0.4.0` 实机与公开发布事实永久保留，不外推为新版验收。当前准备与剩余门禁见[新版准备专题](../../docs/reclaim-the-motherland-ck3-1.20.0.3-readiness-2026-10-05.md)。
+
 状态：**COMPLETE。L0、源码树 MCP-first L1、Workshop 发布、公开描述与 Change Notes 精确回读、全新订阅缓存及 fresh-cache L3 均为 GREEN；Steam 已恢复离线模式。**
 
 验收日期：2026-09-14

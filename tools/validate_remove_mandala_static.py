@@ -79,11 +79,11 @@ def validate() -> list[str]:
     errors = builder.release_source_errors(MOD)
     descriptor = text("descriptor.mod")
     expected_descriptor = (
-        'version="1.0.0"\n'
+        'version="1.0.1"\n'
         'tags={\n\t"Gameplay"\n}\n'
         'name="Mandala Purge — 肃清曼荼罗伪信"\n'
         'picture="thumbnail.png"\n'
-        'supported_version="1.20.0.2"\n'
+        'supported_version="1.20.0.3"\n'
     )
     if descriptor.replace("\r\n", "\n") != expected_descriptor:
         errors.append("descriptor.mod fields or ordering differ from the release contract")

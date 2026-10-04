@@ -4,16 +4,22 @@
 [b]把重复而确定的操作交给决议：自动防御召援、批量改信、牵制索款、赎囚与附条件释放，同时保留一期的行政继任和禁转封优化。[/b]
 [b]Turn repetitive, deterministic chores into decisions: defensive calls, realm conversions, hook payments, ransoms and conditional releases, alongside the original appointment and vassal-transfer improvements.[/b]
 
-Version 1.1.0 · CK3 1.19.0.6
+Draft 1.1.1 · Target CK3 1.20.0.3 · New live acceptance pending
+草稿 1.1.1 · 目标 CK3 1.20.0.3 · 新版实机验收待完成
 
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/3ecba400af0b4c985059459eb3215d169c6b3a53/mod_xenoamess_quality_of_life/thumbnail.png[/img]
+
+[h1]1.20 维护候选 / 1.20 Maintenance Candidate[/h1]
+
+相对 1.1.0，本候选重投影新版任命文件，保留原版计分、等级与冷却；适配行政机制、改信及条件释放的接受度和原生礼仪上下文；修正 recipient 报价与足额钱包判断，并采用新版普通赎金值。生产业务 ID、三独立开关和九语文案保持，发行文件由 24 增为 27。
+Relative to 1.1.0, this candidate refreshes appointment projections while retaining current vanilla scoring, tiers and cooldowns; updates administrative, conversion and conditional-release contexts; corrects recipient/full-wallet quote checks; and adopts the current ordinary ransom value. Existing business IDs, three independent toggles and nine localization texts remain. The release inventory grows from 24 to 27 files.
 
 [h1]三个独立开关 / Three Independent Toggles[/h1]
 
 [list]
 [*][b]自动选择继任 / Automatic Appointments[/b]：开启后，行政制、贤能制与天朝制玩家本人不再成为下属行政官职的兜底候选。候选池、资格和继承分数仍全部使用原版；死亡或卸任时由最高分的其他合资格候选人接任。
 [*][b]别把封臣给我 / Do Not Give Me Vassals[/b]：开启后，下属行政统治者不会再通过原版 AI“授予封臣”逻辑把自己的法理封臣向上转给玩家。玩家主动转封不受影响。
-[*][b]自动召集防御援军 / Automatic Defensive Calls[/b]：被宣战后，自动召集当下可以免费加入的 AI 盟友、保证参战的宗主/朝贡关系、可参战摄政和免费家系成员。不会花费金钱、威信或虔诚；需要付费的宗族/朝贡召集不执行。
+[*][b]自动召集防御援军 / Automatic Defensive Calls[/b]：被宣战后，自动召集当下可以免费加入的 AI 盟友、保证援助玩家的宗主、负有强制参战义务的朝贡者、可参战摄政和免费家系成员。不会花费金钱、威信或虔诚；需要付费的宗族/朝贡召集不执行。
 [/list]
 
 三个功能默认关闭，可在决议面板的【XenoAmess的体验优化】分组中分别开启或关闭。关闭后恢复手动或原版行为。
@@ -42,8 +48,8 @@ These decisions only process AI targets that pass the matching vanilla interacti
 
 [h1]兼容性 / Compatibility[/h1]
 
-已在 CK3 1.19.0.6 的隔离实机会话中通过原生 MCP + 引擎夹具完整验收。推荐单人存档；更新后无需迁移步骤。
-Fully tested on CK3 1.19.0.6 in an isolated live session using the native MCP bridge plus in-engine assertions. Single-player is recommended; no save-migration step is required.
+历史 1.1.0 在 CK3 1.19.0.6 验收；后续 1.20.0.2 的天朝、行政及付款范围有独立有界实证。本候选目标为 1.20.0.3，新实机场景、正式兼容声明与发布均待完成。新准备的付款夹具不代称所有任命、滑条、宗教门禁、防御及 GUI 已通过。推荐单人存档；本候选未新增必须执行的迁移程序，更新前保留备份。
+The historical 1.1.0 release was tested on CK3 1.19.0.6. Later Celestial, Administrative and payment scenes have bounded 1.20.0.2 evidence. This candidate targets 1.20.0.3; its new live scene, formal declaration and publication remain pending. The prepared payment fixture does not certify every appointment, slider, religious gate, defense path or GUI. Single-player is recommended. No mandatory migration procedure is added by this candidate; preserve a backup before updating.
 
 自动继任功能会按相同相对路径覆盖原版的三份 appointment 文件，因此与改写下列文件的其他 mod 不兼容：
 Automatic appointments replace these three vanilla files at the same relative paths and are therefore incompatible with other mods that replace them:

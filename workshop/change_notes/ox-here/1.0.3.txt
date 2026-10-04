@@ -1,0 +1,21 @@
+牛来 / Ox Here! 1.0.3 — CK3 1.20.0.3 维护更新
+
+相对 1.0.2：
+• 将兼容版本声明更新为 CK3 1.20.0.3。
+• 复核真实决议的拒绝与招募流程、唯一勇士到庭、人物身份与勇武、强制骑士、可用时的零薪勇士职位、配偶情人与秘密，以及不受性别或性取向限制的勾引阴谋。
+• 保留 1.0.2 的选项悬浮提示修复、九种语言、主视觉与现有功能规则；本次没有新增玩法或重写翻译。
+
+兼容与限制：
+• 推荐新开单人存档；旧存档与其他 mod 的组合未作全面验收。
+• 《皇家宫廷》仍为可选，仅影响自动任命宫廷勇士。
+• AI 仍按原有低意愿、12 个月检查和恰好 1 年冷却执行；本次未测年度随机使用频率。
+
+Changes from 1.0.2:
+• Updated the compatibility declaration to CK3 1.20.0.3.
+• Rechecked the real decline/recruit decision flow, exactly one delivered warrior, identity/Prowess, forced Knight status, eligible zero-salary Champion appointment, consort lovers/secrets, and the Seduce scheme without gender or orientation restrictions.
+• Retained the 1.0.2 tooltip fix, nine languages, artwork, and gameplay rules; no new gameplay or translation rewrite.
+
+Compatibility and limits:
+• A new single-player game is recommended. Existing saves and combinations with other mods have not been comprehensively tested.
+• Royal Court remains optional and only affects automatic Champion appointment.
+• AI retains its low willingness, 12-month checks, and exact one-year cooldown. Annual random-use frequency was not tested.

@@ -5,54 +5,60 @@
 [b]一位统治者，一条命，一次结算。死亡称量真实分数；余烬位阶跨存档保存；下一世花费其副本换取强化。[/b]
 [b]One ruler, one life, one settlement. Death yields an exact score; the Ember Tier persists across saves; the next life spends its copy on upgrades.[/b]
 
-Version 1.0.1 · CK3 1.19.0.6 · Workshop 3784706360
+Version 1.0.2 · CK3 1.20.0.3 · Workshop 3784706360
+
+[b]1.0.2 为待发布候选；公开版仍为 1.0.1，完整验收与上传尚未完成。/ 1.0.2 is pending acceptance and publication; the public version remains 1.0.1.[/b]
 
 [b]⚠ 必须开启教程 / TUTORIAL REQUIRED：设置 → 教程选择「完整」或「警告」，切勿禁用。旧纪录仍可读取，但禁用后新余烬位阶、契约 PB 与图鉴不会落盘。[/b]
 
+[h1]1.0.2 新版适配 / CK3 1.20 Maintenance[/h1]
+廷臣目录更新为 226 项原生特质。信仰选择显示并绑定礼仪：同信仰保留玩家礼仪，其他信仰使用主礼仪；旧配置缺失或不匹配的礼仪自动补齐。继承窗保留新版教会选项，九语帮助同步。
+The catalog now has 226 native traits. Faith selection displays and binds your current Rite for your faith, or another faith's main Rite; missing or mismatched saved Rites are repaired. The succession window keeps new ecclesiastical choices; help is updated in nine languages.
+
 [h1]1.0.1 性能与终局改进 / Performance & Finale[/h1]
-跨存档纪录只在开局明确请求时扫描，不再于地图运行期间持续轮询 700 档教程位；生日契约也会在进入效果链前过滤无关角色。死亡结算现在先同步发布完整快照，再写入同一套教程纪录，并加入专属终幕画面。玩法数值、奖池、商店、契约目标与教程持久化功能均未删减。
-Cross-save records are now scanned only when game start explicitly requests an import, rather than continuously while the map advances; the birthday contract also rejects irrelevant characters before entering its effect chain. Death now publishes one complete settlement snapshot before writing the same tutorial-backed record, with dedicated finale artwork. Scoring, pools, shop content, contracts, and tutorial persistence are unchanged.
+开局按需扫描 700 档教程纪录，生日契约提前过滤无关角色；死亡先同步完整结算再写纪录，并使用专属终幕画面。计分、奖池、商店、契约和持久化均保留。
+Import scans the 700 tutorial tiers only when requested at game start; birthday contracts filter irrelevant characters. Death publishes a complete snapshot before writing records, with dedicated finale art. Scoring, pools, shop, contracts and persistence remain intact.
 
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/bdc87ac77a3207945343ccdf277d6c4259bce65c/screenshots/gallery/01_pact.jpg[/img]
 
 [h1]核心循环 / Core Loop[/h1]
 
 [h3]跨世余烬与轮回当铺 / Ember Tier & Reincarnation Shop[/h3]
-游戏规则提供绝对/本世成长赛道与 0/25/50/100% 继承，推荐本世成长 + 100%。非零预算会打开四页当铺：属性、资源、借命、重抽、封印、恐怖值、正统性、暴政修正、免费宗教改革，以及 10000/50000/100000 分批量强化；余分开始此生时等量转为金币。
-Choose Absolute or Lifetime Growth scoring and uncapped 0/25/50/100% inheritance. Spend the next life's budget across four shop pages, including attributes, resources, Health, rerolls, seals, crown services, faith reformation, and high-tier bulk upgrades; unspent points become gold.
+绝对/本世成长计分，0/25/50/100% 无上限继承；推荐成长 + 100%。四页当铺提供属性、资源、借命、重抽、封印、恐怖值、正统性、暴政修正、免费宗教改革及 10000/50000/100000 分批量强化；余分等量转金币。
+Choose Absolute or Lifetime Growth scoring and 0/25/50/100% inheritance. Four shop pages offer attributes, resources, Health, rerolls, seals, dread, legitimacy, tyranny relief, faith reformation and bulk upgrades; leftover points become gold.
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/bdc87ac77a3207945343ccdf277d6c4259bce65c/screenshots/gallery/02_reincarnation_shop.jpg[/img]
 
 [h3]一份祝福，一道咒痕 / One Blessing, One Curse[/h3]
-开局及此后每三年，从带稀有度/构筑标签的三项祝福中领一项，再从两项诅咒中强制选择一项。每场恰好一对；重抽可换祝福，封印可免咒痕，拒绝整场则最终分数 -1%。
-Every three years, choose one of three labeled blessings, then one of two mandatory curses. Each session is exactly one pair; rerolls replace blessings, seals waive curses, and declining costs 1% final score.
+开局及每三年，选带稀有度/构筑标签的三项祝福之一，再强制选两项诅咒之一。每场一对；重抽换祝福，封印免咒痕，拒绝整场使最终分数 -1%。
+At start and every three years, choose one of three tagged blessings and one of two mandatory curses. Rerolls replace blessings, seals waive curses, and declining costs 1% final score.
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/bdc87ac77a3207945343ccdf277d6c4259bce65c/screenshots/gallery/03_blessing_choice.jpg[/img]
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/bdc87ac77a3207945343ccdf277d6c4259bce65c/screenshots/gallery/04_curse_choice.jpg[/img]
 
 [h3]账簿与本世契约 / Ledger & Lifetime Contracts[/h3]
-原生决议可随时打开【琉焰账簿】，只读查看即时分数、历史/候选/下一位阶、差值、交易对数与拒绝次数。征服者、织网者、圣徒、家主、贤王、享乐者六类契约把 CK3 行为变成增量目标；3/6/10 进度提供反馈、分数和跨存档 PB。
-The native Decisions panel opens a read-only ledger with live score, historical/candidate/next tiers, gap, pairs, and refusals. Six contracts turn warfare, hooks, conversion, family, construction, and low-stress longevity into incremental goals with 3/6/10 feedback and persistent PBs.
+原生决议打开只读账簿：即时分数、历史/候选/下一位阶、差值、交易对数与拒绝次数。征服者、织网者、圣徒、家主、贤王、享乐者六类契约，在 3/6/10 进度提供反馈、分数和跨存档 PB。
+The Decisions ledger shows live score, historical/candidate/next tiers, gap, pairs and refusals. Six contracts cover warfare, hooks, conversion, family, construction and low-stress longevity, with 3/6/10 rewards and persistent PBs.
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/bdc87ac77a3207945343ccdf277d6c4259bce65c/screenshots/gallery/05_glassfire_ledger.jpg[/img]
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/bdc87ac77a3207945343ccdf277d6c4259bce65c/screenshots/gallery/06_lifetime_contracts.jpg[/img]
 
 [h3]典造琉焰廷臣 / Commission a Glassfire Courtier[/h3]
-花费游戏内金币典造一名宫廷成员：0–120 岁、六项 0–100 基础能力、25 教育、17 将才、38 身体、36 性格、108 其他原生特质，以及所有已载入文化与信仰；可选择出身卑微或归入玩家家族。只有成功交付才扣款，AI 没有入口。“付费”不涉及现实货币。
-Spend in-game gold to commission a courtier with exact age and skills, 224 selectable native traits, every loaded culture and faith, and lowborn or player-house origin. Gold is charged only after delivery; AI has no entry point or real-money purchase.
+游戏内金币定制廷臣：0–120 岁、六项 0–100 能力，25 教育/17 将才/38 身体/36 性格/110 其他特质；所有已载入文化与信仰及适用礼仪，卑微或玩家家族出身。成功交付才扣款；仅真人玩家，不涉及现实货币。
+Commission a courtier with in-game gold: exact age/skills, 226 native traits, every loaded culture and faith with its applicable Rite, and lowborn or player-house origin. Charge only after delivery; human players only, no real-money purchase.
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/bdc87ac77a3207945343ccdf277d6c4259bce65c/screenshots/gallery/08_courtier_essentials.jpg[/img]
 
 [h3]一生一次结算 / One Life, One Settlement[/h3]
-死亡时逐项展示真实分数；只有跨过新阈值才写入量化纪录。有继承人时确认后进入观察者模式；无可玩继承人时由原生继承窗显示八项结算并退出主菜单。两者都不可继续扮演后代。
-Death shows the full exact-score breakdown and writes a record only after crossing a new threshold. Confirmation enters observer mode when an heir exists; without a playable heir, the native succession window shows the settlement and exits to menu. Neither path continues as a descendant.
+死亡逐项称量分数，跨新阈值才写纪录。有继承人确认后进入观察者；无可玩继承人由原生继承窗显示八项结算并退出主菜单。两条路径均不继续扮演后代。
+Death shows exact scores and writes newly crossed record tiers. With an heir, confirmation enters observer mode; without one, the native succession window shows eight settlement values and exits to menu. Neither path plays a descendant.
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/bdc87ac77a3207945343ccdf277d6c4259bce65c/screenshots/gallery/10_death_settlement.jpg[/img]
 
 [h1]琉焰之视 / Glassfire Gaze[/h1]
-每完成一对祝福与诅咒获得 1 XP；每 10 XP 提升一级、增加压力获取，并交替解锁重抽与封印。原生特质悬浮提示即时预览当前分数。
-Each completed pair grants 1 XP. Every 10 XP raises the trait level and stress cost while unlocking rerolls and seals; the native trait tooltip previews the live score.
+每对祝福/诅咒获 1 XP；每 10 XP 升级、增加压力获取并交替解锁重抽/封印。特质悬浮提示预览当前分数。
+Each pair grants 1 XP; every 10 XP raises level and stress gain, alternating reroll/seal unlocks. The trait tooltip previews live score.
 
 [h1]本地化与兼容性 / Localization & Compatibility[/h1]
 简中 / English / Français / Deutsch / 日本語 / 한국어 / Polski / Русский / Español
 
-实测基线 CK3 1.19.0.6；推荐新开局、单机。无继承人结算会投影原生 window_succession_event.gui，与覆盖同一文件的 mod 冲突；其他同键 on_action、GUI 或资源组合不作保证。
-Tested on CK3 1.19.0.6; a new single-player game is recommended. The no-heir settlement projects the native succession window and conflicts with mods replacing the same GUI; other same-key on_action, GUI, or asset combinations are not guaranteed.
+目标 CK3 1.20.0.3；推荐新开局、单机。真实死亡纪录写入/新进程教程导入已验，无继承人完整界面及退出仍待验。覆盖同一 window_succession_event.gui 的 mod 冲突；其他同键 on_action、GUI、资源组合不作保证。
+Target: CK3 1.20.0.3; new single-player games recommended. Actual death-record writing/new-process tutorial import passed; full no-heir UI and exit remain pending. Mods replacing window_succession_event.gui conflict; other same-key on_action, GUI or asset combinations are not guaranteed.
 
 [h1]一局有多长 / Run Length[/h1]
 一局就是签约统治者的一生；30–50 年通常经历约 10–17 次垂青会。/ One run is the contracted ruler's lifetime; 30–50 years usually contains about 10–17 favor sessions.

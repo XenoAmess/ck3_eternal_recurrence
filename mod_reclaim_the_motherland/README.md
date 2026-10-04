@@ -1,5 +1,7 @@
 # 重整河山：设计与实现说明
 
+> 2026-10-05 维护候选：版本 `0.4.1`，目标 CK3 `1.20.0.3` / build `25652598`。七份原版依赖与已审阅 `1.20.0.2` 字节一致；现有源码迁移与静态结果复用。本轮只准备新版本元数据、公开文案和独立门槛界面夹具，**新版实机仍为 `NOT_RUN`，尚未正式发布**。当前工坊公开版本仍是 `0.4.0`，下文发布与实机结论均为历史；当前证据和剩余门禁见[新版准备专题](../docs/reclaim-the-motherland-ck3-1.20.0.3-readiness-2026-10-05.md)。
+
 > 2026-10-01 新版兼容候选：CK3 `1.20.0.2` / build `25588574` 的源码迁移、L0、36 文件构建与 parser-only 已 GREEN，实机仍为 `RUNTIME_PENDING`。下文 `0.4.0` 发布与 `1.19.0.6` 实机记录是历史事实；本轮变更和证据见[新版兼容专题](../docs/reclaim-the-motherland-ck3-1.20-compatibility-2026-10-01.md)。
 
 状态：**0.4.0（三、四期）已正式发布。** L0、`open_kaishek` parser root scan、源码树 MCP-first L1、Workshop 更新、公开回读、全新订阅缓存和 fresh-cache L3 均为 GREEN；Steam 已恢复离线模式。
@@ -189,7 +191,7 @@ mod_reclaim_the_motherland/
   localization/<九种语言>/rmtm_generated_title_names_l_<语言>.yml
 ```
 
-统一命名空间为 `rmtm`。发布构建使用 `tools/build_reclaim_the_motherland_release.py` 的独立 exact allowlist：35 个运行时文件进入 staging，README 不发布。Workshop item ID 为 `3798404599`；`remote_file_id` 只存在于用户目录外层 launcher descriptor 与 ID-bearing 发布记录，绝不进入仓库内 `descriptor.mod`。
+统一命名空间为 `rmtm`。当前候选发布构建使用 `tools/build_reclaim_the_motherland_release.py` 的独立 exact allowlist：36 个运行时文件进入 staging（`0.4.0` 历史公开版为 35 个），新增一个私有附庸 modifier 文件；README 不发布。Workshop item ID 为 `3798404599`；`remote_file_id` 只存在于用户目录外层 launcher descriptor 与 ID-bearing 发布记录，绝不进入仓库内 `descriptor.mod`。
 
 ## 9. 实现与验收顺序
 

@@ -1,0 +1,33 @@
+XenoAmess的体验优化 1.1.1 — CK3 1.20 维护候选（发布前草稿）
+相对上一公开版本 1.1.0。
+
+本次源码维护候选为 1.1.1，兼容目标声明为 CK3 1.20.0.3；该版本独立实机验收与正式发布仍待完成。本文件不是已发布或全部功能已通过的收据。
+
+本次变更：
+• 从当前已审原版重建行政、贤能与天朝三份任命继承投影，只保留既有玩家候选扣分；保留新版公共计分、候选等级与冷却。
+• 禁止向上转封改用新版行政机制判断，仍限定本 mod 的 guard 所有权；关闭后不移除其他来源的保护状态。
+• 批量改信与条件释放适配新版接受度、天朝等级及原生礼仪/国教礼仪上下文；显式绑定玩家 puppet_or_actor，保留原版后果与宗教拒绝门禁。
+• 修正足额牵制索款的报价上下文：逐目标绑定 recipient，并用未被钱包封顶的原版报价检查能否足额支付；实际交易、强牵制规则、消耗与取整仍由原版互动执行。
+• 普通赎金采用新版 normal_ransom_cost_value；劫掠报价、真实付款人重定向、实时钱包检查和释放仍沿原版路径。只处理金钱支付，不自动选择 herd 等其他支付方式。
+• 修正朝贡防御召援的合同方向：宗主保证援助朝贡者，不表示朝贡者必须反向参战。向下自动召援现要求朝贡者负有强制参战义务；已由原版自动加入的目标不会重复召集。
+• 将手写 effects 按职责拆分，补独立报价值文件，发行树由 24 增为 27 文件；既有业务 ID、默认关闭的三开关、批处理入口及九语文案保持。
+
+兼容与存档：本候选没有新增必须执行的存档迁移步骤，更新前保留备份。自动继任仍覆盖 common/succession_appointment 的三份 governor 文件，与同路径覆盖 mod 不兼容。现有款牵制索款仍要求目标金钱大于 1，现有款赎囚仍要求愿意付款者至少 1 金钱；所有目标仍须满足原版战争、宗教、囚禁、关系与冷却条件。
+验收边界：1.20.0.2 的天朝、行政及受影响付款场景已有有界实证，原失败与日志归因保留。本次 1.20.0.3 新输入已准备付款与原防御矩阵，但尚未实机，不能替代五种任命候选、复杂防御、全部滑条边界、宗教负门禁及完整 GUI 矩阵；正式发布、缓存复验与 changelog 入库均 pending。
+
+XenoAmess Quality of Life 1.1.1 — CK3 1.20 maintenance candidate (pre-release draft)
+Changes relative to the previous public version, 1.1.0.
+
+The source maintenance candidate is 1.1.1 and declares CK3 1.20.0.3 as its compatibility target. Separate live acceptance on that build and formal publication remain pending. This is not a publication receipt or a claim that every feature has passed.
+
+Changes:
+• Rebuilds the Administrative, Meritocratic and Celestial appointment projections from reviewed vanilla definitions, keeping only the existing player-candidate penalty and retaining new shared scoring, candidate tiers and cooldowns.
+• Uses the current administrative-mechanic check for the vassal-transfer guard and preserves ownership of this mod's protection state; disabling it does not remove another source's guard.
+• Adapts bulk conversion and conditional release to current acceptance modifiers, Celestial tiers and native Rite/state-Rite context. It binds puppet_or_actor to the player and retains vanilla consequences and religious refusal gates.
+• Corrects full hook-payment quote context: binds each recipient, then checks affordability against the vanilla quote before the final wallet cap. Vanilla still performs the transaction, strong-hook handling, hook use and rounding.
+• Uses normal_ransom_cost_value for ordinary cash ransoms, retaining the raiding quote, real payer redirect, live-wallet checks and vanilla release. Other payment modes such as herd are not selected automatically.
+• Corrects the direction of tributary defensive obligations: a suzerain guarantee protects the tributary, rather than obliging it to defend the suzerain. Automatic downward calls now require a forced-participation obligation, and targets already added by vanilla are not called again.
+• Splits handwritten effects by purpose and adds a separate quote-value file, taking the release inventory from 24 to 27 files. Existing effect IDs, three default-off toggles, bulk-action entries and all nine localization texts are retained.
+
+Compatibility and saves: this candidate adds no mandatory migration procedure; preserve a backup before updating. Automatic appointments still replace the three governor files under common/succession_appointment and conflict with other replacements at those paths. Partial hook payment still requires more than one gold; partial ransom requires a willing payer with at least one gold. Vanilla war, faith, imprisonment, relationship and cooldown eligibility still applies.
+Acceptance limits: bounded Celestial, Administrative and affected-payment evidence exists for 1.20.0.2, with original failures and log attribution preserved. The newly prepared 1.20.0.3 inputs cover payments and the original defense matrix but have not been run; they do not certify all five appointment branches, complex defense, every slider boundary, religious negative gates or the full GUI matrix. Formal publication, fresh-cache verification and permanent changelog delivery remain pending.

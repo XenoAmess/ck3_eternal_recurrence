@@ -1,0 +1,51 @@
+# XQOL 1.20.0.3 防御资格修复与待实机输入
+
+日期：2026-10-05。产品：XenoAmess的体验优化，Workshop item `3798133925`。本记录属于准备与修复事实，不是实机或发布通过。
+
+源码只修改 `mod_xenoamess_quality_of_life/common/scripted_triggers/xqol_triggers.txt` 的一个反向朝贡分支，将 `tributary_contract_suzerain_guarantee_override` 改为 `tributary_contract_tributary_forced_war_override`。文件没有 GENERATED FILE 标记；没有手改生成产物。向上请求宗主保证、盟约、领主、摄政、家系和战争有效性逻辑未改。修改后 trigger 为 5301 字节，SHA-256 `b98094da6faeb2d027821f56f9c10de986e0cb119c12789a19fac9e7245265e5`。
+
+原因是实际原版合同方向：宗主保证援助朝贡者，不表示朝贡者免费援助宗主。原逻辑会把仅有保证、没有强制参战义务且没有盟约的朝贡者直接拉进防御战争。真实 Steam .3 的防御 helper 只执行免资源加入，没有实际扣虔诚的证据；此修复针对错误资格。向下强制合同可能已由原版自动把角色加入战争，目标是否已参与或已被召仍由既有过滤器重查，避免重复。
+
+真实原版取证来自 `C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game`。EXE 为 101039736 字节，SHA-256 `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`。相关来源及行号冻结在 `C:/workspace/ck3-upgrade-20261005/xqol-agent-01/defense-audit/HANDOFF.md`，原字节在其 `frozen-stock/`：
+
+- `00_alliance.txt` 32–67：普通向下朝贡召集需法规与至少 50 虔诚；向上保证是另一分支。
+- `special_contracts.txt` 804–829：宗主援助朝贡者的保证，level 1 对应 suzerain guarantee flag。
+- 同文件 857–911：朝贡者强制参战义务，level 1 对应 tributary forced flag。
+- `00_interaction_effects.txt` 3192–3318：先 `set_called_to`，防御分支直接 `add_defender`。
+
+19 项原版依赖中，17 项与冻结 .2 合同 raw SHA 相同，2 项不同。防御直接依赖的 alliance、interaction effect、war on_action 相同；`pam_effects.txt` 和 `00_religious_triggers.txt` 的漂移仍需按功能边界审核，不能称全产品语义无变更。宗教审阅另确认 head_of_rite 的 -120 属于接受度修正，`ai_will_not_convert` 同时有硬门禁；百万分处罚源码存在，但旧实际行政候选窗口未展示玩家那一行，尚不能充 penalty tooltip 实机通过。
+
+外置冷候选 `C:/workspace/ck3-upgrade-20261005/xqol-agent-01/defense-candidate-01/` 已实际创建。现有正式 builder 生成 27 文件 staging；相对 C04 staging 只有上述 trigger 和候选 descriptor 有差异。候选 descriptor 在外置 source 设置 `1.1.1` / `1.20.0.3`，仓库 canonical descriptor 尚未据此宣称发布。
+
+- manifest SHA-256：`bf70d5975171f1804f92968336f6e01dbffdf066d047a96255ce40f79fa774e2`。
+- deterministic ZIP SHA-256：`6827d7d5efd76ff9d45ad8609abca8f66f034cd4a071c799b41dcb895cc36e39`。
+- 冷 profile preparation SHA-256：`5e3c2ea44fb8e4175b0b4f67367ebc6c91bc158ef6ee9e447c348c5286f82652`。
+- 输入 freeze SHA-256：`64b48956e8ba993984ebeeb0293332b4a345db0b56238ed3c77f30cee232303d`。
+
+只对改变的 trigger 与 startup scheduler 执行无版本 semantic profile 的 parser：2/2、零 diagnostics；未重复同字节旧 L0、原矩阵 parser 或整套游戏测试。cold profile 含 39 文件，只加载 product 与 fixture，logs、save games、run 为空；现有 closed fixture Start policy 对完整 mounted/config 字节执行 load_bound 检查通过。
+
+防御原初始化 D1 hidden switch 已在这份新入口显式调整为 D0，以满足现有 policy 的实际首日宋帝/current actor 检查；初始 effect、原矩阵、开战/生产 callback/observer/replay 的相对战争时序均原样保留。首次召援仍只来自生产 on_war_started；后续 replay 只能在真实 war_days>=2、原始 count>=0 条件成立后发生。旧 operator 011 的 .2 EXE、d19 与旧 profile 锁未改，不能直接执行其 live mode。
+
+原 regular/overlap/paid 矩阵仅提供 14 个 required marker 的待执行输入。新增反向朝贡正/负例、其他复杂关系、宗教负门禁和玩家 penalty tooltip 仍需独立真实证据。实际启动、当次 Steam 离线画面、日期推进、角色/战争身份、完整日志归因、managed cleanup、Workshop 上传、Change Notes 匿名 exact 回读、fresh-cache 核验及永久 release changelog 均尚未由本记录证明。
+
+## 同日新增可执行输入，均 NOT_RUN
+
+最终防御组合场为 `xqol-agent-01/defense-audit/reverse-composite-02/state`：原 14 个标记加反向朝贡合同 8 个标记，共 22 个必需标记。普通 settled 负例使用真实 guarantee=1 / forced=0，正例使用 guarantee=1 / forced=1；保留原版 forced 合同的 guarantee 前提，不以人物同名 flag 伪造合同。新增 observer 等待真实 war_days>=2、原矩阵完成且无失败、原 replay 计数为 0 后，检查负例未被错误召集、正例实际参与且重复 guard 拒绝。正例容许原版提前加入，不强求产品调用数为 1。原矩阵文件与开战/生产 callback 时序保全，新增 initializer 和两个脚本 parser3/3、零错误；policy load_bound 与所有输入 SHA 已复核。最终 freeze 为 20604 字节，SHA-256 `765bc6c8c9ec67e2fb83574d71b66d66338265a516ec83efad6058eb7fb158a5`。
+
+主宗教补测场为 `xqol-agent-01/religion-audit/candidate-02/religion-gate/state`：在 D0 创建两名无地产 Catholic/Roman 囚犯，仅一个携带 ai_will_not_convert；检查实际 production trigger、四个含改信的 interaction validity、非改信 HR、移除和重加 flag。15 个必需标记，不执行付款、释放、改信或招募，不给接受分和 GUI 后果信用。独立 Roman 领袖诊断场从 `rite:roman_rite.head_of_rite` 取得真实人物，有 8 个标记，不囚禁、造盟或改宗该人；其 -120 处罚 tooltip 仍需真实 UI 另验。每场39文件、parser4/4零错误、policy/hash/outer path/空运行目录检查均完成；总输入索引 SHA-256 `1f5fcdad2fed1265b4ca3dd596e0b47160976a2bde938a5c1efd3fcd88b18943`。标记中的 D0 文字不能代替原生日历证明。
+
+付款原夹具与5步计划已逐字复制至 `xqol-agent-01/payment-candidate-02`，仅重绑为同一修复后1.1.1/.3 production，未重跑 builder/parser/旧L0。其41文件 profile 与 policy load_bound 通过；输入 freeze SHA-256 `7f57ab12e583f4ae894efe5300caedee48edacbe8aad99a4935bff543de3679b`。新防御白名单不在该付款场调用路径内，付款验证仍是独立有界范围。
+
+根入口统一见 `xqol-agent-01/HANDOFF-02.md`。上述准备没有实施向上宗主保证、摄政复杂关系、.3 行政与贤能完整任命、全部 slider、真实处罚 tooltip、存档保存/载入或发布。1.20.0.2 的行政17标记与六次实际开关仍为其原版本独立证据，不能因当前函数 SHA 相同改写成 .3 实机通过。
+
+### 同日防御负例隔离加强
+
+最终实际待执行入口改为 `xqol-agent-01/defense-audit/reverse-composite-03/state`，02所有历史输入保留。反向负例初始 `xqol_free_call_target_valid_trigger` 从观察值提升为必需 PASS；invalid 时明确 FAIL 并增加失败计数，避免“未参战”由无关战争资格挡住所造成的含混结果。总 required 为23（原14＋新增9）。仅改变一个外置 reverse effect 脚本，parser1/1、零错误；旧3文件 corpus 未重复，生产27文件与触发器修复字节不变。03全部输入 SHA/policy/outer path/空运行目录复核完成，freeze19926字节、SHA-256 `07602501a95e8bb4dfadb3db2a63a19ca5fff33f83fb488964db7ad5c79008ff`。统一最新入口为 `xqol-agent-01/HANDOFF-03.md`；仍NOT_RUN，没有给02或03实机信用。
+
+### 同日 canonical 候选元数据与发布草稿
+
+Root 授权后，canonical descriptor 已设 version=1.1.1 / supported_version=1.20.0.3，专用静态 descriptor token、README 和 Workshop 描述同步为维护候选。仅执行一次必要 metadata/asset/exact allowlist 检查，27个 canonical runtime 文件逐字节等于已冻结的外置候选；此步只有 descriptor 改变，没有 script/localization/image 漂移。没有刷新历史 .2 原版 SHA 合同，不能把该检查写作全 L0、.3 实机或发布通过。回执为 `xqol-agent-01/metadata-and-notes-validation-04.json`。
+
+完整中英更新说明已保存 `workshop/change_notes/xenoamess-quality-of-life/1.1.1.txt` 与相邻 `1.1.1.freeze.json`，DRAFT_NOT_PUBLISHED：3991字符、33行、5469字节、LF无尾换行，SHA-256 `0cbb91ea9210dca8bdd866e1e36b76e4ea1705f58b4fdb624e7b86513601b2d6`。包含已证实的合同方向修复，没有提交或公开entry/fulltext回读事实。永久候选 changelog 位于 `docs/release-changelogs/xqol/1.1.1.md`，明确 DRAFT / NOT_PUBLISHED / .3 actual pending；正式tag/commit/发布日期、上传、缓存与最终master push均pending。所有旧历史changelog保持原样。
+
+玩家处罚tooltip的只读源证据已完成：现有native MCP没有任命列表/tooltip语义查询或hover；宋帝持h_china霸权级，不能保证进入帝级e_minister_grand_marshal候选池。该原版部长及行政de jure近亲官职仅为合法GUI探查路线，未造强制入池夹具或改原版过滤器，实际百万分tooltip Gap继续保留。最新根交接为 `xqol-agent-01/HANDOFF-04.md`。

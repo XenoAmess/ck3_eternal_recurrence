@@ -1,0 +1,21 @@
+{
+  "schema": "steam-change-notes-freeze-v1",
+  "status": "DRAFT_NOT_PUBLISHED",
+  "product": "xenoamess-quality-of-life",
+  "workshop_item_id": "3798133925",
+  "version": "1.1.1",
+  "previous_public_version": "1.1.0",
+  "frozen_utc": "2026-10-04T18:19:15.335447+00:00",
+  "text_path": "workshop/change_notes/xenoamess-quality-of-life/1.1.1.txt",
+  "encoding": "UTF-8",
+  "newline": "LF",
+  "has_final_newline": false,
+  "bytes": 5469,
+  "characters": 3991,
+  "lines": 33,
+  "sha256": "0cbb91ea9210dca8bdd866e1e36b76e4ea1705f58b4fdb624e7b86513601b2d6",
+  "submitted": false,
+  "public_entry_id": null,
+  "public_full_text_verified": false,
+  "must_refreeze_if_text_changes_before_submit": true
+}

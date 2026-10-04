@@ -1,0 +1,19 @@
+1.0.2 — CK3 1.20.0.3 维护更新
+
+【中文】
+• 按 CK3 1.20 原版刷新廷臣特质目录与元数据：25 教育、17 将才、38 身体、36 性格、110 其他，合计 226 项可选原生特质；同步新版特质 ID、原版设计器成本与冲突关系。
+• 信仰选择现在同时绑定并显示适用礼仪：选择玩家当前信仰时保留玩家礼仪，选择其他信仰时使用该信仰的主礼仪。
+• 重新打开已有廷臣配置时，自动补齐缺失或不属于所选信仰的礼仪；预览、创建和交付资格使用同一文化、信仰与礼仪组合。
+• 修正廷臣列表初始化与空列表资格保护，使主版和白绮独立版的各自目录保持独立。
+• 更新原生继承窗口投影，保留新版教会政体的继承选项；同步九种语言的目录数量与礼仪帮助。
+• 保留原计分公式、700 档教程纪录、轮回商店、祝福/诅咒、六类契约和跨存档纪录协议。
+兼容与限制：推荐 CK3 1.20.0.3 新开局、单机；已有教程纪录无需重置。教程必须保持“完整”或“警告”，关闭教程仍会阻止写入新纪录。无继承人结算与覆盖 window_succession_event.gui 的模组冲突；多人及任意同键模组组合不作保证。旧 CK3 存档的新版完整冷加载与全部廷臣 GUI 操作仍需独立验证。
+
+【English】
+• Refresh the courtier catalog and metadata against CK3 1.20: 25 education, 17 commander, 38 physical, 36 personality and 110 other traits, for 226 selectable native traits. Update native trait IDs, ruler-designer costs and conflict relationships.
+• Faith selection now binds and displays the applicable Rite: your current faith preserves your Rite, while another faith uses its main Rite.
+• Reopening existing courtier configurations repairs missing or mismatched Rites. Preview, creation and delivery validation use the same culture, faith and Rite combination.
+• Correct catalog initialization and empty-list guards, keeping the main mod's and standalone White edition's catalogs independent.
+• Update the native succession-window projection while preserving the new ecclesiastical succession choices. Synchronize catalog counts and Rite help across all nine languages.
+• Preserve scoring, all 700 tutorial record tiers, the reincarnation shop, blessing/curse pools, all six contracts and the cross-save record protocol.
+Compatibility and limits: a new single-player CK3 1.20.0.3 game is recommended. Existing tutorial records need no reset. Tutorials must remain Full or Warnings to write new records. Other mods replacing window_succession_event.gui conflict with the no-heir settlement; multiplayer and arbitrary same-key mod combinations are not guaranteed. Complete cold loading of existing CK3 saves and all courtier GUI controls require separate validation.

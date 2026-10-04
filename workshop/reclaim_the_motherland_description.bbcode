@@ -3,87 +3,62 @@
 [b]The Mandate may be lost. The dynasty need not vanish with it.[/b]
 [b]天命可以失去，王朝不必随之湮灭。[/b]
 
-0.4.0 · CK3 1.19.0.6 · All Under Heaven required
+0.4.1 · CK3 1.20.0.3 · All Under Heaven required
 
-[h1]A New Default Rule / 新增默认规则[/h1]
+[h1]Rules / 游戏规则[/h1]
 
-“Fate of the Chinese Hegemon” defaults to “Reclaim the Motherland”; “Vanilla Shattering” restores vanilla behavior. “The Choice of the Loyalists” defaults to “Divided Hearts,” with “Unwavering Loyalty” retaining every Pro-Hegemon vassal.
-【中华霸权统治者的命运】默认【重整河山】，也可恢复【群雄割据（原版）】；【尊王诸侯的抉择】默认【人心离散】，也可选择尊王派全员留下的【誓死尊王】。
+“Fate of the Chinese Hegemon” defaults to “Reclaim the Motherland”; “Vanilla Shattering” restores vanilla behavior. “The Choice of the Loyalists” defaults to “Divided Hearts”; “Unwavering Loyalty” keeps every Pro-Hegemon direct vassal.
+【中华霸权统治者的命运】默认【重整河山】，也可恢复【群雄割据（原版）】；【尊王诸侯的抉择】默认【人心离散】，也可选择【誓死尊王】。
 
-[h1]When All Under Heaven Fractures / 群雄割据之时[/h1]
-
-[list]
-[*]The old ruler loses the Chinese Hegemony, but keeps every personally held domain and unrelated title. / 旧天子失去中华霸权，但进入群雄割据前亲自持有的领地与其他个人头衔仍归本人。
-[*]A new empty-de-jure Hegemony is created as “Later + old dynasty name”: for example, Later Song / 后宋. / 创建空法理的“后＋原朝号”霸权，例如【后宋】。
-[*]Pro-Hegemon lords decide once: enemies may rebel, close bonds may remain, and uncertain lords weigh opinion, character, rank, military strength, legitimacy, and dread. / 尊王诸侯会在裂解一刻抉择：仇敌可叛、深交可留，其余人权衡好感、性情、地位、军力、合法性与威慑。
-[*]A lord who finally remains keeps the same primary title, displayed or custom realm name, direct liege, and complete subordinate realm tree. “Qingxu Circuit” will not be arbitrarily renamed during the shattering. / 最终留下的忠臣保留原主头衔、显示或自定义国号、直属关系与完整下级封臣树；【青徐路】不会再因群雄割据被随意换号。
-[*]Defectors and every other direct vassal break away and continue through vanilla Chaos reorganization. / 反叛的尊王诸侯与其他直属封臣脱离，并继续按原版群雄割据逻辑重组。
-[/list]
-
-[h1]The Later Dynasty and Its Court / 后朝与旧朝廷[/h1]
+[h1]When China Fractures / 群雄割据之时[/h1]
 
 [list]
-[*]The empty-de-jure Later Hegemony now has a primary heir; existing Later titles gain the contract on load. / 空法理后朝霸权现具有主继承人；旧版既有后朝会在加载时补齐合同。
-[*]On the former emperor's death, the same Later title and loyalist realm pass to that heir; other personal titles keep their normal succession. / 旧君驾崩后，同一后朝头衔与忠臣封臣树由主继承人接续；其他个人头衔仍按原规则继承。
-[*]The nine ministries continue under the latest Later Dynasty. Eligible loyal incumbents stay; defectors leave office; real vacancies use vanilla appointment. / 最近失去天命的后朝延续三省六部九席：合资格的留朝旧臣原位留任，叛离者离任，真实空缺交回原版任免。
-[*]This does not preserve formal Grand Secretariat power-sharing, the Mandate, or reigning-Hegemony privileges. / 这不保留正式中书门下权力分享、天命或现任中华霸权专属特权。
+[*]The former emperor loses the Chinese Hegemony but keeps personally held land and unrelated titles. A new empty-de-jure “Later + old dynasty” Hegemony is created, such as Later Song. / 旧天子失去中华霸权，保留个人领地与其他头衔，并建立空法理的【后＋原朝号】霸权，例如【后宋】。
+[*]Pro-Hegemon lords decide once using rivalries, close bonds, opinion, character, rank, strength, legitimacy and dread. / 尊王诸侯依照仇怨、羁绊、好感、性情、地位、实力、合法性与威慑，在裂解一刻决定去留。
+[*]Loyalists keep the same titles, displayed or custom names, direct liege and complete subordinate realm. Defectors and other direct vassals enter vanilla Chaos reorganization. / 留朝忠臣保留原主头衔、显示或自定义国号、直属关系及下级封臣树；叛者与其他直属封臣按原版割据逻辑重组。
 [/list]
 
-[h1]No Instant Diplomatic Reunification / 割据不再顷刻归附[/h1]
+[h1]The Later Dynasty / 后朝与旧朝廷[/h1]
 
-A Later Dynasty is no longer treated as the reigning Chinese Hegemony by Offer Vassalization and loses its rank-gap, Hegemony, and high-tier exemptions.
-后朝在【提议附庸】中不再被误当成现任中华霸权，也不再获得天朝等级差、霸权身份及高阶诸侯豁免。
+[list]
+[*]The same Later title and loyalist realm pass to the engine-selected primary heir after the former emperor's death. Other personal titles use normal succession. Existing marked Later titles gain an idempotent succession migration. / 旧君死亡后，同一后朝头衔与忠臣封臣树由引擎选出的主继承人接续；其他个人头衔按原规则继承，既有带标记的后朝可幂等补齐继承合同。
+[*]The latest fallen dynasty retains the Three Departments and Six Ministries and their budget eligibility. Eligible loyal incumbents remain; defectors leave; real vacancies use vanilla appointment. / 最近失去天命的后朝延续三省六部九席及预算资格：合资格旧臣原位留任，叛离者离任，真实空缺交回原版任免。
+[*]The Mandate, formal Grand Secretariat power-sharing and reigning-Hegemony privileges are not preserved. / 不保留天命、正式中书门下权力分享或现任中华霸权专属特权。
+[/list]
 
-Direct vassals released by the shattering receive a title-bound, five-year “Recently Independent” memory: a visible -50 acceptance reason against that Later Dynasty. Ruler changes cannot bypass it; patient diplomacy remains possible after expiry.
-本轮实际脱离的直属诸侯获得绑定主头衔、持续五年的【新近自立】记忆：面对该后朝的附庸提议显示 -50 接受度，双方换君不能绕过，期满后仍可外交统一。
+[h1]Diplomacy / 和平附庸[/h1]
+
+Later rulers receive no reigning Chinese Hegemony identity advantages. Under CK3 1.20's formula, their ordinary rank bonus stays +10 when the gap exceeds one tier; high-tier refusal reasons return. Other vanilla acceptance reasons remain.
+后朝不再冒领现任中华霸权的身份优惠；在 CK3 1.20 的公式中，品级差大于一级时保留固定 +10，并恢复高阶诸侯拒绝项，其他原版接受度理由照常。
+
+Only direct lords actually released by that shattering gain a title-bound “Recently Independent” -50 acceptance reason against the exact Later Dynasty for 1,825 days. Ruler changes cannot bypass it. This is soft resistance; exceptional diplomacy may succeed, and normal diplomacy returns after expiry.
+只有本轮实际脱离的直属诸侯获得持续 1825 日、绑定确切双方头衔的【新近自立】-50；双方换君不能绕过。这是软性阻力，出色外交仍可能成功，期满恢复正常外交。
 
 [h1]Proclaim the Restoration / 宣称复辟[/h1]
 
-A Later ruler cannot “Claim the Mandate.” During Chaos, controlling 51% of the Chinese Hegemony's de-jure counties, including qualifying tributary land, unlocks “Proclaim the Restoration.”
-后朝持有者不能【宣称天命】；群雄割据期间控制中华霸权法理伯爵领的 51%（含合资格朝贡国）即可【宣称复辟】。
+A Later ruler cannot Claim the Mandate. During Chaos, an independent, adult ruler at peace who controls 51% of China's de-jure counties, including qualifying tributary land, can Proclaim the Restoration. It uses vanilla Mandate effects and removes that ruler's Later titles. Other historic Later Dynasties may continue to exist.
+后朝持有者不能【宣称天命】。群雄割据期间，独立、成年且和平的后朝统治者控制中华法理伯爵领 51%（含合资格朝贡国）后可【宣称复辟】，执行原版天命效果并销毁自身后朝头衔；其他历史后朝仍可存在。
 
-Restoration uses the same new-dynasty, warlord-submission, and Dynastic Cycle effects as Claim the Mandate, then retires the Later title.
-【宣称复辟】沿用【宣称天命】的新朝、群雄归附与王朝循环效果，最后销毁后朝头衔。
+[h1]0.4.1 Update / 本次更新[/h1]
 
-[h1]0.4.0 更新记录[/h1]
+Updates CK3 1.20.0.3 vassalization, ministry-budget flags, Chaos ordering and Mandate conditions while retaining the dynasty, succession and restoration rules.
+适配 CK3 1.20.0.3 的附庸公式、官署预算标记、割据执行顺序及天命条件，延续现有王朝、继承与复辟规则。
 
-[list]
-[*]修复空法理后朝霸权在死亡结算中无法可靠传给主继承人的问题，并为旧版后朝存档增加幂等迁移。
-[*]旧君驾崩后，后朝头衔与留朝忠臣封臣树继续由主继承人统领。
-[*]后朝延续三省六部九席：留朝合资格的原班大臣不动，随割据者离朝的大臣离任，只补空缺。
-[*]修正后朝被和平附庸公式误当成现任中华霸权的问题。
-[*]本轮实际脱离的直属诸侯获得五年、绑定双方头衔且可见的【新近自立】-50 接受度。
-[*]二期【人心离散】、忠臣国号与封臣树保护、51% 原版门槛及【宣称复辟】保持不变。
-[/list]
+[h1]Real CK3 Images / 历史真实游戏画面[/h1]
 
-[h1]Real CK3 Evidence / 真实游戏画面[/h1]
-
-[h3]Divided Hearts / 人心向背[/h3]
+The images below were captured on CK3 1.19.0.6 for version 0.4.0. / 下图来自 0.4.0 的 CK3 1.19.0.6 实机。
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/83c00de8ed6eeabb2eb234768fd781cb4f7acd11/workshop/reclaim_the_motherland_media/00_divided_hearts_live.jpg[/img]
-
-[h3]Later Song stands at Kaifeng / 后宋立于开封[/h3]
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/83c00de8ed6eeabb2eb234768fd781cb4f7acd11/workshop/reclaim_the_motherland_media/01_later_dynasty_live.jpg[/img]
-
-[h3]Restoration ready; Claim the Mandate locked / 宣称复辟可用，宣称天命锁定[/h3]
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/83c00de8ed6eeabb2eb234768fd781cb4f7acd11/workshop/reclaim_the_motherland_media/02_restoration_decision_live.jpg[/img]
-
-[h3]Restoration proclamation and effect / 复辟诏告与效果[/h3]
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/83c00de8ed6eeabb2eb234768fd781cb4f7acd11/workshop/reclaim_the_motherland_media/03_restoration_confirm_live.jpg[/img]
-
-[h1]Verification / 验收[/h1]
-
-Reproducible 35-file build. MCP-first CK3 1.19.0.6 acceptance covers shattering, loyalist continuity, real-death succession, all nine ministers, two real vassalization refusals, five-year expiry, the 51% threshold, and restoration.
-可复现的 35 文件构建；MCP-first CK3 1.19.0.6 验收覆盖裂解、忠臣延续、真实死亡继承、九席大臣、两次真实附庸拒绝、五年到期、51% 门槛与复辟。
-
-[h1]Localization / 本地化[/h1]
-
-English / 简体中文 / Français / Deutsch / 日本語 / 한국어 / Polski / Русский / Español
 
 [h1]Compatibility / 兼容性[/h1]
 
-Requires CK3 1.19.0.6 and All Under Heaven; new single-player games recommended. Old Later titles gain succession migration, but “Recently Independent” applies only to new shatterings. Human loyalists use the public 50-point boundary. Overrides [code]tgp_chaos_shattering_effect[/code], [code]situation_dynastic_cycle_claim_mandate_decision[/code], [code]tgp_has_access_to_ministry_trigger[/code], and [code]offer_vassalization_interaction[/code].
-需要 CK3 1.19.0.6 与《溥天之下 / All Under Heaven》，推荐新开单人存档。旧后朝会获得继承迁移，但【新近自立】只适用于更新后的新裂解；人类尊王诸侯使用公开的 50 分分界。本 mod 覆写上述四个原版 key，其他同类覆写可能产生加载顺序冲突。
+Requires CK3 1.20.0.3 and All Under Heaven. New single-player games are recommended; cross-major-version save compatibility is not guaranteed. Old Chaos saves do not receive a reconstructed release list. Human loyalists use a deterministic 50-point boundary. Overrides [code]tgp_chaos_shattering_effect[/code], [code]situation_dynastic_cycle_claim_mandate_decision[/code], [code]tgp_has_access_to_ministry_trigger[/code], and [code]offer_vassalization_interaction[/code]; mods replacing those definitions may conflict by load order.
+需要 CK3 1.20.0.3 与《溥天之下》，推荐新开单人存档，不保证跨游戏大版本存档兼容。旧割据存档不补造历史释放名单。人类尊王诸侯采用确定性的 50 分分界。同类覆写上述四个定义的 mod 可能产生加载顺序冲突。
+
+[h1]Languages / 本地化[/h1]
+English / 简体中文 / Français / Deutsch / 日本語 / 한국어 / Polski / Русский / Español
 
 [h1]Source / 源码[/h1]
-
 https://github.com/XenoAmess/ck3_eternal_recurrence

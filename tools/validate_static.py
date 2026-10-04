@@ -2077,8 +2077,8 @@ def package_checks(errors):
         errors.append("descriptor.mod lacks a semantic version")
     if 'picture="thumbnail.png"' not in descriptor:
         errors.append("descriptor.mod picture is not thumbnail.png")
-    if 'supported_version="1.20.0.2"' not in descriptor:
-        errors.append("descriptor.mod differs from the CK3 1.20.0.2 migration baseline")
+    if 'supported_version="1.20.0.3"' not in descriptor:
+        errors.append("descriptor.mod differs from the CK3 1.20.0.3 migration baseline")
     official_ci = read(ROOT / ".github/workflows/static-ci.yml")
     ci_requirements = (
         "runs-on: windows-latest", "pull_request:", "workflow_dispatch:",

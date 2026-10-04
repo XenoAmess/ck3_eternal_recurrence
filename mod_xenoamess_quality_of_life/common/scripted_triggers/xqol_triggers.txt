@@ -49,7 +49,7 @@ xqol_free_ally_relationship_trigger = {
 		}
 		scope:recipient = {
 			is_tributary_of = scope:actor
-			subject_contract_has_flag = tributary_contract_suzerain_guarantee_override
+			subject_contract_has_flag = tributary_contract_tributary_forced_war_override
 		}
 	}
 }

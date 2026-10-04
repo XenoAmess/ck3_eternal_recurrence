@@ -419,10 +419,10 @@ def check_scripts(errors: list[str]) -> None:
 def check_assets_and_descriptor(errors: list[str]) -> None:
     descriptor = read_utf8(MOD / "descriptor.mod")
     for token in (
-        'version="1.1.0"',
+        'version="1.1.1"',
         'name="XenoAmess的体验优化"',
         'picture="thumbnail.png"',
-        'supported_version="1.20.0.2"',
+        'supported_version="1.20.0.3"',
     ):
         if descriptor.count(token) != 1:
             errors.append(f"descriptor token mismatch: {token}")

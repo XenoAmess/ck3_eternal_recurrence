@@ -114,7 +114,7 @@ def product_source_errors() -> list[str]:
     descriptor = SOURCE / "descriptor.mod"
     if descriptor.is_file():
         descriptor_text = descriptor.read_text(encoding="utf-8-sig")
-        for token in ('name="牛来"', 'supported_version="1.19.0.6"'):
+        for token in ('name="牛来"', 'version="1.0.3"', 'supported_version="1.20.0.3"'):
             if token not in descriptor_text:
                 errors.append(f"product descriptor missing {token}")
     decisions = SOURCE / "common" / "decisions" / "ox_here_decisions.txt"
