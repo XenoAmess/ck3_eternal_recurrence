@@ -183,7 +183,7 @@ def product_source_errors() -> list[str]:
             if line.startswith("supported_version=")
         )
         for token in (
-            'version="1.0.0"',
+            'version="1.0.1"',
             'name="Tributary Expansion Directives — 驱策朝贡国"',
             supported_version,
         ):
