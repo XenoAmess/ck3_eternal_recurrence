@@ -146,3 +146,20 @@ Supply与attrition各一次hover只得到acknowledged_verification_pending；随
 Root误调用stop-session产生Unknown tool，原错误保留；正确stop随后成功，bootstrap独立证实SDK/keeper线程退出、CK3和recorder树空。1024×768显示恢复，Root直接审阅新的Steam离线图，CAS4491实际done/resources[]。CAS之后heartbeat参数被parser拒绝不改写CAS成功；本脚本过程输出保全。实际bootstrap位于native-live-army-tooltip-r0163-a01/bootstrap-result.json，launch-gui同名路径缺失不是SDK/游戏失败。
 
 后续修正只处理cap误拒绝并提供实际cap/count诊断，尚属static-only、未新live。下一轮独立绑定真实栈/当前root/文本刷新与像素；不要按旧ACK补造Tooltip成功。正补给恢复、补员、actual合军、同档A/B/C、全文/TTS及成片/交付仍按原缺口推进。[Army UI专题](../../../docs/ck3-native-ai/army-ui-selection-window-12003.md)保持R0162已验范围和R0163失败各自身份，不覆盖历史。
+
+
+## 2026-10-05 R0164 收口：正补给实际闭合，整数补员仍待证
+
+这是对上文历史pending切点的追加更新。[本期R0164索引](evidence/r0164-index.json)绑定exact1.20.0.3、fea65ebb/a06、原始7f Jan11及新episode native-33388-18dbe3e6ac0a。实际暂停初末raw53147160→53147520，共15新游戏日；与Robert长期控制loop、第3期及R0162空窗不合并信用。
+
+正式positive-pair-a05实证：同一CArmy16777220第14→15日仍在2174行军（route[2327,2325]），补给291.22808→300/capacity300，current monthly+15.61404；+188成功更新日期53146800→53147520。净增8.77192符合当前容量截断。完整14个actual兵团人数向量及24条raised records前后相等，总1086/1087、53仍9/10；当前补员权限true及比例不当整数补员正例。当前全roster为[0,16777220]；独立post只请求Sea subject，未冒充sampler全roster。详细边界回链[补给专题](../../../docs/ck3-native-ai/army-current-supply-capacity-attrition-12003.md)与[补员专题](../../../docs/ck3-native-ai/army-regiment-replenishment-raised-reserve-12003.md)。
+
+day15独立preview的current2174 limit4960/usage1086与target2325 limit3840/usage0各保留role；target未抵达值不能当抵达后用量。将领27357在day15再读，day14未独立再读；CArmy+0xC0 raw flag没有由Strength DTO发布，capacity300不能反推flag。
+
+Root直接审阅四张精确PNG：末帧面板1086人、补给300/300、HUD1067Jan26；补给和损耗尝试仍显示Argentan地图tooltip，实际query=source_null（cap1/count1/hovernull/index0）。这是实际失败状态，hover ACK不代文字/像素；十一术语门槛继续pending。
+
+原片1327000997B/SHAba74579ca20d996bb9b78774c229223fc147638503b9327cbd3189212d0bdc01正常finish exit0/Job0，900秒1920×1080/30fps，完整27000帧及27000包时戳严格递增，前后SHA稳定，媒体审计PASS。Root PNG authority SHA938e5f27be4f9dff0dc8e08a7d3ef59a904d3eeb9433f687f3570b44b06c1ed3与raw时码绑定为null；不以UTC推测覆盖stock增长画面，0自动clean spans、0全片1×审阅/approval。第二次recording-start被one-recorder合同拒绝，未启动第二段，publication退出0不代业务成功。
+
+actual day15 save72775729B/SHA2255db3e442650afac51e4e5d75bea7ed9864a90e3b4d1d96de243ef6dd7257f、同SHA immutable seed及保存前后paused/map_ready身份保全。SDK线程退出、CK3/recorder Job空、屏幕资源CAS释放，Root直接审阅新的Steam离线关闭图并恢复1024×768；这些为R0164历史收口证据。后续独立R0165只续余15日、总end53147880，实际证据另记，不是A/B/C。
+
+仍需十一tooltip、实际整数补员、actual merge、同档A/B/C三回放、累计支付/路线代价与全文/TTS/成片/1×签核/指定视频交付。本例闭合库存恢复与人数未增长的区别，不清空这些门槛。权威总账没有正式加权分母，研究完成百分比保持null；900秒素材不能换算研究或影片完成百分比。

@@ -244,3 +244,11 @@ Root确认该30日推进为normal/calendar/bounded/whole（720小时），global
 协调者一次消费同帧critical cache后提供的具名摘要：army838→nativeCArmy50331794，row/status与metadata均available，query seq11、queried native134/public122、raw53249664，final frame match=true；当前3893/4231、47 regiment，supply133.34217/cap300、monthly+20、attrition0。对应raw为13334217/30000000/2000000/0，scale均100000；map soldiers=null仍保留。gathering_days_left=null、status=not_gathering、ready=true是合法非集结状态，不代表战斗质量；该摘要未提供补员record覆盖，不能宣称全47团记录完整或推断兵数差原因。
 
 同一Root摘要给出FullCombat1728053248的defender=1、maneuver=1；首都enemy-active Siege201326609进度71.177%、breach=0、nonoccupied=true，战争129分数−22。已抵达与健康字段仅为production-live primitive，首都尚未解围、战争未胜利；后续4392帧排除。本doc消费者仅引用封存摘要（`ART3/military-ooda-continuation/capital2619-v52/relief64-consumption/DAY30-TERMINAL-CRITICAL.json`，SHA-256 `adb4d32a6f55ed4122ee645eeb60bb99765f0797660561aac980f870fc51a38d`），未重复读取该critical/raw，新增游戏天数、动作及战果信用均0。
+
+## 2026-10-05 R0164：2174 行军途中的实际正补给与容量截断
+
+本期原始7f Jan11新冷载R0164已取得独立暂停配对：raw53147496→53147520，即原始第14→15日。同一实际CArmy16777220，两端都位于2174、state7 moving、目标2325、路线[2327,2325]，不是抵达2325后的驻地休整。actor33388、episode native-33388-18dbe3e6ac0a、PID15000/connection1、exact1.20.0.3 EXE94b55397…02a6及fea65ebb/a06来源已交叉绑定。
+
+Q100000补给实读：stock29122808→30000000，capacity两端30000000，当前月贡献两端1561404。`min(29122808+1561404,30000000)=30000000`与实际吻合，净增877192（8.77192），超出容量的684212未保留。真实+188的raw64由300064531523761328变为300333907577599872，解析日期53146800→53147520；selected bucket19→20，实际Army bucket20不变。后续独立snapshot/Strength再次确认pausedtrue/raw53147520和上述值。CArmy+0xC0原始flag未由此Strength DTO发布，不能从capacity300反推其值或成因。
+
+完整14个actual ArmyRegiment FullID人数向量仍1086/1087，53团仍9/10。这个窗口实际证明补给库存恢复可以发生而逐团人数没有增加；它不证明补员producer永不执行。原片正常收口后已有900秒全媒体审计PASS，数字窗口与实际PNG由[本期R0164索引](../../promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0164-index.json)分别绑定；没有原片时间码或clean span信用，数字回执不能代替完整原片审阅或成片签核。

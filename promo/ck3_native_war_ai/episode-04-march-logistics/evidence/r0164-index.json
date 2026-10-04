@@ -1,0 +1,2833 @@
+{
+  "schema": "xar.war-episode04.live-evidence.v1",
+  "run": "R0164",
+  "stage": "closed-positive-supply-window-a03",
+  "recorded_at": "2026-10-04T20:18:49.581705+00:00",
+  "scope": "Finished R0164 exact source/evidence/media metadata; numeric supply window and exact PNG reviews are separate from video content or human film signoff",
+  "previous_index": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0164-docs-index-report-a01\\positive-pair-a02\\evidence-index.json",
+    "bytes": 430002,
+    "sha256": "a2f1c79292d5810521b96525d76d74db184d368aeae1d6191cf01a8cba8011fe"
+  },
+  "runtime_source_head": "fea65ebb763da5b2ddf7acd4897cd80a7a7a0f59",
+  "native_build_source_head": "fea65ebb763da5b2ddf7acd4897cd80a7a7a0f59",
+  "game_version": "1.20.0.3",
+  "executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "actor_id": 33388,
+  "episode_run_id": "native-33388-18dbe3e6ac0a",
+  "ck3_pid": 15000,
+  "original_checkpoint": {
+    "bytes": 72221797,
+    "sha256": "7f766a68ea5a588ace13a9580ce440976330c5258bf6fb030a196d278058f3b5",
+    "date_raw": 53147160
+  },
+  "initial_date_raw": 53147160,
+  "final_date_raw": 53147520,
+  "actual_new_game_days": 15,
+  "initial_paused": true,
+  "final_paused": true,
+  "final_map_ready": true,
+  "positive_supply_numeric_window": {
+    "source": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\refill-positive-live-r0164-a01\\positive-pair-a05\\actual-positive-supply-and-no-soldier-gain-pair.json",
+      "bytes": 55212,
+      "sha256": "bb2a355d7a01735ce55f12153177a6246665d00f8cf39eb97b41d399f49ebb20"
+    },
+    "status": "observed",
+    "army_id": 16777220,
+    "before_date_raw": 53147496,
+    "after_date_raw": 53147520,
+    "province_both_endpoints": 2174,
+    "army_state_both_endpoints": "moving",
+    "route_both_endpoints": [
+      2327,
+      2325
+    ],
+    "target": 2325,
+    "arrival_at2325": false,
+    "stock_before_raw": 29122808,
+    "stock_after_raw": 30000000,
+    "capacity_raw": 30000000,
+    "current_monthly_raw": 1561404,
+    "scale": 100000,
+    "actual_net_raw": 877192,
+    "last_successful_update_date_raw": [
+      53146800,
+      53147520
+    ],
+    "complete_regiment_vector_unchanged": true,
+    "actual_regiment_count": 14,
+    "current_soldiers": 1086,
+    "maximum_soldiers": 1087,
+    "deficient_regiment": {
+      "army_regiment_id": 53,
+      "current": 9,
+      "maximum": 10
+    },
+    "integer_replenishment_increase_observed": false
+  },
+  "day15_current_province_support": {
+    "status": "available",
+    "unavailable_reason": null,
+    "army_id": 16777220,
+    "native_carmy_id": 16777220,
+    "owner_character_id": 33388,
+    "commander_character_id": 27357,
+    "current": {
+      "status": "available",
+      "unavailable_reason": null,
+      "role": "current",
+      "province_id": 2174,
+      "native_supply_limit_soldiers": 4960,
+      "native_supply_usage_soldiers": 1086,
+      "scale": 1
+    },
+    "target": {
+      "status": "available",
+      "unavailable_reason": null,
+      "role": "target",
+      "province_id": 2325,
+      "native_supply_limit_soldiers": 3840,
+      "native_supply_usage_soldiers": 0,
+      "scale": 1
+    }
+  },
+  "CArmy_C0_raw_flag": null,
+  "CArmy_C0_scope": "not published by current Strength DTO; capacity does not supply its value",
+  "actual_saved_checkpoint": {
+    "status": "saved",
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\state-positive-r0164-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 72775729,
+    "sha256": "2255db3e442650afac51e4e5d75bea7ed9864a90e3b4d1d96de243ef6dd7257f",
+    "date_raw": 53147520,
+    "overwrite_confirmed": false,
+    "strategy": "native-autosave-command-v1",
+    "succession_lifecycle": {
+      "schema": "xar.ck3.succession-lifecycle-binding/v1",
+      "lifecycle": "ordinary_campaign_succession",
+      "xar_enabled": "xar_off",
+      "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+      "source": "pure-vanilla-enabled-mods-empty",
+      "environment_sha256": "326e320f3ea5613330c2b7a2cb1ba6855e047d810f8209a40c0755675e208965"
+    },
+    "history_index": 94,
+    "episode_character_id": 33388,
+    "episode_run_id": "native-33388-18dbe3e6ac0a"
+  },
+  "immutable_episode_seed": {
+    "format_version": 1,
+    "name": "xar_episode_seed.ck3",
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\state-positive-r0164-a01\\profile\\save games\\xar_episode_seed.ck3",
+    "size": 72775729,
+    "sha256": "2255db3e442650afac51e4e5d75bea7ed9864a90e3b4d1d96de243ef6dd7257f",
+    "date_raw": 53147520,
+    "character_id": 33388,
+    "source_run_id": "native-33388-18dbe3e6ac0a",
+    "source_checkpoint_name": "xar_checkpoint.ck3",
+    "immutable": true
+  },
+  "saved_pause_binding": {
+    "before": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-day15-final-pre-a01.json",
+      "bytes": 846513,
+      "sha256": "58c00587af7b16ed7576a33e23533c3a473fd08ac57539ddbd4b7393e38d446d"
+    },
+    "after": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-day15-final-post-a01.json",
+      "bytes": 164939,
+      "sha256": "5ed90952f2b9e429c06a22faa9527d3788c608a40433ac8f9956cc0f8934d6c0"
+    },
+    "date_raw": 53147520,
+    "paused": true,
+    "map_ready": true
+  },
+  "raw_media": {
+    "identity": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\recordings\\positive-r0164-a01\\raw.mkv",
+      "bytes": 1327000997,
+      "sha256": "ba74579ca20d996bb9b78774c229223fc147638503b9327cbd3189212d0bdc01"
+    },
+    "finish_response": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-recording-finish-a01.json",
+      "bytes": 1350,
+      "sha256": "6f57ca75f4e4f7f997fee7c415e0a93fb261ce79ccb5e7dbbb913bcf581ed6b3"
+    },
+    "normal_ffmpeg_exit": 0,
+    "job_active_final": 0,
+    "duration_seconds": "900.000000",
+    "width": 1920,
+    "height": 1080,
+    "frame_rate": "30/1",
+    "decoded_frames": 27000,
+    "video_packets": 27000,
+    "full_timestamps_monotonic": true,
+    "stable_sha_before_after": true,
+    "audit_status": "PASS_media_only",
+    "audit_report": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\recording-audit-r0164-a01\\audit-attempt-a01\\report.json",
+      "bytes": 9340,
+      "sha256": "ec919b8518eca45172f76bdb96ec04905a5b570a054ecba625a8854165e790a6"
+    },
+    "audit_index": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\recording-audit-r0164-a01\\audit-attempt-a01\\evidence-index.json",
+      "bytes": 8360,
+      "sha256": "c975fdb985293c34cf14dfe5e4eb5f85a22c22aeb45eedc66e63a01fb2cf3906"
+    },
+    "ffprobe": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+      "bytes": 222026240,
+      "sha256": "afe05347caaabe479b3c4eae71992b6ec1e11c57266a1d665deb0f9fe9847208"
+    },
+    "full_probe_receipts": {
+      "streams-format": {
+        "started_at_utc": "2026-10-04T19:57:15.326679+00:00",
+        "completed_at_utc": "2026-10-04T19:57:15.456560+00:00",
+        "elapsed_seconds": 0.129887,
+        "returncode": 0,
+        "argv_identity": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\recording-audit-r0164-a01\\audit-attempt-a01\\streams-format\\argv.json",
+          "bytes": 498,
+          "sha256": "0c236f6b49dbc6cfa163a60416cf8566366c0f4f1f44274a82c923d60f4f55d6"
+        },
+        "stdout_identity": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\recording-audit-r0164-a01\\audit-attempt-a01\\streams-format\\stdout.json",
+          "bytes": 2435,
+          "sha256": "1111cf06a8c93924267ace7b354086b16abb5c88b703d2e9b2a9a5a09c6fe9ec"
+        },
+        "stderr_identity": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\recording-audit-r0164-a01\\audit-attempt-a01\\streams-format\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "video-packets": {
+        "started_at_utc": "2026-10-04T19:57:15.327051+00:00",
+        "completed_at_utc": "2026-10-04T19:57:17.696260+00:00",
+        "elapsed_seconds": 2.3691953,
+        "returncode": 0,
+        "argv_identity": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\recording-audit-r0164-a01\\audit-attempt-a01\\video-packets\\argv.json",
+          "bytes": 614,
+          "sha256": "a42b5dc99a586070145ceb9bb7875fc7eca28ef62a24e781a5a1d14dabe89d91"
+        },
+        "stdout_identity": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\recording-audit-r0164-a01\\audit-attempt-a01\\video-packets\\stdout.json",
+          "bytes": 7762762,
+          "sha256": "363e7e419642e72c223e024163d832b6f9cbacb29fa7ef90b93b357bc1174279"
+        },
+        "stderr_identity": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\recording-audit-r0164-a01\\audit-attempt-a01\\video-packets\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "video-frames": {
+        "started_at_utc": "2026-10-04T19:57:15.327377+00:00",
+        "completed_at_utc": "2026-10-04T19:58:43.293522+00:00",
+        "elapsed_seconds": 87.9661609,
+        "returncode": 0,
+        "argv_identity": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\recording-audit-r0164-a01\\audit-attempt-a01\\video-frames\\argv.json",
+          "bytes": 682,
+          "sha256": "bcbda0bcaed2788cfcbc97d19af3c7e9ca745d30579943da4eb9fdcc69112500"
+        },
+        "stdout_identity": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\recording-audit-r0164-a01\\audit-attempt-a01\\video-frames\\stdout.json",
+          "bytes": 11590299,
+          "sha256": "28ce5f9fa8623e26ee11a603a32860b3b99d2b1d4b93220e84b2ddac96b86227"
+        },
+        "stderr_identity": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\recording-audit-r0164-a01\\audit-attempt-a01\\video-frames\\stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "clean_spans_certified": false,
+    "full_human_viewing_performed": false,
+    "human_signoff": false,
+    "final_film_certified": false
+  },
+  "second_recorder_start": {
+    "response": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-recording-start-a02.json",
+      "bytes": 1080,
+      "sha256": "35a5606313de5e281f7ce0edb14f2243ed611e36a49212245746d3efcacbdd52"
+    },
+    "is_error": true,
+    "business_started": false,
+    "scope": "one-recorder contract refusal; transport publication returncode is not business success"
+  },
+  "direct_root_png_reviews": {
+    "authority": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-visual-reviews-r0164-a01\\reviews.json",
+      "bytes": 3389,
+      "sha256": "938e5f27be4f9dff0dc8e08a7d3ef59a904d3eeb9433f687f3570b44b06c1ed3"
+    },
+    "rows": [
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\frames\\r0164-ready-map-a01\\desktop.png",
+        "bytes": 3250019,
+        "sha256": "2b6f50b583214f557c97af48704873646bb0cf68ecf3479d47796918aa51016c",
+        "pixel_size": [
+          1920,
+          1080
+        ],
+        "source_receipt": "C:\\ck3-war-episode04-research-20261004-a01\\frames\\r0164-ready-map-a01\\receipt.json",
+        "reviewer": "Codex Root direct visual inspection",
+        "observed": "Army16777220 selected: soldiers1086, Supply291/300, skull0%, HUD1067Jan11; Argentan map tooltip carries supplyusage1086/3840 and previewETA22days Feb2; neither ETA nor preview is executed arrival proof",
+        "raw_video_timecode_binding": null,
+        "human_full_film_signoff": false
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\frames\\r0164-supply_state-tooltip-a02\\desktop.png",
+        "bytes": 3270146,
+        "sha256": "d123f990f42faf3c8a76b0cc1986ba1f8ddd652b3e9d18363e4e4c30eff692e7",
+        "pixel_size": [
+          1920,
+          1080
+        ],
+        "source_receipt": "C:\\ck3-war-episode04-research-20261004-a01\\frames\\r0164-supply_state-tooltip-a02\\receipt.json",
+        "reviewer": "Codex Root direct visual inspection",
+        "observed": "Army Supply291/300 remains visible; active visible large tooltip is Argentan map tooltip; no Army Supply tooltip visually established",
+        "raw_video_timecode_binding": null,
+        "human_full_film_signoff": false
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\frames\\r0164-attrition-tooltip-a02\\desktop.png",
+        "bytes": 3270313,
+        "sha256": "ef5bc9465e263a500fa5ca1ec3b17b1d634a8876adf7c239287a4159f71d9e43",
+        "pixel_size": [
+          1920,
+          1080
+        ],
+        "source_receipt": "C:\\ck3-war-episode04-research-20261004-a01\\frames\\r0164-attrition-tooltip-a02\\receipt.json",
+        "reviewer": "Codex Root direct visual inspection",
+        "observed": "Army skull0% remains visible; active visible large tooltip is Argentan map tooltip; no Army attrition tooltip visually established",
+        "raw_video_timecode_binding": null,
+        "human_full_film_signoff": false
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\frames\\r0164-supply-clamp-a01\\desktop.png",
+        "bytes": 3279270,
+        "sha256": "18025a43de3e5da40afd5e9572304844b7f2d16c0e009491b3e0502f53194b75",
+        "pixel_size": [
+          1920,
+          1080
+        ],
+        "source_receipt": "C:\\ck3-war-episode04-research-20261004-a01\\frames\\r0164-supply-clamp-a01\\receipt.json",
+        "reviewer": "Codex Root direct visual inspection",
+        "observed": "Army16777220 panel soldiers1086, Supply300/300, skull0%; HUD1067Jan26; unit marker on Normandy land; large tooltip is Argentan map tooltip with preview13days Feb8, not actual arrival",
+        "raw_video_timecode_binding": null,
+        "human_full_film_signoff": false
+      }
+    ],
+    "raw_video_timecode_binding": null,
+    "scope": "Exact PNG direct review only; do not derive raw timecode from wallclock"
+  },
+  "term_tooltip_status": {
+    "status": "unavailable",
+    "actual_reason": "tooltip_stack_entry_source_null;capacity=1;count=1;hover=null;index=0",
+    "actual_tooltip_text_observed": false,
+    "root_png_supply_tooltip_established": false,
+    "root_png_attrition_tooltip_established": false,
+    "hover_ACK_is_verification_pending": true
+  },
+  "cleanup": {
+    "bootstrap": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\bootstrap-result.json",
+      "bytes": 13922,
+      "sha256": "4cbc0bac189c9e6592943e807d6d95002eea433bff58a11a753d5f536913b02f"
+    },
+    "session": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\session-result.json",
+      "bytes": 12549,
+      "sha256": "2a59db8484f8761e695ebea90d2cb614f7de18fd68e5775e0614114b4f333399"
+    },
+    "sdk_thread_exited": true,
+    "exit_reason": "stop",
+    "ck3_exit_code": 1,
+    "job_active_processes_final": 0,
+    "tree_gone": true,
+    "cleanup_proven": true,
+    "contract_errors": [],
+    "screen_release": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\screen-release-r0164-a01\\stdout.json",
+      "bytes": 1305,
+      "sha256": "aad4ab52b09d835d2768d3269f89068f0c511e0ac15f56a2b1062ceb157292b7"
+    },
+    "steam_closing_root_review": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\screen-release-r0164-a01\\root-visual-review.json",
+      "bytes": 569,
+      "sha256": "eb6764764eb63acaf98156e74304eb884c92cec921055d24f7a2f538644ad39d"
+    },
+    "display_restored": [
+      1024,
+      768
+    ],
+    "visible_utc_nonce": "2026-10-04T19:58:16 / 2a00782fb07d",
+    "scope": "historical R0164 closure; not a current desktop assertion"
+  },
+  "remaining": {
+    "total_days_budget": 30,
+    "days_consumed": 15,
+    "days_remaining": 15,
+    "absolute_end_date_raw": 53147880,
+    "continuation": "Separate R0165 run and episode binding required; no next-run live credit here",
+    "integer_replenishment_positive_case": "pending",
+    "actual_merge": "pending",
+    "abc_same_checkpoint_three_replays": "pending",
+    "eleven_term_tooltips": "pending",
+    "film_TTS_1x_signoff_delivery": "pending"
+  },
+  "research_completion_percentage": null,
+  "percentage_denominator": null,
+  "percentage_authority": "research-status-20261004.md explicitly has no formal weighted denominator; raw minutes do not define research or film completion",
+  "artifacts": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\source-freeze-r0164-a01\\manifest.json",
+      "bytes": 1057,
+      "sha256": "79c810e3f3288128d31b347ef15cff7898820e83087913e496984b7ec54a6977"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a06\\root-result.json",
+      "bytes": 943,
+      "sha256": "7cecc4348f0870fe189ba2e9fb15ef49a8c8e187b3b97fc2d35ec84221da8b2d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\prepared-positive-r0164-a01\\prepared.json",
+      "bytes": 5481,
+      "sha256": "007238ef0de3b629b902c00f002b2f20182291e7d8dfd14217d68c0a8c8fbd7f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\prepared-positive-r0164-a01\\environment-manifest.json",
+      "bytes": 1543,
+      "sha256": "7d94b8e1655ae97a02b81013ac3e029cc67a75f191ac45abd68c6cff73d47922"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\prepare-positive-r0164-a01\\a06-offline-admission-a01\\positive-actual-offline-audit-a01.json",
+      "bytes": 5409,
+      "sha256": "d14c3229c0982b3a421e455fe66ae888c8de8efc1bc52653c2aa33ff058eaad1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\defender-project-worktrees-a02\\result.json",
+      "bytes": 34679,
+      "sha256": "61850c13118bf8e317a65968de0bab1915e0d3969b7a4d9d95bb5d34d2ee3edf"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\defender-project-worktrees-a02\\after.json",
+      "bytes": 33999,
+      "sha256": "379e7bf1f8c90f652279d713f7e1e4bd9a89b5e9638c69787930046f058d3c0d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\defender-worktrees-elevation-a02\\result.json",
+      "bytes": 407,
+      "sha256": "0bec3d3d6521b620251d56fb80a5ce03fd19c3920187daf289361c3e86a3d47b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\sdk-ready.json",
+      "bytes": 35979,
+      "sha256": "e0e3d29905b1d7673638a0f6a375808e2bd1e5feead4559e9f75416897f7aada"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\sdk-tools.json",
+      "bytes": 174282,
+      "sha256": "4cd8069aad05deb7ee0a4cd768948e8a1396327091d19e82cad33749e3bbc20f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\bootstrap-result.json",
+      "bytes": 13922,
+      "sha256": "4cbc0bac189c9e6592943e807d6d95002eea433bff58a11a753d5f536913b02f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\session-result.json",
+      "bytes": 12549,
+      "sha256": "2a59db8484f8761e695ebea90d2cb614f7de18fd68e5775e0614114b4f333399"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\session.jsonl",
+      "bytes": 5579,
+      "sha256": "546c2e3d11e2061fc0f275d76b7efd83920e6c186e775c118cf1af286a9a3876"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\refill-positive-live-r0164-a01\\positive-pair-a05\\ROOT-DELIVERY.json",
+      "bytes": 5162,
+      "sha256": "faa5fcdecee76ac3a571c6982f1b0353d8146691bb0ff997f396ce3b5ec2626c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\refill-positive-live-r0164-a01\\positive-pair-a05\\actual-positive-supply-and-no-soldier-gain-pair.json",
+      "bytes": 55212,
+      "sha256": "bb2a355d7a01735ce55f12153177a6246665d00f8cf39eb97b41d399f49ebb20"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\refill-positive-live-r0164-a01\\positive-pair-a05\\native-research-plan-a02.json",
+      "bytes": 17728,
+      "sha256": "6ea1303a8743ae7b0c98e662b4f83c07236335ab108ecb5cc4c5273bb75d1927"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\recording-audit-r0164-a01\\ROOT-DELIVERY01.json",
+      "bytes": 3627,
+      "sha256": "0b0167fb963a88787248fb259332492e4025375bec970e01415d7d142a66cdf9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\recording-audit-r0164-a01\\audit-attempt-a01\\report.json",
+      "bytes": 9340,
+      "sha256": "ec919b8518eca45172f76bdb96ec04905a5b570a054ecba625a8854165e790a6"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\recording-audit-r0164-a01\\audit-attempt-a01\\evidence-index.json",
+      "bytes": 8360,
+      "sha256": "c975fdb985293c34cf14dfe5e4eb5f85a22c22aeb45eedc66e63a01fb2cf3906"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\recording-audit-r0164-a01\\audit-attempt-a01\\scope.json",
+      "bytes": 769,
+      "sha256": "4230a1b72026ec886ef2cff7f6e43e6c9e72f969a7e43cbfcaa7dc980a450ca4"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-visual-reviews-r0164-a01\\reviews.json",
+      "bytes": 3389,
+      "sha256": "938e5f27be4f9dff0dc8e08a7d3ef59a904d3eeb9433f687f3570b44b06c1ed3"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\screen-release-r0164-a01\\root-visual-review.json",
+      "bytes": 569,
+      "sha256": "eb6764764eb63acaf98156e74304eb884c92cec921055d24f7a2f538644ad39d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\screen-release-r0164-a01\\stdout.json",
+      "bytes": 1305,
+      "sha256": "aad4ab52b09d835d2768d3269f89068f0c511e0ac15f56a2b1062ceb157292b7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\screen-release-r0164-a01\\argv.json",
+      "bytes": 494,
+      "sha256": "ba86b1fe253634ea1e33bb4bf5abdfae9503ae084bedfa00e0acf6da8c2f26f5"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\close_screen_r0164_a01.py",
+      "bytes": 2065,
+      "sha256": "5b2fa936106dfcc60972b5638f4d438b451500636d0b276000476ac329338201"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\release_screen_r0164_a01.py",
+      "bytes": 752,
+      "sha256": "16490da0d30f8e2021b31449ea2b7f7905d07c4ede148f5d63cd2074b9b700a1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-attrition-hover-a02.json",
+      "bytes": 202,
+      "sha256": "ae1fe022dc7442fb77ddf3afdd7a1c8b8ba1ed22018b3e37351f64c039cb6b54"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-attrition-leave-a02.json",
+      "bytes": 260,
+      "sha256": "c7ea5b1391345ea7b940074d815e93d1c4c983d5e728467d1c594ed74a96641a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-attrition-query-a02.json",
+      "bytes": 260,
+      "sha256": "a30ce51a9460142828d7cd5ddbdc05fdb946fc009cdcf07a4b89cb02f45ddc40"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-bridge-diagnostics-a01.json",
+      "bytes": 110,
+      "sha256": "4a725691db1a085ff4e1339c1af175dc99024451a92b593189228e82c494b0cd"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-cash-a01-pre.json",
+      "bytes": 138,
+      "sha256": "df7b244cca61c3d0999d8351b6af26788e99eef6f3931ca68de0dc4ffb7e168b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-cash-a01.json",
+      "bytes": 147,
+      "sha256": "a8f8e555c7a59711f86cf63b431c6bf58a38d8044f46382e91a6fa5e9c604467"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-day15-commander-a01-pre.json",
+      "bytes": 149,
+      "sha256": "a7ae0ad0d62eb956443856be397e7657d49a5f29d0c59f764b6d09bdf804b104"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-day15-commander-a01.json",
+      "bytes": 175,
+      "sha256": "fec15e7a22e1f765320a1588ef943872b624e3a17620bbf1a6712412a6ef24a8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-day15-current-supply-preview-a01-pre.json",
+      "bytes": 162,
+      "sha256": "fb06dc00626aa6a25877ff602cf42a0ebfa551a5fd8ef5c91c453f85a3a6cbf4"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-day15-current-supply-preview-a01.json",
+      "bytes": 191,
+      "sha256": "2310b9b45b2840d3458eda5d253efe668149c67639661b7f1814d2a59cf5df4a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-day15-final-post-a01.json",
+      "bytes": 146,
+      "sha256": "02f37e45f256d590f3f296543407b4e527a7282ada16b1ee8d864035580a46e8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-day15-final-pre-a01.json",
+      "bytes": 145,
+      "sha256": "62ca55e5b67a8aa720a87c5d06a1a28ba7b9123f613935a88d0ecdb7c975881a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-day15-save-a01-pre.json",
+      "bytes": 144,
+      "sha256": "70b1535b51b35f33e2657fae5910dacf5e3d0c66f602c642420b0c291a0161a4"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-day15-save-a01.json",
+      "bytes": 154,
+      "sha256": "a32ea76b9bdfc9a021e3118259b8e337845ee8ed933284ae32e3d7d67491c9d1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-diagnostics-ready-a01.json",
+      "bytes": 109,
+      "sha256": "c4db0e1d32d13981a5ace50274ffcfffbd0d0a7842065a4a68c58ce81793558f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-initial-snapshot-a01.json",
+      "bytes": 146,
+      "sha256": "592f28f70c2ede625a4123c76b9a30242d4e97bb7affa1127ff8eb3ddeab9739"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-initial-strengths-a01.json",
+      "bytes": 197,
+      "sha256": "d0e2a19e893d09db76ea933c9895ad29467dca112a74109757d09d35c984aba3"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-001-initial.json",
+      "bytes": 99,
+      "sha256": "476c35b456f7bc391760c85e5225f90d6ccfc5baaf614c0143e26af098b07d0d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-002-caps.json",
+      "bytes": 99,
+      "sha256": "e4d48e4848d275d528b02aee3f8a8e0a6562445f086003bdb04552741e4afd20"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-003-speed1.json",
+      "bytes": 157,
+      "sha256": "75bf8781477b59f4671e8c013c8480c6bfbee510fd1e1664fff78e58bfccad2b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-004-speed1-verify.json",
+      "bytes": 105,
+      "sha256": "f421779dc62a4e1bd793770f098ce5fe34313d2e9edc079f9f0ca48203d63e1c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-005-000-before.json",
+      "bytes": 102,
+      "sha256": "7ae191f05714f7181c75dbd28ba5dd4ac0a41c004227ad106bcd7c6c7d7236de"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-006-000-health.json",
+      "bytes": 189,
+      "sha256": "86655d2b82f8a5b1b0861cbf9235bb4b61088592187c009086ba3a59a5d90e35"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-007-000-after.json",
+      "bytes": 101,
+      "sha256": "f5ff4a2557c2aab07ca82467a33d1a60f6947983bae2e25d970ef7f1e63a0578"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-008-p001-resume.json",
+      "bytes": 161,
+      "sha256": "4fb7a87c64982b58fde739c8b486fab270c2d7b6361ecca741f7170a328adf75"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-009-p001-pause.json",
+      "bytes": 159,
+      "sha256": "15ee2cd84ab924decea311fc24386ba2e027f06fffd1e07429d132b3fe782f61"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-010-p001-verify-pause.json",
+      "bytes": 109,
+      "sha256": "feb51f77eddf92c6c23048587d8075a7fae8fd91c9fc34f2c1a1de8c35bcb08d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-011-001-before.json",
+      "bytes": 102,
+      "sha256": "8c6887f5fccdb9f199b2d9261a0e46b42f9dc8a485aaa1b1da2af282c96faa03"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-012-001-health.json",
+      "bytes": 189,
+      "sha256": "a05344ff8d2d9c56fd6018fdac335747566d66631ed4475b622588e06959740a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-013-001-after.json",
+      "bytes": 101,
+      "sha256": "1857e8d2af734da542860eafd91189df3127694c0ec12efc3a3d696998ecd343"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-014-p002-resume.json",
+      "bytes": 161,
+      "sha256": "45249605577ddaa37a50e3583650310aeee817fcb670f657ed487853bc419a7a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-015-p002-pause.json",
+      "bytes": 159,
+      "sha256": "c985fc3dacf4375cb39f55d00547debc555bd52fb5fd633e365204e4f2ae147b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-016-p002-verify-pause.json",
+      "bytes": 109,
+      "sha256": "e2aded8624186afb624163cac37ed95982f346ba2fb22a63ada88b20a40cab72"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-017-002-before.json",
+      "bytes": 102,
+      "sha256": "1c2ae1af2885d1b380f94fcfc11eaf5db8f95b5760b6792d749f85606fa08c9c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-018-002-health.json",
+      "bytes": 189,
+      "sha256": "1069bbdb8720d0a23752b45f549c8a471125336a61c550599c48b43bbffefc10"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-land-p05-019-002-after.json",
+      "bytes": 101,
+      "sha256": "8cb28a57e0dcf546e394b0eb5615017df78eb75bb792d4abf274142e55f77783"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-map-00.json",
+      "bytes": 132,
+      "sha256": "55378b8de1e697584aff0bbc0ef7fa9a3bbceb9ae19ac2786f90c75b77a7aff1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-map-a02-00.json",
+      "bytes": 136,
+      "sha256": "87017e2bc9f402800c3cb67e8b30fd4593f0943fc6d047bd7ae6df581259e369"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-map-a02-01.json",
+      "bytes": 136,
+      "sha256": "7e8c5e46bbf756f1241e93a5a46c3e50103cb0441b8c96bfed972b533c66666e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-map-a02-02.json",
+      "bytes": 136,
+      "sha256": "c2072835243eb24c367263d12da78c4f9c1060dc702afb2e6b1bdd48951e23f7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-map-a02-03.json",
+      "bytes": 136,
+      "sha256": "3f239c454304548e15e9964d5c9fde0925b46474f8255a5faa854edfafd42d24"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-map-a02-04.json",
+      "bytes": 136,
+      "sha256": "c6967410c544abba76f4f06eff79f2c5359796504713e865ecf6df90fdc8ebf1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-map-a02-05.json",
+      "bytes": 136,
+      "sha256": "b6cd02fed0a5cb46aa6bc0808adeea98e969c78606c933c53fbbaae4456ae150"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-map-a02-06.json",
+      "bytes": 136,
+      "sha256": "5870a625c83e011114791298596dbd209a1a3b6be114be174df742a4be4f4df1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-map-a02-07.json",
+      "bytes": 136,
+      "sha256": "fafa79b896b97d045e60e2ffa5b7412e5226fb70e6cd84a31884b05a6c4a4d24"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-map-a02-08.json",
+      "bytes": 136,
+      "sha256": "20931ac7383b5a4b14c29dcebe9b5fb0580603f4391e153e4a35dd2756688548"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-map-a02-09.json",
+      "bytes": 136,
+      "sha256": "50c78d4135d6bb2c9e33eee4bb20fc77089c7348a5053a69fa4422f2ab276726"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-move-2325-a01.json",
+      "bytes": 175,
+      "sha256": "4f0be464c5286b7e61ecc65b24d421bb0f4cc253246ccb4fecd4fa53d2ad5f2d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-move-health-a01.json",
+      "bytes": 171,
+      "sha256": "bbd4e923514290e68f9ec69ec38b08837e9f313cfb3292c385f67af072e9bf9b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-move-post-a01.json",
+      "bytes": 139,
+      "sha256": "5c300585a2ebca5536cb1b95d431c48d07dc638a1a0b82f39c5ebd8c8f74fac0"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-move-pre-a01.json",
+      "bytes": 138,
+      "sha256": "9f936d24eebd966257976728218d0723777bf696da196073803ef07b9a641a1e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-owner-recall-a01-pre.json",
+      "bytes": 146,
+      "sha256": "d6f3b8fbe764488930b7c02959505bd89cf2c00444b11b36246e229e12febd4f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-owner-recall-a01.json",
+      "bytes": 155,
+      "sha256": "4df59f561521cf268cbccfd701322f96e4035479b6876a972ce03ef34188f82b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-pre-attrition-hover-a02.json",
+      "bytes": 149,
+      "sha256": "dc0faeb53af2e3f12f32cf6880031c73a83472fb3c47fc39dc4eb9e50255a5fc"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-pre-attrition-leave-a02.json",
+      "bytes": 149,
+      "sha256": "86296fec2887f3b06999718c55db81ff026332b6c73b69ace80fe5c4695523ff"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-pre-attrition-query-a02.json",
+      "bytes": 149,
+      "sha256": "5ed8dc80f04c314942c0370e44b22d165d4ff04f0ec762a8404c411e98ef4f88"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-pre-query-sea-ui-a01.json",
+      "bytes": 146,
+      "sha256": "aba5cdf64ca56beeac8dc6666cc250f088ee3a977940c7eace6968881bce8f86"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-pre-recording1-finish-a01.json",
+      "bytes": 151,
+      "sha256": "5bf4fea80ced2a8f9bc7037f8a1eb52970d2a0e456573533bd43e106056212b8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-pre-select-sea-a01.json",
+      "bytes": 144,
+      "sha256": "b8fbbee5e04b780ee23e37311c808cca34367c3ccc554c7eec0892be87445c5a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-pre-supply_state-hover-a01.json",
+      "bytes": 152,
+      "sha256": "c4c511e4a31536adeed59e74edd582b35ba5b9ecd9781b3eca4c1c84c22945f7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-pre-supply_state-leave-a02.json",
+      "bytes": 152,
+      "sha256": "0ddca3b2a7e7bc4ceb0bad6c83da9427be78b280930cc790badd1b98be0a909f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-pre-supply_state-query-a02.json",
+      "bytes": 152,
+      "sha256": "05cfe5aa9f95d6a6356c9e1733489ebc164e23d7fae0fb331126dcbcd85b0354"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-preview-2174-a01.json",
+      "bytes": 174,
+      "sha256": "3bb3f6374966d12538aa062d0146637321df34c23f7773b1d2cd9fc26478fc20"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-preview-2174-pre-a01.json",
+      "bytes": 146,
+      "sha256": "af3b84c1ff9b2b939f198823873165fa3f9f649742970547a34f982f7d2490fd"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-preview-2325-a01.json",
+      "bytes": 174,
+      "sha256": "73ddb78945de5800ef96604441e3c1ce59012d7a22040cee1444d644907f1f95"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-preview-2325-pre-a01.json",
+      "bytes": 146,
+      "sha256": "3ca9a83545f1099a7d6f83ab300cfce174ad8e1930c2d4190094f08602044a7a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-001-initial.json",
+      "bytes": 100,
+      "sha256": "3eed60e89bd91f15580f033310446495448d2e90a6580132346c9fd6b8a874c4"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-002-caps.json",
+      "bytes": 100,
+      "sha256": "6ee01bee0ff57cb0ea265d45fcca4c0e48972342ce2b97ca4ab63f5a5dd024ab"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-003-speed1.json",
+      "bytes": 158,
+      "sha256": "3000d56728d13710acb631eb8e9d6e01019dff867ac7f64c638efca50578df67"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-004-speed1-verify.json",
+      "bytes": 106,
+      "sha256": "fb7895bad7f8600da14e7e8722ba9fe371eaa9f32eb2e441c4d9f26270d57110"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-005-000-before.json",
+      "bytes": 103,
+      "sha256": "fd5c34abcb0e7836782ae4a5bee90a6c33fc70bba6647990f79eea686403044a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-006-000-health.json",
+      "bytes": 200,
+      "sha256": "bd9dc1ec9bde2917d35835d0829df7f637489c21c413d316d912cc2ea3db9eef"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-007-000-after.json",
+      "bytes": 102,
+      "sha256": "b53ff5c27ddfe850e7648fcd6ce7c65bab69f821f049133f10125db030fac934"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-008-p001-resume.json",
+      "bytes": 162,
+      "sha256": "8943a5bffe72e778bce6e630dc6897181c5bf55655365f63eaf52f98ed82bcb6"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-009-p001-pause.json",
+      "bytes": 160,
+      "sha256": "398b078d03bfe4bf348efc03ae262f6872f694e261cb04cbbc654259e8c812d7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-010-p001-verify-pause.json",
+      "bytes": 110,
+      "sha256": "d3ef470e527d3625743e7ff1b0842e6d9e27578af3e01ec3538600176ae1efca"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-011-001-before.json",
+      "bytes": 103,
+      "sha256": "ca4aae062729acf2d05e3078a35fe77d7505e744fd6298d08f80bb23d2d77c35"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-012-001-health.json",
+      "bytes": 200,
+      "sha256": "43e3aaf577da1c57ce72848f45b6ff9f70486fb5049b12b8ade4fc3af1ed952f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-013-001-after.json",
+      "bytes": 102,
+      "sha256": "3575d4a848a142a9e7395742959a8f808e121c6d3e4e0b3af8ab5c756c1197e8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-014-p002-resume.json",
+      "bytes": 162,
+      "sha256": "76c08b0bd2e988ef32bfcfe4cbe16e0ad480e0978f28dca156673b7dd37f2d64"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-015-p002-pause.json",
+      "bytes": 160,
+      "sha256": "c20e113d4d591e48547f7f682b574ce3f57f2c74b165ed2008887e33b9b4b4b5"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-016-p002-verify-pause.json",
+      "bytes": 110,
+      "sha256": "59b58a54a684b7447fe1058ba03bc77b7d5a44d6e57a56ac8a5cc524f4a6a2d5"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-017-002-before.json",
+      "bytes": 103,
+      "sha256": "3f1195ee37650d0202e1bff5f24cc96f67d6b2d4ffd666858902de07e3486c93"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-018-002-health.json",
+      "bytes": 200,
+      "sha256": "e65716a2bd64f5cddcf22e640dd67df9b3e750adabd4e0a51e128e03f7cec987"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p01-019-002-after.json",
+      "bytes": 102,
+      "sha256": "39feb216723e03bcde536c00a9e4ca0e7fe2a716fdec592986c709cd024cb18a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p02-001-initial.json",
+      "bytes": 100,
+      "sha256": "ed44aa39e2f88e344556536612929cf4082e1a1d43cdeebaff6191d41c024038"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p02-002-caps.json",
+      "bytes": 100,
+      "sha256": "ecb5fe55e9c2a4ad7650bcfb646ee41669da384705b4a5a81635ba464765bc9f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p02-003-speed1.json",
+      "bytes": 158,
+      "sha256": "5f45fa7ad6c0f79a1474f223e9b83764de5a741c82180fd7ee23153518e600d0"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p02-004-speed1-verify.json",
+      "bytes": 106,
+      "sha256": "5b369d84e203530aa7fe1eed44c622e05e83ff3b0be6067d5eb10c05904188db"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p02-005-000-before.json",
+      "bytes": 103,
+      "sha256": "41dd1f81fa7037ce210c3ea62208de7031f9b8dc2e5c2b2682015f91c37cae53"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p02-006-000-health.json",
+      "bytes": 200,
+      "sha256": "c85ad5bbddf96c498ee502361a27aed95b35f8d807a4006ec05773e9226c8791"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p02-007-000-after.json",
+      "bytes": 102,
+      "sha256": "1197f46a8ec009f0b2bf2bbe02563b0bddee59708fd2500d4b65423e5f7b9d9d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p02-008-p001-resume.json",
+      "bytes": 162,
+      "sha256": "9b3b0d3dd4da61cfbe05e8c078bae3ccd431e59f5e4ffd1575ae388f0a75c6f1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p02-009-p001-pause.json",
+      "bytes": 160,
+      "sha256": "a158a22ae9aeb987c471044c32b98c7e7bd623073a073ee5933e3e1b0ae01ad0"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p02-010-p001-verify-pause.json",
+      "bytes": 110,
+      "sha256": "f2cb82252a9ced9dabe609795efa3c49f71aacf93c05dd640010751ebfe789e7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p02-011-001-before.json",
+      "bytes": 103,
+      "sha256": "844ed372b9fbfc05e222b4def1183bb0a3a689b7617fa5b6bb7b042fcc0d62d2"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p02-012-001-health.json",
+      "bytes": 201,
+      "sha256": "ebc7a3a755bf0bf54538817589479f49c5d1a57a4e26dc2b86e0ff1290f86102"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-probe-p02-013-001-after.json",
+      "bytes": 102,
+      "sha256": "e7203a9b78e2effcef23fe1c964fb11e44c76a00c525558b42f53f0824a01ba1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-raw-transport-a01.json",
+      "bytes": 101,
+      "sha256": "ea3aca79860185a86c6f90ae2932f779ae2727347bf485b32f2f5ec2719a45ab"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-recording-finish-a01.json",
+      "bytes": 128,
+      "sha256": "d598c0dd12ec2eabab85c12453bc790998684781c9b4b7835cb5462c8b20f973"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-recording-start-a01.json",
+      "bytes": 631,
+      "sha256": "d495c41c5b551c5944713cf8ee862bce1b989ffea05f5d0f0fa1a5f9612958a2"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-recording-start-a02.json",
+      "bytes": 634,
+      "sha256": "2a2de35d904ae03b1d626eb499158373082cdae2498c49378c99199d379c23dc"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-sea-commander-a01-pre.json",
+      "bytes": 147,
+      "sha256": "3aa4b23426edc9bd97f4a1fa41df83265bfec03a5d7e19724bf6183ea809dbcb"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-sea-commander-a01.json",
+      "bytes": 172,
+      "sha256": "cc9b159ef35ea9f802da2b8ec8baefa85e77c55f03d3addb1b710a0442f2ac21"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-sea-ui-a01.json",
+      "bytes": 158,
+      "sha256": "a227c71c72772277f2a58dac8a19321cf20d627b94224f40416e83a9368f7704"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-select-sea-a01.json",
+      "bytes": 160,
+      "sha256": "a11da60eb59458b7828891527178c9e774114c5868b80be617d1be3ef72f3b53"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-stage-p03-review-health.json",
+      "bytes": 180,
+      "sha256": "c6924bf41bc4370a4c2c4616f9620bb4cec7a5ab7032d83ffe4ffa8ac2dec43f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-stage-p03-review-snapshot.json",
+      "bytes": 151,
+      "sha256": "4fdee6664c8f3a8a77b534c527acec7b9de0c1dc6b1ae7faa588a0e2204405ea"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-stage-p04-review-health.json",
+      "bytes": 180,
+      "sha256": "efcd2575d7b84f1fc4f6ccae6e03acf5320c5c9c9064ba9a361a993ae4e1d371"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-stage-p04-review-snapshot.json",
+      "bytes": 151,
+      "sha256": "36cb984bded296f51addbd4109b3f00dd03b6117d1e505b0fbd13c6971218f78"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-stage-p05-review-health.json",
+      "bytes": 180,
+      "sha256": "2949781d1b17eacc94c3e7c66eb4ea183dfb4dcbf4e3e16b35ff499258286eaf"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-stage-p05-review-snapshot.json",
+      "bytes": 151,
+      "sha256": "7a172b29a07a560a44d07af7050a14819f13fea1e42573eb8f9106fc3e58c3b3"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-stop-a01.json",
+      "bytes": 74,
+      "sha256": "884c2621c1106a5aadc32842cdd88e11ae946c3e8bdf5e08ef8198db1dba6b0e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-supply_state-hover-a01.json",
+      "bytes": 208,
+      "sha256": "a07a9b9a5e7ab01edceb19df67e7d140c29d6e5ed07d82a97993195c67c6f8ba"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-supply_state-leave-a02.json",
+      "bytes": 266,
+      "sha256": "223977e84344304aa3d45e5eeeb05cee9d21636750b1aede3fa351d10981a607"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-supply_state-query-a02.json",
+      "bytes": 266,
+      "sha256": "c6ade65926b8e85a51768f6e18ceb8aa35e32d7fb93a002ece23c61c1a91c426"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-001-initial.json",
+      "bytes": 101,
+      "sha256": "c733b63e536616f2b9c213c0e4ba8da71390c23fb4aa6652cb1596c676fb6414"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-002-caps.json",
+      "bytes": 101,
+      "sha256": "f0dac48ddf2f5ebcd2c73586be5c52e09055ad2b9f9727f8a322c34374fac26d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-003-speed1.json",
+      "bytes": 159,
+      "sha256": "d8816a805325b31d04118566acf147dccbe599959318dd7109b52ecbd746a296"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-004-speed1-verify.json",
+      "bytes": 107,
+      "sha256": "63971de0ec4a75e05e6588e9f191cce29fb036783759a6a6bfa11015c5deee85"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-005-000-before.json",
+      "bytes": 104,
+      "sha256": "26cc68f945a37dc08e4a4d7ddb0797e05e1b385dcda923ed5c6a92cd73554db1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-006-000-health.json",
+      "bytes": 202,
+      "sha256": "68bc205bae9e1a33f19a7fbc56f20a6f779726d8c0b13a02320b42b7a82dff4f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-007-000-after.json",
+      "bytes": 103,
+      "sha256": "867231cf3c546667d884edb831fd911c0237098270846c5f174efb3faf96d918"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-008-p001-resume.json",
+      "bytes": 163,
+      "sha256": "05a4d56a5011d9931e2ea587ff8f3e220a6024e47cfbbc56f87606ac5a38ed68"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-009-p001-pause.json",
+      "bytes": 161,
+      "sha256": "d29045155e2dfaff43f25430978aedb72bb5b5f01ab7134e011667178b7756b8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-010-p001-verify-pause.json",
+      "bytes": 111,
+      "sha256": "ed45e3c64a1493cdb827ae93023ad7afcb532e0f62d3a721b3e4cd6b14a7110a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-011-001-before.json",
+      "bytes": 104,
+      "sha256": "c7497c122cf0693807e1a0cbad521d56d581ef5c174f574ed5621faa3a41cd08"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-012-001-health.json",
+      "bytes": 202,
+      "sha256": "b9ade4fcf61b1a6ac56a3ea95dcb3ac18e552813fead22ba22015e6aa88879e8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-013-001-after.json",
+      "bytes": 103,
+      "sha256": "4abdb001963648118eb7368372474a5ad78ffc16c1809e2d081251a42cb94b96"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-014-p002-resume.json",
+      "bytes": 163,
+      "sha256": "f8ed46e2193f1893657f176a77009dafafc0139f5a5336fcf87c43cb7b925e37"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-015-p002-pause.json",
+      "bytes": 161,
+      "sha256": "131bffec134020824fb15c80f9a857b0bbced4593774fa5268bd1ac1018149e2"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-016-p002-verify-pause.json",
+      "bytes": 111,
+      "sha256": "7af353a597c578c71d6f1a89fdb63ec281c97ecf540cd25a8705a1165dc3b745"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-017-002-before.json",
+      "bytes": 104,
+      "sha256": "8f67391771b596af792045a15ba828296c6f4ee4babb4d37822db8d9cae49d2a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-018-002-health.json",
+      "bytes": 202,
+      "sha256": "92f9cca668ecf9014002fd9d8e9614c119b4716730a666ef01e02f4f55e66920"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-019-002-after.json",
+      "bytes": 103,
+      "sha256": "4a201325f3b45b111b7de2a7dfa7de1f2c5fc0e9070b2e0c7367b57b1bd2f57d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-020-p003-resume.json",
+      "bytes": 163,
+      "sha256": "36484789b70b0e22906cb103fdcafc75453a43d749936a9f8618d8442aab589b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-021-p003-pause.json",
+      "bytes": 161,
+      "sha256": "97cf9e1fe711a4d4af7f25a127a4267dd9087b0bc5ba972f537e9b8b18e95172"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-022-p003-verify-pause.json",
+      "bytes": 111,
+      "sha256": "6c7eab77c1ecfa9ac38a3bde71a3cb78ad35548ad246242881079103188c4b6b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-023-003-before.json",
+      "bytes": 104,
+      "sha256": "4c4aad6bdf2fb8bd8bcaa5d2cfe34699b921b2bbbe096d4fab925e4566cdea64"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-024-003-health.json",
+      "bytes": 202,
+      "sha256": "53a849f5216316dd78b30257f27250c644bbf8518c9c056d622bb9404829bfef"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p03-025-003-after.json",
+      "bytes": 103,
+      "sha256": "25e10b2bbe3ea88a260345bf40bc126bf472967c6866159f2115abd3f1adb172"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-001-initial.json",
+      "bytes": 101,
+      "sha256": "eef0d1c5d20577198d6117817a9dce09fd5945dbea50e9c1b27e085370a5322f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-002-caps.json",
+      "bytes": 101,
+      "sha256": "a5c32a706ef5b07d1601a5f1ec6ff187d88ac914fed7e66897157a394f091f70"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-003-speed1.json",
+      "bytes": 159,
+      "sha256": "32dced3b57ee5834f762ae21356f5cceeac11dbecc37e9f882ba0460894c6c8c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-004-speed1-verify.json",
+      "bytes": 107,
+      "sha256": "af3934aea5cf204b2a9a2462ad1fc1f05c9eaae6e835ff649125cdb6bca9f502"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-005-000-before.json",
+      "bytes": 104,
+      "sha256": "0156f489b6befc1e1b868b0c1b836f98fda2af145dfabb34c79d1bb33d6cd920"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-006-000-health.json",
+      "bytes": 202,
+      "sha256": "4071f9a6acfd7bf4a37178d7f200b4d45e9d7ee41b8acf04c5e4dbb050b22649"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-007-000-after.json",
+      "bytes": 103,
+      "sha256": "e991a15db28e8a8da4b5fef1768e9934759cc014816688efe5c3f071e9ceefc4"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-008-p001-resume.json",
+      "bytes": 163,
+      "sha256": "a52a9224981786b8ae955996d6e083488913cadc50ca29a024af5365ec8b1c21"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-009-p001-pause.json",
+      "bytes": 161,
+      "sha256": "0e6edadd8ed248278d087a0fb3c2e50073fd0aef44af31793876907bfce685fa"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-010-p001-verify-pause.json",
+      "bytes": 111,
+      "sha256": "e2ed84141bded8195ed1c8ff753911fcaef1f0aadfec358a7b644bf01c6bf79c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-011-001-before.json",
+      "bytes": 104,
+      "sha256": "2144e213a5d2196efb3f850d38384ec4876a9bfdff43b2b8f94a7d119be22928"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-012-001-health.json",
+      "bytes": 202,
+      "sha256": "5106a02af876d1a155450e6866b09dd0d586a5b560e7a60a51d46b34efffa79b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-013-001-after.json",
+      "bytes": 103,
+      "sha256": "77e46dc274b7f25658bac2b201344a98d6000547e8a1384c0f65c3ef44dc75c1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-014-p002-resume.json",
+      "bytes": 163,
+      "sha256": "4537cc6e6b2fd1fd819b23a93c33d08fc48f4e2f4e5e4e12ec9dcba6bbf1b540"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-015-p002-pause.json",
+      "bytes": 161,
+      "sha256": "79bc4644548c00f2ccb515d6625ada20c7e5e2e09dce61778e279f145f58fd4a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-016-p002-verify-pause.json",
+      "bytes": 111,
+      "sha256": "1748d842b6e28491bb9ed1db961fa679d337f6bb27682bcd2f874ff08b4185ec"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-017-002-before.json",
+      "bytes": 104,
+      "sha256": "5f576c484a7433a2876bd713a6328efe8617b3f2a46e054885df57813ec79bbf"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-018-002-health.json",
+      "bytes": 202,
+      "sha256": "ca35053f410569f8baaa2930c315984b9a90b4ece306d008393d1cdd90d94e3d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-019-002-after.json",
+      "bytes": 103,
+      "sha256": "2f22070ce9e7681867b4f4e9db28ad531418f59789a82cdb0837dc351471c54d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-020-p003-resume.json",
+      "bytes": 163,
+      "sha256": "ad2e08cf7ef87bb59765e11b755ec4b45a22d9ea2c1353d209a5fa8c4673177f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-021-p003-pause.json",
+      "bytes": 161,
+      "sha256": "d95744788a4a342490531c9f5131fe502cdc2469acdd1c650813ee3d964d1162"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-022-p003-verify-pause.json",
+      "bytes": 111,
+      "sha256": "764ff2797634e17ec36b53f35e1e2e67ffb9cb380f10ab87a1e240f669423cfa"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-023-003-before.json",
+      "bytes": 104,
+      "sha256": "92b2e3de319f985bc5114bff503c58ffeb20bddef772f3491de9fc20392e0b93"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-024-003-health.json",
+      "bytes": 202,
+      "sha256": "ae703ee88d8d86ac0d403e1bb4708f89f4a92714f09284ce78168c025cc19921"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-025-003-after.json",
+      "bytes": 103,
+      "sha256": "b207f2da68354c7ee2bf0948331f9c3620777682f2fbe652c2f4b5a5c1fd4717"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-026-p004-resume.json",
+      "bytes": 163,
+      "sha256": "e319f21306fd94c184163454020c7ead61eaedb25a9675f9d148062fbce173c0"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-027-p004-pause.json",
+      "bytes": 161,
+      "sha256": "926fb58c14ae24288d5526677d6d49557d09bd77b882c05a892dbccb9f21b341"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-028-p004-verify-pause.json",
+      "bytes": 111,
+      "sha256": "f187e6c05bfb4e261e8139a0db37129864e990cd77fae24f8b70912250470066"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-029-004-before.json",
+      "bytes": 104,
+      "sha256": "aa2ab19284a17edb76ff5dd1865efa728f9808177d71a01df98e1510fb423763"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-030-004-health.json",
+      "bytes": 202,
+      "sha256": "cb5dae118158dc34d255c3b56f44561c541a0e160087e540ee48f7782e3d4ae5"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-031-004-after.json",
+      "bytes": 103,
+      "sha256": "50d85e01c00da8c422ea3a8c945033f1ff24c2b22953c201d6340343eca7f62a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-032-p005-resume.json",
+      "bytes": 163,
+      "sha256": "e31a642a652761bba0a234eb72874d4331b1d2945787e588076649ccf318555a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-033-p005-pause.json",
+      "bytes": 161,
+      "sha256": "0d0b214ffa85e5a5a89b57d1d2718bd402c19eb0c8a3a72dc5f5039e6ad5916b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-034-p005-verify-pause.json",
+      "bytes": 111,
+      "sha256": "3c80354e6b3480ebc8b5956f888621fab91ff5366e996328f7f9978e0e2d3734"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-035-005-before.json",
+      "bytes": 104,
+      "sha256": "e5018033d861aac14f4b8f11918fbfafbcdf9f3ca114f3e1e23c939e24e39143"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-036-005-health.json",
+      "bytes": 202,
+      "sha256": "3674801529eeb45ef8f2049f57e829c69e7d4763b71cee09dff88f167df4b4a5"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-037-005-after.json",
+      "bytes": 103,
+      "sha256": "d41e24cfdd67b6f5bd52eca6d3e5cea75afd51c9d9f5c680b430cacffc0e3a47"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-038-p006-resume.json",
+      "bytes": 163,
+      "sha256": "bb4ff050c9cef76435f5be41a4ba0fb0639f3832448c952ba293f0eb0c2dafe7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-039-p006-pause.json",
+      "bytes": 161,
+      "sha256": "5aa43a44972db6eca3de80087e46ae953e18b851144e93f6ac5cb044f1ffaa0c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-040-p006-verify-pause.json",
+      "bytes": 111,
+      "sha256": "a68543bc61b34a6ff33126caced72184aaaa8990da733cf14fed10c331d888f3"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-041-006-before.json",
+      "bytes": 104,
+      "sha256": "71f708e1bfb032a4d31df99506555b5b702354254fe5b5a05514165cbc577362"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-042-006-health.json",
+      "bytes": 202,
+      "sha256": "82a26c01b45fd218e60de5971c19efb93b0891d994d0b1d555d56a96235bb879"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-043-006-after.json",
+      "bytes": 103,
+      "sha256": "7c62c69c0b6b6c405774f32a10fa51220ffad1d9558bd7ee20f10ee25a957177"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-044-p007-resume.json",
+      "bytes": 163,
+      "sha256": "67a977256bccdc356a699ae7224f6b7a02026f72b31e37b75e47308407ad3c39"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-045-p007-pause.json",
+      "bytes": 161,
+      "sha256": "60b7b4ec5cb3dd255902ac721ebaad60f0404bbeb7be366f30e386441467b6d0"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-046-p007-verify-pause.json",
+      "bytes": 111,
+      "sha256": "ced3a7aec4f3fa46ea272420c31931bf9ef5952c28c0c9d03d7a2f07e097056a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-047-007-before.json",
+      "bytes": 104,
+      "sha256": "9ce3f1f75103b3bf7d8122e2ee0a4d0afd109bc2f45402730bcc97d5d7167f13"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-048-007-health.json",
+      "bytes": 202,
+      "sha256": "b7d325312c6ab8137465787a669121210c15bc948fab99084715955c163e0a6d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-049-007-after.json",
+      "bytes": 103,
+      "sha256": "aa7f02b7fabe7ff82fdf2d25af18e599f3bf1e6a9290cbcedc4cceb92ee32b3a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-050-p008-resume.json",
+      "bytes": 163,
+      "sha256": "e8925322628d1d9961189bcb042c5c008a3e37182d71836bc16a378a3eeec29e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-051-p008-pause.json",
+      "bytes": 161,
+      "sha256": "126cfb29b5780024b17d939db9bff29bcea3f4bc2503c5dba33b14de039b8e44"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-052-p008-verify-pause.json",
+      "bytes": 111,
+      "sha256": "e47f475f8a15ac440d72f6f2d841787c8fbf0f50c3831f74f36b22db377bc8b1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-053-008-before.json",
+      "bytes": 104,
+      "sha256": "f02864c1fc8d61b56e59aa4c3d2f9a33d51990b8fd25aa906dbe4092cd3badf0"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-054-008-health.json",
+      "bytes": 202,
+      "sha256": "92418236f96dc6bd7932bd19ee1124cb9c54d86c513674e1f248bdc38a5060ff"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-055-008-after.json",
+      "bytes": 103,
+      "sha256": "3c49ffab645644146224d9bfb89db19a47f63c77470c1ae6400caa01cf1b57a2"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-056-p009-resume.json",
+      "bytes": 163,
+      "sha256": "ac911074fcfc7d23a5a588e6ab38acb58677e61bbd1ecf00f2eabc5c9b8160f5"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-057-p009-pause.json",
+      "bytes": 161,
+      "sha256": "1d606ee934119f8857bddeaa6e8878a70bb54b7705ed96f345dd66020addf44c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-058-p009-verify-pause.json",
+      "bytes": 111,
+      "sha256": "b64a4c67e69ee7eb267a0791c59f3f2e6302770e14057e5a9c925269ca7a5b82"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-059-009-before.json",
+      "bytes": 104,
+      "sha256": "4be315bbd5b556965ddcbdac4679a6d12307e56d2d92b11c8e54ef9608165952"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-060-009-health.json",
+      "bytes": 202,
+      "sha256": "06f3bb1069295616bb100fe8927d9c2c24bb2913751438e9b7cf859d01048d3a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-061-009-after.json",
+      "bytes": 103,
+      "sha256": "4ca26d46403b589fe00bfd21d420665cd09ae414001f9522ab16b5bb2e5341f2"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-062-p010-resume.json",
+      "bytes": 163,
+      "sha256": "0173a08b6c767e4f031b86b278c0f017c891b4d8d5d4d5c736484d6007e6f477"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-063-p010-pause.json",
+      "bytes": 161,
+      "sha256": "286ab82d08feeaa2e269ed936dc4aab023fc11e11b0b28f133bc91a4e81d2231"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-064-p010-verify-pause.json",
+      "bytes": 111,
+      "sha256": "bcba21048a4494b1bcd43744d0caf1d1154616f75ec85b856da0da8701c11396"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-065-010-before.json",
+      "bytes": 104,
+      "sha256": "a7385856b8e14c075502838d588e8eb00f64739bfcbb04eca75765aa29297df2"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-066-010-health.json",
+      "bytes": 202,
+      "sha256": "50a660dadfd112f131633eafc813d1d11bb8ee28ec6121851147b11bc0a9872c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-067-010-after.json",
+      "bytes": 103,
+      "sha256": "5a859598edf5365d1cc9d781977e609d6759c3d8d50a1f28e6fea65277ad7c0f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-068-p011-resume.json",
+      "bytes": 163,
+      "sha256": "bb860d19c41a0a2560fff995fade4aeca95396a99d990228ee936951e6feae25"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-069-p011-pause.json",
+      "bytes": 161,
+      "sha256": "5579d2ef0a2734cac6a7b2706882a52d536476415712ccae159a1aa9b83fa24f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-070-p011-verify-pause.json",
+      "bytes": 111,
+      "sha256": "48338b854d152c8a5857f9f1dbf47f37f4da8a985763394ec59db2f13927db52"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-071-011-before.json",
+      "bytes": 104,
+      "sha256": "2b2aedd93c7ad42846b538ea1bd2675d548700f216b91dd7cb461d8a218deb3c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-072-011-health.json",
+      "bytes": 202,
+      "sha256": "6fdfb95b92336195d532cd4871dd1fc7795ba7d34365a675ea23fb3b1c29e80b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-073-011-after.json",
+      "bytes": 103,
+      "sha256": "08e84eb930542514bad3d778872ad23dd819fe038a111be3a4dc016f825c0ea6"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-074-p012-resume.json",
+      "bytes": 163,
+      "sha256": "2088b4a6b40ab846f4aa8e1b8da26094277f1f4f49eac869e2ff275cc90cc3af"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-075-p012-pause.json",
+      "bytes": 161,
+      "sha256": "e51f008c13e18d4c14992d5b71e05a995ecbc406c7e9c669cced4f40ef0d4fa0"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-076-p012-verify-pause.json",
+      "bytes": 111,
+      "sha256": "f2edd47089ef76daaf2f66c70feba624c0a512b75ca4a00343abcb5f7a4d22b6"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-077-012-before.json",
+      "bytes": 104,
+      "sha256": "b70cfe41502b00b86753f8d74bae0e7e635f3a0d3ad8969531edf0bac41116bc"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-078-012-health.json",
+      "bytes": 202,
+      "sha256": "f5c4b2b89221a8342b03e7dd49ddf2fb722ab694d1e02a65b363a1b7419153f1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-079-012-after.json",
+      "bytes": 103,
+      "sha256": "5ab20bd59d1436af6b437f50ef071192e251d1394f298b45c30e9bfaf2f38a90"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-080-p013-resume.json",
+      "bytes": 163,
+      "sha256": "d96bffacba33e7914fa01f978dd36b1b567dc6b270593301c97e45b6372e8284"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-081-p013-pause.json",
+      "bytes": 161,
+      "sha256": "195989bf24ebb6eb3e3cf7dbcb095ea5054bf995b62552b34ed81d89358c57df"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-082-p013-verify-pause.json",
+      "bytes": 111,
+      "sha256": "04735c826f7051a89a215564e645afa416570b5a0f29fd64fcb7b4a262bf7eb4"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-083-013-before.json",
+      "bytes": 104,
+      "sha256": "91405efa617b8ba535ab01b5c7dfa7bc2918a344ec633fb11cffad528ee9604f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-084-013-health.json",
+      "bytes": 191,
+      "sha256": "61f8ba2fd50a8d0622d907019b3a3440ef32cbb3727c7159bae3c19e91bb8756"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\requests\\r0164-travel-p04-085-013-after.json",
+      "bytes": 103,
+      "sha256": "31335e59ac2e6d13e073559bc7cee637cd2a718b2db6e55e80ce478fcb7a4fb0"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-attrition-hover-a02.json",
+      "bytes": 358206,
+      "sha256": "d9226269bfd67a3aec8a28b0e623ead46ebab58afad270de376d7fb040bb8597"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-attrition-leave-a02.json",
+      "bytes": 358386,
+      "sha256": "fd34428903806e58c971c6c5869368812c1250e4d07ed8e2d21625f7dc1d718b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-attrition-query-a02.json",
+      "bytes": 358126,
+      "sha256": "9c932d1da1311f2274b44c8af7e707089b019ef432203b1515d526f30b5aa77b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-bridge-diagnostics-a01.json",
+      "bytes": 39561,
+      "sha256": "32d8ba9e40cfa230a285476547799dee97a3b75689737b38fae259d7f519b69c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-cash-a01-pre.json",
+      "bytes": 860979,
+      "sha256": "400fbebb1c7b6523b695f72015027502bd846a033f348070c50a325632f3d111"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-cash-a01.json",
+      "bytes": 12840,
+      "sha256": "b7c7fb7669ff57d7147f5b95df55b12825bfca5a535b09a083efc6efcae7b746"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-day15-commander-a01-pre.json",
+      "bytes": 846521,
+      "sha256": "089352f05e2588f137dd6f4595ecf38f742f908172bb42b4f6c56a864875ab74"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-day15-commander-a01.json",
+      "bytes": 51317,
+      "sha256": "68108d36f04102c226c1246b43eaacf1ec8ea1902a0a4310f0b2ca524eddfd4c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-day15-current-supply-preview-a01-pre.json",
+      "bytes": 846547,
+      "sha256": "02bb2240219edececf16e3e89fb8d704ab577996c7b8bfd31c0f8e4022cd6e0f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-day15-current-supply-preview-a01.json",
+      "bytes": 6874,
+      "sha256": "f0c1d1d056d42a295dcf06b4cfd27be7f65f3e4bded434b6834fde27874d7d44"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-day15-final-post-a01.json",
+      "bytes": 164939,
+      "sha256": "5ed90952f2b9e429c06a22faa9527d3788c608a40433ac8f9956cc0f8934d6c0"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-day15-final-pre-a01.json",
+      "bytes": 846513,
+      "sha256": "58c00587af7b16ed7576a33e23533c3a473fd08ac57539ddbd4b7393e38d446d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-day15-save-a01-pre.json",
+      "bytes": 846511,
+      "sha256": "9406f3279b4e16a3ee0dbbbfdb2b51f930baca5a25e12a561ce1c0767c67757d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-day15-save-a01.json",
+      "bytes": 9051,
+      "sha256": "669f85c794eb83bdb6f26f95a2441aa5ec6bd2bc9b008ce4f2abd0702ae3bc9e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-diagnostics-ready-a01.json",
+      "bytes": 39575,
+      "sha256": "67bd9b802bde3ef3694163f1ae00ceead18a9b49dce3ceb0ad58a7e90358cad5"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-initial-snapshot-a01.json",
+      "bytes": 168911,
+      "sha256": "0c5ca82a90dbde0a2e4468df3c11e47a9e3caa29f1633de539ca1d2e8eb1ee5f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-initial-strengths-a01.json",
+      "bytes": 288269,
+      "sha256": "5613fc6297f7971241d8e001f0fd9987e7c8711ae427f4abcd0e2b6216787747"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-001-initial.json",
+      "bytes": 26002423,
+      "sha256": "598e6fa9297b173fe02cc2f44713448e4c479358edfeec88104988588a6775ff"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-002-caps.json",
+      "bytes": 140740,
+      "sha256": "216a13cd93fc7de0fd916e49721ee25d282300909d1c2fa9d67c38ab24ae165d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-003-speed1.json",
+      "bytes": 1523,
+      "sha256": "8d62a97415943491fe71b17103d07ef4e702650125817b4974c3aec9dc4e8308"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-004-speed1-verify.json",
+      "bytes": 26003516,
+      "sha256": "445025c423ac7f69ec266a66b74c786250e369e52b90907faefbd767b2f053aa"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-005-000-before.json",
+      "bytes": 26003514,
+      "sha256": "b528a25697d1e95149f8f7fe71789f2b6f284f0a9bfe96ade73f668a650c1c85"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-006-000-health.json",
+      "bytes": 273089,
+      "sha256": "e8e7a3ea1c54e6073676a2d6db9ee6182bf2fd207293ae6e5801b9381fd7505e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-007-000-after.json",
+      "bytes": 26789504,
+      "sha256": "4708cca99c9aa58d01ad8af84e5674148d5aa4acabda5d19d9f54a41ea245282"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-008-p001-resume.json",
+      "bytes": 1528,
+      "sha256": "08d9c79b6977046129cd65b8f37acd2811217f6873ada9f70cb939dc2dc328a7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-009-p001-pause.json",
+      "bytes": 1521,
+      "sha256": "98a8330a933b0866adb3a655b24112aa5707f17c003e221b1c06fa5d993a8823"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-010-p001-verify-pause.json",
+      "bytes": 26109544,
+      "sha256": "91ac053f5959fc64acca7a6bd11de0a6b8c4022625672fcfd496f9f4afdb5184"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-011-001-before.json",
+      "bytes": 26109534,
+      "sha256": "7fc0d850520fced8c986024faa988932f00b4b3854116a7ec2e4100143cbd1db"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-012-001-health.json",
+      "bytes": 273089,
+      "sha256": "a45d9af7cec1b096cb989392849eb1a2a5fc2d1f127b97ce79c76789415ef377"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-013-001-after.json",
+      "bytes": 27577632,
+      "sha256": "03332985cfde995389fbb6a9abb4baaa689338ec6e4d8a0906b1499e5294af91"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-014-p002-resume.json",
+      "bytes": 1528,
+      "sha256": "c2c6a0b8ddd4028268e146a56efc430f058799f0c94ffb6cea4416eedc11698d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-015-p002-pause.json",
+      "bytes": 1521,
+      "sha256": "6a9609b6fc21d39347cccf450512f5e2826dbf827bb26468dd6eaacc8af61c15"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-016-p002-verify-pause.json",
+      "bytes": 26897676,
+      "sha256": "0998142d5d0bd0c815d282173f6a2b6edf5d0476eed3a6dc89fb426ebe688e05"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-017-002-before.json",
+      "bytes": 26897666,
+      "sha256": "78c0a9f4ec062bb6bd473fa748c15fd105b4fee1b3dc91cc0d70c6b81b6dc41a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-018-002-health.json",
+      "bytes": 273093,
+      "sha256": "c0d7a339b34c2c2cc230161f08bef5e28d8c06802770ef5275c5edc87b8bf612"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-land-p05-019-002-after.json",
+      "bytes": 28365772,
+      "sha256": "72a2787ceea5444c98da1170eb267b6ce7993f2c3fba9cb1f8021637c58e7121"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-map-00.json",
+      "bytes": 1261,
+      "sha256": "36e32b55960cb4c3b55f4a5113c711134e60bc3e819590d443e1e79bf634eb0a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-map-a02-00.json",
+      "bytes": 1269,
+      "sha256": "a85f2b1a7181167040f72e0e41053073723560940286d6801c0b9d08cca10788"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-map-a02-01.json",
+      "bytes": 67611,
+      "sha256": "f1a355e55452c1dbfcb66e295689c96e4fe60eec07761c27550fd6e47aab09cd"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-map-a02-02.json",
+      "bytes": 67603,
+      "sha256": "a6659ae24274963297a1b3faff686207fc4ef236390b078bf6133e07291fba74"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-map-a02-03.json",
+      "bytes": 67611,
+      "sha256": "f4b2c7464f6e12b75af4d6ee6624a7caf34ed02b21914aa8a6c7902a8a18b047"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-map-a02-04.json",
+      "bytes": 67611,
+      "sha256": "3d82073db77b979de6311a906fae351efcc718a0df905e4000095ac10d61bd20"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-map-a02-05.json",
+      "bytes": 67611,
+      "sha256": "10fc34ee888e4f7b1a951d1e9500244a4bf598842a5b71e9135dfda279ed758d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-map-a02-06.json",
+      "bytes": 67611,
+      "sha256": "8bc7d5718a046e4ffba449ecf2ce246888de275da7f7f488267beeba07063a06"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-map-a02-07.json",
+      "bytes": 67611,
+      "sha256": "c6cd4504fcf8165a25c3fc3252e6958bbf2c282962cb8e7748966045b19521b7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-map-a02-08.json",
+      "bytes": 67611,
+      "sha256": "8f18908350489661008ee084c4c7f0d2cb9fdb5bc64d63932223641b00a4418d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-map-a02-09.json",
+      "bytes": 168883,
+      "sha256": "d1043b885de674a83a79951aac5f12adb922f8b268fdba7899f8d22fa679ff75"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-move-2325-a01.json",
+      "bytes": 12169,
+      "sha256": "2c1d0e4efd863b9bcbf3d1c1e1d674a84506cab96239ac9288ccd9cd76279000"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-move-health-a01.json",
+      "bytes": 159537,
+      "sha256": "2901d46b1f8249651205dd3a04a914518dda88dff9d25113f064392c40944037"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-move-post-a01.json",
+      "bytes": 169377,
+      "sha256": "2595172762fac1dfa3cf24de41063ae73b2d7e19c379e0b9eac62523733822f7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-move-pre-a01.json",
+      "bytes": 861003,
+      "sha256": "5546c0d557c8ec0a72b3146fd0fc3bcd57f2c7e4f86b6fb5d71078e8a6d9e6da"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-owner-recall-a01-pre.json",
+      "bytes": 860995,
+      "sha256": "5efa68155037b90ddf86ea3537675b89555e58a288d730ed9f828e63ff4200c4"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-owner-recall-a01.json",
+      "bytes": 5394,
+      "sha256": "13fba7a1ca0852964b153f5ac2184e9b61ded88e8b8f3da0c6194ad3bb310416"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-pre-attrition-hover-a02.json",
+      "bytes": 861025,
+      "sha256": "e12c423f3da8bd607ec7a94df54edb45f74c8cb0a1c6e728acefddbec57c7bff"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-pre-attrition-leave-a02.json",
+      "bytes": 861025,
+      "sha256": "978660519a094beca5b59e183b7623b6c8338a0f67a741d5934d122a43991e1c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-pre-attrition-query-a02.json",
+      "bytes": 861025,
+      "sha256": "a8c79ce39a09ede488b535130b8c4ad71404c67ea0c50703c8e8c5758f565508"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-pre-query-sea-ui-a01.json",
+      "bytes": 860995,
+      "sha256": "4ab0c8d921a4ca026f2ea1b2c9444a44acc66766ed72547ec0672fa7cc78654a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-pre-recording1-finish-a01.json",
+      "bytes": 846525,
+      "sha256": "4300227a344667303519f7d2c7a8c4c2ccd7ac5531fa92005e60f90b9a3c8222"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-pre-select-sea-a01.json",
+      "bytes": 860991,
+      "sha256": "2a0fd1197ad106d244bde44aa039645bbad10f829ea60ec32f228848a9cf8cc3"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-pre-supply_state-hover-a01.json",
+      "bytes": 861007,
+      "sha256": "2ec5c871591065913368068456006984dbe70a06abc536eed77aa7326bcf3f49"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-pre-supply_state-leave-a02.json",
+      "bytes": 861027,
+      "sha256": "9503dca0fcba459d02d5de92baf455bada81d81cb1f20affb6ea03abce1454aa"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-pre-supply_state-query-a02.json",
+      "bytes": 861007,
+      "sha256": "c13104671cef299fd117cdb3c4a6aca8343a20951558e5339c08301c6286f6e6"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-preview-2174-a01.json",
+      "bytes": 6845,
+      "sha256": "f86692d374382ba243ed7da3bfbdd09ec40d6e9e949bfde9d64b7ae970800f95"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-preview-2174-pre-a01.json",
+      "bytes": 860995,
+      "sha256": "11eaec3e35283e78157236f2b77f6d09e10cd43b959b0aee90b7217c1818c8d6"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-preview-2325-a01.json",
+      "bytes": 6957,
+      "sha256": "c4662078ed4a0e1b5e30fd49236b617cfec574cb5103f68242cda39a5f079866"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-preview-2325-pre-a01.json",
+      "bytes": 860995,
+      "sha256": "1c84dab9be8f8ba5a4454ded1ab47432e6e25d1c052c83c5027e3e0621816377"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-001-initial.json",
+      "bytes": 5945370,
+      "sha256": "3850b5fc460b02de57856fbf0898ae53f37d0181c0d309d4f71c79f00a4aee0d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-002-caps.json",
+      "bytes": 168351,
+      "sha256": "ea7a93f86d287e623489c9fb61e9cddf466277824d6cd63f823f2a6bf9956b61"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-003-speed1.json",
+      "bytes": 1525,
+      "sha256": "a5e52afa9f1dae1a80e40bf8e5355e7c2f53405cb31d098f550dd5e6a92f7d02"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-004-speed1-verify.json",
+      "bytes": 5947486,
+      "sha256": "cdaea779122ff651f8d268d075c958a6bd95c96a20a167676a5b518acde7c693"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-005-000-before.json",
+      "bytes": 5947480,
+      "sha256": "8b30b2589411f140b4077cfeaec714e3b8a8c080eb6fa3120221f7923d458fbe"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-006-000-health.json",
+      "bytes": 288239,
+      "sha256": "b711d7b7aacd126b9a2f74c195ae8e94698271e0ff6c0d1479e6fc400d61f2ff"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-007-000-after.json",
+      "bytes": 6744950,
+      "sha256": "b4c50c04b9ca58047968f1061a9ccedf96524774cf8dc0d6b49990adfa22c768"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-008-p001-resume.json",
+      "bytes": 1530,
+      "sha256": "ff548684a3b47e5bef4e1860c581690921f7f2568af1702806ab99e86bbbc7c7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-009-p001-pause.json",
+      "bytes": 1523,
+      "sha256": "5ed953d0dd4ec1d67ae0353a50950c789f0d56672f9bcf4c36f8548b4c3cf042"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-010-p001-verify-pause.json",
+      "bytes": 6055066,
+      "sha256": "9a3ce564a9655270fe196f9afbc4c2c1c96549ec31700ad051f875b1f0964c32"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-011-001-before.json",
+      "bytes": 6055056,
+      "sha256": "7bd5509a54e937b1d8e06ab0ce1bf0ff18f8e023a2393578c426d3f51cbd68a9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-012-001-health.json",
+      "bytes": 288239,
+      "sha256": "4b04d1fa89a16aaba97413b010b730f05d5428744654aabf756900f040d98519"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-013-001-after.json",
+      "bytes": 7544550,
+      "sha256": "781a7eb37a26f6798a9bbea3cf4893d3e8ea46e6eb435612c60fa4dcb91bbc12"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-014-p002-resume.json",
+      "bytes": 1530,
+      "sha256": "6f92abcf6c5027f2fd8ad1566a7fa6a227d5c7d78c23defe31b24219fa126ced"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-015-p002-pause.json",
+      "bytes": 1523,
+      "sha256": "f6705f32d31b46c3d43f587617138c6b321024d92ee84f2c53a2da25a3b40950"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-016-p002-verify-pause.json",
+      "bytes": 6854678,
+      "sha256": "13d69726b17d95ead22ead586d0f95aa67b3da95150397025c29a62d39817852"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-017-002-before.json",
+      "bytes": 6854668,
+      "sha256": "d9d146154dadca3044561f4bff32c83ccecc2db376523c9fe52e89cf9a2ae13e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-018-002-health.json",
+      "bytes": 288239,
+      "sha256": "e64719ad381d3c9917f3776cf08c5975b9c4ca402573048c86ddbac84875d8e6"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p01-019-002-after.json",
+      "bytes": 8344162,
+      "sha256": "d43410c9c73d1156acdfcede63feaf09186f36a66a8cf02f70bdf2cb5d5a432c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p02-001-initial.json",
+      "bytes": 8344162,
+      "sha256": "16210d8621617f9404747b01f3cf4416b1505134109a01213712cda41b753f0e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p02-002-caps.json",
+      "bytes": 169375,
+      "sha256": "a73b74f5b9ecf4088826ab76f287af1f7060573e18896302d3fc9ca8be2d42da"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p02-003-speed1.json",
+      "bytes": 1525,
+      "sha256": "cf5dbcfb4bdc15b99b42518a3ac34c35118407cc6fc3fd5d68370a4f0be83735"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p02-004-speed1-verify.json",
+      "bytes": 8345254,
+      "sha256": "992c35ed0e7fad58398ad84fbeff93e7ae5b60f9f094ed8380bb87ea87914069"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p02-005-000-before.json",
+      "bytes": 8345248,
+      "sha256": "400997e50a9f5cf4fdf504c05d56a1514894153f5538c184e698aa32960d35c6"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p02-006-000-health.json",
+      "bytes": 288239,
+      "sha256": "85116fcecd29f951ab2b57e8559e266d66c4932e33f9dd85cd6704d57d5d7504"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p02-007-000-after.json",
+      "bytes": 9142718,
+      "sha256": "dae1e663aff30baf1ec9e7ed09a2dfd6584b07ddb6060e48643106e3bcc783e0"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p02-008-p001-resume.json",
+      "bytes": 1530,
+      "sha256": "da4579c70060bb477da3e59fb8f9d5d0a217d462fe90429682927650cdcf27df"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p02-009-p001-pause.json",
+      "bytes": 1523,
+      "sha256": "b3e6432a2c12a1b42f32bac5dc6f3bcf8d6012e50739ce25d1d55676649e19af"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p02-010-p001-verify-pause.json",
+      "bytes": 8452850,
+      "sha256": "36ace173f5f57f30800872c042473b8b14628c0c790b48031ff028b492242d90"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p02-011-001-before.json",
+      "bytes": 8452840,
+      "sha256": "51d463d1a34f67b791d4e61f0029241721153b0bc3d6c94dcd22695a510f6780"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p02-012-001-health.json",
+      "bytes": 288348,
+      "sha256": "45b677fbcf5160d266a3ca256e871bdc2006b0ac7220ba1428fd5c81601c56a9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-probe-p02-013-001-after.json",
+      "bytes": 9953514,
+      "sha256": "c9eb610bdb6f5b6bc8880e5aa7187f2d0c437ee4abc4af10aa28a1e5fc0b35e8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-raw-transport-a01.json",
+      "bytes": 47234,
+      "sha256": "9d2b5d884649efd2b65caddff81cf9ce08fe46c530641452af7d05e24af2b5db"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-recording-finish-a01.json",
+      "bytes": 1350,
+      "sha256": "6f57ca75f4e4f7f997fee7c415e0a93fb261ce79ccb5e7dbbb913bcf581ed6b3"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-recording-start-a01.json",
+      "bytes": 2124,
+      "sha256": "0f4d68f899694ae43a28763be53bfb21a89364be6827c596bd8928f59896ffa8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-recording-start-a02.json",
+      "bytes": 1080,
+      "sha256": "35a5606313de5e281f7ce0edb14f2243ed611e36a49212245746d3efcacbdd52"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-sea-commander-a01-pre.json",
+      "bytes": 860997,
+      "sha256": "45650113b89f771c5db1ccde6c4b1e1b3d30f0af1335263e3f50166b98614ac0"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-sea-commander-a01.json",
+      "bytes": 51292,
+      "sha256": "d8d154e37b5e1b61dd9e743a9fb0561f00dcce7938469e5f3128634a75b1d3d2"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-sea-ui-a01.json",
+      "bytes": 353983,
+      "sha256": "741f583faa8463c185bded1d5046e9243f8b8b9dcd5c54f6f64b5c7e6c4a7afc"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-select-sea-a01.json",
+      "bytes": 309873,
+      "sha256": "7564513682b7e84f7f4fd739302f4cfa0c38493a73781520d0951a3c7738bb77"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-stage-p03-review-health.json",
+      "bytes": 159638,
+      "sha256": "24b5df103b92de394b8ec28546813fc1c710143d0a1672a10f80d3bb0aba5389"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-stage-p03-review-snapshot.json",
+      "bytes": 867497,
+      "sha256": "bbf6616ab6a5faa3ff1fe2fca2b6ab931e1c887b05f08a6d26ebae27168ea0d1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-stage-p04-review-health.json",
+      "bytes": 157534,
+      "sha256": "b0a34fcd508f60822318d213d413ff7312cb97ed1e2ea9edd3a78e4f9fa8da96"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-stage-p04-review-snapshot.json",
+      "bytes": 846509,
+      "sha256": "8ee3419449cc151dd711b1e98633e55a48a03ac7eff3ff6e20b7aee749b3507e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-stage-p05-review-health.json",
+      "bytes": 157538,
+      "sha256": "1e89b7ac6408c19e61f403c6bf906d64aa70ecbdd3820a3aacef889ed553c866"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-stage-p05-review-snapshot.json",
+      "bytes": 846521,
+      "sha256": "23163182824f29e796c6fe03e69f212212d2666c28913fbcefd76f3679a23288"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-stop-a01.json",
+      "bytes": 457,
+      "sha256": "7a41c549e596fcd8488ff75bc5afb388e851aa572c9141b63fc185e8506765e4"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-supply_state-hover-a01.json",
+      "bytes": 358223,
+      "sha256": "f6b044e661c8a393dcb6930489f772d3ff25ded1c2bcf6f6ff69113860652efa"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-supply_state-leave-a02.json",
+      "bytes": 358403,
+      "sha256": "9e33d9b2363e7aad4e383c4cd4059410bd3cd280d557cdd1558f3defc5452a76"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-supply_state-query-a02.json",
+      "bytes": 358143,
+      "sha256": "673abc7ff12b27677b0a841f1b6e96784e6fd97f5167a004b4be150f51794bb6"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-001-initial.json",
+      "bytes": 9953516,
+      "sha256": "06a593c6c5b555ec74a33a84f31ca7fbb2610977f669814580abe1023367970e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-002-caps.json",
+      "bytes": 169377,
+      "sha256": "1e9366e04492f245b63effde4cbf2ea18cf4ccf6c72c7bfd6f5eebb0c4bac9e0"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-003-speed1.json",
+      "bytes": 1527,
+      "sha256": "de10a3bfd43316a6bd30c53bd160ab4a9d74c22d0a8c052f90c85daa9e4bcbc8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-004-speed1-verify.json",
+      "bytes": 9954612,
+      "sha256": "a1b443584367cc31c88d9ebcc49c38a181f374c9ad11aaa570fd5d73bbd43531"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-005-000-before.json",
+      "bytes": 9954606,
+      "sha256": "f5b64c66fdeaf932d497e1de532aead94131800fb2855223a3f0033c30fc0fa9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-006-000-health.json",
+      "bytes": 288350,
+      "sha256": "d6444d787e587c68bc197da4dc05c340029203f436a0bf97745fe59d95b14b99"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-007-000-after.json",
+      "bytes": 10758028,
+      "sha256": "c44364c8ac539f15149d9bf7471a4b90471200518ce3214a18c4f3a4279d6429"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-008-p001-resume.json",
+      "bytes": 1532,
+      "sha256": "3807599a182cb75ec15acb3c03cd274b2cf69e7a1e07d1875aac19093c815f03"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-009-p001-pause.json",
+      "bytes": 1525,
+      "sha256": "4ce28345320e7db231a1ed74f98f2aa992a2310cd447ee416b7daaa2c83b3333"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-010-p001-verify-pause.json",
+      "bytes": 10062928,
+      "sha256": "37356570bd4702b81e314336089603452b1f309a3d93df8d1346fa451bd239f4"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-011-001-before.json",
+      "bytes": 10062918,
+      "sha256": "e2c193f1892dae3e092139229736e7883908dc4eedf31834642006d6055adfe0"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-012-001-health.json",
+      "bytes": 288350,
+      "sha256": "de125d4e95ed280141e4703aaaa4f9b11adf7e4855d3348e32e68876a1096dec"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-013-001-after.json",
+      "bytes": 11563592,
+      "sha256": "c38ed1c2aef8ffb06f1c0f087735c810d484aec8f36aadd96022da7e64a36f6b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-014-p002-resume.json",
+      "bytes": 1532,
+      "sha256": "008f2fc3a8ccfeec02d1f5f389e5a032720f0b561866f95bd1edb3042f58edf4"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-015-p002-pause.json",
+      "bytes": 1525,
+      "sha256": "dd990cc846dc35ed7456c1f3b977163c711a5d908d562e53a9bbac82165bd1e2"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-016-p002-verify-pause.json",
+      "bytes": 10868408,
+      "sha256": "f6f034f632ca2f4c5c787753f84ecb88dfc8b8af180b5781138c9d1ed0e53556"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-017-002-before.json",
+      "bytes": 10868398,
+      "sha256": "16b2d082f07cda0bb5198db41badcea86ad0f99f95d18122fbab4d1238e465a7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-018-002-health.json",
+      "bytes": 288350,
+      "sha256": "4be9039c4c5fc77a7482bf59deb9c70fdb48c75eae90936aa084233eb74e0e1a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-019-002-after.json",
+      "bytes": 12368984,
+      "sha256": "3c95be348958d5136818eabd1b2640005f3d841c7db2cf8a29827dceabce19b7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-020-p003-resume.json",
+      "bytes": 1532,
+      "sha256": "c84e3269f79f900686eb3405ec46aaa22d943b3fa17b9bee9843877b1b284076"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-021-p003-pause.json",
+      "bytes": 1525,
+      "sha256": "34bcf8efd6c15877df95a6da1649c1f2eaf6f5adc3bfb0f0f80d03a16ba32093"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-022-p003-verify-pause.json",
+      "bytes": 11673800,
+      "sha256": "0be1f71bbb2c702241cb4bbccf98c2f625c2de7f61518f12fdab1f7037b79836"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-023-003-before.json",
+      "bytes": 11673790,
+      "sha256": "a8da3d2a93eeefc88e0d971d0816c04fd796476d521d4dba3c1dfa49ec879f97"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-024-003-health.json",
+      "bytes": 288350,
+      "sha256": "58d659ea27ee95fd9aa497ca53e42dc722d91925365b80ba0ebaf2341b423f1a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p03-025-003-after.json",
+      "bytes": 13174464,
+      "sha256": "05d2f51172ab5981469a284bd7fe391a2647d163b25c938d95f8d6d0dd5977df"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-001-initial.json",
+      "bytes": 13977888,
+      "sha256": "d580e935bc56d8773457641d7477a2998398cea59e2687776d254ab1b2eaeb8a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-002-caps.json",
+      "bytes": 167629,
+      "sha256": "3f72750976168a4f3d58eb87eda93dfd176f063975c41557b937bbd1e5bce2f8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-003-speed1.json",
+      "bytes": 1527,
+      "sha256": "6d017baec9cb35e21511f6f1d9f775812d5d401acfadefaa7be5a2594a224348"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-004-speed1-verify.json",
+      "bytes": 13978984,
+      "sha256": "515dff16d96083cb04093bdadb3bcd054a573f58ce86a75595a490b9ea531f40"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-005-000-before.json",
+      "bytes": 13978978,
+      "sha256": "9503aab2d0f6f451ca0abf05eb1513f231c6821f966793b0ea73a7de2fe1f80e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-006-000-health.json",
+      "bytes": 288350,
+      "sha256": "e89b0f96ae8c332e20092b27d67895bddad5842bc23bf19cdf783fd9bfb32226"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-007-000-after.json",
+      "bytes": 14782400,
+      "sha256": "b4b3f3f982302543cb5a0358c2bec2dd57a1c43afd4911302bc15ec331c1c8e1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-008-p001-resume.json",
+      "bytes": 1532,
+      "sha256": "5928fa827f79a5e08c902249cbb0c0317ac96493fbbc1779592607a21cf75891"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-009-p001-pause.json",
+      "bytes": 1525,
+      "sha256": "fd53c263cafda83f9f91848784bedd7a6fd7a46fb5e78e55af2f664d4d389d40"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-010-p001-verify-pause.json",
+      "bytes": 14087284,
+      "sha256": "ec0431aab3908b5abf25d7b50d867b456e9148530faeefe23bd7a44dcb7a9d0e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-011-001-before.json",
+      "bytes": 14087274,
+      "sha256": "6964369fa18fbc223513bb151d9fe99028ed379c410f6e8f39fcee7be76577a9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-012-001-health.json",
+      "bytes": 288354,
+      "sha256": "cf0539376a371363ab145d2c6f9b8ded88ee742670c56fe88a8597069ff3cdf8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-013-001-after.json",
+      "bytes": 15587956,
+      "sha256": "950f3247f298a4f8f06a09089e38f628a592ad70fa937df9b8a15d14c5b1ebbf"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-014-p002-resume.json",
+      "bytes": 1532,
+      "sha256": "79140133012768564cf491d2acb299002ffd802a10c3118bf5123cf56dd3587d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-015-p002-pause.json",
+      "bytes": 1525,
+      "sha256": "17ec60983415096ca2558bff889491944ce3fab19e74f4b8e0f2c5373e1452a9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-016-p002-verify-pause.json",
+      "bytes": 14892852,
+      "sha256": "0d121a739e22fc9557ff7981c152b2e13be5aa16c98e085bc9d6333fc3e34103"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-017-002-before.json",
+      "bytes": 14892842,
+      "sha256": "daae47b8b95dd74c091ee1165bd32ccb6c5b22842012729c496003e19517fed5"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-018-002-health.json",
+      "bytes": 288354,
+      "sha256": "8b5803f66bb5671a511fd01252cd432c3fe4bd364bbfcb9f7f4467d13c0294a9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-019-002-after.json",
+      "bytes": 16393524,
+      "sha256": "76b1179e2a3a0e27a64078ebe9271cecab9dd60661d9bcb47941b2fb0534c48e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-020-p003-resume.json",
+      "bytes": 1532,
+      "sha256": "d7952ad95a2819ad83acc633f14015479d6a5feedc475d9bb73aef37c06bab3b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-021-p003-pause.json",
+      "bytes": 1525,
+      "sha256": "6fde4212e7aa774e72252e21859cc313d9b74ecbcbeb0639078a40a3f69cdaf5"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-022-p003-verify-pause.json",
+      "bytes": 15698416,
+      "sha256": "f63c81074004dc8d530ef0e849fc187e12df628eb5db108f7cfd42cdbacbe59f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-023-003-before.json",
+      "bytes": 15698406,
+      "sha256": "84cec7d02d124d70882842f06e5caec654886df87047013dc99bcb86dbaf9655"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-024-003-health.json",
+      "bytes": 288362,
+      "sha256": "017c00f8b9602ce4da861d2052423863e3cf52d9df54ed87dda0ceffe111bc87"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-025-003-after.json",
+      "bytes": 17199136,
+      "sha256": "d7081b22164222dff388bdc85f0c0aedee5215a2710a6575358ad799ccca5de8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-026-p004-resume.json",
+      "bytes": 1532,
+      "sha256": "e97d9633f36fc8219b5193acf5419d35123bf9041ef0c29afbd0094361d19e08"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-027-p004-pause.json",
+      "bytes": 1525,
+      "sha256": "ebdee3d19fcf97df22a4e8993920743f0f6b06c238afbcef02957235dc639bbe"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-028-p004-verify-pause.json",
+      "bytes": 16504084,
+      "sha256": "25a1c8df14f3fa44cc6a98ec422bb9fc78e80391a3207b579a4ecf3e5f8b2f9b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-029-004-before.json",
+      "bytes": 16504074,
+      "sha256": "fe978dcccb29afdd0c6fac11deb66407dfaf8b523a14c7c0407c0e31128dacd9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-030-004-health.json",
+      "bytes": 288362,
+      "sha256": "62ed2fb12a6b974c15f1ed80af8237dc327151145014dc5bb1012efe1d8b9168"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-031-004-after.json",
+      "bytes": 18004804,
+      "sha256": "77dcbc9dff2ce9aed41bc9aa6cf7efb9d575413b76c7890aa2d5fa88b0ba70b2"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-032-p005-resume.json",
+      "bytes": 1532,
+      "sha256": "6b237b2e5d2c6cca613a38334066bf9f0c55cce038009348820824f2336a1da1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-033-p005-pause.json",
+      "bytes": 1525,
+      "sha256": "0cd260822aec1935b08b2465f66b70d414e617451a469c134defb4ebe769f61c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-034-p005-verify-pause.json",
+      "bytes": 17309668,
+      "sha256": "3d56a02752397b4f7c0707fb44c109054d09f2b06095b2968db4e22d8e08dd6b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-035-005-before.json",
+      "bytes": 17309658,
+      "sha256": "888337a5e8dd1131eaa5432cf600ddad5838c4d4c62b6512de240a360174d8a1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-036-005-health.json",
+      "bytes": 288362,
+      "sha256": "5f0251fbd3a8c81db20f25423ed4bc0e5b9bb110abc0345f3e2d8b7e1a64dec5"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-037-005-after.json",
+      "bytes": 18810388,
+      "sha256": "59f114c5551d02777fdb8e8fed138dc642da27769b0524a7c55e4ed7627aee35"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-038-p006-resume.json",
+      "bytes": 1532,
+      "sha256": "7abf38c27b820498788fd56ac463cd470195f1e94465e3d1da0240eb1cee0fac"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-039-p006-pause.json",
+      "bytes": 1525,
+      "sha256": "205e7905b329367ff0af309bfb5424dc3a6cc7f7bec000f732108286df427f88"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-040-p006-verify-pause.json",
+      "bytes": 18115260,
+      "sha256": "c8d8d565be94a6221c4db39bcb813d2384d1078f81b20b8d8aec4ab2035bbb20"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-041-006-before.json",
+      "bytes": 18115250,
+      "sha256": "a30b244c1cccf605e615d280f58a17fb00d60889ab37f2b341e6763832a39b9d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-042-006-health.json",
+      "bytes": 288362,
+      "sha256": "71962f67d24b6c10c72d53ceea4207c714ecd111ac7980791002cf70fd1686d8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-043-006-after.json",
+      "bytes": 19615980,
+      "sha256": "08ab1114bc3404ea2257b7edb706501c0f3221ac40781d7b06fdf010e478416d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-044-p007-resume.json",
+      "bytes": 1532,
+      "sha256": "074ce499281f95f5c3835196c8fca93c43c43acf3c59af15976c19aa6402b17b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-045-p007-pause.json",
+      "bytes": 1525,
+      "sha256": "c1cf76387340c0acbea5527618416bbe46cbefdab6c47bbe2e5d820f4f5016b5"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-046-p007-verify-pause.json",
+      "bytes": 18920848,
+      "sha256": "0152f168470da8dce2858160713fec3293b867b4afb0b635439bbde9e3d4eecd"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-047-007-before.json",
+      "bytes": 18920838,
+      "sha256": "2c709a857dbc4d91d3b4c2d0c2a991e2ce89177021894ba94f1d27f0c9b46639"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-048-007-health.json",
+      "bytes": 288362,
+      "sha256": "960e1e7cb39d77cc3368370eb0a6ec8a3d2e0ada6796ee514455c817627a7f2b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-049-007-after.json",
+      "bytes": 20421568,
+      "sha256": "3aff4f3965ce817ffacd8f72988ed9af30942552f7d8660a890ac68f5273bb80"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-050-p008-resume.json",
+      "bytes": 1532,
+      "sha256": "de09d112d1db3d5b1dbfb13ab59cbae8e7e4d91196d6c4c4eedcd34bed3eaf20"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-051-p008-pause.json",
+      "bytes": 1525,
+      "sha256": "497ba5564a10a437060cc09f7dcfa68873494a6a9d27c4d0018dfaf37f1957f1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-052-p008-verify-pause.json",
+      "bytes": 19726436,
+      "sha256": "507cbff112ed188dc4b4f8376046fc2d16ec6bb884e6fd76c2b5bfba8fca2a3a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-053-008-before.json",
+      "bytes": 19726426,
+      "sha256": "72f9665d2c1f4ec60179620294c0bf9c477065bed1fd419ecace23b1eafd05da"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-054-008-health.json",
+      "bytes": 288362,
+      "sha256": "e4e5ce829a3fea55546f14aea028022840d13cd5d7cbab8731af0696cea91488"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-055-008-after.json",
+      "bytes": 21227156,
+      "sha256": "38bba2de91e24aa1f2aea2a65ea9df9f31f7c0eeb40e09d7654d35da4e69d2d0"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-056-p009-resume.json",
+      "bytes": 1532,
+      "sha256": "5efa541ad81ded30765bd28707f9bb15ded42701f08ca2ac0a2697f8beb13dbe"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-057-p009-pause.json",
+      "bytes": 1525,
+      "sha256": "0581c904b5db9dd7cf68bc6279adf99f94a0f11f90894a2511f94d8013f9f83c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-058-p009-verify-pause.json",
+      "bytes": 20532024,
+      "sha256": "2aeb3fb078c5908913ac52c1e9911c6247d34619c0819f4ed35a4eb265dd2790"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-059-009-before.json",
+      "bytes": 20532014,
+      "sha256": "1cdcddc07284bd360eba2cda57e52fbc9e90d054db7c459b517833bbcca1a919"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-060-009-health.json",
+      "bytes": 288362,
+      "sha256": "0bdb8be6360f8f0dd50c9dc091e49851c9a8560eda54a44b56a58b6cfc6e05ac"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-061-009-after.json",
+      "bytes": 22032728,
+      "sha256": "104e6124c1560c329dceeca14e43e0219c00577bf429d3016dc95a864f7707bf"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-062-p010-resume.json",
+      "bytes": 1532,
+      "sha256": "b01041e9111e2a01d7b87a8f16418d216461ad394775c703819c8d69d133cd81"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-063-p010-pause.json",
+      "bytes": 1525,
+      "sha256": "3a000af2efe9e764b3d691cd7a899eeca2b110b911cb858635c0710ae159b6eb"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-064-p010-verify-pause.json",
+      "bytes": 21337520,
+      "sha256": "c120f501fd0cd3e14e58459f169d30a209f1ac8bb920a77094747ac6aa661cdf"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-065-010-before.json",
+      "bytes": 21337510,
+      "sha256": "aa746f0e334f84ea838fd49075cbd234bb4589edb401d7275b3f40b0aa53536a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-066-010-health.json",
+      "bytes": 288362,
+      "sha256": "c5c64ef0cfa55b97e2b9603a1e1f948474857a7b8c8666402b82eb2111527680"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-067-010-after.json",
+      "bytes": 22838156,
+      "sha256": "da84392cc35b0e9adc52834e02197e510fc0237cc77b51fc90905e9855c9f8d7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-068-p011-resume.json",
+      "bytes": 1532,
+      "sha256": "2dad89bf1c2c1715dc1d82f656836583077459940ff5f43e28861d2d1b5d7a46"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-069-p011-pause.json",
+      "bytes": 1525,
+      "sha256": "0f096d1c91914dddc7ff1ea1f99fdb88e09eb677c8c061fd3a032cd3a0b7adad"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-070-p011-verify-pause.json",
+      "bytes": 22143068,
+      "sha256": "6cbfe69611751408ac2d9e709b20d1c942d09529d2b6a5e8ab901f772956dc21"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-071-011-before.json",
+      "bytes": 22143058,
+      "sha256": "f49ed98e1a9dffd007b1d86829f58f69bcc7dfea4ab55cf2e14efb4d57304857"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-072-011-health.json",
+      "bytes": 288362,
+      "sha256": "486b34dad8ae67cbf07129b0c7dd275aae4e280fd02c18a6ef97b5c2df478878"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-073-011-after.json",
+      "bytes": 23643700,
+      "sha256": "2fa03ccd5e9e232891bba6ea24b2e8b3691b357f151f6677903997a5b6cc4319"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-074-p012-resume.json",
+      "bytes": 1532,
+      "sha256": "b2a965ebb5d6f3c9cb74e3e78d119986d13917a4ff99bf1d6ca0696c4369b4cc"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-075-p012-pause.json",
+      "bytes": 1525,
+      "sha256": "640d403d93c4e0c0797eb918443275d581ea94a370d6ce01bcf8c46e4d823726"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-076-p012-verify-pause.json",
+      "bytes": 22948616,
+      "sha256": "267f10fed97b56aadac35a918faf3745fce37c7adee08175a68d7c80a13d06d4"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-077-012-before.json",
+      "bytes": 22948606,
+      "sha256": "93beafe95ab5cd9483cea52303cd900b625d348b170959665ccc5f87fa047dac"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-078-012-health.json",
+      "bytes": 288358,
+      "sha256": "014d70d94eaf922f9bb29b0b8de298a1d84c4dde79e9e77c1a10cb318b350c2f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-079-012-after.json",
+      "bytes": 24449312,
+      "sha256": "aa97d0fafe609f2b4c738550ae2dd8deaac6301dccb51540201b713c34ed0b09"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-080-p013-resume.json",
+      "bytes": 1532,
+      "sha256": "14ad66e70acff5b71cb27d2933a6f92eecb08424545ab8f484d50daca376031f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-081-p013-pause.json",
+      "bytes": 1525,
+      "sha256": "a6fca8a785b7e84cac721bdd97b21639d2303b9914162bb3770a85dded347746"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-082-p013-verify-pause.json",
+      "bytes": 23748344,
+      "sha256": "ffa5c29e065e74f9be454763049a8fbc5b54767f8409407905143c6809d193cd"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-083-013-before.json",
+      "bytes": 23748334,
+      "sha256": "6c309ec5d6963ca202600adafa10e1dbb5e43dfb1b1cecdad576231ffcd0e17a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-084-013-health.json",
+      "bytes": 273093,
+      "sha256": "b073ea2ca194ef46df08a63f2170b5936cfe4ed85118f94ad9b9e98524143cbc"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-positive-r0164-a01\\responses\\r0164-travel-p04-085-013-after.json",
+      "bytes": 25216424,
+      "sha256": "e40992f47e5bb63b5d02f3f06d7befd7e0f8a667d99c5b0d13ca4031399511b5"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\frames\\r0164-ready-map-a01\\desktop.png",
+      "bytes": 3250019,
+      "sha256": "2b6f50b583214f557c97af48704873646bb0cf68ecf3479d47796918aa51016c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\frames\\r0164-supply_state-tooltip-a02\\desktop.png",
+      "bytes": 3270146,
+      "sha256": "d123f990f42faf3c8a76b0cc1986ba1f8ddd652b3e9d18363e4e4c30eff692e7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\frames\\r0164-attrition-tooltip-a02\\desktop.png",
+      "bytes": 3270313,
+      "sha256": "ef5bc9465e263a500fa5ca1ec3b17b1d634a8876adf7c239287a4159f71d9e43"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\frames\\r0164-supply-clamp-a01\\desktop.png",
+      "bytes": 3279270,
+      "sha256": "18025a43de3e5da40afd5e9572304844b7f2d16c0e009491b3e0502f53194b75"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\frames\\r0164-ready-map-a01\\receipt.json",
+      "bytes": 319,
+      "sha256": "c732a4f1bc0c4988998cbed7acb46566082b5193dc96e7940736e71aa877d16d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\frames\\r0164-supply_state-tooltip-a02\\receipt.json",
+      "bytes": 330,
+      "sha256": "e0aa893ceb903178f83781a10a130ee552106790e2e79d67c97e5bc67ff201b8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\frames\\r0164-attrition-tooltip-a02\\receipt.json",
+      "bytes": 327,
+      "sha256": "4c59f46c67099efbf210e8b5d10577f5fe334674356cafabb7cb9c36085e2611"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\frames\\r0164-supply-clamp-a01\\receipt.json",
+      "bytes": 322,
+      "sha256": "33e84452ac7f9322b7ba18e41dc77263de62b3dabf6215845722c10493cd383c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\steam-challenge-close-r0164-a01\\challenge-2.png",
+      "bytes": 259768,
+      "sha256": "8da592adef382286f3fb0362c70bbad5b7e6f85f79db7ae3309a5507af682635"
+    }
+  ],
+  "this_lane_actions": {
+    "SDK_calls": 0,
+    "game_actions": 0,
+    "screen_actions": 0,
+    "native_builds": 0,
+    "security_changes": 0,
+    "main_source_writes": 0,
+    "candidate_docs_only": true
+  }
+}
