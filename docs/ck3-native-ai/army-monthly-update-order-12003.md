@@ -184,3 +184,103 @@ Episode04 P0-SUPPLY filming uses the same army and same commander/province/compi
 Use `tools/run_ck3_native_army_update_clock.py --current-raw <fresh> --days <bounded> --observed-army-bucket <actual>` to select the date; the CLI writes a prospective clock only and does not run CK3. Without an observed bucket omit the option and leave army selection unknown. Root freezes the actual subject, save and natural runtime window before executing the separately bound plan. Stop after the first discriminating boundary pair; if grace edge is specifically needed, at most61 admitted days from a fresh gathering-completion baseline is a bounded search for two potential bucket selections under stock30, subject to unchanged eligibility. A zero-change window excludes no mechanism by itself; preserve it and record which fields or conditions were absent. This is a small observation recipe, not a new gameplay gate.
 
 New bytes are retained at `D:/ck3-war-episode04-research-20261004-a01/supply-clock/`. The gathering span `[2A9AF40,2A9B592)` SHA-256 is `27b16dfc3ab56e1088c7a24676433317a7f86b8ecf82c6108b6b3468aec706e8`; updater slice SHA-256 matches existing `a6214a58f3b8a1ff58fff6148ecf121688ccdaf1a5317f0865991a5367d183f4`; registration function `[23801F0,2380447)` SHA-256 `d7c5bcb41c03e53475f2661fe7171647852e7636109e88cb985ad9207e01b3d3`. The bound plan, generated graph and `ROOT-DELIVERY.json` enumerate actual paths and file hashes. Root integrates this candidate append; this lane does not modify Git refs or canonical repository files.
+
+## Same-query army update clock and native owner recall inputs — 2026-10-04
+
+The existing paused `ck3_query_army_strengths` now has two optional siblings on each row. This increment preserves its current public CUnit/native CArmy identities, revision checks, supply, attrition, monthly supply, gathering, movement and first-record replenishment observations.
+
+`army_update_clock_v1` reads the exact .3 resolved CArmy after its public CUnit backlink matches. It publishes `current_date_raw`, the stored signed `native_day_index`, native unsigned-modulo `selected_bucket_phase`, and `observed_army_bucket_phase` from the actual pointer in the CArmyManager's 30 buckets. It also keeps the CDate64 storage and low32 operands separate: `last_supply_update_date_storage_raw64`/`last_supply_update_date_raw` at CArmy+188, `grace_anchor_date_storage_raw64`/`grace_anchor_date_raw` at +190, plus the exact-build loaded `loaded_grace_days` at RVA5C69AA0. Successful stock-update date and grace anchor are distinct observations. No last-success date, troop refill, loss, cash posting or future phase is inferred from IDs or monthly labels.
+
+The object has `status`, `ready`, and nullable `unavailable_reason`. Pointer-matched membership is `available`; a complete readable scan with no matching pointer is `not_registered`, remains `ready=true`, and retains a null observed bucket phase. An unreadable binding/header is `unavailable`; the parent strength row retains its independent status. Date, phase and grace zero are valid. The unchanged .2 binder omits this exact .3 sibling.
+
+`native_owner_recall_inputs_v1` uses the already published AI leaf's `ForUnits`, serializer and Python normalizer. The backend reuses its one paused snapshot after reading strengths and passes each row's full public CUnit ID; no second snapshot or strength sample occurs. Its owner matrix can contain the full owned roster, so the matrix is not limited to one unit per strength row. `raw_inputs_ready` describes the raw owner/army inputs. The native scheduler context prefix remains independently unobserved and `native_selection_ready` is not promoted by this attachment. These values explain inputs without submitting a native AI action or proving ordinary target score/threat causes.
+
+```mermaid
+flowchart TD
+  S[Existing paused snapshot and scoped strength rows] --> R[Resolve CUnit full ID to CArmy and backlink]
+  R --> T[Actual native bucket pointer, stored day and dates, loaded grace]
+  S --> A[Existing ForUnits native owner recall reader]
+  T --> W[Same strength row serializer]
+  A --> W
+  W --> M[Existing registered army-strength MCP and Python normalization]
+  M -. Root paused artifact pending .-> L[Production clock and same-query recall qualification]
+```
+
+The two new focused production-reader/serializer cases passed once: pointer-matched phase/date/grace zero and readable missing membership with distinct CDate64 high words. Their unchanged wires passed the real registered MCP, service, driver and normalizer once under Python `-O`. Native checks use explicit `Require`. This is `static-ready`, not a live clock sample; the earlier AI leaf fixtures are reused and were not rerun. Root owns the final build, paused sample, source adoption, commit/push and report merge. The frozen A native-leaf receipt remains unchanged; only the integration projection adds the DTO equality required by `ArmyStrengthSnapshot`'s existing default equality.
+
+Source adoption: Root adopted and pushed this frozen 15-path increment as `b148719256a92b1d0fe014f9f62f659e44f0d105`; g64/v59 full strict build and actual paused query remain Root-owned subsequent milestones. This append credits zero game days and no new production-live sample.
+
+## R32 actual clock primitive and bounded 20+4-day loop
+
+Actual gameplay completed on 2026-10-04 / W40. This documentation is finalized
+on 2026-10-04 / W40. Native and Python source were frozen g64 at
+`b148719256a92b1d0fe014f9f62f659e44f0d105`; R32 used the ordinary Robert 29829
+campaign. The sole original-query owners produced cached FIELDS; this clock
+consumer read each of the three new caches once, never the original014/004 JSON.
+Rows are associated by `army_id`, including the changed guard/main row order.
+
+The first actual paused query at raw53255184/D393966/selected phase6 returned
+`army_update_clock_v1.status=available, ready=true` for all three armies. Main
+301989997/native CArmy201326670 had actual bucket0, last successful stock-update
+date53255040, grace anchor53251464 and loaded grace30. Guard184549452/CArmy167772208
+had bucket28/last53254992/anchor53251272; enemy268435597/CArmy184549476 had
+bucket6/last53255184/anchor53249376. The actual elapsed-from-anchor operands
+were155/163/242 days, each strictly greater than30. Native64 storage values are
+preserved in the cache alongside the distinct low32 date operands; they are not
+reinterpreted as calendar raw dates.
+
+This qualifies **production-live primitive** for real membership, day, successful
+update date and grace observations. The decision used the native calendar table
+to preview20 admitted days to month-first raw53255664/phase26, then4 days to the
+actual main bucket0. Root executed each plan with ordinary saved-day progression,
+independently queried the same fresh three IDs and retained normal SAVE evidence.
+
+| Actual saved stage | Date / D / selected phase | Main301989997: current / last success | Guard184549452: current / last success | Enemy268435597: current / last success |
+| --- | --- | --- | --- | --- |
+| Start | 53255184 / 393966 / 6 | 3550 / 53255040 | 3000 / 53254992 | 2692 / 53255184 |
+| Month-first +20 | 53255664 / 393986 / 26 | 3550 / 53255040 | 3000 / 53254992 | 2772 / 53255184 |
+| Main bucket +24 | 53255760 / 393990 / 0 | 3515 / 53255760 | 3000 / 53255712 | 2772 / 53255184 |
+
+All nine clock observations are available/ready. Actual buckets remain0/28/6,
+the anchors and grace30 remain unchanged. Maxima/regiments remain3884/41 for
+main,3000/24 for guard,4702/41 for enemy. Supplies/caps remain300/300,100/100,
+300/300; final attrition fractions remain0.01/0/0, monthly supply0/+20/+20,
+and all three are not gathering with that state independently ready.
+
+At month-first the main has no observed net troop change; the enemy gains80 while
+its last supply-success timestamp is unchanged. At actual phase0 the main's
+last-success timestamp advances to the pre-action predicted53255760 and current
+soldiers decline35. This net difference is compatible with integer truncation
+of3550*0.01; it is not an independently sampled breakdown of every loss producer
+or gross refill. The guard's phase28 timestamp advances to53255712 within the
+same four-day segment. The enemy's next phase6 has not been executed in this
+24-day loop. No fixed NET*days/30, cash posting, global replenishment attribution
+or unobserved component credit follows from these dates.
+
+```mermaid
+flowchart TD
+  O["R32 paused actual three clocks: phase6, main bucket0"] --> P["native calendar preview:20 to month-first phase26"]
+  P --> A["Root actual saved20 days"]
+  A --> V["fresh same IDs: main3550/last unchanged; enemy2772"]
+  V --> P4["pre-action preview4 to main bucket0"]
+  P4 --> A4["Root actual saved4 days"]
+  A4 --> V4["phase0: main3515 and last53255760 match target"]
+  V4 --> S["normal SAVE h7708; scoped timing loop qualified"]
+  U["gross refill/loss component samples and cash posting"] -. "separate construction inputs" .-> V4
+```
+
+Readiness is **production-live loop within this finite army-update timing scope**:
+observe actual clock inputs -> preview20/4 -> execute normal saved days -> verify
+the date/phase/timestamps and troop observations. It does not mean complete army
+recovery policy, every callback/create path, whole-game OODA or cash affordability.
+The same-query `native_owner_recall_inputs_v1` remains **missing in these R32
+queries**, despite the query being GREEN; it has no actual publication credit
+here. Its separately diagnosed SHA translation fix is a later source/runtime
+milestone and is not retroactively applied to these frozen g64 packets.
+
+Final Root normal checkpoint: h7708,96687892 bytes, environment6061,
+SHA-256 `627fd721864a4e2de3f8754b9de465a4810e29da28692123511a38cb4ef6ca83`.
+Root cumulative ledger is4643 global/resume1490/Oct4+618, including exactly24
+new normal saved days in this loop. This consumer advanced0days. The CI runner's
+separate missing timing-TU failure and its Oct4 upstream fix/local affected-step
+verification retain their own failure and source receipts.
