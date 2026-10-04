@@ -1,5 +1,14 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 当前主线：玩家capital2619接敌，等待真实战斗后态（2026-10-04T08:16:12+08:00 实际补录）
+
+**地理锚点仍为玩家capital2619／县2142；2640属于县2115 titlecapital，已收复有限loop不是玩家首都收复。** 55日真实正常行军/1320h已封存，累计 **4323/36524、resume +1170、10-04 +298**，10-03冻结777；G2 5/8、NW2/4、自然继承0。最后正常 **h6509/raw53248080/93584151B/SHA-256 375ab8dd80c2aeeb6e9e48411038e7b671213cd2da118a0c05c4f339023046c9**。末帧native1089/pub220、Robert29829存活/同episode、paused且事件互动清除；主军83886367在2629接入FullCombat1577058310，玩家DEFENDER side1、maneuver第1日、无winner，尚有4跳[2630,2631,2624,2619]去首都。首都2619未被敌占，但敌Siege201326609仍在、ETA122仅估计，未到达或解围。同帧seq81我军health3920/4231、supply113.34217/300、月+20、attr0，不由旧兵力差推伤亡。当前active_wars仅50331736/129，玩家相对分数−10/−26；War16777231自march第2日/raw53246808起不在集合，即提案后第5个保存日，只授war-ended观测primitive，结算类型未查明，不写白和平accepted或全战胜利。
+
+下一步从准确Combat与末军状态进入实际战斗观察和操作，按真实normal保存记账；当前仅确认玩家接敌，不授解围或胜利。原129两支敌军在2619 sieging的观测、旧三军strength和DEFENDER ctor0-v2输入各保留其原帧/partial边界，不混用旧2640现场或假装fresh兵力。零日move后h6278不是本批最终锚点。nativeR25/g54、Python210943/g56 hot与未部署的v50诊断分列；contextual ledger扩展授权不等已实现，后续battle预算不预授。
+
+实证：[55日完整账本](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/capital2619-v51/relief55-sealed-day-consumption/ROOT-DELIVERY.json)、[接敌终帧与正常保存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/capital2619-v51/relief55-sealed-day-consumption/DAY55-TERMINAL-CRITICAL.json)；[此前三军strength观察](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-reinforcement-raise/runtime-v51-capital-defense-strength-consumption/ROOT-FINAL-DELIVERY.json)、[无日数move后态](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/v51-relief2619-moving-zero-day-control/ROOT-DELIVERY.json)。
+
+
 ## 当前主线：2640已收复，战争按独立后态记账（2026-10-04T06:57:59+08:00 实际补录）
 
 **纠正地理：实际玩家capital为2619／县2142；2640是县2115的title capital。此前称“玩家首都收复”不准确。** 本轮我方围城→2640收复的production-live bounded loop保留，地理称谓纠正不抹除实际收复，也不外推全战胜利；历史原文追加本纠正。

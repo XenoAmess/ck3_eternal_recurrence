@@ -1,5 +1,14 @@
 # 一代人自治：阻塞与能力债账本
 
+## 2026-10-04T08:16:12+08:00 玩家首都2619防御行军接敌截点
+
+Root72142已closed：55正常calendar/bounded保存日、1320h，STOPactual_player_combat_requires_root；4268→4323/36524、恢复1115→1170、Oct4+243→+298，Oct3冻结777，G2 5/8、NW2/4、自然0。最新正常h6509/raw53248080/93584151B/SHA `375ab8dd80c2aeeb6e9e48411038e7b671213cd2da118a0c05c4f339023046c9`。末帧native1089/pub220、Robert29829存活/同episode、paused且事件互动清除；主军83886367在2629接入FullCombat1577058310，玩家DEFENDER side1、maneuver第1日、无winner，尚有4跳[2630,2631,2624,2619]去首都。首都2619未被敌占，但敌Siege201326609仍在、ETA122仅估计，未到达或解围。同帧seq81我军health3920/4231、supply113.34217/300、月+20、attr0，不由旧兵力差推伤亡。当前active_wars仅50331736/129，玩家相对分数−10/−26；War16777231自march第2日/raw53246808起不在集合，即提案后第5个保存日，只授war-ended观测primitive，结算类型未查明，不写白和平accepted或全战胜利。 旧date53246760兵力不得补作当前或推断伤亡，不授解围、玩家胜利或未来预算。
+
+玩家当前capital2619/county2142；旧目标2640为county2115头衔首府，其已收复loop保留历史，不能称玩家首都收复。此前v51首都占领/War129两enemy siege、三军strength及DEFENDER ctor0-v2仅观察primitive；initialmove2619→独立moving10route为0日，未在该帧抵达。P0按真实接敌输入推进合法战斗OODA和独立after，保留未闭合分支；contextualledger扩展刚授权，未完成/部署/live。R25 nativeg54/Pythonhotg56/210943保持，v50diag未部署；全部旧RED和另机追加保留。
+
+实证：[55日完整账本](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/capital2619-v51/relief55-sealed-day-consumption/ROOT-DELIVERY.json)、[接敌终帧与正常保存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/capital2619-v51/relief55-sealed-day-consumption/DAY55-TERMINAL-CRITICAL.json)；[此前三军strength观察](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-reinforcement-raise/runtime-v51-capital-defense-strength-consumption/ROOT-FINAL-DELIVERY.json)、[无日数move后态](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/v51-relief2619-moving-zero-day-control/ROOT-DELIVERY.json)。
+
+
 ## 2026-10-04T06:57:59+08:00 地理更正与目标2640收复增量
 
 **更正：Robert当前首都是2619／县2142；2640是县2115的头衔首府。** 旧交接将2640误称“玩家首都”，原文保留为当时误标；本次能力是目标2640实际收复的限定production-live loop，不是玩家首都收复或整战胜利。47日STOPrecapture独立after occupiedfalse/occupiernull/activeSiegenull及正常保存成立。
