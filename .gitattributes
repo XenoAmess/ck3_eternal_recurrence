@@ -7,6 +7,7 @@ mod_superman_qiang/docs/release-*/** -text whitespace=cr-at-eol
 
 # Keep Li Yu Dao acceptance logs and their frozen SHA-256 bindings exact.
 docs/li-yu-dao/acceptance/** -text whitespace=cr-at-eol
+docs/li-yu-dao/acceptance/**/error.log -text whitespace=-blank-at-eol,cr-at-eol
 mod_li_yu_dao/fixtures/native_cycle/*.json -text whitespace=cr-at-eol
 
 # Keep the original independent-mod publication receipts and anonymous HTTP bytes.
