@@ -6321,6 +6321,86 @@ class NativeHeadlessGameplayDriver:
             "uses_mouse": False,
         }
 
+    def open_ingame_decisions_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
+        """Dispatch the fixed .3 HUD button once; observe later actual Decisions visibility."""
+        from .ingame_decisions_open_contract import (
+            STEP, CAPABILITY, opening_binding, normalize_open_result,
+            actual_visible_decisions_tree,
+        )
+        import hashlib
+        import os
+        starting = self.take_snapshot()
+        try:
+            binding = opening_binding(starting)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        revision = int(starting["revision"])
+        if expected_revision is not None:
+            _validate_revision(expected_revision, "expected_revision")
+            if expected_revision != revision:
+                raise PreSubmissionRevisionMismatchError("Decisions opening public revision changed")
+        if CAPABILITY not in set(_string_list(self.capabilities().get("bridge_capabilities"))):
+            raise UnsupportedStepError("native DLL does not advertise the exact .3 Decisions opener")
+        # This append-only create claim survives reconnect/lost ACK. It is not
+        # removed by failure or made repeatable by a new connection generation.
+        claim_dir = self._native_driver_state_path().parent / "ingame-decisions-opener-actions"
+        claim_dir.mkdir(parents=True, exist_ok=True)
+        identity = {"game_pid": binding["game_pid"], "actor_id": binding["played_character_id"],
+                    "episode_run_id": binding["episode_run_id"]}
+        key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode("utf-8")).hexdigest()
+        claim = claim_dir / f"{key}.claim.json"
+        request_id = f"decisions-{uuid.uuid4().hex}"
+        claim_data = {"schema": "ck3-ingame-decisions-once-claim-v1", "request_id": request_id,
+                      "binding": binding, "status": "claimed_result_unknown_no_retry"}
+        try:
+            with claim.open("x", encoding="utf-8", newline="\n") as stream:
+                json.dump(claim_data, stream, ensure_ascii=False, indent=2)
+                stream.write("\n"); stream.flush(); os.fsync(stream.fileno())
+        except FileExistsError as error:
+            raise BridgeUnavailableError("Decisions opener already claimed for this episode; no action retry") from error
+        raw = None
+        try:
+            raw = self._execute_primitive_step(
+                STEP, expected_revision=revision, required_capability=CAPABILITY,
+                request_fields={"expected_player_character_id": binding["played_character_id"],
+                                "expected_game_pid": binding["game_pid"],
+                                "expected_connection_generation": binding["connection_generation"]},
+                protocol_request_id=request_id,
+            )
+            with claim.with_suffix(".result.json").open("x", encoding="utf-8", newline="\n") as stream:
+                json.dump({"request_id": request_id, "raw": raw}, stream, ensure_ascii=False, indent=2)
+                stream.write("\n"); stream.flush(); os.fsync(stream.fileno())
+            result = normalize_open_result(raw, binding)
+            # Only read-only queries are repeated. A lost action ACK reaches
+            # the exception branch above this loop, leaving the claim intact.
+            deadline = time.monotonic() + 5.0
+            later = None
+            while True:
+                current = self.take_snapshot()
+                if opening_binding(current) != binding or not _same_paused_native_frame(starting, current):
+                    raise BridgeUnavailableError("Decisions later observation crossed its episode/frame")
+                later = self.inspect_gui_window_tree_v1("decisions")
+                ending = self.take_snapshot()
+                if opening_binding(ending) != binding or not _same_paused_native_frame(starting, ending):
+                    raise BridgeUnavailableError("Decisions tree observation crossed its episode/frame")
+                if actual_visible_decisions_tree(later):
+                    break
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise BridgeUnavailableError("Decisions was submitted but later actual root did not become visible; no retry")
+                time.sleep(min(0.1, remaining))
+            result.update({"postcondition_verified": True, "verification_pending": False,
+                           "status": "verified_visible", "later_decisions_tree": later,
+                           "native_ack": dict(raw), "action_request_id": request_id,
+                           "action_claim_path": str(claim), "episode_run_id": binding["episode_run_id"],
+                           "queried_revision": revision, "uses_mouse": False, "uses_keyboard": False, "uses_ocr": False})
+        except Exception as error:
+            self._record_command(STEP, ok=False, result={"raw": raw, "action_claim_path": str(claim)},
+                                 error=f"{type(error).__name__}: {error}")
+            raise
+        self._record_command(STEP, ok=True, result=result)
+        return result
+
     def inspect_gui_window_tree_v1(self, window_kind: str) -> dict[str, object]:
         """Inspect one exact native root without old ingame-view RVA calls."""
         from .gui_window_tree_contract import (

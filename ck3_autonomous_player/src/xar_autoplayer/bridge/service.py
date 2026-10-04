@@ -10407,6 +10407,16 @@ class GameplayBridgeService:
             )
         return result
 
+    def open_ingame_decisions_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
+        """Open only the exact .3 HUD Decisions entry and verify actual visibility."""
+        method = getattr(self.driver, "open_ingame_decisions_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks the typed Decisions opener")
+        result = method(expected_revision=expected_revision)
+        if not isinstance(result, dict) or result.get("schema") != "ck3-ingame-decisions-open-v1" or result.get("postcondition_verified") is not True:
+            raise BridgeUnavailableError("typed Decisions opener lacks later visibility proof")
+        return result
+
     def inspect_gui_window_tree_v1(self, window_kind: str) -> dict[str, object]:
         """Read a native window census; a hidden root is not an open modal."""
         inspect = getattr(self.driver, "inspect_gui_window_tree_v1", None)

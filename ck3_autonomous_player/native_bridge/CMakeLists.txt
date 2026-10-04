@@ -394,6 +394,14 @@ if(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1 AND
   message(FATAL_ERROR "Frontend rules candidate requires existing FEUDAL frontend admission")
 endif()
 
+option(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1
+  "Admit exact .3 fixed HUD Decisions button through the original GUI callback" OFF)
+if(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1 AND
+   (NOT XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1 OR
+    NOT XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1))
+  message(FATAL_ERROR "Decisions opener requires existing frontend main-thread admission")
+endif()
+
 option(
   XAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1
   "Bind the exact-build supported 1066 bookmark candidate to Duke Robert"
@@ -1137,6 +1145,7 @@ add_test(NAME ck3_12003_mercenary_hire_action
     "${CMAKE_CURRENT_BINARY_DIR}/ck3_12003_mercenary_hire_action_wire.json")
 
 foreach(private_option IN ITEMS
+    XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1
     XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1
     XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1
     XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1
@@ -1296,6 +1305,7 @@ add_library(xar_ck3_bridge SHARED
   src/event_window_context_v1_serializer.cpp
   src/frontend_bookmark_model_probe_v1.cpp
   src/frontend_gui_route_v1.cpp
+  src/ingame_decisions_opener_v1.cpp
   src/frontend_game_rules_v1.cpp
   src/game_adapter.cpp
   src/government_runtime_adapter_observer_v1.cpp
@@ -1867,6 +1877,9 @@ if(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1
   )
+endif()
+if(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1=1)
 endif()
 if(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE

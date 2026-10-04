@@ -205,6 +205,11 @@ bool DispatchZhongguoScoreboardActionNativeV1(
 // path in the same native mailbox turn. This permits vanilla unnamed buttons
 // without accepting caller-provided pointers or weakening the named action
 // transport above.
+// Read-only copy of the existing dispatch qualification; no shortcut is invoked.
+bool InspectFixedGuiWidgetDispatchAdmissionV1(
+    const ZhongguoScoreboardActionDispatchEnvironmentV1 &environment,
+    void *target, void *expected_vtable) noexcept;
+
 bool DispatchFixedGuiWidgetNativeV1(
     void *opaque_environment, game::ZhongguoScoreboardActionV1 action,
     void *target, void *expected_vtable, bool &native_handled) noexcept;

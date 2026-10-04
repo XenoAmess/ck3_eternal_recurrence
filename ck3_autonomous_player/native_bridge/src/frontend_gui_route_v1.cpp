@@ -797,6 +797,10 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   if (query->operation == FrontendGuiRouteOperationV1::inspect_gui_window_tree) {
     return InspectGuiWindowTree(*query);
   }
+  if (query->operation == FrontendGuiRouteOperationV1::open_ingame_decisions) {
+    return ExecuteIngameDecisionsOpenV1(query->ingame_decisions, *query->mailbox, stamp,
+        query->environment, query->dispatch_environment);
+  }
   if (query->operation == FrontendGuiRouteOperationV1::ingame_ui) {
     // Failure metadata is observed at this original application event boundary,
     // never copied from the caller's expected snapshot.

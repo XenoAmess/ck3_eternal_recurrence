@@ -6,6 +6,7 @@
 #include "xar_bridge/zhongguo_scoreboard_action_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
+#include "xar_bridge/ingame_decisions_opener_v1.hpp"
 #include "xar_bridge/ck3_11906.hpp"
 
 #include <cstdint>
@@ -164,10 +165,11 @@ inline constexpr std::string_view kGuiWindowTreeInspectionV1Step =
     "inspect-gui-window-tree-v1";
 enum class GuiWindowTreeScopeV1 : std::uint32_t {
   unavailable = 0, decisions = 1, decision_detail = 2,
-  courtier = 3, vivhite_courtier = 4,
+  courtier = 3, vivhite_courtier = 4, ingame_topbar = 5,
 };
 inline GuiWindowTreeScopeV1 GuiWindowTreeScopeForV1(
     std::string_view kind) noexcept {
+  if (kind == "ingame_topbar") return GuiWindowTreeScopeV1::ingame_topbar;
   if (kind == "decisions") return GuiWindowTreeScopeV1::decisions;
   if (kind == "decision_detail") return GuiWindowTreeScopeV1::decision_detail;
   if (kind == "courtier") return GuiWindowTreeScopeV1::courtier;
@@ -177,6 +179,7 @@ inline GuiWindowTreeScopeV1 GuiWindowTreeScopeForV1(
 inline std::string_view GuiWindowTreeRootForV1(
     GuiWindowTreeScopeV1 scope) noexcept {
   switch (scope) {
+  case GuiWindowTreeScopeV1::ingame_topbar: return "ingame_topbar";
   case GuiWindowTreeScopeV1::decisions: return "decisions_view";
   case GuiWindowTreeScopeV1::decision_detail: return "decisiondetail_view";
   case GuiWindowTreeScopeV1::courtier: return "xar_courtier_creator_window";
@@ -214,6 +217,7 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   hide_game_rules = 25,
   query_applied_game_rules = 26,
   inspect_gui_window_tree = 27,
+  open_ingame_decisions = 29, // 28 reserved for the independent DecisionView observer.
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {
@@ -258,6 +262,7 @@ struct FrontendGuiRouteMailboxContextV1 {
   game::Snapshot ingame_expected_snapshot{};
   IngameUiRequestV1 ingame_request{};
   IngameUiResultV1 ingame_result{};
+  IngameDecisionsOpenContextV1 ingame_decisions{};
 };
 
 bool ExecuteFrontendGuiRouteMailboxV1(

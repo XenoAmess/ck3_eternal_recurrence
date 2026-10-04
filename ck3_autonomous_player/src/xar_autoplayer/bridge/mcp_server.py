@@ -3180,9 +3180,14 @@ def create_server(
         """Read CK3's current native frontend route; no OCR or input."""
         return _ck3_query_frontend_gui_route_v1(service)
 
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+    def ck3_open_ingame_decisions_v1(expected_revision: int | None = None) -> dict[str, object]:
+        """Open the fixed exact .3 Decisions HUD button once, with later native visibility proof."""
+        return service.open_ingame_decisions_v1(expected_revision=expected_revision)
+
     @server.tool()
     def ck3_inspect_gui_window_tree_v1(
-        window_kind: Literal["decisions", "decision_detail", "courtier", "vivhite_courtier"],
+        window_kind: Literal["ingame_topbar", "decisions", "decision_detail", "courtier", "vivhite_courtier"],
     ) -> dict[str, object]:
         """Read one bounded native window tree; no text, selection, hover or input."""
         return service.inspect_gui_window_tree_v1(window_kind)
@@ -3894,6 +3899,7 @@ def create_server(
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_frontend_gui_route_v1"
     )
+    _forbid_unknown_tool_arguments_v1(server, "ck3_open_ingame_decisions_v1")
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_inspect_gui_window_tree_v1"
     )

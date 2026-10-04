@@ -412,6 +412,47 @@ BindZhongguoScoreboardActionDispatchEnvironmentV1(
   return environment;
 }
 
+bool InspectFixedGuiWidgetDispatchAdmissionV1(
+    const ZhongguoScoreboardActionDispatchEnvironmentV1 &dispatch,
+    void *target, void *expected_vtable) noexcept {
+  try {
+    const auto *environment = &dispatch;
+    if (environment == nullptr || !DispatchEnvironmentIsExact(*environment) ||
+        target == nullptr || expected_vtable == nullptr) {
+      return false;
+    }
+    void *context = nullptr;
+    void *manager = nullptr;
+    void *manager_context = nullptr;
+    void *target_context = nullptr;
+    void *actual_vtable = nullptr;
+    void *slot13 = nullptr;
+    void *slot10 = nullptr;
+    std::uint8_t flags = 0;
+    if (!ResolveGuiDispatchContext(*environment, context) ||
+        !ReadValue(context, kZhongguoGuiShortcutManagerOffset, manager) ||
+        manager == nullptr || !ReadValue(manager, 0, manager_context) ||
+        manager_context != context ||
+        !ReadValue(target, kZhongguoWidgetGuiContextOffset, target_context) ||
+        target_context != context ||
+        !ReadValue(target, kZhongguoWidgetHiddenFlagsOffset, flags) ||
+        (flags & kZhongguoWidgetShortcutRejectedMask) != 0 ||
+        !ReadValue(target, 0, actual_vtable) ||
+        actual_vtable != expected_vtable ||
+        !ReadValue(actual_vtable, 13 * sizeof(void *), slot13) ||
+        slot13 != environment->button_base_slot13 ||
+        !ReadValue(actual_vtable, 10 * sizeof(void *), slot10) ||
+        !CallableAddress(*environment, slot10) ||
+        !ValidateCallbackGroup(*environment, target) ||
+        !ValidateModalAdmission(*environment, context, target)) {
+      return false;
+    }
+    return true;
+  } catch (...) {
+    return false;
+  }
+}
+
 bool DispatchFixedGuiWidgetNativeV1(
     void *opaque_environment, game::ZhongguoScoreboardActionV1 action,
     void *target, void *expected_vtable, bool &native_handled) noexcept {

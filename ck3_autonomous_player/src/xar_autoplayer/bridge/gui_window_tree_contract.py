@@ -5,6 +5,7 @@ from .frontend_gui_route_contract import normalize_frontend_gui_tree_inspection_
 GUI_WINDOW_TREE_STEP = "inspect-gui-window-tree-v1"
 GUI_WINDOW_TREE_CAPABILITY = "game.command.inspect-gui-window-tree-v1"
 GUI_WINDOW_TREE_ROOTS = {
+    "ingame_topbar": "ingame_topbar",
     "decisions": "decisions_view",
     "decision_detail": "decisiondetail_view",
     "courtier": "xar_courtier_creator_window",
@@ -15,6 +16,8 @@ def normalize_gui_window_tree_v1(raw: object, window_kind: str) -> dict[str, obj
     if window_kind not in GUI_WINDOW_TREE_ROOTS:
         raise ValueError("unsupported GUI window census scope")
     root_name = GUI_WINDOW_TREE_ROOTS[window_kind]
+    if window_kind == "ingame_topbar" and isinstance(raw, dict) and raw.get("truncated") is not False:
+        raise ValueError("native ingame topbar census is incomplete")
     if not isinstance(raw, dict) or raw.get("step") != GUI_WINDOW_TREE_STEP or raw.get("scope_root_name") != root_name:
         raise ValueError("GUI window census does not match requested native scope")
     if raw.get("root_available") is True:

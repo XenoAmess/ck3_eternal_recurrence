@@ -61,6 +61,10 @@ const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
     result.push_back(ck3_11906::kFrontendHideGameRulesV1Capability);
     result.push_back(ck3_11906::kFrontendAppliedGameRulesV1Capability);
 #endif
+
+#if defined(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1)
+    result.push_back(ck3_11906::kIngameDecisionsOpenV1Capability);
+#endif
     return result;
   }();
   static const AdapterDescriptor descriptor{
