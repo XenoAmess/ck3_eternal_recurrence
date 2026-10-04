@@ -1,5 +1,10 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 当前主线：4504日续行截点与v57静态准备（2026-10-04T16:29:57+08:00 当前补录）
+
+**4504/36524、resume +1351、10-04 +479、10-03冻结777**，相对4464增40正常calendar/whole/bounded日/960h，G2 5/8、NW2/4、自然继承0；固定 h7252/raw53252424/95804821B/SHA-256 8c8557def103f73519387fecd006b23336d1e3ac659249af7f468dedbb1c21fc。最近实机证据R29/g61f3/env898b、PID38372，新301仍1038 embarked→472未到，旧184仍2619 regular；War117 ATT score0/goal3无siege，470 clean不是我方收复。public285212904/100663351的CArmy解析未找到，不猜unit_kind或合计兵力；Sway继续能力与既有现金primitive保留，完整scheme未terminal。新战斗source各sole focused GREEN仅static-ready，counter首次native2＋Python2 GREEN，counter源d1b7f18d/g62统一full4/Release/W4WX/jobs64与正常freeze一次GREEN81.955581s；最近实机证据为R29/f3/g61，08:21:34.069477Z正常stop/54355 exit0已回收，v57 renderer/prepare/verify GREEN，stage/rebind待执行，R30未allocated且无新live。证据：[8日](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v56/r29-march-eight-days-consumed01/ROOT-DELIVERY.json)、[32日封存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v56/r29-march-next32-days-consumed01/ROOT-DELIVERY.json)。
+
+
 ## 当前主线：4464日已保存，R29恢复与现金观测口实机验收（2026-10-04T15:43:25+08:00 实际补录）
 
 **用户已结束游玩并释放CK3，R29已冷启动，实机运行已恢复。** 20a2暂停及R28正常关闭保留为历史；当前R0029/execution69c953da-34f4-4d8d-a3a4-5c94bb1987e8、managed54355/PID38372运行，native+Python f3f365c5/g61；cold99233 GREEN/fullhistory7124/saveanchor7123，后续53439正常closed GREEN，原四Sway、现金012、newcmd014及preview016已实测。现金current/allraised观测升为production-live primitive，人物/损失/P1的新live仍未qualified。累计**4464/36524、resume1311、Oct4+439、Oct3冻结777**，G2 5/8、NW2/4、自然继承0；较已pub4421一次新增43个正常保存日/1032h，本次部署及查询新增0日。最新正常保存**h7127/raw53251464/95107270B/SHA-256 a265c124196a8e289ef0512ab6721a45ea69654b13a25eb9857a93d42dc569d9**；h7123原末保存仍为部署历史锚点。

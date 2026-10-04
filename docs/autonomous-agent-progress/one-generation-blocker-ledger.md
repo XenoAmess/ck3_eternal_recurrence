@@ -1,5 +1,10 @@
 # 一代人自治：阻塞与能力债账本
 
+## 40日续行闭环：4504日，仍未抵达472（2026-10-04T16:29:57+08:00 当前补录）
+
+自已pub4464，8+32=40正常calendar/bounded/whole保存日/960h，累计4504/36524、恢复1351、Oct4+479，Oct3冻结777，G2 5/8、NW2/4、自然0。锁h7252/raw53252424/SHA `8c8557def103f73519387fecd006b23336d1e3ac659249af7f468dedbb1c21fc`；R29/g61/PID38372同Robert episode。新301989997在1038/embarked4、route[472]未到，旧184549452在2619/regular；War117 ATTscore0，470最新clean不计我方收复，三goal无siege。两新增public unit仅native_carmy_not_found，kind/CFleetID/成因未知、不sum、不增门禁。Sway有益+25历史loop保留，prestop continue/rings非新收益或wholeterminal；全部新focused来源仅static-ready，无新live/MC；counter源d1b7f18d/g62统一full4/Release/W4WX/jobs64与正常freeze一次GREEN81.955581s；最近实机证据为R29/f3/g61，08:21:34.069477Z正常stop/54355 exit0已回收，v57 renderer/prepare/verify GREEN，stage/rebind待执行，R30未allocated且无新live。下一P0实际472抵达及独立after，本40日只续行loop，不wholewar。证据：[8日缓存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v56/r29-march-eight-days-consumed01/ROOT-DELIVERY.json)、[32日缓存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v56/r29-march-next32-days-consumed01/ROOT-DELIVERY.json)。
+
+
 ## 4464日R29实机恢复：现金观测口live，人物/损失/P1待验收（2026-10-04T15:43:25+08:00 实际补录）
 
 **用户已结束游玩并释放CK3，R29已冷启动，实机运行已恢复。** 20a2暂停及R28正常关闭保留为历史；当前R0029/execution69c953da-34f4-4d8d-a3a4-5c94bb1987e8、managed54355/PID38372运行，native+Python f3f365c5/g61；cold99233 GREEN/fullhistory7124/saveanchor7123，后续53439正常closed GREEN，原四Sway、现金012、newcmd014及preview016已实测。现金current/allraised观测升为production-live primitive，人物/损失/P1的新live仍未qualified。累计**4464/36524、resume1311、Oct4+439、Oct3冻结777**，G2 5/8、NW2/4、自然继承0；较已pub4421一次新增43个正常保存日/1032h，本次部署及查询新增0日。最新正常保存**h7127/raw53251464/95107270B/SHA-256 a265c124196a8e289ef0512ab6721a45ea69654b13a25eb9857a93d42dc569d9**；h7123原末保存仍为部署历史锚点。

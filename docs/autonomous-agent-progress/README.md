@@ -1,5 +1,10 @@
 # CK3 自动游玩智能体进度中心
 
+## 最新截点：40日续行已保存，累计4504日（2026-10-04T16:29:57+08:00 当前补录）
+
+相对4464新增40正常calendar/whole/bounded保存日=8＋32、960h；**4504/36524、resume +1351、10-04 +479、10-03冻结777**，G2 5/8、NW2/4、自然继承0。固定prestop SDK79664 CLOSED GREEN、h7252/raw53252424/95804821B/SHA-256 8c8557def103f73519387fecd006b23336d1e3ac659249af7f468dedbb1c21fc，Robert29829/R29 PID38372同episode。新301@1038 embarked4、route[472]未到，旧184@2619 regular；War117 ATT score0/goal3无siege，470 clean不授我方收复。285212904/100663351新增public units的CArmy解析为native_carmy_not_found，unit_kind/CFleetID及形成原因未发布；Sway继续口可用不等收益，旧+25有限loop保留，全生命周期未terminal。新source专题/fixtures仅static-ready，counter源d1b7f18d/g62统一full4/Release/W4WX/jobs64与正常freeze一次GREEN81.955581s；最近实机证据为R29/f3/g61，08:21:34.069477Z正常stop/54355 exit0已回收，v57 renderer/prepare/verify GREEN，stage/rebind待执行，R30未allocated且无新live。证据：[8日](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v56/r29-march-eight-days-consumed01/ROOT-DELIVERY.json)、[32日封存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v56/r29-march-next32-days-consumed01/ROOT-DELIVERY.json)。
+
+
 ## 当前截点：4464日，R29冷启动及现金实机口已验收（2026-10-04T15:43:25+08:00 实际补录）
 
 **用户已结束游玩并释放CK3，R29已冷启动，实机运行已恢复。** 20a2暂停及R28正常关闭保留为历史；当前R0029/execution69c953da-34f4-4d8d-a3a4-5c94bb1987e8、managed54355/PID38372运行，native+Python f3f365c5/g61；cold99233 GREEN/fullhistory7124/saveanchor7123，后续53439正常closed GREEN，原四Sway、现金012、newcmd014及preview016已实测。现金current/allraised观测升为production-live primitive，人物/损失/P1的新live仍未qualified。累计**4464/36524、resume1311、Oct4+439、Oct3冻结777**，G2 5/8、NW2/4、自然继承0；较已pub4421一次新增43个正常保存日/1032h，本次部署及查询新增0日。最新正常保存**h7127/raw53251464/95107270B/SHA-256 a265c124196a8e289ef0512ab6721a45ea69654b13a25eb9857a93d42dc569d9**；h7123原末保存仍为部署历史锚点。
