@@ -1,0 +1,161 @@
+name: Publish CK3 CoA editor to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "coat_of_arms_editer_of_ck3/**"
+      - ".github/workflows/coat-of-arms-editor-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  # Only the newest editor commit should consume the single Pages deployment
+  # lane. Frozen benchmark artifacts preserve superseded run evidence.
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: coat_of_arms_editer_of_ck3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v5
+        with:
+          version: 10.12.1
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: pnpm
+          cache-dependency-path: coat_of_arms_editer_of_ck3/pnpm-lock.yaml
+
+      - name: Verify authorized exact-build asset pack
+        run: python tools/verify_web_asset_pack.py public/asset-packs/ck3-1.19.0.6
+
+      - name: Verify frozen Delta-Q quality benchmark
+        run: python tools/gen_fit_quality_benchmark.py --check
+
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run unit tests
+        run: pnpm test
+
+      - name: Verify frozen seven-picture mixed-element evidence
+        working-directory: .
+        run: python coat_of_arms_editer_of_ck3/tools/summarize_mixed_element_evidence.py docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024 docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-native-r18/summary.json docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/mixed-element-ablation.json --check
+
+      - name: Build production acceptance artifact
+        run: pnpm build
+        env:
+          VITE_BASE_PATH: "/"
+          VITE_COA_CACHE_VERSION: "${{ github.sha }}"
+          VITE_COA_GIT_HASH: "${{ github.sha }}"
+          VITE_DISABLE_SERVICE_WORKER: "true"
+
+      - name: Verify zero-backend production bundle
+        run: pnpm verify:production-boundary
+
+      - name: Install headless browsers
+        run: pnpm exec playwright install --with-deps chromium firefox webkit
+
+      - name: Run production browser acceptance
+        env:
+          COA_E2E_USE_PREVIEW: "true"
+          # GitHub-hosted CPU performance is recorded but is not the frozen
+          # maintainer-workstation performance reference.
+          COA_E2E_PERFORMANCE_GATE: "report-only"
+        run: |
+          pnpm exec playwright test e2e/fit-budget-stress.spec.ts
+          pnpm exec playwright test e2e/standalone-image-fit.spec.ts
+          pnpm exec playwright test \
+            e2e/candidate-comparison.spec.ts \
+            e2e/editor-recovery.spec.ts \
+            e2e/fit-cancel-stages.spec.ts \
+            e2e/i18n.spec.ts \
+            e2e/large-document-stress.spec.ts \
+            e2e/mobile-layout.spec.ts \
+            e2e/parent-preview-boundary.spec.ts \
+            e2e/portable-fit-checkpoint.spec.ts \
+            e2e/production-no-backend.spec.ts \
+            e2e/safe-svg-input.spec.ts \
+            e2e/textured-emblem-preview.spec.ts \
+            e2e/visual-transform-editor.spec.ts
+
+      - name: Run source-module WebGL and Delta-Q acceptance
+        run: pnpm exec playwright test e2e/webgl-batch-scorer.spec.ts e2e/perceptual-metric-calibration.spec.ts e2e/perceptual-real-baseline.spec.ts e2e/perceptual-final-candidates.spec.ts e2e/asset-retrieval-holdout.spec.ts e2e/structure-search-holdout.spec.ts
+
+      - name: Run cross-browser core acceptance
+        run: pnpm exec playwright test --config=playwright.cross-browser.config.ts
+        env:
+          COA_E2E_USE_PREVIEW: "true"
+
+      - name: Build service worker acceptance artifact
+        run: pnpm build
+        env:
+          VITE_BASE_PATH: "/"
+          VITE_COA_CACHE_VERSION: "${{ github.sha }}"
+          VITE_COA_GIT_HASH: "${{ github.sha }}"
+
+      - name: Run service worker offline acceptance
+        run: pnpm exec playwright test e2e/service-worker-offline.spec.ts
+        env:
+          COA_E2E_USE_PREVIEW: "true"
+
+      - name: Build Pages artifact
+        run: pnpm build
+        env:
+          VITE_BASE_PATH: "${{ steps.pages.outputs.base_path }}/coat_of_arms_editer_of_ck3/"
+          VITE_COA_CACHE_VERSION: "${{ github.sha }}"
+          VITE_COA_GIT_HASH: "${{ github.sha }}"
+
+      - name: Stage and verify nested Pages artifact
+        run: |
+          test -f dist/index.html
+          python tools/verify_web_asset_pack.py dist/asset-packs/ck3-1.19.0.6
+          grep -F '${{ steps.pages.outputs.base_path }}/coat_of_arms_editer_of_ck3/' dist/index.html
+          mkdir -p pages-site/coat_of_arms_editer_of_ck3
+          cp -a dist/. pages-site/coat_of_arms_editer_of_ck3/
+          test -f pages-site/coat_of_arms_editer_of_ck3/index.html
+          python tools/verify_web_asset_pack.py pages-site/coat_of_arms_editer_of_ck3/asset-packs/ck3-1.19.0.6
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: coat_of_arms_editer_of_ck3/pages-site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

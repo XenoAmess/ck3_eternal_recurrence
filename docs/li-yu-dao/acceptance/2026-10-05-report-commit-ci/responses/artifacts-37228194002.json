@@ -1,0 +1,30 @@
+{
+  "key": "artifacts-37228194002",
+  "request": {
+    "key": "artifacts-37228194002",
+    "url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/actions/runs/37228194002/artifacts?per_page=100"
+  },
+  "observed_at": "2026-10-04T19:29:58.793Z",
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Action completed."
+      }
+    ],
+    "structuredContent": {
+      "content": "{\"total_count\":0,\"artifacts\":[]}",
+      "title": "artifacts",
+      "modified_date": null,
+      "url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/actions/runs/37228194002/artifacts?per_page=100",
+      "display_url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/actions/runs/37228194002/artifacts?per_page=100",
+      "display_title": "artifacts",
+      "structuredContent": {
+        "title": "artifacts",
+        "content": "{\"total_count\":0,\"artifacts\":[]}",
+        "display_url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/actions/runs/37228194002/artifacts?per_page=100"
+      }
+    },
+    "isError": false
+  }
+}

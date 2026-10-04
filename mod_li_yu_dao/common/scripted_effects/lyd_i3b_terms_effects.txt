@@ -1,0 +1,42 @@
+﻿# GENERATED FILE: edit tools/gen_institution.py; regenerate through gen_runtime.py.
+lyd_i3b_show_terms_effect = {
+    custom_tooltip = lyd_i3b_doctrine_clause_tt
+    every_in_list = { variable = lyd_i3b_rites
+        if = { limit = { this = rite:lyd_rite_kongmen } custom_tooltip = lyd_i3b_term_kongmen_tt }
+        if = { limit = { this = rite:lyd_rite_mengzi } custom_tooltip = lyd_i3b_term_mengzi_tt }
+        if = { limit = { this = rite:lyd_rite_xunzi } custom_tooltip = lyd_i3b_term_xunzi_tt }
+        if = { limit = { this = rite:lyd_rite_dongzhongshu } custom_tooltip = lyd_i3b_term_dongzhongshu_tt }
+        if = { limit = { this = rite:lyd_rite_guwen } custom_tooltip = lyd_i3b_term_guwen_tt }
+        if = { limit = { this = rite:lyd_rite_zhengxuan } custom_tooltip = lyd_i3b_term_zhengxuan_tt }
+        if = { limit = { this = rite:lyd_rite_wangsu } custom_tooltip = lyd_i3b_term_wangsu_tt }
+        if = { limit = { this = rite:lyd_rite_wangbi } custom_tooltip = lyd_i3b_term_wangbi_tt }
+        if = { limit = { this = rite:lyd_rite_guoxiang } custom_tooltip = lyd_i3b_term_guoxiang_tt }
+        if = { limit = { this = rite:lyd_rite_jingshu } custom_tooltip = lyd_i3b_term_jingshu_tt }
+        if = { limit = { this = rite:lyd_rite_hanyu } custom_tooltip = lyd_i3b_term_hanyu_tt }
+        if = { limit = { this = rite:lyd_rite_liao } custom_tooltip = lyd_i3b_term_liao_tt }
+        if = { limit = { this = rite:lyd_rite_zhoudunyi } custom_tooltip = lyd_i3b_term_zhoudunyi_tt }
+        if = { limit = { this = rite:lyd_rite_chengbrothers } custom_tooltip = lyd_i3b_term_chengbrothers_tt }
+        if = { limit = { this = rite:lyd_rite_zhangzai } custom_tooltip = lyd_i3b_term_zhangzai_tt }
+        if = { limit = { this = rite:lyd_rite_shaoyong } custom_tooltip = lyd_i3b_term_shaoyong_tt }
+        if = { limit = { this = rite:lyd_rite_wanganshi } custom_tooltip = lyd_i3b_term_wanganshi_tt }
+        if = { limit = { this = rite:lyd_rite_sushi } custom_tooltip = lyd_i3b_term_sushi_tt }
+        if = { limit = { this = rite:lyd_rite_huxiang } custom_tooltip = lyd_i3b_term_huxiang_tt }
+        if = { limit = { this = rite:lyd_rite_zhuxi } custom_tooltip = lyd_i3b_term_zhuxi_tt }
+        if = { limit = { this = rite:lyd_rite_lujiuyuan } custom_tooltip = lyd_i3b_term_lujiuyuan_tt }
+        if = { limit = { this = rite:lyd_rite_yongjia } custom_tooltip = lyd_i3b_term_yongjia_tt }
+        if = { limit = { this = rite:lyd_rite_yongkang } custom_tooltip = lyd_i3b_term_yongkang_tt }
+        if = { limit = { this = rite:lyd_rite_wucheng } custom_tooltip = lyd_i3b_term_wucheng_tt }
+        if = { limit = { this = rite:lyd_rite_chenxianzhang } custom_tooltip = lyd_i3b_term_chenxianzhang_tt }
+        if = { limit = { this = rite:lyd_rite_zhanruoshui } custom_tooltip = lyd_i3b_term_zhanruoshui_tt }
+        if = { limit = { this = rite:lyd_rite_wangyangming } custom_tooltip = lyd_i3b_term_wangyangming_tt }
+        if = { limit = { this = rite:lyd_rite_jiangyou } custom_tooltip = lyd_i3b_term_jiangyou_tt }
+        if = { limit = { this = rite:lyd_rite_taizhou } custom_tooltip = lyd_i3b_term_taizhou_tt }
+        if = { limit = { this = rite:lyd_rite_liuzongzhou } custom_tooltip = lyd_i3b_term_liuzongzhou_tt }
+        if = { limit = { this = rite:lyd_rite_donglin } custom_tooltip = lyd_i3b_term_donglin_tt }
+        if = { limit = { this = rite:lyd_rite_wangfuzhi } custom_tooltip = lyd_i3b_term_wangfuzhi_tt }
+        if = { limit = { this = rite:lyd_rite_yanli } custom_tooltip = lyd_i3b_term_yanli_tt }
+        if = { limit = { this = rite:lyd_rite_qianjia } custom_tooltip = lyd_i3b_term_qianjia_tt }
+        if = { limit = { this = rite:lyd_rite_changzhou } custom_tooltip = lyd_i3b_term_changzhou_tt }
+        if = { limit = { this = rite:lyd_rite_jingshi } custom_tooltip = lyd_i3b_term_jingshi_tt }
+    }
+}

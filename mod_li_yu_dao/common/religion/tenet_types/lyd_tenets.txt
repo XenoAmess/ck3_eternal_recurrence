@@ -533,7 +533,7 @@ lyd_tenet_constant_heaven = {
 	}
 }
 
-# T23: Calm the Heart and Restore Nature
+# T23: Calm the Heart and Restore Human Nature
 lyd_tenet_restore_nature = {
 	icon = tenet_inner_journey
 	visible = yes

@@ -21,6 +21,17 @@ SOURCE = Path(__file__).resolve().parents[1]
 ROOT = SOURCE.parent
 PRODUCT_ID = "mod_li_yu_dao"
 REQUIRED_RUNTIME_FILES = frozenset({
+    'common/character_interactions/lyd_i3b_nomination_interactions.txt',
+    'common/decisions/lyd_i3b_institution_decisions.txt',
+    'common/script_values/lyd_i3b_institution_values.txt',
+    'common/scripted_effects/lyd_i3b_commit_effects.txt',
+    'common/scripted_effects/lyd_i3b_response_effects.txt',
+    'common/scripted_effects/lyd_i3b_setup_effects.txt',
+    'common/scripted_effects/lyd_i3b_terms_effects.txt',
+    'common/scripted_triggers/lyd_i3b_institution_triggers.txt',
+    'events/lyd_i3b_institution_events.txt',
+    'localization/english/lyd_i3b_institution_l_english.yml',
+    'localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml',
     "descriptor.mod",
     "common/religion/faith_types/lyd_faiths.txt",
     "common/religion/rite_types/lyd_rites.txt",

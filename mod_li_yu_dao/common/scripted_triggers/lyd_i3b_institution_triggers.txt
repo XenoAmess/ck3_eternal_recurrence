@@ -1,0 +1,160 @@
+﻿# GENERATED FILE: edit tools/gen_institution.py; regenerate through gen_runtime.py.
+lyd_i3b_native_admitted_trigger = { always = no }
+lyd_i3b_owned_rite_trigger = { OR = { this = rite:lyd_rite_kongmen this = rite:lyd_rite_mengzi this = rite:lyd_rite_xunzi this = rite:lyd_rite_dongzhongshu this = rite:lyd_rite_guwen this = rite:lyd_rite_zhengxuan this = rite:lyd_rite_wangsu this = rite:lyd_rite_wangbi this = rite:lyd_rite_guoxiang this = rite:lyd_rite_jingshu this = rite:lyd_rite_hanyu this = rite:lyd_rite_liao this = rite:lyd_rite_zhoudunyi this = rite:lyd_rite_chengbrothers this = rite:lyd_rite_zhangzai this = rite:lyd_rite_shaoyong this = rite:lyd_rite_wanganshi this = rite:lyd_rite_sushi this = rite:lyd_rite_huxiang this = rite:lyd_rite_zhuxi this = rite:lyd_rite_lujiuyuan this = rite:lyd_rite_yongjia this = rite:lyd_rite_yongkang this = rite:lyd_rite_wucheng this = rite:lyd_rite_chenxianzhang this = rite:lyd_rite_zhanruoshui this = rite:lyd_rite_wangyangming this = rite:lyd_rite_jiangyou this = rite:lyd_rite_taizhou this = rite:lyd_rite_liuzongzhou this = rite:lyd_rite_donglin this = rite:lyd_rite_wangfuzhi this = rite:lyd_rite_yanli this = rite:lyd_rite_qianjia this = rite:lyd_rite_changzhou this = rite:lyd_rite_jingshi } }
+lyd_i3b_compatible_rite_trigger = {
+    lyd_i3b_owned_rite_trigger = yes
+    rite_has_doctrine = doctrine_no_head
+    rite_has_doctrine = doctrine_theocracy_lay_clergy
+    NOR = {
+        rite_has_doctrine = doctrine_temporal_head
+        rite_has_doctrine = doctrine_spiritual_head
+        rite_has_doctrine = doctrine_clerical_succession_spiritual_appointment
+        rite_has_doctrine = doctrine_clerical_succession_spiritual_fixed_appointment
+    }
+}
+lyd_i3b_elector_trigger = { is_alive = yes is_adult = yes is_imprisoned = no NOT = { has_trait = incapable } learning >= 15 }
+lyd_i3b_actor_trigger = {
+    lyd_c3_player_actor_trigger = yes
+    faith = faith:lyd_common_faith
+    rite = faith.main_rite
+    highest_held_title_tier >= tier_duchy
+    save_temporary_scope_as = lyd_i3b_actor_check
+    rite = { rite_has_allowed_gender_for_clergy = scope:lyd_i3b_actor_check }
+}
+# Withdrawal is available to the living human initiator after identity drift.
+# This does not authorize nominations, ballots or enactment.
+lyd_i3b_cancel_actor_trigger = {
+    is_ai = no
+    is_alive = yes
+    has_variable = lyd_i3b_active
+    has_variable = lyd_i3b_phase
+}
+lyd_i3b_result_actor_trigger = {
+    is_ai = no
+    is_alive = yes
+    has_variable = lyd_i3b_result_code
+    has_variable = lyd_i3b_result_serial
+}
+lyd_i3b_can_begin_trigger = {
+    lyd_i3b_actor_trigger = yes
+    NOT = { has_variable = lyd_i3b_active }
+    NOT = { has_variable = lyd_c2_active }
+    NOT = { has_variable = lyd_c3_active }
+    faith = {
+        NOT = { exists = religious_head_title }
+        NOT = { exists = religious_head }
+        NOT = { any_faith_rite = { NOT = { lyd_i3b_compatible_rite_trigger = yes } } }
+        NOT = { any_faith_rite = { OR = { has_variable = lyd_c2_proposal_owner has_variable = lyd_c3_proposal_owner has_variable = lyd_i3b_owner } } }
+    }
+}
+# Character ROOT, immutable absolute ACTOR parameter. Revalidate the full roster.
+lyd_i3b_current_trigger = {
+    lyd_i3b_actor_trigger = yes
+    has_variable = lyd_i3b_active
+    faith = var:lyd_i3b_faith
+    rite = var:lyd_i3b_main
+    faith.main_rite = var:lyd_i3b_main
+    NOT = { has_variable = lyd_c2_active }
+    NOT = { has_variable = lyd_c3_active }
+    faith = {
+        NOT = { exists = religious_head_title }
+        NOT = { exists = religious_head }
+        NOT = { any_faith_rite = { NOT = { lyd_i3b_compatible_rite_trigger = yes var:lyd_i3b_owner = $ACTOR$ var:lyd_i3b_serial = $ACTOR$.var:lyd_i3b_serial } } }
+        NOT = { any_faith_character = {
+            is_alive = yes
+            NOT = { var:lyd_i3b_member_owner = $ACTOR$ var:lyd_i3b_member_serial = $ACTOR$.var:lyd_i3b_serial }
+        } }
+    }
+    NOT = { any_in_list = {
+        variable = lyd_i3b_rites
+        save_temporary_scope_as = lyd_i3b_checked_rite
+        NOT = {
+            faith = $ACTOR$.var:lyd_i3b_faith
+            lyd_i3b_compatible_rite_trigger = yes
+            var:lyd_i3b_owner = $ACTOR$
+            var:lyd_i3b_serial = $ACTOR$.var:lyd_i3b_serial
+            rite_counties = var:lyd_i3b_counties
+            NOT = { has_variable = lyd_c2_proposal_owner }
+            NOT = { has_variable = lyd_c3_proposal_owner }
+            trigger_if = {
+                limit = { var:lyd_i3b_dormant = 1 }
+                rite_counties = 0
+                $ACTOR$.var:lyd_i3b_faith = { NOT = { any_faith_character = { is_alive = yes rite = scope:lyd_i3b_checked_rite } } }
+            }
+            trigger_else = {
+                var:lyd_i3b_total > 0
+                trigger_if = { limit = { exists = var:lyd_i3b_delegate }
+                    var:lyd_i3b_delegate = { lyd_i3b_elector_trigger = yes rite = scope:lyd_i3b_checked_rite faith = $ACTOR$.var:lyd_i3b_faith }
+                }
+            }
+        }
+    } }
+    NOT = { any_in_list = {
+        variable = lyd_i3b_members
+        NOT = {
+            is_alive = yes faith = $ACTOR$.var:lyd_i3b_faith rite = var:lyd_i3b_member_rite
+            var:lyd_i3b_member_owner = $ACTOR$ var:lyd_i3b_member_serial = $ACTOR$.var:lyd_i3b_serial
+            trigger_if = { limit = { var:lyd_i3b_was_elector = 1 } lyd_i3b_elector_trigger = yes }
+            trigger_else = { NOT = { lyd_i3b_elector_trigger = yes } }
+            trigger_if = { limit = { var:lyd_i3b_was_player = 1 } is_ai = no }
+            trigger_else = { is_ai = yes }
+        }
+    } }
+}
+# Popup identity is never refreshed inside a callback.
+lyd_i3b_event_context_trigger = {
+    exists = scope:lyd_i3b_actor
+    scope:lyd_i3b_actor = {
+        lyd_i3b_current_trigger = { ACTOR = scope:lyd_i3b_actor }
+        var:lyd_i3b_serial = scope:lyd_i3b_event_serial
+        var:lyd_i3b_nonce = scope:lyd_i3b_event_nonce
+        var:lyd_i3b_phase = scope:lyd_i3b_event_phase
+    }
+}
+lyd_i3b_cancel_context_trigger = {
+    exists = scope:lyd_i3b_actor
+    this = scope:lyd_i3b_actor
+    lyd_i3b_cancel_actor_trigger = yes
+    var:lyd_i3b_serial = scope:lyd_i3b_event_serial
+    var:lyd_i3b_nonce = scope:lyd_i3b_event_nonce
+    var:lyd_i3b_phase = scope:lyd_i3b_event_phase
+}
+lyd_i3b_representatives_ready_trigger = {
+    NOT = { any_in_list = {
+        variable = lyd_i3b_rites
+        var:lyd_i3b_dormant = 0
+        NOT = { exists = var:lyd_i3b_delegate var:lyd_i3b_total > 0 }
+    } }
+}
+lyd_i3b_can_seal_trigger = {
+    lyd_i3b_current_trigger = { ACTOR = $ACTOR$ }
+    var:lyd_i3b_phase = 1
+    lyd_i3b_representatives_ready_trigger = yes
+}
+lyd_i3b_nomination_target_trigger = {
+    lyd_i3b_elector_trigger = yes
+    faith = $ACTOR$.faith
+    var:lyd_i3b_member_owner = $ACTOR$
+    var:lyd_i3b_member_serial = $ACTOR$.var:lyd_i3b_serial
+    rite = { var:lyd_i3b_dormant = 0 NOT = { has_variable = lyd_i3b_delegate } }
+}
+lyd_i3b_ballot_trigger = {
+    lyd_i3b_event_context_trigger = yes
+    scope:lyd_i3b_actor = { var:lyd_i3b_phase = 2 }
+    lyd_i3b_elector_trigger = yes
+    var:lyd_i3b_member_owner = scope:lyd_i3b_actor
+    var:lyd_i3b_member_serial = scope:lyd_i3b_event_serial
+    var:lyd_i3b_was_elector = 1
+    var:lyd_i3b_vote = -1
+}
+lyd_i3b_ready_trigger = {
+    lyd_i3b_current_trigger = { ACTOR = $ACTOR$ }
+    var:lyd_i3b_phase = 2
+    NOT = { any_in_list = {
+        variable = lyd_i3b_rites
+        var:lyd_i3b_dormant = 0
+        NOT = { var:lyd_i3b_total > 0 lyd_i3b_quorum_value >= 0 var:lyd_i3b_signed = 1 exists = var:lyd_i3b_delegate }
+    } }
+    NOT = { any_in_list = { variable = lyd_i3b_members var:lyd_i3b_was_player = 1 NOT = { var:lyd_i3b_player_yes = 1 } } }
+    NOT = { any_in_list = { variable = lyd_i3b_political_titles NOT = { holder = $ACTOR$ } } }
+}

@@ -23,6 +23,7 @@ lyd_c2_elector_trigger = {
 lyd_c2_school_free_trigger = {
     NOT = { has_variable = lyd_c2_proposal_owner }
     NOT = { has_variable = lyd_c3_proposal_owner }
+    NOT = { has_variable = lyd_i3b_owner }
     NOT = { has_variable = lyd_c2_transition_cooldown }
     NOT = { has_variable = lyd_c2_retry_cooldown }
 }
@@ -31,6 +32,7 @@ lyd_c2_school_free_trigger = {
 lyd_c2_receiver_free_trigger = {
     NOT = { has_variable = lyd_c2_proposal_owner }
     NOT = { has_variable = lyd_c3_proposal_owner }
+    NOT = { has_variable = lyd_i3b_owner }
 }
 # Faith scope. Used only to protect a multi-rite source main.
 lyd_c2_single_rite_faith_trigger = {

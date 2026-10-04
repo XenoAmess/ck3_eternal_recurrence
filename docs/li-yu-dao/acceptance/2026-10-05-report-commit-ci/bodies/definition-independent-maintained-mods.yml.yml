@@ -1,0 +1,70 @@
+name: Independent Maintained Mods
+
+on:
+  push:
+    paths:
+      - 'mod_de_jure_conquest/**'
+      - 'mod_change_holding_types/**'
+      - 'tools/independent_mod_release.py'
+      - 'tools/test_independent_mod_release.py'
+      - 'tools/translate_localization_minimax.py'
+      - 'tools/extract_auto_upgrade_buildings.py'
+      - '.github/workflows/independent-maintained-mods.yml'
+  pull_request:
+    paths:
+      - 'mod_de_jure_conquest/**'
+      - 'mod_change_holding_types/**'
+      - 'tools/independent_mod_release.py'
+      - 'tools/test_independent_mod_release.py'
+      - 'tools/translate_localization_minimax.py'
+      - 'tools/extract_auto_upgrade_buildings.py'
+      - '.github/workflows/independent-maintained-mods.yml'
+  workflow_dispatch:
+    inputs:
+      release_localization:
+        description: 'Run the explicitly authorized nine-language release audit'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  static:
+    runs-on: windows-latest
+    env:
+      GIT_CONFIG_COUNT: '1'
+      GIT_CONFIG_KEY_0: core.longpaths
+      GIT_CONFIG_VALUE_0: 'true'
+    defaults:
+      run:
+        shell: cmd
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Test shared runtime projection
+        run: python -X utf8 tools/test_independent_mod_release.py
+      - name: Check de jure conquest without installed CK3
+        run: python -X utf8 mod_de_jure_conquest/tools/validate_static.py --no-installed-game --report "%RUNNER_TEMP%\de-jure-static.json"
+      - name: Check holding conversion without installed CK3
+        run: python -X utf8 mod_change_holding_types/tools/validate_static.py --report "%RUNNER_TEMP%\holding-static.json"
+      - name: Check deterministic product builds
+        run: |
+          python -X utf8 mod_de_jure_conquest/tools/build_release.py --check
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -X utf8 mod_change_holding_types/tools/build_release.py --check
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Explicit release localization audit
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.release_localization }}
+        run: |
+          python -X utf8 mod_de_jure_conquest/tools/validate_static.py --no-installed-game --release-localization --report "%RUNNER_TEMP%\de-jure-release-localization.json"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -X utf8 mod_change_holding_types/tools/validate_static.py --release-localization --report "%RUNNER_TEMP%\holding-release-localization.json"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+
+# Official runners verify structure and reproducibility only. CK3/Steam live
+# acceptance and Workshop publication require the separately recorded local run.

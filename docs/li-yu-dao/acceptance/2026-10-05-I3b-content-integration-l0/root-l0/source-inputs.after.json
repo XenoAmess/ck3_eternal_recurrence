@@ -1,0 +1,699 @@
+{
+  "files": [
+    {
+      "path": "common/character_interactions/lyd_c2_consent_interactions.txt",
+      "sha256": "fcfa7662701e48d83ddf9ac6eef007952d55c6cec50ffa04805cef0bea572300",
+      "size": 986
+    },
+    {
+      "path": "common/character_interactions/lyd_c3_teacher_interactions.txt",
+      "sha256": "3b850035d9f6f506c4d7c3f839c2ccf1894f753a445a90bde93b0242fc2645f7",
+      "size": 4931
+    },
+    {
+      "path": "common/character_interactions/lyd_i3b_nomination_interactions.txt",
+      "sha256": "410ebb1a28542f160a9b45a49c017d15dacc39c375c4d358616301c577c2bb98",
+      "size": 954
+    },
+    {
+      "path": "common/character_interactions/lyd_interactions.txt",
+      "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba",
+      "size": 127
+    },
+    {
+      "path": "common/decisions/lyd_c2_consent_decisions.txt",
+      "sha256": "92d7098453c13ea968e2c1979fc324492b6a2a0e6a734f645585aec7a7cec549",
+      "size": 2408
+    },
+    {
+      "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+      "sha256": "01049457541c0c13d08d27bb793a204a2810aa826c4eb01e590b4e64dbb58138",
+      "size": 7598
+    },
+    {
+      "path": "common/decisions/lyd_decisions.txt",
+      "sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e",
+      "size": 1774
+    },
+    {
+      "path": "common/decisions/lyd_i3b_institution_decisions.txt",
+      "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019",
+      "size": 4599
+    },
+    {
+      "path": "common/on_action/lyd_c3_lifecycle_on_actions.txt",
+      "sha256": "19c1773ebb82bbfe75d95a629f9ffda73a521c9afe0060cf55f438a2b96fe19b",
+      "size": 544
+    },
+    {
+      "path": "common/religion/faith_types/lyd_faiths.txt",
+      "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525",
+      "size": 424
+    },
+    {
+      "path": "common/religion/rite_types/lyd_rites.txt",
+      "sha256": "1106d2e9b06bbddb6cc3ab663d19b2e4e7863325ec63d67c776c694eb513ca17",
+      "size": 13028
+    },
+    {
+      "path": "common/religion/tenet_types/lyd_tenets.txt",
+      "sha256": "1a2b4a4f4729b2ac475c1c2a70a3734525ecd31ae50861b002adcf1003a2920e",
+      "size": 19451
+    },
+    {
+      "path": "common/script_values/lyd_c2_consent_values.txt",
+      "sha256": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae",
+      "size": 533
+    },
+    {
+      "path": "common/script_values/lyd_i3b_institution_values.txt",
+      "sha256": "61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156",
+      "size": 205
+    },
+    {
+      "path": "common/scripted_effects/lyd_c2_close_effects.txt",
+      "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01",
+      "size": 3384
+    },
+    {
+      "path": "common/scripted_effects/lyd_c2_commit_effects.txt",
+      "sha256": "79d1c4b6ff7fcbff40357252e2d18808993b1d53158bcc47e0681776a06909c6",
+      "size": 5885
+    },
+    {
+      "path": "common/scripted_effects/lyd_c2_head_effects.txt",
+      "sha256": "cd1f2b8a9adb9816db16924fb20f6d6d559db479d1fe35f22b06bef611f0228b",
+      "size": 1352
+    },
+    {
+      "path": "common/scripted_effects/lyd_c2_response_effects.txt",
+      "sha256": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47",
+      "size": 1369
+    },
+    {
+      "path": "common/scripted_effects/lyd_c2_setup_effects.txt",
+      "sha256": "9cc7b2271437062cd03ef6ca1cb1856e874bf3fee648749df67f5e5eafab28eb",
+      "size": 12049
+    },
+    {
+      "path": "common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "sha256": "ba5b02a594aab32e475cfc2bb6d368ed14a11b1316f60354a3a09585e052529d",
+      "size": 20434
+    },
+    {
+      "path": "common/scripted_effects/lyd_c2_vote_effects.txt",
+      "sha256": "360659bd3f0e95be69391e8b685ec26945466cc59ee263e0f1c6cd62454b34e6",
+      "size": 4832
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+      "sha256": "af3c5cabc8e6123a5d76aeed59bf0e85db8e9bcf39c85118b0ab85ee746ea89c",
+      "size": 6468
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+      "sha256": "6e1a686065911cce27270cafa7c1ac3d86b69b14eca2a5e5c6e87b435b7a01ff",
+      "size": 9687
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_head_factory.txt",
+      "sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24",
+      "size": 1993
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+      "sha256": "94720db16153a862c91172d1a8174a6e91fe734d01353ce2f61132595403f651",
+      "size": 5211
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "sha256": "a13cec21b7e113e1d89a3a8228e760e30aa607704f65ae3db848208e22cac75b",
+      "size": 1366
+    },
+    {
+      "path": "common/scripted_effects/lyd_entry_effects.txt",
+      "sha256": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e",
+      "size": 3415
+    },
+    {
+      "path": "common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "sha256": "72b4dadcfc8cc8ebcf00091e738e64ac99042de273ffbbf06070f59ab40cda50",
+      "size": 4290
+    },
+    {
+      "path": "common/scripted_effects/lyd_i3b_response_effects.txt",
+      "sha256": "f6a78460ac88f14993cb57e2e4ebc53747ad64c19d621bd91c401745cf1923d5",
+      "size": 4848
+    },
+    {
+      "path": "common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "sha256": "53b705957fbe0f4aa71a50662e710957687b57f6f9c131e0ddd2b63deb4f954c",
+      "size": 6065
+    },
+    {
+      "path": "common/scripted_effects/lyd_i3b_terms_effects.txt",
+      "sha256": "e7d688e2b183fc9cec86c1df5646f463e6ac2b84c7132eb9a3009f42eab29633",
+      "size": 3842
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_10_effects.txt",
+      "sha256": "3ca648c00476c6360777685f95892ba881b370028aac6421f27dc327ddd6d873",
+      "size": 3002
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_11_effects.txt",
+      "sha256": "bbb2ffc2af52aa54b3753147e6adab8f3d3fa191cc32072094a354a4b145c7f1",
+      "size": 2887
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_12_effects.txt",
+      "sha256": "4a11f39e7ad438971f9197eea0250a82dcfa5320ab5308157c6aec33a1178949",
+      "size": 2948
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_13_effects.txt",
+      "sha256": "f20eab97c7fa78b98e986d427627b37578faff2fea17b0ddfad9c879b0f4d68c",
+      "size": 3035
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_14_effects.txt",
+      "sha256": "dba733183cc1c66355a44b6ce78e8f3d91ef35b0464ae7da6127dc8ebf7bbf92",
+      "size": 1526
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_1_effects.txt",
+      "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7",
+      "size": 2798
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_2_effects.txt",
+      "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879",
+      "size": 2703
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_3_effects.txt",
+      "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131",
+      "size": 2756
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_4_effects.txt",
+      "sha256": "c4e215a15a98159b9f49d94937a0e81a7c1a5366e2fbe03b091f1962f27f1d52",
+      "size": 2990
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_5_effects.txt",
+      "sha256": "fcb35efef5e5e766befbd3caa5ad8dc7faf5baea3f1852254759ece65dd4fd38",
+      "size": 2901
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_6_effects.txt",
+      "sha256": "731324e20ebd99a8f20e2a1a97473b091d497ac37f33fdefad1a1c0810fb8ee9",
+      "size": 2926
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_7_effects.txt",
+      "sha256": "b5e27005dbea499d63716ba9956996ecd2948dade6d46833ad1df3596079de8f",
+      "size": 2972
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_8_effects.txt",
+      "sha256": "e6c9ad63b57f81e9ff57f0cc146859d2c9b281225f859ffefe101aad9c0a80bf",
+      "size": 2912
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_9_effects.txt",
+      "sha256": "f24b7fcff5d34c21e2186b498a4ef0e7dfcb810ee5bb8ff5321ac8d2cafd2cb0",
+      "size": 2983
+    },
+    {
+      "path": "common/scripted_effects/lyd_school_2_effects.txt",
+      "sha256": "7d730f4fd8e01d9664b44dd8df607c56df1850425b0cc04ab834d891cc127491",
+      "size": 3902
+    },
+    {
+      "path": "common/scripted_effects/lyd_school_3_effects.txt",
+      "sha256": "88230a78a2d27285b11a805c6762e78f2d3c2b472d1f61c862fd9117f0705eab",
+      "size": 3877
+    },
+    {
+      "path": "common/scripted_effects/lyd_school_4_effects.txt",
+      "sha256": "e2c098a86e9f39fcec43bffc74b57f0573c60e59faf5db7edf872b197f253234",
+      "size": 3982
+    },
+    {
+      "path": "common/scripted_effects/lyd_school_5_effects.txt",
+      "sha256": "24395a459573ef5f9ad0e066a88fb9d5e7895e04f5527e88103f1f5ab0a9414a",
+      "size": 1968
+    },
+    {
+      "path": "common/scripted_effects/lyd_school_effects.txt",
+      "sha256": "d9b1456c4a5e7610807ae7e61f4bbfdc8b432968d776befcbd32abd5e6dc6008",
+      "size": 3872
+    },
+    {
+      "path": "common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "sha256": "a4f4fe371ddb35b1a194bb1350c6165442347617cca7ec8dd1b360110e6ab18a",
+      "size": 15372
+    },
+    {
+      "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "sha256": "967ca3e59d4d33aa588859192dde991358c1626d077a00b2d6fb204adb7a655a",
+      "size": 6665
+    },
+    {
+      "path": "common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "sha256": "f110b0d7fe4b9d66d1232d1a2d846f6a53c20f600f26db327791dfcef58756fc",
+      "size": 7789
+    },
+    {
+      "path": "common/scripted_triggers/lyd_player_triggers.txt",
+      "sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e",
+      "size": 2885
+    },
+    {
+      "path": "descriptor.mod",
+      "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2",
+      "size": 139
+    },
+    {
+      "path": "events/lyd_c2_consent_events.txt",
+      "sha256": "aeb4ea2062ad58b6c537df2812a965bf85ea7ee525ffce48c6659e7ffb98616e",
+      "size": 6618
+    },
+    {
+      "path": "events/lyd_c3_leadership_events.txt",
+      "sha256": "be67baa3427719465965917d44e8594c92063a2aa165ee88833c6954ba2fd411",
+      "size": 2692
+    },
+    {
+      "path": "events/lyd_events.txt",
+      "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24",
+      "size": 50504
+    },
+    {
+      "path": "events/lyd_i3b_institution_events.txt",
+      "sha256": "72b6b6348b474fd95e29dfe0fd292cadaed8f541393cbba021fd51fdeb2b5a87",
+      "size": 5556
+    },
+    {
+      "path": "fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/common/decisions/lyd_np_decisions.txt",
+      "sha256": "06ff98f68af5b7dc4b7d2d0e42e0cefe180b3cdaf0e7cbb48b938965f6d4fef0",
+      "size": 1857
+    },
+    {
+      "path": "fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/common/religion/faith_types/lyd_np_faiths.txt",
+      "sha256": "d349b0c5bd4a6102a32ca1f9762487b33559b6da255ccab9533bd13ad8b7247c",
+      "size": 644
+    },
+    {
+      "path": "fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/common/religion/rite_types/lyd_np_rites.txt",
+      "sha256": "11aab688d88c6f8cfbdb8464f408b111ecc07e07e884eee13bbf44492ca15230",
+      "size": 848
+    },
+    {
+      "path": "fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/common/scripted_effects/lyd_np_effects.txt",
+      "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d",
+      "size": 10380
+    },
+    {
+      "path": "fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/common/scripted_triggers/lyd_np_triggers.txt",
+      "sha256": "7c1bc919d2ddf3dfc5b59969ea1cb4b795e4a172e8ad1d984acadc048ed25cff",
+      "size": 2777
+    },
+    {
+      "path": "fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/descriptor.mod",
+      "sha256": "b82a694df94b885c0438d55bb3f1d5ed2fdde6b624131633b5ae56cfabe101f1",
+      "size": 125
+    },
+    {
+      "path": "fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/events/lyd_np_events.txt",
+      "sha256": "b9d57ad721c799e551870f39027a26727b207c5fef97f175dd4db0dff81db896",
+      "size": 3743
+    },
+    {
+      "path": "fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/localization/english/lyd_np_l_english.yml",
+      "sha256": "26acb8c79ff2c790a62b8905e725250153141731c14719259a52c02d555ad723",
+      "size": 2296
+    },
+    {
+      "path": "fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/localization/simp_chinese/lyd_np_l_simp_chinese.yml",
+      "sha256": "d7d4381c8bb172e4a32041588e43f1838e1bc861902153df3a2d1f10eec2d907",
+      "size": 1993
+    },
+    {
+      "path": "fixtures/native_cycle/candidate2/static-report.json",
+      "sha256": "a55a3d44a210dc191112b800e01c88353e399a8b56a260d12301370e9c570a6d",
+      "size": 4933
+    },
+    {
+      "path": "fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/decisions/lyd_np_decisions.txt",
+      "sha256": "7a95bec62bcc6533c7fcdef7331b76a359ec4dedac29d5bc99888b2c53757db2",
+      "size": 1770
+    },
+    {
+      "path": "fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/religion/faith_types/lyd_np_faiths.txt",
+      "sha256": "bcd46bd4407ae43dcaf84b505a08c2d883c2e52726587e7ae9cd088d88c62870",
+      "size": 641
+    },
+    {
+      "path": "fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/religion/rite_types/lyd_np_rites.txt",
+      "sha256": "ba76cd96f18ba0f75d9932c6e50dcd4067abfd465364731c10e7bcfc211b058c",
+      "size": 845
+    },
+    {
+      "path": "fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/scripted_effects/lyd_np_effects.txt",
+      "sha256": "4f11d1ae816e349ee2f4c736939819c0964dc1ddcecd75545026ef5eeeae4d70",
+      "size": 8225
+    },
+    {
+      "path": "fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/scripted_triggers/lyd_np_triggers.txt",
+      "sha256": "4c487386b018af6b2a0c918ee5cf89dad908b483eba44b696b47c303fcdaf445",
+      "size": 2790
+    },
+    {
+      "path": "fixtures/native_cycle/mod_li_yu_dao_native_prototype/descriptor.mod",
+      "sha256": "b82a694df94b885c0438d55bb3f1d5ed2fdde6b624131633b5ae56cfabe101f1",
+      "size": 125
+    },
+    {
+      "path": "fixtures/native_cycle/mod_li_yu_dao_native_prototype/events/lyd_np_events.txt",
+      "sha256": "9e2086e8373a11f6dc7c4ff4f9cf342d6d87b60adba45dd68e5797f9452b9457",
+      "size": 3739
+    },
+    {
+      "path": "fixtures/native_cycle/mod_li_yu_dao_native_prototype/localization/english/lyd_np_l_english.yml",
+      "sha256": "26acb8c79ff2c790a62b8905e725250153141731c14719259a52c02d555ad723",
+      "size": 2296
+    },
+    {
+      "path": "fixtures/native_cycle/mod_li_yu_dao_native_prototype/localization/simp_chinese/lyd_np_l_simp_chinese.yml",
+      "sha256": "d7d4381c8bb172e4a32041588e43f1838e1bc861902153df3a2d1f10eec2d907",
+      "size": 1993
+    },
+    {
+      "path": "fixtures/native_cycle/native-source-evidence.json",
+      "sha256": "9bfbc62b1752a5a639dda8a9cb65ca687457cf0de68d4e5464f7e6dd3dbf10c9",
+      "size": 2686
+    },
+    {
+      "path": "fixtures/native_cycle/static-report.json",
+      "sha256": "f245f7885ba04516954276b0c215258f1fe0534d4fc8ed4a968939a49cf1723a",
+      "size": 2200
+    },
+    {
+      "path": "fixtures/native_cycle/validate_prototype.py",
+      "sha256": "7e7113af4010890c2ffbc30133921c8b16a0091c003634690151abf6a839af8e",
+      "size": 7179
+    },
+    {
+      "path": "history/faiths/lyd_faith_history.txt",
+      "sha256": "d3f44db69e11ad49f4707e3433df6c4c542073bc245042578ded3c30940df19d",
+      "size": 1171
+    },
+    {
+      "path": "localization/english/lyd_c2_consent_l_english.yml",
+      "sha256": "153ff68c54238b1756455376ed33f45afd5721ea74e78c52026365b7996cec99",
+      "size": 13331
+    },
+    {
+      "path": "localization/english/lyd_c3_leadership_l_english.yml",
+      "sha256": "1febd88fc19c08f67e69650f5b4d185f2e5d3c85e118316a68cc3e3084bb3b06",
+      "size": 9455
+    },
+    {
+      "path": "localization/english/lyd_content_l_english.yml",
+      "sha256": "287498e26ddd657db91d1fded99ca671628ef2409f7f56aa86110cabd63d4a78",
+      "size": 66904
+    },
+    {
+      "path": "localization/english/lyd_i3b_institution_l_english.yml",
+      "sha256": "1a370a05c02c14204df309acb8c162ed9651e622ccd848c3181809f3fb1053ac",
+      "size": 10220
+    },
+    {
+      "path": "localization/english/lyd_runtime_l_english.yml",
+      "sha256": "f2959daa69931f05633bb5c2280b36a2789858b0977360301388efe0794e0199",
+      "size": 4461
+    },
+    {
+      "path": "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "sha256": "d93e1fe02dc615a4117ace3754a121cd338fe0bb9125c3100939f66ceebb16b4",
+      "size": 11654
+    },
+    {
+      "path": "localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "sha256": "9cb67ba427950f0b871e1b0a8d00c04dc4fa6bed79b5317056a0f68b28fbfdfc",
+      "size": 8684
+    },
+    {
+      "path": "localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "sha256": "4e93e04d6c894eb549f807bbde9ea1f13a0d43cac202ca30efbcf18221db799f",
+      "size": 52952
+    },
+    {
+      "path": "localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "sha256": "de0f336c3ccc49b1068bc43f41ec1623c0eda2199b62e6a4df68951525e8e96c",
+      "size": 9138
+    },
+    {
+      "path": "localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "sha256": "cdfe4417a8dbd32e04c69a025c5adce08741c22526c4e647069169018c6a6fca",
+      "size": 3707
+    },
+    {
+      "path": "tools/additional_practices.py",
+      "sha256": "cbae8ccf96a33d893ab2c8084ab09046aa34c46596f41ac7241429d2ca56d583",
+      "size": 51685
+    },
+    {
+      "path": "tools/build_release.py",
+      "sha256": "ba5de21fd7aa16bbbbabd9268142cadca3cee6b546acda19c306316cac233ed4",
+      "size": 10701
+    },
+    {
+      "path": "tools/content_data.py",
+      "sha256": "cb368c771dc4b99a612e560b9bb4ce04992a403c7598f24d9ae3aaeae4bcda73",
+      "size": 62030
+    },
+    {
+      "path": "tools/gen_content.py",
+      "sha256": "bb8a82ac75fb60d9cf25a50843e1d924962dc041c27b05631c1977daea18f342",
+      "size": 8044
+    },
+    {
+      "path": "tools/gen_institution.py",
+      "sha256": "f0c347563868a59b9546be2e232b86af143a3b45606411ba506ed327b0971d65",
+      "size": 45813
+    },
+    {
+      "path": "tools/gen_leadership.py",
+      "sha256": "f73d77e7d073b1736821e86acda1decda18ba471a7e71f222c964fa0174d28b4",
+      "size": 2363
+    },
+    {
+      "path": "tools/gen_runtime.py",
+      "sha256": "7219ac0cfc6a4c81fe4bcca8df44bde3b4f6b96f327fb5977f811fd6bbec7b26",
+      "size": 17569
+    },
+    {
+      "path": "tools/gen_school_consent.py",
+      "sha256": "b9c87a07ba16491bb298d456649c015c020deb7322921e82a6b2c1ba70d31c6a",
+      "size": 42041
+    },
+    {
+      "path": "tools/institution_oracle.py",
+      "sha256": "82b63c98b96f781caadbb9e48451a4691aae84feba1fb988b5f9618fbee7a3b8",
+      "size": 5109
+    },
+    {
+      "path": "tools/leadership_templates/common/character_interactions/lyd_c3_teacher_interactions.txt.in",
+      "sha256": "693f04af355754f261f0e2d51119c9156a77bc5e1b39e8ff39bafbe2f52e9221",
+      "size": 4848
+    },
+    {
+      "path": "tools/leadership_templates/common/decisions/lyd_c3_leadership_decisions.txt.in",
+      "sha256": "64a8209f51edc3a9d312a22b1b93e58480d9ecbdf55e61d02cda0e914b0c5e15",
+      "size": 7518
+    },
+    {
+      "path": "tools/leadership_templates/common/on_action/lyd_c3_lifecycle_on_actions.txt.in",
+      "sha256": "52d629206efa1056ebe5652fa8cf2b038f5410fb4444579be6dab0499461c15c",
+      "size": 461
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_challenger_effects.txt.in",
+      "sha256": "abb705ba20f271e217beb0d0d0717729f642d7cfbcb0dea417691e95fc0f82f4",
+      "size": 6385
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_council_effects.txt.in",
+      "sha256": "c856d1a2c2b5de3d2f48745f6068d88ba851a52d0af3c402e58b03c7787fe078",
+      "size": 9604
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in",
+      "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c",
+      "size": 1910
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_lifecycle_effects.txt.in",
+      "sha256": "96530cdb00cda8c4a4b826fe2b6b7bd2f3e14fa15e2442f577cc45e5c592a6c7",
+      "size": 5128
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_migration_hooks.txt.in",
+      "sha256": "d0e73c511166680c46a3915bf38ee6e84f2b2c6474388294d15ca97fb7d5f086",
+      "size": 1283
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_triggers/lyd_c3_leadership_triggers.txt.in",
+      "sha256": "d149ad0a96f2ecf1b0e11463fb002b90e462e1ddc015a8481f434e41bc7b4b85",
+      "size": 6605
+    },
+    {
+      "path": "tools/leadership_templates/events/lyd_c3_leadership_events.txt.in",
+      "sha256": "8735cf8e25c6ae6d6786ef26656e044d5b58a39308160d6fa99edfba2462f490",
+      "size": 2609
+    },
+    {
+      "path": "tools/leadership_templates/localization/english/lyd_c3_leadership_l_english.yml.in",
+      "sha256": "d61e841ea39673d611d80e76c98b4f5412070c54ea5da69cf90c25f86df3e5a0",
+      "size": 9371
+    },
+    {
+      "path": "tools/leadership_templates/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml.in",
+      "sha256": "95f1a73143e68a871197ea56f493547bd760140b9137b3a5497f9c8d092763f0",
+      "size": 8600
+    },
+    {
+      "path": "tools/native_admission_portable.py",
+      "sha256": "7da4839c191fb16e8de5a38b6879840e8d1434839fdb8054b065b283858263bc",
+      "size": 5188
+    },
+    {
+      "path": "tools/reference/native-primitive-tracked-admission.json",
+      "sha256": "558e6c6aee6364abee0d1065f09a35d782765a2ae469a14b62461d19b47d3dd6",
+      "size": 3582
+    },
+    {
+      "path": "tools/run_acceptance.py",
+      "sha256": "7212a6f39a180a45d6f591983dfbf7c40c998cb500050f5afca1960cc9533d6d",
+      "size": 20112
+    },
+    {
+      "path": "tools/school_consent_callbacks.py",
+      "sha256": "23583d05e9daf00c6a3d874893a4171d4bf45c2fa464b18317d4223300ad15a2",
+      "size": 4148
+    },
+    {
+      "path": "tools/school_consent_data.py",
+      "sha256": "156942c061e8c9d0afc3b17b716e4be0ea3fe6988181553dfe5ea44bfec7109c",
+      "size": 2087
+    },
+    {
+      "path": "tools/school_consent_model.py",
+      "sha256": "5fa5e4ae676ba9901b7612b7f2d7375a85938b8d916f605b131157e4a00d8768",
+      "size": 23747
+    },
+    {
+      "path": "tools/school_consent_templates/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "sha256": "649ed150b51c9f7a65ac0976fb87d151fcab691552cbbdb956c7c726fdf5d527",
+      "size": 906
+    },
+    {
+      "path": "tools/school_consent_templates/common/decisions/lyd_c2_consent_decisions.txt",
+      "sha256": "6b8785eed70c3b55d6dac69a07685846e25e7abf5adeee7aac4f090548ff2e23",
+      "size": 2365
+    },
+    {
+      "path": "tools/school_consent_templates/common/script_values/lyd_c2_consent_values.txt",
+      "sha256": "c0f01096ec25dbebde4ba0465648977e4b6c50403076875280d939640fea17ea",
+      "size": 502
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_effects/lyd_c2_close_effects.txt",
+      "sha256": "cc223af9e9f11c490399abfb6f7b0fd65d74eae1150aa0b425c7d7ff3954b54b",
+      "size": 3290
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "sha256": "49c6d9710d9dc8238110d122aafa909445817a8240baa36f2d48e968053b6d0c",
+      "size": 5844
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_effects/lyd_c2_head_effects.txt",
+      "sha256": "0460ae905e49b07f4005d976474872b64112aad51f573552c315ee9312511f91",
+      "size": 1249
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_effects/lyd_c2_response_effects.txt",
+      "sha256": "c4a5019ff2cda368f728afacd9c1b7f44eb922e6b8095dd3c68c789089deba3c",
+      "size": 1266
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "sha256": "f7ddd66d350c929bd53ca33c209468eb7cdded4fed3433cca5080066f30fcdb6",
+      "size": 10182
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "sha256": "2c6964221393059e807d74fdfb484834025a8c868d40570e89800bc9d3e7ba88",
+      "size": 1154
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "sha256": "e7d5878ac2c914acedfd385f6695c8f7c2e48ab9a60ad8004685c3d39ecc710d",
+      "size": 4729
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+      "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c",
+      "size": 1910
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "sha256": "501b36d0fc72538e3f3361c659458ed693d4f47f03eda02a6db51419e6c20bd5",
+      "size": 1346
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "sha256": "ebcb226c6e5e648518c754ebcf1661876cfc498dce880d656e3567b1d4b5cc35",
+      "size": 15343
+    },
+    {
+      "path": "tools/school_consent_templates/events/lyd_c2_consent_events.txt",
+      "sha256": "87da221474c88fb5235a15238d8fca80ee61f93bece5d5ac579d2308395b2134",
+      "size": 6704
+    },
+    {
+      "path": "tools/test_build_release.py",
+      "sha256": "18eec05254e9a537b97089c237c4886775ed1f0d432ae38a1abbb83d07d75fe4",
+      "size": 21655
+    },
+    {
+      "path": "tools/test_content_leadership.py",
+      "sha256": "4712b3ee307771cc6bb8d44220a035f434cb9a227fac68c740efb8cd90358ba4",
+      "size": 30276
+    },
+    {
+      "path": "tools/test_institution_candidate.py",
+      "sha256": "2dea47eeb16dcf71125abaede758b7ddebabbdcc33fd57a472c8aaf686b7e802",
+      "size": 26696
+    },
+    {
+      "path": "tools/test_run_acceptance.py",
+      "sha256": "f2896c2a0317c4d8929563782d96f8d1f841b2dee139a0a1d2ee8de751f5981f",
+      "size": 9218
+    },
+    {
+      "path": "tools/test_school_consent.py",
+      "sha256": "218d2264d80e5a71a528189042105b0f9cc5d86fe0ea3c4a1e21fa25814af49e",
+      "size": 73686
+    },
+    {
+      "path": "tools/validate_static.py",
+      "sha256": "089a6004c48dd5ae8e207827cb130caa41044640c20b7b200100f308039d74a1",
+      "size": 22158
+    }
+  ]
+}

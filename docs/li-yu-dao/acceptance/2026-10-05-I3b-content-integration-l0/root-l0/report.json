@@ -1,0 +1,355 @@
+{
+  "environment": {
+    "boundary": "process presence, bridge tool listing and static corpus checks do not prove product live acceptance",
+    "game": {
+      "display_version": "1.20.0.3 (Crozier)",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "exe_size": 101039736,
+      "expected_exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "expected_version": "1.20.0.3",
+      "game_dir": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game",
+      "game_exe": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "issues": [],
+      "launcher_settings": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\launcher\\launcher-settings.json",
+      "launcher_settings_sha256": "9cd6ff96f8092f2d21e1491b37e8344aa287faf69850563128ca1b117244a214",
+      "status": "EXACT_BUILD",
+      "version": "1.20.0.3"
+    },
+    "gaps": [
+      "no-observed-CK3-session",
+      "no-current-build-MCP-tools-response-evidence"
+    ],
+    "kaishek": {
+      "adapter": "C:\\workspace\\ck3_eternal_recurrence\\tools\\kaishek_preflight.py",
+      "old_1_19_defaults_used": false,
+      "reason": "no Li Yu Dao CK3 1.20 profile and fixture declared",
+      "status": "NOT_APPLICABLE"
+    },
+    "mcp": {
+      "config_path": "C:\\Users\\Administrator\\.codex\\config.toml",
+      "config_sha256": "1811b67906e96a3784b6786237a29db3c2bf5534ebf98cf6ce262883ddc7e051",
+      "configured_servers": [],
+      "issues": [
+        "no-current-build-MCP-tools-response-evidence"
+      ],
+      "reprobed": false,
+      "required_bridge_tools": [
+        "ck3_query_native_profile_v1",
+        "ck3_take_profile_native_snapshot_v1",
+        "ck3_query_profile_pending_interaction_v1",
+        "ck3_reply_profile_pending_interaction_v1",
+        "ck3_select_profile_event_option_v1",
+        "ck3_save_profile_checkpoint_v1"
+      ],
+      "status": "NOT_PROVEN",
+      "unknown_product_capabilities": [
+        "native faith/rite membership and leadership inspection on CK3 1.20.0.3",
+        "native decision/interaction initiation for the active player",
+        "union/schism consent, refusal and AI inactivity observation",
+        "save reload followed by independent faith/rite state inspection"
+      ]
+    },
+    "native_product_capabilities": "NOT_PROVEN",
+    "next_steps": [
+      "existing stdio entry: C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_native_profile_mcp.py --profile <frozen-1.20-profile.json>",
+      "provide actual tools/list response evidence for the exact current build",
+      "native faith/rite membership and leadership inspection on CK3 1.20.0.3",
+      "native decision/interaction initiation for the active player",
+      "union/schism consent, refusal and AI inactivity observation",
+      "save reload followed by independent faith/rite state inspection"
+    ],
+    "processes": {
+      "command": {
+        "argv": [
+          "tasklist",
+          "/FO",
+          "CSV",
+          "/NH"
+        ],
+        "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+        "execution": "COMPLETED",
+        "finished_at": "2026-10-04T19:48:34.209089+00:00",
+        "returncode": 0,
+        "started_at": "2026-10-04T19:48:32.802450+00:00",
+        "stderr": {
+          "path": "processes.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "stdout": {
+          "path": "processes.stdout.txt",
+          "sha256": "1fd88b6dd8cecc5cc2a4aeb42507a1b8fe59551408aa018b837a3c856781562f",
+          "size": 9648
+        },
+        "timeout_seconds": 60
+      },
+      "executable_identity": "NOT_PROVEN_BY_TASKLIST",
+      "pids": [],
+      "status": "NOT_RUNNING"
+    },
+    "status": "ENVIRONMENT_RED"
+  },
+  "exit_code": 2,
+  "finished_at": "2026-10-04T19:48:44.709556+00:00",
+  "l0": {
+    "commands": [
+      {
+        "argv": [
+          "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\test_build_release.py"
+        ],
+        "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+        "execution": "COMPLETED",
+        "finished_at": "2026-10-04T19:48:37.077906+00:00",
+        "name": "tool-tests",
+        "returncode": 0,
+        "started_at": "2026-10-04T19:48:34.215637+00:00",
+        "stderr": {
+          "path": "tool-tests.stderr.txt",
+          "sha256": "809c91bfde19be3fc4bc0d326329423776a5150e75fc71b2b260458f124e5128",
+          "size": 115
+        },
+        "stdout": {
+          "path": "tool-tests.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "timeout_seconds": 60
+      },
+      {
+        "argv": [
+          "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\test_run_acceptance.py"
+        ],
+        "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+        "execution": "COMPLETED",
+        "finished_at": "2026-10-04T19:48:37.526483+00:00",
+        "name": "runner-tests",
+        "returncode": 0,
+        "started_at": "2026-10-04T19:48:37.081048+00:00",
+        "stderr": {
+          "path": "runner-tests.stderr.txt",
+          "sha256": "2b424ff741f9cdbf6445e3796a5ddf492faf6cce7f348903e15c53380ef72972",
+          "size": 109
+        },
+        "stdout": {
+          "path": "runner-tests.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "timeout_seconds": 60
+      },
+      {
+        "argv": [
+          "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\test_school_consent.py"
+        ],
+        "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+        "execution": "COMPLETED",
+        "finished_at": "2026-10-04T19:48:40.387808+00:00",
+        "name": "school-consent-tests",
+        "returncode": 0,
+        "started_at": "2026-10-04T19:48:37.529724+00:00",
+        "stderr": {
+          "path": "school-consent-tests.stderr.txt",
+          "sha256": "a935e4f68ccb918d36bfbaa2d3f06ae124e68cb702db7bca99d5b8b098c1dfd4",
+          "size": 16011
+        },
+        "stdout": {
+          "path": "school-consent-tests.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "timeout_seconds": 60
+      },
+      {
+        "argv": [
+          "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\test_content_leadership.py"
+        ],
+        "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+        "execution": "COMPLETED",
+        "finished_at": "2026-10-04T19:48:40.984277+00:00",
+        "name": "content-leadership-tests",
+        "returncode": 0,
+        "started_at": "2026-10-04T19:48:40.393419+00:00",
+        "stderr": {
+          "path": "content-leadership-tests.stderr.txt",
+          "sha256": "76294fd2966c2db6899afa713c1edc659011c7b0f76500c06f90490ff964b845",
+          "size": 2063
+        },
+        "stdout": {
+          "path": "content-leadership-tests.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "timeout_seconds": 60
+      },
+      {
+        "argv": [
+          "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\test_institution_candidate.py"
+        ],
+        "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+        "execution": "COMPLETED",
+        "finished_at": "2026-10-04T19:48:41.644258+00:00",
+        "name": "institution-tests",
+        "returncode": 0,
+        "started_at": "2026-10-04T19:48:40.989793+00:00",
+        "stderr": {
+          "path": "institution-tests.stderr.txt",
+          "sha256": "a4445e7e1fe07566b5c41d744c03d80a2a920d8402ead1b75e391ad0c07f916e",
+          "size": 4273
+        },
+        "stdout": {
+          "path": "institution-tests.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "timeout_seconds": 60
+      },
+      {
+        "argv": [
+          "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\gen_content.py",
+          "--output",
+          "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao",
+          "--check"
+        ],
+        "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+        "execution": "COMPLETED",
+        "finished_at": "2026-10-04T19:48:41.819827+00:00",
+        "name": "content-generated-check",
+        "returncode": 0,
+        "started_at": "2026-10-04T19:48:41.649715+00:00",
+        "stderr": {
+          "path": "content-generated-check.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "stdout": {
+          "path": "content-generated-check.stdout.txt",
+          "sha256": "7445b385c784bbe8d8cf2fbb0e1ecfeae87580054e01c3b8dbf7d40f1b9b31a9",
+          "size": 543
+        },
+        "timeout_seconds": 60
+      },
+      {
+        "argv": [
+          "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\gen_runtime.py",
+          "--output-dir",
+          "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao",
+          "--check"
+        ],
+        "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+        "execution": "COMPLETED",
+        "finished_at": "2026-10-04T19:48:42.631751+00:00",
+        "name": "runtime-generated-check",
+        "returncode": 0,
+        "started_at": "2026-10-04T19:48:41.822895+00:00",
+        "stderr": {
+          "path": "runtime-generated-check.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "stdout": {
+          "path": "runtime-generated-check.stdout.txt",
+          "sha256": "acb08e5fc71ef6894b6e78c9fd013dd7b7825f26a549402bc84aeddad9fbc30c",
+          "size": 50
+        },
+        "timeout_seconds": 60
+      },
+      {
+        "argv": [
+          "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\validate_static.py",
+          "--source",
+          "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao",
+          "--report",
+          "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\static-report.json"
+        ],
+        "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+        "execution": "COMPLETED",
+        "finished_at": "2026-10-04T19:48:43.730755+00:00",
+        "name": "static",
+        "returncode": 0,
+        "started_at": "2026-10-04T19:48:42.651454+00:00",
+        "stderr": {
+          "path": "static.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "stdout": {
+          "path": "static.stdout.txt",
+          "sha256": "4ba774f3c3053caad0a03e32723840ea43859c94647afaeb87493fb68f528ab4",
+          "size": 9254
+        },
+        "timeout_seconds": 60
+      },
+      {
+        "argv": [
+          "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\build_release.py",
+          "--source",
+          "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao",
+          "--check"
+        ],
+        "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+        "execution": "COMPLETED",
+        "finished_at": "2026-10-04T19:48:44.436084+00:00",
+        "name": "build-check",
+        "returncode": 0,
+        "started_at": "2026-10-04T19:48:43.734866+00:00",
+        "stderr": {
+          "path": "build-check.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "stdout": {
+          "path": "build-check.stdout.txt",
+          "sha256": "78f12266798cf89e5aa09c1a6628a3e4ff2d099daf1d2ab39e61ccb723b50e45",
+          "size": 273
+        },
+        "timeout_seconds": 60
+      }
+    ],
+    "product_source": "GREEN",
+    "proves": "generated bytes, structural parser, localization, player gates, references and reproducible runtime packaging only",
+    "source_inputs_stable": true,
+    "status": "GREEN",
+    "tool_contracts": "GREEN"
+  },
+  "live": {
+    "reason": "this runner performs read-only preflight and L0 only",
+    "status": "NOT_RUN"
+  },
+  "mode": "preflight-and-L0",
+  "product_id": "mod_li_yu_dao",
+  "product_scope": {
+    "english": "L0 structure only",
+    "external_native_probe": "R0002 permanent primitive proof bound by portable receipt; distinct from formal-flow acceptance",
+    "historical_gating": "PHASE_II_NOT_IMPLEMENTED",
+    "holy_orders_and_artifacts": "NOT_IMPLEMENTED",
+    "implemented_declared": "36 free-chronology rites with cultivation, repeated authorized affiliation proposals, teacher consent and political leadership claims",
+    "institution_charter": "IMPLEMENTED_SOURCE_CANDIDATE; none-to-temporal enactment CLOSED pending separate native charter proof; no formal consensus live acceptance",
+    "iteration": 4,
+    "leadership": "IMPLEMENTED_SOURCE; native challenger registration closed pending live proof; temporal factory requires existing doctrine",
+    "live_language": "simp_chinese",
+    "reunion_and_schism": "IMPLEMENTED; this runner provides no live-flow acceptance"
+  },
+  "python": {
+    "executable": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "version": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]"
+  },
+  "report_directory": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001",
+  "result": "ENVIRONMENT_RED",
+  "schema_version": 1,
+  "side_effects": {
+    "ck3_started": false,
+    "mcp_server_started": false,
+    "packages_installed": false,
+    "steam_changed": false
+  },
+  "started_at": "2026-10-04T19:48:32.151315+00:00"
+}

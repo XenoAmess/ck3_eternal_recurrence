@@ -1,0 +1,21 @@
+{
+  "key": "workflow-registry",
+  "request": {
+    "key": "workflow-registry",
+    "url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/actions/workflows?per_page=100"
+  },
+  "observed_at": "2026-10-04T19:29:36.929Z",
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "HTTPError: 400: GitHub Fetch URL is not an allowed public GitHub repository or search endpoint. (Response: None)"
+      }
+    ],
+    "structuredContent": {
+      "error": "HTTPError: 400: GitHub Fetch URL is not an allowed public GitHub repository or search endpoint. (Response: None)",
+      "error_code": "INVALID_ARGUMENT"
+    },
+    "isError": true
+  }
+}

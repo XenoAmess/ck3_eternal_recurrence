@@ -333,9 +333,11 @@ lyd.{10 + page_index} = {{
         outputs[f"localization/{language}/lyd_runtime_l_{language}.yml"] = encoded("\n".join(lines) + "\n")
     from gen_school_consent import DEFAULT_NATIVE_EVIDENCE, build_outputs as consent_outputs
     from gen_leadership import build_outputs as leadership_outputs
+    from gen_institution import build_outputs as institution_outputs
     for extension in (
         consent_outputs(native_evidence=DEFAULT_NATIVE_EVIDENCE, include_shared=False),
         leadership_outputs(),
+        institution_outputs(),
     ):
         duplicates = outputs.keys() & extension.keys()
         if duplicates:

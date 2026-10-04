@@ -42,6 +42,7 @@ def fixture(source: Path) -> None:
         write(source / f"localization/{language}/lyd_runtime_l_{language}.yml", f'l_{language}:\n lyd_open:0 "Open"\n lyd_request:0 "Request"\n lyd.1.t:0 "Discussion"\n lyd.1.d:0 "$lyd_open$ [ROOT.Char.GetName]"\n lyd.1.a:0 "Agree"\n', bom=True)
         write(source / f"localization/{language}/lyd_c2_consent_l_{language}.yml", f'l_{language}:\n', bom=True)
         write(source / f"localization/{language}/lyd_c3_leadership_l_{language}.yml", f'l_{language}:\n', bom=True)
+        write(source / f"localization/{language}/lyd_i3b_institution_l_{language}.yml", f'l_{language}:\n', bom=True)
 
 
 class BuildTests(unittest.TestCase):
@@ -55,8 +56,58 @@ class BuildTests(unittest.TestCase):
         self.assertFalse(static.player_guard(parse("lyd_indirect = { ACTOR = scope:recipient }"), triggers))
         self.assertFalse(static.player_guard(parse("lyd_recipient = { ACTOR = root }"), triggers))
         self.assertFalse(static.player_guard(parse("NOT = { lyd_direct = { TARGET = faith } }"), triggers))
-        self.assertTrue(static.player_guard(parse("hidden_trigger = { is_ai = no }"), triggers))
+        self.assertFalse(static.player_guard(parse("hidden_trigger = { is_ai = no }"), triggers))
         self.assertFalse(static.player_guard(parse("hidden_trigger = { scope:recipient = { is_ai = no } }"), triggers))
+
+    def test_supported_display_containers_preserve_current_scope_guard_proof(self) -> None:
+        parse = static.parse_clausewitz
+        triggers = {"lyd_player": parse("is_ai = no is_alive = yes")}
+        for text in (
+            'custom_description = { text = lyd_human_subject subject = scope:recipient is_ai = no }',
+            'custom_description = { text = lyd_human_subject lyd_player = yes }',
+            'OR = { AND = { custom_description = { text = lyd_a is_ai = no } } AND = { lyd_player = yes } }',
+        ):
+            with self.subTest(positive=text):
+                self.assertTrue(static.player_guard(parse(text), triggers))
+        for text in (
+            'custom_description = { text = lyd_human_subject subject = root scope:recipient = { is_ai = no } }',
+            'NOT = { custom_description = { text = lyd_human_subject is_ai = no } }',
+            'custom_description = { text = lyd_human_subject NOT = { lyd_player = yes } }',
+            'OR = { AND = { custom_description = { text = lyd_human_subject is_ai = no } } AND = { always = yes } }',
+            'custom_description = { text = lyd_human_subject any_faith_character = { is_ai = no } }',
+            'hidden_trigger = { custom_description = { text = lyd_human_subject is_ai = no } }',
+        ):
+            with self.subTest(negative=text):
+                self.assertFalse(static.player_guard(parse(text), triggers))
+
+    def test_hidden_effect_is_transparent_without_granting_authority_or_execution(self) -> None:
+        parse = static.parse_clausewitz
+        triggers = {"lyd_player": parse("is_ai = no is_alive = yes")}
+        effects = {"lyd_guarded": parse('if = { limit = { lyd_player = yes } add_gold = 1 }'),
+                   "lyd_unprotected": parse('add_gold = 1'),
+                   "lyd_empty": parse('if = { limit = { is_ai = no } custom_tooltip = lyd_notice }')}
+        for text in (
+            'custom_tooltip = lyd_notice hidden_effect = { lyd_guarded = yes }',
+            'hidden_effect = { hidden_effect = { if = { limit = { custom_description = { text = lyd_notice is_ai = no } } add_gold = 1 } } }',
+        ):
+            with self.subTest(positive=text):
+                self.assertTrue(static.guarded_effect(parse(text), triggers, effects))
+        for text in (
+            'hidden_effect = { add_gold = 1 }',
+            'hidden_effect = { lyd_unprotected = yes }',
+            'hidden_effect = { lyd_guarded = yes add_gold = 1 }',
+            'hidden_effect = { if = { limit = { NOT = { is_ai = no } } add_gold = 1 } }',
+            'hidden_effect = { if = { limit = { scope:recipient = { is_ai = no } } add_gold = 1 } }',
+            'hidden_effect = { if = { limit = { OR = { AND = { is_ai = no } AND = { always = yes } } } add_gold = 1 } }',
+            'hidden_effect = { scope:recipient = { if = { limit = { is_ai = no } add_gold = 1 } } }',
+            'hidden_effect = { if = { limit = { hidden_trigger = { is_ai = no } } add_gold = 1 } }',
+            'hidden_effect = { custom_tooltip = lyd_notice }',
+            'hidden_effect = { if = { limit = { is_ai = no } custom_tooltip = lyd_notice } }',
+            'hidden_effect = { lyd_empty = yes }',
+            'custom_description = { text = lyd_notice hidden_effect = { lyd_guarded = yes } }',
+        ):
+            with self.subTest(negative=text):
+                self.assertFalse(static.guarded_effect(parse(text), triggers, effects))
 
     def test_variable_names_are_internal_but_option_names_are_localized(self) -> None:
         with tempfile.TemporaryDirectory(prefix="lyd-variable-loc-") as directory:
@@ -71,6 +122,82 @@ class BuildTests(unittest.TestCase):
             report = static.validate(source)
             self.assertEqual(report["result"], "RED")
             self.assertTrue(any("unlocalized field" in item and "lyd_missing_option" in item for item in report["errors"]))
+
+    def test_guard_proof_requires_positive_operators_for_helpers_and_containers(self) -> None:
+        parse = static.parse_clausewitz
+        triggers = {"lyd_player": parse("is_ai = no")}
+        for text in (
+            'custom_description = { text = foo lyd_player != yes }',
+            'custom_description != { text = foo is_ai = no }',
+            'AND >= { is_ai = no }',
+            'root != { is_ai = no }',
+            'scope:actor <= { is_ai = no }',
+            'OR != { AND = { is_ai = no } AND = { is_ai = no } }',
+            'OR = { AND != { is_ai = no } AND = { is_ai = no } }',
+            'OR = { NOT = { is_ai = no } AND = { is_ai = no } }',
+            'OR = { author0fake = { is_ai = no } AND = { is_ai = no } }',
+            'OR = { scope:recipient = { is_ai = no } AND = { is_ai = no } }',
+        ):
+            with self.subTest(negative=text):
+                self.assertFalse(static.player_guard(parse(text), triggers))
+        self.assertTrue(static.player_guard(parse(
+            'OR = { AND = { custom_description = { text = foo is_ai = no } } AND = { lyd_player = yes } }'), triggers))
+
+    def test_operation_proof_rejects_opaque_display_and_predicate_bodies(self) -> None:
+        parse = static.parse_clausewitz
+        triggers = {"lyd_player": parse("is_ai = no")}
+        effects = {"lyd_guarded": parse('if = { limit = { is_ai = no } add_gold = 1 }'),
+                   "lyd_display": parse('custom_tooltip = foo')}
+        for text in (
+            'hidden_effect != { if = { limit = { is_ai = no } add_gold = 1 } }',
+            'hidden_effect = { if != { limit = { is_ai = no } add_gold = 1 } }',
+            'hidden_effect = { lyd_guarded != yes }',
+            'hidden_effect = { lyd_guarded = no }',
+            'if = { limit != { is_ai = no } add_gold = 1 }',
+            'if = { limit = { is_ai = no } author0fake = { custom_tooltip = foo } }',
+            'if = { limit = { is_ai = no } author0fake = { is_ai = no } }',
+            'if = { limit = { is_ai = no } author0fake = { name = foo value = 1 } }',
+            'if = { limit = { is_ai = no } author0fake = { add_gold = 1 } }',
+            'if = { limit = { is_ai = no } is_ai = no }',
+            'if = { limit = { is_ai = no } save_scope_value_as = { name = x value = 1 } }',
+            'if = { limit = { is_ai = no } lyd_display = yes }',
+        ):
+            with self.subTest(negative=text):
+                self.assertFalse(static.guarded_effect(parse(text), triggers, effects))
+        for text in (
+            'if = { limit = { is_ai = no } set_variable = { name = x value = 1 } }',
+            'hidden_effect = { if = { limit = { is_ai = no } faith = { set_variable = { name = x value = 1 } } } }',
+        ):
+            with self.subTest(positive=text):
+                self.assertTrue(static.guarded_effect(parse(text), triggers, effects))
+
+    def test_full_static_gate_rejects_negative_authority_and_fake_execution(self) -> None:
+        mutants = (
+            ('lyd_actor = yes', 'custom_description = { text = foo lyd_actor != yes }', 'current actor player gate'),
+            ('lyd_notify = yes', 'author0fake = { custom_tooltip = foo }', 'executable player guard'),
+            ('lyd_actor = yes', 'OR = { NOT = { is_ai = no } AND = { is_ai = no } }', 'current actor player gate'),
+            ('lyd_actor = yes', 'OR = { scope:recipient = { is_ai = no } AND = { is_ai = no } }', 'current actor player gate'),
+            ('lyd_actor = yes', 'OR = { AND != { is_ai = no } AND = { is_ai = no } }', 'current actor player gate'),
+            ('limit = { lyd_actor = yes }', 'limit != { lyd_actor = yes }', 'executable player guard'),
+            ('is_shown = { lyd_actor = yes }', 'is_shown != { lyd_actor = yes }', 'current actor player gate'),
+            ('effect = { if', 'effect != { if', 'executable player guard'),
+        )
+        with tempfile.TemporaryDirectory(prefix="lyd-proof-regression-") as directory:
+            source = Path(directory)
+            fixture(source)
+            baseline = static.validate(source)
+            self.assertEqual(baseline['result'], 'GREEN', baseline['errors'])
+            path = source / 'common/decisions/lyd_decisions.txt'
+            initial = path.read_bytes()
+            for original, replacement, expected in mutants:
+                with self.subTest(replacement=replacement):
+                    text = initial.decode('utf-8-sig')
+                    self.assertIn(original, text)
+                    write(path, text.replace(original, replacement), bom=True)
+                    report = static.validate(source)
+                    self.assertEqual(report['result'], 'RED', report['errors'])
+                    self.assertTrue(any(expected in error for error in report['errors']), report['errors'])
+                    path.write_bytes(initial)
 
     def test_reproducible_archive_and_fixture_exclusion(self) -> None:
         with tempfile.TemporaryDirectory(prefix="lyd-build-test-") as directory:

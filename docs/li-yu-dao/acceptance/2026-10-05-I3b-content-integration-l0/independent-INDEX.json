@@ -1,0 +1,2113 @@
+{
+  "schema": "lyd.final003.independent-review-index.v1",
+  "candidate_INDEX_sha256": "4938190dc256d517e332e7c3f5f99565315b8cfc5261f7ccc683940d3f02d569",
+  "indexed_file_count": 421,
+  "indexed_bytes": 1209217,
+  "files": [
+    {
+      "path": "build_validator_variant.py",
+      "bytes": 5676,
+      "sha256": "dbd5e9acdcec75203759dd6c8eef8c6d738571dc8510a8d988877350463a724a"
+    },
+    {
+      "path": "build_validator_variant2.py",
+      "bytes": 2376,
+      "sha256": "8d5be2dc858441d065472139c078b2d50ce9ca885414aeb98cc752b3ba7a3df6"
+    },
+    {
+      "path": "challenge_final003_i3b.py",
+      "bytes": 2066,
+      "sha256": "a6af45a71739d9868bbc1d9bd9643dee4e687df733029f920208deb8cfd05f24"
+    },
+    {
+      "path": "challenge_full_static.py",
+      "bytes": 1925,
+      "sha256": "8d14cebb460d7f32c91c0a90a88ef3779099db65ffe08815f5d6e90bb9f84aa1"
+    },
+    {
+      "path": "challenge_integrated_i3b.py",
+      "bytes": 2024,
+      "sha256": "fadcd6b78c2c97a3ff7874461602a4e0774cf3a6f631032a5341da18159ef16a"
+    },
+    {
+      "path": "challenge_validator.py",
+      "bytes": 5957,
+      "sha256": "64c8b222f61aaf1508243db9cc402494b57f369b0f24076c9f0d1879fdf3dc83"
+    },
+    {
+      "path": "challenge_variant_followup.py",
+      "bytes": 3613,
+      "sha256": "4d98f23b4e0ccc676f0fa98f362243fab4a6183c28a5925927b9eb97e63139e8"
+    },
+    {
+      "path": "check_final003_generators_and_business.py",
+      "bytes": 5273,
+      "sha256": "ec11680fe61e626418af64325f60b864c72fd794a74d58d5e004e9f457778a39"
+    },
+    {
+      "path": "check_final003_metadata_and_copyedit.py",
+      "bytes": 8464,
+      "sha256": "088e8db3c646be7e2830e33bd9d27a8a20af5a231cd7e5b52a01938481dd3a4d"
+    },
+    {
+      "path": "check_generators_and_business.py",
+      "bytes": 5182,
+      "sha256": "e3cf3ebc8975685dda46778ee652539763aa3cd190d970d5a70fddf79284765c"
+    },
+    {
+      "path": "check_integrated_metadata.py",
+      "bytes": 3289,
+      "sha256": "e97338375d5a0546ae21887992488193ff752f72c987de47887b91f9341ae39d"
+    },
+    {
+      "path": "compare_validator_versions.py",
+      "bytes": 2180,
+      "sha256": "15402ffdc9fb88c4f723afa86695baeec17e516f0f43e284a9d85ea568353e8d"
+    },
+    {
+      "path": "delta-and-writer-checks.json",
+      "bytes": 19567,
+      "sha256": "f190d30b9c07711f2895fc32d3914e1fe15813da5783befe3694416191a9ff60"
+    },
+    {
+      "path": "final003-checks/challenges.json",
+      "bytes": 14778,
+      "sha256": "84ac9dccb754ec79cf18c08a9c13cfbd0b1738e8f40bc29d75e4bd8423255b6f"
+    },
+    {
+      "path": "final003-checks/existing-build-tests.stdout.txt",
+      "bytes": 1842,
+      "sha256": "42d3618bfb9de4c06928aaa8ef263262f8a984ddce93a120925933bd8ffffeb8"
+    },
+    {
+      "path": "final003-checks/full-product-static.json",
+      "bytes": 9254,
+      "sha256": "4ba774f3c3053caad0a03e32723840ea43859c94647afaeb87493fb68f528ab4"
+    },
+    {
+      "path": "final003-checks/full-static-baseline.json",
+      "bytes": 5068,
+      "sha256": "d6d8c645cb2bed7d32263afa01111ec5a753c5b27b40f4921ca341b9b1f1deb9"
+    },
+    {
+      "path": "final003-checks/full-static-fake_pure_tooltip_wrapper.json",
+      "bytes": 5133,
+      "sha256": "d4575cc2ca4b6e26a13ce66aaeba581df8fb4387032872e7eb6cf39a519c89d8"
+    },
+    {
+      "path": "final003-checks/full-static-negative_effect_container_operator.json",
+      "bytes": 5133,
+      "sha256": "bce189646b5528ae02abc2ac512504b800e9b01d0119bf09f72593a1d00b97cf"
+    },
+    {
+      "path": "final003-checks/full-static-negative_helper_operator.json",
+      "bytes": 5192,
+      "sha256": "54d3255cee17e2221551abe1af0d98ea1ee63ed8d8b630146a7f9f265433e59d"
+    },
+    {
+      "path": "final003-checks/full-static-negative_limit_operator.json",
+      "bytes": 5133,
+      "sha256": "c481834ca1b199ab6f57a3a4ba6007643b8677612f459e62d00971de2e3e8c7b"
+    },
+    {
+      "path": "final003-checks/full-static-negative_shown_operator.json",
+      "bytes": 5128,
+      "sha256": "e3e85b43ca0364c9726bb36cfe2a1c9cb9b7c834930a9259200b16016bb09782"
+    },
+    {
+      "path": "final003-checks/full-static-OR_AND_wrong_operator.json",
+      "bytes": 5192,
+      "sha256": "f786516f05d02855c2837738034c87db22fe6628cbc87e55999459aa38673baf"
+    },
+    {
+      "path": "final003-checks/full-static-OR_NOT_tautology.json",
+      "bytes": 5192,
+      "sha256": "9999863143d0cda33f120acc8de14cafde6cc6c3e4ca64b6be197c90b0e3e8f6"
+    },
+    {
+      "path": "final003-checks/full-static-OR_target_branch.json",
+      "bytes": 5192,
+      "sha256": "f850aa6e00b3f0ad296813f87a2614e2ddd9d830d25a4473fd68d0fb354ed18c"
+    },
+    {
+      "path": "final003-checks/generators-and-business.json",
+      "bytes": 26927,
+      "sha256": "8ada9faac4667972ef18322997533f687c25c0e54eaeb995133814f0b5ada280"
+    },
+    {
+      "path": "final003-checks/INDEX.json",
+      "bytes": 2399,
+      "sha256": "a43a24f32ca5c0da77b7a0aaa7f4aac92c1a126fe76853eff96023b1e3fe757b"
+    },
+    {
+      "path": "final003-checks/input-verification.json",
+      "bytes": 429025,
+      "sha256": "d14e0c56d0f4c70a1021eb499568252ea9252c95e837ef13d50c8d69f7997eba"
+    },
+    {
+      "path": "final003-checks/integrated-I3b-challenges.json",
+      "bytes": 4499,
+      "sha256": "2fea62ef7f0614e03870a32046b903816172904e39e94410d4c6d3cecd8dae9d"
+    },
+    {
+      "path": "final003-checks/metadata-and-copyedit.json",
+      "bytes": 64544,
+      "sha256": "4dbf94aa296a627196b370f564b2bf179bc0c6ea25bec41e96a8f7ac5c46421c"
+    },
+    {
+      "path": "final003-checks/post-review-byte-verification.json",
+      "bytes": 2108,
+      "sha256": "179fc58930dbbce56e84f2ebb7ffd73068962e0494eb4fa6c3accbb4dba73d0c"
+    },
+    {
+      "path": "finalize_review.py",
+      "bytes": 11401,
+      "sha256": "53faf96e063ba3d93f96744c0924a31d77c6de5200222e4f92e21bc4f649e4bd"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/character_interactions/lyd_c3_teacher_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/character_interactions/lyd_i3b_nomination_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/character_interactions/lyd_interactions.txt",
+      "bytes": 121,
+      "sha256": "8af21e566d7607f1bfa8eae08e9c158a84bf92126e640ff058880002061e276d"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/decisions/lyd_c2_consent_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/decisions/lyd_c3_leadership_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/decisions/lyd_decisions.txt",
+      "bytes": 233,
+      "sha256": "80e9dfb51a6b2afb81ae7a95a739ffb79c9ef6f706afb23f0fedb0dbc60f1f0b"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/decisions/lyd_i3b_institution_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/on_action/lyd_c3_lifecycle_on_actions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 93,
+      "sha256": "4e88f1d448afe6dca64090c19eff296aa7b5df4bb3180a39461f14b47b64b133"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/religion/rite_types/lyd_rites.txt",
+      "bytes": 129,
+      "sha256": "23f1ef5b3a70031d164d44a3207e873341eea68a67faf23691500db06c12f5dc"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 64,
+      "sha256": "81153590c31eb4f5a613ce8c7eb89be6b7801475b242ecf7cdfe73f5bbc2218e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/script_values/lyd_c2_consent_values.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/script_values/lyd_i3b_institution_values.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/scripted_effects/lyd_i3b_terms_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/scripted_effects/lyd_notice_effects.txt",
+      "bytes": 99,
+      "sha256": "940591006cb24f2fb245eefe374e3f860315d420c49cca7bc6db60cc531ecdf8"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/scripted_triggers/lyd_actor_triggers.txt",
+      "bytes": 30,
+      "sha256": "31dbb244c38252a1e77f3d6d47cb88381cf2bddb28e9ab973c6071ab3bba45dd"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/descriptor.mod",
+      "bytes": 68,
+      "sha256": "72eac6745bfdccaf44fb8a70c193ef552e182376e3a1fd5ebe02dcfe91c3a0cb"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/events/lyd_c2_consent_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/events/lyd_c3_leadership_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/events/lyd_events.txt",
+      "bytes": 113,
+      "sha256": "0d847b57a3d25b03a095e0a59259c6a6100838517484e8edf29d55113ea0d8f6"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/events/lyd_i3b_institution_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/history/faiths/lyd_faith_history.txt",
+      "bytes": 54,
+      "sha256": "3e3d8d388f0b02759ec431ffe80e38f3ea344d64bcbf80f63b36caa6c5285f92"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/localization/english/lyd_c2_consent_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/localization/english/lyd_c3_leadership_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/localization/english/lyd_content_l_english.yml",
+      "bytes": 284,
+      "sha256": "dbf76fb4fbd33971884f388e47d8e8530c73844bcfcbb95de90541d93427c332"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/localization/english/lyd_i3b_institution_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/localization/english/lyd_runtime_l_english.yml",
+      "bytes": 145,
+      "sha256": "75319d4db9e33f996a6e3b496c904d7bf5d7d81fefa5fb7e4e6313a83259748b"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 289,
+      "sha256": "feadbdd7a0e96d8a7de77dad2fcc7e64557910f92156c807e2639dae44ffbd08"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 150,
+      "sha256": "b1694906dbe95e4bb0b11bff1f62f62913ab7a5fc2b6b2ab1221d624d91c0f99"
+    },
+    {
+      "path": "followup-full-fixtures/negative_effect_container_operator-report.json",
+      "bytes": 5068,
+      "sha256": "425a70f4dd45528a57cab6820121d1e27e02ed2037ccf641f17f022b2efcb82c"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/character_interactions/lyd_c3_teacher_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/character_interactions/lyd_i3b_nomination_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/character_interactions/lyd_interactions.txt",
+      "bytes": 121,
+      "sha256": "8af21e566d7607f1bfa8eae08e9c158a84bf92126e640ff058880002061e276d"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/decisions/lyd_c2_consent_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/decisions/lyd_c3_leadership_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/decisions/lyd_decisions.txt",
+      "bytes": 233,
+      "sha256": "4e193d7385c85feb0f5033dc3f2275d97cda8f068512345f289b641e2839d41e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/decisions/lyd_i3b_institution_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/on_action/lyd_c3_lifecycle_on_actions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 93,
+      "sha256": "4e88f1d448afe6dca64090c19eff296aa7b5df4bb3180a39461f14b47b64b133"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/religion/rite_types/lyd_rites.txt",
+      "bytes": 129,
+      "sha256": "23f1ef5b3a70031d164d44a3207e873341eea68a67faf23691500db06c12f5dc"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 64,
+      "sha256": "81153590c31eb4f5a613ce8c7eb89be6b7801475b242ecf7cdfe73f5bbc2218e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/script_values/lyd_c2_consent_values.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/script_values/lyd_i3b_institution_values.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/scripted_effects/lyd_i3b_terms_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/scripted_effects/lyd_notice_effects.txt",
+      "bytes": 99,
+      "sha256": "940591006cb24f2fb245eefe374e3f860315d420c49cca7bc6db60cc531ecdf8"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/scripted_triggers/lyd_actor_triggers.txt",
+      "bytes": 30,
+      "sha256": "31dbb244c38252a1e77f3d6d47cb88381cf2bddb28e9ab973c6071ab3bba45dd"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/descriptor.mod",
+      "bytes": 68,
+      "sha256": "72eac6745bfdccaf44fb8a70c193ef552e182376e3a1fd5ebe02dcfe91c3a0cb"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/events/lyd_c2_consent_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/events/lyd_c3_leadership_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/events/lyd_events.txt",
+      "bytes": 113,
+      "sha256": "0d847b57a3d25b03a095e0a59259c6a6100838517484e8edf29d55113ea0d8f6"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/events/lyd_i3b_institution_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/history/faiths/lyd_faith_history.txt",
+      "bytes": 54,
+      "sha256": "3e3d8d388f0b02759ec431ffe80e38f3ea344d64bcbf80f63b36caa6c5285f92"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/localization/english/lyd_c2_consent_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/localization/english/lyd_c3_leadership_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/localization/english/lyd_content_l_english.yml",
+      "bytes": 284,
+      "sha256": "dbf76fb4fbd33971884f388e47d8e8530c73844bcfcbb95de90541d93427c332"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/localization/english/lyd_i3b_institution_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/localization/english/lyd_runtime_l_english.yml",
+      "bytes": 145,
+      "sha256": "75319d4db9e33f996a6e3b496c904d7bf5d7d81fefa5fb7e4e6313a83259748b"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 289,
+      "sha256": "feadbdd7a0e96d8a7de77dad2fcc7e64557910f92156c807e2639dae44ffbd08"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 150,
+      "sha256": "b1694906dbe95e4bb0b11bff1f62f62913ab7a5fc2b6b2ab1221d624d91c0f99"
+    },
+    {
+      "path": "followup-full-fixtures/negative_limit_operator-report.json",
+      "bytes": 5068,
+      "sha256": "771709ebe3f53fad578ed1c703929c7c2f3c6db5db7214abc68116dfcf7db589"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/character_interactions/lyd_c3_teacher_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/character_interactions/lyd_i3b_nomination_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/character_interactions/lyd_interactions.txt",
+      "bytes": 121,
+      "sha256": "8af21e566d7607f1bfa8eae08e9c158a84bf92126e640ff058880002061e276d"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/decisions/lyd_c2_consent_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/decisions/lyd_c3_leadership_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/decisions/lyd_decisions.txt",
+      "bytes": 233,
+      "sha256": "279194976e448177281f868e0e48a6ca3655b14f98560a08b81b5619ac2c4135"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/decisions/lyd_i3b_institution_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/on_action/lyd_c3_lifecycle_on_actions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 93,
+      "sha256": "4e88f1d448afe6dca64090c19eff296aa7b5df4bb3180a39461f14b47b64b133"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/religion/rite_types/lyd_rites.txt",
+      "bytes": 129,
+      "sha256": "23f1ef5b3a70031d164d44a3207e873341eea68a67faf23691500db06c12f5dc"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 64,
+      "sha256": "81153590c31eb4f5a613ce8c7eb89be6b7801475b242ecf7cdfe73f5bbc2218e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/script_values/lyd_c2_consent_values.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/script_values/lyd_i3b_institution_values.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/scripted_effects/lyd_i3b_terms_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/scripted_effects/lyd_notice_effects.txt",
+      "bytes": 99,
+      "sha256": "940591006cb24f2fb245eefe374e3f860315d420c49cca7bc6db60cc531ecdf8"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/scripted_triggers/lyd_actor_triggers.txt",
+      "bytes": 30,
+      "sha256": "31dbb244c38252a1e77f3d6d47cb88381cf2bddb28e9ab973c6071ab3bba45dd"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/descriptor.mod",
+      "bytes": 68,
+      "sha256": "72eac6745bfdccaf44fb8a70c193ef552e182376e3a1fd5ebe02dcfe91c3a0cb"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/events/lyd_c2_consent_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/events/lyd_c3_leadership_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/events/lyd_events.txt",
+      "bytes": 113,
+      "sha256": "0d847b57a3d25b03a095e0a59259c6a6100838517484e8edf29d55113ea0d8f6"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/events/lyd_i3b_institution_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/history/faiths/lyd_faith_history.txt",
+      "bytes": 54,
+      "sha256": "3e3d8d388f0b02759ec431ffe80e38f3ea344d64bcbf80f63b36caa6c5285f92"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/localization/english/lyd_c2_consent_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/localization/english/lyd_c3_leadership_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/localization/english/lyd_content_l_english.yml",
+      "bytes": 284,
+      "sha256": "dbf76fb4fbd33971884f388e47d8e8530c73844bcfcbb95de90541d93427c332"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/localization/english/lyd_i3b_institution_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/localization/english/lyd_runtime_l_english.yml",
+      "bytes": 145,
+      "sha256": "75319d4db9e33f996a6e3b496c904d7bf5d7d81fefa5fb7e4e6313a83259748b"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 289,
+      "sha256": "feadbdd7a0e96d8a7de77dad2fcc7e64557910f92156c807e2639dae44ffbd08"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 150,
+      "sha256": "b1694906dbe95e4bb0b11bff1f62f62913ab7a5fc2b6b2ab1221d624d91c0f99"
+    },
+    {
+      "path": "followup-full-fixtures/negative_shown_operator-report.json",
+      "bytes": 5068,
+      "sha256": "f4ad98cea209992bf474d242a6bd095580a5672e9abd3d949f4a920ed8f7e13b"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/character_interactions/lyd_c3_teacher_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/character_interactions/lyd_i3b_nomination_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/character_interactions/lyd_interactions.txt",
+      "bytes": 121,
+      "sha256": "8af21e566d7607f1bfa8eae08e9c158a84bf92126e640ff058880002061e276d"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/decisions/lyd_c2_consent_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/decisions/lyd_c3_leadership_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/decisions/lyd_decisions.txt",
+      "bytes": 304,
+      "sha256": "3f0b81b014de8ee59b568b0a7966280be5bcf78b42a3f75bec9cabf66e9cd031"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/decisions/lyd_i3b_institution_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/on_action/lyd_c3_lifecycle_on_actions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 93,
+      "sha256": "4e88f1d448afe6dca64090c19eff296aa7b5df4bb3180a39461f14b47b64b133"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/religion/rite_types/lyd_rites.txt",
+      "bytes": 129,
+      "sha256": "23f1ef5b3a70031d164d44a3207e873341eea68a67faf23691500db06c12f5dc"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 64,
+      "sha256": "81153590c31eb4f5a613ce8c7eb89be6b7801475b242ecf7cdfe73f5bbc2218e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/script_values/lyd_c2_consent_values.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/script_values/lyd_i3b_institution_values.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/scripted_effects/lyd_i3b_terms_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/scripted_effects/lyd_notice_effects.txt",
+      "bytes": 99,
+      "sha256": "940591006cb24f2fb245eefe374e3f860315d420c49cca7bc6db60cc531ecdf8"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/scripted_triggers/lyd_actor_triggers.txt",
+      "bytes": 30,
+      "sha256": "31dbb244c38252a1e77f3d6d47cb88381cf2bddb28e9ab973c6071ab3bba45dd"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/descriptor.mod",
+      "bytes": 68,
+      "sha256": "72eac6745bfdccaf44fb8a70c193ef552e182376e3a1fd5ebe02dcfe91c3a0cb"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/events/lyd_c2_consent_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/events/lyd_c3_leadership_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/events/lyd_events.txt",
+      "bytes": 113,
+      "sha256": "0d847b57a3d25b03a095e0a59259c6a6100838517484e8edf29d55113ea0d8f6"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/events/lyd_i3b_institution_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/history/faiths/lyd_faith_history.txt",
+      "bytes": 54,
+      "sha256": "3e3d8d388f0b02759ec431ffe80e38f3ea344d64bcbf80f63b36caa6c5285f92"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/localization/english/lyd_c2_consent_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/localization/english/lyd_c3_leadership_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/localization/english/lyd_content_l_english.yml",
+      "bytes": 284,
+      "sha256": "dbf76fb4fbd33971884f388e47d8e8530c73844bcfcbb95de90541d93427c332"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/localization/english/lyd_i3b_institution_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/localization/english/lyd_runtime_l_english.yml",
+      "bytes": 145,
+      "sha256": "75319d4db9e33f996a6e3b496c904d7bf5d7d81fefa5fb7e4e6313a83259748b"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 289,
+      "sha256": "feadbdd7a0e96d8a7de77dad2fcc7e64557910f92156c807e2639dae44ffbd08"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 150,
+      "sha256": "b1694906dbe95e4bb0b11bff1f62f62913ab7a5fc2b6b2ab1221d624d91c0f99"
+    },
+    {
+      "path": "followup-full-fixtures/OR_AND_wrong_operator-report.json",
+      "bytes": 5068,
+      "sha256": "66c03f3747551234627ef08e66a0721726a6a1dbadf88d36854c20b39a54b18d"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/character_interactions/lyd_c3_teacher_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/character_interactions/lyd_i3b_nomination_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/character_interactions/lyd_interactions.txt",
+      "bytes": 121,
+      "sha256": "8af21e566d7607f1bfa8eae08e9c158a84bf92126e640ff058880002061e276d"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/decisions/lyd_c2_consent_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/decisions/lyd_c3_leadership_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/decisions/lyd_decisions.txt",
+      "bytes": 322,
+      "sha256": "932535f6fecfc40e80dfe20f0ed784b86218f36da2c606abd76e2438635859d2"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/decisions/lyd_i3b_institution_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/on_action/lyd_c3_lifecycle_on_actions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 93,
+      "sha256": "4e88f1d448afe6dca64090c19eff296aa7b5df4bb3180a39461f14b47b64b133"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/religion/rite_types/lyd_rites.txt",
+      "bytes": 129,
+      "sha256": "23f1ef5b3a70031d164d44a3207e873341eea68a67faf23691500db06c12f5dc"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 64,
+      "sha256": "81153590c31eb4f5a613ce8c7eb89be6b7801475b242ecf7cdfe73f5bbc2218e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/script_values/lyd_c2_consent_values.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/script_values/lyd_i3b_institution_values.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/scripted_effects/lyd_i3b_terms_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/scripted_effects/lyd_notice_effects.txt",
+      "bytes": 99,
+      "sha256": "940591006cb24f2fb245eefe374e3f860315d420c49cca7bc6db60cc531ecdf8"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/scripted_triggers/lyd_actor_triggers.txt",
+      "bytes": 30,
+      "sha256": "31dbb244c38252a1e77f3d6d47cb88381cf2bddb28e9ab973c6071ab3bba45dd"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/descriptor.mod",
+      "bytes": 68,
+      "sha256": "72eac6745bfdccaf44fb8a70c193ef552e182376e3a1fd5ebe02dcfe91c3a0cb"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/events/lyd_c2_consent_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/events/lyd_c3_leadership_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/events/lyd_events.txt",
+      "bytes": 113,
+      "sha256": "0d847b57a3d25b03a095e0a59259c6a6100838517484e8edf29d55113ea0d8f6"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/events/lyd_i3b_institution_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/history/faiths/lyd_faith_history.txt",
+      "bytes": 54,
+      "sha256": "3e3d8d388f0b02759ec431ffe80e38f3ea344d64bcbf80f63b36caa6c5285f92"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/localization/english/lyd_c2_consent_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/localization/english/lyd_c3_leadership_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/localization/english/lyd_content_l_english.yml",
+      "bytes": 284,
+      "sha256": "dbf76fb4fbd33971884f388e47d8e8530c73844bcfcbb95de90541d93427c332"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/localization/english/lyd_i3b_institution_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/localization/english/lyd_runtime_l_english.yml",
+      "bytes": 145,
+      "sha256": "75319d4db9e33f996a6e3b496c904d7bf5d7d81fefa5fb7e4e6313a83259748b"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 289,
+      "sha256": "feadbdd7a0e96d8a7de77dad2fcc7e64557910f92156c807e2639dae44ffbd08"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 150,
+      "sha256": "b1694906dbe95e4bb0b11bff1f62f62913ab7a5fc2b6b2ab1221d624d91c0f99"
+    },
+    {
+      "path": "followup-full-fixtures/OR_NOT_tautology-report.json",
+      "bytes": 5068,
+      "sha256": "2248284fe03dbece3c81929904755a1bd9ce535f9b1341225ca027719e291783"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/character_interactions/lyd_c3_teacher_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/character_interactions/lyd_i3b_nomination_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/character_interactions/lyd_interactions.txt",
+      "bytes": 121,
+      "sha256": "8af21e566d7607f1bfa8eae08e9c158a84bf92126e640ff058880002061e276d"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/decisions/lyd_c2_consent_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/decisions/lyd_c3_leadership_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/decisions/lyd_decisions.txt",
+      "bytes": 326,
+      "sha256": "a67cc98efbba7512061c91a25921a8552d9cd6f611d64e5fa3cbe6b4791aaddf"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/decisions/lyd_i3b_institution_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/on_action/lyd_c3_lifecycle_on_actions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 93,
+      "sha256": "4e88f1d448afe6dca64090c19eff296aa7b5df4bb3180a39461f14b47b64b133"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/religion/rite_types/lyd_rites.txt",
+      "bytes": 129,
+      "sha256": "23f1ef5b3a70031d164d44a3207e873341eea68a67faf23691500db06c12f5dc"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 64,
+      "sha256": "81153590c31eb4f5a613ce8c7eb89be6b7801475b242ecf7cdfe73f5bbc2218e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/script_values/lyd_c2_consent_values.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/script_values/lyd_i3b_institution_values.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/scripted_effects/lyd_i3b_terms_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/scripted_effects/lyd_notice_effects.txt",
+      "bytes": 99,
+      "sha256": "940591006cb24f2fb245eefe374e3f860315d420c49cca7bc6db60cc531ecdf8"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/scripted_triggers/lyd_actor_triggers.txt",
+      "bytes": 30,
+      "sha256": "31dbb244c38252a1e77f3d6d47cb88381cf2bddb28e9ab973c6071ab3bba45dd"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/descriptor.mod",
+      "bytes": 68,
+      "sha256": "72eac6745bfdccaf44fb8a70c193ef552e182376e3a1fd5ebe02dcfe91c3a0cb"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/events/lyd_c2_consent_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/events/lyd_c3_leadership_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/events/lyd_events.txt",
+      "bytes": 113,
+      "sha256": "0d847b57a3d25b03a095e0a59259c6a6100838517484e8edf29d55113ea0d8f6"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/events/lyd_i3b_institution_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/history/faiths/lyd_faith_history.txt",
+      "bytes": 54,
+      "sha256": "3e3d8d388f0b02759ec431ffe80e38f3ea344d64bcbf80f63b36caa6c5285f92"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/localization/english/lyd_c2_consent_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/localization/english/lyd_c3_leadership_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/localization/english/lyd_content_l_english.yml",
+      "bytes": 284,
+      "sha256": "dbf76fb4fbd33971884f388e47d8e8530c73844bcfcbb95de90541d93427c332"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/localization/english/lyd_i3b_institution_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/localization/english/lyd_runtime_l_english.yml",
+      "bytes": 145,
+      "sha256": "75319d4db9e33f996a6e3b496c904d7bf5d7d81fefa5fb7e4e6313a83259748b"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 289,
+      "sha256": "feadbdd7a0e96d8a7de77dad2fcc7e64557910f92156c807e2639dae44ffbd08"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 150,
+      "sha256": "b1694906dbe95e4bb0b11bff1f62f62913ab7a5fc2b6b2ab1221d624d91c0f99"
+    },
+    {
+      "path": "followup-full-fixtures/OR_target_branch-report.json",
+      "bytes": 5068,
+      "sha256": "069de17b558f63240ce638041b81308bd099f5c97451053ab86b0f75ec3d156d"
+    },
+    {
+      "path": "frozen-predecessors-verification.json",
+      "bytes": 1773,
+      "sha256": "8a8b4873255e9361893bf857b1457ceba36eee7e6c45e2bbf127fc0d1f32e248"
+    },
+    {
+      "path": "full-static-challenges.json",
+      "bytes": 758,
+      "sha256": "a8140a7ebd6f0f017266bd492535957d7dd7b45f97cced019c8ddd67ebb93d11"
+    },
+    {
+      "path": "full-static-variants/baseline/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/baseline/common/character_interactions/lyd_c3_teacher_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/baseline/common/character_interactions/lyd_i3b_nomination_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/baseline/common/character_interactions/lyd_interactions.txt",
+      "bytes": 121,
+      "sha256": "8af21e566d7607f1bfa8eae08e9c158a84bf92126e640ff058880002061e276d"
+    },
+    {
+      "path": "full-static-variants/baseline/common/decisions/lyd_c2_consent_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/baseline/common/decisions/lyd_c3_leadership_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/baseline/common/decisions/lyd_decisions.txt",
+      "bytes": 232,
+      "sha256": "103a19bfec03a635e870cab03ea0e4f302edef8bdb8a08e9f7760112a634397a"
+    },
+    {
+      "path": "full-static-variants/baseline/common/decisions/lyd_i3b_institution_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/baseline/common/on_action/lyd_c3_lifecycle_on_actions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/baseline/common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 93,
+      "sha256": "4e88f1d448afe6dca64090c19eff296aa7b5df4bb3180a39461f14b47b64b133"
+    },
+    {
+      "path": "full-static-variants/baseline/common/religion/rite_types/lyd_rites.txt",
+      "bytes": 129,
+      "sha256": "23f1ef5b3a70031d164d44a3207e873341eea68a67faf23691500db06c12f5dc"
+    },
+    {
+      "path": "full-static-variants/baseline/common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 64,
+      "sha256": "81153590c31eb4f5a613ce8c7eb89be6b7801475b242ecf7cdfe73f5bbc2218e"
+    },
+    {
+      "path": "full-static-variants/baseline/common/script_values/lyd_c2_consent_values.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/baseline/common/script_values/lyd_i3b_institution_values.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/baseline/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/baseline/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/baseline/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/baseline/common/scripted_effects/lyd_i3b_terms_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/baseline/common/scripted_effects/lyd_notice_effects.txt",
+      "bytes": 99,
+      "sha256": "940591006cb24f2fb245eefe374e3f860315d420c49cca7bc6db60cc531ecdf8"
+    },
+    {
+      "path": "full-static-variants/baseline/common/scripted_triggers/lyd_actor_triggers.txt",
+      "bytes": 30,
+      "sha256": "31dbb244c38252a1e77f3d6d47cb88381cf2bddb28e9ab973c6071ab3bba45dd"
+    },
+    {
+      "path": "full-static-variants/baseline/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/baseline/descriptor.mod",
+      "bytes": 68,
+      "sha256": "72eac6745bfdccaf44fb8a70c193ef552e182376e3a1fd5ebe02dcfe91c3a0cb"
+    },
+    {
+      "path": "full-static-variants/baseline/events/lyd_c2_consent_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/baseline/events/lyd_c3_leadership_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/baseline/events/lyd_events.txt",
+      "bytes": 113,
+      "sha256": "0d847b57a3d25b03a095e0a59259c6a6100838517484e8edf29d55113ea0d8f6"
+    },
+    {
+      "path": "full-static-variants/baseline/events/lyd_i3b_institution_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/baseline/history/faiths/lyd_faith_history.txt",
+      "bytes": 54,
+      "sha256": "3e3d8d388f0b02759ec431ffe80e38f3ea344d64bcbf80f63b36caa6c5285f92"
+    },
+    {
+      "path": "full-static-variants/baseline/localization/english/lyd_c2_consent_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "full-static-variants/baseline/localization/english/lyd_c3_leadership_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "full-static-variants/baseline/localization/english/lyd_content_l_english.yml",
+      "bytes": 284,
+      "sha256": "dbf76fb4fbd33971884f388e47d8e8530c73844bcfcbb95de90541d93427c332"
+    },
+    {
+      "path": "full-static-variants/baseline/localization/english/lyd_i3b_institution_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "full-static-variants/baseline/localization/english/lyd_runtime_l_english.yml",
+      "bytes": 145,
+      "sha256": "75319d4db9e33f996a6e3b496c904d7bf5d7d81fefa5fb7e4e6313a83259748b"
+    },
+    {
+      "path": "full-static-variants/baseline/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "full-static-variants/baseline/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "full-static-variants/baseline/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 289,
+      "sha256": "feadbdd7a0e96d8a7de77dad2fcc7e64557910f92156c807e2639dae44ffbd08"
+    },
+    {
+      "path": "full-static-variants/baseline/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "full-static-variants/baseline/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 150,
+      "sha256": "b1694906dbe95e4bb0b11bff1f62f62913ab7a5fc2b6b2ab1221d624d91c0f99"
+    },
+    {
+      "path": "full-static-variants/baseline-report.json",
+      "bytes": 5068,
+      "sha256": "d6d8c645cb2bed7d32263afa01111ec5a753c5b27b40f4921ca341b9b1f1deb9"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/character_interactions/lyd_c3_teacher_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/character_interactions/lyd_i3b_nomination_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/character_interactions/lyd_interactions.txt",
+      "bytes": 121,
+      "sha256": "8af21e566d7607f1bfa8eae08e9c158a84bf92126e640ff058880002061e276d"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/decisions/lyd_c2_consent_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/decisions/lyd_c3_leadership_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/decisions/lyd_decisions.txt",
+      "bytes": 254,
+      "sha256": "8c7f1793a5bf42b3668a229567b4abf0cecc22f238e9772228bb5b8c80e39981"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/decisions/lyd_i3b_institution_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/on_action/lyd_c3_lifecycle_on_actions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 93,
+      "sha256": "4e88f1d448afe6dca64090c19eff296aa7b5df4bb3180a39461f14b47b64b133"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/religion/rite_types/lyd_rites.txt",
+      "bytes": 129,
+      "sha256": "23f1ef5b3a70031d164d44a3207e873341eea68a67faf23691500db06c12f5dc"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 64,
+      "sha256": "81153590c31eb4f5a613ce8c7eb89be6b7801475b242ecf7cdfe73f5bbc2218e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/script_values/lyd_c2_consent_values.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/script_values/lyd_i3b_institution_values.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/scripted_effects/lyd_i3b_terms_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/scripted_effects/lyd_notice_effects.txt",
+      "bytes": 99,
+      "sha256": "940591006cb24f2fb245eefe374e3f860315d420c49cca7bc6db60cc531ecdf8"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/scripted_triggers/lyd_actor_triggers.txt",
+      "bytes": 30,
+      "sha256": "31dbb244c38252a1e77f3d6d47cb88381cf2bddb28e9ab973c6071ab3bba45dd"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/descriptor.mod",
+      "bytes": 68,
+      "sha256": "72eac6745bfdccaf44fb8a70c193ef552e182376e3a1fd5ebe02dcfe91c3a0cb"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/events/lyd_c2_consent_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/events/lyd_c3_leadership_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/events/lyd_events.txt",
+      "bytes": 113,
+      "sha256": "0d847b57a3d25b03a095e0a59259c6a6100838517484e8edf29d55113ea0d8f6"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/events/lyd_i3b_institution_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/history/faiths/lyd_faith_history.txt",
+      "bytes": 54,
+      "sha256": "3e3d8d388f0b02759ec431ffe80e38f3ea344d64bcbf80f63b36caa6c5285f92"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/localization/english/lyd_c2_consent_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/localization/english/lyd_c3_leadership_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/localization/english/lyd_content_l_english.yml",
+      "bytes": 284,
+      "sha256": "dbf76fb4fbd33971884f388e47d8e8530c73844bcfcbb95de90541d93427c332"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/localization/english/lyd_i3b_institution_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/localization/english/lyd_runtime_l_english.yml",
+      "bytes": 145,
+      "sha256": "75319d4db9e33f996a6e3b496c904d7bf5d7d81fefa5fb7e4e6313a83259748b"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 289,
+      "sha256": "feadbdd7a0e96d8a7de77dad2fcc7e64557910f92156c807e2639dae44ffbd08"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 150,
+      "sha256": "b1694906dbe95e4bb0b11bff1f62f62913ab7a5fc2b6b2ab1221d624d91c0f99"
+    },
+    {
+      "path": "full-static-variants/fake_pure_tooltip_wrapper-report.json",
+      "bytes": 5068,
+      "sha256": "57d2b060d5d21815e0d2d5f43541aba7ae861c9c143b7c1147798789b1829a76"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/character_interactions/lyd_c3_teacher_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/character_interactions/lyd_i3b_nomination_interactions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/character_interactions/lyd_interactions.txt",
+      "bytes": 121,
+      "sha256": "8af21e566d7607f1bfa8eae08e9c158a84bf92126e640ff058880002061e276d"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/decisions/lyd_c2_consent_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/decisions/lyd_c3_leadership_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/decisions/lyd_decisions.txt",
+      "bytes": 234,
+      "sha256": "6b46e22de90805d67fbcf14145d90b0ef2bb7bb914538350b096f50eb16fe0e4"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/decisions/lyd_i3b_institution_decisions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/on_action/lyd_c3_lifecycle_on_actions.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 93,
+      "sha256": "4e88f1d448afe6dca64090c19eff296aa7b5df4bb3180a39461f14b47b64b133"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/religion/rite_types/lyd_rites.txt",
+      "bytes": 129,
+      "sha256": "23f1ef5b3a70031d164d44a3207e873341eea68a67faf23691500db06c12f5dc"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 64,
+      "sha256": "81153590c31eb4f5a613ce8c7eb89be6b7801475b242ecf7cdfe73f5bbc2218e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/script_values/lyd_c2_consent_values.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/script_values/lyd_i3b_institution_values.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/scripted_effects/lyd_i3b_terms_effects.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/scripted_effects/lyd_notice_effects.txt",
+      "bytes": 99,
+      "sha256": "940591006cb24f2fb245eefe374e3f860315d420c49cca7bc6db60cc531ecdf8"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/scripted_triggers/lyd_actor_triggers.txt",
+      "bytes": 30,
+      "sha256": "31dbb244c38252a1e77f3d6d47cb88381cf2bddb28e9ab973c6071ab3bba45dd"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/descriptor.mod",
+      "bytes": 68,
+      "sha256": "72eac6745bfdccaf44fb8a70c193ef552e182376e3a1fd5ebe02dcfe91c3a0cb"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/events/lyd_c2_consent_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/events/lyd_c3_leadership_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/events/lyd_events.txt",
+      "bytes": 113,
+      "sha256": "0d847b57a3d25b03a095e0a59259c6a6100838517484e8edf29d55113ea0d8f6"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/events/lyd_i3b_institution_events.txt",
+      "bytes": 27,
+      "sha256": "ddb511c3ee9a2f87911047ca30650042056248acb1df3e2901fe3fe63d52795e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/history/faiths/lyd_faith_history.txt",
+      "bytes": 54,
+      "sha256": "3e3d8d388f0b02759ec431ffe80e38f3ea344d64bcbf80f63b36caa6c5285f92"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/localization/english/lyd_c2_consent_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/localization/english/lyd_c3_leadership_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/localization/english/lyd_content_l_english.yml",
+      "bytes": 284,
+      "sha256": "dbf76fb4fbd33971884f388e47d8e8530c73844bcfcbb95de90541d93427c332"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/localization/english/lyd_i3b_institution_l_english.yml",
+      "bytes": 14,
+      "sha256": "af49b5ae3e8d63969f1523ab09f09c2cd56ead1a670e6d0c1bc821113ed5130e"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/localization/english/lyd_runtime_l_english.yml",
+      "bytes": 145,
+      "sha256": "75319d4db9e33f996a6e3b496c904d7bf5d7d81fefa5fb7e4e6313a83259748b"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 289,
+      "sha256": "feadbdd7a0e96d8a7de77dad2fcc7e64557910f92156c807e2639dae44ffbd08"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "bytes": 19,
+      "sha256": "00f320c6d8d4ac8a096b145a452998b68c27d8f624378ef2ec2d4505043d2d6b"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 150,
+      "sha256": "b1694906dbe95e4bb0b11bff1f62f62913ab7a5fc2b6b2ab1221d624d91c0f99"
+    },
+    {
+      "path": "full-static-variants/negative_helper_operator-report.json",
+      "bytes": 5068,
+      "sha256": "3d2f7fd3266a5a3666e3111541333b44883f237d8245808de2552f037f25a245"
+    },
+    {
+      "path": "generators-and-business.json",
+      "bytes": 26927,
+      "sha256": "db0779d19f093faf58949e022e517c886d5600e6f4495c0358e7588caccaf2a1"
+    },
+    {
+      "path": "input-verification.json",
+      "bytes": 201745,
+      "sha256": "99cfe146bc5b63bae8a739668ee1767861f4811b6c3402fb5083a863fcc1d502"
+    },
+    {
+      "path": "integrated-I3b-challenges.json",
+      "bytes": 4499,
+      "sha256": "841897d10c813ed619da18fd3f50e216fb738a81e8827fe73832d1232aca62e4"
+    },
+    {
+      "path": "list_effect_blocks.py",
+      "bytes": 1359,
+      "sha256": "bd9b348ba36fe88f67cc3578f3ae57dcbedd1c05887edbbdcb825e3e32732018"
+    },
+    {
+      "path": "prepare_final003_harness.py",
+      "bytes": 3328,
+      "sha256": "6c48dd35048f66269da3cbd12862f1ef720aaba3fe286fedd63f99e261ec6ba4"
+    },
+    {
+      "path": "prepare_variant2_tests.py",
+      "bytes": 1480,
+      "sha256": "6400080879d2b2d7b515754c6176c043ae2dea0183010657a473b533bad43ba7"
+    },
+    {
+      "path": "read_codegen_contract.py",
+      "bytes": 721,
+      "sha256": "d5d9b4739e8b9850321c24a0b60f9a52d7ee80e221beb12f84a66a54809dda4a"
+    },
+    {
+      "path": "read_fixture.py",
+      "bytes": 782,
+      "sha256": "a495c763d0a07199b529c0e29f23cec7a7003578c1d70a9fd053a91ae70c411e"
+    },
+    {
+      "path": "read_validator.py",
+      "bytes": 1296,
+      "sha256": "8efe72d3edd01857474068fe7e7207793e965f65f84e4d280cbf6a72141e1aad"
+    },
+    {
+      "path": "REPORT.json",
+      "bytes": 5650,
+      "sha256": "23dc7aef72eff6a3dcd597c08e3ec8890166778e9edbd9079d0c3a02f0c32606"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 3797,
+      "sha256": "6b569f324a213ccc0603437fa497abfce6a546b0c5346991f0f5774c2cf00746"
+    },
+    {
+      "path": "test_final003_validator.py",
+      "bytes": 6933,
+      "sha256": "49f197f5fcb3bbf96ac02646ccc5a5ee257b7437cf1eb750a918198db5482066"
+    },
+    {
+      "path": "test_validator_variant.py",
+      "bytes": 6262,
+      "sha256": "f8a09f91ead494a4bb93daab48633ebd0fdf5dde92a5902dd6ab8f1bdebb76e6"
+    },
+    {
+      "path": "test_validator_variant2.py",
+      "bytes": 6938,
+      "sha256": "b4b6482e5840e5cd154e43bf74c0eb9a19a8d136b7cd1a55b6c6d0c76c27f355"
+    },
+    {
+      "path": "validator-authored-variant-001/authored.diff",
+      "bytes": 5227,
+      "sha256": "bbda3b17c1cf201711e67b2d3b5b361a6f40427c2b6263c3312170ff86a0ad8f"
+    },
+    {
+      "path": "validator-authored-variant-001/challenges.json",
+      "bytes": 12696,
+      "sha256": "3b35e6b4e93b92355856c995ff0400aec2a01d05f7a9857fbf54162ca10f7864"
+    },
+    {
+      "path": "validator-authored-variant-001/existing-build-tests.stdout.txt",
+      "bytes": 1311,
+      "sha256": "c60c454af5e683093a3c4c547b51e38dce20e81fe7ff7f02d84e7ee0153d3cb7"
+    },
+    {
+      "path": "validator-authored-variant-001/full-product-static.json",
+      "bytes": 9254,
+      "sha256": "86231500590fef4c311877aff01331fd8ae091c6c4d52c40419e65a6fcd46e08"
+    },
+    {
+      "path": "validator-authored-variant-001/full-static-baseline.json",
+      "bytes": 5068,
+      "sha256": "d6d8c645cb2bed7d32263afa01111ec5a753c5b27b40f4921ca341b9b1f1deb9"
+    },
+    {
+      "path": "validator-authored-variant-001/full-static-fake_pure_tooltip_wrapper.json",
+      "bytes": 5133,
+      "sha256": "d4575cc2ca4b6e26a13ce66aaeba581df8fb4387032872e7eb6cf39a519c89d8"
+    },
+    {
+      "path": "validator-authored-variant-001/full-static-negative_helper_operator.json",
+      "bytes": 5192,
+      "sha256": "54d3255cee17e2221551abe1af0d98ea1ee63ed8d8b630146a7f9f265433e59d"
+    },
+    {
+      "path": "validator-authored-variant-001/INDEX.json",
+      "bytes": 1619,
+      "sha256": "0f77872805dfda77855d03407bd6d83ac7340a3976346844e40df1aa25ab0f5d"
+    },
+    {
+      "path": "validator-authored-variant-001/REPORT.json",
+      "bytes": 756,
+      "sha256": "0c4d7203fff505b5f086f57f39daec18c0014ea8457a14d561c3f270f7f924cd"
+    },
+    {
+      "path": "validator-authored-variant-001/validate_static.py",
+      "bytes": 22079,
+      "sha256": "6b41fdc190c5d9b6b61d46967cfdb98133d918c8aec5df52d50083c492918d61"
+    },
+    {
+      "path": "validator-authored-variant-002/authored.diff",
+      "bytes": 1317,
+      "sha256": "d04648c053415a09a598b8adb13e989daaf02f175fd1efa94b1cd76ae1b9953b"
+    },
+    {
+      "path": "validator-authored-variant-002/challenges.json",
+      "bytes": 14777,
+      "sha256": "46083b7d49ef01c152fd6d4f848ed2dced87f83d502f3fa0b06fc90f51e095ce"
+    },
+    {
+      "path": "validator-authored-variant-002/existing-build-tests.stdout.txt",
+      "bytes": 1311,
+      "sha256": "45c85464b8a2600fd35f8087275d12ca6bcb8308d95d934eec52e6678352ddc2"
+    },
+    {
+      "path": "validator-authored-variant-002/full-product-static.json",
+      "bytes": 9254,
+      "sha256": "86231500590fef4c311877aff01331fd8ae091c6c4d52c40419e65a6fcd46e08"
+    },
+    {
+      "path": "validator-authored-variant-002/full-static-baseline.json",
+      "bytes": 5068,
+      "sha256": "d6d8c645cb2bed7d32263afa01111ec5a753c5b27b40f4921ca341b9b1f1deb9"
+    },
+    {
+      "path": "validator-authored-variant-002/full-static-fake_pure_tooltip_wrapper.json",
+      "bytes": 5133,
+      "sha256": "d4575cc2ca4b6e26a13ce66aaeba581df8fb4387032872e7eb6cf39a519c89d8"
+    },
+    {
+      "path": "validator-authored-variant-002/full-static-negative_effect_container_operator.json",
+      "bytes": 5133,
+      "sha256": "bce189646b5528ae02abc2ac512504b800e9b01d0119bf09f72593a1d00b97cf"
+    },
+    {
+      "path": "validator-authored-variant-002/full-static-negative_helper_operator.json",
+      "bytes": 5192,
+      "sha256": "54d3255cee17e2221551abe1af0d98ea1ee63ed8d8b630146a7f9f265433e59d"
+    },
+    {
+      "path": "validator-authored-variant-002/full-static-negative_limit_operator.json",
+      "bytes": 5133,
+      "sha256": "c481834ca1b199ab6f57a3a4ba6007643b8677612f459e62d00971de2e3e8c7b"
+    },
+    {
+      "path": "validator-authored-variant-002/full-static-negative_shown_operator.json",
+      "bytes": 5128,
+      "sha256": "e3e85b43ca0364c9726bb36cfe2a1c9cb9b7c834930a9259200b16016bb09782"
+    },
+    {
+      "path": "validator-authored-variant-002/full-static-OR_AND_wrong_operator.json",
+      "bytes": 5192,
+      "sha256": "f786516f05d02855c2837738034c87db22fe6628cbc87e55999459aa38673baf"
+    },
+    {
+      "path": "validator-authored-variant-002/full-static-OR_NOT_tautology.json",
+      "bytes": 5192,
+      "sha256": "9999863143d0cda33f120acc8de14cafde6cc6c3e4ca64b6be197c90b0e3e8f6"
+    },
+    {
+      "path": "validator-authored-variant-002/full-static-OR_target_branch.json",
+      "bytes": 5192,
+      "sha256": "f850aa6e00b3f0ad296813f87a2614e2ddd9d830d25a4473fd68d0fb354ed18c"
+    },
+    {
+      "path": "validator-authored-variant-002/INDEX.json",
+      "bytes": 2695,
+      "sha256": "d36650b0914ec71c2462cac66ee1cb42faebe63b086b7970049e1ad75055181f"
+    },
+    {
+      "path": "validator-authored-variant-002/REPORT.json",
+      "bytes": 608,
+      "sha256": "48326c80fa21dbb194eeb9b755c31539d32470c91229bbc2ee27169ad00d8e90"
+    },
+    {
+      "path": "validator-authored-variant-002/validate_static.py",
+      "bytes": 22158,
+      "sha256": "089a6004c48dd5ae8e207827cb130caa41044640c20b7b200100f308039d74a1"
+    },
+    {
+      "path": "validator-challenges.json",
+      "bytes": 8296,
+      "sha256": "88fe204dad6a74546b79ce060c4e57c697a590d2a74ba38c1397ece3a94e733b"
+    },
+    {
+      "path": "validator-followup-challenges.json",
+      "bytes": 2241,
+      "sha256": "1a35a107b1412f3dd2e8a73cead3ed0f7bae2a6fc32047980f1021517b631f15"
+    },
+    {
+      "path": "validator-version-comparison.json",
+      "bytes": 5263,
+      "sha256": "a009013a82deb57e49d9913c99e3503f1d8d18b3c643c417e0d3807c57f51d69"
+    },
+    {
+      "path": "verify_frozen_predecessors.py",
+      "bytes": 2462,
+      "sha256": "47951cf43453c252f224ddf4220258065bed63cbe8e53137f34d3401c4017787"
+    },
+    {
+      "path": "verify_integrated.py",
+      "bytes": 1401,
+      "sha256": "77d790714adf7b70d8b68880ed3b60c1fdb2265cb08684e8926727237b344ea9"
+    }
+  ]
+}

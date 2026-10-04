@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\test_run_acceptance.py"
+  ],
+  "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+  "execution": "COMPLETED",
+  "finished_at": "2026-10-04T19:48:37.526483+00:00",
+  "returncode": 0,
+  "started_at": "2026-10-04T19:48:37.081048+00:00",
+  "stderr": {
+    "path": "runner-tests.stderr.txt",
+    "sha256": "2b424ff741f9cdbf6445e3796a5ddf492faf6cce7f348903e15c53380ef72972",
+    "size": 109
+  },
+  "stdout": {
+    "path": "runner-tests.stdout.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size": 0
+  },
+  "timeout_seconds": 60
+}

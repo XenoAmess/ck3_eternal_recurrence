@@ -1,0 +1,511 @@
+{
+  "files": [
+    {
+      "path": "root-l0/build-check.command.json",
+      "bytes": 844,
+      "sha256": "0ac1ca6cc3aae8b9056c9d62bde026b4cd98b82536b62909530d95d97bd6908e",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\build-check.command.json"
+    },
+    {
+      "path": "root-l0/build-check.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\build-check.stderr.txt"
+    },
+    {
+      "path": "root-l0/build-check.stdout.txt",
+      "bytes": 273,
+      "sha256": "78f12266798cf89e5aa09c1a6628a3e4ff2d099daf1d2ab39e61ccb723b50e45",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\build-check.stdout.txt"
+    },
+    {
+      "path": "root-l0/content-generated-check.command.json",
+      "bytes": 866,
+      "sha256": "7f4e13b7e74d99276de33b17e8759f028642e404239378e64b546f20cbe40dec",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\content-generated-check.command.json"
+    },
+    {
+      "path": "root-l0/content-generated-check.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\content-generated-check.stderr.txt"
+    },
+    {
+      "path": "root-l0/content-generated-check.stdout.txt",
+      "bytes": 543,
+      "sha256": "7445b385c784bbe8d8cf2fbb0e1ecfeae87580054e01c3b8dbf7d40f1b9b31a9",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\content-generated-check.stdout.txt"
+    },
+    {
+      "path": "root-l0/content-leadership-tests.command.json",
+      "bytes": 787,
+      "sha256": "3587b121f2ff227b92f395bacdca075b4bcf2bd9daccff3648570eaeb0b0dd05",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\content-leadership-tests.command.json"
+    },
+    {
+      "path": "root-l0/content-leadership-tests.stderr.txt",
+      "bytes": 2063,
+      "sha256": "76294fd2966c2db6899afa713c1edc659011c7b0f76500c06f90490ff964b845",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\content-leadership-tests.stderr.txt"
+    },
+    {
+      "path": "root-l0/content-leadership-tests.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\content-leadership-tests.stdout.txt"
+    },
+    {
+      "path": "root-l0/institution-tests.command.json",
+      "bytes": 776,
+      "sha256": "8445e2c032d60a81f185e5c3a5628c90e563b293c9f7281321d477ef13b060c4",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\institution-tests.command.json"
+    },
+    {
+      "path": "root-l0/institution-tests.stderr.txt",
+      "bytes": 4273,
+      "sha256": "a4445e7e1fe07566b5c41d744c03d80a2a920d8402ead1b75e391ad0c07f916e",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\institution-tests.stderr.txt"
+    },
+    {
+      "path": "root-l0/institution-tests.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\institution-tests.stdout.txt"
+    },
+    {
+      "path": "root-l0/launcher-settings.snapshot.json",
+      "bytes": 1335,
+      "sha256": "9cd6ff96f8092f2d21e1491b37e8344aa287faf69850563128ca1b117244a214",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\launcher-settings.snapshot.json"
+    },
+    {
+      "path": "root-l0/processes.command.json",
+      "bytes": 624,
+      "sha256": "ede05e57e532ac98b7a06040ce2a132ce4cefa4bc576c1d53fcbe5caf4cd512c",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\processes.command.json"
+    },
+    {
+      "path": "root-l0/processes.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\processes.stderr.txt"
+    },
+    {
+      "path": "root-l0/processes.stdout.txt",
+      "bytes": 9648,
+      "sha256": "1fd88b6dd8cecc5cc2a4aeb42507a1b8fe59551408aa018b837a3c856781562f",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\processes.stdout.txt"
+    },
+    {
+      "path": "root-l0/report.json",
+      "bytes": 15091,
+      "sha256": "bf4cdd48fb5f7976b29b9602bf6b5233f39df504444f856d8fc166521f48082a",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\report.json"
+    },
+    {
+      "path": "root-l0/runner-tests.command.json",
+      "bytes": 758,
+      "sha256": "e8db6e3055e852188cf3b7d2b004d4c3879aede9242ae729e9ab84baefcd052b",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\runner-tests.command.json"
+    },
+    {
+      "path": "root-l0/runner-tests.stderr.txt",
+      "bytes": 109,
+      "sha256": "2b424ff741f9cdbf6445e3796a5ddf492faf6cce7f348903e15c53380ef72972",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\runner-tests.stderr.txt"
+    },
+    {
+      "path": "root-l0/runner-tests.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\runner-tests.stdout.txt"
+    },
+    {
+      "path": "root-l0/runtime-generated-check.command.json",
+      "bytes": 869,
+      "sha256": "e79e06d590d838aa4a441b7a180a6272bfaec08651aff5ca8017d2f81887fde1",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\runtime-generated-check.command.json"
+    },
+    {
+      "path": "root-l0/runtime-generated-check.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\runtime-generated-check.stderr.txt"
+    },
+    {
+      "path": "root-l0/runtime-generated-check.stdout.txt",
+      "bytes": 50,
+      "sha256": "acb08e5fc71ef6894b6e78c9fd013dd7b7825f26a549402bc84aeddad9fbc30c",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\runtime-generated-check.stdout.txt"
+    },
+    {
+      "path": "root-l0/school-consent-tests.command.json",
+      "bytes": 776,
+      "sha256": "8b0113d401398694dc27807daf2abbb902adcf3d6be578cc5a8e04bd70eb9e32",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\school-consent-tests.command.json"
+    },
+    {
+      "path": "root-l0/school-consent-tests.stderr.txt",
+      "bytes": 16011,
+      "sha256": "a935e4f68ccb918d36bfbaa2d3f06ae124e68cb702db7bca99d5b8b098c1dfd4",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\school-consent-tests.stderr.txt"
+    },
+    {
+      "path": "root-l0/school-consent-tests.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\school-consent-tests.stdout.txt"
+    },
+    {
+      "path": "root-l0/source-inputs.after.json",
+      "bytes": 27338,
+      "sha256": "ca3940af518c4957612adde5fa163b6e681ec824894739747c4c51f005341e85",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\source-inputs.after.json"
+    },
+    {
+      "path": "root-l0/source-inputs.before.json",
+      "bytes": 27338,
+      "sha256": "ca3940af518c4957612adde5fa163b6e681ec824894739747c4c51f005341e85",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\source-inputs.before.json"
+    },
+    {
+      "path": "root-l0/static-report.json",
+      "bytes": 9254,
+      "sha256": "4ba774f3c3053caad0a03e32723840ea43859c94647afaeb87493fb68f528ab4",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\static-report.json"
+    },
+    {
+      "path": "root-l0/static.command.json",
+      "bytes": 943,
+      "sha256": "fefc1e16eea3779cd42078ce43fa1d7dd6bb34441cbe6cf0173bfaaa9644ea0b",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\static.command.json"
+    },
+    {
+      "path": "root-l0/static.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\static.stderr.txt"
+    },
+    {
+      "path": "root-l0/static.stdout.txt",
+      "bytes": 9254,
+      "sha256": "4ba774f3c3053caad0a03e32723840ea43859c94647afaeb87493fb68f528ab4",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\static.stdout.txt"
+    },
+    {
+      "path": "root-l0/tool-tests.command.json",
+      "bytes": 753,
+      "sha256": "d847776ccffddd1ef04a1d66cc6f68eeabc4a2f77d6d96b9aafe6b8d3ddee22a",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\tool-tests.command.json"
+    },
+    {
+      "path": "root-l0/tool-tests.stderr.txt",
+      "bytes": 115,
+      "sha256": "809c91bfde19be3fc4bc0d326329423776a5150e75fc71b2b260458f124e5128",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\tool-tests.stderr.txt"
+    },
+    {
+      "path": "root-l0/tool-tests.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-l0-20261005-001\\tool-tests.stdout.txt"
+    },
+    {
+      "path": "root-import/progress.json",
+      "bytes": 4286,
+      "sha256": "32bc5fef2949a22ea3624345a82f939300a6877ffb440251b98db3807d0b2ffc",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\progress.json"
+    },
+    {
+      "path": "root-import/RESULT.json",
+      "bytes": 4286,
+      "sha256": "32bc5fef2949a22ea3624345a82f939300a6877ffb440251b98db3807d0b2ffc",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\RESULT.json"
+    },
+    {
+      "path": "root-import/validated.json",
+      "bytes": 428,
+      "sha256": "28d399b9b7bb64f5092542a8ae339a8b93dd1bee351cb636148cd7d87744185d",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\validated.json"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/README.md",
+      "bytes": 2082,
+      "sha256": "07078f6964c8977cb2e10a470afa47db359ffa217cfb040b1f9bb23bd9a9aebd",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\README.md"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/events/lyd_c3_leadership_events.txt",
+      "bytes": 2145,
+      "sha256": "591f1c791c286916efcb179e9c340dc241da37e6a73d53e1c661e40b538c50e1",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\events\\lyd_c3_leadership_events.txt"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/additional_practices.py",
+      "bytes": 51434,
+      "sha256": "86354f2d9a116c82710e52201ccc51edcd4f1d9ff0156bbfb446adbac4172e42",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\additional_practices.py"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/build_release.py",
+      "bytes": 10035,
+      "sha256": "9f6cc80d46d429ae5ee67989dc182d7d9b0eb7ce2c8db5f8b1806f96034617ac",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\build_release.py"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/content_data.py",
+      "bytes": 61583,
+      "sha256": "67bc8bbd5f518f29de5de776505c05c16122ffaab3cdc933fedc4a90fbbd66de",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\content_data.py"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/gen_runtime.py",
+      "bytes": 17469,
+      "sha256": "bda3bb64349d46c450765d55b5dce9d0338796ca7a7369d164223d08ed6190fb",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\gen_runtime.py"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/gen_school_consent.py",
+      "bytes": 37725,
+      "sha256": "3084ce5f07355570fa726f196cb9f556d8007904701ca5a5fc4b0ccb932d015e",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\gen_school_consent.py"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/run_acceptance.py",
+      "bytes": 19818,
+      "sha256": "fe681ed1193e2a4e10eb8f66de229bc4e1a5c601efa7dbb2f07e0fc2225993d5",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\run_acceptance.py"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/test_build_release.py",
+      "bytes": 13270,
+      "sha256": "b5f4d9d356b045f0784fc8456af1ce9a893dd115590f0a6890ee05d27c9b3bbe",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\test_build_release.py"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/test_run_acceptance.py",
+      "bytes": 9164,
+      "sha256": "1392b62e53d8c42ec4b5c53ec6e8e5e920b12558d315233ea971c7be52719c06",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\test_run_acceptance.py"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/validate_static.py",
+      "bytes": 18486,
+      "sha256": "c7b7a2932335651ca70efba768800f8dca6613b8e88aa362578046a0680e94a7",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\validate_static.py"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/school_consent_templates/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "bytes": 702,
+      "sha256": "11b0744070d9b47790320363de04e82fb67e787297931f21c5639132084d9608",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\character_interactions\\lyd_c2_consent_interactions.txt"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/school_consent_templates/common/decisions/lyd_c2_consent_decisions.txt",
+      "bytes": 1749,
+      "sha256": "98c449965d22c7e65d5c7e3018d6573e0379880d5110fa063367f370270eb162",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\decisions\\lyd_c2_consent_decisions.txt"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "bytes": 15257,
+      "sha256": "bc5a38df663810510de389778247bcd0766e36525c3c3b61772f45272ace6f18",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/leadership_templates/events/lyd_c3_leadership_events.txt.in",
+      "bytes": 2062,
+      "sha256": "09137358cc4accd44e1d837e83f05ea6890e5a5a0c54934e154919ae35b68ccb",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\leadership_templates\\events\\lyd_c3_leadership_events.txt.in"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/leadership_templates/localization/english/lyd_c3_leadership_l_english.yml.in",
+      "bytes": 5064,
+      "sha256": "2a465babd7e647895a87a9c64f654b68720d1b9a74786a581b4f7651fa8c727e",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\leadership_templates\\localization\\english\\lyd_c3_leadership_l_english.yml.in"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/leadership_templates/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml.in",
+      "bytes": 4745,
+      "sha256": "3d771408f46099d9d998b6d96bc98ea0fd6d65c75d0a3316a61617b0e6c11a08",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\leadership_templates\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml.in"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/leadership_templates/common/character_interactions/lyd_c3_teacher_interactions.txt.in",
+      "bytes": 3430,
+      "sha256": "88bcfa721c7808e537efdebdaae7d52bc6b419487ebe38574b6381f5264badba",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\leadership_templates\\common\\character_interactions\\lyd_c3_teacher_interactions.txt.in"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/leadership_templates/common/decisions/lyd_c3_leadership_decisions.txt.in",
+      "bytes": 5762,
+      "sha256": "11ccfaca42cb200c57dcc4bc87f2f3525e8e0915d2f92b0d3fd594a0ec249de4",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\leadership_templates\\common\\decisions\\lyd_c3_leadership_decisions.txt.in"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_council_effects.txt.in",
+      "bytes": 9575,
+      "sha256": "02cb05fa22bb3add83f0ae813b92940a0bf6671fbbd858f0e8c57640001a1fb1",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_council_effects.txt.in"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/tools/leadership_templates/common/scripted_triggers/lyd_c3_leadership_triggers.txt.in",
+      "bytes": 6554,
+      "sha256": "f3c6350536e54b2df8d6a8ba0c5783b4974d69f9e83704abfb2ec9aca814404a",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt.in"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/localization/english/lyd_c2_consent_l_english.yml",
+      "bytes": 11218,
+      "sha256": "f12dddaf17f4098a47ba2080428b0097cd1b8cdf203a04a5ea6eea7c876a2d70",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\localization\\english\\lyd_c2_consent_l_english.yml"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/localization/english/lyd_c3_leadership_l_english.yml",
+      "bytes": 5148,
+      "sha256": "309fc85912b7bdeadda9cee93ba31b2bdd4c45c1896654c25d682651ec1e4104",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\localization\\english\\lyd_c3_leadership_l_english.yml"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/localization/english/lyd_content_l_english.yml",
+      "bytes": 66078,
+      "sha256": "833fcdb277cfa8a736aa94077a5df1adc0c16dbe6834ef89cdc0a62180337c98",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\localization\\english\\lyd_content_l_english.yml"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/localization/english/lyd_runtime_l_english.yml",
+      "bytes": 4450,
+      "sha256": "d76b648c16a763266ca202c97a00a48e24c72b7b3be291d288d5e2e4134fab0a",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\localization\\english\\lyd_runtime_l_english.yml"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "bytes": 9797,
+      "sha256": "6cf1eeb0008e7ce1cf8c7b087982a1097d436bdb78031674e5dccef918daa93f",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\localization\\simp_chinese\\lyd_c2_consent_l_simp_chinese.yml"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "bytes": 4829,
+      "sha256": "b13674be2286e00b9ce32b14d007a3916b8ad4e46763f4a34ad80d03d96d2d30",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 52916,
+      "sha256": "a28e41c0d4d58116e9bb81882223fe73817cedd5ce9f808384d367180e577972",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\localization\\simp_chinese\\lyd_content_l_simp_chinese.yml"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "bytes": 805,
+      "sha256": "b0917c250f3c89d829c4b852417da4e87e80179d4d62329d99cd14c687f6f89c",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\common\\character_interactions\\lyd_c2_consent_interactions.txt"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/common/character_interactions/lyd_c3_teacher_interactions.txt",
+      "bytes": 3513,
+      "sha256": "abe1bb4f106292dc76a8ce7f58ef23572a4a931d353bde6556c0eb3fa61d3c99",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\common\\character_interactions\\lyd_c3_teacher_interactions.txt"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/common/decisions/lyd_c2_consent_decisions.txt",
+      "bytes": 1852,
+      "sha256": "e86389bf29a5728e7ac48d3c973878f557cb47c006f0f4c56119f8c76de62516",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\common\\decisions\\lyd_c2_consent_decisions.txt"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/common/decisions/lyd_c3_leadership_decisions.txt",
+      "bytes": 5845,
+      "sha256": "098dcb8a5505864e41d52f795fd3bbb3bcce4d5fee2cd1e0ff1f91faf2525673",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\common\\decisions\\lyd_c3_leadership_decisions.txt"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/common/scripted_effects/lyd_c3_council_effects.txt",
+      "bytes": 9658,
+      "sha256": "acf4747c19f9da99c314d8a16973f2b2abcf7f411d8320c8a0c1ac275690154b",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\common\\scripted_effects\\lyd_c3_council_effects.txt"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "bytes": 15286,
+      "sha256": "0e32e31c4e4362710b5ae31c65981d70ae95e0023a20f55fc10788041d25f7c7",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "bytes": 6614,
+      "sha256": "ffecf4aaff8cd7071659f10622cfa7334bd6f16bd41f999c28c82d9857734ee0",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/common/religion/rite_types/lyd_rites.txt",
+      "bytes": 13017,
+      "sha256": "929fb9f7cc6df5a7e8a1acfcc07b43ace9a397bb22246e6884884d5920762a20",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\common\\religion\\rite_types\\lyd_rites.txt"
+    },
+    {
+      "path": "root-import/before/mod_li_yu_dao/common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 19445,
+      "sha256": "410f0c593aa47bec13ae1d85fde9d956aae1a12bd6a2a4d6c1b4767cfc0c15de",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\mod_li_yu_dao\\common\\religion\\tenet_types\\lyd_tenets.txt"
+    },
+    {
+      "path": "root-import/before/.github/workflows/li-yu-dao-static.yml",
+      "bytes": 1601,
+      "sha256": "c05e16c2cf003505116a0af9a2f34437107077cebed4363e0521fa556f7caccf",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-integrated-003-apply-20261005-001\\before\\.github\\workflows\\li-yu-dao-static.yml"
+    },
+    {
+      "path": "candidate-REPORT.md",
+      "bytes": 7208,
+      "sha256": "220e93511897f0e87817d278f9e5fbd9872f6d62f1e0225cbd8ca786fd64e058",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\integrated-candidate-resume-20261005-003\\integration-review-package-001\\REPORT.md"
+    },
+    {
+      "path": "candidate-INDEX.json",
+      "bytes": 429140,
+      "sha256": "4938190dc256d517e332e7c3f5f99565315b8cfc5261f7ccc683940d3f02d569",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\integrated-candidate-resume-20261005-003\\integration-review-package-001\\INDEX.json"
+    },
+    {
+      "path": "candidate-DELTA.json",
+      "bytes": 16208,
+      "sha256": "33651cd2bb83c91b4414c7c65763a4ba181c77c6dbf32828dea055eb80487798",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\integrated-candidate-resume-20261005-003\\integration-review-package-001\\DELTA.json"
+    },
+    {
+      "path": "candidate-SOURCE-INDEX.json",
+      "bytes": 62689,
+      "sha256": "ecb59ac2492a5c956181cc959df83c58d86849b051ee80cf260019c4198adb54",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\integrated-candidate-resume-20261005-003\\integration-review-package-001\\SOURCE-INDEX.json"
+    },
+    {
+      "path": "independent-REPORT.md",
+      "bytes": 3797,
+      "sha256": "6b569f324a213ccc0603437fa497abfce6a546b0c5346991f0f5774c2cf00746",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-independent-resume-review-20261005-003\\REPORT.md"
+    },
+    {
+      "path": "independent-REPORT.json",
+      "bytes": 5650,
+      "sha256": "23dc7aef72eff6a3dcd597c08e3ec8890166778e9edbd9079d0c3a02f0c32606",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-independent-resume-review-20261005-003\\REPORT.json"
+    },
+    {
+      "path": "independent-INDEX.json",
+      "bytes": 92919,
+      "sha256": "9cc2be392a5f73e3f15496c16387ad91a243a00db1896eba1cc5caffa06c0292",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-independent-resume-review-20261005-003\\INDEX.json"
+    },
+    {
+      "path": "root-import-path-failure.json",
+      "bytes": 558,
+      "sha256": "57000b27a7cd9cb2d73e77d362b6582c328ad523181d0c175b6178e6b315d638",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-candidate-import-v1-longpath-failure-20261005.json"
+    }
+  ],
+  "candidate_package_sha256": "4938190dc256d517e332e7c3f5f99565315b8cfc5261f7ccc683940d3f02d569",
+  "independent_package_sha256": "9cc2be392a5f73e3f15496c16387ad91a243a00db1896eba1cc5caffa06c0292",
+  "full_external_packages_retained": true
+}

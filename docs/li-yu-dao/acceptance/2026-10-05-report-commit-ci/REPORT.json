@@ -1,0 +1,99 @@
+{
+  "schema": "lyd-ci-evidence/v1",
+  "repository": "XenoAmess/ck3_eternal_recurrence",
+  "commit": "bfe0514650dbb446f6cab2a8543d3e4bf1582aff",
+  "generated_at_utc": "2026-10-04T19:33:53.634696+00:00",
+  "read_only": true,
+  "dispatch_rerun_or_publication": false,
+  "workflow_runs_api_query": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/actions/runs?head_sha=bfe0514650dbb446f6cab2a8543d3e4bf1582aff&per_page=100",
+  "query_used_pr_filtered_wrapper": false,
+  "exact_commit_ci": {
+    "status": "PASS",
+    "run_id": 37228194002,
+    "run_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37228194002",
+    "workflow": ".github/workflows/static-ci.yml",
+    "event": "push",
+    "run_attempt": 1,
+    "job_id": 111512127603,
+    "job_conclusion": "success",
+    "step_conclusions": {
+      "success": 60,
+      "skipped": 20
+    },
+    "artifact_count": 0
+  },
+  "lyd_specific_workflow": {
+    "status": "NOT_TRIGGERED_DOCS_ONLY",
+    "observed_run_count": 0,
+    "conclusion": "NOT_RUN",
+    "inference": "Actual commit trees changed only LYD README and new R0006 report subtree; no configured path changed.",
+    "push_paths_from_exact_commit_definition": [
+      "mod_li_yu_dao/**",
+      "tools/extract_auto_upgrade_buildings.py",
+      "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/**",
+      ".github/workflows/li-yu-dao-static.yml"
+    ],
+    "root_changed_paths": [
+      "docs"
+    ],
+    "docs_changed_paths": [
+      "li-yu-dao"
+    ],
+    "lyd_docs_changed_paths": [
+      "README.md",
+      "acceptance"
+    ],
+    "acceptance_changed_paths": [
+      "2026-10-05-R0006-closed-not-green"
+    ],
+    "r2_watched_tree_sha_before": "3b882e0e5c2e15b7b822a7c9abedddc1407d750f",
+    "r2_watched_tree_sha_after": "3b882e0e5c2e15b7b822a7c9abedddc1407d750f",
+    "product_tree_sha_before": "2e290b9b7fca02c38a33e4c73f5c46e7060dc9fa",
+    "product_tree_sha_after": "2e290b9b7fca02c38a33e4c73f5c46e7060dc9fa"
+  },
+  "workflow_definitions": [
+    {
+      "path": ".github/workflows/cla.yml",
+      "bytes": 2070,
+      "sha256": "fa7b0ef9cc7da6ccc61b4a3154b13bdb07dbb381499c07251dcc179ac2de4191",
+      "git_blob_sha1": "e62b927bb78547f759a494c7b3f64c07ff52783f",
+      "verified_against_github_blob": true
+    },
+    {
+      "path": ".github/workflows/coat-of-arms-editor-pages.yml",
+      "bytes": 5796,
+      "sha256": "3ce9e957093a7aea635ea536d32d9fa5f0da10bafa77c45965a6f496c32ec4cf",
+      "git_blob_sha1": "774d4435ec7e859ae63285ca72069384a533263c",
+      "verified_against_github_blob": true
+    },
+    {
+      "path": ".github/workflows/independent-maintained-mods.yml",
+      "bytes": 2920,
+      "sha256": "4a5f40a60ddacf1e757ab7911c2c6c47380f4895517f19fa4816ea960d70a11c",
+      "git_blob_sha1": "9df4c4a588faa50e94a8bf781bb1111d14febcae",
+      "verified_against_github_blob": true
+    },
+    {
+      "path": ".github/workflows/li-yu-dao-static.yml",
+      "bytes": 1601,
+      "sha256": "c05e16c2cf003505116a0af9a2f34437107077cebed4363e0521fa556f7caccf",
+      "git_blob_sha1": "ebbadfc784a0acd8b6646f8a74d9c5606677042f",
+      "verified_against_github_blob": true
+    },
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "bytes": 24401,
+      "sha256": "73584dd98fe8af6ba5787f67ade7c82664e340ca18963a949f6b1d3e6e5fe69c",
+      "git_blob_sha1": "026ed3541086f53bca4d71dc34be152896d818a1",
+      "verified_against_github_blob": true
+    }
+  ],
+  "limits": [
+    "GitHub tool exposes UTF-8 body strings, not HTTP wire bytes or response headers. Exact exposed body UTF-8 bytes and complete serialized connector result are preserved.",
+    "Commit detail API response includes 300 file records and is not used as an exhaustive changed-file list. Eight untruncated Git trees prove all top-level and relevant nested changes.",
+    "Workflow registry endpoint was rejected by connector allowlist; original error is preserved. Runs and exact-commit workflow directory/definitions were retrieved successfully.",
+    "General CI success does not prove LYD-specific workflow execution, new 70-file source CI, CK3 runtime correctness, or formal union/leadership/reload acceptance.",
+    "Twenty skipped steps are actual optional release/manual steps; they are not counted as passed tests.",
+    "Prior 3d3305e CI is not used as exact-commit proof for this commit."
+  ]
+}

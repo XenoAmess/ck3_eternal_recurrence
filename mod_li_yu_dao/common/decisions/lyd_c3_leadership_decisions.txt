@@ -7,8 +7,18 @@ lyd_c3_declare_claim_decision = {
     selection_tooltip = lyd_c3_declare_claim_decision_tooltip
     confirm_text = lyd_c3_declare_claim_decision_confirm
     is_shown = { lyd_c3_player_actor_trigger = yes NOT = { has_character_flag = lyd_c3_claimant } }
-    is_valid = { NOT = { has_variable = lyd_c3_active } NOT = { has_variable = lyd_c3_claim_title } }
-    effect = { lyd_c3_declare_claim_effect = yes }
+    is_valid = {
+        custom_description = {
+            text = lyd_c3_claim_declaration_ready
+            NOT = { has_variable = lyd_c3_active } NOT = { has_variable = lyd_c3_claim_title }
+        }
+    }
+    effect = {
+        custom_tooltip = lyd_c3_declare_claim_result
+        hidden_effect = {
+            lyd_c3_declare_claim_effect = yes
+        }
+    }
     ai_will_do = { base = 0 }
 }
 lyd_c3_withdraw_claim_decision = {
@@ -19,8 +29,18 @@ lyd_c3_withdraw_claim_decision = {
     selection_tooltip = lyd_c3_withdraw_claim_decision_tooltip
     confirm_text = lyd_c3_withdraw_claim_decision_confirm
     is_shown = { lyd_c3_player_actor_trigger = yes has_character_flag = lyd_c3_claimant }
-    is_valid = { NOT = { has_variable = lyd_c3_active } }
-    effect = { if = { limit = { lyd_c3_player_actor_trigger = yes } lyd_c3_withdraw_claim_effect = yes } }
+    is_valid = {
+        custom_description = {
+            text = lyd_c3_claim_withdrawal_ready
+            NOT = { has_variable = lyd_c3_active }
+        }
+    }
+    effect = {
+        custom_tooltip = lyd_c3_withdraw_claim_result
+        hidden_effect = {
+            if = { limit = { lyd_c3_player_actor_trigger = yes } lyd_c3_withdraw_claim_effect = yes }
+        }
+    }
     ai_will_do = { base = 0 }
 }
 lyd_c3_begin_council_decision = {
@@ -32,17 +52,25 @@ lyd_c3_begin_council_decision = {
     confirm_text = lyd_c3_begin_council_decision_confirm
     is_shown = { lyd_c3_player_actor_trigger = yes has_character_flag = lyd_c3_claimant NOT = { has_variable = lyd_c3_active } }
     is_valid = {
-        lyd_c3_claim_current_trigger = yes
-        rite = faith.main_rite
-        highest_held_title_tier >= tier_duchy
-        faith = {
-            has_doctrine_parameter = temporal_head_of_faith
-            OR = { NOT = { exists = religious_head_title } lyd_c3_owned_current_head_trigger = yes }
-            NOT = { any_faith_rite = { OR = { has_variable = lyd_c2_proposal_owner has_variable = lyd_c3_proposal_owner } } }
-            NOT = { any_faith_rite = { NOT = { lyd_c3_rite_represented_trigger = yes } } }
+        custom_description = {
+            text = lyd_c3_council_proposal_ready
+            lyd_c3_claim_current_trigger = yes
+            rite = faith.main_rite
+            highest_held_title_tier >= tier_duchy
+            faith = {
+                has_doctrine_parameter = temporal_head_of_faith
+                OR = { NOT = { exists = religious_head_title } lyd_c3_owned_current_head_trigger = yes }
+                NOT = { any_faith_rite = { OR = { has_variable = lyd_c2_proposal_owner has_variable = lyd_c3_proposal_owner has_variable = lyd_i3b_owner } } }
+                NOT = { any_faith_rite = { NOT = { lyd_c3_rite_represented_trigger = yes } } }
+            }
         }
     }
-    effect = { lyd_c3_begin_round_effect = yes }
+    effect = {
+        custom_tooltip = lyd_c3_begin_council_result
+        hidden_effect = {
+            lyd_c3_begin_round_effect = yes
+        }
+    }
     ai_will_do = { base = 0 }
 }
 lyd_c3_review_council_decision = {
@@ -53,13 +81,21 @@ lyd_c3_review_council_decision = {
     selection_tooltip = lyd_c3_review_council_decision_tooltip
     confirm_text = lyd_c3_review_council_decision_confirm
     is_shown = { lyd_c3_player_actor_trigger = yes has_variable = lyd_c3_active }
-    is_valid = { lyd_c3_round_current_trigger = { ACTOR = root } }
+    is_valid = {
+        custom_description = {
+            text = lyd_c3_council_round_current
+            lyd_c3_round_current_trigger = { ACTOR = root }
+        }
+    }
     effect = {
-        if = {
-            limit = { lyd_c3_player_actor_trigger = yes }
-            save_scope_as = lyd_c3_actor
-            save_scope_value_as = { name = lyd_c3_event_serial value = var:lyd_c3_serial }
-            trigger_event = lyd.320
+        custom_tooltip = lyd_c3_review_council_result
+        hidden_effect = {
+            if = {
+                limit = { lyd_c3_player_actor_trigger = yes }
+                save_scope_as = lyd_c3_actor
+                save_scope_value_as = { name = lyd_c3_event_serial value = var:lyd_c3_serial }
+                trigger_event = lyd.320
+            }
         }
     }
     ai_will_do = { base = 0 }
@@ -72,8 +108,18 @@ lyd_c3_cancel_council_decision = {
     selection_tooltip = lyd_c3_cancel_council_decision_tooltip
     confirm_text = lyd_c3_cancel_council_decision_confirm
     is_shown = { lyd_c3_player_actor_trigger = yes has_variable = lyd_c3_active }
-    is_valid = { always = yes }
-    effect = { if = { limit = { lyd_c3_player_actor_trigger = yes } lyd_c3_release_round_effect = yes debug_log = "LYD_C3_COUNCIL_PLAYER_CANCELLED" } }
+    is_valid = {
+        custom_description = {
+            text = lyd_c3_council_can_end
+            always = yes
+        }
+    }
+    effect = {
+        custom_tooltip = lyd_c3_cancel_council_result
+        hidden_effect = {
+            if = { limit = { lyd_c3_player_actor_trigger = yes } lyd_c3_release_round_effect = yes debug_log = "LYD_C3_COUNCIL_PLAYER_CANCELLED" }
+        }
+    }
     ai_will_do = { base = 0 }
 }
 lyd_c3_reconcile_decision = {
@@ -84,8 +130,18 @@ lyd_c3_reconcile_decision = {
     selection_tooltip = lyd_c3_reconcile_decision_tooltip
     confirm_text = lyd_c3_reconcile_decision_confirm
     is_shown = { lyd_c3_player_actor_trigger = yes }
-    is_valid = { always = yes }
-    effect = { lyd_c3_player_reconcile_effect = yes }
+    is_valid = {
+        custom_description = {
+            text = lyd_c3_records_can_review
+            always = yes
+        }
+    }
+    effect = {
+        custom_tooltip = lyd_c3_reconcile_result
+        hidden_effect = {
+            lyd_c3_player_reconcile_effect = yes
+        }
+    }
     ai_will_do = { base = 0 }
 }
 lyd_c3_abdicate_decision = {
@@ -96,8 +152,18 @@ lyd_c3_abdicate_decision = {
     selection_tooltip = lyd_c3_abdicate_decision_tooltip
     confirm_text = lyd_c3_abdicate_decision_confirm
     is_shown = { lyd_c3_player_actor_trigger = yes faith.religious_head = this faith = { lyd_c3_owned_current_head_trigger = yes } }
-    is_valid = { NOT = { faith = { any_faith_rite = { OR = { has_variable = lyd_c2_proposal_owner has_variable = lyd_c3_proposal_owner } } } } }
-    effect = { lyd_c3_abdicate_owned_head_effect = yes }
+    is_valid = {
+        custom_description = {
+            text = lyd_c3_office_resignation_ready
+            NOT = { faith = { any_faith_rite = { OR = { has_variable = lyd_c2_proposal_owner has_variable = lyd_c3_proposal_owner has_variable = lyd_i3b_owner } } } }
+        }
+    }
+    effect = {
+        custom_tooltip = lyd_c3_abdicate_result
+        hidden_effect = {
+            lyd_c3_abdicate_owned_head_effect = yes
+        }
+    }
     ai_will_do = { base = 0 }
 }
 lyd_c3_leave_teacher_decision = {
@@ -108,7 +174,17 @@ lyd_c3_leave_teacher_decision = {
     selection_tooltip = lyd_c3_leave_teacher_decision_tooltip
     confirm_text = lyd_c3_leave_teacher_decision_confirm
     is_shown = { lyd_c3_player_actor_trigger = yes has_variable = lyd_c3_personal_teacher }
-    is_valid = { always = yes }
-    effect = { if = { limit = { lyd_c3_player_actor_trigger = yes } lyd_c3_leave_teacher_effect = yes } }
+    is_valid = {
+        custom_description = {
+            text = lyd_c3_teaching_can_end
+            always = yes
+        }
+    }
+    effect = {
+        custom_tooltip = lyd_c3_leave_teacher_result
+        hidden_effect = {
+            if = { limit = { lyd_c3_player_actor_trigger = yes } lyd_c3_leave_teacher_effect = yes }
+        }
+    }
     ai_will_do = { base = 0 }
 }

@@ -67,6 +67,7 @@ lyd_c3_round_current_trigger = {
             var:lyd_c3_proposal_owner = $ACTOR$
             var:lyd_c3_lock_serial = $ACTOR$.var:lyd_c3_serial
             NOT = { has_variable = lyd_c2_proposal_owner }
+            NOT = { has_variable = lyd_i3b_owner }
             OR = {
                 AND = {
                     var:lyd_c3_delegate_required = 1

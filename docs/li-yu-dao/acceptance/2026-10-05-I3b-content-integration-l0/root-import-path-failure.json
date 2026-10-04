@@ -1,0 +1,8 @@
+{
+  "utc": "2026-10-04T19:43:22.499248+00:00",
+  "original_importer": "C:\\workspace\\ck3_lyd_runtime_20261004\\root_apply_lyd_candidate_20261005.py",
+  "replacement_importer": "C:\\workspace\\ck3_lyd_runtime_20261004\\root_apply_lyd_candidate_20261005_v2.py",
+  "observed_previous_attempt": "FileNotFoundError WinError 3 on >260-character indexed existing content path; no tracked mutation or audit directory created",
+  "layer": "WINDOWS_PATH_ENVIRONMENT_RED",
+  "fix": "explicit extended-length local filesystem paths, no machine setting changes"
+}

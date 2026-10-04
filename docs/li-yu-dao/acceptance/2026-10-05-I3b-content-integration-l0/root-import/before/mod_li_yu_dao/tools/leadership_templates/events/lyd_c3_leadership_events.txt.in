@@ -1,0 +1,58 @@
+namespace = lyd
+
+lyd.310 = {
+    type = character_event
+    title = lyd_c3_delegate_t
+    desc = lyd_c3_delegate_desc
+    theme = faith
+    trigger = { lyd_c3_delegate_context_trigger = yes }
+    option = { name = lyd_c3_yes ai_chance = { base = 65 } lyd_c3_delegate_yes_effect = yes }
+    option = { name = lyd_c3_no ai_chance = { base = 35 } lyd_c3_reject_round_effect = yes }
+}
+lyd.311 = {
+    type = character_event
+    title = lyd_c3_player_consent_t
+    desc = lyd_c3_player_consent_desc
+    theme = faith
+    trigger = { lyd_c3_player_ballot_context_trigger = yes }
+    option = { name = lyd_c3_yes lyd_c3_player_yes_effect = yes }
+    option = { name = lyd_c3_no lyd_c3_reject_round_effect = yes }
+}
+lyd.312 = {
+    type = character_event
+    title = lyd_c3_incumbent_t
+    desc = lyd_c3_incumbent_desc
+    theme = faith
+    trigger = { lyd_c3_response_context_trigger = yes this = scope:lyd_c3_actor.var:lyd_c3_round_head }
+    option = { name = lyd_c3_release_office ai_chance = { base = 35 } lyd_c3_incumbent_yes_effect = yes }
+    option = { name = lyd_c3_no ai_chance = { base = 65 } lyd_c3_reject_round_effect = yes }
+}
+lyd.320 = {
+    type = character_event
+    title = lyd_c3_review_t
+    desc = lyd_c3_review_desc
+    theme = faith
+    trigger = { lyd_c3_response_context_trigger = yes this = scope:lyd_c3_actor }
+    option = {
+        name = lyd_c3_recognize
+        trigger = { lyd_c3_response_context_trigger = yes lyd_c3_can_recognize_trigger = { ACTOR = root } }
+        custom_tooltip = lyd_c3_recognize_tt
+        lyd_c3_recognize_effect = yes
+    }
+    option = { name = lyd_c3_wait }
+    option = {
+        name = lyd_c3_cancel
+        if = { limit = { lyd_c3_response_context_trigger = yes this = scope:lyd_c3_actor } lyd_c3_release_round_effect = yes }
+    }
+}
+lyd.329 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        if = {
+            limit = { var:lyd_c3_serial = scope:lyd_c3_event_serial }
+            lyd_c3_release_round_effect = yes
+            debug_log = "LYD_C3_COUNCIL_EXPIRED"
+        }
+    }
+}

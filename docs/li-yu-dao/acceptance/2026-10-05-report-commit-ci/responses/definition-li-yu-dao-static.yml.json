@@ -1,0 +1,30 @@
+{
+  "key": "definition-li-yu-dao-static.yml",
+  "request": {
+    "key": "definition-li-yu-dao-static.yml",
+    "url": "https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/bfe0514650dbb446f6cab2a8543d3e4bf1582aff/.github/workflows/li-yu-dao-static.yml"
+  },
+  "observed_at": "2026-10-04T19:29:59.441Z",
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Action completed."
+      }
+    ],
+    "structuredContent": {
+      "content": "name: Li Yu Dao static checks\n\non:\n  push:\n    branches: [master]\n    paths:\n      - 'mod_li_yu_dao/**'\n      - 'tools/extract_auto_upgrade_buildings.py'\n      - 'docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/**'\n      - '.github/workflows/li-yu-dao-static.yml'\n  pull_request:\n    paths:\n      - 'mod_li_yu_dao/**'\n      - 'tools/extract_auto_upgrade_buildings.py'\n      - 'docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/**'\n      - '.github/workflows/li-yu-dao-static.yml'\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\njobs:\n  static:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with:\n          python-version: '3.13'\n      - name: Check generated content and runtime\n        run: |\n          python mod_li_yu_dao/tools/gen_content.py --check\n          python mod_li_yu_dao/tools/gen_runtime.py --check\n      - name: Check product and builder\n        run: |\n          python mod_li_yu_dao/tools/validate_static.py --report /tmp/lyd-static.json\n          python mod_li_yu_dao/tools/test_build_release.py\n          python mod_li_yu_dao/tools/test_run_acceptance.py\n          python mod_li_yu_dao/tools/test_school_consent.py\n          python mod_li_yu_dao/tools/test_content_leadership.py\n          python mod_li_yu_dao/tools/build_release.py --check\n      - name: Preserve static report\n        if: always()\n        uses: actions/upload-artifact@v4\n        with:\n          name: li-yu-dao-static-report\n          path: /tmp/lyd-static.json\n          if-no-files-found: ignore\n",
+      "title": "li-yu-dao-static.yml",
+      "modified_date": "2026-10-04T11:11:22Z",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/bfe0514650dbb446f6cab2a8543d3e4bf1582aff/.github/workflows/li-yu-dao-static.yml",
+      "display_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/bfe0514650dbb446f6cab2a8543d3e4bf1582aff/.github/workflows/li-yu-dao-static.yml",
+      "display_title": "li-yu-dao-static.yml",
+      "structuredContent": {
+        "title": "li-yu-dao-static.yml",
+        "content": "name: Li Yu Dao static checks\n\non:\n  push:\n    branches: [master]\n    paths:\n      - 'mod_li_yu_dao/**'\n      - 'tools/extract_auto_upgrade_buildings.py'\n      - 'docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/**'\n      - '.github/workflows/li-yu-dao-static.yml'\n  pull_request:\n    paths:\n      - 'mod_li_yu_dao/**'\n      - 'tools/extract_auto_upgrade_buildings.py'\n      - 'docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/**'\n      - '.github/workflows/li-yu-dao-static.yml'\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\njobs:\n  static:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with:\n          python-version: '3.13'\n      - name: Check generated content and runtime\n        run: |\n          python mod_li_yu_dao/tools/gen_content.py --check\n          python mod_li_yu_dao/tools/gen_runtime.py --check\n      - name: Check product and builder\n        run: |\n          python mod_li_yu_dao/tools/validate_static.py --report /tmp/lyd-static.json\n          python mod_li_yu_dao/tools/test_build_release.py\n          python mod_li_yu_dao/tools/test_run_acceptance.py\n          python mod_li_yu_dao/tools/test_school_consent.py\n          python mod_li_yu_dao/tools/test_content_leadership.py\n          python mod_li_yu_dao/tools/build_release.py --check\n      - name: Preserve static report\n        if: always()\n        uses: actions/upload-artifact@v4\n        with:\n          name: li-yu-dao-static-report\n          path: /tmp/lyd-static.json\n          if-no-files-found: ignore\n",
+        "display_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/bfe0514650dbb446f6cab2a8543d3e4bf1582aff/.github/workflows/li-yu-dao-static.yml"
+      }
+    },
+    "isError": false
+  }
+}

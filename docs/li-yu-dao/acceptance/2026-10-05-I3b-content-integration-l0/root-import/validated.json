@@ -1,0 +1,11 @@
+{
+  "utc": "2026-10-04T19:47:30.111011+00:00",
+  "package": "\\\\?\\C:\\workspace\\ck3_lyd_runtime_20261004\\integrated-candidate-resume-20261005-003\\integration-review-package-001",
+  "index_sha256": "4938190dc256d517e332e7c3f5f99565315b8cfc5261f7ccc683940d3f02d569",
+  "delta_files": 53,
+  "indexed_files": 1888,
+  "execute": true,
+  "applied": [],
+  "native_acceptance": "NOT_RUN",
+  "game_git_native_calls": 0
+}

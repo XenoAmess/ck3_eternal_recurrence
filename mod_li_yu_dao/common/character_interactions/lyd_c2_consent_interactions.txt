@@ -10,7 +10,15 @@ lyd_c2_propose_join_interaction = {
         scope:actor = { lyd_c2_actor_trigger = yes }
         scope:recipient = { is_alive = yes faith != scope:actor.faith faith = { religion = religion:confucianism_religion } }
     }
-    is_valid_showing_failures_only = { lyd_c2_start_join_trigger = yes }
-    on_auto_accept = { lyd_c2_begin_join_effect = yes }
+    is_valid_showing_failures_only = {
+        custom_description = {
+            text = lyd_c2_join_requirements_tt
+            lyd_c2_start_join_trigger = yes
+        }
+    }
+    on_auto_accept = {
+        custom_tooltip = lyd_c2_join_open_tt
+        hidden_effect = { lyd_c2_begin_join_effect = yes }
+    }
     ai_will_do = { base = 0 }
 }

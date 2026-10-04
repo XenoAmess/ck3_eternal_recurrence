@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\test_institution_candidate.py"
+  ],
+  "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+  "execution": "COMPLETED",
+  "finished_at": "2026-10-04T19:48:41.644258+00:00",
+  "returncode": 0,
+  "started_at": "2026-10-04T19:48:40.989793+00:00",
+  "stderr": {
+    "path": "institution-tests.stderr.txt",
+    "sha256": "a4445e7e1fe07566b5c41d744c03d80a2a920d8402ead1b75e391ad0c07f916e",
+    "size": 4273
+  },
+  "stdout": {
+    "path": "institution-tests.stdout.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size": 0
+  },
+  "timeout_seconds": 60
+}

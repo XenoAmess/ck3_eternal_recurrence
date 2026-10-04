@@ -1,0 +1,30 @@
+{
+  "key": "definition-cla.yml",
+  "request": {
+    "key": "definition-cla.yml",
+    "url": "https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/bfe0514650dbb446f6cab2a8543d3e4bf1582aff/.github/workflows/cla.yml"
+  },
+  "observed_at": "2026-10-04T19:29:58.255Z",
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Action completed."
+      }
+    ],
+    "structuredContent": {
+      "content": "name: CLA bot\n\non:\n  pull_request_target:\n    types: [opened, reopened, synchronize, ready_for_review, labeled, unlabeled]\n  issue_comment:\n    types: [created, edited, deleted]\n  workflow_dispatch:\n    inputs:\n      pull_request_number:\n        description: Pull request number to recheck\n        required: true\n        type: number\n\npermissions:\n  contents: read\n  pull-requests: write\n  statuses: write\n\nconcurrency:\n  group: cla-${{ github.event.pull_request.number || github.event.issue.number || inputs.pull_request_number || github.run_id }}\n  cancel-in-progress: true\n\njobs:\n  check:\n    name: Check signatures\n    if: >-\n      github.event_name == 'pull_request_target' ||\n      github.event_name == 'workflow_dispatch' ||\n      (github.event_name == 'issue_comment' &&\n       github.event.issue.pull_request &&\n       github.event.comment.user.type != 'Bot')\n    runs-on: ubuntu-latest\n    timeout-minutes: 5\n    steps:\n      # Trusted base branch only. Never check out or execute pull-request code in\n      # this privileged workflow.\n      - name: Check out trusted CLA checker\n        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0\n        with:\n          ref: ${{ github.event.repository.default_branch }}\n          fetch-depth: 1\n          persist-credentials: false\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /.github/cla-config.json\n            /CLA.md\n            /tools/cla_check.py\n            /tools/test_cla_check.py\n\n      - name: Test checker\n        run: python3 tools/test_cla_check.py\n\n      - name: Record trusted CLA revision\n        run: echo \"CLA_DOCUMENT_REF=$(git rev-parse HEAD)\" >> \"$GITHUB_ENV\"\n\n      - name: Check CLA signatures\n        env:\n          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}\n          CLA_PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number || inputs.pull_request_number }}\n          CLA_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\n        run: python3 tools/cla_check.py\n",
+      "title": "cla.yml",
+      "modified_date": "2026-09-20T07:38:06Z",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/bfe0514650dbb446f6cab2a8543d3e4bf1582aff/.github/workflows/cla.yml",
+      "display_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/bfe0514650dbb446f6cab2a8543d3e4bf1582aff/.github/workflows/cla.yml",
+      "display_title": "cla.yml",
+      "structuredContent": {
+        "title": "cla.yml",
+        "content": "name: CLA bot\n\non:\n  pull_request_target:\n    types: [opened, reopened, synchronize, ready_for_review, labeled, unlabeled]\n  issue_comment:\n    types: [created, edited, deleted]\n  workflow_dispatch:\n    inputs:\n      pull_request_number:\n        description: Pull request number to recheck\n        required: true\n        type: number\n\npermissions:\n  contents: read\n  pull-requests: write\n  statuses: write\n\nconcurrency:\n  group: cla-${{ github.event.pull_request.number || github.event.issue.number || inputs.pull_request_number || github.run_id }}\n  cancel-in-progress: true\n\njobs:\n  check:\n    name: Check signatures\n    if: >-\n      github.event_name == 'pull_request_target' ||\n      github.event_name == 'workflow_dispatch' ||\n      (github.event_name == 'issue_comment' &&\n       github.event.issue.pull_request &&\n       github.event.comment.user.type != 'Bot')\n    runs-on: ubuntu-latest\n    timeout-minutes: 5\n    steps:\n      # Trusted base branch only. Never check out or execute pull-request code in\n      # this privileged workflow.\n      - name: Check out trusted CLA checker\n        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0\n        with:\n          ref: ${{ github.event.repository.default_branch }}\n          fetch-depth: 1\n          persist-credentials: false\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /.github/cla-config.json\n            /CLA.md\n            /tools/cla_check.py\n            /tools/test_cla_check.py\n\n      - name: Test checker\n        run: python3 tools/test_cla_check.py\n\n      - name: Record trusted CLA revision\n        run: echo \"CLA_DOCUMENT_REF=$(git rev-parse HEAD)\" >> \"$GITHUB_ENV\"\n\n      - name: Check CLA signatures\n        env:\n          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}\n          CLA_PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number || inputs.pull_request_number }}\n          CLA_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\n        run: python3 tools/cla_check.py\n",
+        "display_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/bfe0514650dbb446f6cab2a8543d3e4bf1582aff/.github/workflows/cla.yml"
+      }
+    },
+    "isError": false
+  }
+}

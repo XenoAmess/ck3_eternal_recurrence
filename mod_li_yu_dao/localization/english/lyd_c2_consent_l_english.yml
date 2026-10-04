@@ -1,5 +1,13 @@
 ﻿l_english:
  # GENERATED FILE: edit tools/gen_school_consent.py.
+ lyd_c2_detach_requirements_tt:0 "I am an adult, landed initiate of a tradition in this mod, free to act and with at least 15 Learning. My tradition is not the current communion's main rite, has no current affiliation or leadership proposal, and is outside its transition and retry waiting periods."
+ lyd_c2_review_requirements_tt:0 "I remain eligible to initiate, and this proposal still matches my tradition, communion, heads and receiving representative. Its current affiliation arrangements remain valid; changes require a new round."
+ lyd_c2_cancel_requirements_tt:0 "I have a current proposal that has not been enacted. I may withdraw my own round even after losing eligibility to initiate."
+ lyd_c2_join_requirements_tt:0 "I am eligible to initiate, my tradition may propose reunion, and neither side has a current affiliation or leadership proposal. The recipient must be a qualified scholar of another Confucian communion's main rite. A main rite with other affiliated rites cannot move through this proposal."
+ lyd_c2_detach_open_tt:0 "Open our school's mandate round and consult every affected player. A two-thirds scholarly mandate and every affected player's express consent are required before signing, revalidation and enactment. Opening a proposal changes no affiliation and charges no separation cost."
+ lyd_c2_review_open_tt:0 "Recheck this round's representatives, affiliation, mandates and terms, then open its review. Reviewing casts no vote, grants no signature, changes no affiliation and charges no transition cost."
+ lyd_c2_cancel_round_tt:0 "End my current proposal and release only the arrangements held by my own round. This changes no rite or communion affiliation and charges no reunion or separation cost."
+ lyd_c2_join_open_tt:0 "Propose reception of our tradition and separately consult our school, every active receiving rite and every affected player. Delivery is not consent: each school requires its two-thirds mandate or the prescribed current-holder endorsement, and every affected player must expressly consent. Opening changes no affiliation and charges no reunion cost."
  lyd_c2_propose_join_interaction:0 "Propose a Tradition's Reunion"
  lyd_c2_propose_join_interaction_desc:0 "Propose that the recipient's communion receive our tradition. Delivery is not consent: each school needs a two-thirds mandate, and every affected player must choose."
  lyd_c2_propose_detach_decision:0 "Propose an Independent Communion"

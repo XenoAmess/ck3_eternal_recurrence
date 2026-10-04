@@ -179,7 +179,7 @@ lyd_rite_hanyu = {
 	}
 }
 
-# R12: Li Ao's Return to Nature; kind=historical; era=late_tang
+# R12: Li Ao's Restoration of Human Nature; kind=historical; era=late_tang
 lyd_rite_liao = {
 	name = lyd_rite_liao
 	desc = lyd_rite_liao_desc

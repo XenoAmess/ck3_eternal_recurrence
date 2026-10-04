@@ -108,7 +108,7 @@ class AcceptanceRunnerTests(unittest.TestCase):
 
             def fake_command(argv, output, name):
                 self.assertEqual(Path(argv[0]), Path(sys.executable))
-                self.assertTrue(Path(argv[1]).name in {"test_build_release.py", "test_run_acceptance.py", "test_school_consent.py", "test_content_leadership.py", "gen_content.py", "gen_runtime.py", "validate_static.py", "build_release.py"})
+                self.assertTrue(Path(argv[1]).name in {"test_build_release.py", "test_run_acceptance.py", "test_school_consent.py", "test_content_leadership.py", "test_institution_candidate.py", "gen_content.py", "gen_runtime.py", "validate_static.py", "build_release.py"})
                 commands.append(name)
                 return {"argv": argv, "returncode": 0}
 
@@ -116,7 +116,7 @@ class AcceptanceRunnerTests(unittest.TestCase):
                  patch.object(runner, "inspect_processes", return_value={"status": "NOT_RUNNING", "pids": []}), \
                  patch.object(subprocess, "run", side_effect=AssertionError("unexpected subprocess")):
                 report = runner.run(args, command_runner=fake_command)
-            self.assertEqual(commands, ["tool-tests", "runner-tests", "school-consent-tests", "content-leadership-tests", "content-generated-check", "runtime-generated-check", "static", "build-check"])
+            self.assertEqual(commands, ["tool-tests", "runner-tests", "school-consent-tests", "content-leadership-tests", "institution-tests", "content-generated-check", "runtime-generated-check", "static", "build-check"])
             self.assertEqual(report["l0"]["status"], "GREEN")
             self.assertEqual(report["l0"]["product_source"], "GREEN")
             self.assertEqual(report["result"], "ENVIRONMENT_RED")

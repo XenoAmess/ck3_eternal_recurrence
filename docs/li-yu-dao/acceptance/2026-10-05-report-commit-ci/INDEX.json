@@ -1,0 +1,237 @@
+{
+  "schema": "lyd-external-evidence-index/v1",
+  "index_excludes_self": true,
+  "created_at_utc": "2026-10-04T19:33:53.636045+00:00",
+  "files": [
+    {
+      "path": "bodies/artifacts-37228194002.json",
+      "bytes": 32,
+      "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+    },
+    {
+      "path": "bodies/commit.json",
+      "bytes": 1396502,
+      "sha256": "6f98b3b1b9036f37763faea5158d25820d0f2f4fa25603665df3a228a454411b"
+    },
+    {
+      "path": "bodies/definition-cla.yml.yml",
+      "bytes": 2070,
+      "sha256": "fa7b0ef9cc7da6ccc61b4a3154b13bdb07dbb381499c07251dcc179ac2de4191"
+    },
+    {
+      "path": "bodies/definition-coat-of-arms-editor-pages.yml.yml",
+      "bytes": 5796,
+      "sha256": "3ce9e957093a7aea635ea536d32d9fa5f0da10bafa77c45965a6f496c32ec4cf"
+    },
+    {
+      "path": "bodies/definition-independent-maintained-mods.yml.yml",
+      "bytes": 2920,
+      "sha256": "4a5f40a60ddacf1e757ab7911c2c6c47380f4895517f19fa4816ea960d70a11c"
+    },
+    {
+      "path": "bodies/definition-li-yu-dao-static.yml.yml",
+      "bytes": 1601,
+      "sha256": "c05e16c2cf003505116a0af9a2f34437107077cebed4363e0521fa556f7caccf"
+    },
+    {
+      "path": "bodies/definition-static-ci.yml.yml",
+      "bytes": 24401,
+      "sha256": "73584dd98fe8af6ba5787f67ade7c82664e340ca18963a949f6b1d3e6e5fe69c"
+    },
+    {
+      "path": "bodies/head-acceptance-tree.json",
+      "bytes": 4378,
+      "sha256": "c8f5815716a554825e75d88dee61a1357211deeeba23fcd03c9ec77045a725df"
+    },
+    {
+      "path": "bodies/head-docs-li-yu-dao-tree.json",
+      "bytes": 3012,
+      "sha256": "be1fb3d63f2f000370da08a9f744c27013533ce99195d5bb258903a4106dac10"
+    },
+    {
+      "path": "bodies/head-docs-tree.json",
+      "bytes": 53213,
+      "sha256": "4843b74258217f9609346382a174401785970068419840502a7a240492d61837"
+    },
+    {
+      "path": "bodies/head-tree.json",
+      "bytes": 8266,
+      "sha256": "17b387d47570d0f90edbb89ef7824eee2280a8f1643d993eaa19f33d93e12701"
+    },
+    {
+      "path": "bodies/jobs-37228194002.json",
+      "bytes": 15599,
+      "sha256": "cf9973f3fe7094ec580051c4bf8edcfd4100b819c5ea1d8574dffc5c2dfb7a5b"
+    },
+    {
+      "path": "bodies/logs-111512127603.log",
+      "bytes": 205888,
+      "sha256": "8bd1861ddf49ba30980de894add5ece5679949f256c1a4c15e75d9e7fffdcf82"
+    },
+    {
+      "path": "bodies/parent-acceptance-tree.json",
+      "bytes": 4133,
+      "sha256": "61ca0064e427937940ed26eab251e10adbac884ac06aa951cf0033a602574fc1"
+    },
+    {
+      "path": "bodies/parent-docs-li-yu-dao-tree.json",
+      "bytes": 3012,
+      "sha256": "e601fb1b4aab0e45e7e83ad283db6c0f2e9bd8825b666b3cd422f6ed60f467a0"
+    },
+    {
+      "path": "bodies/parent-docs-tree.json",
+      "bytes": 53213,
+      "sha256": "b0b74016c720afc81ac1ef7b02196c31c8653e6b8127d89c73b8079a03f8e4bf"
+    },
+    {
+      "path": "bodies/parent-git-commit.json",
+      "bytes": 1192,
+      "sha256": "130f08da2dbfc46aca6288b8b438d806071a9b2c42a8f128f15e9d9a87966a6a"
+    },
+    {
+      "path": "bodies/parent-tree.json",
+      "bytes": 8266,
+      "sha256": "30c421a0c48ac52104e63f2c89979118fa30bd4691661aacb5470622579eb72d"
+    },
+    {
+      "path": "bodies/runs-001.json",
+      "bytes": 13574,
+      "sha256": "60784c72a7d3186c4ba1baaa76b2fb2d67167d8bb9335cef50198145938dd73b"
+    },
+    {
+      "path": "bodies/workflow-directory.json",
+      "bytes": 5997,
+      "sha256": "4130b431735fbcb9229c7c4560ee9d5a10c107dda0c834dde9b25788f4d8f9fc"
+    },
+    {
+      "path": "build_evidence.py",
+      "bytes": 10296,
+      "sha256": "1ddad4efd2294c49cd90f20aaffc4edb67d00403704440cda8ee30e6b126e23b"
+    },
+    {
+      "path": "incoming-tool-responses.json",
+      "bytes": 3757231,
+      "sha256": "7024a85689a69c7009b80e80d701a2ad278e18c644d6c3ba42c4c10b6a13f92e"
+    },
+    {
+      "path": "observations.json",
+      "bytes": 10977,
+      "sha256": "65bbf95074c87e920da1b0535cadf856d931f7735d533269382195b7abaa0f62"
+    },
+    {
+      "path": "REPORT.json",
+      "bytes": 4349,
+      "sha256": "2c8083ee156460f78908716413d781233f9fda31a7752260de23dfdab6a67df4"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1468,
+      "sha256": "7486176dd07422010ae05590d9ebfea068d35ab7de4e66eebb043d35db3bf53f"
+    },
+    {
+      "path": "responses/artifacts-37228194002.json",
+      "bytes": 1106,
+      "sha256": "e88ef5c89f789950adffa5da92356c39a1b8a5326e0e865ddb76e51eb5064686"
+    },
+    {
+      "path": "responses/commit.json",
+      "bytes": 3069423,
+      "sha256": "eeb38835b431e8a0927c9e2ce1cf0f0ee06339d1874173419d3e654d7f06ba31"
+    },
+    {
+      "path": "responses/definition-cla.yml.json",
+      "bytes": 5378,
+      "sha256": "0b46bc13024f755004481b06c88700308cde1f253a00eb52d09be9f426f6deff"
+    },
+    {
+      "path": "responses/definition-coat-of-arms-editor-pages.yml.json",
+      "bytes": 13314,
+      "sha256": "5aedb338f2cadd1d191c575fb2878644111c0ea52ff6b9d53dedf7c1d8647ca3"
+    },
+    {
+      "path": "responses/definition-independent-maintained-mods.yml.json",
+      "bytes": 7358,
+      "sha256": "a61d95acc196762d5c3ae50f770945ad62b7cc8dbd85a282d93314ac7ed5a266"
+    },
+    {
+      "path": "responses/definition-li-yu-dao-static.yml.json",
+      "bytes": 4521,
+      "sha256": "23a96298a7e5c3d11f43db58e543c39c6e9d000d4a0d0de683670aabff5f0c29"
+    },
+    {
+      "path": "responses/definition-static-ci.yml.json",
+      "bytes": 51638,
+      "sha256": "3e14d077b32e73c4f7ea3bbc8303e5b53ba497b20316dadec32e3ef9959afce7"
+    },
+    {
+      "path": "responses/head-acceptance-tree.json",
+      "bytes": 10597,
+      "sha256": "51420c22a762208c695b09672e8f85979c6f9620ee5c241f209b829b3ad95c09"
+    },
+    {
+      "path": "responses/head-docs-li-yu-dao-tree.json",
+      "bytes": 7673,
+      "sha256": "fc8c90154c9185003fb4c775ad41ed38804387b8bf9672753ae54b79dee09386"
+    },
+    {
+      "path": "responses/head-docs-tree.json",
+      "bytes": 116495,
+      "sha256": "39a6a0c50abfade568c4a303f5cfeb0e0d5fc1420bb80f66f263b6be860a5455"
+    },
+    {
+      "path": "responses/head-tree.json",
+      "bytes": 19103,
+      "sha256": "2ad0db65cc59332958769719e64359c0d8d1686fa00e7a8f5639398b628525c1"
+    },
+    {
+      "path": "responses/jobs-37228194002.json",
+      "bytes": 35875,
+      "sha256": "3f161dced1bcf2734288137c02e809462c0479359b73e7eaf1764bb1a8c4b16c"
+    },
+    {
+      "path": "responses/logs-111512127603.json",
+      "bytes": 217295,
+      "sha256": "d5ed218abe04ec91c3a351079d34daa8eeab1929342a4c142c69dde8e4a8e5fb"
+    },
+    {
+      "path": "responses/parent-acceptance-tree.json",
+      "bytes": 10071,
+      "sha256": "2019468ef7c42a9eb3f7d897656d3e14a0c26b03dea3c0f44e4e48d8ed570089"
+    },
+    {
+      "path": "responses/parent-docs-li-yu-dao-tree.json",
+      "bytes": 7677,
+      "sha256": "3f20ad370a4dc8907616b593dee30477a3d0154ef89b61d24ada6a15f18c25df"
+    },
+    {
+      "path": "responses/parent-docs-tree.json",
+      "bytes": 116499,
+      "sha256": "38678b47d5139ba57bbf076704929bbc743a9058ad5f121897bee313f542163d"
+    },
+    {
+      "path": "responses/parent-git-commit.json",
+      "bytes": 3695,
+      "sha256": "be6064c57e005b262001c29c97e83645b3cc90d7d7985729688ae9de176dce99"
+    },
+    {
+      "path": "responses/parent-tree.json",
+      "bytes": 19107,
+      "sha256": "1e9a2da63bd24b3763046ce3f31288703066f0a3e4b70e1c40ccd84df5a1e77a"
+    },
+    {
+      "path": "responses/runs-001.json",
+      "bytes": 29843,
+      "sha256": "d645c13a83246b9012f6dd4383bc0cc1990344babc8e01d9c9536a109294a586"
+    },
+    {
+      "path": "responses/workflow-directory.json",
+      "bytes": 13598,
+      "sha256": "7609cce6ed733d6b9e52a71d1f84c91f0660f307166e01b683dbfd634fbdbadb"
+    },
+    {
+      "path": "responses/workflow-registry.json",
+      "bytes": 674,
+      "sha256": "f8a09bdaf426a67cb8126ae055ca8e83959c204caeadfdc3ff3c293f8da24766"
+    }
+  ]
+}

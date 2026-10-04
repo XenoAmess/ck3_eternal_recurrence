@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\test_build_release.py"
+  ],
+  "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+  "execution": "COMPLETED",
+  "finished_at": "2026-10-04T19:48:37.077906+00:00",
+  "returncode": 0,
+  "started_at": "2026-10-04T19:48:34.215637+00:00",
+  "stderr": {
+    "path": "tool-tests.stderr.txt",
+    "sha256": "809c91bfde19be3fc4bc0d326329423776a5150e75fc71b2b260458f124e5128",
+    "size": 115
+  },
+  "stdout": {
+    "path": "tool-tests.stdout.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size": 0
+  },
+  "timeout_seconds": 60
+}

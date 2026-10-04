@@ -36,7 +36,7 @@ def walk(block: Block, ancestors: tuple[str, ...] = ()):
 
 
 def blocks(block: Block, key: str) -> list[Block]:
-    return [entry.value for entry in block.entries if entry.key == key and isinstance(entry.value, Block)]
+    return [entry.value for entry in block.entries if entry.key == key and entry.operator == "=" and isinstance(entry.value, Block)]
 
 
 def scalar(block: Block, key: str) -> str | None:
@@ -54,16 +54,57 @@ def player_guard(block: Block, triggers: dict[str, Block], seen: frozenset[str] 
     for entry in block.entries:
         if entry.key == "is_ai" and entry.operator == "=" and entry.value == "no":
             return True
-        if entry.key in triggers and (entry.value == "yes" or isinstance(entry.value, Block)) and entry.key not in seen:
+        if entry.operator == "=" and entry.key in triggers and (entry.value == "yes" or isinstance(entry.value, Block)) and entry.key not in seen:
             if player_guard(triggers[entry.key], triggers, seen | {entry.key}):
                 return True
-        if isinstance(entry.value, Block):
-            if entry.key in {"AND", "root", "scope:actor", "trigger", "limit", "hidden_trigger"} and player_guard(entry.value, triggers, seen):
+        if entry.operator == "=" and isinstance(entry.value, Block):
+            if entry.key in {"AND", "root", "scope:actor", "trigger", "limit", "custom_description"} and player_guard(entry.value, triggers, seen):
                 return True
             if entry.key == "OR":
-                branches = [candidate.value for candidate in entry.value.entries if isinstance(candidate.value, Block)]
-                if branches and len(branches) == len(entry.value.entries) and all(player_guard(branch, triggers, seen) for branch in branches):
+                branches = entry.value.entries
+                # Keep branch polarity, operator and scope. Raw values would
+                # incorrectly turn NOT/player-target branches into positive guards.
+                if branches and all(player_guard(Block([branch]), triggers, seen) for branch in branches):
                     return True
+    return False
+
+
+# Known operation primitives used by this product and its fixture. This is a
+# conservative proof vocabulary, not a complete native command registry.
+# New operation names require an explicit proof-vocabulary extension.
+PROVEN_NATIVE_EFFECT_OPERATIONS = frozenset({
+    "set_variable", "change_variable", "remove_variable", "clear_variable_list",
+    "add_to_variable_list", "remove_list_variable", "add_character_flag", "remove_character_flag",
+    "add_gold", "remove_short_term_gold", "add_piety", "add_prestige", "add_stress", "add_learning_lifestyle_xp",
+    "add_doctrine", "remove_doctrine", "change_rite_doctrine", "set_character_rite",
+    "trigger_event", "create_dynamic_title", "create_title_and_vassal_change", "change_title_holder",
+    "resolve_title_and_vassal_change", "set_religious_head_title", "remove_religious_head_title",
+    "detach_rite_to_new_faith", "set_parent_faith", "destroy_title", "generate_coa", "add_title_law",
+    "set_destroy_if_invalid_heir", "set_no_automatic_claims", "set_definitive_form", "set_always_follows_primary_heir",
+    "set_can_be_named_after_dynasty", "set_capital_county", "set_landless_title",
+    "sponsor_new_religious_head_challenger", "remove_religious_head_challenger",
+    "debug_log", "debug_log_scopes",
+})
+
+
+def effect_has_operation(block: Block, effects: dict[str, Block], seen: frozenset[str] = frozenset()) -> bool:
+    """Prove at least one known executable operation; opaque containers prove none."""
+    for entry in block.entries:
+        if entry.operator != "=":
+            continue
+        if entry.key in {"limit", "trigger", "custom_tooltip", "custom_description", "show_as_tooltip", "ai_chance", "save_scope_as", "save_temporary_scope_as", "save_scope_value_as"}:
+            continue
+        if entry.key in effects:
+            if (entry.value == "yes" or isinstance(entry.value, Block)) and entry.key not in seen and effect_has_operation(effects[entry.key], effects, seen | {entry.key}):
+                return True
+            continue
+        if isinstance(entry.value, Block) and (entry.key in {"if", "else_if", "else", "hidden_effect", "root", "scope:actor", "faith", "rite", "religious_head", "religious_head_title", "faith.religious_head", "faith.religious_head_title", "head_of_rite"}
+                                              or entry.key.startswith(("scope:", "var:", "every_", "random_"))):
+            if effect_has_operation(entry.value, effects, seen):
+                return True
+            continue
+        if entry.key in PROVEN_NATIVE_EFFECT_OPERATIONS:
+            return True
     return False
 
 
@@ -71,14 +112,23 @@ def guarded_effect(block: Block, triggers: dict[str, Block], effects: dict[str, 
     """Every executable top-level branch must be guarded before it mutates."""
     executable = False
     for entry in block.entries:
+        if entry.operator != "=":
+            return False
         if entry.key in {"save_scope_as", "save_temporary_scope_as", "custom_tooltip"}:
             continue
         executable = True
+        if entry.key == "hidden_effect" and isinstance(entry.value, Block):
+            # Native hidden_effect preserves the current scope. It contributes
+            # no authority; every contained executable branch still needs the
+            # same positive player proof as an unwrapped branch.
+            if guarded_effect(entry.value, triggers, effects, seen):
+                continue
+            return False
         if entry.key == "if" and isinstance(entry.value, Block):
             limits = blocks(entry.value, "limit")
-            if len(limits) == 1 and player_guard(limits[0], triggers):
+            if len(limits) == 1 and player_guard(limits[0], triggers) and effect_has_operation(entry.value, effects):
                 continue
-        if entry.key in effects and entry.key not in seen:
+        if entry.key in effects and (entry.value == "yes" or isinstance(entry.value, Block)) and entry.key not in seen:
             if guarded_effect(effects[entry.key], triggers, effects, seen | {entry.key}):
                 continue
         return False

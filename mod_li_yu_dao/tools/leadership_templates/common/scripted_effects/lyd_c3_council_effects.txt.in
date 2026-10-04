@@ -11,7 +11,7 @@ lyd_c3_begin_round_effect = {
             faith = {
                 has_doctrine_parameter = temporal_head_of_faith
                 OR = { NOT = { exists = religious_head_title } lyd_c3_owned_current_head_trigger = yes }
-                NOT = { any_faith_rite = { OR = { has_variable = lyd_c2_proposal_owner has_variable = lyd_c3_proposal_owner } } }
+                NOT = { any_faith_rite = { OR = { has_variable = lyd_c2_proposal_owner has_variable = lyd_c3_proposal_owner has_variable = lyd_i3b_owner } } }
                 NOT = { any_faith_rite = { NOT = { lyd_c3_rite_represented_trigger = yes } } }
             }
         }
