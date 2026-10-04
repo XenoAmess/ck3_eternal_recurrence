@@ -303,3 +303,38 @@ ordinary-first20（SDK11604）与独立ordinary-next4（SDK10960）均closedGREE
 第一20末完整normalh7690/raw53255664/96699642B/SHA `3fd7f7bb9cb7b5495aafcdc9ab18baa604381c0ae016f4300b019f10a41bc857`；后4末完整normalh7705/raw53255760/96687892B/SHA `ae9c21bb2bb48ad4a76e86b0581c4b5b9736afa507404e74411dc8f0518f2aa5`，env `6061b112950f5e192a9957c3653b0b97156101bd2a4b8fc038c7adf873568e24`。末daily native103/public17、Robert29829 alive/同普通episode、paused/mapready/eventinteractionclear；301989997@472 sieging、184549452@2619regular、敌268435597@470regular，空route非combat/retreat。War117440524仍score0，三objective未占领。P472 ownedSiege251658324/publicbesieger301989997/player=true、fort4/g500/B3515/work19739642 of40000000 Q100000、remaining20260358、progress49.349%、ETA135/breach0/CanStartfalse，仍无capture/warwin。普通snapshot士兵/phase/clock的null保留；专用健康时钟query后态不反填原daily row。
 
 父两TOP各once与互斥父day组/唯一直属child共消费192原始dayJSON、168GREEN toolcalls；合并只读sealed20缓存，不回读原20，新的两clock输入只读Root cache，不读query原raw。每日日历、M7 retained binding、normal anchors和变化均封存：[20＋4统一字段](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/clock-prospective-g64/ordinary20-plus4-consumed01/ROOT-DAY-WEEK-FIELDS.json)、[有限clock闭环证明](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/clock-prospective-g64/ordinary20-plus4-topic-projection/LIMITED-PROSPECTIVE-CLOCK-LOOP-PROOF.json)、[月首Root缓存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/clock-prospective-g64/month-first-health-20/ROOT-HEALTH-FIELDS.json) SHA `19391cd05572c3d1b497fc2af48a52ef2922374fac273baf5070d239d0945f61`、[bucket0 Root缓存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/clock-prospective-g64/own-bucket-health-24/ROOT-HEALTH-FIELDS.json) SHA `b70155855872f01c39d0f33912d798d68ba232aeb5134c424de619cbfaa6b5f7`。本topic投影只读当前war-relief前像一次，无其他shared读取/写入、SDK、pipe、游戏/窗口、Git、build、旧fixture或额外audit；Root负责commit/push与午夜报告收口。
+
+## R33 / g65：15 个完整普通存档日，day16 计划失败
+
+此段以父消费者生成的 `CACHED-DAY-01..15.json` 与 `CACHED-FAILED-DAY-16.json` 为唯一输入。实际完成并保存 **15 天 / 360 小时**，raw date `53255760 → 53256120`；15 日及其 105 个工具调用均 GREEN，15份日result与105份tool leaf合计120个原始JSON各消费一次。父账本据此更新为 **4658 / res1505 / Oct4+633**（增量仅 15）。整体停在 failed day16；该日 `0h / 0 complete saved days`，`life_advance_request_submitted=false`。
+
+失败字面值为 `Error executing tool ck3_plan_turn: native gameplay step failed: application-main typed query failed or its snapshot changed`。Failed16 initial/final 均为 `native:65 / public62 / raw53256120`，`paused=true / map_ready=true`。保留此失败事实，不推断具体根因、frame 原因或 health 因果。
+
+| 存档绑定 | History | Raw date | Bytes | SHA-256 |
+|---|---:|---:|---:|---|
+| day15 末完整 wholeSAVE / M7 | 7757 | 53256120 | 96644058 | `e65e5b0603fef2ccac165315d22c4ffa7680f3a1b82e2d874ac473d6a0ed8f67` |
+| failed16 retained zero-day SAVE / M7 | 7759 | 53256120 | 96644058 | `1001971ecbc27b557940fc5aa3a72d4ef41e284492c87bf09e37c482b2777cc3` |
+
+两个绑定都为 saved，episode `native-29829-2bc2d599f7f9` / character `29829`，ordinary campaign / xar_off。Day15 final 为 `native:64 / public61`；failed16 的 h7759 不增加已完成日信用。
+
+当前 Robert `29829` 存活、stress0、spouse34730；active event 与 pending interaction 均 `null`。
+
+| Army | Owner | Province | State | Controllable |
+|---|---:|---:|---|---|
+| 184549452 | 29829 | 2619 | regular | true |
+| 301989997 | 29829 | 472 | sieging | true |
+| 268435597 | 35991 | 470 | regular | false |
+
+三军 soldiers 均 `null`，move target 均 `null` 且不可观测；route `[] / complete_empty / source_count0`，in_combat/retreating 均 false。Compact siege days/holder/subrealm 字段仍 `null`。精确 current 值同时保存在 `CHILD-CACHED-MERGE-RECEIPT.json`。
+
+War `117440524`：玩家 attacker、primary leader，opponent `35991`，relative score0；target titles `[1333,1351,1358]`，objective provinces `[470,3711,472]`，enemy default raise province496。
+
+| Objective | Fort | Garrison | Besieging strength | Occupied | Active siege |
+|---|---:|---:|---:|---|---|
+| 470 | 6 | 621 | 0 | false | null |
+| 3711 | 6 | 565 | 0 | false | null |
+| 472 | 4 | 500 | 3515 | false | 251658324 |
+
+P472 rich siege由 own army `301989997` 执行：work raw `19739642 → 22003232`，增加 `2263590`（scale100000）；total `40000000`，remaining `17996768`，progress raw `49349 → 55008`，days left `135 → 120`。前后 strength均3515；breach0、walls_breached=false、assault_in_progress=false、can_start/stop_assault=false，assault progress/casualties0。Ordinary daily progress、phase length/counter/event/can_advance 等字段仍 `null`。
+
+本段 readiness 仅归于真实 calendar / map army / siege 进度。Native health observer unavailable（父已报告），**新增 clock 匹配信用0、recall信用0**；g64 已有24日 clock证据保持独立历史记录。未将 null、故障或失败字面值推为 clock 匹配。本作者原raw/TOP/SDK/source/Git/test访问均0。
