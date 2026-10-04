@@ -391,3 +391,22 @@ R30 SDK61052正常关闭exit0/GREEN，freshsameanchor独立续接8个实际24h�
 M7 available retainedpriming：末53253264/native151/public33承载beforeday8 raw53253240/native148/public30的期望，未授新自然继承。泛snapshot五phase/day operands仍null，Root SDK16000新专用观察与此row分开。day22 literal map unavailable以及0h正常保存h7344保留历史失败；本段GREEN只证明同实际anchorfreshrevision后八日有限循环继续成功，不声称根因已修复。八直属消费者各独占一日八JSONonce，TOP父独占一次，无运行中读取/旧raw/SDK/source/Git/window/build/tests。
 
 本段只消费已封 [NATIVE-STAGE-APPEND.md](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v57/r30-siege-fresh-after-map-unavailable-eight-days-consumed01/NATIVE-STAGE-APPEND.md)（SHA-256 `3d4937abd392a2f42b9ba6f6b5061cdb863bdee4eb15e80476d9b180dc9b3eb6`），与 [围城专题](war-relief-siege-native-ai-12003.md) 的 owned siege 连续状态同步。readiness 为 **production-live loop（21日完成段及独立 fresh8 日有限续接）**，failed22 的 map-unavailable 实际零日失败继续保留；未授 capture、war win、自然继承或新 completed family。最新已封正式截点为4539 / resume1386 / Oct4+514、h7368 / raw53253264；Root已记账，本文件消费新增0日、0动作，无 SDK、raw/source/旧缓存读取、shared/Git/window/child/test/build 操作。
+
+
+# Episode04 R0162 movement and complete regiment acceptance — candidate append
+
+2026-10-05（本地日期）。本消费者只读Root已落原始回执，SDK、游戏函数、屏幕、主树及冻结源码写入均为0；日数由Root负责，本包新增0日。原先static-ready的typed普通省移动现已在exact .3真实生产链闭合。
+
+运行来源由`root-source-freeze-r0162.original.json`冻结：runtime `dba795fed7102354bada6d94689fbcb884c772f7`，native build `2db29c3c255f5ca465125aba4fac6e3587c6751c`，native C++diff为空；EXE `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`，DLL `cb9af1f699589c94a478158543f8ff57ca29af6b63be5386de5af586f31f60e8`。R0162 `desktop-3fevhd2-1c74096080--vanilla--R0162`，actor33388、connection1、episode `native-33388-428cfae5bf18`。实际health叶的game_version/executable_sha256为null，来源在manifest独立绑定，未补写叶字段。
+
+普通1513 preview绑定native3/public4/date53147160；同帧typed `ck3_move_army`提交后，独立native4/public5 snapshot确认owned/controllable FullCUnit0，target1513、route[1513]。六项join全PASS。原有策略广告表未泛化，原native完整unit/owner/province/move资格与generation校验保持；已有14条focused fixture和原environment sequencing RED保留，不重复测试。此实测仅给予明确合法ordinary1513生产信用，不能推任意目的地都合法。
+
+London实际route为[1513,1512,1526,1527]。day+5 native37/public38/date53147280，progress raw60000/scale100000=0.60，first-edge remaining raw333333/scale100000=3.33333，累计weight1650000、speed330000。真实Halt后独立native38 route[1513]/target1513；随后真实reroute1526独立native39 route[1513,1512,1526]/target1526；第二次真实Halt独立native40重新route[1513]/target1513。三次after health保持同一first-edge累计/progress/remaining。Halt ACK的postcondition_verified为false，实际结果以独立after为据。查询没有发布loaded锁定cutoff，故0.60是观察值，0.5仅是Root实验触发条件，不能说本包读取了引擎阈值。
+
+day+9 native60/public61/date53147376独立health/snapshot join确认Army0已经actual1513、target null、route complete_empty、regular1、非combat/retreat。已停止的路段真实走完，movement现在not_applicable，weight0、progress/remaining null。该到达是最终保留first-edge结果，普通省最初提交时没有arrival信用。
+
+完整实际团数组按FullID逐帧、scale1、数量、ID唯一性和SUM验证。初始27团共6746/6747；split后仍同27团，6个FullID0/1/2/3/7/11从Army0转至170，人数容量保持，Army0=2540/2540七团、170=3120/3120六团、second=1086/1087十四团。不能把拆军的3120转移称为损失或新增补员。day+6 actual170=3089/3120，五行净−31；day+9 actual0=2413/2540，五行净−127（ID4−40、5−20、8−5、10−41、12−21），170与second保持，27 FullIDs无新增/删除/再转移/容量变更。此时总可读6588/6747。细分见`complete-regiment-arrival-wave-a03.json`，day6 paired与wave-a02仍保留。
+
+本期可口播：普通省可以显式规划和移动；锁定后停军只取消后续路径，当前段继续；改道也保留当前段；人数要按完整实际团比较，拆军迁移不是损失。不能口播：所有游戏军队均无补员、全部persistent记录完整、此127/31仅由一个已证明原因造成，或underlimit到达即恢复补给。actual0到达stock82.99737/cap100、month−5、attrition0；补给未实现增长，P0REFILL仍需真实eligible省与successful bucket更新后观测。无正兵员净增不等于期间绝无hidden补员。特殊军团资格和first record false不能改写为永久不可补。
+
+使用已验证主venv `D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe`（Python3.14.7），未回落裸系统Python。没有新promo render/capture run；Root admission release查询由runtime manifest保留。`open_kaishek`既有native1.19.0.6研究不适用于此exact .3回执验收。native research plan的check/render只核结构和hash，不替代以上真实后置状态或视频人工观看。

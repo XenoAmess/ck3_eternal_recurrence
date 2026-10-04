@@ -292,3 +292,13 @@ Root独立William主案，人物33388，R0161；source `f8530f4aeb64735dbeae4831
 Army166为`native_carmy_not_found/unavailable`，是请求批次partial的独立行；没有观测到它的CArmy或兵数，不能记为第三支军或0兵。前两军完整actual数组达到**production-live primitive**，尚无补给恢复、实际补员或损耗前后因果loop。它们本帧月贡献分别−10和0，都不是已经取得正补给恢复的观察窗口。
 
 唯一消费输出、27行完整人数表、runtime绑定、native plan及日/周字段在`C:/ck3-war-episode04-research-20261004-a01/refill-live-review-a01/ROOT-DELIVERY.json`。native plan已`check --for-observation/render`，这里只提升具体源叶的实读，结构检查不代替语义或新实机。此消费lane没有SDK、进程/窗口读取、日期推进、测试或DLL部署，新游戏日0；Root正式录像与随后状态转移由各自新packet记录。
+
+
+## 2026-10-05：R0162 完整actual人数与补员边界
+
+初始三支可读实际军队共27个actual团6746/6747；公开166行native-null，不能当第四支真实人数0军。拆军只转移六个完整ID，current/max不变。day+6 child3120→3089；day+9 main2540→2413，完整27 FullIDs、归属与max没有增删。到达帧可读合计6588/6747。前后完整数组和逐团尾差见[两类扣兵研究](army-episode04-periodic-and-county-arrival-loss-r0162.md)。
+
+拆分child的六团两端各唯一record且对应chunk可读；native_can_replenish与chunk_can_replenish都false只属于这些端点。其余军队仍保持首record范围，未扩大为全persistent净补员合同。截至最后有效逐段采样初始+22日没有正人数净增，不能据此排除隐藏补员。主军到1513后 stock82.99737、month−5，未实现补给恢复；当前损耗率0也不等于正补给或正补员。后续pause失败产生大空窗，不将最终+88端点并入此逐日表，不从中反推第25日补给、月初补员或reserve迁移。
+
+
+R0162范围补充：第三支实际军16777220在+15日1086→1076，max1087保持；五团减2/2/3/1/2，共10。此前“−31与−127两次”只属于拆分13团family，不能当全部27团变化计数。完整分组在 split-live-r0162-a01/seal-a02/ALL-ARMY-CHANGE-SUMMARY.json。

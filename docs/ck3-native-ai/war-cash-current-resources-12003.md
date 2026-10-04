@@ -89,3 +89,10 @@ R0161's first actual William33388 request at date53147160/public3/native2 return
 The existing normalizer now accepts strict integer ArmyIDs starting at0 while WarIDs remain positive. Two focused regressions preserve Army0 through the actual production driver/transport path and still reject War0. This is a Python correction; the frozen f853 capture checkout and loaded DLL were not changed. The original failed request remains at `C:/ck3-war-episode04-research-20261004-a01/operations-main-case-a01/starting-health-a01/004-000-cash.response.json`. A fresh, explicitly bound runtime query remains required before any William monthly-rate claim.
 
 The focused suite also exposed a historical fixture-byte mismatch: all six tracked fixture blobs had been normalized to LF on their original commit while the native serializer provenance retained CRLF hashes. Restoring only the line endings reproduces all six original hashes exactly. A narrow `-text` attribute now preserves these native bytes; the provenance manifest and exact-byte test were retained. Diagnosis and restoration pins are in `C:/ck3-war-episode04-research-20261004-a01/cash-fixture-hash-review-a01/` and `adoption-cash-live-a01/`; no financial source or expected SHA was changed.
+
+
+## 2026-10-05：R0162 William 当前费用真实实读
+
+`initial-cash-a02.json` 同 paused native:2/public3/date53147160，角色33388；runtime Python dba795、DLL 编译来源2db29c，二者 native C++树逐字节相同。个人金币654.18341，已经净掉支出的月收入+4.69417；当前军费3.88749/月，全部集结替代月率4.87050/月。不能把两种军费相加，也不能再从净收入扣一次。raw整数/100000精确换算。两个十槽vector完整、treasury槽6=0，不把 treasury 并入个人gold。
+
+player_army_ids [0,16777220,166] 与同帧snapshot一致；这里的0是合法PublicCUnitID，不从cash表推nativeCArmyID或免费军队。cash packet SHA7a0430c2e7211a76cb2e0af514ebe2247b86336b9a195ca62ad63f94582adfc9；完整解释在 `C:/ck3-war-episode04-research-20261004-a01/cash-live-r0162-a01/ACTUAL-CASH-INTERPRETATION.json`。已实读财务primitive不等于正式战争预算loop：advertised=false/formal_action_ready=false，未取得累计行军费用、登船实际支付流水或逐军分摊。

@@ -1,0 +1,245 @@
+{
+  "schema": "xar.war-episode04.live-evidence.v1",
+  "recorded_at": "2026-10-04T17:10:43.415689+00:00",
+  "run": "desktop-3fevhd2-1c74096080--vanilla--R0162",
+  "runtime_source_head": "dba795fed7102354bada6d94689fbcb884c772f7",
+  "native_build_source_head": "2db29c3c255f5ca465125aba4fac6e3587c6751c",
+  "dll_sha256": "cb9af1f699589c94a478158543f8ff57ca29af6b63be5386de5af586f31f60e8",
+  "actor_id": 33388,
+  "initial_date_raw": 53147160,
+  "last_valid_contiguous_sample_date_raw": 53147688,
+  "contiguous_sample_days": 22,
+  "final_paused_date_raw": 53149272,
+  "actual_total_days": 88,
+  "control_attempt_status": "PAUSE_FAILURE_AND_UNSAMPLED_OVERSHOOT_RETAINED",
+  "core_day6_day9_pair_status": "independently_verified",
+  "raw": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\recordings\\main-case-mechanics-a02\\raw.mkv",
+    "bytes": 2474390796,
+    "sha256": "d2e1c49ee21aafc52af16559e951581f255d403fbff42b629577708cddfe3c41"
+  },
+  "video_duration_seconds": 1709.666,
+  "automatic_media_audit": "PASS",
+  "media_pass_scope": "Finished raw media only; not whole control plan or causal gap",
+  "clean_spans_certified": false,
+  "human_approval": false,
+  "abc_common_checkpoint_frozen": false,
+  "pins": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\prepared-main-case-a02\\prepared.json",
+      "bytes": 5431,
+      "sha256": "1ddb567678b80bbfc4507f62a615951c00f36243692760b8d02c139b8c33a5f9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\source-freeze-r0162-a01\\manifest.json",
+      "bytes": 1564,
+      "sha256": "8642840f2515114e485cd4a7107e36f9784f1e7ed095822d985c295bdcb2ec48"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a03\\root-result.json",
+      "bytes": 943,
+      "sha256": "d86e9a83bb3b682c140bb6508f869ee084a754cb689d545e6f25ac6f44192047"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\sdk-ready.json",
+      "bytes": 35799,
+      "sha256": "0b9c187fea64dd2bfa136042bb01f811bf68b25d29ba2f0a71b5ae5887ca1c3c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\bootstrap-result.json",
+      "bytes": 13804,
+      "sha256": "9368b5990e76a6e9a5182380bab0e3e55f858c4f5d038d672b5c9ac0cfbf1b44"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\session-result.json",
+      "bytes": 12435,
+      "sha256": "70e491405b1a44b60fbe3ee095355ae88320850c4b8ce51d156c82d07d6ce011"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\initial-health-a03.json",
+      "bytes": 133589,
+      "sha256": "aab5c1b9da9ddf0d020cfd0bd0307af3ef2555a790f202702a8b111a2092e04f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\initial-cash-a02.json",
+      "bytes": 12839,
+      "sha256": "7a0430c2e7211a76cb2e0af514ebe2247b86336b9a195ca62ad63f94582adfc9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\after-split-health-a02.json",
+      "bytes": 143505,
+      "sha256": "c50795a38dcb1c360525c0fede84cb14e27165fe2b4c181fa481e8365248b54a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\preview-ordinary-1513-a02.json",
+      "bytes": 6654,
+      "sha256": "2c7059a35cfc65f227f8c35fb1c544c9e4d0e154a1868e466ca47671069b2752"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\after-ordinary-move-snapshot-a02.json",
+      "bytes": 174874,
+      "sha256": "87a495c7f7a21701334e48e1f095560e3ca674dfb9ed3de27fa3fbf0485ab0dc"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\locked-before-health-a02.json",
+      "bytes": 81981,
+      "sha256": "2d453b9e2070fc10b8d32aabbc131a7c337e7e411e876cc87808e65ae22008a7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\halt-locked-after-snapshot-a02.json",
+      "bytes": 175850,
+      "sha256": "8abcfef516360c198e40909a6977ab37e48022739715f90bfb82beb672b7c6c4"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\reroute-locked-after-snapshot-a02.json",
+      "bytes": 176148,
+      "sha256": "d02d01b930bd3ddc4dcdc5b62d72b9d0efd3237b279d651b02ef47e482d801a8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\halt-locked-final-snapshot-a02.json",
+      "bytes": 175850,
+      "sha256": "a1a00d03879a5e38f101176d3aa5a6416bd5bdf03fd2b9c74ca6ef1aa47917a4"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\r0162-pulse03-012-001-health.json",
+      "bytes": 158176,
+      "sha256": "f0e7080d9fb450beb595e8ea46e29d74916ff4a0e2ef7bd424b951646c24ef96"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\r0162-pulse03-018-002-health.json",
+      "bytes": 158160,
+      "sha256": "55ee276152690b5517b19629f82c6b03650cafb50acadb1a8dc0c65a258b6108"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\r0162-pulse03-019-002-after.json",
+      "bytes": 10632881,
+      "sha256": "67510c53fd846dea526d0784fb7681db2eea0ef50560b26c098d4afbcd830031"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\arrival-health-a02.json",
+      "bytes": 138871,
+      "sha256": "a96ef26435d125e733cad74ffd559d7de95d095356c2267473fd7bd537370951"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\arrival-snapshot-a02.json",
+      "bytes": 433174,
+      "sha256": "73a7344d9cc2628f507ce900fe637db3f332d0768d953a1f777dab6c9c8c41ab"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\ui-arrived-query-a02.json",
+      "bytes": 346187,
+      "sha256": "1b0c79d7eb3e47526cd5ddd4db88a5f04080325f0911ea1015c17fb93b5fd9b9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\r0162-pulse05-141-p023-pause.json",
+      "bytes": 1224,
+      "sha256": "4aa7e8bbecb150c36b978f012e581c476b6acb464ed05085ac5875f92951f848"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\r0162-pulse05-142-p023-cleanup-observe.json",
+      "bytes": 21592643,
+      "sha256": "98d063671b3f199399faffcb91e8c5d43395de3286f427305448d3868888fe73"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\emergency-pause-final-a02.json",
+      "bytes": 1508,
+      "sha256": "9aba587af89482f1354e3872e64298231988ca7ea3685d7fc1b8ee7d252657a8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\emergency-pause-observe-a02.json",
+      "bytes": 169252,
+      "sha256": "8435ca7fcb78e552232d00c2c518b5386371e97b1f4aa6a1bb1d8d3f765e33b2"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\post-overshoot-health-a02.json",
+      "bytes": 138874,
+      "sha256": "abf8822a1fd177afdb9d72a3cd870cf72e8d60c4ae93e9c033bad7d4a1b573fc"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\save-post-overshoot-a02.json",
+      "bytes": 8998,
+      "sha256": "4ab58e2b44652b78a2481f28f02eeca04bce96501052226176369d14529d240c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\recording-finish-a02.json",
+      "bytes": 1339,
+      "sha256": "22f3cdfc282d6f5fcbf35fb721b022d8f0e44c00e5f92a995e45edc3923b3a3f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-pulse-attempts\\r0162-pulse05\\result.json",
+      "bytes": 5703068,
+      "sha256": "144d5edcbe5d5130eb822fd2b0cf0c4431c3dd590b33ee6bf7a004343438da98"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\recording-audit-a02\\audit-attempt-a01\\report.json",
+      "bytes": 9357,
+      "sha256": "8ddd318433b59c505231dec8608225fa4280162797c14ef3c6d898ced8417294"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\supply-live-r0162-a01\\boundary-final-a02\\RECEIPT.json",
+      "bytes": 23581,
+      "sha256": "cc63dd5e7b768f27508d372a26f38d72e85bbe8c28ae81c21ccbdefa92d3dbee"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\R0162-loss-causal-a01\\ROOT-DELIVERY-a02.json",
+      "bytes": 5571,
+      "sha256": "7286ab1ecd5dfbc3aa4d3d39e7f34fdd4be1c46f3c58a7b8133a18844caafc4b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\move-live-r0162-a01\\ROOT-DELIVERY-a02.json",
+      "bytes": 538,
+      "sha256": "a305a4524ccc8cb842a47659dd77f541514bae8493111919716d7a0d7289788b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\split-live-r0162-a01\\seal-a02\\ROOT-DELIVERY.json",
+      "bytes": 1966,
+      "sha256": "d29f26ee83d11788411efaa9938d3cf7d1425c680a99480371324e39ccfbaa1d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\army-ui-live-r0162-a01\\ROOT-DELIVERY03.json",
+      "bytes": 458,
+      "sha256": "7b69b0b38d731d6e1e2f0f2e93bd87f1def0e0e42175d470a019c0a56c24c02e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\frames\\arrived-army-panel-r0162-a01\\manifest.json",
+      "bytes": 460,
+      "sha256": "0d3a42fff01f3146d04eeef6aaa8cec8140fe2905cdc69bf0724349137fb89c7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\frames\\after-supply-update-r0162-a01\\manifest.json",
+      "bytes": 461,
+      "sha256": "33ef6d52288bfcc04f4b2153ed18881835c26aa044b9246438767eadabc30a7e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\screen-close-a03\\display-restoration.json",
+      "bytes": 477,
+      "sha256": "398a7af6810786d21ebd5876057d9ebf0e1c6c019787b6d1f2606d1018461c36"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\screen-release-a02\\root-visual-review.json",
+      "bytes": 565,
+      "sha256": "eb5c4d1c8d8f18cc0e64504d703035b8320cab7f56ef5101f3026ad7cd56c0d8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\screen-release-a02\\stdout.json",
+      "bytes": 1278,
+      "sha256": "81bd2c7c9551b730ad34dfc6f05397b15ccdb4730ce261408d5db24cab6cc959"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\split-live-r0162-a01\\seal-a02\\ALL-ARMY-CHANGE-SUMMARY.json",
+      "bytes": 21398,
+      "sha256": "bee41416d9555e97b47df4ec7a85ffb02cbeebfcc21e16a475c917718a01be4c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\case-refill-territory-a01\\refill-territory-findings-a02.md",
+      "bytes": 8354,
+      "sha256": "06f2f85d4854a86d5bef8ded4783b9358b83b288ad9178890b76279142a5ec10"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-main-case-a02\\responses\\preview-main-current-1513-a02.json",
+      "bytes": 11594,
+      "sha256": "aa8f4f6752ccf66b69d955609ee8f6939bedc9895a2b56a741211b763311a130"
+    }
+  ],
+  "current_province_1513_limit_usage": "unavailable at same-frame deferred preview; no underlimit claim"
+}

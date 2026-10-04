@@ -32,3 +32,12 @@ Next actual sequence: new clean source/strict DLL and fresh offline lease → co
 The separately diagnosed movement filter is now corrected in the existing `ck3_move_army` service/driver path. An explicit request requires the native movement and complete-route capabilities, fresh paused ready map, living actual player and owned controllable full CUnit, and no combat/retreat. Original native ProvinceID, character/army/move validators remain responsible for actual eligibility. The existing native submit and independent route observer are reused; no Halt is issued as a side effect. Source date, actor, full army, connection generation and episode must still match after the one command. ACK without an actual moving/arrived route is rejected.
 
 Strategy-advertised action targets and raw `execute_step` move literals retain their existing scope; the typed input now expresses the already-generic native command directly. Fourteen focused service/driver/registered-MCP cases passed, including a non-advertised1513 target, original native rejection and ACK-without-route. This is a pure Python change and requires no new C++ producer or DLL. Its first actual ordinary-province move remains pending in the new independent run. External patch SHA `98cd49286e18c3037adb7bec3e951ad2fb685618f4af23de80358518b7233c50`, receipts at `C:/ck3-war-episode04-research-20261004-a01/move-generic-province-a01/`.
+
+
+## 2026-10-05：R0162 独立 subject、可见面板与原图
+
+最初 Army0在1506/sieging3：select ACK之后独立query已读subject_available=true、public0/native0、owner33388，但army_window完整288节点全hidden。它证明真实身份读回，不能算面板已打开。后来raw53147376 main0已实际到1513/regular1；重新原版select之后独立query visible=true，subject/owner保持，完整323节点、不截断。唯一可见 supplies与attrition父容器路径由该次实际树重新解析，不固化跨run路径。
+
+Root直接审阅1920×1080原图 `frames/arrived-army-panel-r0162-a01/desktop.png`（SHA3035050dcd8adc9bfc7eca4cf44a4c99d5f0f200340492529e7bd4b913884d84）：军队2413、损耗0%、补给82/100与下降箭头。它只证明这张当前原图，非整片观看。鼠标仍在Lewes生成的移动候选ETA9天不能当已经结束的主军路线ETA。native stock82.99737与GUI82是同一实际案例的两种显示精度。
+
+独立检查与像素来源在 `C:/ck3-war-episode04-research-20261004-a01/army-ui-live-r0162-a01/ROOT-DELIVERY03.json`。初始hidden和后续visible均保全。原版AF9000→AFB630只读解释已闭普通view6/combat view1A，精确sieging3→SiegeWindow分支仍未闭，不能先断言状态分支或ABI端口失败。此轮未生产Army tooltip完整文本、GUI更新epoch或hover/leave原图；P0-TERM十一项提示仍未全部拍齐。

@@ -112,3 +112,17 @@
 本轮游戏日增量0，A/B/C共同出发档仍未冻结。下一独立attempt先补Army-only原生面板接口及费用新读，再以真实日期边界采供给/损耗，并等海上军自然到达、正常合军后冻结三臂共同checkpoint。B必须记录新军统帅与容量变化；不得把当前6746计划人数当将来合并实际人数。
 
 15:14 UTC受管SDK已退出，CK3/录制进程树空，原1024×768显示模式已恢复；15:16:49新nonce画面直接确认Steam“离线模式”，15:17:29 CAS释放屏幕。原Robert战役、第3期原始存档和失败attempt均保留。原生UI实现、独立日采样方案、ABC共同起点准备与媒体验证并行推进；只在新live环节重新取得排他屏幕。全文/TTS、正式成片、人工签核和交付均未新增完成信用。
+
+
+## 2026-10-05：R0162 实验与录像增量
+
+本期第二个受管冷载使用原始检查点7f766a68…（实际完整SHA见索引），运行Python dba795、DLL编译2db29c且native C++字节相同，exact CK3 1.20.0.3/25652598。费用/普通省typed移动/拆军已实际读回，Army0合法fullID保持。+5进度0.60时，两次Halt均只保留first edge1513，中间改目标1526也保留当前段。+6 child supply82.99737→74.22545，自己的+188 stamp更新，兵员3120→3089；+9 main实际到1513/空route，stock/stamp未变但人数2540→2413。两类扣兵的具体源链与端点推断见[新专题](../../../docs/ck3-native-ai/army-episode04-periodic-and-county-arrival-loss-r0162.md)，不得统称饥饿或死亡。
+
+原版Army面板在后续regular1案例实际可见；Root审图2413、0%、82/100下降。初始sieging3时的hidden、首次加载map未ready、旧public版本拒绝与首次读取partial-JSON消费者竞争均保全，不转GREEN。最后一次短脉冲pause收到`CK3 map state is unavailable`；首cleanup snapshot证实仍在运行。Root处理延迟造成采样空窗，独立紧急pause最后证实raw53149272（初始+88日）。最后有效连续样本仅raw53147688（+22日），不能声称整个30日控制计划通过、已观察第25日主军结算或用最终端点填补空窗。旧+6/+9配对证据保持各自已核scope。暂停恢复正在最小MCP接口线研究，不用桌面兜底。
+
+第二原片2474390796B/SHA d2e1c49ee21aafc52af16559e951581f255d403fbff42b629577708cddfe3c41，实际28:29.666、1920×1080/30fps、H264/yuv420p/无音频，51290帧与packet完整解码/时间戳PASS。此为含暂停研究及失控后段的原片；加上第一原片26:26.500也不等于30分钟成片或可用动态镜头时长。SDK线程/keeper/CK3/recorder均已退出，Job树空、显示恢复1024×768，fresh Steam离线原图审阅后CAS释放屏幕seq4436。
+
+证据见[本期R0162小索引](evidence/r0162-index.json)。仍未完成：十一项真实概念tooltip、正补给恢复与兵员补充区别案例、actual合军供给/容量截断、同档A/B/C出发与三完整回放、累计支付/路线代价、全文/TTS/成片/人工1×签核/指定最终MP4交付。主军当前month−5，不能先许诺休整恢复；B地点需actual正恢复条件。提示框候选只有static/offline，GUI epoch与实机文本像素信用另取。
+
+
+范围校正：same-province preview-main-current-1513-a02 为 accepted=false/statusdeferred、move_mode_unavailable，没有当前 province_supply；+9在1513的当前limit/usage及underlimit仍待证。Jan11 ordinary target1513 limit2880/usage0只属于早先帧，不外推后续。可说stock82.99737/month−5/attr0，不能以此生成“当前低于上限仍不恢复”的单变量反例；另案验证友方资格与实际正恢复。第三军16777220在+15净−10另存，全军变化不止两次。

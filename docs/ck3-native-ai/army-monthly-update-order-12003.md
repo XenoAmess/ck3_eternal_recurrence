@@ -318,3 +318,42 @@ verification retain their own failure and source receipts.
 身份边界：health `source.game_version/executable_sha256` 为 null；不能把这些 null 当成自身携带 exact EXE 身份。这里回链同 attempt `starting-transport-a01` 的 hello（PID20624、connection_generation1、`.3` expected SHA、`ck3_build_match=true`），与 Root 受管启动/部署证明组成 exact build 证据链。本分析 lane 仅离线读取既有 JSON，SDK、屏幕、进程读取、游戏操作和主仓修改均为0；新观察仍待 Root 执行。
 
 原始来源 SHA：拆前 health `394c7ff61f08c2f3f316a92b9fda6f4fe44add842dcad881bdda3bef35b67b10`；拆后 health `405eeac3650652db55c617ee8bd3977b8a51f3c09a35fdf32dee60ab8cabd87f`；完整源账、冻结 raw bytes、条件计划与结构校验在 `C:/ck3-war-episode04-research-20261004-a01/supply-live-split-a01/`。
+
+
+## 2026-10-05 追加：R0162 拆分新军的实际供给结算边界
+
+本条只用 `native-live-main-case-a02` 的新实际 packet。R0162 此次拆前源军、拆后新军、跨日供给时钟均重新独立读取，不把 R0161 的军队身份或日期作为新 run 的事实。
+
+拆后新军实际为 **public170 / nativeCArmy161**；它首次独立 health 的 `+188/+190` 全64值及 low32与源军相同，只信用“继承历史时间戳”。新军真正的首次新供给更新时间，由后续自身独立基线之后的边界对证明：
+
+| 独立暂停端点 | raw date | native snapshot / public revision / native revision | stored signed D | selected phase | 新军实际 CArmy* bucket |
+| --- | ---: | --- | ---: | ---: | ---: |
+| `r0162-pulse03-012-001-health`（基线+5日） | 53147280 | native:42 / 43 / 42 | 389470 | 10 | 11 |
+| `r0162-pulse03-018-002-health`（基线+6日） | 53147304 | native:45 / 46 / 45 | 389471 | 11 | 11 |
+
+两端请求 army_ids **[0,16777220,166,170]**、报告 scope、scope IDs与scope status相同；core两军 public/native FullID未变。scope status保持 **partial**，public166仍 unavailable，不把它记为完整供给观测。`013-001-after` 与 `019-002-after` 独立 snapshot分别精确匹配对应 health 的 snapshot/revision/date，均 paused；owner33388，core两军当时都在省1506、sieging、in_combat=false、retreating=false。只信用真实 Δraw **24** / ΔD **1**；此前若干零增量短窗也保留，没有把 resume/pause ACK 写成精确一天。
+
+新军在此对端点出现自己的新 `+188` 写入与库存变化：
+
+| 新军字段 | +5日 | +6日 |
+| --- | ---: | ---: |
+| `+188` last_supply_update_date_storage_raw64 | 300333821678253472 | 300333868922893992 |
+| `+188` low32 last_supply_update_date_raw | 53147040 | 53147304 |
+| `+188` high32 bits | 69926917 | 69926928 |
+| `+190` grace_anchor_date_storage_raw64 | 300061168564366016 | 300061168564366016 |
+| `+190` low32 grace_anchor_date_raw | 53144256 | 53144256 |
+| current_supply_raw（scale100000） | 8299737 | 7422545 |
+| current_supply_capacity_raw（scale100000） | 10000000 | 10000000 |
+| current_supply_change_monthly_raw（scale100000） | -877192 | -877192 |
+
+因此，新军在当前实际 bucket11 被选择的这一天，**记录了新的成功供给更新时间**，low32恰等于实际新 admitted date；storage64的高32也真实改变，不能把全64 storage copy与日期 low32混成一个字段。`+190` anchor不变，loaded grace仍30，当前 age是127>30且not_gathering。库存精确减 **877192 raw = 8.77192**，与这两个独立端点观测的当前月供给rate raw吻合；此表没有把GUI月值乘以天数来制造库存预报。主军 public0/native0 的实际 bucket0在此日未匹配，`+188/+190`、库存8299737均未变；不要把主军的当前状态推成所有原因均已排除。
+
+实际逐团算术同样独立核对：新军六个 actual regiment ID稳定，current sum **3120→3089（净−31）**，max sum保持3120；按ID0/1/2/3/7/11，当前人数净变化为 **−10/−8/−1/0/−8/−4**。主军七个 actual regiment ID稳定，current/max sum **2540→2540**。这两个端点的 sums与各自 native aggregate读数吻合；本条只记录本次实际算术，不引入一般 aggregate=sum ABI恒等式，不把净−31直接叫“31人死亡”，也不在供给时钟专题单独判定具体扣兵原因。完整扣兵路径与逐团归因分别回链 LOSS 与 split专题。
+
+这闭合本期已授权的 **actual bucket + 成功更新时间 + stock step** 同军边界实读。当前故事下一采样由 Root限定为基线+9的实际首次到达；本条不为追下一供给周期而延长运行，也不把静态候选arrival或未来bucket机会记为实际到达。
+
+身份来源为本 R0162 attempt 新 transport hello：PID **20008**，connection_generation **1**，pipe `ck3-e04-main-case-20261004-a02`，expected build1.20.0.3，EXE SHA `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`，`ck3_build_match=true`。health source自身version/SHA为null，必须回链该同attempt身份与Root冻结构建/启动证明；不能为null字段补造身份。Root确认本边界无reload/重新拆分/合并或identity reset，并冻结录制与action history后，才把更广的原因归属写入总案。
+
+本 lane 只读 Root已写 SDK响应并保存外置 raw/字段差/hash；SDK、屏幕、进程读取、游戏操作以及 main/Cf修改为0。最终15项输入核对均通过，且两个独立snapshot精确join；结构/文件校验不额外授予实机权限。
+
+来源：+5 health SHA `f0e7080d9fb450beb595e8ea46e29d74916ff4a0e2ef7bd424b951646c24ef96`；+6 health SHA `55ee276152690b5517b19629f82c6b03650cafb50acadb1a8dc0c65a258b6108`；完整 paired receipt SHA `cc63dd5e7b768f27508d372a26f38d72e85bbe8c28ae81c21ccbdefa92d3dbee`，路径 `C:/ck3-war-episode04-research-20261004-a01/supply-live-r0162-a01/boundary-final-a02/RECEIPT.json`。
