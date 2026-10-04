@@ -210,3 +210,25 @@ Four new bounded bodies total1917 bytes, plus804 bytes of recorded12-byte `.pdat
 The next work is the actual `28C3D40`/`28C3CF0` request tails and, if needed, their direct cache-refresh caller. Until that edge and required operands are closed, the existing B `28C3BC0 -> 28C3F60` copied effective values cannot be composed as this trait callback, and battle Entry timing remains unknown. The whole event's memory branch is outside this writer work. No new numeric module/API or fixture is released.
 
 Sealed source: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-phase-event-trait-writer-v66/source/ROOT-DELIVERY.json`, SHA-256 `944502f01b1377105ca3fe5c50251ff5dc6df22347042f1cd8be49e186b323f8`. No new numeric module or fixture is released.
+
+## Actual trait refresh-request targets from cached bytes (v67, 2026-10-05)
+
+The v66 actual mutation/request path now reaches source-closed model-request tails: `2BAA710=False -> 28C3CF0 -> 2A3E140`, and `True -> 28C3D40 -> 2A3E220`. Only the two actual target functions, 69+64=**133 B**, were interpreted from B's already sealed 640 B window. **New EXE/header/pdata/xref reads: 0.** This does not add a fifth v66 body or modify any sealed source.
+
+```mermaid
+flowchart LR
+    R["v66 actual trait mutation to2BAC030"] --> P{"opaque2BAA710 bool"}
+    P -->|false| F["CF0: link/model nonnull and owner/magic checks"]
+    P -->|true| T["D40: link nonnull and loaded model owner/magic checks"]
+    F --> Q["tail2A3E140; prior cached model flag/pending-vector request"]
+    T --> U["tail2A3E220; callee mechanics unknown"]
+    Q -. "request processor/drain and timing unknown" .-> C["actual Character effective-cache write"]
+    U -. "sync/deferred edge unknown" .-> C
+    C -. "ordered battle refresh edge unknown" .-> E["knight Entry cached stats"]
+```
+
+Both matched branches pass the current model in RDX and `[[slot5C68C50]+A0]+CBD8` in RCX; failed owner/magic/link guards return without local writes. CF0 additionally checks the loaded model pointer for null; D40 has no separate model-null test. Neither leaf writes Character+EC, scratch+440 or Entry stats, nor directly calls the independently closed `28C3BC0/28C3F60` synchronous copy chain. Its scratch-ready condition cannot be attributed to these request leaves.
+
+The [current-build skill-cache research](character-skill-trigger-readback-1.20.0.3-2026-10-04.md), previously pinned by B at SHA-256 `dac0f0c4d392fcc50a92074a16a2c48f838aeaf9979f2e4de860cb2929da00bf`, describes `2A3E140` setting model+2F4 and adding the model to a pending vector. That existing source fact is reused, without reading its body again. `2A3E220`, the actual request-processing/drain caller and opaque predicate meaning remain specific next seams. They do not prove post-trait effective prowess or the Entry update day.
+
+Evidence: [v67 source ROOT](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-refresh-request-v67/source/ROOT-DELIVERY.json), 3927 B, SHA-256 `0772760f449eb93dff2689e2d3630375628ee63a6d7362a4db24d8e52e1217d4`, binds both cached target slices, the Mermaid tree, typed inputs and gaps. **Actual request targets ready=true; numeric SOURCE_READY=false.** Research increment complete, selected feature partial; no numeric model, case, live, full horizon, Monte Carlo or odds credit. `v67` names this work package; runtime adoption and commit/push require Root's separate actual receipt.
