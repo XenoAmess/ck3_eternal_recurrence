@@ -1,5 +1,14 @@
 # 一代人自治：阻塞与能力债账本
 
+## 2669真实主战：两新增observer已实测，完整预测待施工（2026-10-04T12:11:53+08:00 实际补录）
+
+相对已发布4395，本轮连续批次合并26个正常保存日=8＋14行军＋1接敌＋3战斗/624h，累计 **4421/36524、resume1268、Oct4+396、Oct3冻结777**；G2 5/8、NW2/4、自然继承0。当前C1291845646/关联Result469762068@2669已到main day0，我方ATT0 Robert29829/83886367 fighting3924，对敌DEF16777683/owner32750/cmd30470 fighting2228；尚无winner，War129的player primary仍DEF。正常h6927/raw53250432/94606488B/SHA `770a1760e6cc3245721ec29b76a153f484a7407c66eff497a68c28c1346be02c`。
+
+侧来源账本与统帅输入两个observer已在真实battle达到有限production-live primitive：联系帧native105/pub2/raw53250360返回side各6行、commander各17 inputs/7 rows，martial23对11为实测非零输入；零roll合成context+7/helpermatchtrue与当前native118/main帧stored advantage+7分开，不作完整因果。opaque1/2未解，full encounter/MC及win odds未完成。R27/g58/source39b/PID122268保持；Sway已成立有益窄loop而整scheme未terminal。后继SDK55969预算32尚未closed，本包0未来日/胜利信用。
+
+证据：[3日正常保存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/v54-battle1291845646-days01-consumption/ROOT-DELIVERY.json)、[真实来源observer](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-contextual-actual-next-v54/actual-combat1291845646/ROOT-DELIVERY-ACTUAL.json)、[Sway有益cold读回](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/actual-sway-next-material-v52/r27-actual-cold-six-consumption-01/ROOT-DELIVERY.json)。
+
+
 ## R27新PID观测已验收，battle来源观测仍待实战（2026-10-04T11:51:42+08:00 实际补录）
 
 累计4395/36524、恢复1242、Oct4+370，Oct3冻结777，G2 5/8、NW2/4、自然0；新增日0。R27/g58/source39b55512/PID122268，四目标strict64/97.902307s、exact CI37174310922和cold SDK19745 closed GREEN；raw53249808/fullhistory6853/saveanchor6852，checkpoint仅已给SHA前缀ce6e3645，不造完整值。旧R26正常stop/closed；4395首都2619解围及503 victory_enforced历史保留。
