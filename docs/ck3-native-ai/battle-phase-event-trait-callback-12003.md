@@ -160,3 +160,53 @@ This increment contains two new bounded bodies totaling176 bytes,384 bytes of in
 The actual `2D2B9E0` execution body, parsed trait binding, selected loaded root/container-to-child edge, Character effective recompute arithmetic, and battle Entry timing remain typed gaps. The independent forced-refresh chain cannot establish an `add_trait` ancestor edge. This package releases no numeric model/API or fixture. The next source work should read `2D2B9E0` and a necessary actual mutation/callback target, within a separately authorized bounded package.
 
 Sealed source: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-phase-event-compiled-trait-factory-v65/source/ROOT-DELIVERY.json`, SHA-256 `7a735ca40bdb6c17715e249e6b33054e9d499b80e824eb968d1e2f3b31f8cfdb`. No model or fixture is released by this factory-only increment.
+
+## Actual trait mutation and refresh-request increment (2026-10-05, v66)
+
+Status: **research**, 2026-10-05 / 2026-W41. The actual trait mutation/request ancestry is source-closed; numeric effective callback readiness remains **false**.
+
+```mermaid
+flowchart TD
+    F["reused compiled CAddTraitEffect&lt;0&gt;
+vptr48638A8+B0"] --> X["2D2B9E0 execute144B"]
+    X --> C["root scope tag4/fullCharacterID
+registry identity resolution"]
+    X --> D["1B43BF0 resolves TraitDefinition
+magic+38=4744624F"]
+    C --> A["tail28BA370(Character,TraitDefinition,0)
+1262B actual mutation"]
+    D --> A
+    A --> G["byteCharacter+1A5 guard
+28D6940 acceptance opaque"]
+    G --> T["definition raw32ID+10
+lower_bound /9D0060 trait-vector+F8 insertion"]
+    T --> O["30E6D20 trait state update
+flags/conditional callbacks opaque"]
+    O --> R["28BA6F5 calls2BAC030
+74B actual refresh-request dispatch"]
+    R --> Q["Character magic/fullID/+1D0 guards
+2BAA710 predicate opaque"]
+    Q --> Y["true tail28C3D40
+exact next body unread"]
+    Q --> N["false tail28C3CF0
+exact next body unread"]
+    Y -. "unclosed request-to-forcedrefresh edge" .-> B["independent B28C3BC0/28C3F60
+Character cached effective copy"]
+    N -. "unclosed request-to-forcedrefresh edge" .-> B
+    A --> P["later289CC90 and28CBB10
+437B filtered gain/loss context
+not effective writer here"]
+    B -. "unknown trait-triggered battle Entry time" .-> K["knight Entry six cached stats"]
+```
+
+The actual compiled execution target resolves the root Character full ID using scope tag4 and the current registry, resolves the trait definition through `1B43BF0`, checks the returned definition magic, and tail-calls **`28BA370(Character,TraitDefinition,0)`**. The Character method checks its byte `+1A5` and an opaque acceptance gate `28D6940`, computes the sorted insertion position, and calls the container insertion into its trait vector at `+F8`. New trait raw32 definition ID comes from definition `+10`, not from a guessed string-to-stat map.
+
+After insertion, helper/flag callbacks precede the call at **`28BA6F5 -> 2BAC030`**. That74-byte request dispatcher checks Character magic at `+1C`, full ID at `+18`, and qword `+1D0`, then calls predicate `2BAA710(fullID)`. The true branch tail-calls **`28C3D40`**; the false branch tail-calls **`28C3CF0`**. Both are qualified next entries. This is an actual `add_trait` refresh-request ancestor edge, while the target bodies and their connection to the independently sealed forced effective-cache writer remain unclosed.
+
+`28CBB10` was followed because it is the actual post-insertion direct callback under the compiled executor's zero third parameter. Its437-byte body filters on a definition list and current global full Character ID, chooses gain/loss context, constructs a Character scope, and invokes context helpers. It is not a Character effective-cache writer in this body. The other conditional definition-flag, role, registry and opaque callbacks remain visible in `EXECUTION-AND-CALLBACK-ORDER.json`; their semantics are not guessed from the name `incapable`.
+
+Four new bounded bodies total1917 bytes, plus804 bytes of recorded12-byte `.pdata` lookup reads. No new xref/whole-text scan, metadata repetition, fifth body, old test, game/SDK/liveRPM/window action or whole EXE hash was performed. There was no v66 harness failure. Current published incapable presence and effective prowess remain observations, not proof of callback completion or a pure native effective-stat calculation.
+
+The next work is the actual `28C3D40`/`28C3CF0` request tails and, if needed, their direct cache-refresh caller. Until that edge and required operands are closed, the existing B `28C3BC0 -> 28C3F60` copied effective values cannot be composed as this trait callback, and battle Entry timing remains unknown. The whole event's memory branch is outside this writer work. No new numeric module/API or fixture is released.
+
+Sealed source: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-phase-event-trait-writer-v66/source/ROOT-DELIVERY.json`, SHA-256 `944502f01b1377105ca3fe5c50251ff5dc6df22347042f1cd8be49e186b323f8`. No new numeric module or fixture is released.
