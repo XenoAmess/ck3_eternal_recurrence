@@ -20,3 +20,5 @@
 [机器证据索引](artifact-index.json) 保留原始C盘文件bytes/SHA，JSON快照统一LF但原件不改写。[发布原始492文件索引](publication-raw-index.snapshot.json) 与 [实机1605资产索引](../acceptance-1.0.0-20261004.raw-index.json) 一并保全。匿名helper仅验证metadata/notes/cover/media，其依赖字段仍not_observed、整体ok=false；独立完整DOM依赖证据补足这一项，没有覆盖原回执。
 
 [永久首发changelog](../../../docs/release-changelogs/superman-qiang/1.0.0.md) 与 Steam Change Notes 为独立交付物。本版本仅 CK3 1.20.0.3 中文实机通过；其他语言仅格式认证，未验多人、移除、成就、全部DLC或其他版本。R0006/R0007 RED、R14流程偏差与未知formatter来源等保留在各实机报告。
+
+2026-10-04 仓库交付完成：永久发布报告和首发changelog已随 `0b59784726f696f736e4638f750cbe9fc0eafb86` 实际普通推送至master，随后远端ref和提交树独立读取确认；正式tag仍为原source，当前22运行文件仍与发布manifest一致。[实际仓库交付回执](repository-delivery.json)。

@@ -1,0 +1,97 @@
+{
+  "schema": "sxad.repository-delivery.v1",
+  "status": "COMPLETE",
+  "verified_at_utc": "2026-10-04T00:30:07.526047+00:00",
+  "workshop_item_id": "3812991990",
+  "source_tag": "superman-qiang-v1.0.0",
+  "source_commit": "7e5ddd481466b7a9df104fd5c6340f473f909aff",
+  "master_evidence_and_changelog_commit": "0b59784726f696f736e4638f750cbe9fc0eafb86",
+  "remote_master_observed": "b7c25c17250452374449ea8d2ddcda355f999710",
+  "delivered_commit_is_ancestor_of_observed_remote": true,
+  "ordinary_master_push_succeeded": true,
+  "permanent_changelog_in_delivered_tree": true,
+  "tag_unchanged": true,
+  "current_runtime_matches_published_files": 22,
+  "external_release_gates": "GREEN",
+  "actual_git_proofs": [
+    {
+      "argv": [
+        "git",
+        "ls-remote",
+        "origin",
+        "refs/heads/master"
+      ],
+      "exit_code": 0,
+      "stdout_path": "C:\\ck3-superman-space-a01\\repository-delivery-proof-a02\\00.stdout",
+      "stdout_sha256": "ba2544a3e7a47e3dca055c48bbab5adbd7b62f06100e1d1f0f810fc9f6983027",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "--format=fuller",
+        "--no-patch",
+        "0b59784726f696f736e4638f750cbe9fc0eafb86"
+      ],
+      "exit_code": 0,
+      "stdout_path": "C:\\ck3-superman-space-a01\\repository-delivery-proof-a02\\01.stdout",
+      "stdout_sha256": "abff14476de2882f9dfd0d05c1d95fd2b4d1aa269cf4659b47c5bd49155c8ae1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "superman-qiang-v1.0.0~0"
+      ],
+      "exit_code": 0,
+      "stdout_path": "C:\\ck3-superman-space-a01\\repository-delivery-proof-a02\\02.stdout",
+      "stdout_sha256": "bbb1b51cf5fe090c7cda319b7fabe4ca4c2caca4771f9df445ccf1bcb7336424",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "-r",
+        "--name-only",
+        "0b59784726f696f736e4638f750cbe9fc0eafb86",
+        "--",
+        "docs/release-changelogs/superman-qiang/1.0.0.md",
+        "mod_superman_qiang/docs/release-1.0.0-20261004"
+      ],
+      "exit_code": 0,
+      "stdout_path": "C:\\ck3-superman-space-a01\\repository-delivery-proof-a02\\03.stdout",
+      "stdout_sha256": "c509c6a7595f3463475ec308307890ce8ee5605808e74b9cef8942f74dc4a124",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "7e5ddd481466b7a9df104fd5c6340f473f909aff",
+        "0b59784726f696f736e4638f750cbe9fc0eafb86"
+      ],
+      "exit_code": 0,
+      "stdout_path": "C:\\ck3-superman-space-a01\\repository-delivery-proof-a02\\04.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "0b59784726f696f736e4638f750cbe9fc0eafb86",
+        "b7c25c17250452374449ea8d2ddcda355f999710"
+      ],
+      "exit_code": 0,
+      "stdout_path": "C:\\ck3-superman-space-a01\\repository-delivery-proof-a02\\05.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "scope": "Records the already committed and pushed release evidence/changelog; this follow-up receipt is committed separately to avoid a self-referential commit identity."
+}
