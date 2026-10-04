@@ -12,3 +12,6 @@
 
 
 [转场声音调查与修复](audio-revision-20261004.md)记录分段音轨裁切/PTS顺序错误及连续母带方案。旧版18项检查没有检查声音时间洞，新增专项检查已证明旧片FAIL、新片PASS。旧影片和旧检查均保留。
+
+
+视频标题图：[4:3，1600×1200](images/video-covers-20261004/superman-qiang-video-cover-4x3.png) 与 [16:9，1920×1080](images/video-covers-20261004/superman-qiang-video-cover-16x9.png)。采用同一套男女主角、红黑金主视觉及“赴约之前，谁才是猎物？”标题，生成原图与提示词见[来源记录](images/video-covers-20261004/README.md)。

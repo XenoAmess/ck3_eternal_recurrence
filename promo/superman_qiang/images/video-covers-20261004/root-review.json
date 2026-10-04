@@ -1,0 +1,25 @@
+{
+  "reviewed_at_utc": "2026-10-04T13:33:49.441547+00:00",
+  "reviewer": "Codex root; direct visual inspection of both exported PNGs",
+  "result": "PASS",
+  "checks": {
+    "two_requested_aspect_ratios_exact": true,
+    "same_left_title_right_characters_layout": true,
+    "same_adult_male_and_female_characters": true,
+    "same_costumes_crowns_gold_energy_and_palette": true,
+    "chinese_title_and_hook_correct_and_readable": true,
+    "both_crowns_faces_and_all_text_visible": true,
+    "no_unwanted_category_captions": true
+  },
+  "scope": "Two still cover images; no video playback or publication signoff",
+  "artifacts": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\images\\video-covers-20261004\\superman-qiang-video-cover-16x9.png",
+      "sha256": "28673fd343636e16ed45262da258050769a49fae3da77601a711709af6d6734e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\images\\video-covers-20261004\\superman-qiang-video-cover-4x3.png",
+      "sha256": "bf3715f18919915b6d1c96423e204abc66dd52b5a1fc20dbe0fc4c8c6d97d8c9"
+    }
+  ]
+}

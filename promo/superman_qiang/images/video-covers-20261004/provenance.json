@@ -1,0 +1,57 @@
+{
+  "format_version": 1,
+  "kind": "superman_qiang_matching_video_title_covers",
+  "created_at_utc": "2026-10-04T13:30:51.651520+00:00",
+  "mode": "built-in image_gen",
+  "brand_reference": "D:/workspace/ck3_eternal_recurrence/images/superman_qiang_key_art.png",
+  "same_design_pair": true,
+  "exact_text": [
+    "CK3 模组",
+    "超人强",
+    "越超人越强",
+    "赴约之前",
+    "谁才是猎物？"
+  ],
+  "workflow": "generate 16:9 master using product key-art reference; edit same master to matching 4:3 by extending above/below; export standard PNG dimensions",
+  "process_directory": "C:\\ck3-superman-qiang-promo-20261004\\title-covers-A0001",
+  "artifacts": [
+    {
+      "aspect_ratio": "16:9",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\images\\video-covers-20261004\\superman-qiang-video-cover-16x9.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 3250985,
+      "sha256": "28673fd343636e16ed45262da258050769a49fae3da77601a711709af6d6734e",
+      "generated_original_path": "C:\\Users\\1\\.codex\\generated_images\\01a10302-d970-7aa0-83d3-bf14ce306d4b\\exec-761bdcf7-40b8-469e-9561-3d272a5807f8.png",
+      "generated_original_size": [
+        1672,
+        941
+      ],
+      "generated_original_sha256": "dfb8185db4e1668b430bdb74d92a22f5852aa888f80b317f2dcabd69594febe0",
+      "retained_original_path": "C:\\ck3-superman-qiang-promo-20261004\\title-covers-A0001\\raw\\16x9-generated-original.png",
+      "request_file": "16x9-request.json",
+      "export": "FFmpeg standard pixel-size export; artwork and aspect adaptation performed by built-in image_gen"
+    },
+    {
+      "aspect_ratio": "4:3",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\images\\video-covers-20261004\\superman-qiang-video-cover-4x3.png",
+      "width": 1600,
+      "height": 1200,
+      "bytes": 2913204,
+      "sha256": "bf3715f18919915b6d1c96423e204abc66dd52b5a1fc20dbe0fc4c8c6d97d8c9",
+      "generated_original_path": "C:\\Users\\1\\.codex\\generated_images\\01a10302-d970-7aa0-83d3-bf14ce306d4b\\exec-38a64807-d8c7-448c-9e92-1699cebc17f7.png",
+      "generated_original_size": [
+        1448,
+        1086
+      ],
+      "generated_original_sha256": "ee9e38b2838ff1307902cbace66b569fd238179f1720a7c6b1b355690423bf2c",
+      "retained_original_path": "C:\\ck3-superman-qiang-promo-20261004\\title-covers-A0001\\raw\\4x3-generated-original.png",
+      "request_file": "4x3-request.json",
+      "export": "FFmpeg standard pixel-size export; artwork and aspect adaptation performed by built-in image_gen"
+    }
+  ],
+  "source_and_outputs_retained": true,
+  "root_review": "root-review.json",
+  "onedrive_transferred": false,
+  "external_platform_published": false
+}

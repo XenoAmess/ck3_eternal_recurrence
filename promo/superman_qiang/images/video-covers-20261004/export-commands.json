@@ -1,0 +1,40 @@
+[
+  {
+    "argv": [
+      "ffmpeg",
+      "-nostdin",
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-n",
+      "-i",
+      "C:\\Users\\1\\.codex\\generated_images\\01a10302-d970-7aa0-83d3-bf14ce306d4b\\exec-761bdcf7-40b8-469e-9561-3d272a5807f8.png",
+      "-vf",
+      "scale=1920:1080:flags=lanczos,setsar=1",
+      "-frames:v",
+      "1",
+      "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\images\\video-covers-20261004\\superman-qiang-video-cover-16x9.png"
+    ],
+    "exit_code": 0,
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "ffmpeg",
+      "-nostdin",
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-n",
+      "-i",
+      "C:\\Users\\1\\.codex\\generated_images\\01a10302-d970-7aa0-83d3-bf14ce306d4b\\exec-38a64807-d8c7-448c-9e92-1699cebc17f7.png",
+      "-vf",
+      "scale=1600:1200:flags=lanczos,setsar=1",
+      "-frames:v",
+      "1",
+      "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\images\\video-covers-20261004\\superman-qiang-video-cover-4x3.png"
+    ],
+    "exit_code": 0,
+    "stderr": ""
+  }
+]
