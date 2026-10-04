@@ -108,8 +108,10 @@ def main() -> int:
         if path.suffix == '.mp3' or path.name == 'request.json' or path.name.endswith('.boundaries.jsonl') or path.parent.name == 'overlays' and path.stem in {chapter['id'] for chapter in config_payload['chapters']}:
             continue
         preserve(path, f'source.binding.{index:03d}', 'source-image' if path.suffix.lower() in {'.png', '.jpg'} else 'source-font')
-    for name in ['tools/player_trailer_composer.py', 'tools/compose_player_visuals.py', 'tools/prepare_render_run.py', '02m/director.md', '02m/director.json', 'asset-and-claim-ledger.json', 'production-selection.json']:
+    for name in ['tools/player_trailer_composer.py', 'tools/compose_player_visuals.py', 'tools/prepare_render_run.py', 'tools/check_player_trailer.py', 'tools/deliver_player_video.py', 'tools/prepare_final_frame_inspection.py', 'tools/retain_render_attempt.py', '02m/director.md', '02m/director.json', 'asset-and-claim-ledger.json', 'production-selection.json', 'visual-revision-20261004.md']:
         preserve(project / name, 'project.' + name.replace('/', '.').replace('.py', ''), 'project-source')
+    for index, path in enumerate(sorted((project / 'images/revision-20261004').glob('*.json'))):
+        preserve(path, f'project.imagegen-request-and-receipt.{index:03d}', 'source-imagegen-metadata')
     for index, path in enumerate(sorted((project / 'plugin').rglob('*'))):
         if path.is_file() and path.suffix in {'.py', '.toml', '.md'}:
             preserve(path, f'project.registration.{index:03d}', 'project-registration-source')

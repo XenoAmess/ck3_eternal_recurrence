@@ -27,11 +27,12 @@ def sha(path: Path) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--attempt-directory', type=Path, required=True)
+    parser.add_argument('--movie', type=Path, required=True, help='Check the delivered OneDrive copy after client synchronization.')
     args = parser.parse_args()
     attempt = args.attempt_directory.resolve()
     native_root = attempt / 'native-run'
     run_manifest = native_root / 'run-manifest.json'
-    movie = attempt / 'build/deliverables/superman-qiang-player-trailer.mp4'
+    movie = args.movie.resolve(strict=True)
     post = native_root / 'postflight'
     post.mkdir(parents=True, exist_ok=False)
     ffmpeg = shutil.which('ffmpeg')
@@ -82,7 +83,19 @@ def main() -> int:
     checks['single_music_source'] = inputs['music']['sha256'] == sha(Path(inputs['music']['path']))
     layout_path = attempt / 'build/subtitle-layout-report.json'
     checks['actual_subtitle_layout_report_exists'] = layout_path.is_file()
-    report = {'format_version': 1, 'kind': 'superman_qiang_encoded_media_check', 'created_at_utc': datetime.now(timezone.utc).isoformat(), 'result': 'PASS' if all(checks.values()) else 'FAIL', 'movie_path': str(movie), 'movie_sha256': movie_sha, 'movie_bytes': movie.stat().st_size, 'duration_seconds': duration, 'checks': checks, 'encoded_loudness': analysis, 'subtitle_layout_path': str(layout_path), 'subtitle_layout_sha256': sha(layout_path) if layout_path.is_file() else None, 'human_full_playback': 'not-recorded', 'manual_signoff_granted': False}
+    layout = json.loads(layout_path.read_bytes())
+    paragraphs = [event for events in layout['scenes'].values() for event in events]
+    expected_text = {scene['scene_id']: scene['narration'] for scene in narration['scenes']}
+    checks['ten_scenes_ten_continuous_paragraphs'] = layout.get('subtitle_policy') == 'one-complete-paragraph-per-scene' and layout.get('cue_count') == 10 and len(paragraphs) == 10 and all(len(events) == 1 for events in layout['scenes'].values())
+    checks['paragraph_text_complete_and_unchanged'] = all(event['narration_text'] == expected_text[event['scene_id']] == ''.join(event['lines']) for event in paragraphs)
+    checks['paragraphs_fit_two_lines_and_safe_width'] = all(len(event['lines']) <= 2 and max(event['widths_px']) <= 1460 for event in paragraphs)
+    narration_duration = {scene['scene_id']: scene['duration_seconds'] for scene in narration['scenes']}
+    checks['paragraph_stays_through_full_narration'] = all(event['end_seconds'] - event['start_seconds'] >= narration_duration[event['scene_id']] for event in paragraphs)
+    timeline = json.loads((attempt / 'build/timeline.json').read_bytes())
+    early_source_paths = [Path(scene['visual']['background']['source_path']) for scene in timeline['scenes'][:5]]
+    early_source_hashes = [sha(path) for path in early_source_paths]
+    checks['first_five_scenes_have_at_least_four_independent_sources'] = len(set(early_source_hashes)) >= 4
+    report = {'format_version': 1, 'kind': 'superman_qiang_encoded_media_check', 'created_at_utc': datetime.now(timezone.utc).isoformat(), 'result': 'PASS' if all(checks.values()) else 'FAIL', 'movie_path': str(movie), 'movie_sha256': movie_sha, 'movie_bytes': movie.stat().st_size, 'duration_seconds': duration, 'checks': checks, 'encoded_loudness': analysis, 'subtitle_layout_path': str(layout_path), 'subtitle_layout_sha256': sha(layout_path) if layout_path.is_file() else None, 'subtitle_cue_count': len(paragraphs), 'first_five_source_bindings': [{'path': str(path), 'sha256': value} for path, value in zip(early_source_paths, early_source_hashes)], 'human_full_playback': 'not-recorded', 'manual_signoff_granted': False}
     report_path = post / 'encoded-media-check.json'
     report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     if not all(checks.values()):

@@ -1,7 +1,7 @@
 {
   "format_version": 1,
   "kind": "superman_qiang_player_visual_plan",
-  "created_at": "2026-10-04T08:50:32.257802+00:00",
+  "created_at": "2026-10-04T09:47:26.535106+00:00",
   "source_director": "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\02m\\director.json",
   "source_director_sha256": "1ba326c2c58cf0e746540a5397fabf1d10ed11331dc5cce51bfb1b1df4114d9f",
   "resolution": [
@@ -9,8 +9,10 @@
     1080
   ],
   "style": "Ruby, near-black and warm gold; one font family, short text, substantial negative space.",
-  "source_policy": "Original artwork crops are ordinary video framing. Screenshot pixels, readings, aspect ratios and provenance remain unchanged. No test fixtures or recreated UI.",
-  "work_directory": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003",
+  "source_policy": "Five independent generated fictional illustrations replace repeated portraits. Source distinctions remain in provenance; the owner explicitly removed on-screen category labels. Screenshot pixels, readings, aspect ratios and provenance remain unchanged. No test fixtures or recreated UI.",
+  "category_labels_visible": false,
+  "first_five_independent_source_count": 5,
+  "work_directory": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004",
   "subtitle_region": [
     80,
     860,
@@ -31,15 +33,10 @@
   "scenes": [
     {
       "scene_id": "SQP-01",
-      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-01.png",
-      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
-      "background_source": "mod_superman_qiang/thumbnail.png",
-      "source_crop": [
-        0,
-        0,
-        640,
-        360
-      ],
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\SQP-01.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png",
+      "background_source": "promo/superman_qiang/images/revision-20261004/01-royal-study.png",
+      "source_crop": null,
       "fit_rect": [
         0,
         0,
@@ -48,13 +45,8 @@
       ],
       "source_kind": "art",
       "background": {
-        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\thumbnail.png",
-        "crop": [
-          0,
-          0,
-          640,
-          360
-        ],
+        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\images\\revision-20261004\\01-royal-study.png",
+        "crop": null,
         "fit": [
           0,
           0,
@@ -62,7 +54,7 @@
           1080
         ],
         "mode": "art",
-        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png"
       },
       "preserve_aspect_ratio": true,
       "subtitle_safe_top": 860,
@@ -70,7 +62,7 @@
       "preview_extra_paths": [],
       "optional_layers": [
         {
-          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-01-hook.png",
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\SQP-01-hook.png",
           "replace_base": true,
           "timing_fraction": [
             0.0,
@@ -79,7 +71,7 @@
           "timing": "Before the final '赴个约' punchline."
         },
         {
-          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-01-punchline.png",
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\SQP-01-punchline.png",
           "replace_base": true,
           "timing_fraction": [
             0.76,
@@ -91,15 +83,10 @@
     },
     {
       "scene_id": "SQP-02",
-      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-02.png",
-      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
-      "background_source": "workshop/superman_qiang_media/v3/01_absorption.jpg",
-      "source_crop": [
-        650,
-        0,
-        1600,
-        534
-      ],
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\SQP-02.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png",
+      "background_source": "promo/superman_qiang/images/revision-20261004/02-palace-ball.png",
+      "source_crop": null,
       "fit_rect": [
         0,
         0,
@@ -108,13 +95,8 @@
       ],
       "source_kind": "art",
       "background": {
-        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\superman_qiang_media\\v3\\01_absorption.jpg",
-        "crop": [
-          650,
-          0,
-          950,
-          534
-        ],
+        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\images\\revision-20261004\\02-palace-ball.png",
+        "crop": null,
         "fit": [
           0,
           0,
@@ -122,7 +104,7 @@
           1080
         ],
         "mode": "art",
-        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png"
       },
       "preserve_aspect_ratio": true,
       "subtitle_safe_top": 860,
@@ -142,15 +124,10 @@
     },
     {
       "scene_id": "SQP-03",
-      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-03.png",
-      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
-      "background_source": "workshop/superman_qiang_media/v3/01_absorption.jpg",
-      "source_crop": [
-        650,
-        0,
-        1600,
-        534
-      ],
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\SQP-03.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png",
+      "background_source": "promo/superman_qiang/images/revision-20261004/03-knight-yard.png",
+      "source_crop": null,
       "fit_rect": [
         0,
         0,
@@ -159,13 +136,8 @@
       ],
       "source_kind": "art",
       "background": {
-        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\superman_qiang_media\\v3\\01_absorption.jpg",
-        "crop": [
-          650,
-          0,
-          950,
-          534
-        ],
+        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\images\\revision-20261004\\03-knight-yard.png",
+        "crop": null,
         "fit": [
           0,
           0,
@@ -173,33 +145,27 @@
           1080
         ],
         "mode": "art",
-        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png"
       },
       "preserve_aspect_ratio": true,
       "subtitle_safe_top": 860,
       "pan": "Slow 2–4% scale within the ordinary illustration crop; screenshots remain still and complete.",
       "preview_extra_paths": [
-        "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\power-to-king.png"
+        "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-勇武-left.png"
       ],
       "optional_layers": [
         {
-          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\power-to-king.png",
-          "timing_fraction": [
-            0.0,
-            1.0
-          ],
-          "timing": "From the second adult silhouette to the first; illustrative only."
-        },
-        {
-          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-外交.png",
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-外交-left.png",
+          "word": "外交",
           "timing_fraction": [
             0.45,
             0.7
           ],
-          "timing": "On '谈判的底气'; one attribute word only."
+          "timing": "On '谈判的底气'; one attribute word only, left of the knight's face."
         },
         {
-          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-勇武.png",
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-勇武-left.png",
+          "word": "勇武",
           "timing_fraction": [
             0.72,
             1.0
@@ -210,15 +176,10 @@
     },
     {
       "scene_id": "SQP-04",
-      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-04.png",
-      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
-      "background_source": "mod_superman_qiang/thumbnail.png",
-      "source_crop": [
-        0,
-        0,
-        640,
-        360
-      ],
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\SQP-04.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png",
+      "background_source": "promo/superman_qiang/images/revision-20261004/04-candle-invitation.png",
+      "source_crop": null,
       "fit_rect": [
         0,
         0,
@@ -227,13 +188,8 @@
       ],
       "source_kind": "art",
       "background": {
-        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\thumbnail.png",
-        "crop": [
-          0,
-          0,
-          640,
-          360
-        ],
+        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\images\\revision-20261004\\04-candle-invitation.png",
+        "crop": null,
         "fit": [
           0,
           0,
@@ -241,7 +197,7 @@
           1080
         ],
         "mode": "art",
-        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png"
       },
       "preserve_aspect_ratio": true,
       "subtitle_safe_top": 860,
@@ -251,15 +207,10 @@
     },
     {
       "scene_id": "SQP-05",
-      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-05.png",
-      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
-      "background_source": "mod_superman_qiang/thumbnail.png",
-      "source_crop": [
-        170,
-        0,
-        640,
-        264
-      ],
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\SQP-05.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png",
+      "background_source": "promo/superman_qiang/images/revision-20261004/05-queen-reversal.png",
+      "source_crop": null,
       "fit_rect": [
         0,
         0,
@@ -268,13 +219,8 @@
       ],
       "source_kind": "art",
       "background": {
-        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\thumbnail.png",
-        "crop": [
-          170,
-          0,
-          470,
-          264
-        ],
+        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\images\\revision-20261004\\05-queen-reversal.png",
+        "crop": null,
         "fit": [
           0,
           0,
@@ -282,36 +228,32 @@
           1080
         ],
         "mode": "art",
-        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png"
       },
       "preserve_aspect_ratio": true,
       "subtitle_safe_top": 860,
-      "pan": "Slow 2–4% scale within the ordinary illustration crop; screenshots remain still and complete.",
+      "pan": "Keep the complete queen image at scale 1.0; no additional crop or zoom may cut the crown near the top edge.",
       "preview_extra_paths": [],
       "optional_layers": [
         {
-          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-05-question.png",
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\SQP-05-question.png",
           "replace_base": true,
           "timing_fraction": [
             0.0,
             0.7
           ],
           "timing": "Before final '谁才是猎物' reveal."
-        },
-        {
-          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\power-to-queen.png",
-          "timing_fraction": [
-            0.34,
-            0.72
-          ],
-          "timing": "Brief reversed illustrative flow; no claimed actual transfer."
         }
-      ]
+      ],
+      "motion_policy": {
+        "fixed_scale": 1.0,
+        "preserve_crown": true
+      }
     },
     {
       "scene_id": "SQP-06",
-      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-06.png",
-      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\SQP-06.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png",
       "background_source": "workshop/superman_qiang_media/v3/05_notification.jpg",
       "source_crop": null,
       "fit_rect": [
@@ -331,7 +273,7 @@
           626
         ],
         "mode": "real-still",
-        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png"
       },
       "preserve_aspect_ratio": true,
       "subtitle_safe_top": 860,
@@ -352,8 +294,8 @@
     },
     {
       "scene_id": "SQP-07",
-      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-07.png",
-      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\SQP-07.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png",
       "background_source": "workshop/superman_qiang_media/v2/04_natural_event.jpg",
       "source_crop": null,
       "fit_rect": [
@@ -373,7 +315,7 @@
           673
         ],
         "mode": "real-still",
-        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png"
       },
       "preserve_aspect_ratio": true,
       "subtitle_safe_top": 860,
@@ -394,14 +336,14 @@
     },
     {
       "scene_id": "SQP-08",
-      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-08.png",
-      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\SQP-08.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png",
       "background_source": null,
       "source_crop": null,
       "fit_rect": null,
       "source_kind": "schematic",
       "background": {
-        "source_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
+        "source_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png",
         "crop": null,
         "fit": [
           0,
@@ -410,17 +352,17 @@
           1080
         ],
         "mode": "graphic",
-        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png"
       },
       "preserve_aspect_ratio": true,
       "subtitle_safe_top": 860,
       "pan": "No screenshot motion, stretched dimensions or fake clicks.",
       "preview_extra_paths": [
-        "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-健康.png"
+        "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-健康.png"
       ],
       "optional_layers": [
         {
-          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-外交.png",
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-外交.png",
           "timing_fraction": [
             0.0,
             0.07857142857142857
@@ -428,7 +370,7 @@
           "timing": "With spoken '外交'; show one category at a time. Prefer actual first-sentence boundaries to this guide."
         },
         {
-          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-军事.png",
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-军事.png",
           "timing_fraction": [
             0.07857142857142857,
             0.15714285714285714
@@ -436,7 +378,7 @@
           "timing": "With spoken '军事'; show one category at a time. Prefer actual first-sentence boundaries to this guide."
         },
         {
-          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-管理.png",
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-管理.png",
           "timing_fraction": [
             0.15714285714285714,
             0.2357142857142857
@@ -444,7 +386,7 @@
           "timing": "With spoken '管理'; show one category at a time. Prefer actual first-sentence boundaries to this guide."
         },
         {
-          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-谋略.png",
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-谋略.png",
           "timing_fraction": [
             0.2357142857142857,
             0.3142857142857143
@@ -452,7 +394,7 @@
           "timing": "With spoken '谋略'; show one category at a time. Prefer actual first-sentence boundaries to this guide."
         },
         {
-          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-学识.png",
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-学识.png",
           "timing_fraction": [
             0.3142857142857143,
             0.3928571428571429
@@ -460,7 +402,7 @@
           "timing": "With spoken '学识'; show one category at a time. Prefer actual first-sentence boundaries to this guide."
         },
         {
-          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-勇武.png",
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-勇武.png",
           "timing_fraction": [
             0.3928571428571429,
             0.4714285714285714
@@ -468,7 +410,7 @@
           "timing": "With spoken '勇武'; show one category at a time. Prefer actual first-sentence boundaries to this guide."
         },
         {
-          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-健康.png",
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-健康.png",
           "timing_fraction": [
             0.4714285714285714,
             0.55
@@ -479,8 +421,8 @@
     },
     {
       "scene_id": "SQP-09",
-      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-09.png",
-      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\SQP-09.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png",
       "background_source": "workshop/superman_qiang_media/v3/05_notification.raw.png",
       "source_crop": null,
       "fit_rect": [
@@ -500,7 +442,7 @@
           705
         ],
         "mode": "real-still",
-        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png"
       },
       "preserve_aspect_ratio": true,
       "subtitle_safe_top": 860,
@@ -510,8 +452,8 @@
     },
     {
       "scene_id": "SQP-10",
-      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-10.png",
-      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\SQP-10.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png",
       "background_source": "mod_superman_qiang/thumbnail.png",
       "source_crop": [
         0,
@@ -541,17 +483,17 @@
           1080
         ],
         "mode": "art",
-        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\backgrounds\\court-field.png"
       },
       "preserve_aspect_ratio": true,
       "subtitle_safe_top": 860,
       "pan": "Slow 2–4% scale within the ordinary illustration crop; screenshots remain still and complete.",
       "preview_extra_paths": [
-        "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\workshop-qr.png"
+        "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\workshop-qr.png"
       ],
       "optional_layers": [
         {
-          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\workshop-qr.png",
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\workshop-qr.png",
           "timing_fraction": [
             0.0,
             1.0
@@ -562,19 +504,21 @@
     }
   ],
   "extras": {
-    "外交": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-外交.png",
-    "军事": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-军事.png",
-    "管理": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-管理.png",
-    "谋略": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-谋略.png",
-    "学识": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-学识.png",
-    "勇武": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-勇武.png",
-    "健康": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-健康.png",
-    "power-to-king": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\power-to-king.png",
-    "power-to-queen": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\power-to-queen.png",
-    "SQP-01-hook": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-01-hook.png",
-    "SQP-01-punchline": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-01-punchline.png",
-    "SQP-05-question": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-05-question.png",
-    "workshop-qr": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\workshop-qr.png",
-    "workshop-qr-native": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\workshop-qr-native.png"
+    "外交": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-外交.png",
+    "军事": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-军事.png",
+    "管理": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-管理.png",
+    "谋略": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-谋略.png",
+    "学识": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-学识.png",
+    "勇武": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-勇武.png",
+    "健康": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-健康.png",
+    "SQP-03-外交": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-外交-left.png",
+    "SQP-03-勇武": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\attribute-勇武-left.png",
+    "power-to-king": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\power-to-king.png",
+    "power-to-queen": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\power-to-queen.png",
+    "SQP-01-hook": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\SQP-01-hook.png",
+    "SQP-01-punchline": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\SQP-01-punchline.png",
+    "SQP-05-question": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\SQP-05-question.png",
+    "workshop-qr": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\workshop-qr.png",
+    "workshop-qr-native": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0004\\overlays\\workshop-qr-native.png"
   }
 }

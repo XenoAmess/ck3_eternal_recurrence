@@ -10,7 +10,6 @@ import hashlib
 import json
 import math
 import mimetypes
-import re
 import shutil
 from pathlib import Path
 from typing import Any
@@ -96,60 +95,71 @@ def subtitle_header(family: str, font_size: int) -> str:
 
 def subtitle_events(scene: dict[str, Any], lead: float, duration: float,
                     font_path: Path, family: str, font_size: int) -> list[dict[str, Any]]:
+    """One unchanged paragraph for the whole scene, with measured line breaks."""
     font = ImageFont.truetype(str(font_path), font_size)
     specification = FontSpec("chinese-subtitle", family, font_size)
     boundaries = [json.loads(line) for line in Path(scene["boundaries_path"]).read_text(
         encoding="utf-8").splitlines() if line.strip()]
-    events: list[dict[str, Any]] = []
-    for row in boundaries:
-        if row["type"] != "SentenceBoundary":
-            continue
-        start = lead + row["offset"] / 10_000_000
-        end = min(duration - 0.2, start + row["duration"] / 10_000_000 + 0.08)
-        if end <= start:
-            raise ValueError("Narration boundary extends beyond the scene")
-        # Split only long sentences at their punctuation. Their real provider
-        # sentence interval remains the outer bound; within-sentence cue timing
-        # is explicitly a text-weighted estimate, never claimed as word alignment.
-        parts = re.findall(r"[^，、：。！？；]+[，、：。！？；]?", row["text"])
-        groups: list[str] = []
-        current = ""
-        for part in parts:
-            candidate = current + part
-            if current and (len(candidate) > 24 or font.getlength(candidate) > 1330):
-                groups.append(current)
-                current = part
-            else:
-                current = candidate
-        if current:
-            groups.append(current)
-        if not groups:
-            groups = [row["text"]]
-        total_weight = sum(len(item) for item in groups)
-        cursor = start
-        for index, text in enumerate(groups):
-            piece_end = end if index == len(groups) - 1 else cursor + (
-                end - start) * len(text) / total_weight
-            layout = wrap_text(
-                text, font=specification,
-                measure=lambda value, spec: font.getlength(value),
-                max_width=1460, max_lines=2,
-                policy=WrapPolicy(prefer_break_after=frozenset("，、：；")),
-            )
-            widths = [font.getlength(line) for line in layout.lines]
-            if max(widths, default=0) > 1460 or len(layout.lines) > 2:
-                raise ValueError("Chinese subtitle exceeds its safe rectangle")
-            events.append({
-                "start_seconds": round(cursor, 6),
-                "end_seconds": round(piece_end, 6),
-                "lines": list(layout.lines), "widths_px": widths,
-                "safe_rectangle": [230, 880, 1460, 140],
-                "alignment": "provider-sentence-boundary/text-weighted-subdivision",
-            })
-            cursor = piece_end
-    if not events:
+    sentences = [row for row in boundaries if row["type"] == "SentenceBoundary"]
+    if not sentences:
         raise ValueError(f"No sentence boundaries for {scene['scene_id']}")
-    return events
+    text = scene["narration"]
+    lines = [text]
+    if font.getlength(text) > 1460:
+        candidates = []
+        for split_at in range(1, len(text)):
+            left, right = text[:split_at], text[split_at:]
+            left_width, right_width = font.getlength(left), font.getlength(right)
+            if max(left_width, right_width) > 1460:
+                continue
+            # Prefer a real clause boundary and a balanced two-line paragraph.
+            # Opening/closing quotes and doubled dashes stay with their phrase.
+            if right[0] in "，。！？；：、”》）" or left[-1] in "“《（":
+                continue
+            if left[-1] == "—" and right[0] == "—":
+                continue
+            punctuation_penalty = 0 if left[-1] in "。！？；，：、" else 1
+            candidates.append((punctuation_penalty, abs(left_width-right_width), left, right))
+        if not candidates:
+            raise ValueError(f"Full paragraph cannot fit two readable lines for {scene['scene_id']}")
+        _, _, left, right = min(candidates, key=lambda item: (item[0], item[1]))
+        lines = [left, right]
+    layout = wrap_text(
+        "\n".join(lines), font=specification,
+        measure=lambda value, spec: font.getlength(value), max_width=1460,
+        max_lines=2, policy=WrapPolicy(prefer_break_after=frozenset("，、：；")),
+    )
+    if "".join(layout.lines) != text:
+        raise ValueError("Paragraph wrapping changed approved narration characters")
+    widths = [font.getlength(line) for line in layout.lines]
+    ascent, descent = font.getmetrics()
+    line_height = ascent + descent
+    top = 1020 - len(layout.lines) * line_height
+    bboxes = []
+    for index, (line, width) in enumerate(zip(layout.lines, widths)):
+        left = 960 - width / 2
+        glyph = font.getbbox(line, anchor="lt")
+        box = [left + glyph[0]-3, top+index*line_height+glyph[1]-3,
+               left+glyph[2]+3, top+index*line_height+glyph[3]+3]
+        if box[0] < 230 or box[1] < 880 or box[2] > 1690 or box[3] > 1020:
+            raise ValueError(f"Paragraph glyph box escaped safe area: {box}")
+        bboxes.append(box)
+    fade_out = 0.65 if scene["scene_id"] == "SQP-10" else 0.20
+    end = duration - fade_out
+    if end <= lead + scene["duration_seconds"]:
+        raise ValueError("Full paragraph must remain through the entire narration")
+    return [{
+        "scene_id": scene["scene_id"], "cue_count": 1, "narration_text": text,
+        "start_seconds": round(lead, 6), "end_seconds": round(end, 6),
+        "lines": list(layout.lines), "widths_px": widths,
+        "glyph_bboxes_px_with_outline": bboxes,
+        "safe_rectangle": [230, 880, 1460, 140],
+        "font_metrics_px": {"ascent": ascent, "descent": descent, "line_height": line_height},
+        "alignment": "whole-scene-paragraph-continuous",
+        "provider_boundaries_retained": len(sentences),
+        "approved_text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+        "full_text_unchanged": True,
+    }]
 
 
 def event_line(event: dict[str, Any], offset: float = 0) -> str:
@@ -362,11 +372,14 @@ def player_segment_plan(kwargs: dict[str, Any], rows: list[dict[str, Any]], visu
         if scene["source_kind"] == "art":
             # Render more pixels before zoompan to avoid visible integer steps.
             large_width, large_height = width * 2, height * 2
+            # The revised queen shot keeps the complete crown in its source
+            # framing. Other artwork receives the ordinary slow push.
+            zoom_start, zoom_delta = (1.0, 0.0) if row["id"] == "SQP-05" else (1.02, 0.035)
             filters.append(
                 f"[{next_input}:v]{crop_filter}scale={large_width}:{large_height}:"
                 "force_original_aspect_ratio=increase:flags=lanczos,"
                 f"crop={large_width}:{large_height},"
-                f"zoompan=z='1.02+0.035*on/{frame_count}':"
+                f"zoompan=z='{zoom_start}+{zoom_delta}*on/{frame_count}':"
                 f"x='(iw-iw/zoom)*(0.45+0.08*on/{frame_count})':"
                 f"y='(ih-ih/zoom)/2':d=1:s={width}x{height}:fps=30,"
                 "setsar=1,format=rgba[framed]"
@@ -547,8 +560,14 @@ def player_concat_plan(kwargs: dict[str, Any], music_path: Path, music: dict[str
         GeneratedTextFile(root / "subtitle-layout-report.json", json.dumps({
             "kind": "superman_qiang_subtitle_layout", "font_path": str(Path("C:/Windows/Fonts/msyh.ttc")),
             "font_family": family, "font_size_px": font_size, "scenes": layouts,
+            "cue_count": len(global_events), "scene_count": len(layouts),
+            "safe_rectangle": [230, 880, 1460, 140],
+            "scene_timing": {row["id"]: {"start_seconds": row["start_seconds"],
+                                           "end_seconds": row["end_seconds"]} for row in rows},
             "measured_width_safe_max_px": 1460, "max_lines": 2,
             "provider_boundary_unit": "100-nanosecond ticks",
+            "subtitle_policy": "one-complete-paragraph-per-scene",
+            "provider_boundaries_usage": "retained for provenance; not sentence replacement",
         }, ensure_ascii=False, indent=2) + "\n"),
         GeneratedTextFile(root / "subtitles" / "complete.ass", global_ass),
         GeneratedTextFile(root / "subtitles" / "complete.srt", srt),

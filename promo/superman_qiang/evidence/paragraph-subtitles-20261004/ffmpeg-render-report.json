@@ -1,0 +1,138 @@
+{
+  "kind": "whole-paragraph-real-render-preflight",
+  "status": "GREEN",
+  "not_final_movie": true,
+  "font_size": 46,
+  "checks": [
+    {
+      "scene_id": "SQP-01",
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\composer-paragraph-A0001\\ffmpeg-smoke-A0001\\SQP-01.png",
+      "sha256": "c578e54fb845c62e16a571d965434257f4ded230e5cd53018ac8703bbd0bf3c2",
+      "actual_libass_fill_bbox_px": [
+        595,
+        936,
+        1301,
+        1016
+      ],
+      "cue_count": 1,
+      "all_text_unchanged": true
+    },
+    {
+      "scene_id": "SQP-02",
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\composer-paragraph-A0001\\ffmpeg-smoke-A0001\\SQP-02.png",
+      "sha256": "dba13d9678dfda1a042234c38c58c186326ff5833657da9ceaa90da7a94e41f4",
+      "actual_libass_fill_bbox_px": [
+        560,
+        936,
+        1337,
+        1016
+      ],
+      "cue_count": 1,
+      "all_text_unchanged": true
+    },
+    {
+      "scene_id": "SQP-03",
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\composer-paragraph-A0001\\ffmpeg-smoke-A0001\\SQP-03.png",
+      "sha256": "b11dfc8b0d885afc71b190db4a08c4fbbde08507f2b323ac7ef737e051fc0eb0",
+      "actual_libass_fill_bbox_px": [
+        507,
+        936,
+        1389,
+        1016
+      ],
+      "cue_count": 1,
+      "all_text_unchanged": true
+    },
+    {
+      "scene_id": "SQP-04",
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\composer-paragraph-A0001\\ffmpeg-smoke-A0001\\SQP-04.png",
+      "sha256": "d9edc21e24350b08fb77dc24c749e89b3c76851f6da5985a9ffce23b45361e5a",
+      "actual_libass_fill_bbox_px": [
+        647,
+        936,
+        1250,
+        1016
+      ],
+      "cue_count": 1,
+      "all_text_unchanged": true
+    },
+    {
+      "scene_id": "SQP-05",
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\composer-paragraph-A0001\\ffmpeg-smoke-A0001\\SQP-05.png",
+      "sha256": "a895054201c31a61464d08c7660ea40e0fd5f46e50e126f1246155e23a37a4ce",
+      "actual_libass_fill_bbox_px": [
+        453,
+        936,
+        1444,
+        1016
+      ],
+      "cue_count": 1,
+      "all_text_unchanged": true
+    },
+    {
+      "scene_id": "SQP-06",
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\composer-paragraph-A0001\\ffmpeg-smoke-A0001\\SQP-06.png",
+      "sha256": "b966d4b0bc550c6a0277c488c821c1c213eb1f9f9ed0b2d9f6d0a4f88c865ddc",
+      "actual_libass_fill_bbox_px": [
+        508,
+        936,
+        1389,
+        1016
+      ],
+      "cue_count": 1,
+      "all_text_unchanged": true
+    },
+    {
+      "scene_id": "SQP-07",
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\composer-paragraph-A0001\\ffmpeg-smoke-A0001\\SQP-07.png",
+      "sha256": "231b895feccb32fe4e30fae309d31a071bdc63a3129fe9ec11e178d66db80aac",
+      "actual_libass_fill_bbox_px": [
+        490,
+        936,
+        1407,
+        1016
+      ],
+      "cue_count": 1,
+      "all_text_unchanged": true
+    },
+    {
+      "scene_id": "SQP-08",
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\composer-paragraph-A0001\\ffmpeg-smoke-A0001\\SQP-08.png",
+      "sha256": "d19ddc8fc22a14e36a9f6549958776dc9be685192d9ad56020cc84fa73d765bf",
+      "actual_libass_fill_bbox_px": [
+        508,
+        936,
+        1389,
+        1016
+      ],
+      "cue_count": 1,
+      "all_text_unchanged": true
+    },
+    {
+      "scene_id": "SQP-09",
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\composer-paragraph-A0001\\ffmpeg-smoke-A0001\\SQP-09.png",
+      "sha256": "3ad23f534334fdc0f7866453a611383d5ef8b84d14f32eb3098bf0b5111029c7",
+      "actual_libass_fill_bbox_px": [
+        543,
+        936,
+        1354,
+        1016
+      ],
+      "cue_count": 1,
+      "all_text_unchanged": true
+    },
+    {
+      "scene_id": "SQP-10",
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\composer-paragraph-A0001\\ffmpeg-smoke-A0001\\SQP-10.png",
+      "sha256": "56d105a5a0d732ef80daea212cb2aab5ef3f1e2211d686620c4455da0c4fb8e3",
+      "actual_libass_fill_bbox_px": [
+        559,
+        936,
+        1354,
+        1016
+      ],
+      "cue_count": 1,
+      "all_text_unchanged": true
+    }
+  ]
+}

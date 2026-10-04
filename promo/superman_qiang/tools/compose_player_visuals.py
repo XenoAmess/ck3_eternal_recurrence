@@ -26,7 +26,7 @@ CREAM = (245, 238, 221, 255)
 MUTED = (191, 181, 166, 255)
 RUBY = (176, 58, 69, 255)
 URL = "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990"
-DEFAULT_WORK = Path("C:/ck3-superman-qiang-promo-20261004/player-visuals-A0001")
+DEFAULT_WORK = Path("C:/ck3-superman-qiang-promo-20261004/player-visuals-A0004")
 DEFAULT_FONT = Path("C:/Windows/Fonts/msyh.ttc")
 DEFAULT_BOLD_FONT = Path("C:/Windows/Fonts/msyhbd.ttc")
 
@@ -96,7 +96,9 @@ class Designer:
         draw.line((184, 146, 350, 146), fill=(229, 193, 123, 65), width=1)
 
     def tag(self, canvas: Image.Image, text: str = "宣传插画 · 示意") -> None:
-        self.text(canvas, text, 1535, 100, 20, color=(223, 217, 203, 205), max_right=1810)
+        # The owner explicitly removed on-screen source-category labels after
+        # watching the first film. Source distinctions remain in provenance.
+        return None
 
     def save(self, canvas: Image.Image, target: Path) -> None:
         if canvas.getbbox() is None:
@@ -208,7 +210,6 @@ def make_scene_overlays(designer: Designer) -> dict[str, Path]:
             designer.text(canvas, "成为你的筹码。", 112, 393, 67, bold=True, color=GOLD, max_right=870)
         elif index == 4:
             designer.tag(canvas)
-            crown(draw, 112, 235, width=162)
             designer.text(canvas, "爱情与野心，", 112, 383, 75, bold=True, max_right=910)
             designer.text(canvas, "这次一起赴约。", 112, 494, 75, bold=True, color=GOLD, max_right=910)
         elif index == 5:
@@ -221,14 +222,12 @@ def make_scene_overlays(designer: Designer) -> dict[str, Path]:
             designer.text(canvas, "先看履历。", 112, 372, 53, bold=True, color=GOLD, max_right=444)
             designer.text(canvas, "看起来无害的人，", 112, 520, 25, color=MUTED, max_right=440)
             designer.text(canvas, "也可能藏得很深。", 112, 564, 25, color=MUTED, max_right=440)
-            designer.text(canvas, "CK3 实机画面 · 通知查询", 460, 146, 22, color=MUTED)
         elif index == 7:
             designer.text(canvas, "每个人，", 112, 247, 52, bold=True, max_right=475)
             designer.text(canvas, "都有自己的", 112, 325, 52, bold=True, max_right=475)
             designer.text(canvas, "履历。", 112, 403, 52, bold=True, color=GOLD, max_right=475)
             designer.text(canvas, "你的宫廷，", 112, 559, 27, color=MUTED, max_right=475)
             designer.text(canvas, "多一种养成。", 112, 606, 27, color=MUTED, max_right=475)
-            designer.text(canvas, "CK3 实机画面 · 独立静帧", 560, 111, 22, color=MUTED)
         elif index == 8:
             designer.tag(canvas, "宣传示意")
             designer.text(canvas, "下一次，", 112, 330, 83, bold=True, max_right=890)
@@ -238,7 +237,6 @@ def make_scene_overlays(designer: Designer) -> dict[str, Path]:
             designer.text(canvas, "老存档，", 112, 303, 67, bold=True, max_right=700)
             designer.text(canvas, "也能接着玩。", 112, 409, 67, bold=True, color=GOLD, max_right=700)
             designer.text(canvas, "带回你熟悉的宫廷。", 112, 564, 31, color=MUTED, max_right=700)
-            designer.text(canvas, "CK3 实机画面 · 现有存档", 745, 70, 22, color=MUTED)
         else:
             designer.tag(canvas)
             designer.text(canvas, "超人强", 104, 246, 139, bold=True, color=GOLD, max_right=950)
@@ -261,6 +259,13 @@ def make_extras(designer: Designer) -> dict[str, Path]:
         path = designer.work / "overlays" / f"attribute-{word}.png"
         designer.save(canvas, path)
         extras[word] = path
+    for word in ["外交", "勇武"]:
+        designer.scene = f"SQP-03-attribute-{word}"
+        canvas = designer.canvas(scrim=False)
+        designer.text(canvas, word, 112, 586, 64, bold=True, color=GOLD, max_right=870)
+        path = designer.work / "overlays" / f"attribute-{word}-left.png"
+        designer.save(canvas, path)
+        extras[f"SQP-03-{word}"] = path
     for name, reverse in [("power-to-king", False), ("power-to-queen", True)]:
         path = designer.work / "overlays" / f"{name}.png"
         designer.save(power_flow(reverse=reverse), path)
@@ -358,17 +363,19 @@ def main() -> int:
     parser.add_argument("--work-dir", type=Path, default=DEFAULT_WORK)
     parser.add_argument("--font", type=Path, default=DEFAULT_FONT)
     parser.add_argument("--bold-font", type=Path, default=DEFAULT_BOLD_FONT)
+    parser.add_argument("--illustration-directory", type=Path,
+                        default=Path("promo/superman_qiang/images/revision-20261004"))
     parser.add_argument("--plan", type=Path, required=True)
     parser.add_argument("--report-directory", type=Path, required=True)
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[3]
     work = args.work_dir.resolve()
-    if work.exists() or args.plan.exists() or args.report_directory.exists():
+    if (work / "overlays").exists() or (work / "visual-plan.json").exists() or args.plan.exists() or args.report_directory.exists():
         raise FileExistsError("Use a fresh visual attempt, plan path and report directory; earlier outputs are retained.")
     for font in [args.font, args.bold_font]:
         if not font.is_file():
             raise FileNotFoundError(f"Required font is absent: {font}")
-    work.mkdir(parents=True)
+    work.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(__file__, work / "compose_player_visuals.py")
     director = root / "promo/superman_qiang/02m/director.json"
     shutil.copyfile(director, work / "director.json")
@@ -383,12 +390,19 @@ def main() -> int:
     event = "workshop/superman_qiang_media/v2/04_natural_event.jpg"
     toast = "workshop/superman_qiang_media/v3/05_notification.jpg"
     context = "workshop/superman_qiang_media/v3/05_notification.raw.png"
+    illustration_directory = args.illustration_directory.resolve()
+    revision_sources = [(illustration_directory / name).relative_to(root).as_posix() for name in [
+        "01-royal-study.png", "02-palace-ball.png", "03-knight-yard.png",
+        "04-candle-invitation.png", "05-queen-reversal.png"]]
+    for source in revision_sources:
+        if not (root / source).is_file():
+            raise FileNotFoundError(f"The independent illustration is absent: {source}")
     selections = [
-        (art, [0, 0, 640, 360], [0, 0, W, H], "art"),
-        (art_wide, [650, 0, 1600, 534], [0, 0, W, H], "art"),
-        (art_wide, [650, 0, 1600, 534], [0, 0, W, H], "art"),
-        (art, [0, 0, 640, 360], [0, 0, W, H], "art"),
-        (art, [170, 0, 640, 264], [0, 0, W, H], "art"),
+        (revision_sources[0], None, [0, 0, W, H], "art"),
+        (revision_sources[1], None, [0, 0, W, H], "art"),
+        (revision_sources[2], None, [0, 0, W, H], "art"),
+        (revision_sources[3], None, [0, 0, W, H], "art"),
+        (revision_sources[4], None, [0, 0, W, H], "art"),
         (toast, None, [460, 195, 1350, 626], "genuine-screenshot"),
         (event, None, [560, 165, 1210, 673], "genuine-screenshot"),
         (None, None, None, "schematic"),
@@ -421,15 +435,16 @@ def main() -> int:
             row["alternate_genuine_source"] = {"path": event, "fit_rect": [700, 170, 1100, 611],
                 "note": "Use an independent labelled still, not as absorption proof; remove large title overlay during this cut."}
         elif index == 3:
-            row["optional_layers"] = [{"path": str(extras["power-to-king"]), "timing_fraction": [0.0, 1.0], "timing": "From the second adult silhouette to the first; illustrative only."},
-                                      {"path": str(extras["外交"]), "timing_fraction": [0.45, 0.70], "timing": "On '谈判的底气'; one attribute word only."},
-                                      {"path": str(extras["勇武"]), "timing_fraction": [0.72, 1.0], "timing": "On '亲自下场的勇气'; replaces the previous word."}]
-            row["preview_extra_paths"] = [str(extras["power-to-king"])]
+            row["optional_layers"] = [{"path": str(extras["SQP-03-外交"]), "word": "外交", "timing_fraction": [0.45, 0.70], "timing": "On '谈判的底气'; one attribute word only, left of the knight's face."},
+                                      {"path": str(extras["SQP-03-勇武"]), "word": "勇武", "timing_fraction": [0.72, 1.0], "timing": "On '亲自下场的勇气'; replaces the previous word."}]
+            row["preview_extra_paths"] = [str(extras["SQP-03-勇武"])]
         elif index == 5:
             row["optional_layers"] = [{"path": str(extras["SQP-05-question"]), "replace_base": True,
                                        "timing_fraction": [0.0, 0.70],
                                        "timing": "Before final '谁才是猎物' reveal."},
-                                      {"path": str(extras["power-to-queen"]), "timing_fraction": [0.34, 0.72], "timing": "Brief reversed illustrative flow; no claimed actual transfer."}]
+                                     ]
+            row["pan"] = "Keep the complete queen image at scale 1.0; no additional crop or zoom may cut the crown near the top edge."
+            row["motion_policy"] = {"fixed_scale": 1.0, "preserve_crown": True}
         elif index == 6:
             row["alternate_genuine_source"] = {"path": context, "fit_rect": [745, 110, 940, 705],
                 "note": "Establish genuine original context briefly, then cut to the complete cropped notification image; no simulated action."}
@@ -451,7 +466,9 @@ def main() -> int:
             "created_at": datetime.now(timezone.utc).isoformat(), "source_director": str(director),
             "source_director_sha256": digest(director), "resolution": [W, H],
             "style": "Ruby, near-black and warm gold; one font family, short text, substantial negative space.",
-            "source_policy": "Original artwork crops are ordinary video framing. Screenshot pixels, readings, aspect ratios and provenance remain unchanged. No test fixtures or recreated UI.",
+            "source_policy": "Five independent generated fictional illustrations replace repeated portraits. Source distinctions remain in provenance; the owner explicitly removed on-screen category labels. Screenshot pixels, readings, aspect ratios and provenance remain unchanged. No test fixtures or recreated UI.",
+            "category_labels_visible": False,
+            "first_five_independent_source_count": len(set(revision_sources)),
             "work_directory": str(work), "subtitle_region": [80, SUBTITLE_TOP, 1760, 180],
             "workshop_url": URL, "fonts": [{"path": str(path), "sha256": digest(path)} for path in [args.font, args.bold_font]],
             "scenes": scenes,
@@ -468,7 +485,7 @@ def main() -> int:
                   "pillow_version": importlib.metadata.version("Pillow"),
                   "contact_sheet": str(contact_sheet), "contact_sheet_sha256": digest(contact_sheet),
                   "plan_sha256": digest(args.plan),
-                  "sources": [{"path": source, "sha256": digest(root / source)} for source in [art, art_wide, event, toast, context]],
+                  "sources": [{"path": source, "sha256": digest(root / source)} for source in [art, art_wide, event, toast, context, *revision_sources]],
                   "generated_files": [{"path": str(path), "bytes": path.stat().st_size, "sha256": digest(path)}
                                       for path in sorted(work.rglob("*")) if path.is_file()]}
     args.report_directory.mkdir(parents=True)

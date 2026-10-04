@@ -344,5 +344,14 @@
     "deliverable_video": "not_produced",
     "human_signoff": "not_provided"
   },
-  "selection_revision": "player-trailer-20261004"
+  "selection_revision": "player-trailer-20261004",
+  "presentation_revision_20261004": {
+    "authority": "用户首版审片要求",
+    "remove_source_category_corner_labels": true,
+    "provenance_location": "内部台账、生成请求和原生run",
+    "subtitle_policy": "每场一段完整旁白连续显示",
+    "visual_policy": "前五场独立书房、舞会、练武、王冠静物、女王场景",
+    "revision_brief": "visual-revision-20261004.md",
+    "previous_corner_label_instructions_superseded": true
+  }
 }

@@ -1,0 +1,93 @@
+{
+  "kind": "whole-paragraph-final-source-preflight",
+  "status": "GREEN",
+  "not_final_movie": true,
+  "render_commands_executed": false,
+  "composer_sha256": "23aea5e4b8b838cdd62717fdcd456fd260bf0f32ef4c2d752307c790453d798d",
+  "source_policy_findings": [],
+  "compile": "GREEN",
+  "font_size_px": 46,
+  "cue_count": 10,
+  "scene_count": 10,
+  "provider_boundaries_retained": 26,
+  "all_paragraphs_complete": true,
+  "max_lines": 2,
+  "maximum_pillow_width_px": 1342.0,
+  "safe_rectangle": [
+    230,
+    880,
+    1460,
+    140
+  ],
+  "actual_libass_pixel_proof": "C:\\ck3-superman-qiang-promo-20261004\\composer-paragraph-A0001\\ffmpeg-smoke-A0001\\ffmpeg-render-report.json",
+  "ASS_byte_identity_to_real_libass_smoke": [
+    {
+      "scene_id": "SQP-01",
+      "sha256": "b9e78c9bac9b45f6e2df9eee14cb134b363b389d8b88bb097e5d66cf2c3170ca",
+      "same_bytes_as_ffmpeg_smoke_A0001": true
+    },
+    {
+      "scene_id": "SQP-02",
+      "sha256": "e18e1044930168b1712f6d2f16e08aad920b4bd39036b41b3a77f9037ed58a74",
+      "same_bytes_as_ffmpeg_smoke_A0001": true
+    },
+    {
+      "scene_id": "SQP-03",
+      "sha256": "23ec06d13ec755436a6e644eae6e139b649dd7d432690fcec111efc90dcd882d",
+      "same_bytes_as_ffmpeg_smoke_A0001": true
+    },
+    {
+      "scene_id": "SQP-04",
+      "sha256": "b766ff26338a69dc8cd5d788684fe642b9ee96189c3fb08630c112c754c5a96c",
+      "same_bytes_as_ffmpeg_smoke_A0001": true
+    },
+    {
+      "scene_id": "SQP-05",
+      "sha256": "3f4f5d4bd5dee79f1593d7c39a77c45eada5c6d42314adcef75e4f353ec1ea3c",
+      "same_bytes_as_ffmpeg_smoke_A0001": true
+    },
+    {
+      "scene_id": "SQP-06",
+      "sha256": "0a61d499143535654e5dfaba36539f3b3d00df307d1c0ddbae0815eb37ba9434",
+      "same_bytes_as_ffmpeg_smoke_A0001": true
+    },
+    {
+      "scene_id": "SQP-07",
+      "sha256": "fff89712386e661219c7127894efd5efbbb01d3e1b286dda883142e7e2adc1fc",
+      "same_bytes_as_ffmpeg_smoke_A0001": true
+    },
+    {
+      "scene_id": "SQP-08",
+      "sha256": "ac0f279b7649a8829d0f3d86d6b848cb884aa8e6068019bd561bb775df1dd750",
+      "same_bytes_as_ffmpeg_smoke_A0001": true
+    },
+    {
+      "scene_id": "SQP-09",
+      "sha256": "68f7c6d959dbf399b6b01251a52406f2b142a91f1832311df569c3f1a759c8eb",
+      "same_bytes_as_ffmpeg_smoke_A0001": true
+    },
+    {
+      "scene_id": "SQP-10",
+      "sha256": "d5c1fd188e92a83950e983561181764d71983a5aaff0f8c5da214475e330403d",
+      "same_bytes_as_ffmpeg_smoke_A0001": true
+    }
+  ],
+  "source_files": [
+    {
+      "path": "promo/superman_qiang/tools/player_trailer_composer.py",
+      "sha256": "23aea5e4b8b838cdd62717fdcd456fd260bf0f32ef4c2d752307c790453d798d"
+    },
+    {
+      "path": "promo/superman_qiang/render-project.json",
+      "sha256": "e45d0547d07aad98d754d581db2c02910fcc58df7d5abc1653ca7efbe46c82d3"
+    },
+    {
+      "path": "promo/superman_qiang/plugin/pyproject.toml",
+      "sha256": "2ca5d6a08d8b5ec584721138a5f514d73a9f05e667eb222b9cfcdacda06370f7"
+    },
+    {
+      "path": "promo/superman_qiang/plugin/superman_qiang_promo_plugin/__init__.py",
+      "sha256": "9899b69db76b0929b36163a6fe95892d9842a284d2bb29b5b143a07bdb256446"
+    }
+  ]
+}

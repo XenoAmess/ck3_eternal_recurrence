@@ -1,0 +1,21 @@
+{
+  "format_version": 1,
+  "kind": "superman_qiang_onedrive_delivery",
+  "source_path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0002\\build\\deliverables\\superman-qiang-player-trailer.mp4",
+  "destination_path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\超人强_越超人越强_宣传片_20261004_43f86c03.mp4",
+  "sha256": "43f86c03bfd4af3cfd6862dfdfc7d7a324a91c039e2835d66a9dd2f6db95e7ff",
+  "bytes": 32018189,
+  "file_count_transferred": 1,
+  "local_copy_verified": true,
+  "cloud_sync_confirmed": false,
+  "cloud_observation": {
+    "observed_at_utc": "2026-10-04T09:28:28.588444+00:00",
+    "state": "not-yet-in-sync",
+    "placeholder_state": 0,
+    "file_attributes": 32,
+    "reparse_tag": 0,
+    "read_access": "FILE_READ_ATTRIBUTES-only"
+  },
+  "confirmation_api": "CfGetPlaceholderStateFromAttributeTag / CF_PLACEHOLDER_STATE_IN_SYNC",
+  "confirmation_reference": "https://learn.microsoft.com/en-us/windows/win32/api/cfapi/nf-cfapi-cfgetplaceholderstatefromattributetag"
+}

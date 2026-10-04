@@ -1,0 +1,41 @@
+{
+  "format_version": 1,
+  "kind": "superman_qiang_encoded_media_check",
+  "created_at_utc": "2026-10-04T09:32:05.974751+00:00",
+  "result": "PASS",
+  "movie_path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\超人强_越超人越强_宣传片_20261004_43f86c03.mp4",
+  "movie_sha256": "43f86c03bfd4af3cfd6862dfdfc7d7a324a91c039e2835d66a9dd2f6db95e7ff",
+  "movie_bytes": 32018189,
+  "duration_seconds": 138.688021,
+  "checks": {
+    "duration_in_approved_range": true,
+    "one_video_stream": true,
+    "one_audio_stream": true,
+    "resolution_1920_1080": true,
+    "h264_yuv420p_30fps": true,
+    "aac_48khz_stereo": true,
+    "whole_movie_decodes_without_errors": true,
+    "encoded_true_peak_at_most_minus_1_db": true,
+    "encoded_loudness_readable_range": true,
+    "deliverable_matches_native_preserved_bytes": true,
+    "requested_voice_and_ten_real_narrations": true,
+    "single_music_source": true,
+    "actual_subtitle_layout_report_exists": true
+  },
+  "encoded_loudness": {
+    "input_i": "-16.48",
+    "input_tp": "-2.81",
+    "input_lra": "5.90",
+    "input_thresh": "-26.78",
+    "output_i": "-16.07",
+    "output_tp": "-2.42",
+    "output_lra": "5.80",
+    "output_thresh": "-26.38",
+    "normalization_type": "dynamic",
+    "target_offset": "0.07"
+  },
+  "subtitle_layout_path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0002\\build\\subtitle-layout-report.json",
+  "subtitle_layout_sha256": "7691cc7c2fb3cfe600e3ca46afd7f998da74632cdf9b1868a690d757f61f69d5",
+  "human_full_playback": "not-recorded",
+  "manual_signoff_granted": false
+}

@@ -1,0 +1,67 @@
+{
+  "automated_audit": {
+    "checks": [
+      "subject-bytes-and-sha256",
+      "sampling-plan-bytes-and-sha256",
+      "source-bytes-and-sha256",
+      "required-role-coverage",
+      "evidence-bytes-and-sha256",
+      "external-producer-metadata"
+    ],
+    "evidence_artifact_count": 2,
+    "evidence_bundle_sha256": "8D08AA22926E12D60F9341C93034589D57B7652311D37A0A208E96261F0560BF",
+    "evidence_plan_sha256": "07F958902E46442336414648DC867C43FCE5941A4F1146B3C7F79557831D0A7E",
+    "external_producers": [
+      {
+        "adapter_id": "superman-qiang-prepared-stills",
+        "operation": "decode-and-loudness-check",
+        "tool": "ffmpeg",
+        "tool_version": "9.0.1"
+      }
+    ],
+    "manual_approval_granted": false,
+    "required_roles": [
+      "media-check"
+    ],
+    "sample_count": 2,
+    "sample_required_roles": {
+      "sample-000001": [
+        "media-check"
+      ],
+      "sample-000002": [
+        "media-check"
+      ]
+    },
+    "scope": "artifact-integrity-and-evidence-completeness",
+    "status": "passed",
+    "subject_sha256": "43F86C03BFD4AF3CFD6862DFDFC7D7A324A91C039E2835D66A9DD2F6DB95E7FF",
+    "verifier": "xar_promo.audit/1"
+  },
+  "created_at_utc": "2026-10-04T09:35:02Z",
+  "evidence_bundle": {
+    "bytes": 1948,
+    "collection": "derived",
+    "id": "audit-evidence-bundle",
+    "label": "Complete hash-bound visual evidence bundle",
+    "media_type": "application/json",
+    "path": "postflight/media-evidence-bundle.json",
+    "role": "evidence-bundle",
+    "sha256": "8D08AA22926E12D60F9341C93034589D57B7652311D37A0A208E96261F0560BF"
+  },
+  "format_version": 1,
+  "kind": "xar_promo_audit_report",
+  "manual_signoff": {
+    "state": "not-provided"
+  },
+  "subject": {
+    "bytes": 32018189,
+    "collection": "derived",
+    "id": "deliverable.player-trailer",
+    "label": "superman-qiang-player-trailer.mp4",
+    "media_type": "video/mp4",
+    "path": "artifacts/derived/sha256/43/43F86C03BFD4AF3CFD6862DFDFC7D7A324A91C039E2835D66A9DD2F6DB95E7FF.mp4",
+    "role": "deliverable",
+    "sha256": "43F86C03BFD4AF3CFD6862DFDFC7D7A324A91C039E2835D66A9DD2F6DB95E7FF",
+    "source_name": "superman-qiang-player-trailer.mp4"
+  }
+}

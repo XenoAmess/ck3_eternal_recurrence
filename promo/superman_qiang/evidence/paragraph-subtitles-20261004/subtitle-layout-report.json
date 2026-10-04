@@ -1,0 +1,523 @@
+{
+  "kind": "superman_qiang_subtitle_layout",
+  "font_path": "C:\\Windows\\Fonts\\msyh.ttc",
+  "font_family": "Microsoft YaHei",
+  "font_size_px": 46,
+  "scenes": {
+    "SQP-01": [
+      {
+        "scene_id": "SQP-01",
+        "cue_count": 1,
+        "narration_text": "在《十字军之王三》里，想变强，通常得读书、练兵、管账。现在，你还可以……赴个约。",
+        "start_seconds": 1.4,
+        "end_seconds": 12.066667,
+        "lines": [
+          "在《十字军之王三》里，想变强，通常得读书、",
+          "练兵、管账。现在，你还可以……赴个约。"
+        ],
+        "widths_px": [
+          966.0,
+          856.0
+        ],
+        "glyph_bboxes_px_with_outline": [
+          [
+            474.0,
+            893,
+            1446.0,
+            945
+          ],
+          [
+            529.0,
+            955,
+            1391.0,
+            1006
+          ]
+        ],
+        "safe_rectangle": [
+          230,
+          880,
+          1460,
+          140
+        ],
+        "font_metrics_px": {
+          "ascent": 49,
+          "descent": 13,
+          "line_height": 62
+        },
+        "alignment": "whole-scene-paragraph-continuous",
+        "provider_boundaries_retained": 2,
+        "approved_text_sha256": "2bbb1398c581b7f04b2d66ca34c9caf317e6154685f5b612fbb86ad48d14586e",
+        "full_text_unchanged": true
+      }
+    ],
+    "SQP-02": [
+      {
+        "scene_id": "SQP-02",
+        "cue_count": 1,
+        "narration_text": "《超人强：越超人越强》。一次宫廷艳遇，不只留下秘密。它还可能把对方的本事，变成你的。",
+        "start_seconds": 0.9,
+        "end_seconds": 12.266667,
+        "lines": [
+          "《超人强：越超人越强》。一次宫廷艳遇，",
+          "不只留下秘密。它还可能把对方的本事，变成你的。"
+        ],
+        "widths_px": [
+          874.0,
+          1058.0
+        ],
+        "glyph_bboxes_px_with_outline": [
+          [
+            520.0,
+            893,
+            1400.0,
+            945
+          ],
+          [
+            428.0,
+            955,
+            1492.0,
+            1006
+          ]
+        ],
+        "safe_rectangle": [
+          230,
+          880,
+          1460,
+          140
+        ],
+        "font_metrics_px": {
+          "ascent": 49,
+          "descent": 13,
+          "line_height": 62
+        },
+        "alignment": "whole-scene-paragraph-continuous",
+        "provider_boundaries_retained": 3,
+        "approved_text_sha256": "3ded2d6491ab8ad953de2559e992b41d2abd0c7e5c13c4625f93e717f5e04a9c",
+        "full_text_unchanged": true
+      }
+    ],
+    "SQP-03": [
+      {
+        "scene_id": "SQP-03",
+        "cue_count": 1,
+        "narration_text": "经验更老到的人，可以吸走对方的一项属性。今晚得到的，也许是谈判的底气，也许是亲自下场的勇气。",
+        "start_seconds": 0.8,
+        "end_seconds": 12.766667,
+        "lines": [
+          "经验更老到的人，可以吸走对方的一项属性。",
+          "今晚得到的，也许是谈判的底气，也许是亲自下场的勇气。"
+        ],
+        "widths_px": [
+          920.0,
+          1196.0
+        ],
+        "glyph_bboxes_px_with_outline": [
+          [
+            497.0,
+            893,
+            1423.0,
+            945
+          ],
+          [
+            359.0,
+            955,
+            1561.0,
+            1007
+          ]
+        ],
+        "safe_rectangle": [
+          230,
+          880,
+          1460,
+          140
+        ],
+        "font_metrics_px": {
+          "ascent": 49,
+          "descent": 13,
+          "line_height": 62
+        },
+        "alignment": "whole-scene-paragraph-continuous",
+        "provider_boundaries_retained": 2,
+        "approved_text_sha256": "34d6a8a0e90614e39f90fd215a43088c5b838e9e83998cc83352e6357df01071",
+        "full_text_unchanged": true
+      }
+    ],
+    "SQP-04": [
+      {
+        "scene_id": "SQP-04",
+        "cue_count": 1,
+        "narration_text": "你以为自己是来征服爱情的。结果，一次约会，可能顺便给王冠添了点分量。",
+        "start_seconds": 0.7,
+        "end_seconds": 10.533333,
+        "lines": [
+          "你以为自己是来征服爱情的。结果，",
+          "一次约会，可能顺便给王冠添了点分量。"
+        ],
+        "widths_px": [
+          736.0,
+          828.0
+        ],
+        "glyph_bboxes_px_with_outline": [
+          [
+            589.0,
+            893,
+            1331.0,
+            944
+          ],
+          [
+            543.0,
+            955,
+            1377.0,
+            1007
+          ]
+        ],
+        "safe_rectangle": [
+          230,
+          880,
+          1460,
+          140
+        ],
+        "font_metrics_px": {
+          "ascent": 49,
+          "descent": 13,
+          "line_height": 62
+        },
+        "alignment": "whole-scene-paragraph-continuous",
+        "provider_boundaries_retained": 2,
+        "approved_text_sha256": "7d89ff87d495c6cd64ac055fbf3907ca2474e058123a017ed8c16fe7c0091d81",
+        "full_text_unchanged": true
+      }
+    ],
+    "SQP-05": [
+      {
+        "scene_id": "SQP-05",
+        "cue_count": 1,
+        "narration_text": "但这份好处，也轮得到别人。王冠不会替你撑腰。对面要是比你更老练——陛下，今晚是谁在变强，可就不好说了。",
+        "start_seconds": 1.0,
+        "end_seconds": 15.866667,
+        "lines": [
+          "但这份好处，也轮得到别人。王冠不会替你撑腰。",
+          "对面要是比你更老练——陛下，今晚是谁在变强，可就不好说了。"
+        ],
+        "widths_px": [
+          1012.0,
+          1342.0
+        ],
+        "glyph_bboxes_px_with_outline": [
+          [
+            451.0,
+            893,
+            1469.0,
+            945
+          ],
+          [
+            286.0,
+            955,
+            1634.0,
+            1007
+          ]
+        ],
+        "safe_rectangle": [
+          230,
+          880,
+          1460,
+          140
+        ],
+        "font_metrics_px": {
+          "ascent": 49,
+          "descent": 13,
+          "line_height": 62
+        },
+        "alignment": "whole-scene-paragraph-continuous",
+        "provider_boundaries_retained": 3,
+        "approved_text_sha256": "70b20e356ca8a35a314929eb3d47fc92c0be5de62a6f466fdafe96a85e27eb06",
+        "full_text_unchanged": true
+      }
+    ],
+    "SQP-06": [
+      {
+        "scene_id": "SQP-06",
+        "cue_count": 1,
+        "narration_text": "所以，赴约前，不妨看看对方的履历。右键一下，经验就能查。那个看起来人畜无害的人，可能藏得比你深。",
+        "start_seconds": 0.9,
+        "end_seconds": 14.866667,
+        "lines": [
+          "所以，赴约前，不妨看看对方的履历。右键一下，",
+          "经验就能查。那个看起来人畜无害的人，可能藏得比你深。"
+        ],
+        "widths_px": [
+          1012.0,
+          1196.0
+        ],
+        "glyph_bboxes_px_with_outline": [
+          [
+            451.0,
+            893,
+            1469.0,
+            945
+          ],
+          [
+            359.0,
+            955,
+            1561.0,
+            1007
+          ]
+        ],
+        "safe_rectangle": [
+          230,
+          880,
+          1460,
+          140
+        ],
+        "font_metrics_px": {
+          "ascent": 49,
+          "descent": 13,
+          "line_height": 62
+        },
+        "alignment": "whole-scene-paragraph-continuous",
+        "provider_boundaries_retained": 3,
+        "approved_text_sha256": "d92ac0739d66d1270d549014084b81ac8f5805ffbb893f58866cda01f5a00520",
+        "full_text_unchanged": true
+      }
+    ],
+    "SQP-07": [
+      {
+        "scene_id": "SQP-07",
+        "cue_count": 1,
+        "narration_text": "这些性行为会留下各自的记录。经验平手，也会记下新经历。你可以养成自己的宫廷高手，也得提防别人成长得比你快。",
+        "start_seconds": 0.8,
+        "end_seconds": 15.033333,
+        "lines": [
+          "这些性行为会留下各自的记录。经验平手，也会记下新经历。",
+          "你可以养成自己的宫廷高手，也得提防别人成长得比你快。"
+        ],
+        "widths_px": [
+          1242.0,
+          1196.0
+        ],
+        "glyph_bboxes_px_with_outline": [
+          [
+            336.0,
+            893,
+            1584.0,
+            945
+          ],
+          [
+            359.0,
+            955,
+            1561.0,
+            1006
+          ]
+        ],
+        "safe_rectangle": [
+          230,
+          880,
+          1460,
+          140
+        ],
+        "font_metrics_px": {
+          "ascent": 49,
+          "descent": 13,
+          "line_height": 62
+        },
+        "alignment": "whole-scene-paragraph-continuous",
+        "provider_boundaries_retained": 3,
+        "approved_text_sha256": "316523acbe8cf0b9754dd29066a5609b3712a454b238cc9dc616aaf27f834af9",
+        "full_text_unchanged": true
+      }
+    ],
+    "SQP-08": [
+      {
+        "scene_id": "SQP-08",
+        "cue_count": 1,
+        "narration_text": "外交、军事、管理、谋略、学识、勇武，还有健康。下一次，会带来什么？宫廷里的邀约，从此多了一层诱惑。",
+        "start_seconds": 0.9,
+        "end_seconds": 15.3,
+        "lines": [
+          "外交、军事、管理、谋略、学识、勇武，还有健康。",
+          "下一次，会带来什么？宫廷里的邀约，从此多了一层诱惑。"
+        ],
+        "widths_px": [
+          1058.0,
+          1196.0
+        ],
+        "glyph_bboxes_px_with_outline": [
+          [
+            428.0,
+            893,
+            1492.0,
+            945
+          ],
+          [
+            359.0,
+            955,
+            1561.0,
+            1007
+          ]
+        ],
+        "safe_rectangle": [
+          230,
+          880,
+          1460,
+          140
+        ],
+        "font_metrics_px": {
+          "ascent": 49,
+          "descent": 13,
+          "line_height": 62
+        },
+        "alignment": "whole-scene-paragraph-continuous",
+        "provider_boundaries_retained": 3,
+        "approved_text_sha256": "f5f93be1e3fba9b9c6f69d2e5c51afc7fc182920869c0446c11f357386f56c62",
+        "full_text_unchanged": true
+      }
+    ],
+    "SQP-09": [
+      {
+        "scene_id": "SQP-09",
+        "cue_count": 1,
+        "narration_text": "老存档也能接着玩。把这点新花样带回你熟悉的宫廷，看看谁会一夜得意，谁又会看走了眼。",
+        "start_seconds": 0.75,
+        "end_seconds": 11.4,
+        "lines": [
+          "老存档也能接着玩。把这点新花样带回你熟悉的宫廷，",
+          "看看谁会一夜得意，谁又会看走了眼。"
+        ],
+        "widths_px": [
+          1104.0,
+          782.0
+        ],
+        "glyph_bboxes_px_with_outline": [
+          [
+            405.0,
+            893,
+            1515.0,
+            944
+          ],
+          [
+            566.0,
+            955,
+            1354.0,
+            1007
+          ]
+        ],
+        "safe_rectangle": [
+          230,
+          880,
+          1460,
+          140
+        ],
+        "font_metrics_px": {
+          "ascent": 49,
+          "descent": 13,
+          "line_height": 62
+        },
+        "alignment": "whole-scene-paragraph-continuous",
+        "provider_boundaries_retained": 2,
+        "approved_text_sha256": "cfae35cc413cf688435c7c24253b24c4559584e40e1d75c696da0eeb1830de49",
+        "full_text_unchanged": true
+      }
+    ],
+    "SQP-10": [
+      {
+        "scene_id": "SQP-10",
+        "cue_count": 1,
+        "narration_text": "《超人强：越超人越强》。创意工坊搜索“超人强”。下一封邀请送来时，你想做猎手——还是猎物？",
+        "start_seconds": 0.9,
+        "end_seconds": 16.116667,
+        "lines": [
+          "《超人强：越超人越强》。创意工坊搜索“超人强”。",
+          "下一封邀请送来时，你想做猎手——还是猎物？"
+        ],
+        "widths_px": [
+          1104.0,
+          974.0
+        ],
+        "glyph_bboxes_px_with_outline": [
+          [
+            405.0,
+            893,
+            1515.0,
+            945
+          ],
+          [
+            470.0,
+            955,
+            1450.0,
+            1006
+          ]
+        ],
+        "safe_rectangle": [
+          230,
+          880,
+          1460,
+          140
+        ],
+        "font_metrics_px": {
+          "ascent": 49,
+          "descent": 13,
+          "line_height": 62
+        },
+        "alignment": "whole-scene-paragraph-continuous",
+        "provider_boundaries_retained": 3,
+        "approved_text_sha256": "6f19f37aaff283a369eb0502379af5747e31e7da7906c9e86720970fc013d096",
+        "full_text_unchanged": true
+      }
+    ]
+  },
+  "cue_count": 10,
+  "scene_count": 10,
+  "safe_rectangle": [
+    230,
+    880,
+    1460,
+    140
+  ],
+  "scene_timing": {
+    "SQP-01": {
+      "start_seconds": 0.0,
+      "end_seconds": 12.266666666666667
+    },
+    "SQP-02": {
+      "start_seconds": 12.266666666666667,
+      "end_seconds": 24.733333333333334
+    },
+    "SQP-03": {
+      "start_seconds": 24.733333333333334,
+      "end_seconds": 37.7
+    },
+    "SQP-04": {
+      "start_seconds": 37.7,
+      "end_seconds": 48.43333333333334
+    },
+    "SQP-05": {
+      "start_seconds": 48.43333333333334,
+      "end_seconds": 64.5
+    },
+    "SQP-06": {
+      "start_seconds": 64.5,
+      "end_seconds": 79.56666666666666
+    },
+    "SQP-07": {
+      "start_seconds": 79.56666666666666,
+      "end_seconds": 94.8
+    },
+    "SQP-08": {
+      "start_seconds": 94.8,
+      "end_seconds": 110.3
+    },
+    "SQP-09": {
+      "start_seconds": 110.3,
+      "end_seconds": 121.89999999999999
+    },
+    "SQP-10": {
+      "start_seconds": 121.89999999999999,
+      "end_seconds": 138.66666666666666
+    }
+  },
+  "measured_width_safe_max_px": 1460,
+  "max_lines": 2,
+  "provider_boundary_unit": "100-nanosecond ticks",
+  "subtitle_policy": "one-complete-paragraph-per-scene",
+  "provider_boundaries_usage": "retained for provenance; not sentence replacement"
+}
