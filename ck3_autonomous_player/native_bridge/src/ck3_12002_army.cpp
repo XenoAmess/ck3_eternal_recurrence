@@ -1,4 +1,5 @@
 ﻿#include "xar_bridge/ck3_12002_army.hpp"
+#include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_military.hpp"
 
@@ -303,9 +304,12 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
     }
     regiment_strengths.push_back({id, current_value, maximum_value});
   }
+  g_army_strength_query_diagnostic_v1.reader.store("current_soldiers_getter");
   const auto native_current = bindings.get_army_current_soldiers(
       static_cast<std::byte *>(army) + 0x38, 0);
+  g_army_strength_query_diagnostic_v1.reader.store("maximum_soldiers_getter");
   const auto native_maximum = bindings.get_army_maximum_soldiers(army);
+  g_army_strength_query_diagnostic_v1.reader.store("scope_row_fields");
   if (native_current < 0 || native_maximum < 0 || native_current != current ||
       native_maximum != maximum) {
     result.unavailable_reason = "native_helper_mismatch";
@@ -481,6 +485,9 @@ bool ReadArmiesForCharacters(const ArmyBindings &bindings,
 game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
     const ArmyBindings &bindings, std::span<const ArmyStrengthScope> scope,
     std::vector<game::ArmyStrengthSnapshot> &output) noexcept {
+  auto &diagnostic = g_army_strength_query_diagnostic_v1;
+  diagnostic.reader.store("scope_bindings");
+  diagnostic.scope_rows.store(static_cast<std::int64_t>(scope.size()));
   output.clear();
   if (!bindings.enabled || bindings.unit_storage_slot == nullptr ||
       bindings.internal_army_storage_slot == nullptr ||
@@ -490,6 +497,8 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
     return game::ReadArmyStrengthsResult::unavailable;
   bool partial = false;
   for (const auto &entry : scope) {
+    diagnostic.army_id.store(entry.army_id);
+    diagnostic.reader.store("scope_row");
     auto row = Strength(bindings, entry);
     partial = partial || !row.available;
     output.push_back(std::move(row));
@@ -502,6 +511,7 @@ game::ReadArmyStrengthsResult ReadArmyStrengths(
     const ArmyBindings &bindings, const game::Snapshot &snapshot,
     std::vector<game::ArmyStrengthSnapshot> &output) noexcept {
   output.clear();
+  g_army_strength_query_diagnostic_v1.reader.store("fullscope_admission");
   if (!bindings.enabled) return game::ReadArmyStrengthsResult::unavailable;
   if (!snapshot.paused) return game::ReadArmyStrengthsResult::requires_paused;
   if (!snapshot.has_played_character)

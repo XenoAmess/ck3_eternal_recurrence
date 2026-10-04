@@ -1,4 +1,5 @@
 #include "xar_bridge/public_unit_id.hpp"
+#include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/combat_hypothetical_scenario_v2_serializer.hpp"
 #include "xar_bridge/ck3_12002.hpp"
@@ -23102,6 +23103,7 @@ void RunConnectedSession(
             }
           }
         } else if (step == "query-army-strengths-v1") {
+          xar::ck3_12002::g_army_strength_query_diagnostic_v1.Reset();
           std::vector<xar::game::ArmyStrengthSnapshot> strengths;
           const auto query_result =
               xar::game::ReadArmyStrengths(game, strengths);
@@ -23115,7 +23117,7 @@ void RunConnectedSession(
                           request_id, army_strength_query_sequence,
                           query_result, strengths));
           } else {
-            std::string_view error =
+            std::string error =
                 "CK3 army-strength query is unavailable";
             if (query_result ==
                 xar::game::ReadArmyStrengthsResult::requires_paused) {
@@ -23124,6 +23126,8 @@ void RunConnectedSession(
                        xar::game::ReadArmyStrengthsResult::
                            no_played_character) {
               error = "no living played CK3 character";
+            } else {
+              error += xar::ck3_12002::g_army_strength_query_diagnostic_v1.FailureSuffix();
             }
             connected = write_frame(
                 pipe, CommandResultFrame(request_id, step, false, error));

@@ -1,4 +1,5 @@
 ﻿#include "xar_bridge/ck3_12002_semantic_adapter.hpp"
+#include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_adapter.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
@@ -205,36 +206,70 @@ bool WorkerAdapter::submit_set_speed(std::int32_t speed) const noexcept {
 game::SaveCheckpointResult WorkerAdapter::submit_save_checkpoint() const noexcept { return native_->submit_save_checkpoint(); }
 
 bool WorkerAdapter::Run(SemanticRequest &request) const noexcept {
+  auto *diagnostic = request.operation == SemanticOperation::strengths
+      ? &g_army_strength_query_diagnostic_v1 : nullptr;
   try {
     request.envelope.game = native_;
     request.envelope.mailbox = mailbox_;
     request.envelope.typed_context = &request;
-    if (!read_snapshot(request.envelope.expected_snapshot) ||
-        !request.envelope.expected_snapshot.paused ||
+    if (diagnostic != nullptr) diagnostic->worker.store("pre_snapshot");
+    const bool pre_snapshot = read_snapshot(request.envelope.expected_snapshot);
+    if (diagnostic != nullptr) {
+      diagnostic->pre_snapshot.store(pre_snapshot);
+      diagnostic->paused.store(request.envelope.expected_snapshot.paused);
+      diagnostic->map_ready.store(request.envelope.expected_snapshot.map_ready);
+    }
+    if (!pre_snapshot || !request.envelope.expected_snapshot.paused ||
         !request.envelope.expected_snapshot.map_ready) return false;
     {
       std::lock_guard guard(snapshot_mutex_);
       request.envelope.expected_snapshot_revision = snapshot_revision_;
     }
+    if (diagnostic != nullptr) diagnostic->worker.store("submit");
     const auto submitted = ck3_11906::TrySubmitMainThreadQueryV1(
         *mailbox_, &ExecuteSemanticAdapter12002, &request.envelope, request.envelope.ticket);
+    if (diagnostic != nullptr) diagnostic->submit.store(static_cast<std::int64_t>(submitted));
     if (submitted != ck3_11906::MainThreadQuerySubmitResultV1::submitted) return false;
+    if (diagnostic != nullptr) diagnostic->worker.store("wait");
     auto wait = ck3_11906::WaitForMainThreadQueryV1(*mailbox_, request.envelope.ticket, 30'000);
     while (wait == ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
       wait = ck3_11906::WaitForMainThreadQueryV1(*mailbox_, request.envelope.ticket, 2'000);
+    if (diagnostic != nullptr) {
+      diagnostic->wait.store(static_cast<std::int64_t>(wait));
+      diagnostic->worker.store("reclaim");
+    }
     const auto reclaimed = ck3_11906::ReclaimMainThreadQueryV1(*mailbox_, request.envelope.ticket);
-    return wait == ck3_11906::MainThreadQueryWaitResultV1::completed &&
+    const bool success = wait == ck3_11906::MainThreadQueryWaitResultV1::completed &&
         reclaimed == ck3_11906::MainThreadQueryReclaimResultV1::reclaimed &&
         request.envelope.frame_stable;
-  } catch (...) { return false; }
+    if (diagnostic != nullptr) {
+      diagnostic->reclaim.store(static_cast<std::int64_t>(reclaimed));
+      diagnostic->entered.store(request.envelope.entered);
+      diagnostic->frame_stable.store(request.envelope.frame_stable);
+      diagnostic->run_success.store(success);
+      diagnostic->worker.store(success ? "returned" : "failed");
+    }
+    return success;
+  } catch (...) {
+    if (diagnostic != nullptr) diagnostic->worker.store("catch");
+    return false;
+  }
 }
 
 bool ExecuteSemanticAdapter12002(void *opaque,
     const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   auto *envelope = static_cast<QueryMailboxEnvelope *>(opaque);
-  if (envelope == nullptr || envelope->typed_context == nullptr ||
-      !EnterQueryMailbox(*envelope, stamp, &ExecuteSemanticAdapter12002)) return false;
+  if (envelope == nullptr || envelope->typed_context == nullptr) return false;
   auto &request = *static_cast<WorkerAdapter::SemanticRequest *>(envelope->typed_context);
+  auto *diagnostic = request.operation == SemanticOperation::strengths
+      ? &g_army_strength_query_diagnostic_v1 : nullptr;
+  if (diagnostic != nullptr) diagnostic->native.store("enter");
+  const bool enter_result = EnterQueryMailbox(*envelope, stamp, &ExecuteSemanticAdapter12002);
+  if (diagnostic != nullptr) {
+    diagnostic->enter_result.store(enter_result);
+    diagnostic->entered.store(envelope->entered);
+  }
+  if (!enter_result) return false;
   const auto &native = *envelope->game;
   try {
     switch (request.operation) {
@@ -259,7 +294,11 @@ bool ExecuteSemanticAdapter12002(void *opaque,
     case SemanticOperation::declarations_for_target: request.result = static_cast<std::int32_t>(native.read_declarable_wars_for_target(request.id, request.declarations)); break;
     case SemanticOperation::marriage_choices: request.result = static_cast<std::int32_t>(native.read_arrange_marriage_choices(request.marriage_choices, request.marriage_diagnostics)); break;
     case SemanticOperation::family_candidates: request.result = static_cast<std::int32_t>(native.read_arrange_marriage_family_candidates_v1(request.id, request.family_candidates, request.marriage_diagnostics)); break;
-    case SemanticOperation::strengths: request.result = static_cast<std::int32_t>(native.read_army_strengths(request.strengths)); break;
+    case SemanticOperation::strengths:
+      diagnostic->native.store("dispatch");
+      request.result = static_cast<std::int32_t>(native.read_army_strengths(request.strengths));
+      diagnostic->native_returned.store(1);
+      break;
     case SemanticOperation::combat_v2: request.result = static_cast<std::int32_t>(native.read_combat_simulation_inputs(request.combat_request, request.combat_v2)); break;
     case SemanticOperation::combat_v3: request.result = static_cast<std::int32_t>(native.read_combat_simulation_inputs_v3(request.combat_request, request.combat_v3)); break;
     case SemanticOperation::title_holder: request.result = static_cast<std::int32_t>(native.read_title_holder_v1(request.id, request.title_holder)); break;
@@ -277,8 +316,18 @@ bool ExecuteSemanticAdapter12002(void *opaque,
       request.diagnostic_json = SerializeInboxFixture(request.console_result);
       break;
     }
-    return FinishQueryMailbox(*envelope);
-  } catch (...) { return false; }
+    if (diagnostic != nullptr) diagnostic->native.store("finish");
+    const bool finish_result = FinishQueryMailbox(*envelope);
+    if (diagnostic != nullptr) {
+      diagnostic->finish_result.store(finish_result);
+      diagnostic->frame_stable.store(envelope->frame_stable);
+      diagnostic->native.store(finish_result ? "returned" : "finish_failed");
+    }
+    return finish_result;
+  } catch (...) {
+    if (diagnostic != nullptr) diagnostic->native.store("catch");
+    return false;
+  }
 }
 
 bool WorkerAdapter::read_marriage_diagnostic(std::string &output) const noexcept {

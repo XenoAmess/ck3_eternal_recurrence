@@ -1,4 +1,5 @@
 ﻿#include "xar_bridge/ck3_12002_adapter.hpp"
+#include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
 
 #include <windows.h>
 #include "xar_bridge/ck3_12003_adapter.hpp"
@@ -338,12 +339,19 @@ public:
   }
   ReadArmyStrengthsResult read_army_strengths(
       std::vector<ArmyStrengthSnapshot> &output) const noexcept override {
+    auto &diagnostic = ck3_12002::g_army_strength_query_diagnostic_v1;
+    diagnostic.reader.store("native_snapshot");
     Snapshot scope{};
-    if (!read_snapshot(scope)) {
+    const bool snapshot_ok = read_snapshot(scope);
+    diagnostic.native_snapshot.store(snapshot_ok);
+    if (!snapshot_ok) {
       output.clear();
       return ReadArmyStrengthsResult::unavailable;
     }
+    diagnostic.reader.store("baseline");
     const auto result = ck3_12002::ReadArmyStrengths(bindings_.armies, scope, output);
+    diagnostic.baseline_result.store(static_cast<std::int64_t>(result));
+    diagnostic.scope_rows.store(static_cast<std::int64_t>(output.size()));
     if ((result == ReadArmyStrengthsResult::available ||
          result == ReadArmyStrengthsResult::partial) &&
         bindings_.native_owner_recall.enabled) {
@@ -355,12 +363,17 @@ public:
             *static_cast<const ck3_12002::ProvinceBindings *>(context), id);
       };
       for (auto &row : output) {
+        diagnostic.army_id.store(row.army_id);
+        diagnostic.reader.store("owner_recall_attach");
         row.native_owner_recall_inputs_v1.emplace();
         ck3_12003::AttachBattleNativeOwnerRecallInputsForUnitsV1(
             recall, scope, std::vector<std::int32_t>{row.army_id},
             *row.native_owner_recall_inputs_v1);
+        diagnostic.reader.store("owner_recall_returned");
       }
     }
+    diagnostic.reader.store(result == ReadArmyStrengthsResult::unavailable
+        ? "baseline_unavailable" : "returned");
     return result;
   }
   ReadCombatSimulationInputsResult read_combat_simulation_inputs(
