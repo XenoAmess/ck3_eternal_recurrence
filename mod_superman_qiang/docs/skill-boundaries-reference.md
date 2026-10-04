@@ -23,7 +23,7 @@
 | `common/scripted_effects/00_animal_effects.txt:1429–1431、1548` | 按名称删除旧 modifier；普通 `add_character_modifier = loyal_eagle_story_modifier` 消费静态定义的 scale。 | `bfa1aac3780c9c0822ba1e2abc0a8c7bea885b89d8cd2e808651eef2351dd5e2` |
 | `common/modifiers/07_ep3_modifiers.txt:1356–1359` | 静态 `personal_schemes_distracted_modifier` 使用 `diplomacy = -1`。 | `c4a7815e1d5f787699ffc4705a6f39ab742796e3493fce979e348f90147c4a9b` |
 
-最小形状是 `diplomacy = 1` 搭配 `scale = { value = <正账本 script value> desc = <loc key> }`，负投影使用 `diplomacy = -1` 搭配负账本绝对值的非负 scale；其他五项相同。这是原版源级可行依据，**新模组实现及其 fresh live 验收仍 pending**，不把源级语法、离线 parser 通过或既有宠物 modifier 的调用外推成本产品通过。
+最小形状是 `diplomacy = 1` 搭配 `scale = { value = <正账本 script value> desc = <loc key> }`，负投影使用 `diplomacy = -1` 搭配负账本绝对值的非负 scale；其他五项相同。原版源码提供语法依据；本产品已另行完成 [真实机制、倍率保存与重载验收](acceptance-1.0.0-20261004.md)，R0011 实际确认赋予时计算、仅改变量保持旧倍率、删除再添加读取新倍率以及重复重建不叠加。
 
 新方案必须核对六项生产 helper 和真实随机入口、正负翻转及回到 0、单项百万边界、更新后重建读取新账本、重复重建不叠加、百分比取整、原生基础数组不变和保存重载。实际门槛见 [测试方案](test-plan.md)；需要强制刷新时仍使用已证实的 effect，但刷新不改变原版百分比及取整语义。
 
@@ -31,4 +31,4 @@
 
 本产品 [R0006](live-R0006.md) 已从原生存档确认旧探测方案 RED：确定性分支来源者漏扣一点、接收者没有加点，随机探测甚至漏扣来源者全部六项。原始存档读回、角色数组摘要和 SHA 继续保存在上述 [通用原生专题](../../docs/ck3-native-ai/character-skill-trigger-readback-1.20.0.3-2026-10-04.md) 及其永久 JSON 索引，原始 attempt 不改写。
 
-[A0002 缓存修复静态记录](build-validation-2026-10-04-R0006-cache-fix.md) 对旧 generator 增加了 probe 正值 guard／基线前刷新、每次试探和恢复后刷新、最终双方提交后刷新。它针对已定位的缓存读取问题增加刷新，保留旧正显示候选限制与临时探测；静态及 parser 结果没有证明百分比取整下“总值没变即基础值没变”。当前账本方案已经替代这些破坏性探测，不沿用其通过数或候选规则。R0006 RED、A0002 静态事实和新方案 pending 分开记录，不把历史来源覆盖成新验收。
+[A0002 缓存修复静态记录](build-validation-2026-10-04-R0006-cache-fix.md) 对旧 generator 增加了 probe 正值 guard／基线前刷新、每次试探和恢复后刷新、最终双方提交后刷新。它针对已定位的缓存读取问题增加刷新，保留旧正显示候选限制与临时探测；静态及 parser 结果没有证明百分比取整下“总值没变即基础值没变”。当前账本方案已经替代这些破坏性探测，不沿用其通过数或候选规则。R0006 RED、A0002 静态事实和新方案实际 GREEN 分开记录，不把历史来源覆盖成新验收。

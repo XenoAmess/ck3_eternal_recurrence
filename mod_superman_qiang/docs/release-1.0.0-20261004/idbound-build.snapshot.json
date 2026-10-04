@@ -1,0 +1,394 @@
+{
+  "schema": "superman-qiang.final-tagbound-idbound-build.v1",
+  "status": "GREEN",
+  "started_at_utc": "2026-10-04T00:03:43.448219+00:00",
+  "interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "phases": [
+    {
+      "name": "source-before-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "started_at_utc": "2026-10-04T00:03:43.448248+00:00",
+      "completed_at_utc": "2026-10-04T00:03:43.503762+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\source-before-head.stdout.txt",
+        "size": 41,
+        "sha256": "bbb1b51cf5fe090c7cda319b7fabe4ca4c2caca4771f9df445ccf1bcb7336424"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\source-before-head.stderr.txt",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "source-before-tag",
+      "argv": [
+        "git",
+        "rev-list",
+        "-n",
+        "1",
+        "superman-qiang-v1.0.0"
+      ],
+      "started_at_utc": "2026-10-04T00:03:43.505234+00:00",
+      "completed_at_utc": "2026-10-04T00:03:43.565972+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\source-before-tag.stdout.txt",
+        "size": 41,
+        "sha256": "bbb1b51cf5fe090c7cda319b7fabe4ca4c2caca4771f9df445ccf1bcb7336424"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\source-before-tag.stderr.txt",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "source-before-clean",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "started_at_utc": "2026-10-04T00:03:43.568416+00:00",
+      "completed_at_utc": "2026-10-04T00:03:43.749897+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\source-before-clean.stdout.txt",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\source-before-clean.stderr.txt",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "double-build",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "mod_superman_qiang/tools/build_release.py",
+        "--check",
+        "--workshop-item-id",
+        "3812991990"
+      ],
+      "started_at_utc": "2026-10-04T00:03:43.833371+00:00",
+      "completed_at_utc": "2026-10-04T00:03:45.463372+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\double-build.stdout.txt",
+        "size": 201,
+        "sha256": "04077cbf2c2e6b0c8c3cbb8919afd7da6d804f2239e0fab2fa2ade81334644b0"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\double-build.stderr.txt",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "formal-build",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "mod_superman_qiang/tools/build_release.py",
+        "--output",
+        "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\mod_superman_qiang",
+        "--git-tag",
+        "superman-qiang-v1.0.0",
+        "--workshop-item-id",
+        "3812991990"
+      ],
+      "started_at_utc": "2026-10-04T00:03:45.477548+00:00",
+      "completed_at_utc": "2026-10-04T00:03:46.756818+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\formal-build.stdout.txt",
+        "size": 439,
+        "sha256": "454e1f6326c4769c1b503af20a7090e291f0d22bf3a36f5fd1271a22fdd3ae2b"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\formal-build.stderr.txt",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "manifest-verify",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "mod_superman_qiang/tools/build_release.py",
+        "--verify",
+        "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\mod_superman_qiang",
+        "--manifest",
+        "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\mod_superman_qiang.manifest.json"
+      ],
+      "started_at_utc": "2026-10-04T00:03:46.773048+00:00",
+      "completed_at_utc": "2026-10-04T00:03:47.003180+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\manifest-verify.stdout.txt",
+        "size": 30,
+        "sha256": "76dbc1e5dbc9bdc1cd178f8441e309bf87d32d99cc57a37b72811e26b44c0a2d"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\manifest-verify.stderr.txt",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "source-after-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "started_at_utc": "2026-10-04T00:03:47.044642+00:00",
+      "completed_at_utc": "2026-10-04T00:03:47.097441+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\source-after-head.stdout.txt",
+        "size": 41,
+        "sha256": "bbb1b51cf5fe090c7cda319b7fabe4ca4c2caca4771f9df445ccf1bcb7336424"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\source-after-head.stderr.txt",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "source-after-tag",
+      "argv": [
+        "git",
+        "rev-list",
+        "-n",
+        "1",
+        "superman-qiang-v1.0.0"
+      ],
+      "started_at_utc": "2026-10-04T00:03:47.099821+00:00",
+      "completed_at_utc": "2026-10-04T00:03:47.154119+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\source-after-tag.stdout.txt",
+        "size": 41,
+        "sha256": "bbb1b51cf5fe090c7cda319b7fabe4ca4c2caca4771f9df445ccf1bcb7336424"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\source-after-tag.stderr.txt",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "source-after-clean",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "started_at_utc": "2026-10-04T00:03:47.156461+00:00",
+      "completed_at_utc": "2026-10-04T00:03:47.323907+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\source-after-clean.stdout.txt",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\source-after-clean.stderr.txt",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "ast_tests_repeated": false,
+  "release_tests_repeated": false,
+  "ck3_started": false,
+  "github_release_created": false,
+  "public_workshop_verified_by_this_build": false,
+  "git_before": {
+    "head": "7e5ddd481466b7a9df104fd5c6340f473f909aff",
+    "tag_commit": "7e5ddd481466b7a9df104fd5c6340f473f909aff",
+    "tag": "superman-qiang-v1.0.0",
+    "clean": true
+  },
+  "initial_formal_closure": {
+    "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-A0001\\closure.json",
+    "size": 14193,
+    "sha256": "587c424c236992e97520a8dcd2ebce6311bce5f7f096b37f2c42ef42bd289d3a"
+  },
+  "actual_workshop_id_receipt": {
+    "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\create-freeze\\native-receipt.json",
+    "size": 536,
+    "sha256": "1944e6834f22d8412c0523e4c334660b237eb3f42b3fb589045a6764d4c7377b"
+  },
+  "steam_create_submit_returned_success": true,
+  "submitted_at_utc": "2026-10-04T00:01:21.672402+00:00",
+  "accepted_candidate_manifest": {
+    "path": "D:\\ck3-superman-qiang-20261004\\builder-L0-A0004\\mod_superman_qiang.manifest.json",
+    "size": 4048,
+    "sha256": "63b0bc75a4c13bfdb343d77d621617eb425c204af081f00658454b193f261aac"
+  },
+  "byte_equivalence": {
+    "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\runtime-byte-equivalence.json",
+    "size": 5889,
+    "sha256": "b89ab7673bd004e6360cd3dafc8e871b1cba45a8d4b6c66b113f344bcff9d4de"
+  },
+  "git_after": {
+    "head": "7e5ddd481466b7a9df104fd5c6340f473f909aff",
+    "tag_commit": "7e5ddd481466b7a9df104fd5c6340f473f909aff",
+    "tag": "superman-qiang-v1.0.0",
+    "clean": true
+  },
+  "closure_status": "IDBOUND_FORMAL_BUILD_GREEN_PUBLIC_READBACK_PENDING",
+  "git_sha": "7e5ddd481466b7a9df104fd5c6340f473f909aff",
+  "git_tag": "superman-qiang-v1.0.0",
+  "workshop_item_id": "3812991990",
+  "upstream_item_id": null,
+  "runtime_file_count": 22,
+  "runtime_files": [
+    {
+      "path": "common/character_interactions/sxad_interactions.txt",
+      "sha256": "2b81d6cdde8512197c60edbee473a9b235d3c9fec8479a82d2f39f581bb82a7e",
+      "size": 921
+    },
+    {
+      "path": "common/modifiers/sxad_skill_balance_modifiers.txt",
+      "sha256": "6d97fa914b5b6a9c49baa537359866e35ac0139a40b6be7efb3d3a191995a42f",
+      "size": 2040
+    },
+    {
+      "path": "common/script_values/sxad_values.txt",
+      "sha256": "63fab3a51d616e848c9ea15ba3b19eeb8779ca141c1f853b88cbdb1fe7903468",
+      "size": 4651
+    },
+    {
+      "path": "common/scripted_effects/sxad_experience_effects.txt",
+      "sha256": "3ba408a0320378b6f09c4d16880d925a16aab07a5904847e0e59af2a183e8a50",
+      "size": 2872
+    },
+    {
+      "path": "common/scripted_effects/sxad_probe_skill_effects.txt",
+      "sha256": "2bf2599cebd91659b58b8adad1241f136394af252a03f3123c9250ef9e07719a",
+      "size": 9604
+    },
+    {
+      "path": "common/scripted_effects/sxad_transfer_effects.txt",
+      "sha256": "2141d3bc944fffa0dfbd62d5d34238baddafc649c861ed0e47a0e775ebf63323",
+      "size": 10285
+    },
+    {
+      "path": "common/scripted_effects/zz_sxad_had_sex_with_effect.txt",
+      "sha256": "46e066aa7e7e81ab2f6292e9650a479de9e8c7ae7e5808d35868396bf99c4ba2",
+      "size": 9868
+    },
+    {
+      "path": "common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt",
+      "sha256": "afaab280b0be669bf019203e2b3d16f97f087daa5b682338fdcb3bbfaca75fe1",
+      "size": 1353
+    },
+    {
+      "path": "common/traits/sxad_traits.txt",
+      "sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d",
+      "size": 482
+    },
+    {
+      "path": "descriptor.mod",
+      "sha256": "52be9ae5db1310a2d8a846bd754621e1461fa30d70c0fb2187f5b1fe8dbd8e06",
+      "size": 153
+    },
+    {
+      "path": "events/sxad_events.txt",
+      "sha256": "a3e84da90696f3b246f8301d744ebe8dd04d7441ebdc31d426cda04e80da9cb0",
+      "size": 390
+    },
+    {
+      "path": "gfx/interface/icons/traits/sxad_sex_experience.dds",
+      "sha256": "7f4c9f2925ac10d6803261ae0e28ec0b417b3a9917664b5297e45a955c4de5b5",
+      "size": 57728
+    },
+    {
+      "path": "localization/english/sxad_l_english.yml",
+      "sha256": "d16c7f9cd076096cc39f2734b496119d23d3630aa9dab23f16c3d07b3c49a59b",
+      "size": 3987
+    },
+    {
+      "path": "localization/french/sxad_l_french.yml",
+      "sha256": "bde1db01f5e5b7cb391eba0b2affce817ec8a49d9ededf471665d31fb069c3e2",
+      "size": 4501
+    },
+    {
+      "path": "localization/german/sxad_l_german.yml",
+      "sha256": "66a54d3e970e615d460877c319ee7fd6211a861ad3f2ece783ff3ae49b609d5f",
+      "size": 4356
+    },
+    {
+      "path": "localization/japanese/sxad_l_japanese.yml",
+      "sha256": "7b29d4811b16eedbb5e4af655aa58b604d3f777131531bc45be9472cb39f8451",
+      "size": 4199
+    },
+    {
+      "path": "localization/korean/sxad_l_korean.yml",
+      "sha256": "a31d5ba52ff3591c843d76f817fe8ce2c15c4bfe916c5f918dd6417450f023e6",
+      "size": 3758
+    },
+    {
+      "path": "localization/polish/sxad_l_polish.yml",
+      "sha256": "dab3e3ebd984dd9ecaaea69d9ebc4cd018cb4aaf441266f7361c4a448f156079",
+      "size": 4331
+    },
+    {
+      "path": "localization/russian/sxad_l_russian.yml",
+      "sha256": "cac22ed9a85c79893c73eb910a8493a63a1738cebe1374f6b675ba4f0a2f868a",
+      "size": 5633
+    },
+    {
+      "path": "localization/simp_chinese/sxad_l_simp_chinese.yml",
+      "sha256": "29ac11c5a8ad6c2f5b115974658d6d32616fdcf03081bbd24ddaff06c285e25a",
+      "size": 3736
+    },
+    {
+      "path": "localization/spanish/sxad_l_spanish.yml",
+      "sha256": "52303622d7fb968fe64fea7671bd021c337212bbf46ec63acf757b89c1e2bfa1",
+      "size": 4208
+    },
+    {
+      "path": "thumbnail.png",
+      "sha256": "732deee357a6d322340fa9e6bb6d7b619b8c9da44b3c68711c23154079df863f",
+      "size": 778046
+    }
+  ],
+  "manifest": {
+    "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\mod_superman_qiang.manifest.json",
+    "size": 4075,
+    "sha256": "b85bcac67af7998453c93346201cc8b738df055aba223316bff394cc42a0685f"
+  },
+  "zip": {
+    "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\mod_superman_qiang.zip",
+    "size": 802525,
+    "sha256": "551901e384931fb5d465f0eaca3327ef357d004d4e290b7bc205c24cc40c3564"
+  },
+  "staging": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\mod_superman_qiang",
+  "inner_descriptor_has_no_remote_id": true,
+  "formal_runtime_equals_native_candidate": true,
+  "formal_runtime_equals_initial_formal": true,
+  "live_acceptance": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\acceptance-1.0.0-20261004.json",
+    "size": 64510,
+    "sha256": "460a1b02f436549003f25111a3c24c091eb9267625889a6fcea6dc6d3727b4e1"
+  },
+  "live_raw_index": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\acceptance-1.0.0-20261004.raw-index.json",
+    "size": 432117,
+    "sha256": "d3c03a8c1d48fb6f3776feae4ff4a3b49b133e7940e7c8244c56a39114352d96"
+  },
+  "completed_at_utc": "2026-10-04T00:03:47.326915+00:00"
+}

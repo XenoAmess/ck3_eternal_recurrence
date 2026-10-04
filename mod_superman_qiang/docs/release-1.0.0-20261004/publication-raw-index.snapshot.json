@@ -1,0 +1,2501 @@
+{
+  "schema": "superman-qiang.publication.handoff-index.v1",
+  "frozen_at_utc": "2026-10-04T00:19:11.657143+00:00",
+  "publication_gates": "GREEN",
+  "item_id": "3812991990",
+  "report": {
+    "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\final-report-a02\\report.json",
+    "bytes": 33663,
+    "sha256": "542471d4c30d1b9073cef1c183ab778a94bd851de190f026e83a13776956cddd"
+  },
+  "readme": {
+    "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\final-report-a02\\handoff.md",
+    "bytes": 1676,
+    "sha256": "8381b14e70c47982eda83d44c57af91f2da0261bc88ca3c41dc476bc67b84d9d"
+  },
+  "notes_A": {
+    "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\final-report-a02\\anonymous-notes-A.txt",
+    "bytes": 2364,
+    "sha256": "ae97e9a713938374323de8a1d3f7bfcbb5343c7442820c352f9eeb554271da7f"
+  },
+  "notes_B": {
+    "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\final-report-a02\\anonymous-notes-B.txt",
+    "bytes": 2467,
+    "sha256": "7a7713bad58d200264ed5227e1b755e24abb2287ac6d3ee02ef30b4903f3c9b0"
+  },
+  "actual_screen_CAS_release": {
+    "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\release-screen-cas.json",
+    "bytes": 1155,
+    "sha256": "c3a22843cc15e8e80e4563bdcd3968e5809331e3bdbb8b1c09198f80b8df434e"
+  },
+  "screen_final_sequence": 4131,
+  "screen_task_state": "done",
+  "screen_resources": [],
+  "source_tag_unchanged": true,
+  "all_tracked_writes_delegated_to_root": true,
+  "all_process_asset_files": [
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\account-friends-coordinate-a01.png",
+      "bytes": 858922,
+      "sha256": "8841769db4506b285a64c650a23de002dfc21859745f3df3e44195d85fd69d1d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\account-friends-open-a01\\action.result.json",
+      "bytes": 247,
+      "sha256": "b547470a2e82494e58da5e867fc91e26398517fb227a6fa77b309ba775c6648a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\account-friends-open-a01\\action.started.json",
+      "bytes": 419,
+      "sha256": "e0945393a9fd2195309989fbba3548afba5e74d43426a65207039bdcc0b0d843"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\account-friends-open-a01\\after-tree.json",
+      "bytes": 292537,
+      "sha256": "ed3b2f7362dc756b3e92a33d98e281b96a3a4538e9aa864b8a64106162a15a0a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\account-friends-open-a01\\after.png",
+      "bytes": 858819,
+      "sha256": "6cd1b1c6105b09a253494bf4e3f37d3efb4dff891cb11101478f31ee61c6692a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\account-friends-open-a01\\before-tree.json",
+      "bytes": 292537,
+      "sha256": "ed3b2f7362dc756b3e92a33d98e281b96a3a4538e9aa864b8a64106162a15a0a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\account-friends-open-a01\\before.png",
+      "bytes": 858819,
+      "sha256": "6cd1b1c6105b09a253494bf4e3f37d3efb4dff891cb11101478f31ee61c6692a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\account-session-read-a01\\desktop.png",
+      "bytes": 858922,
+      "sha256": "8841769db4506b285a64c650a23de002dfc21859745f3df3e44195d85fd69d1d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\account-session-read-a01\\observation.json",
+      "bytes": 536,
+      "sha256": "f7c59d89e22e695f5584fd30b0ff06bed9cdccdc245687eabcd2454c0f811a41"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\account-session-read-a01\\tree.json",
+      "bytes": 273351,
+      "sha256": "941dd7a0a1b30a1725d9cdfad1e959c39f0db4d46f7387f4e5b76bb989d1f0c7"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\account-session-read-a02\\desktop.png",
+      "bytes": 859258,
+      "sha256": "a194fbde0c4e71490adb841a7e3868fe54b6734355381ebf60ee6591808fd4ff"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\account-session-read-a02\\observation.json",
+      "bytes": 536,
+      "sha256": "fbaad65954464041f6c3833d08e223293b28de7c3054df01fb595d17562771df"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\account-session-read-a02\\tree.json",
+      "bytes": 273351,
+      "sha256": "941dd7a0a1b30a1725d9cdfad1e959c39f0db4d46f7387f4e5b76bb989d1f0c7"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\actual-item-inputs\\created-item-binding.json",
+      "bytes": 598,
+      "sha256": "f60b8b0579db9e5f7244decf2e71c05c792690770539eaf1b635b4a442e297d3"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\actual-item-inputs\\download-arguments.json",
+      "bytes": 268,
+      "sha256": "2f21efa15110fd8771c5573a490df99176a22570a19b6ce41ac540a95c3ea3d2"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\actual-item-inputs\\previews-arguments.json",
+      "bytes": 150,
+      "sha256": "11f33e74103db8413a92af7e3e0e030b7f7a18968b555c906b837d5c3ee5e14d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\actual-item-inputs\\subscribe-arguments.json",
+      "bytes": 177,
+      "sha256": "e36a2c35e18815a0dc92981fffa9339a20b808b8d890cea4dab2e1d9c57aaa66"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-a01\\anonymous-page.png",
+      "bytes": 396814,
+      "sha256": "53a0d026e1c8d1822bfdf97ed8735e7d89e13a8299034b048ef25d0e8a036be0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-a01\\browser-dom.html",
+      "bytes": 54355,
+      "sha256": "91c00cf9361cc0de97eb38110a3451a3b7136aff40c6749b78dccd950940a4b9"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-a01\\http-response.html",
+      "bytes": 53089,
+      "sha256": "c2ed5769bdef1322ae62fd7867119fb9a6cb8d092c264960b049cf0f97c4711d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-a01\\input.json",
+      "bytes": 605,
+      "sha256": "06517ed1eeef04b633a8b8b05b59445db014f6107f0e69f90b00fda2e097aff0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-a01\\observation.json",
+      "bytes": 2183,
+      "sha256": "c45394ed8eef7dc83f863986330b123945c7141fff41bffbe335dac26e52ce54"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-a01\\observer-source.cjs",
+      "bytes": 8702,
+      "sha256": "9988c309e519b8a049582c6d76abe1a2447ec2ed7cf1601d815c5bfc0380ccd5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-B-a01\\anonymous-page.png",
+      "bytes": 442116,
+      "sha256": "4dbc67a1dc4225ea2ba2abe61efc4b674ca598187f186464e6f145b0d5781fa9"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-B-a01\\browser-dom.html",
+      "bytes": 54693,
+      "sha256": "854a1bd8016971c9a725bb2fdd7e499ada6505e12d9dee8ee4f4f692d9b7f539"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-B-a01\\http-response.html",
+      "bytes": 53201,
+      "sha256": "884b01aad74973eed11c8f87c27208a5e2040ddf09da147d042c5b8b0b36a6bc"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-B-a01\\input.json",
+      "bytes": 607,
+      "sha256": "b0941ec060a47a562d96d0b8c2706e03a218ebf9aff3066568e4da8955bfd618"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-B-a01\\observation.json",
+      "bytes": 2185,
+      "sha256": "40397b8e405c7a68cd9ec1c16ecf0221c04e0c6071e9dc9d80be1a1e4eabaa2d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-B-a01\\observer-source.cjs",
+      "bytes": 8702,
+      "sha256": "9988c309e519b8a049582c6d76abe1a2447ec2ed7cf1601d815c5bfc0380ccd5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-item-a01\\anonymous-page.png",
+      "bytes": 515940,
+      "sha256": "d26404ddf30d0486cedb501b56b9760420f72428ba38d140cd9195ff7470ac6f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-item-a01\\browser-dom.html",
+      "bytes": 63521,
+      "sha256": "4d515cdc5ed3a0fe2786ec6e347110ac1c22865426b888f2aa2c63378f2a9fdf"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-item-a01\\http-response.html",
+      "bytes": 61867,
+      "sha256": "16a0928fdbfaf8cedb705b64e24e569c6312af02193a791d7c3dca19019ccd1c"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-item-a01\\input.json",
+      "bytes": 585,
+      "sha256": "0dcea6efcf331c00acab77f0f39e3ccb820da2dd65aa25d12faeeb4f22829056"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-item-a01\\observation.json",
+      "bytes": 60524,
+      "sha256": "a406f55df95f3879e5784fa24ff7f1318c057b58364d4b90a8af4308fd860b9a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-item-a01\\observer-source.cjs",
+      "bytes": 8702,
+      "sha256": "9988c309e519b8a049582c6d76abe1a2447ec2ed7cf1601d815c5bfc0380ccd5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\browser-session-inventory-a01\\inventory.json",
+      "bytes": 186,
+      "sha256": "43933f4d3f0c57a57b8bd7e4c6356d5232497a15c1cf4b3f2952ffdadccc3060"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\canonical-path-preflight-a01\\observation.json",
+      "bytes": 803,
+      "sha256": "e2e40094077eac92eb6854139ecc12c2bff3eb65d8b56953b3c95c5841ffe8e6"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\create-freeze\\change-notes.txt",
+      "bytes": 2364,
+      "sha256": "ae97e9a713938374323de8a1d3f7bfcbb5343c7442820c352f9eeb554271da7f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\create-freeze\\description.bbcode",
+      "bytes": 3007,
+      "sha256": "12ac125d91110e7e9435b2db6a20a31955061c9c3e596bb76cac43d67824dafb"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\create-freeze\\frozen-inputs.json",
+      "bytes": 1918,
+      "sha256": "9cdae668bfbc35dce5689311920a0ffd8ba35dbee46d92f2ce4dfd7cf8230dcf"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\create-freeze\\native-arguments.json",
+      "bytes": 355,
+      "sha256": "bee562484b8bea47f11dd8a17aff696e82b3ff206ea1c4da68a71bbc8d1d56b2"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\create-freeze\\native-plan.json",
+      "bytes": 3052,
+      "sha256": "a92ac5a08a55594b6dee4df1df7314bb9aeb94b4933d1e88d4d8ef955acdae03"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\create-freeze\\native-receipt.json",
+      "bytes": 536,
+      "sha256": "1944e6834f22d8412c0523e4c334660b237eb3f42b3fb589045a6764d4c7377b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\final-report-a01\\anonymous-notes-A.txt",
+      "bytes": 2364,
+      "sha256": "ae97e9a713938374323de8a1d3f7bfcbb5343c7442820c352f9eeb554271da7f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\final-report-a01\\anonymous-notes-B.txt",
+      "bytes": 2467,
+      "sha256": "7a7713bad58d200264ed5227e1b755e24abb2287ac6d3ee02ef30b4903f3c9b0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\final-report-a02\\anonymous-notes-A.txt",
+      "bytes": 2364,
+      "sha256": "ae97e9a713938374323de8a1d3f7bfcbb5343c7442820c352f9eeb554271da7f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\final-report-a02\\anonymous-notes-B.txt",
+      "bytes": 2467,
+      "sha256": "7a7713bad58d200264ed5227e1b755e24abb2287ac6d3ee02ef30b4903f3c9b0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\final-report-a02\\handoff.md",
+      "bytes": 1676,
+      "sha256": "8381b14e70c47982eda83d44c57af91f2da0261bc88ca3c41dc476bc67b84d9d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\final-report-a02\\README.md",
+      "bytes": 1253,
+      "sha256": "a4602b8fafa9efe7ec34b51f452cbcc630cbfbbf36f9c678c3bfaa8aac59ea04"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\final-report-a02\\report.json",
+      "bytes": 33663,
+      "sha256": "542471d4c30d1b9073cef1c183ab778a94bd851de190f026e83a13776956cddd"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\final-report-a02.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\final-report-a02.stdout.txt",
+      "bytes": 284,
+      "sha256": "2b32568e0a95bb31d84c5d0f3f1e8623c40df3ef497d1ca668dc085c04b09958"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\formal-bindings-a01.json",
+      "bytes": 1230,
+      "sha256": "322b16b36b9ba2aa0cb045b4ef182b1459c8c23372f10e906cd5a40771b55a74"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\formal-bindings-prepare.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\formal-bindings-prepare.stdout.txt",
+      "bytes": 364,
+      "sha256": "9770888ae7adb92afaed1b91004c78297a7e36ebff29b12bc44aa8dc21076b7e"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\freeze-media.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\freeze-media.stdout.txt",
+      "bytes": 364,
+      "sha256": "222daff3ffd3230fb468c6c21b21e25dd705fb4a839aa3a3b72a3e0b88cf8abf"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\fresh-download-preparation-a01\\receipt.json",
+      "bytes": 414,
+      "sha256": "c32911c91175c82a74f661c751ad4e78b8390ad0e72bc9a4d9a2a8f23c31d4b2"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\anonymous_workshop_dom.cjs",
+      "bytes": 8702,
+      "sha256": "9988c309e519b8a049582c6d76abe1a2447ec2ed7cf1601d815c5bfc0380ccd5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\bind_formal_go_a01.py",
+      "bytes": 2996,
+      "sha256": "753d13a8e1e9e907152ef49919e98d20cbd3132aa01bc6053b6accddf48695ec"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\bind_item_arguments_a01.py",
+      "bytes": 1494,
+      "sha256": "a8367b974f403b6bf2dfe418378287757d8d732a6a5b4e6f9f6b446d20d32bf8"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\browser_session_inventory_a01.py",
+      "bytes": 1007,
+      "sha256": "fe67e4b8a997dadea86981c735a1f2da560a62097ed2f2274bc689b5f1bc8ab9"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\capture_offline_preflight_a01.py",
+      "bytes": 1767,
+      "sha256": "d956ee97cac7b686b2dd0e5e4de560e0f38abd2149a02a38d51bb8a8aa4d667d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\capture_offline_preflight_a02.py",
+      "bytes": 1798,
+      "sha256": "96e1f4ce0cf60ce7f4f55decc07ab113e4b40df57b3f2992fef4ffa8aabe56be"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\capture_steam_menu_read_a01.py",
+      "bytes": 1878,
+      "sha256": "d96e69303e817eba0243b6418fe1f1995f8a776360a540a96bce49742cf79451"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\final_publication_report_a01.py",
+      "bytes": 8967,
+      "sha256": "af7e5f80bef9b989ea4bc1687f0b947af3c80ce5f681afdc27187dd55ec5ce99"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\final_publication_report_a02.py",
+      "bytes": 8966,
+      "sha256": "9e04d5710868741f04b16ac4b53535a21710a21d52a825361a592b09fa9844e4"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\final_report_corrected_attempt_a02.py",
+      "bytes": 738,
+      "sha256": "1fa76be4c66cdcff60ab9660b0ae40fd2711d9f6ea12ae66bd987cfd10960359"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\freeze_handoff_index_a01.py",
+      "bytes": 3316,
+      "sha256": "8aaa1c6838ea2753618791274d212e9d61195c829b2069bfd1a1f42b2e45c8ec"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\freeze_media_a01.py",
+      "bytes": 1270,
+      "sha256": "252c712a386b12a5d2c76ce39ab262236a92697bab068914a8ca2c493c1a44e3"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\open_existing_steam_owner_notes_a01.py",
+      "bytes": 1520,
+      "sha256": "82359b07eeee2ec8f326446635412738548c5c922e2c4606397d039b2b61200e"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\open_steam_menu_readonly_a01.py",
+      "bytes": 2384,
+      "sha256": "8b34d206b5104ed8605ec93d14916f5f1cf2ccd1854f2bf13f40bcb009ce4ca9"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\outer_cache_dependency_receipts_a01.py",
+      "bytes": 5238,
+      "sha256": "a7fc15dd0c23dd30c006d9da4ffc2362fc2187e523f19cb9ca9934410abe2470"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\prepare_offline_preflight_a02.py",
+      "bytes": 684,
+      "sha256": "519a2baf5322077e5e9c1a88a6d545c168366e5d36f69d96f141a6e1d4868ff1"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\prepare_publication_run_P0001.py",
+      "bytes": 8067,
+      "sha256": "a56d2c1905165d0940108cdd5f57f801129504d90ef5a13fddb632085444462f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\prepare_steam_uia_a02.py",
+      "bytes": 1138,
+      "sha256": "1af0a9b1c086e89f7d3537598fb632743fd4dcc4457f1e2c6eecaf2a357679a5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\prepare_steam_uia_a03.py",
+      "bytes": 2519,
+      "sha256": "8f77091d5dcf89d56b8171fdfa96bf7407333e15af6d0a7d483f63815df22f74"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\preserve_autodownload_cache_a01.py",
+      "bytes": 1396,
+      "sha256": "56db7db24435b75060f86ff1b9f34591e12182fff5c0d0ce36a3ea6250689c65"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\public_verify_a01.py",
+      "bytes": 1666,
+      "sha256": "2b0dc68543c6cbc7971c1d0da68bb108344897a126e89bffe4fcfd41a53152da"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\public_verify_ascii_tags_a02.py",
+      "bytes": 3338,
+      "sha256": "09acdbbd53a0a4da176e1febcbacdf71e7d9f6429d464b733dfd6caab102295a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\public_verify_B_a03.py",
+      "bytes": 1840,
+      "sha256": "7d5ed804d6690c3efe40d7da5d9ca022e3f95e90c259e156ccbbafaa132f7457"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\publication_native_call.py",
+      "bytes": 3807,
+      "sha256": "ca286c0b6b05b45f054b9b749f5abaa16654a192e366fb1fde7c7e9bc6fe1e56"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\publication_screen_keeper.py",
+      "bytes": 3818,
+      "sha256": "66455ac8f2f79b87456cbfbe75a3e40bc59c6a4453b21414a0c157ba09bd1753"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\read_canonical_outer_path.py",
+      "bytes": 1296,
+      "sha256": "b9768228f32b27fe2d814d84182ab2e98a306309b52e71cbfce25c19952c2138"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\read_current_steam_windows.py",
+      "bytes": 2094,
+      "sha256": "f2477626c2f7216157e10949e454707c50b0b1daf72c49d63ad6f0ba39863e23"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\read_json_controls.py",
+      "bytes": 272,
+      "sha256": "e70b9d079e1634b468f2bd2be1de19b8e7f6adeeeff0206aa4d0918f598efaa8"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\read_notes_actual_a01.py",
+      "bytes": 877,
+      "sha256": "447cf8dda3c163de8a919978c8e8a0e96a212a10f0e5e42675485928deb0fae1"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\read_owner_editor_controls_a01.py",
+      "bytes": 1666,
+      "sha256": "ce5987da5a3234b567dba158d9a2545fb32bae05722348c249a7cdb5f68254ce"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\read_steam_menu_uia_a01.py",
+      "bytes": 2966,
+      "sha256": "7531951c8bf2c45b03734c7301c0da2835cf389a9ef9c2feeffc22fc496b48de"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\read_steam_uia_a01.py",
+      "bytes": 2851,
+      "sha256": "3c0abd364b2c5199395a0fa75f48ed20d4a02982cdde754076788967d1854590"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\read_steam_uia_a02.py",
+      "bytes": 2929,
+      "sha256": "6df7d1f3e79c3436936cb10c3462a6914e1f4703db7aeca1316d4fa490eb47ad"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\read_steam_uia_a03.py",
+      "bytes": 4156,
+      "sha256": "c097dcbe84e81caf1b7146bfb984853578d9f752eaa7afd15eec31234957139c"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\set_owner_notes_B_a01.py",
+      "bytes": 3035,
+      "sha256": "914764a7987d0f624cd83ab2a7d9c82a47c6cf149e11537c103b5ff1deef5a02"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\helpers\\steam_semantic_action.py",
+      "bytes": 3505,
+      "sha256": "c764d1f713114e7b9a41bbbfc39b8037d584a00d163d656406e2853363de199d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\media-freeze\\change-notes.txt",
+      "bytes": 2467,
+      "sha256": "7a7713bad58d200264ed5227e1b755e24abb2287ac6d3ee02ef30b4903f3c9b0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\media-freeze\\description.bbcode",
+      "bytes": 3007,
+      "sha256": "12ac125d91110e7e9435b2db6a20a31955061c9c3e596bb76cac43d67824dafb"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\media-freeze\\frozen-inputs.json",
+      "bytes": 2155,
+      "sha256": "739d5dbdeba7f6d18a061036ba6dd09ebf73e78931d94370c9d72c934e300747"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\media-freeze\\native-arguments.json",
+      "bytes": 353,
+      "sha256": "defe974135f556d916c05aeade918c44aee61a67d8abb9ba93d8b1f15ff77a77"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\media-freeze\\native-plan.json",
+      "bytes": 3541,
+      "sha256": "4ea5d3b0122738386f3f02eb9421a4fd508b2019ba95754ccb73bc751f2ae522"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\media-freeze\\native-receipt.json",
+      "bytes": 963,
+      "sha256": "63b303ac9cd6ada47a135253028763f65f836cd17df38ab93a0f782f5c935a0b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-create-a01\\arguments.snapshot.json",
+      "bytes": 355,
+      "sha256": "bee562484b8bea47f11dd8a17aff696e82b3ff206ea1c4da68a71bbc8d1d56b2"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-create-a01\\stderr.txt",
+      "bytes": 132,
+      "sha256": "2d979cdbfe9eed3ec4e84c0893899b0a437a6adb721095807ec5097c20804101"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-create-a01\\stdout.json",
+      "bytes": 769,
+      "sha256": "2407b83bdbcc9184f57dafa35f67437626ca83ea156c2f44af8bd1f5bb06b86d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-create-a01\\transport.finished.json",
+      "bytes": 1293,
+      "sha256": "298ccf9b4466a7f4e59520265d785261ad7a2cfc6ae98cd6d75344bfa0654996"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-create-a01\\transport.started.json",
+      "bytes": 928,
+      "sha256": "f688cc3e3a493833f6d029a839a31022abe4acc2691354eeb671135eb22e76f6"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-fresh-download-a01\\arguments.snapshot.json",
+      "bytes": 268,
+      "sha256": "2f21efa15110fd8771c5573a490df99176a22570a19b6ce41ac540a95c3ea3d2"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-fresh-download-a01\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-fresh-download-a01\\stdout.json",
+      "bytes": 2675,
+      "sha256": "4a3f801473778d39d0f21da9e76a92015d2c1fd913152c0b2fd5423612402a5f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-fresh-download-a01\\transport.finished.json",
+      "bytes": 1311,
+      "sha256": "058174bd6c23597c7066165cd18dd811475a16ef027d0644e15d402260ff28f4"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-fresh-download-a01\\transport.started.json",
+      "bytes": 946,
+      "sha256": "b70b8207213712fb2b32b70a4bae2f10910d9afa322345d36996395110713780"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-media-update-a01\\arguments.snapshot.json",
+      "bytes": 353,
+      "sha256": "defe974135f556d916c05aeade918c44aee61a67d8abb9ba93d8b1f15ff77a77"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-media-update-a01\\stderr.txt",
+      "bytes": 132,
+      "sha256": "2d979cdbfe9eed3ec4e84c0893899b0a437a6adb721095807ec5097c20804101"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-media-update-a01\\stdout.json",
+      "bytes": 767,
+      "sha256": "a2fa9b4ce0fed76e7be67b0eced122005d28d4e9271eceda64d2ed8fae701f67"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-media-update-a01\\transport.finished.json",
+      "bytes": 1305,
+      "sha256": "5109e3a8ca990f867f2a32d26955fb15f38283415365c045ce023f8a8edc3213"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-media-update-a01\\transport.started.json",
+      "bytes": 940,
+      "sha256": "bfcb1369aff9e6e0b13111d0a6060b50d5bba01b6c7bba736781af674f6f86e7"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-previews-initial-a01\\arguments.snapshot.json",
+      "bytes": 150,
+      "sha256": "11f33e74103db8413a92af7e3e0e030b7f7a18968b555c906b837d5c3ee5e14d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-previews-initial-a01\\stderr.txt",
+      "bytes": 132,
+      "sha256": "2d979cdbfe9eed3ec4e84c0893899b0a437a6adb721095807ec5097c20804101"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-previews-initial-a01\\stdout.json",
+      "bytes": 426,
+      "sha256": "125120bf018e905c7fe010ff9450b70f58092908aba22a9831c1dbc13539dc51"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-previews-initial-a01\\transport.finished.json",
+      "bytes": 1309,
+      "sha256": "252b0780a0db18d8e4783d2bd2ec0fbb0bac2c6862677fc36504ea57ac30ef51"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-previews-initial-a01\\transport.started.json",
+      "bytes": 950,
+      "sha256": "f686191b727f4bafd0f8b9fa5465392a4c4906668ac376e14b11fc167b039221"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-previews-post-a01\\arguments.snapshot.json",
+      "bytes": 150,
+      "sha256": "11f33e74103db8413a92af7e3e0e030b7f7a18968b555c906b837d5c3ee5e14d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-previews-post-a01\\stderr.txt",
+      "bytes": 132,
+      "sha256": "2d979cdbfe9eed3ec4e84c0893899b0a437a6adb721095807ec5097c20804101"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-previews-post-a01\\stdout.json",
+      "bytes": 849,
+      "sha256": "7c0fc3aac911a4a50f8ac4f7edce1d7adfb680ee8dc171f6f40b1caa5a8f5e5d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-previews-post-a01\\transport.finished.json",
+      "bytes": 1303,
+      "sha256": "8b5991a7a2be97df99de8282ea8e6f464e878bb0cbfc73e11d9d25fac64a2fd8"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-previews-post-a01\\transport.started.json",
+      "bytes": 944,
+      "sha256": "9ad9be6a174eb44dbde8318286fc2a3214c19a3c7e82fdf245635ab12d68bf38"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-probe-a01\\arguments.snapshot.json",
+      "bytes": 118,
+      "sha256": "c538ec0aab3bd13e0fdf756b52383154b37e7355d51746d67498060ad56522aa"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-probe-a01\\stderr.txt",
+      "bytes": 132,
+      "sha256": "2d979cdbfe9eed3ec4e84c0893899b0a437a6adb721095807ec5097c20804101"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-probe-a01\\stdout.json",
+      "bytes": 1106,
+      "sha256": "7c7c94fd4e84fed7028bfc9bf7ca3e5baebd4a2da584e1bcc8a49170ae4a3930"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-probe-a01\\transport.finished.json",
+      "bytes": 1273,
+      "sha256": "b86e4e12b99665f0c9042e313b410f5c4f10859c2179e68c5b1345564e8cd800"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-probe-a01\\transport.started.json",
+      "bytes": 922,
+      "sha256": "06a9531e8175f16d7c38620c71632eb74c8896d4b1e7ff85513e4ac306a0eff9"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-subscribe-a01\\arguments.snapshot.json",
+      "bytes": 177,
+      "sha256": "e36a2c35e18815a0dc92981fffa9339a20b808b8d890cea4dab2e1d9c57aaa66"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-subscribe-a01\\stderr.txt",
+      "bytes": 132,
+      "sha256": "2d979cdbfe9eed3ec4e84c0893899b0a437a6adb721095807ec5097c20804101"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-subscribe-a01\\stdout.json",
+      "bytes": 1190,
+      "sha256": "1c93b519c501c0b72b820ba43b8f40ddd249739271ce5a5b62f0d461504f34eb"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-subscribe-a01\\transport.finished.json",
+      "bytes": 1303,
+      "sha256": "05324958bc4d0d9e8cc4b20cfb58575b730fe2b856cc05c004660a96b2432a15"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-subscribe-a01\\transport.started.json",
+      "bytes": 938,
+      "sha256": "d0f8a83657b6b0725c6d44cb9e0a6bcde9b84e4128b7b1cc45b69375d90246b5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\notes-current-read-a01\\1791072096.txt",
+      "bytes": 2364,
+      "sha256": "ae97e9a713938374323de8a1d3f7bfcbb5343c7442820c352f9eeb554271da7f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\notes-current-read-a01\\observed-entries.json",
+      "bytes": 2577,
+      "sha256": "b1b44b2d6f16bd7c752f0b46475dec4408ee1581a408cef1720693e6d7257d42"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-final-a01\\events.jsonl",
+      "bytes": 1922,
+      "sha256": "33c16065a1397e6e36fd2417be4e9baef9d3e8e7fe59b58935b1dc515b4c5ed1"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-final-a01\\probe-1\\steam-before.png",
+      "bytes": 285216,
+      "sha256": "1cd4babac08d1b7f69158271e4a607f697ca348a6e27a03ed4d0dee4da389c9c"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-final-a01\\probe-1\\steam-frame-freshness.json",
+      "bytes": 1226,
+      "sha256": "018f4606399a001d42549b8cd105c58470f23fb2a795e0bd2e28f96d4b77b93a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-final-a01\\probe-1\\steam-moved.png",
+      "bytes": 287131,
+      "sha256": "7c92af4d5e5cc0cee4afe0c61d90d0f82a08fd7110e81375ad4493d576842a74"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-final-a01\\recovery.json",
+      "bytes": 1492,
+      "sha256": "688e5c5c400ee7cab04369293e3f69e765525f6848c0b614e5a20f55196f33e3"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-go-a01\\events.jsonl",
+      "bytes": 1912,
+      "sha256": "99a195664866eb37247ad7c41e9609a169c76b247a53cadc924ed502a918cd9e"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-go-a01\\probe-1\\steam-before.png",
+      "bytes": 82629,
+      "sha256": "e61fe8d468eef28287a27f342a38a7f00caa591d03d1ac4c0e72f45ac3b71114"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-go-a01\\probe-1\\steam-frame-freshness.json",
+      "bytes": 1215,
+      "sha256": "7ccd350a0126b22cf330c8f94542a6d85ce1093c522d8a0307a3b3027acf823c"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-go-a01\\probe-1\\steam-moved.png",
+      "bytes": 85591,
+      "sha256": "e1fdfdbba783b4178a9fa44ec86b230e3feeceaf6af325876b2d00e03720999f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-go-a01\\recovery.json",
+      "bytes": 1482,
+      "sha256": "21d50c3e5ad7d4e07f3cf7b59dfd17e6b38431006427f79d8bd42bcc43271ec7"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-menu-read-a01\\desktop.png",
+      "bytes": 823931,
+      "sha256": "9c46ef3b173b9ac618ebb2f11618e56b04e95928e7a2c73cb8aed0bfac017575"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-menu-read-a01\\observation.json",
+      "bytes": 1184,
+      "sha256": "dc9cfa05ccffbc50c6e57ba14a69fafc93e2c7ccbdccaa541241ced35e07bfae"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-menu-read-a01\\tree.json",
+      "bytes": 328408,
+      "sha256": "a62fb49c8c437805711c1656505e173312de06e4aaa0becf0f60cbbf094ec63b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-a01\\direct-visual-review.json",
+      "bytes": 732,
+      "sha256": "1a80ddf49855aa697262254125ab6a0f43f03eb37bb89a42056eb62af6d543b4"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-a01\\events.jsonl",
+      "bytes": 1934,
+      "sha256": "a0a473fa95acec2ccea51489c4ec2bd38ded491eb27b8d86f152ef20710d2042"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-a01\\probe-1\\steam-before.png",
+      "bytes": 856499,
+      "sha256": "4da7de409057027c7d66fb05eaf879236af17d0def9cce0d059f638fc50a2c11"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-a01\\probe-1\\steam-frame-freshness.json",
+      "bytes": 1238,
+      "sha256": "110e4d9eea26515d4a56cfdfe717edd29f48be4fb2eaae2e5d10788a427c60fa"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-a01\\probe-1\\steam-moved.png",
+      "bytes": 858626,
+      "sha256": "c7208324bd00a8b4623073948e167c7f706babbedf76a2144c3e089caf6b10a6"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-a01\\recovery.json",
+      "bytes": 1504,
+      "sha256": "e84b00fac185f4ffcd5bcaf3549c2e63832d194dcec7cc53048c6d114a06aac0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-a02\\events.jsonl",
+      "bytes": 1933,
+      "sha256": "a4b1b481a6054f2ffd9254bb4f675d537f23521c640da9b222d70b904a1fbd5f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-a02\\probe-1\\steam-before.png",
+      "bytes": 79478,
+      "sha256": "3022ceea02375d04749c4b5c6e3530d135b883de224d5b07acf7e4a7530ba5d0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-a02\\probe-1\\steam-frame-freshness.json",
+      "bytes": 1237,
+      "sha256": "0f3bccc021d880718436e0221648097633caa16ef4397b1f993efdbd106499bb"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-a02\\probe-1\\steam-moved.png",
+      "bytes": 85790,
+      "sha256": "62fd7511b0094451bb1935687ddfa50652144cc7936ca5421662a1d9785dee7f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-a02\\recovery.json",
+      "bytes": 1503,
+      "sha256": "c765f96afc1ddca7da2fc448b18236ec072d9c2ef728436e1b461fc86d3f2b3b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-call-a01\\caller-source.py",
+      "bytes": 1767,
+      "sha256": "d956ee97cac7b686b2dd0e5e4de560e0f38abd2149a02a38d51bb8a8aa4d667d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-call-a01\\finished.json",
+      "bytes": 954,
+      "sha256": "5ddeea3655248796d72760fdae31615c193be483e97546711801330d3ece0bf6"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-call-a01\\started.json",
+      "bytes": 700,
+      "sha256": "b1c2e77106dc704274df3b5d13af4a6deadf38e81974ac1bfd3f0f31464742b9"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-call-a01\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-call-a01\\stdout.json",
+      "bytes": 1323,
+      "sha256": "18b612d3a3d8379461da7612fe7f4704555c87e35af475f51a4e2337d1ba7c8f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-call-a02\\caller-source.py",
+      "bytes": 1798,
+      "sha256": "96e1f4ce0cf60ce7f4f55decc07ab113e4b40df57b3f2992fef4ffa8aabe56be"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-call-a02\\finished.json",
+      "bytes": 954,
+      "sha256": "930996d725ee5725cc156462adfe6279d6384352fc14793d9faa43ab2c438127"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-call-a02\\started.json",
+      "bytes": 700,
+      "sha256": "11f75bf093edae216223ef50897045f792fde356b2a73ec9896f6d7af2469fbe"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-call-a02\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-preflight-call-a02\\stdout.json",
+      "bytes": 1322,
+      "sha256": "405538acf80420c8200354591883d7f2729b7f77e39002e3aa820c0aa5693c32"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-restoration-a01\\events.jsonl",
+      "bytes": 1939,
+      "sha256": "0dcd9c00f84716e803aa151b5d5b77bf9f6829b46a0c0e40a4910f996d048783"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-restoration-a01\\probe-1\\steam-before.png",
+      "bytes": 858053,
+      "sha256": "ff74a89cb11f532f6f1cf61d2738f953413d84373a7ff32c770d57be304162eb"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-restoration-a01\\probe-1\\steam-frame-freshness.json",
+      "bytes": 1243,
+      "sha256": "671fd891a938adec24c1351566fe69ef77b55e743ac345a0c1c441180f6b3bd3"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-restoration-a01\\probe-1\\steam-moved.png",
+      "bytes": 859332,
+      "sha256": "992f9b5694334974e07767bd1e2d405076c01b81e47385c2dc8e3afc6262aaa0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-restoration-a01\\recovery.json",
+      "bytes": 1510,
+      "sha256": "ab13d56cedbc9470777e3965093b7026fa965d4751237a5b4b038f3b5195d64a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\online-before-offline-a01\\desktop.png",
+      "bytes": 754806,
+      "sha256": "950e1002f0722121de861a22a67b6470124e1f07bced8146a49c249eaec6a241"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\online-before-offline-a01\\observation.json",
+      "bytes": 870,
+      "sha256": "109623ab312a57f5471abe445dd90dbf6dedb1acdfec5b6b83b0d5a3da0e4a84"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\online-before-offline-a01\\tree.json",
+      "bytes": 317778,
+      "sha256": "5719fc7763b5bf11c5b2816ef161f1b14e9f2a26aec20aafee4d2ab994f330bf"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\ordered-plan.json",
+      "bytes": 2254,
+      "sha256": "fe80356e59158c72053c49351d8815236f71dc09eb3cc72aa33d340bdaf7a607"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\outer-cache-dependency-a01\\cache-verify-receipt.json",
+      "bytes": 997,
+      "sha256": "8a988bdf22a39021037e9d325fc22658717bfd2810f4e229934e46b5cc10e032"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\outer-cache-dependency-a01\\cache-verify.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\outer-cache-dependency-a01\\cache-verify.stdout.json",
+      "bytes": 30,
+      "sha256": "76dbc1e5dbc9bdc1cd178f8441e309bf87d32d99cc57a37b72811e26b44c0a2d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\outer-cache-dependency-a01\\canonical-outer.readback.mod",
+      "bytes": 267,
+      "sha256": "6e30f2a4fe71977a9984e7c7d1dbd9c5b6e42d15fcd6d6f6cec7ad088fdc5a57"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\outer-cache-dependency-a01\\dependency-observation.json",
+      "bytes": 1750,
+      "sha256": "787f947f31cb8acacc1796ed11289c22d70629b8f8405a10ff4c1234e3d36370"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\outer-cache-dependency-a01\\descriptor-receipt.json",
+      "bytes": 1218,
+      "sha256": "414c717e186a231faa4369ac224e3150e4e799e860ce2f6d685d27ab71f9c7f7"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\outer-cache-dependency-a01\\sidebar.actual.html",
+      "bytes": 1100,
+      "sha256": "ab5e631f99d68e42755957c456b703fc4f0779fb3b053fe618c342c37380ee1e"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-editor-controls-a01\\controls.json",
+      "bytes": 3325,
+      "sha256": "5339d7e94a9013329a55649c0c69f0f0b756bb1fa438f260065742d4495cafe0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-open-a01\\started.json",
+      "bytes": 600,
+      "sha256": "187f7ce5065b8be677c466867f01fe34ac9d9aa6871aed296b87b6cdd92e557c"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-open-a01\\URI-returned.json",
+      "bytes": 146,
+      "sha256": "7889fe46bde3c378f7b4a8cb3950295dc36b5caf712c2695bf88440bca7707d3"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-read-a01\\desktop.png",
+      "bytes": 861085,
+      "sha256": "741997e9be6c3851a4e7737a26a81adc21b819d5d4443023d2e96b07e290f4f5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-read-a01\\observation.json",
+      "bytes": 868,
+      "sha256": "99135ecdc5fee9868e77923473051e8a884274d52223b609839ecaf39b731545"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-read-a01\\tree.json",
+      "bytes": 27640,
+      "sha256": "d68b3bf2d0ae883c5f70e8583e1cc7667fed68e4496eb74c2d041d632663a280"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-read-a02\\desktop.png",
+      "bytes": 289905,
+      "sha256": "0b8025cb6800096fce4411bb812723bccd0ae43a61073fab0fd27548f1cbd8e5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-read-a02\\observation.json",
+      "bytes": 868,
+      "sha256": "81219e02970fc0972baa5015f348e04d421f779daa47018b51fdcb207162860b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-read-a02\\tree.json",
+      "bytes": 31991,
+      "sha256": "5845d910b1b53b9062332a70521004d75e7e963b09b7b1172c4b13651ccda02a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-save-B-a01\\action.result.json",
+      "bytes": 247,
+      "sha256": "3daa186152edef70843e8f1d63b7163d10776d654e83cd1cbb23839b43488de5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-save-B-a01\\action.started.json",
+      "bytes": 409,
+      "sha256": "ddc6b85fe3b9ce9021c15096392356ca1b249dd54b0b64655a82dc351dcc1e7c"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-save-B-a01\\after-tree.json",
+      "bytes": 34205,
+      "sha256": "6b65ed1ce19da0bbe9711c3aa4d1b754ec6eafe321a6d48d8ea569d8e7f267ca"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-save-B-a01\\after.png",
+      "bytes": 285107,
+      "sha256": "68d27b6e71377b4e8bb6c95ba6d10537076aba5609bd7c65498bc0b9a0243868"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-save-B-a01\\before-tree.json",
+      "bytes": 34265,
+      "sha256": "8407d3123ba67e5706ca42f62a2855049a45548f982018e10ba85d7f8265bb10"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-save-B-a01\\before.png",
+      "bytes": 288976,
+      "sha256": "24acaa541eba6d0abf15f65e86f0def77d684bad0c8ea64169cf5b678548ed2a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-set-B-a01\\after.png",
+      "bytes": 288976,
+      "sha256": "24acaa541eba6d0abf15f65e86f0def77d684bad0c8ea64169cf5b678548ed2a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-set-B-a01\\before.png",
+      "bytes": 289511,
+      "sha256": "1392b23a1042cfe2cc6a43f9bc7de295e8c98e2066eb441f9909e904dc5de0ab"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-set-B-a01\\full-field-readback.txt",
+      "bytes": 2467,
+      "sha256": "7a7713bad58d200264ed5227e1b755e24abb2287ac6d3ee02ef30b4903f3c9b0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-set-B-a01\\old-full-field-A.txt",
+      "bytes": 2364,
+      "sha256": "ae97e9a713938374323de8a1d3f7bfcbb5343c7442820c352f9eeb554271da7f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-set-B-a01\\readback-observations.json",
+      "bytes": 215,
+      "sha256": "b1320692be84144946bc7a9599ea9c839b8a82f7faaca45049e3cf995b2dcd9d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-set-B-a01\\set.started.json",
+      "bytes": 537,
+      "sha256": "79bd722141061a7d2961703c2afef3c15ffd22c8fc7921c2e39d3b492db93132"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\planned-inputs\\download-arguments.template.json",
+      "bytes": 194,
+      "sha256": "656fe3d69521e9d9e7062b1e4b1ae9922f38da81e3847d14d475fe44d72f1fbf"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\planned-inputs\\previews-arguments.template.json",
+      "bytes": 137,
+      "sha256": "1e0e515453dffaa76160bdc4f8f793900716ec00dbcbffd1dd1418dddb47cbeb"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\planned-inputs\\probe-arguments.json",
+      "bytes": 118,
+      "sha256": "c538ec0aab3bd13e0fdf756b52383154b37e7355d51746d67498060ad56522aa"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\planned-inputs\\subscribe-arguments.template.json",
+      "bytes": 163,
+      "sha256": "0a8f698646146211b8212adaf3f32d49a1975a39f94850fd1be63727273c5d5a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-a01\\item-api.raw.json",
+      "bytes": 3783,
+      "sha256": "5e7d8b4009170c5763c6d96d65906231e104018075a4261b422e32d274fecf64"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-a01\\verification.json",
+      "bytes": 2448,
+      "sha256": "21946b7b1969a3bf601cd4dba437b5167cf48436f18ba7b08c5c79d6ae055298"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-a02\\changelog.raw.browser-dom.html",
+      "bytes": 54355,
+      "sha256": "91c00cf9361cc0de97eb38110a3451a3b7136aff40c6749b78dccd950940a4b9"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-a02\\changelog.raw.browser-observation.json",
+      "bytes": 2183,
+      "sha256": "c45394ed8eef7dc83f863986330b123945c7141fff41bffbe335dac26e52ce54"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-a02\\changelog.raw.html",
+      "bytes": 53089,
+      "sha256": "c2ed5769bdef1322ae62fd7867119fb9a6cb8d092c264960b049cf0f97c4711d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-a02\\item-api.raw.json",
+      "bytes": 3783,
+      "sha256": "586c1119a6b6a5202092ee0f9aba1ba4a849462f906bdbc2f424b5758c55a443"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-a02\\item-page.raw.browser-dom.html",
+      "bytes": 63521,
+      "sha256": "4d515cdc5ed3a0fe2786ec6e347110ac1c22865426b888f2aa2c63378f2a9fdf"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-a02\\item-page.raw.browser-observation.json",
+      "bytes": 60524,
+      "sha256": "a406f55df95f3879e5784fa24ff7f1318c057b58364d4b90a8af4308fd860b9a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-a02\\item-page.raw.html",
+      "bytes": 61867,
+      "sha256": "16a0928fdbfaf8cedb705b64e24e569c6312af02193a791d7c3dca19019ccd1c"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-a02\\main-preview.public",
+      "bytes": 778046,
+      "sha256": "732deee357a6d322340fa9e6bb6d7b619b8c9da44b3c68711c23154079df863f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-a02\\media-00.public",
+      "bytes": 170086,
+      "sha256": "d0d0adbaf28445d0aa1ced1de5351374337c6921a67919a9743bbf2dbb2eaa8d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-a02\\verification.json",
+      "bytes": 9148,
+      "sha256": "57403e0caf50ec006d989af00e75e413d99186e735fd233912acc7c837e75a74"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\changelog.raw.browser-dom.html",
+      "bytes": 54693,
+      "sha256": "854a1bd8016971c9a725bb2fdd7e499ada6505e12d9dee8ee4f4f692d9b7f539"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\changelog.raw.browser-observation.json",
+      "bytes": 2185,
+      "sha256": "40397b8e405c7a68cd9ec1c16ecf0221c04e0c6071e9dc9d80be1a1e4eabaa2d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\changelog.raw.html",
+      "bytes": 53201,
+      "sha256": "884b01aad74973eed11c8f87c27208a5e2040ddf09da147d042c5b8b0b36a6bc"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\item-api.raw.json",
+      "bytes": 3783,
+      "sha256": "586c1119a6b6a5202092ee0f9aba1ba4a849462f906bdbc2f424b5758c55a443"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\item-page.raw.browser-dom.html",
+      "bytes": 63521,
+      "sha256": "4d515cdc5ed3a0fe2786ec6e347110ac1c22865426b888f2aa2c63378f2a9fdf"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\item-page.raw.browser-observation.json",
+      "bytes": 60524,
+      "sha256": "a406f55df95f3879e5784fa24ff7f1318c057b58364d4b90a8af4308fd860b9a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\item-page.raw.html",
+      "bytes": 61867,
+      "sha256": "16a0928fdbfaf8cedb705b64e24e569c6312af02193a791d7c3dca19019ccd1c"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\main-preview.public",
+      "bytes": 778046,
+      "sha256": "732deee357a6d322340fa9e6bb6d7b619b8c9da44b3c68711c23154079df863f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\media-00.public",
+      "bytes": 170086,
+      "sha256": "d0d0adbaf28445d0aa1ced1de5351374337c6921a67919a9743bbf2dbb2eaa8d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\verification.json",
+      "bytes": 9187,
+      "sha256": "7287dd92f378d7da3f0d0e5515111850bf33d3b9a3e0f809f7ccb5687eb87ab8"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a01\\finished.json",
+      "bytes": 250,
+      "sha256": "2ca1220b70f58d74d8b6a581ab1a28444616e4206e64a5d208b7164c160ceba9"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a01\\started.json",
+      "bytes": 1470,
+      "sha256": "eb153be08854ffe7c4d019f0dddaf363c40cd2bdf07ab5356d469ca3d8155f48"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a01\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a01\\stdout.json",
+      "bytes": 2510,
+      "sha256": "6fa0fa4e7cda3eb7a9ed195f8fae00802ebc60057c759b6b2243d5d57ed3e7f8"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a02\\adaptation.json",
+      "bytes": 1696,
+      "sha256": "8d3d642b68ab7de54dd3a3b9a45115d4974070b84bfd08cfcad402f060a3f199"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a02\\adapted-helper.py",
+      "bytes": 13521,
+      "sha256": "108eefb0c10556d27937ba89b47eba53afb4ee3bbb139d53dcc950ce65a07968"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a02\\finished.json",
+      "bytes": 250,
+      "sha256": "d70e99212e54005d6c0ef0545053a7c94d37c3371b5f6b33e7dbdf968c7cb8ef"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a02\\launch.py",
+      "bytes": 285,
+      "sha256": "dce003e44856e3a04dc13d85d515d82b55e6bfb757973e26da148edf1a955f3b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a02\\original-helper.py",
+      "bytes": 13510,
+      "sha256": "9dbf0bfac753f8a1877a6a5c94da9b7d16b714d791ab1d2a250fc1c8313b57ad"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a02\\started.json",
+      "bytes": 1489,
+      "sha256": "117f951ff528a9000aab60b342a88b68aab3988dab90a1d64d63f9fffd377716"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a02\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a02\\stdout.json",
+      "bytes": 9354,
+      "sha256": "e6ab593359e30f64ed375da90f14b3c02802e49a8592233315bedc43721ac93f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a03\\finished.json",
+      "bytes": 250,
+      "sha256": "5681f6d4d602750702ce79d06889e6ce64b27697e20848cf15841aa730f4fd45"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a03\\started.json",
+      "bytes": 1605,
+      "sha256": "772cc517ca21f271c9a661c89cd279145f1bcdfb9c6f6a962beed7e860a5056d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a03\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a03\\stdout.json",
+      "bytes": 9393,
+      "sha256": "a112031008c1e167b2629ceee5872a302cfa65d91e97ca0ed861ea61064440f0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\run-index.initial.json",
+      "bytes": 7143,
+      "sha256": "4fa414129c86d4db981986171e87207f9efda5ae97353390d4b121dc59b73f63"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261003T233724096711Z-029a4e0897fa4a19ae8015df7eab14ef\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261003T233724096711Z-029a4e0897fa4a19ae8015df7eab14ef\\result.json",
+      "bytes": 195,
+      "sha256": "c4d0d4c0d7c15d9e34ed1cc9945575c5e89ae0405224a9d127d2a9c5d32b6e0c"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261003T233724096711Z-029a4e0897fa4a19ae8015df7eab14ef\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261003T233724096711Z-029a4e0897fa4a19ae8015df7eab14ef\\stdout.bin",
+      "bytes": 332177,
+      "sha256": "a3321b1470dbad8edfe7e95ea654dc3ba5852a27e065a5a4fd3c18da88229d8c"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261003T233724610579Z-8738dba7a4804f26b6e9ec542835b393\\argv.json",
+      "bytes": 741,
+      "sha256": "59aba2679cf254d424378e6dddeaa93801e86ee489cadf1bbe3c92b0a080413b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261003T233724610579Z-8738dba7a4804f26b6e9ec542835b393\\result.json",
+      "bytes": 195,
+      "sha256": "b3aa85d038ceeb4973d251d62f416a2c80501ca4d62c503e00fd4aa70528e6e6"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261003T233724610579Z-8738dba7a4804f26b6e9ec542835b393\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261003T233724610579Z-8738dba7a4804f26b6e9ec542835b393\\stdout.bin",
+      "bytes": 1378,
+      "sha256": "31f076ccc802772e18b59c9b7c98e8f968e73f3ab9bf20ac27731e767b8ef132"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261003T233725848541Z-b419866af8c347a9a6deb54bb23f6fab\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261003T233725848541Z-b419866af8c347a9a6deb54bb23f6fab\\result.json",
+      "bytes": 195,
+      "sha256": "2dca9ca20a9ce4f657b81db4ea12c40ebdf9426590b13367d61f1be8f37e8048"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261003T233725848541Z-b419866af8c347a9a6deb54bb23f6fab\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261003T233725848541Z-b419866af8c347a9a6deb54bb23f6fab\\stdout.bin",
+      "bytes": 332873,
+      "sha256": "54cf3d23dee35a745468870bb4a9b94f973a65e448d6af18f612a91e969fa889"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261003T233726278229Z-d31a6d92685a473aae858ada48c8f53b\\argv.json",
+      "bytes": 544,
+      "sha256": "ea874e78038414cc5a032338db05e4e1a59e38e81dc3c764574038772e3fece2"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261003T233726278229Z-d31a6d92685a473aae858ada48c8f53b\\result.json",
+      "bytes": 195,
+      "sha256": "bbf610d89b529c797f16037ad41bc0077436a0141e66fafa2ed54df2f280fcac"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261003T233726278229Z-d31a6d92685a473aae858ada48c8f53b\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261003T233726278229Z-d31a6d92685a473aae858ada48c8f53b\\stdout.bin",
+      "bytes": 3085562,
+      "sha256": "689e560707c19896043ab6f9eb5511bb393801965444ecaf36e2f64a077ab378"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261004T001732547190Z-024265e9d7a04259bf2022d619ca4443\\argv.json",
+      "bytes": 617,
+      "sha256": "93e5715af013e6c0ef35f3c59beaa2b55caa6426b8591a8976a67ead02cecda3"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261004T001732547190Z-024265e9d7a04259bf2022d619ca4443\\result.json",
+      "bytes": 195,
+      "sha256": "798d289b9c94cf739589b0876c55dc26992a5dd912d513fbf606c523b501ab03"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261004T001732547190Z-024265e9d7a04259bf2022d619ca4443\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-call-audits\\20261004T001732547190Z-024265e9d7a04259bf2022d619ca4443\\stdout.bin",
+      "bytes": 1155,
+      "sha256": "c3a22843cc15e8e80e4563bdcd3968e5809331e3bdbb8b1c09198f80b8df434e"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\bus-source.py",
+      "bytes": 29120,
+      "sha256": "b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\controller-source.py",
+      "bytes": 3818,
+      "sha256": "66455ac8f2f79b87456cbfbe75a3e40bc59c6a4453b21414a0c157ba09bd1753"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T233726856169Z-6491c6a41eb943dd8ec8b0d7e0fd946f\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T233726856169Z-6491c6a41eb943dd8ec8b0d7e0fd946f\\result.json",
+      "bytes": 195,
+      "sha256": "d674b32201b0bd2fb05a1f3b93ba0618e93580b9b69455519b8dba33e73ea262"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T233726856169Z-6491c6a41eb943dd8ec8b0d7e0fd946f\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T233726856169Z-6491c6a41eb943dd8ec8b0d7e0fd946f\\stdout.bin",
+      "bytes": 332873,
+      "sha256": "d26e9043f8afe7717363062596637d67b3179b43efd9578d3e8d584ac932c51a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T233727229826Z-e9f235095f5a47a6a19f3a14a455767d\\argv.json",
+      "bytes": 575,
+      "sha256": "02790ba738e17631660758a0a6b002389e8150d2a69556207c7d7454688bd266"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T233727229826Z-e9f235095f5a47a6a19f3a14a455767d\\result.json",
+      "bytes": 195,
+      "sha256": "15bb062e0ad2d9f3fc84ea415321d6df1639288d2807581a1316ac4781a80369"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T233727229826Z-e9f235095f5a47a6a19f3a14a455767d\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T233727229826Z-e9f235095f5a47a6a19f3a14a455767d\\stdout.bin",
+      "bytes": 1377,
+      "sha256": "48c580c9ba08f85d47154d4984c8f098478066d5876bcfa48a67ea7fa6100ade"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T233728603783Z-1524cf4b9e144b2f94c99efccce50938\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T233728603783Z-1524cf4b9e144b2f94c99efccce50938\\result.json",
+      "bytes": 195,
+      "sha256": "db1b8b0e30b4fc2d680aac7f98023bf15e2a99023cf253fddb31a7b357fe619d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T233728603783Z-1524cf4b9e144b2f94c99efccce50938\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T233728603783Z-1524cf4b9e144b2f94c99efccce50938\\stdout.bin",
+      "bytes": 332873,
+      "sha256": "8c0e39d5b9e004a05aae1c654fdb89c970d4a4241c8a9bddef0e2adcc0be4086"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234026863259Z-ebb908e6ae814f758e8436d174a42b56\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234026863259Z-ebb908e6ae814f758e8436d174a42b56\\result.json",
+      "bytes": 195,
+      "sha256": "23bff47fce5f2ce680168d5b4c6bc4b2af2f8b9d334f548a0f01fa19d198a5d5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234026863259Z-ebb908e6ae814f758e8436d174a42b56\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234026863259Z-ebb908e6ae814f758e8436d174a42b56\\stdout.bin",
+      "bytes": 332875,
+      "sha256": "d926d8b1742c98d6c4571a90dd7f870dd35076f67ab1e9f28c812fde498eed48"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234027267898Z-59c8246aa12c4717972437fdb4ff64a9\\argv.json",
+      "bytes": 575,
+      "sha256": "ec7f444a8570319bb595545e2e8d8b03ef175db2c58fff0387b36279105294c0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234027267898Z-59c8246aa12c4717972437fdb4ff64a9\\result.json",
+      "bytes": 195,
+      "sha256": "8785307d77c0faba31a6e783bb611c60121a794cde93e5eef323427606ef01d8"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234027267898Z-59c8246aa12c4717972437fdb4ff64a9\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234027267898Z-59c8246aa12c4717972437fdb4ff64a9\\stdout.bin",
+      "bytes": 1377,
+      "sha256": "5c4cdb6e96745b891c446dc2e637c651c1c37426206dc1d60c9fa2b6b68d5aa9"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234028309791Z-8df501ae843141b4a4f8ad7e8324479b\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234028309791Z-8df501ae843141b4a4f8ad7e8324479b\\result.json",
+      "bytes": 195,
+      "sha256": "9177ce70adab37f4c0d6c139fd2ab86e46d981f8cd5c5e6eb5f75202071f700e"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234028309791Z-8df501ae843141b4a4f8ad7e8324479b\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234028309791Z-8df501ae843141b4a4f8ad7e8324479b\\stdout.bin",
+      "bytes": 332873,
+      "sha256": "ca28cea0a89621523eefb994deb8ddb9f719066f8a74ee7657841c6ed44afbf7"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234329014706Z-bb6faa10f4ad42d2b5851ef8f9bf54df\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234329014706Z-bb6faa10f4ad42d2b5851ef8f9bf54df\\result.json",
+      "bytes": 195,
+      "sha256": "5fa1c9a9d7827bdeaf2d24ee95d792f31ac33363e953469920ee13a5a818dc6c"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234329014706Z-bb6faa10f4ad42d2b5851ef8f9bf54df\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234329014706Z-bb6faa10f4ad42d2b5851ef8f9bf54df\\stdout.bin",
+      "bytes": 332875,
+      "sha256": "fe748226f9e04a1032d795e71334c21abcc4a8f87a6710fa23fdf14994c2ef89"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234329470902Z-e39edbdf737948f7b3728c0f81e4ee8f\\argv.json",
+      "bytes": 575,
+      "sha256": "2da08d4922cf5f840afcd38996da969b79674501a79b178909f9ef17bd8a3a6b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234329470902Z-e39edbdf737948f7b3728c0f81e4ee8f\\result.json",
+      "bytes": 195,
+      "sha256": "e2cc34c243ce9d8ab2510304b3c84a0354ba2b8844350f39211ea02ad8347873"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234329470902Z-e39edbdf737948f7b3728c0f81e4ee8f\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234329470902Z-e39edbdf737948f7b3728c0f81e4ee8f\\stdout.bin",
+      "bytes": 1376,
+      "sha256": "e8d8be3cb206c5032930fd6c3c5a26b15b81e25274832a835086292e7b094f44"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234330456673Z-7a27835173a14a2e811cae6b141ca241\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234330456673Z-7a27835173a14a2e811cae6b141ca241\\result.json",
+      "bytes": 195,
+      "sha256": "37e8baa3a7234b6d5c9a9f9cdb0d5ec450a33983ba504b37049233a6553affb2"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234330456673Z-7a27835173a14a2e811cae6b141ca241\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234330456673Z-7a27835173a14a2e811cae6b141ca241\\stdout.bin",
+      "bytes": 332872,
+      "sha256": "04325ed9c6d6de9744b1bf4def4d1435e8f12fb100958fdf659cf13b05f0da38"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234631052023Z-7c4b18c44ba847a381cdd67538a38f8f\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234631052023Z-7c4b18c44ba847a381cdd67538a38f8f\\result.json",
+      "bytes": 195,
+      "sha256": "3c8d889ef1c7bb1ce4efcf88b47561f662e27467a9b624c42fbd453af7a0c8b9"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234631052023Z-7c4b18c44ba847a381cdd67538a38f8f\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234631052023Z-7c4b18c44ba847a381cdd67538a38f8f\\stdout.bin",
+      "bytes": 332882,
+      "sha256": "4fac24b30a3bca54704b699e6aa932281f5fef77c50c2e16dccaebc17a6a253b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234631419646Z-18c0e415141e4b35b4318a14e53db118\\argv.json",
+      "bytes": 575,
+      "sha256": "a45433b5807669f10214835f8c46f4eab13c05fdf52c2490bc1d0bb50ec2d3db"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234631419646Z-18c0e415141e4b35b4318a14e53db118\\result.json",
+      "bytes": 195,
+      "sha256": "859eefde70d2f71a8e3c4b1287c2256b0303eaa90544c6ef32c46b32dd1c73a0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234631419646Z-18c0e415141e4b35b4318a14e53db118\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234631419646Z-18c0e415141e4b35b4318a14e53db118\\stdout.bin",
+      "bytes": 1377,
+      "sha256": "70c4933c6689412b1ca2f9e17ad79f133285c363b47b5aa0a9af13df73b88c35"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234632394166Z-dfc6a69406654ba89bce4b713f25669b\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234632394166Z-dfc6a69406654ba89bce4b713f25669b\\result.json",
+      "bytes": 195,
+      "sha256": "ebc8ec92ea0f0eb3f153e42481d3bc3c55d63c45713417666ded2498bfbdb1f7"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234632394166Z-dfc6a69406654ba89bce4b713f25669b\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234632394166Z-dfc6a69406654ba89bce4b713f25669b\\stdout.bin",
+      "bytes": 332881,
+      "sha256": "ae63167853eb236da1fad632f3cf959a318964d19da0c5bb6b20a8231e73b70b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234933024348Z-f4d0ff8321854510ad66920e8be7e430\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234933024348Z-f4d0ff8321854510ad66920e8be7e430\\result.json",
+      "bytes": 195,
+      "sha256": "440e8a669cb8c5376a38dc36184f53152f9992cdb39b8637f2711a10a3675dd0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234933024348Z-f4d0ff8321854510ad66920e8be7e430\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234933024348Z-f4d0ff8321854510ad66920e8be7e430\\stdout.bin",
+      "bytes": 332884,
+      "sha256": "a58cece81dd9f23d91337287549590242e0d68460e956c57d854cf51e69c04c5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234933490195Z-794110a357f0432392055e88ff07fb9d\\argv.json",
+      "bytes": 575,
+      "sha256": "18b173bb6f1cec29d63056db3d087b3f9dfb6cdc91075b0aa641e352164bc2f4"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234933490195Z-794110a357f0432392055e88ff07fb9d\\result.json",
+      "bytes": 195,
+      "sha256": "39462ac7461751d004cfbc2fb4ddf6f8662e0a472225045bae99e9a4037f4bf0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234933490195Z-794110a357f0432392055e88ff07fb9d\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234933490195Z-794110a357f0432392055e88ff07fb9d\\stdout.bin",
+      "bytes": 1376,
+      "sha256": "035b00538efe360978a138d029770316f272c6ce051e605b2c50e8d6d1e7259a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234934530263Z-61c5478b041045e2bb49536b9f2e47b5\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234934530263Z-61c5478b041045e2bb49536b9f2e47b5\\result.json",
+      "bytes": 195,
+      "sha256": "f39637305a6c8329253e2c9e1ff06d3bf713fab309e7b081f5fb6c1a4811d33b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234934530263Z-61c5478b041045e2bb49536b9f2e47b5\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T234934530263Z-61c5478b041045e2bb49536b9f2e47b5\\stdout.bin",
+      "bytes": 332881,
+      "sha256": "ba0da88fa37736eb8278f4de1b2f35b18b9db2d91a7ee784757fd26f096da48e"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235235163677Z-3100b2bf680a4f66978dfe8046acf25b\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235235163677Z-3100b2bf680a4f66978dfe8046acf25b\\result.json",
+      "bytes": 195,
+      "sha256": "039c0b01fa430216e55b39419292ec664ae4088578d49661cb874e048d43b979"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235235163677Z-3100b2bf680a4f66978dfe8046acf25b\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235235163677Z-3100b2bf680a4f66978dfe8046acf25b\\stdout.bin",
+      "bytes": 332884,
+      "sha256": "0d848417c85ef074323120de1fcd11b70ef1a04a588d68a64eaf9a6bf4a38816"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235235640670Z-8af53f91bb73425e88c3fa585da15ac1\\argv.json",
+      "bytes": 575,
+      "sha256": "de09004ae58925cbddc1fa51c5d1741da573a2e1e3b3b8d2b86a753c9449dd5b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235235640670Z-8af53f91bb73425e88c3fa585da15ac1\\result.json",
+      "bytes": 195,
+      "sha256": "bb6cb578ec23682628b0d6270bc06f72682ef97a922303074bf364784198a706"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235235640670Z-8af53f91bb73425e88c3fa585da15ac1\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235235640670Z-8af53f91bb73425e88c3fa585da15ac1\\stdout.bin",
+      "bytes": 1377,
+      "sha256": "220e584b00397528a9ef72ee51ae443ab985c155f9924ca04f3aa8a115591ef2"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235236607477Z-a90aa2e9c4f049cf8854996a1ef156b7\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235236607477Z-a90aa2e9c4f049cf8854996a1ef156b7\\result.json",
+      "bytes": 195,
+      "sha256": "cfd0b8c4b756531bfff1c0c3799b4c900a30d79eb35944efd03d96f1c452e26c"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235236607477Z-a90aa2e9c4f049cf8854996a1ef156b7\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235236607477Z-a90aa2e9c4f049cf8854996a1ef156b7\\stdout.bin",
+      "bytes": 332883,
+      "sha256": "4b1f94ecbb93b62c4e19f035f493d652a2730cf3146d77b809dba4c84fd85dba"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235537242908Z-f54eb160711845bd8ca3372778bba65d\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235537242908Z-f54eb160711845bd8ca3372778bba65d\\result.json",
+      "bytes": 195,
+      "sha256": "da16c926d7d969640a2428ff4a9a22026652490b933c92e30d712a28d1fd8354"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235537242908Z-f54eb160711845bd8ca3372778bba65d\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235537242908Z-f54eb160711845bd8ca3372778bba65d\\stdout.bin",
+      "bytes": 332895,
+      "sha256": "afba78929cfd1e84b692088ddc678f999f9574ec6457b3b33a7ee861929796ca"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235537683583Z-acaf48121c944c238e87a204acdc4a65\\argv.json",
+      "bytes": 575,
+      "sha256": "0a6cfc0097d08a7aa7171a36bd250a7ee29af3447f584c4ab91a29b9f45d0eb9"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235537683583Z-acaf48121c944c238e87a204acdc4a65\\result.json",
+      "bytes": 195,
+      "sha256": "58d2d03aa7efc3d2210e009646b57fa178734679aa61428fc2c6a42f4038cfc6"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235537683583Z-acaf48121c944c238e87a204acdc4a65\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235537683583Z-acaf48121c944c238e87a204acdc4a65\\stdout.bin",
+      "bytes": 1376,
+      "sha256": "cb8a592cd9eff4055fbfc5d6d072897ff7890b746016f13bf6beab7292463c5f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235538618854Z-11e7961e21874c3c9f4b7038f862e122\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235538618854Z-11e7961e21874c3c9f4b7038f862e122\\result.json",
+      "bytes": 195,
+      "sha256": "7a9e8f8f2e3a3f68d18f68b6f6d5b76996d25848466d7dcea0bda0ea02a14de4"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235538618854Z-11e7961e21874c3c9f4b7038f862e122\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235538618854Z-11e7961e21874c3c9f4b7038f862e122\\stdout.bin",
+      "bytes": 332892,
+      "sha256": "dfc561b86435ff66f61bd10388056119be6bd938c870afde740819b56966bd14"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235839249865Z-31313273d20644b1afe54dd9b9b5debb\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235839249865Z-31313273d20644b1afe54dd9b9b5debb\\result.json",
+      "bytes": 195,
+      "sha256": "4ec816acfb6368bef92775d24e1a926f125752574bf8f1b81e4b99294d829c19"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235839249865Z-31313273d20644b1afe54dd9b9b5debb\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235839249865Z-31313273d20644b1afe54dd9b9b5debb\\stdout.bin",
+      "bytes": 332895,
+      "sha256": "c232c5c61895eaa211874a9c414bfa08cbd5e3e77afab473feccbfcfb655221b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235839684154Z-8a1b100677914af799c5bc40f5961f5e\\argv.json",
+      "bytes": 575,
+      "sha256": "f7387346ef0210990d28273ba1544d7d679069f5d190f85ad0c15a12406deb53"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235839684154Z-8a1b100677914af799c5bc40f5961f5e\\result.json",
+      "bytes": 195,
+      "sha256": "be712e863b0682f87bc5f502bbced748ee3a4953a012698a9c45265d0da075c3"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235839684154Z-8a1b100677914af799c5bc40f5961f5e\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235839684154Z-8a1b100677914af799c5bc40f5961f5e\\stdout.bin",
+      "bytes": 1376,
+      "sha256": "bfc5f305623765a70919a76e26102e21950f596aae33e19739bbd24f004516bb"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235840748462Z-b92c2a5e4b4644ea913fb53f634d8e34\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235840748462Z-b92c2a5e4b4644ea913fb53f634d8e34\\result.json",
+      "bytes": 195,
+      "sha256": "30c55504a6810dfe9492fe7fa9826989a858c326ca5c64c51b436d651013d89b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235840748462Z-b92c2a5e4b4644ea913fb53f634d8e34\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261003T235840748462Z-b92c2a5e4b4644ea913fb53f634d8e34\\stdout.bin",
+      "bytes": 332893,
+      "sha256": "3428851054bed8f5878232a085f4438697b6ecc60bbc4308fa8efa50e132ab0a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000141408770Z-1431e8e6b6614711b537f57cd85c2236\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000141408770Z-1431e8e6b6614711b537f57cd85c2236\\result.json",
+      "bytes": 195,
+      "sha256": "8f1105ef5f6c495d0396e2778494386c05e2a1c2a25371bfb2aa5a237eddcf17"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000141408770Z-1431e8e6b6614711b537f57cd85c2236\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000141408770Z-1431e8e6b6614711b537f57cd85c2236\\stdout.bin",
+      "bytes": 332895,
+      "sha256": "f9d588faebc4427d3c552d1366b75029db76a25adb42a4797accf9ac97273121"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000141880455Z-75a1c8d6924847cfa60c0988fbfa4ffc\\argv.json",
+      "bytes": 575,
+      "sha256": "a1f20f5fb8a299dcb90c4132441f8a89e711679d92b79cb9fda00f186827bd59"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000141880455Z-75a1c8d6924847cfa60c0988fbfa4ffc\\result.json",
+      "bytes": 195,
+      "sha256": "9105192c1811dd01f9feb96b88d1dc4b05c33fda253b9579dbafcf3fc985e1d0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000141880455Z-75a1c8d6924847cfa60c0988fbfa4ffc\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000141880455Z-75a1c8d6924847cfa60c0988fbfa4ffc\\stdout.bin",
+      "bytes": 1377,
+      "sha256": "8b4cc7470e69a20c03dfc472a8cb3cd94a41382eea911ef0dc7c3b6c1cbfd5d5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000143041439Z-661e5bf33b1c4ff9941ffaff2abb3ccb\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000143041439Z-661e5bf33b1c4ff9941ffaff2abb3ccb\\result.json",
+      "bytes": 195,
+      "sha256": "7d0b9eb1f7793fd7e1b557232c46b89c2b83b0111ef6d876fb60915de8be6186"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000143041439Z-661e5bf33b1c4ff9941ffaff2abb3ccb\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000143041439Z-661e5bf33b1c4ff9941ffaff2abb3ccb\\stdout.bin",
+      "bytes": 332894,
+      "sha256": "7c9bb5bfa5dfce73a56461585891048a18cf20f2ed4533cc0c725ffe46640684"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000443685842Z-2fee97afb8284db9b35aec06b6b83976\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000443685842Z-2fee97afb8284db9b35aec06b6b83976\\result.json",
+      "bytes": 195,
+      "sha256": "8d8c66920371d2d06eb3f04eb633c069ea43ae1f6920d0c7dfd5bc0ae22ea3b8"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000443685842Z-2fee97afb8284db9b35aec06b6b83976\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000443685842Z-2fee97afb8284db9b35aec06b6b83976\\stdout.bin",
+      "bytes": 332896,
+      "sha256": "3023233f06ca094b4a4c2e1a27dec4ae5309e2f13b9c0e5838e2945ff92ae1c3"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000444096710Z-48dd52b35c1b46a6a8a9d552e11d7864\\argv.json",
+      "bytes": 575,
+      "sha256": "af0f236cae60dc4f0fa7bfb8de78aebf97db1237e6677b6986600a19a4401101"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000444096710Z-48dd52b35c1b46a6a8a9d552e11d7864\\result.json",
+      "bytes": 195,
+      "sha256": "9a402a1550ee1f6f655ddb5041e1e29bf8e1ec14d9f33b2f7ac73b9534472e08"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000444096710Z-48dd52b35c1b46a6a8a9d552e11d7864\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000444096710Z-48dd52b35c1b46a6a8a9d552e11d7864\\stdout.bin",
+      "bytes": 1377,
+      "sha256": "c8297dde07340b9d77bc7dcba3161433fa2eafe9c28a31a889ce2a405c73352d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000445116612Z-221e1efa86884e228bf701c8f0bb6c52\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000445116612Z-221e1efa86884e228bf701c8f0bb6c52\\result.json",
+      "bytes": 195,
+      "sha256": "c862642d3514f0dc08bc0069dc0af545b62de92d7612d99b70365f14ad73dc2a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000445116612Z-221e1efa86884e228bf701c8f0bb6c52\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000445116612Z-221e1efa86884e228bf701c8f0bb6c52\\stdout.bin",
+      "bytes": 332894,
+      "sha256": "33c089e0e795d8a85ee4dec79a7411bbcf5cb05b3e5bf5ec1be61fb92e24d670"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000745766713Z-3c7cabd29abe4b1093a89e093b4416ef\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000745766713Z-3c7cabd29abe4b1093a89e093b4416ef\\result.json",
+      "bytes": 195,
+      "sha256": "7accfa3f129abde5370353ee1b2b2febfb90d50ea9f094f0eec449c759535686"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000745766713Z-3c7cabd29abe4b1093a89e093b4416ef\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000745766713Z-3c7cabd29abe4b1093a89e093b4416ef\\stdout.bin",
+      "bytes": 332896,
+      "sha256": "da3a3554e47bc171ed2bd4e12ada277937f956300cbfd5168c21ccc6418a49f8"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000746234714Z-a18b7a61299b43d7b024e038db606d14\\argv.json",
+      "bytes": 575,
+      "sha256": "00b2c8c35964a8bd80ab1824ec13ddb5aaee936a5bfefec52745460e87eff2b7"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000746234714Z-a18b7a61299b43d7b024e038db606d14\\result.json",
+      "bytes": 195,
+      "sha256": "bfbbb94f6bfba0f487cbb657c071834d05c78c6e76a0ffbeba5df9e19ac65f89"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000746234714Z-a18b7a61299b43d7b024e038db606d14\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000746234714Z-a18b7a61299b43d7b024e038db606d14\\stdout.bin",
+      "bytes": 1377,
+      "sha256": "0d5978771aedec0116bb28fcfff957b6f112fdda318695dae52df33613402a03"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000747299133Z-b5fcad272e5240c5b224abc55b9af8ac\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000747299133Z-b5fcad272e5240c5b224abc55b9af8ac\\result.json",
+      "bytes": 195,
+      "sha256": "f69505bc6f6c9bd97147ed9a856eac87b27344b0ec50556a12da57257eea18c4"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000747299133Z-b5fcad272e5240c5b224abc55b9af8ac\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T000747299133Z-b5fcad272e5240c5b224abc55b9af8ac\\stdout.bin",
+      "bytes": 332894,
+      "sha256": "40994c8a63e1f52b933b91911ad190e815d782619bb8b6bd58568d737d67260e"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001047952877Z-7497879f3f1b497e9764543096c7dcf7\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001047952877Z-7497879f3f1b497e9764543096c7dcf7\\result.json",
+      "bytes": 195,
+      "sha256": "d3e5141984e9a5391dfe387472d58ef40ad856397fbe504a17acef208b76b5bb"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001047952877Z-7497879f3f1b497e9764543096c7dcf7\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001047952877Z-7497879f3f1b497e9764543096c7dcf7\\stdout.bin",
+      "bytes": 332897,
+      "sha256": "c9ae804021ad2104fe680c9022cee2828e7197f83f9248c64280f884479feb0c"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001048401428Z-129eab447d4943c088faf0a5dccbc63a\\argv.json",
+      "bytes": 575,
+      "sha256": "4831b163bced207f97854de79da8fcbf68ddb323a4d8a03fd5fdef7bcc3da8dc"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001048401428Z-129eab447d4943c088faf0a5dccbc63a\\result.json",
+      "bytes": 195,
+      "sha256": "83559c537af7a33663e086f8ca42360ab587d9a96611cfb3eeae5426b3098bd2"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001048401428Z-129eab447d4943c088faf0a5dccbc63a\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001048401428Z-129eab447d4943c088faf0a5dccbc63a\\stdout.bin",
+      "bytes": 1377,
+      "sha256": "6c44f4c06a5da9d6f3a7bb08452d6a6218fd8750327f661bebfdf2f086f0b429"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001049392559Z-dfb1c22c4fda4d189983b8d03dea8b87\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001049392559Z-dfb1c22c4fda4d189983b8d03dea8b87\\result.json",
+      "bytes": 195,
+      "sha256": "040dd609bdbd52ce2fe53ccc8bb19498145d7c5c621a1983e57cc99b728ebb83"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001049392559Z-dfb1c22c4fda4d189983b8d03dea8b87\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001049392559Z-dfb1c22c4fda4d189983b8d03dea8b87\\stdout.bin",
+      "bytes": 332895,
+      "sha256": "7725d77f3a2bd719ed166b99e2badb23152b90e472555767537d4ea8a3d2bef5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001350052413Z-272c14678e454c2ba73edafc669b2a6a\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001350052413Z-272c14678e454c2ba73edafc669b2a6a\\result.json",
+      "bytes": 195,
+      "sha256": "b8ed0855573d287d5b8ba70259eb1afc0bba78a669ce85755b43ff7eeec57f60"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001350052413Z-272c14678e454c2ba73edafc669b2a6a\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001350052413Z-272c14678e454c2ba73edafc669b2a6a\\stdout.bin",
+      "bytes": 332898,
+      "sha256": "23dc4515106753bfdf088bf986fe84f5250186cd37794a2da9dca5a165534b6d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001350563156Z-554908cc804041c68ecc2a5d423edf17\\argv.json",
+      "bytes": 575,
+      "sha256": "2a2d8ea89f1df988b78ccb744c977e3c3d3a356b43938b54b9cd85369fc41527"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001350563156Z-554908cc804041c68ecc2a5d423edf17\\result.json",
+      "bytes": 195,
+      "sha256": "89efde9e53c5d71d098b4ddf3a945915e74dfc0ee54aec6d0162fe1259858317"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001350563156Z-554908cc804041c68ecc2a5d423edf17\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001350563156Z-554908cc804041c68ecc2a5d423edf17\\stdout.bin",
+      "bytes": 1377,
+      "sha256": "05e4813ed77b3d37877183ad23ec70477f0f5fa428787a30a986634ae580801e"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001351616052Z-e5fe07a046344c3f918e02a50336ac5b\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001351616052Z-e5fe07a046344c3f918e02a50336ac5b\\result.json",
+      "bytes": 195,
+      "sha256": "8eba269179539178c8b9f7f4ae983216deeb566f342a920bcd7564b179e000e3"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001351616052Z-e5fe07a046344c3f918e02a50336ac5b\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001351616052Z-e5fe07a046344c3f918e02a50336ac5b\\stdout.bin",
+      "bytes": 332896,
+      "sha256": "66be1ed121ceb77b3aa47c7179fb2f831a79e16267eca47e90ac0b838f93b8a2"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001652283649Z-c026417dc7e04f7089c5ed15e4ef1731\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001652283649Z-c026417dc7e04f7089c5ed15e4ef1731\\result.json",
+      "bytes": 195,
+      "sha256": "fa894c6bac4ed66de4dfe246d9cc20c81ab4247e9e8ef35cf0b3aadd9425fb7f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001652283649Z-c026417dc7e04f7089c5ed15e4ef1731\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001652283649Z-c026417dc7e04f7089c5ed15e4ef1731\\stdout.bin",
+      "bytes": 332899,
+      "sha256": "c5751286f7a3b71d265382070e8e55dd6eaccbe4f13b40d0631a55e0affa2ee8"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001652768040Z-62fe024430d64f2a9c1bbaaccd52f7bf\\argv.json",
+      "bytes": 575,
+      "sha256": "1efc6b49193ab57178c1021f85dbc5cb40fa4d9ea1cb3d6a4bade21f45a96334"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001652768040Z-62fe024430d64f2a9c1bbaaccd52f7bf\\result.json",
+      "bytes": 195,
+      "sha256": "4400153189e6bc3589440607ccfddb4291fe9cf30b2da8d2f7bca52c7de26191"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001652768040Z-62fe024430d64f2a9c1bbaaccd52f7bf\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001652768040Z-62fe024430d64f2a9c1bbaaccd52f7bf\\stdout.bin",
+      "bytes": 1377,
+      "sha256": "062be8b3d04aba3b8bf9a548bcebe2cae60c5fd58c5a843b90d2abb19f5b5f84"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001653800996Z-a7e2d90ebc77463bbdf248115f324f2e\\argv.json",
+      "bytes": 461,
+      "sha256": "b008afc7be063b22b421db444fae55d1d9db9299b216e05fdc270605f1a95960"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001653800996Z-a7e2d90ebc77463bbdf248115f324f2e\\result.json",
+      "bytes": 195,
+      "sha256": "2272adf4449d73ce5fd7dc775862c58e833ab6eb81919ad0927d65e15cad7f84"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001653800996Z-a7e2d90ebc77463bbdf248115f324f2e\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-call-audits\\20261004T001653800996Z-a7e2d90ebc77463bbdf248115f324f2e\\stdout.bin",
+      "bytes": 332897,
+      "sha256": "5571b44e1829e9cd661d5eb65139be1d7e3951b9cf98e188617c0a3c1aa2b067"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-final.json",
+      "bytes": 317,
+      "sha256": "58cdc09a543a2e89200ede999ab45760520724cff4d9810ae8d9dff792cb877d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper-module-source.py",
+      "bytes": 15381,
+      "sha256": "d000883192b63d0aa7f5df7769a7eff0c1ed90450075e88c3d21d10943b46924"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\keeper.jsonl",
+      "bytes": 9758,
+      "sha256": "2037b4074bb94fa817123dd1d5bc10c0c855d90b94460cd7f3f590e4920dc754"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\list-before.json",
+      "bytes": 332720,
+      "sha256": "1b4903b809edb017ab1675bc916c088a0a46559f40f50640346d42e330b57a67"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\preparation.json",
+      "bytes": 766,
+      "sha256": "8f813d9547ae8da0c6e83c0f227152d3551dcd2ebbee492a85d750144b5e491c"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\registration.json",
+      "bytes": 1378,
+      "sha256": "31f076ccc802772e18b59c9b7c98e8f968e73f3ab9bf20ac27731e767b8ef132"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\release-screen-cas.json",
+      "bytes": 1155,
+      "sha256": "c3a22843cc15e8e80e4563bdcd3968e5809331e3bdbb8b1c09198f80b8df434e"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\stop",
+      "bytes": 96,
+      "sha256": "908a7d58ab8c808ca2fc140ec95cb390ea13a192b3bb4ddcdea54cba921db5c5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-menu-open-a01\\menu-open.png",
+      "bytes": 80608,
+      "sha256": "3f36277a8d8def29432b25ea8cb77e2fdbfb09024d39d6a179b052450e40e9ba"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-menu-open-a01\\planned.json",
+      "bytes": 1092,
+      "sha256": "91d80560940b1ab89471b2677e451496d1f242ae6f0eaf679ae6cdf6adccf262"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-menu-open-a01\\result.json",
+      "bytes": 177,
+      "sha256": "c00cbe8dde42c433c7fb76b36969fb4adfbc06a4768338209e23d5e9846614b1"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-menu-open-a01\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-menu-open-a01\\stdout.json",
+      "bytes": 168,
+      "sha256": "b061bca723b4f61aa14f24d5d9c140aa8422c29ac6a2cbae18cf827aff0b7906"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-menu-read-a01\\desktop.png",
+      "bytes": 820422,
+      "sha256": "4898da5457ce8d34baa64205c91760ef8f064691ecffef51a486841d769cf288"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-menu-read-a01\\observation.json",
+      "bytes": 896,
+      "sha256": "1d044febbe9136fa60cc35a79ed966d47d544c138ed1c85df385c95b2dfdc3fe"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-menu-uia-read-a01\\desktop.png",
+      "bytes": 820468,
+      "sha256": "373f6f21e9b9ad0078e82e496f0d9f523008da33dadaa37ba35edcbd89b4ae27"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-menu-uia-read-a01\\observation.json",
+      "bytes": 5245,
+      "sha256": "91cb516631f93137f15e0b2ddd5852074fc452c5a517214083f1a2ffa5e778b8"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-offline-invoke-a01\\action.result.json",
+      "bytes": 247,
+      "sha256": "8869efab6b754d4d221ce9b732bed41a7eb0095e5a52a13f40d3b43af5d4c217"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-offline-invoke-a01\\action.started.json",
+      "bytes": 419,
+      "sha256": "5dc277554ef069fe17a6e33233e960f9179e5af62dc3683808d7470484fe42c5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-offline-invoke-a01\\after-tree.json",
+      "bytes": 340933,
+      "sha256": "af6aed499ab1523380274c4d8c57e081cf4cd77b9b47e25f8242467091225a59"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-offline-invoke-a01\\after.png",
+      "bytes": 858140,
+      "sha256": "4aa6b8ef949f8ea721f0debc866d2c746b00a59f08cc22928dc30ea1122eeb15"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-offline-invoke-a01\\before-tree.json",
+      "bytes": 351514,
+      "sha256": "34139ca2d8ee3da0bd5b2da4c5a744f9222a434d610247f2d3d7645465b912a5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-offline-invoke-a01\\before.png",
+      "bytes": 823746,
+      "sha256": "13f3b692d29b39a1f21403256e26f9cff0ae3f914682a4cf5afa6213970c89aa"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-offline-menu-open-a01.png",
+      "bytes": 823929,
+      "sha256": "db4a85257596bb3448b624aaa102c899530adbb492ce29f554d23fd5ec021f75"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-online-invoke-a01\\before-tree.json",
+      "bytes": 301941,
+      "sha256": "fe93494e18827d20520865d33cdbea3d42543e08ca21c4782588ee7e784a33b5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-online-invoke-a01\\before.png",
+      "bytes": 820916,
+      "sha256": "9810374eb2a0d96e05d8258d11fef41bc67b22f1b1617495d6d6208340261014"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-online-invoke-a02\\action.result.json",
+      "bytes": 247,
+      "sha256": "d94c49e291876a67af06e1d7fff8e41015bc611685b8daad01e3531a805f9869"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-online-invoke-a02\\action.started.json",
+      "bytes": 407,
+      "sha256": "cbbf7c4728a5643179880e39617bbbed087e55a6eaba052cbec0340fc573f8e2"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-online-invoke-a02\\after-tree.json",
+      "bytes": 292238,
+      "sha256": "b06bec04c93d0a2da8b6e20a54698c518fda9c761c7ca06cf1afa8377a033019"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-online-invoke-a02\\after.png",
+      "bytes": 858203,
+      "sha256": "f4772fed000c7193d5a26bac5bb87a0c4273fa42645365ce7d8ba3a25929b995"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-online-invoke-a02\\before-tree.json",
+      "bytes": 301941,
+      "sha256": "fe93494e18827d20520865d33cdbea3d42543e08ca21c4782588ee7e784a33b5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-online-invoke-a02\\before.png",
+      "bytes": 820916,
+      "sha256": "9810374eb2a0d96e05d8258d11fef41bc67b22f1b1617495d6d6208340261014"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-online-menu-open-a01.png",
+      "bytes": 820506,
+      "sha256": "4050fb359c558f1232493642587a6ba5953ddfae3d2440880f960c848ca44089"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-uia-read-a01\\attempt-result.json",
+      "bytes": 395,
+      "sha256": "c092b06694ef2c87ab1c6b5fb47d9a31401e38576dff940ac82369c8c0a9ac96"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-uia-read-a01\\reader-source.py",
+      "bytes": 2851,
+      "sha256": "3c0abd364b2c5199395a0fa75f48ed20d4a02982cdde754076788967d1854590"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-uia-read-a02\\attempt-result.json",
+      "bytes": 338,
+      "sha256": "2e282599956200b92f4e247f1b389093af04db5dad64da9c405cb8ccc9f991e1"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-uia-read-a02\\reader-source.py",
+      "bytes": 2929,
+      "sha256": "6df7d1f3e79c3436936cb10c3462a6914e1f4703db7aeca1316d4fa490eb47ad"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-uia-read-a02\\stderr.txt",
+      "bytes": 637,
+      "sha256": "18eb3483f99d678195a8ca2f3a89af42f481a3296ab5583110fc198c6cf7cf94"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-uia-read-a02\\stdout.json",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-uia-read-a03\\desktop.png",
+      "bytes": 79478,
+      "sha256": "3022ceea02375d04749c4b5c6e3530d135b883de224d5b07acf7e4a7530ba5d0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-uia-read-a03\\reader-source.py",
+      "bytes": 4156,
+      "sha256": "c097dcbe84e81caf1b7146bfb984853578d9f752eaa7afd15eec31234957139c"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-uia-read-a03\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-uia-read-a03\\stdout.json",
+      "bytes": 576,
+      "sha256": "d2e661aa4feb9a23a0361038e63f2c0a4ef59462312befea6565d1eded4af5e3"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\steam-uia-read-a03\\uia-tree.json",
+      "bytes": 2078,
+      "sha256": "c5492d172be10f29f99389415de80c469929b46880847ee988b490da4a6a4e48"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\text-inputs\\change-notes-A.source.txt",
+      "bytes": 2365,
+      "sha256": "88e1eebfdd800524e35b942d6423b52edc94e0c037c16eea56939aa39231a898"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\text-inputs\\change-notes-A.txt",
+      "bytes": 2364,
+      "sha256": "ae97e9a713938374323de8a1d3f7bfcbb5343c7442820c352f9eeb554271da7f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\text-inputs\\change-notes-B.appendix.txt",
+      "bytes": 103,
+      "sha256": "839aff977e642d7437de46ef1f93ec07d2c440d3d0d8955cc5a4100e405193fb"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\text-inputs\\change-notes-B.final.txt",
+      "bytes": 2467,
+      "sha256": "7a7713bad58d200264ed5227e1b755e24abb2287ac6d3ee02ef30b4903f3c9b0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\text-inputs\\change-notes-B.template.txt",
+      "bytes": 2467,
+      "sha256": "7a7713bad58d200264ed5227e1b755e24abb2287ac6d3ee02ef30b4903f3c9b0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\text-inputs\\description.bbcode",
+      "bytes": 3007,
+      "sha256": "12ac125d91110e7e9435b2db6a20a31955061c9c3e596bb76cac43d67824dafb"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\text-inputs\\description.source.bbcode",
+      "bytes": 3008,
+      "sha256": "d42afa81f7af4e56853c0b13beda2746d7cfb4494350e913c51ae613a4027a87"
+    }
+  ],
+  "remaining": [
+    "root permanent evidence and release changelog master commit/push"
+  ]
+}

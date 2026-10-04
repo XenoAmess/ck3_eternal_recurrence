@@ -24,6 +24,3 @@
 
 源码、测试方案与实际验收报告：
 https://github.com/XenoAmess/ck3_eternal_recurrence/tree/master/mod_superman_qiang/docs
-
-媒体补充：
-• 增加本版本的中文实机玩法截图，展示角色性经验查看功能。

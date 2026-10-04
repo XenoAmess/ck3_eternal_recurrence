@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "fa71dc874cd1e07ce1b97c72fccf1c9e9b7c4b96"
+    },
+    "last_sequence": 4131,
+    "next_step": "",
+    "pid": 18500,
+    "repo": "D:\\ar",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "superman-publication-screen-released",
+    "task_id": "ck3-superman-qiang-publication-screen-20261004-p0001",
+    "updated_at_utc": "2026-10-04T00:17:33.252878+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 4131,
+    "event_id": "df32cd5d557a4db1b62e4a4797850c34",
+    "timestamp_utc": "2026-10-04T00:17:33.254144+00:00",
+    "kind": "completed",
+    "task_id": "ck3-superman-qiang-publication-screen-20261004-p0001",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "superman-publication-screen-released",
+    "next_step": "",
+    "resources": [],
+    "repo": "D:\\ar",
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "fa71dc874cd1e07ce1b97c72fccf1c9e9b7c4b96"
+    }
+  }
+}

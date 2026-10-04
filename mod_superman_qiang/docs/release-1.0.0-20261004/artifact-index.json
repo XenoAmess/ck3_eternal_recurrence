@@ -1,0 +1,67 @@
+{
+  "schema": "sxad.permanent-release-evidence-index.v1",
+  "compiled_at_utc": "2026-10-04T00:23:16.542304+00:00",
+  "source_commit": "7e5ddd481466b7a9df104fd5c6340f473f909aff",
+  "source_tag": "superman-qiang-v1.0.0",
+  "workshop_item_id": "3812991990",
+  "external_release_gates": "GREEN",
+  "master_delivery": "PENDING_ACTUAL_COMMIT_AND_PUSH",
+  "raw_sources": {
+    "publication.snapshot.json": {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\final-report-a02\\report.json",
+      "bytes": 33663,
+      "sha256": "542471d4c30d1b9073cef1c183ab778a94bd851de190f026e83a13776956cddd"
+    },
+    "publication-raw-index.snapshot.json": {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\final-report-a02\\handoff-index.json",
+      "bytes": 137819,
+      "sha256": "47f82f56933c2564c1bda9ead545e75c557fa9fbba85fa9fbe75072ca8cfc42f"
+    },
+    "public-readback.snapshot.json": {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\verification.json",
+      "bytes": 9187,
+      "sha256": "7287dd92f378d7da3f0d0e5515111850bf33d3b9a3e0f809f7ccb5687eb87ab8"
+    },
+    "dependencies.snapshot.json": {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\outer-cache-dependency-a01\\dependency-observation.json",
+      "bytes": 1750,
+      "sha256": "787f947f31cb8acacc1796ed11289c22d70629b8f8405a10ff4c1234e3d36370"
+    },
+    "screen-release.snapshot.json": {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\screen-lease-a01\\release-screen-cas.json",
+      "bytes": 1155,
+      "sha256": "c3a22843cc15e8e80e4563bdcd3968e5809331e3bdbb8b1c09198f80b8df434e"
+    },
+    "formal-build.snapshot.json": {
+      "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-A0001\\closure.json",
+      "bytes": 14193,
+      "sha256": "587c424c236992e97520a8dcd2ebce6311bce5f7f096b37f2c42ef42bd289d3a"
+    },
+    "idbound-build.snapshot.json": {
+      "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\closure.json",
+      "bytes": 14961,
+      "sha256": "555004451246ea4c5915fd6e116ce4dfc01434f24a3495304c718417d0e79e64"
+    },
+    "github-assets.snapshot.json": {
+      "path": "C:\\ck3-superman-space-a01\\github-assets-readback-a01\\readback-report.json",
+      "bytes": 4811,
+      "sha256": "327b687cf0c5ceaa1cccd8096c42ffd0c5cca805b95ae578097d9f208bf9d347"
+    },
+    "official-ci.snapshot.json": {
+      "path": "C:\\ck3-superman-space-a01\\ci-exact-tag-readback-a01\\stdout.bin",
+      "bytes": 14984,
+      "sha256": "8f81573682f5b633ac758b0fffb2d7ad5e83a32a7a19de16398203adb655018c"
+    },
+    "root-image-review.snapshot.json": {
+      "path": "C:\\ck3-superman-space-a01\\root-public-images-offline-review-a01.json",
+      "bytes": 1785,
+      "sha256": "ed08ab9f4ea5b1e3bf4dafe81090a31c3a25c49c8c4c4325d90e6b8d665125d3"
+    }
+  },
+  "verified_frozen_reference_count": 79,
+  "notes_entry_id": "1791072096",
+  "notes_characters": 1011,
+  "notes_lines": 29,
+  "notes_sha256": "7a7713bad58d200264ed5227e1b755e24abb2287ac6d3ee02ef30b4903f3c9b0",
+  "scope_note": "Anonymous helper proves metadata/notes/cover/media. Its independent dependency field remains not_observed and ok=false; complete sidebar evidence in dependencies.snapshot.json closes that separate gate. Repository delivery is recorded after the actual master push."
+}

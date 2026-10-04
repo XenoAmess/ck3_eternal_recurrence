@@ -1,6 +1,6 @@
 # 《超人强》首发实机图片清单
 
-状态：**干净实机媒体已准备，待上传与公开回读**。本图来自 CK3 `1.20.0.3` 的 R0013 production-only 正常角色交互，并已通过真正原版旧档安装及查看后只读保存复核。Steam media strip 尚未上传；本文件不能证明首发完成。
+状态：**已上传 Workshop 3812991990，公开媒体回读 GREEN**。本图来自 CK3 `1.20.0.3` 的 R0013 production-only 正常角色交互，并已通过真正原版旧档安装及查看后只读保存复核。原始准备证据和失败 attempt 继续保全。
 
 工坊标题固定为《超人强：越超人越强》。`mod_superman_qiang/thumbnail.png`为主封面，与这里要求的真实玩法截图是不同交付物。
 
@@ -46,3 +46,7 @@ root 与 media agent 均直接查看原始 PNG 和精确 JPEG 输出：标题“
 先创建本产品自己的新Workshop item并耐久记录ID，再调用`workshop_native_previews`冻结该item的现有strip，使用独立update追加选定图片。native媒体接口当前要求绝对路径、精确大小和SHA-256，图片严格小于1MiB。发布后重新查询预览列表，再匿名读取公开页，核对`highlight_strip_item`数量、顺序和放大图URL；下载公开CDN原图，比较字节、解码尺寸与像素，并直接审阅图片。
 
 `SubmitItemUpdate`成功或页面出现缩略图不足以证明真实玩法图已公开。只有以上记录补齐才能把media gate标记为通过。
+
+2026-10-04 实际发布回读：同物品追加实机图后，匿名页面 `highlight_strip_count=1`、index 0 与正确文件名相符；[公开实机原图](https://images.steamusercontent.com/ugc/17503576911910782537/20D46CB9F8F5DA77E57B999F93C71B56B3F634D8/) HTTP200、170086 bytes、SHA `d0d0adbaf28445d0aa1ced1de5351374337c6921a67919a9743bbf2dbb2eaa8d`，解码尺寸和像素与上传副本完全相同。封面[公开CDN原图](https://images.steamusercontent.com/ugc/16522022013234402778/8FB13587077D7009814665F3FAFEE43A66A086A6/)亦与640×640/778046B正式thumbnail字节完全一致。root直接审阅两个实际CDN文件，图片正确。
+
+完整回执及来源 SHA 见 [最终发布报告](../mod_superman_qiang/docs/release-1.0.0-20261004/README.md)、[匿名公开回读快照](../mod_superman_qiang/docs/release-1.0.0-20261004/public-readback.snapshot.json) 和 [root审图快照](../mod_superman_qiang/docs/release-1.0.0-20261004/root-image-review.snapshot.json)。准备阶段的 `provenance.json` 保持冻结，不改写成其生成时尚未发生的发布事实。

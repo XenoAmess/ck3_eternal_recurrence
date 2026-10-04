@@ -1,5 +1,7 @@
 # 超人强：越超人越强
 
+1.0.0 已发布：[Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990) · [GitHub 下载](https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/superman-qiang-v1.0.0)。
+
 独立 CK3 模组。每次游戏明确结算两位成年角色之间的性行为时，经验较多的一方可以从经验较少的一方吸取随机属性。
 
 性经验记录在角色变量中，双方每次各增加 1；结算前经验相同则不吸取。经验不受特质经验条的 100 点限制。通过角色交互和特质说明查看角色自己的累计经验。
@@ -15,8 +17,10 @@
 - [产品规则](docs/product-contract.md)
 - [测试与验收方案](docs/test-plan.md)
 - [首发实机验收汇总](docs/acceptance-1.0.0-20261004.md)
+- [正式发布与完整回读证据](docs/release-1.0.0-20261004/README.md)
+- [永久首发 changelog](../docs/release-changelogs/superman-qiang/1.0.0.md)
 - [技能边界及原版缩放依据](docs/skill-boundaries-reference.md)
 - [发布方案与完成门槛](docs/release-plan.md)
 - [前期可行性研究](../docs/sex-experience-attribute-drain-feasibility-1.20.0.3.md)
 
-正式包由 `tools/build_release.py` 的明确文件清单构建。账本方案已完成中文机制、正常查看、百万经验与安全极值、真实保存重载、原版旧存档启用及双向属性边界验证；实机图片也已保全。正式 tag 构建与首次 Workshop 发布正在收口，尚无公开物品链接。旧试扣方案 R0006 RED、R0007 失败断言及历史候选按原事实保留，最终发布状态由发布报告记录。
+正式包由 `tools/build_release.py` 的明确文件清单构建，22 个运行文件与实机候选逐字节一致。中文机制、正常查看、百万经验与安全极值、真实保存重载、原版旧存档启用及双向属性边界验证通过；真实订阅下载、公开媒体和完整 Steam Change Notes 均已核验。Steam 已恢复离线。旧试扣方案 R0006 RED、R0007 失败断言及历史候选按原事实保留。

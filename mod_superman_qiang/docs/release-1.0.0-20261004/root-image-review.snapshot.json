@@ -1,0 +1,45 @@
+{
+  "schema": "sxad.root-public-image-review.v1",
+  "utc": "2026-10-04T00:13:50.754470+00:00",
+  "ok": true,
+  "reviewer": "Codex /root",
+  "records": [
+    {
+      "kind": "cover",
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-a02\\main-preview.public",
+      "bytes": 778046,
+      "sha256": "732deee357a6d322340fa9e6bb6d7b619b8c9da44b3c68711c23154079df863f",
+      "dimensions": [
+        640,
+        640
+      ],
+      "directly_viewed_by_root": true,
+      "observation": "Directly viewed public CDN image: correct Chinese title, subtitle, kings and attribute symbols."
+    },
+    {
+      "kind": "media",
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-a02\\media-00.public",
+      "bytes": 170086,
+      "sha256": "d0d0adbaf28445d0aa1ced1de5351374337c6921a67919a9743bbf2dbb2eaa8d",
+      "dimensions": [
+        1024,
+        768
+      ],
+      "directly_viewed_by_root": true,
+      "observation": "Directly viewed public CDN image: ordinary Robert character, Chinese experience 0, current skills and zero net balances, normal confirmation button."
+    },
+    {
+      "kind": "offline_restoration",
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-restoration-a01\\probe-1\\steam-moved.png",
+      "bytes": 859332,
+      "sha256": "992f9b5694334974e07767bd1e2d405076c01b81e47385c2dc8e3afc6262aaa0",
+      "dimensions": [
+        1024,
+        768
+      ],
+      "directly_viewed_by_root": true,
+      "observation": "Directly viewed fresh moved-window frame: Steam bottom bar explicitly displays offline mode."
+    }
+  ],
+  "scope": "Public cover/media and offline frame only; Steam notes remain pending separately."
+}

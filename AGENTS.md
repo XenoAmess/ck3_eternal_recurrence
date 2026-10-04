@@ -19,6 +19,7 @@
 - `mod_auto_upgrade_buildings/` — “自动升级建筑（XenoAmess维护版）”源码；维护版 Workshop item id：**3800124956**；上游 **3596580780** 仅作来源身份，禁止作为维护版发布目标；正式上传只使用 `build_auto_upgrade_buildings_release.py` 生成的 17 文件 staging，维护与验收见 `docs/auto-upgrade-buildings-*.md`
 - `mod_de_jure_conquest/` — “公国/王国/帝国法理征服（XenoAmess维护版）”；维护版 Workshop item id：**3812510217**；上游 **3600021457** 仅作来源，禁止作为发布目标；功能、适配、测试和发布记录在其 `docs/`；正式上传只用其 `tools/build_release.py` 生成的 16 文件 staging。
 - `mod_change_holding_types/` — “地产类型转换（XenoAmess维护版）”；维护版 Workshop item id：**3812510834**；上游 **3337428403** 仅作来源，禁止作为发布目标；功能、适配、测试和发布记录在其 `docs/`；正式上传只用其 `tools/build_release.py --release-localization` 生成的 17 文件 staging。
+- `mod_superman_qiang/` — “超人强：越超人越强”原创独立版；Workshop item id：**3812991990**；无上游产品；正式发布只使用其 `tools/build_release.py` 生成的 22 文件 staging。测试方案、实机和发布证据在该模组 `docs/`，永久 changelog 在 `docs/release-changelogs/superman-qiang/`；remote_file_id 仅保留用户目录外层 `.mod`。
 - `mod_superman_qiang/` — 原创独立版“超人强：越超人越强”；Workshop item ID 待实际首次发布；规则、验收及发布记录在其 `docs/`。正式上传只用其 `tools/build_release.py` 生成的 22 文件 staging，角色经验与六项净属性修正由变量保存，生成文件只改生成器再运行。
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
@@ -130,6 +131,8 @@ py mod_de_jure_conquest/tools/build_release.py --check       # 法理征服维�
 py mod_de_jure_conquest/tools/build_release.py --release --output <new-output> # 正式 tag 对应的 16 文件 staging
 py mod_change_holding_types/tools/build_release.py --check --release-localization # 地产转换维护版临时双构建
 py mod_change_holding_types/tools/build_release.py --output <new-output> --git-tag change-holding-types-v1.0.0 --release-localization # 正式 tag 对应的 17 文件 staging
+py mod_superman_qiang/tools/build_release.py --check --workshop-item-id 3812991990 # 超人强独立版临时双构建
+py mod_superman_qiang/tools/build_release.py --output <new-output> --git-tag superman-qiang-v1.0.0 --workshop-item-id 3812991990 # 在真实正式 tag checkout 构建 22 文件 staging
 py mod_superman_qiang/tools/build_release.py --check          # 超人强独立版 22 文件临时双构建
 py mod_superman_qiang/tools/build_release.py --output <new-output> --git-tag superman-qiang-v1.0.0 # 正式 tag 对应的 staging
 ```

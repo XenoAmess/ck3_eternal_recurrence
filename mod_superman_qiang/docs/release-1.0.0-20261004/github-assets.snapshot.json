@@ -1,0 +1,133 @@
+{
+  "schema": "github-release.explicit-assets-readback.v1",
+  "repo": "XenoAmess/ck3_eternal_recurrence",
+  "tag": "superman-qiang-v1.0.0",
+  "assets": [
+    {
+      "name": "mod_superman_qiang.zip",
+      "expected": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\mod_superman_qiang.zip",
+        "size": 802525,
+        "sha256": "551901e384931fb5d465f0eaca3327ef357d004d4e290b7bc205c24cc40c3564"
+      }
+    },
+    {
+      "name": "mod_superman_qiang.manifest.json",
+      "expected": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\mod_superman_qiang.manifest.json",
+        "size": 4075,
+        "sha256": "b85bcac67af7998453c93346201cc8b738df055aba223316bff394cc42a0685f"
+      }
+    }
+  ],
+  "output": "C:\\ck3-superman-space-a01\\github-assets-readback-a01",
+  "argv": [
+    [
+      "gh",
+      "release",
+      "view",
+      "superman-qiang-v1.0.0",
+      "--repo",
+      "XenoAmess/ck3_eternal_recurrence",
+      "--json",
+      "tagName,url,isDraft,publishedAt,assets"
+    ],
+    [
+      "gh",
+      "release",
+      "download",
+      "superman-qiang-v1.0.0",
+      "--repo",
+      "XenoAmess/ck3_eternal_recurrence",
+      "--pattern",
+      "mod_superman_qiang.zip",
+      "--dir",
+      "C:\\ck3-superman-space-a01\\github-assets-readback-a01\\downloads"
+    ],
+    [
+      "gh",
+      "release",
+      "download",
+      "superman-qiang-v1.0.0",
+      "--repo",
+      "XenoAmess/ck3_eternal_recurrence",
+      "--pattern",
+      "mod_superman_qiang.manifest.json",
+      "--dir",
+      "C:\\ck3-superman-space-a01\\github-assets-readback-a01\\downloads"
+    ]
+  ],
+  "remote_side_effects": "GET and asset downloads only",
+  "tag_or_release_created": false,
+  "started_at_utc": "2026-10-04T00:04:34.761927+00:00",
+  "status": "GREEN",
+  "downloads": [
+    {
+      "name": "mod_superman_qiang.zip",
+      "expected": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\mod_superman_qiang.zip",
+        "size": 802525,
+        "sha256": "551901e384931fb5d465f0eaca3327ef357d004d4e290b7bc205c24cc40c3564"
+      },
+      "actual": {
+        "path": "C:\\ck3-superman-space-a01\\github-assets-readback-a01\\downloads\\mod_superman_qiang.zip",
+        "size": 802525,
+        "sha256": "551901e384931fb5d465f0eaca3327ef357d004d4e290b7bc205c24cc40c3564"
+      },
+      "matched": true
+    },
+    {
+      "name": "mod_superman_qiang.manifest.json",
+      "expected": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\mod_superman_qiang.manifest.json",
+        "size": 4075,
+        "sha256": "b85bcac67af7998453c93346201cc8b738df055aba223316bff394cc42a0685f"
+      },
+      "actual": {
+        "path": "C:\\ck3-superman-space-a01\\github-assets-readback-a01\\downloads\\mod_superman_qiang.manifest.json",
+        "size": 4075,
+        "sha256": "b85bcac67af7998453c93346201cc8b738df055aba223316bff394cc42a0685f"
+      },
+      "matched": true
+    }
+  ],
+  "errors": [],
+  "release_snapshot": {
+    "assets": [
+      {
+        "apiUrl": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/releases/assets/608763257",
+        "contentType": "application/json",
+        "createdAt": "2026-10-04T00:04:36Z",
+        "digest": "sha256:b85bcac67af7998453c93346201cc8b738df055aba223316bff394cc42a0685f",
+        "downloadCount": 0,
+        "id": "RA_kwDOT6BE7s4kSP15",
+        "label": "",
+        "name": "mod_superman_qiang.manifest.json",
+        "size": 4075,
+        "state": "uploaded",
+        "updatedAt": "2026-10-04T00:04:37Z",
+        "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/releases/download/superman-qiang-v1.0.0/mod_superman_qiang.manifest.json"
+      },
+      {
+        "apiUrl": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/releases/assets/608763255",
+        "contentType": "application/zip",
+        "createdAt": "2026-10-04T00:04:36Z",
+        "digest": "sha256:551901e384931fb5d465f0eaca3327ef357d004d4e290b7bc205c24cc40c3564",
+        "downloadCount": 0,
+        "id": "RA_kwDOT6BE7s4kSP13",
+        "label": "",
+        "name": "mod_superman_qiang.zip",
+        "size": 802525,
+        "state": "uploaded",
+        "updatedAt": "2026-10-04T00:04:37Z",
+        "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/releases/download/superman-qiang-v1.0.0/mod_superman_qiang.zip"
+      }
+    ],
+    "isDraft": false,
+    "publishedAt": "2026-10-04T00:04:38Z",
+    "tagName": "superman-qiang-v1.0.0",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/superman-qiang-v1.0.0"
+  },
+  "completed_at_utc": "2026-10-04T00:04:41.328308+00:00",
+  "claim_scope": "Only downloaded exact-name asset bytes compared with explicitly supplied local bytes; no Steam or native acceptance claim."
+}

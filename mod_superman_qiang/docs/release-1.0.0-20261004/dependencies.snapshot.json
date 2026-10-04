@@ -1,0 +1,29 @@
+{
+  "state": "observed",
+  "verified": true,
+  "observed_at_utc": "2026-10-04T00:06:11.489Z",
+  "reviewed_at_utc": "2026-10-04T00:08:36.927233+00:00",
+  "item_id": "3812991990",
+  "anonymous": true,
+  "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990&l=english",
+  "http_status": 200,
+  "http_body_sha256": "16a0928fdbfaf8cedb705b64e24e569c6312af02193a791d7c3dca19019ccd1c",
+  "dom_sha256": "4d515cdc5ed3a0fe2786ec6e347110ac1c22865426b888f2aa2c63378f2a9fdf",
+  "observation_sha256": "a406f55df95f3879e5784fa24ff7f1318c057b58364d4b90a8af4308fd860b9a",
+  "sidebar_sha256": "ab5e631f99d68e42755957c456b703fc4f0779fb3b053fe618c342c37380ee1e",
+  "actual_rule_and_locators": "Unique visible #rightContents > .sidebar; independent direct child .panel; normalized visible .rightSectionTopTitle textContent headings. Metadata File Size and Posted independently in .workshop_item_header. Positive-source selectors requiredDLCContainer/requiredItemsContainer absent in complete sidebar.",
+  "actual_sidebar_locator": "html:nth-of-type(1) > body:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(6) > div:nth-of-type(4) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(8) > div:nth-of-type(1) > div:nth-of-type(1)",
+  "visible_sidebar_titles": [
+    "Created by",
+    ""
+  ],
+  "header_stat_names": [
+    "File Size",
+    "Posted"
+  ],
+  "required_dlc_app_ids": [],
+  "required_mod_item_ids": [],
+  "observed_links": [],
+  "required_sections_absent_in_complete_sidebar": true,
+  "direct_page_visual_review": "anonymous-page.png reviewed: exact title, full description, File Size/Posted and Created by/stats sidebar visible; image area still black at capture, CDN/media verification separate"
+}

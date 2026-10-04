@@ -1,0 +1,710 @@
+{
+  "schema": "superman-qiang.workshop-publication-gates.v1",
+  "state": "GREEN",
+  "ok": true,
+  "scope": "actual Steam publication, fresh subscribed content, public anonymous evidence, canonical descriptor and offline restoration; repository completion is separate",
+  "frozen_at_utc": "2026-10-04T00:18:20.271189+00:00",
+  "product": "超人强：越超人越强",
+  "product_key": "superman-qiang",
+  "version": "1.0.0",
+  "initial_baseline": true,
+  "previous_public_version": null,
+  "workshop_item_id": "3812991990",
+  "public_item_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990",
+  "public_changelog_url": "https://steamcommunity.com/sharedfiles/filedetails/changelog/3812991990",
+  "owner_steam_id64": "76561198273714027",
+  "app_id": 1158310,
+  "source_tag": "superman-qiang-v1.0.0",
+  "source_commit": "7e5ddd481466b7a9df104fd5c6340f473f909aff",
+  "source_clean_at_freeze": true,
+  "live_acceptance_report_sha256": "460a1b02f436549003f25111a3c24c091eb9267625889a6fcea6dc6d3727b4e1",
+  "native_create": {
+    "app_id": 1158310,
+    "create_result": 1,
+    "created_at": "2026-10-04T00:01:07.196443+00:00",
+    "item_id": "3812991990",
+    "legal_agreement_required": false,
+    "operation": "create",
+    "operation_id": "superman-qiang-1.0.0-P0001-create",
+    "payload_sha256": "52ffd1f94786a8920cf9a9be04b75566848ca06e07c45d2a193b4d3ab7a5e1f5",
+    "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+    "stage": "complete",
+    "steam_result": 1,
+    "submitted_at": "2026-10-04T00:01:21.672402+00:00",
+    "updated_at": "2026-10-04T00:01:21.672443+00:00"
+  },
+  "native_media_update": {
+    "additional_preview_changes": {
+      "add": [
+        {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\superman_qiang_media\\01_experience_view.jpg",
+          "sha256": "d0d0adbaf28445d0aa1ced1de5351374337c6921a67919a9743bbf2dbb2eaa8d",
+          "size": 170086
+        }
+      ],
+      "remove_indices": [],
+      "update": []
+    },
+    "additional_previews_before": {
+      "app_id": 1158310,
+      "item_id": "3812991990",
+      "previews": []
+    },
+    "app_id": 1158310,
+    "created_at": "2026-10-04T00:02:28.572346+00:00",
+    "item_id": "3812991990",
+    "legal_agreement_required": false,
+    "operation": "update",
+    "operation_id": "superman-qiang-1.0.0-P0001-media",
+    "payload_sha256": "d0202d6b42e02cce5b58d9526f358ddddd1008790745b7278b5e7755a2d9f8b6",
+    "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+    "stage": "complete",
+    "steam_result": 1,
+    "submitted_at": "2026-10-04T00:02:38.121380+00:00",
+    "updated_at": "2026-10-04T00:02:38.121420+00:00"
+  },
+  "native_SubscribeItem": {
+    "api_call_handle": "3409707530141705655",
+    "app_id": 1158310,
+    "callback": {
+      "callback_id": 1313,
+      "item_id": "3812991990",
+      "result": 1
+    },
+    "content_verified": false,
+    "dll_sha256": "1db3fd414039d3e5815a5721925dd2e0a3a9f2549603c6cab7c49b84966a1af3",
+    "elapsed_seconds": 0.468,
+    "installation_verified": false,
+    "item_id": "3812991990",
+    "ok": true,
+    "schema": "ck3_workshop_mcp.steam_native.subscribe.v1",
+    "started": true,
+    "state_raw": 9,
+    "status": "complete",
+    "subscribed": true
+  },
+  "native_fresh_DownloadItem": {
+    "app_id": 1158310,
+    "callback": {
+      "app_id": 1158310,
+      "callback_id": 3406,
+      "item_id": "3812991990",
+      "result": 1
+    },
+    "dll_path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\steam_api64.dll",
+    "dll_sha256": "1db3fd414039d3e5815a5721925dd2e0a3a9f2549603c6cab7c49b84966a1af3",
+    "download_info": {
+      "available": true,
+      "downloaded_bytes": 0,
+      "total_bytes": 0
+    },
+    "elapsed_seconds": 14.703,
+    "expected_cache_absent_before_start": true,
+    "expected_cache_path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990",
+    "fresh_cache_requested": true,
+    "ignored_callbacks": 40,
+    "install_info": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990",
+      "size_on_disk": 917102,
+      "timestamp": 1791072096
+    },
+    "isolated_worker": true,
+    "item_id": "3812991990",
+    "ok": true,
+    "schema": "ck3_workshop_mcp.steam_native.download.v1",
+    "started": true,
+    "state_flags": {
+      "download_pending": false,
+      "downloading": false,
+      "installed": true,
+      "legacy": false,
+      "needs_update": false,
+      "raw": 5,
+      "subscribed": true
+    },
+    "status": "complete",
+    "timeout_seconds": 300.0,
+    "worker_exit_code": 0,
+    "worker_pid": 18908
+  },
+  "cache_verified_files": 22,
+  "cache_content_bytes": 917102,
+  "repository_files_copied_into_cache": false,
+  "IDbound_manifest": {
+    "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\mod_superman_qiang.manifest.json",
+    "bytes": 4075,
+    "sha256": "b85bcac67af7998453c93346201cc8b738df055aba223316bff394cc42a0685f"
+  },
+  "anonymous_public_readback": {
+    "schema": "superman-qiang.publication.anonymous-readback.v1",
+    "ok": false,
+    "observed_at_utc": "2026-10-04T00:14:58.777301+00:00",
+    "product_id": "mod_superman_qiang",
+    "item_id": "3812991990",
+    "steam_dll_loaded": false,
+    "screen_calls": 0,
+    "frozen_inputs": {
+      "description": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\media-freeze\\description.bbcode",
+        "size": 3007,
+        "sha256": "12ac125d91110e7e9435b2db6a20a31955061c9c3e596bb76cac43d67824dafb"
+      },
+      "notes": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\media-freeze\\change-notes.txt",
+        "size": 2467,
+        "sha256": "7a7713bad58d200264ed5227e1b755e24abb2287ac6d3ee02ef30b4903f3c9b0"
+      },
+      "thumbnail": {
+        "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\mod_superman_qiang\\thumbnail.png",
+        "size": 778046,
+        "sha256": "732deee357a6d322340fa9e6bb6d7b619b8c9da44b3c68711c23154079df863f"
+      },
+      "native_previews": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-previews-post-a01\\stdout.json",
+        "size": 849,
+        "sha256": "7c0fc3aac911a4a50f8ac4f7edce1d7adfb680ee8dc171f6f40b1caa5a8f5e5d"
+      },
+      "media": [
+        {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\superman_qiang_media\\01_experience_view.jpg",
+          "size": 170086,
+          "sha256": "d0d0adbaf28445d0aa1ced1de5351374337c6921a67919a9743bbf2dbb2eaa8d"
+        }
+      ]
+    },
+    "item_api_response": {
+      "requested_url": "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/",
+      "final_url": "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/",
+      "http_status": 200,
+      "content_type": "application/json; charset=UTF-8",
+      "request_cookie_or_authorization": false,
+      "body": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\item-api.raw.json",
+        "size": 3783,
+        "sha256": "586c1119a6b6a5202092ee0f9aba1ba4a849462f906bdbc2f424b5758c55a443"
+      }
+    },
+    "item_identity": {
+      "result_ok": true,
+      "item_id_exact": true,
+      "app_id_exact": true,
+      "owner_exact": true,
+      "public_visibility": true,
+      "tags_exact": true
+    },
+    "changelog_response": {
+      "source": "preserved anonymous browser main HTTP response",
+      "requested_url": "https://steamcommunity.com/sharedfiles/filedetails/changelog/3812991990?l=english&p=1",
+      "final_url": "https://steamcommunity.com/sharedfiles/filedetails/changelog/3812991990?l=english&p=1",
+      "http_status": 200,
+      "request_cookie_or_authorization": false,
+      "body": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\changelog.raw.html",
+        "size": 53201,
+        "sha256": "884b01aad74973eed11c8f87c27208a5e2040ddf09da147d042c5b8b0b36a6bc"
+      },
+      "browser_dom": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\changelog.raw.browser-dom.html",
+        "size": 54693,
+        "sha256": "854a1bd8016971c9a725bb2fdd7e499ada6505e12d9dee8ee4f4f692d9b7f539"
+      },
+      "browser_observation": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\changelog.raw.browser-observation.json",
+        "size": 2185,
+        "sha256": "40397b8e405c7a68cd9ec1c16ecf0221c04e0c6071e9dc9d80be1a1e4eabaa2d"
+      },
+      "original_observation": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-B-a01\\observation.json",
+        "size": 2185,
+        "sha256": "40397b8e405c7a68cd9ec1c16ecf0221c04e0c6071e9dc9d80be1a1e4eabaa2d"
+      }
+    },
+    "text_verification": {
+      "title_exact": true,
+      "description_exact": true,
+      "description_characters": 1233,
+      "description_sha256": "12AC125D91110E7E9435B2DB6A20A31955061C9C3E596BB76CAC43D67824DAFB",
+      "expected_description_sha256": "12AC125D91110E7E9435B2DB6A20A31955061C9C3E596BB76CAC43D67824DAFB",
+      "change_notes_exact": true,
+      "changelog_entry_id": "1791072096",
+      "change_notes_characters": 1011,
+      "change_notes_lines": 29,
+      "change_notes_sha256": "7A7713BAD58D200264ED5227E1B755E24ABB2287AC6D3EE02EF30B4903F3C9B0",
+      "expected_change_notes_characters": 1011,
+      "expected_change_notes_lines": 29,
+      "expected_change_notes_sha256": "7A7713BAD58D200264ED5227E1B755E24ABB2287AC6D3EE02EF30B4903F3C9B0",
+      "time_updated": 1791072096,
+      "file_size": "917102",
+      "ok": true
+    },
+    "item_page_response": {
+      "source": "preserved anonymous browser main HTTP response",
+      "requested_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990&l=english",
+      "final_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990&l=english",
+      "http_status": 200,
+      "request_cookie_or_authorization": false,
+      "body": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\item-page.raw.html",
+        "size": 61867,
+        "sha256": "16a0928fdbfaf8cedb705b64e24e569c6312af02193a791d7c3dca19019ccd1c"
+      },
+      "browser_dom": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\item-page.raw.browser-dom.html",
+        "size": 63521,
+        "sha256": "4d515cdc5ed3a0fe2786ec6e347110ac1c22865426b888f2aa2c63378f2a9fdf"
+      },
+      "browser_observation": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\item-page.raw.browser-observation.json",
+        "size": 60524,
+        "sha256": "a406f55df95f3879e5784fa24ff7f1318c057b58364d4b90a8af4308fd860b9a"
+      },
+      "original_observation": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-item-a01\\observation.json",
+        "size": 60524,
+        "sha256": "a406f55df95f3879e5784fa24ff7f1318c057b58364d4b90a8af4308fd860b9a"
+      }
+    },
+    "dlc_and_required_mods": {
+      "state": "not_observed",
+      "verified": false,
+      "source": "anonymous public page DOM/sidebar",
+      "page_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990&l=english",
+      "public_page_html": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\item-page.raw.html",
+        "size": 61867,
+        "sha256": "16a0928fdbfaf8cedb705b64e24e569c6312af02193a791d7c3dca19019ccd1c"
+      },
+      "required_dlc_app_ids": null,
+      "required_mod_item_ids": null,
+      "reason": "The current native preview query and public metadata verifier expose no proven dependency fields. Observe the actual anonymous Required DLC / Required items sidebar and record its DOM rule, page SHA-256 and both ID arrays separately; absent fields do not establish empty dependencies."
+    },
+    "highlight_strip_count": 1,
+    "highlight_strip_count_exact": true,
+    "main_preview_response": {
+      "requested_url": "https://images.steamusercontent.com/ugc/16522022013234402778/8FB13587077D7009814665F3FAFEE43A66A086A6/",
+      "final_url": "https://images.steamusercontent.com/ugc/16522022013234402778/8FB13587077D7009814665F3FAFEE43A66A086A6/",
+      "http_status": 200,
+      "content_type": "image/png",
+      "request_cookie_or_authorization": false,
+      "body": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\main-preview.public",
+        "size": 778046,
+        "sha256": "732deee357a6d322340fa9e6bb6d7b619b8c9da44b3c68711c23154079df863f"
+      }
+    },
+    "main_preview_comparison": {
+      "dimensions": [
+        640,
+        640
+      ],
+      "expected_dimensions": [
+        640,
+        640
+      ],
+      "bytes_equal": true,
+      "decoded_pixels_equal": true,
+      "ok": true
+    },
+    "media": [
+      {
+        "index": 0,
+        "url": "https://images.steamusercontent.com/ugc/17503576911910782537/20D46CB9F8F5DA77E57B999F93C71B56B3F634D8/",
+        "response": {
+          "requested_url": "https://images.steamusercontent.com/ugc/17503576911910782537/20D46CB9F8F5DA77E57B999F93C71B56B3F634D8/",
+          "final_url": "https://images.steamusercontent.com/ugc/17503576911910782537/20D46CB9F8F5DA77E57B999F93C71B56B3F634D8/",
+          "http_status": 200,
+          "content_type": "image/jpeg",
+          "request_cookie_or_authorization": false,
+          "body": {
+            "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\media-00.public",
+            "size": 170086,
+            "sha256": "d0d0adbaf28445d0aa1ced1de5351374337c6921a67919a9743bbf2dbb2eaa8d"
+          }
+        },
+        "public_page_references_exact_cdn_path": true,
+        "comparison": {
+          "dimensions": [
+            1024,
+            768
+          ],
+          "expected_dimensions": [
+            1024,
+            768
+          ],
+          "bytes_equal": true,
+          "decoded_pixels_equal": true,
+          "ok": true
+        }
+      }
+    ],
+    "metadata_notes_cover_media_ok": true,
+    "status": "pending_dependency_observation",
+    "visual_review": "pending; direct image inspection is an independent recorded step"
+  },
+  "actual_dependencies": {
+    "state": "observed",
+    "verified": true,
+    "observed_at_utc": "2026-10-04T00:06:11.489Z",
+    "reviewed_at_utc": "2026-10-04T00:08:36.927233+00:00",
+    "item_id": "3812991990",
+    "anonymous": true,
+    "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990&l=english",
+    "http_status": 200,
+    "http_body_sha256": "16a0928fdbfaf8cedb705b64e24e569c6312af02193a791d7c3dca19019ccd1c",
+    "dom_sha256": "4d515cdc5ed3a0fe2786ec6e347110ac1c22865426b888f2aa2c63378f2a9fdf",
+    "observation_sha256": "a406f55df95f3879e5784fa24ff7f1318c057b58364d4b90a8af4308fd860b9a",
+    "sidebar_sha256": "ab5e631f99d68e42755957c456b703fc4f0779fb3b053fe618c342c37380ee1e",
+    "actual_rule_and_locators": "Unique visible #rightContents > .sidebar; independent direct child .panel; normalized visible .rightSectionTopTitle textContent headings. Metadata File Size and Posted independently in .workshop_item_header. Positive-source selectors requiredDLCContainer/requiredItemsContainer absent in complete sidebar.",
+    "actual_sidebar_locator": "html:nth-of-type(1) > body:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(6) > div:nth-of-type(4) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(8) > div:nth-of-type(1) > div:nth-of-type(1)",
+    "visible_sidebar_titles": [
+      "Created by",
+      ""
+    ],
+    "header_stat_names": [
+      "File Size",
+      "Posted"
+    ],
+    "required_dlc_app_ids": [],
+    "required_mod_item_ids": [],
+    "observed_links": [],
+    "required_sections_absent_in_complete_sidebar": true,
+    "direct_page_visual_review": "anonymous-page.png reviewed: exact title, full description, File Size/Posted and Created by/stats sidebar visible; image area still black at capture, CDN/media verification separate"
+  },
+  "raw_API_tags": [
+    "Gameplay",
+    "Balance ",
+    "Events"
+  ],
+  "tag_comparison_normalization": "strip only leading/trailing ASCII U+0020; no notes change; focused rejection checks preserved",
+  "notes_A_to_B_same_entry": [
+    {
+      "label": "A",
+      "entry_id": "1791072096",
+      "characters": 974,
+      "lines": 26,
+      "text": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\final-report-a02\\anonymous-notes-A.txt",
+        "bytes": 2364,
+        "sha256": "ae97e9a713938374323de8a1d3f7bfcbb5343c7442820c352f9eeb554271da7f"
+      },
+      "source_http": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-a01\\http-response.html",
+        "bytes": 53089,
+        "sha256": "c2ed5769bdef1322ae62fd7867119fb9a6cb8d092c264960b049cf0f97c4711d"
+      },
+      "source_dom": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-a01\\browser-dom.html",
+        "bytes": 54355,
+        "sha256": "91c00cf9361cc0de97eb38110a3451a3b7136aff40c6749b78dccd950940a4b9"
+      },
+      "source_observation": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-a01\\observation.json",
+        "bytes": 2183,
+        "sha256": "c45394ed8eef7dc83f863986330b123945c7141fff41bffbe335dac26e52ce54"
+      }
+    },
+    {
+      "label": "B",
+      "entry_id": "1791072096",
+      "characters": 1011,
+      "lines": 29,
+      "text": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\final-report-a02\\anonymous-notes-B.txt",
+        "bytes": 2467,
+        "sha256": "7a7713bad58d200264ed5227e1b755e24abb2287ac6d3ee02ef30b4903f3c9b0"
+      },
+      "source_http": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-B-a01\\http-response.html",
+        "bytes": 53201,
+        "sha256": "884b01aad74973eed11c8f87c27208a5e2040ddf09da147d042c5b8b0b36a6bc"
+      },
+      "source_dom": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-B-a01\\browser-dom.html",
+        "bytes": 54693,
+        "sha256": "854a1bd8016971c9a725bb2fdd7e499ada6505e12d9dee8ee4f4f692d9b7f539"
+      },
+      "source_observation": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\anonymous-changelog-B-a01\\observation.json",
+        "bytes": 2185,
+        "sha256": "40397b8e405c7a68cd9ec1c16ecf0221c04e0c6071e9dc9d80be1a1e4eabaa2d"
+      }
+    }
+  ],
+  "native_notes_B_submit_success_but_public_still_A": true,
+  "owner_edit_existing_entry_required_and_actual": true,
+  "owner_editor_full_field_B_readback_exact": true,
+  "owner_save_pattern": "IUIAutomationInvokePattern, actual 保存 controlType50005; exact field change_description ValuePattern; no keyboard/mouse text entry",
+  "offline_images_directly_reviewed": [
+    {
+      "phase": "offline-go-a01",
+      "direct_visual_review": "visible bottom status 离线模式",
+      "raw_image": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-go-a01\\probe-1\\steam-moved.png",
+        "bytes": 85591,
+        "sha256": "e1fdfdbba783b4178a9fa44ec86b230e3feeceaf6af325876b2d00e03720999f"
+      },
+      "window_freshness": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-go-a01\\probe-1\\steam-frame-freshness.json",
+        "bytes": 1215,
+        "sha256": "7ccd350a0126b22cf330c8f94542a6d85ce1093c522d8a0307a3b3027acf823c"
+      }
+    },
+    {
+      "phase": "offline-restoration-a01",
+      "direct_visual_review": "visible bottom status 离线模式",
+      "raw_image": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-restoration-a01\\probe-1\\steam-moved.png",
+        "bytes": 859332,
+        "sha256": "992f9b5694334974e07767bd1e2d405076c01b81e47385c2dc8e3afc6262aaa0"
+      },
+      "window_freshness": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-restoration-a01\\probe-1\\steam-frame-freshness.json",
+        "bytes": 1243,
+        "sha256": "671fd891a938adec24c1351566fe69ef77b55e743ac345a0c1c441180f6b3bd3"
+      }
+    },
+    {
+      "phase": "offline-final-a01",
+      "direct_visual_review": "visible bottom status 离线模式",
+      "raw_image": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-final-a01\\probe-1\\steam-moved.png",
+        "bytes": 287131,
+        "sha256": "7c92af4d5e5cc0cee4afe0c61d90d0f82a08fd7110e81375ad4493d576842a74"
+      },
+      "window_freshness": {
+        "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\offline-final-a01\\probe-1\\steam-frame-freshness.json",
+        "bytes": 1226,
+        "sha256": "018f4606399a001d42549b8cd105c58470f23fb2a795e0bd2e28f96d4b77b93a"
+      }
+    }
+  ],
+  "Steam_client_final_mode": "offline",
+  "CK3_or_other_games_launched_during_publication": false,
+  "public_images_directly_reviewed": true,
+  "canonical_descriptor": {
+    "at_utc": "2026-10-04T00:08:36.356277+00:00",
+    "canonical_outer": {
+      "path": "C:\\Users\\1\\Documents\\Paradox Interactive\\Crusader Kings III\\mod\\superman_qiang.mod",
+      "text": "version=\"1.0.0\"\ntags={\n    \"Gameplay\"\n    \"Balance\"\n    \"Events\"\n}\nname=\"超人强：越超人越强\"\nsupported_version=\"1.20.*\"\npicture=\"thumbnail.png\"\npath=\"C:/ck3-superman-qiang-20261004/final-tagbound-IDbound-A0001/mod_superman_qiang\"\nremote_file_id=\"3812991990\"\n",
+      "bytes": 267,
+      "sha256": "6e30f2a4fe71977a9984e7c7d1dbd9c5b6e42d15fcd6d6f6cec7ad088fdc5a57"
+    },
+    "initial_upload_inner": {
+      "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-A0001\\mod_superman_qiang\\descriptor.mod",
+      "remote_file_id_absent": true,
+      "sha256": "52be9ae5db1310a2d8a846bd754621e1461fa30d70c0fb2187f5b1fe8dbd8e06"
+    },
+    "final_IDbound_inner": {
+      "path": "C:\\ck3-superman-qiang-20261004\\final-tagbound-IDbound-A0001\\mod_superman_qiang\\descriptor.mod",
+      "remote_file_id_absent": true,
+      "sha256": "52be9ae5db1310a2d8a846bd754621e1461fa30d70c0fb2187f5b1fe8dbd8e06"
+    },
+    "native_ID_injection_observed": false,
+    "rebuild_due_to_injection_required": false
+  },
+  "native_inner_descriptor_ID_injection_observed": false,
+  "inner_descriptor_remote_ID_absent": true,
+  "evidence": [
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\formal-bindings-a01.json",
+      "bytes": 1230,
+      "sha256": "322b16b36b9ba2aa0cb045b4ef182b1459c8c23372f10e906cd5a40771b55a74"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\create-freeze\\frozen-inputs.json",
+      "bytes": 1918,
+      "sha256": "9cdae668bfbc35dce5689311920a0ffd8ba35dbee46d92f2ce4dfd7cf8230dcf"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\create-freeze\\native-plan.json",
+      "bytes": 3052,
+      "sha256": "a92ac5a08a55594b6dee4df1df7314bb9aeb94b4933d1e88d4d8ef955acdae03"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\create-freeze\\native-receipt.json",
+      "bytes": 536,
+      "sha256": "1944e6834f22d8412c0523e4c334660b237eb3f42b3fb589045a6764d4c7377b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-create-a01\\stdout.json",
+      "bytes": 769,
+      "sha256": "2407b83bdbcc9184f57dafa35f67437626ca83ea156c2f44af8bd1f5bb06b86d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\media-freeze\\frozen-inputs.json",
+      "bytes": 2155,
+      "sha256": "739d5dbdeba7f6d18a061036ba6dd09ebf73e78931d94370c9d72c934e300747"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\media-freeze\\native-plan.json",
+      "bytes": 3541,
+      "sha256": "4ea5d3b0122738386f3f02eb9421a4fd508b2019ba95754ccb73bc751f2ae522"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\media-freeze\\native-receipt.json",
+      "bytes": 963,
+      "sha256": "63b303ac9cd6ada47a135253028763f65f836cd17df38ab93a0f782f5c935a0b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-media-update-a01\\stdout.json",
+      "bytes": 767,
+      "sha256": "a2fa9b4ce0fed76e7be67b0eced122005d28d4e9271eceda64d2ed8fae701f67"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-previews-initial-a01\\stdout.json",
+      "bytes": 426,
+      "sha256": "125120bf018e905c7fe010ff9450b70f58092908aba22a9831c1dbc13539dc51"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-previews-post-a01\\stdout.json",
+      "bytes": 849,
+      "sha256": "7c0fc3aac911a4a50f8ac4f7edce1d7adfb680ee8dc171f6f40b1caa5a8f5e5d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-probe-a01\\stdout.json",
+      "bytes": 1106,
+      "sha256": "7c7c94fd4e84fed7028bfc9bf7ca3e5baebd4a2da584e1bcc8a49170ae4a3930"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-subscribe-a01\\stdout.json",
+      "bytes": 1190,
+      "sha256": "1c93b519c501c0b72b820ba43b8f40ddd249739271ce5a5b62f0d461504f34eb"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\native-fresh-download-a01\\stdout.json",
+      "bytes": 2675,
+      "sha256": "4a3f801473778d39d0f21da9e76a92015d2c1fd913152c0b2fd5423612402a5f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\fresh-download-preparation-a01\\receipt.json",
+      "bytes": 414,
+      "sha256": "c32911c91175c82a74f661c751ad4e78b8390ad0e72bc9a4d9a2a8f23c31d4b2"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\outer-cache-dependency-a01\\cache-verify-receipt.json",
+      "bytes": 997,
+      "sha256": "8a988bdf22a39021037e9d325fc22658717bfd2810f4e229934e46b5cc10e032"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\outer-cache-dependency-a01\\cache-verify.stdout.json",
+      "bytes": 30,
+      "sha256": "76dbc1e5dbc9bdc1cd178f8441e309bf87d32d99cc57a37b72811e26b44c0a2d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\outer-cache-dependency-a01\\cache-verify.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\outer-cache-dependency-a01\\descriptor-receipt.json",
+      "bytes": 1218,
+      "sha256": "414c717e186a231faa4369ac224e3150e4e799e860ce2f6d685d27ab71f9c7f7"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\outer-cache-dependency-a01\\canonical-outer.readback.mod",
+      "bytes": 267,
+      "sha256": "6e30f2a4fe71977a9984e7c7d1dbd9c5b6e42d15fcd6d6f6cec7ad088fdc5a57"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\outer-cache-dependency-a01\\dependency-observation.json",
+      "bytes": 1750,
+      "sha256": "787f947f31cb8acacc1796ed11289c22d70629b8f8405a10ff4c1234e3d36370"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\outer-cache-dependency-a01\\sidebar.actual.html",
+      "bytes": 1100,
+      "sha256": "ab5e631f99d68e42755957c456b703fc4f0779fb3b053fe618c342c37380ee1e"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-a01\\verification.json",
+      "bytes": 2448,
+      "sha256": "21946b7b1969a3bf601cd4dba437b5167cf48436f18ba7b08c5c79d6ae055298"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-a01\\item-api.raw.json",
+      "bytes": 3783,
+      "sha256": "5e7d8b4009170c5763c6d96d65906231e104018075a4261b422e32d274fecf64"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-a02\\verification.json",
+      "bytes": 9148,
+      "sha256": "57403e0caf50ec006d989af00e75e413d99186e735fd233912acc7c837e75a74"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a02\\adaptation.json",
+      "bytes": 1696,
+      "sha256": "8d3d642b68ab7de54dd3a3b9a45115d4974070b84bfd08cfcad402f060a3f199"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a02\\original-helper.py",
+      "bytes": 13510,
+      "sha256": "9dbf0bfac753f8a1877a6a5c94da9b7d16b714d791ab1d2a250fc1c8313b57ad"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-call-a02\\adapted-helper.py",
+      "bytes": 13521,
+      "sha256": "108eefb0c10556d27937ba89b47eba53afb4ee3bbb139d53dcc950ce65a07968"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-editor-controls-a01\\controls.json",
+      "bytes": 3325,
+      "sha256": "5339d7e94a9013329a55649c0c69f0f0b756bb1fa438f260065742d4495cafe0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-set-B-a01\\set.started.json",
+      "bytes": 537,
+      "sha256": "79bd722141061a7d2961703c2afef3c15ffd22c8fc7921c2e39d3b492db93132"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-set-B-a01\\old-full-field-A.txt",
+      "bytes": 2364,
+      "sha256": "ae97e9a713938374323de8a1d3f7bfcbb5343c7442820c352f9eeb554271da7f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-set-B-a01\\full-field-readback.txt",
+      "bytes": 2467,
+      "sha256": "7a7713bad58d200264ed5227e1b755e24abb2287ac6d3ee02ef30b4903f3c9b0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-set-B-a01\\readback-observations.json",
+      "bytes": 215,
+      "sha256": "b1320692be84144946bc7a9599ea9c839b8a82f7faaca45049e3cf995b2dcd9d"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-save-B-a01\\action.started.json",
+      "bytes": 409,
+      "sha256": "ddc6b85fe3b9ce9021c15096392356ca1b249dd54b0b64655a82dc351dcc1e7c"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\owner-notes-save-B-a01\\action.result.json",
+      "bytes": 247,
+      "sha256": "3daa186152edef70843e8f1d63b7163d10776d654e83cd1cbb23839b43488de5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\verification.json",
+      "bytes": 9187,
+      "sha256": "7287dd92f378d7da3f0d0e5515111850bf33d3b9a3e0f809f7ccb5687eb87ab8"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\item-api.raw.json",
+      "bytes": 3783,
+      "sha256": "586c1119a6b6a5202092ee0f9aba1ba4a849462f906bdbc2f424b5758c55a443"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\main-preview.public",
+      "bytes": 778046,
+      "sha256": "732deee357a6d322340fa9e6bb6d7b619b8c9da44b3c68711c23154079df863f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-publication-20261004\\superman-qiang-1.0.0-P0001\\public-verify-B-a03\\media-00.public",
+      "bytes": 170086,
+      "sha256": "d0d0adbaf28445d0aa1ced1de5351374337c6921a67919a9743bbf2dbb2eaa8d"
+    }
+  ],
+  "all_process_assets_preserved": true,
+  "remaining_release_work": [
+    "Parent reviews final facts and retains tracked permanent publication evidence/changelog",
+    "Parent commits and pushes final changelog/release docs to master",
+    "Screen lease actual release receipt appended separately"
+  ]
+}
