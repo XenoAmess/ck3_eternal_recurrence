@@ -705,9 +705,106 @@ void ReplenishmentFixture() {
   EmitSupplyCase("legacy_replenishment_monthly_unassigned", legacy);
 }
 
+void *merge_fixture_army = nullptr;
+std::int64_t merge_part_a = 0, merge_part_b = 0;
+int merge_calls_a = 0, merge_calls_b = 0;
+bool merge_wrong_return = false;
+std::int64_t *MergePartA(void *army, std::int64_t *output, std::uint32_t flags) {
+  Require(army == merge_fixture_army && output != nullptr && flags == 0,
+          "merge destination A ABI: full resolved CArmy/out/flags0");
+  ++merge_calls_a;
+  *output = merge_part_a;
+  return merge_wrong_return ? nullptr : output;
+}
+std::int64_t *MergePartB(void *army, std::int64_t *output) {
+  Require(army == merge_fixture_army && output != nullptr,
+          "merge destination B ABI: full resolved CArmy/out");
+  ++merge_calls_b;
+  *output = merge_part_b;
+  return output;
+}
+void MergeWeightFixture() {
+  using namespace xar;
+  using namespace xar::ck3_12002;
+  constexpr std::int32_t public_id = 0x01000001, native_id = 0x02000001;
+  constexpr std::int32_t regiment_id = 0x03000001;
+  std::array<std::byte, 0x180> unit{};
+  std::array<std::byte, 0x190> army{};
+  std::array<std::byte, 0x50> regiment{};
+  std::array<std::byte, 0x30> units{}, armies{}, regiments{};
+  std::array<std::byte, 0x20> unit_slots{}, army_slots{}, regiment_slots{};
+  std::array<std::int32_t, 1> ids{regiment_id};
+  Put(unit, 0x10, public_id); Put(unit, 0x178, native_id);
+  Put(army, 0x10, native_id); Put(army, 0x124, public_id);
+  Put(army, 0x38, static_cast<void *>(ids.data()));
+  Put(army, 0x40, std::int32_t{1}); Put(army, 0x44, std::int32_t{1});
+  Put(regiment, 0x10, regiment_id); Put(regiment, 0x14, std::uint32_t{0x41725267});
+  Put(regiment, 0x38, std::int32_t{900}); Put(regiment, 0x3C, std::int32_t{1500});
+  Put(unit_slots, 0x18, static_cast<void *>(unit.data()));
+  Put(army_slots, 0x18, static_cast<void *>(army.data()));
+  Put(regiment_slots, 0x18, static_cast<void *>(regiment.data()));
+  Put(units, 0x20, static_cast<void *>(unit_slots.data())); Put(units, 0x2C, std::int32_t{2});
+  Put(armies, 0x20, static_cast<void *>(army_slots.data())); Put(armies, 0x2C, std::int32_t{2});
+  Put(regiments, 0x20, static_cast<void *>(regiment_slots.data())); Put(regiments, 0x2C, std::int32_t{2});
+  void *units_ptr=units.data(), *armies_ptr=armies.data(), *regiments_ptr=regiments.data();
+  ArmyBindings bindings{};
+  bindings.enabled=true; bindings.unit_storage_slot=&units_ptr;
+  bindings.internal_army_storage_slot=&armies_ptr; bindings.regiment_storage_slot=&regiments_ptr;
+  bindings.get_army_current_soldiers=Current; bindings.get_army_maximum_soldiers=Maximum;
+  bindings.get_merge_destination_weight_part_a=MergePartA;
+  bindings.get_merge_destination_weight_part_b=MergePartB;
+  reg_objects={nullptr, regiment.data(), nullptr}; merge_fixture_army=army.data();
+  std::array<ArmyStrengthScope, 1> scope{{{public_id,game::ArmyStrengthScopeRole::player,{42}}}};
+  std::vector<game::ArmyStrengthSnapshot> rows;
+  struct Case { const char *name; std::int64_t a,b; bool observed; };
+  for (const auto &c: std::array<Case,5>{{
+      {"role_destination_subset",50'000'000,20'000'000,true},
+      {"zero_is_observed",0,0,true},
+      {"negative_unknown",-1,0,false},
+      {"greater_than_source_unknown",90'000'001,0,false},
+      {"sum_exceeds_source_unknown",60'000'000,40'000'000,false}}}) {
+    merge_part_a=c.a; merge_part_b=c.b;
+    int before_a=merge_calls_a, before_b=merge_calls_b;
+    Require(ReadArmyStrengthsForScope(bindings,scope,rows)==game::ReadArmyStrengthsResult::available,
+            "actual production reader strength available");
+    Require(rows[0].current_soldiers==900 && rows[0].merge_supply_destination_weight_raw.has_value()==c.observed,
+            "role-specific operand versus unchanged source strength");
+    if (c.observed) Require(*rows[0].merge_supply_destination_weight_raw==c.a+c.b,"exact operand sum");
+    Require(merge_calls_a==before_a+1 && merge_calls_b==before_b+1,"one call per leaf");
+    EmitSupplyCase(c.name,rows[0]);
+  }
+  merge_part_a=50'000'000; merge_part_b=20'000'000; merge_wrong_return=true;
+  Require(ReadArmyStrengthsForScope(bindings,scope,rows)==game::ReadArmyStrengthsResult::available &&
+          !rows[0].merge_supply_destination_weight_raw.has_value(),"wrong return unknown");
+  EmitSupplyCase("wrong_return_unknown",rows[0]); merge_wrong_return=false;
+  bindings.get_merge_destination_weight_part_b=nullptr;
+  int before_a=merge_calls_a, before_b=merge_calls_b;
+  Require(ReadArmyStrengthsForScope(bindings,scope,rows)==game::ReadArmyStrengthsResult::available &&
+          !rows[0].merge_supply_destination_weight_raw.has_value() && merge_calls_a==before_a &&
+          merge_calls_b==before_b,"missing one leaf leaves operand unknown without partial calls");
+  EmitSupplyCase("binding_missing_unknown",rows[0]);
+  bindings.get_merge_destination_weight_part_b=MergePartB; Put(army,0x124,std::int32_t{0x04000001});
+  Require(ReadArmyStrengthsForScope(bindings,scope,rows)==game::ReadArmyStrengthsResult::available &&
+          !rows[0].merge_supply_destination_weight_raw.has_value() && merge_calls_a==before_a &&
+          merge_calls_b==before_b,"full CArmy to public backlink prevents leaf call");
+  EmitSupplyCase("backlink_missing_unknown",rows[0]); Put(army,0x124,public_id);
+  Put(army,0x10,std::int32_t{0x05000001});
+  Require(ReadArmyStrengthsForScope(bindings,scope,rows)==game::ReadArmyStrengthsResult::partial &&
+          !rows[0].merge_supply_destination_weight_raw.has_value() && merge_calls_a==before_a,
+          "native full generation mismatch prevents leaf call");
+  EmitSupplyCase("native_generation_missing_unknown",rows[0]);
+  const auto legacy=BindArmyImage(0x140000000,kExecutableSha256);
+  Require(legacy.enabled && legacy.get_merge_destination_weight_part_a==nullptr &&
+          legacy.get_merge_destination_weight_part_b==nullptr,"unchanged .2 binder has no exact3 leaf");
+}
+
 } // namespace
 
 int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--merge-weight-fixture") {
+    MergeWeightFixture();
+    return 0;
+  }
   if (argc == 2 && std::string_view(argv[1]) == "--replenishment-fixture") {
     ReplenishmentFixture();
     return 0;

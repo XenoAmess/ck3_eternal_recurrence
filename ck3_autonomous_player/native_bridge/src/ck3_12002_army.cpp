@@ -342,6 +342,22 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
         result.gathering_days_status = game::ArmyGatheringDaysStatus::not_gathering;
       }
     }
+    if (bindings.get_merge_destination_weight_part_a != nullptr &&
+        bindings.get_merge_destination_weight_part_b != nullptr) {
+      std::int64_t part_a = 0, part_b = 0;
+      const auto *returned_a = bindings.get_merge_destination_weight_part_a(
+          army, &part_a, 0);
+      const auto *returned_b = bindings.get_merge_destination_weight_part_b(
+          army, &part_b);
+      const auto source_weight = std::int64_t{native_current} * 100'000;
+      // The two native filters are disjoint subsets of the validated array.
+      // An unexpected operand remains unobserved; ordinary strength survives.
+      if (returned_a == &part_a && returned_b == &part_b && part_a >= 0 &&
+          part_b >= 0 && part_a <= source_weight &&
+          part_b <= source_weight - part_a) {
+        result.merge_supply_destination_weight_raw = part_a + part_b;
+      }
+    }
     result.current_supply_raw = Load<std::int64_t>(army, 0x180);
     if (bindings.get_army_supply_capacity != nullptr) {
       std::int64_t raw = 0;

@@ -62,6 +62,11 @@ struct ArmyBindings {
                                           std::int64_t *) = nullptr;
   void **province_supply_character_fallback_slot = nullptr;
   ck3_12003::ArmySupplyTimingBindings timing_bindings{};
+  // Exact .3 merge destination operand: CArmy receiver, signed Q100000 out.
+  // 24E0160 uses flags=0; 24E02A0 has no flags or breakdown argument.
+  std::int64_t *(*get_merge_destination_weight_part_a)(void *, std::int64_t *,
+                                                      std::uint32_t) = nullptr;
+  std::int64_t *(*get_merge_destination_weight_part_b)(void *, std::int64_t *) = nullptr;
 };
 
 ArmyBindings BindArmyImage(std::uintptr_t image_base,

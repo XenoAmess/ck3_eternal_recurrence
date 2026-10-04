@@ -239,6 +239,10 @@ struct ArmyStrengthSnapshot {
   // Additive .2/.3 current supply observation, signed Q100000. No value is
   // synthesized for other builds or an unresolved CUnit/CArmy backlink.
   std::optional<std::int64_t> current_supply_raw;
+  // Exact .3 premerge role operand 24E0160(flags0)+24E02A0, Q100000.
+  // This is a candidate destination weight, not an actual completed merge.
+  // Source weight reuses validated 2A95740(flags0) current_soldiers *100000.
+  std::optional<std::int64_t> merge_supply_destination_weight_raw;
   // Exact .3 native GUI numeric getters, signed Q100000. Attrition is the
   // current native fraction, not a soldier-loss count or a net future forecast.
   // The .2 adapter leaves the new optional getter bindings unassigned.

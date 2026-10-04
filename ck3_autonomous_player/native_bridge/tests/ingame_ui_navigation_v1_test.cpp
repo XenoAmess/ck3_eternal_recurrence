@@ -323,6 +323,25 @@ int main() {
   std::memcpy(tooltip_text_buffer.data()+0x390,"Supply: 100",12);put(fixture_tooltip_text,0x3A0,sso_size);put(fixture_tooltip_text,0x3A8,sso_capacity);
   std::array<unsigned char,0x40> active_entries{};void *active_data=active_entries.data();std::int32_t zero=0;
   put(modal_context.data(),0x190,active_data);put(modal_context.data(),0x198,two);put(modal_context.data(),0x19C,zero);
+  // Current live failure diagnosis uses real fixture header reads only.
+  // Capacity, count and hover category remain unavailable business evidence;
+  // no policy is relaxed and no tooltip text is accepted by this diagnostic.
+  ArmyTooltipStackV1 diagnostic_stack{};std::string diagnostic_reason;
+  std::int32_t large_capacity=64;put(modal_context.data(),0x198,large_capacity);
+  assert(ArmyTooltipReadStack(modal_context.data(),diagnostic_stack,&diagnostic_reason,fixture_supplies)&&diagnostic_stack.capacity==64&&diagnostic_stack.count==0);
+  put(modal_context.data(),0x198,two);put(modal_context.data(),0x19C,one);
+  put(active_entries.data(),0,tooltip_pointer);void *absent_source=nullptr;put(active_entries.data(),8,absent_source);
+  assert(!ArmyTooltipReadStack(modal_context.data(),diagnostic_stack,&diagnostic_reason,fixture_supplies));
+  assert(diagnostic_reason=="tooltip_stack_entry_source_null;capacity=2;count=1;hover=null;index=0");
+  put(active_entries.data(),8,fixture_supplies);put(modal_context.data(),0xF0,fixture_attrition_parent);
+  assert(ArmyTooltipReadStack(modal_context.data(),diagnostic_stack,&diagnostic_reason,fixture_supplies));
+  put(modal_context.data(),0x198,large_capacity);
+  assert(ArmyTooltipReadStack(modal_context.data(),diagnostic_stack,&diagnostic_reason,fixture_supplies)&&diagnostic_stack.capacity==64&&diagnostic_stack.count==1&&diagnostic_stack.hover==fixture_attrition_parent);
+  std::int32_t excessive_count=33;put(modal_context.data(),0x19C,excessive_count);
+  assert(!ArmyTooltipReadStack(modal_context.data(),diagnostic_stack,&diagnostic_reason,fixture_supplies));
+  assert(diagnostic_reason=="tooltip_stack_count_policy_exceeded_32;capacity=64;count=33;hover=different");
+  std::cout<<"specific actual stack header/entry failure diagnostic PASS; raw pointers not returned; retained allocation capacity accepted; count32/no-cache refusal retained\n";
+  put(modal_context.data(),0x198,two);put(modal_context.data(),0x19C,zero);put(modal_context.data(),0xF0,absent_source);
   IngameUiRequestV1 hover_supply{IngameUiOperationV1::hover_army_tooltip,IngameUiWindowKindV1::army,0};
   hover_supply.army_tooltip_kind="supply_state";hover_supply.connection_generation=2;hover_supply.native_revision=21;
   assert(ValidateIngameUiRequestV1(hover_supply) && IsIngameUiRequestSupportedV1(GuiAbiRevisionV1::crozier12003,hover_supply));
@@ -343,9 +362,20 @@ int main() {
   assert(ExecuteIngameUiNavigationV1(current_env,query_supply,current_snapshot,current_stamp,fixture_gui_first,independent_result));
   assert(!independent_result.available && independent_result.unavailable_reason=="tooltip_requires_later_application_owner_epoch");
   ++current_stamp.pump_epoch;
+  put(modal_context.data(),0x198,large_capacity);
+  assert(ExecuteIngameUiNavigationV1(current_env,query_supply,current_snapshot,current_stamp,fixture_gui_first,independent_result));
+  assert(!independent_result.available&&independent_result.unavailable_reason=="tooltip_hover_source_top_unlocked_join_failed;capacity=64;count=0;hover=bound;top_source=none;top_locked=unavailable");
+  auto diagnostic_wire=SerializeIngameUiResultV1(query_supply,independent_result,21);
+  assert(diagnostic_wire.find("\"observed_cache\":null")!=std::string::npos&&diagnostic_wire.find("\"receipt_id\":null")!=std::string::npos);
+  std::cout<<"ARMY_TOOLTIP_STACK_DIAGNOSTIC_WIRE "<<diagnostic_wire<<'\n';
+  put(modal_context.data(),0xF0,fixture_attrition_parent);
+  assert(ExecuteIngameUiNavigationV1(current_env,query_supply,current_snapshot,current_stamp,fixture_gui_first,independent_result));
+  assert(independent_result.unavailable_reason=="tooltip_hover_source_top_unlocked_join_failed;capacity=64;count=0;hover=different;top_source=none;top_locked=unavailable");
+  put(modal_context.data(),0xF0,fixture_supplies);put(modal_context.data(),0x198,two);
   assert(ExecuteIngameUiNavigationV1(current_env,query_supply,current_snapshot,current_stamp,fixture_gui_first,independent_result));
   assert(!independent_result.available && !independent_result.army_tooltip.cache_bytes_observed);
   // New independently populated actual active stack and text, still no GUI epoch.
+  put(modal_context.data(),0x198,large_capacity);
   put(active_entries.data(),0,tooltip_pointer);put(active_entries.data(),8,fixture_supplies);put(modal_context.data(),0x19C,one);
   assert(ExecuteIngameUiNavigationV1(current_env,query_supply,current_snapshot,current_stamp,fixture_gui_first,independent_result));
   assert(independent_result.available && independent_result.verification_pending && !independent_result.dispatch_invoked);
@@ -356,6 +386,7 @@ int main() {
   assert(tooltip_json.find("\"observed_cache\":{\"text\":\"Supply: 100\"")!=std::string::npos && tooltip_json.find("cache_observed_verification_pending")!=std::string::npos);
   assert(tooltip_json.find("\"active_top_locked\":false")!=std::string::npos);
   std::cout<<"ARMY_TOOLTIP_CACHE_WIRE "<<tooltip_json<<'\n';
+  put(modal_context.data(),0x198,two);
   active_entries[0x10]=1;
   assert(ExecuteIngameUiNavigationV1(current_env,query_supply,current_snapshot,current_stamp,fixture_gui_first,independent_result));
   assert(!independent_result.available && !independent_result.army_tooltip.cache_bytes_observed && !independent_result.army_tooltip.receipt_bound);

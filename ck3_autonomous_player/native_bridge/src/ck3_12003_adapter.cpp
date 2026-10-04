@@ -120,6 +120,12 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
         image_base, ck3_12002::kExecutableSha256);
     ck3_12003::EnableBattleNativeOwnerRecallInputs12003(
         result.native_owner_recall, image_base, executable_sha256);
+    result.armies.get_merge_destination_weight_part_a =
+        reinterpret_cast<decltype(result.armies.get_merge_destination_weight_part_a)>(
+            image_base + 0x24E0160);
+    result.armies.get_merge_destination_weight_part_b =
+        reinterpret_cast<decltype(result.armies.get_merge_destination_weight_part_b)>(
+            image_base + 0x24E02A0);
     result.armies.get_army_supply_capacity =
         reinterpret_cast<decltype(result.armies.get_army_supply_capacity)>(
             image_base + ck3_12002::kArmySupplyCapacityRva12003);

@@ -79,6 +79,11 @@ inline void AppendArmyStrengthV1(
     }
     result += ']';
   }
+  if (strength.available && strength.merge_supply_destination_weight_raw.has_value()) {
+    result += ",\"merge_supply_destination_weight_raw\":";
+    result += number(*strength.merge_supply_destination_weight_raw);
+    result += ",\"merge_supply_destination_weight_scale\":100000";
+  }
   if (strength.available && strength.current_supply_raw.has_value()) {
     result += ",\"current_supply_raw\":";
     result += number(*strength.current_supply_raw);

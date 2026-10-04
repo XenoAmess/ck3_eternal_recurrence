@@ -255,6 +255,7 @@ _ARMY_STRENGTH_ROW_KEYS = {
 }
 _ARMY_STRENGTH_SUPPLY_FIELD_PAIRS = (
     ("current_supply_raw", "current_supply_scale"),
+    ("merge_supply_destination_weight_raw", "merge_supply_destination_weight_scale"),
     ("current_supply_capacity_raw", "current_supply_capacity_scale"),
     ("current_attrition_fraction_raw", "current_attrition_fraction_scale"),
     ("current_supply_change_monthly_raw", "current_supply_change_monthly_scale"),
@@ -1709,6 +1710,8 @@ def _normalize_army_strength_row(
             raise ValueError(f"native {name}.{scale_key} must be {CK3_FIXED_POINT_SCALE}")
         if value.get("status") != "available" and raw is not None:
             raise ValueError(f"native unavailable {name}.{raw_key} must be null")
+        if raw_key == "merge_supply_destination_weight_raw" and raw is not None and raw < 0:
+            raise ValueError(f"native {name}.{raw_key} must be nonnegative")
         observed_supply[raw_key] = raw
         observed_supply[scale_key] = CK3_FIXED_POINT_SCALE
     status = value.get("status")

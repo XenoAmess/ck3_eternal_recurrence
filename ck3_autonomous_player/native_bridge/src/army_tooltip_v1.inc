@@ -130,16 +130,41 @@ struct ArmyTooltipStackV1 {
   std::vector<ArmyTooltipStackEntryV1> entries;
   friend bool operator==(const ArmyTooltipStackV1 &,const ArmyTooltipStackV1 &)=default;
 };
-bool ArmyTooltipReadStack(void *context,ArmyTooltipStackV1 &out) {
-  out={};if(!Value(context,0x190,out.data)||!Value(context,0x198,out.capacity)||!Value(context,0x19C,out.count)||
-      !Value(context,0xF0,out.hover)||out.count<0||out.capacity<0||out.count>32||out.capacity>32||out.count>out.capacity||
-      (out.count&&!out.data))return false;
+bool ArmyTooltipReadStack(void *context,ArmyTooltipStackV1 &out,
+    std::string *failure=nullptr,void *expected_source=nullptr) {
+  out={};
+  // Keep nullable failures distinct. Values below are reported only after the
+  // corresponding real read succeeded; they are never presumed zero.
+  const bool data_read=Value(context,0x190,out.data),capacity_read=Value(context,0x198,out.capacity),
+      count_read=Value(context,0x19C,out.count),hover_read=Value(context,0xF0,out.hover);
+  const auto fail=[&](std::string_view cause,std::int32_t index=-1) {
+    if(failure) {
+      *failure=std::string(cause)+";capacity="+(capacity_read?std::to_string(out.capacity):"unreadable")+
+          ";count="+(count_read?std::to_string(out.count):"unreadable")+
+          ";hover="+(!hover_read?"unreadable":!out.hover?"null":out.hover==expected_source?"bound":"different");
+      if(index>=0)*failure+=";index="+std::to_string(index);
+    }return false;
+  };
+  if(!data_read||!capacity_read||!count_read||!hover_read)return fail("tooltip_stack_header_unreadable");
+  if(out.count<0||out.capacity<0)return fail("tooltip_stack_header_negative");
+  if(out.count>32)return fail("tooltip_stack_count_policy_exceeded_32");
+  // Original close retains capacity; only count determines our read budget.
+  if(out.count>out.capacity)return fail("tooltip_stack_count_exceeds_capacity");
+  if(out.count&&!out.data)return fail("tooltip_stack_data_null_with_active_entries");
   for(std::int32_t index=0;index<out.count;++index) {
     const auto offset=static_cast<std::size_t>(index)*0x20;ArmyTooltipStackEntryV1 entry{};
     if(!Value(out.data,offset,entry.root)||!Value(out.data,offset+8,entry.source)||!Value(out.data,offset+0x10,entry.locked)||
-        !Value(out.data,offset+0x14,entry.anchor)||!entry.root||!entry.source)return false;
+        !Value(out.data,offset+0x14,entry.anchor))return fail("tooltip_stack_entry_unreadable",index);
+    if(!entry.root)return fail("tooltip_stack_entry_root_null",index);
+    if(!entry.source)return fail("tooltip_stack_entry_source_null",index);
     out.entries.push_back(entry);
   }return true;
+}
+std::string ArmyTooltipStackJoinFailure(const ArmyTooltipStackV1 &stack,void *source) {
+  return "tooltip_hover_source_top_unlocked_join_failed;capacity="+std::to_string(stack.capacity)+
+      ";count="+std::to_string(stack.count)+";hover="+(!stack.hover?"null":stack.hover==source?"bound":"different")+
+      ";top_source="+(stack.entries.empty()?"none":stack.entries.back().source==source?"bound":"different")+
+      ";top_locked="+(stack.entries.empty()?std::string("unavailable"):std::to_string(stack.entries.back().locked));
 }
 bool ArmyTooltipTextbox(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *widget) noexcept {
   void *vt=nullptr,*col=nullptr,*getter=nullptr;std::array<std::uint32_t,6> raw{};
@@ -217,7 +242,8 @@ bool ArmyTooltipExecute(const ZhongguoScoreboardNativeEnvironmentV1 &env,const I
     out.status=value.status;out.unavailable_reason.clear();return true;
   }
   ArmyTooltipStackV1 first{},second{};ArmyTooltipTextV1 text{},later_text{};
-  if(!ArmyTooltipReadStack(gui.context,first))return reject("tooltip_active_stack_unreadable_or_out_of_bounds");
+  std::string stack_failure;
+  if(!ArmyTooltipReadStack(gui.context,first,&stack_failure,binding.source))return reject(stack_failure);
   if(receipt.leave) {
     if(first.hover==binding.source||std::any_of(first.entries.begin(),first.entries.end(),[&](const auto &entry){return entry.source==binding.source;}))
       return reject("tooltip_bound_source_still_active_after_leave");
@@ -227,7 +253,7 @@ bool ArmyTooltipExecute(const ZhongguoScoreboardNativeEnvironmentV1 &env,const I
       return reject("tooltip_previous_root_not_hidden_after_leave");
   } else {
     if(first.hover!=binding.source||first.entries.empty()||first.entries.back().source!=binding.source||first.entries.back().locked!=0)
-      return reject("tooltip_hover_source_top_unlocked_join_failed");
+      return reject(ArmyTooltipStackJoinFailure(first,binding.source));
     if(std::count_if(first.entries.begin(),first.entries.end(),[&](const auto &entry){return entry.source==binding.source;})!=1)
       return reject("tooltip_nested_or_duplicate_bound_source");
     if(!ArmyTooltipReadText(env,first.entries.back().root,gui.context,text))return reject("tooltip_unique_actual_text_cache_unavailable");
