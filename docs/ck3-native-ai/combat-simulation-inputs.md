@@ -1923,3 +1923,25 @@ The additive nullable `ck3_query_battle_control_snapshot_v1.full_backing_inputs_
 Readiness is **static-ready**: the one source-to-reader-to-DTO-to-wire-to-Python reconciliation has no contract mismatch, and the parent-owned sole focused evidence is GREEN. Exactly two native scenarios emitted three frames in one execution batch; three registered `ck3_query_battle_control_snapshot_v1` MCP calls under Python `-O` reused those frames. The production reader/serializer preserves native non-ID-sorted order, a physical backing row absent from Combat Entries, legitimate whole zero and a null incomplete census while all three base control frames remain ready. Eight strict `/W4 /WX /O2 /DNDEBUG` TUs closed the focused link; missing production `phase_character` linkage and isolated `tools/build_release` import were harness REDs retained in the final receipt, with existing objects and native frames reused after necessary recovery. No whole DLL build or live deployment is claimed. Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-full-backing-observer-v56/fixture/ROOT-DELIVERY.json` (SHA-256 `af6f26ef069f116b80570ca8c18ebeb93ceaa282215b5c70d765e9f5f4131d26`) and `crosswire/SOURCE-TO-WIRE-RECONCILIATION.md`.
 
 New live credit0, normal days0, saved days0 and natural successions0. Whole Monte Carlo, win odds and full OODA completion remain unclaimed. Root owns exact-build production deployment and a real paused sample, shared topic/day/week publication and commit/push.
+
+## 2026-10-04: existing `.3` actual-counter census producer seam
+
+Exact CK3 1.20.0.3 / Steam 25652598 / EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. Source-only projection, compiled fixture and live result owned separately. This increment fills the already defined `ck3_query_battle_control_snapshot_v1.active_counter_inputs_v1` rather than treating its current unavailable/null consumer value as a completed observation.
+
+Source is closed for actual side `+70` primary owners, ordered MAA Entry60 rows, raw Q100000 `Entry+18`, integer stack size and ordered target definitions, owner modifier aggregates `0x113/0x114`, and contexts **0 countered by 1 then 1 countered by 0**. Existing `.3` bindings are `899E40`, `2657970`, `28C3AE0`, `2303700`, `2C533E0` and `2653F10`. Both row and target strides are hexadecimal: `0x60` = 96 bytes; `0x10` = 16 bytes. Genuine current Q must reach `2657970` without an intermediate integer-soldier floor. Legal class<0 remains an absent counter row in a complete census.
+
+The current outgoing path obtains actual-primary context inside `264FF70`, then resolves counters through `264FC10 ->2653F10`; it consumes current fighting with cached Entry damage. `26505E0` refreshes current totals only. The observer producer publishes current operands through caller-owned scratch and existing optional-leaf availability semantics; it does not call outgoing attribution writers or refresh the real Combat.
+
+```mermaid
+flowchart LR
+  S[Same paused actual side0 and side1 snapshot] --> R[Ordered rawQ MAA census]
+  S --> O[Actual plus70 owners and113114 aggregates]
+  O --> C[Directed native contexts0by1 and1by0]
+  R --> E[Existing active_counter_inputs_v1]
+  C --> E
+  E --> F[Unique two-case native and Python fixture GREEN]
+  F -. paused realgame proof pending .-> V[Production-live current counter observation]
+  U[Actual future Entry refresh and event roster feedback] -. unknown .-> P[Complete future battle kernel]
+```
+
+Source readiness is **research source closed**; producer readiness is **static-ready** after the unique two-case production Control/serializer fixture and existing Python normalizer/counter consumer passed on their first run. Raw getter input `1200001`, actual-primary modifiers and context direction, legal absent negative class, zero target values, and reader failure with control readiness preserved are covered. The three native changes were adopted and pushed by Root in `d1b7f18d200cffd302815a05a12c1d3e958ab2de`; the unified g62 build and freeze passed, while actual paused counter contact observation remains pending. The canonical fixture source is unchanged and the packaged runner has not been rerun. No live or complete next-tick damage parity is claimed. Reproduce the two existing cases with `py tools/run_battle_active_counter_fixture.py --build-dir <new-output-directory>`. Packet: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-current-active-counter-producer-v58/source-notes/ROOT-DELIVERY.json`; Root should merge this appendix into the current native effective-input topic and merge report fields into Oct 4 / W40, preserving the separate fixture and realgame evidence.
