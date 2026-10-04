@@ -262,6 +262,19 @@ WarOccupationTargetsReadResultV1 ReadWarOccupationTargetsV1(
           siege.total_work_raw = rich.siege_total_work.raw;
           siege.days_left_observable = rich.siege_days_left_observable;
           siege.days_left = rich.siege_days_left;
+          siege.ordinary_daily_progress_observable =
+              rich.siege_ordinary_daily_progress_observable;
+          siege.ordinary_daily_progress_raw = rich.siege_ordinary_daily_progress.raw;
+          siege.current_phase_length_observable =
+              rich.siege_current_phase_length_observable;
+          siege.current_phase_length_raw = rich.siege_current_phase_length.raw;
+          siege.prepared_phase_length_observable =
+              rich.siege_prepared_phase_length_observable;
+          siege.prepared_phase_length_raw = rich.siege_prepared_phase_length.raw;
+          siege.phase_counter_observable = rich.siege_phase_counter_observable;
+          siege.phase_counter = rich.siege_phase_counter;
+          siege.can_advance_observable = rich.siege_can_advance_observable;
+          siege.can_advance = rich.siege_can_advance;
           siege.assault_observable = rich.assault_observable;
           siege.breach_level = rich.breach_level;
           siege.assault_in_progress = rich.assault_in_progress;

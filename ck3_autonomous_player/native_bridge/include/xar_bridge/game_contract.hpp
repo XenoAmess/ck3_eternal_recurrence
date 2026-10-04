@@ -796,6 +796,18 @@ struct WarObjectiveProvinceState {
   FixedPointValue siege_total_work;
   bool siege_days_left_observable = false;
   std::int32_t siege_days_left = 0;
+  // Independent nullable current-tick inputs, from one paused alive Siege.
+  // Current phase is freshly evaluated; prepared phase is last prepare's cache.
+  bool siege_ordinary_daily_progress_observable = false;
+  FixedPointValue siege_ordinary_daily_progress;
+  bool siege_current_phase_length_observable = false;
+  FixedPointValue siege_current_phase_length;
+  bool siege_prepared_phase_length_observable = false;
+  FixedPointValue siege_prepared_phase_length;
+  bool siege_phase_counter_observable = false;
+  std::int32_t siege_phase_counter = 0;
+  bool siege_can_advance_observable = false;
+  bool siege_can_advance = false;
   // Exact-build Assault Fort state. This subdomain is published atomically
   // only from a paused rich-siege read. A false observable flag means every
   // following value is unavailable rather than a real zero/false.

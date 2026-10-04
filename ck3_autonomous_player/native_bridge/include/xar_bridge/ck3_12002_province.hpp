@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "xar_bridge/ck3_12002.hpp"
+#include "xar_bridge/ck3_12002_army.hpp"
 #include "xar_bridge/game_contract.hpp"
 
 #include <cstdint>
@@ -25,11 +26,21 @@ inline constexpr std::size_t kObjectiveSiegeProvinceOffset = 0x200;
 inline constexpr std::size_t kObjectiveSiegeArmyIdOffset = 0x208;
 inline constexpr std::size_t kObjectiveSiegeCurrentWorkOffset = 0x3D0;
 inline constexpr std::size_t kObjectiveSiegeBreachOffset = 0x3D8;
+inline constexpr std::size_t kObjectiveSiegePreparedPhaseLengthOffset = 0x20;
+inline constexpr std::size_t kObjectiveSiegePhaseCounterOffset = 0x43C;
+inline constexpr std::size_t kObjectiveSiegeArmyCommanderOffset = 0x120;
 inline constexpr std::size_t kObjectiveSiegeAssaultOffset = 0x44C;
 
 using ProvinceOccupiedGetter = bool (*)(void *);
 using ProvinceIntGetter = std::int32_t (*)(void *);
 using SiegeFixedGetter = std::int64_t *(*)(void *, std::int64_t *);
+// Exact .3 owning-thread getters. IDs are the actual commander and internal
+// CArmy full IDs; the optional tooltip/breakdown pointer is always null.
+using SiegeOrdinaryDailyGetter = std::int64_t *(*)(
+    void *, std::int64_t *, std::int32_t, std::int32_t, void *);
+using SiegePhaseLengthGetter = std::int64_t *(*)(
+    void *, std::int64_t *, std::int32_t, void *);
+using SiegeBlockedPredicate = bool (*)(void *);
 using SiegeDailyAssaultGetter = std::int64_t *(*)(void *, std::int64_t *, std::int32_t);
 using SiegeAssaultValidator = bool (*)(std::int32_t, std::int32_t, std::int32_t, void *);
 using ObjectiveTitleProvinceGetter = void *(*)(void *);
@@ -49,6 +60,10 @@ struct ProvinceBindings {
   SiegeFixedGetter siege_progress = nullptr;
   SiegeFixedGetter siege_total_work = nullptr;
   ProvinceIntGetter siege_days_left = nullptr;
+  ArmyBindings siege_armies{};
+  SiegeOrdinaryDailyGetter siege_ordinary_daily_progress = nullptr;
+  SiegePhaseLengthGetter siege_current_phase_length = nullptr;
+  SiegeBlockedPredicate siege_is_blocked = nullptr;
   SiegeDailyAssaultGetter assault_daily_progress = nullptr;
   ProvinceIntGetter assault_daily_casualties = nullptr;
   SiegeAssaultValidator validate_start_assault = nullptr;

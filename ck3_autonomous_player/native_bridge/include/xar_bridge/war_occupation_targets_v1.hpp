@@ -18,6 +18,17 @@ struct WarOccupationActiveSiegeV1 {
   std::int64_t total_work_raw = 0;
   bool days_left_observable = false;
   std::int32_t days_left = 0;
+  bool ordinary_daily_progress_observable = false;
+  std::int64_t ordinary_daily_progress_raw = 0;
+  // Fresh getter output and the last prepared cache are separate observations.
+  bool current_phase_length_observable = false;
+  std::int64_t current_phase_length_raw = 0;
+  bool prepared_phase_length_observable = false;
+  std::int64_t prepared_phase_length_raw = 0;
+  bool phase_counter_observable = false;
+  std::int32_t phase_counter = 0;
+  bool can_advance_observable = false;
+  bool can_advance = false;
   bool assault_observable = false;
   std::int32_t breach_level = 0;
   bool assault_in_progress = false;

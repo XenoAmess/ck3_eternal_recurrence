@@ -55,6 +55,19 @@ std::string ActiveSiege(const WarOccupationTargetRowV1 &row) {
       ",\"remaining_work\":" + FixedPoint(remaining) +
       ",\"days_left\":" + ObservableInt(
           siege.days_left_observable, siege.days_left) +
+      ",\"ordinary_daily_progress\":" +
+      (siege.ordinary_daily_progress_observable
+          ? FixedPoint(siege.ordinary_daily_progress_raw) : std::string("null")) +
+      ",\"current_phase_length\":" +
+      (siege.current_phase_length_observable
+          ? FixedPoint(siege.current_phase_length_raw) : std::string("null")) +
+      ",\"prepared_phase_length\":" +
+      (siege.prepared_phase_length_observable
+          ? FixedPoint(siege.prepared_phase_length_raw) : std::string("null")) +
+      ",\"phase_counter\":" + ObservableInt(
+          siege.phase_counter_observable, siege.phase_counter) +
+      ",\"can_advance\":" + ObservableBool(
+          siege.can_advance_observable, siege.can_advance) +
       ",\"assault_observable\":" + Bool(siege.assault_observable) +
       ",\"breach_level\":" + ObservableInt(
           siege.assault_observable, siege.breach_level) +

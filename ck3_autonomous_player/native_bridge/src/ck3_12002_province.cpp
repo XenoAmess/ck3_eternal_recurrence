@@ -41,6 +41,12 @@ ProvinceBindings BindProvinceImage(std::uintptr_t base, std::string_view sha) no
   result.siege_progress = reinterpret_cast<SiegeFixedGetter>(base + 0x251C9C0);
   result.siege_total_work = reinterpret_cast<SiegeFixedGetter>(base + 0x251DD20);
   result.siege_days_left = reinterpret_cast<ProvinceIntGetter>(base + 0x251CB00);
+  result.siege_armies = BindArmyImage(base, sha);
+  result.siege_ordinary_daily_progress =
+      reinterpret_cast<SiegeOrdinaryDailyGetter>(base + 0x251F170);
+  result.siege_current_phase_length =
+      reinterpret_cast<SiegePhaseLengthGetter>(base + 0x251E7A0);
+  result.siege_is_blocked = reinterpret_cast<SiegeBlockedPredicate>(base + 0x251CF70);
   result.assault_daily_progress = reinterpret_cast<SiegeDailyAssaultGetter>(base + 0x25207F0);
   result.assault_daily_casualties = reinterpret_cast<ProvinceIntGetter>(base + 0x25205C0);
   result.validate_start_assault = reinterpret_cast<SiegeAssaultValidator>(base + 0x29738C0);
@@ -185,6 +191,49 @@ game::WarObjectiveProvinceState ReadObjectiveProvince(
   if (days >= 0 && days != std::numeric_limits<std::int32_t>::max()) {
     out.siege_days_left_observable = true;
     out.siege_days_left = days;
+  }
+  // These fields belong to the validated active Siege, independently of the
+  // assault subdomain. +0x20 is last prepare's cache; fresh phase uses its getter.
+  const auto prepared_phase = Read<std::int64_t>(
+      siege, kObjectiveSiegePreparedPhaseLengthOffset);
+  if (prepared_phase >= 0) {
+    out.siege_prepared_phase_length_observable = true;
+    out.siege_prepared_phase_length.raw = prepared_phase;
+  }
+  const auto phase_counter = Read<std::int32_t>(
+      siege, kObjectiveSiegePhaseCounterOffset);
+  if (phase_counter >= 0) {
+    out.siege_phase_counter_observable = true;
+    out.siege_phase_counter = phase_counter;
+  }
+  if (b.siege_is_blocked != nullptr) {
+    out.siege_can_advance_observable = true;
+    out.siege_can_advance = !b.siege_is_blocked(siege);
+  }
+  const auto internal_army = ResolveInternalArmy(b.siege_armies, internal_id);
+  if (internal_army != nullptr) {
+    const auto commander_id = Read<std::int32_t>(
+        internal_army, kObjectiveSiegeArmyCommanderOffset);
+    // -1 is the native no-commander ID, not an invented missing modifier value.
+    // A nonempty commander ID must still resolve in the current character graph.
+    if (commander_id == -1 ||
+        Component(b.character_storage_slot, commander_id, 0x18) != nullptr) {
+      std::int64_t ordinary_daily{}, current_phase{};
+      if (b.siege_ordinary_daily_progress != nullptr &&
+          b.siege_ordinary_daily_progress(siege, &ordinary_daily, commander_id,
+                                         internal_id, nullptr) == &ordinary_daily &&
+          ordinary_daily >= 0) {
+        out.siege_ordinary_daily_progress_observable = true;
+        out.siege_ordinary_daily_progress.raw = ordinary_daily;
+      }
+      if (b.siege_current_phase_length != nullptr &&
+          b.siege_current_phase_length(siege, &current_phase, commander_id,
+                                      nullptr) == &current_phase &&
+          current_phase >= 0) {
+        out.siege_current_phase_length_observable = true;
+        out.siege_current_phase_length.raw = current_phase;
+      }
+    }
   }
   if (!out.besieging_strength_observable || b.assault_daily_progress == nullptr ||
       b.assault_daily_casualties == nullptr || b.validate_start_assault == nullptr ||

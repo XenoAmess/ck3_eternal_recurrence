@@ -764,6 +764,24 @@ def _normalize_active_siege(
         "days_left": _optional_non_negative_int32(
             value.get("days_left"), f"{name}.days_left"
         ),
+        "ordinary_daily_progress": (
+            _fixed_point(value["ordinary_daily_progress"], f"{name}.ordinary_daily_progress")
+            if value.get("ordinary_daily_progress") is not None else None
+        ),
+        "current_phase_length": (
+            _fixed_point(value["current_phase_length"], f"{name}.current_phase_length")
+            if value.get("current_phase_length") is not None else None
+        ),
+        "prepared_phase_length": (
+            _fixed_point(value["prepared_phase_length"], f"{name}.prepared_phase_length")
+            if value.get("prepared_phase_length") is not None else None
+        ),
+        "phase_counter": _optional_non_negative_int32(
+            value.get("phase_counter"), f"{name}.phase_counter"
+        ),
+        "can_advance": _optional_strict_bool(
+            value.get("can_advance"), f"{name}.can_advance"
+        ),
         "assault_observable": assault_observable,
         "breach_level": breach_level,
         "walls_breached": (
