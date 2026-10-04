@@ -1,9 +1,8 @@
-"""Authored Confucian content catalogue; generation is not gameplay acceptance.
+"""Authored 36-rite/36-tenet free-chronology content candidate.
 
-R01--R36 and T01--T36 retain the design catalogue. Only SAMPLE_RITES and
-their SAMPLE_TENETS are emitted as native definitions in the first package.
-The first package is an explicitly free chronology mode: no historical
-persons, institutions, or chronology are instantiated by these definitions.
+The eight SAMPLE entries are an immutable semantic baseline. All catalogue
+entries are ACTIVE in this external candidate. Generation is not live UI or
+gameplay acceptance; era metadata does not impose date gates in iteration 1.
 """
 
 from __future__ import annotations
@@ -375,6 +374,14 @@ SAMPLE_RITES = tuple(RITES_BY_CODE[code] for code in SAMPLE_RITE_CODES)
 SAMPLE_TENET_CODES = tuple(sorted({code for rite in SAMPLE_RITES for code in rite.tenet_codes}))
 SAMPLE_TENETS = tuple(TENETS_BY_CODE[code] for code in SAMPLE_TENET_CODES)
 
+# Single authored membership set for all content/runtime and explicit I2/I3 integration.
+CHRONOLOGY_MODE = "free"
+ACTIVE_RITES = RITES
+ACTIVE_TENETS = TENETS
+ACTIVE_RITE_CODES = tuple(rite.code for rite in ACTIVE_RITES)
+ACTIVE_RITE_IDS = tuple(rite.script_id for rite in ACTIVE_RITES)
+
+
 
 @dataclass(frozen=True)
 class PracticeOption:
@@ -558,7 +565,23 @@ PRACTICES = (
              ("song_ming", "song_classics")),
 )
 
+BASELINE_PRACTICES = PRACTICES
+from additional_practices import build_additional_practices
+PRACTICES += build_additional_practices(Practice, PracticeOption, RITES_BY_CODE)
 PRACTICES_BY_RITE_CODE = {item.rite_code: item for item in PRACTICES}
+# Legacy eight retain 100--107; later additions retain 108--135 regardless of
+# future catalogue presentation order. This mapping is an authored ID contract.
+PRACTICE_EVENT_IDS = {
+    "R01": "lyd.100", "R02": "lyd.101", "R03": "lyd.102", "R06": "lyd.103",
+    "R07": "lyd.104", "R10": "lyd.105", "R20": "lyd.106", "R21": "lyd.107",
+    "R04": "lyd.108", "R05": "lyd.109", "R08": "lyd.110", "R09": "lyd.111",
+    "R11": "lyd.112", "R12": "lyd.113", "R13": "lyd.114", "R14": "lyd.115",
+    "R15": "lyd.116", "R16": "lyd.117", "R17": "lyd.118", "R18": "lyd.119",
+    "R19": "lyd.120", "R22": "lyd.121", "R23": "lyd.122", "R24": "lyd.123",
+    "R25": "lyd.124", "R26": "lyd.125", "R27": "lyd.126", "R28": "lyd.127",
+    "R29": "lyd.128", "R30": "lyd.129", "R31": "lyd.130", "R32": "lyd.131",
+    "R33": "lyd.132", "R34": "lyd.133", "R35": "lyd.134", "R36": "lyd.135",
+}
 
 
 def validate_catalogue() -> None:
@@ -581,10 +604,10 @@ def validate_catalogue() -> None:
             raise ValueError(f"Unknown core tenet: {rite.code}")
         if any(not 0 <= channel <= 255 for channel in rite.color):
             raise ValueError(f"Invalid map color: {rite.code}")
-    if MAIN_RITE_ID not in {rite.script_id for rite in SAMPLE_RITES}:
+    if MAIN_RITE_ID not in {rite.script_id for rite in ACTIVE_RITES}:
         raise ValueError("Main rite must be part of the emitted sample package")
-    if set(PRACTICES_BY_RITE_CODE) != set(SAMPLE_RITE_CODES):
-        raise ValueError("Each emitted sample rite must have exactly one practice input")
+    if set(PRACTICES_BY_RITE_CODE) != set(ACTIVE_RITE_CODES):
+        raise ValueError("Each active rite must have exactly one practice input")
     for practice in PRACTICES:
         if tuple(option.key for option in practice.options) != ("a", "b", "c"):
             raise ValueError(f"Practice options must use stable a/b/c keys: {practice.rite_code}")
@@ -593,3 +616,19 @@ def validate_catalogue() -> None:
         for key in practice.source_keys:
             if key not in SOURCE_LINKS:
                 raise ValueError(f"Unknown practice source: {key}")
+
+    if len(PRACTICES) != 36 or len(PRACTICES_BY_RITE_CODE) != 36:
+        raise ValueError("Each of all 36 active rites needs exactly one authored practice")
+    if set(PRACTICE_EVENT_IDS) != set(ACTIVE_RITE_CODES) or len(set(PRACTICE_EVENT_IDS.values())) != 36:
+        raise ValueError("Practice event IDs must uniquely cover all active rites")
+    for practice in PRACTICES:
+        if not practice.historical_boundary_zh or not practice.historical_boundary_en:
+            raise ValueError("Every practice requires explicit historical/abstraction boundaries")
+        if len(practice.options) != 3 or len({option.label_zh for option in practice.options}) != 3:
+            raise ValueError("Every practice requires three distinct authored choices")
+        for option in practice.options:
+            for field in ("gold_cost", "piety_change", "prestige_change", "stress_change", "learning_xp"):
+                if type(getattr(option, field)) is not int:
+                    raise ValueError(f"Practice resources/XP must use exact integer schema: {practice.rite_code}/{option.key}")
+            if not option.tooltip_zh or not option.tooltip_en:
+                raise ValueError("Every choice needs a doctrinal tradeoff tooltip")

@@ -1,0 +1,183 @@
+{
+  "source_root": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game",
+  "game_version": "1.20.0.3",
+  "native_after_fix": "NOT_RUN",
+  "sources": [
+    {
+      "source": "common/character_interactions/pam_interactions.txt",
+      "sha256": "2db73b0da8572e218f1a677a91ff4281a890ade115e6dc40e696ecb59c0b1049",
+      "size": 724542,
+      "ranges": [
+        [
+          18263,
+          18279
+        ]
+      ],
+      "excerpt": "common__character_interactions__pam_interactions.txt.excerpt.txt",
+      "excerpt_sha256": "4e9f75c0d42ab8b2fec64a6cc7400033024099abfb48c38df1151d3f13654b88"
+    },
+    {
+      "source": "common/scripted_triggers/passive_rite_learning_triggers.txt",
+      "sha256": "4cde80d60a415b5dfef815d656f1b07c6d4d1582edc09cded9a91ed503224885",
+      "size": 12365,
+      "ranges": [
+        [
+          5,
+          16
+        ]
+      ],
+      "excerpt": "common__scripted_triggers__passive_rite_learning_triggers.txt.excerpt.txt",
+      "excerpt_sha256": "a773cbf0f3dd96b0ffaeea4fb53812fb579aea004d1be2065eb44588fd4ed887"
+    },
+    {
+      "source": "common/scripted_triggers/00_religious_triggers.txt",
+      "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+      "size": 88549,
+      "ranges": [
+        [
+          2522,
+          2534
+        ]
+      ],
+      "excerpt": "common__scripted_triggers__00_religious_triggers.txt.excerpt.txt",
+      "excerpt_sha256": "80a3053574d1c946245a7ac1541f95b8376408bcc8caa5f694c820de1e323f58"
+    },
+    {
+      "source": "common/religion/doctrine_types/_doctrine_types.info",
+      "sha256": "7a8f6f8e78f88f7c83de3c43239a5da2709777e9d56fed4ae031e98b76af2ffc",
+      "size": 11217,
+      "ranges": [
+        [
+          1,
+          5
+        ],
+        [
+          304,
+          309
+        ]
+      ],
+      "excerpt": "common__religion__doctrine_types___doctrine_types.info.excerpt.txt",
+      "excerpt_sha256": "29a9c5b54add9c004dcb05b7f7a9c832ec834c3e12242c56216e858c80977d07"
+    },
+    {
+      "source": "common/religion/tenet_types/_tenet_types.info",
+      "sha256": "aae8f7a94b0b5ae7a12d29ea6080941fd2e94842ea195905b9a1d8a14f2a9c25",
+      "size": 4799,
+      "ranges": [
+        [
+          1,
+          5
+        ]
+      ],
+      "excerpt": "common__religion__tenet_types___tenet_types.info.excerpt.txt",
+      "excerpt_sha256": "ff8996421bc1ca70066879fd912f7c69edfee503b5643f28583fc6cd6d7c2f14"
+    },
+    {
+      "source": "common/religion/faith_types/_faith_types.info",
+      "sha256": "55696aa5d3ac818fbd68d2b21be51213f02ef5ed4260627e2fbd8b5e321c9e42",
+      "size": 4481,
+      "ranges": [
+        [
+          29,
+          43
+        ],
+        [
+          60,
+          64
+        ]
+      ],
+      "excerpt": "common__religion__faith_types___faith_types.info.excerpt.txt",
+      "excerpt_sha256": "f28c6ebb047e3605688b64ecb050e217a4ef74772ca5a72d820fc3f9cabd4be9"
+    },
+    {
+      "source": "common/religion/rite_types/_rite_types.info",
+      "sha256": "60fd476d72be0941d9c6dff4e83834016d6e32d16e855f3b258389061850828f",
+      "size": 2995,
+      "ranges": [
+        [
+          58,
+          75
+        ]
+      ],
+      "excerpt": "common__religion__rite_types___rite_types.info.excerpt.txt",
+      "excerpt_sha256": "b9032c20ef5394f258d8a666dbf9d06c0ed75ee49c5e3504e506d6e3554cda3e"
+    }
+  ],
+  "catalog_sources": [
+    {
+      "path": "common/religion/doctrine_types/10_doctrines_religions.txt",
+      "sha256": "5ef05fea0620f0aa980a685b769878fc07f891839255473deda9e61cefef8756"
+    },
+    {
+      "path": "common/religion/doctrine_types/20_doctrines.txt",
+      "sha256": "ff663a8f6c5233628dbf6774b28412b918338fec823fe0f534c4cd03c8580504"
+    },
+    {
+      "path": "common/religion/doctrine_types/20_doctrines_islam.txt",
+      "sha256": "49646c319e7b840a388a90e4b3254863a17253649e8b2c033830af031b9902e6"
+    },
+    {
+      "path": "common/religion/doctrine_types/20_doctrines_judaism.txt",
+      "sha256": "599dd295c7bfa3a0cab2fcbe3513c7b8598ee9a9e76744e630a63de541d4929b"
+    },
+    {
+      "path": "common/religion/doctrine_types/20_doctrines_zoroastrianism.txt",
+      "sha256": "d1aae00fd622a62bbfc6bcd3edca3d7ec6a9b1675e3c7f682782af38dd2c43fa"
+    },
+    {
+      "path": "common/religion/doctrine_types/40_doctrines_special.txt",
+      "sha256": "1c6a23f1363b1bdf9c6ebe919d8defc7d3daeb3bda0eece0cd1fbf1f0506d823"
+    },
+    {
+      "path": "common/religion/tenet_types/00_pam_tenets.txt",
+      "sha256": "5d57cf371aedf4d2266286b8fe30d7f0c90eb8d4079019712c907a4b954ce02a"
+    },
+    {
+      "path": "common/religion/tenet_types/00_tenet_types.txt",
+      "sha256": "d9e18a077d81f18f030d795ef45cb4aa5b7db246007043d5b0fe401baaf88abd"
+    }
+  ],
+  "native_doctrine_key_count": 126,
+  "native_tenet_key_count": 97,
+  "lyd_tenet_keys": [
+    "lyd_tenet_reverent_heaven",
+    "lyd_tenet_sincerity_solitude",
+    "lyd_tenet_ritual_music",
+    "lyd_tenet_ancestral_reverence",
+    "lyd_tenet_names_duties",
+    "lyd_tenet_humaneness_righteousness",
+    "lyd_tenet_righteous_remonstrance",
+    "lyd_tenet_sage_transmission",
+    "lyd_tenet_extend_sprouts",
+    "lyd_tenet_deliberate_cultivation",
+    "lyd_tenet_righteous_qi",
+    "lyd_tenet_portent_reflection",
+    "lyd_tenet_qi_kinship",
+    "lyd_tenet_investigate_principle",
+    "lyd_tenet_reverent_attention",
+    "lyd_tenet_original_heart",
+    "lyd_tenet_innate_knowing",
+    "lyd_tenet_knowing_acting",
+    "lyd_tenet_textual_ritual",
+    "lyd_tenet_classical_synthesis",
+    "lyd_tenet_annals_judgment",
+    "lyd_tenet_constant_heaven",
+    "lyd_tenet_restore_nature",
+    "lyd_tenet_ordinary_life",
+    "lyd_tenet_six_arts",
+    "lyd_tenet_philological_way",
+    "lyd_tenet_moral_achievement",
+    "lyd_tenet_restrain_violence",
+    "lyd_tenet_subtle_intentions",
+    "lyd_tenet_responsive_interpretation",
+    "lyd_tenet_images_numbers",
+    "lyd_tenet_profound_interpretation",
+    "lyd_tenet_knowing_acting_support",
+    "lyd_tenet_ongoing_generation",
+    "lyd_tenet_quiet_self_attainment",
+    "lyd_tenet_recognition_everywhere"
+  ],
+  "lyd_tenet_source_sha256": "410f0c593aa47bec13ae1d85fde9d956aae1a12bd6a2a4d6c1b4767cfc0c15de",
+  "lyd_tenet_keys_in_doctrine_catalog": [],
+  "class_boundary": "Distinct source Doctrine/Tenet databases. Comparator calls only any_doctrine/rite_has_doctrine; next cold run must verify native enumeration behavior."
+}

@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\mod_li_yu_dao\tools\test_content_leadership.py", line 22, in <module>
+    from validate_static import guarded_effect, player_guard
+ImportError: cannot import name 'guarded_effect' from 'validate_static' (C:\workspace\ck3_eternal_recurrence\tools\validate_static.py)

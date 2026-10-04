@@ -21,11 +21,15 @@ lyd_c2_commit_effect = {
 lyd_c2_commit_join_effect = {
     if = {
         limit = { is_ai = no lyd_c2_ready_to_confirm_trigger = { ACTOR = scope:lyd_c2_actor } var:lyd_c2_kind = 1 }
+        # Quoted argument syntax cannot interpolate an ACTOR variable path.
+        # Bind the actual captured receiving main Rite before any mutation.
+        var:lyd_c2_target_main = { save_scope_as = lyd_c2_native_target_main }
         # PRE-change singleton snapshot; migration may create a backup main rite.
         lyd_c2_retire_source_head_effect = yes
         if = { limit = { lyd_c2_retirement_postcondition_trigger = { ACTOR = scope:lyd_c2_actor } }
             var:lyd_c2_moving_rite = {
                 lyd_c3_before_rite_migration_effect = yes
+                lyd_c3_cleanup_rite_claim_offices_effect = yes
                 set_parent_faith = { target = scope:lyd_c2_actor.var:lyd_c2_target_faith main = no include_derived = no }
             }
             if = {
@@ -33,7 +37,7 @@ lyd_c2_commit_join_effect = {
                     var:lyd_c2_moving_rite = {
                         faith = scope:lyd_c2_actor.var:lyd_c2_target_faith
                         this != faith.main_rite
-                        "divergence(scope:lyd_c2_actor.var:lyd_c2_target_main)" < 100
+                        "divergence(scope:lyd_c2_native_target_main)" < 100
                     }
                     var:lyd_c2_target_faith = { main_rite = scope:lyd_c2_actor.var:lyd_c2_target_main }
                     lyd_c2_retirement_postcondition_trigger = { ACTOR = scope:lyd_c2_actor }
@@ -44,7 +48,6 @@ lyd_c2_commit_join_effect = {
                 var:lyd_c2_moving_rite = { set_variable = { name = lyd_c2_transition_cooldown value = 1 days = 1825 } }
                 remove_short_term_gold = 300
                 add_piety = -1500
-                set_variable = { name = lyd_c2_latest_faith value = var:lyd_c2_target_faith }
                 set_variable = { name = lyd_c2_result value = 1 }
                 change_variable = { name = lyd_c2_completed_joins add = 1 }
                 lyd_c2_reconcile_after_transition_effect = yes
@@ -60,7 +63,10 @@ lyd_c2_commit_detach_effect = {
     if = {
         limit = { is_ai = no lyd_c2_ready_to_confirm_trigger = { ACTOR = scope:lyd_c2_actor } var:lyd_c2_kind = 2 }
         # Character-scoped invocation plus saved returned Faith, as in R0002.
-        var:lyd_c2_moving_rite = { lyd_c3_before_rite_migration_effect = yes }
+        var:lyd_c2_moving_rite = {
+            lyd_c3_before_rite_migration_effect = yes
+            lyd_c3_cleanup_rite_claim_offices_effect = yes
+        }
         detach_rite_to_new_faith = { target = var:lyd_c2_moving_rite save_scope_as = lyd_c2_new_faith }
         lyd_c2_create_owned_temporal_head_effect = yes
         if = {
@@ -81,7 +87,6 @@ lyd_c2_commit_detach_effect = {
             var:lyd_c2_moving_rite = { set_variable = { name = lyd_c2_transition_cooldown value = 1 days = 1825 } }
             remove_short_term_gold = 200
             add_piety = -1000
-            set_variable = { name = lyd_c2_latest_faith value = scope:lyd_c2_new_faith }
             set_variable = { name = lyd_c2_result value = 1 }
             change_variable = { name = lyd_c2_completed_detaches add = 1 }
             lyd_c2_reconcile_after_transition_effect = yes

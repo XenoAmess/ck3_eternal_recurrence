@@ -1,0 +1,17 @@
+test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor (__main__.ContentLeadershipIntegrationTests.test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor) ... FAIL
+
+======================================================================
+FAIL: test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor (__main__.ContentLeadershipIntegrationTests.test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i3-i4-offline-integration-001\test_content_leadership.py", line 289, in test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor
+    self.assertFalse(any(e.key in {"set_head_of_rite","set_rite_head","set_head_of_rite_title","set_religious_head"}
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                         for e,_ in self.c.operations(body)), f"Invented native setter in {effect}")
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : Invented native setter in lyd_c3_leave_teacher_effect
+
+----------------------------------------------------------------------
+Ran 1 test in 0.087s
+
+FAILED (failures=1)

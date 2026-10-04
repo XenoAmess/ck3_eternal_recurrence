@@ -1,0 +1,81 @@
+{
+  "component": "school-consent",
+  "baseline_commit": "588492d3dbf473226664220b722a04b66ae54bae",
+  "game_reference": "1.20.0.3",
+  "result": "PASS_OFFLINE_RENDER",
+  "mismatches": [],
+  "native_primitive": "R0002_PRIMITIVES_PERMANENT_TRACKED_PROOF_BOUND",
+  "native_admission_default": false,
+  "native_admission": {
+    "admitted": true,
+    "status": "R0002_PRIMITIVES_PERMANENT_TRACKED_PROOF_BOUND",
+    "receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\iteration2-native-load-fix-candidate-001\\candidate\\mod_li_yu_dao\\tools\\reference\\native-primitive-tracked-admission.json",
+    "receipt_sha256": "558e6c6aee6364abee0d1065f09a35d782765a2ae469a14b62461d19b47d3dd6",
+    "evidence_refs": [
+      {
+        "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/native-primitive-attestation-candidate-v2.json",
+        "sha256": "50bad54b995723026bd26842f258376c86447547791357f6c5ad809750891b5d"
+      },
+      {
+        "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/three-rounds.summary.json",
+        "sha256": "a436aec37b9e71e05a47329c69354195ad69deade8711172e16b777d2aa1d1c5"
+      },
+      {
+        "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/debug-marker-lines.raw.log",
+        "sha256": "8564747babb9b8b4d46992bfb17412f086acd60604596c401a8d6a5c6f5f2d10"
+      },
+      {
+        "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/source-r0002/fixture/common/scripted_effects/lyd_np_effects.txt",
+        "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d"
+      },
+      {
+        "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/source-r0002/fixture/common/scripted_triggers/lyd_np_triggers.txt",
+        "sha256": "7c1bc919d2ddf3dfc5b59969ea1cb4b795e4a172e8ad1d984acadc048ed25cff"
+      },
+      {
+        "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/error-classification-addendum.json",
+        "sha256": "2f3a464edf7541aa3b813f5bf39d0400dc6e2fd29d36bea80fbd05f83fe84a48"
+      },
+      {
+        "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/character-36445.excerpt.txt",
+        "sha256": "885419cc4df4e419e36805afab250ce73fa1d6c404a5d2b4ad3925909acdae42"
+      },
+      {
+        "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/rite-151.excerpt.txt",
+        "sha256": "69f5483d4d944da4ebce92c6bddaccd1a74cfdbd9edd01823f9fa006e5904b98"
+      },
+      {
+        "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/faith-108.excerpt.txt",
+        "sha256": "fc56c5494e2eae9984e2d6f3f79a5482a2cae93a80299f79043d7851394e9baf"
+      },
+      {
+        "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/title-18417.excerpt.txt",
+        "sha256": "3e3010bfac4739e0b4e6a33f99b641e8662fa2904d581805d77abc42efb49cbb"
+      }
+    ],
+    "consent_flow_live": "NOT_RUN",
+    "shared_narrow_head_factory_live": "NOT_RUN",
+    "zero_error_acceptance": "NOT_CLAIMED_UNRESOLVED_ERROR_RECORDS",
+    "revalidation_level": "TRACKED_REPORT_AND_EXCERPTS_ONLY",
+    "raw_save_rehashed_this_run": false,
+    "boundary": "Original bound artifact/projection hashes are preserved facts; no new raw-save or native execution claim."
+  },
+  "live": "NOT_RUN",
+  "include_shared": false,
+  "files": {
+    "common/character_interactions/lyd_c2_consent_interactions.txt": "b0917c250f3c89d829c4b852417da4e87e80179d4d62329d99cd14c687f6f89c",
+    "common/decisions/lyd_c2_consent_decisions.txt": "e86389bf29a5728e7ac48d3c973878f557cb47c006f0f4c56119f8c76de62516",
+    "common/script_values/lyd_c2_consent_values.txt": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae",
+    "common/scripted_effects/lyd_c2_close_effects.txt": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01",
+    "common/scripted_effects/lyd_c2_commit_effects.txt": "95f77a49c6bba1d1d82f4f4b654bdf09a7af9a2a8d6a285daf19686354ef4442",
+    "common/scripted_effects/lyd_c2_head_effects.txt": "bb6fb2f7d884792a9f97025afd5859d2f79f3043f9ea707f986c93f055618448",
+    "common/scripted_effects/lyd_c2_response_effects.txt": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47",
+    "common/scripted_effects/lyd_c2_setup_effects.txt": "9cc7b2271437062cd03ef6ca1cb1856e874bf3fee648749df67f5e5eafab28eb",
+    "common/scripted_effects/lyd_c2_snapshot_effects.txt": "ba5b02a594aab32e475cfc2bb6d368ed14a11b1316f60354a3a09585e052529d",
+    "common/scripted_effects/lyd_c2_vote_effects.txt": "360659bd3f0e95be69391e8b685ec26945466cc59ee263e0f1c6cd62454b34e6",
+    "common/scripted_triggers/lyd_c2_consent_triggers.txt": "0e32e31c4e4362710b5ae31c65981d70ae95e0023a20f55fc10788041d25f7c7",
+    "events/lyd_c2_consent_events.txt": "aeb4ea2062ad58b6c537df2812a965bf85ea7ee525ffce48c6659e7ffb98616e",
+    "localization/english/lyd_c2_consent_l_english.yml": "f12dddaf17f4098a47ba2080428b0097cd1b8cdf203a04a5ea6eea7c876a2d70",
+    "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml": "6cf1eeb0008e7ce1cf8c7b087982a1097d436bdb78031674e5dccef918daa93f"
+  }
+}

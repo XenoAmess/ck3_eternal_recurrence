@@ -447,6 +447,8 @@ def generate(output_root: Path = DEFAULT_OUTPUT, *, check: bool = False,
     output_root = output_root.resolve()
     if output_root == CHECKOUT or (CHECKOUT in output_root.parents and output_root != ROOT):
         raise ValueError("School consent output must be the mod root or outside the checkout")
+    if output_root == ROOT and include_shared:
+        raise ValueError("C3 owns shared runtime files: use gen_runtime.py for the formal mod root")
     admission = native_admission(native_evidence)
     outputs = build_outputs(native_evidence=native_evidence, include_shared=include_shared)
     mismatches = []
@@ -474,13 +476,17 @@ def main() -> int:
     parser.add_argument("--output-root", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--check", action="store_true")
     parser.add_argument("--without-shared", action="store_true",
-                        help="Delegate the two C3 shared files to the leadership generator")
+                        help="Compatibility option; shared files are already delegated by default")
+    parser.add_argument("--with-legacy-shared", action="store_true",
+                        help="Render historical C2-only shared templates in an external candidate directory")
     parser.add_argument("--native-evidence", type=Path, default=DEFAULT_NATIVE_EVIDENCE,
                         help="Permanent tracked primitive-only R0002 admission (default: tools/reference receipt)")
     parser.add_argument("--report", type=Path)
     args = parser.parse_args()
+    if args.without_shared and args.with_legacy_shared:
+        parser.error("Shared output options are mutually exclusive")
     result = generate(args.output_root, check=args.check, native_evidence=args.native_evidence,
-                      include_shared=not args.without_shared)
+                      include_shared=args.with_legacy_shared)
     if args.report:
         report_path = args.report.resolve()
         if report_path == CHECKOUT or CHECKOUT in report_path.parents:

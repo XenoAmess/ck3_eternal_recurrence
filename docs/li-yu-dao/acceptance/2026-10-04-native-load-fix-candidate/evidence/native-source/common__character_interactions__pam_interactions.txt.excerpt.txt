@@ -1,0 +1,17 @@
+18263: 	is_shown = {
+18264: 		scope:recipient = {
+18265: 			is_adult = yes
+18266: 			faith ?= scope:actor.faith
+18267: 			rite != scope:actor.rite
+18268: 			rite.head_of_rite ?= this
+18269: 		}
+18270: 		any_doctrine = {
+18271: 			scope:actor.rite ?= {
+18272: 				rite_has_doctrine = prev
+18273: 			}
+18274: 			scope:recipient.rite ?= {
+18275: 				NOT = { rite_has_doctrine = prev }
+18276: 			}
+18277: 			pam_doctrine_can_be_reaffirm = yes
+18278: 		}
+18279: 	}

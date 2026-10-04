@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\run_acceptance.py",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\formal-i3-i4-l0-001\\runner"
+  ],
+  "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+  "started_at": "2026-10-04T10:56:22.867328+00:00",
+  "stdout": {
+    "bytes": 257,
+    "sha256": "17e601dbef9f4837e5cec768c3d3ac8f087352de032fa8b76dcd80643c41e34f"
+  },
+  "stderr": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "returncode": 1,
+  "finished_at": "2026-10-04T10:56:27.500807+00:00"
+}

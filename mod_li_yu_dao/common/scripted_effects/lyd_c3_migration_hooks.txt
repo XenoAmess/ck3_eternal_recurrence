@@ -1,4 +1,4 @@
-﻿# GENERATED FILE: edit mod_li_yu_dao/tools/school_consent_templates or tools/gen_school_consent.py.
+﻿# GENERATED FILE: edit tools/leadership_templates and run tools/gen_runtime.py.
 # Standalone I2 integration hooks. They never touch c2 locks/serial/electorates or native title ownership.
 # Rite ROOT, called from an already authorized player migration chain before the native setter.
 lyd_c3_before_rite_migration_effect = {
@@ -26,7 +26,6 @@ lyd_c3_reconcile_faith_roles_effect = {
                 }
             }
             remove_variable = lyd_c3_recognized_leader
-            set_variable = { name = lyd_c3_vacancy value = 1 }
         }
     }
 }

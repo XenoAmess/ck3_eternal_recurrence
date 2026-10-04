@@ -1,0 +1,1614 @@
+{
+  "scope": "Current production common/events C3 persistent fields and flags only; temporary saved scopes and localization excluded",
+  "rule": "remove/clear is not a consumer; conditions/value reads/list enumeration are consumers",
+  "source_sha256": {
+    "common/character_interactions/lyd_c2_consent_interactions.txt": "b0917c250f3c89d829c4b852417da4e87e80179d4d62329d99cd14c687f6f89c",
+    "common/character_interactions/lyd_c3_teacher_interactions.txt": "abe1bb4f106292dc76a8ce7f58ef23572a4a931d353bde6556c0eb3fa61d3c99",
+    "common/character_interactions/lyd_interactions.txt": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba",
+    "common/decisions/lyd_c2_consent_decisions.txt": "e86389bf29a5728e7ac48d3c973878f557cb47c006f0f4c56119f8c76de62516",
+    "common/decisions/lyd_c3_leadership_decisions.txt": "098dcb8a5505864e41d52f795fd3bbb3bcce4d5fee2cd1e0ff1f91faf2525673",
+    "common/decisions/lyd_decisions.txt": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e",
+    "common/on_action/lyd_c3_lifecycle_on_actions.txt": "19c1773ebb82bbfe75d95a629f9ffda73a521c9afe0060cf55f438a2b96fe19b",
+    "common/religion/faith_types/lyd_faiths.txt": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525",
+    "common/religion/rite_types/lyd_rites.txt": "929fb9f7cc6df5a7e8a1acfcc07b43ace9a397bb22246e6884884d5920762a20",
+    "common/religion/tenet_types/lyd_tenets.txt": "410f0c593aa47bec13ae1d85fde9d956aae1a12bd6a2a4d6c1b4767cfc0c15de",
+    "common/script_values/lyd_c2_consent_values.txt": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae",
+    "common/scripted_effects/lyd_c2_close_effects.txt": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01",
+    "common/scripted_effects/lyd_c2_commit_effects.txt": "003eaf9359bb09d47ceb4aa89a68df24017aa9c3722b5ac2379197f9a7dce426",
+    "common/scripted_effects/lyd_c2_head_effects.txt": "bb6fb2f7d884792a9f97025afd5859d2f79f3043f9ea707f986c93f055618448",
+    "common/scripted_effects/lyd_c2_response_effects.txt": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47",
+    "common/scripted_effects/lyd_c2_setup_effects.txt": "9cc7b2271437062cd03ef6ca1cb1856e874bf3fee648749df67f5e5eafab28eb",
+    "common/scripted_effects/lyd_c2_snapshot_effects.txt": "ba5b02a594aab32e475cfc2bb6d368ed14a11b1316f60354a3a09585e052529d",
+    "common/scripted_effects/lyd_c2_vote_effects.txt": "360659bd3f0e95be69391e8b685ec26945466cc59ee263e0f1c6cd62454b34e6",
+    "common/scripted_effects/lyd_c3_challenger_effects.txt": "af3c5cabc8e6123a5d76aeed59bf0e85db8e9bcf39c85118b0ab85ee746ea89c",
+    "common/scripted_effects/lyd_c3_council_effects.txt": "808c9d1345b8e6374dff65fb4dc2cbb6414718d57a3f763121c25985b615afd9",
+    "common/scripted_effects/lyd_c3_head_factory.txt": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24",
+    "common/scripted_effects/lyd_c3_lifecycle_effects.txt": "2918dc994614a2e655455bf8581879e7086e1726b8e0e5e15e2ddfbc2c96478a",
+    "common/scripted_effects/lyd_c3_migration_hooks.txt": "4e3971eef8fda43de95717f3d686f610e20eb70de8514451fb2e51aba85759b2",
+    "common/scripted_effects/lyd_entry_effects.txt": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e",
+    "common/scripted_effects/lyd_practice_10_effects.txt": "3ca648c00476c6360777685f95892ba881b370028aac6421f27dc327ddd6d873",
+    "common/scripted_effects/lyd_practice_11_effects.txt": "bbb2ffc2af52aa54b3753147e6adab8f3d3fa191cc32072094a354a4b145c7f1",
+    "common/scripted_effects/lyd_practice_12_effects.txt": "4a11f39e7ad438971f9197eea0250a82dcfa5320ab5308157c6aec33a1178949",
+    "common/scripted_effects/lyd_practice_13_effects.txt": "f20eab97c7fa78b98e986d427627b37578faff2fea17b0ddfad9c879b0f4d68c",
+    "common/scripted_effects/lyd_practice_14_effects.txt": "dba733183cc1c66355a44b6ce78e8f3d91ef35b0464ae7da6127dc8ebf7bbf92",
+    "common/scripted_effects/lyd_practice_1_effects.txt": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7",
+    "common/scripted_effects/lyd_practice_2_effects.txt": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879",
+    "common/scripted_effects/lyd_practice_3_effects.txt": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131",
+    "common/scripted_effects/lyd_practice_4_effects.txt": "c4e215a15a98159b9f49d94937a0e81a7c1a5366e2fbe03b091f1962f27f1d52",
+    "common/scripted_effects/lyd_practice_5_effects.txt": "fcb35efef5e5e766befbd3caa5ad8dc7faf5baea3f1852254759ece65dd4fd38",
+    "common/scripted_effects/lyd_practice_6_effects.txt": "731324e20ebd99a8f20e2a1a97473b091d497ac37f33fdefad1a1c0810fb8ee9",
+    "common/scripted_effects/lyd_practice_7_effects.txt": "b5e27005dbea499d63716ba9956996ecd2948dade6d46833ad1df3596079de8f",
+    "common/scripted_effects/lyd_practice_8_effects.txt": "e6c9ad63b57f81e9ff57f0cc146859d2c9b281225f859ffefe101aad9c0a80bf",
+    "common/scripted_effects/lyd_practice_9_effects.txt": "f24b7fcff5d34c21e2186b498a4ef0e7dfcb810ee5bb8ff5321ac8d2cafd2cb0",
+    "common/scripted_effects/lyd_school_2_effects.txt": "7d730f4fd8e01d9664b44dd8df607c56df1850425b0cc04ab834d891cc127491",
+    "common/scripted_effects/lyd_school_3_effects.txt": "88230a78a2d27285b11a805c6762e78f2d3c2b472d1f61c862fd9117f0705eab",
+    "common/scripted_effects/lyd_school_4_effects.txt": "e2c098a86e9f39fcec43bffc74b57f0573c60e59faf5db7edf872b197f253234",
+    "common/scripted_effects/lyd_school_5_effects.txt": "24395a459573ef5f9ad0e066a88fb9d5e7895e04f5527e88103f1f5ab0a9414a",
+    "common/scripted_effects/lyd_school_effects.txt": "d9b1456c4a5e7610807ae7e61f4bbfdc8b432968d776befcbd32abd5e6dc6008",
+    "common/scripted_triggers/lyd_c2_consent_triggers.txt": "0e32e31c4e4362710b5ae31c65981d70ae95e0023a20f55fc10788041d25f7c7",
+    "common/scripted_triggers/lyd_c3_leadership_triggers.txt": "bac466e78388dc5cfd9b0f2e26307b29144cb62cd70fb1f7774e992d958dce5e",
+    "common/scripted_triggers/lyd_player_triggers.txt": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e",
+    "events/lyd_c2_consent_events.txt": "aeb4ea2062ad58b6c537df2812a965bf85ea7ee525ffce48c6659e7ffb98616e",
+    "events/lyd_c3_leadership_events.txt": "591f1c791c286916efcb179e9c340dc241da37e6a73d53e1c661e40b538c50e1",
+    "events/lyd_events.txt": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24"
+  },
+  "fields": {
+    "lyd_c3_active": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+          "definition": "lyd_c3_declare_claim_decision",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+          "definition": "lyd_c3_withdraw_claim_decision",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+          "definition": "lyd_c3_begin_council_decision",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+          "definition": "lyd_c3_review_council_decision",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+          "definition": "lyd_c3_cancel_council_decision",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/on_action/lyd_c3_lifecycle_on_actions.txt",
+          "definition": "lyd_c3_on_death",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_death_cleanup_effect",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_player_reconcile_effect",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_player_reconcile_effect",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "has_variable"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_affected_owner": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "var:lyd_c3_affected_owner"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "var:lyd_c3_affected_owner"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "var:lyd_c3_affected_owner"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_player_ballot_context_trigger",
+          "operation": "var:lyd_c3_affected_owner"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_affected_rite": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "rite=var:lyd_c3_affected_rite"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_affected_serial": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "var:lyd_c3_affected_serial"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "var:lyd_c3_affected_serial"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "var:lyd_c3_affected_serial"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_player_ballot_context_trigger",
+          "operation": "var:lyd_c3_affected_serial"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_claim_faith": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_declare_claim_effect",
+          "operation": "set_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_nomination_accepted_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/on_action/lyd_c3_lifecycle_on_actions.txt",
+          "definition": "lyd_c3_on_death",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_death_cleanup_effect",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_claim_current_trigger",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_claim_current_trigger",
+          "operation": "faith=var:lyd_c3_claim_faith"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_withdraw_claim_effect",
+          "operation": "remove_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_migration_hooks.txt",
+          "definition": "lyd_c3_before_rite_migration_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_claim_rite": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_declare_claim_effect",
+          "operation": "set_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_nomination_accepted_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_migration_hooks.txt",
+          "definition": "lyd_c3_before_rite_migration_effect",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_migration_hooks.txt",
+          "definition": "lyd_c3_before_rite_migration_effect",
+          "operation": "var:lyd_c3_claim_rite"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_claim_current_trigger",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_claim_current_trigger",
+          "operation": "rite=var:lyd_c3_claim_rite"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_withdraw_claim_effect",
+          "operation": "remove_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_migration_hooks.txt",
+          "definition": "lyd_c3_before_rite_migration_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_claim_sponsor": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_nomination_accepted_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/character_interactions/lyd_c3_teacher_interactions.txt",
+          "definition": "lyd_c3_request_withdraw_interaction",
+          "operation": "var:lyd_c3_claim_sponsor"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_withdraw_claim_effect",
+          "operation": "var:lyd_c3_claim_sponsor"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_nominated_withdrawal_accepted_effect",
+          "operation": "var:lyd_c3_claim_sponsor"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_cleanup_rite_claim_offices_effect",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_death_cleanup_effect",
+          "operation": "var:lyd_c3_claim_sponsor"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_withdraw_claim_effect",
+          "operation": "remove_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_death_cleanup_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_claim_title": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_declare_claim_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+          "definition": "lyd_c3_declare_claim_decision",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_declare_claim_effect",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_withdraw_claim_effect",
+          "operation": "var:lyd_c3_claim_title"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_cleanup_rite_claim_offices_effect",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_cleanup_rite_claim_offices_effect",
+          "operation": "var:lyd_c3_claim_title"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_death_cleanup_effect",
+          "operation": "has_variable"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_withdraw_claim_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_claimant": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_declare_claim_effect",
+          "operation": "add_character_flag"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_nomination_accepted_effect",
+          "operation": "add_character_flag"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/character_interactions/lyd_c3_teacher_interactions.txt",
+          "definition": "lyd_c3_nominate_claim_interaction",
+          "operation": "has_character_flag"
+        },
+        {
+          "path": "common/character_interactions/lyd_c3_teacher_interactions.txt",
+          "definition": "lyd_c3_nominate_claim_interaction",
+          "operation": "has_character_flag"
+        },
+        {
+          "path": "common/character_interactions/lyd_c3_teacher_interactions.txt",
+          "definition": "lyd_c3_request_withdraw_interaction",
+          "operation": "has_character_flag"
+        },
+        {
+          "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+          "definition": "lyd_c3_declare_claim_decision",
+          "operation": "has_character_flag"
+        },
+        {
+          "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+          "definition": "lyd_c3_withdraw_claim_decision",
+          "operation": "has_character_flag"
+        },
+        {
+          "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+          "definition": "lyd_c3_begin_council_decision",
+          "operation": "has_character_flag"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_declare_claim_effect",
+          "operation": "has_character_flag"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_nomination_accepted_effect",
+          "operation": "has_character_flag"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_nominated_withdrawal_accepted_effect",
+          "operation": "has_character_flag"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_death_cleanup_effect",
+          "operation": "has_character_flag"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_player_reconcile_effect",
+          "operation": "has_character_flag"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_claim_current_trigger",
+          "operation": "has_character_flag"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_withdraw_claim_effect",
+          "operation": "remove_character_flag"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_migration_hooks.txt",
+          "definition": "lyd_c3_before_rite_migration_effect",
+          "operation": "remove_character_flag"
+        }
+      ]
+    },
+    "lyd_c3_delegate": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "exists=var:lyd_c3_delegate"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "var:lyd_c3_delegate"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "head_of_rite=var:lyd_c3_delegate"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "var:lyd_c3_delegate"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_delegate_context_trigger",
+          "operation": "this=scope:lyd_c3_ballot_rite.var:lyd_c3_delegate"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "remove_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "remove_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_player_reconcile_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_delegate_required": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "set_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "var:lyd_c3_delegate_required"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "var:lyd_c3_delegate_required"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "var:lyd_c3_delegate_required"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_can_recognize_trigger",
+          "operation": "var:lyd_c3_delegate_required"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "remove_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_player_reconcile_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_delegate_yes": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "set_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_delegate_yes_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_delegate_context_trigger",
+          "operation": "var:lyd_c3_delegate_yes"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_can_recognize_trigger",
+          "operation": "var:lyd_c3_delegate_yes"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "remove_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_player_reconcile_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_head_creation_authorized": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c2_head_effects.txt",
+          "definition": "lyd_c2_create_owned_temporal_head_effect",
+          "operation": "set_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_recognize_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_head_factory.txt",
+          "definition": "lyd_c3_create_owned_temporal_head_effect",
+          "operation": "has_variable"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c2_head_effects.txt",
+          "definition": "lyd_c2_create_owned_temporal_head_effect",
+          "operation": "remove_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_recognize_effect",
+          "operation": "remove_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_head_factory.txt",
+          "definition": "lyd_c3_create_owned_temporal_head_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_head_yes": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "set_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "set_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_incumbent_yes_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_can_recognize_trigger",
+          "operation": "var:lyd_c3_head_yes"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_lock_serial": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "var:lyd_c3_lock_serial"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "var:lyd_c3_lock_serial"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "var:lyd_c3_lock_serial"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_delegate_context_trigger",
+          "operation": "var:lyd_c3_lock_serial"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "remove_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_player_reconcile_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_nominated_claimant": {
+      "writers": [
+        {
+          "path": "common/character_interactions/lyd_c3_teacher_interactions.txt",
+          "definition": "lyd_c3_nominate_claim_interaction",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/character_interactions/lyd_c3_teacher_interactions.txt",
+          "definition": "lyd_c3_nominate_claim_interaction",
+          "operation": "var:lyd_c3_nominated_claimant"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_nomination_accepted_effect",
+          "operation": "var:lyd_c3_nominated_claimant"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/character_interactions/lyd_c3_teacher_interactions.txt",
+          "definition": "lyd_c3_nominate_claim_interaction",
+          "operation": "remove_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_nomination_accepted_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_office_faith": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_recognize_effect",
+          "operation": "set_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_head_factory.txt",
+          "definition": "lyd_c3_create_owned_temporal_head_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/on_action/lyd_c3_lifecycle_on_actions.txt",
+          "definition": "lyd_c3_on_death",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_death_cleanup_effect",
+          "operation": "var:lyd_c3_office_faith"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_player_reconcile_effect",
+          "operation": "var:lyd_c3_office_faith"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_abdicate_owned_head_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_owned_claim_title": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_declare_claim_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_withdraw_claim_effect",
+          "operation": "var:lyd_c3_owned_claim_title"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_cleanup_rite_claim_offices_effect",
+          "operation": "var:lyd_c3_owned_claim_title"
+        }
+      ],
+      "removals": []
+    },
+    "lyd_c3_owner_faith": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_declare_claim_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_withdraw_claim_effect",
+          "operation": "exists=var:lyd_c3_owner_faith.religious_head_title"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_withdraw_claim_effect",
+          "operation": "this=var:lyd_c3_owner_faith.religious_head_title"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_withdraw_claim_effect",
+          "operation": "var:lyd_c3_owner_faith"
+        }
+      ],
+      "removals": []
+    },
+    "lyd_c3_owner_rite": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_declare_claim_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_cleanup_rite_claim_offices_effect",
+          "operation": "var:lyd_c3_owner_rite"
+        }
+      ],
+      "removals": []
+    },
+    "lyd_c3_personal_teacher": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_accept_teacher_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+          "definition": "lyd_c3_leave_teacher_decision",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/on_action/lyd_c3_lifecycle_on_actions.txt",
+          "definition": "lyd_c3_on_death",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_leave_teacher_effect",
+          "operation": "var:lyd_c3_personal_teacher"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_death_cleanup_effect",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_death_cleanup_effect",
+          "operation": "var:lyd_c3_personal_teacher"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_player_reconcile_effect",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_player_reconcile_effect",
+          "operation": "var:lyd_c3_personal_teacher"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_leave_teacher_effect",
+          "operation": "remove_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_death_cleanup_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_player_yes": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "set_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_player_yes_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_player_ballot_context_trigger",
+          "operation": "var:lyd_c3_player_yes"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_can_recognize_trigger",
+          "operation": "var:lyd_c3_player_yes"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_players": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "add_to_variable_list"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "every_in_list"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "every_in_list"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "any_in_list"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_can_recognize_trigger",
+          "operation": "any_in_list"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "clear_variable_list"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "clear_variable_list"
+        }
+      ]
+    },
+    "lyd_c3_proposal_owner": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+          "definition": "lyd_c3_begin_council_decision",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+          "definition": "lyd_c3_abdicate_decision",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "var:lyd_c3_proposal_owner"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_player_reconcile_effect",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_player_reconcile_effect",
+          "operation": "var:lyd_c3_proposal_owner"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_player_reconcile_effect",
+          "operation": "var:lyd_c3_proposal_owner"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c2_consent_triggers.txt",
+          "definition": "lyd_c2_school_free_trigger",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c2_consent_triggers.txt",
+          "definition": "lyd_c2_receiver_free_trigger",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "var:lyd_c3_proposal_owner"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "var:lyd_c3_proposal_owner"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_delegate_context_trigger",
+          "operation": "var:lyd_c3_proposal_owner"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "remove_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_player_reconcile_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_protected_titles": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "add_to_variable_list"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_recognize_effect",
+          "operation": "any_in_list"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "clear_variable_list"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "clear_variable_list"
+        }
+      ]
+    },
+    "lyd_c3_recognized_leader": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_recognize_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_death_cleanup_effect",
+          "operation": "var:lyd_c3_recognized_leader"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_migration_hooks.txt",
+          "definition": "lyd_c3_reconcile_faith_roles_effect",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_migration_hooks.txt",
+          "definition": "lyd_c3_reconcile_faith_roles_effect",
+          "operation": "exists=var:lyd_c3_recognized_leader"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_migration_hooks.txt",
+          "definition": "lyd_c3_reconcile_faith_roles_effect",
+          "operation": "religious_head=var:lyd_c3_recognized_leader"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_migration_hooks.txt",
+          "definition": "lyd_c3_reconcile_faith_roles_effect",
+          "operation": "var:lyd_c3_recognized_leader"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_abdicate_owned_head_effect",
+          "operation": "remove_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_death_cleanup_effect",
+          "operation": "remove_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_migration_hooks.txt",
+          "definition": "lyd_c3_reconcile_faith_roles_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_rites": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "add_to_variable_list"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "every_in_list"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "every_in_list"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "any_in_list"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_can_recognize_trigger",
+          "operation": "any_in_list"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "clear_variable_list"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "clear_variable_list"
+        }
+      ]
+    },
+    "lyd_c3_round_faith": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_recognize_effect",
+          "operation": "faith=var:lyd_c3_round_faith"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "faith=var:lyd_c3_round_faith"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "faith=$ACTOR$.var:lyd_c3_round_faith"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "faith=$ACTOR$.var:lyd_c3_round_faith"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "var:lyd_c3_round_faith"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "faith=$ACTOR$.var:lyd_c3_round_faith"
+        }
+      ],
+      "removals": []
+    },
+    "lyd_c3_round_head": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "var:lyd_c3_round_head"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_incumbent_yes_effect",
+          "operation": "this=scope:lyd_c3_actor.var:lyd_c3_round_head"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_recognize_effect",
+          "operation": "holder=scope:lyd_c3_actor.var:lyd_c3_round_head"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "faith.religious_head=var:lyd_c3_round_head"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "var:lyd_c3_round_head"
+        },
+        {
+          "path": "events/lyd_c3_leadership_events.txt",
+          "definition": "lyd.312",
+          "operation": "this=scope:lyd_c3_actor.var:lyd_c3_round_head"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "remove_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_round_main": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_recognize_effect",
+          "operation": "faith.main_rite=var:lyd_c3_round_main"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "rite=var:lyd_c3_round_main"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "faith.main_rite=var:lyd_c3_round_main"
+        }
+      ],
+      "removals": []
+    },
+    "lyd_c3_round_title": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "this=scope:lyd_c3_actor.var:lyd_c3_round_title"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "faith.religious_head_title=var:lyd_c3_round_title"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "remove_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_serial": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "set_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "change_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+          "definition": "lyd_c3_review_council_decision",
+          "operation": "value=var:lyd_c3_serial"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "has_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "change_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_begin_round_effect",
+          "operation": "value=var:lyd_c3_serial"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "var:lyd_c3_lock_serial=scope:lyd_c3_closing_actor.var:lyd_c3_serial"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_release_round_effect",
+          "operation": "var:lyd_c3_affected_serial=scope:lyd_c3_closing_actor.var:lyd_c3_serial"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "var:lyd_c3_lock_serial=$ACTOR$.var:lyd_c3_serial"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "var:lyd_c3_lock_serial=$ACTOR$.var:lyd_c3_serial"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "var:lyd_c3_affected_serial=$ACTOR$.var:lyd_c3_serial"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_round_current_trigger",
+          "operation": "var:lyd_c3_affected_serial=$ACTOR$.var:lyd_c3_serial"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+          "definition": "lyd_c3_response_context_trigger",
+          "operation": "var:lyd_c3_serial"
+        },
+        {
+          "path": "events/lyd_c3_leadership_events.txt",
+          "definition": "lyd.329",
+          "operation": "var:lyd_c3_serial"
+        }
+      ],
+      "removals": []
+    },
+    "lyd_c3_sponsored_claims": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_nomination_accepted_effect",
+          "operation": "add_to_variable_list"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/on_action/lyd_c3_lifecycle_on_actions.txt",
+          "definition": "lyd_c3_on_death",
+          "operation": "any_in_list"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_death_cleanup_effect",
+          "operation": "every_in_list"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+          "definition": "lyd_c3_withdraw_claim_effect",
+          "operation": "remove_list_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_death_cleanup_effect",
+          "operation": "clear_variable_list"
+        }
+      ]
+    },
+    "lyd_c3_students": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_accept_teacher_effect",
+          "operation": "add_to_variable_list"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/on_action/lyd_c3_lifecycle_on_actions.txt",
+          "definition": "lyd_c3_on_death",
+          "operation": "any_in_list"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_death_cleanup_effect",
+          "operation": "every_in_list"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_leave_teacher_effect",
+          "operation": "remove_list_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_death_cleanup_effect",
+          "operation": "clear_variable_list"
+        }
+      ]
+    },
+    "lyd_c3_teacher_requested": {
+      "writers": [
+        {
+          "path": "common/character_interactions/lyd_c3_teacher_interactions.txt",
+          "definition": "lyd_c3_request_teacher_interaction",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "common/character_interactions/lyd_c3_teacher_interactions.txt",
+          "definition": "lyd_c3_request_teacher_interaction",
+          "operation": "var:lyd_c3_teacher_requested"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_accept_teacher_effect",
+          "operation": "var:lyd_c3_teacher_requested"
+        }
+      ],
+      "removals": [
+        {
+          "path": "common/character_interactions/lyd_c3_teacher_interactions.txt",
+          "definition": "lyd_c3_request_teacher_interaction",
+          "operation": "remove_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_accept_teacher_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    },
+    "lyd_c3_vacancy": {
+      "writers": [
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_abdicate_owned_head_effect",
+          "operation": "set_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+          "definition": "lyd_c3_death_cleanup_effect",
+          "operation": "set_variable"
+        },
+        {
+          "path": "common/scripted_effects/lyd_c3_migration_hooks.txt",
+          "definition": "lyd_c3_reconcile_faith_roles_effect",
+          "operation": "set_variable"
+        }
+      ],
+      "consumers": [],
+      "removals": [
+        {
+          "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+          "definition": "lyd_c3_recognize_effect",
+          "operation": "remove_variable"
+        }
+      ]
+    }
+  },
+  "undefined": [],
+  "unconsumed": [
+    "lyd_c3_vacancy"
+  ],
+  "native_after_fix": "NOT_RUN",
+  "tracked_writes": false
+}

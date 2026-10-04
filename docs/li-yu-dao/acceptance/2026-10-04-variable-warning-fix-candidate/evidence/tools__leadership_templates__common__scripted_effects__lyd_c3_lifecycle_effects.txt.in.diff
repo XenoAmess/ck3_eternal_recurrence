@@ -1,0 +1,18 @@
+--- before/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_lifecycle_effects.txt.in
++++ candidate/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_lifecycle_effects.txt.in
+@@ -38,7 +38,6 @@
+         faith = {
+             remove_religious_head_title = yes
+             remove_variable = lyd_c3_recognized_leader
+-            set_variable = { name = lyd_c3_vacancy value = 1 }
+         }
+         destroy_title = scope:lyd_c3_abdicating_title
+         if = {
+@@ -70,7 +69,6 @@
+         if = {
+             limit = { var:lyd_c3_recognized_leader = scope:lyd_c3_dying_actor }
+             remove_variable = lyd_c3_recognized_leader
+-            set_variable = { name = lyd_c3_vacancy value = 1 }
+         }
+     }
+     debug_log = "LYD_C3_PREDEATH_METADATA_CLEANED"

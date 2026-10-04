@@ -10,6 +10,7 @@
 C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe mod_li_yu_dao/tools/test_build_release.py
 C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe mod_li_yu_dao/tools/test_run_acceptance.py
 C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe mod_li_yu_dao/tools/test_school_consent.py
+C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe mod_li_yu_dao/tools/test_content_leadership.py
 C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe mod_li_yu_dao/tools/gen_content.py --check
 C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe mod_li_yu_dao/tools/gen_runtime.py --check
 C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe mod_li_yu_dao/tools/validate_static.py --report <fresh-attempt>/static.json
@@ -45,6 +46,10 @@ C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe mod_li
 ## 分轮产品验收
 
 第一迭代声明玩家进入、选派与样板祭修。R0003 由普通非领袖玩家开始，独立存档已确认正式入门、取消修习与择师不改变人物块、择朱子礼仪以及一次朱子修习的实际费用、收益与冷却；这些只计代表路径通过。入门决议两条领袖条件缺本地化，整体 UI 仍为 RED；显示修正只有 L0 信用，待新冷载。自然冷却届满、存档重载、完整 8×3 修习和多人尚未执行。I2 正式分合已集成，运行状态仍 `NOT_RUN`；只绑定 R0002 原语准入，不能升级为流程通过。宗师、议定宗主与争统仍待 I3。详见 [R0003 报告](../../docs/li-yu-dao/2026-10-04-R0003-formal-representative-ui-red.md)。失败重跑使用新 attempt，旧证据不改写。
+
+后续集成状态：I3 师承、宗主合议与政治争统、I4 的36派及修习已进入正式源码，实机均 `NOT_RUN`。原生 challenger 登记仍关闭，普通无宗主学统尚无转为世俗宗主制度的正式路径；不能把工厂存在写成全部玩家已可建立宗主。军会与圣物为 `NOT_IMPLEMENTED`，历史时代门禁留二期。
+
+R0004 冷启动为 `RED`，未开战役：[永久报告](../../docs/li-yu-dao/acceptance/2026-10-04-R0004-cold-loading-red/REPORT.md)。发现不支持的教义接口与 quoted divergence 参数展开，以及外置 NPC 创建参数冲突。修复后的保守 Doctrine 集合比较和固定目标 scope 必须在新冷载、真实分合及存档重载中证明；结构 L0 无权豁免这些场景。
 
 | 轮次／编号 | 场景 | 必须观察的实际结果 | 必须保留的证据 |
 | --- | --- | --- | --- |

@@ -19,8 +19,8 @@ from content_data import (
     PARENT_RELIGION,
     PRACTICES,
     RITES,
-    SAMPLE_RITES,
-    SAMPLE_TENETS,
+    ACTIVE_RITES,
+    ACTIVE_TENETS,
     TENETS,
     validate_catalogue,
 )
@@ -33,12 +33,12 @@ TENET_DIVERGENCE_MULTIPLIER = "0.1"
 def render_rites() -> str:
     lines = [
         GENERATED_HEADER,
-        f"# CK3 {GAME_VERSION}; additive sample types only. No vanilla IDs are overridden.",
+        f"# CK3 {GAME_VERSION}; additive 36-rite free-chronology types. No vanilla IDs are overridden.",
         "# Free chronology prototype. Native creation/conversion requires live verification.",
         "# convert=yes permits actual admission; product actions remain guarded player entries.",
         "",
     ]
-    for rite in SAMPLE_RITES:
+    for rite in ACTIVE_RITES:
         color = " ".join(str(channel) for channel in rite.color)
         lines.extend([
             f"# {rite.code}: {rite.name_en}; kind={rite.kind}; era={rite.era}",
@@ -52,7 +52,7 @@ def render_rites() -> str:
             f"\ticon = {rite.icon}",
             "\ttenets = {",
         ])
-        tenets_by_code = {tenet.code: tenet for tenet in SAMPLE_TENETS}
+        tenets_by_code = {tenet.code: tenet for tenet in ACTIVE_TENETS}
         lines.extend(f"\t\t{tenets_by_code[code].script_id}" for code in rite.tenet_codes)
         lines.extend(["\t}", "}", ""])
     return "\n".join(lines)
@@ -61,14 +61,14 @@ def render_rites() -> str:
 def render_tenets() -> str:
     lines = [
         GENERATED_HEADER,
-        f"# CK3 {GAME_VERSION}; additive sample tenets. No all-character modifiers.",
+        f"# CK3 {GAME_VERSION}; additive 36-tenet catalogue. No all-character modifiers.",
         "# Faith selection uses Faith scope. Personal selection has Character scope.",
         "# Faith can_pick has no unguarded is_ai check: its actor can be null.",
         "# Parameters are capability flags, not proof that practice events are connected.",
         "# Local divergence scaling is a prototype input; global defines are untouched.",
         "",
     ]
-    for tenet in SAMPLE_TENETS:
+    for tenet in ACTIVE_TENETS:
         lines.extend([
             f"# {tenet.code}: {tenet.name_en}",
             f"{tenet.script_id} = {{",
@@ -115,7 +115,7 @@ def localization_entries(language: str) -> dict[str, str]:
             raise ValueError(f"Duplicate generated localization: {key}")
         entries[key] = value
 
-    for rite in SAMPLE_RITES:
+    for rite in ACTIVE_RITES:
         name = rite.name_zh if zh else rite.name_en
         put(rite.script_id, name)
         put(f"{rite.script_id}_adj", name)
@@ -123,7 +123,7 @@ def localization_entries(language: str) -> dict[str, str]:
         put(f"{rite.script_id}_adherent_plural", f"{name}诸儒" if zh else f"Followers of {name}")
         put(f"{rite.script_id}_desc", rite.history_zh if zh else rite.history_en)
 
-    for tenet in SAMPLE_TENETS:
+    for tenet in ACTIVE_TENETS:
         put(f"{tenet.script_id}_name", tenet.name_zh if zh else tenet.name_en)
         belief = tenet.belief_zh if zh else tenet.belief_en
         practice = tenet.practice_zh if zh else tenet.practice_en
@@ -163,8 +163,8 @@ def summary() -> dict[str, object]:
     return {
         "catalogue_rites": len(RITES),
         "catalogue_tenets": len(TENETS),
-        "emitted_rites": len(SAMPLE_RITES),
-        "emitted_tenets": len(SAMPLE_TENETS),
+        "emitted_rites": len(ACTIVE_RITES),
+        "emitted_tenets": len(ACTIVE_TENETS),
         "practice_inputs": len(PRACTICES),
         "parent_faith": PARENT_FAITH,
         "parent_religion": PARENT_RELIGION,

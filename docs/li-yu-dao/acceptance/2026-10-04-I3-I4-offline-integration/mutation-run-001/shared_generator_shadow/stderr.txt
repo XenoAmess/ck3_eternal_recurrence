@@ -1,0 +1,16 @@
+test_shared_factory_has_one_formal_generator_owner (__main__.ContentLeadershipIntegrationTests.test_shared_factory_has_one_formal_generator_owner) ... ERROR
+
+======================================================================
+ERROR: test_shared_factory_has_one_formal_generator_owner (__main__.ContentLeadershipIntegrationTests.test_shared_factory_has_one_formal_generator_owner)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i3-i4-offline-integration-001\test_content_leadership.py", line 266, in test_shared_factory_has_one_formal_generator_owner
+    integrated = runtime.build_outputs()
+  File "C:\workspace\ck3_lyd_runtime_20261004\i3-i4-offline-integration-001\mutation-run-001\shared_generator_shadow\source\mod_li_yu_dao\tools\gen_runtime.py", line 342, in build_outputs
+    raise ValueError(f"Duplicate generated runtime paths: {sorted(duplicates)}")
+ValueError: Duplicate generated runtime paths: ['common/scripted_effects/lyd_c3_head_factory.txt', 'common/scripted_effects/lyd_c3_migration_hooks.txt']
+
+----------------------------------------------------------------------
+Ran 1 test in 0.131s
+
+FAILED (errors=1)

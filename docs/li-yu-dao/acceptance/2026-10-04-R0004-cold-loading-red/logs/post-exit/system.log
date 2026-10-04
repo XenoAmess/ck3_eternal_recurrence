@@ -1,0 +1,15 @@
+[17:21:18][D][game_setup.cpp:82]: Exe Git Version: release/1.20.0 : 4fe04c7143e6
+
+[17:21:18][D][game_setup.cpp:86]: Build Timestamp: 2026-10-01 10:07:30 +0000 long hash: 4fe04c7143e6288cf1da609145c22d0ddc3c8878
+
+[17:21:18][I][systemsettings.cpp:206]: CPU Model: Intel(R) Xeon(R) CPU E5-2696 v3 @ 2.30GHz
+[17:21:18][I][systemsettings.cpp:207]: CPU Speed: 2295MHz
+[17:21:18][I][systemsettings.cpp:208]: CPU Physical Cores: 18
+[17:21:18][I][systemsettings.cpp:209]: CPU Logical Cores: 36
+[17:21:18][I][systemsettings.cpp:210]: System Memory: 32609
+[17:21:18][I][systemsettings.cpp:211]: OS: Windows 10 x86_64
+[17:21:18][I][systemsettings.cpp:212]: OS Language: zh
+[17:21:19][I][contextowner.cpp:973]: GPU Name: NVIDIA GeForce RTX 3060 Laptop GPU
+[17:21:19][I][contextowner.cpp:974]: GPU Vendor: nVidia
+[17:21:19][I][contextowner.cpp:975]: GPU Id: 9504
+[17:21:19][I][contextowner.cpp:976]: GPU Dedicated Memory: 6010

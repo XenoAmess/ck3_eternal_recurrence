@@ -1,0 +1,21 @@
+{
+  "mutation": "migration_leaves_claim_office",
+  "path": "common/scripted_effects/lyd_c2_commit_effects.txt",
+  "before": "lyd_c3_cleanup_rite_claim_offices_effect = yes",
+  "after": "debug_log = \"MUTANT_SKIPS_CLAIM_CLEANUP\"",
+  "target_test": "test_migration_cleanup_runs_before_the_native_setter",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001\\test_content_leadership.py",
+    "ContentLeadershipIntegrationTests.test_migration_cleanup_runs_before_the_native_setter"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001",
+  "rc": 1,
+  "mutation_detected": true,
+  "original_sha256": "003eaf9359bb09d47ceb4aa89a68df24017aa9c3722b5ac2379197f9a7dce426",
+  "mutated_sha256": "65fb8e9148ab7eb70a4770474fb8c8769e060b799189a8538fc371e5e55c4089",
+  "test_sha256": "65dad476695a4e160b53f39f64456b327d9911e97039d6b48dd7c363e8f21d99",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "dce59faf8600a355d424f81fafc06889a8b6fad3e339042c450eb7b04b921e0f"
+}

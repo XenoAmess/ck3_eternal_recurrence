@@ -1,0 +1,21 @@
+{
+  "mutation": "unaffordable_practice",
+  "path": "common/scripted_effects/lyd_practice_1_effects.txt",
+  "before": "gold >= 10",
+  "after": "gold >= 0",
+  "target_test": "test_every_selected_rite_dispatches_to_its_own_affordable_guarded_practice",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001\\test_content_leadership.py",
+    "ContentLeadershipIntegrationTests.test_every_selected_rite_dispatches_to_its_own_affordable_guarded_practice"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001",
+  "rc": 1,
+  "mutation_detected": true,
+  "original_sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7",
+  "mutated_sha256": "bd421ad91717a44f1fcfa0768096c12b16ee3c42e3bb6fa7a379225ca3969051",
+  "test_sha256": "65dad476695a4e160b53f39f64456b327d9911e97039d6b48dd7c363e8f21d99",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "1e43e9c01610dfe210615ed3d62771fa77fc42dfd11697efa1aab55827ac1951"
+}

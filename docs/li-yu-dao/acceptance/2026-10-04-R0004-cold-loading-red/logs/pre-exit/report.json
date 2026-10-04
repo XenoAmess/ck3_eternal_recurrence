@@ -1,0 +1,94 @@
+{
+  "utc": "2026-10-04T09:31:52.508009+00:00",
+  "pid": 19184,
+  "hwnd": 2295626,
+  "thread": 7440,
+  "source_head": "01b4dda39505929c1245de699e67862f4130a02e",
+  "logs": [
+    {
+      "name": "code_revisions.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "custom_automated_stats.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "database_conflicts.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "debug.log",
+      "bytes": 459800,
+      "sha256": "a66fcde3ff74620e73a112aecc4a8233efaa94d2b2771bf9ff74b0ddb77bdad7"
+    },
+    {
+      "name": "dedicated_server.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "error.log",
+      "bytes": 13926,
+      "sha256": "f043185cac5a5c71bab312c3795d5178c3efa07f368b97e30bd6d553bc725454"
+    },
+    {
+      "name": "game.log",
+      "bytes": 2635,
+      "sha256": "daef046016053c31ec08a5b5135017d52514a4f300d6d41fa0825364c15e5008"
+    },
+    {
+      "name": "gui_warnings.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "memory.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "message.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "multiplayer.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "pdxsdk.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "profile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "setup.log",
+      "bytes": 36864,
+      "sha256": "d80d9e87e87826f7fdeb163bad98a9f63057bc49f713e5de59c308216d98b875"
+    },
+    {
+      "name": "system.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "text.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "campaign_started": false,
+  "native_attach": false,
+  "root_ui_input_sent": false,
+  "result": "NATIVE_LOADING_RED",
+  "close_action": "WM_CLOSE semantic normal window close; no process kill"
+}

@@ -1,0 +1,222 @@
+{
+  "schema": "lyd.three-rounds-error-classification-addendum.v1",
+  "utc": "2026-10-04T03:19:03.307590+00:00",
+  "frozen_error_sha256": "9a94887d7d2f6e825cf806089445aa15ec06e3416d34613037214c4f911e53c5",
+  "exact_counts": {
+    "tooltip_perspective_errors": 3,
+    "formatter_errors": 165,
+    "ai_coronation_errors": 1,
+    "bp3_roaming_invalid_activity_errors": 27
+  },
+  "tooltip_errors": [
+    {
+      "line": 1,
+      "header": "[08:45:18][E][jomini_script_system.cpp:304]: Script system error!",
+      "detail": "  Error: Trigger Localization (database): 'is_ai': missing exact perspective 'first_not' at file: common/trigger_localization/00_debug_triggers.txt line: 5 (is_ai), using 'NOT_is_ai_trigger' instead",
+      "source": "  Script location: file: common/scripted_triggers/lyd_np_triggers.txt line: 3 (lyd_np_actor_trigger)"
+    },
+    {
+      "line": 5,
+      "header": "[08:45:18][E][jomini_script_system.cpp:304]: Script system error!",
+      "detail": "  Error: Trigger Localization (database): 'is_alive': missing exact perspective 'first' at file: common/trigger_localization/00_character_triggers.txt line: 1709 (is_alive), using 'is_alive_filter' instead",
+      "source": "  Script location: Unknown"
+    },
+    {
+      "line": 202,
+      "header": "[11:13:26][E][jomini_script_system.cpp:304]: Script system error!",
+      "detail": "  Error: Trigger Localization (database): 'is_ai': missing exact perspective 'first_not' at file: common/trigger_localization/00_debug_triggers.txt line: 5 (is_ai), using 'NOT_is_ai_trigger' instead",
+      "source": "  Script location: file: common/scripted_triggers/lyd_player_triggers.txt line: 3 (lyd_is_player_trigger)"
+    }
+  ],
+  "roaming_errors": [
+    {
+      "line": 175,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0100' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 176,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0110' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 177,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0120' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 178,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0130' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 179,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0140' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 180,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0150' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 181,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0160' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 182,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0170' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 183,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0190' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 184,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0210' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 185,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0220' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 186,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0240' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 187,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0250' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 188,
+      "text": "[10:49:52][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0090' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 189,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0100' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 190,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0110' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 191,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0120' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 192,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0130' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 193,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0140' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 194,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0150' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 195,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0160' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 196,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0170' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 197,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0190' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 198,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0210' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 199,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0220' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 200,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0240' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "line": 201,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0250' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    }
+  ],
+  "roaming_attribution": "Exact error messages identify native bp3_roaming event IDs and host Irengba runtime26904/historymanipur019/c_manipur. This is a different host than Robert31254 and affected vassalAbelard36445; no loaded custom AI entry or activity override. Direct mod causation not evidenced, indirect causation not ruled out without baseline. Errors remain real E records.",
+  "debug_terminal_prefix": {
+    "bytes": 1585492,
+    "computed_sha256": "0cb8fb9d263358901402088685bf7ec5830c2a97d3618086bbbc17975025cdf4",
+    "expected_sha256": "0cb8fb9d263358901402088685bf7ec5830c2a97d3618086bbbc17975025cdf4",
+    "matches": true
+  },
+  "transition_scopes": [
+    {
+      "marker": "LYD_NP_JOIN_APPLIED",
+      "line": 11610,
+      "observed_scopes": {
+        "lyd_np_absorbed_faith": "lyd_np_branch_faith (34)\u0015weak （Faith-34）\u0015!",
+        "lyd_np_pair_divergence_before": "-15.00",
+        "lyd_np_old_head_title": "独立传承儒家道统 (Internal ID: 18372 - Internal Key: x_script_691)\u0015weak （Landed_title-18372）\u0015!",
+        "lyd_np_pair_divergence_after": "0.00"
+      }
+    },
+    {
+      "marker": "LYD_NP_DETACH_APPLIED",
+      "line": 12126,
+      "observed_scopes": {
+        "lyd_np_absorbed_faith": "lyd_np_branch_faith (34)\u0015weak （Faith-34）\u0015!",
+        "lyd_np_pair_divergence_before": "-15.00",
+        "lyd_np_old_head_title": "独立传承儒家道统 (Internal ID: 18372 - Internal Key: x_script_691)\u0015weak （Landed_title-18372）\u0015!",
+        "lyd_np_pair_divergence_after": "0.00",
+        "lyd_np_new_faith": "lyd_np_anchor_faith (106)\u0015weak （Faith-106）\u0015!",
+        "new_title": "支传儒家道统 (Internal ID: 18402 - Internal Key: x_script_721)\u0015weak （Landed_title-18402）\u0015!"
+      }
+    },
+    {
+      "marker": "LYD_NP_JOIN_APPLIED",
+      "line": 12489,
+      "observed_scopes": {
+        "lyd_np_absorbed_faith": "lyd_np_anchor_faith (106)\u0015weak （Faith-106）\u0015!",
+        "lyd_np_pair_divergence_before": "-15.00",
+        "lyd_np_old_head_title": "支传儒家道统 (Internal ID: 18402 - Internal Key: x_script_721)\u0015weak （Landed_title-18402）\u0015!",
+        "lyd_np_pair_divergence_after": "0.00",
+        "lyd_np_new_faith": "lyd_np_anchor_faith (106)\u0015weak （Faith-106）\u0015!",
+        "new_title": "支传儒家道统 (Internal ID: 18402 - Internal Key: x_script_721)\u0015weak （Landed_title-18402）\u0015!"
+      }
+    },
+    {
+      "marker": "LYD_NP_DETACH_APPLIED",
+      "line": 12926,
+      "observed_scopes": {
+        "lyd_np_absorbed_faith": "lyd_np_anchor_faith (106)\u0015weak （Faith-106）\u0015!",
+        "lyd_np_pair_divergence_before": "-15.00",
+        "lyd_np_old_head_title": "支传儒家道统 (Internal ID: 18402 - Internal Key: x_script_721)\u0015weak （Landed_title-18402）\u0015!",
+        "lyd_np_pair_divergence_after": "0.00",
+        "lyd_np_new_faith": "lyd_np_anchor_faith (107)\u0015weak （Faith-107）\u0015!",
+        "new_title": "支传儒家道统 (Internal ID: 18410 - Internal Key: x_script_729)\u0015weak （Landed_title-18410）\u0015!"
+      }
+    },
+    {
+      "marker": "LYD_NP_JOIN_APPLIED",
+      "line": 13354,
+      "observed_scopes": {
+        "lyd_np_absorbed_faith": "lyd_np_anchor_faith (107)\u0015weak （Faith-107）\u0015!",
+        "lyd_np_pair_divergence_before": "-15.00",
+        "lyd_np_old_head_title": "支传儒家道统 (Internal ID: 18410 - Internal Key: x_script_729)\u0015weak （Landed_title-18410）\u0015!",
+        "lyd_np_pair_divergence_after": "0.00",
+        "lyd_np_new_faith": "lyd_np_anchor_faith (107)\u0015weak （Faith-107）\u0015!",
+        "new_title": "支传儒家道统 (Internal ID: 18410 - Internal Key: x_script_729)\u0015weak （Landed_title-18410）\u0015!"
+      }
+    },
+    {
+      "marker": "LYD_NP_DETACH_APPLIED",
+      "line": 13843,
+      "observed_scopes": {
+        "lyd_np_absorbed_faith": "lyd_np_anchor_faith (107)\u0015weak （Faith-107）\u0015!",
+        "lyd_np_pair_divergence_before": "-15.00",
+        "lyd_np_old_head_title": "支传儒家道统 (Internal ID: 18410 - Internal Key: x_script_729)\u0015weak （Landed_title-18410）\u0015!",
+        "lyd_np_pair_divergence_after": "0.00",
+        "lyd_np_new_faith": "lyd_np_anchor_faith (108)\u0015weak （Faith-108）\u0015!",
+        "new_title": "支传儒家道统 (Internal ID: 18417 - Internal Key: x_script_736)\u0015weak （Landed_title-18417）\u0015!"
+      }
+    }
+  ],
+  "post_terminal_tooltip": "Production lyd_player_triggers:3 is_ai error at11:13:26, later than terminal11:08:38 and final pause11:08:43; kept as real product/UI error and not a false primitive invariant failure.",
+  "overall_zero_error_acceptance": "NOT_CLAIMED"
+}

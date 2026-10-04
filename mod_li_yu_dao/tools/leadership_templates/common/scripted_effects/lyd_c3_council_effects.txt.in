@@ -1,0 +1,189 @@
+# The first recognition flow nominates the initiating PLAYER itself. Multiple
+# other claims remain independent; no global single-claimant variable is used.
+lyd_c3_begin_round_effect = {
+    if = {
+        limit = {
+            lyd_c3_player_actor_trigger = yes
+            lyd_c3_claim_current_trigger = yes
+            rite = faith.main_rite
+            highest_held_title_tier >= tier_duchy
+            NOT = { has_variable = lyd_c3_active }
+            faith = {
+                has_doctrine_parameter = temporal_head_of_faith
+                OR = { NOT = { exists = religious_head_title } lyd_c3_owned_current_head_trigger = yes }
+                NOT = { any_faith_rite = { OR = { has_variable = lyd_c2_proposal_owner has_variable = lyd_c3_proposal_owner } } }
+                NOT = { any_faith_rite = { NOT = { lyd_c3_rite_represented_trigger = yes } } }
+            }
+        }
+        save_scope_as = lyd_c3_actor
+        clear_variable_list = lyd_c3_rites
+        clear_variable_list = lyd_c3_players
+        clear_variable_list = lyd_c3_protected_titles
+        remove_variable = lyd_c3_round_head
+        remove_variable = lyd_c3_round_title
+        if = { limit = { NOT = { has_variable = lyd_c3_serial } } set_variable = { name = lyd_c3_serial value = 0 } }
+        change_variable = { name = lyd_c3_serial add = 1 }
+        save_scope_value_as = { name = lyd_c3_event_serial value = var:lyd_c3_serial }
+        set_variable = { name = lyd_c3_active value = 1 days = 90 }
+        set_variable = { name = lyd_c3_round_faith value = faith }
+        set_variable = { name = lyd_c3_round_main value = faith.main_rite }
+        set_variable = { name = lyd_c3_head_yes value = 0 }
+        if = {
+            limit = { exists = faith.religious_head }
+            set_variable = { name = lyd_c3_round_head value = faith.religious_head }
+            set_variable = { name = lyd_c3_round_title value = faith.religious_head_title }
+            faith.religious_head = {
+                every_held_title = {
+                    limit = { this != scope:lyd_c3_actor.var:lyd_c3_round_title }
+                    save_scope_as = lyd_c3_protected_title
+                    scope:lyd_c3_actor = { add_to_variable_list = { name = lyd_c3_protected_titles target = scope:lyd_c3_protected_title } }
+                }
+            }
+        }
+        else = { set_variable = { name = lyd_c3_head_yes value = 1 } }
+        faith = {
+            every_faith_rite = {
+                save_scope_as = lyd_c3_current_rite
+                set_variable = { name = lyd_c3_proposal_owner value = scope:lyd_c3_actor }
+                set_variable = { name = lyd_c3_lock_serial value = scope:lyd_c3_event_serial }
+                set_variable = { name = lyd_c3_delegate_required value = 0 }
+                set_variable = { name = lyd_c3_delegate_yes value = 0 }
+                remove_variable = lyd_c3_delegate
+                scope:lyd_c3_actor = { add_to_variable_list = { name = lyd_c3_rites target = scope:lyd_c3_current_rite } }
+            }
+            every_faith_character = {
+                limit = { is_ai = no is_alive = yes }
+                save_scope_as = lyd_c3_current_player
+                set_variable = { name = lyd_c3_affected_owner value = scope:lyd_c3_actor }
+                set_variable = { name = lyd_c3_affected_serial value = scope:lyd_c3_event_serial }
+                set_variable = { name = lyd_c3_affected_rite value = rite }
+                set_variable = { name = lyd_c3_player_yes value = 0 }
+                scope:lyd_c3_actor = { add_to_variable_list = { name = lyd_c3_players target = scope:lyd_c3_current_player } }
+            }
+            every_faith_rite = {
+                save_scope_as = lyd_c3_current_rite
+                if = {
+                    limit = { OR = {
+                        rite_counties > 0
+                        faith = { any_faith_character = { is_alive = yes rite = scope:lyd_c3_current_rite } }
+                    } }
+                    set_variable = { name = lyd_c3_delegate_required value = 1 }
+                    if = {
+                        limit = { exists = head_of_rite head_of_rite = { is_alive = yes is_adult = yes rite = prev NOT = { has_trait = incapable } } }
+                        set_variable = { name = lyd_c3_delegate value = head_of_rite }
+                    }
+                }
+                # Empty templates are excluded from voting; their yes field stays zero.
+            }
+        }
+        # All snapshots and locks exist before any response event is delivered.
+        if = {
+            limit = { lyd_c3_round_current_trigger = { ACTOR = scope:lyd_c3_actor } }
+            every_in_list = {
+                variable = lyd_c3_rites
+                limit = { var:lyd_c3_delegate_required = 1 exists = var:lyd_c3_delegate }
+                save_scope_as = lyd_c3_ballot_rite
+                var:lyd_c3_delegate = { trigger_event = lyd.310 }
+            }
+            every_in_list = { variable = lyd_c3_players trigger_event = lyd.311 }
+            var:lyd_c3_round_head ?= { trigger_event = lyd.312 }
+            trigger_event = lyd.320
+            trigger_event = { id = lyd.329 days = 90 }
+            debug_log = "LYD_C3_COUNCIL_STARTED"
+        }
+        else = {
+            lyd_c3_release_round_effect = yes
+            debug_log = "LYD_C3_COUNCIL_PRECONDITION_CHANGED"
+        }
+    }
+}
+lyd_c3_delegate_yes_effect = {
+    if = { limit = { lyd_c3_delegate_context_trigger = yes } scope:lyd_c3_ballot_rite = { set_variable = { name = lyd_c3_delegate_yes value = 1 } } }
+}
+lyd_c3_player_yes_effect = {
+    if = { limit = { lyd_c3_player_ballot_context_trigger = yes } set_variable = { name = lyd_c3_player_yes value = 1 } }
+}
+lyd_c3_incumbent_yes_effect = {
+    if = {
+        limit = { lyd_c3_response_context_trigger = yes this = scope:lyd_c3_actor.var:lyd_c3_round_head }
+        scope:lyd_c3_actor = { set_variable = { name = lyd_c3_head_yes value = 1 } }
+    }
+}
+lyd_c3_reject_round_effect = {
+    if = {
+        limit = { lyd_c3_response_context_trigger = yes }
+        scope:lyd_c3_actor = { lyd_c3_release_round_effect = yes debug_log = "LYD_C3_COUNCIL_REJECTED" }
+    }
+}
+# Cleanup always compares both owner AND serial, including player consent fields.
+lyd_c3_release_round_effect = {
+    save_scope_as = lyd_c3_closing_actor
+    every_in_list = {
+        variable = lyd_c3_rites
+        if = {
+            limit = { var:lyd_c3_proposal_owner = scope:lyd_c3_closing_actor var:lyd_c3_lock_serial = scope:lyd_c3_closing_actor.var:lyd_c3_serial }
+            remove_variable = lyd_c3_proposal_owner
+            remove_variable = lyd_c3_lock_serial
+            remove_variable = lyd_c3_delegate_required
+            remove_variable = lyd_c3_delegate_yes
+            remove_variable = lyd_c3_delegate
+        }
+    }
+    every_in_list = {
+        variable = lyd_c3_players
+        if = {
+            limit = { var:lyd_c3_affected_owner = scope:lyd_c3_closing_actor var:lyd_c3_affected_serial = scope:lyd_c3_closing_actor.var:lyd_c3_serial }
+            remove_variable = lyd_c3_affected_owner
+            remove_variable = lyd_c3_affected_serial
+            remove_variable = lyd_c3_affected_rite
+            remove_variable = lyd_c3_player_yes
+        }
+    }
+    remove_variable = lyd_c3_active
+    clear_variable_list = lyd_c3_rites
+    clear_variable_list = lyd_c3_players
+    clear_variable_list = lyd_c3_protected_titles
+    remove_variable = lyd_c3_round_head
+    remove_variable = lyd_c3_round_title
+    remove_variable = lyd_c3_head_yes
+    # Historical serial and claim survive rejection/cancel; repeat attempts are allowed.
+}
+# Character ROOT. Never force a spatial realm, government, rite or faith change.
+lyd_c3_recognize_effect = {
+    save_scope_as = lyd_c3_actor
+    if = {
+        limit = { lyd_c3_response_context_trigger = yes lyd_c3_can_recognize_trigger = { ACTOR = scope:lyd_c3_actor } }
+        if = {
+            limit = { exists = faith.religious_head_title }
+            create_title_and_vassal_change = { type = granted save_scope_as = lyd_c3_head_transfer add_claim_on_loss = no }
+            faith.religious_head_title = { change_title_holder = { holder = scope:lyd_c3_actor change = scope:lyd_c3_head_transfer } }
+            resolve_title_and_vassal_change = scope:lyd_c3_head_transfer
+        }
+        else = {
+            set_variable = { name = lyd_c3_head_creation_authorized value = 1 }
+            lyd_c3_create_owned_temporal_head_effect = yes
+            remove_variable = lyd_c3_head_creation_authorized
+        }
+        if = {
+            limit = {
+                faith = var:lyd_c3_round_faith
+                faith.main_rite = var:lyd_c3_round_main
+                faith.religious_head = this
+                faith = { lyd_c3_owned_current_head_trigger = yes }
+                NOT = { any_in_list = { variable = lyd_c3_protected_titles NOT = { holder = scope:lyd_c3_actor.var:lyd_c3_round_head } } }
+            }
+            set_variable = { name = lyd_c3_office_faith value = faith }
+            faith = {
+                set_variable = { name = lyd_c3_recognized_leader value = scope:lyd_c3_actor }
+            }
+            lyd_c3_withdraw_claim_effect = yes
+            lyd_c3_release_round_effect = yes
+            debug_log = "LYD_C3_RECOGNITION_NATIVE_POSTCONDITION_PASS"
+        }
+        else = {
+            # Preserve the real partial state. No speculative rollback or success charge.
+            lyd_c3_release_round_effect = yes
+            debug_log = "LYD_C3_RECOGNITION_NATIVE_POSTCONDITION_FAIL"
+        }
+    }
+}

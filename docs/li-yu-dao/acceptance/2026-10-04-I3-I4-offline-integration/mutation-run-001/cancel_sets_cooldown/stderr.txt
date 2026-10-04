@@ -1,0 +1,26 @@
+test_catalogue_is_reachable_through_state_free_chooser_pages (__main__.ContentLeadershipIntegrationTests.test_catalogue_is_reachable_through_state_free_chooser_pages) ... FAIL
+
+======================================================================
+FAIL: test_catalogue_is_reachable_through_state_free_chooser_pages (__main__.ContentLeadershipIntegrationTests.test_catalogue_is_reachable_through_state_free_chooser_pages)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i3-i4-offline-integration-001\test_content_leadership.py", line 153, in test_catalogue_is_reachable_through_state_free_chooser_pages
+    self.assert_cancel_clean(event_id)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i3-i4-offline-integration-001\test_content_leadership.py", line 136, in assert_cancel_clean
+    self.assertEqual(list(self.c.operations(cancels[0])), [], f"{event_id}: cancel executes state changes")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [(Entry(key='add_character_flag', operator[35 chars] ())] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+(Entry(key='add_character_flag', operator='=', value='lyd_school_cooldown'), ())
+
++ []
+- [(Entry(key='add_character_flag', operator='=', value='lyd_school_cooldown'),
+-   ())] : lyd.10: cancel executes state changes
+
+----------------------------------------------------------------------
+Ran 1 test in 0.100s
+
+FAILED (failures=1)

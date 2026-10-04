@@ -1,0 +1,18 @@
+﻿# GENERATED FILE: acceptance fixture only; edit build_fixture.py.
+# Current Character root only. Plain setter; no conversion cascade or HoF creation.
+lyd_r3_fixture_initialize_effect = {
+    if = {
+        limit = { lyd_r3_fixture_actor_trigger = yes }
+        set_character_rite = faith:confucian_faith.main_rite
+        if = {
+            limit = { faith = faith:confucian_faith rite = faith:confucian_faith.main_rite }
+            add_character_flag = lyd_r3_fixture_initialized
+            debug_log = "LYD_R3_FIXTURE_ACTUAL_ORIGINAL_CONFUCIAN_RITE_INITIALIZED"
+            trigger_event = lyd_r3_fixture.1
+        }
+        else = {
+            debug_log = "LYD_R3_FIXTURE_RITE_ASSIGNMENT_FAILED"
+            trigger_event = lyd_r3_fixture.2
+        }
+    }
+}

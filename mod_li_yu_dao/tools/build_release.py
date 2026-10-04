@@ -31,14 +31,20 @@ REQUIRED_RUNTIME_FILES = frozenset({
     "common/decisions/lyd_c2_consent_decisions.txt",
     "common/character_interactions/lyd_c2_consent_interactions.txt",
     "common/script_values/lyd_c2_consent_values.txt",
+    "common/decisions/lyd_c3_leadership_decisions.txt",
+    "common/character_interactions/lyd_c3_teacher_interactions.txt",
+    "common/on_action/lyd_c3_lifecycle_on_actions.txt",
     "events/lyd_events.txt",
     "events/lyd_c2_consent_events.txt",
+    "events/lyd_c3_leadership_events.txt",
     "localization/english/lyd_content_l_english.yml",
     "localization/english/lyd_runtime_l_english.yml",
     "localization/english/lyd_c2_consent_l_english.yml",
+    "localization/english/lyd_c3_leadership_l_english.yml",
     "localization/simp_chinese/lyd_content_l_simp_chinese.yml",
     "localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
     "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+    "localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
 })
 # These two deliberately bounded families accommodate the small helper files.
 # collect_runtime_files freezes the actual production paths in every manifest.

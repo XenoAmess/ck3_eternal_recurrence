@@ -1,0 +1,21 @@
+{
+  "mutation": "ai_initiates_leadership",
+  "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+  "before": "is_ai = no",
+  "after": "is_ai = yes",
+  "target_test": "test_player_initiation_and_recipient_consent_are_separate",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001\\test_content_leadership.py",
+    "ContentLeadershipIntegrationTests.test_player_initiation_and_recipient_consent_are_separate"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001",
+  "rc": 1,
+  "mutation_detected": true,
+  "original_sha256": "bac466e78388dc5cfd9b0f2e26307b29144cb62cd70fb1f7774e992d958dce5e",
+  "mutated_sha256": "dc460f986edf5c5970de4e889dd2c812bb89c1fd9d14a55612033ded661ec798",
+  "test_sha256": "65dad476695a4e160b53f39f64456b327d9911e97039d6b48dd7c363e8f21d99",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "199111e72825252fb9f4ce1aebfee76b97234ae21603cf40f92380196b6b5899"
+}

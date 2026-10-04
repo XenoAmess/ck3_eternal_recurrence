@@ -1,4 +1,4 @@
-﻿# GENERATED FILE: edit mod_li_yu_dao/tools/school_consent_templates or tools/gen_school_consent.py.
+﻿# GENERATED FILE: edit tools/leadership_templates and run tools/gen_runtime.py.
 # Authored template. Character ROOT; current faith/rite after an authorized detach or council recognition.
 # Native basis: 00_religion_effects.txt:347-380. One owned HoF title; no secular land transfer.
 lyd_c3_create_owned_temporal_head_effect = {

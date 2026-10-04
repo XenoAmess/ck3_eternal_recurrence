@@ -1,0 +1,11 @@
+1: ### Brief: key ( database key )
+2: # Name of 'doctrine_type'
+3: # Faith doctrines are what defines how a faith works. All unique faith mechanics are tied to doctrines, rather than involving hardcoding or special parameters on the religion itself.
+4: #
+5: key = {
+304: # == Triggers ==
+305: #########################
+306: # Used in rite scope:
+307: # 	rite_has_doctrine = doctrine_name
+308: # Used in faith scope:
+309: # 	has_doctrine_parameter = parameter_name

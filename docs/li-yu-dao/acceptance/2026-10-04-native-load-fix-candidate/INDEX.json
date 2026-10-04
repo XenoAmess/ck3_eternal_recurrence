@@ -1,0 +1,451 @@
+{
+  "files": [
+    {
+      "path": "before/tools/gen_school_consent.py",
+      "sha256": "fb2cb53970c0d71828cef2dac908fb8a10056fef93384a946ead740a14b6a835",
+      "size": 37266
+    },
+    {
+      "path": "before/tools/native_admission_portable.py",
+      "sha256": "7da4839c191fb16e8de5a38b6879840e8d1434839fdb8054b065b283858263bc",
+      "size": 5188
+    },
+    {
+      "path": "before/tools/reference/native-primitive-tracked-admission.json",
+      "sha256": "558e6c6aee6364abee0d1065f09a35d782765a2ae469a14b62461d19b47d3dd6",
+      "size": 3582
+    },
+    {
+      "path": "before/tools/school_consent_callbacks.py",
+      "sha256": "23583d05e9daf00c6a3d874893a4171d4bf45c2fa464b18317d4223300ad15a2",
+      "size": 4148
+    },
+    {
+      "path": "before/tools/school_consent_data.py",
+      "sha256": "156942c061e8c9d0afc3b17b716e4be0ea3fe6988181553dfe5ea44bfec7109c",
+      "size": 2087
+    },
+    {
+      "path": "before/tools/school_consent_model.py",
+      "sha256": "4f839bee873687d0fd9b615aa8a1a3a8eab81785c2c7df6665af85a1497f5b26",
+      "size": 23642
+    },
+    {
+      "path": "before/tools/school_consent_templates/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "sha256": "11b0744070d9b47790320363de04e82fb67e787297931f21c5639132084d9608",
+      "size": 702
+    },
+    {
+      "path": "before/tools/school_consent_templates/common/decisions/lyd_c2_consent_decisions.txt",
+      "sha256": "98c449965d22c7e65d5c7e3018d6573e0379880d5110fa063367f370270eb162",
+      "size": 1749
+    },
+    {
+      "path": "before/tools/school_consent_templates/common/script_values/lyd_c2_consent_values.txt",
+      "sha256": "c0f01096ec25dbebde4ba0465648977e4b6c50403076875280d939640fea17ea",
+      "size": 502
+    },
+    {
+      "path": "before/tools/school_consent_templates/common/scripted_effects/lyd_c2_close_effects.txt",
+      "sha256": "cc223af9e9f11c490399abfb6f7b0fd65d74eae1150aa0b425c7d7ff3954b54b",
+      "size": 3290
+    },
+    {
+      "path": "before/tools/school_consent_templates/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "sha256": "e2dbec2af0062a6055644cb772ea43bc5a10b6dd8dd27039b436fe5f127d258a",
+      "size": 5664
+    },
+    {
+      "path": "before/tools/school_consent_templates/common/scripted_effects/lyd_c2_head_effects.txt",
+      "sha256": "d8fa17b0afac4e2ec18dfc2955fdc810b6f8763e92d15185858da9b8e50f5aa9",
+      "size": 1929
+    },
+    {
+      "path": "before/tools/school_consent_templates/common/scripted_effects/lyd_c2_response_effects.txt",
+      "sha256": "c4a5019ff2cda368f728afacd9c1b7f44eb922e6b8095dd3c68c789089deba3c",
+      "size": 1266
+    },
+    {
+      "path": "before/tools/school_consent_templates/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "sha256": "f7ddd66d350c929bd53ca33c209468eb7cdded4fed3433cca5080066f30fcdb6",
+      "size": 10182
+    },
+    {
+      "path": "before/tools/school_consent_templates/common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "sha256": "2c6964221393059e807d74fdfb484834025a8c868d40570e89800bc9d3e7ba88",
+      "size": 1154
+    },
+    {
+      "path": "before/tools/school_consent_templates/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "sha256": "e7d5878ac2c914acedfd385f6695c8f7c2e48ab9a60ad8004685c3d39ecc710d",
+      "size": 4729
+    },
+    {
+      "path": "before/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+      "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c",
+      "size": 1910
+    },
+    {
+      "path": "before/tools/school_consent_templates/common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "sha256": "501b36d0fc72538e3f3361c659458ed693d4f47f03eda02a6db51419e6c20bd5",
+      "size": 1346
+    },
+    {
+      "path": "before/tools/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "sha256": "fef22f2b5f192e7f160270448da7ba2abf2c8fc660771a91c58e3625027ec432",
+      "size": 14016
+    },
+    {
+      "path": "before/tools/school_consent_templates/events/lyd_c2_consent_events.txt",
+      "sha256": "87da221474c88fb5235a15238d8fca80ee61f93bece5d5ac579d2308395b2134",
+      "size": 6704
+    },
+    {
+      "path": "before/tools/test_school_consent.py",
+      "sha256": "42873b5522b58448e2059a5ff1a235f3c0650ab337a1ea6799029b340282198f",
+      "size": 68666
+    },
+    {
+      "path": "candidate/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/debug-marker-lines.raw.log",
+      "sha256": "8564747babb9b8b4d46992bfb17412f086acd60604596c401a8d6a5c6f5f2d10",
+      "size": 5000
+    },
+    {
+      "path": "candidate/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/error-classification-addendum.json",
+      "sha256": "2f3a464edf7541aa3b813f5bf39d0400dc6e2fd29d36bea80fbd05f83fe84a48",
+      "size": 14186
+    },
+    {
+      "path": "candidate/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/native-primitive-attestation-candidate-v2.json",
+      "sha256": "50bad54b995723026bd26842f258376c86447547791357f6c5ad809750891b5d",
+      "size": 96228
+    },
+    {
+      "path": "candidate/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/character-36445.excerpt.txt",
+      "sha256": "885419cc4df4e419e36805afab250ce73fa1d6c404a5d2b4ad3925909acdae42",
+      "size": 6255
+    },
+    {
+      "path": "candidate/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/faith-108.excerpt.txt",
+      "sha256": "fc56c5494e2eae9984e2d6f3f79a5482a2cae93a80299f79043d7851394e9baf",
+      "size": 2451
+    },
+    {
+      "path": "candidate/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/rite-151.excerpt.txt",
+      "sha256": "69f5483d4d944da4ebce92c6bddaccd1a74cfdbd9edd01823f9fa006e5904b98",
+      "size": 2490
+    },
+    {
+      "path": "candidate/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/three-rounds.summary.json",
+      "sha256": "a436aec37b9e71e05a47329c69354195ad69deade8711172e16b777d2aa1d1c5",
+      "size": 6344
+    },
+    {
+      "path": "candidate/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/title-18417.excerpt.txt",
+      "sha256": "3e3010bfac4739e0b4e6a33f99b641e8662fa2904d581805d77abc42efb49cbb",
+      "size": 685
+    },
+    {
+      "path": "candidate/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/source-r0002/fixture/common/scripted_effects/lyd_np_effects.txt",
+      "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d",
+      "size": 10380
+    },
+    {
+      "path": "candidate/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/source-r0002/fixture/common/scripted_triggers/lyd_np_triggers.txt",
+      "sha256": "7c1bc919d2ddf3dfc5b59969ea1cb4b795e4a172e8ad1d984acadc048ed25cff",
+      "size": 2777
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/gen_school_consent.py",
+      "sha256": "fb2cb53970c0d71828cef2dac908fb8a10056fef93384a946ead740a14b6a835",
+      "size": 37266
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/native_admission_portable.py",
+      "sha256": "7da4839c191fb16e8de5a38b6879840e8d1434839fdb8054b065b283858263bc",
+      "size": 5188
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/reference/native-primitive-tracked-admission.json",
+      "sha256": "558e6c6aee6364abee0d1065f09a35d782765a2ae469a14b62461d19b47d3dd6",
+      "size": 3582
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_callbacks.py",
+      "sha256": "23583d05e9daf00c6a3d874893a4171d4bf45c2fa464b18317d4223300ad15a2",
+      "size": 4148
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_data.py",
+      "sha256": "156942c061e8c9d0afc3b17b716e4be0ea3fe6988181553dfe5ea44bfec7109c",
+      "size": 2087
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_model.py",
+      "sha256": "5fa5e4ae676ba9901b7612b7f2d7375a85938b8d916f605b131157e4a00d8768",
+      "size": 23747
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_templates/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "sha256": "11b0744070d9b47790320363de04e82fb67e787297931f21c5639132084d9608",
+      "size": 702
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_templates/common/decisions/lyd_c2_consent_decisions.txt",
+      "sha256": "98c449965d22c7e65d5c7e3018d6573e0379880d5110fa063367f370270eb162",
+      "size": 1749
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_templates/common/script_values/lyd_c2_consent_values.txt",
+      "sha256": "c0f01096ec25dbebde4ba0465648977e4b6c50403076875280d939640fea17ea",
+      "size": 502
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_close_effects.txt",
+      "sha256": "cc223af9e9f11c490399abfb6f7b0fd65d74eae1150aa0b425c7d7ff3954b54b",
+      "size": 3290
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "sha256": "1b791ddb5c7219c06c17ee53d97ba3d8344ab2396f4a8b1788ed5bdf62ae37c0",
+      "size": 5885
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_head_effects.txt",
+      "sha256": "d8fa17b0afac4e2ec18dfc2955fdc810b6f8763e92d15185858da9b8e50f5aa9",
+      "size": 1929
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_response_effects.txt",
+      "sha256": "c4a5019ff2cda368f728afacd9c1b7f44eb922e6b8095dd3c68c789089deba3c",
+      "size": 1266
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "sha256": "f7ddd66d350c929bd53ca33c209468eb7cdded4fed3433cca5080066f30fcdb6",
+      "size": 10182
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "sha256": "2c6964221393059e807d74fdfb484834025a8c868d40570e89800bc9d3e7ba88",
+      "size": 1154
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "sha256": "e7d5878ac2c914acedfd385f6695c8f7c2e48ab9a60ad8004685c3d39ecc710d",
+      "size": 4729
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+      "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c",
+      "size": 1910
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "sha256": "501b36d0fc72538e3f3361c659458ed693d4f47f03eda02a6db51419e6c20bd5",
+      "size": 1346
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "sha256": "bc5a38df663810510de389778247bcd0766e36525c3c3b61772f45272ace6f18",
+      "size": 15257
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_templates/events/lyd_c2_consent_events.txt",
+      "sha256": "87da221474c88fb5235a15238d8fca80ee61f93bece5d5ac579d2308395b2134",
+      "size": 6704
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/test_school_consent.py",
+      "sha256": "77c7f617793d57ffd378d0b8ae5aec259157e7c13df32b632aa8a44a464698db",
+      "size": 73664
+    },
+    {
+      "path": "candidate/tools/extract_auto_upgrade_buildings.py",
+      "sha256": "f37063db3e2322dbad713f5b58fa75287970f462402e94c0efea54ea154d8286",
+      "size": 15976
+    },
+    {
+      "path": "candidate-report.json",
+      "sha256": "722b506df3504ed0b7f92f4edc52e20f28353355505d85262aa528ac59e808c2",
+      "size": 1566
+    },
+    {
+      "path": "evidence/before-inputs.json",
+      "sha256": "45ed68c5dcd967295a200687e4ad0b2230d68ccd520df69c52d35bb4a085f921",
+      "size": 4066
+    },
+    {
+      "path": "evidence/diffs/school_consent_model.py.diff",
+      "sha256": "adc96cc09afdd98129a1be19d67dfe3adb4a79b3d0a0c122fdbd353d8043357f",
+      "size": 2146
+    },
+    {
+      "path": "evidence/diffs/school_consent_templates__common__scripted_effects__lyd_c2_commit_effects.txt.diff",
+      "sha256": "c413b70a7a2e309eeac4afccc7b734023cdda81835e16275d1f22f5731cf1d07",
+      "size": 1417
+    },
+    {
+      "path": "evidence/diffs/school_consent_templates__common__scripted_triggers__lyd_c2_consent_triggers.txt.diff",
+      "sha256": "87df28b5d4e2d3a9a91ca8befa6a55dfedc442d0de52c735e08cd13d394a6dbf",
+      "size": 2655
+    },
+    {
+      "path": "evidence/diffs/test_school_consent.py.diff",
+      "sha256": "6de3ee6724cb155d3406182da2c4f3b0c91ebdce52869875745cb5090518da35",
+      "size": 6272
+    },
+    {
+      "path": "evidence/native-interface-source-boundary.json",
+      "sha256": "2c85acae37a94a778d1386135a1496f8c43c9f713b8b71ded36c636c406d6464",
+      "size": 6543
+    },
+    {
+      "path": "evidence/native-source/common__character_interactions__pam_interactions.txt.excerpt.txt",
+      "sha256": "4e9f75c0d42ab8b2fec64a6cc7400033024099abfb48c38df1151d3f13654b88",
+      "size": 477
+    },
+    {
+      "path": "evidence/native-source/common__religion__doctrine_types___doctrine_types.info.excerpt.txt",
+      "sha256": "29a9c5b54add9c004dcb05b7f7a9c832ec834c3e12242c56216e858c80977d07",
+      "size": 475
+    },
+    {
+      "path": "evidence/native-source/common__religion__faith_types___faith_types.info.excerpt.txt",
+      "sha256": "f28c6ebb047e3605688b64ecb050e217a4ef74772ca5a72d820fc3f9cabd4be9",
+      "size": 1254
+    },
+    {
+      "path": "evidence/native-source/common__religion__rite_types___rite_types.info.excerpt.txt",
+      "sha256": "b9032c20ef5394f258d8a666dbf9d06c0ed75ee49c5e3504e506d6e3554cda3e",
+      "size": 738
+    },
+    {
+      "path": "evidence/native-source/common__religion__tenet_types___tenet_types.info.excerpt.txt",
+      "sha256": "ff8996421bc1ca70066879fd912f7c69edfee503b5643f28583fc6cd6d7c2f14",
+      "size": 262
+    },
+    {
+      "path": "evidence/native-source/common__scripted_triggers__00_religious_triggers.txt.excerpt.txt",
+      "sha256": "80a3053574d1c946245a7ac1541f95b8376408bcc8caa5f694c820de1e323f58",
+      "size": 309
+    },
+    {
+      "path": "evidence/native-source/common__scripted_triggers__passive_rite_learning_triggers.txt.excerpt.txt",
+      "sha256": "a773cbf0f3dd96b0ffaeea4fb53812fb579aea004d1be2065eb44588fd4ed887",
+      "size": 472
+    },
+    {
+      "path": "evidence/native-source/lyd_tenets.type-source.txt",
+      "sha256": "410f0c593aa47bec13ae1d85fde9d956aae1a12bd6a2a4d6c1b4767cfc0c15de",
+      "size": 19445
+    },
+    {
+      "path": "evidence/r4-failed-debug.log",
+      "sha256": "4dbf3f90b0f12ab50ea23d4bf79f98bbdd9ffa9fc184160c7d90a8967c0c785f",
+      "size": 460916
+    },
+    {
+      "path": "evidence/r4-failed-error.log",
+      "sha256": "f043185cac5a5c71bab312c3795d5178c3efa07f368b97e30bd6d553bc725454",
+      "size": 13926
+    },
+    {
+      "path": "evidence/render-report.json",
+      "sha256": "6eedb38d7ae1718da9123396bc4e13c10155a61b73612f607f1c5a1c7cd6fe2a",
+      "size": 5343
+    },
+    {
+      "path": "evidence/tests.stderr.bin",
+      "sha256": "dfcd2f83d4a42e500b44dbdb60c4f802c1d30531d99f928c8c0808efa40d9e12",
+      "size": 16011
+    },
+    {
+      "path": "evidence/tests.stdout.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "finalize_candidate.py",
+      "sha256": "bb238e1e080c4c05bedbb4d475973a4a0d4162787ab62fdc5e75ad18b63d059e",
+      "size": 5578
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "sha256": "b0917c250f3c89d829c4b852417da4e87e80179d4d62329d99cd14c687f6f89c",
+      "size": 805
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/decisions/lyd_c2_consent_decisions.txt",
+      "sha256": "e86389bf29a5728e7ac48d3c973878f557cb47c006f0f4c56119f8c76de62516",
+      "size": 1852
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/script_values/lyd_c2_consent_values.txt",
+      "sha256": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae",
+      "size": 533
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_close_effects.txt",
+      "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01",
+      "size": 3384
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "sha256": "95f77a49c6bba1d1d82f4f4b654bdf09a7af9a2a8d6a285daf19686354ef4442",
+      "size": 5926
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_head_effects.txt",
+      "sha256": "bb6fb2f7d884792a9f97025afd5859d2f79f3043f9ea707f986c93f055618448",
+      "size": 2032
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_response_effects.txt",
+      "sha256": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47",
+      "size": 1369
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "sha256": "9cc7b2271437062cd03ef6ca1cb1856e874bf3fee648749df67f5e5eafab28eb",
+      "size": 12049
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "sha256": "ba5b02a594aab32e475cfc2bb6d368ed14a11b1316f60354a3a09585e052529d",
+      "size": 20434
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "sha256": "360659bd3f0e95be69391e8b685ec26945466cc59ee263e0f1c6cd62454b34e6",
+      "size": 4832
+    },
+    {
+      "path": "generated/mod_li_yu_dao/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "sha256": "0e32e31c4e4362710b5ae31c65981d70ae95e0023a20f55fc10788041d25f7c7",
+      "size": 15286
+    },
+    {
+      "path": "generated/mod_li_yu_dao/events/lyd_c2_consent_events.txt",
+      "sha256": "aeb4ea2062ad58b6c537df2812a965bf85ea7ee525ffce48c6659e7ffb98616e",
+      "size": 6618
+    },
+    {
+      "path": "generated/mod_li_yu_dao/localization/english/lyd_c2_consent_l_english.yml",
+      "sha256": "f12dddaf17f4098a47ba2080428b0097cd1b8cdf203a04a5ea6eea7c876a2d70",
+      "size": 11218
+    },
+    {
+      "path": "generated/mod_li_yu_dao/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "sha256": "6cf1eeb0008e7ce1cf8c7b087982a1097d436bdb78031674e5dccef918daa93f",
+      "size": 9797
+    },
+    {
+      "path": "README.md",
+      "sha256": "bd778ddb3ea95230412505dcf1a8fdbdd2c29fd399cadd0b188372cec8eee1e0",
+      "size": 4137
+    }
+  ],
+  "runtime": "NOT_RUN",
+  "result": "PASS_OFFLINE_ONLY"
+}

@@ -1,0 +1,28 @@
+﻿# GENERATED FILE: acceptance-only R4 fixture; edit build_fixture.py.
+namespace = lyd_r4_fixture
+lyd_r4_fixture.1 = {
+    type = character_event title = lyd_r4_status_t desc = lyd_r4_status_desc theme = faith
+    trigger = { is_ai = no has_character_flag = lyd_r4_fixture_initialized }
+    right_portrait = { character = scope:lyd_r4_jingshu_rep }
+    option = { name = lyd_r4_record_actual }
+}
+lyd_r4_fixture.2 = {
+    type = character_event title = lyd_r4_failure_t desc = lyd_r4_failure_desc theme = faith
+    trigger = { is_ai = no }
+    option = { name = lyd_r4_preserve_failure }
+}
+lyd_r4_fixture.3 = {
+    type = character_event title = lyd_r4_qualification_t desc = lyd_r4_qualification_desc theme = faith
+    trigger = { is_ai = no learning = 15 }
+    option = { name = lyd_r4_record_actual }
+}
+lyd_r4_fixture.4 = {
+    type = character_event title = lyd_r4_reset_t desc = lyd_r4_reset_desc theme = faith
+    trigger = { is_ai = no has_character_flag = lyd_r4_fixture_initialized }
+    option = { name = lyd_r4_record_actual }
+}
+lyd_r4_fixture.5 = {
+    type = character_event title = lyd_r4_resources_t desc = lyd_r4_resources_desc theme = faith
+    trigger = { is_ai = no has_character_flag = lyd_r4_resources_prepared }
+    option = { name = lyd_r4_record_actual }
+}

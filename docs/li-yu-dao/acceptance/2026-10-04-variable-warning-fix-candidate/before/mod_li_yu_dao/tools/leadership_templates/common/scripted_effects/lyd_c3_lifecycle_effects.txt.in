@@ -1,0 +1,107 @@
+# Character ROOT. Personal teacher consent never writes native head_of_rite.
+lyd_c3_leave_teacher_effect = {
+    save_scope_as = lyd_c3_leaving_student
+    var:lyd_c3_personal_teacher ?= {
+        remove_list_variable = { name = lyd_c3_students target = scope:lyd_c3_leaving_student }
+    }
+    remove_variable = lyd_c3_personal_teacher
+    debug_log = "LYD_C3_PERSONAL_TEACHER_LINK_CLEARED"
+}
+lyd_c3_accept_teacher_effect = {
+    if = {
+        limit = {
+            scope:actor = { lyd_c3_player_actor_trigger = yes var:lyd_c3_teacher_requested = scope:recipient }
+            scope:recipient = { lyd_c3_teacher_target_trigger = yes }
+            scope:actor != scope:recipient
+        }
+        scope:actor = {
+            lyd_c3_leave_teacher_effect = yes
+            set_variable = { name = lyd_c3_personal_teacher value = scope:recipient }
+            remove_variable = lyd_c3_teacher_requested
+        }
+        scope:recipient = { add_to_variable_list = { name = lyd_c3_students target = scope:actor } }
+        debug_log = "LYD_C3_PERSONAL_TEACHER_CONSENTED"
+    }
+}
+# Explicit PLAYER abdication of this owned religious office only. Native generic
+# secular abdication is not hooked: no verified original on_abdication hook exists.
+lyd_c3_abdicate_owned_head_effect = {
+    if = {
+        limit = {
+            lyd_c3_player_actor_trigger = yes
+            faith.religious_head = this
+            faith = { lyd_c3_owned_current_head_trigger = yes }
+        }
+        save_scope_as = lyd_c3_abdicating_actor
+        faith = { save_scope_as = lyd_c3_abdicating_faith }
+        faith.religious_head_title = { save_scope_as = lyd_c3_abdicating_title }
+        faith = {
+            remove_religious_head_title = yes
+            remove_variable = lyd_c3_recognized_leader
+            set_variable = { name = lyd_c3_vacancy value = 1 }
+        }
+        destroy_title = scope:lyd_c3_abdicating_title
+        if = {
+            limit = { scope:lyd_c3_abdicating_faith = { NOT = { exists = religious_head_title } } }
+            remove_variable = lyd_c3_office_faith
+            debug_log = "LYD_C3_OWNED_HEAD_ABDICATION_POSTCONDITION_PASS"
+        }
+        else = { debug_log = "LYD_C3_OWNED_HEAD_ABDICATION_POSTCONDITION_FAIL" }
+    }
+}
+# Passive metadata cleanup, not an AI action entry. on_death is PRE-death and
+# never destroys the legitimate native HoF or installs its future successor.
+lyd_c3_death_cleanup_effect = {
+    save_scope_as = lyd_c3_dying_actor
+    if = { limit = { has_variable = lyd_c3_active } lyd_c3_release_round_effect = yes }
+    if = { limit = { has_character_flag = lyd_c3_claimant OR = { has_variable = lyd_c3_claim_title has_variable = lyd_c3_claim_faith } } lyd_c3_withdraw_claim_effect = yes }
+    if = { limit = { has_variable = lyd_c3_personal_teacher } lyd_c3_leave_teacher_effect = yes }
+    every_in_list = {
+        variable = lyd_c3_students
+        if = { limit = { var:lyd_c3_personal_teacher = scope:lyd_c3_dying_actor } remove_variable = lyd_c3_personal_teacher }
+    }
+    clear_variable_list = lyd_c3_students
+    every_in_list = {
+        variable = lyd_c3_sponsored_claims
+        if = { limit = { var:lyd_c3_claim_sponsor = scope:lyd_c3_dying_actor } remove_variable = lyd_c3_claim_sponsor }
+    }
+    clear_variable_list = lyd_c3_sponsored_claims
+    var:lyd_c3_office_faith ?= {
+        if = {
+            limit = { var:lyd_c3_recognized_leader = scope:lyd_c3_dying_actor }
+            remove_variable = lyd_c3_recognized_leader
+            set_variable = { name = lyd_c3_vacancy value = 1 }
+        }
+    }
+    debug_log = "LYD_C3_PREDEATH_METADATA_CLEANED"
+}
+# Player cleanup also repairs stale native-holder metadata after external
+# succession/abdication/conversion, without granting or retiring a foreign title.
+lyd_c3_player_reconcile_effect = {
+    if = {
+        limit = { lyd_c3_player_actor_trigger = yes }
+        if = { limit = { has_variable = lyd_c3_active NOT = { lyd_c3_round_current_trigger = { ACTOR = root } } } lyd_c3_release_round_effect = yes }
+        if = { limit = { has_character_flag = lyd_c3_claimant NOT = { lyd_c3_claim_current_trigger = yes } } lyd_c3_withdraw_claim_effect = yes }
+        if = {
+            limit = { has_variable = lyd_c3_personal_teacher NOT = { var:lyd_c3_personal_teacher = { is_alive = yes faith = prev.faith } } }
+            lyd_c3_leave_teacher_effect = yes
+        }
+        faith = { lyd_c3_reconcile_faith_roles_effect = yes }
+        var:lyd_c3_office_faith ?= { lyd_c3_reconcile_faith_roles_effect = yes }
+        # Only a dead or expired owner is stale. Live pending rounds are untouched.
+        faith = {
+            every_faith_rite = {
+                limit = { has_variable = lyd_c3_proposal_owner OR = {
+                    var:lyd_c3_proposal_owner = { is_alive = no }
+                    var:lyd_c3_proposal_owner = { NOT = { has_variable = lyd_c3_active } }
+                } }
+                remove_variable = lyd_c3_proposal_owner
+                remove_variable = lyd_c3_lock_serial
+                remove_variable = lyd_c3_delegate_required
+                remove_variable = lyd_c3_delegate_yes
+                remove_variable = lyd_c3_delegate
+            }
+        }
+        debug_log = "LYD_C3_PLAYER_RECONCILED"
+    }
+}

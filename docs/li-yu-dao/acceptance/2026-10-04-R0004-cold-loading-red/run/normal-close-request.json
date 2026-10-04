@@ -1,0 +1,7 @@
+{
+  "utc": "2026-10-04T09:31:52.508790+00:00",
+  "pid": 19184,
+  "hwnd": 2295626,
+  "action": "posted WM_CLOSE",
+  "business_result": "REQUIRES_ACTUAL_EXIT_READBACK"
+}

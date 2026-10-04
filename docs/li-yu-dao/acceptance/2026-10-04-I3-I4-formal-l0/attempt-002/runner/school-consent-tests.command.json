@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\test_school_consent.py"
+  ],
+  "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+  "execution": "COMPLETED",
+  "finished_at": "2026-10-04T10:59:08.430149+00:00",
+  "returncode": 0,
+  "started_at": "2026-10-04T10:59:07.158157+00:00",
+  "stderr": {
+    "path": "school-consent-tests.stderr.txt",
+    "sha256": "3d3d054be2cd5c9784032f9ae98d16f4ca33238155e4425a858789496cbd42d0",
+    "size": 16011
+  },
+  "stdout": {
+    "path": "school-consent-tests.stdout.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size": 0
+  },
+  "timeout_seconds": 60
+}

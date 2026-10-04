@@ -1,0 +1,116 @@
+{
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\iteration2-variable-warning-fix-candidate-001",
+  "files": [
+    {
+      "path": "audit_c3_fields.py",
+      "bytes": 4234,
+      "sha256": "aa6465b626e1fcd97514da4a44b6c97842973d540dfcc5d9b673f18490cfd9d8"
+    },
+    {
+      "path": "before/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_council_effects.txt.in",
+      "bytes": 9624,
+      "sha256": "c45ae3bf7d137409ccf842c4120a18f41928b104bff0648c05c13cb19141447e"
+    },
+    {
+      "path": "before/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_lifecycle_effects.txt.in",
+      "bytes": 5254,
+      "sha256": "71f1a30a1fa25134c1f54ae6039bd77c75c59673741f7b16bb7f871be50cca19"
+    },
+    {
+      "path": "before/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_migration_hooks.txt.in",
+      "bytes": 1346,
+      "sha256": "501b36d0fc72538e3f3361c659458ed693d4f47f03eda02a6db51419e6c20bd5"
+    },
+    {
+      "path": "before/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "bytes": 6027,
+      "sha256": "df4d33ad1c98093445a61c9026b0cbf83e0d7ada67ffdf4389da7d772cd097a9"
+    },
+    {
+      "path": "before/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_head_effects.txt",
+      "bytes": 1929,
+      "sha256": "d8fa17b0afac4e2ec18dfc2955fdc810b6f8763e92d15185858da9b8e50f5aa9"
+    },
+    {
+      "path": "c3-global-fields-report.json",
+      "bytes": 62296,
+      "sha256": "07e36c17b112a48b20a35741770d8c6766d23efa1c651b6a137e8fb3c027179b"
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_council_effects.txt.in",
+      "bytes": 9575,
+      "sha256": "02cb05fa22bb3add83f0ae813b92940a0bf6671fbbd858f0e8c57640001a1fb1"
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_lifecycle_effects.txt.in",
+      "bytes": 5128,
+      "sha256": "96530cdb00cda8c4a4b826fe2b6b7bd2f3e14fa15e2442f577cc45e5c592a6c7"
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_migration_hooks.txt.in",
+      "bytes": 1283,
+      "sha256": "d0e73c511166680c46a3915bf38ee6e84f2b2c6474388294d15ca97fb7d5f086"
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "bytes": 5844,
+      "sha256": "49c6d9710d9dc8238110d122aafa909445817a8240baa36f2d48e968053b6d0c"
+    },
+    {
+      "path": "candidate/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_head_effects.txt",
+      "bytes": 1249,
+      "sha256": "0460ae905e49b07f4005d976474872b64112aad51f573552c315ee9312511f91"
+    },
+    {
+      "path": "evidence/r4-error-classification.json",
+      "bytes": 22732,
+      "sha256": "278456f86685db11cd12f987c4bfd09a4f41f619c4fe4a72b1137b49d068b219"
+    },
+    {
+      "path": "evidence/tools__leadership_templates__common__scripted_effects__lyd_c3_council_effects.txt.in.diff",
+      "bytes": 596,
+      "sha256": "97019c8831d747b0af480e42d92aff2873045566d1c70030acb22b242824f9d4"
+    },
+    {
+      "path": "evidence/tools__leadership_templates__common__scripted_effects__lyd_c3_lifecycle_effects.txt.in.diff",
+      "bytes": 828,
+      "sha256": "fbaa1dd322efe4f0a897c4aba57e03bedff7dd8f0c1ff2dd8eff5b0e4b0585ae"
+    },
+    {
+      "path": "evidence/tools__leadership_templates__common__scripted_effects__lyd_c3_migration_hooks.txt.in.diff",
+      "bytes": 418,
+      "sha256": "c092c2a84774727ea674612f58353ab411948656dd08cf476920436075da79f0"
+    },
+    {
+      "path": "evidence/tools__school_consent_templates__common__scripted_effects__lyd_c2_commit_effects.txt.diff",
+      "bytes": 1315,
+      "sha256": "e1bdad984d55920c9d6d2d9bf4f064c3a9fc5b86968288d1b7488e19e12122e8"
+    },
+    {
+      "path": "evidence/tools__school_consent_templates__common__scripted_effects__lyd_c2_head_effects.txt.diff",
+      "bytes": 1587,
+      "sha256": "ff307104cd24a9f2d242c2acb2dbc772c2cf9d5f1e96a0eb555e9f036f4ce85c"
+    },
+    {
+      "path": "INDEX.json",
+      "bytes": 4331,
+      "sha256": "15d853184f7b37e272445f72b5dcc9f1fa5803ceced30a619884c19282e44443"
+    },
+    {
+      "path": "prepare_candidate.py",
+      "bytes": 7680,
+      "sha256": "6243e82841d8222dcca65a6e37c09fa007a3cafd18a557342b3a409c57dbdc45"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4658,
+      "sha256": "e2544bd760a8fd9c87596ff0d741fcfc938083a9a67fdfd47aa1da5b19a5ae67"
+    },
+    {
+      "path": "report.json",
+      "bytes": 31839,
+      "sha256": "b5c6281825e138fd05a05ee9434693dcfaaa5c66b68d3526c8563d8fd964d003"
+    }
+  ],
+  "live_credit": "NOT_RUN"
+}

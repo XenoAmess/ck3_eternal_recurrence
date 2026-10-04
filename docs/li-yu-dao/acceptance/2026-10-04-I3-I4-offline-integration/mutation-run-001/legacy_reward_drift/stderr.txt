@@ -1,0 +1,27 @@
+test_legacy_event_ids_and_base_practice_rewards_are_preserved (__main__.ContentLeadershipIntegrationTests.test_legacy_event_ids_and_base_practice_rewards_are_preserved) ... 
+  test_legacy_event_ids_and_base_practice_rewards_are_preserved (__main__.ContentLeadershipIntegrationTests.test_legacy_event_ids_and_base_practice_rewards_are_preserved) (tradition='kongmen') ... FAIL
+
+======================================================================
+FAIL: test_legacy_event_ids_and_base_practice_rewards_are_preserved (__main__.ContentLeadershipIntegrationTests.test_legacy_event_ids_and_base_practice_rewards_are_preserved) (tradition='kongmen')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i3-i4-offline-integration-001\test_content_leadership.py", line 239, in test_legacy_event_ids_and_base_practice_rewards_are_preserved
+    self.assertEqual(actual, expected, f"Legacy practice changed: {name}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (10, 36, 0, 5, 25) != (10, 35, 0, 5, 25)
+
+First differing element 1:
+36
+35
+
+- (10, 36, 0, 5, 25)
+?       ^
+
++ (10, 35, 0, 5, 25)
+?       ^
+ : Legacy practice changed: lyd_practice_kongmen_a
+
+----------------------------------------------------------------------
+Ran 1 test in 0.084s
+
+FAILED (failures=1)

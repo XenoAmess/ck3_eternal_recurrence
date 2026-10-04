@@ -1,0 +1,10 @@
+--- before/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_migration_hooks.txt.in
++++ candidate/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_migration_hooks.txt.in
+@@ -25,7 +25,6 @@
+                 }
+             }
+             remove_variable = lyd_c3_recognized_leader
+-            set_variable = { name = lyd_c3_vacancy value = 1 }
+         }
+     }
+ }

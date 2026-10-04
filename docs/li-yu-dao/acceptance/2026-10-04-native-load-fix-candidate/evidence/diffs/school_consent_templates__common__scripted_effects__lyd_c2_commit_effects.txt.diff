@@ -1,0 +1,21 @@
+--- before/school_consent_templates/common/scripted_effects/lyd_c2_commit_effects.txt
++++ candidate/school_consent_templates/common/scripted_effects/lyd_c2_commit_effects.txt
+@@ -20,6 +20,9 @@
+ lyd_c2_commit_join_effect = {
+     if = {
+         limit = { is_ai = no lyd_c2_ready_to_confirm_trigger = { ACTOR = scope:lyd_c2_actor } var:lyd_c2_kind = 1 }
++        # Quoted argument syntax cannot interpolate an ACTOR variable path.
++        # Bind the actual captured receiving main Rite before any mutation.
++        var:lyd_c2_target_main = { save_scope_as = lyd_c2_native_target_main }
+         # PRE-change singleton snapshot; migration may create a backup main rite.
+         lyd_c2_retire_source_head_effect = yes
+         if = { limit = { lyd_c2_retirement_postcondition_trigger = { ACTOR = scope:lyd_c2_actor } }
+@@ -32,7 +35,7 @@
+                     var:lyd_c2_moving_rite = {
+                         faith = scope:lyd_c2_actor.var:lyd_c2_target_faith
+                         this != faith.main_rite
+-                        "divergence(scope:lyd_c2_actor.var:lyd_c2_target_main)" < 100
++                        "divergence(scope:lyd_c2_native_target_main)" < 100
+                     }
+                     var:lyd_c2_target_faith = { main_rite = scope:lyd_c2_actor.var:lyd_c2_target_main }
+                     lyd_c2_retirement_postcondition_trigger = { ACTOR = scope:lyd_c2_actor }

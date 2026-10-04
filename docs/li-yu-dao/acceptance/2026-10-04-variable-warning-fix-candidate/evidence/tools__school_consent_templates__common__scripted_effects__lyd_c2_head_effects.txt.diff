@@ -1,0 +1,25 @@
+--- before/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_head_effects.txt
++++ candidate/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_head_effects.txt
+@@ -2,13 +2,6 @@
+ # Never mark or destroy a pre-existing foreign title as owned by this mod.
+ lyd_c2_retire_source_head_effect = {
+     if = { limit = { is_ai = no lyd_c2_source_retirement_trigger = { ACTOR = scope:lyd_c2_actor } }
+-        var:lyd_c2_moving_rite = {
+-            set_variable = { name = lyd_c2_retired_teacher value = scope:lyd_c2_actor.var:lyd_c2_source_head }
+-            set_variable = { name = lyd_c2_retired_head_title value = scope:lyd_c2_actor.var:lyd_c2_source_head_title }
+-            if = { limit = { exists = scope:lyd_c2_actor.var:lyd_c2_source_rite_head }
+-                set_variable = { name = lyd_c2_previous_rite_head value = scope:lyd_c2_actor.var:lyd_c2_source_rite_head }
+-            }
+-        }
+         var:lyd_c2_source_faith = { remove_religious_head_title = yes }
+         # Vanilla and R0002 primitive proof invoke destroy_title from Character.
+         destroy_title = var:lyd_c2_source_head_title
+@@ -29,8 +22,5 @@
+         set_variable = { name = lyd_c3_head_creation_authorized value = 1 }
+         lyd_c3_create_owned_temporal_head_effect = yes
+         remove_variable = lyd_c3_head_creation_authorized
+-        if = { limit = { faith.religious_head = scope:lyd_c2_actor }
+-            rite = { set_variable = { name = lyd_c2_teacher_character value = scope:lyd_c2_actor } }
+-        }
+     }
+ }

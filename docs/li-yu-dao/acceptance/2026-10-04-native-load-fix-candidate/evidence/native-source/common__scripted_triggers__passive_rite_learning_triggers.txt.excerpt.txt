@@ -1,0 +1,12 @@
+5: passive_rite_learning_candidate_tenet_is_core_trigger = {
+6: 	save_temporary_scope_as = passive_rite_learning_candidate_tenet
+7: 	$RITE$ = {
+8: 		rite_has_tenet = scope:passive_rite_learning_candidate_tenet
+9: 	}
+10: }
+11: 
+12: passive_rite_learning_candidate_doctrine_is_core_trigger = {
+13: 	save_temporary_scope_as = passive_rite_learning_candidate_doctrine
+14: 	$RITE$ = {
+15: 		rite_has_doctrine = scope:passive_rite_learning_candidate_doctrine
+16: 	}

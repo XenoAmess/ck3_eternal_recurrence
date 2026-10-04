@@ -1,0 +1,27 @@
+# Compare actual sets as well as counts: replacement electors, new players or a
+# doctrine/status change invalidate the round even when totals remain identical.
+lyd_c2_snapshot_terms_effect = {
+    @CAPTURE_TERMS@
+}
+lyd_c2_refresh_snapshot_effect = {
+    save_scope_as = lyd_c2_actor
+    set_variable = { name = lyd_c2_snapshot_valid value = 1 }
+    if = {
+        limit = { NOT = { lyd_c2_current_proposal_trigger = { ACTOR = scope:lyd_c2_actor } } }
+        set_variable = { name = lyd_c2_snapshot_valid value = 0 }
+    }
+    @REFRESH_TERMS@
+    @REFRESH_ELECTORATES@
+}
+lyd_c2_open_review_effect = {
+    if = {
+        limit = { lyd_c2_current_proposal_trigger = { ACTOR = root } }
+        save_scope_as = lyd_c2_actor
+        var:lyd_c2_moving_rite = { save_scope_as = lyd_c2_event_school }
+        save_scope_value_as = { name = lyd_c2_event_serial value = var:lyd_c2_serial }
+        save_scope_value_as = { name = lyd_c2_event_terms value = var:lyd_c2_terms_revision }
+        save_scope_value_as = { name = lyd_c2_event_nonce value = var:lyd_c2_callback_nonce }
+        lyd_c2_refresh_snapshot_effect = yes
+        trigger_event = lyd.220
+    }
+}

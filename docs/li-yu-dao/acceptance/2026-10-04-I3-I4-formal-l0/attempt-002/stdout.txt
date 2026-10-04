@@ -1,0 +1,9 @@
+{
+  "result": "ENVIRONMENT_RED",
+  "exit_code": 2,
+  "report_directory": "C:\\workspace\\ck3_lyd_runtime_20261004\\formal-i3-i4-l0-002\\runner",
+  "live": {
+    "status": "NOT_RUN",
+    "reason": "this runner performs read-only preflight and L0 only"
+  }
+}

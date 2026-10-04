@@ -1,0 +1,21 @@
+{
+  "mutation": "personal_choice_migrates_shared_rite",
+  "path": "common/scripted_effects/lyd_school_effects.txt",
+  "before": "set_character_rite = rite:lyd_rite_kongmen",
+  "after": "set_character_rite = rite:lyd_rite_kongmen set_parent_faith = { target = faith:confucian_faith main = no include_derived = no }",
+  "target_test": "test_personal_adoption_never_migrates_a_shared_rite_or_faith",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001\\test_content_leadership.py",
+    "ContentLeadershipIntegrationTests.test_personal_adoption_never_migrates_a_shared_rite_or_faith"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001",
+  "rc": 1,
+  "mutation_detected": true,
+  "original_sha256": "d9b1456c4a5e7610807ae7e61f4bbfdc8b432968d776befcbd32abd5e6dc6008",
+  "mutated_sha256": "5f19b0abaf733048be221b323d72fcf6f6ffd641abd56d5fbf4527cfb9be591d",
+  "test_sha256": "65dad476695a4e160b53f39f64456b327d9911e97039d6b48dd7c363e8f21d99",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "91eb52708d872e16ba88c687124ad226f4fe8aa9184d0c1634f6c572682fccfb"
+}

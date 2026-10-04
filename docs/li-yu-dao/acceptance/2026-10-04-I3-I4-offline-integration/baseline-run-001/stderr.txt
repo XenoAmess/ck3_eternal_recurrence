@@ -1,0 +1,42 @@
+test_catalogue_is_reachable_through_state_free_chooser_pages (__main__.ContentLeadershipIntegrationTests.test_catalogue_is_reachable_through_state_free_chooser_pages) ... ok
+test_council_callback_revalidates_serial_and_all_affected_players (__main__.ContentLeadershipIntegrationTests.test_council_callback_revalidates_serial_and_all_affected_players) ... ok
+test_every_selected_rite_dispatches_to_its_own_affordable_guarded_practice (__main__.ContentLeadershipIntegrationTests.test_every_selected_rite_dispatches_to_its_own_affordable_guarded_practice) ... ok
+test_legacy_event_ids_and_base_practice_rewards_are_preserved (__main__.ContentLeadershipIntegrationTests.test_legacy_event_ids_and_base_practice_rewards_are_preserved) ... ok
+test_migration_cleanup_runs_before_the_native_setter (__main__.ContentLeadershipIntegrationTests.test_migration_cleanup_runs_before_the_native_setter) ... FAIL
+test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor (__main__.ContentLeadershipIntegrationTests.test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor) ... ok
+test_owned_title_retirement_never_selects_other_held_titles (__main__.ContentLeadershipIntegrationTests.test_owned_title_retirement_never_selects_other_held_titles) ... FAIL
+test_personal_adoption_never_migrates_a_shared_rite_or_faith (__main__.ContentLeadershipIntegrationTests.test_personal_adoption_never_migrates_a_shared_rite_or_faith) ... ok
+test_player_initiation_and_recipient_consent_are_separate (__main__.ContentLeadershipIntegrationTests.test_player_initiation_and_recipient_consent_are_separate) ... FAIL
+test_shared_factory_has_one_formal_generator_owner (__main__.ContentLeadershipIntegrationTests.test_shared_factory_has_one_formal_generator_owner) ... ok
+
+======================================================================
+FAIL: test_migration_cleanup_runs_before_the_native_setter (__main__.ContentLeadershipIntegrationTests.test_migration_cleanup_runs_before_the_native_setter)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i3-i4-offline-integration-001\test_content_leadership.py", line 303, in test_migration_cleanup_runs_before_the_native_setter
+    self.assertTrue(has(hook,"lyd_c3_cleanup_rite_claim_offices_effect","yes"))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_owned_title_retirement_never_selects_other_held_titles (__main__.ContentLeadershipIntegrationTests.test_owned_title_retirement_never_selects_other_held_titles)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i3-i4-offline-integration-001\test_content_leadership.py", line 336, in test_owned_title_retirement_never_selects_other_held_titles
+    self.assertEqual(len(transfers),1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 1
+
+======================================================================
+FAIL: test_player_initiation_and_recipient_consent_are_separate (__main__.ContentLeadershipIntegrationTests.test_player_initiation_and_recipient_consent_are_separate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i3-i4-offline-integration-001\test_content_leadership.py", line 350, in test_player_initiation_and_recipient_consent_are_separate
+    self.assertEqual(scalar(body,"ai_maybe"),"no",identifier)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'no' : lyd_c2_propose_join_interaction
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.152s
+
+FAILED (failures=3)

@@ -1,0 +1,21 @@
+{
+  "mutation": "legitimate_head_title_deletion",
+  "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+  "before": "NOT = { this = var:lyd_c3_owner_faith.religious_head_title }",
+  "after": "this = var:lyd_c3_owner_faith.religious_head_title",
+  "target_test": "test_owned_title_retirement_never_selects_other_held_titles",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001\\test_content_leadership.py",
+    "ContentLeadershipIntegrationTests.test_owned_title_retirement_never_selects_other_held_titles"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001",
+  "rc": 1,
+  "mutation_detected": true,
+  "original_sha256": "af3c5cabc8e6123a5d76aeed59bf0e85db8e9bcf39c85118b0ab85ee746ea89c",
+  "mutated_sha256": "a1a74a78151c6137e58c20603f4f3d243aed9239783f3bb40ba07ac87ebea33b",
+  "test_sha256": "65dad476695a4e160b53f39f64456b327d9911e97039d6b48dd7c363e8f21d99",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "af0c7ba7a55df17c0903aa6f7aa32a6b4e96132346965d2bc0c8b95fa4c5148a"
+}

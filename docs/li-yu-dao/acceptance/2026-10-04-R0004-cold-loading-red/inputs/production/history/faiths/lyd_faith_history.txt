@@ -1,0 +1,7 @@
+﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
+lyd_common_faith = {
+    1.1.1 = {
+        main_rite = lyd_rite_kongmen
+        permitted = { lyd_tenet_reverent_heaven lyd_tenet_sincerity_solitude lyd_tenet_ritual_music lyd_tenet_ancestral_reverence lyd_tenet_humaneness_righteousness lyd_tenet_sage_transmission lyd_tenet_extend_sprouts lyd_tenet_deliberate_cultivation lyd_tenet_righteous_qi lyd_tenet_investigate_principle lyd_tenet_reverent_attention lyd_tenet_original_heart lyd_tenet_textual_ritual lyd_tenet_classical_synthesis lyd_tenet_constant_heaven }
+    }
+}

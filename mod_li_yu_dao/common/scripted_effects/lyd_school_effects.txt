@@ -35,6 +35,30 @@ lyd_adopt_xunzi_effect = {
     }
 }
 
+lyd_adopt_dongzhongshu_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_dongzhongshu } }
+        set_character_rite = rite:lyd_rite_dongzhongshu
+        if = {
+            limit = { rite = rite:lyd_rite_dongzhongshu faith = rite:lyd_rite_dongzhongshu.faith }
+            add_character_flag = { flag = lyd_school_cooldown days = 365 }
+        }
+        else = { debug_log = "LYD_SCHOOL_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }
+    }
+}
+
+lyd_adopt_guwen_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_guwen } }
+        set_character_rite = rite:lyd_rite_guwen
+        if = {
+            limit = { rite = rite:lyd_rite_guwen faith = rite:lyd_rite_guwen.faith }
+            add_character_flag = { flag = lyd_school_cooldown days = 365 }
+        }
+        else = { debug_log = "LYD_SCHOOL_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }
+    }
+}
+
 lyd_adopt_zhengxuan_effect = {
     if = {
         limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_zhengxuan } }
@@ -59,36 +83,12 @@ lyd_adopt_wangsu_effect = {
     }
 }
 
-lyd_adopt_jingshu_effect = {
+lyd_adopt_wangbi_effect = {
     if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_jingshu } }
-        set_character_rite = rite:lyd_rite_jingshu
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_wangbi } }
+        set_character_rite = rite:lyd_rite_wangbi
         if = {
-            limit = { rite = rite:lyd_rite_jingshu faith = rite:lyd_rite_jingshu.faith }
-            add_character_flag = { flag = lyd_school_cooldown days = 365 }
-        }
-        else = { debug_log = "LYD_SCHOOL_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }
-    }
-}
-
-lyd_adopt_zhuxi_effect = {
-    if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_zhuxi } }
-        set_character_rite = rite:lyd_rite_zhuxi
-        if = {
-            limit = { rite = rite:lyd_rite_zhuxi faith = rite:lyd_rite_zhuxi.faith }
-            add_character_flag = { flag = lyd_school_cooldown days = 365 }
-        }
-        else = { debug_log = "LYD_SCHOOL_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }
-    }
-}
-
-lyd_adopt_lujiuyuan_effect = {
-    if = {
-        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_lujiuyuan } }
-        set_character_rite = rite:lyd_rite_lujiuyuan
-        if = {
-            limit = { rite = rite:lyd_rite_lujiuyuan faith = rite:lyd_rite_lujiuyuan.faith }
+            limit = { rite = rite:lyd_rite_wangbi faith = rite:lyd_rite_wangbi.faith }
             add_character_flag = { flag = lyd_school_cooldown days = 365 }
         }
         else = { debug_log = "LYD_SCHOOL_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }

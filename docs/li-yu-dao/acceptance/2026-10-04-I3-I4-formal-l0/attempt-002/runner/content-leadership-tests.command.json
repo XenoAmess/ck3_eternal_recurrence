@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\test_content_leadership.py"
+  ],
+  "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+  "execution": "COMPLETED",
+  "finished_at": "2026-10-04T10:59:08.744770+00:00",
+  "returncode": 0,
+  "started_at": "2026-10-04T10:59:08.434203+00:00",
+  "stderr": {
+    "path": "content-leadership-tests.stderr.txt",
+    "sha256": "a4a6c7f98200195258ca959e05e992ea5ca00210bb88cdf119cb20da69aaf846",
+    "size": 1874
+  },
+  "stdout": {
+    "path": "content-leadership-tests.stdout.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size": 0
+  },
+  "timeout_seconds": 60
+}

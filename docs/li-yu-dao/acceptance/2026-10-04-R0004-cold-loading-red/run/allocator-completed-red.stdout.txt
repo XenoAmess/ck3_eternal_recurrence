@@ -1,0 +1,12 @@
+{
+  "schema": "xar.ck3-live-run-status.v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0004",
+  "execution_id": "84425881-d38d-4595-a106-9f08799633c2",
+  "machine_id": "bf-202609141645-5434332d4d",
+  "mod_key": "li-yu-dao",
+  "sequence": 4,
+  "status": "completed-red",
+  "reason": "R0004-native-loading-errors-normal-window-exit-no-campaign-no-native-attach",
+  "recorded_at_utc": "2026-10-04T09:33:52.044506+00:00",
+  "recorder_pid": 18104
+}

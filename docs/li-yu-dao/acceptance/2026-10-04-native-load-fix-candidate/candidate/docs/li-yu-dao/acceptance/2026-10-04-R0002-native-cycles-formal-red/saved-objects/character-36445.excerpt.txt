@@ -1,0 +1,175 @@
+36445={
+	first_name="Abelard"
+	birth=1040.1.2
+	nickname_text=""
+	ethnicity=caucasian_brown_hair
+	rite=151
+	dynasty_house=174
+	skill={ 6 8 5 5 3 9 }
+	trait_xp_amounts={ 1 }
+	mass=-15
+	traits={ 81 52 63 17 240 }
+	family_data={
+		concubine=55036
+	}
+
+	alive_data={
+		variables={
+			data={ {
+					flag=changed_rite_flag
+					data={
+					}
+
+				}
+ {
+					flag=chancellor_foreign_affairs_opinion_value
+					data={
+						type=value
+					}
+
+				}
+ {
+					flag=court_chaplain_religious_relations_opinion_value
+					data={
+						type=value
+					}
+
+				}
+ {
+					flag=reformer_legend
+					data={
+					}
+
+				}
+ {
+					flag=has_created_a_faith
+					data={
+						type=boolean
+						identity=1
+					}
+
+				}
+ {
+					flag=crown_authority_cooldown
+					tick=7045
+					data={
+						type=boolean
+						identity=1
+					}
+
+				}
+ }
+		}
+		income=1.98337
+		fertility=0.5
+		health=3.95231
+		gold={
+			value=72.1337
+		}
+		piety={
+			currency=65.5
+			accumulated=1015.5
+		}
+		prestige={
+			currency=86.326
+			accumulated=1007.326
+		}
+		influence={
+			currency=180
+		}
+		focus={
+			type=martial_strategy_focus
+			date=1066.9.15
+			changes=0
+			progress=0
+		}
+
+		claim={ {
+				title=2230
+				pressed=yes
+			}
+ {
+				title=2231
+				pressed=yes
+			}
+ }
+		lifestyle_xp={
+			martial_lifestyle=350
+		}
+		perk={ bellum_justum_perk parthian_tactics_perk envelopment_perk }
+		weight_update=1
+		languages={ language_french }
+		activity_data={
+		}
+
+		location={
+			location=2631
+		}
+		memories={ 16777217 4329 8587 9446 10817 }
+	}
+
+	court_data={
+	}
+
+	landed_data={
+		domain={ 18417 2250 2251 }
+		became_ruler_date=1066.9.15
+		laws={ crown_authority_1 confederate_partition_succession_law male_preference_law same_faith_succession_law top_liege_redirected_to_border_wars_law }
+		current_strength=323
+		strength=323
+		strength_without_hires=323
+		power=9380
+		max_power=9380
+		levy=219
+		balance=1.98337
+		succession_result_type=inheritance_relative
+		succession={ 36663 36873 }
+		vassal_power_value=536.9625
+		domain_limit=4
+		vassal_limit=20
+		government=feudal_government
+		realm_capital=2251
+		ai_allowed_to_marry=yes
+		council={ 3071 3072 3073 3074 3075 }
+		at_peace_penalty=5
+		diplo_centers={ 1866 2381 }
+		court_positions={ 2000 315 }
+		legend_seeds={ {
+				type=holy
+				chronicle=new_faith_legend
+				properties={ 					"reformer"={
+						type=char
+						identity=36445
+					}
+ 					"faith"={
+						type=faith
+						identity=106
+					}
+ 					"religion"={
+						type=religion
+						identity=9
+					}
+ 					"reason"={
+						type=flag
+						flag="new_faith"
+					}
+ }
+				quality=famed
+			}
+ }
+		barter_goods={
+		}
+	}
+
+	playable_data={
+		knights={ 55037 59317 36873 36663 }
+		diarchy_successor=36663
+		accolades={ 398 }
+		legitimacy=101
+		legitimacy_type=duke_legitimacy
+		tenets={ tenet_apostolic_succession }
+		known_doctrines={ abrahamic_hostility_doctrine doctrine_monogamy doctrine_polygamy doctrine_divorce_approval doctrine_divorce_disallowed doctrine_divorce_allowed doctrine_bastardry_legitimization doctrine_bastardry_none doctrine_bastardry_all doctrine_homosexuality_shunned doctrine_homosexuality_crime doctrine_homosexuality_accepted doctrine_deviancy_crime doctrine_deviancy_shunned doctrine_adultery_men_shunned doctrine_adultery_men_crime doctrine_adultery_men_accepted doctrine_adultery_women_crime doctrine_adultery_women_shunned doctrine_kinslaying_close_kin_crime doctrine_kinslaying_extended_family_crime doctrine_kinslaying_shunned doctrine_witchcraft_crime doctrine_witchcraft_shunned doctrine_gender_male_dominated doctrine_gender_equal doctrine_consanguinity_aunt_nephew_and_uncle_niece doctrine_consanguinity_cousins doctrine_consanguinity_unrestricted doctrine_pluralism_righteous doctrine_pluralism_fundamentalist doctrine_pluralism_pluralistic doctrine_theocracy_temporal doctrine_theocracy_lay_clergy doctrine_spiritual_head doctrine_clerical_function_taxation doctrine_clerical_gender_male_only doctrine_clerical_gender_either doctrine_clerical_marriage_disallowed doctrine_clerical_marriage_allowed doctrine_clerical_succession_spiritual_fixed_appointment doctrine_pilgrimage_encouraged doctrine_pilgrimage_forbidden doctrine_pilgrimage_local_rites doctrine_funeral_stoic doctrine_imperial_anointment doctrine_monotheist doctrine_scriptural doctrine_monasticism_accepted doctrine_monasticism_encouraged doctrine_monasticism_absent doctrine_sacraments_central special_doctrine_is_christian_faith special_doctrine_ecumenical_christian special_doctrine_has_clerical_electors special_doctrine_is_western_christian_faith doctrine_kinslaying_any_dynasty_member_crime doctrine_clerical_function_alms_and_pacification doctrine_funeral_bewailment doctrine_anointment_permitted special_doctrine_pope_blessing doctrine_deviancy_accepted doctrine_clerical_succession_conditional sinitic_hostility_doctrine doctrine_concubines doctrine_consanguinity_dynastic doctrine_consanguinity_restricted doctrine_temporal_head doctrine_clerical_succession_temporal_appointment doctrine_pilgrimage_mandatory doctrine_family_rites doctrine_no_anointment doctrine_polytheist doctrine_monasticism_forbidden doctrine_sacraments_absent special_doctrine_is_sinitic_faith special_doctrine_immaterial_harmony }
+		known_tenets={ tenet_peace_of_god tenet_dulia tenet_apostolic_succession tenet_confession tenet_original_sin tenet_divine_liturgy tenet_anachoresis tenet_communal_identity tenet_communion tenet_vows_of_poverty tenet_adaptive tenet_transubstantiation tenet_ora_et_labora tenet_hyperdulia tenet_simony tenet_monophysitism tenet_acts_of_apostles tenet_purgatory tenet_be_fruitful_and_multiply tenet_celestial_hierarchy tenet_miles_christi tenet_philanthropia tenet_adoptionism tenet_love_thy_neighbour tenet_miaphysitism tenet_hesychasm tenet_mortification_of_the_flesh tenet_aniconism tenet_gnosticism tenet_pentarchy tenet_esotericism tenet_legalism tenet_literalism tenet_religious_legal_pronouncements tenet_asceticism tenet_ritual_celebrations tenet_sanctity_of_nature tenet_natural_primitivism tenet_polyamory tenet_pursuit_of_knowledge tenet_benevolent_governance tenet_harmonious_society }
+	}
+
+}

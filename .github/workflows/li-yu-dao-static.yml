@@ -37,6 +37,7 @@ jobs:
           python mod_li_yu_dao/tools/test_build_release.py
           python mod_li_yu_dao/tools/test_run_acceptance.py
           python mod_li_yu_dao/tools/test_school_consent.py
+          python mod_li_yu_dao/tools/test_content_leadership.py
           python mod_li_yu_dao/tools/build_release.py --check
       - name: Preserve static report
         if: always()

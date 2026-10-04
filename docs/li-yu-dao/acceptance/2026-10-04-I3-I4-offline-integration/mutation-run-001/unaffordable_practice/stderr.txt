@@ -1,0 +1,15 @@
+test_every_selected_rite_dispatches_to_its_own_affordable_guarded_practice (__main__.ContentLeadershipIntegrationTests.test_every_selected_rite_dispatches_to_its_own_affordable_guarded_practice) ... FAIL
+
+======================================================================
+FAIL: test_every_selected_rite_dispatches_to_its_own_affordable_guarded_practice (__main__.ContentLeadershipIntegrationTests.test_every_selected_rite_dispatches_to_its_own_affordable_guarded_practice)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i3-i4-offline-integration-001\test_content_leadership.py", line 220, in test_every_selected_rite_dispatches_to_its_own_affordable_guarded_practice
+    self.assertTrue(has(gate, "gold", str(cost), ">="), f"{calls[0]} can execute without its cost")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : lyd_practice_kongmen_a_effect can execute without its cost
+
+----------------------------------------------------------------------
+Ran 1 test in 0.083s
+
+FAILED (failures=1)

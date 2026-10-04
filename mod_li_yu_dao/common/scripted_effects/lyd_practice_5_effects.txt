@@ -1,0 +1,96 @@
+﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
+lyd_practice_wangbi_c_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_wangbi
+            gold >= 30
+        }
+        remove_short_term_gold = 30 add_piety = -25 add_prestige = 20 add_stress = -5
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_guoxiang_a_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_guoxiang
+            gold >= 20
+        }
+        remove_short_term_gold = 20 add_piety = 40 add_prestige = -5 add_stress = 5 add_learning_lifestyle_xp = 35
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_guoxiang_b_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_guoxiang
+            gold >= 5
+        }
+        remove_short_term_gold = 5 add_piety = 30 add_prestige = 5 add_stress = -10 add_learning_lifestyle_xp = 25
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_guoxiang_c_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_guoxiang
+            gold >= 0
+        }
+        add_piety = -25 add_prestige = 15 add_stress = -5
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_hanyu_a_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_hanyu
+            gold >= 10
+        }
+        remove_short_term_gold = 10 add_piety = 30 add_prestige = -10 add_stress = 10 add_learning_lifestyle_xp = 45
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_hanyu_b_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_hanyu
+            gold >= 25
+        }
+        remove_short_term_gold = 25 add_piety = 45 add_prestige = 10 add_stress = 5 add_learning_lifestyle_xp = 25
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_hanyu_c_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_hanyu
+            gold >= 5
+        }
+        remove_short_term_gold = 5 add_piety = -30 add_prestige = 25 add_stress = -5
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_liao_a_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_liao
+            gold >= 5
+        }
+        remove_short_term_gold = 5 add_piety = 35 add_prestige = -5 add_stress = -10 add_learning_lifestyle_xp = 25
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}

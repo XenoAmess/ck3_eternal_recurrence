@@ -1,0 +1,15 @@
+test_migration_cleanup_runs_before_the_native_setter (__main__.ContentLeadershipIntegrationTests.test_migration_cleanup_runs_before_the_native_setter) ... ERROR
+
+======================================================================
+ERROR: test_migration_cleanup_runs_before_the_native_setter (__main__.ContentLeadershipIntegrationTests.test_migration_cleanup_runs_before_the_native_setter)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i3-i4-offline-integration-001\test_content_leadership.py", line 300, in test_migration_cleanup_runs_before_the_native_setter
+    self.assertLess(ordered.index("remove_religious_head_challenger"), ordered.index(native), name)
+                    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: 'remove_religious_head_challenger' is not in list
+
+----------------------------------------------------------------------
+Ran 1 test in 0.083s
+
+FAILED (errors=1)

@@ -1,0 +1,21 @@
+{
+  "mutation": "native_challenger_open",
+  "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+  "before": "lyd_c3_native_challenger_admitted_trigger = { always = no }",
+  "after": "lyd_c3_native_challenger_admitted_trigger = { always = yes }",
+  "target_test": "test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001\\test_content_leadership.py",
+    "ContentLeadershipIntegrationTests.test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001",
+  "rc": 1,
+  "mutation_detected": true,
+  "original_sha256": "bac466e78388dc5cfd9b0f2e26307b29144cb62cd70fb1f7774e992d958dce5e",
+  "mutated_sha256": "402e030d5a1dfabef66658317828ff472354815dac6dd163b49418eb6c898119",
+  "test_sha256": "65dad476695a4e160b53f39f64456b327d9911e97039d6b48dd7c363e8f21d99",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "4833c3d26f988e20d3ebb4d406d8a093d6023729e51138b2f8865b8b621930e6"
+}

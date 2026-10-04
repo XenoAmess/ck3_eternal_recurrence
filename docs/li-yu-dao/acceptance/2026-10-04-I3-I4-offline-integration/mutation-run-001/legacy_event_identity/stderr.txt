@@ -1,0 +1,21 @@
+test_legacy_event_ids_and_base_practice_rewards_are_preserved (__main__.ContentLeadershipIntegrationTests.test_legacy_event_ids_and_base_practice_rewards_are_preserved) ... 
+  test_legacy_event_ids_and_base_practice_rewards_are_preserved (__main__.ContentLeadershipIntegrationTests.test_legacy_event_ids_and_base_practice_rewards_are_preserved) (tradition='kongmen') ... FAIL
+
+======================================================================
+FAIL: test_legacy_event_ids_and_base_practice_rewards_are_preserved (__main__.ContentLeadershipIntegrationTests.test_legacy_event_ids_and_base_practice_rewards_are_preserved) (tradition='kongmen')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i3-i4-offline-integration-001\test_content_leadership.py", line 231, in test_legacy_event_ids_and_base_practice_rewards_are_preserved
+    self.assertEqual(scalar(event, "title"), f"lyd_practice_{slug}_t")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'lyd_practice_mengzi_t' != 'lyd_practice_kongmen_t'
+- lyd_practice_mengzi_t
+?                 ---
++ lyd_practice_kongmen_t
+?              ++++
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.083s
+
+FAILED (failures=1)

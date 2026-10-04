@@ -58,7 +58,7 @@ def player_guard(block: Block, triggers: dict[str, Block], seen: frozenset[str] 
             if player_guard(triggers[entry.key], triggers, seen | {entry.key}):
                 return True
         if isinstance(entry.value, Block):
-            if entry.key in {"AND", "root", "scope:actor", "trigger", "limit"} and player_guard(entry.value, triggers, seen):
+            if entry.key in {"AND", "root", "scope:actor", "trigger", "limit", "hidden_trigger"} and player_guard(entry.value, triggers, seen):
                 return True
             if entry.key == "OR":
                 branches = [candidate.value for candidate in entry.value.entries if isinstance(candidate.value, Block)]
@@ -203,9 +203,13 @@ def validate(source: Path = SOURCE) -> dict:
     call_graph.update({identifier: called_nodes(body) - {identifier} for identifier, body in events.items()})
     player_entries: set[str] = set()
     for relative, ast in scripts.items():
-        runtime_flow = relative.startswith(("common/decisions/", "common/character_interactions/", "common/scripted_", "events/"))
+        runtime_flow = relative.startswith(("common/decisions/", "common/character_interactions/", "common/on_action/", "common/scripted_", "events/"))
         for entry, ancestors in walk(ast):
             # Targeted R0001 boot regressions only, not a native scope checker.
+            if runtime_flow and entry.key == "has_same_core_doctrines":
+                errors.append(f"R0004 native rejected has_same_core_doctrines on exact 1.20.0.3: {relative}")
+            if runtime_flow and entry.key.strip('"').startswith("divergence(") and "$" in entry.key:
+                errors.append(f"R0004 native rejected parameter expansion inside divergence; bind an actual saved scope first: {relative}")
             effect_context = relative.startswith("common/scripted_effects/") or bool(EFFECT_CONTAINERS.intersection(ancestors))
             if effect_context and entry.key == "change_stress":
                 errors.append(f"unknown native effect change_stress; use add_stress: {relative}")

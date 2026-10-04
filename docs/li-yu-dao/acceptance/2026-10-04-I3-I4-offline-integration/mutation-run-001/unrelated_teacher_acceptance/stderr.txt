@@ -1,0 +1,15 @@
+test_player_initiation_and_recipient_consent_are_separate (__main__.ContentLeadershipIntegrationTests.test_player_initiation_and_recipient_consent_are_separate) ... FAIL
+
+======================================================================
+FAIL: test_player_initiation_and_recipient_consent_are_separate (__main__.ContentLeadershipIntegrationTests.test_player_initiation_and_recipient_consent_are_separate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i3-i4-offline-integration-001\test_content_leadership.py", line 372, in test_player_initiation_and_recipient_consent_are_separate
+    self.assertTrue(has(callback_limit,f"var:{pending}"), f"{callback}: stale/unrelated recipient can accept")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : lyd_c3_accept_teacher_effect: stale/unrelated recipient can accept
+
+----------------------------------------------------------------------
+Ran 1 test in 0.083s
+
+FAILED (failures=1)

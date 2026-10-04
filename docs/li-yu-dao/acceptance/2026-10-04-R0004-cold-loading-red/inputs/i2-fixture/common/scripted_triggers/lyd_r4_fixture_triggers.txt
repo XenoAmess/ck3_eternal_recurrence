@@ -1,0 +1,99 @@
+﻿# GENERATED FILE: acceptance-only R4 fixture; edit build_fixture.py.
+# Character execution guards are player-only; display guards omit is_ai/is_alive.
+lyd_r4_player_trigger = {
+    is_ai = no is_alive = yes is_adult = yes is_landed = yes
+    has_character_flag = lyd_enabled
+    rite = rite:lyd_rite_zhuxi
+    faith = { religion = religion:confucianism_religion }
+    is_imprisoned = no NOT = { has_trait = incapable }
+}
+lyd_r4_unlocked_rite_trigger = {
+    NOT = { has_variable = lyd_c2_proposal_owner }
+    NOT = { has_variable = lyd_c3_proposal_owner }
+}
+lyd_r4_setup_display_trigger = {
+    is_adult = yes is_landed = yes
+    has_character_flag = lyd_enabled
+    rite = rite:lyd_rite_zhuxi faith = faith:lyd_common_faith
+    NOT = { has_character_flag = lyd_r4_setup_attempted }
+    NOT = { has_variable = lyd_c2_active }
+    faith = {
+        main_rite = rite:lyd_rite_kongmen
+        NOT = { exists = religious_head }
+        NOT = { exists = religious_head_title }
+        any_faith_rite = { count = 8 }
+        NOT = { any_faith_rite = { count >= 9 } }
+    }
+    rite:lyd_rite_kongmen = { faith = faith:lyd_common_faith lyd_r4_unlocked_rite_trigger = yes }
+    rite:lyd_rite_mengzi = { faith = faith:lyd_common_faith lyd_r4_unlocked_rite_trigger = yes }
+    rite:lyd_rite_xunzi = { faith = faith:lyd_common_faith lyd_r4_unlocked_rite_trigger = yes }
+    rite:lyd_rite_zhengxuan = { faith = faith:lyd_common_faith lyd_r4_unlocked_rite_trigger = yes }
+    rite:lyd_rite_wangsu = { faith = faith:lyd_common_faith lyd_r4_unlocked_rite_trigger = yes }
+    rite:lyd_rite_jingshu = { faith = faith:lyd_common_faith lyd_r4_unlocked_rite_trigger = yes }
+    rite:lyd_rite_zhuxi = { faith = faith:lyd_common_faith lyd_r4_unlocked_rite_trigger = yes }
+    rite:lyd_rite_lujiuyuan = { faith = faith:lyd_common_faith lyd_r4_unlocked_rite_trigger = yes }
+}
+lyd_r4_setup_trigger = { lyd_r4_player_trigger = yes lyd_r4_setup_display_trigger = yes }
+lyd_r4_qualification_display_trigger = {
+    is_adult = yes is_landed = yes has_character_flag = lyd_enabled
+    rite = rite:lyd_rite_zhuxi
+    faith = { religion = religion:confucianism_religion }
+    learning < 15 NOT = { has_variable = lyd_c2_active }
+    rite = { lyd_r4_unlocked_rite_trigger = yes }
+}
+lyd_r4_qualification_trigger = {
+    lyd_r4_player_trigger = yes lyd_r4_qualification_display_trigger = yes
+}
+lyd_r4_setup_postcondition_trigger = {
+    faith = var:lyd_r4_initial_source_faith rite = rite:lyd_rite_zhuxi
+    has_character_flag = lyd_enabled
+    gold = var:lyd_r4_setup_gold_before piety = var:lyd_r4_setup_piety_before
+    learning = var:lyd_r4_setup_learning_before
+    NOT = { has_variable = lyd_c2_active }
+    var:lyd_r4_initial_source_faith = {
+        main_rite = rite:lyd_rite_kongmen
+        NOT = { exists = religious_head } NOT = { exists = religious_head_title }
+        any_faith_rite = { count = 7 }
+        NOT = { any_faith_rite = { count >= 8 } }
+    }
+    exists = var:lyd_r4_receiving_faith
+    var:lyd_r4_receiving_faith = {
+        religion = religion:confucianism_religion main_rite = rite:lyd_rite_jingshu
+        NOT = { exists = religious_head } NOT = { exists = religious_head_title }
+        any_faith_rite = { count = 1 }
+        NOT = { any_faith_rite = { count >= 2 } }
+    }
+    rite:lyd_rite_jingshu = { faith = root.var:lyd_r4_receiving_faith }
+    var:lyd_r4_source_rep = {
+        is_ai = yes lyd_c2_elector_trigger = yes
+        rite = rite:lyd_rite_zhuxi faith = root.var:lyd_r4_initial_source_faith
+        NOT = { is_landed = yes }
+    }
+    var:lyd_r4_jingshu_rep = {
+        is_ai = yes lyd_c2_elector_trigger = yes
+        rite = rite:lyd_rite_jingshu faith = root.var:lyd_r4_receiving_faith
+        rite = faith.main_rite NOT = { is_landed = yes }
+    }
+}
+lyd_r4_reset_display_trigger = {
+    is_adult = yes is_landed = yes has_character_flag = lyd_enabled
+    has_character_flag = lyd_r4_fixture_initialized rite = rite:lyd_rite_zhuxi
+    faith = { religion = religion:confucianism_religion }
+    NOT = { has_variable = lyd_c2_active }
+    rite:lyd_rite_zhuxi = {
+        lyd_r4_unlocked_rite_trigger = yes
+        OR = { has_variable = lyd_c2_transition_cooldown has_variable = lyd_c2_retry_cooldown }
+    }
+    rite:lyd_rite_jingshu = { lyd_r4_unlocked_rite_trigger = yes }
+}
+lyd_r4_reset_trigger = { lyd_r4_player_trigger = yes lyd_r4_reset_display_trigger = yes }
+lyd_r4_resources_display_trigger = {
+    is_adult = yes is_landed = yes has_character_flag = lyd_enabled
+    has_character_flag = lyd_r4_fixture_initialized
+    rite = rite:lyd_rite_zhuxi
+    NOT = { has_character_flag = lyd_r4_resources_prepared }
+    NOT = { has_variable = lyd_c2_active }
+    rite:lyd_rite_zhuxi = { lyd_r4_unlocked_rite_trigger = yes }
+    rite:lyd_rite_jingshu = { lyd_r4_unlocked_rite_trigger = yes }
+}
+lyd_r4_resources_trigger = { lyd_r4_player_trigger = yes lyd_r4_resources_display_trigger = yes }

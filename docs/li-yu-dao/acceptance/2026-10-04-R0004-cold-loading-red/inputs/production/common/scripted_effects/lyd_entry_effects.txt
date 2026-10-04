@@ -1,0 +1,25 @@
+﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
+lyd_enter_effect = {
+    if = {
+        limit = { lyd_can_enter_trigger = yes }
+        set_character_rite = rite:lyd_rite_kongmen
+        if = {
+            limit = { rite = rite:lyd_rite_kongmen faith = rite:lyd_rite_kongmen.faith }
+            add_character_flag = lyd_enabled
+            trigger_event = lyd.1
+        }
+        else = { debug_log = "LYD_ENTER_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }
+    }
+}
+lyd_open_school_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes }
+        trigger_event = lyd.10
+    }
+}
+lyd_open_study_effect = {
+    if = {
+        limit = { lyd_can_study_trigger = yes }
+        if = { limit = { rite = rite:lyd_rite_kongmen } trigger_event = lyd.100 } if = { limit = { rite = rite:lyd_rite_mengzi } trigger_event = lyd.101 } if = { limit = { rite = rite:lyd_rite_xunzi } trigger_event = lyd.102 } if = { limit = { rite = rite:lyd_rite_zhengxuan } trigger_event = lyd.103 } if = { limit = { rite = rite:lyd_rite_wangsu } trigger_event = lyd.104 } if = { limit = { rite = rite:lyd_rite_jingshu } trigger_event = lyd.105 } if = { limit = { rite = rite:lyd_rite_zhuxi } trigger_event = lyd.106 } if = { limit = { rite = rite:lyd_rite_lujiuyuan } trigger_event = lyd.107 }
+    }
+}

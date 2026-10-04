@@ -1,0 +1,21 @@
+{
+  "mutation": "cancel_sets_cooldown",
+  "path": "events/lyd_events.txt",
+  "before": "option = { name = lyd_cancel }",
+  "after": "option = { name = lyd_cancel add_character_flag = lyd_school_cooldown }",
+  "target_test": "test_catalogue_is_reachable_through_state_free_chooser_pages",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001\\test_content_leadership.py",
+    "ContentLeadershipIntegrationTests.test_catalogue_is_reachable_through_state_free_chooser_pages"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001",
+  "rc": 1,
+  "mutation_detected": true,
+  "original_sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24",
+  "mutated_sha256": "ba936fbdcc78f216719a1fa313f8dba80c12c37fa3d4a6db6c16a713a98c2d53",
+  "test_sha256": "65dad476695a4e160b53f39f64456b327d9911e97039d6b48dd7c363e8f21d99",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "bf68985f7f8af39f14d5c21062d6dd809c418a50bd2d0e3ff086223ab2001200"
+}

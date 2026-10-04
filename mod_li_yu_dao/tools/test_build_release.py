@@ -41,6 +41,7 @@ def fixture(source: Path) -> None:
         write(source / f"localization/{language}/lyd_content_l_{language}.yml", f'l_{language}:\n lyd_rite:0 "School"\n lyd_rite_desc:0 "A tradition"\n lyd_tenet_name:0 "Learning"\n lyd_tenet_desc:0 "Learning practice"\n lyd_tenet_second_name:0 "Rites"\n lyd_tenet_second_desc:0 "Ritual practice"\n lyd_tenet_third_name:0 "Virtue"\n lyd_tenet_third_desc:0 "Virtue practice"\n', bom=True)
         write(source / f"localization/{language}/lyd_runtime_l_{language}.yml", f'l_{language}:\n lyd_open:0 "Open"\n lyd_request:0 "Request"\n lyd.1.t:0 "Discussion"\n lyd.1.d:0 "$lyd_open$ [ROOT.Char.GetName]"\n lyd.1.a:0 "Agree"\n', bom=True)
         write(source / f"localization/{language}/lyd_c2_consent_l_{language}.yml", f'l_{language}:\n', bom=True)
+        write(source / f"localization/{language}/lyd_c3_leadership_l_{language}.yml", f'l_{language}:\n', bom=True)
 
 
 class BuildTests(unittest.TestCase):
@@ -54,6 +55,8 @@ class BuildTests(unittest.TestCase):
         self.assertFalse(static.player_guard(parse("lyd_indirect = { ACTOR = scope:recipient }"), triggers))
         self.assertFalse(static.player_guard(parse("lyd_recipient = { ACTOR = root }"), triggers))
         self.assertFalse(static.player_guard(parse("NOT = { lyd_direct = { TARGET = faith } }"), triggers))
+        self.assertTrue(static.player_guard(parse("hidden_trigger = { is_ai = no }"), triggers))
+        self.assertFalse(static.player_guard(parse("hidden_trigger = { scope:recipient = { is_ai = no } }"), triggers))
 
     def test_variable_names_are_internal_but_option_names_are_localized(self) -> None:
         with tempfile.TemporaryDirectory(prefix="lyd-variable-loc-") as directory:
@@ -131,6 +134,8 @@ class BuildTests(unittest.TestCase):
         picture = 'picture = { reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds" }'
         mutants = (
             (effects, "add_stress = -5", "change_stress = -5", "unknown native effect change_stress"),
+            (effects, "add_stress = -5", "has_same_core_doctrines = faith", "has_same_core_doctrines"),
+            (effects, "add_stress = -5", '"divergence($ACTOR$.rite)" < 100', "divergence"),
             (effects, "add_gold = 5", "add_gold = -5", "negative add_gold"),
             (decisions, picture, "", "decision picture"),
             (decisions, picture, 'picture = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"', "decision picture"),

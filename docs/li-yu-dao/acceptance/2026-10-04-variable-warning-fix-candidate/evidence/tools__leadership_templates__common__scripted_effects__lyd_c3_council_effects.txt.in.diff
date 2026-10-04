@@ -1,0 +1,10 @@
+--- before/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_council_effects.txt.in
++++ candidate/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_council_effects.txt.in
+@@ -175,7 +175,6 @@
+             set_variable = { name = lyd_c3_office_faith value = faith }
+             faith = {
+                 set_variable = { name = lyd_c3_recognized_leader value = scope:lyd_c3_actor }
+-                remove_variable = lyd_c3_vacancy
+             }
+             lyd_c3_withdraw_claim_effect = yes
+             lyd_c3_release_round_effect = yes

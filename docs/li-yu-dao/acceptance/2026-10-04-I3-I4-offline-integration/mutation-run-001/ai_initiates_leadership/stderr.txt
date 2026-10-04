@@ -1,0 +1,15 @@
+test_player_initiation_and_recipient_consent_are_separate (__main__.ContentLeadershipIntegrationTests.test_player_initiation_and_recipient_consent_are_separate) ... FAIL
+
+======================================================================
+FAIL: test_player_initiation_and_recipient_consent_are_separate (__main__.ContentLeadershipIntegrationTests.test_player_initiation_and_recipient_consent_are_separate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i3-i4-offline-integration-001\test_content_leadership.py", line 352, in test_player_initiation_and_recipient_consent_are_separate
+    self.assertTrue(player_guard(shown_actor,self.c.triggers), identifier)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : lyd_c3_request_teacher_interaction
+
+----------------------------------------------------------------------
+Ran 1 test in 0.089s
+
+FAILED (failures=1)

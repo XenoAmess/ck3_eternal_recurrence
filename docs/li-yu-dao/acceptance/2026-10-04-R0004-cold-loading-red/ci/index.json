@@ -1,0 +1,176 @@
+{
+  "schema": "ck3.lyd.exact01b4dda3-ci-final-index.v1",
+  "files": [
+    {
+      "path": "FINAL-CI-RECEIPT.json",
+      "bytes": 2864,
+      "sha256": "dde0417f4fee7ea2dd9c83b2ca07137c99861c2242c652f45bad4df5bcb7fff9"
+    },
+    {
+      "path": "finalize-source.py",
+      "bytes": 4231,
+      "sha256": "d327c98f5165f8be335c970beba0828afdc71a3b3ef94987a66a9cbc06215cf1"
+    },
+    {
+      "path": "observations/001-initial/all-runs.raw.json",
+      "bytes": 26979,
+      "sha256": "a4fc1ff8a1ec271be531c1b13b4fcb56b89d6cf8d521f7933ef56111d36ba53f"
+    },
+    {
+      "path": "observations/001-initial/all-runs.request-receipt.json",
+      "bytes": 2285,
+      "sha256": "a7f880eb3cda72948994c45e3cd45a107515f375a3fa7b708b38072810d77770"
+    },
+    {
+      "path": "observations/001-initial/index.json",
+      "bytes": 2421,
+      "sha256": "74850d3c1131e85efc05049c5352143af76180236bad444b9582d97f58bc8916"
+    },
+    {
+      "path": "observations/001-initial/jobs-37191629847.raw.json",
+      "bytes": 13338,
+      "sha256": "fc94a04c308b53733644e84761e35705d0fb530422d2020db09c1b53fa6e00ac"
+    },
+    {
+      "path": "observations/001-initial/jobs-37191629847.request-receipt.json",
+      "bytes": 2236,
+      "sha256": "ba86f6209304802c8fba9e73e7211cdab96bb7d0c6fd89c3e611b58b0626bc61"
+    },
+    {
+      "path": "observations/001-initial/jobs-37191629906.request-receipt.json",
+      "bytes": 528,
+      "sha256": "d964f2978a2a5bc4cdbce59cc2b32988392c02461dd892b6ccaec28a00af2010"
+    },
+    {
+      "path": "observations/001-initial/lyd-tree.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "observations/001-initial/lyd-tree.git.stdout",
+      "bytes": 41,
+      "sha256": "58ae493a54d7b43cd888a1a1d535c20aeb255f738535e17fdde0cee1198a7140"
+    },
+    {
+      "path": "observations/001-initial/report.json",
+      "bytes": 9234,
+      "sha256": "b83cc67969c3991c31c8551954b6d7317930b4f7eee8a69ae834ff8a3ea67ba9"
+    },
+    {
+      "path": "observations/001-initial/source/ci_jobs_01b4dda3_http_readonly.py",
+      "bytes": 7165,
+      "sha256": "1ac9ef68aebe7e3540eedf503decc7c016284c561e60ac71c28f04551a00173c"
+    },
+    {
+      "path": "observations/001-initial/source/ci_jobs_598_http_readonly.py",
+      "bytes": 5968,
+      "sha256": "5743e521601f7245e9d5e30f306ff6c572fd802c9a980424322538a371930ee9"
+    },
+    {
+      "path": "observations/001-initial/workflow-1.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "observations/001-initial/workflow-1.git.stdout",
+      "bytes": 1537,
+      "sha256": "3b2317ab5dea3519ec3f7ceb9a25da2b4cadaaa7146f52728804b5b560388a90"
+    },
+    {
+      "path": "observations/001-initial/workflow-2.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "observations/001-initial/workflow-2.git.stdout",
+      "bytes": 24401,
+      "sha256": "73584dd98fe8af6ba5787f67ade7c82664e340ca18963a949f6b1d3e6e5fe69c"
+    },
+    {
+      "path": "observations/002-terminal-check/all-runs.raw.json",
+      "bytes": 26982,
+      "sha256": "5af163bb853ae74456934e871bc92669c60ed0ac15bb171f24406662a2c1b4a9"
+    },
+    {
+      "path": "observations/002-terminal-check/all-runs.request-receipt.json",
+      "bytes": 2291,
+      "sha256": "0e1805aa969cb542912d9c0c47b3d0faed9889ed843f2e35231654b19a8df606"
+    },
+    {
+      "path": "observations/002-terminal-check/index.json",
+      "bytes": 2588,
+      "sha256": "2b2cb041168b23d0ee65dc331657736602c19c0a400be7c76b7be66066e4e485"
+    },
+    {
+      "path": "observations/002-terminal-check/jobs-37191629847.raw.json",
+      "bytes": 15599,
+      "sha256": "195b588e373724795f6d18400630cd96d0c962bc48f9e21322c6514b8a1581cf"
+    },
+    {
+      "path": "observations/002-terminal-check/jobs-37191629847.request-receipt.json",
+      "bytes": 2236,
+      "sha256": "34d7a8f03ad27a2c0072439d3efca2df174085641b718f73b78610df2aee418d"
+    },
+    {
+      "path": "observations/002-terminal-check/jobs-37191629906.raw.json",
+      "bytes": 2461,
+      "sha256": "d0462c56bbb8d2cf4c3a08c3a16c5c9a383a2a2b2f07bbb53f86accc616793bc"
+    },
+    {
+      "path": "observations/002-terminal-check/jobs-37191629906.request-receipt.json",
+      "bytes": 2233,
+      "sha256": "a7fec9499d14c3b594684f8d9597830afed04666f9b015803eb120fdca2926e9"
+    },
+    {
+      "path": "observations/002-terminal-check/lyd-tree.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "observations/002-terminal-check/lyd-tree.git.stdout",
+      "bytes": 41,
+      "sha256": "58ae493a54d7b43cd888a1a1d535c20aeb255f738535e17fdde0cee1198a7140"
+    },
+    {
+      "path": "observations/002-terminal-check/report.json",
+      "bytes": 11513,
+      "sha256": "36c32275a8cde3e5aab39411d0f14831210d8a92761f5e5775f61bed68f1f3bd"
+    },
+    {
+      "path": "observations/002-terminal-check/source/ci_jobs_01b4dda3_http_readonly.py",
+      "bytes": 7165,
+      "sha256": "1ac9ef68aebe7e3540eedf503decc7c016284c561e60ac71c28f04551a00173c"
+    },
+    {
+      "path": "observations/002-terminal-check/source/ci_jobs_598_http_readonly.py",
+      "bytes": 5968,
+      "sha256": "5743e521601f7245e9d5e30f306ff6c572fd802c9a980424322538a371930ee9"
+    },
+    {
+      "path": "observations/002-terminal-check/workflow-1.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "observations/002-terminal-check/workflow-1.git.stdout",
+      "bytes": 1537,
+      "sha256": "3b2317ab5dea3519ec3f7ceb9a25da2b4cadaaa7146f52728804b5b560388a90"
+    },
+    {
+      "path": "observations/002-terminal-check/workflow-2.git.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "observations/002-terminal-check/workflow-2.git.stdout",
+      "bytes": 24401,
+      "sha256": "73584dd98fe8af6ba5787f67ade7c82664e340ca18963a949f6b1d3e6e5fe69c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1557,
+      "sha256": "cd84152e4e2de3bb08edb718b1382b635453d26677c707aa794c525dfb3dfd31"
+    }
+  ],
+  "self_boundary": "index excludes itself"
+}

@@ -1,0 +1,12 @@
+{
+  "name": "jobs-37191629906",
+  "url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/actions/runs/37191629906/jobs?per_page=100",
+  "method": "GET",
+  "started_at_utc": "2026-10-04T09:19:02.446166+00:00",
+  "transport": "Python313 stdlib urllib HTTPS GET",
+  "authenticated": false,
+  "status": "ENVIRONMENT_HTTP_QUERY_FAILED",
+  "exception_type": "URLError",
+  "message": "<urlopen error _ssl.c:1015: The handshake operation timed out>",
+  "finished_at_utc": "2026-10-04T09:19:27.454211+00:00"
+}

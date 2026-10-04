@@ -1,0 +1,12 @@
+{
+  "schema": "xar.promo.screen-lease-keeper/v1",
+  "task_id": "ck3-lyd-live-005-20261004",
+  "last_sequence": 2686,
+  "failure": null,
+  "thread_exited": true,
+  "journal": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0004\\screen-lease.jsonl",
+  "at_utc": "2026-10-04T09:33:27.301791+00:00",
+  "entry_error": null,
+  "screen_released": false,
+  "game_actions": false
+}

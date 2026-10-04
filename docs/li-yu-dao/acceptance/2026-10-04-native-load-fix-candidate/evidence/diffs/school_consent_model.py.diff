@@ -1,0 +1,29 @@
+--- before/school_consent_model.py
++++ candidate/school_consent_model.py
+@@ -60,6 +60,7 @@
+     main: str
+     religion: str = "confucianism_religion"
+     head: str | None = None
++    # Legacy field name: effective main-Rite Doctrine set, not Tenet objects.
+     core_doctrines: tuple[str, ...] = ("doctrine_no_head",)
+     head_title: str | None = None
+     owned_head_title: bool = False
+@@ -358,15 +359,15 @@
+             target = self.world.faiths[proposal.receiving_faith]
+             if target.head and proposal.receiving_head_consent != target.head:
+                 raise Rejected("Receiving head has not consented")
+-            if source.core_doctrines != target.core_doctrines or (source.head != target.head and not self._can_retire(proposal)):
+-                raise Rejected("Native same-core-doctrines/same-head rules remain binding")
++            if set(source.core_doctrines) != set(target.core_doctrines) or (source.head != target.head and not self._can_retire(proposal)):
++                raise Rejected("LYD same-core doctrine-set gate and native same-head rules remain binding")
+             divergence = self.world.pair_divergence.get((proposal.moving_rite, target.main))
+             if divergence is None or divergence >= 100:
+                 raise Rejected("Missing or excessive actual cross-faith divergence")
+         elif self.world.schools[proposal.moving_rite].head_rule not in {"none", "temporal"}:
+             raise Rejected("This candidate supports only no-head or temporal-head detach")
+         if not self.world.native_observed or not self.native_validator(self.world, proposal):
+-            raise Rejected("Native same-core/head rules and primitives are not yet verified")
++            raise Rejected("Native head/divergence rules and primitives are not yet verified")
+         cost_gold = POLICY.join_gold if proposal.kind == Kind.JOIN else POLICY.detach_gold
+         cost_piety = POLICY.join_piety if proposal.kind == Kind.JOIN else POLICY.detach_piety
+         if self.world.gold.get(proposal.actor, 0) < cost_gold or self.world.piety.get(proposal.actor, 0) < cost_piety:

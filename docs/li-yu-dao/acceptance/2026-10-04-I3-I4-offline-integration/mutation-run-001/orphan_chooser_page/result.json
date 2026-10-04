@@ -1,0 +1,21 @@
+{
+  "mutation": "orphan_chooser_page",
+  "path": "events/lyd_events.txt",
+  "before": "trigger_event = lyd.11",
+  "after": "trigger_event = lyd.10",
+  "target_test": "test_catalogue_is_reachable_through_state_free_chooser_pages",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001\\test_content_leadership.py",
+    "ContentLeadershipIntegrationTests.test_catalogue_is_reachable_through_state_free_chooser_pages"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001",
+  "rc": 1,
+  "mutation_detected": true,
+  "original_sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24",
+  "mutated_sha256": "826853db57d7b1c869102e908682c76aab0d2ab6294cd9421aac3bd693dfde60",
+  "test_sha256": "65dad476695a4e160b53f39f64456b327d9911e97039d6b48dd7c363e8f21d99",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "6618363c668df83b953898c7b26e5fd578a4599825f583606ed8a805cc1d9ee7"
+}

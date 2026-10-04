@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "01b4dda39505929c1245de699e67862f4130a02e"
+    },
+    "last_sequence": 2687,
+    "next_step": "",
+    "pid": 16412,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R0004-native-loading-RED-normal-window-exit-no-campaign",
+    "task_id": "ck3-lyd-live-005-20261004",
+    "updated_at_utc": "2026-10-04T09:33:27.663201+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 2687,
+    "event_id": "7f4c8e6951a540448db522b6c3bbb37d",
+    "timestamp_utc": "2026-10-04T09:33:27.664235+00:00",
+    "kind": "completed",
+    "task_id": "ck3-lyd-live-005-20261004",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R0004-native-loading-RED-normal-window-exit-no-campaign",
+    "next_step": "",
+    "resources": [],
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "01b4dda39505929c1245de699e67862f4130a02e"
+    }
+  }
+}

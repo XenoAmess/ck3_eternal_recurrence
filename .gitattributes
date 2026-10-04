@@ -14,6 +14,18 @@ docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-object
 # Saved metadata and numbered source excerpts retain original indentation/spacing.
 docs/li-yu-dao/acceptance/2026-10-04-R0003-formal-representative-ui-red/readbacks/*/*.excerpt.txt -text whitespace=-space-before-tab,cr-at-eol
 docs/li-yu-dao/acceptance/2026-10-04-R0003-formal-representative-ui-red/source-proof/stress/*.excerpt.txt -text whitespace=-blank-at-eol,cr-at-eol
+# Frozen R0004 debug output, mutation tracebacks and source/diff excerpts retain original whitespace.
+docs/li-yu-dao/acceptance/2026-10-04-R0004-cold-loading-red/logs/*/debug.log -text whitespace=-blank-at-eol,cr-at-eol
+docs/li-yu-dao/acceptance/2026-10-04-R0004-cold-loading-red/logs/post-exit/code_revisions.log -text whitespace=-blank-at-eof,cr-at-eol
+docs/li-yu-dao/acceptance/2026-10-04-I3-I4-offline-integration/mutation-run-001/legacy_event_identity/stderr.txt -text whitespace=-blank-at-eol,cr-at-eol
+docs/li-yu-dao/acceptance/2026-10-04-I3-I4-offline-integration/mutation-run-001/legacy_reward_drift/stderr.txt -text whitespace=-blank-at-eol,cr-at-eol
+docs/li-yu-dao/acceptance/2026-10-04-native-load-fix-candidate/evidence/r4-failed-debug.log -text whitespace=-blank-at-eol,cr-at-eol
+docs/li-yu-dao/acceptance/2026-10-04-native-load-fix-candidate/evidence/diffs/test_school_consent.py.diff -text whitespace=-blank-at-eol,cr-at-eol
+docs/li-yu-dao/acceptance/2026-10-04-native-load-fix-candidate/evidence/native-source/common__religion__faith_types___faith_types.info.excerpt.txt -text whitespace=-blank-at-eol,cr-at-eol
+docs/li-yu-dao/acceptance/2026-10-04-native-load-fix-candidate/evidence/native-source/common__religion__rite_types___rite_types.info.excerpt.txt -text whitespace=-blank-at-eol,cr-at-eol
+docs/li-yu-dao/acceptance/2026-10-04-native-load-fix-candidate/evidence/native-source/common__scripted_triggers__00_religious_triggers.txt.excerpt.txt -text whitespace=-blank-at-eol,cr-at-eol
+docs/li-yu-dao/acceptance/2026-10-04-native-load-fix-candidate/evidence/native-source/common__scripted_triggers__passive_rite_learning_triggers.txt.excerpt.txt -text whitespace=-blank-at-eol,cr-at-eol
+docs/li-yu-dao/acceptance/2026-10-04-native-load-fix-candidate/candidate/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/character-36445.excerpt.txt -text whitespace=-space-before-tab,cr-at-eol
 mod_li_yu_dao/fixtures/native_cycle/*.json -text whitespace=cr-at-eol
 
 # Keep the original independent-mod publication receipts and anonymous HTTP bytes.

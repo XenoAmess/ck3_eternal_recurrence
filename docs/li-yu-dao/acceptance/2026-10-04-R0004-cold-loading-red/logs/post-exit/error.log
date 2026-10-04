@@ -1,0 +1,69 @@
+[17:22:50][E][pdx_persistent_reader.cpp:216]: Error: "Unknown trigger: has_same_core_doctrines, near line: 100" in file: "common/scripted_triggers/lyd_c2_consent_triggers.txt" near line: 101
+[17:22:50][E][pdx_persistent_reader.cpp:216]: Error: "Unknown trigger: divergenceroot$.var:lyd_c2_target_main), near line: 115" in file: "common/scripted_triggers/lyd_c2_consent_triggers.txt" near line: 115
+[17:22:51][E][pdx_persistent_reader.cpp:216]: Error: "Unknown trigger: has_same_core_doctrines, near line: 118" in file: "common/scripted_effects/lyd_r4_fixture_effects.txt" near line: 118
+[17:22:51][E][pdx_persistent_reader.cpp:216]: Error: "Unknown trigger: has_same_core_doctrines, near line: 100" in file: "common/scripted_triggers/lyd_c2_consent_triggers.txt" near line: 101
+[17:22:51][E][pdx_persistent_reader.cpp:216]: Error: "Unknown trigger: divergencescope:lyd_c2_actor$.var:lyd_c2_target_main), near line: 115" in file: "common/scripted_triggers/lyd_c2_consent_triggers.txt" near line: 115
+[17:23:02][E][jomini_script_system.cpp:304]: Script system error!
+  Error: create_character effect [ Cannot specify both location and employer ]
+  Script location: file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 16 (lyd_r4_setup_effect)
+
+[17:23:02][E][jomini_effect.cpp:139]: PostValidate of effect 'create_character' returned false at file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 16 (lyd_r4_setup_effect)
+[17:23:02][E][jomini_script_system.cpp:304]: Script system error!
+  Error: create_character effect [ Cannot specify both location and employer ]
+  Script location: file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 28 (lyd_r4_setup_effect)
+
+[17:23:02][E][jomini_effect.cpp:139]: PostValidate of effect 'create_character' returned false at file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 28 (lyd_r4_setup_effect)
+[17:23:02][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_claimant' is used but is never set. Setting it in an unused scripted trigger or effect does not count
+[17:23:02][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_proposal_owner' is used but is never set. Setting it in an unused scripted trigger or effect does not count
+[17:23:02][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_claim_faith' is used but is never set. Setting it in an unused scripted trigger or effect does not count
+[17:23:02][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_recognized_leader' is used but is never set. Setting it in an unused scripted trigger or effect does not count
+[17:23:02][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_claim_rite' is used but is never set. Setting it in an unused scripted trigger or effect does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_c3_office_faith' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_piety_before' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_pair_divergence' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_same_core' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_join_funds' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_created_source_rep' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_retired_teacher' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_piety_after' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_retired_head_title' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_distinct_faiths' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_previous_rite_head' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_learning_before' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_gold_after' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_both_no_head' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_learning_delta' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_created_jingshu_rep' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_gold_before' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_actor_qualified' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_learning_after' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_latest_faith' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_c3_vacancy' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_teacher_character' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_claimant' is used but is never set. Setting it in an unused scripted trigger or effect does not count
+[17:23:56][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_proposal_owner' is used but is never set. Setting it in an unused scripted trigger or effect does not count
+[17:23:56][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_claim_faith' is used but is never set. Setting it in an unused scripted trigger or effect does not count
+[17:23:56][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_recognized_leader' is used but is never set. Setting it in an unused scripted trigger or effect does not count
+[17:23:56][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_claim_rite' is used but is never set. Setting it in an unused scripted trigger or effect does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_c3_office_faith' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_piety_before' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_pair_divergence' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_same_core' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_join_funds' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_created_source_rep' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_retired_teacher' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_piety_after' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_retired_head_title' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_distinct_faiths' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_previous_rite_head' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_learning_before' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_gold_after' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_both_no_head' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_learning_delta' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_created_jingshu_rep' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_gold_before' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_actor_qualified' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_learning_after' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_latest_faith' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_c3_vacancy' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_teacher_character' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count

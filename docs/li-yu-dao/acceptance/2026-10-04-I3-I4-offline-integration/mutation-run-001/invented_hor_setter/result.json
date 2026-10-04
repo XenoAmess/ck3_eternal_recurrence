@@ -1,0 +1,21 @@
+{
+  "mutation": "invented_hor_setter",
+  "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+  "before": "lyd_c3_leave_teacher_effect = {",
+  "after": "lyd_c3_leave_teacher_effect = { set_head_of_rite = root",
+  "target_test": "test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001\\test_content_leadership.py",
+    "ContentLeadershipIntegrationTests.test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001",
+  "rc": 1,
+  "mutation_detected": true,
+  "original_sha256": "2918dc994614a2e655455bf8581879e7086e1726b8e0e5e15e2ddfbc2c96478a",
+  "mutated_sha256": "30d1b8bdb74843db1e0f2feaa9f35288dcef883cc0c906f9850fbdc88e804a99",
+  "test_sha256": "65dad476695a4e160b53f39f64456b327d9911e97039d6b48dd7c363e8f21d99",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "d1adc732f166d85d41d0469bc1fa168a3413d8862b604dfdf472f90e2a7ec6de"
+}

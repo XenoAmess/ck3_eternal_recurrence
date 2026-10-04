@@ -1,7 +1,7 @@
-"""Generate player entry, cultivation and school consent runtime content.
+"""Generate free-chronology traditions, cultivation, consent and leadership.
 
-Primitive admission binds permanent native evidence. Generated consent flows
-still require their own cold-start, save-state and repeated-cycle acceptance.
+Primitive admission binds permanent native evidence; each formal flow still
+requires its own CK3 loading, saved-state and lifecycle acceptance.
 """
 
 from __future__ import annotations
@@ -9,7 +9,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from content_data import MAIN_RITE_ID, PARENT_FAITH, PRACTICES, SAMPLE_RITES, SAMPLE_TENETS
+from content_data import MAIN_RITE_ID, PARENT_FAITH, PRACTICES, SAMPLE_RITES, ACTIVE_RITES, ACTIVE_TENETS, PRACTICE_EVENT_IDS
 
 SOURCE = Path(__file__).resolve().parents[1]
 HEADER = "# GENERATED FILE: edit tools/gen_runtime.py and run it again.\n"
@@ -22,7 +22,7 @@ def encoded(text: str) -> bytes:
 
 
 def practice_event_id(index: int) -> str:
-    return f"lyd.{100 + index}"
+    return PRACTICE_EVENT_IDS[PRACTICES[index].rite_code]
 
 
 def build_outputs() -> dict[str, bytes]:
@@ -45,7 +45,7 @@ def build_outputs() -> dict[str, bytes]:
     holy_sites = {{ luoyang bianliang mount_qingcheng }}
 }}
 """)
-    permitted = " ".join(tenet.script_id for tenet in SAMPLE_TENETS)
+    permitted = " ".join(tenet.script_id for tenet in ACTIVE_TENETS)
     script("history/faiths/lyd_faith_history.txt", f"""
 {PARENT_FAITH} = {{
     1.1.1 = {{
@@ -80,21 +80,24 @@ lyd_can_enter_display_trigger = {
     }
     OR = {
         NOT = { has_character_flag = lyd_enabled }
-        NOT = { lyd_member_rite_trigger = yes }
+        NOT = { lyd_catalogue_rite_trigger = yes }
     }
 }
 lyd_can_enter_trigger = {
     lyd_is_player_trigger = yes
     lyd_can_enter_display_trigger = yes
 }
+lyd_catalogue_rite_trigger = {
+    @PRODUCT_RITE_GATE@
+}
+lyd_member_rite_trigger = {
+    lyd_catalogue_rite_trigger = yes
+}
 lyd_can_use_school_display_trigger = {
     lyd_display_eligible_trigger = yes
     has_character_flag = lyd_enabled
     faith = { religion = religion:confucianism_religion }
-    lyd_member_rite_trigger = yes
-}
-lyd_member_rite_trigger = {
-    @PRODUCT_RITE_GATE@
+    lyd_catalogue_rite_trigger = yes
 }
 lyd_can_use_school_trigger = {
     lyd_is_player_trigger = yes
@@ -116,8 +119,8 @@ lyd_can_study_trigger = {
     lyd_is_player_trigger = yes
     lyd_can_study_display_trigger = yes
 }
-""".replace(
-        "@PRODUCT_RITE_GATE@", "OR = { " + " ".join(f"rite = rite:{r.script_id}" for r in SAMPLE_RITES) + " }"))
+""".replace("@PRODUCT_FAITH@", PARENT_FAITH).replace(
+        "@PRODUCT_RITE_GATE@", "OR = { " + " ".join(f"rite = rite:{r.script_id}" for r in ACTIVE_RITES) + " }"))
     script("common/scripted_effects/lyd_entry_effects.txt", f"""
 lyd_enter_effect = {{
     if = {{
@@ -145,7 +148,7 @@ lyd_open_study_effect = {{
 }}
 """)
     school_effects = []
-    for rite in SAMPLE_RITES:
+    for rite in ACTIVE_RITES:
         school_effects.append(f"""
 lyd_adopt_{rite.slug}_effect = {{
     if = {{
@@ -159,7 +162,9 @@ lyd_adopt_{rite.slug}_effect = {{
     }}
 }}
 """)
-    script("common/scripted_effects/lyd_school_effects.txt", "".join(school_effects))
+    for index in range(0, len(school_effects), 8):
+        suffix = "" if index == 0 else f"_{index // 8 + 1}"
+        script(f"common/scripted_effects/lyd_school{suffix}_effects.txt", "".join(school_effects[index:index + 8]))
     practice_effects: list[str] = []
     for practice in PRACTICES:
         for option in practice.options:
@@ -200,7 +205,7 @@ lyd_adopt_{rite.slug}_effect = {{
     ai_will_do = {{ base = 0 }}
 }}
 """
-    sample_gate = "OR = { " + " ".join(f"rite = rite:{r.script_id}" for r in SAMPLE_RITES) + " }"
+    sample_gate = "OR = { " + " ".join(f"rite = rite:{r.script_id}" for r in ACTIVE_RITES) + " }"
     # Keep disabled decisions visible: the validity panel explains cooldowns.
     script("common/decisions/lyd_decisions.txt", "".join((
         decision("lyd_enter_decision", "lyd_can_enter_trigger = yes", "lyd_enter_effect", display_gate="lyd_can_enter_display_trigger = yes"),
@@ -225,15 +230,20 @@ lyd.2 = {
     trigger = { lyd_is_player_trigger = yes }
     option = { name = lyd_cancel }
 }
-lyd.10 = {
+"""]
+    remaining_rites = tuple(rite for rite in ACTIVE_RITES if not rite.is_sample)
+    school_pages = (SAMPLE_RITES,) + tuple(remaining_rites[i:i + 7] for i in range(0, len(remaining_rites), 7))
+    for page_index, page_rites in enumerate(school_pages):
+        events.append(f"""
+lyd.{10 + page_index} = {{
     type = character_event
     title = lyd_choose_school_t
     desc = lyd_choose_school_desc
     theme = faith
-    trigger = { lyd_can_change_school_trigger = yes }
-"""]
-    for rite in SAMPLE_RITES:
-        events.append(f"""
+    trigger = {{ lyd_can_change_school_trigger = yes }}
+""")
+        for rite in page_rites:
+            events.append(f"""
     option = {{
         name = lyd_adopt_{rite.slug}
         trigger = {{ lyd_can_change_school_display_trigger = yes NOT = {{ rite = rite:{rite.script_id} }} }}
@@ -241,7 +251,23 @@ lyd.10 = {
         lyd_adopt_{rite.slug}_effect = yes
     }}
 """)
-    events.append("    option = { name = lyd_cancel }\n}\n")
+        if page_index > 0:
+            events.append(f"""
+    option = {{
+        name = lyd_choose_school_previous_page
+        trigger = {{ lyd_can_change_school_display_trigger = yes }}
+        if = {{ limit = {{ lyd_can_change_school_trigger = yes }} trigger_event = lyd.{9 + page_index} }}
+    }}
+""")
+        if page_index + 1 < len(school_pages):
+            events.append(f"""
+    option = {{
+        name = lyd_choose_school_next_page
+        trigger = {{ lyd_can_change_school_display_trigger = yes }}
+        if = {{ limit = {{ lyd_can_change_school_trigger = yes }} trigger_event = lyd.{11 + page_index} }}
+    }}
+""")
+        events.append("    option = { name = lyd_cancel }\n}\n")
     for i, practice in enumerate(PRACTICES):
         events.append(f"""
 {practice_event_id(i)} = {{
@@ -293,9 +319,11 @@ lyd.10 = {
         "lyd_study_cooldown_tt": ("完成此次修习后，180 天内不能再次践礼修身。", "Completing this practice prevents another cultivation session for 180 days."),
         "lyd_admission_failed_t": ("尚未改从学统", "Unable to Adopt the Tradition"),
         "lyd_admission_failed_desc": ("此次未能改从所选学统，我仍奉行原先礼仪。待处理当前宗主职责或礼仪限制后，再行问学。此次不会开始择师或修习的等待期。", "I still follow my previous rite. I must resolve any current religious leadership duties or restrictions before adopting another tradition. This attempt starts no waiting period for study or changing traditions."),
+        "lyd_choose_school_previous_page": ("看前一页学统", "Previous traditions"),
+        "lyd_choose_school_next_page": ("看后一页学统", "More traditions"),
         "lyd_cancel": ("容我再思", "I will consider this further"),
     }
-    for rite in SAMPLE_RITES:
+    for rite in ACTIVE_RITES:
         loc[f"lyd_adopt_{rite.slug}"] = (rite.name_zh, rite.name_en)
     for language, column in (("simp_chinese", 0), ("english", 1)):
         lines = [f"l_{language}:", " # GENERATED FILE: edit tools/gen_runtime.py"]
@@ -304,11 +332,15 @@ lyd.10 = {
             lines.append(f' {key}:0 "{escaped}"')
         outputs[f"localization/{language}/lyd_runtime_l_{language}.yml"] = encoded("\n".join(lines) + "\n")
     from gen_school_consent import DEFAULT_NATIVE_EVIDENCE, build_outputs as consent_outputs
-    consent = consent_outputs(native_evidence=DEFAULT_NATIVE_EVIDENCE)
-    duplicate = outputs.keys() & consent.keys()
-    if duplicate:
-        raise ValueError(f"Duplicate generated runtime paths: {sorted(duplicate)}")
-    outputs.update(consent)
+    from gen_leadership import build_outputs as leadership_outputs
+    for extension in (
+        consent_outputs(native_evidence=DEFAULT_NATIVE_EVIDENCE, include_shared=False),
+        leadership_outputs(),
+    ):
+        duplicates = outputs.keys() & extension.keys()
+        if duplicates:
+            raise ValueError(f"Duplicate generated runtime paths: {sorted(duplicates)}")
+        outputs.update(extension)
     return outputs
 
 
@@ -334,7 +366,7 @@ def main() -> int:
     if mismatches:
         print("Generated runtime differs: " + ", ".join(mismatches))
         return 1
-    print(f"Runtime {'verified' if args.check else 'generated'}: {len(SAMPLE_RITES)} schools, {len(PRACTICES)} practice events")
+    print(f"Runtime {'verified' if args.check else 'generated'}: {len(ACTIVE_RITES)} schools, {len(PRACTICES)} practice events")
     return 0
 
 

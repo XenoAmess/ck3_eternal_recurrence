@@ -163,6 +163,24 @@ class ProposalTests(unittest.TestCase):
         with self.assertRaisesRegex(Rejected, "same-core"):
             controller.commit(proposal)
 
+    def test_same_main_doctrine_set_ignores_order_but_not_actual_membership(self):
+        controller = fixture()
+        controller.world.faiths["faith_a"].core_doctrines = ("clergy", "head")
+        controller.world.faiths["faith_b"].core_doctrines = ("head", "clergy")
+        proposal = controller.begin("actor", Kind.JOIN, "faith_a")
+        authorize(controller, proposal)
+        controller.commit(proposal)
+        self.assertEqual(controller.world.schools["B"].faith, "faith_a")
+
+    def test_different_school_core_tenets_do_not_block_equal_main_doctrine_sets(self):
+        controller = fixture()
+        self.assertNotEqual(controller.world.schools["A"].core, controller.world.schools["B"].core)
+        proposal = controller.begin("actor", Kind.JOIN, "faith_a")
+        authorize(controller, proposal)
+        controller.commit(proposal)
+        self.assertEqual(controller.world.schools["B"].core, ("t4", "t5", "t6"))
+        self.assertEqual(controller.world.schools["B"].faith, "faith_a")
+
     def test_two_different_heads_remain_incompatible_despite_consent(self):
         controller = fixture()
         controller.world.faiths["faith_b"].head = "b2"
@@ -873,10 +891,71 @@ class GeneratedGraphTests(unittest.TestCase):
     def test_same_core_and_head_rules_remain_explicit(self):
         ast = self.scripts["common/scripted_triggers/lyd_c2_consent_triggers.txt"]
         keys = {entry.key for entry in walk(ast)}
-        self.assertIn("has_same_core_doctrines", keys)
+        self.assertNotIn("has_same_core_doctrines", keys)
+        self.assertIn("lyd_c2_same_main_doctrines_trigger", keys)
+        self.assertIn("any_doctrine", keys)
+        self.assertIn("rite_has_doctrine", keys)
         self.assertIn("var:lyd_c2_source_faith.religious_head", keys)
         text = self.outputs["common/scripted_effects/lyd_c2_commit_effects.txt"].decode("utf-8-sig")
         self.assertIn("main = no include_derived = no", text)
+
+    def test_effective_main_doctrine_comparator_checks_both_difference_directions(self):
+        ast = self.scripts["common/scripted_triggers/lyd_c2_consent_triggers.txt"]
+        definition = next(e.value for e in ast.entries if e.key == "lyd_c2_same_main_doctrines_trigger")
+        # Evaluate the actual authored Boolean/scope tree against distinct sets.
+        # The test's Doctrine universe is deliberately separate from Tenet keys.
+        def evaluate(block, current, previous, saved, source, target, universe):
+            results = []
+            for entry in block.entries:
+                key, value = entry.key, entry.value
+                if key in {"AND", "OR", "NOT"}:
+                    children = [evaluate(Block([child]), current, previous, saved, source, target, universe)
+                                for child in value.entries]
+                    result = all(children) if key == "AND" else any(children) if key == "OR" else not all(children)
+                elif key == "any_doctrine":
+                    result = any(evaluate(value, doctrine, current, saved, source, target, universe) for doctrine in universe)
+                elif key == "save_temporary_scope_as":
+                    saved[value] = current
+                    result = True
+                elif key == "exists":
+                    result = current in {"source", "target"} and value == "main_rite"
+                elif key == "$TARGET$":
+                    result = evaluate(value, "target", current, saved, source, target, universe)
+                elif key.startswith("scope:"):
+                    result = evaluate(value, saved[key.split(":", 1)[1].split(".", 1)[0]] + ".main", current,
+                                      saved, source, target, universe)
+                elif key == "rite_has_doctrine":
+                    self.assertEqual(value, "prev")
+                    result = previous in (source if current == "source.main" else target)
+                else:
+                    raise AssertionError(key)
+                results.append(result)
+            return all(results)
+        cases = [({"head", "clergy"}, {"head", "clergy"}, True),
+                 ({"head"}, {"head", "clergy"}, False),
+                 ({"head", "clergy"}, {"head"}, False),
+                 (set(), set(), True)]
+        for source, target, expected in cases:
+            with self.subTest(source=source, target=target):
+                self.assertEqual(evaluate(definition, "source", None, {}, source, target, {"head", "clergy"}), expected)
+        self.assertFalse({e.key for e in walk(definition)} & {"any_rite_tenet", "has_tenet_status", "rite_has_tenet"})
+
+    def test_divergence_arguments_use_saved_rite_scopes_and_never_macro_variable_paths(self):
+        expressions = []
+        for path, ast in self.scripts.items():
+            for entry in walk(ast):
+                if "divergence(" in entry.key:
+                    expressions.append((path, entry.key))
+        self.assertEqual(len(expressions), 2)
+        for path, expression in expressions:
+            self.assertEqual(expression, '"divergence(scope:lyd_c2_native_target_main)"', path)
+            self.assertNotIn("$", expression)
+            self.assertNotIn(".var:", expression)
+        trigger = self.outputs["common/scripted_triggers/lyd_c2_consent_triggers.txt"].decode("utf-8-sig")
+        commit = self.outputs["common/scripted_effects/lyd_c2_commit_effects.txt"].decode("utf-8-sig")
+        self.assertIn("var:lyd_c2_target_main = { save_temporary_scope_as = lyd_c2_native_target_main }", trigger)
+        self.assertLess(commit.index("save_scope_as = lyd_c2_native_target_main"), commit.index("lyd_c2_retire_source_head_effect = yes"))
+        self.assertLess(commit.index("save_scope_as = lyd_c2_native_target_main"), commit.index("set_parent_faith ="))
 
     def test_owned_retirement_is_guarded_before_migration_and_never_uses_empty_faith_guess(self):
         heads = self.scripts["common/scripted_effects/lyd_c2_head_effects.txt"]
@@ -1120,7 +1199,7 @@ class GeneratedGraphTests(unittest.TestCase):
         actual = CHECKOUT / "mod_li_yu_dao"
         before = {path.relative_to(actual).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
                   for path in actual.rglob("*") if path.is_file()}
-        result = generate(actual, check=True)
+        result = generate(actual, check=True, include_shared=False)
         after = {path.relative_to(actual).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
                  for path in actual.rglob("*") if path.is_file()}
         self.assertEqual(before, after)

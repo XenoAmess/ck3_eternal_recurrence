@@ -1,0 +1,228 @@
+{
+  "schema": "ck3.lyd.final-three-rounds-concrete-save-summary.v1",
+  "artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca\\xar_checkpoint.ck3",
+    "bytes": 102093350,
+    "sha256": "ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca"
+  },
+  "projection": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca\\three-rounds.objects.complete.json",
+  "projection_sha256": "79fd1567125594c96f8c086c33eb1550f1236660a2f256d1c50fdff710ffd613",
+  "metadata": {
+    "version": "1.20.0.3",
+    "meta_date": "1067.6.30",
+    "meta_player_name": "夫子罗贝尔"
+  },
+  "player": {
+    "id": 31254,
+    "name": "Robert",
+    "rite": "150",
+    "saved_variables": {
+      "lyd_np_initialized": {
+        "type": "boolean",
+        "identity": "1"
+      },
+      "lyd_np_latest_faith": {
+        "type": "faith",
+        "identity": "108"
+      },
+      "lyd_np_completed_joins": {
+        "type": "value",
+        "identity": "300000"
+      },
+      "lyd_np_completed_cycles": {
+        "type": "value",
+        "identity": "300000"
+      },
+      "lyd_np_branch_county": {
+        "type": "lt",
+        "identity": "2250"
+      },
+      "lyd_np_branch_holder": {
+        "type": "char",
+        "identity": "36445"
+      },
+      "lyd_np_old_faith": {
+        "type": "faith",
+        "identity": "107"
+      },
+      "lyd_np_old_head_title": {
+        "type": "lt",
+        "identity": "18410"
+      }
+    }
+  },
+  "count_raw_values": {
+    "lyd_np_completed_cycles": {
+      "type": "value",
+      "identity": "300000"
+    },
+    "lyd_np_completed_joins": {
+      "type": "value",
+      "identity": "300000"
+    }
+  },
+  "acceptance_mode_present": false,
+  "failed_present": false,
+  "busy_present": false,
+  "anchor": {
+    "faith": "33",
+    "rite": "150",
+    "head_of_rite": "31254",
+    "religious_head_title": "18371",
+    "head_title_holder": "31254"
+  },
+  "branch": {
+    "holder": "36445",
+    "holder_name": "Abelard",
+    "rite": "151",
+    "faith": "108",
+    "head_of_rite": "36445",
+    "religious_head_title": "18417",
+    "head_title_holder": "36445",
+    "county_landed_title_id": "2250",
+    "county_key": "c_camarda",
+    "county_saved_rite": "151"
+  },
+  "saved_faith_objects": {
+    "33": {
+      "faith_type": "lyd_np_anchor_faith",
+      "religion": "9",
+      "main_rite": "150",
+      "organization": "33",
+      "origin": null,
+      "tag": "\"lyd_np_anchor_faith\"",
+      "name": "\"共礼学统（原型）\"",
+      "religious_head": "18371",
+      "founder": null,
+      "historical": "yes"
+    },
+    "34": {
+      "faith_type": "lyd_np_branch_faith",
+      "religion": "9",
+      "main_rite": "160",
+      "organization": "34",
+      "origin": null,
+      "tag": "\"lyd_np_branch_faith\"",
+      "name": "\"独立传承（原型）\"",
+      "religious_head": "4294967295",
+      "founder": null,
+      "historical": "yes"
+    },
+    "106": {
+      "faith_type": "lyd_np_anchor_faith",
+      "religion": "9",
+      "main_rite": "161",
+      "organization": "106",
+      "origin": "33",
+      "tag": "\"dynamic_faith_106\"",
+      "name": "\"支传（原型）\"",
+      "religious_head": "4294967295",
+      "founder": "36445",
+      "historical": "yes"
+    },
+    "107": {
+      "faith_type": "lyd_np_anchor_faith",
+      "religion": "9",
+      "main_rite": "162",
+      "organization": "107",
+      "origin": "33",
+      "tag": "\"dynamic_faith_107\"",
+      "name": "\"支传（原型）\"",
+      "religious_head": "4294967295",
+      "founder": "36445",
+      "historical": "yes"
+    },
+    "108": {
+      "faith_type": "lyd_np_anchor_faith",
+      "religion": "9",
+      "main_rite": "151",
+      "organization": "108",
+      "origin": "33",
+      "tag": "\"dynamic_faith_108\"",
+      "name": "\"支传（原型）\"",
+      "religious_head": "18417",
+      "founder": "36445",
+      "historical": "yes"
+    }
+  },
+  "prior_titles": {
+    "18372": {
+      "current_holder": null,
+      "history": [
+        {
+          "date": "1066.9.15",
+          "type": "created",
+          "holder": "36445"
+        },
+        {
+          "date": "1066.12.24",
+          "type": "destroyed",
+          "holder": "36445"
+        }
+      ]
+    },
+    "18402": {
+      "current_holder": null,
+      "history": [
+        {
+          "date": "1067.1.24",
+          "type": "created",
+          "holder": "36445"
+        },
+        {
+          "date": "1067.2.24",
+          "type": "destroyed",
+          "holder": "36445"
+        }
+      ]
+    },
+    "18410": {
+      "current_holder": null,
+      "history": [
+        {
+          "date": "1067.3.27",
+          "type": "created",
+          "holder": "36445"
+        },
+        {
+          "date": "1067.4.27",
+          "type": "destroyed",
+          "holder": "36445"
+        }
+      ]
+    },
+    "18417": {
+      "current_holder": "36445",
+      "history": [
+        {
+          "date": "1067.5.28",
+          "type": "created",
+          "holder": "36445"
+        }
+      ]
+    }
+  },
+  "original_rite_comparison": {
+    "baseline_sha256": "df8a22e38ef260e197b237707bc0ef19ce64ee3627e50b67da7d37ecd23b8ffc",
+    "runtime_rite_id": "151",
+    "baseline_faith": "34",
+    "final_faith": "108",
+    "rite_type": "lyd_np_branch_rite",
+    "data_tenets_equal": true
+  },
+  "checks": {
+    "actual_saved_player_31254": true,
+    "saved_latest_faith_108": true,
+    "raw_completed_cycles_300000": true,
+    "raw_completed_joins_300000": true,
+    "acceptance_failed_busy_absent": true,
+    "anchor_binding": true,
+    "branch_holder_and_county_binding": true,
+    "latest_head_binding": true,
+    "prior_dynamic_faith_objects_remain": true,
+    "original_branch_rite_identity_and_definition_retained": true
+  },
+  "status": "SAVED_OBJECT_GRAPH_VERIFIED",
+  "game_called": false,
+  "boundary": "saved object identities/relationships only; no reload acceptance, historical faith-object follower-count inference, or product authority implementation claim"
+}

@@ -1,0 +1,5 @@
+1: ### Brief: key ( database key )
+2: # Name of 'tenet_type'
+3: # Faith tenets are what defines how a faith works. All unique faith mechanics are tied to tenets, rather than involving hardcoding or special parameters on the religion itself.
+4: #
+5: key = {

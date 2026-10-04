@@ -1,0 +1,26 @@
+test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor (__main__.ContentLeadershipIntegrationTests.test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor) ... FAIL
+
+======================================================================
+FAIL: test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor (__main__.ContentLeadershipIntegrationTests.test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i3-i4-offline-integration-001\test_content_leadership.py", line 279, in test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor
+    self.assertEqual([(e.key,e.operator,e.value) for e in gate.entries], [("always","=","no")])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [('always', '=', 'yes')] != [('always', '=', 'no')]
+
+First differing element 0:
+('always', '=', 'yes')
+('always', '=', 'no')
+
+- [('always', '=', 'yes')]
+?                   ^^^
+
++ [('always', '=', 'no')]
+?                   ^^
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.084s
+
+FAILED (failures=1)

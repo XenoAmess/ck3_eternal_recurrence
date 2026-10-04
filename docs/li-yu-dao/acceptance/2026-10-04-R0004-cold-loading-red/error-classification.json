@@ -1,0 +1,419 @@
+{
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-004\\userdir\\logs\\error.log",
+  "source_sha256": "f043185cac5a5c71bab312c3795d5178c3efa07f368b97e30bd6d553bc725454",
+  "source_bytes": 13926,
+  "E_header_count": 63,
+  "counts": [
+    {
+      "category": "FIXTURE_CREATE_CHARACTER_VALIDATION",
+      "domain": "i2-fixture",
+      "entries": 4
+    },
+    {
+      "category": "FIXTURE_UNKNOWN_TRIGGER",
+      "domain": "i2-fixture",
+      "entries": 1
+    },
+    {
+      "category": "PRODUCT_UNKNOWN_TRIGGER",
+      "domain": "production",
+      "entries": 4
+    },
+    {
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "entries": 30
+    },
+    {
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "production",
+      "entries": 14
+    },
+    {
+      "category": "VARIABLE_USED_NEVER_SET",
+      "domain": "production",
+      "entries": 10
+    }
+  ],
+  "entries": [
+    {
+      "line": 1,
+      "category": "PRODUCT_UNKNOWN_TRIGGER",
+      "domain": "production",
+      "raw_header": "[17:22:50][E][pdx_persistent_reader.cpp:216]: Error: \"Unknown trigger: has_same_core_doctrines, near line: 100\" in file: \"common/scripted_triggers/lyd_c2_consent_triggers.txt\" near line: 101"
+    },
+    {
+      "line": 2,
+      "category": "PRODUCT_UNKNOWN_TRIGGER",
+      "domain": "production",
+      "raw_header": "[17:22:50][E][pdx_persistent_reader.cpp:216]: Error: \"Unknown trigger: divergenceroot$.var:lyd_c2_target_main), near line: 115\" in file: \"common/scripted_triggers/lyd_c2_consent_triggers.txt\" near line: 115"
+    },
+    {
+      "line": 3,
+      "category": "FIXTURE_UNKNOWN_TRIGGER",
+      "domain": "i2-fixture",
+      "raw_header": "[17:22:51][E][pdx_persistent_reader.cpp:216]: Error: \"Unknown trigger: has_same_core_doctrines, near line: 118\" in file: \"common/scripted_effects/lyd_r4_fixture_effects.txt\" near line: 118"
+    },
+    {
+      "line": 4,
+      "category": "PRODUCT_UNKNOWN_TRIGGER",
+      "domain": "production",
+      "raw_header": "[17:22:51][E][pdx_persistent_reader.cpp:216]: Error: \"Unknown trigger: has_same_core_doctrines, near line: 100\" in file: \"common/scripted_triggers/lyd_c2_consent_triggers.txt\" near line: 101"
+    },
+    {
+      "line": 5,
+      "category": "PRODUCT_UNKNOWN_TRIGGER",
+      "domain": "production",
+      "raw_header": "[17:22:51][E][pdx_persistent_reader.cpp:216]: Error: \"Unknown trigger: divergencescope:lyd_c2_actor$.var:lyd_c2_target_main), near line: 115\" in file: \"common/scripted_triggers/lyd_c2_consent_triggers.txt\" near line: 115"
+    },
+    {
+      "line": 6,
+      "category": "FIXTURE_CREATE_CHARACTER_VALIDATION",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_script_system.cpp:304]: Script system error!"
+    },
+    {
+      "line": 10,
+      "category": "FIXTURE_CREATE_CHARACTER_VALIDATION",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:139]: PostValidate of effect 'create_character' returned false at file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 16 (lyd_r4_setup_effect)"
+    },
+    {
+      "line": 11,
+      "category": "FIXTURE_CREATE_CHARACTER_VALIDATION",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_script_system.cpp:304]: Script system error!"
+    },
+    {
+      "line": 15,
+      "category": "FIXTURE_CREATE_CHARACTER_VALIDATION",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:139]: PostValidate of effect 'create_character' returned false at file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 28 (lyd_r4_setup_effect)"
+    },
+    {
+      "line": 16,
+      "category": "VARIABLE_USED_NEVER_SET",
+      "domain": "production",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_claimant' is used but is never set. Setting it in an unused scripted trigger or effect does not count"
+    },
+    {
+      "line": 17,
+      "category": "VARIABLE_USED_NEVER_SET",
+      "domain": "production",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_proposal_owner' is used but is never set. Setting it in an unused scripted trigger or effect does not count"
+    },
+    {
+      "line": 18,
+      "category": "VARIABLE_USED_NEVER_SET",
+      "domain": "production",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_claim_faith' is used but is never set. Setting it in an unused scripted trigger or effect does not count"
+    },
+    {
+      "line": 19,
+      "category": "VARIABLE_USED_NEVER_SET",
+      "domain": "production",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_recognized_leader' is used but is never set. Setting it in an unused scripted trigger or effect does not count"
+    },
+    {
+      "line": 20,
+      "category": "VARIABLE_USED_NEVER_SET",
+      "domain": "production",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_claim_rite' is used but is never set. Setting it in an unused scripted trigger or effect does not count"
+    },
+    {
+      "line": 21,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "production",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_c3_office_faith' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 22,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_piety_before' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 23,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_pair_divergence' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 24,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_same_core' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 25,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_join_funds' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 26,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_created_source_rep' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 27,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "production",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_retired_teacher' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 28,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_piety_after' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 29,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "production",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_retired_head_title' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 30,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_distinct_faiths' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 31,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "production",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_previous_rite_head' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 32,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_learning_before' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 33,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_gold_after' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 34,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_both_no_head' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 35,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_learning_delta' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 36,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_created_jingshu_rep' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 37,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_gold_before' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 38,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_actor_qualified' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 39,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_learning_after' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 40,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "production",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_latest_faith' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 41,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "production",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_c3_vacancy' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 42,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "production",
+      "raw_header": "[17:23:02][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_teacher_character' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 43,
+      "category": "VARIABLE_USED_NEVER_SET",
+      "domain": "production",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_claimant' is used but is never set. Setting it in an unused scripted trigger or effect does not count"
+    },
+    {
+      "line": 44,
+      "category": "VARIABLE_USED_NEVER_SET",
+      "domain": "production",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_proposal_owner' is used but is never set. Setting it in an unused scripted trigger or effect does not count"
+    },
+    {
+      "line": 45,
+      "category": "VARIABLE_USED_NEVER_SET",
+      "domain": "production",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_claim_faith' is used but is never set. Setting it in an unused scripted trigger or effect does not count"
+    },
+    {
+      "line": 46,
+      "category": "VARIABLE_USED_NEVER_SET",
+      "domain": "production",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_recognized_leader' is used but is never set. Setting it in an unused scripted trigger or effect does not count"
+    },
+    {
+      "line": 47,
+      "category": "VARIABLE_USED_NEVER_SET",
+      "domain": "production",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1162]: Variable 'lyd_c3_claim_rite' is used but is never set. Setting it in an unused scripted trigger or effect does not count"
+    },
+    {
+      "line": 48,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "production",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_c3_office_faith' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 49,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_piety_before' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 50,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_pair_divergence' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 51,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_same_core' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 52,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_join_funds' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 53,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_created_source_rep' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 54,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "production",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_retired_teacher' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 55,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_piety_after' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 56,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "production",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_retired_head_title' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 57,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_distinct_faiths' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 58,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "production",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_previous_rite_head' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 59,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_learning_before' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 60,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_gold_after' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 61,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_both_no_head' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 62,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_learning_delta' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 63,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_created_jingshu_rep' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 64,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_gold_before' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 65,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_actor_qualified' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 66,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "i2-fixture",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_r4_learning_after' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 67,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "production",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_latest_faith' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 68,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "production",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_c3_vacancy' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    },
+    {
+      "line": 69,
+      "category": "VARIABLE_SET_NEVER_USED",
+      "domain": "production",
+      "raw_header": "[17:23:56][E][jomini_effect.cpp:1146]: Variable 'lyd_c2_teacher_character' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+    }
+  ],
+  "boundary": "Counts are actual error.log headers, not deduplicated signatures or repeated game.log copies. Variables remain native E diagnostics, not automatically exempt warnings."
+}

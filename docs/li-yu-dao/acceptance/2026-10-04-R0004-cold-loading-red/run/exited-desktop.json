@@ -1,0 +1,164 @@
+{
+  "image": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-004\\exited-desktop.png",
+  "image_sha256": "2efff3347bde56f7fd6ba0abfd50c8c9c74e763b61ae4fcd9a31ec0bd7c4ff97",
+  "image_size": [
+    1920,
+    1080
+  ],
+  "desktop_size": [
+    1920,
+    1080
+  ],
+  "foreground_hwnd": 984556,
+  "windows": [
+    {
+      "hwnd": 65832,
+      "pid": 8268,
+      "thread": 8272,
+      "title": "DragFileWindowTitle",
+      "class": "DragFileWindowClass",
+      "rect": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "hwnd": 984556,
+      "pid": 3028,
+      "thread": 5164,
+      "title": "Steam",
+      "class": "SDL_app",
+      "rect": [
+        80,
+        40,
+        1680,
+        1040
+      ]
+    },
+    {
+      "hwnd": 5112980,
+      "pid": 8964,
+      "thread": 12184,
+      "title": "Steam 社区 :: 公国／王国／帝国法理征服（XenoAmess维护版） :: 改动说明 和另外 1 个页面 - 用户配置 1 - Microsoft​ Edge",
+      "class": "Chrome_WidgetWin_1",
+      "rect": [
+        -8,
+        -8,
+        1928,
+        1048
+      ]
+    },
+    {
+      "hwnd": 66930,
+      "pid": 5308,
+      "thread": 1072,
+      "title": "上游更新了mod，你需要短暂上线steam，然后获取上游更新，然后离线steam，",
+      "class": "Chrome_WidgetWin_1",
+      "rect": [
+        146,
+        172,
+        1182,
+        905
+      ]
+    },
+    {
+      "hwnd": 131258,
+      "pid": 14204,
+      "thread": 4932,
+      "title": "设置",
+      "class": "Windows.UI.Core.CoreWindow",
+      "rect": [
+        0,
+        8,
+        1024,
+        736
+      ]
+    },
+    {
+      "hwnd": 524858,
+      "pid": 13188,
+      "thread": 2584,
+      "title": "设置",
+      "class": "ApplicationFrameWindow",
+      "rect": [
+        -8,
+        -8,
+        1928,
+        1048
+      ]
+    },
+    {
+      "hwnd": 196732,
+      "pid": 11120,
+      "thread": 11192,
+      "title": "Microsoft Text Input Application",
+      "class": "Windows.UI.Core.CoreWindow",
+      "rect": [
+        0,
+        0,
+        1920,
+        1080
+      ]
+    },
+    {
+      "hwnd": 65910,
+      "pid": 7484,
+      "thread": 7488,
+      "title": "Program Manager",
+      "class": "Progman",
+      "rect": [
+        0,
+        0,
+        1920,
+        1080
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "exe": "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe",
+      "pid": 1464,
+      "create_time": 1790980013.1523955,
+      "name": "steamwebhelper.exe"
+    },
+    {
+      "exe": "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe",
+      "pid": 2692,
+      "create_time": 1791027756.0937624,
+      "name": "steamwebhelper.exe"
+    },
+    {
+      "exe": "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe",
+      "pid": 3028,
+      "create_time": 1790980012.3969574,
+      "name": "steamwebhelper.exe"
+    },
+    {
+      "exe": "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe",
+      "pid": 5956,
+      "create_time": 1790980013.1199436,
+      "name": "steamwebhelper.exe"
+    },
+    {
+      "exe": "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe",
+      "pid": 14888,
+      "create_time": 1790980013.1243167,
+      "name": "steamwebhelper.exe"
+    },
+    {
+      "exe": "C:\\Program Files (x86)\\Steam\\steam.exe",
+      "pid": 18100,
+      "create_time": 1790980011.1466615,
+      "name": "steam.exe"
+    },
+    {
+      "exe": "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe",
+      "pid": 18564,
+      "create_time": 1790980014.4099422,
+      "name": "steamwebhelper.exe"
+    }
+  ],
+  "time": "2026-10-04T09:32:37.743161+00:00"
+}

@@ -1,0 +1,21 @@
+{
+  "mutation": "unrelated_teacher_acceptance",
+  "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+  "before": "var:lyd_c3_teacher_requested = scope:recipient",
+  "after": "always = yes",
+  "target_test": "test_player_initiation_and_recipient_consent_are_separate",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001\\test_content_leadership.py",
+    "ContentLeadershipIntegrationTests.test_player_initiation_and_recipient_consent_are_separate"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001",
+  "rc": 1,
+  "mutation_detected": true,
+  "original_sha256": "2918dc994614a2e655455bf8581879e7086e1726b8e0e5e15e2ddfbc2c96478a",
+  "mutated_sha256": "1b3f4875fa1c57c069b3443377950d18b0c86b36277394124a43a2c4d4fa6013",
+  "test_sha256": "65dad476695a4e160b53f39f64456b327d9911e97039d6b48dd7c363e8f21d99",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "564e85477591b3ec61e4fd7dfed0a3e6a1bfe0458d591a6abaef468002fb46a0"
+}

@@ -1,0 +1,33 @@
+{
+  "created_utc": "2026-10-04T10:27:17.857825+00:00",
+  "result": "PASS_OFFLINE",
+  "test_exit_code": 0,
+  "tests": 102,
+  "render_count": 14,
+  "source_changes": [
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_model.py",
+      "before_sha256": "4f839bee873687d0fd9b615aa8a1a3a8eab81785c2c7df6665af85a1497f5b26",
+      "after_sha256": "5fa5e4ae676ba9901b7612b7f2d7375a85938b8d916f605b131157e4a00d8768"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "before_sha256": "e2dbec2af0062a6055644cb772ea43bc5a10b6dd8dd27039b436fe5f127d258a",
+      "after_sha256": "1b791ddb5c7219c06c17ee53d97ba3d8344ab2396f4a8b1788ed5bdf62ae37c0"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "before_sha256": "fef22f2b5f192e7f160270448da7ba2abf2c8fc660771a91c58e3625027ec432",
+      "after_sha256": "bc5a38df663810510de389778247bcd0766e36525c3c3b61772f45272ace6f18"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_school_consent.py",
+      "before_sha256": "42873b5522b58448e2059a5ff1a235f3c0650ab337a1ea6799029b340282198f",
+      "after_sha256": "77c7f617793d57ffd378d0b8ae5aec259157e7c13df32b632aa8a44a464698db"
+    }
+  ],
+  "native_after_fix": "NOT_RUN",
+  "r4_failed_inputs_preserved": true,
+  "shared": "C3 untouched; root final integration uses include_shared=False and full I3 owns shared hooks",
+  "readback_helper": "PAUSED_BY_ROOT_R4_NATIVE_LOAD_BLOCKERS"
+}

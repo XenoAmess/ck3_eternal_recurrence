@@ -1,0 +1,86 @@
+{
+  "captured_utc": "2026-10-04T10:06:26.174321+00:00",
+  "source_root": "C:\\workspace\\ck3_eternal_recurrence",
+  "inputs": [
+    {
+      "path": "mod_li_yu_dao/tools/gen_school_consent.py",
+      "sha256": "fb2cb53970c0d71828cef2dac908fb8a10056fef93384a946ead740a14b6a835"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_data.py",
+      "sha256": "156942c061e8c9d0afc3b17b716e4be0ea3fe6988181553dfe5ea44bfec7109c"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_model.py",
+      "sha256": "4f839bee873687d0fd9b615aa8a1a3a8eab81785c2c7df6665af85a1497f5b26"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_callbacks.py",
+      "sha256": "23583d05e9daf00c6a3d874893a4171d4bf45c2fa464b18317d4223300ad15a2"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_school_consent.py",
+      "sha256": "42873b5522b58448e2059a5ff1a235f3c0650ab337a1ea6799029b340282198f"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/native_admission_portable.py",
+      "sha256": "7da4839c191fb16e8de5a38b6879840e8d1434839fdb8054b065b283858263bc"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/events/lyd_c2_consent_events.txt",
+      "sha256": "87da221474c88fb5235a15238d8fca80ee61f93bece5d5ac579d2308395b2134"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "sha256": "11b0744070d9b47790320363de04e82fb67e787297931f21c5639132084d9608"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/decisions/lyd_c2_consent_decisions.txt",
+      "sha256": "98c449965d22c7e65d5c7e3018d6573e0379880d5110fa063367f370270eb162"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_close_effects.txt",
+      "sha256": "cc223af9e9f11c490399abfb6f7b0fd65d74eae1150aa0b425c7d7ff3954b54b"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "sha256": "e2dbec2af0062a6055644cb772ea43bc5a10b6dd8dd27039b436fe5f127d258a"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_head_effects.txt",
+      "sha256": "d8fa17b0afac4e2ec18dfc2955fdc810b6f8763e92d15185858da9b8e50f5aa9"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_response_effects.txt",
+      "sha256": "c4a5019ff2cda368f728afacd9c1b7f44eb922e6b8095dd3c68c789089deba3c"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "sha256": "f7ddd66d350c929bd53ca33c209468eb7cdded4fed3433cca5080066f30fcdb6"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "sha256": "2c6964221393059e807d74fdfb484834025a8c868d40570e89800bc9d3e7ba88"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "sha256": "e7d5878ac2c914acedfd385f6695c8f7c2e48ab9a60ad8004685c3d39ecc710d"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+      "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "sha256": "501b36d0fc72538e3f3361c659458ed693d4f47f03eda02a6db51419e6c20bd5"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "sha256": "fef22f2b5f192e7f160270448da7ba2abf2c8fc660771a91c58e3625027ec432"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/script_values/lyd_c2_consent_values.txt",
+      "sha256": "c0f01096ec25dbebde4ba0465648977e4b6c50403076875280d939640fea17ea"
+    }
+  ]
+}

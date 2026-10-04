@@ -1,0 +1,20 @@
+29: 	# If the faith has no scripted main Rite, tenets and tenet_selection_pair seed its dynamically created main Rite.
+30: 	# If the faith has a scripted main Rite, define its core tenets on that Rite instead; the Rite's tenets override these.
+31: 	tenets = {
+32: 		key
+33: 		key
+34: 	}
+35: 
+36: 	# Faith doctrines are additive to a scripted main Rite. The faith doctrine is added when the Rite and parent religion
+37: 	# have not already filled its doctrine group; a doctrine on the Rite in the same group takes precedence.
+38: 	# Keep doctrines intrinsic to every Rite of the faith here. Put Rite-specific doctrine choices on the individual Rite.
+39: 	# For a faith with no scripted main Rite, these doctrines seed the dynamically created main Rite.
+40: 	doctrines = {
+41: 		key
+42: 		key
+43: 	}
+60: 	# If the faith is supposed to have a specific Rite as its main Rite, specify its key here.
+61: 	# If it changes between start dates, use faith history to set the dated main Rites and document those mappings
+62: 	# in a comment in the faith definition. The scripted main Rite owns core tenets and Rite-specific doctrines, while
+63: 	# faith-intrinsic doctrines may remain additive in the faith definition.
+64: 	main_rite = rite_key

@@ -1,0 +1,15 @@
+test_catalogue_is_reachable_through_state_free_chooser_pages (__main__.ContentLeadershipIntegrationTests.test_catalogue_is_reachable_through_state_free_chooser_pages) ... FAIL
+
+======================================================================
+FAIL: test_catalogue_is_reachable_through_state_free_chooser_pages (__main__.ContentLeadershipIntegrationTests.test_catalogue_is_reachable_through_state_free_chooser_pages)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i3-i4-offline-integration-001\test_content_leadership.py", line 162, in test_catalogue_is_reachable_through_state_free_chooser_pages
+    self.assertTrue(all(e.key in {"if", "trigger_event"} for e,_ in ops), f"{event_id}: navigation writes state")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : lyd.10: navigation writes state
+
+----------------------------------------------------------------------
+Ran 1 test in 0.098s
+
+FAILED (failures=1)

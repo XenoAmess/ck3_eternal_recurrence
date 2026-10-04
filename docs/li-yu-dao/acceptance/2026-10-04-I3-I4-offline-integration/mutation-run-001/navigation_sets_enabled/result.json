@@ -1,0 +1,21 @@
+{
+  "mutation": "navigation_sets_enabled",
+  "path": "events/lyd_events.txt",
+  "before": "trigger_event = lyd.11",
+  "after": "add_character_flag = lyd_enabled trigger_event = lyd.11",
+  "target_test": "test_catalogue_is_reachable_through_state_free_chooser_pages",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001\\test_content_leadership.py",
+    "ContentLeadershipIntegrationTests.test_catalogue_is_reachable_through_state_free_chooser_pages"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001",
+  "rc": 1,
+  "mutation_detected": true,
+  "original_sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24",
+  "mutated_sha256": "96574ac6982aa58dae66412e58b034f85325158201115ceb681e19ed478567ca",
+  "test_sha256": "65dad476695a4e160b53f39f64456b327d9911e97039d6b48dd7c363e8f21d99",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "684c0516e33690e76dca95fd8946e4ad5b1d6185975eb390d1f04e904caee306"
+}

@@ -1,0 +1,21 @@
+{
+  "mutation": "foreign_claim_title_deletion",
+  "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+  "before": "var:lyd_c3_owned_claim_title = 1",
+  "after": "always = yes",
+  "target_test": "test_owned_title_retirement_never_selects_other_held_titles",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001\\test_content_leadership.py",
+    "ContentLeadershipIntegrationTests.test_owned_title_retirement_never_selects_other_held_titles"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001",
+  "rc": 1,
+  "mutation_detected": true,
+  "original_sha256": "af3c5cabc8e6123a5d76aeed59bf0e85db8e9bcf39c85118b0ab85ee746ea89c",
+  "mutated_sha256": "60b2ba6f9b82aceac214b2f848e87b9dee124e2a748f0ea82dfca7b7cffd072d",
+  "test_sha256": "65dad476695a4e160b53f39f64456b327d9911e97039d6b48dd7c363e8f21d99",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "46391946d60bc44483a051d04ddfa44f7356b737d458c062df9afe92ab03546e"
+}

@@ -1,0 +1,21 @@
+{
+  "mutation": "recognition_ignores_player_refusal",
+  "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+  "before": "NOT = { any_in_list = { variable = lyd_c3_players NOT = { var:lyd_c3_player_yes = 1 } } }",
+  "after": "always = yes",
+  "target_test": "test_council_callback_revalidates_serial_and_all_affected_players",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001\\test_content_leadership.py",
+    "ContentLeadershipIntegrationTests.test_council_callback_revalidates_serial_and_all_affected_players"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001",
+  "rc": 1,
+  "mutation_detected": true,
+  "original_sha256": "bac466e78388dc5cfd9b0f2e26307b29144cb62cd70fb1f7774e992d958dce5e",
+  "mutated_sha256": "3f31958d138748a1c2fa0581cf9afd8ce603ff8130a7fc3a79e76781b3b7b478",
+  "test_sha256": "65dad476695a4e160b53f39f64456b327d9911e97039d6b48dd7c363e8f21d99",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e8e88d42d63e17558e81f0012e7e68412cabff43a9ed902b2d370c447d770552"
+}

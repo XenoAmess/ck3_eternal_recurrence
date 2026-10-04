@@ -1,0 +1,54 @@
+--- before/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt
++++ candidate/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt
+@@ -93,10 +93,34 @@
+         } }
+     }
+ }
++# Faith root. This is LYD's conservative equality gate for the effective main
++# rites' doctrine sets, using native global Doctrine enumeration. It does not
++# compare Tenet objects or require the two schools' core tenets to be equal.
++# Source: vanilla pam_interactions.txt:18270-18276 (any_doctrine/prev).
++lyd_c2_same_main_doctrines_trigger = {
++    exists = main_rite
++    $TARGET$ = { exists = main_rite }
++    save_temporary_scope_as = lyd_c2_native_source_faith
++    $TARGET$ = { save_temporary_scope_as = lyd_c2_native_target_faith }
++    NOT = {
++        any_doctrine = {
++            OR = {
++                AND = {
++                    scope:lyd_c2_native_source_faith.main_rite = { rite_has_doctrine = prev }
++                    scope:lyd_c2_native_target_faith.main_rite = { NOT = { rite_has_doctrine = prev } }
++                }
++                AND = {
++                    scope:lyd_c2_native_source_faith.main_rite = { NOT = { rite_has_doctrine = prev } }
++                    scope:lyd_c2_native_target_faith.main_rite = { rite_has_doctrine = prev }
++                }
++            }
++        }
++    }
++}
+ lyd_c2_native_join_rules_trigger = {
+     var:lyd_c2_source_faith = {
+         religion = religion:confucianism_religion
+-        has_same_core_doctrines = $ACTOR$.var:lyd_c2_target_faith
++        lyd_c2_same_main_doctrines_trigger = { TARGET = $ACTOR$.var:lyd_c2_target_faith }
+     }
+     var:lyd_c2_target_faith = { religion = religion:confucianism_religion }
+     OR = {
+@@ -111,11 +135,13 @@
+             var:lyd_c2_source_faith.religious_head = var:lyd_c2_target_faith.religious_head
+         }
+     }
+-    var:lyd_c2_moving_rite = { "divergence($ACTOR$.var:lyd_c2_target_main)" < 100 }
++    var:lyd_c2_target_main = { save_temporary_scope_as = lyd_c2_native_target_main }
++    var:lyd_c2_moving_rite = { "divergence(scope:lyd_c2_native_target_main)" < 100 }
+ }
+ # Default closed while candidate2 is NOT_YET_LIVE_VERIFIED. Rendering can admit
+ # a hash-bound root receipt of actual native observations. This never overrides
+-# CK3's same-core/head/divergence rules or verifies this consent event flow.
++# LYD's main-doctrine gate or CK3's head/divergence rules, and does not verify
++# this consent event flow.
+ lyd_c2_native_admitted_trigger = { always = @NATIVE_ADMITTED@ }
+ lyd_c2_current_proposal_trigger = {
+     lyd_c2_actor_trigger = yes

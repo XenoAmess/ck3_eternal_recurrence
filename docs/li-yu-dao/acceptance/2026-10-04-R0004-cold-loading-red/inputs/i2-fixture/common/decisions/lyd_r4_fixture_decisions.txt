@@ -1,0 +1,50 @@
+﻿# GENERATED FILE: acceptance-only R4 fixture; edit build_fixture.py.
+lyd_r4_setup_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious ai_check_interval = 0
+    desc = lyd_r4_setup_decision_desc selection_tooltip = lyd_r4_setup_decision_tooltip confirm_text = lyd_r4_setup_decision_confirm
+    is_shown = { lyd_r4_setup_trigger = yes }
+    is_valid = { lyd_r4_setup_display_trigger = yes }
+    effect = { lyd_r4_setup_effect = yes }
+    ai_will_do = { base = 0 }
+}
+
+lyd_r4_qualification_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious ai_check_interval = 0
+    desc = lyd_r4_qualification_decision_desc selection_tooltip = lyd_r4_qualification_decision_tooltip confirm_text = lyd_r4_qualification_decision_confirm
+    is_shown = { lyd_r4_qualification_trigger = yes }
+    is_valid = { lyd_r4_qualification_display_trigger = yes }
+    effect = { lyd_r4_qualification_effect = yes }
+    ai_will_do = { base = 0 }
+}
+
+lyd_r4_status_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious ai_check_interval = 0
+    desc = lyd_r4_status_decision_desc selection_tooltip = lyd_r4_status_decision_tooltip confirm_text = lyd_r4_status_decision_confirm
+    is_shown = { lyd_r4_player_trigger = yes has_character_flag = lyd_r4_fixture_initialized }
+    is_valid = { has_character_flag = lyd_r4_fixture_initialized }
+    effect = { lyd_r4_read_status_effect = yes }
+    ai_will_do = { base = 0 }
+}
+
+lyd_r4_reset_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious ai_check_interval = 0
+    desc = lyd_r4_reset_decision_desc selection_tooltip = lyd_r4_reset_decision_tooltip confirm_text = lyd_r4_reset_decision_confirm
+    is_shown = { lyd_r4_reset_trigger = yes }
+    is_valid = { lyd_r4_reset_display_trigger = yes }
+    effect = { lyd_r4_reset_effect = yes }
+    ai_will_do = { base = 0 }
+}
+
+lyd_r4_resources_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious ai_check_interval = 0
+    desc = lyd_r4_resources_decision_desc selection_tooltip = lyd_r4_resources_decision_tooltip confirm_text = lyd_r4_resources_decision_confirm
+    is_shown = { lyd_r4_resources_trigger = yes }
+    is_valid = { lyd_r4_resources_display_trigger = yes }
+    effect = { lyd_r4_resources_effect = yes }
+    ai_will_do = { base = 0 }
+}

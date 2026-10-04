@@ -1,0 +1,17 @@
+{
+  "schema": "lyd.offline-integration-run.v1",
+  "utc": "2026-10-04T10:32:54.631956+00:00",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001\\test_content_leadership.py"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001",
+  "rc": 1,
+  "layer": "L0-offline-integration",
+  "live": "NOT_RUN",
+  "inputs_sha256": "b11fe3a792e23da15e4f0ee99b5f4a0c023953ace2f6fb13f4652ba57e1f5d66",
+  "test_sha256": "ffbac6d61578a17390feae4742b24457ce3ef197a1b89f34d1544c8ca7e3314b",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "10a2a4e94eb087f302e6078419cd6b25b67b78e5ff706844ea8c5b709cc822d4"
+}

@@ -1,0 +1,21 @@
+{
+  "mutation": "legacy_event_identity",
+  "path": "events/lyd_events.txt",
+  "before": "title = lyd_practice_kongmen_t",
+  "after": "title = lyd_practice_mengzi_t",
+  "target_test": "test_legacy_event_ids_and_base_practice_rewards_are_preserved",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001\\test_content_leadership.py",
+    "ContentLeadershipIntegrationTests.test_legacy_event_ids_and_base_practice_rewards_are_preserved"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001",
+  "rc": 1,
+  "mutation_detected": true,
+  "original_sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24",
+  "mutated_sha256": "ecd479ffdba932fac91ade4680adfe17581f7a6c058c7be4b722f9efd7775c10",
+  "test_sha256": "65dad476695a4e160b53f39f64456b327d9911e97039d6b48dd7c363e8f21d99",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "50ac1d5b21a1c8a3dccedb8df05b4fa6ea61ba825bd33f6310708c417aa16b50"
+}

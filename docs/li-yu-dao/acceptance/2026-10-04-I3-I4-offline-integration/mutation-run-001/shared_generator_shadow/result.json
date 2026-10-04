@@ -1,0 +1,21 @@
+{
+  "mutation": "shared_generator_shadow",
+  "path": "tools/gen_runtime.py",
+  "before": "include_shared=False",
+  "after": "include_shared=True",
+  "target_test": "test_shared_factory_has_one_formal_generator_owner",
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001\\test_content_leadership.py",
+    "ContentLeadershipIntegrationTests.test_shared_factory_has_one_formal_generator_owner"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3-i4-offline-integration-001",
+  "rc": 1,
+  "mutation_detected": true,
+  "original_sha256": "bda3bb64349d46c450765d55b5dce9d0338796ca7a7369d164223d08ed6190fb",
+  "mutated_sha256": "dd82c55a54e2d03f5aa231d554a150086865090cd825a10ffd913569a231cd49",
+  "test_sha256": "65dad476695a4e160b53f39f64456b327d9911e97039d6b48dd7c363e8f21d99",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "ba4921b2eb47abbee50629e9ed242b7996e2e6f740d184f238ecac099bd9ec66"
+}

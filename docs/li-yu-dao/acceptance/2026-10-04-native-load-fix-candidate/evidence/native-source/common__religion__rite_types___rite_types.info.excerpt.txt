@@ -1,0 +1,18 @@
+58: 	### brief: tenets ( database keys )
+59: 	# List of tenets associated with this Rite. If this is a faith's scripted main Rite, these are the faith's
+60: 	# effective core tenets; do not duplicate them in the faith type.
+61: 	#
+62: 	tenets = {
+63: 		key
+64: 		key
+65: 	}
+66: 
+67: 	### brief: doctrines ( database keys )
+68: 	# List of doctrines associated with this Rite. Rite doctrines override parent-religion and faith doctrines from the
+69: 	# same doctrine group. Faith doctrines from otherwise unfilled groups are added to the instantiated main Rite.
+70: 	# Put doctrine choices intrinsic to the whole faith on the faith type and Rite-specific choices here.
+71: 	#
+72: 	doctrines = {
+73: 		key
+74: 		key
+75: 	}

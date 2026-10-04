@@ -1,0 +1,13 @@
+2522: 
+2523: 		#HERETICAL RITE
+2524: 		AND = {
+2525: 			rite ?= {
+2526: 				save_temporary_scope_as = wicked_judged_rite
+2527: 			}
+2528: 			$RITE$ = {
+2529: 				"divergence(scope:wicked_judged_rite)" >= faith.heresy_threshold
+2530: 			}
+2531: 		}
+2532: 
+2533: 		#CRIMINAL TRAITS
+2534: 		AND = {

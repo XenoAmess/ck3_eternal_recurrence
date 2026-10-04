@@ -1,0 +1,18 @@
+--- before/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_commit_effects.txt
++++ candidate/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_commit_effects.txt
+@@ -47,7 +47,6 @@
+                 var:lyd_c2_moving_rite = { set_variable = { name = lyd_c2_transition_cooldown value = 1 days = @TRANSITION_DAYS@ } }
+                 remove_short_term_gold = @JOIN_GOLD@
+                 add_piety = -@JOIN_PIETY@
+-                set_variable = { name = lyd_c2_latest_faith value = var:lyd_c2_target_faith }
+                 set_variable = { name = lyd_c2_result value = 1 }
+                 change_variable = { name = lyd_c2_completed_joins add = 1 }
+                 lyd_c2_reconcile_after_transition_effect = yes
+@@ -87,7 +86,6 @@
+             var:lyd_c2_moving_rite = { set_variable = { name = lyd_c2_transition_cooldown value = 1 days = @TRANSITION_DAYS@ } }
+             remove_short_term_gold = @DETACH_GOLD@
+             add_piety = -@DETACH_PIETY@
+-            set_variable = { name = lyd_c2_latest_faith value = scope:lyd_c2_new_faith }
+             set_variable = { name = lyd_c2_result value = 1 }
+             change_variable = { name = lyd_c2_completed_detaches add = 1 }
+             lyd_c2_reconcile_after_transition_effect = yes

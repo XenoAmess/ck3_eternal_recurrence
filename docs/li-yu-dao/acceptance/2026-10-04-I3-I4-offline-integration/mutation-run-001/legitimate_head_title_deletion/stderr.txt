@@ -1,0 +1,17 @@
+test_owned_title_retirement_never_selects_other_held_titles (__main__.ContentLeadershipIntegrationTests.test_owned_title_retirement_never_selects_other_held_titles) ... FAIL
+
+======================================================================
+FAIL: test_owned_title_retirement_never_selects_other_held_titles (__main__.ContentLeadershipIntegrationTests.test_owned_title_retirement_never_selects_other_held_titles)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i3-i4-offline-integration-001\test_content_leadership.py", line 322, in test_owned_title_retirement_never_selects_other_held_titles
+    self.assertTrue(contains_direct_fragment(guard,
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "trigger_if = { limit = { exists = var:lyd_c3_owner_faith.religious_head_title } NOT = { this = var:lyd_c3_owner_faith.religious_head_title } }"))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 1 test in 0.083s
+
+FAILED (failures=1)
