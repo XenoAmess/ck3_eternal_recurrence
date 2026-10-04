@@ -405,3 +405,40 @@ The direct next source entry is **`2A3E380` with primary CModifierManager receiv
 Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-modifier-manager-method-role-v71/source/{ROOT-DELIVERY.json,SOURCE-RECEIPT.json,TREE.md,A-FIRST-METHOD-ROLE.json,INPUT-CONTRACT.json,READ-COST.json}` and `cached-second-role/{ROOT-DELIVERY.json,README.md,OCT5-W41-FIELDS.json}`. The preceding scoped cached lookup receipt is under `battle-modifier-manager-consumer-v70/source-qualification`.
 
 Actual new EXE reads total **1,124 B**: 1,044 B `.pdata`, 64 B unique code, 16 B unwind. Two functions shared an 8-byte unwind record which the capture script actually read twice; this repeated read remains recorded. B analyzed only A's cached 34-byte second body, adding zero EXE reads. `WRAPPER_ROLE_SOURCE_READY=true`, call/reset order is source-closed; destination drain, numeric callback, native date admission and Entry timing remain partial. No numerical module, fixture, test, SDK, live RPM, game/window action, shared mutation or Git operation was performed.
+
+
+## v72 — direct helper reaches the existing Character cache writer (2026-10-05 / W41)
+
+Sequential source base is the v71 EOF projection, 42,092 B, SHA `a73200bcf3dd95735fe6aa0470a469f3b37804c9c640a336d692b90313b7e9a1`; this increment preserves its exact prefix. The v71 adoption receipt was not supplied when this packet was sealed. Latest confirmed Root source commit is v70 `4850873e489ba92053ced5cb00ac03eea339f22c`. Exact CK3 **1.20.0.3**, frozen EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6` remains the identity.
+
+The now direct primary helper `2A3E380..2A3E62A` is a complete 682-byte body. It preserves primary CModifierManager in `R12`; the global slot `5C68C50` supplies the separate owner through `+A0`. Three pointer inventories are traversed at owner `+140/+14C`, `+100B0/+100BC` and `+2EE60/+2EE6C`. These are owner coordinates, distinct from manager-relative destination `+B0/+BC`.
+
+The third inventory uses 8-byte pointer rows. At `2A3E5B3`, the row pointer is passed in `RCX` to **`28C3F60`**, with raw `EDX=1` and `R8B=1`. The optional row `+1B0` / nested `+258` model-association block precedes that call; the direct call follows regardless of that block. Argument semantic names and the broader global model-pointer role remain unassigned.
+
+This closes the source call chain **`2A3D380 -> 2A3E380 -> 28C3F60`** from a registered manager method to the existing conditional Character cache writer. Reuse v64's sealed `28C3F60` evidence: its non-null scratch preparation path copies scratch `+408` to Character `+D0` and scratch `+418` to Character `+E0`, including Character `+EC`. The writer and preparation kernel were not recaptured or redecoded. The new caller edge supplies no numeric future EC value or calendar admission proof.
+
+The main body has no direct manager `+B0/+BC` operand, no model `+2F4` access and no queue search, deduplication or per-entry removal. It does not directly read old manager `+98` data. At the end it calls `22C0C20` with manager `+60/+6C`, then clears DWORD manager `+6C/+A4/+104/+EC`. The known old-queue count `+A4` is thus zeroed. **Manager `+EC` is a different object field from Character `+EC`**; this ending reset is not a prowess-value write. Owner `+100B0/+100BC` similarly is not the pending destination queue merely because the suffix resembles `B0/BC`.
+
+```mermaid
+flowchart TD
+    S["registered secondary method2A3D380"] --> H["direct primary helper2A3E380
+R12=manager"]
+    H --> I["owner+2EE60/+2EE6C
+8-byte pointer rows"]
+    I --> W["2A3E5B3 direct28C3F60
+RCX=row, EDX1, R8B1"]
+    W --> C["existing conditional Character cache stores
+v64 sealed source reused"]
+    H --> Z["manager count resets
++6C/+A4/+104/+EC"]
+    Q["trait request destination
+manager+B0/+BC; model+2F4"] -. "queue-to-helper edge unknown" .-> H
+    H -. "actual date admission unknown" .-> D["refresh frame"]
+    C -. "numeric preparation / Entry time unclosed" .-> E["future battle feedback partial"]
+```
+
+Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-modifier-manager-direct-helper-v72/source/{ROOT-DELIVERY.json,SOURCE-RECEIPT.json,TREE.md,A-CONTROL-ROLE.json,INPUT-CONTRACT.json,READ-COST.json}` and `cached-queue-role/{ROOT-DELIVERY.json,README.md,OCT5-W41-FIELDS.json}`. Existing writer source receipt: `battle-phase-event-trait-callback-v64/trait-caller-source/ROOT-DELIVERY.json`, SHA `8bbb9fea208b45e861612bf508a6fac583cb68abc83e88ccece71c619249c3bc`.
+
+Actual new EXE reads total **770 B**: 682 B code, 60 B `.pdata`, 28 B unwind; 13 previously sealed `.pdata` rows were reused. B analyzed only the cached main ASM, adding zero EXE reads. The optional direct-callee body budget was unused because the actual writer target already had sealed evidence. `FORCED_CACHE_CALL_EDGE_SOURCE_READY=true`; destination consumption, trait-request-to-refresh timing, numeric preparation and Entry order remain partial. No model, fixture, test, current EC prediction, Entry-day claim, SDK, live RPM, game/window action, shared mutation or Git operation was performed.
+
+Next source construction remains the actual relative destination `+B0/+BC` consumer and its admission. Registered, unread manager methods from v70 still provide bounded concrete entry points (`2A3D3C0`, `2A3DB50` with v71 pinned extents), without assigning a tick or consumer role in advance. The known reset helper's direct writer edge is adopted source knowledge rather than a guessed queue-drain completion.
