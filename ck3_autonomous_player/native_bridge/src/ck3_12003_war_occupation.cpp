@@ -237,6 +237,17 @@ WarOccupationTargetsReadResultV1 ReadWarOccupationTargetsV1(
           void *definition = Load<void *>(title, 0x48);
           if (definition == nullptr || Load<std::int32_t>(definition, 0x64) != 1)
             return fail("holding_title_template_unavailable");
+          // Reuse the reviewed native de-jure-parent seam. An unavailable
+          // county mapping does not erase an otherwise valid occupation.
+          const auto county_title_id = Load<std::int32_t>(title, 0x108);
+          if (county_title_id >= 0) {
+            void *county = ck3_12002::ResolveObjectiveTitle(
+                b.provinces, county_title_id);
+            void *county_definition = Load<void *>(county, 0x48);
+            if (county_definition != nullptr &&
+                Load<std::int32_t>(county_definition, 0x64) == 2)
+              row.county_title_id = county_title_id;
+          }
           row.province_id = Load<std::int32_t>(definition, 0x88);
           void *province = ck3_12002::ResolveObjectiveProvince(b.provinces, row.province_id);
           if (province == nullptr || b.provinces.title_province(title) != province ||

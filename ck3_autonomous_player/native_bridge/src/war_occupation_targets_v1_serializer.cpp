@@ -155,6 +155,7 @@ std::string SerializeWarOccupationTargetsV1(
     if (!first) out += ',';
     first = false;
     out += "{\"holding_title_id\":" + NullableId(row.holding_title_id) +
+        ",\"county_title_id\":" + NullableId(row.county_title_id) +
         ",\"province_id\":" + NullableId(row.province_id) +
         ",\"legal_holder_character_id\":" +
         NullableId(row.legal_holder_character_id) +

@@ -55,6 +55,8 @@ struct WarOccupationTargetRowV1 {
   // The native collector returns barony CLandedTitle pointers. This full title
   // ID is the holding identity; no invented second CHolding ID is published.
   std::int32_t holding_title_id = -1;
+  // Optional resolved de-jure county full TitleID; -1 serializes as null.
+  std::int32_t county_title_id = -1;
   std::int32_t province_id = -1;
   std::int32_t legal_holder_character_id = -1;
   std::string_view territory_side = "unavailable"; // attacker / defender

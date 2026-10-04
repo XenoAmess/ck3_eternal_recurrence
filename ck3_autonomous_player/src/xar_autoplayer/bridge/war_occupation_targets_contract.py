@@ -152,6 +152,13 @@ def normalize_war_occupation_targets_v1(
     # Older occupation rows did not carry these optional observations. Keep
     # their absence distinct from a native measurement of zero.
     for index, row in enumerate(result["rows"]):
+        # Legacy rows have no county mapping. Keep absence as null and
+        # preserve the native full TitleID when the parent was resolved.
+        county_title_id = row.get("county_title_id")
+        row["county_title_id"] = (
+            _id(county_title_id, "county_title_id")
+            if county_title_id is not None else None
+        )
         for name in ("fort_level", "garrison_size", "besieging_strength"):
             measurement = row.get(name)
             if measurement is not None:
