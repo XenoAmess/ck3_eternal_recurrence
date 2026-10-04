@@ -1,0 +1,395 @@
+{
+  "schema": "superman-qiang.repository-delivery.v1",
+  "started_at_utc": "2026-10-04T06:51:13.782074+00:00",
+  "source_tag": "superman-qiang-v1.1.0",
+  "source_commit": "f7fde816e295a62807ab636ee2d93cf307ea69cf",
+  "previous_attempt_retained": "C:/ck3-superman-qiang-media-redo-20261004/repository-delivery-1.1.0-A0001",
+  "commands": [
+    {
+      "name": "conflict-paths-0",
+      "argv": [
+        "git",
+        "diff",
+        "--name-only",
+        "--diff-filter=U"
+      ],
+      "exit": 0,
+      "stdout_sha256": "c556cacef2e620297577d417fd54e5365f4401da2866552de369082ed6e2eb96",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "2026-10-04.md.1-upstream",
+      "argv": [
+        "git",
+        "show",
+        ":2:docs/autonomous-agent-progress/daily/2026-10-04.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "cfa23e24ed5e3f286fef82d30c87cb377523c98532fc7f4f2716baea903ee6a0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "2026-10-04.md.1-ours",
+      "argv": [
+        "git",
+        "show",
+        ":3:docs/autonomous-agent-progress/daily/2026-10-04.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "849e599824ecc54746e7bfa702b3bae16a1d1335757943e634e574347f374267",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "2026-10-04.md.1-stage",
+      "argv": [
+        "git",
+        "add",
+        "--",
+        "docs/autonomous-agent-progress/daily/2026-10-04.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "2026-W40.md.4-upstream",
+      "argv": [
+        "git",
+        "show",
+        ":2:docs/autonomous-agent-progress/weekly/2026-W40.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "ac00d58569173e9442a826e8255e46b451328a223e0b2afd4df9a9b85b23512a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "2026-W40.md.4-ours",
+      "argv": [
+        "git",
+        "show",
+        ":3:docs/autonomous-agent-progress/weekly/2026-W40.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "61a5b420d1843aa303de43cbbb98afeecab5a4e50699934ae406bd6cba733832",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "2026-W40.md.4-stage",
+      "argv": [
+        "git",
+        "add",
+        "--",
+        "docs/autonomous-agent-progress/weekly/2026-W40.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "resolved-check-7",
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "rebase-continue",
+      "argv": [
+        "git",
+        "-c",
+        "core.editor=true",
+        "rebase",
+        "--continue"
+      ],
+      "exit": 0,
+      "stdout_sha256": "da77d8a3ff7c7a91f40ca0d801165452cef1db0519e747a31d103ec9bb794a62",
+      "stderr_sha256": "541f1cd14c7b5a66710cf5eaf3df4743f8aaa8bd30c9636bcf50b42a92e68da2"
+    },
+    {
+      "name": "fetch-1",
+      "argv": [
+        "git",
+        "fetch",
+        "origin",
+        "master"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "2e3ed2f429cc0767250e3e61d4e3f2b0aa0ae6fb0a0ee5a6f9f281f52feb7aa3"
+    },
+    {
+      "name": "rebase-1",
+      "argv": [
+        "git",
+        "rebase",
+        "origin/master"
+      ],
+      "exit": 0,
+      "stdout_sha256": "8a6596cee7493cf5ebb3fcfa3cb3e24d451c15a37dcefcbd4fc1c9520f783de2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "push-1",
+      "argv": [
+        "git",
+        "push",
+        "origin",
+        "master"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "0841a9843a470874acb4889034719cbd100342f79fa18fd479dbdb53b1fb86ae"
+    },
+    {
+      "name": "delivered-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout_sha256": "221ef34615eeea7387c5729a65bf4215e6560e054ab098d29fd6438e1648ffa6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "remote-master",
+      "argv": [
+        "git",
+        "ls-remote",
+        "origin",
+        "refs/heads/master"
+      ],
+      "exit": 0,
+      "stdout_sha256": "1a116b3fb110d9bad511a48fd515e3683b393100489e33672ce2117cf33ada86",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "tree-0",
+      "argv": [
+        "git",
+        "show",
+        "df6c4b685902699ae68fdd85e8e6c673b293ceba:docs/release-changelogs/superman-qiang/1.1.0.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "5cd20383d0fe2983fbf6ed835f02de47bcb931536223860cc464d542fd952717",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "tree-1",
+      "argv": [
+        "git",
+        "show",
+        "df6c4b685902699ae68fdd85e8e6c673b293ceba:mod_superman_qiang/docs/release-1.1.0-20261004/README.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "2953fa1c496baebd51edde29da946dce47d1842ff5f9fa1e133ae3602f0ce2c0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "tree-2",
+      "argv": [
+        "git",
+        "show",
+        "df6c4b685902699ae68fdd85e8e6c673b293ceba:mod_superman_qiang/docs/release-1.1.0-20261004/publication.snapshot.json"
+      ],
+      "exit": 0,
+      "stdout_sha256": "994678080b9ac87329f3d3182ff57538088dbd1555f9aa2f5d479e468a0d343e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "tag-unchanged",
+      "argv": [
+        "git",
+        "rev-parse",
+        "superman-qiang-v1.1.0^{commit}"
+      ],
+      "exit": 0,
+      "stdout_sha256": "c933bc1f439ce94221a927df26d79652be0bdbd8fb3c4a036b841aed8cac6c9e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "status-after",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "append_conflicts_preserved_both_sides": [
+    {
+      "path": "docs/autonomous-agent-progress/daily/2026-10-04.md",
+      "before_sha256": "53270f6413a68ab4e51764f088ff99e5513fd57ad849e5fce36f3f7f1d068bcd",
+      "after_sha256": "8a99f0e020f0474f77c062cb93658544fcbc614ebbf76501111505ce661fde4e"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/weekly/2026-W40.md",
+      "before_sha256": "f308035d98c7df56da23e6f53dd978f9a7fa20f2eb807c351aa61bbcef414fb0",
+      "after_sha256": "99cd8786323fb55ba6b186d937c2b2a90774098b8851c4f29903b103858c9029"
+    }
+  ],
+  "runtime22": [
+    {
+      "path": "common/character_interactions/sxad_interactions.txt",
+      "bytes": 1177,
+      "sha256": "49af8002a9d26eeb08b99073bb2393a6bd7c2e25f11610df990bcebbfe8e92d5",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "common/modifiers/sxad_skill_balance_modifiers.txt",
+      "bytes": 2342,
+      "sha256": "c21257a41a0b83428b0840ea198bd62581d1b02879235a86d056bc98d81bf995",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "common/script_values/sxad_values.txt",
+      "bytes": 5344,
+      "sha256": "fd7c4dfad2de83a6bcd7a3d0ab303835ead7a103abe5d954f0bb2e5a82b94a7d",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "common/scripted_effects/sxad_experience_effects.txt",
+      "bytes": 2872,
+      "sha256": "3ba408a0320378b6f09c4d16880d925a16aab07a5904847e0e59af2a183e8a50",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "common/scripted_effects/sxad_probe_skill_effects.txt",
+      "bytes": 11144,
+      "sha256": "e4d6e1d40b552440a5f5042d1d6833337cfb1b55565504e1cd5dea4ef12ab7cd",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "common/scripted_effects/sxad_transfer_effects.txt",
+      "bytes": 11909,
+      "sha256": "7991c7000897755735fad9d6785ee3840811b3ad958a155675b9d67918a59458",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "common/scripted_effects/zz_sxad_had_sex_with_effect.txt",
+      "bytes": 9868,
+      "sha256": "46e066aa7e7e81ab2f6292e9650a479de9e8c7ae7e5808d35868396bf99c4ba2",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt",
+      "bytes": 1353,
+      "sha256": "afaab280b0be669bf019203e2b3d16f97f087daa5b682338fdcb3bbfaca75fe1",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "common/traits/sxad_traits.txt",
+      "bytes": 482,
+      "sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "descriptor.mod",
+      "bytes": 153,
+      "sha256": "7b0bae16d8d339bff9c9f2fb3cceee5fa2d4a2a0b3b1f2ce4da6a77347e41ca5",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "events/sxad_events.txt",
+      "bytes": 243,
+      "sha256": "e21cfe6edc1a0f511eb90f0bc6083988e3a596cec947039268175b6652272701",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "gfx/interface/icons/traits/sxad_sex_experience.dds",
+      "bytes": 57728,
+      "sha256": "7f4c9f2925ac10d6803261ae0e28ec0b417b3a9917664b5297e45a955c4de5b5",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "localization/english/sxad_l_english.yml",
+      "bytes": 3324,
+      "sha256": "5422b387afa491de136372e4072f556ad76d2dc2f532563ddc70bc5453daf089",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "localization/french/sxad_l_french.yml",
+      "bytes": 3450,
+      "sha256": "b137d300c787228c3cfa41fcfae7dca78ebe3caac9ad081e793d371ae009ec1b",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "localization/german/sxad_l_german.yml",
+      "bytes": 3443,
+      "sha256": "4c5bfbd396fde27bdda47bcf5dd43bd12b0f6f30cee09b6b55541369c308eab9",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "localization/japanese/sxad_l_japanese.yml",
+      "bytes": 3343,
+      "sha256": "ed7ab2fe996dabe694513f90a7e6d7fa8ee26d3701fcfe6059397784e9c58081",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "localization/korean/sxad_l_korean.yml",
+      "bytes": 3309,
+      "sha256": "fa609dc5e373f5f327286d1e53dfa874715fb0d89ee92756b957cfcccadde960",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "localization/polish/sxad_l_polish.yml",
+      "bytes": 3464,
+      "sha256": "67de102874b1d6537598389ba49643e0ecf7dcaac7db8d1882c6b9238338bd40",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "localization/russian/sxad_l_russian.yml",
+      "bytes": 3732,
+      "sha256": "6fcc180ce7d2baae95e4c34e46645cd74f6cc2b4a46d85273432f265e914244f",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "localization/simp_chinese/sxad_l_simp_chinese.yml",
+      "bytes": 3263,
+      "sha256": "11eb3d59e31cfd0cd417d67ac3803986a00bff0b298af5c42799a0472baecd6b",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "localization/spanish/sxad_l_spanish.yml",
+      "bytes": 3405,
+      "sha256": "eb7c3a5143c32b498cc266d2af5ab8afe75371357a2ba3bdea7d20cb2446be21",
+      "equals_published_manifest": true
+    },
+    {
+      "path": "thumbnail.png",
+      "bytes": 785139,
+      "sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b",
+      "equals_published_manifest": true
+    }
+  ],
+  "delivery_commit": "df6c4b685902699ae68fdd85e8e6c673b293ceba",
+  "remote_master_at_readback": "df6c4b685902699ae68fdd85e8e6c673b293ceba",
+  "master_pushed_and_read_back": true,
+  "delivered_blobs": [
+    {
+      "path": "docs/release-changelogs/superman-qiang/1.1.0.md",
+      "bytes": 5860,
+      "sha256": "5cd20383d0fe2983fbf6ed835f02de47bcb931536223860cc464d542fd952717"
+    },
+    {
+      "path": "mod_superman_qiang/docs/release-1.1.0-20261004/README.md",
+      "bytes": 6366,
+      "sha256": "2953fa1c496baebd51edde29da946dce47d1842ff5f9fa1e133ae3602f0ce2c0"
+    },
+    {
+      "path": "mod_superman_qiang/docs/release-1.1.0-20261004/publication.snapshot.json",
+      "bytes": 68023,
+      "sha256": "994678080b9ac87329f3d3182ff57538088dbd1555f9aa2f5d479e468a0d343e"
+    }
+  ],
+  "state": "CHANGELOG_AND_RELEASE_EVIDENCE_MASTER_PUSHED_AND_READ_BACK",
+  "completed_at_utc": "2026-10-04T06:51:26.329183+00:00"
+}
