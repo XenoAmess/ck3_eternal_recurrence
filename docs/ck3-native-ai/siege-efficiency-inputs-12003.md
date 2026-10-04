@@ -162,3 +162,14 @@ flowchart TD
 ```
 
 本节当前帧只引用Root/协调者摘要，不再读取原始actual004或health006，不新增SDK/RPM/窗口/测试/游戏日，不领取换将、围城加速或占领收益。外置最小账本、sourcepins与Oct5/W41字段：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-commander-value/native-tree/ROOT-DELIVERY.json`；实际候选receipt由协调者另包合并。
+
+## 2026-10-05：R38 城防6围城的当前效率与合格兵种输入
+
+Root零日occupation004实读date53259768、War117440524、P470/holding1334/county1333、玩家CUnit301989997、Siege503316504；fort6/garrison550/eligible besiegers3210，work511704/55000000（Q100000）、0.930%、ETA639，CanStartAssault=false，尚未占领或完成。
+同一实际围城ordinary_daily_progress=85284/Q100000、fresh/prepared phase均1800000/Q100000、counter6、can_advance=true，breach/starvation/disease/desertion/stalemate状态均真实0，prepared enum5只是上次prepare sentinel；既有occupation口已读到这些输入，generic daily snapshot中null不能当getter未实现。
+已完成day03..08五个相邻24h工作差均85284，与实读普通D相符；普通日进展有效，639是当前D条件估计，不是固定城破日。保持输入时还需12个允许tick达到18天phase门槛，不保证事件种类、强攻或终结。
+本场尚未发布M/K：M为本省原生合格regiment有效siege_value×归一化当前规模之和；K为合格最高siege tier，不以历史器械、全军人数或未采字段补0。fort6触及原版threshold4/6，条件K0/K1/K>=2的F分别.49/.7/1，最终D仍含其他修正与minimum；当前E=.13只是相加项。
+两个此前实际可达getter ABI已闭：0x247ECE0为`int64_t*(void* Province,int64_t* out)`，既有daily0x251F170 caller用真实Province/out；0x247EFC0为`int32_t(void* Province)`，既有event weight0x251E6E0 caller使用其EAX，fort helper同读K。M727B SHA`0dc8648056516b8c413a85b42f1d607ad9db4e1f36c6f3214e419f6b9c3ff7e4`、K528B SHA`a4f0a172a74efaefacddcafeff0aae0328f162461490927f5f99af714e2d1136`绑定exact .3 EXE`94b55397…2a6`。
+先封原生树/Mermaid，再外置3path只读reader：alive Siege后独立读取真实Province M/K，既有occupation同口发布nullable`eligible_regiment_siege_work {raw,scale:100000}`与`highest_eligible_siege_tier`；真实0保留，缺getter/失败仍null，不依赖assault或将领字段可用。唯一affected生产路径fixture已GREEN（native16 checks/1serializer包、registeredMCP20 require/2calls，第二为derived legacy shape）；首次Python缓存绑定harness RED保留，回执`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/active-siege-eligible-input-v66/fixture/ROOT-DELIVERY.json` SHA`b7d65a0e64191be3d6720637c7c26cf3aabf79d034aa7cec3bd3daef3bc6c4fb`。Root已采用native`38467fc69f28a15627ef725c8d3ad45bba957544`与wire`2ef91947c161c0b22795a57f36c9485affc437b0`，新observer为static-ready，v66加载与fresh actual M/K仍待独立receipt，未授加速、城破或新日信用。
+策略入口优先比较当前M/K实际器械或会师收益，其次复用合法commander candidate effective phase输入；phase modifier不直接提高普通D，trait/XP不重复计入。未发现可执行改善时继续当前目标的普通围城及实证补给维护，不等待完整RNG，也不因长ETA自动放弃目标。
+冻结树、ABI/源码pins、唯一actual004消费及日周字段见`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-efficiency-current-fort6-v65/ROOT-DELIVERY.json`（SHA`126791c2c0528fde6ef6a8b243d7856f7c2062f74eab996ca807c10dec58d5bd`）；原生树SHA`44a1219bd852bb2d20086711b93b3ed3e0641f1571aa6686c2cacea79f6e1b58`。本lane0 SDK/RPM/窗口/tests/shared/Git/新日；实际累计4810日由Root原推进计入一次。
