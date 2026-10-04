@@ -14,6 +14,7 @@ import sys
 
 from xar_promo import probe_and_write_bound_media
 from xar_promo.evidence import bind_external_artifact, write_evidence_bundle_v2, write_sampling_plan_v2
+from check_audio_continuity import check_audio_continuity
 
 
 def sha(path: Path) -> str:
@@ -95,8 +96,12 @@ def main() -> int:
     early_source_paths = [Path(scene['visual']['background']['source_path']) for scene in timeline['scenes'][:5]]
     early_source_hashes = [sha(path) for path in early_source_paths]
     checks['first_five_scenes_have_at_least_four_independent_sources'] = len(set(early_source_hashes)) >= 4
+    audio_continuity = check_audio_continuity(movie, attempt, post / 'audio-continuity')
+    checks.update({'audio.' + key: value for key, value in audio_continuity['checks'].items()})
     report = {'format_version': 1, 'kind': 'superman_qiang_encoded_media_check', 'created_at_utc': datetime.now(timezone.utc).isoformat(), 'result': 'PASS' if all(checks.values()) else 'FAIL', 'movie_path': str(movie), 'movie_sha256': movie_sha, 'movie_bytes': movie.stat().st_size, 'duration_seconds': duration, 'checks': checks, 'encoded_loudness': analysis, 'subtitle_layout_path': str(layout_path), 'subtitle_layout_sha256': sha(layout_path) if layout_path.is_file() else None, 'subtitle_cue_count': len(paragraphs), 'first_five_source_bindings': [{'path': str(path), 'sha256': value} for path, value in zip(early_source_paths, early_source_hashes)], 'human_full_playback': 'not-recorded', 'manual_signoff_granted': False}
     report_path = post / 'encoded-media-check.json'
+    report['audio_continuity_report_path'] = audio_continuity['report_path']
+    report['audio_continuity_report_sha256'] = audio_continuity['report_sha256']
     report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     if not all(checks.values()):
         print(json.dumps(report, ensure_ascii=False))

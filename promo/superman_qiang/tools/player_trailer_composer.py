@@ -272,6 +272,7 @@ def compose(config: ProjectConfig, run: RunManifest | None, *, config_path: Path
             if image.size != (1920, 1080) or image.mode != "RGBA":
                 raise ValueError(f"Overlay must be RGBA 1920x1080: {overlay}")
         rows.append({"id": sid, "lead_seconds": head_seconds[index],
+                     "narration_path": scene["audio_path"],
                      "narration_seconds": scene["duration_seconds"],
                      "duration_seconds": duration, "visual": visuals[sid],
                      "overlay": str(overlay), "overlay_sha256": digest(overlay),
@@ -299,6 +300,18 @@ def compose(config: ProjectConfig, run: RunManifest | None, *, config_path: Path
         row["start_seconds"] = cursor
         row["end_seconds"] = cursor + row["duration_seconds"]
         cursor = row["end_seconds"]
+    reuse = inputs.get("reuse_visuals")
+    if reuse:
+        checked_file(reuse["movie"], "previous approved visual stream")
+        previous = read_json(checked_file(reuse["timeline"], "previous visual timeline"))
+        if len(previous["scenes"]) != len(rows):
+            raise ValueError("Reused visuals must contain all ten scenes")
+        for row, old in zip(rows, previous["scenes"]):
+            if row["id"] != old["id"] or abs(row["duration_seconds"]-old["duration_seconds"]) > 1e-6:
+                raise ValueError("Reused visual timing differs from the current director")
+            if row["visual_source_bindings"] != old["visual_source_bindings"]:
+                raise ValueError("Reused visual sources differ from the current visual plan")
+            row["reuse_segment"] = str(checked_file(reuse["segments"][row["id"]], "reused visual scene"))
     layout_reports: dict[str, list[dict[str, Any]]] = {}
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg:
@@ -317,7 +330,7 @@ def compose(config: ProjectConfig, run: RunManifest | None, *, config_path: Path
 
     def concat_planner(**kwargs: Any) -> RenderPlan:
         return player_concat_plan(kwargs, music_path, inputs["music"], total, rows,
-                                  layout_reports, storyboard.to_dict(), family, font_size)
+                                  layout_reports, storyboard.to_dict(), family, font_size, reuse)
 
     segments = tuple(SegmentDraft(
         segment_id=row["id"], visual_source=VisualSource(
@@ -349,6 +362,14 @@ def player_segment_plan(kwargs: dict[str, Any], rows: list[dict[str, Any]], visu
     root = Path(kwargs["working_directory"])
     overlay = Path(kwargs["video_input"])
     partial, final = Path(kwargs["partial_output"]), Path(kwargs["final_output"])
+    if row.get("reuse_segment"):
+        command = CommandSpec.create(
+            [kwargs["ffmpeg"], "-nostdin", "-hide_banner", "-loglevel", "error", "-n",
+             "-i", row["reuse_segment"], "-c", "copy", "-movflags", "+faststart", partial],
+            label=f"reuse exact approved visual scene {row['id']}", cwd=root,
+            partial_artifacts=(partial,))
+        return RenderPlan((PlannedCommand(command, Path(kwargs["audit_directory"]) / "reuse-visual"),),
+                          (), partial, final)
     background = Path(scene["background_path"])
     argv = [kwargs["ffmpeg"], "-nostdin", "-hide_banner", "-loglevel", "info", "-n",
             "-loop", "1", "-framerate", "30", "-i", overlay,
@@ -457,7 +478,8 @@ def player_segment_plan(kwargs: dict[str, Any], rows: list[dict[str, Any]], visu
     filters.append(
         "[1:a]highpass=f=70,loudnorm=I=-17:TP=-2:LRA=6,aresample=48000,"
         "aformat=sample_fmts=fltp:channel_layouts=stereo,"
-        f"adelay={round(lead*1000)}:all=1,apad,atrim=duration={duration:.6f},"
+        f"asetpts=N/SR/TB,adelay={round(lead*48000)}S:all=1,apad,asetpts=N/SR/TB,"
+        f"atrim=end_sample={round(duration*48000)},"
         "asetpts=N/SR/TB[a]"
     )
     graph = ";".join(filters)
@@ -475,11 +497,11 @@ def player_segment_plan(kwargs: dict[str, Any], rows: list[dict[str, Any]], visu
 
 def player_concat_plan(kwargs: dict[str, Any], music_path: Path, music: dict[str, Any],
                        total: float, rows: list[dict[str, Any]], layouts: dict[str, Any],
-                       storyboard: dict[str, Any], family: str, font_size: int) -> RenderPlan:
-    """Join narration scenes, continuously duck one music source, and retain inputs."""
+                       storyboard: dict[str, Any], family: str, font_size: int,
+                       reuse: dict[str, Any] | None = None) -> RenderPlan:
+    """Copy the visual stream and encode a single sample-continuous audio master."""
     root = Path(kwargs["working_directory"])
-    joined = root / "intermediate" / "joined-narration.mp4"
-    joined.parent.mkdir(parents=True, exist_ok=True)
+    joined = root / "intermediate" / "joined-visuals.mp4"
     concat_path = Path(kwargs["concat_path"])
     partial = Path(kwargs["partial_output"])
     final = Path(kwargs["final_output"])
@@ -492,32 +514,61 @@ def player_concat_plan(kwargs: dict[str, Any], music_path: Path, music: dict[str
     overlap_seconds = 2.0
     body_seconds = total - ending_seconds + overlap_seconds
     ending_start = max(music_start + body_seconds, music_duration - ending_seconds)
-    graph = (
-        f"[1:a]asplit=2[opening][ending];"
-        f"[opening]atrim=start={seconds(music_start)}:duration={seconds(body_seconds)},asetpts=PTS-STARTPTS[body];"
-        f"[ending]atrim=start={seconds(ending_start)}:duration=12,asetpts=PTS-STARTPTS[tail];"
+    sample_count = round(total * 48000)
+    voice_labels, audio_filters = [], []
+    pcm_argv = [kwargs["ffmpeg"], "-nostdin", "-hide_banner", "-loglevel", "info", "-n"]
+    for index, row in enumerate(rows):
+        pcm_argv.extend(["-i", row["narration_path"]])
+        delay = round((row["start_seconds"] + row["lead_seconds"]) * 48000)
+        audio_filters.append(
+            f"[{index}:a]highpass=f=70,loudnorm=I=-17:TP=-2:LRA=6,aresample=48000,"
+            "aformat=sample_fmts=fltp:channel_layouts=stereo,asetpts=N/SR/TB,"
+            f"adelay={delay}S:all=1,apad=whole_len={sample_count},asetpts=N/SR/TB,"
+            f"atrim=end_sample={sample_count},asetpts=N/SR/TB[voice{index}]"
+        )
+        voice_labels.append(f"[voice{index}]")
+    audio_filters.append("".join(voice_labels) +
+                         f"amix=inputs={len(rows)}:normalize=0:duration=longest,"
+                         "asetpts=N/SR/TB,asplit=2[voice][voiceout]")
+    pcm_argv.extend(["-i", music_path])
+    audio_filters.extend([
+        f"[{len(rows)}:a]asplit=2[opening][ending]",
+        f"[opening]atrim=start={seconds(music_start)}:duration={seconds(body_seconds)},asetpts=PTS-STARTPTS[body]",
+        f"[ending]atrim=start={seconds(ending_start)}:duration=12,asetpts=PTS-STARTPTS[tail]",
         f"[body][tail]acrossfade=d=2:c1=tri:c2=tri,afade=t=in:st=0:d=1.5,"
-        f"afade=t=out:st={seconds(total-2.5)}:d=2.5,volume=0.30[music];"
-        "[0:a]aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo,"
-        "asplit=2[voice][key];"
-        "[music][key]sidechaincompress=threshold=0.035:ratio=10:attack=20:release=550[ducked];"
-        f"[voice][ducked]amix=inputs=2:normalize=0:duration=first,"
-        f"atrim=duration={duration},loudnorm=I=-16:TP=-2:LRA=8:print_format=json,"
-        "aresample=48000,alimiter=limit=0.891251:level=false[a]"
-    )
+        f"afade=t=out:st={seconds(total-2.5)}:d=2.5,volume=0.18,"
+        f"atrim=end_sample={sample_count},asetpts=N/SR/TB,asplit=2[music][musicout]",
+        f"[voice][music]amix=inputs=2:normalize=0:duration=longest,"
+        f"atrim=end_sample={sample_count},asetpts=N/SR/TB[mix]",
+    ])
+    graph = ";".join(audio_filters)
+    mix_wav = root / "intermediate" / "continuous-mix.wav"
+    voice_wav = root / "intermediate" / "continuous-voice.wav"
+    music_wav = root / "intermediate" / "continuous-music.wav"
+    pcm_argv.extend(["-filter_complex", graph])
+    for label, path in [("mix", mix_wav), ("voiceout", voice_wav), ("musicout", music_wav)]:
+        pcm_argv.extend(["-map", f"[{label}]", "-c:a", "pcm_f32le", "-ar", "48000", "-ac", "2", path])
+    if reuse:
+        visual_argv = [kwargs["ffmpeg"], "-nostdin", "-hide_banner", "-loglevel", "error", "-n",
+                       "-i", reuse["movie"]["path"], "-map", "0:v:0", "-an", "-c:v", "copy",
+                       "-movflags", "+faststart", joined]
+    else:
+        visual_argv = [kwargs["ffmpeg"], "-nostdin", "-hide_banner", "-loglevel", "error", "-n",
+                       "-f", "concat", "-safe", "0", "-i", concat_path, "-map", "0:v:0",
+                       "-an", "-c:v", "copy", "-movflags", "+faststart", joined]
     commands = (
-        PlannedCommand(CommandSpec.create(
-            [kwargs["ffmpeg"], "-nostdin", "-hide_banner", "-loglevel", "error", "-n",
-             "-f", "concat", "-safe", "0", "-i", concat_path, "-c", "copy",
-             "-movflags", "+faststart", joined],
-            label="concatenate approved player scenes", cwd=root, partial_artifacts=(joined,)),
-            root / "audit" / "concat" / "join-narration"),
+        PlannedCommand(CommandSpec.create(visual_argv,
+            label="copy approved visual stream without segmented audio", cwd=root, partial_artifacts=(joined,)),
+            root / "audit" / "concat" / "join-visuals"),
+        PlannedCommand(CommandSpec.create(pcm_argv,
+            label="build sample-continuous lossless narration and single music bed", cwd=root,
+            partial_artifacts=(mix_wav, voice_wav, music_wav)), root / "audit" / "concat" / "continuous-pcm"),
         PlannedCommand(CommandSpec.create(
             [kwargs["ffmpeg"], "-nostdin", "-hide_banner", "-loglevel", "info", "-n",
-             "-i", joined, "-i", music_path, "-filter_complex", graph, "-map", "0:v:0",
-             "-map", "[a]", "-c:v", "copy", "-c:a", "aac", "-b:a", "256k",
+             "-i", joined, "-i", mix_wav, "-af", "volume=1dB,asetpts=N/SR/TB", "-map", "0:v:0",
+             "-map", "1:a:0", "-c:v", "copy", "-c:a", "aac", "-b:a", "256k",
              "-ar", "48000", "-ac", "2", "-t", duration, "-movflags", "+faststart", partial],
-            label="mix one supplied Suno track with Xiaoxiao narration", cwd=root,
+            label="encode one continuous audio master with fixed gain", cwd=root,
             partial_artifacts=(partial,)), root / "audit" / "concat" / "mix-single-music"),
     )
     timeline = {
@@ -527,8 +578,11 @@ def player_concat_plan(kwargs: dict[str, Any], music_path: Path, music: dict[str
         "music": {"path": str(music_path), "sha256": digest(music_path),
                   "source_count": 1, "opening_span": [music_start, music_start + body_seconds],
                   "ending_span": [ending_start, ending_start + ending_seconds],
-                  "crossfade_seconds": overlap_seconds, "voice_sidechain_ducking": True,
-                  "target_lufs": -16, "mix_target_true_peak_dbfs": -2,
+                  "crossfade_seconds": overlap_seconds, "voice_sidechain_ducking": False,
+                  "music_gain": 0.18, "master_gain_db": 1.0,
+                  "audio_clock": "single-continuous-48000Hz-sample-clock",
+                  "audio_sample_count_before_final_encode": sample_count,
+                  "target_lufs": -16.5, "mix_target_true_peak_dbfs": -2,
                   "actual_final_loudness": "requires post-encode measurement"},
         "review_state": "pending-human-review",
     }
@@ -553,6 +607,13 @@ def player_concat_plan(kwargs: dict[str, Any], music_path: Path, music: dict[str
         f"{srt_time(offset+event['end_seconds'])}\n" + "\n".join(event["lines"])
         for index, (_, offset, event) in enumerate(global_events, start=1)) + "\n"
     generated = (
+        GeneratedTextFile(root / "intermediate" / "narration-placement.json", json.dumps({
+            "sample_rate": 48000, "total_samples": sample_count,
+            "scenes": [{"id": row["id"], "path": row["narration_path"],
+                        "sha256": row["narration_sha256"],
+                        "start_sample": round((row["start_seconds"] + row["lead_seconds"]) * 48000)}
+                       for row in rows],
+        }, ensure_ascii=False, indent=2) + "\n"),
         GeneratedTextFile(concat_path, concat_manifest(tuple(kwargs["segment_paths"]), manifest_directory=concat_path.parent)),
         GeneratedTextFile(root / "timeline.json", json.dumps(timeline, ensure_ascii=False, indent=2) + "\n"),
         GeneratedTextFile(root / "storyboard.json", json.dumps(review_storyboard, ensure_ascii=False, indent=2) + "\n"),
@@ -572,5 +633,15 @@ def player_concat_plan(kwargs: dict[str, Any], music_path: Path, music: dict[str
         GeneratedTextFile(root / "subtitles" / "complete.ass", global_ass),
         GeneratedTextFile(root / "subtitles" / "complete.srt", srt),
         GeneratedTextFile(root / "concat" / "single-music-mix.filter", graph + "\n"),
+        GeneratedTextFile(root / "audio-mix-policy.json", json.dumps({
+            "format_version": 1, "kind": "superman_qiang_continuous_audio_policy",
+            "sample_rate": 48000, "sample_count": sample_count, "music_gain": 0.18,
+            "master_gain_db": 1.0, "voice_sidechain_ducking": False,
+            "final_dynamic_loudnorm": False, "segmented_aac_used_for_final_audio": False,
+            "reference_video_path": reuse["movie"]["path"] if reuse else None,
+            "reference_video_sha256": reuse["movie"]["sha256"] if reuse else None,
+            "loudness_design_probe": "audio-mix-design-A0001: -17.47 LUFS / -3.44 dBTP before fixed +1dB",
+            "review_state": "pending-human-review",
+        }, ensure_ascii=False, indent=2) + "\n"),
     )
     return RenderPlan(commands, generated, partial, final)

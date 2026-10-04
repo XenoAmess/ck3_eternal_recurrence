@@ -22,6 +22,7 @@ def main() -> int:
     parser.add_argument('--run-id', required=True)
     parser.add_argument('--narration-summary', type=Path, required=True)
     parser.add_argument('--music-receipt', type=Path, required=True)
+    parser.add_argument('--reuse-visual-attempt', type=Path, help='Bind an unchanged previous visual stream for an audio-only revision.')
     args = parser.parse_args()
     project = Path(__file__).resolve().parents[1]
     repo = project.parents[1]
@@ -92,6 +93,25 @@ def main() -> int:
         for field in ['audio_path', 'boundaries_path', 'request_path']:
             sources.add(Path(row[field]))
     inputs = {'format_version': 1, 'kind': 'superman_qiang_render_inputs', 'narration_summary': {'path': str(narration_path), 'sha256': digest(narration_path)}, 'visual_plan': {'path': str(visual_plan_path), 'sha256': digest(visual_plan_path)}, 'visual_root': str(visual_root), 'music': {'path': str(music_path), 'sha256': digest(music_path), 'start_seconds': 0, 'duration_seconds': receipt['duration_seconds']}, 'subtitle_font': {'path': str(font), 'family': 'Microsoft YaHei', 'size': 46}, 'frame': {'width': 1920, 'height': 1080, 'fps': 30}, 'duration_policy': {'minimum_seconds': 90, 'maximum_seconds': 300}, 'source_bindings': [{'path': str(path), 'sha256': digest(path)} for path in sorted(sources)]}
+    reused_sources = []
+    if args.reuse_visual_attempt:
+        previous = args.reuse_visual_attempt.resolve(strict=True)
+        previous_root = previous / 'native-run'
+        previous_run = json.loads((previous_root / 'run-manifest.json').read_bytes())
+        old_input = next(row for row in previous_run['artifacts'] if row['id'] == 'render.inputs')
+        old_inputs = json.loads((previous_root / old_input['path']).read_bytes())
+        assert old_inputs['visual_plan']['sha256'] == digest(visual_plan_path), 'Changed visual plan cannot reuse old video.'
+        layout = json.loads((previous / 'build/subtitle-layout-report.json').read_bytes())
+        assert layout['subtitle_policy'] == 'one-complete-paragraph-per-scene' and layout['cue_count'] == 10
+        for row in narration['scenes']:
+            assert layout['scenes'][row['scene_id']][0]['narration_text'] == row['narration']
+        movie = previous / 'build/deliverables/superman-qiang-player-trailer.mp4'
+        old_movie = next(row for row in previous_run['artifacts'] if row['id'] == 'deliverable.player-trailer')
+        assert digest(movie) == old_movie['sha256'].lower()
+        timeline = previous / 'build/timeline.json'
+        segments = {row['scene_id']: previous / f"build/segments/{index:04d}-{row['scene_id']}.mp4" for index, row in enumerate(narration['scenes'], 1)}
+        inputs['reuse_visuals'] = {'movie': {'path': str(movie), 'sha256': digest(movie)}, 'timeline': {'path': str(timeline), 'sha256': digest(timeline)}, 'segments': {key: {'path': str(path), 'sha256': digest(path)} for key, path in segments.items()}}
+        reused_sources = [('movie', movie), ('timeline', timeline), *segments.items()]
     inputs_path = attempt / 'render-inputs.json'
     inputs_path.write_text(json.dumps(inputs, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     preserve(inputs_path, 'render.inputs', 'render-inputs')
@@ -100,6 +120,8 @@ def main() -> int:
     preserve(narration_path, 'narration.summary', 'narration-summary')
     preserve(visual_plan_path, 'visual.plan', 'visual-plan')
     preserve(framework_path, 'framework.version', 'framework-version')
+    for name, path in reused_sources:
+        preserve(path, 'visual.reuse.' + name, 'previous-visual-source')
     for row in narration['scenes']:
         scene = row['scene_id']
         preserve(Path(row['audio_path']), 'narration.input.' + scene, 'audio')
@@ -111,7 +133,7 @@ def main() -> int:
         if path.suffix == '.mp3' or path.name == 'request.json' or path.name.endswith('.boundaries.jsonl') or path.parent.name == 'overlays' and path.stem in {chapter['id'] for chapter in config_payload['chapters']}:
             continue
         preserve(path, f'source.binding.{index:03d}', 'source-image' if path.suffix.lower() in {'.png', '.jpg'} else 'source-font')
-    for name in ['tools/player_trailer_composer.py', 'tools/compose_player_visuals.py', 'tools/prepare_render_run.py', 'tools/check_player_trailer.py', 'tools/deliver_player_video.py', 'tools/prepare_final_frame_inspection.py', 'tools/retain_render_attempt.py', '02m/director.md', '02m/director.json', 'asset-and-claim-ledger.json', 'production-selection.json', 'visual-revision-20261004.md']:
+    for name in ['tools/player_trailer_composer.py', 'tools/compose_player_visuals.py', 'tools/prepare_render_run.py', 'tools/check_player_trailer.py', 'tools/check_audio_continuity.py', 'tools/deliver_player_video.py', 'tools/prepare_final_frame_inspection.py', 'tools/retain_render_attempt.py', '02m/director.md', '02m/director.json', 'asset-and-claim-ledger.json', 'production-selection.json', 'visual-revision-20261004.md', 'audio-revision-20261004.md']:
         preserve(project / name, 'project.' + name.replace('/', '.').replace('.py', ''), 'project-source')
     for index, path in enumerate(sorted((project / 'images/revision-20261004').glob('*.json'))):
         preserve(path, f'project.imagegen-request-and-receipt.{index:03d}', 'source-imagegen-metadata')
