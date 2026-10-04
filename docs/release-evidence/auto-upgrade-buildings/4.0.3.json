@@ -1,0 +1,207 @@
+{
+  "schema": "ck3.workshop-release-evidence.v1",
+  "product": "auto-upgrade-buildings",
+  "version": "4.0.3",
+  "workshop_item_id": "3800124956",
+  "release_tag": "auto-upgrade-buildings-v4.0.3",
+  "release_commit": "7dc8d31e51d16fda1b1d7aaae231dccf4af9b97b",
+  "published_at_utc": "2026-10-04T20:56:18.893772+00:00",
+  "public_change_notes": {
+    "status": "PUBLISHED_PUBLIC_FULLTEXT_VERIFIED",
+    "product": "auto-upgrade-buildings",
+    "workshop_item_id": "3800124956",
+    "version": "4.0.3",
+    "previous_public_version": "4.0.2",
+    "previous_public_tag": "auto-upgrade-buildings-v4.0.2",
+    "previous_public_commit": "57faadc63e578f419ec4d0d1475264b3b3a86b9e",
+    "target_game_version": "1.20.0.3",
+    "notes_path": "workshop/change_notes/auto-upgrade-buildings/4.0.3.txt",
+    "unicode_characters": 495,
+    "lines": 16,
+    "utf8_bytes": 1128,
+    "sha256": "32ae0d84c9adc347e353d00e4b1c926da259724e29f64c47c96dd44f66d3fbc5",
+    "line_endings": "LF",
+    "final_newline": false,
+    "public_entry_id": "1791147378",
+    "public_fulltext_verified": true,
+    "release_tag": "auto-upgrade-buildings-v4.0.3",
+    "release_commit": "7dc8d31e51d16fda1b1d7aaae231dccf4af9b97b",
+    "published_at_utc": "2026-10-04T20:56:18.893772+00:00"
+  },
+  "build_and_cache": {
+    "schema": "aub.actual-postpublish-local-verification.v1",
+    "completed_at_utc": "2026-10-04T21:11:58.045701+00:00",
+    "item_id": "3800124956",
+    "version": "4.0.3",
+    "tag": "auto-upgrade-buildings-v4.0.3",
+    "release_commit": "7dc8d31e51d16fda1b1d7aaae231dccf4af9b97b",
+    "cache_exact_files": 17,
+    "cache_exact_bytes": 985263,
+    "cache_descriptor_normalization_used": false,
+    "postpublish_rebuild_exact": true,
+    "manifest": {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\aub-workshop-publish-4.0.3-01\\formal\\mod_auto_upgrade_buildings-v4.0.3.manifest.json",
+      "bytes": 3237,
+      "sha256": "2e2e1ebf59217bcfc64a9c988cbf764bff7f3a212e7434603b0a8bca7b439802"
+    },
+    "zip": {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\aub-workshop-publish-4.0.3-01\\formal\\mod_auto_upgrade_buildings-v4.0.3.zip",
+      "bytes": 361494,
+      "sha256": "38745dc26df1f58b37ae76ed138d158ddd87d1c0cabfcb90669dfea21513830d"
+    },
+    "outer_before_exists": false,
+    "outer_after": {
+      "path": "C:\\Users\\Administrator\\Documents\\Paradox Interactive\\Crusader Kings III\\mod\\mod_auto_upgrade_buildings.mod",
+      "bytes": 232,
+      "sha256": "cfc5351daa0cd15656cd2b4a3a1c7834397a180531821cd3a4c7d0f8b1280f56"
+    },
+    "canonical_id_only_in_outer": true,
+    "steam_offline_visually_reviewed": true,
+    "offline_original": {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\aub-workshop-publish-4.0.3-01\\offline-restored-fresh-01\\probe-1\\steam-moved.png",
+      "bytes": 367661,
+      "sha256": "45c16985e0d9c953af82f7368def683b4413507c68668e5c3ebb759776afa0ac"
+    },
+    "files": {
+      "descriptor.mod": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3800124956\\descriptor.mod",
+        "bytes": 115,
+        "sha256": "93293ba409b0e2056f280aa52e2fc3aa5ef9bef6954f5e2b5b942ccfc5d620e4"
+      },
+      "thumbnail.png": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3800124956\\thumbnail.png",
+        "bytes": 96479,
+        "sha256": "5f12562fdb9399c1a028db4bf79308c13ca9566f131ee8b35c2f56c2ddef33fd"
+      },
+      "events/auto_build.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3800124956\\events\\auto_build.txt",
+        "bytes": 3458,
+        "sha256": "da9eee78fd54661690ef1e4489d06db91d58993d6ef3bdeec13cc9dac7345408"
+      },
+      "localization/english/auto_build_l_english.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3800124956\\localization\\english\\auto_build_l_english.yml",
+        "bytes": 6395,
+        "sha256": "f7f786d33c57b858db654c6ad75d79c911efe76b7b0435df3c0b2c977059dd07"
+      },
+      "localization/french/auto_build_l_french.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3800124956\\localization\\french\\auto_build_l_french.yml",
+        "bytes": 8433,
+        "sha256": "2f86fa5f017a53bf25b53f17f17fea31d366e6ee722558da08182e178c24d876"
+      },
+      "localization/german/auto_build_l_german.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3800124956\\localization\\german\\auto_build_l_german.yml",
+        "bytes": 7802,
+        "sha256": "80fd7d646cc05af542a49f48f199c1715705e5ec5a99dea10d78b63604150cb5"
+      },
+      "localization/japanese/auto_build_l_japanese.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3800124956\\localization\\japanese\\auto_build_l_japanese.yml",
+        "bytes": 7729,
+        "sha256": "30e23ecc9b8743682cdf2bd627cefe002a61b7c121290d5aea71b49a57c21827"
+      },
+      "localization/korean/auto_build_l_korean.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3800124956\\localization\\korean\\auto_build_l_korean.yml",
+        "bytes": 7821,
+        "sha256": "55905030bc9a973f9d74ab29720c61379473716493b6a1d59d4f2aa161915961"
+      },
+      "localization/polish/auto_build_l_polish.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3800124956\\localization\\polish\\auto_build_l_polish.yml",
+        "bytes": 7520,
+        "sha256": "e5703005c246f47d5b067422eccd1141d7b3509bb83e1ed18493141019e93908"
+      },
+      "localization/russian/auto_build_l_russian.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3800124956\\localization\\russian\\auto_build_l_russian.yml",
+        "bytes": 11894,
+        "sha256": "0b165be29912a36e28c0e5d02060f1b90e38458ed7a8cea3818b957ad966e8ab"
+      },
+      "localization/simp_chinese/auto_build_l_simp_chinese.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3800124956\\localization\\simp_chinese\\auto_build_l_simp_chinese.yml",
+        "bytes": 5640,
+        "sha256": "ec09c9b88f9bd6542f8ec2c41919291f42508e9b359b1190eda828214339ac0f"
+      },
+      "localization/spanish/auto_build_l_spanish.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3800124956\\localization\\spanish\\auto_build_l_spanish.yml",
+        "bytes": 7422,
+        "sha256": "1a4740e9d5a1ab48a4af20bd2b03ea1040000ac26a90a183b29bc48cf5bba816"
+      },
+      "gfx/interface/illustrations/decisions/decision_auto_upgrade_buildings.dds": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3800124956\\gfx\\interface\\illustrations\\decisions\\decision_auto_upgrade_buildings.dds",
+        "bytes": 242128,
+        "sha256": "b41c0961be1ee9b8046cc2ca439e611c1200664779974cfd9dd6962d7ad688f1"
+      },
+      "common/decisions/build_decision.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3800124956\\common\\decisions\\build_decision.txt",
+        "bytes": 6578,
+        "sha256": "46ad8cc8ed01589ac0612e3446f5a9086c64573805d9dd31c257e361b6fc9347"
+      },
+      "common/on_action/aub_on_actions.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3800124956\\common\\on_action\\aub_on_actions.txt",
+        "bytes": 487,
+        "sha256": "b6722ce6cee9a070b7f8d7bfac56cb953d71ad172a7900e4d2d3a76dc72e5fd9"
+      },
+      "common/scripted_effects/build_scripted_effect.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3800124956\\common\\scripted_effects\\build_scripted_effect.txt",
+        "bytes": 318646,
+        "sha256": "74378ae7aebaddad322fcdeb59eeecdf1435adc1e9e732902255da0eb12c83d4"
+      },
+      "common/scripted_triggers/aub_building_triggers.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3800124956\\common\\scripted_triggers\\aub_building_triggers.txt",
+        "bytes": 246716,
+        "sha256": "08ac74b79ab18b3dea242d77f34277fe8790cec1fbd9c45d4c87ec73b8f53ef5"
+      }
+    }
+  },
+  "native_publish": {
+    "app_id": 1158310,
+    "created_at": "2026-10-04T20:56:12.337271+00:00",
+    "item_id": "3800124956",
+    "legal_agreement_required": false,
+    "operation": "update",
+    "operation_id": "auto-upgrade-buildings-4.0.3-update-20261005-01",
+    "payload_sha256": "cf5780bd3e978ce083e51259c30510cc6dd87a24bed790191773ced547f43571",
+    "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+    "stage": "complete",
+    "steam_result": 1,
+    "submitted_at": "2026-10-04T20:56:18.893772+00:00",
+    "updated_at": "2026-10-04T20:56:18.893825+00:00"
+  },
+  "public_exact": true,
+  "steam_offline_reviewed": true,
+  "screen_released_sequence": 2641,
+  "evidence_files": [
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\aub-workshop-publish-4.0.3-01\\native-publish-receipt.json",
+      "bytes": 528,
+      "sha256": "a957a5171ac7725c27d477c8f28db5ba24a906a4c2a8c8c957b6c7a567823664"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\aub-workshop-publish-4.0.3-01\\native-publish-result-01.json",
+      "bytes": 745,
+      "sha256": "f2f29a0cc6f1875d8846d171a20edf939c252aada2aae7a065a3ab627725adc4"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\aub-workshop-publish-4.0.3-01\\anonymous-readback-01\\verification.json",
+      "bytes": 24083,
+      "sha256": "2b4919ee532bcd550a9636c7a37e9e8afeeb5d0c4fe03b404baee021c0b2f312"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\aub-workshop-publish-4.0.3-01\\native-download-result-01.json",
+      "bytes": 2763,
+      "sha256": "ad90ca2e3d38b4d8fdba3122e6c222c34b7a0dce99433b3ed4838b3dfcb24231"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\aub-workshop-publish-4.0.3-01\\postpublish-local-verification-01.json",
+      "bytes": 6905,
+      "sha256": "847191b5d1e4c34421f102d08083bba712360f06add221400ea3d88a7c85b6de"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\aub-workshop-publish-4.0.3-01\\screen-release-01.json",
+      "bytes": 1290,
+      "sha256": "c8a1fd492fd3f7e40ba13ff01bdec201b4773b868ab7174468275de941baef62"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\aub-workshop-publish-4.0.3-01\\offline-restored-fresh-01\\recovery.json",
+      "bytes": 1481,
+      "sha256": "a088a8cf0e193607fad8eb8d561195a5bd8eac44741191a3aa5a2ef736121c69"
+    }
+  ]
+}

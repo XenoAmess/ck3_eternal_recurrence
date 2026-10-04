@@ -13,6 +13,16 @@
 
 用户 2026-10-05 追加低优先级任务：白绮独立版及琉焰卿原版创建廷臣时均增加具体礼仪选择；**全部 mod 的1.20翻新维护完成之后才启动**。已纳入[产品任务清单](product-technical-roadmap.md)，不扩入当前发布门槛。
 
+### 2026-10-05 自动建造发布增量（提交北京时间 04:56）
+
+自动升级建筑维护版 `4.0.3` 已实际更新到 Workshop `3800124956`，正式 tag `auto-upgrade-buildings-v4.0.3` 与源码 commit `7dc8d31e51d16fda1b1d7aaae231dccf4af9b97b`，上传 `stage=complete / EResult=1`，提交 UTC `2026-10-04T20:56:18.893772+00:00`。匿名回读公开 entry `1791147378` 完整 Notes 与冻结全文精确相等：495字符、16行、1128字节、SHA-256 `32ae0d84c9adc347e353d00e4b1c926da259724e29f64c47c96dd44f66d3fbc5`；公开标题、描述、作者及 AppID/visibility 同时匹配，旧公开 entry 正文保持原样。
+
+当前六图标修复生产包 R0014 已完成真实六图标显示、第三项／第二步／一次 Confirm、四flags `true/false/true/true` 和自然16日384小时，金币243→93、同活玩家和episode保留；harness GREEN并清理关闭。修复前六条VFS空texture在本次实际范围为0，zeroID0；仍有58court＋30formatter，其完整正文与实际无mod基线匹配，次数未声称全等。R0010核心33＋R0011继承3是独立证据，不能写成单场39；原R0010 RED/UNKNOWN、R0012观测RED、R0013 VFS6均保留，当前验收范围通过不改写历史。
+
+发布目录 `C:/workspace/ck3-upgrade-20261005/aub-workshop-publish-4.0.3-01` 绑定原生回执、正式17、匿名全文和下载事实。fresh download 已完成，目标开始前不存在，实际985263字节、timestamp1791147378、subscribed=false；真实缓存17/17文件共985263字节已精确复核，无descriptor归一化；新formal-rebuilt-02无ID重建的manifest/ZIP与上传原件逐字节相同，默认Documents/mod已新建版本4.0.3的canonical outer指向rebuilt、ID只在outer。收据为 `C:/workspace/ck3-upgrade-20261005/aub-workshop-publish-4.0.3-01/postpublish-local-verification-01.json`，SHA-256 `847191b5d1e4c34421f102d08083bba712360f06add221400ea3d88a7c85b6de`。永久changelog及本增量仍须root合入master提交推送。Steam已恢复离线，fresh-window原图已直接审阅“离线模式”。当前确认实际公开的产品为白绮与自动建造；两产品实机／公开上传／完整Notes／缓存／离线门禁已取得，本次永久文档提交推送完成后本轮正式产品收口为2/10（20%）；不能提前把尚未推送的文档记为已完成。
+
+见[自动建造专题](ck3-1.20.0.3-auto-upgrade-buildings-compatibility-2026-10-05.md)与[4.0.3 发布记录](release-changelogs/auto-upgrade-buildings/4.0.3.md)。下面时点的“自动建造待上传”和UNKNOWN表述保留为历史，优先读取本增量和当前专题的范围。其他已授权mod继续并行，天朝361最后；廷臣具体礼仪选择仍等全部1.20翻新维护之后。
+
 ### 2026-10-05 并行接续增量（北京时间 02:36）
 
 前台继续 P1 自动建造；白绮发布已经闭合，无需重跑。当前会话允许 root 加 64 个子任务，按独立工作分配，并保持游戏、桌面与 Steam 单一执行者。其他八个待维护产品的源码候选、完整更新说明及必要构建已并行准备；候选与发布草稿不能记为正式上线。

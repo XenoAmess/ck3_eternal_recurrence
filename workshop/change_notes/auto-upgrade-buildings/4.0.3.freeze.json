@@ -1,5 +1,5 @@
 {
-  "status": "FROZEN_CANDIDATE_TEXT_NOT_PUBLISHED",
+  "status": "PUBLISHED_PUBLIC_FULLTEXT_VERIFIED",
   "product": "auto-upgrade-buildings",
   "workshop_item_id": "3800124956",
   "version": "4.0.3",
@@ -14,6 +14,9 @@
   "sha256": "32ae0d84c9adc347e353d00e4b1c926da259724e29f64c47c96dd44f66d3fbc5",
   "line_endings": "LF",
   "final_newline": false,
-  "public_entry_id": null,
-  "public_fulltext_verified": false
+  "public_entry_id": "1791147378",
+  "public_fulltext_verified": true,
+  "release_tag": "auto-upgrade-buildings-v4.0.3",
+  "release_commit": "7dc8d31e51d16fda1b1d7aaae231dccf4af9b97b",
+  "published_at_utc": "2026-10-04T20:56:18.893772+00:00"
 }
