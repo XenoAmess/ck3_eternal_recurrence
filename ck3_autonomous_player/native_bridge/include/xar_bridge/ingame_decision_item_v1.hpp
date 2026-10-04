@@ -25,6 +25,9 @@ struct IngameDecisionItemResultV1 {
   bool detail_definition_available=false, detail_definition_matches_target=false;
   bool detail_actor_binding_verified=false;
   std::string decision_key, detail_decision_key, unavailable_reason;
+  // Failure-only diagnostics: never used as ownership, frame or action proof.
+  std::string model_read_pass, model_failed_stage;
+  std::uintptr_t model_observed_pointer=0, model_expected_pointer=0;
 };
 struct IngameDecisionItemContextV1 {
   const game::GameAdapter *game=nullptr;

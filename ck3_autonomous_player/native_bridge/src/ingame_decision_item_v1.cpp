@@ -84,31 +84,70 @@ struct Pass {
   std::int32_t detail_actor_reference_key=-1;
   bool operator==(const Pass &) const=default;
 };
-bool ModelPass(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *list_root,Pass &p) {
+// Record only the first failed original guard. No diagnostic value admits an object.
+bool ModelFailure(IngameDecisionItemResultV1 *d,const char *stage,
+    const void *observed=nullptr,const void *expected=nullptr) {
+  if(d&&d->model_failed_stage.empty()){
+    d->model_failed_stage=stage;
+    d->model_observed_pointer=reinterpret_cast<std::uintptr_t>(observed);
+    d->model_expected_pointer=reinterpret_cast<std::uintptr_t>(expected);
+  }return false;
+}
+bool ModelTypeFailure(IngameDecisionItemResultV1 *d,const char *stage,
+    const void *object,std::uintptr_t expected_vtable) {
+  // A failed Typed guard stays failed. The additional read is diagnostic only.
+  const void *observed=nullptr;if(d&&!Read(object,0,observed))observed=nullptr;
+  return ModelFailure(d,stage,observed,reinterpret_cast<const void *>(expected_vtable));
+}
+bool ModelPass(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *list_root,Pass &p,
+    IngameDecisionItemResultV1 *d=nullptr) {
   const auto base=env.module_base;const void *back=nullptr;
-  if(!Read(env.gui_global_slot,0,p.application)||!Typed(p.application,base,0x449BDA8,0x5667F88)||
-     !Read(p.application,0x78,p.logical)||!Typed(p.logical,base,0x44D6048,0x55072C0)||
-     !Read(p.logical,0x18,back)||back!=p.application||!Read(p.logical,0x10,p.gfx)||
-     !Typed(p.gfx,base,0x44BC408,0x5514460)||!Read(p.gfx,0x90,back)||back!=p.application||
-     !Read(p.gfx,0x20,back)||back!=p.logical||!Read(p.gfx,0x88,p.handler)||
-     !Typed(p.handler,base,0x44BA890,0x5694B50)||!Read(p.handler,0x1B0,p.list)||
-     !Typed(p.list,base,0x455CC80,0x5794DB0)||!Read(p.list,0x98,back)||back!=p.logical||
-     !Read(p.list,0xA0,back)||back!=p.handler||!Read(p.list,0x60,p.list_root)||p.list_root!=list_root||
-     !Read(p.handler,0x1B8,p.detail)||!Typed(p.detail,base,0x455D4E8,0x5795080)||
-     !Read(p.detail,0xA0,back)||back!=p.handler||!Read(p.detail,0x60,p.detail_root)||
-      !Read(p.detail,0xD0,p.selected_definition)||!Read(p.detail,0xD8,p.detail_actor_reference_key)||
-      !VectorAt(p.list,0x258,kMaximumGroups,p.groups))return false;
-  if(p.selected_definition&&!DefinitionKey(p.selected_definition,base,p.selected_key))return false;
+  if(!Read(env.gui_global_slot,0,p.application))return ModelFailure(d,"application_read");
+  if(!Typed(p.application,base,0x449BDA8,0x5667F88))return ModelTypeFailure(d,"application_type",p.application,base+0x449BDA8);
+  if(!Read(p.application,0x78,p.logical))return ModelFailure(d,"logical_read");
+  if(!Typed(p.logical,base,0x44D6048,0x55072C0))return ModelTypeFailure(d,"logical_type",p.logical,base+0x44D6048);
+  if(!Read(p.logical,0x18,back))return ModelFailure(d,"logical_application_backref_read");
+  if(back!=p.application)return ModelFailure(d,"logical_application_backref",back,p.application);
+  if(!Read(p.logical,0x10,p.gfx))return ModelFailure(d,"gfx_read");
+  if(!Typed(p.gfx,base,0x44BC408,0x5514460))return ModelTypeFailure(d,"gfx_type",p.gfx,base+0x44BC408);
+  if(!Read(p.gfx,0x90,back))return ModelFailure(d,"gfx_application_backref_read");
+  if(back!=p.application)return ModelFailure(d,"gfx_application_backref",back,p.application);
+  if(!Read(p.gfx,0x20,back))return ModelFailure(d,"gfx_logical_backref_read");
+  if(back!=p.logical)return ModelFailure(d,"gfx_logical_backref",back,p.logical);
+  if(!Read(p.gfx,0x88,p.handler))return ModelFailure(d,"handler_read");
+  if(!Typed(p.handler,base,0x44BA890,0x5694B50))return ModelTypeFailure(d,"handler_type",p.handler,base+0x44BA890);
+  if(!Read(p.handler,0x1B0,p.list))return ModelFailure(d,"list_read");
+  if(!Typed(p.list,base,0x455CC80,0x5794DB0))return ModelTypeFailure(d,"list_type",p.list,base+0x455CC80);
+  if(!Read(p.list,0x98,back))return ModelFailure(d,"list_logical_backref_read");
+  if(back!=p.logical)return ModelFailure(d,"list_logical_backref",back,p.logical);
+  if(!Read(p.list,0xA0,back))return ModelFailure(d,"list_handler_backref_read");
+  if(back!=p.handler)return ModelFailure(d,"list_handler_backref",back,p.handler);
+  if(!Read(p.list,0x60,p.list_root))return ModelFailure(d,"list_root_read");
+  if(p.list_root!=list_root)return ModelFailure(d,"list_root_binding",p.list_root,list_root);
+  if(!Read(p.handler,0x1B8,p.detail))return ModelFailure(d,"detail_read");
+  if(!Typed(p.detail,base,0x455D4E8,0x5795080))return ModelTypeFailure(d,"detail_type",p.detail,base+0x455D4E8);
+  if(!Read(p.detail,0xA0,back))return ModelFailure(d,"detail_handler_backref_read");
+  if(back!=p.handler)return ModelFailure(d,"detail_handler_backref",back,p.handler);
+  if(!Read(p.detail,0x60,p.detail_root))return ModelFailure(d,"detail_root_read");
+  if(!Read(p.detail,0xD0,p.selected_definition))return ModelFailure(d,"selected_definition_read");
+  if(!Read(p.detail,0xD8,p.detail_actor_reference_key))return ModelFailure(d,"detail_actor_reference_read");
+  if(!VectorAt(p.list,0x258,kMaximumGroups,p.groups))return ModelFailure(d,"groups_vector_guard");
+  if(p.selected_definition&&!DefinitionKey(p.selected_definition,base,p.selected_key))return ModelTypeFailure(d,"selected_definition_key_guard",p.selected_definition,base+0x48BD140);
   for(std::size_t n=0;n<p.groups.count;++n){
     const void *group=At(p.groups.data,n*0x20),*definition=nullptr;Vector rows{};
-    if(!Read(group,0,definition)||!definition||!VectorAt(group,8,kMaximumRows,rows)||
-       p.rows.size()+rows.count>kMaximumRows)return false;
+    if(!Read(group,0,definition))return ModelFailure(d,"group_definition_read");
+    if(!definition)return ModelFailure(d,"group_definition_null");
+    if(!VectorAt(group,8,kMaximumRows,rows))return ModelFailure(d,"group_rows_vector_guard");
+    if(p.rows.size()+rows.count>kMaximumRows)return ModelFailure(d,"total_rows_bound");
     p.group_definitions.push_back(definition);p.row_vectors.push_back(rows);
     for(std::size_t i=0;i<rows.count;++i){
       const void *row=At(rows.data,i*0x20);Item item{};item.address=row;
-      if(!Read(row,0,item.definition)||!Read(row,8,item.scope_reference)||
-         !Read(row,0x10,item.context_reference_key)||!Read(row,0x18,item.owner)||item.owner!=p.list||
-         !DefinitionKey(item.definition,base,item.key))return false;
+      if(!Read(row,0,item.definition))return ModelFailure(d,"row_definition_read");
+      if(!Read(row,8,item.scope_reference))return ModelFailure(d,"row_scope_reference_read");
+      if(!Read(row,0x10,item.context_reference_key))return ModelFailure(d,"row_context_reference_read");
+      if(!Read(row,0x18,item.owner))return ModelFailure(d,"row_owner_read");
+      if(item.owner!=p.list)return ModelFailure(d,"row_owner_binding",item.owner,p.list);
+      if(!DefinitionKey(item.definition,base,item.key))return ModelTypeFailure(d,"row_definition_key_guard",item.definition,base+0x48BD140);
       p.rows.push_back(std::move(item));
     }
   }
@@ -296,8 +335,12 @@ bool ExecuteIngameDecisionItemQueryV1(IngameDecisionItemContextV1 &query,
     if(!Root(env,"decisions_view",root,out.decisions_root_visible,out.decisions_tree_complete)||!root||!out.decisions_root_visible)
       return reject("actual_decisions_root_hidden_or_census_incomplete");
     Pass first{},second{};
-    if(!ModelPass(env,root,first)||!ModelPass(env,root,second)||first!=second)
-      return reject("actual_keyed_decision_model_or_owner_unstable");
+    out.model_read_pass="first";
+    if(!ModelPass(env,root,first,&out))return reject("actual_keyed_decision_model_or_owner_unstable");
+    out.model_read_pass="second";
+    if(!ModelPass(env,root,second,&out))return reject("actual_keyed_decision_model_or_owner_unstable");
+    if(first!=second){out.model_read_pass="first_second_compare";ModelFailure(&out,"stable_model_compare");
+      return reject("actual_keyed_decision_model_or_owner_unstable");}
     out.group_count=first.groups.count;out.row_count=first.rows.size();out.row_owner_verified=true;
     for(const auto &row:first.rows)if(row.key==query.requested_key){
       ++out.matching_row_count;out.decision_key=row.key;
@@ -314,8 +357,11 @@ bool ExecuteIngameDecisionItemQueryV1(IngameDecisionItemContextV1 &query,
     void *last_context=nullptr,*last_owner=nullptr;game::Snapshot after{};Pass last{};
     out.gui_owner_binding_verified=ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,last_context,last_owner)&&last_context==context&&last_owner==owner;
     out.frame_verified=game::ReadSnapshot(*query.game,after)&&after==before;
-    if(!out.gui_owner_binding_verified||!out.frame_verified||!ModelPass(env,root,last)||last!=first)
-      return reject("keyed_query_completion_binding_changed");
+    if(!out.gui_owner_binding_verified||!out.frame_verified)return reject("keyed_query_completion_binding_changed");
+    out.model_read_pass="completion";
+    if(!ModelPass(env,root,last,&out))return reject("keyed_query_completion_binding_changed");
+    if(last!=first){out.model_read_pass="first_completion_compare";ModelFailure(&out,"stable_model_compare");
+      return reject("keyed_query_completion_binding_changed");}
     out.available=true;return true;
   }catch(...){out.available=false;out.unavailable_reason="native_keyed_reader_exception";return true;}
 }
@@ -338,6 +384,10 @@ std::string SerializeIngameDecisionItemV1(const IngameDecisionItemResultV1 &v) {
   boolean("detail_actor_binding_verified",v.detail_actor_binding_verified);
   // Scope/context scalar is observed but deliberately not cast to player identity or action qualification.
   boolean("row_widget_datacontext_verified",false);boolean("action_qualified",false);
+  if(!v.model_failed_stage.empty()){
+    text("model_read_pass",v.model_read_pass);text("model_failed_stage",v.model_failed_stage);
+    number("model_observed_pointer",v.model_observed_pointer);number("model_expected_pointer",v.model_expected_pointer);
+  }
   text("decision_key",v.decision_key);text("detail_decision_key",v.detail_decision_key);text("unavailable_reason",v.unavailable_reason);return s+'}';
 }
 bool ExecuteIngameDecisionItemActionV1(IngameDecisionItemActionContextV1 &query,
