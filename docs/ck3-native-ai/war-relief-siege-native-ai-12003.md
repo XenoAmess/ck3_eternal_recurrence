@@ -223,3 +223,12 @@ Root-confirmed same-frame cutoff is raw53249664/native134/public122, R26/g57/sou
 Capital2619 is occupation_observable=true/is_occupied=false/occupier=null, yet siege_observable=true with enemySiege201326609 still active: besieger268435747/player=false, progress71177/Q100000=71.177%, work23132700/32500000/remaining9367300 Q100000, besieging strength0, days_left=null, fort3/garrison540, breach1/walls_breached=true/CanStart=false. Strength0 and unoccupied status do not establish relief while the enemy siege remains nonnull; there is no current ETA, combat-end or war-win claim. The current active-war set contains only129(score-22), without an inferred settlement type. Historical siege/combat estimates remain unchanged; later4392 observations are excluded. All30 days are already Root credited; this consumer adds0 days/actions/queries.
 
 Source: [Root once-consumed day30 critical](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/capital2619-v52/relief64-consumption/DAY30-TERMINAL-CRITICAL.json), SHA-256 `adb4d32a6f55ed4122ee645eeb60bb99765f0797660561aac980f870fc51a38d`; only Root's named fields are used here, with no cache/raw read.
+
+
+### 2026-10-04：当前首都2619真实解围闭环
+
+R26/g57/source1791d84/PID7388 的独立战后查询在 raw53249808/native166/public2/paused=true 确认：capital2619/holding2143 的 occupation_observable=true、is_occupied=false、occupier=null；siege_observable=true、active_siege=null，fort3/garrison540/besieging_strength0。主军83886367在2619恢复 regular、空路线、无combat，仍属于同一 Robert29829 普通 episode。
+
+此前201326609仍 active 的抵达帧保留为历史；本次真实 no-siege 后态与已发表的防守方战斗胜利共同闭合有限 **production-live capital-relief loop**。首都此前也未被占领，因此这是解围，不增加县收复、抵达或战斗终局信用；不据旧besieger缺少scope判断其被消灭。当前累计4395/恢复1242/10月4日370，10月3日冻结777；独立查询和文档消费新增日0，未证明全战争胜利。
+
+唯一已消费证据：[sealed relief receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/siege-efficiency-inputs/current-capital-2619-query/actual-after-battle1728053248-v52-01/ROOT-DELIVERY.json)，SHA-256 `42deeec47f3737de5b79840cff59b5b1493399c1a63bd1c0d1051855cca53f25`；原始查询由专题owner唯一消费，本增量只复用其缓存字段。
