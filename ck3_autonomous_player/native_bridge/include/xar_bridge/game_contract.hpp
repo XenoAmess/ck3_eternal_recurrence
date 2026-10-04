@@ -1791,6 +1791,7 @@ struct BattleControlParticipantHardSnapshot {
   std::int32_t row_index = -1;
   std::int32_t participant_character_id = -1;
   std::int64_t hard_casualties_raw = 0;
+  std::optional<std::int32_t> resource_share_weight_signed32;
 
   friend bool operator==(const BattleControlParticipantHardSnapshot &,
                          const BattleControlParticipantHardSnapshot &) = default;

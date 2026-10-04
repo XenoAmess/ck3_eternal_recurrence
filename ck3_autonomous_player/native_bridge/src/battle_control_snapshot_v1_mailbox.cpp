@@ -952,6 +952,14 @@ bool AppendSide(std::string &output,
     if (!AppendNumber(output, row.hard_casualties_raw)) {
       return false;
     }
+    output += ",\"resource_share_weight_signed32\":";
+    if (row.resource_share_weight_signed32.has_value()) {
+      if (!AppendNumber(output, *row.resource_share_weight_signed32)) {
+        return false;
+      }
+    } else {
+      output += "null";
+    }
     output.push_back('}');
   }
   output += "],\"participant_hard_total_raw\":";

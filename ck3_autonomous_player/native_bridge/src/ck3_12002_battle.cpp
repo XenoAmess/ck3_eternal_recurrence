@@ -279,6 +279,8 @@ bool Side(const BattleBindings &b, const void *combat, std::size_t off,
     game::BattleControlParticipantHardSnapshot r{
         i, At<std::int32_t>(data, i * 0x18ULL + 8),
         At<std::int64_t>(data, i * 0x18ULL + 0x10)};
+    r.resource_share_weight_signed32 =
+        At<std::int32_t>(data, i * 0x18ULL + 0x0C);
     if (!Resolve(b.character_storage_slot, r.participant_character_id, 0x18) ||
         r.hard_casualties_raw < 0 ||
         !Add(out.participant_hard_total_raw, r.hard_casualties_raw))

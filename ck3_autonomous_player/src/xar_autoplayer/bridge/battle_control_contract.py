@@ -2067,29 +2067,38 @@ def _normalize_entries(
 
 def _normalize_participant_hard_ledger(
     value: object, *, name: str
-) -> list[dict[str, int]]:
+) -> list[dict[str, int | None]]:
     if not isinstance(value, list):
         raise ValueError(f"{name}.participant_hard_ledger must be a list")
-    result: list[dict[str, int]] = []
+    result: list[dict[str, int | None]] = []
     for index, row in enumerate(value):
         row_name = f"{name}.participant_hard_ledger[{index}]"
-        if not isinstance(row, dict) or set(row) != _PARTICIPANT_HARD_KEYS:
+        if not isinstance(row, dict) or set(row) not in (
+            _PARTICIPANT_HARD_KEYS,
+            _PARTICIPANT_HARD_KEYS | {"resource_share_weight_signed32"},
+        ):
             raise ValueError(f"{row_name} has a malformed schema")
         if row.get("row_index") != index:
             raise ValueError(f"{row_name} native row order disagrees")
-        result.append(
-            {
-                "row_index": index,
-                "participant_character_id": _positive_int32(
-                    row.get("participant_character_id"),
-                    f"{row_name}.participant_character_id",
-                ),
-                "hard_casualties_raw": _signed_int64(
-                    row.get("hard_casualties_raw"),
-                    f"{row_name}.hard_casualties_raw",
-                ),
-            }
-        )
+        normalized: dict[str, int | None] = {
+            "row_index": index,
+            "participant_character_id": _positive_int32(
+                row.get("participant_character_id"),
+                f"{row_name}.participant_character_id",
+            ),
+            "hard_casualties_raw": _signed_int64(
+                row.get("hard_casualties_raw"),
+                f"{row_name}.hard_casualties_raw",
+            ),
+        }
+        if "resource_share_weight_signed32" in row:
+            weight = row["resource_share_weight_signed32"]
+            normalized["resource_share_weight_signed32"] = (
+                None
+                if weight is None
+                else _signed_int32(weight, f"{row_name}.resource_share_weight_signed32")
+            )
+        result.append(normalized)
     return result
 
 
