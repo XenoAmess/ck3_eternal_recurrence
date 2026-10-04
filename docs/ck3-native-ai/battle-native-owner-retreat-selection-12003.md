@@ -39,3 +39,33 @@ The narrow observation entry stays in existing native command history/queue and 
 The closed source branches and existing consumer interface are ready as a research handoff. True selection remains a typed native source gap; this packet adds no gameplay restriction and leaves Root's actual campaign independent. No selected-action adapter or stock threshold is inserted, and no complete Monte Carlo, battle win odds or native retreat intent is claimed.
 
 Evidence: [native dispatch and owner application](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-native-owner-retreat-v61/native-dispatch/ROOT-DELIVERY.json), [native decision/legality source boundary](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-native-owner-retreat-v61/native-criteria/ROOT-DELIVERY.json), and [exclusive g38 consumer boundary](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-native-owner-retreat-v61/topic-report/G38-CONSUMER-BOUNDARY-MAP.json). The source-only daily/week fields are [Oct4/W40](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-native-owner-retreat-v61/topic-report/OCT4-W40-FIELDS.json). Native instruction/span pins remain owned by the two source lanes; this topic consumes their sealed summaries and does not recapture those caches.
+
+## Increment: exact .3 activity recall selection, 2026-10-04
+
+The v62 increment closes a named stock AI branch that can recall an already fighting army. New bounded1A188B0 caller evidence identifies1A23BD0, whose owner-derived target, mode0, native24AC1B0 permission and path checks can produce a CMoveUnitCommand. It has no ordinary active-combat early exit. The generic1A188B0 helper itself only clones the command through virtual+40 and submits to37EBC40; its use alone does not identify a retreat decision.
+
+WHEN is the accepted daily command post-stage2988FD0→2989031→1A31EE0 actual AI pass, reusing the sealed calendar edge. The manager enumerates actual character contexts from base+90/+9C and+D8/+E4. Synchronous paths and native async callback tables45AC3E8/45AC2F8 reach19E80B0/19E8420 and the two activity wrappers1A7BDF0/1A7E370. The actor integer obtained from a character-keyed hash map is retained raw; it is not a calendar day.
+
+WHO and WHY are source-backed: an admitted outer context calls its first mission planner; on rejection, the wrapper enumerates full public CUnit IDs in the character object's+278 list, resolves each unit's+178 CArmy, and calls1A23BD0 when the relevant CArmy byte+1D4 or+1EC is nonzero. The inner continuations still handle active Combat before their ordinary fallback. A sufficient rejection is independently readable: Character+1C0 object+318 native-list count at+324 being nonzero makes both first planners return false before battle metrics. The two Army bytes and that native list remain raw fields until their business identities/writers are bound. This branch does not compare retained battle loss, strength, advantage or generic casualty cost.
+
+```mermaid
+flowchart TD
+  D[Accepted daily AI post] --> C[Actual character contexts and raw prefix]
+  C --> P[First mission planner]
+  N[Native object list count nonzero] -->|sufficient early rejection| F[Planner false]
+  P --> F
+  F --> U[Character full CUnit list to CArmy]
+  U --> B{Relevant raw1D4 or1EC nonzero?}
+  B -->|yes| H[Native owner-title target]
+  H --> L[mode0 permission and path checks]
+  L --> M[Move command submission]
+  C -. current context observation not yet live .-> O[Readonly input leaf]
+```
+
+TARGET is the actual28B1CD0/28B2220 accessor path: native TitleStorage slot5D1DAF8, TitleID field+10, optional source fallback slot5D1DAE0, and raw-title-type2 first-child chains reach Title+338 Province. This must not be replaced with an arbitrary fixed capital or terrain ranking. Command base+0 is primary vtable476B168 and base+18 is secondary476B138. Submission EDX7, actual mode+2C, route endpoint+28 and desired owner target are separate values; none should be labelled interchangeably.
+
+The E outer-prefix helper1A781A0 is now separately source-bound to actual context flags/level/land, owner rule bit41 and the current player-interface bit8 path. Current observed membership/prefix remains a separate reader dependency. Reading current raw inputs does not establish a submitted natural command or a future `action_selected=false`. The existing `native_command_history` is the local Python driver's primitive transcript, not a natural AI queue census. General battle-metric retreat selection, activity-byte writers and state+C4/C5 writers remain named subsequent source work; they do not erase this closed activity-recall branch.
+
+Minimal readonly publication is now under implementation on the existing MCP surface: actual Unit/Army/owner identities, raw activity bytes, native list count, source-title-derived target and only source-bound current prefix fields. A shared unit-list attachment API supports regular-army strength observations as well as current BattleTransition observations; the transition/control role limits remain explicit. Current-input readiness, natural event capture and full native selection readiness are separate. No planner or submit method is invoked by a readonly query. This source-topic commit claims source closure only; production fixture results and any later live reader validation belong to their independent receipts.
+
+Evidence: [new producer/caller tree](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-native-owner-retreat-v62/producer-callers/ROOT-DELIVERY.json), [new predicates and exact input fields](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-native-owner-retreat-v62/active-criteria/ROOT-DELIVERY.json), and [Title binding / E prefix addendum](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-native-owner-retreat-v62/active-criteria-binding-addendum/ROOT-DELIVERY.json). New targeted slices and cached .3 source reused the existing exact EXE identity; no whole EXE hash, repeated old checks, game, SDK, window or saved-day action was performed. The old v61 packet remains frozen.
