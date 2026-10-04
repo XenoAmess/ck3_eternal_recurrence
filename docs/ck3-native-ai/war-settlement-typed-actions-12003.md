@@ -120,3 +120,15 @@ Root SDK98908 的真实请求在 service 层报 `selected backend does not imple
 唯一 registered MCP → actual service/driver 的 `python -O` focused attempt01 首次 GREEN（optimize1，3 phases / 61 explicit checks）：旧版同错误且 native factory callback 0；修复版使用同一真实已发布 CB41 DTO 与生产 query cache，发出一次 `offer-white-peace-129` callback，结果保持 ACK `submitted_pending` 和 null reply；单独 final native predicate false 场景保留拒绝。RESULT SHA-256 `a019a9d263439d45b9efc98c1c711cb8a6b5fd986ea90c8cc36cd6baaa8386dd`，修复 driver SHA-256 `3482c458c4bd08853600aa6e3feb9bf56e12c520be30fec8a1d0063a09dd7c40`；artifact 位于 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-settlement-typed-action/war129-score40-wp-r27/actual-service-fix/`。
 
 本增量生产代码状态为 static-ready，等待真实白和请求及独立后态/回答观测；正报价、fixture callback 和 ACK 均不提供 accepted/applied credit。既有 War503 强制要求的有限实机 loop 范围保留，旧 War167 的终止类型仍 unknown。本包基线累计 4444 天 / resume1291 / Oct4+419，query/fix/fixture 额外 0 天。
+
+### R28：CB41 一次提案后的有限实机结算循环
+
+SDK7631 在新 Python `b5add463` 与已有 g59 原生 DLL 上，同一会话 freshquery → 一次 `ck3_offer_white_peace(129)` → 独立读回 GREEN；raw53250984/native3/public2，实际 `submitted_pending`、recipient decision/would-accept=null，War129 仍在、whole+40。此前 SDK98908 pre-native RED 保留；这里补充真实提交后的结果，不改变当时 fixture/static-ready 记录。
+
+三个普通回复日后，最后 present 为 raw53251032/native15/public6，首 absent 与独立 final 均为 raw53251056/native17/public8、`active_wars=[]`；末次正常 SAVE h7044/95001476B/SHA `ee5e3c91755f00294c8b461c2eaf5313dd40df778bb35dd3e9255caff44b7f44`。
+
+状态提升为 **production-live loop，限定一次提案→自然推进→独立精确 WarID 消失→正常保存**；最终 AI 答复、结束类型与 truce 未发布，absence/ACK/正 quote/null 互动均不冒充 direct accepted。
+
+SDK19250 两日48h均实际正常保存；helper 历史 RED 来自 war 消失后仍调用占领查询，service 报 `war occupation query requires one current full WarID participant row`，没有 native structured 结果。`complete_saved_days=1` 与实际 saved calendar2/bounded_success2 并存，不抹去第二日；当时累计4447/resume1294/Oct4+422。
+
+末帧我军83886367 regular@2669；玩家本两日首末 gold655.61127/prestige2832.3818/piety378.26250 相同，未推对手虔诚或物理清理。14个 leaf/day-result 由8线程各once消费，未重读 TOP；有限循环与失败证据见外置 `war-settlement-typed-action/war129-score40-wp-r27/actual-r28-consumption/reply-days02-03/ROOT-DELIVERY.json`（SHA `8528c3d11d766463f9cd7c1574f47f174efbb3efca99814742eb39a31d1ff6e6`）。后续继续既有军队与独立材料读回，不重发白和。
