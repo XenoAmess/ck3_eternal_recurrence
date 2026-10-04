@@ -970,6 +970,64 @@ bool AppendSide(std::string &output,
   return true;
 }
 
+bool AppendCurrentLossInputsV1(
+    std::string &output,
+    const std::optional<game::BattleControlCurrentLossInputsV1> &inputs) {
+  if (!inputs.has_value()) {
+    output += "null";
+    return true;
+  }
+  const auto &value = *inputs;
+  output += "{\"scale\":";
+  if (!AppendNumber(output, value.scale))
+    return false;
+  output += ",\"source_combat_id\":";
+  if (!AppendNumber(output, value.source_combat_id))
+    return false;
+  output += ",\"source_target_province_id\":";
+  if (!AppendNumber(output, value.source_target_province_id))
+    return false;
+  output += ",\"stored_advantage_damage_factor_raw\":";
+  if (!AppendNumber(output, value.stored_advantage_damage_factor_raw))
+    return false;
+  output += ",\"runtime_damage_scaling_raw\":";
+  if (!AppendNumber(output, value.runtime_damage_scaling_raw))
+    return false;
+  output += ",\"runtime_main_hard_conversion_raw\":";
+  if (!AppendNumber(output, value.runtime_main_hard_conversion_raw))
+    return false;
+  output += ",\"runtime_pursuit_hard_conversion_raw\":";
+  if (!AppendNumber(output, value.runtime_pursuit_hard_conversion_raw))
+    return false;
+  output += ",\"province_has_holding\":";
+  output += value.province_has_holding ? "true" : "false";
+  output += ",\"province_winter_hard_conversion_modifier_raw\":";
+  if (!AppendNumber(output,
+                    value.province_winter_hard_conversion_modifier_raw))
+    return false;
+  output += ",\"sides\":[";
+  for (std::size_t index = 0; index < value.sides.size(); ++index) {
+    if (index != 0)
+      output.push_back(',');
+    const auto &row = value.sides[index];
+    output += "{\"side_index\":";
+    if (!AppendNumber(output, row.side_index))
+      return false;
+    output += ",\"outgoing_advantage_factor_raw\":";
+    if (!AppendNumber(output, row.outgoing_advantage_factor_raw))
+      return false;
+    output += ",\"own_hard_conversion_modifier_raw\":";
+    if (!AppendNumber(output, row.own_hard_conversion_modifier_raw))
+      return false;
+    output += ",\"opposing_hard_conversion_modifier_raw\":";
+    if (!AppendNumber(output, row.opposing_hard_conversion_modifier_raw))
+      return false;
+    output.push_back('}');
+  }
+  output += "]}";
+  return true;
+}
+
 bool AppendActualHardSides(
     std::string &output,
     const game::BattleControlActualHardSides &hard) {
@@ -1693,6 +1751,10 @@ std::string SerializeBattleControlSnapshotV1(
   }
   output += ",\"defender\":";
   if (!AppendSide(output, snapshot.defender)) {
+    return {};
+  }
+  output += ",\"current_loss_inputs_v1\":";
+  if (!AppendCurrentLossInputsV1(output, snapshot.current_loss_inputs_v1)) {
     return {};
   }
   if (snapshot.actual_hard_casualty_sides.attempted) {

@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_routes.hpp"
 #include "xar_bridge/ck3_12002_combat.hpp"
+#include "xar_bridge/ck3_12002_phase_advantage.hpp"
 #include "xar_bridge/game_contract.hpp"
 
 namespace xar::ck3_12002 {
@@ -13,6 +14,11 @@ inline constexpr std::uintptr_t kBattleResultFallbackRva = 0x5D1FFD8;
 inline constexpr std::uintptr_t kBattleSideStrengthRva = 0x2651100;
 inline constexpr std::uintptr_t kBattleEntryStrengthRva = 0x2657B50;
 inline constexpr std::uintptr_t kBattleCanRetreatRva = 0x258AA10;
+inline constexpr std::uintptr_t kBattleDamageScalingRva = 0x5C69B90;
+inline constexpr std::uintptr_t kBattleMainHardConversionRva = 0x5C69BA0;
+inline constexpr std::uintptr_t kBattlePursuitHardConversionRva = 0x5C69BB0;
+inline constexpr std::uintptr_t kBattleLossSideModifierRva = 0x264DD20;
+inline constexpr std::size_t kBattleStoredAdvantageDamageFactorOffset = 0x6D8;
 inline constexpr std::uintptr_t kBattleRetreatRuleRva = 0x28C2E10;
 inline constexpr std::uintptr_t kBattleMinimumRetreatDaysRva = 0x5C699B4;
 inline constexpr std::size_t kBattleMainPhaseTypeFlag = 0x98A;
@@ -31,6 +37,9 @@ inline constexpr std::size_t kBattleSubunitTargetOffset = 0x40;
 inline constexpr std::size_t kBattleSubunitFlagsOffset = 0x48;
 inline constexpr std::size_t kBattleSubunitCrossValidityOffset = 0x54;
 inline constexpr std::size_t kBattleSubunitCrossPowerOffset = 0x30;
+
+using ReadBattleSideModifier = std::int64_t *(*)(
+    std::int64_t *output, void *combat_side, std::uint16_t modifier_enum);
 
 struct BattleBindings {
   bool enabled = false;
@@ -61,6 +70,13 @@ struct BattleBindings {
   // Independently nullable leaf: existing control observations remain useful
   // when selected next-roll inputs were not bound in a fixture or build.
   CombatBindings commander_roll_context{};
+  // Current read-only loss operands; independent of the existing control gate.
+  const std::int64_t *damage_scaling = nullptr;
+  const std::int64_t *main_hard_conversion = nullptr;
+  const std::int64_t *pursuit_hard_conversion = nullptr;
+  ReadBattleSideModifier read_loss_side_modifier = nullptr;
+  bool (*province_has_holding)(void *) = nullptr;
+  ReadAdvantageModifierValue read_loss_province_modifier = nullptr;
 };
 
 BattleBindings BindBattleImage(std::uintptr_t image_base,

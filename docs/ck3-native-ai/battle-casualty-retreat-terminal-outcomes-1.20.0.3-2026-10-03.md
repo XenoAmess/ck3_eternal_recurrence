@@ -323,3 +323,32 @@ top character_observations=null因未请求额外character_ids，不否认prior�
 normalh6844、save94141190B、Root relay SHA675a…20706；total4395/resume1242/Oct4+370。
 本报告新增游戏日/动作/查询/测试均0；text-only两个owned专题与Oct4/W40字段由Root合并commit/push，
 observer/central/source/settlement保留其各自owner。
+
+## Oct4 v55 current effective-loss operands on the existing battle MCP
+
+The exact .3 source ledger is sealed at `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-effective-loss-inputs-implementation-v55/native-reader/TREE.md`, before producer edits, against Root frozen `39b55512` / `Z:/g58`. This increments the existing `ck3_query_battle_control_snapshot_v1`; no additional tool, execution command, readiness flag or policy restriction is introduced.
+
+Two source meanings are now precise: Combat+6D8 is the stored advantage damage factor in signed Q100000, while outgoing width comes from the already-published Combat+6C4. The condition before province modifier0x1AC is the native province tag/`C6AF20 ProvinceHasHolding` branch. It is not an inferred season predicate. The false branch contributes native zero. Entry+40 effective damage and Entry+48 effective toughness were already published, along with pursuit+50/screen+58; they remain unchanged rather than duplicated.
+
+```mermaid
+flowchart TD
+  E[Existing Entry60 effective damage/toughness/pursuit/screen] --> Q[Existing battle control MCP]
+  A[Combat+6D8 stored advantage factor and +710 sign] --> L[Current loss inputs]
+  R[Runtime qword Q slots 5C69B90/BA0/BB0] --> L
+  S[Readonly264DD20 own199 and opposing19A final aggregate] --> L
+  H[Province tag plus C6AF20 has holding] --> B{Native holding branch}
+  B -->|yes| W[Readonly2C4D550 province+30 modifier1AC]
+  B -->|no| Z[Native zero]
+  W --> L
+  Z --> L
+  L --> Q
+  Q -. not retained by this paused input projection .-> O[Prior tick actual outgoing / executed losses]
+```
+
+The additive `current_loss_inputs_v1` is `null|object`. A populated object has `scale=100000`, actual `source_combat_id` and `source_target_province_id`, `stored_advantage_damage_factor_raw`, current `runtime_damage_scaling_raw`, `runtime_main_hard_conversion_raw`, `runtime_pursuit_hard_conversion_raw`, `province_has_holding`, `province_winter_hard_conversion_modifier_raw`, and two native-ordered `sides` rows. Each side row carries `side_index`, `outgoing_advantage_factor_raw`, `own_hard_conversion_modifier_raw` and `opposing_hard_conversion_modifier_raw`. For +710>0, side0 uses the stored factor; otherwise side1 does. The other side uses 100000. Native aggregate getters retain commander, side-container and terrain contributions rather than reducing the observation to commander-only traits.
+
+All raw fields preserve genuine signed int64 Q100000 operands, including zero and negative modifier values. An unbound legacy reader leaves only this new leaf null and keeps existing useful control observations. Python preserves an absent field's old result shape and explicit native null separately. It checks the existing schema/types/source binding, without a new holding/winter plausibility rejection. The registered service and MCP signature remain unchanged. The readonly recipe is a fresh `ck3_take_snapshot({include_native_command_history:false})`, then `ck3_query_battle_control_snapshot_v1({subject_army_id: actual public CUnit army_id from snapshot.player_armies, expected_revision: snapshot.revision})`; `expected_revision` is the public revision, while native revision/date are bound inside the service.
+
+No mutating `264FF70`/`264FC10` outgoing calculator, `2652E30` incoming application or troop writeback is called. These current operands do not record an unretained prior tick's stack-local damage, establish historical casualty causation, enumerate knight deaths or certify full simulator parity. The existing dashed effective-stat refresh callsite and pursuit aggregate/helper equations stay explicit research boundaries. If genuine executed outgoing becomes required, the known passive trace entry remains `258C774..258C779`, after both original outgoing returns and before either incoming application; this delivery does not add that hook.
+
+Validation is **static-ready**: the sole new strict MSVC `/O2 /DNDEBUG /W4 /WX` focused run compiled seven production/test TUs in six parallel slots, passed four bounded native reader-to-serializer cases and the registered same-MCP Python `-O` checks, including old missing-field shape and explicit null. The run completed GREEN in 13.41 seconds. Receipt: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-effective-loss-inputs-implementation-v55/focused-fixture/parent-focused-run-01/RESULT.json`, SHA256 `74160579fbc59169ca1bb07cb022dd60e34d3876dfbb9e18ee8d71ac61dcdf87`. This fixture is not a paused game observation; the new fields still require Root deployment and a genuine current-battle query before production-live credit. No new SDK, game, window, shared-source, Git or game-day operation is performed by this work package. Root owns adoption, the combined build, later paused real observation, and Oct4/W40 report integration.

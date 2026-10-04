@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_12002_battle.hpp"
 #include "xar_bridge/ck3_12002_battle_journal.hpp"
+#include "xar_bridge/ck3_12002_phase.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -361,6 +362,52 @@ bool Retreat(const BattleBindings &b, const game::Snapshot &scope, void *combat,
                        24;
   return l.legal_now == l.native_boolean;
 }
+std::optional<game::BattleControlCurrentLossInputsV1> CurrentLossInputs(
+    const BattleBindings &b, void *combat, void *province,
+    const game::BattleControlSnapshot &snapshot) {
+  if (!b.damage_scaling || !b.main_hard_conversion ||
+      !b.pursuit_hard_conversion || !b.read_loss_side_modifier ||
+      !b.province_has_holding || !b.read_loss_province_modifier)
+    return std::nullopt;
+
+  game::BattleControlCurrentLossInputsV1 out{};
+  out.source_combat_id = snapshot.combat_id;
+  out.source_target_province_id = snapshot.province_id;
+  out.stored_advantage_damage_factor_raw =
+      At<std::int64_t>(combat, kBattleStoredAdvantageDamageFactorOffset);
+  out.runtime_damage_scaling_raw = *b.damage_scaling;
+  out.runtime_main_hard_conversion_raw = *b.main_hard_conversion;
+  out.runtime_pursuit_hard_conversion_raw = *b.pursuit_hard_conversion;
+  out.province_has_holding =
+      At<std::uint32_t>(province, 0x85C) == 0x50726F76U &&
+      b.province_has_holding(province);
+  if (out.province_has_holding &&
+      b.read_loss_province_modifier(
+          &out.province_winter_hard_conversion_modifier_raw,
+          static_cast<std::byte *>(province) + 0x30, 0x1AC, nullptr,
+          100'000, 0) != &out.province_winter_hard_conversion_modifier_raw)
+    return std::nullopt;
+
+  const std::array<void *, 2> sides{
+      static_cast<std::byte *>(combat) + kBattleAttackerSideOffset,
+      static_cast<std::byte *>(combat) + kBattleDefenderSideOffset};
+  const std::size_t advantaged_side = snapshot.resolved_advantage_raw > 0 ? 0 : 1;
+  for (std::size_t index = 0; index < sides.size(); ++index) {
+    auto &row = out.sides[index];
+    row.side_index = static_cast<std::int32_t>(index);
+    row.outgoing_advantage_factor_raw = index == advantaged_side
+        ? out.stored_advantage_damage_factor_raw : 100'000;
+    if (b.read_loss_side_modifier(&row.own_hard_conversion_modifier_raw,
+                                 sides[index], 0x199) !=
+            &row.own_hard_conversion_modifier_raw ||
+        b.read_loss_side_modifier(&row.opposing_hard_conversion_modifier_raw,
+                                 sides[1 - index], 0x19A) !=
+            &row.opposing_hard_conversion_modifier_raw)
+      return std::nullopt;
+  }
+  return out;
+}
+
 bool ControlSample(const BattleBindings &b, const game::Snapshot &scope,
                    const game::BattleControlRequest &req,
                    game::BattleControlSnapshot &out) {
@@ -416,6 +463,7 @@ bool ControlSample(const BattleBindings &b, const game::Snapshot &scope,
       !Retreat(b, scope, combat, army, out) ||
       At<std::uint8_t>(combat, kBattleDailyGuardOffset))
     return false;
+  out.current_loss_inputs_v1 = CurrentLossInputs(b, combat, province, out);
   if (Province(b, At<void *>(combat, 0x6B8)) != province)
     return false;
   if (roll_applicable && get_terrain != nullptr &&
@@ -1039,6 +1087,18 @@ BattleBindings BindBattleImage(std::uintptr_t base,
       reinterpret_cast<decltype(b.read_route_edge_duration)>(base + 0x24AB060);
   b.route_bindings = BindRouteImage(base, sha);
   b.commander_roll_context = BindCombatImage(base, sha);
+  b.damage_scaling = reinterpret_cast<const std::int64_t *>(
+      base + kBattleDamageScalingRva);
+  b.main_hard_conversion = reinterpret_cast<const std::int64_t *>(
+      base + kBattleMainHardConversionRva);
+  b.pursuit_hard_conversion = reinterpret_cast<const std::int64_t *>(
+      base + kBattlePursuitHardConversionRva);
+  b.read_loss_side_modifier = reinterpret_cast<ReadBattleSideModifier>(
+      base + kBattleLossSideModifierRva);
+  b.province_has_holding = reinterpret_cast<PhaseProvincePredicate>(
+      base + kPhaseProvinceHasHoldingRva);
+  b.read_loss_province_modifier = reinterpret_cast<ReadAdvantageModifierValue>(
+      base + kAdvantageModifierValueRva);
   b.province_context = b.game_state_slot;
   b.resolve_province = NativeProvince;
   return b;

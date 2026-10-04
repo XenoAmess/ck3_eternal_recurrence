@@ -1800,6 +1800,34 @@ struct BattleControlPursuitModifierSides {
                          const BattleControlPursuitModifierSides &) = default;
 };
 
+// Current operands of the native loss branches. These are not a retained
+// outgoing damage result and do not execute a combat-loss operation.
+struct BattleControlCurrentLossSideInputsV1 {
+  std::int32_t side_index = -1;
+  std::int64_t outgoing_advantage_factor_raw = 0;
+  std::int64_t own_hard_conversion_modifier_raw = 0;
+  std::int64_t opposing_hard_conversion_modifier_raw = 0;
+
+  friend bool operator==(const BattleControlCurrentLossSideInputsV1 &,
+                         const BattleControlCurrentLossSideInputsV1 &) = default;
+};
+
+struct BattleControlCurrentLossInputsV1 {
+  std::int32_t scale = 100'000;
+  std::int32_t source_combat_id = -1;
+  std::int32_t source_target_province_id = -1;
+  std::int64_t stored_advantage_damage_factor_raw = 0;
+  std::int64_t runtime_damage_scaling_raw = 0;
+  std::int64_t runtime_main_hard_conversion_raw = 0;
+  std::int64_t runtime_pursuit_hard_conversion_raw = 0;
+  bool province_has_holding = false;
+  std::int64_t province_winter_hard_conversion_modifier_raw = 0;
+  std::array<BattleControlCurrentLossSideInputsV1, 2> sides{};
+
+  friend bool operator==(const BattleControlCurrentLossInputsV1 &,
+                         const BattleControlCurrentLossInputsV1 &) = default;
+};
+
 struct BattleControlSnapshot {
   BattleControlSnapshotStatus status =
       BattleControlSnapshotStatus::unavailable;
@@ -1847,6 +1875,8 @@ struct BattleControlSnapshot {
   BattleControlActualHardSides actual_hard_casualty_sides;
   // Private exact-build diagnostic; these are full CCombatSide modifiers.
   BattleControlPursuitModifierSides pursuit_modifier_sides;
+  // Null is an unobserved leaf; zero remains a native numeric observation.
+  std::optional<BattleControlCurrentLossInputsV1> current_loss_inputs_v1;
   bool battle_control_ready = false;
 
   friend bool operator==(const BattleControlSnapshot &,

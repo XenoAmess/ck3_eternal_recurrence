@@ -62,6 +62,7 @@ _OPTIONAL_SNAPSHOT_KEYS = {
     "actual_hard_casualty_sides",
     "pursuit_modifier_sides",
     "active_counter_inputs_v1",
+    "current_loss_inputs_v1",
 }
 _ACTIVE_COUNTER_KEYS = {
     "schema_version", "status", "operand_census_complete", "source_combat_id",
@@ -159,6 +160,25 @@ _PURSUIT_MODIFIER_SIDE_KEYS = {
     "encounter_role",
     "pursuit_efficiency_raw",
     "retreat_losses_raw",
+}
+
+_CURRENT_LOSS_INPUT_KEYS = {
+    "scale",
+    "source_combat_id",
+    "source_target_province_id",
+    "stored_advantage_damage_factor_raw",
+    "runtime_damage_scaling_raw",
+    "runtime_main_hard_conversion_raw",
+    "runtime_pursuit_hard_conversion_raw",
+    "province_has_holding",
+    "province_winter_hard_conversion_modifier_raw",
+    "sides",
+}
+_CURRENT_LOSS_SIDE_KEYS = {
+    "side_index",
+    "outgoing_advantage_factor_raw",
+    "own_hard_conversion_modifier_raw",
+    "opposing_hard_conversion_modifier_raw",
 }
 
 _SIDE_KEYS = {
@@ -606,7 +626,78 @@ def normalize_battle_control_snapshot_v1(
         result["pursuit_modifier_sides"] = pursuit_modifiers
     if active_counter is not None:
         result["active_counter_inputs_v1"] = active_counter
+    # Keep old receipts' shape and explicit current-frame unavailability distinct.
+    if "current_loss_inputs_v1" in value:
+        result["current_loss_inputs_v1"] = _normalize_current_loss_inputs_v1(
+            value["current_loss_inputs_v1"],
+            combat_id=combat_id,
+            province_id=province_id,
+        )
     return result
+
+
+def _normalize_current_loss_inputs_v1(
+    value: object, *, combat_id: int, province_id: int,
+) -> dict[str, object] | None:
+    """Preserve observed current operands, without claiming executed tick loss."""
+    if value is None:
+        return None
+    name = "battle_control_snapshot.current_loss_inputs_v1"
+    if not isinstance(value, dict) or set(value) != _CURRENT_LOSS_INPUT_KEYS:
+        raise ValueError(f"{name} has a malformed schema")
+    scale = _signed_int32(value["scale"], f"{name}.scale")
+    source_combat_id = _positive_int32(
+        value["source_combat_id"], f"{name}.source_combat_id"
+    )
+    source_province_id = _positive_int32(
+        value["source_target_province_id"], f"{name}.source_target_province_id"
+    )
+    if (
+        scale != 100_000
+        or source_combat_id != combat_id
+        or source_province_id != province_id
+    ):
+        raise ValueError(f"{name} identity or scale disagrees")
+    has_holding = _strict_bool(
+        value["province_has_holding"], f"{name}.province_has_holding"
+    )
+    normalized = {
+        "scale": scale,
+        "source_combat_id": source_combat_id,
+        "source_target_province_id": source_province_id,
+        "province_has_holding": has_holding,
+    }
+    for field in (
+        "stored_advantage_damage_factor_raw",
+        "runtime_damage_scaling_raw",
+        "runtime_main_hard_conversion_raw",
+        "runtime_pursuit_hard_conversion_raw",
+        "province_winter_hard_conversion_modifier_raw",
+    ):
+        normalized[field] = _signed_int64(value[field], f"{name}.{field}")
+    sides = value["sides"]
+    if not isinstance(sides, list) or len(sides) != 2:
+        raise ValueError(f"{name} requires both actual sides")
+    normalized_sides = []
+    for index, side in enumerate(sides):
+        side_name = f"{name}.sides[{index}]"
+        if not isinstance(side, dict) or set(side) != _CURRENT_LOSS_SIDE_KEYS:
+            raise ValueError(f"{side_name} has a malformed schema")
+        side_index = _signed_int32(side["side_index"], f"{side_name}.side_index")
+        if side_index != index:
+            raise ValueError(f"{side_name} actual native side order disagrees")
+        normalized_side = {"side_index": side_index}
+        for field in (
+            "outgoing_advantage_factor_raw",
+            "own_hard_conversion_modifier_raw",
+            "opposing_hard_conversion_modifier_raw",
+        ):
+            normalized_side[field] = _signed_int64(
+                side[field], f"{side_name}.{field}"
+            )
+        normalized_sides.append(normalized_side)
+    normalized["sides"] = normalized_sides
+    return normalized
 
 
 def _normalize_active_counter_inputs_v1(
