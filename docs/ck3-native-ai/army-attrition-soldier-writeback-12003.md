@@ -107,3 +107,28 @@ R36 已缓存实际主军 `3480/3878`、40 regiment、attrition `.01`、monthly 
 
 唯一新增的 production-path focused case GREEN：编译/链接退出0（5.089s），NativeReadArmyStrengths→serializer 退出0（0.116s），registered MCP→NativeDriver normalizer→readonly provider 在 `-B -O` 下退出0（4.651s）；四个 flags 各调用一次，用例 typed rate VALUE1000 得 siege budget34，supply eligible80 / supply budget0，raid inactive / budget0。
 该唯一用例复用真实 reader、serializer 和消费入口，但这些输入是 fixture 数据；Root v64 部署后的真实 paused army query 仍待完成，本包不授予新增 production-live primitive、实际扣兵归因或游戏日信用。
+
+
+## 2026-10-05：R37 首次 paused loss-input 观测（primitive）
+
+本节只消费父协调者派生的 [QUALIFIED-FIELDS.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-loss-r37-actual/QUALIFIED-FIELDS.json)，SHA-256 `def7c4e99f74909e7b1fff4ea4297878ed27a81f690c6b980be2a20356165ed8`；没有读取原 013 或 owner cache，没有 SDK、实机动作、fixture 重跑或新增游戏日。
+
+| 来源层 | 保留的证据 |
+| --- | --- |
+| 外层 Root runtime 来源 | `R0037` / `g69` / source `a14f3c5fab2079956ddccb7b614d5e3aa41d9bbc` / PID `136112` |
+| native source literal build 字段 | `game_version=null`、`executable_sha256=null`；不以外层绑定填入 |
+| 同 paused 查询帧 | snapshot `native:3`；native revision `3` / public revision `2`；date raw `53258808`；query sequence `1` |
+
+`query-army-strengths-v1` 本次整体与 scope 均为 `partial`。三个可用 loss domain 的实际计数与原生预算如下；计数/预算单位为整士兵（scale1），列名 `definition_le_zero` 只表示原生 definition filter，不补游戏类别解释。
+
+| ArmyID | whole | definition_le_zero | supply_eligible | definition_le_zero_supply_eligible | supply / siege / raid 预算 |
+| --- | ---: | ---: | ---: | ---: | --- |
+| 301989997 | 3378 | 3378 | 3378 | 3378 | 0 / 0 / 0 |
+| 184549452 | 3000 | 3000 | 3000 | 3000 | 0 / 0 / 0 |
+| 268435597 | 2981 | 2961 | 2981 | 2961 | 0 / 0 / 0 |
+
+三个可用行的 `siege_association_id=-1`、`siege_active=false`、`raid_active=false`；已读到的 `siege_rate_raw=raid_rate_raw=1000`（fraction scale100000）与合法 inactive 预算 `0` 分别保留。mode=false 时没有调用 active siege/raid whole-loss 路径，不能把加载标量0.01乘人数当成本帧实际 debit。
+
+第4行 ArmyID `83886508` 是 health `unavailable / native_carmy_not_found`，native CArmyID及兵力 aggregate为 `null`；loss 字段实际缺席，派生展示值为 `null`，不填任何预算0。
+
+本次仅取得 **production-live primitive**：三行当前 inactive loss 输入、过滤计数和供给预算。active whole-loss 路径仍只有 source+fixture 验证；没有激活分支的实机后态、完整损耗循环或新增保存日信用。当前预算0不能归因过去主军−34的净变化，也不能预测未来净损失；setter `2657EA0` 额外 lifecycle/carry 仍未闭合，没有已证实 offset。
