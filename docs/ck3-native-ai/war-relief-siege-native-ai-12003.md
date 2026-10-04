@@ -452,3 +452,11 @@ day08独立final **native38/public33/raw53259768**：P470仍未占、fort6/garri
 - P470仍未占领；CanStartAssault=false、breach0/assaultfalse，days_left559只保留为当帧估计，不信用围城完成或未来日数。
 - Generic soldiers/supply未发布，围城五项 operands与phase-event字段仍null；Root38425独立专用查询属于另一帧与其他owner，此包不读取、不回填，不推围城推进根因。
 - 缓存母账：[ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/military-r39-siege-next24-01-consumed01/ROOT-DELIVERY.json)（SHA `63f9dd07e7e45eea1c1639711a52c5957193d7bf9d3863eb8a638eea080d05ca`）；fields/ledger SHA `827fcb4087ab160744870428af76d89e4a0a910c3e4de630216d01b9ecd1acbb`，natural0/new completed families0。
+
+## 2026-10-05 R39 续段：实际 2 日后停于 event27
+
+- 本段仅新增2 whole/calendar/bounded日、48 raw小时（53260344→53260392），14 GREEN工具叶＋2 dayresults；累计4836/resumed1683/Oct5+178/W41。R39两独立包合计26日/624h只作账目汇总，前24日不重计，预算8日中未执行6日信用为0。
+- 末帧 native112/public9/raw53260392，whole SAVE h8353/98030531 bytes/SHA `4068a7aa897d1b42205cf5a81405c7ac967913ef0188f26e6895a5555d0e9d0b`，与Root anchor一致；沿用R39/g71/v66、Robert29829同episode/environment。
+- main301@470仍sieging/owncombat=false，guard184@2619 regular；War117440524 active/+25。P470未占领，同围城503316504/B3178/work2847440/55000000/rem52152560/progress5.177%/CanStartAssault=false；ETA557只为当帧估计。
+- day01 activeevent=null，day02实际event27令普通日循环停止；两个enabled选项index0/1，title/labels均null。本lane未选择选项，不猜事件内容、触发原因或后续结果。
+- Generic兵/供、围城五项operands与phase-event字段保持原发布null，专用event-scope/health查询未读取或回填；[两日缓存母账](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/military-r39-siege-next8-02-consumed01/ROOT-DELIVERY.json) SHA `f34959dcd7046a727ea1bf5e950cd46aad65f971f09fe85d436093599a09040f`，fields/ledger SHA `45e448dfe594c77baef749cc67845d22a3fb20c164a04c400c274e65883cdebe`。
