@@ -70,3 +70,22 @@ Root 的 officialprepare / verify / stage ten streams / ordinary rebind / prefli
 原四 Sway completion / execution / termination / invalidation hooks 保持 FullID `134217986` / generation `8`，新 PID 冷读已完成，没有重发 Start。pre-stop 独立存档为 current continuation、Can=true、chance 55%；三 rings 均 `0/0`、empty、gap=false。health 当前三条 CArmy soldiers 为 player `3000`、new player `3693`、enemy `2459`；另两个 PublicCUnit 行返回 `native_carmy_not_found`，只记录 missing native，不据此推断 shadow 或舰船身份。
 
 新 movement observer 已有实际只读 primitive：first edge `5.48572` days 是当前预测耗时，不是已经推进的自然日。部署闭合 cut 为 h`7257` / 累计 `4504` 日，部署记 `0` 日；h`7252` 仅为来源存档锚点。Root 的后续 6 个 normal bounded days 已开始，此文档 lane 不消费、不记行军日数；没有新增 P1 或自然继承信用。原自然继承 `0`、G2 `5/8`、NW2 `2/4` 的历史事实保留；新源码、cold GREEN 和只读字段不冒充完整 OODA 或自然继承完成。
+
+
+## 2026-10-04 R31 实际部署收口（v58）
+
+native / Python 统一冻结为 `Z:/g63` / `df6e5039a9dfa167c9f732a241cd60ca463df362`，exact game `1.20.0.3`；冻结时间 `2026-10-04T10:53:19.136324Z`，dirty `0`。四 target Release `/W4 /WX`、64 jobs 单次全构建 GREEN，75.388693 秒，115 flags / 65 ON / 50 OFF（WAR_CASH ON），563 TU / 560 unique / 1090 inputs。生成 `.inc` 沿正常 inventory 收录，没有再次 repair 或编译。官方 exact-source CI run `37196371137` 已 completed / success，HEAD 与本次 df6e 相同；只引用 Root 已给的 `runtime-preparation/v58/ROOT-EXACT-SOURCE-CI-RESULT.json`，资格限官方静态 CI，未重读或查询。
+
+DLL 9,154,560 B / SHA-256 `ef9e2711b32d110b07ad07aabb39f6e14579781b2064eabe4c1678ed2e8ac449`；manifest 267,070 B / SHA-256 `8c79ed66a5fc42ed59a5463c81bda073c9f83d0938a30cdbb483b1b4abe88eb3`。开发树中后续 pure horizon 工作不在本次 freeze，不作为部署 pursuit slot 与 siege levels 观测的前置条件。
+
+R30 于 `2026-10-04T10:55:03.469006Z` normalstop，managed controller `69340` exit0；`2026-10-04T10:59:30.989016Z` superseded。单次 renderer full history/save h`7369` 与十条完整流 GREEN，随后 officialprepare / verify / stage10 / ordinary rebind / preflight 均 GREEN；维持 normalstop before officialprepare 和 rebind 完成后 preflight。环境 SHA-256 `ac949dbd42df143e5e1c6542a77b3edca71833a01864f677f06ecd7dde31abb6`，driver SHA-256 `8b7081d8a982041fd251ec54286890339e2d1b2545257eae2b2bda464a29e533`。
+
+实际 run `xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0031`，execution `0754bd1b-c2d6-401f-838f-f828169b151f`；allocated `2026-10-04T11:01:02.476890Z`、launch-started `2026-10-04T11:03:21.179943Z`，managed `84135` / PID `73976` active。cold SDK `54908` CLOSED GREEN，full history `7370` / save anchor `7369`；Robert 29829 alive、原 ordinary episode 延续，cold 恢复记 `0` 日。
+
+首批冷读后正常 SAVE 为 h`7373` / raw date `53253264` / 96,371,960 B / SHA-256 `89e2f2afca6a96d30ba433f860d3ed42514f989691a5b82bd1e730e0192f6948`。来源 h`7369` / raw date `53253264` / 96,372,333 B / SHA-256 `f71dd8fa943c7d9f2d0e6630dbd4f4aac64713622d634d2c3c5ab17333837213` 保留为 source anchor。原四 Sway / health / levels SDK `64082` 状态为 `CLOSED_GREEN`；此 lane 只采用 Root 闭合字段，不读取 raw。
+
+Root 唯一消费投影 `g2-resume-20261004/r29-route-actual/r31-first-phase-levels-once/ROOT-DELIVERY.json`（Root 给定 SHA-256 `fb9e3ff871c4b17ddc0f5a1a878e4ca65f985c16f97bc3a46f4dfab507de7030`）确认 native revision `2` / public revision `2` / generation `2` / date `53253264`。实际 `breach=0`、`starvation=0`、`disease=0`、`desertion_count=1`、`stalemate=0` 均存在，达到 production-live primitive；合法零值已区分于 missing。`prepared_enum=5` 是 actual no-due sentinel，不是未来事件。旧五项 literal 为 `D126385/Q L1800000/Q preparedL0 legalzero/counter12/CanAdvtrue`；当前 cache `projected_work=4420875` / `counter=13` / `missing=[]` / `stateadaptermissing=[]`。这些是实际只读投影，没有执行新的 nextday 或 event。
+
+本次纸面切面明确采用已确认的 cold SDK `54908` / full history `7370` / source anchor `7369`；累计 `4539` 日，部署新增 `0` 日，自然继承 `0`，无新增 P1 信用。原四 FullID `134217986` / generation `8` hooks 已随首批 SDK `64082` CLOSED GREEN 完成新 PID 冷读，没有重发 Start；pursuit slot 修复仍按实际后续 pursuit 样本独立验收，不将 native 新源码或只读 primitive 冒充完整 OODA。
+
+本条状态为 `DEPLOYMENT_READY_OBSERVATION_CLOSED_PRIMITIVE`。最新 SAVE 与 levels 采用 Root 最终字段及唯一消费投影，只读状态达到 production-live primitive，不代表下一日、未来事件或完整 loop 已执行。

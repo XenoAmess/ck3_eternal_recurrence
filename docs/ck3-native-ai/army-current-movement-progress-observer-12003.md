@@ -272,3 +272,57 @@ seal; natural succession remains0. The file-only consumer performed0 SDK
 calls,0 window operations,0 tests and0 shared/Git changes. The one-topic
 append, cache comparison and Oct4/W40 report fields are indexed at
 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/movement-progress/landfall-six-r30/ROOT-DELIVERY.json`.
+
+## R0031 first new-PID health frame: current siege strength and empty-edge operands
+
+Root's R0031 first original-four/query packet is a new process frame:
+g63/df6e source, native PID73976, observed date **53253264**, total4539 with
+zero advancement in this capture. The original four queries preceded health.
+Its `012-ck3_query_army_strengths.json` was consumed once into
+`movement-progress/first-cold-r31`:160567 original bytes, SHA-256
+`e6e8310f4666bc021073633c085f357589277e31638319f641c032dfdc9fbd11`.
+The actual health source is **native2 / public2 / paused true**, accepted and
+available. Both requested and complete scope IDs are exactly184549452,
+301989997 and268435597, and scope_status is now available. Payload version/EXE
+fields remain null; the enclosing deployment facts above come from Root.
+
+| Public CUnit / CArmy | Role | Soldiers / maximum / regiments | Supply / capacity | Current monthly supply | Current attrition fraction | State / movement status |
+|---|---|---|---|---:|---:|---|
+| 184549452 / 167772208 | player | 3000 / 3000 / 24 | 100 / 100 | +20 | 0 | 1 / not_applicable |
+| 301989997 / 201326670 | player | 3657 / 3884 / 41 | 300 / 300 | 0 | 0.01 | 3 / not_applicable |
+| 268435597 / 184549476 | active_war_enemy | 2459 / 4702 / 41 | 292 / 300 | +20 | 0 | 1 / not_applicable |
+
+Every movement block publishes accumulated0, cache0, **both edge getters null**
+and unavailable_reason null. Empty-edge not_applicable remains the observed
+branch; raw cache0 is neither an effective movement-speed measurement nor a
+missing-callback diagnosis. There is no active first-edge duration to turn into
+an arrival forecast. The three CArmy identities still match the earlier caches.
+Root's enclosing paused snapshot places old184 in capital2619, own301 in472
+sieging, and enemy268 in470 regular with an empty route. Those locations are
+not fabricated health response fields.
+
+Current health independently confirms own301's **3657 soldiers**, matching the
+3657 strength Root supplied from the rich frame at this paused date. That
+matching scalar independently confirms the supplied current rich strength;
+this consumer does not assert whether that rich frame preceded cold restart.
+A same-date prior army-health cache was not supplied to this lane;
+the lane's newest prior health cache is date53252568. It therefore does not
+claim cold retention of all supply/cache fields or compare R0030 checkpoint
+h7369 with a guessed R0031 save anchor. Root owns the later R0031 normal SAVE
+history/hash binding.
+
+The available historical health comparison spans53252568→53253264,
+**696 raw hours /29 calendar days**, rather than zero-day restart. Over that
+interval, own301 changes3693→3657 soldiers (net-36), old184 supply95.45305→100,
+enemy268 supply300→292; maxima, regiment counts and all three CArmy identities
+remain unchanged. Own301's current monthly supply operand is now observed0,
+against the historical-1.81818. These interval changes are not attributed to
+cold restart, one attrition tick or an inferred future casualty mechanism.
+
+This receipt independently re-observes existing current health and the
+empty-edge movement primitive in a new PID. The prior finite movement/arrival
+loop retains its evidence; this zero-day frame does not create another loop,
+siege completion or battle result. All shared source/Git/SDK/window operations
+and tests remain0 for this file consumer; its day credit is0. Current cache,
+historical comparison, one-topic patch and Oct4/W40 fields are indexed at
+`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/movement-progress/first-cold-r31/ROOT-DELIVERY.json`.

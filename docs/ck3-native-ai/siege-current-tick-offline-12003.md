@@ -234,3 +234,45 @@ observer由source-ready提升至static-ready。C++内存fixture与registered消�
 没有全DLL构建，旧model/format不变。新三个canonical测试文件及pins见
 `phase-event-production-focused/report/CANONICAL-HARNESS-MANIFEST.json`；
 Root统一新files与本页短append及Oct4/W40记录。
+
+## R31 实机：当前 phase-event state 与缓存枚举（2026-10-04）
+
+R31 / CK3 PID73976 / frozen `Z:/g63` HEAD `df6e5039a9dfa167c9f732a241cd60ca463df362`，
+同一 Robert29829 普通战役和 War117440524。SDK64082 closed GREEN 的首次
+`ck3_query_war_occupation_targets_v1` 在 raw53253264 / native2 / published2 / gen2 / sequence1
+独立返回 P472 / Siege251658324 / besieging Army301989997 的当前对象：
+
+| 新当前 state 输入 | 实际值 |
+|---|---:|
+| breach_level | 0 |
+| starvation_level | 0 |
+| disease_level | 0 |
+| desertion_count | 1 |
+| stalemate_count | 0 |
+
+五项均真实 present且非null；合法零保留，阶段 state 只读 observer 从 static-ready 升为
+**production-live primitive**。`prepared_selected_phase_event_enum` 也实际读到5；按本专题
+原生合同，这是 no-due sentinel / 当前准备缓存，apply不清缓存。它不证明刚执行事件、
+不选择下一事件，也不预测下一roll。当前desertion_count1仅是实际累计状态，未授新事件执行信用。
+
+R30已实测的五项current-tick observer继续具备production-live primitive证据：本帧
+ordinary_daily_progress126385、current_phase_length1800000、prepared_phase_length0均Q100000，
+phase_counter12、can_advance=true。prepared0是本帧合法零，与fresh L独立，不能改成null。
+实际work4294490/total40000000/remaining35705510均Q100000，progress10736/Q100000，
+动态days_left283；P472仍未占领、Fort4/garrison500、B3657、breach0、assault=false、
+can_start_assault=false。P470 Fort6/garrison574、P3711 Fort6/garrison565均未占领且无active siege。
+没有围城完成、战争结算或283日固定完成日期信用。
+
+直属model lane只用上述完整缓存row，以g63 CLI调用current-tick纯模型一次：
+status projected、missing=[]，work4294490+D126385形成**离线**4420875/Q100000，
+counter12形成**离线**13；phase_due、event_pending、normal_completion均false。另一次
+phase-event state adapter完整保留0/0/0/1/0，missing=[]，未把缓存enum5转成selection，
+未调用apply_current_phase_event。此结果证明实机观测与有限纯输入相容；尚未验证实机次日
+work/counter，不证明下一draw、加载权重全闭合或实际事件执行。模型receipt：
+[r31-current-model-once/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/r29-route-actual/r31-current-model-once/ROOT-DELIVERY.json)，
+SHA-256 `0989f53560371a8602d27710b6017c167e6ee7000a61eece73fd6f3223d3de0a`。
+
+本sole consumer只缓存新raw014一次，之后只读本缓存；不重读旧raw/TOP、旧source或测试矩阵。
+累计cut4539/恢复1386/Oct4+514沿用协调者账，本包新增0日、0SDK/窗口/共享源码/Git写入/测试。
+缓存、单topic append补丁和Oct4/W40字段统一封存在
+[r31-first-phase-levels-once/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/r29-route-actual/r31-first-phase-levels-once/ROOT-DELIVERY.json)。
