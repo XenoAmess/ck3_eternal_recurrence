@@ -494,3 +494,51 @@ and diagnostic receipts are under `army-replenishment-current-input-v66/`
 `r37-native-army-resolution-observer/A-NATIVE-ROOT-DELIVERY.json`.
 Root's later eight-day frame is separately `4810`, h `8261`, raw `53259768`;
 it supplies no replacement health values for R38. This documentation adds zero days.
+
+### R39 — deployed native CArmy resolution observation (2026-10-05 / W41)
+
+The single accepted R39 strength query is available for all three requested armies
+at native revision3/public revision2, query sequence1, paused raw date `53259768`.
+The returned native game-version and executable-hash fields remain null. Root's
+outer `R39/g71/cd0acf19`, PID126252 binding is separate provenance.
+
+`army_strengths[].native_army_resolution_v1` is now **production-live primitive**
+for the successful `resolved` branch. All seven published keys are present:
+
+| Public CUnit | status | ready | branch | raw_reference | reference_index | storage_capacity | entry_full_id |
+|---|---|---|---|---:|---:|---:|---:|
+| 301989997 | available | true | resolved | 201326670 | 78 | 2048 | 201326670 |
+| 184549452 | available | true | resolved | 167772208 | 48 | 2048 | 167772208 |
+| 268435597 | available | true | resolved | 184549476 | 100 | 2048 | 184549476 |
+
+The four numeric keys retain their nullable signed32 contract; these three rows
+contain concrete observations. The earlier five failure branches remain source/
+controlled-fixture coverage. This sample does not test an actual failure branch,
+resolve the historical `83886508` failure, prove its lifecycle, or credit a repair
+or replenishment. That historical CUnit was not requested in this scope.
+
+The complete-record lane independently reports 104 ArmyRegiments/197 DATA records
+all available, including 16 legitimate empty arrays. Against postarrival R38 at
+the same raw date, all197 record identities and fields are unchanged: zero changed,
+added or removed. Whole health stays `3210/3874/39`, `3000/3000/24`, and
+`2981/4702/41`. Main DATA deficit is `645 + 19 = 664`, guard0, enemy
+`754 + 967 = 1721`; all197 prepared fractions remain zero and fresh fractions
+positive, with independent predicates unchanged. This is current-input observation,
+not a future month update or applied troop-change credit. Generic regiment/DATA
+fields still provide no MAA or siege-engine classification.
+
+All three clock leaves are available/ready with D394157, selected phase17 and
+actual buckets0/28/6; low last-success/anchor/grace values match the held same-date
+baseline. Current signed64 storage values are preserved in the actual cache; their
+baseline signed64 values were not retained for comparison. Corrected loss labels
+and the main `raid_association_id=-1`, raidfalse/0, siegetrue/32, supply0 observation
+belong to [the soldier-writeback topic](army-attrition-soldier-writeback-12003.md).
+The unchanged total32 is a budget, not proof of applied casualties.
+
+Evidence is under `army-loss-r39-corrected-actual/` (compact cache and
+`resolution-qualification/ROOT-DELIVERY.json`) and
+`army-replenishment-current-input-v66/actual-r39-resolution-replenishment/`
+(complete seven-key observations, A record-difference receipt and this topic patch).
+Root's subsequent ordinary24-day run is separate and receives no advance credit
+from this cache consumer. This work performs zero SDK, original-raw, code-review,
+test, shared-write, Git, window or gameplay-day operations.
