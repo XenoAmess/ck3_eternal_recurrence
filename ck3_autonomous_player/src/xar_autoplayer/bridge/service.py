@@ -10425,6 +10425,68 @@ class GameplayBridgeService:
             raise BridgeUnavailableError("typed Confirm lacks later actual inner modal proof")
         return result
 
+    def query_aub_business_state_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
+        return self.driver.query_aub_business_state_v1(expected_revision=expected_revision)
+
+    def confirm_aub_policy_v1(self, expected_selected_key: str, *, expected_revision: int | None = None) -> dict[str, object]:
+        return self.driver.confirm_aub_policy_v1(expected_selected_key,expected_revision=expected_revision)
+
+    def query_aub_policy_options_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
+        method=getattr(self.driver,"query_aub_policy_options_v1",None)
+        if not callable(method):raise UnsupportedStepError("selected backend lacks exact .3 AUB policies")
+        result=method(expected_revision=expected_revision)
+        if not isinstance(result,dict) or result.get("schema")!="ck3-aub-policy-options-v1" or result.get("read_only") is not True or result.get("full_product_acceptance_credit") is not False:
+            raise BridgeUnavailableError("AUB policy backend returned malformed or product-credit data")
+        return result
+
+    def select_aub_policy_option_v1(self, expected_selected_key: str, desired_key: str, *, expected_revision: int | None = None) -> dict[str, object]:
+        from .aub_policy_options_contract import validate_policy_key
+        validate_policy_key(expected_selected_key);validate_policy_key(desired_key)
+        method=getattr(self.driver,"select_aub_policy_option_v1",None)
+        if not callable(method):raise UnsupportedStepError("selected backend lacks exact .3 AUB source selection")
+        result=method(expected_selected_key,desired_key,expected_revision=expected_revision)
+        if (not isinstance(result,dict) or result.get("schema")!="ck3-aub-policy-options-v1" or result.get("read_only") is not False
+                or result.get("postcondition_verified") is not True or not isinstance(result.get("later_actual_observation"),dict)
+                or result["later_actual_observation"].get("policy",{}).get("selected_key")!=desired_key
+                or result.get("production_confirmed") is not False or result.get("full_product_acceptance_credit") is not False):
+            raise BridgeUnavailableError("AUB selection backend lacks independent actual selected-state proof")
+        return result
+
+    def click_white_numeric_control_v1(self, control: str, expected_before_value: int, expected_before_price_text: str, intent_id: str, *, expected_revision: int | None = None) -> dict[str, object]:
+        from .white_numeric_control_action_contract import validate_numeric_action
+        validate_numeric_action(control, expected_before_value, expected_before_price_text, intent_id)
+        method = getattr(self.driver, "click_white_numeric_control_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks fixed six White skill+1 controls")
+        result = method(control, expected_before_value, expected_before_price_text, intent_id, expected_revision=expected_revision)
+        if (not isinstance(result, dict) or result.get("control") != control or result.get("intent_id") != intent_id
+                or result.get("postcondition_verified") is not True
+                or result.get("independent_business_after_verified") is not True
+                or result.get("independent_rendered_text_after_verified") is not True
+                or result.get("actual_price_before_after_bound") is not True
+                or result.get("price_formula_verified") is not False
+                or result.get("selected_down_available") is not False or result.get("full_gui_acceptance_credit") is not False):
+            raise BridgeUnavailableError("White skill action lacks actual business/text/price-bound after proof")
+        return result
+
+    def click_white_control_v1(self, control: str, expected_before_age: int, intent_id: str, *, expected_revision: int | None = None) -> dict[str, object]:
+        """One fixed actual White callback with independent actual rendered/business after."""
+        from .white_control_action_contract import SCHEMA, STEP, validate_action
+        validate_action(control, expected_before_age, intent_id)
+        method = getattr(self.driver, "click_white_control_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks fixed White age+1 action")
+        result = method(control, expected_before_age, intent_id, expected_revision=expected_revision)
+        if (not isinstance(result, dict) or result.get("schema") != SCHEMA or result.get("step") != STEP
+                or result.get("control") != control or result.get("intent_id") != intent_id
+                or result.get("postcondition_verified") is not True
+                or result.get("independent_business_after_verified") is not True
+                or result.get("independent_rendered_text_after_verified") is not True
+                or result.get("selected_down_available") is not False
+                or result.get("full_gui_acceptance_credit") is not False):
+            raise BridgeUnavailableError("White action lacks separate actual business/text after proof")
+        return result
+
     def query_white_rendered_text_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
         """Read nine actual fixed visible TextBox values; no selected/down credit."""
         from .white_rendered_text_contract import SCHEMA, STEP

@@ -813,9 +813,25 @@ bool ExecuteFrontendGuiRouteMailboxV1(
     return ExecuteWhitePlayerBusinessVariablesV1(query->white_player_business_variables, *query->mailbox, stamp);
   }
 #endif
+#if defined(XAR_CK3_ENABLE_AUB_CONFIRM_STATE_PRIVATE_V1)
+  if (query->operation == FrontendGuiRouteOperationV1::aub_business_state)
+    return ck3_12003::ExecuteAubBusinessStateQueryV1(query->aub_business_state,*query->mailbox,stamp,query->environment);
+  if (query->operation == FrontendGuiRouteOperationV1::aub_confirm)
+    return ck3_12003::ExecuteAubConfirmV1(query->aub_confirm,*query->mailbox,stamp,query->environment,query->dispatch_environment);
+#endif
+#if defined(XAR_CK3_ENABLE_AUB_POLICY_OPTIONS_PRIVATE_V1)
+  if (query->operation == FrontendGuiRouteOperationV1::aub_policy_options) {
+    return ck3_12003::ExecuteAubPolicyOptionsMailboxV1(query->aub_policy_options, *query->mailbox, stamp, query->environment);
+  }
+#endif
 #if defined(XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1)
   if (query->operation == FrontendGuiRouteOperationV1::query_white_rendered_text) {
     return ExecuteWhiteRenderedTextV1(query->white_rendered_text, *query->mailbox, stamp, query->environment);
+  }
+#endif
+#if defined(XAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1)
+  if (query->operation == FrontendGuiRouteOperationV1::action_white_control) {
+    return ExecuteWhiteControlActionV1(query->white_control_action, *query->mailbox, stamp, query->environment, query->dispatch_environment);
   }
 #endif
   if (query->operation == FrontendGuiRouteOperationV1::ingame_ui) {

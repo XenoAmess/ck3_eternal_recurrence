@@ -15551,6 +15551,68 @@ void RunConnectedSession(
               connected=write_frame(pipe,response);
             }
 #endif
+#if defined(XAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1)
+          } else if (step == xar::ck3_11906::kWhiteControlActionV1Step || step == xar::ck3_11906::kWhiteNumericControlActionV1Step) {
+            std::uint64_t expected_revision=0, expected_actor=0, expected_pid=0, expected_generation=0, expected_age=0;
+            std::string control,expected_price;
+            const bool parsed_control=xar::bridge::JsonStringField(incoming.payload,"control",control,32);
+            const auto *control_spec=xar::ck3_11906::FindWhiteControlSpecV1(control);
+            const bool legacy=step==xar::ck3_11906::kWhiteControlActionV1Step;
+            const bool parsed_before=control_spec&&(legacy?xar::bridge::JsonUnsignedField(incoming.payload,"expected_before_age",expected_age):
+                (xar::bridge::JsonUnsignedField(incoming.payload,"expected_before_value",expected_age)&&
+                 xar::bridge::JsonStringField(incoming.payload,"expected_before_price_text",expected_price,2048)));
+            xar::game::Snapshot current{};
+            if (!parsed_control || !control_spec || legacy!=control_spec->legacy_age || !parsed_before || expected_age>=static_cast<std::uint64_t>(control_spec->maximum) ||
+                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_revision",expected_revision) ||
+                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_player_character_id",expected_actor) ||
+                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_game_pid",expected_pid) ||
+                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_connection_generation",expected_generation) ||
+                expected_revision==0 || expected_revision!=state_revision ||
+                expected_pid!=GetCurrentProcessId() || expected_generation!=connection_generation ||
+                !previous_snapshot.has_value() || !xar::game::ReadSnapshot(game,current) || current!=*previous_snapshot ||
+                !current.map_ready || !current.paused || !current.has_played_character || !current.played_character_alive || current.has_active_event ||
+                current.played_character_id<=0 || expected_actor!=static_cast<std::uint64_t>(current.played_character_id) ||
+                game.descriptor().game_version!=xar::ck3_12003::kGameVersion ||
+                game.descriptor().executable_sha256!=xar::ck3_12003::kExecutableSha256) {
+              connected=write_frame(pipe,CommandResultFrame(request_id,step,false,"exact_alive_paused_noevent_white_control_binding_changed"));
+            } else {
+              xar::ck3_11906::FrontendGuiRouteMailboxContextV1 query{};
+              query.mailbox=&g_main_thread_query_mailbox_v1;
+              query.operation=xar::ck3_11906::FrontendGuiRouteOperationV1::action_white_control;
+              auto &observation=query.white_control_action;
+              observation.game=&game;observation.expected_snapshot=current;
+               observation.control=control;observation.expected_before_price_text=expected_price;
+               observation.expected_before_value=static_cast<std::int32_t>(expected_age);
+               if(legacy)observation.expected_before_age=static_cast<std::int32_t>(expected_age);
+              observation.native_revision=state_revision;observation.connection_generation=connection_generation;
+               const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+               query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,xar::ck3_11906::GuiAbiRevisionV1::crozier12003);
+               query.dispatch_environment=xar::ck3_11906::BindZhongguoScoreboardActionDispatchEnvironmentV1(base,true,xar::ck3_11906::GuiAbiRevisionV1::crozier12003);
+              const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1,&query,query.ticket);
+              std::string response;
+              if(submitted==xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+                auto waited=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8'000);
+                // Keep this original context alive until its one ticket finishes.
+                while(waited==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+                  waited=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2'000);
+                if(waited==xar::ck3_11906::MainThreadQueryWaitResultV1::completed) {
+                  xar::game::Snapshot completion{};
+                  if(!xar::game::ReadSnapshot(game,completion)||completion!=current||state_revision!=expected_revision||connection_generation!=expected_generation) {
+                    observation.result.available=false;observation.result.frame_verified=false;
+                    observation.result.unavailable_reason="pipe_completion_white_control_binding_changed";
+                  }
+                  response="{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"";
+                  response+=request_id;response+="\",\"ok\":true,\"result\":";
+                  response+=xar::ck3_11906::SerializeWhiteControlActionV1(observation.result);response+='}';
+                }
+                if(xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket)!=
+                    xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed)response.clear();
+              }
+              if(response.empty())response=CommandResultFrame(request_id,step,false,"white_control_owner_submission_or_completion_failed_no_retry");
+              connected=write_frame(pipe,response);
+            }
+#endif
 #if defined(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1)
           } else if (step == xar::ck3_11906::kIngameDecisionsOpenV1Step) {
             std::uint64_t expected_revision=0, expected_actor=0, expected_pid=0, expected_generation=0;
@@ -15706,6 +15768,109 @@ void RunConnectedSession(
                     xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed)response.clear();
               }
               if(response.empty())response=CommandResultFrame(request_id,step,false,"keyed_query_owner_submission_or_completion_failed");
+              connected=write_frame(pipe,response);
+            }
+#endif
+#if defined(XAR_CK3_ENABLE_AUB_CONFIRM_STATE_PRIVATE_V1)
+          } else if (step==xar::ck3_12003::kAubBusinessStateQueryV1Step || step==xar::ck3_12003::kAubConfirmV1Step) {
+            const bool confirm=step==xar::ck3_12003::kAubConfirmV1Step;
+            std::uint64_t expected_revision=0,expected_actor=0,expected_pid=0,expected_generation=0;
+            std::string expected_key;xar::game::Snapshot current{};
+            if(!xar::bridge::JsonUnsignedField(incoming.payload,"expected_revision",expected_revision)||
+               !xar::bridge::JsonUnsignedField(incoming.payload,"expected_player_character_id",expected_actor)||
+               !xar::bridge::JsonUnsignedField(incoming.payload,"expected_game_pid",expected_pid)||
+               !xar::bridge::JsonUnsignedField(incoming.payload,"expected_connection_generation",expected_generation)||
+               (confirm&&!xar::bridge::JsonStringField(incoming.payload,"expected_selected_key",expected_key,192))||
+               !expected_revision||expected_revision!=state_revision||expected_pid!=GetCurrentProcessId()||expected_generation!=connection_generation||
+               !previous_snapshot.has_value()||!xar::game::ReadSnapshot(game,current)||current!=*previous_snapshot||
+               !current.map_ready||!current.paused||!current.has_played_character||!current.played_character_alive||
+               current.has_active_event||current.has_pending_character_interaction||current.played_character_id<=0||
+               expected_actor!=static_cast<std::uint64_t>(current.played_character_id)||game.descriptor().game_version!="1.20.0.3"||
+               game.descriptor().executable_sha256!="94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"){
+              connected=write_frame(pipe,CommandResultFrame(request_id,step,false,"exact_aub_confirm_state_binding_changed_no_retry"));
+            }else{
+              xar::ck3_11906::FrontendGuiRouteMailboxContextV1 query{};query.mailbox=&g_main_thread_query_mailbox_v1;
+              query.operation=confirm?xar::ck3_11906::FrontendGuiRouteOperationV1::aub_confirm:xar::ck3_11906::FrontendGuiRouteOperationV1::aub_business_state;
+              auto &observation=confirm?query.aub_confirm.observation:query.aub_business_state.observation;
+              observation.game=&game;observation.expected_snapshot=current;observation.native_revision=state_revision;
+              observation.connection_generation=connection_generation;observation.requested_key="enable_auto_build";
+              query.aub_confirm.expected_selected_key=expected_key;
+              const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,xar::ck3_11906::GuiAbiRevisionV1::crozier12003);
+              query.dispatch_environment=xar::ck3_11906::BindZhongguoScoreboardActionDispatchEnvironmentV1(base,true,xar::ck3_11906::GuiAbiRevisionV1::crozier12003);
+              const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,&xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1,&query,query.ticket);
+              std::string response;
+              if(submitted==xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted){
+                auto waited=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8'000);
+                while(waited==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+                  waited=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2'000);
+                if(waited==xar::ck3_11906::MainThreadQueryWaitResultV1::completed){
+                  xar::game::Snapshot completion{};
+                  if(!xar::game::ReadSnapshot(game,completion)||completion!=current||state_revision!=expected_revision){
+                    query.aub_business_state.result.available=false;query.aub_business_state.result.unavailable_reason="aub_state_pipe_completion_changed";
+                    query.aub_confirm.result.postcondition_verified=false;query.aub_confirm.result.unavailable_reason="aub_confirm_pipe_completion_changed_no_retry";
+                  }
+                  response="{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\""+request_id+"\",\"ok\":true,\"result\":";
+                  response+=confirm?xar::ck3_12003::SerializeAubConfirmV1(query.aub_confirm.result):xar::ck3_12003::SerializeAubBusinessStateV1(query.aub_business_state.result);response+='}';
+                }
+                if(xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket)!=xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed)response.clear();
+              }
+              if(response.empty())response=CommandResultFrame(request_id,step,false,"aub_confirm_state_owner_submission_or_completion_failed_no_retry");
+              connected=write_frame(pipe,response);
+            }
+#endif
+#if defined(XAR_CK3_ENABLE_AUB_POLICY_OPTIONS_PRIVATE_V1)
+          } else if (step == xar::ck3_12003::kAubPolicyQueryV1Step || step == xar::ck3_12003::kAubPolicySelectV1Step) {
+            std::uint64_t expected_revision=0,expected_actor=0,expected_pid=0,expected_generation=0;
+            std::string expected_key,desired_key;xar::game::Snapshot current{};
+            const bool select=step==xar::ck3_12003::kAubPolicySelectV1Step;
+            if(!xar::bridge::JsonUnsignedField(incoming.payload,"expected_revision",expected_revision) ||
+               !xar::bridge::JsonUnsignedField(incoming.payload,"expected_player_character_id",expected_actor) ||
+               !xar::bridge::JsonUnsignedField(incoming.payload,"expected_game_pid",expected_pid) ||
+               !xar::bridge::JsonUnsignedField(incoming.payload,"expected_connection_generation",expected_generation) ||
+               (select&&(!xar::bridge::JsonStringField(incoming.payload,"expected_selected_key",expected_key,192) ||
+                         !xar::bridge::JsonStringField(incoming.payload,"desired_key",desired_key,192))) ||
+               !expected_revision || expected_revision!=state_revision || expected_pid!=GetCurrentProcessId() || expected_generation!=connection_generation ||
+               !previous_snapshot.has_value() || !xar::game::ReadSnapshot(game,current) || current!=*previous_snapshot ||
+               !current.map_ready || !current.paused || !current.has_played_character || !current.played_character_alive ||
+               current.has_active_event || current.has_pending_character_interaction || current.played_character_id<=0 ||
+               expected_actor!=static_cast<std::uint64_t>(current.played_character_id) ||
+               game.descriptor().game_version!="1.20.0.3" ||
+               game.descriptor().executable_sha256!="94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6") {
+              connected=write_frame(pipe,CommandResultFrame(request_id,step,false,"exact_alive_paused_aub_policy_binding_changed_no_retry"));
+            }else{
+              xar::ck3_11906::FrontendGuiRouteMailboxContextV1 query{};
+              query.mailbox=&g_main_thread_query_mailbox_v1;query.operation=xar::ck3_11906::FrontendGuiRouteOperationV1::aub_policy_options;
+              auto &policy=query.aub_policy_options;
+              policy.action=select?xar::ck3_12003::AubPolicyMailboxActionV1::select:xar::ck3_12003::AubPolicyMailboxActionV1::query;
+              policy.expected_selected_key=expected_key;policy.desired_key=desired_key;
+              policy.observation.game=&game;policy.observation.expected_snapshot=current;
+              policy.observation.native_revision=state_revision;policy.observation.connection_generation=connection_generation;
+              policy.observation.requested_key="enable_auto_build";
+              const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,xar::ck3_11906::GuiAbiRevisionV1::crozier12003);
+              const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1,&query,query.ticket);
+              std::string response;
+              if(submitted==xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted){
+                auto waited=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8'000);
+                // Retain one original ticket and its private context; never redispatch an action.
+                while(waited==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+                  waited=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2'000);
+                if(waited==xar::ck3_11906::MainThreadQueryWaitResultV1::completed){
+                  xar::game::Snapshot completion{};
+                  if(!xar::game::ReadSnapshot(game,completion) || completion!=current || state_revision!=expected_revision){
+                    policy.query_result.ready=false;policy.query_result.unavailable_reason="pipe_completion_aub_policy_binding_changed";
+                    policy.select_result.postcondition_verified=false;policy.select_result.unavailable_reason="pipe_completion_aub_policy_binding_changed_no_retry";
+                  }
+                  response="{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"";
+                  response+=request_id;response+="\",\"ok\":true,\"result\":";
+                  response+=xar::ck3_12003::SerializeAubPolicyMailboxV1(policy);response+='}';
+                }
+                if(xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket)!=
+                    xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed)response.clear();
+              }
+              if(response.empty())response=CommandResultFrame(request_id,step,false,"aub_policy_owner_submission_or_completion_failed_no_retry");
               connected=write_frame(pipe,response);
             }
 #endif

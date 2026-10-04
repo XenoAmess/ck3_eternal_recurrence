@@ -73,8 +73,20 @@ const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
 #if defined(XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1)
     result.push_back(ck3_11906::kWhitePlayerBusinessVariablesV1Capability);
 #endif
+#if defined(XAR_CK3_ENABLE_AUB_CONFIRM_STATE_PRIVATE_V1)
+    result.push_back(ck3_12003::kAubBusinessStateQueryV1Capability);
+    result.push_back(ck3_12003::kAubConfirmV1Capability);
+#endif
+#if defined(XAR_CK3_ENABLE_AUB_POLICY_OPTIONS_PRIVATE_V1)
+    result.push_back(ck3_12003::kAubPolicyQueryV1Capability);
+    result.push_back(ck3_12003::kAubPolicySelectV1Capability);
+#endif
 #if defined(XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1)
     result.push_back(ck3_11906::kWhiteRenderedTextV1Capability);
+#endif
+#if defined(XAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1)
+    result.push_back(ck3_11906::kWhiteControlActionV1Capability);
+    result.push_back(ck3_11906::kWhiteNumericControlActionV1Capability);
 #endif
     return result;
   }();

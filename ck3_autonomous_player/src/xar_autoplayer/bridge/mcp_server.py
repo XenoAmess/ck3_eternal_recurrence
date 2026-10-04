@@ -3190,6 +3190,44 @@ def create_server(
         """Invoke the selected detail's fixed Confirm once and independently read the actual inner modal."""
         return service.confirm_ingame_decision_item_v1(decision_key, expected_window_kind, expected_revision=expected_revision)
 
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+    def ck3_click_white_numeric_control_v1(control: Literal["diplomacy_plus_1", "martial_plus_1", "stewardship_plus_1", "intrigue_plus_1", "learning_plus_1", "prowess_plus_1"], expected_before_value: int, expected_before_price_text: str, intent_id: str, expected_revision: IngameUiRevisionV1 | None = None) -> dict[str, object]:
+        """One fixed skill+1 callback, separate actual business/text after, actual price values only."""
+        return service.click_white_numeric_control_v1(control, expected_before_value, expected_before_price_text, intent_id, expected_revision=expected_revision)
+
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+    def ck3_click_white_control_v1(control: Literal["age_plus_1"], expected_before_age: int, intent_id: str, expected_revision: IngameUiRevisionV1 | None = None) -> dict[str, object]:
+        """Invoke fixed age+1 once per durable intent, then separately read actual business/text after."""
+        return service.click_white_control_v1(control, expected_before_age, intent_id, expected_revision=expected_revision)
+
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_aub_business_state_v1(*, expected_revision: IngameUiRevisionV1 | None = None) -> dict[str, object]:
+        """Read actual four fixed AUB character flags and complete detail census."""
+        return service.query_aub_business_state_v1(expected_revision=expected_revision)
+
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+    def ck3_confirm_aub_policy_v1(expected_selected_key: Literal[
+        "aub_policy_treasury_only_pause_choice","aub_policy_treasury_only_continue_choice",
+        "aub_policy_personal_only_pause_choice","aub_policy_personal_only_continue_choice",
+        "aub_policy_treasury_first_pause_choice","aub_policy_treasury_first_continue_choice"],
+        *, expected_revision: IngameUiRevisionV1 | None = None) -> dict[str, object]:
+        """Confirm the actual selected AUB policy once; read independent native flags and closure."""
+        return service.confirm_aub_policy_v1(expected_selected_key,expected_revision=expected_revision)
+
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_aub_policy_options_v1(expected_revision: IngameUiRevisionV1 | None = None) -> dict[str, object]:
+        """Read actual fixed six AUB keys/Entry.IsSelected; no enabled/tooltip/Confirm."""
+        return service.query_aub_policy_options_v1(expected_revision=expected_revision)
+
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+    def ck3_select_aub_policy_option_v1(
+        expected_selected_key: Literal["aub_policy_treasury_only_pause_choice","aub_policy_treasury_only_continue_choice","aub_policy_personal_only_pause_choice","aub_policy_personal_only_continue_choice","aub_policy_treasury_first_pause_choice","aub_policy_treasury_first_continue_choice"],
+        desired_key: Literal["aub_policy_treasury_only_pause_choice","aub_policy_treasury_only_continue_choice","aub_policy_personal_only_pause_choice","aub_policy_personal_only_continue_choice","aub_policy_treasury_first_pause_choice","aub_policy_treasury_first_continue_choice"],
+        expected_revision: IngameUiRevisionV1 | None = None,
+    ) -> dict[str, object]:
+        """Invoke actual AUB Entry.Self source OnSelect once; require independent selected readback. Does not Confirm."""
+        return service.select_aub_policy_option_v1(expected_selected_key,desired_key,expected_revision=expected_revision)
+
     @server.tool(annotations=read_only_tool)
     def ck3_query_white_rendered_text_v1(expected_revision: IngameUiRevisionV1 | None = None) -> dict[str, object]:
         """Read nine fixed actual visible White TextBox UTF-8 values; no down state."""
@@ -3926,6 +3964,12 @@ def create_server(
     )
     _forbid_unknown_tool_arguments_v1(server, "ck3_open_ingame_decisions_v1")
     _forbid_unknown_tool_arguments_v1(server, "ck3_query_white_player_business_variables_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_query_aub_business_state_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_confirm_aub_policy_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_query_aub_policy_options_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_select_aub_policy_option_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_click_white_numeric_control_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_click_white_control_v1")
     _forbid_unknown_tool_arguments_v1(server, "ck3_query_white_rendered_text_v1")
     _forbid_unknown_tool_arguments_v1(server, "ck3_query_ingame_decision_item_v1")
     _forbid_unknown_tool_arguments_v1(server, "ck3_select_ingame_decision_item_v1")

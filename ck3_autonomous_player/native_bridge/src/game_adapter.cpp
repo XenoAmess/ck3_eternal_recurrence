@@ -444,6 +444,18 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = ck3_11906::kIngameUiNavigationV1Capability;
   } else if (step == ck3_11906::kIngameUiWindowQueryV1Step) {
     capability = ck3_11906::kIngameUiWindowQueryV1Capability;
+  } else if (step == ck3_12003::kAubBusinessStateQueryV1Step) {
+    capability = ck3_12003::kAubBusinessStateQueryV1Capability;
+  } else if (step == ck3_12003::kAubConfirmV1Step) {
+    capability = ck3_12003::kAubConfirmV1Capability;
+  } else if (step == ck3_12003::kAubPolicyQueryV1Step) {
+    capability = ck3_12003::kAubPolicyQueryV1Capability;
+  } else if (step == ck3_12003::kAubPolicySelectV1Step) {
+    capability = ck3_12003::kAubPolicySelectV1Capability;
+  } else if (step == ck3_11906::kWhiteNumericControlActionV1Step) {
+    capability = ck3_11906::kWhiteNumericControlActionV1Capability;
+  } else if (step == ck3_11906::kWhiteControlActionV1Step) {
+    capability = ck3_11906::kWhiteControlActionV1Capability;
   } else if (step == ck3_11906::kWhiteRenderedTextV1Step) {
     capability = ck3_11906::kWhiteRenderedTextV1Capability;
   } else if (step == ck3_11906::kWhitePlayerBusinessVariablesV1Step) {

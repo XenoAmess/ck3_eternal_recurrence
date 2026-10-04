@@ -10,6 +10,9 @@
 #include "xar_bridge/ingame_decision_item_v1.hpp"
 #include "xar_bridge/white_player_business_variables_v1.hpp"
 #include "xar_bridge/white_rendered_text_v1.hpp"
+#include "xar_bridge/aub_policy_options_mailbox_v1.hpp"
+#include "xar_bridge/aub_business_state_v1.hpp"
+#include "xar_bridge/white_control_action_v1.hpp"
 #include "xar_bridge/ck3_11906.hpp"
 
 #include <cstdint>
@@ -230,6 +233,10 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   action_ingame_decision_item = 31,
   query_white_player_business_variables = 32,
   query_white_rendered_text = 33,
+  aub_business_state = 36,
+  aub_confirm = 37,
+  aub_policy_options = 34, // query and source OnSelect share one fixed private operation.
+  action_white_control = 35,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {
@@ -279,6 +286,10 @@ struct FrontendGuiRouteMailboxContextV1 {
   IngameDecisionItemActionContextV1 ingame_decision_action{};
   WhitePlayerBusinessVariablesContextV1 white_player_business_variables{};
   WhiteRenderedTextContextV1 white_rendered_text{};
+  ck3_12003::AubPolicyMailboxContextV1 aub_policy_options{};
+  ck3_12003::AubBusinessStateContextV1 aub_business_state{};
+  ck3_12003::AubConfirmContextV1 aub_confirm{};
+  WhiteControlActionContextV1 white_control_action{};
 };
 
 bool ExecuteFrontendGuiRouteMailboxV1(

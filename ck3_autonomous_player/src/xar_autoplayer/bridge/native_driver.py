@@ -6435,6 +6435,185 @@ class NativeHeadlessGameplayDriver:
         self._record_command(step, ok=True, result=result)
         return result
 
+    def query_aub_business_state_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
+        """Read four actual current-player character flags and complete detail census."""
+        from .aub_business_state_contract import QUERY_STEP, QUERY_CAPABILITY, policy_binding, normalize_state
+        if QUERY_CAPABILITY not in set(_string_list(self.capabilities().get("bridge_capabilities"))):
+            raise UnsupportedStepError("native DLL does not advertise AUB fixed flags query")
+        starting=self.take_snapshot()
+        try:binding=policy_binding(starting)
+        except ValueError as error:raise BridgeUnavailableError(str(error)) from error
+        revision=starting["revision"];_validate_revision(revision,"snapshot revision")
+        if expected_revision is not None:
+            _validate_revision(expected_revision,"expected_revision")
+            if expected_revision!=revision:raise PreSubmissionRevisionMismatchError("AUB state public revision changed")
+        raw=self._execute_primitive_step(QUERY_STEP,expected_revision=revision,required_capability=QUERY_CAPABILITY,
+            request_fields={"expected_player_character_id":binding["played_character_id"],"expected_game_pid":binding["game_pid"],
+                            "expected_connection_generation":binding["connection_generation"]})
+        try:
+            result=normalize_state(raw,binding);ending=self.take_snapshot()
+            if policy_binding(ending)!=binding or not _same_paused_native_frame(starting,ending):raise ValueError("AUB state crossed actual episode/frame")
+        except ValueError as error:raise BridgeUnavailableError(str(error)) from error
+        result.update({"episode_run_id":binding["episode_run_id"],"queried_revision":revision,
+                       "uses_mouse":False,"uses_keyboard":False,"uses_ocr":False,"full_product_acceptance_credit":False})
+        return result
+
+    def confirm_aub_policy_v1(self, expected_selected_key: str, *, expected_revision: int | None = None) -> dict[str, object]:
+        """Confirm the actual AUB selected policy once, then independently read durable flags/closure."""
+        from .aub_business_state_contract import CONFIRM_STEP, CONFIRM_CAPABILITY, QUERY_CAPABILITY, policy_binding, validate_policy_key, normalize_confirm, actual_confirmed_state
+        from .aub_policy_options_contract import QUERY_CAPABILITY as POLICY_QUERY_CAPABILITY
+        import hashlib
+        import os
+        validate_policy_key(expected_selected_key)
+        required={CONFIRM_CAPABILITY,QUERY_CAPABILITY,POLICY_QUERY_CAPABILITY}
+        if not required.issubset(set(_string_list(self.capabilities().get("bridge_capabilities")))):
+            raise UnsupportedStepError("native DLL lacks AUB Confirm or independent actual observer")
+        starting=self.take_snapshot()
+        try:binding=policy_binding(starting)
+        except ValueError as error:raise BridgeUnavailableError(str(error)) from error
+        revision=starting["revision"];_validate_revision(revision,"snapshot revision")
+        if expected_revision is not None:
+            _validate_revision(expected_revision,"expected_revision")
+            if expected_revision!=revision:raise PreSubmissionRevisionMismatchError("AUB Confirm public revision changed")
+        identity={"game_pid":binding["game_pid"],"episode_run_id":binding["episode_run_id"],"actor_id":binding["played_character_id"],"decision_key":"enable_auto_build"}
+        claim_dir=self._native_driver_state_path().parent/"aub-policy-confirm-actions"
+        key=hashlib.sha256(json.dumps(identity,sort_keys=True).encode("utf-8")).hexdigest();claim=claim_dir/f"{key}.claim.json"
+        if claim.exists():raise BridgeUnavailableError("AUB enable Confirm already claimed for this actual episode; no retry")
+        before=self.query_aub_policy_options_v1(expected_revision=revision)
+        if before["policy"]["selected_key"]!=expected_selected_key:raise BridgeUnavailableError("AUB actual selection changed before Confirm")
+        business_before=self.query_aub_business_state_v1(expected_revision=revision)
+        if business_before["flags"][0]["present"]:raise BridgeUnavailableError("AUB already enabled; no Confirm")
+        current=self.take_snapshot()
+        if policy_binding(current)!=binding or not _same_paused_native_frame(starting,current):raise BridgeUnavailableError("AUB Confirm before queries crossed frame")
+        claim_dir.mkdir(parents=True,exist_ok=True);request_id=f"aub-confirm-{uuid.uuid4().hex}"
+        try:
+            with claim.open("x",encoding="utf-8",newline="\n") as stream:
+                json.dump({"schema":"ck3-aub-enable-confirm-once-claim-v1","request_id":request_id,"binding":binding,"intent":identity,
+                           "expected_selected_key":expected_selected_key,"status":"claimed_result_unknown_no_retry"},stream,ensure_ascii=False,indent=2)
+                stream.write("\n");stream.flush();os.fsync(stream.fileno())
+        except FileExistsError as error:raise BridgeUnavailableError("AUB enable Confirm already claimed; no retry") from error
+        raw=None
+        try:
+            raw=self._execute_primitive_step(CONFIRM_STEP,expected_revision=revision,required_capability=CONFIRM_CAPABILITY,
+                request_fields={"expected_player_character_id":binding["played_character_id"],"expected_game_pid":binding["game_pid"],
+                                "expected_connection_generation":binding["connection_generation"],"expected_selected_key":expected_selected_key},protocol_request_id=request_id)
+            with claim.with_suffix(".result.json").open("x",encoding="utf-8",newline="\n") as stream:
+                json.dump({"request_id":request_id,"raw":raw},stream,ensure_ascii=False,indent=2);stream.write("\n");stream.flush();os.fsync(stream.fileno())
+            result=normalize_confirm(raw,binding,expected_selected_key)
+            admitted=self.take_snapshot()
+            if policy_binding(admitted)!=binding or not _same_paused_native_frame(starting,admitted):raise BridgeUnavailableError("AUB Confirm owner/frame changed before independent observer")
+            later=self.query_aub_business_state_v1(expected_revision=revision)
+            # Strip only driver metadata; native proof fields are preserved verbatim.
+            native_later={k:v for k,v in later.items() if k not in {"episode_run_id","queried_revision","uses_mouse","uses_keyboard","uses_ocr","full_product_acceptance_credit"}}
+            actual_confirmed_state(native_later,binding,expected_selected_key)
+            ending=self.take_snapshot()
+            if policy_binding(ending)!=binding or not _same_paused_native_frame(starting,ending):raise BridgeUnavailableError("AUB Confirm later state crossed owner/frame")
+            result.update({"independent_postcondition_verified":True,"later_actual_observation":later,"episode_run_id":binding["episode_run_id"],"queried_revision":revision,
+                           "action_request_id":request_id,"action_claim_path":str(claim),"native_ack":dict(raw),
+                           "uses_mouse":False,"uses_keyboard":False,"uses_ocr":False,"full_product_acceptance_credit":False})
+        except Exception as error:
+            self._record_command(CONFIRM_STEP,ok=False,result={"raw":raw,"action_claim_path":str(claim)},error=f"{type(error).__name__}: {error}")
+            raise
+        self._record_command(CONFIRM_STEP,ok=True,result=result);return result
+
+    def query_aub_policy_options_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
+        """Read actual six policy keys and Entry.IsSelected; does not Confirm."""
+        from .aub_policy_options_contract import QUERY_STEP, QUERY_CAPABILITY, policy_binding, normalize_policy_result
+        if QUERY_CAPABILITY not in set(_string_list(self.capabilities().get("bridge_capabilities"))):
+            raise UnsupportedStepError("native DLL does not advertise exact .3 AUB policy query")
+        starting=self.take_snapshot()
+        try:binding=policy_binding(starting)
+        except ValueError as error:raise BridgeUnavailableError(str(error)) from error
+        revision=starting["revision"]
+        _validate_revision(revision,"snapshot revision")
+        if expected_revision is not None:
+            _validate_revision(expected_revision,"expected_revision")
+            if expected_revision!=revision:raise PreSubmissionRevisionMismatchError("AUB query public revision changed")
+        raw=self._execute_primitive_step(QUERY_STEP,expected_revision=revision,required_capability=QUERY_CAPABILITY,
+            request_fields={"expected_player_character_id":binding["played_character_id"],"expected_game_pid":binding["game_pid"],
+                            "expected_connection_generation":binding["connection_generation"]})
+        try:
+            result=normalize_policy_result(raw,binding)
+            ending=self.take_snapshot()
+            if policy_binding(ending)!=binding or not _same_paused_native_frame(starting,ending):
+                raise ValueError("AUB query crossed actual episode/frame")
+        except ValueError as error:raise BridgeUnavailableError(str(error)) from error
+        result.update({"episode_run_id":binding["episode_run_id"],"queried_revision":revision,
+                       "uses_mouse":False,"uses_keyboard":False,"uses_ocr":False,"full_product_acceptance_credit":False})
+        return result
+
+    def select_aub_policy_option_v1(self, expected_selected_key: str, desired_key: str, *, expected_revision: int | None = None) -> dict[str, object]:
+        """Source OnSelect once on actual semantic Entry; independent later query."""
+        from .aub_policy_options_contract import SELECT_STEP, SELECT_CAPABILITY, policy_binding, validate_policy_key, normalize_policy_result
+        import hashlib
+        import os
+        validate_policy_key(expected_selected_key);validate_policy_key(desired_key)
+        if SELECT_CAPABILITY not in set(_string_list(self.capabilities().get("bridge_capabilities"))):
+            raise UnsupportedStepError("native DLL does not advertise exact .3 AUB source selection")
+        starting=self.take_snapshot()
+        try:binding=policy_binding(starting)
+        except ValueError as error:raise BridgeUnavailableError(str(error)) from error
+        revision=starting["revision"]
+        _validate_revision(revision,"snapshot revision")
+        if expected_revision is not None:
+            _validate_revision(expected_revision,"expected_revision")
+            if expected_revision!=revision:raise PreSubmissionRevisionMismatchError("AUB select public revision changed")
+        identity={"game_pid":binding["game_pid"],"episode_run_id":binding["episode_run_id"],"actor_id":binding["played_character_id"],
+                  "expected_selected_key":expected_selected_key,"desired_key":desired_key}
+        claim_dir=self._native_driver_state_path().parent/"aub-policy-selection-actions"
+        key=hashlib.sha256(json.dumps(identity,sort_keys=True).encode("utf-8")).hexdigest()
+        claim=claim_dir/f"{key}.claim.json"
+        if claim.exists():raise BridgeUnavailableError("AUB transition already claimed for this actual episode; no retry")
+        before=self.query_aub_policy_options_v1(expected_revision=revision)
+        if before["policy"]["selected_key"]!=expected_selected_key:
+            raise BridgeUnavailableError("AUB actual current selection disagrees before mutation")
+        current=self.take_snapshot()
+        if policy_binding(current)!=binding or not _same_paused_native_frame(starting,current):
+            raise BridgeUnavailableError("AUB selection before query crossed actual episode/frame")
+        claim_dir.mkdir(parents=True,exist_ok=True)
+        request_id=f"aub-policy-{uuid.uuid4().hex}"
+        # Identity excludes revision/generation: reconnect and new ACK IDs cannot
+        # make the same actual semantic transition retryable. Raw claim is fsynced.
+        try:
+            with claim.open("x",encoding="utf-8",newline="\n") as stream:
+                json.dump({"schema":"ck3-aub-policy-selection-once-claim-v1","request_id":request_id,"binding":binding,
+                           "intent":identity,"status":"claimed_result_unknown_no_retry"},stream,ensure_ascii=False,indent=2)
+                stream.write("\n");stream.flush();os.fsync(stream.fileno())
+        except FileExistsError as error:raise BridgeUnavailableError("AUB transition already claimed; no retry") from error
+        raw=None
+        try:
+            raw=self._execute_primitive_step(SELECT_STEP,expected_revision=revision,required_capability=SELECT_CAPABILITY,
+                request_fields={"expected_player_character_id":binding["played_character_id"],"expected_game_pid":binding["game_pid"],
+                                "expected_connection_generation":binding["connection_generation"],
+                                "expected_selected_key":expected_selected_key,"desired_key":desired_key},protocol_request_id=request_id)
+            with claim.with_suffix(".result.json").open("x",encoding="utf-8",newline="\n") as stream:
+                json.dump({"request_id":request_id,"raw":raw},stream,ensure_ascii=False,indent=2)
+                stream.write("\n");stream.flush();os.fsync(stream.fileno())
+            result=normalize_policy_result(raw,binding,action=True,expected_key=expected_selected_key,desired_key=desired_key)
+            # One independent later query. No retry of the mutation or inference
+            # from command ACK/native same-call after alone.
+            later=self.query_aub_policy_options_v1(expected_revision=revision)
+            ending=self.take_snapshot()
+            if policy_binding(ending)!=binding or not _same_paused_native_frame(starting,ending) or later["policy"]["selected_key"]!=desired_key:
+                raise BridgeUnavailableError("AUB later actual selection/frame unverified; no retry")
+            result.update({"later_actual_observation":later,"episode_run_id":binding["episode_run_id"],"queried_revision":revision,
+                           "action_request_id":request_id,"action_claim_path":str(claim),"native_ack":dict(raw),
+                           "uses_mouse":False,"uses_keyboard":False,"uses_ocr":False,"full_product_acceptance_credit":False})
+        except Exception as error:
+            self._record_command(SELECT_STEP,ok=False,result={"raw":raw,"action_claim_path":str(claim)},error=f"{type(error).__name__}: {error}")
+            raise
+        self._record_command(SELECT_STEP,ok=True,result=result)
+        return result
+    def click_white_numeric_control_v1(self, control: str, expected_before_value: int, expected_before_price_text: str, intent_id: str, *, expected_revision: int | None = None) -> dict[str, object]:
+        """Invoke one of six fixed skill+1 controls once; bind actual price before/after."""
+        from .white_numeric_control_action_driver import click_white_numeric_control
+        return click_white_numeric_control(self, control, expected_before_value, expected_before_price_text, intent_id, expected_revision=expected_revision)
+
+    def click_white_control_v1(self, control: str, expected_before_age: int, intent_id: str, *, expected_revision: int | None = None) -> dict[str, object]:
+        """Click fixed age+1 once per durable intent; independently prove business/text after."""
+        from .white_control_action_driver import click_white_control
+        return click_white_control(self, control, expected_before_age, intent_id, expected_revision=expected_revision)
+
     def query_white_rendered_text_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
         """Read nine fixed visible White widget UTF-8 values; selected/down remains unavailable."""
         from .white_rendered_text_contract import (

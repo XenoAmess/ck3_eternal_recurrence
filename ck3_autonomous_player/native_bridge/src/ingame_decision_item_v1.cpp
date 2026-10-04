@@ -1,4 +1,5 @@
 #include "xar_bridge/ingame_decision_item_v1.hpp"
+#include "xar_bridge/aub_business_state_v1.hpp"
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
 #include <Windows.h>
 #include <array>
@@ -484,6 +485,69 @@ bool ExecuteIngameDecisionItemActionV1(IngameDecisionItemActionContextV1 &query,
   }catch(...){out.postcondition_verified=false;out.unavailable_reason="native_decision_action_exception_no_retry";return true;}
 }
 
+bool ExecuteAubConfirmWithStockReceiverV1(ck3_12003::AubConfirmContextV1 &q,MainThreadQueryMailboxV1 &mailbox,
+    const MainThreadExecutionStampV1 &stamp,const ZhongguoScoreboardNativeEnvironmentV1 &env,
+    ZhongguoScoreboardActionDispatchEnvironmentV1 &dispatch) noexcept {
+  using namespace ck3_12003;auto &o=q.result;o={};o.selected_key=q.expected_selected_key;
+  try {
+    const auto reject=[&](const char *why){o.postcondition_verified=false;o.unavailable_reason=why;return true;};
+    bool known=false;for(const auto key:kAubPolicyValueKeysV1)known=known||key==q.expected_selected_key;
+    if(q.observation.requested_key!="enable_auto_build"||!known)return reject("fixed_aub_decision_or_selected_key_unverified");
+    AubPolicyMailboxContextV1 policy{};policy.observation=q.observation;policy.action=AubPolicyMailboxActionV1::query;
+    if(!ExecuteAubPolicyOptionsMailboxV1(policy,mailbox,stamp,env)||!policy.query_result.ready||
+        policy.query_result.selected_key!=q.expected_selected_key)return reject("actual_aub_selected_policy_unqualified");
+    o.keyed_before=policy.keyed_owner_before;o.policy_before=policy.query_result;
+    AubBusinessStateContextV1 state{};state.observation=q.observation;
+    if(!ExecuteAubBusinessStateQueryV1(state,mailbox,stamp,env)||!state.result.available)return reject("actual_aub_business_before_unavailable");
+    o.state_before=state.result;
+    if(!state.result.detail_effectively_visible||!state.result.flags[0].present||*state.result.flags[0].present)return reject("actual_aub_already_enabled_or_unknown_no_confirm");
+    if(!ActionPins(env)||dispatch.gui_abi_revision!=GuiAbiRevisionV1::crozier12003||
+        dispatch.offline_fixture_function_overrides||!dispatch.exact_build_admitted)return reject("loaded_aub_confirm_action_pins_changed");
+    ZhongguoScoreboardAccessV1 access{};void *context=nullptr,*owner=nullptr,*list_root=nullptr;bool visible=false,complete=false;
+    if(!ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,context,owner)||
+        !Root(env,"decisions_view",list_root,visible,complete)||!list_root||!visible||!complete)
+      return reject("actual_aub_confirm_roots_owner_or_modal_unqualified");
+    Pass first{},second{};
+    if(!ModelPass(env,list_root,first,reinterpret_cast<const void *>(stamp.jomini_state))||
+       !ModelPass(env,list_root,second,reinterpret_cast<const void *>(stamp.jomini_state))||first!=second||
+       first.selected_key!="enable_auto_build"||first.detail_actor_reference_key!=o.state_before.played_character_id||
+       !ActualActor(env,o.state_before.played_character_id))return reject("actual_aub_confirm_model_actor_unqualified");
+    void *target=nullptr,*vtable=nullptr;
+    if(!ConfirmReceiver(env,dispatch,first,context,target,vtable,o.target_child_path))return reject("actual_aub_confirm_footer7_receiver_unqualified");
+    o.receiver_qualified=true;
+    // Re-read the actual six Entry.IsSelected values immediately before the sole Confirm.
+    AubPolicyMailboxContextV1 last_policy{};last_policy.observation=q.observation;last_policy.action=AubPolicyMailboxActionV1::query;
+    if(!ExecuteAubPolicyOptionsMailboxV1(last_policy,mailbox,stamp,env)||!last_policy.query_result.ready||
+       last_policy.query_result.selected_key!=q.expected_selected_key||last_policy.query_result.entries!=o.policy_before.entries)
+      return reject("actual_aub_selected_policy_changed_before_confirm");
+    o.selected_policy_revalidated=true;
+    game::Snapshot current{};void *last_context=nullptr,*last_owner=nullptr;Pass last{};
+    if(!q.observation.game||!game::ReadSnapshot(*q.observation.game,current)||current!=q.observation.expected_snapshot||
+       !IsIngameUiPausedOwnerStampV1(mailbox,stamp,GetCurrentThreadId())||!ActualActor(env,o.state_before.played_character_id)||
+       !ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,last_context,last_owner)||last_context!=context||last_owner!=owner||
+       !ModelPass(env,list_root,last,reinterpret_cast<const void *>(stamp.jomini_state))||last!=first)
+      return reject("actual_aub_confirm_predispatch_owner_frame_changed");
+    void *last_target=nullptr,*last_vtable=nullptr;std::string last_path;
+    if(!ConfirmReceiver(env,dispatch,last,context,last_target,last_vtable,last_path)||last_target!=target||last_vtable!=vtable||last_path!=o.target_child_path)
+      return reject("actual_aub_confirm_receiver_changed");
+    o.dispatch_attempted=true; // A failed invocation consumes the caller's persistent once claim too.
+    o.dispatch_invoked=DispatchFixedGuiWidgetNativeV1(&dispatch,game::ZhongguoScoreboardActionV1::open,target,vtable,o.native_handled);
+    if(!o.dispatch_invoked)return reject("native_aub_confirm_dispatch_failed_no_retry");
+    AubBusinessStateContextV1 after{};after.observation=q.observation;
+    if(!ExecuteAubBusinessStateQueryV1(after,mailbox,stamp,env))return reject("aub_confirm_after_query_infrastructure_unavailable_no_retry");
+    o.state_after=std::move(after.result);
+    o.postcondition_verified=o.state_after.available&&o.state_after.detail_census_verified&&o.state_after.detail_tree_complete&&
+      !o.state_after.detail_effectively_visible&&AubFlagsMatchSelectedPolicyV1(q.expected_selected_key,o.state_after)&&
+      o.state_after.game_pid==o.state_before.game_pid&&o.state_after.played_character_id==o.state_before.played_character_id&&
+      o.state_after.date_raw==o.state_before.date_raw&&o.state_after.native_revision==o.state_before.native_revision&&
+      o.state_after.connection_generation==o.state_before.connection_generation;
+    if(!o.state_after.available)o.unavailable_reason="aub_confirm_after_actual_state_unavailable_no_retry";
+    // A known stable after-state may still await closure/effect. The caller
+    // must independently query actual flags/closure; this ACK is never credit.
+    return true;
+  }catch(...){o.postcondition_verified=false;o.unavailable_reason="aub_confirm_exception_result_unknown_no_retry";return true;}
+}
+
 std::string SerializeIngameDecisionItemActionV1(const IngameDecisionItemActionResultV1 &v){
   const bool select=v.action==IngameDecisionItemActionKindV1::select;
   std::string s="{\"schema\":\"ck3-ingame-decision-item-action-v1\",\"step\":\"";
@@ -509,3 +573,11 @@ std::string SerializeIngameDecisionItemActionV1(const IngameDecisionItemActionRe
   s+=",\"after_actual_model\":";s+=SerializeIngameDecisionItemV1(v.after);return s+'}';
 }
 } // namespace xar::ck3_11906
+
+namespace xar::ck3_12003 {
+bool ExecuteAubConfirmV1(AubConfirmContextV1 &q,ck3_11906::MainThreadQueryMailboxV1 &m,
+ const ck3_11906::MainThreadExecutionStampV1 &s,const ck3_11906::ZhongguoScoreboardNativeEnvironmentV1 &e,
+ ck3_11906::ZhongguoScoreboardActionDispatchEnvironmentV1 &d) noexcept {
+ return ck3_11906::ExecuteAubConfirmWithStockReceiverV1(q,m,s,e,d);
+}
+} // namespace xar::ck3_12003
