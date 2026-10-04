@@ -2181,23 +2181,85 @@
         "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
       },
       "effect_ast": {
-        "op": "call_transition",
-        "key": "unavailable_current_script_effect",
-        "args": {
-          "event_key": "knight_becomes_incapable",
-          "source_boundary": [
-            "incapable memory and full noncombat feedback not modeled"
+        "op": "if",
+        "condition": {
+          "op": "state_ref",
+          "path": "root.alive",
+          "value_type": "bool"
+        },
+        "then": {
+          "op": "sequence",
+          "steps": [
+            {
+              "op": "call_transition",
+              "key": "request_effect_12003",
+              "args": {
+                "operation": "add_trait",
+                "target": "root",
+                "payload": {
+                  "trait": "incapable"
+                },
+                "refs": {},
+                "source_event_key": "knight_becomes_incapable"
+              },
+              "dependencies": []
+            },
+            {
+              "op": "call_transition",
+              "key": "request_effect_12003",
+              "args": {
+                "operation": "create_character_memory",
+                "target": "root",
+                "payload": {
+                  "type": "became_incapable_due_to_battle_concussion",
+                  "source_result_scope": "new_memory"
+                },
+                "refs": {},
+                "source_event_key": "knight_becomes_incapable"
+              },
+              "dependencies": []
+            },
+            {
+              "op": "call_transition",
+              "key": "request_effect_12003",
+              "args": {
+                "operation": "set_variable",
+                "target": "battle_memory",
+                "payload": {
+                  "name": "battle_location",
+                  "requires_scope_from_request": "create_character_memory",
+                  "source_scope_alias": "new_memory",
+                  "saved_scope_alias": "battle_memory"
+                },
+                "refs": {
+                  "value": "root.location"
+                },
+                "source_event_key": "knight_becomes_incapable"
+              },
+              "dependencies": [
+                "root.location"
+              ]
+            }
           ]
         },
-        "dependencies": []
+        "else": {
+          "op": "call_transition",
+          "key": "no_op",
+          "args": {},
+          "dependencies": []
+        }
       },
       "transition_tags": [
-        "add_incapable",
-        "character_stats_recompute",
-        "same_day_recompute_unverified"
+        "request_add_incapable",
+        "request_battle_concussion_memory",
+        "request_memory_battle_location",
+        "native_trait_commit_unobserved",
+        "native_memory_commit_unobserved"
       ],
       "state_dependencies": [
-        "root.is_incapable"
+        "root.alive",
+        "root.is_incapable",
+        "root.location"
       ]
     },
     {
@@ -4042,5 +4104,5 @@
       "current_12003_inventory_rows_without_bounded_effect_implementation"
     ]
   },
-  "canonical_manifest_sha256": "024D5618BB3AD8AE633AB127669441DD1AB6C2344C3745B0FAE310E515ADE7C4"
+  "canonical_manifest_sha256": "609F94AADD131F6BAA9D20C78F598FEB39410D312261756DDC3FC03381D9C858"
 }

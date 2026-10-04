@@ -68,9 +68,9 @@ EXECUTABLE_SHA256_12003 = (
     "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
 )
 STOCK_PHASE_EVENT_MANIFEST_SHA256_12003 = (
-    "024D5618BB3AD8AE633AB127669441DD1AB6C2344C3745B0FAE310E515ADE7C4"
+    "609F94AADD131F6BAA9D20C78F598FEB39410D312261756DDC3FC03381D9C858"
 )
-PHASE_EVENT_TRANSITION_VERSION_12003 = "ck3-1.20.0.3-caller-selected-primary-and-requested-effects-v2"
+PHASE_EVENT_TRANSITION_VERSION_12003 = "ck3-1.20.0.3-caller-selected-primary-and-requested-effects-v3"
 _MANIFEST_RESOURCE = "data/ck3_1_20_0_3_stock_combat_phase_events.json"
 SUPPORTED_SELECTED_EVENT_KEYS_12003 = (
     "commander_none",
@@ -78,6 +78,7 @@ SUPPORTED_SELECTED_EVENT_KEYS_12003 = (
     "commander_maimed",
     "commander_killed",
     "knight_none",
+    "knight_becomes_incapable",
     "knight_wounded",
     "knight_maimed",
     "knight_killed",
@@ -435,7 +436,8 @@ def _request_value_12003(state, path):
     return state.refs.get(path)
 
 
-def _request_effect_12003(state, *, operation, target, payload=None, refs=None):
+def _request_effect_12003(state, *, operation, target, payload=None, refs=None,
+                          source_event_key="knight_killed"):
     values = deepcopy(dict(payload or {}))
     missing = []
     for key, path in (refs or {}).items():
@@ -446,7 +448,7 @@ def _request_effect_12003(state, *, operation, target, payload=None, refs=None):
     character_id = (state.root_character_id if target == "root" else
                     state.selected_enemy_character_id if target == "selected_enemy_knight" else None)
     record = {"transition": "selected_effect_request", "stage": "requested",
-        "operation": operation, "source_event_key": "knight_killed",
+        "operation": operation, "source_event_key": source_event_key,
         "target_scope": target, "target_character_id": character_id,
         "payload": values, "unavailable_operands": missing,
         "committed": False, "queue_admission_observed": False,
@@ -691,6 +693,7 @@ def execute_selected_phase_event_12003(
             "rules_source": stock.rules_source, "canonical_manifest_sha256": stock.canonical_manifest_sha256,
             "source_files": [{"relative_path": source.relative_path, "sha256": source.sha256} for source in stock.files],
             "loaded_playset_verified": stock.completeness.loaded_playset_verified,
+            "knight_incapable_source_api_sha256": "F4DC41DD8D419DCA6DD5BED7A08CC3C426A16EAEFCB4F532ABE54CBA73D70D57",
             "knight_killed_source_api_sha256": KNIGHT_KILLED_SOURCE_API_SHA256_12003,
             "stock_source_closure_sha256": "76F752C0A794346D4FDCD29FB8721B1A878ED6108B6C2DBA226CFDDD3D797E58",
             "primary_feedback_source_ledger_sha256": "AC7BC5B9D2928E191B0EDCE8AAA9F4C2E645EBC162B7DC8D3869BB1419DBDB9E",
