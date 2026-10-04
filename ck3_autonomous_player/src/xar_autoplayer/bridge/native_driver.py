@@ -28037,6 +28037,8 @@ def _action_steps(
             ):
                 if _positive_native_id(province_id):
                     hostile_threat_province_ids.add(int(province_id))
+        # Intercept targets include observed hostile route/target provinces.
+        target_provinces.update(hostile_threat_province_ids)
         # Active-combat retreat needs a destination seed outside the combat
         # province.  Enemy positions and war objectives alone are attack
         # targets, not retreat destinations.  Advertise only read-only
