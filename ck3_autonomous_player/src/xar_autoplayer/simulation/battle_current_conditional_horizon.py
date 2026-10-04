@@ -27,6 +27,7 @@ from .battle_current_future_refresh import (
 from .battle_current_next_day import CarriedBattleCondition
 from .battle_current_normal_finalizer import (
     CurrentNormalFinalizerManagerInputs, CurrentNormalSummaryInputs,
+    CurrentNormalParticipantResourceInputs,
     project_current_normal_finalizer,
 )
 from .battle_current_phase_transition import (
@@ -62,6 +63,7 @@ class ConditionalTerminalInputs:
     normal_finalizer_manager: CurrentNormalFinalizerManagerInputs | None = None
     normal_finalizer_winner_raw: Literal[-1, 0, 1] | None = None
     normal_summary_inputs: CurrentNormalSummaryInputs | None = None
+    normal_participant_resource_inputs: CurrentNormalParticipantResourceInputs | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -159,6 +161,7 @@ def _terminal(condition: CurrentBattleCondition, inputs: ConditionalTerminalInpu
             winner_raw=raw_winner,
             wipe_raw=wipe if inputs.wipe_raw is None else inputs.wipe_raw,
             normal_summary_inputs=inputs.normal_summary_inputs,
+            normal_participant_resource_inputs=inputs.normal_participant_resource_inputs,
         )
         return result, [gap.missing_input for gap in result["typed_gaps"]]
     required = []

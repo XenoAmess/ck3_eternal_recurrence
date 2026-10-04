@@ -53,6 +53,33 @@ class CurrentNormalSummaryInputs:
 
 
 @dataclass(frozen=True, slots=True)
+class CurrentNormalOwnerRow:
+    """One selected-side native row+8 FullID and row+0C signed32 weight."""
+
+    participant_full_id: int
+    weight: int | None
+
+
+@dataclass(frozen=True, slots=True)
+class CurrentNormalParticipantResourceInputs:
+    """Conditional native enumeration/membership and immediate-store inputs.
+
+    The ordered2650F50 vector and264E380 membership are explicit inputs, not
+    inferred from the player, winner, commander or Army list. A before value
+    is at285EE87 for its supplied participant occurrence; post-store hooks do
+    not establish a before value for any later occurrence of the same ID.
+    """
+
+    ordered_participant_full_ids: tuple[int, ...] | None
+    attacker_membership_by_participant: Mapping[int, bool | None]
+    owner_rows_by_side: Mapping[int, tuple[CurrentNormalOwnerRow, ...] | None]
+    resolved_receiver_full_id_by_participant: Mapping[int, int | None]
+    living_extension_present_by_participant: Mapping[int, bool | None]
+    gold_before_raw_by_participant: Mapping[int, int | None]
+    source_context: Mapping[str, object]
+
+
+@dataclass(frozen=True, slots=True)
 class CurrentNormalFinalizerGap:
     stage: str
     missing_input: str
@@ -253,6 +280,117 @@ def _project_normal_summary(account, inputs, winner_raw):
     }
 
 
+def _normal_participant_share(rows, participant):
+    if rows is None:
+        return None, None, None, None, "selected side ordered owner rows"
+    match = next((row for row in rows if
+                  (row.participant_full_id & 0xFFFFFFFF) == (participant & 0xFFFFFFFF)), None)
+    if match is None:
+        return None, None, None, 0, None
+    weight = None if match.weight is None else _signed(match.weight, 32)
+    if any(row.weight is None for row in rows):
+        return None, weight, None, None, "selected side signed32 owner weights"
+    total = 0
+    for row in rows:
+        total = _signed(total + _signed(row.weight, 32), 32)
+    if total <= 0:
+        return total, weight, None, 0, None
+    quotient = trunc_div_toward_zero(weight, total)
+    return total, weight, quotient, _signed(quotient * FIXED_SCALE, 64), None
+
+
+def _project_normal_participant_resources(summary, inputs):
+    """258BF70 owner shares and310DB40's closed immediate slot0 gold store."""
+    participants, gaps = [], []
+    original = ((None,) * 10 if summary is None else summary["summary_raw_slots"])
+    if inputs.ordered_participant_full_ids is None:
+        gaps.append(CurrentNormalFinalizerGap(
+            "participant_enumeration", "explicit ordered2650F50 participant FullIDs", "2650F50"))
+    for participant in inputs.ordered_participant_full_ids or ():
+        missing = []
+        membership = inputs.attacker_membership_by_participant.get(participant)
+        selected = None if membership is None else 0 if membership else 1
+        if selected is None:
+            total = weight = quotient = share = None
+            missing.append(("participant_membership", "explicit264E380 attacker membership", "264E380"))
+        else:
+            total, weight, quotient, share, reason = _normal_participant_share(
+                inputs.owner_rows_by_side.get(selected), participant)
+            if reason is not None:
+                missing.append(("participant_share", reason, "258C27D..258C305"))
+        scaled = []
+        for slot, value in enumerate(original):
+            if share == 0:
+                scaled.append(0)
+            elif share is None or value is None:
+                scaled.append(None)
+                if share is not None:
+                    missing.append(("participant_scaling", f"original summary slot{slot} raw", "258C330..258C3C4"))
+            else:
+                scaled.append(_normal_summary_mul_raw(value, share)[0])
+        resolved = inputs.resolved_receiver_full_id_by_participant.get(participant)
+        genuine = (resolved is not None and (participant & 0xFFFFFFFF) != 0xFFFFFFFF
+                   and (resolved & 0xFFFFFFFF) == (participant & 0xFFFFFFFF))
+        beneficiary = _signed(resolved, 32) if genuine else None
+        delta = scaled[0]
+        store = {
+            "status": "partial", "branch": "slot0_delta_unobserved",
+            "store_reached": None, "beneficiary_character_id": beneficiary,
+            "field": "Character+0x1B0/extension+0x100",
+            "currency_alias": "personal_gold", "scale": FIXED_SCALE,
+            "before_raw_q100000": None, "delta_raw_q100000": delta,
+            "after_at_store_raw_q100000": None, "final_gold_raw_q100000": None,
+            "actual_balance_committed": False,
+        }
+        if delta == 0:
+            store.update(status="skipped", branch="raw_zero_slot_skipped", store_reached=False)
+        elif delta is None:
+            missing.append(("slot0_store", "known scaled slot0 raw delta", "310DBF6"))
+        elif not genuine:
+            store["branch"] = "fallback_receiver_unclosed"
+            missing.append(("slot0_receiver", "generation-matched actual Character FullID", "258C403..258C425"))
+        else:
+            extension = inputs.living_extension_present_by_participant.get(participant)
+            if extension is False:
+                store.update(status="skipped", branch="extension_null_skipped", store_reached=False)
+            elif extension is None:
+                store["branch"] = "extension_presence_unobserved"
+                missing.append(("slot0_receiver", "actual Character+1B0 pointer presence", "310DC18..310DC22"))
+            else:
+                store.update(branch="immediate_store", store_reached=True)
+                before = inputs.gold_before_raw_by_participant.get(participant)
+                if before is None:
+                    missing.append(("slot0_store", "extension+100 value immediately before store", "285EE87"))
+                else:
+                    before = _signed(before, 64)
+                    store.update(status="available", before_raw_q100000=before,
+                                 after_at_store_raw_q100000=_signed(before + delta, 64))
+        row_gaps = tuple(CurrentNormalFinalizerGap(stage,
+            f"participant{participant}: {reason}", entry) for stage, reason, entry in missing)
+        gaps.extend(row_gaps)
+        participants.append({
+            "participant_full_id": participant, "selected_side_index": selected,
+            "side_total_signed32": total, "owner_weight_signed32": weight,
+            "share_integer_quotient": quotient, "share_raw_q100000": share,
+            "scaled_raw_slots": tuple(scaled),
+            "resolved_receiver_full_id": resolved, "beneficiary_character_id": beneficiary,
+            "slot0_writeback": store, "typed_gaps": row_gaps,
+        })
+    return {
+        "scope_kind": "conditional_participant_scaling_and_immediate_gold_store",
+        "status": "partial" if gaps else "available", "source_context": dict(inputs.source_context),
+        "participants": tuple(participants), "typed_gaps": tuple(gaps),
+        "summary_recomputed": False, "summary_modified_between_participants": False,
+        "actual_evaluator_executed": False, "actual_balance_committed": False,
+        "complete_receiver_effects": False, "complete_native_finalizer": False,
+        "unmodeled_effects": ("2650F50 enumeration and264E380 membership bodies",
+            "fallback receiver resource semantics", "nonzero slots1..9 writer effects",
+            "post-store queries/hooks and return-time gold", "Stats38 and full terminal/war settlement"),
+        "prior_losses_reapplied": False, "owner_hard_ledger_debited": False,
+        "actual_game_days_advanced": 0,
+    }
+
+
 def project_current_normal_finalizer(
     condition: CurrentBattleCondition, *,
     manager: CurrentNormalFinalizerManagerInputs,
@@ -266,6 +404,7 @@ def project_current_normal_finalizer(
     winner_raw: Literal[-1, 0, 1] | None = None,
     wipe_raw: bool | None = None,
     normal_summary_inputs: CurrentNormalSummaryInputs | None = None,
+    normal_participant_resource_inputs: CurrentNormalParticipantResourceInputs | None = None,
 ) -> dict[str, object]:
     """Compose covered manager intent and normal numerics without mutations.
 
@@ -276,6 +415,8 @@ def project_current_normal_finalizer(
     is separate from the still-partial complete native effects model. Optional
     summary inputs supply conditional evaluated raws only; the raw Result copy
     projection does not run scripts or commit participant resource balances.
+    Participant context can project the immediate slot0 gold store from explicit
+    receiver/before witnesses; later hooks and final balances remain unmodeled.
     """
     if winner_raw not in (None, -1, 0, 1):
         raise ValueError("winner_raw requires -1, 0, 1 or unavailable None")
@@ -296,6 +437,7 @@ def project_current_normal_finalizer(
         "wipe_raw": wipe_raw, "result_present_input": manager.result_present,
         "backing_reaggregation": None, "normal_numeric_accounting": None,
         "normal_summary_projection": None,
+        "participant_resource_projection": None,
         "losing_side_hard_raw_q100000": None,
         "war_battle_row_projection": {
             "status": "not_produced" if dispatch["normal_result_intent"] is False
@@ -337,6 +479,9 @@ def project_current_normal_finalizer(
         if normal_summary_inputs is not None:
             output["normal_summary_projection"] = _project_normal_summary(
                 account, normal_summary_inputs, winner_raw)
+        if normal_participant_resource_inputs is not None:
+            output["participant_resource_projection"] = _project_normal_participant_resources(
+                output["normal_summary_projection"], normal_participant_resource_inputs)
         for missing in backing.get("unavailable_inputs", ()):
             gaps.append(CurrentNormalFinalizerGap("backing_count", missing, "2633340"))
         for row in backing.get("sides", ()):
