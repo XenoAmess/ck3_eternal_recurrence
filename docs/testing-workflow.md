@@ -2945,3 +2945,12 @@ R9 已按此方式直接冷启动 PID101408，恢复 h98 后完成暂停只读�
 只挂载原 scripted effects、主动省略决议／GUI 的外置夹具，可能同时省掉某个初始化 flag 的唯一读取者。TED 1.20.0.2 R0005 的两条 `tea_fixture_initialized` 未使用诊断就是这种投影差异：effect 写入该 flag，原决议的一次初始化 guard 读它，而 engine fixture 未带决议。
 
 应把原 guard 放入替代入口的真实 trigger，继续阻止已初始化对象再次进入；不得添加只为压日志的无业务读取、过滤原记录或宣称修复已实机通过。本次 `tea120.1` 候选保留核心 effects、marker、作用域修复及后续事件的精确输入，changed-event parser 通过；unused flag 的引擎归零仍待新 run。源码／挂载树有明确诊断区域时，先绑定并解释该差异，不能把去除诊断后的比较误记为原始文件逐字节相等。详见 [续接报告](ck3-1.20-aub-ted-log-continuation-2026-10-03.md)。
+
+
+### 实测：固定 expected-date 与自然推进后的抓取
+
+`capturehelper --expected-date` 的固定值适用于零日数事务。原生自然推进成功后，下一帧日期会改变；后续只读抓取与正常 SAVE 应绑定实际新日期。
+
+Root cached 实测：sole advance 将 `53246688 → 53246712` 自然推进 1 天；随后 helper 仍使用旧 fixed expected-date，后置帧检查报 HARNESS-RED 且当次未 SAVE。Root 没有再次推进，改用实际新日期 `53246712` 做只读读回并正常 SAVE，SDK 4926 closed GREEN。该 helper RED 不代表 native advance 失败，也不能据此重复 advance。
+
+证据边界：本条只复用 Root 提供的已缓存结果；本 lane 未读取原始推进、control 或 SAVE packet，未新增生产门禁或测试。该 1 天已计入 `4266 / resume 1113 / 2026-10-04 +241`，只读查询另加 0 天。

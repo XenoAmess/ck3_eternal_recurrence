@@ -88,3 +88,14 @@ Root actual03 **SDK64107 closed/exit0、GREEN** 独立确认date_raw **53246760*
 资格仍为 **production-live primitive：单次提议及其后独立观察**，peace settlement未完成。回复scheduler未闭合不阻断ordinary gameplay，本追加不新增门禁或acceptance预测。sealed post-action delivery与CAPITAL-CACHE-FACT只复用原owner缓存，actual03只使用Root sole consumer提供的事实及receipt链接；本doc consumer新增0日/动作，不读取raw或运行下一轮SDK。
 
 封存输入：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-settlement-typed-action/white-peace-current-defender-g54/post-action-consumption/ROOT-ACTUAL-CONSUMER-DELIVERY.json`、同根 `raw-query-lane/actual-authorized-after-reply-003-005-007-consumed-01/CAPITAL-CACHE-FACT.json`；Root actual03索引仅链接 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v51/ROOT-ACTUAL-REPLY-DAY-03-RECEIPT.json`，未读取该receipt/raw。
+
+
+## 2026-10-04：WarID 16777231 独立退出，结束类型仍未观测
+
+同一 ordinary episode `native-29829-2bc2d599f7f9`、Robert 29829、唯一一次白和平提议后，sealed 日账的 exact WarID membership 为最后仍在 `53246784/native874/pub5`、首次不在 `53246808/native877/pub8`：reply03 + march02，共 5 个自然日。DAY55 `53248080/native1089/pub220` 是后来仍保持消失的观察；不能写成 58 天才结束。边界缓存 SHA `dc0e203d2a77e71cd7822267730734c9b2f62168accd60ec57facbed24c50060`。
+
+readiness 为 `production-live primitive`；有限“单次提议 → 自然日 → 独立 exact old WarID 退出”观察循环已闭合。剩余 `50331736/129`，player-relative score `-10/-26`。未观测 settlement type、recipient final answer、truce 或玩家战斗胜利；报价、ACK 和 WarID 消失不能独立证明白和平被接受。已有 A/B 原生输入账本中的 queue/history/final-reply 观测缺口沿已冻结施工入口继续，不阻断当前 battle。
+
+下一真实暂停停点复用现有只读口：`ck3_query_title_holder_v1(title_id=2128, expected_revision=<fresh public integer>)`；`ck3_query_campaign_root_context_v1(expected_revision=<fresh public integer>)` 整组读取已知 5 县 `2102/2111/2115/2142/2173` 与 duchy `2141`，不逐县重复查询。2128 不在本人 held partition，需独立 holder 读回。资源余额复用当停点已有 snapshot cache 的 `played_character_gold/prestige/piety` raw Q100000；必要时 Root 选择现有 `ck3_take_snapshot(include_native_command_history=false)`，收入不当余额，不新增 getter、门禁或 SDK 执行。后续结束类型与 stock effects 只按实际 published readback 陈述。
+
+DAY55 为 paused/map-ready、Robert alive，event/interaction 实际 author cache 为 null，normal checkpoint saved 且 matches final date；该 null 不证明对方接受。累计 `4323 / resume 1170 / 2026-10-04 +298`，本只读报告追加 0 天。仅复用 Root/owner decoded cache 与既有 receipts；不重消费日级 raw。
