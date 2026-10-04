@@ -504,3 +504,13 @@ CK3 **1.20.0.3** 原版 `events/_events.info:62–66` 明确 fullscreen_event �
 | 负勇武 modifier 与净账本 -1 已保存，但有效勇武未下降；其他五项正常 | 原版 `negate_prowess_penalty_add` 抵消负修正；R0007 实际 Norman culture 保存 `tradition_chanson_de_geste` 的5点抵消与 `ethos_bellicose` 的 +2勇武，计算是 `base10 + positive2 + min(0, negative(-1) + negate5) = 12` | 同时核对原始账本、缩放 modifier、基础数组及有效值，并核对实际 culture/faith 等抵消来源。平坦 ±1 用例排除或耗尽抵消额度；保留有抵消用例验证 raw 守恒，不追加扣点来追赶 UI |
 
 同 EXE 的实际 enum18 分支与定义表、signed64 存档、文化块和源码 SHA 见[追加的勇武专题](../ck3-native-ai/character-skill-trigger-readback-1.20.0.3-2026-10-04.md)。普通 `prowess = -1` 有原版 character modifier 使用先例；`prowess_no_portrait` getter 仍由总值减去相关 modifier 得到，不能当作基础值。
+
+## 缺失 variable list 的长度读取也需要惰性边界（2026-10-04）
+
+`has_variable_list` 与 `variable_list_size` 并列在 AND/OR 中，不能阻止缺失列表的长度读取。
+白绮双加载 R0004 的默认主版配置在 tooltip 求值中由四处 commander/personality 长度读取产生 552 条生产错误；
+两产品改为 `trigger_if` 的 limit 仅检查列表存在，body 才比较长度，`trigger_else` 仍要求 count=0。
+存在列表时 size=count、上限2/3及原 count 上下界仍保留，不能用虚假空列表或预设结果消除诊断。
+原版 `.3` `tgp_japan_decision_events.txt:1423–1429` 使用同形 presence-gated 长度读取，`tgp_china_career_events.txt:209–218` 提供 paired trigger_else。
+changed parser 只证明语法；[fresh R0006](../ck3-1.20.0.3-vivhite-compatibility-2026-10-04.md#白绮先加载-r0006核心通过空列表错误消失真实-decisions-入口通过)
+才证明四类生产缺列表签名归零且原购买金额、配置和实际交付条件继续通过。660条不同的fixture预览错误仍在，不由该修复外推为零日志。
