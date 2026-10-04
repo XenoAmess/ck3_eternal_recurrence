@@ -10425,6 +10425,19 @@ class GameplayBridgeService:
             raise BridgeUnavailableError("typed Confirm lacks later actual inner modal proof")
         return result
 
+    def query_white_rendered_text_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
+        """Read nine actual fixed visible TextBox values; no selected/down credit."""
+        from .white_rendered_text_contract import SCHEMA, STEP
+        method = getattr(self.driver, "query_white_rendered_text_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks fixed actual White text query")
+        result = method(expected_revision=expected_revision)
+        if (not isinstance(result, dict) or result.get("schema") != SCHEMA or result.get("step") != STEP
+                or result.get("read_only") is not True or result.get("selected_down_available") is not False
+                or result.get("full_gui_acceptance_credit") is not False):
+            raise BridgeUnavailableError("White text backend returned malformed data or unsupported down credit")
+        return result
+
     def query_white_player_business_variables_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
         """Observe actual player variable presence/type/value independently of panel rendering."""
         from .white_player_business_variables_contract import SCHEMA, STEP

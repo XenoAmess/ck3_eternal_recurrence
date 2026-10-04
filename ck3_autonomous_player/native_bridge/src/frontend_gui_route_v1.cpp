@@ -813,6 +813,11 @@ bool ExecuteFrontendGuiRouteMailboxV1(
     return ExecuteWhitePlayerBusinessVariablesV1(query->white_player_business_variables, *query->mailbox, stamp);
   }
 #endif
+#if defined(XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1)
+  if (query->operation == FrontendGuiRouteOperationV1::query_white_rendered_text) {
+    return ExecuteWhiteRenderedTextV1(query->white_rendered_text, *query->mailbox, stamp, query->environment);
+  }
+#endif
   if (query->operation == FrontendGuiRouteOperationV1::ingame_ui) {
     // Failure metadata is observed at this original application event boundary,
     // never copied from the caller's expected snapshot.

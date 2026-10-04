@@ -402,6 +402,9 @@ if(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1 AND
   message(FATAL_ERROR "Decisions opener requires existing frontend main-thread admission")
 endif()
 
+option(XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1
+  "Admit exact .3 nine fixed actual White TextBox values; no down state" OFF)
+
 option(XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1
   "Admit exact .3 fixed current-player White configuration variable observation" OFF)
 
@@ -1159,6 +1162,7 @@ add_test(NAME ck3_12003_mercenary_hire_action
 
 foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1
+    XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1
     XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1
     XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1
     XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1
@@ -1323,6 +1327,7 @@ add_library(xar_ck3_bridge SHARED
   src/ingame_decisions_opener_v1.cpp
   src/ingame_decision_item_v1.cpp
   src/white_player_business_variables_v1.cpp
+  src/white_rendered_text_v1.cpp
   src/frontend_game_rules_v1.cpp
   src/game_adapter.cpp
   src/government_runtime_adapter_observer_v1.cpp
@@ -1898,6 +1903,10 @@ endif()
 if(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1=1)
 endif()
+if(XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1=1)
+endif()
+
 if(XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1=1)
 endif()
@@ -7680,4 +7689,14 @@ if(BUILD_TESTING AND WIN32)
     FIXTURES_SETUP commander_movement_speed_wire)
   set_tests_properties(xar_ck3_12003_commander_movement_speed_registered_mcp PROPERTIES
     FIXTURES_REQUIRED commander_movement_speed_wire)
+endif()
+
+# Fixed text memory/UTF-8 tests; this target never starts or attaches CK3.
+if(XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1)
+  add_executable(xar_ck3_white_rendered_text_v1_test tests/white_rendered_text_v1_test.cpp)
+  target_include_directories(xar_ck3_white_rendered_text_v1_test PRIVATE include)
+  target_compile_features(xar_ck3_white_rendered_text_v1_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_white_rendered_text_v1_test PRIVATE NOMINMAX)
+  target_compile_options(xar_ck3_white_rendered_text_v1_test PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/UNDEBUG>)
+  add_test(NAME xar_ck3_white_rendered_text_v1_test COMMAND xar_ck3_white_rendered_text_v1_test)
 endif()

@@ -6435,6 +6435,48 @@ class NativeHeadlessGameplayDriver:
         self._record_command(step, ok=True, result=result)
         return result
 
+    def query_white_rendered_text_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
+        """Read nine fixed visible White widget UTF-8 values; selected/down remains unavailable."""
+        from .white_rendered_text_contract import (
+            STEP, CAPABILITY, business_binding, normalize_white_rendered_text,
+        )
+        from .ingame_decisions_open_contract import EXE_SHA256
+        if expected_revision is not None:
+            _validate_revision(expected_revision, "expected_revision")
+            if expected_revision >= 2**64:
+                raise ValueError("expected_revision must fit uint64")
+        if CAPABILITY not in set(_string_list(self.capabilities().get("bridge_capabilities"))):
+            raise UnsupportedStepError("native DLL does not advertise exact .3 White text variables")
+        starting = self.take_snapshot()
+        try:
+            binding = business_binding(starting)
+            revision = starting["revision"]
+            _validate_revision(revision, "snapshot revision")
+            if revision >= 2**64:
+                raise ValueError("snapshot revision must fit uint64")
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        if expected_revision is not None and expected_revision != revision:
+            raise PreSubmissionRevisionMismatchError("White text query public revision changed")
+        raw = self._execute_primitive_step(
+            STEP, expected_revision=revision, required_capability=CAPABILITY,
+            request_fields={"expected_player_character_id": binding["played_character_id"],
+                            "expected_game_pid": binding["game_pid"],
+                            "expected_connection_generation": binding["connection_generation"]},
+        )
+        try:
+            result = normalize_white_rendered_text(raw, binding)
+            ending = self.take_snapshot()
+            if business_binding(ending) != binding or not _same_paused_native_frame(starting, ending):
+                raise ValueError("White text query crossed its episode/frame")
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        result.update({"read_only": True, "game_version": "1.20.0.3", "executable_sha256": EXE_SHA256,
+                       "episode_run_id": binding["episode_run_id"], "queried_revision": revision,
+                       "uses_mouse": False, "uses_keyboard": False, "uses_ocr": False,
+                       "full_gui_acceptance_credit": False})
+        return result
+
     def query_white_player_business_variables_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
         """Read eight fixed actual current-player variables; no panel/text/down/price credit."""
         from .white_player_business_variables_contract import (
