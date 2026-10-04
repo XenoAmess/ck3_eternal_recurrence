@@ -1884,3 +1884,15 @@ flowchart LR
 ~~~
 
 Delivery, final source hashes, the two-fixture receipt and Oct4/W40 fields: [P1 ROOT-DELIVERY](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-current-condition-implementation-p1-v55/ROOT-DELIVERY.json). Root owns source adoption and the next actual main-frame qualification; normal play continues.
+
+### 2026-10-04：P2 当前 main 单 tick 后的显式接续（离线 static-ready）
+
+Exact .3 的既有树闭合 2AD8000 → 258C640：manager 先增加 phase_day(+6B4)；main 非正 stored fighting／已强制 winner 的早退发生在 roll 前；+705 是 processing flag。roll 仅在 +6E4=0 到期，继续 main 时回写 (old+1) % loaded(5C69B48)，随后 2587A90 重算优势。外层日 admission、动态 roster／stats／events／counter 刷新及 native RNG 仍在原生树虚线分支，不能从 frozen 一帧推成原生多日。
+
+新增 battle_current_next_day.py：carry_frozen_main_tick(condition, result) 保留原生顺序，接续已算出的 current／soft／main-hard、独立 backing 整数及 owner ledger 一次；stored cache、source frame 和 entry provenance 仍是原观测，derived after-sums 单列。prepare_next_main_tick(carried, refreshed_condition=...) 将调用方提供的完整 fresh condition 作为权威替换，不再扣旧预测 loss。没有 fresh condition 时明确为 conditional/frozen 接续，不自动刷新日期、阶段、优势、属性、roster 或 counter census。
+
+cadence 仅使用 SAME normalized snapshot 可选 roll_cadence_interval 的正观测值，或具有来源的显式 roll_days；无 native 默认 3，旧 absent/null 与合法观测 0 保留。cadence 推演只属 continuing-main 假设；已知早退不推进。该 getter 的 native/wire 资格由独立 battle-roll-cadence-control-v56 包负责，P2 不改旧 P1/core/contract。
+
+唯一 focused attempt1 的 **2/2 GREEN** 覆盖 production normalizer→P1 adapter→P1 runner→新 carry/prepare：Q 状态与 native order、backing／owner ledger 分离、caller DrawState、显式 interval5/counter4→0、stored cache 与 derived sum 分离，以及 fresh authority 不重复扣损。属于 synthetic paused DTO 的离线验证；新 live、game day、SDK／pipe／window、完整多日、完整 MC 与胜率均为零或未实现。
+
+源码树与三文件最小 LF 交付：Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-current-next-day-p2-offline/ROOT-DELIVERY.json；原生树先于实现落盘，fixture 不重跑。下一接口是 caller 提供 next actual normalized condition 与动态 roster／属性刷新；本模型输出不替代下一帧原生观测。
