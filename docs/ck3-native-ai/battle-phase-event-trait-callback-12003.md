@@ -522,3 +522,50 @@ The earliest closed cadence input is **1000 items per invocation**, together wit
 Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-modifier-manager-destination-admission-v74/source/{ROOT-DELIVERY.json,SOURCE-RECEIPT.json,TREE.md,READ-COST.json}` and `cached-admission-role/{ROOT-DELIVERY.json,TREE.md,ROLE.json,OCT5-W41-FIELDS.json}`. Actual new EXE reads: **851 B = 595 B code + 132 B exact `.pdata` rows + 124 B necessary unwind**, across two logical bodies and six physical code fragments. B interpreted cached continuations only, with zero new EXE read. An attempted cached-row lookup raised FileNotFound before any EXE read; the corrected single 12 B metadata read is included in the cost and the attempt is retained by source A.
 
 Readiness advances to range-insertion orchestration, complete first-method normal control and concrete invocation progress. Primitive leaf implementations, actual `2A3EF00` next-stage effects, old worker `2A41170`, external calendar admission, future numeric values and Entry update order remain partial. Those two direct targets are concrete next source entries. No numerical module, test, SDK, live RPM, game/window action, shared mutation, Git operation, current EC prediction, native date or Entry-day claim was produced.
+
+
+## v75 — pending-object preparation and actual range dispatch (2026-10-05 / W41)
+
+Sequential source base is v74's 57,430-byte EOF projection (`c55df0cbb0409f79574fb143dfbd747d0d941c6930d2cc8719426e0c6155314c`), preserved exactly. Root supplied actual v74 adoption/push `cd0acf19a68cdbc42ce20deed226e53e9e7b8c84`; the frozen G71 source includes it. Exact CK3 **1.20.0.3**, frozen EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6` remains the identity.
+
+The two proven direct targets were captured once: primary-manager tail `2A3EF00..2A3F2D8` (984 B), and v73 old-pending worker `2A41170..2A41560` (1008 B). Both necessary unwind records have flags2 and handler `4225A84`; there is no CHAININFO. The handler and all called bodies remain unread. No further logical body, class scan or library leaf was followed.
+
+The first body snapshots old pending count `primary+A4`, ensures 16-byte pair-vector capacity at `primary+78/+80`, and for each pending item allocates a `0x2F8` object through the primary `+20` allocator and calls actual initializer **`291BE30`**. It appends an `(allocator pointer, object pointer)` pair to `primary+78/+84`. The objects' full type and initializer effects are unassigned. The resulting pair count is **existing pair count plus pending count**; existing pairs are not assumed zero. This is concrete source-record construction before the following dispatches, rather than proof of a numeric attribute cache update.
+
+It then calls **`2A3FCE0`** with old vector descriptor `primary+98`, and invokes two actual stages **`2A41560`** and **`2A41960`**. Native partition inputs are pair count `n=primary+84` and raw global integer `w=[5CBF1A8]+AC`, with divisor `wrap32(w+1)`. Each stage rereads its own current `n` and `w`; equality or constancy across the two calls is not assumed. Signed division truncates toward zero. Stage one uses `max_signed32(1,trunc0(trunc0(n/divisor)/3))` and raw flag1; stage two uses `max_signed32(1,trunc0(n/divisor))` and raw flag0. Raw `primary+10` is another opaque context input. The global integer's semantic role and these stage bodies remain unproved. This method has no direct destination `+B0/+BC`, progress `+90`, model `+2F4`, Character EC or Entry write, and no native date input.
+
+The second body is an actual range-dispatch framework: incoming `RCX` is range context and `RDX` is the old-vector closure. It reads context start/end at `+8/+C`; equality returns. Native chunk count is `trunc_signed32(wrap32(chunk-start-1+end)/chunk)` and chosen workers are `min_signed32(context+10,chunk_count)`, with chunk from `context+14`. Mode `context+18==3` or chosen workers equal1 calls concrete serial target **`2A42110(original_closure,&[start,end])`**. Other paths copy the closure/context, including closure old-vector descriptor at `+40`, into a job capture with vptr **`4778480`**, then call **`3F91AF0`** through global `5CBF1A8` with the chosen worker argument and result storage. Its sixth argument is this dispatcher's incoming fifth argument at `[entryRSP+28]`, not saved incoming R9; its meaning and scheduler R8 are unassigned. The job's execute slot is not captured.
+
+After dispatch, result records contain a controller at `+18` and payload at `+20`. With non-null controller and `DWORD[controller+60]==0`, the captured calls reach **`3F90A10(controller,payload+1C0)`**; subsequent **`3F5A090(controller)`** also has unknown effects. The observed resets concern capture ownership flags/pointers and temporary result counts; they do not directly reset manager queue count, model `+2F4` or Character EC. The old pending count clear in v73's separate registered processing wrapper remains cached evidence. No new callsite proves those result callbacks are attribute writers.
+
+```mermaid
+flowchart TD
+    A["v74 registered admission/progress
+actual tail2A3EF00"] --> P["old pending A4 snapshot
+allocate0x2F8 ->291BE30
+append16B pairs78/84"]
+    P --> F["2A3FCE0(old vector98)
+body unread"]
+    F --> S["2A41560 then2A41960
+n=paircount; divisor rawglobal+1
+flags1/0; stage bodies unread"]
+    O["v73 registered oldqueue wrapper
+actual call2A41170"] --> D["range/chunk/mode/worker selection"]
+    D --> K["serial actual2A42110
+body unread"]
+    D --> J["parallel jobvptr4778480
+dispatch3F91AF0"]
+    J -. "execute-slot target unread" .-> X["parallel kernel unknown"]
+    K -. "attribute preparation effects unknown" .-> N["explicit future numeric inputs"]
+    J --> R["result callbacks3F90A10/3F5A090
+temporary ownership cleanup"]
+    R -. "cache-writer causal edge unknown" .-> N
+    C["external manager admission/call frequency"] -. "no native date proof" .-> A
+    C -. "no scheduling order proof" .-> O
+```
+
+This advances the real pending-object and execution-dispatch source chain. Source-record construction, partition arguments and conditional serial/parallel entry selection are closed components. Their actual attribute preparation kernels, cache commit effects and external invocation cadence remain partial. The earliest cadence input remains v74's 1000-item per-invocation budget; this package adds integer range/chunk/partition inputs, not a day or hour. Current EC getters remain existing observations; no new freshness protocol or numeric inference is introduced.
+
+Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-modifier-manager-pending-dispatch-v75/source/{ROOT-DELIVERY.json,SOURCE-RECEIPT.json,TREE.md,READ-COST.json}` and `cached-worker-role/{ROOT-DELIVERY.json,TREE.md,ROLE.json,OCT5-W41-FIELDS.json}`. Actual new EXE reads: **2168 B = 1992 B code + 108 B exact `.pdata` rows + 68 B necessary unwind**, across two logical bodies and two physical code regions. A uniquely extracted both bodies; B interpreted only cached worker ASM with zero additional EXE read. No called body was followed.
+
+Concrete next entries are **`2A42110`** for the old-queue serial kernel, **`291BE30`** for pending-object initialization, **`2A3FCE0`**, and stage entries **`2A41560/2A41960`**. The parallel job vptr `4778480` is a proven metadata entrance, with no execute-slot target invented. A future bounded scope can choose the kernel or constructor to reach the actual updater; these are actual source entrances rather than a generic scan. No numerical module, test, SDK, live RPM, game/window action, shared mutation, Git operation, current EC prediction or Entry-day claim was produced.
