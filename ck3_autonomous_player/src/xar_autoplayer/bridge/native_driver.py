@@ -7821,6 +7821,146 @@ class NativeHeadlessGameplayDriver:
                 f"native title-map projection is malformed: {error}"
             ) from error
 
+    def move_army(
+        self, army_id: int, target_province_id: int, *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Submit an explicit owned army move through the native family contract."""
+        step = move_army_step(army_id, target_province_id)
+        try:
+            result = self._execute_typed_move_army(
+                step, expected_revision=expected_revision
+            )
+        except Exception as error:
+            self._record_command(
+                step, ok=False, result=None,
+                error=f"{type(error).__name__}: {error}",
+            )
+            raise
+        self._record_command(step, ok=True, result=result)
+        return result
+
+    def _execute_typed_move_army(
+        self, step: str, *, expected_revision: int | None,
+    ) -> dict[str, object]:
+        ids = parse_move_army_step(step)
+        if ids is None:
+            raise ValueError("typed native move requires canonical army/province IDs")
+        army_id, province_id = ids
+        capabilities = set(_string_list(self.capabilities().get("bridge_capabilities")))
+        if not {MOVE_ARMY_CAPABILITY, ARMY_ROUTES_CAPABILITY} <= capabilities:
+            raise UnsupportedStepError(
+                "typed native move requires native movement and route capabilities"
+            )
+        starting = self.take_snapshot()
+        selected_revision = starting["revision"] if expected_revision is None else expected_revision
+        _validate_revision(selected_revision, "expected_revision")
+        if selected_revision != starting["revision"]:
+            raise PreSubmissionRevisionMismatchError(
+                "typed native move source revision is stale"
+            )
+        played = starting.get("played_character")
+        actor_id = played.get("character_id") if isinstance(played, dict) else None
+        army = _army_by_id(starting, army_id)
+        diagnostics = starting.get("diagnostics")
+        generation = diagnostics.get("connection_generation") if isinstance(diagnostics, dict) else None
+        if not (
+            starting.get("map_ready") is True and starting.get("paused") is True
+            and isinstance(played, dict) and played.get("alive") is True
+            and type(actor_id) is int and actor_id > 0
+            and isinstance(army, dict) and army.get("controllable") is True
+            and army.get("owner_character_id") == actor_id
+            and _positive_native_id(army.get("current_province_id"))
+            and not _army_in_combat_or_retreat(army)
+            and not _army_in_active_combat(army)
+            and type(generation) is int and generation >= 0
+            and isinstance(starting.get("episode_run_id"), str)
+            and bool(starting["episode_run_id"])
+        ):
+            raise BridgeUnavailableError(
+                "typed native move requires a paused ready map and owned noncombat army"
+            )
+        submitted_date_raw = _date_raw(starting, "typed move starting snapshot")
+
+        def same_owned_session(snapshot: dict[str, object]) -> bool:
+            current_army = _army_by_id(snapshot, army_id)
+            current_played = snapshot.get("played_character")
+            current_diagnostics = snapshot.get("diagnostics")
+            return bool(
+                snapshot.get("map_ready") is True and snapshot.get("paused") is True
+                and snapshot.get("date_raw") == submitted_date_raw
+                and snapshot.get("episode_run_id") == starting["episode_run_id"]
+                and isinstance(current_diagnostics, dict)
+                and current_diagnostics.get("connection_generation") == generation
+                and isinstance(current_played, dict)
+                and current_played.get("character_id") == actor_id
+                and current_played.get("alive") is True
+                and isinstance(current_army, dict)
+                and current_army.get("controllable") is True
+                and current_army.get("owner_character_id") == actor_id
+                and not _army_in_combat_or_retreat(current_army)
+                and not _army_in_active_combat(current_army)
+            )
+
+        try:
+            result = self._execute_primitive_step(
+                step, expected_revision=selected_revision,
+                required_capability=MOVE_ARMY_CAPABILITY,
+            )
+        except _NativeCommandRejectedError as error:
+            if error.native_error not in _ARMY_MOVE_DEFERRED_ERRORS:
+                raise
+            current = self.take_snapshot()
+            if not same_owned_session(current):
+                raise BridgeUnavailableError(
+                    "typed native move crossed its paused session or army ownership"
+                ) from error
+            return {
+                "step": step, "accepted": False, "status": "deferred",
+                "backend_id": "native-headless",
+                "war_action": {"status": "move_deferred", "reason": "army_not_move_ready",
+                               "army_id": army_id, "target_province_id": province_id,
+                               "submitted_date_raw": submitted_date_raw},
+                "player_armies": current.get("player_armies", []),
+                "snapshot_id": current["snapshot_id"], "revision": current["revision"],
+            }
+        if result.get("accepted") is not True:
+            raise BridgeUnavailableError("typed native move was not accepted")
+        changed = self._wait_for_snapshot(
+            self.take_snapshot(),
+            lambda snapshot: same_owned_session(snapshot) and _army_move_postcondition(
+                snapshot, army_id, province_id, require_route=True,
+                starting_snapshot=starting,
+            ) in {"moving", "arrived"},
+            timeout_seconds=self.command_timeout_seconds,
+        )
+        if not same_owned_session(changed):
+            raise BridgeUnavailableError(
+                "typed native move crossed its paused session or army ownership"
+            )
+        status = _army_move_postcondition(
+            changed, army_id, province_id, require_route=True,
+            starting_snapshot=starting,
+        )
+        if status not in {"moving", "arrived"}:
+            raise BridgeUnavailableError(
+                f"typed native move did not observe army {army_id} target province {province_id}"
+            )
+        return {
+            **result,
+            "war_action": {"status": status, "army_id": army_id,
+                           "target_province_id": province_id,
+                           "submitted_date_raw": submitted_date_raw,
+                           "postcondition_verified": True},
+            "submitted_snapshot_id": starting["snapshot_id"],
+            "submitted_revision": selected_revision,
+            "submitted_native_revision": starting["native_revision"],
+            "submitted_connection_generation": generation,
+            "submitted_episode_run_id": starting["episode_run_id"],
+            "player_armies": changed.get("player_armies", []),
+            "snapshot_id": changed["snapshot_id"], "revision": changed["revision"],
+        }
+
     def execute_step(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:

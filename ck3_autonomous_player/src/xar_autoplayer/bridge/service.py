@@ -3860,10 +3860,14 @@ class GameplayBridgeService:
     ) -> dict[str, object]:
         """Move one exact native army to one exact CK3 province."""
         step = move_army_step(army_id, target_province_id)
+        typed_move = getattr(self.driver, "move_army", None)
+        result = (
+            typed_move(army_id, target_province_id, expected_revision=expected_revision)
+            if callable(typed_move)
+            else self._execute_typed_war_step(step, expected_revision=expected_revision)
+        )
         return {
-            **self._execute_typed_war_step(
-                step, expected_revision=expected_revision
-            ),
+            **result,
             "army_id": army_id,
             "target_province_id": target_province_id,
         }
