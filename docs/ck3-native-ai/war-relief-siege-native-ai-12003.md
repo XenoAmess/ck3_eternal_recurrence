@@ -232,3 +232,17 @@ R26/g57/source1791d84/PID7388 的独立战后查询在 raw53249808/native166/pub
 此前201326609仍 active 的抵达帧保留为历史；本次真实 no-siege 后态与已发表的防守方战斗胜利共同闭合有限 **production-live capital-relief loop**。首都此前也未被占领，因此这是解围，不增加县收复、抵达或战斗终局信用；不据旧besieger缺少scope判断其被消灭。当前累计4395/恢复1242/10月4日370，10月3日冻结777；独立查询和文档消费新增日0，未证明全战争胜利。
 
 唯一已消费证据：[sealed relief receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/siege-efficiency-inputs/current-capital-2619-query/actual-after-battle1728053248-v52-01/ROOT-DELIVERY.json)，SHA-256 `42deeec47f3737de5b79840cff59b5b1493399c1a63bd1c0d1051855cca53f25`；原始查询由专题owner唯一消费，本增量只复用其缓存字段。
+
+### 2026-10-04 R30：六日登陆472后的玩家自动围城（历史cutoff）
+
+本节封存的是 Root SDK51124 正常关闭后的六日登陆阶段，不代表最新 live 状态。raw53252424→53252568 共144h，6 saved-calendar / 6 bounded / 6 whole OODA 已由父唯一账4504→4510计入，恢复1357、10月4日+485；本专题缓存采用新增日0。normal SAVE h7275 / raw53252568 / 95874330 B / SHA-256 `34620eb57872d0814424047f9702310a8662791319d78860179c91c9e2ce90c3`，Robert29829 alive、同普通 episode `native-29829-2bc2d599f7f9`、active_event=null；后续查询/保存和日数另行绑定。
+
+day01..05 CUnit301989997 仍在1038 / embarked4 / route `[472]`；day06 before raw53252544 仍为该前态，after raw53252568 / native29 / public26 首次实际在472 / sieging3、controllable=true、target=null、move_target_observable=false、route `complete_empty` / source_count0，combat=false、retreating=false。实际登陆只定位在该24h观察区间，不主张准确登陆小时。既有一日推进→独立军队/路线观察→正常保存闭合有限 transit-to-landfall **production-live loop**，owned siege 起始另获 **production-live primitive**；抵达不授占领或整战胜利信用。
+
+同历史末帧 War117440524 仍 active，玩家 attacker / primary war leader、对手35991、相对战争分数0。province472 occupation_observable=true / is_occupied=false / occupier=null，fort4 / garrison500；siege_observable=true / besieging_strength3693。实际 owned FullSiege251658324 / besieging_army_id301989997（公开 CUnit）/ player_army_besieging=true：current_work126595 / total_work40000000 / remaining_work39873405（均 Q100000），progress_fraction316/Q100000=0.316%，原生本帧 days_left315。ETA是该帧条件估计；besieging_strength3693不替代未请求的专用军力查询，map soldiers仍null。
+
+assault_observable=true、breach0、walls_breached=false、assault_in_progress=false、CanStart=false、CanStop=false，assault_daily_progress0/Q100000、assault_daily_casualties0。此历史帧 `ordinary_daily_progress`、`current_phase_length`、`prepared_phase_length`、`phase_counter`、`can_advance` 五项均实际null，不能称已观察 puretick 输入；本次没有强攻、占领、收复或战争结算。
+
+Root 后继独立 SDK16000 为实际 native puretick 决策读取 fresh health 与上述五项操作数，是必要的新观测。Root 提供的另次查询包括 D126595/Q100000、prepared_phase_length1800000/Q100000、phase_counter1、can_advance=true；current_phase_length及完整health按该独立查询原绑定记录。本专题不读取该查询、不产生其验收信用，也不将其数值反向回填到 native29/public26 的 day06 历史行。接续使用 Root 的新实读，不重复本帧 occupation 观测或新建门禁。
+
+本次只读当前专题一次及两份现成封存输入：[STAGE-APPEND.md](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v57/r30-landfall-six-days-consumed01/STAGE-APPEND.md)（SHA-256 `271d9a9fd6af70628f5f4cc87b8fc9689764279682137f28849dcfd92dc17df4`）与 [ROOT-DAY-WEEK-FIELDS.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v57/r30-landfall-six-days-consumed01/ROOT-DAY-WEEK-FIELDS.json)（SHA-256 `7875d3371df85d9c74641baf92fd835b47acdd4d3550dd6d18c8767e47499989`）。六日原始消费者、前五日时序与完整计数归父统一缓存；本 lane 无 raw、SDK、生产源码、测试、构建、窗口操作、共享文件修改或 Git。
