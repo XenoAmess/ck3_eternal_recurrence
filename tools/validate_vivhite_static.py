@@ -45,9 +45,9 @@ OTHER_LANGUAGES = tuple(
 )
 LOCALIZATION_CONTRACT = ROOT / "tools/vivhite_localization_contract_1_20_0_2.json"
 # Bind the committed LF bytes enforced by .gitattributes, not a pre-add CRLF file.
-LOCALIZATION_CONTRACT_SHA256 = "020089df7b12076e2860d7463273042ad989d067e542328357852de7b3514816"
+LOCALIZATION_CONTRACT_SHA256 = "5da51b06cec8796e4c581fc85a21f38946c763d265f05c35fc9931c1c2195fb5"
 DESCRIPTOR_FIELDS = {
-    "version": "1.0.1",
+    "version": "1.0.2",
     "name": "琉焰卿的永恒轮回：典造琉焰廷臣·白绮特供版",
     "picture": "thumbnail.png",
     "supported_version": "1.20.0.3",

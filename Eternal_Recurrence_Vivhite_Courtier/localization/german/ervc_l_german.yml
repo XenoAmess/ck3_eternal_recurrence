@@ -31,7 +31,7 @@
  ervc.cc.physical.help:0 "Alle 38 körperlichen Eigenschaften des Grundspiels sind aufgelistet, einschließlich der normalerweise verborgenen $trait_impotent$. Verträgliche Wahlen können kombiniert werden."
  ervc.cc.personality.help:0 "Alle 36 Persönlichkeitseigenschaften des Grundspiels sind aufgelistet. Wähle bis zu drei; die Wahl eines Gegenteils ersetzt sein Gegenstück. Gewählt: [GetPlayer.MakeScope.Var('ervc_cc_personality_count').GetValue|0]/3."
  ervc.cc.other.help:0 "Die übrigen 110 im Herrscher-Designer sichtbaren Eigenschaften des Grundspiels sind hier aufgelistet. Sie umfassen mächtige Status-, Gesundheits- und andere folgenschwere Wahlen."
- ervc.cc.origin.help:0 "Wähle aus allen geladenen Kulturen und Glauben, dann gib der Seele eine niedrige Geburt oder füge sie deiner Dynastie und deinem Haus hinzu. Letzteres ist nicht verfügbar, wenn du kein Haus hast."
+ ervc.cc.origin.help:0 "Wähle aus allen geladenen Kulturen und Glauben, dann gib der Seele eine niedrige Geburt oder füge sie deiner Dynastie und deinem Haus hinzu. Letzteres ist nicht verfügbar, wenn du kein Haus hast. Dein eigener Glaube behält deinen aktuellen Ritus; ein anderer Glaube verwendet seinen Hauptritus. Der gewählte Ritus wird oberhalb der Liste angezeigt."
  ervc.cc.culture:0 "Kultur"
  ervc.cc.faith:0 "Glaube"
  ervc.cc.dynasty_house:0 "Dynastie und Haus"

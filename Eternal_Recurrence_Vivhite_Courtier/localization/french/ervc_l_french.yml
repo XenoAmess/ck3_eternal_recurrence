@@ -31,7 +31,7 @@
  ervc.cc.physical.help:0 "Les 38 traits physiques du jeu de base sont listés, y compris le $trait_impotent$ normalement caché. Les choix compatibles peuvent être combinés."
  ervc.cc.personality.help:0 "Les 36 traits de personnalité du jeu de base sont listés. Choisis-en jusqu'à trois ; choisir un opposé remplace son pendant. Sélectionnés : [GetPlayer.MakeScope.Var('ervc_cc_personality_count').GetValue|0]/3."
  ervc.cc.other.help:0 "Les 110 autres traits du jeu de base visibles dans le Créateur de dirigeant sont listés ici. Ils comprennent de puissants statuts, des états de santé et d'autres choix lourds de conséquences."
- ervc.cc.origin.help:0 "Choisis parmi toutes les cultures et les fois chargées, puis fais de cette âme un être de basse extraction ou place-la dans ta dynastie et ta maison. Cette dernière option est indisponible si tu n'as pas de maison."
+ ervc.cc.origin.help:0 "Choisis parmi toutes les cultures et les fois chargées, puis fais de cette âme un être de basse extraction ou place-la dans ta dynastie et ta maison. Cette dernière option est indisponible si tu n'as pas de maison. Ta foi conserve ton rite actuel ; une autre foi utilise son rite principal. Le rite choisi apparaît au-dessus de la liste."
  ervc.cc.culture:0 "Culture"
  ervc.cc.faith:0 "Foi"
  ervc.cc.dynasty_house:0 "Dynastie et maison"

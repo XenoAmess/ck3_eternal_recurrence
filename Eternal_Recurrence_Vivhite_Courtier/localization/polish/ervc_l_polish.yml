@@ -31,7 +31,7 @@
  ervc.cc.physical.help:0 "Wymieniono wszystkie 38 cech fizycznych z gry podstawowej, w tym normalnie ukrytą $trait_impotent$. Zgodne wybory można łączyć."
  ervc.cc.personality.help:0 "Wymieniono wszystkie 36 cech osobowości z gry podstawowej. Wybierz do trzech; wybór przeciwnej zastępuje jej odpowiednik. Wybrano: [GetPlayer.MakeScope.Var('ervc_cc_personality_count').GetValue|0]/3."
  ervc.cc.other.help:0 "Wymieniono tutaj pozostałe 110 cech z gry podstawowej widocznych w kreatorze władcy. Obejmują one potężne statusy, zdrowie i inne istotne wybory."
- ervc.cc.origin.help:0 "Wybierz spośród wszystkich wczytanych kultur i wiar, a następnie pozostaw duszę niskiego urodzenia lub umieść ją w swojej dynastii i rodzie. To drugie jest niedostępne, jeśli nie masz rodu."
+ ervc.cc.origin.help:0 "Wybierz spośród wszystkich wczytanych kultur i wiar, a następnie pozostaw duszę niskiego urodzenia lub umieść ją w swojej dynastii i rodzie. To drugie jest niedostępne, jeśli nie masz rodu. Twoja wiara zachowuje twój obecny obrządek, a inna wiara używa swojego głównego obrządku. Wybrany obrządek jest pokazany nad listą."
  ervc.cc.culture:0 "Kultura"
  ervc.cc.faith:0 "Wiara"
  ervc.cc.dynasty_house:0 "Dynastia i ród"
