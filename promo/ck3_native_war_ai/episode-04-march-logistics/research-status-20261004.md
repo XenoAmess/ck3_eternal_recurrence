@@ -126,3 +126,10 @@
 
 
 范围校正：same-province preview-main-current-1513-a02 为 accepted=false/statusdeferred、move_mode_unavailable，没有当前 province_supply；+9在1513的当前limit/usage及underlimit仍待证。Jan11 ordinary target1513 limit2880/usage0只属于早先帧，不外推后续。可说stock82.99737/month−5/attr0，不能以此生成“当前低于上限仍不恢复”的单变量反例；另案验证友方资格与实际正恢复。第三军16777220在+15净−10另存，全军变化不止两次。
+
+
+## 2026-10-05 下一次GUI-only冷载准备
+
+R0162 postovershoot保存已真实物化：74405700 bytes，SHA-256 `208a52733662769c9675cef11ebd53c1520fc8d2efb2c6bd6ef2bc6e3b53d73d`，actor33388/date53149272。它仅作提示框画面观察，不能作为A/B/C共同起点或弥补+23至+88的观测空窗。原保存使用真实 `ck3_execute_step` 的 `save-checkpoint`；bootstrap现在兼容该调用与既有 `ck3_save_checkpoint`，仍检查saved状态、原profile路径、bytes/SHA、actor/date、pure vanilla lifecycle与exact build。保存DTO不携带paused；另以独立paused snapshot绑定，重载后还要新读paused/alive/noevent。
+
+最小兼容patch及15项offline fixture PASS保存在 `C:/ck3-war-episode04-research-20261004-a01/capture-next-r0163-plan-a01/bootstrap-save-compat-a01/`，patch SHA-256 `083a47f00f1fb6d3f0a2a9667b37437ae2069d9e8e82747050ad484f162e0e1d`。此包只改变保存receipt准入；没有执行游戏、SDK或屏幕动作。

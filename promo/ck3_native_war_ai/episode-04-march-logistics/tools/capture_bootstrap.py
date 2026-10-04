@@ -92,7 +92,14 @@ def checkpoint_source(save, receipt_path, build_path):
         return None
     require(save.is_file() and save.suffix.lower() == ".ck3", "Existing .ck3 source required")
     packet = json.loads(receipt_path.read_text(encoding="utf-8-sig"))
-    require(packet.get("is_error") is False and (packet.get("request") or {}).get("tool") == "ck3_save_checkpoint", "Not a successful actual SDK save-checkpoint packet")
+    request = packet.get("request") or {}
+    require(isinstance(request, dict), "Checkpoint request must be an object")
+    arguments = request.get("arguments")
+    execute_save = (request.get("tool") == "ck3_execute_step" and
+                    isinstance(arguments, dict) and arguments.get("step") == "save-checkpoint")
+    require(packet.get("is_error") is False and
+            (request.get("tool") == "ck3_save_checkpoint" or execute_save),
+            "Not a successful actual SDK save-checkpoint packet")
     body = packet.get("body") or {}
     saved = body.get("checkpoint") or {}
     require(body.get("step") == "save-checkpoint" and body.get("accepted") is True and saved.get("status") == "saved", "No saved native checkpoint")
