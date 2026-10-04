@@ -68,6 +68,35 @@ inline void AppendSide(
   result += '}';
 }
 
+inline void AppendNonreligiousConstructorSource(
+    std::string &result,
+    const xar::game::ContextualAdvantageConstructorSourceSnapshot &source) {
+  result += "{\"stage_order\":" + std::to_string(source.stage_order);
+  result += ",\"append_order\":";
+  result += source.append_order == -1 ? "null" : std::to_string(source.append_order);
+  result += ",\"stage\":";
+  AppendJsonString(result, source.stage);
+  result += ",\"side\":";
+  AppendJsonString(result, source.side);
+  result += ",\"source_key\":";
+  if (source.selected) AppendJsonString(result, source.source_key);
+  else result += "null";
+  result += ",\"effect_advantage_points\":";
+  result += source.selected ? std::to_string(source.effect_advantage_points) : "null";
+  result += ",\"scale_raw\":" + std::to_string(source.scale_raw);
+  result += ",\"signed_contribution_raw\":" + std::to_string(source.signed_contribution_raw);
+  result += ",\"accumulator_before_raw\":" + std::to_string(source.accumulator_before_raw);
+  result += ",\"accumulator_after_raw\":" + std::to_string(source.accumulator_after_raw);
+  result += ",\"selected\":";
+  result += source.selected ? "true" : "false";
+  result += ",\"applied\":";
+  result += source.applied ? "true" : "false";
+  result += ",\"skip_reason\":";
+  if (source.applied) result += "null";
+  else AppendJsonString(result, source.skip_reason);
+  result += '}';
+}
+
 inline void AppendReligionSource(
     std::string &result,
     const xar::game::ContextualAdvantageReligionSourceSnapshot &source) {
@@ -149,6 +178,19 @@ inline std::string SerializeContextualAdvantageV1(
     result += "null,\"base_nonreligious_accumulator_raw\":null,"
               "\"synthetic_zero_roll_total_raw\":null,"
               "\"synthetic_helper_total_match\":null";
+  }
+  result += ",\"nonreligious_constructor_sources\":";
+  if (snapshot.available) {
+    result += '[';
+    for (std::size_t index = 0;
+         index < snapshot.nonreligious_constructor_sources.size(); ++index) {
+      if (index != 0) result += ',';
+      contextual_advantage_v1_detail::AppendNonreligiousConstructorSource(
+          result, snapshot.nonreligious_constructor_sources[index]);
+    }
+    result += ']';
+  } else {
+    result += "null";
   }
   if (religious) {
     result += ",\"religion_constructor_sources_ready\":";

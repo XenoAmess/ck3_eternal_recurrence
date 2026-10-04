@@ -1031,6 +1031,25 @@ bool ReadContextualAdvantageInputs(
       output.sides.push_back(std::move(side));
     }
     output.base_nonreligious_accumulator_raw = native.base_nonreligious_accumulator_raw;
+    for (const auto &source : model.constructor_sources) {
+      if (source.stage == "unreformed_faith_0" || source.stage == "unreformed_faith_1")
+        continue;
+      game::ContextualAdvantageConstructorSourceSnapshot row{};
+      row.stage_order = source.stage_order;
+      row.append_order = source.append_order;
+      row.stage = source.stage;
+      row.side = source.side;
+      row.selected = source.selected;
+      row.applied = source.applied;
+      row.source_key = source.source_key;
+      row.effect_advantage_points = source.effect_advantage_points;
+      row.scale_raw = source.scale_raw;
+      row.signed_contribution_raw = source.signed_contribution_raw;
+      row.accumulator_before_raw = source.accumulator_before_raw;
+      row.accumulator_after_raw = source.accumulator_after_raw;
+      row.skip_reason = source.skip_reason;
+      output.nonreligious_constructor_sources.push_back(std::move(row));
+    }
     output.base_constructor_accumulator_raw = model.base_static_accumulator_raw;
     output.religion_constructor_sources_ready = native.religion_constructor_ready;
     output.religion_constructor_sources = std::move(native.religion_constructor_sources);

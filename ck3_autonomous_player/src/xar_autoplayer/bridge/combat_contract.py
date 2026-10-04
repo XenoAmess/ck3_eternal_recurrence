@@ -681,8 +681,84 @@ def _normalize_contextual_religion_sources(
         })
     return normalized
 
+_CONTEXTUAL_NONRELIGIOUS_SOURCE_ORDER = tuple(
+    stage for stage in _V3_ADVANTAGE_SOURCE_ORDER
+    if not stage.startswith("unreformed_faith_")
+)
+
+
+def _normalize_contextual_nonreligious_sources(
+    value: object, *, base_accumulator_raw: int, name: str
+) -> list[dict[str, object]]:
+    sources = _array(value, name)
+    if len(sources) != len(_CONTEXTUAL_NONRELIGIOUS_SOURCE_ORDER):
+        raise ValueError(f"native {name} must publish thirteen ordered sources")
+    normalized = []
+    accumulator = 0
+    next_append_order = 0
+    for index, (source, stage) in enumerate(
+        zip(sources, _CONTEXTUAL_NONRELIGIOUS_SOURCE_ORDER)
+    ):
+        source_name = f"{name}[{index}]"
+        source = _exact_object(source, {
+            "stage_order", "append_order", "stage", "side", "selected", "applied",
+            "source_key", "effect_advantage_points", "scale_raw",
+            "signed_contribution_raw", "accumulator_before_raw",
+            "accumulator_after_raw", "skip_reason",
+        }, source_name)
+        stage_order = _signed_int32(source["stage_order"], f"{source_name}.stage_order")
+        side = _V3_ADVANTAGE_STAGE_SIDES[stage]
+        if stage_order != index or source["stage"] != stage or source["side"] != side:
+            raise ValueError(f"native {source_name} constructor stage order or side mismatch")
+        selected = _strict_bool(source["selected"], f"{source_name}.selected")
+        applied = _strict_bool(source["applied"], f"{source_name}.applied")
+        if applied and not selected:
+            raise ValueError(f"native {source_name} cannot apply an unselected source")
+        source_key = source["source_key"]
+        points = _conditional_signed_int32(source["effect_advantage_points"], selected,
+                                          f"{source_name}.effect_advantage_points")
+        if selected:
+            source_key = _nonempty_string(source_key, f"{source_name}.source_key")
+        elif source_key is not None:
+            raise ValueError(f"native {source_name} unselected source must null its key")
+        raw = {key: _signed_int64(source[key], f"{source_name}.{key}")
+               for key in ("scale_raw", "signed_contribution_raw",
+                           "accumulator_before_raw", "accumulator_after_raw")}
+        contribution = points * raw["scale_raw"] if applied else 0
+        if side == "defender":
+            contribution = -contribution
+        if raw["signed_contribution_raw"] != contribution:
+            raise ValueError(f"native {source_name} signed contribution mismatch")
+        if raw["accumulator_before_raw"] != accumulator:
+            raise ValueError(f"native {source_name} accumulator_before mismatch")
+        accumulator = max(-10_000_000, min(10_000_000, accumulator + contribution))
+        if raw["accumulator_after_raw"] != accumulator:
+            raise ValueError(f"native {source_name} per-source clamp mismatch")
+        append_order = source["append_order"]
+        skip_reason = source["skip_reason"]
+        if applied:
+            append_order = _signed_int32(append_order, f"{source_name}.append_order")
+            if append_order != next_append_order or skip_reason is not None:
+                raise ValueError(f"native {source_name} applied append order or skip mismatch")
+            next_append_order += 1
+        else:
+            if append_order is not None:
+                raise ValueError(f"native {source_name} non-applied append order must be null")
+            skip_reason = _nonempty_string(skip_reason, f"{source_name}.skip_reason")
+        normalized.append({
+            "stage_order": stage_order, "append_order": append_order,
+            "stage": stage, "side": side, "selected": selected, "applied": applied,
+            "source_key": source_key, "effect_advantage_points": points,
+            **raw, "skip_reason": skip_reason,
+        })
+    if accumulator != base_accumulator_raw:
+        raise ValueError(f"native {name} final nonreligious accumulator mismatch")
+    return normalized
+
+
 def _contextual_advantage_unavailable(
-    target_province_id: int, reason: str, *, schema_version: int = 1
+    target_province_id: int, reason: str, *, schema_version: int = 1,
+    nonreligious_sources_present: bool = False,
 ) -> dict[str, object]:
     result = {
         "schema_version": schema_version,
@@ -704,6 +780,8 @@ def _contextual_advantage_unavailable(
         result.update({"religion_constructor_sources_ready": False,
                        "base_constructor_accumulator_raw": None,
                        "religion_constructor_sources": None})
+    if nonreligious_sources_present:
+        result["nonreligious_constructor_sources"] = None
     return result
 
 
@@ -721,11 +799,16 @@ def _normalize_contextual_advantage(
     """
     name = "combat_simulation_inputs.contextual_advantage"
     schema_version = 2 if isinstance(value, dict) and value.get("schema_version") == 2 else 1
+    nonreligious_sources_present = (
+        isinstance(value, dict) and "nonreligious_constructor_sources" in value
+    )
     try:
         extra_keys = ({"religion_constructor_sources_ready",
                        "base_constructor_accumulator_raw",
                        "religion_constructor_sources"}
                       if schema_version == 2 else set())
+        if nonreligious_sources_present:
+            extra_keys.add("nonreligious_constructor_sources")
         row = _exact_object(
             value,
             {
@@ -791,9 +874,14 @@ def _normalize_contextual_advantage(
         if not available:
             if schema_version == 2 and row["religion_constructor_sources"] is not None:
                 raise ValueError(f"native unavailable {name} must null religion sources")
+            if nonreligious_sources_present and row["nonreligious_constructor_sources"] is not None:
+                raise ValueError(f"native unavailable {name} must null nonreligious sources")
             if row["sides"] is not None or row["synthetic_helper_total_match"] is not None:
                 raise ValueError(f"native unavailable {name} must null context values")
-            return _contextual_advantage_unavailable(target, reason, schema_version=schema_version)
+            return _contextual_advantage_unavailable(
+                target, reason, schema_version=schema_version,
+                nonreligious_sources_present=nonreligious_sources_present,
+            )
         if _strict_bool(
             row["synthetic_helper_total_match"],
             f"{name}.synthetic_helper_total_match",
@@ -870,11 +958,17 @@ def _normalize_contextual_advantage(
                     row["religion_constructor_sources"], scenario=scenario,
                     name=f"{name}.religion_constructor_sources"),
             })
+        if nonreligious_sources_present:
+            result["nonreligious_constructor_sources"] = _normalize_contextual_nonreligious_sources(
+                row["nonreligious_constructor_sources"], base_accumulator_raw=base,
+                name=f"{name}.nonreligious_constructor_sources",
+            )
         return result
     except (ValueError, TypeError) as error:
         return _contextual_advantage_unavailable(
             target_province_id, f"contextual_advantage_fragment_invalid: {error}",
             schema_version=schema_version,
+            nonreligious_sources_present=nonreligious_sources_present,
         )
 
 def normalize_combat_simulation_inputs_v3_test_only(

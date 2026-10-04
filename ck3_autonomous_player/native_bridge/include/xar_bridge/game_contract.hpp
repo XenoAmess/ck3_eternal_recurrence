@@ -537,6 +537,26 @@ struct ContextualAdvantageSideSnapshot {
                          const ContextualAdvantageSideSnapshot &) = default;
 };
 
+// An already-read constructor source row, not an actual battle result.
+struct ContextualAdvantageConstructorSourceSnapshot {
+  std::int32_t stage_order = -1;
+  std::int32_t append_order = -1;
+  std::string stage;
+  std::string side;
+  bool selected = false;
+  bool applied = false;
+  std::string source_key;
+  std::int32_t effect_advantage_points = 0;
+  std::int64_t scale_raw = 100'000;
+  std::int64_t signed_contribution_raw = 0;
+  std::int64_t accumulator_before_raw = 0;
+  std::int64_t accumulator_after_raw = 0;
+  std::string skip_reason;
+
+  friend bool operator==(const ContextualAdvantageConstructorSourceSnapshot &,
+                         const ContextualAdvantageConstructorSourceSnapshot &) = default;
+};
+
 // Exact constructor-faith source operands, not an actual battle result.
 struct ContextualAdvantageReligionSourceSnapshot {
   std::int32_t side_index = -1;
@@ -571,6 +591,7 @@ struct ContextualAdvantageSnapshot {
   std::int32_t target_province_id = -1;
   std::vector<ContextualAdvantageSideSnapshot> sides;
   std::int64_t base_nonreligious_accumulator_raw = 0;
+  std::vector<ContextualAdvantageConstructorSourceSnapshot> nonreligious_constructor_sources;
   bool religion_constructor_attempted = false;
   bool religion_constructor_sources_ready = false;
   std::int64_t base_constructor_accumulator_raw = 0;
