@@ -295,3 +295,41 @@ Root 已封本次 30 个独立正常存档日：每次推进 24 raw hours、epis
 抵达已经闭合为 `production-live primitive`，正常行军推进至真实接敌并交回控制的有限 `production-live loop` 也已闭合；战斗尚无终局。首都 occupation 可观测且 `is_occupied=false / occupier=null`，同时敌方活动围城 `201326609` 仍非空：领军 `268435747 / player=false`，进度 `71.177%`、`B0`、`days_left=null`，堡垒 3、守军 540、breach 1、`CanStart=false`。因此位置抵达、空路线及未被占领均不能替代解围验证，本帧无解围、战斗终局或战争胜利信用。
 
 证据只链接 Root sole-consumer 已封 [DAY30-TERMINAL-CRITICAL.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/capital2619-v52/relief64-consumption/DAY30-TERMINAL-CRITICAL.json)，其 SHA-256 为 `adb4d32a6f55ed4122ee645eeb60bb99765f0797660561aac980f870fc51a38d`。文件名 terminal 表示本推进批次末帧，不表示战斗终局；本 lane 不重读该缓存、原始 ledger 或后续战斗。
+
+
+## 2026-10-04: R27 committed intercept to 2669 and closed eight-day march
+
+This increment uses CK3 **1.20.0.3**, EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. Runtime is R27/g58/source39b, PID122268. Root consumed the live leaves once and supplied the following summaries; this file-only lane did not read raw006/007, the optional MOVE ACK004, or day/TOP files. The cached qualification is [ACTUAL-COMMITTED-AND-EIGHT-DAY-QUALIFICATION.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-movement-capital2619-v52-live/intercept2669-committed-r27/ACTUAL-COMMITTED-AND-EIGHT-DAY-QUALIFICATION.json).
+
+The previously rejected observed hostile target2669 now passes the existing preview admission after the one-driver fix. Root's SDK11235 closed GREEN preview016 reports available/accepted at raw53249808, native3/public2/cgen2, own83886367 origin2619, route `[2614,8757,2669]`. This qualifies the fixed preview as a **production-live primitive**. Source: [preview016](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v54/actual-original-sway-six-preview2669-01/016-ck3_execute_step.json). Preserve the original R26 failure as the functional before case; it did not prove the generic native preview handler was missing.
+
+Root then committed the real move once. SDK15358 closed GREEN without advancing the date. Root's sole-consumed horizon006 and independent army/war body007 bind the route to raw53249808, native6/public3/cgen3. Independent007 observes own83886367 moving/code7 to2669 with three route provinces and no combat/retreat; enemy16777683 is also moving to2669 with two route provinces and no combat/retreat. This independent pose is separate from a command acknowledgement. The optional ACK004 is not needed to establish the observed moving target/route. Source directory: [actual-committed-intercept2669-01](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v54/actual-committed-intercept2669-01).
+
+| CUnit | Current / effective origin | Committed prefix province | Native arrival date raw | Whole-day-rounded delta from raw53249808 |
+| --- | --- | --- | --- | --- |
+| own83886367 | 2619 / 2614 | 2614 | 53250024 | +9 days |
+| own83886367 | 2619 / 2614 | 8757 | 53250192 | +16 days |
+| own83886367 | 2619 / 2614 | 2669 | 53250336 | +22 days |
+| enemy16777683 | 2614 / 8757 | 8757 | 53250000 | +8 days |
+| enemy16777683 | 2614 / 8757 | 2669 | 53250192 | +16 days |
+
+These are native path-prefix projections from the day-zero frame. The existing exact-build `ProjectPathTimeline` / `RouteDurationToDate` chain rounds Q100000 durations to whole days, then adds roundedDays*24 to the raw date. They do not expose an independently measured sub-day current-edge duration. Effective origin, public current province, planned waypoint arrival and actual observed arrival are distinct inputs. The enemy's earlier projected target arrival is useful routing input; it supplies neither victory odds nor a guaranteed contact time.
+
+Horizon006 ends at raw53249832, exactly **one native day** after this frame: `one_day_contact_free=true`, `conflicts=[]`. Its contact result covers that one-day window. It does not certify the full 22-day projected route. In the existing step grammar `h-N` declares N hostile army IDs; it does not select N days.
+
+```mermaid
+flowchart LR
+  D0["Day-zero frame: raw53249808"] --> P["Native rounded prefix timeline"]
+  P -. "prediction +8 days" .-> E["Enemy planned first waypoint8757"]
+  D0 --> C["Contact window only through53249832: one day clear"]
+  D0 --> A["Root normal march: eight days / +192 hours"]
+  A --> D8["Observed raw53250000: own2619; enemy2614; both moving"]
+  E -. "arrival not observed at day8" .-> D8
+  D8 --> N["Next material pause: fresh existing route-contact query"]
+```
+
+The normal eight-day segment SDK49153 is **CLOSED GREEN**: +192 raw hours to raw53250000, native39/public33. Own83886367 remains at2619 moving to2669, route length3, no combat/retreat. Enemy16777683 remains at2614 moving to2669, route length2, no combat/retreat. At the original rounded enemy first-arrival date the actual enemy has **not reached8757**. Do not relabel that prediction as observed arrival, and do not obtain a fresh remaining ETA by subtracting eight days from the day-zero table.
+
+The independent war observation changes war129 score from -13 to -12. Objective2640 remains unoccupied and without siege, fort7; garrison changes349 to430. These fields establish the observed objective state, not an intercept result. Root supplied closed-segment counters total4403/res1250/Oct4+378/h6874 and an artifact pin of94456431 bytes, SHA `3a7d3f9e0ef9b94c55bded16936a2a7b4c09cfdf1c8d4b8118ba59ffd1a2b5f3`; no exact path was supplied, so none is invented here. All eight days belong to Root's actual march, with zero days or actions credited to this documentation consumer.
+
+Readiness for this increment is **production-live primitive**: the fixed preview, one actual committed move, and independent moving route/timing observation are live. The closed eight-day segment verifies continued normal progression, but establishes no arrival at2669, new combat or completed interception. The existing `ck3_execute_step(step=query_route_contact_horizon_step(83886367,2669,_route_contact_hostile_ids(fresh_snapshot)), expected_revision=fresh_public_revision)` is the next material-pause read for fresh route timing and one-day contact inputs. The hostile list remains all current eligible hostile CUnits deduplicated by the existing helper; no new query, schema, flag, gate or repeated move is introduced. Root's later SDK24718 was ACTIVE when this evidence was handed off; its possible fourteen days and outcomes are excluded.
