@@ -171,3 +171,19 @@ R39 / v66 / g71，Root 冻结源 `cd0acf19`、PID `126252`；唯一军力查询�
 新 `native_army_resolution_v1` 的本帧三个 resolved 分支与未触发失败分支边界，由 ArmyReinforcement 在 [补员与 raised/reserve 专题](army-regiment-replenishment-raised-reserve-12003.md) 另行记录；本专题仅引用当前 CArmy 身份，不重复该诊断 primitive 的验收。
 
 compact 缓存为 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-loss-r39-corrected-actual/COMPACT-CORRECTED-HEALTH-CACHE.json`（SHA `831a56ee162297dbd2d7657836c24d5d811b4bca101df95955e01a461c467213`）；完整选定 body 缓存已交 ArmyReinforcement 独立 diff/report，禁止其重复读取原005。初次 decoder 因 content.text 与 structuredContent 双副本触发 HARNESS_RED，且在断言前未留 buffer；修正后完成唯一成功解码，原 buffer 总读取2次如实保留。此 harness RED 不是 native capability RED；未新增 SDK、游戏日、动作、测试或窗口操作，既有唯一生产回归直接复用。
+
+### 2026-10-05：R39 正常 24 日后的独立当前军力
+
+Root 正常 `20302` 批次 CLOSED GREEN 并已记 24 日；随后 `38425` 查询 CLOSED exit0 GREEN。新原叶 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/r39-after24-actual-readback-01/006-ck3_query_army_strengths.json`（SHA `2070228656153c36eaaf118df252915348ccd67ace23e0dd9457f564d825c363`）由军需 owner 一次完整缓存。实际 query sequence `2`、snapshot `native:103`、native revision `103`、public revision `2`、raw date `53260344`、paused=true，三个 scope row 均 available；外层继续 R39 / v66 / g71 / `cd0acf19` / PID126252，原生版本与 EXE SHA 的 null 原样保留。
+
+| 当前军团 | 人数 / 上限 / regiment | 对前帧人数净差 | supply / capacity | 当前月变化 / attrition | 当前围城 / 劫掠 / 供给预算 |
+| --- | --- | --- | --- | --- | --- |
+| 主军 301989997 | 3178 / 3874 / 39 | −32 | 293.63637 / 300 | −1.81818 / .01 | 31 / 0 / 0 |
+| 守军 184549452 | 3000 / 3000 / 24 | 0 | 100 / 100 | +20 / 0 | 0 / 0 / 0 |
+| 敌军 268435597 | 3045 / 4702 / 41 | +64 | 285 / 300 | −10 / 0 | 0 / 0 / 0 |
+
+主军当前仍 `raid_association_id=-1 / raid_active=false / siege_active=true / unit_state_raw=3`；人数上限与 regiment 数不变，实际库存不变，当前月率从0变为−1.81818，整数围城预算从32变为31。独立实际人数净减32与前帧预算数值相同，但查询没有提供 setter 执行轨迹，不能据相等归因纯损耗、证明预算已扣或预测下一期净减31。敌军独立实际净增64、库存减7、当前月率−5→−10；这些差值同样不由当前 rate 或 budget 单独归因。其当前 `unit_state_raw=2`，本口不提供 battle ID/side，前帧移动边 ETA 不沿用到本帧。
+
+三个 `last_supply_update_date_raw` 分别为主军 `53260080`、守军 `53260032`、敌军 `53260224`，均较前帧锚点前移720 raw小时。当前 day index `394181`、selected phase `11`，三个 army bucket 为 `0 / 28 / 6`；锚点变化可观测，当前暂停帧不据 phase 推定即时执行。三个 resolver 仍 available/ready/resolved，原生预算与损耗标签沿用已获得的 production-live primitive 资格。
+
+完整 health/FULLDATA 缓存已交 ArmyReinforcement 独立 diff；本专题只保留当前损耗与供给输入。compact 为 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-loss-r39-after24-actual/COMPACT-AFTER24-HEALTH-CACHE.json`（SHA `48980e0bf75947732f12648d8fd04e8a3faf6e04da002c8909d1fbc035cb2bd8`）。旧 R38 错标签、R39 首次 decoder HARNESS_RED 与原005两次 buffer 读取继续保留；新006实际仅一次 buffer 读取。本消费不新增 SDK、测试、动作或游戏日；母批次累计 `4834 / resume1681 / Oct5+176` 由 Root 记账。
