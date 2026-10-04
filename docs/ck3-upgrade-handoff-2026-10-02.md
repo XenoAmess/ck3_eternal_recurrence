@@ -197,3 +197,19 @@ CK3 1.20.0.3 R2 已实际闭合 GREEN：Root 真实 Robert / 默认规则 / mrm_
 新 canonical 用户外层 `.mod` 之前不存在，实际创建后 **254 B** / SHA `7d93a3ec498006dc82e0e48074de8fa4e85b6809edb243beac291f87c3b70da8`；canonical remote ID 仅留此外层。最终恢复的 [fresh Steam 原图](C:/workspace/ck3-upgrade-20261005/mrm-workshop-publish-1.0.1-01/offline-restored-fresh-02/probe-1/steam-moved.png)已由 Root 直接审阅“离线模式”，**393,754 B** / SHA `7ff29bcc313f3ce1deb5a968b0c557a151375a12014f37ad3ac075d85b7375c9`，不是第一次恢复后再次联网前的旧画面。汇总 [postpublish-local-verification-01.json](C:/workspace/ck3-upgrade-20261005/mrm-workshop-publish-1.0.1-01/postpublish-local-verification-01.json)为 **6,006 B**，SHA `f661df3ad7d8ae7027ecaa1c0aa6fe249aafc3c358e8ff09e39b06fd1258955e`，实际本地收口时间 `2026-10-04T21:51:26.370152+00:00`。
 
 本产品实机、正式构建、单次上传、公开完整Notes、fresh cache15、无ID重建、canonical outer和最终Steam离线已全部实际完成。兼容专题、永久changelog、本交接及[发布证据索引](release-evidence/remove-mandala/1.0.1.json)一并提交至master；实际文档commit和远端读回保存于同次外置发布目录的release-closeout-01.json。正式源码tag与文档收口commit分别记录。描述、README和完整1929/25 Notes不改，不重播upload或已通过实机。历史准备的NOT_RUN/NOT_PUBLISHED属于当时日期边界，不能读成当前候选状态。周期dispatcher加速检查不外推自然一年、关闭规则或独立保存/载入。
+
+## 2026-10-05 牛来 1.0.3 正式公开、实机与屏幕实际闭合
+
+本增量只追加实际新状态；旧 1.19、候选、失败 attempt 与原始素材继续保留，不反向改写历史。当前公开版本为 `1.0.3`，上一公开 `1.0.2` 为历史基线。
+
+R2 `4-8e1c2f1861--ox-here--R0002` 的实际业务与简体中文 UI 复核为 **PRODUCT PASS**：拒绝、招募均经 Root 真实最终确认各一次，唯一勇士到庭、身份与勇武、强制骑士／适用时的零薪勇士、情人与秘密、不兼容性取向下勾引及零薪断言均通过。12 个必需标记各一次，两个 FAIL 均零；initial5 与 final3 实得通过。原 frontend 查询在执行前超时，恢复只读检查通过；原完整 runner `RED` / `HARNESS_RED` 与原 error 保留，不能写为整个 runner GREEN。actor38665 / PID17096 / generation1 全程暂停于 1066-09-15（raw53144328），没有自然日或重载验收信用。实际 `finished_at=2026-10-04T22:33:02.531798+00:00`、cleanup=true、thread=true；关闭后原始 error.log 为 **0 B**，SHA `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`，没有旧日志白名单或免除规则。
+
+实际闭合 [thin12](C:/workspace/ck3-upgrade-20261005/ox-r2-log-boundary-agent-01/closed-r2-product-harness-and-root-ui-receipt-12/final-ox-r2-product-PASS-harness-RED-thin-receipt-12.json) SHA `95d14c09740801649315d63eb843d85c060a97f56ee4cdadd8d8dddf0cb001fa`，及 [full10](C:/workspace/ck3-upgrade-20261005/ox-r2-log-boundary-agent-01/closed-r2-current-full-body-comparison-10/final-ox-r2-current-full-body-comparison-10.json) SHA `298deb8d65e74f3cc042977f5705cdd3881e4ad321dfd3b5f1b985afaeec026c` 分别绑定业务／运行器边界、Root 原图、实际输入及完整日志来源；旧 UNKNOWN / RED 不改成通过。
+
+正式源码 tag `ox-here-v1.0.3` → `27233b21273959c85d4f2b85bd7519e53fcf99a1` 已实际推送。item `3790635143` 的单次 SDK update 已于 `2026-10-04T22:49:42.938448+00:00` 实际完成，stage=complete / EResult=1；独立匿名三个端点 HTTP200，owner/App/item/public/title/description 精确，新 entry **1791154182** 的完整更新说明 **1130 字符 / 21 行 / 1600 UTF-8 B**，SHA `bf8f774e66f834c114dba47378608b3e7b7871e4694287a5c841a9e843643e8a`，与提交前完整冻结字节精确相同，旧条目保持原样。SDK 成功与公开全文回读分别记录。
+
+实际 fresh 下载耗时 **9.404 秒**，开始前 cache 不存在，callback EResult=1 / installed=true / install **717537 B**，时间戳1791154182；该回执 subscribed=false，不写为新订阅成功。官方 STRICT cache verify 实际 exit0 / **22 文件**、stderr空；未使用 descriptor 归一化或 ID 例外。正式上传后独立重建、canonical 源／两正式树／缓存共四处内层 descriptor 均无 remote ID。canonical outer **228 B** / SHA `d14d58a80f2cafad96694e7f1a91f61b925d30e38c787ce59964543e336bee6c`，ID 仅留用户外层。Root 已直接审阅最终新鲜 Steam 离线原图，SHA `612498a9b80f65a06cb01b7b8c21208faa16c5bcf81ce6eb151000cdbec40dc7`；本地实际汇总时间 `2026-10-04T22:55:06.499921+00:00`。
+
+屏幕任务 `ck3-upgrade-screen-20261004-a42` 的真实 CAS 完成回执为 sequence **2756**、state=done、resources=[]，已释放屏幕；没有根据命令 ACK 推定释放。后续 QOL 占用不改变此历史释放事实。
+
+永久 [发布证据索引](release-evidence/ox-here/1.0.3.json) 与 [changelog](release-changelogs/ox-here/1.0.3.md) 分别记录发布与版本差异。**本轮永久记录的 master 提交、推送及远端回读仍待 Root 实际执行并追加 release-closeout 回执**；没有虚填未来 master commit。源码 tag 与最终文档收口 commit 分开。此脚本不重播实机、上传或下载，不改公开描述与 Notes 正文字节。

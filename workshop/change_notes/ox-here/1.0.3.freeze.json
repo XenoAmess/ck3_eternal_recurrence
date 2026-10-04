@@ -8,8 +8,29 @@
   "target_item_id": "3790635143",
   "version": "1.0.3",
   "frozen_before_submit": true,
-  "status": "DRAFT_NOT_SUBMITTED",
-  "use_condition": "Root may adopt only after actual 1.20.0.3 business and Chinese UI acceptance; any copy change requires a new freeze.",
+  "status": "PUBLISHED_PUBLIC_FULLTEXT_VERIFIED",
+  "use_condition": "Published full text independently read back exactly; text is immutable for this entry. Any correction requires a separately recorded new freeze and public readback.",
   "source_candidate": "C:\\workspace\\ck3-upgrade-20261005\\ox-release-readiness-agent-02\\steam-change-notes.txt.candidate",
-  "freeze_source_sha256": "dd7a79beaae4cc7f1f81ed951d2fa27b461e217fc85e62be81cc025410a19e48"
+  "freeze_source_sha256": "dd7a79beaae4cc7f1f81ed951d2fa27b461e217fc85e62be81cc025410a19e48",
+  "published": true,
+  "entry_id": "1791154182",
+  "public_exact_readback": true,
+  "release_tag": "ox-here-v1.0.3",
+  "release_commit": "27233b21273959c85d4f2b85bd7519e53fcf99a1",
+  "published_at_utc": "2026-10-04T22:49:42.938448+00:00",
+  "source_master_tag_receipt": {
+    "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\source-master-tag-01.json",
+    "bytes": 152,
+    "sha256": "c8be1376630fef125747fa9ff4cdaa0c238745fa9ad7b2ada1633b7841d3a846"
+  },
+  "public_readback_receipt": {
+    "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\anonymous-readback-01\\verification.json",
+    "bytes": 17103,
+    "sha256": "97da779f4e2c0bbdf76721e1ef1dd6d8e13558ec2bda3eadcaf83818d476d917"
+  },
+  "candidate_freeze_before_publication": {
+    "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-final-master-record-prep-agent-01\\before-root-canonical-write-01\\1.0.3.freeze.before-published.exact.json",
+    "bytes": 725,
+    "sha256": "90a9f956dd0aefe276eacea9766947ac2d1ade6dd3f78f22bca490e821c75ac3"
+  }
 }

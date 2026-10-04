@@ -1,0 +1,2840 @@
+{
+  "schema": "ck3.workshop-release-evidence.v1",
+  "product": "ox-here",
+  "version": "1.0.3",
+  "previous_public_version": "1.0.2",
+  "workshop_item_id": "3790635143",
+  "release_tag": "ox-here-v1.0.3",
+  "release_commit": "27233b21273959c85d4f2b85bd7519e53fcf99a1",
+  "published_at_utc": "2026-10-04T22:49:42.938448+00:00",
+  "public_change_notes": {
+    "path": "workshop/change_notes/ox-here/1.0.3.txt",
+    "bytes": 1600,
+    "characters": 1130,
+    "lines": 21,
+    "sha256": "bf8f774e66f834c114dba47378608b3e7b7871e4694287a5c841a9e843643e8a",
+    "normalization": "UTF-8, LF, no trailing newline",
+    "target_item_id": "3790635143",
+    "version": "1.0.3",
+    "frozen_before_submit": true,
+    "status": "PUBLISHED_PUBLIC_FULLTEXT_VERIFIED",
+    "use_condition": "Published full text independently read back exactly; text is immutable for this entry. Any correction requires a separately recorded new freeze and public readback.",
+    "source_candidate": "C:\\workspace\\ck3-upgrade-20261005\\ox-release-readiness-agent-02\\steam-change-notes.txt.candidate",
+    "freeze_source_sha256": "dd7a79beaae4cc7f1f81ed951d2fa27b461e217fc85e62be81cc025410a19e48",
+    "published": true,
+    "entry_id": "1791154182",
+    "public_exact_readback": true,
+    "release_tag": "ox-here-v1.0.3",
+    "release_commit": "27233b21273959c85d4f2b85bd7519e53fcf99a1",
+    "published_at_utc": "2026-10-04T22:49:42.938448+00:00",
+    "source_master_tag_receipt": {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\source-master-tag-01.json",
+      "bytes": 152,
+      "sha256": "c8be1376630fef125747fa9ff4cdaa0c238745fa9ad7b2ada1633b7841d3a846"
+    },
+    "public_readback_receipt": {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\anonymous-readback-01\\verification.json",
+      "bytes": 17103,
+      "sha256": "97da779f4e2c0bbdf76721e1ef1dd6d8e13558ec2bda3eadcaf83818d476d917"
+    },
+    "candidate_freeze_before_publication": {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-final-master-record-prep-agent-01\\before-root-canonical-write-01\\1.0.3.freeze.before-published.exact.json",
+      "bytes": 725,
+      "sha256": "90a9f956dd0aefe276eacea9766947ac2d1ade6dd3f78f22bca490e821c75ac3"
+    }
+  },
+  "native_publish": {
+    "app_id": 1158310,
+    "created_at": "2026-10-04T22:49:37.725737+00:00",
+    "item_id": "3790635143",
+    "legal_agreement_required": false,
+    "operation": "update",
+    "operation_id": "ox-here-1.0.3-update-20261005-01",
+    "payload_sha256": "290182b2b6ff7460e0d449ae59fdacda86599444abee65a8953506b1089fbb5a",
+    "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+    "stage": "complete",
+    "steam_result": 1,
+    "submitted_at": "2026-10-04T22:49:42.938448+00:00",
+    "updated_at": "2026-10-04T22:49:42.938500+00:00"
+  },
+  "public_exact": true,
+  "public_readback": {
+    "status": "PUBLIC_METADATA_AND_NOTES_EXACT_OBSERVED",
+    "observed_at_utc": "2026-10-04T22:51:00.878044+00:00",
+    "all_http_200_complete": true,
+    "identity_owner_app_item_public_visibility_exact": true,
+    "exact_payload_comparison": {
+      "title_exact": true,
+      "description_exact": true,
+      "description_characters": 4551,
+      "description_sha256": "17AB9F8ADB72BE52208D45178D505159B6CF5FE32F85DF64E5C0C1B9E4667E2B",
+      "expected_description_sha256": "17AB9F8ADB72BE52208D45178D505159B6CF5FE32F85DF64E5C0C1B9E4667E2B",
+      "change_notes_exact": true,
+      "changelog_entry_id": "1791154182",
+      "change_notes_characters": 1130,
+      "change_notes_lines": 21,
+      "change_notes_sha256": "BF8F774E66F834C114DBA47378608B3E7B7871E4694287A5C841A9E843643E8A",
+      "expected_change_notes_characters": 1130,
+      "expected_change_notes_lines": 21,
+      "expected_change_notes_sha256": "BF8F774E66F834C114DBA47378608B3E7B7871E4694287A5C841A9E843643E8A",
+      "time_updated": 1791154182,
+      "file_size": "717537",
+      "ok": true
+    },
+    "target_entry_is_new_and_latest": true,
+    "target_chars_lines_bytes_sha_exact": true,
+    "old_entry_body_unchanged": true
+  },
+  "fresh_download": {
+    "app_id": 1158310,
+    "callback": {
+      "app_id": 1158310,
+      "callback_id": 3406,
+      "item_id": "3790635143",
+      "result": 1
+    },
+    "dll_path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\steam_api64.dll",
+    "dll_sha256": "1db3fd414039d3e5815a5721925dd2e0a3a9f2549603c6cab7c49b84966a1af3",
+    "download_info": {
+      "available": true,
+      "downloaded_bytes": 0,
+      "total_bytes": 0
+    },
+    "elapsed_seconds": 9.404,
+    "expected_cache_absent_before_start": true,
+    "expected_cache_path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143",
+    "fresh_cache_requested": true,
+    "ignored_callbacks": 25,
+    "install_info": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143",
+      "size_on_disk": 717537,
+      "timestamp": 1791154182
+    },
+    "isolated_worker": true,
+    "item_id": "3790635143",
+    "ok": true,
+    "schema": "ck3_workshop_mcp.steam_native.download.v1",
+    "started": true,
+    "state_flags": {
+      "download_pending": false,
+      "downloading": false,
+      "installed": true,
+      "legacy": false,
+      "needs_update": false,
+      "raw": 4,
+      "subscribed": false
+    },
+    "status": "complete",
+    "timeout_seconds": 300.0,
+    "worker_exit_code": 0,
+    "worker_pid": 13800
+  },
+  "build_and_cache": {
+    "schema": "ox.actual-postpublish-local-verification.v1",
+    "completed_at_utc": "2026-10-04T22:55:06.499921+00:00",
+    "item_id": "3790635143",
+    "version": "1.0.3",
+    "tag": "ox-here-v1.0.3",
+    "release_commit": "27233b21273959c85d4f2b85bd7519e53fcf99a1",
+    "cache_exact_files": 22,
+    "cache_exact_bytes": 717537,
+    "cache_descriptor_normalization_used": false,
+    "postpublish_rebuild_exact": true,
+    "manifest": {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\formal\\ox_here-v1.0.3.manifest.json",
+      "bytes": 4034,
+      "sha256": "d7550ea694e612639762d00aabffc1a969672261c5fbcd2182d829521193fc57"
+    },
+    "zip": {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\formal\\ox_here-v1.0.3.zip",
+      "bytes": 701903,
+      "sha256": "996057a9afab2fb5b8b83bc8643c61ea596aea904e763901a3367337df8c385e"
+    },
+    "outer_before_exists": false,
+    "outer_after": {
+      "path": "C:\\Users\\Administrator\\Documents\\Paradox Interactive\\Crusader Kings III\\mod\\ox_here.mod",
+      "bytes": 228,
+      "sha256": "d14d58a80f2cafad96694e7f1a91f61b925d30e38c787ce59964543e336bee6c"
+    },
+    "canonical_id_only_in_outer": true,
+    "steam_offline_visually_reviewed": true,
+    "offline_original": {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\offline-restored-fresh-01\\probe-1\\steam-moved.png",
+      "bytes": 395553,
+      "sha256": "612498a9b80f65a06cb01b7b8c21208faa16c5bcf81ce6eb151000cdbec40dc7"
+    },
+    "files": {
+      "descriptor.mod": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\descriptor.mod",
+        "bytes": 104,
+        "sha256": "5b6abeae7c2baddd25dab061967d3f7b22c8389a0d1de74c6b625de4df916dbf"
+      },
+      "thumbnail.png": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\thumbnail.png",
+        "bytes": 686490,
+        "sha256": "330bf1fb1330fd817b46b47ac3345e4e5f32472152b18d4277790c0c0c767b59"
+      },
+      "events/ox_here_events.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\events\\ox_here_events.txt",
+        "bytes": 576,
+        "sha256": "39e3f73691274fc475fdf46ebfbbab3bde412754321b7dacd914cc2df5db6de8"
+      },
+      "gui/ox_here_bridge.gui": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\gui\\ox_here_bridge.gui",
+        "bytes": 632,
+        "sha256": "464a7dc853d2a89c882996e7f71edf8c83dc565c6d3272c23f01a7e1aeb2d9e4"
+      },
+      "localization/english/ox_here_l_english.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\english\\ox_here_l_english.yml",
+        "bytes": 1888,
+        "sha256": "4716745abdb1c09703b0cc5400ff99768fb053d0bf4f7ac6471590c90e04c25f"
+      },
+      "localization/french/ox_here_l_french.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\french\\ox_here_l_french.yml",
+        "bytes": 2252,
+        "sha256": "a2b96e9327de5cade99b96ae29f915cfbbe0384bb1bf80fa4ebc0afff8420976"
+      },
+      "localization/german/ox_here_l_german.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\german\\ox_here_l_german.yml",
+        "bytes": 2149,
+        "sha256": "7bda9a7bf1f1c05c876ba3489ddb4e56030502d58b4e12b222ca28e825b4a264"
+      },
+      "localization/japanese/ox_here_l_japanese.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\japanese\\ox_here_l_japanese.yml",
+        "bytes": 2283,
+        "sha256": "733f73c40a84200c3deee77169596715dc72a311027df2d851052d6432a83db4"
+      },
+      "localization/korean/ox_here_l_korean.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\korean\\ox_here_l_korean.yml",
+        "bytes": 2349,
+        "sha256": "fc79a23db29af3af8ddcca90bf7001b485baceef88ff68729f2ab05f26b90f84"
+      },
+      "localization/polish/ox_here_l_polish.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\polish\\ox_here_l_polish.yml",
+        "bytes": 2226,
+        "sha256": "b2f256b818c908b09373352f6c0344efdf07cafc50506317611a60f089d9f3cc"
+      },
+      "localization/russian/ox_here_l_russian.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\russian\\ox_here_l_russian.yml",
+        "bytes": 2920,
+        "sha256": "df8abf8eba35adf43256ddeb23cf7c3aba9de093670cfd3a8fc2973ef08b914a"
+      },
+      "localization/simp_chinese/ox_here_l_simp_chinese.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\simp_chinese\\ox_here_l_simp_chinese.yml",
+        "bytes": 1861,
+        "sha256": "17425b1b6e28a9fec68c1bbfdb6e5de50c004d677c2cd40fafb3d85542c2c6a6"
+      },
+      "localization/spanish/ox_here_l_spanish.yml": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\spanish\\ox_here_l_spanish.yml",
+        "bytes": 2025,
+        "sha256": "c6b72d298348a996397a6bb8b1090fb38e8a463d63e49bd7a79a6c6c71a73c8f"
+      },
+      "gui/scripted_widgets/ox_here_scripted_widgets.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\gui\\scripted_widgets\\ox_here_scripted_widgets.txt",
+        "bytes": 50,
+        "sha256": "383e1ba2981eabf5e1c38cf5d54260674ade5e0e5c8a42d292c148df84b0d9b5"
+      },
+      "common/decisions/ox_here_decisions.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\decisions\\ox_here_decisions.txt",
+        "bytes": 3031,
+        "sha256": "8c863123bd4dca6b91a9f7afd7b0155db14d40a5a75771153c9a36864a408d60"
+      },
+      "common/decision_group_types/ox_here_decision_group_types.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\decision_group_types\\ox_here_decision_group_types.txt",
+        "bytes": 62,
+        "sha256": "e2cfc9d676061e2f3db8365ef3904776da444eb8c1654c14fc1afc0c536198da"
+      },
+      "common/ethnicities/ox_here_ethnicities.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\ethnicities\\ox_here_ethnicities.txt",
+        "bytes": 339,
+        "sha256": "194fabe42171837b9d861baec7f69e4379558367983019298be3671a71c43fb0"
+      },
+      "common/scripted_character_templates/ox_here_character_templates.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\scripted_character_templates\\ox_here_character_templates.txt",
+        "bytes": 548,
+        "sha256": "646918007efdf28af4bd9513c6c274d8c59d8266354d9205fd65acff46e183a5"
+      },
+      "common/scripted_effects/ox_here_effects.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\scripted_effects\\ox_here_effects.txt",
+        "bytes": 2677,
+        "sha256": "1f4ee9362e40424d003c4ed61db9ac1d6214d561b6474536cbe462e7dfeaa7ca"
+      },
+      "common/scripted_guis/ox_here_guis.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\scripted_guis\\ox_here_guis.txt",
+        "bytes": 331,
+        "sha256": "9d6ca53950d5ef0f92d935dcafb841cbac2c2ee034a42f81919f723d7d669693"
+      },
+      "common/script_values/ox_here_values.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\script_values\\ox_here_values.txt",
+        "bytes": 1783,
+        "sha256": "361ed80ab6844961b74c7d02343d26b57c51e67b8b81b2296f084d27efd27746"
+      },
+      "common/culture/cultures/ox_here_cultures.txt": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\culture\\cultures\\ox_here_cultures.txt",
+        "bytes": 961,
+        "sha256": "ab65766d4e6cfd0271b771d7973d41d10a67335b79a0c3aa11f317c2c609c707"
+      }
+    }
+  },
+  "strict_cache_verification": {
+    "argv": [
+      "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "tools/build_ox_here_release.py",
+      "--verify",
+      "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3790635143",
+      "--manifest",
+      "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\formal\\ox_here-v1.0.3.manifest.json"
+    ],
+    "exit_code": 0,
+    "stdout": "Verified directory: C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\nFiles: 22\n",
+    "stderr": ""
+  },
+  "no_id_inner_descriptor_pins": [
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\formal\\ox_here\\descriptor.mod",
+      "bytes": 104,
+      "sha256": "5b6abeae7c2baddd25dab061967d3f7b22c8389a0d1de74c6b625de4df916dbf"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\formal-rebuilt-02\\ox_here\\descriptor.mod",
+      "bytes": 104,
+      "sha256": "5b6abeae7c2baddd25dab061967d3f7b22c8389a0d1de74c6b625de4df916dbf"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\descriptor.mod",
+      "bytes": 104,
+      "sha256": "5b6abeae7c2baddd25dab061967d3f7b22c8389a0d1de74c6b625de4df916dbf"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ox_here\\descriptor.mod",
+      "bytes": 104,
+      "sha256": "5b6abeae7c2baddd25dab061967d3f7b22c8389a0d1de74c6b625de4df916dbf"
+    }
+  ],
+  "steam_offline_reviewed": true,
+  "screen_release": {
+    "task_id": "ck3-upgrade-screen-20261004-a42",
+    "state": "done",
+    "resources": [],
+    "actual_sequence": 2756,
+    "actual_timestamp_utc": "2026-10-04T23:08:01.572859+00:00",
+    "receipt": {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\screen-release-01.json",
+      "bytes": 1307,
+      "sha256": "af9a9e2e71814144ac1ee0e69ab8ec483ae01ae807046dbab69851d11ac42b84"
+    }
+  },
+  "actual_live": {
+    "run_id": "4-8e1c2f1861--ox-here--R0002",
+    "execution_id": "b943ddbc-1e84-4e8a-aed5-900b08bf63db",
+    "product_acceptance": "PASS",
+    "harness_frontend_query": "RED",
+    "whole_runner_status_preserved": "RED",
+    "original_error_preserved": "RuntimeError: MCP tool ck3_query_campaign_root_context_v1 returned an error: Error executing tool ck3_query_campaign_root_context_v1",
+    "actual_scope_gate": {
+      "actual_initial5_final3_all_ok": true,
+      "actual_finish_hold_ok": true,
+      "actual_twelve_markers_each_once_both_FAIL_zero": true,
+      "actual_frozen_product22_exact": true,
+      "actual_current_error_empty": true,
+      "actual_start_and_final_identity_date_gen_exact": true,
+      "actual_native_HRE_feudal_empire_independent": true,
+      "root_original_GUI_assets_bound": true
+    },
+    "closure": {
+      "status": "RED",
+      "phase": "hold",
+      "started_at": "2026-10-04T22:09:38.328457+00:00",
+      "finished_at": "2026-10-04T22:33:02.531798+00:00",
+      "cleanup_ok": true,
+      "managed_session_thread_finished": true,
+      "error": "RuntimeError: MCP tool ck3_query_campaign_root_context_v1 returned an error: Error executing tool ck3_query_campaign_root_context_v1"
+    },
+    "same_native_start_final_frames": [
+      {
+        "id": "ox-start-frame",
+        "ok": true,
+        "map_ready": true,
+        "paused": true,
+        "date_raw": 53144328,
+        "played_character": {
+          "character_id": 38665,
+          "alive": true,
+          "source": "native",
+          "stress_points": 0,
+          "betrothed_id": null,
+          "primary_spouse_id": 38113,
+          "spouse_ids": [
+            38113
+          ]
+        },
+        "active_event": null,
+        "episode_projection": "native_campaign",
+        "episode_run_id": null,
+        "episode_character_id": null,
+        "bridge_pid": 17096,
+        "connection_generation": 1
+      },
+      {
+        "id": "ox-start-frame-readback",
+        "ok": true,
+        "map_ready": true,
+        "paused": true,
+        "date_raw": 53144328,
+        "played_character": {
+          "character_id": 38665,
+          "alive": true,
+          "source": "native",
+          "stress_points": 0,
+          "betrothed_id": null,
+          "primary_spouse_id": 38113,
+          "spouse_ids": [
+            38113
+          ]
+        },
+        "active_event": null,
+        "episode_projection": "native_campaign",
+        "episode_run_id": null,
+        "episode_character_id": null,
+        "bridge_pid": 17096,
+        "connection_generation": 1
+      },
+      {
+        "id": "ox-final-frame",
+        "ok": true,
+        "map_ready": true,
+        "paused": true,
+        "date_raw": 53144328,
+        "played_character": {
+          "character_id": 38665,
+          "alive": true,
+          "source": "native",
+          "stress_points": 0,
+          "betrothed_id": null,
+          "primary_spouse_id": 38113,
+          "spouse_ids": [
+            38113
+          ]
+        },
+        "active_event": null,
+        "episode_projection": "native_campaign",
+        "episode_run_id": null,
+        "episode_character_id": null,
+        "bridge_pid": 17096,
+        "connection_generation": 1
+      }
+    ],
+    "business_markers": [
+      {
+        "literal": "OXA120: TEST BEGIN engine_startup",
+        "expected_count": 1,
+        "actual_line_count": 1,
+        "exact_expected_count": true
+      },
+      {
+        "literal": "OXA: TEST BEGIN standalone",
+        "expected_count": 1,
+        "actual_line_count": 1,
+        "exact_expected_count": true
+      },
+      {
+        "literal": "OXA: TEST PASS exact_build_ruler_ready",
+        "expected_count": 1,
+        "actual_line_count": 1,
+        "exact_expected_count": true
+      },
+      {
+        "literal": "OXA120: TEST READY production_choices",
+        "expected_count": 1,
+        "actual_line_count": 1,
+        "exact_expected_count": true
+      },
+      {
+        "literal": "OXA: TEST PASS decline_zero_side_effect",
+        "expected_count": 1,
+        "actual_line_count": 1,
+        "exact_expected_count": true
+      },
+      {
+        "literal": "OXA: TEST PASS exactly_one_delivery",
+        "expected_count": 1,
+        "actual_line_count": 1,
+        "exact_expected_count": true
+      },
+      {
+        "literal": "OXA: TEST PASS warrior_identity_and_prowess",
+        "expected_count": 1,
+        "actual_line_count": 1,
+        "exact_expected_count": true
+      },
+      {
+        "literal": "OXA: TEST PASS knight_and_champion_appointment",
+        "expected_count": 1,
+        "actual_line_count": 1,
+        "exact_expected_count": true
+      },
+      {
+        "literal": "OXA: TEST PASS affair_and_secret",
+        "expected_count": 1,
+        "actual_line_count": 1,
+        "exact_expected_count": true
+      },
+      {
+        "literal": "OXA: TEST PASS incompatible_orientation_seduce_scheme",
+        "expected_count": 1,
+        "actual_line_count": 1,
+        "exact_expected_count": true
+      },
+      {
+        "literal": "OXA: TEST PASS champion_salary_zero",
+        "expected_count": 1,
+        "actual_line_count": 1,
+        "exact_expected_count": true
+      },
+      {
+        "literal": "OXA: TEST DONE standalone",
+        "expected_count": 1,
+        "actual_line_count": 1,
+        "exact_expected_count": true
+      },
+      {
+        "literal": "OXA: TEST FAIL",
+        "expected_count": 0,
+        "actual_line_count": 0,
+        "exact_expected_count": true
+      },
+      {
+        "literal": "OXA120: TEST FAIL",
+        "expected_count": 0,
+        "actual_line_count": 0,
+        "exact_expected_count": true
+      }
+    ],
+    "closed_raw_error": {
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "block_count": 0,
+      "family_counts": {},
+      "body_multiset": {}
+    },
+    "scope_limits": "Actual paused core only: decline no side effect, one delivery, warrior identity/prowess, knight/champion appointment, affair/secret, incompatible-orientation seduce scheme and zero champion salary. No AI frequency, real day progression or extended duration claim.",
+    "historical_boundaries": "MRM/AUB/stock raw logs and prior UNKNOWN/RED retained. Current actual error.log empty; no court58 exemption or old error whitelist used. Missing source path/SHA fields in old simple mappings explicitly retained, not fabricated.",
+    "root_gui_receipt_pins": [
+      {
+        "name": "ox-r2-close-arrival-once-01",
+        "mapping": {
+          "live_screen_size": [
+            1920,
+            1080
+          ],
+          "observed_point": [
+            695.0,
+            782.0
+          ],
+          "preview_bounds": [
+            0.0,
+            0.0,
+            1920,
+            1080
+          ],
+          "screen_point": [
+            695,
+            782
+          ],
+          "source_image_size": [
+            1920,
+            1080
+          ]
+        },
+        "artifacts": [
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-close-arrival-once-01.png",
+              "bytes": 2838249,
+              "sha256": "bcfb58d7929c9280f13aa618c5aeddc5ec28c3ee894be8169012a6ceae3f1df4"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-close-arrival-once-01.png",
+              "bytes": 2838249,
+              "sha256": "bcfb58d7929c9280f13aa618c5aeddc5ec28c3ee894be8169012a6ceae3f1df4"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-close-arrival-once-01.mapping.json",
+              "bytes": 175,
+              "sha256": "ce26023ec31223a64904bdf5ca901add92deb0f5f4448cb19c9763081064a644"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-close-arrival-once-01.mapping.json",
+              "bytes": 175,
+              "sha256": "ce26023ec31223a64904bdf5ca901add92deb0f5f4448cb19c9763081064a644"
+            }
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-close-arrival-once-01-settled.png",
+              "bytes": 3158461,
+              "sha256": "974c06991b601b2a3fe011c948cd6b52fa49e7df9a8ccad186658fd12d6956f6"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-close-arrival-once-01-settled.png",
+              "bytes": 3158461,
+              "sha256": "974c06991b601b2a3fe011c948cd6b52fa49e7df9a8ccad186658fd12d6956f6"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          }
+        ],
+        "original_png_sizes_match_recorded_mapping": true,
+        "old_mapping_source_path_sha_fields_present": false,
+        "binding_boundary": "These legacy mappings contain actual independent X/Y geometry and source/live dimensions but no source path/SHA or target PID. Preserve exact PNG and settled originals, bind same-session owner PID/ctime via before-open/frontend capture receipts, and bind actual production outcomes via final source markers; no invented fields or action ACK."
+      },
+      {
+        "name": "ox-r2-confirm-decline-once-01",
+        "mapping": {
+          "live_screen_size": [
+            1920,
+            1080
+          ],
+          "observed_point": [
+            978.0,
+            925.0
+          ],
+          "preview_bounds": [
+            0.0,
+            0.0,
+            1920,
+            1080
+          ],
+          "screen_point": [
+            978,
+            925
+          ],
+          "source_image_size": [
+            1920,
+            1080
+          ]
+        },
+        "artifacts": [
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-confirm-decline-once-01.png",
+              "bytes": 2837895,
+              "sha256": "9042d7d0f1e682270f054ab0d2df8df93004fdd2b549e0fc00e147d38ea0729f"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-confirm-decline-once-01.png",
+              "bytes": 2837895,
+              "sha256": "9042d7d0f1e682270f054ab0d2df8df93004fdd2b549e0fc00e147d38ea0729f"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-confirm-decline-once-01.mapping.json",
+              "bytes": 175,
+              "sha256": "dec4d8ce0ecfafc7f8c8a77356da7275b7025e7a98d2ddce6772ddaf437a30fb"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-confirm-decline-once-01.mapping.json",
+              "bytes": 175,
+              "sha256": "dec4d8ce0ecfafc7f8c8a77356da7275b7025e7a98d2ddce6772ddaf437a30fb"
+            }
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-confirm-decline-once-01-settled.png",
+              "bytes": 2838156,
+              "sha256": "ffc93dc151ccb03480e6b096953356d120a6ce01368d99983cf59873ce755606"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-confirm-decline-once-01-settled.png",
+              "bytes": 2838156,
+              "sha256": "ffc93dc151ccb03480e6b096953356d120a6ce01368d99983cf59873ce755606"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          }
+        ],
+        "original_png_sizes_match_recorded_mapping": true,
+        "old_mapping_source_path_sha_fields_present": false,
+        "binding_boundary": "These legacy mappings contain actual independent X/Y geometry and source/live dimensions but no source path/SHA or target PID. Preserve exact PNG and settled originals, bind same-session owner PID/ctime via before-open/frontend capture receipts, and bind actual production outcomes via final source markers; no invented fields or action ACK."
+      },
+      {
+        "name": "ox-r2-end-summary-once-01",
+        "mapping": {
+          "live_screen_size": [
+            1920,
+            1080
+          ],
+          "observed_point": [
+            698.0,
+            781.0
+          ],
+          "preview_bounds": [
+            0.0,
+            0.0,
+            1920,
+            1080
+          ],
+          "screen_point": [
+            698,
+            781
+          ],
+          "source_image_size": [
+            1920,
+            1080
+          ]
+        },
+        "artifacts": [
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-end-summary-once-01.png",
+              "bytes": 2816077,
+              "sha256": "cdc0b47416263c5119cc3ca2a65e5d8d1062935182e788281922a0ab3d94c80f"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-end-summary-once-01.png",
+              "bytes": 2816077,
+              "sha256": "cdc0b47416263c5119cc3ca2a65e5d8d1062935182e788281922a0ab3d94c80f"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-end-summary-once-01.mapping.json",
+              "bytes": 175,
+              "sha256": "351488a553b6cbc6739fb8b02313580682b15f445ec2ca2486e405bcf9049f55"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-end-summary-once-01.mapping.json",
+              "bytes": 175,
+              "sha256": "351488a553b6cbc6739fb8b02313580682b15f445ec2ca2486e405bcf9049f55"
+            }
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-end-summary-once-01-settled.png",
+              "bytes": 3156885,
+              "sha256": "33c8ffb508a91de53beff3c9f7a26c9db0e5ded594ff2a8ec841de41a8dcf1f3"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-end-summary-once-01-settled.png",
+              "bytes": 3156885,
+              "sha256": "33c8ffb508a91de53beff3c9f7a26c9db0e5ded594ff2a8ec841de41a8dcf1f3"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          }
+        ],
+        "original_png_sizes_match_recorded_mapping": true,
+        "old_mapping_source_path_sha_fields_present": false,
+        "binding_boundary": "These legacy mappings contain actual independent X/Y geometry and source/live dimensions but no source path/SHA or target PID. Preserve exact PNG and settled originals, bind same-session owner PID/ctime via before-open/frontend capture receipts, and bind actual production outcomes via final source markers; no invented fields or action ACK."
+      },
+      {
+        "name": "ox-r2-final-confirm-decline-once-01",
+        "mapping": {
+          "live_screen_size": [
+            1920,
+            1080
+          ],
+          "observed_point": [
+            1074.0,
+            925.0
+          ],
+          "preview_bounds": [
+            0.0,
+            0.0,
+            1920,
+            1080
+          ],
+          "screen_point": [
+            1074,
+            925
+          ],
+          "source_image_size": [
+            1920,
+            1080
+          ]
+        },
+        "artifacts": [
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-final-confirm-decline-once-01.png",
+              "bytes": 3053929,
+              "sha256": "2dd76dbc8817f6358687ca8bfdcec7c59280ad9dca8a662c3fd35a3f592b72ad"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-final-confirm-decline-once-01.png",
+              "bytes": 3053929,
+              "sha256": "2dd76dbc8817f6358687ca8bfdcec7c59280ad9dca8a662c3fd35a3f592b72ad"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-final-confirm-decline-once-01.mapping.json",
+              "bytes": 177,
+              "sha256": "2314aaefd9e404ab1b165c86803828241c92864767a18d147e26fe20acd7d017"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-final-confirm-decline-once-01.mapping.json",
+              "bytes": 177,
+              "sha256": "2314aaefd9e404ab1b165c86803828241c92864767a18d147e26fe20acd7d017"
+            }
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-final-confirm-decline-once-01-settled.png",
+              "bytes": 3150115,
+              "sha256": "3077db751870c6afe6de090ef909363e884a5040e5272ca1d2e677ae37f07b07"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-final-confirm-decline-once-01-settled.png",
+              "bytes": 3150115,
+              "sha256": "3077db751870c6afe6de090ef909363e884a5040e5272ca1d2e677ae37f07b07"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          }
+        ],
+        "original_png_sizes_match_recorded_mapping": true,
+        "old_mapping_source_path_sha_fields_present": false,
+        "binding_boundary": "These legacy mappings contain actual independent X/Y geometry and source/live dimensions but no source path/SHA or target PID. Preserve exact PNG and settled originals, bind same-session owner PID/ctime via before-open/frontend capture receipts, and bind actual production outcomes via final source markers; no invented fields or action ACK."
+      },
+      {
+        "name": "ox-r2-final-confirm-recruit-once-01",
+        "mapping": {
+          "live_screen_size": [
+            1920,
+            1080
+          ],
+          "observed_point": [
+            1072.0,
+            925.0
+          ],
+          "preview_bounds": [
+            0.0,
+            0.0,
+            1920,
+            1080
+          ],
+          "screen_point": [
+            1072,
+            925
+          ],
+          "source_image_size": [
+            1920,
+            1080
+          ]
+        },
+        "artifacts": [
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-final-confirm-recruit-once-01.png",
+              "bytes": 3034227,
+              "sha256": "d1962c16fdedea9c8cc6011f000b5121952a3f9eef453aad3729323b07a3261a"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-final-confirm-recruit-once-01.png",
+              "bytes": 3034227,
+              "sha256": "d1962c16fdedea9c8cc6011f000b5121952a3f9eef453aad3729323b07a3261a"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-final-confirm-recruit-once-01.mapping.json",
+              "bytes": 177,
+              "sha256": "b574d86be3bfeda1fcedb478f43cc54834dd4faf43d170d8ce27e08f90b6c1a1"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-final-confirm-recruit-once-01.mapping.json",
+              "bytes": 177,
+              "sha256": "b574d86be3bfeda1fcedb478f43cc54834dd4faf43d170d8ce27e08f90b6c1a1"
+            }
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-final-confirm-recruit-once-01-settled.png",
+              "bytes": 2781371,
+              "sha256": "4fc7d1df78df3a1682e86f06ab05d3c52333ea7d612c9a061d4a5fe24812937e"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-final-confirm-recruit-once-01-settled.png",
+              "bytes": 2781371,
+              "sha256": "4fc7d1df78df3a1682e86f06ab05d3c52333ea7d612c9a061d4a5fe24812937e"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          }
+        ],
+        "original_png_sizes_match_recorded_mapping": true,
+        "old_mapping_source_path_sha_fields_present": false,
+        "binding_boundary": "These legacy mappings contain actual independent X/Y geometry and source/live dimensions but no source path/SHA or target PID. Preserve exact PNG and settled originals, bind same-session owner PID/ctime via before-open/frontend capture receipts, and bind actual production outcomes via final source markers; no invented fields or action ACK."
+      },
+      {
+        "name": "ox-r2-open-decisions-02",
+        "mapping": {
+          "live_screen_size": [
+            1920,
+            1080
+          ],
+          "observed_point": [
+            1898.0,
+            397.0
+          ],
+          "preview_bounds": [
+            0.0,
+            0.0,
+            1920,
+            1080
+          ],
+          "screen_point": [
+            1898,
+            397
+          ],
+          "source_image_size": [
+            1920,
+            1080
+          ]
+        },
+        "artifacts": [
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-open-decisions-02.png",
+              "bytes": 3090061,
+              "sha256": "94892fc574675c14592954080a9c7ece53c4a1ae6b537b0a8b88a07e49d02740"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-open-decisions-02.png",
+              "bytes": 3090061,
+              "sha256": "94892fc574675c14592954080a9c7ece53c4a1ae6b537b0a8b88a07e49d02740"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-open-decisions-02.mapping.json",
+              "bytes": 177,
+              "sha256": "8ec7a6a7781f2214e7ee8f9cfbab52948d1de33e29a6ba610e13e8a857e54e62"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-open-decisions-02.mapping.json",
+              "bytes": 177,
+              "sha256": "8ec7a6a7781f2214e7ee8f9cfbab52948d1de33e29a6ba610e13e8a857e54e62"
+            }
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-open-decisions-02-settled.png",
+              "bytes": 3159243,
+              "sha256": "4218dc07fb154c722eef5943143371208f4db48e0bb7db815b244c6dc82449fc"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-open-decisions-02-settled.png",
+              "bytes": 3159243,
+              "sha256": "4218dc07fb154c722eef5943143371208f4db48e0bb7db815b244c6dc82449fc"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          }
+        ],
+        "original_png_sizes_match_recorded_mapping": true,
+        "old_mapping_source_path_sha_fields_present": false,
+        "binding_boundary": "These legacy mappings contain actual independent X/Y geometry and source/live dimensions but no source path/SHA or target PID. Preserve exact PNG and settled originals, bind same-session owner PID/ctime via before-open/frontend capture receipts, and bind actual production outcomes via final source markers; no invented fields or action ACK."
+      },
+      {
+        "name": "ox-r2-open-decisions-once-01",
+        "mapping": {
+          "live_screen_size": [
+            1920,
+            1080
+          ],
+          "observed_point": [
+            1894.0,
+            310.0
+          ],
+          "preview_bounds": [
+            0.0,
+            0.0,
+            1920,
+            1080
+          ],
+          "screen_point": [
+            1894,
+            310
+          ],
+          "source_image_size": [
+            1920,
+            1080
+          ]
+        },
+        "artifacts": [
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-open-decisions-once-01.png",
+              "bytes": 3231096,
+              "sha256": "f4128f6dfa46c92993358179cd621b17f622d6e60ce735fe03dca6722a3fa0b0"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-open-decisions-once-01.png",
+              "bytes": 3231096,
+              "sha256": "f4128f6dfa46c92993358179cd621b17f622d6e60ce735fe03dca6722a3fa0b0"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-open-decisions-once-01.mapping.json",
+              "bytes": 177,
+              "sha256": "ca58ec63fc782a9ed7fae7b27c470d09875c7f3cd5126097991667904f11c830"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-open-decisions-once-01.mapping.json",
+              "bytes": 177,
+              "sha256": "ca58ec63fc782a9ed7fae7b27c470d09875c7f3cd5126097991667904f11c830"
+            }
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-open-decisions-once-01-settled.png",
+              "bytes": 3058384,
+              "sha256": "7e8506c56d9d4b35ce9a4688f27f109f16b21c186e6240042f9e6533f3318f7f"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-open-decisions-once-01-settled.png",
+              "bytes": 3058384,
+              "sha256": "7e8506c56d9d4b35ce9a4688f27f109f16b21c186e6240042f9e6533f3318f7f"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          }
+        ],
+        "original_png_sizes_match_recorded_mapping": true,
+        "old_mapping_source_path_sha_fields_present": false,
+        "binding_boundary": "These legacy mappings contain actual independent X/Y geometry and source/live dimensions but no source path/SHA or target PID. Preserve exact PNG and settled originals, bind same-session owner PID/ctime via before-open/frontend capture receipts, and bind actual production outcomes via final source markers; no invented fields or action ACK."
+      },
+      {
+        "name": "ox-r2-recruit-next-once-01",
+        "mapping": {
+          "live_screen_size": [
+            1920,
+            1080
+          ],
+          "observed_point": [
+            978.0,
+            925.0
+          ],
+          "preview_bounds": [
+            0.0,
+            0.0,
+            1920,
+            1080
+          ],
+          "screen_point": [
+            978,
+            925
+          ],
+          "source_image_size": [
+            1920,
+            1080
+          ]
+        },
+        "artifacts": [
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-recruit-next-once-01.png",
+              "bytes": 2837279,
+              "sha256": "55928fb7c553e07ecd1985de1ddd707d6f8516923f630fb2cf2ebb57412f2118"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-recruit-next-once-01.png",
+              "bytes": 2837279,
+              "sha256": "55928fb7c553e07ecd1985de1ddd707d6f8516923f630fb2cf2ebb57412f2118"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-recruit-next-once-01.mapping.json",
+              "bytes": 175,
+              "sha256": "dec4d8ce0ecfafc7f8c8a77356da7275b7025e7a98d2ddce6772ddaf437a30fb"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-recruit-next-once-01.mapping.json",
+              "bytes": 175,
+              "sha256": "dec4d8ce0ecfafc7f8c8a77356da7275b7025e7a98d2ddce6772ddaf437a30fb"
+            }
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-recruit-next-once-01-settled.png",
+              "bytes": 2837182,
+              "sha256": "6371aa781966f2d638fd3e263a5194b17a6025a8b8126210ed613f5b90f30d82"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-recruit-next-once-01-settled.png",
+              "bytes": 2837182,
+              "sha256": "6371aa781966f2d638fd3e263a5194b17a6025a8b8126210ed613f5b90f30d82"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          }
+        ],
+        "original_png_sizes_match_recorded_mapping": true,
+        "old_mapping_source_path_sha_fields_present": false,
+        "binding_boundary": "These legacy mappings contain actual independent X/Y geometry and source/live dimensions but no source path/SHA or target PID. Preserve exact PNG and settled originals, bind same-session owner PID/ctime via before-open/frontend capture receipts, and bind actual production outcomes via final source markers; no invented fields or action ACK."
+      },
+      {
+        "name": "ox-r2-reopen-product-once-01",
+        "mapping": {
+          "live_screen_size": [
+            1920,
+            1080
+          ],
+          "observed_point": [
+            1542.0,
+            727.0
+          ],
+          "preview_bounds": [
+            0.0,
+            0.0,
+            1920,
+            1080
+          ],
+          "screen_point": [
+            1542,
+            727
+          ],
+          "source_image_size": [
+            1920,
+            1080
+          ]
+        },
+        "artifacts": [
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-reopen-product-once-01.png",
+              "bytes": 3026954,
+              "sha256": "e47eba883b5b6b3e0ae499bfc352cc4b4dc1c76691b3855f89bda926671a14f6"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-reopen-product-once-01.png",
+              "bytes": 3026954,
+              "sha256": "e47eba883b5b6b3e0ae499bfc352cc4b4dc1c76691b3855f89bda926671a14f6"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-reopen-product-once-01.mapping.json",
+              "bytes": 177,
+              "sha256": "79b6cd5d6b3bb49a66fd805d1f2396acccfb9bcad96ac3c7363be41db48f016c"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-reopen-product-once-01.mapping.json",
+              "bytes": 177,
+              "sha256": "79b6cd5d6b3bb49a66fd805d1f2396acccfb9bcad96ac3c7363be41db48f016c"
+            }
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-reopen-product-once-01-settled.png",
+              "bytes": 2853353,
+              "sha256": "641fa4d7bc3d2a6ad255ac98b766dfa0bfc56b4e0c10abe37c9972c1799fefff"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-reopen-product-once-01-settled.png",
+              "bytes": 2853353,
+              "sha256": "641fa4d7bc3d2a6ad255ac98b766dfa0bfc56b4e0c10abe37c9972c1799fefff"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          }
+        ],
+        "original_png_sizes_match_recorded_mapping": true,
+        "old_mapping_source_path_sha_fields_present": false,
+        "binding_boundary": "These legacy mappings contain actual independent X/Y geometry and source/live dimensions but no source path/SHA or target PID. Preserve exact PNG and settled originals, bind same-session owner PID/ctime via before-open/frontend capture receipts, and bind actual production outcomes via final source markers; no invented fields or action ACK."
+      },
+      {
+        "name": "ox-r2-run-decline-assertion-once-01",
+        "mapping": {
+          "live_screen_size": [
+            1920,
+            1080
+          ],
+          "observed_point": [
+            972.0,
+            925.0
+          ],
+          "preview_bounds": [
+            0.0,
+            0.0,
+            1920,
+            1080
+          ],
+          "screen_point": [
+            972,
+            925
+          ],
+          "source_image_size": [
+            1920,
+            1080
+          ]
+        },
+        "artifacts": [
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-run-decline-assertion-once-01.png",
+              "bytes": 3017691,
+              "sha256": "61dca6e1dab91edd4ca05456832f574d17466361a9fdea119542745ddf2f9e3a"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-run-decline-assertion-once-01.png",
+              "bytes": 3017691,
+              "sha256": "61dca6e1dab91edd4ca05456832f574d17466361a9fdea119542745ddf2f9e3a"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-run-decline-assertion-once-01.mapping.json",
+              "bytes": 175,
+              "sha256": "8fd72285f24de90c39a45b1e8cb1d67bb93ce9d87d4cf501c9987a08efe969d1"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-run-decline-assertion-once-01.mapping.json",
+              "bytes": 175,
+              "sha256": "8fd72285f24de90c39a45b1e8cb1d67bb93ce9d87d4cf501c9987a08efe969d1"
+            }
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-run-decline-assertion-once-01-settled.png",
+              "bytes": 3151593,
+              "sha256": "08ff0b932232f18fcff2e1e41f620d72db0d10d6cbd8b23f17dd0848da28d7b1"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-run-decline-assertion-once-01-settled.png",
+              "bytes": 3151593,
+              "sha256": "08ff0b932232f18fcff2e1e41f620d72db0d10d6cbd8b23f17dd0848da28d7b1"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          }
+        ],
+        "original_png_sizes_match_recorded_mapping": true,
+        "old_mapping_source_path_sha_fields_present": false,
+        "binding_boundary": "These legacy mappings contain actual independent X/Y geometry and source/live dimensions but no source path/SHA or target PID. Preserve exact PNG and settled originals, bind same-session owner PID/ctime via before-open/frontend capture receipts, and bind actual production outcomes via final source markers; no invented fields or action ACK."
+      },
+      {
+        "name": "ox-r2-run-recruit-assertion-once-01",
+        "mapping": {
+          "live_screen_size": [
+            1920,
+            1080
+          ],
+          "observed_point": [
+            976.0,
+            925.0
+          ],
+          "preview_bounds": [
+            0.0,
+            0.0,
+            1920,
+            1080
+          ],
+          "screen_point": [
+            976,
+            925
+          ],
+          "source_image_size": [
+            1920,
+            1080
+          ]
+        },
+        "artifacts": [
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-run-recruit-assertion-once-01.png",
+              "bytes": 2620307,
+              "sha256": "fb5938d28828b968ad31f82a579d3b298ca29b13ed70f3f0541de5ca57329bd8"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-run-recruit-assertion-once-01.png",
+              "bytes": 2620307,
+              "sha256": "fb5938d28828b968ad31f82a579d3b298ca29b13ed70f3f0541de5ca57329bd8"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-run-recruit-assertion-once-01.mapping.json",
+              "bytes": 175,
+              "sha256": "064de0c939be110f4e52dc789c08b7ec0a5cfbdb191efab10996684af7c949ff"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-run-recruit-assertion-once-01.mapping.json",
+              "bytes": 175,
+              "sha256": "064de0c939be110f4e52dc789c08b7ec0a5cfbdb191efab10996684af7c949ff"
+            }
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-run-recruit-assertion-once-01-settled.png",
+              "bytes": 2797709,
+              "sha256": "da584a4e73d1b543a3af1dbff6302c0696f562276e4bba9364c099fcfec0d45d"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-run-recruit-assertion-once-01-settled.png",
+              "bytes": 2797709,
+              "sha256": "da584a4e73d1b543a3af1dbff6302c0696f562276e4bba9364c099fcfec0d45d"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          }
+        ],
+        "original_png_sizes_match_recorded_mapping": true,
+        "old_mapping_source_path_sha_fields_present": false,
+        "binding_boundary": "These legacy mappings contain actual independent X/Y geometry and source/live dimensions but no source path/SHA or target PID. Preserve exact PNG and settled originals, bind same-session owner PID/ctime via before-open/frontend capture receipts, and bind actual production outcomes via final source markers; no invented fields or action ACK."
+      },
+      {
+        "name": "ox-r2-select-decline-once-01",
+        "mapping": {
+          "live_screen_size": [
+            1920,
+            1080
+          ],
+          "observed_point": [
+            958.0,
+            579.0
+          ],
+          "preview_bounds": [
+            0.0,
+            0.0,
+            1920,
+            1080
+          ],
+          "screen_point": [
+            958,
+            579
+          ],
+          "source_image_size": [
+            1920,
+            1080
+          ]
+        },
+        "artifacts": [
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-decline-once-01.png",
+              "bytes": 2852364,
+              "sha256": "7bef160e105923f0b434d4c046aedd5d1e4e2fe9eeb005ba27e726cfa943705e"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-decline-once-01.png",
+              "bytes": 2852364,
+              "sha256": "7bef160e105923f0b434d4c046aedd5d1e4e2fe9eeb005ba27e726cfa943705e"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-decline-once-01.mapping.json",
+              "bytes": 175,
+              "sha256": "da8901c28de1fdeba6f32f809696ccd1ca75ce040cd050f592fdb62233220869"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-decline-once-01.mapping.json",
+              "bytes": 175,
+              "sha256": "da8901c28de1fdeba6f32f809696ccd1ca75ce040cd050f592fdb62233220869"
+            }
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-decline-once-01-settled.png",
+              "bytes": 2853213,
+              "sha256": "7e18030a93890fc257200a3a33d5c1c458d1542e5e6c5a73e67bb6a27d1e626a"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-decline-once-01-settled.png",
+              "bytes": 2853213,
+              "sha256": "7e18030a93890fc257200a3a33d5c1c458d1542e5e6c5a73e67bb6a27d1e626a"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          }
+        ],
+        "original_png_sizes_match_recorded_mapping": true,
+        "old_mapping_source_path_sha_fields_present": false,
+        "binding_boundary": "These legacy mappings contain actual independent X/Y geometry and source/live dimensions but no source path/SHA or target PID. Preserve exact PNG and settled originals, bind same-session owner PID/ctime via before-open/frontend capture receipts, and bind actual production outcomes via final source markers; no invented fields or action ACK."
+      },
+      {
+        "name": "ox-r2-select-product-01",
+        "mapping": {
+          "live_screen_size": [
+            1920,
+            1080
+          ],
+          "observed_point": [
+            1563.0,
+            250.0
+          ],
+          "preview_bounds": [
+            0.0,
+            0.0,
+            1920,
+            1080
+          ],
+          "screen_point": [
+            1563,
+            250
+          ],
+          "source_image_size": [
+            1920,
+            1080
+          ]
+        },
+        "artifacts": [
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-product-01.png",
+              "bytes": 3158579,
+              "sha256": "8a367b25584904d9431436dcfda7d80c9bb2ffc6533a4eea6b3f1e6e2540c335"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-product-01.png",
+              "bytes": 3158579,
+              "sha256": "8a367b25584904d9431436dcfda7d80c9bb2ffc6533a4eea6b3f1e6e2540c335"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-product-01.mapping.json",
+              "bytes": 177,
+              "sha256": "d43f2667c964dc682127827a05967a0b174edf073035ad4185ba52abae76a054"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-product-01.mapping.json",
+              "bytes": 177,
+              "sha256": "d43f2667c964dc682127827a05967a0b174edf073035ad4185ba52abae76a054"
+            }
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-product-01-settled.png",
+              "bytes": 3158055,
+              "sha256": "cd4d5fd7dbf973d4ddbfa904a4f6801f5338ade5903f655e362d571f7eefe000"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-product-01-settled.png",
+              "bytes": 3158055,
+              "sha256": "cd4d5fd7dbf973d4ddbfa904a4f6801f5338ade5903f655e362d571f7eefe000"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          }
+        ],
+        "original_png_sizes_match_recorded_mapping": true,
+        "old_mapping_source_path_sha_fields_present": false,
+        "binding_boundary": "These legacy mappings contain actual independent X/Y geometry and source/live dimensions but no source path/SHA or target PID. Preserve exact PNG and settled originals, bind same-session owner PID/ctime via before-open/frontend capture receipts, and bind actual production outcomes via final source markers; no invented fields or action ACK."
+      },
+      {
+        "name": "ox-r2-select-product-02",
+        "mapping": {
+          "live_screen_size": [
+            1920,
+            1080
+          ],
+          "observed_point": [
+            1555.0,
+            727.0
+          ],
+          "preview_bounds": [
+            0.0,
+            0.0,
+            1920,
+            1080
+          ],
+          "screen_point": [
+            1555,
+            727
+          ],
+          "source_image_size": [
+            1920,
+            1080
+          ]
+        },
+        "artifacts": [
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-product-02.png",
+              "bytes": 2987988,
+              "sha256": "2ef72298c2d762ee0a2fdef96aa26188fa4d88aa21501b358fe382341c3fda94"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-product-02.png",
+              "bytes": 2987988,
+              "sha256": "2ef72298c2d762ee0a2fdef96aa26188fa4d88aa21501b358fe382341c3fda94"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-product-02.mapping.json",
+              "bytes": 177,
+              "sha256": "d0ec12a345d6b86f99bbd3bb771d2cb9a721ff61f62c368088dec98049fa1978"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-product-02.mapping.json",
+              "bytes": 177,
+              "sha256": "d0ec12a345d6b86f99bbd3bb771d2cb9a721ff61f62c368088dec98049fa1978"
+            }
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-product-02-settled.png",
+              "bytes": 2854304,
+              "sha256": "309f8c57331acfe65f4c8ece29537551ebf4fb469135cfbe0375a70affb9a5d7"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-product-02-settled.png",
+              "bytes": 2854304,
+              "sha256": "309f8c57331acfe65f4c8ece29537551ebf4fb469135cfbe0375a70affb9a5d7"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          }
+        ],
+        "original_png_sizes_match_recorded_mapping": true,
+        "old_mapping_source_path_sha_fields_present": false,
+        "binding_boundary": "These legacy mappings contain actual independent X/Y geometry and source/live dimensions but no source path/SHA or target PID. Preserve exact PNG and settled originals, bind same-session owner PID/ctime via before-open/frontend capture receipts, and bind actual production outcomes via final source markers; no invented fields or action ACK."
+      },
+      {
+        "name": "ox-r2-select-recruit-once-01",
+        "mapping": {
+          "live_screen_size": [
+            1920,
+            1080
+          ],
+          "observed_point": [
+            969.0,
+            516.0
+          ],
+          "preview_bounds": [
+            0.0,
+            0.0,
+            1920,
+            1080
+          ],
+          "screen_point": [
+            969,
+            516
+          ],
+          "source_image_size": [
+            1920,
+            1080
+          ]
+        },
+        "artifacts": [
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-recruit-once-01.png",
+              "bytes": 2853429,
+              "sha256": "9877033ea01d8dc67e33bf6e7d345d82c5323efca136ce01472f18c1c5bed6a6"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-recruit-once-01.png",
+              "bytes": 2853429,
+              "sha256": "9877033ea01d8dc67e33bf6e7d345d82c5323efca136ce01472f18c1c5bed6a6"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-recruit-once-01.mapping.json",
+              "bytes": 175,
+              "sha256": "7456f60c763cd889e3d0594ccf675c3065ae43887dd5dcd88a61a1934aa8e191"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-recruit-once-01.mapping.json",
+              "bytes": 175,
+              "sha256": "7456f60c763cd889e3d0594ccf675c3065ae43887dd5dcd88a61a1934aa8e191"
+            }
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-recruit-once-01-settled.png",
+              "bytes": 2853858,
+              "sha256": "91c7faa0eb997ea34ebdb5ccd1d852db53cff02760f19c3860db765e1fa6a4ff"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-recruit-once-01-settled.png",
+              "bytes": 2853858,
+              "sha256": "91c7faa0eb997ea34ebdb5ccd1d852db53cff02760f19c3860db765e1fa6a4ff"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          }
+        ],
+        "original_png_sizes_match_recorded_mapping": true,
+        "old_mapping_source_path_sha_fields_present": false,
+        "binding_boundary": "These legacy mappings contain actual independent X/Y geometry and source/live dimensions but no source path/SHA or target PID. Preserve exact PNG and settled originals, bind same-session owner PID/ctime via before-open/frontend capture receipts, and bind actual production outcomes via final source markers; no invented fields or action ACK."
+      },
+      {
+        "name": "ox-r2-select-verify-decline-once-01",
+        "mapping": {
+          "live_screen_size": [
+            1920,
+            1080
+          ],
+          "observed_point": [
+            1546.0,
+            823.0
+          ],
+          "preview_bounds": [
+            0.0,
+            0.0,
+            1920,
+            1080
+          ],
+          "screen_point": [
+            1546,
+            823
+          ],
+          "source_image_size": [
+            1920,
+            1080
+          ]
+        },
+        "artifacts": [
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-verify-decline-once-01.png",
+              "bytes": 2992466,
+              "sha256": "d8ccb29b2215afe04aa1917dc067675384c8a0ce39d6d54e5c056922fd2f0ef8"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-verify-decline-once-01.png",
+              "bytes": 2992466,
+              "sha256": "d8ccb29b2215afe04aa1917dc067675384c8a0ce39d6d54e5c056922fd2f0ef8"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-verify-decline-once-01.mapping.json",
+              "bytes": 177,
+              "sha256": "08909633b5c9555fabcf682c0bde40934b551f8a44d0f360b56f57cb6fe51209"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-verify-decline-once-01.mapping.json",
+              "bytes": 177,
+              "sha256": "08909633b5c9555fabcf682c0bde40934b551f8a44d0f360b56f57cb6fe51209"
+            }
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-verify-decline-once-01-settled.png",
+              "bytes": 2839120,
+              "sha256": "12c1233bc9c8686ccde621998d8dd4b3c2bd106868c1cc8b9d073c1177f526f2"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-verify-decline-once-01-settled.png",
+              "bytes": 2839120,
+              "sha256": "12c1233bc9c8686ccde621998d8dd4b3c2bd106868c1cc8b9d073c1177f526f2"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          }
+        ],
+        "original_png_sizes_match_recorded_mapping": true,
+        "old_mapping_source_path_sha_fields_present": false,
+        "binding_boundary": "These legacy mappings contain actual independent X/Y geometry and source/live dimensions but no source path/SHA or target PID. Preserve exact PNG and settled originals, bind same-session owner PID/ctime via before-open/frontend capture receipts, and bind actual production outcomes via final source markers; no invented fields or action ACK."
+      },
+      {
+        "name": "ox-r2-select-verify-recruit-once-01",
+        "mapping": {
+          "live_screen_size": [
+            1920,
+            1080
+          ],
+          "observed_point": [
+            1545.0,
+            823.0
+          ],
+          "preview_bounds": [
+            0.0,
+            0.0,
+            1920,
+            1080
+          ],
+          "screen_point": [
+            1545,
+            823
+          ],
+          "source_image_size": [
+            1920,
+            1080
+          ]
+        },
+        "artifacts": [
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-verify-recruit-once-01.png",
+              "bytes": 3003229,
+              "sha256": "a7d9bedb3489644fd56b20973065aee605862e785b956acedb5a1731b1d7cb41"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-verify-recruit-once-01.png",
+              "bytes": 3003229,
+              "sha256": "a7d9bedb3489644fd56b20973065aee605862e785b956acedb5a1731b1d7cb41"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-verify-recruit-once-01.mapping.json",
+              "bytes": 177,
+              "sha256": "853bc8cb25710c97ac985ac92e0130777f821eb3934e332249d0104cd5e2363d"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-verify-recruit-once-01.mapping.json",
+              "bytes": 177,
+              "sha256": "853bc8cb25710c97ac985ac92e0130777f821eb3934e332249d0104cd5e2363d"
+            }
+          },
+          {
+            "original": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-verify-recruit-once-01-settled.png",
+              "bytes": 2839093,
+              "sha256": "555678700ff79131072bc963ac62977f06200d5b5a6aa686742c71106ba67746"
+            },
+            "frozen_copy": {
+              "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-verify-recruit-once-01-settled.png",
+              "bytes": 2839093,
+              "sha256": "555678700ff79131072bc963ac62977f06200d5b5a6aa686742c71106ba67746"
+            },
+            "actual_png_size": [
+              1920,
+              1080
+            ]
+          }
+        ],
+        "original_png_sizes_match_recorded_mapping": true,
+        "old_mapping_source_path_sha_fields_present": false,
+        "binding_boundary": "These legacy mappings contain actual independent X/Y geometry and source/live dimensions but no source path/SHA or target PID. Preserve exact PNG and settled originals, bind same-session owner PID/ctime via before-open/frontend capture receipts, and bind actual production outcomes via final source markers; no invented fields or action ACK."
+      }
+    ],
+    "required_root_gui_groups": [
+      "ox-r2-final-confirm-decline-once-01",
+      "ox-r2-run-decline-assertion-once-01",
+      "ox-r2-final-confirm-recruit-once-01",
+      "ox-r2-close-arrival-once-01",
+      "ox-r2-run-recruit-assertion-once-01",
+      "ox-r2-end-summary-once-01"
+    ],
+    "runtime_identity_existing_receipts": [
+      {
+        "role": "game_executable",
+        "actual": {
+          "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+          "bytes": 101039736,
+          "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+        },
+        "matches_report": true,
+        "matches_frozen": true,
+        "frozen_pin_source": {
+          "kind": "frozen initial-plan exact EXE SHA contract; executable is intentionally absent from frozen-argv files map",
+          "plan": {
+            "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\final-plan-and-runtime-loaded-tree-pins-05\\typed-initial-readonly-plan.json",
+            "bytes": 3742,
+            "sha256": "711348d82d74b50bce6eb45cc13ab15c5e2c1244cd30987f52c83b70204ce9dc"
+          },
+          "expected_exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+          "file_map_byte_pin_present": false
+        }
+      },
+      {
+        "role": "dll",
+        "actual": {
+          "path": "C:\\workspace\\ck3-upgrade-20261004\\current-runtime-parallel-01\\cache-build-04\\xar_ck3_bridge.dll",
+          "bytes": 5544960,
+          "sha256": "70c43924e95de07a6d18c1e3b27db3e9dff1c69faff2efd486843aaa8ad14506"
+        },
+        "matches_report": true,
+        "matches_frozen": true,
+        "frozen_pin_source": {
+          "kind": "frozen-argv exact file bytes and SHA",
+          "frozen_file_pin": {
+            "bytes": 5544960,
+            "sha256": "70c43924e95de07a6d18c1e3b27db3e9dff1c69faff2efd486843aaa8ad14506"
+          }
+        }
+      },
+      {
+        "role": "injector",
+        "actual": {
+          "path": "C:\\workspace\\ck3-upgrade-20261004\\current-runtime-parallel-01\\build-02\\xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "ba33048d406e04110f27dea8f2784aac301a3b0020d9721a34e92cbec8f52348"
+        },
+        "matches_report": true,
+        "matches_frozen": true,
+        "frozen_pin_source": {
+          "kind": "frozen-argv exact file bytes and SHA",
+          "frozen_file_pin": {
+            "bytes": 39936,
+            "sha256": "ba33048d406e04110f27dea8f2784aac301a3b0020d9721a34e92cbec8f52348"
+          }
+        }
+      }
+    ],
+    "game_process_inventory": {
+      "observed_at_utc": "2026-10-04T22:37:47Z",
+      "ox_expected_pid": 17096,
+      "ox_expected_ctime": 1791151786.8794053,
+      "current_ck3_processes": [],
+      "original_closed_packet_current_ck3_inventory": [],
+      "boundary": "Read-only process inventory, distinct from later game runs by PID plus creation time."
+    },
+    "no_credit": [
+      "Natural date progression",
+      "Save/reload",
+      "Annual AI use frequency",
+      "Whole-runner GREEN",
+      "Extended duration or all mod combinations"
+    ]
+  },
+  "evidence_files": [
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\source-master-tag-01.json",
+      "bytes": 152,
+      "sha256": "c8be1376630fef125747fa9ff4cdaa0c238745fa9ad7b2ada1633b7841d3a846"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\root-prepublish-freeze.json",
+      "bytes": 3172,
+      "sha256": "9ccca699c6389e45042fcd36f51dde546adb7573a423a7ea594e0d07b685af8d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\native-publish-plan.json",
+      "bytes": 2329,
+      "sha256": "d4c1febf778c49db0c1ac9d2d9940ec08ab461c814906ac14d6770915cab1c1b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\native-publish-receipt.json",
+      "bytes": 513,
+      "sha256": "87aef3629d33fea1719415c4e3cb44ce984c7386b263dfb7bab7ca27bead6fa1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\native-publish-result-01.json",
+      "bytes": 743,
+      "sha256": "bb1cd5a1144237656613130058b3590476de847983d2b9c97b81805bdb039e3a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\native-publish-stderr-01.log",
+      "bytes": 132,
+      "sha256": "2d979cdbfe9eed3ec4e84c0893899b0a437a6adb721095807ec5097c20804101"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\native-probe-result-01.json",
+      "bytes": 1136,
+      "sha256": "ad932dfa2b422fb5875195f91905a8910be0abdd3d5bab46e6cccd2f91db3028"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\native-probe-stderr-01.log",
+      "bytes": 132,
+      "sha256": "2d979cdbfe9eed3ec4e84c0893899b0a437a6adb721095807ec5097c20804101"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\probe-tool-start-intent-01.json",
+      "bytes": 367,
+      "sha256": "a8a4b2611f40b90e2e2d58851e8c831837aa59c0d95ca3b1683d91378e8df6de"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\publish-tool-start-intent-01.json",
+      "bytes": 371,
+      "sha256": "4b922216f649bce49d5fbe184ac6e1e0f301ca64930c8e4cfaaedc113837e949"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\publish-arguments.json",
+      "bytes": 336,
+      "sha256": "767c28054eadeccb0365fa0f78ec001407e7e6ff77d2eb79e9e723b2a5ece667"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\download-arguments.json",
+      "bytes": 287,
+      "sha256": "70a592983ab4269fdd36b6a9e9acb88791b2e898fd1badfc780c3af4be1b22dd"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\native-download-result-01.json",
+      "bytes": 2765,
+      "sha256": "952dc69ee154ad9fe626b28fa83c0e165c6302c73329ddb5f6088839b8f363bf"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\native-download-stderr-01.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\download-tool-start-intent-01.json",
+      "bytes": 373,
+      "sha256": "1b4cf030f4b5746fbd7b033429065e49dfb977998992f88eb5f72febb4c095c3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\anonymous-readback-01\\attempt-inputs.json",
+      "bytes": 13517,
+      "sha256": "1cd4d7156c8616bdd55d2c6ad89ff9ebc6c4c3c1bfda49c3c5cb6bc526460f7d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\anonymous-readback-01\\verification.json",
+      "bytes": 17103,
+      "sha256": "97da779f4e2c0bbdf76721e1ef1dd6d8e13558ec2bda3eadcaf83818d476d917"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\anonymous-readback-01\\metadata.http-receipt.json",
+      "bytes": 1423,
+      "sha256": "402cd0c1c5c80a6a3fb771c232c41586675c4d2685b88e09478305410368b748"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\anonymous-readback-01\\details.http-receipt.json",
+      "bytes": 3120,
+      "sha256": "8cdf4d1029e6451d0420eeb3012617221918bfc0b4b27e333f8c897d791cbd0d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\anonymous-readback-01\\changelog.http-receipt.json",
+      "bytes": 3134,
+      "sha256": "057b1ba48d5cfc61ab8b06ef40c3cc91b71b3c44ae245e7103cef9303ebeda61"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\anonymous-readback-01\\entry-01-1791154182.normalized.txt",
+      "bytes": 1600,
+      "sha256": "bf8f774e66f834c114dba47378608b3e7b7871e4694287a5c841a9e843643e8a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\cache-verification-01.json",
+      "bytes": 568,
+      "sha256": "8d93377e0902d8eb5b3d06e2c93209b67758456391de0eaed1c689bc57465cfe"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\cache-verification-01.stdout.txt",
+      "bytes": 107,
+      "sha256": "740156f9dea11b8703028940506bcb81a863a01f2994f3c04ea8fd99f6b05ac3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\cache-verification-01.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\postpublish-local-verification-01.json",
+      "bytes": 8309,
+      "sha256": "06282751874b17603a25913a34ccdd2a9540d1fb268dc9116d3e39bec8fcf2ac"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\finalize_local_evidence_01.py",
+      "bytes": 3481,
+      "sha256": "e08ac67c252cedc73ee06b2b9940e2db66a9bf33b3f89aee31fd29f1f151e061"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\offline-restored-fresh-01\\recovery.json",
+      "bytes": 1478,
+      "sha256": "57775395995c10a7e0989eba613a665b6f35c8babee5356cef78d55d13433fd2"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\offline-restored-fresh-01\\probe-1\\steam-frame-freshness.json",
+      "bytes": 1244,
+      "sha256": "f8b1bcf989dce1c389abfe8a68c7ad224a7810653bc9e8e74fbfe6e3776c269b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\steam-change-notes.txt",
+      "bytes": 1600,
+      "sha256": "bf8f774e66f834c114dba47378608b3e7b7871e4694287a5c841a9e843643e8a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\steam-change-notes-freeze.json",
+      "bytes": 725,
+      "sha256": "90a9f956dd0aefe276eacea9766947ac2d1ade6dd3f78f22bca490e821c75ac3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\description.bbcode",
+      "bytes": 6048,
+      "sha256": "8b6871aa1bb887ffa446466a9fc96c0cc7c17f8f95ab4ed3db41f4327f8606d2"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\screen-release-01.json",
+      "bytes": 1307,
+      "sha256": "af9a9e2e71814144ac1ee0e69ab8ec483ae01ae807046dbab69851d11ac42b84"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\final-ox-r2-product-PASS-harness-RED-thin-receipt-12.json",
+      "bytes": 86003,
+      "sha256": "95d14c09740801649315d63eb843d85c060a97f56ee4cdadd8d8dddf0cb001fa"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-current-full-body-comparison-10\\final-ox-r2-current-full-body-comparison-10.json",
+      "bytes": 2059076,
+      "sha256": "298deb8d65e74f3cc042977f5705cdd3881e4ad321dfd3b5f1b985afaeec026c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\actual-readonly-ox-closeout-game-inventory.json",
+      "bytes": 315,
+      "sha256": "6d5478b658b5577916fb0a7fa23da598425595996fcbe4d54daa47e22b381d44"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-final-master-record-prep-agent-01\\before-root-canonical-write-01\\1.0.3.freeze.before-published.exact.json",
+      "bytes": 725,
+      "sha256": "90a9f956dd0aefe276eacea9766947ac2d1ade6dd3f78f22bca490e821c75ac3"
+    }
+  ],
+  "recorded_artifact_pins": [
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\formal\\ox_here-v1.0.3.manifest.json",
+      "bytes": 4034,
+      "sha256": "d7550ea694e612639762d00aabffc1a969672261c5fbcd2182d829521193fc57"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\formal\\ox_here-v1.0.3.zip",
+      "bytes": 701903,
+      "sha256": "996057a9afab2fb5b8b83bc8643c61ea596aea904e763901a3367337df8c385e"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Documents\\Paradox Interactive\\Crusader Kings III\\mod\\ox_here.mod",
+      "bytes": 228,
+      "sha256": "d14d58a80f2cafad96694e7f1a91f61b925d30e38c787ce59964543e336bee6c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\offline-restored-fresh-01\\probe-1\\steam-moved.png",
+      "bytes": 395553,
+      "sha256": "612498a9b80f65a06cb01b7b8c21208faa16c5bcf81ce6eb151000cdbec40dc7"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\descriptor.mod",
+      "bytes": 104,
+      "sha256": "5b6abeae7c2baddd25dab061967d3f7b22c8389a0d1de74c6b625de4df916dbf"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\thumbnail.png",
+      "bytes": 686490,
+      "sha256": "330bf1fb1330fd817b46b47ac3345e4e5f32472152b18d4277790c0c0c767b59"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\events\\ox_here_events.txt",
+      "bytes": 576,
+      "sha256": "39e3f73691274fc475fdf46ebfbbab3bde412754321b7dacd914cc2df5db6de8"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\gui\\ox_here_bridge.gui",
+      "bytes": 632,
+      "sha256": "464a7dc853d2a89c882996e7f71edf8c83dc565c6d3272c23f01a7e1aeb2d9e4"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\english\\ox_here_l_english.yml",
+      "bytes": 1888,
+      "sha256": "4716745abdb1c09703b0cc5400ff99768fb053d0bf4f7ac6471590c90e04c25f"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\french\\ox_here_l_french.yml",
+      "bytes": 2252,
+      "sha256": "a2b96e9327de5cade99b96ae29f915cfbbe0384bb1bf80fa4ebc0afff8420976"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\german\\ox_here_l_german.yml",
+      "bytes": 2149,
+      "sha256": "7bda9a7bf1f1c05c876ba3489ddb4e56030502d58b4e12b222ca28e825b4a264"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\japanese\\ox_here_l_japanese.yml",
+      "bytes": 2283,
+      "sha256": "733f73c40a84200c3deee77169596715dc72a311027df2d851052d6432a83db4"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\korean\\ox_here_l_korean.yml",
+      "bytes": 2349,
+      "sha256": "fc79a23db29af3af8ddcca90bf7001b485baceef88ff68729f2ab05f26b90f84"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\polish\\ox_here_l_polish.yml",
+      "bytes": 2226,
+      "sha256": "b2f256b818c908b09373352f6c0344efdf07cafc50506317611a60f089d9f3cc"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\russian\\ox_here_l_russian.yml",
+      "bytes": 2920,
+      "sha256": "df8abf8eba35adf43256ddeb23cf7c3aba9de093670cfd3a8fc2973ef08b914a"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\simp_chinese\\ox_here_l_simp_chinese.yml",
+      "bytes": 1861,
+      "sha256": "17425b1b6e28a9fec68c1bbfdb6e5de50c004d677c2cd40fafb3d85542c2c6a6"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\spanish\\ox_here_l_spanish.yml",
+      "bytes": 2025,
+      "sha256": "c6b72d298348a996397a6bb8b1090fb38e8a463d63e49bd7a79a6c6c71a73c8f"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\gui\\scripted_widgets\\ox_here_scripted_widgets.txt",
+      "bytes": 50,
+      "sha256": "383e1ba2981eabf5e1c38cf5d54260674ade5e0e5c8a42d292c148df84b0d9b5"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\decisions\\ox_here_decisions.txt",
+      "bytes": 3031,
+      "sha256": "8c863123bd4dca6b91a9f7afd7b0155db14d40a5a75771153c9a36864a408d60"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\decision_group_types\\ox_here_decision_group_types.txt",
+      "bytes": 62,
+      "sha256": "e2cfc9d676061e2f3db8365ef3904776da444eb8c1654c14fc1afc0c536198da"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\ethnicities\\ox_here_ethnicities.txt",
+      "bytes": 339,
+      "sha256": "194fabe42171837b9d861baec7f69e4379558367983019298be3671a71c43fb0"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\scripted_character_templates\\ox_here_character_templates.txt",
+      "bytes": 548,
+      "sha256": "646918007efdf28af4bd9513c6c274d8c59d8266354d9205fd65acff46e183a5"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\scripted_effects\\ox_here_effects.txt",
+      "bytes": 2677,
+      "sha256": "1f4ee9362e40424d003c4ed61db9ac1d6214d561b6474536cbe462e7dfeaa7ca"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\scripted_guis\\ox_here_guis.txt",
+      "bytes": 331,
+      "sha256": "9d6ca53950d5ef0f92d935dcafb841cbac2c2ee034a42f81919f723d7d669693"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\script_values\\ox_here_values.txt",
+      "bytes": 1783,
+      "sha256": "361ed80ab6844961b74c7d02343d26b57c51e67b8b81b2296f084d27efd27746"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\culture\\cultures\\ox_here_cultures.txt",
+      "bytes": 961,
+      "sha256": "ab65766d4e6cfd0271b771d7973d41d10a67335b79a0c3aa11f317c2c609c707"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\anonymous-readback-01\\entry-01-1791154182.normalized.txt",
+      "bytes": 1600,
+      "sha256": "bf8f774e66f834c114dba47378608b3e7b7871e4694287a5c841a9e843643e8a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\anonymous-readback-01\\entry-02-1787787267.normalized.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\anonymous-readback-01\\entry-03-1787778848.normalized.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\anonymous-readback-01\\details.http-body.raw",
+      "bytes": 80790,
+      "sha256": "4a1856c4cb19d2893f6ac15f478383cb05e493a4f5ca92fb753e89f1af28e703"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\anonymous-readback-01\\changelog.http-body.raw",
+      "bytes": 52626,
+      "sha256": "28c033e6f28fff2b3f0a746dbfd8538d035a5fb0440c6002631c82b78ebf442a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-workshop-publish-1.0.3-01\\anonymous-readback-01\\metadata.http-body.raw",
+      "bytes": 6801,
+      "sha256": "c59da62777840f54fa1e454bfb9bc83b61fc6863ba151f1839d98dbfe627fcf5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-before-open-01\\desktop.png",
+      "bytes": 3434673,
+      "sha256": "fe633c6f7ae3f9dc838a7358c0f42d3d9b0d672b74c2b0897da81a7e88244e82"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-before-open-01\\desktop.png",
+      "bytes": 3434673,
+      "sha256": "fe633c6f7ae3f9dc838a7358c0f42d3d9b0d672b74c2b0897da81a7e88244e82"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-before-open-01\\receipt.json",
+      "bytes": 366,
+      "sha256": "1c7bfef60e675910f99a262219e8b4ccad4f0ecba356f787407a7889ab5e3f97"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-before-open-01\\receipt.json",
+      "bytes": 366,
+      "sha256": "1c7bfef60e675910f99a262219e8b4ccad4f0ecba356f787407a7889ab5e3f97"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-frontend-01\\desktop.png",
+      "bytes": 3435963,
+      "sha256": "ac85fe8a4b68e7adea32615158403300b297c753b33ed7ad5a8f452d5d9a4e0c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-frontend-01\\desktop.png",
+      "bytes": 3435963,
+      "sha256": "ac85fe8a4b68e7adea32615158403300b297c753b33ed7ad5a8f452d5d9a4e0c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-frontend-01\\receipt.json",
+      "bytes": 366,
+      "sha256": "1c7bfef60e675910f99a262219e8b4ccad4f0ecba356f787407a7889ab5e3f97"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-frontend-01\\receipt.json",
+      "bytes": 366,
+      "sha256": "1c7bfef60e675910f99a262219e8b4ccad4f0ecba356f787407a7889ab5e3f97"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-close-arrival-once-01.png",
+      "bytes": 2838249,
+      "sha256": "bcfb58d7929c9280f13aa618c5aeddc5ec28c3ee894be8169012a6ceae3f1df4"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-close-arrival-once-01.png",
+      "bytes": 2838249,
+      "sha256": "bcfb58d7929c9280f13aa618c5aeddc5ec28c3ee894be8169012a6ceae3f1df4"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-close-arrival-once-01.mapping.json",
+      "bytes": 175,
+      "sha256": "ce26023ec31223a64904bdf5ca901add92deb0f5f4448cb19c9763081064a644"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-close-arrival-once-01.mapping.json",
+      "bytes": 175,
+      "sha256": "ce26023ec31223a64904bdf5ca901add92deb0f5f4448cb19c9763081064a644"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-close-arrival-once-01-settled.png",
+      "bytes": 3158461,
+      "sha256": "974c06991b601b2a3fe011c948cd6b52fa49e7df9a8ccad186658fd12d6956f6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-close-arrival-once-01-settled.png",
+      "bytes": 3158461,
+      "sha256": "974c06991b601b2a3fe011c948cd6b52fa49e7df9a8ccad186658fd12d6956f6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-confirm-decline-once-01.png",
+      "bytes": 2837895,
+      "sha256": "9042d7d0f1e682270f054ab0d2df8df93004fdd2b549e0fc00e147d38ea0729f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-confirm-decline-once-01.png",
+      "bytes": 2837895,
+      "sha256": "9042d7d0f1e682270f054ab0d2df8df93004fdd2b549e0fc00e147d38ea0729f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-confirm-decline-once-01.mapping.json",
+      "bytes": 175,
+      "sha256": "dec4d8ce0ecfafc7f8c8a77356da7275b7025e7a98d2ddce6772ddaf437a30fb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-confirm-decline-once-01.mapping.json",
+      "bytes": 175,
+      "sha256": "dec4d8ce0ecfafc7f8c8a77356da7275b7025e7a98d2ddce6772ddaf437a30fb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-confirm-decline-once-01-settled.png",
+      "bytes": 2838156,
+      "sha256": "ffc93dc151ccb03480e6b096953356d120a6ce01368d99983cf59873ce755606"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-confirm-decline-once-01-settled.png",
+      "bytes": 2838156,
+      "sha256": "ffc93dc151ccb03480e6b096953356d120a6ce01368d99983cf59873ce755606"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-end-summary-once-01.png",
+      "bytes": 2816077,
+      "sha256": "cdc0b47416263c5119cc3ca2a65e5d8d1062935182e788281922a0ab3d94c80f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-end-summary-once-01.png",
+      "bytes": 2816077,
+      "sha256": "cdc0b47416263c5119cc3ca2a65e5d8d1062935182e788281922a0ab3d94c80f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-end-summary-once-01.mapping.json",
+      "bytes": 175,
+      "sha256": "351488a553b6cbc6739fb8b02313580682b15f445ec2ca2486e405bcf9049f55"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-end-summary-once-01.mapping.json",
+      "bytes": 175,
+      "sha256": "351488a553b6cbc6739fb8b02313580682b15f445ec2ca2486e405bcf9049f55"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-end-summary-once-01-settled.png",
+      "bytes": 3156885,
+      "sha256": "33c8ffb508a91de53beff3c9f7a26c9db0e5ded594ff2a8ec841de41a8dcf1f3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-end-summary-once-01-settled.png",
+      "bytes": 3156885,
+      "sha256": "33c8ffb508a91de53beff3c9f7a26c9db0e5ded594ff2a8ec841de41a8dcf1f3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-final-confirm-decline-once-01.png",
+      "bytes": 3053929,
+      "sha256": "2dd76dbc8817f6358687ca8bfdcec7c59280ad9dca8a662c3fd35a3f592b72ad"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-final-confirm-decline-once-01.png",
+      "bytes": 3053929,
+      "sha256": "2dd76dbc8817f6358687ca8bfdcec7c59280ad9dca8a662c3fd35a3f592b72ad"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-final-confirm-decline-once-01.mapping.json",
+      "bytes": 177,
+      "sha256": "2314aaefd9e404ab1b165c86803828241c92864767a18d147e26fe20acd7d017"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-final-confirm-decline-once-01.mapping.json",
+      "bytes": 177,
+      "sha256": "2314aaefd9e404ab1b165c86803828241c92864767a18d147e26fe20acd7d017"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-final-confirm-decline-once-01-settled.png",
+      "bytes": 3150115,
+      "sha256": "3077db751870c6afe6de090ef909363e884a5040e5272ca1d2e677ae37f07b07"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-final-confirm-decline-once-01-settled.png",
+      "bytes": 3150115,
+      "sha256": "3077db751870c6afe6de090ef909363e884a5040e5272ca1d2e677ae37f07b07"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-final-confirm-recruit-once-01.png",
+      "bytes": 3034227,
+      "sha256": "d1962c16fdedea9c8cc6011f000b5121952a3f9eef453aad3729323b07a3261a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-final-confirm-recruit-once-01.png",
+      "bytes": 3034227,
+      "sha256": "d1962c16fdedea9c8cc6011f000b5121952a3f9eef453aad3729323b07a3261a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-final-confirm-recruit-once-01.mapping.json",
+      "bytes": 177,
+      "sha256": "b574d86be3bfeda1fcedb478f43cc54834dd4faf43d170d8ce27e08f90b6c1a1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-final-confirm-recruit-once-01.mapping.json",
+      "bytes": 177,
+      "sha256": "b574d86be3bfeda1fcedb478f43cc54834dd4faf43d170d8ce27e08f90b6c1a1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-final-confirm-recruit-once-01-settled.png",
+      "bytes": 2781371,
+      "sha256": "4fc7d1df78df3a1682e86f06ab05d3c52333ea7d612c9a061d4a5fe24812937e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-final-confirm-recruit-once-01-settled.png",
+      "bytes": 2781371,
+      "sha256": "4fc7d1df78df3a1682e86f06ab05d3c52333ea7d612c9a061d4a5fe24812937e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-open-decisions-02.png",
+      "bytes": 3090061,
+      "sha256": "94892fc574675c14592954080a9c7ece53c4a1ae6b537b0a8b88a07e49d02740"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-open-decisions-02.png",
+      "bytes": 3090061,
+      "sha256": "94892fc574675c14592954080a9c7ece53c4a1ae6b537b0a8b88a07e49d02740"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-open-decisions-02.mapping.json",
+      "bytes": 177,
+      "sha256": "8ec7a6a7781f2214e7ee8f9cfbab52948d1de33e29a6ba610e13e8a857e54e62"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-open-decisions-02.mapping.json",
+      "bytes": 177,
+      "sha256": "8ec7a6a7781f2214e7ee8f9cfbab52948d1de33e29a6ba610e13e8a857e54e62"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-open-decisions-02-settled.png",
+      "bytes": 3159243,
+      "sha256": "4218dc07fb154c722eef5943143371208f4db48e0bb7db815b244c6dc82449fc"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-open-decisions-02-settled.png",
+      "bytes": 3159243,
+      "sha256": "4218dc07fb154c722eef5943143371208f4db48e0bb7db815b244c6dc82449fc"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-open-decisions-once-01.png",
+      "bytes": 3231096,
+      "sha256": "f4128f6dfa46c92993358179cd621b17f622d6e60ce735fe03dca6722a3fa0b0"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-open-decisions-once-01.png",
+      "bytes": 3231096,
+      "sha256": "f4128f6dfa46c92993358179cd621b17f622d6e60ce735fe03dca6722a3fa0b0"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-open-decisions-once-01.mapping.json",
+      "bytes": 177,
+      "sha256": "ca58ec63fc782a9ed7fae7b27c470d09875c7f3cd5126097991667904f11c830"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-open-decisions-once-01.mapping.json",
+      "bytes": 177,
+      "sha256": "ca58ec63fc782a9ed7fae7b27c470d09875c7f3cd5126097991667904f11c830"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-open-decisions-once-01-settled.png",
+      "bytes": 3058384,
+      "sha256": "7e8506c56d9d4b35ce9a4688f27f109f16b21c186e6240042f9e6533f3318f7f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-open-decisions-once-01-settled.png",
+      "bytes": 3058384,
+      "sha256": "7e8506c56d9d4b35ce9a4688f27f109f16b21c186e6240042f9e6533f3318f7f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-recruit-next-once-01.png",
+      "bytes": 2837279,
+      "sha256": "55928fb7c553e07ecd1985de1ddd707d6f8516923f630fb2cf2ebb57412f2118"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-recruit-next-once-01.png",
+      "bytes": 2837279,
+      "sha256": "55928fb7c553e07ecd1985de1ddd707d6f8516923f630fb2cf2ebb57412f2118"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-recruit-next-once-01.mapping.json",
+      "bytes": 175,
+      "sha256": "dec4d8ce0ecfafc7f8c8a77356da7275b7025e7a98d2ddce6772ddaf437a30fb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-recruit-next-once-01.mapping.json",
+      "bytes": 175,
+      "sha256": "dec4d8ce0ecfafc7f8c8a77356da7275b7025e7a98d2ddce6772ddaf437a30fb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-recruit-next-once-01-settled.png",
+      "bytes": 2837182,
+      "sha256": "6371aa781966f2d638fd3e263a5194b17a6025a8b8126210ed613f5b90f30d82"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-recruit-next-once-01-settled.png",
+      "bytes": 2837182,
+      "sha256": "6371aa781966f2d638fd3e263a5194b17a6025a8b8126210ed613f5b90f30d82"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-reopen-product-once-01.png",
+      "bytes": 3026954,
+      "sha256": "e47eba883b5b6b3e0ae499bfc352cc4b4dc1c76691b3855f89bda926671a14f6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-reopen-product-once-01.png",
+      "bytes": 3026954,
+      "sha256": "e47eba883b5b6b3e0ae499bfc352cc4b4dc1c76691b3855f89bda926671a14f6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-reopen-product-once-01.mapping.json",
+      "bytes": 177,
+      "sha256": "79b6cd5d6b3bb49a66fd805d1f2396acccfb9bcad96ac3c7363be41db48f016c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-reopen-product-once-01.mapping.json",
+      "bytes": 177,
+      "sha256": "79b6cd5d6b3bb49a66fd805d1f2396acccfb9bcad96ac3c7363be41db48f016c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-reopen-product-once-01-settled.png",
+      "bytes": 2853353,
+      "sha256": "641fa4d7bc3d2a6ad255ac98b766dfa0bfc56b4e0c10abe37c9972c1799fefff"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-reopen-product-once-01-settled.png",
+      "bytes": 2853353,
+      "sha256": "641fa4d7bc3d2a6ad255ac98b766dfa0bfc56b4e0c10abe37c9972c1799fefff"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-run-decline-assertion-once-01.png",
+      "bytes": 3017691,
+      "sha256": "61dca6e1dab91edd4ca05456832f574d17466361a9fdea119542745ddf2f9e3a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-run-decline-assertion-once-01.png",
+      "bytes": 3017691,
+      "sha256": "61dca6e1dab91edd4ca05456832f574d17466361a9fdea119542745ddf2f9e3a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-run-decline-assertion-once-01.mapping.json",
+      "bytes": 175,
+      "sha256": "8fd72285f24de90c39a45b1e8cb1d67bb93ce9d87d4cf501c9987a08efe969d1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-run-decline-assertion-once-01.mapping.json",
+      "bytes": 175,
+      "sha256": "8fd72285f24de90c39a45b1e8cb1d67bb93ce9d87d4cf501c9987a08efe969d1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-run-decline-assertion-once-01-settled.png",
+      "bytes": 3151593,
+      "sha256": "08ff0b932232f18fcff2e1e41f620d72db0d10d6cbd8b23f17dd0848da28d7b1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-run-decline-assertion-once-01-settled.png",
+      "bytes": 3151593,
+      "sha256": "08ff0b932232f18fcff2e1e41f620d72db0d10d6cbd8b23f17dd0848da28d7b1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-run-recruit-assertion-once-01.png",
+      "bytes": 2620307,
+      "sha256": "fb5938d28828b968ad31f82a579d3b298ca29b13ed70f3f0541de5ca57329bd8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-run-recruit-assertion-once-01.png",
+      "bytes": 2620307,
+      "sha256": "fb5938d28828b968ad31f82a579d3b298ca29b13ed70f3f0541de5ca57329bd8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-run-recruit-assertion-once-01.mapping.json",
+      "bytes": 175,
+      "sha256": "064de0c939be110f4e52dc789c08b7ec0a5cfbdb191efab10996684af7c949ff"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-run-recruit-assertion-once-01.mapping.json",
+      "bytes": 175,
+      "sha256": "064de0c939be110f4e52dc789c08b7ec0a5cfbdb191efab10996684af7c949ff"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-run-recruit-assertion-once-01-settled.png",
+      "bytes": 2797709,
+      "sha256": "da584a4e73d1b543a3af1dbff6302c0696f562276e4bba9364c099fcfec0d45d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-run-recruit-assertion-once-01-settled.png",
+      "bytes": 2797709,
+      "sha256": "da584a4e73d1b543a3af1dbff6302c0696f562276e4bba9364c099fcfec0d45d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-decline-once-01.png",
+      "bytes": 2852364,
+      "sha256": "7bef160e105923f0b434d4c046aedd5d1e4e2fe9eeb005ba27e726cfa943705e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-decline-once-01.png",
+      "bytes": 2852364,
+      "sha256": "7bef160e105923f0b434d4c046aedd5d1e4e2fe9eeb005ba27e726cfa943705e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-decline-once-01.mapping.json",
+      "bytes": 175,
+      "sha256": "da8901c28de1fdeba6f32f809696ccd1ca75ce040cd050f592fdb62233220869"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-decline-once-01.mapping.json",
+      "bytes": 175,
+      "sha256": "da8901c28de1fdeba6f32f809696ccd1ca75ce040cd050f592fdb62233220869"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-decline-once-01-settled.png",
+      "bytes": 2853213,
+      "sha256": "7e18030a93890fc257200a3a33d5c1c458d1542e5e6c5a73e67bb6a27d1e626a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-decline-once-01-settled.png",
+      "bytes": 2853213,
+      "sha256": "7e18030a93890fc257200a3a33d5c1c458d1542e5e6c5a73e67bb6a27d1e626a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-product-01.png",
+      "bytes": 3158579,
+      "sha256": "8a367b25584904d9431436dcfda7d80c9bb2ffc6533a4eea6b3f1e6e2540c335"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-product-01.png",
+      "bytes": 3158579,
+      "sha256": "8a367b25584904d9431436dcfda7d80c9bb2ffc6533a4eea6b3f1e6e2540c335"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-product-01.mapping.json",
+      "bytes": 177,
+      "sha256": "d43f2667c964dc682127827a05967a0b174edf073035ad4185ba52abae76a054"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-product-01.mapping.json",
+      "bytes": 177,
+      "sha256": "d43f2667c964dc682127827a05967a0b174edf073035ad4185ba52abae76a054"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-product-01-settled.png",
+      "bytes": 3158055,
+      "sha256": "cd4d5fd7dbf973d4ddbfa904a4f6801f5338ade5903f655e362d571f7eefe000"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-product-01-settled.png",
+      "bytes": 3158055,
+      "sha256": "cd4d5fd7dbf973d4ddbfa904a4f6801f5338ade5903f655e362d571f7eefe000"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-product-02.png",
+      "bytes": 2987988,
+      "sha256": "2ef72298c2d762ee0a2fdef96aa26188fa4d88aa21501b358fe382341c3fda94"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-product-02.png",
+      "bytes": 2987988,
+      "sha256": "2ef72298c2d762ee0a2fdef96aa26188fa4d88aa21501b358fe382341c3fda94"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-product-02.mapping.json",
+      "bytes": 177,
+      "sha256": "d0ec12a345d6b86f99bbd3bb771d2cb9a721ff61f62c368088dec98049fa1978"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-product-02.mapping.json",
+      "bytes": 177,
+      "sha256": "d0ec12a345d6b86f99bbd3bb771d2cb9a721ff61f62c368088dec98049fa1978"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-product-02-settled.png",
+      "bytes": 2854304,
+      "sha256": "309f8c57331acfe65f4c8ece29537551ebf4fb469135cfbe0375a70affb9a5d7"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-product-02-settled.png",
+      "bytes": 2854304,
+      "sha256": "309f8c57331acfe65f4c8ece29537551ebf4fb469135cfbe0375a70affb9a5d7"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-recruit-once-01.png",
+      "bytes": 2853429,
+      "sha256": "9877033ea01d8dc67e33bf6e7d345d82c5323efca136ce01472f18c1c5bed6a6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-recruit-once-01.png",
+      "bytes": 2853429,
+      "sha256": "9877033ea01d8dc67e33bf6e7d345d82c5323efca136ce01472f18c1c5bed6a6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-recruit-once-01.mapping.json",
+      "bytes": 175,
+      "sha256": "7456f60c763cd889e3d0594ccf675c3065ae43887dd5dcd88a61a1934aa8e191"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-recruit-once-01.mapping.json",
+      "bytes": 175,
+      "sha256": "7456f60c763cd889e3d0594ccf675c3065ae43887dd5dcd88a61a1934aa8e191"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-recruit-once-01-settled.png",
+      "bytes": 2853858,
+      "sha256": "91c7faa0eb997ea34ebdb5ccd1d852db53cff02760f19c3860db765e1fa6a4ff"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-recruit-once-01-settled.png",
+      "bytes": 2853858,
+      "sha256": "91c7faa0eb997ea34ebdb5ccd1d852db53cff02760f19c3860db765e1fa6a4ff"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-verify-decline-once-01.png",
+      "bytes": 2992466,
+      "sha256": "d8ccb29b2215afe04aa1917dc067675384c8a0ce39d6d54e5c056922fd2f0ef8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-verify-decline-once-01.png",
+      "bytes": 2992466,
+      "sha256": "d8ccb29b2215afe04aa1917dc067675384c8a0ce39d6d54e5c056922fd2f0ef8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-verify-decline-once-01.mapping.json",
+      "bytes": 177,
+      "sha256": "08909633b5c9555fabcf682c0bde40934b551f8a44d0f360b56f57cb6fe51209"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-verify-decline-once-01.mapping.json",
+      "bytes": 177,
+      "sha256": "08909633b5c9555fabcf682c0bde40934b551f8a44d0f360b56f57cb6fe51209"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-verify-decline-once-01-settled.png",
+      "bytes": 2839120,
+      "sha256": "12c1233bc9c8686ccde621998d8dd4b3c2bd106868c1cc8b9d073c1177f526f2"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-verify-decline-once-01-settled.png",
+      "bytes": 2839120,
+      "sha256": "12c1233bc9c8686ccde621998d8dd4b3c2bd106868c1cc8b9d073c1177f526f2"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-verify-recruit-once-01.png",
+      "bytes": 3003229,
+      "sha256": "a7d9bedb3489644fd56b20973065aee605862e785b956acedb5a1731b1d7cb41"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-verify-recruit-once-01.png",
+      "bytes": 3003229,
+      "sha256": "a7d9bedb3489644fd56b20973065aee605862e785b956acedb5a1731b1d7cb41"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-verify-recruit-once-01.mapping.json",
+      "bytes": 177,
+      "sha256": "853bc8cb25710c97ac985ac92e0130777f821eb3934e332249d0104cd5e2363d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-verify-recruit-once-01.mapping.json",
+      "bytes": 177,
+      "sha256": "853bc8cb25710c97ac985ac92e0130777f821eb3934e332249d0104cd5e2363d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-select-verify-recruit-once-01-settled.png",
+      "bytes": 2839093,
+      "sha256": "555678700ff79131072bc963ac62977f06200d5b5a6aa686742c71106ba67746"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\root-ui\\ox-r2-select-verify-recruit-once-01-settled.png",
+      "bytes": 2839093,
+      "sha256": "555678700ff79131072bc963ac62977f06200d5b5a6aa686742c71106ba67746"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "bytes": 101039736,
+      "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\final-plan-and-runtime-loaded-tree-pins-05\\typed-initial-readonly-plan.json",
+      "bytes": 3742,
+      "sha256": "711348d82d74b50bce6eb45cc13ab15c5e2c1244cd30987f52c83b70204ce9dc"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261004\\current-runtime-parallel-01\\cache-build-04\\xar_ck3_bridge.dll",
+      "bytes": 5544960,
+      "sha256": "70c43924e95de07a6d18c1e3b27db3e9dff1c69faff2efd486843aaa8ad14506"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261004\\current-runtime-parallel-01\\build-02\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "ba33048d406e04110f27dea8f2784aac301a3b0020d9721a34e92cbec8f52348"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261004\\current-runtime-parallel-01\\source-composite-index-04.json",
+      "bytes": 615762,
+      "sha256": "35a3e2bfb218fee8fdc46626923781f96f7ed918bd40072be4cc3ad30586cf01"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-current-full-body-comparison-10\\final-ox-r2-current-full-body-comparison-10.json",
+      "bytes": 2059076,
+      "sha256": "298deb8d65e74f3cc042977f5705cdd3881e4ad321dfd3b5f1b985afaeec026c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-current-full-body-comparison-10\\current_Ox_R2_closed\\native-report.json",
+      "bytes": 7359639,
+      "sha256": "37b1d9199a37bfdeba1df8789187f46b8da1462310373ec6d9683184ad21133e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ox-r2-log-boundary-agent-01\\closed-r2-product-harness-and-root-ui-receipt-12\\actual-readonly-ox-closeout-game-inventory.json",
+      "bytes": 315,
+      "sha256": "6d5478b658b5577916fb0a7fa23da598425595996fcbe4d54daa47e22b381d44"
+    }
+  ],
+  "recorded_artifact_pin_boundary": "Copied from SHA-bound original receipts without reinterpreting old attempts or reopening large raw logs/video/EXE.",
+  "master_record_closeout": {
+    "status": "PENDING_ACTUAL_ROOT_COMMIT_PUSH_AND_REMOTE_READBACK",
+    "commit": null,
+    "push_receipt": null,
+    "boundary": "Formal source tag was actually pushed; this final documentation commit and push are not yet facts. Root records actual results in the separate release-closeout receipt after execution."
+  }
+}
