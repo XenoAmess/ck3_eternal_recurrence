@@ -2966,3 +2966,15 @@ R25→R26 的正式续局保留同一 Robert29829／ordinary episode `native-298
 实际冷 baseline `session76055` exit0／GREEN：旧 PID66464→新 bridge/game PID7388，source1791/g57、same ordinary episode、Robert 存活、paused/map_ready；完整 history6666→6667，仅追加 `restore-checkpoint`，save anchor仍6666。Root helper 包装进程 PID105476 不是游戏 PID。冷启动 readiness 中最初尚未连接 pipe 的 timing RED 原样留在 result，最终恢复 GREEN。mandatory 原 Sway4 是后续独立 SDK 查询，不能算入这份 baseline 的已完成动作；截至本条，SDK53419 的前三条 GREEN、第四 invalidation stale/malformed revision3 RED、plan_turn GREEN，Root 只 fresh retry 第四条，不重跑前三条或重发 Start。
 
 证据：[部署收据](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v52/ROOT-ACTUAL-V52-DEPLOYMENT-RECEIPT.json)、[Root 冷 query 结果](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v52/v52-root-packet/actual-candidate-cold-goal-01/result.json)、[实际 allocator identity](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v52/LIVE-RUN-ALLOCATION.json)。本知识增量只复用已完成结果，不读取 changing pair、后继业务 query 叶或重跑游戏／测试；新增游戏日为0，4359日及第三战胜利信用由原实机 owner 独立汇总。
+
+## Application-main typed query 的失败详情（2026-10-05）
+
+R34 普通战争循环成功14正常日/336h后，failed15 的 `ck3_plan_turn` 发布 `native gameplay step failed: application-main typed query failed or its snapshot changed`；失败调用本身没有推进日期，raw53256456/native61/public58、actor paused/map-ready。该次失败由军事唯一 owner 缓存，published packet 只有 content/isError/resultType和静态error；typed_query_failure_v1、last_command_result、失败命令身份均不存在。成功前后snapshot diagnostics不能替代失败命令身份，当前heartbeat无异常也不能补出历史失败阶段。
+
+现有 native `TypedQueryFailureFrame12002` 已提供 typed_query_failure_v1：stage/query_type/wait_result/wait_completed/frame_stable/typed_result/final_read/final_equal/executor_enter/executor_typed_result/executor_finish/executor_exception。Python native_driver 的实际接收链先将 command_result 整dict暂存、wait时整帧pop；原 `_execute_primitive_step` false分支只取error后抛 `_NativeCommandRejectedError`，普通step没有UI/trace专用raw receipt，driverstate/diagnostics也未保存该typed子树。因此不得用旧失败artifact的静态error猜测主线程失败阶段。
+
+最小Python增量在原false分支将已收到的 typed_query_failure_v1 dict 完整压成JSON，追加到既有 native_error 文本；原错误前缀、异常类和业务流程保留。没有新增schema、WAL、NativeDLL、gate或重试。候选py_compile一次GREEN，Root已采用并推送 b2e4fe4e，随后冻结091bb268/g67准备R35。此处只记录源码传播增量；新freshplan实际detail输出待生产结果，成功恢复也不代表旧故障根因已经归因。
+
+后续读取新结果时，成功与失败均由指定owner唯一消费原叶：GREEN记录当前功能恢复及旧cause未知；RED只从实际 typed 子树区分运行等待、frame稳定性、实际typed调用及executor结果，不把字段存在、ACK或当前无异常heartbeat当作原因证明。旧R34 failed15 RED保留，不为它扩native协议或重复无证据审计。
+
+可核验外置证据：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/r34-plan-turn-typed-error-ingress/python-candidate/ROOT-DELIVERY.json`（SHA-256 `465cc625a334c4bd1234b5dfb5dbbb4f1aa3a5a63db6f63352c874d49305b692`）；军事已有缓存短包 `.../military-ooda-continuation/ordinary-v61/r34-progress-after-restored-strength-query-consumed01/FAILED15-CACHED-ERROR-INGRESS-SHORT.json`（SHA-256 `cba92ea58f6b05876da57b5d3d5d9c16e51a0104746615adab1858068499b9ef`）。本补充lane新增SDK/query/day均0。
