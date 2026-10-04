@@ -1,0 +1,11 @@
+{
+  "queried_at_utc": "2026-10-04T09:57:26.390315+00:00",
+  "release_tag": "v0.2.1",
+  "release_id": 381034850,
+  "wheel_sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+  "wheel_url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1-py3-none-any.whl",
+  "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "package_version": "0.2.1",
+  "source_head": "c9e8331d7f20fb9c87e9b5908b0a24079b93c8ba"
+}

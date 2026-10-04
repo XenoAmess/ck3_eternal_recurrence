@@ -1,0 +1,14 @@
+{
+  "created_at_utc": "2026-10-04T10:12:47.588792+00:00",
+  "attempt": "C:\\ck3-superman-qiang-promo-20261004\\render-A0004",
+  "archive": "C:\\ck3-superman-qiang-promo-20261004\\render-retention-A0004\\process-materials.zip",
+  "archive_sha256": "f9497d508cc79d59df7eaf45e73f9811de7756f01b8dd5e2a1bc3ba55b89b0f3",
+  "archive_bytes": 199466886,
+  "process_file_count": 914,
+  "native_manifest": "C:\\ck3-superman-qiang-promo-20261004\\render-A0004\\native-run\\run-manifest.json",
+  "native_manifest_sha256": "366aafa5ce0171b25ae7442f9287fcbae551f0695af6c861a65d8c537ec070e2",
+  "native_artifact_count": 146,
+  "signoff_count": 0,
+  "validation_passed": true,
+  "original_materials_retained": true
+}

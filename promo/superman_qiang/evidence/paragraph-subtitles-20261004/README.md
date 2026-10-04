@@ -14,4 +14,4 @@
 
 [布局报告](subtitle-layout-report.json)、[最终源码预检](preflight-receipt.json)与[实际 libass 像素测量](ffmpeg-render-report.json)为本次证据副本。全部原始过程永久保留于 `C:/ck3-superman-qiang-promo-20261004/composer-paragraph-A0001/`，包含旧源码精确副本、layout-A0001/A0002/A0003、十份 ASS、十张烧录图、每条命令的 argv/stdout/stderr/receipt 与检查脚本。第一次换行结果虽符合宽度，但会在词中间断行，已保留并改为优先按中文标点换行；最终选择 layout-A0003。
 
-这些检查只证明完整字幕与字体烧录行为；最终 A0003 影片由主执行者使用新的 native run 构建、探测与交付。本预检没有执行最终影片 render，没有记录人工 approval。
+这些检查只证明完整字幕与字体烧录行为；最终 A0004 影片由主执行者使用新的 native run 构建、探测与交付。本预检没有执行最终影片 render，没有记录人工 approval。

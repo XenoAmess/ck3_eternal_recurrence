@@ -1,0 +1,37 @@
+{
+  "reviewed_at_utc": "2026-10-04T10:12:32.548036+00:00",
+  "reviewer": "/root",
+  "result": "PASS_LIMITED_FRAME_INSPECTION",
+  "movie_sha256": "2d880ce2df313d2c9cdc343208e5d21aea16963654696718c8ca4e9055eeaf82",
+  "movie_path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\超人强_越超人越强_宣传片_修订版_20261004_2d880ce2.mp4",
+  "reviewed_actual_frame_count": 28,
+  "reviewed_contact_sheets": [
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\final-frame-inspection-A0004\\contact-01.jpg",
+      "sha256": "013752c58b97661ceb5934cebd113aa44c228030ab366213423d049e05e72aa0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\final-frame-inspection-A0004\\contact-02.jpg",
+      "sha256": "76d974b156933588072c26de7a710effd62b23480ec1aa915326694e70407d1e"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\final-frame-inspection-A0004\\contact-03.jpg",
+      "sha256": "0ddb96bbbc97813cc1979e168b4f7b504c7cccd134ac3d8be5716ba4536cd266"
+    }
+  ],
+  "observations": {
+    "five_different_first_half_scenes_visible": true,
+    "source_category_corner_labels_absent_in_reviewed_frames": true,
+    "complete_two_line_paragraphs_visible_in_all_ten_scenes": true,
+    "same_paragraph_stays_at_voice_beginning_and_tail": true,
+    "preview_only_safety_bar_and_scene_ids_absent_from_movie": true,
+    "queen_crown_visible": true,
+    "genuine_notification_and_event_stills_present": true,
+    "all_seven_category_cards_visible": true,
+    "stable_end_card_and_decodable_workshop_qr_present": true
+  },
+  "full_1x_human_playback": false,
+  "full_auditory_listening_performed": false,
+  "human_signoff_granted": false,
+  "scope": "Direct inspection of three contact sheets containing28 actual encoded frames. Complete decode and loudness are separate machine checks; no claim of full-speed human playback."
+}

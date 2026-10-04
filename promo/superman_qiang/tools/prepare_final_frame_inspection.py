@@ -5,6 +5,7 @@ from datetime import datetime,timezone
 import hashlib
 import json
 from pathlib import Path
+import re
 import shutil
 import subprocess
 from PIL import Image,ImageDraw,ImageFont
@@ -19,6 +20,7 @@ def main() -> int:
     movie=a.movie.resolve(strict=True)
     timeline=json.loads((a.attempt_directory/'build/timeline.json').read_bytes())
     out=a.output_directory.resolve();out.mkdir(parents=True,exist_ok=False)
+    (out/'tool-source.py').write_bytes(Path(__file__).read_bytes())
     ffmpeg=shutil.which('ffmpeg');assert ffmpeg
     jobs=[]
     for row in timeline['scenes']:
@@ -27,11 +29,13 @@ def main() -> int:
         jobs.append((row['id']+'-voice-tail-hold',begin+row['narration_seconds']+0.4))
     final=timeline['scenes'][-1]
     jobs.append(('final-stable-qr',final['end_seconds']-2.0))
-    # Seven category cards in the encoded montage, using its declared guide span.
+    # Sample actual encoded optional-layer times, rather than the visual guide.
     montage=next(row for row in timeline['scenes'] if row['id']=='SQP-08')
-    for i,layer in enumerate(montage['visual']['optional_layers']):
-        fractions=layer.get('timing_fraction')
-        if fractions:jobs.append((f'category-{i+1:02d}',montage['start_seconds']+montage['duration_seconds']*sum(fractions)/2))
+    graph=a.attempt_directory/'build/filtergraphs/SQP-08.filter'
+    windows=re.findall(r"enable='between\(t,([0-9.]+),([0-9.]+)\)'",graph.read_text(encoding='utf-8'))
+    assert len(windows)==7, 'Use the seven actual rendered card windows.'
+    for i,(start,end) in enumerate(windows):
+        jobs.append((f'category-{i+1:02d}',montage['start_seconds']+(float(start)+float(end))/2))
     records=[]
     for index,(label,timepoint) in enumerate(jobs,1):
         frame=out/f'{index:02d}-{label}.png'
@@ -52,7 +56,7 @@ def main() -> int:
             x=(i%2)*640;y=(i//2)*386;sheet.paste(picture,(x,y))
             draw.text((x+8,y+360),f"{record['label']} · {record['timestamp_seconds']:.2f}s",font=font,fill='white')
         file=out/f'contact-{first//10+1:02d}.jpg';sheet.save(file,quality=92);sheets.append(str(file))
-    report={'created_at_utc':datetime.now(timezone.utc).isoformat(),'movie':str(movie),'movie_bytes':movie.stat().st_size,'movie_sha256':hashlib.sha256(movie.read_bytes()).hexdigest(),'frames':records,'contact_sheets':sheets,'root_direct_inspection':'pending','full_1x_human_playback':False,'human_signoff_granted':False}
+    report={'created_at_utc':datetime.now(timezone.utc).isoformat(),'movie':str(movie),'movie_bytes':movie.stat().st_size,'movie_sha256':hashlib.sha256(movie.read_bytes()).hexdigest(),'frames':records,'contact_sheets':sheets,'montage_filtergraph':str(graph),'montage_filtergraph_sha256':hashlib.sha256(graph.read_bytes()).hexdigest(),'tool_source_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'root_direct_inspection':'pending','full_1x_human_playback':False,'human_signoff_granted':False}
     (out/'frame-index.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'frame_count':len(records),'contact_sheets':sheets},ensure_ascii=False))
     return 0

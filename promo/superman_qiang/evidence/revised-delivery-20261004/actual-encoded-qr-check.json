@@ -1,0 +1,16 @@
+{
+  "checked_at_utc": "2026-10-04T10:10:47.927959+00:00",
+  "movie_sha256": "2d880ce2df313d2c9cdc343208e5d21aea16963654696718c8ca4e9055eeaf82",
+  "frame": {
+    "label": "final-stable-qr",
+    "timestamp_seconds": 136.66666666666666,
+    "path": "C:\\ck3-superman-qiang-promo-20261004\\final-frame-inspection-A0004\\21-final-stable-qr.png",
+    "bytes": 2219637,
+    "sha256": "4518162c53954c02a00a4a0eedd44a412ee47097422b6a235e1f47c43e3a2767"
+  },
+  "decoded_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990",
+  "expected_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990",
+  "opencv_version": "5.0.0",
+  "passed": true,
+  "human_signoff_granted": false
+}
