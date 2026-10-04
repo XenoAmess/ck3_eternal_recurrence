@@ -1,0 +1,126 @@
+{
+  "schema": "ck3.lyd.bounded-advance-result.v1",
+  "started_at_utc": "2026-10-04T03:08:28.188471+00:00",
+  "requests": [
+    {
+      "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\mcp-queue\\advance-528b05563eaf47dd-000-resume.request.json",
+      "request_id": "advance-528b05563eaf47dd-000-resume",
+      "sha256": "8f50d9ebbadebfb8698e51fa3696694889664a32b5180a123585351f314f993a",
+      "contacted_game": false
+    },
+    {
+      "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\mcp-queue\\advance-528b05563eaf47dd-001-snapshot.request.json",
+      "request_id": "advance-528b05563eaf47dd-001-snapshot",
+      "sha256": "32e1202f1cd05fdc76bd6b20e97a19fc110bef476758628a1ab4ddd7861430e8",
+      "contacted_game": false
+    },
+    {
+      "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\mcp-queue\\advance-528b05563eaf47dd-002-snapshot.request.json",
+      "request_id": "advance-528b05563eaf47dd-002-snapshot",
+      "sha256": "102b151a33be408c6ce0857632acc689c336af00d706ca971e11f91bbcf148cb",
+      "contacted_game": false
+    },
+    {
+      "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\mcp-queue\\advance-528b05563eaf47dd-003-snapshot.request.json",
+      "request_id": "advance-528b05563eaf47dd-003-snapshot",
+      "sha256": "34658f6b6fa53800c2c85c78d19d7bed15abdaf2b43425c49e15f096560fbc9f",
+      "contacted_game": false
+    },
+    {
+      "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\mcp-queue\\advance-528b05563eaf47dd-004-snapshot.request.json",
+      "request_id": "advance-528b05563eaf47dd-004-snapshot",
+      "sha256": "0d53a410d97dc2a9bdf7aaac6757d18c70bdc73b9da38364eb5a4c38324d5f47",
+      "contacted_game": false
+    },
+    {
+      "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\mcp-queue\\advance-528b05563eaf47dd-005-snapshot.request.json",
+      "request_id": "advance-528b05563eaf47dd-005-snapshot",
+      "sha256": "05f1ebc7588437c7c32bfa5b3220ed98516161f866461eef3e5a2ab3be033ddd",
+      "contacted_game": false
+    },
+    {
+      "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\mcp-queue\\advance-528b05563eaf47dd-999-pause.request.json",
+      "request_id": "advance-528b05563eaf47dd-999-pause",
+      "sha256": "54fa7f8df67db52deb688ad9bbe3e0a42866673bdcd5795b61a6b5f79ae00510",
+      "contacted_game": false
+    }
+  ],
+  "responses": [
+    {
+      "request_id": "0018-cycle-final-snapshot",
+      "response_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\mcp-client-evidence\\0085-0018-cycle-final-snapshot.response.json",
+      "sha256": "73b99593cddd867616ac059b9edd212c69d02cebe813fefad2a5f04985817064",
+      "preserved_prefix": "001-0018-cycle-final-snapshot"
+    },
+    {
+      "request_id": "advance-528b05563eaf47dd-000-resume",
+      "response_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\mcp-client-evidence\\0086-advance-528b05563eaf47dd-000-resume.response.json",
+      "sha256": "209a7bd2ba239becbc650402843deee0c825276c909f4805e10db5867845a023",
+      "preserved_prefix": "002-advance-528b05563eaf47dd-000-resume"
+    },
+    {
+      "request_id": "advance-528b05563eaf47dd-001-snapshot",
+      "response_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\mcp-client-evidence\\0087-advance-528b05563eaf47dd-001-snapshot.response.json",
+      "sha256": "1a4710d1f229c83eb632ede82c102059b588a33c3c808794216009f540cc3d5c",
+      "preserved_prefix": "003-advance-528b05563eaf47dd-001-snapshot"
+    },
+    {
+      "request_id": "advance-528b05563eaf47dd-002-snapshot",
+      "response_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\mcp-client-evidence\\0088-advance-528b05563eaf47dd-002-snapshot.response.json",
+      "sha256": "3d159c7737a4558fba1a08786f683bbe253628bf48b70ea6ea7142c0ffe5d7df",
+      "preserved_prefix": "004-advance-528b05563eaf47dd-002-snapshot"
+    },
+    {
+      "request_id": "advance-528b05563eaf47dd-003-snapshot",
+      "response_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\mcp-client-evidence\\0089-advance-528b05563eaf47dd-003-snapshot.response.json",
+      "sha256": "d45ad688232f18ec7734b73fec5365ad725f73c48112045b0df773af171c612b",
+      "preserved_prefix": "005-advance-528b05563eaf47dd-003-snapshot"
+    },
+    {
+      "request_id": "advance-528b05563eaf47dd-004-snapshot",
+      "response_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\mcp-client-evidence\\0090-advance-528b05563eaf47dd-004-snapshot.response.json",
+      "sha256": "798b3a2080b123fa321882c81574744271638822ee12c28935cf446c51899dd8",
+      "preserved_prefix": "006-advance-528b05563eaf47dd-004-snapshot"
+    },
+    {
+      "request_id": "advance-528b05563eaf47dd-999-pause",
+      "response_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\mcp-client-evidence\\0092-advance-528b05563eaf47dd-999-pause.response.json",
+      "sha256": "d4b5c0319c41714889fcde68f2b4443e986aa8087afa5631290977389689fb5e",
+      "preserved_prefix": "007-advance-528b05563eaf47dd-999-pause"
+    }
+  ],
+  "stop_reason": "LYD_NP_THREE_ROUNDS_PASS",
+  "pause": "NATIVE_PAUSED_VERIFIED",
+  "start_frame": {
+    "revision": 285,
+    "date_raw": 53150784,
+    "paused": true,
+    "speed": 3
+  },
+  "debug_before": {
+    "bytes": 1553482,
+    "sha256": "45866e9e329f01cda67ed905c47e8ae9abbeb4b730fb870e7f2782518f66ead2"
+  },
+  "resume_verified": true,
+  "last_running_frame": {
+    "revision": 297,
+    "date_raw": 53151072,
+    "paused": false,
+    "speed": 3
+  },
+  "terminal_marker": "LYD_NP_THREE_ROUNDS_PASS",
+  "final_frame": {
+    "revision": 305,
+    "date_raw": 53151240,
+    "paused": true,
+    "speed": 3
+  },
+  "debug_after": {
+    "bytes": 1585492,
+    "sha256": "0cb8fb9d263358901402088685bf7ec5830c2a97d3618086bbbc17975025cdf4"
+  },
+  "elapsed_seconds": 14.826,
+  "finished_at_utc": "2026-10-04T03:08:43.014746+00:00",
+  "status": "BOUNDED_ADVANCE_STOPPED_PAUSED",
+  "product_acceptance": "NOT_CLAIMED"
+}

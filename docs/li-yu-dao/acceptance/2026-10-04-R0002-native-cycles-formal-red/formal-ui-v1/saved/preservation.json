@@ -1,0 +1,14 @@
+{
+  "schema": "ck3.lyd.native-checkpoint-preservation.v1",
+  "preserved_at_utc": "2026-10-04T03:27:48.247700+00:00",
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\userdir\\save games\\xar_checkpoint.ck3",
+  "artifact": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed\\xar_checkpoint.ck3",
+  "size": 102093402,
+  "sha256": "db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed",
+  "source_mtime_ns": 1791084346667385600,
+  "artifact_read_only": true,
+  "native_save_request_id": "0024",
+  "expected_played_character_id_from_native_receipt": 31254,
+  "save_objects_readback": "PENDING",
+  "game_called": false
+}

@@ -54,39 +54,70 @@ def build_outputs() -> dict[str, bytes]:
     }}
 }}
 """)
+    # Display gates omit automation details; execution gates still require a player.
     script("common/scripted_triggers/lyd_player_triggers.txt", """
+lyd_display_eligible_trigger = {
+    is_landed = yes
+    is_adult = yes
+}
 lyd_is_player_trigger = {
     is_ai = no
-    is_landed = yes
     is_alive = yes
-    is_adult = yes
+    lyd_display_eligible_trigger = yes
+}
+lyd_can_enter_display_trigger = {
+    lyd_display_eligible_trigger = yes
+    faith = { religion = religion:confucianism_religion }
+    NOT = { this = faith.religious_head }
+    NOT = { this = rite.head_of_rite }
+    OR = {
+        NOT = { has_character_flag = lyd_enabled }
+        NOT = { faith = faith:@PRODUCT_FAITH@ }
+    }
 }
 lyd_can_enter_trigger = {
     lyd_is_player_trigger = yes
-    faith = { religion = religion:confucianism_religion }
-    NOT = { has_character_flag = lyd_enabled }
+    lyd_can_enter_display_trigger = yes
+}
+lyd_can_use_school_display_trigger = {
+    lyd_display_eligible_trigger = yes
+    has_character_flag = lyd_enabled
+    faith = faith:@PRODUCT_FAITH@
+    @PRODUCT_RITE_GATE@
 }
 lyd_can_use_school_trigger = {
     lyd_is_player_trigger = yes
-    has_character_flag = lyd_enabled
-    faith = { religion = religion:confucianism_religion }
+    lyd_can_use_school_display_trigger = yes
 }
-lyd_can_change_school_trigger = {
-    lyd_can_use_school_trigger = yes
+lyd_can_change_school_display_trigger = {
+    lyd_can_use_school_display_trigger = yes
     NOT = { has_character_flag = lyd_school_cooldown }
 }
-lyd_can_study_trigger = {
-    lyd_can_use_school_trigger = yes
+lyd_can_change_school_trigger = {
+    lyd_is_player_trigger = yes
+    lyd_can_change_school_display_trigger = yes
+}
+lyd_can_study_display_trigger = {
+    lyd_can_use_school_display_trigger = yes
     NOT = { has_character_flag = lyd_study_cooldown }
 }
-""")
+lyd_can_study_trigger = {
+    lyd_is_player_trigger = yes
+    lyd_can_study_display_trigger = yes
+}
+""".replace("@PRODUCT_FAITH@", PARENT_FAITH).replace(
+        "@PRODUCT_RITE_GATE@", "OR = { " + " ".join(f"rite = rite:{r.script_id}" for r in SAMPLE_RITES) + " }"))
     script("common/scripted_effects/lyd_entry_effects.txt", f"""
 lyd_enter_effect = {{
     if = {{
         limit = {{ lyd_can_enter_trigger = yes }}
         set_character_rite = rite:{MAIN_RITE_ID}
-        add_character_flag = lyd_enabled
-        trigger_event = lyd.1
+        if = {{
+            limit = {{ rite = rite:{MAIN_RITE_ID} faith = faith:{PARENT_FAITH} }}
+            add_character_flag = lyd_enabled
+            trigger_event = lyd.1
+        }}
+        else = {{ debug_log = "LYD_ENTER_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }}
     }}
 }}
 lyd_open_school_effect = {{
@@ -109,7 +140,11 @@ lyd_adopt_{rite.slug}_effect = {{
     if = {{
         limit = {{ lyd_can_change_school_trigger = yes NOT = {{ rite = rite:{rite.script_id} }} }}
         set_character_rite = rite:{rite.script_id}
-        add_character_flag = {{ flag = lyd_school_cooldown days = {SCHOOL_COOLDOWN_DAYS} }}
+        if = {{
+            limit = {{ rite = rite:{rite.script_id} faith = rite:{rite.script_id}.faith }}
+            add_character_flag = {{ flag = lyd_school_cooldown days = {SCHOOL_COOLDOWN_DAYS} }}
+        }}
+        else = {{ debug_log = "LYD_SCHOOL_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }}
     }}
 }}
 """)
@@ -139,7 +174,7 @@ lyd_adopt_{rite.slug}_effect = {{
     for index in range(0, len(practice_effects), 8):
         script(f"common/scripted_effects/lyd_practice_{index // 8 + 1}_effects.txt", "".join(practice_effects[index:index + 8]))
 
-    def decision(identifier: str, gate: str, effect: str, extra: str = "") -> str:
+    def decision(identifier: str, gate: str, effect: str, extra: str = "", display_gate: str | None = None) -> str:
         return f"""
 {identifier} = {{
     picture = {{ reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }}
@@ -149,7 +184,7 @@ lyd_adopt_{rite.slug}_effect = {{
     selection_tooltip = {identifier}_tooltip
     confirm_text = {identifier}_confirm
     is_shown = {{ lyd_is_player_trigger = yes {gate} }}
-    is_valid = {{ {gate} {extra} }}
+    is_valid = {{ {display_gate or gate} {extra} }}
     effect = {{ {effect} = yes }}
     ai_will_do = {{ base = 0 }}
 }}
@@ -157,9 +192,9 @@ lyd_adopt_{rite.slug}_effect = {{
     sample_gate = "OR = { " + " ".join(f"rite = rite:{r.script_id}" for r in SAMPLE_RITES) + " }"
     # Keep disabled decisions visible: the validity panel explains cooldowns.
     script("common/decisions/lyd_decisions.txt", "".join((
-        decision("lyd_enter_decision", "lyd_can_enter_trigger = yes", "lyd_enter_effect"),
-        decision("lyd_change_school_decision", "lyd_can_use_school_trigger = yes", "lyd_open_school_effect", "lyd_can_change_school_trigger = yes"),
-        decision("lyd_study_decision", "lyd_can_use_school_trigger = yes", "lyd_open_study_effect", f"lyd_can_study_trigger = yes {sample_gate}"),
+        decision("lyd_enter_decision", "lyd_can_enter_trigger = yes", "lyd_enter_effect", display_gate="lyd_can_enter_display_trigger = yes"),
+        decision("lyd_change_school_decision", "lyd_can_use_school_trigger = yes", "lyd_open_school_effect", "lyd_can_change_school_display_trigger = yes", display_gate="lyd_can_use_school_display_trigger = yes"),
+        decision("lyd_study_decision", "lyd_can_use_school_trigger = yes", "lyd_open_study_effect", "lyd_can_study_display_trigger = yes", display_gate="lyd_can_use_school_display_trigger = yes"),
     )))
     script("common/character_interactions/lyd_interactions.txt", "# No independent NPC interaction entry points in iteration 1.\n")
     events = ["namespace = lyd\n", """
@@ -170,6 +205,14 @@ lyd.1 = {
     theme = faith
     trigger = { lyd_can_use_school_trigger = yes }
     option = { name = lyd_welcome_continue }
+}
+lyd.2 = {
+    type = character_event
+    title = lyd_admission_failed_t
+    desc = lyd_admission_failed_desc
+    theme = faith
+    trigger = { lyd_is_player_trigger = yes }
+    option = { name = lyd_cancel }
 }
 lyd.10 = {
     type = character_event
@@ -182,7 +225,7 @@ lyd.10 = {
         events.append(f"""
     option = {{
         name = lyd_adopt_{rite.slug}
-        trigger = {{ lyd_can_change_school_trigger = yes NOT = {{ rite = rite:{rite.script_id} }} }}
+        trigger = {{ lyd_can_change_school_display_trigger = yes NOT = {{ rite = rite:{rite.script_id} }} }}
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_{rite.slug}_effect = yes
     }}
@@ -201,7 +244,7 @@ lyd.10 = {
             events.append(f"""
     option = {{
         name = {practice.script_id}_{option.key}
-        trigger = {{ lyd_can_study_trigger = yes gold >= {option.gold_cost} }}
+        trigger = {{ lyd_can_study_display_trigger = yes gold >= {option.gold_cost} }}
         custom_tooltip = {practice.script_id}_{option.key}_tt
         custom_tooltip = lyd_study_cooldown_tt
         {practice.script_id}_{option.key}_effect = yes
@@ -235,6 +278,8 @@ lyd.10 = {
         "lyd_choose_school_desc": ("同读圣贤之书，诸家所重各有不同：仁与礼、性与教、天与祭、理与心。此番改从学统，当先明其义。", "The traditions emphasize different readings of humaneness, ritual, nature, teaching, Heaven, principle and mind. I must understand a teaching before following it."),
         "lyd_adopt_school_tt": ("改从此礼仪；一年内不能再次择师。", "Adopt this rite. You may seek another tradition after one year."),
         "lyd_study_cooldown_tt": ("完成此次修习后，180 天内不能再次践礼修身。", "Completing this practice prevents another cultivation session for 180 days."),
+        "lyd_admission_failed_t": ("尚未改从学统", "Unable to Adopt the Tradition"),
+        "lyd_admission_failed_desc": ("此次未能改从所选学统，我仍奉行原先礼仪。待处理当前宗主职责或礼仪限制后，再行问学。此次不会开始择师或修习的等待期。", "I still follow my previous rite. I must resolve any current religious leadership duties or restrictions before adopting another tradition. This attempt starts no waiting period for study or changing traditions."),
         "lyd_cancel": ("容我再思", "I will consider this further"),
     }
     for rite in SAMPLE_RITES:

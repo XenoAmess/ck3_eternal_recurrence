@@ -1,0 +1,7 @@
+		c_camarda={
+			development=11
+			development_progress=8.82
+			county_control=100
+			culture=136
+			rite=151
+		}

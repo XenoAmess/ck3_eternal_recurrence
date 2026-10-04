@@ -1,0 +1,274 @@
+{
+  "schema": "lyd.console-input-receipt.v1",
+  "utc": "2026-10-04T00:39:53.412250+00:00",
+  "helper_sha256": "dc0a192531cdcaa5919fc0a9a97bf8c8e9d2ef77fe34c8b88256b89f8ba0672e",
+  "action": "open",
+  "step": null,
+  "campaign": "1066 Robert Guiscard",
+  "runtime_character_id": 29829,
+  "status": "open_key_dispatched_requires_console_focus_review",
+  "input_attempted": true,
+  "enter_attempted": false,
+  "business_postcondition_verified": false,
+  "arbitrary_script_capability": false,
+  "uses_mouse": false,
+  "uses_ocr": false,
+  "guard_profile": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\profile-attempt-001\\guard-profile.json",
+  "guard_profile_sha256": "4a8758e513c183ad4b8d4e3ca12a1b5059b88364e0eb3cd4d066a73d91634f55",
+  "capability_proof": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_native_profile_mcp.py",
+    "sha256": "4fa041c9ea9ea81885e5ca8a17cdac2a8880d7a1b980497012d600058f60a1ed",
+    "tools": [
+      "ck3_attach_profile_bridge_v1",
+      "ck3_pause_profile_simulation_v1",
+      "ck3_query_native_profile_v1",
+      "ck3_query_profile_event_window_v1",
+      "ck3_query_profile_pending_interaction_v1",
+      "ck3_read_profile_native_clock_v1",
+      "ck3_reply_profile_pending_interaction_v1",
+      "ck3_resume_profile_bridge_v1",
+      "ck3_save_profile_checkpoint_v1",
+      "ck3_select_profile_event_option_v1",
+      "ck3_set_profile_simulation_v1",
+      "ck3_take_profile_native_snapshot_v1"
+    ],
+    "fallback_reason": "No arbitrary scripted-effect, console, or LYD decision action in the exact current profile provider. Native snapshot/simulation/event/save capabilities remain preferred."
+  },
+  "fixture_proof": {
+    "candidate_report_sha256": "a55a3d44a210dc191112b800e01c88353e399a8b56a260d12301370e9c570a6d",
+    "mounted_payload": [
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\content\\fixture\\common\\decisions\\lyd_np_decisions.txt",
+        "sha256": "06ff98f68af5b7dc4b7d2d0e42e0cefe180b3cdaf0e7cbb48b938965f6d4fef0"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\content\\fixture\\common\\religion\\faith_types\\lyd_np_faiths.txt",
+        "sha256": "d349b0c5bd4a6102a32ca1f9762487b33559b6da255ccab9533bd13ad8b7247c"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\content\\fixture\\common\\religion\\rite_types\\lyd_np_rites.txt",
+        "sha256": "11aab688d88c6f8cfbdb8464f408b111ecc07e07e884eee13bbf44492ca15230"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\content\\fixture\\common\\scripted_effects\\lyd_np_effects.txt",
+        "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\content\\fixture\\common\\scripted_triggers\\lyd_np_triggers.txt",
+        "sha256": "7c1bc919d2ddf3dfc5b59969ea1cb4b795e4a172e8ad1d984acadc048ed25cff"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\content\\fixture\\descriptor.mod",
+        "sha256": "b82a694df94b885c0438d55bb3f1d5ed2fdde6b624131633b5ae56cfabe101f1"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\content\\fixture\\events\\lyd_np_events.txt",
+        "sha256": "b9d57ad721c799e551870f39027a26727b207c5fef97f175dd4db0dff81db896"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\content\\fixture\\localization\\english\\lyd_np_l_english.yml",
+        "sha256": "26acb8c79ff2c790a62b8905e725250153141731c14719259a52c02d555ad723"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\content\\fixture\\localization\\simp_chinese\\lyd_np_l_simp_chinese.yml",
+        "sha256": "d7d4381c8bb172e4a32041588e43f1838e1bc861902153df3a2d1f10eec2d907"
+      }
+    ]
+  },
+  "reused_helpers": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\run_zhongguo_acceptance.py",
+      "sha256": "da96c4c5d964f3e1d105fdd3d28def4ce1acf7b4db00d21d16136c08673bf3a7"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\run_acceptance.py",
+      "sha256": "b5e99a7b835da5d2ffb237296567984683b401d42e14fdd5ea272707adf9f156"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\windows_unicode_clipboard.py",
+      "sha256": "c0f878917331f980530df966cbcbe5efb8b7fe605899a1fb2c6f532b6a95faf0"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\desktop_semantic_action_mcp.py",
+      "sha256": "98da0b66c19a0553d84671649f5381c1af84ee70806424654402b43fc596e921"
+    }
+  ],
+  "observation_before": {
+    "schema": "desktop.semantic-action-profile.v1",
+    "session_id": "e512330e-c46c-43ce-86e7-f1634fb2a21a",
+    "profile_sha256": "4a8758e513c183ad4b8d4e3ca12a1b5059b88364e0eb3cd4d066a73d91634f55",
+    "actions": [
+      "open_player_panel"
+    ],
+    "observation": {
+      "pid": 7564,
+      "hwnd": 16975020,
+      "window_pid": 7564,
+      "process_create_time": 1791072107.664736,
+      "executable": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "build_id": "25652598",
+      "app_manifest_sha256": "dd9ded14dde2e10e5535a63c1a9c8fc89ebd3527213cb27979d477c72b548924",
+      "window_visible": true,
+      "window_title": "Crusader Kings III",
+      "window_class": "SDL_app",
+      "window_rect": [
+        152,
+        59,
+        1768,
+        998
+      ],
+      "focus": {
+        "foreground_hwnd": 16975020,
+        "foreground_pid": 7564,
+        "foreground_thread_id": 16432,
+        "focus_hwnd": 16975020,
+        "title": "Crusader Kings III"
+      },
+      "screen_size": [
+        1920,
+        1080
+      ],
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "steam_offline_flags": [
+        "1"
+      ],
+      "steam_loginusers_sha256": "94e993d04f118c58758fb0d6da7dff581c9a7c91c7d0e8fa823440f74c9b2097",
+      "steam_pid": 3028,
+      "steam_create_time": 1790980012.3969574,
+      "steam_executable": "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe",
+      "steam_client_pid": 18100,
+      "steam_client_create_time": 1790980011.1466615,
+      "steam_client_executable": "C:\\Program Files (x86)\\Steam\\steam.exe",
+      "screen_lease_fresh": true,
+      "screen_owners": [
+        "ck3-lyd-live-003-20261004"
+      ]
+    },
+    "receipts": {},
+    "read_only": true
+  },
+  "capture_before": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\console-open-001\\before.png",
+    "bytes": 2409098,
+    "sha256": "6943e927aacd9241ec1a984e4647901a17b3a07dbe78f740b36e5ae5468af830",
+    "size": [
+      1920,
+      1080
+    ]
+  },
+  "layout": {
+    "schema_version": 1,
+    "result": "GREEN",
+    "policy": "keep_us_english_for_desktop_automation",
+    "requested_klid": "00000409",
+    "requested_langid": "0409",
+    "restore_requested": false,
+    "restore_performed": false,
+    "poll_observations": [
+      {
+        "elapsed_ms": 0,
+        "hkl": "0x04090409",
+        "langid": "0409"
+      }
+    ],
+    "window_handle": 16975020,
+    "window_title": "Crusader Kings III",
+    "target_thread_id": 16432,
+    "target_pid": 7564,
+    "tracked_ck3_pid": 7564,
+    "input_window_handle": 16975020,
+    "input_thread_id": 16432,
+    "input_pid": 7564,
+    "before_hkl": "0x04090409",
+    "before_langid": "0409",
+    "installed_hkls": [
+      "0x04090409",
+      "0x08040804",
+      "0x04090804"
+    ],
+    "requested_hkl": "0x04090409",
+    "message_posted": null,
+    "message_delivery_claimed": false,
+    "after_hkl": "0x04090409",
+    "after_langid": "0409",
+    "left_in_english": true
+  },
+  "dispatch_claim": "C:\\workspace\\ck3_lyd_runtime_20261004\\console-dispatch-claims\\7564-open-console.json",
+  "capture_after": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\console-open-001\\after.png",
+    "bytes": 2409708,
+    "sha256": "622f65006c68cac2c5b309c8a2877fcabcac9fe83fa48b7d390b739a00009bf6",
+    "size": [
+      1920,
+      1080
+    ]
+  },
+  "observation_after": {
+    "schema": "desktop.semantic-action-profile.v1",
+    "session_id": "e512330e-c46c-43ce-86e7-f1634fb2a21a",
+    "profile_sha256": "4a8758e513c183ad4b8d4e3ca12a1b5059b88364e0eb3cd4d066a73d91634f55",
+    "actions": [
+      "open_player_panel"
+    ],
+    "observation": {
+      "pid": 7564,
+      "hwnd": 16975020,
+      "window_pid": 7564,
+      "process_create_time": 1791072107.664736,
+      "executable": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "build_id": "25652598",
+      "app_manifest_sha256": "dd9ded14dde2e10e5535a63c1a9c8fc89ebd3527213cb27979d477c72b548924",
+      "window_visible": true,
+      "window_title": "Crusader Kings III",
+      "window_class": "SDL_app",
+      "window_rect": [
+        152,
+        59,
+        1768,
+        998
+      ],
+      "focus": {
+        "foreground_hwnd": 16975020,
+        "foreground_pid": 7564,
+        "foreground_thread_id": 16432,
+        "focus_hwnd": 16975020,
+        "title": "Crusader Kings III"
+      },
+      "screen_size": [
+        1920,
+        1080
+      ],
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "steam_offline_flags": [
+        "1"
+      ],
+      "steam_loginusers_sha256": "94e993d04f118c58758fb0d6da7dff581c9a7c91c7d0e8fa823440f74c9b2097",
+      "steam_pid": 3028,
+      "steam_create_time": 1790980012.3969574,
+      "steam_executable": "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe",
+      "steam_client_pid": 18100,
+      "steam_client_create_time": 1790980011.1466615,
+      "steam_client_executable": "C:\\Program Files (x86)\\Steam\\steam.exe",
+      "screen_lease_fresh": true,
+      "screen_owners": [
+        "ck3-lyd-live-003-20261004"
+      ]
+    },
+    "receipts": {},
+    "read_only": true
+  }
+}

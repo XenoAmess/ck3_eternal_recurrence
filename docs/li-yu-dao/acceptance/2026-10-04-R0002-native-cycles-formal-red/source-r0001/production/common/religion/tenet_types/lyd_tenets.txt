@@ -1,0 +1,366 @@
+﻿# GENERATED FILE — edit tools/content_data.py and rerun tools/gen_content.py.
+# CK3 1.20.0.3; additive sample tenets. No all-character modifiers.
+# Faith selection uses Faith scope. Personal selection has Character scope.
+# Faith can_pick has no unguarded is_ai check: its actor can be null.
+# Parameters are capability flags, not proof that practice events are connected.
+# Local divergence scaling is a prototype input; global defines are untouched.
+
+# T01: Revere Heaven and Its Charge
+lyd_tenet_reverent_heaven = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_reverent_heaven_practice
+	}
+	personal_tenet_parameters = {
+		lyd_reverent_heaven_practice
+	}
+}
+
+# T02: Sincerity in Solitude
+lyd_tenet_sincerity_solitude = {
+	icon = tenet_inner_journey
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_sincerity_solitude_practice
+	}
+	personal_tenet_parameters = {
+		lyd_sincerity_solitude_practice
+	}
+}
+
+# T03: Cultivation through Ritual and Music
+lyd_tenet_ritual_music = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_ritual_music_practice
+	}
+	personal_tenet_parameters = {
+		lyd_ritual_music_practice
+	}
+}
+
+# T04: Honor Ancestral Origins
+lyd_tenet_ancestral_reverence = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_ancestral_reverence_practice
+	}
+	personal_tenet_parameters = {
+		lyd_ancestral_reverence_practice
+	}
+}
+
+# T06: Humaneness and Righteousness
+lyd_tenet_humaneness_righteousness = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_humaneness_righteousness_practice
+	}
+	personal_tenet_parameters = {
+		lyd_humaneness_righteousness_practice
+	}
+}
+
+# T08: Honor Sages and Transmit the Way
+lyd_tenet_sage_transmission = {
+	icon = tenet_literalism
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_sage_transmission_practice
+	}
+	personal_tenet_parameters = {
+		lyd_sage_transmission_practice
+	}
+}
+
+# T09: Extend the Four Sprouts
+lyd_tenet_extend_sprouts = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_extend_sprouts_practice
+	}
+	personal_tenet_parameters = {
+		lyd_extend_sprouts_practice
+	}
+}
+
+# T10: Deliberate Moral Cultivation
+lyd_tenet_deliberate_cultivation = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_deliberate_cultivation_practice
+	}
+	personal_tenet_parameters = {
+		lyd_deliberate_cultivation_practice
+	}
+}
+
+# T11: Nourish Qi through Righteousness
+lyd_tenet_righteous_qi = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_righteous_qi_practice
+	}
+	personal_tenet_parameters = {
+		lyd_righteous_qi_practice
+	}
+}
+
+# T14: Investigate Things and Principle
+lyd_tenet_investigate_principle = {
+	icon = tenet_literalism
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_investigate_principle_practice
+	}
+	personal_tenet_parameters = {
+		lyd_investigate_principle_practice
+	}
+}
+
+# T15: Reverent Attention and Cultivation
+lyd_tenet_reverent_attention = {
+	icon = tenet_inner_journey
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_reverent_attention_practice
+	}
+	personal_tenet_parameters = {
+		lyd_reverent_attention_practice
+	}
+}
+
+# T16: Illuminate the Original Heart
+lyd_tenet_original_heart = {
+	icon = tenet_inner_journey
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_original_heart_practice
+	}
+	personal_tenet_parameters = {
+		lyd_original_heart_practice
+	}
+}
+
+# T19: Ground Rites in the Classics
+lyd_tenet_textual_ritual = {
+	icon = tenet_literalism
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_textual_ritual_practice
+	}
+	personal_tenet_parameters = {
+		lyd_textual_ritual_practice
+	}
+}
+
+# T20: Interpret Classics Together
+lyd_tenet_classical_synthesis = {
+	icon = tenet_literalism
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_classical_synthesis_practice
+	}
+	personal_tenet_parameters = {
+		lyd_classical_synthesis_practice
+	}
+}
+
+# T22: Heaven Follows Its Course
+lyd_tenet_constant_heaven = {
+	icon = tenet_ritual_hospitality
+	visible = yes
+	divergence_multiplier = 0.1
+	piety_cost = { value = faith_tenet_cost_low }
+	is_shown = {
+		religion = religion:confucianism_religion
+	}
+	can_pick = {
+		religion = religion:confucianism_religion
+	}
+	can_pick_as_personal_tenet = {
+		is_ai = no
+		religion = religion:confucianism_religion
+	}
+	parameters = {
+		lyd_constant_heaven_practice
+	}
+	personal_tenet_parameters = {
+		lyd_constant_heaven_practice
+	}
+}

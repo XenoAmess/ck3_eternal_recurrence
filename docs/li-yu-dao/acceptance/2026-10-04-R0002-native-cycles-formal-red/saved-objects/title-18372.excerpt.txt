@@ -1,0 +1,40 @@
+18372={
+	key=x_script_691
+	variables={
+		data={ {
+				flag=lyd_np_owned_head
+				data={
+					type=boolean
+					identity=1
+				}
+
+			}
+ }
+	}
+	date=1066.12.24
+	succession_result_type=inheritance_relative
+	history={ 1066.9.15={
+			type=created
+			holder=36445
+		}
+ 1066.12.24={
+			type=destroyed
+			holder=36445
+		}
+ }
+	color=rgb { 255 51 248 }
+	definite_form=yes
+	destroy_if_invalid_heir=yes
+	no_automatic_claims=yes
+	always_follows_primary_heir=yes
+	coat_of_arms_id=28816
+	title_name_data={
+		name="独立传承儒家道统"
+		adj="独立传承"
+	}
+
+	default_coa=no
+	treasury={
+	}
+	nomad_name_type=default
+}

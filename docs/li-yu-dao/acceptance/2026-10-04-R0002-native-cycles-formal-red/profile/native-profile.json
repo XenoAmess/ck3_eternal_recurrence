@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "guard_profile": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\profile-attempt-001\\guard-profile.json",
+  "guard_profile_sha256": "4a8758e513c183ad4b8d4e3ca12a1b5059b88364e0eb3cd4d066a73d91634f55",
+  "userdir": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\userdir",
+  "state_directory": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\native-state",
+  "evidence_directory": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\native-evidence",
+  "game_version": "1.20.0.3",
+  "dll": {
+    "path": "C:\\cn123\\xar_ck3_bridge.dll",
+    "sha256": "6cd8a0a3fcb91a426d043adbc311c04bf540fcd3321659b45f74951c4a8fee2d"
+  },
+  "injector": {
+    "path": "C:\\cn123\\xar_ck3_bridge_injector.exe",
+    "sha256": "00fe3853594ada9eeab9aa235f78188b509bc7da8f74ef497f423cc6fa8b9a03"
+  }
+}

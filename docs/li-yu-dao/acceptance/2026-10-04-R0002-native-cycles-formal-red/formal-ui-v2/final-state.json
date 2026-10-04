@@ -1,0 +1,50 @@
+{
+  "schema": "lyd.r0002.final-qualified-verdict.v1",
+  "recorded_at_utc": "2026-10-04T04:10:52.635231+00:00",
+  "primitive_verdict": "ACCEPTED_SCRIPTED_ENGINE_THREE_ROUND_ATTESTATION",
+  "saved_object_graph": "VERIFIED_NO_RELOAD",
+  "formal_verdict": "FORMAL_ENTRY_AND_ZHUXI_CHOICE_RED",
+  "formal_source": "formal-ui-v2/saved/zhuxi-choice.comparison.json",
+  "actual_player": 31254,
+  "actual_rite": 150,
+  "actual_faith": 33,
+  "requested_zhuxi_rite": 158,
+  "requested_faith": 32,
+  "target_convertibility_saved_value": "no",
+  "school_cooldown_new_tick": "365",
+  "study_cooldown": false,
+  "root_cause": "NOT_ESTABLISHED; saved conversion=no is an observed candidate condition, not causation proof.",
+  "overall_product_green": false,
+  "zero_error_log_claimed": false,
+  "final_error_log_identical_to_primitive_freeze": true,
+  "final_error_sha256": "9a94887d7d2f6e825cf806089445aa15ec06e3416d34613037214c4f911e53c5",
+  "final_error_counts": {
+    "tooltip_perspective_errors": 3,
+    "formatter_errors": 165,
+    "ai_coronation_errors": 1,
+    "bp3_roaming_invalid_activity_errors": 27
+  },
+  "lifecycle": {
+    "normal_save_exit_reported_by_root": true,
+    "ck3_absent_from_exit_receipt": true,
+    "mcp_client_close_requested": true,
+    "mcp_server_pid_15206_absent_reported_by_root": true,
+    "keeper_pid_68845_stopped_reported_by_root": true,
+    "keeper_thread_exited": true,
+    "keeper_failure": null,
+    "keeper_last_sequence": 2626,
+    "cas_release_sequence": 2627,
+    "cas_resources_empty": true
+  },
+  "root_lifecycle_attestation": "R0002 normal save+exit done and CK3 PID7564 absent; MCP session closed15206; keeper68845 STOP FINAL seq2626 thread exited no failure; CAS released2627.",
+  "limits": [
+    "No save reload",
+    "No formal study success",
+    "No conversion root-cause proof",
+    "No main/last direct detach",
+    "No natural five-year cooldown or ordinary cost acceptance",
+    "No >=100 auto-split acceptance",
+    "No global AI or release acceptance"
+  ],
+  "auditor_actions": "Read preserved receipts and copied explicitly authorized report files only; no game/desktop/MCP/Steam/lease action or product source change."
+}

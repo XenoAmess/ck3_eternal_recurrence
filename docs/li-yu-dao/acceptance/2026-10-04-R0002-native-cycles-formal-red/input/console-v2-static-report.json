@@ -1,0 +1,21 @@
+{
+  "schema": "lyd.console-v2-static-review.v1",
+  "utc": "2026-10-04T00:52:09.276175+00:00",
+  "syntax": "GREEN",
+  "help": "GREEN",
+  "physical_function_import": "GREEN_NOT_CALLED",
+  "desktop_action_execution": "NOT_RUN_BY_RESEARCHER",
+  "helper_sha256": "c98c8ee841329029581ff9fd87bd0d102089817c06373dcf21781a452910df29",
+  "readme_sha256": "77f66bab90c48ddcbfe13d7919cf6eadb1f2788366e32b70cd086fffb04d7333",
+  "identity_checkpoint_sha256": "df8a22e38ef260e197b237707bc0ef19ce64ee3627e50b67da7d37ecd23b8ffc",
+  "checkpoint_matches_original_native_save_receipt": true,
+  "keymapping_research_sha256": "ec49c18c5b9e2b5b61096681cbdd1b633942021750da72f9be7ffdcc0e90cfae",
+  "current_player_id": 31254,
+  "commands": [
+    "event lyd_np.0001",
+    "event lyd_np.9000"
+  ],
+  "old_helper_preserved": true,
+  "old_failure_preserved": true,
+  "open_binding": "physical scan0x29 candidate; live console business postcondition still unverified"
+}

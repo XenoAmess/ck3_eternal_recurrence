@@ -1,0 +1,40 @@
+{
+  "schema": "lyd.r0002.root-formal-ui-attestation.v1",
+  "recorded_at_utc": "2026-10-04T03:39:50.198126+00:00",
+  "source": "Root collaboration message; sourcebound filesystem receipts copied alongside. Auditor did not call game or desktop.",
+  "root_statement": "FormalUI conclusions R2: native welcome option pass rev308. Choose event 9 options correct Chinese; cancel option9 pass rev311 gold/piety/prestige/stress unchanged, choose remains available. Independent formal-entry save db281... player still rite150/faith33, enabled present, no2 cooldowns. Main actual product rite152/faith32. Thus formal entry RED (no actual rite change); study blocked correct OR not cooldown issue. Root does test Zhu Xi choice and resave before exit; keep R2 qualified primitive pass/formal RED. Both is_ai/is_alive tooltip perspective pink bugs production shown in formal-study-requirements.png.",
+  "verdict": "FORMAL_ENTRY_RED",
+  "welcome": {
+    "native_option_postcondition": "PASS",
+    "revision": 308
+  },
+  "choose_cancel": {
+    "nine_chinese_options_reviewed_by_root": true,
+    "cancel_option": 9,
+    "native_postcondition": "PASS",
+    "revision": 311,
+    "gold_piety_prestige_stress_unchanged": true,
+    "choose_remains_available": true
+  },
+  "entry_saved_state": {
+    "checkpoint_sha256": "db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed",
+    "actual_player": 31254,
+    "actual_rite": 150,
+    "actual_faith": 33,
+    "lyd_enabled": true,
+    "choice_cooldown": false,
+    "practice_cooldown": false,
+    "product_main_rite": 152,
+    "product_faith": 32
+  },
+  "study": {
+    "blocked": true,
+    "reason": "Actual rite is outside eight product school rites; OR gate correctly rejects it.",
+    "tooltip_perspective_errors_visually_reviewed": true
+  },
+  "zhu_xi_choice_and_later_save": "PENDING_NEXT_ROOT_ATTESTATION",
+  "primitive_verdict_unchanged": "ACCEPTED_SCRIPTED_ENGINE_THREE_ROUND_ATTESTATION",
+  "overall_product_green": false,
+  "no_root_cause_claim": true,
+  "boundary": "Welcome/option consumption and cancellation do not establish correct product conversion or successful study."
+}

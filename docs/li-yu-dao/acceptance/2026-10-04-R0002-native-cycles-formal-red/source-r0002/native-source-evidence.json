@@ -1,0 +1,65 @@
+{
+  "source_root": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III",
+  "launcher_version": "1.20.0.3 (Crozier)",
+  "raw_version": "1.20.0.3",
+  "launcher_sha256": "9cd6ff96f8092f2d21e1491b37e8344aa287faf69850563128ca1b117244a214",
+  "steam_buildid": "25652598",
+  "steam_manifest_path": "C:\\Program Files (x86)\\Steam\\steamapps\\appmanifest_1158310.acf",
+  "steam_manifest_sha256": "27d1071f5190f19254b1db417fd38e1bf0f61eb1b119a597f8d03d976e46efa5",
+  "evidence_level": "static-confirmed source / unverified runtime candidate",
+  "exe_read": false,
+  "sources": [
+    {
+      "path": "common/religion/faith_types/_faith_types.info",
+      "sha256": "55696aa5d3ac818fbd68d2b21be51213f02ef5ed4260627e2fbd8b5e321c9e42"
+    },
+    {
+      "path": "common/religion/rite_types/_rite_types.info",
+      "sha256": "60fd476d72be0941d9c6dff4e83834016d6e32d16e855f3b258389061850828f"
+    },
+    {
+      "path": "common/religion/religion_types/00_confucianism.txt",
+      "sha256": "aec90b9dde7890a38454b2333f069f327df5824508417c29dde300c84476c507"
+    },
+    {
+      "path": "common/religion/doctrine_types/20_doctrines.txt",
+      "sha256": "ff663a8f6c5233628dbf6774b28412b918338fec823fe0f534c4cd03c8580504"
+    },
+    {
+      "path": "common/religion/tenet_types/00_tenet_types.txt",
+      "sha256": "d9e18a077d81f18f030d795ef45cb4aa5b7db246007043d5b0fe401baaf88abd"
+    },
+    {
+      "path": "common/scripted_effects/00_religion_effects.txt",
+      "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931"
+    },
+    {
+      "path": "common/scripted_effects/pam_antipope_effects.txt",
+      "sha256": "c74caedc55a76f3d7158ecb586a33473a2c80d65b79f77f336e5fced7c3713f0"
+    },
+    {
+      "path": "common/scripted_effects/pam_effects.txt",
+      "sha256": "fc4c77974a7844c31c1271dcc2ace24b17906620a832658919aa281e42a2b94f"
+    },
+    {
+      "path": "common/casus_belli_types/00_event_war.txt",
+      "sha256": "48ab66002f287f0828cac3dcb3160248f49cc336ad335d838a4dd6c3563c0baa"
+    },
+    {
+      "path": "common/character_interactions/pam_interactions.txt",
+      "sha256": "2db73b0da8572e218f1a677a91ff4281a890ade115e6dc40e696ecb59c0b1049"
+    },
+    {
+      "path": "common/on_action/religion_on_actions.txt",
+      "sha256": "ef9367ddf5f89c912b895743f8b72441e88af3a5b03a5c1a9eddea0e5681ee2d"
+    },
+    {
+      "path": "events/dlc/fp3/fp3_struggle_events.txt",
+      "sha256": "31989c33ecaea73d2f2ed536813b8815b0cd90cb2a824e6dc9d85bc47a531c52"
+    },
+    {
+      "path": "events/courtier_guest_management_events/courtier_guest_management_events.txt",
+      "sha256": "bcb96949a4c6e6794b87175634d2a2d1c08435c4c4d35ae115e3b596c73743b5"
+    }
+  ]
+}

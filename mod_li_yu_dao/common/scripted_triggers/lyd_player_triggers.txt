@@ -1,25 +1,50 @@
 ﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
+lyd_display_eligible_trigger = {
+    is_landed = yes
+    is_adult = yes
+}
 lyd_is_player_trigger = {
     is_ai = no
-    is_landed = yes
     is_alive = yes
-    is_adult = yes
+    lyd_display_eligible_trigger = yes
+}
+lyd_can_enter_display_trigger = {
+    lyd_display_eligible_trigger = yes
+    faith = { religion = religion:confucianism_religion }
+    NOT = { this = faith.religious_head }
+    NOT = { this = rite.head_of_rite }
+    OR = {
+        NOT = { has_character_flag = lyd_enabled }
+        NOT = { faith = faith:lyd_common_faith }
+    }
 }
 lyd_can_enter_trigger = {
     lyd_is_player_trigger = yes
-    faith = { religion = religion:confucianism_religion }
-    NOT = { has_character_flag = lyd_enabled }
+    lyd_can_enter_display_trigger = yes
+}
+lyd_can_use_school_display_trigger = {
+    lyd_display_eligible_trigger = yes
+    has_character_flag = lyd_enabled
+    faith = faith:lyd_common_faith
+    OR = { rite = rite:lyd_rite_kongmen rite = rite:lyd_rite_mengzi rite = rite:lyd_rite_xunzi rite = rite:lyd_rite_zhengxuan rite = rite:lyd_rite_wangsu rite = rite:lyd_rite_jingshu rite = rite:lyd_rite_zhuxi rite = rite:lyd_rite_lujiuyuan }
 }
 lyd_can_use_school_trigger = {
     lyd_is_player_trigger = yes
-    has_character_flag = lyd_enabled
-    faith = { religion = religion:confucianism_religion }
+    lyd_can_use_school_display_trigger = yes
 }
-lyd_can_change_school_trigger = {
-    lyd_can_use_school_trigger = yes
+lyd_can_change_school_display_trigger = {
+    lyd_can_use_school_display_trigger = yes
     NOT = { has_character_flag = lyd_school_cooldown }
 }
-lyd_can_study_trigger = {
-    lyd_can_use_school_trigger = yes
+lyd_can_change_school_trigger = {
+    lyd_is_player_trigger = yes
+    lyd_can_change_school_display_trigger = yes
+}
+lyd_can_study_display_trigger = {
+    lyd_can_use_school_display_trigger = yes
     NOT = { has_character_flag = lyd_study_cooldown }
+}
+lyd_can_study_trigger = {
+    lyd_is_player_trigger = yes
+    lyd_can_study_display_trigger = yes
 }

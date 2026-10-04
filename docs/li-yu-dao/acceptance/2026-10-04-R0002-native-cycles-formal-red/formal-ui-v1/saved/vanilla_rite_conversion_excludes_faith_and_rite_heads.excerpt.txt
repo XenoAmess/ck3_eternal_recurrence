@@ -1,0 +1,9 @@
+	option = {
+		name = rite_growth.0010.b
+		trigger = {
+			NOR = {
+				faith.religious_head ?= this
+				rite.head_of_rite ?= this
+			}
+		}
+		set_character_rite_with_conversion = scope:new_rite

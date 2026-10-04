@@ -1,0 +1,7 @@
+lyd_enter_effect = {
+    if = {
+        limit = { lyd_can_enter_trigger = yes }
+        set_character_rite = rite:lyd_rite_kongmen
+        add_character_flag = lyd_enabled
+        trigger_event = lyd.1
+    }

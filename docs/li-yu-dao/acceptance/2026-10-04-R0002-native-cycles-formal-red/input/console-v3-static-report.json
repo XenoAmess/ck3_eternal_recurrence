@@ -1,0 +1,27 @@
+{
+  "schema": "lyd.console-v3-static-review.v1",
+  "utc": "2026-10-04T01:03:25.107633+00:00",
+  "helper_sha256": "3731fba7622a7a308c929b35928ed78626c69bf4ffee26651743b616cd662a77",
+  "instructions_sha256": "f32214582dc9a8f05e9aa9e02c5b245574f6eb1750091baf259106254ff974e5",
+  "syntax": "GREEN",
+  "help": "GREEN",
+  "physical_backend_import": "GREEN_NOT_CALLED",
+  "desktop_input_by_preparer": false,
+  "sole_command": "event lyd_np.9000",
+  "no_pyautogui_virtual_action": true,
+  "previous_attempt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\console-three-rounds-001\\receipt.json",
+    "sha256": "e174f4239a097c575645c76d06ab1f0441e1eb8765915f2bbb88ee39e6f0f2d8",
+    "status": "RED",
+    "enter_attempted": false,
+    "sentinel_unchanged": true
+  },
+  "scan_codes": {
+    "left_ctrl": 29,
+    "a": 30,
+    "v": 47,
+    "c": 46,
+    "enter": 28
+  },
+  "live_status": "NOT_RUN_BY_PREPARER"
+}

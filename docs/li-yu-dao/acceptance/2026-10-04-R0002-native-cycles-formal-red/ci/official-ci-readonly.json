@@ -1,0 +1,299 @@
+{
+  "schema": "ck3.lyd.official-ci-readonly.v1",
+  "queried_at_utc": "2026-10-04T00:23:08.363520+00:00",
+  "commit": "7fd082eab7626239ecb88702d0ebae71f938b259",
+  "workflow": "li-yu-dao-static.yml",
+  "commands": [
+    {
+      "name": "commit",
+      "argv": [
+        "gh",
+        "api",
+        "repos/XenoAmess/ck3_eternal_recurrence/commits/7fd082eab7626239ecb88702d0ebae71f938b259"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "commit.stdout.txt",
+        "sha256": "b887bf050519650ee6ed0672b4aa12fc5c788f589b957b75b1c98024b0064eaf"
+      },
+      "stderr": {
+        "path": "commit.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "json": {
+        "sha": "7fd082eab7626239ecb88702d0ebae71f938b259",
+        "node_id": "C_kwDOT6BE7toAKDdmZDA4MmVhYjc2MjYyMzllY2I4ODcwMmQwZWJhZTcxZjkzOGIyNTk",
+        "commit": {
+          "author": {
+            "name": "Codex",
+            "email": "codex@openai.com",
+            "date": "2026-10-04T00:00:25Z"
+          },
+          "committer": {
+            "name": "Codex",
+            "email": "codex@openai.com",
+            "date": "2026-10-04T00:00:25Z"
+          },
+          "message": "Preserve native error log whitespace without altering evidence",
+          "tree": {
+            "sha": "6fc3b0dec04f9dbdefd6d45bc1f19e96d2a79fe8",
+            "url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/git/trees/6fc3b0dec04f9dbdefd6d45bc1f19e96d2a79fe8"
+          },
+          "url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/git/commits/7fd082eab7626239ecb88702d0ebae71f938b259",
+          "comment_count": 0,
+          "verification": {
+            "verified": false,
+            "reason": "unsigned",
+            "signature": null,
+            "payload": null,
+            "verified_at": null
+          }
+        },
+        "url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/commits/7fd082eab7626239ecb88702d0ebae71f938b259",
+        "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/commit/7fd082eab7626239ecb88702d0ebae71f938b259",
+        "comments_url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/commits/7fd082eab7626239ecb88702d0ebae71f938b259/comments",
+        "author": {
+          "login": "codex",
+          "id": 267193182,
+          "node_id": "U_kgDOD-0LXg",
+          "avatar_url": "https://avatars.githubusercontent.com/u/267193182?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/codex",
+          "html_url": "https://github.com/codex",
+          "followers_url": "https://api.github.com/users/codex/followers",
+          "following_url": "https://api.github.com/users/codex/following{/other_user}",
+          "gists_url": "https://api.github.com/users/codex/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/codex/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/codex/subscriptions",
+          "organizations_url": "https://api.github.com/users/codex/orgs",
+          "repos_url": "https://api.github.com/users/codex/repos",
+          "events_url": "https://api.github.com/users/codex/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/codex/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "committer": {
+          "login": "codex",
+          "id": 267193182,
+          "node_id": "U_kgDOD-0LXg",
+          "avatar_url": "https://avatars.githubusercontent.com/u/267193182?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/codex",
+          "html_url": "https://github.com/codex",
+          "followers_url": "https://api.github.com/users/codex/followers",
+          "following_url": "https://api.github.com/users/codex/following{/other_user}",
+          "gists_url": "https://api.github.com/users/codex/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/codex/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/codex/subscriptions",
+          "organizations_url": "https://api.github.com/users/codex/orgs",
+          "repos_url": "https://api.github.com/users/codex/repos",
+          "events_url": "https://api.github.com/users/codex/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/codex/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "parents": [
+          {
+            "sha": "be321ac403741aed6036c46d6f1e426e10f26b4d",
+            "url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/commits/be321ac403741aed6036c46d6f1e426e10f26b4d",
+            "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/commit/be321ac403741aed6036c46d6f1e426e10f26b4d"
+          }
+        ],
+        "stats": {
+          "total": 1,
+          "additions": 1,
+          "deletions": 0
+        },
+        "files": [
+          {
+            "sha": "fe81298dd17577858990de91e7144a668b489bd7",
+            "filename": ".gitattributes",
+            "status": "modified",
+            "additions": 1,
+            "deletions": 0,
+            "changes": 1,
+            "blob_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/7fd082eab7626239ecb88702d0ebae71f938b259/.gitattributes",
+            "raw_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/raw/7fd082eab7626239ecb88702d0ebae71f938b259/.gitattributes",
+            "contents_url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/contents/.gitattributes?ref=7fd082eab7626239ecb88702d0ebae71f938b259",
+            "patch": "@@ -7,6 +7,7 @@ mod_superman_qiang/docs/release-*/** -text whitespace=cr-at-eol\n \n # Keep Li Yu Dao acceptance logs and their frozen SHA-256 bindings exact.\n docs/li-yu-dao/acceptance/** -text whitespace=cr-at-eol\n+docs/li-yu-dao/acceptance/**/error.log -text whitespace=-blank-at-eol,cr-at-eol\n mod_li_yu_dao/fixtures/native_cycle/*.json -text whitespace=cr-at-eol\n \n # Keep the original independent-mod publication receipts and anonymous HTTP bytes."
+          }
+        ]
+      }
+    },
+    {
+      "name": "lyd-runs",
+      "argv": [
+        "gh",
+        "run",
+        "list",
+        "--repo",
+        "XenoAmess/ck3_eternal_recurrence",
+        "--commit",
+        "7fd082eab7626239ecb88702d0ebae71f938b259",
+        "--workflow",
+        "li-yu-dao-static.yml",
+        "--limit",
+        "20",
+        "--json",
+        "databaseId,headSha,status,conclusion,url,createdAt,updatedAt"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "lyd-runs.stdout.txt",
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      },
+      "stderr": {
+        "path": "lyd-runs.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "json": []
+    },
+    {
+      "name": "all-runs",
+      "argv": [
+        "gh",
+        "run",
+        "list",
+        "--repo",
+        "XenoAmess/ck3_eternal_recurrence",
+        "--commit",
+        "7fd082eab7626239ecb88702d0ebae71f938b259",
+        "--limit",
+        "20",
+        "--json",
+        "databaseId,headSha,status,conclusion,url,workflowName,createdAt,updatedAt"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "all-runs.stdout.txt",
+        "sha256": "a4404d6355594afb35368a3aa5c467a36c1b1b0789da7b2a1752d6b3354be32c"
+      },
+      "stderr": {
+        "path": "all-runs.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "json": [
+        {
+          "conclusion": "success",
+          "createdAt": "2026-10-04T00:00:33Z",
+          "databaseId": 37163561735,
+          "headSha": "7fd082eab7626239ecb88702d0ebae71f938b259",
+          "status": "completed",
+          "updatedAt": "2026-10-04T00:06:31Z",
+          "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37163561735",
+          "workflowName": "Official Runner CI"
+        }
+      ]
+    },
+    {
+      "name": "latest-lyd-runs",
+      "argv": [
+        "gh",
+        "run",
+        "list",
+        "--repo",
+        "XenoAmess/ck3_eternal_recurrence",
+        "--workflow",
+        "li-yu-dao-static.yml",
+        "--limit",
+        "5",
+        "--json",
+        "databaseId,headSha,status,conclusion,url,createdAt,updatedAt"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "latest-lyd-runs.stdout.txt",
+        "sha256": "dbc4452b72ce4776c1dd8b1dda6587c23ec9b50ba91945a9eefc7f73eeb857e6"
+      },
+      "stderr": {
+        "path": "latest-lyd-runs.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "json": [
+        {
+          "conclusion": "success",
+          "createdAt": "2026-10-03T23:59:51Z",
+          "databaseId": 37163517527,
+          "headSha": "be321ac403741aed6036c46d6f1e426e10f26b4d",
+          "status": "completed",
+          "updatedAt": "2026-10-04T00:00:21Z",
+          "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37163517527"
+        },
+        {
+          "conclusion": "success",
+          "createdAt": "2026-10-03T20:47:49Z",
+          "databaseId": 37152819287,
+          "headSha": "01a52e6842b0513c78053751304cfe60a963df92",
+          "status": "completed",
+          "updatedAt": "2026-10-03T20:48:17Z",
+          "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37152819287"
+        }
+      ]
+    }
+  ],
+  "status": "NO_MATCHING_RUN",
+  "conclusion": null,
+  "url": null,
+  "git_mutated": false,
+  "latest_lyd": {
+    "conclusion": "success",
+    "createdAt": "2026-10-03T23:59:51Z",
+    "databaseId": 37163517527,
+    "headSha": "be321ac403741aed6036c46d6f1e426e10f26b4d",
+    "status": "completed",
+    "updatedAt": "2026-10-04T00:00:21Z",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37163517527"
+  },
+  "lyd_input_object_comparison": {
+    "mod_li_yu_dao": {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\workspace\\ck3_eternal_recurrence",
+        "rev-parse",
+        "7fd082eab7626239ecb88702d0ebae71f938b259:mod_li_yu_dao",
+        "be321ac403741aed6036c46d6f1e426e10f26b4d:mod_li_yu_dao"
+      ],
+      "returncode": 0,
+      "objects": [
+        "5107ad4fa03bb66a663be1acc24f7a74c0ade4a4",
+        "5107ad4fa03bb66a663be1acc24f7a74c0ade4a4"
+      ],
+      "equal": true
+    },
+    ".github/workflows/li-yu-dao-static.yml": {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\workspace\\ck3_eternal_recurrence",
+        "rev-parse",
+        "7fd082eab7626239ecb88702d0ebae71f938b259:.github/workflows/li-yu-dao-static.yml",
+        "be321ac403741aed6036c46d6f1e426e10f26b4d:.github/workflows/li-yu-dao-static.yml"
+      ],
+      "returncode": 0,
+      "objects": [
+        "65ba06ee579bb5192428e92c783283571dca673e",
+        "65ba06ee579bb5192428e92c783283571dca673e"
+      ],
+      "equal": true
+    },
+    "tools/extract_auto_upgrade_buildings.py": {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\workspace\\ck3_eternal_recurrence",
+        "rev-parse",
+        "7fd082eab7626239ecb88702d0ebae71f938b259:tools/extract_auto_upgrade_buildings.py",
+        "be321ac403741aed6036c46d6f1e426e10f26b4d:tools/extract_auto_upgrade_buildings.py"
+      ],
+      "returncode": 0,
+      "objects": [
+        "6cc9e3407db931dabfdf0532293b398c531bfd75",
+        "6cc9e3407db931dabfdf0532293b398c531bfd75"
+      ],
+      "equal": true
+    }
+  }
+}

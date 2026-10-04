@@ -24,6 +24,8 @@
  lyd_choose_school_desc:0 "The traditions emphasize different readings of humaneness, ritual, nature, teaching, Heaven, principle and mind. I must understand a teaching before following it."
  lyd_adopt_school_tt:0 "Adopt this rite. You may seek another tradition after one year."
  lyd_study_cooldown_tt:0 "Completing this practice prevents another cultivation session for 180 days."
+ lyd_admission_failed_t:0 "Unable to Adopt the Tradition"
+ lyd_admission_failed_desc:0 "I still follow my previous rite. I must resolve any current religious leadership duties or restrictions before adopting another tradition. This attempt starts no waiting period for study or changing traditions."
  lyd_cancel:0 "I will consider this further"
  lyd_adopt_kongmen:0 "The Kongmen Tradition"
  lyd_adopt_mengzi:0 "The Learning of Mengzi"

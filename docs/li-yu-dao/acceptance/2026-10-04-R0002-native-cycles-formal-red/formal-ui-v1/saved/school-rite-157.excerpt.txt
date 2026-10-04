@@ -1,0 +1,106 @@
+		157={
+			rite_type=lyd_rite_jingshu			faith=32
+			founder=4294967295
+			head_of_rite=4294967295
+			origin_rite=152
+			data={
+				tag="lyd_rite_jingshu"
+				name="经疏正义"
+				adjective="经疏正义"
+				adherent="经疏正义之儒"
+				adherent_plural="经疏正义诸儒"
+				desc="以南北经学及唐代经疏为基础，兼习诸经，尊重传注又辨其义理。祭序、礼器与丧服须据经说明，不将后世四书中心体系提前置入。"
+				color=rgb { 229 204 137 }
+				icon=""
+				texticon=""
+				graphical_faith=""
+				piety_icon_group=""
+				tenet_background_icon=""
+				tenet_heretical_background_icon=""
+				tenet_neutral_background_icon=""
+				tenet_unknown_background_icon=""
+				fervor=50
+				religious_head=4294967295
+				tenets={ {
+						tenet=lyd_tenet_reverent_heaven						status=permitted
+					}
+ {
+						tenet=lyd_tenet_sincerity_solitude						status=permitted
+					}
+ {
+						tenet=lyd_tenet_ritual_music						status=permitted
+					}
+ {
+						tenet=lyd_tenet_ancestral_reverence						status=permitted
+					}
+ {
+						tenet=lyd_tenet_humaneness_righteousness						status=permitted
+					}
+ {
+						tenet=lyd_tenet_sage_transmission						status=core
+					}
+ {
+						tenet=lyd_tenet_extend_sprouts						status=permitted
+					}
+ {
+						tenet=lyd_tenet_deliberate_cultivation						status=permitted
+					}
+ {
+						tenet=lyd_tenet_righteous_qi						status=permitted
+					}
+ {
+						tenet=lyd_tenet_investigate_principle						status=permitted
+					}
+ {
+						tenet=lyd_tenet_reverent_attention						status=permitted
+					}
+ {
+						tenet=lyd_tenet_original_heart						status=permitted
+					}
+ {
+						tenet=lyd_tenet_textual_ritual						status=core
+					}
+ {
+						tenet=lyd_tenet_classical_synthesis						status=core
+					}
+ {
+						tenet=lyd_tenet_constant_heaven						status=permitted
+					}
+ }
+				tenet=lyd_tenet_sage_transmission
+				tenet=lyd_tenet_textual_ritual
+				tenet=lyd_tenet_classical_synthesis
+				doctrine=sinitic_hostility_doctrine
+				doctrine=doctrine_concubines
+				doctrine=doctrine_divorce_allowed
+				doctrine=doctrine_bastardry_legitimization
+				doctrine=doctrine_homosexuality_shunned
+				doctrine=doctrine_deviancy_crime
+				doctrine=doctrine_adultery_men_crime
+				doctrine=doctrine_adultery_women_crime
+				doctrine=doctrine_kinslaying_any_dynasty_member_crime
+				doctrine=doctrine_witchcraft_crime
+				doctrine=doctrine_gender_male_dominated
+				doctrine=doctrine_consanguinity_dynastic
+				doctrine=doctrine_pluralism_pluralistic
+				doctrine=doctrine_theocracy_lay_clergy
+				doctrine=doctrine_no_head
+				doctrine=doctrine_clerical_function_taxation
+				doctrine=doctrine_clerical_gender_male_only
+				doctrine=doctrine_clerical_marriage_allowed
+				doctrine=doctrine_clerical_succession_temporal_appointment
+				doctrine=doctrine_pilgrimage_local_rites
+				doctrine=doctrine_family_rites
+				doctrine=doctrine_no_anointment
+				doctrine=doctrine_polytheist
+				doctrine=doctrine_scriptural
+				doctrine=doctrine_monasticism_absent
+				doctrine=doctrine_sacraments_absent
+				doctrine=special_doctrine_is_sinitic_faith
+				doctrine=special_doctrine_immaterial_harmony
+			}
+			convert=no
+			enabled=yes
+			override_name=no
+			source=historical
+		}

@@ -1,0 +1,660 @@
+{
+  "schema": "ck3.lyd.formal-entry-diagnosis.v1",
+  "artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed\\xar_checkpoint.ck3",
+    "bytes": 102093402,
+    "sha256": "db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed"
+  },
+  "status": "FORMAL_ENTRY_POSTCONDITION_FAILED",
+  "facts": {
+    "player": "31254",
+    "actual_rite": {
+      "id": "150",
+      "fields": {
+        "rite_type": "lyd_np_anchor_rite",
+        "faith": "33",
+        "head_of_rite": "31254",
+        "convert": "yes",
+        "enabled": "yes",
+        "source": "historical"
+      },
+      "all_entries": [
+        {
+          "key": "rite_type",
+          "value": "lyd_np_anchor_rite"
+        },
+        {
+          "key": "faith",
+          "value": "33"
+        },
+        {
+          "key": "founder",
+          "value": "4294967295"
+        },
+        {
+          "key": "head_of_rite",
+          "value": "31254"
+        },
+        {
+          "key": "origin_rite",
+          "value": "4294967295"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "tag",
+              "value": "\"lyd_np_anchor_rite\""
+            },
+            {
+              "key": "name",
+              "value": "\"共礼（原型）\""
+            },
+            {
+              "key": "adjective",
+              "value": "\"共礼\""
+            },
+            {
+              "key": "adherent",
+              "value": "\"共礼学人\""
+            },
+            {
+              "key": "adherent_plural",
+              "value": "\"共礼学人\""
+            },
+            {
+              "key": "desc",
+              "value": "\"始终保留为接收方主礼仪。\""
+            },
+            {
+              "key": "color",
+              "value": "rgb"
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": null,
+                  "value": "150"
+                },
+                {
+                  "key": null,
+                  "value": "89"
+                },
+                {
+                  "key": null,
+                  "value": "30"
+                }
+              ]
+            },
+            {
+              "key": "icon",
+              "value": "\"\""
+            },
+            {
+              "key": "texticon",
+              "value": "\"\""
+            },
+            {
+              "key": "graphical_faith",
+              "value": "\"\""
+            },
+            {
+              "key": "piety_icon_group",
+              "value": "\"\""
+            },
+            {
+              "key": "tenet_background_icon",
+              "value": "\"\""
+            },
+            {
+              "key": "tenet_heretical_background_icon",
+              "value": "\"\""
+            },
+            {
+              "key": "tenet_neutral_background_icon",
+              "value": "\"\""
+            },
+            {
+              "key": "tenet_unknown_background_icon",
+              "value": "\"\""
+            },
+            {
+              "key": "fervor",
+              "value": "50"
+            },
+            {
+              "key": "religious_head",
+              "value": "4294967295"
+            },
+            {
+              "key": "tenets",
+              "value": [
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "tenet_pursuit_of_knowledge"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "tenet_benevolent_governance"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "tenet_harmonious_society"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "tenet",
+              "value": "tenet_pursuit_of_knowledge"
+            },
+            {
+              "key": "tenet",
+              "value": "tenet_benevolent_governance"
+            },
+            {
+              "key": "tenet",
+              "value": "tenet_harmonious_society"
+            },
+            {
+              "key": "doctrine",
+              "value": "sinitic_hostility_doctrine"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_concubines"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_divorce_allowed"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_bastardry_legitimization"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_homosexuality_shunned"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_deviancy_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_adultery_men_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_adultery_women_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_kinslaying_any_dynasty_member_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_witchcraft_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_gender_male_dominated"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_consanguinity_dynastic"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_pluralism_pluralistic"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_theocracy_lay_clergy"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_temporal_head"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_function_taxation"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_gender_male_only"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_marriage_allowed"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_succession_temporal_appointment"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_pilgrimage_local_rites"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_family_rites"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_no_anointment"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_polytheist"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_scriptural"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_monasticism_absent"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_sacraments_absent"
+            },
+            {
+              "key": "doctrine",
+              "value": "special_doctrine_is_sinitic_faith"
+            },
+            {
+              "key": "doctrine",
+              "value": "special_doctrine_immaterial_harmony"
+            }
+          ]
+        },
+        {
+          "key": "convert",
+          "value": "yes"
+        },
+        {
+          "key": "enabled",
+          "value": "yes"
+        },
+        {
+          "key": "override_name",
+          "value": "no"
+        },
+        {
+          "key": "source",
+          "value": "historical"
+        }
+      ]
+    },
+    "actual_faith": {
+      "id": "33",
+      "fields": {
+        "faith_type": "lyd_np_anchor_faith",
+        "main_rite": "150",
+        "religion": "9",
+        "tag": "\"lyd_np_anchor_faith\"",
+        "name": "\"共礼学统（原型）\"",
+        "religious_head": "18371"
+      },
+      "all_entries": [
+        {
+          "key": "faith_type",
+          "value": "lyd_np_anchor_faith"
+        },
+        {
+          "key": "religion",
+          "value": "9"
+        },
+        {
+          "key": "main_rite",
+          "value": "150"
+        },
+        {
+          "key": "organization",
+          "value": "33"
+        },
+        {
+          "key": "holy_sites",
+          "value": [
+            {
+              "key": null,
+              "value": "275"
+            },
+            {
+              "key": null,
+              "value": "246"
+            },
+            {
+              "key": null,
+              "value": "319"
+            },
+            {
+              "key": null,
+              "value": "278"
+            },
+            {
+              "key": null,
+              "value": "216"
+            }
+          ]
+        },
+        {
+          "key": "eminent_holy_sites",
+          "value": [
+            {
+              "key": null,
+              "value": "275"
+            },
+            {
+              "key": null,
+              "value": "246"
+            }
+          ]
+        },
+        {
+          "key": "changes",
+          "value": []
+        },
+        {
+          "key": "historical",
+          "value": "yes"
+        },
+        {
+          "key": "tag",
+          "value": "\"lyd_np_anchor_faith\""
+        },
+        {
+          "key": "name",
+          "value": "\"共礼学统（原型）\""
+        },
+        {
+          "key": "adjective",
+          "value": "\"共礼学统\""
+        },
+        {
+          "key": "adherent",
+          "value": "\"共礼学人\""
+        },
+        {
+          "key": "adherent_plural",
+          "value": "\"共礼学人\""
+        },
+        {
+          "key": "desc",
+          "value": "\"用于反复合流、分立验收的外置夹具。\""
+        },
+        {
+          "key": "color",
+          "value": "rgb"
+        },
+        {
+          "key": null,
+          "value": [
+            {
+              "key": null,
+              "value": "150"
+            },
+            {
+              "key": null,
+              "value": "90"
+            },
+            {
+              "key": null,
+              "value": "30"
+            }
+          ]
+        },
+        {
+          "key": "icon",
+          "value": "\"jingxue\""
+        },
+        {
+          "key": "texticon",
+          "value": "\"\u0016jingxue_icon!\""
+        },
+        {
+          "key": "graphical_faith",
+          "value": "\"\""
+        },
+        {
+          "key": "piety_icon_group",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_heretical_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_neutral_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_unknown_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "fervor",
+          "value": "50.5"
+        },
+        {
+          "key": "religious_head",
+          "value": "18371"
+        },
+        {
+          "key": "doctrine",
+          "value": "sinitic_hostility_doctrine"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_concubines"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_divorce_allowed"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_bastardry_legitimization"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_homosexuality_shunned"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_deviancy_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_adultery_men_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_adultery_women_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_kinslaying_any_dynasty_member_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_witchcraft_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_gender_male_dominated"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_consanguinity_dynastic"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_pluralism_pluralistic"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_theocracy_lay_clergy"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_no_head"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_function_taxation"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_gender_male_only"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_marriage_allowed"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_succession_temporal_appointment"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_pilgrimage_local_rites"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_family_rites"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_no_anointment"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_polytheist"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_scriptural"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_monasticism_absent"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_sacraments_absent"
+        },
+        {
+          "key": "doctrine",
+          "value": "special_doctrine_is_sinitic_faith"
+        },
+        {
+          "key": "doctrine",
+          "value": "special_doctrine_immaterial_harmony"
+        }
+      ]
+    },
+    "flags": {
+      "lyd_enabled": true,
+      "lyd_school_cooldown": false,
+      "lyd_study_cooldown": false
+    },
+    "actual_rite_matches_eight_product_schools": false,
+    "target_rite_id": "152",
+    "target_faith_id": "32",
+    "target_faith_main_rite": "152",
+    "current_head_title": "18371",
+    "current_head_title_holder": "31254",
+    "actual_player_is_current_faith_head": true,
+    "actual_player_is_current_rite_head": true
+  },
+  "direct_explanation": "The entry flag was added while the player remained on prototype rite150/faith33. The study OR accepts only product rites152..159, so it is false. Change-school guards check the broad Confucian religion and entry flag, so they can pass in this inconsistent state.",
+  "native_cause_inference": "Current player is both a Faith head and Rite head. Primary vanilla conversion scripts explicitly exclude both heads. This supports a head conversion restriction; this read-only projection does not independently prove the engine's internal branch.",
+  "convert_no_is_not_proven_cause": true,
+  "with_conversion_is_not_an_accepted_fix": true,
+  "minimal_validation_next_step": "Root may validate formal entry on a non-head character/baseline, or explicitly release only the owned fixture head binding first. Entry/school success flags and cooldown should follow an actual requested-rite postcondition. No action performed by this helper.",
+  "primary_native_sources": [
+    {
+      "key": "vanilla_rite_conversion_excludes_faith_and_rite_heads",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\religion_events\\rite_growth_events.txt",
+      "start_line": 334,
+      "end_line": 342,
+      "sha256": "d09c0eb94e1a81c0d456f55c049004d7ef1ebe38464a1274cf151d0214418895",
+      "excerpt": "\toption = {\n\t\tname = rite_growth.0010.b\n\t\ttrigger = {\n\t\t\tNOR = {\n\t\t\t\tfaith.religious_head ?= this\n\t\t\t\trite.head_of_rite ?= this\n\t\t\t}\n\t\t}\n\t\tset_character_rite_with_conversion = scope:new_rite\n"
+    },
+    {
+      "key": "vanilla_cross_conversion_excludes_faith_head",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\global_religion_events.txt",
+      "start_line": 942,
+      "end_line": 958,
+      "sha256": "be451b6f82435ec31dbf537810bab294da9aa2a69c28c73a4574970f51b2f755",
+      "excerpt": "\toption = {\n\t\tname = global_religion.1000.special\n\t\tadd_internal_flag = dangerous\n\t\ttrigger = {\n\t\t\trite != scope:target_rite\n\t\t\tfaith.religious_head != root\n\t\t\ttrigger_if = { # The AI only takes up a rite that already has a foothold nearby, unless it is unreformed and this is its road out of paganism; players may follow their conscience\n\t\t\t\tlimit = { is_ai = yes }\n\t\t\t\tOR = {\n\t\t\t\t\texists = scope:exiles_rite_locally_present\n\t\t\t\t\trite = { rite_has_parameter = unreformed }\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tshow_as_tooltip = {\n\t\t\tset_character_rite_with_conversion = scope:target_rite\n\t\t\tif = {\n"
+    },
+    {
+      "key": "plain_set_character_rite_supports_forced_conversion_without_cascade",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\11_dlc_pam_scripted_effects.txt",
+      "start_line": 77,
+      "end_line": 78,
+      "sha256": "ade936faf40ac2f2c928ba3bc0b618f62d324ce6f2af400e54da3b4bd975371f",
+      "excerpt": "\t# Not set_character_rite_with_conversion: avoids cascade, and this may be a forced conversion\n\tset_character_rite = $RITE$\n"
+    }
+  ],
+  "frozen_product_sources": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\content\\production\\common\\scripted_effects\\lyd_entry_effects.txt",
+      "start_line": 2,
+      "end_line": 8,
+      "sha256": "6ad04df437ce1e7ba63fcbb5c475b15fb22d4e7e5131aa0849b69b6aecaa226d",
+      "excerpt": "lyd_enter_effect = {\n    if = {\n        limit = { lyd_can_enter_trigger = yes }\n        set_character_rite = rite:lyd_rite_kongmen\n        add_character_flag = lyd_enabled\n        trigger_event = lyd.1\n    }\n"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\content\\production\\common\\scripted_triggers\\lyd_player_triggers.txt",
+      "start_line": 13,
+      "end_line": 25,
+      "sha256": "4908f60fcea79e98a4389dd332bcf1da33a812d895562327aa37d16272a50e02",
+      "excerpt": "lyd_can_use_school_trigger = {\n    lyd_is_player_trigger = yes\n    has_character_flag = lyd_enabled\n    faith = { religion = religion:confucianism_religion }\n}\nlyd_can_change_school_trigger = {\n    lyd_can_use_school_trigger = yes\n    NOT = { has_character_flag = lyd_school_cooldown }\n}\nlyd_can_study_trigger = {\n    lyd_can_use_school_trigger = yes\n    NOT = { has_character_flag = lyd_study_cooldown }\n}\n"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\content\\production\\common\\decisions\\lyd_decisions.txt",
+      "start_line": 15,
+      "end_line": 37,
+      "sha256": "aae30076a90402e285d4f589b6160a21ef9eb321a12239f4b0955d11ff23b9f4",
+      "excerpt": "lyd_change_school_decision = {\n    picture = { reference = \"gfx/interface/illustrations/decisions/decision_personal_religious.dds\" }\n    decision_group_type = religious\n    ai_check_interval = 0\n    desc = lyd_change_school_decision_desc\n    selection_tooltip = lyd_change_school_decision_tooltip\n    confirm_text = lyd_change_school_decision_confirm\n    is_shown = { lyd_is_player_trigger = yes lyd_can_use_school_trigger = yes }\n    is_valid = { lyd_can_use_school_trigger = yes lyd_can_change_school_trigger = yes }\n    effect = { lyd_open_school_effect = yes }\n    ai_will_do = { base = 0 }\n}\n\nlyd_study_decision = {\n    picture = { reference = \"gfx/interface/illustrations/decisions/decision_personal_religious.dds\" }\n    decision_group_type = religious\n    ai_check_interval = 0\n    desc = lyd_study_decision_desc\n    selection_tooltip = lyd_study_decision_tooltip\n    confirm_text = lyd_study_decision_confirm\n    is_shown = { lyd_is_player_trigger = yes lyd_can_use_school_trigger = yes }\n    is_valid = { lyd_can_use_school_trigger = yes lyd_can_study_trigger = yes OR = { rite = rite:lyd_rite_kongmen rite = rite:lyd_rite_mengzi rite = rite:lyd_rite_xunzi rite = rite:lyd_rite_zhengxuan rite = rite:lyd_rite_wangsu rite = rite:lyd_rite_jingshu rite = rite:lyd_rite_zhuxi rite = rite:lyd_rite_lujiuyuan } }\n    effect = { lyd_open_study_effect = yes }\n"
+    }
+  ],
+  "game_called": false,
+  "tracked_written": false
+}

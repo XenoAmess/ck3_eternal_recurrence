@@ -1,0 +1,39 @@
+18410={
+	key=x_script_729
+	variables={
+		data={ {
+				flag=lyd_np_owned_head
+				data={
+					type=boolean
+					identity=1
+				}
+
+			}
+ }
+	}
+	date=1067.4.27
+	history={ 1067.3.27={
+			type=created
+			holder=36445
+		}
+ 1067.4.27={
+			type=destroyed
+			holder=36445
+		}
+ }
+	color=rgb { 51 255 78 }
+	definite_form=yes
+	destroy_if_invalid_heir=yes
+	no_automatic_claims=yes
+	always_follows_primary_heir=yes
+	coat_of_arms_id=29026
+	title_name_data={
+		name="支传儒家道统"
+		adj="支传"
+	}
+
+	default_coa=no
+	treasury={
+	}
+	nomad_name_type=default
+}

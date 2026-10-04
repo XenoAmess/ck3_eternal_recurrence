@@ -1,0 +1,2243 @@
+{
+  "schema": "lyd.native-primitive-three-rounds-attestation-candidate.v2",
+  "utc": "2026-10-04T03:14:31.587200+00:00",
+  "attestation_scope": "Exact loaded native-script primitive prototype, three successive player-triggered join/detach cycles with delayed in-engine assertions.",
+  "primitive_verdict": "ACCEPTED_SCRIPTED_ENGINE_THREE_ROUND_ATTESTATION",
+  "overall_zero_error_acceptance": "NOT_CLAIMED_UNRESOLVED_ERROR_RECORDS",
+  "independent_object_readback": "NOT_CLAIMED; native snapshots verify process/player/map/time/pause, scripted assertions verify faith/rite/title/county predicates.",
+  "build": {
+    "source_root": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game",
+    "version": "1.20.0.3",
+    "build_id": "25652598",
+    "executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+    "ck3_pid": 7564,
+    "player_runtime_id": 31254,
+    "player_history_id": "1128",
+    "campaign": "ordinary 1066 Robert Guiscard"
+  },
+  "count_checks": {
+    "LYD_NP_INITIALIZE_PASS": {
+      "expected": 1,
+      "actual": 1,
+      "match": true
+    },
+    "LYD_NP_JOIN_APPLIED": {
+      "expected": 3,
+      "actual": 3,
+      "match": true
+    },
+    "LYD_NP_DETACH_APPLIED": {
+      "expected": 3,
+      "actual": 3,
+      "match": true
+    },
+    "LYD_NP_JOIN_D1_PASS": {
+      "expected": 3,
+      "actual": 3,
+      "match": true
+    },
+    "LYD_NP_JOIN_D30_PASS": {
+      "expected": 3,
+      "actual": 3,
+      "match": true
+    },
+    "LYD_NP_DETACH_D1_PASS": {
+      "expected": 3,
+      "actual": 3,
+      "match": true
+    },
+    "LYD_NP_DETACH_D30_PASS": {
+      "expected": 3,
+      "actual": 3,
+      "match": true
+    },
+    "LYD_NP_THREE_ROUNDS_PASS": {
+      "expected": 1,
+      "actual": 1,
+      "match": true
+    }
+  },
+  "all_marker_counts": {
+    "LYD_NP_EXISTING_VASSAL_SUBJECT": 1,
+    "LYD_NP_INITIALIZE_PASS": 1,
+    "LYD_NP_JOIN_APPLIED": 3,
+    "LYD_NP_JOIN_D1_PASS": 3,
+    "LYD_NP_JOIN_D30_PASS": 3,
+    "LYD_NP_COOLDOWN_BLOCK_PASS": 5,
+    "LYD_NP_ACCEPTANCE_ONLY_COOLDOWN_CLEARED": 5,
+    "LYD_NP_DETACH_APPLIED": 3,
+    "LYD_NP_DETACH_D1_PASS": 3,
+    "LYD_NP_DETACH_D30_PASS": 3,
+    "LYD_NP_THREE_ROUNDS_PASS": 1
+  },
+  "hard_failure_markers": [],
+  "terminal_bounded_report": {
+    "status": "BOUNDED_ADVANCE_STOPPED_PAUSED",
+    "stop_reason": "LYD_NP_THREE_ROUNDS_PASS",
+    "terminal_marker": "LYD_NP_THREE_ROUNDS_PASS",
+    "pause": "NATIVE_PAUSED_VERIFIED",
+    "start_frame": {
+      "revision": 285,
+      "date_raw": 53150784,
+      "paused": true,
+      "speed": 3
+    },
+    "final_frame": {
+      "revision": 305,
+      "date_raw": 53151240,
+      "paused": true,
+      "speed": 3
+    },
+    "elapsed_seconds": 14.826,
+    "finished_at_utc": "2026-10-04T03:08:43.014746+00:00"
+  },
+  "frozen_files": {
+    "debug.log": {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\userdir\\logs\\debug.log",
+      "frozen_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\probe-audit-three-rounds\\debug.log",
+      "bytes": 1593721,
+      "sha256": "64c1fc5a73dcf5e20d90657e68318a9eec3e43caaf330573f4bea2ec2366ee6e",
+      "source_size_before": 1593721,
+      "source_size_after": 1593721,
+      "source_mtime_ns_before": 1791083606817083600,
+      "source_mtime_ns_after": 1791083606817083600
+    },
+    "error.log": {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\userdir\\logs\\error.log",
+      "frozen_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\probe-audit-three-rounds\\error.log",
+      "bytes": 22248,
+      "sha256": "9a94887d7d2f6e825cf806089445aa15ec06e3416d34613037214c4f911e53c5",
+      "source_size_before": 22248,
+      "source_size_after": 22248,
+      "source_mtime_ns_before": 1791083606817083600,
+      "source_mtime_ns_after": 1791083606817083600
+    },
+    "advance-cycles-004-report.json": {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\advance-cycles-004\\report.json",
+      "frozen_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\probe-audit-three-rounds\\advance-cycles-004-report.json",
+      "bytes": 6157,
+      "sha256": "660c5f7146f67077ec48fa9a82b81469c95ae04cd308962362fc7a9e10476265",
+      "source_size_before": 6157,
+      "source_size_after": 6157,
+      "source_mtime_ns_before": 1791083323015413400,
+      "source_mtime_ns_after": 1791083323015413400
+    },
+    "dlc_load.json": {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\userdir\\dlc_load.json",
+      "frozen_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\probe-audit-three-rounds\\dlc_load.json",
+      "bytes": 107,
+      "sha256": "24f8cb5d6d471c101e5da573f86a4e9aa7cb865593179b33389491231bdf8f30",
+      "source_size_before": 107,
+      "source_size_after": 107,
+      "source_mtime_ns_before": 1791072029207100600,
+      "source_mtime_ns_after": 1791072029207100600
+    }
+  },
+  "source_payloads": [
+    {
+      "product": "production",
+      "relative_path": "common/character_interactions/lyd_interactions.txt",
+      "bytes": 127,
+      "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "production",
+      "relative_path": "common/decisions/lyd_decisions.txt",
+      "bytes": 1973,
+      "sha256": "aae30076a90402e285d4f589b6160a21ef9eb321a12239f4b0955d11ff23b9f4",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "production",
+      "relative_path": "common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 424,
+      "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "production",
+      "relative_path": "common/religion/rite_types/lyd_rites.txt",
+      "bytes": 3061,
+      "sha256": "889d7846bb876ee260f0b5882116fafe9185db78c8adeab9551f43146cb33a2b",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "production",
+      "relative_path": "common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 8333,
+      "sha256": "8c48b1d0e6056845fec7a6babb53754fb7b7aecb2c3b7df7bae608654bd20789",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "production",
+      "relative_path": "common/scripted_effects/lyd_entry_effects.txt",
+      "bytes": 1099,
+      "sha256": "6ad04df437ce1e7ba63fcbb5c475b15fb22d4e7e5131aa0849b69b6aecaa226d",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "production",
+      "relative_path": "common/scripted_effects/lyd_practice_1_effects.txt",
+      "bytes": 2798,
+      "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "production",
+      "relative_path": "common/scripted_effects/lyd_practice_2_effects.txt",
+      "bytes": 2703,
+      "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "production",
+      "relative_path": "common/scripted_effects/lyd_practice_3_effects.txt",
+      "bytes": 2756,
+      "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "production",
+      "relative_path": "common/scripted_effects/lyd_school_effects.txt",
+      "bytes": 2186,
+      "sha256": "440ff86222c5143bec5d00862afff7113b38c7c0e45605aa1e5036fad2ff6055",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "production",
+      "relative_path": "common/scripted_triggers/lyd_player_triggers.txt",
+      "bytes": 738,
+      "sha256": "4908f60fcea79e98a4389dd332bcf1da33a812d895562327aa37d16272a50e02",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "production",
+      "relative_path": "descriptor.mod",
+      "bytes": 139,
+      "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "production",
+      "relative_path": "events/lyd_events.txt",
+      "bytes": 10604,
+      "sha256": "443036f4787efa5e59f927bb0d8832d8f6e55efbf744b3810efe674de36817ed",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "production",
+      "relative_path": "history/faiths/lyd_faith_history.txt",
+      "bytes": 588,
+      "sha256": "00ea56c310601a142d18ee52313d39556ffb56964f4927026de69126b9914f11",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "production",
+      "relative_path": "localization/english/lyd_content_l_english.yml",
+      "bytes": 17495,
+      "sha256": "3c5ca01e2f47ad87700eb6e93eb0a9675e98ceb5a58337679e9f31c7eea6f3c4",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "production",
+      "relative_path": "localization/english/lyd_runtime_l_english.yml",
+      "bytes": 2471,
+      "sha256": "ecea067dcd55ee5bf78018d39e972ca875547390b392550e8a2b4504a1835193",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "production",
+      "relative_path": "localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 14147,
+      "sha256": "df78c4340ba0f8ae53d3637f5485143046497c014e980ee91f6a9b6031f9dae5",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "production",
+      "relative_path": "localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 2138,
+      "sha256": "f95bc217ca63028cb828e156e0a2f131d80ad2a332f98bc5290c4683e0a90a1a",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "fixture",
+      "relative_path": "common/decisions/lyd_np_decisions.txt",
+      "bytes": 1857,
+      "sha256": "06ff98f68af5b7dc4b7d2d0e42e0cefe180b3cdaf0e7cbb48b938965f6d4fef0",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "fixture",
+      "relative_path": "common/religion/faith_types/lyd_np_faiths.txt",
+      "bytes": 644,
+      "sha256": "d349b0c5bd4a6102a32ca1f9762487b33559b6da255ccab9533bd13ad8b7247c",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "fixture",
+      "relative_path": "common/religion/rite_types/lyd_np_rites.txt",
+      "bytes": 848,
+      "sha256": "11aab688d88c6f8cfbdb8464f408b111ecc07e07e884eee13bbf44492ca15230",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "fixture",
+      "relative_path": "common/scripted_effects/lyd_np_effects.txt",
+      "bytes": 10380,
+      "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "fixture",
+      "relative_path": "common/scripted_triggers/lyd_np_triggers.txt",
+      "bytes": 2777,
+      "sha256": "7c1bc919d2ddf3dfc5b59969ea1cb4b795e4a172e8ad1d984acadc048ed25cff",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "fixture",
+      "relative_path": "descriptor.mod",
+      "bytes": 125,
+      "sha256": "b82a694df94b885c0438d55bb3f1d5ed2fdde6b624131633b5ae56cfabe101f1",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "fixture",
+      "relative_path": "events/lyd_np_events.txt",
+      "bytes": 3743,
+      "sha256": "b9d57ad721c799e551870f39027a26727b207c5fef97f175dd4db0dff81db896",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "fixture",
+      "relative_path": "localization/english/lyd_np_l_english.yml",
+      "bytes": 2296,
+      "sha256": "26acb8c79ff2c790a62b8905e725250153141731c14719259a52c02d555ad723",
+      "matches_first_stopped_audit": true
+    },
+    {
+      "product": "fixture",
+      "relative_path": "localization/simp_chinese/lyd_np_l_simp_chinese.yml",
+      "bytes": 1993,
+      "sha256": "d7d4381c8bb172e4a32041588e43f1838e1bc861902153df3a2d1f10eec2d907",
+      "matches_first_stopped_audit": true
+    }
+  ],
+  "cold_payload_unchanged": true,
+  "source_file_counts": {
+    "production": 18,
+    "fixture": 9
+  },
+  "markers": [
+    {
+      "marker": "LYD_NP_EXISTING_VASSAL_SUBJECT",
+      "line": 9963,
+      "text": "[08:45:55][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 55 (lyd_np_initialize_effect): LYD_NP_EXISTING_VASSAL_SUBJECT"
+    },
+    {
+      "marker": "LYD_NP_INITIALIZE_PASS",
+      "line": 10241,
+      "text": "[08:48:35][D][jomini_effect_impl.cpp:450]: file: events/lyd_np_events.txt line: 15 (lyd_np.0002:immediate): LYD_NP_INITIALIZE_PASS"
+    },
+    {
+      "marker": "LYD_NP_JOIN_APPLIED",
+      "line": 11610,
+      "text": "[09:03:15][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 121 (lyd_np_join_effect): LYD_NP_JOIN_APPLIED"
+    },
+    {
+      "marker": "LYD_NP_JOIN_D1_PASS",
+      "line": 11623,
+      "text": "[09:17:45][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 176 (lyd_np_assert_join_d1_effect): LYD_NP_JOIN_D1_PASS"
+    },
+    {
+      "marker": "LYD_NP_JOIN_D30_PASS",
+      "line": 12118,
+      "text": "[09:18:10][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 190 (lyd_np_assert_join_d30_effect): LYD_NP_JOIN_D30_PASS"
+    },
+    {
+      "marker": "LYD_NP_COOLDOWN_BLOCK_PASS",
+      "line": 12124,
+      "text": "[09:18:10][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 232 (lyd_np_acceptance_clear_cooldown_effect): LYD_NP_COOLDOWN_BLOCK_PASS"
+    },
+    {
+      "marker": "LYD_NP_ACCEPTANCE_ONLY_COOLDOWN_CLEARED",
+      "line": 12125,
+      "text": "[09:18:10][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 236 (lyd_np_acceptance_clear_cooldown_effect): LYD_NP_ACCEPTANCE_ONLY_COOLDOWN_CLEARED"
+    },
+    {
+      "marker": "LYD_NP_DETACH_APPLIED",
+      "line": 12126,
+      "text": "[09:18:10][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 154 (lyd_np_detach_effect): LYD_NP_DETACH_APPLIED"
+    },
+    {
+      "marker": "LYD_NP_DETACH_D1_PASS",
+      "line": 12143,
+      "text": "[09:18:11][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 204 (lyd_np_assert_detach_d1_effect): LYD_NP_DETACH_D1_PASS"
+    },
+    {
+      "marker": "LYD_NP_DETACH_D30_PASS",
+      "line": 12472,
+      "text": "[10:24:02][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 218 (lyd_np_assert_detach_d30_effect): LYD_NP_DETACH_D30_PASS"
+    },
+    {
+      "marker": "LYD_NP_COOLDOWN_BLOCK_PASS",
+      "line": 12487,
+      "text": "[10:24:03][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 232 (lyd_np_acceptance_clear_cooldown_effect): LYD_NP_COOLDOWN_BLOCK_PASS"
+    },
+    {
+      "marker": "LYD_NP_ACCEPTANCE_ONLY_COOLDOWN_CLEARED",
+      "line": 12488,
+      "text": "[10:24:03][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 236 (lyd_np_acceptance_clear_cooldown_effect): LYD_NP_ACCEPTANCE_ONLY_COOLDOWN_CLEARED"
+    },
+    {
+      "marker": "LYD_NP_JOIN_APPLIED",
+      "line": 12489,
+      "text": "[10:24:03][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 121 (lyd_np_join_effect): LYD_NP_JOIN_APPLIED"
+    },
+    {
+      "marker": "LYD_NP_JOIN_D1_PASS",
+      "line": 12504,
+      "text": "[10:24:03][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 176 (lyd_np_assert_join_d1_effect): LYD_NP_JOIN_D1_PASS"
+    },
+    {
+      "marker": "LYD_NP_JOIN_D30_PASS",
+      "line": 12920,
+      "text": "[10:24:22][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 190 (lyd_np_assert_join_d30_effect): LYD_NP_JOIN_D30_PASS"
+    },
+    {
+      "marker": "LYD_NP_COOLDOWN_BLOCK_PASS",
+      "line": 12924,
+      "text": "[10:24:22][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 232 (lyd_np_acceptance_clear_cooldown_effect): LYD_NP_COOLDOWN_BLOCK_PASS"
+    },
+    {
+      "marker": "LYD_NP_ACCEPTANCE_ONLY_COOLDOWN_CLEARED",
+      "line": 12925,
+      "text": "[10:24:22][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 236 (lyd_np_acceptance_clear_cooldown_effect): LYD_NP_ACCEPTANCE_ONLY_COOLDOWN_CLEARED"
+    },
+    {
+      "marker": "LYD_NP_DETACH_APPLIED",
+      "line": 12926,
+      "text": "[10:24:22][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 154 (lyd_np_detach_effect): LYD_NP_DETACH_APPLIED"
+    },
+    {
+      "marker": "LYD_NP_DETACH_D1_PASS",
+      "line": 12984,
+      "text": "[10:24:23][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 204 (lyd_np_assert_detach_d1_effect): LYD_NP_DETACH_D1_PASS"
+    },
+    {
+      "marker": "LYD_NP_DETACH_D30_PASS",
+      "line": 13349,
+      "text": "[10:49:29][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 218 (lyd_np_assert_detach_d30_effect): LYD_NP_DETACH_D30_PASS"
+    },
+    {
+      "marker": "LYD_NP_COOLDOWN_BLOCK_PASS",
+      "line": 13352,
+      "text": "[10:49:30][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 232 (lyd_np_acceptance_clear_cooldown_effect): LYD_NP_COOLDOWN_BLOCK_PASS"
+    },
+    {
+      "marker": "LYD_NP_ACCEPTANCE_ONLY_COOLDOWN_CLEARED",
+      "line": 13353,
+      "text": "[10:49:30][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 236 (lyd_np_acceptance_clear_cooldown_effect): LYD_NP_ACCEPTANCE_ONLY_COOLDOWN_CLEARED"
+    },
+    {
+      "marker": "LYD_NP_JOIN_APPLIED",
+      "line": 13354,
+      "text": "[10:49:30][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 121 (lyd_np_join_effect): LYD_NP_JOIN_APPLIED"
+    },
+    {
+      "marker": "LYD_NP_JOIN_D1_PASS",
+      "line": 13371,
+      "text": "[10:49:30][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 176 (lyd_np_assert_join_d1_effect): LYD_NP_JOIN_D1_PASS"
+    },
+    {
+      "marker": "LYD_NP_JOIN_D30_PASS",
+      "line": 13837,
+      "text": "[10:49:49][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 190 (lyd_np_assert_join_d30_effect): LYD_NP_JOIN_D30_PASS"
+    },
+    {
+      "marker": "LYD_NP_COOLDOWN_BLOCK_PASS",
+      "line": 13841,
+      "text": "[10:49:50][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 232 (lyd_np_acceptance_clear_cooldown_effect): LYD_NP_COOLDOWN_BLOCK_PASS"
+    },
+    {
+      "marker": "LYD_NP_ACCEPTANCE_ONLY_COOLDOWN_CLEARED",
+      "line": 13842,
+      "text": "[10:49:50][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 236 (lyd_np_acceptance_clear_cooldown_effect): LYD_NP_ACCEPTANCE_ONLY_COOLDOWN_CLEARED"
+    },
+    {
+      "marker": "LYD_NP_DETACH_APPLIED",
+      "line": 13843,
+      "text": "[10:49:50][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 154 (lyd_np_detach_effect): LYD_NP_DETACH_APPLIED"
+    },
+    {
+      "marker": "LYD_NP_DETACH_D1_PASS",
+      "line": 13860,
+      "text": "[10:49:50][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 204 (lyd_np_assert_detach_d1_effect): LYD_NP_DETACH_D1_PASS"
+    },
+    {
+      "marker": "LYD_NP_DETACH_D30_PASS",
+      "line": 14336,
+      "text": "[11:08:38][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 218 (lyd_np_assert_detach_d30_effect): LYD_NP_DETACH_D30_PASS"
+    },
+    {
+      "marker": "LYD_NP_THREE_ROUNDS_PASS",
+      "line": 14337,
+      "text": "[11:08:38][D][jomini_effect_impl.cpp:450]: file: events/lyd_np_events.txt line: 63 (lyd_np.0230:immediate): LYD_NP_THREE_ROUNDS_PASS"
+    }
+  ],
+  "transition_scope_excerpts": [
+    {
+      "marker": "LYD_NP_JOIN_APPLIED",
+      "start_line": 11610,
+      "lines": [
+        {
+          "line": 11610,
+          "text": "[09:03:15][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 121 (lyd_np_join_effect): LYD_NP_JOIN_APPLIED"
+        },
+        {
+          "line": 11611,
+          "text": "[09:03:15][D][effectimpl.cpp:642]: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!"
+        },
+        {
+          "line": 11612,
+          "text": "Root: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!"
+        },
+        {
+          "line": 11613,
+          "text": ""
+        },
+        {
+          "line": 11614,
+          "text": "Saved event targets:"
+        },
+        {
+          "line": 11615,
+          "text": "lyd_np_absorbed_faith: lyd_np_branch_faith (34)\u0015weak （Faith-34）\u0015!"
+        },
+        {
+          "line": 11616,
+          "text": "lyd_np_pair_divergence_before: -15.00"
+        },
+        {
+          "line": 11617,
+          "text": "lyd_np_old_head_title: 独立传承儒家道统 (Internal ID: 18372 - Internal Key: x_script_691)\u0015weak （Landed_title-18372）\u0015!"
+        },
+        {
+          "line": 11618,
+          "text": "lyd_np_moving_rite: 支传（原型） (Internal ID: 151)\u0015weak （Rite-151）\u0015!"
+        },
+        {
+          "line": 11619,
+          "text": "lyd_np_pair_divergence_after: 0.00"
+        },
+        {
+          "line": 11620,
+          "text": ""
+        },
+        {
+          "line": 11621,
+          "text": "[09:03:15][D][console.cpp:1193]: console_success: "
+        },
+        {
+          "line": 11622,
+          "text": "[09:03:15][D][console.cpp:1193]: console_success: Fired Event: lyd_np.9000"
+        },
+        {
+          "line": 11623,
+          "text": "[09:17:45][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 176 (lyd_np_assert_join_d1_effect): LYD_NP_JOIN_D1_PASS"
+        },
+        {
+          "line": 11624,
+          "text": "[09:17:46][D][effectimpl.cpp:642]: empty"
+        },
+        {
+          "line": 11625,
+          "text": "Root: empty"
+        },
+        {
+          "line": 11626,
+          "text": ""
+        },
+        {
+          "line": 11627,
+          "text": "Saved event targets:"
+        },
+        {
+          "line": 11628,
+          "text": "liege: Ye_66C4 谢 of c_jizhou_3 (Internal ID: 29544 - Historical ID han_6589)\u0015weak （Character-29544）\u0015!"
+        },
+        {
+          "line": 11629,
+          "text": "employee: Ban_653D 谢 of  (Internal ID: 37172 - Historical ID han_8686)\u0015weak （Character-37172）\u0015!"
+        },
+        {
+          "line": 11630,
+          "text": ""
+        },
+        {
+          "line": 11631,
+          "text": "[09:17:46][D][jomini_effect_impl.cpp:450]: file: common/character_interactions/00_diarch_interactions.txt line: 7135 (diarch_swing_scales_currency_interaction:on_accept): 一名共治者摆动了权力天平来对抗自己的领主"
+        }
+      ]
+    },
+    {
+      "marker": "LYD_NP_DETACH_APPLIED",
+      "start_line": 12126,
+      "lines": [
+        {
+          "line": 12126,
+          "text": "[09:18:10][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 154 (lyd_np_detach_effect): LYD_NP_DETACH_APPLIED"
+        },
+        {
+          "line": 12127,
+          "text": "[09:18:10][D][effectimpl.cpp:642]: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!"
+        },
+        {
+          "line": 12128,
+          "text": "Root: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!"
+        },
+        {
+          "line": 12129,
+          "text": ""
+        },
+        {
+          "line": 12130,
+          "text": "Saved event targets:"
+        },
+        {
+          "line": 12131,
+          "text": "lyd_np_absorbed_faith: lyd_np_branch_faith (34)\u0015weak （Faith-34）\u0015!"
+        },
+        {
+          "line": 12132,
+          "text": "lyd_np_pair_divergence_before: -15.00"
+        },
+        {
+          "line": 12133,
+          "text": "lyd_np_old_head_title: 独立传承儒家道统 (Internal ID: 18372 - Internal Key: x_script_691)\u0015weak （Landed_title-18372）\u0015!"
+        },
+        {
+          "line": 12134,
+          "text": "lyd_np_moving_rite: 支传（原型） (Internal ID: 151)\u0015weak （Rite-151）\u0015!"
+        },
+        {
+          "line": 12135,
+          "text": "lyd_np_pair_divergence_after: 0.00"
+        },
+        {
+          "line": 12136,
+          "text": "lyd_np_new_faith: lyd_np_anchor_faith (106)\u0015weak （Faith-106）\u0015!"
+        },
+        {
+          "line": 12137,
+          "text": "lyd_np_head_candidate: Abelard 德· 欧特维尔 of x_script_721 (Internal ID: 36445 - Historical ID 1134)\u0015weak （Character-36445）\u0015!"
+        },
+        {
+          "line": 12138,
+          "text": "my_faith: lyd_np_anchor_faith (106)\u0015weak （Faith-106）\u0015!"
+        },
+        {
+          "line": 12139,
+          "text": "new_title: 支传儒家道统 (Internal ID: 18402 - Internal Key: x_script_721)\u0015weak （Landed_title-18402）\u0015!"
+        },
+        {
+          "line": 12140,
+          "text": "change: \u0015weak （Title_and_vassal_change-1306）\u0015!"
+        },
+        {
+          "line": 12141,
+          "text": ""
+        },
+        {
+          "line": 12142,
+          "text": "[09:18:10][D][jomini_effect_impl.cpp:450]: file: common/character_interactions/00_diarch_interactions.txt line: 7135 (diarch_swing_scales_currency_interaction:on_accept): 一名共治者摆动了权力天平来对抗自己的领主"
+        },
+        {
+          "line": 12143,
+          "text": "[09:18:11][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 204 (lyd_np_assert_detach_d1_effect): LYD_NP_DETACH_D1_PASS"
+        },
+        {
+          "line": 12144,
+          "text": "[09:18:12][D][ai_situation_migration.cpp:84]: 1067.1.27: Ruler 'Koza 盐漠 of c_ak-taylak (Internal ID: 39984 - Historical ID 302771)' thinks about migration into some 'county' in the '大草原' - low fertility 0.28126"
+        },
+        {
+          "line": 12145,
+          "text": "[09:18:12][D][ai_situation_migration.cpp:237]: 1067.1.27: 'Koza 盐漠 of c_ak-taylak (Internal ID: 39984 - Historical ID 302771)'Sent migration interaction to 'Kutesk 出身卑微 of c_jinghiz (Internal ID: 30355 - Historical ID fictional_kimeks_17)' for title '成吉思 (Internal ID: 5526 - Internal Key: c_jinghiz)'"
+        },
+        {
+          "line": 12146,
+          "text": "[09:18:12][D][jomini_effect_impl.cpp:450]: file: common/on_action/yearly_on_actions.txt line: 1983 (yearly_playable_pulse): AI attempted to host a coronation"
+        },
+        {
+          "line": 12147,
+          "text": "[09:18:12][D][effectimpl.cpp:642]: Heinrich 萨利安 of e_hre (Internal ID: 38665 - Historical ID 1316)\u0015weak （Character-38665）\u0015!"
+        }
+      ]
+    },
+    {
+      "marker": "LYD_NP_JOIN_APPLIED",
+      "start_line": 12489,
+      "lines": [
+        {
+          "line": 12489,
+          "text": "[10:24:03][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 121 (lyd_np_join_effect): LYD_NP_JOIN_APPLIED"
+        },
+        {
+          "line": 12490,
+          "text": "[10:24:03][D][effectimpl.cpp:642]: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!"
+        },
+        {
+          "line": 12491,
+          "text": "Root: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!"
+        },
+        {
+          "line": 12492,
+          "text": ""
+        },
+        {
+          "line": 12493,
+          "text": "Saved event targets:"
+        },
+        {
+          "line": 12494,
+          "text": "lyd_np_absorbed_faith: lyd_np_anchor_faith (106)\u0015weak （Faith-106）\u0015!"
+        },
+        {
+          "line": 12495,
+          "text": "lyd_np_pair_divergence_before: -15.00"
+        },
+        {
+          "line": 12496,
+          "text": "lyd_np_old_head_title: 支传儒家道统 (Internal ID: 18402 - Internal Key: x_script_721)\u0015weak （Landed_title-18402）\u0015!"
+        },
+        {
+          "line": 12497,
+          "text": "lyd_np_moving_rite: 支传（原型） (Internal ID: 151)\u0015weak （Rite-151）\u0015!"
+        },
+        {
+          "line": 12498,
+          "text": "lyd_np_pair_divergence_after: 0.00"
+        },
+        {
+          "line": 12499,
+          "text": "lyd_np_new_faith: lyd_np_anchor_faith (106)\u0015weak （Faith-106）\u0015!"
+        },
+        {
+          "line": 12500,
+          "text": "lyd_np_head_candidate: Abelard 德· 欧特维尔 of c_camarda (Internal ID: 36445 - Historical ID 1134)\u0015weak （Character-36445）\u0015!"
+        },
+        {
+          "line": 12501,
+          "text": "my_faith: lyd_np_anchor_faith (106)\u0015weak （Faith-106）\u0015!"
+        },
+        {
+          "line": 12502,
+          "text": "new_title: 支传儒家道统 (Internal ID: 18402 - Internal Key: x_script_721)\u0015weak （Landed_title-18402）\u0015!"
+        },
+        {
+          "line": 12503,
+          "text": ""
+        },
+        {
+          "line": 12504,
+          "text": "[10:24:03][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 176 (lyd_np_assert_join_d1_effect): LYD_NP_JOIN_D1_PASS"
+        },
+        {
+          "line": 12505,
+          "text": "[10:24:03][D][scheme_manager.cpp:1429]: Found [5] empty agent slots for scheme '\u0015TOOLTIP:SCHEME,16777341 骗子\u0015! (Id: #16777341; Type: 'laamp_base_0041_contract_scheme')'."
+        },
+        {
+          "line": 12506,
+          "text": "[10:24:03][D][scheme_manager.cpp:1429]: Found [5] empty agent slots for scheme '\u0015TOOLTIP:SCHEME,319 挑战地位\u0015! (Id: #319; Type: 'challenge_status')'."
+        },
+        {
+          "line": 12507,
+          "text": "[10:24:03][D][scheme_manager.cpp:2164]: Found [2] agent invites for scheme '\u0015TOOLTIP:SCHEME,319 挑战地位\u0015! (Id: #319; Type: 'challenge_status')'."
+        },
+        {
+          "line": 12508,
+          "text": "[10:24:03][D][scheme_manager.cpp:1429]: Found [4] empty agent slots for scheme '\u0015TOOLTIP:SCHEME,319 挑战地位\u0015! (Id: #319; Type: 'challenge_status')'."
+        },
+        {
+          "line": 12509,
+          "text": "[10:24:03][D][scheme_manager.cpp:1429]: Found [3] empty agent slots for scheme '\u0015TOOLTIP:SCHEME,319 挑战地位\u0015! (Id: #319; Type: 'challenge_status')'."
+        },
+        {
+          "line": 12510,
+          "text": "[10:24:03][D][scheme_manager.cpp:1429]: Found [5] empty agent slots for scheme '\u0015TOOLTIP:SCHEME,322 诋毁\u0015! (Id: #322; Type: 'slander')'."
+        }
+      ]
+    },
+    {
+      "marker": "LYD_NP_DETACH_APPLIED",
+      "start_line": 12926,
+      "lines": [
+        {
+          "line": 12926,
+          "text": "[10:24:22][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 154 (lyd_np_detach_effect): LYD_NP_DETACH_APPLIED"
+        },
+        {
+          "line": 12927,
+          "text": "[10:24:22][D][effectimpl.cpp:642]: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!"
+        },
+        {
+          "line": 12928,
+          "text": "Root: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!"
+        },
+        {
+          "line": 12929,
+          "text": ""
+        },
+        {
+          "line": 12930,
+          "text": "Saved event targets:"
+        },
+        {
+          "line": 12931,
+          "text": "lyd_np_absorbed_faith: lyd_np_anchor_faith (106)\u0015weak （Faith-106）\u0015!"
+        },
+        {
+          "line": 12932,
+          "text": "lyd_np_pair_divergence_before: -15.00"
+        },
+        {
+          "line": 12933,
+          "text": "lyd_np_old_head_title: 支传儒家道统 (Internal ID: 18402 - Internal Key: x_script_721)\u0015weak （Landed_title-18402）\u0015!"
+        },
+        {
+          "line": 12934,
+          "text": "lyd_np_moving_rite: 支传（原型） (Internal ID: 151)\u0015weak （Rite-151）\u0015!"
+        },
+        {
+          "line": 12935,
+          "text": "lyd_np_pair_divergence_after: 0.00"
+        },
+        {
+          "line": 12936,
+          "text": "lyd_np_new_faith: lyd_np_anchor_faith (107)\u0015weak （Faith-107）\u0015!"
+        },
+        {
+          "line": 12937,
+          "text": "lyd_np_head_candidate: Abelard 德· 欧特维尔 of x_script_729 (Internal ID: 36445 - Historical ID 1134)\u0015weak （Character-36445）\u0015!"
+        },
+        {
+          "line": 12938,
+          "text": "my_faith: lyd_np_anchor_faith (107)\u0015weak （Faith-107）\u0015!"
+        },
+        {
+          "line": 12939,
+          "text": "new_title: 支传儒家道统 (Internal ID: 18410 - Internal Key: x_script_729)\u0015weak （Landed_title-18410）\u0015!"
+        },
+        {
+          "line": 12940,
+          "text": "change: \u0015weak （Title_and_vassal_change-1408）\u0015!"
+        },
+        {
+          "line": 12941,
+          "text": ""
+        },
+        {
+          "line": 12942,
+          "text": "[10:24:23][D][decision_custom_widget.cpp:408]: mpo_decision_fertility_dance: new_holy_order scope not set after effect"
+        },
+        {
+          "line": 12943,
+          "text": "[10:24:23][D][effectimpl.cpp:642]: empty"
+        },
+        {
+          "line": 12944,
+          "text": "Root: empty"
+        },
+        {
+          "line": 12945,
+          "text": ""
+        },
+        {
+          "line": 12946,
+          "text": "Saved event targets:"
+        },
+        {
+          "line": 12947,
+          "text": "liege: Ziqi_5B50_5947 范 of c_changzhou (Internal ID: 32019 - Historical ID han_7417)\u0015weak （Character-32019）\u0015!"
+        }
+      ]
+    },
+    {
+      "marker": "LYD_NP_JOIN_APPLIED",
+      "start_line": 13354,
+      "lines": [
+        {
+          "line": 13354,
+          "text": "[10:49:30][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 121 (lyd_np_join_effect): LYD_NP_JOIN_APPLIED"
+        },
+        {
+          "line": 13355,
+          "text": "[10:49:30][D][effectimpl.cpp:642]: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!"
+        },
+        {
+          "line": 13356,
+          "text": "Root: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!"
+        },
+        {
+          "line": 13357,
+          "text": ""
+        },
+        {
+          "line": 13358,
+          "text": "Saved event targets:"
+        },
+        {
+          "line": 13359,
+          "text": "lyd_np_absorbed_faith: lyd_np_anchor_faith (107)\u0015weak （Faith-107）\u0015!"
+        },
+        {
+          "line": 13360,
+          "text": "lyd_np_pair_divergence_before: -15.00"
+        },
+        {
+          "line": 13361,
+          "text": "lyd_np_old_head_title: 支传儒家道统 (Internal ID: 18410 - Internal Key: x_script_729)\u0015weak （Landed_title-18410）\u0015!"
+        },
+        {
+          "line": 13362,
+          "text": "lyd_np_moving_rite: 支传（原型） (Internal ID: 151)\u0015weak （Rite-151）\u0015!"
+        },
+        {
+          "line": 13363,
+          "text": "lyd_np_pair_divergence_after: 0.00"
+        },
+        {
+          "line": 13364,
+          "text": "lyd_np_new_faith: lyd_np_anchor_faith (107)\u0015weak （Faith-107）\u0015!"
+        },
+        {
+          "line": 13365,
+          "text": "lyd_np_head_candidate: Abelard 德· 欧特维尔 of c_camarda (Internal ID: 36445 - Historical ID 1134)\u0015weak （Character-36445）\u0015!"
+        },
+        {
+          "line": 13366,
+          "text": "my_faith: lyd_np_anchor_faith (107)\u0015weak （Faith-107）\u0015!"
+        },
+        {
+          "line": 13367,
+          "text": "new_title: 支传儒家道统 (Internal ID: 18410 - Internal Key: x_script_729)\u0015weak （Landed_title-18410）\u0015!"
+        },
+        {
+          "line": 13368,
+          "text": ""
+        },
+        {
+          "line": 13369,
+          "text": "[10:49:30][D][jomini_effect_impl.cpp:450]: file: common/character_interactions/00_diarch_interactions.txt line: 7135 (diarch_swing_scales_currency_interaction:on_accept): 一名共治者摆动了权力天平来对抗自己的领主"
+        },
+        {
+          "line": 13370,
+          "text": "[10:49:30][D][scheme_manager.cpp:1429]: Found [5] empty agent slots for scheme '\u0015TOOLTIP:SCHEME,117 谋杀\u0015! (Id: #117; Type: 'murder')'."
+        },
+        {
+          "line": 13371,
+          "text": "[10:49:30][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 176 (lyd_np_assert_join_d1_effect): LYD_NP_JOIN_D1_PASS"
+        },
+        {
+          "line": 13372,
+          "text": "[10:49:30][D][effectimpl.cpp:642]: empty"
+        },
+        {
+          "line": 13373,
+          "text": "Root: empty"
+        },
+        {
+          "line": 13374,
+          "text": ""
+        },
+        {
+          "line": 13375,
+          "text": "Saved event targets:"
+        }
+      ]
+    },
+    {
+      "marker": "LYD_NP_DETACH_APPLIED",
+      "start_line": 13843,
+      "lines": [
+        {
+          "line": 13843,
+          "text": "[10:49:50][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 154 (lyd_np_detach_effect): LYD_NP_DETACH_APPLIED"
+        },
+        {
+          "line": 13844,
+          "text": "[10:49:50][D][effectimpl.cpp:642]: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!"
+        },
+        {
+          "line": 13845,
+          "text": "Root: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!"
+        },
+        {
+          "line": 13846,
+          "text": ""
+        },
+        {
+          "line": 13847,
+          "text": "Saved event targets:"
+        },
+        {
+          "line": 13848,
+          "text": "lyd_np_absorbed_faith: lyd_np_anchor_faith (107)\u0015weak （Faith-107）\u0015!"
+        },
+        {
+          "line": 13849,
+          "text": "lyd_np_pair_divergence_before: -15.00"
+        },
+        {
+          "line": 13850,
+          "text": "lyd_np_old_head_title: 支传儒家道统 (Internal ID: 18410 - Internal Key: x_script_729)\u0015weak （Landed_title-18410）\u0015!"
+        },
+        {
+          "line": 13851,
+          "text": "lyd_np_moving_rite: 支传（原型） (Internal ID: 151)\u0015weak （Rite-151）\u0015!"
+        },
+        {
+          "line": 13852,
+          "text": "lyd_np_pair_divergence_after: 0.00"
+        },
+        {
+          "line": 13853,
+          "text": "lyd_np_new_faith: lyd_np_anchor_faith (108)\u0015weak （Faith-108）\u0015!"
+        },
+        {
+          "line": 13854,
+          "text": "lyd_np_head_candidate: Abelard 德· 欧特维尔 of x_script_736 (Internal ID: 36445 - Historical ID 1134)\u0015weak （Character-36445）\u0015!"
+        },
+        {
+          "line": 13855,
+          "text": "my_faith: lyd_np_anchor_faith (108)\u0015weak （Faith-108）\u0015!"
+        },
+        {
+          "line": 13856,
+          "text": "new_title: 支传儒家道统 (Internal ID: 18417 - Internal Key: x_script_736)\u0015weak （Landed_title-18417）\u0015!"
+        },
+        {
+          "line": 13857,
+          "text": "change: \u0015weak （Title_and_vassal_change-1551）\u0015!"
+        },
+        {
+          "line": 13858,
+          "text": ""
+        },
+        {
+          "line": 13859,
+          "text": "[10:49:50][D][scheme_manager.cpp:1429]: Found [3] empty agent slots for scheme '\u0015TOOLTIP:SCHEME,148 诋毁\u0015! (Id: #148; Type: 'slander')'."
+        },
+        {
+          "line": 13860,
+          "text": "[10:49:50][D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_np_effects.txt line: 204 (lyd_np_assert_detach_d1_effect): LYD_NP_DETACH_D1_PASS"
+        },
+        {
+          "line": 13861,
+          "text": "[10:49:51][D][dynasty_house.cpp:1082]: House '李 (Internal ID: 6982 - Internal Key: )' has no valid heir."
+        },
+        {
+          "line": 13862,
+          "text": "[10:49:51][D][ai_situation_migration.cpp:84]: 1067.5.30: Ruler 'Ramazan 科斯布瓦克 of c_kos-buwak (Internal ID: 34252 - Historical ID fictional_turkish_16)' thinks about migration into some 'county' in the '大草原' - low fertility 0.1825"
+        },
+        {
+          "line": 13863,
+          "text": "[10:49:51][D][ai_situation_migration.cpp:237]: 1067.5.30: 'Ramazan 科斯布瓦克 of c_kos-buwak (Internal ID: 34252 - Historical ID fictional_turkish_16)'Sent migration interaction to 'Kolo 出身卑微 of c_turgay (Internal ID: 31283 - Historical ID fictional_kipchaks_9)' for title '图尔盖 (Internal ID: 5347 - Internal Key: c_turgay)'"
+        },
+        {
+          "line": 13864,
+          "text": "[10:49:51][D][scheme_manager.cpp:1429]: Found [5] empty agent slots for scheme '\u0015TOOLTIP:SCHEME,16777630 挑战地位\u0015! (Id: #16777630; Type: 'challenge_status')'."
+        }
+      ]
+    },
+    {
+      "marker": "LYD_NP_THREE_ROUNDS_PASS",
+      "start_line": 14337,
+      "lines": [
+        {
+          "line": 14337,
+          "text": "[11:08:38][D][jomini_effect_impl.cpp:450]: file: events/lyd_np_events.txt line: 63 (lyd_np.0230:immediate): LYD_NP_THREE_ROUNDS_PASS"
+        },
+        {
+          "line": 14338,
+          "text": "[11:08:38][D][effectimpl.cpp:642]: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!"
+        },
+        {
+          "line": 14339,
+          "text": "Root: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!"
+        },
+        {
+          "line": 14340,
+          "text": ""
+        },
+        {
+          "line": 14341,
+          "text": "Saved event targets:"
+        },
+        {
+          "line": 14342,
+          "text": "lyd_np_absorbed_faith: lyd_np_anchor_faith (107)\u0015weak （Faith-107）\u0015!"
+        },
+        {
+          "line": 14343,
+          "text": "lyd_np_pair_divergence_before: -15.00"
+        },
+        {
+          "line": 14344,
+          "text": "lyd_np_old_head_title: 支传儒家道统 (Internal ID: 18410 - Internal Key: x_script_729)\u0015weak （Landed_title-18410）\u0015!"
+        },
+        {
+          "line": 14345,
+          "text": "lyd_np_moving_rite: 支传（原型） (Internal ID: 151)\u0015weak （Rite-151）\u0015!"
+        },
+        {
+          "line": 14346,
+          "text": "lyd_np_pair_divergence_after: 0.00"
+        },
+        {
+          "line": 14347,
+          "text": "lyd_np_new_faith: lyd_np_anchor_faith (108)\u0015weak （Faith-108）\u0015!"
+        },
+        {
+          "line": 14348,
+          "text": "lyd_np_head_candidate: Abelard 德· 欧特维尔 of x_script_736 (Internal ID: 36445 - Historical ID 1134)\u0015weak （Character-36445）\u0015!"
+        },
+        {
+          "line": 14349,
+          "text": "my_faith: lyd_np_anchor_faith (108)\u0015weak （Faith-108）\u0015!"
+        },
+        {
+          "line": 14350,
+          "text": "new_title: 支传儒家道统 (Internal ID: 18417 - Internal Key: x_script_736)\u0015weak （Landed_title-18417）\u0015!"
+        },
+        {
+          "line": 14351,
+          "text": ""
+        },
+        {
+          "line": 14352,
+          "text": "[11:08:38][D][jomini_effect_impl.cpp:450]: file: common/character_interactions/00_diarch_interactions.txt line: 7135 (diarch_swing_scales_currency_interaction:on_accept): 一名共治者摆动了权力天平来对抗自己的领主"
+        },
+        {
+          "line": 14353,
+          "text": "[11:08:38][D][scheme_manager.cpp:1429]: Found [5] empty agent slots for scheme '\u0015TOOLTIP:SCHEME,525 诋毁朋党势力\u0015! (Id: #525; Type: 'celestial_movement_power_slander')'."
+        },
+        {
+          "line": 14354,
+          "text": "[11:08:38][D][scheme_manager.cpp:2164]: Found [4] agent invites for scheme '\u0015TOOLTIP:SCHEME,525 诋毁朋党势力\u0015! (Id: #525; Type: 'celestial_movement_power_slander')'."
+        },
+        {
+          "line": 14355,
+          "text": "[11:08:38][D][scheme_manager.cpp:1429]: Found [4] empty agent slots for scheme '\u0015TOOLTIP:SCHEME,525 诋毁朋党势力\u0015! (Id: #525; Type: 'celestial_movement_power_slander')'."
+        },
+        {
+          "line": 14356,
+          "text": "[11:08:38][D][scheme_manager.cpp:1429]: Found [3] empty agent slots for scheme '\u0015TOOLTIP:SCHEME,525 诋毁朋党势力\u0015! (Id: #525; Type: 'celestial_movement_power_slander')'."
+        },
+        {
+          "line": 14357,
+          "text": "[11:08:38][D][scheme_manager.cpp:1429]: Found [2] empty agent slots for scheme '\u0015TOOLTIP:SCHEME,525 诋毁朋党势力\u0015! (Id: #525; Type: 'celestial_movement_power_slander')'."
+        },
+        {
+          "line": 14358,
+          "text": "[11:08:38][D][scheme_manager.cpp:1429]: Found [1] empty agent slots for scheme '\u0015TOOLTIP:SCHEME,525 诋毁朋党势力\u0015! (Id: #525; Type: 'celestial_movement_power_slander')'."
+        }
+      ]
+    }
+  ],
+  "error_counts": {
+    "E_SCRIPT_SYSTEM_DETAILS_PRESERVED": 3,
+    "E_FORMATTER_UNKNOWN_PROVENANCE": 165,
+    "E_AI_CORONATION_UNKNOWN_HOST": 1,
+    "E_OTHER_UNCLASSIFIED": 27
+  },
+  "error_records": [
+    {
+      "category": "E_SCRIPT_SYSTEM_DETAILS_PRESERVED",
+      "line": 1,
+      "text": "[08:45:18][E][jomini_script_system.cpp:304]: Script system error!"
+    },
+    {
+      "category": "E_SCRIPT_SYSTEM_DETAILS_PRESERVED",
+      "line": 5,
+      "text": "[08:45:18][E][jomini_script_system.cpp:304]: Script system error!"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 9,
+      "text": "[08:48:39][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 10,
+      "text": "[08:48:39][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 11,
+      "text": "[08:48:39][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 12,
+      "text": "[08:48:39][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 13,
+      "text": "[08:48:39][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 14,
+      "text": "[08:48:39][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 15,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 16,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 17,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 18,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 19,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 20,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 21,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 22,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 23,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 24,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 25,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 26,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 27,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 28,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 29,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 30,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 31,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 32,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 33,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 34,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 35,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 36,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 37,
+      "text": "[08:48:40][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 38,
+      "text": "[08:48:45][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 39,
+      "text": "[08:48:45][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 40,
+      "text": "[08:48:45][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 41,
+      "text": "[08:48:45][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 42,
+      "text": "[08:48:45][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 43,
+      "text": "[08:48:45][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 44,
+      "text": "[08:48:45][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 45,
+      "text": "[08:48:45][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 46,
+      "text": "[08:48:45][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 47,
+      "text": "[08:48:45][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 48,
+      "text": "[08:48:45][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 49,
+      "text": "[08:48:45][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 50,
+      "text": "[08:48:45][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 51,
+      "text": "[08:48:45][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 52,
+      "text": "[08:48:45][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_AI_CORONATION_UNKNOWN_HOST",
+      "line": 53,
+      "text": "[08:48:49][E][ai_activity.cpp:415]: AI tried to create an invalid 'activity_coronation' activity with reason: 'Unknown - enable aiwatch to see.'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 54,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 55,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 56,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 57,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 58,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 59,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 60,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 61,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 62,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 63,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 64,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 65,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 66,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 67,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 68,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 69,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 70,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 71,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 72,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 73,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 74,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 75,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 76,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 77,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 78,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 79,
+      "text": "[08:49:05][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 80,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 81,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 82,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 83,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 84,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 85,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 86,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 87,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 88,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 89,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 90,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 91,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 92,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 93,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 94,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 95,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 96,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 97,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 98,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 99,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 100,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 101,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 102,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 103,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 104,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 105,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 106,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 107,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 108,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 109,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 110,
+      "text": "[08:49:26][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 111,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 112,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 113,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 114,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 115,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 116,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 117,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 118,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 119,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 120,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 121,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 122,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 123,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 124,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 125,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 126,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 127,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 128,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 129,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 130,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 131,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 132,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 133,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 134,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 135,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 136,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 137,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 138,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 139,
+      "text": "[08:49:27][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 140,
+      "text": "[09:18:10][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 141,
+      "text": "[09:18:10][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 142,
+      "text": "[09:18:10][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 143,
+      "text": "[09:18:16][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 144,
+      "text": "[09:18:16][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 145,
+      "text": "[09:18:16][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 146,
+      "text": "[10:24:08][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 147,
+      "text": "[10:24:08][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 148,
+      "text": "[10:24:08][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 149,
+      "text": "[10:24:28][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 150,
+      "text": "[10:24:28][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 151,
+      "text": "[10:24:28][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 152,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 153,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 154,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 155,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 156,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 157,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 158,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 159,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 160,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 161,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 162,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 163,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 164,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 165,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 166,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 167,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 168,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 169,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 170,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 171,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 172,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 173,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_FORMATTER_UNKNOWN_PROVENANCE",
+      "line": 174,
+      "text": "[10:24:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'"
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 175,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0100' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 176,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0110' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 177,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0120' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 178,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0130' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 179,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0140' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 180,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0150' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 181,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0160' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 182,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0170' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 183,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0190' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 184,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0210' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 185,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0220' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 186,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0240' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 187,
+      "text": "[10:49:43][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0250' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 188,
+      "text": "[10:49:52][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0090' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 189,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0100' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 190,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0110' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 191,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0120' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 192,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0130' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 193,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0140' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 194,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0150' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 195,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0160' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 196,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0170' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 197,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0190' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 198,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0210' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 199,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0220' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 200,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0240' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_OTHER_UNCLASSIFIED",
+      "line": 201,
+      "text": "[11:08:32][E][activity_utilities.cpp:981]: Trying to trigger activity event 'bp3_roaming.0250' for character Irengba 宁头贾 of c_manipur (Internal ID: 26904 - Historical ID manipur019), but the activity is invalid - skipping."
+    },
+    {
+      "category": "E_SCRIPT_SYSTEM_DETAILS_PRESERVED",
+      "line": 202,
+      "text": "[11:13:26][E][jomini_script_system.cpp:304]: Script system error!"
+    }
+  ],
+  "error_interpretation": "All E records retained. is_ai perspective has direct fixture trigger source; is_alive has Unknown caller. Formatter lacks source callsite and AI coronation lacks host, so neither is waived as vanilla. Prior attribution research and exact tag search remain in probe-audit-cycles-001.",
+  "verified_by_script_conditions": [
+    "receiving anchor faith retains main anchor rite and root religious head",
+    "moving branch rite becomes a minor rite of receiving faith; stored subject and county match",
+    "old fixture-owned head title loses holder and old faith loses head binding if objects still exist",
+    "native detach returns a faith scope, saved on root latest-faith variable; branch is that faith's main rite",
+    "new head candidate and fixture-owned head title are bound to returned faith; county follows branch faith/rite",
+    "D+1 and D+30 timer presence and transition blocking in each direction, repeated three times",
+    "stored join/cycle counters satisfy three each at terminal event"
+  ],
+  "remaining_limits": [
+    "acceptance-only timer clearing between cycles; natural five-year expiry and ordinary decision charges not attested",
+    "direct main/last-rite detach not exercised",
+    "only observed divergence pairs below100; automatic >=100 split and all-pair behavior not attested",
+    "former empty-faith lifetime and title-object garbage collection not attested",
+    "save projection/reload persistence and independent UI state inspection pending",
+    "native AI propagation not globally disabled or attested",
+    "production practice/catalogue/UI and clean-log acceptance remain separate"
+  ],
+  "auditor_actions": "Only post-report source reads and external raw-byte preservation. No game query/action/input, process launch/injection, task-bus mutation or tracked edit.",
+  "error_counts_exact": {
+    "tooltip_perspective_errors": 3,
+    "formatter_errors": 165,
+    "ai_coronation_errors": 1,
+    "bp3_roaming_invalid_activity_errors": 27
+  },
+  "error_classification_addendum": "error-classification-addendum.json",
+  "terminal_debug_prefix_matches_bounded_report": {
+    "bytes": 1585492,
+    "computed_sha256": "0cb8fb9d263358901402088685bf7ec5830c2a97d3618086bbbc17975025cdf4",
+    "expected_sha256": "0cb8fb9d263358901402088685bf7ec5830c2a97d3618086bbbc17975025cdf4",
+    "matches": true
+  },
+  "original_candidate_sha256": "30f9bb5e03f2ecd21fedbf466a02c183ccdb208f1b5d2f926e283df6364f6cab",
+  "transition_scopes": [
+    {
+      "marker": "LYD_NP_JOIN_APPLIED",
+      "line": 11610,
+      "observed_scopes": {
+        "lyd_np_absorbed_faith": "lyd_np_branch_faith (34)\u0015weak （Faith-34）\u0015!",
+        "lyd_np_pair_divergence_before": "-15.00",
+        "lyd_np_old_head_title": "独立传承儒家道统 (Internal ID: 18372 - Internal Key: x_script_691)\u0015weak （Landed_title-18372）\u0015!",
+        "lyd_np_pair_divergence_after": "0.00"
+      }
+    },
+    {
+      "marker": "LYD_NP_DETACH_APPLIED",
+      "line": 12126,
+      "observed_scopes": {
+        "lyd_np_absorbed_faith": "lyd_np_branch_faith (34)\u0015weak （Faith-34）\u0015!",
+        "lyd_np_pair_divergence_before": "-15.00",
+        "lyd_np_old_head_title": "独立传承儒家道统 (Internal ID: 18372 - Internal Key: x_script_691)\u0015weak （Landed_title-18372）\u0015!",
+        "lyd_np_pair_divergence_after": "0.00",
+        "lyd_np_new_faith": "lyd_np_anchor_faith (106)\u0015weak （Faith-106）\u0015!",
+        "new_title": "支传儒家道统 (Internal ID: 18402 - Internal Key: x_script_721)\u0015weak （Landed_title-18402）\u0015!"
+      }
+    },
+    {
+      "marker": "LYD_NP_JOIN_APPLIED",
+      "line": 12489,
+      "observed_scopes": {
+        "lyd_np_absorbed_faith": "lyd_np_anchor_faith (106)\u0015weak （Faith-106）\u0015!",
+        "lyd_np_pair_divergence_before": "-15.00",
+        "lyd_np_old_head_title": "支传儒家道统 (Internal ID: 18402 - Internal Key: x_script_721)\u0015weak （Landed_title-18402）\u0015!",
+        "lyd_np_pair_divergence_after": "0.00",
+        "lyd_np_new_faith": "lyd_np_anchor_faith (106)\u0015weak （Faith-106）\u0015!",
+        "new_title": "支传儒家道统 (Internal ID: 18402 - Internal Key: x_script_721)\u0015weak （Landed_title-18402）\u0015!"
+      }
+    },
+    {
+      "marker": "LYD_NP_DETACH_APPLIED",
+      "line": 12926,
+      "observed_scopes": {
+        "lyd_np_absorbed_faith": "lyd_np_anchor_faith (106)\u0015weak （Faith-106）\u0015!",
+        "lyd_np_pair_divergence_before": "-15.00",
+        "lyd_np_old_head_title": "支传儒家道统 (Internal ID: 18402 - Internal Key: x_script_721)\u0015weak （Landed_title-18402）\u0015!",
+        "lyd_np_pair_divergence_after": "0.00",
+        "lyd_np_new_faith": "lyd_np_anchor_faith (107)\u0015weak （Faith-107）\u0015!",
+        "new_title": "支传儒家道统 (Internal ID: 18410 - Internal Key: x_script_729)\u0015weak （Landed_title-18410）\u0015!"
+      }
+    },
+    {
+      "marker": "LYD_NP_JOIN_APPLIED",
+      "line": 13354,
+      "observed_scopes": {
+        "lyd_np_absorbed_faith": "lyd_np_anchor_faith (107)\u0015weak （Faith-107）\u0015!",
+        "lyd_np_pair_divergence_before": "-15.00",
+        "lyd_np_old_head_title": "支传儒家道统 (Internal ID: 18410 - Internal Key: x_script_729)\u0015weak （Landed_title-18410）\u0015!",
+        "lyd_np_pair_divergence_after": "0.00",
+        "lyd_np_new_faith": "lyd_np_anchor_faith (107)\u0015weak （Faith-107）\u0015!",
+        "new_title": "支传儒家道统 (Internal ID: 18410 - Internal Key: x_script_729)\u0015weak （Landed_title-18410）\u0015!"
+      }
+    },
+    {
+      "marker": "LYD_NP_DETACH_APPLIED",
+      "line": 13843,
+      "observed_scopes": {
+        "lyd_np_absorbed_faith": "lyd_np_anchor_faith (107)\u0015weak （Faith-107）\u0015!",
+        "lyd_np_pair_divergence_before": "-15.00",
+        "lyd_np_old_head_title": "支传儒家道统 (Internal ID: 18410 - Internal Key: x_script_729)\u0015weak （Landed_title-18410）\u0015!",
+        "lyd_np_pair_divergence_after": "0.00",
+        "lyd_np_new_faith": "lyd_np_anchor_faith (108)\u0015weak （Faith-108）\u0015!",
+        "new_title": "支传儒家道统 (Internal ID: 18417 - Internal Key: x_script_736)\u0015weak （Landed_title-18417）\u0015!"
+      }
+    }
+  ]
+}

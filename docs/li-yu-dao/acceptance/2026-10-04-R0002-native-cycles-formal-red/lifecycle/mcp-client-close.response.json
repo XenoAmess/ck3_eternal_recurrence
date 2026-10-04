@@ -1,0 +1,10 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 103,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\mcp-queue\\9999-close.request.json",
+  "request_sha256": "7dc85b5167868485834a1b90d5b9de508ef7ade2b99b305e2298313adf1d1574",
+  "started_at_utc": "2026-10-04T03:39:40.218980+00:00",
+  "request_id": "9999-close",
+  "status": "CLIENT_CLOSE_REQUESTED",
+  "finished_at_utc": "2026-10-04T03:39:40.219946+00:00"
+}

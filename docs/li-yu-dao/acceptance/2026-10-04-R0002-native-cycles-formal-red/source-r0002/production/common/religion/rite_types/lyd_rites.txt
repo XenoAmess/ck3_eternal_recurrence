@@ -1,0 +1,132 @@
+﻿# GENERATED FILE — edit tools/content_data.py and rerun tools/gen_content.py.
+# CK3 1.20.0.3; additive sample types only. No vanilla IDs are overridden.
+# Free chronology prototype. Native creation/conversion requires live verification.
+# convert=no keeps the normal conversion menu closed; player activation is external.
+
+# R01: The Kongmen Tradition; kind=reconstructed; era=pre_qin
+lyd_rite_kongmen = {
+	name = lyd_rite_kongmen
+	desc = lyd_rite_kongmen_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = no
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_ritual_music
+		lyd_tenet_humaneness_righteousness
+		lyd_tenet_sage_transmission
+	}
+}
+
+# R02: The Learning of Mengzi; kind=historical; era=pre_qin
+lyd_rite_mengzi = {
+	name = lyd_rite_mengzi
+	desc = lyd_rite_mengzi_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = no
+	color = { 210 174 76 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_extend_sprouts
+		lyd_tenet_righteous_qi
+		lyd_tenet_humaneness_righteousness
+	}
+}
+
+# R03: The Learning of Xunzi; kind=historical; era=pre_qin
+lyd_rite_xunzi = {
+	name = lyd_rite_xunzi
+	desc = lyd_rite_xunzi_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = no
+	color = { 189 143 67 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_deliberate_cultivation
+		lyd_tenet_ritual_music
+		lyd_tenet_constant_heaven
+	}
+}
+
+# R06: Zheng Xuan's Ritual Learning; kind=historical; era=eastern_han
+lyd_rite_zhengxuan = {
+	name = lyd_rite_zhengxuan
+	desc = lyd_rite_zhengxuan_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = no
+	color = { 224 178 110 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_textual_ritual
+		lyd_tenet_reverent_heaven
+		lyd_tenet_ancestral_reverence
+	}
+}
+
+# R07: Wang Su's Ritual Learning; kind=historical; era=cao_wei
+lyd_rite_wangsu = {
+	name = lyd_rite_wangsu
+	desc = lyd_rite_wangsu_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = no
+	color = { 182 153 107 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_textual_ritual
+		lyd_tenet_ancestral_reverence
+		lyd_tenet_classical_synthesis
+	}
+}
+
+# R10: The Classical Commentaries; kind=historical; era=sui_tang
+lyd_rite_jingshu = {
+	name = lyd_rite_jingshu
+	desc = lyd_rite_jingshu_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = no
+	color = { 229 204 137 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_classical_synthesis
+		lyd_tenet_textual_ritual
+		lyd_tenet_sage_transmission
+	}
+}
+
+# R20: Zhu Xi's Learning; kind=historical; era=southern_song
+lyd_rite_zhuxi = {
+	name = lyd_rite_zhuxi
+	desc = lyd_rite_zhuxi_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = no
+	color = { 150 211 198 }
+	icon = daoxue
+	tenets = {
+		lyd_tenet_investigate_principle
+		lyd_tenet_reverent_attention
+		lyd_tenet_ancestral_reverence
+	}
+}
+
+# R21: Lu Jiuyuan's Learning; kind=historical; era=southern_song
+lyd_rite_lujiuyuan = {
+	name = lyd_rite_lujiuyuan
+	desc = lyd_rite_lujiuyuan_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = no
+	color = { 113 185 180 }
+	icon = daoxue
+	tenets = {
+		lyd_tenet_original_heart
+		lyd_tenet_sincerity_solitude
+		lyd_tenet_humaneness_righteousness
+	}
+}

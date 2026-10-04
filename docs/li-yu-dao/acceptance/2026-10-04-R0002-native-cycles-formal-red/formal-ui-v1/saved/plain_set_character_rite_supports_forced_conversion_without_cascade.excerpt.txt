@@ -1,0 +1,2 @@
+	# Not set_character_rite_with_conversion: avoids cascade, and this may be a forced conversion
+	set_character_rite = $RITE$

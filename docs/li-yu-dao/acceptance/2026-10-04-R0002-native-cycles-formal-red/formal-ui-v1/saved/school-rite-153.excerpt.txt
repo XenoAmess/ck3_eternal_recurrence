@@ -1,0 +1,106 @@
+		153={
+			rite_type=lyd_rite_mengzi			faith=32
+			founder=4294967295
+			head_of_rite=4294967295
+			origin_rite=152
+			data={
+				tag="lyd_rite_mengzi"
+				name="孟氏之学"
+				adjective="孟氏之学"
+				adherent="孟氏之学之儒"
+				adherent_plural="孟氏之学诸儒"
+				desc="恻隐、羞恶、辞让与是非之心是成德的萌芽，须由行义扩充。养气依靠持续实践，礼义冲突则须辨经权；性善不意味着无需努力便已成圣。"
+				color=rgb { 210 174 76 }
+				icon=""
+				texticon=""
+				graphical_faith=""
+				piety_icon_group=""
+				tenet_background_icon=""
+				tenet_heretical_background_icon=""
+				tenet_neutral_background_icon=""
+				tenet_unknown_background_icon=""
+				fervor=50
+				religious_head=4294967295
+				tenets={ {
+						tenet=lyd_tenet_reverent_heaven						status=permitted
+					}
+ {
+						tenet=lyd_tenet_sincerity_solitude						status=permitted
+					}
+ {
+						tenet=lyd_tenet_ritual_music						status=permitted
+					}
+ {
+						tenet=lyd_tenet_ancestral_reverence						status=permitted
+					}
+ {
+						tenet=lyd_tenet_humaneness_righteousness						status=core
+					}
+ {
+						tenet=lyd_tenet_sage_transmission						status=permitted
+					}
+ {
+						tenet=lyd_tenet_extend_sprouts						status=core
+					}
+ {
+						tenet=lyd_tenet_deliberate_cultivation						status=permitted
+					}
+ {
+						tenet=lyd_tenet_righteous_qi						status=core
+					}
+ {
+						tenet=lyd_tenet_investigate_principle						status=permitted
+					}
+ {
+						tenet=lyd_tenet_reverent_attention						status=permitted
+					}
+ {
+						tenet=lyd_tenet_original_heart						status=permitted
+					}
+ {
+						tenet=lyd_tenet_textual_ritual						status=permitted
+					}
+ {
+						tenet=lyd_tenet_classical_synthesis						status=permitted
+					}
+ {
+						tenet=lyd_tenet_constant_heaven						status=permitted
+					}
+ }
+				tenet=lyd_tenet_humaneness_righteousness
+				tenet=lyd_tenet_extend_sprouts
+				tenet=lyd_tenet_righteous_qi
+				doctrine=sinitic_hostility_doctrine
+				doctrine=doctrine_concubines
+				doctrine=doctrine_divorce_allowed
+				doctrine=doctrine_bastardry_legitimization
+				doctrine=doctrine_homosexuality_shunned
+				doctrine=doctrine_deviancy_crime
+				doctrine=doctrine_adultery_men_crime
+				doctrine=doctrine_adultery_women_crime
+				doctrine=doctrine_kinslaying_any_dynasty_member_crime
+				doctrine=doctrine_witchcraft_crime
+				doctrine=doctrine_gender_male_dominated
+				doctrine=doctrine_consanguinity_dynastic
+				doctrine=doctrine_pluralism_pluralistic
+				doctrine=doctrine_theocracy_lay_clergy
+				doctrine=doctrine_no_head
+				doctrine=doctrine_clerical_function_taxation
+				doctrine=doctrine_clerical_gender_male_only
+				doctrine=doctrine_clerical_marriage_allowed
+				doctrine=doctrine_clerical_succession_temporal_appointment
+				doctrine=doctrine_pilgrimage_local_rites
+				doctrine=doctrine_family_rites
+				doctrine=doctrine_no_anointment
+				doctrine=doctrine_polytheist
+				doctrine=doctrine_scriptural
+				doctrine=doctrine_monasticism_absent
+				doctrine=doctrine_sacraments_absent
+				doctrine=special_doctrine_is_sinitic_faith
+				doctrine=special_doctrine_immaterial_harmony
+			}
+			convert=no
+			enabled=yes
+			override_name=no
+			source=historical
+		}

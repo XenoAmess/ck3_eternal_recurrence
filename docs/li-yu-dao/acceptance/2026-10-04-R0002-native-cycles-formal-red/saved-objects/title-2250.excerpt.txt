@@ -1,0 +1,37 @@
+2250={
+	key=c_camarda
+	de_facto_liege=18417
+	variables={
+		data={ {
+				flag=tp_popularity_rite
+				data={
+					type=rite
+					identity=151
+				}
+
+			}
+ }
+	}
+	de_jure_liege=2244
+	de_jure_vassals={ 2251 2252 }
+	holder=36445
+	date=1057.1.1
+	succession_result_type=inheritance_relative
+	heir={ 36663 36873 }
+	history={ 763.1.1=7321 810.1.1=8441 811.1.1=9636 857.1.1=13434 1057.1.1=36445 }
+	capital=2250
+	coat_of_arms_id=551
+	title_name_data={
+		name="卡马尔达"
+		adj="卡马尔达"
+		title_history_names={ {
+				date=763.1.1
+				name="c_camarda"
+			}
+ }
+	}
+
+	treasury={
+	}
+	nomad_name_type=default
+}

@@ -1,0 +1,13 @@
+lyd_can_use_school_trigger = {
+    lyd_is_player_trigger = yes
+    has_character_flag = lyd_enabled
+    faith = { religion = religion:confucianism_religion }
+}
+lyd_can_change_school_trigger = {
+    lyd_can_use_school_trigger = yes
+    NOT = { has_character_flag = lyd_school_cooldown }
+}
+lyd_can_study_trigger = {
+    lyd_can_use_school_trigger = yes
+    NOT = { has_character_flag = lyd_study_cooldown }
+}

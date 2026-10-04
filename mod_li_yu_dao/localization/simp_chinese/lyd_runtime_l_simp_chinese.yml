@@ -24,6 +24,8 @@
  lyd_choose_school_desc:0 "同读圣贤之书，诸家所重各有不同：仁与礼、性与教、天与祭、理与心。此番改从学统，当先明其义。"
  lyd_adopt_school_tt:0 "改从此礼仪；一年内不能再次择师。"
  lyd_study_cooldown_tt:0 "完成此次修习后，180 天内不能再次践礼修身。"
+ lyd_admission_failed_t:0 "尚未改从学统"
+ lyd_admission_failed_desc:0 "此次未能改从所选学统，我仍奉行原先礼仪。待处理当前宗主职责或礼仪限制后，再行问学。此次不会开始择师或修习的等待期。"
  lyd_cancel:0 "容我再思"
  lyd_adopt_kongmen:0 "孔门经礼"
  lyd_adopt_mengzi:0 "孟氏之学"

@@ -1,0 +1,8 @@
+{
+  "steam_offline_confirmed": true,
+  "reviewer": "root visual inspection",
+  "image": "offline/probe-1/steam-moved.png",
+  "image_sha256": "1655dc8af4f7a6bbf58a22960129eba4ed210e4f75cb9003d142a7514e01efae",
+  "fresh_frame_receipt": "offline/probe-1/steam-frame-freshness.json",
+  "evidence_scope": "current R0002 launch; Steam lower bar visibly reads 离线模式"
+}

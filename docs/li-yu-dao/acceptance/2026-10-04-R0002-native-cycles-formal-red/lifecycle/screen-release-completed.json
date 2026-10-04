@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+    "--expected-cli-sha256",
+    "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "release-screen-cas",
+    "--task",
+    "ck3-lyd-live-003-20261004",
+    "--expected-sequence",
+    "2626",
+    "--summary",
+    "R0002-three-native-cycles-PASS-formal-entry-RED-checkpoints-preserved-normal-save-exit"
+  ],
+  "exit_code": 0,
+  "stdout": "{\n  \"schema\": \"codex.task_bus.v1\",\n  \"ok\": true,\n  \"task\": {\n    \"git\": {\n      \"branch\": \"master\",\n      \"dirty_entries\": 0,\n      \"head\": \"7fd082eab7626239ecb88702d0ebae71f938b259\"\n    },\n    \"last_sequence\": 2627,\n    \"next_step\": \"\",\n    \"pid\": 19352,\n    \"repo\": \"C:\\\\workspace\\\\ck3_eternal_recurrence\",\n    \"resources\": [],\n    \"schema\": \"codex.task_bus.v1\",\n    \"state\": \"done\",\n    \"summary\": \"R0002-three-native-cycles-PASS-formal-entry-RED-checkpoints-preserved-normal-save-exit\",\n    \"task_id\": \"ck3-lyd-live-003-20261004\",\n    \"updated_at_utc\": \"2026-10-04T03:40:30.053141+00:00\"\n  },\n  \"event\": {\n    \"schema\": \"codex.task_bus.v1\",\n    \"sequence\": 2627,\n    \"event_id\": \"46844cf98f464c63bf373a03dc4142e2\",\n    \"timestamp_utc\": \"2026-10-04T03:40:30.053910+00:00\",\n    \"kind\": \"completed\",\n    \"task_id\": \"ck3-lyd-live-003-20261004\",\n    \"to\": [\n      \"*\"\n    ],\n    \"state\": \"done\",\n    \"summary\": \"R0002-three-native-cycles-PASS-formal-entry-RED-checkpoints-preserved-normal-save-exit\",\n    \"next_step\": \"\",\n    \"resources\": [],\n    \"repo\": \"C:\\\\workspace\\\\ck3_eternal_recurrence\",\n    \"git\": {\n      \"branch\": \"master\",\n      \"dirty_entries\": 0,\n      \"head\": \"7fd082eab7626239ecb88702d0ebae71f938b259\"\n    }\n  }\n}\n",
+  "stderr": ""
+}

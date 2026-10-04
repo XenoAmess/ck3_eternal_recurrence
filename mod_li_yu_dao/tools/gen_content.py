@@ -35,7 +35,7 @@ def render_rites() -> str:
         GENERATED_HEADER,
         f"# CK3 {GAME_VERSION}; additive sample types only. No vanilla IDs are overridden.",
         "# Free chronology prototype. Native creation/conversion requires live verification.",
-        "# convert=no keeps the normal conversion menu closed; player activation is external.",
+        "# convert=yes permits actual admission; product actions remain guarded player entries.",
         "",
     ]
     for rite in SAMPLE_RITES:
@@ -47,7 +47,7 @@ def render_rites() -> str:
             f"\tdesc = {rite.script_id}_desc",
             f"\tfaith = {PARENT_FAITH}",
             "\tcreate = yes",
-            "\tconvert = no",
+            "\tconvert = yes",
             f"\tcolor = {{ {color} }}",
             f"\ticon = {rite.icon}",
             "\ttenets = {",

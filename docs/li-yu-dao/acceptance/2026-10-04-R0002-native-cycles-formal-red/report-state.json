@@ -1,0 +1,169 @@
+{
+  "schema": "lyd.r0002.external-report-state.v1",
+  "recorded_at_utc": "2026-10-04T03:31:25.256249+00:00",
+  "run_id": {
+    "schema": "xar.ck3-live-run-identity.v1",
+    "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0002",
+    "execution_id": "98eeeec7-4cc8-493d-99cb-06f8c33430f8",
+    "machine_id": "bf-202609141645-5434332d4d",
+    "mod_key": "li-yu-dao",
+    "sequence": 2,
+    "allocated_at_utc": "2026-10-04T00:01:20.912539+00:00",
+    "allocator_pid": 1116,
+    "legacy_alias": null
+  },
+  "primitive": {
+    "verdict": "ACCEPTED_SCRIPTED_ENGINE_THREE_ROUND_ATTESTATION",
+    "count_checks": {
+      "LYD_NP_INITIALIZE_PASS": {
+        "expected": 1,
+        "actual": 1,
+        "match": true
+      },
+      "LYD_NP_JOIN_APPLIED": {
+        "expected": 3,
+        "actual": 3,
+        "match": true
+      },
+      "LYD_NP_DETACH_APPLIED": {
+        "expected": 3,
+        "actual": 3,
+        "match": true
+      },
+      "LYD_NP_JOIN_D1_PASS": {
+        "expected": 3,
+        "actual": 3,
+        "match": true
+      },
+      "LYD_NP_JOIN_D30_PASS": {
+        "expected": 3,
+        "actual": 3,
+        "match": true
+      },
+      "LYD_NP_DETACH_D1_PASS": {
+        "expected": 3,
+        "actual": 3,
+        "match": true
+      },
+      "LYD_NP_DETACH_D30_PASS": {
+        "expected": 3,
+        "actual": 3,
+        "match": true
+      },
+      "LYD_NP_THREE_ROUNDS_PASS": {
+        "expected": 1,
+        "actual": 1,
+        "match": true
+      }
+    },
+    "cold_payload_unchanged": true,
+    "hard_failure_markers": []
+  },
+  "saved_objects": {
+    "status": "SAVED_OBJECT_GRAPH_VERIFIED",
+    "checks": {
+      "actual_saved_player_31254": true,
+      "saved_latest_faith_108": true,
+      "raw_completed_cycles_300000": true,
+      "raw_completed_joins_300000": true,
+      "acceptance_failed_busy_absent": true,
+      "anchor_binding": true,
+      "branch_holder_and_county_binding": true,
+      "latest_head_binding": true,
+      "prior_dynamic_faith_objects_remain": true,
+      "original_branch_rite_identity_and_definition_retained": true
+    },
+    "artifact": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca\\xar_checkpoint.ck3",
+      "bytes": 102093350,
+      "sha256": "ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca"
+    },
+    "reload_verified": false
+  },
+  "formal_ui": {
+    "status": "RED_OR_PENDING_ROOT_SIGNOFF",
+    "reason": "Formal welcome/choose/study work still active; real product tooltip errors remain.",
+    "overall_product_green": false
+  },
+  "errors_exact_at_primitive_freeze": {
+    "tooltip_perspective_errors": 3,
+    "formatter_errors": 165,
+    "ai_coronation_errors": 1,
+    "bp3_roaming_invalid_activity_errors": 27
+  },
+  "ci": {
+    "official_runner": [
+      {
+        "conclusion": "success",
+        "createdAt": "2026-10-04T00:00:33Z",
+        "databaseId": 37163561735,
+        "headSha": "7fd082eab7626239ecb88702d0ebae71f938b259",
+        "status": "completed",
+        "updatedAt": "2026-10-04T00:06:31Z",
+        "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37163561735",
+        "workflowName": "Official Runner CI"
+      }
+    ],
+    "lyd_specific_7fd": "NO_MATCHING_RUN",
+    "lyd_specific_actual": {
+      "conclusion": "success",
+      "createdAt": "2026-10-03T23:59:51Z",
+      "databaseId": 37163517527,
+      "headSha": "be321ac403741aed6036c46d6f1e426e10f26b4d",
+      "status": "completed",
+      "updatedAt": "2026-10-04T00:00:21Z",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37163517527"
+    },
+    "input_object_comparison": {
+      "mod_li_yu_dao": {
+        "argv": [
+          "git",
+          "-C",
+          "C:\\workspace\\ck3_eternal_recurrence",
+          "rev-parse",
+          "7fd082eab7626239ecb88702d0ebae71f938b259:mod_li_yu_dao",
+          "be321ac403741aed6036c46d6f1e426e10f26b4d:mod_li_yu_dao"
+        ],
+        "returncode": 0,
+        "objects": [
+          "5107ad4fa03bb66a663be1acc24f7a74c0ade4a4",
+          "5107ad4fa03bb66a663be1acc24f7a74c0ade4a4"
+        ],
+        "equal": true
+      },
+      ".github/workflows/li-yu-dao-static.yml": {
+        "argv": [
+          "git",
+          "-C",
+          "C:\\workspace\\ck3_eternal_recurrence",
+          "rev-parse",
+          "7fd082eab7626239ecb88702d0ebae71f938b259:.github/workflows/li-yu-dao-static.yml",
+          "be321ac403741aed6036c46d6f1e426e10f26b4d:.github/workflows/li-yu-dao-static.yml"
+        ],
+        "returncode": 0,
+        "objects": [
+          "65ba06ee579bb5192428e92c783283571dca673e",
+          "65ba06ee579bb5192428e92c783283571dca673e"
+        ],
+        "equal": true
+      },
+      "tools/extract_auto_upgrade_buildings.py": {
+        "argv": [
+          "git",
+          "-C",
+          "C:\\workspace\\ck3_eternal_recurrence",
+          "rev-parse",
+          "7fd082eab7626239ecb88702d0ebae71f938b259:tools/extract_auto_upgrade_buildings.py",
+          "be321ac403741aed6036c46d6f1e426e10f26b4d:tools/extract_auto_upgrade_buildings.py"
+        ],
+        "returncode": 0,
+        "objects": [
+          "6cc9e3407db931dabfdf0532293b398c531bfd75",
+          "6cc9e3407db931dabfdf0532293b398c531bfd75"
+        ],
+        "equal": true
+      }
+    }
+  },
+  "auditor_actions": "Preserved pre-existing frozen receipts and payloads only; no game/desktop/MCP/Steam/lease action or tracked edit."
+}

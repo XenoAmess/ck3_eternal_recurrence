@@ -1,0 +1,105 @@
+﻿namespace = lyd_np
+
+lyd_np.0002 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        if = {
+            limit = {
+                lyd_np_initialized_trigger = yes
+                faith:lyd_np_anchor_faith = { main_rite = rite:lyd_np_anchor_rite religious_head = root }
+                rite:lyd_np_branch_rite = { faith = faith:lyd_np_branch_faith this = faith.main_rite }
+                faith:lyd_np_branch_faith = { religious_head = root.var:lyd_np_branch_holder }
+                var:lyd_np_branch_county = { faith = faith:lyd_np_branch_faith rite = rite:lyd_np_branch_rite }
+            }
+            debug_log = "LYD_NP_INITIALIZE_PASS"
+        }
+        else = { debug_log = "LYD_NP_INITIALIZE_FAIL" lyd_np_fail_effect = yes }
+    }
+}
+
+lyd_np.0101 = {
+    type = character_event
+    hidden = yes
+    immediate = { lyd_np_assert_join_d1_effect = yes }
+}
+
+lyd_np.0130 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        lyd_np_assert_join_d30_effect = yes
+        if = {
+            limit = { NOT = { has_variable = lyd_np_failed } }
+            change_variable = { name = lyd_np_completed_joins add = 1 }
+            remove_variable = lyd_np_transition_busy
+            if = { limit = { has_variable = lyd_np_acceptance_mode } trigger_event = { id = lyd_np.9001 days = 1 } }
+        }
+    }
+}
+
+lyd_np.0201 = {
+    type = character_event
+    hidden = yes
+    immediate = { lyd_np_assert_detach_d1_effect = yes }
+}
+
+lyd_np.0230 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        lyd_np_assert_detach_d30_effect = yes
+        if = {
+            limit = { NOT = { has_variable = lyd_np_failed } }
+            change_variable = { name = lyd_np_completed_cycles add = 1 }
+            remove_variable = lyd_np_transition_busy
+            if = {
+                limit = { has_variable = lyd_np_acceptance_mode var:lyd_np_completed_cycles < 3 }
+                trigger_event = { id = lyd_np.9000 days = 1 }
+            }
+            else_if = {
+                limit = { has_variable = lyd_np_acceptance_mode var:lyd_np_completed_cycles = 3 var:lyd_np_completed_joins = 3 }
+                remove_variable = lyd_np_acceptance_mode
+                debug_log = "LYD_NP_THREE_ROUNDS_PASS"
+                debug_log_scopes = yes
+            }
+        }
+    }
+}
+
+# Console: event lyd_np.9000 <player_character_id>. Start after INITIALIZE_PASS.
+# Resumes only under the deliberately set acceptance flag; no on_action or AI scheduling.
+lyd_np.9000 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        if = {
+            limit = { lyd_np_initialized_trigger = yes NOT = { has_variable = lyd_np_failed } NOT = { has_variable = lyd_np_transition_busy } var:lyd_np_completed_cycles < 3 }
+            set_variable = { name = lyd_np_acceptance_mode value = yes }
+            lyd_np_acceptance_clear_cooldown_effect = yes
+            lyd_np_join_effect = yes
+        }
+        else = { debug_log = "LYD_NP_ACCEPTANCE_JOIN_REJECTED" }
+    }
+}
+
+lyd_np.9001 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        if = {
+            limit = { lyd_np_initialized_trigger = yes has_variable = lyd_np_acceptance_mode NOT = { has_variable = lyd_np_failed } NOT = { has_variable = lyd_np_transition_busy } }
+            lyd_np_acceptance_clear_cooldown_effect = yes
+            lyd_np_detach_effect = yes
+        }
+        else = { debug_log = "LYD_NP_ACCEPTANCE_DETACH_REJECTED" }
+    }
+}
+
+# Only the currently played Character passes this guard. Expected Runtime ID
+# 29829 must be independently read back; no fake character:29829 history scope.
+lyd_np.0001 = {
+    type = character_event
+    hidden = yes
+    immediate = { lyd_np_initialize_effect = yes }
+}

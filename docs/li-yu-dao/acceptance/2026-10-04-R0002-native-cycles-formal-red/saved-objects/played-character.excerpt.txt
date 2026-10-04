@@ -1,0 +1,21 @@
+played_character={
+	name="UNKNOWN"
+	character=31254
+	player=1
+	legacy={ {
+			character=31254
+			date=1066.9.15
+			wars={ 0 0 0 0 }
+		}
+ }
+	rally_points={ {
+			province=2619
+			color=0
+		}
+ }
+	last_triggered_court_events_date=1066.9.15
+	raid_intent={
+		type=adventure_intent_viking
+	}
+
+}

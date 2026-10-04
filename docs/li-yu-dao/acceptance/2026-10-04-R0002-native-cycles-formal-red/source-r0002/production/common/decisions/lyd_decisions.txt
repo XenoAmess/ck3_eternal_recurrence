@@ -1,0 +1,39 @@
+﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
+lyd_enter_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious
+    ai_check_interval = 0
+    desc = lyd_enter_decision_desc
+    selection_tooltip = lyd_enter_decision_tooltip
+    confirm_text = lyd_enter_decision_confirm
+    is_shown = { lyd_is_player_trigger = yes lyd_can_enter_trigger = yes }
+    is_valid = { lyd_can_enter_trigger = yes  }
+    effect = { lyd_enter_effect = yes }
+    ai_will_do = { base = 0 }
+}
+
+lyd_change_school_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious
+    ai_check_interval = 0
+    desc = lyd_change_school_decision_desc
+    selection_tooltip = lyd_change_school_decision_tooltip
+    confirm_text = lyd_change_school_decision_confirm
+    is_shown = { lyd_is_player_trigger = yes lyd_can_use_school_trigger = yes }
+    is_valid = { lyd_can_use_school_trigger = yes lyd_can_change_school_trigger = yes }
+    effect = { lyd_open_school_effect = yes }
+    ai_will_do = { base = 0 }
+}
+
+lyd_study_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious
+    ai_check_interval = 0
+    desc = lyd_study_decision_desc
+    selection_tooltip = lyd_study_decision_tooltip
+    confirm_text = lyd_study_decision_confirm
+    is_shown = { lyd_is_player_trigger = yes lyd_can_use_school_trigger = yes }
+    is_valid = { lyd_can_use_school_trigger = yes lyd_can_study_trigger = yes OR = { rite = rite:lyd_rite_kongmen rite = rite:lyd_rite_mengzi rite = rite:lyd_rite_xunzi rite = rite:lyd_rite_zhengxuan rite = rite:lyd_rite_wangsu rite = rite:lyd_rite_jingshu rite = rite:lyd_rite_zhuxi rite = rite:lyd_rite_lujiuyuan } }
+    effect = { lyd_open_study_effect = yes }
+    ai_will_do = { base = 0 }
+}

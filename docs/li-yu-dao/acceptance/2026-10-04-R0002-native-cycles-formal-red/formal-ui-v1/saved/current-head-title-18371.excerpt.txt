@@ -1,0 +1,38 @@
+18371={
+	key=x_script_690
+	variables={
+		data={ {
+				flag=lyd_np_owned_head
+				data={
+					type=boolean
+					identity=1
+				}
+
+			}
+ }
+	}
+	holder=31254
+	date=1066.9.15
+	succession_result_type=inheritance_child_line
+	history={ 1066.9.15={
+			type=created
+			holder=31254
+		}
+ }
+	color=rgb { 51 214 255 }
+	definite_form=yes
+	destroy_if_invalid_heir=yes
+	no_automatic_claims=yes
+	always_follows_primary_heir=yes
+	laws={ temporal_head_of_faith_succession_law }
+	coat_of_arms_id=28814
+	title_name_data={
+		name="共礼学统儒家道统"
+		adj="共礼学统"
+	}
+
+	default_coa=no
+	treasury={
+	}
+	nomad_name_type=default
+}

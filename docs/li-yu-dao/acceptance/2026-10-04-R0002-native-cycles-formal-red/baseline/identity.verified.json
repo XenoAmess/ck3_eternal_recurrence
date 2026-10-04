@@ -1,0 +1,110 @@
+{
+  "schema": "ck3.lyd.checkpoint-concrete-identity.v1",
+  "recorded_at_utc": "2026-10-04T00:53:40.236296+00:00",
+  "identity": "Robert de Hauteville (Guiscard)",
+  "status": "SAVE_IDENTITY_VERIFIED",
+  "artifact": {
+    "name": "xar_checkpoint.ck3",
+    "relative_path": "xar_checkpoint.ck3",
+    "bytes": 91208782,
+    "sha256": "df8a22e38ef260e197b237707bc0ef19ce64ee3627e50b67da7d37ecd23b8ffc",
+    "format": "raw-ck3",
+    "integrity_scope": "header-only",
+    "integrity_ok": null,
+    "raw_header_valid": true,
+    "raw_header_kind": "text",
+    "zip_valid": false,
+    "bad_member": null,
+    "has_gamestate": null,
+    "format_probe_error": "BadZipFile"
+  },
+  "metadata": {
+    "version": "1.20.0.3",
+    "meta_date": "1066.9.15",
+    "meta_player_name": "公爵罗贝尔",
+    "meta_number_of_players": "1"
+  },
+  "played_character_id": 31254,
+  "saved_character": {
+    "first_name": "Robert",
+    "nickname": "nick_the_fox",
+    "birth": "1015.1.1",
+    "dynasty_house": "174",
+    "dynasty": null,
+    "father": null,
+    "mother": null,
+    "culture": "73",
+    "faith": null,
+    "religion": null,
+    "historical_id": null,
+    "gold": [
+      {
+        "key": "value",
+        "value": "247"
+      }
+    ],
+    "piety": [
+      {
+        "key": "currency",
+        "value": "150"
+      }
+    ],
+    "prestige": [
+      {
+        "key": "currency",
+        "value": "2200"
+      },
+      {
+        "key": "accumulated",
+        "value": "5000"
+      }
+    ]
+  },
+  "saved_house_id": 174,
+  "saved_house": {
+    "name": "dynn_Hauteville",
+    "prefix": "dynnp_de",
+    "found_date": "980.1.1",
+    "head_of_house": "31254",
+    "dynasty": "174"
+  },
+  "saved_dynasty_id": 174,
+  "saved_dynasty": {
+    "key": "678",
+    "dynasty_head": "31254"
+  },
+  "historical_character_source": {
+    "character_key": "1128",
+    "name": "Robert",
+    "dynasty_key": "678",
+    "birth": "1015.1.1",
+    "nickname": "nick_the_fox",
+    "source_file": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\history\\characters\\norman.txt",
+    "source_file_sha256": "588a012e567f6acc9e032a162b9995bb7424b535ff50cfaea459cf10a1c0132b",
+    "source_start_line": 467,
+    "author_comment": "Robert #Guiscard; AKA Robert 'Guiscard'"
+  },
+  "checks": {
+    "current_saved_player_is_31254": true,
+    "historical_1128_maps_to_current_31254": true,
+    "same_name": true,
+    "same_birth": true,
+    "same_nickname": true,
+    "same_dynasty": true,
+    "house_is_hauteville": true,
+    "current_game_version": true
+  },
+  "evidence_lines": {
+    "saved_character": 1467050,
+    "saved_house": 647462,
+    "saved_dynasty": 838333,
+    "historical_lookup_mapping": 907498,
+    "played_character": 4743280,
+    "currently_played_characters": 4743301
+  },
+  "runtime_and_historical_ids_are_distinct": true,
+  "old_1_19_runtime_id_used": false,
+  "game_called": false,
+  "projection_correction": "Historical scalar quotes normalized before comparison; raw save and source bytes unchanged. Prior RED report retained as identity.json.",
+  "boundary": "identity of one immutable baseline only; no product mechanic or save/reload acceptance claim"
+}

@@ -1,0 +1,1456 @@
+{
+  "schema": "lyd.r0002.external-report-package-index.v3",
+  "created_at_utc": "2026-10-04T04:10:52.687059+00:00",
+  "current_report": "FINAL-REPORT.md",
+  "previous_index": {
+    "path": "index-v2.json",
+    "sha256": "c7f812f72b319180d4768ce1bb9bc8e274f9fec04675d8606be70d40794343f6"
+  },
+  "package_files": [
+    {
+      "path": "run/live-run-id.json",
+      "bytes": 370,
+      "sha256": "543a65db069483de3cd68bec8910ac19119bbb1f04a05fb4788bce38a4b524d9",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/live-run-id.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "run/PREPARED.historical.json",
+      "bytes": 13338,
+      "sha256": "2496fb5861da63acc5bda472aac8830f5ab2709792eb8e95cd534a8628847b4f",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/PREPARED.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "run/prelaunch-check.json",
+      "bytes": 797,
+      "sha256": "3afc0e898777d9fe15013323eede5818fb320bb919dc06f2d25092f047ec1282",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/prelaunch-check.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "run/launch.json",
+      "bytes": 315,
+      "sha256": "400a2ceee3564027970c5f0d47101892d78f714fa4aacfe3eccd7713c2effa90",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/launch.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "offline/offline-reviewed.json",
+      "bytes": 369,
+      "sha256": "7946efdb1434e62546016f5d075b083615765a8458ae3837379d918fd0dcf422",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/offline-reviewed.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "offline/steam-frame-freshness.json",
+      "bytes": 1170,
+      "sha256": "539d099b628fe4103ab9fa5c2e125fffa20eb4e219dd666ca7abc5d699d77216",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/offline/probe-1/steam-frame-freshness.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "profile/guard-profile.json",
+      "bytes": 1945,
+      "sha256": "4a8758e513c183ad4b8d4e3ca12a1b5059b88364e0eb3cd4d066a73d91634f55",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/profile-attempt-001/guard-profile.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "profile/native-profile.json",
+      "bytes": 867,
+      "sha256": "61a533323b8e8812b8babbb8c12afec8d99a9e2df7eb2d6bcaf9e028ad93cfd9",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/profile-attempt-001/native-profile.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "profile/profile-build-receipt.json",
+      "bytes": 3125,
+      "sha256": "652173f4ac079983b19a7a4365dd98a2d32147396d46faa23f559caed0196ebc",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/profile-attempt-001/profile-build-receipt.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "native/0002-attach.json",
+      "bytes": 17370,
+      "sha256": "8a18b8a596d51d2add256625d4f5393d26c5917ad74fb7a5b407e86cbd18e2b7",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/native-evidence/fa5f0ef6b5334db09a51f8d9bbcc9dbf/0002-attach.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "native/0003-initial-snapshot.json",
+      "bytes": 12618,
+      "sha256": "621733e65b68e52cc731cd9aff4f2e5c17ff9332be9f982e35e08b45cef504cb",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/native-evidence/fa5f0ef6b5334db09a51f8d9bbcc9dbf/0003-snapshot.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "native/0092-completed-snapshot.json",
+      "bytes": 39104,
+      "sha256": "b4b12a22e6fec6973281e6c7f8362482001cd0c03d6db6606d2437427a5c1951",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/native-evidence/fa5f0ef6b5334db09a51f8d9bbcc9dbf/0092-snapshot.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "native/0093-final-checkpoint.json",
+      "bytes": 78390,
+      "sha256": "1bc496e3495fffae5e8a86046f52a3fa10d0e23c54d43da31a0f353f32cb1db3",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/native-evidence/fa5f0ef6b5334db09a51f8d9bbcc9dbf/0093-checkpoint.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "native/native-reuse-audit.historical.json",
+      "bytes": 3637,
+      "sha256": "d8fa90381698a5558bad9ab7de40e55f2858db11511bf44f41bd03eb6e25df52",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/native-reuse-audit-001.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "ci/official-ci-readonly.json",
+      "bytes": 11983,
+      "sha256": "6d0df995f2a69432e11702d793b04014ebbdb88505d4e10c7d36cf3f609e29f6",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/ci-readonly-7fd082e-002/report.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production.manifest.json",
+      "bytes": 3341,
+      "sha256": "e1a69536e7b04ffca57ece10431e3449cc3b31d9feb34266c6b80b8ef040a7a0",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/build-iteration1/mod_li_yu_dao.manifest.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production.manifest.json",
+      "bytes": 3341,
+      "sha256": "1d3f7d4c2264be239897c1ded7355be09c218680722c6a5e12d3775c28de5d34",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/build-native-fixes/mod_li_yu_dao.manifest.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/fixture.static-repair-report.json",
+      "bytes": 4933,
+      "sha256": "a55a3d44a210dc191112b800e01c88353e399a8b56a260d12301370e9c570a6d",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/candidate2/static-report.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/native-source-evidence.json",
+      "bytes": 2751,
+      "sha256": "1b254764161d2b573e33c0fab982101f367b4a54487667aa9ec867dc952b5863",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/native-prototype/native-source-evidence.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "primitive/native-primitive-attestation-candidate-v2.json",
+      "bytes": 96228,
+      "sha256": "50bad54b995723026bd26842f258376c86447547791357f6c5ad809750891b5d",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/native-primitive-attestation-candidate-v2.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "primitive/error-classification-addendum.json",
+      "bytes": 14186,
+      "sha256": "2f3a464edf7541aa3b813f5bf39d0400dc6e2fd29d36bea80fbd05f83fe84a48",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/error-classification-addendum.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "primitive/error.log",
+      "bytes": 22248,
+      "sha256": "9a94887d7d2f6e825cf806089445aa15ec06e3416d34613037214c4f911e53c5",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/error.log",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "primitive/advance-cycles-004-report.json",
+      "bytes": 6157,
+      "sha256": "660c5f7146f67077ec48fa9a82b81469c95ae04cd308962362fc7a9e10476265",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/advance-cycles-004-report.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "primitive/dlc_load.json",
+      "bytes": 107,
+      "sha256": "24f8cb5d6d471c101e5da573f86a4e9aa7cb865593179b33389491231bdf8f30",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/dlc_load.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "baseline/identity.verified.json",
+      "bytes": 3268,
+      "sha256": "53e8275538a8c48bd41d8fb1b28298fd9c7a97c2d7a49ccf2871effe51d277f8",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/df8a22e38ef260e197b237707bc0ef19ce64ee3627e50b67da7d37ecd23b8ffc/identity.verified.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "baseline/31254.excerpt.txt",
+      "bytes": 6449,
+      "sha256": "5a41c20cc57f6116d6d56d5e6f9c84d58350de10684d0ed361deb496350921fa",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/df8a22e38ef260e197b237707bc0ef19ce64ee3627e50b67da7d37ecd23b8ffc/31254.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "baseline/played_character.excerpt.txt",
+      "bytes": 308,
+      "sha256": "4b37ef056dd73740bc7c8f5cc27ccb4a316f071235a34991d593a3edcb9b44ba",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/df8a22e38ef260e197b237707bc0ef19ce64ee3627e50b67da7d37ecd23b8ffc/played_character.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/three-rounds.summary.json",
+      "bytes": 6344,
+      "sha256": "a436aec37b9e71e05a47329c69354195ad69deade8711172e16b777d2aa1d1c5",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/three-rounds.summary.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/preservation.json",
+      "bytes": 707,
+      "sha256": "f9758905f682860e07cc4ca7d0b5af9f2f93da6a81b910fcc51be0d9136802ff",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/preservation.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "input/console-v1-open.receipt.json",
+      "bytes": 10639,
+      "sha256": "33ca7d3759b0ce380db14d37e1246cd1c0eae5c73fe5d4f66f59f2fe4d7688cc",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/console-open-001/receipt.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "input/console-v2-open.receipt.json",
+      "bytes": 11502,
+      "sha256": "e9b9a215f09b8131a860eb47f6f11dfb54d3cbae3fbb57b77b6120ad0d51b458",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/console-open-physical-001/receipt.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "input/console-v2-execute.RED.receipt.json",
+      "bytes": 9868,
+      "sha256": "e174f4239a097c575645c76d06ab1f0441e1eb8765915f2bbb88ee39e6f0f2d8",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/console-three-rounds-001/receipt.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "input/console-v3-execute.receipt.json",
+      "bytes": 13226,
+      "sha256": "bbb67392519cb6ac589c0b991c02a6591f4aa8b6546d818c79c08556c72b8bf9",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/console-three-rounds-v3-001/receipt.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "input/console-close.receipt.json",
+      "bytes": 11743,
+      "sha256": "1417d5c4b43bbb01de119dee0f7d4a65965ff93b67a139bcd05cc75b4dc4e1ec",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/console-close-physical-001/receipt.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "input/console-keymapping-research.json",
+      "bytes": 7747,
+      "sha256": "ec49c18c5b9e2b5b61096681cbdd1b633942021750da72f9be7ffdcc0e90cfae",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/console-keymapping-research-001.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "input/console-static-review.json",
+      "bytes": 3626,
+      "sha256": "246c2426b2588e9fb83479b6c80a6bd6aa1d3c03b62f7c89ab4aba4b86270631",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/console-static-review-002.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "input/console-v3-static-report.json",
+      "bytes": 950,
+      "sha256": "329d4e7f045ae2fc1b41a0e59a67c9199aa674f815014b53a33c2dd5e0af5582",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/console-v3-static-report-001.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "input/console-v2-static-report.json",
+      "bytes": 960,
+      "sha256": "302d7f3e7b1f904cdead61268030b983207ad7da3d0988851c6195f86fe14254",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/console-v2-static-report-001.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production/common/character_interactions/lyd_interactions.txt",
+      "bytes": 127,
+      "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/production/common/character_interactions/lyd_interactions.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production/common/decisions/lyd_decisions.txt",
+      "bytes": 1481,
+      "sha256": "3faada6dbe2e34e5fce4650362a97908e4a1f1fb29478abaf532bf2095d300cf",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/production/common/decisions/lyd_decisions.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production/common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 424,
+      "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/production/common/religion/faith_types/lyd_faiths.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production/common/religion/rite_types/lyd_rites.txt",
+      "bytes": 3061,
+      "sha256": "889d7846bb876ee260f0b5882116fafe9185db78c8adeab9551f43146cb33a2b",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/production/common/religion/rite_types/lyd_rites.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production/common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 8333,
+      "sha256": "8c48b1d0e6056845fec7a6babb53754fb7b7aecb2c3b7df7bae608654bd20789",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/production/common/religion/tenet_types/lyd_tenets.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production/common/scripted_effects/lyd_entry_effects.txt",
+      "bytes": 1099,
+      "sha256": "6ad04df437ce1e7ba63fcbb5c475b15fb22d4e7e5131aa0849b69b6aecaa226d",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/production/common/scripted_effects/lyd_entry_effects.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production/common/scripted_effects/lyd_practice_1_effects.txt",
+      "bytes": 3195,
+      "sha256": "c9e3106ad93f8cc4bbf4345610ff9261232cca01dce1c23e1ede33b196d6d55d",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/production/common/scripted_effects/lyd_practice_1_effects.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production/common/scripted_effects/lyd_practice_2_effects.txt",
+      "bytes": 3096,
+      "sha256": "d72cf677111d87c9cad2129e6d220b31b073bbdbf1856b0008c93009c184fdf1",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/production/common/scripted_effects/lyd_practice_2_effects.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production/common/scripted_effects/lyd_practice_3_effects.txt",
+      "bytes": 3170,
+      "sha256": "76ca4cfefb255377241f620cee28f3bf2e672f625625fc077efdc29f7a86ac6e",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/production/common/scripted_effects/lyd_practice_3_effects.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production/common/scripted_effects/lyd_school_effects.txt",
+      "bytes": 2186,
+      "sha256": "440ff86222c5143bec5d00862afff7113b38c7c0e45605aa1e5036fad2ff6055",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/production/common/scripted_effects/lyd_school_effects.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production/common/scripted_triggers/lyd_player_triggers.txt",
+      "bytes": 738,
+      "sha256": "4908f60fcea79e98a4389dd332bcf1da33a812d895562327aa37d16272a50e02",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/production/common/scripted_triggers/lyd_player_triggers.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production/descriptor.mod",
+      "bytes": 139,
+      "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/production/descriptor.mod",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production/events/lyd_events.txt",
+      "bytes": 10604,
+      "sha256": "443036f4787efa5e59f927bb0d8832d8f6e55efbf744b3810efe674de36817ed",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/production/events/lyd_events.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production/history/faiths/lyd_faith_history.txt",
+      "bytes": 588,
+      "sha256": "00ea56c310601a142d18ee52313d39556ffb56964f4927026de69126b9914f11",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/production/history/faiths/lyd_faith_history.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production/localization/english/lyd_content_l_english.yml",
+      "bytes": 17495,
+      "sha256": "3c5ca01e2f47ad87700eb6e93eb0a9675e98ceb5a58337679e9f31c7eea6f3c4",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/production/localization/english/lyd_content_l_english.yml",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production/localization/english/lyd_runtime_l_english.yml",
+      "bytes": 2471,
+      "sha256": "ecea067dcd55ee5bf78018d39e972ca875547390b392550e8a2b4504a1835193",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/production/localization/english/lyd_runtime_l_english.yml",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 14147,
+      "sha256": "df78c4340ba0f8ae53d3637f5485143046497c014e980ee91f6a9b6031f9dae5",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/production/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/production/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 2138,
+      "sha256": "f95bc217ca63028cb828e156e0a2f131d80ad2a332f98bc5290c4683e0a90a1a",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/production/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/fixture/common/decisions/lyd_np_decisions.txt",
+      "bytes": 1695,
+      "sha256": "4e847c65988ac4a3853f6320d4a2683a9688e0aa4db2f875fae403b97b967f16",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/fixture/common/decisions/lyd_np_decisions.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/fixture/common/religion/faith_types/lyd_np_faiths.txt",
+      "bytes": 641,
+      "sha256": "bcd46bd4407ae43dcaf84b505a08c2d883c2e52726587e7ae9cd088d88c62870",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/fixture/common/religion/faith_types/lyd_np_faiths.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/fixture/common/religion/rite_types/lyd_np_rites.txt",
+      "bytes": 845,
+      "sha256": "ba76cd96f18ba0f75d9932c6e50dcd4067abfd465364731c10e7bcfc211b058c",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/fixture/common/religion/rite_types/lyd_np_rites.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/fixture/common/scripted_effects/lyd_np_effects.txt",
+      "bytes": 9410,
+      "sha256": "5add010b934ef5074303ecdcabf48f1009b4d23b3a687d4e070603c3264731b2",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/fixture/common/scripted_effects/lyd_np_effects.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/fixture/common/scripted_triggers/lyd_np_triggers.txt",
+      "bytes": 2774,
+      "sha256": "46eabe7e5218e9cbcfb9051bc7390010038a6cf25228cf859fdfb31d0c797bf5",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/fixture/common/scripted_triggers/lyd_np_triggers.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/fixture/descriptor.mod",
+      "bytes": 125,
+      "sha256": "b82a694df94b885c0438d55bb3f1d5ed2fdde6b624131633b5ae56cfabe101f1",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/fixture/descriptor.mod",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/fixture/events/lyd_np_events.txt",
+      "bytes": 4010,
+      "sha256": "4f2d4272a224e08b4f6a2f3b1379f4f3528f0e15b6ec833bb8c0fa47b36f2e99",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/fixture/events/lyd_np_events.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/fixture/localization/english/lyd_np_l_english.yml",
+      "bytes": 2296,
+      "sha256": "26acb8c79ff2c790a62b8905e725250153141731c14719259a52c02d555ad723",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/fixture/localization/english/lyd_np_l_english.yml",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0001/fixture/localization/simp_chinese/lyd_np_l_simp_chinese.yml",
+      "bytes": 1993,
+      "sha256": "d7d4381c8bb172e4a32041588e43f1838e1bc861902153df3a2d1f10eec2d907",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-001/content/fixture/localization/simp_chinese/lyd_np_l_simp_chinese.yml",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production/common/character_interactions/lyd_interactions.txt",
+      "bytes": 127,
+      "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/production/common/character_interactions/lyd_interactions.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production/common/decisions/lyd_decisions.txt",
+      "bytes": 1973,
+      "sha256": "aae30076a90402e285d4f589b6160a21ef9eb321a12239f4b0955d11ff23b9f4",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/production/common/decisions/lyd_decisions.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production/common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 424,
+      "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/production/common/religion/faith_types/lyd_faiths.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production/common/religion/rite_types/lyd_rites.txt",
+      "bytes": 3061,
+      "sha256": "889d7846bb876ee260f0b5882116fafe9185db78c8adeab9551f43146cb33a2b",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/production/common/religion/rite_types/lyd_rites.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production/common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 8333,
+      "sha256": "8c48b1d0e6056845fec7a6babb53754fb7b7aecb2c3b7df7bae608654bd20789",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/production/common/religion/tenet_types/lyd_tenets.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production/common/scripted_effects/lyd_entry_effects.txt",
+      "bytes": 1099,
+      "sha256": "6ad04df437ce1e7ba63fcbb5c475b15fb22d4e7e5131aa0849b69b6aecaa226d",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/production/common/scripted_effects/lyd_entry_effects.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production/common/scripted_effects/lyd_practice_1_effects.txt",
+      "bytes": 2798,
+      "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/production/common/scripted_effects/lyd_practice_1_effects.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production/common/scripted_effects/lyd_practice_2_effects.txt",
+      "bytes": 2703,
+      "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/production/common/scripted_effects/lyd_practice_2_effects.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production/common/scripted_effects/lyd_practice_3_effects.txt",
+      "bytes": 2756,
+      "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/production/common/scripted_effects/lyd_practice_3_effects.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production/common/scripted_effects/lyd_school_effects.txt",
+      "bytes": 2186,
+      "sha256": "440ff86222c5143bec5d00862afff7113b38c7c0e45605aa1e5036fad2ff6055",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/production/common/scripted_effects/lyd_school_effects.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production/common/scripted_triggers/lyd_player_triggers.txt",
+      "bytes": 738,
+      "sha256": "4908f60fcea79e98a4389dd332bcf1da33a812d895562327aa37d16272a50e02",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/production/common/scripted_triggers/lyd_player_triggers.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production/descriptor.mod",
+      "bytes": 139,
+      "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/production/descriptor.mod",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production/events/lyd_events.txt",
+      "bytes": 10604,
+      "sha256": "443036f4787efa5e59f927bb0d8832d8f6e55efbf744b3810efe674de36817ed",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/production/events/lyd_events.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production/history/faiths/lyd_faith_history.txt",
+      "bytes": 588,
+      "sha256": "00ea56c310601a142d18ee52313d39556ffb56964f4927026de69126b9914f11",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/production/history/faiths/lyd_faith_history.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production/localization/english/lyd_content_l_english.yml",
+      "bytes": 17495,
+      "sha256": "3c5ca01e2f47ad87700eb6e93eb0a9675e98ceb5a58337679e9f31c7eea6f3c4",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/production/localization/english/lyd_content_l_english.yml",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production/localization/english/lyd_runtime_l_english.yml",
+      "bytes": 2471,
+      "sha256": "ecea067dcd55ee5bf78018d39e972ca875547390b392550e8a2b4504a1835193",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/production/localization/english/lyd_runtime_l_english.yml",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 14147,
+      "sha256": "df78c4340ba0f8ae53d3637f5485143046497c014e980ee91f6a9b6031f9dae5",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/production/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/production/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 2138,
+      "sha256": "f95bc217ca63028cb828e156e0a2f131d80ad2a332f98bc5290c4683e0a90a1a",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/production/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/fixture/common/decisions/lyd_np_decisions.txt",
+      "bytes": 1857,
+      "sha256": "06ff98f68af5b7dc4b7d2d0e42e0cefe180b3cdaf0e7cbb48b938965f6d4fef0",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/fixture/common/decisions/lyd_np_decisions.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/fixture/common/religion/faith_types/lyd_np_faiths.txt",
+      "bytes": 644,
+      "sha256": "d349b0c5bd4a6102a32ca1f9762487b33559b6da255ccab9533bd13ad8b7247c",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/fixture/common/religion/faith_types/lyd_np_faiths.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/fixture/common/religion/rite_types/lyd_np_rites.txt",
+      "bytes": 848,
+      "sha256": "11aab688d88c6f8cfbdb8464f408b111ecc07e07e884eee13bbf44492ca15230",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/fixture/common/religion/rite_types/lyd_np_rites.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/fixture/common/scripted_effects/lyd_np_effects.txt",
+      "bytes": 10380,
+      "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/fixture/common/scripted_effects/lyd_np_effects.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/fixture/common/scripted_triggers/lyd_np_triggers.txt",
+      "bytes": 2777,
+      "sha256": "7c1bc919d2ddf3dfc5b59969ea1cb4b795e4a172e8ad1d984acadc048ed25cff",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/fixture/common/scripted_triggers/lyd_np_triggers.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/fixture/descriptor.mod",
+      "bytes": 125,
+      "sha256": "b82a694df94b885c0438d55bb3f1d5ed2fdde6b624131633b5ae56cfabe101f1",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/fixture/descriptor.mod",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/fixture/events/lyd_np_events.txt",
+      "bytes": 3743,
+      "sha256": "b9d57ad721c799e551870f39027a26727b207c5fef97f175dd4db0dff81db896",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/fixture/events/lyd_np_events.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/fixture/localization/english/lyd_np_l_english.yml",
+      "bytes": 2296,
+      "sha256": "26acb8c79ff2c790a62b8905e725250153141731c14719259a52c02d555ad723",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/fixture/localization/english/lyd_np_l_english.yml",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "source-r0002/fixture/localization/simp_chinese/lyd_np_l_simp_chinese.yml",
+      "bytes": 1993,
+      "sha256": "d7d4381c8bb172e4a32041588e43f1838e1bc861902153df3a2d1f10eec2d907",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/source/fixture/localization/simp_chinese/lyd_np_l_simp_chinese.yml",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/baseline-rite-151.excerpt.txt",
+      "bytes": 2325,
+      "sha256": "1123ed5b2de91cd5ec687d923f64d8fe79a42a506f9da578efe75838cf8379a5",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/baseline-rite-151.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/character-31254.excerpt.txt",
+      "bytes": 8557,
+      "sha256": "975efc0b6e37c026c0a677c4ee51e759bb33b158fe5f50502ebf5dbed0342072",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/character-31254.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/character-36445.excerpt.txt",
+      "bytes": 6255,
+      "sha256": "885419cc4df4e419e36805afab250ce73fa1d6c404a5d2b4ad3925909acdae42",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/character-36445.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/county-2250-c_camarda.excerpt.txt",
+      "bytes": 121,
+      "sha256": "293154e3714b105406ac09d2a99dec911a82bd3626205f2d36196526e355820b",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/county-2250-c_camarda.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/faith-106.excerpt.txt",
+      "bytes": 2456,
+      "sha256": "ba39635ee33258945c74915e9001d53433eebef3d4a7e1f2356f31c32ed5901d",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/faith-106.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/faith-107.excerpt.txt",
+      "bytes": 2456,
+      "sha256": "593c6da02bba2df7395128b5f9c64ec3fa31317ade95d1e9b9d3578641c5c5c4",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/faith-107.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/faith-108.excerpt.txt",
+      "bytes": 2451,
+      "sha256": "fc56c5494e2eae9984e2d6f3f79a5482a2cae93a80299f79043d7851394e9baf",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/faith-108.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/faith-33.excerpt.txt",
+      "bytes": 1935,
+      "sha256": "1dd99040d50c55f266975d0d3dc976f0cecd498fee0dd52bba6948bd3bb78e5f",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/faith-33.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/faith-34.excerpt.txt",
+      "bytes": 1972,
+      "sha256": "959c1b5cd9d6b07e929fd8eef9a78a30a0dd26e840aae87b3872aeda7789320d",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/faith-34.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/played-character.excerpt.txt",
+      "bytes": 308,
+      "sha256": "4b37ef056dd73740bc7c8f5cc27ccb4a316f071235a34991d593a3edcb9b44ba",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/played-character.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/rite-150.excerpt.txt",
+      "bytes": 2284,
+      "sha256": "0e2d5b638d5b980681d18ea0bada235559b9f378788c4ec013f17f4a270c251f",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/rite-150.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/rite-151.excerpt.txt",
+      "bytes": 2490,
+      "sha256": "69f5483d4d944da4ebce92c6bddaccd1a74cfdbd9edd01823f9fa006e5904b98",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/rite-151.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/rite-160.excerpt.txt",
+      "bytes": 1995,
+      "sha256": "4d387c6221b4cc6240843349554b0017afcec37b97e2b6bca4bc7b0c78b4b68c",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/rite-160.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/rite-161.excerpt.txt",
+      "bytes": 2329,
+      "sha256": "f3849b56b1d0463b07808f383260a440385a21ce4fef5e49b1910c61baf65b14",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/rite-161.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/rite-162.excerpt.txt",
+      "bytes": 2329,
+      "sha256": "0a7334cc6a411d58374484122b0c8c974dbdff2d39acd2b00732ec51e4188f97",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/rite-162.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/title-18371.excerpt.txt",
+      "bytes": 656,
+      "sha256": "e3b87dfec700b162a478f06e556748375d451c0dc47451b462b44654c950dd12",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/title-18371.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/title-18372.excerpt.txt",
+      "bytes": 647,
+      "sha256": "d32e3d5c8cc1490769a172567b23e1079832cb9a1b59f54bb7fb8e95b081adcc",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/title-18372.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/title-18402.excerpt.txt",
+      "bytes": 587,
+      "sha256": "22c88f0152becad904d890e21ec213c7f988971d1bc7d8f9056453e2414aa5a5",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/title-18402.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/title-18410.excerpt.txt",
+      "bytes": 586,
+      "sha256": "a435a4435278221301979962abc3ff9ff3cc68b573ff6db18ac4a387f49d4f69",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/title-18410.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/title-18417.excerpt.txt",
+      "bytes": 685,
+      "sha256": "3e3010bfac4739e0b4e6a33f99b641e8662fa2904d581805d77abc42efb49cbb",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/title-18417.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "saved-objects/title-2250.excerpt.txt",
+      "bytes": 638,
+      "sha256": "9b0299d1c08789c07a55bb7d9cc3ee5a2d17defd5f1e35a42c5952f9c11cc177",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/title-2250.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "input/source/console_input_helper.py",
+      "bytes": 12910,
+      "sha256": "dc0a192531cdcaa5919fc0a9a97bf8c8e9d2ef77fe34c8b88256b89f8ba0672e",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/console_input_helper.py",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "input/source/console_input_helper_v2.py",
+      "bytes": 16173,
+      "sha256": "c98c8ee841329029581ff9fd87bd0d102089817c06373dcf21781a452910df29",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/console_input_helper_v2.py",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "input/source/console_input_helper_v3.py",
+      "bytes": 16368,
+      "sha256": "3731fba7622a7a308c929b35928ed78626c69bf4ffee26651743b616cd662a77",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/console_input_helper_v3.py",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "input/source/console_close_helper.py",
+      "bytes": 11994,
+      "sha256": "1d900f3b547806c5286dc15d3b107c6d1b25d54595a0ab31e18c319d9b038e95",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/console_close_helper.py",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "input/source/CONSOLE-LIVE-R0002-V3.md",
+      "bytes": 3698,
+      "sha256": "f32214582dc9a8f05e9aa9e02c5b245574f6eb1750091baf259106254ff974e5",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/CONSOLE-LIVE-R0002-V3.md",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "input/source/bounded-native-advance.original.py",
+      "bytes": 12235,
+      "sha256": "59a494fcc99f4a5a7f21bb6aeb26aa23cc997e14eb88f276a1ccb3f3ca2de3c8",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/helper-revisions/59a494fcc99f4a5a7f21bb6aeb26aa23cc997e14eb88f276a1ccb3f3ca2de3c8/bounded_native_advance.py",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "input/source/bounded-native-advance.current.py",
+      "bytes": 12868,
+      "sha256": "4312b1d4b8ddca690c5920bf784f1fd83416253653f1159aedb164f737012768",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/bounded_native_advance.py",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "primitive/debug-marker-lines.raw.log",
+      "bytes": 5000,
+      "sha256": "8564747babb9b8b4d46992bfb17412f086acd60604596c401a8d6a5c6f5f2d10",
+      "copy_kind": "derived_projection",
+      "lineage": {
+        "source": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/debug.log",
+        "source_sha256": "64c1fc5a73dcf5e20d90657e68318a9eec3e43caaf330573f4bea2ec2366ee6e",
+        "source_line_numbers": [
+          9963,
+          10241,
+          11610,
+          11623,
+          12118,
+          12124,
+          12125,
+          12126,
+          12143,
+          12472,
+          12487,
+          12488,
+          12489,
+          12504,
+          12920,
+          12924,
+          12925,
+          12926,
+          12984,
+          13349,
+          13352,
+          13353,
+          13354,
+          13371,
+          13837,
+          13841,
+          13842,
+          13843,
+          13860,
+          14336,
+          14337
+        ],
+        "transform": "select exact raw lines containing LYD_NP_; no decoding/newline normalization"
+      }
+    },
+    {
+      "path": "report-state.json",
+      "bytes": 5473,
+      "sha256": "0d285260ba58c7c04100a7cf1f33791b014a9d521a47a7e5e644260738fb9cf3",
+      "copy_kind": "derived_projection",
+      "lineage": {
+        "sources": [
+          "primitive/native-primitive-attestation-candidate-v2.json",
+          "saved-objects/three-rounds.summary.json",
+          "ci/official-ci-readonly.json"
+        ]
+      }
+    },
+    {
+      "path": "formal-ui-v1/saved/actual-player-faith-33.excerpt.txt",
+      "bytes": 1935,
+      "sha256": "1dd99040d50c55f266975d0d3dc976f0cecd498fee0dd52bba6948bd3bb78e5f",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/actual-player-faith-33.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/actual-player-rite-150.excerpt.txt",
+      "bytes": 2284,
+      "sha256": "0e2d5b638d5b980681d18ea0bada235559b9f378788c4ec013f17f4a270c251f",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/actual-player-rite-150.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/current-head-title-18371.excerpt.txt",
+      "bytes": 656,
+      "sha256": "e3b87dfec700b162a478f06e556748375d451c0dc47451b462b44654c950dd12",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/current-head-title-18371.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/formal-entry.diagnosis.json",
+      "bytes": 21998,
+      "sha256": "59b0ebd4dc11c339367a6aa83115ac88b51b84b58c60c356d86e24596f7e092c",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/formal-entry.diagnosis.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/formal-entry.objects.json",
+      "bytes": 104225,
+      "sha256": "4fcbeed7f8e7aa211ac4efdee4bb968e5c03645845f84c858cc7b4800edd160f",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/formal-entry.objects.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/lyd_decisions.source-excerpt.txt",
+      "bytes": 1384,
+      "sha256": "6b40da40c3e512abe00203ad0dedb8b4343da57c23684e2e1d191bdc58d88fb9",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/lyd_decisions.source-excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/lyd_entry_effects.source-excerpt.txt",
+      "bytes": 215,
+      "sha256": "07fa4f59fc2727d191d87cae1935aabbc8455301370b21a795493a1ac43eeb2a",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/lyd_entry_effects.source-excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/lyd_player_triggers.source-excerpt.txt",
+      "bytes": 420,
+      "sha256": "73678b4dd18c3509f4df235e5487cf8967463c83880a02751077ec3ac9e2dd8f",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/lyd_player_triggers.source-excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/plain_set_character_rite_supports_forced_conversion_without_cascade.excerpt.txt",
+      "bytes": 126,
+      "sha256": "6eb02217f5fedcaf88d202021bd605785c91a2a89b8c74e7f0b7d7dab1827cac",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/plain_set_character_rite_supports_forced_conversion_without_cascade.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/played-character.excerpt.txt",
+      "bytes": 308,
+      "sha256": "4b37ef056dd73740bc7c8f5cc27ccb4a316f071235a34991d593a3edcb9b44ba",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/played-character.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/player-31254.excerpt.txt",
+      "bytes": 8614,
+      "sha256": "833e2265c604ea3ccfdb1fc65f2aca3107b6e1fca1671fee278084da3c0987b3",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/player-31254.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/preservation.json",
+      "bytes": 744,
+      "sha256": "8e6f5f34d2e7799ee13235d9f03a69f49625cb5eb8c9d7f60ba121a3cacbeacd",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/preservation.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/school-rite-152.excerpt.txt",
+      "bytes": 3380,
+      "sha256": "e5527b81548de9d7eca72107245dd13ed8499439120351c08211fcd9cbf4305a",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/school-rite-152.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/school-rite-153.excerpt.txt",
+      "bytes": 3335,
+      "sha256": "b6a0762eb3ff5789545cd0580f878050fdcc1a808963b2feb5fc46252f1dfc93",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/school-rite-153.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/school-rite-154.excerpt.txt",
+      "bytes": 3344,
+      "sha256": "c4f4e1714de04fd6e8b20521235a9648e8bd316517f592c288b70c226d884e86",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/school-rite-154.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/school-rite-155.excerpt.txt",
+      "bytes": 3334,
+      "sha256": "b997df9a49049e91beb5e83cf64109e849c60e42d31b52cd818181138747e897",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/school-rite-155.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/school-rite-156.excerpt.txt",
+      "bytes": 3329,
+      "sha256": "e422dfa178f983a802e7544883786c06fa28d52284b12eb5c83c9342ebc08aea",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/school-rite-156.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/school-rite-157.excerpt.txt",
+      "bytes": 3329,
+      "sha256": "2b7332bfa2b0e4fe4932d313ead3a561a9c91d6bac93b7f30229dcbc07c5de1c",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/school-rite-157.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/school-rite-158.excerpt.txt",
+      "bytes": 3339,
+      "sha256": "4e0ec295dec147fe329d2f184bfee60432d8b0d37cc9c8727a0fcbbc52188ebd",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/school-rite-158.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/school-rite-159.excerpt.txt",
+      "bytes": 3327,
+      "sha256": "f4394b56a7e057e068c6a65c5b226b770df73e6dda915cf1ab9819da5cb2cc87",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/school-rite-159.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/target-faith-32.excerpt.txt",
+      "bytes": 2011,
+      "sha256": "ad47f20ec3752c994fdabb0c31a3468f3e226a0a4c45c064096eb462fb4f2890",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/target-faith-32.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/vanilla_cross_conversion_excludes_faith_head.excerpt.txt",
+      "bytes": 596,
+      "sha256": "30b2f3b03b642b48633c79f83b26e1406e7ec49d143f929e416b798f82eaa2b6",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/vanilla_cross_conversion_excludes_faith_head.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/saved/vanilla_rite_conversion_excludes_faith_and_rite_heads.excerpt.txt",
+      "bytes": 200,
+      "sha256": "261fd04859f9d2bd4da3746eee1d296c1e6752745c46763864dd0ed18d59d56f",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/vanilla_rite_conversion_excludes_faith_and_rite_heads.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/native/0096-0022-welcome-select.request.json",
+      "bytes": 217,
+      "sha256": "fc3dcca20104d15ed98d29a3951313ed009dd86005c96ed6e2414526963e60e2",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/mcp-client-evidence/0096-0022-welcome-select.request.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/native/0096-0022-welcome-select.native-01.json",
+      "bytes": 83575,
+      "sha256": "2a5abca8e2f2c30328b0bc65fa479fc83180d3e4828b99c545749c8c0ade7554",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/mcp-client-evidence/0096-0022-welcome-select.native-01.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/native/0096-0022-welcome-select.response.json",
+      "bytes": 980,
+      "sha256": "44024862adefe19112a081d485327c2f5b890f00988f7a9431a6ca3a19e064f3",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/mcp-client-evidence/0096-0022-welcome-select.response.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/native/0099-0026-choose-cancel.request.json",
+      "bytes": 216,
+      "sha256": "882a1a85eeae95259f14b49dc72c6f58dfdc54296b824948a353e37596e3657e",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/mcp-client-evidence/0099-0026-choose-cancel.request.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/native/0099-0026-choose-cancel.native-01.json",
+      "bytes": 92472,
+      "sha256": "3bfa6664cb2ed0f2ecd19a7238e1a42c0bd443bf6507a6d72913248157f84287",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/mcp-client-evidence/0099-0026-choose-cancel.native-01.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/native/0099-0026-choose-cancel.response.json",
+      "bytes": 976,
+      "sha256": "09b277302d56cda293715b435b13c09f11c009bec12e8279ff986d92cfe52829",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/mcp-client-evidence/0099-0026-choose-cancel.response.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v1/root-attestation.json",
+      "bytes": 2127,
+      "sha256": "11cb672f38ab43c9d1cefcdc075e3d6370a640fbf8c708c5b8581a6970d2ec9b",
+      "copy_kind": "derived_root_message_attestation"
+    },
+    {
+      "path": "formal-ui-v1/README.md",
+      "bytes": 1120,
+      "sha256": "05989c73badbb3ceb6337f651eba061779548dabf2a3882df9749cf11a66288c",
+      "copy_kind": "derived_report"
+    },
+    {
+      "path": "README.md",
+      "bytes": 9504,
+      "sha256": "de222a81ba9e1f78f738901444d71756aa8c19988631bb54c78febf569fbe1e7",
+      "copy_kind": "derived_report"
+    },
+    {
+      "path": "formal-ui-v2/saved/actual-faith-33.excerpt.txt",
+      "bytes": 1935,
+      "sha256": "1dd99040d50c55f266975d0d3dc976f0cecd498fee0dd52bba6948bd3bb78e5f",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/8dfe5f9eb6f084f081ce078d73e1a68cfd7e98ccf56512e5130359627a2eafd5/actual-faith-33.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v2/saved/actual-rite-150.excerpt.txt",
+      "bytes": 2284,
+      "sha256": "0e2d5b638d5b980681d18ea0bada235559b9f378788c4ec013f17f4a270c251f",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/8dfe5f9eb6f084f081ce078d73e1a68cfd7e98ccf56512e5130359627a2eafd5/actual-rite-150.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v2/saved/played-character.excerpt.txt",
+      "bytes": 308,
+      "sha256": "4b37ef056dd73740bc7c8f5cc27ccb4a316f071235a34991d593a3edcb9b44ba",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/8dfe5f9eb6f084f081ce078d73e1a68cfd7e98ccf56512e5130359627a2eafd5/played-character.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v2/saved/player-31254.excerpt.txt",
+      "bytes": 8694,
+      "sha256": "013a24c39015c450d741d2d2b6861f1398d907868bce8269d6404b71d24e3d5c",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/8dfe5f9eb6f084f081ce078d73e1a68cfd7e98ccf56512e5130359627a2eafd5/player-31254.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v2/saved/preservation.json",
+      "bytes": 707,
+      "sha256": "74cd3617d9ead88768d3f782854d21796a9de190f6fd2fa6f6fb1915f74cf2f0",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/8dfe5f9eb6f084f081ce078d73e1a68cfd7e98ccf56512e5130359627a2eafd5/preservation.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v2/saved/target-zhuxi-rite-158.excerpt.txt",
+      "bytes": 3339,
+      "sha256": "4e0ec295dec147fe329d2f184bfee60432d8b0d37cc9c8727a0fcbbc52188ebd",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/8dfe5f9eb6f084f081ce078d73e1a68cfd7e98ccf56512e5130359627a2eafd5/target-zhuxi-rite-158.excerpt.txt",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v2/saved/zhuxi-choice.comparison.json",
+      "bytes": 4656,
+      "sha256": "a2571fbd76d6225ca95c778807966b7cd7a68a050405983024758561ef97c19f",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/8dfe5f9eb6f084f081ce078d73e1a68cfd7e98ccf56512e5130359627a2eafd5/zhuxi-choice.comparison.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v2/native/0101-0028-choose-zhuxi.request.json",
+      "bytes": 215,
+      "sha256": "2f63a8cedbb0d4b572e656f07cfabf7464c416fca47dc22b2d8d7d289ef49924",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/mcp-client-evidence/0101-0028-choose-zhuxi.request.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v2/native/0101-0028-choose-zhuxi.native-01.json",
+      "bytes": 97524,
+      "sha256": "cd97fbf47165b2ff2f660e5f2d461cf3280a73dc4c740b93ffd75bf708c15902",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/mcp-client-evidence/0101-0028-choose-zhuxi.native-01.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v2/native/0101-0028-choose-zhuxi.response.json",
+      "bytes": 973,
+      "sha256": "454fbe78b436902b8ad336957e744e675c98d065f3322b929c85e8c1a4b4c149",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/mcp-client-evidence/0101-0028-choose-zhuxi.response.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v2/native/0102-0029-formal-final-save.request.json",
+      "bytes": 213,
+      "sha256": "aa9283289ba07468dc86658ec61bf389c85bf9892f46283f5e67183acafd7ae6",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/mcp-client-evidence/0102-0029-formal-final-save.request.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v2/native/0102-0029-formal-final-save.native-01.json",
+      "bytes": 99154,
+      "sha256": "d0866989a748359508034945352f8a4431c3e85ff5ab321702675aed27c71d1f",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/mcp-client-evidence/0102-0029-formal-final-save.native-01.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v2/native/0102-0029-formal-final-save.response.json",
+      "bytes": 991,
+      "sha256": "a2535dc6842c811ffa90efedbc848aaaa06ee85922736947c3185541032fe449",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/mcp-client-evidence/0102-0029-formal-final-save.response.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "lifecycle/normal-exit-desktop-confirmed.json",
+      "bytes": 3870,
+      "sha256": "f30b570927edfe5633146797a2330be28f5656f1804ae026c1e9018e707cd4f2",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/normal-exit-desktop-confirmed.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "lifecycle/screen-release-completed.json",
+      "bytes": 1951,
+      "sha256": "2f4da1a7852411a26edb9ee774d4896e523783b8b8fae0667ede6c5b77b52fe4",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/screen-release-completed.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "lifecycle/keeper-FINAL.json",
+      "bytes": 387,
+      "sha256": "932a84017134b8aedf602e92542d8a97156d4c49a77564dd63dbf73ec4afb2b1",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0002/FINAL.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "lifecycle/mcp-client-close.response.json",
+      "bytes": 455,
+      "sha256": "34cf18cdba35b3b049096a1a7ba7693dcd2ed34a6532c0c6e73b49b076e07624",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/mcp-client-evidence/0103-9999-close.response.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "lifecycle/mcp-client-close.request.json",
+      "bytes": 82,
+      "sha256": "7dc85b5167868485834a1b90d5b9de508ef7ade2b99b305e2298313adf1d1574",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/mcp-client-evidence/0103-9999-close.request.json",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "lifecycle/error.log",
+      "bytes": 22248,
+      "sha256": "9a94887d7d2f6e825cf806089445aa15ec06e3416d34613037214c4f911e53c5",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/userdir/logs/error.log",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "screenshots/steam-moved.png",
+      "bytes": 327336,
+      "sha256": "1655dc8af4f7a6bbf58a22960129eba4ed210e4f75cb9003d142a7514e01efae",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/offline/probe-1/steam-moved.png",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "screenshots/formal-study-requirements.png",
+      "bytes": 2254777,
+      "sha256": "bdfeffbc6db402f2ddf1141a013e65285bcf02a0a13495621bc95b42789664ae",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/formal-study-requirements.png",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "screenshots/normal-exit-desktop-confirmed.png",
+      "bytes": 327479,
+      "sha256": "942d7137c7d75330ed2ea61b2d9e752dcbca30d73f265aa5b2d22bf7baeda743",
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/normal-exit-desktop-confirmed.png",
+      "copy_kind": "exact_raw_bytes"
+    },
+    {
+      "path": "formal-ui-v2/final-state.json",
+      "bytes": 2166,
+      "sha256": "bf9c5436f736ea8b7d3876a9a9e1d4c19b68261fac8e12e64d4ac6378d1bcb67",
+      "copy_kind": "derived_report",
+      "lineage": "Root final message, immutable formal comparison, keeper/release/normal-exit receipts and exact final error bytes."
+    },
+    {
+      "path": "FINAL-REPORT.md",
+      "bytes": 3183,
+      "sha256": "ca6ce1a184e0d7b10cd27d559ec94504682e7e1d07094d0e7714b2b0e31f16d1",
+      "copy_kind": "derived_report",
+      "lineage": "Final state and source-bound retained evidence."
+    },
+    {
+      "path": "index.json",
+      "bytes": 49453,
+      "sha256": "3eea26f9b93b95c2da9b19e5bc6d5a868db54041c783762644b627c0f1629c54",
+      "copy_kind": "previous_immutable_index"
+    },
+    {
+      "path": "index-v2.json",
+      "bytes": 63609,
+      "sha256": "c7f812f72b319180d4768ce1bb9bc8e274f9fec04675d8606be70d40794343f6",
+      "copy_kind": "previous_immutable_index"
+    }
+  ],
+  "external_artifacts": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/probe-audit-three-rounds/debug.log",
+      "bytes": 1593721,
+      "sha256": "64c1fc5a73dcf5e20d90657e68318a9eec3e43caaf330573f4bea2ec2366ee6e",
+      "embedded": false,
+      "reason": "Permanent raw artifact remains in original external preservation tree"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/df8a22e38ef260e197b237707bc0ef19ce64ee3627e50b67da7d37ecd23b8ffc/xar_checkpoint.ck3",
+      "bytes": 91208782,
+      "sha256": "df8a22e38ef260e197b237707bc0ef19ce64ee3627e50b67da7d37ecd23b8ffc",
+      "embedded": false,
+      "reason": "Permanent raw artifact remains in original external preservation tree"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca/xar_checkpoint.ck3",
+      "bytes": 102093350,
+      "sha256": "ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca",
+      "embedded": false,
+      "reason": "Permanent raw artifact remains in original external preservation tree"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/offline/probe-1/steam-moved.png",
+      "bytes": 327336,
+      "sha256": "1655dc8af4f7a6bbf58a22960129eba4ed210e4f75cb9003d142a7514e01efae",
+      "embedded": false,
+      "reason": "Permanent raw artifact remains in original external preservation tree"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/console-three-rounds-v3-001/readback.png",
+      "bytes": 2025420,
+      "sha256": "33ac712c0a2548b4530ddefabcb219b05645b2652146dff19cc7ef98842f6ddf",
+      "embedded": false,
+      "reason": "Permanent raw artifact remains in original external preservation tree"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/console-open-001/after.png",
+      "bytes": 2409708,
+      "sha256": "622f65006c68cac2c5b309c8a2877fcabcac9fe83fa48b7d390b739a00009bf6",
+      "embedded": false,
+      "reason": "Permanent raw artifact remains in original external preservation tree"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/console-open-delayed.png",
+      "bytes": 2412922,
+      "sha256": "411a00d328019ad4f038ec9dfdff88b9b2e9757bd719828b0421a9930cfe6b2d",
+      "embedded": false,
+      "reason": "Permanent raw artifact remains in original external preservation tree"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/formal-welcome.png",
+      "bytes": 2153617,
+      "sha256": "51ce86cdb6d078c5ee0632b4893d99ae017dbc44635e602af5ec4e0b239f4ce7",
+      "embedded": false,
+      "root_visual_review": true
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/formal-post-welcome.png",
+      "bytes": 2304031,
+      "sha256": "3333e13ec12d90a7849931e2c1a63c38f045769e205fca625691bd52ddb4cca4",
+      "embedded": false,
+      "root_visual_review": true
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/formal-choose-start.png",
+      "bytes": 2301220,
+      "sha256": "fef972311f966e7d2aab6558a33a2fe90deee63ef48a86b0f8f004adc9528867",
+      "embedded": false,
+      "root_visual_review": true
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-002/formal-study-requirements.png",
+      "bytes": 2254777,
+      "sha256": "bdfeffbc6db402f2ddf1141a013e65285bcf02a0a13495621bc95b42789664ae",
+      "embedded": false,
+      "root_visual_review": true
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed/xar_checkpoint.ck3",
+      "bytes": 102093402,
+      "sha256": "db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed",
+      "embedded": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/preserved-checkpoints/8dfe5f9eb6f084f081ce078d73e1a68cfd7e98ccf56512e5130359627a2eafd5/xar_checkpoint.ck3",
+      "bytes": 102093475,
+      "sha256": "8dfe5f9eb6f084f081ce078d73e1a68cfd7e98ccf56512e5130359627a2eafd5",
+      "embedded": false
+    }
+  ],
+  "current_status": {
+    "schema": "lyd.r0002.final-qualified-verdict.v1",
+    "recorded_at_utc": "2026-10-04T04:10:52.635231+00:00",
+    "primitive_verdict": "ACCEPTED_SCRIPTED_ENGINE_THREE_ROUND_ATTESTATION",
+    "saved_object_graph": "VERIFIED_NO_RELOAD",
+    "formal_verdict": "FORMAL_ENTRY_AND_ZHUXI_CHOICE_RED",
+    "formal_source": "formal-ui-v2/saved/zhuxi-choice.comparison.json",
+    "actual_player": 31254,
+    "actual_rite": 150,
+    "actual_faith": 33,
+    "requested_zhuxi_rite": 158,
+    "requested_faith": 32,
+    "target_convertibility_saved_value": "no",
+    "school_cooldown_new_tick": "365",
+    "study_cooldown": false,
+    "root_cause": "NOT_ESTABLISHED; saved conversion=no is an observed candidate condition, not causation proof.",
+    "overall_product_green": false,
+    "zero_error_log_claimed": false,
+    "final_error_log_identical_to_primitive_freeze": true,
+    "final_error_sha256": "9a94887d7d2f6e825cf806089445aa15ec06e3416d34613037214c4f911e53c5",
+    "final_error_counts": {
+      "tooltip_perspective_errors": 3,
+      "formatter_errors": 165,
+      "ai_coronation_errors": 1,
+      "bp3_roaming_invalid_activity_errors": 27
+    },
+    "lifecycle": {
+      "normal_save_exit_reported_by_root": true,
+      "ck3_absent_from_exit_receipt": true,
+      "mcp_client_close_requested": true,
+      "mcp_server_pid_15206_absent_reported_by_root": true,
+      "keeper_pid_68845_stopped_reported_by_root": true,
+      "keeper_thread_exited": true,
+      "keeper_failure": null,
+      "keeper_last_sequence": 2626,
+      "cas_release_sequence": 2627,
+      "cas_resources_empty": true
+    },
+    "root_lifecycle_attestation": "R0002 normal save+exit done and CK3 PID7564 absent; MCP session closed15206; keeper68845 STOP FINAL seq2626 thread exited no failure; CAS released2627.",
+    "limits": [
+      "No save reload",
+      "No formal study success",
+      "No conversion root-cause proof",
+      "No main/last direct detach",
+      "No natural five-year cooldown or ordinary cost acceptance",
+      "No >=100 auto-split acceptance",
+      "No global AI or release acceptance"
+    ],
+    "auditor_actions": "Read preserved receipts and copied explicitly authorized report files only; no game/desktop/MCP/Steam/lease action or product source change."
+  },
+  "raw_copy_validation": {
+    "status": "PASS",
+    "files_verified": 180,
+    "method": "SHA-256 and byte count of every exact copied/derived package member before import"
+  },
+  "encoding_contract": "Raw payloads retain BOM, control bytes, CRLF and original line endings; Git acceptance tree must remain -text."
+}

@@ -1,0 +1,17 @@
+	option = {
+		name = global_religion.1000.special
+		add_internal_flag = dangerous
+		trigger = {
+			rite != scope:target_rite
+			faith.religious_head != root
+			trigger_if = { # The AI only takes up a rite that already has a foothold nearby, unless it is unreformed and this is its road out of paganism; players may follow their conscience
+				limit = { is_ai = yes }
+				OR = {
+					exists = scope:exiles_rite_locally_present
+					rite = { rite_has_parameter = unreformed }
+				}
+			}
+		}
+		show_as_tooltip = {
+			set_character_rite_with_conversion = scope:target_rite
+			if = {

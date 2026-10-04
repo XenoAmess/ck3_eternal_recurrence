@@ -9,6 +9,14 @@ lyd.1 = {
     trigger = { lyd_can_use_school_trigger = yes }
     option = { name = lyd_welcome_continue }
 }
+lyd.2 = {
+    type = character_event
+    title = lyd_admission_failed_t
+    desc = lyd_admission_failed_desc
+    theme = faith
+    trigger = { lyd_is_player_trigger = yes }
+    option = { name = lyd_cancel }
+}
 lyd.10 = {
     type = character_event
     title = lyd_choose_school_t
@@ -18,56 +26,56 @@ lyd.10 = {
 
     option = {
         name = lyd_adopt_kongmen
-        trigger = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_kongmen } }
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_kongmen } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_kongmen_effect = yes
     }
 
     option = {
         name = lyd_adopt_mengzi
-        trigger = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_mengzi } }
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_mengzi } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_mengzi_effect = yes
     }
 
     option = {
         name = lyd_adopt_xunzi
-        trigger = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_xunzi } }
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_xunzi } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_xunzi_effect = yes
     }
 
     option = {
         name = lyd_adopt_zhengxuan
-        trigger = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_zhengxuan } }
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_zhengxuan } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_zhengxuan_effect = yes
     }
 
     option = {
         name = lyd_adopt_wangsu
-        trigger = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_wangsu } }
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wangsu } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_wangsu_effect = yes
     }
 
     option = {
         name = lyd_adopt_jingshu
-        trigger = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_jingshu } }
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_jingshu } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_jingshu_effect = yes
     }
 
     option = {
         name = lyd_adopt_zhuxi
-        trigger = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_zhuxi } }
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_zhuxi } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_zhuxi_effect = yes
     }
 
     option = {
         name = lyd_adopt_lujiuyuan
-        trigger = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_lujiuyuan } }
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_lujiuyuan } }
         custom_tooltip = lyd_adopt_school_tt
         lyd_adopt_lujiuyuan_effect = yes
     }
@@ -83,7 +91,7 @@ lyd.100 = {
 
     option = {
         name = lyd_practice_kongmen_a
-        trigger = { lyd_can_study_trigger = yes gold >= 10 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
         custom_tooltip = lyd_practice_kongmen_a_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_kongmen_a_effect = yes
@@ -91,7 +99,7 @@ lyd.100 = {
 
     option = {
         name = lyd_practice_kongmen_b
-        trigger = { lyd_can_study_trigger = yes gold >= 25 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 25 }
         custom_tooltip = lyd_practice_kongmen_b_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_kongmen_b_effect = yes
@@ -99,7 +107,7 @@ lyd.100 = {
 
     option = {
         name = lyd_practice_kongmen_c
-        trigger = { lyd_can_study_trigger = yes gold >= 40 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 40 }
         custom_tooltip = lyd_practice_kongmen_c_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_kongmen_c_effect = yes
@@ -116,7 +124,7 @@ lyd.101 = {
 
     option = {
         name = lyd_practice_mengzi_a
-        trigger = { lyd_can_study_trigger = yes gold >= 20 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 20 }
         custom_tooltip = lyd_practice_mengzi_a_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_mengzi_a_effect = yes
@@ -124,7 +132,7 @@ lyd.101 = {
 
     option = {
         name = lyd_practice_mengzi_b
-        trigger = { lyd_can_study_trigger = yes gold >= 15 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
         custom_tooltip = lyd_practice_mengzi_b_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_mengzi_b_effect = yes
@@ -132,7 +140,7 @@ lyd.101 = {
 
     option = {
         name = lyd_practice_mengzi_c
-        trigger = { lyd_can_study_trigger = yes gold >= 0 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
         custom_tooltip = lyd_practice_mengzi_c_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_mengzi_c_effect = yes
@@ -149,7 +157,7 @@ lyd.102 = {
 
     option = {
         name = lyd_practice_xunzi_a
-        trigger = { lyd_can_study_trigger = yes gold >= 10 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
         custom_tooltip = lyd_practice_xunzi_a_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_xunzi_a_effect = yes
@@ -157,7 +165,7 @@ lyd.102 = {
 
     option = {
         name = lyd_practice_xunzi_b
-        trigger = { lyd_can_study_trigger = yes gold >= 15 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
         custom_tooltip = lyd_practice_xunzi_b_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_xunzi_b_effect = yes
@@ -165,7 +173,7 @@ lyd.102 = {
 
     option = {
         name = lyd_practice_xunzi_c
-        trigger = { lyd_can_study_trigger = yes gold >= 0 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
         custom_tooltip = lyd_practice_xunzi_c_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_xunzi_c_effect = yes
@@ -182,7 +190,7 @@ lyd.103 = {
 
     option = {
         name = lyd_practice_zhengxuan_a
-        trigger = { lyd_can_study_trigger = yes gold >= 15 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
         custom_tooltip = lyd_practice_zhengxuan_a_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_zhengxuan_a_effect = yes
@@ -190,7 +198,7 @@ lyd.103 = {
 
     option = {
         name = lyd_practice_zhengxuan_b
-        trigger = { lyd_can_study_trigger = yes gold >= 10 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
         custom_tooltip = lyd_practice_zhengxuan_b_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_zhengxuan_b_effect = yes
@@ -198,7 +206,7 @@ lyd.103 = {
 
     option = {
         name = lyd_practice_zhengxuan_c
-        trigger = { lyd_can_study_trigger = yes gold >= 30 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 30 }
         custom_tooltip = lyd_practice_zhengxuan_c_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_zhengxuan_c_effect = yes
@@ -215,7 +223,7 @@ lyd.104 = {
 
     option = {
         name = lyd_practice_wangsu_a
-        trigger = { lyd_can_study_trigger = yes gold >= 15 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
         custom_tooltip = lyd_practice_wangsu_a_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_wangsu_a_effect = yes
@@ -223,7 +231,7 @@ lyd.104 = {
 
     option = {
         name = lyd_practice_wangsu_b
-        trigger = { lyd_can_study_trigger = yes gold >= 10 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
         custom_tooltip = lyd_practice_wangsu_b_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_wangsu_b_effect = yes
@@ -231,7 +239,7 @@ lyd.104 = {
 
     option = {
         name = lyd_practice_wangsu_c
-        trigger = { lyd_can_study_trigger = yes gold >= 25 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 25 }
         custom_tooltip = lyd_practice_wangsu_c_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_wangsu_c_effect = yes
@@ -248,7 +256,7 @@ lyd.105 = {
 
     option = {
         name = lyd_practice_jingshu_a
-        trigger = { lyd_can_study_trigger = yes gold >= 15 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
         custom_tooltip = lyd_practice_jingshu_a_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_jingshu_a_effect = yes
@@ -256,7 +264,7 @@ lyd.105 = {
 
     option = {
         name = lyd_practice_jingshu_b
-        trigger = { lyd_can_study_trigger = yes gold >= 20 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 20 }
         custom_tooltip = lyd_practice_jingshu_b_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_jingshu_b_effect = yes
@@ -264,7 +272,7 @@ lyd.105 = {
 
     option = {
         name = lyd_practice_jingshu_c
-        trigger = { lyd_can_study_trigger = yes gold >= 35 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 35 }
         custom_tooltip = lyd_practice_jingshu_c_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_jingshu_c_effect = yes
@@ -281,7 +289,7 @@ lyd.106 = {
 
     option = {
         name = lyd_practice_zhuxi_a
-        trigger = { lyd_can_study_trigger = yes gold >= 15 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
         custom_tooltip = lyd_practice_zhuxi_a_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_zhuxi_a_effect = yes
@@ -289,7 +297,7 @@ lyd.106 = {
 
     option = {
         name = lyd_practice_zhuxi_b
-        trigger = { lyd_can_study_trigger = yes gold >= 10 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
         custom_tooltip = lyd_practice_zhuxi_b_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_zhuxi_b_effect = yes
@@ -297,7 +305,7 @@ lyd.106 = {
 
     option = {
         name = lyd_practice_zhuxi_c
-        trigger = { lyd_can_study_trigger = yes gold >= 35 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 35 }
         custom_tooltip = lyd_practice_zhuxi_c_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_zhuxi_c_effect = yes
@@ -314,7 +322,7 @@ lyd.107 = {
 
     option = {
         name = lyd_practice_lujiuyuan_a
-        trigger = { lyd_can_study_trigger = yes gold >= 0 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
         custom_tooltip = lyd_practice_lujiuyuan_a_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_lujiuyuan_a_effect = yes
@@ -322,7 +330,7 @@ lyd.107 = {
 
     option = {
         name = lyd_practice_lujiuyuan_b
-        trigger = { lyd_can_study_trigger = yes gold >= 15 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
         custom_tooltip = lyd_practice_lujiuyuan_b_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_lujiuyuan_b_effect = yes
@@ -330,7 +338,7 @@ lyd.107 = {
 
     option = {
         name = lyd_practice_lujiuyuan_c
-        trigger = { lyd_can_study_trigger = yes gold >= 0 }
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
         custom_tooltip = lyd_practice_lujiuyuan_c_tt
         custom_tooltip = lyd_study_cooldown_tt
         lyd_practice_lujiuyuan_c_effect = yes

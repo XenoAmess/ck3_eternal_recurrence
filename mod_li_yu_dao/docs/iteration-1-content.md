@@ -8,7 +8,7 @@
 
 ## 归属与时间模式
 
-8 个样板均属于新增信仰 `lyd_common_faith`，上层仍为原生 `confucianism_religion`，主礼仪为 `lyd_rite_kongmen`。本包新增定义，不覆盖原版 `confucian_faith`、`jingxue`、`daoxue`。礼仪声明 `create = yes`、`convert = no`；当前集成使用玩家启用和选学流程，显式切换礼仪的原生语义仍须实机验证，不能由声明推定普通改宗菜单已经可用。
+8 个样板均属于新增信仰 `lyd_common_faith`，上层仍为原生 `confucianism_religion`，主礼仪为 `lyd_rite_kongmen`。本包新增定义，不覆盖原版 `confucian_faith`、`jingxue`、`daoxue`。礼仪声明 `create = yes`、`convert = yes`；原版定义说明 `convert = no` 会禁止人物转入，不能解释为只关闭改宗菜单。产品入口和择学仍由玩家主动发起，使用只改变当前角色的 plain setter；仅在实际礼仪及信仰核对成功后启用功能或设置择学冷却。新声明的实际转入效果待 R0003 冷加载验证。
 
 一期采用明确的**自由时代模式**：玩家可选孔孟、荀子、汉魏礼学、唐代经疏和南宋学问。朱子、象山样板此时是供玩家试用的跨时代思想路线，不能据此描述为 867 年或 1066 年已有的历史组织。系统不生成同名历史人物，不因路线选择改写某朝的实际祀典。
 

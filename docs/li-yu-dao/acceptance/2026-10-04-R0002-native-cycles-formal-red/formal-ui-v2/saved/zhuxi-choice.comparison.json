@@ -1,0 +1,199 @@
+{
+  "schema": "ck3.lyd.zhuxi-choice-save-comparison.v1",
+  "recorded_at_utc": "2026-10-04T03:37:22.573810+00:00",
+  "artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\8dfe5f9eb6f084f081ce078d73e1a68cfd7e98ccf56512e5130359627a2eafd5\\xar_checkpoint.ck3",
+    "bytes": 102093475,
+    "sha256": "8dfe5f9eb6f084f081ce078d73e1a68cfd7e98ccf56512e5130359627a2eafd5"
+  },
+  "previous_formal_entry_artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed\\xar_checkpoint.ck3",
+    "bytes": 102093402,
+    "sha256": "db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed"
+  },
+  "previous_projection_sha256": "4fcbeed7f8e7aa211ac4efdee4bb968e5c03645845f84c858cc7b4800edd160f",
+  "metadata": {
+    "version": "\"1.20.0.3\"",
+    "meta_date": "1067.6.30",
+    "meta_player_name": "\"夫子罗贝尔\""
+  },
+  "saved_played_character": "31254",
+  "player": {
+    "first_name": "\"Robert\"",
+    "birth": "1015.1.1",
+    "rite": "150"
+  },
+  "lyd_variables": [
+    {
+      "flag": "lyd_np_initialized",
+      "tick": null,
+      "data": [
+        {
+          "key": "type",
+          "value": "boolean"
+        },
+        {
+          "key": "identity",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "flag": "lyd_np_latest_faith",
+      "tick": null,
+      "data": [
+        {
+          "key": "type",
+          "value": "faith"
+        },
+        {
+          "key": "identity",
+          "value": "108"
+        }
+      ]
+    },
+    {
+      "flag": "lyd_np_completed_joins",
+      "tick": null,
+      "data": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "300000"
+        }
+      ]
+    },
+    {
+      "flag": "lyd_np_completed_cycles",
+      "tick": null,
+      "data": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "300000"
+        }
+      ]
+    },
+    {
+      "flag": "lyd_np_branch_county",
+      "tick": null,
+      "data": [
+        {
+          "key": "type",
+          "value": "lt"
+        },
+        {
+          "key": "identity",
+          "value": "2250"
+        }
+      ]
+    },
+    {
+      "flag": "lyd_np_branch_holder",
+      "tick": null,
+      "data": [
+        {
+          "key": "type",
+          "value": "char"
+        },
+        {
+          "key": "identity",
+          "value": "36445"
+        }
+      ]
+    },
+    {
+      "flag": "lyd_np_old_faith",
+      "tick": null,
+      "data": [
+        {
+          "key": "type",
+          "value": "faith"
+        },
+        {
+          "key": "identity",
+          "value": "107"
+        }
+      ]
+    },
+    {
+      "flag": "lyd_np_old_head_title",
+      "tick": null,
+      "data": [
+        {
+          "key": "type",
+          "value": "lt"
+        },
+        {
+          "key": "identity",
+          "value": "18410"
+        }
+      ]
+    },
+    {
+      "flag": "lyd_enabled",
+      "tick": null,
+      "data": []
+    },
+    {
+      "flag": "lyd_school_cooldown",
+      "tick": "365",
+      "data": []
+    }
+  ],
+  "flags": {
+    "lyd_enabled": true,
+    "lyd_school_cooldown": true,
+    "lyd_study_cooldown": false
+  },
+  "actual_rite": {
+    "id": "150",
+    "fields": {
+      "rite_type": "lyd_np_anchor_rite",
+      "faith": "33",
+      "head_of_rite": "31254",
+      "convert": "yes",
+      "enabled": "yes"
+    }
+  },
+  "actual_faith": {
+    "id": "33",
+    "fields": {
+      "faith_type": "lyd_np_anchor_faith",
+      "main_rite": "150",
+      "religious_head": "18371",
+      "name": "\"共礼学统（原型）\""
+    }
+  },
+  "actual_saved_zhuxi_target": {
+    "id": "158",
+    "fields": {
+      "rite_type": "lyd_rite_zhuxi",
+      "faith": "32",
+      "head_of_rite": "4294967295",
+      "convert": "no",
+      "enabled": "yes"
+    }
+  },
+  "comparison": {
+    "previous_rite": "150",
+    "current_rite": "150",
+    "previous_faith": "33",
+    "current_faith": "33",
+    "rite_changed": false,
+    "faith_changed": false,
+    "previous_school_cooldown": false,
+    "current_school_cooldown": true,
+    "current_rite_is_zhuxi_target": false
+  },
+  "status": "ACTUAL_SAVED_STATE_RECORDED",
+  "game_called": false,
+  "tracked_written": false,
+  "boundary": "only actual saved values; no ACK promotion or claim about the engine's conversion restriction"
+}

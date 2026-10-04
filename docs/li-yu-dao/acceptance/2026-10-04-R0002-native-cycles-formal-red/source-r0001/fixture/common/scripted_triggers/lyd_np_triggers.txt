@@ -1,0 +1,82 @@
+# Character scope. Actors initiate; NPC holder is only an affected fixture target.
+lyd_np_actor_trigger = {
+    is_ai = no
+    is_landed = yes
+    is_adult = yes
+    is_alive = yes
+    exists = capital_province
+}
+
+lyd_np_initialized_trigger = {
+    lyd_np_actor_trigger = yes
+    has_variable = lyd_np_initialized
+    exists = var:lyd_np_branch_holder
+    var:lyd_np_branch_holder = { is_alive = yes rite = rite:lyd_np_branch_rite }
+    rite = rite:lyd_np_anchor_rite
+    faith = faith:lyd_np_anchor_faith
+}
+
+lyd_np_transition_ready_trigger = {
+    lyd_np_initialized_trigger = yes
+    NOT = { has_variable = lyd_np_transition_busy }
+    rite:lyd_np_branch_rite = { NOT = { has_variable = lyd_np_transition_cooldown } }
+}
+
+lyd_np_join_ready_trigger = {
+    lyd_np_transition_ready_trigger = yes
+    rite:lyd_np_branch_rite = { faith != faith:lyd_np_anchor_faith }
+    # Explicit cross-faith pair query; not the branch's unparameterized divergence.
+    rite:lyd_np_branch_rite = { "divergence(root.faith.main_rite)" < 100 }
+}
+
+lyd_np_detach_ready_trigger = {
+    lyd_np_transition_ready_trigger = yes
+    rite:lyd_np_branch_rite = {
+        faith = faith:lyd_np_anchor_faith
+        this != faith.main_rite
+    }
+}
+
+# Postconditions run at D+1 and D+30. Cooldown must still be present.
+lyd_np_joined_postcondition_trigger = {
+    lyd_np_initialized_trigger = yes
+    faith:lyd_np_anchor_faith = {
+        main_rite = rite:lyd_np_anchor_rite
+        religious_head = root
+    }
+    rite:lyd_np_branch_rite = {
+        faith = faith:lyd_np_anchor_faith
+        this != faith.main_rite
+        has_variable = lyd_np_transition_cooldown
+    }
+    var:lyd_np_branch_holder = { faith = faith:lyd_np_anchor_faith }
+    # A destroyed title object may retain identity; test holder/binding, not object garbage collection.
+    trigger_if = {
+        limit = { exists = var:lyd_np_old_head_title }
+        var:lyd_np_old_head_title = { NOT = { exists = holder } }
+    }
+    trigger_if = {
+        limit = { exists = var:lyd_np_old_faith }
+        var:lyd_np_old_faith = { NOT = { exists = religious_head_title } }
+    }
+}
+
+lyd_np_detached_postcondition_trigger = {
+    lyd_np_initialized_trigger = yes
+    exists = var:lyd_np_latest_faith
+    rite:lyd_np_branch_rite = {
+        faith != faith:lyd_np_anchor_faith
+        faith = root.var:lyd_np_latest_faith
+        this = faith.main_rite
+        has_variable = lyd_np_transition_cooldown
+    }
+    var:lyd_np_latest_faith = {
+        main_rite = rite:lyd_np_branch_rite
+        religious_head = root.var:lyd_np_branch_holder
+    }
+    var:lyd_np_branch_holder = {
+        faith = root.var:lyd_np_latest_faith
+        exists = faith.religious_head_title
+        faith.religious_head_title = { has_variable = lyd_np_owned_head }
+    }
+}

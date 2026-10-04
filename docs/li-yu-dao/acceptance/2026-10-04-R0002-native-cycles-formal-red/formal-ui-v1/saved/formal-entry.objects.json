@@ -1,0 +1,4108 @@
+{
+  "schema": "ck3.lyd.formal-entry-save-diagnosis.v1",
+  "recorded_at_utc": "2026-10-04T03:30:02.035542+00:00",
+  "artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed\\xar_checkpoint.ck3",
+    "bytes": 102093402,
+    "sha256": "db281f7bbf6f4aedf4f0e87b8f419418d492bca37615ce1db495b3086b98c5ed"
+  },
+  "metadata": {
+    "version": "\"1.20.0.3\"",
+    "meta_date": "1067.6.30",
+    "meta_player_name": "\"夫子罗贝尔\""
+  },
+  "actual_saved_player": "31254",
+  "player": {
+    "id": 31254,
+    "fields": {
+      "first_name": "\"Robert\"",
+      "rite": "150",
+      "birth": "1015.1.1"
+    },
+    "lyd_variables": [
+      {
+        "flag": "lyd_np_initialized",
+        "tick": null,
+        "data": [
+          {
+            "key": "type",
+            "value": "boolean"
+          },
+          {
+            "key": "identity",
+            "value": "1"
+          }
+        ]
+      },
+      {
+        "flag": "lyd_np_latest_faith",
+        "tick": null,
+        "data": [
+          {
+            "key": "type",
+            "value": "faith"
+          },
+          {
+            "key": "identity",
+            "value": "108"
+          }
+        ]
+      },
+      {
+        "flag": "lyd_np_completed_joins",
+        "tick": null,
+        "data": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "300000"
+          }
+        ]
+      },
+      {
+        "flag": "lyd_np_completed_cycles",
+        "tick": null,
+        "data": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "300000"
+          }
+        ]
+      },
+      {
+        "flag": "lyd_np_branch_county",
+        "tick": null,
+        "data": [
+          {
+            "key": "type",
+            "value": "lt"
+          },
+          {
+            "key": "identity",
+            "value": "2250"
+          }
+        ]
+      },
+      {
+        "flag": "lyd_np_branch_holder",
+        "tick": null,
+        "data": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "36445"
+          }
+        ]
+      },
+      {
+        "flag": "lyd_np_old_faith",
+        "tick": null,
+        "data": [
+          {
+            "key": "type",
+            "value": "faith"
+          },
+          {
+            "key": "identity",
+            "value": "107"
+          }
+        ]
+      },
+      {
+        "flag": "lyd_np_old_head_title",
+        "tick": null,
+        "data": [
+          {
+            "key": "type",
+            "value": "lt"
+          },
+          {
+            "key": "identity",
+            "value": "18410"
+          }
+        ]
+      },
+      {
+        "flag": "lyd_enabled",
+        "tick": null,
+        "data": []
+      }
+    ]
+  },
+  "actual_rite": {
+    "id": "150",
+    "fields": {
+      "rite_type": "lyd_np_anchor_rite",
+      "faith": "33",
+      "head_of_rite": "31254",
+      "convert": "yes",
+      "enabled": "yes",
+      "source": "historical"
+    },
+    "all_entries": [
+      {
+        "key": "rite_type",
+        "value": "lyd_np_anchor_rite"
+      },
+      {
+        "key": "faith",
+        "value": "33"
+      },
+      {
+        "key": "founder",
+        "value": "4294967295"
+      },
+      {
+        "key": "head_of_rite",
+        "value": "31254"
+      },
+      {
+        "key": "origin_rite",
+        "value": "4294967295"
+      },
+      {
+        "key": "data",
+        "value": [
+          {
+            "key": "tag",
+            "value": "\"lyd_np_anchor_rite\""
+          },
+          {
+            "key": "name",
+            "value": "\"共礼（原型）\""
+          },
+          {
+            "key": "adjective",
+            "value": "\"共礼\""
+          },
+          {
+            "key": "adherent",
+            "value": "\"共礼学人\""
+          },
+          {
+            "key": "adherent_plural",
+            "value": "\"共礼学人\""
+          },
+          {
+            "key": "desc",
+            "value": "\"始终保留为接收方主礼仪。\""
+          },
+          {
+            "key": "color",
+            "value": "rgb"
+          },
+          {
+            "key": null,
+            "value": [
+              {
+                "key": null,
+                "value": "150"
+              },
+              {
+                "key": null,
+                "value": "89"
+              },
+              {
+                "key": null,
+                "value": "30"
+              }
+            ]
+          },
+          {
+            "key": "icon",
+            "value": "\"\""
+          },
+          {
+            "key": "texticon",
+            "value": "\"\""
+          },
+          {
+            "key": "graphical_faith",
+            "value": "\"\""
+          },
+          {
+            "key": "piety_icon_group",
+            "value": "\"\""
+          },
+          {
+            "key": "tenet_background_icon",
+            "value": "\"\""
+          },
+          {
+            "key": "tenet_heretical_background_icon",
+            "value": "\"\""
+          },
+          {
+            "key": "tenet_neutral_background_icon",
+            "value": "\"\""
+          },
+          {
+            "key": "tenet_unknown_background_icon",
+            "value": "\"\""
+          },
+          {
+            "key": "fervor",
+            "value": "50"
+          },
+          {
+            "key": "religious_head",
+            "value": "4294967295"
+          },
+          {
+            "key": "tenets",
+            "value": [
+              {
+                "key": null,
+                "value": [
+                  {
+                    "key": "tenet",
+                    "value": "tenet_pursuit_of_knowledge"
+                  },
+                  {
+                    "key": "status",
+                    "value": "core"
+                  }
+                ]
+              },
+              {
+                "key": null,
+                "value": [
+                  {
+                    "key": "tenet",
+                    "value": "tenet_benevolent_governance"
+                  },
+                  {
+                    "key": "status",
+                    "value": "core"
+                  }
+                ]
+              },
+              {
+                "key": null,
+                "value": [
+                  {
+                    "key": "tenet",
+                    "value": "tenet_harmonious_society"
+                  },
+                  {
+                    "key": "status",
+                    "value": "core"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "key": "tenet",
+            "value": "tenet_pursuit_of_knowledge"
+          },
+          {
+            "key": "tenet",
+            "value": "tenet_benevolent_governance"
+          },
+          {
+            "key": "tenet",
+            "value": "tenet_harmonious_society"
+          },
+          {
+            "key": "doctrine",
+            "value": "sinitic_hostility_doctrine"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_concubines"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_divorce_allowed"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_bastardry_legitimization"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_homosexuality_shunned"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_deviancy_crime"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_adultery_men_crime"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_adultery_women_crime"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_kinslaying_any_dynasty_member_crime"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_witchcraft_crime"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_gender_male_dominated"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_consanguinity_dynastic"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_pluralism_pluralistic"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_theocracy_lay_clergy"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_temporal_head"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_clerical_function_taxation"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_clerical_gender_male_only"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_clerical_marriage_allowed"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_clerical_succession_temporal_appointment"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_pilgrimage_local_rites"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_family_rites"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_no_anointment"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_polytheist"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_scriptural"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_monasticism_absent"
+          },
+          {
+            "key": "doctrine",
+            "value": "doctrine_sacraments_absent"
+          },
+          {
+            "key": "doctrine",
+            "value": "special_doctrine_is_sinitic_faith"
+          },
+          {
+            "key": "doctrine",
+            "value": "special_doctrine_immaterial_harmony"
+          }
+        ]
+      },
+      {
+        "key": "convert",
+        "value": "yes"
+      },
+      {
+        "key": "enabled",
+        "value": "yes"
+      },
+      {
+        "key": "override_name",
+        "value": "no"
+      },
+      {
+        "key": "source",
+        "value": "historical"
+      }
+    ]
+  },
+  "actual_faith": {
+    "id": "33",
+    "fields": {
+      "faith_type": "lyd_np_anchor_faith",
+      "main_rite": "150",
+      "religion": "9",
+      "tag": "\"lyd_np_anchor_faith\"",
+      "name": "\"共礼学统（原型）\"",
+      "religious_head": "18371"
+    },
+    "all_entries": [
+      {
+        "key": "faith_type",
+        "value": "lyd_np_anchor_faith"
+      },
+      {
+        "key": "religion",
+        "value": "9"
+      },
+      {
+        "key": "main_rite",
+        "value": "150"
+      },
+      {
+        "key": "organization",
+        "value": "33"
+      },
+      {
+        "key": "holy_sites",
+        "value": [
+          {
+            "key": null,
+            "value": "275"
+          },
+          {
+            "key": null,
+            "value": "246"
+          },
+          {
+            "key": null,
+            "value": "319"
+          },
+          {
+            "key": null,
+            "value": "278"
+          },
+          {
+            "key": null,
+            "value": "216"
+          }
+        ]
+      },
+      {
+        "key": "eminent_holy_sites",
+        "value": [
+          {
+            "key": null,
+            "value": "275"
+          },
+          {
+            "key": null,
+            "value": "246"
+          }
+        ]
+      },
+      {
+        "key": "changes",
+        "value": []
+      },
+      {
+        "key": "historical",
+        "value": "yes"
+      },
+      {
+        "key": "tag",
+        "value": "\"lyd_np_anchor_faith\""
+      },
+      {
+        "key": "name",
+        "value": "\"共礼学统（原型）\""
+      },
+      {
+        "key": "adjective",
+        "value": "\"共礼学统\""
+      },
+      {
+        "key": "adherent",
+        "value": "\"共礼学人\""
+      },
+      {
+        "key": "adherent_plural",
+        "value": "\"共礼学人\""
+      },
+      {
+        "key": "desc",
+        "value": "\"用于反复合流、分立验收的外置夹具。\""
+      },
+      {
+        "key": "color",
+        "value": "rgb"
+      },
+      {
+        "key": null,
+        "value": [
+          {
+            "key": null,
+            "value": "150"
+          },
+          {
+            "key": null,
+            "value": "90"
+          },
+          {
+            "key": null,
+            "value": "30"
+          }
+        ]
+      },
+      {
+        "key": "icon",
+        "value": "\"jingxue\""
+      },
+      {
+        "key": "texticon",
+        "value": "\"\u0016jingxue_icon!\""
+      },
+      {
+        "key": "graphical_faith",
+        "value": "\"\""
+      },
+      {
+        "key": "piety_icon_group",
+        "value": "\"\""
+      },
+      {
+        "key": "tenet_background_icon",
+        "value": "\"\""
+      },
+      {
+        "key": "tenet_heretical_background_icon",
+        "value": "\"\""
+      },
+      {
+        "key": "tenet_neutral_background_icon",
+        "value": "\"\""
+      },
+      {
+        "key": "tenet_unknown_background_icon",
+        "value": "\"\""
+      },
+      {
+        "key": "fervor",
+        "value": "50.5"
+      },
+      {
+        "key": "religious_head",
+        "value": "18371"
+      },
+      {
+        "key": "doctrine",
+        "value": "sinitic_hostility_doctrine"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_concubines"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_divorce_allowed"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_bastardry_legitimization"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_homosexuality_shunned"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_deviancy_crime"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_adultery_men_crime"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_adultery_women_crime"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_kinslaying_any_dynasty_member_crime"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_witchcraft_crime"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_gender_male_dominated"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_consanguinity_dynastic"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_pluralism_pluralistic"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_theocracy_lay_clergy"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_no_head"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_clerical_function_taxation"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_clerical_gender_male_only"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_clerical_marriage_allowed"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_clerical_succession_temporal_appointment"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_pilgrimage_local_rites"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_family_rites"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_no_anointment"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_polytheist"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_scriptural"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_monasticism_absent"
+      },
+      {
+        "key": "doctrine",
+        "value": "doctrine_sacraments_absent"
+      },
+      {
+        "key": "doctrine",
+        "value": "special_doctrine_is_sinitic_faith"
+      },
+      {
+        "key": "doctrine",
+        "value": "special_doctrine_immaterial_harmony"
+      }
+    ]
+  },
+  "saved_school_rites": {
+    "lyd_rite_kongmen": {
+      "id": "152",
+      "fields": {
+        "rite_type": "lyd_rite_kongmen",
+        "faith": "32",
+        "head_of_rite": "4294967295",
+        "convert": "no",
+        "enabled": "yes",
+        "source": "historical"
+      },
+      "data": [
+        {
+          "key": "tag",
+          "value": "\"lyd_rite_kongmen\""
+        },
+        {
+          "key": "name",
+          "value": "\"孔门经礼\""
+        },
+        {
+          "key": "adjective",
+          "value": "\"孔门经礼\""
+        },
+        {
+          "key": "adherent",
+          "value": "\"孔门经礼之儒\""
+        },
+        {
+          "key": "adherent_plural",
+          "value": "\"孔门经礼诸儒\""
+        },
+        {
+          "key": "desc",
+          "value": "\"以孔门的仁、礼与敬为本，学诗习礼，尊圣传道。祭礼的敬与哀须出于内心；贵重礼物不能代替诚意。此名概括经典中的共同传统，不声称古代存在同名独立教会。\""
+        },
+        {
+          "key": "color",
+          "value": "rgb"
+        },
+        {
+          "key": null,
+          "value": [
+            {
+              "key": null,
+              "value": "236"
+            },
+            {
+              "key": null,
+              "value": "190"
+            },
+            {
+              "key": null,
+              "value": "85"
+            }
+          ]
+        },
+        {
+          "key": "icon",
+          "value": "\"\""
+        },
+        {
+          "key": "texticon",
+          "value": "\"\""
+        },
+        {
+          "key": "graphical_faith",
+          "value": "\"\""
+        },
+        {
+          "key": "piety_icon_group",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_heretical_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_neutral_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_unknown_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "fervor",
+          "value": "50"
+        },
+        {
+          "key": "religious_head",
+          "value": "4294967295"
+        },
+        {
+          "key": "tenets",
+          "value": [
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_reverent_heaven"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_sincerity_solitude"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_ritual_music"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_ancestral_reverence"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_humaneness_righteousness"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_sage_transmission"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_extend_sprouts"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_deliberate_cultivation"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_righteous_qi"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_investigate_principle"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_reverent_attention"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_original_heart"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_textual_ritual"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_classical_synthesis"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_constant_heaven"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_ritual_music"
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_humaneness_righteousness"
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_sage_transmission"
+        },
+        {
+          "key": "doctrine",
+          "value": "sinitic_hostility_doctrine"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_concubines"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_divorce_allowed"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_bastardry_legitimization"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_homosexuality_shunned"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_deviancy_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_adultery_men_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_adultery_women_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_kinslaying_any_dynasty_member_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_witchcraft_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_gender_male_dominated"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_consanguinity_dynastic"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_pluralism_pluralistic"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_theocracy_lay_clergy"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_no_head"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_function_taxation"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_gender_male_only"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_marriage_allowed"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_succession_temporal_appointment"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_pilgrimage_local_rites"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_family_rites"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_no_anointment"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_polytheist"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_scriptural"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_monasticism_absent"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_sacraments_absent"
+        },
+        {
+          "key": "doctrine",
+          "value": "special_doctrine_is_sinitic_faith"
+        },
+        {
+          "key": "doctrine",
+          "value": "special_doctrine_immaterial_harmony"
+        }
+      ]
+    },
+    "lyd_rite_mengzi": {
+      "id": "153",
+      "fields": {
+        "rite_type": "lyd_rite_mengzi",
+        "faith": "32",
+        "head_of_rite": "4294967295",
+        "convert": "no",
+        "enabled": "yes",
+        "source": "historical"
+      },
+      "data": [
+        {
+          "key": "tag",
+          "value": "\"lyd_rite_mengzi\""
+        },
+        {
+          "key": "name",
+          "value": "\"孟氏之学\""
+        },
+        {
+          "key": "adjective",
+          "value": "\"孟氏之学\""
+        },
+        {
+          "key": "adherent",
+          "value": "\"孟氏之学之儒\""
+        },
+        {
+          "key": "adherent_plural",
+          "value": "\"孟氏之学诸儒\""
+        },
+        {
+          "key": "desc",
+          "value": "\"恻隐、羞恶、辞让与是非之心是成德的萌芽，须由行义扩充。养气依靠持续实践，礼义冲突则须辨经权；性善不意味着无需努力便已成圣。\""
+        },
+        {
+          "key": "color",
+          "value": "rgb"
+        },
+        {
+          "key": null,
+          "value": [
+            {
+              "key": null,
+              "value": "210"
+            },
+            {
+              "key": null,
+              "value": "174"
+            },
+            {
+              "key": null,
+              "value": "76"
+            }
+          ]
+        },
+        {
+          "key": "icon",
+          "value": "\"\""
+        },
+        {
+          "key": "texticon",
+          "value": "\"\""
+        },
+        {
+          "key": "graphical_faith",
+          "value": "\"\""
+        },
+        {
+          "key": "piety_icon_group",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_heretical_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_neutral_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_unknown_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "fervor",
+          "value": "50"
+        },
+        {
+          "key": "religious_head",
+          "value": "4294967295"
+        },
+        {
+          "key": "tenets",
+          "value": [
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_reverent_heaven"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_sincerity_solitude"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_ritual_music"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_ancestral_reverence"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_humaneness_righteousness"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_sage_transmission"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_extend_sprouts"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_deliberate_cultivation"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_righteous_qi"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_investigate_principle"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_reverent_attention"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_original_heart"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_textual_ritual"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_classical_synthesis"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_constant_heaven"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_humaneness_righteousness"
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_extend_sprouts"
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_righteous_qi"
+        },
+        {
+          "key": "doctrine",
+          "value": "sinitic_hostility_doctrine"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_concubines"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_divorce_allowed"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_bastardry_legitimization"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_homosexuality_shunned"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_deviancy_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_adultery_men_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_adultery_women_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_kinslaying_any_dynasty_member_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_witchcraft_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_gender_male_dominated"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_consanguinity_dynastic"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_pluralism_pluralistic"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_theocracy_lay_clergy"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_no_head"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_function_taxation"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_gender_male_only"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_marriage_allowed"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_succession_temporal_appointment"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_pilgrimage_local_rites"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_family_rites"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_no_anointment"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_polytheist"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_scriptural"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_monasticism_absent"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_sacraments_absent"
+        },
+        {
+          "key": "doctrine",
+          "value": "special_doctrine_is_sinitic_faith"
+        },
+        {
+          "key": "doctrine",
+          "value": "special_doctrine_immaterial_harmony"
+        }
+      ]
+    },
+    "lyd_rite_xunzi": {
+      "id": "154",
+      "fields": {
+        "rite_type": "lyd_rite_xunzi",
+        "faith": "32",
+        "head_of_rite": "4294967295",
+        "convert": "no",
+        "enabled": "yes",
+        "source": "historical"
+      },
+      "data": [
+        {
+          "key": "tag",
+          "value": "\"lyd_rite_xunzi\""
+        },
+        {
+          "key": "name",
+          "value": "\"荀氏之学\""
+        },
+        {
+          "key": "adjective",
+          "value": "\"荀氏之学\""
+        },
+        {
+          "key": "adherent",
+          "value": "\"荀氏之学之儒\""
+        },
+        {
+          "key": "adherent_plural",
+          "value": "\"荀氏之学诸儒\""
+        },
+        {
+          "key": "desc",
+          "value": "\"成德有赖师法、习礼与人为努力。丧祭与礼乐安顿情感和欲望；天的运行有常，祈雨不直接改变天时。起伪之伪指有意识的作为，绝非以欺诈为德。\""
+        },
+        {
+          "key": "color",
+          "value": "rgb"
+        },
+        {
+          "key": null,
+          "value": [
+            {
+              "key": null,
+              "value": "189"
+            },
+            {
+              "key": null,
+              "value": "143"
+            },
+            {
+              "key": null,
+              "value": "67"
+            }
+          ]
+        },
+        {
+          "key": "icon",
+          "value": "\"\""
+        },
+        {
+          "key": "texticon",
+          "value": "\"\""
+        },
+        {
+          "key": "graphical_faith",
+          "value": "\"\""
+        },
+        {
+          "key": "piety_icon_group",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_heretical_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_neutral_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_unknown_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "fervor",
+          "value": "50"
+        },
+        {
+          "key": "religious_head",
+          "value": "4294967295"
+        },
+        {
+          "key": "tenets",
+          "value": [
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_reverent_heaven"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_sincerity_solitude"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_ritual_music"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_ancestral_reverence"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_humaneness_righteousness"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_sage_transmission"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_extend_sprouts"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_deliberate_cultivation"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_righteous_qi"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_investigate_principle"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_reverent_attention"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_original_heart"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_textual_ritual"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_classical_synthesis"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_constant_heaven"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_ritual_music"
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_deliberate_cultivation"
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_constant_heaven"
+        },
+        {
+          "key": "doctrine",
+          "value": "sinitic_hostility_doctrine"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_concubines"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_divorce_allowed"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_bastardry_legitimization"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_homosexuality_shunned"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_deviancy_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_adultery_men_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_adultery_women_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_kinslaying_any_dynasty_member_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_witchcraft_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_gender_male_dominated"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_consanguinity_dynastic"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_pluralism_pluralistic"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_theocracy_lay_clergy"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_no_head"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_function_taxation"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_gender_male_only"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_marriage_allowed"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_succession_temporal_appointment"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_pilgrimage_local_rites"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_family_rites"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_no_anointment"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_polytheist"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_scriptural"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_monasticism_absent"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_sacraments_absent"
+        },
+        {
+          "key": "doctrine",
+          "value": "special_doctrine_is_sinitic_faith"
+        },
+        {
+          "key": "doctrine",
+          "value": "special_doctrine_immaterial_harmony"
+        }
+      ]
+    },
+    "lyd_rite_zhengxuan": {
+      "id": "155",
+      "fields": {
+        "rite_type": "lyd_rite_zhengxuan",
+        "faith": "32",
+        "head_of_rite": "4294967295",
+        "convert": "no",
+        "enabled": "yes",
+        "source": "historical"
+      },
+      "data": [
+        {
+          "key": "tag",
+          "value": "\"lyd_rite_zhengxuan\""
+        },
+        {
+          "key": "name",
+          "value": "\"郑氏礼学\""
+        },
+        {
+          "key": "adjective",
+          "value": "\"郑氏礼学\""
+        },
+        {
+          "key": "adherent",
+          "value": "\"郑氏礼学之儒\""
+        },
+        {
+          "key": "adherent_plural",
+          "value": "\"郑氏礼学诸儒\""
+        },
+        {
+          "key": "desc",
+          "value": "\"会通今古文的郑氏礼学区分昊天与五帝、圜丘与郊祭，并以感生与祖先配享解释祭礼。经师理论与各朝实际采用的祀典仍须分别考察。\""
+        },
+        {
+          "key": "color",
+          "value": "rgb"
+        },
+        {
+          "key": null,
+          "value": [
+            {
+              "key": null,
+              "value": "224"
+            },
+            {
+              "key": null,
+              "value": "178"
+            },
+            {
+              "key": null,
+              "value": "110"
+            }
+          ]
+        },
+        {
+          "key": "icon",
+          "value": "\"\""
+        },
+        {
+          "key": "texticon",
+          "value": "\"\""
+        },
+        {
+          "key": "graphical_faith",
+          "value": "\"\""
+        },
+        {
+          "key": "piety_icon_group",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_heretical_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_neutral_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_unknown_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "fervor",
+          "value": "50"
+        },
+        {
+          "key": "religious_head",
+          "value": "4294967295"
+        },
+        {
+          "key": "tenets",
+          "value": [
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_reverent_heaven"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_sincerity_solitude"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_ritual_music"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_ancestral_reverence"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_humaneness_righteousness"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_sage_transmission"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_extend_sprouts"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_deliberate_cultivation"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_righteous_qi"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_investigate_principle"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_reverent_attention"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_original_heart"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_textual_ritual"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_classical_synthesis"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_constant_heaven"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_reverent_heaven"
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_ancestral_reverence"
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_textual_ritual"
+        },
+        {
+          "key": "doctrine",
+          "value": "sinitic_hostility_doctrine"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_concubines"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_divorce_allowed"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_bastardry_legitimization"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_homosexuality_shunned"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_deviancy_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_adultery_men_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_adultery_women_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_kinslaying_any_dynasty_member_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_witchcraft_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_gender_male_dominated"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_consanguinity_dynastic"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_pluralism_pluralistic"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_theocracy_lay_clergy"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_no_head"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_function_taxation"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_gender_male_only"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_marriage_allowed"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_succession_temporal_appointment"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_pilgrimage_local_rites"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_family_rites"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_no_anointment"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_polytheist"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_scriptural"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_monasticism_absent"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_sacraments_absent"
+        },
+        {
+          "key": "doctrine",
+          "value": "special_doctrine_is_sinitic_faith"
+        },
+        {
+          "key": "doctrine",
+          "value": "special_doctrine_immaterial_harmony"
+        }
+      ]
+    },
+    "lyd_rite_wangsu": {
+      "id": "156",
+      "fields": {
+        "rite_type": "lyd_rite_wangsu",
+        "faith": "32",
+        "head_of_rite": "4294967295",
+        "convert": "no",
+        "enabled": "yes",
+        "source": "historical"
+      },
+      "data": [
+        {
+          "key": "tag",
+          "value": "\"lyd_rite_wangsu\""
+        },
+        {
+          "key": "name",
+          "value": "\"王氏礼学\""
+        },
+        {
+          "key": "adjective",
+          "value": "\"王氏礼学\""
+        },
+        {
+          "key": "adherent",
+          "value": "\"王氏礼学之儒\""
+        },
+        {
+          "key": "adherent_plural",
+          "value": "\"王氏礼学诸儒\""
+        },
+        {
+          "key": "desc",
+          "value": "\"王肃主张天惟一体、丘郊一祭，将禘礼解释为追享祖源。它与郑氏有实际礼学分歧，仍共同重视经据、报本与诚敬；王肃不是王弼。\""
+        },
+        {
+          "key": "color",
+          "value": "rgb"
+        },
+        {
+          "key": null,
+          "value": [
+            {
+              "key": null,
+              "value": "182"
+            },
+            {
+              "key": null,
+              "value": "153"
+            },
+            {
+              "key": null,
+              "value": "107"
+            }
+          ]
+        },
+        {
+          "key": "icon",
+          "value": "\"\""
+        },
+        {
+          "key": "texticon",
+          "value": "\"\""
+        },
+        {
+          "key": "graphical_faith",
+          "value": "\"\""
+        },
+        {
+          "key": "piety_icon_group",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_heretical_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_neutral_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_unknown_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "fervor",
+          "value": "50"
+        },
+        {
+          "key": "religious_head",
+          "value": "4294967295"
+        },
+        {
+          "key": "tenets",
+          "value": [
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_reverent_heaven"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_sincerity_solitude"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_ritual_music"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_ancestral_reverence"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_humaneness_righteousness"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_sage_transmission"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_extend_sprouts"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_deliberate_cultivation"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_righteous_qi"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_investigate_principle"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_reverent_attention"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_original_heart"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_textual_ritual"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_classical_synthesis"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_constant_heaven"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_ancestral_reverence"
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_textual_ritual"
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_classical_synthesis"
+        },
+        {
+          "key": "doctrine",
+          "value": "sinitic_hostility_doctrine"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_concubines"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_divorce_allowed"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_bastardry_legitimization"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_homosexuality_shunned"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_deviancy_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_adultery_men_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_adultery_women_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_kinslaying_any_dynasty_member_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_witchcraft_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_gender_male_dominated"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_consanguinity_dynastic"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_pluralism_pluralistic"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_theocracy_lay_clergy"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_no_head"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_function_taxation"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_gender_male_only"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_marriage_allowed"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_succession_temporal_appointment"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_pilgrimage_local_rites"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_family_rites"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_no_anointment"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_polytheist"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_scriptural"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_monasticism_absent"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_sacraments_absent"
+        },
+        {
+          "key": "doctrine",
+          "value": "special_doctrine_is_sinitic_faith"
+        },
+        {
+          "key": "doctrine",
+          "value": "special_doctrine_immaterial_harmony"
+        }
+      ]
+    },
+    "lyd_rite_jingshu": {
+      "id": "157",
+      "fields": {
+        "rite_type": "lyd_rite_jingshu",
+        "faith": "32",
+        "head_of_rite": "4294967295",
+        "convert": "no",
+        "enabled": "yes",
+        "source": "historical"
+      },
+      "data": [
+        {
+          "key": "tag",
+          "value": "\"lyd_rite_jingshu\""
+        },
+        {
+          "key": "name",
+          "value": "\"经疏正义\""
+        },
+        {
+          "key": "adjective",
+          "value": "\"经疏正义\""
+        },
+        {
+          "key": "adherent",
+          "value": "\"经疏正义之儒\""
+        },
+        {
+          "key": "adherent_plural",
+          "value": "\"经疏正义诸儒\""
+        },
+        {
+          "key": "desc",
+          "value": "\"以南北经学及唐代经疏为基础，兼习诸经，尊重传注又辨其义理。祭序、礼器与丧服须据经说明，不将后世四书中心体系提前置入。\""
+        },
+        {
+          "key": "color",
+          "value": "rgb"
+        },
+        {
+          "key": null,
+          "value": [
+            {
+              "key": null,
+              "value": "229"
+            },
+            {
+              "key": null,
+              "value": "204"
+            },
+            {
+              "key": null,
+              "value": "137"
+            }
+          ]
+        },
+        {
+          "key": "icon",
+          "value": "\"\""
+        },
+        {
+          "key": "texticon",
+          "value": "\"\""
+        },
+        {
+          "key": "graphical_faith",
+          "value": "\"\""
+        },
+        {
+          "key": "piety_icon_group",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_heretical_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_neutral_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_unknown_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "fervor",
+          "value": "50"
+        },
+        {
+          "key": "religious_head",
+          "value": "4294967295"
+        },
+        {
+          "key": "tenets",
+          "value": [
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_reverent_heaven"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_sincerity_solitude"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_ritual_music"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_ancestral_reverence"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_humaneness_righteousness"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_sage_transmission"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_extend_sprouts"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_deliberate_cultivation"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_righteous_qi"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_investigate_principle"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_reverent_attention"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_original_heart"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_textual_ritual"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_classical_synthesis"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_constant_heaven"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_sage_transmission"
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_textual_ritual"
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_classical_synthesis"
+        },
+        {
+          "key": "doctrine",
+          "value": "sinitic_hostility_doctrine"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_concubines"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_divorce_allowed"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_bastardry_legitimization"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_homosexuality_shunned"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_deviancy_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_adultery_men_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_adultery_women_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_kinslaying_any_dynasty_member_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_witchcraft_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_gender_male_dominated"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_consanguinity_dynastic"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_pluralism_pluralistic"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_theocracy_lay_clergy"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_no_head"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_function_taxation"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_gender_male_only"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_marriage_allowed"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_succession_temporal_appointment"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_pilgrimage_local_rites"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_family_rites"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_no_anointment"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_polytheist"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_scriptural"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_monasticism_absent"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_sacraments_absent"
+        },
+        {
+          "key": "doctrine",
+          "value": "special_doctrine_is_sinitic_faith"
+        },
+        {
+          "key": "doctrine",
+          "value": "special_doctrine_immaterial_harmony"
+        }
+      ]
+    },
+    "lyd_rite_zhuxi": {
+      "id": "158",
+      "fields": {
+        "rite_type": "lyd_rite_zhuxi",
+        "faith": "32",
+        "head_of_rite": "4294967295",
+        "convert": "no",
+        "enabled": "yes",
+        "source": "historical"
+      },
+      "data": [
+        {
+          "key": "tag",
+          "value": "\"lyd_rite_zhuxi\""
+        },
+        {
+          "key": "name",
+          "value": "\"朱子之学\""
+        },
+        {
+          "key": "adjective",
+          "value": "\"朱子之学\""
+        },
+        {
+          "key": "adherent",
+          "value": "\"朱子之学之儒\""
+        },
+        {
+          "key": "adherent_plural",
+          "value": "\"朱子之学诸儒\""
+        },
+        {
+          "key": "desc",
+          "value": "\"以四书、理气及居敬穷理论成德，家礼将诚敬落实于日用丧祭。问学必须落实于行；其南宋形成过程与后世官方正统地位不能混为一谈。\""
+        },
+        {
+          "key": "color",
+          "value": "rgb"
+        },
+        {
+          "key": null,
+          "value": [
+            {
+              "key": null,
+              "value": "150"
+            },
+            {
+              "key": null,
+              "value": "211"
+            },
+            {
+              "key": null,
+              "value": "198"
+            }
+          ]
+        },
+        {
+          "key": "icon",
+          "value": "\"\""
+        },
+        {
+          "key": "texticon",
+          "value": "\"\""
+        },
+        {
+          "key": "graphical_faith",
+          "value": "\"\""
+        },
+        {
+          "key": "piety_icon_group",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_heretical_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_neutral_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_unknown_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "fervor",
+          "value": "50"
+        },
+        {
+          "key": "religious_head",
+          "value": "4294967295"
+        },
+        {
+          "key": "tenets",
+          "value": [
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_reverent_heaven"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_sincerity_solitude"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_ritual_music"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_ancestral_reverence"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_humaneness_righteousness"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_sage_transmission"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_extend_sprouts"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_deliberate_cultivation"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_righteous_qi"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_investigate_principle"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_reverent_attention"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_original_heart"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_textual_ritual"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_classical_synthesis"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_constant_heaven"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_ancestral_reverence"
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_investigate_principle"
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_reverent_attention"
+        },
+        {
+          "key": "doctrine",
+          "value": "sinitic_hostility_doctrine"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_concubines"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_divorce_allowed"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_bastardry_legitimization"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_homosexuality_shunned"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_deviancy_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_adultery_men_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_adultery_women_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_kinslaying_any_dynasty_member_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_witchcraft_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_gender_male_dominated"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_consanguinity_dynastic"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_pluralism_pluralistic"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_theocracy_lay_clergy"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_no_head"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_function_taxation"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_gender_male_only"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_marriage_allowed"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_succession_temporal_appointment"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_pilgrimage_local_rites"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_family_rites"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_no_anointment"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_polytheist"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_scriptural"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_monasticism_absent"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_sacraments_absent"
+        },
+        {
+          "key": "doctrine",
+          "value": "special_doctrine_is_sinitic_faith"
+        },
+        {
+          "key": "doctrine",
+          "value": "special_doctrine_immaterial_harmony"
+        }
+      ]
+    },
+    "lyd_rite_lujiuyuan": {
+      "id": "159",
+      "fields": {
+        "rite_type": "lyd_rite_lujiuyuan",
+        "faith": "32",
+        "head_of_rite": "4294967295",
+        "convert": "no",
+        "enabled": "yes",
+        "source": "historical"
+      },
+      "data": [
+        {
+          "key": "tag",
+          "value": "\"lyd_rite_lujiuyuan\""
+        },
+        {
+          "key": "name",
+          "value": "\"象山之学\""
+        },
+        {
+          "key": "adjective",
+          "value": "\"象山之学\""
+        },
+        {
+          "key": "adherent",
+          "value": "\"象山之学之儒\""
+        },
+        {
+          "key": "adherent_plural",
+          "value": "\"象山之学诸儒\""
+        },
+        {
+          "key": "desc",
+          "value": "\"发明本心、辨明大本，以立志改过和实践检验自得。它不主张任性便是道，也不废弃经典；陆学不等于后世成熟的阳明学。\""
+        },
+        {
+          "key": "color",
+          "value": "rgb"
+        },
+        {
+          "key": null,
+          "value": [
+            {
+              "key": null,
+              "value": "113"
+            },
+            {
+              "key": null,
+              "value": "185"
+            },
+            {
+              "key": null,
+              "value": "180"
+            }
+          ]
+        },
+        {
+          "key": "icon",
+          "value": "\"\""
+        },
+        {
+          "key": "texticon",
+          "value": "\"\""
+        },
+        {
+          "key": "graphical_faith",
+          "value": "\"\""
+        },
+        {
+          "key": "piety_icon_group",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_heretical_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_neutral_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "tenet_unknown_background_icon",
+          "value": "\"\""
+        },
+        {
+          "key": "fervor",
+          "value": "50"
+        },
+        {
+          "key": "religious_head",
+          "value": "4294967295"
+        },
+        {
+          "key": "tenets",
+          "value": [
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_reverent_heaven"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_sincerity_solitude"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_ritual_music"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_ancestral_reverence"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_humaneness_righteousness"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_sage_transmission"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_extend_sprouts"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_deliberate_cultivation"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_righteous_qi"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_investigate_principle"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_reverent_attention"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_original_heart"
+                },
+                {
+                  "key": "status",
+                  "value": "core"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_textual_ritual"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_classical_synthesis"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            },
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "tenet",
+                  "value": "lyd_tenet_constant_heaven"
+                },
+                {
+                  "key": "status",
+                  "value": "permitted"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_sincerity_solitude"
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_humaneness_righteousness"
+        },
+        {
+          "key": "tenet",
+          "value": "lyd_tenet_original_heart"
+        },
+        {
+          "key": "doctrine",
+          "value": "sinitic_hostility_doctrine"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_concubines"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_divorce_allowed"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_bastardry_legitimization"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_homosexuality_shunned"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_deviancy_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_adultery_men_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_adultery_women_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_kinslaying_any_dynasty_member_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_witchcraft_crime"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_gender_male_dominated"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_consanguinity_dynastic"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_pluralism_pluralistic"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_theocracy_lay_clergy"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_no_head"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_function_taxation"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_gender_male_only"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_marriage_allowed"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_clerical_succession_temporal_appointment"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_pilgrimage_local_rites"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_family_rites"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_no_anointment"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_polytheist"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_scriptural"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_monasticism_absent"
+        },
+        {
+          "key": "doctrine",
+          "value": "doctrine_sacraments_absent"
+        },
+        {
+          "key": "doctrine",
+          "value": "special_doctrine_is_sinitic_faith"
+        },
+        {
+          "key": "doctrine",
+          "value": "special_doctrine_immaterial_harmony"
+        }
+      ]
+    }
+  },
+  "actual_rite_equals_current_faith_main": true,
+  "actual_rite_matches_any_of_eight_school_objects": false,
+  "flags": {
+    "lyd_enabled": true,
+    "lyd_school_cooldown": false,
+    "lyd_study_cooldown": false
+  },
+  "game_called": false,
+  "boundary": "concrete saved state; native conversion cause requires separate source/log evidence"
+}

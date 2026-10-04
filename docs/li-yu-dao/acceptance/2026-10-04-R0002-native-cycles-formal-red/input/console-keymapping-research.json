@@ -1,0 +1,43 @@
+{
+  "schema": "lyd.console-keymapping-research.v1",
+  "utc": "2026-10-04T00:46:39.699767+00:00",
+  "desktop_input_sent_by_researcher": false,
+  "mapping": {
+    "backtick_vk_and_modifiers": 192,
+    "tilde_vk_and_modifiers": 448,
+    "us_english_oem3_scan": 41
+  },
+  "pyautogui_module": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\pyautogui\\_pyautogui_win.py",
+  "pyautogui_module_sha256": "b9a562af714b89f5411a979e94d942b8f43f63f85ba5e516b55fa945343f5382",
+  "original_dispatch_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\console-open-001\\receipt.json",
+  "original_dispatch_receipt_sha256": "33ca7d3759b0ce380db14d37e1246cd1c0eae5c73fe5d4f66f59f2fe4d7688cc",
+  "original_business_result": "Root directly reviewed original and delayed frames: console absent; dispatch ACK preserved, not success",
+  "native_shortcuts": {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\shortcuts.shortcuts",
+    "sha256": "d2aa3a6f3a9de9729d778e240920e5a15f724d1f5b0adee5861ef6831797cd66",
+    "console_grave_tilde_matches": []
+  },
+  "player_identity": {
+    "native_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\native-evidence\\fa5f0ef6b5334db09a51f8d9bbcc9dbf\\0003-snapshot.json",
+    "sha256": "621733e65b68e52cc731cd9aff4f2e5c17ff9332be9f982e35e08b45cef504cb",
+    "id": 31254,
+    "bridge_pid": 7564,
+    "version": "1.20.0.3"
+  },
+  "fixture_29829_occurrences": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\candidate2\\mod_li_yu_dao_native_prototype\\events\\lyd_np_events.txt",
+      "line": 100,
+      "text": "# 29829 must be independently read back; no fake character:29829 history scope.",
+      "comment_only": true
+    }
+  ],
+  "checkpoint_header": "SAV01002e8e35b100007e7f\nmeta_data={\n\tsave_game_version=17\n\tversion=\"1.20.0.3\"\n\tportraits_version=5\n\tmeta_date=1066.9.15\n\tmeta_player_name=\"公爵罗贝尔\"\n\tmeta_title_name=\"阿普利亚公国\"\n\tmeta_coat_of_arms={\n\t\tpattern=\"pattern_bend_01.dds\"\n\t\tcolor1=white\n\t\tcolor2=blue\n\t\tcolored_emblem={\n\t\t\tcolor1=blue\n\t\t\tcolor2=blue\n\t\t\ttexture=\"ce_block_02.dds\"\n\t\t\tmask={ 1 0 0 }\n\t\t}\n\n\t\tcolored_emblem={\n\t\t\tcolor1=red\n\t\t\tcolor2=white\n\t\t\ttexture=\"ce_checkers_08.dds\"\n\t\t\tmask={ 0 2 0 }\n\t\t\tinstance={\n\t\t\t\tposition={ 0.475000 0.480000 }\n\t\t\t\tscale={ 1.350000 1.350000 }\n\t\t\t\trotation=-45\n\t\t\t}\n\n\t\t}\n\n\t\tcolored_emblem={\n\t\t\tcolor1=yellow\n\t\t\tcolor2=yellow\n\t\t\ttexture=\"ce_barrulets_2.dds\"\n\t\t\tinstance={\n\t\t\t\tscale={ 1.100000 1.100000 }\n\t\t\t\trotation=45\n\t\t\t}\n\n\t\t}\n\n\t}\n\tmeta_player_tier=3\n\tmeta_house_name=\"德· 欧特维尔\"\n\tframe=\"house_frame_03\"\n\thouse_coa_mask_offset={ 0.000000 0.055000 }\n\thouse_coa_mask_scale={ 0.900000 0.900000 }\n\tmeta_house_coat_of_arms={\n\t\tpattern=\"pattern_solid.dds\"\n\t\tcolor1=blue\n\t\tcolor2=white\n\t\tcolored_emblem={\n\t\t\tcolor1=white\n\t\t\tcolor2=red\n\t\t\ttexture=\"ce_bend_checky.dds\"\n\t\t}\n\n\t}\n\tmeta_dynasty_frame=2\n\tmeta_main_portrait={\n\t\ttype=male\n\t\tid=31254\n\t\trandom_seed=305100875\n\t\tage=0.510000\n\t\tgenes={ \t\t\thair_color={ 9 238 9 238 }\n \t\t\tskin_color={ 130 116 130 116 }\n \t\t\teye_color={ 29 176 29 176 }\n \t\t\tgene_chin_forward={ \"chin_forward_neg\" 126 \"chin_forward_neg\" 126 }\n \t\t\tgene_chin_height={ \"chin_height_pos\" 136 \"chin_height_pos\" 136 }\n \t\t\tgene_chin_width={ \"chin_width_neg\" 117 \"chin_width",
+  "checkpoint_31254_block_offsets": [
+    24424264
+  ],
+  "checkpoint_31254_excerpts": [
+    "\n31254={\n\tfirst_name=\"Robert\"\n\tbirth=1015.1.1\n\tnickname=nick_the_fox\n\tnickname_text=\"狐狸\"\n\tethnicity=caucasian_ginger\n\tculture=73\n\trite=0\n\tdynasty_house=174\n\tskill={ 4 9 6 6 2 0 }\n\tdna=\"Ce4J7oJ0gnQdsB2wAH4AfgGIAYgAdQB1AYABgAByAHIBhQGFAH0AfQCuAHcBjQGNAHcAdwGVAZUBkAGQAF4AXgBaAFoBpAGkAF4AXgGFAYUB0gHSAGsAawByAHIAdwB3AYoBigB5AHkAcABwAHgAeAGZAZkAPgA+AZMBkwB2AHYBrAGsAZIBkgG4AHoADQANACMAIwEDAQMBEgESACEAIQFlAWUAMgAyACUAJQGcAZwBHgEeABsAGwEQARAAsgBPAXUBdQAWATgAPgA+ASUBJQEMAQwAGAAYABwAHABnAGcBeAF4AAQABAAdAB0BBwEHABIAEgBNAE0BPwE/AVUBVQEcARwAbAEpACoAKgEPAQ8ABAAEAXMAcwEJAQkAKAAoARsBGwEGAQYBLQEtATsBOwAqACoEEAQQAREBEQFwAXAA4QDhAPEA8QEPAQ8AhAEKAA8ADwCpAKkAkgDIAA4ADgAbABsAAAAAAHsAewF3AXUBeQF5ARAHBgnECcQDDQMNBqwGrAHAAcABpABbAIAAgADcAH8BsQGxAQABAAGZAZk=\"\n\n\tmass=7\n\ttraits={ 69 51 67 19 31 158 }\n\tfamily_data={\n\t\tprimary_spouse=36311\n\t\tspouse=36311\n\t\tformer_spouses={ 34968 }\n\t\tchild={ 38924 39348 39979 40526 40695 40847 41032 }\n\t}\n\n\talive_data={\n\t\tvariables={\n\t\t\tdata={ {\n\t\t\t\t\tflag=ce3_11_servus_servorum_dei_achievement_start\n\t\t\t\t\tdata={\n\t\t\t\t\t}\n\n\t\t\t\t}\n {\n\t\t\t\t\tflag=has_scripted_appearance\n\t\t\t\t\tdata={\n\t\t\t\t\t}\n\n\t\t\t\t}\n {\n\t\t\t\t\tflag=chancellor_foreign_affairs_opinion_value\n\t\t\t\t\tdata={\n\t\t\t\t\t\ttype=value\n\t\t\t\t\t}\n\n\t\t\t\t}\n {\n\t\t\t\t\tflag=court_chaplain_religious_relations_opinion_value\n\t\t\t\t\tdata={\n\t\t\t\t\t\ttype=value\n\t\t\t\t\t}\n\n\t\t\t\t}\n }\n\t\t}\n\t\tincome=4.85139\n\t\tmodifier={\n\t\t\tmodifier=guiscard_modifier\t\t\texpiration_date=9999.1.1\n\t\t}\n\n\t\tfertility=0.5\n\t\thealth=4.1616\n\t\tgold={\n\t\t\tvalue=247\n\t\t}\n\t\tpiety={\n\t\t\tcurrency=150\n\t\t}\n\t\tprestige={\n\t\t\tcurrency=2200\n\t\t\taccumulated=5000\n\t\t}\n\t\tinfluence={\n\t\t\tcurrency=240\n\t\t}\n\t\tpretender={ 2250 }\n\t\tclaim={ {\n\t\t\t\ttitle=7219\n\t\t\t}\n }\n\t\tlifestyle_xp={\n\t\t\tdiplomacy_lifestyle=0\n\t\t\tmartial_lifestyle=0\n\t\t\tstewardship_lifestyle=0\n\t\t\tintrigue_lifestyle=0\n\t\t\tlearning_lifestyle=0\n\t\t\twanderer_lifestyle=0\n\t\t}\n\t\tperk={ bellum_justum_perk parthian_tactics_perk envelopment_perk organized_retreat_perk hit_and_run_perk engineered_for_destruction_perk living_off_the_land_perk sappers_perk strategist_perk stalwart_leader_perk chivalric_dominance_perk never_back_down_perk kingsguard_perk meritocracy_perk large_levies_perk soon_forgiven_perk toe_the_line_perk }\n\t\tlanguages={ language_french language_italian }\n\t\tactivity_data={\n\t\t}\n\n\t\tlocation={\n\t\t\tlocation=2619\n\t\t}\n\t}\n\n\tcourt_data={\n\t}\n\n\tlanded_data={\n\t\tdomain={ 2230 2231 2262 2232 2263 2235 2264 }\n\t\tvassal_contracts={ 8663 8691 8809 8812 9402 16786427 16786415 }\n\t\tbecame_ruler_date=1066.9.15\n\t\tlaws={ crown_authority_0 confederate_partition_succession_law male_preference_law top_liege_redirected_to_border_wars_law }\n\t\tcurrent_strength=1211\n\t\tstrength=1211\n\t\tstrength_without_hires=1211\n\t\tpower=36300\n\t\tmax_power=36300\n\t\tlevy=905\n\t\tbalance=4.06494\n\t\tsuccession_result_type=inheritance_child_line\n\t\tsuccession={ 40526 40695 39979 40847 41032 37244 38098 36445 36663 36873 31692 34973 40259 35598 36638 32536 38561 39045 39171 39352 39527 33234 37702 33542 34232 32236 38560 38902 31538 35899 40507 40843 41028 36329 36847 41495 37064 33028 38782 39032 39309 39932 40694 41235 41288 }\n\t\tdomain_limit=6\n\t\tvassal_limit=20\n\t\tvassals_towards_limit=5\n\t\tgovernment=feudal_government\n\t\trealm_capital=2232\n\t\tcouncil={ 7870 7871 7872 7873 7874 7875 }\n\t\tdiplo_centers={ 1938 2418 1895 2283 1711 2539 1826 2461 1796 2160 1866 2381 }\n\t\tbarter_goods={\n\t\t}\n\t}\n\n\tplayable_data={\n\t\tknights={ 34975 36333 34973 34232 36445 37702 }\n\t\tdiarchy_successor=34232\n\t\twas_player=yes\n\t\tlegitimacy=324\n\t\tlegitimacy_type=duke_legitimacy\n\t\ttenets={ tenet_apostolic_succession "
+  ],
+  "checkpoint_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\userdir\\save games\\xar_checkpoint.ck3"
+}
