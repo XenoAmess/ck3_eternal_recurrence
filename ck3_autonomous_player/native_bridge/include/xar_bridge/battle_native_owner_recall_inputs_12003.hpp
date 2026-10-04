@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/battle_native_activity_context_12003.hpp"
+
 #include <cstdint>
 #include <optional>
 #include <string>
@@ -30,6 +32,7 @@ struct BattleNativeOwnerRecallUnitInputsV1 {
 
 struct BattleNativeOwnerRecallOwnerInputsV1 {
   std::int32_t owner_character_id = -1;
+  std::optional<BattleNativeActivityContextV1> native_activity_context_v1;
   std::optional<std::int32_t> land_318_count_raw;
   std::optional<std::int32_t> owner_target_source_title_id;
   std::optional<std::int32_t> owner_native_recall_target_province_id;

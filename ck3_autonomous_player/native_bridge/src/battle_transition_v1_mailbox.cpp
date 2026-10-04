@@ -214,6 +214,60 @@ bool AppendOwnerRecallUnit(
   return true;
 }
 
+bool AppendNativeActivityContextMatch(
+    std::string &output, const game::BattleNativeActivityContextMatchV1 &context) {
+  output += "{\"collection\":";
+  AppendJsonString(output, context.collection);
+  output += ",\"prefix_kind\":";
+  AppendJsonString(output, context.prefix_kind);
+  output += ",\"stored_index\":";
+  if (!AppendNumber(output, context.stored_index)) return false;
+  output += ",\"actor_character_id\":";
+  if (!AppendNumber(output, context.actor_character_id)) return false;
+  output += ",\"status\":";
+  AppendJsonString(output, context.status);
+  output += ",\"unavailable_reason\":";
+  if (context.status == "available") output += "null";
+  else AppendJsonString(output, context.unavailable_reason);
+  output += ",\"e_prefix_admitted\":";
+  AppendRecallNullableBool(output, context.e_prefix_admitted);
+  output += ",\"context_state_raw\":";
+  if (!AppendRecallNullableNumber(output, context.context_state_raw)) return false;
+  output += ",\"context_16_raw\":";
+  if (!AppendRecallNullableNumber(output, context.context_16_raw)) return false;
+  output += ",\"context_2e_raw\":";
+  if (!AppendRecallNullableNumber(output, context.context_2e_raw)) return false;
+  output += ",\"government_flags_40_raw\":";
+  if (!context.government_flags_40_raw) output += "null";
+  else if (!AppendNumber(output, *context.government_flags_40_raw)) return false;
+  output += ",\"plin_flags_2f0_raw\":";
+  if (!AppendRecallNullableNumber(output, context.plin_flags_2f0_raw)) return false;
+  output.push_back('}');
+  return true;
+}
+
+bool AppendNativeActivityContext(
+    std::string &output, const game::BattleNativeActivityContextV1 &inputs) {
+  output += "{\"schema_version\":";
+  if (!AppendNumber(output, inputs.schema_version)) return false;
+  output += ",\"status\":";
+  AppendJsonString(output, inputs.status);
+  output += ",\"unavailable_reason\":";
+  if (inputs.status == "available") output += "null";
+  else AppendJsonString(output, inputs.unavailable_reason);
+  output += ",\"membership_observed\":";
+  output += inputs.membership_observed ? "true" : "false";
+  output += ",\"matched_contexts_in_native_order\":[";
+  bool first = true;
+  for (const auto &context : inputs.matched_contexts_in_native_order) {
+    if (!first) output.push_back(',');
+    first = false;
+    if (!AppendNativeActivityContextMatch(output, context)) return false;
+  }
+  output += "]}";
+  return true;
+}
+
 bool AppendOwnerRecallOwner(
     std::string &output, const game::BattleNativeOwnerRecallOwnerInputsV1 &owner) {
   output += "{\"owner_character_id\":";
@@ -237,7 +291,12 @@ bool AppendOwnerRecallOwner(
     first = false;
     if (!AppendOwnerRecallUnit(output, unit)) return false;
   }
-  output += "]}";
+  output += "]";
+  if (owner.native_activity_context_v1) {
+    output += ",\"native_activity_context_v1\":";
+    if (!AppendNativeActivityContext(output, *owner.native_activity_context_v1)) return false;
+  }
+  output.push_back('}');
   return true;
 }
 

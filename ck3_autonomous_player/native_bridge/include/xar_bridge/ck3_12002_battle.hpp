@@ -58,6 +58,10 @@ struct BattleBindings {
   void **army_storage_slot = nullptr;
   // Exact .3 readonly owner-target resolver; optional on older adapters.
   void **native_owner_recall_title_storage_slot = nullptr;
+  // Exact .3 E-prefix raw bindings; independent of complete AI selection.
+  bool native_activity_context_source_enabled = false;
+  void **native_activity_context_government_fallback_slot = nullptr;
+  void **native_activity_context_plin_fallback_slot = nullptr;
   void **army_internal_storage_slot = nullptr;
   void **army_internal_fallback_slot = nullptr;
   void **regiment_storage_slot = nullptr;

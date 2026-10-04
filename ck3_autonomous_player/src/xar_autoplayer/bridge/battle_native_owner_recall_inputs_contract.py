@@ -60,13 +60,87 @@ def _unit(value: object, count: int | None) -> dict[str, object]:
     return result
 
 
+def _activity_context_match(value: object, owner_id: int) -> dict[str, object]:
+    fields = {
+        "collection", "prefix_kind", "stored_index", "actor_character_id",
+        "status", "unavailable_reason", "e_prefix_admitted", "context_state_raw",
+        "context_16_raw", "context_2e_raw", "government_flags_40_raw", "plin_flags_2f0_raw",
+    }
+    if not isinstance(value, dict) or set(value) != fields:
+        raise ValueError("native activity context match fields are invalid")
+    if value["collection"] not in {"fallback_d8", "mission_90"}:
+        raise ValueError("native activity context collection is invalid")
+    if value["prefix_kind"] != "e_1a781a0":
+        raise ValueError("native activity context prefix_kind is invalid")
+    status = value["status"]
+    admitted = value["e_prefix_admitted"]
+    reason = value["unavailable_reason"]
+    if status == "available":
+        if not isinstance(admitted, bool) or reason is not None:
+            raise ValueError("available E-prefix requires a bool and no unavailable reason")
+    elif status == "unavailable":
+        if admitted is not None or not isinstance(reason, str) or not reason:
+            raise ValueError("unavailable E-prefix requires null admission and a reason")
+    else:
+        raise ValueError("native activity context match status is invalid")
+    actor_id = _integer(value["actor_character_id"], "actor_character_id", -(2**31), 2**31 - 1)
+    if actor_id != owner_id:
+        raise ValueError("native activity context match belongs to another owner")
+    return {
+        "collection": value["collection"],
+        "prefix_kind": value["prefix_kind"],
+        "stored_index": _integer(value["stored_index"], "stored_index", 0, 2**31 - 1),
+        "actor_character_id": actor_id,
+        "status": status,
+        "unavailable_reason": reason,
+        "e_prefix_admitted": admitted,
+        "context_state_raw": _optional_integer(value["context_state_raw"], "context_state_raw", -(2**31), 2**31 - 1),
+        "context_16_raw": _optional_integer(value["context_16_raw"], "context_16_raw", 0, 255),
+        "context_2e_raw": _optional_integer(value["context_2e_raw"], "context_2e_raw", 0, 255),
+        "government_flags_40_raw": _optional_integer(value["government_flags_40_raw"], "government_flags_40_raw", 0, 2**64 - 1),
+        "plin_flags_2f0_raw": _optional_integer(value["plin_flags_2f0_raw"], "plin_flags_2f0_raw", 0, 2**16 - 1),
+    }
+
+
+def _activity_context(value: object, owner_id: int) -> dict[str, object] | None:
+    if value is None:
+        return None
+    fields = {"schema_version", "status", "unavailable_reason", "membership_observed",
+              "matched_contexts_in_native_order"}
+    if not isinstance(value, dict) or set(value) != fields:
+        raise ValueError("native activity context fields are invalid")
+    version = _integer(value["schema_version"], "native activity context schema_version", 1, 1)
+    status = value["status"]
+    reason = value["unavailable_reason"]
+    if status == "available":
+        if reason is not None:
+            raise ValueError("available native activity context reason must be null")
+    elif status == "unavailable":
+        if not isinstance(reason, str) or not reason:
+            raise ValueError("unavailable native activity context requires a reason")
+    else:
+        raise ValueError("native activity context status is invalid")
+    if not isinstance(value["membership_observed"], bool):
+        raise ValueError("native activity context membership_observed must be bool")
+    matches = value["matched_contexts_in_native_order"]
+    if not isinstance(matches, list):
+        raise ValueError("matched_contexts_in_native_order must be a list")
+    return {
+        "schema_version": version,
+        "status": status,
+        "unavailable_reason": reason,
+        "membership_observed": value["membership_observed"],
+        "matched_contexts_in_native_order": [_activity_context_match(match, owner_id) for match in matches],
+    }
+
+
 def _owner(value: object) -> dict[str, object]:
     fields = {
         "owner_character_id", "land_318_count_raw", "owner_target_source_title_id",
         "owner_native_recall_target_province_id", "target_status", "owned_cunit_roster_status",
         "raw_inputs_ready", "owned_cunits_in_stored_order",
     }
-    if not isinstance(value, dict) or set(value) != fields:
+    if not isinstance(value, dict) or set(value) - {"native_activity_context_v1"} != fields:
         raise ValueError("native recall owner fields are invalid")
     count = _optional_integer(value["land_318_count_raw"], "land_318_count_raw", -(2**31), 2**31 - 1)
     roster = value["owned_cunits_in_stored_order"]
@@ -80,7 +154,7 @@ def _owner(value: object) -> dict[str, object]:
     owner_id = _optional_id(value["owner_character_id"], "owner_character_id")
     if owner_id is None:
         raise ValueError("owner_character_id is required")
-    return {
+    result: dict[str, object] = {
         "owner_character_id": owner_id,
         "land_318_count_raw": count,
         "owner_target_source_title_id": _optional_id(value["owner_target_source_title_id"], "owner_target_source_title_id"),
@@ -90,6 +164,9 @@ def _owner(value: object) -> dict[str, object]:
         "raw_inputs_ready": value["raw_inputs_ready"],
         "owned_cunits_in_stored_order": [_unit(unit, count) for unit in roster],
     }
+    if "native_activity_context_v1" in value:
+        result["native_activity_context_v1"] = _activity_context(value["native_activity_context_v1"], owner_id)
+    return result
 
 
 def normalize_battle_native_owner_recall_inputs_v1(value: object, *, lifecycle_status: str) -> dict[str, object] | None:

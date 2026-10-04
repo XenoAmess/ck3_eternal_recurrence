@@ -264,10 +264,138 @@ void ReadOwnerRecallTarget(const BattleBindings &bindings, const void *land,
   }
 }
 
+void ReadActivityContextEPrefix(
+    const BattleBindings &bindings, const void *game_data,
+    const void *context, const void *character,
+    game::BattleNativeActivityContextMatchV1 &result) {
+  const auto finish = [&result](bool admitted) {
+    result.status = "available";
+    result.unavailable_reason.clear();
+    result.e_prefix_admitted = admitted;
+  };
+  result.context_16_raw = At<std::uint8_t>(context, 0x16);
+  if ((*result.context_16_raw & 2U) == 0) {
+    finish(false);
+    return;
+  }
+  result.context_state_raw = At<std::int32_t>(context, 0x10);
+  if (*result.context_state_raw < 2) {
+    finish(false);
+    return;
+  }
+  const auto *land = At<const void *>(character, 0x1C0);
+  if (!land) {
+    finish(false);
+    return;
+  }
+
+  const void *government{};
+  if (At<std::uint32_t>(character, 0x1C) == 0x43686172U &&
+      At<std::int32_t>(character, 0x18) != -1) {
+    const auto *death_data = At<const void *>(character, 0x1D0);
+    government = death_data ? At<const void *>(death_data, 0x88)
+                            : At<const void *>(land, 0x3F8);
+  }
+  if (!government) {
+    if (!bindings.native_activity_context_government_fallback_slot ||
+        !*bindings.native_activity_context_government_fallback_slot) {
+      result.unavailable_reason = "government_fallback_unavailable";
+      return;
+    }
+    government = *bindings.native_activity_context_government_fallback_slot;
+  }
+  if (At<std::uint32_t>(government, 0x38) != 0x4744624FU) {
+    finish(false);
+    return;
+  }
+  result.government_flags_40_raw = At<std::uint64_t>(government, 0x40);
+  if ((*result.government_flags_40_raw & (std::uint64_t{1} << 41)) == 0) {
+    finish(false);
+    return;
+  }
+  result.context_2e_raw = At<std::uint8_t>(context, 0x2E);
+  if (*result.context_2e_raw == 0) {
+    finish(true);
+    return;
+  }
+
+  const auto *rows = At<const void *>(game_data, 0x22340);
+  const auto count = At<std::int32_t>(game_data, 0x2234C);
+  if (count < 0 || (count != 0 && !rows)) {
+    result.unavailable_reason = "plin_membership_unavailable";
+    return;
+  }
+  const void *selected_plin{};
+  for (std::int32_t i = 0; i < count; ++i) {
+    const auto *plin = At<const void *>(
+        rows, static_cast<std::size_t>(i) * sizeof(void *));
+    if (!plin) {
+      result.unavailable_reason = "plin_membership_element_unavailable";
+      return;
+    }
+    if (At<std::int32_t>(plin, 0xB0) == result.actor_character_id) {
+      selected_plin = plin;
+      break;
+    }
+  }
+  if (!selected_plin) {
+    if (!bindings.native_activity_context_plin_fallback_slot ||
+        !*bindings.native_activity_context_plin_fallback_slot) {
+      result.unavailable_reason = "plin_fallback_unavailable";
+      return;
+    }
+    selected_plin = *bindings.native_activity_context_plin_fallback_slot;
+  }
+  if (At<std::uint32_t>(selected_plin, 0xDC) != 0x506C496EU ||
+      At<std::int32_t>(selected_plin, 0xD8) == -1) {
+    finish(false);
+    return;
+  }
+  result.plin_flags_2f0_raw = At<std::uint16_t>(selected_plin, 0x2F0);
+  finish((*result.plin_flags_2f0_raw & (std::uint16_t{1} << 8)) != 0);
+}
+
+bool ReadActivityContextCollection(
+    const BattleBindings &bindings, const void *game_data, const void *manager,
+    std::size_t pointer_offset, std::size_t count_offset,
+    const char *collection, std::int32_t owner_id,
+    game::BattleNativeActivityContextV1 &result) {
+  const auto *rows = At<const void *>(manager, pointer_offset);
+  const auto count = At<std::int32_t>(manager, count_offset);
+  if (count < 0 || (count != 0 && !rows)) return false;
+  bool membership_observed = true;
+  for (std::int32_t i = 0; i < count; ++i) {
+    const auto *context = At<const void *>(
+        rows, static_cast<std::size_t>(i) * sizeof(void *));
+    if (!context) {
+      membership_observed = false;
+      continue;
+    }
+    const auto *character = At<const void *>(context, 0x18);
+    if (!character) {
+      membership_observed = false;
+      continue;
+    }
+    const auto actor_id = At<std::int32_t>(character, 0x18);
+    if (actor_id != owner_id) continue;
+    game::BattleNativeActivityContextMatchV1 match{};
+    match.collection = collection;
+    match.stored_index = i;
+    match.actor_character_id = actor_id;
+    ReadActivityContextEPrefix(bindings, game_data, context, character, match);
+    result.matched_contexts_in_native_order.push_back(std::move(match));
+  }
+  return membership_observed;
+}
+
+
 void ReadOwnerRecallInputs(const BattleBindings &bindings,
                           std::int32_t owner_id,
                           game::BattleNativeOwnerRecallOwnerInputsV1 &result) {
   result.owner_character_id = owner_id;
+  if (bindings.native_activity_context_source_enabled)
+    result.native_activity_context_v1 =
+        ReadOwnerNativeActivityContextInputsV1(bindings, owner_id);
   auto *character = Resolve(bindings.character_storage_slot, owner_id, 0x18);
   if (!character) return;
   const auto *land = At<const void *>(character, 0x1C0);
@@ -399,15 +527,70 @@ void AttachBattleCurrentObservationV1(
   transition.current_observation = std::move(unavailable);
 }
 
+game::BattleNativeActivityContextV1 ReadOwnerNativeActivityContextInputsV1(
+    const ck3_12002::BattleBindings &bindings, std::int32_t owner_id) noexcept {
+  game::BattleNativeActivityContextV1 result{};
+  try {
+    if (!bindings.enabled || !bindings.native_activity_context_source_enabled) {
+      result.unavailable_reason = "activity_context_source_unbound";
+      return result;
+    }
+    if (owner_id <= 0 || !bindings.game_state_slot ||
+        !*bindings.game_state_slot) {
+      result.unavailable_reason = "activity_context_game_state_unavailable";
+      return result;
+    }
+    const auto *game_data = At<const void *>(*bindings.game_state_slot, 0xA0);
+    if (!game_data) {
+      result.unavailable_reason = "activity_context_game_data_unavailable";
+      return result;
+    }
+    const auto *manager = static_cast<const std::byte *>(game_data) + 0x2D48;
+    const auto fallback_observed = ReadActivityContextCollection(
+        bindings, game_data, manager, 0xD8, 0xE4, "fallback_d8", owner_id, result);
+    const auto mission_observed = ReadActivityContextCollection(
+        bindings, game_data, manager, 0x90, 0x9C, "mission_90", owner_id, result);
+    result.membership_observed = fallback_observed && mission_observed;
+    if (!result.membership_observed) {
+      result.unavailable_reason = "activity_context_membership_unavailable";
+      return result;
+    }
+    if (std::any_of(result.matched_contexts_in_native_order.begin(),
+                    result.matched_contexts_in_native_order.end(),
+                    [](const auto &match) {
+                      return match.status != "available";
+                    })) {
+      result.unavailable_reason = "e_prefix_operands_unavailable";
+      return result;
+    }
+    result.status = "available";
+    result.unavailable_reason.clear();
+  } catch (...) {
+    result = {};
+    result.unavailable_reason = "native_activity_context_unavailable";
+  }
+  return result;
+}
+
+
 void EnableBattleNativeOwnerRecallInputs12003(
     ck3_12002::BattleBindings &bindings, std::uintptr_t image_base,
     std::string_view executable_sha256) noexcept {
   bindings.native_owner_recall_title_storage_slot = nullptr;
+  bindings.native_activity_context_source_enabled = false;
+  bindings.native_activity_context_government_fallback_slot = nullptr;
+  bindings.native_activity_context_plin_fallback_slot = nullptr;
   if (image_base != 0 && executable_sha256 ==
       "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6") {
     // New source 28B1CDE /230F90A exact .3 TitleStorage pointer slot.
     bindings.native_owner_recall_title_storage_slot =
         reinterpret_cast<void **>(image_base + 0x5D1DAF8);
+    // 28C2E10 and 1A78257 exact .3 raw government/PlIn fallback slots.
+    bindings.native_activity_context_government_fallback_slot =
+        reinterpret_cast<void **>(image_base + 0x5D1E2A8);
+    bindings.native_activity_context_plin_fallback_slot =
+        reinterpret_cast<void **>(image_base + 0x5D29008);
+    bindings.native_activity_context_source_enabled = true;
   }
 }
 
