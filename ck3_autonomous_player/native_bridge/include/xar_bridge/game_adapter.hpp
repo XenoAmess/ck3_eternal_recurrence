@@ -74,6 +74,10 @@ public:
   virtual MoveArmyResult submit_move_army(std::int32_t army_id,
                                           std::int32_t province_id) const
       noexcept = 0;
+  virtual HaltArmyResult submit_halt_army(std::int32_t army_id) const noexcept {
+    static_cast<void>(army_id);
+    return HaltArmyResult::unavailable;
+  }
   virtual PreviewMoveArmyResult
   preview_move_army(std::int32_t army_id,
                     std::int32_t province_id) const noexcept = 0;
@@ -281,6 +285,10 @@ inline MoveArmyResult SubmitMoveArmy(const GameAdapter &game,
                                      std::int32_t army_id,
                                      std::int32_t province_id) noexcept {
   return game.submit_move_army(army_id, province_id);
+}
+inline HaltArmyResult SubmitHaltArmy(const GameAdapter &game,
+                                     std::int32_t army_id) noexcept {
+  return game.submit_halt_army(army_id);
 }
 inline PreviewMoveArmyResult
 PreviewMoveArmy(const GameAdapter &game, std::int32_t army_id,

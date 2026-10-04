@@ -9926,6 +9926,12 @@ std::optional<MoveArmyStepIds> PreviewMoveArmyStep(
   return ArmyToProvinceStep(step, "preview-move-army-");
 }
 
+std::optional<std::int32_t> HaltArmyStep(std::string_view step) noexcept {
+  constexpr std::string_view prefix = "halt-army-";
+  if (!step.starts_with(prefix)) return std::nullopt;
+  return PublicCUnitId(step.substr(prefix.size()));
+}
+
 std::optional<std::int32_t> DisbandArmyStep(
     std::string_view step) noexcept {
   constexpr std::string_view prefix = "disband-army-";
@@ -25633,6 +25639,42 @@ void RunConnectedSession(
               }
               connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false, error));
+            }
+          }
+          if (connected) {
+            connected = PublishSnapshot(pipe, game, previous_snapshot,
+                                        state_revision, checkpoint_submission,
+                                        published_checkpoint_sequence);
+          }
+        } else if (step.starts_with("halt-army-")) {
+          const auto army_id = HaltArmyStep(step);
+          if (!army_id.has_value()) {
+            connected = write_frame(pipe, CommandResultFrame(
+                request_id, step, false, "invalid halt-army-<army_id> step"));
+          } else {
+            const auto result = xar::game::SubmitHaltArmy(game, *army_id);
+            if (result == xar::game::HaltArmyResult::halt_submitted) {
+              connected = write_frame(pipe, CommandResultFrame(
+                  request_id, step, true, "halt_submitted"));
+            } else {
+              std::string_view error = "CK3 halt-army state is unavailable";
+              switch (result) {
+              case xar::game::HaltArmyResult::requires_paused:
+                error = "CK3 halt-army requires paused map"; break;
+              case xar::game::HaltArmyResult::no_played_character:
+                error = "CK3 halt-army requires a living played character"; break;
+              case xar::game::HaltArmyResult::army_not_found:
+                error = "CK3 army was not found"; break;
+              case xar::game::HaltArmyResult::army_not_controllable:
+                error = "CK3 army is not player-controllable"; break;
+              case xar::game::HaltArmyResult::validator_rejected:
+                error = "CK3 halt-army command validation failed"; break;
+              case xar::game::HaltArmyResult::submission_failed:
+                error = "CK3 halt-army command queue rejected"; break;
+              default: break;
+              }
+              connected = write_frame(pipe, CommandResultFrame(
+                  request_id, step, false, error));
             }
           }
           if (connected) {

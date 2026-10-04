@@ -1438,6 +1438,16 @@ enum class MoveArmyResult {
   validation_failed,
   unavailable,
 };
+enum class HaltArmyResult {
+  halt_submitted,
+  requires_paused,
+  no_played_character,
+  army_not_found,
+  army_not_controllable,
+  validator_rejected,
+  submission_failed,
+  unavailable,
+};
 enum class PreviewMoveArmyStatus {
   available,
   requires_paused,

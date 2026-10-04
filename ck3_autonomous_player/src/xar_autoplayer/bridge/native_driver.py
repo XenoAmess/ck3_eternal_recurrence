@@ -564,6 +564,7 @@ from .war_contract import (
     ENFORCE_DEMANDS_CAPABILITY,
     MERGE_ARMIES_CAPABILITY,
     MOVE_ARMY_CAPABILITY,
+    HALT_ARMY_CAPABILITY,
     OFFER_WHITE_PEACE_CAPABILITY,
     PREVIEW_MOVE_ARMY_CAPABILITY,
     QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY,
@@ -600,6 +601,8 @@ from .war_contract import (
     is_life_advance_step,
     merge_armies_step,
     move_army_step,
+    halt_army_step,
+    parse_halt_army_step,
     normalize_active_wars,
     normalize_army_strengths,
     normalize_province_local_siege_result,
@@ -12622,6 +12625,24 @@ class NativeHeadlessGameplayDriver:
                     else None
                 ),
                 "queried_episode_run_id": starting.get("episode_run_id"),
+            }
+
+        halt_id = parse_halt_army_step(step)
+        if halt_id is not None:
+            army = _army_by_id(starting, halt_id)
+            if not isinstance(army, dict) or army.get("controllable") is not True:
+                raise BridgeUnavailableError("native halt requires a controllable player army")
+            result = self._execute_primitive_step(
+                step, expected_revision=selected_revision
+            )
+            return {
+                **result,
+                "war_action": {
+                    "status": "halt_submitted",
+                    "army_id": halt_id,
+                    "submitted_date_raw": _date_raw(starting, "halt starting snapshot"),
+                    "postcondition_verified": False,
+                },
             }
 
         move = parse_move_army_step(step)
@@ -27901,6 +27922,9 @@ def _action_steps(
             ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP,
         }:
             pending_interaction_steps.add(step)
+        elif capability == HALT_ARMY_CAPABILITY:
+            # Expand exact player IDs below, never the N placeholder.
+            continue
         elif capability == MOVE_ARMY_CAPABILITY:
             expand_move_armies = True
         elif capability == PREVIEW_MOVE_ARMY_CAPABILITY:
@@ -28329,6 +28353,16 @@ def _action_steps(
             and not isinstance(army.get("army_id"), bool)
             and 0 <= int(army["army_id"]) <= 2**31 - 1
         )
+    if HALT_ARMY_CAPABILITY in capabilities and paused is True:
+        for army in controllable:
+            route = army.get("route_province_ids")
+            if (is_public_cunit_id(army.get("army_id"))
+                    and army.get("route_read_status") == "complete_nonempty"
+                    and isinstance(route, list) and route
+                    and not _army_in_combat_or_retreat(army)):
+                # Native command validation remains authoritative for the
+                # loaded lock threshold and front==tail rejection.
+                steps.add(halt_army_step(int(army["army_id"])))
     if expand_merge_armies:
         merge_candidates = [
             army

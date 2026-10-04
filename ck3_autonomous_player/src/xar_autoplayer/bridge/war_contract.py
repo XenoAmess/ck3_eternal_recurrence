@@ -32,6 +32,7 @@ from xar_autoplayer.bridge.raiktor_war_bound_regiment_contract import (
 
 
 MOVE_ARMY_CAPABILITY = "game.command.move-army-N-to-N"
+HALT_ARMY_CAPABILITY = "game.command.halt-army-N"
 PREVIEW_MOVE_ARMY_CAPABILITY = "game.command.preview-move-army-N-to-N"
 QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY = (
     "game.command.query-route-contact-horizon-v1-N"
@@ -1986,6 +1987,20 @@ def _normalize_regiment_replenishment_chunk(
     result[raw_key] = raw
     result[scale_key] = CK3_FIXED_POINT_SCALE
     return result
+
+
+def halt_army_step(army_id: int) -> str:
+    return f"halt-army-{public_cunit_id(army_id, 'army_id')}"
+
+
+def parse_halt_army_step(step: object) -> int | None:
+    if not isinstance(step, str) or not step.startswith("halt-army-"):
+        return None
+    text = step.removeprefix("halt-army-")
+    if not canonical_public_cunit_decimal(text):
+        return None
+    value = int(text)
+    return value if 0 <= value <= 2**31 - 1 else None
 
 
 def move_army_step(army_id: int, province_id: int) -> str:
@@ -4333,6 +4348,7 @@ def is_native_war_step(step: object) -> bool:
         or parse_preview_move_army_step(step) is not None
         or parse_query_route_contact_horizon_step(step) is not None
         or parse_move_army_step(step) is not None
+        or parse_halt_army_step(step) is not None
         or parse_disband_army_step(step) is not None
         or parse_split_army_half_step(step) is not None
         or parse_merge_armies_step(step) is not None

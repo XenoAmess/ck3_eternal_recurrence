@@ -9,7 +9,7 @@
 namespace xar::ck3_12002 {
 namespace {
 enum class SemanticOperation {
-  select_event, reply, acknowledge, raise, move, disband, split, merge, assault_start, assault_stop, declare, marriage, enforce, surrender, white_peace,
+  select_event, reply, acknowledge, raise, move, halt, disband, split, merge, assault_start, assault_stop, declare, marriage, enforce, surrender, white_peace,
   preview, declarations, declarations_for_target, marriage_choices, family_candidates, strengths, combat_v2, combat_v3,
   title_holder, occupation_targets, termination_options, termination_terms, exit_terms, marriage_diagnostic,
   fixture_run_inbox
@@ -243,6 +243,7 @@ bool ExecuteSemanticAdapter12002(void *opaque,
     case SemanticOperation::acknowledge: request.result = static_cast<std::int32_t>(native.submit_acknowledge_pending_interaction(request.id)); break;
     case SemanticOperation::raise: request.result = static_cast<std::int32_t>(native.submit_raise_troops_default()); break;
     case SemanticOperation::move: request.result = static_cast<std::int32_t>(native.submit_move_army(request.id, request.other_id)); break;
+    case SemanticOperation::halt: request.result = static_cast<std::int32_t>(native.submit_halt_army(request.id)); break;
     case SemanticOperation::disband: request.result = static_cast<std::int32_t>(native.submit_disband_army(request.id)); break;
     case SemanticOperation::split: request.result = static_cast<std::int32_t>(native.submit_split_army_half(request.id)); break;
     case SemanticOperation::merge: request.result = static_cast<std::int32_t>(native.submit_merge_armies(request.id, request.other_id)); break;
@@ -322,6 +323,11 @@ game::RaiseTroopsResult WorkerAdapter::submit_raise_troops_default() const noexc
   request.operation = SemanticOperation::raise;
 
   return Run(request) ? static_cast<game::RaiseTroopsResult>(request.result) : game::RaiseTroopsResult::unavailable;
+}
+game::HaltArmyResult WorkerAdapter::submit_halt_army(std::int32_t army_id) const noexcept {
+  SemanticRequest request; request.operation = SemanticOperation::halt;
+  request.id = army_id;
+  return Run(request) ? static_cast<game::HaltArmyResult>(request.result) : game::HaltArmyResult::unavailable;
 }
 game::MoveArmyResult WorkerAdapter::submit_move_army(std::int32_t army_id, std::int32_t province_id) const noexcept {
   SemanticRequest request{};

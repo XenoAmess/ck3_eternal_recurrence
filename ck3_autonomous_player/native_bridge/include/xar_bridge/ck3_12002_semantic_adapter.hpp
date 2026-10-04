@@ -41,6 +41,7 @@ public:
   game::AcknowledgePendingInteractionResult submit_acknowledge_pending_interaction(std::int32_t pending_id) const noexcept override;
   game::RaiseTroopsResult submit_raise_troops_default() const noexcept override;
   game::MoveArmyResult submit_move_army(std::int32_t army_id, std::int32_t province_id) const noexcept override;
+  game::HaltArmyResult submit_halt_army(std::int32_t army_id) const noexcept override;
   game::DisbandArmyResult submit_disband_army(std::int32_t army_id) const noexcept override;
   game::SplitArmyHalfResult submit_split_army_half(std::int32_t army_id) const noexcept override;
   game::MergeArmiesResult submit_merge_armies(std::int32_t destination, std::int32_t source) const noexcept override;

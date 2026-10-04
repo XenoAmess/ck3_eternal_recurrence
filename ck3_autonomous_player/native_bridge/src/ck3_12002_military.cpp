@@ -96,6 +96,8 @@ MilitaryBindings BindMilitaryImage(std::uintptr_t image_base,
   bindings.raise_secondary = image_base + 0x4534658;
   bindings.move_primary = image_base + 0x476B168;
   bindings.move_secondary = image_base + 0x476B138;
+  bindings.halt_primary = image_base + 0x476B070;
+  bindings.halt_secondary = image_base + 0x476B108;
   bindings.disband_primary = image_base + 0x476AE48;
   bindings.disband_secondary = image_base + 0x476AE18;
   bindings.split_primary = image_base + 0x476AF10;
@@ -119,6 +121,9 @@ MilitaryBindings BindMilitaryImage(std::uintptr_t image_base,
   XAR_MILITARY_BIND(move_allowed, 0x2969570);
   XAR_MILITARY_BIND(construct_move_path, 0xD1A0B0);
   XAR_MILITARY_BIND(destroy_move, 0x2969620);
+  XAR_MILITARY_BIND(construct_halt, 0x296A1B0);
+  XAR_MILITARY_BIND(validate_halt, 0x296A2F0);
+  XAR_MILITARY_BIND(destroy_halt, 0x296A220);
   XAR_MILITARY_BIND(read_move_progress, 0x24AB2F0);
   XAR_MILITARY_BIND(read_route_first, 0x24AA7D0);
   XAR_MILITARY_BIND(read_route_last, 0x24AA820);
@@ -302,6 +307,47 @@ MoveArmyResult SubmitMoveArmy(const MilitaryBindings &bindings,
   return bindings.submit_copy(bindings.submit_context, &command, 0x0E)
              ? MoveArmyResult::submitted
              : MoveArmyResult::unavailable;
+}
+
+HaltArmyResult SubmitHaltArmy(const MilitaryBindings &bindings,
+                              const MilitaryWorldAccess &world,
+                              std::int32_t unit_id) noexcept {
+  if (!CanSubmit(bindings) || world.resolve_unit == nullptr ||
+      bindings.construct_halt == nullptr || bindings.validate_halt == nullptr ||
+      bindings.destroy_halt == nullptr || bindings.halt_primary == 0 ||
+      bindings.halt_secondary == 0) {
+    return HaltArmyResult::unavailable;
+  }
+  Snapshot current{};
+  if (!ReadCurrent(world, current)) return HaltArmyResult::unavailable;
+  if (!current.paused) return HaltArmyResult::requires_paused;
+  if (!HasLivingPlayer(current)) return HaltArmyResult::no_played_character;
+  if (world.resolve_unit(world.context, unit_id) == nullptr)
+    return HaltArmyResult::army_not_found;
+  if (FindControllable(current, unit_id) == nullptr)
+    return HaltArmyResult::army_not_controllable;
+  // The original constructor deep-copies this one-member full CUnitID array.
+  // Its validator accepts any eligible member while execution visits them all;
+  // this public operation must therefore remain exactly one army.
+  NativeMilitaryIntArray ids{};
+  ids.data = &unit_id;
+  ids.capacity = 1;
+  ids.count = 1;
+  HaltUnitCommand command{};
+  if (bindings.construct_halt(&command, 1, &ids) != &command)
+    return HaltArmyResult::unavailable;
+  CommandCleanup cleanup{bindings.destroy_halt, &command, 0};
+  if (command.header.primary_vtable != bindings.halt_primary ||
+      command.header.secondary_vtable != bindings.halt_secondary ||
+      command.kind != 1 || command.unit_ids.data == nullptr ||
+      command.unit_ids.capacity < 1 || command.unit_ids.count != 1 ||
+      command.unit_ids.data[0] != unit_id || command.unit_ids.allocator == nullptr)
+    return HaltArmyResult::unavailable;
+  if (!bindings.validate_halt(&command, nullptr))
+    return HaltArmyResult::validator_rejected;
+  return bindings.submit_copy(bindings.submit_context, &command, 0x0E)
+             ? HaltArmyResult::halt_submitted
+             : HaltArmyResult::submission_failed;
 }
 
 PreviewMoveArmyResult PreviewMoveArmy(const MilitaryBindings &bindings,

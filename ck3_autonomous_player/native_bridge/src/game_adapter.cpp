@@ -680,6 +680,8 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = "game.command.raise-troops-default";
   } else if (step.starts_with("preview-move-army-")) {
     capability = "game.command.preview-move-army-N-to-N";
+  } else if (step.starts_with("halt-army-")) {
+    capability = "game.command.halt-army-N";
   } else if (step.starts_with("move-army-")) {
     capability = "game.command.move-army-N-to-N";
   } else if (step.starts_with("disband-army-")) {

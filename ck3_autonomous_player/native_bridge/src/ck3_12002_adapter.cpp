@@ -52,6 +52,7 @@ constexpr auto kCapabilities = std::to_array<std::string_view>({
     "game.command.query-battle-terminal-transition-v1",
     "game.command.query-battle-reinforcement-assignment-v1-N",
     "game.command.move-army-N-to-N",
+    "game.command.halt-army-N",
     "game.command.disband-army-N",
     "game.command.split-army-half-N",
     "game.command.merge-armies-N-with-N",
@@ -259,6 +260,9 @@ public:
                                   std::int32_t province) const noexcept override {
     return ck3_12002::SubmitMoveArmy(bindings_.military, WorldAccess(), army,
                                     province);
+  }
+  HaltArmyResult submit_halt_army(std::int32_t army) const noexcept override {
+    return ck3_12002::SubmitHaltArmy(bindings_.military, WorldAccess(), army);
   }
   PreviewMoveArmyResult preview_move_army(
       std::int32_t army, std::int32_t province) const noexcept override {

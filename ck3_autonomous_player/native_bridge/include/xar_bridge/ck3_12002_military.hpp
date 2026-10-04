@@ -12,6 +12,7 @@ namespace xar::ck3_12002 {
 using game::Snapshot;
 using game::RaiseTroopsResult;
 using game::MoveArmyResult;
+using game::HaltArmyResult;
 using game::PreviewMoveArmyResult;
 using game::PreviewMoveArmyStatus;
 using game::DisbandArmyResult;
@@ -39,6 +40,7 @@ struct MilitaryBindings {
   bool (*submit_copy)(void *, void *, std::uint32_t) noexcept = nullptr;
   std::uintptr_t raise_primary = 0, raise_secondary = 0;
   std::uintptr_t move_primary = 0, move_secondary = 0;
+  std::uintptr_t halt_primary = 0, halt_secondary = 0;
   std::uintptr_t disband_primary = 0, disband_secondary = 0;
   std::uintptr_t split_primary = 0, split_secondary = 0;
   std::uintptr_t merge_primary = 0, merge_secondary = 0;
@@ -56,6 +58,9 @@ struct MilitaryBindings {
   bool (*move_allowed)(std::int32_t, void *, std::int32_t) = nullptr;
   void *(*construct_move_path)(void *) = nullptr;
   void *(*destroy_move)(void *, std::int32_t) = nullptr;
+  void *(*construct_halt)(void *, std::int32_t, const void *) = nullptr;
+  bool (*validate_halt)(void *, void *) = nullptr;
+  void *(*destroy_halt)(void *, std::int32_t) = nullptr;
   std::int64_t *(*read_move_progress)(void *, std::int64_t *) = nullptr;
   void *(*read_route_first)(void *) = nullptr;
   void *(*read_route_last)(void *) = nullptr;
@@ -97,6 +102,9 @@ MoveArmyResult SubmitMoveArmy(const MilitaryBindings &,
                               const MilitaryWorldAccess &,
                               std::int32_t unit_id,
                               std::int32_t province_id) noexcept;
+HaltArmyResult SubmitHaltArmy(const MilitaryBindings &,
+                              const MilitaryWorldAccess &,
+                              std::int32_t unit_id) noexcept;
 PreviewMoveArmyResult PreviewMoveArmy(const MilitaryBindings &,
                                       const MilitaryWorldAccess &,
                                       std::int32_t unit_id,
@@ -146,6 +154,12 @@ struct NativeMilitaryIntArray {
   std::int32_t capacity = 0, count = 0;
   void *allocator = nullptr;
 };
+struct HaltUnitCommand {
+  MilitaryCommandHeader header;
+  std::int32_t kind = 1;
+  std::array<std::byte, 4> padding{};
+  NativeMilitaryIntArray unit_ids;
+};
 struct MergeUnitCommand {
   MilitaryCommandHeader header;
   std::int32_t kind = 0, destination_unit_id = -1;
@@ -164,6 +178,8 @@ static_assert(sizeof(DisbandUnitCommand) == 0x28);
 static_assert(sizeof(SplitHalfUnitCommand) == 0x30);
 static_assert(offsetof(SplitHalfUnitCommand, character_id) == 0x24);
 static_assert(offsetof(SplitHalfUnitCommand, internal_army_id) == 0x28);
+static_assert(sizeof(HaltUnitCommand) == 0x40);
+static_assert(offsetof(HaltUnitCommand, unit_ids) == 0x28);
 static_assert(sizeof(MergeUnitCommand) == 0x40);
 static_assert(offsetof(MergeUnitCommand, source_unit_ids) == 0x28);
 static_assert(sizeof(AssaultSiegeCommand) == 0x30);
