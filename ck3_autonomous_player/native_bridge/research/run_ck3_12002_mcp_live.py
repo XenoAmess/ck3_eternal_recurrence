@@ -1250,7 +1250,15 @@ def write_atomic_report(path: Path, report: dict[str, object]) -> None:
         stream.write(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
         stream.flush()
         os.fsync(stream.fileno())
-    os.replace(partial, path)
+    for attempt in range(20):
+        try:
+            os.replace(partial, path)
+        except PermissionError as error:
+            if os.name != "nt" or getattr(error, "winerror", None) not in (5, 32, 33) or attempt == 19:
+                raise
+            time.sleep(0.05)
+        else:
+            return
 
 
 async def run(args: argparse.Namespace) -> dict[str, object]:

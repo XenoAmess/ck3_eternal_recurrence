@@ -829,6 +829,76 @@ class AtomicReportWriteTests(unittest.TestCase):
             self.assertEqual(json.loads(output.read_text(encoding="utf-8")), intended)
             self.assertEqual(list(Path(directory).glob(".report.json.partial-*")), [])
 
+    def test_transient_windows_denial_retries_the_same_synced_complete_partial(self):
+        import run_ck3_12002_mcp_live as harness
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "report.json"
+            original = b'{"status":"RUNNING","phase":"last-complete"}\n'
+            output.write_bytes(original)
+            intended = {"status": "RED", "error": "真实替换错误", "steps": [{"ok": False}]}
+            real_replace = os.replace
+            partials = []
+
+            def installed(partial, target):
+                partials.append(Path(partial))
+                self.assertEqual(output.read_bytes(), original)
+                self.assertEqual(json.loads(Path(partial).read_text(encoding="utf-8")), intended)
+                self.assertEqual(sync.call_count, 1)
+                if len(partials) <= 3:
+                    failure = PermissionError("injected Windows replacement denial")
+                    failure.winerror = (5, 32, 33)[len(partials) - 1]
+                    raise failure
+                return real_replace(partial, target)
+
+            with mock.patch.object(harness.os, "name", "nt"), \
+                    mock.patch.object(harness.os, "fsync", wraps=os.fsync) as sync, \
+                    mock.patch.object(harness.os, "replace", side_effect=installed) as replace, \
+                    mock.patch.object(harness.time, "sleep") as sleep:
+                harness.write_atomic_report(output, intended)
+            self.assertEqual(replace.call_count, 4)
+            self.assertEqual(len(set(partials)), 1)
+            self.assertEqual(sleep.call_args_list, [mock.call(0.05)] * 3)
+            self.assertEqual(json.loads(output.read_text(encoding="utf-8")), intended)
+            self.assertEqual(list(Path(directory).glob(".report.json.partial-*")), [])
+
+    def test_permanent_windows_denial_is_bounded_and_keeps_both_complete_files(self):
+        import errno
+        import run_ck3_12002_mcp_live as harness
+        failures = [(PermissionError("injected persistent denial"), 5, 20),
+                    (PermissionError("injected unrelated Windows denial"), 87, 1),
+                    (OSError(errno.ENOSPC, "injected replacement disk full"), None, 1)]
+        for failure, winerror, limit in failures:
+            with self.subTest(winerror=winerror, attempts=limit), tempfile.TemporaryDirectory() as directory:
+                if winerror is not None:
+                    failure.winerror = winerror
+                output = Path(directory) / "report.json"
+                original = b'{"status":"RUNNING","phase":"last-complete"}\n'
+                output.write_bytes(original)
+                intended = {"status": "RED", "error": "实际失败保持红色"}
+                partials = []
+
+                def denied(partial, target):
+                    partials.append(Path(partial))
+                    self.assertEqual(output.read_bytes(), original)
+                    self.assertEqual(json.loads(Path(partial).read_text(encoding="utf-8")), intended)
+                    self.assertEqual(sync.call_count, 1)
+                    raise failure
+
+                with mock.patch.object(harness.os, "name", "nt"), \
+                        mock.patch.object(harness.os, "fsync", wraps=os.fsync) as sync, \
+                        mock.patch.object(harness.os, "replace", side_effect=denied) as replace, \
+                        mock.patch.object(harness.time, "sleep") as sleep:
+                    with self.assertRaises(type(failure)) as raised:
+                        harness.write_atomic_report(output, intended)
+                self.assertIs(raised.exception, failure)
+                self.assertEqual(replace.call_count, limit)
+                self.assertEqual(sleep.call_args_list, [mock.call(0.05)] * (limit - 1))
+                self.assertEqual(len(set(partials)), 1)
+                self.assertEqual(output.read_bytes(), original)
+                preserved = list(Path(directory).glob(".report.json.partial-*"))
+                self.assertEqual(preserved, [partials[0]])
+                self.assertEqual(json.loads(preserved[0].read_text(encoding="utf-8")), intended)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -90,35 +90,29 @@ ervc_cc_valid_configuration_trigger = {
 	}
 	var:ervc_cc_commander_count >= 0
 	var:ervc_cc_commander_count <= 2
-	OR = {
-		AND = {
-			NOT = { has_variable_list = ervc_cc_selected_commander }
-			var:ervc_cc_commander_count = 0
+	trigger_if = {
+		limit = { has_variable_list = ervc_cc_selected_commander }
+		variable_list_size = { name = ervc_cc_selected_commander value <= 2 }
+		variable_list_size = {
+			name = ervc_cc_selected_commander
+			value = var:ervc_cc_commander_count
 		}
-		AND = {
-			has_variable_list = ervc_cc_selected_commander
-			variable_list_size = { name = ervc_cc_selected_commander value <= 2 }
-			variable_list_size = {
-				name = ervc_cc_selected_commander
-				value = var:ervc_cc_commander_count
-			}
-		}
+	}
+	trigger_else = {
+		var:ervc_cc_commander_count = 0
 	}
 	var:ervc_cc_personality_count >= 0
 	var:ervc_cc_personality_count <= 3
-	OR = {
-		AND = {
-			NOT = { has_variable_list = ervc_cc_selected_personality }
-			var:ervc_cc_personality_count = 0
+	trigger_if = {
+		limit = { has_variable_list = ervc_cc_selected_personality }
+		variable_list_size = { name = ervc_cc_selected_personality value <= 3 }
+		variable_list_size = {
+			name = ervc_cc_selected_personality
+			value = var:ervc_cc_personality_count
 		}
-		AND = {
-			has_variable_list = ervc_cc_selected_personality
-			variable_list_size = { name = ervc_cc_selected_personality value <= 3 }
-			variable_list_size = {
-				name = ervc_cc_selected_personality
-				value = var:ervc_cc_personality_count
-			}
-		}
+	}
+	trigger_else = {
+		var:ervc_cc_personality_count = 0
 	}
 	ervc_cc_selected_list_valid_trigger = {
 		ervc_selected_list = ervc_cc_selected_education

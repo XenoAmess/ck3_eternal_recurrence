@@ -63,3 +63,5 @@ R0003已实际续跑，但首个Bookmarks route是加载瞬态：随后树为 `_
 03:03 [主版R0009](ck3-upgrade-native-startup-2026-10-03.md#主版-r0009新进程实际导入纪录)12/12实际通过并闭包：新进程、新世界、新episode在自然首日真实条件读到import_consumed1/imported2/inheritance100，原教程75B保持精确SHA。writer→reader持久化子链已有实际证明，完整七cell/GUI仍未收口。新的用户指令优先白绮独立版，接续先solo核心、再双加载顺序，RMTM/Ox/no-heir暂缓；不能把尚缺的GUI入口和元数据诊断隐藏为产品全通过。
 
 10-04 [白绮独立版实机接续](ck3-1.20.0.3-vivhite-compatibility-2026-10-04.md)：R0001 原生 23/23、29 必需标记及 3 生产 guard 各一次，取消/119/120/348/保留重开/实际 Rite 核心通过；GUI credit=false，441 条夹具提示预览错误与 2 条 unused 保留。R0002 original-first 在核心执行前发生磁盘 Errno28，0-byte 原报告和 stderr 保留，环境 RED、CAS1937 释放。已闭合旧输入与日志只做字节不变 NTFS 压缩，空间约 730MB；新 attempt 前先补报告原子保存、再新纯输入，双顺序尚未通过。
+
+10-04 08:07 增量：[白绮 R0004](ck3-1.20.0.3-vivhite-compatibility-2026-10-04.md#主版先加载-r0004核心通过生产空列表报错待修复验证) 主版先加载核心 29/29、29 标记与实际扣款/双命名空间隔离通过，资格后 finish 使最终 30/30；CAS1950 释放。三种核心加载场景已过 2/3（67%），完整 GUI/七 cell 不据此通过。1,270 条非空日志中 552 条生产缺列表长度读取已定位；两产品 presence 分支修复保持全部购买限制，parser 2/2 与窄边界测试通过。反向 R0005 在报告 replace WinError5 前停止，核心 0 步、CAS1968 释放；先前 finish-consumed 摘要已追加撤回。v12 仅重试同一报告 partial 的 replace，4 项测试通过，下一新 profile 使用 `.3` White metadata 与新生产 staging 实机验证。
