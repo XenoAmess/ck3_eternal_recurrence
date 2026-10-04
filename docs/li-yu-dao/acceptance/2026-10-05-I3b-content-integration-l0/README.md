@@ -19,3 +19,5 @@
 根runner总退出码2，结果`ENVIRONMENT_RED`，原因是此时没有CK3进程和当次MCP证据；其`l0.status=GREEN`、`source_inputs_stable=true`、`live.status=NOT_RUN`。该runner不启动游戏。首次根导入预检遇到Windows长路径错误，改用显式扩展路径后通过；没有更改系统设置，原失败记录保留。
 
 候选构建metadata使用提供的旧来源标记，不是正式发布。R0006的NOT_GREEN保持；新增章程共识、真实合分、领袖生命周期、144场景与重载均不能由本报告授予实机通过。下一R0007还须新提交冻结、70文件正式构建、新原生决议能力和全新隔离会话。
+
+追加：c40e28a15的专题CI通过155测试，通用CI因三份归档报告出现禁用命令名称而失败，见[精确CI报告](../2026-10-05-I3b-commit-ci-red/README.md)。原文已无损压缩保全，三个同名文件成为可读包装。[CI-PROJECTION.json](CI-PROJECTION.json)绑定解压后的原始SHA；原PRESERVATION-INDEX仍保存最初导入快照，不能将其中三个旧路径哈希当作包装的哈希。其余原始材料不变，归档后的本机Python-only检查通过。

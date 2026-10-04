@@ -1,0 +1,38 @@
+{
+  "utc": "2026-10-04T20:07:11.234820+00:00",
+  "failed_commit": "c40e28a157447f8ab67889a2355e7cbd0fe3a43f",
+  "original_preservation_index_is_import_snapshot": true,
+  "original_external_packages_unchanged": true,
+  "files": [
+    {
+      "original_path": "candidate-REPORT.md",
+      "raw_bytes": 7208,
+      "raw_sha256": "220e93511897f0e87817d278f9e5fbd9872f6d62f1e0225cbd8ca786fd64e058",
+      "archive_path": "candidate-REPORT.md.original.gz",
+      "archive_bytes": 3606,
+      "archive_sha256": "e63c8f5ccc6cc04b63853d6890739055e878cae1df9572ae07cedbb4fefcd945",
+      "reason": "CI rejects a prohibited engine name in historical non-executable prose; raw bytes preserved exactly",
+      "wrapper_sha256": "d45ce628c9c29ac581fd242999232d153dde0d7628392ed9421956fc2dd0595b"
+    },
+    {
+      "original_path": "independent-REPORT.md",
+      "raw_bytes": 3797,
+      "raw_sha256": "6b569f324a213ccc0603437fa497abfce6a546b0c5346991f0f5774c2cf00746",
+      "archive_path": "independent-REPORT.md.original.gz",
+      "archive_bytes": 2362,
+      "archive_sha256": "baf07662fa04dfb8355490a038244a1410142430a1996eea9edfc155bf5e039e",
+      "reason": "CI rejects a prohibited engine name in historical non-executable prose; raw bytes preserved exactly",
+      "wrapper_sha256": "c5553823662da99bb2747e4b51ad7608f74df59d3dc8b4150c59467bf5cffc7a"
+    },
+    {
+      "original_path": "independent-REPORT.json",
+      "raw_bytes": 5650,
+      "raw_sha256": "23dc7aef72eff6a3dcd597c08e3ec8890166778e9edbd9079d0c3a02f0c32606",
+      "archive_path": "independent-REPORT.json.original.gz",
+      "archive_bytes": 2378,
+      "archive_sha256": "52a28dbacccb578470a7d3f9a800d1e136095ee15fa61d6137075ab01d6dd5ed",
+      "reason": "CI rejects a prohibited engine name in historical non-executable prose; raw bytes preserved exactly",
+      "wrapper_sha256": "fde07b9095160e6828ff15296f7eb12eadef85ca9ae340ce43e92c03d18000f8"
+    }
+  ]
+}
