@@ -128,9 +128,9 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
     result.armies.get_army_supply_loss_budget =
         reinterpret_cast<decltype(result.armies.get_army_supply_loss_budget)>(
             image_base + ck3_12002::kArmySupplyLossBudgetRva12003);
-    result.armies.is_army_raid_active =
-        reinterpret_cast<decltype(result.armies.is_army_raid_active)>(
-            image_base + ck3_12002::kArmyRaidActiveRva12003);
+    result.armies.is_army_siege_active =
+        reinterpret_cast<decltype(result.armies.is_army_siege_active)>(
+            image_base + ck3_12002::kArmySiegeActiveRva12003);
     result.armies.timing_bindings = ck3_12003::BindArmySupplyTimingImage(
         image_base, executable_sha256);
     result.native_owner_recall = ck3_12002::BindBattleImage(

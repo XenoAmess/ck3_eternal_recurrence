@@ -1871,7 +1871,7 @@ def _normalize_loss_application_inputs_v1(
 ) -> dict[str, object]:
     """Preserve observed native budgets, distinct filtered counts and rate scalars."""
     integer_fields = (
-        "siege_association_id", "whole_soldiers", "definition_le_zero_soldiers",
+        "raid_association_id", "whole_soldiers", "definition_le_zero_soldiers",
         "supply_eligible_soldiers", "definition_le_zero_supply_eligible_soldiers",
         "current_supply_loss_budget", "siege_loss_budget", "raid_loss_budget",
     )

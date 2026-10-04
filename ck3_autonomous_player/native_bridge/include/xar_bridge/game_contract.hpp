@@ -227,7 +227,8 @@ struct ArmyRegimentStrengthSnapshot {
 struct ArmyLossApplicationInputsV1 {
   bool available = false;
   std::string unavailable_reason;
-  std::int32_t siege_association_id = -1;
+  // Native CArmy+1E8 is a raiding association, not the active Siege ID.
+  std::int32_t raid_association_id = -1;
   bool siege_active = false;
   bool raid_active = false;
   std::int64_t siege_rate_raw = 0;

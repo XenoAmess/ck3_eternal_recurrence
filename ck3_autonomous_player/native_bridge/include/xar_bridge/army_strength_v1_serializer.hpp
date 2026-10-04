@@ -287,7 +287,7 @@ inline void AppendArmyStrengthV1(
       result += ':';
       result += inputs.available ? (value ? "true" : "false") : "null";
     };
-    append_number("siege_association_id", inputs.siege_association_id);
+    append_number("raid_association_id", inputs.raid_association_id);
     append_boolean("siege_active", inputs.siege_active);
     append_boolean("raid_active", inputs.raid_active);
     append_number("siege_rate_raw", inputs.siege_rate_raw);

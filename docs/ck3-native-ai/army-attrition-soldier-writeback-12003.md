@@ -132,3 +132,26 @@ R36 已缓存实际主军 `3480/3878`、40 regiment、attrition `.01`、monthly 
 第4行 ArmyID `83886508` 是 health `unavailable / native_carmy_not_found`，native CArmyID及兵力 aggregate为 `null`；loss 字段实际缺席，派生展示值为 `null`，不填任何预算0。
 
 本次仅取得 **production-live primitive**：三行当前 inactive loss 输入、过滤计数和供给预算。active whole-loss 路径仍只有 source+fixture 验证；没有激活分支的实机后态、完整损耗循环或新增保存日信用。当前预算0不能归因过去主军−34的净变化，也不能预测未来净损失；setter `2657EA0` 额外 lifecycle/carry 仍未闭合，没有已证实 offset。
+
+### 2026-10-05：R38 实际围城揭示 siege/raid 标签反置
+
+R38 主军301989997→CArmy201326670、native40/public2/date53259768/seq2 的旧 observer 显示 `siege_association_id=-1`、`siege_active=false`、`raid_active=true`、`raid_loss_budget=32`；独立 occupation 已观测P470 / Siege503316504 / besieging3210。已封 exact .3 原生树证明这是组件标签反置，receiver 和整数预算未被该差异证明错误；本节撤回本文及旧 native-loss/attrition-state 树中相反的分支名字，历史 archive、actual 原字节与数值保留。
+
+| 原生输入 / 已闭调用 | 正确字段与配对 |
+| --- | --- |
+| `24E8560(CArmy*) ->AL`：Unit+20 Province+788有 FullSiegeID，retreat+170<=0，再 `2C16690(CArmy,Province)` | `siege_active`、rate VALUE `5C69618`、`siege_loss_budget` |
+| `int32 CArmy+1E8 !=-1`：既有迁移/reuse 已证 raiding 输入 | `raid_association_id`、`raid_active`、rate VALUE `5C69098`、`raid_loss_budget` |
+
+因此 R38 历史字段 `raid_loss_budget=32` 的真实分支语义是**当前围城预算32**（`trunc0(3210*1000/100000)`），不表示实际已经扣32人；+1E8不是当前 FullSiegeID，独立围城ID来自 Province+788。R37 三行 inactive0、filtered counts/current supply budget0 及第四 missing-loss 行保留原数值与 partial 边界，旧 component 名字不再称已精确验证；这些零值不能解释以前主军−34。此前把 war-side+30贡献称“raid+supply、排除siege”的语义亦撤回：实际24E8560分量属于 siege，即 siege+supply、排除raiding；不因此新增净损失归因。
+
+```mermaid
+flowchart TD
+  P[Unit current Province+788 active SiegeID] --> S[24E8560 siege context]
+  S --> V[VALUE5C69618 /24DD580 -> current siege budget32]
+  R[Army+1E8 raiding association−1] --> Z[raiding inactive / budget0 / VALUE5C69098]
+  V --> M[correct same-query field names]
+  Z --> M
+  X[2C16690 full predicates / raiding ID domain / define constructor] -. unexpanded .-> S
+```
+
+纠正源候选现为 static-ready；唯一生产 reader→serializer→registered MCP 回归 GREEN（native 16 checks），目前尚未 Root v66 部署后的真实 paused query；本段不冒充纠正后 actual 或 applied-loss 验收。原生 cause/tree/最小施工入口见 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-loss-r38-branch-truth/native-semantics/ROOT-DELIVERY.json`（SHA `7a7fd76ccc91f05573f2e5329eb3a85bc07fb7094014ab4bc352d4db1553b2f4`）；loaded scalar 的分支角色已闭，命名 defines 的 constructor 绑定与 setter2657EA0额外 lifecycle/carry不在此扩展。本包仅追加本专题 EOF，0新增游戏日、SDK、fixture重跑、共享修改或Git。

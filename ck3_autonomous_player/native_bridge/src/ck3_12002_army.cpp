@@ -293,13 +293,13 @@ game::ArmyLossApplicationInputsV1 LossApplicationInputs(
       bindings.raid_loss_rate_raw == nullptr ||
       bindings.get_army_whole_loss_budget == nullptr ||
       bindings.get_army_supply_loss_budget == nullptr ||
-      bindings.is_army_raid_active == nullptr) {
+      bindings.is_army_siege_active == nullptr) {
     result.unavailable_reason = "loss_application_bindings_unavailable";
     return result;
   }
-  result.siege_association_id = Load<std::int32_t>(army, 0x1E8);
-  result.siege_active = result.siege_association_id != -1;
-  result.raid_active = bindings.is_army_raid_active(army);
+  result.raid_association_id = Load<std::int32_t>(army, 0x1E8);
+  result.raid_active = result.raid_association_id != -1;
+  result.siege_active = bindings.is_army_siege_active(army);
   result.siege_rate_raw = *bindings.siege_loss_rate_raw;
   result.raid_rate_raw = *bindings.raid_loss_rate_raw;
   result.whole_soldiers = whole_soldiers;
