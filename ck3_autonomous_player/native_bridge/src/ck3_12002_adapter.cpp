@@ -339,7 +339,25 @@ public:
       output.clear();
       return ReadArmyStrengthsResult::unavailable;
     }
-    return ck3_12002::ReadArmyStrengths(bindings_.armies, scope, output);
+    const auto result = ck3_12002::ReadArmyStrengths(bindings_.armies, scope, output);
+    if ((result == ReadArmyStrengthsResult::available ||
+         result == ReadArmyStrengthsResult::partial) &&
+        bindings_.native_owner_recall.enabled) {
+      auto provinces = bindings_.provinces;
+      auto recall = bindings_.native_owner_recall;
+      recall.province_context = &provinces;
+      recall.resolve_province = [](void *context, std::int32_t id) -> void * {
+        return ck3_12002::ResolveObjectiveProvince(
+            *static_cast<const ck3_12002::ProvinceBindings *>(context), id);
+      };
+      for (auto &row : output) {
+        row.native_owner_recall_inputs_v1.emplace();
+        ck3_12003::AttachBattleNativeOwnerRecallInputsForUnitsV1(
+            recall, scope, std::vector<std::int32_t>{row.army_id},
+            *row.native_owner_recall_inputs_v1);
+      }
+    }
+    return result;
   }
   ReadCombatSimulationInputsResult read_combat_simulation_inputs(
       const CombatSimulationInputsRequest &request,

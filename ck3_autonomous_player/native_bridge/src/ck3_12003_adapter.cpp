@@ -98,6 +98,12 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
   // These numeric GUI getter ABIs are closed only for exact .3. Do not install
   // them in BindArmyImage: that binder also serves the unchanged .2 adapter.
   if (result.armies.enabled) {
+    result.armies.timing_bindings = ck3_12003::BindArmySupplyTimingImage(
+        image_base, executable_sha256);
+    result.native_owner_recall = ck3_12002::BindBattleImage(
+        image_base, executable_sha256);
+    ck3_12003::EnableBattleNativeOwnerRecallInputs12003(
+        result.native_owner_recall, image_base, executable_sha256);
     result.armies.get_army_supply_capacity =
         reinterpret_cast<decltype(result.armies.get_army_supply_capacity)>(
             image_base + ck3_12002::kArmySupplyCapacityRva12003);

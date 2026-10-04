@@ -61,6 +61,7 @@ struct ArmyBindings {
   std::int32_t (*get_province_supply_usage)(void *, void *, std::int32_t,
                                           std::int64_t *) = nullptr;
   void **province_supply_character_fallback_slot = nullptr;
+  ck3_12003::ArmySupplyTimingBindings timing_bindings{};
 };
 
 ArmyBindings BindArmyImage(std::uintptr_t image_base,

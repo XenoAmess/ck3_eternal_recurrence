@@ -2,6 +2,7 @@
 
 #include "xar_bridge/war_occupation_targets_v1.hpp"
 #include "xar_bridge/battle_native_owner_recall_inputs_12003.hpp"
+#include "xar_bridge/ck3_12003_army_supply_timing.hpp"
 
 #include <array>
 #include <cstdint>
@@ -236,6 +237,8 @@ struct ArmyStrengthSnapshot {
       regiment_replenishment;
   // Exact .3 CArmy native remaining gathering days. Zero is observable while
   // gathering; not_gathering is an observed absence, with no invented days.
+  std::optional<ArmySupplyTimingSnapshot> army_update_clock_v1;
+  std::optional<BattleNativeOwnerRecallInputsV1> native_owner_recall_inputs_v1;
   std::optional<std::int32_t> gathering_days_left;
   ArmyGatheringDaysStatus gathering_days_status =
       ArmyGatheringDaysStatus::unavailable;

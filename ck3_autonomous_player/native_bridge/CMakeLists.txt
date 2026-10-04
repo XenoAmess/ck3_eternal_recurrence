@@ -807,7 +807,8 @@ file(GLOB XAR_CK3_12002_SOURCES CONFIGURE_DEPENDS
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002*.cpp")
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "_test(_only)?\\.cpp$")
 list(APPEND XAR_CK3_12002_SOURCES
-  "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_battle_current_state.cpp")
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_battle_current_state.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_army_supply_timing.cpp")
 # R11 owns only explicitly READY outcome production CPPs below.
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "/ck3_12002_sway_outcome.*\\.cpp$")
 # READY explicit source lists below own these namespaces.
@@ -7661,6 +7662,7 @@ endif()
 if(BUILD_TESTING AND WIN32)
   add_executable(xar_ck3_12003_commander_movement_speed_test
     src/ck3_12002_army.cpp
+    src/ck3_12003_army_supply_timing.cpp
     src/ck3_12003_commander.cpp
     src/ck3_12003_commander_mailbox.cpp
     src/ck3_12002_query_mailbox.cpp
@@ -7689,6 +7691,37 @@ if(BUILD_TESTING AND WIN32)
     FIXTURES_SETUP commander_movement_speed_wire)
   set_tests_properties(xar_ck3_12003_commander_movement_speed_registered_mcp PROPERTIES
     FIXTURES_REQUIRED commander_movement_speed_wire)
+endif()
+
+# Observed army update clock: exactly two new production reader/wire cases.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12003_army_update_clock_test
+    src/ck3_12002_army.cpp
+    src/ck3_12003_army_supply_timing.cpp
+    src/ck3_12003_army_update_clock_test.cpp)
+  target_include_directories(xar_ck3_12003_army_update_clock_test PRIVATE include)
+  target_compile_features(xar_ck3_12003_army_update_clock_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12003_army_update_clock_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_army_update_clock_test PRIVATE
+      /W4 /WX /permissive- /EHsc /Gy /O2)
+    target_link_options(xar_ck3_12003_army_update_clock_test PRIVATE /OPT:REF)
+  endif()
+  file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/ck3_12003_army_update_clock_wire")
+  add_test(NAME xar_ck3_12003_army_update_clock_two_cases
+    COMMAND xar_ck3_12003_army_update_clock_test
+      "${CMAKE_BINARY_DIR}/ck3_12003_army_update_clock_wire")
+  add_test(NAME xar_ck3_12003_army_update_clock_registered_mcp
+    COMMAND ${Python3_EXECUTABLE} -O
+      "${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/run_army_update_clock_mcp_fixture.py"
+      --projection-root "${CMAKE_CURRENT_SOURCE_DIR}/../.."
+      --native-dir "${CMAKE_BINARY_DIR}/ck3_12003_army_update_clock_wire"
+      --output-dir "${CMAKE_BINARY_DIR}/ck3_12003_army_update_clock_registered")
+  set_tests_properties(xar_ck3_12003_army_update_clock_two_cases PROPERTIES
+    FIXTURES_SETUP army_update_clock_wire)
+  set_tests_properties(xar_ck3_12003_army_update_clock_registered_mcp PROPERTIES
+    FIXTURES_REQUIRED army_update_clock_wire)
 endif()
 
 # Fixed text memory/UTF-8 tests; this target never starts or attaches CK3.

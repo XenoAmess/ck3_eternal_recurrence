@@ -173,6 +173,32 @@ inline void AppendArmyStrengthV1(
     else append_json_string(result, movement.unavailable_reason);
     result += '}';
   }
+  if (strength.army_update_clock_v1.has_value()) {
+    const auto &clock = *strength.army_update_clock_v1;
+    result += ",\"army_update_clock_v1\":{\"status\":";
+    append_json_string(result, ArmySupplyTimingStatusName(clock.status));
+    result += ",\"ready\":";
+    result += clock.ready ? "true" : "false";
+    const auto append_optional = [&](std::string_view key, const auto &value) {
+      result += ',';
+      append_json_string(result, key);
+      result += ':';
+      result += value.has_value() ? number(*value) : "null";
+    };
+    append_optional("current_date_raw", clock.current_date_raw);
+    append_optional("native_day_index", clock.native_day_index);
+    append_optional("selected_bucket_phase", clock.selected_bucket_phase);
+    append_optional("observed_army_bucket_phase", clock.observed_army_bucket_phase);
+    append_optional("last_supply_update_date_storage_raw64", clock.last_supply_update_date_storage_raw64);
+    append_optional("last_supply_update_date_raw", clock.last_supply_update_date_raw);
+    append_optional("grace_anchor_date_storage_raw64", clock.grace_anchor_date_storage_raw64);
+    append_optional("grace_anchor_date_raw", clock.grace_anchor_date_raw);
+    append_optional("loaded_grace_days", clock.loaded_grace_days);
+    result += ",\"unavailable_reason\":";
+    if (clock.unavailable_reason.empty()) result += "null";
+    else append_json_string(result, clock.unavailable_reason);
+    result += '}';
+  }
   result += ",\"gathering_days_left\":";
   if (strength.gathering_days_status == ArmyGatheringDaysStatus::available &&
       strength.gathering_days_left.has_value()) {

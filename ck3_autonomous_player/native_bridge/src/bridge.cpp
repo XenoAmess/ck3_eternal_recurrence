@@ -3071,6 +3071,13 @@ void AppendArmyStrength(
     const xar::game::ArmyStrengthSnapshot &strength) {
   xar::game::AppendArmyStrengthV1(
       result, strength, SignedNumber, AppendInt32Array, AppendJsonString);
+  if (strength.native_owner_recall_inputs_v1.has_value()) {
+    result.pop_back();
+    result += ",\"native_owner_recall_inputs_v1\":";
+    result += xar::ck3_11906::SerializeBattleNativeOwnerRecallInputsV1(
+        strength.native_owner_recall_inputs_v1);
+    result += '}';
+  }
 }
 
 std::string_view CombatStatusName(

@@ -2,6 +2,11 @@
 
 from __future__ import annotations
 
+from .army_update_clock_contract import normalize_army_update_clock_v1
+from .battle_native_owner_recall_inputs_contract import (
+    normalize_battle_native_owner_recall_inputs_v1,
+)
+
 from .public_unit_contract import (
     canonical_public_cunit_decimal,
     optional_public_cunit_id,
@@ -258,7 +263,8 @@ _ARMY_STRENGTH_GATHERING_DAYS_KEYS = {
 }
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS = _ARMY_STRENGTH_ROW_KEYS | {
     key for pair in _ARMY_STRENGTH_SUPPLY_FIELD_PAIRS for key in pair
-} | {"regiment_replenishment", "current_movement_progress"} | _ARMY_STRENGTH_GATHERING_DAYS_KEYS
+} | {"regiment_replenishment", "current_movement_progress",
+     "army_update_clock_v1", "native_owner_recall_inputs_v1"} | _ARMY_STRENGTH_GATHERING_DAYS_KEYS
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
     "active_war_ally",
@@ -1777,6 +1783,12 @@ def _normalize_army_strength_row(
         "unavailable_reason": unavailable_reason,
     }
     result.update(observed_supply)
+    if "army_update_clock_v1" in value:
+        result["army_update_clock_v1"] = normalize_army_update_clock_v1(value["army_update_clock_v1"])
+    if "native_owner_recall_inputs_v1" in value:
+        result["native_owner_recall_inputs_v1"] = normalize_battle_native_owner_recall_inputs_v1(
+            value["native_owner_recall_inputs_v1"], lifecycle_status="available"
+        )
     result.update(_normalize_army_gathering_days(value, name=name))
     if "current_movement_progress" in value:
         result["current_movement_progress"] = _normalize_current_movement_progress(

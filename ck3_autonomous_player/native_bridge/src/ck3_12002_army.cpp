@@ -316,6 +316,9 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
   // Exact .3 selector 0x2587254 consumes this signed Q100000 operand.
   // The reviewed .2/.3 adapter binding owns the executable identity gate.
   if (Load<std::int32_t>(army, 0x124) == scope.army_id) {
+    if (bindings.timing_bindings.enabled)
+      result.army_update_clock_v1 = ck3_12003::ReadArmySupplyTiming(
+          bindings, bindings.timing_bindings, army);
     if (bindings.current_movement_progress_enabled)
       result.current_movement_progress = MovementProgress(bindings, unit);
     if (bindings.get_army_gathering_days_left != nullptr &&

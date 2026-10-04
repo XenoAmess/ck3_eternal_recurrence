@@ -2,6 +2,7 @@
 
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ck3_12002_army.hpp"
+#include "xar_bridge/ck3_12002_battle.hpp"
 #include "xar_bridge/ck3_12002_claim_terms.hpp"
 #include "xar_bridge/ck3_12002_combat.hpp"
 #include "xar_bridge/ck3_12002_context.hpp"
@@ -28,6 +29,7 @@ struct Ck3_12002AdapterBindings {
   ck3_12002::CommandBindings commands;
   ck3_12002::EventsBindings events;
   ck3_12002::ArmyBindings armies;
+  ck3_12002::BattleBindings native_owner_recall;
   ck3_12002::WorldBindings world;
   ck3_12002::ProvinceBindings provinces;
   ck3_12002::MilitaryBindings military;
