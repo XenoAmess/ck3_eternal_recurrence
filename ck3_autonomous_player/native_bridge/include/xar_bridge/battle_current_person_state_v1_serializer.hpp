@@ -46,6 +46,19 @@ inline std::string_view TraitStatusName(
   return "unavailable";
 }
 
+inline std::string_view DeathRecordStatusName(
+    xar::game::BattleCurrentPersonDeathRecordStatusV1 status) {
+  switch (status) {
+  case xar::game::BattleCurrentPersonDeathRecordStatusV1::none:
+    return "none";
+  case xar::game::BattleCurrentPersonDeathRecordStatusV1::available:
+    return "available";
+  case xar::game::BattleCurrentPersonDeathRecordStatusV1::unavailable:
+    return "unavailable";
+  }
+  return "unavailable";
+}
+
 }  // namespace battle_current_person_state_v1_detail
 
 // A current-character read; it does not project historical injury causality.
@@ -87,6 +100,19 @@ inline std::string SerializeBattleCurrentPersonStateV1(
   AppendReason(output,
                injury.status == xar::game::BattleCurrentPersonInjuryTraitsStatusV1::available,
                injury.unavailable_reason, "injury_trait_reads_unavailable");
+  const auto &death = state.death_record;
+  output += "},\"death_record\":{\"status\":";
+  AppendString(output, DeathRecordStatusName(death.status));
+  output += ",\"reason_key\":";
+  if (death.status == xar::game::BattleCurrentPersonDeathRecordStatusV1::available &&
+      death.reason_key.has_value())
+    AppendString(output, *death.reason_key);
+  else
+    output += "null";
+  output += ",\"unavailable_reason\":";
+  AppendReason(output,
+               death.status != xar::game::BattleCurrentPersonDeathRecordStatusV1::unavailable,
+               death.unavailable_reason, "death_record_unavailable");
   output += "}}";
   return output;
 }

@@ -275,10 +275,11 @@ def _requested_character_ids(value: object, field: str) -> list[int]:
 def _normalize_current_person_state(
     value: object, field: str,
 ) -> dict[str, object]:
-    """Validate independently observed current prowess and eight injury flags."""
-    state = _exact_dict(value, field, {
-        "scope", "effective_prowess", "injury_traits",
-    })
+    """Validate independently observed current-person leaves."""
+    fields = {"scope", "effective_prowess", "injury_traits"}
+    if isinstance(value, dict) and "death_record" in value:
+        fields.add("death_record")
+    state = _exact_dict(value, field, fields)
     if state["scope"] != "current_character":
         raise ValueError(f"{field}.scope must be current_character")
     prowess = _exact_dict(state["effective_prowess"], f"{field}.effective_prowess", {
@@ -331,11 +332,32 @@ def _normalize_current_person_state(
         or (rank_observed and rank_reason is not None)
         or (not rank_observed and (not isinstance(rank_reason, str) or not rank_reason))):
         raise ValueError(f"{field} wounded rank disagrees with observed flags")
-    return {
+    normalized = {
         "scope": "current_character",
         "effective_prowess": {**prowess, "points": points},
         "injury_traits": {**injury, "flags": flags, "wounded_rank": rank},
     }
+    if "death_record" in state:
+        death = _exact_dict(state["death_record"], f"{field}.death_record", {
+            "status", "reason_key", "unavailable_reason",
+        })
+        status, key, reason = (death["status"], death["reason_key"],
+                               death["unavailable_reason"])
+        if key is not None and type(key) is not str:
+            raise ValueError(f"{field}.death_record.reason_key must be a string or null")
+        if status == "none":
+            if key is not None or reason is not None:
+                raise ValueError(f"{field} absent death record disagrees")
+        elif status == "available":
+            if reason is not None:
+                raise ValueError(f"{field} available death record disagrees")
+        elif status == "unavailable":
+            if key is not None or type(reason) is not str or not reason:
+                raise ValueError(f"{field} unavailable death record disagrees")
+        else:
+            raise ValueError(f"{field} death record status is invalid")
+        normalized["death_record"] = dict(death)
+    return normalized
 
 
 def _normalize_character_custody_rows(

@@ -2404,9 +2404,21 @@ struct BattleCurrentPersonInjuryTraitsSnapshotV1 {
   friend bool operator==(const BattleCurrentPersonInjuryTraitsSnapshotV1 &,
                          const BattleCurrentPersonInjuryTraitsSnapshotV1 &) = default;
 };
+enum class BattleCurrentPersonDeathRecordStatusV1 { none, available, unavailable };
+struct BattleCurrentPersonDeathRecordSnapshotV1 {
+  BattleCurrentPersonDeathRecordStatusV1 status =
+      BattleCurrentPersonDeathRecordStatusV1::unavailable;
+  // Actual marker absence is none; a dead record's native null reason is
+  // available/null. A copied empty stable key remains an empty string.
+  std::optional<std::string> reason_key;
+  std::string unavailable_reason;
+  friend bool operator==(const BattleCurrentPersonDeathRecordSnapshotV1 &,
+                         const BattleCurrentPersonDeathRecordSnapshotV1 &) = default;
+};
 struct BattleCurrentPersonStateSnapshotV1 {
   BattleCurrentPersonEffectiveProwessSnapshotV1 effective_prowess;
   BattleCurrentPersonInjuryTraitsSnapshotV1 injury_traits;
+  BattleCurrentPersonDeathRecordSnapshotV1 death_record;
   friend bool operator==(const BattleCurrentPersonStateSnapshotV1 &,
                          const BattleCurrentPersonStateSnapshotV1 &) = default;
 };

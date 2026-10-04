@@ -908,6 +908,38 @@ bool ReinforcementSample(const BattleBindings &b, const game::Snapshot &scope,
 game::BattleCurrentPersonStateSnapshotV1 CurrentPersonSample(
     const BattleBindings &b, void *character) noexcept {
   game::BattleCurrentPersonStateSnapshotV1 observed{};
+  auto &death = observed.death_record;
+  if (!character) {
+    death.unavailable_reason = "character_unresolved";
+  } else {
+    const void *const data = At<void *>(character, kCharacterDeathDataOffset);
+    if (!data) {
+      death.status = game::BattleCurrentPersonDeathRecordStatusV1::none;
+    } else {
+      const void *const reason = At<void *>(data, 0x10);
+      if (!reason) {
+        death.status = game::BattleCurrentPersonDeathRecordStatusV1::available;
+      } else {
+        // Exact .3 CDeathReason getter 0x2F52EC0: low DWORD length,
+        // unsigned qword capacity, and primary definition key at +0x18.
+        // Copy the owning-thread span; do not invoke its locked DB getter.
+        const auto length = At<std::uint32_t>(reason, 0x28);
+        const auto capacity = At<std::uint64_t>(reason, 0x30);
+        const char *const key = capacity < 16
+            ? static_cast<const char *>(reason) + 0x18
+            : At<const char *>(reason, 0x18);
+        if (length == 0) {
+          death.reason_key.emplace();
+          death.status = game::BattleCurrentPersonDeathRecordStatusV1::available;
+        } else if (key) {
+          death.reason_key.emplace(key, static_cast<std::size_t>(length));
+          death.status = game::BattleCurrentPersonDeathRecordStatusV1::available;
+        } else {
+          death.unavailable_reason = "death_reason_key_storage_unavailable";
+        }
+      }
+    }
+  }
   auto &prowess = observed.effective_prowess;
   if (character && b.current_person_effective_prowess_enabled) {
     // Same signed int32 effective value used by v2 ReadCombatKnights.
