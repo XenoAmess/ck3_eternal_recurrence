@@ -460,3 +460,15 @@ day08独立final **native38/public33/raw53259768**：P470仍未占、fort6/garri
 - main301@470仍sieging/owncombat=false，guard184@2619 regular；War117440524 active/+25。P470未占领，同围城503316504/B3178/work2847440/55000000/rem52152560/progress5.177%/CanStartAssault=false；ETA557只为当帧估计。
 - day01 activeevent=null，day02实际event27令普通日循环停止；两个enabled选项index0/1，title/labels均null。本lane未选择选项，不猜事件内容、触发原因或后续结果。
 - Generic兵/供、围城五项operands与phase-event字段保持原发布null，专用event-scope/health查询未读取或回填；[两日缓存母账](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/military-r39-siege-next8-02-consumed01/ROOT-DELIVERY.json) SHA `f34959dcd7046a727ea1bf5e950cd46aad65f971f09fe85d436093599a09040f`，fields/ledger SHA `45e448dfe594c77baef749cc67845d22a3fb20c164a04c400c274e65883cdebe`。
+
+## 2026-10-05 R39：事件处理后再完成 16 个正常围城日
+
+- 本段仅新增16 whole/calendar/bounded日、384 raw小时（53260392→53260776），112 GREEN工具叶＋16 dayresults、partial0；4836→4852、resumed1683→1699、Oct5/W41 +178→+194。此前24＋2日与更早阶段均不重复计数。
+- Runtime仍为R39/g71/v66、Robert29829、同episode `native-29829-2bc2d599f7f9`、XAR off/environment `dc56a1cfbc0c111b6edc8533a2d167a15256e2d564dbe74163fcd4a64a08fab9`；g72 observer尚pending，不能称新runtime live。
+- 末独立帧native184/public65/raw53260776；whole SAVE h8406、98135224 bytes、SHA `f3291550ce642b7836b84c7994568d7e387a613635d4932931374018c3602b5a`，16次exact24h日保存及Root末anchor一致。
+- P470同围城503316504实际work2847440→4847152/55000000、progress5.177%→8.813%、remaining50152848；这些为rich-siege观测，不从Generic nullable army字段推断。
+- Besieging_strength3178、fort6/garrison550；P470仍未占领，CanStartAssault=false、breach0/assaultfalse，ETA536仅为当帧估计，不信用完成或未来日数。
+- main301989997@470 sieging3/route[]，guard184549452@2619 regular1/route[]，owncombat0、actoralive/eventnull/pendinginteractionnull；War117440524仍active/+25。 外敌268435597@4893/combat2仍仅foreign状态观测，不据此推本军接战、对手或战斗结果。
+- Root提供的历史零日记录：trait_specific4001/event27选择选项2、native118→119、eventnull/postconditionverified、normalh8358；该操作新增0日，此lane不读取原eventquery、不推piety收益。
+- Generic士兵/供给及围城五项operands/phase-event字段保持未发布/null；后续专用observer不回填本16日，不将work变化归因于clock或phase event。
+- [16日缓存母账](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/military-r39-siege-next16-03-consumed01/ROOT-DELIVERY.json) SHA `e08651d869e04a50f84b040c3005c1425251ff6dd5d2441cb61fa9bb69de3f33`；fields/ledger SHA `54df427477e7f73c9c519c8aff211dbb580678802c18a180e5d5f25fb58ca5be`，natural0/new completed families0。
