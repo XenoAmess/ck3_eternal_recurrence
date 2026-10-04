@@ -369,3 +369,25 @@ The historical day6 rich row's **ordinary_daily_progress, current_phase_length, 
 The last historical normal pair is **h7275 / raw53252568 / 95874330 B / SHA-256 `34620eb57872d0814424047f9702310a8662791319d78860179c91c9e2ce90c3`**, Robert29829 alive in the unchanged episode `native-29829-2bc2d599f7f9`, paused/map_ready true and active_event=null. The retained M7 expectation is from raw53252544/native25/public22, not a same-final fresh query; natural and reconciled successions remain0.
 
 Readiness is **production-live loop for the finite six saved normal-day observation -> advance -> independent state/route verification -> normal save sequence through actual landfall**, plus **production-live primitive for the independently observed owned siege startup**. This cutoff establishes no occupation/capture, siege completion, battle win, war settlement or completed campaign. The later query and later days retain their own evidence. This projection adds no SDK/game/window input, source or shared-document edit, Git action, test, build, observer, schema or gate.
+
+## R30首批普通围城21实际日与零日失败22（2026-10-04历史冻结）
+
+R30 SDK20318已正常关闭exit1，实际包RED/actual_attempt_failed_requires_root。请求32只是预算，day01..21各完成24h、fresh独立后态与normalSAVE，实际504h、calendar/bounded/whole均21；day22执行004 life-advance-one-day失败，实际0h/0day并保留normalSAVE。正式仅新增21：4510→4531、resume1357→1378、Oct4+485→+506，Oct3 frozen777；自然0、G2 5/8、NW2 2/4沿用，无新completed families。
+
+末完整day21正常h7341/date53253072/native117/public86/96276518B，SHA071a415fafed29d3122342e174c6fe51a5d6ed885ed1580737dce44dc5222a77；day22失败后同date正常h7344/native118/public87，SHA0917f66b875db1cef9a0c7f128390007feccc5e771eeff795056fbeebed918ef，不能额外计第22日。literal错误为 native gameplay step failed: CK3 map state is unavailable；001/003/005实际snapshot map_ready仍true，不能由缓存推定原因或宣称frame漂移。Root接续同实际日期freshguard，未回放21日。
+
+末帧Robert29829alive/同episode/paused ready/eventinteractionclear；War117440524仍active、玩家attacker/primary、对手35991、score0。army301989997@472 sieging3/可控/空route/非combatretreat；184549452@2619 regular空route。敌100663351@8652 regular，268435597@8652 embarked完整route[470]/target470；map soldiers仍null。目标472仍未占领，ownedSiege251658324/publicbesieger301/playertrue、fort4/garrison500/B3657；work3283410 of40000000 Q100000，remaining36716590，progress8208 Q100000=8.208%，nativeETA291/breach0/CanStartfalse。只授持续围城循环，不授capture或warwin；原生ETA不是保证完成日。
+
+M7持续available retained priming，day21末native117/public86/raw53253072承载beforeday21 native114/public83/raw53253048；failed22零日新prime在native118/public87/同rawdate，未授自然继承。泛snapshot末row五phase/day operands仍null；Root先前SDK16000对current health/fiveoperands的独立新观察不回填本row。11直属completed-day消费者＋failed22直属owner各独占原始叶一次，无SDK/window/Git/build/旧测试；中央Oct4日报/W40由Root合并。
+
+本段只消费已封 [NATIVE-TOPIC-APPEND.md](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v57/r30-siege-first32-days-consumed01/NATIVE-TOPIC-APPEND.md)（SHA-256 `b23a852ca53653090ec601b78bc0ece131d125a61c273b5a38be6f2ad02a1052`）；对应原生围城机制回链 [war-relief-siege-native-ai-12003.md](war-relief-siege-native-ai-12003.md)。上段 canonical 六日登陆历史保持原样；此处只记录随后的21个实际保存日和零日 failed22，不重计登陆六日。
+
+## R30 freshsameanchor八个实际普通围城日（2026-10-04历史冻结）
+
+R30 SDK61052正常关闭exit0/GREEN，freshsameanchor独立续接8个实际24h正常OODA，raw53253072→53253264，共192h，calendar/bounded/whole各8；stop requested_day_budget_completed，errornull。正式仅本段+8：4531→4539、resume1378→1386、Oct4+506→+514；本轮从4504以来6landfall＋21siege＋8fresh=35日，failed22仍0。末正常h7368/date53253264/96372333B，SHA c2c85675d1b328faed78297924130836cdd981aeb3e92b91801ebf3f1f9add08，finalnative151/public33；Oct3 frozen777、自然0、G2 5/8、NW2 2/4不变。
+
+末Robert29829alive/同episode/pausedready/eventinteractionclear；own301989997@472 sieging3、184549452@2619 regular，均可控/空route/未接战退却。War117440524仍玩家attacker/primary、opponent35991、score0。敌军当帧scope只返回268435597@470 regular/空route/非combatretreat；100663351已不在该scope，机制未观测，不授战斗胜利/死亡/merge因果。470/3711/472均仍未占领。P472 ownedSiege251658324/publicbesieger301/playertrue，fort4/garrison500/B3657；work4294490 of40000000 Q100000，remaining35705510，progress10736 Q100000=10.736%，nativeETA283/breach0/CanStartfalse。普通围城继续，尚未capture或warwin。
+
+M7 available retainedpriming：末53253264/native151/public33承载beforeday8 raw53253240/native148/public30的期望，未授新自然继承。泛snapshot五phase/day operands仍null，Root SDK16000新专用观察与此row分开。day22 literal map unavailable以及0h正常保存h7344保留历史失败；本段GREEN只证明同实际anchorfreshrevision后八日有限循环继续成功，不声称根因已修复。八直属消费者各独占一日八JSONonce，TOP父独占一次，无运行中读取/旧raw/SDK/source/Git/window/build/tests。
+
+本段只消费已封 [NATIVE-STAGE-APPEND.md](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v57/r30-siege-fresh-after-map-unavailable-eight-days-consumed01/NATIVE-STAGE-APPEND.md)（SHA-256 `3d4937abd392a2f42b9ba6f6b5061cdb863bdee4eb15e80476d9b180dc9b3eb6`），与 [围城专题](war-relief-siege-native-ai-12003.md) 的 owned siege 连续状态同步。readiness 为 **production-live loop（21日完成段及独立 fresh8 日有限续接）**，failed22 的 map-unavailable 实际零日失败继续保留；未授 capture、war win、自然继承或新 completed family。最新已封正式截点为4539 / resume1386 / Oct4+514、h7368 / raw53253264；Root已记账，本文件消费新增0日、0动作，无 SDK、raw/source/旧缓存读取、shared/Git/window/child/test/build 操作。
