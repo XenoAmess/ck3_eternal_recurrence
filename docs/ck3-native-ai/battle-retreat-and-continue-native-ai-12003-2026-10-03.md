@@ -168,3 +168,33 @@ flowchart TD
 通用 AI 主动退出意愿仍不能由上述 permission/readout 推出。其下一具体研究入口是 **自然产生**的 owned move command：复用已知 `.3` ordinary producer `1A1CF88→1A188B0(...,7)`、move apply `2969660→258B010` 和 existing command queue，将实际 full CUnit/Combat、owner、date/phase、目标/route/mode、producer return RVA 与 applied结果配对；只有 producer 确实在 active battle 读取并比较决策量，才继续上溯该**实际命中**caller的输入与候选排序。不再做全 EXE census，不把未闭合策略或 `.45` stock 默认作为游戏继续前置。
 
 外部证据包为 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-source-next-increments-v52/native-active-exit/`：`NATIVE-TREE.md` 保留提取前账本；三份 `EXE-*.json/.asm` 保存 exact bytes/span hashes；`SOURCE-PINS.json` 与 `STOCK-FACTORS.json` 固定源与安装 stock。状态保持 research/static branches，现有实机循环只保留协调者自己的原有限 credit。
+
+## 2026-10-04：当前冻结主阶段损失的自有撤退诊断
+
+绑定 CK3 **1.20.0.3 / Steam 25652598**，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`；开发源读取 head 为 `a15f52bafa8476d2d9cb7235a5cddabbb4b6df3d`，不声称新 DLL 已部署。外部 `native-tree/TREE-READY.json` 于 `2026-10-04T07:41:12.845944Z` 先冻结原生输入账本，之后才落盘策略源码。复用本专题 `.3` permission、普通 AI active-combat 早退、自动 pursuit/destroy/finalize 树；不重跑 EXE census，也不把 `.19` 常数或玩家权限当成 AI 主动撤退意愿。
+
+新增纯函数 `assess_current_battle_retreat(...)` 消费 normalized 当前帧、同帧 P1 `frozen_main_tick` 和 normalized route preview。调用者明确给出 `maximum_next_tick_hard_loss_raw`，单位为 **Q100000 人数损失**；只比较 selected owner 的 hard-ledger 增量，不以整侧损失替代玩家损失或重复扣兵。P1 的 observed loss factor、events/stats/width/roster 均冻结，caller-owned roll 不改该 factor。有敌方 levy 时须消费实际 native primary levy getter；缺项返回 `query_current_battle_inputs`，不以旧 uniform-entry proxy、人数比或零值补决定量。
+
+在 main 且输入完整时，预算内或超预算但 native retreat 当前不合法，返回 **1 日有界观察** proposal；预算外且合法，返回 preview query。同帧 available preview 才返回已有 typed retreat proposal；缺失、unavailable 或换帧的 preview 仍返回 `query_retreat_preview`，换帧后需从其 embedded frame 重算 tick。已终结时提议 terminal query，maneuver/pursuit 或 native winner/forced winner 已选时提议一日观察。函数不执行、调度或推进游戏，Root 可结合战役目标选择实际动作，并独立读取结果、正常 SAVE。
+
+```mermaid
+flowchart TD
+    N["先冻结 .3 原生树与当前输入账本"] --> F["normalized main frame + same-frame P1 frozen tick"]
+    F --> I{"selected-owner hard-loss 必需输入完整？"}
+    I -->|否| Q["query_current_battle_inputs proposal"]
+    I -->|是| B{"own hard loss 超过 caller 明确预算？"}
+    B -->|否| C["1 日观察 proposal；重读与正常 SAVE"]
+    B -->|是| L{"native retreat legal now？"}
+    L -->|否| C
+    L -->|是| R{"same-frame available route preview？"}
+    R -->|否| P["query_retreat_preview proposal；必要时重算 tick"]
+    R -->|是| T["typed retreat proposal；Root 决定执行并验证"]
+    U["unknown native voluntary intent/cadence/target ranking"] -.-> T
+    X["未纳入 pursuit/retreat cost、future roster 与战役目标价值"] -.-> B
+```
+
+该诊断没有比较真实撤退成本，不保证目的省安全，也不预测实际下一日、完整结果、胜率或 Monte Carlo。future roster/join/leave 需实际 route/join 观测；自动退出预测的最小 observer 仍接同一 control 查询的两侧 flags、first stored Army permission、loaded `0x5C69B74` 与 frozen soft。原生主动选择研究沿自然 move producer `1A1CF88→1A188B0(...,7)` 与 apply `2969660→258B010` 关联实际 caller/owner/Combat/target/route；以上质量差距保留施工入口，不成为 Robert 继续游玩的新前置条件。
+
+唯一两项生产路径夹具 **GREEN，2/2，0.001s，exit0**：真实 normalizer→adapter→runner→policy 得 own hard loss `125000`，caller budget `100000` 超出 `25000`，同帧合法 route 给 typed retreat proposal；budget 等于 `125000` 则给一日观察。另一项只移除 `current_loss_inputs_v1`，实际 runner 为 partial、legal 仍 true，策略要求补读现有 control 而不替换缺项。`run-01` 的 test-name 收集 TypeError 是 **Harness RED，0 cases 执行**；仅修外置 runner 遍历后运行同两项，policy/test 未改，失败产物保留。
+
+状态为 **static-ready current-input diagnostic**。本包 **0 SDK / 0 live artifacts / 0 actions / 0 saved days / 0 G2 credit**；没有新 `.3` main-frame 实机资格或撤退 OODA。源码、先于策略的 TREE 账本、两项夹具、失败 attempt 与日周字段回链 [ROOT-DELIVERY](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-current-retreat-policy/ROOT-DELIVERY.json)。Root 负责采纳、commit/push，以及后续真实当前帧消费；若选择撤退，再用现有 typed action 与独立 after-frame 验证。
