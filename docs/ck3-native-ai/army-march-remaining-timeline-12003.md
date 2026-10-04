@@ -273,3 +273,14 @@ Root选主军83886367赴2618，watch capital2640、occupation-role=relief。实�
 march canonical ETA仍绑定before day8 raw53241264/native52，arrival `[53241312,53241432,53241528]`/remaining11days；终态age24h，不计算after末帧新ETA。首次真正battle contact不改写原 route ETA 观测，不宣称主军抵达或merge。
 
 实物入口：`military-ooda-continuation/rendezvous-v47/eight-day-contact-consumption/ROOT-DELIVERY.json`、已owned `TERMINAL-COMPACT-AUTO.json`、同目录 `ACTUAL-BATTLE-CONTROL-SCOPE-COMPACT.json`；报告字段 `rendezvous-v47/eight-day-contact-report/ROOT-DAY-WEEK-FIELDS.json`。旧44 calendar/43 whole且day44 occupationRED与旧subset horizonRED保留。非战领域门禁0；本lane无SDK/window/shared/source/Git/tests。
+
+
+### 2026-10-04：向当前首都 2619 行军，55 日后接敌交回控制
+
+以下复用 Root 已封缓存，保留两个独立帧。零日移动后态为 `raw 53246760 / native:869 / public 3 / h6278`：玩家 `29829` 的主军 `83886367` 位于 `2640`、状态 `moving`、目标 `2619`，完整 10 段路线为 `[2634,2633,2627,2626,8753,2629,2630,2631,2624,2619]`，当帧非战斗、非退却且可控。其正常存档为 `93381942 B / SHA-256 203cf719ee4779b8646c67dd42bc70f8023639382520045c7fd54df2eff96541`；这是累计 `4268 / resume 1115 / Oct4 +243` 的历史起点，查询不新增日。
+
+Root 后续正常推进 55 日（1320 raw hours），在接敌时停机；批次末帧为 `raw 53248080 / native:1089 / public 220 / h6509`，正常存档 `93584151 B / SHA-256 375ab8dd80c2aeeb6e9e48411038e7b671213cd2da118a0c05c4f339023046c9`。主军实际位于 `2629`，处于战斗 `1577058310` 的防守方 `side 1 / maneuver day 1`，剩余完整路线 `[2630,2631,2624,2619]`；还未抵达 `2619`。路线仍存在不证明战斗期间继续移动；缓存文件名中的 terminal 仅指本批次结束及控制交回，不是战斗终局。Root SDK `72142` 已正常关闭、退出码 0；停止原因为 `actual_player_combat_requires_root`。
+
+当前王国首都是 `2619 / county 2142`；`2640 / county 2115` 是另一伯爵领首府，历史记录保留。首都敌方围城 `201326609` 仍活动，进度 `37.421% / ETA 122`，本批次没有解围、抵达或胜负信用。战争 `16777231` 不在末帧 active 集合，仅说明该帧不再活动，结算类型及原因仍未闭合。已有 consumer CLI RED 保留为历史失败，不覆盖正常存档证据。
+
+55 日已由 Root 计入累计 `4323 / resume 1170 / Oct4 +298`，本专题消费新增 `0` 日、`0` 动作；单日与批次不重复加总。能力边界是生产实机行军及有限推进至接敌交回，尚不代表完整行军抵达、首都解围或整场战役完成。证据为 [零日 moving/control/SAVE 封包](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/v51-relief2619-moving-zero-day-control/ROOT-DELIVERY.json) 与 [55 日 sealed critical](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/capital2619-v51/relief55-sealed-day-consumption/DAY55-TERMINAL-CRITICAL.json)；后续战斗由 Root 独占消费，不在本页提前认定结果。

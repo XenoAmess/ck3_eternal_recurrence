@@ -213,3 +213,26 @@ flowchart LR
 其后续批`siege02 day47`的已封critical由Root追加授权复用一次：seq70/statuspartial、queried`native:840`/public189与final raw53246688同帧。全查询partial而`83886367/CArmy50331794`行available，实际**3728/4231、reg47、supply97.88762/cap300、monthly−4.54545、attritionfraction0**，not_gathering/null/readytrue；不把整体partial强填unknown。同帧map@2640/regular/空route/noCombat，map soldiers仍null；器械／军种／完整参与分配未从总量或补员行伪造。补员47行中30available、17recordcount0 unavailable，30firstrecord chunks的两个独立bool为18T/12F与15T/15F，6multirecord仍partial，不合成为整军净补率。
 
 当前点距首批day9已76日，距baseline85日（首批38日＋续批47日）；端点soldiers−73、supply−9.09090、attritionfraction0.01→0仅观察差值，不补齐连续health路径或损失因果。旧day38 unknown保留为当时事实，新查询已恢复此末帧current health观测，**不再提出重复strength query**。Root同帧已proofowned Siege385875999由before99.729%变为occupationfalse／activeSiegenull并正常保存h6254，故该资本普通围城已真实完成收复，B0只指围城结束、不是军队兵数零；白和平仍独立pending，不赋warwin。Root累计4265/res1112/Oct4+240，本lane0day。新增current qualification：`recapture-health/ROOT-DELIVERY.json`（source sealedcritical SHA `8474b2371e5b8ae2f188bb5bea737f93df06e2939fdc689124ecd9f3a8dad544`）。
+
+
+### 2026-10-04：首都 2619 解围前的三军同帧兵力查询（v51）
+
+Root 报告 SDK `69894` 正常关闭、退出码 `0`、批次 `GREEN`。本消费者只读取 `runtime-preparation/v51/actual-current-capital-2619-defense-observations-01/006-ck3_query_army_strengths.json` 一次；源文件 `83633 B`，SHA-256 `1af03c5a1a5f25176f222940b28d562fbb6585873c9ad80f605718629ef69b2b`。三行共同绑定 `date_raw=53246760`、`paused=true`、query sequence `71`、public revision `2`、native revision `862`、snapshot `native:862`。
+
+| Public CUnitID / native CArmyID | 行状态 / 角色 | 当前 / 上限 / 团数 | 当前补给 / 容量 | 月度补给变化 | 当前损耗 fraction |
+| --- | --- | --- | --- | --- | --- |
+| `83886367 / 50331794` | `available / player` | `3728 / 4231 / 47` | `93.34217 / 300` | `-4.54545` | `0` |
+| `16777683 / 457` | `available / active_war_enemy` | `2328 / 2436 / 11` | `88 / 100` | `0` | `0.01` |
+| `268435747 / 150995313` | `available / active_war_enemy` | `151 / 151 / 3` | `100 / 100` | `0` | `0.01` |
+
+表内 supply、capacity、monthly change、attrition 的 raw 均除以其发布的 `scale=100000`；我军原始值分别为 `9334217 / 30000000 / -454545 / 0`。三行 `unavailable_reason=null`；三行 `gathering_days_left=null`、`gathering_days_status=not_gathering`、`gathering_days_ready=true`，表示合法非集结状态，不能从这个 `null` 写成 ETA 读取失败，也不能把 gathering readiness 当作总体作战 readiness。此 query 没有发布骑士数量、兵士类别/数量或 regiment 类型。
+
+全局 `accepted=true/status=available`，但 `scope_status=partial`；请求 3 个 ID，发布的 scope ID 列表有 12 个。`partial` 的独立原因字段未发布，保留其实际值，不据此把三个目标行改为 unavailable。补员子行另有局部覆盖：我军 47 个 `native_first_record` 行中 30 available、17 unavailable，匹配 chunk 30 个；6 行 `native_data_record_count>1`，仍为首 record 有限覆盖。两个 permission bool 独立；不从这些 chunk fraction 推算全军储备或净补员率。
+
+该帧为 `production-live primitive`。位置、路线、incoming 与实际解围行动由 Root 的 preview/战役消费者负责；本包没有读其他 snapshot、war、preview `008`、result 或 normalSAVE，也没有新 SDK、推进、构建、测试、Git 或窗口操作。Root 提供的进度为 global `4268`、resumed `1115`、Oct4 `+243`，本查询 `0` 天；不添加一次新的日期信用。封存 receipt 和 Oct4/2026-W40 字段位于 `army-reinforcement-raise/runtime-v51-capital-defense-strength-consumption/`。
+
+#### 同日后续：55日推进后的独立当前健康截面
+
+上述4268日三军查询保留为历史临战帧。Root随后确认SDK72142已正常closed；55实际日为saved/bounded/whole，当前总4323/res1170/Oct4+298，normal h6509（93584151 B，SHA-256 `375ab8dd80c2aeeb6e9e48411038e7b671213cd2da118a0c05c4f339023046c9`）。Root提供的终态critical同帧raw53248080、native1089/public220、seq81：我军3920/4231，supply113.34217/cap300、monthly+20、attrition0。这是新截面，不从较早3728的变化归因伤亡、补员或其他机制，也不据当前健康字段宣称regiment记录全覆盖。
+
+Root提供main838@2629已进入combat1577058310（defender=1、maneuver=1）；真实首都2619的Siege201326609仍为37.421%，ETA122是估计，尚未解围。此处只引用已封Rootmetadata，不读55日raw、不增加文档消费者游戏天数或战果信用；后续12738战斗尚属未来，不并入本截面。

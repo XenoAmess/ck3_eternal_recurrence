@@ -189,3 +189,14 @@ Fixture用真实loaded F70[0]/FA0[0]选择路径：attacker effect points=7、de
 首 `focused-attempt-01/RESULT.json` harness RED因generated full serializer include漏`<charconv>`、`std::to_chars`不可见；production reader/advantage对象已GREEN。Attempt02只修harness并重编它，复用未变生产对象；这是独立harness失败，未证明capability RED。Final receipts在 `implementation-g52/fixture/focused-attempt-02/RESULT.json` / `REGISTERED-MCP-RESULT.json`，生产wire `native-command-result.json` SHA `c24f8c0fe04215a487bd3d5a13d2fd660ec637ac00001105290d7f29e7519593`。新mode **没有live信用**；Root后续结合构建/实际paused v2/v3查询另验。Existing projected-contact只读primitive与完整battle OODA分别记账。
 
 来源为既有 `native-tree/ROOT-DELIVERY.json`、`NATIVE-TREE.md`、`abi-proposal/FINAL-PROPOSAL.md` 和 `pure-model/ROOT-DELIVERY.json`。本文档lane仅输出外置append与Oct4/W40字段，0 raw读取/研究重跑/测试/SDK/nativebuild/shared/Git/window/游戏日；Root拥有源码合并与实机。
+
+
+## 2026-10-04 v51：capital2619实际ctor0只读输入
+
+[production-live primitive，限定假想接战输入] 已封存capital2619的首次existing registered v2 `ctor0`查询为available/schema2，input_observation_ready=true，native866/public2；monte_carlo_ready=false。它把上文新constructor mode从static-ready升级为实际输入primitive，仍是Robert29829的fixed-at-target hypothetical scope，不证明真实抵达、接战、军令或胜利，也不增加游戏日。ctor0表示该几何构造入口，不能把raw0当作advantage0或已完成full Monte Carlo。
+
+报告的ordered攻击方为`[16777683,268435747]`、防守玩家方为`[83886367]`。已发布regiment整数求和：攻击方current/maximum soldiers=`2479/2587`，防守方=`3728/4231`；这是观测到的regiment士兵合计，没有发布独立current_fighting字段，不是fighting-only total、battle strength或胜率。角色与participant顺序用于这一假想query，不能外推后续敌军运动或实际接战角色。
+
+唯一来源：[owner sealed receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-terrain-actual/future-engagement/capital2619-actual-ctor0-v51/ROOT-DELIVERY.json)。初次cached side extractor的incomplete attempt与修正由owner保留，未发生新的capability RED。本短增量只复用该receipt；不读取raw/normalized body、改evidence JSON、复制contextual ledger/source explanation新专题或增加推进门禁。原未知分支与完整预测输入边界保持；本次0day，后续实际运行不能回填成此帧事实。
+
+相关原生source解释只链接 [battle-contextual-source-explanation-12003-2026-10-04.md](battle-contextual-source-explanation-12003-2026-10-04.md)。新contextual ledger实现仅static-ready，尚未actual发布或完成fullMC；不复制其source树或新实现，不回填Root后续接敌frame。

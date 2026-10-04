@@ -199,3 +199,19 @@ SDK 42475 closed exit 0 的末日 sealed cache（军事 soleconsumer 唯一读�
 Root/军事 owner 的本批真实计数为 47 日/1128h，累计 4265、resume 1112、Oct4 +240；本缓存消费者新增日、SDK、游戏操作、窗口、测试、shared/Git、重复收复及战争胜利信用均为 0。新指挥官 phase 未观测，未称强攻或加速收益。后续使用现有同军/战争/补给 owner 的当前结果选择下一目标，白和平与此围城收复独立记账。
 
 Cache: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/recapture-v49/siege02-sealed-day-consumption/DAY47-RECAPTURE-TERMINAL-CRITICAL.json`，SHA-256 `8474b2371e5b8ae2f188bb5bea737f93df06e2939fdc689124ecd9f3a8dad544`。Save h6254，93434316 B，SHA-256 `2388c9877fccdc160ba1c60db76347be2ff95390303ef4c001fae355b6a8a714`。
+
+### 2026-10-04 当前真正首府2619的敌方围城观测
+
+Root fresh007已观测campaign root capital2619（county2142 titlecapital）；2640为county2115 titlecapital/已收复目标。随后SDK69894正常关闭exit0，现有 `ck3_query_war_occupation_targets_v1(war_id=129)` 在暂停同日 `raw53246760 / native862` 的真实eligible holding collection中直接返回province2619、holding2143/legalRobert29829，证明当前现口已覆盖本地状态，无需新增arbitrary省份接口。
+
+首府2619 `occupation_observable=true / is_occupied=false / occupier=null`，fort3/garrison540/besieging strength2479；敌方FullSiege201326609、public besieger16777683、player_army_besieging=false，进度9.964%，work3238300/32500000/remaining29261700（Q100000）、原生本帧ETA192。breach0/walls unbreached/assault observable true/CanStart=false/CanStop=false，assault work/casualty preview均0。首府尚未被敌占，当前敌围城真实存在；ETA为条件观测，不能当固定期限、敌胜或我方解围结果。该leaf唯一明确public besieger16777683；另一军268435747的军力/关联由独立军力owner处理，不从B总数推算。
+
+War129 defender eligible31/敌占3、attacker eligible7/敌占0，均collection_complete=true。query只按实际matching row取holding与当前值，没有使用objective2640代替2619或回填旧holding/garrison。normalizer body不发布public revision/paused，保留缺字段；绑定复用Root此samepaused SDK guard，native862与public revision不能混用。
+
+Readiness为现有本地occupation/敌围城观测 production-live primitive；当前capital防御决策的围城字段ready=true，Root使用另owner freshstrength/supply与自身move preview选择下一操作。本leaf只读一次、g56生产normalizer一次GREEN，未读006strength/008preview/009state/010-011control；0新SDK/query/day/action/window/test/shared/Git/收复或warwin，查询后Root总日数仍4268。此成功实际row关闭了本包的同provider缺行fallback方向，不作新ABI/参数施工。
+
+Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v51/actual-current-capital-2619-defense-observations-01/004-ck3_query_war_occupation_targets_v1.json`，SHA-256 `c4a58d8da74654001da7aaa6f58969c0d75f518e579aff89b20ddfd006a5d3df`。Native为R25/g54/889821f5，Python hot g56/210943a7。
+
+This observation is the historical0-day/4268 cutoff at native862/raw53246760; its siege ETA192 belongs to that frame. Root later reports SDK72142 reaching contact after55 days, total4323/res1170/Oct4+298. That separately owned later terminal is not read here and does not refresh this row or establish arrival, relief, full membership or whole-war completion.
+
+Current Root-confirmed55-day terminal is a separate later frame: raw53248080/native1089/public220, Robert alive/same episode/paused clear;55 normal-saved calendar/bounded/whole days=1320h give4323/res1170/Oct4+298. Normal h6509/93584151B/SHA375ab8dd80c2aeeb6e9e48411038e7b671213cd2da118a0c05c4f339023046c9. Main83886367 is at2629 in Combat1577058310, defender side1/maneuver day1 against150995107; its remaining4-hop committed route still targets2619, without arrival. At this current frame, capital2619 enemySiege201326609 remains active at37.421%/native ETA122/besiegers2433/fort3/garrison540/breach1, with no relief. War16777231 is absent from the current active set; only50331736(score-10) and129(score-26) remain. This closes the formerly pending ended-membership observation primitive, without establishing white-peace acceptance, settlement type or war victory. Original native862/raw53246760/4268 and its9.964% estimate remain historical. Source: [Root-confirmed sealed day55 critical](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/capital2619-v51/relief55-sealed-day-consumption/DAY55-TERMINAL-CRITICAL.json), link only; no critical or future SDK12738 packet was opened.
