@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <limits>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -44,6 +45,61 @@ inline void AppendDatabaseId(std::string &result, std::uint32_t value) {
                 : std::to_string(value);
 }
 
+template <typename Integer>
+inline void AppendOptionalNumber(std::string &result,
+                                 const std::optional<Integer> &value) {
+  result += value.has_value() ? std::to_string(*value) : "null";
+}
+
+inline void AppendSideModifierSource(
+    std::string &result,
+    const xar::game::ContextualAdvantageSideModifierSourceSnapshot &source) {
+  result += "{\"side_index\":" + std::to_string(source.side_index);
+  result += ",\"source_slot\":";
+  AppendJsonString(result, source.source_slot);
+  result += ",\"source_modifier_id\":";
+  result += std::to_string(source.source_modifier_id);
+  result += ",\"condition_observed\":";
+  result += source.condition_observed ? "true" : "false";
+  result += ",\"selected\":";
+  result += source.selected ? "true" : "false";
+  result += ",\"modifier_raw\":";
+  AppendOptionalNumber(result, source.modifier_raw);
+  result += ",\"contribution_raw\":";
+  AppendOptionalNumber(result, source.contribution_raw);
+  result += ",\"scale100000\":" + std::to_string(source.scale100000);
+  result += ",\"skip_reason\":";
+  AppendNullableString(result, source.skip_reason);
+  result += ",\"opposite_side_index\":";
+  AppendOptionalNumber(result, source.opposite_side_index);
+  result += ",\"eligible_opposite_effects\":";
+  if (!source.eligible_opposite_effects.has_value()) {
+    result += "null";
+  } else {
+    result += '[';
+    const auto &effects = *source.eligible_opposite_effects;
+    for (std::size_t index = 0; index < effects.size(); ++index) {
+      if (index != 0) result += ',';
+      const auto &effect = effects[index];
+      result += "{\"native_ledger_index\":" +
+                std::to_string(effect.native_ledger_index);
+      result += ",\"effect_key\":";
+      AppendJsonString(result, effect.effect_key);
+      result += ",\"flag88_raw\":" +
+                std::to_string(static_cast<unsigned int>(effect.flag88_raw));
+      result += ",\"flag89_raw\":" +
+                std::to_string(static_cast<unsigned int>(effect.flag89_raw));
+      result += ",\"contribution_raw\":" +
+                std::to_string(effect.contribution_raw);
+      result += '}';
+    }
+    result += ']';
+  }
+  result += ",\"opposite_eligible_contribution_sum_raw\":";
+  AppendOptionalNumber(result, source.opposite_eligible_contribution_sum_raw);
+  result += '}';
+}
+
 inline void AppendSide(
     std::string &result,
     const xar::game::ContextualAdvantageSideSnapshot &side) {
@@ -65,6 +121,18 @@ inline void AppendSide(
   result += ",\"target_conditionals_residual_raw\":" +
             std::to_string(side.target_conditionals_residual_raw);
   result += ",\"side_total_raw\":" + std::to_string(side.side_total_raw);
+  result += ",\"side_modifier_sources\":";
+  if (!side.side_modifier_sources.has_value()) {
+    result += "null";
+  } else {
+    result += '[';
+    const auto &sources = *side.side_modifier_sources;
+    for (std::size_t index = 0; index < sources.size(); ++index) {
+      if (index != 0) result += ',';
+      AppendSideModifierSource(result, sources[index]);
+    }
+    result += ']';
+  }
   result += '}';
 }
 

@@ -756,6 +756,82 @@ def _normalize_contextual_nonreligious_sources(
     return normalized
 
 
+def _normalize_contextual_side_modifier_sources(
+    value: object, *, side_index: int, name: str
+) -> list[dict[str, object]] | None:
+    """Preserve optional native side-source observations, including true zero."""
+    if value is None:
+        return None
+    normalized = []
+    for index, source in enumerate(_array(value, name)):
+        source_name = f"{name}[{index}]"
+        source = _exact_object(source, {
+            "side_index", "source_slot", "source_modifier_id",
+            "condition_observed", "selected", "modifier_raw",
+            "contribution_raw", "scale100000", "skip_reason",
+            "opposite_side_index", "eligible_opposite_effects",
+            "opposite_eligible_contribution_sum_raw",
+        }, source_name)
+        observed_side = _signed_int32(source["side_index"], f"{source_name}.side_index")
+        if observed_side != side_index:
+            raise ValueError(f"native {source_name} side binding mismatch")
+        source_slot = _nonempty_string(source["source_slot"], f"{source_name}.source_slot")
+        source_id = _non_negative_int32(source["source_modifier_id"], f"{source_name}.source_modifier_id")
+        if source_id > 65535:
+            raise ValueError(f"native {source_name}.source_modifier_id must be uint16")
+        observed = _strict_bool(source["condition_observed"], f"{source_name}.condition_observed")
+        selected = _strict_bool(source["selected"], f"{source_name}.selected")
+        raw = {key: (None if source[key] is None else
+                     _signed_int64(source[key], f"{source_name}.{key}"))
+               for key in ("modifier_raw", "contribution_raw",
+                           "opposite_eligible_contribution_sum_raw")}
+        scale = _signed_int64(source["scale100000"], f"{source_name}.scale100000")
+        _fixed_scale(scale, f"{source_name}.scale100000")
+        skip_reason = source["skip_reason"]
+        if skip_reason is not None:
+            skip_reason = _nonempty_string(skip_reason, f"{source_name}.skip_reason")
+        opposite_index = source["opposite_side_index"]
+        if opposite_index is not None:
+            opposite_index = _signed_int32(opposite_index, f"{source_name}.opposite_side_index")
+            if opposite_index != 1 - side_index:
+                raise ValueError(f"native {source_name} opposite side binding mismatch")
+        effects = source["eligible_opposite_effects"]
+        if effects is not None:
+            normalized_effects = []
+            for effect_index, effect in enumerate(_array(
+                effects, f"{source_name}.eligible_opposite_effects"
+            )):
+                effect_name = f"{source_name}.eligible_opposite_effects[{effect_index}]"
+                effect = _exact_object(effect, {
+                    "native_ledger_index", "effect_key", "flag88_raw",
+                    "flag89_raw", "contribution_raw",
+                }, effect_name)
+                ledger_index = _non_negative_int32(
+                    effect["native_ledger_index"], f"{effect_name}.native_ledger_index")
+                flags = {key: _non_negative_int32(effect[key], f"{effect_name}.{key}")
+                         for key in ("flag88_raw", "flag89_raw")}
+                if any(flag > 255 for flag in flags.values()):
+                    raise ValueError(f"native {effect_name} effect flags must be uint8")
+                normalized_effects.append({
+                    "native_ledger_index": ledger_index,
+                    "effect_key": _nonempty_string(effect["effect_key"], f"{effect_name}.effect_key"),
+                    **flags,
+                    "contribution_raw": _signed_int64(effect["contribution_raw"], f"{effect_name}.contribution_raw"),
+                })
+            effects = normalized_effects
+        normalized.append({
+            "side_index": observed_side, "source_slot": source_slot,
+            "source_modifier_id": source_id, "condition_observed": observed,
+            "selected": selected, "modifier_raw": raw["modifier_raw"],
+            "contribution_raw": raw["contribution_raw"],
+            "scale100000": scale, "skip_reason": skip_reason,
+            "opposite_side_index": opposite_index,
+            "eligible_opposite_effects": effects,
+            "opposite_eligible_contribution_sum_raw": raw["opposite_eligible_contribution_sum_raw"],
+        })
+    return normalized
+
+
 def _contextual_advantage_unavailable(
     target_province_id: int, reason: str, *, schema_version: int = 1,
     nonreligious_sources_present: bool = False,
@@ -893,6 +969,9 @@ def _normalize_contextual_advantage(
         normalized_sides = []
         for index, side in enumerate(sides):
             side_name = f"{name}.sides[{index}]"
+            side_modifier_sources_present = (
+                isinstance(side, dict) and "side_modifier_sources" in side
+            )
             side = _exact_object(
                 side,
                 {
@@ -900,7 +979,7 @@ def _normalize_contextual_advantage(
                     "selected_commander_character_id", "relation_kind_raw",
                     "commander_dynamic_raw", "side_dynamic_raw",
                     "target_conditionals_residual_raw", "side_total_raw",
-                },
+                } | ({"side_modifier_sources"} if side_modifier_sources_present else set()),
                 side_name,
             )
             side_index = _signed_int32(side["side_index"], f"{side_name}.side_index")
@@ -934,6 +1013,10 @@ def _normalize_contextual_advantage(
                 "side_index": side_index, "ordered_public_cunit_ids": units,
                 "selected_commander_character_id": selected,
                 "relation_kind_raw": relation, **raw_fields,
+                **({"side_modifier_sources": _normalize_contextual_side_modifier_sources(
+                    side["side_modifier_sources"], side_index=side_index,
+                    name=f"{side_name}.side_modifier_sources",
+                )} if side_modifier_sources_present else {}),
             })
         if schema_version == 1 and total != base + normalized_sides[0]["side_total_raw"] - normalized_sides[1]["side_total_raw"]:
             raise ValueError(f"native {name} synthetic partial total mismatch")

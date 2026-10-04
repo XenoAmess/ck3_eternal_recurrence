@@ -7,6 +7,7 @@
 #include <windows.h>
 #include <bcrypt.h>
 #include <charconv>
+#include <bit>
 #include <stdexcept>
 #include <algorithm>
 #include <cstring>
@@ -23,6 +24,152 @@ template <typename T> T Load(const void *p, std::size_t offset) noexcept {
 template <typename T> void Store(void *p, std::size_t offset, T value) noexcept {
   std::memcpy(static_cast<std::byte *>(p) + offset, &value, sizeof(T));
 }
+
+// BEGIN contextual side modifier source producer (exact CK3 1.20.0.3).
+using SideModifierSourceRows = std::optional<std::vector<
+    game::ContextualAdvantageSideModifierSourceSnapshot>>;
+using SideModifierSourceRowsBySide = std::array<SideModifierSourceRows, 2>;
+
+std::int64_t SideSourceWrapMultiply(std::int64_t a, std::int64_t b) noexcept {
+  const auto raw = std::bit_cast<std::uint64_t>(a) *
+                   std::bit_cast<std::uint64_t>(b);
+  return std::bit_cast<std::int64_t>(raw);
+}
+std::int64_t SideSourceWrapAdd(std::int64_t a, std::int64_t b) noexcept {
+  return std::bit_cast<std::int64_t>(std::bit_cast<std::uint64_t>(a) +
+                                    std::bit_cast<std::uint64_t>(b));
+}
+std::int64_t SideSourceWrapNegate(std::int64_t a) noexcept {
+  return std::bit_cast<std::int64_t>(std::uint64_t{0} -
+                                    std::bit_cast<std::uint64_t>(a));
+}
+// Mirrors 0x258968B..0x258972B, including the original signed max/min
+// decomposition and x64 wrap semantics. The wide branch does not multiply
+// both original operands before division. Signed division truncates to zero.
+std::int64_t SideSourceFixedMultiply(std::int64_t a,
+                                    std::int64_t b) noexcept {
+  constexpr std::int64_t bound = 3'037'000'499;
+  constexpr std::int64_t scale = 100'000;
+  if (a >= -bound && a <= bound && b >= -bound && b <= bound)
+    return SideSourceWrapMultiply(a, b) / scale;
+  const auto large = std::max(a, b);
+  const auto small = std::min(a, b);
+  const auto quotient = large / scale;
+  const auto remainder = large % scale;
+  return SideSourceWrapAdd(SideSourceWrapMultiply(quotient, small),
+                           SideSourceWrapMultiply(remainder, small) / scale);
+}
+
+bool ReadSideSourceEffectKey(const void *effect, std::string &key) {
+  if (!effect || Load<std::uint32_t>(effect, 0x38) != 0x4744624F)
+    return false;
+  const auto length = Load<std::size_t>(effect, 0x28);
+  const auto capacity = Load<std::size_t>(effect, 0x30);
+  if (length == 0 || length > 512 || capacity < length) return false;
+  const auto *data = capacity < 16
+      ? static_cast<const char *>(effect) + 0x18
+      : Load<const char *>(effect, 0x18);
+  if (!data) return false;
+  key.assign(data, length);
+  return true;
+}
+
+SideModifierSourceRows ReadSideModifierSources(
+    const CombatBindings &bindings, const void *combat_shell, void *target,
+    std::int32_t side_index, std::int32_t relation_kind) noexcept {
+  if (!combat_shell || !target || side_index < 0 || side_index > 1 ||
+      !bindings.read_character_modifier || !bindings.get_province_terrain)
+    return std::nullopt;
+  try {
+    const auto *shell = static_cast<const std::byte *>(combat_shell);
+    const auto *side = shell + (side_index == 0 ? 0x20 : 0x368);
+    void *component = const_cast<std::byte *>(side + 0x110 + 0x68);
+    void *terrain = bindings.get_province_terrain(target);
+    void *definition = Load<void *>(target, 8);
+    if (!terrain || !definition) return std::nullopt;
+    std::vector<game::ContextualAdvantageSideModifierSourceSnapshot> rows;
+    rows.reserve(7);
+    const auto append = [&](std::string_view slot, std::uint16_t id,
+                            bool condition) {
+      game::ContextualAdvantageSideModifierSourceSnapshot row{};
+      row.side_index = side_index;
+      row.source_slot = slot;
+      row.source_modifier_id = id;
+      row.condition_observed = condition;
+      row.selected = condition;
+      if (condition) {
+        std::int64_t raw = 0;
+        if (bindings.read_character_modifier(component, &raw,
+              static_cast<std::int32_t>(id)) != &raw) return false;
+        row.modifier_raw = raw;
+        row.contribution_raw = raw;
+      } else {
+        row.contribution_raw = 0;
+        row.skip_reason = "condition_false";
+      }
+      rows.push_back(std::move(row));
+      return true;
+    };
+    if (!append("generic", 0x19B, true) ||
+        !append("side_role", side_index == 0 ? 0x19C : 0x19D, true) ||
+        !append("terrain_index", Load<std::uint16_t>(terrain, 0x774), true) ||
+        !append("target_definition_byte18", 0x19E,
+                Load<std::uint8_t>(definition, 0x18) != 0) ||
+        !append("province_has_holding_flag", 0x1AD,
+                Load<std::uint8_t>(shell, 0x6FD) != 0))
+      return std::nullopt;
+
+    game::ContextualAdvantageSideModifierSourceSnapshot nested{};
+    nested.side_index = side_index;
+    nested.source_slot = "opposing_flagged_effects";
+    nested.source_modifier_id = 0x19F;
+    std::int64_t modifier = 0;
+    if (bindings.read_character_modifier(component, &modifier, 0x19F) !=
+        &modifier) return std::nullopt;
+    nested.modifier_raw = modifier;
+    nested.opposite_side_index = 1 - side_index;
+    const auto *opposite = shell + (side_index == 0 ? 0x368 : 0x20);
+    const auto *entries = Load<const std::byte *>(opposite, 0x78);
+    const auto count = Load<std::int32_t>(opposite, 0x84);
+    if (count < 0 || count > 65'536 || (count != 0 && !entries))
+      return std::nullopt;
+    std::vector<game::ContextualAdvantageOppositeEffectSnapshot> effects;
+    std::int64_t sum = 0;
+    for (std::int32_t i = 0; i < count; ++i) {
+      const auto offset = static_cast<std::size_t>(i) * 0x10;
+      const void *effect = Load<const void *>(entries, offset);
+      if (!effect) return std::nullopt;
+      const auto flag88 = Load<std::uint8_t>(effect, 0x88);
+      const auto flag89 = Load<std::uint8_t>(effect, 0x89);
+      if (flag88 == 0 && flag89 == 0) continue;
+      game::ContextualAdvantageOppositeEffectSnapshot row{};
+      row.native_ledger_index = i;
+      if (!ReadSideSourceEffectKey(effect, row.effect_key)) return std::nullopt;
+      row.flag88_raw = flag88;
+      row.flag89_raw = flag89;
+      row.contribution_raw = Load<std::int64_t>(entries, offset + 8);
+      sum = SideSourceWrapAdd(sum, row.contribution_raw);
+      effects.push_back(std::move(row));
+    }
+    nested.eligible_opposite_effects = std::move(effects);
+    nested.opposite_eligible_contribution_sum_raw = sum;
+    nested.condition_observed = modifier != 0 && sum != 0;
+    nested.selected = nested.condition_observed;
+    nested.contribution_raw = nested.selected
+        ? SideSourceFixedMultiply(SideSourceWrapNegate(modifier), sum) : 0;
+    if (!nested.selected)
+      nested.skip_reason = modifier == 0 ? "modifier_zero"
+                                        : "opposite_eligible_contribution_sum_zero";
+    rows.push_back(std::move(nested));
+    if ((relation_kind == 1 || relation_kind == 2) &&
+        !append("relation_kind", relation_kind == 1 ? 0x1A2 : 0x1A3, true))
+      return std::nullopt;
+    return rows;
+  } catch (...) {
+    return std::nullopt;
+  }
+}
+// END contextual side modifier source producer.
 
 using NativeFree = void (*)(void *, void *, std::size_t);
 bool FreePopulation(void *local) noexcept {
@@ -790,10 +937,11 @@ PhaseBindings BindPhaseImage(std::uintptr_t base, std::string_view hash) noexcep
   return result;
 }
 
-ReadNativeCombatPhaseResult ReadNativeCombatPhase(
+static ReadNativeCombatPhaseResult ReadNativeCombatPhaseWithModifierSources(
     const PhaseBindings &bindings, const PhaseEnvironment &environment,
     const game::Snapshot &scope, const game::CombatSimulationInputsSnapshot &base,
-    NativeCombatPhase &output, bool include_constructor_religion) noexcept {
+    NativeCombatPhase &output, bool include_constructor_religion,
+    SideModifierSourceRowsBySide *modifier_sources) noexcept {
   output = {};
   if (!bindings.enabled || !bindings.construct_side || !bindings.populate_side ||
       !bindings.select_commander || !bindings.refresh_strength || !bindings.read_strength ||
@@ -961,6 +1109,10 @@ ReadNativeCombatPhaseResult ReadNativeCombatPhase(
         row.side_total_raw = output.sides[i].dynamic_advantage_raw;
         row.target_conditionals_residual_raw = row.side_total_raw - row.commander_dynamic_raw - row.side_dynamic_raw;
         row.contribution_to_resolved_raw = i == 0 ? row.side_total_raw : -row.side_total_raw;
+        if (modifier_sources)
+          (*modifier_sources)[i] = ReadSideModifierSources(bindings.combat,
+              local.shell.data(), target, static_cast<std::int32_t>(i),
+              row.relation_kind_raw);
         resolved.sides.push_back(std::move(row));
       }
     }
@@ -971,6 +1123,14 @@ ReadNativeCombatPhaseResult ReadNativeCombatPhase(
     output = {};
     return ReadNativeCombatPhaseResult::unavailable;
   }
+}
+
+ReadNativeCombatPhaseResult ReadNativeCombatPhase(
+    const PhaseBindings &bindings, const PhaseEnvironment &environment,
+    const game::Snapshot &scope, const game::CombatSimulationInputsSnapshot &base,
+    NativeCombatPhase &output, bool include_constructor_religion) noexcept {
+  return ReadNativeCombatPhaseWithModifierSources(bindings, environment, scope,
+      base, output, include_constructor_religion, nullptr);
 }
 
 bool ReadContextualAdvantageInputs(
@@ -998,8 +1158,10 @@ bool ReadContextualAdvantageInputs(
                                  ResolveEnvironmentProvince, ReadEnvironmentGathering,
                                  ResolveEnvironmentRegiment};
     NativeCombatPhase native{};
-    const auto result = ReadNativeCombatPhase(bindings, environment, scope, base, native,
-        bindings.advantage.constructor_religion.enabled);
+    SideModifierSourceRowsBySide modifier_sources{};
+    const auto result = ReadNativeCombatPhaseWithModifierSources(
+        bindings, environment, scope, base, native,
+        bindings.advantage.constructor_religion.enabled, &modifier_sources);
     if (result != ReadNativeCombatPhaseResult::available) {
       std::string reason = native.unavailable_reason;
       if (reason.empty()) {
@@ -1028,6 +1190,7 @@ bool ReadContextualAdvantageInputs(
       side.side_dynamic_raw = dynamic.side_dynamic_raw;
       side.target_conditionals_residual_raw = dynamic.target_conditionals_residual_raw;
       side.side_total_raw = dynamic.side_total_raw;
+      side.side_modifier_sources = std::move(modifier_sources[i]);
       output.sides.push_back(std::move(side));
     }
     output.base_nonreligious_accumulator_raw = native.base_nonreligious_accumulator_raw;

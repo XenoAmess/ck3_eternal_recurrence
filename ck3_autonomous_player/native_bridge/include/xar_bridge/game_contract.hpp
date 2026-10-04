@@ -523,6 +523,38 @@ struct CombatHypotheticalScenarioSnapshot {
 // Narrow observation of a synthetic nonreligious constructor context. The
 // selected commander precedes the static ledger; target residual is arithmetic.
 // This DTO does not represent a complete encounter or a real resolved CCombat.
+// Operation-defined source rows of the query-owned synthetic side modifier.
+// Modifier ordinals and raw bytes are observations, not authored trait names.
+struct ContextualAdvantageOppositeEffectSnapshot {
+  std::int32_t native_ledger_index = -1;
+  std::string effect_key;
+  std::uint8_t flag88_raw = 0;
+  std::uint8_t flag89_raw = 0;
+  std::int64_t contribution_raw = 0;
+
+  friend bool operator==(const ContextualAdvantageOppositeEffectSnapshot &,
+                         const ContextualAdvantageOppositeEffectSnapshot &) = default;
+};
+
+struct ContextualAdvantageSideModifierSourceSnapshot {
+  std::int32_t side_index = -1;
+  std::string source_slot;
+  std::uint16_t source_modifier_id = 0;
+  bool condition_observed = false;
+  bool selected = false;
+  std::optional<std::int64_t> modifier_raw;
+  std::optional<std::int64_t> contribution_raw;
+  std::int64_t scale100000 = 100'000;
+  std::string skip_reason;
+  std::optional<std::int32_t> opposite_side_index;
+  std::optional<std::vector<ContextualAdvantageOppositeEffectSnapshot>>
+      eligible_opposite_effects;
+  std::optional<std::int64_t> opposite_eligible_contribution_sum_raw;
+
+  friend bool operator==(const ContextualAdvantageSideModifierSourceSnapshot &,
+                         const ContextualAdvantageSideModifierSourceSnapshot &) = default;
+};
+
 struct ContextualAdvantageSideSnapshot {
   std::int32_t side_index = -1;
   std::vector<std::int32_t> ordered_public_cunit_ids;
@@ -532,6 +564,10 @@ struct ContextualAdvantageSideSnapshot {
   std::int64_t side_dynamic_raw = 0;
   std::int64_t target_conditionals_residual_raw = 0;
   std::int64_t side_total_raw = 0;
+  // Absent only when this additive source reader is unavailable. Existing
+  // context totals and readiness are independent of this optional leaf.
+  std::optional<std::vector<ContextualAdvantageSideModifierSourceSnapshot>>
+      side_modifier_sources;
 
   friend bool operator==(const ContextualAdvantageSideSnapshot &,
                          const ContextualAdvantageSideSnapshot &) = default;
