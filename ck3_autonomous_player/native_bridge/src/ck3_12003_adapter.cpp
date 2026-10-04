@@ -113,7 +113,7 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
     result.armies.timing_bindings = ck3_12003::BindArmySupplyTimingImage(
         image_base, executable_sha256);
     result.native_owner_recall = ck3_12002::BindBattleImage(
-        image_base, executable_sha256);
+        image_base, ck3_12002::kExecutableSha256);
     ck3_12003::EnableBattleNativeOwnerRecallInputs12003(
         result.native_owner_recall, image_base, executable_sha256);
     result.armies.get_army_supply_capacity =
