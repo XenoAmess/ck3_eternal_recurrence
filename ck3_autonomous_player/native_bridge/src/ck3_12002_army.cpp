@@ -246,6 +246,43 @@ game::ArmyRegimentReplenishmentSnapshot Replenishment(
   return result;
 }
 
+game::ArmyLossApplicationInputsV1 LossApplicationInputs(
+    const ArmyBindings &bindings, void *army, std::int32_t whole_soldiers) {
+  game::ArmyLossApplicationInputsV1 result{};
+  if (bindings.get_army_current_soldiers == nullptr ||
+      bindings.siege_loss_rate_raw == nullptr ||
+      bindings.raid_loss_rate_raw == nullptr ||
+      bindings.get_army_whole_loss_budget == nullptr ||
+      bindings.get_army_supply_loss_budget == nullptr ||
+      bindings.is_army_raid_active == nullptr) {
+    result.unavailable_reason = "loss_application_bindings_unavailable";
+    return result;
+  }
+  result.siege_association_id = Load<std::int32_t>(army, 0x1E8);
+  result.siege_active = result.siege_association_id != -1;
+  result.raid_active = bindings.is_army_raid_active(army);
+  result.siege_rate_raw = *bindings.siege_loss_rate_raw;
+  result.raid_rate_raw = *bindings.raid_loss_rate_raw;
+  result.whole_soldiers = whole_soldiers;
+  void *descriptor = static_cast<std::byte *>(army) + 0x38;
+  result.definition_le_zero_soldiers =
+      bindings.get_army_current_soldiers(descriptor, 1);
+  result.supply_eligible_soldiers =
+      bindings.get_army_current_soldiers(descriptor, 2);
+  result.definition_le_zero_supply_eligible_soldiers =
+      bindings.get_army_current_soldiers(descriptor, 3);
+  result.current_supply_loss_budget = bindings.get_army_supply_loss_budget(army);
+  // Inactive modes are legitimate native zero branches. The loaded rate stays
+  // observable even then, and independent integer budgets are never combined
+  // through the UI's current aggregate attrition fraction.
+  result.siege_loss_budget = result.siege_active
+      ? bindings.get_army_whole_loss_budget(result.siege_rate_raw, army) : 0;
+  result.raid_loss_budget = result.raid_active
+      ? bindings.get_army_whole_loss_budget(result.raid_rate_raw, army) : 0;
+  result.available = true;
+  return result;
+}
+
 game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
                                    const ArmyStrengthScope &scope) {
   game::ArmyStrengthSnapshot result{};
@@ -379,6 +416,11 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
         bindings.get_army_monthly_supply_change(army, &raw, province, nullptr);
         result.current_supply_change_monthly_raw = raw;
       }
+    }
+    if (bindings.loss_application_inputs_enabled) {
+      g_army_strength_query_diagnostic_v1.reader.store("loss_application_inputs_getters");
+      result.loss_application_inputs_v1 =
+          LossApplicationInputs(bindings, army, native_current);
     }
     if (bindings.persistent_regiment_storage_slot != nullptr &&
         bindings.can_regiment_replenish != nullptr &&

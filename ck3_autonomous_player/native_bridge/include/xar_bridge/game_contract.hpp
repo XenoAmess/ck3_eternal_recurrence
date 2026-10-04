@@ -221,6 +221,29 @@ struct ArmyRegimentStrengthSnapshot {
                          const ArmyRegimentStrengthSnapshot &) = default;
 };
 
+// Same-frame readonly native monthly loss operands and integer budgets.
+// The definition<=0 category is deliberately unnamed. These are current-input
+// native outputs, not future net troop loss, casualties, or a setter forecast.
+struct ArmyLossApplicationInputsV1 {
+  bool available = false;
+  std::string unavailable_reason;
+  std::int32_t siege_association_id = -1;
+  bool siege_active = false;
+  bool raid_active = false;
+  std::int64_t siege_rate_raw = 0;
+  std::int64_t raid_rate_raw = 0;
+  std::int32_t whole_soldiers = 0;
+  std::int32_t definition_le_zero_soldiers = 0;
+  std::int32_t supply_eligible_soldiers = 0;
+  std::int32_t definition_le_zero_supply_eligible_soldiers = 0;
+  std::int32_t current_supply_loss_budget = 0;
+  std::int32_t siege_loss_budget = 0;
+  std::int32_t raid_loss_budget = 0;
+
+  friend bool operator==(const ArmyLossApplicationInputsV1 &,
+                         const ArmyLossApplicationInputsV1 &) = default;
+};
+
 struct ArmyStrengthSnapshot {
   bool available = false;
   std::int32_t army_id = -1;
@@ -260,6 +283,7 @@ struct ArmyStrengthSnapshot {
   // Exact .3 CArmy native remaining gathering days. Zero is observable while
   // gathering; not_gathering is an observed absence, with no invented days.
   std::optional<ArmySupplyTimingSnapshot> army_update_clock_v1;
+  std::optional<ArmyLossApplicationInputsV1> loss_application_inputs_v1;
   std::optional<BattleNativeOwnerRecallInputsV1> native_owner_recall_inputs_v1;
   std::optional<std::int32_t> gathering_days_left;
   ArmyGatheringDaysStatus gathering_days_status =

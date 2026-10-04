@@ -74,3 +74,36 @@ exact `0x24E2400` 按来源/目的对象及actor条件调用 `0x24E2250`，通�
 剩余项明确为：Root的主案连续人数观测与排混杂；运行期loaded rate/table、两anchor及真实日期节奏（补给时钟包）；行军上下文谓词和modifier最终返回值；特殊state3/character或零record等全部生命周期。普通驻地因果实验与A/B/C拍摄仍可推进，完整原生AI地点评分和调度不是本包门禁。
 
 可复用依据：[当前补给与比例](army-current-supply-capacity-attrition-12003.md)、[补给状态与更新](army-supply-depletion-update-and-state-12003.md)、[补员及两类Regiment](army-regiment-replenishment-raised-reserve-12003.md)。日/周报告记本包 `exact-build-static-chain`；新增游戏天、动作、SDK、录制与live cases均为0，P0-LOSS静态执行链推进，整项实机验收仍pending。
+
+### 2026-10-05：围城/劫掠同输入整数损耗观测
+
+Exact CK3 1.20.0.3 / Steam 25652598 / EXE `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。闭合 source tree 和 ABI 位于 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/raised-siege-attrition-quarter-v68/native-loss-tree/ROOT-DELIVERY.json`（SHA `42a0ba7a9dabd2437c647c4d1b3cf30f3e3abd0093212935c12bb25df9586cf2`）。`24E3A4D` 是恢复寄存器的 epilogue，不是 quarter/carry；setter `2657EA0` 内部额外状态仍未查明，不推定偏移。
+
+`24DD580(int64 rate VALUE RCX, CArmy* RDX)` 累计全部有效 ArmyRegiment 当前人数，将率 clamp 到 `[0,100000]` 后乘除并截断成整数兵员。围城由 `CArmy+1E8 != -1` 激活，载入率位于 `5C69098`；劫掠由 `24E8560` 原生 bool 激活，载入率位于 `5C69618`。独立整数预算不可由 UI 总 attrition fraction 相加后一次取整替代。`24E32E0(CArmy*)` 是只读当前供给损耗预算，不调用 updater、不写库存/anchors；实际月结路径先成功更新 supply，再计算并分配预算。
+
+已备妥的静态候选在同一 `ck3_query_army_strengths` 增加 `loss_application_inputs_v1`：原生 siege/raid 活动状态、载入率、全军人数、`2A95740` flags 1/2/3 的三个筛选人数、当前供给预算及 siege/raid 独立 wholeloss 输出。兵员 scale 1、率 scale 100000；`definition_le_zero` 只命名原生定义 `+2A0 <= 0` 比较，不推断单位类别。既有 update clock 与 Full DATA 保留，readonly consumer 原样保存这些值，不另造净损失模型。预算是同帧输入下原生只读值，不证明实际 updater 执行、最终 setter 写回或未来净兵数。
+
+```mermaid
+flowchart TD
+  A[同帧 CArmy 与既有完整 roster] --> B[flags0 全部当前人数]
+  A --> C[flags1 定义 <=0 / flags2 供给合格 / flags3 两者]
+  A --> D{siege association != -1}
+  A --> E{原生 raid bool}
+  D -->|是| F[loaded siege rate → 24DD580 整数预算]
+  D -->|否| Z[合法零预算]
+  E -->|是| G[loaded raid rate → 24DD580 整数预算]
+  E -->|否| Z
+  A --> H[24E32E0 当前供给整数预算]
+  B --> I[现军力 MCP additive 观测]
+  C --> I
+  F --> I
+  G --> I
+  H --> I
+  Z --> I
+  I -. 不等同实际 updater / setter 写回 .-> U[2657EA0 额外状态 unknown]
+```
+
+R36 已缓存实际主军 `3480/3878`、40 regiment、attrition `.01`、monthly supply `0`、sieging；R35→R36 的 `−35/−6/−1` 只记观测，尚未用新增字段取得同帧 actual，不能归因为某一损耗链。本包接线当前为 static-ready；此次 primitive 的 production-live 验收待 Root v64 部署后唯一新真实 army query，fixture 数据不冒充 actual，工作包新增游戏日为 0。
+
+唯一新增的 production-path focused case GREEN：编译/链接退出0（5.089s），NativeReadArmyStrengths→serializer 退出0（0.116s），registered MCP→NativeDriver normalizer→readonly provider 在 `-B -O` 下退出0（4.651s）；四个 flags 各调用一次，用例 typed rate VALUE1000 得 siege budget34，supply eligible80 / supply budget0，raid inactive / budget0。
+该唯一用例复用真实 reader、serializer 和消费入口，但这些输入是 fixture 数据；Root v64 部署后的真实 paused army query 仍待完成，本包不授予新增 production-live primitive、实际扣兵归因或游戏日信用。

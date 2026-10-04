@@ -250,6 +250,40 @@ inline void AppendArmyStrengthV1(
     else append_json_string(result, movement.unavailable_reason);
     result += '}';
   }
+  if (strength.loss_application_inputs_v1.has_value()) {
+    const auto &inputs = *strength.loss_application_inputs_v1;
+    result += ",\"loss_application_inputs_v1\":{\"status\":\"";
+    result += inputs.available ? "available" : "unavailable";
+    result += "\",\"unavailable_reason\":";
+    if (inputs.available) result += "null";
+    else append_json_string(result, inputs.unavailable_reason);
+    const auto append_number = [&](std::string_view key, std::int64_t value) {
+      result += ',';
+      append_json_string(result, key);
+      result += ':';
+      result += inputs.available ? number(value) : "null";
+    };
+    const auto append_boolean = [&](std::string_view key, bool value) {
+      result += ',';
+      append_json_string(result, key);
+      result += ':';
+      result += inputs.available ? (value ? "true" : "false") : "null";
+    };
+    append_number("siege_association_id", inputs.siege_association_id);
+    append_boolean("siege_active", inputs.siege_active);
+    append_boolean("raid_active", inputs.raid_active);
+    append_number("siege_rate_raw", inputs.siege_rate_raw);
+    append_number("raid_rate_raw", inputs.raid_rate_raw);
+    append_number("whole_soldiers", inputs.whole_soldiers);
+    append_number("definition_le_zero_soldiers", inputs.definition_le_zero_soldiers);
+    append_number("supply_eligible_soldiers", inputs.supply_eligible_soldiers);
+    append_number("definition_le_zero_supply_eligible_soldiers",
+                  inputs.definition_le_zero_supply_eligible_soldiers);
+    append_number("current_supply_loss_budget", inputs.current_supply_loss_budget);
+    append_number("siege_loss_budget", inputs.siege_loss_budget);
+    append_number("raid_loss_budget", inputs.raid_loss_budget);
+    result += ",\"fraction_scale\":100000,\"soldier_scale\":1}";
+  }
   if (strength.army_update_clock_v1.has_value()) {
     const auto &clock = *strength.army_update_clock_v1;
     result += ",\"army_update_clock_v1\":{\"status\":";

@@ -268,7 +268,8 @@ _ARMY_STRENGTH_GATHERING_DAYS_KEYS = {
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS = _ARMY_STRENGTH_ROW_KEYS | {
     key for pair in _ARMY_STRENGTH_SUPPLY_FIELD_PAIRS for key in pair
 } | {"regiment_replenishment", "regiment_strengths", "regiment_replenishment_records_v1", "current_movement_progress",
-     "army_update_clock_v1", "native_owner_recall_inputs_v1"} | _ARMY_STRENGTH_GATHERING_DAYS_KEYS
+     "army_update_clock_v1", "native_owner_recall_inputs_v1",
+     "loss_application_inputs_v1"} | _ARMY_STRENGTH_GATHERING_DAYS_KEYS
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
     "active_war_ally",
@@ -1795,6 +1796,10 @@ def _normalize_army_strength_row(
         )
     if "army_update_clock_v1" in value:
         result["army_update_clock_v1"] = normalize_army_update_clock_v1(value["army_update_clock_v1"])
+    if "loss_application_inputs_v1" in value:
+        result["loss_application_inputs_v1"] = _normalize_loss_application_inputs_v1(
+            value["loss_application_inputs_v1"], name=f"{name}.loss_application_inputs_v1"
+        )
     if "native_owner_recall_inputs_v1" in value:
         result["native_owner_recall_inputs_v1"] = normalize_battle_native_owner_recall_inputs_v1(
             value["native_owner_recall_inputs_v1"], lifecycle_status="available"
@@ -1818,6 +1823,48 @@ def _normalize_army_strength_row(
         result["regiment_replenishment"] = _normalize_regiment_replenishment(
             value["regiment_replenishment"], name=f"{name}.regiment_replenishment"
         )
+    return result
+
+
+def _normalize_loss_application_inputs_v1(
+    value: object, *, name: str
+) -> dict[str, object]:
+    """Preserve observed native budgets, distinct filtered counts and rate scalars."""
+    integer_fields = (
+        "siege_association_id", "whole_soldiers", "definition_le_zero_soldiers",
+        "supply_eligible_soldiers", "definition_le_zero_supply_eligible_soldiers",
+        "current_supply_loss_budget", "siege_loss_budget", "raid_loss_budget",
+    )
+    rate_fields = ("siege_rate_raw", "raid_rate_raw")
+    boolean_fields = ("siege_active", "raid_active")
+    data_fields = (*integer_fields, *rate_fields, *boolean_fields)
+    if not isinstance(value, dict) or set(value) != {
+        "status", "unavailable_reason", "fraction_scale", "soldier_scale", *data_fields,
+    }:
+        raise ValueError(f"native {name} schema is malformed")
+    status = value["status"]
+    if type(status) is not str or status not in {"available", "unavailable"}:
+        raise ValueError(f"native {name}.status is malformed")
+    if type(value["fraction_scale"]) is not int or value["fraction_scale"] != CK3_FIXED_POINT_SCALE:
+        raise ValueError(f"native {name}.fraction_scale must be {CK3_FIXED_POINT_SCALE}")
+    if type(value["soldier_scale"]) is not int or value["soldier_scale"] != 1:
+        raise ValueError(f"native {name}.soldier_scale must be whole soldiers (1)")
+    reason = value["unavailable_reason"]
+    result = dict(value)
+    if status == "unavailable":
+        if not isinstance(reason, str) or not reason or any(value[field] is not None for field in data_fields):
+            raise ValueError(f"native unavailable {name} requires a reason and null observation fields")
+        return result
+    if reason is not None:
+        raise ValueError(f"native available {name} cannot have unavailable_reason")
+    for field in integer_fields:
+        result[field] = _signed_int32(value[field], f"{name}.{field}")
+    for field in rate_fields:
+        raw = value[field]
+        if type(raw) is not int or not -(2**63) <= raw <= 2**63 - 1:
+            raise ValueError(f"native {name}.{field} must be signed int64")
+    for field in boolean_fields:
+        result[field] = _strict_bool(value[field], f"{name}.{field}")
     return result
 
 

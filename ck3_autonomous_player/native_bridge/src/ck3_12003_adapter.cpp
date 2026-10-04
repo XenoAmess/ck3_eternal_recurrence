@@ -114,6 +114,20 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
   // These numeric GUI getter ABIs are closed only for exact .3. Do not install
   // them in BindArmyImage: that binder also serves the unchanged .2 adapter.
   if (result.armies.enabled) {
+    result.armies.loss_application_inputs_enabled = true;
+    result.armies.siege_loss_rate_raw = reinterpret_cast<const std::int64_t *>(
+        image_base + ck3_12002::kArmySiegeLossRateRva12003);
+    result.armies.raid_loss_rate_raw = reinterpret_cast<const std::int64_t *>(
+        image_base + ck3_12002::kArmyRaidLossRateRva12003);
+    result.armies.get_army_whole_loss_budget =
+        reinterpret_cast<decltype(result.armies.get_army_whole_loss_budget)>(
+            image_base + ck3_12002::kArmyWholeLossBudgetRva12003);
+    result.armies.get_army_supply_loss_budget =
+        reinterpret_cast<decltype(result.armies.get_army_supply_loss_budget)>(
+            image_base + ck3_12002::kArmySupplyLossBudgetRva12003);
+    result.armies.is_army_raid_active =
+        reinterpret_cast<decltype(result.armies.is_army_raid_active)>(
+            image_base + ck3_12002::kArmyRaidActiveRva12003);
     result.armies.timing_bindings = ck3_12003::BindArmySupplyTimingImage(
         image_base, executable_sha256);
     result.native_owner_recall = ck3_12002::BindBattleImage(

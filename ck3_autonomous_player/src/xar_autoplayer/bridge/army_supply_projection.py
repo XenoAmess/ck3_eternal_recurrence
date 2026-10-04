@@ -34,6 +34,8 @@ def diagnose_frozen_supply(
     capacity_raw: int,
     monthly_change_raw: int,
     observed_current_attrition_raw: int | None = None,
+    loss_application_inputs_v1: dict[str, Any] | None = None,
+    army_update_clock_v1: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Return conditional stock milestones without a calendar conversion.
 
@@ -41,6 +43,9 @@ def diagnose_frozen_supply(
     observations. Each hypothetical successful update applies this same
     signed rate once and clamps to the same capacity. Current attrition is
     retained as an independent observation, never derived from the rate.
+    Optional inputs and clock are the normalized readonly native query outputs.
+    Loss budgets are preserved as observations, not recomputed from the UI
+    attrition fraction or converted into future net soldier changes.
     """
     first_stock = max(0, min(capacity_raw, stock_raw + monthly_change_raw))
 
@@ -74,7 +79,7 @@ def diagnose_frozen_supply(
             entry.update(_stock_state(projected_stock))
         milestones[name] = entry
 
-    return {
+    result = {
         "model": "frozen native successful-update recurrence",
         "scale": SCALE,
         "stock_raw": stock_raw,
@@ -91,3 +96,9 @@ def diagnose_frozen_supply(
         "depletion_date_raw": None,
         "clock_basis": "actual upstream cadence/grace inputs are not mapped; no conversion from events to days",
     }
+    if loss_application_inputs_v1 is not None:
+        result["loss_application_inputs_v1"] = dict(loss_application_inputs_v1)
+    if army_update_clock_v1 is not None:
+        result["army_update_clock_v1"] = dict(army_update_clock_v1)
+        result["clock_basis"] = "observed native army update clock; no conversion into future net losses"
+    return result
