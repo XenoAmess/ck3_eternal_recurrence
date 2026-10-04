@@ -1,0 +1,12 @@
+﻿l_english:
+ # GENERATED FILE: edit build_fixture.py.
+ lyd_r3_fixture_initialize_decision:0 "[R3 Fixture] Initialize Only This Player's Vanilla Confucian Rite"
+ lyd_r3_fixture_initialize_decision_desc:0 "For this ordinary-player admission test, assign only this character to the vanilla Confucian faith's main rite at the start date. This does not enable Li Yu Dao, set its school or study cooldowns, create heads or alter NPCs. Then use the formal product entry."
+ lyd_r3_fixture_initialize_decision_tooltip:0 "Establish only an ordinary Confucian player prerequisite"
+ lyd_r3_fixture_initialize_decision_confirm:0 "Initialize only this character"
+ lyd_r3_fixture_initialized_t:0 "R3 Prerequisite Revalidated"
+ lyd_r3_fixture_initialized_desc:0 "This character now actually follows the vanilla Confucian faith and its main rite. This fixture has not assigned the formal product's enabled flag or cooldowns. Begin testing with the formal Enter the Confucian Tradition decision."
+ lyd_r3_fixture_begin_formal:0 "Begin testing the formal entry"
+ lyd_r3_fixture_failed_t:0 "R3 Prerequisite Was Not Established"
+ lyd_r3_fixture_failed_desc:0 "The actual rite or faith did not match the fixture target. This does not establish readiness to test formal admission. Preserve the actual state and receipt."
+ lyd_r3_fixture_record_failure:0 "Preserve the failure record"

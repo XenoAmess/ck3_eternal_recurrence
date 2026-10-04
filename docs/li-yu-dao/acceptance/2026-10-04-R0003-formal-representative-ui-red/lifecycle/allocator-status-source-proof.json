@@ -1,0 +1,27 @@
+{
+  "schema": "ck3.lyd.r3-allocator-existing-status-proof.v1",
+  "source_path": "C:\\Users\\Administrator\\AppData\\Local\\XarCk3Acceptance\\live-run-ids-v1\\bf-202609141645-5434332d4d\\li-yu-dao\\statuses.jsonl",
+  "source_bytes": 1240,
+  "source_sha256": "381faa1d17c44bc015c83d99adc190bf7ebd0bb1d301a7bfb250dea188c35970",
+  "snapshot_path": "lifecycle/allocator-statuses.snapshot.raw.jsonl",
+  "snapshot_sha256": "381faa1d17c44bc015c83d99adc190bf7ebd0bb1d301a7bfb250dea188c35970",
+  "raw_row_path": "lifecycle/allocator-completed-red.raw.json",
+  "raw_row_sha256": "86ffcfab1d10183660dbe861833322863e615e2b433c0d305b7971a8f53d7af2",
+  "line_number": 3,
+  "actual_status_row": {
+    "execution_id": "a5fd03c7-cc8d-457d-8870-5080d83c3b0d",
+    "machine_id": "bf-202609141645-5434332d4d",
+    "mod_key": "li-yu-dao",
+    "reason": "R3-functional-representative-pass-UI-localization-red-normal-saved-exit",
+    "recorded_at_utc": "2026-10-04T07:20:42.311587+00:00",
+    "recorder_pid": 17064,
+    "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0003",
+    "schema": "xar.ck3-live-run-status.v1",
+    "sequence": 3,
+    "status": "completed-red"
+  },
+  "extraction_boundary": "original source row bytes including newline copied unchanged; this metadata does not create or append an allocator record",
+  "correction": "initial projection checked allocations.jsonl rather than statuses.jsonl; its not-found statement was a reader-path error, not missing root completion",
+  "allocator_called": false,
+  "tracked_written": false
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "ck3.lyd.r3-permanent-projection-receipt.v1",
+  "projection": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-permanent-projection-001",
+  "file_count": 172,
+  "total_bytes": 15783452,
+  "index_sha256": "60a77ee9b061884f9a871d828cffdc1522d95e8b14d584378592610b466d06c1",
+  "report_md_sha256": "b9e6a4933d9c54339b7c4b87cb3af5cb837fbfcb416ddc55472323306eba1916",
+  "report_json_sha256": "79d324d0d2b7540fb4234833ba5443fdfdf72c4c39e3720ac1a2224349340d77",
+  "selected_raw_png_count": 7,
+  "selected_raw_png_bytes": 12848630,
+  "full_package494_bytes_unchanged": true,
+  "allocator_status": "NO_COMPLETED_RED_RECEIPT_FOUND_AT_PROJECTION_TIME",
+  "tracked_written": false,
+  "game_called": false
+}

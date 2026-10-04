@@ -1,0 +1,62 @@
+3588: ambitious = {
+3589: 	category = personality
+3590: 	opposites = {
+3591: 		content
+3592: 	}
+3593: 
+3594: 	intrigue = 1
+3595: 	stewardship = 1
+3596: 	diplomacy = 1
+3597: 	martial = 1
+3598: 	learning = 1
+3599: 	prowess = 1
+3600: 
+3601: 	culture_modifier = {
+3602: 		parameter = mountain_trait_bonuses
+3603: 		mountains_advantage = 2
+3604: 		desert_mountains_advantage = 2
+3605: 	}
+3606: 
+3607: 	rite_modifier = {
+3608: 		parameter = tenet_mountain_worship_trait_bonuses
+3609: 		mountains_advantage = 2
+3610: 		desert_mountains_advantage = 2
+3611: 	}
+3612: 
+3613: 	culture_modifier = {
+3614: 		parameter = dry_trait_bonuses
+3615: 		drylands_max_combat_roll = 3
+3616: 		desert_max_combat_roll = 3
+3617: 	}
+3618: 
+3619: 	culture_modifier = {
+3620: 		parameter = ambitious_trait_penalty
+3621: 		same_culture_opinion = -15
+3622: 	}
+3623: 
+3624: 	culture_modifier = {
+3625: 		parameter = palace_politics_trait_bonuses
+3626: 		monthly_influence = 0.35
+3627: 	}
+3628: 
+3629: 	opinion_of_liege = -15
+3630: 	same_opinion = -15
+3631: 	glory_hound_opinion = 10
+3632: 
+3633: 	stress_gain_mult = 0.25
+3634: 
+3635: 	ai_war_cooldown = -0.25
+3636: 	ai_war_chance = 1
+3637: 	ai_amenity_target_baseline = 0.25
+3638: 	ai_amenity_spending = 0.1
+3750: arbitrary = {
+3751: 	category = personality
+3752: 	opposites = {
+3753: 		just
+3754: 	}
+3755: 	stewardship = -2
+3756: 	learning = -1
+3757: 	intrigue = 3
+3758: 
+3759: 	stress_gain_mult = -0.5
+3760: 	dread_baseline_add = 15

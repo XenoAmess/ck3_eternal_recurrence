@@ -1,0 +1,285 @@
+{
+  "schema": "ck3.lyd.r3-lifecycle-supplement.v1",
+  "recorded_at_utc": "2026-10-04T07:18:19.504634+00:00",
+  "status": "LIFECYCLE_CLOSED",
+  "checks": {
+    "ck3_empty_and_actual_pid5556_absent": true,
+    "keeper_thread_exited_without_failure": true,
+    "cas_completed_resources_empty_source_clean": true,
+    "task_identity_matches": true,
+    "mcp_close_and_session_closed_present": true
+  },
+  "actual_process_observation": {
+    "time": "2026-10-04T07:01:13.381962+00:00",
+    "ck3_processes": [],
+    "pid_5556_present": false
+  },
+  "keeper_final": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "ck3-lyd-live-004-20261004",
+    "last_sequence": 2674,
+    "failure": null,
+    "thread_exited": true,
+    "journal": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0003\\screen-lease.jsonl",
+    "at_utc": "2026-10-04T07:05:50.697221+00:00",
+    "entry_error": null,
+    "screen_released": false,
+    "game_actions": false
+  },
+  "cas_release": {
+    "schema": "codex.task_bus.v1",
+    "ok": true,
+    "task": {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "588492d3dbf473226664220b722a04b66ae54bae"
+      },
+      "last_sequence": 2676,
+      "next_step": "",
+      "pid": 19820,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R0003-normal-saved-exit-functional-pass-UI-localization-RED",
+      "task_id": "ck3-lyd-live-004-20261004",
+      "updated_at_utc": "2026-10-04T07:09:54.636332+00:00"
+    },
+    "event": {
+      "schema": "codex.task_bus.v1",
+      "sequence": 2676,
+      "event_id": "67acad82a6a146489694ac7373d68aaa",
+      "timestamp_utc": "2026-10-04T07:09:54.637181+00:00",
+      "kind": "completed",
+      "task_id": "ck3-lyd-live-004-20261004",
+      "to": [
+        "*"
+      ],
+      "state": "done",
+      "summary": "R0003-normal-saved-exit-functional-pass-UI-localization-RED",
+      "next_step": "",
+      "resources": [],
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "588492d3dbf473226664220b722a04b66ae54bae"
+      }
+    }
+  },
+  "mcp_close_response": {
+    "schema": "ck3.lyd.mcp-dispatch.v1",
+    "sequence": 23,
+    "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\mcp-queue\\9999-close.request.json",
+    "request_sha256": "fa21da3c1ed338e0905bc88936510993d535b17ad014be87b21f7143c7cfcc22",
+    "started_at_utc": "2026-10-04T06:46:38.003785+00:00",
+    "request_id": "9999-close",
+    "status": "CLIENT_CLOSE_REQUESTED",
+    "finished_at_utc": "2026-10-04T06:46:38.004536+00:00"
+  },
+  "mcp_session_closed": {
+    "closed_at_utc": "2026-10-04T06:46:38.390093+00:00",
+    "claimed_requests": [
+      "0001-list.request.json",
+      "0002-query.request.json",
+      "0003-attach.request.json",
+      "0004-baseline-save.request.json",
+      "0005-after-fixture.request.json",
+      "0006-fixture-ack.request.json",
+      "0007-original-confucian-save.request.json",
+      "0008-after-formal-entry.request.json",
+      "0009-welcome-ack.request.json",
+      "0010-formal-entry-save.request.json",
+      "0011-kongmen-practice-open.request.json",
+      "0012-kongmen-practice-cancel.request.json",
+      "0013-practice-cancel-save.request.json",
+      "0014-choose-open.request.json",
+      "0015-choose-cancel.request.json",
+      "0016-choose-cancel-save.request.json",
+      "0017-choose-reopen.request.json",
+      "0018-choose-zhuxi.request.json",
+      "0019-zhuxi-save.request.json",
+      "0020-zhuxi-practice-open.request.json",
+      "0021-zhuxi-practice-a.request.json",
+      "0022-practice-a-save.request.json",
+      "9999-close.request.json"
+    ],
+    "attach_requested": true
+  },
+  "mcp_process_exit": {
+    "unified_exec_session_id": 79955,
+    "exit_code": 0,
+    "evidence_kind": "root agent reported actual tool completion; close response alone is not process-exit proof"
+  },
+  "screens_reviewed": {
+    "normal-exit-dialog-visible.png": "child directly viewed save autosave_exit checkbox checked",
+    "normal-exit-desktop-click.png": "child directly viewed actual saving overlay after exit-to-desktop click; subsequent process JSON proves CK3 absence"
+  },
+  "postexit_errors": {
+    "schema": "ck3.lyd.r3-postexit-error-classification.v1",
+    "source_snapshot": "lifecycle/error.postexit.log",
+    "bytes": 802,
+    "sha256": "a479b73b3510f21a2721d6af36e26c3eca913e33353ff743334bbc6a99673f6c",
+    "raw_error_blocks": 2,
+    "known_trigger_localization_blocks": 2,
+    "missing_key_occurrences": 2,
+    "other_error_blocks": [],
+    "known_only_in_this_captured_error_log": true,
+    "same_bytes_as_pre_exit_package_error_log": true,
+    "boundary": "Exact exit-time error.log snapshot only. Two known pink display errors remain RED. No zero-error product claim or claim about uncaptured engine diagnostics."
+  },
+  "preserved_initial_files_checked": 462,
+  "old_report_index_sha256_unchanged": {
+    "report.json": "f1bc913810278d8bb4acd36d5febc957ab0cb48a3d82051c4a35eefadb2a344b",
+    "raw-hash-index.json": "5557f97ad6a8c93abf72f27fb298a482238d20cd452c31b9350d3f9d03d29a2f"
+  },
+  "copied_source_receipts": [
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\normal-exit-desktop-click.png",
+      "package_path": "lifecycle/normal-exit-desktop-click.png",
+      "bytes": 1499170,
+      "sha256": "ced0388f109c3453725f9d4d4bbf9f65eb769a36f11444681832fb4d7f053445"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\normal-exit-dialog-visible.json",
+      "package_path": "lifecycle/normal-exit-dialog-visible.json",
+      "bytes": 4303,
+      "sha256": "c44147de6886f74f3eabc7762684b7c6d6411a661834dd149ed2b8cef204d642"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\normal-exit-dialog-visible.png",
+      "package_path": "lifecycle/normal-exit-dialog-visible.png",
+      "bytes": 1911419,
+      "sha256": "7007a658f2c9ff139e1b435645766b2669dba1ea53ad90fbc6c3c2a9de2ecb20"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\normal-exit-process-check.json",
+      "package_path": "lifecycle/normal-exit-process-check.json",
+      "bytes": 4302,
+      "sha256": "53001bec73a216bf3aebd528704e6b2ceb735815f818dcd977d38da3c75691c7"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\normal-exit-process-check.png",
+      "package_path": "lifecycle/normal-exit-process-check.png",
+      "bytes": 1499090,
+      "sha256": "78ed1b139ae470e74fcf837bd79f59bbbceeed40afeca1441657eb34d41b2cba"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\normal-exit-processes-001.json",
+      "package_path": "lifecycle/normal-exit-processes-001.json",
+      "bytes": 104,
+      "sha256": "f030c3084e0844d5a4c8404d96d4ef32c096f634fe7bbdc710c752f0868954ea"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\normal-exit-window-click.png",
+      "package_path": "lifecycle/normal-exit-window-click.png",
+      "bytes": 2009337,
+      "sha256": "b4f088179368b43302cc266fe5a7ddb79bd71490c3bb5c1855150af4aeb899c9"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\screen-release-completed.json",
+      "package_path": "lifecycle/screen-release-completed.json",
+      "bytes": 1215,
+      "sha256": "438666c1d852ed4d5db188a6eb53753dc694b9b3061656869066a369d85a7c3d"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0003\\ADMITTED.json",
+      "package_path": "lifecycle/keeper/ADMITTED.json",
+      "bytes": 663,
+      "sha256": "868cc725ec67f7ca4670c811dd4da1e9a5d8b2aa3974dda913af0ddf54819d66"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0003\\FINAL.json",
+      "package_path": "lifecycle/keeper/FINAL.json",
+      "bytes": 387,
+      "sha256": "1912d0f609837baccb91496cb5f1e92979af9f71f9e0c8cfafdd49d12130d7a1"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0003\\INPUTS.json",
+      "package_path": "lifecycle/keeper/INPUTS.json",
+      "bytes": 2356,
+      "sha256": "9168db694ecec39d063e22331fe56810620f7df78ae7fecddaf82fa65c454815"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0003\\poll.jsonl",
+      "package_path": "lifecycle/keeper/poll.jsonl",
+      "bytes": 13131185,
+      "sha256": "82b7ebb13f5538bd69451eaf20703e0b16b2981fdaa1cc0ff31a5eab379b2010"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0003\\READY.json",
+      "package_path": "lifecycle/keeper/READY.json",
+      "bytes": 736,
+      "sha256": "843347088575c21d7946a36e40db9325784f647941f0c48e1f0cde915f5a7f87"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0003\\screen-lease.jsonl",
+      "package_path": "lifecycle/keeper/screen-lease.jsonl",
+      "bytes": 28741,
+      "sha256": "c2073a55edb6ecde25af945f71543d52049d18b20ca8948ffc3a5a695bde1ffc"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0003\\STOP.request",
+      "package_path": "lifecycle/keeper/STOP.request",
+      "bytes": 65,
+      "sha256": "b6c2c0058bf8caae9cdc7d5ca0447e765384ba839149e390b60bb413c5bd1717"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\mcp-client-evidence\\0023-9999-close.request.json",
+      "package_path": "lifecycle/mcp/0023-9999-close.request.json",
+      "bytes": 98,
+      "sha256": "fa21da3c1ed338e0905bc88936510993d535b17ad014be87b21f7143c7cfcc22"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\mcp-client-evidence\\0023-9999-close.response.json",
+      "package_path": "lifecycle/mcp/0023-9999-close.response.json",
+      "bytes": 454,
+      "sha256": "cb96f78c81cca3a0fbaa0839846525611a6bf950773741f738dc5e41929d17be"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\mcp-client-evidence\\0023-9999-close.started.json",
+      "package_path": "lifecycle/mcp/0023-9999-close.started.json",
+      "bytes": 326,
+      "sha256": "3983bccaf861d9765896ed97e1b9c0aaa438f72a255ce0a7047898776c217894"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\mcp-client-evidence\\session-closed.json",
+      "package_path": "lifecycle/mcp/session-closed.json",
+      "bytes": 1058,
+      "sha256": "84242c470496a7ec3d1af734732e557f008909a7576eb3175920c00f1831faf6"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\mcp-queue\\9999-close.69c925b9b6c14e3a91d03213e6a0c1fe.input",
+      "package_path": "lifecycle/mcp-queue/9999-close.69c925b9b6c14e3a91d03213e6a0c1fe.input",
+      "bytes": 98,
+      "sha256": "fa21da3c1ed338e0905bc88936510993d535b17ad014be87b21f7143c7cfcc22"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\mcp-queue\\9999-close.request.json",
+      "package_path": "lifecycle/mcp-queue/9999-close.request.json",
+      "bytes": 98,
+      "sha256": "fa21da3c1ed338e0905bc88936510993d535b17ad014be87b21f7143c7cfcc22"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\userdir\\logs\\error.log",
+      "package_path": "lifecycle/error.postexit.log",
+      "bytes": 802,
+      "sha256": "a479b73b3510f21a2721d6af36e26c3eca913e33353ff743334bbc6a99673f6c"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\prepare_r3_acceptance_package.py",
+      "package_path": "helpers-and-build/prepare_r3_acceptance_package.py",
+      "bytes": 17697,
+      "sha256": "36d2c0050104c39a3d02fe211f18877569e35b001cf0f03b6e421bc7152c3470"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\finalize_r3_acceptance_package.py",
+      "package_path": "helpers-and-build/finalize_r3_acceptance_package.py",
+      "bytes": 14180,
+      "sha256": "83448805737909428b8e8962f7e57186c705615d1aabc041b3bf0551e2453bd4"
+    }
+  ],
+  "game_called_by_supplement_tool": false,
+  "tracked_written": false
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "ck3.lyd.r3-cancel-player-excerpts-comparison.v1",
+  "source_excerpts": [
+    {
+      "phase": "r3-readback-formal-entry-001",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-readback-formal-entry-001\\actual-player.excerpt.txt",
+      "sha256": "5cb27808e1907ca0d0b85f8544d661f81f79d3d546ad39a4e793e003221d561b"
+    },
+    {
+      "phase": "r3-readback-practice-cancel-001",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-readback-practice-cancel-001\\actual-player.excerpt.txt",
+      "sha256": "5cb27808e1907ca0d0b85f8544d661f81f79d3d546ad39a4e793e003221d561b"
+    },
+    {
+      "phase": "r3-readback-choose-cancel-001",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-readback-choose-cancel-001\\actual-player.excerpt.txt",
+      "sha256": "5cb27808e1907ca0d0b85f8544d661f81f79d3d546ad39a4e793e003221d561b"
+    }
+  ],
+  "all_actual_player_blocks_byte_identical": true,
+  "game_called": false,
+  "tracked_written": false
+}

@@ -1,0 +1,416 @@
+{
+  "schema_version": 1,
+  "utc": "2026-10-04T04:56:23.111692+00:00",
+  "runtime_status": "NOT_RUN",
+  "source_revision": "588492d3dbf473226664220b722a04b66ae54bae",
+  "source_git_objects": {
+    "mod_li_yu_dao": "41de727d1ea2183002a7ac7854948f67afacac45",
+    "tools/extract_auto_upgrade_buildings.py": "6cc9e3407db931dabfdf0532293b398c531bfd75",
+    ".github/workflows/li-yu-dao-static.yml": "65ba06ee579bb5192428e92c783283571dca673e"
+  },
+  "source_clean_before_and_after": true,
+  "interpreter": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003",
+  "userdir": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\userdir",
+  "mount_order": [
+    "mod/lyd_production.mod",
+    "mod/lyd_fixture.mod"
+  ],
+  "production_input": "C:\\workspace\\ck3_lyd_runtime_20261004\\build-formal-hotfix-r0003",
+  "production_manifest": "C:\\workspace\\ck3_lyd_runtime_20261004\\build-formal-hotfix-r0003.manifest.json",
+  "production_manifest_sha256": "5a259aa60a9cfe86f913d2a6a9dfb49bd091e7b33f5a82bdc0b666fbd340ef62",
+  "production_zip": "C:\\workspace\\ck3_lyd_runtime_20261004\\build-formal-hotfix-r0003.zip",
+  "production_zip_sha256": "607768d1848918ad955cf78bef90147b2e3f76cfa4dad6687b5a11b96dc24ee8",
+  "production_payload": [
+    {
+      "path": "common/character_interactions/lyd_interactions.txt",
+      "bytes": 127,
+      "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba"
+    },
+    {
+      "path": "common/decisions/lyd_decisions.txt",
+      "bytes": 1774,
+      "sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e"
+    },
+    {
+      "path": "common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 424,
+      "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525"
+    },
+    {
+      "path": "common/religion/rite_types/lyd_rites.txt",
+      "bytes": 3071,
+      "sha256": "fe4e5ae58c3a7f52d93ee4411844e65aed3c94c743558abc05636e9d099abf40"
+    },
+    {
+      "path": "common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 8333,
+      "sha256": "8c48b1d0e6056845fec7a6babb53754fb7b7aecb2c3b7df7bae608654bd20789"
+    },
+    {
+      "path": "common/scripted_effects/lyd_entry_effects.txt",
+      "bytes": 1307,
+      "sha256": "5deef0c786a0de1d53df129b93e8aec16469d82ddf50b6fbf063fd80fd8ee8c1"
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_1_effects.txt",
+      "bytes": 2798,
+      "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7"
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_2_effects.txt",
+      "bytes": 2703,
+      "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879"
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_3_effects.txt",
+      "bytes": 2756,
+      "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131"
+    },
+    {
+      "path": "common/scripted_effects/lyd_school_effects.txt",
+      "bytes": 3862,
+      "sha256": "34f97896f41ab51b90a185d05e4c64f81b78699b8f82a975bb3516e436bd98c7"
+    },
+    {
+      "path": "common/scripted_triggers/lyd_player_triggers.txt",
+      "bytes": 1671,
+      "sha256": "942cc258ec6a0814695122701297a1b30e7854cb6f8aae72e3d3dbeef18f1c2b"
+    },
+    {
+      "path": "descriptor.mod",
+      "bytes": 139,
+      "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2"
+    },
+    {
+      "path": "events/lyd_events.txt",
+      "bytes": 11070,
+      "sha256": "1c083b0fd910d701f3fc0f63345ce130930a1d80dac9575f076d02eacda602a7"
+    },
+    {
+      "path": "history/faiths/lyd_faith_history.txt",
+      "bytes": 588,
+      "sha256": "00ea56c310601a142d18ee52313d39556ffb56964f4927026de69126b9914f11"
+    },
+    {
+      "path": "localization/english/lyd_content_l_english.yml",
+      "bytes": 17495,
+      "sha256": "3c5ca01e2f47ad87700eb6e93eb0a9675e98ceb5a58337679e9f31c7eea6f3c4"
+    },
+    {
+      "path": "localization/english/lyd_runtime_l_english.yml",
+      "bytes": 2771,
+      "sha256": "09aef44681fa3810def8b3c7ad42593766f1039c147d3c2d8421ce8530e690ea"
+    },
+    {
+      "path": "localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 14147,
+      "sha256": "df78c4340ba0f8ae53d3637f5485143046497c014e980ee91f6a9b6031f9dae5"
+    },
+    {
+      "path": "localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 2388,
+      "sha256": "f44152a6488831db7ccff4985b0a1e58592547f9f71c93eb34f8a9101dada944"
+    }
+  ],
+  "fixture_payload": [
+    {
+      "path": "common/decisions/lyd_r3_fixture_decisions.txt",
+      "bytes": 650,
+      "sha256": "bd731703217b10a6fde0a104a48c61be7f852c88a0538b41b250f50fd1ce6d93"
+    },
+    {
+      "path": "common/scripted_effects/lyd_r3_fixture_effects.txt",
+      "bytes": 768,
+      "sha256": "5a79a925992d3a55586e5558d5c6300d608986467259b3f9b1ec17c8f08096da"
+    },
+    {
+      "path": "common/scripted_triggers/lyd_r3_fixture_triggers.txt",
+      "bytes": 415,
+      "sha256": "bc0f586a245377fb1d2660651f04ce2c16f85fcc113250f323da4fd7fbbb5bda"
+    },
+    {
+      "path": "descriptor.mod",
+      "bytes": 123,
+      "sha256": "56257504a8f873e43a20ab5c3096c9607647e205d28db17f4c3b13cb54f94a8f"
+    },
+    {
+      "path": "events/lyd_r3_fixture_events.txt",
+      "bytes": 707,
+      "sha256": "0f5cae24b3d938cc9ece2af2a8a889dbf42d8b234d41cdc94c6c16adc7f05a9b"
+    },
+    {
+      "path": "localization/english/lyd_r3_fixture_l_english.yml",
+      "bytes": 1363,
+      "sha256": "c74004e936f793dc5d47b12a696f2a0a9f32662fd5938a4a16787e7926939d7f"
+    },
+    {
+      "path": "localization/simp_chinese/lyd_r3_fixture_l_simp_chinese.yml",
+      "bytes": 1244,
+      "sha256": "257a24c7d74b5ededcd8930ba2d124faadf33ca4b54a3d7985a080190c8dd315"
+    }
+  ],
+  "fixture_input": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-entry-fixture-candidate-002\\generated\\mod_li_yu_dao_r3_entry_fixture",
+  "fixture_render_report": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-entry-fixture-candidate-002\\fixture-render-report.json",
+  "fixture_render_report_sha256": "1b49b5e1a67b26002cea073db79f708e88a1b5ec3324f2212b8285559d8ae3a3",
+  "fixture_candidate": "r3-entry-fixture-candidate-002",
+  "fixture_contract": {
+    "target": "current played Character only, original faith:confucian_faith.main_rite",
+    "native_probe_mounted": false,
+    "creates_faith_rite_title_npc": false
+  },
+  "game": {
+    "root": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III",
+    "raw_version": "1.20.0.3",
+    "executable": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "executable_bytes": 101039736,
+    "executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+    "launcher_settings": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\launcher\\launcher-settings.json",
+    "launcher_settings_sha256": "9cd6ff96f8092f2d21e1491b37e8344aa287faf69850563128ca1b117244a214",
+    "app_manifest": "C:\\Program Files (x86)\\Steam\\steamapps\\appmanifest_1158310.acf",
+    "app_manifest_sha256": "cdf1d7ed0a8307cc345b447bdf9cb80f501a3e35c57037e1df428412eb2612cb",
+    "build_id": "25652598"
+  },
+  "native_corpus": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\faith_types\\00_faith_types.txt",
+      "relative_path": "common/religion/faith_types/00_faith_types.txt",
+      "bytes": 118526,
+      "sha256": "c1b94cd6cf2cc47824a43112965e9a1e1a669530090b44b1cd702245914e84df"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\rite_types\\00_rite_types.txt",
+      "relative_path": "common/religion/rite_types/00_rite_types.txt",
+      "bytes": 45201,
+      "sha256": "3123e46d154cc35a72986979d3db951accf31fdbb03bf65d54b9261a3451dbce"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\rite_types\\_rite_types.info",
+      "relative_path": "common/religion/rite_types/_rite_types.info",
+      "bytes": 2995,
+      "sha256": "60fd476d72be0941d9c6dff4e83834016d6e32d16e855f3b258389061850828f"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\history\\faiths\\00_eastern_misc.txt",
+      "relative_path": "history/faiths/00_eastern_misc.txt",
+      "bytes": 954,
+      "sha256": "59c561dc2fdb502872a6426cd35f3dd9f032e5481d6fb371f409801bb044fa4e"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\history\\characters\\norman.txt",
+      "relative_path": "history/characters/norman.txt",
+      "bytes": 158165,
+      "sha256": "588a012e567f6acc9e032a162b9995bb7424b535ff50cfaea459cf10a1c0132b"
+    }
+  ],
+  "launch_argv": [
+    "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "-debug_mode",
+    "-gdpr-compliant",
+    "-userdir=C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\userdir"
+  ],
+  "launch_cwd": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries",
+  "entry": {
+    "bookmark_date": "1066.9.15",
+    "character_name": "Robert Guiscard",
+    "historical_character_key": "1128",
+    "native_character_id": null,
+    "identity_status": "REQUIRES_INDEPENDENT_LIVE_READBACK",
+    "new_normal_campaign": true
+  },
+  "settings_requested": {
+    "language": "l_simp_chinese",
+    "autosave": "NEVER",
+    "cloud_save": false,
+    "display_mode": "windowed",
+    "windowed_resolution": "1600x900"
+  },
+  "settings_status": "REQUIRES_GAME_SETTINGS_READBACK; requested dimensions are not desktop-click coordinates",
+  "root_screen_task": "ck3-lyd-live-004-20261004",
+  "root_action_helpers": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live_control_r0003.py",
+      "bytes": 5517,
+      "sha256": "42b963c8e8584cedd15240b076b9d79ecb5cee239cc0c04925e164941020cfae",
+      "executed": false
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen_lease_entry_r0003.py",
+      "bytes": 7348,
+      "sha256": "22c2c629092cd7ab18b5438dabdccabbee53ab7b89ed7894d23d031b57b03d90",
+      "executed": false
+    }
+  ],
+  "task_bus_source_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+  "helper_actions_executed": false,
+  "prepared_files": [
+    {
+      "path": "content/fixture/common/decisions/lyd_r3_fixture_decisions.txt",
+      "bytes": 650,
+      "sha256": "bd731703217b10a6fde0a104a48c61be7f852c88a0538b41b250f50fd1ce6d93"
+    },
+    {
+      "path": "content/fixture/common/scripted_effects/lyd_r3_fixture_effects.txt",
+      "bytes": 768,
+      "sha256": "5a79a925992d3a55586e5558d5c6300d608986467259b3f9b1ec17c8f08096da"
+    },
+    {
+      "path": "content/fixture/common/scripted_triggers/lyd_r3_fixture_triggers.txt",
+      "bytes": 415,
+      "sha256": "bc0f586a245377fb1d2660651f04ce2c16f85fcc113250f323da4fd7fbbb5bda"
+    },
+    {
+      "path": "content/fixture/descriptor.mod",
+      "bytes": 123,
+      "sha256": "56257504a8f873e43a20ab5c3096c9607647e205d28db17f4c3b13cb54f94a8f"
+    },
+    {
+      "path": "content/fixture/events/lyd_r3_fixture_events.txt",
+      "bytes": 707,
+      "sha256": "0f5cae24b3d938cc9ece2af2a8a889dbf42d8b234d41cdc94c6c16adc7f05a9b"
+    },
+    {
+      "path": "content/fixture/localization/english/lyd_r3_fixture_l_english.yml",
+      "bytes": 1363,
+      "sha256": "c74004e936f793dc5d47b12a696f2a0a9f32662fd5938a4a16787e7926939d7f"
+    },
+    {
+      "path": "content/fixture/localization/simp_chinese/lyd_r3_fixture_l_simp_chinese.yml",
+      "bytes": 1244,
+      "sha256": "257a24c7d74b5ededcd8930ba2d124faadf33ca4b54a3d7985a080190c8dd315"
+    },
+    {
+      "path": "content/production/common/character_interactions/lyd_interactions.txt",
+      "bytes": 127,
+      "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba"
+    },
+    {
+      "path": "content/production/common/decisions/lyd_decisions.txt",
+      "bytes": 1774,
+      "sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e"
+    },
+    {
+      "path": "content/production/common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 424,
+      "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525"
+    },
+    {
+      "path": "content/production/common/religion/rite_types/lyd_rites.txt",
+      "bytes": 3071,
+      "sha256": "fe4e5ae58c3a7f52d93ee4411844e65aed3c94c743558abc05636e9d099abf40"
+    },
+    {
+      "path": "content/production/common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 8333,
+      "sha256": "8c48b1d0e6056845fec7a6babb53754fb7b7aecb2c3b7df7bae608654bd20789"
+    },
+    {
+      "path": "content/production/common/scripted_effects/lyd_entry_effects.txt",
+      "bytes": 1307,
+      "sha256": "5deef0c786a0de1d53df129b93e8aec16469d82ddf50b6fbf063fd80fd8ee8c1"
+    },
+    {
+      "path": "content/production/common/scripted_effects/lyd_practice_1_effects.txt",
+      "bytes": 2798,
+      "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7"
+    },
+    {
+      "path": "content/production/common/scripted_effects/lyd_practice_2_effects.txt",
+      "bytes": 2703,
+      "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879"
+    },
+    {
+      "path": "content/production/common/scripted_effects/lyd_practice_3_effects.txt",
+      "bytes": 2756,
+      "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131"
+    },
+    {
+      "path": "content/production/common/scripted_effects/lyd_school_effects.txt",
+      "bytes": 3862,
+      "sha256": "34f97896f41ab51b90a185d05e4c64f81b78699b8f82a975bb3516e436bd98c7"
+    },
+    {
+      "path": "content/production/common/scripted_triggers/lyd_player_triggers.txt",
+      "bytes": 1671,
+      "sha256": "942cc258ec6a0814695122701297a1b30e7854cb6f8aae72e3d3dbeef18f1c2b"
+    },
+    {
+      "path": "content/production/descriptor.mod",
+      "bytes": 139,
+      "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2"
+    },
+    {
+      "path": "content/production/events/lyd_events.txt",
+      "bytes": 11070,
+      "sha256": "1c083b0fd910d701f3fc0f63345ce130930a1d80dac9575f076d02eacda602a7"
+    },
+    {
+      "path": "content/production/history/faiths/lyd_faith_history.txt",
+      "bytes": 588,
+      "sha256": "00ea56c310601a142d18ee52313d39556ffb56964f4927026de69126b9914f11"
+    },
+    {
+      "path": "content/production/localization/english/lyd_content_l_english.yml",
+      "bytes": 17495,
+      "sha256": "3c5ca01e2f47ad87700eb6e93eb0a9675e98ceb5a58337679e9f31c7eea6f3c4"
+    },
+    {
+      "path": "content/production/localization/english/lyd_runtime_l_english.yml",
+      "bytes": 2771,
+      "sha256": "09aef44681fa3810def8b3c7ad42593766f1039c147d3c2d8421ce8530e690ea"
+    },
+    {
+      "path": "content/production/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 14147,
+      "sha256": "df78c4340ba0f8ae53d3637f5485143046497c014e980ee91f6a9b6031f9dae5"
+    },
+    {
+      "path": "content/production/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 2388,
+      "sha256": "f44152a6488831db7ccff4985b0a1e58592547f9f71c93eb34f8a9101dada944"
+    },
+    {
+      "path": "native-profile.template.json",
+      "bytes": 734,
+      "sha256": "51aefd9352977f0f3323214598836dea10e7b2b5b75743bf2fdc10b4ee7420d7"
+    },
+    {
+      "path": "userdir/dlc_load.json",
+      "bytes": 107,
+      "sha256": "24f8cb5d6d471c101e5da573f86a4e9aa7cb865593179b33389491231bdf8f30"
+    },
+    {
+      "path": "userdir/mod/lyd_fixture.mod",
+      "bytes": 201,
+      "sha256": "2c54c0e60d74b46717cc72e7e6f63ded777c8bd28c526945936281c8a72bb3f2"
+    },
+    {
+      "path": "userdir/mod/lyd_production.mod",
+      "bytes": 220,
+      "sha256": "52f351580406b8bd4607fd9d04df7585ce1848844cce2f5d45f1bf322ef9e14c"
+    },
+    {
+      "path": "userdir/pdx_settings.txt",
+      "bytes": 434,
+      "sha256": "35ac79cc6e173bf82e975b4a401a94dab924bca2414497e66e3fedbffe7783db"
+    },
+    {
+      "path": "userdir/player/game_rules/presets.txt",
+      "bytes": 71,
+      "sha256": "c564e5e177e8263a66b32c572fd713f6cb79a7be6e4760d565d4144ca9024c46"
+    },
+    {
+      "path": "userdir/tutorial.txt",
+      "bytes": 57,
+      "sha256": "de93ebed7d262c2450ac9fd18543e0890d8e5d3661cc773b62f707fc310a2075"
+    }
+  ],
+  "real_documents_written": false,
+  "workshop_cache_written": false,
+  "game_launched": false,
+  "steam_input": false,
+  "screen_task_registered": false,
+  "lease_started": false,
+  "native_injected": false,
+  "tracked_written": false
+}

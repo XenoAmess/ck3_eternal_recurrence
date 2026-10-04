@@ -1,0 +1,13 @@
+{
+  "schema": "ck3.lyd.r3-postexit-error-classification.v1",
+  "source_snapshot": "lifecycle/error.postexit.log",
+  "bytes": 802,
+  "sha256": "a479b73b3510f21a2721d6af36e26c3eca913e33353ff743334bbc6a99673f6c",
+  "raw_error_blocks": 2,
+  "known_trigger_localization_blocks": 2,
+  "missing_key_occurrences": 2,
+  "other_error_blocks": [],
+  "known_only_in_this_captured_error_log": true,
+  "same_bytes_as_pre_exit_package_error_log": true,
+  "boundary": "Exact exit-time error.log snapshot only. Two known pink display errors remain RED. No zero-error product claim or claim about uncaptured engine diagnostics."
+}

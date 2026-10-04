@@ -1,0 +1,8 @@
+[13:41:24][E][jomini_script_system.cpp:304]: Script system error!
+  Error: Trigger Localization (database): 'character_this_equal': missing localization 'NOT_character_this_equal_global' at file: common/trigger_localization/00_character_triggers.txt line: 2027 (character_this_equal)
+  Script location: file: common/scripted_triggers/lyd_player_triggers.txt line: 14 (lyd_can_enter_display_trigger)
+
+[13:41:24][E][jomini_script_system.cpp:304]: Script system error!
+  Error: Trigger Localization (database): 'character_this_equal': missing localization 'NOT_character_this_equal_global' at file: common/trigger_localization/00_character_triggers.txt line: 2027 (character_this_equal)
+  Script location: file: common/scripted_triggers/lyd_player_triggers.txt line: 15 (lyd_can_enter_display_trigger)
+

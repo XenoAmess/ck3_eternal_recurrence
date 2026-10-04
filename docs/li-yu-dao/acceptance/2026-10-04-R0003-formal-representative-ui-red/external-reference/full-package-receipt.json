@@ -1,0 +1,19 @@
+{
+  "schema": "ck3.lyd.r3-final-package-receipt.v1",
+  "package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001",
+  "file_count": 494,
+  "total_bytes_including_this_receipt": 142405708,
+  "index_v2_sha256": "0cbb6fa8ea260167695af96d21e8bb74007a4402ea2d2b2c495cfc99d4350403",
+  "final_report_json_sha256": "1f91e892c33d39fcc8184580268d8def619ed26d7a6723f2f4f719adf77188ec",
+  "final_report_md_sha256": "5fd07b238676a12c0b1081e212f009623458c299e73c3100083e2bd0730ee485",
+  "statuses": {
+    "functional": "FUNCTIONAL_REPRESENTATIVE_PASS",
+    "ui_localization": "UI_LOCALIZATION_RED",
+    "overall": "INCOMPLETE_UI_LOCALIZATION_RED",
+    "lifecycle": "LIFECYCLE_CLOSED"
+  },
+  "permanent_target": "docs/li-yu-dao/acceptance/2026-10-04-R0003-formal-representative-ui-red",
+  "tracked_import_performed": false,
+  "game_called": false,
+  "old_file_bytes_preserved": true
+}

@@ -1,0 +1,46 @@
+{
+  "schema": "ck3.steam_fresh_desktop_frame.v1",
+  "captured_at_utc": "2026-10-04T05:05:54.793725+00:00",
+  "steam_hwnd": 984556,
+  "steam_pid": 3028,
+  "desktop_size": [
+    1920,
+    1080
+  ],
+  "before_rect": [
+    80,
+    40,
+    1680,
+    1040
+  ],
+  "moved_rect": [
+    100,
+    40,
+    1700,
+    1040
+  ],
+  "restored_rect": [
+    80,
+    40,
+    1680,
+    1040
+  ],
+  "before_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\offline\\steam-before.png",
+  "before_sha256": "97E83D6D524D76CB6E72C4C062DA103BBCD5EA90412125B9F0AAEC2A06333FD8",
+  "moved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\offline\\steam-moved.png",
+  "moved_sha256": "1600185FB68E450457AB3EED10BB72BC36EDA169158F15FD38B31139EC9C643D",
+  "moved_identity": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\offline\\steam-moved.png",
+    "bytes": 327451,
+    "sha256": "1600185FB68E450457AB3EED10BB72BC36EDA169158F15FD38B31139EC9C643D"
+  },
+  "pixel_difference_bbox": [
+    67,
+    27,
+    1713,
+    1040
+  ],
+  "moving_edge_changed": true,
+  "clock_check": null,
+  "offline_status_observed": null
+}

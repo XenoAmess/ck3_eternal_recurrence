@@ -6,6 +6,8 @@
  lyd_common_faith_adherent_plural:0 "Confucians"
  lyd_common_faith_desc:0 "The traditions share the classics, ritual and self-cultivation, while differing over Heaven, nature, mind and sacrifice. Communion need not erase their differences."
  lyd_enter_decision:0 "Enter the Confucian Tradition"
+ lyd_not_current_faith_head_tt:0 "The current character is not the head of their current faith."
+ lyd_not_current_rite_head_tt:0 "The current character is not the head of their current rite."
  lyd_enter_decision_desc:0 "Join the Confucian Communion through study, ritual and self-cultivation, beginning with the Kongmen tradition."
  lyd_enter_decision_tooltip:0 "Join the Kongmen rite of the Confucian Communion"
  lyd_enter_decision_confirm:0 "Begin my practice"

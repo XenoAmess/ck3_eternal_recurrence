@@ -1,0 +1,17 @@
+{
+  "schema": "ck3.lyd.r3-practice-cancel-prestige-comparison.v1",
+  "source_excerpts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-readback-formal-entry-001\\actual-player.excerpt.txt",
+      "sha256": "5cb27808e1907ca0d0b85f8544d661f81f79d3d546ad39a4e793e003221d561b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-readback-practice-cancel-001\\actual-player.excerpt.txt",
+      "sha256": "5cb27808e1907ca0d0b85f8544d661f81f79d3d546ad39a4e793e003221d561b"
+    }
+  ],
+  "formal_entry_saved_prestige": "2200",
+  "practice_cancel_saved_prestige": "2200",
+  "unchanged": true,
+  "game_called": false
+}

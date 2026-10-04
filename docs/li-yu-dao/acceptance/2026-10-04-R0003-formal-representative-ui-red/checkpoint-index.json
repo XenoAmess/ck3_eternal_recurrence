@@ -1,0 +1,68 @@
+{
+  "schema": "ck3.lyd.r3-checkpoint-index.v1",
+  "checkpoints": [
+    {
+      "phase": "baseline",
+      "artifact_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\4a14fec48e88117c5b16e7e3ee9d971d8ade2931412abf19f6a07e955be0e7d2\\xar_checkpoint.ck3",
+      "bytes": 91115264,
+      "sha256": "4a14fec48e88117c5b16e7e3ee9d971d8ade2931412abf19f6a07e955be0e7d2",
+      "native_receipt": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0003-checkpoint.json",
+      "readback": "readbacks/baseline/report.json",
+      "copy_boundary": "full raw save retained immutable at artifact_path; narrow readback excerpts are copied into this package"
+    },
+    {
+      "phase": "original-confucian",
+      "artifact_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\e7a7911721953970c11c40f5e1bde0a20d842d6f2bdc132e7b66dc899dffe029\\xar_checkpoint.ck3",
+      "bytes": 91121099,
+      "sha256": "e7a7911721953970c11c40f5e1bde0a20d842d6f2bdc132e7b66dc899dffe029",
+      "native_receipt": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0006-checkpoint.json",
+      "readback": "readbacks/original-confucian/report.json",
+      "copy_boundary": "full raw save retained immutable at artifact_path; narrow readback excerpts are copied into this package"
+    },
+    {
+      "phase": "formal-entry",
+      "artifact_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\4c0c9502fbb18e29921d00f0b639b20a66462c419ad9165d571a76f5f97eb193\\xar_checkpoint.ck3",
+      "bytes": 91122954,
+      "sha256": "4c0c9502fbb18e29921d00f0b639b20a66462c419ad9165d571a76f5f97eb193",
+      "native_receipt": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0009-checkpoint.json",
+      "readback": "readbacks/formal-entry/report.json",
+      "copy_boundary": "full raw save retained immutable at artifact_path; narrow readback excerpts are copied into this package"
+    },
+    {
+      "phase": "practice-cancel",
+      "artifact_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\160235e0d1935b5baa76555fc69d3998dc9ae3940832eae763ed9066b07d665c\\xar_checkpoint.ck3",
+      "bytes": 91122954,
+      "sha256": "160235e0d1935b5baa76555fc69d3998dc9ae3940832eae763ed9066b07d665c",
+      "native_receipt": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0012-checkpoint.json",
+      "readback": "readbacks/practice-cancel/report.json",
+      "copy_boundary": "full raw save retained immutable at artifact_path; narrow readback excerpts are copied into this package"
+    },
+    {
+      "phase": "choose-cancel",
+      "artifact_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\e5e1afb90df33f0e7faa6b1f3ceb53004a9c0a9d312545eb96feecfc7d15af7f\\xar_checkpoint.ck3",
+      "bytes": 91122954,
+      "sha256": "e5e1afb90df33f0e7faa6b1f3ceb53004a9c0a9d312545eb96feecfc7d15af7f",
+      "native_receipt": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0015-checkpoint.json",
+      "readback": "readbacks/choose-cancel/report.json",
+      "copy_boundary": "full raw save retained immutable at artifact_path; narrow readback excerpts are copied into this package"
+    },
+    {
+      "phase": "zhuxi-chosen",
+      "artifact_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\93c741c95ed4dcc6eb1eba494734605ca7513cfdf407e56b61dd4eb9d331f552\\xar_checkpoint.ck3",
+      "bytes": 91124420,
+      "sha256": "93c741c95ed4dcc6eb1eba494734605ca7513cfdf407e56b61dd4eb9d331f552",
+      "native_receipt": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0018-checkpoint.json",
+      "readback": "readbacks/zhuxi-chosen/report.json",
+      "copy_boundary": "full raw save retained immutable at artifact_path; narrow readback excerpts are copied into this package"
+    },
+    {
+      "phase": "final-practice",
+      "artifact_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\5d9560b199189ecaaa33c04c236fdcf27bb0158d662b68c6314459fa0b357024\\xar_checkpoint.ck3",
+      "bytes": 91124524,
+      "sha256": "5d9560b199189ecaaa33c04c236fdcf27bb0158d662b68c6314459fa0b357024",
+      "native_receipt": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0021-checkpoint.json",
+      "readback": "readbacks/final-practice/report.json",
+      "copy_boundary": "full raw save retained immutable at artifact_path; narrow readback excerpts are copied into this package"
+    }
+  ]
+}

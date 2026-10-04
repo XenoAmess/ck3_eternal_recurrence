@@ -1,0 +1,29 @@
+{
+  "closed_at_utc": "2026-10-04T06:46:38.390093+00:00",
+  "claimed_requests": [
+    "0001-list.request.json",
+    "0002-query.request.json",
+    "0003-attach.request.json",
+    "0004-baseline-save.request.json",
+    "0005-after-fixture.request.json",
+    "0006-fixture-ack.request.json",
+    "0007-original-confucian-save.request.json",
+    "0008-after-formal-entry.request.json",
+    "0009-welcome-ack.request.json",
+    "0010-formal-entry-save.request.json",
+    "0011-kongmen-practice-open.request.json",
+    "0012-kongmen-practice-cancel.request.json",
+    "0013-practice-cancel-save.request.json",
+    "0014-choose-open.request.json",
+    "0015-choose-cancel.request.json",
+    "0016-choose-cancel-save.request.json",
+    "0017-choose-reopen.request.json",
+    "0018-choose-zhuxi.request.json",
+    "0019-zhuxi-save.request.json",
+    "0020-zhuxi-practice-open.request.json",
+    "0021-zhuxi-practice-a.request.json",
+    "0022-practice-a-save.request.json",
+    "9999-close.request.json"
+  ],
+  "attach_requested": true
+}

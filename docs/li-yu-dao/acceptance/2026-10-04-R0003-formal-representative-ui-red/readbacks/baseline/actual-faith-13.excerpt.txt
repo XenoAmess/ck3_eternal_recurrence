@@ -1,0 +1,158 @@
+		13={
+			faith_type=catholic			religion=8
+			main_rite=0
+			organization=13
+			active_clerical_electors={ 17552 17556 17562 17568 17548 17563 17557 17564 17549 17569 17554 17565 17566 17560 17551 17561 17553 17555 17570 17581 }
+			inactive_clerical_electors={ 17558 17559 17571 17572 17573 17574 17575 17576 17578 17579 17580 17582 17583 17567 17584 17585 17586 17587 17588 17589 17590 17591 17550 17577 }
+			holy_sites={ 0 1 3 2 4 }
+			eminent_holy_sites={ 0 1 3 }
+			changes={
+			}
+
+			origin=12
+			tenet_popularity={ {
+					tenet=tenet_peace_of_god					score=477
+				}
+ {
+					tenet=tenet_dulia					score=100
+				}
+ {
+					tenet=tenet_transubstantiation					score=100
+				}
+ {
+					tenet=tenet_ora_et_labora					score=180
+				}
+ {
+					tenet=tenet_hyperdulia					score=100
+				}
+ {
+					tenet=tenet_simony					score=-80
+				}
+ {
+					tenet=tenet_acts_of_apostles					score=100
+				}
+ {
+					tenet=tenet_purgatory					score=40
+				}
+ {
+					tenet=tenet_be_fruitful_and_multiply					score=100
+				}
+ {
+					tenet=tenet_apostolic_succession					score=1335
+				}
+ {
+					tenet=tenet_confession					score=100
+				}
+ {
+					tenet=tenet_original_sin					score=120
+				}
+ {
+					tenet=tenet_celestial_hierarchy					score=100
+				}
+ {
+					tenet=tenet_miles_christi					score=100
+				}
+ {
+					tenet=tenet_philanthropia					score=100
+				}
+ {
+					tenet=tenet_love_thy_neighbour					score=100
+				}
+ {
+					tenet=tenet_divine_liturgy					score=103
+				}
+ {
+					tenet=tenet_hesychasm					score=40
+				}
+ {
+					tenet=tenet_anachoresis					score=100
+				}
+ {
+					tenet=tenet_mortification_of_the_flesh					score=100
+				}
+ {
+					tenet=tenet_aniconism					score=40
+				}
+ {
+					tenet=tenet_communal_identity					score=100
+				}
+ {
+					tenet=tenet_communion					score=426
+				}
+ {
+					tenet=tenet_vows_of_poverty					score=100
+				}
+ {
+					tenet=tenet_adaptive					score=105
+				}
+ {
+					tenet=tenet_esotericism					score=40
+				}
+ {
+					tenet=tenet_legalism					score=40
+				}
+ {
+					tenet=tenet_literalism					score=40
+				}
+ {
+					tenet=tenet_religious_legal_pronouncements					score=40
+				}
+ {
+					tenet=tenet_asceticism					score=100
+				}
+ {
+					tenet=tenet_ritual_celebrations					score=40
+				}
+ {
+					tenet=tenet_sanctity_of_nature					score=40
+				}
+ }
+			historical=yes
+			saints={ 2 5 27 33 35 37 41 42 43 58 267 268 421 479 522 531 542 719 720 745 766 1017 1400 1514 1890 2099 2563 4428 19353 20396 24766 24848 }
+			tag="catholic"
+			name="天主教"
+			adjective="天主教"
+			adherent="天主教徒"
+			adherent_plural="天主教徒"
+			desc="罗马天主教声称耶稣将天国的钥匙赐予圣伯多禄，作为他的正统继承人，教宗因而是整个基督教世界的至高宗教权威。"
+			color=rgb { 204 204 153 }
+			icon="catholic"
+			texticon="catholic_icon!"
+			graphical_faith="catholic_gfx"
+			piety_icon_group=""
+			tenet_background_icon=""
+			tenet_heretical_background_icon=""
+			tenet_neutral_background_icon=""
+			tenet_unknown_background_icon=""
+			fervor=50
+			religious_head=4
+			doctrine=abrahamic_hostility_doctrine
+			doctrine=doctrine_monogamy
+			doctrine=doctrine_divorce_approval
+			doctrine=doctrine_bastardry_legitimization
+			doctrine=doctrine_homosexuality_shunned
+			doctrine=doctrine_deviancy_crime
+			doctrine=doctrine_adultery_men_shunned
+			doctrine=doctrine_adultery_women_crime
+			doctrine=doctrine_kinslaying_close_kin_crime
+			doctrine=doctrine_witchcraft_crime
+			doctrine=doctrine_gender_male_dominated
+			doctrine=doctrine_consanguinity_aunt_nephew_and_uncle_niece
+			doctrine=doctrine_pluralism_righteous
+			doctrine=doctrine_theocracy_temporal
+			doctrine=doctrine_spiritual_head
+			doctrine=doctrine_clerical_function_taxation
+			doctrine=doctrine_clerical_gender_male_only
+			doctrine=doctrine_clerical_marriage_disallowed
+			doctrine=doctrine_clerical_succession_spiritual_fixed_appointment
+			doctrine=doctrine_pilgrimage_encouraged
+			doctrine=doctrine_funeral_stoic
+			doctrine=doctrine_imperial_anointment
+			doctrine=doctrine_monotheist
+			doctrine=doctrine_scriptural
+			doctrine=doctrine_monasticism_accepted
+			doctrine=doctrine_sacraments_central
+			doctrine=special_doctrine_is_christian_faith
+			doctrine=special_doctrine_ecumenical_christian
+			doctrine=special_doctrine_has_clerical_electors
+		}

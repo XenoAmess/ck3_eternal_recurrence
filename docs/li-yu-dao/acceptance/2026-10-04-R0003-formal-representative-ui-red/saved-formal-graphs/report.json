@@ -1,0 +1,157 @@
+{
+  "schema": "ck3.lyd.r3-final-saved-objects.v1",
+  "artifact_sha256": "5d9560b199189ecaaa33c04c236fdcf27bb0158d662b68c6314459fa0b357024",
+  "actual_actor": 31254,
+  "traits": [
+    {
+      "saved_index": 69,
+      "trait": "arbitrary"
+    },
+    {
+      "saved_index": 51,
+      "trait": "greedy"
+    },
+    {
+      "saved_index": 67,
+      "trait": "ambitious"
+    },
+    {
+      "saved_index": 19,
+      "trait": "education_martial_5"
+    },
+    {
+      "saved_index": 31,
+      "trait": "strategist"
+    },
+    {
+      "saved_index": 158,
+      "trait": "physique_good_2"
+    }
+  ],
+  "saved_actor_modifier_entries": [
+    {
+      "key": "modifier",
+      "value": [
+        {
+          "key": "modifier",
+          "value": "guiscard_modifier"
+        },
+        {
+          "key": "expiration_date",
+          "value": "9999.1.1"
+        }
+      ]
+    }
+  ],
+  "faith_id": "32",
+  "faith_main_rite": "150",
+  "faith_religious_head": "4294967295",
+  "formal_rites": [
+    {
+      "id": "150",
+      "rite_type": "lyd_rite_kongmen",
+      "faith": "32",
+      "head_of_rite": "4294967295",
+      "core_tenets": [
+        "lyd_tenet_ritual_music",
+        "lyd_tenet_humaneness_righteousness",
+        "lyd_tenet_sage_transmission"
+      ],
+      "enabled": "yes",
+      "convert": "yes"
+    },
+    {
+      "id": "151",
+      "rite_type": "lyd_rite_mengzi",
+      "faith": "32",
+      "head_of_rite": "4294967295",
+      "core_tenets": [
+        "lyd_tenet_humaneness_righteousness",
+        "lyd_tenet_extend_sprouts",
+        "lyd_tenet_righteous_qi"
+      ],
+      "enabled": "yes",
+      "convert": "yes"
+    },
+    {
+      "id": "152",
+      "rite_type": "lyd_rite_xunzi",
+      "faith": "32",
+      "head_of_rite": "4294967295",
+      "core_tenets": [
+        "lyd_tenet_ritual_music",
+        "lyd_tenet_deliberate_cultivation",
+        "lyd_tenet_constant_heaven"
+      ],
+      "enabled": "yes",
+      "convert": "yes"
+    },
+    {
+      "id": "153",
+      "rite_type": "lyd_rite_zhengxuan",
+      "faith": "32",
+      "head_of_rite": "4294967295",
+      "core_tenets": [
+        "lyd_tenet_reverent_heaven",
+        "lyd_tenet_ancestral_reverence",
+        "lyd_tenet_textual_ritual"
+      ],
+      "enabled": "yes",
+      "convert": "yes"
+    },
+    {
+      "id": "154",
+      "rite_type": "lyd_rite_wangsu",
+      "faith": "32",
+      "head_of_rite": "4294967295",
+      "core_tenets": [
+        "lyd_tenet_ancestral_reverence",
+        "lyd_tenet_textual_ritual",
+        "lyd_tenet_classical_synthesis"
+      ],
+      "enabled": "yes",
+      "convert": "yes"
+    },
+    {
+      "id": "155",
+      "rite_type": "lyd_rite_jingshu",
+      "faith": "32",
+      "head_of_rite": "4294967295",
+      "core_tenets": [
+        "lyd_tenet_sage_transmission",
+        "lyd_tenet_textual_ritual",
+        "lyd_tenet_classical_synthesis"
+      ],
+      "enabled": "yes",
+      "convert": "yes"
+    },
+    {
+      "id": "156",
+      "rite_type": "lyd_rite_zhuxi",
+      "faith": "32",
+      "head_of_rite": "4294967295",
+      "core_tenets": [
+        "lyd_tenet_ancestral_reverence",
+        "lyd_tenet_investigate_principle",
+        "lyd_tenet_reverent_attention"
+      ],
+      "enabled": "yes",
+      "convert": "yes"
+    },
+    {
+      "id": "157",
+      "rite_type": "lyd_rite_lujiuyuan",
+      "faith": "32",
+      "head_of_rite": "4294967295",
+      "core_tenets": [
+        "lyd_tenet_sincerity_solitude",
+        "lyd_tenet_humaneness_righteousness",
+        "lyd_tenet_original_heart"
+      ],
+      "enabled": "yes",
+      "convert": "yes"
+    }
+  ],
+  "game_called": false,
+  "tracked_written": false
+}

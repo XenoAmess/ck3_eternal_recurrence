@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "588492d3dbf473226664220b722a04b66ae54bae"
+    },
+    "last_sequence": 2676,
+    "next_step": "",
+    "pid": 19820,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R0003-normal-saved-exit-functional-pass-UI-localization-RED",
+    "task_id": "ck3-lyd-live-004-20261004",
+    "updated_at_utc": "2026-10-04T07:09:54.636332+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 2676,
+    "event_id": "67acad82a6a146489694ac7373d68aaa",
+    "timestamp_utc": "2026-10-04T07:09:54.637181+00:00",
+    "kind": "completed",
+    "task_id": "ck3-lyd-live-004-20261004",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R0003-normal-saved-exit-functional-pass-UI-localization-RED",
+    "next_step": "",
+    "resources": [],
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "588492d3dbf473226664220b722a04b66ae54bae"
+    }
+  }
+}

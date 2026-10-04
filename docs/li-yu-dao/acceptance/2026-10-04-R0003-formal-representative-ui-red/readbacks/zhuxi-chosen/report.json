@@ -1,0 +1,272 @@
+{
+  "schema": "ck3.lyd.r3-checkpoint-readback.v1",
+  "recorded_at_utc": "2026-10-04T06:28:32.249885+00:00",
+  "label": "R0003_zhuxi_chosen",
+  "artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\93c741c95ed4dcc6eb1eba494734605ca7513cfdf407e56b61dd4eb9d331f552\\xar_checkpoint.ck3",
+    "bytes": 91124420,
+    "sha256": "93c741c95ed4dcc6eb1eba494734605ca7513cfdf407e56b61dd4eb9d331f552"
+  },
+  "state": {
+    "metadata": {
+      "version": "1.20.0.3",
+      "meta_date": "1066.9.15",
+      "meta_player_name": "公爵罗贝尔"
+    },
+    "player_id": 31254,
+    "historical_mapping": {
+      "1128": [
+        "31254"
+      ]
+    },
+    "identity_checks": {
+      "saved_player_matches_actual_native_id": true,
+      "historical_1128_maps_to_actual_player": true,
+      "name_robert": true,
+      "birth_1015_1_1": true,
+      "house_hauteville": true,
+      "historical_dynasty_678": true,
+      "version_1_20_0_3": true
+    },
+    "identity_status": "ACTUAL_ROBERT_VERIFIED",
+    "actor": {
+      "first_name": "Robert",
+      "birth": "1015.1.1",
+      "nickname": "nick_the_fox",
+      "dynasty_house": "174",
+      "saved_house_name": "dynn_Hauteville",
+      "saved_dynasty_id": "174",
+      "historical_dynasty_key": "678"
+    },
+    "rite": {
+      "id": "156",
+      "rite_type": "lyd_rite_zhuxi",
+      "faith": "32",
+      "head_of_rite": "4294967295",
+      "convert": "yes",
+      "enabled": "yes",
+      "source": "historical"
+    },
+    "faith": {
+      "id": "32",
+      "faith_type": "lyd_common_faith",
+      "main_rite": "150",
+      "religious_head": "4294967295",
+      "name": "儒家共宗",
+      "religion": "9"
+    },
+    "faith_head_title_holder": null,
+    "is_saved_faith_head": false,
+    "is_saved_rite_head": false,
+    "lyd_variables": [
+      {
+        "flag": "lyd_enabled",
+        "tick": null,
+        "data": []
+      },
+      {
+        "flag": "lyd_r3_fixture_initialized",
+        "tick": null,
+        "data": []
+      },
+      {
+        "flag": "lyd_school_cooldown",
+        "tick": "365",
+        "data": []
+      }
+    ],
+    "lyd_flags": {
+      "lyd_r3_fixture_initialized": true,
+      "lyd_enabled": true,
+      "lyd_school_cooldown": true,
+      "lyd_study_cooldown": false,
+      "lyd_postcondition_failed": false
+    },
+    "saved_values": {
+      "gold": "259",
+      "piety": "150",
+      "prestige": "2200",
+      "stress": null,
+      "learning_lifestyle_xp": "0"
+    },
+    "saved_value_presence": {
+      "stress": false,
+      "learning_lifestyle_xp": true
+    },
+    "saved_skill_array": [
+      {
+        "key": null,
+        "value": "4"
+      },
+      {
+        "key": null,
+        "value": "9"
+      },
+      {
+        "key": null,
+        "value": "6"
+      },
+      {
+        "key": null,
+        "value": "6"
+      },
+      {
+        "key": null,
+        "value": "2"
+      },
+      {
+        "key": null,
+        "value": "10"
+      }
+    ],
+    "saved_lifestyle_xp_entries": [
+      {
+        "key": "diplomacy_lifestyle",
+        "value": "0"
+      },
+      {
+        "key": "martial_lifestyle",
+        "value": "0"
+      },
+      {
+        "key": "stewardship_lifestyle",
+        "value": "0"
+      },
+      {
+        "key": "intrigue_lifestyle",
+        "value": "0"
+      },
+      {
+        "key": "learning_lifestyle",
+        "value": "0"
+      },
+      {
+        "key": "wanderer_lifestyle",
+        "value": "0"
+      }
+    ],
+    "missing_numeric_value_policy": "null means not stored/readable; omitted stress or learning XP is not silently promoted to zero"
+  },
+  "game_called": false,
+  "tracked_written": false,
+  "live_acceptance": "NOT_GRADED_BY_THIS_FILE_READER",
+  "native": {
+    "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0018-checkpoint.json",
+    "receipt_sha256": "5548c12f9187cf79df4e2e161e64290ce633b4b7ef8cef3b1c8c0988782f84f3",
+    "status": "native_gameplay_postcondition_verified",
+    "checkpoint": {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-003\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91124420,
+      "sha256": "93c741c95ed4dcc6eb1eba494734605ca7513cfdf407e56b61dd4eb9d331f552",
+      "date_raw": 53144328,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 11,
+      "episode_character_id": null,
+      "episode_run_id": null
+    },
+    "revision": 18,
+    "date_raw": 53144328,
+    "paused": true,
+    "values": {
+      "gold": "259",
+      "piety": "150",
+      "prestige": "2200",
+      "stress": "0",
+      "learning_lifestyle_xp": null
+    },
+    "learning_xp_status": "NOT_EXPOSED_BY_STANDARD_NATIVE_SNAPSHOT; use independent saved lifestyle_xp",
+    "date_boundary": "native raw date and saved calendar retained separately; no old1.19 decoder used"
+  },
+  "native_saved_comparison": {
+    "gold": {
+      "native": "259",
+      "saved": "259",
+      "equal": true
+    },
+    "piety": {
+      "native": "150",
+      "saved": "150",
+      "equal": true
+    },
+    "prestige": {
+      "native": "2200",
+      "saved": "2200",
+      "equal": true
+    },
+    "stress": {
+      "native": "0",
+      "saved": null,
+      "equal": null
+    },
+    "learning_lifestyle_xp": {
+      "native": null,
+      "saved": "0",
+      "equal": null
+    }
+  },
+  "previous_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-readback-choose-cancel-001\\report.json",
+    "sha256": "3f723be9700aff9702b3b05309af1c71a3b2d065746c700ce2e3fcb53668c5f5"
+  },
+  "comparison": {
+    "same_actor": true,
+    "previous_rite": "150",
+    "current_rite": "156",
+    "previous_faith": "32",
+    "current_faith": "32",
+    "flag_changes": {
+      "lyd_r3_fixture_initialized": {
+        "before": true,
+        "after": true
+      },
+      "lyd_enabled": {
+        "before": true,
+        "after": true
+      },
+      "lyd_school_cooldown": {
+        "before": false,
+        "after": true
+      },
+      "lyd_study_cooldown": {
+        "before": false,
+        "after": false
+      },
+      "lyd_postcondition_failed": {
+        "before": false,
+        "after": false
+      }
+    },
+    "numeric_changes": {
+      "gold": {
+        "before": "259",
+        "after": "259",
+        "delta": "0"
+      },
+      "piety": {
+        "before": "150",
+        "after": "150",
+        "delta": "0"
+      },
+      "prestige": {
+        "before": "2200",
+        "after": "2200",
+        "delta": "0"
+      },
+      "stress": {
+        "before": null,
+        "after": null,
+        "delta": null
+      },
+      "learning_lifestyle_xp": {
+        "before": "0",
+        "after": "0",
+        "delta": "0"
+      }
+    }
+  }
+}

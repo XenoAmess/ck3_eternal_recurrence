@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\run_acceptance.py",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\display-hotfix-l0-001",
+    "--game-dir",
+    "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game",
+    "--game-exe",
+    "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe"
+  ],
+  "returncode": 2,
+  "stdout": "{\r\n  \"result\": \"ENVIRONMENT_RED\",\r\n  \"exit_code\": 2,\r\n  \"report_directory\": \"C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\display-hotfix-l0-001\",\r\n  \"live\": {\r\n    \"status\": \"NOT_RUN\",\r\n    \"reason\": \"this runner performs read-only preflight and L0 only\"\r\n  }\r\n}\r\n",
+  "stderr": "",
+  "at_utc": "2026-10-04T07:28:46.688015+00:00",
+  "source_head": "a35fdb0ba9a22692a6700dd461487061eb68eca1"
+}

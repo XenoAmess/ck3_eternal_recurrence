@@ -1,0 +1,98 @@
+{
+  "files": [
+    {
+      "path": "common/character_interactions/lyd_interactions.txt",
+      "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba",
+      "size": 127
+    },
+    {
+      "path": "common/decisions/lyd_decisions.txt",
+      "sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e",
+      "size": 1774
+    },
+    {
+      "path": "common/religion/faith_types/lyd_faiths.txt",
+      "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525",
+      "size": 424
+    },
+    {
+      "path": "common/religion/rite_types/lyd_rites.txt",
+      "sha256": "fe4e5ae58c3a7f52d93ee4411844e65aed3c94c743558abc05636e9d099abf40",
+      "size": 3071
+    },
+    {
+      "path": "common/religion/tenet_types/lyd_tenets.txt",
+      "sha256": "8c48b1d0e6056845fec7a6babb53754fb7b7aecb2c3b7df7bae608654bd20789",
+      "size": 8333
+    },
+    {
+      "path": "common/scripted_effects/lyd_entry_effects.txt",
+      "sha256": "5deef0c786a0de1d53df129b93e8aec16469d82ddf50b6fbf063fd80fd8ee8c1",
+      "size": 1307
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_1_effects.txt",
+      "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7",
+      "size": 2798
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_2_effects.txt",
+      "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879",
+      "size": 2703
+    },
+    {
+      "path": "common/scripted_effects/lyd_practice_3_effects.txt",
+      "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131",
+      "size": 2756
+    },
+    {
+      "path": "common/scripted_effects/lyd_school_effects.txt",
+      "sha256": "34f97896f41ab51b90a185d05e4c64f81b78699b8f82a975bb3516e436bd98c7",
+      "size": 3862
+    },
+    {
+      "path": "common/scripted_triggers/lyd_player_triggers.txt",
+      "sha256": "942cc258ec6a0814695122701297a1b30e7854cb6f8aae72e3d3dbeef18f1c2b",
+      "size": 1671
+    },
+    {
+      "path": "descriptor.mod",
+      "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2",
+      "size": 139
+    },
+    {
+      "path": "events/lyd_events.txt",
+      "sha256": "1c083b0fd910d701f3fc0f63345ce130930a1d80dac9575f076d02eacda602a7",
+      "size": 11070
+    },
+    {
+      "path": "history/faiths/lyd_faith_history.txt",
+      "sha256": "00ea56c310601a142d18ee52313d39556ffb56964f4927026de69126b9914f11",
+      "size": 588
+    },
+    {
+      "path": "localization/english/lyd_content_l_english.yml",
+      "sha256": "3c5ca01e2f47ad87700eb6e93eb0a9675e98ceb5a58337679e9f31c7eea6f3c4",
+      "size": 17495
+    },
+    {
+      "path": "localization/english/lyd_runtime_l_english.yml",
+      "sha256": "09aef44681fa3810def8b3c7ad42593766f1039c147d3c2d8421ce8530e690ea",
+      "size": 2771
+    },
+    {
+      "path": "localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "sha256": "df78c4340ba0f8ae53d3637f5485143046497c014e980ee91f6a9b6031f9dae5",
+      "size": 14147
+    },
+    {
+      "path": "localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "sha256": "f44152a6488831db7ccff4985b0a1e58592547f9f71c93eb34f8a9101dada944",
+      "size": 2388
+    }
+  ],
+  "format_version": 1,
+  "git_sha": "588492d3dbf473226664220b722a04b66ae54bae",
+  "mod_version": "0.1.0",
+  "product_id": "mod_li_yu_dao"
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "ck3.lyd.r3-permanent-projection-receipt.v2",
+  "projection": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-permanent-projection-001",
+  "file_count": 179,
+  "total_bytes": 15890755,
+  "index_v2_sha256": "44cad794b9f19954a4e3d9f7617f448cd3c776f569dfe57daa950eb8449a4b0b",
+  "final_report_md_sha256": "88ebbe7b350769d61bf1343738eab3d7c58f3c8462f798b5a3ac68dd1ff5da86",
+  "final_report_json_sha256": "264d7aa233523deae87dc7ba848a082fdb0a6d187ce2773827b8481944c60571",
+  "selected_raw_png_count": 7,
+  "selected_raw_png_bytes": 12848630,
+  "allocator_status": "ACTUAL_COMPLETED_RED_ROW_PRESENT",
+  "full_package494_bytes_unchanged": true,
+  "target": "docs/li-yu-dao/acceptance/2026-10-04-R0003-formal-representative-ui-red",
+  "tracked_written": false,
+  "game_called": false
+}

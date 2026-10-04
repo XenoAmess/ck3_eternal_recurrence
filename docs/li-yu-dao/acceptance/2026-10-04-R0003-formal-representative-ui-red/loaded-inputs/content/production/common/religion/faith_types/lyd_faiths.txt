@@ -1,0 +1,13 @@
+﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
+lyd_common_faith = {
+    faith_details = {
+        religion = confucianism_religion
+        color = { 236 190 85 }
+        icon = jingxue
+    }
+    main_rite = lyd_rite_kongmen
+    historical = no
+    # Retain the game's Confucian site set in this iteration.
+    eminent_holy_sites = { qufu chang_an }
+    holy_sites = { luoyang bianliang mount_qingcheng }
+}

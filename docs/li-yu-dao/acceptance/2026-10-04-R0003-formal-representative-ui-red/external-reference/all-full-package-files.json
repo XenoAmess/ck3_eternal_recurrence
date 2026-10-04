@@ -1,0 +1,2972 @@
+{
+  "schema": "ck3.lyd.r3-full-package-all-files.v1",
+  "full_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001",
+  "files": [
+    {
+      "package_path": "checkpoint-index.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\checkpoint-index.json",
+      "bytes": 4365,
+      "sha256": "180df2396771c1437d8428f0a6851d3a106ef4b899506418b4a0ecd1dc38d0f1"
+    },
+    {
+      "package_path": "FINAL-PACKAGE-RECEIPT.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\FINAL-PACKAGE-RECEIPT.json",
+      "bytes": 900,
+      "sha256": "ce5ab1d200ae0753948235cc7df7dae9fa7d6099a7d8487c38c1d2d940e90b39"
+    },
+    {
+      "package_path": "FINAL-REPORT.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\FINAL-REPORT.json",
+      "bytes": 15674,
+      "sha256": "1f91e892c33d39fcc8184580268d8def619ed26d7a6723f2f4f719adf77188ec"
+    },
+    {
+      "package_path": "FINAL-REPORT.md",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\FINAL-REPORT.md",
+      "bytes": 2461,
+      "sha256": "5fd07b238676a12c0b1081e212f009623458c299e73c3100083e2bd0730ee485"
+    },
+    {
+      "package_path": "helper-history/160d87e28e25324aaa5bef241a5a35551ad5a1de4a2e56860764fc4d5ea7d82b/r3_checkpoint_readback.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\helper-history\\160d87e28e25324aaa5bef241a5a35551ad5a1de4a2e56860764fc4d5ea7d82b\\r3_checkpoint_readback.py",
+      "bytes": 16521,
+      "sha256": "160d87e28e25324aaa5bef241a5a35551ad5a1de4a2e56860764fc4d5ea7d82b"
+    },
+    {
+      "package_path": "helper-history/f07d4019d38425cd36392b8baefa032d95afe77a4fece425a04984402bbf3541/r3_checkpoint_readback.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\helper-history\\f07d4019d38425cd36392b8baefa032d95afe77a4fece425a04984402bbf3541\\r3_checkpoint_readback.py",
+      "bytes": 16519,
+      "sha256": "f07d4019d38425cd36392b8baefa032d95afe77a4fece425a04984402bbf3541"
+    },
+    {
+      "package_path": "helpers-and-build/build-formal-hotfix-r0003.manifest.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\helpers-and-build\\build-formal-hotfix-r0003.manifest.json",
+      "bytes": 3342,
+      "sha256": "5a259aa60a9cfe86f913d2a6a9dfb49bd091e7b33f5a82bdc0b666fbd340ef62"
+    },
+    {
+      "package_path": "helpers-and-build/check_r3_checkpoint_readback_offline.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\helpers-and-build\\check_r3_checkpoint_readback_offline.py",
+      "bytes": 6318,
+      "sha256": "cb7bd16e5cfdc5a3085cbefed3dc2c675638f26edccdd63b74b38ad4c68f4c1c"
+    },
+    {
+      "package_path": "helpers-and-build/finalize_r3_acceptance_package.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\helpers-and-build\\finalize_r3_acceptance_package.py",
+      "bytes": 14180,
+      "sha256": "83448805737909428b8e8962f7e57186c705615d1aabc041b3bf0551e2453bd4"
+    },
+    {
+      "package_path": "helpers-and-build/live_control_r0003.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\helpers-and-build\\live_control_r0003.py",
+      "bytes": 5517,
+      "sha256": "42b963c8e8584cedd15240b076b9d79ecb5cee239cc0c04925e164941020cfae"
+    },
+    {
+      "package_path": "helpers-and-build/prepare_r0003.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\helpers-and-build\\prepare_r0003.py",
+      "bytes": 13204,
+      "sha256": "63160d8ef049c9b2fe119e5d15e38a2ffe3987b39cbccb08f230f561c746a15b"
+    },
+    {
+      "package_path": "helpers-and-build/prepare_r3_acceptance_package.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\helpers-and-build\\prepare_r3_acceptance_package.py",
+      "bytes": 17697,
+      "sha256": "36d2c0050104c39a3d02fe211f18877569e35b001cf0f03b6e421bc7152c3470"
+    },
+    {
+      "package_path": "helpers-and-build/r3_cancel_excerpts_check.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\helpers-and-build\\r3_cancel_excerpts_check.py",
+      "bytes": 838,
+      "sha256": "ab4a8cdfa985a912258012f7f466774ffc1b8be9372a05e0ab8e19bbdd5e909b"
+    },
+    {
+      "package_path": "helpers-and-build/r3_checkpoint_graph_compare.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\helpers-and-build\\r3_checkpoint_graph_compare.py",
+      "bytes": 3291,
+      "sha256": "7c7ac80981e59f47c16ee9ac9d0005586612efa8c090ffd3615b6071ad8471c2"
+    },
+    {
+      "package_path": "helpers-and-build/r3_checkpoint_readback.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\helpers-and-build\\r3_checkpoint_readback.py",
+      "bytes": 16654,
+      "sha256": "ee4e3616876ba1de81123b60a58a183cfbd336d4761ae95d8186e2279c0663ef"
+    },
+    {
+      "package_path": "helpers-and-build/r3_final_saved_objects.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\helpers-and-build\\r3_final_saved_objects.py",
+      "bytes": 3060,
+      "sha256": "a013b3b36fd7f2c68da4d3f230ce70b93b11fb70262205254afc0c1d988ca4b3"
+    },
+    {
+      "package_path": "helpers-and-build/r3_practice_cancel_prestige_check.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\helpers-and-build\\r3_practice_cancel_prestige_check.py",
+      "bytes": 1002,
+      "sha256": "293d537170f5a5558fa3521832d19e050570a406b9dcec45473f82efec8238a2"
+    },
+    {
+      "package_path": "helpers-and-build/screen_lease_entry_r0003.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\helpers-and-build\\screen_lease_entry_r0003.py",
+      "bytes": 7348,
+      "sha256": "22c2c629092cd7ab18b5438dabdccabbee53ab7b89ed7894d23d031b57b03d90"
+    },
+    {
+      "package_path": "index-v2.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\index-v2.json",
+      "bytes": 106091,
+      "sha256": "0cbb6fa8ea260167695af96d21e8bb74007a4402ea2d2b2c495cfc99d4350403"
+    },
+    {
+      "package_path": "lifecycle/error-classification.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\error-classification.json",
+      "bytes": 613,
+      "sha256": "9fb9cf86d919ddf1a980390c4a33adbae4c3276c246ca2d345505ecf2698eab5"
+    },
+    {
+      "package_path": "lifecycle/error.postexit.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\error.postexit.log",
+      "bytes": 802,
+      "sha256": "a479b73b3510f21a2721d6af36e26c3eca913e33353ff743334bbc6a99673f6c"
+    },
+    {
+      "package_path": "lifecycle/keeper/ADMITTED.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\keeper\\ADMITTED.json",
+      "bytes": 663,
+      "sha256": "868cc725ec67f7ca4670c811dd4da1e9a5d8b2aa3974dda913af0ddf54819d66"
+    },
+    {
+      "package_path": "lifecycle/keeper/FINAL.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\keeper\\FINAL.json",
+      "bytes": 387,
+      "sha256": "1912d0f609837baccb91496cb5f1e92979af9f71f9e0c8cfafdd49d12130d7a1"
+    },
+    {
+      "package_path": "lifecycle/keeper/INPUTS.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\keeper\\INPUTS.json",
+      "bytes": 2356,
+      "sha256": "9168db694ecec39d063e22331fe56810620f7df78ae7fecddaf82fa65c454815"
+    },
+    {
+      "package_path": "lifecycle/keeper/poll.jsonl",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\keeper\\poll.jsonl",
+      "bytes": 13131185,
+      "sha256": "82b7ebb13f5538bd69451eaf20703e0b16b2981fdaa1cc0ff31a5eab379b2010"
+    },
+    {
+      "package_path": "lifecycle/keeper/READY.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\keeper\\READY.json",
+      "bytes": 736,
+      "sha256": "843347088575c21d7946a36e40db9325784f647941f0c48e1f0cde915f5a7f87"
+    },
+    {
+      "package_path": "lifecycle/keeper/screen-lease.jsonl",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\keeper\\screen-lease.jsonl",
+      "bytes": 28741,
+      "sha256": "c2073a55edb6ecde25af945f71543d52049d18b20ca8948ffc3a5a695bde1ffc"
+    },
+    {
+      "package_path": "lifecycle/keeper/STOP.request",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\keeper\\STOP.request",
+      "bytes": 65,
+      "sha256": "b6c2c0058bf8caae9cdc7d5ca0447e765384ba839149e390b60bb413c5bd1717"
+    },
+    {
+      "package_path": "lifecycle/mcp/0023-9999-close.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\mcp\\0023-9999-close.request.json",
+      "bytes": 98,
+      "sha256": "fa21da3c1ed338e0905bc88936510993d535b17ad014be87b21f7143c7cfcc22"
+    },
+    {
+      "package_path": "lifecycle/mcp/0023-9999-close.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\mcp\\0023-9999-close.response.json",
+      "bytes": 454,
+      "sha256": "cb96f78c81cca3a0fbaa0839846525611a6bf950773741f738dc5e41929d17be"
+    },
+    {
+      "package_path": "lifecycle/mcp/0023-9999-close.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\mcp\\0023-9999-close.started.json",
+      "bytes": 326,
+      "sha256": "3983bccaf861d9765896ed97e1b9c0aaa438f72a255ce0a7047898776c217894"
+    },
+    {
+      "package_path": "lifecycle/mcp/session-closed.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\mcp\\session-closed.json",
+      "bytes": 1058,
+      "sha256": "84242c470496a7ec3d1af734732e557f008909a7576eb3175920c00f1831faf6"
+    },
+    {
+      "package_path": "lifecycle/mcp-queue/9999-close.69c925b9b6c14e3a91d03213e6a0c1fe.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\mcp-queue\\9999-close.69c925b9b6c14e3a91d03213e6a0c1fe.input",
+      "bytes": 98,
+      "sha256": "fa21da3c1ed338e0905bc88936510993d535b17ad014be87b21f7143c7cfcc22"
+    },
+    {
+      "package_path": "lifecycle/mcp-queue/9999-close.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\mcp-queue\\9999-close.request.json",
+      "bytes": 98,
+      "sha256": "fa21da3c1ed338e0905bc88936510993d535b17ad014be87b21f7143c7cfcc22"
+    },
+    {
+      "package_path": "lifecycle/normal-exit-desktop-click.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\normal-exit-desktop-click.png",
+      "bytes": 1499170,
+      "sha256": "ced0388f109c3453725f9d4d4bbf9f65eb769a36f11444681832fb4d7f053445"
+    },
+    {
+      "package_path": "lifecycle/normal-exit-dialog-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\normal-exit-dialog-visible.json",
+      "bytes": 4303,
+      "sha256": "c44147de6886f74f3eabc7762684b7c6d6411a661834dd149ed2b8cef204d642"
+    },
+    {
+      "package_path": "lifecycle/normal-exit-dialog-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\normal-exit-dialog-visible.png",
+      "bytes": 1911419,
+      "sha256": "7007a658f2c9ff139e1b435645766b2669dba1ea53ad90fbc6c3c2a9de2ecb20"
+    },
+    {
+      "package_path": "lifecycle/normal-exit-process-check.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\normal-exit-process-check.json",
+      "bytes": 4302,
+      "sha256": "53001bec73a216bf3aebd528704e6b2ceb735815f818dcd977d38da3c75691c7"
+    },
+    {
+      "package_path": "lifecycle/normal-exit-process-check.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\normal-exit-process-check.png",
+      "bytes": 1499090,
+      "sha256": "78ed1b139ae470e74fcf837bd79f59bbbceeed40afeca1441657eb34d41b2cba"
+    },
+    {
+      "package_path": "lifecycle/normal-exit-processes-001.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\normal-exit-processes-001.json",
+      "bytes": 104,
+      "sha256": "f030c3084e0844d5a4c8404d96d4ef32c096f634fe7bbdc710c752f0868954ea"
+    },
+    {
+      "package_path": "lifecycle/normal-exit-window-click.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\normal-exit-window-click.png",
+      "bytes": 2009337,
+      "sha256": "b4f088179368b43302cc266fe5a7ddb79bd71490c3bb5c1855150af4aeb899c9"
+    },
+    {
+      "package_path": "lifecycle/screen-release-completed.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle\\screen-release-completed.json",
+      "bytes": 1215,
+      "sha256": "438666c1d852ed4d5db188a6eb53753dc694b9b3061656869066a369d85a7c3d"
+    },
+    {
+      "package_path": "lifecycle-supplement.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\lifecycle-supplement.json",
+      "bytes": 12315,
+      "sha256": "9d2a164779e05a5764a73b39e3c90f8af91b372d74e1f95b587e4784791798e4"
+    },
+    {
+      "package_path": "loaded-inputs/content/fixture/common/decisions/lyd_r3_fixture_decisions.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\fixture\\common\\decisions\\lyd_r3_fixture_decisions.txt",
+      "bytes": 650,
+      "sha256": "bd731703217b10a6fde0a104a48c61be7f852c88a0538b41b250f50fd1ce6d93"
+    },
+    {
+      "package_path": "loaded-inputs/content/fixture/common/scripted_effects/lyd_r3_fixture_effects.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\fixture\\common\\scripted_effects\\lyd_r3_fixture_effects.txt",
+      "bytes": 768,
+      "sha256": "5a79a925992d3a55586e5558d5c6300d608986467259b3f9b1ec17c8f08096da"
+    },
+    {
+      "package_path": "loaded-inputs/content/fixture/common/scripted_triggers/lyd_r3_fixture_triggers.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\fixture\\common\\scripted_triggers\\lyd_r3_fixture_triggers.txt",
+      "bytes": 415,
+      "sha256": "bc0f586a245377fb1d2660651f04ce2c16f85fcc113250f323da4fd7fbbb5bda"
+    },
+    {
+      "package_path": "loaded-inputs/content/fixture/descriptor.mod",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\fixture\\descriptor.mod",
+      "bytes": 123,
+      "sha256": "56257504a8f873e43a20ab5c3096c9607647e205d28db17f4c3b13cb54f94a8f"
+    },
+    {
+      "package_path": "loaded-inputs/content/fixture/events/lyd_r3_fixture_events.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\fixture\\events\\lyd_r3_fixture_events.txt",
+      "bytes": 707,
+      "sha256": "0f5cae24b3d938cc9ece2af2a8a889dbf42d8b234d41cdc94c6c16adc7f05a9b"
+    },
+    {
+      "package_path": "loaded-inputs/content/fixture/localization/english/lyd_r3_fixture_l_english.yml",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\fixture\\localization\\english\\lyd_r3_fixture_l_english.yml",
+      "bytes": 1363,
+      "sha256": "c74004e936f793dc5d47b12a696f2a0a9f32662fd5938a4a16787e7926939d7f"
+    },
+    {
+      "package_path": "loaded-inputs/content/fixture/localization/simp_chinese/lyd_r3_fixture_l_simp_chinese.yml",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\fixture\\localization\\simp_chinese\\lyd_r3_fixture_l_simp_chinese.yml",
+      "bytes": 1244,
+      "sha256": "257a24c7d74b5ededcd8930ba2d124faadf33ca4b54a3d7985a080190c8dd315"
+    },
+    {
+      "package_path": "loaded-inputs/content/production/common/character_interactions/lyd_interactions.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\production\\common\\character_interactions\\lyd_interactions.txt",
+      "bytes": 127,
+      "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba"
+    },
+    {
+      "package_path": "loaded-inputs/content/production/common/decisions/lyd_decisions.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\production\\common\\decisions\\lyd_decisions.txt",
+      "bytes": 1774,
+      "sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e"
+    },
+    {
+      "package_path": "loaded-inputs/content/production/common/religion/faith_types/lyd_faiths.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\production\\common\\religion\\faith_types\\lyd_faiths.txt",
+      "bytes": 424,
+      "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525"
+    },
+    {
+      "package_path": "loaded-inputs/content/production/common/religion/rite_types/lyd_rites.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\production\\common\\religion\\rite_types\\lyd_rites.txt",
+      "bytes": 3071,
+      "sha256": "fe4e5ae58c3a7f52d93ee4411844e65aed3c94c743558abc05636e9d099abf40"
+    },
+    {
+      "package_path": "loaded-inputs/content/production/common/religion/tenet_types/lyd_tenets.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\production\\common\\religion\\tenet_types\\lyd_tenets.txt",
+      "bytes": 8333,
+      "sha256": "8c48b1d0e6056845fec7a6babb53754fb7b7aecb2c3b7df7bae608654bd20789"
+    },
+    {
+      "package_path": "loaded-inputs/content/production/common/scripted_effects/lyd_entry_effects.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\production\\common\\scripted_effects\\lyd_entry_effects.txt",
+      "bytes": 1307,
+      "sha256": "5deef0c786a0de1d53df129b93e8aec16469d82ddf50b6fbf063fd80fd8ee8c1"
+    },
+    {
+      "package_path": "loaded-inputs/content/production/common/scripted_effects/lyd_practice_1_effects.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\production\\common\\scripted_effects\\lyd_practice_1_effects.txt",
+      "bytes": 2798,
+      "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7"
+    },
+    {
+      "package_path": "loaded-inputs/content/production/common/scripted_effects/lyd_practice_2_effects.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\production\\common\\scripted_effects\\lyd_practice_2_effects.txt",
+      "bytes": 2703,
+      "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879"
+    },
+    {
+      "package_path": "loaded-inputs/content/production/common/scripted_effects/lyd_practice_3_effects.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\production\\common\\scripted_effects\\lyd_practice_3_effects.txt",
+      "bytes": 2756,
+      "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131"
+    },
+    {
+      "package_path": "loaded-inputs/content/production/common/scripted_effects/lyd_school_effects.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\production\\common\\scripted_effects\\lyd_school_effects.txt",
+      "bytes": 3862,
+      "sha256": "34f97896f41ab51b90a185d05e4c64f81b78699b8f82a975bb3516e436bd98c7"
+    },
+    {
+      "package_path": "loaded-inputs/content/production/common/scripted_triggers/lyd_player_triggers.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\production\\common\\scripted_triggers\\lyd_player_triggers.txt",
+      "bytes": 1671,
+      "sha256": "942cc258ec6a0814695122701297a1b30e7854cb6f8aae72e3d3dbeef18f1c2b"
+    },
+    {
+      "package_path": "loaded-inputs/content/production/descriptor.mod",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\production\\descriptor.mod",
+      "bytes": 139,
+      "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2"
+    },
+    {
+      "package_path": "loaded-inputs/content/production/events/lyd_events.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\production\\events\\lyd_events.txt",
+      "bytes": 11070,
+      "sha256": "1c083b0fd910d701f3fc0f63345ce130930a1d80dac9575f076d02eacda602a7"
+    },
+    {
+      "package_path": "loaded-inputs/content/production/history/faiths/lyd_faith_history.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\production\\history\\faiths\\lyd_faith_history.txt",
+      "bytes": 588,
+      "sha256": "00ea56c310601a142d18ee52313d39556ffb56964f4927026de69126b9914f11"
+    },
+    {
+      "package_path": "loaded-inputs/content/production/localization/english/lyd_content_l_english.yml",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\production\\localization\\english\\lyd_content_l_english.yml",
+      "bytes": 17495,
+      "sha256": "3c5ca01e2f47ad87700eb6e93eb0a9675e98ceb5a58337679e9f31c7eea6f3c4"
+    },
+    {
+      "package_path": "loaded-inputs/content/production/localization/english/lyd_runtime_l_english.yml",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\production\\localization\\english\\lyd_runtime_l_english.yml",
+      "bytes": 2771,
+      "sha256": "09aef44681fa3810def8b3c7ad42593766f1039c147d3c2d8421ce8530e690ea"
+    },
+    {
+      "package_path": "loaded-inputs/content/production/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\production\\localization\\simp_chinese\\lyd_content_l_simp_chinese.yml",
+      "bytes": 14147,
+      "sha256": "df78c4340ba0f8ae53d3637f5485143046497c014e980ee91f6a9b6031f9dae5"
+    },
+    {
+      "package_path": "loaded-inputs/content/production/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\content\\production\\localization\\simp_chinese\\lyd_runtime_l_simp_chinese.yml",
+      "bytes": 2388,
+      "sha256": "f44152a6488831db7ccff4985b0a1e58592547f9f71c93eb34f8a9101dada944"
+    },
+    {
+      "package_path": "loaded-inputs/userdir/dlc_load.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\userdir\\dlc_load.json",
+      "bytes": 107,
+      "sha256": "24f8cb5d6d471c101e5da573f86a4e9aa7cb865593179b33389491231bdf8f30"
+    },
+    {
+      "package_path": "loaded-inputs/userdir/mod/lyd_fixture.mod",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\userdir\\mod\\lyd_fixture.mod",
+      "bytes": 201,
+      "sha256": "2c54c0e60d74b46717cc72e7e6f63ded777c8bd28c526945936281c8a72bb3f2"
+    },
+    {
+      "package_path": "loaded-inputs/userdir/mod/lyd_production.mod",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\userdir\\mod\\lyd_production.mod",
+      "bytes": 220,
+      "sha256": "52f351580406b8bd4607fd9d04df7585ce1848844cce2f5d45f1bf322ef9e14c"
+    },
+    {
+      "package_path": "loaded-inputs/userdir/pdx_settings.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\userdir\\pdx_settings.txt",
+      "bytes": 7130,
+      "sha256": "07375cc747895065e5729395072a7d095cad93d827d3613ff45b8148ae24a20d"
+    },
+    {
+      "package_path": "loaded-inputs/userdir/tutorial.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\loaded-inputs\\userdir\\tutorial.txt",
+      "bytes": 57,
+      "sha256": "de93ebed7d262c2450ac9fd18543e0890d8e5d3661cc773b62f707fc310a2075"
+    },
+    {
+      "package_path": "logs/code_revisions.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\logs\\code_revisions.log",
+      "bytes": 1387,
+      "sha256": "cff1a212df4ed8bd158c21c748eb4b946ee6a4dd093538f0b5473a51dc424021"
+    },
+    {
+      "package_path": "logs/custom_automated_stats.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\logs\\custom_automated_stats.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "package_path": "logs/database_conflicts.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\logs\\database_conflicts.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "package_path": "logs/debug.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\logs\\debug.log",
+      "bytes": 1225084,
+      "sha256": "6b86005e5c9a257580bda165b21973af188751e5c8b56ec68c414207680fe311"
+    },
+    {
+      "package_path": "logs/dedicated_server.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\logs\\dedicated_server.log",
+      "bytes": 144,
+      "sha256": "535919d586582ba9b1ee7d4367955cb2a46677c8f504f26da5d3976c0eb8e03c"
+    },
+    {
+      "package_path": "logs/error.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\logs\\error.log",
+      "bytes": 802,
+      "sha256": "a479b73b3510f21a2721d6af36e26c3eca913e33353ff743334bbc6a99673f6c"
+    },
+    {
+      "package_path": "logs/game.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\logs\\game.log",
+      "bytes": 3426,
+      "sha256": "7cc4d5598fd01143d1b1306753f681afc8428c4a74c6de92f24bdec4a8e62f5d"
+    },
+    {
+      "package_path": "logs/gui_warnings.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\logs\\gui_warnings.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "package_path": "logs/memory.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\logs\\memory.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "package_path": "logs/message.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\logs\\message.log",
+      "bytes": 1346,
+      "sha256": "9c34d146b3cf03d467b91c72c01247051ea8030a1ceceea13bb59e9102a9c3b3"
+    },
+    {
+      "package_path": "logs/multiplayer.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\logs\\multiplayer.log",
+      "bytes": 4232,
+      "sha256": "bfa95db1bc256f71193016a6c02db835c82ef993637d040ec4fceb21502f9334"
+    },
+    {
+      "package_path": "logs/pdxsdk.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\logs\\pdxsdk.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "package_path": "logs/profile.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\logs\\profile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "package_path": "logs/setup.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\logs\\setup.log",
+      "bytes": 37356,
+      "sha256": "cd580e6fa2174427b1228f04642c9f69a0e44ccca9fb7957dfccd06895f996a7"
+    },
+    {
+      "package_path": "logs/system.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\logs\\system.log",
+      "bytes": 926,
+      "sha256": "798fe8a091df6d41a4e0d2202e6087d4b1d92d50ad86e56e2fdce239b5ed98e2"
+    },
+    {
+      "package_path": "logs/text.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\logs\\text.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "package_path": "mcp-client-evidence/0001-0001-list.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0001-0001-list.request.json",
+      "bytes": 102,
+      "sha256": "7b14e2c2dad1b3ee8ca830662bb28074cfa5e7cdc25de4da19f455d846c14cce"
+    },
+    {
+      "package_path": "mcp-client-evidence/0001-0001-list.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0001-0001-list.response.json",
+      "bytes": 638,
+      "sha256": "32767e84d7bee3b68e88dfd77ab972655e828b5a567400606365ff7ae0f4173c"
+    },
+    {
+      "package_path": "mcp-client-evidence/0001-0001-list.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0001-0001-list.sdk-result.json",
+      "bytes": 10612,
+      "sha256": "0f4ea0a9746aff3d8d3f0b3e573d7d834b0b3354efe9122ca0b4b177acb942d8"
+    },
+    {
+      "package_path": "mcp-client-evidence/0001-0001-list.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0001-0001-list.started.json",
+      "bytes": 324,
+      "sha256": "18b1910deb6123f1240283f7a99f66b093c736064d56df32f533cee1e1039980"
+    },
+    {
+      "package_path": "mcp-client-evidence/0002-0002-query.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0002-0002-query.native-01.json",
+      "bytes": 2411,
+      "sha256": "758b23ae4b13af027b2f5745ba31f970207995182fe11a494a56f50bc8b3776e"
+    },
+    {
+      "package_path": "mcp-client-evidence/0002-0002-query.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0002-0002-query.request.json",
+      "bytes": 164,
+      "sha256": "01266148a03e2781f010f8a83c13437751eb38a0b9c9ae558496726ca00de4a3"
+    },
+    {
+      "package_path": "mcp-client-evidence/0002-0002-query.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0002-0002-query.response.json",
+      "bytes": 938,
+      "sha256": "a1836cbb0591a514b94d2344bd7970904acb0476d55ba13a41689a13c896da0f"
+    },
+    {
+      "package_path": "mcp-client-evidence/0002-0002-query.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0002-0002-query.sdk-result.json",
+      "bytes": 5505,
+      "sha256": "b237253909fb8d91d187cfde8b4602fc5425b5ca5c536587501a348df9c5ec66"
+    },
+    {
+      "package_path": "mcp-client-evidence/0002-0002-query.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0002-0002-query.started.json",
+      "bytes": 325,
+      "sha256": "a76f671aa6fd1f63b7836c5972810fa90313b1a8efeb704d96576ffed793c787"
+    },
+    {
+      "package_path": "mcp-client-evidence/0003-0003-attach.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0003-0003-attach.native-01.json",
+      "bytes": 17362,
+      "sha256": "43bec117068bea07ed5d49e2cb2a623f21e4b28741662bc7632b8ad4a7c11a3b"
+    },
+    {
+      "package_path": "mcp-client-evidence/0003-0003-attach.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0003-0003-attach.request.json",
+      "bytes": 166,
+      "sha256": "3ae3b5f83b448d7734eac9e2ba623de2709b4940555b6b55077b54c478a2989a"
+    },
+    {
+      "package_path": "mcp-client-evidence/0003-0003-attach.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0003-0003-attach.response.json",
+      "bytes": 941,
+      "sha256": "7b831ac9ff925dc7533050ddd9b9e2b254155fb1cc210d7ca942e4d04c30c6e9"
+    },
+    {
+      "package_path": "mcp-client-evidence/0003-0003-attach.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0003-0003-attach.sdk-result.json",
+      "bytes": 37027,
+      "sha256": "f48fd4f1aea370db520000dbacfce783b5f72ad462c76be744ae710d045a17df"
+    },
+    {
+      "package_path": "mcp-client-evidence/0003-0003-attach.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0003-0003-attach.started.json",
+      "bytes": 326,
+      "sha256": "86c665125c3855438ad0cd97b5784bac5410643c41fc93783cbacab972de728a"
+    },
+    {
+      "package_path": "mcp-client-evidence/0004-0004-baseline-save.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0004-0004-baseline-save.native-01.json",
+      "bytes": 25544,
+      "sha256": "6a0c3a409c7fa0155226c4929a10096fc9511f097abab6a3fa445038d813ff36"
+    },
+    {
+      "package_path": "mcp-client-evidence/0004-0004-baseline-save.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0004-0004-baseline-save.request.json",
+      "bytes": 207,
+      "sha256": "84d8beaa89fe4a3f490db48163c4cc0de3616848f1b2f599bfd7176ac534455c"
+    },
+    {
+      "package_path": "mcp-client-evidence/0004-0004-baseline-save.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0004-0004-baseline-save.response.json",
+      "bytes": 973,
+      "sha256": "9223f47d585ef22633624840d9d53d961c71103b40def2d5d653d90547bd3404"
+    },
+    {
+      "package_path": "mcp-client-evidence/0004-0004-baseline-save.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0004-0004-baseline-save.sdk-result.json",
+      "bytes": 54189,
+      "sha256": "cf81c5a775c57652b4a6ae3a7d2ad9f53fdfe108f704ca2959564b32f8f132f6"
+    },
+    {
+      "package_path": "mcp-client-evidence/0004-0004-baseline-save.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0004-0004-baseline-save.started.json",
+      "bytes": 333,
+      "sha256": "66455d515c8dc215e21745d95474bbc73f093677fc04624fac337bd128ae42d9"
+    },
+    {
+      "package_path": "mcp-client-evidence/0005-0005-after-fixture.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0005-0005-after-fixture.native-01.json",
+      "bytes": 14411,
+      "sha256": "4c75a2e5895de742c309ef38a5f7ef640e3b4b754fdfa175a05f3b9c4d9273a9"
+    },
+    {
+      "package_path": "mcp-client-evidence/0005-0005-after-fixture.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0005-0005-after-fixture.request.json",
+      "bytes": 180,
+      "sha256": "1e42531376495d683b75e9d729ff9cbef0133ec09cd5b249f9923d9087ffbfde"
+    },
+    {
+      "package_path": "mcp-client-evidence/0005-0005-after-fixture.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0005-0005-after-fixture.response.json",
+      "bytes": 971,
+      "sha256": "170c0e6940176ee0463729f3f5f37d35cd0a5df10e56e092757c6c27de7322ef"
+    },
+    {
+      "package_path": "mcp-client-evidence/0005-0005-after-fixture.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0005-0005-after-fixture.sdk-result.json",
+      "bytes": 30775,
+      "sha256": "12a902f93a609fc6b8a9c4971f95a38cce46fbdf8db79d97c91521b24323eaed"
+    },
+    {
+      "package_path": "mcp-client-evidence/0005-0005-after-fixture.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0005-0005-after-fixture.started.json",
+      "bytes": 333,
+      "sha256": "47e31210b31a5ed4e8a7caa6a9ceaf5593b68310c82aaf3ab4063c267a9db08b"
+    },
+    {
+      "package_path": "mcp-client-evidence/0006-0006-fixture-ack.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0006-0006-fixture-ack.native-01.json",
+      "bytes": 30845,
+      "sha256": "e096b78d4b534506dbf171d23d4da6068e87da1a79fcf1fc5ce69a06fefd83b8"
+    },
+    {
+      "package_path": "mcp-client-evidence/0006-0006-fixture-ack.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0006-0006-fixture-ack.request.json",
+      "bytes": 263,
+      "sha256": "9fb1a112d3991f66bf46ff79fa8faf040012aa56a9872661c81846480acfc7c6"
+    },
+    {
+      "package_path": "mcp-client-evidence/0006-0006-fixture-ack.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0006-0006-fixture-ack.response.json",
+      "bytes": 967,
+      "sha256": "c34eb54e0a66a927e8056b4c458b15958a4c101cff78f3e6227b69efc4d23769"
+    },
+    {
+      "package_path": "mcp-client-evidence/0006-0006-fixture-ack.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0006-0006-fixture-ack.sdk-result.json",
+      "bytes": 65461,
+      "sha256": "081f2adc35fbcbbfa4c1ce45b9023748c2152090de2a81690b1892841ffad580"
+    },
+    {
+      "package_path": "mcp-client-evidence/0006-0006-fixture-ack.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0006-0006-fixture-ack.started.json",
+      "bytes": 331,
+      "sha256": "a8e4d39595e8982e2686aae4a2b06cbfcfd7d84c1cfdca0ac6d1c211606997d4"
+    },
+    {
+      "package_path": "mcp-client-evidence/0007-0007-original-confucian-save.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0007-0007-original-confucian-save.native-01.json",
+      "bytes": 33513,
+      "sha256": "95824f01f299dad50937b9fb441936512a6b84cd73a7434fcddc206fa0199340"
+    },
+    {
+      "package_path": "mcp-client-evidence/0007-0007-original-confucian-save.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0007-0007-original-confucian-save.request.json",
+      "bytes": 217,
+      "sha256": "e6be0b60e0d7b984e695745da6ca7780d1cf2560d73477aff5fb2c6e00572caa"
+    },
+    {
+      "package_path": "mcp-client-evidence/0007-0007-original-confucian-save.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0007-0007-original-confucian-save.response.json",
+      "bytes": 1013,
+      "sha256": "0408ccabc5457cc0033af75e6dea5ee79cb91f78e835c5c700289f008a21953b"
+    },
+    {
+      "package_path": "mcp-client-evidence/0007-0007-original-confucian-save.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0007-0007-original-confucian-save.sdk-result.json",
+      "bytes": 71103,
+      "sha256": "0e1e1aa340c23479353d61cd64ddcccf3288cb5c2e860af479d0d892bfccb248"
+    },
+    {
+      "package_path": "mcp-client-evidence/0007-0007-original-confucian-save.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0007-0007-original-confucian-save.started.json",
+      "bytes": 343,
+      "sha256": "e18eeb9deb595e6b148d27a4077bd735654ed3e19a261ff873896261796328d3"
+    },
+    {
+      "package_path": "mcp-client-evidence/0008-0008-after-formal-entry.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0008-0008-after-formal-entry.native-01.json",
+      "bytes": 18329,
+      "sha256": "0ac96cc8d299b375650824acd0882394aaad277584b8e0f4a9d49c9870228f0c"
+    },
+    {
+      "package_path": "mcp-client-evidence/0008-0008-after-formal-entry.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0008-0008-after-formal-entry.request.json",
+      "bytes": 185,
+      "sha256": "d8f7d1c8dcaf2894ae5aa9acf8a8170476c333398def63f1d9bbca79be46d58d"
+    },
+    {
+      "package_path": "mcp-client-evidence/0008-0008-after-formal-entry.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0008-0008-after-formal-entry.response.json",
+      "bytes": 991,
+      "sha256": "529fac45c9aabc7043896cc6883a00472735229c6ed97e71c8d89714c30d57d8"
+    },
+    {
+      "package_path": "mcp-client-evidence/0008-0008-after-formal-entry.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0008-0008-after-formal-entry.sdk-result.json",
+      "bytes": 39087,
+      "sha256": "7a38471ce9a5f2ccbbacdc61fa7faac829a0bb8be4e380491a74a2a867e45d52"
+    },
+    {
+      "package_path": "mcp-client-evidence/0008-0008-after-formal-entry.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0008-0008-after-formal-entry.started.json",
+      "bytes": 338,
+      "sha256": "2fa3aa1baae72740f3b138d4954ae90a14cd800b98143cb0d77b4c5847eeec50"
+    },
+    {
+      "package_path": "mcp-client-evidence/0009-0009-welcome-ack.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0009-0009-welcome-ack.native-01.json",
+      "bytes": 38678,
+      "sha256": "66b8eec1fa771458179ff68bec85c27dd4d1ec0b548a00268c40ba47121c61b5"
+    },
+    {
+      "package_path": "mcp-client-evidence/0009-0009-welcome-ack.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0009-0009-welcome-ack.request.json",
+      "bytes": 263,
+      "sha256": "44d18f37b0225859ee975a105a9d0a85958cde502d4c53d64949f66d5f5af7c0"
+    },
+    {
+      "package_path": "mcp-client-evidence/0009-0009-welcome-ack.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0009-0009-welcome-ack.response.json",
+      "bytes": 967,
+      "sha256": "ae3a6d5afc4314b17e4bfd865895c427778cbf9acdd9fd0f86ff81c6a7a38a2e"
+    },
+    {
+      "package_path": "mcp-client-evidence/0009-0009-welcome-ack.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0009-0009-welcome-ack.sdk-result.json",
+      "bytes": 82079,
+      "sha256": "101b84aa0e5de064bc2a3c51048fb32d16928a9d60bcdc2d7e7ba102e6065745"
+    },
+    {
+      "package_path": "mcp-client-evidence/0009-0009-welcome-ack.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0009-0009-welcome-ack.started.json",
+      "bytes": 331,
+      "sha256": "3ce486cdb1fa933eef335ad8c9f943bf99271bc12ef6f0c812d4ecf8b1bf4f62"
+    },
+    {
+      "package_path": "mcp-client-evidence/0010-0010-formal-entry-save.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0010-0010-formal-entry-save.native-01.json",
+      "bytes": 41343,
+      "sha256": "444cd7316c7c98710bc1a363ce389607de1abbe94e2edd69ffd9279355f4e5e0"
+    },
+    {
+      "package_path": "mcp-client-evidence/0010-0010-formal-entry-save.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0010-0010-formal-entry-save.request.json",
+      "bytes": 211,
+      "sha256": "4bd535bb87aff2bdc41727e005bcc9f507857c26c5a861a0a89b3e8cc92059c9"
+    },
+    {
+      "package_path": "mcp-client-evidence/0010-0010-formal-entry-save.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0010-0010-formal-entry-save.response.json",
+      "bytes": 990,
+      "sha256": "4aa621af3a692fafc6e9d8120aacabeeef8e415e04b5996dd2a102ccfec0fddd"
+    },
+    {
+      "package_path": "mcp-client-evidence/0010-0010-formal-entry-save.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0010-0010-formal-entry-save.sdk-result.json",
+      "bytes": 87715,
+      "sha256": "7b372ccc77146881d7e9aadd235792293f11f33963b59aa271f69e988592f0f6"
+    },
+    {
+      "package_path": "mcp-client-evidence/0010-0010-formal-entry-save.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0010-0010-formal-entry-save.started.json",
+      "bytes": 338,
+      "sha256": "f4af1fb773cbfe7255ad47af43dc8dee9d680eee1ee23b1c409be6492a327f1d"
+    },
+    {
+      "package_path": "mcp-client-evidence/0011-0011-kongmen-practice-open.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0011-0011-kongmen-practice-open.native-01.json",
+      "bytes": 22632,
+      "sha256": "e22443c9e5dc1795dd2d526bc15e8b4b38a60587b3a5710f7aa0201b808e417f"
+    },
+    {
+      "package_path": "mcp-client-evidence/0011-0011-kongmen-practice-open.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0011-0011-kongmen-practice-open.request.json",
+      "bytes": 188,
+      "sha256": "71cf5e9e7c2daaab80d5c73ea1164c18c4b52fa28b16f1b494f5b4a0a7dbd8cb"
+    },
+    {
+      "package_path": "mcp-client-evidence/0011-0011-kongmen-practice-open.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0011-0011-kongmen-practice-open.response.json",
+      "bytes": 1004,
+      "sha256": "ea1c3f9e66951fcb6e0338b247fa15ebea288fefc84788071f752e74092b747f"
+    },
+    {
+      "package_path": "mcp-client-evidence/0011-0011-kongmen-practice-open.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0011-0011-kongmen-practice-open.sdk-result.json",
+      "bytes": 48229,
+      "sha256": "c01ae13f5ccf790e49f790a6f86d514434a214c9fd5b4ba257a2f31796898919"
+    },
+    {
+      "package_path": "mcp-client-evidence/0011-0011-kongmen-practice-open.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0011-0011-kongmen-practice-open.started.json",
+      "bytes": 342,
+      "sha256": "69d4a1073399c96f4901be18cf2f56276c98ebc7efc349975aefc01623449360"
+    },
+    {
+      "package_path": "mcp-client-evidence/0012-0012-kongmen-practice-cancel.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0012-0012-kongmen-practice-cancel.native-01.json",
+      "bytes": 46905,
+      "sha256": "80351cb751d7795ef8ac5667b322b65688b67e9f65af8706931c0db7281a381e"
+    },
+    {
+      "package_path": "mcp-client-evidence/0012-0012-kongmen-practice-cancel.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0012-0012-kongmen-practice-cancel.request.json",
+      "bytes": 276,
+      "sha256": "ad7191fa80d52b0d2c25c86f8aff8f2495a12fe8559e297731e18871e4c78df6"
+    },
+    {
+      "package_path": "mcp-client-evidence/0012-0012-kongmen-practice-cancel.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0012-0012-kongmen-practice-cancel.response.json",
+      "bytes": 1016,
+      "sha256": "b5e9ccbe22fd829a0210d8ce28781c177ba355065af3a8d14f99240059ab47f8"
+    },
+    {
+      "package_path": "mcp-client-evidence/0012-0012-kongmen-practice-cancel.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0012-0012-kongmen-practice-cancel.sdk-result.json",
+      "bytes": 99545,
+      "sha256": "4d43bf7d6e7ec61f84ef9eed9f384a3a5437c772e51400c450946f531a072e63"
+    },
+    {
+      "package_path": "mcp-client-evidence/0012-0012-kongmen-practice-cancel.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0012-0012-kongmen-practice-cancel.started.json",
+      "bytes": 344,
+      "sha256": "fe5ad634ebad559d63655c8dce09321867a6ff0e0f3fade0832eeaa9af4ec10b"
+    },
+    {
+      "package_path": "mcp-client-evidence/0013-0013-practice-cancel-save.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0013-0013-practice-cancel-save.native-01.json",
+      "bytes": 49181,
+      "sha256": "e6d491bf0aa8d8af58a57caceacda87b3f1037240b8cf7913b738356005653da"
+    },
+    {
+      "package_path": "mcp-client-evidence/0013-0013-practice-cancel-save.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0013-0013-practice-cancel-save.request.json",
+      "bytes": 215,
+      "sha256": "1767f2727acf93872f9c40d69e66c4b07e904621193b2d32748a0716bfeb900b"
+    },
+    {
+      "package_path": "mcp-client-evidence/0013-0013-practice-cancel-save.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0013-0013-practice-cancel-save.response.json",
+      "bytes": 1002,
+      "sha256": "0783a7e82bfdfa58804f6eee52dee0439f8a7ea0984d1d2fcc79dd9e818d1a49"
+    },
+    {
+      "package_path": "mcp-client-evidence/0013-0013-practice-cancel-save.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0013-0013-practice-cancel-save.sdk-result.json",
+      "bytes": 104343,
+      "sha256": "5b6ab8f11c4e06f5c5f27d58bbba3932f4f442b39079da085c280546f73d819b"
+    },
+    {
+      "package_path": "mcp-client-evidence/0013-0013-practice-cancel-save.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0013-0013-practice-cancel-save.started.json",
+      "bytes": 341,
+      "sha256": "cf462bfdcfb355a4eb1c0019a1f6ab7dcde2601b3ba0b472899461ae32b739b7"
+    },
+    {
+      "package_path": "mcp-client-evidence/0014-0014-choose-open.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0014-0014-choose-open.native-01.json",
+      "bytes": 27200,
+      "sha256": "5d78c8d54fb310da129dae63f2370935dd7b1c74a489ecee4c0b2272bb9e5813"
+    },
+    {
+      "package_path": "mcp-client-evidence/0014-0014-choose-open.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0014-0014-choose-open.request.json",
+      "bytes": 178,
+      "sha256": "1887a75a90d3a4f451592bffd85196329fae146999585bc7b2bf8735f57ff9b9"
+    },
+    {
+      "package_path": "mcp-client-evidence/0014-0014-choose-open.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0014-0014-choose-open.response.json",
+      "bytes": 964,
+      "sha256": "b662c59f8f24c23d0b47af528de426dfd94a31c92a28e9574fd759a0f8697bf0"
+    },
+    {
+      "package_path": "mcp-client-evidence/0014-0014-choose-open.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0014-0014-choose-open.sdk-result.json",
+      "bytes": 57941,
+      "sha256": "3d5f3340f383874fed36566e4ead6835a5e5457aa79be082af3c4ddbfd16f7c4"
+    },
+    {
+      "package_path": "mcp-client-evidence/0014-0014-choose-open.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0014-0014-choose-open.started.json",
+      "bytes": 332,
+      "sha256": "3c3967aa09d4d8d128ee78d94a345d9c419f94531a8cc4505f82f2be80256ea6"
+    },
+    {
+      "package_path": "mcp-client-evidence/0015-0015-choose-cancel.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0015-0015-choose-cancel.native-01.json",
+      "bytes": 55391,
+      "sha256": "be11cf45fa84b8affc02119f14edcb0a81adf835986c1964ede6461e387c46ed"
+    },
+    {
+      "package_path": "mcp-client-evidence/0015-0015-choose-cancel.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0015-0015-choose-cancel.request.json",
+      "bytes": 266,
+      "sha256": "a0c931168683c7749b566a987b6167710df092417a5b437691648309561a38f8"
+    },
+    {
+      "package_path": "mcp-client-evidence/0015-0015-choose-cancel.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0015-0015-choose-cancel.response.json",
+      "bytes": 976,
+      "sha256": "eb874e8ba484640ad7f8795c9592dc752a32aaebe1eb5960da1658a210b8806d"
+    },
+    {
+      "package_path": "mcp-client-evidence/0015-0015-choose-cancel.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0015-0015-choose-cancel.sdk-result.json",
+      "bytes": 117569,
+      "sha256": "544744c23465e0ddf47724105aac24bd994fe55b25f76facc589d543beff96c2"
+    },
+    {
+      "package_path": "mcp-client-evidence/0015-0015-choose-cancel.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0015-0015-choose-cancel.started.json",
+      "bytes": 334,
+      "sha256": "cec5f719ae396931a882775736238198140a7b690b1c1506ccc4a4efeee63803"
+    },
+    {
+      "package_path": "mcp-client-evidence/0016-0016-choose-cancel-save.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0016-0016-choose-cancel-save.native-01.json",
+      "bytes": 57015,
+      "sha256": "a59074629e867d2f498102d57c02859dc86dd7d64078f43e67f7c44428b03418"
+    },
+    {
+      "package_path": "mcp-client-evidence/0016-0016-choose-cancel-save.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0016-0016-choose-cancel-save.request.json",
+      "bytes": 213,
+      "sha256": "b5a71d367cf177c5c4c3894f913a6437293a7df6f480e7c2e10101af11e43dc8"
+    },
+    {
+      "package_path": "mcp-client-evidence/0016-0016-choose-cancel-save.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0016-0016-choose-cancel-save.response.json",
+      "bytes": 994,
+      "sha256": "0eb571505d7f3880b1c544c0424e49e287f2f3f74d98f4992238d0fcd4ff6fb2"
+    },
+    {
+      "package_path": "mcp-client-evidence/0016-0016-choose-cancel-save.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0016-0016-choose-cancel-save.sdk-result.json",
+      "bytes": 120963,
+      "sha256": "172f04624e5193581d77f5072adf15201e54b88811790abe833fd7a68807fc00"
+    },
+    {
+      "package_path": "mcp-client-evidence/0016-0016-choose-cancel-save.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0016-0016-choose-cancel-save.started.json",
+      "bytes": 339,
+      "sha256": "e2f575f4ae184a40728f696b51ed68a914dc51efdc969fe57a5383d8dd78516f"
+    },
+    {
+      "package_path": "mcp-client-evidence/0017-0017-choose-reopen.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0017-0017-choose-reopen.native-01.json",
+      "bytes": 31118,
+      "sha256": "fa560b2b858a90b744305bc065db9dc8f8b978093434399febf182c55a8c597a"
+    },
+    {
+      "package_path": "mcp-client-evidence/0017-0017-choose-reopen.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0017-0017-choose-reopen.request.json",
+      "bytes": 180,
+      "sha256": "6989db1dad1b9deeb8437c0977d18e23be714cc3863ab01313bcb3426e2cd242"
+    },
+    {
+      "package_path": "mcp-client-evidence/0017-0017-choose-reopen.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0017-0017-choose-reopen.response.json",
+      "bytes": 972,
+      "sha256": "b1a9d34720141e61356b215a541648adf5f1404d0fc510a7d3a85a92b4a13768"
+    },
+    {
+      "package_path": "mcp-client-evidence/0017-0017-choose-reopen.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0017-0017-choose-reopen.sdk-result.json",
+      "bytes": 66253,
+      "sha256": "db62d0db8f7a68df0161dec972ec83ba6d54122705208b0f99ec5aa1cefd8305"
+    },
+    {
+      "package_path": "mcp-client-evidence/0017-0017-choose-reopen.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0017-0017-choose-reopen.started.json",
+      "bytes": 334,
+      "sha256": "7ff7b02fcc58cdebd0711a3c00d91e3b9fc48acfeb52e1602a486566e2f17b9e"
+    },
+    {
+      "package_path": "mcp-client-evidence/0018-0018-choose-zhuxi.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0018-0018-choose-zhuxi.native-01.json",
+      "bytes": 63228,
+      "sha256": "4f04a88e94d2a3c8029f27743302b1a716ec83f6dc86222a709b73c3dc1bedf7"
+    },
+    {
+      "package_path": "mcp-client-evidence/0018-0018-choose-zhuxi.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0018-0018-choose-zhuxi.request.json",
+      "bytes": 265,
+      "sha256": "d6389b9d76ea71751fed7af48539c99831051964233ef7008fd082fb4644cf21"
+    },
+    {
+      "package_path": "mcp-client-evidence/0018-0018-choose-zhuxi.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0018-0018-choose-zhuxi.response.json",
+      "bytes": 972,
+      "sha256": "d7cd8c2b3af87131d178214625c9d1d8e03c7a581e998a1aac375ef7766587f3"
+    },
+    {
+      "package_path": "mcp-client-evidence/0018-0018-choose-zhuxi.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0018-0018-choose-zhuxi.sdk-result.json",
+      "bytes": 134195,
+      "sha256": "64c314a3451a46677399d0d4d3c68479126ff7a0c60b5fd1242ac91cd16cff7e"
+    },
+    {
+      "package_path": "mcp-client-evidence/0018-0018-choose-zhuxi.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0018-0018-choose-zhuxi.started.json",
+      "bytes": 333,
+      "sha256": "8a3877e516987a5d2b647f2c7d416749e8f47e6f4e8782c5153ecd4e5cb98538"
+    },
+    {
+      "package_path": "mcp-client-evidence/0019-0019-zhuxi-save.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0019-0019-zhuxi-save.native-01.json",
+      "bytes": 64856,
+      "sha256": "5548c12f9187cf79df4e2e161e64290ce633b4b7ef8cef3b1c8c0988782f84f3"
+    },
+    {
+      "package_path": "mcp-client-evidence/0019-0019-zhuxi-save.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0019-0019-zhuxi-save.request.json",
+      "bytes": 205,
+      "sha256": "cde33b365ad00e46302979e9924433ce8ba676b71f0865f538c107ddcb3d858d"
+    },
+    {
+      "package_path": "mcp-client-evidence/0019-0019-zhuxi-save.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0019-0019-zhuxi-save.response.json",
+      "bytes": 962,
+      "sha256": "0a0daad2e8ff79091ae9e22e2ec07680626977dcd2a49a78f73f71834df105b1"
+    },
+    {
+      "package_path": "mcp-client-evidence/0019-0019-zhuxi-save.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0019-0019-zhuxi-save.sdk-result.json",
+      "bytes": 137597,
+      "sha256": "049838a895e52c21ea6c4e8713ad68bc733685105ed3c5d9a7960ebb675a4be3"
+    },
+    {
+      "package_path": "mcp-client-evidence/0019-0019-zhuxi-save.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0019-0019-zhuxi-save.started.json",
+      "bytes": 331,
+      "sha256": "f40aa1bd304e4735a5a03b0e83f7a67032f7e56807131ba78894f41020dc8b23"
+    },
+    {
+      "package_path": "mcp-client-evidence/0020-0020-zhuxi-practice-open.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0020-0020-zhuxi-practice-open.native-01.json",
+      "bytes": 34388,
+      "sha256": "509306ef757af39192813679295de51ab3011ffa4c722afb9c49f530202fc380"
+    },
+    {
+      "package_path": "mcp-client-evidence/0020-0020-zhuxi-practice-open.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0020-0020-zhuxi-practice-open.request.json",
+      "bytes": 186,
+      "sha256": "4878a96aea9356db133c7c55fab53440eda8c3f673b5ed755e7ca4cfa8a0c617"
+    },
+    {
+      "package_path": "mcp-client-evidence/0020-0020-zhuxi-practice-open.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0020-0020-zhuxi-practice-open.response.json",
+      "bytes": 996,
+      "sha256": "d54d497143f86caef6d2d18495d83b6823d05a8b6dc66ff52f42a0f33db75c85"
+    },
+    {
+      "package_path": "mcp-client-evidence/0020-0020-zhuxi-practice-open.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0020-0020-zhuxi-practice-open.sdk-result.json",
+      "bytes": 73169,
+      "sha256": "2fcaa288c17cfabcec9318a7ca3aed1c7e7aec5b82cfcab7fa918f275caec2c2"
+    },
+    {
+      "package_path": "mcp-client-evidence/0020-0020-zhuxi-practice-open.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0020-0020-zhuxi-practice-open.started.json",
+      "bytes": 340,
+      "sha256": "c63fac1aa787d6ca9d23e16b286f0d3e36fe8db5d2b61a88e6c89a88a814ec32"
+    },
+    {
+      "package_path": "mcp-client-evidence/0021-0021-zhuxi-practice-a.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0021-0021-zhuxi-practice-a.native-01.json",
+      "bytes": 70418,
+      "sha256": "e4aa07e8e9191fc460176d5cbef8b814e1b8a0184e6b543e4bd4229c52ce90e7"
+    },
+    {
+      "package_path": "mcp-client-evidence/0021-0021-zhuxi-practice-a.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0021-0021-zhuxi-practice-a.request.json",
+      "bytes": 269,
+      "sha256": "3965543784c08c815a8a4afe4c71e0eeb3547939b82f232bf3297aac92f2a622"
+    },
+    {
+      "package_path": "mcp-client-evidence/0021-0021-zhuxi-practice-a.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0021-0021-zhuxi-practice-a.response.json",
+      "bytes": 988,
+      "sha256": "ca4abb117a0f0cb608673422a1f8c7f0e14083dc482fbd98df58fc0239d88bcb"
+    },
+    {
+      "package_path": "mcp-client-evidence/0021-0021-zhuxi-practice-a.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0021-0021-zhuxi-practice-a.sdk-result.json",
+      "bytes": 149427,
+      "sha256": "df19ebb9c666bc2ca0fd4af6e213af3539ad8149c54dd4dc893f20adf23638b1"
+    },
+    {
+      "package_path": "mcp-client-evidence/0021-0021-zhuxi-practice-a.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0021-0021-zhuxi-practice-a.started.json",
+      "bytes": 337,
+      "sha256": "d01ae6a4d1046d38dfa9aca1a88af38b058e5428ba2447393a15a5422309c6c9"
+    },
+    {
+      "package_path": "mcp-client-evidence/0022-0022-practice-a-save.native-01.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0022-0022-practice-a-save.native-01.json",
+      "bytes": 72696,
+      "sha256": "8e7e5a94acdc0a1890e0793df3d543537d56002e4dab40890181b7446dd2977d"
+    },
+    {
+      "package_path": "mcp-client-evidence/0022-0022-practice-a-save.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0022-0022-practice-a-save.request.json",
+      "bytes": 210,
+      "sha256": "5a8418c85712bb47cce0165f56552440571b9b6d96ac58fc72688c61c22d5fdc"
+    },
+    {
+      "package_path": "mcp-client-evidence/0022-0022-practice-a-save.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0022-0022-practice-a-save.response.json",
+      "bytes": 982,
+      "sha256": "60ff197bc7e1f93d853565377613fca3c3656bf8fe65afe562ca4fd95ff68a9f"
+    },
+    {
+      "package_path": "mcp-client-evidence/0022-0022-practice-a-save.sdk-result.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0022-0022-practice-a-save.sdk-result.json",
+      "bytes": 154229,
+      "sha256": "bb2f566c71425f57c9e915b3237c0231c3314eae85de6090125d7de35bf77745"
+    },
+    {
+      "package_path": "mcp-client-evidence/0022-0022-practice-a-save.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0022-0022-practice-a-save.started.json",
+      "bytes": 336,
+      "sha256": "1a2407e89df1fee400610e3bcd84698f128aeb4dbf87cbae6ee43f2b90c9d77a"
+    },
+    {
+      "package_path": "mcp-client-evidence/0023-9999-close.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0023-9999-close.request.json",
+      "bytes": 98,
+      "sha256": "fa21da3c1ed338e0905bc88936510993d535b17ad014be87b21f7143c7cfcc22"
+    },
+    {
+      "package_path": "mcp-client-evidence/0023-9999-close.response.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0023-9999-close.response.json",
+      "bytes": 454,
+      "sha256": "cb96f78c81cca3a0fbaa0839846525611a6bf950773741f738dc5e41929d17be"
+    },
+    {
+      "package_path": "mcp-client-evidence/0023-9999-close.started.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\0023-9999-close.started.json",
+      "bytes": 326,
+      "sha256": "3983bccaf861d9765896ed97e1b9c0aaa438f72a255ce0a7047898776c217894"
+    },
+    {
+      "package_path": "mcp-client-evidence/ready.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\ready.json",
+      "bytes": 941,
+      "sha256": "d14ebc1deb62081cb7de4f23cbf39bb96fc48492813aacf81553eb0dec65cff7"
+    },
+    {
+      "package_path": "mcp-client-evidence/server.stderr.log",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\server.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "package_path": "mcp-client-evidence/session-closed.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\session-closed.json",
+      "bytes": 1058,
+      "sha256": "84242c470496a7ec3d1af734732e557f008909a7576eb3175920c00f1831faf6"
+    },
+    {
+      "package_path": "mcp-client-evidence/session.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-client-evidence\\session.json",
+      "bytes": 818,
+      "sha256": "0d9b9ec5fc52ba436f021dfcc267ff45ab79b577f25b343906cf79ce022ffeaf"
+    },
+    {
+      "package_path": "mcp-queue/0001-list.e3e9fe828875460f944aadb3bd0285ef.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0001-list.e3e9fe828875460f944aadb3bd0285ef.input",
+      "bytes": 102,
+      "sha256": "7b14e2c2dad1b3ee8ca830662bb28074cfa5e7cdc25de4da19f455d846c14cce"
+    },
+    {
+      "package_path": "mcp-queue/0001-list.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0001-list.request.json",
+      "bytes": 102,
+      "sha256": "7b14e2c2dad1b3ee8ca830662bb28074cfa5e7cdc25de4da19f455d846c14cce"
+    },
+    {
+      "package_path": "mcp-queue/0002-query.922cc471ce694192b758ce7e1afe31d9.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0002-query.922cc471ce694192b758ce7e1afe31d9.input",
+      "bytes": 164,
+      "sha256": "01266148a03e2781f010f8a83c13437751eb38a0b9c9ae558496726ca00de4a3"
+    },
+    {
+      "package_path": "mcp-queue/0002-query.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0002-query.request.json",
+      "bytes": 164,
+      "sha256": "01266148a03e2781f010f8a83c13437751eb38a0b9c9ae558496726ca00de4a3"
+    },
+    {
+      "package_path": "mcp-queue/0003-attach.e9f346c336c0438fb6af6cc780372203.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0003-attach.e9f346c336c0438fb6af6cc780372203.input",
+      "bytes": 166,
+      "sha256": "3ae3b5f83b448d7734eac9e2ba623de2709b4940555b6b55077b54c478a2989a"
+    },
+    {
+      "package_path": "mcp-queue/0003-attach.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0003-attach.request.json",
+      "bytes": 166,
+      "sha256": "3ae3b5f83b448d7734eac9e2ba623de2709b4940555b6b55077b54c478a2989a"
+    },
+    {
+      "package_path": "mcp-queue/0004-baseline-save.b837d3af46b8423885be3d68cde93b60.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0004-baseline-save.b837d3af46b8423885be3d68cde93b60.input",
+      "bytes": 207,
+      "sha256": "84d8beaa89fe4a3f490db48163c4cc0de3616848f1b2f599bfd7176ac534455c"
+    },
+    {
+      "package_path": "mcp-queue/0004-baseline-save.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0004-baseline-save.request.json",
+      "bytes": 207,
+      "sha256": "84d8beaa89fe4a3f490db48163c4cc0de3616848f1b2f599bfd7176ac534455c"
+    },
+    {
+      "package_path": "mcp-queue/0005-after-fixture.1d7407f55d5e4bfda5b3c27273765369.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0005-after-fixture.1d7407f55d5e4bfda5b3c27273765369.input",
+      "bytes": 180,
+      "sha256": "1e42531376495d683b75e9d729ff9cbef0133ec09cd5b249f9923d9087ffbfde"
+    },
+    {
+      "package_path": "mcp-queue/0005-after-fixture.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0005-after-fixture.request.json",
+      "bytes": 180,
+      "sha256": "1e42531376495d683b75e9d729ff9cbef0133ec09cd5b249f9923d9087ffbfde"
+    },
+    {
+      "package_path": "mcp-queue/0006-fixture-ack.4d07a61c81104f25857b60dc96d5a72a.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0006-fixture-ack.4d07a61c81104f25857b60dc96d5a72a.input",
+      "bytes": 263,
+      "sha256": "9fb1a112d3991f66bf46ff79fa8faf040012aa56a9872661c81846480acfc7c6"
+    },
+    {
+      "package_path": "mcp-queue/0006-fixture-ack.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0006-fixture-ack.request.json",
+      "bytes": 263,
+      "sha256": "9fb1a112d3991f66bf46ff79fa8faf040012aa56a9872661c81846480acfc7c6"
+    },
+    {
+      "package_path": "mcp-queue/0007-original-confucian-save.89e9bc05829c425599f34f72d1cb681f.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0007-original-confucian-save.89e9bc05829c425599f34f72d1cb681f.input",
+      "bytes": 217,
+      "sha256": "e6be0b60e0d7b984e695745da6ca7780d1cf2560d73477aff5fb2c6e00572caa"
+    },
+    {
+      "package_path": "mcp-queue/0007-original-confucian-save.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0007-original-confucian-save.request.json",
+      "bytes": 217,
+      "sha256": "e6be0b60e0d7b984e695745da6ca7780d1cf2560d73477aff5fb2c6e00572caa"
+    },
+    {
+      "package_path": "mcp-queue/0008-after-formal-entry.1cc7ba956360408092825cb4c1b95c06.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0008-after-formal-entry.1cc7ba956360408092825cb4c1b95c06.input",
+      "bytes": 185,
+      "sha256": "d8f7d1c8dcaf2894ae5aa9acf8a8170476c333398def63f1d9bbca79be46d58d"
+    },
+    {
+      "package_path": "mcp-queue/0008-after-formal-entry.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0008-after-formal-entry.request.json",
+      "bytes": 185,
+      "sha256": "d8f7d1c8dcaf2894ae5aa9acf8a8170476c333398def63f1d9bbca79be46d58d"
+    },
+    {
+      "package_path": "mcp-queue/0009-welcome-ack.24ab61e4f1fe46cab4b983a11f075b23.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0009-welcome-ack.24ab61e4f1fe46cab4b983a11f075b23.input",
+      "bytes": 263,
+      "sha256": "44d18f37b0225859ee975a105a9d0a85958cde502d4c53d64949f66d5f5af7c0"
+    },
+    {
+      "package_path": "mcp-queue/0009-welcome-ack.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0009-welcome-ack.request.json",
+      "bytes": 263,
+      "sha256": "44d18f37b0225859ee975a105a9d0a85958cde502d4c53d64949f66d5f5af7c0"
+    },
+    {
+      "package_path": "mcp-queue/0010-formal-entry-save.cfeb47da7d8e4acf9ce76541e8b83393.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0010-formal-entry-save.cfeb47da7d8e4acf9ce76541e8b83393.input",
+      "bytes": 211,
+      "sha256": "4bd535bb87aff2bdc41727e005bcc9f507857c26c5a861a0a89b3e8cc92059c9"
+    },
+    {
+      "package_path": "mcp-queue/0010-formal-entry-save.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0010-formal-entry-save.request.json",
+      "bytes": 211,
+      "sha256": "4bd535bb87aff2bdc41727e005bcc9f507857c26c5a861a0a89b3e8cc92059c9"
+    },
+    {
+      "package_path": "mcp-queue/0011-kongmen-practice-open.e625d0a4949d444aa1585a9574d9770d.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0011-kongmen-practice-open.e625d0a4949d444aa1585a9574d9770d.input",
+      "bytes": 188,
+      "sha256": "71cf5e9e7c2daaab80d5c73ea1164c18c4b52fa28b16f1b494f5b4a0a7dbd8cb"
+    },
+    {
+      "package_path": "mcp-queue/0011-kongmen-practice-open.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0011-kongmen-practice-open.request.json",
+      "bytes": 188,
+      "sha256": "71cf5e9e7c2daaab80d5c73ea1164c18c4b52fa28b16f1b494f5b4a0a7dbd8cb"
+    },
+    {
+      "package_path": "mcp-queue/0012-kongmen-practice-cancel.d73d8c86457c4e7bb894d94336fae631.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0012-kongmen-practice-cancel.d73d8c86457c4e7bb894d94336fae631.input",
+      "bytes": 276,
+      "sha256": "ad7191fa80d52b0d2c25c86f8aff8f2495a12fe8559e297731e18871e4c78df6"
+    },
+    {
+      "package_path": "mcp-queue/0012-kongmen-practice-cancel.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0012-kongmen-practice-cancel.request.json",
+      "bytes": 276,
+      "sha256": "ad7191fa80d52b0d2c25c86f8aff8f2495a12fe8559e297731e18871e4c78df6"
+    },
+    {
+      "package_path": "mcp-queue/0013-practice-cancel-save.0292cf89963142f781d4606fafc2528b.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0013-practice-cancel-save.0292cf89963142f781d4606fafc2528b.input",
+      "bytes": 215,
+      "sha256": "1767f2727acf93872f9c40d69e66c4b07e904621193b2d32748a0716bfeb900b"
+    },
+    {
+      "package_path": "mcp-queue/0013-practice-cancel-save.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0013-practice-cancel-save.request.json",
+      "bytes": 215,
+      "sha256": "1767f2727acf93872f9c40d69e66c4b07e904621193b2d32748a0716bfeb900b"
+    },
+    {
+      "package_path": "mcp-queue/0014-choose-open.f118dadba8414a9fac8d60662d49f779.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0014-choose-open.f118dadba8414a9fac8d60662d49f779.input",
+      "bytes": 178,
+      "sha256": "1887a75a90d3a4f451592bffd85196329fae146999585bc7b2bf8735f57ff9b9"
+    },
+    {
+      "package_path": "mcp-queue/0014-choose-open.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0014-choose-open.request.json",
+      "bytes": 178,
+      "sha256": "1887a75a90d3a4f451592bffd85196329fae146999585bc7b2bf8735f57ff9b9"
+    },
+    {
+      "package_path": "mcp-queue/0015-choose-cancel.67ef5f28c8ac49e6a98a3613e22e0c1c.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0015-choose-cancel.67ef5f28c8ac49e6a98a3613e22e0c1c.input",
+      "bytes": 266,
+      "sha256": "a0c931168683c7749b566a987b6167710df092417a5b437691648309561a38f8"
+    },
+    {
+      "package_path": "mcp-queue/0015-choose-cancel.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0015-choose-cancel.request.json",
+      "bytes": 266,
+      "sha256": "a0c931168683c7749b566a987b6167710df092417a5b437691648309561a38f8"
+    },
+    {
+      "package_path": "mcp-queue/0016-choose-cancel-save.5ddce70b307d44c5b40058f74124b481.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0016-choose-cancel-save.5ddce70b307d44c5b40058f74124b481.input",
+      "bytes": 213,
+      "sha256": "b5a71d367cf177c5c4c3894f913a6437293a7df6f480e7c2e10101af11e43dc8"
+    },
+    {
+      "package_path": "mcp-queue/0016-choose-cancel-save.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0016-choose-cancel-save.request.json",
+      "bytes": 213,
+      "sha256": "b5a71d367cf177c5c4c3894f913a6437293a7df6f480e7c2e10101af11e43dc8"
+    },
+    {
+      "package_path": "mcp-queue/0017-choose-reopen.356be1e49bd64928824e5dc308297cd9.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0017-choose-reopen.356be1e49bd64928824e5dc308297cd9.input",
+      "bytes": 180,
+      "sha256": "6989db1dad1b9deeb8437c0977d18e23be714cc3863ab01313bcb3426e2cd242"
+    },
+    {
+      "package_path": "mcp-queue/0017-choose-reopen.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0017-choose-reopen.request.json",
+      "bytes": 180,
+      "sha256": "6989db1dad1b9deeb8437c0977d18e23be714cc3863ab01313bcb3426e2cd242"
+    },
+    {
+      "package_path": "mcp-queue/0018-choose-zhuxi.4fb378c69e7e447898cd8fbe37f026af.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0018-choose-zhuxi.4fb378c69e7e447898cd8fbe37f026af.input",
+      "bytes": 265,
+      "sha256": "d6389b9d76ea71751fed7af48539c99831051964233ef7008fd082fb4644cf21"
+    },
+    {
+      "package_path": "mcp-queue/0018-choose-zhuxi.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0018-choose-zhuxi.request.json",
+      "bytes": 265,
+      "sha256": "d6389b9d76ea71751fed7af48539c99831051964233ef7008fd082fb4644cf21"
+    },
+    {
+      "package_path": "mcp-queue/0019-zhuxi-save.db0551216f054df1938b3f4f318e8721.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0019-zhuxi-save.db0551216f054df1938b3f4f318e8721.input",
+      "bytes": 205,
+      "sha256": "cde33b365ad00e46302979e9924433ce8ba676b71f0865f538c107ddcb3d858d"
+    },
+    {
+      "package_path": "mcp-queue/0019-zhuxi-save.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0019-zhuxi-save.request.json",
+      "bytes": 205,
+      "sha256": "cde33b365ad00e46302979e9924433ce8ba676b71f0865f538c107ddcb3d858d"
+    },
+    {
+      "package_path": "mcp-queue/0020-zhuxi-practice-open.03971abfbe374202b195f305cee7c4c7.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0020-zhuxi-practice-open.03971abfbe374202b195f305cee7c4c7.input",
+      "bytes": 186,
+      "sha256": "4878a96aea9356db133c7c55fab53440eda8c3f673b5ed755e7ca4cfa8a0c617"
+    },
+    {
+      "package_path": "mcp-queue/0020-zhuxi-practice-open.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0020-zhuxi-practice-open.request.json",
+      "bytes": 186,
+      "sha256": "4878a96aea9356db133c7c55fab53440eda8c3f673b5ed755e7ca4cfa8a0c617"
+    },
+    {
+      "package_path": "mcp-queue/0021-zhuxi-practice-a.f834da9062e14f02b5767b8aa5fab1aa.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0021-zhuxi-practice-a.f834da9062e14f02b5767b8aa5fab1aa.input",
+      "bytes": 269,
+      "sha256": "3965543784c08c815a8a4afe4c71e0eeb3547939b82f232bf3297aac92f2a622"
+    },
+    {
+      "package_path": "mcp-queue/0021-zhuxi-practice-a.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0021-zhuxi-practice-a.request.json",
+      "bytes": 269,
+      "sha256": "3965543784c08c815a8a4afe4c71e0eeb3547939b82f232bf3297aac92f2a622"
+    },
+    {
+      "package_path": "mcp-queue/0022-practice-a-save.96f7d1324ab14b1e8e0ba1cd8cfed6dc.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0022-practice-a-save.96f7d1324ab14b1e8e0ba1cd8cfed6dc.input",
+      "bytes": 210,
+      "sha256": "5a8418c85712bb47cce0165f56552440571b9b6d96ac58fc72688c61c22d5fdc"
+    },
+    {
+      "package_path": "mcp-queue/0022-practice-a-save.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\0022-practice-a-save.request.json",
+      "bytes": 210,
+      "sha256": "5a8418c85712bb47cce0165f56552440571b9b6d96ac58fc72688c61c22d5fdc"
+    },
+    {
+      "package_path": "mcp-queue/9999-close.69c925b9b6c14e3a91d03213e6a0c1fe.input",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\9999-close.69c925b9b6c14e3a91d03213e6a0c1fe.input",
+      "bytes": 98,
+      "sha256": "fa21da3c1ed338e0905bc88936510993d535b17ad014be87b21f7143c7cfcc22"
+    },
+    {
+      "package_path": "mcp-queue/9999-close.request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\9999-close.request.json",
+      "bytes": 98,
+      "sha256": "fa21da3c1ed338e0905bc88936510993d535b17ad014be87b21f7143c7cfcc22"
+    },
+    {
+      "package_path": "mcp-queue/consumer-session.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\mcp-queue\\consumer-session.json",
+      "bytes": 818,
+      "sha256": "0d9b9ec5fc52ba436f021dfcc267ff45ab79b577f25b343906cf79ce022ffeaf"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0001-inspect.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0001-inspect.json",
+      "bytes": 2411,
+      "sha256": "758b23ae4b13af027b2f5745ba31f970207995182fe11a494a56f50bc8b3776e"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0002-attach.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0002-attach.json",
+      "bytes": 17362,
+      "sha256": "43bec117068bea07ed5d49e2cb2a623f21e4b28741662bc7632b8ad4a7c11a3b"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0003-checkpoint.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0003-checkpoint.json",
+      "bytes": 25544,
+      "sha256": "6a0c3a409c7fa0155226c4929a10096fc9511f097abab6a3fa445038d813ff36"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0004-snapshot.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0004-snapshot.json",
+      "bytes": 14411,
+      "sha256": "4c75a2e5895de742c309ef38a5f7ef640e3b4b754fdfa175a05f3b9c4d9273a9"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0005-event-select.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0005-event-select.json",
+      "bytes": 30845,
+      "sha256": "e096b78d4b534506dbf171d23d4da6068e87da1a79fcf1fc5ce69a06fefd83b8"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0006-checkpoint.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0006-checkpoint.json",
+      "bytes": 33513,
+      "sha256": "95824f01f299dad50937b9fb441936512a6b84cd73a7434fcddc206fa0199340"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0007-snapshot.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0007-snapshot.json",
+      "bytes": 18329,
+      "sha256": "0ac96cc8d299b375650824acd0882394aaad277584b8e0f4a9d49c9870228f0c"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0008-event-select.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0008-event-select.json",
+      "bytes": 38678,
+      "sha256": "66b8eec1fa771458179ff68bec85c27dd4d1ec0b548a00268c40ba47121c61b5"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0009-checkpoint.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0009-checkpoint.json",
+      "bytes": 41343,
+      "sha256": "444cd7316c7c98710bc1a363ce389607de1abbe94e2edd69ffd9279355f4e5e0"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0010-snapshot.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0010-snapshot.json",
+      "bytes": 22632,
+      "sha256": "e22443c9e5dc1795dd2d526bc15e8b4b38a60587b3a5710f7aa0201b808e417f"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0011-event-select.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0011-event-select.json",
+      "bytes": 46905,
+      "sha256": "80351cb751d7795ef8ac5667b322b65688b67e9f65af8706931c0db7281a381e"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0012-checkpoint.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0012-checkpoint.json",
+      "bytes": 49181,
+      "sha256": "e6d491bf0aa8d8af58a57caceacda87b3f1037240b8cf7913b738356005653da"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0013-snapshot.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0013-snapshot.json",
+      "bytes": 27200,
+      "sha256": "5d78c8d54fb310da129dae63f2370935dd7b1c74a489ecee4c0b2272bb9e5813"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0014-event-select.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0014-event-select.json",
+      "bytes": 55391,
+      "sha256": "be11cf45fa84b8affc02119f14edcb0a81adf835986c1964ede6461e387c46ed"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0015-checkpoint.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0015-checkpoint.json",
+      "bytes": 57015,
+      "sha256": "a59074629e867d2f498102d57c02859dc86dd7d64078f43e67f7c44428b03418"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0016-snapshot.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0016-snapshot.json",
+      "bytes": 31118,
+      "sha256": "fa560b2b858a90b744305bc065db9dc8f8b978093434399febf182c55a8c597a"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0017-event-select.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0017-event-select.json",
+      "bytes": 63228,
+      "sha256": "4f04a88e94d2a3c8029f27743302b1a716ec83f6dc86222a709b73c3dc1bedf7"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0018-checkpoint.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0018-checkpoint.json",
+      "bytes": 64856,
+      "sha256": "5548c12f9187cf79df4e2e161e64290ce633b4b7ef8cef3b1c8c0988782f84f3"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0019-snapshot.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0019-snapshot.json",
+      "bytes": 34388,
+      "sha256": "509306ef757af39192813679295de51ab3011ffa4c722afb9c49f530202fc380"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0020-event-select.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0020-event-select.json",
+      "bytes": 70418,
+      "sha256": "e4aa07e8e9191fc460176d5cbef8b814e1b8a0184e6b543e4bd4229c52ce90e7"
+    },
+    {
+      "package_path": "native-evidence/3528e02976184e56b7c75f3b261d34c5/0021-checkpoint.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\3528e02976184e56b7c75f3b261d34c5\\0021-checkpoint.json",
+      "bytes": 72696,
+      "sha256": "8e7e5a94acdc0a1890e0793df3d543537d56002e4dab40890181b7446dd2977d"
+    },
+    {
+      "package_path": "native-evidence/attach-claim.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\native-evidence\\attach-claim.json",
+      "bytes": 701,
+      "sha256": "be2b82b5e069afd5fbe07e1b51c409619d6c401b4632eab9b177cbe4e5ddbe36"
+    },
+    {
+      "package_path": "offline/steam-before.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\offline\\steam-before.png",
+      "bytes": 327564,
+      "sha256": "97e83d6d524d76cb6e72c4c062da103bbcd5ea90412125b9f0aaec2a06333fd8"
+    },
+    {
+      "package_path": "offline/steam-frame-freshness.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\offline\\steam-frame-freshness.json",
+      "bytes": 1143,
+      "sha256": "516001865e435daae61849ed1bc6d9d61754ec44f0f1212fe01ed014208c82c8"
+    },
+    {
+      "package_path": "offline/steam-moved.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\offline\\steam-moved.png",
+      "bytes": 327451,
+      "sha256": "1600185fb68e450457ab3eed10bb72bc36eda169158f15fd38b31139ec9c643d"
+    },
+    {
+      "package_path": "offline-reader-checks/r3-checkpoint-offline-20261004T052707-c51ce2d6/report.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\offline-reader-checks\\r3-checkpoint-offline-20261004T052707-c51ce2d6\\report.json",
+      "bytes": 655,
+      "sha256": "f9e80ceaf1f0a59992819022d93bcd63ce0056a51f71749854846df9e4550899"
+    },
+    {
+      "package_path": "offline-reader-checks/r3-checkpoint-offline-20261004T053914-e624b4f4/report.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\offline-reader-checks\\r3-checkpoint-offline-20261004T053914-e624b4f4\\report.json",
+      "bytes": 655,
+      "sha256": "3044692e1ca62fc12bcd0c85b149d6358669167d75267f0947cc8fc99345f295"
+    },
+    {
+      "package_path": "offline-reader-checks/r3-checkpoint-offline-20261004T054824-b56eeb18/report.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\offline-reader-checks\\r3-checkpoint-offline-20261004T054824-b56eeb18\\report.json",
+      "bytes": 655,
+      "sha256": "c85a6c61eda66f4e27743cacd49d51c062700bf03c4770c1367586fb891ff6c1"
+    },
+    {
+      "package_path": "permanent-target-mapping.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\permanent-target-mapping.json",
+      "bytes": 1066,
+      "sha256": "f79bb078d8316ca41d0659289fcd2d6b043a076c53b7e40e737b78b7a8d1d747"
+    },
+    {
+      "package_path": "preservation/baseline/preservation-39c49282a8954acb.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\preservation\\baseline\\preservation-39c49282a8954acb.json",
+      "bytes": 688,
+      "sha256": "d9f697f1811ed2143ccb8be09e53c4f988426905ab31ce2ddbe320bdabc5a96f"
+    },
+    {
+      "package_path": "preservation/choose-cancel/preservation-43a8c46ce42744c2.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\preservation\\choose-cancel\\preservation-43a8c46ce42744c2.json",
+      "bytes": 699,
+      "sha256": "16f9dc26d9882de7e475544206114176b023a274d48938e184b6e48800fba1f7"
+    },
+    {
+      "package_path": "preservation/final-practice/preservation-ce6fdec7cc8d4438.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\preservation\\final-practice\\preservation-ce6fdec7cc8d4438.json",
+      "bytes": 694,
+      "sha256": "d239b42f86d9d0cfef3ededddc61517f71f2134929ae5874e75804bead6852fd"
+    },
+    {
+      "package_path": "preservation/formal-entry/preservation-1e4e68fbc58b4bfd.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\preservation\\formal-entry\\preservation-1e4e68fbc58b4bfd.json",
+      "bytes": 692,
+      "sha256": "0efd8cc5ec45787f3693920407bd740aef50b01bb66fcf57aaf0ff711395d2e3"
+    },
+    {
+      "package_path": "preservation/original-confucian/preservation-02add6f8dbe24fc2.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\preservation\\original-confucian\\preservation-02add6f8dbe24fc2.json",
+      "bytes": 712,
+      "sha256": "044bf1e97b118a4239521bc31a2f1d9d20d240819a024a28f459b2d3501a7a19"
+    },
+    {
+      "package_path": "preservation/practice-cancel/preservation-958143e9395a4c7f.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\preservation\\practice-cancel\\preservation-958143e9395a4c7f.json",
+      "bytes": 701,
+      "sha256": "0ffb0d3790401d336e569631ede2e683de52f0bcd8e20ab4c5269c42b101d32f"
+    },
+    {
+      "package_path": "preservation/zhuxi-chosen/preservation-1c27fefd27324b83.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\preservation\\zhuxi-chosen\\preservation-1c27fefd27324b83.json",
+      "bytes": 692,
+      "sha256": "6159540e53b7d47e5b0b354bd2781ccb1691a38a392b82969a94d15870b106f7"
+    },
+    {
+      "package_path": "preserved-parser-failures/baseline-001/actual-faith-13.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\preserved-parser-failures\\baseline-001\\actual-faith-13.excerpt.txt",
+      "bytes": 4446,
+      "sha256": "545b512327fe3962ff86f1ba9a7c22ad12bec32682c0bd8516359e0f97e24817"
+    },
+    {
+      "package_path": "preserved-parser-failures/baseline-001/actual-player.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\preserved-parser-failures\\baseline-001\\actual-player.excerpt.txt",
+      "bytes": 6444,
+      "sha256": "88fcdaa0295a15d5a89a407972d590f7438f196d593fc79b280b9afb035b2023"
+    },
+    {
+      "package_path": "preserved-parser-failures/baseline-001/actual-rite-0.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\preserved-parser-failures\\baseline-001\\actual-rite-0.excerpt.txt",
+      "bytes": 4917,
+      "sha256": "9e7a814a438c2c2cffbc56b3c959586e619b6c0d2377c3109112824df23f886b"
+    },
+    {
+      "package_path": "preserved-parser-failures/baseline-001/faith-head-title-4.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\preserved-parser-failures\\baseline-001\\faith-head-title-4.excerpt.txt",
+      "bytes": 4838,
+      "sha256": "3d950bc99451037c4c7fa2a5c92234f48fa27a39ed111a73036f797ccdf073c5"
+    },
+    {
+      "package_path": "preserved-parser-failures/baseline-001/metadata.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\preserved-parser-failures\\baseline-001\\metadata.excerpt.txt",
+      "bytes": 32926,
+      "sha256": "e14f8228abdf7c69c68588a4de2339b04a301a1823f056f8a9fe5768d51aad1d"
+    },
+    {
+      "package_path": "preserved-parser-failures/baseline-001/played-character.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\preserved-parser-failures\\baseline-001\\played-character.excerpt.txt",
+      "bytes": 308,
+      "sha256": "4b37ef056dd73740bc7c8f5cc27ccb4a316f071235a34991d593a3edcb9b44ba"
+    },
+    {
+      "package_path": "preserved-parser-failures/failure-notes.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\preserved-parser-failures\\failure-notes.json",
+      "bytes": 970,
+      "sha256": "a0365547ef8a604c43d772f92dd04bbc062b986f4a29fc8c00be43682bbfec30"
+    },
+    {
+      "package_path": "primary-source-excerpts/00_bookmark_modifiers.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\primary-source-excerpts\\00_bookmark_modifiers.excerpt.txt",
+      "bytes": 202,
+      "sha256": "7a7c029848d94da2a7f0d4272e936a0d48ae521a64961924aecefbd3ccbf6312"
+    },
+    {
+      "package_path": "primary-source-excerpts/00_traits.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\primary-source-excerpts\\00_traits.excerpt.txt",
+      "bytes": 1515,
+      "sha256": "be55677ac70e7401dd7776e1eab345caad581e1d90ae204b5be5a84c6708d07c"
+    },
+    {
+      "package_path": "profile/guard-profile.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\profile\\guard-profile.json",
+      "bytes": 1929,
+      "sha256": "f4340b3ed442aca8c33f4882855968ecb5ef76873ea0c9122ab5d6c586ff73bb"
+    },
+    {
+      "package_path": "profile/lease.snapshot.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\profile\\lease.snapshot.json",
+      "bytes": 1277,
+      "sha256": "a3789a1f4a3012e5e19a7f41b488c1be3b22a9ffe7ecfd283ff2a6258d736113"
+    },
+    {
+      "package_path": "profile/native-profile.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\profile\\native-profile.json",
+      "bytes": 867,
+      "sha256": "13cbde42945b12009e7171d329e9d632af504ddd937b00ca9f6d5721d7f563b9"
+    },
+    {
+      "package_path": "profile/native-template.snapshot.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\profile\\native-template.snapshot.json",
+      "bytes": 865,
+      "sha256": "7b8904907f8a26c1fef79bf3e2b2a14714cdd93ccead2713b6b2cc9a3ed75e19"
+    },
+    {
+      "package_path": "profile/offline-frame.snapshot.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\profile\\offline-frame.snapshot.json",
+      "bytes": 1143,
+      "sha256": "516001865e435daae61849ed1bc6d9d61754ec44f0f1212fe01ed014208c82c8"
+    },
+    {
+      "package_path": "profile/offline-review.snapshot.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\profile\\offline-review.snapshot.json",
+      "bytes": 615,
+      "sha256": "7b8c84a6f48a31e2944abc1bf14de56af4caa61b053b752b236fdc8c1c545869"
+    },
+    {
+      "package_path": "profile/profile-build-receipt.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\profile\\profile-build-receipt.json",
+      "bytes": 3115,
+      "sha256": "48935ca4d10261ed1add0f840f6cec8f011586cd01f63e20769e2d1a29855c35"
+    },
+    {
+      "package_path": "profile/reviewed-actions.snapshot.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\profile\\reviewed-actions.snapshot.json",
+      "bytes": 441,
+      "sha256": "51a45107e2927aa53fde0bd96024a03fc901f550493801016fdf41ce1d2b4acf"
+    },
+    {
+      "package_path": "raw-hash-index.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\raw-hash-index.json",
+      "bytes": 237130,
+      "sha256": "5557f97ad6a8c93abf72f27fb298a482238d20cd452c31b9350d3f9d03d29a2f"
+    },
+    {
+      "package_path": "readbacks/baseline/actual-faith-13.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\baseline\\actual-faith-13.excerpt.txt",
+      "bytes": 4446,
+      "sha256": "545b512327fe3962ff86f1ba9a7c22ad12bec32682c0bd8516359e0f97e24817"
+    },
+    {
+      "package_path": "readbacks/baseline/actual-house.entries.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\baseline\\actual-house.entries.json",
+      "bytes": 645,
+      "sha256": "e9a2ca359d8bade7b8765a581541749e1863bdd8b089573baac7ac7effb3c789"
+    },
+    {
+      "package_path": "readbacks/baseline/actual-player.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\baseline\\actual-player.excerpt.txt",
+      "bytes": 6444,
+      "sha256": "88fcdaa0295a15d5a89a407972d590f7438f196d593fc79b280b9afb035b2023"
+    },
+    {
+      "package_path": "readbacks/baseline/actual-rite-0.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\baseline\\actual-rite-0.excerpt.txt",
+      "bytes": 4917,
+      "sha256": "9e7a814a438c2c2cffbc56b3c959586e619b6c0d2377c3109112824df23f886b"
+    },
+    {
+      "package_path": "readbacks/baseline/faith-head-title-4.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\baseline\\faith-head-title-4.excerpt.txt",
+      "bytes": 4838,
+      "sha256": "3d950bc99451037c4c7fa2a5c92234f48fa27a39ed111a73036f797ccdf073c5"
+    },
+    {
+      "package_path": "readbacks/baseline/metadata.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\baseline\\metadata.excerpt.txt",
+      "bytes": 32926,
+      "sha256": "e14f8228abdf7c69c68588a4de2339b04a301a1823f056f8a9fe5768d51aad1d"
+    },
+    {
+      "package_path": "readbacks/baseline/played-character.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\baseline\\played-character.excerpt.txt",
+      "bytes": 308,
+      "sha256": "4b37ef056dd73740bc7c8f5cc27ccb4a316f071235a34991d593a3edcb9b44ba"
+    },
+    {
+      "package_path": "readbacks/baseline/report.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\baseline\\report.json",
+      "bytes": 5046,
+      "sha256": "50f5393b95996572bfa207294e5ccd0de969b8824938e5e1951b70324a872d8b"
+    },
+    {
+      "package_path": "readbacks/choose-cancel/actual-faith-32.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\choose-cancel\\actual-faith-32.excerpt.txt",
+      "bytes": 2011,
+      "sha256": "709abf839642c59540d0dcaeadca64e4d5792b7e85857a32aaa4b5ce4a3c5f6b"
+    },
+    {
+      "package_path": "readbacks/choose-cancel/actual-house.entries.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\choose-cancel\\actual-house.entries.json",
+      "bytes": 645,
+      "sha256": "e9a2ca359d8bade7b8765a581541749e1863bdd8b089573baac7ac7effb3c789"
+    },
+    {
+      "package_path": "readbacks/choose-cancel/actual-player-v-entry-and-practice-cancel.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\choose-cancel\\actual-player-v-entry-and-practice-cancel.json",
+      "bytes": 975,
+      "sha256": "e88f5660a634f723e18eca8a1042ea83ec7b2d2929fd77b304348e8dbf524434"
+    },
+    {
+      "package_path": "readbacks/choose-cancel/actual-player.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\choose-cancel\\actual-player.excerpt.txt",
+      "bytes": 7651,
+      "sha256": "5cb27808e1907ca0d0b85f8544d661f81f79d3d546ad39a4e793e003221d561b"
+    },
+    {
+      "package_path": "readbacks/choose-cancel/actual-rite-150.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\choose-cancel\\actual-rite-150.excerpt.txt",
+      "bytes": 3381,
+      "sha256": "121e22e90f55084fae18b3c6261df59616db675036d1e4c71f40969ead6acce7"
+    },
+    {
+      "package_path": "readbacks/choose-cancel/metadata.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\choose-cancel\\metadata.excerpt.txt",
+      "bytes": 32926,
+      "sha256": "e14f8228abdf7c69c68588a4de2339b04a301a1823f056f8a9fe5768d51aad1d"
+    },
+    {
+      "package_path": "readbacks/choose-cancel/played-character.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\choose-cancel\\played-character.excerpt.txt",
+      "bytes": 308,
+      "sha256": "4b37ef056dd73740bc7c8f5cc27ccb4a316f071235a34991d593a3edcb9b44ba"
+    },
+    {
+      "package_path": "readbacks/choose-cancel/report.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\choose-cancel\\report.json",
+      "bytes": 6788,
+      "sha256": "3f723be9700aff9702b3b05309af1c71a3b2d065746c700ce2e3fcb53668c5f5"
+    },
+    {
+      "package_path": "readbacks/final-practice/actual-faith-32.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\final-practice\\actual-faith-32.excerpt.txt",
+      "bytes": 2011,
+      "sha256": "709abf839642c59540d0dcaeadca64e4d5792b7e85857a32aaa4b5ce4a3c5f6b"
+    },
+    {
+      "package_path": "readbacks/final-practice/actual-house.entries.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\final-practice\\actual-house.entries.json",
+      "bytes": 645,
+      "sha256": "e9a2ca359d8bade7b8765a581541749e1863bdd8b089573baac7ac7effb3c789"
+    },
+    {
+      "package_path": "readbacks/final-practice/actual-player.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\final-practice\\actual-player.excerpt.txt",
+      "bytes": 7844,
+      "sha256": "b1e39fc4e8724ae00f08fc4151af1a156b1020a2ff7f7ebd7f55f45d0774da65"
+    },
+    {
+      "package_path": "readbacks/final-practice/actual-rite-156.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\final-practice\\actual-rite-156.excerpt.txt",
+      "bytes": 3340,
+      "sha256": "181dd4db1b4adc23da56ec553d2fdd8132945b3b0649b7901ee3805cadf236ee"
+    },
+    {
+      "package_path": "readbacks/final-practice/final-saved-objects-002/report.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\final-practice\\final-saved-objects-002\\report.json",
+      "bytes": 3621,
+      "sha256": "220f0fad99017155294a4f16b7315fc464d3013377592cc0e31010b662ce7098"
+    },
+    {
+      "package_path": "readbacks/final-practice/final-saved-objects-002/rite-150.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\final-practice\\final-saved-objects-002\\rite-150.excerpt.txt",
+      "bytes": 3381,
+      "sha256": "121e22e90f55084fae18b3c6261df59616db675036d1e4c71f40969ead6acce7"
+    },
+    {
+      "package_path": "readbacks/final-practice/final-saved-objects-002/rite-151.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\final-practice\\final-saved-objects-002\\rite-151.excerpt.txt",
+      "bytes": 3336,
+      "sha256": "03298439c1f61d67ac2d524ab39803b53fd31c613e79af318f9d5ea10320d898"
+    },
+    {
+      "package_path": "readbacks/final-practice/final-saved-objects-002/rite-152.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\final-practice\\final-saved-objects-002\\rite-152.excerpt.txt",
+      "bytes": 3345,
+      "sha256": "70a0869bf950aea159db3ed2802ce9c649ff70b64c2e776c83e81e517d939a14"
+    },
+    {
+      "package_path": "readbacks/final-practice/final-saved-objects-002/rite-153.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\final-practice\\final-saved-objects-002\\rite-153.excerpt.txt",
+      "bytes": 3335,
+      "sha256": "0369df06cb02a19aa5067404ccbd8f4a48b3cdea0a5d317722d3efaab421e55b"
+    },
+    {
+      "package_path": "readbacks/final-practice/final-saved-objects-002/rite-154.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\final-practice\\final-saved-objects-002\\rite-154.excerpt.txt",
+      "bytes": 3330,
+      "sha256": "482c28f1da7813bfe4e830ff51a35b7d1f8dacf02f4d99fc16f6159047fd557d"
+    },
+    {
+      "package_path": "readbacks/final-practice/final-saved-objects-002/rite-155.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\final-practice\\final-saved-objects-002\\rite-155.excerpt.txt",
+      "bytes": 3330,
+      "sha256": "6471206678677b5be7ecdba7cdf7b7e8f585adc55b29aa802ab56f998bf392e2"
+    },
+    {
+      "package_path": "readbacks/final-practice/final-saved-objects-002/rite-156.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\final-practice\\final-saved-objects-002\\rite-156.excerpt.txt",
+      "bytes": 3340,
+      "sha256": "181dd4db1b4adc23da56ec553d2fdd8132945b3b0649b7901ee3805cadf236ee"
+    },
+    {
+      "package_path": "readbacks/final-practice/final-saved-objects-002/rite-157.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\final-practice\\final-saved-objects-002\\rite-157.excerpt.txt",
+      "bytes": 3328,
+      "sha256": "1e1693a65a1a7c4d3ac726835ffb58d392f46ae747575c462e6c589514182251"
+    },
+    {
+      "package_path": "readbacks/final-practice/final-saved-objects-002/trait-lookup.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\final-practice\\final-saved-objects-002\\trait-lookup.excerpt.txt",
+      "bytes": 4137,
+      "sha256": "94b8ccac1dba6ec0bb5b523d78867c1f3a8ffbdf134aee357e06b15c4c2b6f51"
+    },
+    {
+      "package_path": "readbacks/final-practice/metadata.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\final-practice\\metadata.excerpt.txt",
+      "bytes": 32926,
+      "sha256": "e14f8228abdf7c69c68588a4de2339b04a301a1823f056f8a9fe5768d51aad1d"
+    },
+    {
+      "package_path": "readbacks/final-practice/played-character.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\final-practice\\played-character.excerpt.txt",
+      "bytes": 308,
+      "sha256": "4b37ef056dd73740bc7c8f5cc27ccb4a316f071235a34991d593a3edcb9b44ba"
+    },
+    {
+      "package_path": "readbacks/final-practice/report.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\final-practice\\report.json",
+      "bytes": 6973,
+      "sha256": "1be2f621130e7335c062514fe1109c0984716833ddac223a3b2eca55054593d2"
+    },
+    {
+      "package_path": "readbacks/formal-entry/actual-faith-32.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\formal-entry\\actual-faith-32.excerpt.txt",
+      "bytes": 2011,
+      "sha256": "709abf839642c59540d0dcaeadca64e4d5792b7e85857a32aaa4b5ce4a3c5f6b"
+    },
+    {
+      "package_path": "readbacks/formal-entry/actual-house.entries.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\formal-entry\\actual-house.entries.json",
+      "bytes": 645,
+      "sha256": "e9a2ca359d8bade7b8765a581541749e1863bdd8b089573baac7ac7effb3c789"
+    },
+    {
+      "package_path": "readbacks/formal-entry/actual-player.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\formal-entry\\actual-player.excerpt.txt",
+      "bytes": 7651,
+      "sha256": "5cb27808e1907ca0d0b85f8544d661f81f79d3d546ad39a4e793e003221d561b"
+    },
+    {
+      "package_path": "readbacks/formal-entry/actual-rite-150.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\formal-entry\\actual-rite-150.excerpt.txt",
+      "bytes": 3381,
+      "sha256": "121e22e90f55084fae18b3c6261df59616db675036d1e4c71f40969ead6acce7"
+    },
+    {
+      "package_path": "readbacks/formal-entry/metadata.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\formal-entry\\metadata.excerpt.txt",
+      "bytes": 32926,
+      "sha256": "e14f8228abdf7c69c68588a4de2339b04a301a1823f056f8a9fe5768d51aad1d"
+    },
+    {
+      "package_path": "readbacks/formal-entry/played-character.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\formal-entry\\played-character.excerpt.txt",
+      "bytes": 308,
+      "sha256": "4b37ef056dd73740bc7c8f5cc27ccb4a316f071235a34991d593a3edcb9b44ba"
+    },
+    {
+      "package_path": "readbacks/formal-entry/report.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\formal-entry\\report.json",
+      "bytes": 6538,
+      "sha256": "50f97dd9325df02e7249827c0aa7466c23e6b02ce83ddc25d184ce9ad5baeaaa"
+    },
+    {
+      "package_path": "readbacks/original-confucian/actual-faith-31.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\original-confucian\\actual-faith-31.excerpt.txt",
+      "bytes": 2020,
+      "sha256": "6aa8f8276da7444748b181bf3a8fa5da4cdbd2c0c0b1861c8b0ff646cce3096e"
+    },
+    {
+      "package_path": "readbacks/original-confucian/actual-house.entries.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\original-confucian\\actual-house.entries.json",
+      "bytes": 645,
+      "sha256": "e9a2ca359d8bade7b8765a581541749e1863bdd8b089573baac7ac7effb3c789"
+    },
+    {
+      "package_path": "readbacks/original-confucian/actual-player.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\original-confucian\\actual-player.excerpt.txt",
+      "bytes": 7174,
+      "sha256": "25bf0775ddfae4cf12acee94733a92ca659d5dbb6d055246a7582098da8d8ab3"
+    },
+    {
+      "package_path": "readbacks/original-confucian/actual-rite-33.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\original-confucian\\actual-rite-33.excerpt.txt",
+      "bytes": 2851,
+      "sha256": "8c31dc61bd70faf7dedb8e71f45d6edb7449456ef429cd690b383bd12f581d3f"
+    },
+    {
+      "package_path": "readbacks/original-confucian/graph-v-baseline.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\original-confucian\\graph-v-baseline.json",
+      "bytes": 671564,
+      "sha256": "ea14e831b2be23fa3f12778946bbbc8b4bf9c9d7635cda8d1cf92f066801410e"
+    },
+    {
+      "package_path": "readbacks/original-confucian/metadata.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\original-confucian\\metadata.excerpt.txt",
+      "bytes": 32926,
+      "sha256": "e14f8228abdf7c69c68588a4de2339b04a301a1823f056f8a9fe5768d51aad1d"
+    },
+    {
+      "package_path": "readbacks/original-confucian/played-character.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\original-confucian\\played-character.excerpt.txt",
+      "bytes": 308,
+      "sha256": "4b37ef056dd73740bc7c8f5cc27ccb4a316f071235a34991d593a3edcb9b44ba"
+    },
+    {
+      "package_path": "readbacks/original-confucian/report.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\original-confucian\\report.json",
+      "bytes": 6436,
+      "sha256": "35201ff51c291a39a0c5d8a6e6ca0949678b4c943092764dd4b77a0561abe929"
+    },
+    {
+      "package_path": "readbacks/practice-cancel/actual-faith-32.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\practice-cancel\\actual-faith-32.excerpt.txt",
+      "bytes": 2011,
+      "sha256": "709abf839642c59540d0dcaeadca64e4d5792b7e85857a32aaa4b5ce4a3c5f6b"
+    },
+    {
+      "package_path": "readbacks/practice-cancel/actual-house.entries.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\practice-cancel\\actual-house.entries.json",
+      "bytes": 645,
+      "sha256": "e9a2ca359d8bade7b8765a581541749e1863bdd8b089573baac7ac7effb3c789"
+    },
+    {
+      "package_path": "readbacks/practice-cancel/actual-player.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\practice-cancel\\actual-player.excerpt.txt",
+      "bytes": 7651,
+      "sha256": "5cb27808e1907ca0d0b85f8544d661f81f79d3d546ad39a4e793e003221d561b"
+    },
+    {
+      "package_path": "readbacks/practice-cancel/actual-rite-150.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\practice-cancel\\actual-rite-150.excerpt.txt",
+      "bytes": 3381,
+      "sha256": "121e22e90f55084fae18b3c6261df59616db675036d1e4c71f40969ead6acce7"
+    },
+    {
+      "package_path": "readbacks/practice-cancel/metadata.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\practice-cancel\\metadata.excerpt.txt",
+      "bytes": 32926,
+      "sha256": "e14f8228abdf7c69c68588a4de2339b04a301a1823f056f8a9fe5768d51aad1d"
+    },
+    {
+      "package_path": "readbacks/practice-cancel/played-character.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\practice-cancel\\played-character.excerpt.txt",
+      "bytes": 308,
+      "sha256": "4b37ef056dd73740bc7c8f5cc27ccb4a316f071235a34991d593a3edcb9b44ba"
+    },
+    {
+      "package_path": "readbacks/practice-cancel/prestige-v-formal-entry.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\practice-cancel\\prestige-v-formal-entry.json",
+      "bytes": 648,
+      "sha256": "44e94233fa4e4f94bfff42306a130239870efac74f7072678d5c3240642a1a6b"
+    },
+    {
+      "package_path": "readbacks/practice-cancel/report.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\practice-cancel\\report.json",
+      "bytes": 6786,
+      "sha256": "c7b3b5f7335749ec826e2f56867a7356d328a0b74fa223b09bdb6f40ba5b8c70"
+    },
+    {
+      "package_path": "readbacks/zhuxi-chosen/actual-faith-32.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\zhuxi-chosen\\actual-faith-32.excerpt.txt",
+      "bytes": 2011,
+      "sha256": "709abf839642c59540d0dcaeadca64e4d5792b7e85857a32aaa4b5ce4a3c5f6b"
+    },
+    {
+      "package_path": "readbacks/zhuxi-chosen/actual-house.entries.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\zhuxi-chosen\\actual-house.entries.json",
+      "bytes": 645,
+      "sha256": "e9a2ca359d8bade7b8765a581541749e1863bdd8b089573baac7ac7effb3c789"
+    },
+    {
+      "package_path": "readbacks/zhuxi-chosen/actual-player.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\zhuxi-chosen\\actual-player.excerpt.txt",
+      "bytes": 7731,
+      "sha256": "14e571843d517fe1140bd5a9f4a9b59168574623d2193a52077865877baed3be"
+    },
+    {
+      "package_path": "readbacks/zhuxi-chosen/actual-rite-156.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\zhuxi-chosen\\actual-rite-156.excerpt.txt",
+      "bytes": 3340,
+      "sha256": "181dd4db1b4adc23da56ec553d2fdd8132945b3b0649b7901ee3805cadf236ee"
+    },
+    {
+      "package_path": "readbacks/zhuxi-chosen/metadata.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\zhuxi-chosen\\metadata.excerpt.txt",
+      "bytes": 32926,
+      "sha256": "e14f8228abdf7c69c68588a4de2339b04a301a1823f056f8a9fe5768d51aad1d"
+    },
+    {
+      "package_path": "readbacks/zhuxi-chosen/played-character.excerpt.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\zhuxi-chosen\\played-character.excerpt.txt",
+      "bytes": 308,
+      "sha256": "4b37ef056dd73740bc7c8f5cc27ccb4a316f071235a34991d593a3edcb9b44ba"
+    },
+    {
+      "package_path": "readbacks/zhuxi-chosen/report.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\zhuxi-chosen\\report.json",
+      "bytes": 6874,
+      "sha256": "bd9dfd19d09173fae320291cea1a83c52f8fbfe8683b73365f6285b19a998e99"
+    },
+    {
+      "package_path": "README.md",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\README.md",
+      "bytes": 1411,
+      "sha256": "38dd061f9ab6d68cb0a6392bc3a14ce8d72afc88d128a69db3d61df44c66fded"
+    },
+    {
+      "package_path": "report.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\report.json",
+      "bytes": 14536,
+      "sha256": "f1bc913810278d8bb4acd36d5febc957ab0cb48a3d82051c4a35eefadb2a344b"
+    },
+    {
+      "package_path": "run-root/0001-list.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0001-list.json",
+      "bytes": 102,
+      "sha256": "7b14e2c2dad1b3ee8ca830662bb28074cfa5e7cdc25de4da19f455d846c14cce"
+    },
+    {
+      "package_path": "run-root/0002-query.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0002-query.json",
+      "bytes": 164,
+      "sha256": "01266148a03e2781f010f8a83c13437751eb38a0b9c9ae558496726ca00de4a3"
+    },
+    {
+      "package_path": "run-root/0003-attach.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0003-attach.json",
+      "bytes": 166,
+      "sha256": "3ae3b5f83b448d7734eac9e2ba623de2709b4940555b6b55077b54c478a2989a"
+    },
+    {
+      "package_path": "run-root/0004-baseline-save.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0004-baseline-save.json",
+      "bytes": 207,
+      "sha256": "84d8beaa89fe4a3f490db48163c4cc0de3616848f1b2f599bfd7176ac534455c"
+    },
+    {
+      "package_path": "run-root/0005-after-fixture.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0005-after-fixture.json",
+      "bytes": 180,
+      "sha256": "1e42531376495d683b75e9d729ff9cbef0133ec09cd5b249f9923d9087ffbfde"
+    },
+    {
+      "package_path": "run-root/0006-fixture-ack.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0006-fixture-ack.json",
+      "bytes": 263,
+      "sha256": "9fb1a112d3991f66bf46ff79fa8faf040012aa56a9872661c81846480acfc7c6"
+    },
+    {
+      "package_path": "run-root/0007-original-confucian-save.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0007-original-confucian-save.json",
+      "bytes": 217,
+      "sha256": "e6be0b60e0d7b984e695745da6ca7780d1cf2560d73477aff5fb2c6e00572caa"
+    },
+    {
+      "package_path": "run-root/0008-after-formal-entry.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0008-after-formal-entry.json",
+      "bytes": 185,
+      "sha256": "d8f7d1c8dcaf2894ae5aa9acf8a8170476c333398def63f1d9bbca79be46d58d"
+    },
+    {
+      "package_path": "run-root/0009-welcome-ack.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0009-welcome-ack.json",
+      "bytes": 263,
+      "sha256": "44d18f37b0225859ee975a105a9d0a85958cde502d4c53d64949f66d5f5af7c0"
+    },
+    {
+      "package_path": "run-root/0010-formal-entry-save.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0010-formal-entry-save.json",
+      "bytes": 211,
+      "sha256": "4bd535bb87aff2bdc41727e005bcc9f507857c26c5a861a0a89b3e8cc92059c9"
+    },
+    {
+      "package_path": "run-root/0011-kongmen-practice-open.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0011-kongmen-practice-open.json",
+      "bytes": 188,
+      "sha256": "71cf5e9e7c2daaab80d5c73ea1164c18c4b52fa28b16f1b494f5b4a0a7dbd8cb"
+    },
+    {
+      "package_path": "run-root/0012-kongmen-practice-cancel.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0012-kongmen-practice-cancel.json",
+      "bytes": 276,
+      "sha256": "ad7191fa80d52b0d2c25c86f8aff8f2495a12fe8559e297731e18871e4c78df6"
+    },
+    {
+      "package_path": "run-root/0013-practice-cancel-save.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0013-practice-cancel-save.json",
+      "bytes": 215,
+      "sha256": "1767f2727acf93872f9c40d69e66c4b07e904621193b2d32748a0716bfeb900b"
+    },
+    {
+      "package_path": "run-root/0014-choose-open.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0014-choose-open.json",
+      "bytes": 178,
+      "sha256": "1887a75a90d3a4f451592bffd85196329fae146999585bc7b2bf8735f57ff9b9"
+    },
+    {
+      "package_path": "run-root/0015-choose-cancel.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0015-choose-cancel.json",
+      "bytes": 266,
+      "sha256": "a0c931168683c7749b566a987b6167710df092417a5b437691648309561a38f8"
+    },
+    {
+      "package_path": "run-root/0016-choose-cancel-save.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0016-choose-cancel-save.json",
+      "bytes": 213,
+      "sha256": "b5a71d367cf177c5c4c3894f913a6437293a7df6f480e7c2e10101af11e43dc8"
+    },
+    {
+      "package_path": "run-root/0017-choose-reopen.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0017-choose-reopen.json",
+      "bytes": 180,
+      "sha256": "6989db1dad1b9deeb8437c0977d18e23be714cc3863ab01313bcb3426e2cd242"
+    },
+    {
+      "package_path": "run-root/0018-choose-zhuxi.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0018-choose-zhuxi.json",
+      "bytes": 265,
+      "sha256": "d6389b9d76ea71751fed7af48539c99831051964233ef7008fd082fb4644cf21"
+    },
+    {
+      "package_path": "run-root/0019-zhuxi-save.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0019-zhuxi-save.json",
+      "bytes": 205,
+      "sha256": "cde33b365ad00e46302979e9924433ce8ba676b71f0865f538c107ddcb3d858d"
+    },
+    {
+      "package_path": "run-root/0020-zhuxi-practice-open.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0020-zhuxi-practice-open.json",
+      "bytes": 186,
+      "sha256": "4878a96aea9356db133c7c55fab53440eda8c3f673b5ed755e7ca4cfa8a0c617"
+    },
+    {
+      "package_path": "run-root/0021-zhuxi-practice-a.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0021-zhuxi-practice-a.json",
+      "bytes": 269,
+      "sha256": "3965543784c08c815a8a4afe4c71e0eeb3547939b82f232bf3297aac92f2a622"
+    },
+    {
+      "package_path": "run-root/0022-practice-a-save.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\0022-practice-a-save.json",
+      "bytes": 210,
+      "sha256": "5a8418c85712bb47cce0165f56552440571b9b6d96ac58fc72688c61c22d5fdc"
+    },
+    {
+      "package_path": "run-root/9999-close.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\9999-close.json",
+      "bytes": 98,
+      "sha256": "fa21da3c1ed338e0905bc88936510993d535b17ad014be87b21f7143c7cfcc22"
+    },
+    {
+      "package_path": "run-root/after-choose-cancel-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\after-choose-cancel-visible.json",
+      "bytes": 4304,
+      "sha256": "aa015c4f3be3f6d2e963ad8ddf8b0d8b85a0c9b733b1b2c48d47526f67947455"
+    },
+    {
+      "package_path": "run-root/after-choose-cancel-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\after-choose-cancel-visible.png",
+      "bytes": 2289593,
+      "sha256": "c36bdcccb719def25e264425cb2810b978d4b95b231b3d67862bc7e5952b4034"
+    },
+    {
+      "package_path": "run-root/after-practice-a-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\after-practice-a-visible.json",
+      "bytes": 4301,
+      "sha256": "7af8b8268b9508cc6c10787ae93ee54588f2f82cf7a00b00e80a02ec7b352936"
+    },
+    {
+      "package_path": "run-root/after-practice-a-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\after-practice-a-visible.png",
+      "bytes": 2287952,
+      "sha256": "54b72aa99d5c6a6d22ab131bd51dd54e32a444997d8cf95de008a42bf39a6630"
+    },
+    {
+      "package_path": "run-root/after-practice-cancel-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\after-practice-cancel-visible.json",
+      "bytes": 4306,
+      "sha256": "22a779b29d5e43a44b90e3d22c510ee330efad82884e8b016b4aa7d9d45fa71b"
+    },
+    {
+      "package_path": "run-root/after-practice-cancel-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\after-practice-cancel-visible.png",
+      "bytes": 2291046,
+      "sha256": "f8b53747115f063733526287c0cd392889820094e2c3407bbfcfce3a242a2553"
+    },
+    {
+      "package_path": "run-root/after-zhuxi-decisions-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\after-zhuxi-decisions-visible.json",
+      "bytes": 4306,
+      "sha256": "e26a9930c684ea00a77c32fc17d78db8b00aeaedc5f9175c9be4728dc68a9200"
+    },
+    {
+      "package_path": "run-root/after-zhuxi-decisions-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\after-zhuxi-decisions-visible.png",
+      "bytes": 2293364,
+      "sha256": "447eb2148ebd5e3a346243e381b457bc39a384659debfdfea198d199e4c58355"
+    },
+    {
+      "package_path": "run-root/campaign-ready.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\campaign-ready.json",
+      "bytes": 4291,
+      "sha256": "3a2df02cfb5180ee76f1b3c9d3e8859af1dd78d5054ab467529faa6c7c500ad1"
+    },
+    {
+      "package_path": "run-root/campaign-ready.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\campaign-ready.png",
+      "bytes": 2415506,
+      "sha256": "71e5a2faeb3251d05d248366eea272ff3e6f9c648d5c89ea9ba9bc46d070ab5b"
+    },
+    {
+      "package_path": "run-root/campaign-starting.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\campaign-starting.json",
+      "bytes": 4294,
+      "sha256": "368124c34b47a0c3e5c4791edcf9d6b119ed47cf7832251c49ba9b901ab66626"
+    },
+    {
+      "package_path": "run-root/campaign-starting.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\campaign-starting.png",
+      "bytes": 659009,
+      "sha256": "afc30737c30ae6be666e2ecae2578e630ce6c579fa765b96060d2a532d03650b"
+    },
+    {
+      "package_path": "run-root/choose-blocked-row-click.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\choose-blocked-row-click.png",
+      "bytes": 2217785,
+      "sha256": "ab7d74c2445f866c2b1f177562580998596cf3da7a58a098783c891a02702ff9"
+    },
+    {
+      "package_path": "run-root/choose-confirm-click.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\choose-confirm-click.png",
+      "bytes": 2108970,
+      "sha256": "d1b82f2f5400716a38a11842ab3600714d59fb7a330bf217bcd7000f032fbf64"
+    },
+    {
+      "package_path": "run-root/choose-confirm-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\choose-confirm-visible.json",
+      "bytes": 4299,
+      "sha256": "26f26f8d14509361e5d1496012148b7bad2de7220f8135980d024044b49a0e93"
+    },
+    {
+      "package_path": "run-root/choose-confirm-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\choose-confirm-visible.png",
+      "bytes": 2221529,
+      "sha256": "d894abf2cc20b35e36bfdd06ee6fd35c23f19dd1f2618de145c840f44a88ae1c"
+    },
+    {
+      "package_path": "run-root/choose-event-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\choose-event-visible.json",
+      "bytes": 4297,
+      "sha256": "def9d7f568ef51fea6cc2a966098af409cad2fa7c2374b424569d7e896a23269"
+    },
+    {
+      "package_path": "run-root/choose-event-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\choose-event-visible.png",
+      "bytes": 2168051,
+      "sha256": "1b9b641381a385efae116cd3b85a382118e3508e7ba446080258e756145d86ad"
+    },
+    {
+      "package_path": "run-root/choose-normal-robert.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\choose-normal-robert.png",
+      "bytes": 2240376,
+      "sha256": "23f4cd840b8d8ae2164d3103a13317cf4c463140b2b73955eb14df34046c9b6f"
+    },
+    {
+      "package_path": "run-root/choose-reopen-confirm-click.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\choose-reopen-confirm-click.png",
+      "bytes": 2203837,
+      "sha256": "cf000d595c0312e177d8ade9cb695d7a3612157be8a8b8fcbe49e6332c15dae8"
+    },
+    {
+      "package_path": "run-root/choose-reopen-confirm-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\choose-reopen-confirm-visible.json",
+      "bytes": 4306,
+      "sha256": "874819ca76f6b3918ba76a7851d8048317200e18ceff89fc1c229dcb3786f512"
+    },
+    {
+      "package_path": "run-root/choose-reopen-confirm-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\choose-reopen-confirm-visible.png",
+      "bytes": 2221107,
+      "sha256": "6268a467f6eea899caae13ea4e1f7d0ad17323906ca0cadf15f3f5e1ce1055fe"
+    },
+    {
+      "package_path": "run-root/choose-reopen-event-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\choose-reopen-event-visible.json",
+      "bytes": 4304,
+      "sha256": "2f902c642db38bbaa858935742bf0bd86ec6489621dbddd0926e981a78315880"
+    },
+    {
+      "package_path": "run-root/choose-reopen-event-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\choose-reopen-event-visible.png",
+      "bytes": 2167027,
+      "sha256": "aa5a76813832266c3de5b30a078178b7f5ac19481cf9d392be70232c6cd5e07d"
+    },
+    {
+      "package_path": "run-root/choose-reopen-row-click.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\choose-reopen-row-click.png",
+      "bytes": 2227930,
+      "sha256": "15c0b612c7c129d71b0c8e8d12d466c8318dc2b1b7e8d05d350ec64789ba9744"
+    },
+    {
+      "package_path": "run-root/choose-row-click.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\choose-row-click.png",
+      "bytes": 2216284,
+      "sha256": "5889898a248aa7dd144f3faf07ee760307e9820a7034701a705482ca95f406c1"
+    },
+    {
+      "package_path": "run-root/ck3-stderr.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\ck3-stderr.txt",
+      "bytes": 132,
+      "sha256": "2d979cdbfe9eed3ec4e84c0893899b0a437a6adb721095807ec5097c20804101"
+    },
+    {
+      "package_path": "run-root/ck3-stdout.txt",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\ck3-stdout.txt",
+      "bytes": 4760340,
+      "sha256": "7189bc296726716428d96efc7f32830800b7c00989cd9b9cf9798baa7371243f"
+    },
+    {
+      "package_path": "run-root/click-new-game.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\click-new-game.png",
+      "bytes": 2020181,
+      "sha256": "c6acc59cc56e19e36a568ea91fdd0c9c93f6ade9cd6a312c9b8ec6ae9ff47d0d"
+    },
+    {
+      "package_path": "run-root/collapse-important.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\collapse-important.png",
+      "bytes": 2290342,
+      "sha256": "7ae2022e745dabc10b1daea76a155cd3c1e1a5f9f8f4ae56dabda362152a1861"
+    },
+    {
+      "package_path": "run-root/compact_result.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\compact_result.py",
+      "bytes": 1206,
+      "sha256": "cc77b315529e0ba75ecb06ea1af61f07f694b277ae7040396ce72e8990a7efd7"
+    },
+    {
+      "package_path": "run-root/first-load.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\first-load.json",
+      "bytes": 4286,
+      "sha256": "e263f29a5df013f82b77662f4a3e8aa374ac0a8ba361f368a5b0e348155bf371"
+    },
+    {
+      "package_path": "run-root/first-load.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\first-load.png",
+      "bytes": 328348,
+      "sha256": "4c459630fe0140143728d4a2270150c57b091402ee7c9c750a57aae5e486893c"
+    },
+    {
+      "package_path": "run-root/fixture-confirm-click.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\fixture-confirm-click.png",
+      "bytes": 2255754,
+      "sha256": "fba2f872bdbdec2bc346adf16d0a488306deaa6151eb5c4c940d20e48d1b77b0"
+    },
+    {
+      "package_path": "run-root/fixture-confirm-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\fixture-confirm-visible.json",
+      "bytes": 4300,
+      "sha256": "08fce7c52f27ece0c82b0f6dcab7242ac471aed64ccfb8a5bee9a953f696478c"
+    },
+    {
+      "package_path": "run-root/fixture-confirm-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\fixture-confirm-visible.png",
+      "bytes": 2235949,
+      "sha256": "80f10669bdba34ea8bb86b159f6e5f138dcceba2c405a04446f525ff382780a1"
+    },
+    {
+      "package_path": "run-root/fixture-event-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\fixture-event-visible.json",
+      "bytes": 4298,
+      "sha256": "f2697948a2b427ceac324f79587454e6b108aad4a129776919d938b5487036aa"
+    },
+    {
+      "package_path": "run-root/fixture-event-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\fixture-event-visible.png",
+      "bytes": 2152499,
+      "sha256": "5c5eb70be1775f28f7fbb414b1ceb0af3f63b007a4eff034a3cb211d091c933e"
+    },
+    {
+      "package_path": "run-root/fixture-row-click.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\fixture-row-click.png",
+      "bytes": 2234665,
+      "sha256": "3bff5cf2f4ce1ff1b2b3c4950faf3d2f778fff6901639f8799f0d170d333a02f"
+    },
+    {
+      "package_path": "run-root/focus-game-taskbar.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\focus-game-taskbar.png",
+      "bytes": 1927486,
+      "sha256": "bfeac5bbbe187f2027db83d1ef1becdac2baeb2b6bc002e73b86c6ac4476998b"
+    },
+    {
+      "package_path": "run-root/focused-load.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\focused-load.json",
+      "bytes": 4289,
+      "sha256": "50dba6933aed9f4a2d98713b27637b95b6aec2b4de2f1663daf2b8a78b813608"
+    },
+    {
+      "package_path": "run-root/focused-load.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\focused-load.png",
+      "bytes": 1913044,
+      "sha256": "0b773c3db9375e6829411cf42a3995b719f617015f6a6e52b46ff2d41e895013"
+    },
+    {
+      "package_path": "run-root/formal-entry-confirm-click.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\formal-entry-confirm-click.png",
+      "bytes": 2195242,
+      "sha256": "7cead178d0fc9bef238f5f7e51871037a741b883d827f7bf714b4352f103f806"
+    },
+    {
+      "package_path": "run-root/formal-entry-confirm-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\formal-entry-confirm-visible.json",
+      "bytes": 4305,
+      "sha256": "7051553bbfb17ad5817779d0c8df75f19d434fdf678391eac2b27ea0283a600d"
+    },
+    {
+      "package_path": "run-root/formal-entry-confirm-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\formal-entry-confirm-visible.png",
+      "bytes": 2235445,
+      "sha256": "09f604592e0d7307ef17ddca56a812298363fcd628ab5769eb5ab40080e2ec6a"
+    },
+    {
+      "package_path": "run-root/formal-entry-row-click.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\formal-entry-row-click.png",
+      "bytes": 2229251,
+      "sha256": "28e754e54aa3587989eaff82e013d7b1ccf3a3eb6e22ad6e67281873c0e203c7"
+    },
+    {
+      "package_path": "run-root/formal-welcome-event-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\formal-welcome-event-visible.json",
+      "bytes": 4305,
+      "sha256": "7a6728ca499d40173731ccebf3083a4d83e5455cd26fded0b21dd553e11a4730"
+    },
+    {
+      "package_path": "run-root/formal-welcome-event-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\formal-welcome-event-visible.png",
+      "bytes": 2154113,
+      "sha256": "855d937b87bcd75fcf6f6c58e6beeb25ad0ad27a31df8ebfceb92300c88ddf56"
+    },
+    {
+      "package_path": "run-root/kongmen-practice-event-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\kongmen-practice-event-visible.json",
+      "bytes": 4307,
+      "sha256": "7e4827afa068e03cdb74b5dd126723f9e6d5235d8924bac9c6c8deda52c7e3a2"
+    },
+    {
+      "package_path": "run-root/kongmen-practice-event-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\kongmen-practice-event-visible.png",
+      "bytes": 2170206,
+      "sha256": "e7a4a878eee511e1e426f7a23e289bdbbf5c7c600266cf30484fec9f615f9ede"
+    },
+    {
+      "package_path": "run-root/kongmen-study-confirm-click.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\kongmen-study-confirm-click.png",
+      "bytes": 2052356,
+      "sha256": "4cf825f0d8ecb9f84b85f9fddaf2c121576526f6348cab7fda0a781381979440"
+    },
+    {
+      "package_path": "run-root/kongmen-study-confirm-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\kongmen-study-confirm-visible.json",
+      "bytes": 4306,
+      "sha256": "3ddfd05c42d711de75774489da3d61652dc449dcfd19569867ea6f40d7b0fc98"
+    },
+    {
+      "package_path": "run-root/kongmen-study-confirm-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\kongmen-study-confirm-visible.png",
+      "bytes": 2223085,
+      "sha256": "3561fb66d473c0a981ac99f539d81763a5ada46e653701b5f280b1ca40132240"
+    },
+    {
+      "package_path": "run-root/kongmen-study-row-click.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\kongmen-study-row-click.png",
+      "bytes": 2222178,
+      "sha256": "f324d9ee9adee86f98753b6b982427dcf507d8344e7a6ed0f7cc6be8c7025e5f"
+    },
+    {
+      "package_path": "run-root/launch.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\launch.json",
+      "bytes": 315,
+      "sha256": "13de9f42038c02edc438a272f41a6873ef53c3f7bb0eb4bad02c1cde3a74a5d3"
+    },
+    {
+      "package_path": "run-root/live-run-id.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\live-run-id.json",
+      "bytes": 371,
+      "sha256": "a7bf925aeea619bbeb7623a3158032dd828f9c93db185f80df6e22304e7a9a2e"
+    },
+    {
+      "package_path": "run-root/main-menu-loaded.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\main-menu-loaded.json",
+      "bytes": 4292,
+      "sha256": "7d135f6a2e2c50da622e0ea6df50f8cf16be8d29fff95f965b9cf9cf381791b1"
+    },
+    {
+      "package_path": "run-root/main-menu-loaded.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\main-menu-loaded.png",
+      "bytes": 476542,
+      "sha256": "57707fc1dc4ef156df8d6447df44feb4c6ec562483272383b5a45ff4843ccb67"
+    },
+    {
+      "package_path": "run-root/mcp_request.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\mcp_request.py",
+      "bytes": 1750,
+      "sha256": "f136d3b3cd3ae886c9b97914a2775df93cc637c364ab86c50dad71836ce0f8ad"
+    },
+    {
+      "package_path": "run-root/native-profile.template.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\native-profile.template.json",
+      "bytes": 734,
+      "sha256": "51aefd9352977f0f3323214598836dea10e7b2b5b75743bf2fdc10b4ee7420d7"
+    },
+    {
+      "package_path": "run-root/native-template.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\native-template.json",
+      "bytes": 865,
+      "sha256": "7b8904907f8a26c1fef79bf3e2b2a14714cdd93ccead2713b6b2cc9a3ed75e19"
+    },
+    {
+      "package_path": "run-root/new-game-screen.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\new-game-screen.json",
+      "bytes": 4292,
+      "sha256": "c486ed57e5eb661856d0fcfc30945b667ae399a3ac3d2dae4707fd1fa8025bf7"
+    },
+    {
+      "package_path": "run-root/new-game-screen.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\new-game-screen.png",
+      "bytes": 2269713,
+      "sha256": "5fb2535dc87155c1d86e8b329a4f13b911c263ac76ba74d2a12a5d11c238a5cc"
+    },
+    {
+      "package_path": "run-root/normal-exit-desktop-click.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\normal-exit-desktop-click.png",
+      "bytes": 1499170,
+      "sha256": "ced0388f109c3453725f9d4d4bbf9f65eb769a36f11444681832fb4d7f053445"
+    },
+    {
+      "package_path": "run-root/normal-exit-dialog-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\normal-exit-dialog-visible.json",
+      "bytes": 4303,
+      "sha256": "c44147de6886f74f3eabc7762684b7c6d6411a661834dd149ed2b8cef204d642"
+    },
+    {
+      "package_path": "run-root/normal-exit-dialog-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\normal-exit-dialog-visible.png",
+      "bytes": 1911419,
+      "sha256": "7007a658f2c9ff139e1b435645766b2669dba1ea53ad90fbc6c3c2a9de2ecb20"
+    },
+    {
+      "package_path": "run-root/normal-exit-process-check.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\normal-exit-process-check.json",
+      "bytes": 4302,
+      "sha256": "53001bec73a216bf3aebd528704e6b2ceb735815f818dcd977d38da3c75691c7"
+    },
+    {
+      "package_path": "run-root/normal-exit-process-check.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\normal-exit-process-check.png",
+      "bytes": 1499090,
+      "sha256": "78ed1b139ae470e74fcf837bd79f59bbbceeed40afeca1441657eb34d41b2cba"
+    },
+    {
+      "package_path": "run-root/normal-exit-window-click.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\normal-exit-window-click.png",
+      "bytes": 2009337,
+      "sha256": "b4f088179368b43302cc266fe5a7ddb79bd71490c3bb5c1855150af4aeb899c9"
+    },
+    {
+      "package_path": "run-root/normal-robert-selected.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\normal-robert-selected.json",
+      "bytes": 4299,
+      "sha256": "f0fbc2a01bde5d84f0d7b62b0836b247ebccc89061ee65649212edc858c65a32"
+    },
+    {
+      "package_path": "run-root/normal-robert-selected.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\normal-robert-selected.png",
+      "bytes": 2269746,
+      "sha256": "1604d2184f9049718df2057faed7e06ec8c2ce9b93d0d38f3682635099ccfcdd"
+    },
+    {
+      "package_path": "run-root/offline-reviewed.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\offline-reviewed.json",
+      "bytes": 615,
+      "sha256": "7b8c84a6f48a31e2944abc1bf14de56af4caa61b053b752b236fdc8c1c545869"
+    },
+    {
+      "package_path": "run-root/open-decisions.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\open-decisions.png",
+      "bytes": 2408118,
+      "sha256": "5ad1d9c8dd0c5d66a032fdbe126c31e3585d989f3d74786f4f64f73512f201f0"
+    },
+    {
+      "package_path": "run-root/original-confucian-decisions-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\original-confucian-decisions-visible.json",
+      "bytes": 4313,
+      "sha256": "cbfe831498c48473d4744b2c0d9f89419cee53e55ae9ed031f8e79eef27b9453"
+    },
+    {
+      "package_path": "run-root/original-confucian-decisions-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\original-confucian-decisions-visible.png",
+      "bytes": 2283823,
+      "sha256": "29e75402f28a96b5b3ac690ab0ce218eb0d9626d2b85532ea607152770915bde"
+    },
+    {
+      "package_path": "run-root/prelaunch-check.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\prelaunch-check.json",
+      "bytes": 1082,
+      "sha256": "34936896f619e971a0de8114b18a2871ab4fa8f0524ccb04bc4cb24f4e61ee97"
+    },
+    {
+      "package_path": "run-root/prelaunch-poll.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\prelaunch-poll.json",
+      "bytes": 71731,
+      "sha256": "9b3fb5e25b995c2f0fe0d80cb74cf03a69f8c4b08daa220dbd38110e7b175f7c"
+    },
+    {
+      "package_path": "run-root/PREPARED.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\PREPARED.json",
+      "bytes": 16721,
+      "sha256": "ed45eecc157a61d7d65d6b1c6c615edcab7e9006979263cc2bc6ae0019c886b6"
+    },
+    {
+      "package_path": "run-root/product-decisions-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\product-decisions-visible.json",
+      "bytes": 4302,
+      "sha256": "f365cba060eb6825c14e116f276e772b1ffce889c633a0f07a5fc20322495350"
+    },
+    {
+      "package_path": "run-root/product-decisions-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\product-decisions-visible.png",
+      "bytes": 2291893,
+      "sha256": "226994fe3bfd70341e1a1595b2567a8a93cd2f37165f2382ee19da8f69745356"
+    },
+    {
+      "package_path": "run-root/profile-request.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\profile-request.json",
+      "bytes": 965,
+      "sha256": "b07ce736de648f363ad2ede4c7d4c18407c45314ac46e8ce69a17413787131df"
+    },
+    {
+      "package_path": "run-root/regular-fixture-decision-list.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\regular-fixture-decision-list.json",
+      "bytes": 4306,
+      "sha256": "830bf3d5edb72c5e193810455ac2cd6bd276446fef7b3a8877a4fcbb7484729f"
+    },
+    {
+      "package_path": "run-root/regular-fixture-decision-list.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\regular-fixture-decision-list.png",
+      "bytes": 2302813,
+      "sha256": "6cc73e97247f6dbdc98a72ec46f10710536ef9023a41019f3d9f7f4019b5927c"
+    },
+    {
+      "package_path": "run-root/regular-fixture-list-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\regular-fixture-list-visible.json",
+      "bytes": 4305,
+      "sha256": "6353f97a6519f187630545416393ee1cd2ece626a322f8a6c04718247d2a532f"
+    },
+    {
+      "package_path": "run-root/regular-fixture-list-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\regular-fixture-list-visible.png",
+      "bytes": 2300763,
+      "sha256": "7bbe5f8c362f2ef5363df1e543587e8bfae3e5c456f2e608268c9295a5445d2a"
+    },
+    {
+      "package_path": "run-root/reviewed-actions.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\reviewed-actions.json",
+      "bytes": 441,
+      "sha256": "51a45107e2927aa53fde0bd96024a03fc901f550493801016fdf41ce1d2b4acf"
+    },
+    {
+      "package_path": "run-root/school-cooldown-blocked-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\school-cooldown-blocked-visible.json",
+      "bytes": 4308,
+      "sha256": "ebcb615457593bc8871459b933b73ba9a76a5ce9b47507ddeb53b3bba84b3bfe"
+    },
+    {
+      "package_path": "run-root/school-cooldown-blocked-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\school-cooldown-blocked-visible.png",
+      "bytes": 2224912,
+      "sha256": "eaa0aecba1b9ea2c66b0d59e55e2d5cda6ea52eb59406e2e37efebcbc8068ef3"
+    },
+    {
+      "package_path": "run-root/screen-register.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\screen-register.json",
+      "bytes": 1277,
+      "sha256": "a3789a1f4a3012e5e19a7f41b488c1be3b22a9ffe7ecfd283ff2a6258d736113"
+    },
+    {
+      "package_path": "run-root/semantic_request.py",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\semantic_request.py",
+      "bytes": 1201,
+      "sha256": "3b514f2123d76fe298d6ecedad8f9cd746f6a0b3576c7016825f79ed097cdf0e"
+    },
+    {
+      "package_path": "run-root/start-normal-campaign.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\start-normal-campaign.png",
+      "bytes": 2260518,
+      "sha256": "902a423f240ea7487ff53a5166cb9fc56cf7c3d6ada5c13b46f26c911745ed51"
+    },
+    {
+      "package_path": "run-root/study-blocked-row-click.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\study-blocked-row-click.png",
+      "bytes": 2218278,
+      "sha256": "7a0812cf3d9e93e7d99f8fa18afc52cbabfeca28b38d4c63548826744a51e215"
+    },
+    {
+      "package_path": "run-root/study-cooldown-blocked-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\study-cooldown-blocked-visible.json",
+      "bytes": 4307,
+      "sha256": "a44df0ccdd1afbecd00d0402e865bd5f4ad7ac4e867b75e8d76582d3abcbc7ce"
+    },
+    {
+      "package_path": "run-root/study-cooldown-blocked-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\study-cooldown-blocked-visible.png",
+      "bytes": 2222535,
+      "sha256": "f1088089e68e896db0344b89b79b1367cf2916a611ad07f2cd985f575b16b913"
+    },
+    {
+      "package_path": "run-root/zhuxi-practice-event-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\zhuxi-practice-event-visible.json",
+      "bytes": 4305,
+      "sha256": "3b75e5a532c8fc2aef4b798d4ccdcab9d8ede64888084e8db4a6a53c73cc0e02"
+    },
+    {
+      "package_path": "run-root/zhuxi-practice-event-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\zhuxi-practice-event-visible.png",
+      "bytes": 2172090,
+      "sha256": "15a6f7c810168a047be443ff426a6ade21cd14691772b56de487cc1bb26fc6a8"
+    },
+    {
+      "package_path": "run-root/zhuxi-study-confirm-click.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\zhuxi-study-confirm-click.png",
+      "bytes": 2054925,
+      "sha256": "1ad89ba3ced7fe106c70d52435193f95d3dc3d48d705f87912a6caa6b62a9b14"
+    },
+    {
+      "package_path": "run-root/zhuxi-study-confirm-visible.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\zhuxi-study-confirm-visible.json",
+      "bytes": 4304,
+      "sha256": "926778d11e154b33e969d8bb594287f2b798728e108e59fceb8f60bf8d84faeb"
+    },
+    {
+      "package_path": "run-root/zhuxi-study-confirm-visible.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\zhuxi-study-confirm-visible.png",
+      "bytes": 2221341,
+      "sha256": "ae6c14dc9f8c5297d967db3c6e05a993e07c10a0b9e52a0fccb3d9472eb3e3de"
+    },
+    {
+      "package_path": "run-root/zhuxi-study-row-click.png",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\run-root\\zhuxi-study-row-click.png",
+      "bytes": 2210266,
+      "sha256": "be4e301403f2aad4dd5c8f9a4eaa3b2608f19026a1e15e8b8190e4c23081548c"
+    }
+  ],
+  "count": 494,
+  "bytes": 142405708
+}

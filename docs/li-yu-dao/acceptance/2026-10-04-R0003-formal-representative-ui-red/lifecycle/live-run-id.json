@@ -1,0 +1,11 @@
+{
+  "schema": "xar.ck3-live-run-identity.v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0003",
+  "execution_id": "a5fd03c7-cc8d-457d-8870-5080d83c3b0d",
+  "machine_id": "bf-202609141645-5434332d4d",
+  "mod_key": "li-yu-dao",
+  "sequence": 3,
+  "allocated_at_utc": "2026-10-04T05:04:40.813671+00:00",
+  "allocator_pid": 11344,
+  "legacy_alias": null
+}

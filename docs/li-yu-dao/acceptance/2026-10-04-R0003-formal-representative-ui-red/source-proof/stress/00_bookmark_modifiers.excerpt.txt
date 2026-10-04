@@ -1,0 +1,7 @@
+24: guiscard_modifier = {
+25: 	icon = flame_positive
+26: 	army_maintenance_mult = -0.25
+27: 	enemy_hostile_scheme_success_chance_add = -25
+28: 	ai_war_cooldown = -1
+29: 	ai_war_chance = 10
+30: }

@@ -1,0 +1,181 @@
+		0={
+			rite_type=roman_rite			faith=13
+			founder=4294967295
+			head_of_rite=30490
+			origin_rite=4294967295
+			data={
+				tag="roman_rite"
+				name="罗马礼"
+				adjective="罗马礼"
+				adherent="罗马礼基督徒"
+				adherent_plural="罗马礼基督徒"
+				desc="罗马礼是罗马教会的礼仪传统，由拉丁神学与教会法权体系塑造，着重恪守圣事规仪、圣职圣统与制度上的统一。"
+				color=rgb { 204 204 153 }
+				icon=""
+				texticon=""
+				graphical_faith=""
+				piety_icon_group=""
+				tenet_background_icon=""
+				tenet_heretical_background_icon=""
+				tenet_neutral_background_icon=""
+				tenet_unknown_background_icon=""
+				fervor=50
+				religious_head=4294967295
+				tenets={ {
+						tenet=tenet_peace_of_god						status=core
+					}
+ {
+						tenet=tenet_dulia						status=permitted
+					}
+ {
+						tenet=tenet_transubstantiation						status=permitted
+					}
+ {
+						tenet=tenet_ora_et_labora						status=permitted
+					}
+ {
+						tenet=tenet_hyperdulia						status=permitted
+					}
+ {
+						tenet=tenet_simony						status=prohibited
+					}
+ {
+						tenet=tenet_monophysitism						status=prohibited
+					}
+ {
+						tenet=tenet_acts_of_apostles						status=permitted
+					}
+ {
+						tenet=tenet_purgatory						status=known
+					}
+ {
+						tenet=tenet_be_fruitful_and_multiply						status=permitted
+					}
+ {
+						tenet=tenet_apostolic_succession						status=core
+					}
+ {
+						tenet=tenet_confession						status=permitted
+					}
+ {
+						tenet=tenet_original_sin						status=permitted
+					}
+ {
+						tenet=tenet_celestial_hierarchy						status=permitted
+					}
+ {
+						tenet=tenet_miles_christi						status=permitted
+					}
+ {
+						tenet=tenet_philanthropia						status=permitted
+					}
+ {
+						tenet=tenet_adoptionism						status=prohibited
+					}
+ {
+						tenet=tenet_love_thy_neighbour						status=permitted
+					}
+ {
+						tenet=tenet_divine_liturgy						status=permitted
+					}
+ {
+						tenet=tenet_miaphysitism						status=prohibited
+					}
+ {
+						tenet=tenet_hesychasm						status=known
+					}
+ {
+						tenet=tenet_anachoresis						status=permitted
+					}
+ {
+						tenet=tenet_mortification_of_the_flesh						status=permitted
+					}
+ {
+						tenet=tenet_aniconism						status=known
+					}
+ {
+						tenet=tenet_communal_identity						status=permitted
+					}
+ {
+						tenet=tenet_communion						status=core
+					}
+ {
+						tenet=tenet_gnosticism						status=prohibited
+					}
+ {
+						tenet=tenet_pentarchy						status=prohibited
+					}
+ {
+						tenet=tenet_vows_of_poverty						status=permitted
+					}
+ {
+						tenet=tenet_adaptive						status=permitted
+					}
+ {
+						tenet=tenet_esotericism						status=known
+					}
+ {
+						tenet=tenet_legalism						status=known
+					}
+ {
+						tenet=tenet_literalism						status=known
+					}
+ {
+						tenet=tenet_religious_legal_pronouncements						status=known
+					}
+ {
+						tenet=tenet_asceticism						status=permitted
+					}
+ {
+						tenet=tenet_ritual_celebrations						status=known
+					}
+ {
+						tenet=tenet_sanctity_of_nature						status=known
+					}
+ {
+						tenet=tenet_natural_primitivism						status=prohibited
+					}
+ {
+						tenet=tenet_polyamory						status=prohibited
+					}
+ }
+				tenet=tenet_peace_of_god
+				tenet=tenet_apostolic_succession
+				tenet=tenet_communion
+				doctrine=abrahamic_hostility_doctrine
+				doctrine=doctrine_monogamy
+				doctrine=doctrine_divorce_approval
+				doctrine=doctrine_bastardry_legitimization
+				doctrine=doctrine_homosexuality_shunned
+				doctrine=doctrine_deviancy_crime
+				doctrine=doctrine_adultery_men_shunned
+				doctrine=doctrine_adultery_women_crime
+				doctrine=doctrine_kinslaying_close_kin_crime
+				doctrine=doctrine_witchcraft_crime
+				doctrine=doctrine_gender_male_dominated
+				doctrine=doctrine_consanguinity_aunt_nephew_and_uncle_niece
+				doctrine=doctrine_pluralism_righteous
+				doctrine=doctrine_theocracy_temporal
+				doctrine=doctrine_spiritual_head
+				doctrine=doctrine_clerical_function_taxation
+				doctrine=doctrine_clerical_gender_male_only
+				doctrine=doctrine_clerical_marriage_disallowed
+				doctrine=doctrine_clerical_succession_conditional
+				doctrine=doctrine_pilgrimage_encouraged
+				doctrine=doctrine_funeral_stoic
+				doctrine=doctrine_imperial_anointment
+				doctrine=doctrine_monotheist
+				doctrine=doctrine_scriptural
+				doctrine=doctrine_monasticism_accepted
+				doctrine=doctrine_sacraments_central
+				doctrine=special_doctrine_is_christian_faith
+				doctrine=special_doctrine_ecumenical_christian
+				doctrine=special_doctrine_has_clerical_electors
+				doctrine=special_doctrine_is_western_christian_faith
+			}
+			convert=yes
+			enabled=yes
+			override_name=no
+			source=historical
+			cultures={ 131 132 133 136 137 }
+		}

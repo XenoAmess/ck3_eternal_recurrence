@@ -1,0 +1,43 @@
+[
+  {
+    "key": "name",
+    "value": "\"dynn_Hauteville\""
+  },
+  {
+    "key": "prefix",
+    "value": "\"dynnp_de\""
+  },
+  {
+    "key": "found_date",
+    "value": "980.1.1"
+  },
+  {
+    "key": "head_of_house",
+    "value": "31254"
+  },
+  {
+    "key": "dynasty",
+    "value": "174"
+  },
+  {
+    "key": "historical",
+    "value": [
+      {
+        "key": null,
+        "value": "26696"
+      },
+      {
+        "key": null,
+        "value": "29882"
+      },
+      {
+        "key": null,
+        "value": "31254"
+      }
+    ]
+  },
+  {
+    "key": "motto",
+    "value": "\"dynn_Hauteville_motto\""
+  }
+]

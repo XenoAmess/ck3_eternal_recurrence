@@ -1,0 +1,8 @@
+{
+  "schema": "ck3.lyd.r3-projection-mapping.v1",
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-permanent-projection-001",
+  "target": "docs/li-yu-dao/acceptance/2026-10-04-R0003-formal-representative-ui-red",
+  "copy": "one-to-one relative paths; root owns tracked import",
+  "tracked_import_performed": false,
+  "full_external_package_unchanged": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001"
+}

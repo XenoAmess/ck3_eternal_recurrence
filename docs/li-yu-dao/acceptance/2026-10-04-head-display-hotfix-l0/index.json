@@ -1,0 +1,143 @@
+{
+  "schema": "lyd.acceptance-index.v1",
+  "external_original": "C:\\workspace\\ck3_lyd_runtime_20261004\\display-hotfix-l0-001",
+  "product_l0": "GREEN",
+  "live": "NOT_RUN",
+  "files": [
+    {
+      "path": "build-check.command.json",
+      "size": 844,
+      "sha256": "0e80acb044cbf5602211c7cc845abc597acbc31a648badbe5bb634fa7c120207"
+    },
+    {
+      "path": "build-check.stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build-check.stdout.txt",
+      "size": 273,
+      "sha256": "ab3d25e3a5ccd98b63b5a8809a7586af68579aa0030c93e535398cebddb7fc50"
+    },
+    {
+      "path": "content-generated-check.command.json",
+      "size": 866,
+      "sha256": "c4dddd5aa79978c45d15e892f0e32f3f86e50f05d4f6e6384f2d26c9e4a6fd96"
+    },
+    {
+      "path": "content-generated-check.stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "content-generated-check.stdout.txt",
+      "size": 541,
+      "sha256": "157865262a1916b2a1b57807d665ffbbb6739d973eb351ec7eb998e94697733e"
+    },
+    {
+      "path": "launcher-settings.snapshot.json",
+      "size": 1335,
+      "sha256": "9cd6ff96f8092f2d21e1491b37e8344aa287faf69850563128ca1b117244a214"
+    },
+    {
+      "path": "processes.command.json",
+      "size": 625,
+      "sha256": "4f8cc7af409c8ae8d550794eb421e85c80e2f2799ba3e5eb986e676a0850db55"
+    },
+    {
+      "path": "processes.stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "processes.stdout.txt",
+      "size": 10139,
+      "sha256": "dbd170fc0096df365f8a50db5b7641db7bfa73e27b8bed2a2cfa07f9f3255666"
+    },
+    {
+      "path": "report.json",
+      "size": 11671,
+      "sha256": "464e6d4a0060fc1c9c446d101b2a16a4520666b9fff442f791277199f4d126e1"
+    },
+    {
+      "path": "runner-tests.command.json",
+      "size": 758,
+      "sha256": "147ba58e1596b4f1cd7a93442b69e581214bc0b213e777e9420aa63aa2ccb26f"
+    },
+    {
+      "path": "runner-tests.stderr.txt",
+      "size": 109,
+      "sha256": "f8648a510a15d7c052e7cf1ba921ccd533671ca57cd7d21b6cb5e10896ec58db"
+    },
+    {
+      "path": "runner-tests.stdout.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runtime-generated-check.command.json",
+      "size": 869,
+      "sha256": "8b524a7542e27049250cbad022f5832ee7e7c5d2260d0ee177f92e7088ea28ea"
+    },
+    {
+      "path": "runtime-generated-check.stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runtime-generated-check.stdout.txt",
+      "size": 48,
+      "sha256": "f0da31221e1241f5df80c5ef5abb76bf06e1c4b4417db4e4e30f2390d5798e31"
+    },
+    {
+      "path": "source-inputs.after.json",
+      "size": 9013,
+      "sha256": "368b90dd2fa62e73d475421b999cd88299273f14923960dba0f5470db1ab8690"
+    },
+    {
+      "path": "source-inputs.before.json",
+      "size": 9013,
+      "sha256": "368b90dd2fa62e73d475421b999cd88299273f14923960dba0f5470db1ab8690"
+    },
+    {
+      "path": "static-report.json",
+      "size": 2627,
+      "sha256": "822232ae3747eeb2ce04cca87122a8396f173b44d214f0d4a39f1a4686a3e1a5"
+    },
+    {
+      "path": "static.command.json",
+      "size": 929,
+      "sha256": "ea75e5f8f95235111444ee0863bf67f2b20fda79b2fe7c1363c7b59bf1c2f681"
+    },
+    {
+      "path": "static.stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "static.stdout.txt",
+      "size": 2627,
+      "sha256": "822232ae3747eeb2ce04cca87122a8396f173b44d214f0d4a39f1a4686a3e1a5"
+    },
+    {
+      "path": "tool-tests.command.json",
+      "size": 753,
+      "sha256": "ecdb2dd989553ed34ec489d68d9fc7d469c6676c937cbe0129cecf5574e88cde"
+    },
+    {
+      "path": "tool-tests.stderr.txt",
+      "size": 107,
+      "sha256": "a40d828a9104f6a69f7b0042bdc89c7864140887f6afcdcffbd0805c32bf5572"
+    },
+    {
+      "path": "tool-tests.stdout.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "command.json",
+      "size": 961,
+      "sha256": "4d76bf10a23d946f1caa19f3d5239b70db3de277f7c1ea8850cec46b23f11936"
+    }
+  ]
+}
