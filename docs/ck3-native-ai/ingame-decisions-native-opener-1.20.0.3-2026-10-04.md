@@ -62,3 +62,12 @@ current-master 本次尚未另编译整份 DLL，不能用旧 frozen candidate �
 完整实际报告 SHA `8890a05f0dd22753bbfed543932d436f5bd3e7fd468874dcc6e112df7612409d`，核心与 GUI 首段先后分开保全。
 source/DLL/生产 mounts/原生 wire/MCP calls/claim/result 和 current Steam 离线 nonce 证据均绑定该 run；闭合 CAS1992。
 下一施工入口是稳定 decision key→实际 row/DataContext→Take，再证明产品生产 bridge 的内层 panel 可见；本能力不覆盖该后段。
+
+## 官方 CI 回读（2026-10-04）
+
+已推送集成提交 `8de49e5c74e6b24cc1ba6ce31ed4683ccd6f3cde` 的
+[Official Runner CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37173194206)
+在 03:14:22 UTC 完成，结论为 success；`static` job 的 head SHA 与该提交一致并成功。
+只读回执为 `C:/workspace/ck3-upgrade-20261004/white-opener-ci-agent-01/ci-final-packet-01.json`，SHA
+`6b7c8764cbdc109e745e0edcd5e0222fdde76d6747206420dcf973e6a3270ca1`。
+此为官方 Windows 静态门禁信用，不增加 current-master 整份 native DLL 的构建或实机信用。
