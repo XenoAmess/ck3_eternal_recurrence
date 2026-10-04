@@ -2,12 +2,5 @@
 
 namespace = sxad
 
-# Read-only detail event: no immediate, after, experience effect or variable write.
-sxad.1 = {
-    type = character_event
-    title = sxad.1.t
-    desc = sxad.1.desc
-    theme = intrigue
-    left_portrait = { character = scope:sxad_view_subject animation = idle }
-    option = { name = sxad.1.a }
-}
+# Experience queries use the native interface toast in sxad_interactions.txt.
+# No event window, event options or character state changes are required.

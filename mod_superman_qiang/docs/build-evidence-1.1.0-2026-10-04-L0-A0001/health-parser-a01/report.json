@@ -1,0 +1,60 @@
+{
+  "schema": "sxad.health-parser-precheck.v1",
+  "jar": {
+    "path": "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+    "size": 365313,
+    "sha256": "7262e771ad3e1f5d724d663ac259a20e2a7df0c491d4c125f56cb4c3a604e75c"
+  },
+  "open_kaishek_head": "890b32de49081b7b5510e40c5518dfb59d5c8a6d",
+  "source_inputs": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\gen_runtime.py",
+      "size": 20478,
+      "sha256": "729baabf63d0057fc46c458b9d95329f9e1c864a30c7357f25bd806ed7b38c6e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\runtime_data.py",
+      "size": 4116,
+      "sha256": "a5ac79b55e74fafe279f8bf2ea14cc2d1c5c74ccb2b9252a623135aeeaba9f1a"
+    }
+  ],
+  "argv": [
+    "java",
+    "-jar",
+    "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+    "batch",
+    "--file",
+    "D:\\ck3-superman-ui-health-1.1.0-20261004\\health-parser-a01\\manifest.jsonl",
+    "--stop-on-error"
+  ],
+  "exit_code": 0,
+  "stdout": "{\"id\":\"sxad_probe\",\"line\":1,\"exitCode\":0,\"result\":{\"status\":\"PARSED\",\"bytes\":11141,\"tokens\":2706,\"blocks\":134,\"diagnostics\":[],\"roundTrip\":true}}\n{\"id\":\"sxad_transfer\",\"line\":2,\"exitCode\":0,\"result\":{\"status\":\"PARSED\",\"bytes\":11906,\"tokens\":3803,\"blocks\":217,\"diagnostics\":[],\"roundTrip\":true}}\n{\"id\":\"sxad_values\",\"line\":3,\"exitCode\":0,\"result\":{\"status\":\"PARSED\",\"bytes\":5341,\"tokens\":1861,\"blocks\":101,\"diagnostics\":[],\"roundTrip\":true}}\n{\"id\":\"sxad_modifiers\",\"line\":4,\"exitCode\":0,\"result\":{\"status\":\"PARSED\",\"bytes\":2339,\"tokens\":663,\"blocks\":28,\"diagnostics\":[],\"roundTrip\":true}}\n",
+  "stderr": "",
+  "inputs": [
+    {
+      "path": "D:\\ck3-superman-ui-health-1.1.0-20261004\\health-parser-a01\\sxad_probe.txt",
+      "size": 11144,
+      "sha256": "e4d6e1d40b552440a5f5042d1d6833337cfb1b55565504e1cd5dea4ef12ab7cd"
+    },
+    {
+      "path": "D:\\ck3-superman-ui-health-1.1.0-20261004\\health-parser-a01\\sxad_transfer.txt",
+      "size": 11909,
+      "sha256": "7991c7000897755735fad9d6785ee3840811b3ad958a155675b9d67918a59458"
+    },
+    {
+      "path": "D:\\ck3-superman-ui-health-1.1.0-20261004\\health-parser-a01\\sxad_values.txt",
+      "size": 5344,
+      "sha256": "fd7c4dfad2de83a6bcd7a3d0ab303835ead7a103abe5d954f0bb2e5a82b94a7d"
+    },
+    {
+      "path": "D:\\ck3-superman-ui-health-1.1.0-20261004\\health-parser-a01\\sxad_modifiers.txt",
+      "size": 2342,
+      "sha256": "c21257a41a0b83428b0840ea198bd62581d1b02879235a86d056bc98d81bf995"
+    }
+  ],
+  "coverage": "Text parse and roundTrip only. Fixed-point 75-tick balance/modifier values and health/current scope evaluation require live native/save readback.",
+  "runtime_semantics": "UNSUPPORTED",
+  "ck3_started": false,
+  "save_mutated": false,
+  "network_used": false
+}

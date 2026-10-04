@@ -1,0 +1,10 @@
+test_descriptor_workshop_id_and_unreviewed_runtime_are_rejected (__main__.SupermanReleaseTests.test_descriptor_workshop_id_and_unreviewed_runtime_are_rejected) ... ok
+test_existing_attempt_and_wrong_product_tag_are_rejected (__main__.SupermanReleaseTests.test_existing_attempt_and_wrong_product_tag_are_rejected) ... ok
+test_manifest_and_archive_are_byte_reproducible (__main__.SupermanReleaseTests.test_manifest_and_archive_are_byte_reproducible) ... ok
+test_mutated_staging_is_rejected_even_with_same_file_size (__main__.SupermanReleaseTests.test_mutated_staging_is_rejected_even_with_same_file_size) ... ok
+test_release_has_exact_allowlist_and_excludes_source_and_fixture_assets (__main__.SupermanReleaseTests.test_release_has_exact_allowlist_and_excludes_source_and_fixture_assets) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 3.092s
+
+OK

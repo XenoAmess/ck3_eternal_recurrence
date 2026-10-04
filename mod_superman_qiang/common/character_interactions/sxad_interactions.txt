@@ -20,8 +20,14 @@ sxad_view_experience_interaction = {
     on_accept = {
         custom_tooltip = sxad_view_experience_interaction_accept_tt
         hidden_effect = {
-            scope:recipient = { save_scope_as = sxad_view_subject }
-            scope:actor = { trigger_event = sxad.1 }
+            scope:actor = {
+                send_interface_toast = {
+                    type = event_toast_effect_neutral
+                    title = sxad_view_experience_toast_title
+                    left_icon = scope:recipient
+                    custom_tooltip = sxad_view_experience_toast_details
+                }
+            }
         }
     }
     ai_will_do = { base = 0 }

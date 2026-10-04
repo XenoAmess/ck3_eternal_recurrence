@@ -1,0 +1,1600 @@
+{
+  "schema": "sxad.health-design-sources.v1",
+  "product_version_target": "1.1.0",
+  "game_version": "1.20.0.3",
+  "steam_build": 25652598,
+  "native_runtime": "PENDING",
+  "source_research_scope": "read-only files and PE RTTI; no process or desktop access",
+  "selected_parameters": {
+    "health_delta": "0.00075",
+    "health_delta_q100000": 75,
+    "health_signed_balance_min": "-1000000",
+    "health_signed_balance_max": "1000000",
+    "donor_health_min": "3.00075",
+    "receiver_balance_precondition_max": "999999.99925",
+    "donor_balance_precondition_min": "-999999.99925",
+    "scriptvalue_health_syntax": "value = health",
+    "scriptvalue_health_evidence": "schema common operations plus vanilla subtract = health; new live pending"
+  },
+  "month_scale_derivation": {
+    "age_anchor": 25,
+    "annual_probability_anchor": "0.075",
+    "per_failed_roll_health_loss": "0.125",
+    "monthly_expected_decline_anchor": "0.00078125",
+    "selected_delta": "0.00075",
+    "below_anchor_fraction": "0.04",
+    "actual_lifespan_cap_guaranteed": false
+  },
+  "primary_source_records": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\00_defines.txt",
+      "bytes": 125400,
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "excerpts": [
+        {
+          "first": 113,
+          "last": 115,
+          "lines": [
+            {
+              "line": 113,
+              "text": "\tRANDOM_CHARACTER_MIN_HEALTH = 4.0"
+            },
+            {
+              "line": 114,
+              "text": "\tRANDOM_CHARACTER_MAX_HEALTH = 5.0"
+            },
+            {
+              "line": 115,
+              "text": "\tRANDOM_CHARACTER_AGE_MIN_HEALTH = 2.5 # This is the minimum starting base health characters get after adjustments for age"
+            }
+          ]
+        },
+        {
+          "first": 150,
+          "last": 150,
+          "lines": [
+            {
+              "line": 150,
+              "text": "\tBASE_HEALTH = 5.0"
+            }
+          ]
+        },
+        {
+          "first": 192,
+          "last": 205,
+          "lines": [
+            {
+              "line": 192,
+              "text": "\tHEALTH_STATE_LEVELS_VALUES = {"
+            },
+            {
+              "line": 193,
+              "text": "\t\t0.0"
+            },
+            {
+              "line": 194,
+              "text": "\t\t1.0"
+            },
+            {
+              "line": 195,
+              "text": "\t\t3.0"
+            },
+            {
+              "line": 196,
+              "text": "\t\t5.0"
+            },
+            {
+              "line": 197,
+              "text": "\t\t7.0"
+            },
+            {
+              "line": 198,
+              "text": "\t}"
+            },
+            {
+              "line": 199,
+              "text": "\tHEALTH_STATE_LEVELS_TEXTS = {"
+            },
+            {
+              "line": 200,
+              "text": "\t\t\"HEALTH_DYING\""
+            },
+            {
+              "line": 201,
+              "text": "\t\t\"HEALTH_NEAR_DEATH\""
+            },
+            {
+              "line": 202,
+              "text": "\t\t\"HEALTH_POOR\""
+            },
+            {
+              "line": 203,
+              "text": "\t\t\"HEALTH_FINE\""
+            },
+            {
+              "line": 204,
+              "text": "\t\t\"HEALTH_GOOD\""
+            },
+            {
+              "line": 205,
+              "text": "\t\t\"HEALTH_EXCELLENT\""
+            }
+          ]
+        },
+        {
+          "first": 325,
+          "last": 338,
+          "lines": [
+            {
+              "line": 325,
+              "text": "NOldAge = {"
+            },
+            {
+              "line": 326,
+              "text": "\tLOWER_HEALTH_START_AGE = 25 # At this age characters start getting the chance to lose health each year"
+            },
+            {
+              "line": 327,
+              "text": "\tLOWER_HEALTH_BASE_CHANCE = 0.075 # This is the base chance of losing health at the START_AGE"
+            },
+            {
+              "line": 328,
+              "text": "\tLOWER_HEALTH_YEARLY_INCREASE = 0.022 # This is the yearly increase of the chance to lose health"
+            },
+            {
+              "line": 329,
+              "text": "\tLOWER_HEALTH_AMOUNT = -0.125 # This is the health change on each failed yearly health roll"
+            },
+            {
+              "line": 330,
+              "text": "\tHEALTH_PENALTY_PER_YEAR_IN_POOL = 0.1 # For each year in the pool, your effective health is this much lower. This disappears entirely when you leave the pool"
+            },
+            {
+              "line": 331,
+              "text": "\tELDERLY_POOL_HEALTH_PENALTY = 2.0 # Elderly characters in the pool will have their effective health reduced by this amount for death checks"
+            },
+            {
+              "line": 332,
+              "text": ""
+            },
+            {
+              "line": 333,
+              "text": "\t# This DIE values are used with a quadratic chance."
+            },
+            {
+              "line": 334,
+              "text": "\tDIE_HEALTH_TRESHOLD = 3.0 # Characters have a chance to die each month they have less health than this"
+            },
+            {
+              "line": 335,
+              "text": "\tDIE_HEALTH_CHANCE_ZERO = 0.25 # This is the month chance that a character dies at zero health (or lower)"
+            },
+            {
+              "line": 336,
+              "text": ""
+            },
+            {
+              "line": 337,
+              "text": "\tDEATH_MINIMUM_DELAY = 15 # If marked for death, they will die at least this many days after the check"
+            },
+            {
+              "line": 338,
+              "text": "\tDEATH_MAXIMUM_DELAY = 20 # If marked for death, they will die no more than this many days after the check. With these numbers, that means if someone becomes deathly ill, they have a high chance of dying between 7 and 40 days (30 days from the death check) after contracting the health penalty"
+            }
+          ]
+        },
+        {
+          "first": 387,
+          "last": 389,
+          "lines": [
+            {
+              "line": 387,
+              "text": "\tNEWBORN_HEALTH_BASE = 4.5"
+            },
+            {
+              "line": 388,
+              "text": "\tNEWBORN_HEALTH_SPAN = 0.5"
+            },
+            {
+              "line": 389,
+              "text": "\tNEWBORN_HEALTH_FEMALE_BONUS = 0.5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "excerpts": [
+        {
+          "first": 1535,
+          "last": 1543,
+          "lines": [
+            {
+              "line": 1535,
+              "text": "excellent_health = 7"
+            },
+            {
+              "line": 1536,
+              "text": "good_health = 5"
+            },
+            {
+              "line": 1537,
+              "text": "medium_health = 4"
+            },
+            {
+              "line": 1538,
+              "text": "fine_health = 3 #The names of these should be updated to match the defines (HEALTH_STATE_LEVELS_VALUES, HEALTH_STATE_LEVELS_TEXTS)"
+            },
+            {
+              "line": 1539,
+              "text": "poor_health = 1"
+            },
+            {
+              "line": 1540,
+              "text": "dying_health = 0"
+            },
+            {
+              "line": 1541,
+              "text": ""
+            },
+            {
+              "line": 1542,
+              "text": "death_chance_starts_health = 3"
+            },
+            {
+              "line": 1543,
+              "text": "death_chance_dying_health = 1.5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\10_health_values.txt",
+      "bytes": 15014,
+      "sha256": "787d22ed5a482e2abaf5bd6f7a4a2ef257f77fc3b0636104108a62020fb7e90a",
+      "excerpts": [
+        {
+          "first": 1,
+          "last": 4,
+          "lines": [
+            {
+              "line": 1,
+              "text": "# Dependencies:"
+            },
+            {
+              "line": 2,
+              "text": "#\t_basic_values.txt"
+            },
+            {
+              "line": 3,
+              "text": ""
+            },
+            {
+              "line": 4,
+              "text": "# When their health drop too low and they're slated for death, a character will die within 15-50 days (based on DEATH_MAXIMUM_DELAY , DEATH_MINIMUM_DELAY and DEATH_CHECK_INTERVAL in defines)"
+            }
+          ]
+        },
+        {
+          "first": 21,
+          "last": 26,
+          "lines": [
+            {
+              "line": 21,
+              "text": ""
+            },
+            {
+              "line": 22,
+              "text": "### RECOVERY TIMES ###"
+            },
+            {
+              "line": 23,
+              "text": "minimum_recovery_time = 51 #Needs to be higher than 50 (the longest amount of days between health change and death, so that a character can't recover before they're slated to be checked for death)"
+            },
+            {
+              "line": 24,
+              "text": ""
+            },
+            {
+              "line": 25,
+              "text": "ill_recovery_min = minimum_recovery_time"
+            },
+            {
+              "line": 26,
+              "text": "ill_recovery_max = 365"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\_modifiers.info",
+      "bytes": 920,
+      "sha256": "530ffc0e27d061c716d417d6f726d6227a7ea573f1c0073d61c71eaf6e090800",
+      "excerpts": [
+        {
+          "first": 12,
+          "last": 23,
+          "lines": [
+            {
+              "line": 12,
+              "text": "\t# Modifier can have scale that'll be calculated once when effect assigns a modifier, and later"
+            },
+            {
+              "line": 13,
+              "text": "\t# remains unchanged for the entire modifier duration"
+            },
+            {
+              "line": 14,
+              "text": "\tscale = {"
+            },
+            {
+              "line": 15,
+              "text": ""
+            },
+            {
+              "line": 16,
+              "text": "\t\t# Scripted value - can be named value or direct math here"
+            },
+            {
+              "line": 17,
+              "text": "\t\t# Root scope is the object that's going to get the modifier"
+            },
+            {
+              "line": 18,
+              "text": "\t\t# Scripted value top level description will be added to modifier description"
+            },
+            {
+              "line": 19,
+              "text": "\t\tvalue = scale_scripted_value"
+            },
+            {
+              "line": 20,
+              "text": ""
+            },
+            {
+              "line": 21,
+              "text": "\t\t# Loc key that's used for base level entry, to show alongside with the scaled value"
+            },
+            {
+              "line": 22,
+              "text": "\t\tdesc = base_value_description"
+            },
+            {
+              "line": 23,
+              "text": "\t}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\07_ep3_modifiers.txt",
+      "bytes": 64603,
+      "sha256": "c4a7815e1d5f787699ffc4705a6f39ab742796e3493fce979e348f90147c4a9b",
+      "excerpts": [
+        {
+          "first": 1791,
+          "last": 1829,
+          "lines": [
+            {
+              "line": 1791,
+              "text": "laamp_decision_church_health_modifier = {"
+            },
+            {
+              "line": 1792,
+              "text": "\ticon = treatment_positive"
+            },
+            {
+              "line": 1793,
+              "text": "\thealth = 0.1"
+            },
+            {
+              "line": 1794,
+              "text": "\tfertility = 0.1"
+            },
+            {
+              "line": 1795,
+              "text": ""
+            },
+            {
+              "line": 1796,
+              "text": "\tscale = {"
+            },
+            {
+              "line": 1797,
+              "text": "\t\tvalue = {"
+            },
+            {
+              "line": 1798,
+              "text": "\t\t\tvalue = 0"
+            },
+            {
+              "line": 1799,
+              "text": "\t\t\tif = {"
+            },
+            {
+              "line": 1800,
+              "text": "\t\t\t\tlimit = { exists = var:1041_healer_aptitude }"
+            },
+            {
+              "line": 1801,
+              "text": "\t\t\t\tadd = var:1041_healer_aptitude"
+            },
+            {
+              "line": 1802,
+              "text": "\t\t\t\tmin = 1"
+            },
+            {
+              "line": 1803,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 1804,
+              "text": "\t\t}"
+            },
+            {
+              "line": 1805,
+              "text": "\t\tdesc = MODIFIER_DEFINITION_VALUE_PER_PHYSICIAN_APTITUDE"
+            },
+            {
+              "line": 1806,
+              "text": "\t\tdisplay_mode = scaled"
+            },
+            {
+              "line": 1807,
+              "text": "\t}"
+            },
+            {
+              "line": 1808,
+              "text": "}"
+            },
+            {
+              "line": 1809,
+              "text": ""
+            },
+            {
+              "line": 1810,
+              "text": "laamp_decision_church_health_partner_modifier = {"
+            },
+            {
+              "line": 1811,
+              "text": "\ticon = treatment_positive"
+            },
+            {
+              "line": 1812,
+              "text": "\thealth = 0.1"
+            },
+            {
+              "line": 1813,
+              "text": "\tfertility = 0.1"
+            },
+            {
+              "line": 1814,
+              "text": ""
+            },
+            {
+              "line": 1815,
+              "text": "\tscale = {"
+            },
+            {
+              "line": 1816,
+              "text": "\t\tvalue = {"
+            },
+            {
+              "line": 1817,
+              "text": "\t\t\tvalue = 0"
+            },
+            {
+              "line": 1818,
+              "text": "\t\t\tif = {"
+            },
+            {
+              "line": 1819,
+              "text": "\t\t\t\tlimit = { exists = var:1041_partner_healer_aptitude }"
+            },
+            {
+              "line": 1820,
+              "text": "\t\t\t\tadd = {"
+            },
+            {
+              "line": 1821,
+              "text": "\t\t\t\t\tvalue = var:1041_partner_healer_aptitude"
+            },
+            {
+              "line": 1822,
+              "text": "\t\t\t\t\tmin = 1"
+            },
+            {
+              "line": 1823,
+              "text": "\t\t\t\t\tmultiply = 0.9"
+            },
+            {
+              "line": 1824,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 1825,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 1826,
+              "text": "\t\t}"
+            },
+            {
+              "line": 1827,
+              "text": "\t\tdesc = MODIFIER_DEFINITION_VALUE_PER_PHYSICIAN_APTITUDE"
+            },
+            {
+              "line": 1828,
+              "text": "\t\tdisplay_mode = scaled"
+            },
+            {
+              "line": 1829,
+              "text": "\t}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_activity_tours_modifiers.txt",
+      "bytes": 6852,
+      "sha256": "5c65ad4f093077e93ba57a3ce1cd06546d2df058a102a1afdadcda913d363370",
+      "excerpts": [
+        {
+          "first": 191,
+          "last": 205,
+          "lines": [
+            {
+              "line": 191,
+              "text": ""
+            },
+            {
+              "line": 192,
+              "text": "festival_2080_red_fertility_bad = {"
+            },
+            {
+              "line": 193,
+              "text": "\ticon = fertility_negative"
+            },
+            {
+              "line": 194,
+              "text": "\tfertility = -0.2"
+            },
+            {
+              "line": 195,
+              "text": "}"
+            },
+            {
+              "line": 196,
+              "text": ""
+            },
+            {
+              "line": 197,
+              "text": "festival_2080_blue_health_bad = {"
+            },
+            {
+              "line": 198,
+              "text": "\ticon = health_negative"
+            },
+            {
+              "line": 199,
+              "text": "\thealth = -0.1"
+            },
+            {
+              "line": 200,
+              "text": "}"
+            },
+            {
+              "line": 201,
+              "text": ""
+            },
+            {
+              "line": 202,
+              "text": "festival_2080_blue_stress = {"
+            },
+            {
+              "line": 203,
+              "text": "\ticon = stress_positive"
+            },
+            {
+              "line": 204,
+              "text": "\tstress_gain_mult = -0.15"
+            },
+            {
+              "line": 205,
+              "text": "}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_artifact_modifiers.txt",
+      "bytes": 79092,
+      "sha256": "06495c2f0b39634895f9587a4f3fb26725183d913851d4ea1ec6f4d3b8efe059",
+      "excerpts": [
+        {
+          "first": 797,
+          "last": 813,
+          "lines": [
+            {
+              "line": 797,
+              "text": "artifact_health_penalty_1_modifier = { health = -0.10 }"
+            },
+            {
+              "line": 798,
+              "text": "artifact_health_gain_0_5_modifier = { health = 0.05 }"
+            },
+            {
+              "line": 799,
+              "text": "artifact_health_gain_1_modifier = { health = 0.10 }"
+            },
+            {
+              "line": 800,
+              "text": "artifact_health_gain_2_modifier = { health = 0.15 }"
+            },
+            {
+              "line": 801,
+              "text": "artifact_health_gain_3_modifier = { health = 0.20 }"
+            },
+            {
+              "line": 802,
+              "text": "artifact_health_gain_4_modifier = { health = 0.25 }"
+            },
+            {
+              "line": 803,
+              "text": ""
+            },
+            {
+              "line": 804,
+              "text": "artifact_life_expectancy_1_modifier = { life_expectancy = 0.1 }"
+            },
+            {
+              "line": 805,
+              "text": "#artifact_life_expectancy_2_modifier = { life_expectancy = 0.2 }"
+            },
+            {
+              "line": 806,
+              "text": "artifact_life_expectancy_3_modifier = { life_expectancy = 0.3 }"
+            },
+            {
+              "line": 807,
+              "text": ""
+            },
+            {
+              "line": 808,
+              "text": "artifact_negate_withering_mind_1_modifier = { trait_track_withering_mind_xp_gain_mult = -0.025 }"
+            },
+            {
+              "line": 809,
+              "text": ""
+            },
+            {
+              "line": 810,
+              "text": "artifact_negate_health_penalty_add_1_modifier = { negate_health_penalty_add = 0.1 }"
+            },
+            {
+              "line": 811,
+              "text": "artifact_negate_health_penalty_add_2_modifier = { negate_health_penalty_add = 0.2 }"
+            },
+            {
+              "line": 812,
+              "text": "artifact_negate_health_penalty_add_3_modifier = { negate_health_penalty_add = 0.5 }"
+            },
+            {
+              "line": 813,
+              "text": "artifact_negate_health_penalty_add_4_modifier = { negate_health_penalty_add = 1 }"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\20_health_triggers.txt",
+      "bytes": 23193,
+      "sha256": "2846f0591e692814a907bb111c161bb8124798af5a972bd2d3344de69799c883",
+      "excerpts": [
+        {
+          "first": 25,
+          "last": 56,
+          "lines": [
+            {
+              "line": 25,
+              "text": "# Will this character suffer age-related health issues, factoring how healthy they actually are vs. what their age is?"
+            },
+            {
+              "line": 26,
+              "text": "age_ranked_health_vulnerability_threshold_trigger = {"
+            },
+            {
+              "line": 27,
+              "text": "\tOR = {"
+            },
+            {
+              "line": 28,
+              "text": "\t\t# If you're already having problems..."
+            },
+            {
+              "line": 29,
+              "text": "\t\thas_trait = infirm"
+            },
+            {
+              "line": 30,
+              "text": "\t\t# Otherwise, we check health crossed against age."
+            },
+            {
+              "line": 31,
+              "text": "\t\t## Characters that are this old are vulnerable regardless of health."
+            },
+            {
+              "line": 32,
+              "text": "\t\tage >= 80"
+            },
+            {
+              "line": 33,
+              "text": "\t\t## Else, the higher your health is, the older you need to be to suffer age-related health problems."
+            },
+            {
+              "line": 34,
+              "text": "\t\tAND = {"
+            },
+            {
+              "line": 35,
+              "text": "\t\t\thealth <= good_health"
+            },
+            {
+              "line": 36,
+              "text": "\t\t\tage >= 70"
+            },
+            {
+              "line": 37,
+              "text": "\t\t}"
+            },
+            {
+              "line": 38,
+              "text": "\t\tAND = {"
+            },
+            {
+              "line": 39,
+              "text": "\t\t\thealth <= medium_health"
+            },
+            {
+              "line": 40,
+              "text": "\t\t\tage >= 60"
+            },
+            {
+              "line": 41,
+              "text": "\t\t}"
+            },
+            {
+              "line": 42,
+              "text": "\t\tAND = {"
+            },
+            {
+              "line": 43,
+              "text": "\t\t\thealth <= fine_health"
+            },
+            {
+              "line": 44,
+              "text": "\t\t\tage >= 50"
+            },
+            {
+              "line": 45,
+              "text": "\t\t}"
+            },
+            {
+              "line": 46,
+              "text": "\t\tAND = {"
+            },
+            {
+              "line": 47,
+              "text": "\t\t\thealth <= poor_health"
+            },
+            {
+              "line": 48,
+              "text": "\t\t\tage >= 40"
+            },
+            {
+              "line": 49,
+              "text": "\t\t}"
+            },
+            {
+              "line": 50,
+              "text": "\t\tAND = {"
+            },
+            {
+              "line": 51,
+              "text": "\t\t\thealth <= dying_health"
+            },
+            {
+              "line": 52,
+              "text": "\t\t\tage >= 30"
+            },
+            {
+              "line": 53,
+              "text": "\t\t}"
+            },
+            {
+              "line": 54,
+              "text": "\t}"
+            },
+            {
+              "line": 55,
+              "text": "\tNOT = { has_trait_with_flag = is_immortal }"
+            },
+            {
+              "line": 56,
+              "text": "}"
+            }
+          ]
+        },
+        {
+          "first": 761,
+          "last": 773,
+          "lines": [
+            {
+              "line": 761,
+              "text": "sick_enough_for_relative_to_care_trigger = {"
+            },
+            {
+              "line": 762,
+              "text": "\t#For this list of diseases, you need to be dying"
+            },
+            {
+              "line": 763,
+              "text": "\ttrigger_if = {"
+            },
+            {
+              "line": 764,
+              "text": "\t\tlimit = {"
+            },
+            {
+              "line": 765,
+              "text": "\t\t\texists = scope:disease_type"
+            },
+            {
+              "line": 766,
+              "text": "\t\t\tminor_disease_flag_for_notification_trigger = yes"
+            },
+            {
+              "line": 767,
+              "text": "\t\t}"
+            },
+            {
+              "line": 768,
+              "text": "\t\thealth < death_chance_dying_health"
+            },
+            {
+              "line": 769,
+              "text": "\t}"
+            },
+            {
+              "line": 770,
+              "text": "\t#For all others we always notify"
+            },
+            {
+              "line": 771,
+              "text": "\ttrigger_else = {"
+            },
+            {
+              "line": 772,
+              "text": "\t\talways = yes"
+            },
+            {
+              "line": 773,
+              "text": "\t}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_nonwar_metrics.hpp",
+      "bytes": 2901,
+      "sha256": "191c93e4e893050bd893d888526ae79eff7c0eb0c147244d760313d889c685b1",
+      "excerpts": [
+        {
+          "first": 10,
+          "last": 15,
+          "lines": [
+            {
+              "line": 10,
+              "text": "inline constexpr std::uintptr_t kCampaignRootMonthlyGoldIncomeRva = 0x2BCA960;"
+            },
+            {
+              "line": 11,
+              "text": "// Exact 1.20.0.3 resource-vector getter. Only its gold slot is projected."
+            },
+            {
+              "line": 12,
+              "text": "inline constexpr std::uintptr_t kCampaignRootMaxMonthlyMaintenanceRva12003 ="
+            },
+            {
+              "line": 13,
+              "text": "    0x2C152D0;"
+            },
+            {
+              "line": 14,
+              "text": "inline constexpr std::uintptr_t kCampaignRootHealthRva = 0x28C6500;"
+            },
+            {
+              "line": 15,
+              "text": "inline constexpr std::uintptr_t kCampaignRootDomainSizeRva = 0x28B7200;"
+            }
+          ]
+        },
+        {
+          "first": 27,
+          "last": 31,
+          "lines": [
+            {
+              "line": 27,
+              "text": "struct NonwarMetricsProjection12002 {"
+            },
+            {
+              "line": 28,
+              "text": "  std::int64_t monthly_gold_income_raw = 0;"
+            },
+            {
+              "line": 29,
+              "text": "  std::int64_t health_raw = 0;"
+            },
+            {
+              "line": 30,
+              "text": "  std::int32_t domain_size = 0;"
+            },
+            {
+              "line": 31,
+              "text": "  std::int32_t domain_limit = 0;"
+            }
+          ]
+        },
+        {
+          "first": 40,
+          "last": 50,
+          "lines": [
+            {
+              "line": 40,
+              "text": "// Assigns only these migrated callbacks. Exact-build/thread/frame admission"
+            },
+            {
+              "line": 41,
+              "text": "// remains the enclosing campaign-root reader's responsibility."
+            },
+            {
+              "line": 42,
+              "text": "void BindNonwarMetrics12002("
+            },
+            {
+              "line": 43,
+              "text": "    ck3_11906::CampaignRootNativeEnvironmentV1 &environment,"
+            },
+            {
+              "line": 44,
+              "text": "    std::uintptr_t module_base) noexcept;"
+            },
+            {
+              "line": 45,
+              "text": ""
+            },
+            {
+              "line": 46,
+              "text": "// Called only by the enclosing exact 1.20.0.3 descriptor branch; the .2"
+            },
+            {
+              "line": 47,
+              "text": "// metrics binder leaves this optional callback absent."
+            },
+            {
+              "line": 48,
+              "text": "void BindNonwarFinance12003("
+            },
+            {
+              "line": 49,
+              "text": "    ck3_11906::CampaignRootNativeEnvironmentV1 &environment,"
+            },
+            {
+              "line": 50,
+              "text": "    std::uintptr_t module_base) noexcept;"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_nonwar_metrics.cpp",
+      "bytes": 7099,
+      "sha256": "5843f8c7e7c09dad3fd21e5903d2307b6487cc5441e317fcc8b1356b52346274",
+      "excerpts": [
+        {
+          "first": 55,
+          "last": 69,
+          "lines": [
+            {
+              "line": 55,
+              "text": "bool Health(ck3_11906::NativeCampaignRootCharacterFixedPointV1 function,"
+            },
+            {
+              "line": 56,
+              "text": "            void *character, std::int64_t &output) noexcept {"
+            },
+            {
+              "line": 57,
+              "text": "#if defined(_MSC_VER)"
+            },
+            {
+              "line": 58,
+              "text": "  __try {"
+            },
+            {
+              "line": 59,
+              "text": "    return function(character, &output) == &output;"
+            },
+            {
+              "line": 60,
+              "text": "  } __except (EXCEPTION_EXECUTE_HANDLER) {"
+            },
+            {
+              "line": 61,
+              "text": "    return false;"
+            },
+            {
+              "line": 62,
+              "text": "  }"
+            },
+            {
+              "line": 63,
+              "text": "#else"
+            },
+            {
+              "line": 64,
+              "text": "  return function(character, &output) == &output;"
+            },
+            {
+              "line": 65,
+              "text": "#endif"
+            },
+            {
+              "line": 66,
+              "text": "}"
+            },
+            {
+              "line": 67,
+              "text": ""
+            },
+            {
+              "line": 68,
+              "text": "bool Maintenance("
+            },
+            {
+              "line": 69,
+              "text": "    ck3_11906::NativeCampaignRootMaxMonthlyMaintenanceV1 function,"
+            }
+          ]
+        },
+        {
+          "first": 110,
+          "last": 125,
+          "lines": [
+            {
+              "line": 110,
+              "text": "void BindNonwarMetrics12002("
+            },
+            {
+              "line": 111,
+              "text": "    ck3_11906::CampaignRootNativeEnvironmentV1 &environment,"
+            },
+            {
+              "line": 112,
+              "text": "    std::uintptr_t module_base) noexcept {"
+            },
+            {
+              "line": 113,
+              "text": "  environment.monthly_gold_income = reinterpret_cast<"
+            },
+            {
+              "line": 114,
+              "text": "      ck3_11906::NativeCampaignRootMonthlyGoldIncomeV1>("
+            },
+            {
+              "line": 115,
+              "text": "      module_base + kCampaignRootMonthlyGoldIncomeRva);"
+            },
+            {
+              "line": 116,
+              "text": "  environment.health = reinterpret_cast<"
+            },
+            {
+              "line": 117,
+              "text": "      ck3_11906::NativeCampaignRootCharacterFixedPointV1>("
+            },
+            {
+              "line": 118,
+              "text": "      module_base + kCampaignRootHealthRva);"
+            },
+            {
+              "line": 119,
+              "text": "  environment.domain_size = reinterpret_cast<"
+            },
+            {
+              "line": 120,
+              "text": "      ck3_11906::NativeCampaignRootCharacterInt32V1>("
+            },
+            {
+              "line": 121,
+              "text": "      module_base + kCampaignRootDomainSizeRva);"
+            },
+            {
+              "line": 122,
+              "text": "  environment.domain_limit = reinterpret_cast<"
+            },
+            {
+              "line": 123,
+              "text": "      ck3_11906::NativeCampaignRootCharacterInt32V1>("
+            },
+            {
+              "line": 124,
+              "text": "      module_base + kCampaignRootDomainLimitRva);"
+            },
+            {
+              "line": 125,
+              "text": "}"
+            }
+          ]
+        },
+        {
+          "first": 154,
+          "last": 175,
+          "lines": [
+            {
+              "line": 154,
+              "text": "bool ReadNonwarMetrics12002("
+            },
+            {
+              "line": 155,
+              "text": "    const ck3_11906::CampaignRootNativeEnvironmentV1 &environment,"
+            },
+            {
+              "line": 156,
+              "text": "    const ck3_11906::CampaignRootAccessV1 &access, void *character,"
+            },
+            {
+              "line": 157,
+              "text": "    NonwarMetricsProjection12002 &output,"
+            },
+            {
+              "line": 158,
+              "text": "    std::string_view &failure) noexcept {"
+            },
+            {
+              "line": 159,
+              "text": "  output = {};"
+            },
+            {
+              "line": 160,
+              "text": "  failure = {};"
+            },
+            {
+              "line": 161,
+              "text": "  if (character == nullptr || environment.monthly_gold_income == nullptr ||"
+            },
+            {
+              "line": 162,
+              "text": "      environment.health == nullptr || environment.domain_size == nullptr ||"
+            },
+            {
+              "line": 163,
+              "text": "      environment.domain_limit == nullptr) {"
+            },
+            {
+              "line": 164,
+              "text": "    failure = \"nonwar_metrics_environment_unavailable\";"
+            },
+            {
+              "line": 165,
+              "text": "    return false;"
+            },
+            {
+              "line": 166,
+              "text": "  }"
+            },
+            {
+              "line": 167,
+              "text": "  if (!Income(environment.monthly_gold_income, character,"
+            },
+            {
+              "line": 168,
+              "text": "              output.monthly_gold_income_raw)) {"
+            },
+            {
+              "line": 169,
+              "text": "    failure = \"player_monthly_gold_income_unavailable\";"
+            },
+            {
+              "line": 170,
+              "text": "    return false;"
+            },
+            {
+              "line": 171,
+              "text": "  }"
+            },
+            {
+              "line": 172,
+              "text": "  if (!Health(environment.health, character, output.health_raw)) {"
+            },
+            {
+              "line": 173,
+              "text": "    failure = \"player_health_unavailable\";"
+            },
+            {
+              "line": 174,
+              "text": "    return false;"
+            },
+            {
+              "line": 175,
+              "text": "  }"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_campaign.cpp",
+      "bytes": 42673,
+      "sha256": "97946e8457a2ee625ee095b0bab43d078f051bd1b18648363e188348aaf2af85",
+      "excerpts": [
+        {
+          "first": 1008,
+          "last": 1022,
+          "lines": [
+            {
+              "line": 1008,
+              "text": "    output.status = game::CampaignRootContextStatusV1::available;"
+            },
+            {
+              "line": 1009,
+              "text": "    output.local_player_id = first.local_player_id;"
+            },
+            {
+              "line": 1010,
+              "text": "    output.player_character_id = first.player_character_id;"
+            },
+            {
+              "line": 1011,
+              "text": "    output.player_character_alive = first.player_character_alive;"
+            },
+            {
+              "line": 1012,
+              "text": "    output.player_monthly_gold_income = {"
+            },
+            {
+              "line": 1013,
+              "text": "        first.metrics.monthly_gold_income_raw, 100'000};"
+            },
+            {
+              "line": 1014,
+              "text": "    if (first_piety_available && second_piety_available &&"
+            },
+            {
+              "line": 1015,
+              "text": "        first_piety == second_piety) {"
+            },
+            {
+              "line": 1016,
+              "text": "      output.player_monthly_piety_v1 = first_piety;"
+            },
+            {
+              "line": 1017,
+              "text": "    }"
+            },
+            {
+              "line": 1018,
+              "text": "    output.player_health = {first.metrics.health_raw, 100'000};"
+            },
+            {
+              "line": 1019,
+              "text": "    output.player_legitimacy_v1 = std::move(first.metrics.legitimacy);"
+            },
+            {
+              "line": 1020,
+              "text": "    output.player_max_monthly_gold_maintenance_v1 ="
+            },
+            {
+              "line": 1021,
+              "text": "        std::move(first.metrics.max_monthly_gold_maintenance);"
+            },
+            {
+              "line": 1022,
+              "text": "    output.player_domain_size = first.metrics.domain_size;"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "selection_and_precision": {
+    "created_utc": "2026-10-04T03:24:07.250659+00:00",
+    "game_version": "1.20.0.3",
+    "steam_build": "25652598",
+    "scope": "read-only source + PE RTTI; no process or desktop access",
+    "health_delta": "0.00075",
+    "health_delta_q100000": 75,
+    "health_signed_balance_min": "-1000000",
+    "health_signed_balance_max": "1000000",
+    "donor_health_min": "3.00075",
+    "receiver_balance_precondition_max": "999999.99925",
+    "donor_balance_precondition_min": "-999999.99925",
+    "scriptvalue_health_syntax": "value = health",
+    "scriptvalue_health_evidence": "schema common operations plus vanilla subtract = health; new live pending",
+    "health_trigger_rtti": {
+      "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "type_fileoffset": "0x5a58da0",
+      "type_rva": "0x5a5a590",
+      "results": [
+        {
+          "col_rva": "0x4e958e0",
+          "hierarchy_rva": "0x4e937d8",
+          "names": [
+            ".?AVCHealthTrigger@@",
+            ".?AV?$CJominiCompareTrigger@VCFixedPoint@@@@",
+            ".?AVCCompareValueTrigger@@",
+            ".?AVCJominiTrigger@@",
+            ".?AVCStaticDataProvider@NJominiTriggerDescription@@"
+          ]
+        }
+      ],
+      "process_access": "NOT_RUN"
+    },
+    "sources": [
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\_script_values.info",
+        "bytes": 3852,
+        "sha256": "764ad711339c61bf239851bd52d87168dc1a2c91fe0c385c308ec4b85e2b5ef1",
+        "excerpts": [
+          {
+            "start": 13,
+            "end": 13,
+            "text": "13: For more complex values, it is possible to define mathematical formulas. These allow you to use everything available in the scope you're currently in."
+          },
+          {
+            "start": 19,
+            "end": 27,
+            "text": "19: name_of_scripted_value = {\n20: \t# Mathematical operations\n21: \tadd = number/scripted value/scope.something\n22: \tsubtract = ...\n23: \tmultiply = ...\n24: \tdivide = ... # Be careful not to divide by 0\n25: \tmodulo = ...\n26: \t\n27: \tvalue = ... # Sets the value to this number"
+          },
+          {
+            "start": 75,
+            "end": 92,
+            "text": "75: Example:\n76: \tadd_gold = {\n77: \t\tvalue = gold\n78: \t\tmultiply = { # Yes, you can even inline them in the mathematical operators\n79: \t\t\tvalue = 1\n80: \t\t\tmultiply = 0.5\n81: \t\t}\n82: \t}\n83: \t\n84: === Chaining ===\n85: You can reference named script formulas using scope chaining. For example, if you were to define this formula:\n86: \texample_age = {\n87: \t\tvalue = age\n88: \t}\n89: Then the following would work:\n90: \tadd_gold = {\n91: \t\tvalue = mother.example_age\n92: \t}"
+          }
+        ]
+      },
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_travel_values.txt",
+        "bytes": 5918,
+        "sha256": "f90b584b8c40546e591077fdefbdfe35fb924ffb0cf9d550da655b473a6bc4b8",
+        "excerpts": [
+          {
+            "start": 155,
+            "end": 164,
+            "text": "155: food_poison_value = {\n156: \tvalue = 15\n157: \tsubtract = health\n158: \tif = {\n159: \t\tlimit = {\n160: \t\t\thas_perk = iron_constitution_perk\n161: \t\t}\n162: \t\tadd = -5\n163: \t}\n164: }"
+          }
+        ]
+      },
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\game_concepts_l_english.yml",
+        "bytes": 382068,
+        "sha256": "ae7ebd881fe5b4222220c5dd9cf4b56b5d848202af2e5db9f5c90b479f455dd7",
+        "excerpts": [
+          {
+            "start": 505,
+            "end": 506,
+            "text": "505:  game_concept_health:0 \"Health\"\n506:  game_concept_healthy: \"Healthy\""
+          }
+        ]
+      },
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\message_filters_l_english.yml",
+        "bytes": 33051,
+        "sha256": "f790486931b553d44de990c852a42e89532d84c4ec750b9c6ea2b508164ef5ad",
+        "excerpts": [
+          {
+            "start": 26,
+            "end": 26,
+            "text": "26:  message_filter_character_health: \"@health_icon! Health\""
+          }
+        ]
+      },
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\gui\\multiplayer_lobby_l_english.yml",
+        "bytes": 1986,
+        "sha256": "f7f06ff4b9b689dd6ef54b348912fdd265343690947be7ae1b3040278e80ff95",
+        "excerpts": [
+          {
+            "start": 17,
+            "end": 17,
+            "text": "17:  lobby_landless_ruler_name: \"[Character.GetNameNoTooltip|U] | [Character.GetAge] [Select_CString( Not( EqualTo_int32( Character.GetHealthIconFrame, '(int32)4' ) ), Select_CString( Not( EqualTo_int32( Character.GetHealthIconFrame, '(int32)3' ) ), Select_CString( Not( EqualTo_int32( Character.GetHealthIconFrame, '(int32)2' ) ), '@health_icon_excellent!', '@health_icon!' ), '@health_icon_poor!' ), '@health_icon_dying!' )]\""
+          }
+        ]
+      }
+    ],
+    "runtime_validation": "PENDING"
+  },
+  "preserved_research_manifest": {
+    "files": [
+      {
+        "path": "health-design.md",
+        "bytes": 7437,
+        "sha256": "4c6d773c9d90c5ebe71d2a89b919764c0acfb5264ae8f152ccfbc2c0fb022769"
+      },
+      {
+        "path": "sources-and-design.json",
+        "bytes": 38964,
+        "sha256": "5d812a43165daade144b6ebbf60a03c703f933ab85f51f0afc92efec86cde068"
+      },
+      {
+        "path": "manifest.json",
+        "bytes": 404,
+        "sha256": "743630a07d21f6223754ed13108516d36cdc5e26f93dd43245470d36c28fc4e1"
+      },
+      {
+        "path": "selection-and-precision.md",
+        "bytes": 4947,
+        "sha256": "e44bd1cb46b1d7b094fd75459a52bbcd82c8c545e1e3a4b855854afcdd0c73b5"
+      },
+      {
+        "path": "health-trigger-rtti-readonly.py",
+        "bytes": 1918,
+        "sha256": "83610aaf2431f86b5e935196001fc197d6933e5c727449b0a10c21cd6eb66c13"
+      },
+      {
+        "path": "selection-and-precision.json",
+        "bytes": 5169,
+        "sha256": "beb49f8f00ca7bac6812dbccbe135ed7716ec4f6c2b86c00cf88c883b626a7d9"
+      }
+    ],
+    "prior_attempt_bytes_preserved": true,
+    "native_runtime": "NOT_RUN",
+    "production_mutation": "NOT_RUN"
+  },
+  "preserved_research_directory": "D:\\ck3-superman-health-design-20261004\\readonly-A0001",
+  "ui_health_map_handoff": {
+    "schema": "sxad.health-ui-mechanical-localization.v1",
+    "version_target": "1.1.0",
+    "runtime_data_sha256": "a5ac79b55e74fafe279f8bf2ea14cc2d1c5c74ccb2b9252a623135aeeaba9f1a",
+    "previous_complete_maps": "D:\\ck3-experience-drain-feasibility-20261004\\ui-review-1.1.0\\toast-source-freeze-A0002\\ui_localization.json",
+    "previous_complete_maps_sha256": "fbdc12cba03df8d2c8b1052387d5500a773d2f3a4c2c6b60bdd46c3b7cc564be",
+    "previous_foreign_authority_sha256": "cddbe0f9567bb1430ed2fb16a339a227d6a6c6b45362a1aeb1174bfc8d693d84",
+    "complete_maps_sha256": "c58b35effce13ab1a2fffdbaf5c423af53bc2ff1dcd4f4b5d7062faa67bcfac4",
+    "health_row": "@health_icon! $game_concept_health$ [recipient.MakeScope.ScriptValue('sxad_health_value')|5] ([recipient.MakeScope.ScriptValue('sxad_health_balance_value')|+5])",
+    "health_current_expression": "[recipient.MakeScope.ScriptValue('sxad_health_value')|5]",
+    "health_net_expression": "[recipient.MakeScope.ScriptValue('sxad_health_balance_value')|+5]",
+    "native_label": "$game_concept_health$",
+    "native_icon": "@health_icon!",
+    "new_minimax_requests": 0,
+    "operation": "Insert the exact native-token health row and derive two modifier aliases; preserve the other 22 values per language.",
+    "checks": [
+      {
+        "language": "simp_chinese",
+        "key_count": 25,
+        "unchanged_existing_key_count": 22,
+        "changed_key": "sxad_view_experience_toast_details",
+        "new_keys": [
+          "sxad_health_gain_modifier",
+          "sxad_health_loss_modifier"
+        ],
+        "status": "format-certified",
+        "live_verified": false
+      },
+      {
+        "language": "english",
+        "key_count": 25,
+        "unchanged_existing_key_count": 22,
+        "changed_key": "sxad_view_experience_toast_details",
+        "new_keys": [
+          "sxad_health_gain_modifier",
+          "sxad_health_loss_modifier"
+        ],
+        "status": "format-certified",
+        "live_verified": false
+      },
+      {
+        "language": "french",
+        "key_count": 25,
+        "unchanged_existing_key_count": 22,
+        "changed_key": "sxad_view_experience_toast_details",
+        "new_keys": [
+          "sxad_health_gain_modifier",
+          "sxad_health_loss_modifier"
+        ],
+        "status": "format-certified",
+        "live_verified": false
+      },
+      {
+        "language": "german",
+        "key_count": 25,
+        "unchanged_existing_key_count": 22,
+        "changed_key": "sxad_view_experience_toast_details",
+        "new_keys": [
+          "sxad_health_gain_modifier",
+          "sxad_health_loss_modifier"
+        ],
+        "status": "format-certified",
+        "live_verified": false
+      },
+      {
+        "language": "japanese",
+        "key_count": 25,
+        "unchanged_existing_key_count": 22,
+        "changed_key": "sxad_view_experience_toast_details",
+        "new_keys": [
+          "sxad_health_gain_modifier",
+          "sxad_health_loss_modifier"
+        ],
+        "status": "format-certified",
+        "live_verified": false
+      },
+      {
+        "language": "korean",
+        "key_count": 25,
+        "unchanged_existing_key_count": 22,
+        "changed_key": "sxad_view_experience_toast_details",
+        "new_keys": [
+          "sxad_health_gain_modifier",
+          "sxad_health_loss_modifier"
+        ],
+        "status": "format-certified",
+        "live_verified": false
+      },
+      {
+        "language": "polish",
+        "key_count": 25,
+        "unchanged_existing_key_count": 22,
+        "changed_key": "sxad_view_experience_toast_details",
+        "new_keys": [
+          "sxad_health_gain_modifier",
+          "sxad_health_loss_modifier"
+        ],
+        "status": "format-certified",
+        "live_verified": false
+      },
+      {
+        "language": "russian",
+        "key_count": 25,
+        "unchanged_existing_key_count": 22,
+        "changed_key": "sxad_view_experience_toast_details",
+        "new_keys": [
+          "sxad_health_gain_modifier",
+          "sxad_health_loss_modifier"
+        ],
+        "status": "format-certified",
+        "live_verified": false
+      },
+      {
+        "language": "spanish",
+        "key_count": 25,
+        "unchanged_existing_key_count": 22,
+        "changed_key": "sxad_view_experience_toast_details",
+        "new_keys": [
+          "sxad_health_gain_modifier",
+          "sxad_health_loss_modifier"
+        ],
+        "status": "format-certified",
+        "live_verified": false
+      }
+    ],
+    "non_chinese_scope": "format-only; no semantic/native-speaker/game acceptance",
+    "product_files_written": false,
+    "command": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "D:\\ck3-experience-drain-feasibility-20261004\\produce_health_ui_maps.py"
+    ],
+    "driver_sha256": "0e7bf090c09ce99f43e7c5c2404e509d0e6eb7f868a24374f539ddde4c47d442"
+  }
+}

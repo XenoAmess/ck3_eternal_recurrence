@@ -1,0 +1,53 @@
+{
+  "schema": "sxad.toast-parser-precheck.v1",
+  "jar": {
+    "path": "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+    "size": 365313,
+    "sha256": "7262e771ad3e1f5d724d663ac259a20e2a7df0c491d4c125f56cb4c3a604e75c"
+  },
+  "open_kaishek_head": "890b32de49081b7b5510e40c5518dfb59d5c8a6d",
+  "source_inputs": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\gen_runtime.py",
+      "size": 19729,
+      "sha256": "21b93ff9387396c45ffe2904d42d3e2c2376ac6a42021a4748a43b78404b1ebe"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\runtime_data.py",
+      "size": 3577,
+      "sha256": "bc63abeff767867cc259ab84f6c2209500b74002a7e3e6873e995a6052170b6d"
+    }
+  ],
+  "checks": [
+    {
+      "argv": [
+        "java",
+        "-jar",
+        "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout": "kaishek-cli 0.1.0-cli (pure Java; Quarkus is not started)\nUsage: parse|validate|hash|corpus|profile [--file PATH|PATH] [corpus: --require-corpus]\n       synthetic-361|runtime-fixture\n       preflight [--root PATH] [--profile ID] [--fixture ID]\n       batch|replay [--file MANIFEST.jsonl] [--stop-on-error]\nBatch lines: {\"id\":\"case\",\"command\":\"parse\",\"text\":\"x = 1\\n\"}\nPreflight is offline-only and never starts CK3; it returns one JSON report.\nFixtures include synthetic-361-014, appeal-014, ck3-calculated-value-014 (schema-only RED), ck3-g2-activity-type-schema-red-11906 (schema-only RED), ck3-war-days-trigger-11906, ck3-has-innovation-trigger-11906, ck3-has-cultural-tradition-trigger-11906, ck3-has-cultural-pillar-trigger-11906, ck3-has-cultural-parameter-trigger-11906, ck3-is-acclaimed-trigger-11906, ck3-can-be-acclaimed-trigger-11906, zg361-projects-metrics-postcondition-v1, and zg361-promotion-compensation-postcondition-v1.\nUnknown semantics return status UNSUPPORTED.\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "java",
+        "-jar",
+        "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+        "batch",
+        "--file",
+        "D:\\ck3-superman-ui-1.0.1-20261004\\ui-parser-a01\\manifest.jsonl",
+        "--stop-on-error"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"id\":\"sxad_interactions\",\"line\":1,\"exitCode\":0,\"result\":{\"status\":\"PARSED\",\"bytes\":1133,\"tokens\":294,\"blocks\":12,\"diagnostics\":[],\"roundTrip\":true}}\n{\"id\":\"sxad_events\",\"line\":2,\"exitCode\":0,\"result\":{\"status\":\"PARSED\",\"bytes\":240,\"tokens\":16,\"blocks\":0,\"diagnostics\":[],\"roundTrip\":true}}\n",
+      "stderr": ""
+    }
+  ],
+  "coverage": "Text parse and roundTrip only; native toast scope, rendering, SV formatting and user-facing layout require live acceptance.",
+  "runtime_semantics": "UNSUPPORTED",
+  "ck3_started": false,
+  "save_mutated": false,
+  "network_used": false
+}
