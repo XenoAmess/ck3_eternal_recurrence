@@ -190,3 +190,10 @@ K0证明本省当前资格集合没有正siege tier；不能扩推全军类型�
 有效 siege getter26344C0(ArRg,out,真实省份)与 normalized-size2634720 已由 M span 闭合；本最小施工暂不扩 getter。低 tier不等于该团零贡献或招募非法，不能用 current/max 猜 M 的归一化分母。
 Raised→首条 record→persistent Regi 仅证明当前部队局部关系；完整 owned/unraised collection、recruitable catalog、CanCreate／final quote 仍需 native collector／create 输入闭合后才设计买器械策略。
 施工投影与唯一新生产 reader→serializer→registeredMCP case：`ART05/army-regiment-composition-v71/`。fixture/实机 readiness 以最终 receipt 和 Root 独立实际 query 为准，本段不新增 live 或完整战争能力信用。
+
+## 2026-10-05：R39 普通24日后的疾病状态与日速
+
+Root ordinary24 SDK20302 CLOSED GREEN计入24日，累计4834/接续1681/10月5日176；后续SDK38425 closed GREEN的sole occupation004冻结date53260344/native:103/native103/public2/generation4/queryseq2，同P470/holding1334/county1333/Siege503316504/main301989997仍active，fort6/g550/B3178，work2659976/55000000、4.836%、ETA559、can_advance=true、nativeCanStartAssault=false，无占领/城破。
+当前M60900/Q100000=.609、K0、普通D93732/Q100000=.93732；disease_level已1，其余breach/starvation/desertion/stalemate状态0、prepared enum5。fresh与prepared phase现均1800000=18天、counter12，和上一冷恢复帧prepared真实0分开记录；输入不变时还需6个允许tick达到phase门槛，不保证下一事件或完成日。
+复用原生树：writer0x251CD00 enum2提升疾病等级，daily0x251F170使用其当前10% multiplier项，改变后续日速而非一次性work或强攻资格。已知(1+.609+.13)*1.1*.49固定点截断=93732吻合实读；work/D已实际增加，ETA639→559仅条件估计变化，不能追加80日信用或承诺终结。继续现occupation查询的native CanStart0x29738C0判定入口，当前false故普通推进；current roster/type/tier、stock/CanCreate、mercenary依赖保持并行。
+新004 SHA`12d488fbd941d3ba6bbc337549659bf09cec69be8758e42db9c743efc6b8bc6e`；compact、策略与日周字段见`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-efficiency-current-fort6-v65/r39-after24/ROOT-DELIVERY.json`。本consumer新增0日，不读旧原叶/snapshot005/health006/source/tests/SDK/window；batch末normalh8344与后续新normal由Root独立保存确认，不授器械改善、强攻、城破或新family信用。
