@@ -1,0 +1,248 @@
+{
+  "status": "GREEN",
+  "scope": "Static graphics preparation, not finished-video review or human approval.",
+  "checked_at": "2026-10-04T08:48:36.965814+00:00",
+  "resolution": [
+    1920,
+    1080
+  ],
+  "overlay_count": 10,
+  "extra_count": 14,
+  "font_bounds_checked": 69,
+  "subtitle_clear_top": 860,
+  "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "python_executable": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "pillow_version": "12.3.0",
+  "contact_sheet": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\contact-sheet.jpg",
+  "contact_sheet_sha256": "cdc869c6bb621ef51792022b64e5c472d1242def73e1d0bcee3da5852c04c5fc",
+  "plan_sha256": "77b754c98ff218e11de8116e2d01ca2ae31d8b344c754b2d00a098ad32838b5e",
+  "sources": [
+    {
+      "path": "mod_superman_qiang/thumbnail.png",
+      "sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b"
+    },
+    {
+      "path": "workshop/superman_qiang_media/v3/01_absorption.jpg",
+      "sha256": "af7c226187d1024e62ed4ad881d2d07889a3c24d9715026442ccbd3ec835a238"
+    },
+    {
+      "path": "workshop/superman_qiang_media/v2/04_natural_event.jpg",
+      "sha256": "0f4f7ebc49ae07fadcca65e4382498c2ee3110f6bd0116807066b76f36ad6356"
+    },
+    {
+      "path": "workshop/superman_qiang_media/v3/05_notification.jpg",
+      "sha256": "51ac5484e3a82bcac65c65c2fe3fe3d058c2868715980171192f1d1886c0d6ff"
+    },
+    {
+      "path": "workshop/superman_qiang_media/v3/05_notification.raw.png",
+      "sha256": "7b74e180a0bccf2bfdad678bff7bf363d77b57c37e9329de0283fa9f1a8840c6"
+    }
+  ],
+  "generated_files": [
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\backgrounds\\court-field.png",
+      "bytes": 531314,
+      "sha256": "c2511593a088e1ec62ece06ad58bb5b34803fadefac523c0f616f4c83acc2434"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\compose_player_visuals.py",
+      "bytes": 29197,
+      "sha256": "fff8619323e0f99fe6967e96d0d18fc1a35ca59686b63a67493c4a8d517cbbab"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\contact-sheet.jpg",
+      "bytes": 868969,
+      "sha256": "cdc869c6bb621ef51792022b64e5c472d1242def73e1d0bcee3da5852c04c5fc"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\director.json",
+      "bytes": 9082,
+      "sha256": "1ba326c2c58cf0e746540a5397fabf1d10ed11331dc5cce51bfb1b1df4114d9f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\attribute-健康.png",
+      "bytes": 13470,
+      "sha256": "224d74120cea7154dc619feb1c551fef00f359d7afc2f266cbee89bc3bb888e7"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\attribute-军事.png",
+      "bytes": 9899,
+      "sha256": "7a4424af5e2871e1bb64d0120f13dddcec83dacae823ffacef2bdd02599a5d56"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\attribute-勇武.png",
+      "bytes": 12091,
+      "sha256": "0b80b2fc73e24b7cfb53a1b586f33d56c63c2ec5b6c314f2725447ea5651cbe6"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\attribute-外交.png",
+      "bytes": 14240,
+      "sha256": "a78a550aaa37b31bd786167f3d27bdfe30f9813f87e342320f2e80f28e072f9b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\attribute-学识.png",
+      "bytes": 12314,
+      "sha256": "0e80530a5f610230d51ebc86e8cb92401cfbf0e7428eeb4f3ca2b6ccb9f596cd"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\attribute-管理.png",
+      "bytes": 10758,
+      "sha256": "15201f25cc79a5eb12d8b52832df55e1b05b94109fabdcdaf0b11f3804f88ccb"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\attribute-谋略.png",
+      "bytes": 12453,
+      "sha256": "3d37024a1b6b85c7eb5541ca4ae67f55d5a583b8900a5bb3ea7b9eec1e433a34"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\power-to-king.png",
+      "bytes": 9366,
+      "sha256": "d320ab0d4adf005d3d0176d9e07bf707ac077cc62d8b5c1627135ccec0bf9fbf"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\power-to-queen.png",
+      "bytes": 9371,
+      "sha256": "4fc992283d19ffe5546b980b06d764e0ea8be0aec9c8763dd323fc45757f8af5"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\SQP-01-hook.png",
+      "bytes": 30148,
+      "sha256": "43f4c31a0a268eac9ac16276966792869de0698da3ebb985b866a2ca677b5481"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\SQP-01-punchline.png",
+      "bytes": 42809,
+      "sha256": "db1fe6bbae19d3281637edfc0af0bb62eb306e6edef2d3f19b6ee97aa8697b11"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\SQP-01.png",
+      "bytes": 42809,
+      "sha256": "db1fe6bbae19d3281637edfc0af0bb62eb306e6edef2d3f19b6ee97aa8697b11"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\SQP-02.png",
+      "bytes": 51066,
+      "sha256": "4ca65c53d93200b6bdfa33f58c9b0eca4fc61022fa64a587a2bc38bf39d66764"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\SQP-03.png",
+      "bytes": 44227,
+      "sha256": "3992724ff21a0735b0e73c54c45e33610a38141bb8a4f15ab0bbcb1e22b34f39"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\SQP-04.png",
+      "bytes": 47879,
+      "sha256": "273fc05b58bdb93c7b1abda23ac1c7a988156692410c6ba87887463b065ab143"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\SQP-05-question.png",
+      "bytes": 35228,
+      "sha256": "ab9e35ce7ca56343703d0b2996a844f75864d2ebf7505bcf96952ba7cf76e261"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\SQP-05.png",
+      "bytes": 45648,
+      "sha256": "421c2e4e67d69baac175785c95a13ba6974a209be09687b13248f65980d93b46"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\SQP-06.png",
+      "bytes": 30942,
+      "sha256": "5521531cdf925ff236dbb0299511f09015adeff32c774ce4b5ffe80fc1a5cf2a"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\SQP-07.png",
+      "bytes": 30917,
+      "sha256": "550bc4f6e443b6cbc2565d3dfd03698a21827eab50628987be80a4e962115875"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\SQP-08.png",
+      "bytes": 41923,
+      "sha256": "3a022287253fd2bbebad4b85f0d1f4d01281cfec70668a6fa1d5390ccbf53a92"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\SQP-09.png",
+      "bytes": 32034,
+      "sha256": "623d96929dba802fde59affec41510442bbc0e5357da4a3bee63240e0d226d2b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\SQP-10.png",
+      "bytes": 61999,
+      "sha256": "8d231cb3cff6818ebe90f12c2cdac7760b50252f71d112076fc1ed3a61182cff"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\workshop-qr-native.png",
+      "bytes": 2285,
+      "sha256": "20d64b09366cfdb5c16d09c46427c8095b09c9f6f6af44237db90b7d150cab06"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\overlays\\workshop-qr.png",
+      "bytes": 13358,
+      "sha256": "f3d0109ccbe7696e403097e3ac82b02587b538c46f32bfc480e3221b14f49a0f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\previews\\SQP-01.jpg",
+      "bytes": 405090,
+      "sha256": "6afd4b4c99db361c544eb99eb5111af18f3c64aee172196da5792f4ab563326b"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\previews\\SQP-02.jpg",
+      "bytes": 424943,
+      "sha256": "f984a4a6dfa48dcfb1c9e8ef6c6aa396c1567764f072e9e6ff7568f70cb62df7"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\previews\\SQP-03.jpg",
+      "bytes": 425301,
+      "sha256": "f13fd12e21d98d2090ed76375da3004950f96e703111ebf0c73dff34b4624598"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\previews\\SQP-04.jpg",
+      "bytes": 414509,
+      "sha256": "22c0f034887d2375c867b27877a3b9fa6fadd6f69e239296972351b733166f64"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\previews\\SQP-05.jpg",
+      "bytes": 336514,
+      "sha256": "fbc41a2dfd8e5f82d7ed581701c990ac19cdc3d530ac6734b99774c8268473f2"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\previews\\SQP-06.jpg",
+      "bytes": 349501,
+      "sha256": "0e2eacbb1e7bc721340aa91eea0550177a640346b86403f2700ef4a570cbd4bb"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\previews\\SQP-07.jpg",
+      "bytes": 390873,
+      "sha256": "8ca04022e92dc702a8f2c176f154a77544e83bb77ba1ffe8b8f405b6708fedc0"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\previews\\SQP-08.jpg",
+      "bytes": 182001,
+      "sha256": "fcfe8eee2c197ab87ab5de2a5f8827a26921a0e8d90eae408e436eb1ffa4e48c"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\previews\\SQP-09.jpg",
+      "bytes": 350087,
+      "sha256": "0849dc88dfdcc34f032c70074267b26a6d549094528f8212f9e10da61a8370ff"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\previews\\SQP-10.jpg",
+      "bytes": 440423,
+      "sha256": "3059834f8eeffb5c68cc5ab54830f3a382cf0c17d9c98b6040209804d076aa2f"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\qr-source.json",
+      "bytes": 354,
+      "sha256": "347f683a282f921f524e483da6cad82de90ac3701240c9feee32100729fc36d1"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\text-bounds.json",
+      "bytes": 13598,
+      "sha256": "30da715b770160f513f047ce993e20e5e1889f71fbe91c21b1c0482bf8e5d8ad"
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0002\\visual-plan.json",
+      "bytes": 20933,
+      "sha256": "77b754c98ff218e11de8116e2d01ca2ae31d8b344c754b2d00a098ad32838b5e"
+    }
+  ]
+}

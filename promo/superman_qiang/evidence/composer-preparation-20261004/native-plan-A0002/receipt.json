@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8",
+    "-B",
+    "-m",
+    "xar_promo",
+    "plan",
+    "C:\\ck3-superman-qiang-promo-20261004\\render-A0002\\native-run\\run-manifest.json",
+    "--workdir",
+    "C:\\ck3-superman-qiang-promo-20261004\\render-A0002\\build",
+    "--composer",
+    "promo.superman_qiang.tools.player_trailer_composer:compose"
+  ],
+  "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+  "returncode": 0,
+  "timestamp_utc": "2026-10-04T09:12:08.773378+00:00",
+  "manifest_sha256_before": "25e4b0a7879bd9c963d093234e5a449330da36fe1ec27e86dfddc2bf7b7f439c",
+  "manifest_sha256_after": "25e4b0a7879bd9c963d093234e5a449330da36fe1ec27e86dfddc2bf7b7f439c",
+  "manifest_unchanged": true,
+  "workdir_created": false,
+  "not_final_movie": true
+}

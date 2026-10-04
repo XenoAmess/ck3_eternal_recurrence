@@ -1,0 +1,580 @@
+{
+  "format_version": 1,
+  "kind": "superman_qiang_player_visual_plan",
+  "created_at": "2026-10-04T08:50:32.257802+00:00",
+  "source_director": "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\02m\\director.json",
+  "source_director_sha256": "1ba326c2c58cf0e746540a5397fabf1d10ed11331dc5cce51bfb1b1df4114d9f",
+  "resolution": [
+    1920,
+    1080
+  ],
+  "style": "Ruby, near-black and warm gold; one font family, short text, substantial negative space.",
+  "source_policy": "Original artwork crops are ordinary video framing. Screenshot pixels, readings, aspect ratios and provenance remain unchanged. No test fixtures or recreated UI.",
+  "work_directory": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003",
+  "subtitle_region": [
+    80,
+    860,
+    1760,
+    180
+  ],
+  "workshop_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990",
+  "fonts": [
+    {
+      "path": "C:\\Windows\\Fonts\\msyh.ttc",
+      "sha256": "d79c55e68b1131eea0cc1c47be4f572d964f28c682e143db2ad09c1e4cb07a3f"
+    },
+    {
+      "path": "C:\\Windows\\Fonts\\msyhbd.ttc",
+      "sha256": "4508821b3dffe01f0ef5e5326a3e60df705a44633858811f67b6982dce3f6ee6"
+    }
+  ],
+  "scenes": [
+    {
+      "scene_id": "SQP-01",
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-01.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
+      "background_source": "mod_superman_qiang/thumbnail.png",
+      "source_crop": [
+        0,
+        0,
+        640,
+        360
+      ],
+      "fit_rect": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "source_kind": "art",
+      "background": {
+        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\thumbnail.png",
+        "crop": [
+          0,
+          0,
+          640,
+          360
+        ],
+        "fit": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "mode": "art",
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+      },
+      "preserve_aspect_ratio": true,
+      "subtitle_safe_top": 860,
+      "pan": "Slow 2–4% scale within the ordinary illustration crop; screenshots remain still and complete.",
+      "preview_extra_paths": [],
+      "optional_layers": [
+        {
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-01-hook.png",
+          "replace_base": true,
+          "timing_fraction": [
+            0.0,
+            0.76
+          ],
+          "timing": "Before the final '赴个约' punchline."
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-01-punchline.png",
+          "replace_base": true,
+          "timing_fraction": [
+            0.76,
+            1.0
+          ],
+          "timing": "Reveal with the final phrase and hold."
+        }
+      ]
+    },
+    {
+      "scene_id": "SQP-02",
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-02.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
+      "background_source": "workshop/superman_qiang_media/v3/01_absorption.jpg",
+      "source_crop": [
+        650,
+        0,
+        1600,
+        534
+      ],
+      "fit_rect": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "source_kind": "art",
+      "background": {
+        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\superman_qiang_media\\v3\\01_absorption.jpg",
+        "crop": [
+          650,
+          0,
+          950,
+          534
+        ],
+        "fit": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "mode": "art",
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+      },
+      "preserve_aspect_ratio": true,
+      "subtitle_safe_top": 860,
+      "pan": "Slow 2–4% scale within the ordinary illustration crop; screenshots remain still and complete.",
+      "preview_extra_paths": [],
+      "optional_layers": [],
+      "alternate_genuine_source": {
+        "path": "workshop/superman_qiang_media/v2/04_natural_event.jpg",
+        "fit_rect": [
+          700,
+          170,
+          1100,
+          611
+        ],
+        "note": "Use an independent labelled still, not as absorption proof; remove large title overlay during this cut."
+      }
+    },
+    {
+      "scene_id": "SQP-03",
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-03.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
+      "background_source": "workshop/superman_qiang_media/v3/01_absorption.jpg",
+      "source_crop": [
+        650,
+        0,
+        1600,
+        534
+      ],
+      "fit_rect": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "source_kind": "art",
+      "background": {
+        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\superman_qiang_media\\v3\\01_absorption.jpg",
+        "crop": [
+          650,
+          0,
+          950,
+          534
+        ],
+        "fit": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "mode": "art",
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+      },
+      "preserve_aspect_ratio": true,
+      "subtitle_safe_top": 860,
+      "pan": "Slow 2–4% scale within the ordinary illustration crop; screenshots remain still and complete.",
+      "preview_extra_paths": [
+        "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\power-to-king.png"
+      ],
+      "optional_layers": [
+        {
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\power-to-king.png",
+          "timing_fraction": [
+            0.0,
+            1.0
+          ],
+          "timing": "From the second adult silhouette to the first; illustrative only."
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-外交.png",
+          "timing_fraction": [
+            0.45,
+            0.7
+          ],
+          "timing": "On '谈判的底气'; one attribute word only."
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-勇武.png",
+          "timing_fraction": [
+            0.72,
+            1.0
+          ],
+          "timing": "On '亲自下场的勇气'; replaces the previous word."
+        }
+      ]
+    },
+    {
+      "scene_id": "SQP-04",
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-04.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
+      "background_source": "mod_superman_qiang/thumbnail.png",
+      "source_crop": [
+        0,
+        0,
+        640,
+        360
+      ],
+      "fit_rect": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "source_kind": "art",
+      "background": {
+        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\thumbnail.png",
+        "crop": [
+          0,
+          0,
+          640,
+          360
+        ],
+        "fit": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "mode": "art",
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+      },
+      "preserve_aspect_ratio": true,
+      "subtitle_safe_top": 860,
+      "pan": "Slow 2–4% scale within the ordinary illustration crop; screenshots remain still and complete.",
+      "preview_extra_paths": [],
+      "optional_layers": []
+    },
+    {
+      "scene_id": "SQP-05",
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-05.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
+      "background_source": "mod_superman_qiang/thumbnail.png",
+      "source_crop": [
+        170,
+        0,
+        640,
+        264
+      ],
+      "fit_rect": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "source_kind": "art",
+      "background": {
+        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\thumbnail.png",
+        "crop": [
+          170,
+          0,
+          470,
+          264
+        ],
+        "fit": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "mode": "art",
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+      },
+      "preserve_aspect_ratio": true,
+      "subtitle_safe_top": 860,
+      "pan": "Slow 2–4% scale within the ordinary illustration crop; screenshots remain still and complete.",
+      "preview_extra_paths": [],
+      "optional_layers": [
+        {
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-05-question.png",
+          "replace_base": true,
+          "timing_fraction": [
+            0.0,
+            0.7
+          ],
+          "timing": "Before final '谁才是猎物' reveal."
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\power-to-queen.png",
+          "timing_fraction": [
+            0.34,
+            0.72
+          ],
+          "timing": "Brief reversed illustrative flow; no claimed actual transfer."
+        }
+      ]
+    },
+    {
+      "scene_id": "SQP-06",
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-06.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
+      "background_source": "workshop/superman_qiang_media/v3/05_notification.jpg",
+      "source_crop": null,
+      "fit_rect": [
+        460,
+        195,
+        1350,
+        626
+      ],
+      "source_kind": "genuine-screenshot",
+      "background": {
+        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\superman_qiang_media\\v3\\05_notification.jpg",
+        "crop": null,
+        "fit": [
+          460,
+          195,
+          1350,
+          626
+        ],
+        "mode": "real-still",
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+      },
+      "preserve_aspect_ratio": true,
+      "subtitle_safe_top": 860,
+      "pan": "No screenshot motion, stretched dimensions or fake clicks.",
+      "preview_extra_paths": [],
+      "optional_layers": [],
+      "alternate_genuine_source": {
+        "path": "workshop/superman_qiang_media/v3/05_notification.raw.png",
+        "fit_rect": [
+          745,
+          110,
+          940,
+          705
+        ],
+        "note": "Establish genuine original context briefly, then cut to the complete cropped notification image; no simulated action."
+      },
+      "genuine_claim_limit": "Normal query from an actual adult NPC; net health is zero, so this is not a health-transfer example."
+    },
+    {
+      "scene_id": "SQP-07",
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-07.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
+      "background_source": "workshop/superman_qiang_media/v2/04_natural_event.jpg",
+      "source_crop": null,
+      "fit_rect": [
+        560,
+        165,
+        1210,
+        673
+      ],
+      "source_kind": "genuine-screenshot",
+      "background": {
+        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\superman_qiang_media\\v2\\04_natural_event.jpg",
+        "crop": null,
+        "fit": [
+          560,
+          165,
+          1210,
+          673
+        ],
+        "mode": "real-still",
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+      },
+      "preserve_aspect_ratio": true,
+      "subtitle_safe_top": 860,
+      "pan": "No screenshot motion, stretched dimensions or fake clicks.",
+      "preview_extra_paths": [],
+      "optional_layers": [],
+      "alternate_genuine_source": {
+        "path": "workshop/superman_qiang_media/v3/05_notification.jpg",
+        "fit_rect": [
+          560,
+          225,
+          1210,
+          561
+        ],
+        "note": "Use a separately labelled normal query still; these are independent captures, not a claimed same-event transfer."
+      },
+      "genuine_claim_limit": "The natural event was a tie. It establishes the event atmosphere and recording, not absorption."
+    },
+    {
+      "scene_id": "SQP-08",
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-08.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
+      "background_source": null,
+      "source_crop": null,
+      "fit_rect": null,
+      "source_kind": "schematic",
+      "background": {
+        "source_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
+        "crop": null,
+        "fit": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "mode": "graphic",
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+      },
+      "preserve_aspect_ratio": true,
+      "subtitle_safe_top": 860,
+      "pan": "No screenshot motion, stretched dimensions or fake clicks.",
+      "preview_extra_paths": [
+        "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-健康.png"
+      ],
+      "optional_layers": [
+        {
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-外交.png",
+          "timing_fraction": [
+            0.0,
+            0.07857142857142857
+          ],
+          "timing": "With spoken '外交'; show one category at a time. Prefer actual first-sentence boundaries to this guide."
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-军事.png",
+          "timing_fraction": [
+            0.07857142857142857,
+            0.15714285714285714
+          ],
+          "timing": "With spoken '军事'; show one category at a time. Prefer actual first-sentence boundaries to this guide."
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-管理.png",
+          "timing_fraction": [
+            0.15714285714285714,
+            0.2357142857142857
+          ],
+          "timing": "With spoken '管理'; show one category at a time. Prefer actual first-sentence boundaries to this guide."
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-谋略.png",
+          "timing_fraction": [
+            0.2357142857142857,
+            0.3142857142857143
+          ],
+          "timing": "With spoken '谋略'; show one category at a time. Prefer actual first-sentence boundaries to this guide."
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-学识.png",
+          "timing_fraction": [
+            0.3142857142857143,
+            0.3928571428571429
+          ],
+          "timing": "With spoken '学识'; show one category at a time. Prefer actual first-sentence boundaries to this guide."
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-勇武.png",
+          "timing_fraction": [
+            0.3928571428571429,
+            0.4714285714285714
+          ],
+          "timing": "With spoken '勇武'; show one category at a time. Prefer actual first-sentence boundaries to this guide."
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-健康.png",
+          "timing_fraction": [
+            0.4714285714285714,
+            0.55
+          ],
+          "timing": "With spoken '健康'; show one category at a time. Prefer actual first-sentence boundaries to this guide."
+        }
+      ]
+    },
+    {
+      "scene_id": "SQP-09",
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-09.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
+      "background_source": "workshop/superman_qiang_media/v3/05_notification.raw.png",
+      "source_crop": null,
+      "fit_rect": [
+        745,
+        110,
+        940,
+        705
+      ],
+      "source_kind": "genuine-screenshot",
+      "background": {
+        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\superman_qiang_media\\v3\\05_notification.raw.png",
+        "crop": null,
+        "fit": [
+          745,
+          110,
+          940,
+          705
+        ],
+        "mode": "real-still",
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+      },
+      "preserve_aspect_ratio": true,
+      "subtitle_safe_top": 860,
+      "pan": "No screenshot motion, stretched dimensions or fake clicks.",
+      "preview_extra_paths": [],
+      "optional_layers": []
+    },
+    {
+      "scene_id": "SQP-10",
+      "overlay_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-10.png",
+      "background_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png",
+      "background_source": "mod_superman_qiang/thumbnail.png",
+      "source_crop": [
+        0,
+        0,
+        640,
+        360
+      ],
+      "fit_rect": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "source_kind": "art",
+      "background": {
+        "source_path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\thumbnail.png",
+        "crop": [
+          0,
+          0,
+          640,
+          360
+        ],
+        "fit": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "mode": "art",
+        "canvas_path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\backgrounds\\court-field.png"
+      },
+      "preserve_aspect_ratio": true,
+      "subtitle_safe_top": 860,
+      "pan": "Slow 2–4% scale within the ordinary illustration crop; screenshots remain still and complete.",
+      "preview_extra_paths": [
+        "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\workshop-qr.png"
+      ],
+      "optional_layers": [
+        {
+          "path": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\workshop-qr.png",
+          "timing_fraction": [
+            0.0,
+            1.0
+          ],
+          "timing": "Final stable end card; hold through the voice tail and music resolve."
+        }
+      ]
+    }
+  ],
+  "extras": {
+    "外交": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-外交.png",
+    "军事": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-军事.png",
+    "管理": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-管理.png",
+    "谋略": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-谋略.png",
+    "学识": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-学识.png",
+    "勇武": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-勇武.png",
+    "健康": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\attribute-健康.png",
+    "power-to-king": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\power-to-king.png",
+    "power-to-queen": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\power-to-queen.png",
+    "SQP-01-hook": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-01-hook.png",
+    "SQP-01-punchline": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-01-punchline.png",
+    "SQP-05-question": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\SQP-05-question.png",
+    "workshop-qr": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\workshop-qr.png",
+    "workshop-qr-native": "C:\\ck3-superman-qiang-promo-20261004\\player-visuals-A0003\\overlays\\workshop-qr-native.png"
+  }
+}

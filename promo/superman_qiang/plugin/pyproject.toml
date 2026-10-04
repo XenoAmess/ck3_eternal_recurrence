@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "superman-qiang-promo-project"
+version = "0.1.0"
+description = "Prepared-media adapter and player-trailer preset for Superhuman Qiang"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.entry-points."xar_promo.adapters"]
+superman-qiang-prepared-stills = "superman_qiang_promo_plugin:prepared_stills_adapter"
+
+[project.entry-points."xar_promo.presets"]
+superman-qiang-player-trailer = "superman_qiang_promo_plugin:player_trailer_preset"
+
+[tool.setuptools]
+packages = ["superman_qiang_promo_plugin"]
