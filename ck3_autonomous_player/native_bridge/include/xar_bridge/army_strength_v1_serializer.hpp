@@ -138,6 +138,41 @@ inline void AppendArmyStrengthV1(
     }
     result += ']';
   }
+  if (strength.current_movement_progress.has_value()) {
+    const auto &movement = *strength.current_movement_progress;
+    result += ",\"current_movement_progress\":{\"status\":\"";
+    switch (movement.status) {
+    case ArmyMovementProgressStatus::available: result += "available"; break;
+    case ArmyMovementProgressStatus::partial: result += "partial"; break;
+    case ArmyMovementProgressStatus::not_applicable: result += "not_applicable"; break;
+    case ArmyMovementProgressStatus::unavailable: result += "unavailable"; break;
+    }
+    result += "\",\"source\":\"native_current_route_edge\",\"unit_state_raw\":";
+    result += movement.unit_state_raw.has_value() ? number(*movement.unit_state_raw) : "null";
+    result += ",\"accumulated_movement_weight_raw\":";
+    result += movement.accumulated_movement_weight_raw.has_value()
+                  ? number(*movement.accumulated_movement_weight_raw) : "null";
+    result += ",\"cached_edge_speed_raw\":";
+    result += movement.cached_edge_speed_raw.has_value()
+                  ? number(*movement.cached_edge_speed_raw) : "null";
+    const auto append_fixed = [&](const std::optional<std::int64_t> &raw) {
+      if (raw.has_value()) {
+        result += "{\"raw\":";
+        result += number(*raw);
+        result += ",\"scale\":100000}";
+      } else {
+        result += "null";
+      }
+    };
+    result += ",\"normalized_edge_progress\":";
+    append_fixed(movement.normalized_edge_progress_raw);
+    result += ",\"first_route_edge_remaining_duration\":";
+    append_fixed(movement.first_route_edge_remaining_duration_raw);
+    result += ",\"unavailable_reason\":";
+    if (movement.unavailable_reason.empty()) result += "null";
+    else append_json_string(result, movement.unavailable_reason);
+    result += '}';
+  }
   result += ",\"gathering_days_left\":";
   if (strength.gathering_days_status == ArmyGatheringDaysStatus::available &&
       strength.gathering_days_left.has_value()) {

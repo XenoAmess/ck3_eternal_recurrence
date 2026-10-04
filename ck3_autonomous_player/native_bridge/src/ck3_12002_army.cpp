@@ -102,6 +102,57 @@ void Route(void *game_data, void *unit, game::ArmySnapshot &row) {
   }
 }
 
+game::ArmyMovementProgressSnapshot MovementProgress(
+    const ArmyBindings &bindings, void *unit) {
+  game::ArmyMovementProgressSnapshot result{};
+  result.accumulated_movement_weight_raw = Load<std::int64_t>(unit, 0x168);
+  result.cached_edge_speed_raw = Load<std::int64_t>(unit, 0x190);
+  if (bindings.get_unit_state != nullptr)
+    result.unit_state_raw = bindings.get_unit_state(unit);
+
+  // Reuse the existing complete-route read. Empty is observed absence of a
+  // current edge, not a guessed zero duration. State 7 alone does not prove a path.
+  void *game_data = nullptr;
+  if (bindings.game_state_slot != nullptr && *bindings.game_state_slot != nullptr)
+    game_data = Load<void *>(*bindings.game_state_slot, 0xA0);
+  game::ArmySnapshot route{};
+  Route(game_data, unit, route);
+  if (route.route_read_status == game::ArmyRouteReadStatus::complete_empty) {
+    result.status = game::ArmyMovementProgressStatus::not_applicable;
+    return result;
+  }
+  if (route.route_read_status != game::ArmyRouteReadStatus::complete_nonempty) {
+    result.unavailable_reason = "current_route_unavailable";
+    return result;
+  }
+
+  constexpr std::int64_t unavailable = 0xFFFF'FFFFLL;
+  if (bindings.get_unit_normalized_edge_progress != nullptr) {
+    std::int64_t raw = 0;
+    if (bindings.get_unit_normalized_edge_progress(unit, &raw) == &raw &&
+        raw != unavailable)
+      result.normalized_edge_progress_raw = raw;
+  }
+  if (bindings.get_unit_first_route_edge_duration != nullptr) {
+    std::int64_t raw = 0;
+    if (bindings.get_unit_first_route_edge_duration(unit, &raw, 0) == &raw &&
+        raw != unavailable)
+      result.first_route_edge_remaining_duration_raw = raw;
+  }
+  const bool progress = result.normalized_edge_progress_raw.has_value();
+  const bool duration = result.first_route_edge_remaining_duration_raw.has_value();
+  if (progress && duration) {
+    result.status = game::ArmyMovementProgressStatus::available;
+  } else if (progress || duration) {
+    result.status = game::ArmyMovementProgressStatus::partial;
+    result.unavailable_reason = progress ? "first_route_edge_duration_unavailable"
+                                         : "normalized_edge_progress_unavailable";
+  } else {
+    result.unavailable_reason = "movement_getters_unavailable";
+  }
+  return result;
+}
+
 bool AddSoldiers(std::int64_t &sum, std::int32_t value) noexcept {
   if (value < 0 || sum > std::numeric_limits<std::int32_t>::max() - value)
     return false;
@@ -265,6 +316,8 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
   // Exact .3 selector 0x2587254 consumes this signed Q100000 operand.
   // The reviewed .2/.3 adapter binding owns the executable identity gate.
   if (Load<std::int32_t>(army, 0x124) == scope.army_id) {
+    if (bindings.current_movement_progress_enabled)
+      result.current_movement_progress = MovementProgress(bindings, unit);
     if (bindings.get_army_gathering_days_left != nullptr &&
         bindings.get_unit_state != nullptr) {
       const auto state = bindings.get_unit_state(unit);

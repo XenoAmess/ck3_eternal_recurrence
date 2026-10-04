@@ -182,6 +182,30 @@ enum class ArmyGatheringDaysStatus {
   available,
 };
 
+enum class ArmyMovementProgressStatus {
+  unavailable,
+  not_applicable,
+  partial,
+  available,
+};
+
+// Independent current CUnit observations. Accumulated movement and cached
+// speed are movement-weight operands; normalized progress is Q100000 and is
+// not elapsed days. Remaining duration is signed Q100000 days, without a
+// guessed arrival tick or an inferred embark phase.
+struct ArmyMovementProgressSnapshot {
+  ArmyMovementProgressStatus status = ArmyMovementProgressStatus::unavailable;
+  std::optional<std::int32_t> unit_state_raw;
+  std::optional<std::int64_t> accumulated_movement_weight_raw;
+  std::optional<std::int64_t> cached_edge_speed_raw;
+  std::optional<std::int64_t> normalized_edge_progress_raw;
+  std::optional<std::int64_t> first_route_edge_remaining_duration_raw;
+  std::string unavailable_reason;
+
+  friend bool operator==(const ArmyMovementProgressSnapshot &,
+                         const ArmyMovementProgressSnapshot &) = default;
+};
+
 struct ArmyStrengthSnapshot {
   bool available = false;
   std::int32_t army_id = -1;
@@ -214,6 +238,7 @@ struct ArmyStrengthSnapshot {
   std::optional<std::int32_t> gathering_days_left;
   ArmyGatheringDaysStatus gathering_days_status =
       ArmyGatheringDaysStatus::unavailable;
+  std::optional<ArmyMovementProgressSnapshot> current_movement_progress;
 
   friend bool operator==(const ArmyStrengthSnapshot &,
                          const ArmyStrengthSnapshot &) = default;

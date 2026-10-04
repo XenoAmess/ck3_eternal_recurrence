@@ -22,6 +22,8 @@ inline constexpr std::uintptr_t kChunkCanReplenishRva12003 = 0x2657F10;
 inline constexpr std::uintptr_t kRegimentMonthlyReplenishmentRva12003 = 0x262CAD0;
 inline constexpr std::uintptr_t kArmyMonthlySupplyChangeRva12003 = 0x24E51A0;
 inline constexpr std::uintptr_t kArmyGatheringDaysLeftRva12003 = 0x24E9070;
+inline constexpr std::uintptr_t kUnitNormalizedEdgeProgressRva12003 = 0x24AB2F0;
+inline constexpr std::uintptr_t kUnitFirstRouteEdgeDurationRva12003 = 0x24AB060;
 inline constexpr std::uintptr_t kProvinceSupplyLimitRva12003 = 0x247BEC0;
 inline constexpr std::uintptr_t kProvinceSupplyUsageRva12003 = 0x247C5A0;
 
@@ -47,6 +49,13 @@ struct ArmyBindings {
   std::int64_t *(*get_army_monthly_supply_change)(void *, std::int64_t *, void *, void *) = nullptr;
   // Exact .3 native CArmy receiver, integral remaining days (scale 1).
   std::int32_t (*get_army_gathering_days_left)(void *) = nullptr;
+  // Exact .3 CUnit route getters; neither requires an army-AI assignment.
+  // A missing getter leaves only that operand unknown. The .2 binder omits
+  // this subdomain. Positive 0xFFFFFFFF is the native unavailable sentinel.
+  bool current_movement_progress_enabled = false;
+  std::int64_t *(*get_unit_normalized_edge_progress)(void *, std::int64_t *) = nullptr;
+  std::int64_t *(*get_unit_first_route_edge_duration)(void *, std::int64_t *,
+                                                   std::int32_t) = nullptr;
   // Exact .3 native whole soldier-equivalent values, scale 1, not Q100000.
   std::int32_t (*get_province_supply_limit)(void *, void *, void *, void *) = nullptr;
   std::int32_t (*get_province_supply_usage)(void *, void *, std::int32_t,

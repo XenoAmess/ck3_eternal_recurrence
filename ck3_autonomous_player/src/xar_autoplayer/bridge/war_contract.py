@@ -258,7 +258,7 @@ _ARMY_STRENGTH_GATHERING_DAYS_KEYS = {
 }
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS = _ARMY_STRENGTH_ROW_KEYS | {
     key for pair in _ARMY_STRENGTH_SUPPLY_FIELD_PAIRS for key in pair
-} | {"regiment_replenishment"} | _ARMY_STRENGTH_GATHERING_DAYS_KEYS
+} | {"regiment_replenishment", "current_movement_progress"} | _ARMY_STRENGTH_GATHERING_DAYS_KEYS
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
     "active_war_ally",
@@ -1757,6 +1757,10 @@ def _normalize_army_strength_row(
     }
     result.update(observed_supply)
     result.update(_normalize_army_gathering_days(value, name=name))
+    if "current_movement_progress" in value:
+        result["current_movement_progress"] = _normalize_current_movement_progress(
+            value["current_movement_progress"], name=f"{name}.current_movement_progress"
+        )
     if "regiment_replenishment" in value:
         if status != "available":
             raise ValueError(f"native unavailable {name} cannot publish regiment_replenishment")
@@ -1764,6 +1768,44 @@ def _normalize_army_strength_row(
             value["regiment_replenishment"], name=f"{name}.regiment_replenishment"
         )
     return result
+
+
+def _normalize_current_movement_progress(
+    value: object, *, name: str
+) -> dict[str, object] | None:
+    """Keep independent native edge observations; no ETA or permission inference."""
+    if value is None:
+        return None
+    if not isinstance(value, dict) or set(value) != {
+        "status", "source", "unit_state_raw", "accumulated_movement_weight_raw",
+        "cached_edge_speed_raw", "normalized_edge_progress",
+        "first_route_edge_remaining_duration", "unavailable_reason",
+    }:
+        raise ValueError(f"native {name} schema is malformed")
+    if value["status"] not in {"available", "not_applicable", "partial", "unavailable"}:
+        raise ValueError(f"native {name}.status is malformed")
+    if value["source"] != "native_current_route_edge":
+        raise ValueError(f"native {name}.source is malformed")
+    reason = value["unavailable_reason"]
+    if reason is not None and (not isinstance(reason, str) or not reason):
+        raise ValueError(f"native {name}.unavailable_reason must be a non-empty string or null")
+    normalized = dict(value)
+    normalized["unit_state_raw"] = _optional_signed_int32(
+        value["unit_state_raw"], f"{name}.unit_state_raw"
+    )
+    for field in ("accumulated_movement_weight_raw", "cached_edge_speed_raw"):
+        raw = value[field]
+        if raw is not None and (
+            type(raw) is not int or not -(2**63) <= raw <= 2**63 - 1
+        ):
+            raise ValueError(f"native {name}.{field} must be signed int64 or null")
+        normalized[field] = raw
+    for field in ("normalized_edge_progress", "first_route_edge_remaining_duration"):
+        amount = value[field]
+        normalized[field] = (
+            None if amount is None else _signed_fixed_point(amount, f"{name}.{field}")
+        )
+    return normalized
 
 
 def _normalize_army_gathering_days(

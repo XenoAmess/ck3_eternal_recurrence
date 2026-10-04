@@ -118,6 +118,13 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
     result.armies.get_army_gathering_days_left =
         reinterpret_cast<decltype(result.armies.get_army_gathering_days_left)>(
             image_base + ck3_12002::kArmyGatheringDaysLeftRva12003);
+    result.armies.current_movement_progress_enabled = true;
+    result.armies.get_unit_normalized_edge_progress =
+        reinterpret_cast<decltype(result.armies.get_unit_normalized_edge_progress)>(
+            image_base + ck3_12002::kUnitNormalizedEdgeProgressRva12003);
+    result.armies.get_unit_first_route_edge_duration =
+        reinterpret_cast<decltype(result.armies.get_unit_first_route_edge_duration)>(
+            image_base + ck3_12002::kUnitFirstRouteEdgeDurationRva12003);
     result.armies.get_province_supply_limit =
         reinterpret_cast<decltype(result.armies.get_province_supply_limit)>(
             image_base + ck3_12002::kProvinceSupplyLimitRva12003);
