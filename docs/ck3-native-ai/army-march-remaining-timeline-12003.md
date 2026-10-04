@@ -410,3 +410,17 @@ day+9 native60/public61/date53147376独立health/snapshot join确认Army0已经a
 本期可口播：普通省可以显式规划和移动；锁定后停军只取消后续路径，当前段继续；改道也保留当前段；人数要按完整实际团比较，拆军迁移不是损失。不能口播：所有游戏军队均无补员、全部persistent记录完整、此127/31仅由一个已证明原因造成，或underlimit到达即恢复补给。actual0到达stock82.99737/cap100、month−5、attrition0；补给未实现增长，P0REFILL仍需真实eligible省与successful bucket更新后观测。无正兵员净增不等于期间绝无hidden补员。特殊军团资格和first record false不能改写为永久不可补。
 
 使用已验证主venv `D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe`（Python3.14.7），未回落裸系统Python。没有新promo render/capture run；Root admission release查询由runtime manifest保留。`open_kaishek`既有native1.19.0.6研究不适用于此exact .3回执验收。native research plan的check/render只核结构和hash，不替代以上真实后置状态或视频人工观看。
+
+## 2026-10-05 R38：当前段剩余时长、committed-route 日期与独立实际到达
+
+冷部署 g70/d3b 后复用既有三个 MCP 入口：`ck3_query_army_strengths` 的当前段字段、`ck3_execute_step` 的 route-contact 日期，以及已有独立 snapshot 中的真实军队位置/状态。普通 preview 缺 ETA 无需新增 bridge；此次没有用路径长度或当前速率自造 ETA。既有exact-build范围仍为1.20.0.3 / Steam25652598 / EXE SHA94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6；下述 live frames 的日期与 revision 分别保留。
+
+ArmyReinf sole 原health013后提供的 independent `CURRENT-MOVEMENT-PROGRESS-CACHE.json`（15377 bytes，SHA256 `cbd1fae6ae7b3621513af44ca95a74181be9da7155ecd976b567cb44b8baf641`）获 ROOT 明确授权，由此 lane完整消费一次；没有重读原013。`query-army-strengths-v1` 为available，native3 / public2 / `date_raw=53259576`。主军301989997当前段 `normalized_edge_progress={raw:61955,scale:100000}` 即61.955%，`first_route_edge_remaining_duration={raw:297360,scale:100000}` 即原生剩余2.9736天；state7、accumulated movement weight2106480、cached edge speed0均保留原值。cached speed0不能用作我方除法重建时长，原生getter此帧仍available。敌军268435597为20.325%、首段剩6.31528天；守军184549452为not_applicable、ratio/duration null。首段时长不自动成为任意完整路线 ETA。health的game_version/executable_sha256为null，不能伪造为该response自带exact pin；版本来自既有ABI与 ROOT 冷部署上下文。
+
+ROOT actual50468（closed/exit0/GREEN）使用已注册 `ck3_execute_step(step="query-route-contact-horizon-v1-301989997-to-470-h-1-268435597", expected_revision=2)`。唯一原004（3615 bytes，SHA256 `d52b0514d53fe32f921bf05a3aae57bc7bacddc63aab954de9da5dfc56da5777`）由此lane sole一次完整decode；native5 / public2 / generation3 / 同暂停日期53259576 / episode `native-29829-2bc2d599f7f9`。主军真实current3717、stored route `[470]`、effective origin470、timeline_observable=true、arrival dates `[53259648]`，约+3个整日。health native3与route native5是独立frame，不称同一native revision；effective origin是存储首边，不是物理当前位置。敌军route `[4895,4899,4893]`、dates `[53259720,53260032,53260272]`，约+6/+19/+29整日。
+
+此日期是既有 `0x24AADA0` 原生 committed-prefix duration经 bridge整日舍入的估计，不是直接原生到达日期getter或准确未来tick。wire未发布raw native prefix durations，不能从舍入日期差反造精确duration raw。`one_day_contact_free=true`、`conflicts=[]`仅覆盖 `[53259576,53259600]` 一天，不能外推为预计3日或实际8日的无接触证明；h-1表示一个完整非退却敌军ID。query是readonly，consumer没有SDK调用或新增天数。
+
+ROOT/Military sole独立后置观测报告：实际day03 `date_raw=53259648`，主军301989997已在470、sieging3、空route；normalh8246，97654055 bytes，SHA256 `2d3a76763449aa113ace8c042cb37b1ac4509f08c6b363186baf56d33f6b0f2e`。本次到达自然日与先前rounded estimate吻合，只证明这一个实例，不能据此宣称总ETA永远准确。实际完整+8day窗口末为raw53259768、normalh8261，仍sieging；ROOT统一计日为cumulative4810/resume1657/Oct5+152。此lane没有读取后置原save/snapshot，只复用Military/ROOT的独立结果；不把后置成功回填进before query，也不把一日contact预测扩大为八日保证。
+
+外置账本：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/movement-actual-segment-eta-v65/` 的 `ROUTE-ETA-004-CACHE.json`、`CURRENT-SEGMENT-CACHE.json`、两份 `*-OBSERVATION.json` 和 `ACTUAL-DAILY-WEEKLY-FIELDS.json`。当前段观测与committed-route日期观测各为 **production-live primitive**；实际到达归属独立Military证据，不冒充完整OODA或新增bridge施工。
