@@ -1864,3 +1864,23 @@ Against g52/source892378b5的当前设计，在 existing v2/v3 literal第二toke
 Registered scenario确切字段为`contact_geometry_mode="native_defender_constructor_zero"`，entry=null、constructor raw0，两侧position policy为`fixed_at_target_hypothetical`。New constructor kind0仍消费Rules+F70/FA0当前effect、commander flag排除及原生ledger计算；不能硬编码crossing优势或最终advantage0。复用post-hire sameframe native A[473,251658381]/D[83886367]和defender角色，为当前target条件输入，不是实际battle sides或新contact；future状态须Rootfreshquery。
 
 唯一新fixture现为 **static-ready**：production reader/advantage/full serializer native1、normalizer/driver/service/registered existing `ck3_query_combat_simulation_inputs`1、native/MCP exit0。Synthetic native41/public2中execute1成功，无entry Province对象或resolve；保存incomingraw2的pureplan保留2→constructor0，saved post-hire role/order原样保留。Actual scenario shape与production command result一致，`input_observation_ready=true/monte_carlo_ready=false`；没有独立v3实机、full DLL/game/旧matrix信用。首harness `<charconv>`遗漏RED保留，未变生产对象复用，只重编修正harness。Pure plan `query_producer_geometry_mode`指source mode，`native_v2_query_ready`不是部署live标记。Root结合构建和实际paused查询后另记live；本append无测试/原始包读取/SDK/nativebuild/shared/Git/window/天数。来源pins见外置 `v47-defender-attacker-entry/implementation-g52/docs/ROOT-DELIVERY.json`。
+
+### 2026-10-04 — P1 current-condition adapter and bounded runner
+
+simulation/battle_current_adapter.py now adapts normalized actual battle observations into native-order current state; battle_current_runner.py reuses existing kernels for a caller-seeded next-roll diagnostic and one frozen main-phase tick. Current/soft/stats remain Q100000, backing component soldiers remain integers, and owner hard-loss ledgers are separate accounting views. All retained current MAA contribute outgoing under the reviewed .3 loop; a precontact main-eligibility filter does not replace that loop or create a second knight bucket.
+
+The runner keeps current events, stats, width and rosters frozen. Sampled rolls do not modify the observed current loss factor. It is not a complete transition, actual next draw, result or win probability. Selected bounds come from the existing optional active-resume inputs, not an invented control-side field.
+
+Optional current_loss_inputs_v1.sides[i].levy_damage_raw and primary_participant_character_id retain native getter/actor provenance, including legitimate raw0. The primary participant is Side+70, distinct from selected commander+74. Missing native data can use explicit caller-observed input; the legacy uniform-entry proxy is labelled conditional, while nonuniform/missing inputs leave only that output partial. The separate v56 package closes the native getter source and owns its pending paused-live qualification.
+
+The first and only offline production-path fixture attempt was GREEN exit0, **2/2**: real v56 normalizer → final adapter → final runner → frozen existing core. Assertions cover native order, current non-main MAA participation, units, observed getter versus old absence, integer backing versus owner ledger, and caller-owned rolls. This is **static-ready**, with no fresh actual .3 main-frame or native loss-reader live credit; the old 1.19.0.6 core parity manifest remains historical.
+
+~~~mermaid
+flowchart LR
+    O[Normalized actual observation] --> A[Ordered current-state adapter] --> K[Existing frozen-tick kernels]
+    K --> B[Bounded roll and loss diagnostics]
+    A -. exact .3 multi-day scheduler and mutation refresh unclosed .-> F[Longer execution]
+    F -. same-day arrival and pursuit integration pending .-> M[Complete battle simulation]
+~~~
+
+Delivery, final source hashes, the two-fixture receipt and Oct4/W40 fields: [P1 ROOT-DELIVERY](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-current-condition-implementation-p1-v55/ROOT-DELIVERY.json). Root owns source adoption and the next actual main-frame qualification; normal play continues.
