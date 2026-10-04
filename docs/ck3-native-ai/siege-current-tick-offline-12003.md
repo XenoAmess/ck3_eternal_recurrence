@@ -211,3 +211,26 @@ prepared_selected_phase_event_enum没有本帧production-live资格，不补0或
 本段补丁、缓存SHA与Oct4/W40字段在该目录`report/ROOT-DELIVERY.json`。
 协调者累计cut4510/恢复1357/Oct4+485（parent day-credit seal pending）；
 本consumer新增0日，不再计入上级六日批次。
+
+## 生产阶段事件 observer 新 focused GREEN（static-ready）
+
+Root提供已采用基线 `2e09aa8f`；唯一执行代理在外置freshg38 345文件冻结投影上，
+一次6TU `/MP6 /W4 /WX /O2 /DNDEBUG` 构建，native2cases/17checks → registered
+MCP2calls/34checks 均exit0，9.0375434秒，0RED/修复/重跑/旧pure2/35重跑。
+链路是production reader → rich holding copy → serializer → registered handler →
+production service/execute_step → shared normalizer；只替换外部transport/frame，
+没有以直接normalizer调用代替registered消费。RESULT SHA
+`95b174730b3d74160dfd7ba09a1f4472bcc09cbd0f6241df82403d45f2e31d30`。
+
+可用夹具在assault_observable=false时仍保持独立current五state `3/0/4/0/7` 与prepared
+enum5诊断，另一夹具确认
+observable无activeSiege为null、不产生嵌套state/cache、不补零。这只证明reader与
+consumer允许合法非负域含>stock2，**不证明stock规则会到达3/4级**，也不证明当前
+loaded define规则。prepared enum仍是lastpreparecache，不能当实际或下一次抽样。
+报文revision11/date53237136是fixture metadata，不能称当前游戏帧。
+
+observer由source-ready提升至static-ready。C++内存fixture与registered消费均非live；
+实际gameevent、RNG replay、occupation、finishday、游戏输入与推进天数信用0。
+没有全DLL构建，旧model/format不变。新三个canonical测试文件及pins见
+`phase-event-production-focused/report/CANONICAL-HARNESS-MANIFEST.json`；
+Root统一新files与本页短append及Oct4/W40记录。
