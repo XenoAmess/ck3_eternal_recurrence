@@ -180,3 +180,13 @@ Root正常冷恢复G71/source cd0、R39/PID126252后，occupation007在冻结dat
 同帧普通D=`85284/Q100000=0.85284`、fresh phase=`1800000/Q100000=18天`、counter6、can_advance=true，五类event state均真实0、prepared enum5；cold prepared phase cache为可用的真实0，必须与fresh18天分开，不沿用旧帧18、不将0当读取失败或立即due。C511704/T55000000、ETA639、nativeCanStartAssault=false，尚未占领或完成。
 K0证明本省当前资格集合没有正siege tier；不能扩推全军类型、库存或其它军队无器械，M>0也不是纯器械数量。fort6两档折减说明当前tier不足值得优先改善；下一current roster/type/tier及正式可用器械来源依赖由CommanderObserver contactless raised composition、BattleObservation stock/CanCreate与mercenary composition各owner继续施工，不能凭人数或历史配置宣称补兵/造器械已改善。
 本次部署与sole007消费新增0日，累计4810日保持Root唯一计入；不授加速、阶段事件、城破或战争胜利信用，继续当前目标普通围城。冻结实读、策略与日周字段见`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-efficiency-current-fort6-v65/production-live-v66-r39/ROOT-DELIVERY.json` SHA`69debae7a18f5956957b23906084ad79f1ae92056dad2d953f569f35f704c334`；原007 SHA`f72459a6abae20f3b36261bc2ebdc5f5d2a30274c3e01f851241f5c5e55f7bc5`，本知识增量不重读该叶。
+
+## 2026-10-05 R39：raised-regiment composition 的 source-first 输入闭合
+
+以上 Root R39 actual M/K已证明当前资格集合 K0；这不能推出完整 owned/unraised MAA 都缺器械。本段在同一 native 输入账本先冻结 composition 树，再推进后续买器械策略。
+已封树／两源缓存：`ART05/commander-observer/maa-contactless-sourcefirst/NATIVE-INPUT-TREE.md`、`INPUT-CACHE-MANIFEST.json`。g71 cd0acf19 既有 strengths 原生 reader 已读完整 CArmy roster FullID/current/max，无需 contact、敌人或 CombatID。
+对象链：CUnit+178→CArmy；CArmy+38/+40/+44→ArRg FullIDs；ArRg+18→GDbo type，type+18 为 canonical MSVC database key，type+2A0 为 K 原生 signed tier。数值 typeID／localized name 未闭，不伪造；ArRg 与 persistent Regi 不同，Regi+18 是 chunks。
+同一已注册 `ck3_query_army_strengths` additive 每团分类先发布 key/status/tier；真实 tier0 保留0，读取失败为 null／unavailable，absent 区分无 MAA 类型；分类失败保留原人数聚合。仅 exact .3 adapter 启用已封 tier layout，.2 原 binder 保持未绑定。
+有效 siege getter26344C0(ArRg,out,真实省份)与 normalized-size2634720 已由 M span 闭合；本最小施工暂不扩 getter。低 tier不等于该团零贡献或招募非法，不能用 current/max 猜 M 的归一化分母。
+Raised→首条 record→persistent Regi 仅证明当前部队局部关系；完整 owned/unraised collection、recruitable catalog、CanCreate／final quote 仍需 native collector／create 输入闭合后才设计买器械策略。
+施工投影与唯一新生产 reader→serializer→registeredMCP case：`ART05/army-regiment-composition-v71/`。fixture/实机 readiness 以最终 receipt 和 Root 独立实际 query 为准，本段不新增 live 或完整战争能力信用。
