@@ -21,6 +21,38 @@ template <class T> T Load(const void *object, std::size_t offset) noexcept {
 constexpr std::int32_t kMaximumCapacity = 1'000'000;
 constexpr std::int32_t kMaximumRoute = 4'096;
 constexpr std::int32_t kMaximumRegiments = 65'536;
+constexpr std::size_t kMaximumDatabaseObjectKeyBytes = 4'096;
+constexpr std::size_t kMsvcStringInlineCapacity = 15;
+
+void ReadRegimentComposition(
+    void *regiment, game::ArmyRegimentStrengthSnapshot &output) noexcept {
+  // The existing combat reader uses this ArRg -> GDbo type/key path. Exact .3
+  // province tier getter 0x247EFC0 reads the same type's signed +0x2A0 operand.
+  void *const maa_type = Load<void *>(regiment, 0x18);
+  if (maa_type == nullptr ||
+      Load<std::uint32_t>(maa_type, 0x38) != 0x4744624FU) {
+    output.maa_type_status = game::ArmyRegimentTypeStatusV1::absent;
+    return;
+  }
+  const auto *const storage = static_cast<const std::byte *>(maa_type) + 0x18;
+  const auto size = Load<std::size_t>(storage, 0x10);
+  const auto capacity = Load<std::size_t>(storage, 0x18);
+  if (size == 0 || size > capacity ||
+      size > kMaximumDatabaseObjectKeyBytes) {
+    output.composition_unavailable_reason = "maa_type_key_unavailable";
+    return;
+  }
+  const char *const data = capacity <= kMsvcStringInlineCapacity
+                              ? reinterpret_cast<const char *>(storage)
+                              : Load<const char *>(storage, 0x00);
+  if (data == nullptr) {
+    output.composition_unavailable_reason = "maa_type_key_unavailable";
+    return;
+  }
+  output.maa_type_key.assign(data, size);
+  output.siege_tier = Load<std::int32_t>(maa_type, 0x2A0);
+  output.maa_type_status = game::ArmyRegimentTypeStatusV1::available;
+}
 
 bool Storage(void **slot, void *&objects, std::int32_t &capacity) noexcept {
   objects = nullptr;
@@ -381,7 +413,17 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
       result.unavailable_reason = "aggregate_overflow";
       return result;
     }
-    regiment_strengths.push_back({id, current_value, maximum_value});
+    game::ArmyRegimentStrengthSnapshot regiment_strength{};
+    regiment_strength.army_regiment_id = id;
+    regiment_strength.current_soldiers = current_value;
+    regiment_strength.maximum_soldiers = maximum_value;
+    if (bindings.regiment_composition_enabled) {
+      ReadRegimentComposition(regiment, regiment_strength);
+    } else {
+      regiment_strength.composition_unavailable_reason =
+          "regiment_composition_not_bound";
+    }
+    regiment_strengths.push_back(std::move(regiment_strength));
   }
   g_army_strength_query_diagnostic_v1.reader.store("current_soldiers_getter");
   const auto native_current = bindings.get_army_current_soldiers(

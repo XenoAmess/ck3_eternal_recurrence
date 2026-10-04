@@ -1911,15 +1911,22 @@ def _normalize_loss_application_inputs_v1(
 def _normalize_regiment_strengths(
     value: object, *, name: str, regiment_count: int,
     current_soldiers: int, maximum_soldiers: int,
-) -> list[dict[str, int]]:
+) -> list[dict[str, object]]:
     if not isinstance(value, list) or len(value) != regiment_count:
         raise ValueError(f"native {name} must cover the observed regiment_count")
     result = []
     for index, row in enumerate(value):
         item_name = f"{name}[{index}]"
-        if not isinstance(row, dict) or set(row) != {
+        core_keys = {
             "army_regiment_id", "current_soldiers", "maximum_soldiers", "scale",
-        }:
+        }
+        composition_keys = {
+            "maa_type_status", "maa_type_key", "siege_tier_observable",
+            "siege_tier", "composition_unavailable_reason",
+        }
+        if not isinstance(row, dict) or set(row) not in (
+            core_keys, core_keys | composition_keys
+        ):
             raise ValueError(f"native {item_name} schema is malformed")
         fields = {
             key: _optional_non_negative_int32(row[key], f"{item_name}.{key}")
@@ -1929,7 +1936,34 @@ def _normalize_regiment_strengths(
             raise ValueError(f"native {item_name} requires observed integer values")
         if type(row["scale"]) is not int or row["scale"] != 1:
             raise ValueError(f"native {item_name}.scale must be whole soldiers (1)")
-        result.append({**fields, "scale": 1})
+        normalized: dict[str, object] = {**fields, "scale": 1}
+        if composition_keys <= row.keys():
+            status = row["maa_type_status"]
+            if not isinstance(status, str) or status not in {
+                "available", "absent", "unavailable"
+            }:
+                raise ValueError(f"native {item_name}.maa_type_status is malformed")
+            key = row["maa_type_key"]
+            if status == "available":
+                if not isinstance(key, str) or not key:
+                    raise ValueError(f"native {item_name}.maa_type_key must be observed")
+            elif key is not None:
+                raise ValueError(f"native {item_name}.maa_type_key must be null")
+            tier = _optional_signed_int32(row["siege_tier"], f"{item_name}.siege_tier")
+            tier_observable = _strict_bool(
+                row["siege_tier_observable"], f"{item_name}.siege_tier_observable"
+            )
+            if tier_observable is not (tier is not None):
+                raise ValueError(f"native {item_name}.siege_tier_observable disagrees with tier")
+            reason = row["composition_unavailable_reason"]
+            if reason is not None and (not isinstance(reason, str) or not reason):
+                raise ValueError(f"native {item_name}.composition_unavailable_reason is malformed")
+            normalized.update(
+                maa_type_status=status, maa_type_key=key,
+                siege_tier_observable=tier_observable, siege_tier=tier,
+                composition_unavailable_reason=reason,
+            )
+        result.append(normalized)
     if (sum(row["current_soldiers"] for row in result) != current_soldiers
             or sum(row["maximum_soldiers"] for row in result) != maximum_soldiers):
         raise ValueError(f"native {name} does not match the same-frame strength aggregate")

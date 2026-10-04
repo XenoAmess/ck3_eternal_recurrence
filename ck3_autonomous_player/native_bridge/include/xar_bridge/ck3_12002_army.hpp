@@ -41,6 +41,8 @@ struct ArmyBindings {
   std::int32_t (*get_unit_state)(void *) = nullptr;
   std::int32_t (*get_army_current_soldiers)(void *, std::uint8_t) = nullptr;
   std::int32_t (*get_army_maximum_soldiers)(void *) = nullptr;
+  // The GDbo key and signed siege-tier layout are closed for exact .3 only.
+  bool regiment_composition_enabled = false;
   // Exact .3 only; the native optional-breakdown argument is always null.
   std::int64_t *(*get_army_supply_capacity)(std::int64_t *, void *, void *) = nullptr;
   std::int64_t *(*get_army_attrition_fraction)(void *, std::int64_t *, void *) = nullptr;

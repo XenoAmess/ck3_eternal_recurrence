@@ -93,7 +93,26 @@ inline void AppendArmyStrengthV1(
       result += number(regiment.current_soldiers);
       result += ",\"maximum_soldiers\":";
       result += number(regiment.maximum_soldiers);
-      result += ",\"scale\":1}";
+      result += ",\"scale\":1,\"maa_type_status\":\"";
+      switch (regiment.maa_type_status) {
+      case ArmyRegimentTypeStatusV1::available: result += "available"; break;
+      case ArmyRegimentTypeStatusV1::absent: result += "absent"; break;
+      case ArmyRegimentTypeStatusV1::unavailable: result += "unavailable"; break;
+      }
+      result += "\",\"maa_type_key\":";
+      if (regiment.maa_type_status == ArmyRegimentTypeStatusV1::available) {
+        append_json_string(result, regiment.maa_type_key);
+      } else {
+        result += "null";
+      }
+      result += ",\"siege_tier_observable\":";
+      result += regiment.siege_tier.has_value() ? "true" : "false";
+      result += ",\"siege_tier\":";
+      result += regiment.siege_tier.has_value() ? number(*regiment.siege_tier) : "null";
+      result += ",\"composition_unavailable_reason\":";
+      if (regiment.composition_unavailable_reason.empty()) result += "null";
+      else append_json_string(result, regiment.composition_unavailable_reason);
+      result += '}';
     }
     result += ']';
   }

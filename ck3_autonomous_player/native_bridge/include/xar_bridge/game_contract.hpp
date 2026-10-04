@@ -209,6 +209,12 @@ struct ArmyMovementProgressSnapshot {
                          const ArmyMovementProgressSnapshot &) = default;
 };
 
+enum class ArmyRegimentTypeStatusV1 {
+  unavailable,
+  absent,
+  available,
+};
+
 // Complete actual CArmyRegiment membership from the same checked array and
 // current/maximum reads used by the aggregate. No persistent-record coverage
 // or replenishment cause is inferred from these whole-soldier counts.
@@ -216,6 +222,15 @@ struct ArmyRegimentStrengthSnapshot {
   std::int32_t army_regiment_id = -1;
   std::int32_t current_soldiers = 0;
   std::int32_t maximum_soldiers = 0;
+
+  // Additive type metadata belongs to this raised ArRg roster component,
+  // not a persistent Regi record or the owner's full MAA inventory.
+  ArmyRegimentTypeStatusV1 maa_type_status =
+      ArmyRegimentTypeStatusV1::unavailable;
+  std::string maa_type_key;
+  // Signed native type+0x2A0; legal zero differs from an unread null.
+  std::optional<std::int32_t> siege_tier;
+  std::string composition_unavailable_reason;
 
   friend bool operator==(const ArmyRegimentStrengthSnapshot &,
                          const ArmyRegimentStrengthSnapshot &) = default;
