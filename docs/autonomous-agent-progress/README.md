@@ -1,5 +1,14 @@
 # CK3 自动游玩智能体进度中心
 
+## 当前截点：4464日，R29冷启动及现金实机口已验收（2026-10-04T15:43:25+08:00 实际补录）
+
+**用户已结束游玩并释放CK3，R29已冷启动，实机运行已恢复。** 20a2暂停及R28正常关闭保留为历史；当前R0029/execution69c953da-34f4-4d8d-a3a4-5c94bb1987e8、managed54355/PID38372运行，native+Python f3f365c5/g61；cold99233 GREEN/fullhistory7124/saveanchor7123，后续53439正常closed GREEN，原四Sway、现金012、newcmd014及preview016已实测。现金current/allraised观测升为production-live primitive，人物/损失/P1的新live仍未qualified。累计**4464/36524、resume1311、Oct4+439、Oct3冻结777**，G2 5/8、NW2/4、自然继承0；较已pub4421一次新增43个正常保存日/1032h，本次部署及查询新增0日。最新正常保存**h7127/raw53251464/95107270B/SHA-256 a265c124196a8e289ef0512ab6721a45ea69654b13a25eb9857a93d42dc569d9**；h7123原末保存仍为部署历史锚点。
+
+第五战Robert battleATT/WarDEF实际获胜；War129一次提案后3保存日独立退出、零日standdown及普通9日均已闭有限loop，直接AIreply/结算类型仍未观测。event25后新War117440524；五次合军及独立集结8日后，184549452=3000/3000/reg24、301989997=3681/3884/reg41，两军仍独立，6681只合计；新动员到账有限loop成立。统帅34867已独立指派读回并提升行军速度，472仅preview未move。Sway有益旧loop保留、生命周期pending；M7预期仅真实24h retention、自然0。v56 f3/g61 full4strict64jobs实际65ON50OFF、编译/freeze-only修复/exactCI GREEN，R29冷启动已实测；cash观测口production-live primitive，knight/levy/P1新live待验收，新P2与补给/围城施工未计ready。所有旧Harness RED及其它产品追加保留。
+
+证据：[用户实机会话交接](../ck3-native-ai/2026-10-04-user-game-window-handoff.md)、[8正常日](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v55/gather-eight-day-consumption/ROOT-DELIVERY.json)、[两军独立实读](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-reinforcement-raise/port-war-v56/gather-finished-strength/ROOT-FINAL-DELIVERY.json)。
+
+
 ## 最新截点：2669玩家进攻战与非零来源观测，累计4421日（2026-10-04T12:11:53+08:00 实际补录）
 
 相对已发布4395，本轮连续批次合并26个正常保存日=8＋14行军＋1接敌＋3战斗/624h，累计 **4421/36524、resume1268、Oct4+396、Oct3冻结777**；G2 5/8、NW2/4、自然继承0。当前C1291845646/关联Result469762068@2669已到main day0，我方ATT0 Robert29829/83886367 fighting3924，对敌DEF16777683/owner32750/cmd30470 fighting2228；尚无winner，War129的player primary仍DEF。正常h6927/raw53250432/94606488B/SHA `770a1760e6cc3245721ec29b76a153f484a7407c66eff497a68c28c1346be02c`。
