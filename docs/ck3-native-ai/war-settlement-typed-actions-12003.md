@@ -110,3 +110,13 @@ Root SDK73709 在同一新 action session fresh-query-bind 后只提交一次 `e
 该限定分支达到 `production-live primitive`，有限“原生观察 → 选择一次 force → 实际提交 → 独立 exact WarID 退出”循环可 qualified 为 `production-live loop`；不代表全局战争策略或整局游玩 complete。Root normal SAVE 与查询为零日数事务，累计 4359 天；仅一次 force，不重发 167 或 503。旧 167 的结束类型仍 unknown。资源后态、CB terms、70766 实际羁押、33554465 targeting-alert 清理尚未读，不推断财富、囚禁或全局 faction object 销毁；后续只复用已有可用查询口，不作为本次 force 前置门禁。
 
 证据仅复用授权 raw lane 一次消费后的 cache：`actual-enforce-006-007-consumed-01/ROOT-DELIVERY.json` SHA `a643e23bfee8173e0943882d48bc305a1a5120479b4d1ce9c20c46e03c722e55`。006 raw SHA `4f9d70ec375bb9a61502a9bdead7455df0f92758369a3a43c1d635d06ec9a81c`，007 raw SHA `3a35b28ca5fdc74cbc26c713e594319c3d27dba29087f27b443d868ba9a9f12a`；本报告 lane 未读取这些 Root raw。
+
+### 2026-10-04：CB41 防御方白和 typed 入口实拒与最小修复
+
+Root SDK98908 的真实请求在 service 层报 `selected backend does not implement native war step offer-white-peace-129`，未进入 native factory，不是原生 CanSend 拒绝或 AI decline；独立战争状态与正常 SAVE 为 GREEN，过程推进 0 天。该帧 War129 为 Robert29829 primary defender，CB41 `minor_religious_war`，整战分 +40，原生白和 context/CanSend/available 为 true，quote `2670329/100000 = +26.70329`，autoaccept false，recipient response 仍不可见。
+
+生产修复仅 `native_driver.py`：保留 CB17 `individual_county_de_jure_cb` 分支，为真实 CB41 身份新增 `defender_minor_religious_white_peace` variant、readiness dispatch 与 proposal metadata，共享既有同帧 active WarID、primary defender、原生合法和正报价条件，最终 native submission predicate 保留；没有新增 recipient response/CB-specific terms gate、flag、DTO、WAL 或 C++ 改动。Root 已提交推送 `b5add463dd3ff7fc5cbe71c024652af3f4ff750c`。
+
+唯一 registered MCP → actual service/driver 的 `python -O` focused attempt01 首次 GREEN（optimize1，3 phases / 61 explicit checks）：旧版同错误且 native factory callback 0；修复版使用同一真实已发布 CB41 DTO 与生产 query cache，发出一次 `offer-white-peace-129` callback，结果保持 ACK `submitted_pending` 和 null reply；单独 final native predicate false 场景保留拒绝。RESULT SHA-256 `a019a9d263439d45b9efc98c1c711cb8a6b5fd986ea90c8cc36cd6baaa8386dd`，修复 driver SHA-256 `3482c458c4bd08853600aa6e3feb9bf56e12c520be30fec8a1d0063a09dd7c40`；artifact 位于 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-settlement-typed-action/war129-score40-wp-r27/actual-service-fix/`。
+
+本增量生产代码状态为 static-ready，等待真实白和请求及独立后态/回答观测；正报价、fixture callback 和 ACK 均不提供 accepted/applied credit。既有 War503 强制要求的有限实机 loop 范围保留，旧 War167 的终止类型仍 unknown。本包基线累计 4444 天 / resume1291 / Oct4+419，query/fix/fixture 额外 0 天。
