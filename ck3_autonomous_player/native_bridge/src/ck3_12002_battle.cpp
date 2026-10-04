@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12002_battle.hpp"
+#include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/ck3_12002_battle_journal.hpp"
 #include "xar_bridge/ck3_12002_phase.hpp"
 
@@ -184,6 +185,22 @@ bool Bucket(const BattleBindings &b, const void *side, std::size_t offset,
       return false;
     r.public_cunit_id = army->public_cunit_id;
     r.owner_character_id = army->owner_character_id;
+    if (b.current_battle_knight_identity_enabled && r.bucket == "men_at_arms") {
+      // Existing v2 ReadCombatKnights membership source and full-ID/backlink
+      // semantics. -1 alone is native none; invalid identities fail this bucket.
+      const auto knight_id = At<std::int32_t>(regiment, 0x148);
+      if (knight_id != -1) {
+        auto *knight = Resolve(b.character_storage_slot, knight_id, 0x18);
+        if (knight_id <= 0 || !knight ||
+            At<std::uint32_t>(knight, 0x1C) != 0x43686172U)
+          return false;
+        auto *link = At<void *>(knight, phase_character::kCharacterKnightLinkOffset);
+        if (!link || At<std::int32_t>(link,
+                phase_character::kKnightLinkRegimentIdOffset) != r.regiment_id)
+          return false;
+      }
+      r.knight_character_id_raw = knight_id;
+    }
     auto *type = At<void *>(regiment, kBattleArmyRegimentTypeOffset);
     if (!type)
       return false;
@@ -725,11 +742,76 @@ bool ReinforcementSample(const BattleBindings &b, const game::Snapshot &scope,
   out.battle_reinforcement_assignment_ready = true;
   return true;
 }
+game::BattleCurrentPersonStateSnapshotV1 CurrentPersonSample(
+    const BattleBindings &b, void *character) noexcept {
+  game::BattleCurrentPersonStateSnapshotV1 observed{};
+  auto &prowess = observed.effective_prowess;
+  if (character && b.current_person_effective_prowess_enabled) {
+    // Same signed int32 effective value used by v2 ReadCombatKnights.
+    prowess.available = true;
+    prowess.points = At<std::int32_t>(
+        character, phase_character::kCharacterProwessOffset);
+  } else {
+    prowess.unavailable_reason = character ? "effective_prowess_reader_unbound"
+                                          : "character_unresolved";
+  }
+  auto &injury = observed.injury_traits;
+  constexpr std::array<std::string_view, 8> keys{
+      "wounded_1", "wounded_2", "wounded_3", "maimed", "one_legged",
+      "one_eyed", "disfigured", "incapable"};
+  const auto &traits = b.current_person_traits;
+  const void *database = character && traits.enabled &&
+      traits.get_trait_database && traits.character_has_trait
+      ? traits.get_trait_database() : nullptr;
+  std::size_t observed_flags = 0;
+  if (database) {
+    for (std::size_t index = 0; index < keys.size(); ++index) {
+      void *definition = phase_character::FindUniqueTraitDefinition(database,
+                                                                  keys[index]);
+      bool present = false;
+      if (phase_character::ReadTraitPresence(traits, character,
+              std::span<void *const>(&definition, 1), present)) {
+        injury.flags[index] = present;
+        ++observed_flags;
+      }
+    }
+  }
+  injury.status = observed_flags == keys.size()
+      ? game::BattleCurrentPersonInjuryTraitsStatusV1::available
+      : observed_flags != 0 ? game::BattleCurrentPersonInjuryTraitsStatusV1::partial
+                            : game::BattleCurrentPersonInjuryTraitsStatusV1::unavailable;
+  if (observed_flags != keys.size()) {
+    injury.unavailable_reason = !character ? "character_unresolved"
+        : !traits.enabled || !traits.get_trait_database || !traits.character_has_trait
+            ? "injury_trait_reader_unbound"
+            : !database ? "trait_database_unavailable"
+                        : "trait_definition_or_presence_unavailable";
+  }
+  if (!injury.flags[0] || !injury.flags[1] || !injury.flags[2]) {
+    injury.wounded_rank_unavailable_reason = "wounded_trait_unavailable";
+  } else {
+    std::int32_t rank = 0;
+    std::int32_t present_count = 0;
+    for (std::int32_t index = 0; index < 3; ++index) {
+      if (*injury.flags[static_cast<std::size_t>(index)]) {
+        rank = index + 1;
+        ++present_count;
+      }
+    }
+    if (present_count <= 1) injury.wounded_rank = rank;
+    else injury.wounded_rank_unavailable_reason = "wounded_traits_multiple_present";
+  }
+  return observed;
+}
+
 game::BattleTerminalCharacterCustodySnapshotV1 CharacterObservationSample(
-    const BattleBindings &b, std::int32_t id) noexcept {
+    const BattleBindings &b, std::int32_t id,
+    bool include_current_person = false) noexcept {
   game::BattleTerminalCharacterCustodySnapshotV1 observed{};
   observed.character_id = id;
   void *const character = Resolve(b.character_storage_slot, id, 0x18);
+  if (include_current_person && b.current_person_state_enabled)
+    observed.current_person_state = CurrentPersonSample(b, character);
   if (!character) return observed;
   // Exact .3 native 0x28EE9BA compares this eight-byte death-data pointer.
   // Missing strict identity remains null; nonnull is an observed dead object.
@@ -761,7 +843,7 @@ bool TerminalSample(const BattleBindings &b, const game::Snapshot &scope,
                       o.character_observations->end(),
                       [id](const auto &row) { return row.character_id == id; }))
         continue;
-      o.character_observations->push_back(CharacterObservationSample(b, id));
+      o.character_observations->push_back(CharacterObservationSample(b, id, true));
     }
   }
   // A character-only request explicitly has no historical Combat or CUnit.
@@ -1044,6 +1126,21 @@ bool TerminalSample(const BattleBindings &b, const game::Snapshot &scope,
   return true;
 }
 } // namespace
+
+void EnableBattleCurrentPerson12003(BattleBindings &b, std::uintptr_t base,
+                                    std::string_view sha) noexcept {
+  if (!b.enabled || !base || sha != ck3_12003::kExecutableSha256) return;
+  b.current_battle_knight_identity_enabled = true;
+  b.current_person_state_enabled = true;
+  b.current_person_effective_prowess_enabled = true;
+  b.current_person_traits.enabled = true;
+  b.current_person_traits.get_trait_database =
+      reinterpret_cast<phase_character::GetTraitDatabase>(
+          base + phase_character::kTraitDatabaseRva);
+  b.current_person_traits.character_has_trait =
+      reinterpret_cast<phase_character::CharacterHasTrait>(
+          base + phase_character::kCharacterHasTraitRva);
+}
 
 BattleBindings BindBattleImage(std::uintptr_t base,
                                std::string_view sha) noexcept {

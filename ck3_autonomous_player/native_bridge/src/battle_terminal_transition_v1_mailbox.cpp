@@ -1,5 +1,6 @@
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/battle_terminal_transition_v1_mailbox.hpp"
+#include "xar_bridge/battle_current_person_state_v1_serializer.hpp"
 
 #include <windows.h>
 
@@ -266,7 +267,7 @@ bool ValidCharacterObservations(
 bool AppendCharacterObservations(
     std::string &output,
     const std::optional<std::vector<game::BattleTerminalCharacterCustodySnapshotV1>>
-        &rows) {
+        &rows, bool current_person = false) {
   if (!ValidCharacterObservations(rows)) return false;
   if (!rows) {
     output += "null";
@@ -287,6 +288,11 @@ bool AppendCharacterObservations(
     if (!AppendOptionalNumber(output, row.actual_jailer_character_id)) return false;
     output += ",\"alive\":";
     AppendOptionalBool(output, row.alive);
+    if (current_person && row.current_person_state.has_value()) {
+      output += ",\"current_person_state\":";
+      output += xar::bridge::SerializeBattleCurrentPersonStateV1(
+          *row.current_person_state);
+    }
     output.push_back('}');
   }
   output.push_back(']');
@@ -747,7 +753,7 @@ std::string SerializeBattleTerminalTransitionV1(
   output += ",\"subject_public_cunit_id\":";
   if (!AppendNumber(output, snapshot.subject_public_cunit_id)) return {};
   output += ",\"character_observations\":";
-  if (!AppendCharacterObservations(output, snapshot.character_observations)) return {};
+  if (!AppendCharacterObservations(output, snapshot.character_observations, true)) return {};
   const auto &journal = snapshot.terminal_journal;
   output += ",\"terminal_journal\":{\"requested_after_sequence\":";
   if (!AppendOptionalNumber(output, journal.requested_after_sequence)) return {};

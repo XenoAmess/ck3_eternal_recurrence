@@ -5,6 +5,7 @@
 #include "xar_bridge/ck3_12002_combat.hpp"
 #include "xar_bridge/ck3_12002_phase_advantage.hpp"
 #include "xar_bridge/game_contract.hpp"
+#include "xar_bridge/ck3_12002_phase_character.hpp"
 
 namespace xar::ck3_12002 {
 
@@ -77,10 +78,19 @@ struct BattleBindings {
   ReadBattleSideModifier read_loss_side_modifier = nullptr;
   bool (*province_has_holding)(void *) = nullptr;
   ReadAdvantageModifierValue read_loss_province_modifier = nullptr;
+  // Exact .3 only, and attempted only for explicit requested CharacterIDs.
+  bool current_battle_knight_identity_enabled = false;
+  bool current_person_state_enabled = false;
+  bool current_person_effective_prowess_enabled = false;
+  phase_character::Bindings current_person_traits{};
 };
 
 BattleBindings BindBattleImage(std::uintptr_t image_base,
                                std::string_view executable_sha256) noexcept;
+
+// Installs only the reviewed current-person leaves for the exact .3 image.
+void EnableBattleCurrentPerson12003(BattleBindings &, std::uintptr_t image_base,
+                                    std::string_view executable_sha256) noexcept;
 
 game::BattleControlSnapshotStatus ReadBattleControlSnapshot(
     const BattleBindings &, const game::Snapshot &paused_scope,

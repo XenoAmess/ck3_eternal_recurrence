@@ -2205,12 +2205,41 @@ struct BattleTerminalCharacterResultRowSnapshotV1 {
                          const BattleTerminalCharacterResultRowSnapshotV1 &) = default;
 };
 
+// Current named-character observations are independent of historical battle rows.
+struct BattleCurrentPersonEffectiveProwessSnapshotV1 {
+  bool available = false;
+  std::optional<std::int32_t> points;
+  std::string unavailable_reason;
+  friend bool operator==(const BattleCurrentPersonEffectiveProwessSnapshotV1 &,
+                         const BattleCurrentPersonEffectiveProwessSnapshotV1 &) = default;
+};
+enum class BattleCurrentPersonInjuryTraitsStatusV1 { available, partial, unavailable };
+struct BattleCurrentPersonInjuryTraitsSnapshotV1 {
+  BattleCurrentPersonInjuryTraitsStatusV1 status =
+      BattleCurrentPersonInjuryTraitsStatusV1::unavailable;
+  // wounded_1, wounded_2, wounded_3, maimed, one_legged, one_eyed,
+  // disfigured, incapable; a failed read remains null, never false.
+  std::array<std::optional<bool>, 8> flags{};
+  std::optional<std::int32_t> wounded_rank;
+  std::string unavailable_reason;
+  std::string wounded_rank_unavailable_reason;
+  friend bool operator==(const BattleCurrentPersonInjuryTraitsSnapshotV1 &,
+                         const BattleCurrentPersonInjuryTraitsSnapshotV1 &) = default;
+};
+struct BattleCurrentPersonStateSnapshotV1 {
+  BattleCurrentPersonEffectiveProwessSnapshotV1 effective_prowess;
+  BattleCurrentPersonInjuryTraitsSnapshotV1 injury_traits;
+  friend bool operator==(const BattleCurrentPersonStateSnapshotV1 &,
+                         const BattleCurrentPersonStateSnapshotV1 &) = default;
+};
+
 enum class BattleTerminalCustodyStatusV1 { observed, none, unavailable };
 struct BattleTerminalCharacterCustodySnapshotV1 {
   std::int32_t character_id = -1;
   BattleTerminalCustodyStatusV1 status = BattleTerminalCustodyStatusV1::unavailable;
   std::optional<std::int32_t> actual_jailer_character_id;
   std::optional<bool> alive;
+  std::optional<BattleCurrentPersonStateSnapshotV1> current_person_state;
   friend bool operator==(const BattleTerminalCharacterCustodySnapshotV1 &,
                          const BattleTerminalCharacterCustodySnapshotV1 &) = default;
 };

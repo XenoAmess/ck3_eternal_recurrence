@@ -272,8 +272,74 @@ def _requested_character_ids(value: object, field: str) -> list[int]:
     return list(dict.fromkeys(_ordered_positive_ids(value, field, unique=False)))
 
 
-def _normalize_character_custody_rows(
+def _normalize_current_person_state(
     value: object, field: str,
+) -> dict[str, object]:
+    """Validate independently observed current prowess and eight injury flags."""
+    state = _exact_dict(value, field, {
+        "scope", "effective_prowess", "injury_traits",
+    })
+    if state["scope"] != "current_character":
+        raise ValueError(f"{field}.scope must be current_character")
+    prowess = _exact_dict(state["effective_prowess"], f"{field}.effective_prowess", {
+        "status", "points", "unavailable_reason",
+    })
+    points = _optional_integer(
+        prowess["points"], f"{field}.effective_prowess.points",
+        minimum=-(2**31), maximum=2**31 - 1,
+    )
+    prowess_status = prowess["status"]
+    prowess_reason = prowess["unavailable_reason"]
+    if prowess_status == "available":
+        if points is None or prowess_reason is not None:
+            raise ValueError(f"{field} available prowess disagrees")
+    elif prowess_status == "unavailable":
+        if points is not None or not isinstance(prowess_reason, str) or not prowess_reason:
+            raise ValueError(f"{field} unavailable prowess disagrees")
+    else:
+        raise ValueError(f"{field} prowess status is invalid")
+    injury = _exact_dict(state["injury_traits"], f"{field}.injury_traits", {
+        "status", "flags", "wounded_rank", "unavailable_reason",
+        "wounded_rank_unavailable_reason",
+    })
+    keys = (
+        "wounded_1", "wounded_2", "wounded_3", "maimed", "one_legged",
+        "one_eyed", "disfigured", "incapable",
+    )
+    flags = _exact_dict(injury["flags"], f"{field}.injury_traits.flags", set(keys))
+    flags = {
+        key: _optional_boolean(flags[key], f"{field}.injury_traits.flags.{key}")
+        for key in keys
+    }
+    observed = sum(flag is not None for flag in flags.values())
+    expected_status = "available" if observed == 8 else "partial" if observed else "unavailable"
+    injury_reason = injury["unavailable_reason"]
+    if (injury["status"] != expected_status
+        or (observed == 8 and injury_reason is not None)
+        or (observed != 8 and (not isinstance(injury_reason, str) or not injury_reason))):
+        raise ValueError(f"{field} injury availability disagrees")
+    rank = _optional_integer(
+        injury["wounded_rank"], f"{field}.injury_traits.wounded_rank",
+        minimum=0, maximum=3,
+    )
+    wound_flags = [flags[key] for key in keys[:3]]
+    matches = [index + 1 for index, flag in enumerate(wound_flags) if flag is True]
+    rank_observed = all(flag is not None for flag in wound_flags) and len(matches) <= 1
+    expected_rank = (matches[0] if matches else 0) if rank_observed else None
+    rank_reason = injury["wounded_rank_unavailable_reason"]
+    if (rank != expected_rank
+        or (rank_observed and rank_reason is not None)
+        or (not rank_observed and (not isinstance(rank_reason, str) or not rank_reason))):
+        raise ValueError(f"{field} wounded rank disagrees with observed flags")
+    return {
+        "scope": "current_character",
+        "effective_prowess": {**prowess, "points": points},
+        "injury_traits": {**injury, "flags": flags, "wounded_rank": rank},
+    }
+
+
+def _normalize_character_custody_rows(
+    value: object, field: str, *, allow_current_person_state: bool = False,
 ) -> list[dict[str, object]] | None:
     if value is None:
         return None
@@ -284,6 +350,9 @@ def _normalize_character_custody_rows(
         fields = {"character_id", "status", "actual_jailer_character_id"}
         if isinstance(value, dict) and "alive" in value:
             fields.add("alive")
+        if (allow_current_person_state and isinstance(value, dict)
+            and "current_person_state" in value):
+            fields.add("current_person_state")
         row = _exact_dict(value, f"{field}[{index}]", fields)
         character_id = _positive_int32(row["character_id"], f"{field} character")
         status = row["status"]
@@ -300,6 +369,10 @@ def _normalize_character_custody_rows(
                       "actual_jailer_character_id": jailer}
         if "alive" in row:
             normalized["alive"] = _optional_boolean(row["alive"], f"{field} alive")
+        if "current_person_state" in row:
+            normalized["current_person_state"] = _normalize_current_person_state(
+                row["current_person_state"], f"{field}[{index}].current_person_state"
+            )
         result.append(normalized)
     return result
 
@@ -1207,7 +1280,8 @@ def normalize_battle_terminal_transition_v1(
     )
     frame = _exact_dict(value, "battle_terminal_transition", fields)
     observations = _normalize_character_custody_rows(
-        frame.get("character_observations"), "character_observations"
+        frame.get("character_observations"), "character_observations",
+        allow_current_person_state=True,
     )
     if expected_character_ids is not None:
         expected_ids = _requested_character_ids(
