@@ -2482,3 +2482,6 @@ this policy candidate does not replace or invalidate it. Authority remains G2
 ## 2026-10-03T14:31 当前防守军务输入与替换入口
 
 当前三个防守WarID16777231/129/50331736、玩家2334、两目标实际7/89日路线与敌军互斗双方已实读；先实现7日目标防守的最小一日循环，actual首日GREEN。完整native candidate ranking、tie、求援0.6实际比率、未来敌军意图/MonteCarlo未采用，不作额外前置；替换入口是原生目标与解围专题已列的facts/score/native query。下一可施工项正在并行：当前统帅候选、exact当前补给、真实terminal field projection、县typed派遣、召盟typed执行及悔罪fallback/compiled route。拒绝和移动两已验证动作不等于战争胜利；全量终战仍待实际score/CanSend与后态。
+## 2026-10-05T02:31:49+08:00 当前4690日：事件26待选择
+
+当前4690/36524、恢复1537、Oct5+32，Oct4冻结633、G2 5/8、NW2 2/4、自然0；4672后新增18 normal/calendar/bounded/whole保存日/432h。锁R35/PID110044/g67冻结091bb268、env3866、normalh7869/raw53256888/96786861B/SHA `f1c6424a97235cbd23a1b9815a178d964b22cf281ee61a3de94f2ffc3a7e188a`。首attempt74130 plan final_read=false零日，typed campaign/Finish=true/exception0完整Python传播已获primitive；其后18日GREEN不等原cause修复，cause仍unknown。新增只读primitive：FULLDATA199 records/16合法empty、缺369=350+19（doc311dd96d）；person alive/no-record及dead death_battle（docc200f996）。Eprefix3 matched-empty仅membership，E/Gov/PlIn数值与fullAIselection未解；Sway gen8 continue/cold records0，无新material/terminal/fullscheme；traitcallbackv63 factory未闭，仍research，0model/tests。当前停点为事件26待Root原生选项查询/语义选择；不得把matched-empty扩为完整原生决策，缺所需观测优先施工后继续事件/战争OODA。

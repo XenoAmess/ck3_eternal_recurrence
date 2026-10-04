@@ -1067,3 +1067,6 @@ GEN-034 子包进度另按 `4/4` 汇报：A/B/C/D 均已完成；
 2026-10-02 23:33:53 Asia/Shanghai最新用户明确授权：“从现在开始，允许你进行全方位的深入的宗教领域研究。你需要全局搜索，打破任何你发现的 类似‘宗教领域暂缓’ 的禁令。”本次八份中央文档中所有现行宗教暂缓、holy order暂缓及“只有婚姻/圣战两项窄例外”限制全部撤销；下方dated历史段中的旧限制只记录当时权限，当前均已失效。通用faith/religion、doctrine/tenet/fervor、改宗/宗教改革、holy order及相应原生AI树、只读bridge/MCP和策略研究可按真实价值施工。授权不等于能力完成；2026-10-03 已撤销 nonwar-only 的执行授权限制，战争与战斗研究、实现、策略和实机全面开放；Robert 原普通战役唯一入口、玩家限定与发布规则保持。
 
 原生树、exact-build输入与实际paused材料按既有readiness分级；缺少新live不能以授权、schema、源码或fixture冒充完成。原午夜计划和旧日期段中的宗教权限仅为历史记录，不作为当前门禁。
+## 2026-10-05T02:31:49+08:00 当前4690日：事件26待选择
+
+当前4690/36524、恢复1537、Oct5+32，Oct4冻结633、G2 5/8、NW2 2/4、自然0；4672后新增18 normal/calendar/bounded/whole保存日/432h。锁R35/PID110044/g67冻结091bb268、env3866、normalh7869/raw53256888/96786861B/SHA `f1c6424a97235cbd23a1b9815a178d964b22cf281ee61a3de94f2ffc3a7e188a`。首attempt74130 plan final_read=false零日，typed campaign/Finish=true/exception0完整Python传播已获primitive；其后18日GREEN不等原cause修复，cause仍unknown。新增只读primitive：FULLDATA199 records/16合法empty、缺369=350+19（doc311dd96d）；person alive/no-record及dead death_battle（docc200f996）。Eprefix3 matched-empty仅membership，E/Gov/PlIn数值与fullAIselection未解；Sway gen8 continue/cold records0，无新material/terminal/fullscheme；traitcallbackv63 factory未闭，仍research，0model/tests。事件26两选项待Root query/semantic choice，不授已选择；下一P0处理该实机事件并独立读回，继续普通war OODA与实际保存。
