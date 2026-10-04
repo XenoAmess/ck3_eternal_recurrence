@@ -93,3 +93,16 @@ All 13 observed signed contributions and accumulator transitions are zero, with 
 The +21/+41 values above are `commander_dynamic_raw` (2100000/4100000 at scale100000); `side_dynamic_raw` and `target_conditionals_residual_raw` are0 on both sides. The new13 constructor rows do not explain the commander dynamic components. The leaf's `source.game_version` and `source.executable_sha256` remain null; g57/source1791d84 and the frozen DLL SHA are external cold-start provenance. This observed input remains at raw53248944; later arrival/combat at raw53249664 does not update or relabel it.
 
 Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v52/actual-constructor-ledger/ROOT-DELIVERY-ACTUAL.json` (raw leaf SHA256 `cee1225f7323e7f0dfc6b9957a1c567f1b432e5e0f71c1ebd86a4f0228aa6131`).
+
+### 2026-10-04：2669 当前来源切片实采（v53/v54）
+
+SDK30429 正常关闭 GREEN；query `native105/public2/raw53250360`，当前目标 2669，正入口 8757，有序 attacker `[83886367]`（Robert 29829）/defender `[16777683]`（commander 30470），constructor raw 参数未填 0。
+现有 `ck3_query_combat_simulation_inputs` 返回 contextual schema2/available，范围仍为 `hypothetical_constructor_context`；当前 Combat1291845646 是 Root 独立实际帧绑定。
+v53 每侧 6 条 side 来源已实采，贡献均为 0；当前 opposite eligibility 仍真实返回 `defender_hills`、raw500000，不能把 modifier0 等同于没有 eligible effect。
+v54 每侧 17 个输入、7 个有序阶段已实采：signed martial 23/11 × Q100000 为 2300000/1100000，relation aggregate 各1000000；observed commander dynamic 为 3300000/2100000，side dynamic/residual 均0。
+cached1AE 无 cache、raw0；primary identity 为 A1B1 selected/raw0、D1B0 mismatch/贡献0；gathering 均为 not_gathering/贡献0，合法零与短路 null 分别保留。
+这证明新增来源切片对当前质量值的解释有实际输入；opaque opposing-primary/province 两阶段仍 unavailable/null，当前未闭合细源实现属于后续工作，不推断缺项为0或完整因果和。
+当前 constructor base −500000，synthetic zero-roll 为 +700000、helper match=true；Root 后来 actual main stored +7 是另一帧观察，数值相同不合并帧、不推胜率。
+限定为 `production-live primitive`：partial context/input ready=true，complete encounter advantage/MC=false；不把来源切片写成完整 commander 解释或整场结论。
+证据：[完整交付](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-contextual-actual-next-v54/ROOT-DELIVERY.json)、[当前值与边界](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-contextual-actual-next-v54/actual-combat1291845646/ACTUAL-CRITICAL-CACHED.json)、[完整 body 缓存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-contextual-actual-next-v54/actual-combat1291845646/FULLBODY-CACHED.json)；004 单叶 SHA256 `9a6fc5ed11b16cabf9663d8efdfae7db07f827a28b113cc954768bf6da09df0a`。
+相关：[commander 选择与来源](combat-side-commander-selection-12003.md)；[Oct4/W40 字段](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-contextual-actual-next-v54/actual-combat1291845646/DAY-WEEK-REPORT-FINAL.json)。本追加0新raw/SDK/测试/Git/日推进。
