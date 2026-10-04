@@ -1,5 +1,14 @@
 # CK3 自动游玩智能体进度中心
 
+## 最新截点：真正首都2619解围，累计4395日（2026-10-04T11:20:56+08:00 实际补录）
+
+新增36个保存日=30行军＋6战斗、864h；累计 **4395/36524、resume +1242、10-04 +370、10-03冻结+777**，G2 5/8、NW2/4、自然继承0。30日抵达玩家capital2619／县2142，Combat1728053248/Result1442840576为Robert DEF normal_result；实测wipe true、敌军末值1、我军3893，6日按3＋3封存。
+
+fresh capital未被占领、occupier与active siege均null，主83886367 regular@2619、空route：**真正解围的limited production-live loop GREEN**。503已victory_enforced并独立确认退出；当前仅129，WP/enforce false。下一2669截击仅preview，未来0日。R26/g57运行；v53 sideledger仅published static-ready未build/deploy，v54 commander仍并行测试。
+
+保存 **h6844/raw53249808/94141190B/SHA-256 675a6f104e0d620b210675f327165883fc0723c2e9b256e7a0ec760cc8a20706**；[30日抵达账本](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/capital2619-v52/relief64-consumption/ROOT-DELIVERY.json)、[独立首都后态](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/siege-efficiency-inputs/current-capital-2619-query/actual-after-battle1728053248-v52-01/ROOT-DELIVERY.json)。 [第四战6日保存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/v52-capital2619-battle1728053248-days02-consumption/ROOT-DELIVERY.json)。
+
+
 ## 最新截点：两场玩家防御胜利，累计4359日（2026-10-04T10:23:52+08:00 实际补录）
 
 新增36个正常保存日（第二战9＋行军2＋第三战25），累计 **4359/36524、resume +1206、10-04 +334、10-03冻结+777**；G2 5/8、NW2/4、自然继承0。Combat1577058310与1593835526均在2629由Robert防御获胜、敌军末帧归零；各自我军末值3911、3804，分别记账。

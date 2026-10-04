@@ -1,5 +1,14 @@
 # 一代人自治：阻塞与能力债账本
 
+## 当前增量：真正首都2619解围闭环，累计4395日（2026-10-04T11:20:56+08:00 实际补录）
+
+相对4359，30行军+6战斗=36正常保存日/864h；累计4395/36524、恢复1242、Oct4+370，Oct3冻结777，G2 5/8、NW2/4、自然0。锁h6844/raw53249808/SHA `675a6f104e0d620b210675f327165883fc0723c2e9b256e7a0ec760cc8a20706`。真正capital2619/county2142已实际抵达，C1728053248/Result1442840576 DEF Robert normal_result、cursor19→22，wipe=true且enemyfinal1，非0；fresh8987独立capital notoccupied/occupiernull/active_siegenull及主838regular2619/空route，限定解围production-live loop GREEN。旧2640仅county2115 seat更正保持。
+
+503已精确victory_enforced并独立exit，当前只129（score−13/opponent32750/CBdb41 minor_religious_war），WP/enforce false，未surrender。敌16777683在2614向2669两段路线、8/16日native arrival；AIcoordinator100663304 ready/helpbothfalse/assignmentnull仅actual primitive，2669截击仅preview未move。fresh3893/4231、47团、供133.34217/300/月+20/attr0按该帧记录。R26/g57/1791/PID7388保持；v53 sideledger与v54 commander施工未live，下一P0依据真实输入推进截击/战争OODA，未来0。
+
+证据：[首都解围after](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/siege-efficiency-inputs/current-capital-2619-query/actual-after-battle1728053248-v52-01/ROOT-DELIVERY.json)、[剩余War129](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-settlement-typed-action/war129-current-post-capital-battle-v52/ROOT-DELIVERY.json)。
+
+
 ## 2026-10-04T10:23:52+08:00 两场防御战胜利与未结算战争
 
 锁h6666/raw53248944/SHA `9c499e083880b20d8b7e3a14871cd2e72cb3b0cf680ea732377960bbc599ce47`；累计4359/36524、恢复1206、Oct4+334，Oct3冻结777，G2 5/8、NW2/4、自然0。相对已pub4323，第二战9+路线2+第三战25=36保存日/864h。2629两场Robert防御战实际胜利、敌军final0，各按终态限定loop，不计整战胜利；主838仍2629/moving7→2619四跳，未抵达/解围。
