@@ -155,3 +155,19 @@ flowchart TD
 ```
 
 纠正源候选现为 static-ready；唯一生产 reader→serializer→registered MCP 回归 GREEN（native 16 checks），目前尚未 Root v66 部署后的真实 paused query；本段不冒充纠正后 actual 或 applied-loss 验收。原生 cause/tree/最小施工入口见 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-loss-r38-branch-truth/native-semantics/ROOT-DELIVERY.json`（SHA `7a7fd76ccc91f05573f2e5329eb3a85bc07fb7094014ab4bc352d4db1553b2f4`）；loaded scalar 的分支角色已闭，命名 defines 的 constructor 绑定与 setter2657EA0额外 lifecycle/carry不在此扩展。本包仅追加本专题 EOF，0新增游戏日、SDK、fixture重跑、共享修改或Git。
+
+### 2026-10-05：R39 修正标签与 resolver 的首次真实 paused query
+
+R39 / v66 / g71，Root 冻结源 `cd0acf19`、PID `126252`；唯一军力查询为 `runtime-preparation/v66/root-results/actual-main-readback-01/005-ck3_query_army_strengths.json`（SHA `a5bddeaccf218acb1ec990697498f1b7e4c03133422119ec928125a6309a7da6`）。真实返回 accepted / status / scope_status 均为 available，query sequence `1`、snapshot `native:3`、native revision `3`、public revision `2`、raw date `53259768`、paused=true。原生 source 的 game_version / executable_sha256 仍为 literal null；以上 Root 外层运行绑定单独记录，未反填原生字段。
+
+| 当前军团 / CArmy | 当前人数 / 上限 / regiment | supply / capacity | 月供给变化 / attrition | 围城 / 劫掠 / 供给整数预算 |
+| --- | --- | --- | --- | --- |
+| 主军 301989997 / 201326670 | 3210 / 3874 / 39 | 293.63637 / 300 | 0 / .01 | 32 / 0 / 0 |
+| 守军 184549452 / 167772208 | 3000 / 3000 / 24 | 100 / 100 | +20 / 0 | 0 / 0 / 0 |
+| 敌军 268435597 / 184549476 | 2981 / 4702 / 41 | 292 / 300 | −5 / 0 | 0 / 0 / 0 |
+
+主军的修正 wire 实际为 `raid_association_id=-1`、`raid_active=false`、`siege_active=true`；native unit state 为 `3`。loaded siege / raid rate 均为 `1000 / 100000`。这次真实触发 `24E8560` 围城判断及 `24DD580` 当前输入整数预算，发布到正确的 `siege_loss_budget=32`。修正标签与活跃预算 primitive 已达 production-live primitive，预算32不是已扣32人、未来净损失或过去兵数变化的因果证据。原 R37/R38 错标签 archive 原字节保留为 legacy；setter2657EA0额外 lifecycle/carry 未在此扩展。
+
+新 `native_army_resolution_v1` 的本帧三个 resolved 分支与未触发失败分支边界，由 ArmyReinforcement 在 [补员与 raised/reserve 专题](army-regiment-replenishment-raised-reserve-12003.md) 另行记录；本专题仅引用当前 CArmy 身份，不重复该诊断 primitive 的验收。
+
+compact 缓存为 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-loss-r39-corrected-actual/COMPACT-CORRECTED-HEALTH-CACHE.json`（SHA `831a56ee162297dbd2d7657836c24d5d811b4bca101df95955e01a461c467213`）；完整选定 body 缓存已交 ArmyReinforcement 独立 diff/report，禁止其重复读取原005。初次 decoder 因 content.text 与 structuredContent 双副本触发 HARNESS_RED，且在断言前未留 buffer；修正后完成唯一成功解码，原 buffer 总读取2次如实保留。此 harness RED 不是 native capability RED；未新增 SDK、游戏日、动作、测试或窗口操作，既有唯一生产回归直接复用。
