@@ -16,6 +16,11 @@ import shutil
 import subprocess
 import sys
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from register_project_exe_exclusions import (
+    after_successful_build, has_codemodel_reply, opted_in, request_codemodel, validate_source,
+)
+
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SOURCE = ROOT / "ck3_autonomous_player/native_bridge"
@@ -31,6 +36,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--configuration", choices=CONFIGURATIONS, default="Release")
     result.add_argument("--jobs", type=int, default=64)
     result.add_argument("--target", action="extend", nargs="+")
+    result.add_argument("--defender-external-candidate", help="Explicit caller label for this external project candidate source")
     result.add_argument("--cmake-define", action="append", default=[], metavar="NAME=VALUE")
     result.add_argument("--configure", action="store_true", help="Run CMake configure")
     result.add_argument("--build", action="store_true", help="Run the selected build targets")
@@ -183,6 +189,10 @@ def run(args: argparse.Namespace) -> dict:
         raise ValueError("--jobs must be positive")
     args.source_dir = args.source_dir.resolve()
     args.build_dir = args.build_dir.resolve()
+    defender_enabled = opted_in(ROOT)
+    external_candidate = getattr(args, "defender_external_candidate", None)
+    if defender_enabled and not args.probe:
+        validate_source(ROOT, args.source_dir, external_candidate)
     if not args.probe and not (args.source_dir / "CMakeLists.txt").is_file():
         raise RuntimeError(f"CMakeLists.txt is missing: {args.source_dir}")
     args.build_dir.mkdir(parents=True, exist_ok=True)
@@ -203,6 +213,12 @@ def run(args: argparse.Namespace) -> dict:
         else:
             configure = args.configure or not args.build
             build = args.build or not args.configure
+            if defender_enabled:
+                request_codemodel(args.build_dir)
+                # The existing build-only tree may predate this small query.
+                # A normal configure creates typed target artifact provenance.
+                if build and not configure and not has_codemodel_reply(args.build_dir):
+                    configure = True
             report["configured"] = configure
             report["built"] = build
             if configure:
@@ -211,6 +227,13 @@ def run(args: argparse.Namespace) -> dict:
             if build:
                 run_logged(build_command(args, tools), args.build_dir / "msvc-build.log", environment, args.build_dir)
             report["status"] = "built" if build else "configured"
+            if build:
+                report["build_succeeded"] = True
+                report["defender_exclusions"] = after_successful_build(
+                    ROOT, args.source_dir, args.build_dir, args.configuration,
+                    report["targets"], external_candidate)
+                if report["defender_exclusions"]["status"] == "settings_failed":
+                    report["status"] = "built_defender_registration_failed"
     except Exception as error:
         report["status"] = "failed"
         report["error"] = str(error)
@@ -229,7 +252,7 @@ def main() -> int:
         print(str(error), file=sys.stderr)
         return 1
     print(json.dumps(report, ensure_ascii=False, indent=2))
-    return 0
+    return 1 if report["status"] == "built_defender_registration_failed" else 0
 
 
 if __name__ == "__main__":

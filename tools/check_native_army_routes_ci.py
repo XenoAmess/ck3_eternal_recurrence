@@ -18,6 +18,7 @@ import subprocess
 import sys
 
 from run_native_msvc import child_environment, visual_studio_installation
+import register_project_exe_exclusions as defender_exclusions
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -103,6 +104,11 @@ def run(build_dir: Path, requested_vs: Path | None) -> dict:
                 *(str(SOURCE / name) for name in TRANSLATION_UNITS),
                 f"/Fe{executable}"]
         run_logged(argv, "compile", build_dir, compiler_environment, report)
+        report["build_status"] = "build_succeeded"
+        report["defender_exclusions"] = defender_exclusions.after_successful_command_build(
+            ROOT, SOURCE, build_dir, argv, [executable])
+        if report["defender_exclusions"]["status"] == "settings_failed":
+            raise RuntimeError("build succeeded; Defender registration failed: " + json.dumps(report["defender_exclusions"]))
         run_logged([str(executable)], "army-fixtures", build_dir, compiler_environment, report)
         report["executable_sha256"] = hashlib.sha256(executable.read_bytes()).hexdigest()
         report["status"] = "passed"

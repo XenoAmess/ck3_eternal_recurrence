@@ -15,6 +15,7 @@ import os
 import shutil
 import subprocess
 import time
+import register_project_exe_exclusions as defender_exclusions
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -120,6 +121,15 @@ def main():
         (RUN / 'link.log').write_bytes(linked.stdout + linked.stderr)
         report.update(link_command=link, link_exit=linked.returncode, link_log=pin(RUN / 'link.log'))
         require(linked.returncode == 0, 'Minimum production fixture link failed.')
+        report['build_status'] = 'build_succeeded'
+        report['defender_exclusions'] = defender_exclusions.after_successful_command_build(
+            ROOT, native, RUN, link, [executable],
+            external_candidate=(None if native == ROOT / 'ck3_autonomous_player/native_bridge'
+                                else 'run_battle_active_counter_fixture.py source-root=' + str(source_root)),
+            return_code=linked.returncode,
+            source_commands=[{'argv': row['command'], 'return_code': row['exit_code']} for row in compiled])
+        require(report['defender_exclusions']['status'] != 'settings_failed',
+                'build succeeded; Defender registration failed: ' + json.dumps(report['defender_exclusions']))
         report['status'] = 'FIXTURE-RED'
         ran = subprocess.run([str(executable), str(RUN / 'wire')], cwd=RUN, env=env,
                              capture_output=True, timeout=30, creationflags=flags)

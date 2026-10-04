@@ -264,12 +264,19 @@ def run(args: argparse.Namespace) -> dict[str, object]:
     if args.plan_only:
         return plan
 
+    repo = source_dir.parents[1]
+    sys.path.insert(0, str(repo / "tools"))
+    import register_project_exe_exclusions as defender_exclusions
+    defender_enabled = defender_exclusions.opted_in(repo)
+    defender_result = {"status": "disabled"}
     cmake = _required_command("cmake")
     ninja = _required_command("ninja")
     compiler = Path(_required_command("cl"))
     ctest = _required_command("ctest")
     fingerprint_before = native_bridge_source_fingerprint(source_dir)
     build_dir.mkdir(parents=False, exist_ok=False)
+    if defender_enabled:
+        defender_exclusions.request_codemodel(build_dir)
 
     prior_vslang = os.environ.get("VSLANG")
     try:
@@ -314,6 +321,19 @@ def run(args: argparse.Namespace) -> dict[str, object]:
                 "xar_ck3_frontend_bookmark_model_probe_v1_test",
             ])
         _run_checked(build)
+        if defender_enabled:
+            build_record = {"build_status": "build_succeeded", "command": build,
+                            "source_fingerprint_sha256": fingerprint_before,
+                            "wrapper_path": str(Path(__file__).resolve()),
+                            "wrapper_sha256": _sha256(Path(__file__))}
+            with (build_dir / "defender-build-completed.json").open("x", encoding="utf-8") as stream:
+                json.dump(build_record, stream, indent=2)
+                stream.write("\n")
+            targets = build[build.index("--target") + 1:] if "--target" in build else ["all"]
+            defender_result = defender_exclusions.after_successful_build(
+                repo, source_dir, build_dir, args.configuration, targets)
+            if defender_result["status"] == "settings_failed":
+                raise FreshBuildError("build succeeded; Defender registration failed: " + json.dumps(defender_result))
         for dependency_object in DEPENDENCY_OBJECTS:
             dependency_text = _run_checked(
                 [ninja, "-C", str(build_dir), "-t", "deps", dependency_object],
@@ -352,6 +372,8 @@ def run(args: argparse.Namespace) -> dict[str, object]:
             raise FreshBuildError(f"fresh native bridge artifact is missing: {artifact}")
     return {
         "status": "ready",
+        "build_status": "build_succeeded",
+        "defender_exclusions": defender_result,
         "build_dir": str(build_dir),
         "source_fingerprint_sha256": fingerprint_after,
         "dll_path": str(dll),

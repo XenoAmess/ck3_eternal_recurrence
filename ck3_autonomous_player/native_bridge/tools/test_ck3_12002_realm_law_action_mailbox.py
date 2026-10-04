@@ -40,6 +40,8 @@ def main() -> int:
     args.artifacts = args.artifacts.resolve()
     args.artifacts.mkdir(parents=True, exist_ok=True)
     sys.pycache_prefix = str(args.artifacts / ".python-cache")
+    sys.path.insert(0, str(ROOT / "tools"))
+    import register_project_exe_exclusions as defender_exclusions
     spec = importlib.util.spec_from_file_location("native_msvc", ROOT / "tools/run_native_msvc.py")
     assert spec and spec.loader
     helper = importlib.util.module_from_spec(spec)
@@ -58,9 +60,14 @@ def main() -> int:
                    "/link", "bcrypt.lib", "user32.lib"]
         compile_result = subprocess.run(command, cwd=directory, env=environment, capture_output=True)
         (directory / "compile.log").write_bytes(compile_result.stdout + compile_result.stderr)
-        record = {"mode": mode, "compile_returncode": compile_result.returncode}
+        record = {"mode": mode, "compile_returncode": compile_result.returncode,
+                  "build_status": "build_failed" if compile_result.returncode else "build_succeeded"}
         if compile_result.returncode:
             print((compile_result.stdout + compile_result.stderr).decode("mbcs", errors="replace"))
+            return record
+        record["defender_exclusions"] = defender_exclusions.after_successful_command_build(
+            ROOT, NATIVE, directory, command, [exe], return_code=compile_result.returncode)
+        if record["defender_exclusions"]["status"] == "settings_failed":
             return record
         run = subprocess.run([str(exe), str(directory)], cwd=directory, env=environment, capture_output=True)
         (directory / "run.log").write_bytes(run.stdout + run.stderr)

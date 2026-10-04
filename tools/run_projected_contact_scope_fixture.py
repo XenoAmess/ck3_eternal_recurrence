@@ -6,6 +6,8 @@ from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import importlib.util
 import json
+import os
+import register_project_exe_exclusions as defender_exclusions
 from pathlib import Path
 import shutil
 import subprocess
@@ -26,7 +28,11 @@ def main() -> int:
     parser.add_argument("--native-only", action="store_true")
     parser.add_argument("--python", type=Path, default=Path(sys.executable))
     args = parser.parse_args()
-    args.baseline_root = args.baseline_root or args.source_root
+    args.source_root = args.source_root.resolve()
+    args.baseline_root = (args.baseline_root or args.source_root).resolve()
+    if args.fixture_source is not None:
+        args.fixture_source = args.fixture_source.resolve()
+    defender_enabled = defender_exclusions.opted_in(args.baseline_root)
     build = BASE / args.attempt
     build.mkdir(exist_ok=False)
     common = args.baseline_root / "ck3_autonomous_player/native_bridge"
@@ -71,7 +77,8 @@ def main() -> int:
         prefix = [compiler["cl"], "/nologo", "/std:c++20", "/EHsc", "/W4", "/WX", "/O2",
                   "/DNDEBUG", "/utf-8", "/MT", "/DNOMINMAX", "/DWIN32_LEAN_AND_MEAN"]
         previous = {}
-        if args.reuse:
+        # Opted-in registration needs this build's actual CL producer for every linked object.
+        if args.reuse and not defender_enabled:
             old = json.loads((args.reuse / "RESULT.json").read_text(encoding="utf-8"))
             previous = {row["name"]: row for row in old["sources"]}
 
@@ -98,6 +105,15 @@ def main() -> int:
                    "/out:" + str(exe), "kernel32.lib", "/INCREMENTAL:NO"]
         report["link_command"] = command
         helper.run_logged(command, build / "link.log", env, build)
+        report["build_status"] = "build_succeeded"
+        source_dir = Path(os.path.commonpath([str(path.resolve().parent) for path in units.values()]))
+        report["defender_exclusions"] = defender_exclusions.after_successful_command_build(
+            args.baseline_root, source_dir, build, command, [exe],
+            external_candidate="run_projected_contact_scope_fixture.py explicit source set: " +
+                               json.dumps([str(path.resolve()) for path in units.values()]),
+            source_commands=[{"argv": argv, "return_code": 0} for argv in report["compile_commands"].values()])
+        if report["defender_exclusions"]["status"] == "settings_failed":
+            raise RuntimeError("build succeeded; Defender registration failed: " + json.dumps(report["defender_exclusions"]))
         wire = build / "wire"
         wire.mkdir()
         command = [str(exe), str(wire)] + ([args.case] if args.case else [])
