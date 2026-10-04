@@ -100,11 +100,17 @@ bool ModelTypeFailure(IngameDecisionItemResultV1 *d,const char *stage,
   return ModelFailure(d,stage,observed,reinterpret_cast<const void *>(expected_vtable));
 }
 bool ModelPass(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *list_root,Pass &p,
-    IngameDecisionItemResultV1 *d=nullptr) {
+    const void *expected_current_owner,IngameDecisionItemResultV1 *d=nullptr) {
   const auto base=env.module_base;const void *back=nullptr;
   if(!Read(env.gui_global_slot,0,p.application))return ModelFailure(d,"application_read");
   if(!Typed(p.application,base,0x449BDA8,0x5667F88))return ModelTypeFailure(d,"application_type",p.application,base+0x449BDA8);
-  if(!Read(p.application,0x78,p.logical))return ModelFailure(d,"logical_read");
+  // The GUI Application's idle slot can be empty after Start. The existing .3
+  // event-window and religion-window readers take the current owner from the
+  // exact core Jomini slot, then owner+10 -> the same pinned Gfx idler.
+  // This remains a read-only owner chain: require this very mailbox stamp and
+  // retain all original logical RTTI, App/Gfx backlinks and actual root guards.
+  if(!Read(reinterpret_cast<const void *>(base+0x5C6A520),0,p.logical))return ModelFailure(d,"current_jomini_owner_read");
+  if(!expected_current_owner||p.logical!=expected_current_owner)return ModelFailure(d,"current_jomini_owner_stamp_binding",p.logical,expected_current_owner);
   if(!Typed(p.logical,base,0x44D6048,0x55072C0))return ModelTypeFailure(d,"logical_type",p.logical,base+0x44D6048);
   if(!Read(p.logical,0x18,back))return ModelFailure(d,"logical_application_backref_read");
   if(back!=p.application)return ModelFailure(d,"logical_application_backref",back,p.application);
@@ -336,9 +342,9 @@ bool ExecuteIngameDecisionItemQueryV1(IngameDecisionItemContextV1 &query,
       return reject("actual_decisions_root_hidden_or_census_incomplete");
     Pass first{},second{};
     out.model_read_pass="first";
-    if(!ModelPass(env,root,first,&out))return reject("actual_keyed_decision_model_or_owner_unstable");
+    if(!ModelPass(env,root,first,reinterpret_cast<const void *>(stamp.jomini_state),&out))return reject("actual_keyed_decision_model_or_owner_unstable");
     out.model_read_pass="second";
-    if(!ModelPass(env,root,second,&out))return reject("actual_keyed_decision_model_or_owner_unstable");
+    if(!ModelPass(env,root,second,reinterpret_cast<const void *>(stamp.jomini_state),&out))return reject("actual_keyed_decision_model_or_owner_unstable");
     if(first!=second){out.model_read_pass="first_second_compare";ModelFailure(&out,"stable_model_compare");
       return reject("actual_keyed_decision_model_or_owner_unstable");}
     out.group_count=first.groups.count;out.row_count=first.rows.size();out.row_owner_verified=true;
@@ -359,7 +365,7 @@ bool ExecuteIngameDecisionItemQueryV1(IngameDecisionItemContextV1 &query,
     out.frame_verified=game::ReadSnapshot(*query.game,after)&&after==before;
     if(!out.gui_owner_binding_verified||!out.frame_verified)return reject("keyed_query_completion_binding_changed");
     out.model_read_pass="completion";
-    if(!ModelPass(env,root,last,&out))return reject("keyed_query_completion_binding_changed");
+    if(!ModelPass(env,root,last,reinterpret_cast<const void *>(stamp.jomini_state),&out))return reject("keyed_query_completion_binding_changed");
     if(last!=first){out.model_read_pass="first_completion_compare";ModelFailure(&out,"stable_model_compare");
       return reject("keyed_query_completion_binding_changed");}
     out.available=true;return true;
@@ -407,7 +413,7 @@ bool ExecuteIngameDecisionItemActionV1(IngameDecisionItemActionContextV1 &query,
     if(!ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,context,owner)||
        !Root(env,"decisions_view",list_root,visible,complete)||!list_root||!visible||!complete)return reject("actual_action_root_owner_unavailable");
     Pass first{},second{};
-    if(!ModelPass(env,list_root,first)||!ModelPass(env,list_root,second)||first!=second)return reject("actual_predispatch_model_changed");
+    if(!ModelPass(env,list_root,first,reinterpret_cast<const void *>(stamp.jomini_state))||!ModelPass(env,list_root,second,reinterpret_cast<const void *>(stamp.jomini_state))||first!=second)return reject("actual_predispatch_model_changed");
     const Item *target_row=nullptr;
     for(const auto &row:first.rows)if(row.key==query.observation.requested_key){if(target_row)return reject("actual_action_key_ambiguous");target_row=&row;}
     if(!target_row||!target_row->address||target_row->owner!=first.list)return reject("actual_action_row_owner_unqualified");
@@ -435,7 +441,7 @@ bool ExecuteIngameDecisionItemActionV1(IngameDecisionItemActionContextV1 &query,
     if(!query.observation.game||!game::ReadSnapshot(*query.observation.game,predispatch)||predispatch!=query.observation.expected_snapshot||
        !ActualActor(env,out.before.played_character_id)||!IsIngameUiPausedOwnerStampV1(mailbox,stamp,GetCurrentThreadId())||
        !ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,last_context,last_owner)||last_context!=context||last_owner!=owner||
-       !ModelPass(env,list_root,pre_model)||pre_model!=first)return reject("actual_decision_predispatch_frame_or_owner_changed");
+       !ModelPass(env,list_root,pre_model,reinterpret_cast<const void *>(stamp.jomini_state))||pre_model!=first)return reject("actual_decision_predispatch_frame_or_owner_changed");
     if(query.action==IngameDecisionItemActionKindV1::select){
       if(!NoVisibleModals(context))return reject("source_select_predispatch_modal_changed");
       if(!out.before_already_selected){
