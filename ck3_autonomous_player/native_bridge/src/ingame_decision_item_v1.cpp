@@ -81,6 +81,7 @@ struct Pass {
   const void *list_root=nullptr,*detail_root=nullptr,*selected_definition=nullptr;
   Vector groups{};std::vector<Vector> row_vectors;std::vector<const void *> group_definitions;std::vector<Item> rows;
   std::string selected_key;
+  bool selected_definition_is_null_object=false;
   std::int32_t detail_actor_reference_key=-1;
   bool operator==(const Pass &) const=default;
 };
@@ -138,7 +139,13 @@ bool ModelPass(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *list_root,
   if(!Read(p.detail,0xD0,p.selected_definition))return ModelFailure(d,"selected_definition_read");
   if(!Read(p.detail,0xD8,p.detail_actor_reference_key))return ModelFailure(d,"detail_actor_reference_read");
   if(!VectorAt(p.list,0x258,kMaximumGroups,p.groups))return ModelFailure(d,"groups_vector_guard");
-  if(p.selected_definition&&!DefinitionKey(p.selected_definition,base,p.selected_key))return ModelTypeFailure(d,"selected_definition_key_guard",p.selected_definition,base+0x48BD140);
+  // R0010 observes this exact .3 TPdxNullObject<CDecisionType> before selection.
+  // Keep its actual pointer in all stable-pass comparisons; only this pinned
+  // RTTI/vtable can represent an empty selection. Other wrong types still fail.
+  if(p.selected_definition&&Typed(p.selected_definition,base,0x4893190,0x5AB0548))
+    p.selected_definition_is_null_object=true;
+  else if(p.selected_definition&&!DefinitionKey(p.selected_definition,base,p.selected_key))
+    return ModelTypeFailure(d,"selected_definition_key_guard",p.selected_definition,base+0x48BD140);
   for(std::size_t n=0;n<p.groups.count;++n){
     const void *group=At(p.groups.data,n*0x20),*definition=nullptr;Vector rows{};
     if(!Read(group,0,definition))return ModelFailure(d,"group_definition_read");
@@ -354,9 +361,9 @@ bool ExecuteIngameDecisionItemQueryV1(IngameDecisionItemContextV1 &query,
       out.detail_definition_matches_target=first.selected_definition==row.definition;
     }
     if(out.matching_row_count!=1)return reject(out.matching_row_count?"requested_decision_key_ambiguous":"requested_decision_key_not_in_actual_rows");
-    out.detail_definition_available=first.selected_definition!=nullptr;out.detail_decision_key=first.selected_key;
+    out.detail_definition_available=first.selected_definition&&!first.selected_definition_is_null_object;out.detail_decision_key=first.selected_key;
     out.detail_actor_reference_key=first.detail_actor_reference_key;
-    out.detail_actor_binding_verified=first.selected_definition&&first.detail_actor_reference_key==before.played_character_id;
+    out.detail_actor_binding_verified=out.detail_definition_available&&first.detail_actor_reference_key==before.played_character_id;
     void *detail_root=nullptr;
     if(!Root(env,"decisiondetail_view",detail_root,out.detail_root_visible,out.detail_tree_complete)||
        (detail_root&&detail_root!=first.detail_root))return reject("actual_detail_root_or_census_unverified");
