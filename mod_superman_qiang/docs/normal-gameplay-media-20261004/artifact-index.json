@@ -1,0 +1,162 @@
+{
+  "schema": "superman-qiang.normal-gameplay.source-artifacts.v1",
+  "assets": [
+    {
+      "original": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/gameplay-P0002/event-a01/04_natural_event.jpg",
+        "bytes": 159032,
+        "sha256": "0f4f7ebc49ae07fadcca65e4382498c2ee3110f6bd0116807066b76f36ad6356"
+      },
+      "repository": {
+        "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v2/04_natural_event.jpg",
+        "bytes": 159032,
+        "sha256": "0f4f7ebc49ae07fadcca65e4382498c2ee3110f6bd0116807066b76f36ad6356"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/gameplay-P0002/event-a01/04_natural_event.raw.png",
+        "bytes": 1185421,
+        "sha256": "55411c9a62122636247d7fd1b68938e0bc0a3d741a13043e5e465df45ff50b5b"
+      },
+      "repository": {
+        "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v2/04_natural_event.raw.png",
+        "bytes": 1185421,
+        "sha256": "55411c9a62122636247d7fd1b68938e0bc0a3d741a13043e5e465df45ff50b5b"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/gameplay-P0002/event-a01/04_natural_event.provenance.json",
+        "bytes": 2771,
+        "sha256": "dce56f78c53d69e45833988dec62023437ee86155ecab09aaa63fcd805d21ada"
+      },
+      "repository": {
+        "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v2/04_natural_event.provenance.json",
+        "bytes": 2697,
+        "sha256": "892899967c04b20a0f7bc02a82477cb170534a40853e7b7d0446fb6414ba4db7"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/gameplay-P0002/record-a01/05_nonzero_experience.jpg",
+        "bytes": 61259,
+        "sha256": "4cc5073bb9d7078c1bb9b7663f6d052e8522c2615e99703975578b0a9bd77d60"
+      },
+      "repository": {
+        "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v2/05_nonzero_experience.jpg",
+        "bytes": 61259,
+        "sha256": "4cc5073bb9d7078c1bb9b7663f6d052e8522c2615e99703975578b0a9bd77d60"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/gameplay-P0002/record-a01/05_nonzero_experience.raw.png",
+        "bytes": 1063833,
+        "sha256": "b5cda95cd60c4cc61438b8adb96b9da3d88e5f1797fac7330a50b297f97cd2fc"
+      },
+      "repository": {
+        "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v2/05_nonzero_experience.raw.png",
+        "bytes": 1063833,
+        "sha256": "b5cda95cd60c4cc61438b8adb96b9da3d88e5f1797fac7330a50b297f97cd2fc"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/gameplay-P0002/record-a01/05_nonzero_experience.provenance.json",
+        "bytes": 2808,
+        "sha256": "6710a96a5fd2755fdcc3de21b68eade776117060a206d4bca56e051b9934a013"
+      },
+      "repository": {
+        "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v2/05_nonzero_experience.provenance.json",
+        "bytes": 2734,
+        "sha256": "81ba1bd8849422958e21df4712e53f263168391bb4b9fcfb884ca24c51cfdd46"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/capture-P0002/actual-sex-characters-independent-a01/report.json",
+        "bytes": 1463,
+        "sha256": "22b4dbeb3e26bd7d0c4758d301bcf7e13528b5ed50d1a6e7aa39f67788875372"
+      },
+      "repository": {
+        "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/docs/normal-gameplay-media-20261004/actual-sex-characters.json",
+        "bytes": 1395,
+        "sha256": "0ea0946f005ea841208c9720d16e596b9990ca8b2442c3b1526cbf6c37d88cd6"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/capture-P0002/session/save-readback-actual-sex-outcome-a01/report.json",
+        "bytes": 1690,
+        "sha256": "eb513d1f46b333762996f0bea4f44117bae62316ce31a6c62286eeb622380387"
+      },
+      "repository": {
+        "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/docs/normal-gameplay-media-20261004/native-sex-checkpoint.json",
+        "bytes": 1652,
+        "sha256": "98a50688d5f3ab1bf4f51298f780a102b37c7f927d617c63c64a1c6e3393cb96"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/capture-P0002/session/receipts/inbox-130-context.json",
+        "bytes": 16020,
+        "sha256": "b7e0ea387e4c22382d4c1248663728b5cb6fe387b7cde2f30498d57f3fd79383"
+      },
+      "repository": {
+        "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/docs/normal-gameplay-media-20261004/native-sex-event-context.json",
+        "bytes": 15479,
+        "sha256": "baafe58c94e621881f3f78c8ec15fe1be8e334315435815d5a1e9c6e32e29d5f"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/capture-P0002/session/receipts/inbox-133-npc-record-context.json",
+        "bytes": 11631,
+        "sha256": "7f398578803784579fbdcf631e1310f26bc3751ab9a140b75fc4cc2e307a1ab9"
+      },
+      "repository": {
+        "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/docs/normal-gameplay-media-20261004/native-experience-view-context.json",
+        "bytes": 11230,
+        "sha256": "fe2570da3186a1d33f9bfdf34b787fea05a642a49981d0608e90d6b98b5f3566"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/capture-P0002/session/production.manifest.json",
+        "bytes": 4048,
+        "sha256": "63b0bc75a4c13bfdb343d77d621617eb425c204af081f00658454b193f261aac"
+      },
+      "repository": {
+        "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/docs/normal-gameplay-media-20261004/production.manifest.json",
+        "bytes": 4048,
+        "sha256": "63b0bc75a4c13bfdb343d77d621617eb425c204af081f00658454b193f261aac"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/capture-P0002/identity.json",
+        "bytes": 384,
+        "sha256": "fc43c98cb77b81d7c356708cf06c580d68f397c4232f839d2341187e45047de5"
+      },
+      "repository": {
+        "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/docs/normal-gameplay-media-20261004/identity.json",
+        "bytes": 373,
+        "sha256": "799236fd49839a2adb4c926de6dfa06976383ca6217975146b391ea40f0eccdd"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/ck3-superman-qiang-media-redo-20261004/capture-P0001/correction-20261004.json",
+        "bytes": 1833,
+        "sha256": "30fd8058a4fba8a934c01e10bc8ab53e6c97b936cf3f7fc26ac1274d6a7089d5"
+      },
+      "repository": {
+        "path": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/docs/normal-gameplay-media-20261004/prior-capture-correction.json",
+        "bytes": 1798,
+        "sha256": "d4718027ed0971388be4ae867de0e5d79b3c616f28dc70e0daa4c84950768bda"
+      }
+    }
+  ],
+  "JSON_snapshot_encoding": "UTF-8 LF; original external bytes and SHA remain separately retained"
+}

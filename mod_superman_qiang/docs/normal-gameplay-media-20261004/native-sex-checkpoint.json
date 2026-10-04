@@ -1,0 +1,38 @@
+{
+  "schema": "sxad.native-checkpoint-readback.v2",
+  "at_utc": "2026-10-04T02:43:08.175677+00:00",
+  "run_id": "session",
+  "snapshot_revision": 560,
+  "played_character_id": 31254,
+  "checkpoint": {
+    "status": "saved",
+    "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\state\\profile\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 87246807,
+    "sha256": "a9843d89aba28643818fd37babf993ffc10233985e11930516f221bf34ad7ff2",
+    "date_raw": 53175072,
+    "overwrite_confirmed": true,
+    "strategy": "native-autosave-command-v1",
+    "episode_projection": "native_campaign",
+    "succession_lifecycle": null,
+    "history_index": 68,
+    "episode_character_id": null,
+    "episode_run_id": null
+  },
+  "retained_checkpoint_sha256": "a9843d89aba28643818fd37babf993ffc10233985e11930516f221bf34ad7ff2",
+  "decoder_sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+  "script_sha256": "01de32efc72e7c224cda2ba697f79191bf5070d3d46c7f0ed1ab5ec923b06528",
+  "melt_command": [
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+    "melt",
+    "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-outcome-a01\\checkpoint.ck3",
+    "--format",
+    "ck3",
+    "--unknown-key",
+    "stringify",
+    "-o",
+    "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-outcome-a01\\melted.ck3"
+  ],
+  "melt_exit_code": 0,
+  "melted_sha256": "7c15dcc77a1fc5c12c070a446c2d3e45757a1241c79935fad041a195e2b91d41"
+}

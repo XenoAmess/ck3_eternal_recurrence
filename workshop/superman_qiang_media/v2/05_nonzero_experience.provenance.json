@@ -1,0 +1,74 @@
+{
+  "schema": "superman-qiang.real-gameplay-screenshot-projection.v1",
+  "recorded_utc": "2026-10-04T02:49:22.028046+00:00",
+  "status": "pending_direct_visual_and_capture_review",
+  "source_path": "C:/ck3-superman-qiang-media-redo-20261004/capture-P0002/npc-nonzero-record-a02/screen.png",
+  "source_sha256": "b5cda95cd60c4cc61438b8adb96b9da3d88e5f1797fac7330a50b297f97cd2fc",
+  "source_bytes": 1063833,
+  "source_dimensions": [
+    1024,
+    768
+  ],
+  "source_format": "PNG",
+  "source_mode": "RGB",
+  "crop_left_top_right_bottom": [
+    236,
+    235,
+    787,
+    532
+  ],
+  "output_dimensions": [
+    551,
+    297
+  ],
+  "output_format": "JPEG",
+  "output_mode": "RGB",
+  "quality": 95,
+  "optimize": true,
+  "progressive": true,
+  "subsampling": 0,
+  "resized": false,
+  "content_edited": false,
+  "image_generation_used": false,
+  "output_bytes": 61259,
+  "output_sha256": "4cc5073bb9d7078c1bb9b7663f6d052e8522c2615e99703975578b0a9bd77d60",
+  "strict_max_bytes": 1048576,
+  "below_native_byte_limit": true,
+  "retained_raw_path": "C:/ck3-superman-qiang-media-redo-20261004/gameplay-P0002/record-a01/05_nonzero_experience.raw.png",
+  "output_path": "C:/ck3-superman-qiang-media-redo-20261004/gameplay-P0002/record-a01/05_nonzero_experience.jpg",
+  "capture_report": {
+    "path": "C:/ck3-superman-qiang-media-redo-20261004/capture-P0002/actual-sex-characters-independent-a01/report.json",
+    "bytes": 1463,
+    "sha256": "22b4dbeb3e26bd7d0c4758d301bcf7e13528b5ed50d1a6e7aa39f67788875372"
+  },
+  "capture_result_inferred": false,
+  "visual_review": "pending",
+  "published": false,
+  "tool": {
+    "path": "C:\\ck3-superman-qiang-media-redo-20261004\\gameplay-P0002\\project_gameplay_screenshots.py",
+    "sha256": "351ad9109e739e4441ce92359da044546971543b556595d2e6bbb94572653ea1",
+    "argv": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "C:/ck3-superman-qiang-media-redo-20261004/gameplay-P0002/project_gameplay_screenshots.py",
+      "--source",
+      "C:/ck3-superman-qiang-media-redo-20261004/capture-P0002/npc-nonzero-record-a02/screen.png",
+      "--source-sha256",
+      "b5cda95cd60c4cc61438b8adb96b9da3d88e5f1797fac7330a50b297f97cd2fc",
+      "--crop",
+      "236",
+      "235",
+      "787",
+      "532",
+      "--quality",
+      "95",
+      "--output-dir",
+      "C:/ck3-superman-qiang-media-redo-20261004/gameplay-P0002/record-a01",
+      "--name",
+      "05_nonzero_experience",
+      "--capture-report",
+      "C:/ck3-superman-qiang-media-redo-20261004/capture-P0002/actual-sex-characters-independent-a01/report.json"
+    ],
+    "pillow_version": "12.3.0",
+    "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]"
+  }
+}

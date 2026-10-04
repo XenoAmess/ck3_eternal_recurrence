@@ -1,0 +1,51 @@
+{
+  "schema": "superman-qiang.gameplay-media.root-review.v1",
+  "reviewed_at_utc": "2026-10-04T02:52:57.897792+00:00",
+  "reviewer": "root",
+  "directly_viewed_original_PNG_and_exact_final_JPEG": true,
+  "images": [
+    {
+      "index": 3,
+      "name": "04_natural_event",
+      "caption": "正常勾引成功事件",
+      "dimensions": [
+        684,
+        380
+      ],
+      "crop": [
+        170,
+        194,
+        854,
+        574
+      ],
+      "source_sha256": "55411c9a62122636247d7fd1b68938e0bc0a3d741a13043e5e465df45ff50b5b",
+      "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v2/04_natural_event.jpg",
+      "bytes": 159032,
+      "sha256": "0f4f7ebc49ae07fadcca65e4382498c2ee3110f6bd0116807066b76f36ad6356"
+    },
+    {
+      "index": 4,
+      "name": "05_nonzero_experience",
+      "caption": "阿梅利娜的真实1次经验记录",
+      "dimensions": [
+        551,
+        297
+      ],
+      "crop": [
+        236,
+        235,
+        787,
+        532
+      ],
+      "source_sha256": "b5cda95cd60c4cc61438b8adb96b9da3d88e5f1797fac7330a50b297f97cd2fc",
+      "path": "D:/workspace/ck3_eternal_recurrence/workshop/superman_qiang_media/v2/05_nonzero_experience.jpg",
+      "bytes": 61259,
+      "sha256": "4cc5073bb9d7078c1bb9b7663f6d052e8522c2615e99703975578b0a9bd77d60"
+    }
+  ],
+  "actual_outcome": "Normal seduce_outcome.2020, Robert31254 and Amelina32535 each naturally 0 to 1; equal pre-experience, no transfer.",
+  "originals_retained": true,
+  "content_editing": false,
+  "image_generation_used": false,
+  "published": false
+}

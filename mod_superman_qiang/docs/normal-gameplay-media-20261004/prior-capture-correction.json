@@ -1,0 +1,35 @@
+{
+  "schema": "superman-qiang.normal-gameplay-capture.correction.v1",
+  "recorded_utc": "2026-10-04T02:23:58.430459+00:00",
+  "correction_to_attempt": "capture-P0001",
+  "original_reports_preserved": [
+    {
+      "path": "C:/ck3-superman-qiang-media-redo-20261004/capture-P0001/capture-summary.json",
+      "bytes": 5791,
+      "sha256": "aa9838532e259f72dd2c322929f36489e0ddec42169d37c9de074f377968333c"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-media-redo-20261004/capture-P0001/capture-summary.md",
+      "bytes": 1878,
+      "sha256": "9434f228165e01d96209a10198be10a7e8798084dd69185e3b5a42496ffa0816"
+    },
+    {
+      "path": "C:/ck3-superman-qiang-media-redo-20261004/capture-P0001/raw-index.json",
+      "bytes": 105700,
+      "sha256": "d0f3a0e1247c7ecc846a2e229cd8dd3be49cae80f7138d647f28d40bea576aab"
+    }
+  ],
+  "actual_followup_evidence": {
+    "path": "C:/ck3-superman-qiang-media-redo-20261004/capture-P0002/session/receipts/inbox-074-follow-context.json",
+    "bytes": 15853,
+    "sha256": "850ef5ef2ca3e16bc00b4d62823cd01e2fff69c64f3b155378b00ffb35777373"
+  },
+  "observed_event_definition": "murder_outcome_reworked.0013",
+  "observed_event_instance": 9,
+  "observed_date_raw": 53165928,
+  "correction": "P0001 accidentally started murder. Its original report incorrectly called this seduction and misread 30% success chance as scheme progress. P0002 followup native event identity proves failed murder, rather than sexual activity.",
+  "nonzero_xp_or_absorption_from_P0001": false,
+  "P0001_frames_allowed_as_promotional_gameplay": false,
+  "historical_reports_or_raw_bytes_overwritten": false,
+  "future_attempt": "P0002 independently confirmed type=seduce, owner31254,target32535; normal progression and actual sexual settlement remain a separate evidence claim."
+}

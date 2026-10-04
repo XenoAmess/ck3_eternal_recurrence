@@ -1,0 +1,68 @@
+{
+  "schema": "sxad.original-character-preserved-save.v1",
+  "melted_sha256": "7c15dcc77a1fc5c12c070a446c2d3e45757a1241c79935fad041a195e2b91d41",
+  "script_sha256": "625f328f6290d9267ed06c9e93587488102f0d8d59e8c6b881958d97db56897d",
+  "characters": [
+    {
+      "character_id": 31254,
+      "base": [
+        4,
+        9,
+        6,
+        6,
+        6,
+        10
+      ],
+      "traits": [
+        69,
+        51,
+        67,
+        19,
+        31,
+        158,
+        125,
+        306
+      ],
+      "sxad_variables": {
+        "sxad_sex_experience": {
+          "present": true,
+          "type": "value",
+          "identity": 100000,
+          "number": 1.0,
+          "integer_exact": 1
+        }
+      },
+      "sxad_modifiers": [],
+      "raw_sha256": "57d6ec69e6ef7bc1acd39b4dc6312a49c149f3f2303587ffc7b115e5cb6c4621"
+    },
+    {
+      "character_id": 32535,
+      "base": [
+        4,
+        5,
+        7,
+        6,
+        2,
+        3
+      ],
+      "traits": [
+        47,
+        76,
+        63,
+        11,
+        306
+      ],
+      "sxad_variables": {
+        "sxad_sex_experience": {
+          "present": true,
+          "type": "value",
+          "identity": 100000,
+          "number": 1.0,
+          "integer_exact": 1
+        }
+      },
+      "sxad_modifiers": [],
+      "raw_sha256": "53e69ef9ff1f90e8bf7bfe1f5796d00344db34d7acb283fa02520d98cc013b1c"
+    }
+  ]
+}

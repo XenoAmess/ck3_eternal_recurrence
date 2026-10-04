@@ -1,0 +1,541 @@
+{
+  "request_path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\inbox\\130-context.json",
+  "request_sha256": "1b3685902f8229d75b30d9a81bf1dc7ace2a2c51c2561cf676d014878b23e747",
+  "result": {
+    "step": "query-current-event-window-context-v1",
+    "accepted": true,
+    "status": "available",
+    "query_sequence": 17,
+    "snapshot_revision": 559,
+    "current_event_window_context": {
+      "schema": "current-event-window-context-v1",
+      "schema_version": 1,
+      "status": "available",
+      "snapshot_revision": 559,
+      "date_raw": 53175072,
+      "current_event_instance_id": 20,
+      "window_match_count": 1,
+      "unavailable_reason": null,
+      "event_definition_key": "seduce_outcome.2020",
+      "calculated_event_id": 1442020,
+      "runtime_stats_ordinal": 1128,
+      "root_scope": {
+        "status": "available",
+        "raw_type_index": 4,
+        "type_key": "character",
+        "subtype": 0,
+        "typed_identity": {
+          "status": "available",
+          "kind": "character",
+          "character_id": 31254
+        }
+      },
+      "saved_scopes": [
+        {
+          "name": "scheme",
+          "name_identifier": 6,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 9,
+            "type_key": "scheme",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "generic_scope_payload_identity_not_closed"
+            }
+          }
+        },
+        {
+          "name": "owner",
+          "name_identifier": 5,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 31254
+            }
+          }
+        },
+        {
+          "name": "artifact",
+          "name_identifier": 180,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 31,
+            "type_key": "artifact",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "generic_scope_payload_identity_not_closed"
+            }
+          }
+        },
+        {
+          "name": "target",
+          "name_identifier": 4,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 32535
+            }
+          }
+        },
+        {
+          "name": "ignore_cheating_error_check",
+          "name_identifier": 9800,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 2,
+            "type_key": "boolean",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "generic_scope_payload_identity_not_closed"
+            }
+          }
+        },
+        {
+          "name": "scheme_successful",
+          "name_identifier": 9609,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 2,
+            "type_key": "boolean",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "generic_scope_payload_identity_not_closed"
+            }
+          }
+        },
+        {
+          "name": "had_sex_root_character",
+          "name_identifier": 44404,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 31254
+            }
+          }
+        },
+        {
+          "name": "had_sex_with_effect_partner",
+          "name_identifier": 44406,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 32535
+            }
+          }
+        },
+        {
+          "name": "new_memory",
+          "name_identifier": 210,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 34,
+            "type_key": "character_memory",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "generic_scope_payload_identity_not_closed"
+            }
+          }
+        },
+        {
+          "name": "infecting_partner",
+          "name_identifier": 12237,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 31254
+            }
+          }
+        },
+        {
+          "name": "secret_character",
+          "name_identifier": 23662,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 32535
+            }
+          }
+        }
+      ],
+      "options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我们应该再搞一次，不过可能要换个地方……",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我总说，去厕所释放一下。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "readiness": {
+        "event_definition_identity_ready": true,
+        "root_scope_ready": true,
+        "saved_scopes_ready": true,
+        "option_presentation_ready": true,
+        "effect_indicators_ready": true,
+        "effect_preview_ready": false,
+        "semantic_decision_ready": false
+      },
+      "provenance": {
+        "root": "module+0x5C6A520->+0x10",
+        "idler_vtable_rva": "0x44BC408",
+        "manager_offset": "+0x28",
+        "backend_id": "ck3-1.20.0.3-native-event-window-v1"
+      }
+    },
+    "backend_id": "native-headless",
+    "schema": "current-event-window-context-v1",
+    "schema_version": 1,
+    "date_raw": 53175072,
+    "current_event_instance_id": 20,
+    "window_match_count": 1,
+    "unavailable_reason": null,
+    "event_definition_key": "seduce_outcome.2020",
+    "calculated_event_id": 1442020,
+    "runtime_stats_ordinal": 1128,
+    "root_scope": {
+      "status": "available",
+      "raw_type_index": 4,
+      "type_key": "character",
+      "subtype": 0,
+      "typed_identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 31254
+      }
+    },
+    "saved_scopes": [
+      {
+        "name": "scheme",
+        "name_identifier": 6,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 9,
+          "type_key": "scheme",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "owner",
+        "name_identifier": 5,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        }
+      },
+      {
+        "name": "artifact",
+        "name_identifier": 180,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 31,
+          "type_key": "artifact",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "target",
+        "name_identifier": 4,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 32535
+          }
+        }
+      },
+      {
+        "name": "ignore_cheating_error_check",
+        "name_identifier": 9800,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 2,
+          "type_key": "boolean",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "scheme_successful",
+        "name_identifier": 9609,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 2,
+          "type_key": "boolean",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "had_sex_root_character",
+        "name_identifier": 44404,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        }
+      },
+      {
+        "name": "had_sex_with_effect_partner",
+        "name_identifier": 44406,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 32535
+          }
+        }
+      },
+      {
+        "name": "new_memory",
+        "name_identifier": 210,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 34,
+          "type_key": "character_memory",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "infecting_partner",
+        "name_identifier": 12237,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        }
+      },
+      {
+        "name": "secret_character",
+        "name_identifier": 23662,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 32535
+          }
+        }
+      }
+    ],
+    "options": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "我们应该再搞一次，不过可能要换个地方……",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 1,
+        "native_option_index": 1,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "我总说，去厕所释放一下。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      }
+    ],
+    "readiness": {
+      "event_definition_identity_ready": true,
+      "root_scope_ready": true,
+      "saved_scopes_ready": true,
+      "option_presentation_ready": true,
+      "effect_indicators_ready": true,
+      "effect_preview_ready": false,
+      "semantic_decision_ready": false
+    },
+    "provenance": {
+      "root": "module+0x5C6A520->+0x10",
+      "idler_vtable_rva": "0x44BC408",
+      "manager_offset": "+0x28",
+      "backend_id": "ck3-1.20.0.3-native-event-window-v1"
+    },
+    "current_event_window_context_ready": true,
+    "current_event_effect_indicators_ready": true,
+    "queried_snapshot_id": "native:559",
+    "queried_revision": 560,
+    "queried_native_revision": 559,
+    "scope": "exact-current-event-window",
+    "source": {
+      "snapshot_id": "native:559",
+      "revision": 560,
+      "native_revision": 559,
+      "date_raw": 53175072,
+      "paused": true,
+      "backend_id": "native-headless"
+    },
+    "binding": {
+      "snapshot_id": "native:559",
+      "revision": 560,
+      "native_revision": 559,
+      "date_raw": 53175072,
+      "expected_revision": 560,
+      "event_instance_id": 20
+    }
+  },
+  "ok": true
+}

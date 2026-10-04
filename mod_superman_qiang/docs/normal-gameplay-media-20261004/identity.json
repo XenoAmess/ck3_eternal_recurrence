@@ -1,0 +1,11 @@
+{
+  "schema": "xar.ck3-live-run-identity.v1",
+  "run_id": "desktop-3fevhd2-1c74096080--superman-qiang--R0016",
+  "execution_id": "db297ed6-297c-4a92-aafd-e6b5ae7f168b",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "mod_key": "superman-qiang",
+  "sequence": 16,
+  "allocated_at_utc": "2026-10-04T01:30:28.943903+00:00",
+  "allocator_pid": 19760,
+  "legacy_alias": null
+}
