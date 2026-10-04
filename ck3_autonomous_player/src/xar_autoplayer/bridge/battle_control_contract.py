@@ -180,6 +180,9 @@ _CURRENT_LOSS_SIDE_KEYS = {
     "own_hard_conversion_modifier_raw",
     "opposing_hard_conversion_modifier_raw",
 }
+_CURRENT_LOSS_SIDE_KEYS_WITH_LEVY = _CURRENT_LOSS_SIDE_KEYS | {
+    "primary_participant_character_id", "levy_damage_raw",
+}
 
 _SIDE_KEYS = {
     "side_index",
@@ -632,12 +635,15 @@ def normalize_battle_control_snapshot_v1(
             value["current_loss_inputs_v1"],
             combat_id=combat_id,
             province_id=province_id,
+            attacker=attacker,
+            defender=defender,
         )
     return result
 
 
 def _normalize_current_loss_inputs_v1(
     value: object, *, combat_id: int, province_id: int,
+    attacker: dict[str, object], defender: dict[str, object],
 ) -> dict[str, object] | None:
     """Preserve observed current operands, without claiming executed tick loss."""
     if value is None:
@@ -681,7 +687,9 @@ def _normalize_current_loss_inputs_v1(
     normalized_sides = []
     for index, side in enumerate(sides):
         side_name = f"{name}.sides[{index}]"
-        if not isinstance(side, dict) or set(side) != _CURRENT_LOSS_SIDE_KEYS:
+        if not isinstance(side, dict) or set(side) not in (
+            _CURRENT_LOSS_SIDE_KEYS, _CURRENT_LOSS_SIDE_KEYS_WITH_LEVY,
+        ):
             raise ValueError(f"{side_name} has a malformed schema")
         side_index = _signed_int32(side["side_index"], f"{side_name}.side_index")
         if side_index != index:
@@ -694,6 +702,18 @@ def _normalize_current_loss_inputs_v1(
         ):
             normalized_side[field] = _signed_int64(
                 side[field], f"{side_name}.{field}"
+            )
+        if "levy_damage_raw" in side:
+            primary = _positive_int32(
+                side["primary_participant_character_id"],
+                f"{side_name}.primary_participant_character_id",
+            )
+            if primary != (attacker, defender)[index]["primary_participant_character_id"]:
+                raise ValueError(f"{side_name} primary participant binding disagrees")
+            raw = side["levy_damage_raw"]
+            normalized_side["primary_participant_character_id"] = primary
+            normalized_side["levy_damage_raw"] = (
+                None if raw is None else _signed_int64(raw, f"{side_name}.levy_damage_raw")
             )
         normalized_sides.append(normalized_side)
     normalized["sides"] = normalized_sides

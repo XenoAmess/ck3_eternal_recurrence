@@ -412,6 +412,18 @@ std::optional<game::BattleControlCurrentLossInputsV1> CurrentLossInputs(
   for (std::size_t index = 0; index < sides.size(); ++index) {
     auto &row = out.sides[index];
     row.side_index = static_cast<std::int32_t>(index);
+    row.primary_participant_character_id =
+        At<std::int32_t>(sides[index], 0x70);
+    if (b.read_primary_levy_damage != nullptr) {
+      auto *primary = Resolve(b.character_storage_slot,
+                              row.primary_participant_character_id, 0x18);
+      if (primary != nullptr) {
+        std::int64_t scratch{};
+        const auto *value = b.read_primary_levy_damage(&scratch, primary);
+        if (value != nullptr)
+          row.levy_damage_raw = At<std::int64_t>(value, 0);
+      }
+    }
     row.outgoing_advantage_factor_raw = index == advantaged_side
         ? out.stored_advantage_damage_factor_raw : 100'000;
     if (b.read_loss_side_modifier(&row.own_hard_conversion_modifier_raw,
@@ -1192,6 +1204,9 @@ BattleBindings BindBattleImage(std::uintptr_t base,
       base + kBattlePursuitHardConversionRva);
   b.read_loss_side_modifier = reinterpret_cast<ReadBattleSideModifier>(
       base + kBattleLossSideModifierRva);
+  b.read_primary_levy_damage =
+      reinterpret_cast<decltype(b.read_primary_levy_damage)>(
+          base + kBattlePrimaryLevyDamageRva);
   b.province_has_holding = reinterpret_cast<PhaseProvincePredicate>(
       base + kPhaseProvinceHasHoldingRva);
   b.read_loss_province_modifier = reinterpret_cast<ReadAdvantageModifierValue>(

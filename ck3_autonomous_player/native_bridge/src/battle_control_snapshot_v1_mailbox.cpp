@@ -1013,6 +1013,16 @@ bool AppendCurrentLossInputsV1(
     output += "{\"side_index\":";
     if (!AppendNumber(output, row.side_index))
       return false;
+    output += ",\"primary_participant_character_id\":";
+    if (!AppendNumber(output, row.primary_participant_character_id))
+      return false;
+    output += ",\"levy_damage_raw\":";
+    if (row.levy_damage_raw.has_value()) {
+      if (!AppendNumber(output, *row.levy_damage_raw))
+        return false;
+    } else {
+      output += "null";
+    }
     output += ",\"outgoing_advantage_factor_raw\":";
     if (!AppendNumber(output, row.outgoing_advantage_factor_raw))
       return false;

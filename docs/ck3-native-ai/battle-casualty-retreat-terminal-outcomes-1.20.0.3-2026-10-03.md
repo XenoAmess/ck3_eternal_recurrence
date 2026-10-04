@@ -390,3 +390,26 @@ g59构建尚未部署，本实际结果不验收新loss8 primitive，也不覆�
 numeric-person/RETAINED-ENTRIES.json，由numeric owner独占消费。Root已计本战27normal、
 末批实际4日/96h（不是budget8）、total4444/resume1291/Oct4+419、h7027/95054193B/
 save relay SHA15447…64fd1；本text报告新增0日/0query/0test，无source读取、patch或共享写入。
+
+## v56 primary levy damage input: exact readonly source and same MCP
+
+The exact 1.20.0.3 / Steam 25652598 native leaf is closed before this implementation; frozen EXE SHA is `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. Native outgoing caller `0x2650082` consumes readonly getter `0x2C15610` using the actual ordered `CCombatSide+0x70` primary Character full ID. The existing strict resolver checks `Character+0x18`; selected commander and army owner remain separate identities. Win64 RCX is caller-owned int64 output, RDX is that Character, and RAX returns the original output address. The producer copies its signed Q100000 qword immediately.
+
+The closed getter reads runtime base `0x5C69BC0`, adds numeric modifier key `0xB0`, and multiplies by `100000 + key 0x1B3` with native signed Q truncation. Its `0x28C3AE0` source reader follows `Character+0x1B0 -> extension+0x258`, requires cache owner `cache+8` to equal that actual Character, and returns the modifier container at `cache+0x10`. A resolved Character with missing or mismatched native cache legally uses the canonical empty modifier container and retains a numeric base result. The helper may initialize that singleton once. No Character, side, troops, battle result or damage application is mutated by this observation; the mutating outgoing function `0x264FF70` is not invoked.
+
+```mermaid
+flowchart LR
+  A[Actual Side+70 full CharacterID] --> B[Existing strict primary resolver]
+  B --> C[RCX output / RDX actual Character]
+  C --> D[2C15610 runtime base and native modifiers]
+  D --> E[Copy signed Q100000 at returned output]
+  E --> F[Same current_loss_inputs_v1 ordered side row]
+```
+
+The existing battle-control MCP now has additive side-row fields `primary_participant_character_id` and `levy_damage_raw`. The latter is signed int64 Q100000, preserves numeric zero and negative values, and is `null` when the getter binding is absent. The outer reader's existing strict primary-resolution behavior is unchanged; an unresolved primary is not converted into an available zero-damage row. Old four-key loss-side rows, top-level absence and top-level null remain compatible. This operand is a current source input, not a retained measurement of already executed outgoing damage.
+
+The first focused attempt remains [run01](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-primary-levy-damage-inputs-v56/parent-focused-run-01/RESULT.json): seven TUs compiled strictly with `/W4 /WX /O2 /DNDEBUG` using six workers and linked GREEN; the new fixture then incorrectly expected one getter read per side. Existing `ReadBattleControlSnapshot` samples twice, so two reads per side are correct. Only that fixture count expectation changed. [run02](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-primary-levy-damage-inputs-v56/parent-focused-run-02/RESULT.json) recompiled one fixture TU, reused the six unchanged production objects, and passed both native reader -> serializer cases and two registered MCP calls under Python `-O` in 6.58 seconds. The cases retain actual primary provenance, legal `0` and `125007` operands, and unbound-getter `null` while existing loss inputs survive. The P1 consumer's previously GREEN new-field/old-absence pair is reused rather than rerun.
+
+Readiness is **static-ready**, with **zero new paused game observations** for this getter. Root's standdown baseline at raw date53251056 had no wars or own armies, so there was no ongoing battle frame to sample; Root's independent gameplay continues. This change adds no tool, flag, gate, command, game day, window action or historical value backfill. The next actual ongoing battle can use the unchanged snapshot -> `ck3_query_battle_control_snapshot_v1` recipe and feed the observed primary levy operand into the existing P1 model. Current inputs alone do not certify simulator parity, historical damage, or completed combat OODA.
+
+[Closed native tree](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-primary-levy-damage-inputs-v56/native-tree/TREE.md) and [sealed implementation receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-primary-levy-damage-inputs-v56/ROOT-DELIVERY.json) hold the source, patch and failure pins. Root integrates only section diffs; frozen full-file projections are fixture material and must not overwrite later knight/current-person changes.

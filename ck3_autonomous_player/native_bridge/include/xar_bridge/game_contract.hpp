@@ -1856,6 +1856,9 @@ struct BattleControlPursuitModifierSides {
 // outgoing damage result and do not execute a combat-loss operation.
 struct BattleControlCurrentLossSideInputsV1 {
   std::int32_t side_index = -1;
+  std::int32_t primary_participant_character_id = -1;
+  // Signed Q100000 from the actual primary participant's native getter.
+  std::optional<std::int64_t> levy_damage_raw;
   std::int64_t outgoing_advantage_factor_raw = 0;
   std::int64_t own_hard_conversion_modifier_raw = 0;
   std::int64_t opposing_hard_conversion_modifier_raw = 0;

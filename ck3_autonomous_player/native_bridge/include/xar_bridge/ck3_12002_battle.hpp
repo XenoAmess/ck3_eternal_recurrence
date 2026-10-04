@@ -19,6 +19,7 @@ inline constexpr std::uintptr_t kBattleDamageScalingRva = 0x5C69B90;
 inline constexpr std::uintptr_t kBattleMainHardConversionRva = 0x5C69BA0;
 inline constexpr std::uintptr_t kBattlePursuitHardConversionRva = 0x5C69BB0;
 inline constexpr std::uintptr_t kBattleLossSideModifierRva = 0x264DD20;
+inline constexpr std::uintptr_t kBattlePrimaryLevyDamageRva = 0x2C15610;
 inline constexpr std::size_t kBattleStoredAdvantageDamageFactorOffset = 0x6D8;
 inline constexpr std::uintptr_t kBattleRetreatRuleRva = 0x28C2E10;
 inline constexpr std::uintptr_t kBattleMinimumRetreatDaysRva = 0x5C699B4;
@@ -76,6 +77,8 @@ struct BattleBindings {
   const std::int64_t *main_hard_conversion = nullptr;
   const std::int64_t *pursuit_hard_conversion = nullptr;
   ReadBattleSideModifier read_loss_side_modifier = nullptr;
+  std::int64_t *(*read_primary_levy_damage)(std::int64_t *output,
+                                         void *primary_character) = nullptr;
   bool (*province_has_holding)(void *) = nullptr;
   ReadAdvantageModifierValue read_loss_province_modifier = nullptr;
   // Exact .3 only, and attempted only for explicit requested CharacterIDs.
