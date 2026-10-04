@@ -1,0 +1,18 @@
+{
+  "schema": "superman-qiang.root-cover-review.v1",
+  "reviewed_at_utc": "2026-10-04T01:43:59.657664+00:00",
+  "reviewer": "root",
+  "directly_viewed_source_and_exact_640_thumbnail": true,
+  "decision": "approved",
+  "subjects": "adult king and adult queen matching the new promotional illustrations",
+  "source_sha256": "c58fffe3e52eedb1dd1d11f96bb2cff813ecf0bd2be5cadab77dccec63822178",
+  "thumbnail_sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b",
+  "thumbnail_bytes": 785139,
+  "dimensions": [
+    640,
+    640
+  ],
+  "title": "超人强",
+  "subtitle": "越超人越强",
+  "composer_check_exit_code": 0
+}

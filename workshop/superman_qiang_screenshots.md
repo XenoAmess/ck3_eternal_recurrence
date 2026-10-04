@@ -2,7 +2,7 @@
 
 2026-10-04 展示修订 `1.0.0-media.1`：重做三张统一红金风格的宣传海报，替换首发经验 0 查看截图，并同步重写中文工坊介绍。图片为原创宣传插画与规则示意，均有明确标识，不声称是实机截图。上传前的图像与文字已冻结，公开回读在实际发布后补齐。
 
-工坊条目：[3812991990](https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990)。原640×640封面保留。运行时仍为 `superman-qiang-v1.0.0` / `7e5ddd481466b7a9df104fd5c6340f473f909aff` 的22文件。
+工坊条目：[3812991990](https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990)。封面同步改为成年国王与王后，见 [封面来源](../mod_superman_qiang/docs/key-art.md)。游戏版本仍为1.0.0，正式包重新由媒体tag构建；除thumbnail外21文件与首发验收包相同。
 
 ## 当前顺序
 
@@ -32,6 +32,8 @@ tools\.venv\Scripts\python.exe tools/compose_superman_qiang_promotional_media.py
 
 首发图已被用户否决，不再用于宣传。原PNG、JPEG、来源manifest与 [首发图片清单快照](superman_qiang_screenshots_initial_1.0.0.md) 保留作历史记录。
 
-本次同时尝试了新production-only普通战役取材，正常配偶诱惑计谋进度30%，尚未发生性行为，未取得非零经验或属性转移宣传场景。这些截图不上传。实际存档、430份原始资产索引、停止及屏幕释放记录保留于 `C:/ck3-superman-qiang-media-redo-20261004/capture-P0001/`，不将计谋启动或尚未发生的结果写成取材成功。
+本次同时尝试了新production-only普通战役取材。2026-10-04更正：P0001误点后启动的实际为谋杀计谋，界面30%是成功几率，原报告将其误记为诱惑进度。P0002后续真实`murder_outcome_reworked.0013`失败事件确认了该错误；目标存活，未发生性行为，没有非零经验或属性转移宣传结果。旧报告和全部原始素材保留并追加勘误，这些截图不上传。最初430份原始资产索引、实际存档、停止与屏幕释放记录保留于 `C:/ck3-superman-qiang-media-redo-20261004/capture-P0001/`，不将计谋启动或尚未发生的结果写成取材成功。
 
 宣传选择与中文介绍要求见 [promotional-media.md](../mod_superman_qiang/docs/promotional-media.md)，活动中文全文见 [BBCode](superman_qiang_description.bbcode)。图片与文案同次提交，发布后核对完整描述、三张CDN原图和独立Steam Change Notes。
+
+用户追加要求必须包含实机截图，正常游玩取材已在独立capture-P0002继续；选定的真实非零记录与正式顺序在素材就绪后冻结。首发XP0图不重新上传。

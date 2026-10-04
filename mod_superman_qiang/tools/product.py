@@ -12,6 +12,7 @@ PRODUCT_KEY = "superman-qiang"
 VERSION = "1.0.0"
 GAME_VERSION = "1.20.0.3"
 TAG_PREFIX = "superman-qiang-v"
+RELEASE_TAG_ALIASES = frozenset({"superman-qiang-media-v2"})
 LANGUAGES = ("english", "simp_chinese", "french", "german", "japanese", "korean", "polish", "russian", "spanish")
 
 # Explicit, immutable release inventory; filled from the reviewed runtime
@@ -46,4 +47,4 @@ def spec():
     sys.path.insert(0, str(REPO / "tools"))
     from independent_mod_release import ProductSpec
 
-    return ProductSpec(PRODUCT_ID, SOURCE, RUNTIME_FILES, None, TAG_PREFIX)
+    return ProductSpec(PRODUCT_ID, SOURCE, RUNTIME_FILES, None, TAG_PREFIX, release_tag_aliases=RELEASE_TAG_ALIASES)

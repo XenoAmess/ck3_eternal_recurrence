@@ -13,6 +13,7 @@ import hashlib
 import json
 from pathlib import Path, PurePosixPath
 import re
+import subprocess
 import tempfile
 from typing import Iterable
 import zipfile
@@ -59,6 +60,7 @@ class ProductSpec:
     runtime_files: frozenset[str] | Iterable[str]
     upstream_item_id: str | None
     tag_prefix: str
+    release_tag_aliases: frozenset[str] | Iterable[str] = frozenset()
 
     def __post_init__(self) -> None:
         if not isinstance(self.product_id, str) or PRODUCT_ID.fullmatch(self.product_id) is None:
@@ -70,6 +72,11 @@ class ProductSpec:
                 raise ValueError("upstream_item_id exceeds uint64")
         if not isinstance(self.tag_prefix, str) or not self.tag_prefix or any(c.isspace() for c in self.tag_prefix):
             raise ValueError("tag_prefix must be a nonempty string without whitespace")
+        if isinstance(self.release_tag_aliases, (str, bytes)):
+            raise ValueError("release_tag_aliases must be an explicit collection of tags")
+        aliases = tuple(self.release_tag_aliases)
+        if any(not isinstance(tag, str) or not tag or any(c.isspace() for c in tag) for tag in aliases):
+            raise ValueError("release_tag_aliases must contain nonempty strings without whitespace")
         if isinstance(self.runtime_files, (str, bytes)):
             raise ValueError("runtime_files must be an explicit collection of relative paths")
         paths = tuple(_relative_path(path) for path in self.runtime_files)
@@ -81,6 +88,7 @@ class ProductSpec:
             raise ValueError("README.md, docs and tools are source-only")
         object.__setattr__(self, "source", Path(self.source))
         object.__setattr__(self, "runtime_files", frozenset(paths))
+        object.__setattr__(self, "release_tag_aliases", frozenset(aliases))
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -182,6 +190,29 @@ def product_tag(spec: ProductSpec, version: str) -> str:
     return spec.tag_prefix + version
 
 
+def _validate_tag(spec: ProductSpec, version: str, tag: str | None) -> None:
+    if tag is not None and tag != product_tag(spec, version) and tag not in spec.release_tag_aliases:
+        raise ValueError("git_tag does not match the product version or an explicit release tag alias")
+
+
+def _verify_alias_revision(spec: ProductSpec, tag: str | None, revision: str, *, require_head: bool = False) -> None:
+    if tag not in spec.release_tag_aliases:
+        return
+    try:
+        tag_revision = subprocess.run(
+            ["git", "-C", str(spec.source), "rev-parse", "--verify", f"refs/tags/{tag}^{{commit}}"],
+            check=True, capture_output=True, text=True,
+        ).stdout.strip()
+        head_revision = subprocess.run(
+            ["git", "-C", str(spec.source), "rev-parse", "HEAD"],
+            check=True, capture_output=True, text=True,
+        ).stdout.strip() if require_head else revision
+    except (OSError, subprocess.CalledProcessError) as error:
+        raise ValueError("release tag alias cannot be resolved in the product source repository") from error
+    if tag_revision != revision or head_revision != revision:
+        raise ValueError("release tag alias does not match source revision and HEAD")
+
+
 def build(
     spec: ProductSpec,
     output: Path,
@@ -197,8 +228,8 @@ def build(
         raise ValueError("revision must be a full lowercase Git commit SHA")
     item = _item_id(workshop_item_id, spec.upstream_item_id)
     version = descriptor_version(spec.source)
-    if git_tag not in {None, product_tag(spec, version)}:
-        raise ValueError("git_tag does not match the product version")
+    _validate_tag(spec, version, git_tag)
+    _verify_alias_revision(spec, git_tag, revision, require_head=True)
     source = spec.source.resolve()
     if _link(Path(output)):
         raise ValueError("build output must not be a link")
@@ -274,12 +305,12 @@ def load_manifest(spec: ProductSpec, manifest_path: Path) -> dict[str, object]:
     version = payload["mod_version"]
     if not isinstance(version, str) or VERSION.fullmatch(version) is None:
         raise ValueError("manifest mod version is invalid")
-    if payload["git_tag"] is not None and (
-        not isinstance(payload["git_tag"], str) or payload["git_tag"] != product_tag(spec, version)
-    ):
+    if payload["git_tag"] is not None and not isinstance(payload["git_tag"], str):
         raise ValueError("manifest Git tag is invalid")
+    _validate_tag(spec, version, payload["git_tag"])
     if not isinstance(payload["git_sha"], str) or REVISION.fullmatch(payload["git_sha"]) is None:
         raise ValueError("manifest Git revision is invalid")
+    _verify_alias_revision(spec, payload["git_tag"], payload["git_sha"])
     _item_id(payload["workshop_item_id"], spec.upstream_item_id)
     entries = payload["files"]
     if not isinstance(entries, list):

@@ -6,6 +6,7 @@ from __future__ import annotations
 from dataclasses import replace
 import json
 from pathlib import Path
+import subprocess
 import tempfile
 import unittest
 import zipfile
@@ -43,6 +44,20 @@ class IndependentModReleaseTests(unittest.TestCase):
 
     def build(self, name: str = "build"):
         return release.build(self.spec, self.root / name / self.spec.product_id, REVISION, "3809999999")
+
+    def git(self, *arguments: str) -> str:
+        return subprocess.run(
+            ["git", "-C", str(self.root), *arguments], check=True, capture_output=True, text=True,
+        ).stdout.strip()
+
+    def initialize_tagged_alias(self, alias: str) -> str:
+        self.git("init")
+        self.git("add", "source")
+        self.git("-c", "user.name=ReleaseFixture", "-c", "user.email=release-fixture@example.invalid",
+                 "commit", "-m", "Initial release fixture")
+        revision = self.git("rev-parse", "HEAD")
+        self.git("tag", alias)
+        return revision
 
     def test_production_projection_and_archive_have_only_reviewed_runtime(self) -> None:
         staging, manifest, archive, payload = self.build()
@@ -162,6 +177,52 @@ class IndependentModReleaseTests(unittest.TestCase):
             with self.subTest(paths=paths):
                 with self.assertRaises(ValueError):
                     replace(self.spec, runtime_files=paths)
+
+    def test_explicit_release_alias_builds_and_verifies_its_actual_tag(self) -> None:
+        alias = "maintained-media-v2"
+        self.spec = replace(self.spec, release_tag_aliases={alias})
+        revision = self.initialize_tagged_alias(alias)
+        staging, manifest, archive, payload = release.build(
+            self.spec, self.root / "alias", revision, "3809999999", git_tag=alias,
+        )
+        self.assertEqual(payload["git_tag"], alias)
+        self.assertEqual(payload["git_sha"], revision)
+        self.assertEqual(release.verify_manifest(self.spec, staging, manifest), 4)
+        canonical = release.build(self.spec, self.root / "canonical", revision, "3809999999", git_tag="maintained-v1.0.0")
+        self.assertEqual(archive.read_bytes(), canonical[2].read_bytes())
+
+    def test_unknown_release_alias_is_rejected_by_build_and_manifest(self) -> None:
+        self.spec = replace(self.spec, release_tag_aliases={"maintained-media-v2"})
+        with self.assertRaisesRegex(ValueError, "git_tag"):
+            release.build(self.spec, self.root / "unknown", REVISION, git_tag="maintained-media-v3")
+        self.assertFalse((self.root / "unknown").exists())
+        staging, manifest, _, payload = self.build()
+        manifest.write_text(json.dumps({**payload, "git_tag": "maintained-media-v3"}), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "git_tag"):
+            release.verify_manifest(self.spec, staging, manifest)
+
+    def test_release_alias_rejects_wrong_tag_commit_and_source_head(self) -> None:
+        alias = "maintained-media-v2"
+        self.spec = replace(self.spec, release_tag_aliases={alias})
+        revision = self.initialize_tagged_alias(alias)
+        staging, manifest, _, payload = release.build(self.spec, self.root / "alias", revision, git_tag=alias)
+        self.write("README.md", b"A later source-only edit\n")
+        self.git("add", "source/README.md")
+        self.git("-c", "user.name=ReleaseFixture", "-c", "user.email=release-fixture@example.invalid",
+                 "commit", "-m", "Later source revision")
+        later_revision = self.git("rev-parse", "HEAD")
+        for supplied_revision in (revision, later_revision):
+            with self.subTest(revision=supplied_revision):
+                output = self.root / supplied_revision
+                with self.assertRaisesRegex(ValueError, "release tag alias does not match"):
+                    release.build(self.spec, output, supplied_revision, git_tag=alias)
+                self.assertFalse(output.exists())
+        # A historical staging remains verifiable after the checkout advances;
+        # its manifest must still name the actual immutable alias commit.
+        self.assertEqual(release.verify_manifest(self.spec, staging, manifest), 4)
+        manifest.write_text(json.dumps({**payload, "git_sha": later_revision}), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "release tag alias does not match"):
+            release.verify_manifest(self.spec, staging, manifest)
 
 
 if __name__ == "__main__":

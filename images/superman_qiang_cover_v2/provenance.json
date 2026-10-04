@@ -1,0 +1,102 @@
+{
+  "schema": "superman-qiang.cover-king-queen-candidate.v1",
+  "recorded_utc": "2026-10-04T01:37:25.749973+00:00",
+  "attempt": "cover-P0001",
+  "product": "superman-qiang",
+  "status": "candidate_awaiting_root_thumbnail_review",
+  "generator": "built-in tools.image_gen__imagegen",
+  "fallback_api_used": false,
+  "prompt": "Use case: precise-object-edit, identity-preserve. Edit Image 1, the square '超人强' cover, with ONE targeted character replacement. Image 1 is the edit target. Image 2, the wide king-and-queen promotional poster, is only an identity/style reference for the adult queen, not a layout reference. Replace the background male ruler standing at the upper right of Image 1 with the clearly adult FEMALE QUEEN from Image 2: mature woman about 35, beautiful confident adult face, brown curled hair, feminine facial features, gold and ruby medieval crown, refined crimson-and-gold embroidered royal gown with white fur trim, fully clothed. The queen's full face must be distinctly visible and large enough to remain clearly identifiable as an adult woman in a 640x640 thumbnail; place her head in the upper-right area at a similar scale to the foreground king's head, not hidden behind him, not merely a crown peeking out. Keep her gracefully standing behind/right of him with a hand participating in the existing symbolic golden magical energy flow. This is a regal medieval advertising illustration, no nudity or sexual activity. Preserve the excellent ORIGINAL SQUARE COMPOSITION and EVERYTHING ELSE in Image 1: the same adult foreground male king, his mature face and expression, beard, hands, crown, red velvet and black/gold royal robes, throne, castle atmosphere, dramatic light, golden energy flowing between the two rulers, exactly six floating original ability medallions in their existing positions and symbols, ornate red velvet lower title band. Preserve the exact high-quality golden Chinese title '超人强' and subtitle '越超人越强', with complete accurate strokes and their same sizes and positions; add no other words or numbers. Retain all important objects and the 1:1 aspect ratio. The only substantive change is background male -> clearly adult queen matching Image 2, with sufficient face visibility. No extra people, no second man in the background, no young-looking face, no cartoon superhero, no fake game UI, no screenshot, no watermark. Carefully keep all unchanged areas visually consistent and maintain the premium realistic painterly quality.",
+  "transparent_background": false,
+  "actual_imagegen_reference_paths": [
+    "D:/workspace/ck3_eternal_recurrence/images/superman_qiang_key_art.png",
+    "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/generated/01_absorption.png"
+  ],
+  "preserved_inputs": [
+    {
+      "source": "D:/workspace/ck3_eternal_recurrence/images/superman_qiang_key_art.png",
+      "preserved": "C:/ck3-superman-qiang-media-redo-20261004/cover-P0001/history/old_source.png",
+      "sha256": "4dd30fc9e8c50064c709e3cb42479342e419202961f9a6c3b66e015569a6a617",
+      "bytes": 2669088,
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGB"
+    },
+    {
+      "source": "D:/workspace/ck3_eternal_recurrence/mod_superman_qiang/thumbnail.png",
+      "preserved": "C:/ck3-superman-qiang-media-redo-20261004/cover-P0001/history/old_thumbnail.png",
+      "sha256": "732deee357a6d322340fa9e6bb6d7b619b8c9da44b3c68711c23154079df863f",
+      "bytes": 778046,
+      "dimensions": [
+        640,
+        640
+      ],
+      "mode": "RGB"
+    },
+    {
+      "source": "C:/ck3-superman-qiang-media-redo-20261004/art-P0001/generated/01_absorption.png",
+      "preserved": "C:/ck3-superman-qiang-media-redo-20261004/cover-P0001/history/king_queen_reference.png",
+      "sha256": "6d1230c42f5f4fa751f0f7b520ef3f7da1a68218e5c54844476d479aa3ceb01b",
+      "bytes": 2601769,
+      "dimensions": [
+        1672,
+        941
+      ],
+      "mode": "RGB"
+    }
+  ],
+  "original_generated_path": "C:/Users/1/.codex/generated_images/01a10325-ec45-72c0-a0c5-787c69cd3f00/exec-70523e0c-d6b4-4c80-8149-50d7b6c46148.png",
+  "new_source": {
+    "path": "C:/ck3-superman-qiang-media-redo-20261004/cover-P0001/superman_qiang_key_art_candidate.png",
+    "sha256": "c58fffe3e52eedb1dd1d11f96bb2cff813ecf0bd2be5cadab77dccec63822178",
+    "bytes": 2615490,
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "format": "PNG"
+  },
+  "new_thumbnail": {
+    "path": "C:/ck3-superman-qiang-media-redo-20261004/cover-P0001/thumbnail_candidate.png",
+    "sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b",
+    "bytes": 785139,
+    "dimensions": [
+      640,
+      640
+    ],
+    "mode": "RGB",
+    "format": "PNG"
+  },
+  "composer": {
+    "path": "D:/workspace/ck3_eternal_recurrence/tools/compose_superman_qiang_key_art.py",
+    "sha256": "374d62faaf3e156d5a54b7cded5da70589d7f2af789fad37762b4fcce826f1f0",
+    "function": "compose_superman_qiang_key_art.rendered_bytes(source)",
+    "size": [
+      640,
+      640
+    ],
+    "method": "centered ImageOps.fit, LANCZOS, RGB",
+    "format": "PNG",
+    "optimize": true,
+    "compress_level": 9,
+    "strict_max_bytes": 1000000,
+    "pillow_version": "12.3.0"
+  },
+  "visual_review": {
+    "source_superman_art": "approved_by_direct_view",
+    "thumbnail_superman_art": "approved_by_direct_view",
+    "root": "pending_direct_view"
+  },
+  "classification": "promotional_illustration_not_gameplay",
+  "old_source_and_thumbnail_preserved": true,
+  "repository_files_modified": [],
+  "desktop_or_game_actions": false,
+  "workshop_published": false,
+  "command": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "C:\\ck3-superman-qiang-media-redo-20261004\\cover-P0001\\preserve_and_project_cover.py"
+  ]
+}
