@@ -137,3 +137,28 @@ Root 在 frozen `Z:/g45` / source `8e2cfbee4981af7f80398ec09129c1cf0f3dbe54` 的
 这是本帧选择，不创建永久换将限制；未来fresh候选或目标上下文出现真实收益时仍可用既有正式任命并独立读回。取舍材料：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/siege-efficiency-inputs/observable-composition/actual-phase-tradeoff-v43-01/TRADEOFF.md`。
 
 文件消费者的首次 preflight 曾误认为此endpoint会发布episode字段，在生产normalizer调用之前报harness RED；该字段实际未发布，现保留null并移除这个不适用假设。之后matching frozen生产normalizer实际调用恰好1次、33显式Require GREEN，未重发SDK或旧测试。原harness RED保留在consumer receipt。Root同批defaultRaise012的actual executor unavailable/busy RED另包保留，不改写为此只读014能力RED。
+
+## 2026-10-05：P470 当前将领取舍与阶段刷新
+
+本节复用上述有效11D、[当前tick prepare/apply树](siege-current-tick-offline-12003.md)和[正式mode1任命树](commander-in-battle-assignment-timing-12003.md)，只读g70/source `d3b6742e7cdad2dad1f396c7f78ac279d9bde728`；exact .3 SHA不变。围城状态本身没有独立赋将禁止分支；目标retreat raw>0会拒绝，特定候选仍以fresh正式CanAssign为准，当前同军将领重复请求是already_assigned零动作。
+
+Root摘要中的 **301是public CUnit301989997简称，不是兵数**。P470/Siege503316504/fort6：合格围攻强度3210>守军550、canAdvance=true，当前普通D85284/Q100000，freshL18/preparedL18/counter6，当前阶段事件状态均0，ETA639；本帧不能称兵不足。军师或工程师图标、历史v43值均不能替代当前effective raw，更低11D只降低阶段因子，不能直接折减D或ETA。
+
+协调者一次消费Root新候选后的摘要：28行complete、25位eligible、11D无null；当前Robert29829为33/33、raw−10000，16位eligible同−10000、9位为0。同phase最优合法替代32716质量23；34867质量28/raw−10000但CanAssign=false。因此**当前保留Robert，不发任命**；该结论只证明本帧没有可任命的更低11D，不代表候选普通日速已全部比较。
+
+赋将的Army+120角色写入和fresh候选11D读取已有合同。若该军仍为Siege stored+208的内部Army，下一paused occupation的current_phase_length会以当前Army+120 FullCharacterID调用251E7A0重求；prepared_phase_length则仍是Siege+20上次prepare缓存。下次251E200先重选军队并重求L，再以**保留counter+1**比较阈值；allowed apply递增counter/提交普通work，未完成且due才写事件并清counter。getter不驱动prepare，换将不承诺counter清零、立即改preparedL或ETA。
+
+实际安装stock logistician声明supply_duration=0.4及文化/rite条件attrition修正，没有直接siege_phase_time或普通siege dailyprogress加成；XP也不能由标签补造有效值。现有ck3_query_army_strengths已读当前supply、capacity、最终attrition和当前省份monthly supply change，足够独立消费当前补给状态；health006仍仅由其owner消费。候选假设supply_duration尚未公开，不能凭名称计算换人后的容量或损耗。
+
+普通日速树只部分闭合：X_mult含疾病、character与Siege缓存11E及条件120，X_add含同条件路径11F；完整名称和条件对象仍未全闭，不能猜角色/省份各项或置零。当前candidate口仅11D，确实未发布日速贡献。若后续真实决策需要比较，具体入口是251F170的这些consumer分支及既有28C3AE0/aggregator+68/2303700候选聚合叶；先闭合同再决定同口可选字段。本轮不新增observer、candidateD推算、catalog或外层scheduler研究。
+
+```mermaid
+flowchart TD
+ C["fresh candidate mode1 + effective11D"] --> V["本帧无更低eligible11D：保留Robert，零任命"]
+ A["Army120 actual role"] --> F["storedSiege208 Army → fresh251E7A0"]
+ F --> P["下次prepare重选军队/写preparedL"]
+ P --> K["保留counter；allowedapply递增；due事件后清0"]
+ U["unknown 日速11E/11F/120完整consumer合同"] -. "具体后续入口251F170；本轮不扩" .-> D["普通D/ETA与11D分开"]
+```
+
+本节当前帧只引用Root/协调者摘要，不再读取原始actual004或health006，不新增SDK/RPM/窗口/测试/游戏日，不领取换将、围城加速或占领收益。外置最小账本、sourcepins与Oct5/W41字段：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-commander-value/native-tree/ROOT-DELIVERY.json`；实际候选receipt由协调者另包合并。
