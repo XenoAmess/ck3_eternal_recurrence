@@ -315,3 +315,32 @@ flowchart TD
 资格为 **static-ready**，尚未部署或加载到 g69/v64，也没有新的 actual paused county映射。当前holding1664的县仍待Root下一revision一次实际occupation查询；470/3711已有实际目标预览继续独立推进。本工作包新增游戏日、收益、游戏SDK命令、窗口、共享修改和Git操作均为0。外部交付索引：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war-goal-capture-execution/occupation-county-mapping-v64/ROOT-DELIVERY.json`。
 
 The county-mapping source package above was subsequently reviewed, adopted and pushed as `3f544df8fd64dcffe188afe7f15ea2095c8995f6` (Root supplied). Its frozen static evidence and first link HARNESS RED remain historical; the current runtime is still g69/a14 without live county fields, so source adoption grants no actual county mapping credit. The current 368-row comparison only changes nonplayer P496/holding1223 and P4893/holding8814 prepared_phase_length from18 to0; occupation counts and other progress/work fields remain unchanged, with the four current target rows agreeing. This cached comparison supplies no advance or native-fault attribution.
+
+## 2026-10-05 v65：县 FullTitleID 已取得真实占领查询值
+
+同一 `ck3_query_war_occupation_targets_v1` 的县映射已在 g70/d3b（Root shorthand）实机 GREEN。本帧 full WarID **117440524**、actor29829、player side attacker、primary defender35991，native snapshot revision3、raw53259576，exact CK3 1.20.0.3 / EXE SHA94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6。368条 holding 行全部带非 null `county_title_id`，无字段缺失；原 native side_counts 保留 defender eligible337/occupied2、attacker eligible31/occupied0。此前 source-first 闭合的直系 de_jure_parent→tier2县映射已投产，本段只补实测结果，不增加另一棵原生树。
+
+实际 CB targeted county titles1333/1351/1358关联到5条 holding 行；另以 holding1664验证一个目标外县：
+
+| Holding | Province | County full ID | 属于本战争CB目标 | Legal holder | 本帧占领 | Fort | Garrison |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|1334|470|1333|是|32309|未占领|6|550|
+|1352|3711|1351|是|32309|未占领|6|500|
+|1353|3712|1351|是|66322|未占领|0|150|
+|1359|472|1358|是|31797|29829，attacker|4|45|
+|1360|3710|1358|是|43550|29829，attacker|0|150|
+|1664|471|1663|否|63215|未占领|4|500|
+
+这些行 occupation 均可观测，active_siege 为可观测的无围城；472和3710的 `counted_occupied_by_opposing_side=true` 指 Robert占领 defender territory，不能解释成 Robert被敌占。Fort0是实际零值。Holding1664的实际县是1663，不能再据省份邻近或CB targets猜成1333/1351/1358。县字段已解锁实际 holding与CB县的关联选择；它没有证明470/3711的未来占领或战争结束。
+
+```mermaid
+flowchart LR
+  Q["v65实际县字段: 368/368非null"] --> C["CB counties1333/1351/1358 → 5holding行"]
+  Q --> H["holding1664/P471 → county1663, outsideCB"]
+  C --> O["P470/3711/3712未占; P472/3710已被29829占"]
+  O -.-> F["unknown / 未claim: 下一目标占领、战争胜利与产权结果"]
+```
+
+本次新增能力资格为有限 **production-live primitive：当前同一占领查询的县 FullTitleID 观测**。Root当前累计4802日/resume1649，本轮已记144日；本文件消费与追加新增0日、0收益、0动作，不新增war win、future capture、8-day或完整OODA信用。既有静态18+41case receipts直接复用，未重跑。本段只消费协调者的 `ACTUAL-COUNTY-DECISION-AND-COVERAGE.json`（11597B，SHAf99f39d2a1183b620d98e280a64bd47ab2442173c3dad3ea095be9b7a57c4de0），未读取原015或其他Sway/health/plan/TOP/checkpoint产物。
+
+保留首次本地 **HARNESS RED**：consumer guard误把full WarID117440524与简称117比较；完整decoded cache先落盘，修复只消费cache，原015没有二次读取。原015 bytes458028，但SHA未在首次失败前持久化，继续记录 **null**；完整decoded cache203213B/SHAa483842e47dc2f3a07d28037609daa9657e81a5c37443c2ccc61766bdbc207e0为现有强哈希边界。不得以cache哈希冒充原始文件哈希，也不能把已修复的本地guard失败记成县native capability失败。运行来源保留 Root shorthand g70/d3b、environment0b478d...、R38/PID42080/SDK89939正常关闭exit0，未补造完整commit或环境ID。
