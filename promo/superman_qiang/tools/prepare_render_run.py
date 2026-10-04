@@ -81,6 +81,9 @@ def main() -> int:
 
     visual_root = Path(visual_plan['work_directory'])
     sources: set[Path] = set(visual_root.rglob('*.png'))
+    for scene in visual_plan['scenes']:
+        if scene.get('background', {}).get('source_path'):
+            sources.add(Path(scene['background']['source_path']))
     for relative in ['mod_superman_qiang/thumbnail.png', 'workshop/superman_qiang_media/v3/01_absorption.jpg', 'workshop/superman_qiang_media/v2/04_natural_event.jpg', 'workshop/superman_qiang_media/v3/05_notification.jpg', 'workshop/superman_qiang_media/v3/05_notification.raw.png']:
         sources.add(repo / relative)
     font = Path('C:/Windows/Fonts/msyh.ttc')
