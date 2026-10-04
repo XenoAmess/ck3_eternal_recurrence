@@ -1175,6 +1175,13 @@ bool AppendCurrentLossInputsV1(
   output += ",\"runtime_damage_scaling_raw\":";
   if (!AppendNumber(output, value.runtime_damage_scaling_raw))
     return false;
+  output += ",\"runtime_advantage_scaling_raw\":";
+  if (value.runtime_advantage_scaling_raw.has_value()) {
+    if (!AppendNumber(output, *value.runtime_advantage_scaling_raw))
+      return false;
+  } else {
+    output += "null";
+  }
   output += ",\"runtime_main_hard_conversion_raw\":";
   if (!AppendNumber(output, value.runtime_main_hard_conversion_raw))
     return false;

@@ -212,6 +212,9 @@ _CURRENT_LOSS_INPUT_KEYS = {
     "province_winter_hard_conversion_modifier_raw",
     "sides",
 }
+_CURRENT_LOSS_INPUT_KEYS_WITH_ADVANTAGE_SCALING = _CURRENT_LOSS_INPUT_KEYS | {
+    "runtime_advantage_scaling_raw",
+}
 _CURRENT_LOSS_SIDE_KEYS = {
     "side_index",
     "outgoing_advantage_factor_raw",
@@ -909,7 +912,10 @@ def _normalize_current_loss_inputs_v1(
     if value is None:
         return None
     name = "battle_control_snapshot.current_loss_inputs_v1"
-    if not isinstance(value, dict) or set(value) != _CURRENT_LOSS_INPUT_KEYS:
+    if not isinstance(value, dict) or set(value) not in (
+        _CURRENT_LOSS_INPUT_KEYS,
+        _CURRENT_LOSS_INPUT_KEYS_WITH_ADVANTAGE_SCALING,
+    ):
         raise ValueError(f"{name} has a malformed schema")
     scale = _signed_int32(value["scale"], f"{name}.scale")
     source_combat_id = _positive_int32(
@@ -941,6 +947,13 @@ def _normalize_current_loss_inputs_v1(
         "province_winter_hard_conversion_modifier_raw",
     ):
         normalized[field] = _signed_int64(value[field], f"{name}.{field}")
+    if "runtime_advantage_scaling_raw" in value:
+        raw = value["runtime_advantage_scaling_raw"]
+        normalized["runtime_advantage_scaling_raw"] = (
+            None if raw is None else _signed_int64(
+                raw, f"{name}.runtime_advantage_scaling_raw"
+            )
+        )
     sides = value["sides"]
     if not isinstance(sides, list) or len(sides) != 2:
         raise ValueError(f"{name} requires both actual sides")

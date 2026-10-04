@@ -22,6 +22,8 @@ inline constexpr std::uintptr_t kBattleBaseToughnessMultiplierRva = 0x5C699C0;
 inline constexpr std::uintptr_t kBattleMinimumPursuitMultiplierRva = 0x5C699A0;
 inline constexpr std::uintptr_t kBattlePursuitStatMultiplierRva = 0x5C699D0;
 inline constexpr std::uintptr_t kBattleDamageScalingRva = 0x5C69B90;
+// Exact .3 loaded advantage rule; distinct from outgoing damage scaling.
+inline constexpr std::uintptr_t kBattleAdvantageScaling12003Rva = 0x5C6A230;
 inline constexpr std::uintptr_t kBattleMainHardConversionRva = 0x5C69BA0;
 inline constexpr std::uintptr_t kBattlePursuitHardConversionRva = 0x5C69BB0;
 inline constexpr std::uintptr_t kBattleLossSideModifierRva = 0x264DD20;
@@ -87,6 +89,8 @@ struct BattleBindings {
   CombatBindings commander_roll_context{};
   // Current read-only loss operands; independent of the existing control gate.
   const std::int64_t *damage_scaling = nullptr;
+  // Independent exact .3 leaf: null means unavailable; zero is observed.
+  const std::int64_t *advantage_scaling = nullptr;
   const std::int64_t *main_hard_conversion = nullptr;
   const std::int64_t *pursuit_hard_conversion = nullptr;
   ReadBattleSideModifier read_loss_side_modifier = nullptr;

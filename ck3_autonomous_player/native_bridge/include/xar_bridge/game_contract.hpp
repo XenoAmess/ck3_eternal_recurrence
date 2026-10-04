@@ -1963,6 +1963,8 @@ struct BattleControlCurrentLossInputsV1 {
   std::int32_t source_target_province_id = -1;
   std::int64_t stored_advantage_damage_factor_raw = 0;
   std::int64_t runtime_damage_scaling_raw = 0;
+  // Signed Q100000; unavailable binding differs from legitimate zero.
+  std::optional<std::int64_t> runtime_advantage_scaling_raw;
   std::int64_t runtime_main_hard_conversion_raw = 0;
   std::int64_t runtime_pursuit_hard_conversion_raw = 0;
   bool province_has_holding = false;

@@ -488,6 +488,8 @@ std::optional<game::BattleControlCurrentLossInputsV1> CurrentLossInputs(
   out.stored_advantage_damage_factor_raw =
       At<std::int64_t>(combat, kBattleStoredAdvantageDamageFactorOffset);
   out.runtime_damage_scaling_raw = *b.damage_scaling;
+  if (b.advantage_scaling != nullptr)
+    out.runtime_advantage_scaling_raw = *b.advantage_scaling;
   out.runtime_main_hard_conversion_raw = *b.main_hard_conversion;
   out.runtime_pursuit_hard_conversion_raw = *b.pursuit_hard_conversion;
   out.province_has_holding =
@@ -1292,6 +1294,12 @@ void EnableBattleFullBacking12003(BattleBindings &b, std::uintptr_t base,
                                   std::string_view sha) noexcept {
   b.full_backing_inputs_enabled =
       b.enabled && base != 0 && sha == ck3_12003::kExecutableSha256;
+  // Reuse this existing exact .3 control-only admission point. The leaf
+  // is independent of the backing census and has no .2 slot binding.
+  b.advantage_scaling = b.full_backing_inputs_enabled
+      ? reinterpret_cast<const std::int64_t *>(
+            base + kBattleAdvantageScaling12003Rva)
+      : nullptr;
 }
 
 void EnableBattleCurrentPerson12003(BattleBindings &b, std::uintptr_t base,
