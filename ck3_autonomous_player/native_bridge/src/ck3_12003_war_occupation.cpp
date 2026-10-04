@@ -275,6 +275,25 @@ WarOccupationTargetsReadResultV1 ReadWarOccupationTargetsV1(
           siege.phase_counter = rich.siege_phase_counter;
           siege.can_advance_observable = rich.siege_can_advance_observable;
           siege.can_advance = rich.siege_can_advance;
+          siege.phase_event_breach_level_observable =
+              rich.siege_phase_event_breach_level_observable;
+          siege.phase_event_breach_level = rich.siege_phase_event_breach_level;
+          siege.phase_event_starvation_level_observable =
+              rich.siege_phase_event_starvation_level_observable;
+          siege.phase_event_starvation_level = rich.siege_phase_event_starvation_level;
+          siege.phase_event_disease_level_observable =
+              rich.siege_phase_event_disease_level_observable;
+          siege.phase_event_disease_level = rich.siege_phase_event_disease_level;
+          siege.phase_event_desertion_count_observable =
+              rich.siege_phase_event_desertion_count_observable;
+          siege.phase_event_desertion_count = rich.siege_phase_event_desertion_count;
+          siege.phase_event_stalemate_count_observable =
+              rich.siege_phase_event_stalemate_count_observable;
+          siege.phase_event_stalemate_count = rich.siege_phase_event_stalemate_count;
+          siege.prepared_selected_phase_event_enum_observable =
+              rich.siege_prepared_selected_phase_event_enum_observable;
+          siege.prepared_selected_phase_event_enum =
+              rich.siege_prepared_selected_phase_event_enum;
           siege.assault_observable = rich.assault_observable;
           siege.breach_level = rich.breach_level;
           siege.assault_in_progress = rich.assault_in_progress;

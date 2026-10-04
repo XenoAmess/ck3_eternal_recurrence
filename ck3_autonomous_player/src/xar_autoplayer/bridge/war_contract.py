@@ -688,6 +688,25 @@ def _normalize_active_siege(
         value.get("current_work"), f"{name}.current_work"
     )
     total = _fixed_point(value.get("total_work"), f"{name}.total_work")
+    phase_event_state = value.get("phase_event_state")
+    if phase_event_state is not None:
+        if not isinstance(phase_event_state, dict):
+            raise ValueError(f"native {name}.phase_event_state must be an object or null")
+        phase_event_state = {
+            field: _optional_non_negative_int32(
+                phase_event_state.get(field), f"{name}.phase_event_state.{field}"
+            )
+            for field in (
+                "breach_level", "starvation_level", "disease_level",
+                "desertion_count", "stalemate_count",
+            )
+        }
+    prepared_event = _optional_non_negative_int32(
+        value.get("prepared_selected_phase_event_enum"),
+        f"{name}.prepared_selected_phase_event_enum",
+    )
+    if prepared_event is not None and prepared_event > 5:
+        raise ValueError(f"native {name}.prepared_selected_phase_event_enum must be in range 0..5")
     assault_observable = value.get("assault_observable", False)
     if not isinstance(assault_observable, bool):
         raise ValueError(
@@ -782,6 +801,8 @@ def _normalize_active_siege(
         "can_advance": _optional_strict_bool(
             value.get("can_advance"), f"{name}.can_advance"
         ),
+        "phase_event_state": phase_event_state,
+        "prepared_selected_phase_event_enum": prepared_event,
         "assault_observable": assault_observable,
         "breach_level": breach_level,
         "walls_breached": (

@@ -833,6 +833,20 @@ struct WarObjectiveProvinceState {
   std::int32_t siege_phase_counter = 0;
   bool siege_can_advance_observable = false;
   bool siege_can_advance = false;
+  // Current phase-event state: nullable independently of the assault group.
+  bool siege_phase_event_breach_level_observable = false;
+  std::int32_t siege_phase_event_breach_level = 0;
+  bool siege_phase_event_starvation_level_observable = false;
+  std::int32_t siege_phase_event_starvation_level = 0;
+  bool siege_phase_event_disease_level_observable = false;
+  std::int32_t siege_phase_event_disease_level = 0;
+  bool siege_phase_event_desertion_count_observable = false;
+  std::int32_t siege_phase_event_desertion_count = 0;
+  bool siege_phase_event_stalemate_count_observable = false;
+  std::int32_t siege_phase_event_stalemate_count = 0;
+  // Last prepare's enum cache; sentinel 5 means no due selection.
+  bool siege_prepared_selected_phase_event_enum_observable = false;
+  std::int32_t siege_prepared_selected_phase_event_enum = 0;
   // Exact-build Assault Fort state. This subdomain is published atomically
   // only from a paused rich-siege read. A false observable flag means every
   // following value is unavailable rather than a real zero/false.

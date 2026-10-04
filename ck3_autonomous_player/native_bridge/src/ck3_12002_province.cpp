@@ -206,6 +206,42 @@ game::WarObjectiveProvinceState ReadObjectiveProvince(
     out.siege_phase_counter_observable = true;
     out.siege_phase_counter = phase_counter;
   }
+  // Current event states are independent of assault callbacks. Loaded
+  // define vector lengths set level caps; observation preserves any real
+  // nonnegative int32, rather than imposing the stock model's level-two cap.
+  const auto event_breach = Read<std::int32_t>(siege, kObjectiveSiegeBreachOffset);
+  if (event_breach >= 0) {
+    out.siege_phase_event_breach_level_observable = true;
+    out.siege_phase_event_breach_level = event_breach;
+  }
+  const auto starvation = Read<std::int32_t>(siege, kObjectiveSiegeStarvationOffset);
+  if (starvation >= 0) {
+    out.siege_phase_event_starvation_level_observable = true;
+    out.siege_phase_event_starvation_level = starvation;
+  }
+  const auto disease = Read<std::int32_t>(siege, kObjectiveSiegeDiseaseOffset);
+  if (disease >= 0) {
+    out.siege_phase_event_disease_level_observable = true;
+    out.siege_phase_event_disease_level = disease;
+  }
+  const auto desertion = Read<std::int32_t>(siege, kObjectiveSiegeDesertionCountOffset);
+  if (desertion >= 0) {
+    out.siege_phase_event_desertion_count_observable = true;
+    out.siege_phase_event_desertion_count = desertion;
+  }
+  const auto stalemate = Read<std::int32_t>(siege, kObjectiveSiegeStalemateCountOffset);
+  if (stalemate >= 0) {
+    out.siege_phase_event_stalemate_count_observable = true;
+    out.siege_phase_event_stalemate_count = stalemate;
+  }
+  // This is last prepare's raw cache. Apply does not clear it; it is neither
+  // a future draw nor proof that an event occurred in the current paused frame.
+  const auto prepared_event = Read<std::int32_t>(
+      siege, kObjectiveSiegePreparedPhaseEventEnumOffset);
+  if (prepared_event >= 0 && prepared_event <= 5) {
+    out.siege_prepared_selected_phase_event_enum_observable = true;
+    out.siege_prepared_selected_phase_event_enum = prepared_event;
+  }
   if (b.siege_is_blocked != nullptr) {
     out.siege_can_advance_observable = true;
     out.siege_can_advance = !b.siege_is_blocked(siege);

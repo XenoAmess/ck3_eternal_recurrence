@@ -103,3 +103,69 @@ outer scheduler、历史、动态 post-event total、占领或战争终结。
 本包 0SDK/pipe/window/query/action/day/live；Root 负责共享合入、合批构建与Git。
 下一步是 Root 在真正 active Siege 的 paused frame 验收五项 fresh 值，继续有限 OODA；
 完整 RNG/外层时钟保持研究缺口，不作为当前静态单步功能的额外门禁。
+
+## 当前阶段事件：显式选择的有限转移（2026-10-04）
+
+本增量先封 exact .3 的 selection/cache/writer/apply 树，再新增独立
+`xar_autoplayer.simulation.siege_current_phase_event`，保留原单tick模块与35例。
+新模型是 **static-ready** 的 caller-selected 条件转移；原生观测扩充是 **source-ready**，
+待Root合批构建及真正paused activeSiege资格验证。此包没有新增实机帧、游戏日或战争结果。
+
+原生 selector 过滤达到 loaded 规则向量长度的 breach/starvation/disease，再按剩余正权重选择；
+stock向量长度为2，不能把它说成不可变硬码或把>2的真实观测改null。
+实际Steam安装是1.20.0.3 / build25652598，NSiege 位于 `game/common/defines/00_defines.txt` 969–1018；
+stock基线权重为[30,15,15,20,20]，breach实际权重还取 `max(0,30*K-2*fort)`。
+仓库忽略游戏镜像实际是1.19.0.6，不作为.3 stock来源。
+当前加载覆盖值尚无本包实机证据，模型只采用显式supplied规则或明确标识的stock条件工厂。
+
+| 显式selected enum | native writer先改变的状态 | 后续work或未来项 |
+|---|---|---|
+| 0 breach | breach_level+1 | 不加work；新等级替换以后phase项（stock−.1/−.3） |
+| 1 starvation | starvation_level+1 | fresh T_event × 新等级比例（stock5%/15%），奖励后以同T_event截顶 |
+| 2 disease | disease_level+1 | 不改已准备D；新等级替换以后日速项（stock+.1/+.2） |
+| 3 desertion | 已知desertion_count+1 | stock加5work，以fresh T_event截顶 |
+| 4 stalemate | 已知stalemate_count+1 | 无额外work |
+
+writer `0x251CD00` 先升级、写history，再取奖励所用total。
+apply顺序仍是normal work优先；normal已达到 T_apply时跳writer。
+未完成且due才调用writer、counter清0；最后重取 T_post **只比较completion，不再次写C截顶**。
+因此条件算例 C_normal1.05m、NEW starvation2、T_event6m得到奖励.9m与C_writer1.95m；
+若T_post1.5m，条件completion=true而C仍1.95m。这不是实际占领或战争结束证据。
+actor11D只改变due时点，不替代event选择；病疫不能反算为把最终D整体乘1.2。
+
+```mermaid
+flowchart TD
+ N["normal C与T_apply比较"] -->|已完成| S["跳过writer"]
+ N -->|未完成且due| E["显式caller enum0..4"]
+ U["unknown下一draw/RNG"] -.-> E
+ E --> L["升级state；history"]
+ L --> W["starve/desertion：fresh T_event奖励与截顶"]
+ L --> B["其它event无额外work"]
+ W --> P["counter0；fresh T_post仅completion比较"]
+ B --> P
+ C["+28 lastprepared cache"] -.-> D["诊断；不作为E隐式输入"]
+```
+
+同现有 `ck3_query_war_occupation_targets_v1` 的 rich active_siege新增
+`phase_event_state` 五项：breach_level+3D8、starvation_level+3DC、disease_level+3E0、
+desertion_count+3E4、stalemate_count+3E8。各自nullable非负int32，真实0与>2保留，
+独立于assault原子观测组。可选 `prepared_selected_phase_event_enum` 读取+28的0..5：
+5是no-due sentinel；apply不clear cache，所以不能据它证明刚发生事件或预测下一roll。
+未加入+18cache、额外armyIDs、modifier数组或cachefresh gate。
+
+新typed adapter只读取当前五项；独立 caller-selected enum缺失仍pending，不用prepared cache补0。
+每步 C_normal、T_apply、T_event、T_post、due分别显式提供；最多两个条件步骤，
+缺字段保持unknown，不静默复用当前T，不生成中间tick/外层时钟/随机draw或完成日期。
+missing T_post不抹去已知writer效果，completion仍unknown；未知counts也不从0开始。
+CLI `python siege_current_phase_event.py INPUT.json --output OUTPUT.json` 只读写本地文件。
+
+唯一新focused严格两例GREEN（0fail/error/skip，0.12s，Python -B -O）：
+①NEWlevel奖励与较低T_post不再截顶；②实际fileCLI/adapter due缺选择且cacheenum0仍pending。
+只覆盖这两个新必要边界，未声称新bridge C++已编译或其余event已逐项fixture覆盖。
+原35JUnit没有修改或重跑。
+
+完整source/stock/规则/夹具/补丁索引位于
+`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/siege-efficiency-inputs/phase-event-offline/combined/ROOT-DELIVERY.json`。
+原生合同SHA `e68c25fb451e11b7a962fe340a206ec5a8e8d1499094ec1fc3b0cd3800679583`，
+stock补充明确loaded vector cap，当前规则覆盖值与完整RNG/outerclock保持来源账本。
+本包0SDK/pipe/window/query/gameinput/day/live/Git；Root继续军务，此增量不制造当前noSiege阻点。

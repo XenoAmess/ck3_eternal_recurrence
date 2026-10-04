@@ -68,6 +68,19 @@ std::string ActiveSiege(const WarOccupationTargetRowV1 &row) {
           siege.phase_counter_observable, siege.phase_counter) +
       ",\"can_advance\":" + ObservableBool(
           siege.can_advance_observable, siege.can_advance) +
+      ",\"phase_event_state\":{\"breach_level\":" + ObservableInt(
+          siege.phase_event_breach_level_observable, siege.phase_event_breach_level) +
+      ",\"starvation_level\":" + ObservableInt(
+          siege.phase_event_starvation_level_observable, siege.phase_event_starvation_level) +
+      ",\"disease_level\":" + ObservableInt(
+          siege.phase_event_disease_level_observable, siege.phase_event_disease_level) +
+      ",\"desertion_count\":" + ObservableInt(
+          siege.phase_event_desertion_count_observable, siege.phase_event_desertion_count) +
+      ",\"stalemate_count\":" + ObservableInt(
+          siege.phase_event_stalemate_count_observable, siege.phase_event_stalemate_count) +
+      "},\"prepared_selected_phase_event_enum\":" + ObservableInt(
+          siege.prepared_selected_phase_event_enum_observable,
+          siege.prepared_selected_phase_event_enum) +
       ",\"assault_observable\":" + Bool(siege.assault_observable) +
       ",\"breach_level\":" + ObservableInt(
           siege.assault_observable, siege.breach_level) +

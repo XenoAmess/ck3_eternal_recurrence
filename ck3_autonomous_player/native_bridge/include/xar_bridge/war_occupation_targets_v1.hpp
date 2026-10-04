@@ -29,6 +29,19 @@ struct WarOccupationActiveSiegeV1 {
   std::int32_t phase_counter = 0;
   bool can_advance_observable = false;
   bool can_advance = false;
+  bool phase_event_breach_level_observable = false;
+  std::int32_t phase_event_breach_level = 0;
+  bool phase_event_starvation_level_observable = false;
+  std::int32_t phase_event_starvation_level = 0;
+  bool phase_event_disease_level_observable = false;
+  std::int32_t phase_event_disease_level = 0;
+  bool phase_event_desertion_count_observable = false;
+  std::int32_t phase_event_desertion_count = 0;
+  bool phase_event_stalemate_count_observable = false;
+  std::int32_t phase_event_stalemate_count = 0;
+  // Last prepare cache only; it is not a prediction of the next random draw.
+  bool prepared_selected_phase_event_enum_observable = false;
+  std::int32_t prepared_selected_phase_event_enum = 0;
   bool assault_observable = false;
   std::int32_t breach_level = 0;
   bool assault_in_progress = false;
