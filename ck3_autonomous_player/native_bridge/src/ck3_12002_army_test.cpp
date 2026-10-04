@@ -179,8 +179,14 @@ bool Test() {
              "generation resolved army strength")) return false;
   if (!Check(strength[0].regiment_strengths.has_value() &&
              strength[0].regiment_strengths->size() == 2 &&
-             (*strength[0].regiment_strengths)[0] == game::ArmyRegimentStrengthSnapshot{regs[0], 600, 1000} &&
-             (*strength[0].regiment_strengths)[1] == game::ArmyRegimentStrengthSnapshot{regs[1], 300, 500},
+             (*strength[0].regiment_strengths)[0] == game::ArmyRegimentStrengthSnapshot{
+                 regs[0], 600, 1000,
+                 game::ArmyRegimentTypeStatusV1::unavailable, {}, std::nullopt,
+                 "regiment_composition_not_bound"} &&
+             (*strength[0].regiment_strengths)[1] == game::ArmyRegimentStrengthSnapshot{
+                 regs[1], 300, 500,
+                 game::ArmyRegimentTypeStatusV1::unavailable, {}, std::nullopt,
+                 "regiment_composition_not_bound"},
              "complete actual full-ID regiment strengths share the native aggregate")) return false;
   Put(r1, 0x10, std::int32_t{0x09000001});
   if (!Check(ReadArmyStrengthsForScope(bindings, scope, strength) == game::ReadArmyStrengthsResult::partial &&
