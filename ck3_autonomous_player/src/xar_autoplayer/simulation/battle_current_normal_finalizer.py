@@ -15,7 +15,7 @@ from .battle_current_backing_reaggregation import (
     CurrentPhase3BackingState, reaggregate_current_phase3_backing,
 )
 from .battle_current_terminal import project_current_terminal_accounting
-from .combat_core import FIXED_SCALE
+from .combat_core import FIXED_SCALE, trunc_div_toward_zero
 
 
 @dataclass(frozen=True, slots=True)
@@ -37,6 +37,19 @@ class CurrentNormalFinalizerManagerInputs:
     processing: bool | None = None
     result_present: bool | None = None
     source_context: Mapping[str, object] = field(default_factory=dict)
+
+
+@dataclass(frozen=True, slots=True)
+class CurrentNormalSummaryInputs:
+    """Explicit conditional 37542F0 raw outputs, not a script evaluator.
+
+    Keys are native kinds3/4/5. Missing keys/None remain unknown, while an
+    evaluated zero is a genuine zero. Source context records the loaded row
+    and winner evaluation provenance without claiming a native observation.
+    """
+
+    evaluated_raw_by_kind: Mapping[int, int | None]
+    source_context: Mapping[str, object]
 
 
 @dataclass(frozen=True, slots=True)
@@ -164,6 +177,82 @@ def _normal_numeric(condition, backing, side_baselines, winner, wipe):
     return account
 
 
+def _normal_summary_mul_raw(left: int, right: int) -> tuple[int, str]:
+    """258BDEC..BE7A, including its signed-MAX split and qword writes."""
+    guard = lambda value: ((value + 0xB504F333) & 0xFFFFFFFFFFFFFFFF) <= 0x16A09E666
+    if guard(left) and guard(right):
+        return trunc_div_toward_zero(_signed(left * right, 64), FIXED_SCALE), "fast"
+    high, low = max(left, right), min(left, right)
+    quotient = trunc_div_toward_zero(high, FIXED_SCALE)
+    remainder = _signed(high - _signed(quotient * FIXED_SCALE, 64), 64)
+    product = _signed(low * quotient, 64)
+    fraction = trunc_div_toward_zero(_signed(remainder * low, 64), FIXED_SCALE)
+    return _signed(product + fraction, 64), "signed_max_split"
+
+
+def _normal_summary_div_raw(value: int) -> tuple[int, str]:
+    """258BE7D..BF55: two native integer stages use literal raw1e8."""
+    denominator = 100_000_000
+    if ((value + 0x53E2D6238DA3) & 0xFFFFFFFFFFFFFFFF) <= 0xA7C5AC471B46:
+        return trunc_div_toward_zero(_signed(value * FIXED_SCALE, 64), denominator), "fast"
+    quotient = trunc_div_toward_zero(value, FIXED_SCALE)
+    whole = _signed(quotient * FIXED_SCALE, 64)
+    remainder = _signed(value - whole, 64)
+    fractional = _signed(remainder * FIXED_SCALE, 64)
+    whole_quotient = trunc_div_toward_zero(whole, denominator)
+    whole_remainder = _signed(whole - _signed(whole_quotient * denominator, 64), 64)
+    fractional_quotient = trunc_div_toward_zero(fractional, denominator)
+    correction = trunc_div_toward_zero(_signed(whole_remainder * FIXED_SCALE, 64), denominator)
+    return _signed(_signed(whole_quotient * FIXED_SCALE, 64) + fractional_quotient + correction, 64), "split"
+
+
+def _project_normal_summary(account, inputs, winner_raw):
+    """258BF70 raw summary and Result copy from existing hard accounts once."""
+    hard = [row["hard_loss_raw_q100000"] for row in account["sides"]]
+    combined = None if any(value is None for value in hard) else _signed(sum(hard), 64)
+    slots = [0] * 10
+    evaluations, gaps = [], []
+    if combined is None:
+        gaps.append(CurrentNormalFinalizerGap(
+            "normal_summary_hard", "both current side hard raw totals", "2652B50 / 258BF70"))
+    for kind, slot in ((3, 0), (5, 2), (4, 1)):
+        value = inputs.evaluated_raw_by_kind.get(kind)
+        coefficient = None if value is None else _signed(value, 64)
+        product = projected = multiply_branch = divide_branch = None
+        if coefficient is None:
+            gaps.append(CurrentNormalFinalizerGap(
+                "normal_summary_evaluation", f"kind{kind} explicit evaluated raw coefficient", "37542F0 / 258BD30"))
+        elif combined is not None:
+            product, multiply_branch = _normal_summary_mul_raw(combined, coefficient)
+            projected, divide_branch = _normal_summary_div_raw(product)
+        slots[slot] = projected
+        evaluations.append({
+            "kind": kind, "slot": slot,
+            "evaluated_raw_q100000": coefficient,
+            "fixed_mul_raw_q100000": product,
+            "summary_raw_q100000": projected,
+            "fixed_mul_branch": multiply_branch, "fixed_div_branch": divide_branch,
+        })
+    return {
+        "scope_kind": "conditional_normal_summary_raw_and_result_copy",
+        "status": "partial" if gaps else "available",
+        "source_context": dict(inputs.source_context),
+        "scale": FIXED_SCALE, "denominator_raw_q100000": 100_000_000,
+        "combined_hard_raw_q100000": combined,
+        "hard_raw_by_side": hard, "evaluations": tuple(evaluations),
+        "summary_raw_slots": tuple(slots),
+        "result_raw_by_offset": {f"0x{0x48 + index * 8:X}": value for index, value in enumerate(slots)},
+        "result_writeback": {"operation": "overwrite", "bytes": 80,
+                             "start_offset": "0x48", "end_exclusive_offset": "0x98"},
+        "evaluation_winner_context_side": (winner_raw if winner_raw in (0, 1) else
+                                           0 if winner_raw == -1 else None),
+        "typed_gaps": tuple(gaps),
+        "actual_evaluator_executed": False, "actual_balance_committed": False,
+        "complete_native_finalizer": False,
+        "prior_losses_reapplied": False, "owner_hard_ledger_debited": False,
+    }
+
+
 def project_current_normal_finalizer(
     condition: CurrentBattleCondition, *,
     manager: CurrentNormalFinalizerManagerInputs,
@@ -176,6 +265,7 @@ def project_current_normal_finalizer(
     side_baseline_raw_by_side: Mapping[int, int | None] | None = None,
     winner_raw: Literal[-1, 0, 1] | None = None,
     wipe_raw: bool | None = None,
+    normal_summary_inputs: CurrentNormalSummaryInputs | None = None,
 ) -> dict[str, object]:
     """Compose covered manager intent and normal numerics without mutations.
 
@@ -183,7 +273,9 @@ def project_current_normal_finalizer(
     complete census membership. Unaffected receiver counts are retained. A
     suppressed, deferred, skipped or unresolved invocation produces no normal
     numerical output; None does not mean zero. Supported-subset availability
-    is separate from the still-partial complete native effects model.
+    is separate from the still-partial complete native effects model. Optional
+    summary inputs supply conditional evaluated raws only; the raw Result copy
+    projection does not run scripts or commit participant resource balances.
     """
     if winner_raw not in (None, -1, 0, 1):
         raise ValueError("winner_raw requires -1, 0, 1 or unavailable None")
@@ -203,6 +295,7 @@ def project_current_normal_finalizer(
         "loser_side": 1 - winner if winner is not None else None,
         "wipe_raw": wipe_raw, "result_present_input": manager.result_present,
         "backing_reaggregation": None, "normal_numeric_accounting": None,
+        "normal_summary_projection": None,
         "losing_side_hard_raw_q100000": None,
         "war_battle_row_projection": {
             "status": "not_produced" if dispatch["normal_result_intent"] is False
@@ -241,6 +334,9 @@ def project_current_normal_finalizer(
                                   winner, wipe_raw)
         output.update(backing_reaggregation=backing,
                       normal_numeric_accounting=account)
+        if normal_summary_inputs is not None:
+            output["normal_summary_projection"] = _project_normal_summary(
+                account, normal_summary_inputs, winner_raw)
         for missing in backing.get("unavailable_inputs", ()):
             gaps.append(CurrentNormalFinalizerGap("backing_count", missing, "2633340"))
         for row in backing.get("sides", ()):
