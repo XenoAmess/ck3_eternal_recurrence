@@ -133,3 +133,16 @@
 R0162 postovershoot保存已真实物化：74405700 bytes，SHA-256 `208a52733662769c9675cef11ebd53c1520fc8d2efb2c6bd6ef2bc6e3b53d73d`，actor33388/date53149272。它仅作提示框画面观察，不能作为A/B/C共同起点或弥补+23至+88的观测空窗。原保存使用真实 `ck3_execute_step` 的 `save-checkpoint`；bootstrap现在兼容该调用与既有 `ck3_save_checkpoint`，仍检查saved状态、原profile路径、bytes/SHA、actor/date、pure vanilla lifecycle与exact build。保存DTO不携带paused；另以独立paused snapshot绑定，重载后还要新读paused/alive/noevent。
 
 最小兼容patch及15项offline fixture PASS保存在 `C:/ck3-war-episode04-research-20261004-a01/capture-next-r0163-plan-a01/bootstrap-save-compat-a01/`，patch SHA-256 `083a47f00f1fb6d3f0a2a9667b37437ae2069d9e8e82747050ad484f162e0e1d`。此包只改变保存receipt准入；没有执行游戏、SDK或屏幕动作。
+
+
+## R0163：暂停GUI提示框尝试与第三原片（2026-10-05T02:36:56+08:00 资料编制）
+
+本轮是GUI-only受管冷载，人物William33388、exact1.20.0.3，Python冻结dbab/native-build-a05（编译36a，DLL5,234,688B/SHA63f30d…56fd）。加载的74,405,700B、SHA208a5273…d73d保存输入对应R0162最终+88日端点；即使名为episode04_frozen_start，也没有A/B/C共同起点资格。初/末snapshot及语义样本date_raw53149272、paused=true，实际新增游戏日0，不能再次加88日。完整身份与回包SHA见[R0163索引](evidence/r0163-index.json)。
+
+Supply与attrition各一次hover只得到acknowledged_verification_pending；随后query均为tooltip_active_stack_unreadable_or_out_of_bounds，active_count=null、active_stack_read=false，leave均为tooltip_leave_requires_hover_receipt_or_observed_root。Root直接审过对应截图，只有Army77/100与0%标签、Lewes地图tooltip，未见Armytooltip。原始ACK不等于已读取或已呈现提示框；现有证据不能证明地图提示覆盖了Army提示。实际栈cap/count仍未知，TERM与十一项概念tooltip没有新增闭合信用。
+
+第三原片843,481,703B/SHA a34a780ac5b5c949f9b97d060d4ef0c7e20b04ff63e095cd56c45b33381dc68d；565.233秒、1920×1080/30fps/H264/yuv420p/无音频。完整16,957帧与packet时序自动媒体PASS（报告9361B/SHA733ec8e1…42f41，索引8135B/SHA7ae57c19…7c06）；只授该原片媒体资格，不授TERM、clean spans、成片时长、人工1×签核或影片完成比例。原录制finish收据的media_probe_pending保留为当时状态。
+
+Root误调用stop-session产生Unknown tool，原错误保留；正确stop随后成功，bootstrap独立证实SDK/keeper线程退出、CK3和recorder树空。1024×768显示恢复，Root直接审阅新的Steam离线图，CAS4491实际done/resources[]。CAS之后heartbeat参数被parser拒绝不改写CAS成功；本脚本过程输出保全。实际bootstrap位于native-live-army-tooltip-r0163-a01/bootstrap-result.json，launch-gui同名路径缺失不是SDK/游戏失败。
+
+后续修正只处理cap误拒绝并提供实际cap/count诊断，尚属static-only、未新live。下一轮独立绑定真实栈/当前root/文本刷新与像素；不要按旧ACK补造Tooltip成功。正补给恢复、补员、actual合军、同档A/B/C、全文/TTS及成片/交付仍按原缺口推进。[Army UI专题](../../../docs/ck3-native-ai/army-ui-selection-window-12003.md)保持R0162已验范围和R0163失败各自身份，不覆盖历史。

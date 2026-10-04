@@ -1,0 +1,365 @@
+{
+  "schema": "xar.war-episode04.live-evidence.v1",
+  "recorded_at": "2026-10-04T18:36:56.618192+00:00",
+  "run": "desktop-3fevhd2-1c74096080--vanilla--R0163",
+  "scope": "Paused GUI tooltip attempt only; native/UI negative results, raw media and cleanup kept separately",
+  "runtime_source_head": "dbab6f4ec2f700e80004267bf2280bb9a3e7d178",
+  "runtime_source_head_binding": "CF frozen head in release receipt, with sdk-ready loaded module paths bound to the same C:/w/e4a01 checkout",
+  "native_build_source_head": "36a0345f8b8ff2a144c7810c59bfd8dacbb4444f",
+  "dll_sha256": "63f30d54915b44ad0579a6aa558098bf07ed8abcc346d7fc96ddd771914a56fd",
+  "dll_bytes": 5234688,
+  "game_version": "1.20.0.3",
+  "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "actor_id": 33388,
+  "episode_run_id": "native-33388-e8a0ff7479e4",
+  "initial_date_raw": 53149272,
+  "final_date_raw": 53149272,
+  "actual_new_game_days": 0,
+  "initial_paused": true,
+  "final_paused": true,
+  "gui_saved_input": {
+    "name": "episode04_frozen_start",
+    "load_save_name": "episode04_frozen_start",
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\state-army-tooltip-r0163-a01\\profile\\save games\\episode04_frozen_start.ck3",
+    "size": 74405700,
+    "sha256": "208a52733662769c9675cef11ebd53c1520fc8d2efb2c6bd6ef2bc6e3b53d73d"
+  },
+  "gui_input_scope": "GUI-only saved post-R0162 +88 endpoint; filename frozen_start does not establish an A/B/C common checkpoint",
+  "abc_common_checkpoint_frozen": false,
+  "tooltip_attempts": [
+    {
+      "kind": "supply",
+      "hover_status": "acknowledged_verification_pending",
+      "hover_available": false,
+      "source_bound_in_hover": true,
+      "text_refresh_verified_in_hover": false,
+      "rendered_verified_in_hover": false,
+      "query_status": "unavailable",
+      "query_reason": "tooltip_active_stack_unreadable_or_out_of_bounds",
+      "active_stack_read": false,
+      "active_count": null,
+      "leave_status": "unavailable",
+      "leave_reason": "tooltip_leave_requires_hover_receipt_or_observed_root",
+      "live_term_closed": false
+    },
+    {
+      "kind": "attrition",
+      "hover_status": "acknowledged_verification_pending",
+      "hover_available": false,
+      "source_bound_in_hover": true,
+      "text_refresh_verified_in_hover": false,
+      "rendered_verified_in_hover": false,
+      "query_status": "unavailable",
+      "query_reason": "tooltip_active_stack_unreadable_or_out_of_bounds",
+      "active_stack_read": false,
+      "active_count": null,
+      "leave_status": "unavailable",
+      "leave_reason": "tooltip_leave_requires_hover_receipt_or_observed_root",
+      "live_term_closed": false
+    }
+  ],
+  "term_gate_status": "not_closed",
+  "army_tooltip_complete_text_and_pixel_verified": false,
+  "active_stack_capacity_actual": null,
+  "active_stack_count_actual": null,
+  "map_overwrite_or_supersession_proven": false,
+  "root_pixel_observation": {
+    "reviewer": "Root",
+    "source": "Direct supply/attrition image viewing reported in task message; report lane did not inspect pixels",
+    "visible_labels": [
+      "Army 77/100",
+      "Army attrition 0%"
+    ],
+    "tooltip_observed": "Lewes map tooltip",
+    "army_tooltip_observed": false,
+    "causal_inference": "No proof that map tooltip overwrote Army tooltip; no cap/count or valid-active-root claim"
+  },
+  "post_run_cap_guard_and_diagnostics_candidate": {
+    "scope": "cap mistaken-rejection correction and actual cap/count diagnostics only",
+    "level": "static-only",
+    "new_live_verified": false
+  },
+  "raw": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\recordings\\army-tooltip-r0163-a01\\raw.mkv",
+    "bytes": 843481703,
+    "sha256": "a34a780ac5b5c949f9b97d060d4ef0c7e20b04ff63e095cd56c45b33381dc68d"
+  },
+  "video_duration_seconds": 565.233,
+  "automatic_media_audit": "PASS",
+  "decoded_frames": 16957,
+  "video_packets": 16957,
+  "media_pass_scope": "Finished R0163 raw only: full-file demux metadata, complete packet timestamps and complete decoded-frame timestamps. No human audiovisual viewing, clean span, pixel-content or final film verdict.",
+  "media_report": {
+    "path": "C:/ck3-war-episode04-research-20261004-a01/recording-audit-r0163-a01/audit-attempt-a01/report.json",
+    "bytes": 9361,
+    "sha256": "733ec8e1d80702491371a4ec8da39ef0317ccb63a38e397abee8c2c9fe242f41",
+    "preserved_path": "C:/ck3-war-episode04-research-20261004-a01/r0163-docs-index-report-a01/completion-input-bytes/recording-audit-r0163-a01/audit-attempt-a01/report.json"
+  },
+  "media_evidence_index": {
+    "path": "C:/ck3-war-episode04-research-20261004-a01/recording-audit-r0163-a01/audit-attempt-a01/evidence-index.json",
+    "bytes": 8135,
+    "sha256": "7ae57c19769a3478d035327e189060ed2f9200e395e9ec48bcc798cf492f7c06",
+    "preserved_path": "C:/ck3-war-episode04-research-20261004-a01/r0163-docs-index-report-a01/completion-input-bytes/recording-audit-r0163-a01/audit-attempt-a01/evidence-index.json"
+  },
+  "media_state_history": [
+    {
+      "at": "2026-10-04T18:11:42.899647+00:00",
+      "status": "pending",
+      "source": "original recorder finish receipt, kept unchanged"
+    },
+    {
+      "at": "2026-10-04T18:26:31.592824+00:00",
+      "status": "PASS",
+      "scope": "finished raw media only"
+    }
+  ],
+  "clean_spans_certified": false,
+  "full_human_viewing_performed": false,
+  "human_approval": false,
+  "final_film_certified": false,
+  "stop_script_error": {
+    "tool": "stop-session",
+    "message": "Unknown tool: stop-session",
+    "category": "Root caller tool-name mistake; original response preserved",
+    "game_capability_failure_claim": false
+  },
+  "correct_stop": {
+    "tool": "stop",
+    "session_exit_reason": "stop",
+    "cleanup_proven": true,
+    "sdk_thread_exited": true,
+    "keeper_thread_exited": true,
+    "ck3_tree_empty": true,
+    "recorder_tree_empty": true
+  },
+  "screen_close": {
+    "display": [
+      1024,
+      768
+    ],
+    "offline_root_visual_review": {
+      "reviewer": "Root",
+      "observed_at": "2026-10-04T18:25:19.837387+00:00",
+      "image": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\steam-challenge-close-r0163-a01\\challenge-2.png",
+        "bytes": 84052,
+        "sha256": "bb8ceb114bc73daa77ab64646233f041bfda3b6aedca0a48dc3a924b17b34cb5"
+      },
+      "direct_visual_offline_text": "离线模式",
+      "visible_utc_nonce": "2026-10-04T18:17:04 / afe8d7fa6ea5",
+      "display_restored": [
+        1024,
+        768
+      ],
+      "mode_changed": false,
+      "scope": "Post-session current pixels; no human video signoff"
+    },
+    "cas_status": "done",
+    "cas_sequence": 4491,
+    "cas_resources": [],
+    "post_cas_heartbeat_parser_error_changes_cas_result": false,
+    "post_cas_correct_heartbeat_success": "Root reported; not a game/tooltip result"
+  },
+  "bootstrap_path_resolution": {
+    "requested": "C:/ck3-war-episode04-research-20261004-a01/launch-gui-r0163-a01/bootstrap-result.json",
+    "requested_exists": false,
+    "actual": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/bootstrap-result.json",
+    "launch_result_returncode": 0
+  },
+  "pins": [
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/responses/r0163-initial-snapshot-a01.json",
+      "bytes": 168139,
+      "sha256": "d199991f3c50958bc1949c1bf291cdc72c6e8a2f95ce94251cf27e28ce7e91a0"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/responses/r0163-final-paused-snapshot-a01.json",
+      "bytes": 862689,
+      "sha256": "ee833365340137f72ee75830eb7915c09b89738071f3016ca14ace7004da5f11"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/responses/r0163-initial-strengths-a01.json",
+      "bytes": 292708,
+      "sha256": "29d1a9ce7462d87a2dc5664e18a0943d0261645dc497a33a89e07cf6ea4b15dc"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/responses/r0163-final-strengths-a01.json",
+      "bytes": 292704,
+      "sha256": "f6ee16b2a608d9ae555e6c8acea2b49484972e2295884ea7875e4e932546c7b8"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/responses/r0163-select-main-a01.json",
+      "bytes": 309860,
+      "sha256": "d1c5a87a56b63675970eee00b539f8f361e65d35d73c39952a491b23a7c2d742"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/responses/r0163-army-ui-query-a01.json",
+      "bytes": 346221,
+      "sha256": "0ea47d42f41f280c01bd5b06c275ad924e4f51b1f1bc647c706443ea72b66aef"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/responses/r0163-supply-hover-a01.json",
+      "bytes": 350400,
+      "sha256": "eb29e88e3c61c35f1579ccc8eead37bb6725dd5e0195158a6f7a95e2f62ba09d"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/responses/r0163-supply-query-a01.json",
+      "bytes": 350152,
+      "sha256": "8c75e0505d173052192e5a27eeb6ee6d66350edd37c044798e4d8389aac83a3a"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/responses/r0163-supply-leave-a01.json",
+      "bytes": 350580,
+      "sha256": "eac0d764a06ab07dba59573b88afd31eda2a4d8a8b772887ceb4eb874488f6b7"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/responses/r0163-attrition-hover-a01.json",
+      "bytes": 350391,
+      "sha256": "88b9690f9b6cd8d356ca34a802643ca422195e61e51b1287ae7cec75331f7cd1"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/responses/r0163-attrition-query-a01.json",
+      "bytes": 350147,
+      "sha256": "7cd9f81ea7f0b39ed6fb621fafd355d62a975c14853112947f211f070e7e7d06"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/responses/r0163-attrition-leave-a01.json",
+      "bytes": 350575,
+      "sha256": "6490adfe61011ebe74103e72ac9ae493ca7081d9dbb8571a49af0544b77a1b88"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/responses/r0163-recording-start-a01.json",
+      "bytes": 2142,
+      "sha256": "a6bac5ef2041e47016a1e8116ad77713fbb2a60bcbef7cb08c76250021152864"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/responses/r0163-recording-finish-a01.json",
+      "bytes": 1359,
+      "sha256": "4d542f35e0d61105ab75d5543141b21b9a211c91ec1142f5d3c9ee2935d5ecb7"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/responses/r0163-stop-session-a01.json",
+      "bytes": 1012,
+      "sha256": "a97892685ecdf7d858cb49f31d388fcbabb8f7f328ff656d760b8297eb143c40"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/responses/r0163-stop-a01.json",
+      "bytes": 461,
+      "sha256": "f8922cbcf1ad55bac2607e2ffad4a7ce685124188baaed2eb55a6bb9efc59f07"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/bootstrap-result.json",
+      "bytes": 13997,
+      "sha256": "2ce2704d24586e5946074cce71cb0bcf60ef329c8462d9d52bb2885191beeeb6"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/sdk-ready.json",
+      "bytes": 35980,
+      "sha256": "e5b20f0215d3b9e7e2e9ca187778f2768dfb1edfc4d294d30d6fbef8fb03cabd"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-army-tooltip-r0163-a01/session-result.json",
+      "bytes": 12621,
+      "sha256": "378455d9460e9f63d0ca4f0fa36457f7b83ab8049f42517e5016bff659d68bfd"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/launch-gui-r0163-a01/launch-result.json",
+      "bytes": 62,
+      "sha256": "05391e3eb2c4fd78239ea38af716e4ce0a542474f005e83af06ac4c1e9212946"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/launch-gui-r0163-a01/live-run-id.json",
+      "bytes": 369,
+      "sha256": "a66339a9a15a9ef943a6c2e5533b6852248fa62b93a1188d565fe2161031c9e7"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/screen-close-r0163-a01/capture-heartbeat.stdout",
+      "bytes": 1353,
+      "sha256": "62b78c514c6354c4679a1fa1e51f551307e147704310189e8000e556db5abeea"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/screen-close-r0163-a01/challenge.stdout",
+      "bytes": 1735,
+      "sha256": "1e9d467a8b8d29e970ccec119cd7b0fe9235c6a8c2330ba055ab591d1d865a32"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/screen-close-r0163-a01/display-restoration.json",
+      "bytes": 477,
+      "sha256": "4ef11aa4f89875d6e22d7633466c4b00734a23da2517868ebf6c131530983708"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/screen-close-r0163-a01/list.stdout",
+      "bytes": 391016,
+      "sha256": "f0c84f2e4cc0ed27ca72bf44333910c572e34ab56087c476010d7b2409852f54"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/recording-audit-r0163-a01/audit-attempt-a01/report.json",
+      "bytes": 9361,
+      "sha256": "733ec8e1d80702491371a4ec8da39ef0317ccb63a38e397abee8c2c9fe242f41"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/recording-audit-r0163-a01/audit-attempt-a01/evidence-index.json",
+      "bytes": 8135,
+      "sha256": "7ae57c19769a3478d035327e189060ed2f9200e395e9ec48bcc798cf492f7c06"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/screen-release-r0163-a01/argv.json",
+      "bytes": 489,
+      "sha256": "932f203a948b485b0a9fc241a3e09ab5a2ee60096b86cd698cab11483911d5a3"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/screen-release-r0163-a01/bus-before.json",
+      "bytes": 391871,
+      "sha256": "7b6eaecedb6839604e2e99fce691fc457c3ee78b26ba9d3ca822b56fb96e7350"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/screen-release-r0163-a01/root-heartbeat.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/screen-release-r0163-a01/root-visual-review.json",
+      "bytes": 568,
+      "sha256": "b977f73de2049cee879f1f2e4164ffaa30edb1c5542f3e3812dd0fdc79e70840"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/screen-release-r0163-a01/stdout.json",
+      "bytes": 1295,
+      "sha256": "c861eb6cb47bc5a231c62b3e436949285dbf459b9ffcc9580dc685025ecbdd5d"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-build-a05/root-result.json",
+      "bytes": 943,
+      "sha256": "2e982bad70244e92c4d0f086bfaff705bd63b742cbc78fa7f4281f170d523d02"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-build-a05/source-freeze.json",
+      "bytes": 164,
+      "sha256": "96d5f85374eef552f4e8b5af37e0350ffd64ae7f21f9a717685e3bfb7cb4ba5f"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/frames/r0163-supply-hover-a01/manifest.json",
+      "bytes": 454,
+      "sha256": "3419298008d797353a3c55006e174cffc1f8b8d0d2a014afb98ccab3f7005b91"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/frames/r0163-attrition-hover-a01/manifest.json",
+      "bytes": 457,
+      "sha256": "9e1d2c70a01ed70970dcf604d5fa21ddcff3f3f2df8f9c6740268b8256b90011"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/frames/r0163-ready-map-a01/manifest.json",
+      "bytes": 451,
+      "sha256": "e94b06f2c21f6f122d1bd6883ae8b64e63a05259dd98421d0b0c55dc5fa517e7"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/screen-release-r0163-a01/root-heartbeat.stderr",
+      "bytes": 400,
+      "sha256": "0fb761473e4f6fa4f5db19315eae27aa2bc058e3b26963909db6e27a7b10ecbe"
+    }
+  ],
+  "report_lane_sdk_calls": 0,
+  "report_lane_main_cf_writes": 0,
+  "report_lane_runtime_tests": 0,
+  "report_lane_raw_or_save_rehashes": 0
+}

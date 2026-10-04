@@ -50,3 +50,14 @@ hover返回绑定当前连接、日期、full Army/owner/root/source及owner epo
 GUI更新epoch producer仍未查明：`gui_update_epoch=null`、`text_refresh_verified=false`、`rendered_verified=false`及nested `available=false`保持，实际cache单列为 `observed_cache`。后来一次application owner turn不能替代GUI更新或像素证据。Root在下一轮用新鲜snapshot确认玩家存活、无事件，并以真实画面另行核对文字；这些现场前提不能称为provider新增的独立完整门禁。
 
 最终native06与Python01 patch分别为 `196e1901400f8613688c8e0135d61a4bc31833a60f342874bf9b926637829acc`、`b791f68c621d466128287adf43a77c403d0aac626e1cd535913010cd0ad2f305`。外置候选、actual synthetic producer/mailbox检查及独立peer保存在 `C:/ck3-war-episode04-research-20261004-a01/army-tooltip-provider-a01/`。Root合入两个patch及safe-pause后，主树70项UI focused与16项pause focused通过，记录在 `root-code-checks-a01/`；Endpoint/local buffers不构成真实CK3 tooltip验收。正式DLL构建与下一次隔离实机另记。
+
+
+## R0163 actual tooltip负分支（2026-10-05T02:36:56+08:00 资料编制）
+
+R0163/William33388、date_raw53149272，全程暂停且0新游戏日；使用GUI-only saved +88输入，不是A/B/C共同起点。窗口/Army77/100、0%标签和Root看到的Lewes地图提示保留为各自观测。Supply、attrition的hover均acknowledged_verification_pending，但后续两个query仍tooltip_active_stack_unreadable_or_out_of_bounds，active_count=null、active_stack_read=false；两个leave仍tooltip_leave_requires_hover_receipt_or_observed_root。没有Armytooltip完整文本、刷新后getter或对应像素验收，TERM仍未闭合。
+
+Root直接view supply和attrition截图未见Armytooltip；地图提示存在不能单独证明覆盖、优先级或失败原因。实际active栈cap/count尚未知；后续cap误拒绝修正与实际诊断属于static-only，没有新的live资格。GUI tree widget_count与active tooltip count不是同一个量，不由323个window widgets补造实际栈count。
+
+正确stop及bootstrap证实SDK/keeper退出、CK3/录制树空；显示恢复1024×768、fresh Steam离线由Root直接审图、CAS4491done。错误stop-session是Root caller工具名错误，保留原Unknown tool；CAS后heartbeat parser错误不改写成功CAS。第三原片565.233秒/16,957帧及packet媒体PASS只覆盖媒体，不是本专题业务成功或人工影片审阅。
+
+来源：[R0163精确packet/媒体/退出索引](../../promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0163-index.json)；原始回包与截图manifest不覆盖。R0162 Army面板已验范围保留，本轮负分支不倒改旧run，也不把ACK或offline fixture升为提示框实机闭合。
