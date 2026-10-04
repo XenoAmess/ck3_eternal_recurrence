@@ -88,3 +88,30 @@ positive knight IDs 为空；type_raw/prowess 尚未发布，因此不能推成�
 该 before owner hard ledger（70766=51112494、Robert29829=2631980Q100000）与终局 side input 属不同 scope，
 不计算跨账差或一致性问题。历史 selected rolls 为 phase1/day5/cadence2、advantage−5400000Q100000；
 attacker current0/next0..0/commander null，defender Robert current6/next0..10；均不是终局后当前掷骰。
+
+## Oct4 third actual result — final survivors and named wound rows
+
+Combat1593835526 的 normal_result event398>cursor383 于 paused native1241/public41/date53248944
+发布 phase3/day0、defender winner1，Result1761607683 retained/relevant1；enemywipe=true。
+captured final side0 commander70766/baseline296700000/survivors0Q100000，side1 commander29829/
+baseline391100000/survivors380400000Q100000，即敌2967→0、玩家3911→3804。
+玩家净减少107、native hard23267447Q100000、stored fighting326466938Q100000 是不同字段，
+不互相替代或因数值不同启动一致性审计。真实 final/custody/result-row 组件资格为 production-live primitive。
+
+两条实际人物结果行依次为 left43706、left32023；right−1合法无人物，key=knight_wounded_no_enemy、
+type_raw2、side0=false、target_right=false。这只证明 native 具名受伤记录；没有当前trait/等级读取，
+不从key声称trait已生效，不推完整骑士受伤/死亡/被俘 aggregate。prior同查询发布
+70766/29829/43706/32023 alive=true、custody none/actual_jailer−1；该当前事实不等于全部战斗人物
+因果结果。top character_observations=null是本次未请求额外character_ids，不需要重复人物query。
+
+old Combat removed、subject active/backlink clear/no_successor，原route[2630,2631,2624,2619]与target2619
+仍在同一terminal输出；current control/route/save另由指定observer封包，本lane只由Root引用receipt。
+War50331736/row1的attacker-relative delta−50仅为单场 native row，不是 whole-war current score。
+只消费父已封decoded/facts/pin；本战25日与末batch10日/240小时已由Root计入
+total4359/resume1206/Oct4+334，本报告新增0日/0query/0test；h6666部署没有新增日期推进。
+
+历史 before 只引用 numeric owner 的 `numeric-person/RETAINED-ENTRIES.json`，不重读 owner export。
+父已封字段为 native1238/public38/date53248920，不能当本终局1241/public41/date53248944。
+该帧54 typed entries：敌levy3/MAA4、我levy17/MAA30，各owner hard ledger1；34 MAA 的
+positive knight raw IDs 为空，不代表骑士不存在，实际终局已有43706/32023两条wound记录。
+旧typed的type/prowess未发布只作为字段现状记载，不产生未知研究或march门禁；本报告仍新增0查询/0日。

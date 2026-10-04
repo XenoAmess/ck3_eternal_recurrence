@@ -232,3 +232,50 @@ Exact build 与本文相同；只读源 `Z:/g57` / owner-reported `1791d84`。�
 唯一 shared days04 cached projection（SHA `34310e64c51cb3a23476e9589fb121f7b2b5f0ca6ccbbe88d877ae84c4cb230c`）属于 R25 native g54 / Python g56，Combat1593835526、2629、Robert29829 defender、main12、native1200/public29/raw53248704。本帧双方 stored current 与 derived current 不同；这是 cache/immediate 时间语义，不能从人数差倒填实际伤害系数或给 g57 live 信用。
 
 下一施工入口是已有 `ck3_query_battle_control_snapshot_v1` 的 `Bucket/Side/ReadBattleControlSnapshot`：在既有 actual Entry effective stats 上补只读 loss operands，读取 Combat+6D8、runtime scaling/conversion slots5C69B90/5C69BA0/5C69BB0及上述 final aggregate modifiers。`264FF70/264FC10` 会写归因账，不能作为 paused read-only calculator。若决策确需真实执行过的 outgoing，最短 passive capture 入口是`258C774..258C779`，两侧真实 native 返回后、任何 apply 前。Entry refresh 与部分 pursuit aggregate helpers 的未闭合边在原生树中保持虚线。Readiness 为 **research**，不是完整 simulator、live 新观测口、损失因果 parity 或完整战斗 OODA。
+
+## Oct4 third player normal terminal — Combat1593835526
+
+真实 paused journal event398（after383；latest398）发布 normal_result，phase3/day0/date53248944，
+native1241/public41、Result1761607683。winner_raw1 对应 defender Robert29829，实际 defender CUnit
+[83886367]；attacker primary70766、CUnits[251658381,473]。wipe=true，敌军最终0；这次追加资格为
+production-live primitive 的真实玩家战斗结果，不增加战争结束或完整 OODA loop 信用。
+finalized_before=false 是捕获前字段，不能据此否认 observed normal terminal。
+
+| side | baseline人数 | native hard Q100000 / 当量 | native cached fighting Q100000 | final survivors人数 |
+|---|---|---|---|---|
+| attacker0 | 2967 | 296700000 / 2967 | 0 | 0 |
+| defender1 | 3911 | 23267447 / 232.67447 | 326466938 | 3804 |
+
+final survivors 原始值为0/380400000Q100000。3911→3804 的净减少107与 native hard232.67447
+分别保留；cached fighting3264.66938不是 final survivors。side1 levy/MAA soft 分别为
+33313749/8051866Q100000，side0 soft 均0；不因不同原生账的数值差启动审计或重读。
+若另一 owner 发布 fresh army integer strength，则使用其整数人数，不再次除Q。
+
+recorded battle warscore 为 War50331736/row1/value5000000Q100000（50），
+winner_is_war_attacker=false、combat_side0_is_war_attacker=true，attacker-relative delta−5000000（−50）。
+这是本场 native battle row，不能冒充当前 whole-war score 或前后总分变化；selected CB scale 与 denominator
+为合法 null。本包没有读取 current whole-war score。
+
+旧 Combat 已删除、省份不再包含旧ID；Result仍严格解析/relevant_player_count1。
+subject83886367@2629/CArmy50331794的 active/backlink 均null、blocked=false、AI membership none，
+successor=no_successor。原 target2619/route[2630,2631,2624,2619]仍保留；按已有原生 terminal/route
+经验继续该既定 march，不为结果消费重置路线或重复查询。movement_or_retreat_state_raw0仅保留
+为 terminal 原生字段，不与另一 current-control enum 混用。current control/route/save 已由指定
+observer消费封包，本lane只由Root链接其receipt，不再细读。
+
+两条 native character result row 的 key=knight_wounded_no_enemy、type_raw2、target_right=false，
+left分别43706/32023、right均−1、side0=false。有限报告两条具名受伤记录；不能由key推成当前已加
+wounded trait、具体等级或完整骑士伤亡总数。70766/29829/43706/32023 同一查询均alive=true、
+custody none/jailer−1；当前存活与监禁事实独立，不扩张为战斗因果。top character_observations=null
+源于未请求额外人物ID，不否认prior已发布的四人物观测；不新增traitsquery或fresh trait读取。
+
+本lane只消费父consumer的 TERMINAL-DECODED.json、TERMINAL-CONSUMED-FACTS.json、ORIGIN-PIN.json。
+Root已计本战25 normal days、末batch10日/240小时，total4359/resume1206/Oct4+334；
+1791/g57/v52 fixed h6666是无日期推进的部署元数据。本报告新增游戏日、动作、查询、测试均0。
+仅提供两个已分配专题追加和日周/source字段；Root负责observer链接、共享合并与commit/push。
+
+历史 before 只引用 numeric owner 的 `numeric-person/RETAINED-ENTRIES.json`，不重读 owner export。
+父已封字段为 native1238/public38/date53248920，不能当本终局1241/public41/date53248944。
+该帧54 typed entries：敌levy3/MAA4、我levy17/MAA30，各owner hard ledger1；34 MAA 的
+positive knight raw IDs 为空，不代表骑士不存在，实际终局已有43706/32023两条wound记录。
+旧typed的type/prowess未发布只作为字段现状记载，不产生未知研究或march门禁；本报告仍新增0查询/0日。
