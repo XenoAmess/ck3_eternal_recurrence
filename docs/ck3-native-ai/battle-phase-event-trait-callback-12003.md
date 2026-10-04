@@ -297,3 +297,42 @@ flowchart LR
 A's final core now proves the old-container binding that B had left provisional at its earlier seal. Its conditional old-queue swap removal and unique destination append are distinct from B's ordered local compaction. B has **no cached consumer pin for destination `CC88/CC94`**, nor an automatic parent/tick that invokes this forced path. The next high-value source seam is that destination's actual processing caller and admission/frame; a pending byte or queue move cannot stand in for completed effective prowess or six knight Entry attributes. Current effective integer0 remains legal; no predicted EC is derived from trait=True.
 
 B [ROOT source](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-refresh-queue-v68/drain-source/ROOT-DELIVERY.json):2612 B, SHA-256 `6258c204ee56640faed443e54305a7ee79fee15930103e0dbd576687bfbdc4e9`. Original A/B source bytes remain sealed. **QUEUE_CORE_CONTROL_SOURCE_READY=true; LOCAL_MODEL_VECTOR_CONSUMER_SOURCE_READY=true; numeric SOURCE_READY=false.** This research increment is complete and the feature remains partial, with no numeric model/API, case, live, complete horizon, MC or odds credit. Root adoption64–67 is independently recorded; this v68 publication has no supplied commit/push and claims no runtime change.
+
+
+## v69 — actual modifier manager identity and initialization (2026-10-05 / W41)
+
+Source status: **research**. `OWNER_TYPE_AND_INIT_SOURCE_READY=true`; destination drain, numeric callback and knight Entry timing remain partial. Exact build is CK3 **1.20.0.3**, frozen EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`.
+
+Root adopted v68 at commit `8e723751bcf2bcbb2a4ad4406a612aa60dd63fb2`. This EOF increment preserves that source projection's exact 30,409-byte prefix (`43e632335cf50bea18c1d714cf4a7250f8774fa600282320d472116f34a642d6`).
+
+One authorized instruction-boundary pass compared only exact memory displacements `CC88` and `CC94`. It found one matching store, `2ADCA38: mov [R15+CC88], R12`, inside `2ADC3D0..2ADE503`. The selected 8,499-byte body establishes `R15=RCX`, `R12=0` and storage initialization: old queue qwords `CC70/CC78` and destination qwords `CC88/CC90` are cleared. The `CC90` qword store also clears count `CC94`; direct `CC94` operand hits were zero. The body initializes mutex/flag storage as well. These are initialization effects. Relative subobject `+B0/+BC` consumers are outside this pass's exact targets, so zero further direct hits carries no broader absence conclusion.
+
+The initializer installs primary vptr `47807A0` at its owner argument `+CBD8` (`2ADC97E`) and secondary vptr `4780670` at `+CBE0` (`2ADC98C`). Reachable COL metadata closes offsets 0 and 8 (`4E48C28` and `4E48C78`) and shared type descriptor `5A33B50`, literal `.?AVCModifierManager@@`. The actual manager class is **CModifierManager**. Its initialized queue coordinates match the existing request receiver's `+CBD8` / destination relative `+B0/+BC` layout. This package does not independently capture the initializer's caller binding its first argument to the live global owner.
+
+Only table slot 0 targets were retained: primary `2AE2480`, secondary `2AE8088`. Their roles remain unestablished and their bodies were not read. No tick, destructor or queue consumer role is inferred from an address.
+
+```mermaid
+flowchart TD
+    R["existing 2A3E220 request
+receiver owner+CBD8"] --> Q["destination relative+B0/+BC
+absolute owner CC88/CC94"]
+    I["2ADC3D0 initialization
+RCX owner argument"] --> V["CBD8 primary47807A0
+CBE0 secondary4780670"]
+    V --> T["COL offsets0/8
+CModifierManager type5A33B50"]
+    I --> Z["CC88/CC90 zero
+CC94 count covered"]
+    T -. "owner instantiation caller unclosed" .-> R
+    Q -. "actual drain/frame unknown" .-> D["CModifierManager queue consumer"]
+    D -. "writer ancestry and timing unknown" .-> C["existing forced Character cache writer"]
+    C -. "numeric inputs / Entry timing unknown" .-> E["future effective stats and knight Entry"]
+```
+
+The calendar lane reused the sealed `battle-calendar-admission-v57/manager-source` receipt and source pins. That cache closes CombatManager's `22A1D75 -> 2AD8000` date edge and separate `2AD7F00 -> 258B510/264D480` preparation edge. It contains no concrete admission/consumer pin for this CModifierManager primary/secondary table. No additional calendar body or EXE span was read and no daily modifier-drain claim follows from the CombatManager evidence.
+
+Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-refresh-queue-consumer-v69/xref-source/{ROOT-DELIVERY.json,SOURCE-RECEIPT.json,TREE.md,INPUT-CONTRACT.json,ACTUAL-OWNER-AND-XREF-LEDGER.json,QUEUE-OWNER-IDENTIFIERS.json,ACTUAL-READ-COST.json}`; cached-calendar boundary under the same package's `calendar-source/{ROOT-DELIVERY.json,CALENDAR-METADATA-AND-GAPS.json,TREE.md,SOURCE-PINS.json}`.
+
+Actual cost: one exact-target `.text` instruction pass, 71,141,888 bytes in 16.169 seconds, plus 216 bytes of `.pdata`; one selected body, 8,364 newly read bytes plus 135 retained near-window bytes; 256 new reachable identifier metadata bytes. Total newly read EXE bytes: **71,150,724**. The second permitted body was unused. Calendar source added zero EXE/header/pdata/xref/body bytes. No full EXE hash, whole-text dump, generic callgraph, model, test, SDK, live RPM, game/window action or shared/Git mutation occurred.
+
+Next source construction entry: finite method metadata at the now identified primary `47807A0` / secondary `4780670`, reusing slot 0 and RTTI. Root authorized up to 8 slots per table and at most two actual candidate bodies with existing relative `+B0/+BC` queue-use or forced-writer ancestry evidence. No further absolute `CC88` scan is planned. Numeric callback readiness remains false until actual destination consumption and attribute-input values are proved; no trait boolean is converted into an EC value.
