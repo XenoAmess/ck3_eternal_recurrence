@@ -269,7 +269,7 @@ _ARMY_STRENGTH_SUPPLY_ROW_KEYS = _ARMY_STRENGTH_ROW_KEYS | {
     key for pair in _ARMY_STRENGTH_SUPPLY_FIELD_PAIRS for key in pair
 } | {"regiment_replenishment", "regiment_strengths", "regiment_replenishment_records_v1", "current_movement_progress",
      "army_update_clock_v1", "native_owner_recall_inputs_v1",
-     "loss_application_inputs_v1"} | _ARMY_STRENGTH_GATHERING_DAYS_KEYS
+     "loss_application_inputs_v1", "native_army_resolution_v1"} | _ARMY_STRENGTH_GATHERING_DAYS_KEYS
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
     "active_war_ally",
@@ -1688,6 +1688,28 @@ def army_strength_query_status(
     )
 
 
+def _normalize_native_army_resolution_v1(
+    value: object, *, name: str
+) -> dict[str, object]:
+    keys = {"status", "ready", "branch", "raw_reference", "reference_index",
+            "storage_capacity", "entry_full_id"}
+    if not isinstance(value, dict) or value.keys() != keys:
+        raise ValueError(f"native {name} schema is malformed")
+    status = value["status"]
+    if status not in {"available", "unavailable"}:
+        raise ValueError(f"native {name}.status is malformed")
+    if type(value["ready"]) is not bool or value["ready"] != (status == "available"):
+        raise ValueError(f"native {name}.ready is malformed")
+    branch = value["branch"]
+    if branch not in {"unavailable", "reference_absent", "storage_unavailable",
+                      "index_out_of_range", "entry_empty", "full_id_mismatch", "resolved"}:
+        raise ValueError(f"native {name}.branch is malformed")
+    result = {"status": status, "ready": value["ready"], "branch": branch}
+    for key in ("raw_reference", "reference_index", "storage_capacity", "entry_full_id"):
+        result[key] = _optional_signed_int32(value[key], f"{name}.{key}")
+    return result
+
+
 def _normalize_army_strength_row(
     value: object, *, name: str
 ) -> dict[str, object]:
@@ -1790,6 +1812,10 @@ def _normalize_army_strength_row(
         "unavailable_reason": unavailable_reason,
     }
     result.update(observed_supply)
+    if "native_army_resolution_v1" in value:
+        result["native_army_resolution_v1"] = _normalize_native_army_resolution_v1(
+            value["native_army_resolution_v1"], name=f"{name}.native_army_resolution_v1"
+        )
     if "regiment_replenishment_records_v1" in value:
         result["regiment_replenishment_records_v1"] = normalize_regiment_replenishment_records_v1(
             value["regiment_replenishment_records_v1"]

@@ -244,11 +244,59 @@ struct ArmyLossApplicationInputsV1 {
                          const ArmyLossApplicationInputsV1 &) = default;
 };
 
+// Independent observation of the existing CUnit -> CArmy resolver. Available
+// describes the read of the reference/branch, including a failed CArmy lookup.
+enum class ArmyNativeResolutionBranchV1 {
+  unavailable,
+  reference_absent,
+  storage_unavailable,
+  index_out_of_range,
+  entry_empty,
+  full_id_mismatch,
+  resolved,
+};
+
+constexpr std::string_view ArmyNativeResolutionBranchNameV1(
+    ArmyNativeResolutionBranchV1 branch) noexcept {
+  switch (branch) {
+  case ArmyNativeResolutionBranchV1::reference_absent:
+    return "reference_absent";
+  case ArmyNativeResolutionBranchV1::storage_unavailable:
+    return "storage_unavailable";
+  case ArmyNativeResolutionBranchV1::index_out_of_range:
+    return "index_out_of_range";
+  case ArmyNativeResolutionBranchV1::entry_empty:
+    return "entry_empty";
+  case ArmyNativeResolutionBranchV1::full_id_mismatch:
+    return "full_id_mismatch";
+  case ArmyNativeResolutionBranchV1::resolved:
+    return "resolved";
+  default:
+    return "unavailable";
+  }
+}
+
+struct ArmyNativeResolutionSnapshotV1 {
+  bool available = false;
+  ArmyNativeResolutionBranchV1 branch =
+      ArmyNativeResolutionBranchV1::unavailable;
+  std::optional<std::int32_t> raw_reference;
+  std::optional<std::int32_t> reference_index;
+  std::optional<std::int32_t> storage_capacity;
+  std::optional<std::int32_t> entry_full_id;
+
+  friend bool operator==(const ArmyNativeResolutionSnapshotV1 &,
+                         const ArmyNativeResolutionSnapshotV1 &) = default;
+};
+
 struct ArmyStrengthSnapshot {
   bool available = false;
   std::int32_t army_id = -1;
   bool native_carmy_id_observable = false;
   std::int32_t native_carmy_id = -1;
+  // Present immediately after CUnit resolves, independently of CArmy health.
+  // Unreached numeric operands stay null; reference/index/capacity/ID zero is valid.
+  std::optional<ArmyNativeResolutionSnapshotV1> native_army_resolution_v1;
   ArmyStrengthScopeRole scope_role = ArmyStrengthScopeRole::player;
   std::vector<std::int32_t> war_ids;
   std::int32_t regiment_count = 0;

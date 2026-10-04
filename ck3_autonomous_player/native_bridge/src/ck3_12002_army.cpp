@@ -32,16 +32,55 @@ bool Storage(void **slot, void *&objects, std::int32_t &capacity) noexcept {
          (capacity == 0 || objects != nullptr);
 }
 
-void *Resolve(void **slot, std::int32_t id) noexcept {
-  if (id == -1) return nullptr;
+void *Resolve(void **slot, std::int32_t id,
+              game::ArmyNativeResolutionSnapshotV1 *observation = nullptr) noexcept {
+  if (observation != nullptr) {
+    *observation = {};
+    observation->available = true;
+    observation->raw_reference = id;
+  }
+  if (id == -1) {
+    if (observation != nullptr)
+      observation->branch = game::ArmyNativeResolutionBranchV1::reference_absent;
+    return nullptr;
+  }
   void *objects = nullptr;
   std::int32_t capacity = 0;
-  if (!Storage(slot, objects, capacity)) return nullptr;
+  if (!Storage(slot, objects, capacity)) {
+    if (observation != nullptr) {
+      observation->branch = game::ArmyNativeResolutionBranchV1::storage_unavailable;
+      // A failed Storage with capacity0 did not reach the header read. An actual
+      // header capacity0 is accepted by Storage and observed below before OOB.
+      if (capacity != 0) observation->storage_capacity = capacity;
+    }
+    return nullptr;
+  }
   const auto index = static_cast<std::uint32_t>(id) & 0xFFFFFF;
-  if (index >= static_cast<std::uint32_t>(capacity)) return nullptr;
+  if (observation != nullptr) {
+    observation->reference_index = static_cast<std::int32_t>(index);
+    observation->storage_capacity = capacity;
+  }
+  if (index >= static_cast<std::uint32_t>(capacity)) {
+    if (observation != nullptr)
+      observation->branch = game::ArmyNativeResolutionBranchV1::index_out_of_range;
+    return nullptr;
+  }
   void *object = Load<void *>(objects, index * 0x10ULL + 0x08);
-  return object != nullptr && Load<std::int32_t>(object, 0x10) == id
-             ? object : nullptr;
+  if (object == nullptr) {
+    if (observation != nullptr)
+      observation->branch = game::ArmyNativeResolutionBranchV1::entry_empty;
+    return nullptr;
+  }
+  const auto entry_id = Load<std::int32_t>(object, 0x10);
+  if (observation != nullptr) observation->entry_full_id = entry_id;
+  if (entry_id != id) {
+    if (observation != nullptr)
+      observation->branch = game::ArmyNativeResolutionBranchV1::full_id_mismatch;
+    return nullptr;
+  }
+  if (observation != nullptr)
+    observation->branch = game::ArmyNativeResolutionBranchV1::resolved;
+  return object;
 }
 
 void *Province(void *game_data, std::int32_t id) noexcept {
@@ -295,7 +334,9 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
     return result;
   }
   const auto internal_id = Load<std::int32_t>(unit, 0x178);
-  void *army = Resolve(bindings.internal_army_storage_slot, internal_id);
+  result.native_army_resolution_v1.emplace();
+  void *army = Resolve(bindings.internal_army_storage_slot, internal_id,
+                       &*result.native_army_resolution_v1);
   if (army == nullptr) {
     result.unavailable_reason = "native_carmy_not_found";
     return result;

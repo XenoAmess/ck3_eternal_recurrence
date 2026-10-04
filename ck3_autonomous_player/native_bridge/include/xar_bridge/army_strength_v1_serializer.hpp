@@ -23,6 +23,24 @@ inline void AppendArmyStrengthV1(
   } else {
     result += "null";
   }
+  if (strength.native_army_resolution_v1.has_value()) {
+    const auto &resolution = *strength.native_army_resolution_v1;
+    result += ",\"native_army_resolution_v1\":{\"status\":\"";
+    result += resolution.available ? "available" : "unavailable";
+    result += "\",\"ready\":";
+    result += resolution.available ? "true" : "false";
+    result += ",\"branch\":";
+    append_json_string(result, ArmyNativeResolutionBranchNameV1(resolution.branch));
+    result += ",\"raw_reference\":";
+    result += resolution.raw_reference.has_value() ? number(*resolution.raw_reference) : "null";
+    result += ",\"reference_index\":";
+    result += resolution.reference_index.has_value() ? number(*resolution.reference_index) : "null";
+    result += ",\"storage_capacity\":";
+    result += resolution.storage_capacity.has_value() ? number(*resolution.storage_capacity) : "null";
+    result += ",\"entry_full_id\":";
+    result += resolution.entry_full_id.has_value() ? number(*resolution.entry_full_id) : "null";
+    result += '}';
+  }
   result += ",\"scope_role\":\"";
   switch (strength.scope_role) {
   case ArmyStrengthScopeRole::player:
