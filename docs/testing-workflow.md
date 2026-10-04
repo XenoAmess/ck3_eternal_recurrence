@@ -2954,3 +2954,15 @@ R9 已按此方式直接冷启动 PID101408，恢复 h98 后完成暂停只读�
 Root cached 实测：sole advance 将 `53246688 → 53246712` 自然推进 1 天；随后 helper 仍使用旧 fixed expected-date，后置帧检查报 HARNESS-RED 且当次未 SAVE。Root 没有再次推进，改用实际新日期 `53246712` 做只读读回并正常 SAVE，SDK 4926 closed GREEN。该 helper RED 不代表 native advance 失败，也不能据此重复 advance。
 
 证据边界：本条只复用 Root 提供的已缓存结果；本 lane 未读取原始推进、control 或 SAVE packet，未新增生产门禁或测试。该 1 天已计入 `4266 / resume 1113 / 2026-10-04 +241`，只读查询另加 0 天。
+
+## 2026-10-04 G2 v52 实测：先正常停止旧 CK3，再 official prepare；status 使用 canonical run_id
+
+R25→R26 的正式续局保留同一 Robert29829／ordinary episode `native-29829-2bc2d599f7f9`，源为正常 h6666（raw53248944、4359累计日）。v52 source1791/g57 四目标严格构建 GREEN 后，renderer 已正常生成最新完整 history 与十条 opaque stream。随后 `official-prepare-01` 真正 exit1：`refusing profile while ck3.exe PID66464 running`。这是既有 prepare 的全局进程检查，本次没有新增检查或 gate；renderer 的纯文件成功不能代替停止仍在运行的旧 CK3。
+
+实测成功顺序为：**严格构建 → renderer → Root 所属队列 normal stop → managed75537 正常 exit0 → official-prepare-02 → verify → stage 十条 stream → canonical R25 retirement → ordinary rebind → receipt-derived preflight → actual R26 allocation／launch-started → managed minimized cold → 实际 paused baseline**。prepare-01 RED 保留，不改写为 GREEN，也不再使用“prepare 前允许旧 CK3 继续运行”的部署模板。构建仍可以和旧局游戏推进并行；停止与新 profile prepare 在 Root 选择的正常 checkpoint 边界串行完成。
+
+`ck3_live_run_id.py status --run-id` 使用 allocator 返回的完整 `run_id`：本轮旧 ID 为 `xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0025`。Root 试用单独 `R0025` 得到 unknown／exit1，没有 ledger 变化；使用完整 ID 后 superseded 成功，并保留全部旧失败与终局材料。新 R26 的 canonical ID 从 `LIVE-RUN-ALLOCATION.json` 原值读取，不靠短编号拼接或猜测；其 execution ID 为 `4868b93d-3ae7-4e79-a2f2-964a0b9591e2`。
+
+实际冷 baseline `session76055` exit0／GREEN：旧 PID66464→新 bridge/game PID7388，source1791/g57、same ordinary episode、Robert 存活、paused/map_ready；完整 history6666→6667，仅追加 `restore-checkpoint`，save anchor仍6666。Root helper 包装进程 PID105476 不是游戏 PID。冷启动 readiness 中最初尚未连接 pipe 的 timing RED 原样留在 result，最终恢复 GREEN。mandatory 原 Sway4 是后续独立 SDK 查询，不能算入这份 baseline 的已完成动作；截至本条，SDK53419 的前三条 GREEN、第四 invalidation stale/malformed revision3 RED、plan_turn GREEN，Root 只 fresh retry 第四条，不重跑前三条或重发 Start。
+
+证据：[部署收据](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v52/ROOT-ACTUAL-V52-DEPLOYMENT-RECEIPT.json)、[Root 冷 query 结果](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v52/v52-root-packet/actual-candidate-cold-goal-01/result.json)、[实际 allocator identity](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v52/LIVE-RUN-ALLOCATION.json)。本知识增量只复用已完成结果，不读取 changing pair、后继业务 query 叶或重跑游戏／测试；新增游戏日为0，4359日及第三战胜利信用由原实机 owner 独立汇总。
