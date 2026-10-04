@@ -25,6 +25,9 @@ from .battle_current_future_refresh import (
     FutureMainRefreshInputs, run_conditional_future_main_tick,
 )
 from .battle_current_next_day import CarriedBattleCondition
+from .battle_current_normal_finalizer import (
+    CurrentNormalFinalizerManagerInputs, project_current_normal_finalizer,
+)
 from .battle_current_phase_transition import (
     CurrentMainPhaseTransitionInputs, project_current_main_phase_transition,
 )
@@ -52,6 +55,8 @@ class ConditionalTerminalInputs:
     side_baseline_raw_by_side: Mapping[int, int | None] | None = None
     winner_side: int | None = None
     wipe_raw: bool | None = None
+    normal_finalizer_manager: CurrentNormalFinalizerManagerInputs | None = None
+    normal_finalizer_winner_raw: Literal[-1, 0, 1] | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -120,6 +125,31 @@ def _with_condition(state: CarriedBattleCondition, condition: CurrentBattleCondi
 
 def _terminal(condition: CurrentBattleCondition, inputs: ConditionalTerminalInputs,
               winner: int | None, wipe: bool | None) -> tuple[dict[str, Any], list[str]]:
+    if inputs.normal_finalizer_manager is not None:
+        # The manager owns intent and reached requirements. Suppressed,
+        # deferred and unadmitted rows do not consume a backing census.
+        current = dict(inputs.current_state_by_regiment or {})
+        if inputs.allow_carried_entry_components and inputs.recomputed_regiments is not None:
+            links = inputs.knight_link_state_by_regiment or {}
+            for side in condition.sides:
+                for entry in side.entries:
+                    identity = (entry.native_carmy_id, entry.state.regiment_id)
+                    if identity in inputs.recomputed_regiments and identity not in current and identity in links:
+                        current[identity] = CurrentPhase3BackingState(entry.backing_components, links[identity])
+        raw_winner = inputs.normal_finalizer_winner_raw
+        if raw_winner is None:
+            raw_winner = winner if inputs.winner_side is None else inputs.winner_side
+        result = project_current_normal_finalizer(
+            condition, manager=inputs.normal_finalizer_manager,
+            current_state_by_regiment=current,
+            backing_inputs_v1=inputs.backing_inputs_v1,
+            recomputed_regiments=inputs.recomputed_regiments,
+            captured_maximum_by_regiment=inputs.captured_maximum_by_regiment,
+            side_baseline_raw_by_side=inputs.side_baseline_raw_by_side,
+            winner_raw=raw_winner,
+            wipe_raw=wipe if inputs.wipe_raw is None else inputs.wipe_raw,
+        )
+        return result, [gap.missing_input for gap in result["typed_gaps"]]
     required = []
     if inputs.backing_inputs_v1 is None:
         required.append("complete external full_backing_inputs_v1")

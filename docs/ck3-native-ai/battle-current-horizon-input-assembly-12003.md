@@ -38,3 +38,26 @@ The [field-map receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/bat
 ## Canonical package integration
 
 The identical pure implementation is available at `xar_autoplayer.simulation.battle_current_horizon_input_assembly`; the repository module retains the original tested bytes. The two focused tests use that package import and embed the same sealed compact-map JSON instead of requiring its external artifact path. Their cases and assertions are unchanged. The original first-pass two-case GREEN receipt remains the qualification; this path relocation does not grant complete initial-condition, horizon, MC or runtime credit.
+
+## 2026-10-05: explicit terminal-manager composition
+
+`ConditionalTerminalInputs` now accepts optional `normal_finalizer_manager: CurrentNormalFinalizerManagerInputs` and `normal_finalizer_winner_raw`. When manager input is supplied, the reached terminal branch calls canonical `project_current_normal_finalizer` before the legacy census/recomputed-backing and receiver checks, then forwards its adapted signed32 accounting map and typed missing entries directly. It does not reaggregate or account for the same loss a second time. The manager owns invocation intent; legacy `normal_result_intent` is consumed only without manager input, where existing behavior is retained.
+
+```mermaid
+flowchart TD
+  N[Committed named-person outcomes and forwarded cleanup] -. explicit caller construction .-> H[Current condition and admitted horizon timeline]
+  R[Selected-owner retreat events and backing inputs] -. explicit caller construction .-> H
+  H --> T[Reached terminal branch]
+  T --> M{Explicit manager input supplied?}
+  M -->|yes| F[Canonical normal-finalizer first]
+  B[Phase3 backing contract and explicit consulted operands] --> F
+  F --> O[Forward adapted signed32 result and typed gaps once]
+  M -->|no| L[Existing census and terminal-accounting branch]
+  U[Missing manager witness or winner] -. retained unknown .-> F
+```
+
+`apply_committed_named_person_outcomes_12003` returns its person/alive ledger and cleanup forwarding; it does not return a carried battle condition. `apply_selected_owner_subset_retreats_12003` requires selected events and explicit backing and returns carried/backing state with typed gaps. Those existing APIs remain construction dependencies; this increment invents no actor, event, action or schedule. Phase3 backing reaggregation retains its current membership/component/count-qualifier contract.
+
+Manager presence is not inferred from phase3 or normal-result intent. Missing `None` and native winner sentinel `-1` remain distinct. The helper's suppressed, deferred or not-invoked branches do not demand a census they never consult.
+
+The one new affected-branch check passed **GREEN on its first attempt** through public `run_conditional_horizon`: the synthetic normal-manager case returned survivor raw 700000/300000 and loser hard raw 200000 once; a suppressed manager retained `None` census/receivers without typed gaps, and winner sentinel `-1` stayed intact. These are static fixture values. The same unique check has two GREEN executions: the original first pass and a required portable locator adjustment, with identical projected module bytes and no RED. There are no two distinct new cases. The original Oct 4 first-pass 2/2 assembly qualification remains historical and was not rerun or credited again. Readiness is **static-ready for this narrow terminal-manager composition; complete transition remains partial**. The [new focused receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-current-horizon-v61-composition/integration/NEW-FOCUSED-RECEIPT.json) pins this qualification. New days, actions and runtime/live observations are 0; current Root totals remain unknown.
