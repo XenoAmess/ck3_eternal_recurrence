@@ -611,3 +611,58 @@ save/install/restore"]
 Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-modifier-manager-attribute-kernel-v76/source/{ROOT-DELIVERY.json,SOURCE-RECEIPT.json,TREE.md,A-RECEIVER-CALLBACK-PINS.json,INPUT-CONTRACT.json,READ-COST.json}` and `cached-kernel-role/{ROOT-DELIVERY.json,TREE.md,ROLE.json,OCT5-W41-FIELDS.json}`. Actual new EXE reads: **441 B = 385 B code + 24 B exact `.pdata` rows + 32 B necessary unwind**, across one logical body and one physical region. Fifteen cached `.pdata` consults were reused. A uniquely captured the body and pinned receiver/callback ancestry; B interpreted only cached kernel ASM, with zero new EXE read. No other callee or framework body was read.
 
 Readiness advances to a complete normal index wrapper and exact callback payload/code provenance. Real attribute preparation, numeric formulas, cache commit, calendar cadence and Entry update order remain partial. The preferred next source entrance is **`2A43CA0`**, proven by the captured code-address producer and callable descriptor. No numerical API plan is supplied because the attribute formula is not yet observed. No model, test, SDK, live RPM, game/window action, shared mutation, Git operation, current EC prediction or Entry-day claim was produced.
+
+
+## v77 — queued trait callback to current effective-attribute numeric inputs (2026-10-05)
+
+This source increment closes the actual queued callback receiver and the six-skill numeric operation on native prepared inputs. It does not turn a trait Boolean into future modifier rows. The frozen input remains CK3 1.20.0.3 / Steam 25652598, EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. All new work was offline; current CK3, the bridge, public models and tests were unchanged.
+
+### Actual receiver and context
+
+- The serial callback `2A43CA0` dereferences the actual old-vector index to its pending model, reads `model+8` as Character, and tail-calls `28C3F60`. It supplies **DL=1**, with upper RDX bits still carrying index bits, and R8D=0; whole EDX=1 is not the contract.
+- The existing cached writer slice now proves the new context question: `28C3F9B -> 28C3AE0(Character)`, then `28C3FA0 MOV RDX,RAX`, then `28C3FA6 -> 28C3D80(Character, context)`. The raw callback flag/index is not the D80 context.
+- `28C3AE0` reads Character+1B0 scratch, scratch+258 model. A nonnull model whose +8 matches Character returns the **address** model+10. Otherwise it returns the initialized fallback context at RVA5D67B90; fallback initialization was not replaced by empty or zero properties.
+- Context+0/+C are a source-ordered vector/count of 16-byte `{PropertyContainer*, Q100000 weight}` rows. Its aggregate PropertyContainer is embedded at context+68. A PropertyContainer has sorted U16 keys at +0, signed32 count at +C and parallel signed64 Q100000 values at +68. `2303700` implements native lower-bound lookup; an actual missing key is zero, while an unread input is still missing.
+
+### Numeric contract
+
+The full integer and fixed-point contract is sealed in [v77 ROLE.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-effective-attribute-callback-v77/cached-writer-role/ROLE.json). Its plain component multiplication wraps signed64 before truncation, while percentage scaling uses the source fast/decomposed fixed multiply; the two operations must not be conflated. All points and cap comparisons are signed32, sums wrap32, and Q100000 conversion truncates toward zero.
+
+For skill i=0..5, actual base points are Character+C0/C4/C8/CC/D0/D4. Components consume key i, category keys20+i/26+i/32+i/38+i, and factor key48+i; prowess additionally consumes key6. Absolute key13+i selects aggregate mode0 or the positive/negative weighted combination. Percentage key7+i then scales the wrapped base-plus-component value, with percentage<=-100000 yielding zero. Valid skill key mapper `291D0B0` preserves the incoming mode register.
+
+Four ordinal multiplier getters read scratch metrics118/138/158/178 and overrides120/140/160/180, count the source threshold prefix, and apply the native nonnegative-override minimum. Their literal category meanings and threshold metric units remain unnamed. The factor getter reads signed32 scratch2F8 and denominator slot5C68CE8. Its **denominator-zero branch produces multiplier42949**, from zero-extended R11D=FFFFFFFF followed by native /100000; it is not -1 or an invented zero. Null-scratch factor supplies zero.
+
+`28C3D80` computes skills in ascending order and writes scratch410+4*i. The runtime signed32 caps are, in skill order, slots **5C6A0D8 / 5C6A0D4 / 5C6A0BC / 5C6A0B8 / 5C6A0C0 / 5C6A0C4**. Each first stage is `raw<0 ? 0 : signed_min(raw, cap)`; there is no post-min zero clamp. For prowess, nonzero signed32 Character+F0 is wrap32-added **after this first clamp**, then the same signed branch and capC4 run again. A single clamp of raw5+F0 is a different operation. The existing writer copies the prepared six effective points to Character **D8/DC/E0/E4/E8/EC**. Auxiliary scratch430/438 and its opaque helpers remain outside this numeric subset.
+
+```mermaid
+flowchart TD
+  Queue["adopted queued trait / old pending vector"] --> Serial["2A42110 serial callback descriptor"]
+  Serial --> Callback["2A43CA0: vector[index] -> model+8 Character; DL=1, R8D=0"]
+  Callback --> Writer["28C3F60 selected forced cache path"]
+  Writer --> Context["28C3AE0: matching model+10 address / actual fallback5D67B90"]
+  Context --> D80["28C3D80(Character, AE0.RAX)"]
+  D80 --> Raw["2BA95E0: base6 + component/absolute/percentage operations"]
+  Inputs["actual context keys/weighted rows; category getters; factor numerator/denominator"] --> Raw
+  Raw --> Caps["six runtime caps; first signed clamp"]
+  Caps --> F0["prowess F0 wrap32 add; second signed clamp"]
+  F0 --> Copy["selected scratch copy -> CharD8/DC/E0/E4/E8/EC"]
+  Trait["successful trait insertion/request"] -. "updated modifier rows: preparation291C0D0/291CF50 not closed" .-> Inputs
+  Copy -. "Entry callback / outer date cadence not closed" .-> Future["full future battle / knight Entry refresh"]
+```
+
+### Existing observation and concrete next interface
+
+The current published `ck3_query_battle_terminal_transition_v1` already exposes `character_observations[*].current_person_state.effective_prowess.points` from signed32 Character+EC, including legal zero and negative values. That observed clipped value cannot recover base points, raw skill values, modifiers, caps or F0, and is not evidence of a same-frame queued callback.
+
+The source-only [API plan](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-effective-attribute-callback-v77/cached-writer-role/API-PLAN.json) proposes `compute_six_skill_cache_from_native_inputs_12003(inputs)`, yielding raw6, first_clipped6 and finalcache6 from explicit actual operands. The [same-query raw-input producer plan](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-effective-attribute-callback-v77/observed-input-ledger/ACTUAL-RAW-NUMERIC-INPUT-PRODUCER-PLAN.json) uses an optional `current_person_state.raw_numeric_inputs` bundle with actual base6, context aggregate/weighted rows, ordinal getter outputs, numerator/denominator, six caps and F0. Both remain plans: no new producer, native field, public API, numeric model or focused test is implemented in this package.
+
+Given an actual refreshed context, the bounded numeric operation is source-ready. A hypothetical newly added trait still needs its actual resulting context or a separately closed preparation implementation; freezing the old context does not complete future battle prediction. The next concrete preparation entrances are the already pinned `291C0D0` and `291CF50`. Parallel dispatch, full callbacks/lifecycle/memory, fallback initialization, auxiliary writes, Entry update timing and calendar frequency remain partial.
+
+### Artifacts, cost and report status
+
+- [A source receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-effective-attribute-callback-v77/source/numeric-chain/ROOT-DELIVERY.json): source receipt SHA `f2c7af12e852e3e4f5d90a4d35a640f9be100732e8326b5cbbd601d73caa9c75`; input contract SHA `0c6b1360094fdb1d01e318a76754b3c0c834c763af5878d747d52845826e3f74`.
+- [B numeric/math receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-effective-attribute-callback-v77/cached-writer-role/ROOT-DELIVERY.json): ROLE SHA `d81b1584229e5111eb38b1587aa41aa442172c17d6cf9006eed582022043e4aa`; API-plan SHA `89a778c3b5ec8099a6d92b341c958ae14b8821323148103706028b486b60f2a7`.
+- [C raw observer plan receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-effective-attribute-callback-v77/observed-input-ledger/ACTUAL-RAW-NUMERIC-INCREMENT-ROOT.json): producer-plan SHA `a9990ac41f6d5406573ed69f7d0d595144b907a1718459ea90018ffa9e1a2dd1`.
+- [D sole affected-case plan](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-effective-attribute-callback-v77/focused-fixture/CASE-PLAN.json) is unexecuted; it predates the final raw-input closure and retains that historical dependency state. No synthetic value is presented as a native parity sample.
+- New frozen EXE input: **16 logical entries / 26 physical code captures / 4956 bytes** =3432 code windows +132 exact operand data +1032 pdata +360 unwind. Cached D80 reuse192 bytes; embedded24-byte cap table is already counted in code. No repeated EXE reads, whole scan or full hash. An earlier logical-count17 was corrected to16 with its attempt metadata retained.
+- Oct5/W41: completed bounded current numeric source and input/API plans; readiness remains **research with this source unit ready**, with no implementation/static-ready/live upgrade. Tests0, old cases0, native parity0, game days0, SDK/RPM/window/Git0. Adoption/push belongs to Root after this EOF increment, sequential to adopted v76 `80f281b86ce47b606ec88dbb26f6b6a59337875a`.
