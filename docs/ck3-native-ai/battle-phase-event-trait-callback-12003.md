@@ -479,3 +479,46 @@ All normal conditional branches in the second captured body stay within its exte
 Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-modifier-manager-pending-consumer-v73/source/{ROOT-DELIVERY.json,SOURCE-RECEIPT.json,TREE.md,A-FIRST-ADMISSION-ROLE.json,INPUT-CONTRACT.json,READ-COST.json}` and `cached-pending-role/{ROOT-DELIVERY.json,README.md,OCT5-W41-FIELDS.json}`. Actual new EXE reads: **1477 B = 1421 B code + 56 B necessary unwind**, with zero new `.pdata` search/read; cached row pins were reused. B interpreted only cached second-body ASM, with zero additional EXE read. The two-body budget was exhausted without following other bodies.
 
 Source-ready components now include destination argument admission, destination count clear and old-pending wrapper order. Full range-transfer semantics, first-method continuations, pending worker effects, calendar timing, future numeric values and Entry order remain partial. Concrete next source entries are `9CE070`, reachable continuations `2A3D52F/2A3D5F5`, and old-queue worker `2A41170`; these are actual calls/branches, not a generic search plan. No model, test, SDK, live RPM, game/window action, shared mutation, Git operation, current EC prediction or Entry-day claim was produced.
+
+
+## v74 — concrete destination transfer and invocation progress (2026-10-05 / W41)
+
+Sequential source base is v73's 51,218-byte EOF projection (`7e02654f6abaea66a16065b46b128a1e3483556331fc7310b19d8eb9f3556666`), preserved exactly. Root supplied actual v72 adoption/push `753c617cf35c12f6c8e4e39fbe555feeddcdef78`; v73 adoption was queued at this seal. Exact CK3 **1.20.0.3**, frozen EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6` remains the identity.
+
+Two logical source scopes were read: the actual range helper `9CE070`, and continuations of registered manager method `2A3D3C0`. Necessary `.pdata`/CHAININFO pins prove physical fragments belong to those same logical functions. The helper has four fragments, `9CE070..9CE08B` (27 B), `9CE08B..9CE187` (252 B), `9CE187..9CE1CE` (71 B), and `9CE1CE..9CE1CF` (1 B). The first-method continuations are `2A3D52F..2A3D5F5` (198 B) and `2A3D5F5..2A3D623` (46 B). Their CHAININFO points to the existing first fragment `2A3D3C0..2A3D52F`; its 367 B source is reused without recapture. `FIRST_LOGICAL_NORMAL_CONTROL_READY=true` now resolves v73's two uncaptured normal continuations; it does not close the called bodies.
+
+The range helper orchestrates an 8-byte pointer-vector insertion. An empty incoming range returns immediately. Otherwise incoming count is the arithmetic shift `wrap64(end-begin)>>3`, and new count is `wrap32(old_count+incoming_count)`. At the actual `2A3D41C` callsite, insertion position equals old queue count. The growth branch calls allocator interfaces and copy-shaped `4226880` for prefix, incoming range and suffix, then writes vector data/capacity/count. Here suffix length is zero. The capacity-sufficient branch calls `4226880(destination=old_end,source=incoming_begin,bytes=range_bytes)`, updates count, and calls `86E500(first=insertion_position,middle=old_end,last=new_end)`; this callsite has `first==middle`. Allocator, `4226880`, `86E500` and float growth-coefficient leaf `49F6400` were not followed. Helper normal control and vector-write orchestration are closed; those primitive implementations remain explicit leaves.
+
+Consequently the first method's existing destination `primary+B0/+BC` input has a concrete range-insertion call into old `primary+98/+A4`, followed by the already captured destination count clear at `2A3D424`. The old-vector primitive owner filter and stable compaction are reused. This is an actual admission operation when the registered method runs; its external invocation frequency is not proved.
+
+The newly captured continuation operates on **16-byte pairs** at secondary `+58/+64 = primary+60/+6C`. Progress is secondary `+88 = primary+90 = GameData+CC68`. Initial carry `R12D=0` and invalid counter `R15D=0` come from the existing first-fragment pins. The scan starts at `wrap32(min_signed32(wrap32(progress+1000),count)-1)` and descends while the index is at least reloaded signed progress. Each row uses model-to-Character primitive checks: a non-null model, owner magic `+1C=43686172`, full ID `+18!=-1`, and qword `+1D0=0`. No alive, incapable, death, prowess or knight-detach interpretation is assigned to these checks.
+
+An invalid row increments the counter, calls `2A3FEA0` with current/last 16-byte pair addresses, makes opaque object callbacks (`vptr[0]` with `EDX=0`, and another object's `vptr+10` with `R8D=8`), then decrements pair count. The final progress candidate is `wrap32(latest_progress-invalid_count+1000)`; signed candidate greater than or equal to current pair count selects zero. Progress is stored before the actual final tail **`2A3EF00(primary)`**. These called targets remain unread.
+
+```mermaid
+flowchart TD
+    T["closed trait request
+2A3E220 destination+B0/+BC"] --> I["registered2A3D3C0 invocation
+actual range call9CE070"]
+    I --> H["pointer-vector insertion orchestration
+position=old count"]
+    H -. "allocator / copy / rotate leaves unread" .-> L["primitive leaf bodies"]
+    H --> O["old98/A4; destinationBC=0
+primitive owner filter"]
+    O --> B["primary60/6C 16B pairs
+1000 items per invocation"]
+    B --> P["primary90 progress update
+wrap32(latest-invalids+1000)"]
+    P --> R["actual tail2A3EF00
+body unread"]
+    R -. "next stage / cache effects unknown" .-> E["future attribute inputs remain explicit"]
+    C["calendar / external admission caller"] -. "invocation frequency unknown" .-> I
+    O -. "separate registered oldqueue path" .-> W["v73 2A3DB50 ->2A41170
+worker body unread"]
+```
+
+The earliest closed cadence input is **1000 items per invocation**, together with progress/count integers. No GameDate, day/hour delta or call frequency was observed in this method, so this is not proof of a daily refresh. Neither continuation directly reads model `+2F4` or invokes the forced Character cache writer. The separate v72 `2A3D380 ->2A3E380 ->28C3F60` edge remains valid cached knowledge; no new causal edge from this admission tail to that writer, numeric attribute result or knight Entry-day update is claimed.
+
+Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-modifier-manager-destination-admission-v74/source/{ROOT-DELIVERY.json,SOURCE-RECEIPT.json,TREE.md,READ-COST.json}` and `cached-admission-role/{ROOT-DELIVERY.json,TREE.md,ROLE.json,OCT5-W41-FIELDS.json}`. Actual new EXE reads: **851 B = 595 B code + 132 B exact `.pdata` rows + 124 B necessary unwind**, across two logical bodies and six physical code fragments. B interpreted cached continuations only, with zero new EXE read. An attempted cached-row lookup raised FileNotFound before any EXE read; the corrected single 12 B metadata read is included in the cost and the attempt is retained by source A.
+
+Readiness advances to range-insertion orchestration, complete first-method normal control and concrete invocation progress. Primitive leaf implementations, actual `2A3EF00` next-stage effects, old worker `2A41170`, external calendar admission, future numeric values and Entry update order remain partial. Those two direct targets are concrete next source entries. No numerical module, test, SDK, live RPM, game/window action, shared mutation, Git operation, current EC prediction, native date or Entry-day claim was produced.
