@@ -1,0 +1,27 @@
+白绮独立版 1.0.2 — CK3 1.20.0.3 兼容更新
+
+相对上一公开版本 1.0.1：
+- 更新原版特质目录至 CK3 1.20.0.3，其他特质由 108 项增至 110 项。
+- 使用当前原版的 erudite、herald、lifestyle_scholar 特质键，移除已不在当前原版目录中的 scholar 键。
+- 廷臣创建适配礼仪：同信仰沿用玩家当前礼仪，其他信仰采用其主要礼仪；所选礼仪显示在信仰列表上方。
+- 自动补齐旧设计中只有信仰选择的有效礼仪，并在交付时核对文化、信仰与礼仪。
+- 修复未选择将才或性格特质时的配置校验，保留原有数量上限与非法配置限制。
+- 信仰选择限定为实际载入的目录条目。
+- 九种语言同步更新其他特质数量与礼仪说明。
+
+验收：新版三项特质的实际廷臣交付、金币扣款、教派和家族归属已验证；独立加载及与主版的两种加载顺序已有实机业务验收。
+兼容范围：实测 CK3 1.20.0.3 单机新开局。旧信仰设计会补齐礼仪；未作完整旧存档及多人联机验收，也不保证与改写相同接口的其他 mod 兼容。
+
+Vivhite standalone 1.0.2 — CK3 1.20.0.3 compatibility update
+
+Changes from the previous public version, 1.0.1:
+- Update the native trait catalog to CK3 1.20.0.3, increasing the other-trait list from 108 to 110.
+- Use the current native erudite, herald and lifestyle_scholar keys and remove scholar, which is absent from the current native catalog.
+- Support Rite assignment: the player's faith keeps the player's current Rite; another faith uses its main Rite. Show the assigned Rite above the faith list.
+- Assign a valid Rite to older faith-only designs and verify culture, faith and Rite when delivering a courtier.
+- Fix configuration checks for empty commander or personality selections while preserving existing limits and invalid-configuration guards.
+- Restrict faith selection to entries in the loaded catalog.
+- Update other-trait counts and Rite explanations in all nine languages.
+
+Acceptance: actual courtier delivery with the three current trait keys, gold charges, Rite and house membership has been verified. Standalone loading and both load orders with the main mod have real-engine business acceptance.
+Compatibility: tested with new single-player games on CK3 1.20.0.3. Older faith-only designs receive a Rite; full old-save and multiplayer acceptance remains untested, and compatibility with mods changing the same interfaces is not guaranteed.
