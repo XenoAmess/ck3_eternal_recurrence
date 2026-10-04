@@ -439,3 +439,16 @@ day08独立final **native38/public33/raw53259768**：P470仍未占、fort6/garri
 本独立包只新增 **8 whole/calendar/bounded days、192h**，raw53259576→53259768；56 GREEN工具leaves＋8 day results＝64原day JSON，TOP/checkpoint由Root独占。正式 **4802→4810**、resumed **1649→1657**、Oct5 **144→152 / W41**；旧R36 80与R37 32日增量均0，Oct4/W40 frozen633不动，natural/new completed families/futurebudget均0。末whole **h8261/97664986B/SHA-256 `3bab89a635f10fa92322c42c8dbe9f4003c48bd309089d49b26623370d6f0356`**；episode `native-29829-2bc2d599f7f9` /29829、ordinary_campaign_succession/xar_off，env `0b478d00050266a137b07c11108897eaa852eef3210ac34bb7cb941a2f39c3e2`。
 
 日级generic soldiers=null、专用health/supply未查询、五项ordinary/phase operands及phase-event字段null原样保留；3210仅本帧besieging_strength，不回填whole兵数，cold county不写回未发布的generic行。证据：[母fields](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v65/r38-next-eight-arrival-days-01-consumed01/ROOT-DAY-WEEK-FIELDS.json) SHA-256 `d43cac7b678394e643018e31be442c77207fcb9844b10a0c045882f6a25ba4b7`、[首次actual切片](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v65/r38-next-eight-arrival-days-01-consumed01/FIRST-ACTUAL-470-ARRIVAL-AND-SIEGE.json) `afc6a7623a53c0cb887666bc20c1d4647910f314aa24d3523dc7e4c7449ae5e3`、[ROOT delivery](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v65/r38-next-eight-arrival-days-01-consumed01/ROOT-DELIVERY.json) `3ccea0819d98295fde0825aa450c40bc41a534afde65f18cb418075e24231d05`；独立county owner cache `a483842e47dc2f3a07d28037609daa9657e81a5c37443c2ccc61766bdbc207e0`仅由母cache回链。本段新增到达＋实际围城的bounded production-live loop，不宣永久通用故障闭合。
+
+## 2026-10-05 R39：P470 正常围城继续 24 个完整日
+
+- 本包新增 24 whole/calendar/bounded 日、576 raw 小时（53259768→53260344），168 GREEN tool leaves＋24 day results；4810→4834、resumed1657→1681、Oct5/W41 +152→+176。R36的80日、R37的32日与R38的8日均只作历史链接，重新增量为0。
+- Runtime 为 R39/g71/v66、Robert29829、episode `native-29829-2bc2d599f7f9`、XAR off；normal environment SHA `dc56a1cfbc0c111b6edc8533a2d167a15256e2d564dbe74163fcd4a64a08fab9`。这是有界的 production-live normal-siege observation loop。
+- 末独立帧 native101/public98/raw53260344；whole SAVE h8344、98003624 bytes、SHA `4f63f72b129963f00d27b7209780745be158fb5a7dba9c803f8bde9b08db693f`，日缓存与 Root normal anchor 一致。
+- P470 同一玩家围城503316504：work511704→2659976/55000000，progress0.930%→4.836%，remaining52340024；这些是实际 rich-siege 字段。
+- 原生 besieging_strength3210→3178，fort6/garrison550；该围城强度读数不代表 whole-army health，不归因于 attrition、clock 或 phase event。
+- main301989997@470 sieging3/route[]，guard184549452@2619 regular1/route[]；两支 own army 均无combat，actor29829 alive，activeevent/pendinginteraction null，War117440524 active/+25。
+- 外敌268435597在 day21 final 实际变为4893/combat2，末帧仍为该状态；没有据此认定本军接战、敌军对手或战斗结果。
+- P470仍未占领；CanStartAssault=false、breach0/assaultfalse，days_left559只保留为当帧估计，不信用围城完成或未来日数。
+- Generic soldiers/supply未发布，围城五项 operands与phase-event字段仍null；Root38425独立专用查询属于另一帧与其他owner，此包不读取、不回填，不推围城推进根因。
+- 缓存母账：[ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/military-r39-siege-next24-01-consumed01/ROOT-DELIVERY.json)（SHA `63f9dd07e7e45eea1c1639711a52c5957193d7bf9d3863eb8a638eea080d05ca`）；fields/ledger SHA `827fcb4087ab160744870428af76d89e4a0a910c3e4de630216d01b9ecd1acbb`，natural0/new completed families0。
