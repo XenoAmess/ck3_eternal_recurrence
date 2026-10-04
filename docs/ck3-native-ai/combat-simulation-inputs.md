@@ -1945,3 +1945,59 @@ flowchart LR
 ```
 
 Source readiness is **research source closed**; producer readiness is **static-ready** after the unique two-case production Control/serializer fixture and existing Python normalizer/counter consumer passed on their first run. Raw getter input `1200001`, actual-primary modifiers and context direction, legal absent negative class, zero target values, and reader failure with control readiness preserved are covered. The three native changes were adopted and pushed by Root in `d1b7f18d200cffd302815a05a12c1d3e958ab2de`; the unified g62 build and freeze passed, while actual paused counter contact observation remains pending. The canonical fixture source is unchanged and the packaged runner has not been rerun. No live or complete next-tick damage parity is claimed. Reproduce the two existing cases with `py tools/run_battle_active_counter_fixture.py --build-dir <new-output-directory>`. Packet: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-current-active-counter-producer-v58/source-notes/ROOT-DELIVERY.json`; Root should merge this appendix into the current native effective-input topic and merge report fields into Oct 4 / W40, preserving the separate fixture and realgame evidence.
+
+## 2026-10-04: phase3 whole-backing count reaggregation (exact CK3 1.20.0.3)
+
+Freeze: Steam build 25652598; EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. The existing 1952-byte complete `0x2633340..0x2633AE0` and 383-byte chained `2657C10` body are reused. New EXE reads, game calls, tests and window operations:0.
+
+```mermaid
+flowchart TD
+  P[Current explicit phase3 no-retreat backing state] --> C[Complete genuine ordered backing membership]
+  C --> I[For each selected actual ArmyRegiment initialize two signed32 sums0]
+  I --> V{Current component receiver qualified?}
+  V -->|native no| R[2634CA0 removes stored row before continuing]
+  R --> V
+  V -->|yes| K{Rawkind3 and wholecurrent equals0?}
+  K -->|yes| M[Use wholemaximum as effectivecurrent]
+  K -->|no| U[Use wholecurrent as effectivecurrent]
+  M --> A[Signed32 add effectivecurrent and maximum in stored order]
+  U --> A
+  A --> N{More components?}
+  N -->|yes| V
+  N -->|no| H{Final strict Character count qualifier at ArmyReg148 succeeds?}
+  H -->|yes| O[Override entire current and maximum to1]
+  H -->|known absent or invalid| S[Keep component sums]
+  O --> W[Write ArmyReg38 current and3C max signed32 whole]
+  S --> W
+  W --> F[Preserve unaffected backing then complete all-Army whole survivor sum]
+  F --> Q[Q100000 conversion only at output]
+  C -. membership not captured .-> X[Explicit unavailable]
+  H -. qualifier not captured .-> X
+  Q -. separate native finalizer and outer events .-> T[Normal result death capture join require separate source]
+```
+
+### Count branch
+
+`CArmyRegiment+20/+2C` stores component rows in native order, stride16, with `row+08` complete CRegiment ID and signed32 component index at `row+0C`. The qualified component is `CRegiment+18+0x24*index`. `+00` max, `+04` current and `+18` rawkind are signed32 whole values. At `2633455..2633481`, current becomes max only for rawkind3 and current **exactly** zero; all other values, including negative current, remain current. The two aggregates use 32-bit adds with native wrap, not Q additions, floating totals or nonnegative clamps. Max always contributes the captured component maximum.
+
+The native loop removes an unresolved/wrong-tag/sentinel CRegiment row using `2634CA0` before continuing. The pure model receives already established current membership; an unobserved receiver is not a legal zero row. Nonpositive native count skips the loop, leaving the initialized zero sums. The given actual component indices are inputs; this source has no extra bound guard to invent.
+
+After that loop and separate stat work, `26337F9..2633850` reads ArmyRegiment `+148` FullCharacterID. A stored -1 skips the override. Registry lookup uses low24 slot, actual full ID equality at Character+18, then the canonical Character fallback. The final qualifier checks resolved type tag `+1C==0x43686172` and resolved full ID `+18!=-1`. If it passes, `2633871..26338C3` writes the **entire** backing current and max as1; otherwise it writes component sums to `ArmyReg+38/+3C`. This function does not inspect alive/dead state, Army backlink, prowess, injury or outer knight events. Stored knight ID alone does not prove qualification.
+
+### Current-state boundary and accounting
+
+The already closed no-retreat `2657C10` clears Entry+18 current and+20 soft, clears genuine backing component current at+04, retains positive maxima, conditionally normalizes only certain nonpositive maxima, then calls2633340. This pure helper starts with caller-supplied **current/post-clear** operands. P1/P2 after-values have already applied their own component losses; they are never subtracted here again. Untouched backing regiments remain captured current values, so complete noncombat backing survives in the final census.
+
+No owner hard-ledger add occurs in this clear/reaggregation path. Existing normal terminal hard `max(B-C-SL-SM,0)` remains an independent combat account. Cleared combat strength, wipe intent, phase3 and terminal hard are not interchangeable with the late all-Army whole survivors. Existing all-Army count consumption is reused; Q100000 scaling occurs only at the output boundary. This work closes only count semantics given current backing membership, not ordinary result finalization or outer death/join events.
+
+Known absent/invalid knight link keeps the component sums. Missing final qualifier, component max/kind/current or complete membership remains explicitly unavailable; it cannot become false, zero or a sentinel. An actually qualified knight can establish its own regiment current/max1 despite irrelevant component missingness, but cannot establish missing all-Army membership. Legitimate empty, known nonknight backing yields0, and negative signed values remain signed source values.
+
+`API.json` is the semantic input/output contract. `SOURCE-PINS.json` pins the reused local archived fragments and predecessor source contract. This tree is sealed before the model implementation. Readiness: **research exact count source closed**; live credit, game days, tests, SDK, pipe, native mutations and shared writes:0.
+
+### Pure integration and focused evidence
+
+`simulation/battle_current_backing_reaggregation.py` implements `reaggregate_current_phase3_backing` from this sealed tree. It uses the existing complete `full_backing_inputs_v1` census, caller-supplied current components and exact count-qualifier states, and an explicit selected receiver set when only certain native regiments are reaggregated. Untouched regiments retain their captured whole current counts; missing untouched maxima remain independently nullable. Selected unknown operands never become zero. The helper preserves stored Army/Regiment order, signed32 count arithmetic, the rawkind3 exact-zero substitution and the final strict Character whole-count override. It maps known current outputs directly to the unchanged `TerminalBackingRegiment` interface. Current post-clear/P1/P2 after-values are consumed once: no second fighting-loss deduction or owner-ledger credit occurs.
+
+The single focused run passed two production adapter→new helper→unchanged terminal cases in about 0.07 seconds. It covers selected versus untouched backing, exact kind3 zero/current behavior, valid/absent/invalid/unavailable qualifier states, legitimate zero versus missing input, signed32 aggregation, native order, unchanged component/soft/owner accounts and Q conversion at output. The helper SHA-256 is `2ac76ff97e71f7c52c8ebb748534560bde6e77f9f5becea7c159b3137107b183`. Evidence is frozen under `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-phase3-backing-reaggregation-v60/{source,model,fixture}/`; `fixture/ROOT-DELIVERY.json` pins the sole two-case receipt, source dependencies and reusable test.
+
+Integration readiness is **static-ready**. No SDK, game, window, native build or old-suite operation ran; new normal days and live samples are zero. The helper computes current count reaggregation from supplied actual membership and qualifier facts. It does not predict outer knight death/join, run ordinary result finalization, prove a complete terminal transition, or complete Monte Carlo/win odds. Full terminal capability remains partial.
