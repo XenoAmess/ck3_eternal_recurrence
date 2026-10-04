@@ -4,7 +4,7 @@
 
 ## 生成与独立检查
 
-在主树实际验证的解释器为`tools/.venv/Scripts/python.exe`3.14.7；冻结SDK根为`D:/sxad-freeze-20261004`，不是其`ck3_autonomous_player`子目录。下面命令是Python/CMD，无PowerShell。所有输出必须是新的外置目录，旧attempt保持原样。
+在主树实际验证的解释器为`tools/.venv/Scripts/python.exe`3.14.7；冻结SDK根为`D:/sxad-freeze-20261004`，不是其`ck3_autonomous_player`子目录。下面命令均使用Python与CMD。所有输出必须是新的外置目录，旧attempt保持原样。
 
 ```text
 tools/.venv/Scripts/python.exe mod_superman_qiang/tools/prepare_health_fixture.py --output C:/new-health-run/health-fixture
