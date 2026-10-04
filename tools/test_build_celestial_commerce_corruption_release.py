@@ -122,7 +122,7 @@ class BuildCelestialCommerceCorruptionReleaseTests(unittest.TestCase):
         loaded = json.loads(manifest_path.read_text(encoding="utf-8"))
         self.assertEqual(loaded, manifest)
         self.assertEqual(loaded["product_id"], release.PRODUCT_ID)
-        self.assertEqual(loaded["mod_version"], "1.0.0")
+        self.assertEqual(loaded["mod_version"], "1.0.1")
 
     def government_path(self) -> Path:
         return self.source / "common/governments/xccc_celestial_government.txt"
