@@ -11831,8 +11831,12 @@ std::string RunTypedQuery12002(
     const bool completed = wait_completed &&
         frame_stable.emplace(query.envelope.frame_stable) &&
         typed_result.emplace(query.typed_result) &&
-        final_read.emplace(xar::game::ReadSnapshot(game, completed_snapshot)) &&
-        final_equal.emplace(completed_snapshot == snapshot);
+        // Campaign Finish already compared the complete native snapshot on
+        // the owning thread. Its result must not depend on a second copy of
+        // the worker observer cache while that cache is being refreshed.
+        (query.kind == QueryKind12002::campaign ||
+         (final_read.emplace(xar::game::ReadSnapshot(game, completed_snapshot)) &&
+          final_equal.emplace(completed_snapshot == snapshot)));
     const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
         g_main_thread_query_mailbox_v1, query.envelope.ticket);
     if (reclaimed != xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
