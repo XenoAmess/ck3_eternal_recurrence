@@ -2951,17 +2951,731 @@
         "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
       },
       "effect_ast": {
-        "op": "call_transition",
-        "key": "unavailable_current_script_effect",
-        "args": {
-          "event_key": "knight_killed",
-          "source_boundary": [
-            "cranial trophy predicate changed to a scripted trigger",
-            "beheaded warrior cooldown now tested as a variable",
-            "full death side effects not modeled"
-          ]
-        },
-        "dependencies": []
+        "op": "sequence",
+        "steps": [
+          {
+            "op": "if",
+            "condition": {
+              "op": "state_ref",
+              "path": "derived.root_hold_court_8050_promise_matches",
+              "value_type": "bool"
+            },
+            "then": {
+              "op": "sequence",
+              "steps": [
+                {
+                  "op": "call_transition",
+                  "key": "request_effect_12003",
+                  "args": {
+                    "operation": "remove_variable",
+                    "target": "root",
+                    "payload": {
+                      "name": "hold_court_8050_knight"
+                    },
+                    "refs": {}
+                  },
+                  "dependencies": []
+                },
+                {
+                  "op": "call_transition",
+                  "key": "request_effect_12003",
+                  "args": {
+                    "operation": "remove_variable",
+                    "target": "root.employer",
+                    "payload": {
+                      "name": "hold_court_8050_promise"
+                    },
+                    "refs": {}
+                  },
+                  "dependencies": []
+                },
+                {
+                  "op": "call_transition",
+                  "key": "request_effect_12003",
+                  "args": {
+                    "operation": "trigger_event",
+                    "target": "root.employer",
+                    "payload": {
+                      "id": "hold_court.8053",
+                      "days": 1
+                    },
+                    "refs": {
+                      "knight": "@root_character_id",
+                      "battle_location": "root.location",
+                      "vassal": "root.variables.hold_court_8050_knight"
+                    }
+                  },
+                  "dependencies": [
+                    "root.location",
+                    "root.variables.hold_court_8050_knight"
+                  ]
+                }
+              ]
+            },
+            "else": {
+              "op": "call_transition",
+              "key": "no_op",
+              "args": {},
+              "dependencies": []
+            }
+          },
+          {
+            "op": "sequence",
+            "steps": [
+              {
+                "op": "call_transition",
+                "key": "request_effect_12003",
+                "args": {
+                  "operation": "set_variable",
+                  "target": "root",
+                  "payload": {
+                    "name": "battle_death_enemy"
+                  },
+                  "refs": {
+                    "value": "enemy_side.primary_participant_character_id"
+                  }
+                },
+                "dependencies": [
+                  "enemy_side.primary_participant_character_id"
+                ]
+              },
+              {
+                "op": "call_transition",
+                "key": "request_effect_12003",
+                "args": {
+                  "operation": "set_variable",
+                  "target": "root",
+                  "payload": {
+                    "name": "battle_death_leader"
+                  },
+                  "refs": {
+                    "value": "combat_side.primary_participant_character_id"
+                  }
+                },
+                "dependencies": [
+                  "combat_side.primary_participant_character_id"
+                ]
+              },
+              {
+                "op": "call_transition",
+                "key": "request_effect_12003",
+                "args": {
+                  "operation": "set_variable",
+                  "target": "root",
+                  "payload": {
+                    "name": "battle_death_location"
+                  },
+                  "refs": {
+                    "value": "combat.location"
+                  }
+                },
+                "dependencies": [
+                  "combat.location"
+                ]
+              }
+            ]
+          },
+          {
+            "op": "if",
+            "condition": {
+              "op": "state_ref",
+              "path": "derived.enemy_knight_meets_opponent_threshold_exists",
+              "value_type": "bool"
+            },
+            "then": {
+              "op": "sequence",
+              "steps": [
+                {
+                  "op": "select_side_knight",
+                  "side": "enemy",
+                  "filter": {
+                    "op": "compare",
+                    "operator": ">=",
+                    "left": {
+                      "op": "state_ref",
+                      "path": "candidate.skills.prowess_raw",
+                      "value_type": "fixed_q100000"
+                    },
+                    "right": {
+                      "op": "multiply",
+                      "left": {
+                        "op": "state_ref",
+                        "path": "root.skills.prowess_raw",
+                        "value_type": "fixed_q100000"
+                      },
+                      "right": {
+                        "op": "const_fixed",
+                        "raw": 80000,
+                        "scale": 100000
+                      },
+                      "rounding": "truncate_toward_zero"
+                    }
+                  },
+                  "weight": {
+                    "op": "const_fixed",
+                    "raw": 100000,
+                    "scale": 100000
+                  },
+                  "order_policy": "native_random_side_knight_candidate_order_unresolved",
+                  "on_selected": {
+                    "op": "sequence",
+                    "steps": [
+                      {
+                        "op": "call_transition",
+                        "key": "request_kill_prestige_12003",
+                        "args": {
+                          "target": "selected_enemy_knight"
+                        },
+                        "dependencies": [
+                          "root.primary_title.exists",
+                          "root.primary_title.tier_raw",
+                          "root.is_lowborn"
+                        ]
+                      },
+                      {
+                        "op": "call_transition",
+                        "key": "request_knight_growth_12003",
+                        "args": {
+                          "target": "selected_enemy_knight"
+                        },
+                        "dependencies": [
+                          "selected_enemy_knight.skills.learning_raw",
+                          "selected_enemy_knight.traits_and_culture_for_blademaster",
+                          "selected_enemy_knight.dynasty.perks.warfare_legacy_3",
+                          "selected_enemy_knight.liege.exists",
+                          "selected_enemy_knight.liege.is_ai",
+                          "selected_enemy_knight.flags.was_the_target_of_event_court_5060",
+                          "selected_enemy_knight.variables.number_of_impressive_knight_things.exists",
+                          "selected_enemy_knight.flags.is_schedueled_for_court_5061_maintenance"
+                        ]
+                      },
+                      {
+                        "op": "if",
+                        "condition": {
+                          "op": "state_ref",
+                          "path": "selected_enemy_knight.is_acclaimed",
+                          "value_type": "bool"
+                        },
+                        "then": {
+                          "op": "call_transition",
+                          "key": "request_effect_12003",
+                          "args": {
+                            "operation": "add_glory",
+                            "target": "selected_enemy_knight.accolade",
+                            "payload": {
+                              "value_raw": 2500000,
+                              "scale": 100000
+                            },
+                            "refs": {}
+                          },
+                          "dependencies": []
+                        },
+                        "else": {
+                          "op": "call_transition",
+                          "key": "no_op",
+                          "args": {},
+                          "dependencies": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "op": "if",
+                  "condition": {
+                    "op": "all",
+                    "args": [
+                      {
+                        "op": "state_ref",
+                        "path": "root.alive",
+                        "value_type": "bool"
+                      },
+                      {
+                        "op": "state_ref",
+                        "path": "selected_enemy_knight.alive",
+                        "value_type": "bool"
+                      }
+                    ]
+                  },
+                  "then": {
+                    "op": "sequence",
+                    "steps": [
+                      {
+                        "op": "call_transition",
+                        "key": "request_effect_12003",
+                        "args": {
+                          "operation": "battle_event",
+                          "target": "combat_side",
+                          "payload": {
+                            "key": "knight_killed_by_enemy",
+                            "type": "death"
+                          },
+                          "refs": {
+                            "left_portrait": "@root_character_id",
+                            "right_portrait": "@selected_enemy_character_id"
+                          }
+                        },
+                        "dependencies": []
+                      },
+                      {
+                        "op": "call_transition",
+                        "key": "request_effect_12003",
+                        "args": {
+                          "operation": "add_to_variable_list",
+                          "target": "combat_side",
+                          "payload": {
+                            "name": "slain_side_knights"
+                          },
+                          "refs": {
+                            "value": "@root_character_id"
+                          }
+                        },
+                        "dependencies": []
+                      },
+                      {
+                        "op": "if",
+                        "condition": {
+                          "op": "all",
+                          "args": [
+                            {
+                              "op": "state_ref",
+                              "path": "root.house.exists",
+                              "value_type": "bool"
+                            },
+                            {
+                              "op": "state_ref",
+                              "path": "selected_enemy_knight.house.exists",
+                              "value_type": "bool"
+                            }
+                          ]
+                        },
+                        "then": {
+                          "op": "call_transition",
+                          "key": "request_effect_12003",
+                          "args": {
+                            "operation": "change_house_relation_effect",
+                            "target": "root.house",
+                            "payload": {
+                              "value_raw": -20000,
+                              "scale": 100000,
+                              "reason": "killed",
+                              "title_scope": "dummy_gender"
+                            },
+                            "refs": {
+                              "house": "selected_enemy_knight.house_id",
+                              "character": "@selected_enemy_character_id",
+                              "target_character": "@root_character_id"
+                            }
+                          },
+                          "dependencies": [
+                            "selected_enemy_knight.house_id"
+                          ]
+                        },
+                        "else": {
+                          "op": "call_transition",
+                          "key": "no_op",
+                          "args": {},
+                          "dependencies": []
+                        }
+                      },
+                      {
+                        "op": "if",
+                        "condition": {
+                          "op": "any",
+                          "args": [
+                            {
+                              "op": "state_ref",
+                              "path": "selected_enemy_knight.rite.killing_bestows_heads",
+                              "value_type": "bool"
+                            },
+                            {
+                              "op": "state_ref",
+                              "path": "selected_enemy_knight.personal_tenet.killing_bestows_heads",
+                              "value_type": "bool"
+                            }
+                          ]
+                        },
+                        "then": {
+                          "op": "call_transition",
+                          "key": "request_cranial_trophy_12003",
+                          "args": {
+                            "target": "selected_enemy_knight"
+                          },
+                          "dependencies": [
+                            "root.highest_held_title_tier",
+                            "root.prestige_raw",
+                            "selected_enemy_knight.faith.tengri",
+                            "selected_enemy_knight.traits.greatest_of_khans",
+                            "selected_enemy_knight.traits.nomadic_philosophy",
+                            "selected_enemy_knight.rite.decapitation_steals_prestige_as_piety",
+                            "selected_enemy_knight.personal_tenet.cranial_trophies_spiritual_fulfillment",
+                            "caller.minor_spiritual_fulfillment_value_raw"
+                          ]
+                        },
+                        "else": {
+                          "op": "call_transition",
+                          "key": "no_op",
+                          "args": {},
+                          "dependencies": []
+                        }
+                      },
+                      {
+                        "op": "call_transition",
+                        "key": "request_effect_12003",
+                        "args": {
+                          "operation": "death",
+                          "target": "root",
+                          "payload": {
+                            "reason_key": "death_battle"
+                          },
+                          "refs": {
+                            "killer_character_id": "@selected_enemy_character_id"
+                          }
+                        },
+                        "dependencies": []
+                      }
+                    ]
+                  },
+                  "else": {
+                    "op": "call_transition",
+                    "key": "no_op",
+                    "args": {},
+                    "dependencies": []
+                  }
+                }
+              ]
+            },
+            "else": {
+              "op": "sequence",
+              "steps": [
+                {
+                  "op": "call_transition",
+                  "key": "request_effect_12003",
+                  "args": {
+                    "operation": "battle_event",
+                    "target": "combat_side",
+                    "payload": {
+                      "key": "knight_killed_no_enemy",
+                      "type": "death"
+                    },
+                    "refs": {
+                      "left_portrait": "@root_character_id"
+                    }
+                  },
+                  "dependencies": []
+                },
+                {
+                  "op": "call_transition",
+                  "key": "request_effect_12003",
+                  "args": {
+                    "operation": "add_to_variable_list",
+                    "target": "combat_side",
+                    "payload": {
+                      "name": "slain_side_knights"
+                    },
+                    "refs": {
+                      "value": "@root_character_id"
+                    }
+                  },
+                  "dependencies": []
+                },
+                {
+                  "op": "call_transition",
+                  "key": "request_effect_12003",
+                  "args": {
+                    "operation": "death",
+                    "target": "root",
+                    "payload": {
+                      "reason_key": "death_battle",
+                      "killer_character_id": null
+                    },
+                    "refs": {}
+                  },
+                  "dependencies": []
+                }
+              ]
+            }
+          },
+          {
+            "op": "if",
+            "condition": {
+              "op": "state_ref",
+              "path": "root.is_acclaimed",
+              "value_type": "bool"
+            },
+            "then": {
+              "op": "call_transition",
+              "key": "request_effect_12003",
+              "args": {
+                "operation": "add_glory",
+                "target": "root.accolade",
+                "payload": {
+                  "value_raw": 2500000,
+                  "scale": 100000
+                },
+                "refs": {
+                  "accolade_id": "root.accolade_id"
+                }
+              },
+              "dependencies": [
+                "root.accolade_id"
+              ]
+            },
+            "else": {
+              "op": "call_transition",
+              "key": "no_op",
+              "args": {},
+              "dependencies": []
+            }
+          },
+          {
+            "op": "if",
+            "condition": {
+              "op": "all",
+              "args": [
+                {
+                  "op": "state_ref",
+                  "path": "root.liege.exists",
+                  "value_type": "bool"
+                },
+                {
+                  "op": "state_ref",
+                  "path": "root.is_knight_of_liege",
+                  "value_type": "bool"
+                },
+                {
+                  "op": "any",
+                  "args": [
+                    {
+                      "op": "state_ref",
+                      "path": "root.is_acclaimed",
+                      "value_type": "bool"
+                    },
+                    {
+                      "op": "state_ref",
+                      "path": "root.is_close_family_of_liege",
+                      "value_type": "bool"
+                    },
+                    {
+                      "op": "state_ref",
+                      "path": "root.is_consort_of_liege",
+                      "value_type": "bool"
+                    },
+                    {
+                      "op": "state_ref",
+                      "path": "root.is_powerful_vassal_of_liege",
+                      "value_type": "bool"
+                    },
+                    {
+                      "op": "state_ref",
+                      "path": "root.has_relation_blood_brother_with_liege",
+                      "value_type": "bool"
+                    }
+                  ]
+                },
+                {
+                  "op": "not",
+                  "arg": {
+                    "op": "state_ref",
+                    "path": "root.liege.variables.beheaded_warrior.exists",
+                    "value_type": "bool"
+                  }
+                },
+                {
+                  "op": "not",
+                  "arg": {
+                    "op": "state_ref",
+                    "path": "root.liege.variables.beheaded_warrior_cooldown.exists",
+                    "value_type": "bool"
+                  }
+                },
+                {
+                  "op": "any",
+                  "args": [
+                    {
+                      "op": "state_ref",
+                      "path": "root.liege.faith.tengri",
+                      "value_type": "bool"
+                    },
+                    {
+                      "op": "all",
+                      "args": [
+                        {
+                          "op": "any",
+                          "args": [
+                            {
+                              "op": "state_ref",
+                              "path": "root.liege.culture.heritage_mongolic",
+                              "value_type": "bool"
+                            },
+                            {
+                              "op": "state_ref",
+                              "path": "root.liege.culture.heritage_turkic",
+                              "value_type": "bool"
+                            }
+                          ]
+                        },
+                        {
+                          "op": "state_ref",
+                          "path": "root.liege.traits.nomadic_philosophy",
+                          "value_type": "bool"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "op": "state_ref",
+                  "path": "root.liege.is_combat_side_participant",
+                  "value_type": "bool"
+                }
+              ]
+            },
+            "then": {
+              "op": "sequence",
+              "steps": [
+                {
+                  "op": "call_transition",
+                  "key": "request_effect_12003",
+                  "args": {
+                    "operation": "set_variable",
+                    "target": "root.liege",
+                    "payload": {
+                      "name": "beheaded_warrior"
+                    },
+                    "refs": {
+                      "value": "@root_character_id"
+                    }
+                  },
+                  "dependencies": []
+                },
+                {
+                  "op": "call_transition",
+                  "key": "request_effect_12003",
+                  "args": {
+                    "operation": "set_variable",
+                    "target": "root.liege",
+                    "payload": {
+                      "name": "beheaded_warrior_foe"
+                    },
+                    "refs": {
+                      "value": "enemy_side.primary_participant_character_id"
+                    }
+                  },
+                  "dependencies": [
+                    "enemy_side.primary_participant_character_id"
+                  ]
+                },
+                {
+                  "op": "call_transition",
+                  "key": "request_effect_12003",
+                  "args": {
+                    "operation": "set_variable",
+                    "target": "root.liege",
+                    "payload": {
+                      "name": "beheaded_warrior_location"
+                    },
+                    "refs": {
+                      "value": "combat.location"
+                    }
+                  },
+                  "dependencies": [
+                    "combat.location"
+                  ]
+                },
+                {
+                  "op": "if",
+                  "condition": {
+                    "op": "state_ref",
+                    "path": "root.is_powerful_vassal_of_liege",
+                    "value_type": "bool"
+                  },
+                  "then": {
+                    "op": "call_transition",
+                    "key": "request_effect_12003",
+                    "args": {
+                      "operation": "set_variable",
+                      "target": "root.liege",
+                      "payload": {
+                        "name": "beheaded_warrior_powerful_vassal"
+                      },
+                      "refs": {
+                        "value": "@root_character_id"
+                      }
+                    },
+                    "dependencies": []
+                  },
+                  "else": {
+                    "op": "if",
+                    "condition": {
+                      "op": "state_ref",
+                      "path": "root.is_councillor_of_liege",
+                      "value_type": "bool"
+                    },
+                    "then": {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "set_variable",
+                        "target": "root.liege",
+                        "payload": {
+                          "name": "beheaded_warrior_councillor"
+                        },
+                        "refs": {
+                          "value": "@root_character_id"
+                        }
+                      },
+                      "dependencies": []
+                    },
+                    "else": {
+                      "op": "call_transition",
+                      "key": "no_op",
+                      "args": {},
+                      "dependencies": []
+                    }
+                  }
+                },
+                {
+                  "op": "if",
+                  "condition": {
+                    "op": "state_ref",
+                    "path": "root.is_acclaimed",
+                    "value_type": "bool"
+                  },
+                  "then": {
+                    "op": "call_transition",
+                    "key": "request_effect_12003",
+                    "args": {
+                      "operation": "set_variable",
+                      "target": "root.liege",
+                      "payload": {
+                        "name": "beheaded_warrior_accolade"
+                      },
+                      "refs": {
+                        "value": "root.accolade_id"
+                      }
+                    },
+                    "dependencies": [
+                      "root.accolade_id"
+                    ]
+                  },
+                  "else": {
+                    "op": "call_transition",
+                    "key": "no_op",
+                    "args": {},
+                    "dependencies": []
+                  }
+                }
+              ]
+            },
+            "else": {
+              "op": "call_transition",
+              "key": "no_op",
+              "args": {},
+              "dependencies": []
+            }
+          }
+        ]
       },
       "transition_tags": [
         "death",
@@ -2972,20 +3686,72 @@
         "delayed_and_observational_side_effects"
       ],
       "state_dependencies": [
+        "caller.minor_spiritual_fulfillment_value_raw",
+        "candidate.skills.prowess_raw",
+        "combat.location",
+        "combat_side.primary_participant_character_id",
         "derived.enemy_hostile_knight_death_accolade_any_tier",
         "derived.enemy_hostile_knight_death_accolade_factor_raw",
+        "derived.enemy_knight_meets_opponent_threshold_exists",
         "derived.outnumbering_injury_factor_raw",
         "derived.own_side_more_than_five_times_enemy",
         "derived.own_side_stronger",
+        "derived.root_hold_court_8050_promise_matches",
         "derived.root_injury_factor_30_with_garuda_raw",
         "derived.root_wounded_rank_3",
         "derived.same_house_defends_family_any_tier",
         "derived.same_house_defends_family_factor_raw",
+        "enemy_side.primary_participant_character_id",
+        "root.accolade_id",
+        "root.alive",
         "root.court_positions.garuda",
         "root.culture.parameters.knights_slightly_more_prone_to_injury",
+        "root.has_relation_blood_brother_with_liege",
+        "root.highest_held_title_tier",
+        "root.house.exists",
+        "root.is_acclaimed",
+        "root.is_close_family_of_liege",
+        "root.is_consort_of_liege",
+        "root.is_councillor_of_liege",
+        "root.is_knight_of_liege",
+        "root.is_lowborn",
+        "root.is_powerful_vassal_of_liege",
+        "root.liege.culture.heritage_mongolic",
+        "root.liege.culture.heritage_turkic",
+        "root.liege.exists",
+        "root.liege.faith.tengri",
+        "root.liege.is_combat_side_participant",
+        "root.liege.traits.nomadic_philosophy",
+        "root.liege.variables.beheaded_warrior.exists",
+        "root.liege.variables.beheaded_warrior_cooldown.exists",
+        "root.location",
+        "root.prestige_raw",
+        "root.primary_title.exists",
+        "root.primary_title.tier_raw",
         "root.rite.parameters.death_is_glory",
+        "root.skills.prowess_raw",
         "root.traits.brave",
-        "root.traits.craven"
+        "root.traits.craven",
+        "root.variables.hold_court_8050_knight",
+        "selected_enemy_knight.alive",
+        "selected_enemy_knight.dynasty.perks.warfare_legacy_3",
+        "selected_enemy_knight.faith.tengri",
+        "selected_enemy_knight.flags.is_schedueled_for_court_5061_maintenance",
+        "selected_enemy_knight.flags.was_the_target_of_event_court_5060",
+        "selected_enemy_knight.house.exists",
+        "selected_enemy_knight.house_id",
+        "selected_enemy_knight.is_acclaimed",
+        "selected_enemy_knight.liege.exists",
+        "selected_enemy_knight.liege.is_ai",
+        "selected_enemy_knight.personal_tenet.cranial_trophies_spiritual_fulfillment",
+        "selected_enemy_knight.personal_tenet.killing_bestows_heads",
+        "selected_enemy_knight.rite.decapitation_steals_prestige_as_piety",
+        "selected_enemy_knight.rite.killing_bestows_heads",
+        "selected_enemy_knight.skills.learning_raw",
+        "selected_enemy_knight.traits.greatest_of_khans",
+        "selected_enemy_knight.traits.nomadic_philosophy",
+        "selected_enemy_knight.traits_and_culture_for_blademaster",
+        "selected_enemy_knight.variables.number_of_impressive_knight_things.exists"
       ]
     },
     {
@@ -3250,7 +4016,11 @@
     "observational_only",
     "require_character_stat_recompute",
     "require_participant_detach_recompute",
-    "unavailable_current_script_effect"
+    "unavailable_current_script_effect",
+    "request_effect_12003",
+    "request_kill_prestige_12003",
+    "request_knight_growth_12003",
+    "request_cranial_trophy_12003"
   ],
   "completeness": {
     "loaded_playset_verified": false,
@@ -3272,5 +4042,5 @@
       "current_12003_inventory_rows_without_bounded_effect_implementation"
     ]
   },
-  "canonical_manifest_sha256": "38BB943E208F53D106B90A2F6B895189ECA6471ED7B9888AC5A8454E7CD60240"
+  "canonical_manifest_sha256": "024D5618BB3AD8AE633AB127669441DD1AB6C2344C3745B0FAE310E515ADE7C4"
 }

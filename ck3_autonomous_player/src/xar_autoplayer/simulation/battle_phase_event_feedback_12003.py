@@ -304,6 +304,10 @@ def apply_selected_phase_event_feedback_12003(
             "observed_date_raw": carried.condition.observed_date_raw},
         "selected_side_order": side_order, "selected_count": len(selected),
         "event_execution_consumed": list(consumed), "character_primary_feedback_applied": bool(deltas),
+        "effect_requests": [dict(deepcopy(request), selected_index=index)
+            for index, execution in enumerate(executions) if execution is not None
+            for request in execution.get("effect_requests", ())],
+        "requested_effects_committed": False, "native_queue_admission_observed": False,
         "character_primary_after_states": [None if item is None else deepcopy(item["after_state"]) for item in executions],
         "literal_cached_stats_applied": bool(caches), "feedback_ready": ready,
         "source_snapshot_replaced": False, "draw_state_unchanged": state.draw_state == carried.draw_state,

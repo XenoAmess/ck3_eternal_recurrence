@@ -12,6 +12,7 @@ remain outside this bounded primitive.
 from __future__ import annotations
 
 import copy
+from copy import deepcopy
 from dataclasses import dataclass, field
 from importlib import resources
 import json
@@ -67,9 +68,9 @@ EXECUTABLE_SHA256_12003 = (
     "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
 )
 STOCK_PHASE_EVENT_MANIFEST_SHA256_12003 = (
-    "38BB943E208F53D106B90A2F6B895189ECA6471ED7B9888AC5A8454E7CD60240"
+    "024D5618BB3AD8AE633AB127669441DD1AB6C2344C3745B0FAE310E515ADE7C4"
 )
-PHASE_EVENT_TRANSITION_VERSION_12003 = "ck3-1.20.0.3-caller-selected-primary-effects-v1"
+PHASE_EVENT_TRANSITION_VERSION_12003 = "ck3-1.20.0.3-caller-selected-primary-and-requested-effects-v2"
 _MANIFEST_RESOURCE = "data/ck3_1_20_0_3_stock_combat_phase_events.json"
 SUPPORTED_SELECTED_EVENT_KEYS_12003 = (
     "commander_none",
@@ -79,6 +80,7 @@ SUPPORTED_SELECTED_EVENT_KEYS_12003 = (
     "knight_none",
     "knight_wounded",
     "knight_maimed",
+    "knight_killed",
 )
 _CALLER_TARGET_POLICY = "caller_explicit_character_targets_no_native_order_claim"
 _CONTEXT_KEYS = frozenset(
@@ -240,7 +242,7 @@ def load_stock_phase_events_12003(path: str | Path | None = None) -> FrozenPhase
         for name in ("validity_ast", "chance_ast"):
             _audit_value_node(row[name], name=f"{row['key']}.{name}", dependencies=dependencies)
         if row["key"] in SUPPORTED_SELECTED_EVENT_KEYS_12003:
-            _audit_effect_node(row["effect_ast"], name=f"{row['key']}.effect_ast", dependencies=dependencies, direct_calls=set())
+            _audit_selected_effect_12003(row["effect_ast"], name=f"{row['key']}.effect_ast", dependencies=dependencies)
         rows.append(FrozenPhaseEventRow(
             global_load_index=index, type_load_index=type_counts[role],
             key=_string(row["key"], "event key"), event_type=role,
@@ -398,6 +400,170 @@ def _primary_maim_12003(state: PhaseEventTrialState, tape: _ExplicitOutcomeTape)
         _record_pending(state, "epilepsy_brain_trauma_risk", delayed=True)
 
 
+
+_REQUEST_TRANSITIONS_12003 = frozenset((
+    "request_effect_12003", "request_kill_prestige_12003",
+    "request_knight_growth_12003", "request_cranial_trophy_12003",
+))
+KNIGHT_KILLED_SOURCE_API_SHA256_12003 = "8120F8760091DE225CACF0FED2EFBEC0AB0A09E111EF823CC139FBD62FBE4FA7"
+
+
+def _audit_selected_effect_12003(node, *, name, dependencies):
+    # The existing AST audit still checks order, conditions and dependencies.
+    # New leaves name authored requests, without invoking old commit helpers.
+    def primitive(value):
+        if isinstance(value, dict):
+            if value.get("op") == "call_transition" and value.get("key") in _REQUEST_TRANSITIONS_12003:
+                _mapping(value.get("args"), name + ".request.args")
+                return {**value, "key": "no_op", "args": {}}
+            return {key: primitive(child) for key, child in value.items()}
+        if isinstance(value, list):
+            return [primitive(child) for child in value]
+        return value
+    _audit_effect_node(primitive(node), name=name, dependencies=dependencies, direct_calls=set())
+
+
+def _request_value_12003(state, path):
+    if path == "@root_character_id":
+        return state.root_character_id
+    if path == "@selected_enemy_character_id":
+        return state.selected_enemy_character_id
+    if path.startswith("selected_enemy_knight."):
+        if state.selected_enemy_character_id is None:
+            return None
+        return state.candidate(state.selected_enemy_character_id)["selected_enemy_knight_refs"].get(path)
+    return state.refs.get(path)
+
+
+def _request_effect_12003(state, *, operation, target, payload=None, refs=None):
+    values = deepcopy(dict(payload or {}))
+    missing = []
+    for key, path in (refs or {}).items():
+        value = _request_value_12003(state, path)
+        values[key] = deepcopy(value)
+        if value is None and not path.startswith("@"):
+            missing.append(path)
+    character_id = (state.root_character_id if target == "root" else
+                    state.selected_enemy_character_id if target == "selected_enemy_knight" else None)
+    record = {"transition": "selected_effect_request", "stage": "requested",
+        "operation": operation, "source_event_key": "knight_killed",
+        "target_scope": target, "target_character_id": character_id,
+        "payload": values, "unavailable_operands": missing,
+        "committed": False, "queue_admission_observed": False,
+        "native_callback_admission_observed": False}
+    if operation == "death":
+        record.update(reason_key=values["reason_key"],
+                      killer_character_id=values.get("killer_character_id"))
+    state.transition_log.append(record)
+    _record_pending(state, "requested_" + operation + "_native_commit")
+
+
+def _request_kill_prestige_12003(state):
+    value = 15000000
+    has_title = _bool(state.refs["root.primary_title.exists"], "root.primary_title.exists")
+    if has_title:
+        tier = _signed_int64(state.refs["root.primary_title.tier_raw"], "root.primary_title.tier_raw")
+        if tier > 0:
+            value = fixed_mul(value, tier)
+    if _bool(state.refs["root.is_lowborn"], "root.is_lowborn"):
+        value //= 2
+    _request_effect_12003(state, operation="add_prestige", target="selected_enemy_knight",
+                         payload={"value_raw": value, "scale": 100000})
+
+
+def _request_knight_growth_12003(state, tape):
+    person = state.candidate(state.selected_enemy_character_id)
+    refs = person["selected_enemy_knight_refs"]
+    learning = _signed_int64(refs["selected_enemy_knight.skills.learning_raw"], "selected learning")
+    container = _mapping(refs["selected_enemy_knight.traits_and_culture_for_blademaster"], "selected blademaster")
+    no_op = 6000000 - 2 * learning
+    warfare = _bool(refs["selected_enemy_knight.dynasty.perks.warfare_legacy_3"], "selected warfare legacy")
+    if warfare:
+        no_op = fixed_mul(no_op, 50000)
+    blade = 1000000
+    if any(_bool(x, "martial education") for x in container["education_martial"]):
+        blade += 500000
+    for present, points in zip(container["education_martial_prowess"], (4, 8, 12, 16), strict=True):
+        if _bool(present, "martial prowess education"):
+            blade += points * 100000
+    for key, points in (("lifestyle_blademaster", 15), ("shrewd", 10), ("physique_good", 10)):
+        if _bool(container[key], key):
+            blade += points * 100000
+    for present, points in zip(container["intellect_good"], (5, 15, 30), strict=True):
+        if _bool(present, "intellect education"):
+            blade += points * 100000
+    if _bool(container["culture_blademaster_traits_more_common"], "blademaster culture"):
+        blade = fixed_mul(blade, 300000)
+    has_blade = _bool(container["lifestyle_blademaster"], "blademaster trait")
+    xp = _signed_int64(container["lifestyle_blademaster_xp_raw"], "blademaster XP")
+    if has_blade and xp >= 10000000:
+        blade = 0
+    selected = tape.take("knight_increase_prowess:source_order", (no_op, 3000000, blade))
+    if selected == 1:
+        _request_effect_12003(state, operation="add_prowess_skill", target="selected_enemy_knight",
+                             payload={"value_raw": 100000, "scale": 100000})
+    elif selected == 2 and not has_blade:
+        _request_effect_12003(state, operation="add_trait", target="selected_enemy_knight",
+                             payload={"trait": "lifestyle_blademaster"})
+    elif selected == 2 and xp < 10000000:
+        _request_effect_12003(state, operation="add_trait_xp", target="selected_enemy_knight",
+                             payload={"trait": "lifestyle_blademaster", "value_raw": 1000000, "scale": 100000})
+    state.transition_log.append({"transition": "knight_growth_selection_12003", "branch_index": selected,
+                                 "weights_raw": [no_op, 3000000, blade], "committed": False})
+    if not _bool(refs["selected_enemy_knight.liege.exists"], "selected liege exists"):
+        return
+    if (_bool(refs["selected_enemy_knight.liege.is_ai"], "selected liege is_ai") or
+            _bool(refs["selected_enemy_knight.flags.was_the_target_of_event_court_5060"], "court 5060 flag")):
+        return
+    exists = _bool(refs["selected_enemy_knight.variables.number_of_impressive_knight_things.exists"], "impressive count exists")
+    _request_effect_12003(state, operation="change_variable" if exists else "set_variable",
+        target="selected_enemy_knight", payload={"name": "number_of_impressive_knight_things",
+            "add_raw" if exists else "value_raw": 100000, "scale": 100000})
+    if not _bool(refs["selected_enemy_knight.flags.is_schedueled_for_court_5061_maintenance"], "court maintenance flag"):
+        _request_effect_12003(state, operation="add_character_flag", target="selected_enemy_knight",
+            payload={"flag": "is_schedueled_for_court_5061_maintenance", "years": 4})
+        _request_effect_12003(state, operation="trigger_event", target="selected_enemy_knight",
+            payload={"id": "court.5061", "years": 4})
+    _request_effect_12003(state, operation="add_to_variable_list", target="selected_enemy_knight.liege",
+        payload={"name": "impressive_knights"}, refs={"value": "@selected_enemy_character_id"})
+
+
+def _request_cranial_trophy_12003(state):
+    refs = state.candidate(state.selected_enemy_character_id)["selected_enemy_knight_refs"]
+    if any(_bool(refs[key], key) for key in (
+        "selected_enemy_knight.faith.tengri", "selected_enemy_knight.traits.greatest_of_khans",
+        "selected_enemy_knight.traits.nomadic_philosophy")):
+        return
+    tier = state.refs.get("root.highest_held_title_tier")
+    tiers = {"tier_hegemony": (6, "illustrious"), "tier_empire": (5, "illustrious"),
+        "tier_kingdom": (4, "famed"), "tier_duchy": (3, "famed"),
+        "tier_county": (2, "masterwork"), "tier_barony": (1, "masterwork")}
+    modifier, rarity = tiers.get(tier, (0, "common"))
+    _request_effect_12003(state, operation="create_artifact", target="selected_enemy_knight",
+        payload={"name": "tgp_cranial_trophy_artifact", "description": "tgp_cranial_trophy_artifact_desc",
+            "rarity": rarity if tier is not None else None, "type": "miscellaneous",
+            "modifier": "cranial_trophy_modifier_t" + str(modifier) if tier is not None else None,
+            "decaying": True, "template": "tgp_severed_head_template", "visuals": "pocket_severed_head",
+            "save_scope_as": "new_head_artifact"}, refs={"creator": "@root_character_id",
+            "highest_held_title_tier": "root.highest_held_title_tier"})
+    _request_effect_12003(state, operation="flag_as_trash_artifact", target="new_head_artifact", payload={"value": True})
+    if _bool(refs["selected_enemy_knight.rite.decapitation_steals_prestige_as_piety"], "piety rite"):
+        prestige = state.refs.get("root.prestige_raw")
+        _request_effect_12003(state, operation="add_piety", target="selected_enemy_knight",
+            payload={"value_raw": None if prestige is None else fixed_mul(max(_signed_int64(prestige, "victim prestige"), 0), 25000),
+                "scale": 100000}, refs={"source_prestige_raw": "root.prestige_raw"})
+    if _bool(refs["selected_enemy_knight.personal_tenet.cranial_trophies_spiritual_fulfillment"], "fulfillment tenet"):
+        prestige = state.refs.get("root.prestige_raw")
+        if prestige is None:
+            _record_pending(state, "cranial_spiritual_fulfillment_victim_prestige_operand")
+        elif _signed_int64(prestige, "victim prestige") > 0:
+            limit = state.refs.get("caller.minor_spiritual_fulfillment_value_raw")
+            value = None if limit is None else min(fixed_mul(prestige, 1000), _signed_int64(limit, "minor fulfillment value"))
+            _request_effect_12003(state, operation="change_spiritual_fulfillment", target="selected_enemy_knight",
+                payload={"value_raw": value, "scale": 100000},
+                refs={"source_limit_raw": "caller.minor_spiritual_fulfillment_value_raw"})
+
+
 def _execute_selected_effect_12003(node_value: object, *, state: PhaseEventTrialState, tape: _ExplicitOutcomeTape, name: str) -> None:
     node = _mapping(node_value, name)
     op = node["op"]
@@ -413,7 +579,8 @@ def _execute_selected_effect_12003(node_value: object, *, state: PhaseEventTrial
             if int(candidate["character_id"]) in state.enemy_membership
             and _eval_bool(node["filter"], state=state, candidate=candidate, name=f"{name}.filter")
         ]
-        target = tape.target(f"{name}:enemy_knight", [int(candidate["character_id"]) for candidate in eligible])
+        purpose = "knight_killed:enemy_knight" if name.startswith("knight_killed.") else f"{name}:enemy_knight"
+        target = tape.target(purpose, [int(candidate["character_id"]) for candidate in eligible])
         state.selected_enemy_character_id = target
         state.transition_log.append({
             "transition": "select_side_knight", "selected_character_id": target,
@@ -436,7 +603,16 @@ def _execute_selected_effect_12003(node_value: object, *, state: PhaseEventTrial
             _execute_selected_effect_12003(branches[selected]["effect"], state=state, tape=tape, name=f"{name}.branches[{selected}].effect")
     elif op == "call_transition":
         key = str(node["key"])
-        if key == "increase_wound_or_die":
+        args = _mapping(node["args"], f"{name}.args")
+        if key == "request_effect_12003":
+            _request_effect_12003(state, **dict(args))
+        elif key == "request_kill_prestige_12003":
+            _request_kill_prestige_12003(state)
+        elif key == "request_knight_growth_12003":
+            _request_knight_growth_12003(state, tape)
+        elif key == "request_cranial_trophy_12003":
+            _request_cranial_trophy_12003(state)
+        elif key == "increase_wound_or_die":
             _primary_wound_12003(state)
         elif key == "maim_random":
             _primary_maim_12003(state, tape)
@@ -481,6 +657,12 @@ def execute_selected_phase_event_12003(
         key = _string(event_key, "event_key")
         if key not in SUPPORTED_SELECTED_EVENT_KEYS_12003:
             raise PhaseEventEvaluationError(f"event {key!r} is not supported by the bounded .3 primitive")
+        if key == "knight_killed":
+            state.refs["derived.enemy_knight_meets_opponent_threshold_exists"] = any(
+                _signed_int64(row["candidate_refs"]["candidate.skills.prowess_raw"], "candidate prowess")
+                >= fixed_mul(_signed_int64(state.refs["root.skills.prowess_raw"], "root prowess"), 80000)
+                for row in state.candidates if row["character_id"] in state.enemy_membership
+            )
         row = next(row for row in stock.event_rows if row.key == key)
         if row.event_type not in state.phase_roles:
             raise PhaseEventEvaluationError(f"root has no {row.event_type} phase role")
@@ -496,14 +678,20 @@ def execute_selected_phase_event_12003(
     if tape.position != len(tape.outcomes):
         raise PhaseEventEvaluationError("selected phase-event transition has unused script outcomes")
     after = state.snapshot()
+    effect_requests = [deepcopy(row) for row in state.transition_log
+                       if row.get("transition") == "selected_effect_request"]
     result: dict[str, object] = {
         "schema_version": 1,
         "status": "primary_selected_effect_transition_applied" if event_key is not None else "explicit_no_event_unchanged",
         "transition_version": PHASE_EVENT_TRANSITION_VERSION_12003,
+        "effect_requests": effect_requests,
+        "requested_effects_committed": False,
+        "native_queue_admission_observed": False,
         "data_provenance": {
             "rules_source": stock.rules_source, "canonical_manifest_sha256": stock.canonical_manifest_sha256,
             "source_files": [{"relative_path": source.relative_path, "sha256": source.sha256} for source in stock.files],
             "loaded_playset_verified": stock.completeness.loaded_playset_verified,
+            "knight_killed_source_api_sha256": KNIGHT_KILLED_SOURCE_API_SHA256_12003,
             "stock_source_closure_sha256": "76F752C0A794346D4FDCD29FB8721B1A878ED6108B6C2DBA226CFDDD3D797E58",
             "primary_feedback_source_ledger_sha256": "AC7BC5B9D2928E191B0EDCE8AAA9F4C2E645EBC162B7DC8D3869BB1419DBDB9E",
         },
