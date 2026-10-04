@@ -7,6 +7,7 @@
 - [完整宣传导演稿](02m/director.md)：逐镜头完整旁白、画面、屏幕短文案和声音设计。
 - [制作选择与时长](production-selection.json)：唯一选中项目、90–300秒范围、废弃方案与历史留存。
 - [共同导演意图](production-brief.md)：面向玩家的叙事、视觉与制作取舍。
+- [Suno 单曲配乐输入](music/suno-brief.md)：Style、纯音乐结构标签、排除项和建议设置；配音固定为晓晓。
 - [素材与事实资料](asset-and-claim-ledger.json)：内部素材编号与来源。
 - [本轮框架记录](evidence/player-trailer-selection-20261004/README.md)：新配置、新run及完整authoring验证。
 

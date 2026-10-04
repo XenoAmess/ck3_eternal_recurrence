@@ -1,0 +1,21 @@
+{
+  "format_version": 1,
+  "kind": "superman_qiang_suno_music_brief",
+  "created_at_utc": "2026-10-04T08:27:37.891261+00:00",
+  "generation_state": "awaiting_user_audio",
+  "mode": "Custom",
+  "instrumental": true,
+  "target_duration_seconds": 180,
+  "target_duration_is_guidance": true,
+  "music_source_limit": 1,
+  "style_box": "Instrumental cinematic dark comedy, baroque chamber orchestra. 96 BPM, D minor. Harpsichord, pizzicato low strings, restrained hand percussion. Sparse arrangement, short memorable motifs, ample space for spoken narration. Brief intro, concise three-minute cue, clean resolved ending.",
+  "lyrics_box": "[Intro - sly regal]\n\n[Main Theme - playful temptation]\n\n[Bridge - sudden suspense]\n\n[Main Theme - confident return]\n\n[Outro - elegant resolve]\n\n[End]",
+  "exclude_styles": "no vocals, no choir, no EDM drops, no dense lead melody",
+  "suggested_sliders": {
+    "weirdness_percent": 25,
+    "style_influence_percent": 80
+  },
+  "narration_provider": "edge-tts",
+  "narration_voice": "zh-CN-XiaoxiaoNeural",
+  "skill_source": "C:/Users/1/.codex/skills/suno-engineer/SKILL.md"
+}

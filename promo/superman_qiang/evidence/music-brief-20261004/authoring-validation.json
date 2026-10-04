@@ -1,0 +1,27 @@
+{
+  "format_version": 1,
+  "kind": "superman_qiang_suno_brief_validation",
+  "created_at_utc": "2026-10-04T08:27:37.891261+00:00",
+  "result": "PASS",
+  "checks": {
+    "style_characters": 283,
+    "style_under_1000_characters": true,
+    "lyrics_only_structure_tags": true,
+    "end_tag_present": true,
+    "exclude_item_count": 4,
+    "generation_not_claimed": "awaiting_user_audio",
+    "python_only_findings": []
+  },
+  "files": [
+    {
+      "path": "promo/superman_qiang/music/suno-brief.md",
+      "sha256": "a54adf0f3e2610d256d0f5fcf9a07e538f2e2360f4c4d3ca76a56fca5f22d908",
+      "size_bytes": 2213
+    },
+    {
+      "path": "promo/superman_qiang/music/suno-input.json",
+      "sha256": "5b2192486ee8b5198f80569f3b54beb34a83482593715577d0b26bc356888f6f",
+      "size_bytes": 1140
+    }
+  ]
+}
