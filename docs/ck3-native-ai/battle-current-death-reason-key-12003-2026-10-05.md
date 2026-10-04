@@ -50,3 +50,22 @@ One new reason-only native case covers inline and heap key ownership, alive/no r
 Readiness is **static-ready current DeathReason key observation**. Source proof is closed; Root deployment and a genuine current requested-character paused query remain necessary for production-live credit. This constructed fixture uses synthetic date `54000000`. New live observations, game days, SDK/pipe/CK3/window/Git/shared writes and full DLL builds are all zero. Normal-finalizer event effects, custody, cleanup and complete Monte Carlo remain separate.
 
 Oct 5 / W41 report and Root-only seven-path LF patch: [ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-death-reason-stable-key-v63/ROOT-DELIVERY.json), [ROOT-DAY-WEEK-FIELDS.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-death-reason-stable-key-v63/ROOT-DAY-WEEK-FIELDS.json).
+
+## Oct5 R0035：当前死亡原因 key 首次 production-live primitive
+
+Root 在冷绑定 `g67/091bb268`、PID110044、R0035 上，使用现有 `ck3_query_battle_terminal_transition_v1` 做一次 character-only 读取：显式 `prior_combat_id=null`、`subject_public_cunit_id=null`，fullIDs `[29829,37671]`，expected_revision2。实际帧为 `native:5` / public2 / native5 / raw53256456 / paused=true，新增游戏天数0；SDK95475 已正常关闭。payload 的 game_version/executable_sha256 原值为 null，原样保留；冷源绑定依据 Root 的部署元数据，不向 payload 补旧值。
+
+| 实际 fullID | 当前 alive | 当前 death_record | reason_key | 资格 |
+| --- | --- | --- | --- | --- |
+| Robert29829 | true | none | null | 当前存活与无死亡记录分支的 production-live primitive |
+| 37671 | false | available | `death_battle` | 当前死者 native stable key 字符串的 production-live primitive |
+
+两行 `scope=current_character`，unavailable_reason均为null。独立 sibling 均实际发布 prowess8、八个 injury flags=false、wounded_rank0、custody none/jailer−1；这些是当前值，不是事件前后 delta。此 character-only 帧 `battle_terminal_transition_ready=false`，prior/removal/subject/successor均null、terminal_journal未观察到事件，保持原本范围。当前 key 不证明新的死亡、具体战斗、callback/queue提交时序、死亡日期或 killer；本次也不升级完整 terminal/OODA/forecast。
+
+原015 attempt 的 Pydantic required-nullable 参数缺失保留为 pre-native harness RED，没有人物 payload。修正仅为同一新增查询显式给出两个null参数；Root随后只重试该leaf。当前人物值来自本次真正 decoded payload，不来自 transport GREEN、历史死者事实或旧 fixture。
+
+唯一原缓存消费者为 `normal_result_numeric_projection`；本报告仅各读取一次其两个解码产物：[OBSERVED-FIELDS.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-death-reason-next-actual-v64/actual-current-person-retry-01/consumer/OBSERVED-FIELDS.json)，SHA`052b4e059d50b1821e4a516345d1ca1dbbc47a2dbbd7a6933f269d348004dde8`；[ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-death-reason-next-actual-v64/actual-current-person-retry-01/consumer/ROOT-DELIVERY.json)，SHA`775412735ab305d8f85c9ad5555d98ef1f695a63cbb5212f83dc660d8f9bf3c4`。报告 lane 未读取原SDK/Root cache，未查询、模拟死亡、修改共享源码或运行测试。
+
+Root independently read retry SAVE006: normal heartbeat `7813`, date raw `53256456`, 96,643,154 bytes, save SHA-256 `0ec1c17ab7e6227407bad07728b806658514faeaca0bd79fc1464300aee5251a`. The retry belongs to R0035 / PID110044 / environment SHA-256 `38666cec554cab6152f16df89440a448cf8c988347a54e961777238aa666e626`. This record adds zero game days; the character owner did not reconsume SAVE006.
+
+A later ordinary first-step failure retained another normal checkpoint at heartbeat `7815`, also with zero new days (Root supplied abbreviated save SHA `bb8a65...0cc7`). That is a separate later timeline hint, not a character-query capability RED; the two current death-record observations above remain the result of the earlier successful retry.
