@@ -379,6 +379,74 @@ bool Retreat(const BattleBindings &b, const game::Snapshot &scope, void *combat,
                        24;
   return l.legal_now == l.native_boolean;
 }
+std::optional<bool> FirstArmyOwnerLandRuleAllows(
+    const BattleBindings &b, const void *army) {
+  if (!army)
+    return std::nullopt;
+  auto *unit = Resolve(b.army_storage_slot,
+                       At<std::int32_t>(army, 0x124), 0x10);
+  if (!unit)
+    return std::nullopt;
+  auto *owner = Resolve(b.character_storage_slot,
+                        At<std::int32_t>(unit, 0x174), 0x18);
+  if (!owner)
+    return std::nullopt;
+  auto *land = At<void *>(owner, kBattleLandStatusOffset);
+  if (!land || At<std::int32_t>(land, 0x1F8) != -1)
+    return true;
+  if (!b.get_combat_retreat_rule_state)
+    return std::nullopt;
+  auto *rules = b.get_combat_retreat_rule_state(owner);
+  if (!rules)
+    return std::nullopt;
+  return (At<std::uint32_t>(rules, kBattleRuleFlagsOffset) & (1U << 10)) != 0;
+}
+
+std::optional<game::BattleControlCurrentPhaseTransitionInputsV1>
+CurrentPhaseTransitionInputs(const BattleBindings &b, void *combat,
+                             const game::BattleControlSnapshot &snapshot) {
+  if (!b.minimum_days_before_manual_retreat)
+    return std::nullopt;
+
+  game::BattleControlCurrentPhaseTransitionInputsV1 out{};
+  out.forced_winner_raw = snapshot.forced_winner_raw;
+  out.result_start_date_raw =
+      snapshot.legality.retreat_elapsed_baseline_date_raw;
+  out.minimum_elapsed_days =
+      snapshot.legality.minimum_elapsed_whole_days_exclusive;
+  const std::array<const game::BattleControlSideSnapshot *, 2> snapshots{
+      &snapshot.attacker, &snapshot.defender};
+  const std::array<const void *, 2> sides{
+      static_cast<std::byte *>(combat) + kBattleAttackerSideOffset,
+      static_cast<std::byte *>(combat) + kBattleDefenderSideOffset};
+  for (std::size_t index = 0; index < sides.size(); ++index) {
+    auto &row = out.sides[index];
+    row.side_index = static_cast<std::int32_t>(index);
+    row.stored_current_fighting_raw = At<std::int64_t>(sides[index], 0x98);
+    row.disallowed = At<std::uint8_t>(sides[index], 0xC0) != 0;
+    row.allow_early = At<std::uint8_t>(sides[index], 0xC1) != 0;
+    row.skip_pursuit = At<std::uint8_t>(sides[index], 0xC2) != 0;
+    // This is the first stored native Army, independently of the selected Army.
+    // Native empty-side resolution uses its actual canonical receiver.
+    const auto &armies = snapshots[index]->ordered_armies;
+    auto *first = armies.empty()
+        ? (b.army_internal_fallback_slot ? *b.army_internal_fallback_slot
+                                        : nullptr)
+        : Resolve(b.army_internal_storage_slot,
+                  armies.front().native_carmy_id, 0x10);
+    if (!first)
+      continue;
+    row.first_native_carmy_id = At<std::int32_t>(first, 0x10);
+    if (b.can_order_combat_retreat)
+      row.native_can_retreat =
+          b.can_order_combat_retreat(combat, first, nullptr);
+    // A native fallback may lack an owner representable by the strict reader.
+    // Its direct native Boolean remains observed independently of this leaf.
+    row.owner_land_rule_allows = FirstArmyOwnerLandRuleAllows(b, first);
+  }
+  return out;
+}
+
 std::optional<game::BattleControlCurrentPursuitInputsV1> CurrentPursuitInputs(
     const BattleBindings &b, const void *combat,
     const game::BattleControlSnapshot &snapshot) {
@@ -572,6 +640,8 @@ bool ControlSample(const BattleBindings &b, const game::Snapshot &scope,
   out.current_loss_inputs_v1 = CurrentLossInputs(b, combat, province, out);
   out.full_backing_inputs_v1 = FullBackingInputs(b, out);
   out.current_pursuit_inputs_v1 = CurrentPursuitInputs(b, combat, out);
+  out.current_phase_transition_inputs_v1 =
+      CurrentPhaseTransitionInputs(b, combat, out);
   if (Province(b, At<void *>(combat, 0x6B8)) != province)
     return false;
   if (roll_applicable && get_terrain != nullptr &&
@@ -1249,6 +1319,8 @@ BattleBindings BindBattleImage(std::uintptr_t base,
   b.jomini_state_slot = reinterpret_cast<void **>(base + kJominiStateSlotRva);
   b.army_storage_slot = reinterpret_cast<void **>(base + 0x5D1E380);
   b.army_internal_storage_slot = reinterpret_cast<void **>(base + 0x5D1DE48);
+  b.army_internal_fallback_slot =
+      reinterpret_cast<void **>(base + kBattleArmyInternalFallbackRva);
   b.regiment_storage_slot = reinterpret_cast<void **>(base + 0x5D1F340);
   b.character_storage_slot =
       reinterpret_cast<void **>(base + kCharacterStorageSlotRva);
@@ -1366,6 +1438,12 @@ ReadBattleControlSnapshot(const BattleBindings &b, const game::Snapshot &s,
     // A changing optional census cannot invalidate the existing control frame.
     a.full_backing_inputs_v1.reset();
     c.full_backing_inputs_v1.reset();
+  }
+  if (sampled && a.current_phase_transition_inputs_v1 !=
+                     c.current_phase_transition_inputs_v1) {
+    // A changing optional leaf does not invalidate the existing control frame.
+    a.current_phase_transition_inputs_v1.reset();
+    c.current_phase_transition_inputs_v1.reset();
   }
   if (!sampled || a != c || !Scope(b, s)) {
     o.status = game::BattleControlSnapshotStatus::state_changed;

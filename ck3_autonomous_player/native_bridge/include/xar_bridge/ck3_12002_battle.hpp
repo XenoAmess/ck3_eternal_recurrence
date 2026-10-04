@@ -10,6 +10,7 @@
 namespace xar::ck3_12002 {
 
 inline constexpr std::uintptr_t kBattleCombatStorageRva = 0x5D1DE70;
+inline constexpr std::uintptr_t kBattleArmyInternalFallbackRva = 0x5D1DE50;
 inline constexpr std::uintptr_t kBattleResultStorageRva = 0x5D1FFE0;
 inline constexpr std::uintptr_t kBattleResultFallbackRva = 0x5D1FFD8;
 inline constexpr std::uintptr_t kBattleSideStrengthRva = 0x2651100;
@@ -54,6 +55,7 @@ struct BattleBindings {
   void **jomini_state_slot = nullptr;
   void **army_storage_slot = nullptr;
   void **army_internal_storage_slot = nullptr;
+  void **army_internal_fallback_slot = nullptr;
   void **regiment_storage_slot = nullptr;
   void **character_storage_slot = nullptr;
   void **combat_storage_slot = nullptr;

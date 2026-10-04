@@ -60,6 +60,7 @@ _SNAPSHOT_KEYS = {
 }
 _OPTIONAL_SNAPSHOT_KEYS = {
     "roll_cadence_interval",
+    "current_phase_transition_inputs_v1",
     "current_pursuit_inputs_v1",
     "actual_hard_casualty_sides",
     "pursuit_modifier_sides",
@@ -163,6 +164,15 @@ _PURSUIT_MODIFIER_SIDE_KEYS = {
     "encounter_role",
     "pursuit_efficiency_raw",
     "retreat_losses_raw",
+}
+
+_CURRENT_PHASE_TRANSITION_INPUT_KEYS = {
+    "forced_winner_raw", "result_start_date_raw", "minimum_elapsed_days", "sides",
+}
+_CURRENT_PHASE_TRANSITION_SIDE_KEYS = {
+    "side_index", "stored_current_fighting_raw", "disallowed", "allow_early",
+    "skip_pursuit", "first_native_carmy_id", "native_can_retreat",
+    "owner_land_rule_allows",
 }
 
 _CURRENT_PURSUIT_INPUT_KEYS = {
@@ -682,11 +692,61 @@ def normalize_battle_control_snapshot_v1(
             attacker=attacker,
             defender=defender,
         )
+    if "current_phase_transition_inputs_v1" in value:
+        result["current_phase_transition_inputs_v1"] = (
+            _normalize_current_phase_transition_inputs_v1(
+                value["current_phase_transition_inputs_v1"]
+            )
+        )
     if "current_pursuit_inputs_v1" in value:
         result["current_pursuit_inputs_v1"] = _normalize_current_pursuit_inputs_v1(
             value["current_pursuit_inputs_v1"], combat_id=combat_id
         )
     return result
+
+
+def _normalize_current_phase_transition_inputs_v1(
+    value: object,
+) -> dict[str, object] | None:
+    """Preserve current first-Army operands without forecasting future permission."""
+    if value is None:
+        return None
+    name = "battle_control_snapshot.current_phase_transition_inputs_v1"
+    if not isinstance(value, dict) or set(value) != _CURRENT_PHASE_TRANSITION_INPUT_KEYS:
+        raise ValueError(f"{name} has a malformed schema")
+    normalized = {
+        field: _signed_int32(value[field], f"{name}.{field}")
+        for field in ("forced_winner_raw", "result_start_date_raw", "minimum_elapsed_days")
+    }
+    sides = value["sides"]
+    if not isinstance(sides, list) or len(sides) != 2:
+        raise ValueError(f"{name}.sides must contain two native-order rows")
+    rows = []
+    for index, side in enumerate(sides):
+        row_name = f"{name}.sides[{index}]"
+        if not isinstance(side, dict) or set(side) != _CURRENT_PHASE_TRANSITION_SIDE_KEYS:
+            raise ValueError(f"{row_name} has a malformed schema")
+        side_index = _signed_int32(side["side_index"], f"{row_name}.side_index")
+        if side_index != index:
+            raise ValueError(f"{row_name}.side_index differs from native order")
+        row = {
+            "side_index": side_index,
+            "stored_current_fighting_raw": _signed_int64(
+                side["stored_current_fighting_raw"], f"{row_name}.stored_current_fighting_raw"
+            ),
+            "first_native_carmy_id": (
+                None if side["first_native_carmy_id"] is None else
+                _signed_int32(side["first_native_carmy_id"], f"{row_name}.first_native_carmy_id")
+            ),
+        }
+        for field in ("disallowed", "allow_early", "skip_pursuit"):
+            row[field] = _strict_bool(side[field], f"{row_name}.{field}")
+        for field in ("native_can_retreat", "owner_land_rule_allows"):
+            row[field] = (None if side[field] is None else
+                          _strict_bool(side[field], f"{row_name}.{field}"))
+        rows.append(row)
+    normalized["sides"] = rows
+    return normalized
 
 
 def _normalize_current_pursuit_inputs_v1(
@@ -1136,7 +1196,8 @@ def normalize_active_combat_resume_inputs_v1(
     if (
         not isinstance(observed, dict)
         or set(observed) - {
-            "roll_cadence_interval", "current_pursuit_inputs_v1"
+            "roll_cadence_interval", "current_pursuit_inputs_v1",
+            "current_phase_transition_inputs_v1",
         } not in (
             _ACTIVE_RESUME_OBSERVED_KEYS,
             _ACTIVE_RESUME_OBSERVED_KEYS_WITH_MAPPING,
@@ -1178,6 +1239,14 @@ def normalize_active_combat_resume_inputs_v1(
         if interval != parent.get("roll_cadence_interval"):
             raise ValueError(
                 f"{name}.observed.roll_cadence_interval disagrees with battle frame"
+            )
+    if "current_phase_transition_inputs_v1" in observed:
+        transition = _normalize_current_phase_transition_inputs_v1(
+            observed["current_phase_transition_inputs_v1"]
+        )
+        if transition != parent.get("current_phase_transition_inputs_v1"):
+            raise ValueError(
+                f"{name}.observed.current_phase_transition_inputs_v1 disagrees with battle frame"
             )
     if "current_pursuit_inputs_v1" in observed:
         pursuit = _normalize_current_pursuit_inputs_v1(
@@ -1499,10 +1568,6 @@ def _normalize_active_retreat_legality(
         value.get("minimum_elapsed_whole_days_exclusive"),
         f"{name}.minimum_elapsed_whole_days_exclusive",
     )
-    if minimum_days != 14:
-        raise ValueError(
-            f"{name}.minimum_elapsed_whole_days_exclusive must be 14"
-        )
     baseline_day_index = _retreat_day_index(baseline_date_raw)
     observed_day_index = _retreat_day_index(observed_date_raw)
     expected_elapsed_whole_days = observed_day_index - baseline_day_index
@@ -1524,7 +1589,7 @@ def _normalize_active_retreat_legality(
     expected_reason_codes: list[str] = []
     if side_flags["disallow_retreat"]:
         expected_reason_codes.append("disallowed")
-    if not side_flags["allow_early_retreat"] and elapsed_whole_days <= 14:
+    if not side_flags["allow_early_retreat"] and elapsed_whole_days <= minimum_days:
         expected_reason_codes.append("too_early")
     if phase_raw >= 2:
         expected_reason_codes.append("pursuit_or_done")
@@ -1558,7 +1623,7 @@ def _normalize_active_retreat_legality(
         "phase": phase,
         "retreat_elapsed_baseline_date_raw": baseline_date_raw,
         "elapsed_whole_days": elapsed_whole_days,
-        "minimum_elapsed_whole_days_exclusive": 14,
+        "minimum_elapsed_whole_days_exclusive": minimum_days,
         "landless_gate_allows_retreat": landless_allows,
         "legal_now": legal_now,
         "reason_codes_in_native_order": reason_codes,

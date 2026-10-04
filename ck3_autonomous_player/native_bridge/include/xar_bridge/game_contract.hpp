@@ -1990,6 +1990,32 @@ struct BattleControlCurrentPursuitInputsV1 {
                          const BattleControlCurrentPursuitInputsV1 &) = default;
 };
 
+// Current main-phase transition observations; no future dispatch is forecast.
+struct BattleControlCurrentPhaseTransitionSideInputsV1 {
+  std::int32_t side_index = -1;
+  std::int64_t stored_current_fighting_raw = 0;
+  bool disallowed = false;
+  bool allow_early = false;
+  bool skip_pursuit = false;
+  std::optional<std::int32_t> first_native_carmy_id;
+  std::optional<bool> native_can_retreat;
+  std::optional<bool> owner_land_rule_allows;
+
+  friend bool operator==(
+      const BattleControlCurrentPhaseTransitionSideInputsV1 &,
+      const BattleControlCurrentPhaseTransitionSideInputsV1 &) = default;
+};
+
+struct BattleControlCurrentPhaseTransitionInputsV1 {
+  std::int32_t forced_winner_raw = -1;
+  std::int32_t result_start_date_raw = 0;
+  std::int32_t minimum_elapsed_days = 0;
+  std::array<BattleControlCurrentPhaseTransitionSideInputsV1, 2> sides{};
+
+  friend bool operator==(const BattleControlCurrentPhaseTransitionInputsV1 &,
+                         const BattleControlCurrentPhaseTransitionInputsV1 &) = default;
+};
+
 struct BattleControlSnapshot {
   BattleControlSnapshotStatus status =
       BattleControlSnapshotStatus::unavailable;
@@ -2046,6 +2072,9 @@ struct BattleControlSnapshot {
   std::optional<BattleControlFullBackingInputsV1> full_backing_inputs_v1;
   // Runtime pursuit rules are independent nullable observations, not a gate.
   std::optional<BattleControlCurrentPursuitInputsV1> current_pursuit_inputs_v1;
+  // Optional current-frame first-Army permission inputs, independent of ready.
+  std::optional<BattleControlCurrentPhaseTransitionInputsV1>
+      current_phase_transition_inputs_v1;
   bool battle_control_ready = false;
 
   friend bool operator==(const BattleControlSnapshot &,

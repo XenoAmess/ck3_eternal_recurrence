@@ -970,6 +970,60 @@ bool AppendSide(std::string &output,
   return true;
 }
 
+bool AppendCurrentPhaseTransitionInputsV1(
+    std::string &output,
+    const std::optional<game::BattleControlCurrentPhaseTransitionInputsV1> &inputs) {
+  if (!inputs.has_value()) {
+    output += "null";
+    return true;
+  }
+  const auto &value = *inputs;
+  const auto append_optional_bool = [&output](const std::optional<bool> &field) {
+    output += field.has_value() ? (*field ? "true" : "false") : "null";
+  };
+  output += "{\"forced_winner_raw\":";
+  if (!AppendNumber(output, value.forced_winner_raw))
+    return false;
+  output += ",\"result_start_date_raw\":";
+  if (!AppendNumber(output, value.result_start_date_raw))
+    return false;
+  output += ",\"minimum_elapsed_days\":";
+  if (!AppendNumber(output, value.minimum_elapsed_days))
+    return false;
+  output += ",\"sides\":[";
+  for (std::size_t index = 0; index < value.sides.size(); ++index) {
+    if (index != 0)
+      output.push_back(',');
+    const auto &side = value.sides[index];
+    output += "{\"side_index\":";
+    if (!AppendNumber(output, side.side_index))
+      return false;
+    output += ",\"stored_current_fighting_raw\":";
+    if (!AppendNumber(output, side.stored_current_fighting_raw))
+      return false;
+    output += ",\"disallowed\":";
+    output += side.disallowed ? "true" : "false";
+    output += ",\"allow_early\":";
+    output += side.allow_early ? "true" : "false";
+    output += ",\"skip_pursuit\":";
+    output += side.skip_pursuit ? "true" : "false";
+    output += ",\"first_native_carmy_id\":";
+    if (side.first_native_carmy_id.has_value()) {
+      if (!AppendNumber(output, *side.first_native_carmy_id))
+        return false;
+    } else {
+      output += "null";
+    }
+    output += ",\"native_can_retreat\":";
+    append_optional_bool(side.native_can_retreat);
+    output += ",\"owner_land_rule_allows\":";
+    append_optional_bool(side.owner_land_rule_allows);
+    output.push_back('}');
+  }
+  output += "]}";
+  return true;
+}
+
 bool AppendCurrentPursuitInputsV1(
     std::string &output,
     const std::optional<game::BattleControlCurrentPursuitInputsV1> &inputs) {
@@ -1899,6 +1953,11 @@ std::string SerializeBattleControlSnapshotV1(
   if (!AppendSide(output, snapshot.defender)) {
     return {};
   }
+  output += ",\"current_phase_transition_inputs_v1\":";
+  if (!AppendCurrentPhaseTransitionInputsV1(
+          output, snapshot.current_phase_transition_inputs_v1)) {
+    return {};
+  }
   output += ",\"current_pursuit_inputs_v1\":";
   if (!AppendCurrentPursuitInputsV1(output, snapshot.current_pursuit_inputs_v1)) {
     return {};
@@ -2048,6 +2107,11 @@ std::string SerializeActiveCombatResumeInputsV1(
   }
   output += ",\"final_combat_width\":";
   if (!AppendNumber(output, snapshot.final_combat_width)) {
+    return {};
+  }
+  output += ",\"current_phase_transition_inputs_v1\":";
+  if (!AppendCurrentPhaseTransitionInputsV1(
+          output, snapshot.current_phase_transition_inputs_v1)) {
     return {};
   }
   output += ",\"current_pursuit_inputs_v1\":";
