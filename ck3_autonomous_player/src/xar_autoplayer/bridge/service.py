@@ -10425,6 +10425,20 @@ class GameplayBridgeService:
             raise BridgeUnavailableError("typed Confirm lacks later actual inner modal proof")
         return result
 
+    def query_white_player_business_variables_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
+        """Observe actual player variable presence/type/value independently of panel rendering."""
+        from .white_player_business_variables_contract import SCHEMA, STEP
+        method = getattr(self.driver, "query_white_player_business_variables_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks fixed native White business variable query")
+        result = method(expected_revision=expected_revision)
+        if (not isinstance(result, dict) or result.get("schema") != SCHEMA or result.get("step") != STEP
+                or result.get("read_only") is not True or result.get("gui_acceptance_credit") is not False
+                or any(result.get(name) is not False for name in
+                       ("rendered_text_available", "selected_down_available", "scriptvalue_price_available"))):
+            raise BridgeUnavailableError("White variable backend returned malformed data or unsupported GUI credit")
+        return result
+
     def query_ingame_decision_item_v1(self, decision_key: str, *, expected_revision: int | None = None) -> dict[str, object]:
         """Observe one actual decision model identity; this does not qualify a widget action."""
         method = getattr(self.driver, "query_ingame_decision_item_v1", None)

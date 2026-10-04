@@ -3191,6 +3191,11 @@ def create_server(
         return service.confirm_ingame_decision_item_v1(decision_key, expected_window_kind, expected_revision=expected_revision)
 
     @server.tool(annotations=read_only_tool)
+    def ck3_query_white_player_business_variables_v1(expected_revision: IngameUiRevisionV1 | None = None) -> dict[str, object]:
+        """Read eight fixed current-player White variables with actual absence/type/Q100000; no text/down/price or GUI credit."""
+        return service.query_white_player_business_variables_v1(expected_revision=expected_revision)
+
+    @server.tool(annotations=read_only_tool)
     def ck3_query_ingame_decision_item_v1(decision_key: str, expected_revision: int | None = None) -> dict[str, object]:
         """Read exact .3 native decision key/owner and actual detail definition; no widget action credit."""
         return service.query_ingame_decision_item_v1(decision_key, expected_revision=expected_revision)
@@ -3915,6 +3920,7 @@ def create_server(
         server, "ck3_query_frontend_gui_route_v1"
     )
     _forbid_unknown_tool_arguments_v1(server, "ck3_open_ingame_decisions_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_query_white_player_business_variables_v1")
     _forbid_unknown_tool_arguments_v1(server, "ck3_query_ingame_decision_item_v1")
     _forbid_unknown_tool_arguments_v1(server, "ck3_select_ingame_decision_item_v1")
     _forbid_unknown_tool_arguments_v1(server, "ck3_confirm_ingame_decision_item_v1")

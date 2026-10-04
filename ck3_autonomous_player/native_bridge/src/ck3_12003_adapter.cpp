@@ -70,6 +70,9 @@ const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
     result.push_back(ck3_11906::kIngameDecisionItemConfirmV1Capability);
 #endif
 #endif
+#if defined(XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1)
+    result.push_back(ck3_11906::kWhitePlayerBusinessVariablesV1Capability);
+#endif
     return result;
   }();
   static const AdapterDescriptor descriptor{

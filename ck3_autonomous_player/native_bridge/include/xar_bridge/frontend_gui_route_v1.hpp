@@ -8,6 +8,7 @@
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
 #include "xar_bridge/ingame_decisions_opener_v1.hpp"
 #include "xar_bridge/ingame_decision_item_v1.hpp"
+#include "xar_bridge/white_player_business_variables_v1.hpp"
 #include "xar_bridge/ck3_11906.hpp"
 
 #include <cstdint>
@@ -221,6 +222,7 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   open_ingame_decisions = 29, // 28 reserved for the independent DecisionView observer.
   query_ingame_decision_item = 30,
   action_ingame_decision_item = 31,
+  query_white_player_business_variables = 32,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {
@@ -268,6 +270,7 @@ struct FrontendGuiRouteMailboxContextV1 {
   IngameDecisionsOpenContextV1 ingame_decisions{};
   IngameDecisionItemContextV1 ingame_decision_item{};
   IngameDecisionItemActionContextV1 ingame_decision_action{};
+  WhitePlayerBusinessVariablesContextV1 white_player_business_variables{};
 };
 
 bool ExecuteFrontendGuiRouteMailboxV1(

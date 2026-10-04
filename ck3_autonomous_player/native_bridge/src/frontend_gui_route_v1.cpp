@@ -808,6 +808,11 @@ bool ExecuteFrontendGuiRouteMailboxV1(
     return ExecuteIngameDecisionItemActionV1(query->ingame_decision_action, *query->mailbox, stamp,
         query->environment, query->dispatch_environment);
   }
+#if defined(XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1)
+  if (query->operation == FrontendGuiRouteOperationV1::query_white_player_business_variables) {
+    return ExecuteWhitePlayerBusinessVariablesV1(query->white_player_business_variables, *query->mailbox, stamp);
+  }
+#endif
   if (query->operation == FrontendGuiRouteOperationV1::ingame_ui) {
     // Failure metadata is observed at this original application event boundary,
     // never copied from the caller's expected snapshot.
