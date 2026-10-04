@@ -366,3 +366,28 @@ Original leaf SHA-256 `77e4cbb1797c89551ffb05553f46f4b06b04bff91661d47e219ad4583
 Root applied, committed and pushed the complete 11-path source packet as `324938d0b879f26a618b7704a520305b760f56ec`. The earlier document attempt had a real context conflict after independent upstream `cddb7e3d` changed this topic; it wrote zero shared files. This new append preserves the complete current upstream prefix and reuses the sealed source/test/R34 coverage text without another raw read or verification.
 
 Root subsequently completed 14 ordinary game days: total `4672`, resume `1519`, Oct5 `+14`, raw date `53256456`, normal h7807. Those later days do not change R34's earlier `4658`/Oct5 `0` query frame above. The new full DATA fields have not yet been queried from the next deployed native runtime, so source adoption and the later day credit do not confer full DATA production-live status. Root owns that independent paused query after the unified v62/g67 build/deployment.
+
+### R35：完整 DATA 与实际 prepared 输入首次 paused 观测
+
+2026-10-05，原 `ck3_query_army_strengths` 同口 paused 叶 accepted/available，native3/public2/date53256456。父代理唯一读取 original013 后封完整缓存，本 lane 仅消费该授权缓存一次；三个 Army 行及新增 sibling 均 available，106 个 ArmyReg snapshot、199 个 stored record 全 available，partial/unavailable 均零。记录按原顺序保留，没有 dedup；16 个合法 native count0 snapshot 为 available/ready、records[]，不降低父 Army health readiness。
+
+| Public Army / native CArmy | 当前/上限 | ArmyReg / DATA records | 合法 count0 / multi | 首记录 / 非首记录 physical 缺额 | 两项资格 true/false |
+|---|---:|---:|---:|---:|---|
+| 301989997 / 201326670 | 3515/3884 | 41/42 | 13/6 | 350/19 | CanReplenish 26/16；ChunkCan 0/42 |
+| 184549452 / 167772208 | 3000/3000 | 24/24 | 0/0 | 0/无非首记录 | CanReplenish 0/24；ChunkCan 0/24 |
+| 268435597 / 184549476 | 2843/4702 | 41/133 | 3/25 | 770/1089 | CanReplenish 127/6；ChunkCan 70/63 |
+
+主军首28记录有23条缺额，非首14记录有2条缺额：ArmyReg117440605 的 record1 / persistent882 / ordinal0 为127/145（缺18）；ArmyReg218104157 的 record1 / persistent904 / ordinal2 为2/3（缺1）。两条独立资格均 true/false，fresh Fraw 分别5625/3225，prepared Fraw 均0，scale100000。当前同帧350+19=369与主军 health gap 相符；这是本帧已观测关联，不把历史 R31 coverage 和 R32 gap 拼成因果，也不建立任意 record sum 必等 Army health 的规则。
+
+全199 records 的 fresh whole-persistent getter F 均为正，实际 CReg+148 prepared F 均为合法0且与 fresh F 不同；两 bool 分别发布。上述月首执行输入与当前资格是独立真值，不能把 fresh getter 直接授作当前执行补人数，也不能推下一月首缓存仍0、未来资格永久false或损失原因。本帧 physical/effective 缺额相同，未观察到 state3/current0→effectiveMax 实例；该分支仍回链既有 native/fixture 证据。
+
+此项达到 `production-live primitive`：完整 DATA 缺额与 prepared 输入可在现有 paused 查询观察；补员恢复循环、未来日期和全战役没有因此完成。实际 query source.game_version/executable_sha256 仍null，Root外层091bb268/R0035/PID110044仅作 provenance，不回填 source。军力叶 GREEN 与第三 death 查询缺参数造成的 Harness RED 分开；normalSAVE017准确锚点仍由Root消费。本 lane 0新SDK/raw/source/test/day/window/Git，共享专题仅由父代理采用本追加段。
+
+
+The exact ArmyRegiment joins in the independent cached association lane also match each army's raised current/max gap in this frame: own `369/369`, guard `0/0`, enemy `1859/1859`. All 23 own and 31 enemy deficient ArmyRegiments have readable deficit records; positive deficit left without record association is zero. The two own armies remain separate observations (`3515` and `3000`, combined current/max `6515/6884`), with no merge, new raise or reserve credit. The strength query does not publish the current unraised reserve or default-raise legality.
+
+The current clock view is independently available/ready for all three: raw `53256456`, native D `394019`, selected phase `29`, observed buckets own/guard/enemy `0/28/6`. Last-success dates are `53255760/53256432/53255904`, grace anchors `53251464/53251272/53249376`, loaded grace `30`. All three gathering states are `not_gathering` with ready true and days null. The original 64-bit storage values remain exact in the clock cache. This is a current observation; it does not rerun or broaden the old Clock24 loop.
+
+Outer Root provenance is frozen source `091bb268aae3e533daeb853c1f8f34aa736ca62a`, R0035, native PID110044, execution `16cbd061-552e-4e4d-bb67-7c0892d08781`, environment SHA `38666cec554cab6152f16df89440a448cf8c988347a54e961777238aa666e626`. These identities are separate from native source null fields. Formal progress is Root's `4672` total / `1519` resume / Oct5 `+14`; the new query/consumers add no game days. SDK30243 closed exit1 because the separate third death query lacked required arguments; the army query is independently GREEN. Normal SAVE017's exact anchor remains owned by Root, with no peer reread.
+
+The original army leaf was consumed once as a complete buffer: SHA `5e3625acec6b7ee6a6c2e1e94f55b0c6c7c2626ab899981c25583662ff7d372d`. Complete/subtree caches are sealed by `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-replenishment-current-input-v66/actual-r35-full-data-once/COMPLETE-CACHE-ROOT-DELIVERY.json`, 11828 bytes, SHA `cef8b2eac6584423c56550ef7e79d6f496915e458c7a8421edd1c6cef3e9fb45`. A full-DATA receipt SHA `56edd028aa356b168e25f94203996061a1334d31e94b265ea42b01f0129d1920`; B association receipt SHA `872df23ef9f0b8ce5e8157e8c989196f28243d5a91ed8cf424c239d313f2fb82`; C clock receipt SHA `1022bd4b33580984175bfb6c64aac6bd304252469c9a4c6e25c2e322700087dc`. AI semantics are handed only through the sealed AI subtree to their sole domain owner. The new full DATA and prepared input capability is now **production-live primitive**, with no claim of a completed replenish/recovery action loop.
