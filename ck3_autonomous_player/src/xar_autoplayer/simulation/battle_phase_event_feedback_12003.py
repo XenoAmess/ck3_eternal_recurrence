@@ -2,7 +2,8 @@
 
 Character primary values are caller model state. The optional knight leaf
 uses explicit after-effective operands; a script base-skill change never
-supplies those operands. Only empty effects close the current event boundary.
+supplies those operands. Empty effects and the sole source-bounded accolade
+variable subset can close the declared fixed-context event boundary.
 """
 from __future__ import annotations
 
@@ -23,6 +24,10 @@ from .battle_current_phase_transition import (
 from .battle_phase_events_12003 import (
     PhaseEventScriptOutcome12003, SUPPORTED_SELECTED_EVENT_KEYS_12003,
     execute_selected_phase_event_12003,
+)
+from .battle_phase_event_one_seam_12003 import (
+    ACCOLADE_QUALIFICATION_EVENT_KEY_12003, AccoladeQualificationInputs12003,
+    execute_selected_accolade_qualification_12003,
 )
 from .combat_core import DrawState, wrap_int64
 from .phase_event_evaluator import FrozenPhaseEventManifest
@@ -58,6 +63,7 @@ class SelectedPhaseEventInput12003:
     manifest: FrozenPhaseEventManifest | None = None
     advantage_model: object | None = None
     knight_refreshes: tuple[KnightCachedStatRefresh12003, ...] = ()
+    one_seam_inputs: AccoladeQualificationInputs12003 | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -234,15 +240,25 @@ def apply_selected_phase_event_feedback_12003(
         if identity_gaps:
             gaps.extend(identity_gaps); executions.append(None); consumed.append(False)
             continue
-        if item.event_key is not None and item.event_key not in SUPPORTED_SELECTED_EVENT_KEYS_12003:
+        if (item.event_key is not None and item.event_key not in SUPPORTED_SELECTED_EVENT_KEYS_12003
+                and item.event_key != ACCOLADE_QUALIFICATION_EVENT_KEY_12003):
             gaps.append(_gap(index, "selected_phase_script_unknown", f"unsupported selected SCRIPT row {item.event_key}"))
             executions.append(None); consumed.append(False)
             continue
-        result = execute_selected_phase_event_12003(
-            item.context, event_key=item.event_key, script_outcomes=item.script_outcomes,
-            advantage_model=item.advantage_model, manifest=item.manifest)
-        executions.append(result); consumed.append(True)
+        if item.event_key == ACCOLADE_QUALIFICATION_EVENT_KEY_12003:
+            result = execute_selected_accolade_qualification_12003(
+                item.context, script_outcomes=item.script_outcomes, inputs=item.one_seam_inputs,
+                source_context=item.source_context, manifest=item.manifest,
+                advantage_model=item.advantage_model)
+        else:
+            result = execute_selected_phase_event_12003(
+                item.context, event_key=item.event_key, script_outcomes=item.script_outcomes,
+                advantage_model=item.advantage_model, manifest=item.manifest)
+        executions.append(result); consumed.append(result.get(
+            'event_execution_consumed', True))
         deltas.extend(_primary_deltas(item.context, result, index))
+        deltas.extend({**deepcopy(row), 'selected_index': index}
+                      for row in result.get('condition_numeric_deltas', ()))
         after = result["after_state"]
         recompute = after["recompute"]
         affected = set(recompute.get("character_stat_ids", ()))
@@ -254,7 +270,11 @@ def apply_selected_phase_event_feedback_12003(
             gaps.extend(missing)
             if projection is not None:
                 caches.append(projection); refreshed_ids.add(refresh.knight_character_id)
-        if item.event_key not in _EMPTY_EVENTS and item.event_key is not None:
+        if item.event_key == ACCOLADE_QUALIFICATION_EVENT_KEY_12003:
+            for pending in result.get('feedback_pending', ()):
+                gaps.append(_gap(index, 'selected_accolade_condition',
+                    str(pending), 'knight_qualify_for_accolade direct source / selected3765780'))
+        elif item.event_key not in _EMPTY_EVENTS and item.event_key is not None:
             for character_id in sorted(affected):
                 if character_id not in refreshed_ids:
                     gaps.append(_gap(index, "selected_phase_cached_stat",
@@ -272,7 +292,12 @@ def apply_selected_phase_event_feedback_12003(
             # Even a zero numeric branch does not prove callback closure.
             if not result.get("feedback_pending"):
                 gaps.append(_gap(index, "selected_phase_script_callback", "nonempty selected event full callback closure"))
-    ready = all(consumed) and not gaps and all(item.event_key in _EMPTY_EVENTS or item.event_key is None for item in selected)
+    ready = all(consumed) and not gaps and all(
+        item.event_key in _EMPTY_EVENTS or item.event_key is None or
+        item.event_key == ACCOLADE_QUALIFICATION_EVENT_KEY_12003
+        and executions[index] is not None
+        and executions[index].get('condition_feedback_ready') is True
+        for index, item in enumerate(selected))
     ledger = {"scope_kind": "caller_conditioned_selected_12003_primary_and_literal_cache_feedback",
         "original_observed_identity": {"combat_id": carried.condition.combat_id,
             "snapshot_revision": carried.condition.snapshot_revision,
