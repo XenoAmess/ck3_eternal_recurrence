@@ -356,3 +356,25 @@ raw53254056→53254992的936小时属于Root已计账的39个正常日，cut4611
 此历史cut的normal anchor由Root独占TOP维护，本consumer新增0日、未读TOP/旧raw/测试矩阵，
 也不改变此前已验证的一日prospective current-tick有限loop。当前字段、短append和Oct4/W40报告：
 [r31-after39-state-changed-phase-once/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/r29-route-actual/r31-after39-state-changed-phase-once/ROOT-DELIVERY.json)。
+
+## R31 实机：fresh8最终阶段状态cut（2026-10-04）
+
+同R31 / PID73976 / frozen g63 df6e5039，独立query在raw53255184 / native335 /
+published2 / gen10 / sequence5读到P472 / Siege251658324。继此前39日cut，
+actual stalemate_count1→2、phase_counter12→2；当前state为breach0/starvation0/
+disease1/desertion3/stalemate2。当前D138446、fresh L1800000、prepared L1800000
+均Q100000，counter2、can_advance=true；缓存selected enum仍5，仅按当前缓存解释，
+没有重构发生时刻、选择顺序或未来RNG，也未重新运行模型。
+
+实际work16316250/total40000000/remaining23683750均Q100000，progress40790/Q100000、
+动态days_left172、B3550；P472仍未占领、Fort4/garrison500，breach0/walls=false/
+assault=false/can_start_assault=false。P470与P3711仍未占且无active siege，garrison621/565。
+没有依据D/B推健康或补员因果，没有完整围城、占领或整战信用；既有一日prospective
+ordinary current-tick有限loop保留。
+
+fresh8为192小时，已由Root计为4619/恢复1466/Oct4+594，本consumer新增0日。
+Root提供正常SAVE h7626 / raw53255184 / 96635572 B / SHA-256
+`ec4e1b0d3bcd19665c598a23b4d2250adeacadf2bdb511afb907974449c9d996`；TOP由Root独占。
+此新raw006只缓存一次，后续只用sealed字段；旧失败attempt40仍保留0推进/0日期小时，
+没有补记为第40个成功日。缓存、最终fresh append补丁与Oct4/W40字段：
+[r31-final-after8-phase-once/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/r29-route-actual/r31-final-after8-phase-once/ROOT-DELIVERY.json)。

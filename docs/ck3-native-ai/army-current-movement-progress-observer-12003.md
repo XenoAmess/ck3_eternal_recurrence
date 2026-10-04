@@ -417,3 +417,40 @@ one-topic append and Oct4/W40 fields are indexed at
 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/movement-progress/after39-r31/ROOT-DELIVERY.json`.
 This consumer performs0 SDK/window/game/build/test/Git/shared operations,
 0 new agents and0 old-raw reads.
+
+## R0031 final fresh8 saved days: independently observed current health
+
+New raw004 was consumed once:160615 bytes, SHA-256
+`aa8ef9c717e6bd7d4493f36be20b2ef863d7ccc2d17a2021ba2e6a27d968e409`.
+Actual **native335 / public2 / raw53255184 / paused true**, query/scope
+available, same three CArmy identities and war117440524. Root binds this
+frame to actor29829/R0031/PID73976/g63-df6e and closed SDK21794.
+The prior cached53254992→current53255184 interval is **192 hours /8 days**.
+
+| Public CUnit / CArmy | Soldiers prior→current / maximum / regiments | Supply / cap | Monthly supply / attrition fraction |
+|---|---|---|---|
+| 184549452 / 167772208 | 3000→3000 / 3000 / 24 | 100 / 100 | +20 / 0 |
+| 301989997 / 201326670 | 3585→3550 / 3884 / 41 | 300 / 300 | 0 / 0.01 |
+| 268435597 / 184549476 | 2692→2692 / 4702 / 41 | 300 / 300 | +20 / 0 |
+
+Current health3550 independently confirms Root's generic siege B3550;
+own net-35 is observed stock change across these eight days. No month-order
+cause or future loss is deduced. Movement remains not_applicable/null with
+states1/3/1, accumulated0 and caches525000/435000/471000.
+Current replenishment coverage remains24 available, own28/13 and enemy38/3;
+**in this fresh8 frame**, all own13 and enemy3 unavailable records explicitly
+say `army_regiment_first_record_absent`. This new reason summary is not
+retroactively assigned to the previous frame, and metadata absence is not a
+regiment-death observation. Both41-regiment army counts remain unchanged.
+First selected monthly fractions
+remain3000/3675/2775 over100000. New army timing observers under construction
+are outside this deployed g63 receipt and are not promoted to live here.
+
+Root supplies final day-TOP normal **h7626**,96635572 bytes, SHA-256
+`ec4e1b0d3bcd19665c598a23b4d2250adeacadf2bdb511afb907974449c9d996`,
+total4619 / resumed1466 / Oct4+594 / natural0. That normal anchor is Root's
+supplied day-TOP evidence, not a TOP parsed by this consumer or a guessed
+checkpoint for the query capture. This consumer adds0 days,0 queries and0
+tests, preserving existing primitives and the prior finite arrival loop.
+Current cache, month sidecar and Oct4/W40 fields are indexed at
+`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/movement-progress/final-fresh8-r31/ROOT-DELIVERY.json`.

@@ -2,6 +2,20 @@
 
 - [角色技能 trigger 与属性转移读回（1.20.0.3，2026-10-04）](character-skill-trigger-readback-1.20.0.3-2026-10-04.md)：六项普通 getter 的 RTTI／RVA／总技能缓存偏移与 RHS 解析边界；离线研究，基础值上下限及 effect 后缓存刷新仍待对应实机。
 
+## 2026-10-04：新增战斗源码专题入口
+
+本段索引开发源已采用的专题；当前冻结运行源仍为 `g63/df6e5039`，新增源码不视为已加载能力。
+
+- [当前条件 horizon](battle-current-conditional-horizon-12003.md)（`79e0e4fb`）：有限条件 seam 为 static-ready，两个独立生产组合 case GREEN；完整 terminal、AI selection 与 script callback 仍 partial，历史 harness RED 保留，条件结果不作为未来事件或终局承诺。
+- [原生 owner 撤退选择](battle-native-owner-retreat-selection-12003.md)（`94c03c90`）：research-only；选择树研究不代表撤退动作或实际结果。
+- [正常战斗终结](battle-normal-finalizer-1.20.0.3-2026-10-04.md)（`9597750d`）：static-partial，两个聚焦 GREEN；实际终结结果与完整闭环仍单独验收。
+- [当前 horizon 输入组装](battle-current-horizon-input-assembly-12003.md)（`b0c20706`）：static-partial，两个聚焦 GREEN；输入组装不增加未来事件执行信用。
+- [具名人物伤亡](battle-named-person-casualty-12003-2026-10-04.md)（`0799f6ea`）：static-partial，两个聚焦 GREEN；尚不授具名人物实际伤亡或死亡信用。
+- [战斗 phase 与 event 反馈](battle-phase-event-feedback-12003.md)（`c3d2188d`）：static-partial，两个聚焦 GREEN；当前反馈输入与未来 event 执行分开。
+- [选定 owner 的 subset 撤退](battle-selected-owner-subset-retreat-12003.md)（`1ff943f14657c29c3e28e4cd724fa8a23e586640`）：普通 subset 条件分支为 static-ready，两个 case／51 checks GREEN；原生 AI selection、positive-knight、absent H append、完整 258B830 与 movement-final 仍未实现。
+
+既有围城和军队 health 实测、一次当前 tick 的资格保持原专题范围；这些证据不把新增研究或静态局部实现提升为未来事件、完整终结或整场 OODA。
+
 ## 2026-10-04：v46 七日路线与实际集结闭环
 
 累计 **4032/36524日**、接续 **+879日**、10月4日 **+7日**；10月3日冻结 **+777日**，自然继承0。v46七日执行前保存为h5510，实际 **7 calendar / 7 bounded time-save / 7 whole one-day OODA / 168h** 全部正常落盘，末批次h5532/raw53241096；随后独立兵力查询与零日保存形成最新 **h5534 / raw53241096 / 91,825,231B / SHA-256 `22e9028da99a4f77ba5b5485b912065f38aa9761fc9100a1adf63d4dd238f028`**。新增7日由Root计入一次，各文档消费和后续只读不再加日。
