@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 22,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue\\0022-practice-cancel-save.request.json",
+  "request_sha256": "1766cae92b97ca42550a3ff4b681cda16480f72160942496dd8d45d65a10f065",
+  "started_at_utc": "2026-10-04T13:33:47.400157+00:00",
+  "request_id": "0022-practice-cancel-save",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0022-0022-practice-cancel-save.sdk-result.json",
+  "sdk_result_sha256": "5927f83a403459322f33264a493c3dbe890f837df8f40f13a847c396c6126100",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0021-checkpoint.json",
+      "copy": "0022-0022-practice-cancel-save.native-01.json",
+      "sha256": "7404698648b15183746efb8f91d70fdf1b2d02a508f586bd8c9073bed7739e3d"
+    }
+  ],
+  "finished_at_utc": "2026-10-04T13:33:54.847815+00:00"
+}

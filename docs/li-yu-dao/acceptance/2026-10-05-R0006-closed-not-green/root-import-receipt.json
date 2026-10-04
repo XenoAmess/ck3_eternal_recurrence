@@ -1,0 +1,14 @@
+{
+  "schema": "lyd.r6.permanent-report-import.v2",
+  "utc": "2026-10-04T19:22:46.205701+00:00",
+  "source_revision": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+  "target": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-05-R0006-closed-not-green",
+  "files": 1170,
+  "bytes": 25106724,
+  "plan_sha256": "7caae4327a3caa5f5e4e50dad5544b00bad276f8d1fa4fc6075ca8938c241be5",
+  "terminal_evidence_complete": true,
+  "overall_native_acceptance": "NOT_GREEN",
+  "old_sdk": "LOST_ABSENT_ORDERLY_CLOSE_NOT_OBSERVED",
+  "execute_requested": true,
+  "game_native_git_ci_screen_calls": 0
+}

@@ -1,0 +1,89 @@
+{
+  "action": "move",
+  "failures": [],
+  "focus_after": {
+    "focus_hwnd": 2491650,
+    "foreground_hwnd": 2491650,
+    "foreground_pid": 12500,
+    "foreground_thread_id": 16420,
+    "title": "Crusader Kings III"
+  },
+  "focus_before": {
+    "focus_hwnd": 2491650,
+    "foreground_hwnd": 2491650,
+    "foreground_pid": 12500,
+    "foreground_thread_id": 16420,
+    "title": "Crusader Kings III"
+  },
+  "live_screen_size": [
+    1920,
+    1080
+  ],
+  "mouse_buttons_after": {
+    "left": false,
+    "middle": false,
+    "right": false,
+    "x1": false,
+    "x2": false
+  },
+  "mouse_buttons_before": {
+    "left": false,
+    "middle": false,
+    "right": false,
+    "x1": false,
+    "x2": false
+  },
+  "move_completed": true,
+  "observed_point": [
+    1227.0,
+    522.0
+  ],
+  "pointer_after": [
+    1227,
+    522
+  ],
+  "pointer_before": [
+    986,
+    846
+  ],
+  "preview_bounds": [
+    0.0,
+    0.0,
+    1920,
+    1080
+  ],
+  "receipt_image_size": [
+    1920,
+    1080
+  ],
+  "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\fixture-tooltip-clear-001.png",
+  "receipt_sha256": "18F5CDF9670B05B2AB509E6F5A2680754450F0EB3027C80F5072A2253D0E7B3E",
+  "reviewed_bounds": [
+    1218.0,
+    420.0,
+    30,
+    240
+  ],
+  "screen_point": [
+    1227,
+    522
+  ],
+  "screen_size_after": [
+    1920,
+    1080
+  ],
+  "screen_size_before": [
+    1920,
+    1080
+  ],
+  "sidecar_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\fixture-tooltip-clear-001.png.json",
+  "source_image": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\fixture-entry-execute-001.png",
+    "sha256": "85D1E65C06AFD44C28E5ED5FE242BAB28D324EEC193C14BA169A902C5FE3E5C0"
+  },
+  "source_image_size": [
+    1920,
+    1080
+  ],
+  "status": "pointer-move-readback-matched"
+}

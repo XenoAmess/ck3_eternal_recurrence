@@ -1,0 +1,13 @@
+{
+  "schema": "lyd.exact-head-ci-readonly.receipts.v1",
+  "connector": "mcp__codex_apps__github_fetch",
+  "method": "GET",
+  "commit": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+  "product_tree": "2e290b9b7fca02c38a33e4c73f5c46e7060dc9fa",
+  "first_poll_observed_no_later_than_utc": "2026-10-04T12:04:57Z",
+  "terminal_run_observed_no_later_than_utc": "2026-10-04T12:05:25Z",
+  "terminal_jobs_observed_no_later_than_utc": "2026-10-04T12:05:52Z",
+  "listing_url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/actions/runs?head_sha=3d3305e75cf642a7a82bef5f9aee03dc76b3c10e&per_page=100",
+  "mutations": [],
+  "note": "Times are post-call clock observations, not invented HTTP server/request timestamps. Connector envelope preserves the structured response payload; HTTP transport headers and wire bytes were not available."
+}

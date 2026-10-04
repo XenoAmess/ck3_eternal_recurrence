@@ -1,0 +1,39 @@
+{
+  "e_header_count": 100000,
+  "native_output_cap_reached": true,
+  "cap_basis": "root actual-run report plus complete snapshot exact100000 E headers; raw file has no independently identified cap warning footer",
+  "first_local_time": "21:53:36",
+  "last_local_time": "22:21:12",
+  "categories": {
+    "missing_trigger_localization": 43,
+    "unset_learning_delta_variable": 15721,
+    "unset_var_scope_link": 33319,
+    "script_value_wrong_type_none": 15721,
+    "unset_initial_source_faith_variable": 17598,
+    "invalid_var_comparison_right_side": 17598
+  },
+  "contexts": {
+    "trigger_localization_display": 43,
+    "explicit_tooltip_description": 84236,
+    "evaluation_context_not_explicitly_marked": 15721
+  },
+  "primary_domains": {
+    "i2-fixture": 100000
+  },
+  "product_primary_locations": 0,
+  "unknown_parser_or_api": 0,
+  "unclassified": 0,
+  "later_absence_is_not_zero_errors": true,
+  "post_cap_log_coverage": "UNAVAILABLE",
+  "qualification_snapshot_is_exact_byte_prefix": true,
+  "raw_error": {
+    "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\i2-setup-submitted-001\\error.log",
+    "projected_path": "logs/i2-setup-error.raw.log.gz",
+    "original_bytes": 40866397,
+    "original_sha256": "fd8b659ef333ffe7e1a1dad1a20e7a8f892071bbcc41d36ec4866f229cd9827b",
+    "projected_bytes": 205817,
+    "projected_sha256": "df96b05aaa12df9ed3c8d95c30c47ffb991d565eac3da3753f274a731b7550a4",
+    "encoding": "gzip-lossless"
+  },
+  "all_records_gzip_uncompressed_sha256": "9145a707be71d567bc8d6b10c583c9f4823a73e6c76bd61b0afd766e347717d6"
+}

@@ -1,0 +1,80 @@
+65863={
+	first_name="Canan"
+	birth=1042.4.13
+	female=yes
+	nickname_text=""
+	ethnicity=turkic_west
+	culture=195
+	rite=13
+	skill={ 6 3 5 3 5 8 }
+	trait_xp_amounts={ 0 0 }
+	weight={
+		base=-14
+		current=-39
+		target=-14
+	}
+
+	traits={ 55 50 79 5 280 }
+	alive_data={
+		variables={
+			data={ {
+					flag=title_event.9900
+					tick=1
+					data={
+					}
+
+				}
+ }
+		}
+		fertility=0.55365
+		health=4.49123
+		piety={
+			currency=50
+		}
+		prestige={
+			currency=150
+		}
+		influence={
+			currency=60
+		}
+		focus={
+			type=diplomacy_majesty_focus
+			date=1066.9.16
+			changes=0
+			progress=0
+		}
+
+		perk={ benevolent_intent_perk firm_hand_perk inspiring_rule_perk }
+		languages={ language_turkic }
+		activity_data={
+		}
+
+		location={
+			location=624
+		}
+		memories={ 16778064 }
+	}
+
+	court_data={
+	}
+
+	landed_data={
+		domain={ 5752 5753 }
+		became_ruler_date=1066.9.16
+		laws={ herder_succession_law male_only_law }
+		succession_result_type=generate_from_template
+		domain_limit=1
+		government=herder_government
+		realm_capital=5753
+		diplo_centers={ 3729 2771 }
+		barter_goods={
+		}
+	}
+
+	playable_data={
+		current_spiritual_fulfillment=40
+		known_doctrines={ abrahamic_hostility_doctrine doctrine_polygamy doctrine_monogamy doctrine_concubines doctrine_divorce_allowed doctrine_divorce_approval doctrine_bastardry_none doctrine_bastardry_legitimization doctrine_homosexuality_shunned doctrine_homosexuality_crime doctrine_homosexuality_accepted doctrine_deviancy_shunned doctrine_deviancy_crime doctrine_deviancy_accepted doctrine_adultery_men_shunned doctrine_adultery_men_crime doctrine_adultery_men_accepted doctrine_adultery_women_shunned doctrine_adultery_women_crime doctrine_adultery_women_accepted doctrine_kinslaying_accepted doctrine_kinslaying_shunned doctrine_witchcraft_crime doctrine_witchcraft_shunned doctrine_gender_male_dominated doctrine_gender_equal doctrine_consanguinity_cousins doctrine_consanguinity_restricted doctrine_consanguinity_aunt_nephew_and_uncle_niece doctrine_pluralism_righteous doctrine_pluralism_fundamentalist doctrine_pluralism_pluralistic doctrine_theocracy_lay_clergy doctrine_theocracy_temporal doctrine_temporal_head doctrine_clerical_function_alms_and_pacification doctrine_clerical_gender_male_only doctrine_clerical_gender_either doctrine_clerical_marriage_allowed doctrine_clerical_marriage_disallowed doctrine_clerical_succession_temporal_fixed_appointment doctrine_pilgrimage_mandatory_hajj doctrine_pilgrimage_mandatory doctrine_funeral_stoic doctrine_no_anointment doctrine_monotheist doctrine_scriptural doctrine_monasticism_absent doctrine_monasticism_accepted doctrine_monasticism_forbidden doctrine_sacraments_absent muhammad_succession_sunni_doctrine special_doctrine_is_islamic_faith special_doctrine_jizya }
+		known_tenets={ tenet_aniconism tenet_communal_identity tenet_mendicant_preachers tenet_adaptive tenet_esotericism tenet_legalism tenet_literalism tenet_religious_legal_pronouncements tenet_struggle_submission tenet_asceticism tenet_inner_journey tenet_ritual_celebrations tenet_sanctity_of_nature tenet_communal_possessions }
+	}
+
+}

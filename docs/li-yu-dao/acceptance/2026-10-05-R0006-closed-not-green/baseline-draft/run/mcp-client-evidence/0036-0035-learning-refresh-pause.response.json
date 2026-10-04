@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 36,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue\\0035-learning-refresh-pause.request.json",
+  "request_sha256": "b2d537a549bcb7bf6a9b9585675a51ab1f430c916223c226518acf790367edf4",
+  "started_at_utc": "2026-10-04T15:11:01.585244+00:00",
+  "request_id": "0035-learning-refresh-pause",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0036-0035-learning-refresh-pause.sdk-result.json",
+  "sdk_result_sha256": "952aef7c30dde8eb67d961e8e94a409da0e2da4395d6be5aaf50b870a777c1f4",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0035-simulation-pause-current.json",
+      "copy": "0036-0035-learning-refresh-pause.native-01.json",
+      "sha256": "edace9e175f36b9a8c7826da9e75872fa86cb4a99dde93a33d8a96339161c664"
+    }
+  ],
+  "finished_at_utc": "2026-10-04T15:11:04.110698+00:00"
+}

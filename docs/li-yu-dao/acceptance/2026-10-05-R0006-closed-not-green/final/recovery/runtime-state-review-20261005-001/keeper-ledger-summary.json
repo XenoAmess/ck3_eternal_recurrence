@@ -1,0 +1,103 @@
+{
+  "lease_line_count": 106,
+  "lease_tail": [
+    {
+      "at_utc": "2026-10-04T17:12:57.320535+00:00",
+      "lease": {
+        "checkout_head": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+        "cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+        "event_id": "b797e60473904d02bb421284c1fd2306",
+        "expected_sequence": 2805,
+        "installed_cli": "C:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+        "repo": "C:\\workspace\\ck3_eternal_recurrence",
+        "schema": "xar.promo.screen-lease-cas/v1",
+        "screen_resource": "ck3-screen:acquired",
+        "sequence": 2806,
+        "source_cli": "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+        "task_id": "ck3-lyd-live-007-20261004",
+        "updated_at_utc": "2026-10-04T17:12:56.763795+00:00"
+      },
+      "result": "OWNED_CAS"
+    },
+    {
+      "at_utc": "2026-10-04T17:15:59.634298+00:00",
+      "lease": {
+        "checkout_head": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+        "cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+        "event_id": "dbad602c1d324e16a133c2bca232bec4",
+        "expected_sequence": 2806,
+        "installed_cli": "C:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+        "repo": "C:\\workspace\\ck3_eternal_recurrence",
+        "schema": "xar.promo.screen-lease-cas/v1",
+        "screen_resource": "ck3-screen:acquired",
+        "sequence": 2807,
+        "source_cli": "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+        "task_id": "ck3-lyd-live-007-20261004",
+        "updated_at_utc": "2026-10-04T17:15:58.741610+00:00"
+      },
+      "result": "OWNED_CAS"
+    },
+    {
+      "at_utc": "2026-10-04T17:19:00.863534+00:00",
+      "lease": {
+        "checkout_head": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+        "cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+        "event_id": "a3a4cd96fc894c5e80b4abf693d7860a",
+        "expected_sequence": 2807,
+        "installed_cli": "C:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+        "repo": "C:\\workspace\\ck3_eternal_recurrence",
+        "schema": "xar.promo.screen-lease-cas/v1",
+        "screen_resource": "ck3-screen:acquired",
+        "sequence": 2808,
+        "source_cli": "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+        "task_id": "ck3-lyd-live-007-20261004",
+        "updated_at_utc": "2026-10-04T17:19:00.588608+00:00"
+      },
+      "result": "OWNED_CAS"
+    }
+  ],
+  "poll_line_count": 627,
+  "poll_tail": [
+    {
+      "at_utc": "2026-10-04T17:18:43.270554+00:00",
+      "packet": {
+        "schema": "codex.task_bus.v1",
+        "ok": true,
+        "task_id": "ck3-lyd-live-007-20261004",
+        "previous_cursor": 2807,
+        "acknowledged_cursor": 2807,
+        "events": [],
+        "remaining": 0
+      }
+    },
+    {
+      "at_utc": "2026-10-04T17:19:13.807184+00:00",
+      "packet": {
+        "schema": "codex.task_bus.v1",
+        "ok": true,
+        "task_id": "ck3-lyd-live-007-20261004",
+        "previous_cursor": 2807,
+        "acknowledged_cursor": 2807,
+        "events": [],
+        "remaining": 0
+      }
+    },
+    {
+      "at_utc": "2026-10-04T17:19:44.311441+00:00",
+      "packet": {
+        "schema": "codex.task_bus.v1",
+        "ok": true,
+        "task_id": "ck3-lyd-live-007-20261004",
+        "previous_cursor": 2807,
+        "acknowledged_cursor": 2807,
+        "events": [],
+        "remaining": 0
+      }
+    }
+  ],
+  "markers": {
+    "FINAL.json": false,
+    "ROOT_STOP_REQUIRED.json": false,
+    "STOP.request": false
+  }
+}

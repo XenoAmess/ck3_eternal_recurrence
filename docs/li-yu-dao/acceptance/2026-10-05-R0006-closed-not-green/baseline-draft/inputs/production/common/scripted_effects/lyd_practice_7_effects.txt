@@ -1,0 +1,96 @@
+﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
+lyd_practice_zhangzai_a_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_zhangzai
+            gold >= 10
+        }
+        remove_short_term_gold = 10 add_piety = 35 add_prestige = -10 add_stress = 15 add_learning_lifestyle_xp = 45
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_zhangzai_b_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_zhangzai
+            gold >= 30
+        }
+        remove_short_term_gold = 30 add_piety = 45 add_prestige = 10 add_stress = 5 add_learning_lifestyle_xp = 25
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_zhangzai_c_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_zhangzai
+            gold >= 0
+        }
+        add_piety = -30 add_prestige = 10 add_stress = -5
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_shaoyong_a_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_shaoyong
+            gold >= 10
+        }
+        remove_short_term_gold = 10 add_piety = 30 add_prestige = -10 add_stress = 10 add_learning_lifestyle_xp = 45
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_shaoyong_b_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_shaoyong
+            gold >= 20
+        }
+        remove_short_term_gold = 20 add_piety = 40 add_prestige = 10 add_stress = 5 add_learning_lifestyle_xp = 25
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_shaoyong_c_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_shaoyong
+            gold >= 25
+        }
+        remove_short_term_gold = 25 add_piety = -25 add_prestige = 25 add_stress = -10
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_wanganshi_a_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_wanganshi
+            gold >= 10
+        }
+        remove_short_term_gold = 10 add_piety = 30 add_prestige = -10 add_stress = 10 add_learning_lifestyle_xp = 45
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}
+
+lyd_practice_wanganshi_b_effect = {
+    if = {
+        limit = {
+            lyd_can_study_trigger = yes
+            rite = rite:lyd_rite_wanganshi
+            gold >= 25
+        }
+        remove_short_term_gold = 25 add_piety = 40 add_prestige = 10 add_stress = 5 add_learning_lifestyle_xp = 30
+        add_character_flag = { flag = lyd_study_cooldown days = 180 }
+    }
+}

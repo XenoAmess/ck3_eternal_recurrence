@@ -1,0 +1,46 @@
+59621={
+	first_name="Herbert"
+	birth=1030.4.29
+	nickname_text=""
+	ethnicity=caucasian_blond
+	culture=73
+	rite=0
+	skill={ 4 1 3 4 4 2 }
+	mass=12
+	traits={ 52 75 58 20 }
+	alive_data={
+		variables={
+			data={ {
+					flag=pam_latin_schooling_rolled
+					data={
+					}
+
+				}
+ }
+		}
+		fertility=0.52597
+		health=4.899
+		piety={
+			currency=50
+		}
+		prestige={
+			currency=300
+		}
+		influence={
+			currency=120
+		}
+		languages={ language_french language_latin }
+		activity_data={
+		}
+
+		location={
+			location=2604
+		}
+	}
+
+	court_data={
+		employer=34973
+		join_court_date=1066.9.15
+	}
+
+}

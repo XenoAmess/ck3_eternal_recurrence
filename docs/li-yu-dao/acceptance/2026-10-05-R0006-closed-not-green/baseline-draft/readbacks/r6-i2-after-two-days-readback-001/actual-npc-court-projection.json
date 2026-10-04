@@ -1,0 +1,66 @@
+{
+  "source_rep": {
+    "id": "65856",
+    "rite_id": "169",
+    "faith_id": "32",
+    "saved_skill_array": [
+      "6",
+      "9",
+      "9",
+      "10",
+      "20",
+      "3"
+    ],
+    "base_learning": "20",
+    "court_data": [
+      {
+        "key": "employer",
+        "value": "31254"
+      },
+      {
+        "key": "knight",
+        "value": "yes"
+      },
+      {
+        "key": "join_court_date",
+        "value": "1066.9.15"
+      }
+    ],
+    "actual_employer": "31254",
+    "alive_data_present": true,
+    "native_is_ai": null,
+    "boundary": "AI and total Learning are not inferred from base skills or nonplayer identity."
+  },
+  "receiving_rep": {
+    "id": "65857",
+    "rite_id": "159",
+    "faith_id": "104",
+    "saved_skill_array": [
+      "7",
+      "0",
+      "9",
+      "0",
+      "20",
+      "4"
+    ],
+    "base_learning": "20",
+    "court_data": [
+      {
+        "key": "employer",
+        "value": "31254"
+      },
+      {
+        "key": "knight",
+        "value": "yes"
+      },
+      {
+        "key": "join_court_date",
+        "value": "1066.9.15"
+      }
+    ],
+    "actual_employer": "31254",
+    "alive_data_present": true,
+    "native_is_ai": null,
+    "boundary": "AI and total Learning are not inferred from base skills or nonplayer identity."
+  }
+}

@@ -1,0 +1,786 @@
+[
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      69,
+      "lyd_r4_qualification_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (database): 'has_variable': missing localization 'NOT_has_variable_trigger' at file: common/trigger_localization/00_debug_triggers.txt line: 157 (has_variable)",
+    "count": 1,
+    "first_local_time": "21:53:36",
+    "last_local_time": "21:53:36",
+    "first_character_offset": 0,
+    "first_raw_block": "[21:53:36][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (database): 'has_variable': missing localization 'NOT_has_variable_trigger' at file: common/trigger_localization/00_debug_triggers.txt line: 157 (has_variable)\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 69 (lyd_r4_qualification_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      11,
+      "lyd_r4_unlocked_rite_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (database): 'has_variable': missing localization 'NOT_has_variable_trigger' at file: common/trigger_localization/00_debug_triggers.txt line: 157 (has_variable)",
+    "count": 1,
+    "first_local_time": "21:53:36",
+    "last_local_time": "21:53:36",
+    "first_character_offset": 384,
+    "first_raw_block": "[21:53:36][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (database): 'has_variable': missing localization 'NOT_has_variable_trigger' at file: common/trigger_localization/00_debug_triggers.txt line: 157 (has_variable)\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 11 (lyd_r4_unlocked_rite_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      12,
+      "lyd_r4_unlocked_rite_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (database): 'has_variable': missing localization 'NOT_has_variable_trigger' at file: common/trigger_localization/00_debug_triggers.txt line: 157 (has_variable)",
+    "count": 1,
+    "first_local_time": "21:53:36",
+    "last_local_time": "21:53:36",
+    "first_character_offset": 760,
+    "first_raw_block": "[21:53:36][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (database): 'has_variable': missing localization 'NOT_has_variable_trigger' at file: common/trigger_localization/00_debug_triggers.txt line: 157 (has_variable)\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 12 (lyd_r4_unlocked_rite_trigger)\n\r\n"
+  },
+  {
+    "category": "unset_learning_delta_variable",
+    "context": "explicit_tooltip_description",
+    "primary": [
+      "common/scripted_effects/lyd_r4_fixture_effects.txt",
+      76,
+      "lyd_r4_qualification_effect"
+    ],
+    "domain": "i2-fixture",
+    "message": "Failed to fetch variable for 'lyd_r4_learning_delta' due to not being set",
+    "count": 15721,
+    "first_local_time": "21:53:36",
+    "last_local_time": "21:58:03",
+    "first_character_offset": 1136,
+    "first_raw_block": "[21:53:36][E][jomini_script_system.cpp:304]: Script system error! (while building tooltip/description)\n  Error: Failed to fetch variable for 'lyd_r4_learning_delta' due to not being set\n  Script location: file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 76 (lyd_r4_qualification_effect)\n    file: common/decisions/lyd_r4_fixture_decisions.txt line: 18 (lyd_r4_qualification_decision:effect)\n\r\n"
+  },
+  {
+    "category": "unset_var_scope_link",
+    "context": "explicit_tooltip_description",
+    "primary": [
+      "common/scripted_effects/lyd_r4_fixture_effects.txt",
+      76,
+      "lyd_r4_qualification_effect"
+    ],
+    "domain": "i2-fixture",
+    "message": "Event target link 'var' returned an unset scope",
+    "count": 15721,
+    "first_local_time": "21:53:36",
+    "last_local_time": "21:58:03",
+    "first_character_offset": 1543,
+    "first_raw_block": "[21:53:36][E][jomini_script_system.cpp:304]: Script system error! (while building tooltip/description)\n  Error: Event target link 'var' returned an unset scope\n  Script location: file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 76 (lyd_r4_qualification_effect)\n    file: common/decisions/lyd_r4_fixture_decisions.txt line: 18 (lyd_r4_qualification_decision:effect)\n\r\n"
+  },
+  {
+    "category": "script_value_wrong_type_none",
+    "context": "evaluation_context_not_explicitly_marked",
+    "primary": [
+      "common/scripted_effects/lyd_r4_fixture_effects.txt",
+      76,
+      "lyd_r4_qualification_effect"
+    ],
+    "domain": "i2-fixture",
+    "message": "Value of wrong type in 'file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 76 (lyd_r4_qualification_effect)'. Got value of type 'none'",
+    "count": 15721,
+    "first_local_time": "21:53:36",
+    "last_local_time": "21:58:03",
+    "first_character_offset": 1924,
+    "first_raw_block": "[21:53:36][E][jomini_scriptvalue.cpp:1499]: Value of wrong type in 'file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 76 (lyd_r4_qualification_effect)'. Got value of type 'none'\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      19,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (database): 'has_variable': missing localization 'NOT_has_variable_trigger' at file: common/trigger_localization/00_debug_triggers.txt line: 157 (has_variable)",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15407716,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (database): 'has_variable': missing localization 'NOT_has_variable_trigger' at file: common/trigger_localization/00_debug_triggers.txt line: 157 (has_variable)\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 19 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      21,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'main_rite_equal_third' (or 'main_rite_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15408092,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'main_rite_equal_third' (or 'main_rite_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 21 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      24,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'any_faith_rite_count_third' (or 'any_faith_rite_count')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15408387,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'any_faith_rite_count_third' (or 'any_faith_rite_count')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 24 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      25,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'any_faith_rite_count_third' (or 'any_faith_rite_count')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15408692,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'any_faith_rite_count_third' (or 'any_faith_rite_count')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 25 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      27,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15408997,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 27 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      28,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15409294,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 28 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      29,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15409591,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 29 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      30,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15409888,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 30 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      31,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15410185,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 31 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      32,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15410482,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 32 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      33,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15410779,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 33 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      34,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15411076,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 34 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      35,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15411373,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 35 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      36,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15411670,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 36 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      37,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15411967,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 37 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      38,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15412264,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 38 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      39,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15412561,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 39 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      40,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15412858,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 40 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      41,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15413155,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 41 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      42,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15413452,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 42 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      43,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15413749,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 43 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      44,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15414046,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 44 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      45,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15414343,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 45 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      46,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15414640,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 46 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      47,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15414937,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 47 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      48,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15415234,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 48 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      49,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15415531,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 49 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      50,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15415828,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 50 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      51,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15416125,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 51 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      52,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15416422,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 52 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      53,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15416719,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 53 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      54,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15417016,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 54 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      55,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15417313,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 55 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      56,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15417610,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 56 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      57,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15417907,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 57 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      58,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15418204,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 58 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      59,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15418501,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 59 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      60,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15418798,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 60 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      61,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15419095,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 61 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      62,
+      "lyd_r4_setup_display_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')",
+    "count": 1,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:16:10",
+    "first_character_offset": 15419392,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (dynamic): missing localization 'rite_faith_equal_third' (or 'rite_faith_equal')\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 62 (lyd_r4_setup_display_trigger)\n\r\n"
+  },
+  {
+    "category": "unset_initial_source_faith_variable",
+    "context": "explicit_tooltip_description",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      76,
+      "lyd_r4_setup_postcondition_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Failed to fetch variable for 'lyd_r4_initial_source_faith' due to not being set",
+    "count": 17598,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:21:12",
+    "first_character_offset": 15419689,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error! (while building tooltip/description)\n  Error: Failed to fetch variable for 'lyd_r4_initial_source_faith' due to not being set\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 76 (lyd_r4_setup_postcondition_trigger)\n    file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 52 (lyd_r4_setup_effect)\n    file: common/decisions/lyd_r4_fixture_decisions.txt line: 8 (lyd_r4_setup_decision:effect)\n\r\n"
+  },
+  {
+    "category": "unset_var_scope_link",
+    "context": "explicit_tooltip_description",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      76,
+      "lyd_r4_setup_postcondition_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Event target link 'var' returned an unset scope",
+    "count": 17598,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:21:12",
+    "first_character_offset": 15420194,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error! (while building tooltip/description)\n  Error: Event target link 'var' returned an unset scope\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 76 (lyd_r4_setup_postcondition_trigger)\n    file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 52 (lyd_r4_setup_effect)\n    file: common/decisions/lyd_r4_fixture_decisions.txt line: 8 (lyd_r4_setup_decision:effect)\n\r\n"
+  },
+  {
+    "category": "invalid_var_comparison_right_side",
+    "context": "explicit_tooltip_description",
+    "primary": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      76,
+      "lyd_r4_setup_postcondition_trigger"
+    ],
+    "domain": "i2-fixture",
+    "message": "Invalid right side during comparison 'var'",
+    "count": 17598,
+    "first_local_time": "22:16:10",
+    "last_local_time": "22:21:12",
+    "first_character_offset": 15420667,
+    "first_raw_block": "[22:16:10][E][jomini_script_system.cpp:304]: Script system error! (while building tooltip/description)\n  Error: Invalid right side during comparison 'var'\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 76 (lyd_r4_setup_postcondition_trigger)\n    file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 52 (lyd_r4_setup_effect)\n    file: common/decisions/lyd_r4_fixture_decisions.txt line: 8 (lyd_r4_setup_decision:effect)\n\r\n"
+  }
+]

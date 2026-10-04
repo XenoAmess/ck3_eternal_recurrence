@@ -1,0 +1,532 @@
+{
+  "schema": "lyd.r6.closed-permanent-report.v2",
+  "created_utc": "2026-10-04T19:17:14.346018+00:00",
+  "source_revision": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+  "product_tree": "2e290b9b7fca02c38a33e4c73f5c46e7060dc9fa",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0006",
+  "execution_id": "a29d24c0-d479-4989-bf90-16d4e1de0ea0",
+  "game_version": "1.20.0.3",
+  "steam_build": "25652598",
+  "overall_native_acceptance": "NOT_GREEN",
+  "terminal_evidence_complete": true,
+  "terminal_observations": {
+    "ck3_exit": {
+      "result": "OBSERVED_NORMAL_GUI_EXIT",
+      "evidence": [
+        {
+          "path": "bound-root-evidence/r6-normal-exit-watcher-20261005-001/RESULT.json",
+          "bytes": 450,
+          "sha256": "f5252acd893fd61be22aedc136f0ebc9d691b7690389cce6cdc59ccbbf1cacad"
+        },
+        {
+          "path": "bound-root-evidence/live-attempt-006/r6-normal-exit-confirm-001.png",
+          "bytes": 1417232,
+          "sha256": "d2f442789469459a797225382d1cd45498a68033ac2050b08c675fcc25b5b754"
+        },
+        {
+          "path": "bound-root-evidence/live-attempt-006/r6-normal-exit-after-001.png",
+          "bytes": 454629,
+          "sha256": "72211bbd7e09b242f390b6c6f2a019c76975e67d98b65fb2da472f42102d1ee9"
+        }
+      ]
+    },
+    "process_absence": {
+      "result": "VERIFIED_ABSENT",
+      "evidence": [
+        {
+          "path": "closure/PROCESSES-ABSENT.json",
+          "bytes": 221,
+          "sha256": "413934009f3eda960ca2cd88b55323c413d43c1cbdb93bf9252f1d8b7c64edfb"
+        }
+      ]
+    },
+    "old_sdk": {
+      "result": "LOST_ABSENT_ORDERLY_CLOSE_NOT_OBSERVED",
+      "evidence": [
+        {
+          "path": "closure/REPORT.raw.json",
+          "bytes": 2910,
+          "sha256": "4a17e35841bb2758be8369cc1ffc162bc194d809dd0cb745b6f6ce7510eb1873"
+        },
+        {
+          "path": "closure/PROCESSES-ABSENT.json",
+          "bytes": 221,
+          "sha256": "413934009f3eda960ca2cd88b55323c413d43c1cbdb93bf9252f1d8b7c64edfb"
+        },
+        {
+          "path": "bound-root-evidence/runtime-state-review-20261005-001/REPORT.md",
+          "bytes": 4707,
+          "sha256": "dd7225d1777c8e44aa742825d78834489482d3d703c59f4c51e3021360529bf4"
+        }
+      ]
+    },
+    "old_keeper": {
+      "result": "INTERRUPTED_ABSENT_FINAL_NOT_OBSERVED",
+      "evidence": [
+        {
+          "path": "closure/REPORT.raw.json",
+          "bytes": 2910,
+          "sha256": "4a17e35841bb2758be8369cc1ffc162bc194d809dd0cb745b6f6ce7510eb1873"
+        },
+        {
+          "path": "closure/PROCESSES-ABSENT.json",
+          "bytes": 221,
+          "sha256": "413934009f3eda960ca2cd88b55323c413d43c1cbdb93bf9252f1d8b7c64edfb"
+        },
+        {
+          "path": "bound-root-evidence/runtime-state-review-20261005-001/REPORT.md",
+          "bytes": 4707,
+          "sha256": "dd7225d1777c8e44aa742825d78834489482d3d703c59f4c51e3021360529bf4"
+        }
+      ]
+    },
+    "recovery_keeper": {
+      "result": "STOP_FINAL_NORMAL_EXIT",
+      "evidence": [
+        {
+          "path": "bound-root-evidence/screen-lease-live-r0006-exit-20261005/FINAL.json",
+          "bytes": 403,
+          "sha256": "f715f6043f340f0fdc921e67eb0563863557142679f662e94f6e2fa4126172d8"
+        },
+        {
+          "path": "recovery/keeper/STOP.request",
+          "bytes": 183,
+          "sha256": "1a04af3c3a5d270e2ea518f94a6cb50412d6237949acde2d5bf139252f3177cd"
+        }
+      ]
+    },
+    "screen_lease": {
+      "result": "FRESH_CAS_RELEASED",
+      "evidence": [
+        {
+          "path": "closure/02-cas-release.stdout",
+          "bytes": 1184,
+          "sha256": "d31e8288ca516f6f919745013bdd55b2ce9c3a085d8f5abf2746061186e705f1"
+        },
+        {
+          "path": "closure/03-list-after-release.stdout",
+          "bytes": 87933,
+          "sha256": "36ad833ba96b2ed542ddeb3584055c6ad79a80b231930f0cab1ea225e482fef7"
+        }
+      ]
+    },
+    "source_freeze": {
+      "result": "RELEASED_AFTER_ACTUAL_ABSENCE_AND_CAS",
+      "evidence": [
+        {
+          "path": "closure/REPORT.raw.json",
+          "bytes": 2910,
+          "sha256": "4a17e35841bb2758be8369cc1ffc162bc194d809dd0cb745b6f6ce7510eb1873"
+        },
+        {
+          "path": "closure/PROCESSES-ABSENT.json",
+          "bytes": 221,
+          "sha256": "413934009f3eda960ca2cd88b55323c413d43c1cbdb93bf9252f1d8b7c64edfb"
+        },
+        {
+          "path": "closure/02-cas-release.stdout",
+          "bytes": 1184,
+          "sha256": "d31e8288ca516f6f919745013bdd55b2ce9c3a085d8f5abf2746061186e705f1"
+        }
+      ]
+    }
+  },
+  "qualified_scenario_results": [
+    {
+      "scenario": "original-confucian-fixture",
+      "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+      "checks_count": 34,
+      "failed_checks": [],
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-original-confucian-readback-001",
+      "compact_sha256": "c3005e8236a9a8aec430cb35cff873c8e0553edda562a301354a7a39d48374a1",
+      "original_index_sha256": "aee5b8795ae56a9e64e5c89732bbc35c36ec9ab742b93ab168462722f0da6021",
+      "full_report_sha256": "7cf6ec3c345c0f9b4281d155561b1c9e2b0e478de1557ad66c6bc8336f004cf4",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\97461bed54da92ff05da6836f54884c90d6f847a02e6bd9c1bd64dc3da1567fe\\xar_checkpoint.ck3",
+        "bytes": 91297138,
+        "sha256": "97461bed54da92ff05da6836f54884c90d6f847a02e6bd9c1bd64dc3da1567fe"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\291bf3fe63c1d8c3bbbbc97c6d94e47794b031c07934311cbcb83873232fdc8e\\xar_checkpoint.ck3",
+        "bytes": 91282203,
+        "sha256": "291bf3fe63c1d8c3bbbbc97c6d94e47794b031c07934311cbcb83873232fdc8e"
+      },
+      "qualification_result": null,
+      "formal_c2_result": null,
+      "whole_log_result": null
+    },
+    {
+      "scenario": "formal-entry",
+      "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+      "checks_count": 42,
+      "failed_checks": [],
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-formal-entry-readback-001",
+      "compact_sha256": "f8cf1da147fd4cae69f812565981b0ea2bb8de6986bb95dd5daab14f8304f2d2",
+      "original_index_sha256": "09bc295a69439e9191cdee58be88d63cf07d3d230ef1d8389361b2a37e3d59ec",
+      "full_report_sha256": "7782bf44a9d0b0e1bd537f06ce844581942c84a9f29c094623169c7489703676",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\d6296e522615f68aa374a60c2f76f55d95416476ff19e85ddb8e6bfdb203778c\\xar_checkpoint.ck3",
+        "bytes": 91299581,
+        "sha256": "d6296e522615f68aa374a60c2f76f55d95416476ff19e85ddb8e6bfdb203778c"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\97461bed54da92ff05da6836f54884c90d6f847a02e6bd9c1bd64dc3da1567fe\\xar_checkpoint.ck3",
+        "bytes": 91297138,
+        "sha256": "97461bed54da92ff05da6836f54884c90d6f847a02e6bd9c1bd64dc3da1567fe"
+      },
+      "qualification_result": null,
+      "formal_c2_result": null,
+      "whole_log_result": null
+    },
+    {
+      "scenario": "chooser-cancel",
+      "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+      "checks_count": 52,
+      "failed_checks": [],
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-chooser-cancel-readback-001",
+      "compact_sha256": "472b2b0beef0aff8459dc2232650d532f08fae5fe9be13b6e7690072303ef778",
+      "original_index_sha256": "6b4ef1c726914af0d4f121e98574b5753ba793aa5af882ef1d86d5e2ef12b0cc",
+      "full_report_sha256": "7d0848108e3e0ff4633faad2f10b16550aeab3a04c9b8abba2f0e13e4c000919",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\6017a24dfbf68405fcae89ca9f572ef2443bf4627540a61f46673320703c2f7e\\xar_checkpoint.ck3",
+        "bytes": 91299581,
+        "sha256": "6017a24dfbf68405fcae89ca9f572ef2443bf4627540a61f46673320703c2f7e"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\d6296e522615f68aa374a60c2f76f55d95416476ff19e85ddb8e6bfdb203778c\\xar_checkpoint.ck3",
+        "bytes": 91299581,
+        "sha256": "d6296e522615f68aa374a60c2f76f55d95416476ff19e85ddb8e6bfdb203778c"
+      },
+      "qualification_result": null,
+      "formal_c2_result": null,
+      "whole_log_result": null
+    },
+    {
+      "scenario": "zhuxi-choice",
+      "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+      "checks_count": 49,
+      "failed_checks": [],
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-zhuxi-choice-readback-001",
+      "compact_sha256": "a8f79b02f4bf7c9496acbd105b0834ae1872359802ea622d968f71e836ce9511",
+      "original_index_sha256": "9f8abdb3b130d45ffa03308bd2f5748533228848c000c3f799b8e2090736ec0a",
+      "full_report_sha256": "444a19a5f6000fa3684d090ae5d0511df9caa80b552a4f14832d951c452cd73d",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\95e7babc5c2c15d93cac491c87dd9e3e77e24bf3323c0c7006f9e570c95e0959\\xar_checkpoint.ck3",
+        "bytes": 91301037,
+        "sha256": "95e7babc5c2c15d93cac491c87dd9e3e77e24bf3323c0c7006f9e570c95e0959"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\6017a24dfbf68405fcae89ca9f572ef2443bf4627540a61f46673320703c2f7e\\xar_checkpoint.ck3",
+        "bytes": 91299581,
+        "sha256": "6017a24dfbf68405fcae89ca9f572ef2443bf4627540a61f46673320703c2f7e"
+      },
+      "qualification_result": null,
+      "formal_c2_result": null,
+      "whole_log_result": null
+    },
+    {
+      "scenario": "practice-cancel",
+      "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+      "checks_count": 52,
+      "failed_checks": [],
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-practice-cancel-readback-001",
+      "compact_sha256": "0e203bcf800f8f972540f7b90ff1eac2f403b3cc22712a75027a97a312df965a",
+      "original_index_sha256": "908c39e6981254b00a3ff5a0d2446494bec09e6ba2cc4684530eeaf3a963348a",
+      "full_report_sha256": "bd21a30a5677b46d45fdbb45b504260aaedafc2f8a34c7849322805c3c73fcf3",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\a35a831a9717aa94b44d3d876cfc1e3ae0fffde60f3a82918e2407792e06b58d\\xar_checkpoint.ck3",
+        "bytes": 91301037,
+        "sha256": "a35a831a9717aa94b44d3d876cfc1e3ae0fffde60f3a82918e2407792e06b58d"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\95e7babc5c2c15d93cac491c87dd9e3e77e24bf3323c0c7006f9e570c95e0959\\xar_checkpoint.ck3",
+        "bytes": 91301037,
+        "sha256": "95e7babc5c2c15d93cac491c87dd9e3e77e24bf3323c0c7006f9e570c95e0959"
+      },
+      "qualification_result": null,
+      "formal_c2_result": null,
+      "whole_log_result": null
+    },
+    {
+      "scenario": "practice-a",
+      "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+      "checks_count": 62,
+      "failed_checks": [],
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-practice-a-readback-001",
+      "compact_sha256": "04df2c5e4ed3e96e28a4e1d6604aeaf9ff5d5910c23c1bd23f358ee0769494d1",
+      "original_index_sha256": "26c13d4bc41ed8ad7605fbec3fd68e02a09ddd32414d5c974605815f0efa356c",
+      "full_report_sha256": "ced34500f7e94d681875f87519dad7412fd8921df79d402e7b6283de48d166de",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c\\xar_checkpoint.ck3",
+        "bytes": 91301141,
+        "sha256": "5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\a35a831a9717aa94b44d3d876cfc1e3ae0fffde60f3a82918e2407792e06b58d\\xar_checkpoint.ck3",
+        "bytes": 91301037,
+        "sha256": "a35a831a9717aa94b44d3d876cfc1e3ae0fffde60f3a82918e2407792e06b58d"
+      },
+      "qualification_result": null,
+      "formal_c2_result": null,
+      "whole_log_result": null
+    },
+    {
+      "scenario": "i2-qualification-red",
+      "result": "RED_QUALIFICATION_POSTCONDITION",
+      "checks_count": 60,
+      "failed_checks": [],
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-qualification-red-readback-001",
+      "compact_sha256": "72ede6cee7e9b75bb5dd3e683616404015d94b782b0e3b5b0a130a9ce6c9f696",
+      "original_index_sha256": "53002667707b3a436fba02288daaa87ef7c8aeaacb8b58135ef3566d2e26868a",
+      "full_report_sha256": "b443748463478dcdf74bf08434606f02b5a501e3159d3f3b517d5e4ab1f11f07",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\a7107cc1c3e2f0bd947d9ead8346967f80ae8247471595792769aa6989d782e5\\xar_checkpoint.ck3",
+        "bytes": 91302021,
+        "sha256": "a7107cc1c3e2f0bd947d9ead8346967f80ae8247471595792769aa6989d782e5"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c\\xar_checkpoint.ck3",
+        "bytes": 91301141,
+        "sha256": "5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c"
+      },
+      "qualification_result": null,
+      "formal_c2_result": null,
+      "whole_log_result": null
+    },
+    {
+      "scenario": "i2-setup-fixture-only",
+      "result": "PASS_SAVED_SETUP_GRAPH_ONLY",
+      "checks_count": 96,
+      "failed_checks": [],
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-setup-readback-001",
+      "compact_sha256": "cd0eac4d2fcf62b40ab9d163fa10cf9eba8f800c9d450cdb53d9b55fb0bb1891",
+      "original_index_sha256": "68ff80156e27e2e982d200549643123a3845b326915dcf03d1288a5e07ff551f",
+      "full_report_sha256": "0d31a401f21937e94a66efb28ef099d8a0ea7a42d0950ab6cff3270ca5919498",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\3f03971940fe97653f392691a36acee63bd66544d49b35b57296c744fe47da37\\xar_checkpoint.ck3",
+        "bytes": 91313712,
+        "sha256": "3f03971940fe97653f392691a36acee63bd66544d49b35b57296c744fe47da37"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\a7107cc1c3e2f0bd947d9ead8346967f80ae8247471595792769aa6989d782e5\\xar_checkpoint.ck3",
+        "bytes": 91302021,
+        "sha256": "a7107cc1c3e2f0bd947d9ead8346967f80ae8247471595792769aa6989d782e5"
+      },
+      "qualification_result": "RED: previously recorded same-effect learning_after8; actual base14, setup getter8. No fresh total-Learning15 observation.",
+      "formal_c2_result": "NOT_RUN: no proposals, votes, signatures, mandate, commit or business fees seeded by setup.",
+      "whole_log_result": "RED: root observed tooltip error cap100000; this readback does not classify live logs or convert graph PASS into zero-log GREEN."
+    },
+    {
+      "scenario": "i2-after-actual-two-days",
+      "result": "PASS_ACTUAL_D_PLUS2_OBSERVATION_ONLY",
+      "checks_count": 110,
+      "failed_checks": [],
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-after-two-days-readback-001",
+      "compact_sha256": "8599201af092d453e965dc292a849c1d41c59a961082e9c8a35d612230f135c7",
+      "original_index_sha256": "6c930a76af85d238ec194f48151d57b52193b0ea110ebf627a212627ca7a8154",
+      "full_report_sha256": "3ef1bb3873ecbafd40489c9980fb9f159020bef6e5ff0b47bc97301eb6fb4388",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\97fe09b4d9ff9cfc59bfbeb4b9ff7bf795538cfa22c8fd07ac73c6dd2b61eee5\\xar_checkpoint.ck3",
+        "bytes": 90494024,
+        "sha256": "97fe09b4d9ff9cfc59bfbeb4b9ff7bf795538cfa22c8fd07ac73c6dd2b61eee5"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\3f03971940fe97653f392691a36acee63bd66544d49b35b57296c744fe47da37\\xar_checkpoint.ck3",
+        "bytes": 91313712,
+        "sha256": "3f03971940fe97653f392691a36acee63bd66544d49b35b57296c744fe47da37"
+      },
+      "qualification_result": null,
+      "formal_c2_result": null,
+      "whole_log_result": null
+    }
+  ],
+  "resource_result": {
+    "result": "PASS_RESOURCE_FIXTURE_ONLY",
+    "checks": 29,
+    "failed_checks": [],
+    "before": {
+      "gold": "229",
+      "piety": "185",
+      "prestige": "2200",
+      "stress": "4",
+      "learning_lifestyle_xp": "40"
+    },
+    "after": {
+      "gold": "2229",
+      "piety": "9185",
+      "prestige": "2200",
+      "stress": "4",
+      "learning_lifestyle_xp": "40"
+    },
+    "scope": "0036 to0040 only: exact+2000 gold/+9000 piety and seven fixture records; all other world character raw records, all Faith/Rite objects and whole title section verified unchanged. Saved missing rite fields are compared as actual absent fields, without a fabricated resolved Faith."
+  },
+  "c2_actual_partial": {
+    "proposal_observed": true,
+    "source_electors": [
+      "31254",
+      "65856",
+      "65860",
+      "65861"
+    ],
+    "source_total": 4,
+    "source_yes": 2,
+    "source_quorum_arithmetic": -2,
+    "player_source_ballot_present": false,
+    "player_personal_consent_present": false,
+    "0043_actual": "instance12 lyd.200 option1 lyd_c2_wait; original filename records intention only",
+    "representative_signatures": "NOT_RUN",
+    "commit_and_native_migration": "NOT_RUN",
+    "join_detach_repeat": "NOT_RUN"
+  },
+  "foreign_clergy_origin": {
+    "direct_saved_observations": "65860/65861 absent0030, present0036 before resources/proposal; adultbirth1034.8.11/1017.8.25, foreignemployers34973/34232, religious-relations tasks1359/506; oldowners59621/59758 replaced; rulers ownrite0→169",
+    "inference": "Current-buildauto_fill/fill_from_pool/pool_court_chaplain supports clergy-pool replacement; originalnativecreator/appointment call absent, unique cause not proven",
+    "not_newborns": true,
+    "not_the_two_fixture_representatives": true
+  },
+  "historical_red": [
+    "RED_QUALIFICATION_POSTCONDITION: same-effect Learning8/7/8 while saved base14; no fresh exacttotal15",
+    "100000E tooltip fixturelogcap; historical wholelogRED"
+  ],
+  "parser_failures": "Resource reader failed001/002 on genuine duplicate records/nonunique or absentrite fields; new003 uses complete saved occurrence order and missing-field preservation. Oldfailureattempts preserved; reader failures are not invented game-effectRED.",
+  "final_log_snapshots": [
+    {
+      "source_directory": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\final-before-normal-exit-20261005-001",
+      "utc": "2026-10-04T18:58:38.413769+00:00",
+      "file_count": 16,
+      "error": {
+        "path": "error.log",
+        "bytes": 40866397,
+        "sha256": "fd8b659ef333ffe7e1a1dad1a20e7a8f892071bbcc41d36ec4866f229cd9827b"
+      },
+      "e_count": 100000,
+      "same_error_bytes_as_historical_classified_snapshot": true,
+      "post_cap_runtime_coverage": "UNKNOWN"
+    },
+    {
+      "source_directory": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\final-after-normal-exit-20261005-001",
+      "utc": "2026-10-04T19:05:30.739822+00:00",
+      "file_count": 16,
+      "error": {
+        "path": "error.log",
+        "bytes": 40866397,
+        "sha256": "fd8b659ef333ffe7e1a1dad1a20e7a8f892071bbcc41d36ec4866f229cd9827b"
+      },
+      "e_count": 100000,
+      "same_error_bytes_as_historical_classified_snapshot": true,
+      "post_cap_runtime_coverage": "UNKNOWN"
+    }
+  ],
+  "error_classification": {
+    "e_header_count": 100000,
+    "native_output_cap_reached": true,
+    "cap_basis": "root actual-run report plus complete snapshot exact100000 E headers; raw file has no independently identified cap warning footer",
+    "first_local_time": "21:53:36",
+    "last_local_time": "22:21:12",
+    "categories": {
+      "missing_trigger_localization": 43,
+      "unset_learning_delta_variable": 15721,
+      "unset_var_scope_link": 33319,
+      "script_value_wrong_type_none": 15721,
+      "unset_initial_source_faith_variable": 17598,
+      "invalid_var_comparison_right_side": 17598
+    },
+    "contexts": {
+      "trigger_localization_display": 43,
+      "explicit_tooltip_description": 84236,
+      "evaluation_context_not_explicitly_marked": 15721
+    },
+    "primary_domains": {
+      "i2-fixture": 100000
+    },
+    "product_primary_locations": 0,
+    "unknown_parser_or_api": 0,
+    "unclassified": 0,
+    "later_absence_is_not_zero_errors": true,
+    "post_cap_log_coverage": "UNAVAILABLE",
+    "qualification_snapshot_is_exact_byte_prefix": true,
+    "raw_error": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\i2-setup-submitted-001\\error.log",
+      "projected_path": "logs/i2-setup-error.raw.log.gz",
+      "original_bytes": 40866397,
+      "original_sha256": "fd8b659ef333ffe7e1a1dad1a20e7a8f892071bbcc41d36ec4866f229cd9827b",
+      "projected_bytes": 205817,
+      "projected_sha256": "df96b05aaa12df9ed3c8d95c30c47ffb991d565eac3da3753f274a731b7550a4",
+      "encoding": "gzip-lossless"
+    },
+    "all_records_gzip_uncompressed_sha256": "9145a707be71d567bc8d6b10c583c9f4823a73e6c76bd61b0afd766e347717d6"
+  },
+  "post_error_cap_runtime_coverage": "UNKNOWN",
+  "old_orderly_sdk_close_observed": false,
+  "exit_autosave": {
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\userdir\\save games\\autosave_exit.ck3",
+    "preserved": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-terminal-closure-20261005-001\\exit-autosave.ck3",
+    "bytes": 90506624,
+    "sha256": "23b0c18b59cd59bbbe55f94e4bc47333de339a1076bd64a43cea102562f41bd7",
+    "route": "actual CK3 normal-exit autosave selected in GUI; no synthetic save",
+    "raw_save_committed": false,
+    "independent_business_state_readback_by_this_writer": false
+  },
+  "not_run_or_unproven": [
+    "complete36rite×practiceoptionlivecoverage",
+    "C2 allmandatoryvotes/playerconsents/signatures/commit/migration/repeats",
+    "C3 teacher/headvacancy/challenge/recognition/ownedtitlelifecycle",
+    "D+30",
+    "reload",
+    "exactD+1timing",
+    "currentexacttotalLearning15",
+    "oldorderlySDKclose",
+    "historical68oldhumanreviewcredit"
+  ],
+  "historical_packages": [
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-report-draft-001",
+      "index_name": "INDEX.json",
+      "index_sha256": "fa0aad4d907cb0a57b1627a6afeb4cfd3e1f3cf172f4c9286c8f7c03258850da",
+      "target_prefix": "baseline-draft",
+      "files": 795,
+      "bytes": 6393990,
+      "all_indexed_bytes_reverified": true
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-report-draft-addendum-001",
+      "index_name": "INDEX.json",
+      "index_sha256": "615e109c1d4db13496ad8a3cb22ded7c1e355289484e38ec68a65afb41b3452d",
+      "target_prefix": "d-plus2-addendum",
+      "files": 7,
+      "bytes": 11641,
+      "all_indexed_bytes_reverified": true
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-report-draft-addendum-003",
+      "index_name": "INDEX.json",
+      "index_sha256": "5b44d27d0cd548fce74765703123220867ca9971bc187e42ae9d8aa81be7d436",
+      "target_prefix": "progress-addendum",
+      "files": 19,
+      "bytes": 127896,
+      "all_indexed_bytes_reverified": true
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-report-resume-20261005-001",
+      "index_name": "INDEX.json",
+      "index_sha256": "396c8b943ab89bb43c3d2f6fdd116b207af2019032213d50d2359062b97c1c57",
+      "target_prefix": "resume-snapshot",
+      "files": 110,
+      "bytes": 13890765,
+      "all_indexed_bytes_reverified": true
+    }
+  ],
+  "tracked_import_performed": false,
+  "side_effects": {
+    "tracked": 0,
+    "git": 0,
+    "game": 0,
+    "native": 0,
+    "screen": 0,
+    "ci": 0,
+    "spawn": 0,
+    "old_files_mutated": 0,
+    "raw_saves_copied": 0
+  },
+  "import_boundary": "All outcomes have true terminal evidence; lost/RED is admissible. Import requires observedruntimeabsence+releasedlease/sourcefreeze and exacthashes, not everylifecycleGREEN. Root owns execution."
+}

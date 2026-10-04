@@ -1,0 +1,30 @@
+{
+  "request_count": 45,
+  "response_count": 45,
+  "last_response": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0045-0044-i2-detach-source-yes-save.response.json",
+    "data": {
+      "schema": "ck3.lyd.mcp-dispatch.v1",
+      "sequence": 45,
+      "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue\\0044-i2-detach-source-yes-save.request.json",
+      "request_sha256": "ac1c3ac2bab35b2c6aefff59de181371be2f682b353209371b08493d3976b5d2",
+      "started_at_utc": "2026-10-04T17:17:33.913915+00:00",
+      "request_id": "0044-i2-detach-source-yes-save",
+      "status": "MCP_RESULT_RECORDED",
+      "is_error": null,
+      "sdk_result": "0045-0044-i2-detach-source-yes-save.sdk-result.json",
+      "sdk_result_sha256": "d45250626e1e42bf16ab779f9732f31116099db3c39a0f8796a892e99b64805e",
+      "native_receipts": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0044-checkpoint.json",
+          "copy": "0045-0044-i2-detach-source-yes-save.native-01.json",
+          "sha256": "2b01c49dfb5cde830571f3f572c344cc6eb4853a64251eac46e80ba6ed4d6f6f"
+        }
+      ],
+      "finished_at_utc": "2026-10-04T17:17:44.691998+00:00"
+    }
+  },
+  "unresponded_request_ids": [],
+  "closing_marker": false,
+  "error_marker": false
+}

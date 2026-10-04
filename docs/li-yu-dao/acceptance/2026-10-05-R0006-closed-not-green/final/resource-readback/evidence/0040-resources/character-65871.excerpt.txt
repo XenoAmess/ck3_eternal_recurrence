@@ -1,0 +1,55 @@
+65871={
+	first_name="Dash_mir"
+	birth=1046.4.17
+	nickname=nick_the_wolf
+	nickname_text="狼"
+	ethnicity=turkic
+	culture=209
+	rite=131
+	skill={ 10 11 5 7 6 6 }
+	trait_xp_amounts={ 25 0 }
+	weight={
+		base=-26
+		current=-100
+		target=-26
+	}
+
+	traits={ 77 47 56 16 30 }
+	alive_data={
+		variables={
+			data={ {
+					flag=blocked_from_leaving
+					tick=9125
+					data={
+					}
+
+				}
+ }
+		}
+		fertility=0.55381
+		health=4.36678
+		piety={
+			currency=50
+		}
+		prestige={
+			currency=300
+			accumulated=1150
+		}
+		influence={
+			currency=60
+		}
+		languages={ language_turkic }
+		activity_data={
+		}
+
+		location={
+			location=1452
+		}
+	}
+
+	court_data={
+		employer=32835
+		join_court_date=1066.9.17
+	}
+
+}

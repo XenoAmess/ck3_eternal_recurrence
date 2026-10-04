@@ -1,0 +1,48 @@
+65866={
+	first_name="Siduan"
+	birth=1041.4.2
+	nickname_text=""
+	ethnicity=asian_mongol
+	culture=158
+	rite=127
+	skill={ 3 12 3 3 8 6 }
+	trait_xp_amounts={ 25 0 }
+	mass=-21
+	traits={ 56 47 76 16 30 }
+	alive_data={
+		variables={
+			data={ {
+					flag=blocked_from_leaving
+					tick=9125
+					data={
+					}
+
+				}
+ }
+		}
+		fertility=0.51827
+		health=4.75747
+		piety={
+			currency=50
+		}
+		prestige={
+			currency=300
+		}
+		influence={
+			currency=120
+		}
+		languages={ language_khitan }
+		activity_data={
+		}
+
+		location={
+			location=11680
+		}
+	}
+
+	court_data={
+		employer=34755
+		join_court_date=1066.9.17
+	}
+
+}

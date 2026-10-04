@@ -1,0 +1,16 @@
+{
+  "schema": "ck3.lyd.fresh-profile-request.v1",
+  "pid": 12500,
+  "hwnd": 2491650,
+  "steam_ui_pid": 3028,
+  "steam_client_pid": 18100,
+  "offline_review": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\offline-reviewed.json",
+  "offline_image_sha256": "c593076991ea0149bb10a1017ad385816593453530e6ef4cee9071112413a52d",
+  "lease_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\screen-register.json",
+  "screen_task_id": "ck3-lyd-live-007-20261004",
+  "task_bus_script": "C:/workspace/.codex-task-bus/bin/codex_task_bus.py",
+  "task_bus_sha256": "b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee",
+  "native_template": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-profile.template.json",
+  "actions_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\reviewed-native-guard-actions.json",
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\profile-001"
+}

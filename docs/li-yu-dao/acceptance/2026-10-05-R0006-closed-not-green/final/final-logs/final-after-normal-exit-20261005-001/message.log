@@ -1,0 +1,179 @@
+[20:14:31][D][commanddispatcher.cpp:78]: Invalid command. ID: 17, Type: create_important_action, Recipient: BROADCAST
+[20:14:31][D][commanddispatcher.cpp:73]: Command data: ID: 17, Type: create_important_action, Recipient: BROADCAST, Message: 'create_important_action={
+	default_state={
+		identity=17
+		sender=1
+		receiver=0
+		attribs=0
+	}
+	object={
+		important_action_type=action_can_propose_alliance_to_family_member		player=1
+		character=31254
+		scope={
+			root={
+				type=char
+				identity=31254
+			}
+
+			seed=0
+			event_targets={
+				actor={
+					type=char
+					identity=31254
+				}
+
+				recipient={
+					type=char
+					identity=34232
+				}
+
+			}
+
+		}
+
+	}
+}
+'
+[21:02:39][D][commanddispatcher.cpp:78]: Invalid command. ID: 52, Type: create_important_action, Recipient: BROADCAST
+[21:02:39][D][commanddispatcher.cpp:73]: Command data: ID: 52, Type: create_important_action, Recipient: BROADCAST, Message: 'create_important_action={
+	default_state={
+		identity=52
+		sender=1
+		receiver=0
+		attribs=0
+	}
+	object={
+		important_action_type=action_can_potentially_propose_alliance_to_family_member		player=1
+		character=31254
+		scope={
+			root={
+				type=char
+				identity=31254
+			}
+
+			seed=0
+			event_targets={
+				actor={
+					type=char
+					identity=31254
+				}
+
+				recipient={
+					type=char
+					identity=34232
+				}
+
+			}
+
+		}
+
+	}
+}
+'
+[23:10:59][D][commanddispatcher.cpp:78]: Invalid command. ID: 117, Type: send_character_interaction, Recipient: BROADCAST
+[23:10:59][D][commanddispatcher.cpp:73]: Command data: ID: 117, Type: send_character_interaction, Recipient: BROADCAST, Message: 'send_character_interaction={
+	default_state={
+		identity=117
+		sender=1
+		receiver=0
+		attribs=0
+	}
+	object={
+		character_interaction={
+			character_interaction=demand_tributary_interaction			scope={
+				root={
+				}
+
+				seed=2094194916
+				event_targets={
+					actor={
+						type=char
+						identity=29984
+					}
+
+					recipient={
+						type=char
+						identity=32809
+					}
+
+					secondary_actor={
+						type=char
+						identity=4294967295
+					}
+
+					secondary_recipient={
+						type=char
+						identity=4294967295
+					}
+
+					intermediary={
+						type=char
+						identity=4294967295
+					}
+
+					puppet_or_actor={
+						type=char
+						identity=29984
+					}
+
+					is_puppet_action={
+						type=boolean
+					}
+
+				}
+
+			}
+
+			original_scope={
+				root={
+				}
+
+				seed=2094194916
+			}
+
+			actor=29984
+			recipient=32809
+			puppet_or_actor=29984
+		}
+
+		ai_intermediary_accept=100
+		ai_accept=-80
+	}
+}
+'
+[23:11:00][D][commanddispatcher.cpp:78]: Invalid command. ID: 124, Type: create_important_action, Recipient: BROADCAST
+[23:11:00][D][commanddispatcher.cpp:73]: Command data: ID: 124, Type: create_important_action, Recipient: BROADCAST, Message: 'create_important_action={
+	default_state={
+		identity=124
+		sender=1
+		receiver=0
+		attribs=0
+	}
+	object={
+		important_action_type=action_can_propose_alliance_to_family_member		player=1
+		character=31254
+		scope={
+			root={
+				type=char
+				identity=31254
+			}
+
+			seed=0
+			event_targets={
+				actor={
+					type=char
+					identity=31254
+				}
+
+				recipient={
+					type=char
+					identity=34232
+				}
+
+			}
+
+		}
+
+	}
+}
+'

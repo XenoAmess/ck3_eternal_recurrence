@@ -1,0 +1,9 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "0019-zhuxi-save",
+  "operation": "call_tool",
+  "name": "ck3_save_profile_checkpoint_v1",
+  "arguments": {
+    "expected_revision": 14
+  }
+}

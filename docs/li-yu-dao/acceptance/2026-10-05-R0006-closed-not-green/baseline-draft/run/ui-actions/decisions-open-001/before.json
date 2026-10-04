@@ -1,0 +1,40 @@
+{
+  "utc": "2026-10-04T12:18:44.231027+00:00",
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\ordinary-campaign-001.png",
+  "source_sha256": "5566f94c88b051cf64923e0d19f4868b99540310f5a56cf45ebc9064d6aee60d",
+  "actual_hwnd": 2491650,
+  "actual_pid": 12500,
+  "preview_content_rect": [
+    0,
+    0,
+    1920,
+    1080
+  ],
+  "observed_point": [
+    1742.0,
+    149.0
+  ],
+  "route": "Current native MCP exposes 11 tools and no menu/decision initiation; UI fallback.",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:/workspace/ck3_eternal_recurrence/tools/desktop_coordinate_map.py",
+    "--source-image",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\ordinary-campaign-001.png",
+    "--preview-left",
+    "0",
+    "--preview-top",
+    "0",
+    "--preview-width",
+    "1920",
+    "--preview-height",
+    "1080",
+    "--observed-x",
+    "1742.0",
+    "--observed-y",
+    "149.0",
+    "--click",
+    "--receipt",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\ui-actions\\decisions-open-001\\post-click.png"
+  ],
+  "only_target": "isolated R0006 current window"
+}

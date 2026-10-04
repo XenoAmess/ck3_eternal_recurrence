@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 35,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue\\0034-learning-refresh-snapshot-02.request.json",
+  "request_sha256": "f5a0fe25f672c24bb535192db1711080c78a34af641db6c5447347d5982badd8",
+  "started_at_utc": "2026-10-04T15:11:00.087897+00:00"
+}

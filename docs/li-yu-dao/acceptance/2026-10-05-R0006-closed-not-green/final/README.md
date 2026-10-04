@@ -1,0 +1,1 @@
+这是新的闭合报告投影；整体NOT_GREEN，真实终态完整。source-projection-map记录原字节/无损投影SHA，INDEX不含自己，外置importplan绑定所有旧包与此包。raw存档、bulk世界账与失败过程永远外置保留。

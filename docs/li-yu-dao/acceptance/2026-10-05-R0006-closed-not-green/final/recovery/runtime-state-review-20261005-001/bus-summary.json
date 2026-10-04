@@ -1,0 +1,17 @@
+{
+  "at_utc": "2026-10-04T18:38:26.496709+00:00",
+  "screen_lease_max_age_seconds": 600,
+  "claims": [
+    {
+      "task_id": "ck3-lyd-live-007-20261004",
+      "state": "running",
+      "sequence": 2808,
+      "updated_at_utc": "2026-10-04T17:19:00.588608+00:00",
+      "age_seconds": 4765.908101,
+      "fresh_under_600_seconds": false
+    }
+  ],
+  "screen_task_later_events": [],
+  "bus_sequence": "2808",
+  "raw_read_uses_no_bus_lock_and_is_not_CAS_authorization": true
+}

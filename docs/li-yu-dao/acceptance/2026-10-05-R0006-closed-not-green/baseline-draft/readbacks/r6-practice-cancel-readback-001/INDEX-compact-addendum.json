@@ -1,0 +1,15 @@
+{
+  "schema": "lyd.r6-compact-proof-addendum.v1",
+  "original_index_sha256": "908c39e6981254b00a3ff5a0d2446494bec09e6ba2cc4684530eeaf3a963348a",
+  "full_report_sha256": "bd21a30a5677b46d45fdbb45b504260aaedafc2f8a34c7849322805c3c73fcf3",
+  "compact_summary": {
+    "path": "compact-summary.json",
+    "bytes": 25464,
+    "sha256": "0e203bcf800f8f972540f7b90ff1eac2f403b3cc22712a75027a97a312df965a"
+  },
+  "summary_tool": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6_compact_readback.py",
+    "sha256": "578d22e70bff61ae91a9360752d78a0b0e3c0238369eefde43e1f1a5d32cc7e1"
+  },
+  "meaning": "Reference reduction only. Full unchanged proof and its original index retain raw saved state. No new scenario or live acceptance granted."
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 37,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue\\0036-i2-one-day-save.request.json",
+  "request_sha256": "45afc8154369f0f6aa13b43a8be3eb40dee8ef3e4648a55b07c7e0c601ea6329",
+  "started_at_utc": "2026-10-04T15:21:44.667838+00:00",
+  "request_id": "0036-i2-one-day-save",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0037-0036-i2-one-day-save.sdk-result.json",
+  "sdk_result_sha256": "3e87e0d9adae1aea76277f6802e3864f7b433ec0bcbaccd97f1af4680340e8c4",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0036-checkpoint.json",
+      "copy": "0037-0036-i2-one-day-save.native-01.json",
+      "sha256": "3450168eb86c37e2f667499c4f384d69f09dca94dd51c23a629c619f54791677"
+    }
+  ],
+  "finished_at_utc": "2026-10-04T15:21:53.404017+00:00"
+}

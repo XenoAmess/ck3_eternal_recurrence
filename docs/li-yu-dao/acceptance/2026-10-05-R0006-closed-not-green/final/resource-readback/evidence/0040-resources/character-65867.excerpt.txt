@@ -1,0 +1,48 @@
+65867={
+	first_name="Zongxun"
+	birth=1042.4.20
+	nickname_text=""
+	ethnicity=asian_mongol
+	culture=158
+	rite=127
+	skill={ 9 14 3 5 6 10 }
+	trait_xp_amounts={ 25 0 }
+	mass=4
+	traits={ 54 70 77 17 30 }
+	alive_data={
+		variables={
+			data={ {
+					flag=blocked_from_leaving
+					tick=9125
+					data={
+					}
+
+				}
+ }
+		}
+		fertility=0.57271
+		health=4.56487
+		piety={
+			currency=50
+		}
+		prestige={
+			currency=150
+		}
+		influence={
+			currency=60
+		}
+		languages={ language_khitan }
+		activity_data={
+		}
+
+		location={
+			location=11680
+		}
+	}
+
+	court_data={
+		employer=34755
+		join_court_date=1066.9.17
+	}
+
+}

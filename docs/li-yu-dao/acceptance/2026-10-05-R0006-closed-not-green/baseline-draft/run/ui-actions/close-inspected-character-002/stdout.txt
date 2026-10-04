@@ -1,0 +1,1 @@
+{"live_screen_size": [1920, 1080], "observed_point": [615.0, 107.0], "preview_bounds": [0.0, 0.0, 1920, 1080], "screen_point": [615, 107], "source_image_size": [1920, 1080]}

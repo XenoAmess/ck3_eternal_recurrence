@@ -1,0 +1,25 @@
+{
+  "utc": "2026-10-04T13:51:06.617447+00:00",
+  "source_checkpoint": {
+    "status": "saved",
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\userdir\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 91301141,
+    "sha256": "5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c",
+    "date_raw": 53144328,
+    "overwrite_confirmed": true,
+    "strategy": "native-autosave-command-v1",
+    "episode_projection": "native_campaign",
+    "succession_lifecycle": null,
+    "history_index": 14,
+    "episode_character_id": null,
+    "episode_run_id": null
+  },
+  "immutable_save": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0025-practice-a-save\\save.ck3",
+  "sha256": "5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c",
+  "bytes": 91301141,
+  "played_character_id": 31254,
+  "date_raw": 53144328,
+  "native_response": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0025-0025-practice-a-save.sdk-result.json",
+  "native_response_sha256": "bcdc06ba666f0f6e02e0c45ee58f14618d740bf997d431cd24657aa26e8efa39"
+}

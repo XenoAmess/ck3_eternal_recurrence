@@ -1,0 +1,4 @@
+		506={
+			type=task_religious_relations			owner=59758
+			court_owner=34232
+		}

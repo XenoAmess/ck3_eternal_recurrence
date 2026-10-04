@@ -1,0 +1,397 @@
+{
+  "schema": "lyd.r6-elector-court-origin-supplement.v1",
+  "created_utc": "2026-10-04T19:07:25.995657+00:00",
+  "game_called": false,
+  "native_called": false,
+  "git_called": false,
+  "tracked_written": false,
+  "scope": "Two immutable snapshots and existing full-world result. Only inspect actual council replacement and own rite; no event action or fabricated appointment trace.",
+  "prior_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-resource-and-elector-origin-resume-20261005-003\\REPORT.json",
+    "sha256": "99be86b1340074aa008c78d1c376f45ae5336c11db33fd0d2a9689ddd9ab89e1"
+  },
+  "snapshots": {
+    "0030-setup": {
+      "save": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0030-i2-setup-save\\save.ck3",
+      "sha256": "3f03971940fe97653f392691a36acee63bd66544d49b35b57296c744fe47da37",
+      "characters": {
+        "34232": {
+          "id": "34232",
+          "section": "living",
+          "first_name": "Roger",
+          "birth": "1031.1.2",
+          "culture": null,
+          "rite_id": "0",
+          "organization": null,
+          "saved_base_learning": "10",
+          "actual_court_employer": null,
+          "actual_council_task": "7870",
+          "join_court_date": null,
+          "is_in_the_council_saved_flag_present": false,
+          "lyd_variables": {},
+          "lyd_lists": {}
+        },
+        "34973": {
+          "id": "34973",
+          "section": "living",
+          "first_name": "Robert",
+          "birth": "1035.1.1",
+          "culture": null,
+          "rite_id": "0",
+          "organization": null,
+          "saved_base_learning": "1",
+          "actual_court_employer": null,
+          "actual_council_task": "7872",
+          "join_court_date": null,
+          "is_in_the_council_saved_flag_present": false,
+          "lyd_variables": {},
+          "lyd_lists": {}
+        },
+        "59621": {
+          "id": "59621",
+          "section": "living",
+          "first_name": "Herbert",
+          "birth": "1030.4.29",
+          "culture": "73",
+          "rite_id": "0",
+          "organization": "13",
+          "saved_base_learning": "4",
+          "actual_court_employer": "34973",
+          "actual_council_task": "1359",
+          "join_court_date": "1066.9.15",
+          "is_in_the_council_saved_flag_present": false,
+          "lyd_variables": {},
+          "lyd_lists": {}
+        },
+        "65856": {
+          "id": "65856",
+          "section": "living",
+          "first_name": "Geoffroy",
+          "birth": "1026.5.6",
+          "culture": "73",
+          "rite_id": "169",
+          "organization": null,
+          "saved_base_learning": "20",
+          "actual_court_employer": "31254",
+          "actual_council_task": null,
+          "join_court_date": "1066.9.15",
+          "is_in_the_council_saved_flag_present": false,
+          "lyd_variables": {
+            "lyd_r4_created_source_rep": {
+              "present": true,
+              "tick": null,
+              "type": null,
+              "identity": null,
+              "entries": [],
+              "row_entries": [
+                {
+                  "key": "flag",
+                  "value": "lyd_r4_created_source_rep"
+                },
+                {
+                  "key": "data",
+                  "value": []
+                }
+              ]
+            }
+          },
+          "lyd_lists": {}
+        },
+        "65857": {
+          "id": "65857",
+          "section": "living",
+          "first_name": "Humphrey",
+          "birth": "1026.7.31",
+          "culture": "73",
+          "rite_id": "159",
+          "organization": null,
+          "saved_base_learning": "20",
+          "actual_court_employer": "31254",
+          "actual_council_task": null,
+          "join_court_date": "1066.9.15",
+          "is_in_the_council_saved_flag_present": false,
+          "lyd_variables": {
+            "lyd_r4_created_jingshu_rep": {
+              "present": true,
+              "tick": null,
+              "type": null,
+              "identity": null,
+              "entries": [],
+              "row_entries": [
+                {
+                  "key": "flag",
+                  "value": "lyd_r4_created_jingshu_rep"
+                },
+                {
+                  "key": "data",
+                  "value": []
+                }
+              ]
+            }
+          },
+          "lyd_lists": {}
+        },
+        "59758": [
+          {
+            "id": "59758",
+            "section": "living",
+            "first_name": "Geraud",
+            "birth": "1030.5.5",
+            "culture": "73",
+            "rite_id": "0",
+            "organization": "13",
+            "saved_base_learning": "7",
+            "actual_court_employer": "34232",
+            "actual_council_task": "506",
+            "join_court_date": "1066.9.15",
+            "is_in_the_council_saved_flag_present": false,
+            "lyd_variables": {},
+            "lyd_lists": {}
+          }
+        ]
+      },
+      "council_tasks": {
+        "506": [
+          {
+            "key": "type",
+            "value": "task_religious_relations"
+          },
+          {
+            "key": "owner",
+            "value": "59758"
+          },
+          {
+            "key": "court_owner",
+            "value": "34232"
+          }
+        ],
+        "1359": [
+          {
+            "key": "type",
+            "value": "task_religious_relations"
+          },
+          {
+            "key": "owner",
+            "value": "59621"
+          },
+          {
+            "key": "court_owner",
+            "value": "34973"
+          }
+        ]
+      }
+    },
+    "0036-actual-dplus2": {
+      "save": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0036-i2-one-day-save\\save.ck3",
+      "sha256": "97fe09b4d9ff9cfc59bfbeb4b9ff7bf795538cfa22c8fd07ac73c6dd2b61eee5",
+      "characters": {
+        "34232": {
+          "id": "34232",
+          "section": "living",
+          "first_name": "Roger",
+          "birth": "1031.1.2",
+          "culture": null,
+          "rite_id": "169",
+          "organization": null,
+          "saved_base_learning": "10",
+          "actual_court_employer": null,
+          "actual_council_task": "7870",
+          "join_court_date": null,
+          "is_in_the_council_saved_flag_present": false,
+          "lyd_variables": {},
+          "lyd_lists": {}
+        },
+        "34973": {
+          "id": "34973",
+          "section": "living",
+          "first_name": "Robert",
+          "birth": "1035.1.1",
+          "culture": null,
+          "rite_id": "169",
+          "organization": null,
+          "saved_base_learning": "1",
+          "actual_court_employer": null,
+          "actual_council_task": "7872",
+          "join_court_date": null,
+          "is_in_the_council_saved_flag_present": false,
+          "lyd_variables": {},
+          "lyd_lists": {}
+        },
+        "59621": {
+          "id": "59621",
+          "section": "living",
+          "first_name": "Herbert",
+          "birth": "1030.4.29",
+          "culture": "73",
+          "rite_id": "0",
+          "organization": null,
+          "saved_base_learning": "4",
+          "actual_court_employer": "34973",
+          "actual_council_task": null,
+          "join_court_date": "1066.9.15",
+          "is_in_the_council_saved_flag_present": false,
+          "lyd_variables": {},
+          "lyd_lists": {}
+        },
+        "65856": {
+          "id": "65856",
+          "section": "living",
+          "first_name": "Geoffroy",
+          "birth": "1026.5.6",
+          "culture": "73",
+          "rite_id": "169",
+          "organization": null,
+          "saved_base_learning": "20",
+          "actual_court_employer": "31254",
+          "actual_council_task": null,
+          "join_court_date": "1066.9.15",
+          "is_in_the_council_saved_flag_present": false,
+          "lyd_variables": {
+            "lyd_r4_created_source_rep": {
+              "present": true,
+              "tick": null,
+              "type": null,
+              "identity": null,
+              "entries": [],
+              "row_entries": [
+                {
+                  "key": "flag",
+                  "value": "lyd_r4_created_source_rep"
+                },
+                {
+                  "key": "data",
+                  "value": []
+                }
+              ]
+            }
+          },
+          "lyd_lists": {}
+        },
+        "65857": {
+          "id": "65857",
+          "section": "living",
+          "first_name": "Humphrey",
+          "birth": "1026.7.31",
+          "culture": "73",
+          "rite_id": "159",
+          "organization": null,
+          "saved_base_learning": "20",
+          "actual_court_employer": "31254",
+          "actual_council_task": null,
+          "join_court_date": "1066.9.15",
+          "is_in_the_council_saved_flag_present": false,
+          "lyd_variables": {
+            "lyd_r4_created_jingshu_rep": {
+              "present": true,
+              "tick": null,
+              "type": null,
+              "identity": null,
+              "entries": [],
+              "row_entries": [
+                {
+                  "key": "flag",
+                  "value": "lyd_r4_created_jingshu_rep"
+                },
+                {
+                  "key": "data",
+                  "value": []
+                }
+              ]
+            }
+          },
+          "lyd_lists": {}
+        },
+        "59758": [
+          {
+            "id": "59758",
+            "section": "living",
+            "first_name": "Geraud",
+            "birth": "1030.5.5",
+            "culture": "73",
+            "rite_id": "0",
+            "organization": null,
+            "saved_base_learning": "7",
+            "actual_court_employer": "34232",
+            "actual_council_task": null,
+            "join_court_date": "1066.9.15",
+            "is_in_the_council_saved_flag_present": false,
+            "lyd_variables": {},
+            "lyd_lists": {}
+          }
+        ]
+      },
+      "council_tasks": {
+        "506": [
+          {
+            "key": "type",
+            "value": "task_religious_relations"
+          },
+          {
+            "key": "owner",
+            "value": "65861"
+          },
+          {
+            "key": "court_owner",
+            "value": "34232"
+          }
+        ],
+        "1359": [
+          {
+            "key": "type",
+            "value": "task_religious_relations"
+          },
+          {
+            "key": "owner",
+            "value": "65860"
+          },
+          {
+            "key": "court_owner",
+            "value": "34973"
+          }
+        ]
+      }
+    }
+  },
+  "source_references": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-resource-and-elector-origin-resume-20261005-003\\source\\06-00_council_positions.txt",
+      "sha256": "31fa258dfbf35a07e9ee08d1d1dfdcd26712d3974cd65ec74255c284e4df0a2a",
+      "bytes": 88435
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-resource-and-elector-origin-resume-20261005-003\\source\\08-00_clergy.txt",
+      "sha256": "8c381a54154e1785bff83d0d3b59642e15a80e5165789bc6d1ef2fd54049ff29",
+      "bytes": 2081
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-resource-and-elector-origin-resume-20261005-003\\source\\02-lyd_r4_fixture_effects.txt",
+      "sha256": "55a6310eb1a9abef2b08848f9630b7577c5c77d8c887d3647a89f69107b2095c",
+      "bytes": 10470
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-resource-and-elector-origin-resume-20261005-002\\readback_world_and_origin.py",
+      "sha256": "140fcca677e44ffbf060db5cc8466b5050c5a307801f82a8850d2285cc599887",
+      "bytes": 22838
+    }
+  ],
+  "conclusions": {
+    "foreign_ruler_34973_own_rite": [
+      "0",
+      "169"
+    ],
+    "foreign_ruler_34232_own_rite": [
+      "0",
+      "169"
+    ],
+    "task1359_original_to_new_owner": [
+      "59621",
+      "65860"
+    ],
+    "task506_original_to_new_owner": [
+      "59758",
+      "65861"
+    ],
+    "mechanism_boundary": "Observed saved court-task owner replacement and same-rite new adult clergy are consistent with loaded auto_fill/fill_from_pool/pool_court_chaplain rules. Original native creation and appointment calls are not present; unique causation is not proven.",
+    "proposal_creation_excluded": "65860 and65861 already exist in0036 and0040. Full world0040-to0042 comparison had no character additions or deletions."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "at_utc": "2026-10-04T18:57:53.099427+00:00",
+  "lease": {
+    "schema": "xar.promo.screen-lease-cas/v1",
+    "task_id": "ck3-lyd-r0006-exit-20261005",
+    "expected_sequence": 2810,
+    "sequence": 2811,
+    "event_id": "0afcd2f80f844d1a829850761997a318",
+    "updated_at_utc": "2026-10-04T18:57:52.123223+00:00",
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "checkout_head": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+    "source_cli": "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+    "installed_cli": "C:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+    "cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "screen_resource": "ck3-screen:acquired"
+  }
+}

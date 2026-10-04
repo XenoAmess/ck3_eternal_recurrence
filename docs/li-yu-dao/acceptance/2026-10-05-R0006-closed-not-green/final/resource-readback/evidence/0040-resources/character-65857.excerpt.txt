@@ -1,0 +1,70 @@
+65857={
+	first_name="Humphrey"
+	birth=1026.7.31
+	nickname_text=""
+	ethnicity=caucasian_dark_hair
+	culture=73
+	rite=159
+	dynasty_house=12759
+	skill={ 7 0 9 0 20 4 }
+	dna="Ce4J7mBBYEHIn8ifAY0BjQGAAYAAewB7AYMBgwGMAYwBhQGFAYUBhQByAHIAZQBlAagBqAG1AbUAbwBvADMAMwGbAZsAfwB/AbEBsQGKAYoBpQGlAHMAcwB2AHYBhQGFAaMBowGDAYMBlQGVAYwBjAGLAYsAcwBzAasBqwBYAFgBoQGhAHQAdAB2AHYBLAEsARIBEgAYABgAIwAjAAoACgADAAMBAAEAAXsBewElASUBXgFeARMBEwEEAQQAkwCTAU0BTQBcAFwBAQEBACkAKQBzAHMAJwAnABwAHADIAMgAIgAiAAIAAgAIAAgACwALACwALAA+AD4BzgHOAFwAXAEiASIBWQFZAC8ALwASABIBEAEQAAQABAAcABwBLAEsATQBNAAfAB8BBQEFATMBMwAAAAABEQERABEAEQHdAd0B/wH/A/ID8gIYAhgAAgACACMAIwDqAOoCDgIOAsMCwwAuAC4CAAIAALkAuQFjAWMCiwKLBAAEAApfCl8BiQGJBLsEuwHbAdsAawBrALEAsQHfAd8BzgHOAX4BfgGTAZM="
+
+	mass=-10
+	traits={ 68 59 49 23 }
+	alive_data={
+		variables={
+			data={ {
+					flag=changed_rite_flag
+					data={
+					}
+
+				}
+ {
+					flag=has_created_a_faith
+					data={
+						type=boolean
+						identity=1
+					}
+
+				}
+ {
+					flag=reformer_legend
+					data={
+					}
+
+				}
+ {
+					flag=lyd_r4_created_jingshu_rep
+					data={
+					}
+
+				}
+ }
+		}
+		fertility=0.55183
+		health=4.9745
+		piety={
+			currency=50
+		}
+		prestige={
+			currency=450
+		}
+		influence={
+			currency=180
+		}
+		languages={ language_french }
+		activity_data={
+		}
+
+		location={
+			location=2619
+		}
+	}
+
+	court_data={
+		employer=31254
+		knight=yes
+		join_court_date=1066.9.15
+	}
+
+}

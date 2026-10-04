@@ -1,0 +1,83 @@
+{
+  "lyd_r4_actor_qualified": {
+    "present": true,
+    "tick": null,
+    "type": "value",
+    "identity": null,
+    "entries": [
+      {
+        "key": "type",
+        "value": "value"
+      }
+    ],
+    "row_entries": [
+      {
+        "key": "flag",
+        "value": "lyd_r4_actor_qualified"
+      },
+      {
+        "key": "data",
+        "value": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ]
+      }
+    ]
+  },
+  "lyd_r4_join_funds": {
+    "present": true,
+    "tick": null,
+    "type": "value",
+    "identity": null,
+    "entries": [
+      {
+        "key": "type",
+        "value": "value"
+      }
+    ],
+    "row_entries": [
+      {
+        "key": "flag",
+        "value": "lyd_r4_join_funds"
+      },
+      {
+        "key": "data",
+        "value": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ]
+      }
+    ]
+  },
+  "lyd_r4_reset_count": {
+    "present": true,
+    "tick": null,
+    "type": "value",
+    "identity": null,
+    "entries": [
+      {
+        "key": "type",
+        "value": "value"
+      }
+    ],
+    "row_entries": [
+      {
+        "key": "flag",
+        "value": "lyd_r4_reset_count"
+      },
+      {
+        "key": "data",
+        "value": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ]
+      }
+    ]
+  }
+}

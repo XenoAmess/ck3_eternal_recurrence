@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+    "--bus-dir",
+    "C:\\workspace\\.codex-task-bus",
+    "--expected-cli-sha256",
+    "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "register",
+    "--task",
+    "ck3-lyd-r0006-exit-20261005",
+    "--repo",
+    "C:\\workspace\\ck3_eternal_recurrence",
+    "--summary",
+    "LYD-R0006-recovery-normal-exit",
+    "--next-step",
+    "Preserve-frozen-session-and-normal-UI-exit",
+    "--resource",
+    "ck3-screen:acquired"
+  ],
+  "exit_code": 0,
+  "utc": "2026-10-04T18:57:30.747684+00:00"
+}

@@ -1,0 +1,73 @@
+{
+  "primary": [
+    {
+      "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      "line": 69,
+      "symbol": "lyd_r4_qualification_display_trigger",
+      "count": 1
+    },
+    {
+      "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      "line": 11,
+      "symbol": "lyd_r4_unlocked_rite_trigger",
+      "count": 1
+    },
+    {
+      "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      "line": 12,
+      "symbol": "lyd_r4_unlocked_rite_trigger",
+      "count": 1
+    },
+    {
+      "path": "common/scripted_effects/lyd_r4_fixture_effects.txt",
+      "line": 76,
+      "symbol": "lyd_r4_qualification_effect",
+      "count": 47163
+    }
+  ],
+  "all_referenced": [
+    {
+      "domain": "vanilla_reference",
+      "path": "common/trigger_localization/00_debug_triggers.txt",
+      "line": 157,
+      "symbol": "has_variable",
+      "count": 3
+    },
+    {
+      "domain": "fixture",
+      "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      "line": 69,
+      "symbol": "lyd_r4_qualification_display_trigger",
+      "count": 1
+    },
+    {
+      "domain": "fixture",
+      "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      "line": 11,
+      "symbol": "lyd_r4_unlocked_rite_trigger",
+      "count": 1
+    },
+    {
+      "domain": "fixture",
+      "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      "line": 12,
+      "symbol": "lyd_r4_unlocked_rite_trigger",
+      "count": 1
+    },
+    {
+      "domain": "fixture",
+      "path": "common/decisions/lyd_r4_fixture_decisions.txt",
+      "line": 18,
+      "symbol": "lyd_r4_qualification_decision:effect",
+      "count": 31442
+    },
+    {
+      "domain": "fixture",
+      "path": "common/scripted_effects/lyd_r4_fixture_effects.txt",
+      "line": 76,
+      "symbol": "lyd_r4_qualification_effect",
+      "count": 47163
+    }
+  ],
+  "definition": "Each [E] block has one primary Script location when present; vanilla trigger-localization and fixture decision stack references are separately listed, not double-counted as product errors."
+}

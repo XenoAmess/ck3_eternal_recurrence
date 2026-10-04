@@ -1,0 +1,667 @@
+[
+  {
+    "request_id": "0037-i2-resources-snapshot",
+    "sdk_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0038-0037-i2-resources-snapshot.sdk-result.json",
+    "sdk_bytes": 108855,
+    "sdk_sha256": "8062ed9ed3a54ae94457d1f5109634a504c504d26aeec88bc6158159d40397d9",
+    "status": "native_snapshot_verified",
+    "isError": false,
+    "event_selection": null,
+    "checkpoint": null,
+    "snapshots": {
+      "snapshot": {
+        "snapshot_id": "native:33",
+        "revision": 34,
+        "date_raw": 53144376,
+        "paused": true,
+        "active_event": {
+          "source": "native",
+          "instance_id": 9,
+          "option_count": 1,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        },
+        "played_character_gold": {
+          "raw": 222900000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 918500000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        }
+      }
+    }
+  },
+  {
+    "request_id": "0038-i2-resources-fresh",
+    "sdk_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0039-0038-i2-resources-fresh.sdk-result.json",
+    "sdk_bytes": 108855,
+    "sdk_sha256": "02c439ed3ff44d6579b90357a424bb832117b9fe15b289bf6c1c4f58e6c03eb0",
+    "status": "native_snapshot_verified",
+    "isError": false,
+    "event_selection": null,
+    "checkpoint": null,
+    "snapshots": {
+      "snapshot": {
+        "snapshot_id": "native:33",
+        "revision": 34,
+        "date_raw": 53144376,
+        "paused": true,
+        "active_event": {
+          "source": "native",
+          "instance_id": 9,
+          "option_count": 1,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        },
+        "played_character_gold": {
+          "raw": 222900000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 918500000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        }
+      }
+    }
+  },
+  {
+    "request_id": "0039-i2-resources-ack",
+    "sdk_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0040-0039-i2-resources-ack.sdk-result.json",
+    "sdk_bytes": 221655,
+    "sdk_sha256": "cae7c7b6ae0dc5d7ca7557a7736a5baca37dd4dda2b0cbd027afd6eec94205f7",
+    "status": "native_gameplay_postcondition_verified",
+    "isError": false,
+    "event_selection": {
+      "status": "event_instance_advanced",
+      "postcondition_verified": true,
+      "old_event_instance_id": 9,
+      "new_event_instance_id": null,
+      "selected_option_number": 1,
+      "selected_native_option_index": 0,
+      "starting_snapshot_id": "native:33",
+      "starting_revision": 34,
+      "ending_snapshot_id": "native:34",
+      "ending_revision": 35,
+      "episode_run_id": null,
+      "connection_generation": 1,
+      "bridge_pid": 12500,
+      "starting_played_character_stress": {
+        "status": "available",
+        "character_id": 31254,
+        "stress_points": 4,
+        "unavailable_reason": null
+      },
+      "ending_played_character_stress": {
+        "status": "available",
+        "character_id": 31254,
+        "stress_points": 4,
+        "unavailable_reason": null
+      },
+      "starting_played_character_gold": {
+        "status": "available",
+        "character_id": 31254,
+        "gold_raw": 222900000,
+        "scale": 100000,
+        "unavailable_reason": null
+      },
+      "ending_played_character_gold": {
+        "status": "available",
+        "character_id": 31254,
+        "gold_raw": 222900000,
+        "scale": 100000,
+        "unavailable_reason": null
+      },
+      "starting_played_character_prestige": {
+        "status": "available",
+        "character_id": 31254,
+        "prestige_raw": 220000000,
+        "scale": 100000,
+        "unavailable_reason": null
+      },
+      "ending_played_character_prestige": {
+        "status": "available",
+        "character_id": 31254,
+        "prestige_raw": 220000000,
+        "scale": 100000,
+        "unavailable_reason": null
+      }
+    },
+    "checkpoint": null,
+    "snapshots": {
+      "snapshot_before": {
+        "snapshot_id": "native:33",
+        "revision": 34,
+        "date_raw": 53144376,
+        "paused": true,
+        "active_event": {
+          "source": "native",
+          "instance_id": 9,
+          "option_count": 1,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        },
+        "played_character_gold": {
+          "raw": 222900000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 918500000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        }
+      },
+      "snapshot_after": {
+        "snapshot_id": "native:34",
+        "revision": 35,
+        "date_raw": 53144376,
+        "paused": true,
+        "active_event": null,
+        "played_character_gold": {
+          "raw": 222900000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 918500000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        }
+      }
+    }
+  },
+  {
+    "request_id": "0040-i2-resources-save",
+    "sdk_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0041-0040-i2-resources-save.sdk-result.json",
+    "sdk_bytes": 227313,
+    "sdk_sha256": "1f1a4f6c73e11b7595f344ee92caaa076cc7aca0ca5b57f61d37f2ee0ac3b62c",
+    "status": "native_gameplay_postcondition_verified",
+    "isError": false,
+    "event_selection": null,
+    "checkpoint": {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 90496391,
+      "sha256": "129616804d118c0ba035921e97e1e4a9f0d01abcb3687e1a8eb77ce57961ad23",
+      "date_raw": 53144376,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 24,
+      "episode_character_id": null,
+      "episode_run_id": null
+    },
+    "snapshots": {
+      "snapshot_before": {
+        "snapshot_id": "native:34",
+        "revision": 35,
+        "date_raw": 53144376,
+        "paused": true,
+        "active_event": null,
+        "played_character_gold": {
+          "raw": 222900000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 918500000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        }
+      },
+      "snapshot_after": {
+        "snapshot_id": "native:35",
+        "revision": 36,
+        "date_raw": 53144376,
+        "paused": true,
+        "active_event": null,
+        "played_character_gold": {
+          "raw": 222900000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 918500000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        }
+      }
+    }
+  },
+  {
+    "request_id": "0041-i2-detach-open-snapshot",
+    "sdk_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0042-0041-i2-detach-open-snapshot.sdk-result.json",
+    "sdk_bytes": 117473,
+    "sdk_sha256": "77984c39cde6dca8fcd517635d30098af113e43c63f85e8333955f335ccedc8e",
+    "status": "native_snapshot_verified",
+    "isError": false,
+    "event_selection": null,
+    "checkpoint": null,
+    "snapshots": {
+      "snapshot": {
+        "snapshot_id": "native:36",
+        "revision": 37,
+        "date_raw": 53144376,
+        "paused": true,
+        "active_event": {
+          "source": "native",
+          "instance_id": 12,
+          "option_count": 2,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            },
+            {
+              "index": 1,
+              "option_number": 2,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        },
+        "played_character_gold": {
+          "raw": 222900000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 918500000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        }
+      }
+    }
+  },
+  {
+    "request_id": "0042-i2-detach-open-save",
+    "sdk_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0043-0042-i2-detach-open-save.sdk-result.json",
+    "sdk_bytes": 234985,
+    "sdk_sha256": "6ba404e2544ff226033ee52ff0da0537344d572a9d7b1970b8aa79269455f55b",
+    "status": "native_gameplay_postcondition_verified",
+    "isError": false,
+    "event_selection": null,
+    "checkpoint": {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 90507374,
+      "sha256": "7b5adbc84232b6c1159f4d472cd87778b5910c4f1594399e118a6116edb1a42c",
+      "date_raw": 53144376,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 25,
+      "episode_character_id": null,
+      "episode_run_id": null
+    },
+    "snapshots": {
+      "snapshot_before": {
+        "snapshot_id": "native:36",
+        "revision": 37,
+        "date_raw": 53144376,
+        "paused": true,
+        "active_event": {
+          "source": "native",
+          "instance_id": 12,
+          "option_count": 2,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            },
+            {
+              "index": 1,
+              "option_number": 2,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        },
+        "played_character_gold": {
+          "raw": 222900000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 918500000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        }
+      },
+      "snapshot_after": {
+        "snapshot_id": "native:37",
+        "revision": 38,
+        "date_raw": 53144376,
+        "paused": true,
+        "active_event": {
+          "source": "native",
+          "instance_id": 12,
+          "option_count": 2,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            },
+            {
+              "index": 1,
+              "option_number": 2,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        },
+        "played_character_gold": {
+          "raw": 222900000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 918500000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        }
+      }
+    }
+  },
+  {
+    "request_id": "0043-i2-detach-source-yes",
+    "sdk_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0044-0043-i2-detach-source-yes.sdk-result.json",
+    "sdk_bytes": 247347,
+    "sdk_sha256": "f9a7c5022a9fd81cfe7e9ea3cd69cbf70566699401152db0e3d1ad755518e8d2",
+    "status": "native_gameplay_postcondition_verified",
+    "isError": false,
+    "event_selection": {
+      "status": "event_instance_advanced",
+      "postcondition_verified": true,
+      "old_event_instance_id": 12,
+      "new_event_instance_id": 11,
+      "selected_option_number": 1,
+      "selected_native_option_index": 0,
+      "starting_snapshot_id": "native:37",
+      "starting_revision": 38,
+      "ending_snapshot_id": "native:38",
+      "ending_revision": 39,
+      "episode_run_id": null,
+      "connection_generation": 1,
+      "bridge_pid": 12500,
+      "starting_played_character_stress": {
+        "status": "available",
+        "character_id": 31254,
+        "stress_points": 4,
+        "unavailable_reason": null
+      },
+      "ending_played_character_stress": {
+        "status": "available",
+        "character_id": 31254,
+        "stress_points": 4,
+        "unavailable_reason": null
+      },
+      "starting_played_character_gold": {
+        "status": "available",
+        "character_id": 31254,
+        "gold_raw": 222900000,
+        "scale": 100000,
+        "unavailable_reason": null
+      },
+      "ending_played_character_gold": {
+        "status": "available",
+        "character_id": 31254,
+        "gold_raw": 222900000,
+        "scale": 100000,
+        "unavailable_reason": null
+      },
+      "starting_played_character_prestige": {
+        "status": "available",
+        "character_id": 31254,
+        "prestige_raw": 220000000,
+        "scale": 100000,
+        "unavailable_reason": null
+      },
+      "ending_played_character_prestige": {
+        "status": "available",
+        "character_id": 31254,
+        "prestige_raw": 220000000,
+        "scale": 100000,
+        "unavailable_reason": null
+      }
+    },
+    "checkpoint": null,
+    "snapshots": {
+      "snapshot_before": {
+        "snapshot_id": "native:37",
+        "revision": 38,
+        "date_raw": 53144376,
+        "paused": true,
+        "active_event": {
+          "source": "native",
+          "instance_id": 12,
+          "option_count": 2,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            },
+            {
+              "index": 1,
+              "option_number": 2,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        },
+        "played_character_gold": {
+          "raw": 222900000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 918500000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        }
+      },
+      "snapshot_after": {
+        "snapshot_id": "native:38",
+        "revision": 39,
+        "date_raw": 53144376,
+        "paused": true,
+        "active_event": {
+          "source": "native",
+          "instance_id": 11,
+          "option_count": 2,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            },
+            {
+              "index": 1,
+              "option_number": 2,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        },
+        "played_character_gold": {
+          "raw": 222900000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 918500000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        }
+      }
+    }
+  },
+  {
+    "request_id": "0044-i2-detach-source-yes-save",
+    "sdk_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0045-0044-i2-detach-source-yes-save.sdk-result.json",
+    "sdk_bytes": 253789,
+    "sdk_sha256": "d45250626e1e42bf16ab779f9732f31116099db3c39a0f8796a892e99b64805e",
+    "status": "native_gameplay_postcondition_verified",
+    "isError": false,
+    "event_selection": null,
+    "checkpoint": {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 90506624,
+      "sha256": "7ee7fb562d37874fb479559bef0c6d069f43320bdd908537c5466d07d5a1ecf2",
+      "date_raw": 53144376,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 27,
+      "episode_character_id": null,
+      "episode_run_id": null
+    },
+    "snapshots": {
+      "snapshot_before": {
+        "snapshot_id": "native:38",
+        "revision": 39,
+        "date_raw": 53144376,
+        "paused": true,
+        "active_event": {
+          "source": "native",
+          "instance_id": 11,
+          "option_count": 2,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            },
+            {
+              "index": 1,
+              "option_number": 2,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        },
+        "played_character_gold": {
+          "raw": 222900000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 918500000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        }
+      },
+      "snapshot_after": {
+        "snapshot_id": "native:39",
+        "revision": 40,
+        "date_raw": 53144376,
+        "paused": true,
+        "active_event": {
+          "source": "native",
+          "instance_id": 11,
+          "option_count": 2,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            },
+            {
+              "index": 1,
+              "option_number": 2,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        },
+        "played_character_gold": {
+          "raw": 222900000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 918500000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        }
+      }
+    }
+  }
+]

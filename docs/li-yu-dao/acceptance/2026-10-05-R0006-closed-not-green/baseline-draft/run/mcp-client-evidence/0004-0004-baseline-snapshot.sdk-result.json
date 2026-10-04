@@ -1,0 +1,339 @@
+{
+  "_meta": {
+    "io.modelcontextprotocol/serverInfo": {
+      "name": "CK3 frozen native profile",
+      "version": ""
+    }
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"schema\": \"ck3.native-profile-receipt.v1\",\n  \"session_id\": \"4b3809aa40264a9581b8392d565d63ba\",\n  \"profile_sha256\": \"74601f97464a5faeb14312c4e2fa7458153c36fd7c2d5349a37ef852ec1db661\",\n  \"pipe_name\": \"\\\\\\\\.\\\\pipe\\\\xar_profile_4b3809aa40264a9581b8392d565d63ba\",\n  \"recorded_at_utc\": \"2026-10-04T12:16:03.398153+00:00\",\n  \"status\": \"native_snapshot_verified\",\n  \"snapshot\": {\n    \"date_raw\": 53144328,\n    \"speed\": 3,\n    \"paused\": true,\n    \"local_player_id\": 1,\n    \"map_ready\": true,\n    \"played_character\": {\n      \"character_id\": 31254,\n      \"alive\": true,\n      \"source\": \"native\",\n      \"stress_points\": 0,\n      \"betrothed_id\": null,\n      \"primary_spouse_id\": 36311,\n      \"spouse_ids\": [\n        36311\n      ]\n    },\n    \"played_character_gold\": {\n      \"raw\": 24400000,\n      \"scale\": 100000\n    },\n    \"played_character_prestige\": {\n      \"raw\": 220000000,\n      \"scale\": 100000\n    },\n    \"played_character_piety\": {\n      \"raw\": 15000000,\n      \"scale\": 100000\n    },\n    \"one_life_settlement\": null,\n    \"active_event\": null,\n    \"pending_character_interaction\": null,\n    \"active_wars\": [],\n    \"player_armies\": [],\n    \"last_checkpoint_submission\": null,\n    \"history\": [],\n    \"format_version\": 1,\n    \"snapshot_id\": \"native:1\",\n    \"revision\": 2,\n    \"native_revision\": 1,\n    \"backend_id\": \"native-headless\",\n    \"source\": \"injected-dll-named-pipe\",\n    \"diagnostics\": {\n      \"protocol_version\": 1,\n      \"pipe_name\": \"\\\\\\\\.\\\\pipe\\\\xar_profile_4b3809aa40264a9581b8392d565d63ba\",\n      \"connected\": true,\n      \"connection_generation\": 1,\n      \"bridge_pid\": 12500,\n      \"bridge_version\": \"0.1.0\",\n      \"hello\": {\n        \"type\": \"hello\",\n        \"protocol_version\": 1,\n        \"bridge_version\": \"0.1.0\",\n        \"pid\": 12500,\n        \"session_generation\": 0,\n        \"connection_generation\": 1,\n        \"architecture\": \"x86_64-windows-msvc\",\n        \"expected_ck3_version\": \"1.20.0.3\",\n        \"expected_ck3_sha256\": \"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6\",\n        \"game_adapter_id\": \"ck3-1.20.0.3-msvc-x64\",\n        \"game_adapter_status\": \"ready\",\n        \"ck3_build_match\": true,\n        \"capabilities\": [\n          \"bridge.identity\",\n          \"bridge.heartbeat\",\n          \"bridge.ping\",\n          \"game.state.snapshot\",\n          \"game.state.xar-one-life-settlement\",\n          \"game.state.map-ready\",\n          \"game.state.played-character\",\n          \"game.state.active-event\",\n          \"game.state.pending-character-interaction\",\n          \"game.state.active-wars\",\n          \"game.state.war-primary-opponent\",\n          \"game.state.war-objectives\",\n          \"game.state.war-objective-occupation\",\n          \"game.state.war-objective-fort-level\",\n          \"game.state.war-objective-garrison\",\n          \"game.state.war-objective-siege-progress\",\n          \"game.state.war-objective-assault\",\n          \"game.state.player-armies\",\n          \"game.state.army-routes\",\n          \"game.command.pause-map\",\n          \"game.command.resume-map\",\n          \"game.command.set-speed-1\",\n          \"game.command.set-speed-2\",\n          \"game.command.set-speed-3\",\n          \"game.command.set-speed-4\",\n          \"game.command.set-speed-5\",\n          \"game.command.select-event-option-N\",\n          \"game.command.save-checkpoint\",\n          \"game.command.accept-pending-character-interaction\",\n          \"game.command.reject-pending-character-interaction\",\n          \"game.command.acknowledge-pending-character-interaction\",\n          \"game.command.raise-troops-default\",\n          \"game.command.preview-move-army-N-to-N\",\n          \"game.command.query-route-contact-horizon-v1-N\",\n          \"game.command.query-actual-contact-scope-v1-N\",\n          \"game.command.query-battle-control-snapshot-v1-N\",\n          \"game.command.query-battle-transition-v1-N\",\n          \"game.command.query-battle-terminal-transition-v1\",\n          \"game.command.query-battle-reinforcement-assignment-v1-N\",\n          \"game.command.move-army-N-to-N\",\n          \"game.command.disband-army-N\",\n          \"game.command.split-army-half-N\",\n          \"game.command.merge-armies-N-with-N\",\n          \"game.command.start-assault-N\",\n          \"game.command.stop-assault-N\",\n          \"game.command.query-declarable-wars\",\n          \"game.command.query-war-entry-assessments-v1-N\",\n          \"game.command.declare-war-N\",\n          \"game.command.enforce-demands-N\",\n          \"game.command.query-army-strengths-v1\",\n          \"game.command.query-campaign-root-context-v1\",\n          \"game.command.query-loaded-feature-manifest-v1\",\n          \"game.command.query-pending-character-interaction-context-v1\",\n          \"game.command.query-current-event-window-context-v1\",\n          \"game.command.center-map-on-landed-title-v1\",\n          \"game.command.query-combat-simulation-inputs-v2-N\",\n          \"game.command.query-war-termination-options-N\",\n          \"game.command.query-war-termination-terms-v1-N\",\n          \"game.command.surrender-war-N\",\n          \"game.command.offer-white-peace-N\",\n          \"game.command.query-arrange-marriage-choices\",\n          \"game.command.arrange-marriage-N\",\n          \"game.adapter.exact-build\",\n          \"game.adapter.minimized-headless\"\n        ]\n      },\n      \"last_heartbeat\": {\n        \"type\": \"heartbeat\",\n        \"protocol_version\": 1,\n        \"sequence\": 138,\n        \"pid\": 12500,\n        \"monotonic_ms\": 586651000,\n        \"startup_failure_containment_enabled\": false,\n        \"startup_particle2_stage_recorder_enabled\": false,\n        \"startup_widget_null_flag_call_guard_enabled\": false,\n        \"startup_rbx_null_call_guard_enabled\": false,\n        \"cold_map_vfs_observer_enabled\": false,\n        \"named_path_583_root_observer_enabled\": false,\n        \"pdx_paths_583_producer_observer_enabled\": false,\n        \"vfs_mount_lifecycle_observer_enabled\": false,\n        \"physfs_mounted_data_observer_enabled\": false,\n        \"g2_truce_preview_entry_observer_enabled\": true,\n        \"zhongguo_scoreboard_production_candidate_enabled\": false,\n        \"zhongguo_scoreboard_production_capability_advertised\": false,\n        \"main_thread_query_mailbox_v1\": {\n          \"candidate_id\": \"application_main_thread_war_entry_v1\",\n          \"query_scope\": \"frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport\",\n          \"installed\": true,\n          \"sdl_poll_event_hook_installed\": false,\n          \"observed_sdl_poll_event_target\": 0,\n          \"stop\": false,\n          \"failure\": 0,\n          \"pump_epochs\": 4034,\n          \"owner_verified_pump_epochs\": 4034,\n          \"consecutive_verified\": 4034,\n          \"published_sequence\": 0,\n          \"completed_sequence\": 0,\n          \"executor_started_requests\": 0,\n          \"executor_started_sequence\": 0,\n          \"executor_started_pump_epoch\": 0,\n          \"owner_tid\": 16420,\n          \"current_tid\": 16420,\n          \"rng_owner_tid\": 0,\n          \"tls_global\": 1,\n          \"tls_context\": 2160345902256,\n          \"tls_marker\": 1,\n          \"jomini_state\": 2163551996000,\n          \"game_state\": 2161727489600,\n          \"date_raw\": 53144328,\n          \"paused\": true,\n          \"stamp_read_success\": true,\n          \"executed_requests\": 0,\n          \"executor_submission_enabled\": true,\n          \"application_main_observed\": true,\n          \"paused_main_thread_observed\": true,\n          \"ready\": true\n        },\n        \"coat_of_arms_designer_probe_v1\": {\n          \"installed\": false,\n          \"failure\": 1,\n          \"observed_calls\": 0,\n          \"executed_requests\": 0\n        },\n        \"snapshot_observer_12002\": {\n          \"started_ms\": 586650843,\n          \"completed_ms\": 586650843,\n          \"last_read_ms\": 0,\n          \"read_in_progress\": false,\n          \"last_read_available\": true,\n          \"snapshot_cached\": true\n        },\n        \"startup_particle2_null_guard_v1\": {\n          \"installed\": false,\n          \"failure\": 0,\n          \"suppressed_count\": 0,\n          \"suppressed_index_mask\": 0,\n          \"last_suppressed_index\": 4294967295\n        },\n        \"startup_particle2_consumer_null_guard_v1\": {\n          \"installed\": false,\n          \"failure\": 0,\n          \"suppressed_count\": 0,\n          \"missing_slot_mask\": 0\n        },\n        \"startup_particle2_stage_recorder_v1\": {\n          \"installed\": false,\n          \"patch_mask\": 0,\n          \"failure\": 0,\n          \"source_lookup_null_count\": 0,\n          \"variant_lookup_null_count\": 0,\n          \"backend_creation_null_count\": 0\n        },\n        \"startup_dx11_render_context_draw_guard_v1\": {\n          \"installed\": false,\n          \"failure\": 0,\n          \"suppressed_count\": 0\n        },\n        \"startup_localize_current_root_guard_v1\": {\n          \"installed\": false,\n          \"failure\": 0,\n          \"native_miss_count\": 0\n        },\n        \"startup_widget_null_flag_call_guard_v1\": {\n          \"installed\": false,\n          \"failure\": 0,\n          \"suppressed_count\": 0\n        },\n        \"startup_rbx_null_call_guard_v1\": {\n          \"installed\": false,\n          \"failure\": 0,\n          \"suppressed_count\": 0\n        }\n      },\n      \"private_observers\": {},\n      \"last_pong\": {\n        \"type\": \"pong\",\n        \"protocol_version\": 1,\n        \"request_id\": \"python-1-36ff134c8f67\",\n        \"pid\": 12500\n      },\n      \"last_error\": null,\n      \"semantic_state_available\": true,\n      \"rejected_state_snapshot_count\": 0,\n      \"last_rejected_state_snapshot\": null,\n      \"snapshot_publish_diagnostic_count\": 0,\n      \"last_snapshot_publish_diagnostic\": null\n    },\n    \"episode_projection\": \"native_campaign\",\n    \"native_command_history\": [],\n    \"native_rollback_war_failure\": null,\n    \"native_rollback_war_failures\": []\n  },\n  \"observation_after\": {\n    \"pid\": 12500,\n    \"hwnd\": 2491650,\n    \"window_pid\": 12500,\n    \"process_create_time\": 1791115363.105566,\n    \"executable\": \"C:\\\\Program Files (x86)\\\\Steam\\\\steamapps\\\\common\\\\Crusader Kings III\\\\binaries\\\\ck3.exe\",\n    \"executable_sha256\": \"94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6\",\n    \"build_id\": \"25652598\",\n    \"app_manifest_sha256\": \"95324b9b6046f39272b1217d91b196f4f8147323b8586ff967f441baaf89d13d\",\n    \"window_visible\": true,\n    \"window_title\": \"Crusader Kings III\",\n    \"window_class\": \"SDL_app\",\n    \"window_rect\": [\n      152,\n      59,\n      1768,\n      998\n    ],\n    \"focus\": {\n      \"foreground_hwnd\": 2491650,\n      \"foreground_pid\": 12500,\n      \"foreground_thread_id\": 16420,\n      \"focus_hwnd\": 2491650,\n      \"title\": \"Crusader Kings III\"\n    },\n    \"screen_size\": [\n      1920,\n      1080\n    ],\n    \"mouse_buttons\": {\n      \"left\": false,\n      \"right\": false,\n      \"middle\": false,\n      \"x1\": false,\n      \"x2\": false\n    },\n    \"steam_offline_flags\": [\n      \"1\"\n    ],\n    \"steam_loginusers_sha256\": \"94e993d04f118c58758fb0d6da7dff581c9a7c91c7d0e8fa823440f74c9b2097\",\n    \"steam_pid\": 3028,\n    \"steam_create_time\": 1790980012.3969574,\n    \"steam_executable\": \"C:\\\\Program Files (x86)\\\\Steam\\\\bin\\\\cef\\\\cef.win64\\\\steamwebhelper.exe\",\n    \"steam_client_pid\": 18100,\n    \"steam_client_create_time\": 1790980011.1466615,\n    \"steam_client_executable\": \"C:\\\\Program Files (x86)\\\\Steam\\\\steam.exe\",\n    \"screen_lease_fresh\": true,\n    \"screen_owners\": [\n      \"ck3-lyd-live-007-20261004\"\n    ],\n    \"command_line\": [\n      \"C:\\\\Program Files (x86)\\\\Steam\\\\steamapps\\\\common\\\\Crusader Kings III\\\\binaries\\\\ck3.exe\",\n      \"-debug_mode\",\n      \"-gdpr-compliant\",\n      \"-userdir=C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\live-attempt-006\\\\userdir\"\n    ]\n  },\n  \"receipt_path\": \"C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\live-attempt-006\\\\native-evidence\\\\4b3809aa40264a9581b8392d565d63ba\\\\0003-snapshot.json\"\n}",
+      "annotations": null,
+      "_meta": null
+    }
+  ],
+  "structuredContent": {
+    "schema": "ck3.native-profile-receipt.v1",
+    "session_id": "4b3809aa40264a9581b8392d565d63ba",
+    "profile_sha256": "74601f97464a5faeb14312c4e2fa7458153c36fd7c2d5349a37ef852ec1db661",
+    "pipe_name": "\\\\.\\pipe\\xar_profile_4b3809aa40264a9581b8392d565d63ba",
+    "recorded_at_utc": "2026-10-04T12:16:03.398153+00:00",
+    "status": "native_snapshot_verified",
+    "snapshot": {
+      "date_raw": 53144328,
+      "speed": 3,
+      "paused": true,
+      "local_player_id": 1,
+      "map_ready": true,
+      "played_character": {
+        "character_id": 31254,
+        "alive": true,
+        "source": "native",
+        "stress_points": 0,
+        "betrothed_id": null,
+        "primary_spouse_id": 36311,
+        "spouse_ids": [
+          36311
+        ]
+      },
+      "played_character_gold": {
+        "raw": 24400000,
+        "scale": 100000
+      },
+      "played_character_prestige": {
+        "raw": 220000000,
+        "scale": 100000
+      },
+      "played_character_piety": {
+        "raw": 15000000,
+        "scale": 100000
+      },
+      "one_life_settlement": null,
+      "active_event": null,
+      "pending_character_interaction": null,
+      "active_wars": [],
+      "player_armies": [],
+      "last_checkpoint_submission": null,
+      "history": [],
+      "format_version": 1,
+      "snapshot_id": "native:1",
+      "revision": 2,
+      "native_revision": 1,
+      "backend_id": "native-headless",
+      "source": "injected-dll-named-pipe",
+      "diagnostics": {
+        "protocol_version": 1,
+        "pipe_name": "\\\\.\\pipe\\xar_profile_4b3809aa40264a9581b8392d565d63ba",
+        "connected": true,
+        "connection_generation": 1,
+        "bridge_pid": 12500,
+        "bridge_version": "0.1.0",
+        "hello": {
+          "type": "hello",
+          "protocol_version": 1,
+          "bridge_version": "0.1.0",
+          "pid": 12500,
+          "session_generation": 0,
+          "connection_generation": 1,
+          "architecture": "x86_64-windows-msvc",
+          "expected_ck3_version": "1.20.0.3",
+          "expected_ck3_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+          "game_adapter_id": "ck3-1.20.0.3-msvc-x64",
+          "game_adapter_status": "ready",
+          "ck3_build_match": true,
+          "capabilities": [
+            "bridge.identity",
+            "bridge.heartbeat",
+            "bridge.ping",
+            "game.state.snapshot",
+            "game.state.xar-one-life-settlement",
+            "game.state.map-ready",
+            "game.state.played-character",
+            "game.state.active-event",
+            "game.state.pending-character-interaction",
+            "game.state.active-wars",
+            "game.state.war-primary-opponent",
+            "game.state.war-objectives",
+            "game.state.war-objective-occupation",
+            "game.state.war-objective-fort-level",
+            "game.state.war-objective-garrison",
+            "game.state.war-objective-siege-progress",
+            "game.state.war-objective-assault",
+            "game.state.player-armies",
+            "game.state.army-routes",
+            "game.command.pause-map",
+            "game.command.resume-map",
+            "game.command.set-speed-1",
+            "game.command.set-speed-2",
+            "game.command.set-speed-3",
+            "game.command.set-speed-4",
+            "game.command.set-speed-5",
+            "game.command.select-event-option-N",
+            "game.command.save-checkpoint",
+            "game.command.accept-pending-character-interaction",
+            "game.command.reject-pending-character-interaction",
+            "game.command.acknowledge-pending-character-interaction",
+            "game.command.raise-troops-default",
+            "game.command.preview-move-army-N-to-N",
+            "game.command.query-route-contact-horizon-v1-N",
+            "game.command.query-actual-contact-scope-v1-N",
+            "game.command.query-battle-control-snapshot-v1-N",
+            "game.command.query-battle-transition-v1-N",
+            "game.command.query-battle-terminal-transition-v1",
+            "game.command.query-battle-reinforcement-assignment-v1-N",
+            "game.command.move-army-N-to-N",
+            "game.command.disband-army-N",
+            "game.command.split-army-half-N",
+            "game.command.merge-armies-N-with-N",
+            "game.command.start-assault-N",
+            "game.command.stop-assault-N",
+            "game.command.query-declarable-wars",
+            "game.command.query-war-entry-assessments-v1-N",
+            "game.command.declare-war-N",
+            "game.command.enforce-demands-N",
+            "game.command.query-army-strengths-v1",
+            "game.command.query-campaign-root-context-v1",
+            "game.command.query-loaded-feature-manifest-v1",
+            "game.command.query-pending-character-interaction-context-v1",
+            "game.command.query-current-event-window-context-v1",
+            "game.command.center-map-on-landed-title-v1",
+            "game.command.query-combat-simulation-inputs-v2-N",
+            "game.command.query-war-termination-options-N",
+            "game.command.query-war-termination-terms-v1-N",
+            "game.command.surrender-war-N",
+            "game.command.offer-white-peace-N",
+            "game.command.query-arrange-marriage-choices",
+            "game.command.arrange-marriage-N",
+            "game.adapter.exact-build",
+            "game.adapter.minimized-headless"
+          ]
+        },
+        "last_heartbeat": {
+          "type": "heartbeat",
+          "protocol_version": 1,
+          "sequence": 138,
+          "pid": 12500,
+          "monotonic_ms": 586651000,
+          "startup_failure_containment_enabled": false,
+          "startup_particle2_stage_recorder_enabled": false,
+          "startup_widget_null_flag_call_guard_enabled": false,
+          "startup_rbx_null_call_guard_enabled": false,
+          "cold_map_vfs_observer_enabled": false,
+          "named_path_583_root_observer_enabled": false,
+          "pdx_paths_583_producer_observer_enabled": false,
+          "vfs_mount_lifecycle_observer_enabled": false,
+          "physfs_mounted_data_observer_enabled": false,
+          "g2_truce_preview_entry_observer_enabled": true,
+          "zhongguo_scoreboard_production_candidate_enabled": false,
+          "zhongguo_scoreboard_production_capability_advertised": false,
+          "main_thread_query_mailbox_v1": {
+            "candidate_id": "application_main_thread_war_entry_v1",
+            "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+            "installed": true,
+            "sdl_poll_event_hook_installed": false,
+            "observed_sdl_poll_event_target": 0,
+            "stop": false,
+            "failure": 0,
+            "pump_epochs": 4034,
+            "owner_verified_pump_epochs": 4034,
+            "consecutive_verified": 4034,
+            "published_sequence": 0,
+            "completed_sequence": 0,
+            "executor_started_requests": 0,
+            "executor_started_sequence": 0,
+            "executor_started_pump_epoch": 0,
+            "owner_tid": 16420,
+            "current_tid": 16420,
+            "rng_owner_tid": 0,
+            "tls_global": 1,
+            "tls_context": 2160345902256,
+            "tls_marker": 1,
+            "jomini_state": 2163551996000,
+            "game_state": 2161727489600,
+            "date_raw": 53144328,
+            "paused": true,
+            "stamp_read_success": true,
+            "executed_requests": 0,
+            "executor_submission_enabled": true,
+            "application_main_observed": true,
+            "paused_main_thread_observed": true,
+            "ready": true
+          },
+          "coat_of_arms_designer_probe_v1": {
+            "installed": false,
+            "failure": 1,
+            "observed_calls": 0,
+            "executed_requests": 0
+          },
+          "snapshot_observer_12002": {
+            "started_ms": 586650843,
+            "completed_ms": 586650843,
+            "last_read_ms": 0,
+            "read_in_progress": false,
+            "last_read_available": true,
+            "snapshot_cached": true
+          },
+          "startup_particle2_null_guard_v1": {
+            "installed": false,
+            "failure": 0,
+            "suppressed_count": 0,
+            "suppressed_index_mask": 0,
+            "last_suppressed_index": 4294967295
+          },
+          "startup_particle2_consumer_null_guard_v1": {
+            "installed": false,
+            "failure": 0,
+            "suppressed_count": 0,
+            "missing_slot_mask": 0
+          },
+          "startup_particle2_stage_recorder_v1": {
+            "installed": false,
+            "patch_mask": 0,
+            "failure": 0,
+            "source_lookup_null_count": 0,
+            "variant_lookup_null_count": 0,
+            "backend_creation_null_count": 0
+          },
+          "startup_dx11_render_context_draw_guard_v1": {
+            "installed": false,
+            "failure": 0,
+            "suppressed_count": 0
+          },
+          "startup_localize_current_root_guard_v1": {
+            "installed": false,
+            "failure": 0,
+            "native_miss_count": 0
+          },
+          "startup_widget_null_flag_call_guard_v1": {
+            "installed": false,
+            "failure": 0,
+            "suppressed_count": 0
+          },
+          "startup_rbx_null_call_guard_v1": {
+            "installed": false,
+            "failure": 0,
+            "suppressed_count": 0
+          }
+        },
+        "private_observers": {},
+        "last_pong": {
+          "type": "pong",
+          "protocol_version": 1,
+          "request_id": "python-1-36ff134c8f67",
+          "pid": 12500
+        },
+        "last_error": null,
+        "semantic_state_available": true,
+        "rejected_state_snapshot_count": 0,
+        "last_rejected_state_snapshot": null,
+        "snapshot_publish_diagnostic_count": 0,
+        "last_snapshot_publish_diagnostic": null
+      },
+      "episode_projection": "native_campaign",
+      "native_command_history": [],
+      "native_rollback_war_failure": null,
+      "native_rollback_war_failures": []
+    },
+    "observation_after": {
+      "pid": 12500,
+      "hwnd": 2491650,
+      "window_pid": 12500,
+      "process_create_time": 1791115363.105566,
+      "executable": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "build_id": "25652598",
+      "app_manifest_sha256": "95324b9b6046f39272b1217d91b196f4f8147323b8586ff967f441baaf89d13d",
+      "window_visible": true,
+      "window_title": "Crusader Kings III",
+      "window_class": "SDL_app",
+      "window_rect": [
+        152,
+        59,
+        1768,
+        998
+      ],
+      "focus": {
+        "foreground_hwnd": 2491650,
+        "foreground_pid": 12500,
+        "foreground_thread_id": 16420,
+        "focus_hwnd": 2491650,
+        "title": "Crusader Kings III"
+      },
+      "screen_size": [
+        1920,
+        1080
+      ],
+      "mouse_buttons": {
+        "left": false,
+        "right": false,
+        "middle": false,
+        "x1": false,
+        "x2": false
+      },
+      "steam_offline_flags": [
+        "1"
+      ],
+      "steam_loginusers_sha256": "94e993d04f118c58758fb0d6da7dff581c9a7c91c7d0e8fa823440f74c9b2097",
+      "steam_pid": 3028,
+      "steam_create_time": 1790980012.3969574,
+      "steam_executable": "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe",
+      "steam_client_pid": 18100,
+      "steam_client_create_time": 1790980011.1466615,
+      "steam_client_executable": "C:\\Program Files (x86)\\Steam\\steam.exe",
+      "screen_lease_fresh": true,
+      "screen_owners": [
+        "ck3-lyd-live-007-20261004"
+      ],
+      "command_line": [
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "-debug_mode",
+        "-gdpr-compliant",
+        "-userdir=C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\userdir"
+      ]
+    },
+    "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0003-snapshot.json"
+  },
+  "isError": false,
+  "resultType": "complete"
+}

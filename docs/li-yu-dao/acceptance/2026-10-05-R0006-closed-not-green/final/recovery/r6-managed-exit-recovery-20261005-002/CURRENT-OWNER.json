@@ -1,0 +1,21 @@
+{
+  "git": {
+    "branch": "master",
+    "dirty_entries": 0,
+    "head": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e"
+  },
+  "last_sequence": 2810,
+  "next_step": "Preserve-frozen-session-and-normal-UI-exit",
+  "pid": 11444,
+  "repo": "C:\\workspace\\ck3_eternal_recurrence",
+  "resources": [
+    "ck3-screen:acquired"
+  ],
+  "schema": "codex.task_bus.v1",
+  "state": "running",
+  "summary": "LYD-R0006-recovery-normal-exit",
+  "task_id": "ck3-lyd-r0006-exit-20261005",
+  "updated_at_utc": "2026-10-04T18:57:30.720405+00:00",
+  "age_seconds": 0,
+  "stale": false
+}

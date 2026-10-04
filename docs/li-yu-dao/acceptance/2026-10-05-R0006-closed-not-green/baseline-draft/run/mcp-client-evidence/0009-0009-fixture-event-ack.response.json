@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 9,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue\\0009-fixture-event-ack.request.json",
+  "request_sha256": "79006062a7b46b92ee59e94e2eb5b80a32c014653222e6ee0d74601ea25caf1e",
+  "started_at_utc": "2026-10-04T13:04:38.594833+00:00",
+  "request_id": "0009-fixture-event-ack",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0009-0009-fixture-event-ack.sdk-result.json",
+  "sdk_result_sha256": "fe87d072137ea68c2d68464fba8d32f400245e013753831a79c01434f61052f9",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0008-event-select.json",
+      "copy": "0009-0009-fixture-event-ack.native-01.json",
+      "sha256": "2d564b58f86eb6328a293750f49f152b7e643b6dc2acaf7c7134c95848535bd4"
+    }
+  ],
+  "finished_at_utc": "2026-10-04T13:04:41.469524+00:00"
+}

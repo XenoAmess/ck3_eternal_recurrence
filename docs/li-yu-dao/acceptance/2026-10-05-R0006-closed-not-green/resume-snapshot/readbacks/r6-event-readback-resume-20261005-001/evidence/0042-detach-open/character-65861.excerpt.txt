@@ -1,0 +1,105 @@
+65861={
+	first_name="Jordan"
+	birth=1017.8.25
+	nickname_text=""
+	ethnicity=caucasian_brown_hair
+	culture=73
+	rite=169
+	organization=32
+	skill={ 9 6 8 2 7 9 }
+	mass=29
+	sexuality=bi
+	traits={ 47 78 63 23 }
+	alive_data={
+		variables={
+			data={ {
+					flag=lyd_c2_vote_yes
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_c2_vote_nonce
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_c2_vote_serial
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_c2_vote_owner
+					data={
+						type=char
+						identity=31254
+					}
+
+				}
+ {
+					flag=lyd_c2_elector_rite
+					data={
+						type=rite
+						identity=169
+					}
+
+				}
+ {
+					flag=lyd_c2_elector_serial
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_c2_elector_owner
+					data={
+						type=char
+						identity=31254
+					}
+
+				}
+ {
+					flag=is_in_the_council
+					data={
+					}
+
+				}
+ }
+		}
+		fertility=0.55525
+		health=4.50956
+		piety={
+			currency=50
+		}
+		prestige={
+			currency=600
+		}
+		influence={
+			currency=240
+		}
+		languages={ language_french }
+		activity_data={
+		}
+
+		location={
+			location=2633
+		}
+	}
+
+	court_data={
+		employer=34232
+		council_task=506
+		join_court_date=1066.9.16
+	}
+
+}

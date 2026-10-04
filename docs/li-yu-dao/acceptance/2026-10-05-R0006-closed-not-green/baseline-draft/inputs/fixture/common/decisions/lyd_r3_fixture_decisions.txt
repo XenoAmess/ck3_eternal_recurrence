@@ -1,0 +1,13 @@
+﻿# GENERATED FILE: acceptance fixture only; edit build_fixture.py.
+lyd_r3_fixture_initialize_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious
+    ai_check_interval = 0
+    desc = lyd_r3_fixture_initialize_decision_desc
+    selection_tooltip = lyd_r3_fixture_initialize_decision_tooltip
+    confirm_text = lyd_r3_fixture_initialize_decision_confirm
+    is_shown = { lyd_r3_fixture_actor_trigger = yes }
+    is_valid = { lyd_r3_fixture_display_trigger = yes }
+    effect = { lyd_r3_fixture_initialize_effect = yes }
+    ai_will_do = { base = 0 }
+}

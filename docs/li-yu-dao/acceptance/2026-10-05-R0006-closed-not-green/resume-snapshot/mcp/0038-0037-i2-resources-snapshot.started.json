@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 38,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue\\0037-i2-resources-snapshot.request.json",
+  "request_sha256": "4ff76e9ab6e6092d901fe04ff0eb593c30850e9c951ba14620d37aed2314ff40",
+  "started_at_utc": "2026-10-04T16:52:29.166604+00:00"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "0015-chooser-cancel",
+  "operation": "call_tool",
+  "name": "ck3_select_profile_event_option_v1",
+  "arguments": {
+    "expected_revision": 10,
+    "event_instance_id": 3,
+    "option_number": 10
+  }
+}

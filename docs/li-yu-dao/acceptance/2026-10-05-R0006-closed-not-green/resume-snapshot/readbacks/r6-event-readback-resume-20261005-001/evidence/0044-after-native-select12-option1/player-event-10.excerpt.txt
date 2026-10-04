@@ -1,0 +1,57 @@
+player_event={
+	id=10
+	scope={
+		root={
+			type=char
+			identity=31254
+		}
+
+		seed=1866436553
+		event_targets={
+			puppeteer={
+				type=char
+				identity=4294967295
+			}
+
+			lyd_c2_actor={
+				type=char
+				identity=31254
+			}
+
+			lyd_c2_event_school={
+				type=rite
+				identity=169
+			}
+
+			lyd_c2_event_serial={
+				type=value
+				identity=100000
+			}
+
+			lyd_c2_event_terms={
+				type=value
+				identity=100000
+			}
+
+			lyd_c2_event_nonce={
+				type=value
+				identity=100000
+			}
+
+			lyd_c2_voter={
+				type=char
+				identity=31254
+			}
+
+		}
+
+	}
+
+	primary=yes
+	character=31254
+	event="lyd.210"
+	immediate=""
+	title=""
+	expiration_date=1.1.1
+	death=no
+}

@@ -1,0 +1,211 @@
+{
+  "schema": "lyd.r6.report-draft-addendum.v2",
+  "created_utc": "2026-10-04T17:18:31.385605+00:00",
+  "baseline_commit": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+  "product_tree": "2e290b9b7fca02c38a33e4c73f5c46e7060dc9fa",
+  "attempt": "live-attempt-006",
+  "result": "DRAFT_ADDENDUM_NOT_FINAL_NOT_GREEN",
+  "game_current_state_source": "PARENT_MESSAGE_ONLY",
+  "game_current_state": "RUNNING_PAUSED",
+  "normal_exit": "PENDING",
+  "sdk_close": "PENDING",
+  "screen_lease_release": "PENDING",
+  "source_freeze_release": "PENDING",
+  "development_progress": {
+    "estimate": "60%",
+    "meaning": "综合开发估算，非测试通过率",
+    "milestones": [
+      {
+        "date": "2026-10-05",
+        "scope": "落地本轮验收报告，交付基础礼仪与修习阶段版本"
+      },
+      {
+        "date": "2026-10-06",
+        "scope": "正式统一分裂首轮完整验收及修复"
+      },
+      {
+        "date": "2026-10-07—08",
+        "scope": "领袖建立/对立学统/同意拒绝/保存重载"
+      },
+      {
+        "date": "2026-10-09",
+        "scope": "一期回归、可交付构建和总报告"
+      }
+    ],
+    "chronology_limits": "二期",
+    "status": "估算里程碑，非已完成测试"
+  },
+  "codex_configuration": {
+    "path": "C:\\Users\\Administrator\\.codex\\config.toml",
+    "sha256": "1811b67906e96a3784b6786237a29db3c2bf5534ebf98cf6ce262883ddc7e051",
+    "bytes": 271,
+    "agents.max_concurrent_threads_per_session": 64,
+    "agents.max_threads_legacy_alias": null,
+    "selected_lines": [
+      {
+        "line": 10,
+        "text": "[agents]"
+      },
+      {
+        "line": 11,
+        "text": "max_concurrent_threads_per_session = 64"
+      }
+    ],
+    "full_config_copied": false
+  },
+  "current_session_capacity": {
+    "source_kind": "CURRENT_SESSION_DEVELOPER_TOOL_INSTRUCTIONS",
+    "declared_concurrency_slots": 4,
+    "counting_boundary": "including this agent; active capacity is declared by current tool interface",
+    "config_file_value": 64,
+    "config_key": "agents.max_concurrent_threads_per_session",
+    "configuration_counting_boundary": "official key means spawned agent threads excluding primary",
+    "configured_value_does_not_prove_active_capacity": true,
+    "hot_reload_verified": false,
+    "restart_or_new_session_for_this_report": false,
+    "spawn_64_test_performed": false,
+    "scope": "只记录配置字节和当前会话工具声明，不以配置替代当前运行能力，不把两个计数口径直接相加。"
+  },
+  "root_tool_output_only_facts": [
+    {
+      "item": "root0007",
+      "actual_status": "local validate_request 拒绝非法闭式名 codex_apps.ck3_query_native_snapshot",
+      "dispatch": false,
+      "sdk": false,
+      "raw_stderr_evidence": "NOT_PROVIDED_DO_NOT_MANUFACTURE"
+    },
+    {
+      "item": "r6_native_action first helper",
+      "actual_status": "读取 instance key 错误；后续新 6139... v2 修正",
+      "game_side_effect": false,
+      "raw_stderr_evidence": "NOT_PROVIDED_DO_NOT_MANUFACTURE"
+    },
+    {
+      "item": "draft_v2",
+      "actual_status": "assertion 计数错误，目标文件未生成；v2b 后续成功",
+      "raw_stderr_evidence": "NOT_PROVIDED_DO_NOT_MANUFACTURE"
+    }
+  ],
+  "d_plus2": {
+    "observation_status": "PASS_ACTUAL_D_PLUS2_OBSERVATION_ONLY",
+    "artifact": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\97fe09b4d9ff9cfc59bfbeb4b9ff7bf795538cfa22c8fd07ac73c6dd2b61eee5\\xar_checkpoint.ck3",
+      "bytes": 90494024,
+      "sha256": "97fe09b4d9ff9cfc59bfbeb4b9ff7bf795538cfa22c8fd07ac73c6dd2b61eee5"
+    },
+    "actual_date": "1066.9.17",
+    "actual_native_raw_date": 53144376,
+    "requested_days": 1,
+    "actual_elapsed_days": 2,
+    "actual_graph_changes": {
+      "faith_ids": [
+        "13"
+      ],
+      "rite_ids": [
+        "169"
+      ],
+      "rite_heads": [
+        {
+          "rite_id": "169",
+          "rite_type": "lyd_rite_zhuxi",
+          "before": "4294967295",
+          "after": "31254"
+        }
+      ],
+      "cause_boundary": "Actual changed fields are preserved. No cause, C3 appointment, or player consent is inferred merely from natural advancement."
+    },
+    "source_faith": {
+      "id": "32",
+      "name": "儒家共宗",
+      "main_rite": "150",
+      "main_rite_type": "lyd_rite_kongmen",
+      "rite_count": 35,
+      "rite_ids": [
+        "150",
+        "151",
+        "152",
+        "153",
+        "154",
+        "155",
+        "156",
+        "157",
+        "158",
+        "160",
+        "161",
+        "162",
+        "163",
+        "164",
+        "165",
+        "166",
+        "167",
+        "168",
+        "169",
+        "170",
+        "171",
+        "172",
+        "173",
+        "174",
+        "175",
+        "176",
+        "177",
+        "178",
+        "179",
+        "180",
+        "181",
+        "182",
+        "183",
+        "184",
+        "185"
+      ],
+      "religious_head": "4294967295"
+    },
+    "receiving_faith": {
+      "id": "104",
+      "name": "经疏正义",
+      "main_rite": "159",
+      "main_rite_type": "lyd_rite_jingshu",
+      "rite_count": 1,
+      "rite_ids": [
+        "159"
+      ],
+      "religious_head": "4294967295"
+    },
+    "saved_base_learning": 14,
+    "saved_total_learning": null,
+    "qualification_boundary": "No fresh exact total-Learning getter is exposed by this SDK/save. Old stored qualification8/7/8 and setup_before8 remain unchanged. Root reports the native qualifying fixture disappeared and formal decision became visible, consistent with current execution eligibility; not an independent exact15 measurement and not a rewrite of prior qualification RED.",
+    "scope": "Actual D+2 observation of preserved 35+1 ownership, named NPCs, natural expiry ticks and actor-related political safeguards only. The checkpoint filename one-day records intent; actual timing is two days. Ordinary time may alter world characters, wallets, Faith fields and native rite leadership. ZhuXi head_of_rite actually became current actor without a saved C3 appointment record; both Faith HoF titles remain absent. No formal C2 or C3 player consent, migration, exact D+1 timing, delayed candidate validation, or zero-log GREEN inferred."
+  },
+  "c2_actual_resources_and_decisions": "PENDING_PARENT_EVIDENCE",
+  "formal_reunion_schism_live": "NOT_PROVEN_BY_THIS_ADDENDUM",
+  "r6_error_log_boundary": "此前冻结 whole error.log 达100000 cap；缺后续行不等于运行无错。",
+  "old_packages": [
+    {
+      "package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-report-draft-001",
+      "index_sha256": "fa0aad4d907cb0a57b1627a6afeb4cfd3e1f3cf172f4c9286c8f7c03258850da",
+      "files_including_index": 795,
+      "unchanged_index_verified": true,
+      "whole_package_reverified": false
+    },
+    {
+      "package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-report-draft-addendum-001",
+      "index_sha256": "615e109c1d4db13496ad8a3cb22ded7c1e355289484e38ec68a65afb41b3452d",
+      "files_including_index": 7,
+      "unchanged_index_verified": true,
+      "whole_package_reverified": false
+    },
+    {
+      "package": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-independent-review-001",
+      "index_sha256": "0af1cd6a7bf9aaeff994812445feb964c6ae48442e6bc88a15f4f2533070c5d8",
+      "files_including_index": 34,
+      "unchanged_index_verified": true,
+      "whole_package_reverified": false
+    }
+  ],
+  "tracked_written": false,
+  "git_calls": false,
+  "game_calls": false,
+  "ci_calls": false,
+  "configuration_modified": false,
+  "old_packages_modified": false,
+  "i3b_review_modified": false
+}

@@ -1,0 +1,47 @@
+65856={
+	first_name="Geoffroy"
+	birth=1026.5.6
+	nickname_text=""
+	ethnicity=caucasian_blond
+	culture=73
+	rite=169
+	dynasty_house=12758
+	skill={ 6 9 9 10 20 3 }
+	mass=-25
+	traits={ 60 61 73 23 }
+	alive_data={
+		variables={
+			data={ {
+					flag=lyd_r4_created_source_rep
+					data={
+					}
+
+				}
+ }
+		}
+		fertility=0.54815
+		health=4.77356
+		piety={
+			currency=50
+		}
+		prestige={
+			currency=450
+		}
+		influence={
+			currency=180
+		}
+		languages={ language_french }
+		activity_data={
+		}
+
+		location={
+			location=2619
+		}
+	}
+
+	court_data={
+		employer=31254
+		join_court_date=1066.9.15
+	}
+
+}

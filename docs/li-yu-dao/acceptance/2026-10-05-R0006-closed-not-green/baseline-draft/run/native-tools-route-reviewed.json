@@ -1,0 +1,150 @@
+{
+  "current_tools_sha256": "0f4ea0a9746aff3d8d3f0b3e573d7d834b0b3354efe9122ca0b4b177acb942d8",
+  "tools": [
+    {
+      "name": "ck3_query_native_profile_v1",
+      "arguments": {},
+      "required": []
+    },
+    {
+      "name": "ck3_attach_profile_bridge_v1",
+      "arguments": {},
+      "required": []
+    },
+    {
+      "name": "ck3_resume_profile_bridge_v1",
+      "arguments": {},
+      "required": []
+    },
+    {
+      "name": "ck3_take_profile_native_snapshot_v1",
+      "arguments": {},
+      "required": []
+    },
+    {
+      "name": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": {
+          "title": "Event Instance Id",
+          "type": "integer"
+        },
+        "expected_revision": {
+          "title": "Expected Revision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "event_instance_id",
+        "expected_revision"
+      ]
+    },
+    {
+      "name": "ck3_query_profile_pending_interaction_v1",
+      "arguments": {
+        "pending_interaction_id": {
+          "title": "Pending Interaction Id",
+          "type": "integer"
+        },
+        "expected_revision": {
+          "title": "Expected Revision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "pending_interaction_id",
+        "expected_revision"
+      ]
+    },
+    {
+      "name": "ck3_reply_profile_pending_interaction_v1",
+      "arguments": {
+        "accept": {
+          "title": "Accept",
+          "type": "boolean"
+        },
+        "pending_interaction_id": {
+          "title": "Pending Interaction Id",
+          "type": "integer"
+        },
+        "expected_revision": {
+          "title": "Expected Revision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "accept",
+        "pending_interaction_id",
+        "expected_revision"
+      ]
+    },
+    {
+      "name": "ck3_set_profile_simulation_v1",
+      "arguments": {
+        "action": {
+          "enum": [
+            "pause",
+            "resume",
+            "speed_1",
+            "speed_3",
+            "speed_5"
+          ],
+          "title": "Action",
+          "type": "string"
+        },
+        "expected_revision": {
+          "title": "Expected Revision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "action",
+        "expected_revision"
+      ]
+    },
+    {
+      "name": "ck3_pause_profile_simulation_v1",
+      "arguments": {},
+      "required": []
+    },
+    {
+      "name": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "option_number": {
+          "title": "Option Number",
+          "type": "integer"
+        },
+        "event_instance_id": {
+          "title": "Event Instance Id",
+          "type": "integer"
+        },
+        "expected_revision": {
+          "title": "Expected Revision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "option_number",
+        "event_instance_id",
+        "expected_revision"
+      ]
+    },
+    {
+      "name": "ck3_save_profile_checkpoint_v1",
+      "arguments": {
+        "expected_revision": {
+          "title": "Expected Revision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "expected_revision"
+      ]
+    }
+  ],
+  "count": 11,
+  "decision_initiation": "NOT_EXPOSED",
+  "outbound_character_interaction": "NOT_EXPOSED",
+  "game_menu_and_settings": "NOT_EXPOSED",
+  "basis": "actual R6 SDK list; broader repository routes reviewed in r4-mcp-route-review-001",
+  "fallback": "Only missing initiation via current reviewed UI; native event response/save/clock via MCP."
+}

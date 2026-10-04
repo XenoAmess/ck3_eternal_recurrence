@@ -1,0 +1,56 @@
+{
+  "schema": "lyd.r6.permanent-report-clarification.v1",
+  "created_utc": "2026-10-04T19:20:13.184205+00:00",
+  "source_revision": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+  "overall_native_acceptance": "NOT_GREEN",
+  "changes_historical_results": false,
+  "source_report_sha256": "8bea2fc934751128b9372485ea99da165ecf6852c0ccf7b096cdedaabd767c7c",
+  "actual_all_saved_flag_delta": {
+    "added_flags": [
+      "lyd_r4_gold_after",
+      "lyd_r4_gold_before",
+      "lyd_r4_gold_expected",
+      "lyd_r4_piety_after",
+      "lyd_r4_piety_before",
+      "lyd_r4_piety_expected",
+      "lyd_r4_resources_prepared"
+    ],
+    "removed_flags": [],
+    "altered_existing_flags": [],
+    "unchanged_existing_flag_count": 32
+  },
+  "other_actor_lossless_field_delta": [
+    {
+      "path": "/alive_data[0]/gold[0]/value[0]",
+      "before_present": true,
+      "before": "229",
+      "after_present": true,
+      "after": "2229"
+    },
+    {
+      "path": "/alive_data[0]/income[0]",
+      "before_present": true,
+      "before": "7.2965",
+      "after_present": true,
+      "after": "6.22214"
+    },
+    {
+      "path": "/alive_data[0]/piety[0]/accumulated[0]",
+      "before_present": true,
+      "before": "1035",
+      "after_present": true,
+      "after": "10035"
+    },
+    {
+      "path": "/alive_data[0]/piety[0]/currency[0]",
+      "before_present": true,
+      "before": "185",
+      "after_present": true,
+      "after": "9185"
+    }
+  ],
+  "income_cause": "NOT_PROVEN",
+  "resource_pass_boundary": "Prior PASS_RESOURCE_FIXTURE_ONLY proves specified resource amounts, no additional existing LYD mutations, unchanged other complete character records and Faith/Rite/title graphs. It does not mean all actor fields except currency are identical.",
+  "old_final_package_unchanged": true,
+  "tracked_git_game_native_ci_screen_spawn_calls": 0
+}

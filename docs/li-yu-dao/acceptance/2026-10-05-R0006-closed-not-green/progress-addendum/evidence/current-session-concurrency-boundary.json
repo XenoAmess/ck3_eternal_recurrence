@@ -1,0 +1,13 @@
+{
+  "source_kind": "CURRENT_SESSION_DEVELOPER_TOOL_INSTRUCTIONS",
+  "declared_concurrency_slots": 4,
+  "counting_boundary": "including this agent; active capacity is declared by current tool interface",
+  "config_file_value": 64,
+  "config_key": "agents.max_concurrent_threads_per_session",
+  "configuration_counting_boundary": "official key means spawned agent threads excluding primary",
+  "configured_value_does_not_prove_active_capacity": true,
+  "hot_reload_verified": false,
+  "restart_or_new_session_for_this_report": false,
+  "spawn_64_test_performed": false,
+  "scope": "只记录配置字节和当前会话工具声明，不以配置替代当前运行能力，不把两个计数口径直接相加。"
+}

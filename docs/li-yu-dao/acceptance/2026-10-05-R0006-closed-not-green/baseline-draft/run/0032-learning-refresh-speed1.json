@@ -1,0 +1,10 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "0032-learning-refresh-speed1",
+  "operation": "call_tool",
+  "name": "ck3_set_profile_simulation_v1",
+  "arguments": {
+    "action": "speed_1",
+    "expected_revision": 27
+  }
+}

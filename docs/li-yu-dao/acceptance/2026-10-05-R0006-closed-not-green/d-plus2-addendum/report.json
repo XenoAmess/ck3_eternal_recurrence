@@ -1,0 +1,23 @@
+{
+  "schema": "ck3.lyd.r0006-draft-addendum.v1",
+  "utc": "2026-10-04T15:54:59.280306+00:00",
+  "original_draft_index_sha256": "fa0aad4d907cb0a57b1627a6afeb4cfd3e1f3cf172f4c9286c8f7c03258850da",
+  "original_draft_795_files_unchanged": true,
+  "status": "ADDENDUM_ONLY_EXIT_PENDING_NOT_GREEN",
+  "actual_D_plus2": "1066.9.17 / raw53144376",
+  "saved_base_learning": "14",
+  "independent_fresh_total_learning": null,
+  "qualification_boundary": "No fresh exact total-Learning getter is exposed by this SDK/save. Old stored qualification8/7/8 and setup_before8 remain unchanged. Root reports the native qualifying fixture disappeared and formal decision became visible, consistent with current execution eligibility; not an independent exact15 measurement and not a rewrite of prior qualification RED.",
+  "native_rite_head_boundary": "ZhuXi head_of_rite naturally became actor31254; no saved C3 appointment record; both Faith HoF titles remain absent. Do not grant C3 leadership lifecycle acceptance.",
+  "milestones_boundary": "60% is a parent reported development estimate, not tests or release acceptance. Oct5/6/7-8/9 are parent reported estimated target dates; exact scope wording pending parent, not fabricated.",
+  "failed_request_boundary": "All available raw requests/SDK envelopes/UI action receipts preserved in draft. NO_DISPATCH_RESPONSE_FOUND does not prove an SDK call was made or failed; tool-output-only failures need parent note, not a manufactured receipt.",
+  "exit": "PENDING",
+  "source_freeze_release": "PENDING",
+  "side_effects": {
+    "tracked": 0,
+    "git": 0,
+    "game_or_screen": 0,
+    "ci_network": 0,
+    "original_changes": 0
+  }
+}

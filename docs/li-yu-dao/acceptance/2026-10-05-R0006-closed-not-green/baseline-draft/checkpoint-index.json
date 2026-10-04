@@ -1,0 +1,271 @@
+{
+  "schema": "ck3.lyd.r0006-draft-checkpoint-index.v1",
+  "checkpoints": [
+    {
+      "scenario": "original-confucian-fixture",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\97461bed54da92ff05da6836f54884c90d6f847a02e6bd9c1bd64dc3da1567fe\\xar_checkpoint.ck3",
+        "bytes": 91297138,
+        "sha256": "97461bed54da92ff05da6836f54884c90d6f847a02e6bd9c1bd64dc3da1567fe"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\291bf3fe63c1d8c3bbbbc97c6d94e47794b031c07934311cbcb83873232fdc8e\\xar_checkpoint.ck3",
+        "bytes": 91282203,
+        "sha256": "291bf3fe63c1d8c3bbbbc97c6d94e47794b031c07934311cbcb83873232fdc8e"
+      },
+      "sdk_sha256": "504d60aff92cb01cbbe84e4ed20542615fd4f0a51bba748915c9d0a03d3c8903",
+      "wrapper_sha256": "68cd1a2e461162c4b8f3d62a167ff592f473ea240c725a3a9dcd07ad366dd220",
+      "full_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-original-confucian-readback-001",
+      "full_index_sha256": "aee5b8795ae56a9e64e5c89732bbc35c36ec9ab742b93ab168462722f0da6021",
+      "save_copied": false,
+      "save_reparsed": false
+    },
+    {
+      "scenario": "formal-entry",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\d6296e522615f68aa374a60c2f76f55d95416476ff19e85ddb8e6bfdb203778c\\xar_checkpoint.ck3",
+        "bytes": 91299581,
+        "sha256": "d6296e522615f68aa374a60c2f76f55d95416476ff19e85ddb8e6bfdb203778c"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\97461bed54da92ff05da6836f54884c90d6f847a02e6bd9c1bd64dc3da1567fe\\xar_checkpoint.ck3",
+        "bytes": 91297138,
+        "sha256": "97461bed54da92ff05da6836f54884c90d6f847a02e6bd9c1bd64dc3da1567fe"
+      },
+      "sdk_sha256": "bc2fa69e4d351b2a4c49167cb646115cf829f440a2a0e45cbc59204cec596236",
+      "wrapper_sha256": "b479cd13abb191d350cb83d78320ee312f83b1479545d94694b6e1d47e0b5c23",
+      "full_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-formal-entry-readback-001",
+      "full_index_sha256": "09bc295a69439e9191cdee58be88d63cf07d3d230ef1d8389361b2a37e3d59ec",
+      "save_copied": false,
+      "save_reparsed": false
+    },
+    {
+      "scenario": "chooser-cancel",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\6017a24dfbf68405fcae89ca9f572ef2443bf4627540a61f46673320703c2f7e\\xar_checkpoint.ck3",
+        "bytes": 91299581,
+        "sha256": "6017a24dfbf68405fcae89ca9f572ef2443bf4627540a61f46673320703c2f7e"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\d6296e522615f68aa374a60c2f76f55d95416476ff19e85ddb8e6bfdb203778c\\xar_checkpoint.ck3",
+        "bytes": 91299581,
+        "sha256": "d6296e522615f68aa374a60c2f76f55d95416476ff19e85ddb8e6bfdb203778c"
+      },
+      "sdk_sha256": "b8a46870340fbf90c84d4218c1fc370200d0ca6b677d56c629f0c64b2298d039",
+      "wrapper_sha256": "39d99811402ed8861e4eecf1e46381ff1354f086ac44cdc4ad77c9e0ca47c45b",
+      "full_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-chooser-cancel-readback-001",
+      "full_index_sha256": "6b4ef1c726914af0d4f121e98574b5753ba793aa5af882ef1d86d5e2ef12b0cc",
+      "save_copied": false,
+      "save_reparsed": false
+    },
+    {
+      "scenario": "zhuxi-choice",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\95e7babc5c2c15d93cac491c87dd9e3e77e24bf3323c0c7006f9e570c95e0959\\xar_checkpoint.ck3",
+        "bytes": 91301037,
+        "sha256": "95e7babc5c2c15d93cac491c87dd9e3e77e24bf3323c0c7006f9e570c95e0959"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\6017a24dfbf68405fcae89ca9f572ef2443bf4627540a61f46673320703c2f7e\\xar_checkpoint.ck3",
+        "bytes": 91299581,
+        "sha256": "6017a24dfbf68405fcae89ca9f572ef2443bf4627540a61f46673320703c2f7e"
+      },
+      "sdk_sha256": "bc001d3da4664cd0c89deaa84c3ecb78fbd92aaffe7c8437478a46e731706f29",
+      "wrapper_sha256": "9fb53b2ca27ec97439962f21166103312454a12359b73b462bf7771f5d59d1f1",
+      "full_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-zhuxi-choice-readback-001",
+      "full_index_sha256": "9f8abdb3b130d45ffa03308bd2f5748533228848c000c3f799b8e2090736ec0a",
+      "save_copied": false,
+      "save_reparsed": false
+    },
+    {
+      "scenario": "practice-cancel",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\a35a831a9717aa94b44d3d876cfc1e3ae0fffde60f3a82918e2407792e06b58d\\xar_checkpoint.ck3",
+        "bytes": 91301037,
+        "sha256": "a35a831a9717aa94b44d3d876cfc1e3ae0fffde60f3a82918e2407792e06b58d"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\95e7babc5c2c15d93cac491c87dd9e3e77e24bf3323c0c7006f9e570c95e0959\\xar_checkpoint.ck3",
+        "bytes": 91301037,
+        "sha256": "95e7babc5c2c15d93cac491c87dd9e3e77e24bf3323c0c7006f9e570c95e0959"
+      },
+      "sdk_sha256": "5927f83a403459322f33264a493c3dbe890f837df8f40f13a847c396c6126100",
+      "wrapper_sha256": "8ece012ee703c90f82b2a61479548145a6324f9d956653e78df910e37ceb0d8a",
+      "full_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-practice-cancel-readback-001",
+      "full_index_sha256": "908c39e6981254b00a3ff5a0d2446494bec09e6ba2cc4684530eeaf3a963348a",
+      "save_copied": false,
+      "save_reparsed": false
+    },
+    {
+      "scenario": "practice-a",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c\\xar_checkpoint.ck3",
+        "bytes": 91301141,
+        "sha256": "5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\a35a831a9717aa94b44d3d876cfc1e3ae0fffde60f3a82918e2407792e06b58d\\xar_checkpoint.ck3",
+        "bytes": 91301037,
+        "sha256": "a35a831a9717aa94b44d3d876cfc1e3ae0fffde60f3a82918e2407792e06b58d"
+      },
+      "sdk_sha256": "bcdc06ba666f0f6e02e0c45ee58f14618d740bf997d431cd24657aa26e8efa39",
+      "wrapper_sha256": "8e7c420df3010ac18dd6f2d5cca5efb49a208784c588212bd355aa7bee4f3ad6",
+      "full_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-practice-a-readback-001",
+      "full_index_sha256": "26c13d4bc41ed8ad7605fbec3fd68e02a09ddd32414d5c974605815f0efa356c",
+      "save_copied": false,
+      "save_reparsed": false
+    },
+    {
+      "scenario": "i2-qualification-red",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\a7107cc1c3e2f0bd947d9ead8346967f80ae8247471595792769aa6989d782e5\\xar_checkpoint.ck3",
+        "bytes": 91302021,
+        "sha256": "a7107cc1c3e2f0bd947d9ead8346967f80ae8247471595792769aa6989d782e5"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c\\xar_checkpoint.ck3",
+        "bytes": 91301141,
+        "sha256": "5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c"
+      },
+      "sdk_sha256": "d76d691cbc557e48482cb2ef6ece524b752f1f9856895bd3d5897fb235f87d32",
+      "wrapper_sha256": "f910e55f2777c0dc5fbbbba2da462e009d5c72aa742956c0947f85bc29ec1391",
+      "full_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-qualification-red-readback-001",
+      "full_index_sha256": "53002667707b3a436fba02288daaa87ef7c8aeaacb8b58135ef3566d2e26868a",
+      "save_copied": false,
+      "save_reparsed": false
+    },
+    {
+      "scenario": "i2-setup-fixture-only",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\3f03971940fe97653f392691a36acee63bd66544d49b35b57296c744fe47da37\\xar_checkpoint.ck3",
+        "bytes": 91313712,
+        "sha256": "3f03971940fe97653f392691a36acee63bd66544d49b35b57296c744fe47da37"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\a7107cc1c3e2f0bd947d9ead8346967f80ae8247471595792769aa6989d782e5\\xar_checkpoint.ck3",
+        "bytes": 91302021,
+        "sha256": "a7107cc1c3e2f0bd947d9ead8346967f80ae8247471595792769aa6989d782e5"
+      },
+      "sdk_sha256": "813abd7d1e8d94ea0cd171b89ab6caa2c17166e13d3a8ae7eff034757e484417",
+      "wrapper_sha256": "7cd48e38a4c6fee06ca6f76d1a8ca945c01e04fc4d2793cd0aa031dd4c6132b4",
+      "full_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-setup-readback-001",
+      "full_index_sha256": "68ff80156e27e2e982d200549643123a3845b326915dcf03d1288a5e07ff551f",
+      "save_copied": false,
+      "save_reparsed": false
+    },
+    {
+      "scenario": "i2-after-actual-two-days",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\97fe09b4d9ff9cfc59bfbeb4b9ff7bf795538cfa22c8fd07ac73c6dd2b61eee5\\xar_checkpoint.ck3",
+        "bytes": 90494024,
+        "sha256": "97fe09b4d9ff9cfc59bfbeb4b9ff7bf795538cfa22c8fd07ac73c6dd2b61eee5"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\3f03971940fe97653f392691a36acee63bd66544d49b35b57296c744fe47da37\\xar_checkpoint.ck3",
+        "bytes": 91313712,
+        "sha256": "3f03971940fe97653f392691a36acee63bd66544d49b35b57296c744fe47da37"
+      },
+      "sdk_sha256": "3e87e0d9adae1aea76277f6802e3864f7b433ec0bcbaccd97f1af4680340e8c4",
+      "wrapper_sha256": "b2e435eb68e8b3bd17be08772474117aa0818dacdd85808b81d3c141b093b7c8",
+      "full_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-after-two-days-readback-001",
+      "full_index_sha256": "6c930a76af85d238ec194f48151d57b52193b0ea110ebf627a212627ca7a8154",
+      "save_copied": false,
+      "save_reparsed": false
+    }
+  ],
+  "checkpoint_receipts": [
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0005-baseline-save\\receipt.json",
+      "projected_path": "checkpoints/0005-baseline-save/receipt.raw.json",
+      "original_bytes": 1144,
+      "original_sha256": "b24b1d704c0b2f0164e0b02a21b16100995960c26c559426bcfaeecf019fde78",
+      "projected_bytes": 1144,
+      "projected_sha256": "b24b1d704c0b2f0164e0b02a21b16100995960c26c559426bcfaeecf019fde78",
+      "encoding": "original-bytes"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0010-original-confucian-save\\receipt.json",
+      "projected_path": "checkpoints/0010-original-confucian-save/receipt.raw.json",
+      "original_bytes": 1163,
+      "original_sha256": "68cd1a2e461162c4b8f3d62a167ff592f473ea240c725a3a9dcd07ad366dd220",
+      "projected_bytes": 1163,
+      "projected_sha256": "68cd1a2e461162c4b8f3d62a167ff592f473ea240c725a3a9dcd07ad366dd220",
+      "encoding": "original-bytes"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0013-formal-entry-save\\receipt.json",
+      "projected_path": "checkpoints/0013-formal-entry-save/receipt.raw.json",
+      "original_bytes": 1151,
+      "original_sha256": "b479cd13abb191d350cb83d78320ee312f83b1479545d94694b6e1d47e0b5c23",
+      "projected_bytes": 1151,
+      "projected_sha256": "b479cd13abb191d350cb83d78320ee312f83b1479545d94694b6e1d47e0b5c23",
+      "encoding": "original-bytes"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0016-chooser-cancel-save\\receipt.json",
+      "projected_path": "checkpoints/0016-chooser-cancel-save/receipt.raw.json",
+      "original_bytes": 1155,
+      "original_sha256": "39d99811402ed8861e4eecf1e46381ff1354f086ac44cdc4ad77c9e0ca47c45b",
+      "projected_bytes": 1155,
+      "projected_sha256": "39d99811402ed8861e4eecf1e46381ff1354f086ac44cdc4ad77c9e0ca47c45b",
+      "encoding": "original-bytes"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0019-zhuxi-save\\receipt.json",
+      "projected_path": "checkpoints/0019-zhuxi-save/receipt.raw.json",
+      "original_bytes": 1138,
+      "original_sha256": "9fb53b2ca27ec97439962f21166103312454a12359b73b462bf7771f5d59d1f1",
+      "projected_bytes": 1138,
+      "projected_sha256": "9fb53b2ca27ec97439962f21166103312454a12359b73b462bf7771f5d59d1f1",
+      "encoding": "original-bytes"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0022-practice-cancel-save\\receipt.json",
+      "projected_path": "checkpoints/0022-practice-cancel-save/receipt.raw.json",
+      "original_bytes": 1158,
+      "original_sha256": "8ece012ee703c90f82b2a61479548145a6324f9d956653e78df910e37ceb0d8a",
+      "projected_bytes": 1158,
+      "projected_sha256": "8ece012ee703c90f82b2a61479548145a6324f9d956653e78df910e37ceb0d8a",
+      "encoding": "original-bytes"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0025-practice-a-save\\receipt.json",
+      "projected_path": "checkpoints/0025-practice-a-save/receipt.raw.json",
+      "original_bytes": 1148,
+      "original_sha256": "8e7c420df3010ac18dd6f2d5cca5efb49a208784c588212bd355aa7bee4f3ad6",
+      "projected_bytes": 1148,
+      "projected_sha256": "8e7c420df3010ac18dd6f2d5cca5efb49a208784c588212bd355aa7bee4f3ad6",
+      "encoding": "original-bytes"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0027-i2-qualified-save\\receipt.json",
+      "projected_path": "checkpoints/0027-i2-qualified-save/receipt.raw.json",
+      "original_bytes": 1152,
+      "original_sha256": "f910e55f2777c0dc5fbbbba2da462e009d5c72aa742956c0947f85bc29ec1391",
+      "projected_bytes": 1152,
+      "projected_sha256": "f910e55f2777c0dc5fbbbba2da462e009d5c72aa742956c0947f85bc29ec1391",
+      "encoding": "original-bytes"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0030-i2-setup-save\\receipt.json",
+      "projected_path": "checkpoints/0030-i2-setup-save/receipt.raw.json",
+      "original_bytes": 1144,
+      "original_sha256": "7cd48e38a4c6fee06ca6f76d1a8ca945c01e04fc4d2793cd0aa031dd4c6132b4",
+      "projected_bytes": 1144,
+      "projected_sha256": "7cd48e38a4c6fee06ca6f76d1a8ca945c01e04fc4d2793cd0aa031dd4c6132b4",
+      "encoding": "original-bytes"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0036-i2-one-day-save\\receipt.json",
+      "projected_path": "checkpoints/0036-i2-one-day-save/receipt.raw.json",
+      "original_bytes": 1148,
+      "original_sha256": "b2e435eb68e8b3bd17be08772474117aa0818dacdd85808b81d3c141b093b7c8",
+      "projected_bytes": 1148,
+      "projected_sha256": "b2e435eb68e8b3bd17be08772474117aa0818dacdd85808b81d3c141b093b7c8",
+      "encoding": "original-bytes"
+    }
+  ],
+  "all_large_original_saves_and_graphs_remain_external": true,
+  "copies_of_ck3_files": 0,
+  "coverage": "raw checkpoint receipts retained, compact scenario proofs bound; index paths alone are not independent save reparse"
+}

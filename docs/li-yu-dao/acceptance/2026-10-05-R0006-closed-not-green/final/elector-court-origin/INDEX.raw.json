@@ -1,0 +1,50 @@
+{
+  "schema": "lyd.external-evidence-index.v1",
+  "files": [
+    {
+      "path": "evidence\\0030-setup\\character-59758-living-0.excerpt.txt",
+      "bytes": 607,
+      "sha256": "d33ebfbbf7690a5d4e2ab2653bec6dfb52a0655ffac3e7fbbdea54b4ec55e0e9"
+    },
+    {
+      "path": "evidence\\0030-setup\\council-task-1359.excerpt.txt",
+      "bytes": 81,
+      "sha256": "6cbe8f2decded7c921d48e782a032d839e5e9ae30af174d87511684ae32aace8"
+    },
+    {
+      "path": "evidence\\0030-setup\\council-task-506.excerpt.txt",
+      "bytes": 80,
+      "sha256": "8fa4f1022793d666db55c9f6017039019e052521408ca7513b8146ae072af8f3"
+    },
+    {
+      "path": "evidence\\0036-actual-dplus2\\character-59758-living-0.excerpt.txt",
+      "bytes": 571,
+      "sha256": "319e42d8c88616f9166a3934c72f7f88639ccf1c07ad79cb3324703f9f925c45"
+    },
+    {
+      "path": "evidence\\0036-actual-dplus2\\council-task-1359.excerpt.txt",
+      "bytes": 81,
+      "sha256": "f34f49eaaa47409f274b767a1a1b4d1da35e4a2ce008700663c871653459a79b"
+    },
+    {
+      "path": "evidence\\0036-actual-dplus2\\council-task-506.excerpt.txt",
+      "bytes": 80,
+      "sha256": "188e8c8226b8053560b8040f0ea23fafca5e80d1fad7bd76e81e3bc7ff084cda"
+    },
+    {
+      "path": "REPORT.json",
+      "bytes": 12442,
+      "sha256": "8c54cf5bf4bfce37d5a88580f1c1b163671a8a98db052949b11ea4f366449a93"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 829,
+      "sha256": "23ccb82831432e96314d87a2b60c5b0e3e0cd3a28e7db7dc175e3f36ae712523"
+    },
+    {
+      "path": "supplement.py",
+      "bytes": 6279,
+      "sha256": "5a0d424baa600befefad6febb4a07fd30c4fd1b2c530182bf04d0f2d969c5d9d"
+    }
+  ]
+}

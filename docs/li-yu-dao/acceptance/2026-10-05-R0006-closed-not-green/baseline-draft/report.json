@@ -1,0 +1,509 @@
+{
+  "schema": "ck3.lyd.r0006-permanent-report-draft.v1",
+  "snapshot_utc": "2026-10-04T15:44:02.270631+00:00",
+  "status": "DRAFT_PARTIAL_SUCCESS_QUALIFICATION_AND_CAPPED_LOG_RED",
+  "overall_native_acceptance": "NOT_GREEN",
+  "normal_exit": "PENDING",
+  "source_freeze_release": "PENDING",
+  "frozen_source_revision": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+  "product_tree": "2e290b9b7fca02c38a33e4c73f5c46e7060dc9fa",
+  "run": {
+    "schema": "xar.ck3-live-run-identity.v1",
+    "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0006",
+    "execution_id": "a29d24c0-d479-4989-bf90-16d4e1de0ea0",
+    "machine_id": "bf-202609141645-5434332d4d",
+    "mod_key": "li-yu-dao",
+    "sequence": 6,
+    "allocated_at_utc": "2026-10-04T12:02:42.461249+00:00",
+    "allocator_pid": 13716,
+    "legacy_alias": null
+  },
+  "mounted_counts": {
+    "production": 59,
+    "entry_fixture": 7,
+    "i2_fixture": 7
+  },
+  "readback_results": [
+    {
+      "scenario": "original-confucian-fixture",
+      "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+      "checks_count": 34,
+      "failed_checks": [],
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-original-confucian-readback-001",
+      "compact_sha256": "c3005e8236a9a8aec430cb35cff873c8e0553edda562a301354a7a39d48374a1",
+      "original_index_sha256": "aee5b8795ae56a9e64e5c89732bbc35c36ec9ab742b93ab168462722f0da6021",
+      "full_report_sha256": "7cf6ec3c345c0f9b4281d155561b1c9e2b0e478de1557ad66c6bc8336f004cf4",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\97461bed54da92ff05da6836f54884c90d6f847a02e6bd9c1bd64dc3da1567fe\\xar_checkpoint.ck3",
+        "bytes": 91297138,
+        "sha256": "97461bed54da92ff05da6836f54884c90d6f847a02e6bd9c1bd64dc3da1567fe"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\291bf3fe63c1d8c3bbbbc97c6d94e47794b031c07934311cbcb83873232fdc8e\\xar_checkpoint.ck3",
+        "bytes": 91282203,
+        "sha256": "291bf3fe63c1d8c3bbbbc97c6d94e47794b031c07934311cbcb83873232fdc8e"
+      },
+      "qualification_result": null,
+      "formal_c2_result": null,
+      "whole_log_result": null
+    },
+    {
+      "scenario": "formal-entry",
+      "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+      "checks_count": 42,
+      "failed_checks": [],
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-formal-entry-readback-001",
+      "compact_sha256": "f8cf1da147fd4cae69f812565981b0ea2bb8de6986bb95dd5daab14f8304f2d2",
+      "original_index_sha256": "09bc295a69439e9191cdee58be88d63cf07d3d230ef1d8389361b2a37e3d59ec",
+      "full_report_sha256": "7782bf44a9d0b0e1bd537f06ce844581942c84a9f29c094623169c7489703676",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\d6296e522615f68aa374a60c2f76f55d95416476ff19e85ddb8e6bfdb203778c\\xar_checkpoint.ck3",
+        "bytes": 91299581,
+        "sha256": "d6296e522615f68aa374a60c2f76f55d95416476ff19e85ddb8e6bfdb203778c"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\97461bed54da92ff05da6836f54884c90d6f847a02e6bd9c1bd64dc3da1567fe\\xar_checkpoint.ck3",
+        "bytes": 91297138,
+        "sha256": "97461bed54da92ff05da6836f54884c90d6f847a02e6bd9c1bd64dc3da1567fe"
+      },
+      "qualification_result": null,
+      "formal_c2_result": null,
+      "whole_log_result": null
+    },
+    {
+      "scenario": "chooser-cancel",
+      "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+      "checks_count": 52,
+      "failed_checks": [],
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-chooser-cancel-readback-001",
+      "compact_sha256": "472b2b0beef0aff8459dc2232650d532f08fae5fe9be13b6e7690072303ef778",
+      "original_index_sha256": "6b4ef1c726914af0d4f121e98574b5753ba793aa5af882ef1d86d5e2ef12b0cc",
+      "full_report_sha256": "7d0848108e3e0ff4633faad2f10b16550aeab3a04c9b8abba2f0e13e4c000919",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\6017a24dfbf68405fcae89ca9f572ef2443bf4627540a61f46673320703c2f7e\\xar_checkpoint.ck3",
+        "bytes": 91299581,
+        "sha256": "6017a24dfbf68405fcae89ca9f572ef2443bf4627540a61f46673320703c2f7e"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\d6296e522615f68aa374a60c2f76f55d95416476ff19e85ddb8e6bfdb203778c\\xar_checkpoint.ck3",
+        "bytes": 91299581,
+        "sha256": "d6296e522615f68aa374a60c2f76f55d95416476ff19e85ddb8e6bfdb203778c"
+      },
+      "qualification_result": null,
+      "formal_c2_result": null,
+      "whole_log_result": null
+    },
+    {
+      "scenario": "zhuxi-choice",
+      "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+      "checks_count": 49,
+      "failed_checks": [],
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-zhuxi-choice-readback-001",
+      "compact_sha256": "a8f79b02f4bf7c9496acbd105b0834ae1872359802ea622d968f71e836ce9511",
+      "original_index_sha256": "9f8abdb3b130d45ffa03308bd2f5748533228848c000c3f799b8e2090736ec0a",
+      "full_report_sha256": "444a19a5f6000fa3684d090ae5d0511df9caa80b552a4f14832d951c452cd73d",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\95e7babc5c2c15d93cac491c87dd9e3e77e24bf3323c0c7006f9e570c95e0959\\xar_checkpoint.ck3",
+        "bytes": 91301037,
+        "sha256": "95e7babc5c2c15d93cac491c87dd9e3e77e24bf3323c0c7006f9e570c95e0959"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\6017a24dfbf68405fcae89ca9f572ef2443bf4627540a61f46673320703c2f7e\\xar_checkpoint.ck3",
+        "bytes": 91299581,
+        "sha256": "6017a24dfbf68405fcae89ca9f572ef2443bf4627540a61f46673320703c2f7e"
+      },
+      "qualification_result": null,
+      "formal_c2_result": null,
+      "whole_log_result": null
+    },
+    {
+      "scenario": "practice-cancel",
+      "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+      "checks_count": 52,
+      "failed_checks": [],
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-practice-cancel-readback-001",
+      "compact_sha256": "0e203bcf800f8f972540f7b90ff1eac2f403b3cc22712a75027a97a312df965a",
+      "original_index_sha256": "908c39e6981254b00a3ff5a0d2446494bec09e6ba2cc4684530eeaf3a963348a",
+      "full_report_sha256": "bd21a30a5677b46d45fdbb45b504260aaedafc2f8a34c7849322805c3c73fcf3",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\a35a831a9717aa94b44d3d876cfc1e3ae0fffde60f3a82918e2407792e06b58d\\xar_checkpoint.ck3",
+        "bytes": 91301037,
+        "sha256": "a35a831a9717aa94b44d3d876cfc1e3ae0fffde60f3a82918e2407792e06b58d"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\95e7babc5c2c15d93cac491c87dd9e3e77e24bf3323c0c7006f9e570c95e0959\\xar_checkpoint.ck3",
+        "bytes": 91301037,
+        "sha256": "95e7babc5c2c15d93cac491c87dd9e3e77e24bf3323c0c7006f9e570c95e0959"
+      },
+      "qualification_result": null,
+      "formal_c2_result": null,
+      "whole_log_result": null
+    },
+    {
+      "scenario": "practice-a",
+      "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+      "checks_count": 62,
+      "failed_checks": [],
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-practice-a-readback-001",
+      "compact_sha256": "04df2c5e4ed3e96e28a4e1d6604aeaf9ff5d5910c23c1bd23f358ee0769494d1",
+      "original_index_sha256": "26c13d4bc41ed8ad7605fbec3fd68e02a09ddd32414d5c974605815f0efa356c",
+      "full_report_sha256": "ced34500f7e94d681875f87519dad7412fd8921df79d402e7b6283de48d166de",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c\\xar_checkpoint.ck3",
+        "bytes": 91301141,
+        "sha256": "5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\a35a831a9717aa94b44d3d876cfc1e3ae0fffde60f3a82918e2407792e06b58d\\xar_checkpoint.ck3",
+        "bytes": 91301037,
+        "sha256": "a35a831a9717aa94b44d3d876cfc1e3ae0fffde60f3a82918e2407792e06b58d"
+      },
+      "qualification_result": null,
+      "formal_c2_result": null,
+      "whole_log_result": null
+    },
+    {
+      "scenario": "i2-qualification-red",
+      "result": "RED_QUALIFICATION_POSTCONDITION",
+      "checks_count": 60,
+      "failed_checks": [],
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-qualification-red-readback-001",
+      "compact_sha256": "72ede6cee7e9b75bb5dd3e683616404015d94b782b0e3b5b0a130a9ce6c9f696",
+      "original_index_sha256": "53002667707b3a436fba02288daaa87ef7c8aeaacb8b58135ef3566d2e26868a",
+      "full_report_sha256": "b443748463478dcdf74bf08434606f02b5a501e3159d3f3b517d5e4ab1f11f07",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\a7107cc1c3e2f0bd947d9ead8346967f80ae8247471595792769aa6989d782e5\\xar_checkpoint.ck3",
+        "bytes": 91302021,
+        "sha256": "a7107cc1c3e2f0bd947d9ead8346967f80ae8247471595792769aa6989d782e5"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c\\xar_checkpoint.ck3",
+        "bytes": 91301141,
+        "sha256": "5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c"
+      },
+      "qualification_result": null,
+      "formal_c2_result": null,
+      "whole_log_result": null
+    },
+    {
+      "scenario": "i2-setup-fixture-only",
+      "result": "PASS_SAVED_SETUP_GRAPH_ONLY",
+      "checks_count": 96,
+      "failed_checks": [],
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-setup-readback-001",
+      "compact_sha256": "cd0eac4d2fcf62b40ab9d163fa10cf9eba8f800c9d450cdb53d9b55fb0bb1891",
+      "original_index_sha256": "68ff80156e27e2e982d200549643123a3845b326915dcf03d1288a5e07ff551f",
+      "full_report_sha256": "0d31a401f21937e94a66efb28ef099d8a0ea7a42d0950ab6cff3270ca5919498",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\3f03971940fe97653f392691a36acee63bd66544d49b35b57296c744fe47da37\\xar_checkpoint.ck3",
+        "bytes": 91313712,
+        "sha256": "3f03971940fe97653f392691a36acee63bd66544d49b35b57296c744fe47da37"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\a7107cc1c3e2f0bd947d9ead8346967f80ae8247471595792769aa6989d782e5\\xar_checkpoint.ck3",
+        "bytes": 91302021,
+        "sha256": "a7107cc1c3e2f0bd947d9ead8346967f80ae8247471595792769aa6989d782e5"
+      },
+      "qualification_result": "RED: previously recorded same-effect learning_after8; actual base14, setup getter8. No fresh total-Learning15 observation.",
+      "formal_c2_result": "NOT_RUN: no proposals, votes, signatures, mandate, commit or business fees seeded by setup.",
+      "whole_log_result": "RED: root observed tooltip error cap100000; this readback does not classify live logs or convert graph PASS into zero-log GREEN."
+    },
+    {
+      "scenario": "i2-after-actual-two-days",
+      "result": "PASS_ACTUAL_D_PLUS2_OBSERVATION_ONLY",
+      "checks_count": 110,
+      "failed_checks": [],
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-after-two-days-readback-001",
+      "compact_sha256": "8599201af092d453e965dc292a849c1d41c59a961082e9c8a35d612230f135c7",
+      "original_index_sha256": "6c930a76af85d238ec194f48151d57b52193b0ea110ebf627a212627ca7a8154",
+      "full_report_sha256": "3ef1bb3873ecbafd40489c9980fb9f159020bef6e5ff0b47bc97301eb6fb4388",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\97fe09b4d9ff9cfc59bfbeb4b9ff7bf795538cfa22c8fd07ac73c6dd2b61eee5\\xar_checkpoint.ck3",
+        "bytes": 90494024,
+        "sha256": "97fe09b4d9ff9cfc59bfbeb4b9ff7bf795538cfa22c8fd07ac73c6dd2b61eee5"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\3f03971940fe97653f392691a36acee63bd66544d49b35b57296c744fe47da37\\xar_checkpoint.ck3",
+        "bytes": 91313712,
+        "sha256": "3f03971940fe97653f392691a36acee63bd66544d49b35b57296c744fe47da37"
+      },
+      "qualification_result": null,
+      "formal_c2_result": null,
+      "whole_log_result": null
+    }
+  ],
+  "two_day_independent_readback": "INCLUDED_FROZEN_COMPACT",
+  "snapshots": [
+    {
+      "snapshot": "campaign-loaded-001",
+      "receipt_utc": "2026-10-04T12:14:33.230190+00:00",
+      "error": {
+        "path": "error.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "e_count": 0,
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\campaign-loaded-001\\error.log"
+    },
+    {
+      "snapshot": "formal-entry-001",
+      "receipt_utc": "2026-10-04T13:06:45.878821+00:00",
+      "error": {
+        "path": "error.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "e_count": 0,
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\formal-entry-001\\error.log"
+    },
+    {
+      "snapshot": "i2-qualification-failed-001",
+      "receipt_utc": "2026-10-04T14:04:45.994628+00:00",
+      "error": {
+        "path": "error.log",
+        "bytes": 15407716,
+        "sha256": "6ee8a5cc3cdb3e13c558f1db3456552d810bfff49deebe761e37a45cb9f1d4ae"
+      },
+      "e_count": 47166,
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\i2-qualification-failed-001\\error.log"
+    },
+    {
+      "snapshot": "i2-setup-submitted-001",
+      "receipt_utc": "2026-10-04T14:36:04.504272+00:00",
+      "error": {
+        "path": "error.log",
+        "bytes": 40866397,
+        "sha256": "fd8b659ef333ffe7e1a1dad1a20e7a8f892071bbcc41d36ec4866f229cd9827b"
+      },
+      "e_count": 100000,
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\i2-setup-submitted-001\\error.log"
+    },
+    {
+      "snapshot": "loading-001",
+      "receipt_utc": "2026-10-04T12:03:06.806703+00:00",
+      "error": {
+        "path": "error.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "e_count": 0,
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\loading-001\\error.log"
+    },
+    {
+      "snapshot": "loading-002",
+      "receipt_utc": "2026-10-04T12:04:45.737361+00:00",
+      "error": {
+        "path": "error.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "e_count": 0,
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\loading-002\\error.log"
+    },
+    {
+      "snapshot": "lobby-complete-001",
+      "receipt_utc": "2026-10-04T12:06:20.215838+00:00",
+      "error": {
+        "path": "error.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "e_count": 0,
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\lobby-complete-001\\error.log"
+    },
+    {
+      "snapshot": "ordinary-campaign-002",
+      "receipt_utc": "2026-10-04T12:16:02.367777+00:00",
+      "error": {
+        "path": "error.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "e_count": 0,
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\ordinary-campaign-002\\error.log"
+    }
+  ],
+  "error_classification": {
+    "e_header_count": 100000,
+    "native_output_cap_reached": true,
+    "cap_basis": "root actual-run report plus complete snapshot exact100000 E headers; raw file has no independently identified cap warning footer",
+    "first_local_time": "21:53:36",
+    "last_local_time": "22:21:12",
+    "categories": {
+      "missing_trigger_localization": 43,
+      "unset_learning_delta_variable": 15721,
+      "unset_var_scope_link": 33319,
+      "script_value_wrong_type_none": 15721,
+      "unset_initial_source_faith_variable": 17598,
+      "invalid_var_comparison_right_side": 17598
+    },
+    "contexts": {
+      "trigger_localization_display": 43,
+      "explicit_tooltip_description": 84236,
+      "evaluation_context_not_explicitly_marked": 15721
+    },
+    "primary_domains": {
+      "i2-fixture": 100000
+    },
+    "product_primary_locations": 0,
+    "unknown_parser_or_api": 0,
+    "unclassified": 0,
+    "later_absence_is_not_zero_errors": true,
+    "post_cap_log_coverage": "UNAVAILABLE",
+    "qualification_snapshot_is_exact_byte_prefix": true,
+    "raw_error": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\i2-setup-submitted-001\\error.log",
+      "projected_path": "logs/i2-setup-error.raw.log.gz",
+      "original_bytes": 40866397,
+      "original_sha256": "fd8b659ef333ffe7e1a1dad1a20e7a8f892071bbcc41d36ec4866f229cd9827b",
+      "projected_bytes": 205817,
+      "projected_sha256": "df96b05aaa12df9ed3c8d95c30c47ffb991d565eac3da3753f274a731b7550a4",
+      "encoding": "gzip-lossless"
+    },
+    "all_records_gzip_uncompressed_sha256": "9145a707be71d567bc8d6b10c583c9f4823a73e6c76bd61b0afd766e347717d6"
+  },
+  "actual_clock": {
+    "initial_raw": 53144328,
+    "final_raw": 53144376,
+    "actual_delta_raw": 48,
+    "requested_delta_raw": 24,
+    "actual_days": 2,
+    "actual_final_date": "1066.9.17",
+    "D_plus_1_exact_acceptance": "NOT_CLAIMED",
+    "cooldown_reset": false
+  },
+  "ci": {
+    "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-3d3305e75cf642a7a82bef5f9aee03dc76b3c10e-001",
+    "required_exact_head_runs": [
+      {
+        "path": ".github/workflows/static-ci.yml",
+        "run_id": 37200670917,
+        "name": "Official Runner CI",
+        "head_sha": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+        "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37200670917",
+        "run_attempt": 1,
+        "event": "push",
+        "first_status": "in_progress",
+        "first_conclusion": null,
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-04T12:01:07Z",
+        "updated_at": "2026-10-04T12:04:52Z",
+        "jobs": [
+          {
+            "id": 111431527422,
+            "name": "static",
+            "head_sha": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+            "run_attempt": 1,
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37200670917/job/111431527422",
+            "started_at": "2026-10-04T12:01:09Z",
+            "completed_at": "2026-10-04T12:04:51Z",
+            "step_outcomes": {
+              "success": 60,
+              "skipped": 20
+            },
+            "skipped_steps": [
+              "Verify ZhongGuo 361 release localization audit",
+              "Build manual release candidate",
+              "Build manual Vivhite release candidate",
+              "Build manual Ox Here release candidate",
+              "Build manual Mandala Purge release candidate",
+              "Build manual Tributary Expansion Directives release candidate",
+              "Build manual Celestial Commerce and Corruption release candidate",
+              "Build manual Auto Upgrade Buildings release candidate",
+              "Build manual Reclaim the Motherland release candidate",
+              "Build manual ZhongGuo 361 release candidate",
+              "Build tagged release candidate",
+              "Build tagged Vivhite release candidate",
+              "Build tagged Ox Here release candidate",
+              "Build tagged Mandala Purge release candidate",
+              "Build tagged Tributary Expansion Directives release candidate",
+              "Build tagged Celestial Commerce and Corruption release candidate",
+              "Build tagged Auto Upgrade Buildings release candidate",
+              "Build tagged Reclaim the Motherland release candidate",
+              "Build tagged ZhongGuo 361 release candidate",
+              "Upload release candidate"
+            ]
+          }
+        ]
+      },
+      {
+        "path": ".github/workflows/li-yu-dao-static.yml",
+        "run_id": 37200670823,
+        "name": "Li Yu Dao static checks",
+        "head_sha": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+        "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37200670823",
+        "run_attempt": 1,
+        "event": "push",
+        "first_status": "completed",
+        "first_conclusion": "success",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-04T12:01:07Z",
+        "updated_at": "2026-10-04T12:01:40Z",
+        "jobs": [
+          {
+            "id": 111431526874,
+            "name": "static",
+            "head_sha": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+            "run_attempt": 1,
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37200670823/job/111431526874",
+            "started_at": "2026-10-04T12:01:09Z",
+            "completed_at": "2026-10-04T12:01:39Z",
+            "step_outcomes": {
+              "success": 9
+            },
+            "skipped_steps": []
+          }
+        ]
+      }
+    ],
+    "native_credit": false
+  },
+  "milestones": {
+    "estimate_progress_percent": 60,
+    "not_test_pass_rate": true,
+    "basis": "parent-reported current estimate",
+    "targets": [
+      {
+        "date": "2026-10-05",
+        "scope": "parent exact scope pending"
+      },
+      {
+        "date": "2026-10-06",
+        "scope": "parent exact scope pending"
+      },
+      {
+        "date": "2026-10-07—2026-10-08",
+        "scope": "parent exact scope pending"
+      },
+      {
+        "date": "2026-10-09",
+        "scope": "parent exact scope pending"
+      }
+    ],
+    "scope_finalization": "PENDING_PARENT_EXACT_WORDING"
+  },
+  "not_run_or_unproven": [
+    "formal C2 proposal/votes/playerconsent/representative signatures/commit/repeated join-detach",
+    "C3 teacher/head vacancy/challenge recognition/native owned-head lifecycle",
+    "all36rite practice options individually live tested",
+    "D+30",
+    "reload",
+    "final exit/process absence/keeper FINAL/CAS/allocator"
+  ],
+  "side_effects": {
+    "tracked": 0,
+    "git": 0,
+    "game_or_screen": 0,
+    "ci_network": 0,
+    "original_delete_or_mutation": 0,
+    "save_copies": 0,
+    "save_reparse": 0
+  },
+  "compression": "gzip mtime0 and byte-for-byte roundtrip verified; original uncompressed SHA in source-projection-map"
+}

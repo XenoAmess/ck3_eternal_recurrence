@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 38,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue\\0037-i2-resources-snapshot.request.json",
+  "request_sha256": "4ff76e9ab6e6092d901fe04ff0eb593c30850e9c951ba14620d37aed2314ff40",
+  "started_at_utc": "2026-10-04T16:52:29.166604+00:00",
+  "request_id": "0037-i2-resources-snapshot",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0038-0037-i2-resources-snapshot.sdk-result.json",
+  "sdk_result_sha256": "8062ed9ed3a54ae94457d1f5109634a504c504d26aeec88bc6158159d40397d9",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0037-snapshot.json",
+      "copy": "0038-0037-i2-resources-snapshot.native-01.json",
+      "sha256": "f6e0f44ebfc484dc65015b672babbe4bd4314782474d2ad760b4cd1f5f173ed7"
+    }
+  ],
+  "finished_at_utc": "2026-10-04T16:52:30.449236+00:00"
+}

@@ -1,0 +1,134 @@
+31254={
+	first_name="Robert"
+	birth=1015.1.1
+	nickname=nick_the_fox
+	nickname_text="狐狸"
+	ethnicity=caucasian_ginger
+	culture=73
+	rite=0
+	dynasty_house=174
+	skill={ 4 9 6 6 7 6 }
+	dna="Ce4J7oJ0gnQdsB2wAH4AfgGIAYgAdQB1AYABgAByAHIBhQGFAH0AfQCuAHcBjQGNAHcAdwGVAZUBkAGQAF4AXgBaAFoBpAGkAF4AXgGFAYUB0gHSAGsAawByAHIAdwB3AYoBigB5AHkAcABwAHgAeAGZAZkAPgA+AZMBkwB2AHYBrAGsAZIBkgG4AHoADQANACMAIwEDAQMBEgESACEAIQFlAWUAMgAyACUAJQGcAZwBHgEeABsAGwEQARAAsgBPAXUBdQAWATgAPgA+ASUBJQEMAQwAGAAYABwAHABnAGcBeAF4AAQABAAdAB0BBwEHABIAEgBNAE0BPwE/AVUBVQEcARwAbAEpACoAKgEPAQ8ABAAEAXMAcwEJAQkAKAAoARsBGwEGAQYBLQEtATsBOwAqACoEEAQQAREBEQFwAXAA4QDhAPEA8QEPAQ8AhAEKAA8ADwCpAKkAkgDIAA4ADgAbABsAAAAAAHsAewF3AXUBeQF5ARAHBgnECcQDDQMNBqwGrAHAAcABpABbAIAAgADcAH8BsQGxAQABAAGZAZk="
+
+	mass=7
+	traits={ 69 51 67 19 31 158 }
+	family_data={
+		primary_spouse=36311
+		spouse=36311
+		former_spouses={ 34968 }
+		child={ 38924 39348 39979 40526 40695 40847 41032 }
+	}
+
+	alive_data={
+		variables={
+			data={ {
+					flag=ce3_11_servus_servorum_dei_achievement_start
+					data={
+					}
+
+				}
+ {
+					flag=has_scripted_appearance
+					data={
+					}
+
+				}
+ {
+					flag=chancellor_foreign_affairs_opinion_value
+					data={
+						type=value
+					}
+
+				}
+ {
+					flag=court_chaplain_religious_relations_opinion_value
+					data={
+						type=value
+					}
+
+				}
+ }
+		}
+		income=4.75051
+		modifier={
+			modifier=guiscard_modifier			expiration_date=9999.1.1
+		}
+
+		fertility=0.5
+		health=4.1616
+		gold={
+			value=244
+		}
+		piety={
+			currency=150
+		}
+		prestige={
+			currency=2200
+			accumulated=5000
+		}
+		influence={
+			currency=240
+		}
+		pretender={ 2250 }
+		claim={ {
+				title=7219
+			}
+ }
+		lifestyle_xp={
+			diplomacy_lifestyle=0
+			martial_lifestyle=0
+			stewardship_lifestyle=0
+			intrigue_lifestyle=0
+			learning_lifestyle=0
+			wanderer_lifestyle=0
+		}
+		perk={ bellum_justum_perk parthian_tactics_perk envelopment_perk organized_retreat_perk hit_and_run_perk engineered_for_destruction_perk living_off_the_land_perk sappers_perk strategist_perk stalwart_leader_perk chivalric_dominance_perk never_back_down_perk kingsguard_perk meritocracy_perk large_levies_perk soon_forgiven_perk toe_the_line_perk }
+		languages={ language_french language_italian }
+		activity_data={
+		}
+
+		location={
+			location=2619
+		}
+	}
+
+	court_data={
+	}
+
+	landed_data={
+		domain={ 2230 2231 2262 2232 2263 2235 2264 }
+		vassal_contracts={ 8663 8691 8809 8812 9402 16786427 16786415 }
+		became_ruler_date=1066.9.15
+		laws={ crown_authority_0 confederate_partition_succession_law male_preference_law top_liege_redirected_to_border_wars_law }
+		current_strength=1210
+		strength=1210
+		strength_without_hires=1210
+		power=36280
+		max_power=36280
+		levy=904
+		balance=3.98296
+		succession_result_type=inheritance_child_line
+		succession={ 40526 40695 39979 40847 41032 37244 38098 36445 36663 36873 31692 34973 40259 35598 36638 32536 38561 39045 39171 39352 39527 33234 37702 33542 34232 32236 38560 38902 31538 35899 40507 40843 41028 36329 36847 41495 37064 33028 38782 39032 39309 39932 40694 41235 41288 }
+		domain_limit=6
+		vassal_limit=20
+		vassals_towards_limit=5
+		government=feudal_government
+		realm_capital=2232
+		council={ 7870 7871 7872 7873 7874 7875 }
+		diplo_centers={ 1938 2418 1895 2283 1711 2539 1826 2461 1796 2160 1866 2381 }
+		barter_goods={
+		}
+	}
+
+	playable_data={
+		knights={ 32658 37244 37702 36333 34975 35899 }
+		diarchy_successor=34232
+		was_player=yes
+		legitimacy=326
+		legitimacy_type=duke_legitimacy
+		tenets={ tenet_apostolic_succession }
+		known_doctrines={ abrahamic_hostility_doctrine doctrine_monogamy doctrine_polygamy doctrine_divorce_approval doctrine_divorce_disallowed doctrine_divorce_allowed doctrine_bastardry_legitimization doctrine_bastardry_none doctrine_bastardry_all doctrine_homosexuality_shunned doctrine_homosexuality_crime doctrine_homosexuality_accepted doctrine_deviancy_crime doctrine_deviancy_shunned doctrine_adultery_men_shunned doctrine_adultery_men_crime doctrine_adultery_men_accepted doctrine_adultery_women_crime doctrine_adultery_women_shunned doctrine_kinslaying_close_kin_crime doctrine_kinslaying_extended_family_crime doctrine_kinslaying_shunned doctrine_witchcraft_crime doctrine_witchcraft_shunned doctrine_gender_male_dominated doctrine_gender_equal doctrine_consanguinity_aunt_nephew_and_uncle_niece doctrine_consanguinity_cousins doctrine_consanguinity_unrestricted doctrine_pluralism_righteous doctrine_pluralism_fundamentalist doctrine_pluralism_pluralistic doctrine_theocracy_temporal doctrine_theocracy_lay_clergy doctrine_spiritual_head doctrine_clerical_function_taxation doctrine_clerical_gender_male_only doctrine_clerical_gender_either doctrine_clerical_marriage_disallowed doctrine_clerical_marriage_allowed doctrine_clerical_succession_spiritual_fixed_appointment doctrine_pilgrimage_encouraged doctrine_pilgrimage_forbidden doctrine_pilgrimage_local_rites doctrine_funeral_stoic doctrine_imperial_anointment doctrine_monotheist doctrine_scriptural doctrine_monasticism_accepted doctrine_monasticism_encouraged doctrine_monasticism_absent doctrine_sacraments_central special_doctrine_is_christian_faith special_doctrine_ecumenical_christian special_doctrine_has_clerical_electors special_doctrine_is_western_christian_faith doctrine_kinslaying_any_dynasty_member_crime doctrine_clerical_function_alms_and_pacification doctrine_funeral_bewailment doctrine_anointment_permitted special_doctrine_pope_blessing doctrine_deviancy_accepted doctrine_clerical_succession_conditional }
+		known_tenets={ tenet_peace_of_god tenet_dulia tenet_apostolic_succession tenet_confession tenet_original_sin tenet_divine_liturgy tenet_anachoresis tenet_communal_identity tenet_communion tenet_vows_of_poverty tenet_adaptive tenet_transubstantiation tenet_ora_et_labora tenet_hyperdulia tenet_simony tenet_monophysitism tenet_acts_of_apostles tenet_purgatory tenet_be_fruitful_and_multiply tenet_celestial_hierarchy tenet_miles_christi tenet_philanthropia tenet_adoptionism tenet_love_thy_neighbour tenet_miaphysitism tenet_hesychasm tenet_mortification_of_the_flesh tenet_aniconism tenet_gnosticism tenet_pentarchy tenet_esotericism tenet_legalism tenet_literalism tenet_religious_legal_pronouncements tenet_asceticism tenet_ritual_celebrations tenet_sanctity_of_nature tenet_natural_primitivism tenet_polyamory }
+	}
+
+}

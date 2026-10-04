@@ -1,0 +1,14 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 1,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue\\0001-tools-list.request.json",
+  "request_sha256": "09e2d09452aad578b23ecf888cb7fce41b9bd50e46251c71d095e3852dc8c58a",
+  "started_at_utc": "2026-10-04T12:09:06.659954+00:00",
+  "request_id": "0001-tools-list",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0001-0001-tools-list.sdk-result.json",
+  "sdk_result_sha256": "0f4ea0a9746aff3d8d3f0b3e573d7d834b0b3354efe9122ca0b4b177acb942d8",
+  "native_receipts": [],
+  "finished_at_utc": "2026-10-04T12:09:06.678626+00:00"
+}

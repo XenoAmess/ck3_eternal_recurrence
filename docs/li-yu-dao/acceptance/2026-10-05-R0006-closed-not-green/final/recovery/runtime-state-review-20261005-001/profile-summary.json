@@ -1,0 +1,146 @@
+{
+  "profile_sha256": "74601f97464a5faeb14312c4e2fa7458153c36fd7c2d5349a37ef852ec1db661",
+  "profile_sha256_matches_expected": true,
+  "guard_target": {
+    "pid": 12500,
+    "hwnd": 2491650,
+    "process_create_time": 1791115363.105566,
+    "executable": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+    "app_manifest": "C:\\Program Files (x86)\\Steam\\steamapps\\appmanifest_1158310.acf",
+    "build_id": "25652598",
+    "window_title": "Crusader Kings III",
+    "window_class": "SDL_app",
+    "window_rect": [
+      152,
+      59,
+      1768,
+      998
+    ]
+  },
+  "guard_cli_sha256": "b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee",
+  "driver_state_mtime_utc": "2026-10-04T17:17:43.067549+00:00",
+  "driver_bridge_pid": 12500,
+  "driver_command_history_count": 27,
+  "driver_last_checkpoint": {
+    "status": "saved",
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\userdir\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 90506624,
+    "sha256": "7ee7fb562d37874fb479559bef0c6d069f43320bdd908537c5466d07d5a1ecf2",
+    "date_raw": 53144376,
+    "overwrite_confirmed": true,
+    "strategy": "native-autosave-command-v1",
+    "episode_projection": "native_campaign",
+    "succession_lifecycle": null,
+    "history_index": 27,
+    "episode_character_id": null,
+    "episode_run_id": null
+  },
+  "last_stored_event_selection": {
+    "index": 26,
+    "command": "select-event-option-1",
+    "ok": true,
+    "result": {
+      "step": "select-event-option-1",
+      "accepted": true,
+      "status": "submitted",
+      "backend_id": "native-headless",
+      "progress_status": "postcondition",
+      "event_selection": {
+        "status": "event_instance_advanced",
+        "postcondition_verified": true,
+        "old_event_instance_id": 12,
+        "new_event_instance_id": 11,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "starting_snapshot_id": "native:37",
+        "starting_revision": 38,
+        "ending_snapshot_id": "native:38",
+        "ending_revision": 39,
+        "episode_run_id": null,
+        "connection_generation": 1,
+        "bridge_pid": 12500,
+        "starting_played_character_stress": {
+          "status": "available",
+          "character_id": 31254,
+          "stress_points": 4,
+          "unavailable_reason": null
+        },
+        "ending_played_character_stress": {
+          "status": "available",
+          "character_id": 31254,
+          "stress_points": 4,
+          "unavailable_reason": null
+        },
+        "starting_played_character_gold": {
+          "status": "available",
+          "character_id": 31254,
+          "gold_raw": 222900000,
+          "scale": 100000,
+          "unavailable_reason": null
+        },
+        "ending_played_character_gold": {
+          "status": "available",
+          "character_id": 31254,
+          "gold_raw": 222900000,
+          "scale": 100000,
+          "unavailable_reason": null
+        },
+        "starting_played_character_prestige": {
+          "status": "available",
+          "character_id": 31254,
+          "prestige_raw": 220000000,
+          "scale": 100000,
+          "unavailable_reason": null
+        },
+        "ending_played_character_prestige": {
+          "status": "available",
+          "character_id": 31254,
+          "prestige_raw": 220000000,
+          "scale": 100000,
+          "unavailable_reason": null
+        }
+      },
+      "active_event": {
+        "source": "native",
+        "instance_id": 11,
+        "option_count": 2,
+        "title": null,
+        "options": [
+          {
+            "index": 0,
+            "option_number": 1,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 1,
+            "option_number": 2,
+            "label": null,
+            "enabled": true
+          }
+        ]
+      },
+      "paused": true,
+      "snapshot_id": "native:38",
+      "revision": 39
+    }
+  },
+  "stored_state_is_historical_not_live_pause_or_connection_validation": true,
+  "relevant_distribution_versions": [
+    {
+      "name": "ck3-workshop-mcp",
+      "version": "0.1.0"
+    },
+    {
+      "name": "mcp",
+      "version": "2.0.0"
+    },
+    {
+      "name": "mcp-types",
+      "version": "2.0.0"
+    }
+  ],
+  "sdk_2_2_0_not_confirmed_by_this_interpreter_metadata": true
+}

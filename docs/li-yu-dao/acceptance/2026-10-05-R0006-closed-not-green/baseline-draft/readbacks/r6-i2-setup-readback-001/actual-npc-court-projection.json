@@ -1,0 +1,112 @@
+{
+  "source_rep": {
+    "id": "65856",
+    "first_name": "Geoffroy",
+    "birth": "1026.5.6",
+    "rite_id": "169",
+    "rite_type": "lyd_rite_zhuxi",
+    "faith_id": "32",
+    "base_learning": "20",
+    "saved_skill_array": [
+      "6",
+      "9",
+      "9",
+      "10",
+      "20",
+      "3"
+    ],
+    "variables": {
+      "lyd_r4_created_source_rep": {
+        "present": true,
+        "tick": null,
+        "type": null,
+        "identity": null,
+        "entries": [],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_created_source_rep"
+          },
+          {
+            "key": "data",
+            "value": []
+          }
+        ]
+      }
+    },
+    "lists": {},
+    "alive_data_present": true,
+    "currently_played": false,
+    "native_is_ai": null,
+    "landed_data": null,
+    "actual_saved_held_title_ids": [],
+    "actual_court_data": [
+      {
+        "key": "employer",
+        "value": "31254"
+      },
+      {
+        "key": "join_court_date",
+        "value": "1066.9.15"
+      }
+    ],
+    "actual_employer": "31254",
+    "helper_employer_projection": null,
+    "projection_boundary": "Frozen generic helper reads employer from alive_data and reports null; actual saved court_data is independently preserved here. Native is_ai and total Learning are not inferred from base20 or nonplayer status."
+  },
+  "receiving_rep": {
+    "id": "65857",
+    "first_name": "Humphrey",
+    "birth": "1026.7.31",
+    "rite_id": "159",
+    "rite_type": "lyd_rite_jingshu",
+    "faith_id": "104",
+    "base_learning": "20",
+    "saved_skill_array": [
+      "7",
+      "0",
+      "9",
+      "0",
+      "20",
+      "4"
+    ],
+    "variables": {
+      "lyd_r4_created_jingshu_rep": {
+        "present": true,
+        "tick": null,
+        "type": null,
+        "identity": null,
+        "entries": [],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_created_jingshu_rep"
+          },
+          {
+            "key": "data",
+            "value": []
+          }
+        ]
+      }
+    },
+    "lists": {},
+    "alive_data_present": true,
+    "currently_played": false,
+    "native_is_ai": null,
+    "landed_data": null,
+    "actual_saved_held_title_ids": [],
+    "actual_court_data": [
+      {
+        "key": "employer",
+        "value": "31254"
+      },
+      {
+        "key": "join_court_date",
+        "value": "1066.9.15"
+      }
+    ],
+    "actual_employer": "31254",
+    "helper_employer_projection": null,
+    "projection_boundary": "Frozen generic helper reads employer from alive_data and reports null; actual saved court_data is independently preserved here. Native is_ai and total Learning are not inferred from base20 or nonplayer status."
+  }
+}

@@ -1,0 +1,1408 @@
+{
+  "states": [
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0001-tools-list.json",
+      "original_request_sha256": "09e2d09452aad578b23ecf888cb7fce41b9bd50e46251c71d095e3852dc8c58a",
+      "request_id": "0001-tools-list",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": null,
+      "sdk_structured_status": null,
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0001-0001-tools-list.response.json",
+      "response_sha256": "1ade1a17ae5c930f6b8de4158f46ebcfd610ba897bedda7576d8c0c6cddc1090",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0001-0001-tools-list.sdk-result.json",
+      "sdk_sha256": "0f4ea0a9746aff3d8d3f0b3e573d7d834b0b3354efe9122ca0b4b177acb942d8",
+      "receipt_files": []
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0002-query-profile.json",
+      "original_request_sha256": "bd2e9468019c9265b571a0b27a8452772a5f99ea168fd1f634232157416b005c",
+      "request_id": "0002-query-profile",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "profile_bound",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0002-0002-query-profile.response.json",
+      "response_sha256": "531545f3448467fb32709dffb4fb33e068263831f1ba01d25320fe4f2433e86f",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0002-0002-query-profile.sdk-result.json",
+      "sdk_sha256": "76cbf4ebea1cc910e4e721bf4acf8db749642935856e531b4c53b2aa1eb3df34",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0001-inspect.json",
+          "copy": "0002-0002-query-profile.native-01.json",
+          "sha256": "6545243325d6526b02b937c3e9a528b4fab82ebc1d5e78bed2826333bfdeea92"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0003-attach.json",
+      "original_request_sha256": "e6fd755d286896a748326e7588064b989a30a9e9b3fa5b74b41589e70b258c05",
+      "request_id": "0003-attach",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "attached_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0003-0003-attach.response.json",
+      "response_sha256": "1e4f1aea20737d791c88bdb55008b53fdd3da417840c42bd0d78f5dcea94d811",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0003-0003-attach.sdk-result.json",
+      "sdk_sha256": "82f971569af3b4a3629f1d66d22bd619b3fc5e0adea5076fc3d473ccf5de74dd",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0002-attach.json",
+          "copy": "0003-0003-attach.native-01.json",
+          "sha256": "57ae3a9d3ef9d86a1d2a717fc582a9ae01edc49c308b3f05cd6032ee96cdabbc"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0004-baseline-snapshot.json",
+      "original_request_sha256": "b65cd49ee0c2a0054a71c080c27d5876297df837a5a0a8857ffd6033f4b1f3f4",
+      "request_id": "0004-baseline-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0004-0004-baseline-snapshot.response.json",
+      "response_sha256": "3ac7c31baa8546daefac908869cfa50d77b2e19cd29e3f03bc99a4395c1c7513",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0004-0004-baseline-snapshot.sdk-result.json",
+      "sdk_sha256": "465e3273b2f8b3614b40ba158929dddd973643843335510a42556981903e0e3e",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0003-snapshot.json",
+          "copy": "0004-0004-baseline-snapshot.native-01.json",
+          "sha256": "05f326494f022e26f67a4aa57085159119987f38b270094096b8e79db5c2b308"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0005-baseline-save.json",
+      "original_request_sha256": "d7b0f26e0f56e5b2fd31f084aada4842adb01ccd149959320d1b386d943d6823",
+      "request_id": "0005-baseline-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0005-0005-baseline-save.response.json",
+      "response_sha256": "4bcd910993e1f68943b850339158151791249fbc48ebe9af7b5efd7905a26fbf",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0005-0005-baseline-save.sdk-result.json",
+      "sdk_sha256": "009038b6802eaea42d667c0db3f42681fea952a8458516442dca3463bfceb23d",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0004-checkpoint.json",
+          "copy": "0005-0005-baseline-save.native-01.json",
+          "sha256": "5351f1d7fefb3245925a763f5155f4719cf0fd6fc0e493d3ca45f4e8af477ec7"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0006-fixture-entry-snapshot.json",
+      "original_request_sha256": "bc3d8f3d5860153f510e21dff5b736e44edf5f7489d72b0b0e5a74ab447096fd",
+      "request_id": "0006-fixture-entry-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0006-0006-fixture-entry-snapshot.response.json",
+      "response_sha256": "13d2da6e304ab253d0b41daecd6c4e0344cb2a00d202124e79f63fe84df32f69",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0006-0006-fixture-entry-snapshot.sdk-result.json",
+      "sdk_sha256": "bdfacca2a857d3e35df7b9f255139cca0a4bf27d4cd6df783af631bdc971fcc8",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0005-snapshot.json",
+          "copy": "0006-0006-fixture-entry-snapshot.native-01.json",
+          "sha256": "0057ea4f45c797fa41fd4310f556d2e2c432b3dedd1f64ed357215f9f620ac63"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0007-fixture-confirm-snapshot.json",
+      "original_request_sha256": "b9af8b02509a3f0011768f409c06d0886bbf2d73644477962b33f866123d72f1",
+      "request_id": "0007-fixture-confirm-snapshot",
+      "dispatch_status": "NO_DISPATCH_RESPONSE_FOUND",
+      "status_boundary": "original request is preserved; no success or failed execution invented from name alone"
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0007a-fixture-confirm-snapshot.json",
+      "original_request_sha256": "42e052b19026bbd7c0dbc8294a93e1e9b135cf0692a4468727a6c748e24d80b9",
+      "request_id": "0007a-fixture-confirm-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0007-0007a-fixture-confirm-snapshot.response.json",
+      "response_sha256": "1670a91ee625fd74db656459ae03aacba1c3b5946e44f2936855f68498efe767",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0007-0007a-fixture-confirm-snapshot.sdk-result.json",
+      "sdk_sha256": "5127aee9920aebf3c80fe06f5a2044b7775d96971c73f6e25bf8c051a19bd8b5",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0006-snapshot.json",
+          "copy": "0007-0007a-fixture-confirm-snapshot.native-01.json",
+          "sha256": "f1c1675fa168b7b812998c1d1b5c734f76bc5d42ce8029af629233ac9f033921"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0008-fixture-event-query.json",
+      "original_request_sha256": "cac4e31870583ff70e94bd571006896ed62d2f3ed4b8e542ced25d5ddaa3851e",
+      "request_id": "0008-fixture-event-query",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_event_query_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0008-0008-fixture-event-query.response.json",
+      "response_sha256": "2f1f95c568b4190c4bfa5d1d7a15b52b18d37c77c31a4b837b25bb3c9d4fe4cb",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0008-0008-fixture-event-query.sdk-result.json",
+      "sdk_sha256": "fc69b7c662b5510c682fa9a289acb0f2eb4ccb411197dc1e0429d56717f7a338",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0007-event-query.json",
+          "copy": "0008-0008-fixture-event-query.native-01.json",
+          "sha256": "12c9b31e3747b3259c85df2b9d8f0b79f30b26350ca71887bf1d82d93a88947d"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0009-fixture-event-ack.json",
+      "original_request_sha256": "79006062a7b46b92ee59e94e2eb5b80a32c014653222e6ee0d74601ea25caf1e",
+      "request_id": "0009-fixture-event-ack",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0009-0009-fixture-event-ack.response.json",
+      "response_sha256": "8000868d70b40c0fd2988fc603a28a6be099a407c53ed67bbdfdf58355604297",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0009-0009-fixture-event-ack.sdk-result.json",
+      "sdk_sha256": "fe87d072137ea68c2d68464fba8d32f400245e013753831a79c01434f61052f9",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0008-event-select.json",
+          "copy": "0009-0009-fixture-event-ack.native-01.json",
+          "sha256": "2d564b58f86eb6328a293750f49f152b7e643b6dc2acaf7c7134c95848535bd4"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0010-original-confucian-save.json",
+      "original_request_sha256": "21691330e0c0369b36a1b6b247410a456064cf0f5d8521f03ff8600d9e65dc2b",
+      "request_id": "0010-original-confucian-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0010-0010-original-confucian-save.response.json",
+      "response_sha256": "39a8f6d7875601b95298fc177408f2522a49ecd57225cbd9edefcf83c8dcf65f",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0010-0010-original-confucian-save.sdk-result.json",
+      "sdk_sha256": "504d60aff92cb01cbbe84e4ed20542615fd4f0a51bba748915c9d0a03d3c8903",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0009-checkpoint.json",
+          "copy": "0010-0010-original-confucian-save.native-01.json",
+          "sha256": "facf7a68c8c10acc8a43539934c37c5d682932bb6a6190339478423bd40f1c8f"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0011-formal-entry-snapshot.json",
+      "original_request_sha256": "dea4a0f16e9ad7323ab1e9a2f62dff1bcb416b5ee7134497a8d55a55a078dadd",
+      "request_id": "0011-formal-entry-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0011-0011-formal-entry-snapshot.response.json",
+      "response_sha256": "5b797929e5ec901b95778ca3fbce2e28ab1e857a5a369c683410a6f909dc555f",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0011-0011-formal-entry-snapshot.sdk-result.json",
+      "sdk_sha256": "7f7832a5c00179405c3c48946506b954cabc3c57e3ae653a905b2ff0daad05c3",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0010-snapshot.json",
+          "copy": "0011-0011-formal-entry-snapshot.native-01.json",
+          "sha256": "42cd1c4e73697dac5e851407853b26138b6230737edca5d91526f5572ab19854"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0012-formal-entry-ack.json",
+      "original_request_sha256": "bbae73905e4266a8c5152c330d2f8e643ab3ebe0d07510dec146df391b0c7492",
+      "request_id": "0012-formal-entry-ack",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0012-0012-formal-entry-ack.response.json",
+      "response_sha256": "3f413deb1af7e3f957d7a12fe5ec620980459e471a80985d8aacb44f97cd7eda",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0012-0012-formal-entry-ack.sdk-result.json",
+      "sdk_sha256": "08272f231476ea40147ae4b44c400e2a0f1b8f9481f449d129f29b744bbc1921",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0011-event-select.json",
+          "copy": "0012-0012-formal-entry-ack.native-01.json",
+          "sha256": "6f225d3a0346f91343ffc9dedb537e7e37047995908bf411a6a8d13ebf702d09"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0013-formal-entry-save.json",
+      "original_request_sha256": "e26e36305d0fd74b3b416f11e2c175d2b83adb4823e5803026bcd0a11b3e338c",
+      "request_id": "0013-formal-entry-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0013-0013-formal-entry-save.response.json",
+      "response_sha256": "0d81b5ead72cbcc0fa9b74606c8c0e621b5ace2431c6a4bdfff575d308a5bad9",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0013-0013-formal-entry-save.sdk-result.json",
+      "sdk_sha256": "bc2fa69e4d351b2a4c49167cb646115cf829f440a2a0e45cbc59204cec596236",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0012-checkpoint.json",
+          "copy": "0013-0013-formal-entry-save.native-01.json",
+          "sha256": "3caa3f1adc8554db6c311fc7f16cd552765a20ae76d4f403d0e40e79a206b6d2"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0014-chooser-first-snapshot.json",
+      "original_request_sha256": "d702ecbb86146c73ebd0d3f43f023ec995127a0207724907e09aa1febccdda32",
+      "request_id": "0014-chooser-first-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0014-0014-chooser-first-snapshot.response.json",
+      "response_sha256": "3952c073b519ff3d48dec0b43e8c8bb0e8da069743c57906d147617ddd2b94a9",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0014-0014-chooser-first-snapshot.sdk-result.json",
+      "sdk_sha256": "789ec5f4b6d6a81ae2ccaeedcba6112d26e098758ebc0ce85841a326713de8ea",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0013-snapshot.json",
+          "copy": "0014-0014-chooser-first-snapshot.native-01.json",
+          "sha256": "f2b7c641697b2bedbe4f39e6d5d6f79c0689454d617b4a6a39a6ce9778b8fcbb"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0015-chooser-cancel.json",
+      "original_request_sha256": "f9c14a819702110a28046e9f9144235703e0f24374429caf8ada14c8018bc8e3",
+      "request_id": "0015-chooser-cancel",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0015-0015-chooser-cancel.response.json",
+      "response_sha256": "554810ae734ca857c54fea7d2b63d04965739bcb0d885403971f12ca7ef8aa9c",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0015-0015-chooser-cancel.sdk-result.json",
+      "sdk_sha256": "5ab024bedf8ae6248a73f9c165230a4142680bb4f037d37e94544b1a61347ee1",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0014-event-select.json",
+          "copy": "0015-0015-chooser-cancel.native-01.json",
+          "sha256": "6e64e30f3887f881dc5d0a20408cb494f32e696d9ff1c8dcac725ac8357b4e3e"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0016-chooser-cancel-save.json",
+      "original_request_sha256": "f7711835112f1c6d1488cde05699734332d2a057ecebb872a6757890963d8644",
+      "request_id": "0016-chooser-cancel-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0016-0016-chooser-cancel-save.response.json",
+      "response_sha256": "1f3807840dd63477e90d6f5ee923681741262e3b1f462f9cdb228bfd17910d81",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0016-0016-chooser-cancel-save.sdk-result.json",
+      "sdk_sha256": "b8a46870340fbf90c84d4218c1fc370200d0ca6b677d56c629f0c64b2298d039",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0015-checkpoint.json",
+          "copy": "0016-0016-chooser-cancel-save.native-01.json",
+          "sha256": "a301c042ad31106fa4753e16963f29ac317bd1bc709f9b078165207882eba10a"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0017-chooser-second-snapshot.json",
+      "original_request_sha256": "366595b5ccb5a4125261e92586529454aeb2cfa4f7242ccb06ea4758c37d3e0b",
+      "request_id": "0017-chooser-second-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0017-0017-chooser-second-snapshot.response.json",
+      "response_sha256": "e69d9ab1554983b4fffb60048787db5ae4e0dbf22fa33373937218e846585dff",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0017-0017-chooser-second-snapshot.sdk-result.json",
+      "sdk_sha256": "d23a91d15a3f3b376d3f65cc9c9464bfacec9a270f524322313a3b2a8a8b507c",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0016-snapshot.json",
+          "copy": "0017-0017-chooser-second-snapshot.native-01.json",
+          "sha256": "3ad314f6c72f76ed5f8752fc4110776f3df43f4b86a82f2a0bd9014b99cb3c0a"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0018-choose-zhuxi.json",
+      "original_request_sha256": "fd816425d65f7c4f5167f0e246a6b72ec4a7c8f897cf924393a85c2c666302e3",
+      "request_id": "0018-choose-zhuxi",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0018-0018-choose-zhuxi.response.json",
+      "response_sha256": "ab799c6b967a379eb170fc39738fedcf0ed91fc903d873530d8f0a6b59db1d38",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0018-0018-choose-zhuxi.sdk-result.json",
+      "sdk_sha256": "f317394d44b0497dfb838a93adde26af53fb1667c486f1be0c127cbb00246197",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0017-event-select.json",
+          "copy": "0018-0018-choose-zhuxi.native-01.json",
+          "sha256": "03ca5b913bcbc4e336c774a706a84e38f9307ea306c1ddbc014c8557c01d0d97"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0019-zhuxi-save.json",
+      "original_request_sha256": "cf07e52f1da2d7d0dee856ca7c4a41ddd04b923bcbf413121688cd03b983da34",
+      "request_id": "0019-zhuxi-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0019-0019-zhuxi-save.response.json",
+      "response_sha256": "f20ea778f831cdf3823862b8d3e5a882899d061e6e512b04daa09b990ca64ccd",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0019-0019-zhuxi-save.sdk-result.json",
+      "sdk_sha256": "bc001d3da4664cd0c89deaa84c3ecb78fbd92aaffe7c8437478a46e731706f29",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0018-checkpoint.json",
+          "copy": "0019-0019-zhuxi-save.native-01.json",
+          "sha256": "85501e32179e50f1da67c28fcb2420f055c68fd734b0c246e8f8607094f87a94"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0020-zhuxi-practice-snapshot.json",
+      "original_request_sha256": "8a1dc3a5153063dcf8b10c177d80750aa51f1cf473aaffc0ade5336b602db036",
+      "request_id": "0020-zhuxi-practice-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0020-0020-zhuxi-practice-snapshot.response.json",
+      "response_sha256": "b67d86a114a46f21cbeb56e35ab31f34b8e4e60bede3e12203cd03794be3cc0d",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0020-0020-zhuxi-practice-snapshot.sdk-result.json",
+      "sdk_sha256": "753f5aa1e7c52945ac2540741c11d75183abdecd14dfc91c2107e931d9b2d3c1",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0019-snapshot.json",
+          "copy": "0020-0020-zhuxi-practice-snapshot.native-01.json",
+          "sha256": "b4e61862b54edfe1eb28d4d84a0833d4ca3cdf11731fdedbf43f8fa86837dc23"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0021-practice-cancel.json",
+      "original_request_sha256": "1fb952fc05a0c4ec6b9be37a1f6c2c83e1c4523f24ff06801b03057a67804e29",
+      "request_id": "0021-practice-cancel",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0021-0021-practice-cancel.response.json",
+      "response_sha256": "de18d049dde92d20e2e47678794f258e38eadf85edb793787025d189678daf4f",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0021-0021-practice-cancel.sdk-result.json",
+      "sdk_sha256": "00df7670501f10409ca46db6aec4795b1b2cf5a26eb6ecdce88bba315e4202c1",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0020-event-select.json",
+          "copy": "0021-0021-practice-cancel.native-01.json",
+          "sha256": "6565d6f71ce4cbb3feac6f075cc517ddf4d83598a43378114f99f489a7ee9677"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0022-practice-cancel-save.json",
+      "original_request_sha256": "1766cae92b97ca42550a3ff4b681cda16480f72160942496dd8d45d65a10f065",
+      "request_id": "0022-practice-cancel-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0022-0022-practice-cancel-save.response.json",
+      "response_sha256": "469fd2ca569b04b76360dbcc6d3295e5aed7445535f500dac348bfc8f64a3056",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0022-0022-practice-cancel-save.sdk-result.json",
+      "sdk_sha256": "5927f83a403459322f33264a493c3dbe890f837df8f40f13a847c396c6126100",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0021-checkpoint.json",
+          "copy": "0022-0022-practice-cancel-save.native-01.json",
+          "sha256": "7404698648b15183746efb8f91d70fdf1b2d02a508f586bd8c9073bed7739e3d"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0023-zhuxi-practice-second-snapshot.json",
+      "original_request_sha256": "880bce62a0039a72cf7de160eb19e58c5906182ed0edf3039e8d0712796a5424",
+      "request_id": "0023-zhuxi-practice-second-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0023-0023-zhuxi-practice-second-snapshot.response.json",
+      "response_sha256": "e5f3068233781dc39cce528624e9b3867f24dce997ee0ec751951a5a363a93d5",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0023-0023-zhuxi-practice-second-snapshot.sdk-result.json",
+      "sdk_sha256": "c2c4031282ff21856b1719607363e5d8fe371b3858970da08d290f65bc7b3c75",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0022-snapshot.json",
+          "copy": "0023-0023-zhuxi-practice-second-snapshot.native-01.json",
+          "sha256": "30ac718efcb37c25f4d2b57a524a57f357685e4fdd0395c6f6c2048bf44863ba"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0024-zhuxi-practice-a.json",
+      "original_request_sha256": "dc0014aa87bfd21bb4b66ac205f44a398576f1ab9100ebb348611d5740018179",
+      "request_id": "0024-zhuxi-practice-a",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0024-0024-zhuxi-practice-a.response.json",
+      "response_sha256": "b83c287bc27981a9533501473ab8f4dce1b33b4cd2008540a90790d630c6e21c",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0024-0024-zhuxi-practice-a.sdk-result.json",
+      "sdk_sha256": "1281f1a236ab132c01ba93482f030dd3cb5e1b4663bcc4a6ee57dd81b84c029f",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0023-event-select.json",
+          "copy": "0024-0024-zhuxi-practice-a.native-01.json",
+          "sha256": "9eb1829bacd2212a1ec6488aa04a71c4e1b8b22a36342203407bb05246a5d14b"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0025-practice-a-save.json",
+      "original_request_sha256": "02da0c0c5a9bf85319e6abdca25f563fcb21a9e3184737771c8e422445122db6",
+      "request_id": "0025-practice-a-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0025-0025-practice-a-save.response.json",
+      "response_sha256": "f78391ebf21eb28aab992876899586e409009ec42fb68affa0f5b6a0c1863b1e",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0025-0025-practice-a-save.sdk-result.json",
+      "sdk_sha256": "bcdc06ba666f0f6e02e0c45ee58f14618d740bf997d431cd24657aa26e8efa39",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0024-checkpoint.json",
+          "copy": "0025-0025-practice-a-save.native-01.json",
+          "sha256": "8877cfeffa8076feb4151bd3ff0aafd9a5b44a95895c20b73f2fa8db0a8826e4"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0026-i2-qualification-snapshot.json",
+      "original_request_sha256": "21d0fa05d00f6ded50f7708edbc449f3c6ae09aed148b1d4626e4833657cc9c8",
+      "request_id": "0026-i2-qualification-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0026-0026-i2-qualification-snapshot.response.json",
+      "response_sha256": "f181039e9d3e6b3261e1cf90a76713eb184644bd50d44591eaeff529bd811d74",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0026-0026-i2-qualification-snapshot.sdk-result.json",
+      "sdk_sha256": "de9244dacfeb228dde978d570644fc100fc3161bddb0c98102aaa179fe847e3b",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0025-snapshot.json",
+          "copy": "0026-0026-i2-qualification-snapshot.native-01.json",
+          "sha256": "215610d085099343ac4b250eb78755e205eaddfd630f6d14b1165e38485f9a12"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0027-i2-qualified-save.json",
+      "original_request_sha256": "f54cb17610b1ea4217d7bcf4e01212f7fcd289f44ec4878e812240cf361075b1",
+      "request_id": "0027-i2-qualified-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0027-0027-i2-qualified-save.response.json",
+      "response_sha256": "dda0cbe6a1af46193d363b6fd66b6016c39f9ee6f3678dfa6ea8449fd0dacf3f",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0027-0027-i2-qualified-save.sdk-result.json",
+      "sdk_sha256": "d76d691cbc557e48482cb2ef6ece524b752f1f9856895bd3d5897fb235f87d32",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0026-checkpoint.json",
+          "copy": "0027-0027-i2-qualified-save.native-01.json",
+          "sha256": "f641f8e80051ce8863a3d8665c7ef4030b098401bba098ccea8c9012a5e13b84"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0028-i2-failure-ack.json",
+      "original_request_sha256": "24688428c09ca165a0ce0735e488cdc70155965148a54c8297711f09ae557b8c",
+      "request_id": "0028-i2-failure-ack",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0028-0028-i2-failure-ack.response.json",
+      "response_sha256": "22521b211cdcc017be913bc7b77e219b6a86d0e806211da491566c60c76510c6",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0028-0028-i2-failure-ack.sdk-result.json",
+      "sdk_sha256": "39435c29eaab9d83de8451a5add24c223dada1d25cd29fce22e492c600ad33b6",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0027-event-select.json",
+          "copy": "0028-0028-i2-failure-ack.native-01.json",
+          "sha256": "1d08f8664e481b4330a710e46f4b0b166f87ec1d671233401209b33990a18d33"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0029-i2-setup-snapshot.json",
+      "original_request_sha256": "00a83408e42e85498949a93f4bb52492e35ae9128e17b43310a52154d00c8adc",
+      "request_id": "0029-i2-setup-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0029-0029-i2-setup-snapshot.response.json",
+      "response_sha256": "f982c98d50d2bddf567f55b2bb334ef7b505d45807500298653c822ba342273e",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0029-0029-i2-setup-snapshot.sdk-result.json",
+      "sdk_sha256": "eff2d8a1d7d11cd09ba02de3f06d91e6a3c8bcc17d6eee7ce386bfb084a3a3c8",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0028-snapshot.json",
+          "copy": "0029-0029-i2-setup-snapshot.native-01.json",
+          "sha256": "584f6ca49dfce507c3fec67ca71e881e62cb0247c5acd48dac304b0466d21cad"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0030-i2-setup-save.json",
+      "original_request_sha256": "d66ae0bdb517e374cb6bf5f686266c9c168bec4c8dc30b1d4d9b898997beb64b",
+      "request_id": "0030-i2-setup-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0030-0030-i2-setup-save.response.json",
+      "response_sha256": "5c8928dadd3487fb88e12298bdcc75a9600719b0a824144fbfa84a0939dcdbcc",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0030-0030-i2-setup-save.sdk-result.json",
+      "sdk_sha256": "813abd7d1e8d94ea0cd171b89ab6caa2c17166e13d3a8ae7eff034757e484417",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0029-checkpoint.json",
+          "copy": "0030-0030-i2-setup-save.native-01.json",
+          "sha256": "bf57115bcec88a057865ade6a59d1665e5711e15e0d4407a5b37f61afd21cae7"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0031-i2-setup-ack.json",
+      "original_request_sha256": "79be2a42ce937cdc9af5dca0ce57df8599d9ea7170eb69fc4f01aee3055f44d8",
+      "request_id": "0031-i2-setup-ack",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0031-0031-i2-setup-ack.response.json",
+      "response_sha256": "af9d19ff2eeb7a70aa9c720ae0ea64260fadef09cf44cda80fcdabc0d3bee87e",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0031-0031-i2-setup-ack.sdk-result.json",
+      "sdk_sha256": "baad8f1aa16917e095760d9b8e1e81ba7c01026a7fa465c5b4ec66ec4a954460",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0030-event-select.json",
+          "copy": "0031-0031-i2-setup-ack.native-01.json",
+          "sha256": "84ed78f5d1b4f13cf0e8353cb6271870668bc49081e9735b16f37897f85c8ef5"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0032-learning-refresh-speed1.json",
+      "original_request_sha256": "0160adbcd415a72ff7f68d5b4b9bb030ec60ace0ba201c8cb540a264f3ac40a8",
+      "request_id": "0032-learning-refresh-speed1",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0032-0032-learning-refresh-speed1.response.json",
+      "response_sha256": "bc413c7efb99ebf35cecec82e26148cf7606f901110f479ac6d0282d003511f9",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0032-0032-learning-refresh-speed1.sdk-result.json",
+      "sdk_sha256": "21593037d1a3081a053417b8562dec6cc19420f2c69f07b70830d03ed51ff27f",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0031-simulation-speed_1.json",
+          "copy": "0032-0032-learning-refresh-speed1.native-01.json",
+          "sha256": "b36ba270ea6b54ad5a1a512669b14c0350065d9a592284a4c32a4476c7756a08"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0033-learning-refresh-resume.json",
+      "original_request_sha256": "b63af7d23a2aa2795f14d8f645ec774aaee51f3ab58b9f56bf05b478ffaa5b81",
+      "request_id": "0033-learning-refresh-resume",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0033-0033-learning-refresh-resume.response.json",
+      "response_sha256": "5bcf0e5b8e757d7ca14baaef929b40df644556d0700e0888011554015e75b3e7",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0033-0033-learning-refresh-resume.sdk-result.json",
+      "sdk_sha256": "a2c7a3b7cbfc971d9c49a60dd00b524cf896e5cb05d40ade3e711f8ebe67f7d2",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0032-simulation-resume.json",
+          "copy": "0033-0033-learning-refresh-resume.native-01.json",
+          "sha256": "32ddf703d8c9625b98919bb469a9eb698a827408343edfb6ae3a3b138de4e4eb"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0034-learning-refresh-snapshot-01.json",
+      "original_request_sha256": "624f747e25b1e1e1d4eddf0b5481ec6324e46a22bdd225b8774de34db99e3391",
+      "request_id": "0034-learning-refresh-snapshot-01",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0034-0034-learning-refresh-snapshot-01.response.json",
+      "response_sha256": "6886bd630c9b339d48c7a7a51ba04ff17ed8941046045c3f7bee8f3043f75264",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0034-0034-learning-refresh-snapshot-01.sdk-result.json",
+      "sdk_sha256": "7b3c63cc9d19b9d1552e87f8257bfb85c1d90071b502ef6275bf52e2971ad4d8",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0033-snapshot.json",
+          "copy": "0034-0034-learning-refresh-snapshot-01.native-01.json",
+          "sha256": "f2da461e4407fe3d40e6c5f2a441e33775b9ff228185f8f422373e6690bb6f9d"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0034-learning-refresh-snapshot-02.json",
+      "original_request_sha256": "f5a0fe25f672c24bb535192db1711080c78a34af641db6c5447347d5982badd8",
+      "request_id": "0034-learning-refresh-snapshot-02",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0035-0034-learning-refresh-snapshot-02.response.json",
+      "response_sha256": "7c345a3dcc57497f3ee7c76547de90bad8311de4ba46fa4dd2b00c2b6bcc1713",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0035-0034-learning-refresh-snapshot-02.sdk-result.json",
+      "sdk_sha256": "7e071eb2649042c250486b2a460cb65b5e28105d75e883a4b41d22ac049ae4f4",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0034-snapshot.json",
+          "copy": "0035-0034-learning-refresh-snapshot-02.native-01.json",
+          "sha256": "f9751076ddc590ab932bc24f24c82192afc0833c2d16c70b0482f959721a9807"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0035-learning-refresh-pause.json",
+      "original_request_sha256": "b2d537a549bcb7bf6a9b9585675a51ab1f430c916223c226518acf790367edf4",
+      "request_id": "0035-learning-refresh-pause",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0036-0035-learning-refresh-pause.response.json",
+      "response_sha256": "441e861a096f9b1eed576182b103df3362d64ecd4832a258bb477d927baff52c",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0036-0035-learning-refresh-pause.sdk-result.json",
+      "sdk_sha256": "952aef7c30dde8eb67d961e8e94a409da0e2da4395d6be5aaf50b870a777c1f4",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0035-simulation-pause-current.json",
+          "copy": "0036-0035-learning-refresh-pause.native-01.json",
+          "sha256": "edace9e175f36b9a8c7826da9e75872fa86cb4a99dde93a33d8a96339161c664"
+        }
+      ]
+    },
+    {
+      "original_request_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\0036-i2-one-day-save.json",
+      "original_request_sha256": "45afc8154369f0f6aa13b43a8be3eb40dee8ef3e4648a55b07c7e0c601ea6329",
+      "request_id": "0036-i2-one-day-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0037-0036-i2-one-day-save.response.json",
+      "response_sha256": "2208f137b3758b257f56f9c6f4e14170098a4f86dbe714e801266d1713c31c06",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0037-0036-i2-one-day-save.sdk-result.json",
+      "sdk_sha256": "3e87e0d9adae1aea76277f6802e3864f7b433ec0bcbaccd97f1af4680340e8c4",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0036-checkpoint.json",
+          "copy": "0037-0036-i2-one-day-save.native-01.json",
+          "sha256": "3450168eb86c37e2f667499c4f384d69f09dca94dd51c23a629c619f54791677"
+        }
+      ]
+    }
+  ],
+  "all_dispatch_responses": [
+    {
+      "request_id": "0001-tools-list",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": null,
+      "sdk_structured_status": null,
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0001-0001-tools-list.response.json",
+      "response_sha256": "1ade1a17ae5c930f6b8de4158f46ebcfd610ba897bedda7576d8c0c6cddc1090",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0001-0001-tools-list.sdk-result.json",
+      "sdk_sha256": "0f4ea0a9746aff3d8d3f0b3e573d7d834b0b3354efe9122ca0b4b177acb942d8",
+      "receipt_files": []
+    },
+    {
+      "request_id": "0002-query-profile",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "profile_bound",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0002-0002-query-profile.response.json",
+      "response_sha256": "531545f3448467fb32709dffb4fb33e068263831f1ba01d25320fe4f2433e86f",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0002-0002-query-profile.sdk-result.json",
+      "sdk_sha256": "76cbf4ebea1cc910e4e721bf4acf8db749642935856e531b4c53b2aa1eb3df34",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0001-inspect.json",
+          "copy": "0002-0002-query-profile.native-01.json",
+          "sha256": "6545243325d6526b02b937c3e9a528b4fab82ebc1d5e78bed2826333bfdeea92"
+        }
+      ]
+    },
+    {
+      "request_id": "0003-attach",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "attached_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0003-0003-attach.response.json",
+      "response_sha256": "1e4f1aea20737d791c88bdb55008b53fdd3da417840c42bd0d78f5dcea94d811",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0003-0003-attach.sdk-result.json",
+      "sdk_sha256": "82f971569af3b4a3629f1d66d22bd619b3fc5e0adea5076fc3d473ccf5de74dd",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0002-attach.json",
+          "copy": "0003-0003-attach.native-01.json",
+          "sha256": "57ae3a9d3ef9d86a1d2a717fc582a9ae01edc49c308b3f05cd6032ee96cdabbc"
+        }
+      ]
+    },
+    {
+      "request_id": "0004-baseline-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0004-0004-baseline-snapshot.response.json",
+      "response_sha256": "3ac7c31baa8546daefac908869cfa50d77b2e19cd29e3f03bc99a4395c1c7513",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0004-0004-baseline-snapshot.sdk-result.json",
+      "sdk_sha256": "465e3273b2f8b3614b40ba158929dddd973643843335510a42556981903e0e3e",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0003-snapshot.json",
+          "copy": "0004-0004-baseline-snapshot.native-01.json",
+          "sha256": "05f326494f022e26f67a4aa57085159119987f38b270094096b8e79db5c2b308"
+        }
+      ]
+    },
+    {
+      "request_id": "0005-baseline-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0005-0005-baseline-save.response.json",
+      "response_sha256": "4bcd910993e1f68943b850339158151791249fbc48ebe9af7b5efd7905a26fbf",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0005-0005-baseline-save.sdk-result.json",
+      "sdk_sha256": "009038b6802eaea42d667c0db3f42681fea952a8458516442dca3463bfceb23d",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0004-checkpoint.json",
+          "copy": "0005-0005-baseline-save.native-01.json",
+          "sha256": "5351f1d7fefb3245925a763f5155f4719cf0fd6fc0e493d3ca45f4e8af477ec7"
+        }
+      ]
+    },
+    {
+      "request_id": "0006-fixture-entry-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0006-0006-fixture-entry-snapshot.response.json",
+      "response_sha256": "13d2da6e304ab253d0b41daecd6c4e0344cb2a00d202124e79f63fe84df32f69",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0006-0006-fixture-entry-snapshot.sdk-result.json",
+      "sdk_sha256": "bdfacca2a857d3e35df7b9f255139cca0a4bf27d4cd6df783af631bdc971fcc8",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0005-snapshot.json",
+          "copy": "0006-0006-fixture-entry-snapshot.native-01.json",
+          "sha256": "0057ea4f45c797fa41fd4310f556d2e2c432b3dedd1f64ed357215f9f620ac63"
+        }
+      ]
+    },
+    {
+      "request_id": "0007a-fixture-confirm-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0007-0007a-fixture-confirm-snapshot.response.json",
+      "response_sha256": "1670a91ee625fd74db656459ae03aacba1c3b5946e44f2936855f68498efe767",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0007-0007a-fixture-confirm-snapshot.sdk-result.json",
+      "sdk_sha256": "5127aee9920aebf3c80fe06f5a2044b7775d96971c73f6e25bf8c051a19bd8b5",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0006-snapshot.json",
+          "copy": "0007-0007a-fixture-confirm-snapshot.native-01.json",
+          "sha256": "f1c1675fa168b7b812998c1d1b5c734f76bc5d42ce8029af629233ac9f033921"
+        }
+      ]
+    },
+    {
+      "request_id": "0008-fixture-event-query",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_event_query_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0008-0008-fixture-event-query.response.json",
+      "response_sha256": "2f1f95c568b4190c4bfa5d1d7a15b52b18d37c77c31a4b837b25bb3c9d4fe4cb",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0008-0008-fixture-event-query.sdk-result.json",
+      "sdk_sha256": "fc69b7c662b5510c682fa9a289acb0f2eb4ccb411197dc1e0429d56717f7a338",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0007-event-query.json",
+          "copy": "0008-0008-fixture-event-query.native-01.json",
+          "sha256": "12c9b31e3747b3259c85df2b9d8f0b79f30b26350ca71887bf1d82d93a88947d"
+        }
+      ]
+    },
+    {
+      "request_id": "0009-fixture-event-ack",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0009-0009-fixture-event-ack.response.json",
+      "response_sha256": "8000868d70b40c0fd2988fc603a28a6be099a407c53ed67bbdfdf58355604297",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0009-0009-fixture-event-ack.sdk-result.json",
+      "sdk_sha256": "fe87d072137ea68c2d68464fba8d32f400245e013753831a79c01434f61052f9",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0008-event-select.json",
+          "copy": "0009-0009-fixture-event-ack.native-01.json",
+          "sha256": "2d564b58f86eb6328a293750f49f152b7e643b6dc2acaf7c7134c95848535bd4"
+        }
+      ]
+    },
+    {
+      "request_id": "0010-original-confucian-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0010-0010-original-confucian-save.response.json",
+      "response_sha256": "39a8f6d7875601b95298fc177408f2522a49ecd57225cbd9edefcf83c8dcf65f",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0010-0010-original-confucian-save.sdk-result.json",
+      "sdk_sha256": "504d60aff92cb01cbbe84e4ed20542615fd4f0a51bba748915c9d0a03d3c8903",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0009-checkpoint.json",
+          "copy": "0010-0010-original-confucian-save.native-01.json",
+          "sha256": "facf7a68c8c10acc8a43539934c37c5d682932bb6a6190339478423bd40f1c8f"
+        }
+      ]
+    },
+    {
+      "request_id": "0011-formal-entry-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0011-0011-formal-entry-snapshot.response.json",
+      "response_sha256": "5b797929e5ec901b95778ca3fbce2e28ab1e857a5a369c683410a6f909dc555f",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0011-0011-formal-entry-snapshot.sdk-result.json",
+      "sdk_sha256": "7f7832a5c00179405c3c48946506b954cabc3c57e3ae653a905b2ff0daad05c3",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0010-snapshot.json",
+          "copy": "0011-0011-formal-entry-snapshot.native-01.json",
+          "sha256": "42cd1c4e73697dac5e851407853b26138b6230737edca5d91526f5572ab19854"
+        }
+      ]
+    },
+    {
+      "request_id": "0012-formal-entry-ack",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0012-0012-formal-entry-ack.response.json",
+      "response_sha256": "3f413deb1af7e3f957d7a12fe5ec620980459e471a80985d8aacb44f97cd7eda",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0012-0012-formal-entry-ack.sdk-result.json",
+      "sdk_sha256": "08272f231476ea40147ae4b44c400e2a0f1b8f9481f449d129f29b744bbc1921",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0011-event-select.json",
+          "copy": "0012-0012-formal-entry-ack.native-01.json",
+          "sha256": "6f225d3a0346f91343ffc9dedb537e7e37047995908bf411a6a8d13ebf702d09"
+        }
+      ]
+    },
+    {
+      "request_id": "0013-formal-entry-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0013-0013-formal-entry-save.response.json",
+      "response_sha256": "0d81b5ead72cbcc0fa9b74606c8c0e621b5ace2431c6a4bdfff575d308a5bad9",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0013-0013-formal-entry-save.sdk-result.json",
+      "sdk_sha256": "bc2fa69e4d351b2a4c49167cb646115cf829f440a2a0e45cbc59204cec596236",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0012-checkpoint.json",
+          "copy": "0013-0013-formal-entry-save.native-01.json",
+          "sha256": "3caa3f1adc8554db6c311fc7f16cd552765a20ae76d4f403d0e40e79a206b6d2"
+        }
+      ]
+    },
+    {
+      "request_id": "0014-chooser-first-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0014-0014-chooser-first-snapshot.response.json",
+      "response_sha256": "3952c073b519ff3d48dec0b43e8c8bb0e8da069743c57906d147617ddd2b94a9",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0014-0014-chooser-first-snapshot.sdk-result.json",
+      "sdk_sha256": "789ec5f4b6d6a81ae2ccaeedcba6112d26e098758ebc0ce85841a326713de8ea",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0013-snapshot.json",
+          "copy": "0014-0014-chooser-first-snapshot.native-01.json",
+          "sha256": "f2b7c641697b2bedbe4f39e6d5d6f79c0689454d617b4a6a39a6ce9778b8fcbb"
+        }
+      ]
+    },
+    {
+      "request_id": "0015-chooser-cancel",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0015-0015-chooser-cancel.response.json",
+      "response_sha256": "554810ae734ca857c54fea7d2b63d04965739bcb0d885403971f12ca7ef8aa9c",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0015-0015-chooser-cancel.sdk-result.json",
+      "sdk_sha256": "5ab024bedf8ae6248a73f9c165230a4142680bb4f037d37e94544b1a61347ee1",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0014-event-select.json",
+          "copy": "0015-0015-chooser-cancel.native-01.json",
+          "sha256": "6e64e30f3887f881dc5d0a20408cb494f32e696d9ff1c8dcac725ac8357b4e3e"
+        }
+      ]
+    },
+    {
+      "request_id": "0016-chooser-cancel-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0016-0016-chooser-cancel-save.response.json",
+      "response_sha256": "1f3807840dd63477e90d6f5ee923681741262e3b1f462f9cdb228bfd17910d81",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0016-0016-chooser-cancel-save.sdk-result.json",
+      "sdk_sha256": "b8a46870340fbf90c84d4218c1fc370200d0ca6b677d56c629f0c64b2298d039",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0015-checkpoint.json",
+          "copy": "0016-0016-chooser-cancel-save.native-01.json",
+          "sha256": "a301c042ad31106fa4753e16963f29ac317bd1bc709f9b078165207882eba10a"
+        }
+      ]
+    },
+    {
+      "request_id": "0017-chooser-second-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0017-0017-chooser-second-snapshot.response.json",
+      "response_sha256": "e69d9ab1554983b4fffb60048787db5ae4e0dbf22fa33373937218e846585dff",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0017-0017-chooser-second-snapshot.sdk-result.json",
+      "sdk_sha256": "d23a91d15a3f3b376d3f65cc9c9464bfacec9a270f524322313a3b2a8a8b507c",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0016-snapshot.json",
+          "copy": "0017-0017-chooser-second-snapshot.native-01.json",
+          "sha256": "3ad314f6c72f76ed5f8752fc4110776f3df43f4b86a82f2a0bd9014b99cb3c0a"
+        }
+      ]
+    },
+    {
+      "request_id": "0018-choose-zhuxi",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0018-0018-choose-zhuxi.response.json",
+      "response_sha256": "ab799c6b967a379eb170fc39738fedcf0ed91fc903d873530d8f0a6b59db1d38",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0018-0018-choose-zhuxi.sdk-result.json",
+      "sdk_sha256": "f317394d44b0497dfb838a93adde26af53fb1667c486f1be0c127cbb00246197",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0017-event-select.json",
+          "copy": "0018-0018-choose-zhuxi.native-01.json",
+          "sha256": "03ca5b913bcbc4e336c774a706a84e38f9307ea306c1ddbc014c8557c01d0d97"
+        }
+      ]
+    },
+    {
+      "request_id": "0019-zhuxi-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0019-0019-zhuxi-save.response.json",
+      "response_sha256": "f20ea778f831cdf3823862b8d3e5a882899d061e6e512b04daa09b990ca64ccd",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0019-0019-zhuxi-save.sdk-result.json",
+      "sdk_sha256": "bc001d3da4664cd0c89deaa84c3ecb78fbd92aaffe7c8437478a46e731706f29",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0018-checkpoint.json",
+          "copy": "0019-0019-zhuxi-save.native-01.json",
+          "sha256": "85501e32179e50f1da67c28fcb2420f055c68fd734b0c246e8f8607094f87a94"
+        }
+      ]
+    },
+    {
+      "request_id": "0020-zhuxi-practice-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0020-0020-zhuxi-practice-snapshot.response.json",
+      "response_sha256": "b67d86a114a46f21cbeb56e35ab31f34b8e4e60bede3e12203cd03794be3cc0d",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0020-0020-zhuxi-practice-snapshot.sdk-result.json",
+      "sdk_sha256": "753f5aa1e7c52945ac2540741c11d75183abdecd14dfc91c2107e931d9b2d3c1",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0019-snapshot.json",
+          "copy": "0020-0020-zhuxi-practice-snapshot.native-01.json",
+          "sha256": "b4e61862b54edfe1eb28d4d84a0833d4ca3cdf11731fdedbf43f8fa86837dc23"
+        }
+      ]
+    },
+    {
+      "request_id": "0021-practice-cancel",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0021-0021-practice-cancel.response.json",
+      "response_sha256": "de18d049dde92d20e2e47678794f258e38eadf85edb793787025d189678daf4f",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0021-0021-practice-cancel.sdk-result.json",
+      "sdk_sha256": "00df7670501f10409ca46db6aec4795b1b2cf5a26eb6ecdce88bba315e4202c1",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0020-event-select.json",
+          "copy": "0021-0021-practice-cancel.native-01.json",
+          "sha256": "6565d6f71ce4cbb3feac6f075cc517ddf4d83598a43378114f99f489a7ee9677"
+        }
+      ]
+    },
+    {
+      "request_id": "0022-practice-cancel-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0022-0022-practice-cancel-save.response.json",
+      "response_sha256": "469fd2ca569b04b76360dbcc6d3295e5aed7445535f500dac348bfc8f64a3056",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0022-0022-practice-cancel-save.sdk-result.json",
+      "sdk_sha256": "5927f83a403459322f33264a493c3dbe890f837df8f40f13a847c396c6126100",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0021-checkpoint.json",
+          "copy": "0022-0022-practice-cancel-save.native-01.json",
+          "sha256": "7404698648b15183746efb8f91d70fdf1b2d02a508f586bd8c9073bed7739e3d"
+        }
+      ]
+    },
+    {
+      "request_id": "0023-zhuxi-practice-second-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0023-0023-zhuxi-practice-second-snapshot.response.json",
+      "response_sha256": "e5f3068233781dc39cce528624e9b3867f24dce997ee0ec751951a5a363a93d5",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0023-0023-zhuxi-practice-second-snapshot.sdk-result.json",
+      "sdk_sha256": "c2c4031282ff21856b1719607363e5d8fe371b3858970da08d290f65bc7b3c75",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0022-snapshot.json",
+          "copy": "0023-0023-zhuxi-practice-second-snapshot.native-01.json",
+          "sha256": "30ac718efcb37c25f4d2b57a524a57f357685e4fdd0395c6f6c2048bf44863ba"
+        }
+      ]
+    },
+    {
+      "request_id": "0024-zhuxi-practice-a",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0024-0024-zhuxi-practice-a.response.json",
+      "response_sha256": "b83c287bc27981a9533501473ab8f4dce1b33b4cd2008540a90790d630c6e21c",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0024-0024-zhuxi-practice-a.sdk-result.json",
+      "sdk_sha256": "1281f1a236ab132c01ba93482f030dd3cb5e1b4663bcc4a6ee57dd81b84c029f",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0023-event-select.json",
+          "copy": "0024-0024-zhuxi-practice-a.native-01.json",
+          "sha256": "9eb1829bacd2212a1ec6488aa04a71c4e1b8b22a36342203407bb05246a5d14b"
+        }
+      ]
+    },
+    {
+      "request_id": "0025-practice-a-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0025-0025-practice-a-save.response.json",
+      "response_sha256": "f78391ebf21eb28aab992876899586e409009ec42fb68affa0f5b6a0c1863b1e",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0025-0025-practice-a-save.sdk-result.json",
+      "sdk_sha256": "bcdc06ba666f0f6e02e0c45ee58f14618d740bf997d431cd24657aa26e8efa39",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0024-checkpoint.json",
+          "copy": "0025-0025-practice-a-save.native-01.json",
+          "sha256": "8877cfeffa8076feb4151bd3ff0aafd9a5b44a95895c20b73f2fa8db0a8826e4"
+        }
+      ]
+    },
+    {
+      "request_id": "0026-i2-qualification-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0026-0026-i2-qualification-snapshot.response.json",
+      "response_sha256": "f181039e9d3e6b3261e1cf90a76713eb184644bd50d44591eaeff529bd811d74",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0026-0026-i2-qualification-snapshot.sdk-result.json",
+      "sdk_sha256": "de9244dacfeb228dde978d570644fc100fc3161bddb0c98102aaa179fe847e3b",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0025-snapshot.json",
+          "copy": "0026-0026-i2-qualification-snapshot.native-01.json",
+          "sha256": "215610d085099343ac4b250eb78755e205eaddfd630f6d14b1165e38485f9a12"
+        }
+      ]
+    },
+    {
+      "request_id": "0027-i2-qualified-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0027-0027-i2-qualified-save.response.json",
+      "response_sha256": "dda0cbe6a1af46193d363b6fd66b6016c39f9ee6f3678dfa6ea8449fd0dacf3f",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0027-0027-i2-qualified-save.sdk-result.json",
+      "sdk_sha256": "d76d691cbc557e48482cb2ef6ece524b752f1f9856895bd3d5897fb235f87d32",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0026-checkpoint.json",
+          "copy": "0027-0027-i2-qualified-save.native-01.json",
+          "sha256": "f641f8e80051ce8863a3d8665c7ef4030b098401bba098ccea8c9012a5e13b84"
+        }
+      ]
+    },
+    {
+      "request_id": "0028-i2-failure-ack",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0028-0028-i2-failure-ack.response.json",
+      "response_sha256": "22521b211cdcc017be913bc7b77e219b6a86d0e806211da491566c60c76510c6",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0028-0028-i2-failure-ack.sdk-result.json",
+      "sdk_sha256": "39435c29eaab9d83de8451a5add24c223dada1d25cd29fce22e492c600ad33b6",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0027-event-select.json",
+          "copy": "0028-0028-i2-failure-ack.native-01.json",
+          "sha256": "1d08f8664e481b4330a710e46f4b0b166f87ec1d671233401209b33990a18d33"
+        }
+      ]
+    },
+    {
+      "request_id": "0029-i2-setup-snapshot",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0029-0029-i2-setup-snapshot.response.json",
+      "response_sha256": "f982c98d50d2bddf567f55b2bb334ef7b505d45807500298653c822ba342273e",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0029-0029-i2-setup-snapshot.sdk-result.json",
+      "sdk_sha256": "eff2d8a1d7d11cd09ba02de3f06d91e6a3c8bcc17d6eee7ce386bfb084a3a3c8",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0028-snapshot.json",
+          "copy": "0029-0029-i2-setup-snapshot.native-01.json",
+          "sha256": "584f6ca49dfce507c3fec67ca71e881e62cb0247c5acd48dac304b0466d21cad"
+        }
+      ]
+    },
+    {
+      "request_id": "0030-i2-setup-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0030-0030-i2-setup-save.response.json",
+      "response_sha256": "5c8928dadd3487fb88e12298bdcc75a9600719b0a824144fbfa84a0939dcdbcc",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0030-0030-i2-setup-save.sdk-result.json",
+      "sdk_sha256": "813abd7d1e8d94ea0cd171b89ab6caa2c17166e13d3a8ae7eff034757e484417",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0029-checkpoint.json",
+          "copy": "0030-0030-i2-setup-save.native-01.json",
+          "sha256": "bf57115bcec88a057865ade6a59d1665e5711e15e0d4407a5b37f61afd21cae7"
+        }
+      ]
+    },
+    {
+      "request_id": "0031-i2-setup-ack",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0031-0031-i2-setup-ack.response.json",
+      "response_sha256": "af9d19ff2eeb7a70aa9c720ae0ea64260fadef09cf44cda80fcdabc0d3bee87e",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0031-0031-i2-setup-ack.sdk-result.json",
+      "sdk_sha256": "baad8f1aa16917e095760d9b8e1e81ba7c01026a7fa465c5b4ec66ec4a954460",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0030-event-select.json",
+          "copy": "0031-0031-i2-setup-ack.native-01.json",
+          "sha256": "84ed78f5d1b4f13cf0e8353cb6271870668bc49081e9735b16f37897f85c8ef5"
+        }
+      ]
+    },
+    {
+      "request_id": "0032-learning-refresh-speed1",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0032-0032-learning-refresh-speed1.response.json",
+      "response_sha256": "bc413c7efb99ebf35cecec82e26148cf7606f901110f479ac6d0282d003511f9",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0032-0032-learning-refresh-speed1.sdk-result.json",
+      "sdk_sha256": "21593037d1a3081a053417b8562dec6cc19420f2c69f07b70830d03ed51ff27f",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0031-simulation-speed_1.json",
+          "copy": "0032-0032-learning-refresh-speed1.native-01.json",
+          "sha256": "b36ba270ea6b54ad5a1a512669b14c0350065d9a592284a4c32a4476c7756a08"
+        }
+      ]
+    },
+    {
+      "request_id": "0033-learning-refresh-resume",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0033-0033-learning-refresh-resume.response.json",
+      "response_sha256": "5bcf0e5b8e757d7ca14baaef929b40df644556d0700e0888011554015e75b3e7",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0033-0033-learning-refresh-resume.sdk-result.json",
+      "sdk_sha256": "a2c7a3b7cbfc971d9c49a60dd00b524cf896e5cb05d40ade3e711f8ebe67f7d2",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0032-simulation-resume.json",
+          "copy": "0033-0033-learning-refresh-resume.native-01.json",
+          "sha256": "32ddf703d8c9625b98919bb469a9eb698a827408343edfb6ae3a3b138de4e4eb"
+        }
+      ]
+    },
+    {
+      "request_id": "0034-learning-refresh-snapshot-01",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0034-0034-learning-refresh-snapshot-01.response.json",
+      "response_sha256": "6886bd630c9b339d48c7a7a51ba04ff17ed8941046045c3f7bee8f3043f75264",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0034-0034-learning-refresh-snapshot-01.sdk-result.json",
+      "sdk_sha256": "7b3c63cc9d19b9d1552e87f8257bfb85c1d90071b502ef6275bf52e2971ad4d8",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0033-snapshot.json",
+          "copy": "0034-0034-learning-refresh-snapshot-01.native-01.json",
+          "sha256": "f2da461e4407fe3d40e6c5f2a441e33775b9ff228185f8f422373e6690bb6f9d"
+        }
+      ]
+    },
+    {
+      "request_id": "0034-learning-refresh-snapshot-02",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_snapshot_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0035-0034-learning-refresh-snapshot-02.response.json",
+      "response_sha256": "7c345a3dcc57497f3ee7c76547de90bad8311de4ba46fa4dd2b00c2b6bcc1713",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0035-0034-learning-refresh-snapshot-02.sdk-result.json",
+      "sdk_sha256": "7e071eb2649042c250486b2a460cb65b5e28105d75e883a4b41d22ac049ae4f4",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0034-snapshot.json",
+          "copy": "0035-0034-learning-refresh-snapshot-02.native-01.json",
+          "sha256": "f9751076ddc590ab932bc24f24c82192afc0833c2d16c70b0482f959721a9807"
+        }
+      ]
+    },
+    {
+      "request_id": "0035-learning-refresh-pause",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0036-0035-learning-refresh-pause.response.json",
+      "response_sha256": "441e861a096f9b1eed576182b103df3362d64ecd4832a258bb477d927baff52c",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0036-0035-learning-refresh-pause.sdk-result.json",
+      "sdk_sha256": "952aef7c30dde8eb67d961e8e94a409da0e2da4395d6be5aaf50b870a777c1f4",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0035-simulation-pause-current.json",
+          "copy": "0036-0035-learning-refresh-pause.native-01.json",
+          "sha256": "edace9e175f36b9a8c7826da9e75872fa86cb4a99dde93a33d8a96339161c664"
+        }
+      ]
+    },
+    {
+      "request_id": "0036-i2-one-day-save",
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "dispatch_is_error": null,
+      "sdk_isError": false,
+      "sdk_structured_status": "native_gameplay_postcondition_verified",
+      "response_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0037-0036-i2-one-day-save.response.json",
+      "response_sha256": "2208f137b3758b257f56f9c6f4e14170098a4f86dbe714e801266d1713c31c06",
+      "sdk_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0037-0036-i2-one-day-save.sdk-result.json",
+      "sdk_sha256": "3e87e0d9adae1aea76277f6802e3864f7b433ec0bcbaccd97f1af4680340e8c4",
+      "receipt_files": [
+        {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0036-checkpoint.json",
+          "copy": "0037-0036-i2-one-day-save.native-01.json",
+          "sha256": "3450168eb86c37e2f667499c4f384d69f09dca94dd51c23a629c619f54791677"
+        }
+      ]
+    }
+  ],
+  "meaning": "Dispatcher record/save/event ACK proves its declared native operation only. Qualified/one-day filenames are intent labels; preserve RED qualification and actual2day independently. No response found is not fabricated failure proof."
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "label": "0040-i2-resources-save",
+    "save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0040-i2-resources-save\\save.ck3",
+      "bytes": 90496391,
+      "sha256": "129616804d118c0ba035921e97e1e4a9f0d01abcb3687e1a8eb77ce57961ad23"
+    },
+    "wrapper_sha256": "c40234303edee0c6c932cdb3de94b884381fad18c91d9502445f58534711a7e8",
+    "sdk_sha256": "1f1a4f6c73e11b7595f344ee92caaa076cc7aca0ca5b57f61d37f2ee0ac3b62c",
+    "save_copied": false,
+    "scope": "Frozen immutable save hash and wrapper/SDK binding; filename is the original intent label."
+  },
+  {
+    "label": "0042-i2-detach-open-save",
+    "save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0042-i2-detach-open-save\\save.ck3",
+      "bytes": 90507374,
+      "sha256": "7b5adbc84232b6c1159f4d472cd87778b5910c4f1594399e118a6116edb1a42c"
+    },
+    "wrapper_sha256": "b9d0c1d9e083c53d2c562a7ecbc55333e22dc020a870b5c66ae29c37a4c95667",
+    "sdk_sha256": "6ba404e2544ff226033ee52ff0da0537344d572a9d7b1970b8aa79269455f55b",
+    "save_copied": false,
+    "scope": "Frozen immutable save hash and wrapper/SDK binding; filename is the original intent label."
+  },
+  {
+    "label": "0044-i2-detach-source-yes-save",
+    "save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0044-i2-detach-source-yes-save\\save.ck3",
+      "bytes": 90506624,
+      "sha256": "7ee7fb562d37874fb479559bef0c6d069f43320bdd908537c5466d07d5a1ecf2"
+    },
+    "wrapper_sha256": "3eef591e0ed87059f4e4c23380aedcd2d6a65497b0a288010eb9284b5c2c2bb0",
+    "sdk_sha256": "d45250626e1e42bf16ab779f9732f31116099db3c39a0f8796a892e99b64805e",
+    "save_copied": false,
+    "scope": "Frozen immutable save hash and wrapper/SDK binding; filename is the original intent label."
+  }
+]

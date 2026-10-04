@@ -1,0 +1,162 @@
+{
+  "schema": "lyd.readonly-evidence-index.v1",
+  "commit": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+  "product_tree": "2e290b9b7fca02c38a33e4c73f5c46e7060dc9fa",
+  "artifacts": [
+    {
+      "path": "collection-receipts.json",
+      "bytes": 843,
+      "sha256": "8a8a32de11f6c192e08b2f785e53cbc1c3e72b63a2a5676d9b73fd6f3218f6c4"
+    },
+    {
+      "path": "finalize_readonly.py",
+      "bytes": 7007,
+      "sha256": "92fb6cd82b8bd385d141e93b066b6e1bcb75f954a623efab2b95945f377e6641"
+    },
+    {
+      "path": "finalize_readonly_v2.py",
+      "bytes": 7148,
+      "sha256": "83e1822db8af348597e302fe801e6f7b00c3a0b9c828f7f7675d5942470f06a0"
+    },
+    {
+      "path": "finalizer-001-failure.json",
+      "bytes": 372,
+      "sha256": "09eea8fe5f7391d41db0cfbcdfec7f08eda21f18c9add41305e75aa5b55e8569"
+    },
+    {
+      "path": "poll-001/jobs-37200670823.connector.json",
+      "bytes": 6174,
+      "sha256": "8154b2dd484aaa57adc4c2cb94f7cab15bb24f389f95796f709e217a3670f8c5"
+    },
+    {
+      "path": "poll-001/jobs-37200670823.content.bin",
+      "bytes": 2461,
+      "sha256": "4cd391c546ee83fb653cf39db6a420bc9fffca68618cfc3b3ff236c260274ee2"
+    },
+    {
+      "path": "poll-001/jobs-37200670823.response.json",
+      "bytes": 2462,
+      "sha256": "ddf30ca44bc6927de12ad5a47b6d71c67dba6b5be5643de365764b42937c87dd"
+    },
+    {
+      "path": "poll-001/jobs-37200670917.connector.json",
+      "bytes": 35574,
+      "sha256": "f5d408ed3e46ee29782c3847e551fbbe314479348dfe5590b97b05d2d2f9ea7d"
+    },
+    {
+      "path": "poll-001/jobs-37200670917.content.bin",
+      "bytes": 15599,
+      "sha256": "bd63ad1e797dcae0f1b8cf5a0bac5c2a65f1d997335b407355160580a9ed8e5d"
+    },
+    {
+      "path": "poll-001/jobs-37200670917.response.json",
+      "bytes": 15600,
+      "sha256": "bc922bf88bab824457ecce9a3554cdd051bf146a3e66575e33b80cf642b17901"
+    },
+    {
+      "path": "poll-001/runs.connector.json",
+      "bytes": 57921,
+      "sha256": "0aba2e70df6ad1c5c3b438ba127decb8e92464bbf82016e3e634fad4f9910c69"
+    },
+    {
+      "path": "poll-001/runs.content.bin",
+      "bytes": 26989,
+      "sha256": "5ee3b0ee23c6f1656d17a32a9f2afc56a687462061fd9edb013bc706dd97a51e"
+    },
+    {
+      "path": "poll-001/runs.response.json",
+      "bytes": 26990,
+      "sha256": "e112bce5873096556ce0bca122c2764d07b74e18bce27093f5d3f5dd103e7591"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1256,
+      "sha256": "a07e08098fda625a2a91ca73afe4c286ac59811793d7f731f3f2aa99378e87ea"
+    },
+    {
+      "path": "report.json",
+      "bytes": 4266,
+      "sha256": "208b93db1efdf7e31ccaaa09b48e6122a43cd928b9ab06a423c8306f733b8ccb"
+    },
+    {
+      "path": "source/.github/workflows/li-yu-dao-static.yml",
+      "bytes": 1601,
+      "sha256": "c05e16c2cf003505116a0af9a2f34437107077cebed4363e0521fa556f7caccf"
+    },
+    {
+      "path": "source/.github/workflows/static-ci.yml",
+      "bytes": 24401,
+      "sha256": "73584dd98fe8af6ba5787f67ade7c82664e340ca18963a949f6b1d3e6e5fe69c"
+    },
+    {
+      "path": "source/git-exact-head.stdout.bin",
+      "bytes": 82,
+      "sha256": "fedf1462d1ecae5b068758e30401b858436fa160b6cd9f89a85c0b125fda06c7"
+    },
+    {
+      "path": "source/git-status.stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "terminal-001/jobs-37200670823.connector.json",
+      "bytes": 6174,
+      "sha256": "8154b2dd484aaa57adc4c2cb94f7cab15bb24f389f95796f709e217a3670f8c5"
+    },
+    {
+      "path": "terminal-001/jobs-37200670823.content.bin",
+      "bytes": 2461,
+      "sha256": "4cd391c546ee83fb653cf39db6a420bc9fffca68618cfc3b3ff236c260274ee2"
+    },
+    {
+      "path": "terminal-001/jobs-37200670823.response.json",
+      "bytes": 2462,
+      "sha256": "ddf30ca44bc6927de12ad5a47b6d71c67dba6b5be5643de365764b42937c87dd"
+    },
+    {
+      "path": "terminal-001/jobs-37200670917.connector.json",
+      "bytes": 35574,
+      "sha256": "f5d408ed3e46ee29782c3847e551fbbe314479348dfe5590b97b05d2d2f9ea7d"
+    },
+    {
+      "path": "terminal-001/jobs-37200670917.content.bin",
+      "bytes": 15599,
+      "sha256": "bd63ad1e797dcae0f1b8cf5a0bac5c2a65f1d997335b407355160580a9ed8e5d"
+    },
+    {
+      "path": "terminal-001/jobs-37200670917.response.json",
+      "bytes": 15600,
+      "sha256": "bc922bf88bab824457ecce9a3554cdd051bf146a3e66575e33b80cf642b17901"
+    },
+    {
+      "path": "terminal-001/run-37200670823.connector.json",
+      "bytes": 29195,
+      "sha256": "c29f87617443790a2a6163e2a948ab0a4ddc0aa86ee1d2705079c6b8d748ec36"
+    },
+    {
+      "path": "terminal-001/run-37200670823.content.bin",
+      "bytes": 13482,
+      "sha256": "34dfaa0c7fdb2c4538a7fc27f7776e65118f32c614c940c63f0a46af271f33cd"
+    },
+    {
+      "path": "terminal-001/run-37200670823.response.json",
+      "bytes": 13483,
+      "sha256": "1f0bade03dc2350559ebfd240dc83e5bb63a5051eff43a93b755d6dc09e29a52"
+    },
+    {
+      "path": "terminal-001/run-37200670917.connector.json",
+      "bytes": 29177,
+      "sha256": "7dc4618ab09e655e25ac102446108a10ad2e4ba08501a43a67607979c52d3759"
+    },
+    {
+      "path": "terminal-001/run-37200670917.content.bin",
+      "bytes": 13473,
+      "sha256": "0f7eaec2e513c38ed1c13d3a500b1a1de6e9cb30508049ec189c1af099d07ce2"
+    },
+    {
+      "path": "terminal-001/run-37200670917.response.json",
+      "bytes": 13474,
+      "sha256": "77f492e0e246dafecb5851335afbd23f35f99a2aa48b903f623766fcd6dd1386"
+    }
+  ]
+}

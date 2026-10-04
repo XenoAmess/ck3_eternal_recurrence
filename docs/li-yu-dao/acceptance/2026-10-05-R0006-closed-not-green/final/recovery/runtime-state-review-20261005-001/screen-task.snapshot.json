@@ -1,0 +1,19 @@
+{
+  "git": {
+    "branch": "master",
+    "dirty_entries": 0,
+    "head": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e"
+  },
+  "last_sequence": 2808,
+  "next_step": "Fresh-offline-and-load",
+  "pid": 9444,
+  "repo": "C:\\workspace\\ck3_eternal_recurrence",
+  "resources": [
+    "ck3-screen:acquired"
+  ],
+  "schema": "codex.task_bus.v1",
+  "state": "running",
+  "summary": "LYD-formal-R0006-isolated-live",
+  "task_id": "ck3-lyd-live-007-20261004",
+  "updated_at_utc": "2026-10-04T17:19:00.588608+00:00"
+}

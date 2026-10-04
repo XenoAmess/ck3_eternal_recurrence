@@ -1,0 +1,13 @@
+{
+  "source_kind": "OFFICIAL_OPENAI_PAGE_FETCHED_WITH_WEB_TOOL",
+  "requested_url": "https://developers.openai.com/ja-JP/docs/config-file/config-reference",
+  "actual_page_url": "https://learn.chatgpt.com/docs/config-file/config-reference?translationFallback=ja-JP",
+  "title": "Configuration Reference",
+  "relevant_page_lines": [
+    981,
+    982
+  ],
+  "paraphrase": "agents.max_concurrent_threads_per_session limits concurrent spawned-agent threads, excluding primary. agents.max_threads is its legacy alias.",
+  "citation_scope": "配置字段名称和计数口径；不证明本机运行会话已热重载，也不证明64槽已执行。",
+  "full_page_copied": false
+}

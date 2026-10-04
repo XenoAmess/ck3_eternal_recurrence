@@ -1,0 +1,171 @@
+{
+  "schema": "lyd.r6.report-resume.v1",
+  "created_utc": "2026-10-04T18:38:21.603571+00:00",
+  "attempt": "live-attempt-006",
+  "source_revision": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+  "product_tree": "2e290b9b7fca02c38a33e4c73f5c46e7060dc9fa",
+  "status": "EXTERNAL_CONTINUATION_DRAFT_NOT_FINAL",
+  "overall_native_acceptance": "NOT_GREEN",
+  "lifecycle": {
+    "normal_exit": "PENDING_PARENT_EVIDENCE",
+    "process_absence": "PENDING_PARENT_EVIDENCE",
+    "sdk_close": "PENDING_PARENT_EVIDENCE",
+    "screen_lease_release": "PENDING_PARENT_EVIDENCE",
+    "source_freeze_release": "PENDING_PARENT_EVIDENCE"
+  },
+  "game_state_parent_message_only": "PID12500 RUNNING_PAUSED at task handover; no current game/process probe by this agent",
+  "previous_packages": [
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-report-draft-001",
+      "index_name": "INDEX.json",
+      "index_sha256": "fa0aad4d907cb0a57b1627a6afeb4cfd3e1f3cf172f4c9286c8f7c03258850da",
+      "indexed_files": 794,
+      "indexed_bytes": 6242483,
+      "all_indexed_original_bytes_reverified": true
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-report-draft-addendum-001",
+      "index_name": "INDEX.json",
+      "index_sha256": "615e109c1d4db13496ad8a3cb22ded7c1e355289484e38ec68a65afb41b3452d",
+      "indexed_files": 6,
+      "indexed_bytes": 10550,
+      "all_indexed_original_bytes_reverified": true
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-report-draft-addendum-003",
+      "index_name": "INDEX.json",
+      "index_sha256": "5b44d27d0cd548fce74765703123220867ca9971bc187e42ae9d8aa81be7d436",
+      "indexed_files": 18,
+      "indexed_bytes": 124579,
+      "all_indexed_original_bytes_reverified": true
+    }
+  ],
+  "new_sdk_summaries": "evidence/sdk-exact-summary.json",
+  "new_checkpoint_bindings": [
+    {
+      "label": "0040-i2-resources-save",
+      "save": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0040-i2-resources-save\\save.ck3",
+        "bytes": 90496391,
+        "sha256": "129616804d118c0ba035921e97e1e4a9f0d01abcb3687e1a8eb77ce57961ad23"
+      },
+      "wrapper_sha256": "c40234303edee0c6c932cdb3de94b884381fad18c91d9502445f58534711a7e8",
+      "sdk_sha256": "1f1a4f6c73e11b7595f344ee92caaa076cc7aca0ca5b57f61d37f2ee0ac3b62c",
+      "save_copied": false,
+      "scope": "Frozen immutable save hash and wrapper/SDK binding; filename is the original intent label."
+    },
+    {
+      "label": "0042-i2-detach-open-save",
+      "save": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0042-i2-detach-open-save\\save.ck3",
+        "bytes": 90507374,
+        "sha256": "7b5adbc84232b6c1159f4d472cd87778b5910c4f1594399e118a6116edb1a42c"
+      },
+      "wrapper_sha256": "b9d0c1d9e083c53d2c562a7ecbc55333e22dc020a870b5c66ae29c37a4c95667",
+      "sdk_sha256": "6ba404e2544ff226033ee52ff0da0537344d572a9d7b1970b8aa79269455f55b",
+      "save_copied": false,
+      "scope": "Frozen immutable save hash and wrapper/SDK binding; filename is the original intent label."
+    },
+    {
+      "label": "0044-i2-detach-source-yes-save",
+      "save": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0044-i2-detach-source-yes-save\\save.ck3",
+        "bytes": 90506624,
+        "sha256": "7ee7fb562d37874fb479559bef0c6d069f43320bdd908537c5466d07d5a1ecf2"
+      },
+      "wrapper_sha256": "3eef591e0ed87059f4e4c23380aedcd2d6a65497b0a288010eb9284b5c2c2bb0",
+      "sdk_sha256": "d45250626e1e42bf16ab779f9732f31116099db3c39a0f8796a892e99b64805e",
+      "save_copied": false,
+      "scope": "Frozen immutable save hash and wrapper/SDK binding; filename is the original intent label."
+    }
+  ],
+  "new_readback_statuses": [
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-resources-readback-001",
+      "final_index_present": false,
+      "status": "PENDING_FINAL_REPORT_AND_INDEX"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-event-readback-resume-20261005-001",
+      "final_index_present": true,
+      "status": "FINALIZED_INDEXED_EXTERNAL",
+      "index_name": "INDEX-final.json",
+      "index_sha256": "47d97d31cb3354767316ff65f079a297ab0d4402478266394dbe686b48dea548",
+      "indexed_files": 45,
+      "indexed_bytes": 6891042,
+      "all_indexed_original_bytes_reverified": true,
+      "result": "EVENT_IDENTITY_OBSERVATION_ONLY",
+      "scope": "This package does not grade consent, commit, native migration or complete R6. It identifies event correspondence and saved ticket state only."
+    }
+  ],
+  "event0043_actual": {
+    "intent_filename": "0043-i2-detach-source-yes",
+    "actual_selected_instance": 12,
+    "actual_loaded_definition": "lyd.200",
+    "actual_option_number": 1,
+    "actual_option_name": "lyd_c2_wait",
+    "native_next_instance": 11,
+    "source_vote_yes_claim": false,
+    "evidence_scope": "Existing saved excerpt + actual loaded script + raw SDK selection. Full separately indexed correspondence/ticket readback is recorded below when present."
+  },
+  "event_ticket_readback": {
+    "result": "INDEXED_EVENT_IDENTITY_AND_TICKET_OBSERVATION_ONLY",
+    "before_saved_events": {
+      "10": "lyd.210",
+      "11": "lyd.212",
+      "12": "lyd.200"
+    },
+    "after_saved_events": {
+      "10": "lyd.210",
+      "11": "lyd.212"
+    },
+    "source_yes": "2",
+    "source_total": "4",
+    "quorum_arithmetic": -2,
+    "player_vote_ticket_keys_present": [],
+    "player_personal_consent_ticket_keys_present": [],
+    "all_five_targeted_characters_c2_state_unchanged": true,
+    "lyd_expiry_triggered_event_exactly_unchanged": true,
+    "gui_correspondence": "Prior readback agent inspected archived PNGs and matched visible Chinese ballot content to retainedlyd.210; GUI numeric event instance itself is not shown. This preparation agent only copies exact original PNG bytes.",
+    "vote_65860_omitted_identity": "Present value-type field with absent identity retained as omission; no affirmative1 or numeric0 manufactured."
+  },
+  "historical_qualification": "RED_QUALIFICATION_POSTCONDITION; not rewritten by D+2 or future business progress",
+  "historical_whole_error_log": {
+    "e_count": 100000,
+    "sha256": "fd8b659ef333ffe7e1a1dad1a20e7a8f892071bbcc41d36ec4866f229cd9827b",
+    "post_cap_coverage": "UNKNOWN_UNAVAILABLE",
+    "later_missing_rows_prove_zero_errors": false
+  },
+  "time_boundary": "Requested D+1, actual D+2 from1066.9.15 to1066.9.17. No fresh exact total Learning=15 claim.",
+  "capacity_boundary": {
+    "configuration64_source": "Frozen addendum003 evidence; no configuration read or modification in this continuation",
+    "current_tool_declared_slots": 65,
+    "declaration_source": "CURRENT_SESSION_DEVELOPER_INSTRUCTIONS",
+    "parent_reported_actual_spawn_count": 40,
+    "parent_reported_capacity_errors": true,
+    "user_cancelled_capacity_testing": true,
+    "actual64_pass": false,
+    "further_capacity_testing": false
+  },
+  "not_proven": [
+    "C2 source/target vote, affected-player consent, representative signatures, commit/native migration/repeat join-detach",
+    "C3 owned-head lifecycle/claim/recognition",
+    "all36rites practice options",
+    "D+30",
+    "reload",
+    "overall R6 GREEN",
+    "historical68old human review applicability"
+  ],
+  "import_candidate": "import_report_candidate.py; root-owned future execution after exact closure review/index supplied; never executed by preparation agent",
+  "side_effects": {
+    "tracked": 0,
+    "git": 0,
+    "game": 0,
+    "native": 0,
+    "ci": 0,
+    "screen": 0,
+    "spawn": 0,
+    "old_asset_mutations": 0,
+    "raw_save_copies": 0
+  }
+}

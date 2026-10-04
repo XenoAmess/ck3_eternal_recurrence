@@ -1,0 +1,183 @@
+{
+  "image": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\school-chooser-detail-001.png",
+  "image_sha256": "d45a7055ecf0682dd0d1cb2cdd2787b3f4d6bc5cfee7149f2b64a5d3cdd185aa",
+  "image_size": [
+    1920,
+    1080
+  ],
+  "desktop_size": [
+    1920,
+    1080
+  ],
+  "foreground_hwnd": 2491650,
+  "windows": [
+    {
+      "hwnd": 65832,
+      "pid": 8268,
+      "thread": 8272,
+      "title": "DragFileWindowTitle",
+      "class": "DragFileWindowClass",
+      "rect": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "hwnd": 2491650,
+      "pid": 12500,
+      "thread": 16420,
+      "title": "Crusader Kings III",
+      "class": "SDL_app",
+      "rect": [
+        152,
+        59,
+        1768,
+        998
+      ]
+    },
+    {
+      "hwnd": 5112980,
+      "pid": 8964,
+      "thread": 12184,
+      "title": "Steam 社区 :: 公国／王国／帝国法理征服（XenoAmess维护版） :: 改动说明 和另外 1 个页面 - 用户配置 1 - Microsoft​ Edge",
+      "class": "Chrome_WidgetWin_1",
+      "rect": [
+        -8,
+        -8,
+        1928,
+        1048
+      ]
+    },
+    {
+      "hwnd": 66930,
+      "pid": 5308,
+      "thread": 1072,
+      "title": "上游更新了mod，你需要短暂上线steam，然后获取上游更新，然后离线steam，",
+      "class": "Chrome_WidgetWin_1",
+      "rect": [
+        146,
+        172,
+        1182,
+        905
+      ]
+    },
+    {
+      "hwnd": 131258,
+      "pid": 14204,
+      "thread": 4932,
+      "title": "设置",
+      "class": "Windows.UI.Core.CoreWindow",
+      "rect": [
+        0,
+        8,
+        1024,
+        736
+      ]
+    },
+    {
+      "hwnd": 524858,
+      "pid": 13188,
+      "thread": 2584,
+      "title": "设置",
+      "class": "ApplicationFrameWindow",
+      "rect": [
+        -8,
+        -8,
+        1928,
+        1048
+      ]
+    },
+    {
+      "hwnd": 196732,
+      "pid": 11120,
+      "thread": 11192,
+      "title": "Microsoft Text Input Application",
+      "class": "Windows.UI.Core.CoreWindow",
+      "rect": [
+        0,
+        0,
+        1920,
+        1080
+      ]
+    },
+    {
+      "hwnd": 984556,
+      "pid": 3028,
+      "thread": 5164,
+      "title": "Steam",
+      "class": "SDL_app",
+      "rect": [
+        -32000,
+        -32000,
+        -31840,
+        -31972
+      ]
+    },
+    {
+      "hwnd": 65910,
+      "pid": 7484,
+      "thread": 7488,
+      "title": "Program Manager",
+      "class": "Progman",
+      "rect": [
+        0,
+        0,
+        1920,
+        1080
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "create_time": 1790980013.1523955,
+      "name": "steamwebhelper.exe",
+      "pid": 1464,
+      "exe": "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe"
+    },
+    {
+      "create_time": 1791027756.0937624,
+      "name": "steamwebhelper.exe",
+      "pid": 2692,
+      "exe": "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe"
+    },
+    {
+      "create_time": 1790980012.3969574,
+      "name": "steamwebhelper.exe",
+      "pid": 3028,
+      "exe": "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe"
+    },
+    {
+      "create_time": 1790980013.1199436,
+      "name": "steamwebhelper.exe",
+      "pid": 5956,
+      "exe": "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe"
+    },
+    {
+      "create_time": 1791115363.105566,
+      "name": "ck3.exe",
+      "pid": 12500,
+      "exe": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe"
+    },
+    {
+      "create_time": 1790980013.1243167,
+      "name": "steamwebhelper.exe",
+      "pid": 14888,
+      "exe": "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe"
+    },
+    {
+      "create_time": 1790980011.1466615,
+      "name": "steam.exe",
+      "pid": 18100,
+      "exe": "C:\\Program Files (x86)\\Steam\\steam.exe"
+    },
+    {
+      "create_time": 1790980014.4099422,
+      "name": "steamwebhelper.exe",
+      "pid": 18564,
+      "exe": "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe"
+    }
+  ],
+  "time": "2026-10-04T13:10:51.956510+00:00"
+}

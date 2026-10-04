@@ -1,0 +1,64 @@
+{
+  "schema": "lyd.r6.parent-message-context-note.v1",
+  "source_kind": "PARENT_MESSAGE_ONLY",
+  "not_raw_tool_output": true,
+  "does_not_rewrite_existing_packages": [
+    "r6-report-draft-001 (795 files)",
+    "r6-report-draft-addendum-001 (7 files)",
+    "r6-runtime-errors-diagnosis-001 (51 files)"
+  ],
+  "development_progress": {
+    "estimate": "60%",
+    "meaning": "综合开发估算，非测试通过率",
+    "milestones": [
+      {
+        "date": "2026-10-05",
+        "scope": "落地本轮验收报告，交付基础礼仪与修习阶段版本"
+      },
+      {
+        "date": "2026-10-06",
+        "scope": "正式统一分裂首轮完整验收及修复"
+      },
+      {
+        "date": "2026-10-07—08",
+        "scope": "领袖建立/对立学统/同意拒绝/保存重载"
+      },
+      {
+        "date": "2026-10-09",
+        "scope": "一期回归、可交付构建和总报告"
+      }
+    ],
+    "chronology_limits": "二期",
+    "status": "估算里程碑，非已完成测试"
+  },
+  "root_tool_output_only_corrections": [
+    {
+      "item": "root0007",
+      "actual_status": "local validate_request 拒绝非法闭式名 codex_apps.ck3_query_native_snapshot",
+      "dispatch": false,
+      "sdk": false,
+      "raw_stderr_evidence": "NOT_PROVIDED_DO_NOT_MANUFACTURE"
+    },
+    {
+      "item": "r6_native_action first helper",
+      "actual_status": "读取 instance key 错误；后续新 6139... v2 修正",
+      "game_side_effect": false,
+      "raw_stderr_evidence": "NOT_PROVIDED_DO_NOT_MANUFACTURE"
+    },
+    {
+      "item": "draft_v2",
+      "actual_status": "assertion 计数错误，目标文件未生成；v2b 后续成功",
+      "raw_stderr_evidence": "NOT_PROVIDED_DO_NOT_MANUFACTURE"
+    }
+  ],
+  "r6_dynamic_native_head_observation": {
+    "date": "1066.9.17 (actual D+2)",
+    "rite": "lyd_rite_zhuxi",
+    "head_of_rite": "actor 31254 naturally",
+    "c3_appointment": false,
+    "faith_religious_head_title": "absent",
+    "conclusion": "现任 native HoR 可在正常时间流转变化；办公室代表 callback 必须重新读当前实际身份。学者提名代表可与 native HoR 分开，但须明确制度政策。"
+  },
+  "r6_final_exit_and_source_freeze": "PENDING_AT_NOTE_TIME",
+  "overall_r6": "NOT_GREEN"
+}

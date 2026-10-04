@@ -1,0 +1,127 @@
+34232={
+	first_name="Roger"
+	birth=1031.1.2
+	nickname_text=""
+	ethnicity=caucasian_blond
+	rite=169
+	dynasty_house=174
+	skill={ 7 8 8 4 10 2 }
+	trait_xp_amounts={ 0 }
+	dna="0cV9SCRXJ0/FxnDEAHsBiQGJAYEBmgGHAHwBjAGHAHwBlQB0AYwBggBzAHoBigGLAHgAdAGcAaQBmQGOAGgASwGlAFABowB3AF0AbQGcAYgAegGxAHEBgAGRAYQAdgB5AGIBjQGAAYwBiAGCAYkBmwB+AYgAdwBKAYwAZwBnAHIAYgABAaYBkwBwAY4AKAAIADEACwAWARgAXwFBADMAHgEHADUBKgFzAG8AJwHrAbEBJQAxASwBDQAmADMBLwCOAVEBKwBNAXkBYwAqATwAMQBfAWoAfwABABoAFABMAAYAUgElABUAKgEjAVYAfwDHACwADQFeAJMAFgBOAC0BKgEZAQEBHwEVAYgBPwAAAU8AIwExAFsCCwEHAQsAHAEBARQBBgAFASwALwALAKABGgGmAG4D9QQHAA4AAgBmAAEA5gBgAwABFQEKASMAAwAFAPEAAQDPAP0AwQMGAf8AGQBHAAACAAIABnAAnQF6AYoDfgNnCcsBAAaABlEA9AK7CIEFWgGSBFwBaACgALQBugB/AH8BQwFDAQABAAEjASM="
+
+	mass=7
+	traits={ 70 56 79 18 238 }
+	family_data={
+		primary_spouse=35386
+		spouse=35386
+		child={ 38925 40694 41235 41288 }
+	}
+
+	alive_data={
+		variables={
+			data={ {
+					flag=changed_rite_flag
+					data={
+					}
+
+				}
+ {
+					flag=chancellor_foreign_affairs_opinion_value
+					data={
+						type=value
+					}
+
+				}
+ {
+					flag=court_chaplain_religious_relations_opinion_value
+					data={
+						type=value
+					}
+
+				}
+ {
+					flag=conversion_memory_recently_created
+					tick=2
+					data={
+					}
+
+				}
+ }
+		}
+		income=3.5503
+		fertility=0.5
+		health=4.50752
+		gold={
+			value=130
+		}
+		piety={
+			currency=300
+		}
+		prestige={
+			currency=600
+		}
+		influence={
+			currency=120
+		}
+		focus={
+			type=martial_chivalry_focus
+			date=1066.9.15
+			changes=0
+			progress=0
+		}
+
+		claim={ {
+				title=7219
+			}
+ }
+		perk={ serve_the_crown_perk a_mans_home_perk enduring_hardships_perk strict_organization_perk prepared_conscription_perk hard_rule_perk }
+		languages={ language_french }
+		activity_data={
+		}
+
+		location={
+			location=2633
+		}
+		memories={ 4326 }
+	}
+
+	court_data={
+		council_task=7870
+		knight=yes
+	}
+
+	landed_data={
+		domain={ 2196 2258 2254 2197 2259 2255 2199 2257 }
+		vassal_contracts={ 16786443 16786420 16786419 }
+		became_ruler_date=1066.9.15
+		laws={ crown_authority_0 confederate_partition_succession_law male_preference_law }
+		current_strength=886
+		strength=886
+		strength_for_liege=100
+		strength_without_hires=886
+		power=25840
+		max_power=25840
+		levy=582
+		succession_result_type=inheritance_child_line
+		succession={ 40694 41235 41288 37244 38098 31254 40526 40695 36445 36663 36873 31692 34973 40259 35598 36638 32536 38561 39045 39171 39352 39527 33234 37702 33542 32236 38560 38902 39979 40847 41032 31538 35899 40507 40843 41028 36329 36847 41495 37064 33028 38782 39032 39309 39932 }
+		vassal_power_value=1291.515
+		domain_limit=5
+		government=feudal_government
+		realm_capital=2197
+		council={ 502 503 504 505 506 507 }
+		barter_goods={
+		}
+	}
+
+	playable_data={
+		knights={ 45462 32536 33234 45463 }
+		diarchy_successor=35386
+		legitimacy=220
+		legitimacy_type=count_legitimacy
+		tenets={ tenet_apostolic_succession }
+		current_spiritual_fulfillment=60
+		known_doctrines={ abrahamic_hostility_doctrine doctrine_monogamy doctrine_polygamy doctrine_divorce_approval doctrine_divorce_disallowed doctrine_divorce_allowed doctrine_bastardry_legitimization doctrine_bastardry_none doctrine_bastardry_all doctrine_homosexuality_shunned doctrine_homosexuality_crime doctrine_homosexuality_accepted doctrine_deviancy_crime doctrine_deviancy_shunned doctrine_adultery_men_shunned doctrine_adultery_men_crime doctrine_adultery_men_accepted doctrine_adultery_women_crime doctrine_adultery_women_shunned doctrine_kinslaying_close_kin_crime doctrine_kinslaying_extended_family_crime doctrine_kinslaying_shunned doctrine_witchcraft_crime doctrine_witchcraft_shunned doctrine_gender_male_dominated doctrine_gender_equal doctrine_consanguinity_aunt_nephew_and_uncle_niece doctrine_consanguinity_cousins doctrine_consanguinity_unrestricted doctrine_pluralism_righteous doctrine_pluralism_fundamentalist doctrine_pluralism_pluralistic doctrine_theocracy_temporal doctrine_theocracy_lay_clergy doctrine_spiritual_head doctrine_clerical_function_taxation doctrine_clerical_gender_male_only doctrine_clerical_gender_either doctrine_clerical_marriage_disallowed doctrine_clerical_marriage_allowed doctrine_clerical_succession_spiritual_fixed_appointment doctrine_pilgrimage_encouraged doctrine_pilgrimage_forbidden doctrine_pilgrimage_local_rites doctrine_funeral_stoic doctrine_imperial_anointment doctrine_monotheist doctrine_scriptural doctrine_monasticism_accepted doctrine_monasticism_encouraged doctrine_monasticism_absent doctrine_sacraments_central special_doctrine_is_christian_faith special_doctrine_ecumenical_christian special_doctrine_has_clerical_electors special_doctrine_is_western_christian_faith doctrine_kinslaying_any_dynasty_member_crime doctrine_clerical_function_alms_and_pacification doctrine_funeral_bewailment doctrine_anointment_permitted special_doctrine_pope_blessing doctrine_deviancy_accepted doctrine_clerical_succession_conditional sinitic_hostility_doctrine doctrine_concubines doctrine_consanguinity_dynastic doctrine_consanguinity_restricted doctrine_no_head doctrine_clerical_succession_temporal_appointment doctrine_pilgrimage_mandatory doctrine_family_rites doctrine_no_anointment doctrine_polytheist doctrine_monasticism_forbidden doctrine_sacraments_absent special_doctrine_is_sinitic_faith special_doctrine_immaterial_harmony }
+		known_tenets={ tenet_peace_of_god tenet_dulia tenet_apostolic_succession tenet_confession tenet_original_sin tenet_divine_liturgy tenet_anachoresis tenet_communal_identity tenet_communion tenet_vows_of_poverty tenet_adaptive tenet_transubstantiation tenet_ora_et_labora tenet_hyperdulia tenet_simony tenet_monophysitism tenet_acts_of_apostles tenet_purgatory tenet_be_fruitful_and_multiply tenet_celestial_hierarchy tenet_miles_christi tenet_philanthropia tenet_adoptionism tenet_love_thy_neighbour tenet_miaphysitism tenet_hesychasm tenet_mortification_of_the_flesh tenet_aniconism tenet_gnosticism tenet_pentarchy tenet_esotericism tenet_legalism tenet_literalism tenet_religious_legal_pronouncements tenet_asceticism tenet_ritual_celebrations tenet_sanctity_of_nature tenet_natural_primitivism tenet_polyamory lyd_tenet_reverent_heaven lyd_tenet_sincerity_solitude lyd_tenet_ritual_music lyd_tenet_ancestral_reverence lyd_tenet_names_duties lyd_tenet_humaneness_righteousness lyd_tenet_righteous_remonstrance lyd_tenet_sage_transmission lyd_tenet_extend_sprouts lyd_tenet_deliberate_cultivation lyd_tenet_righteous_qi lyd_tenet_portent_reflection lyd_tenet_qi_kinship lyd_tenet_investigate_principle lyd_tenet_reverent_attention lyd_tenet_original_heart lyd_tenet_innate_knowing lyd_tenet_knowing_acting lyd_tenet_textual_ritual lyd_tenet_classical_synthesis lyd_tenet_annals_judgment lyd_tenet_constant_heaven lyd_tenet_restore_nature lyd_tenet_ordinary_life lyd_tenet_six_arts lyd_tenet_philological_way lyd_tenet_moral_achievement lyd_tenet_restrain_violence lyd_tenet_subtle_intentions lyd_tenet_responsive_interpretation lyd_tenet_images_numbers lyd_tenet_profound_interpretation lyd_tenet_knowing_acting_support lyd_tenet_ongoing_generation lyd_tenet_quiet_self_attainment lyd_tenet_recognition_everywhere }
+	}
+
+}

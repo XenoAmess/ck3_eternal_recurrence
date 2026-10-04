@@ -1,0 +1,50 @@
+{
+  "source_kind": "PARENT_MESSAGE_ONLY",
+  "milestones": {
+    "estimate": "60%",
+    "meaning": "综合开发估算，非测试通过率",
+    "milestones": [
+      {
+        "date": "2026-10-05",
+        "scope": "落地本轮验收报告，交付基础礼仪与修习阶段版本"
+      },
+      {
+        "date": "2026-10-06",
+        "scope": "正式统一分裂首轮完整验收及修复"
+      },
+      {
+        "date": "2026-10-07—08",
+        "scope": "领袖建立/对立学统/同意拒绝/保存重载"
+      },
+      {
+        "date": "2026-10-09",
+        "scope": "一期回归、可交付构建和总报告"
+      }
+    ],
+    "chronology_limits": "二期",
+    "status": "估算里程碑，非已完成测试"
+  },
+  "root_tool_only_facts": [
+    {
+      "item": "root0007",
+      "actual_status": "local validate_request 拒绝非法闭式名 codex_apps.ck3_query_native_snapshot",
+      "dispatch": false,
+      "sdk": false,
+      "raw_stderr_evidence": "NOT_PROVIDED_DO_NOT_MANUFACTURE"
+    },
+    {
+      "item": "r6_native_action first helper",
+      "actual_status": "读取 instance key 错误；后续新 6139... v2 修正",
+      "game_side_effect": false,
+      "raw_stderr_evidence": "NOT_PROVIDED_DO_NOT_MANUFACTURE"
+    },
+    {
+      "item": "draft_v2",
+      "actual_status": "assertion 计数错误，目标文件未生成；v2b 后续成功",
+      "raw_stderr_evidence": "NOT_PROVIDED_DO_NOT_MANUFACTURE"
+    }
+  ],
+  "current_r6_status": "仍运行且暂停；exit/SDKclose/lease release PENDING",
+  "pending_c2_resources_and_decisions": "根代理后续另提供实际证据；本补充不预填成功、资源变更或费用结算。",
+  "no_raw_stderr_manufactured": true
+}

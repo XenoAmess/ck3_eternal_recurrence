@@ -1,0 +1,88 @@
+{
+  "utc": "2026-10-04T14:04:45.994628+00:00",
+  "files": [
+    {
+      "path": "code_revisions.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "custom_automated_stats.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "database_conflicts.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "debug.log",
+      "bytes": 13605355,
+      "sha256": "8fc09046200b43dbf80de9ec31bdd8cf03c348fa8eabd69bfb0744243b118b53"
+    },
+    {
+      "path": "dedicated_server.log",
+      "bytes": 144,
+      "sha256": "055b0edb73c0402ee883c86b90c3d8ee1256a7fe488967e8f68f191c93dc4a2b"
+    },
+    {
+      "path": "error.log",
+      "bytes": 15407716,
+      "sha256": "6ee8a5cc3cdb3e13c558f1db3456552d810bfff49deebe761e37a45cb9f1d4ae"
+    },
+    {
+      "path": "game.log",
+      "bytes": 12392048,
+      "sha256": "e7345e1e3c9eb85674e1514c1b121da19ff437f2885e0e7b419e7e31645ed445"
+    },
+    {
+      "path": "gui_warnings.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "memory.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "message.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "multiplayer.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pdxsdk.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "profile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "setup.log",
+      "bytes": 36864,
+      "sha256": "dfde4f6f25ca102f9717eaa2372844d62d7c3f3522fca2f4ee9b5710ba7479aa"
+    },
+    {
+      "path": "system.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "text.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "e_count": 47166,
+  "log_snapshot_only": true,
+  "acceptance": "PENDING_COMPLETE_NATIVE_LOAD"
+}

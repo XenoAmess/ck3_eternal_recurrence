@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 28,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue\\0028-i2-failure-ack.request.json",
+  "request_sha256": "24688428c09ca165a0ce0735e488cdc70155965148a54c8297711f09ae557b8c",
+  "started_at_utc": "2026-10-04T14:09:14.170087+00:00"
+}

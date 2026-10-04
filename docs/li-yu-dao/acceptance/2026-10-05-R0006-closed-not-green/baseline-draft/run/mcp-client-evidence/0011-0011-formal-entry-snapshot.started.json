@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 11,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue\\0011-formal-entry-snapshot.request.json",
+  "request_sha256": "dea4a0f16e9ad7323ab1e9a2f62dff1bcb416b5ee7134497a8d55a55a078dadd",
+  "started_at_utc": "2026-10-04T13:06:32.135685+00:00"
+}

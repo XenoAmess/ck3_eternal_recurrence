@@ -1,0 +1,23 @@
+[
+  {
+    "package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-report-draft-001",
+    "index_sha256": "fa0aad4d907cb0a57b1627a6afeb4cfd3e1f3cf172f4c9286c8f7c03258850da",
+    "files_including_index": 795,
+    "unchanged_index_verified": true,
+    "whole_package_reverified": false
+  },
+  {
+    "package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-report-draft-addendum-001",
+    "index_sha256": "615e109c1d4db13496ad8a3cb22ded7c1e355289484e38ec68a65afb41b3452d",
+    "files_including_index": 7,
+    "unchanged_index_verified": true,
+    "whole_package_reverified": false
+  },
+  {
+    "package": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-independent-review-001",
+    "index_sha256": "0af1cd6a7bf9aaeff994812445feb964c6ae48442e6bc88a15f4f2533070c5d8",
+    "files_including_index": 34,
+    "unchanged_index_verified": true,
+    "whole_package_reverified": false
+  }
+]

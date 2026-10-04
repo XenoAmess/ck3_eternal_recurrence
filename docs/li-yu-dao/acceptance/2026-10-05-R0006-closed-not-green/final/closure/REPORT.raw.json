@@ -1,0 +1,62 @@
+{
+  "schema": "lyd.r6.terminal-closure.v1",
+  "utc": "2026-10-04T19:07:39.284879+00:00",
+  "run": "R0006",
+  "frozen_head_at_terminal_verification": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+  "normal_exit": true,
+  "normal_exit_code": 0,
+  "process_absence": true,
+  "sdk_processes_absent": true,
+  "old_sdk_orderly_close_observed": false,
+  "old_sdk_terminal_status": "SESSION_LOST; VERIFIED_PROCESS_ABSENCE; NO_ORDERLY_CLOSE_RECEIPT",
+  "old_keeper_terminal_status": "PROCESS_ABSENT; FINAL_RECEIPT_NOT_OBSERVED",
+  "new_recovery_keeper_normal_exit": true,
+  "lease_released": true,
+  "released_task": "ck3-lyd-r0006-exit-20261005",
+  "released_prior_sequence": 2813,
+  "released_new_sequence": 2814,
+  "source_freeze_released": true,
+  "source_freeze_release_basis": "actual CK3/reporter/SDK/keeper absence plus fresh CAS screen release",
+  "actual_business_scope": "lyd.200 wait only; no source ballot or affected-player consent selected",
+  "overall_acceptance": "NOT_GREEN",
+  "post_error_cap_runtime_coverage": "UNKNOWN",
+  "bindings": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-normal-exit-watcher-20261005-001\\RESULT.json",
+      "bytes": 450,
+      "sha256": "f5252acd893fd61be22aedc136f0ebc9d691b7690389cce6cdc59ccbbf1cacad"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0006-exit-20261005\\FINAL.json",
+      "bytes": 403,
+      "sha256": "f715f6043f340f0fdc921e67eb0563863557142679f662e94f6e2fa4126172d8"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\r6-normal-exit-confirm-001.png",
+      "bytes": 1417232,
+      "sha256": "d2f442789469459a797225382d1cd45498a68033ac2050b08c675fcc25b5b754"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\r6-normal-exit-after-001.png",
+      "bytes": 454629,
+      "sha256": "72211bbd7e09b242f390b6c6f2a019c76975e67d98b65fb2da472f42102d1ee9"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\runtime-state-review-20261005-001\\REPORT.md",
+      "bytes": 4707,
+      "sha256": "dd7225d1777c8e44aa742825d78834489482d3d703c59f4c51e3021360529bf4"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\runtime-recovery-candidate-20261005-001\\static-resume-blocker.json",
+      "bytes": 2678,
+      "sha256": "f641b358dbd82bd66a944d47abe5573ce0e7179d1c93ce32b3fe4ec9395e0acc"
+    }
+  ],
+  "exit_save": {
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\userdir\\save games\\autosave_exit.ck3",
+    "preserved": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-terminal-closure-20261005-001\\exit-autosave.ck3",
+    "bytes": 90506624,
+    "sha256": "23b0c18b59cd59bbbe55f94e4bc47333de339a1076bd64a43cea102562f41bd7",
+    "route": "actual CK3 normal-exit autosave selected in GUI; no synthetic save"
+  }
+}

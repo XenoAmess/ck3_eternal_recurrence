@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 6,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue\\0006-fixture-entry-snapshot.request.json",
+  "request_sha256": "bc3d8f3d5860153f510e21dff5b736e44edf5f7489d72b0b0e5a74ab447096fd",
+  "started_at_utc": "2026-10-04T12:52:45.140967+00:00"
+}

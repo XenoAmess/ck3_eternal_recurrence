@@ -1,0 +1,46 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "schema": "codex.task_bus.v1",
+    "task_id": "ck3-lyd-live-007-20261004",
+    "state": "running",
+    "summary": "LYD-formal-R0006-isolated-live",
+    "next_step": "Fresh-offline-and-load",
+    "resources": [
+      "ck3-screen:acquired"
+    ],
+    "updated_at_utc": "2026-10-04T12:01:39.534525+00:00",
+    "pid": 20420,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "head": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+      "branch": "master",
+      "dirty_entries": 0
+    },
+    "last_sequence": 2702
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 2702,
+    "event_id": "63e40edc3e964989807a8547c27d16f7",
+    "timestamp_utc": "2026-10-04T12:01:39.535377+00:00",
+    "kind": "registered",
+    "task_id": "ck3-lyd-live-007-20261004",
+    "to": [
+      "*"
+    ],
+    "state": "running",
+    "summary": "LYD-formal-R0006-isolated-live",
+    "next_step": "Fresh-offline-and-load",
+    "resources": [
+      "ck3-screen:acquired"
+    ],
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "head": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+      "branch": "master",
+      "dirty_entries": 0
+    }
+  }
+}

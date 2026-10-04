@@ -1,0 +1,97 @@
+{
+  "schema": "lyd.r6.report-addendum-index.v2",
+  "files": [
+    {
+      "path": "evidence/current-session-concurrency-boundary.json",
+      "bytes": 726,
+      "sha256": "b3d829ce5b7710b0e9a00b1b88469e2f5046e1b89fa7c362025b43b8e56a73c4"
+    },
+    {
+      "path": "evidence/d-plus2/actual-natural-time-graph-changes.json",
+      "bytes": 363,
+      "sha256": "ebccc25c429e7c500c9a0df833c171eabf3937324b703eba8ed47528dfd27c3c"
+    },
+    {
+      "path": "evidence/d-plus2/actual-npc-court-projection.json",
+      "bytes": 1288,
+      "sha256": "1bc3d55d7bbfcf62133af0e85365d1341338250918674e6bf6f476e6c06178cc"
+    },
+    {
+      "path": "evidence/d-plus2/compact-summary.json",
+      "bytes": 83486,
+      "sha256": "8599201af092d453e965dc292a849c1d41c59a961082e9c8a35d612230f135c7"
+    },
+    {
+      "path": "evidence/d-plus2/INDEX-compact-addendum.json",
+      "bytes": 745,
+      "sha256": "79a92c1aebcc0be1f3492fcfed7d9d9af0ef7739cacb5a3b014871179aff5351"
+    },
+    {
+      "path": "evidence/d-plus2/INDEX.json",
+      "bytes": 9746,
+      "sha256": "6c930a76af85d238ec194f48151d57b52193b0ea110ebf627a212627ca7a8154"
+    },
+    {
+      "path": "evidence/d-plus2/README.md",
+      "bytes": 1296,
+      "sha256": "9ce8e65222f61767228f7b41243108237167cd9b7442360a3c600fb25de2ea76"
+    },
+    {
+      "path": "evidence/immutable-package-references.json",
+      "bytes": 897,
+      "sha256": "8d4ffcea80bf9d85f1250391809ff2045b0f6587f5ea583360e1040d739a9753"
+    },
+    {
+      "path": "evidence/local-config-and-immutable-index-probe.json",
+      "bytes": 1874,
+      "sha256": "632ea31abd997e1c31ad03f80b702b11c5313046ac2b7f4b1120b4f913b85e2f"
+    },
+    {
+      "path": "evidence/official-config-key-reference.json",
+      "bytes": 689,
+      "sha256": "0a1f5d42d3a4b4108ac73c24c4437ffe6f3aff6a2cc145acc856bf7676d1395c"
+    },
+    {
+      "path": "evidence/parent-context-note-previous.json",
+      "bytes": 2338,
+      "sha256": "4ad592732772e29547d75b433530f3a5b70728b17af9432095d139a19650af09"
+    },
+    {
+      "path": "evidence/parent-message-only-facts.json",
+      "bytes": 1769,
+      "sha256": "702518ab9b975a7c60f6280ec2980d1d74705a3f3686ae279e43b57dc859466f"
+    },
+    {
+      "path": "evidence/preparation-failure-metadata.json",
+      "bytes": 898,
+      "sha256": "9c70022e00f05ef8dc5c453a13ad071a0fd55009baf4e428a5f437b57c14f6cd"
+    },
+    {
+      "path": "evidence/previous-d-plus2-report.json",
+      "bytes": 1665,
+      "sha256": "05889089183399fc2835c04887740d71b2598aee16b38518db73a4e6b89031d6"
+    },
+    {
+      "path": "evidence/previous-d-plus2-report.md",
+      "bytes": 1687,
+      "sha256": "002ca0d81fd46277e501fe024cf651ffea50c721452cc6d860fe6ae7852f9e3e"
+    },
+    {
+      "path": "evidence/provenance.json",
+      "bytes": 3168,
+      "sha256": "f61d3b191e13d360d56b50b7da5f592ab044a3c967815f8aa3998d128c5502ae"
+    },
+    {
+      "path": "REPORT-addendum.md",
+      "bytes": 4115,
+      "sha256": "5b2fc45927a14f278840914dd8b44df8e64274dedbbfef39a40ec53c72034dfb"
+    },
+    {
+      "path": "REPORT.json",
+      "bytes": 7829,
+      "sha256": "3b2bf8ed3e4377f824e00ad9878874fda10240552104c8b7ab67560b2467b398"
+    }
+  ],
+  "indexed_file_count": 18,
+  "indexed_bytes": 124579
+}

@@ -1,0 +1,30 @@
+{
+  "observed_saved_trait_ids": [
+    69,
+    51,
+    67,
+    19,
+    31,
+    158
+  ],
+  "frozen_catalogue_order_names": [
+    "arbitrary",
+    "greedy",
+    "ambitious",
+    "education_martial_5",
+    "strategist",
+    "physique_good_2"
+  ],
+  "catalogue_game_source_sha256": "93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa",
+  "current_game_source_sha256": "93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa",
+  "catalogue_source_matches": true,
+  "script_raw_add_stress": 5,
+  "actual_saved_stress_after": "4",
+  "native_before_stress": "0",
+  "native_after_stress": "4",
+  "arbitrary_source_stress_gain_mult": "-0.5",
+  "ambitious_source_stress_gain_mult": "0.25",
+  "candidate_arithmetic": "5 * (1 - 0.5 + 0.25) = 3.75, consistent with observed integer4",
+  "inference_boundary": "Catalogue-order trait mapping agrees with Robert history. This does not prove complete modifier aggregation or the engine rounding function. Observed 4/5 ratio is not a confirmed0.8 modifier; temperate is absent from the current mapped trait set.",
+  "scope": "Exact ZhuXi practice a representative only; no 36x3 coverage claim."
+}

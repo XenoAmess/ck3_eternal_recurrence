@@ -1,0 +1,16 @@
+{
+  "phases": [
+    {
+      "scan": 66,
+      "flags": 8,
+      "accepted": 1
+    },
+    {
+      "scan": 66,
+      "flags": 10,
+      "accepted": 1
+    }
+  ],
+  "ABI_bytes": 40,
+  "business_result": "NOT_VERIFIED"
+}

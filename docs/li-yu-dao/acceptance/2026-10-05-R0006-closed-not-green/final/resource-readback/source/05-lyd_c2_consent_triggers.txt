@@ -1,0 +1,370 @@
+﻿# GENERATED FILE: edit mod_li_yu_dao/tools/school_consent_templates or tools/gen_school_consent.py.
+# Character-root eligibility. NPCs only answer a player-owned, serial-bound event.
+lyd_c2_actor_trigger = {
+    is_ai = no
+    is_alive = yes
+    is_adult = yes
+    is_landed = yes
+    has_character_flag = lyd_enabled
+    faith = { religion = religion:confucianism_religion }
+    is_imprisoned = no
+    NOT = { has_trait = incapable }
+    learning >= 15
+    lyd_member_rite_trigger = yes
+}
+lyd_c2_elector_trigger = {
+    is_alive = yes
+    is_adult = yes
+    is_imprisoned = no
+    NOT = { has_trait = incapable }
+    learning >= 15
+}
+# Rite scope. The owner expires; serial and transition history never gate once-only.
+lyd_c2_school_free_trigger = {
+    NOT = { has_variable = lyd_c2_proposal_owner }
+    NOT = { has_variable = lyd_c3_proposal_owner }
+    NOT = { has_variable = lyd_c2_transition_cooldown }
+    NOT = { has_variable = lyd_c2_retry_cooldown }
+}
+# Reception changes the incoming rite's affiliation, not this rite's. Its own
+# transition/retry cooldown cannot veto unrelated incoming schools.
+lyd_c2_receiver_free_trigger = {
+    NOT = { has_variable = lyd_c2_proposal_owner }
+    NOT = { has_variable = lyd_c3_proposal_owner }
+}
+# Faith scope. Used only to protect a multi-rite source main.
+lyd_c2_single_rite_faith_trigger = {
+    any_faith_rite = { count = 1 }
+    NOT = { any_faith_rite = { count >= 2 } }
+}
+lyd_c2_start_join_trigger = {
+    scope:actor = {
+        lyd_c2_actor_trigger = yes
+        NOT = { has_variable = lyd_c2_active }
+        rite = { lyd_c2_school_free_trigger = yes }
+        OR = {
+            NOT = { rite = faith.main_rite }
+            faith = { lyd_c2_single_rite_faith_trigger = yes }
+        }
+    }
+    scope:recipient = {
+        lyd_c2_elector_trigger = yes
+        faith = { religion = religion:confucianism_religion any_faith_rite = { count >= 1 } NOT = { any_faith_rite = { NOT = { lyd_c2_receiver_free_trigger = yes } } } }
+        faith != scope:actor.faith
+        rite = faith.main_rite
+        rite = { lyd_c2_receiver_free_trigger = yes }
+    }
+}
+lyd_c2_start_detach_trigger = {
+    lyd_c2_actor_trigger = yes
+    NOT = { has_variable = lyd_c2_active }
+    NOT = { rite = faith.main_rite }
+    rite = { lyd_c2_school_free_trigger = yes }
+}
+# Caller is the initiating character; ACTOR is an absolute Character reference.
+# Normal transfers retain equal-head rules. A sole-rite source may instead
+# retire ONLY its captured owned HoF title under the explicit signed terms.
+lyd_c2_source_retirement_trigger = {
+    var:lyd_c2_source_singleton = 1
+    var:lyd_c2_source_main = var:lyd_c2_moving_rite
+    var:lyd_c2_source_faith = { lyd_c2_single_rite_faith_trigger = yes }
+    exists = var:lyd_c2_source_head
+    exists = var:lyd_c2_source_head_title
+    var:lyd_c2_source_faith.religious_head_title = var:lyd_c2_source_head_title
+    var:lyd_c2_source_head = { is_alive = yes rite = $ACTOR$.var:lyd_c2_moving_rite }
+    var:lyd_c2_source_head_title = {
+        has_variable = lyd_c2_owned_head_title
+        var:lyd_c2_owner_faith = $ACTOR$.var:lyd_c2_source_faith
+        holder = $ACTOR$.var:lyd_c2_source_head
+    }
+    trigger_if = { limit = { var:lyd_c2_target_faith = { exists = religious_head_title } }
+        NOT = { var:lyd_c2_source_head_title = var:lyd_c2_target_faith.religious_head_title }
+    }
+}
+lyd_c2_retirement_postcondition_trigger = {
+    trigger_if = { limit = { var:lyd_c2_source_head_retired = 1 }
+        var:lyd_c2_source_head = { is_alive = yes }
+        var:lyd_c2_source_faith = { NOT = { exists = religious_head_title } }
+        trigger_if = { limit = { exists = var:lyd_c2_source_head_title }
+            var:lyd_c2_source_head_title = { NOT = { exists = holder } }
+        }
+        NOT = { any_in_list = {
+            variable = lyd_c2_protected_head_titles
+            NOT = { holder = $ACTOR$.var:lyd_c2_source_head }
+        } }
+    }
+}
+# Faith root. This is LYD's conservative equality gate for the effective main
+# rites' doctrine sets, using native global Doctrine enumeration. It does not
+# compare Tenet objects or require the two schools' core tenets to be equal.
+# Source: vanilla pam_interactions.txt:18270-18276 (any_doctrine/prev).
+lyd_c2_same_main_doctrines_trigger = {
+    exists = main_rite
+    $TARGET$ = { exists = main_rite }
+    save_temporary_scope_as = lyd_c2_native_source_faith
+    $TARGET$ = { save_temporary_scope_as = lyd_c2_native_target_faith }
+    NOT = {
+        any_doctrine = {
+            OR = {
+                AND = {
+                    scope:lyd_c2_native_source_faith.main_rite = { rite_has_doctrine = prev }
+                    scope:lyd_c2_native_target_faith.main_rite = { NOT = { rite_has_doctrine = prev } }
+                }
+                AND = {
+                    scope:lyd_c2_native_source_faith.main_rite = { NOT = { rite_has_doctrine = prev } }
+                    scope:lyd_c2_native_target_faith.main_rite = { rite_has_doctrine = prev }
+                }
+            }
+        }
+    }
+}
+lyd_c2_native_join_rules_trigger = {
+    var:lyd_c2_source_faith = {
+        religion = religion:confucianism_religion
+        lyd_c2_same_main_doctrines_trigger = { TARGET = $ACTOR$.var:lyd_c2_target_faith }
+    }
+    var:lyd_c2_target_faith = { religion = religion:confucianism_religion }
+    OR = {
+        lyd_c2_source_retirement_trigger = { ACTOR = $ACTOR$ }
+        AND = {
+            var:lyd_c2_source_faith = { NOT = { exists = religious_head } }
+            var:lyd_c2_target_faith = { NOT = { exists = religious_head } }
+        }
+        AND = {
+            var:lyd_c2_source_faith = { exists = religious_head }
+            var:lyd_c2_target_faith = { exists = religious_head }
+            var:lyd_c2_source_faith.religious_head = var:lyd_c2_target_faith.religious_head
+        }
+    }
+    var:lyd_c2_target_main = { save_temporary_scope_as = lyd_c2_native_target_main }
+    var:lyd_c2_moving_rite = { "divergence(scope:lyd_c2_native_target_main)" < 100 }
+}
+# Default closed while candidate2 is NOT_YET_LIVE_VERIFIED. Rendering can admit
+# a hash-bound root receipt of actual native observations. This never overrides
+# LYD's main-doctrine gate or CK3's head/divergence rules, and does not verify
+# this consent event flow.
+lyd_c2_native_admitted_trigger = { always = yes }
+lyd_c2_current_proposal_trigger = {
+    lyd_c2_actor_trigger = yes
+    has_variable = lyd_c2_active
+    exists = var:lyd_c2_moving_rite
+    exists = var:lyd_c2_source_faith
+    rite = var:lyd_c2_moving_rite
+    faith = var:lyd_c2_source_faith
+    var:lyd_c2_moving_rite = {
+        var:lyd_c2_proposal_owner = $ACTOR$
+        var:lyd_c2_proposal_serial = $ACTOR$.var:lyd_c2_serial
+        faith = $ACTOR$.var:lyd_c2_source_faith
+        NOT = { has_variable = lyd_c2_transition_cooldown }
+    }
+    var:lyd_c2_source_faith = { main_rite = $ACTOR$.var:lyd_c2_source_main }
+    trigger_if = { limit = { var:lyd_c2_source_singleton = 1 }
+        var:lyd_c2_source_faith = { lyd_c2_single_rite_faith_trigger = yes }
+    }
+    OR = { NOT = { rite = faith.main_rite } faith = { lyd_c2_single_rite_faith_trigger = yes } }
+    trigger_if = {
+        limit = { has_variable = lyd_c2_source_head }
+        var:lyd_c2_source_faith = { exists = religious_head }
+        var:lyd_c2_source_faith.religious_head = var:lyd_c2_source_head
+        var:lyd_c2_source_faith.religious_head_title = var:lyd_c2_source_head_title
+        NOT = { any_in_list = {
+            variable = lyd_c2_protected_head_titles
+            NOT = { holder = $ACTOR$.var:lyd_c2_source_head }
+        } }
+    }
+    trigger_else = { var:lyd_c2_source_faith = { NOT = { exists = religious_head } } }
+    trigger_if = {
+        limit = { var:lyd_c2_kind = 1 }
+        exists = var:lyd_c2_target_faith
+        exists = var:lyd_c2_target_rep
+        var:lyd_c2_target_rep = {
+            lyd_c2_elector_trigger = yes
+            rite = $ACTOR$.var:lyd_c2_target_main
+            faith = $ACTOR$.var:lyd_c2_target_faith
+        }
+        var:lyd_c2_target_faith = {
+            main_rite = $ACTOR$.var:lyd_c2_target_main
+            any_faith_rite = { count >= 1 }
+            NOT = { any_faith_rite = { NOT = { AND = { has_variable = lyd_c2_proposal_owner var:lyd_c2_proposal_owner = $ACTOR$ var:lyd_c2_lock_serial = $ACTOR$.var:lyd_c2_serial } } } }
+        }
+        var:lyd_c2_target_main = {
+            var:lyd_c2_proposal_owner = $ACTOR$
+            var:lyd_c2_lock_serial = $ACTOR$.var:lyd_c2_serial
+        }
+        trigger_if = {
+            limit = { has_variable = lyd_c2_target_head }
+            var:lyd_c2_target_faith = { exists = religious_head }
+            var:lyd_c2_target_faith.religious_head = var:lyd_c2_target_head
+        }
+        trigger_else = { var:lyd_c2_target_faith = { NOT = { exists = religious_head } } }
+    }
+}
+# Event callbacks carry immutable actor/school/serial/terms/nonce context. The
+# per-actor nonce survives reset and prevents cross-school serial collisions.
+lyd_c2_ballot_context_trigger = {
+    exists = scope:lyd_c2_actor
+    exists = scope:lyd_c2_event_school
+    scope:lyd_c2_actor = {
+        lyd_c2_current_proposal_trigger = { ACTOR = scope:lyd_c2_actor }
+        var:lyd_c2_moving_rite = scope:lyd_c2_event_school
+        var:lyd_c2_serial = scope:lyd_c2_event_serial
+        var:lyd_c2_terms_revision = scope:lyd_c2_event_terms
+        has_variable = lyd_c2_callback_nonce
+        var:lyd_c2_callback_nonce = scope:lyd_c2_event_nonce
+    }
+}
+# An initiator popup is stricter than a role-response popup. Direct decisions
+# deliberately use current-round helpers without requiring old saved scopes.
+lyd_c2_initiator_event_context_trigger = {
+    lyd_c2_ballot_context_trigger = yes
+    this = scope:lyd_c2_actor
+    is_ai = no
+}
+lyd_c2_source_ballot_trigger = {
+    lyd_c2_ballot_context_trigger = yes
+    lyd_c2_elector_trigger = yes
+    rite = scope:lyd_c2_actor.var:lyd_c2_moving_rite
+    has_variable = lyd_c2_elector_owner
+    var:lyd_c2_elector_owner = scope:lyd_c2_actor
+    var:lyd_c2_elector_serial = scope:lyd_c2_event_serial
+    rite = var:lyd_c2_elector_rite
+    NOT = {
+        AND = {
+            has_variable = lyd_c2_vote_owner
+            has_variable = lyd_c2_vote_serial
+            has_variable = lyd_c2_vote_nonce
+            var:lyd_c2_vote_owner = scope:lyd_c2_actor
+            var:lyd_c2_vote_serial = scope:lyd_c2_event_serial
+            var:lyd_c2_vote_nonce = scope:lyd_c2_event_nonce
+        }
+    }
+}
+lyd_c2_target_ballot_trigger = {
+    lyd_c2_ballot_context_trigger = yes
+    lyd_c2_elector_trigger = yes
+    faith = scope:lyd_c2_actor.var:lyd_c2_target_faith
+    has_variable = lyd_c2_elector_owner
+    var:lyd_c2_elector_owner = scope:lyd_c2_actor
+    var:lyd_c2_elector_serial = scope:lyd_c2_event_serial
+    rite = var:lyd_c2_elector_rite
+    NOT = {
+        AND = {
+            has_variable = lyd_c2_vote_owner
+            has_variable = lyd_c2_vote_serial
+            has_variable = lyd_c2_vote_nonce
+            var:lyd_c2_vote_owner = scope:lyd_c2_actor
+            var:lyd_c2_vote_serial = scope:lyd_c2_event_serial
+            var:lyd_c2_vote_nonce = scope:lyd_c2_event_nonce
+        }
+    }
+}
+lyd_c2_player_consent_trigger = {
+    lyd_c2_ballot_context_trigger = yes
+    is_ai = no
+    is_alive = yes
+    has_variable = lyd_c2_affected_owner
+    var:lyd_c2_affected_owner = scope:lyd_c2_actor
+    var:lyd_c2_affected_serial = scope:lyd_c2_event_serial
+    rite = var:lyd_c2_affected_rite
+    OR = {
+        rite = scope:lyd_c2_actor.var:lyd_c2_moving_rite
+        AND = {
+            exists = scope:lyd_c2_actor.var:lyd_c2_target_faith
+            faith = scope:lyd_c2_actor.var:lyd_c2_target_faith
+        }
+    }
+    NOT = {
+        AND = {
+            has_variable = lyd_c2_player_owner
+            has_variable = lyd_c2_player_serial
+            has_variable = lyd_c2_player_nonce
+            var:lyd_c2_player_owner = scope:lyd_c2_actor
+            var:lyd_c2_player_serial = scope:lyd_c2_event_serial
+            var:lyd_c2_player_nonce = scope:lyd_c2_event_nonce
+        }
+    }
+}
+# Rite scope. Completely empty templates are EXCLUDED, not awarded yes votes.
+lyd_c2_dormant_receiving_rite_trigger = { var:lyd_c2_target_followers = 0 rite_counties = 0 }
+lyd_c2_holder_context_trigger = {
+    lyd_c2_ballot_context_trigger = yes
+    exists = scope:lyd_c2_holder_school
+    is_alive = yes
+    is_adult = yes
+    NOT = { has_trait = incapable }
+    rite = scope:lyd_c2_holder_school
+    this = scope:lyd_c2_holder_school.head_of_rite
+    scope:lyd_c2_holder_school = {
+        faith = scope:lyd_c2_actor.var:lyd_c2_target_faith
+        var:lyd_c2_proposal_owner = scope:lyd_c2_actor
+        var:lyd_c2_lock_serial = scope:lyd_c2_event_serial
+        var:lyd_c2_target_total = 0
+        NOT = { lyd_c2_dormant_receiving_rite_trigger = yes }
+        var:lyd_c2_holder_endorsed = 0
+    }
+}
+lyd_c2_receiver_rite_quorum_trigger = {
+    has_variable = lyd_c2_proposal_owner
+    var:lyd_c2_proposal_owner = $ACTOR$
+    var:lyd_c2_lock_serial = $ACTOR$.var:lyd_c2_serial
+    OR = {
+        AND = { var:lyd_c2_target_total > 0 lyd_c2_target_quorum_value >= 0 }
+        AND = {
+            var:lyd_c2_target_total = 0
+            NOT = { lyd_c2_dormant_receiving_rite_trigger = yes }
+            exists = head_of_rite
+            head_of_rite = var:lyd_c2_endorser
+            head_of_rite = { is_alive = yes is_adult = yes NOT = { has_trait = incapable } rite = prev }
+            var:lyd_c2_holder_endorsed = 1
+            $ACTOR$ = { var:lyd_c2_player_yes = var:lyd_c2_player_total }
+        }
+    }
+}
+lyd_c2_receiving_mandates_trigger = {
+    var:lyd_c2_target_faith = {
+        any_faith_rite = { count >= 1 }
+        NOT = {
+            any_faith_rite = {
+                NOT = { lyd_c2_dormant_receiving_rite_trigger = yes }
+                NOT = { lyd_c2_receiver_rite_quorum_trigger = { ACTOR = $ACTOR$ } }
+            }
+        }
+    }
+}
+lyd_c2_source_mandate_trigger = {
+    lyd_c2_current_proposal_trigger = { ACTOR = $ACTOR$ }
+    var:lyd_c2_source_total > 0
+    lyd_c2_source_quorum_value >= 0
+    var:lyd_c2_player_yes = var:lyd_c2_player_total
+    has_variable = lyd_c2_vote_owner
+    has_variable = lyd_c2_vote_serial
+    has_variable = lyd_c2_vote_nonce
+    var:lyd_c2_vote_owner = this
+    var:lyd_c2_vote_serial = var:lyd_c2_serial
+    var:lyd_c2_vote_nonce = var:lyd_c2_callback_nonce
+    var:lyd_c2_vote_yes = 1
+}
+lyd_c2_ready_to_confirm_trigger = {
+    lyd_c2_source_mandate_trigger = { ACTOR = $ACTOR$ }
+    var:lyd_c2_source_signed = 1
+    var:lyd_c2_snapshot_valid = 1
+    lyd_c2_native_admitted_trigger = yes
+    trigger_if = {
+        limit = { var:lyd_c2_kind = 1 }
+        lyd_c2_receiving_mandates_trigger = { ACTOR = $ACTOR$ }
+        var:lyd_c2_target_signed = 1
+        lyd_c2_native_join_rules_trigger = { ACTOR = $ACTOR$ }
+        trigger_if = { limit = { has_variable = lyd_c2_target_head } var:lyd_c2_target_head_yes = 1 }
+        gold >= 300
+        piety >= 1500
+    }
+    trigger_else = {
+        NOT = { var:lyd_c2_moving_rite = var:lyd_c2_source_faith.main_rite }
+        var:lyd_c2_moving_rite = { OR = {
+            rite_has_doctrine = doctrine_no_head
+            rite_has_doctrine = doctrine_temporal_head
+        } }
+        gold >= 200
+        piety >= 1000
+    }
+}

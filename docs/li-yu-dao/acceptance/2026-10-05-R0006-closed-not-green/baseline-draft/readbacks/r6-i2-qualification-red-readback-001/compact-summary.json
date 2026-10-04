@@ -1,0 +1,1373 @@
+{
+  "schema": "lyd.r6-independent-saved-state-comparison.v1",
+  "scenario": "i2-qualification-red",
+  "result": "RED_QUALIFICATION_POSTCONDITION",
+  "safeguards_result": "PASS",
+  "qualification_checks": [
+    {
+      "name": "same-effect measured total Learning reaches15",
+      "actual": "8",
+      "expected": "15",
+      "passed": false
+    },
+    {
+      "name": "actual added base matches stored intended delta",
+      "actual": "7",
+      "expected": "7",
+      "passed": true
+    }
+  ],
+  "artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\a7107cc1c3e2f0bd947d9ead8346967f80ae8247471595792769aa6989d782e5\\xar_checkpoint.ck3",
+    "bytes": 91302021,
+    "sha256": "a7107cc1c3e2f0bd947d9ead8346967f80ae8247471595792769aa6989d782e5"
+  },
+  "sdk_sha256": "d76d691cbc557e48482cb2ef6ece524b752f1f9856895bd3d5897fb235f87d32",
+  "wrapper_sha256": "f910e55f2777c0dc5fbbbba2da462e009d5c72aa742956c0947f85bc29ec1391",
+  "baseline_artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c\\xar_checkpoint.ck3",
+    "bytes": 91301141,
+    "sha256": "5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c"
+  },
+  "baseline_report_sha256": "6e1356414a17066f63d3e31777f685f7d1c142b099432206227dd6f9ea93034e",
+  "actual_faith": {
+    "id": "32",
+    "faith_type": "lyd_common_faith",
+    "name": "儒家共宗",
+    "main_rite": "150",
+    "main_rite_type": "lyd_rite_kongmen",
+    "rite_count": 36,
+    "religious_head": "4294967295"
+  },
+  "actual_rite": {
+    "id": "169",
+    "rite_type": "lyd_rite_zhuxi",
+    "name": "朱子之学",
+    "faith": "32",
+    "head_of_rite": "4294967295"
+  },
+  "actor_lyd_variables": {
+    "lyd_enabled": {
+      "present": true,
+      "tick": null,
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_enabled"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_r3_fixture_initialized": {
+      "present": true,
+      "tick": null,
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r3_fixture_initialized"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_r4_learning_before": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "800000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "800000"
+        }
+      ],
+      "number": "8",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_learning_before"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "800000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_learning_delta": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "700000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "700000"
+        }
+      ],
+      "number": "7",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_learning_delta"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "700000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_qualification_gold_before": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "22900000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "22900000"
+        }
+      ],
+      "number": "229",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_qualification_gold_before"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "22900000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_qualification_piety_before": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "18500000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "18500000"
+        }
+      ],
+      "number": "185",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_qualification_piety_before"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "18500000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_learning_after": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "800000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "800000"
+        }
+      ],
+      "number": "8",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_learning_after"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "800000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_school_cooldown": {
+      "present": true,
+      "tick": "365",
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_school_cooldown"
+        },
+        {
+          "key": "tick",
+          "value": "365"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_study_cooldown": {
+      "present": true,
+      "tick": "180",
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_study_cooldown"
+        },
+        {
+          "key": "tick",
+          "value": "180"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    }
+  },
+  "saved_resources": {
+    "gold": "229",
+    "piety": "185",
+    "prestige": "2200",
+    "stress": "4",
+    "learning_lifestyle_xp": "40"
+  },
+  "native_resources": {
+    "gold": "229",
+    "piety": "185",
+    "prestige": "2200",
+    "stress": "4",
+    "learning_lifestyle_xp": null
+  },
+  "saved_stress_boundary": "Absent saved stress is null, not inferred zero; native stress independently preserved.",
+  "scope": "Overall RED: qualified is the requested checkpoint name, not an achieved qualification. Base Learning actually increased7; same-effect learning_after getter persisted8 and the intended15 postcondition failed. No current-total-learning or later setup/consensus/migration pass inferred.",
+  "game_called": false,
+  "tracked_written": false,
+  "full_report": {
+    "path": "comparison-report.json",
+    "bytes": 12216246,
+    "sha256": "b443748463478dcdf74bf08434606f02b5a501e3159d3f3b517d5e4ab1f11f07"
+  },
+  "original_index": {
+    "path": "INDEX.json",
+    "sha256": "53002667707b3a436fba02288daaa87ef7c8aeaacb8b58135ef3566d2e26868a"
+  },
+  "family_character_count": 9,
+  "protected_title_count": 7,
+  "checks": [
+    {
+      "name": "current actor unchanged from R6 baseline",
+      "actual": "31254",
+      "expected": "31254",
+      "passed": true
+    },
+    {
+      "name": "history identity still ordinary Robert",
+      "actual": [
+        "1128"
+      ],
+      "expected": [
+        "1128"
+      ],
+      "passed": true
+    },
+    {
+      "name": "local current player unchanged",
+      "actual": [
+        "31254"
+      ],
+      "expected": [
+        "31254"
+      ],
+      "passed": true
+    },
+    {
+      "name": "checkpoint date unchanged",
+      "actual": "1066.9.15",
+      "expected": "1066.9.15",
+      "passed": true
+    },
+    {
+      "name": "actual target rite type",
+      "actual": "lyd_rite_zhuxi",
+      "expected": "lyd_rite_zhuxi",
+      "passed": true
+    },
+    {
+      "name": "actual target faith type",
+      "actual": "lyd_common_faith",
+      "expected": "lyd_common_faith",
+      "passed": true
+    },
+    {
+      "name": "common faith main rite unchanged",
+      "actual": "150",
+      "expected": "150",
+      "passed": true
+    },
+    {
+      "name": "main rite parent resolves actual faith",
+      "actual": "32",
+      "expected": "32",
+      "passed": true
+    },
+    {
+      "name": "entry fixture flag present",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "lyd_c3_personal_teacher absent",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "actor family records unchanged",
+      "actual": [
+        {
+          "key": "primary_spouse",
+          "value": "36311"
+        },
+        {
+          "key": "spouse",
+          "value": "36311"
+        },
+        {
+          "key": "former_spouses",
+          "value": [
+            {
+              "key": null,
+              "value": "34968"
+            }
+          ]
+        },
+        {
+          "key": "child",
+          "value": [
+            {
+              "key": null,
+              "value": "38924"
+            },
+            {
+              "key": null,
+              "value": "39348"
+            },
+            {
+              "key": null,
+              "value": "39979"
+            },
+            {
+              "key": null,
+              "value": "40526"
+            },
+            {
+              "key": null,
+              "value": "40695"
+            },
+            {
+              "key": null,
+              "value": "40847"
+            },
+            {
+              "key": null,
+              "value": "41032"
+            }
+          ]
+        }
+      ],
+      "expected": [
+        {
+          "key": "primary_spouse",
+          "value": "36311"
+        },
+        {
+          "key": "spouse",
+          "value": "36311"
+        },
+        {
+          "key": "former_spouses",
+          "value": [
+            {
+              "key": null,
+              "value": "34968"
+            }
+          ]
+        },
+        {
+          "key": "child",
+          "value": [
+            {
+              "key": null,
+              "value": "38924"
+            },
+            {
+              "key": null,
+              "value": "39348"
+            },
+            {
+              "key": null,
+              "value": "39979"
+            },
+            {
+              "key": null,
+              "value": "40526"
+            },
+            {
+              "key": null,
+              "value": "40695"
+            },
+            {
+              "key": null,
+              "value": "40847"
+            },
+            {
+              "key": null,
+              "value": "41032"
+            }
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "all spouse/former-spouse/children saved identity rite family and political records unchanged",
+      "actual": {
+        "full_report_pointer": "/checks/11/actual",
+        "canonical_json_bytes": 2247,
+        "canonical_json_sha256": "e4077d084cda629d64819bbf6150e81d1802238b735893e22938336b15d3aeea"
+      },
+      "expected": {
+        "full_report_pointer": "/checks/11/expected",
+        "canonical_json_bytes": 2247,
+        "canonical_json_sha256": "e4077d084cda629d64819bbf6150e81d1802238b735893e22938336b15d3aeea"
+      },
+      "passed": true
+    },
+    {
+      "name": "all actor and family held-title assignments/lieges unchanged",
+      "actual": {
+        "2230": {
+          "id": "2230",
+          "key": "d_apulia",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2189"
+        },
+        "2231": {
+          "id": "2231",
+          "key": "c_apulia",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2230"
+        },
+        "2232": {
+          "id": "2232",
+          "key": "b_trani",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2231"
+        },
+        "2235": {
+          "id": "2235",
+          "key": "b_acerenza",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2231"
+        },
+        "2262": {
+          "id": "2262",
+          "key": "c_rossano",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2253"
+        },
+        "2263": {
+          "id": "2263",
+          "key": "b_rossano",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2262"
+        },
+        "2264": {
+          "id": "2264",
+          "key": "b_cotrone",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2262"
+        }
+      },
+      "expected": {
+        "2230": {
+          "id": "2230",
+          "key": "d_apulia",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2189"
+        },
+        "2231": {
+          "id": "2231",
+          "key": "c_apulia",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2230"
+        },
+        "2232": {
+          "id": "2232",
+          "key": "b_trani",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2231"
+        },
+        "2235": {
+          "id": "2235",
+          "key": "b_acerenza",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2231"
+        },
+        "2262": {
+          "id": "2262",
+          "key": "c_rossano",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2253"
+        },
+        "2263": {
+          "id": "2263",
+          "key": "b_rossano",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2262"
+        },
+        "2264": {
+          "id": "2264",
+          "key": "b_cotrone",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2262"
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "actor held-title ids unchanged",
+      "actual": [
+        "2230",
+        "2231",
+        "2232",
+        "2235",
+        "2262",
+        "2263",
+        "2264"
+      ],
+      "expected": [
+        "2230",
+        "2231",
+        "2232",
+        "2235",
+        "2262",
+        "2263",
+        "2264"
+      ],
+      "passed": true
+    },
+    {
+      "name": "actor saved landed_data unchanged",
+      "actual": {
+        "full_report_pointer": "/checks/14/actual",
+        "canonical_json_bytes": 3207,
+        "canonical_json_sha256": "164bfa5119b7a67da56e21a22b4820be14587f0be1e65085ef58da81fd3d278a"
+      },
+      "expected": {
+        "full_report_pointer": "/checks/14/expected",
+        "canonical_json_bytes": 3207,
+        "canonical_json_sha256": "164bfa5119b7a67da56e21a22b4820be14587f0be1e65085ef58da81fd3d278a"
+      },
+      "passed": true
+    },
+    {
+      "name": "saved gold unchanged",
+      "actual": "229",
+      "expected": "229",
+      "passed": true
+    },
+    {
+      "name": "saved piety unchanged",
+      "actual": "185",
+      "expected": "185",
+      "passed": true
+    },
+    {
+      "name": "saved prestige unchanged",
+      "actual": "2200",
+      "expected": "2200",
+      "passed": true
+    },
+    {
+      "name": "saved learning_lifestyle_xp unchanged",
+      "actual": "40",
+      "expected": "40",
+      "passed": true
+    },
+    {
+      "name": "native gold unchanged",
+      "actual": "229",
+      "expected": "229",
+      "passed": true
+    },
+    {
+      "name": "native piety unchanged",
+      "actual": "185",
+      "expected": "185",
+      "passed": true
+    },
+    {
+      "name": "native prestige unchanged",
+      "actual": "2200",
+      "expected": "2200",
+      "passed": true
+    },
+    {
+      "name": "native stress unchanged",
+      "actual": "4",
+      "expected": "4",
+      "passed": true
+    },
+    {
+      "name": "saved/native gold independent agreement",
+      "actual": "229",
+      "expected": "229",
+      "passed": true
+    },
+    {
+      "name": "saved/native piety independent agreement",
+      "actual": "185",
+      "expected": "185",
+      "passed": true
+    },
+    {
+      "name": "saved/native prestige independent agreement",
+      "actual": "2200",
+      "expected": "2200",
+      "passed": true
+    },
+    {
+      "name": "36 catalogue rite keys still loaded",
+      "actual": 36,
+      "expected": 36,
+      "passed": true
+    },
+    {
+      "name": "faith head-title remains absent",
+      "actual": "4294967295",
+      "expected": "4294967295",
+      "passed": true
+    },
+    {
+      "name": "no owned LYD head/claim titles created",
+      "actual": {},
+      "expected": {},
+      "passed": true
+    },
+    {
+      "name": "all living character identity keys unchanged",
+      "actual": {
+        "full_report_pointer": "/checks/29/actual",
+        "canonical_json_bytes": 284585,
+        "canonical_json_sha256": "5978460e78b1325d35cfc9c407fc199d2e9001e3879548bec6f4bce5a5641f8b"
+      },
+      "expected": {
+        "full_report_pointer": "/checks/29/expected",
+        "canonical_json_bytes": 284585,
+        "canonical_json_sha256": "5978460e78b1325d35cfc9c407fc199d2e9001e3879548bec6f4bce5a5641f8b"
+      },
+      "passed": true
+    },
+    {
+      "name": "all living rite map scenario difference",
+      "actual": [],
+      "expected": [],
+      "passed": true
+    },
+    {
+      "name": "complete actor LYD flag key set",
+      "actual": [
+        "lyd_enabled",
+        "lyd_r3_fixture_initialized",
+        "lyd_r4_learning_after",
+        "lyd_r4_learning_before",
+        "lyd_r4_learning_delta",
+        "lyd_r4_qualification_gold_before",
+        "lyd_r4_qualification_piety_before",
+        "lyd_school_cooldown",
+        "lyd_study_cooldown"
+      ],
+      "expected": [
+        "lyd_enabled",
+        "lyd_r3_fixture_initialized",
+        "lyd_r4_learning_after",
+        "lyd_r4_learning_before",
+        "lyd_r4_learning_delta",
+        "lyd_r4_qualification_gold_before",
+        "lyd_r4_qualification_piety_before",
+        "lyd_school_cooldown",
+        "lyd_study_cooldown"
+      ],
+      "passed": true
+    },
+    {
+      "name": "wallets match immediate practice a baseline",
+      "actual": {
+        "gold": "229",
+        "piety": "185",
+        "prestige": "2200",
+        "stress": "4",
+        "learning_lifestyle_xp": "40"
+      },
+      "expected": {
+        "gold": "229",
+        "piety": "185",
+        "prestige": "2200",
+        "stress": "4",
+        "learning_lifestyle_xp": "40"
+      },
+      "passed": true
+    },
+    {
+      "name": "formal family records match initial R6 baseline",
+      "actual": [
+        {
+          "key": "primary_spouse",
+          "value": "36311"
+        },
+        {
+          "key": "spouse",
+          "value": "36311"
+        },
+        {
+          "key": "former_spouses",
+          "value": [
+            {
+              "key": null,
+              "value": "34968"
+            }
+          ]
+        },
+        {
+          "key": "child",
+          "value": [
+            {
+              "key": null,
+              "value": "38924"
+            },
+            {
+              "key": null,
+              "value": "39348"
+            },
+            {
+              "key": null,
+              "value": "39979"
+            },
+            {
+              "key": null,
+              "value": "40526"
+            },
+            {
+              "key": null,
+              "value": "40695"
+            },
+            {
+              "key": null,
+              "value": "40847"
+            },
+            {
+              "key": null,
+              "value": "41032"
+            }
+          ]
+        }
+      ],
+      "expected": [
+        {
+          "key": "primary_spouse",
+          "value": "36311"
+        },
+        {
+          "key": "spouse",
+          "value": "36311"
+        },
+        {
+          "key": "former_spouses",
+          "value": [
+            {
+              "key": null,
+              "value": "34968"
+            }
+          ]
+        },
+        {
+          "key": "child",
+          "value": [
+            {
+              "key": null,
+              "value": "38924"
+            },
+            {
+              "key": null,
+              "value": "39348"
+            },
+            {
+              "key": null,
+              "value": "39979"
+            },
+            {
+              "key": null,
+              "value": "40526"
+            },
+            {
+              "key": null,
+              "value": "40695"
+            },
+            {
+              "key": null,
+              "value": "40847"
+            },
+            {
+              "key": null,
+              "value": "41032"
+            }
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "formal actor titles match initial R6 baseline",
+      "actual": [
+        "2230",
+        "2231",
+        "2232",
+        "2235",
+        "2262",
+        "2263",
+        "2264"
+      ],
+      "expected": [
+        "2230",
+        "2231",
+        "2232",
+        "2235",
+        "2262",
+        "2263",
+        "2264"
+      ],
+      "passed": true
+    },
+    {
+      "name": "LYD formally enabled",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "entered common faith has all 36 actual rites",
+      "actual": 36,
+      "expected": 36,
+      "passed": true
+    },
+    {
+      "name": "entered common faith main rite type",
+      "actual": "lyd_rite_kongmen",
+      "expected": "lyd_rite_kongmen",
+      "passed": true
+    },
+    {
+      "name": "all actual common faith rite types are LYD catalogue",
+      "actual": [
+        "lyd_rite_changzhou",
+        "lyd_rite_chengbrothers",
+        "lyd_rite_chenxianzhang",
+        "lyd_rite_donglin",
+        "lyd_rite_dongzhongshu",
+        "lyd_rite_guoxiang",
+        "lyd_rite_guwen",
+        "lyd_rite_hanyu",
+        "lyd_rite_huxiang",
+        "lyd_rite_jiangyou",
+        "lyd_rite_jingshi",
+        "lyd_rite_jingshu",
+        "lyd_rite_kongmen",
+        "lyd_rite_liao",
+        "lyd_rite_liuzongzhou",
+        "lyd_rite_lujiuyuan",
+        "lyd_rite_mengzi",
+        "lyd_rite_qianjia",
+        "lyd_rite_shaoyong",
+        "lyd_rite_sushi",
+        "lyd_rite_taizhou",
+        "lyd_rite_wanganshi",
+        "lyd_rite_wangbi",
+        "lyd_rite_wangfuzhi",
+        "lyd_rite_wangsu",
+        "lyd_rite_wangyangming",
+        "lyd_rite_wucheng",
+        "lyd_rite_xunzi",
+        "lyd_rite_yanli",
+        "lyd_rite_yongjia",
+        "lyd_rite_yongkang",
+        "lyd_rite_zhangzai",
+        "lyd_rite_zhanruoshui",
+        "lyd_rite_zhengxuan",
+        "lyd_rite_zhoudunyi",
+        "lyd_rite_zhuxi"
+      ],
+      "expected": [
+        "lyd_rite_changzhou",
+        "lyd_rite_chengbrothers",
+        "lyd_rite_chenxianzhang",
+        "lyd_rite_donglin",
+        "lyd_rite_dongzhongshu",
+        "lyd_rite_guoxiang",
+        "lyd_rite_guwen",
+        "lyd_rite_hanyu",
+        "lyd_rite_huxiang",
+        "lyd_rite_jiangyou",
+        "lyd_rite_jingshi",
+        "lyd_rite_jingshu",
+        "lyd_rite_kongmen",
+        "lyd_rite_liao",
+        "lyd_rite_liuzongzhou",
+        "lyd_rite_lujiuyuan",
+        "lyd_rite_mengzi",
+        "lyd_rite_qianjia",
+        "lyd_rite_shaoyong",
+        "lyd_rite_sushi",
+        "lyd_rite_taizhou",
+        "lyd_rite_wanganshi",
+        "lyd_rite_wangbi",
+        "lyd_rite_wangfuzhi",
+        "lyd_rite_wangsu",
+        "lyd_rite_wangyangming",
+        "lyd_rite_wucheng",
+        "lyd_rite_xunzi",
+        "lyd_rite_yanli",
+        "lyd_rite_yongjia",
+        "lyd_rite_yongkang",
+        "lyd_rite_zhangzai",
+        "lyd_rite_zhanruoshui",
+        "lyd_rite_zhengxuan",
+        "lyd_rite_zhoudunyi",
+        "lyd_rite_zhuxi"
+      ],
+      "passed": true
+    },
+    {
+      "name": "no actual native head_of_rite for common main",
+      "actual": "4294967295",
+      "expected": "4294967295",
+      "passed": true
+    },
+    {
+      "name": "learning before typed variable actual8",
+      "actual": "8",
+      "expected": "8",
+      "passed": true
+    },
+    {
+      "name": "computed delta typed variable actual7 not0",
+      "actual": "7",
+      "expected": "7",
+      "passed": true
+    },
+    {
+      "name": "same effect learning_after getter actual8",
+      "actual": "8",
+      "expected": "8",
+      "passed": true
+    },
+    {
+      "name": "actual base Learning before setter7",
+      "actual": "7",
+      "expected": "7",
+      "passed": true
+    },
+    {
+      "name": "actual base Learning after setter14",
+      "actual": "14",
+      "expected": "14",
+      "passed": true
+    },
+    {
+      "name": "actual saved base Learning increase7",
+      "actual": "7",
+      "expected": "7",
+      "passed": true
+    },
+    {
+      "name": "saved qualification wallet before records match actual prior wallet",
+      "actual": [
+        "229",
+        "185"
+      ],
+      "expected": [
+        "229",
+        "185"
+      ],
+      "passed": true
+    },
+    {
+      "name": "study cooldown from representative practice remains180",
+      "actual": "180",
+      "expected": "180",
+      "passed": true
+    },
+    {
+      "name": "current actual pending native event instance7 retained at save",
+      "actual": 7,
+      "expected": 7,
+      "passed": true
+    },
+    {
+      "name": "school cooldown remains actual saved tick 365",
+      "actual": "365",
+      "expected": "365",
+      "passed": true
+    },
+    {
+      "name": "actor actual rite unchanged",
+      "actual": "169",
+      "expected": "169",
+      "passed": true
+    },
+    {
+      "name": "actor actual faith unchanged",
+      "actual": "32",
+      "expected": "32",
+      "passed": true
+    },
+    {
+      "name": "existing LYD typed variables unchanged",
+      "actual": {
+        "lyd_enabled": {
+          "present": true,
+          "tick": null,
+          "type": null,
+          "identity": null,
+          "entries": [],
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_enabled"
+            },
+            {
+              "key": "data",
+              "value": []
+            }
+          ]
+        },
+        "lyd_r3_fixture_initialized": {
+          "present": true,
+          "tick": null,
+          "type": null,
+          "identity": null,
+          "entries": [],
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_r3_fixture_initialized"
+            },
+            {
+              "key": "data",
+              "value": []
+            }
+          ]
+        },
+        "lyd_school_cooldown": {
+          "present": true,
+          "tick": "365",
+          "type": null,
+          "identity": null,
+          "entries": [],
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_school_cooldown"
+            },
+            {
+              "key": "tick",
+              "value": "365"
+            },
+            {
+              "key": "data",
+              "value": []
+            }
+          ]
+        },
+        "lyd_study_cooldown": {
+          "present": true,
+          "tick": "180",
+          "type": null,
+          "identity": null,
+          "entries": [],
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_study_cooldown"
+            },
+            {
+              "key": "tick",
+              "value": "180"
+            },
+            {
+              "key": "data",
+              "value": []
+            }
+          ]
+        }
+      },
+      "expected": {
+        "lyd_enabled": {
+          "present": true,
+          "tick": null,
+          "type": null,
+          "identity": null,
+          "entries": [],
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_enabled"
+            },
+            {
+              "key": "data",
+              "value": []
+            }
+          ]
+        },
+        "lyd_r3_fixture_initialized": {
+          "present": true,
+          "tick": null,
+          "type": null,
+          "identity": null,
+          "entries": [],
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_r3_fixture_initialized"
+            },
+            {
+              "key": "data",
+              "value": []
+            }
+          ]
+        },
+        "lyd_school_cooldown": {
+          "present": true,
+          "tick": "365",
+          "type": null,
+          "identity": null,
+          "entries": [],
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_school_cooldown"
+            },
+            {
+              "key": "tick",
+              "value": "365"
+            },
+            {
+              "key": "data",
+              "value": []
+            }
+          ]
+        },
+        "lyd_study_cooldown": {
+          "present": true,
+          "tick": "180",
+          "type": null,
+          "identity": null,
+          "entries": [],
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_study_cooldown"
+            },
+            {
+              "key": "tick",
+              "value": "180"
+            },
+            {
+              "key": "data",
+              "value": []
+            }
+          ]
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "complete actor saved LYD named lists unchanged including durations",
+      "actual": {},
+      "expected": {},
+      "passed": true
+    },
+    {
+      "name": "all saved Rite graphs unchanged",
+      "actual": {
+        "full_report_pointer": "/checks/54/actual",
+        "canonical_json_bytes": 1505408,
+        "canonical_json_sha256": "d81222b25d6c939fdb8b09823d917a71c8b1815e692864cf787c78b6858f9990"
+      },
+      "expected": {
+        "full_report_pointer": "/checks/54/expected",
+        "canonical_json_bytes": 1505408,
+        "canonical_json_sha256": "d81222b25d6c939fdb8b09823d917a71c8b1815e692864cf787c78b6858f9990"
+      },
+      "passed": true
+    },
+    {
+      "name": "all saved Faith graphs unchanged",
+      "actual": {
+        "full_report_pointer": "/checks/55/actual",
+        "canonical_json_bytes": 553322,
+        "canonical_json_sha256": "2f458a3411aeeaea16250e035109a000053687beaa720d9070ac32b0fc57f3d0"
+      },
+      "expected": {
+        "full_report_pointer": "/checks/55/expected",
+        "canonical_json_bytes": 553322,
+        "canonical_json_sha256": "2f458a3411aeeaea16250e035109a000053687beaa720d9070ac32b0fc57f3d0"
+      },
+      "passed": true
+    },
+    {
+      "name": "all owned head and claimant titles unchanged",
+      "actual": {},
+      "expected": {},
+      "passed": true
+    },
+    {
+      "name": "other base skill fields unchanged",
+      "actual": [
+        "4",
+        "9",
+        "6",
+        "6",
+        "6"
+      ],
+      "expected": [
+        "4",
+        "9",
+        "6",
+        "6",
+        "6"
+      ],
+      "passed": true
+    },
+    {
+      "name": "actor saved playable records unchanged",
+      "actual": {
+        "full_report_pointer": "/checks/58/actual",
+        "canonical_json_bytes": 8684,
+        "canonical_json_sha256": "1fae7dd6a45470f2dc883e6532ad533bbf059c8df85ca1fcec2bc608b7b7ef29"
+      },
+      "expected": {
+        "full_report_pointer": "/checks/58/expected",
+        "canonical_json_bytes": 8684,
+        "canonical_json_sha256": "1fae7dd6a45470f2dc883e6532ad533bbf059c8df85ca1fcec2bc608b7b7ef29"
+      },
+      "passed": true
+    },
+    {
+      "name": "cancel baseline is immediately preceding ZhuXi choice artifact",
+      "actual": "5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c",
+      "expected": "5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c",
+      "passed": true
+    }
+  ]
+}

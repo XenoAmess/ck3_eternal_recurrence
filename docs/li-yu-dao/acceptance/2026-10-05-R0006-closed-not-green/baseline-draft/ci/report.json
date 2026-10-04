@@ -1,0 +1,100 @@
+{
+  "schema": "lyd.exact-head-ci-readonly.report.v1",
+  "generated_utc": "2026-10-04T12:08:41.081144+00:00",
+  "repository": "XenoAmess/ck3_eternal_recurrence",
+  "commit": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+  "product_tree": "2e290b9b7fca02c38a33e4c73f5c46e7060dc9fa",
+  "result": "PASS_TWO_REQUIRED_EXACT_HEAD_RUNS_AND_JOBS",
+  "required_workflows": [
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "run_id": 37200670917,
+      "name": "Official Runner CI",
+      "head_sha": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37200670917",
+      "run_attempt": 1,
+      "event": "push",
+      "first_status": "in_progress",
+      "first_conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-04T12:01:07Z",
+      "updated_at": "2026-10-04T12:04:52Z",
+      "jobs": [
+        {
+          "id": 111431527422,
+          "name": "static",
+          "head_sha": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+          "run_attempt": 1,
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37200670917/job/111431527422",
+          "started_at": "2026-10-04T12:01:09Z",
+          "completed_at": "2026-10-04T12:04:51Z",
+          "step_outcomes": {
+            "success": 60,
+            "skipped": 20
+          },
+          "skipped_steps": [
+            "Verify ZhongGuo 361 release localization audit",
+            "Build manual release candidate",
+            "Build manual Vivhite release candidate",
+            "Build manual Ox Here release candidate",
+            "Build manual Mandala Purge release candidate",
+            "Build manual Tributary Expansion Directives release candidate",
+            "Build manual Celestial Commerce and Corruption release candidate",
+            "Build manual Auto Upgrade Buildings release candidate",
+            "Build manual Reclaim the Motherland release candidate",
+            "Build manual ZhongGuo 361 release candidate",
+            "Build tagged release candidate",
+            "Build tagged Vivhite release candidate",
+            "Build tagged Ox Here release candidate",
+            "Build tagged Mandala Purge release candidate",
+            "Build tagged Tributary Expansion Directives release candidate",
+            "Build tagged Celestial Commerce and Corruption release candidate",
+            "Build tagged Auto Upgrade Buildings release candidate",
+            "Build tagged Reclaim the Motherland release candidate",
+            "Build tagged ZhongGuo 361 release candidate",
+            "Upload release candidate"
+          ]
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/li-yu-dao-static.yml",
+      "run_id": 37200670823,
+      "name": "Li Yu Dao static checks",
+      "head_sha": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37200670823",
+      "run_attempt": 1,
+      "event": "push",
+      "first_status": "completed",
+      "first_conclusion": "success",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-04T12:01:07Z",
+      "updated_at": "2026-10-04T12:01:40Z",
+      "jobs": [
+        {
+          "id": 111431526874,
+          "name": "static",
+          "head_sha": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+          "run_attempt": 1,
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37200670823/job/111431526874",
+          "started_at": "2026-10-04T12:01:09Z",
+          "completed_at": "2026-10-04T12:01:39Z",
+          "step_outcomes": {
+            "success": 9
+          },
+          "skipped_steps": []
+        }
+      ]
+    }
+  ],
+  "mutating_github_operations": [],
+  "clean_checkout_observed": true,
+  "scope": "Static official GitHub Windows runner checks only. No CK3 campaign, save-state, desktop, MCP or R6 acceptance credit.",
+  "payload_boundary": "Full connector envelopes and exact UTF-8 structured-content strings preserved. No HTTP transport/header/wire-byte claim."
+}

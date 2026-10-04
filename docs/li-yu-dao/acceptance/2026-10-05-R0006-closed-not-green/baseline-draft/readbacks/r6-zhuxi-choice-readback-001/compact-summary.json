@@ -1,0 +1,976 @@
+{
+  "schema": "lyd.r6-independent-saved-state-comparison.v1",
+  "scenario": "zhuxi-choice",
+  "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+  "artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\95e7babc5c2c15d93cac491c87dd9e3e77e24bf3323c0c7006f9e570c95e0959\\xar_checkpoint.ck3",
+    "bytes": 91301037,
+    "sha256": "95e7babc5c2c15d93cac491c87dd9e3e77e24bf3323c0c7006f9e570c95e0959"
+  },
+  "sdk_sha256": "bc001d3da4664cd0c89deaa84c3ecb78fbd92aaffe7c8437478a46e731706f29",
+  "wrapper_sha256": "9fb53b2ca27ec97439962f21166103312454a12359b73b462bf7771f5d59d1f1",
+  "baseline_artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\6017a24dfbf68405fcae89ca9f572ef2443bf4627540a61f46673320703c2f7e\\xar_checkpoint.ck3",
+    "bytes": 91299581,
+    "sha256": "6017a24dfbf68405fcae89ca9f572ef2443bf4627540a61f46673320703c2f7e"
+  },
+  "baseline_report_sha256": "0c60b3fd37557ee98d0a2bb9f1bfe56a75b8749f734a6d764f8f000f883428e9",
+  "actual_faith": {
+    "id": "32",
+    "faith_type": "lyd_common_faith",
+    "name": "儒家共宗",
+    "main_rite": "150",
+    "main_rite_type": "lyd_rite_kongmen",
+    "rite_count": 36,
+    "religious_head": "4294967295"
+  },
+  "actual_rite": {
+    "id": "169",
+    "rite_type": "lyd_rite_zhuxi",
+    "name": "朱子之学",
+    "faith": "32",
+    "head_of_rite": "4294967295"
+  },
+  "actor_lyd_variables": {
+    "lyd_enabled": {
+      "present": true,
+      "tick": null,
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_enabled"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_r3_fixture_initialized": {
+      "present": true,
+      "tick": null,
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r3_fixture_initialized"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_school_cooldown": {
+      "present": true,
+      "tick": "365",
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_school_cooldown"
+        },
+        {
+          "key": "tick",
+          "value": "365"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    }
+  },
+  "saved_resources": {
+    "gold": "244",
+    "piety": "150",
+    "prestige": "2200",
+    "stress": null,
+    "learning_lifestyle_xp": "0"
+  },
+  "native_resources": {
+    "gold": "244",
+    "piety": "150",
+    "prestige": "2200",
+    "stress": "0",
+    "learning_lifestyle_xp": null
+  },
+  "saved_stress_boundary": "Absent saved stress is null, not inferred zero; native stress independently preserved.",
+  "scope": "Only this exact saved scenario; original conversion is fixture precondition, not formal entry. No teacher/selection/consent/migration/leadership/general native acceptance inferred.",
+  "game_called": false,
+  "tracked_written": false,
+  "full_report": {
+    "path": "comparison-report.json",
+    "bytes": 12169829,
+    "sha256": "444a19a5f6000fa3684d090ae5d0511df9caa80b552a4f14832d951c452cd73d"
+  },
+  "original_index": {
+    "path": "INDEX.json",
+    "sha256": "9f8abdb3b130d45ffa03308bd2f5748533228848c000c3f799b8e2090736ec0a"
+  },
+  "family_character_count": 9,
+  "protected_title_count": 7,
+  "checks": [
+    {
+      "name": "current actor unchanged from R6 baseline",
+      "actual": "31254",
+      "expected": "31254",
+      "passed": true
+    },
+    {
+      "name": "history identity still ordinary Robert",
+      "actual": [
+        "1128"
+      ],
+      "expected": [
+        "1128"
+      ],
+      "passed": true
+    },
+    {
+      "name": "local current player unchanged",
+      "actual": [
+        "31254"
+      ],
+      "expected": [
+        "31254"
+      ],
+      "passed": true
+    },
+    {
+      "name": "checkpoint date unchanged",
+      "actual": "1066.9.15",
+      "expected": "1066.9.15",
+      "passed": true
+    },
+    {
+      "name": "actual target rite type",
+      "actual": "lyd_rite_zhuxi",
+      "expected": "lyd_rite_zhuxi",
+      "passed": true
+    },
+    {
+      "name": "actual target faith type",
+      "actual": "lyd_common_faith",
+      "expected": "lyd_common_faith",
+      "passed": true
+    },
+    {
+      "name": "main rite unchanged",
+      "actual": "150",
+      "expected": "150",
+      "passed": true
+    },
+    {
+      "name": "main rite parent resolves actual faith",
+      "actual": "32",
+      "expected": "32",
+      "passed": true
+    },
+    {
+      "name": "entry fixture flag present",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "lyd_c3_personal_teacher absent",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "lyd_study_cooldown absent",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "actor family records unchanged",
+      "actual": [
+        {
+          "key": "primary_spouse",
+          "value": "36311"
+        },
+        {
+          "key": "spouse",
+          "value": "36311"
+        },
+        {
+          "key": "former_spouses",
+          "value": [
+            {
+              "key": null,
+              "value": "34968"
+            }
+          ]
+        },
+        {
+          "key": "child",
+          "value": [
+            {
+              "key": null,
+              "value": "38924"
+            },
+            {
+              "key": null,
+              "value": "39348"
+            },
+            {
+              "key": null,
+              "value": "39979"
+            },
+            {
+              "key": null,
+              "value": "40526"
+            },
+            {
+              "key": null,
+              "value": "40695"
+            },
+            {
+              "key": null,
+              "value": "40847"
+            },
+            {
+              "key": null,
+              "value": "41032"
+            }
+          ]
+        }
+      ],
+      "expected": [
+        {
+          "key": "primary_spouse",
+          "value": "36311"
+        },
+        {
+          "key": "spouse",
+          "value": "36311"
+        },
+        {
+          "key": "former_spouses",
+          "value": [
+            {
+              "key": null,
+              "value": "34968"
+            }
+          ]
+        },
+        {
+          "key": "child",
+          "value": [
+            {
+              "key": null,
+              "value": "38924"
+            },
+            {
+              "key": null,
+              "value": "39348"
+            },
+            {
+              "key": null,
+              "value": "39979"
+            },
+            {
+              "key": null,
+              "value": "40526"
+            },
+            {
+              "key": null,
+              "value": "40695"
+            },
+            {
+              "key": null,
+              "value": "40847"
+            },
+            {
+              "key": null,
+              "value": "41032"
+            }
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "all spouse/former-spouse/children saved identity rite family and political records unchanged",
+      "actual": {
+        "full_report_pointer": "/checks/12/actual",
+        "canonical_json_bytes": 2247,
+        "canonical_json_sha256": "e4077d084cda629d64819bbf6150e81d1802238b735893e22938336b15d3aeea"
+      },
+      "expected": {
+        "full_report_pointer": "/checks/12/expected",
+        "canonical_json_bytes": 2247,
+        "canonical_json_sha256": "e4077d084cda629d64819bbf6150e81d1802238b735893e22938336b15d3aeea"
+      },
+      "passed": true
+    },
+    {
+      "name": "all actor and family held-title assignments/lieges unchanged",
+      "actual": {
+        "2230": {
+          "id": "2230",
+          "key": "d_apulia",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2189"
+        },
+        "2231": {
+          "id": "2231",
+          "key": "c_apulia",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2230"
+        },
+        "2232": {
+          "id": "2232",
+          "key": "b_trani",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2231"
+        },
+        "2235": {
+          "id": "2235",
+          "key": "b_acerenza",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2231"
+        },
+        "2262": {
+          "id": "2262",
+          "key": "c_rossano",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2253"
+        },
+        "2263": {
+          "id": "2263",
+          "key": "b_rossano",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2262"
+        },
+        "2264": {
+          "id": "2264",
+          "key": "b_cotrone",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2262"
+        }
+      },
+      "expected": {
+        "2230": {
+          "id": "2230",
+          "key": "d_apulia",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2189"
+        },
+        "2231": {
+          "id": "2231",
+          "key": "c_apulia",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2230"
+        },
+        "2232": {
+          "id": "2232",
+          "key": "b_trani",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2231"
+        },
+        "2235": {
+          "id": "2235",
+          "key": "b_acerenza",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2231"
+        },
+        "2262": {
+          "id": "2262",
+          "key": "c_rossano",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2253"
+        },
+        "2263": {
+          "id": "2263",
+          "key": "b_rossano",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2262"
+        },
+        "2264": {
+          "id": "2264",
+          "key": "b_cotrone",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2262"
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "actor held-title ids unchanged",
+      "actual": [
+        "2230",
+        "2231",
+        "2232",
+        "2235",
+        "2262",
+        "2263",
+        "2264"
+      ],
+      "expected": [
+        "2230",
+        "2231",
+        "2232",
+        "2235",
+        "2262",
+        "2263",
+        "2264"
+      ],
+      "passed": true
+    },
+    {
+      "name": "actor saved landed_data unchanged",
+      "actual": {
+        "full_report_pointer": "/checks/15/actual",
+        "canonical_json_bytes": 3207,
+        "canonical_json_sha256": "164bfa5119b7a67da56e21a22b4820be14587f0be1e65085ef58da81fd3d278a"
+      },
+      "expected": {
+        "full_report_pointer": "/checks/15/expected",
+        "canonical_json_bytes": 3207,
+        "canonical_json_sha256": "164bfa5119b7a67da56e21a22b4820be14587f0be1e65085ef58da81fd3d278a"
+      },
+      "passed": true
+    },
+    {
+      "name": "saved gold unchanged",
+      "actual": "244",
+      "expected": "244",
+      "passed": true
+    },
+    {
+      "name": "saved piety unchanged",
+      "actual": "150",
+      "expected": "150",
+      "passed": true
+    },
+    {
+      "name": "saved prestige unchanged",
+      "actual": "2200",
+      "expected": "2200",
+      "passed": true
+    },
+    {
+      "name": "saved learning_lifestyle_xp unchanged",
+      "actual": "0",
+      "expected": "0",
+      "passed": true
+    },
+    {
+      "name": "native gold unchanged",
+      "actual": "244",
+      "expected": "244",
+      "passed": true
+    },
+    {
+      "name": "native piety unchanged",
+      "actual": "150",
+      "expected": "150",
+      "passed": true
+    },
+    {
+      "name": "native prestige unchanged",
+      "actual": "2200",
+      "expected": "2200",
+      "passed": true
+    },
+    {
+      "name": "native stress unchanged",
+      "actual": "0",
+      "expected": "0",
+      "passed": true
+    },
+    {
+      "name": "saved/native gold independent agreement",
+      "actual": "244",
+      "expected": "244",
+      "passed": true
+    },
+    {
+      "name": "saved/native piety independent agreement",
+      "actual": "150",
+      "expected": "150",
+      "passed": true
+    },
+    {
+      "name": "saved/native prestige independent agreement",
+      "actual": "2200",
+      "expected": "2200",
+      "passed": true
+    },
+    {
+      "name": "36 catalogue rite keys still loaded",
+      "actual": 36,
+      "expected": 36,
+      "passed": true
+    },
+    {
+      "name": "faith head-title remains absent",
+      "actual": "4294967295",
+      "expected": "4294967295",
+      "passed": true
+    },
+    {
+      "name": "no owned LYD head/claim titles created",
+      "actual": {},
+      "expected": {},
+      "passed": true
+    },
+    {
+      "name": "all living character identity keys unchanged",
+      "actual": {
+        "full_report_pointer": "/checks/30/actual",
+        "canonical_json_bytes": 284585,
+        "canonical_json_sha256": "5978460e78b1325d35cfc9c407fc199d2e9001e3879548bec6f4bce5a5641f8b"
+      },
+      "expected": {
+        "full_report_pointer": "/checks/30/expected",
+        "canonical_json_bytes": 284585,
+        "canonical_json_sha256": "5978460e78b1325d35cfc9c407fc199d2e9001e3879548bec6f4bce5a5641f8b"
+      },
+      "passed": true
+    },
+    {
+      "name": "only current actor rite changed in all living saved characters",
+      "actual": [
+        {
+          "character_id": "31254",
+          "before": "150",
+          "after": "169"
+        }
+      ],
+      "expected": [
+        {
+          "character_id": "31254",
+          "before": "150",
+          "after": "169"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "only newly added actor LYD flag is school cooldown",
+      "actual": [
+        "lyd_enabled",
+        "lyd_r3_fixture_initialized",
+        "lyd_school_cooldown"
+      ],
+      "expected": [
+        "lyd_enabled",
+        "lyd_r3_fixture_initialized",
+        "lyd_school_cooldown"
+      ],
+      "passed": true
+    },
+    {
+      "name": "formal actor wallets match initial R6 baseline",
+      "actual": {
+        "gold": "244",
+        "piety": "150",
+        "prestige": "2200",
+        "stress": null,
+        "learning_lifestyle_xp": "0"
+      },
+      "expected": {
+        "gold": "244",
+        "piety": "150",
+        "prestige": "2200",
+        "stress": null,
+        "learning_lifestyle_xp": "0"
+      },
+      "passed": true
+    },
+    {
+      "name": "formal family records match initial R6 baseline",
+      "actual": [
+        {
+          "key": "primary_spouse",
+          "value": "36311"
+        },
+        {
+          "key": "spouse",
+          "value": "36311"
+        },
+        {
+          "key": "former_spouses",
+          "value": [
+            {
+              "key": null,
+              "value": "34968"
+            }
+          ]
+        },
+        {
+          "key": "child",
+          "value": [
+            {
+              "key": null,
+              "value": "38924"
+            },
+            {
+              "key": null,
+              "value": "39348"
+            },
+            {
+              "key": null,
+              "value": "39979"
+            },
+            {
+              "key": null,
+              "value": "40526"
+            },
+            {
+              "key": null,
+              "value": "40695"
+            },
+            {
+              "key": null,
+              "value": "40847"
+            },
+            {
+              "key": null,
+              "value": "41032"
+            }
+          ]
+        }
+      ],
+      "expected": [
+        {
+          "key": "primary_spouse",
+          "value": "36311"
+        },
+        {
+          "key": "spouse",
+          "value": "36311"
+        },
+        {
+          "key": "former_spouses",
+          "value": [
+            {
+              "key": null,
+              "value": "34968"
+            }
+          ]
+        },
+        {
+          "key": "child",
+          "value": [
+            {
+              "key": null,
+              "value": "38924"
+            },
+            {
+              "key": null,
+              "value": "39348"
+            },
+            {
+              "key": null,
+              "value": "39979"
+            },
+            {
+              "key": null,
+              "value": "40526"
+            },
+            {
+              "key": null,
+              "value": "40695"
+            },
+            {
+              "key": null,
+              "value": "40847"
+            },
+            {
+              "key": null,
+              "value": "41032"
+            }
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "formal actor titles match initial R6 baseline",
+      "actual": [
+        "2230",
+        "2231",
+        "2232",
+        "2235",
+        "2262",
+        "2263",
+        "2264"
+      ],
+      "expected": [
+        "2230",
+        "2231",
+        "2232",
+        "2235",
+        "2262",
+        "2263",
+        "2264"
+      ],
+      "passed": true
+    },
+    {
+      "name": "LYD formally enabled",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "entered common faith has all 36 actual rites",
+      "actual": 36,
+      "expected": 36,
+      "passed": true
+    },
+    {
+      "name": "entered common faith main rite type",
+      "actual": "lyd_rite_kongmen",
+      "expected": "lyd_rite_kongmen",
+      "passed": true
+    },
+    {
+      "name": "all actual common faith rite types are LYD catalogue",
+      "actual": [
+        "lyd_rite_changzhou",
+        "lyd_rite_chengbrothers",
+        "lyd_rite_chenxianzhang",
+        "lyd_rite_donglin",
+        "lyd_rite_dongzhongshu",
+        "lyd_rite_guoxiang",
+        "lyd_rite_guwen",
+        "lyd_rite_hanyu",
+        "lyd_rite_huxiang",
+        "lyd_rite_jiangyou",
+        "lyd_rite_jingshi",
+        "lyd_rite_jingshu",
+        "lyd_rite_kongmen",
+        "lyd_rite_liao",
+        "lyd_rite_liuzongzhou",
+        "lyd_rite_lujiuyuan",
+        "lyd_rite_mengzi",
+        "lyd_rite_qianjia",
+        "lyd_rite_shaoyong",
+        "lyd_rite_sushi",
+        "lyd_rite_taizhou",
+        "lyd_rite_wanganshi",
+        "lyd_rite_wangbi",
+        "lyd_rite_wangfuzhi",
+        "lyd_rite_wangsu",
+        "lyd_rite_wangyangming",
+        "lyd_rite_wucheng",
+        "lyd_rite_xunzi",
+        "lyd_rite_yanli",
+        "lyd_rite_yongjia",
+        "lyd_rite_yongkang",
+        "lyd_rite_zhangzai",
+        "lyd_rite_zhanruoshui",
+        "lyd_rite_zhengxuan",
+        "lyd_rite_zhoudunyi",
+        "lyd_rite_zhuxi"
+      ],
+      "expected": [
+        "lyd_rite_changzhou",
+        "lyd_rite_chengbrothers",
+        "lyd_rite_chenxianzhang",
+        "lyd_rite_donglin",
+        "lyd_rite_dongzhongshu",
+        "lyd_rite_guoxiang",
+        "lyd_rite_guwen",
+        "lyd_rite_hanyu",
+        "lyd_rite_huxiang",
+        "lyd_rite_jiangyou",
+        "lyd_rite_jingshi",
+        "lyd_rite_jingshu",
+        "lyd_rite_kongmen",
+        "lyd_rite_liao",
+        "lyd_rite_liuzongzhou",
+        "lyd_rite_lujiuyuan",
+        "lyd_rite_mengzi",
+        "lyd_rite_qianjia",
+        "lyd_rite_shaoyong",
+        "lyd_rite_sushi",
+        "lyd_rite_taizhou",
+        "lyd_rite_wanganshi",
+        "lyd_rite_wangbi",
+        "lyd_rite_wangfuzhi",
+        "lyd_rite_wangsu",
+        "lyd_rite_wangyangming",
+        "lyd_rite_wucheng",
+        "lyd_rite_xunzi",
+        "lyd_rite_yanli",
+        "lyd_rite_yongjia",
+        "lyd_rite_yongkang",
+        "lyd_rite_zhangzai",
+        "lyd_rite_zhanruoshui",
+        "lyd_rite_zhengxuan",
+        "lyd_rite_zhoudunyi",
+        "lyd_rite_zhuxi"
+      ],
+      "passed": true
+    },
+    {
+      "name": "no actual native head_of_rite for common main",
+      "actual": "4294967295",
+      "expected": "4294967295",
+      "passed": true
+    },
+    {
+      "name": "actual Faith ID unchanged through rite selection",
+      "actual": "32",
+      "expected": "32",
+      "passed": true
+    },
+    {
+      "name": "school cooldown absent before choice",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "school cooldown actually present",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "school cooldown saved tick 365",
+      "actual": "365",
+      "expected": "365",
+      "passed": true
+    },
+    {
+      "name": "complete actor LYD named lists unchanged",
+      "actual": {},
+      "expected": {},
+      "passed": true
+    },
+    {
+      "name": "existing actor LYD variables unchanged",
+      "actual": {
+        "lyd_enabled": {
+          "present": true,
+          "tick": null,
+          "type": null,
+          "identity": null,
+          "entries": [],
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_enabled"
+            },
+            {
+              "key": "data",
+              "value": []
+            }
+          ]
+        },
+        "lyd_r3_fixture_initialized": {
+          "present": true,
+          "tick": null,
+          "type": null,
+          "identity": null,
+          "entries": [],
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_r3_fixture_initialized"
+            },
+            {
+              "key": "data",
+              "value": []
+            }
+          ]
+        }
+      },
+      "expected": {
+        "lyd_enabled": {
+          "present": true,
+          "tick": null,
+          "type": null,
+          "identity": null,
+          "entries": [],
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_enabled"
+            },
+            {
+              "key": "data",
+              "value": []
+            }
+          ]
+        },
+        "lyd_r3_fixture_initialized": {
+          "present": true,
+          "tick": null,
+          "type": null,
+          "identity": null,
+          "entries": [],
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_r3_fixture_initialized"
+            },
+            {
+              "key": "data",
+              "value": []
+            }
+          ]
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "all actual Rite parent/leader/persistent graphs unchanged",
+      "actual": {
+        "full_report_pointer": "/checks/47/actual",
+        "canonical_json_bytes": 1505408,
+        "canonical_json_sha256": "d81222b25d6c939fdb8b09823d917a71c8b1815e692864cf787c78b6858f9990"
+      },
+      "expected": {
+        "full_report_pointer": "/checks/47/expected",
+        "canonical_json_bytes": 1505408,
+        "canonical_json_sha256": "d81222b25d6c939fdb8b09823d917a71c8b1815e692864cf787c78b6858f9990"
+      },
+      "passed": true
+    },
+    {
+      "name": "all actual Faith main/head/persistent graphs unchanged",
+      "actual": {
+        "full_report_pointer": "/checks/48/actual",
+        "canonical_json_bytes": 553322,
+        "canonical_json_sha256": "2f458a3411aeeaea16250e035109a000053687beaa720d9070ac32b0fc57f3d0"
+      },
+      "expected": {
+        "full_report_pointer": "/checks/48/expected",
+        "canonical_json_bytes": 553322,
+        "canonical_json_sha256": "2f458a3411aeeaea16250e035109a000053687beaa720d9070ac32b0fc57f3d0"
+      },
+      "passed": true
+    }
+  ]
+}

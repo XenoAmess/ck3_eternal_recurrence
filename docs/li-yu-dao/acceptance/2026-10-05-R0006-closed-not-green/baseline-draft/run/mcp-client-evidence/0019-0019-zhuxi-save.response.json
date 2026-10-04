@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 19,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue\\0019-zhuxi-save.request.json",
+  "request_sha256": "cf07e52f1da2d7d0dee856ca7c4a41ddd04b923bcbf413121688cd03b983da34",
+  "started_at_utc": "2026-10-04T13:23:43.770416+00:00",
+  "request_id": "0019-zhuxi-save",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0019-0019-zhuxi-save.sdk-result.json",
+  "sdk_result_sha256": "bc001d3da4664cd0c89deaa84c3ecb78fbd92aaffe7c8437478a46e731706f29",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0018-checkpoint.json",
+      "copy": "0019-0019-zhuxi-save.native-01.json",
+      "sha256": "85501e32179e50f1da67c28fcb2420f055c68fd734b0c246e8f8607094f87a94"
+    }
+  ],
+  "finished_at_utc": "2026-10-04T13:23:52.997632+00:00"
+}

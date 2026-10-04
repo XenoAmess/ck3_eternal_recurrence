@@ -1,0 +1,23 @@
+{
+  "result": "EXTERNAL_FIXTURE_RENDERED",
+  "live": "NOT_RUN",
+  "production": false,
+  "target": "current-player-only faith:confucian_faith.main_rite",
+  "start_1066_main": "daoxue (native dated history); convert defaults yes",
+  "output_sha256": {
+    "descriptor.mod": "56257504a8f873e43a20ab5c3096c9607647e205d28db17f4c3b13cb54f94a8f",
+    "common/scripted_triggers/lyd_r3_fixture_triggers.txt": "bc0f586a245377fb1d2660651f04ce2c16f85fcc113250f323da4fd7fbbb5bda",
+    "common/decisions/lyd_r3_fixture_decisions.txt": "bd731703217b10a6fde0a104a48c61be7f852c88a0538b41b250f50fd1ce6d93",
+    "common/scripted_effects/lyd_r3_fixture_effects.txt": "5a79a925992d3a55586e5558d5c6300d608986467259b3f9b1ec17c8f08096da",
+    "events/lyd_r3_fixture_events.txt": "0f5cae24b3d938cc9ece2af2a8a889dbf42d8b234d41cdc94c6c16adc7f05a9b",
+    "localization/simp_chinese/lyd_r3_fixture_l_simp_chinese.yml": "257a24c7d74b5ededcd8930ba2d124faadf33ca4b54a3d7985a080190c8dd315",
+    "localization/english/lyd_r3_fixture_l_english.yml": "c74004e936f793dc5d47b12a696f2a0a9f32662fd5938a4a16787e7926939d7f"
+  },
+  "registration_sha256": "f04755c32204932b973f1edde47aab765c0e318928ea050f51f6612ccc5c0cea",
+  "native_sources_sha256": {
+    "common/religion/faith_types/00_faith_types.txt": "c1b94cd6cf2cc47824a43112965e9a1e1a669530090b44b1cd702245914e84df",
+    "common/religion/rite_types/00_rite_types.txt": "3123e46d154cc35a72986979d3db951accf31fdbb03bf65d54b9261a3451dbce",
+    "common/religion/rite_types/_rite_types.info": "60fd476d72be0941d9c6dff4e83834016d6e32d16e855f3b258389061850828f",
+    "history/faiths/00_eastern_misc.txt": "59c561dc2fdb502872a6426cd35f3dd9f032e5481d6fb371f409801bb044fa4e"
+  }
+}

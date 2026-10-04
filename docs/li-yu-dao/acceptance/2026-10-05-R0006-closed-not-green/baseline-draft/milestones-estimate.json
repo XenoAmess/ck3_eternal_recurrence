@@ -1,0 +1,24 @@
+{
+  "estimate_progress_percent": 60,
+  "not_test_pass_rate": true,
+  "basis": "parent-reported current estimate",
+  "targets": [
+    {
+      "date": "2026-10-05",
+      "scope": "parent exact scope pending"
+    },
+    {
+      "date": "2026-10-06",
+      "scope": "parent exact scope pending"
+    },
+    {
+      "date": "2026-10-07—2026-10-08",
+      "scope": "parent exact scope pending"
+    },
+    {
+      "date": "2026-10-09",
+      "scope": "parent exact scope pending"
+    }
+  ],
+  "scope_finalization": "PENDING_PARENT_EXACT_WORDING"
+}

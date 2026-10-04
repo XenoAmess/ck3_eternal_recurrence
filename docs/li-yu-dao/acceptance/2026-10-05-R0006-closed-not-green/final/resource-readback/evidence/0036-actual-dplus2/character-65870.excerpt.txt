@@ -1,0 +1,55 @@
+65870={
+	first_name="Dalay_ool"
+	birth=1034.4.5
+	nickname=nick_the_proud
+	nickname_text="骄傲者"
+	ethnicity=turkic
+	culture=209
+	rite=131
+	skill={ 7 13 6 3 4 6 }
+	trait_xp_amounts={ 25 0 }
+	weight={
+		base=-32
+		current=43
+		target=-32
+	}
+
+	traits={ 61 66 67 17 30 }
+	alive_data={
+		variables={
+			data={ {
+					flag=blocked_from_leaving
+					tick=9125
+					data={
+					}
+
+				}
+ }
+		}
+		fertility=0.52553
+		health=4.65052
+		piety={
+			currency=50
+		}
+		prestige={
+			currency=450
+			accumulated=1150
+		}
+		influence={
+			currency=120
+		}
+		languages={ language_turkic }
+		activity_data={
+		}
+
+		location={
+			location=1452
+		}
+	}
+
+	court_data={
+		employer=32835
+		join_court_date=1066.9.17
+	}
+
+}

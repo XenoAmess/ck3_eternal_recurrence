@@ -1,0 +1,17 @@
+{
+  "faith_ids": [
+    "13"
+  ],
+  "rite_ids": [
+    "169"
+  ],
+  "rite_heads": [
+    {
+      "rite_id": "169",
+      "rite_type": "lyd_rite_zhuxi",
+      "before": "4294967295",
+      "after": "31254"
+    }
+  ],
+  "cause_boundary": "Actual changed fields are preserved. No cause, C3 appointment, or player consent is inferred merely from natural advancement."
+}

@@ -1,0 +1,7 @@
+{
+  "operation": "finalize_readonly.py",
+  "exit_code": 1,
+  "failure": "KeyError: poll-001/runs.connector.json",
+  "cause": "Windows Path relative keys used backslash; v2 normalizes path keys. No GitHub/run result altered. Original source and materialized payloads preserved.",
+  "source_sha256": "92fb6cd82b8bd385d141e93b066b6e1bcb75f954a623efab2b95945f377e6641"
+}

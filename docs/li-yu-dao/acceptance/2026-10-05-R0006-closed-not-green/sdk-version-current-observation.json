@@ -1,0 +1,13 @@
+{
+  "schema": "lyd.sdk-version-observation.v1",
+  "utc": "2026-10-04T19:23:21.310637+00:00",
+  "interpreter": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "python_version": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+  "distribution": "mcp",
+  "distribution_version": "2.0.0",
+  "module_file": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\__init__.py",
+  "client_signature": "(server: 'Server[Any] | MCPServer | Transport | str', *, raise_exceptions: 'bool' = False, read_timeout_seconds: 'float | None' = None, sampling_callback: 'SamplingFnT | None' = None, sampling_capabilities: 'types.SamplingCapability | None' = None, list_roots_callback: 'ListRootsFnT | None' = None, logging_callback: 'LoggingFnT | None' = None, log_level: 'LoggingLevel | None' = None, message_handler: 'MessageHandlerFnT | None' = None, client_info: 'Implementation | None' = None, mode: 'ConnectMode' = 'auto', prior_discover: 'types.DiscoverResult | None' = None, elicitation_callback: 'ElicitationFnT | None' = None, input_required_max_rounds: 'int' = 10, extensions: 'Sequence[ClientExtension] | None' = None, cache: 'CacheConfig | None' = <factory>) -> None",
+  "call_tool_signature": "(self, name: 'str', arguments: 'dict[str, Any] | None' = None, read_timeout_seconds: 'float | None' = None, progress_callback: 'ProgressFnT | None' = None, *, input_responses: 'InputResponses | None' = None, request_state: 'str | None' = None, meta: 'RequestParamsMeta | None' = None) -> 'CallToolResult'",
+  "game_native_network_calls": 0,
+  "scope": "current installed environment only; does not establish historical session distribution version"
+}

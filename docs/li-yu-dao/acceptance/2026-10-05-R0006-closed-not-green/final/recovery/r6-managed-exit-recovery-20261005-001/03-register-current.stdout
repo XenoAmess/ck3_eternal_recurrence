@@ -1,0 +1,23 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": false,
+  "code": "CAS_CONFLICT",
+  "reason": "screen claim requires a new task registration",
+  "observed": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e"
+    },
+    "last_sequence": 2809,
+    "next_step": "Fresh-offline-and-load",
+    "pid": 19308,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "waiting",
+    "summary": "R0006-expired-own-screen-claim-released-unresolved",
+    "task_id": "ck3-lyd-live-007-20261004",
+    "updated_at_utc": "2026-10-04T18:55:33.111775+00:00"
+  }
+}

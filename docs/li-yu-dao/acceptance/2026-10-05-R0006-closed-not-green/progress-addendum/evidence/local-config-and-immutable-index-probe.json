@@ -1,0 +1,75 @@
+{
+  "configuration": {
+    "path": "C:\\Users\\Administrator\\.codex\\config.toml",
+    "sha256": "1811b67906e96a3784b6786237a29db3c2bf5534ebf98cf6ce262883ddc7e051",
+    "bytes": 271,
+    "agents.max_concurrent_threads_per_session": 64,
+    "agents.max_threads_legacy_alias": null,
+    "selected_lines": [
+      {
+        "line": 10,
+        "text": "[agents]"
+      },
+      {
+        "line": 11,
+        "text": "max_concurrent_threads_per_session = 64"
+      }
+    ],
+    "full_config_copied": false
+  },
+  "packages": [
+    {
+      "package": "r6-report-draft-001",
+      "index_sha256": "fa0aad4d907cb0a57b1627a6afeb4cfd3e1f3cf172f4c9286c8f7c03258850da",
+      "files": 795,
+      "reports": [
+        {
+          "path": "REPORT.md",
+          "bytes": 8620
+        },
+        {
+          "path": "classification/summary.json",
+          "bytes": 1600
+        },
+        {
+          "path": "prior-diagnosis/REPORT.md",
+          "bytes": 3817
+        }
+      ]
+    },
+    {
+      "package": "r6-report-draft-addendum-001",
+      "index_sha256": "615e109c1d4db13496ad8a3cb22ded7c1e355289484e38ec68a65afb41b3452d",
+      "files": 7,
+      "reports": [
+        {
+          "path": "REPORT-addendum.md",
+          "bytes": 1687
+        }
+      ]
+    },
+    {
+      "package": "i3b-independent-review-001",
+      "index_sha256": "0af1cd6a7bf9aaeff994812445feb964c6ae48442e6bc88a15f4f2533070c5d8",
+      "files": 34,
+      "reports": [
+        {
+          "path": "REPORT.json",
+          "bytes": 975
+        },
+        {
+          "path": "REPORT.md",
+          "bytes": 6144
+        },
+        {
+          "path": "upstream-manifest/REPORT.json",
+          "bytes": 2746
+        },
+        {
+          "path": "upstream-manifest/REPORT.md",
+          "bytes": 3641
+        }
+      ]
+    }
+  ]
+}

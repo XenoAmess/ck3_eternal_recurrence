@@ -1,0 +1,40 @@
+{
+  "utc": "2026-10-04T12:13:12.186300+00:00",
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\robert-selected-001.png",
+  "source_sha256": "81cb6d540cbc5a32c66fff747e82ee768fd22b1a87164467b0539d1bcfb4326f",
+  "actual_hwnd": 2491650,
+  "actual_pid": 12500,
+  "preview_content_rect": [
+    0,
+    0,
+    1920,
+    1080
+  ],
+  "observed_point": [
+    1574.0,
+    897.0
+  ],
+  "route": "Current native MCP exposes 11 tools and no menu/decision initiation; UI fallback.",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:/workspace/ck3_eternal_recurrence/tools/desktop_coordinate_map.py",
+    "--source-image",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\robert-selected-001.png",
+    "--preview-left",
+    "0",
+    "--preview-top",
+    "0",
+    "--preview-width",
+    "1920",
+    "--preview-height",
+    "1080",
+    "--observed-x",
+    "1574.0",
+    "--observed-y",
+    "897.0",
+    "--click",
+    "--receipt",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\ui-actions\\start-campaign-001\\post-click.png"
+  ],
+  "only_target": "isolated R0006 current window"
+}

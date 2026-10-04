@@ -1,0 +1,180 @@
+{
+  "schema": "lyd.r6-readback-evidence-index.v1",
+  "scenario": "R6 multiple-player-event identity and native12 selection",
+  "source_save_sha256": [
+    "7b5adbc84232b6c1159f4d472cd87778b5910c4f1594399e118a6116edb1a42c",
+    "7ee7fb562d37874fb479559bef0c6d069f43320bdd908537c5466d07d5a1ecf2"
+  ],
+  "files": [
+    {
+      "path": "evidence/0042-detach-open/character-31254.excerpt.txt",
+      "bytes": 17103,
+      "sha256": "a57fb16c85a272944fd3db746529abae35246ea03f44eff93acf8d4194c84103"
+    },
+    {
+      "path": "evidence/0042-detach-open/character-65856.excerpt.txt",
+      "bytes": 1279,
+      "sha256": "a7f05b3f9d26dfeeef0d842e772eec6a724c886d817efec51fbb6b044da0cfb8"
+    },
+    {
+      "path": "evidence/0042-detach-open/character-65857.excerpt.txt",
+      "bytes": 1383,
+      "sha256": "298faec980c2d15a7fdb438e201db1bb2265b7bdc9712c31461306acd73d4d0d"
+    },
+    {
+      "path": "evidence/0042-detach-open/character-65861.excerpt.txt",
+      "bytes": 1288,
+      "sha256": "eeddac41fbb11c5579e58da77f6798619a51c6634cec9b13afb007f1d9a52045"
+    },
+    {
+      "path": "evidence/0042-detach-open/compact-c2-tickets.json",
+      "bytes": 31320,
+      "sha256": "a06973023d662bcab3654ba5c57c06d4c72aab2a51336adc1c5caf51a38f8424"
+    },
+    {
+      "path": "evidence/0042-detach-open/player-event-10.excerpt.txt",
+      "bytes": 658,
+      "sha256": "3ba6b8cbdcd03a6d89e9ec0804c64fdf1248b5b4812766ca43214e39a957dcc8"
+    },
+    {
+      "path": "evidence/0042-detach-open/player-event-11.excerpt.txt",
+      "bytes": 658,
+      "sha256": "71f59919a6e5685e5695cf346f98ff705ce570087505b90799d945c48fbfd2f5"
+    },
+    {
+      "path": "evidence/0042-detach-open/player-event-12.excerpt.txt",
+      "bytes": 749,
+      "sha256": "971b687cdde9a95950c033ced826c0a70b1406be96b019272e5b954978b69ba5"
+    },
+    {
+      "path": "evidence/0042-detach-open/targeted-state.json",
+      "bytes": 456859,
+      "sha256": "4cfec93a2e10d78709cf220b4d820332c3edbd7ddeba7ae2515c707912fc66e6"
+    },
+    {
+      "path": "evidence/0044-after-native-select12-option1/character-31254.excerpt.txt",
+      "bytes": 17103,
+      "sha256": "a57fb16c85a272944fd3db746529abae35246ea03f44eff93acf8d4194c84103"
+    },
+    {
+      "path": "evidence/0044-after-native-select12-option1/character-65856.excerpt.txt",
+      "bytes": 1279,
+      "sha256": "a7f05b3f9d26dfeeef0d842e772eec6a724c886d817efec51fbb6b044da0cfb8"
+    },
+    {
+      "path": "evidence/0044-after-native-select12-option1/character-65857.excerpt.txt",
+      "bytes": 1383,
+      "sha256": "298faec980c2d15a7fdb438e201db1bb2265b7bdc9712c31461306acd73d4d0d"
+    },
+    {
+      "path": "evidence/0044-after-native-select12-option1/character-65861.excerpt.txt",
+      "bytes": 1288,
+      "sha256": "eeddac41fbb11c5579e58da77f6798619a51c6634cec9b13afb007f1d9a52045"
+    },
+    {
+      "path": "evidence/0044-after-native-select12-option1/compact-c2-tickets.json",
+      "bytes": 31320,
+      "sha256": "a06973023d662bcab3654ba5c57c06d4c72aab2a51336adc1c5caf51a38f8424"
+    },
+    {
+      "path": "evidence/0044-after-native-select12-option1/player-event-10.excerpt.txt",
+      "bytes": 658,
+      "sha256": "3ba6b8cbdcd03a6d89e9ec0804c64fdf1248b5b4812766ca43214e39a957dcc8"
+    },
+    {
+      "path": "evidence/0044-after-native-select12-option1/player-event-11.excerpt.txt",
+      "bytes": 658,
+      "sha256": "71f59919a6e5685e5695cf346f98ff705ce570087505b90799d945c48fbfd2f5"
+    },
+    {
+      "path": "evidence/0044-after-native-select12-option1/targeted-state.json",
+      "bytes": 449340,
+      "sha256": "4fcb013398dcc305f651d597e2dd5e1af1f5a2823f078b93274105de84dd1d0c"
+    },
+    {
+      "path": "inputs/checkpoints/0042-i2-detach-open-save/receipt.json",
+      "bytes": 1156,
+      "sha256": "b9d0c1d9e083c53d2c562a7ecbc55333e22dc020a870b5c66ae29c37a4c95667"
+    },
+    {
+      "path": "inputs/checkpoints/0044-i2-detach-source-yes-save/receipt.json",
+      "bytes": 1168,
+      "sha256": "3eef591e0ed87059f4e4c23380aedcd2d6a65497b0a288010eb9284b5c2c2bb0"
+    },
+    {
+      "path": "inputs/content/production/common/scripted_effects/lyd_c2_response_effects.txt",
+      "bytes": 1369,
+      "sha256": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47"
+    },
+    {
+      "path": "inputs/content/production/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "bytes": 12049,
+      "sha256": "9cc7b2271437062cd03ef6ca1cb1856e874bf3fee648749df67f5e5eafab28eb"
+    },
+    {
+      "path": "inputs/content/production/common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "bytes": 20434,
+      "sha256": "ba5b02a594aab32e475cfc2bb6d368ed14a11b1316f60354a3a09585e052529d"
+    },
+    {
+      "path": "inputs/content/production/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "bytes": 4832,
+      "sha256": "360659bd3f0e95be69391e8b685ec26945466cc59ee263e0f1c6cd62454b34e6"
+    },
+    {
+      "path": "inputs/content/production/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "bytes": 15286,
+      "sha256": "0e32e31c4e4362710b5ae31c65981d70ae95e0023a20f55fc10788041d25f7c7"
+    },
+    {
+      "path": "inputs/content/production/events/lyd_c2_consent_events.txt",
+      "bytes": 6618,
+      "sha256": "aeb4ea2062ad58b6c537df2812a965bf85ea7ee525ffce48c6659e7ffb98616e"
+    },
+    {
+      "path": "inputs/content/production/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "bytes": 9797,
+      "sha256": "6cf1eeb0008e7ce1cf8c7b087982a1097d436bdb78031674e5dccef918daa93f"
+    },
+    {
+      "path": "inputs/i2-detach-source-yes-001.png",
+      "bytes": 2163862,
+      "sha256": "293aa171ef7af2db2b2a554f15fab8fbfbf18f69ba8e60a002e6e61484dd682a"
+    },
+    {
+      "path": "inputs/i2-detach-source-yes-002.png",
+      "bytes": 2162182,
+      "sha256": "3ec3c8e87aa25f4dfafccf24363704fb29297630527cc84142b7d40df2556e37"
+    },
+    {
+      "path": "inputs/native-evidence/4b3809aa40264a9581b8392d565d63ba/0043-event-select.json",
+      "bytes": 116531,
+      "sha256": "6fbead1f46c4ef291a10330e0f6560c4fd6cae7e880e141397ae790c429476f1"
+    },
+    {
+      "path": "inputs/native-evidence/4b3809aa40264a9581b8392d565d63ba/0044-checkpoint.json",
+      "bytes": 119576,
+      "sha256": "2b01c49dfb5cde830571f3f572c344cc6eb4853a64251eac46e80ba6ed4d6f6f"
+    },
+    {
+      "path": "read_event_relationships.py",
+      "bytes": 12533,
+      "sha256": "ed96860f18e0f9c15400abd90d7444b2a0849328a031f9d495c6c535d34c7ac7"
+    },
+    {
+      "path": "REPORT.json",
+      "bytes": 1082365,
+      "sha256": "5741c0d8c3c4348e78a3eca79778fd2ecb27e69dc69a2389a8b0e17c5fedeec4"
+    },
+    {
+      "path": "source/r3_checkpoint_readback.py",
+      "bytes": 16654,
+      "sha256": "ee4e3616876ba1de81123b60a58a183cfbd336d4761ae95d8186e2279c0663ef"
+    },
+    {
+      "path": "source/r6_i2_readback.py",
+      "bytes": 20751,
+      "sha256": "51af4998654e4cf9660d64aeb3e746011ac6b03f38a7da72f0170952a8883bfe"
+    }
+  ]
+}

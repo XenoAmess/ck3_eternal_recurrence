@@ -1,0 +1,13 @@
+{
+  "utc": "2026-10-04T15:11:04.289062+00:00",
+  "initial_date_raw": 53144328,
+  "final_date_raw": 53144376,
+  "raw_delta": 48,
+  "requested_raw_delta": 24,
+  "actually_reached_requested_delta": true,
+  "paused": true,
+  "active_event": null,
+  "cooldown_reset": false,
+  "game_state_patch": false,
+  "final_request_id": "0035-learning-refresh-pause"
+}

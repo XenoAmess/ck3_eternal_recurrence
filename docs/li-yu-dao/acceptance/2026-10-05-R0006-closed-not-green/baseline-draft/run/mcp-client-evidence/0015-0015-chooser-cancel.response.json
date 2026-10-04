@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 15,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue\\0015-chooser-cancel.request.json",
+  "request_sha256": "f9c14a819702110a28046e9f9144235703e0f24374429caf8ada14c8018bc8e3",
+  "started_at_utc": "2026-10-04T13:18:03.421276+00:00",
+  "request_id": "0015-chooser-cancel",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0015-0015-chooser-cancel.sdk-result.json",
+  "sdk_result_sha256": "5ab024bedf8ae6248a73f9c165230a4142680bb4f037d37e94544b1a61347ee1",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0014-event-select.json",
+      "copy": "0015-0015-chooser-cancel.native-01.json",
+      "sha256": "6e64e30f3887f881dc5d0a20408cb494f32e696d9ff1c8dcac725ac8357b4e3e"
+    }
+  ],
+  "finished_at_utc": "2026-10-04T13:18:06.197515+00:00"
+}

@@ -1,0 +1,72 @@
+{
+  "schema": "lyd.evidence-index.v1",
+  "files": [
+    {
+      "path": "01-list-before-release.command.json",
+      "bytes": 455,
+      "sha256": "2fcbd606228221e2fe3a2de3e18a8b5ad2765ffda92a0074a3a31c734b854202"
+    },
+    {
+      "path": "01-list-before-release.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "01-list-before-release.stdout",
+      "bytes": 88009,
+      "sha256": "a65f72f3510b721f9e7646273573f11c886da3b8edb6458d4096981c6c4048be"
+    },
+    {
+      "path": "02-cas-release.command.json",
+      "bytes": 595,
+      "sha256": "cce892a9e300ef994d642f0defd4c209bc7799dde3848193e0835fb64203dc65"
+    },
+    {
+      "path": "02-cas-release.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "02-cas-release.stdout",
+      "bytes": 1184,
+      "sha256": "d31e8288ca516f6f919745013bdd55b2ce9c3a085d8f5abf2746061186e705f1"
+    },
+    {
+      "path": "03-list-after-release.command.json",
+      "bytes": 455,
+      "sha256": "ea556ae88e252dc79503dc48d1e4662efc57783918d72f0ed299102e66daea26"
+    },
+    {
+      "path": "03-list-after-release.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "03-list-after-release.stdout",
+      "bytes": 87933,
+      "sha256": "36ad833ba96b2ed542ddeb3584055c6ad79a80b231930f0cab1ea225e482fef7"
+    },
+    {
+      "path": "EXIT-SAVE.json",
+      "bytes": 414,
+      "sha256": "536a40a29314191b5e4d31768b6f78221073e9a4782373038c07df46bf0e6696"
+    },
+    {
+      "path": "PROCESSES-ABSENT.json",
+      "bytes": 221,
+      "sha256": "413934009f3eda960ca2cd88b55323c413d43c1cbdb93bf9252f1d8b7c64edfb"
+    },
+    {
+      "path": "REPORT.json",
+      "bytes": 2910,
+      "sha256": "4a17e35841bb2758be8369cc1ffc162bc194d809dd0cb745b6f6ce7510eb1873"
+    }
+  ],
+  "large_save_external_reference": {
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\userdir\\save games\\autosave_exit.ck3",
+    "preserved": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-terminal-closure-20261005-001\\exit-autosave.ck3",
+    "bytes": 90506624,
+    "sha256": "23b0c18b59cd59bbbe55f94e4bc47333de339a1076bd64a43cea102562f41bd7",
+    "route": "actual CK3 normal-exit autosave selected in GUI; no synthetic save"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "utc": "2026-10-04T12:04:44.388267+00:00",
+  "action": "semantic minimize obscuring Steam; no Steam mode change or mouse/keyboard",
+  "hwnd": 984556,
+  "pid": 3028,
+  "before_rect": [
+    80,
+    40,
+    1680,
+    1040
+  ],
+  "is_iconic": true,
+  "after_foreground": 984556
+}

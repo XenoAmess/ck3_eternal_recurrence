@@ -1,0 +1,297 @@
+{
+  "schema": "lyd.r6-readback-evidence-index.v1",
+  "scenario": "practice-cancel",
+  "save_sha256": "a35a831a9717aa94b44d3d876cfc1e3ae0fffde60f3a82918e2407792e06b58d",
+  "files": [
+    {
+      "path": "compare_saved_state_practice_cancel.py",
+      "bytes": 14750,
+      "sha256": "56d0e517c98f1663a6ad52f0efaf3d668158925badfe0dc2d5f6a47b4fe859c8"
+    },
+    {
+      "path": "comparison-report.json",
+      "bytes": 12209082,
+      "sha256": "bd21a30a5677b46d45fdbb45b504260aaedafc2f8a34c7849322805c3c73fcf3"
+    },
+    {
+      "path": "evidence/all-living-rite-map-after.json",
+      "bytes": 602841,
+      "sha256": "3feafeade72c03a5ffe4c99eb5e5c1410f5cc764a0d29bc77b20d9d17b4da203"
+    },
+    {
+      "path": "evidence/all-living-rite-map-before.json",
+      "bytes": 602841,
+      "sha256": "3feafeade72c03a5ffe4c99eb5e5c1410f5cc764a0d29bc77b20d9d17b4da203"
+    },
+    {
+      "path": "evidence/baseline-report.raw.json",
+      "bytes": 5375705,
+      "sha256": "ee8daab895bacfdba0744d369188a3252b1eed9a8af9471d1fe74271ef8deae8"
+    },
+    {
+      "path": "evidence/checkpoint-wrapper.raw.json",
+      "bytes": 1158,
+      "sha256": "8ece012ee703c90f82b2a61479548145a6324f9d956653e78df910e37ceb0d8a"
+    },
+    {
+      "path": "evidence/initial-baseline-report.raw.json",
+      "bytes": 5339513,
+      "sha256": "04d26b17cb3693b3bec61439ebc308d66aca67d54d757aa7c72326f15be8f5bb"
+    },
+    {
+      "path": "evidence/original-confucian-audit.raw.json",
+      "bytes": 43857,
+      "sha256": "7cf6ec3c345c0f9b4281d155561b1c9e2b0e478de1557ad66c6bc8336f004cf4"
+    },
+    {
+      "path": "family-and-titles/character-34968.excerpt.txt",
+      "bytes": 575,
+      "sha256": "15105a1d1c8d02bda72ddbda86586b0136eaaf1e388c62faf546ee5d45e098a1"
+    },
+    {
+      "path": "family-and-titles/character-36311.excerpt.txt",
+      "bytes": 1267,
+      "sha256": "ef54d555f2ec8987e69aa16040b8c65f32c1b721546a47393b2ceaa8376bca70"
+    },
+    {
+      "path": "family-and-titles/character-38924.excerpt.txt",
+      "bytes": 597,
+      "sha256": "a335b88171905048188387a40db652e585e222c4e8e59a7c5f587a5f068d243a"
+    },
+    {
+      "path": "family-and-titles/character-39348.excerpt.txt",
+      "bytes": 1253,
+      "sha256": "5c2ca27c3d3902ed398fb4efa5456919e8b42bed5c71cc798280e7a342e4e41f"
+    },
+    {
+      "path": "family-and-titles/character-39979.excerpt.txt",
+      "bytes": 592,
+      "sha256": "cbfd7f8862abe10bc249a1e682a84f412b0ffb8e9398f29c1e34dcc4375ee47f"
+    },
+    {
+      "path": "family-and-titles/character-40526.excerpt.txt",
+      "bytes": 1062,
+      "sha256": "ca4a16183bff20ebadb039c3eda47bd881aa601283fbc83055515560e385720f"
+    },
+    {
+      "path": "family-and-titles/character-40695.excerpt.txt",
+      "bytes": 488,
+      "sha256": "dda3ea75c85cafa0811ac4213c5996c78a827ea720cfb9db6d9b04865816c3b7"
+    },
+    {
+      "path": "family-and-titles/character-40847.excerpt.txt",
+      "bytes": 495,
+      "sha256": "7745c662707b4e0c2e45a1275d42ae36e5677101f062593831d23638dc7cc0ab"
+    },
+    {
+      "path": "family-and-titles/character-41032.excerpt.txt",
+      "bytes": 478,
+      "sha256": "de5ce8b51c51f0e1e8648e35429847442389423591a669d02f09cbfce3641b54"
+    },
+    {
+      "path": "family-and-titles/title-2230.excerpt.txt",
+      "bytes": 665,
+      "sha256": "fab3e58a2a3f55a1d76da559ec486f0eba19f0669737e1d0acb2f3fe312da261"
+    },
+    {
+      "path": "family-and-titles/title-2231.excerpt.txt",
+      "bytes": 739,
+      "sha256": "5bab5fec6c494bcf37199d9cbd2bef0b7a1fb3df0f28b7731dab394f4b2b85e9"
+    },
+    {
+      "path": "family-and-titles/title-2232.excerpt.txt",
+      "bytes": 274,
+      "sha256": "88d23d02c27da25cefc85dac22808d73947fc7c02ef35d7acaf3d0f45f8ef9a1"
+    },
+    {
+      "path": "family-and-titles/title-2235.excerpt.txt",
+      "bytes": 411,
+      "sha256": "a4006116817b99b938ef5e0fb5e1b67a2eb3b16b14c73f0405d18a1db0857f90"
+    },
+    {
+      "path": "family-and-titles/title-2262.excerpt.txt",
+      "bytes": 595,
+      "sha256": "b60ecde293edc63050a4cca64bf542ba3293538782cd40c1e2cfec90ed2a3bef"
+    },
+    {
+      "path": "family-and-titles/title-2263.excerpt.txt",
+      "bytes": 250,
+      "sha256": "75a07499a6cc4510d0a1ced09274003df06fac91dedfc54403a029fe055a3d5f"
+    },
+    {
+      "path": "family-and-titles/title-2264.excerpt.txt",
+      "bytes": 410,
+      "sha256": "2260b17d45cbccff834164451e7516cc5567ff5cc4459fcafe891d9bb11ceaef"
+    },
+    {
+      "path": "generic/all-faiths.excerpt.txt",
+      "bytes": 236793,
+      "sha256": "1b5fc151a35e062364f4578b8f8404a6d2cd822df826880dca78d83ea39b20e8"
+    },
+    {
+      "path": "generic/all-rites.excerpt.txt",
+      "bytes": 603007,
+      "sha256": "a16f80c01174e6d0ae342e4731b4768ca3a941f6d39a7bc0f77659c69dac0a0b"
+    },
+    {
+      "path": "generic/character-31254.excerpt.txt",
+      "bytes": 8164,
+      "sha256": "49a75a1e84c176dc284814d5d0dbc6c6469c7bbe4fca09aec4ff29034baaa5e6"
+    },
+    {
+      "path": "generic/metadata.excerpt.txt",
+      "bytes": 32409,
+      "sha256": "1a6c415a6d34a9c97aa2f12ab3636796281b96515fea733888b6e722078b41a3"
+    },
+    {
+      "path": "generic/native-receipt.raw.json",
+      "bytes": 150205,
+      "sha256": "5927f83a403459322f33264a493c3dbe890f837df8f40f13a847c396c6126100"
+    },
+    {
+      "path": "generic/played-character.excerpt.txt",
+      "bytes": 287,
+      "sha256": "f9f82598a6ef39d8a1a3c805701fdacd4cc9f442821b4cc852e4a13b30f80962"
+    },
+    {
+      "path": "generic/report.json",
+      "bytes": 5375715,
+      "sha256": "f707b37e32ceb7cc94668d2f71f14cbdcabc4b423316abd1da7ca09c683fe23b"
+    },
+    {
+      "path": "generic/title-10.excerpt.txt",
+      "bytes": 1746,
+      "sha256": "fc829c7ce1e83dc82916004021c51d1d7d3edddc76d846e72ed99df5b803a573"
+    },
+    {
+      "path": "generic/title-12.excerpt.txt",
+      "bytes": 185,
+      "sha256": "a68f3dd1707fda25dffe0882f38bef7361659d897698c41d030c907c0f329f00"
+    },
+    {
+      "path": "generic/title-16.excerpt.txt",
+      "bytes": 1007,
+      "sha256": "667ddc1e394ce51d27da64a234af7a43e4253e13d96ee4f3dee44e751b4d5181"
+    },
+    {
+      "path": "generic/title-17.excerpt.txt",
+      "bytes": 647,
+      "sha256": "f0484277742362859c59ca13657c58b26a21ebf04551729fd48df417bf46599f"
+    },
+    {
+      "path": "generic/title-198.excerpt.txt",
+      "bytes": 318,
+      "sha256": "d156c12eec2cf2611d8303b8337166017e564293e5e351e8edf71cefeeb08cf2"
+    },
+    {
+      "path": "generic/title-22.excerpt.txt",
+      "bytes": 296,
+      "sha256": "a478ce49c5523f003b1301405d024fdb8a5cff5e085044b15f22e52a5fa508d6"
+    },
+    {
+      "path": "generic/title-4.excerpt.txt",
+      "bytes": 4659,
+      "sha256": "b31128d1b9df60937fb681694200730f775ec4381880eac469cbb990665b3dd9"
+    },
+    {
+      "path": "generic/title-45.excerpt.txt",
+      "bytes": 198,
+      "sha256": "0f9662bd6a1c25adebb89ab4374943dc9cea77f662a4fd587ab42a3d4b0b2dd9"
+    },
+    {
+      "path": "generic/title-46.excerpt.txt",
+      "bytes": 211,
+      "sha256": "8a2849cf4b5c473b37c2edeeb065b4d1f75fdddca31916c084d9872253d5fe32"
+    },
+    {
+      "path": "generic/title-47.excerpt.txt",
+      "bytes": 334,
+      "sha256": "7b4785dad2ce631705af8d4a42d994ce367f40965dabd57515a2b84d904283f7"
+    },
+    {
+      "path": "generic/title-48.excerpt.txt",
+      "bytes": 472,
+      "sha256": "6f6c2f38ea2dfc6334b0208a3c13ae7d5d1ad2ed2003040349fa94774960ff66"
+    },
+    {
+      "path": "generic/title-49.excerpt.txt",
+      "bytes": 205,
+      "sha256": "d479df0cb5e990f1fdd9f79731138dc03903eef0d0623f07b3da2ba6575a3b0b"
+    },
+    {
+      "path": "generic/title-5.excerpt.txt",
+      "bytes": 1971,
+      "sha256": "7e5f9dda94b1615b7f4f2c3172415ce97a8e51794d04dc45b65208839c687b18"
+    },
+    {
+      "path": "generic/title-50.excerpt.txt",
+      "bytes": 198,
+      "sha256": "d1efce0854b260c24678d982618180297fa0aa6123fc1139a532a001e8f6ce8b"
+    },
+    {
+      "path": "generic/title-51.excerpt.txt",
+      "bytes": 218,
+      "sha256": "5a7d12afe58d24eb4a08e783687f3f7fffdb447a91f0897e2e7d1e340364af05"
+    },
+    {
+      "path": "generic/title-54.excerpt.txt",
+      "bytes": 212,
+      "sha256": "d1feac3d7527db12d8d3f80f66faa3d19d1405f14f6a4a2e9d0c82437cba1b8a"
+    },
+    {
+      "path": "generic/title-55.excerpt.txt",
+      "bytes": 207,
+      "sha256": "a1dfe28e5714b426b637764a548c5dcd0577a05d4cb34982ac4b12687c7d78ae"
+    },
+    {
+      "path": "generic/title-56.excerpt.txt",
+      "bytes": 218,
+      "sha256": "0d784811c4b0be33755d005aab6876685f998f575fcb6094461140e70c36d919"
+    },
+    {
+      "path": "generic/title-7.excerpt.txt",
+      "bytes": 326,
+      "sha256": "e11f7d2566bd1b156183d95126b2e769e6ddb051b36d5a58e88cb3385f624805"
+    },
+    {
+      "path": "generic/title-8.excerpt.txt",
+      "bytes": 1437,
+      "sha256": "93da006ce761ce8c73bd0491546f7653f8b101073866ba39acad11697d5b1eb3"
+    },
+    {
+      "path": "generic/title-9.excerpt.txt",
+      "bytes": 736,
+      "sha256": "46991e7df5a68984fe17f45609460bc6a0ea0d806b4e215a2e890311bdbfa26a"
+    },
+    {
+      "path": "README.md",
+      "bytes": 620,
+      "sha256": "d7c92ade146bc9bf5b599f11090e7d745bbc2b5831271bb5d679d9e996ed9184"
+    },
+    {
+      "path": "source/lyd_r3_fixture_effects.txt",
+      "bytes": 768,
+      "sha256": "5a79a925992d3a55586e5558d5c6300d608986467259b3f9b1ec17c8f08096da"
+    },
+    {
+      "path": "source/mod_li_yu_dao/common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 424,
+      "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525"
+    },
+    {
+      "path": "source/mod_li_yu_dao/common/scripted_effects/lyd_entry_effects.txt",
+      "bytes": 3415,
+      "sha256": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e"
+    },
+    {
+      "path": "source/r3_checkpoint_readback.py",
+      "bytes": 16654,
+      "sha256": "ee4e3616876ba1de81123b60a58a183cfbd336d4761ae95d8186e2279c0663ef"
+    },
+    {
+      "path": "source/r6_i2_readback.py",
+      "bytes": 20751,
+      "sha256": "51af4998654e4cf9660d64aeb3e746011ac6b03f38a7da72f0170952a8883bfe"
+    }
+  ]
+}

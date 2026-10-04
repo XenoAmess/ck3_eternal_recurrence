@@ -1,0 +1,11 @@
+{
+  "utc": "2026-10-04T12:39:36.347445+00:00",
+  "hwnd": 2491650,
+  "pid": 12500,
+  "focus_hwnd": 2491650,
+  "LANGID": "0x409",
+  "key": "f8",
+  "route": "UI shortcut absent from current 11 MCP tools",
+  "before_foreground": 2491650,
+  "input_ack_is_not_business_proof": true
+}

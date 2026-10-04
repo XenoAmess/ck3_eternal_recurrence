@@ -1,0 +1,278 @@
+{
+  "schema": "ck3.lyd.r0006-runtime-errors-readonly-diagnosis.v1",
+  "created_utc": "2026-10-04T14:11:23.746499+00:00",
+  "status": "PARTIAL_NATIVE_SUCCESS_WITH_I2_FIXTURE_RED_EXIT_PENDING",
+  "frozen_commit": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+  "actual_failure_snapshot": {
+    "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\i2-qualification-failed-001\\error.log",
+    "bytes": 15407716,
+    "sha256": "6ee8a5cc3cdb3e13c558f1db3456552d810bfff49deebe761e37a45cb9f1d4ae",
+    "line_count": 172943,
+    "e_header_count": 47166,
+    "raw_gzip": "raw/i2-qualification-error.raw.log.gz",
+    "raw_gzip_bytes": 76941,
+    "raw_gzip_sha256": "b3e88ac2fc27967b5125e29d7a7810f04fe00b16147da62b347524cdf0d3ce67",
+    "gzip_roundtrip_exact": true
+  },
+  "first_error_local_time": "21:53:36",
+  "last_error_local_time": "21:58:03",
+  "log_timezone_boundary": "Log HH:MM:SS is local and contains no date/timezone. Receipts are UTC; Asia/Shanghai local21:53:36 corresponds13:53:36Z on actual R6 date, conditional on the stated workstation timezone.",
+  "categories": {
+    "missing_trigger_localization": 3,
+    "unset_learning_delta_variable": 15721,
+    "unset_var_scope_link": 15721,
+    "script_value_wrong_type_none": 15721
+  },
+  "contexts": {
+    "trigger_localization_display": 3,
+    "explicit_tooltip_description": 31442,
+    "evaluation_context_not_explicitly_marked": 15721
+  },
+  "primary_location_domains": {
+    "fixture": 47166
+  },
+  "unknown_parser_or_api": 0,
+  "unclassified": 0,
+  "product_primary_locations": 0,
+  "wrong_type_context_boundary": "15721 none-type messages do not explicitly carry tooltip annotation. They repeat at the same qualification effect line76 adjacent to the explicit tooltip pairs. This association is an inference, not independent proof of committed effect execution.",
+  "snapshots": [
+    {
+      "name": "campaign-loaded-001",
+      "utc": "2026-10-04T12:14:33.230190+00:00",
+      "error": {
+        "path": "error.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "e_count": 0,
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\campaign-loaded-001\\error.log"
+    },
+    {
+      "name": "formal-entry-001",
+      "utc": "2026-10-04T13:06:45.878821+00:00",
+      "error": {
+        "path": "error.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "e_count": 0,
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\formal-entry-001\\error.log"
+    },
+    {
+      "name": "i2-qualification-failed-001",
+      "utc": "2026-10-04T14:04:45.994628+00:00",
+      "error": {
+        "path": "error.log",
+        "bytes": 15407716,
+        "sha256": "6ee8a5cc3cdb3e13c558f1db3456552d810bfff49deebe761e37a45cb9f1d4ae"
+      },
+      "e_count": 47166,
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\i2-qualification-failed-001\\error.log"
+    },
+    {
+      "name": "loading-001",
+      "utc": "2026-10-04T12:03:06.806703+00:00",
+      "error": {
+        "path": "error.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "e_count": 0,
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\loading-001\\error.log"
+    },
+    {
+      "name": "loading-002",
+      "utc": "2026-10-04T12:04:45.737361+00:00",
+      "error": {
+        "path": "error.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "e_count": 0,
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\loading-002\\error.log"
+    },
+    {
+      "name": "lobby-complete-001",
+      "utc": "2026-10-04T12:06:20.215838+00:00",
+      "error": {
+        "path": "error.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "e_count": 0,
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\lobby-complete-001\\error.log"
+    },
+    {
+      "name": "ordinary-campaign-002",
+      "utc": "2026-10-04T12:16:02.367777+00:00",
+      "error": {
+        "path": "error.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "e_count": 0,
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\log-observations\\ordinary-campaign-002\\error.log"
+    }
+  ],
+  "source_proof": [
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\content\\i2-fixture\\common\\scripted_effects\\lyd_r4_fixture_effects.txt",
+      "projected_path": "source/mounted-i2-fixture/common/scripted_effects/lyd_r4_fixture_effects.txt",
+      "bytes": 10470,
+      "sha256": "55a6310eb1a9abef2b08848f9630b7577c5c77d8c887d3647a89f69107b2095c"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\content\\i2-fixture\\common\\scripted_triggers\\lyd_r4_fixture_triggers.txt",
+      "projected_path": "source/mounted-i2-fixture/common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      "bytes": 7886,
+      "sha256": "97f538545fbe3f00220acee85222f4f5b888faccdcf5e37559aee952c85fa8ba"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\content\\i2-fixture\\common\\decisions\\lyd_r4_fixture_decisions.txt",
+      "projected_path": "source/mounted-i2-fixture/common/decisions/lyd_r4_fixture_decisions.txt",
+      "bytes": 2736,
+      "sha256": "adfabd03a3ef3e437a7f30f1111cf746790475051e6f20f2d24fccc3e24e69d6"
+    }
+  ],
+  "readbacks": [
+    {
+      "scenario": "original-confucian-fixture",
+      "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-original-confucian-readback-001",
+      "compact_sha256": "c3005e8236a9a8aec430cb35cff873c8e0553edda562a301354a7a39d48374a1",
+      "addendum_sha256": "8702aff6ed8f0a3bdd0b48d1a902fd4cc45b7c716ecb15f8fd07e3fb16fa311a",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\97461bed54da92ff05da6836f54884c90d6f847a02e6bd9c1bd64dc3da1567fe\\xar_checkpoint.ck3",
+        "bytes": 91297138,
+        "sha256": "97461bed54da92ff05da6836f54884c90d6f847a02e6bd9c1bd64dc3da1567fe"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\291bf3fe63c1d8c3bbbbc97c6d94e47794b031c07934311cbcb83873232fdc8e\\xar_checkpoint.ck3",
+        "bytes": 91282203,
+        "sha256": "291bf3fe63c1d8c3bbbbc97c6d94e47794b031c07934311cbcb83873232fdc8e"
+      },
+      "full_index_sha256": "aee5b8795ae56a9e64e5c89732bbc35c36ec9ab742b93ab168462722f0da6021",
+      "full_report_sha256": "7cf6ec3c345c0f9b4281d155561b1c9e2b0e478de1557ad66c6bc8336f004cf4",
+      "reparsed_save": false,
+      "small_projection_does_not_grant_new_scenario": true
+    },
+    {
+      "scenario": "formal-entry",
+      "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-formal-entry-readback-001",
+      "compact_sha256": "f8cf1da147fd4cae69f812565981b0ea2bb8de6986bb95dd5daab14f8304f2d2",
+      "addendum_sha256": "25ff1ed705cc69172177b33645a74ad3b8e3ad14223d673e8cdacdec00593b75",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\d6296e522615f68aa374a60c2f76f55d95416476ff19e85ddb8e6bfdb203778c\\xar_checkpoint.ck3",
+        "bytes": 91299581,
+        "sha256": "d6296e522615f68aa374a60c2f76f55d95416476ff19e85ddb8e6bfdb203778c"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\97461bed54da92ff05da6836f54884c90d6f847a02e6bd9c1bd64dc3da1567fe\\xar_checkpoint.ck3",
+        "bytes": 91297138,
+        "sha256": "97461bed54da92ff05da6836f54884c90d6f847a02e6bd9c1bd64dc3da1567fe"
+      },
+      "full_index_sha256": "09bc295a69439e9191cdee58be88d63cf07d3d230ef1d8389361b2a37e3d59ec",
+      "full_report_sha256": "7782bf44a9d0b0e1bd537f06ce844581942c84a9f29c094623169c7489703676",
+      "reparsed_save": false,
+      "small_projection_does_not_grant_new_scenario": true
+    },
+    {
+      "scenario": "chooser-cancel",
+      "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-chooser-cancel-readback-001",
+      "compact_sha256": "472b2b0beef0aff8459dc2232650d532f08fae5fe9be13b6e7690072303ef778",
+      "addendum_sha256": "b0a70245220f51c575a28f63ee0e823c94cb35ec15c01279287b32ac3e9b1982",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\6017a24dfbf68405fcae89ca9f572ef2443bf4627540a61f46673320703c2f7e\\xar_checkpoint.ck3",
+        "bytes": 91299581,
+        "sha256": "6017a24dfbf68405fcae89ca9f572ef2443bf4627540a61f46673320703c2f7e"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\d6296e522615f68aa374a60c2f76f55d95416476ff19e85ddb8e6bfdb203778c\\xar_checkpoint.ck3",
+        "bytes": 91299581,
+        "sha256": "d6296e522615f68aa374a60c2f76f55d95416476ff19e85ddb8e6bfdb203778c"
+      },
+      "full_index_sha256": "6b4ef1c726914af0d4f121e98574b5753ba793aa5af882ef1d86d5e2ef12b0cc",
+      "full_report_sha256": "7d0848108e3e0ff4633faad2f10b16550aeab3a04c9b8abba2f0e13e4c000919",
+      "reparsed_save": false,
+      "small_projection_does_not_grant_new_scenario": true
+    },
+    {
+      "scenario": "zhuxi-choice",
+      "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-zhuxi-choice-readback-001",
+      "compact_sha256": "a8f79b02f4bf7c9496acbd105b0834ae1872359802ea622d968f71e836ce9511",
+      "addendum_sha256": "3d77d73205cc4638cb65ae87257cfac0d14239d2b2ff1b32192845a684278e92",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\95e7babc5c2c15d93cac491c87dd9e3e77e24bf3323c0c7006f9e570c95e0959\\xar_checkpoint.ck3",
+        "bytes": 91301037,
+        "sha256": "95e7babc5c2c15d93cac491c87dd9e3e77e24bf3323c0c7006f9e570c95e0959"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\6017a24dfbf68405fcae89ca9f572ef2443bf4627540a61f46673320703c2f7e\\xar_checkpoint.ck3",
+        "bytes": 91299581,
+        "sha256": "6017a24dfbf68405fcae89ca9f572ef2443bf4627540a61f46673320703c2f7e"
+      },
+      "full_index_sha256": "9f8abdb3b130d45ffa03308bd2f5748533228848c000c3f799b8e2090736ec0a",
+      "full_report_sha256": "444a19a5f6000fa3684d090ae5d0511df9caa80b552a4f14832d951c452cd73d",
+      "reparsed_save": false,
+      "small_projection_does_not_grant_new_scenario": true
+    },
+    {
+      "scenario": "practice-cancel",
+      "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-practice-cancel-readback-001",
+      "compact_sha256": "0e203bcf800f8f972540f7b90ff1eac2f403b3cc22712a75027a97a312df965a",
+      "addendum_sha256": "08c3653053ee67a9f85be412e513a8f3123db88f09b0a02f34f841c1b17fb88f",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\a35a831a9717aa94b44d3d876cfc1e3ae0fffde60f3a82918e2407792e06b58d\\xar_checkpoint.ck3",
+        "bytes": 91301037,
+        "sha256": "a35a831a9717aa94b44d3d876cfc1e3ae0fffde60f3a82918e2407792e06b58d"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\95e7babc5c2c15d93cac491c87dd9e3e77e24bf3323c0c7006f9e570c95e0959\\xar_checkpoint.ck3",
+        "bytes": 91301037,
+        "sha256": "95e7babc5c2c15d93cac491c87dd9e3e77e24bf3323c0c7006f9e570c95e0959"
+      },
+      "full_index_sha256": "908c39e6981254b00a3ff5a0d2446494bec09e6ba2cc4684530eeaf3a963348a",
+      "full_report_sha256": "bd21a30a5677b46d45fdbb45b504260aaedafc2f8a34c7849322805c3c73fcf3",
+      "reparsed_save": false,
+      "small_projection_does_not_grant_new_scenario": true
+    },
+    {
+      "scenario": "practice-a",
+      "result": "PASS_EXPLICIT_SAVED_SCENARIO",
+      "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-practice-a-readback-001",
+      "compact_sha256": "04df2c5e4ed3e96e28a4e1d6604aeaf9ff5d5910c23c1bd23f358ee0769494d1",
+      "addendum_sha256": "73de25449461185fce6777ed2ac0a99d8b3ce88fff64495160b95709810b51d2",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c\\xar_checkpoint.ck3",
+        "bytes": 91301141,
+        "sha256": "5431b7d1bd9aac264c48c5f72a79c0f171c386861e27703fc620dd00cc72486c"
+      },
+      "baseline_artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\a35a831a9717aa94b44d3d876cfc1e3ae0fffde60f3a82918e2407792e06b58d\\xar_checkpoint.ck3",
+        "bytes": 91301037,
+        "sha256": "a35a831a9717aa94b44d3d876cfc1e3ae0fffde60f3a82918e2407792e06b58d"
+      },
+      "full_index_sha256": "26c13d4bc41ed8ad7605fbec3fd68e02a09ddd32414d5c974605815f0efa356c",
+      "full_report_sha256": "ced34500f7e94d681875f87519dad7412fd8921df79d402e7b6283de48d166de",
+      "reparsed_save": false,
+      "small_projection_does_not_grant_new_scenario": true
+    }
+  ],
+  "qualification_failed_save_readback": "PENDING_SEPARATE_AGENT_0027",
+  "overall_native_acceptance": "NOT_GREEN",
+  "normal_exit": "NOT_YET_OBSERVED",
+  "source_effect_reason": "Displayed effect initializes lyd_r4_learning_delta through prior set_variable, then uses var in add_learning_skill; tooltip evaluation reports unset var at line76. Read-only finding; no code changed.",
+  "boundary": {
+    "tracked_mutations": 0,
+    "git_operations": 0,
+    "game_or_screen_operations": 0,
+    "original_mutations": 0,
+    "save_copies": 0,
+    "full_graph_copies": 0,
+    "save_reparse": false
+  }
+}

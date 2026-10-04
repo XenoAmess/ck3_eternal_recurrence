@@ -1,0 +1,115 @@
+{
+  "_meta": {
+    "io.modelcontextprotocol/serverInfo": {
+      "name": "CK3 frozen native profile",
+      "version": ""
+    }
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"schema\": \"ck3.native-profile-receipt.v1\",\n  \"session_id\": \"4b3809aa40264a9581b8392d565d63ba\",\n  \"profile_sha256\": \"74601f97464a5faeb14312c4e2fa7458153c36fd7c2d5349a37ef852ec1db661\",\n  \"pipe_name\": \"\\\\\\\\.\\\\pipe\\\\xar_profile_4b3809aa40264a9581b8392d565d63ba\",\n  \"recorded_at_utc\": \"2026-10-04T13:04:28.113918+00:00\",\n  \"status\": \"native_event_query_verified\",\n  \"result\": {\n    \"step\": \"query-current-event-window-context-v1\",\n    \"accepted\": true,\n    \"status\": \"unavailable\",\n    \"query_sequence\": 1,\n    \"snapshot_revision\": 3,\n    \"current_event_window_context\": {\n      \"schema\": \"current-event-window-context-v1\",\n      \"schema_version\": 1,\n      \"status\": \"unavailable\",\n      \"snapshot_revision\": 3,\n      \"date_raw\": 53144328,\n      \"current_event_instance_id\": 1,\n      \"window_match_count\": 0,\n      \"unavailable_reason\": \"event_saved_scope_invalid\",\n      \"event_definition_key\": null,\n      \"calculated_event_id\": null,\n      \"runtime_stats_ordinal\": null,\n      \"root_scope\": null,\n      \"saved_scopes\": null,\n      \"options\": null,\n      \"readiness\": {\n        \"event_definition_identity_ready\": false,\n        \"root_scope_ready\": false,\n        \"saved_scopes_ready\": false,\n        \"option_presentation_ready\": false,\n        \"effect_indicators_ready\": false,\n        \"effect_preview_ready\": false,\n        \"semantic_decision_ready\": false\n      },\n      \"provenance\": {\n        \"root\": \"module+0x5C6A520->+0x10\",\n        \"idler_vtable_rva\": \"0x44BC408\",\n        \"manager_offset\": \"+0x28\",\n        \"backend_id\": \"ck3-1.20.0.3-native-event-window-v1\"\n      }\n    },\n    \"backend_id\": \"native-headless\",\n    \"schema\": \"current-event-window-context-v1\",\n    \"schema_version\": 1,\n    \"date_raw\": 53144328,\n    \"current_event_instance_id\": 1,\n    \"window_match_count\": 0,\n    \"unavailable_reason\": \"event_saved_scope_invalid\",\n    \"event_definition_key\": null,\n    \"calculated_event_id\": null,\n    \"runtime_stats_ordinal\": null,\n    \"root_scope\": null,\n    \"saved_scopes\": null,\n    \"options\": null,\n    \"readiness\": {\n      \"event_definition_identity_ready\": false,\n      \"root_scope_ready\": false,\n      \"saved_scopes_ready\": false,\n      \"option_presentation_ready\": false,\n      \"effect_indicators_ready\": false,\n      \"effect_preview_ready\": false,\n      \"semantic_decision_ready\": false\n    },\n    \"provenance\": {\n      \"root\": \"module+0x5C6A520->+0x10\",\n      \"idler_vtable_rva\": \"0x44BC408\",\n      \"manager_offset\": \"+0x28\",\n      \"backend_id\": \"ck3-1.20.0.3-native-event-window-v1\"\n    },\n    \"current_event_window_context_ready\": false,\n    \"current_event_effect_indicators_ready\": false,\n    \"queried_snapshot_id\": \"native:3\",\n    \"queried_revision\": 4,\n    \"queried_native_revision\": 3,\n    \"scope\": \"exact-current-event-window\",\n    \"source\": {\n      \"snapshot_id\": \"native:3\",\n      \"revision\": 4,\n      \"native_revision\": 3,\n      \"date_raw\": 53144328,\n      \"paused\": true,\n      \"backend_id\": \"native-headless\"\n    },\n    \"binding\": {\n      \"snapshot_id\": \"native:3\",\n      \"revision\": 4,\n      \"native_revision\": 3,\n      \"date_raw\": 53144328,\n      \"expected_revision\": 4,\n      \"event_instance_id\": 1\n    }\n  },\n  \"receipt_path\": \"C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\live-attempt-006\\\\native-evidence\\\\4b3809aa40264a9581b8392d565d63ba\\\\0007-event-query.json\"\n}",
+      "annotations": null,
+      "_meta": null
+    }
+  ],
+  "structuredContent": {
+    "schema": "ck3.native-profile-receipt.v1",
+    "session_id": "4b3809aa40264a9581b8392d565d63ba",
+    "profile_sha256": "74601f97464a5faeb14312c4e2fa7458153c36fd7c2d5349a37ef852ec1db661",
+    "pipe_name": "\\\\.\\pipe\\xar_profile_4b3809aa40264a9581b8392d565d63ba",
+    "recorded_at_utc": "2026-10-04T13:04:28.113918+00:00",
+    "status": "native_event_query_verified",
+    "result": {
+      "step": "query-current-event-window-context-v1",
+      "accepted": true,
+      "status": "unavailable",
+      "query_sequence": 1,
+      "snapshot_revision": 3,
+      "current_event_window_context": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "unavailable",
+        "snapshot_revision": 3,
+        "date_raw": 53144328,
+        "current_event_instance_id": 1,
+        "window_match_count": 0,
+        "unavailable_reason": "event_saved_scope_invalid",
+        "event_definition_key": null,
+        "calculated_event_id": null,
+        "runtime_stats_ordinal": null,
+        "root_scope": null,
+        "saved_scopes": null,
+        "options": null,
+        "readiness": {
+          "event_definition_identity_ready": false,
+          "root_scope_ready": false,
+          "saved_scopes_ready": false,
+          "option_presentation_ready": false,
+          "effect_indicators_ready": false,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC408",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.3-native-event-window-v1"
+        }
+      },
+      "backend_id": "native-headless",
+      "schema": "current-event-window-context-v1",
+      "schema_version": 1,
+      "date_raw": 53144328,
+      "current_event_instance_id": 1,
+      "window_match_count": 0,
+      "unavailable_reason": "event_saved_scope_invalid",
+      "event_definition_key": null,
+      "calculated_event_id": null,
+      "runtime_stats_ordinal": null,
+      "root_scope": null,
+      "saved_scopes": null,
+      "options": null,
+      "readiness": {
+        "event_definition_identity_ready": false,
+        "root_scope_ready": false,
+        "saved_scopes_ready": false,
+        "option_presentation_ready": false,
+        "effect_indicators_ready": false,
+        "effect_preview_ready": false,
+        "semantic_decision_ready": false
+      },
+      "provenance": {
+        "root": "module+0x5C6A520->+0x10",
+        "idler_vtable_rva": "0x44BC408",
+        "manager_offset": "+0x28",
+        "backend_id": "ck3-1.20.0.3-native-event-window-v1"
+      },
+      "current_event_window_context_ready": false,
+      "current_event_effect_indicators_ready": false,
+      "queried_snapshot_id": "native:3",
+      "queried_revision": 4,
+      "queried_native_revision": 3,
+      "scope": "exact-current-event-window",
+      "source": {
+        "snapshot_id": "native:3",
+        "revision": 4,
+        "native_revision": 3,
+        "date_raw": 53144328,
+        "paused": true,
+        "backend_id": "native-headless"
+      },
+      "binding": {
+        "snapshot_id": "native:3",
+        "revision": 4,
+        "native_revision": 3,
+        "date_raw": 53144328,
+        "expected_revision": 4,
+        "event_instance_id": 1
+      }
+    },
+    "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0007-event-query.json"
+  },
+  "isError": false,
+  "resultType": "complete"
+}

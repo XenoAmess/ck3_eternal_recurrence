@@ -1,0 +1,22 @@
+{
+  "lobby-new-game": {
+    "source_image": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\focus-title-readback.png",
+    "source_sha256": "abd33f3c603567c508173d99e2c4fa45070acccb2536e4d2e262eafd47d960e2",
+    "preview_bounds": [
+      0,
+      0,
+      1920,
+      1080
+    ],
+    "observed_point": [
+      534,
+      436
+    ],
+    "reviewed_bounds": [
+      405,
+      413,
+      261,
+      46
+    ]
+  }
+}

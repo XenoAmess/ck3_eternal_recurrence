@@ -1,0 +1,12 @@
+{
+  "artifact": {
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\userdir\\save games\\autosave_exit.ck3",
+    "preserved": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-terminal-closure-20261005-001\\exit-autosave.ck3",
+    "bytes": 90506624,
+    "sha256": "23b0c18b59cd59bbbe55f94e4bc47333de339a1076bd64a43cea102562f41bd7",
+    "route": "actual CK3 normal-exit autosave selected in GUI; no synthetic save"
+  },
+  "save_copied": false,
+  "source_save_sha_verified": true,
+  "reason": "Actual exit autosave permanently external; no90MB rawsave in tracked report. No business-state parse or vote inference by this report writer."
+}

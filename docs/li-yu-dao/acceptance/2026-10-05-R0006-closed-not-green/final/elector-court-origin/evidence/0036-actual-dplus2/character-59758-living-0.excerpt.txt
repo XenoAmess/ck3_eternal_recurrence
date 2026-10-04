@@ -1,0 +1,46 @@
+59758={
+	first_name="Geraud"
+	birth=1030.5.5
+	nickname_text=""
+	ethnicity=caucasian_dark_hair
+	culture=73
+	rite=0
+	skill={ 1 0 10 4 7 9 }
+	mass=1
+	traits={ 47 71 78 22 }
+	alive_data={
+		variables={
+			data={ {
+					flag=pam_latin_schooling_rolled
+					data={
+					}
+
+				}
+ }
+		}
+		fertility=0.50256
+		health=4.54877
+		piety={
+			currency=50
+		}
+		prestige={
+			currency=300
+		}
+		influence={
+			currency=120
+		}
+		languages={ language_french }
+		activity_data={
+		}
+
+		location={
+			location=2633
+		}
+	}
+
+	court_data={
+		employer=34232
+		join_court_date=1066.9.15
+	}
+
+}

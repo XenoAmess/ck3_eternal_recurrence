@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 28,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue\\0028-i2-failure-ack.request.json",
+  "request_sha256": "24688428c09ca165a0ce0735e488cdc70155965148a54c8297711f09ae557b8c",
+  "started_at_utc": "2026-10-04T14:09:14.170087+00:00",
+  "request_id": "0028-i2-failure-ack",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0028-0028-i2-failure-ack.sdk-result.json",
+  "sdk_result_sha256": "39435c29eaab9d83de8451a5add24c223dada1d25cd29fce22e492c600ad33b6",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0027-event-select.json",
+      "copy": "0028-0028-i2-failure-ack.native-01.json",
+      "sha256": "1d08f8664e481b4330a710e46f4b0b166f87ec1d671233401209b33990a18d33"
+    }
+  ],
+  "finished_at_utc": "2026-10-04T14:09:16.853756+00:00"
+}

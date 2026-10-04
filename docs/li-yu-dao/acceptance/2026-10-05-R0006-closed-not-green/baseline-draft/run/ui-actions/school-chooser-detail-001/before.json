@@ -1,0 +1,40 @@
+{
+  "utc": "2026-10-04T13:10:50.239951+00:00",
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\expand-major-decisions-002.png",
+  "source_sha256": "5fc829e13bfa62701c61a95921a38db574e2a0d5e730baf0247f0526db16f77e",
+  "actual_hwnd": 2491650,
+  "actual_pid": 12500,
+  "preview_content_rect": [
+    0,
+    0,
+    1920,
+    1080
+  ],
+  "observed_point": [
+    1486.0,
+    904.0
+  ],
+  "route": "Current native MCP exposes 11 tools and no menu/decision initiation; UI fallback.",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:/workspace/ck3_eternal_recurrence/tools/desktop_coordinate_map.py",
+    "--source-image",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\expand-major-decisions-002.png",
+    "--preview-left",
+    "0",
+    "--preview-top",
+    "0",
+    "--preview-width",
+    "1920",
+    "--preview-height",
+    "1080",
+    "--observed-x",
+    "1486.0",
+    "--observed-y",
+    "904.0",
+    "--click",
+    "--receipt",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\ui-actions\\school-chooser-detail-001\\post-click.png"
+  ],
+  "only_target": "isolated R0006 current window"
+}

@@ -1,0 +1,157 @@
+{
+  "source_package": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-resource-and-elector-origin-resume-20261005-003",
+  "source_index_sha256": "6fe691ffa556ba575657272135a3d31f1281933cf8169337524edfa6eb58f5e1",
+  "source_all_indexed_bytes_verified": true,
+  "excluded": [
+    {
+      "path": "evidence/0030-setup/all-character-record-hash-map.json",
+      "bytes": 31783682,
+      "sha256": "ba8481baed95be5d757f6971506139463e7f4358b896268e29d6c8dd1e5dc277",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "evidence/0030-setup/duplicate-character-occurrences.json",
+      "bytes": 19721969,
+      "sha256": "c2f13ca2828590bb8e1674c6feb7af615eb6e61ee99e5a105f06de95c8dfd37f",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "evidence/0030-setup/selected-character-state.json",
+      "bytes": 150146,
+      "sha256": "8bdc50e443a9bbbdf1a631cf10f0d3c666fe62e2babbc539c6cb6f7102d9828a",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "evidence/0030-setup--to--0036-actual-dplus2.world-character-delta.json",
+      "bytes": 120967,
+      "sha256": "2232b57d18ef18072e4ac9bcc18cd04461f2c6a31eb99c65901c96d0e867febb",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "evidence/0036-actual-dplus2/all-character-record-hash-map.json",
+      "bytes": 31788786,
+      "sha256": "37b93247d1a458c94738eeffcd70d79dc928e1e8fea663cf9d392c0324093bfd",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "evidence/0036-actual-dplus2/duplicate-character-occurrences.json",
+      "bytes": 19722610,
+      "sha256": "a6f765b1f7fdb9f1d06fd3a24015af66e6aab539640f71740599e8925a7b44a7",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "evidence/0036-actual-dplus2/selected-character-state.json",
+      "bytes": 273620,
+      "sha256": "60a875c049d744c3507acab0d512d44341882e6882a31876d1f9ef4d21187db1",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "evidence/0036-actual-dplus2--to--0040-resources.world-character-delta.json",
+      "bytes": 491,
+      "sha256": "02008e6e3d37c5fb28748775442f2a1020576b8d53b95a5028c2d9e4e2e23755",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "evidence/0040-resources/all-character-record-hash-map.json",
+      "bytes": 31788786,
+      "sha256": "6f0ded430b64a77a1efaa0d2a9a1837065bd612f2f9c0642f607e9e38a8732dc",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "evidence/0040-resources/duplicate-character-occurrences.json",
+      "bytes": 19722610,
+      "sha256": "a6f765b1f7fdb9f1d06fd3a24015af66e6aab539640f71740599e8925a7b44a7",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "evidence/0040-resources/selected-character-state.json",
+      "bytes": 283571,
+      "sha256": "a7848f0e5e015b25018e321ddf03a1d89284e874e0c8178ff30a8f601c3a36c9",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "evidence/0040-resources--to--0042-proposal-open.world-character-delta.json",
+      "bytes": 531,
+      "sha256": "04333bce93add205692c301d801c169af2dd7e7c66e3c5fbe8ce232aa1dc1a75",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "evidence/0042-proposal-open/all-character-record-hash-map.json",
+      "bytes": 31788789,
+      "sha256": "3e5487f635eedd04eb3d538e283e8324d197bb79dcf2dd5beec0a54cb0c66024",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "evidence/0042-proposal-open/duplicate-character-occurrences.json",
+      "bytes": 19722610,
+      "sha256": "a6f765b1f7fdb9f1d06fd3a24015af66e6aab539640f71740599e8925a7b44a7",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "evidence/0042-proposal-open/graph/actual-graph-state.json",
+      "bytes": 3317011,
+      "sha256": "68cdc758cec7fe41fae128fe92f7416e246de0ba3475bf95ea0006fb752fe73a",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "evidence/0042-proposal-open/graph/all-rites.excerpt.txt",
+      "bytes": 603365,
+      "sha256": "fd682dd440e8821ab27027fd58be983fff3bb8dc860fb04a574cffa828836726",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "evidence/0042-proposal-open/selected-character-state.json",
+      "bytes": 402416,
+      "sha256": "54545e00320bd6a149f4fad65b9c4fb0bcb03b0928e2ecf1cc9b15bfaf09e04b",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "evidence/resource-actor-lossless-field-delta.json",
+      "bytes": 8070,
+      "sha256": "87d28e6ecc98938450873daf21182685b7fa971fb81a03c61bc20e10cb4509ed",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "input-normalization/0030-setup.saved-entries-only-report.json",
+      "bytes": 3995665,
+      "sha256": "78d62ea3fad975550781833959522037502232fc9201c65fc96e665d874433f1",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "input-normalization/0036-actual-dplus2.saved-entries-only-report.json",
+      "bytes": 4004023,
+      "sha256": "2ce31733cd1c1ed5d7ac5e016366a4e2548b5299aa7c11e9690eff6a7fbdcfb4",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "input-normalization/0040-resources.saved-entries-only-report.json",
+      "bytes": 4027009,
+      "sha256": "727ac38b0ea3442676fb387cdb7c322e32ff34c95f1b69d6ef95707731932e50",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "inputs/0030-setup.generic-report.raw.json",
+      "bytes": 3995665,
+      "sha256": "78d62ea3fad975550781833959522037502232fc9201c65fc96e665d874433f1",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "inputs/0036-actual-dplus2.generic-report.raw.json",
+      "bytes": 4004023,
+      "sha256": "2ce31733cd1c1ed5d7ac5e016366a4e2548b5299aa7c11e9690eff6a7fbdcfb4",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "inputs/0040-resources.generic-report.raw.json",
+      "bytes": 4027009,
+      "sha256": "727ac38b0ea3442676fb387cdb7c322e32ff34c95f1b69d6ef95707731932e50",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    },
+    {
+      "path": "run_occurrence_readback.py",
+      "bytes": 8276,
+      "sha256": "2b5b5e25c1e74aa4867bb5b48bb686547f98554460d94d56a6e7b637a1f52bf1",
+      "reason": "Full duplicate-occurrence/world hash map or repeated input remains permanently external; full reports and exact sourceindex bind every byte."
+    }
+  ]
+}

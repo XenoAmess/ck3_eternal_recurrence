@@ -1,0 +1,42 @@
+{
+  "schema": "lyd.r6.closure-review.v1",
+  "attempt": "live-attempt-006",
+  "source_revision": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+  "overall_native_acceptance": "NOT_GREEN",
+  "example_only": true,
+  "status": "NOT_EVIDENCE_DO_NOT_USE_AS_CLOSURE",
+  "lifecycle": {
+    "normal_exit": {
+      "status": "PENDING_REAL_EVIDENCE",
+      "evidence": []
+    },
+    "process_absence": {
+      "status": "PENDING_REAL_EVIDENCE",
+      "evidence": []
+    },
+    "sdk_close": {
+      "status": "PENDING_REAL_EVIDENCE",
+      "evidence": []
+    },
+    "screen_lease_release": {
+      "status": "PENDING_REAL_EVIDENCE",
+      "evidence": []
+    },
+    "source_freeze_release": {
+      "status": "PENDING_REAL_EVIDENCE",
+      "evidence": []
+    }
+  },
+  "required_actual_statuses": {
+    "normal_exit": "OBSERVED_NORMAL_EXIT",
+    "process_absence": "OBSERVED_PROCESS_ABSENCE",
+    "sdk_close": "OBSERVED_SESSION_CLOSED",
+    "screen_lease_release": "OBSERVED_RELEASED",
+    "source_freeze_release": "OBSERVED_RELEASED"
+  },
+  "evidence_row_shape": {
+    "path": "absolute existing immutable closure-package file",
+    "bytes": "actual integer",
+    "sha256": "actual digest"
+  }
+}

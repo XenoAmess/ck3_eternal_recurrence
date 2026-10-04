@@ -1,0 +1,39 @@
+65862={
+	first_name="amira"
+	birth=1036.3.12
+	nickname_text=""
+	ethnicity=mediterranean
+	culture=103
+	rite=20
+	dynasty_house=12760
+	skill={ 1 0 9 9 7 1 }
+	mass=-22
+	traits={ 72 66 54 22 235 }
+	alive_data={
+		fertility=0.52312
+		health=4.6647
+		piety={
+			currency=50
+		}
+		prestige={
+			currency=300
+		}
+		influence={
+			currency=120
+		}
+		languages={ language_iranian }
+		activity_data={
+		}
+
+		location={
+			location=4319
+		}
+	}
+
+	court_data={
+		employer=38670
+		join_court_date=1066.9.16
+		court_positions={ 128 }
+	}
+
+}

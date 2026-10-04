@@ -1,0 +1,16 @@
+{
+  "schema": "ck3.lyd.persistent-mcp-session.v1",
+  "client_session_id": "87d9d3a0b22e477a8e9192b42a4aa4e2",
+  "profile": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\profile-001\\native-profile.json",
+  "profile_sha256": "74601f97464a5faeb14312c4e2fa7458153c36fd7c2d5349a37ef852ec1db661",
+  "server": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_native_profile_mcp.py",
+  "server_sha256": "4fa041c9ea9ea81885e5ca8a17cdac2a8880d7a1b980497012d600058f60a1ed",
+  "interpreter": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "queue": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue",
+  "started_at_utc": "2026-10-04T12:07:52.827923+00:00",
+  "cache": null,
+  "automatic_attach": false,
+  "automatic_retry": false,
+  "ready_at_utc": "2026-10-04T12:07:58.675683+00:00",
+  "status": "CLIENT_CONNECTED; bridge NOT_ATTACHED automatically"
+}

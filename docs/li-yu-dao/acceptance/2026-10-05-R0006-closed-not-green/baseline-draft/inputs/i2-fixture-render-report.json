@@ -1,0 +1,209 @@
+{
+  "status": "RENDERED_EXTERNAL_NOT_LIVE",
+  "run_input": "R5_FORMAL_I4_36_RITES",
+  "catalogue_input_sha256": "167f262f3f427e9dd455309d9830f7693fc394d48bc23d12ec9a718e7633e76f",
+  "live": "NOT_RUN",
+  "production": false,
+  "created_npcs": 2,
+  "rite_definitions": 0,
+  "faith_definitions": 0,
+  "eligible_original_rites": [
+    "kongmen",
+    "mengzi",
+    "xunzi",
+    "dongzhongshu",
+    "guwen",
+    "zhengxuan",
+    "wangsu",
+    "wangbi",
+    "guoxiang",
+    "jingshu",
+    "hanyu",
+    "liao",
+    "zhoudunyi",
+    "chengbrothers",
+    "zhangzai",
+    "shaoyong",
+    "wanganshi",
+    "sushi",
+    "huxiang",
+    "zhuxi",
+    "lujiuyuan",
+    "yongjia",
+    "yongkang",
+    "wucheng",
+    "chenxianzhang",
+    "zhanruoshui",
+    "wangyangming",
+    "jiangyou",
+    "taizhou",
+    "liuzongzhou",
+    "donglin",
+    "wangfuzhi",
+    "yanli",
+    "qianjia",
+    "changzhou",
+    "jingshi"
+  ],
+  "runtime_postcondition": "35 original source rites + 1 actual detached Jingshu receiving rite; actor unchanged",
+  "same_core_result": "NOT_A_PROVEN_NATIVE_API_REPLACED_BY_LYD_MAIN_DOCTRINE_GATE",
+  "faith_ids": "REQUIRES_ACTUAL_RUNTIME_BINDINGS_NOT_HARDCODED",
+  "same_main_doctrines_result": "REQUIRES_ACTUAL_RUNTIME_SNAPSHOT",
+  "shared_gate": "lyd_c2_same_main_doctrines_trigger; Faith root; TARGET actual Faith; conservative effective main-rite Doctrine equality; not Tenet equality",
+  "legacy_same_core_variable": "lyd_r4_same_core retained for readback compatibility; now records the shared main-doctrine gate only",
+  "formal_consent": "NOT_SEEDED_NOT_LIVE",
+  "wallet": "SETUP_UNCHANGED_SEPARATE_EXPLICIT_ONCE_RESOURCE_DECISION_PLUS_2000_GOLD_PLUS_9000_PIETY",
+  "cooldown_test": "EXPLICIT_ACCEPTANCE_RESET_NOT_NATURAL_EXPIRY",
+  "checkout_before": {
+    "head": "01b4dda39505929c1245de699e67862f4130a02e",
+    "tracked_status": [
+      " M docs/li-yu-dao/README.md",
+      " M mod_li_yu_dao/README.md",
+      " M mod_li_yu_dao/common/religion/rite_types/lyd_rites.txt",
+      " M mod_li_yu_dao/common/religion/tenet_types/lyd_tenets.txt",
+      " M mod_li_yu_dao/common/scripted_effects/lyd_c2_commit_effects.txt",
+      " M mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+      " M mod_li_yu_dao/common/scripted_effects/lyd_c3_migration_hooks.txt",
+      " M mod_li_yu_dao/common/scripted_effects/lyd_entry_effects.txt",
+      " M mod_li_yu_dao/common/scripted_effects/lyd_school_effects.txt",
+      " M mod_li_yu_dao/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      " M mod_li_yu_dao/common/scripted_triggers/lyd_player_triggers.txt",
+      " M mod_li_yu_dao/docs/acceptance-matrix.md",
+      " M mod_li_yu_dao/events/lyd_events.txt",
+      " M mod_li_yu_dao/history/faiths/lyd_faith_history.txt",
+      " M mod_li_yu_dao/localization/english/lyd_content_l_english.yml",
+      " M mod_li_yu_dao/localization/english/lyd_runtime_l_english.yml",
+      " M mod_li_yu_dao/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      " M mod_li_yu_dao/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      " M mod_li_yu_dao/tools/build_release.py",
+      " M mod_li_yu_dao/tools/content_data.py",
+      " M mod_li_yu_dao/tools/gen_content.py",
+      " M mod_li_yu_dao/tools/gen_runtime.py",
+      " M mod_li_yu_dao/tools/gen_school_consent.py",
+      " M mod_li_yu_dao/tools/run_acceptance.py",
+      " M mod_li_yu_dao/tools/school_consent_model.py",
+      " M mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_commit_effects.txt",
+      " M mod_li_yu_dao/tools/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      " M mod_li_yu_dao/tools/test_build_release.py",
+      " M mod_li_yu_dao/tools/test_school_consent.py",
+      " M mod_li_yu_dao/tools/validate_static.py"
+    ],
+    "sha256": {
+      "mod_li_yu_dao/common/religion/rite_types/lyd_rites.txt": "929fb9f7cc6df5a7e8a1acfcc07b43ace9a397bb22246e6884884d5920762a20",
+      "mod_li_yu_dao/common/religion/faith_types/lyd_faiths.txt": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525",
+      "mod_li_yu_dao/tools/gen_runtime.py": "bda3bb64349d46c450765d55b5dce9d0338796ca7a7369d164223d08ed6190fb",
+      "tools/extract_auto_upgrade_buildings.py": "f37063db3e2322dbad713f5b58fa75287970f462402e94c0efea54ea154d8286"
+    }
+  },
+  "checkout_after": {
+    "head": "01b4dda39505929c1245de699e67862f4130a02e",
+    "tracked_status": [
+      " M docs/li-yu-dao/README.md",
+      " M mod_li_yu_dao/README.md",
+      " M mod_li_yu_dao/common/religion/rite_types/lyd_rites.txt",
+      " M mod_li_yu_dao/common/religion/tenet_types/lyd_tenets.txt",
+      " M mod_li_yu_dao/common/scripted_effects/lyd_c2_commit_effects.txt",
+      " M mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+      " M mod_li_yu_dao/common/scripted_effects/lyd_c3_migration_hooks.txt",
+      " M mod_li_yu_dao/common/scripted_effects/lyd_entry_effects.txt",
+      " M mod_li_yu_dao/common/scripted_effects/lyd_school_effects.txt",
+      " M mod_li_yu_dao/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      " M mod_li_yu_dao/common/scripted_triggers/lyd_player_triggers.txt",
+      " M mod_li_yu_dao/docs/acceptance-matrix.md",
+      " M mod_li_yu_dao/events/lyd_events.txt",
+      " M mod_li_yu_dao/history/faiths/lyd_faith_history.txt",
+      " M mod_li_yu_dao/localization/english/lyd_content_l_english.yml",
+      " M mod_li_yu_dao/localization/english/lyd_runtime_l_english.yml",
+      " M mod_li_yu_dao/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      " M mod_li_yu_dao/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      " M mod_li_yu_dao/tools/build_release.py",
+      " M mod_li_yu_dao/tools/content_data.py",
+      " M mod_li_yu_dao/tools/gen_content.py",
+      " M mod_li_yu_dao/tools/gen_runtime.py",
+      " M mod_li_yu_dao/tools/gen_school_consent.py",
+      " M mod_li_yu_dao/tools/run_acceptance.py",
+      " M mod_li_yu_dao/tools/school_consent_model.py",
+      " M mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_commit_effects.txt",
+      " M mod_li_yu_dao/tools/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      " M mod_li_yu_dao/tools/test_build_release.py",
+      " M mod_li_yu_dao/tools/test_school_consent.py",
+      " M mod_li_yu_dao/tools/validate_static.py"
+    ],
+    "sha256": {
+      "mod_li_yu_dao/common/religion/rite_types/lyd_rites.txt": "929fb9f7cc6df5a7e8a1acfcc07b43ace9a397bb22246e6884884d5920762a20",
+      "mod_li_yu_dao/common/religion/faith_types/lyd_faiths.txt": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525",
+      "mod_li_yu_dao/tools/gen_runtime.py": "bda3bb64349d46c450765d55b5dce9d0338796ca7a7369d164223d08ed6190fb",
+      "tools/extract_auto_upgrade_buildings.py": "f37063db3e2322dbad713f5b58fa75287970f462402e94c0efea54ea154d8286"
+    }
+  },
+  "checkout_unchanged": true,
+  "source_evidence": {
+    "native_create_character_faith_rite_learning": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_religion_effects.txt",
+      "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931",
+      "snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-i2-fixture-candidate-001\\source-evidence\\native_create_character_faith_rite_learning.txt"
+    },
+    "native_create_character_employer": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_commander_effects.txt",
+      "sha256": "ab943c4ad0b68e2305f958a0031125ee7fa2543c47cf312c07bdbc8eaa7163f8",
+      "snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-i2-fixture-candidate-001\\source-evidence\\native_create_character_employer.txt"
+    },
+    "native_add_learning_inline_delta": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\fp3\\fp3_misc_decision_events.txt",
+      "sha256": "bbf8025940cbbc387f82577e1755366c4a9b592ae8332679ad366e3dd7bcfb04",
+      "snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-i2-fixture-candidate-001\\source-evidence\\native_add_learning_inline_delta.txt"
+    },
+    "formal_i2_triggers": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\iteration2-native-load-fix-candidate-001\\candidate\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+      "sha256": "bc5a38df663810510de389778247bcd0766e36525c3c3b61772f45272ace6f18",
+      "snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-i2-fixture-candidate-001\\source-evidence\\formal_i2_triggers.txt"
+    },
+    "formal_i2_commit": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\iteration2-native-load-fix-candidate-001\\candidate\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_commit_effects.txt",
+      "sha256": "1b791ddb5c7219c06c17ee53d97ba3d8344ab2396f4a8b1788ed5bdf62ae37c0",
+      "snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-i2-fixture-candidate-001\\source-evidence\\formal_i2_commit.txt"
+    },
+    "native_courtier_postcondition": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_courtier_and_guest_interactions.txt",
+      "sha256": "c7b6dfffe786bab9358b91a11d9601ca77dacc43f390ba872dfb2104f2fb1cc6",
+      "snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-i2-fixture-candidate-001\\source-evidence\\native_courtier_postcondition.txt"
+    },
+    "native_doctrine_enumeration": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\pam_interactions.txt",
+      "sha256": "2db73b0da8572e218f1a677a91ff4281a890ade115e6dc40e696ecb59c0b1049",
+      "snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-i2-fixture-candidate-001\\source-evidence\\native_doctrine_enumeration.txt"
+    },
+    "native_learning_variable": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\activities\\activity_types\\hike.txt",
+      "sha256": "a4cd33d7f6857b83ae72f38d88326a6c6befe32cbece3b5843ca52b9f673c4c4",
+      "snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-i2-fixture-candidate-001\\source-evidence\\native_learning_variable.txt"
+    },
+    "r2_actual_primitive_attestation": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-002\\probe-audit-three-rounds\\native-primitive-attestation-candidate-v2.json",
+      "sha256": "50bad54b995723026bd26842f258376c86447547791357f6c5ad809750891b5d",
+      "snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-i2-fixture-candidate-001\\source-evidence\\r2_actual_primitive_attestation.json"
+    },
+    "r3_actual_ordinary_player": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r3-acceptance-package-candidate-001\\readbacks\\zhuxi-chosen\\actual-player.excerpt.txt",
+      "sha256": "14e571843d517fe1140bd5a9f4a9b59168574623d2193a52077865877baed3be",
+      "snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-i2-fixture-candidate-001\\source-evidence\\r3_actual_ordinary_player.txt"
+    },
+    "r2_actual_primitive_source": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-04-R0002-native-cycles-formal-red\\source-r0002\\fixture\\common\\scripted_effects\\lyd_np_effects.txt",
+      "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d",
+      "snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r5-i2-fixture-candidate-001\\source-evidence\\r2_actual_primitive_source.txt"
+    }
+  },
+  "outputs": {
+    "descriptor.mod": "2b7f18a5ae3a30f68ad52de4013b85af507faf619e536e4225de30d698bf62a4",
+    "common/scripted_triggers/lyd_r4_fixture_triggers.txt": "97f538545fbe3f00220acee85222f4f5b888faccdcf5e37559aee952c85fa8ba",
+    "common/scripted_effects/lyd_r4_fixture_effects.txt": "55a6310eb1a9abef2b08848f9630b7577c5c77d8c887d3647a89f69107b2095c",
+    "common/decisions/lyd_r4_fixture_decisions.txt": "adfabd03a3ef3e437a7f30f1111cf746790475051e6f20f2d24fccc3e24e69d6",
+    "events/lyd_r4_fixture_events.txt": "5133367dac46a1a3da61937b2969a66f9998a58651525870eaaccf6e19c5f4ec",
+    "localization/simp_chinese/lyd_r4_fixture_l_simp_chinese.yml": "dfcdd7b67c01a3d022cd69323677733cddd68b78c3a694d29ca5311566339a5d",
+    "localization/english/lyd_r4_fixture_l_english.yml": "1714862e1989f76e3496d079a1039baab095a3205a125e323b9c03056f477677"
+  },
+  "registration_sha256": "bdc372d191066d128e4282619a0262458a030919cdf72685568980f9791cbb90",
+  "generator_sha256": "351f5e8f41c2fee256ded05faa5f074559a1aac55e2bdde4f02f6e041b24569e",
+  "rendered_utc": "2026-10-04T10:34:31.530425+00:00"
+}

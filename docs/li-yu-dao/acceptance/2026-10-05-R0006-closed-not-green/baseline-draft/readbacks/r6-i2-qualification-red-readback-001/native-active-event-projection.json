@@ -1,0 +1,14 @@
+{
+  "source": "native",
+  "instance_id": 7,
+  "option_count": 1,
+  "title": null,
+  "options": [
+    {
+      "index": 0,
+      "option_number": 1,
+      "label": null,
+      "enabled": true
+    }
+  ]
+}

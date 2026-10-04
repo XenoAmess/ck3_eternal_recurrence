@@ -1,0 +1,68 @@
+[
+  {
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-next-addendum-input-probe-v2.json",
+    "projection": "evidence/local-config-and-immutable-index-probe.json",
+    "bytes": 1874,
+    "sha256": "632ea31abd997e1c31ad03f80b702b11c5313046ac2b7f4b1120b4f913b85e2f"
+  },
+  {
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-addendum-002-preparation-failure.json",
+    "projection": "evidence/preparation-failure-metadata.json",
+    "bytes": 898,
+    "sha256": "9c70022e00f05ef8dc5c453a13ad071a0fd55009baf4e428a5f437b57c14f6cd"
+  },
+  {
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-independent-review-001\\parent-context-note.json",
+    "projection": "evidence/parent-context-note-previous.json",
+    "bytes": 2338,
+    "sha256": "4ad592732772e29547d75b433530f3a5b70728b17af9432095d139a19650af09"
+  },
+  {
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-after-two-days-readback-001\\compact-summary.json",
+    "projection": "evidence/d-plus2/compact-summary.json",
+    "bytes": 83486,
+    "sha256": "8599201af092d453e965dc292a849c1d41c59a961082e9c8a35d612230f135c7"
+  },
+  {
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-after-two-days-readback-001\\actual-natural-time-graph-changes.json",
+    "projection": "evidence/d-plus2/actual-natural-time-graph-changes.json",
+    "bytes": 363,
+    "sha256": "ebccc25c429e7c500c9a0df833c171eabf3937324b703eba8ed47528dfd27c3c"
+  },
+  {
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-after-two-days-readback-001\\actual-npc-court-projection.json",
+    "projection": "evidence/d-plus2/actual-npc-court-projection.json",
+    "bytes": 1288,
+    "sha256": "1bc3d55d7bbfcf62133af0e85365d1341338250918674e6bf6f476e6c06178cc"
+  },
+  {
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-after-two-days-readback-001\\INDEX.json",
+    "projection": "evidence/d-plus2/INDEX.json",
+    "bytes": 9746,
+    "sha256": "6c930a76af85d238ec194f48151d57b52193b0ea110ebf627a212627ca7a8154"
+  },
+  {
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-after-two-days-readback-001\\INDEX-compact-addendum.json",
+    "projection": "evidence/d-plus2/INDEX-compact-addendum.json",
+    "bytes": 745,
+    "sha256": "79a92c1aebcc0be1f3492fcfed7d9d9af0ef7739cacb5a3b014871179aff5351"
+  },
+  {
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-after-two-days-readback-001\\README.md",
+    "projection": "evidence/d-plus2/README.md",
+    "bytes": 1296,
+    "sha256": "9ce8e65222f61767228f7b41243108237167cd9b7442360a3c600fb25de2ea76"
+  },
+  {
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-report-draft-addendum-001\\REPORT-addendum.md",
+    "projection": "evidence/previous-d-plus2-report.md",
+    "bytes": 1687,
+    "sha256": "002ca0d81fd46277e501fe024cf651ffea50c721452cc6d860fe6ae7852f9e3e"
+  },
+  {
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-report-draft-addendum-001\\report.json",
+    "projection": "evidence/previous-d-plus2-report.json",
+    "bytes": 1665,
+    "sha256": "05889089183399fc2835c04887740d71b2598aee16b38518db73a4e6b89031d6"
+  }
+]

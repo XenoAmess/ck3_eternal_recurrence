@@ -1,0 +1,48 @@
+65859={
+	first_name="Jordan"
+	birth=1020.2.27
+	nickname_text=""
+	ethnicity=caucasian_brown_hair
+	culture=73
+	rite=169
+	organization=32
+	skill={ 7 0 8 10 1 9 }
+	mass=2
+	traits={ 71 77 54 21 }
+	alive_data={
+		variables={
+			data={ {
+					flag=is_in_the_council
+					data={
+					}
+
+				}
+ }
+		}
+		fertility=0.53901
+		health=4.32513
+		piety={
+			currency=50
+		}
+		prestige={
+			currency=450
+		}
+		influence={
+			currency=180
+		}
+		languages={ language_french }
+		activity_data={
+		}
+
+		location={
+			location=2623
+		}
+	}
+
+	court_data={
+		employer=35899
+		council_task=2529
+		join_court_date=1066.9.16
+	}
+
+}

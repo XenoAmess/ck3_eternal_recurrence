@@ -1,0 +1,10 @@
+[20:13:14][I][jominiapplication.cpp:261]: Using random seed: 2199524870
+
+[20:13:37][I][jominiapplication.cpp:261]: Changing game speed to: 2
+
+[23:10:54][I][jominiapplication.cpp:261]: Changing game speed to: 0
+
+[23:10:56][I][jominiapplication.cpp:261]: Pause Toggled! Paused: false, PlayerID: 0
+
+[23:11:02][I][jominiapplication.cpp:261]: Pause Toggled! Paused: true, PlayerID: 1
+

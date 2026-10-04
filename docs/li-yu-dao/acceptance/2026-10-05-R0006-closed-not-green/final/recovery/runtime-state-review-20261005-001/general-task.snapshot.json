@@ -1,0 +1,17 @@
+{
+  "git": {
+    "branch": "master",
+    "dirty_entries": 9,
+    "head": "18b1944d1784d3e4ec57189c016335ef135b9b34"
+  },
+  "last_sequence": 2701,
+  "next_step": "Native-cycle-prototype-content-and-test-harness",
+  "pid": 20356,
+  "repo": "C:\\workspace\\ck3_eternal_recurrence",
+  "resources": [],
+  "schema": "codex.task_bus.v1",
+  "state": "running",
+  "summary": "Implement-iterative-Confucian-mod-and-acceptance",
+  "task_id": "ck3-li-yu-dao-implementation-20261004",
+  "updated_at_utc": "2026-10-04T11:58:24.412093+00:00"
+}

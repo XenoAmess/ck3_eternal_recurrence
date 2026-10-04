@@ -1,0 +1,40 @@
+{
+  "utc": "2026-10-04T13:53:35.837249+00:00",
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\collapse-major-decisions-003.png",
+  "source_sha256": "ea46bbd2717a63a5ab05697333fe8e0ef8a9e4394009208ff82ad1e9cf3afe77",
+  "actual_hwnd": 2491650,
+  "actual_pid": 12500,
+  "preview_content_rect": [
+    0,
+    0,
+    1920,
+    1080
+  ],
+  "observed_point": [
+    1486.0,
+    782.0
+  ],
+  "route": "Current native MCP exposes 11 tools and no menu/decision initiation; UI fallback.",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:/workspace/ck3_eternal_recurrence/tools/desktop_coordinate_map.py",
+    "--source-image",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\collapse-major-decisions-003.png",
+    "--preview-left",
+    "0",
+    "--preview-top",
+    "0",
+    "--preview-width",
+    "1920",
+    "--preview-height",
+    "1080",
+    "--observed-x",
+    "1486.0",
+    "--observed-y",
+    "782.0",
+    "--click",
+    "--receipt",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\ui-actions\\i2-qualification-detail-001\\post-click.png"
+  ],
+  "only_target": "isolated R0006 current window"
+}

@@ -1,0 +1,55 @@
+[
+  {
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+      "--help"
+    ],
+    "returncode": 0,
+    "stdout": "usage: codex_task_bus.py [-h] [--bus-dir BUS_DIR]\n                         [--expected-cli-sha256 EXPECTED_CLI_SHA256]\n                         {register,status,release-screen-cas,heartbeat,notify,poll,list,install} ...\n\nCooperative, filesystem-backed status and notification bus for Codex tasks.\n\npositional arguments:\n  {register,status,release-screen-cas,heartbeat,notify,poll,list,install}\n\noptions:\n  -h, --help            show this help message and exit\n  --bus-dir BUS_DIR\n  --expected-cli-sha256 EXPECTED_CLI_SHA256\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+      "release-screen-cas",
+      "--help"
+    ],
+    "returncode": 0,
+    "stdout": "usage: codex_task_bus.py release-screen-cas [-h] --task TASK\n                                            --expected-sequence EXPECTED_SEQUENCE\n                                            --summary SUMMARY\n\noptions:\n  -h, --help            show this help message and exit\n  --task TASK\n  --expected-sequence EXPECTED_SEQUENCE\n  --summary SUMMARY\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+      "status",
+      "--help"
+    ],
+    "returncode": 0,
+    "stdout": "usage: codex_task_bus.py status [-h] --task TASK\n                                --state {running,waiting,blocked,done}\n                                [--summary SUMMARY] [--next-step NEXT_STEP]\n                                [--repo REPO] [--resource RESOURCE]\n\noptions:\n  -h, --help            show this help message and exit\n  --task TASK\n  --state {running,waiting,blocked,done}\n  --summary SUMMARY\n  --next-step NEXT_STEP\n  --repo REPO\n  --resource RESOURCE\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "C:\\workspace\\ck3_lyd_runtime_20261004\\persistent_native_mcp_queue.py",
+      "--help"
+    ],
+    "returncode": 0,
+    "stdout": "usage: persistent_native_mcp_queue.py [-h] {enqueue,serve} ...\n\nOne persistent official MCP Client(cache=None) for explicit JSON requests.\nCreating/enqueueing requests does not contact CK3. Only `serve` starts the\nexisting stdio server, and only explicit call_tool requests invoke its tools.\nNo automatic attach, retry, reconnect, gameplay policy or desktop input.\n\npositional arguments:\n  {enqueue,serve}\n    enqueue        preserve one explicit request JSON without contacting CK3\n    serve          keep one official stdio MCP session; dispatch only queued\n                   requests\n\noptions:\n  -h, --help       show this help message and exit\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "C:\\workspace\\ck3_lyd_runtime_20261004\\persistent_native_mcp_queue.py",
+      "enqueue",
+      "--help"
+    ],
+    "returncode": 0,
+    "stdout": "usage: persistent_native_mcp_queue.py enqueue [-h] --queue QUEUE\n                                              --request REQUEST\n\noptions:\n  -h, --help         show this help message and exit\n  --queue QUEUE\n  --request REQUEST\n",
+    "stderr": ""
+  }
+]

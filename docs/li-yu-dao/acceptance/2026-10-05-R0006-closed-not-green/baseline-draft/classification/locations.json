@@ -1,0 +1,272 @@
+[
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 69,
+    "symbol": "lyd_r4_qualification_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 11,
+    "symbol": "lyd_r4_unlocked_rite_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 12,
+    "symbol": "lyd_r4_unlocked_rite_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_effects/lyd_r4_fixture_effects.txt",
+    "line": 76,
+    "symbol": "lyd_r4_qualification_effect",
+    "count": 47163
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 19,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 21,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 24,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 25,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 27,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 28,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 29,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 30,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 31,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 32,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 33,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 34,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 35,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 36,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 37,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 38,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 39,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 40,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 41,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 42,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 43,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 44,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 45,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 46,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 47,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 48,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 49,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 50,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 51,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 52,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 53,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 54,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 55,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 56,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 57,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 58,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 59,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 60,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 61,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 62,
+    "symbol": "lyd_r4_setup_display_trigger",
+    "count": 1
+  },
+  {
+    "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+    "line": 76,
+    "symbol": "lyd_r4_setup_postcondition_trigger",
+    "count": 52794
+  }
+]

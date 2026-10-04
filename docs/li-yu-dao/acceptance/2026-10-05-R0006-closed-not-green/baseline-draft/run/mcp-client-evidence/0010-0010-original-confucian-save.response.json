@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 10,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue\\0010-original-confucian-save.request.json",
+  "request_sha256": "21691330e0c0369b36a1b6b247410a456064cf0f5d8521f03ff8600d9e65dc2b",
+  "started_at_utc": "2026-10-04T13:05:22.345353+00:00",
+  "request_id": "0010-original-confucian-save",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0010-0010-original-confucian-save.sdk-result.json",
+  "sdk_result_sha256": "504d60aff92cb01cbbe84e4ed20542615fd4f0a51bba748915c9d0a03d3c8903",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\native-evidence\\4b3809aa40264a9581b8392d565d63ba\\0009-checkpoint.json",
+      "copy": "0010-0010-original-confucian-save.native-01.json",
+      "sha256": "facf7a68c8c10acc8a43539934c37c5d682932bb6a6190339478423bd40f1c8f"
+    }
+  ],
+  "finished_at_utc": "2026-10-04T13:05:35.994806+00:00"
+}

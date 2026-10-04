@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "0035-learning-refresh-pause",
+  "operation": "call_tool",
+  "name": "ck3_pause_profile_simulation_v1",
+  "arguments": {}
+}

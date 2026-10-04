@@ -1,0 +1,55 @@
+triggered_event={
+	event="lyd.229"
+	scope={
+		root={
+			type=char
+			identity=31254
+		}
+
+		seed=136097938
+		event_targets={
+			puppeteer={
+				type=char
+				identity=4294967295
+			}
+
+			lyd_c2_actor={
+				type=char
+				identity=31254
+			}
+
+			lyd_c2_event_school={
+				type=rite
+				identity=169
+			}
+
+			lyd_c2_event_serial={
+				type=value
+				identity=100000
+			}
+
+			lyd_c2_event_terms={
+				type=value
+				identity=100000
+			}
+
+			lyd_c2_event_nonce={
+				type=value
+				identity=100000
+			}
+
+			lyd_c2_voter={
+				type=char
+				identity=65861
+			}
+
+			lyd_c2_snapshot_item={
+				type=doctrine
+				key=special_doctrine_immaterial_harmony			}
+
+		}
+
+	}
+
+	date=1067.9.17
+}

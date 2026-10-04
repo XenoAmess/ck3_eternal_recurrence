@@ -1,0 +1,25 @@
+{
+  "utc": "2026-10-04T13:05:38.785369+00:00",
+  "source_checkpoint": {
+    "status": "saved",
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\userdir\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 91297138,
+    "sha256": "97461bed54da92ff05da6836f54884c90d6f847a02e6bd9c1bd64dc3da1567fe",
+    "date_raw": 53144328,
+    "overwrite_confirmed": true,
+    "strategy": "native-autosave-command-v1",
+    "episode_projection": "native_campaign",
+    "succession_lifecycle": null,
+    "history_index": 4,
+    "episode_character_id": null,
+    "episode_run_id": null
+  },
+  "immutable_save": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\checkpoints\\0010-original-confucian-save\\save.ck3",
+  "sha256": "97461bed54da92ff05da6836f54884c90d6f847a02e6bd9c1bd64dc3da1567fe",
+  "bytes": 91297138,
+  "played_character_id": 31254,
+  "date_raw": 53144328,
+  "native_response": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-client-evidence\\0010-0010-original-confucian-save.sdk-result.json",
+  "native_response_sha256": "504d60aff92cb01cbbe84e4ed20542615fd4f0a51bba748915c9d0a03d3c8903"
+}

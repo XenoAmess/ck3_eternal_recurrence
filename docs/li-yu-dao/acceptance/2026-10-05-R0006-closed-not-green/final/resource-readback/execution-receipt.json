@@ -1,0 +1,37 @@
+{
+  "schema": "lyd.r6-occurrence-world-reader.v1",
+  "started_utc": "2026-10-04T19:00:47.102445+00:00",
+  "completed_utc": "2026-10-04T19:02:15.409649+00:00",
+  "status": "completed",
+  "exit_code": 0,
+  "interpreter": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "python_version": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+  "original_v2_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-resource-and-elector-origin-resume-20261005-002\\readback_world_and_origin.py",
+  "original_v2_source_sha256": "140fcca677e44ffbf060db5cc8466b5050c5a307801f82a8850d2285cc599887",
+  "reader_changes": [
+    "Preserve every repeated character record as an ordered occurrence list per full ID.",
+    "Compare exact original Faith/Rite saved_entries on both sides; exclude derived projection convenience fields.",
+    "Correct human report description of duplicate40982 reader failure."
+  ],
+  "original_report_inputs": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-setup-readback-001\\generic\\report.json",
+      "bytes": 5549917,
+      "sha256": "e23f8bd15ff2b96030568d4c554b41183dde2b2231f79021d0c27ac767b68f8f"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-after-two-days-readback-001\\generic\\report.json",
+      "bytes": 5558270,
+      "sha256": "cb2de5f1bbbed81db642f87dd38f5691b8f3d810511ca0f0e15c6c5ec08cbf5a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-i2-resources-readback-001\\generic\\report.json",
+      "bytes": 5581256,
+      "sha256": "342a4c2d1a7a79c4b8d4aee068702a74ac56b9f6ef5d78090faeae312edb4b73"
+    }
+  ],
+  "game_called": false,
+  "native_called": false,
+  "git_called": false,
+  "tracked_written": false
+}

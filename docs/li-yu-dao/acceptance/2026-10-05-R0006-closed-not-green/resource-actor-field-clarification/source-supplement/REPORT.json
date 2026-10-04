@@ -1,0 +1,74 @@
+{
+  "schema": "lyd.r6-resource-actor-fields-supplement.v1",
+  "created_utc": "2026-10-04T19:17:21.952243+00:00",
+  "game_called": false,
+  "native_called": false,
+  "git_called": false,
+  "tracked_written": false,
+  "prior_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-resource-and-elector-origin-resume-20261005-003\\REPORT.json",
+    "sha256": "99be86b1340074aa008c78d1c376f45ae5336c11db33fd0d2a9689ddd9ab89e1"
+  },
+  "scope": "Existing exact31254 excerpts only. Variable arrays are keyed by actual saved flag while retaining all duplicate occurrences per flag; insertion positions do not masquerade as flag changes. Other complete character fields retain lossless parsed structure.",
+  "inputs": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-resource-and-elector-origin-resume-20261005-003\\evidence\\0036-actual-dplus2\\character-31254.excerpt.txt",
+      "bytes": 10548,
+      "sha256": "c81e65408feb4871280f5a8a79715ea120a14da8b6df470a87caf206a0fc8403"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-resource-and-elector-origin-resume-20261005-003\\evidence\\0040-resources\\character-31254.excerpt.txt",
+      "bytes": 11220,
+      "sha256": "0b90587b7be1d94989841e5b99739ebd8ececb1b702ab06000966800961e0dd8"
+    }
+  ],
+  "actual_all_saved_flag_delta": {
+    "added_flags": [
+      "lyd_r4_gold_after",
+      "lyd_r4_gold_before",
+      "lyd_r4_gold_expected",
+      "lyd_r4_piety_after",
+      "lyd_r4_piety_before",
+      "lyd_r4_piety_expected",
+      "lyd_r4_resources_prepared"
+    ],
+    "removed_flags": [],
+    "altered_existing_flags": [],
+    "unchanged_existing_flag_count": 32
+  },
+  "other_actor_lossless_field_delta": [
+    {
+      "path": "/alive_data[0]/gold[0]/value[0]",
+      "before_present": true,
+      "before": "229",
+      "after_present": true,
+      "after": "2229"
+    },
+    {
+      "path": "/alive_data[0]/income[0]",
+      "before_present": true,
+      "before": "7.2965",
+      "after_present": true,
+      "after": "6.22214"
+    },
+    {
+      "path": "/alive_data[0]/piety[0]/accumulated[0]",
+      "before_present": true,
+      "before": "1035",
+      "after_present": true,
+      "after": "10035"
+    },
+    {
+      "path": "/alive_data[0]/piety[0]/currency[0]",
+      "before_present": true,
+      "before": "185",
+      "after_present": true,
+      "after": "9185"
+    }
+  ],
+  "conclusions": {
+    "all_prior_saved_flag_occurrences_exactly_unchanged": true,
+    "additional_observed_fields": "Saved income7.2965→6.22214 and accumulatedpiety1035→10035 also changed. Accumulatedpiety delta+9000 matches the explicit resource effect; income cause is not established by this readback.",
+    "pass_boundary": "Prior PASS_RESOURCE_FIXTURE_ONLY proves specified resource amounts, no additional existing LYD mutations, unchanged other complete character records and Faith/Rite/title graphs. It does not mean all actor fields except currency are identical."
+  }
+}

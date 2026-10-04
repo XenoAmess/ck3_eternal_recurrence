@@ -1,0 +1,10 @@
+{
+  "pid": 12500,
+  "argv": [
+    "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "-debug_mode",
+    "-gdpr-compliant",
+    "-userdir=C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\userdir"
+  ],
+  "created_at": "2026-10-04T12:02:43.106398+00:00"
+}

@@ -1,0 +1,14 @@
+{
+  "status": "SCREEN_REACQUIRED_FOR_ROOT_NORMAL_EXIT",
+  "sequence": 2810,
+  "task_id": "ck3-lyd-r0006-exit-20261005",
+  "head": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e",
+  "game_pid": 12500,
+  "game_create_time": 1791115363.105566,
+  "keeper_entry": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen_lease_entry_r0006_exit_20261005.py",
+  "keeper_entry_sha256": "dd486e0e862cfa749f6867698532b5ee774644356d5dbafc98fb997f15fb0414",
+  "queue_restarted": false,
+  "old_sdk_orderly_close_observed": false,
+  "game_input_sent": false,
+  "utc": "2026-10-04T18:57:31.184268+00:00"
+}

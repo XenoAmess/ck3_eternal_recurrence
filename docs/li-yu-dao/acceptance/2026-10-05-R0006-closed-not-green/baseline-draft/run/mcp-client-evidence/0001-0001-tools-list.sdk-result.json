@@ -1,0 +1,390 @@
+{
+  "_meta": {
+    "io.modelcontextprotocol/serverInfo": {
+      "name": "CK3 frozen native profile",
+      "version": ""
+    }
+  },
+  "ttlMs": 0,
+  "cacheScope": "private",
+  "nextCursor": null,
+  "tools": [
+    {
+      "name": "ck3_query_native_profile_v1",
+      "title": null,
+      "description": "",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "title": "ck3_query_native_profile_v1Arguments"
+      },
+      "execution": null,
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_query_native_profile_v1DictOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": true,
+        "destructiveHint": null,
+        "idempotentHint": null,
+        "openWorldHint": null
+      },
+      "_meta": null
+    },
+    {
+      "name": "ck3_attach_profile_bridge_v1",
+      "title": null,
+      "description": "",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "title": "ck3_attach_profile_bridge_v1Arguments"
+      },
+      "execution": null,
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_attach_profile_bridge_v1DictOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": false,
+        "destructiveHint": null,
+        "idempotentHint": null,
+        "openWorldHint": null
+      },
+      "_meta": null
+    },
+    {
+      "name": "ck3_resume_profile_bridge_v1",
+      "title": null,
+      "description": "",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "title": "ck3_resume_profile_bridge_v1Arguments"
+      },
+      "execution": null,
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_resume_profile_bridge_v1DictOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": false,
+        "destructiveHint": null,
+        "idempotentHint": null,
+        "openWorldHint": null
+      },
+      "_meta": null
+    },
+    {
+      "name": "ck3_take_profile_native_snapshot_v1",
+      "title": null,
+      "description": "",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "title": "ck3_take_profile_native_snapshot_v1Arguments"
+      },
+      "execution": null,
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_take_profile_native_snapshot_v1DictOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": true,
+        "destructiveHint": null,
+        "idempotentHint": null,
+        "openWorldHint": null
+      },
+      "_meta": null
+    },
+    {
+      "name": "ck3_query_profile_event_window_v1",
+      "title": null,
+      "description": "",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "event_instance_id": {
+            "title": "Event Instance Id",
+            "type": "integer"
+          },
+          "expected_revision": {
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "event_instance_id",
+          "expected_revision"
+        ],
+        "title": "ck3_query_profile_event_window_v1Arguments"
+      },
+      "execution": null,
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_query_profile_event_window_v1DictOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": true,
+        "destructiveHint": null,
+        "idempotentHint": null,
+        "openWorldHint": null
+      },
+      "_meta": null
+    },
+    {
+      "name": "ck3_query_profile_pending_interaction_v1",
+      "title": null,
+      "description": "",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "pending_interaction_id": {
+            "title": "Pending Interaction Id",
+            "type": "integer"
+          },
+          "expected_revision": {
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "pending_interaction_id",
+          "expected_revision"
+        ],
+        "title": "ck3_query_profile_pending_interaction_v1Arguments"
+      },
+      "execution": null,
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_query_profile_pending_interaction_v1DictOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": true,
+        "destructiveHint": null,
+        "idempotentHint": null,
+        "openWorldHint": null
+      },
+      "_meta": null
+    },
+    {
+      "name": "ck3_reply_profile_pending_interaction_v1",
+      "title": null,
+      "description": "",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "accept": {
+            "title": "Accept",
+            "type": "boolean"
+          },
+          "pending_interaction_id": {
+            "title": "Pending Interaction Id",
+            "type": "integer"
+          },
+          "expected_revision": {
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "accept",
+          "pending_interaction_id",
+          "expected_revision"
+        ],
+        "title": "ck3_reply_profile_pending_interaction_v1Arguments"
+      },
+      "execution": null,
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_reply_profile_pending_interaction_v1DictOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": false,
+        "destructiveHint": null,
+        "idempotentHint": null,
+        "openWorldHint": null
+      },
+      "_meta": null
+    },
+    {
+      "name": "ck3_set_profile_simulation_v1",
+      "title": null,
+      "description": "",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "enum": [
+              "pause",
+              "resume",
+              "speed_1",
+              "speed_3",
+              "speed_5"
+            ],
+            "title": "Action",
+            "type": "string"
+          },
+          "expected_revision": {
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "action",
+          "expected_revision"
+        ],
+        "title": "ck3_set_profile_simulation_v1Arguments"
+      },
+      "execution": null,
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_set_profile_simulation_v1DictOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": false,
+        "destructiveHint": null,
+        "idempotentHint": null,
+        "openWorldHint": null
+      },
+      "_meta": null
+    },
+    {
+      "name": "ck3_pause_profile_simulation_v1",
+      "title": null,
+      "description": "",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "title": "ck3_pause_profile_simulation_v1Arguments"
+      },
+      "execution": null,
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_pause_profile_simulation_v1DictOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": false,
+        "destructiveHint": null,
+        "idempotentHint": null,
+        "openWorldHint": null
+      },
+      "_meta": null
+    },
+    {
+      "name": "ck3_select_profile_event_option_v1",
+      "title": null,
+      "description": "",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "option_number": {
+            "title": "Option Number",
+            "type": "integer"
+          },
+          "event_instance_id": {
+            "title": "Event Instance Id",
+            "type": "integer"
+          },
+          "expected_revision": {
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "option_number",
+          "event_instance_id",
+          "expected_revision"
+        ],
+        "title": "ck3_select_profile_event_option_v1Arguments"
+      },
+      "execution": null,
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_select_profile_event_option_v1DictOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": false,
+        "destructiveHint": null,
+        "idempotentHint": null,
+        "openWorldHint": null
+      },
+      "_meta": null
+    },
+    {
+      "name": "ck3_save_profile_checkpoint_v1",
+      "title": null,
+      "description": "",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "expected_revision"
+        ],
+        "title": "ck3_save_profile_checkpoint_v1Arguments"
+      },
+      "execution": null,
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_save_profile_checkpoint_v1DictOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": false,
+        "destructiveHint": null,
+        "idempotentHint": null,
+        "openWorldHint": null
+      },
+      "_meta": null
+    }
+  ],
+  "resultType": "complete"
+}

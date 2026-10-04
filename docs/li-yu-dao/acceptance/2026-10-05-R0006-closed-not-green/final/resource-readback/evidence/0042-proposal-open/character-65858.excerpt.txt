@@ -1,0 +1,48 @@
+65858={
+	first_name="Bertran"
+	birth=1036.8.15
+	nickname_text=""
+	ethnicity=caucasian_dark_hair
+	culture=73
+	rite=169
+	organization=32
+	skill={ 1 1 9 5 1 4 }
+	mass=11
+	traits={ 54 52 66 22 }
+	alive_data={
+		variables={
+			data={ {
+					flag=is_in_the_council
+					data={
+					}
+
+				}
+ }
+		}
+		fertility=0.58424
+		health=4.62335
+		piety={
+			currency=50
+		}
+		prestige={
+			currency=300
+		}
+		influence={
+			currency=120
+		}
+		languages={ language_french }
+		activity_data={
+		}
+
+		location={
+			location=2631
+		}
+	}
+
+	court_data={
+		employer=36445
+		council_task=3075
+		join_court_date=1066.9.16
+	}
+
+}

@@ -1,0 +1,23 @@
+﻿# GENERATED FILE: acceptance fixture only; edit build_fixture.py.
+namespace = lyd_r3_fixture
+lyd_r3_fixture.1 = {
+    type = character_event
+    title = lyd_r3_fixture_initialized_t
+    desc = lyd_r3_fixture_initialized_desc
+    theme = faith
+    trigger = {
+        is_ai = no
+        has_character_flag = lyd_r3_fixture_initialized
+        faith = faith:confucian_faith
+        rite = faith:confucian_faith.main_rite
+    }
+    option = { name = lyd_r3_fixture_begin_formal }
+}
+lyd_r3_fixture.2 = {
+    type = character_event
+    title = lyd_r3_fixture_failed_t
+    desc = lyd_r3_fixture_failed_desc
+    theme = faith
+    trigger = { is_ai = no }
+    option = { name = lyd_r3_fixture_record_failure }
+}

@@ -1,0 +1,48 @@
+65860={
+	first_name="Goubert"
+	birth=1034.8.11
+	nickname_text=""
+	ethnicity=caucasian_dark_hair
+	culture=73
+	rite=169
+	organization=32
+	skill={ 7 8 4 6 8 6 }
+	mass=17
+	traits={ 68 55 77 22 }
+	alive_data={
+		variables={
+			data={ {
+					flag=is_in_the_council
+					data={
+					}
+
+				}
+ }
+		}
+		fertility=0.58937
+		health=4.4165
+		piety={
+			currency=50
+		}
+		prestige={
+			currency=300
+		}
+		influence={
+			currency=120
+		}
+		languages={ language_french }
+		activity_data={
+		}
+
+		location={
+			location=2604
+		}
+	}
+
+	court_data={
+		employer=34973
+		council_task=1359
+		join_court_date=1066.9.16
+	}
+
+}

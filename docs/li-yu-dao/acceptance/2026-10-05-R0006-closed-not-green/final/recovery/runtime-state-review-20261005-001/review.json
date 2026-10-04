@@ -1,0 +1,19 @@
+{
+  "at_utc": "2026-10-04T18:38:26.496709+00:00",
+  "old_queue_and_keeper_usable": false,
+  "current_screen_exclusive_fresh": false,
+  "screen_stale_age_seconds": 4765.908101,
+  "screen_sequence": 2808,
+  "other_python_processes": [],
+  "live_ck3_identity_matches": true,
+  "current_sdk_client_connected": false,
+  "current_profile_sha256_matches": true,
+  "current_game_paused": "NOT_VERIFIED_BY_THIS_READ_ONLY_REVIEW",
+  "native_calls": 0,
+  "desktop_inputs": 0,
+  "game_process_start_stop": 0,
+  "task_bus_mutations": 0,
+  "tracked_edits": 0,
+  "git_commands": 0,
+  "auth_secret_reads": 0
+}

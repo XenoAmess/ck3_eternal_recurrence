@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 15,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue\\0015-chooser-cancel.request.json",
+  "request_sha256": "f9c14a819702110a28046e9f9144235703e0f24374429caf8ada14c8018bc8e3",
+  "started_at_utc": "2026-10-04T13:18:03.421276+00:00"
+}

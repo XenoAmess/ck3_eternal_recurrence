@@ -1,0 +1,331 @@
+{
+  "schema": "lyd.r6-baseline-independent-save-audit.v1",
+  "result": "PASS_EXPLICIT_BASELINE_STATE",
+  "artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\291bf3fe63c1d8c3bbbbc97c6d94e47794b031c07934311cbcb83873232fdc8e\\xar_checkpoint.ck3",
+    "bytes": 91282203,
+    "sha256": "291bf3fe63c1d8c3bbbbc97c6d94e47794b031c07934311cbcb83873232fdc8e"
+  },
+  "generic_report_sha256": "04d26b17cb3693b3bec61439ebc308d66aca67d54d757aa7c72326f15be8f5bb",
+  "sdk_receipt_sha256": "009038b6802eaea42d667c0db3f42681fea952a8458516442dca3463bfceb23d",
+  "wrapper_receipt_sha256": "b24b1d704c0b2f0164e0b02a21b16100995960c26c559426bcfaeecf019fde78",
+  "checks": [
+    {
+      "name": "explicit current player matches save",
+      "actual": [
+        "31254"
+      ],
+      "expected": [
+        "31254"
+      ],
+      "passed": true
+    },
+    {
+      "name": "played_character local player",
+      "actual": "1",
+      "expected": "1",
+      "passed": true
+    },
+    {
+      "name": "saved actor alive",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "save lookup identifies ordinary Robert 1128",
+      "actual": [
+        "1128"
+      ],
+      "expected": [
+        "1128"
+      ],
+      "passed": true
+    },
+    {
+      "name": "Robert birth",
+      "actual": "1015.1.1",
+      "expected": "1015.1.1",
+      "passed": true
+    },
+    {
+      "name": "Robert first name",
+      "actual": "Robert",
+      "expected": "Robert",
+      "passed": true
+    },
+    {
+      "name": "baseline date",
+      "actual": "1066.9.15",
+      "expected": "1066.9.15",
+      "passed": true
+    },
+    {
+      "name": "baseline ordinary rite",
+      "actual": "roman_rite",
+      "expected": "roman_rite",
+      "passed": true
+    },
+    {
+      "name": "baseline ordinary faith",
+      "actual": "catholic",
+      "expected": "catholic",
+      "passed": true
+    },
+    {
+      "name": "baseline main rite is actor rite",
+      "actual": "0",
+      "expected": "0",
+      "passed": true
+    },
+    {
+      "name": "LYD enable flag absent in complete actor LYD variable projection",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "fixture initialization flag absent",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "all 36 catalogue rite keys loaded",
+      "actual": 36,
+      "expected": 36,
+      "passed": true
+    },
+    {
+      "name": "saved landed title count",
+      "actual": 7,
+      "expected": 7,
+      "passed": true
+    },
+    {
+      "name": "saved primary spouse matches current native receipt",
+      "actual": "36311",
+      "expected": "36311",
+      "passed": true
+    },
+    {
+      "name": "current spouse history identity matches native history",
+      "actual": [
+        "1123"
+      ],
+      "expected": [
+        "1123"
+      ],
+      "passed": true
+    },
+    {
+      "name": "former spouse history identity",
+      "actual": [
+        "10003"
+      ],
+      "expected": [
+        "10003"
+      ],
+      "passed": true
+    },
+    {
+      "name": "saved child count",
+      "actual": 7,
+      "expected": 7,
+      "passed": true
+    },
+    {
+      "name": "saved baseline gold",
+      "actual": "244",
+      "expected": "244",
+      "passed": true
+    },
+    {
+      "name": "saved/native gold independently agree",
+      "actual": "244",
+      "expected": "244",
+      "passed": true
+    },
+    {
+      "name": "saved baseline piety",
+      "actual": "150",
+      "expected": "150",
+      "passed": true
+    },
+    {
+      "name": "saved/native piety independently agree",
+      "actual": "150",
+      "expected": "150",
+      "passed": true
+    },
+    {
+      "name": "saved baseline prestige",
+      "actual": "2200",
+      "expected": "2200",
+      "passed": true
+    },
+    {
+      "name": "saved/native prestige independently agree",
+      "actual": "2200",
+      "expected": "2200",
+      "passed": true
+    },
+    {
+      "name": "native successful checkpoint exact SHA",
+      "actual": "291bf3fe63c1d8c3bbbbc97c6d94e47794b031c07934311cbcb83873232fdc8e",
+      "expected": "291bf3fe63c1d8c3bbbbc97c6d94e47794b031c07934311cbcb83873232fdc8e",
+      "passed": true
+    },
+    {
+      "name": "native baseline paused",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    }
+  ],
+  "family": [
+    {
+      "relationship": "primary_spouse",
+      "character_id": "36311",
+      "first_name": "Sichelgaita",
+      "birth": "1040.1.1",
+      "history_ids": [
+        "1123"
+      ],
+      "alive_data_present": true
+    },
+    {
+      "relationship": "spouse",
+      "character_id": "36311",
+      "first_name": "Sichelgaita",
+      "birth": "1040.1.1",
+      "history_ids": [
+        "1123"
+      ],
+      "alive_data_present": true
+    },
+    {
+      "relationship": "former_spouses",
+      "character_id": "34968",
+      "first_name": "Alberada",
+      "birth": "1035.1.1",
+      "history_ids": [
+        "10003"
+      ],
+      "alive_data_present": true
+    },
+    {
+      "relationship": "child",
+      "character_id": "38924",
+      "first_name": "Emma",
+      "birth": "1052.1.2",
+      "history_ids": [
+        "1143"
+      ],
+      "alive_data_present": true
+    },
+    {
+      "relationship": "child",
+      "character_id": "39348",
+      "first_name": "Bohemond",
+      "birth": "1055.1.1",
+      "history_ids": [
+        "1140"
+      ],
+      "alive_data_present": true
+    },
+    {
+      "relationship": "child",
+      "character_id": "39979",
+      "first_name": "Matilda",
+      "birth": "1059.1.2",
+      "history_ids": [
+        "1121"
+      ],
+      "alive_data_present": true
+    },
+    {
+      "relationship": "child",
+      "character_id": "40526",
+      "first_name": "Roger",
+      "birth": "1061.1.2",
+      "history_ids": [
+        "1142"
+      ],
+      "alive_data_present": true
+    },
+    {
+      "relationship": "child",
+      "character_id": "40695",
+      "first_name": "Guy",
+      "birth": "1062.1.2",
+      "history_ids": [
+        "41732"
+      ],
+      "alive_data_present": true
+    },
+    {
+      "relationship": "child",
+      "character_id": "40847",
+      "first_name": "Mabel",
+      "birth": "1063.1.1",
+      "history_ids": [
+        "161112"
+      ],
+      "alive_data_present": true
+    },
+    {
+      "relationship": "child",
+      "character_id": "41032",
+      "first_name": "Eria",
+      "birth": "1064.1.1",
+      "history_ids": [
+        "161113"
+      ],
+      "alive_data_present": true
+    }
+  ],
+  "actor": {
+    "id": "31254",
+    "first_name": "Robert",
+    "birth": "1015.1.1",
+    "history_ids": [
+      "1128"
+    ],
+    "rite_id": "0",
+    "faith_id": "13",
+    "rite_type": "roman_rite",
+    "currently_played": true,
+    "actual_saved_held_title_ids": [
+      "2230",
+      "2231",
+      "2232",
+      "2235",
+      "2262",
+      "2263",
+      "2264"
+    ],
+    "saved_values": {
+      "gold": "244",
+      "piety": "150",
+      "prestige": "2200",
+      "stress": null,
+      "learning_lifestyle_xp": "0"
+    },
+    "variables": {}
+  },
+  "faith": {
+    "faith_type": "catholic",
+    "name": "天主教",
+    "main_rite": "0",
+    "religious_head": "4",
+    "head_title_holder": "30490"
+  },
+  "saved_stress": null,
+  "native_stress": "0",
+  "helper_format_correction": "Original generic FAIL preserved: actual graphs use database; R6 gold uses nested value. New helper v2 handles these observed formats and adds family/playable raw entries.",
+  "control_boundary": "Saved local player remains ordinary Robert. Viewing another map character does not establish a control transfer. Save and SDK do not prove Esc/F8 delivery, live HWND/control focus, or UI click success.",
+  "product_boundary": "36 catalogue objects loaded; actor LYD entry not enabled. No consent round, migration, leadership, study or native-loop PASS awarded.",
+  "game_called": false,
+  "tracked_written": false
+}

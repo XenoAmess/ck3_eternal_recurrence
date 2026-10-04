@@ -1,0 +1,37 @@
+[
+  {
+    "path": "actor_fields.py",
+    "bytes": 5093,
+    "sha256": "f7ad770096b54c4b6250510700d943bb44779217693c1e204855c4481477ec65",
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-resource-actor-fields-supplement-20261005-001\\actor_fields.py",
+    "projection": "source-supplement/actor_fields.py"
+  },
+  {
+    "path": "inputs\\0036-actual-dplus2-character-31254.excerpt.txt",
+    "bytes": 10548,
+    "sha256": "c81e65408feb4871280f5a8a79715ea120a14da8b6df470a87caf206a0fc8403",
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-resource-actor-fields-supplement-20261005-001\\inputs\\0036-actual-dplus2-character-31254.excerpt.txt",
+    "projection": "source-supplement/inputs\\0036-actual-dplus2-character-31254.excerpt.txt"
+  },
+  {
+    "path": "inputs\\0040-resources-character-31254.excerpt.txt",
+    "bytes": 11220,
+    "sha256": "0b90587b7be1d94989841e5b99739ebd8ececb1b702ab06000966800961e0dd8",
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-resource-actor-fields-supplement-20261005-001\\inputs\\0040-resources-character-31254.excerpt.txt",
+    "projection": "source-supplement/inputs\\0040-resources-character-31254.excerpt.txt"
+  },
+  {
+    "path": "REPORT.json",
+    "bytes": 2973,
+    "sha256": "8bea2fc934751128b9372485ea99da165ecf6852c0ccf7b096cdedaabd767c7c",
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-resource-actor-fields-supplement-20261005-001\\REPORT.json",
+    "projection": "source-supplement/REPORT.json"
+  },
+  {
+    "path": "REPORT.md",
+    "bytes": 706,
+    "sha256": "7b37e89d0fc903585a1bec0e6147e8c938dbff8351786fb301b1fc12f444b1d9",
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-resource-actor-fields-supplement-20261005-001\\REPORT.md",
+    "projection": "source-supplement/REPORT.md"
+  }
+]

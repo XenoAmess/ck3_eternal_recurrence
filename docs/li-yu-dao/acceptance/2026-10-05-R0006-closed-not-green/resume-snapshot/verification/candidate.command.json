@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-report-resume-20261005-001\\verify_candidate.py"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004",
+  "started_utc": "2026-10-04T18:38:20.336101+00:00",
+  "ended_utc": "2026-10-04T18:38:21.508248+00:00",
+  "returncode": 0,
+  "stdout_bytes": 576,
+  "stdout_sha256": "1301697a7926fe9d0230ab073c5d2077ee2d4c3ecd2c8ba8cd3f8b5bcc864b73",
+  "stderr_bytes": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "tracked_git_game_native_ci_screen_spawn_calls": 0
+}

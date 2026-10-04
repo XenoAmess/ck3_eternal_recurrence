@@ -1,0 +1,25 @@
+﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
+lyd_enter_effect = {
+    if = {
+        limit = { lyd_can_enter_trigger = yes }
+        set_character_rite = rite:lyd_rite_kongmen
+        if = {
+            limit = { rite = rite:lyd_rite_kongmen faith = rite:lyd_rite_kongmen.faith }
+            add_character_flag = lyd_enabled
+            trigger_event = lyd.1
+        }
+        else = { debug_log = "LYD_ENTER_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }
+    }
+}
+lyd_open_school_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes }
+        trigger_event = lyd.10
+    }
+}
+lyd_open_study_effect = {
+    if = {
+        limit = { lyd_can_study_trigger = yes }
+        if = { limit = { rite = rite:lyd_rite_kongmen } trigger_event = lyd.100 } if = { limit = { rite = rite:lyd_rite_mengzi } trigger_event = lyd.101 } if = { limit = { rite = rite:lyd_rite_xunzi } trigger_event = lyd.102 } if = { limit = { rite = rite:lyd_rite_zhengxuan } trigger_event = lyd.103 } if = { limit = { rite = rite:lyd_rite_wangsu } trigger_event = lyd.104 } if = { limit = { rite = rite:lyd_rite_jingshu } trigger_event = lyd.105 } if = { limit = { rite = rite:lyd_rite_zhuxi } trigger_event = lyd.106 } if = { limit = { rite = rite:lyd_rite_lujiuyuan } trigger_event = lyd.107 } if = { limit = { rite = rite:lyd_rite_dongzhongshu } trigger_event = lyd.108 } if = { limit = { rite = rite:lyd_rite_guwen } trigger_event = lyd.109 } if = { limit = { rite = rite:lyd_rite_wangbi } trigger_event = lyd.110 } if = { limit = { rite = rite:lyd_rite_guoxiang } trigger_event = lyd.111 } if = { limit = { rite = rite:lyd_rite_hanyu } trigger_event = lyd.112 } if = { limit = { rite = rite:lyd_rite_liao } trigger_event = lyd.113 } if = { limit = { rite = rite:lyd_rite_zhoudunyi } trigger_event = lyd.114 } if = { limit = { rite = rite:lyd_rite_chengbrothers } trigger_event = lyd.115 } if = { limit = { rite = rite:lyd_rite_zhangzai } trigger_event = lyd.116 } if = { limit = { rite = rite:lyd_rite_shaoyong } trigger_event = lyd.117 } if = { limit = { rite = rite:lyd_rite_wanganshi } trigger_event = lyd.118 } if = { limit = { rite = rite:lyd_rite_sushi } trigger_event = lyd.119 } if = { limit = { rite = rite:lyd_rite_huxiang } trigger_event = lyd.120 } if = { limit = { rite = rite:lyd_rite_yongjia } trigger_event = lyd.121 } if = { limit = { rite = rite:lyd_rite_yongkang } trigger_event = lyd.122 } if = { limit = { rite = rite:lyd_rite_wucheng } trigger_event = lyd.123 } if = { limit = { rite = rite:lyd_rite_chenxianzhang } trigger_event = lyd.124 } if = { limit = { rite = rite:lyd_rite_zhanruoshui } trigger_event = lyd.125 } if = { limit = { rite = rite:lyd_rite_wangyangming } trigger_event = lyd.126 } if = { limit = { rite = rite:lyd_rite_jiangyou } trigger_event = lyd.127 } if = { limit = { rite = rite:lyd_rite_taizhou } trigger_event = lyd.128 } if = { limit = { rite = rite:lyd_rite_liuzongzhou } trigger_event = lyd.129 } if = { limit = { rite = rite:lyd_rite_donglin } trigger_event = lyd.130 } if = { limit = { rite = rite:lyd_rite_wangfuzhi } trigger_event = lyd.131 } if = { limit = { rite = rite:lyd_rite_yanli } trigger_event = lyd.132 } if = { limit = { rite = rite:lyd_rite_qianjia } trigger_event = lyd.133 } if = { limit = { rite = rite:lyd_rite_changzhou } trigger_event = lyd.134 } if = { limit = { rite = rite:lyd_rite_jingshi } trigger_event = lyd.135 }
+    }
+}

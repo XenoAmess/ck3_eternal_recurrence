@@ -1,0 +1,9 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task_id": "ck3-lyd-live-007-20261004",
+  "previous_cursor": 2703,
+  "acknowledged_cursor": 2703,
+  "events": [],
+  "remaining": 0
+}

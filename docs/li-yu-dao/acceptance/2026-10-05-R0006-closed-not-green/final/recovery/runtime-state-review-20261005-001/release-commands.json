@@ -1,0 +1,16 @@
+{
+  "not_executed": true,
+  "screen_release_current_snapshot": "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe C:/workspace/ck3_eternal_recurrence/tools/codex_task_bus.py --bus-dir C:/workspace/.codex-task-bus --expected-cli-sha256 B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE release-screen-cas --task ck3-lyd-live-007-20261004 --expected-sequence 2808 --summary R0006-expired-own-screen-claim-released-unresolved",
+  "screen_release_condition": "Re-read exact current task sequence and CLI pair immediately before execution. If sequence changes, stop and review; do not force or retry with guessed sequence.",
+  "general_waiting_when_work_is_not_complete": "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe C:/workspace/ck3_eternal_recurrence/tools/codex_task_bus.py --bus-dir C:/workspace/.codex-task-bus status --task ck3-li-yu-dao-implementation-20261004 --state waiting --summary R6-live-paused-session-lost-review-required --next-step Preserve-evidence-and-review-managed-resume",
+  "general_done_only_after_real_full_completion": "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe C:/workspace/ck3_eternal_recurrence/tools/codex_task_bus.py --bus-dir C:/workspace/.codex-task-bus status --task ck3-li-yu-dao-implementation-20261004 --state done --summary Li-Yu-Dao-implementation-and-acceptance-complete",
+  "queue_close_if_a_live_consumer_exists": "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe C:/workspace/ck3_lyd_runtime_20261004/persistent_native_mcp_queue.py enqueue --queue <CURRENT-LIVE-QUEUE> --request <NEW-CLOSE-REQUEST.json>",
+  "close_request_schema": {
+    "schema": "ck3.lyd.mcp-request.v1",
+    "request_id": "<NEW-UNIQUE-ID>",
+    "operation": "close"
+  },
+  "keeper_stop_protocol": "Create NEW STOP.request in the live keeper output, wait for FINAL.json and actual keeper process exit; there is no stop CLI subcommand.",
+  "current_dead_queue_keeper_cleanup": "Neither enqueue close nor create STOP.request is useful for this absent queue/keeper. Preserve old ledgers. Never restart serve against old mcp-queue, because its consumer-session.json binds the old session and historical requests must not replay.",
+  "game_exit": "No reviewed native-MCP quit tool or live_control_r0006 quit CLI exists. Actual CK3 remains running. Normal game exit requires Root-reviewed current GUI evidence and existing coordinate/focus contracts; no game-stop command was executed or invented in this review."
+}

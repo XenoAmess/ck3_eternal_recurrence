@@ -1,0 +1,104 @@
+[
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "domain": "fixture",
+    "primary_location": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      69,
+      "lyd_r4_qualification_display_trigger"
+    ],
+    "message": "Trigger Localization (database): 'has_variable': missing localization 'NOT_has_variable_trigger' at file: common/trigger_localization/00_debug_triggers.txt line: 157 (has_variable)",
+    "count": 1,
+    "first_local_time": "21:53:36",
+    "first_line": 1,
+    "last_local_time": "21:53:36",
+    "last_line": 1,
+    "first_raw_block": "[21:53:36][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (database): 'has_variable': missing localization 'NOT_has_variable_trigger' at file: common/trigger_localization/00_debug_triggers.txt line: 157 (has_variable)\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 69 (lyd_r4_qualification_display_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "domain": "fixture",
+    "primary_location": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      11,
+      "lyd_r4_unlocked_rite_trigger"
+    ],
+    "message": "Trigger Localization (database): 'has_variable': missing localization 'NOT_has_variable_trigger' at file: common/trigger_localization/00_debug_triggers.txt line: 157 (has_variable)",
+    "count": 1,
+    "first_local_time": "21:53:36",
+    "first_line": 5,
+    "last_local_time": "21:53:36",
+    "last_line": 5,
+    "first_raw_block": "[21:53:36][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (database): 'has_variable': missing localization 'NOT_has_variable_trigger' at file: common/trigger_localization/00_debug_triggers.txt line: 157 (has_variable)\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 11 (lyd_r4_unlocked_rite_trigger)\n\r\n"
+  },
+  {
+    "category": "missing_trigger_localization",
+    "context": "trigger_localization_display",
+    "domain": "fixture",
+    "primary_location": [
+      "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      12,
+      "lyd_r4_unlocked_rite_trigger"
+    ],
+    "message": "Trigger Localization (database): 'has_variable': missing localization 'NOT_has_variable_trigger' at file: common/trigger_localization/00_debug_triggers.txt line: 157 (has_variable)",
+    "count": 1,
+    "first_local_time": "21:53:36",
+    "first_line": 9,
+    "last_local_time": "21:53:36",
+    "last_line": 9,
+    "first_raw_block": "[21:53:36][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Trigger Localization (database): 'has_variable': missing localization 'NOT_has_variable_trigger' at file: common/trigger_localization/00_debug_triggers.txt line: 157 (has_variable)\n  Script location: file: common/scripted_triggers/lyd_r4_fixture_triggers.txt line: 12 (lyd_r4_unlocked_rite_trigger)\n\r\n"
+  },
+  {
+    "category": "unset_learning_delta_variable",
+    "context": "explicit_tooltip_description",
+    "domain": "fixture",
+    "primary_location": [
+      "common/scripted_effects/lyd_r4_fixture_effects.txt",
+      76,
+      "lyd_r4_qualification_effect"
+    ],
+    "message": "Failed to fetch variable for 'lyd_r4_learning_delta' due to not being set",
+    "count": 15721,
+    "first_local_time": "21:53:36",
+    "first_line": 13,
+    "last_local_time": "21:58:03",
+    "last_line": 172933,
+    "first_raw_block": "[21:53:36][E][jomini_script_system.cpp:304]: Script system error! (while building tooltip/description)\n  Error: Failed to fetch variable for 'lyd_r4_learning_delta' due to not being set\n  Script location: file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 76 (lyd_r4_qualification_effect)\n    file: common/decisions/lyd_r4_fixture_decisions.txt line: 18 (lyd_r4_qualification_decision:effect)\n\r\n"
+  },
+  {
+    "category": "unset_var_scope_link",
+    "context": "explicit_tooltip_description",
+    "domain": "fixture",
+    "primary_location": [
+      "common/scripted_effects/lyd_r4_fixture_effects.txt",
+      76,
+      "lyd_r4_qualification_effect"
+    ],
+    "message": "Event target link 'var' returned an unset scope",
+    "count": 15721,
+    "first_local_time": "21:53:36",
+    "first_line": 18,
+    "last_local_time": "21:58:03",
+    "last_line": 172938,
+    "first_raw_block": "[21:53:36][E][jomini_script_system.cpp:304]: Script system error! (while building tooltip/description)\n  Error: Event target link 'var' returned an unset scope\n  Script location: file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 76 (lyd_r4_qualification_effect)\n    file: common/decisions/lyd_r4_fixture_decisions.txt line: 18 (lyd_r4_qualification_decision:effect)\n\r\n"
+  },
+  {
+    "category": "script_value_wrong_type_none",
+    "context": "evaluation_context_not_explicitly_marked",
+    "domain": "fixture",
+    "primary_location": [
+      "common/scripted_effects/lyd_r4_fixture_effects.txt",
+      76,
+      "lyd_r4_qualification_effect"
+    ],
+    "message": "Value of wrong type in 'file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 76 (lyd_r4_qualification_effect)'. Got value of type 'none'\r",
+    "count": 15721,
+    "first_local_time": "21:53:36",
+    "first_line": 23,
+    "last_local_time": "21:58:03",
+    "last_line": 172943,
+    "first_raw_block": "[21:53:36][E][jomini_scriptvalue.cpp:1499]: Value of wrong type in 'file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 76 (lyd_r4_qualification_effect)'. Got value of type 'none'\r\n"
+  }
+]

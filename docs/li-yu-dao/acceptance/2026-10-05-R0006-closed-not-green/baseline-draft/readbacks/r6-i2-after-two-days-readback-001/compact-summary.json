@@ -1,0 +1,3778 @@
+{
+  "schema": "lyd.r6-independent-saved-state-comparison.v1",
+  "scenario": "i2-after-actual-two-days",
+  "result": "PASS_ACTUAL_D_PLUS2_OBSERVATION_ONLY",
+  "artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\97fe09b4d9ff9cfc59bfbeb4b9ff7bf795538cfa22c8fd07ac73c6dd2b61eee5\\xar_checkpoint.ck3",
+    "bytes": 90494024,
+    "sha256": "97fe09b4d9ff9cfc59bfbeb4b9ff7bf795538cfa22c8fd07ac73c6dd2b61eee5"
+  },
+  "sdk_sha256": "3e87e0d9adae1aea76277f6802e3864f7b433ec0bcbaccd97f1af4680340e8c4",
+  "wrapper_sha256": "b2e435eb68e8b3bd17be08772474117aa0818dacdd85808b81d3c141b093b7c8",
+  "clock_report_sha256": "eb4babc7c1bd85d6d0c8bdf28d25ccdced81bd1cbbd374823a4f5b5b41b2168c",
+  "baseline_artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\preserved-checkpoints\\3f03971940fe97653f392691a36acee63bd66544d49b35b57296c744fe47da37\\xar_checkpoint.ck3",
+    "bytes": 91313712,
+    "sha256": "3f03971940fe97653f392691a36acee63bd66544d49b35b57296c744fe47da37"
+  },
+  "baseline_report_sha256": "e23f8bd15ff2b96030568d4c554b41183dde2b2231f79021d0c27ac767b68f8f",
+  "actual_date": "1066.9.17",
+  "actual_native_raw_date": 53144376,
+  "actual_elapsed_days": 2,
+  "requested_days": 1,
+  "actual_source_faith": {
+    "id": "32",
+    "name": "儒家共宗",
+    "main_rite": "150",
+    "main_rite_type": "lyd_rite_kongmen",
+    "rite_count": 35,
+    "rite_ids": [
+      "150",
+      "151",
+      "152",
+      "153",
+      "154",
+      "155",
+      "156",
+      "157",
+      "158",
+      "160",
+      "161",
+      "162",
+      "163",
+      "164",
+      "165",
+      "166",
+      "167",
+      "168",
+      "169",
+      "170",
+      "171",
+      "172",
+      "173",
+      "174",
+      "175",
+      "176",
+      "177",
+      "178",
+      "179",
+      "180",
+      "181",
+      "182",
+      "183",
+      "184",
+      "185"
+    ],
+    "religious_head": "4294967295"
+  },
+  "actual_receiving_faith": {
+    "id": "104",
+    "name": "经疏正义",
+    "main_rite": "159",
+    "main_rite_type": "lyd_rite_jingshu",
+    "rite_count": 1,
+    "rite_ids": [
+      "159"
+    ],
+    "religious_head": "4294967295"
+  },
+  "saved_base_learning": "14",
+  "saved_total_learning": null,
+  "actor_lyd_variables": {
+    "lyd_enabled": {
+      "present": true,
+      "tick": null,
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_enabled"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_r3_fixture_initialized": {
+      "present": true,
+      "tick": null,
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r3_fixture_initialized"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_r4_learning_before": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "800000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "800000"
+        }
+      ],
+      "number": "8",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_learning_before"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "800000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_learning_delta": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "700000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "700000"
+        }
+      ],
+      "number": "7",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_learning_delta"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "700000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_qualification_gold_before": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "22900000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "22900000"
+        }
+      ],
+      "number": "229",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_qualification_gold_before"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "22900000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_qualification_piety_before": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "18500000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "18500000"
+        }
+      ],
+      "number": "185",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_qualification_piety_before"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "18500000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_learning_after": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "800000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "800000"
+        }
+      ],
+      "number": "8",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_learning_after"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "800000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_initial_source_faith": {
+      "present": true,
+      "tick": null,
+      "type": "faith",
+      "identity": "32",
+      "entries": [
+        {
+          "key": "type",
+          "value": "faith"
+        },
+        {
+          "key": "identity",
+          "value": "32"
+        }
+      ],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_initial_source_faith"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "faith"
+            },
+            {
+              "key": "identity",
+              "value": "32"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_setup_gold_before": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "22900000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "22900000"
+        }
+      ],
+      "number": "229",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_setup_gold_before"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "22900000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_setup_piety_before": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "18500000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "18500000"
+        }
+      ],
+      "number": "185",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_setup_piety_before"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "18500000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_setup_learning_before": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "800000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "800000"
+        }
+      ],
+      "number": "8",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_setup_learning_before"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "800000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_setup_attempted": {
+      "present": true,
+      "tick": null,
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_setup_attempted"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_r4_reset_count": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": null,
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        }
+      ],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_reset_count"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_source_rep": {
+      "present": true,
+      "tick": null,
+      "type": "char",
+      "identity": "65856",
+      "entries": [
+        {
+          "key": "type",
+          "value": "char"
+        },
+        {
+          "key": "identity",
+          "value": "65856"
+        }
+      ],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_source_rep"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "char"
+            },
+            {
+              "key": "identity",
+              "value": "65856"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_jingshu_rep": {
+      "present": true,
+      "tick": null,
+      "type": "char",
+      "identity": "65857",
+      "entries": [
+        {
+          "key": "type",
+          "value": "char"
+        },
+        {
+          "key": "identity",
+          "value": "65857"
+        }
+      ],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_jingshu_rep"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "char"
+            },
+            {
+              "key": "identity",
+              "value": "65857"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_receiving_faith": {
+      "present": true,
+      "tick": null,
+      "type": "faith",
+      "identity": "104",
+      "entries": [
+        {
+          "key": "type",
+          "value": "faith"
+        },
+        {
+          "key": "identity",
+          "value": "104"
+        }
+      ],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_receiving_faith"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "faith"
+            },
+            {
+              "key": "identity",
+              "value": "104"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_fixture_initialized": {
+      "present": true,
+      "tick": null,
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_fixture_initialized"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_r4_same_core": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "100000"
+        }
+      ],
+      "number": "1",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_same_core"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "100000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_both_no_head": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "100000"
+        }
+      ],
+      "number": "1",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_both_no_head"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "100000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_actor_qualified": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": null,
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        }
+      ],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_actor_qualified"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_join_funds": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": null,
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        }
+      ],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_join_funds"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_distinct_faiths": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "100000"
+        }
+      ],
+      "number": "1",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_distinct_faiths"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "100000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_pair_divergence": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "300000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "300000"
+        }
+      ],
+      "number": "3",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_pair_divergence"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "300000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_school_cooldown": {
+      "present": true,
+      "tick": "363",
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_school_cooldown"
+        },
+        {
+          "key": "tick",
+          "value": "363"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_study_cooldown": {
+      "present": true,
+      "tick": "178",
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_study_cooldown"
+        },
+        {
+          "key": "tick",
+          "value": "178"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    }
+  },
+  "actual_npc_records": {
+    "source_rep": {
+      "id": "65856",
+      "rite_id": "169",
+      "faith_id": "32",
+      "saved_skill_array": [
+        "6",
+        "9",
+        "9",
+        "10",
+        "20",
+        "3"
+      ],
+      "base_learning": "20",
+      "court_data": [
+        {
+          "key": "employer",
+          "value": "31254"
+        },
+        {
+          "key": "knight",
+          "value": "yes"
+        },
+        {
+          "key": "join_court_date",
+          "value": "1066.9.15"
+        }
+      ],
+      "actual_employer": "31254",
+      "alive_data_present": true,
+      "native_is_ai": null,
+      "boundary": "AI and total Learning are not inferred from base skills or nonplayer identity."
+    },
+    "receiving_rep": {
+      "id": "65857",
+      "rite_id": "159",
+      "faith_id": "104",
+      "saved_skill_array": [
+        "7",
+        "0",
+        "9",
+        "0",
+        "20",
+        "4"
+      ],
+      "base_learning": "20",
+      "court_data": [
+        {
+          "key": "employer",
+          "value": "31254"
+        },
+        {
+          "key": "knight",
+          "value": "yes"
+        },
+        {
+          "key": "join_court_date",
+          "value": "1066.9.15"
+        }
+      ],
+      "actual_employer": "31254",
+      "alive_data_present": true,
+      "native_is_ai": null,
+      "boundary": "AI and total Learning are not inferred from base skills or nonplayer identity."
+    }
+  },
+  "saved_wallet_observations": {
+    "gold": {
+      "before": "229",
+      "after": "229"
+    },
+    "piety": {
+      "before": "185",
+      "after": "185"
+    },
+    "prestige": {
+      "before": "2200",
+      "after": "2200"
+    },
+    "stress": {
+      "before": "4",
+      "after": "4"
+    },
+    "learning_lifestyle_xp": {
+      "before": "40",
+      "after": "40"
+    }
+  },
+  "saved_resources": {
+    "gold": "229",
+    "piety": "185",
+    "prestige": "2200",
+    "stress": "4",
+    "learning_lifestyle_xp": "40"
+  },
+  "native_resources": {
+    "gold": "229",
+    "piety": "185",
+    "prestige": "2200",
+    "stress": "4",
+    "learning_lifestyle_xp": null
+  },
+  "actual_graph_changes": {
+    "faith_ids": [
+      "13"
+    ],
+    "rite_ids": [
+      "169"
+    ],
+    "rite_heads": [
+      {
+        "rite_id": "169",
+        "rite_type": "lyd_rite_zhuxi",
+        "before": "4294967295",
+        "after": "31254"
+      }
+    ],
+    "cause_boundary": "Actual changed fields are preserved. No cause, C3 appointment, or player consent is inferred merely from natural advancement."
+  },
+  "qualification_boundary": "No fresh exact total-Learning getter is exposed by this SDK/save. Old stored qualification8/7/8 and setup_before8 remain unchanged. Root reports the native qualifying fixture disappeared and formal decision became visible, consistent with current execution eligibility; not an independent exact15 measurement and not a rewrite of prior qualification RED.",
+  "scope": "Actual D+2 observation of preserved 35+1 ownership, named NPCs, natural expiry ticks and actor-related political safeguards only. The checkpoint filename one-day records intent; actual timing is two days. Ordinary time may alter world characters, wallets, Faith fields and native rite leadership. ZhuXi head_of_rite actually became current actor without a saved C3 appointment record; both Faith HoF titles remain absent. No formal C2 or C3 player consent, migration, exact D+1 timing, delayed candidate validation, or zero-log GREEN inferred.",
+  "game_called": false,
+  "tracked_written": false,
+  "full_report": {
+    "path": "comparison-report.json",
+    "bytes": 95313,
+    "sha256": "3ef1bb3873ecbafd40489c9980fb9f159020bef6e5ff0b47bc97301eb6fb4388"
+  },
+  "original_index": {
+    "path": "INDEX.json",
+    "sha256": "6c930a76af85d238ec194f48151d57b52193b0ea110ebf627a212627ca7a8154"
+  },
+  "family_character_count": 9,
+  "protected_title_count": 7,
+  "checks": [
+    {
+      "name": "fresh current saved actor and SDK player agree",
+      "actual": "31254",
+      "expected": "31254",
+      "passed": true
+    },
+    {
+      "name": "ordinary Robert history identity remains1128",
+      "actual": [
+        "1128"
+      ],
+      "expected": [
+        "1128"
+      ],
+      "passed": true
+    },
+    {
+      "name": "saved current played identity unchanged",
+      "actual": [
+        "31254"
+      ],
+      "expected": [
+        "31254"
+      ],
+      "passed": true
+    },
+    {
+      "name": "actual saved date isD+2 September17",
+      "actual": "1066.9.17",
+      "expected": "1066.9.17",
+      "passed": true
+    },
+    {
+      "name": "actual previous saved date September15",
+      "actual": "1066.9.15",
+      "expected": "1066.9.15",
+      "passed": true
+    },
+    {
+      "name": "actual native raw date delta48",
+      "actual": 48,
+      "expected": 48,
+      "passed": true
+    },
+    {
+      "name": "clock requested24 but actually48 raw ticks",
+      "actual": [
+        24,
+        48
+      ],
+      "expected": [
+        24,
+        48
+      ],
+      "passed": true
+    },
+    {
+      "name": "clock start and end actual checkpoint dates",
+      "actual": [
+        53144328,
+        53144376
+      ],
+      "expected": [
+        53144328,
+        53144376
+      ],
+      "passed": true
+    },
+    {
+      "name": "bounded clock reports no cooldown reset or state patch",
+      "actual": [
+        false,
+        false
+      ],
+      "expected": [
+        false,
+        false
+      ],
+      "passed": true
+    },
+    {
+      "name": "current saved actor actual rite and faith retained",
+      "actual": [
+        "169",
+        "32"
+      ],
+      "expected": [
+        "169",
+        "32"
+      ],
+      "passed": true
+    },
+    {
+      "name": "source actual main and membership retained35",
+      "actual": [
+        "150",
+        [
+          "150",
+          "151",
+          "152",
+          "153",
+          "154",
+          "155",
+          "156",
+          "157",
+          "158",
+          "160",
+          "161",
+          "162",
+          "163",
+          "164",
+          "165",
+          "166",
+          "167",
+          "168",
+          "169",
+          "170",
+          "171",
+          "172",
+          "173",
+          "174",
+          "175",
+          "176",
+          "177",
+          "178",
+          "179",
+          "180",
+          "181",
+          "182",
+          "183",
+          "184",
+          "185"
+        ],
+        35
+      ],
+      "expected": [
+        "150",
+        [
+          "150",
+          "151",
+          "152",
+          "153",
+          "154",
+          "155",
+          "156",
+          "157",
+          "158",
+          "160",
+          "161",
+          "162",
+          "163",
+          "164",
+          "165",
+          "166",
+          "167",
+          "168",
+          "169",
+          "170",
+          "171",
+          "172",
+          "173",
+          "174",
+          "175",
+          "176",
+          "177",
+          "178",
+          "179",
+          "180",
+          "181",
+          "182",
+          "183",
+          "184",
+          "185"
+        ],
+        35
+      ],
+      "passed": true
+    },
+    {
+      "name": "receiver actual main and membership retained1",
+      "actual": [
+        "159",
+        [
+          "159"
+        ],
+        1
+      ],
+      "expected": [
+        "159",
+        [
+          "159"
+        ],
+        1
+      ],
+      "passed": true
+    },
+    {
+      "name": "all rite parentFaith/main content mapping retained",
+      "actual": {
+        "full_report_pointer": "/checks/12/actual",
+        "canonical_json_bytes": 1925,
+        "canonical_json_sha256": "e7df670c61d3f4b9452b2a245c1744e63d73a2fe26faff714d7c8adcfd543609"
+      },
+      "expected": {
+        "full_report_pointer": "/checks/12/expected",
+        "canonical_json_bytes": 1925,
+        "canonical_json_sha256": "e7df670c61d3f4b9452b2a245c1744e63d73a2fe26faff714d7c8adcfd543609"
+      },
+      "passed": true
+    },
+    {
+      "name": "global catalogue remains36",
+      "actual": 36,
+      "expected": 36,
+      "passed": true
+    },
+    {
+      "name": "source actual Faith head-title remains absent",
+      "actual": "4294967295",
+      "expected": "4294967295",
+      "passed": true
+    },
+    {
+      "name": "source main doctrine-set retained",
+      "actual": [
+        "sinitic_hostility_doctrine",
+        "doctrine_concubines",
+        "doctrine_divorce_allowed",
+        "doctrine_bastardry_legitimization",
+        "doctrine_homosexuality_shunned",
+        "doctrine_deviancy_crime",
+        "doctrine_adultery_men_crime",
+        "doctrine_adultery_women_crime",
+        "doctrine_kinslaying_any_dynasty_member_crime",
+        "doctrine_witchcraft_crime",
+        "doctrine_gender_male_dominated",
+        "doctrine_consanguinity_dynastic",
+        "doctrine_pluralism_pluralistic",
+        "doctrine_theocracy_lay_clergy",
+        "doctrine_no_head",
+        "doctrine_clerical_function_taxation",
+        "doctrine_clerical_gender_male_only",
+        "doctrine_clerical_marriage_allowed",
+        "doctrine_clerical_succession_temporal_appointment",
+        "doctrine_pilgrimage_local_rites",
+        "doctrine_family_rites",
+        "doctrine_no_anointment",
+        "doctrine_polytheist",
+        "doctrine_scriptural",
+        "doctrine_monasticism_absent",
+        "doctrine_sacraments_absent",
+        "special_doctrine_is_sinitic_faith",
+        "special_doctrine_immaterial_harmony"
+      ],
+      "expected": [
+        "sinitic_hostility_doctrine",
+        "doctrine_concubines",
+        "doctrine_divorce_allowed",
+        "doctrine_bastardry_legitimization",
+        "doctrine_homosexuality_shunned",
+        "doctrine_deviancy_crime",
+        "doctrine_adultery_men_crime",
+        "doctrine_adultery_women_crime",
+        "doctrine_kinslaying_any_dynasty_member_crime",
+        "doctrine_witchcraft_crime",
+        "doctrine_gender_male_dominated",
+        "doctrine_consanguinity_dynastic",
+        "doctrine_pluralism_pluralistic",
+        "doctrine_theocracy_lay_clergy",
+        "doctrine_no_head",
+        "doctrine_clerical_function_taxation",
+        "doctrine_clerical_gender_male_only",
+        "doctrine_clerical_marriage_allowed",
+        "doctrine_clerical_succession_temporal_appointment",
+        "doctrine_pilgrimage_local_rites",
+        "doctrine_family_rites",
+        "doctrine_no_anointment",
+        "doctrine_polytheist",
+        "doctrine_scriptural",
+        "doctrine_monasticism_absent",
+        "doctrine_sacraments_absent",
+        "special_doctrine_is_sinitic_faith",
+        "special_doctrine_immaterial_harmony"
+      ],
+      "passed": true
+    },
+    {
+      "name": "receiver actual Faith head-title remains absent",
+      "actual": "4294967295",
+      "expected": "4294967295",
+      "passed": true
+    },
+    {
+      "name": "receiver main doctrine-set retained",
+      "actual": [
+        "sinitic_hostility_doctrine",
+        "doctrine_concubines",
+        "doctrine_divorce_allowed",
+        "doctrine_bastardry_legitimization",
+        "doctrine_homosexuality_shunned",
+        "doctrine_deviancy_crime",
+        "doctrine_adultery_men_crime",
+        "doctrine_adultery_women_crime",
+        "doctrine_kinslaying_any_dynasty_member_crime",
+        "doctrine_witchcraft_crime",
+        "doctrine_gender_male_dominated",
+        "doctrine_consanguinity_dynastic",
+        "doctrine_pluralism_pluralistic",
+        "doctrine_theocracy_lay_clergy",
+        "doctrine_no_head",
+        "doctrine_clerical_function_taxation",
+        "doctrine_clerical_gender_male_only",
+        "doctrine_clerical_marriage_allowed",
+        "doctrine_clerical_succession_temporal_appointment",
+        "doctrine_pilgrimage_local_rites",
+        "doctrine_family_rites",
+        "doctrine_no_anointment",
+        "doctrine_polytheist",
+        "doctrine_scriptural",
+        "doctrine_monasticism_absent",
+        "doctrine_sacraments_absent",
+        "special_doctrine_is_sinitic_faith",
+        "special_doctrine_immaterial_harmony"
+      ],
+      "expected": [
+        "sinitic_hostility_doctrine",
+        "doctrine_concubines",
+        "doctrine_divorce_allowed",
+        "doctrine_bastardry_legitimization",
+        "doctrine_homosexuality_shunned",
+        "doctrine_deviancy_crime",
+        "doctrine_adultery_men_crime",
+        "doctrine_adultery_women_crime",
+        "doctrine_kinslaying_any_dynasty_member_crime",
+        "doctrine_witchcraft_crime",
+        "doctrine_gender_male_dominated",
+        "doctrine_consanguinity_dynastic",
+        "doctrine_pluralism_pluralistic",
+        "doctrine_theocracy_lay_clergy",
+        "doctrine_no_head",
+        "doctrine_clerical_function_taxation",
+        "doctrine_clerical_gender_male_only",
+        "doctrine_clerical_marriage_allowed",
+        "doctrine_clerical_succession_temporal_appointment",
+        "doctrine_pilgrimage_local_rites",
+        "doctrine_family_rites",
+        "doctrine_no_anointment",
+        "doctrine_polytheist",
+        "doctrine_scriptural",
+        "doctrine_monasticism_absent",
+        "doctrine_sacraments_absent",
+        "special_doctrine_is_sinitic_faith",
+        "special_doctrine_immaterial_harmony"
+      ],
+      "passed": true
+    },
+    {
+      "name": "actor actual base Learning14 remains",
+      "actual": "14",
+      "expected": "14",
+      "passed": true
+    },
+    {
+      "name": "actor saved base skill array retained",
+      "actual": [
+        "4",
+        "9",
+        "6",
+        "6",
+        "14",
+        "6"
+      ],
+      "expected": [
+        "4",
+        "9",
+        "6",
+        "6",
+        "14",
+        "6"
+      ],
+      "passed": true
+    },
+    {
+      "name": "no newly added actor LYD variables",
+      "actual": [
+        "lyd_enabled",
+        "lyd_r3_fixture_initialized",
+        "lyd_r4_actor_qualified",
+        "lyd_r4_both_no_head",
+        "lyd_r4_distinct_faiths",
+        "lyd_r4_fixture_initialized",
+        "lyd_r4_initial_source_faith",
+        "lyd_r4_jingshu_rep",
+        "lyd_r4_join_funds",
+        "lyd_r4_learning_after",
+        "lyd_r4_learning_before",
+        "lyd_r4_learning_delta",
+        "lyd_r4_pair_divergence",
+        "lyd_r4_qualification_gold_before",
+        "lyd_r4_qualification_piety_before",
+        "lyd_r4_receiving_faith",
+        "lyd_r4_reset_count",
+        "lyd_r4_same_core",
+        "lyd_r4_setup_attempted",
+        "lyd_r4_setup_gold_before",
+        "lyd_r4_setup_learning_before",
+        "lyd_r4_setup_piety_before",
+        "lyd_r4_source_rep",
+        "lyd_school_cooldown",
+        "lyd_study_cooldown"
+      ],
+      "expected": [
+        "lyd_enabled",
+        "lyd_r3_fixture_initialized",
+        "lyd_r4_actor_qualified",
+        "lyd_r4_both_no_head",
+        "lyd_r4_distinct_faiths",
+        "lyd_r4_fixture_initialized",
+        "lyd_r4_initial_source_faith",
+        "lyd_r4_jingshu_rep",
+        "lyd_r4_join_funds",
+        "lyd_r4_learning_after",
+        "lyd_r4_learning_before",
+        "lyd_r4_learning_delta",
+        "lyd_r4_pair_divergence",
+        "lyd_r4_qualification_gold_before",
+        "lyd_r4_qualification_piety_before",
+        "lyd_r4_receiving_faith",
+        "lyd_r4_reset_count",
+        "lyd_r4_same_core",
+        "lyd_r4_setup_attempted",
+        "lyd_r4_setup_gold_before",
+        "lyd_r4_setup_learning_before",
+        "lyd_r4_setup_piety_before",
+        "lyd_r4_source_rep",
+        "lyd_school_cooldown",
+        "lyd_study_cooldown"
+      ],
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_enabled",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": null,
+        "identity": null,
+        "entries": [],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_enabled"
+          },
+          {
+            "key": "data",
+            "value": []
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": null,
+        "identity": null,
+        "entries": [],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_enabled"
+          },
+          {
+            "key": "data",
+            "value": []
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r3_fixture_initialized",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": null,
+        "identity": null,
+        "entries": [],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r3_fixture_initialized"
+          },
+          {
+            "key": "data",
+            "value": []
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": null,
+        "identity": null,
+        "entries": [],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r3_fixture_initialized"
+          },
+          {
+            "key": "data",
+            "value": []
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_learning_before",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "800000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "800000"
+          }
+        ],
+        "number": "8",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_learning_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "800000"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "800000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "800000"
+          }
+        ],
+        "number": "8",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_learning_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "800000"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_learning_delta",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "700000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "700000"
+          }
+        ],
+        "number": "7",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_learning_delta"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "700000"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "700000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "700000"
+          }
+        ],
+        "number": "7",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_learning_delta"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "700000"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_qualification_gold_before",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "22900000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "22900000"
+          }
+        ],
+        "number": "229",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_qualification_gold_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "22900000"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "22900000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "22900000"
+          }
+        ],
+        "number": "229",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_qualification_gold_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "22900000"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_qualification_piety_before",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "18500000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "18500000"
+          }
+        ],
+        "number": "185",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_qualification_piety_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "18500000"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "18500000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "18500000"
+          }
+        ],
+        "number": "185",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_qualification_piety_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "18500000"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_learning_after",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "800000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "800000"
+          }
+        ],
+        "number": "8",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_learning_after"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "800000"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "800000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "800000"
+          }
+        ],
+        "number": "8",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_learning_after"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "800000"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_initial_source_faith",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "faith",
+        "identity": "32",
+        "entries": [
+          {
+            "key": "type",
+            "value": "faith"
+          },
+          {
+            "key": "identity",
+            "value": "32"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_initial_source_faith"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "faith"
+              },
+              {
+                "key": "identity",
+                "value": "32"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "faith",
+        "identity": "32",
+        "entries": [
+          {
+            "key": "type",
+            "value": "faith"
+          },
+          {
+            "key": "identity",
+            "value": "32"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_initial_source_faith"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "faith"
+              },
+              {
+                "key": "identity",
+                "value": "32"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_setup_gold_before",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "22900000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "22900000"
+          }
+        ],
+        "number": "229",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_setup_gold_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "22900000"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "22900000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "22900000"
+          }
+        ],
+        "number": "229",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_setup_gold_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "22900000"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_setup_piety_before",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "18500000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "18500000"
+          }
+        ],
+        "number": "185",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_setup_piety_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "18500000"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "18500000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "18500000"
+          }
+        ],
+        "number": "185",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_setup_piety_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "18500000"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_setup_learning_before",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "800000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "800000"
+          }
+        ],
+        "number": "8",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_setup_learning_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "800000"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "800000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "800000"
+          }
+        ],
+        "number": "8",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_setup_learning_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "800000"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_setup_attempted",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": null,
+        "identity": null,
+        "entries": [],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_setup_attempted"
+          },
+          {
+            "key": "data",
+            "value": []
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": null,
+        "identity": null,
+        "entries": [],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_setup_attempted"
+          },
+          {
+            "key": "data",
+            "value": []
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_reset_count",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_reset_count"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_reset_count"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_source_rep",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "65856",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "65856"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_source_rep"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "65856"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "65856",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "65856"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_source_rep"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "65856"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_jingshu_rep",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "65857",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "65857"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_jingshu_rep"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "65857"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "65857",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "65857"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_jingshu_rep"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "65857"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_receiving_faith",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "faith",
+        "identity": "104",
+        "entries": [
+          {
+            "key": "type",
+            "value": "faith"
+          },
+          {
+            "key": "identity",
+            "value": "104"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_receiving_faith"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "faith"
+              },
+              {
+                "key": "identity",
+                "value": "104"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "faith",
+        "identity": "104",
+        "entries": [
+          {
+            "key": "type",
+            "value": "faith"
+          },
+          {
+            "key": "identity",
+            "value": "104"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_receiving_faith"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "faith"
+              },
+              {
+                "key": "identity",
+                "value": "104"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_fixture_initialized",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": null,
+        "identity": null,
+        "entries": [],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_fixture_initialized"
+          },
+          {
+            "key": "data",
+            "value": []
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": null,
+        "identity": null,
+        "entries": [],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_fixture_initialized"
+          },
+          {
+            "key": "data",
+            "value": []
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_same_core",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_same_core"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_same_core"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_both_no_head",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_both_no_head"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_both_no_head"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_actor_qualified",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_actor_qualified"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_actor_qualified"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_join_funds",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_join_funds"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_join_funds"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_distinct_faiths",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_distinct_faiths"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_distinct_faiths"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "prior stored record unchanged lyd_r4_pair_divergence",
+      "actual": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "300000"
+          }
+        ],
+        "number": "3",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_pair_divergence"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "300000"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "300000"
+          }
+        ],
+        "number": "3",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_pair_divergence"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "300000"
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "lyd_school_cooldown naturally decreased by2",
+      "actual": "363",
+      "expected": "363",
+      "passed": true
+    },
+    {
+      "name": "lyd_school_cooldown data unchanged apart from expiry tick",
+      "actual": {
+        "present": true,
+        "tick": "365",
+        "type": null,
+        "identity": null,
+        "entries": [],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_school_cooldown"
+          },
+          {
+            "key": "tick",
+            "value": "365"
+          },
+          {
+            "key": "data",
+            "value": []
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": "365",
+        "type": null,
+        "identity": null,
+        "entries": [],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_school_cooldown"
+          },
+          {
+            "key": "tick",
+            "value": "365"
+          },
+          {
+            "key": "data",
+            "value": []
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "lyd_study_cooldown naturally decreased by2",
+      "actual": "178",
+      "expected": "178",
+      "passed": true
+    },
+    {
+      "name": "lyd_study_cooldown data unchanged apart from expiry tick",
+      "actual": {
+        "present": true,
+        "tick": "180",
+        "type": null,
+        "identity": null,
+        "entries": [],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_study_cooldown"
+          },
+          {
+            "key": "tick",
+            "value": "180"
+          },
+          {
+            "key": "data",
+            "value": []
+          }
+        ]
+      },
+      "expected": {
+        "present": true,
+        "tick": "180",
+        "type": null,
+        "identity": null,
+        "entries": [],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_study_cooldown"
+          },
+          {
+            "key": "tick",
+            "value": "180"
+          },
+          {
+            "key": "data",
+            "value": []
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "lyd_c2_active absent actual saved record",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "lyd_c3_personal_teacher absent actual saved record",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "lyd_r4_resources_prepared absent actual saved record",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "actor actual lists unchanged/no seeded vote",
+      "actual": {},
+      "expected": {},
+      "passed": true
+    },
+    {
+      "name": "no formal C2 token anywhere in saved text",
+      "actual": [],
+      "expected": [],
+      "passed": true
+    },
+    {
+      "name": "no C3 state token anywhere in saved text",
+      "actual": [],
+      "expected": [],
+      "passed": true
+    },
+    {
+      "name": "no LYD owned head/claim title added",
+      "actual": {},
+      "expected": {},
+      "passed": true
+    },
+    {
+      "name": "source_rep actual typed id retained",
+      "actual": "65856",
+      "expected": "65856",
+      "passed": true
+    },
+    {
+      "name": "source_rep actual riteFaith mapping retained",
+      "actual": [
+        "169",
+        "32"
+      ],
+      "expected": [
+        "169",
+        "32"
+      ],
+      "passed": true
+    },
+    {
+      "name": "source_rep actual base Learning20 and alive",
+      "actual": [
+        "20",
+        true
+      ],
+      "expected": [
+        "20",
+        true
+      ],
+      "passed": true
+    },
+    {
+      "name": "source_rep actual court_data employer remains actor",
+      "actual": "31254",
+      "expected": "31254",
+      "passed": true
+    },
+    {
+      "name": "source_rep no political titles or landed_data",
+      "actual": [
+        [],
+        null
+      ],
+      "expected": [
+        [],
+        null
+      ],
+      "passed": true
+    },
+    {
+      "name": "receiving_rep actual typed id retained",
+      "actual": "65857",
+      "expected": "65857",
+      "passed": true
+    },
+    {
+      "name": "receiving_rep actual riteFaith mapping retained",
+      "actual": [
+        "159",
+        "104"
+      ],
+      "expected": [
+        "159",
+        "104"
+      ],
+      "passed": true
+    },
+    {
+      "name": "receiving_rep actual base Learning20 and alive",
+      "actual": [
+        "20",
+        true
+      ],
+      "expected": [
+        "20",
+        true
+      ],
+      "passed": true
+    },
+    {
+      "name": "receiving_rep actual court_data employer remains actor",
+      "actual": "31254",
+      "expected": "31254",
+      "passed": true
+    },
+    {
+      "name": "receiving_rep no political titles or landed_data",
+      "actual": [
+        [],
+        null
+      ],
+      "expected": [
+        [],
+        null
+      ],
+      "passed": true
+    },
+    {
+      "name": "actual actor family relationship refs retained",
+      "actual": [
+        {
+          "key": "primary_spouse",
+          "value": "36311"
+        },
+        {
+          "key": "spouse",
+          "value": "36311"
+        },
+        {
+          "key": "former_spouses",
+          "value": [
+            {
+              "key": null,
+              "value": "34968"
+            }
+          ]
+        },
+        {
+          "key": "child",
+          "value": [
+            {
+              "key": null,
+              "value": "38924"
+            },
+            {
+              "key": null,
+              "value": "39348"
+            },
+            {
+              "key": null,
+              "value": "39979"
+            },
+            {
+              "key": null,
+              "value": "40526"
+            },
+            {
+              "key": null,
+              "value": "40695"
+            },
+            {
+              "key": null,
+              "value": "40847"
+            },
+            {
+              "key": null,
+              "value": "41032"
+            }
+          ]
+        }
+      ],
+      "expected": [
+        {
+          "key": "primary_spouse",
+          "value": "36311"
+        },
+        {
+          "key": "spouse",
+          "value": "36311"
+        },
+        {
+          "key": "former_spouses",
+          "value": [
+            {
+              "key": null,
+              "value": "34968"
+            }
+          ]
+        },
+        {
+          "key": "child",
+          "value": [
+            {
+              "key": null,
+              "value": "38924"
+            },
+            {
+              "key": null,
+              "value": "39348"
+            },
+            {
+              "key": null,
+              "value": "39979"
+            },
+            {
+              "key": null,
+              "value": "40526"
+            },
+            {
+              "key": null,
+              "value": "40695"
+            },
+            {
+              "key": null,
+              "value": "40847"
+            },
+            {
+              "key": null,
+              "value": "41032"
+            }
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "only actor/family political title holder liege dejure protected",
+      "actual": {
+        "2230": {
+          "id": "2230",
+          "key": "d_apulia",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2189"
+        },
+        "2231": {
+          "id": "2231",
+          "key": "c_apulia",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2230"
+        },
+        "2232": {
+          "id": "2232",
+          "key": "b_trani",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2231"
+        },
+        "2235": {
+          "id": "2235",
+          "key": "b_acerenza",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2231"
+        },
+        "2262": {
+          "id": "2262",
+          "key": "c_rossano",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2253"
+        },
+        "2263": {
+          "id": "2263",
+          "key": "b_rossano",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2262"
+        },
+        "2264": {
+          "id": "2264",
+          "key": "b_cotrone",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2262"
+        }
+      },
+      "expected": {
+        "2230": {
+          "id": "2230",
+          "key": "d_apulia",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2189"
+        },
+        "2231": {
+          "id": "2231",
+          "key": "c_apulia",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2230"
+        },
+        "2232": {
+          "id": "2232",
+          "key": "b_trani",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2231"
+        },
+        "2235": {
+          "id": "2235",
+          "key": "b_acerenza",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2231"
+        },
+        "2262": {
+          "id": "2262",
+          "key": "c_rossano",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2253"
+        },
+        "2263": {
+          "id": "2263",
+          "key": "b_rossano",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2262"
+        },
+        "2264": {
+          "id": "2264",
+          "key": "b_cotrone",
+          "holder": "31254",
+          "liege": null,
+          "de_jure_liege": "2262"
+        }
+      },
+      "passed": true
+    },
+    {
+      "name": "actor held-title ids retained",
+      "actual": [
+        "2230",
+        "2231",
+        "2232",
+        "2235",
+        "2262",
+        "2263",
+        "2264"
+      ],
+      "expected": [
+        "2230",
+        "2231",
+        "2232",
+        "2235",
+        "2262",
+        "2263",
+        "2264"
+      ],
+      "passed": true
+    },
+    {
+      "name": "actor actual realm capital retained",
+      "actual": "2232",
+      "expected": "2232",
+      "passed": true
+    },
+    {
+      "name": "actor-related family identity set retained",
+      "actual": [
+        "34968",
+        "36311",
+        "38924",
+        "39348",
+        "39979",
+        "40526",
+        "40695",
+        "40847",
+        "41032"
+      ],
+      "expected": [
+        "34968",
+        "36311",
+        "38924",
+        "39348",
+        "39979",
+        "40526",
+        "40695",
+        "40847",
+        "41032"
+      ],
+      "passed": true
+    },
+    {
+      "name": "related family 34968 history_ids retained",
+      "actual": [
+        "10003"
+      ],
+      "expected": [
+        "10003"
+      ],
+      "passed": true
+    },
+    {
+      "name": "related family 34968 first_name retained",
+      "actual": "Alberada",
+      "expected": "Alberada",
+      "passed": true
+    },
+    {
+      "name": "related family 34968 birth retained",
+      "actual": "1035.1.1",
+      "expected": "1035.1.1",
+      "passed": true
+    },
+    {
+      "name": "related family 34968 held_title_ids retained",
+      "actual": [],
+      "expected": [],
+      "passed": true
+    },
+    {
+      "name": "related family 36311 history_ids retained",
+      "actual": [
+        "1123"
+      ],
+      "expected": [
+        "1123"
+      ],
+      "passed": true
+    },
+    {
+      "name": "related family 36311 first_name retained",
+      "actual": "Sichelgaita",
+      "expected": "Sichelgaita",
+      "passed": true
+    },
+    {
+      "name": "related family 36311 birth retained",
+      "actual": "1040.1.1",
+      "expected": "1040.1.1",
+      "passed": true
+    },
+    {
+      "name": "related family 36311 held_title_ids retained",
+      "actual": [],
+      "expected": [],
+      "passed": true
+    },
+    {
+      "name": "related family 38924 history_ids retained",
+      "actual": [
+        "1143"
+      ],
+      "expected": [
+        "1143"
+      ],
+      "passed": true
+    },
+    {
+      "name": "related family 38924 first_name retained",
+      "actual": "Emma",
+      "expected": "Emma",
+      "passed": true
+    },
+    {
+      "name": "related family 38924 birth retained",
+      "actual": "1052.1.2",
+      "expected": "1052.1.2",
+      "passed": true
+    },
+    {
+      "name": "related family 38924 held_title_ids retained",
+      "actual": [],
+      "expected": [],
+      "passed": true
+    },
+    {
+      "name": "related family 39348 history_ids retained",
+      "actual": [
+        "1140"
+      ],
+      "expected": [
+        "1140"
+      ],
+      "passed": true
+    },
+    {
+      "name": "related family 39348 first_name retained",
+      "actual": "Bohemond",
+      "expected": "Bohemond",
+      "passed": true
+    },
+    {
+      "name": "related family 39348 birth retained",
+      "actual": "1055.1.1",
+      "expected": "1055.1.1",
+      "passed": true
+    },
+    {
+      "name": "related family 39348 held_title_ids retained",
+      "actual": [],
+      "expected": [],
+      "passed": true
+    },
+    {
+      "name": "related family 39979 history_ids retained",
+      "actual": [
+        "1121"
+      ],
+      "expected": [
+        "1121"
+      ],
+      "passed": true
+    },
+    {
+      "name": "related family 39979 first_name retained",
+      "actual": "Matilda",
+      "expected": "Matilda",
+      "passed": true
+    },
+    {
+      "name": "related family 39979 birth retained",
+      "actual": "1059.1.2",
+      "expected": "1059.1.2",
+      "passed": true
+    },
+    {
+      "name": "related family 39979 held_title_ids retained",
+      "actual": [],
+      "expected": [],
+      "passed": true
+    },
+    {
+      "name": "related family 40526 history_ids retained",
+      "actual": [
+        "1142"
+      ],
+      "expected": [
+        "1142"
+      ],
+      "passed": true
+    },
+    {
+      "name": "related family 40526 first_name retained",
+      "actual": "Roger",
+      "expected": "Roger",
+      "passed": true
+    },
+    {
+      "name": "related family 40526 birth retained",
+      "actual": "1061.1.2",
+      "expected": "1061.1.2",
+      "passed": true
+    },
+    {
+      "name": "related family 40526 held_title_ids retained",
+      "actual": [],
+      "expected": [],
+      "passed": true
+    },
+    {
+      "name": "related family 40695 history_ids retained",
+      "actual": [
+        "41732"
+      ],
+      "expected": [
+        "41732"
+      ],
+      "passed": true
+    },
+    {
+      "name": "related family 40695 first_name retained",
+      "actual": "Guy",
+      "expected": "Guy",
+      "passed": true
+    },
+    {
+      "name": "related family 40695 birth retained",
+      "actual": "1062.1.2",
+      "expected": "1062.1.2",
+      "passed": true
+    },
+    {
+      "name": "related family 40695 held_title_ids retained",
+      "actual": [],
+      "expected": [],
+      "passed": true
+    },
+    {
+      "name": "related family 40847 history_ids retained",
+      "actual": [
+        "161112"
+      ],
+      "expected": [
+        "161112"
+      ],
+      "passed": true
+    },
+    {
+      "name": "related family 40847 first_name retained",
+      "actual": "Mabel",
+      "expected": "Mabel",
+      "passed": true
+    },
+    {
+      "name": "related family 40847 birth retained",
+      "actual": "1063.1.1",
+      "expected": "1063.1.1",
+      "passed": true
+    },
+    {
+      "name": "related family 40847 held_title_ids retained",
+      "actual": [],
+      "expected": [],
+      "passed": true
+    },
+    {
+      "name": "related family 41032 history_ids retained",
+      "actual": [
+        "161113"
+      ],
+      "expected": [
+        "161113"
+      ],
+      "passed": true
+    },
+    {
+      "name": "related family 41032 first_name retained",
+      "actual": "Eria",
+      "expected": "Eria",
+      "passed": true
+    },
+    {
+      "name": "related family 41032 birth retained",
+      "actual": "1064.1.1",
+      "expected": "1064.1.1",
+      "passed": true
+    },
+    {
+      "name": "related family 41032 held_title_ids retained",
+      "actual": [],
+      "expected": [],
+      "passed": true
+    },
+    {
+      "name": "actual saved and current SDK independent agreement gold",
+      "actual": "229",
+      "expected": "229",
+      "passed": true
+    },
+    {
+      "name": "actual saved and current SDK independent agreement piety",
+      "actual": "185",
+      "expected": "185",
+      "passed": true
+    },
+    {
+      "name": "actual saved and current SDK independent agreement prestige",
+      "actual": "2200",
+      "expected": "2200",
+      "passed": true
+    },
+    {
+      "name": "actual saved and current SDK independent agreement stress",
+      "actual": "4",
+      "expected": "4",
+      "passed": true
+    }
+  ]
+}

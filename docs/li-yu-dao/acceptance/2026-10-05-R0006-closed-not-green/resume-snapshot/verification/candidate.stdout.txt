@@ -1,0 +1,25 @@
+{
+  "result": "PASS_READ_ONLY_CANDIDATE_CHECKS",
+  "syntax": true,
+  "unsafe_paths_rejected": 5,
+  "pending_closure_rejected": true,
+  "old_package_hash_checks": [
+    {
+      "package": "r6-report-draft-001",
+      "files": 795,
+      "bytes": 6393990
+    },
+    {
+      "package": "r6-report-draft-addendum-001",
+      "files": 7,
+      "bytes": 11641
+    },
+    {
+      "package": "r6-report-draft-addendum-003",
+      "files": 19,
+      "bytes": 127896
+    }
+  ],
+  "tracked_git_game_native_ci_screen_spawn_calls": 0,
+  "import_executed": false
+}

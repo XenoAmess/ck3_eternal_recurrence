@@ -1,0 +1,17 @@
+{
+  "source_kind": "EXEC_TOOL_RESPONSE_TRANSCRIPTION",
+  "script": "C:\\workspace\\ck3_lyd_runtime_20261004\\prepare_r6_report_draft_addendum_002.py",
+  "exit_code": 1,
+  "failure": "AssertionError at saved_base_learning==14; actual compact summary represents the same value as string \"14\"",
+  "actual_followup_type_probe": {
+    "saved_base_learning_type": "str",
+    "saved_base_learning_value": "14",
+    "saved_total_learning_type": "NoneType",
+    "saved_total_learning_value": null
+  },
+  "partial_output_retained": "C:\\workspace\\ck3_lyd_runtime_20261004\\r6-report-draft-addendum-002",
+  "partial_output_has_final_index": false,
+  "raw_stdout_stderr_files": "NOT_CAPTURED; this metadata is not a manufactured raw stream",
+  "tracked_git_game_ci_side_effects": 0,
+  "recovery": "new 003 output, numeric normalization only, previous script and partial output preserved"
+}

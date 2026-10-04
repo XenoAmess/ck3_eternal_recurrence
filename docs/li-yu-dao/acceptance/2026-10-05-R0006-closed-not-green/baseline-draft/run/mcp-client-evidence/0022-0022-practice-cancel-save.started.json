@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 22,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-006\\mcp-queue\\0022-practice-cancel-save.request.json",
+  "request_sha256": "1766cae92b97ca42550a3ff4b681cda16480f72160942496dd8d45d65a10f065",
+  "started_at_utc": "2026-10-04T13:33:47.400157+00:00"
+}
