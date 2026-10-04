@@ -1,5 +1,14 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 当前主线：两场胜利后继续前往玩家capital2619（2026-10-04T10:23:52+08:00 实际补录）
+
+**4359/36524、resume +1206、10-04 +334、10-03冻结+777**；本批36日=第二战9＋行军2＋第三战25，G2 5/8、NW2/4、自然继承0。2629两次真实DEF胜利与wipe各自封存：1577058310→1711276040、1593835526→1761607683；不合并敌军损失或外推全战胜利。
+
+主83886367@2629 moving7，目标2619、路线四跳，尚未抵达/解围；**玩家capital2619／县2142，旧2640为县2115头衔首府。** 一次enforce→独立warstate仅余129已闭合有限结算loop；下一步继续向2619行军，129 score−24且两围城敌军仍在。R26 source1791/g57已cold GREEN；v2新13来源片段已实测primitive，合法负值/零值且MC/complete=false，不计完整预测，后续relief/天数不给预授信用。
+
+当前正常保存 **h6666/raw53248944/93863164B/SHA-256 9c499e083880b20d8b7e3a14871cd2e72cb3b0cf680ea732377960bbc599ce47**；[第三战证据](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-casualty-outcomes/player-combat-1593835526-actual-terminal/ROOT-DELIVERY.json)、[25日账本](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/battle1593835526-twenty-five-normal-save-index/ROOT-DELIVERY.json)。
+
+
 ## 当前主线：玩家capital2619接敌，等待真实战斗后态（2026-10-04T08:16:12+08:00 实际补录）
 
 **地理锚点仍为玩家capital2619／县2142；2640属于县2115 titlecapital，已收复有限loop不是玩家首都收复。** 55日真实正常行军/1320h已封存，累计 **4323/36524、resume +1170、10-04 +298**，10-03冻结777；G2 5/8、NW2/4、自然继承0。最后正常 **h6509/raw53248080/93584151B/SHA-256 375ab8dd80c2aeeb6e9e48411038e7b671213cd2da118a0c05c4f339023046c9**。末帧native1089/pub220、Robert29829存活/同episode、paused且事件互动清除；主军83886367在2629接入FullCombat1577058310，玩家DEFENDER side1、maneuver第1日、无winner，尚有4跳[2630,2631,2624,2619]去首都。首都2619未被敌占，但敌Siege201326609仍在、ETA122仅估计，未到达或解围。同帧seq81我军health3920/4231、supply113.34217/300、月+20、attr0，不由旧兵力差推伤亡。当前active_wars仅50331736/129，玩家相对分数−10/−26；War16777231自march第2日/raw53246808起不在集合，即提案后第5个保存日，只授war-ended观测primitive，结算类型未查明，不写白和平accepted或全战胜利。

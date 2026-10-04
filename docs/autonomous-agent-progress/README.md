@@ -1,5 +1,14 @@
 # CK3 自动游玩智能体进度中心
 
+## 最新截点：两场玩家防御胜利，累计4359日（2026-10-04T10:23:52+08:00 实际补录）
+
+新增36个正常保存日（第二战9＋行军2＋第三战25），累计 **4359/36524、resume +1206、10-04 +334、10-03冻结+777**；G2 5/8、NW2/4、自然继承0。Combat1577058310与1593835526均在2629由Robert防御获胜、敌军末帧归零；各自我军末值3911、3804，分别记账。
+
+主军83886367仍在2629 moving→2619、四跳路线，未到达或解围。**玩家capital为2619／县2142；2640是县2115头衔首府。** War50331736一次enforce后独立退出活动集合，有限结算loop已实测、具体条款未读；129仍有两支首都围城敌军。R26/g57冷启动GREEN；v2新13来源片段已实测production-live primitive（合法负值/零值），MC/complete=false，非完整预测。Sway stale RED与fresh retry GREEN均保留，新增0日。
+
+保存 **h6666/raw53248944/93863164B/SHA-256 9c499e083880b20d8b7e3a14871cd2e72cb3b0cf680ea732377960bbc599ce47**；[第三战终态](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-casualty-outcomes/player-combat-1593835526-actual-terminal/ROOT-DELIVERY.json)、[25日保存索引](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/battle1593835526-twenty-five-normal-save-index/ROOT-DELIVERY.json)。
+
+
 ## 最新截点：向玩家capital2619行军55日后接敌（2026-10-04T08:16:12+08:00 实际补录）
 
 **玩家capital为2619／县2142；旧目标2640是县2115的头衔首府。2640实际收复loop保留，旧“玩家首都”误标签按此纠正。** Root72142结束55 normal/calendar/bounded保存日、1320h，STOPactual_player_combat_requires_root；4268→**4323/36524、resume +1170、10-03冻结+777、10-04 +298**，G2 5/8、NW2/4、自然继承0。最终normal **h6509/raw53248080/93584151B/SHA-256 375ab8dd80c2aeeb6e9e48411038e7b671213cd2da118a0c05c4f339023046c9**。末帧native1089/pub220、Robert29829存活/同episode、paused且事件互动清除；主军83886367在2629接入FullCombat1577058310，玩家DEFENDER side1、maneuver第1日、无winner，尚有4跳[2630,2631,2624,2619]去首都。首都2619未被敌占，但敌Siege201326609仍在、ETA122仅估计，未到达或解围。同帧seq81我军health3920/4231、supply113.34217/300、月+20、attr0，不由旧兵力差推伤亡。当前active_wars仅50331736/129，玩家相对分数−10/−26；War16777231自march第2日/raw53246808起不在集合，即提案后第5个保存日，只授war-ended观测primitive，结算类型未查明，不写白和平accepted或全战胜利。

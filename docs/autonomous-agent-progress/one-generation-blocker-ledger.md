@@ -1,5 +1,14 @@
 # 一代人自治：阻塞与能力债账本
 
+## 2026-10-04T10:23:52+08:00 两场防御战胜利与未结算战争
+
+锁h6666/raw53248944/SHA `9c499e083880b20d8b7e3a14871cd2e72cb3b0cf680ea732377960bbc599ce47`；累计4359/36524、恢复1206、Oct4+334，Oct3冻结777，G2 5/8、NW2/4、自然0。相对已pub4323，第二战9+路线2+第三战25=36保存日/864h。2629两场Robert防御战实际胜利、敌军final0，各按终态限定loop，不计整战胜利；主838仍2629/moving7→2619四跳，未抵达/解围。
+
+玩家首都2619/county2142；2640是county2115 seat，旧误标及目标2640收复历史保留。R26/g57/source1791/PID7388 cold GREEN；v2新13 constructor来源片段已实测production-live primitive，负值/零值合法、MC/complete=false，非完整预测。Sway stale RED后freshretry GREEN零日保存，原RED保留。War50331736一次enforce后独立查询exact absent，有限结算loop成立、具体条款未读；War129−24、两首都besiegers仍在。P0真正2619解围和129战争，后续动作/日零预授；runtime profile RED细因/order由owner另报，不猜。
+
+证据：[第三战终态](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-casualty-outcomes/player-combat-1593835526-actual-terminal/ROOT-DELIVERY.json)、[25日正常保存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/battle1593835526-twenty-five-normal-save-index/ROOT-DELIVERY.json)。
+
+
 ## 2026-10-04T08:16:12+08:00 玩家首都2619防御行军接敌截点
 
 Root72142已closed：55正常calendar/bounded保存日、1320h，STOPactual_player_combat_requires_root；4268→4323/36524、恢复1115→1170、Oct4+243→+298，Oct3冻结777，G2 5/8、NW2/4、自然0。最新正常h6509/raw53248080/93584151B/SHA `375ab8dd80c2aeeb6e9e48411038e7b671213cd2da118a0c05c4f339023046c9`。末帧native1089/pub220、Robert29829存活/同episode、paused且事件互动清除；主军83886367在2629接入FullCombat1577058310，玩家DEFENDER side1、maneuver第1日、无winner，尚有4跳[2630,2631,2624,2619]去首都。首都2619未被敌占，但敌Siege201326609仍在、ETA122仅估计，未到达或解围。同帧seq81我军health3920/4231、supply113.34217/300、月+20、attr0，不由旧兵力差推伤亡。当前active_wars仅50331736/129，玩家相对分数−10/−26；War16777231自march第2日/raw53246808起不在集合，即提案后第5个保存日，只授war-ended观测primitive，结算类型未查明，不写白和平accepted或全战胜利。 旧date53246760兵力不得补作当前或推断伤亡，不授解围、玩家胜利或未来预算。
