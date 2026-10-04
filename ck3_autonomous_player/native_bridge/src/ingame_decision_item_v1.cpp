@@ -286,7 +286,7 @@ bool ConfirmReceiver(const ZhongguoScoreboardNativeEnvironmentV1 &env,
      !ParentPath(back->child_path,custom_branch,back_index)||back_index!=0||
      !ParentPath(highlight->child_path,regular_branch,highlight_index)||highlight_index!=2)return false;
   const auto *footer_row=TreeRow(tree,footer),*regular=TreeRow(tree,regular_branch),*custom=TreeRow(tree,custom_branch);
-  if(!footer_row||footer_row->child_count!=6||!regular||regular->child_count!=3||!custom||custom->child_count!=2)return false;
+  if(!footer_row||footer_row->child_count!=7||!regular||regular->child_count!=3||!custom||custom->child_count!=2)return false;
   std::string parent;std::uint32_t index=0;
   if(!ParentPath(regular_branch,parent,index)||parent!=footer||index!=2||
      !ParentPath(custom_branch,parent,index)||parent!=footer||index!=3)return false;
