@@ -184,6 +184,31 @@ def _regular_current(components):
     return current
 
 
+def _owner_hard_increment_12003(rows, owner, hard):
+    """264EA10 finds the first full key or appends a zero account at tail.
+
+    The caller invokes this once for each reached soft-positive loss body,
+    including a legal converted hard0. Native vtable/auxiliary fields are not
+    published; row_index is the observable stored ordinal. Existing metadata
+    and duplicate rows retain their original order and values.
+    """
+    index = next((index for index, row in enumerate(rows)
+                  if row["participant_character_id"] == owner), None)
+    created = index is None
+    if created:
+        index = len(rows)
+        rows.append({"row_index": index, "participant_character_id": owner,
+                     "hard_casualties_raw": 0})
+    before = rows[index]["hard_casualties_raw"]
+    rows[index]["hard_casualties_raw"] = before + hard
+    return {"row_index": index, "participant_character_id": owner,
+            "row_created": created, "initialized_hard_raw": 0 if created else None,
+            "hard_before_raw": before, "delta_raw": hard,
+            "hard_after_raw": rows[index]["hard_casualties_raw"],
+            "native_getter": "264EA10", "first_matching_full_key": True,
+            "backing_debited_by_owner_ledger": False}
+
+
 def _whole_views(condition, backing, departed_ids):
     retained = {}
     for side in condition.sides:
@@ -202,8 +227,9 @@ def apply_selected_owner_subset_retreats_12003(
 ) -> SelectedOwnerSubsetRetreatResult12003:
     """Apply selected copied-row loss, owner accounting and removal once.
 
-    Positive-soft losses use existing H58 rows. A source-qualified 2634880
-    true result bypasses backing writes; explicit false uses regular components.
+    Each reached positive-soft body finds or appends its full-owner H58 row
+    and increments it once, even for hard0. A source-qualified 2634880 true
+    result bypasses backing writes; explicit false uses regular components.
     Missing numeric/admission/qualification inputs leave that callback uninstalled.
     A known Q loss with missing whole operands remains a partial Q result; its
     affected whole census is explicitly None, never an unchanged after-count.
@@ -274,12 +300,6 @@ def apply_selected_owner_subset_retreats_12003(
                     detail.update(branch="knight_backing_qualification_unavailable", installed=False, new_hard_casualties_raw=None)
                     stop = True
                     break
-                owner_row = next((index for index, row in enumerate(side.participant_hard_ledger) if row["participant_character_id"] == owner), None)
-                if owner_row is None and any(row.state.soft_casualties_raw > 0 for row in copied):
-                    gap(event_index, owner_index, owner, "absent_owner_hard_row_construction_unimplemented", "264EA10 absent-row creation/order")
-                    detail.update(branch="owner_hard_writer_unavailable", installed=False, new_hard_casualties_raw=None)
-                    stop = True
-                    break
                 # The Q allocator is unchanged. Qualified native hard calls
                 # have no backing receiver; restore their untouched components
                 # below without changing CharacterID, bucket or other identity.
@@ -294,7 +314,8 @@ def apply_selected_owner_subset_retreats_12003(
                     pursuit_stat_multiplier_raw=inputs.pursuit_stat_multiplier_raw,
                     base_toughness_multiplier_raw=inputs.base_toughness_multiplier_raw,
                     minimum_pursuit_multiplier_raw=inputs.minimum_pursuit_multiplier_raw)
-                after, writebacks = [], []
+                after, writebacks, owner_writes = [], [], []
+                owner_ledger = [dict(row) for row in side.participant_hard_ledger]
                 for row, state, (_, hard) in zip(copied, day.entries, day.hard_by_regiment_raw, strict=True):
                     identity = (row.native_carmy_id, row.state.regiment_id)
                     qualified = qualified_by_regiment[identity] is True
@@ -329,6 +350,10 @@ def apply_selected_owner_subset_retreats_12003(
                                 changed = list(census)
                                 changed[found] = replace(changed[found], current_soldiers=whole_after)
                                 backing[row.native_carmy_id] = tuple(changed)
+                    owner_write = None
+                    if call_selected:
+                        owner_write = _owner_hard_increment_12003(owner_ledger, owner, hard)
+                        owner_writes.append(owner_write)
                     writebacks.append({"native_carmy_id": row.native_carmy_id, "regiment_id": row.state.regiment_id,
                         "new_hard_casualties_raw": hard, "whole_current_soldiers_after": whole_after,
                         "regular_backing_call_selected": call_selected and not qualified,
@@ -336,22 +361,24 @@ def apply_selected_owner_subset_retreats_12003(
                         "qualified_knight_backing_early_return": call_selected and qualified,
                         "backing_reaggregation_called": call_selected and not qualified,
                         "knight_backing_qualification_source": qualification_contexts[identity],
+                        "owner_hard_getter_called": call_selected,
+                        "owner_hard_writeback": owner_write,
                         "native_write_order": (("qualified_knight_backing_hard_return" if qualified else "regular_backing_hard",
-                                                "copied_soft_decrease", "existing_owner_H58_increment") if call_selected else ()),
+                                                "copied_soft_decrease", "new_owner_H58_initialize_append_and_increment"
+                                                if owner_write["row_created"] else "existing_owner_H58_increment") if call_selected else ()),
                         "owner_ledger_is_second_whole_debit": False})
                 hard_total = day.total_hard_raw
-                owner_ledger = [dict(row) for row in side.participant_hard_ledger]
-                if owner_row is not None:
-                    owner_ledger[owner_row]["hard_casualties_raw"] += hard_total
                 detail.update(branch="selected_soft_pursuit", copied_entries_after=tuple(after),
                     new_hard_casualties_raw=hard_total, backing_writebacks=tuple(writebacks),
-                    numeric_domains=day.domains, owner_hard_delta_raw=hard_total)
+                    numeric_domains=day.domains, owner_hard_delta_raw=hard_total,
+                    owner_hard_writebacks_in_native_order=tuple(owner_writes))
             else:
                 hard_total = 0
                 owner_ledger = side.participant_hard_ledger
                 detail.update(branch="no_soft_toughness" if event.subset_pursuit_flag else "explicit_no_subset_pursuit",
                     copied_entries_after=tuple(copied), new_hard_casualties_raw=0,
-                    backing_writebacks=(), numeric_domains=(), owner_hard_delta_raw=0)
+                    backing_writebacks=(), numeric_domains=(), owner_hard_delta_raw=0,
+                    owner_hard_writebacks_in_native_order=())
             levy_debit = sum(row.state.current_raw for row in by_bucket["levy"])
             all_debit = levy_debit+sum(row.state.current_raw for row in by_bucket["men_at_arms"])
             removed = tuple(army for army in reversed(side.ordered_armies) if army["owner_character_id"] == owner)
