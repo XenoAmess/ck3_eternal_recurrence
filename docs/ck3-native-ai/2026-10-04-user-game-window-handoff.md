@@ -41,3 +41,15 @@ The single all-four-target strict Release build, jobs 64, compiled successfully 
 Binary freezing hit a real inventory KeyError for generated `white_business_exact_pins_v1.inc`. The offline repair must register the actual generated compiled input with its own hash and generation provenance, then freeze the already successful build. No recompilation is needed. R0029 has not been allocated, prepared, rebound, or launched.
 
 After the user releases the game: complete the freeze-only repair; render the latest full saved pair and ten streams once; perform official prepare/verify/stage, retire R0028, rebind to the normal saved campaign, and preflight. Allocate and launch the next minimized instance. Capture the original four Sway queries before advancing, then make the one paused current-cash query. Continue the port war using actual army and supply state. New battle-loss fields and P1 tick remain static-ready until a real current main battle frame is sampled.
+
+## 2026-10-04 R29 实际部署收口（窗口归还后）
+
+用户游玩暂停已按历史事实保留；用户随后明确玩完并授权恢复 CK3 实机。Root 已将 R28 正常收口并于 07:02:25.249911Z 标记 superseded，R29 已实际启动。此记录复用 Root 已闭合的部署与查询回执，不读取正在运行的行军包。
+
+候选源码为 `Z:/g61` / `f3f365c53d3708f520e0142a1b81a484b0c31df3`，四 target Release `/W4 /WX`、64 jobs 全构建实际 GREEN，77.746665 秒，115 flags / 65 ON / 50 OFF。97838 首次的 `.inc` inventory `KeyError` 是 freeze harness RED，原失败保留；native 编译已成功，随后 `ROOT-FREEZE-GENERATED-INPUT-REPAIR-RESULT.json` freeze-only 修复 GREEN，未重复编译。正式 CI `37183133742` / job `111379532891` success。DLL 9,108,992 B，SHA-256 `8545934beef798d95d4d63c2c8b6ec1fa1e01ba0adfa367073c4667ecb819dc2`；manifest 266,582 B，SHA-256 `d2586fe99c2a555db61b44fe054b90c864cb773f045da34ad637330cd99dcf66`。
+
+实际 run 为 `xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0029`，execution `69c953da-34f4-4d8d-a3a4-5c94bb1987e8`；allocated `07:04:44.815380Z`、launch-started `07:04:45.122017Z`。managed controller `54355` / game PID `38372` active。10 文件 stage、rebind `54057` 与普通战役恢复均已完成；环境 SHA-256 `898b68004f6b1173c49a5db049515919e68fd35012ed455c1570e84e08cf8a1b`。cold SDK `99233` GREEN，完整 history `7124` / save anchor `7123`，没有把正常恢复增加的 history 记成自然日。
+
+原四 Sway、现金、指挥官与 route preview 的 SDK `53439` 已 CLOSED GREEN。其正常 SAVE 为 h`7127` / raw date `53251464` / 95,107,270 B / SHA-256 `a265c124196a8e289ef0512ab6721a45ea69654b13a25eb9857a93d42dc569d9`。current cash 实际 `available`、各 readiness 均为 true，现金只读观测达到 production-live primitive；current-person / loss / P1 的 ongoing live 资格仍待真实接触，不能仅凭新源码、部署或 schema 记成战斗 loop 完成。
+
+本次部署记 0 日，闭合累计 `4464` / resumed `1311` / Oct4 `+439`；自然继承 `0`，G2 `5/8`，NW2 `2/4`。Root move `98187` 已 CLOSED GREEN，随后 8 日行军 SDK `14458` 仍运行；此处不消费该包、不增加行军日数。来源为 Root 既有回执与外置 `runtime-preparation/v56` artifact；当次部署闭合不依赖下一批 P2 / cadence 候选，也不将它们冒充当前 f3 能力。

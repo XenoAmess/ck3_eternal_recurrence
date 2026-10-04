@@ -72,3 +72,13 @@ Robert29829 的两个独立原生 getter 在本帧均为 **29**，是已发布�
 
 
 后续 ROOT 正式任命尝试 `actual-assignment-v36-01` 的005返回 RED：`application-main army-commander assignment executor unavailable or busy`。共同 mailbox 的 failure_flags512 已在动作前诊断002/003出现；assignment provider 已沿 exact source branch 确认该错误位于 `TrySubmit != submitted`，没有进入 assignment callback／原生命令 queue。这项任命未完成，保留失败并由 ROOT 修复真实 mailbox 故障后先独立读取当前 commander，不盲重发。该后续失败不改变 earlier query024 的完整只读名单证据；observer 保持 production-live primitive，不升级 assignment loop。失败 capture 正常 checkpoint 为 save4714、SHA `8a9e4345edb07ba6b6e118a6ad4eee12daecf21ab58bee095a346ff1d80119a5`；完整回执 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/commander-assignment-provider/actual-assignment-v36-01/result.json`。
+
+## R29 新集结军队：Robert 已是当前将领
+
+2026-10-04，R0029 的零日暂停帧 raw53251464、revision2，通过同一注册 MCP `ck3_query_army_commander_candidates_v1` 读取新军 **CUnit301989997 → CArmy201326670**，owner 为 **Robert29829**。current commander 为 available 的 **29829**；对应实际候选行的 native AI base quality 与 generic advantage 均为 **33**，siege phase-time modifier raw 为 **−10000**。这两个整数仍是不同 getter 的当前结果，不改称 martial skill、胜率或全量原生分配效用。
+
+完整候选集合为 **29** 行，mode-1 CanAssign 为 **26 true / 3 false**。最高可任命候选为 **32716（23/23）**，其次 **33435（22/22）**、**60820（21/21）**；Robert29829 为 false，34867（28/28）与49267（4/4）也为 false。false 行无原生解释原因，本帧不推断“已任命”等原因，也不把 false 改写成当前将领失效。当前已观测将领的质量33高于这一次可任命候选的最高23，因此继续保留当前 Robert 即可，无须为行军先做一次任命。
+
+本帧军队在 **2619**，state regular、非 combat、非 retreating，route 为 complete_empty。当前 land getter `0x24AA940` 为 **495000/Q100000 = 4.95**，naval getter `0x24AAC00` 为 **2625000/Q100000 = 26.25**；current edge 为 empty_route 的 not_applicable。这些是当前原生移动权重／速率输入，不能由它们直接承诺路线ETA、到达日或费用。
+
+Root 冻结运行身份为 CK3 1.20.0.3 / Steam25652598 / EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`，source `Z:/g61` / `f3f365c53d3708f520e0142a1b81a484b0c31df3`，DLL SHA `8545934beef798d95d4d63c2c8b6ec1fa1e01ba0adfa367073c4667ecb819dc2`，PID38372。原始014叶由本 worker 仅一次复制为 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/r29-new-army-commander-actual/RAW014-CACHED-ONCE.json`，解释在同目录 `ACTUAL-COMMANDER-SUMMARY.json`。该叶 completed/accepted/read_only，维持 **production-live primitive**；无新任命动作、无新游戏日、无新增 G2/NW2 信用。正式累计仍为4464日、续接1311日、Oct4增量439日、natural0、G2 5/8、NW2 2/4，百分比报告仍未开放。
