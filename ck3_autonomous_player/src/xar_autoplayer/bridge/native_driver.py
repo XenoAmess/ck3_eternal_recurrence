@@ -18642,7 +18642,9 @@ class NativeHeadlessGameplayDriver:
                         ).get("raw"),
                     }
                     if evidence.get("variant") in {
-                        "de_jure_no_safe_route", "defender_de_jure_white_peace"
+                        "de_jure_no_safe_route",
+                        "defender_de_jure_white_peace",
+                        "defender_minor_religious_white_peace",
                     }
                     else {}
                 ),
@@ -29413,7 +29415,36 @@ def _de_jure_no_safe_route_white_peace_readiness(
 def _defender_de_jure_white_peace_readiness(
     snapshot: dict[str, object], war_id: int
 ) -> tuple[bool, str, dict[str, object]]:
-    """Allow a chosen native-legal defender de-jure white-peace proposal.
+    return _defender_native_white_peace_readiness(
+        snapshot,
+        war_id,
+        canonical_key="individual_county_de_jure_cb",
+        database_index=17,
+        variant="defender_de_jure_white_peace",
+    )
+
+
+def _defender_minor_religious_white_peace_readiness(
+    snapshot: dict[str, object], war_id: int
+) -> tuple[bool, str, dict[str, object]]:
+    return _defender_native_white_peace_readiness(
+        snapshot,
+        war_id,
+        canonical_key="minor_religious_war",
+        database_index=41,
+        variant="defender_minor_religious_white_peace",
+    )
+
+
+def _defender_native_white_peace_readiness(
+    snapshot: dict[str, object],
+    war_id: int,
+    *,
+    canonical_key: str,
+    database_index: int,
+    variant: str,
+) -> tuple[bool, str, dict[str, object]]:
+    """Allow a chosen native-legal defender white-peace proposal.
 
     The native AI quote is a proposal input, not an observed recipient answer.
     CB-specific terms and a projected final answer are not required to send.
@@ -29455,8 +29486,8 @@ def _defender_de_jure_white_peace_readiness(
         and options.get("player_relative_war_score") == war.get("player_relative_war_score")
         and options.get("active_casus_belli_present") is True
         and isinstance(casus_belli, dict)
-        and casus_belli.get("canonical_key") == "individual_county_de_jure_cb"
-        and casus_belli.get("database_index") == 17
+        and casus_belli.get("canonical_key") == canonical_key
+        and casus_belli.get("database_index") == database_index
         and options.get("cb_allows_white_peace") is True
         and isinstance(white_peace, dict)
         and white_peace.get("outcome") == "white_peace"
@@ -29469,9 +29500,9 @@ def _defender_de_jure_white_peace_readiness(
         and type(acceptance.get("raw")) is int
         and acceptance["raw"] > 0
     ):
-        return False, "defender_de_jure_white_peace_not_ready", {}
+        return False, f"{variant}_not_ready", {}
     return True, "ready", {
-        "variant": "defender_de_jure_white_peace",
+        "variant": variant,
         "war": war,
         "options": options,
         "white_peace": white_peace,
@@ -29484,6 +29515,11 @@ def _white_peace_readiness(
     defender_de_jure = _defender_de_jure_white_peace_readiness(snapshot, war_id)
     if defender_de_jure[0]:
         return defender_de_jure
+    defender_minor_religious = _defender_minor_religious_white_peace_readiness(
+        snapshot, war_id
+    )
+    if defender_minor_religious[0]:
+        return defender_minor_religious
     de_jure = _de_jure_no_safe_route_white_peace_readiness(snapshot, war_id)
     if de_jure[0]:
         return de_jure
@@ -29492,6 +29528,7 @@ def _white_peace_readiness(
         return claim
     return False, (
         f"defender_de_jure={defender_de_jure[1]}; "
+        f"defender_minor_religious={defender_minor_religious[1]}; "
         f"de_jure={de_jure[1]}; claim={claim[1]}"
     ), {}
 
