@@ -373,3 +373,25 @@ Root SDK51989正常关闭GREEN，实际选择event25的option_number2/native ind
 事件清除与独立新战争/六军状态形成有限production-live event-choice→war-initiation observation loop，未包含本owner的新专用strength或normal save。累计4456/恢复1303/10月4日431不变，动作新增游戏日0；claims、直辖县、战斗或战争胜利均未证明。最短可复用缓存：[COMPACT-ACTUAL-CHOICE-AND-WAR.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/actual-v55-event25-bookmark1071-review/actual-choice-consumption/COMPACT-ACTUAL-CHOICE-AND-WAR.json)，含两原叶pins；Root及其他owner不必再读这两原始回执。
 
 后续Root专用军力查询与五次合军的独立后态已核验六支事件军：3000/3000兵、24regiments，源码3k因此获得后续actual验证；上述初次005的soldiers=null保留为当时事实，不作为终态缺口。另新军301989997仍gathering，其兵数与集结ETA未知，不合计到已核验事件军。该增量只复用Root已确认字段，未再读取原始回执、运行SDK或测试；累计4456/恢复1303/10月4日431不变，新增日0，未授新战斗或胜利信用。
+
+
+## 2026-10-05：R35 event26 教宗诏书通知确认实机闭环
+
+- 当前 exact build 为 CK3 1.20.0.3 / Steam25652598，EXE `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`；实际 R35/PID110044、g67/091bb、环境 `38666cec554cab6152f16df89440a448cf8c988347a54e961777238aa666e626`。定义是 `pam_bull_events.0004`。最初仅凭 PAM namespace 推测模组来源的判断已纠正：实际来源为官方安装目录 `game/events/dlc/pam/pam_bull_events.txt:283–328`，file SHA `596a8f4ce0c9e64119b2e65917ec56f984c58882e5ccb0adbd2e56893d89f937`，node SHA `ebbdcde661d287de1ed8fe9e1cd8eb05343edf7ba3e84af883461e720f7eba5f`。
+- 原生 `letter_event` 的 native option0 `.0004.a` 只有名称，是无 effect/cost/helper/ai_chance block 的确认项；native option1 `.c` 仅增加 `bull_issuer.var:bull_option = flag:crusade` 显示条件，同样没有这些脚本块。immediate 只在 heresy 与 root heresiarch 条件下播放 CE3 音效。当前节点没有直接宣战、军队、claims、婚姻、trait 或资源修改；不能将名称空体推成已观测 tenet 许可收益。
+- 唯一 context leaf 原始消费一次：native82/public2/raw53256888，详细 options 数组返回 rendered0/native0 shown/enabled；未发布总选项数或 coverage。root 为 Robert29829，saved actor/issuer/permit 为 Character29097，tenet scope identity 未闭合。独立选择前 snapshot native84/public2 则报告 event26/option_count2/both enabled；两口径各自保留，不据此猜隐藏变量或读取根因。effect-preview unavailable/complete_effect_set=false/semantic_decision_ready=false 仍是当时端点字段；实际源节点与现有选择入口足以确认这封通知。
+
+```mermaid
+flowchart TD
+    E[官方 pam_bull_events.0004 letter_event] --> A[当前 rendered0/native0: 空体确认项]
+    E --> C[native1: crusade 条件空体]
+    C -. 当前 bull_option 未独立读取 .-> U[保留未知]
+    A --> S[Root fresh snapshot 后 select option_number1/event26]
+    S --> P[accepted + postcondition_verified; event null]
+    P --> V[独立 native85/public3: paused/mapready/alive/event null]
+    V --> SAVE[日期53256888不变; normal SAVE h7873]
+```
+
+Root SDK49232 正常关闭 GREEN。一次选择返回 accepted/submitted，`event_instance_advanced`、`postcondition_verified=true`；独立后 snapshot native85/public3 确认 eventnull、暂停/地图就绪/Robert alive。Root 独占 SAVE006 的正常配对为 **h7873/raw53256888/96786330 B/SHA `d09fccda2a932815ae8c2e93aa8dc65c5bdfc5c6c9db3fe4ad0f62fc3ef2f3a1`**。这是有限 **production-live loop：context → source 决策 → 选项确认 → 独立事件清除 → 正常保存**。新增日0，正式账仍4690/resume1537/Oct5+32；不授 tenet、资源、战争收益或完整宗教能力。source/node 与 original context 不复读；本 lane 只消费选择004和独立001/005，未读 SAVE006 raw，未运行 SDK/测试/窗口/Git。
+
+独立工具记录：Root `read_harness` 一次误执行结果 JSON，在 `true` 处 NameError；没有修改结果或执行 SDK，随后使用正确 helper。该工具错误与游戏 GREEN 分开保留。可核验 source/decision/control 全包：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/current-event26-r35-source-decision/`，其中 `stock-source/ROOT-DELIVERY.json`、`ROOT-EVENT26-DECISION-LEDGER.json`、`EVENT26-SELECT-CONTROL-CACHED.json` 保留各自源和实际帧边界。
