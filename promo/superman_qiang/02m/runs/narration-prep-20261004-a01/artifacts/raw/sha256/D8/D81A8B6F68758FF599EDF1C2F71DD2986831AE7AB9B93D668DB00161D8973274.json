@@ -1,0 +1,18 @@
+{
+  "scene_id": "SQP-07",
+  "request": {
+    "text": "这些性行为会留下各自的记录。经验平手，也会记下新经历。你可以养成自己的宫廷高手，也得提防别人成长得比你快。",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "+0%",
+    "pitch": "+0Hz",
+    "volume": "+0%",
+    "audio_format": "mp3",
+    "cache_salt": ""
+  },
+  "provider": {
+    "provider_id": "edge-tts",
+    "tool_version": "7.2.8"
+  },
+  "boundary": "SentenceBoundary",
+  "requested_at": "2026-10-04T08:32:46.482669+00:00"
+}

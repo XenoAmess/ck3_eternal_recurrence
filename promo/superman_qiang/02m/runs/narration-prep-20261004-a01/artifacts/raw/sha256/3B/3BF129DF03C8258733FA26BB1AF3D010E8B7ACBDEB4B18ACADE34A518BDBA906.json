@@ -1,0 +1,21 @@
+{
+  "scene_id": "SQP-10",
+  "title": "把悬念交给玩家",
+  "narration": "《超人强：越超人越强》。创意工坊搜索“超人强”。下一封邀请送来时，你想做猎手——还是猎物？",
+  "narration_utf8_sha256": "6f19f37aaff283a369eb0502379af5747e31e7da7906c9e86720970fc013d096",
+  "status": "GREEN",
+  "audio_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-10\\narration.zh-CN.mp3",
+  "audio_sha256": "592538d1b99abe7577fbd59a1a2b8e88dba21d5db2050c1612632eb57419d50c",
+  "audio_bytes": 59040,
+  "duration_seconds": 9.84,
+  "sample_rate": "24000",
+  "channels": 1,
+  "request_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-10\\request.json",
+  "request_sha256": "6f06fac0e3996fb04419bb581932ead348ca2683720398eb03690b3ddd543ed7",
+  "boundaries_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-10\\narration.zh-CN.boundaries.jsonl",
+  "boundaries_sha256": "28ead5177680bc39c9850cf4fdbafc2ff8bf75196f358422c3bebe31782aa18b",
+  "boundary_count": 3,
+  "boundary_time_unit": "100-nanosecond ticks",
+  "started_at": "2026-10-04T08:33:13.756323+00:00",
+  "completed_at": "2026-10-04T08:33:16.436903+00:00"
+}

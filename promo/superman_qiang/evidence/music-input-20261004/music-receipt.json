@@ -1,0 +1,30 @@
+{
+  "format_version": 1,
+  "kind": "superman_qiang_user_music_receipt",
+  "received_at_utc": "2026-10-04T08:39:28.163236+00:00",
+  "source": "user-upload",
+  "retained_zip_path": "C:\\ck3-superman-qiang-promo-20261004\\music-input-A0001\\超人强.zip",
+  "zip_sha256": "1551cea2a15f35260f6503d096b0bcb42bff037ef87c3a7e143e71e41ac7b6f8",
+  "music_path": "C:\\ck3-superman-qiang-promo-20261004\\music-input-A0001\\超人强.wav",
+  "music_sha256": "c3ab75a5e2143207c52fb9c810a96285fc654887aa535b9715db0990c28743be",
+  "music_bytes": 34573840,
+  "duration_seconds": 180.0,
+  "codec": "pcm_s16le",
+  "sample_rate": "48000",
+  "channels": 2,
+  "music_source_count": 1,
+  "loudness_probe": {
+    "input_i": "-15.32",
+    "input_tp": "-2.52",
+    "input_lra": "4.70",
+    "input_thresh": "-25.44",
+    "output_i": "-22.22",
+    "output_tp": "-7.42",
+    "output_lra": "3.90",
+    "output_thresh": "-32.26",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.78"
+  },
+  "raw_music_modified": false,
+  "receipt_parser_note": "FFmpeg appends its output summary after the loudnorm JSON; raw_decode reads the single analysis object. Original probe and failed parser attempt remain retained."
+}

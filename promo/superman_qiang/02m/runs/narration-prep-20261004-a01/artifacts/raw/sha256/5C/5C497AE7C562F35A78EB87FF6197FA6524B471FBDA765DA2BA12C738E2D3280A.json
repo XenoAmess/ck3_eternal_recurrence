@@ -1,0 +1,21 @@
+{
+  "scene_id": "SQP-07",
+  "title": "宫廷里，多了另一种养成",
+  "narration": "这些性行为会留下各自的记录。经验平手，也会记下新经历。你可以养成自己的宫廷高手，也得提防别人成长得比你快。",
+  "narration_utf8_sha256": "316523acbe8cf0b9754dd29066a5609b3712a454b238cc9dc616aaf27f834af9",
+  "status": "GREEN",
+  "audio_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-07\\narration.zh-CN.mp3",
+  "audio_sha256": "32d6daa233521083c2800949f1f6817073e93540e58a6cb0d123c214433cb774",
+  "audio_bytes": 70992,
+  "duration_seconds": 11.832,
+  "sample_rate": "24000",
+  "channels": 1,
+  "request_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-07\\request.json",
+  "request_sha256": "d81a8b6f68758ff599edf1c2f71dd2986831ae7ab9b93d668db00161d8973274",
+  "boundaries_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-07\\narration.zh-CN.boundaries.jsonl",
+  "boundaries_sha256": "a8bedc7dbbdad50f9c71540c074cc8840c00d906a2fad9dab3c99580e12895d6",
+  "boundary_count": 3,
+  "boundary_time_unit": "100-nanosecond ticks",
+  "started_at": "2026-10-04T08:32:46.484957+00:00",
+  "completed_at": "2026-10-04T08:32:48.965646+00:00"
+}

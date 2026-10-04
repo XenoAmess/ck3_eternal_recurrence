@@ -1,0 +1,223 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "superman-qiang-02m",
+    "title": "《超人强》玩家宣传片（90–300秒）"
+  },
+  "pipeline": {
+    "adapter": "generic",
+    "preset": "default"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": 300
+  },
+  "chapters": [
+    {
+      "id": "SQP-01",
+      "type": "player_promo_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "变强，还有一条路"
+      },
+      "cues": [
+        {
+          "id": "SQP-01-voice",
+          "narration": {
+            "zh-CN": "在《十字军之王三》里，想变强，通常得读书、练兵、管账。现在，你还可以……赴个约。"
+          },
+          "subtitles": {
+            "zh-CN": "在《十字军之王三》里，想变强，通常得读书、练兵、管账。现在，你还可以……赴个约。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQP-02",
+      "type": "player_promo_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "宫廷艳遇，开始争夺力量"
+      },
+      "cues": [
+        {
+          "id": "SQP-02-voice",
+          "narration": {
+            "zh-CN": "《超人强：越超人越强》。一次宫廷艳遇，不只留下秘密。它还可能把对方的本事，变成你的。"
+          },
+          "subtitles": {
+            "zh-CN": "《超人强：越超人越强》。一次宫廷艳遇，不只留下秘密。它还可能把对方的本事，变成你的。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQP-03",
+      "type": "player_promo_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "把诱惑接到玩家的野心上"
+      },
+      "cues": [
+        {
+          "id": "SQP-03-voice",
+          "narration": {
+            "zh-CN": "经验更老到的人，可以吸走对方的一项属性。今晚得到的，也许是谈判的底气，也许是亲自下场的勇气。"
+          },
+          "subtitles": {
+            "zh-CN": "经验更老到的人，可以吸走对方的一项属性。今晚得到的，也许是谈判的底气，也许是亲自下场的勇气。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQP-04",
+      "type": "player_promo_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "给王冠添点分量"
+      },
+      "cues": [
+        {
+          "id": "SQP-04-voice",
+          "narration": {
+            "zh-CN": "你以为自己是来征服爱情的。结果，一次约会，可能顺便给王冠添了点分量。"
+          },
+          "subtitles": {
+            "zh-CN": "你以为自己是来征服爱情的。结果，一次约会，可能顺便给王冠添了点分量。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQP-05",
+      "type": "player_promo_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "你也可能成为猎物"
+      },
+      "cues": [
+        {
+          "id": "SQP-05-voice",
+          "narration": {
+            "zh-CN": "但这份好处，也轮得到别人。王冠不会替你撑腰。对面要是比你更老练——陛下，今晚是谁在变强，可就不好说了。"
+          },
+          "subtitles": {
+            "zh-CN": "但这份好处，也轮得到别人。王冠不会替你撑腰。对面要是比你更老练——陛下，今晚是谁在变强，可就不好说了。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQP-06",
+      "type": "player_promo_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "查履历，是赴约前的新乐趣"
+      },
+      "cues": [
+        {
+          "id": "SQP-06-voice",
+          "narration": {
+            "zh-CN": "所以，赴约前，不妨看看对方的履历。右键一下，经验就能查。那个看起来人畜无害的人，可能藏得比你深。"
+          },
+          "subtitles": {
+            "zh-CN": "所以，赴约前，不妨看看对方的履历。右键一下，经验就能查。那个看起来人畜无害的人，可能藏得比你深。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQP-07",
+      "type": "player_promo_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "宫廷里，多了另一种养成"
+      },
+      "cues": [
+        {
+          "id": "SQP-07-voice",
+          "narration": {
+            "zh-CN": "这些性行为会留下各自的记录。经验平手，也会记下新经历。你可以养成自己的宫廷高手，也得提防别人成长得比你快。"
+          },
+          "subtitles": {
+            "zh-CN": "这些性行为会留下各自的记录。经验平手，也会记下新经历。你可以养成自己的宫廷高手，也得提防别人成长得比你快。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQP-08",
+      "type": "player_promo_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "随机，才让下一次有诱惑"
+      },
+      "cues": [
+        {
+          "id": "SQP-08-voice",
+          "narration": {
+            "zh-CN": "外交、军事、管理、谋略、学识、勇武，还有健康。下一次，会带来什么？宫廷里的邀约，从此多了一层诱惑。"
+          },
+          "subtitles": {
+            "zh-CN": "外交、军事、管理、谋略、学识、勇武，还有健康。下一次，会带来什么？宫廷里的邀约，从此多了一层诱惑。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQP-09",
+      "type": "player_promo_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "把新花样带回熟悉的宫廷"
+      },
+      "cues": [
+        {
+          "id": "SQP-09-voice",
+          "narration": {
+            "zh-CN": "老存档也能接着玩。把这点新花样带回你熟悉的宫廷，看看谁会一夜得意，谁又会看走了眼。"
+          },
+          "subtitles": {
+            "zh-CN": "老存档也能接着玩。把这点新花样带回你熟悉的宫廷，看看谁会一夜得意，谁又会看走了眼。"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "SQP-10",
+      "type": "player_promo_scene",
+      "state": "planned",
+      "title": {
+        "zh-CN": "把悬念交给玩家"
+      },
+      "cues": [
+        {
+          "id": "SQP-10-voice",
+          "narration": {
+            "zh-CN": "《超人强：越超人越强》。创意工坊搜索“超人强”。下一封邀请送来时，你想做猎手——还是猎物？"
+          },
+          "subtitles": {
+            "zh-CN": "《超人强：越超人越强》。创意工坊搜索“超人强”。下一封邀请送来时，你想做猎手——还是猎物？"
+          }
+        }
+      ],
+      "artifact_ids": []
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "scene_id": "SQP-01",
+  "title": "变强，还有一条路",
+  "narration": "在《十字军之王三》里，想变强，通常得读书、练兵、管账。现在，你还可以……赴个约。",
+  "narration_utf8_sha256": "2bbb1398c581b7f04b2d66ca34c9caf317e6154685f5b612fbb86ad48d14586e",
+  "status": "GREEN",
+  "audio_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-01\\narration.zh-CN.mp3",
+  "audio_sha256": "b39cdb5d3ea2455f2d041bdf9e58c085f3a5b69edb547afce2403be9a3400a8c",
+  "audio_bytes": 53136,
+  "duration_seconds": 8.856,
+  "sample_rate": "24000",
+  "channels": 1,
+  "request_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-01\\request.json",
+  "request_sha256": "5cf60c5bbc70bf82d3ecf79c7fb408c5a54952e756bfa2f4c41f5f42e4d40b5d",
+  "boundaries_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-01\\narration.zh-CN.boundaries.jsonl",
+  "boundaries_sha256": "3047e2f6f85331ab0a6121b1fc289fa375f1e5621653a7dd738ef2aa05e21717",
+  "boundary_count": 2,
+  "boundary_time_unit": "100-nanosecond ticks",
+  "started_at": "2026-10-04T08:31:55.159615+00:00",
+  "completed_at": "2026-10-04T08:31:57.737664+00:00"
+}

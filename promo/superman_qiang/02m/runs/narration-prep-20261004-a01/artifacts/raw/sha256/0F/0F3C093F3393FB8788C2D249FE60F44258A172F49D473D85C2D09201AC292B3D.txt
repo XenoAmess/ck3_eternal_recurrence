@@ -1,0 +1,115 @@
+@dataclass(frozen=True)
+class TtsRequest:
+    """All caller-controlled inputs that can change synthesized audio."""
+
+    text: str
+    voice: str
+    rate: str = "+0%"
+    pitch: str = "+0Hz"
+    volume: str = "+0%"
+    audio_format: str = "mp3"
+    cache_salt: str = ""
+
+    def __post_init__(self) -> None:
+        _required_text(self.text, "text")
+        _required_text(self.voice, "voice")
+        _required_text(self.rate, "rate")
+        _required_text(self.pitch, "pitch")
+        _required_text(self.volume, "volume")
+        if (
+            not isinstance(self.audio_format, str)
+            or _FORMAT_RE.fullmatch(self.audio_format) is None
+        ):
+            raise ValueError(
+                "audio_format must be a short lowercase filename token"
+            )
+        if not isinstance(self.cache_salt, str):
+            raise ValueError("cache_salt must be a string")
+
+    def cache_payload(self) -> dict[str, str]:
+        return {
+            "text": self.text,
+            "voice": self.voice,
+            "rate": self.rate,
+            "pitch": self.pitch,
+            "volume": self.volume,
+            "audio_format": self.audio_format,
+            "cache_salt": self.cache_salt,
+        }
+class EdgeTtsProvider:
+    """Lazy Edge TTS adapter with an injectable module for deterministic tests."""
+
+    def __init__(
+        self,
+        *,
+        module: ModuleType | object | None = None,
+        tool_version: str | None = None,
+    ) -> None:
+        self._module = module
+        self._import_error: Exception | None = None
+        if tool_version is None:
+            try:
+                tool_version = importlib.metadata.version("edge-tts")
+            except importlib.metadata.PackageNotFoundError as error:
+                self._import_error = error
+        if not isinstance(tool_version, str) or not tool_version.strip():
+            self._identity: ProviderIdentity | None = None
+        else:
+            self._identity = ProviderIdentity("edge-tts", tool_version.strip())
+
+    @property
+    def identity(self) -> ProviderIdentity:
+        if self._identity is None:
+            raise TtsProviderUnavailableError(
+                "edge-tts is not installed; install the optional TTS runtime "
+                "or use offline cache validation with an explicit "
+                "ProviderIdentity"
+            ) from self._import_error
+        return self._identity
+
+    def _runtime(self) -> object:
+        if self._module is not None:
+            return self._module
+        try:
+            self._module = importlib.import_module("edge_tts")
+        except Exception as error:
+            raise TtsProviderUnavailableError(
+                f"edge-tts runtime import failed: {error}"
+            ) from error
+        return self._module
+
+    def synthesize(self, request: TtsRequest, destination: Path) -> None:
+        self.identity
+        if request.audio_format != "mp3":
+            raise ValueError("EdgeTtsProvider currently emits mp3 only")
+        runtime = self._runtime()
+        communicate = getattr(runtime, "Communicate", None)
+        if not callable(communicate):
+            raise TtsProviderUnavailableError(
+                "edge-tts runtime does not expose Communicate"
+            )
+        communicator = communicate(
+            request.text,
+            request.voice,
+            rate=request.rate,
+            volume=request.volume,
+            pitch=request.pitch,
+        )
+        save_sync = getattr(communicator, "save_sync", None)
+        if not callable(save_sync):
+            raise TtsProviderUnavailableError(
+                "edge-tts Communicate does not expose save_sync"
+            )
+        save_sync(str(destination))
+    def save_sync(
+        self,
+        audio_fname: Union[str, bytes],
+        metadata_fname: Optional[Union[str, bytes]] = None,
+    ) -> None:
+        """Synchronous interface for async save method."""
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            future = executor.submit(
+                asyncio.run, self.save(audio_fname, metadata_fname)
+            )
+            future.result()
+(text: str, voice: str = 'en-US-EmmaMultilingualNeural', *, rate: str = '+0%', volume: str = '+0%', pitch: str = '+0Hz', boundary: Literal['WordBoundary', 'SentenceBoundary'] = 'SentenceBoundary', connector: aiohttp.connector.BaseConnector | None = None, proxy: str | None = None, connect_timeout: int | None = 10, receive_timeout: int | None = 60)

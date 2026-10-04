@@ -1,0 +1,35 @@
+{
+  "queried_at": "2026-10-04T08:31:49.054542+00:00",
+  "release_repository": "XenoAmess/xar_promo_toolchain",
+  "release_id": 381034850,
+  "release_tag": "v0.2.1",
+  "release_url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.2.1",
+  "wheel_url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1-py3-none-any.whl",
+  "wheel_sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+  "installed_direct_url": {
+    "archive_info": {
+      "hash": "sha256=f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+      "hashes": {
+        "sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621"
+      }
+    },
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1-py3-none-any.whl"
+  },
+  "python_executable": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "xar_promo_version": "0.2.1",
+  "edge_tts_version": "7.2.8",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "settings": {
+    "rate": "+0%",
+    "pitch": "+0Hz",
+    "volume": "+0%"
+  },
+  "boundary": "SentenceBoundary",
+  "ffprobe": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.EXE",
+  "source_head_at_input_read": "e5d6c3196d0a44d45243c26c3783815fe4191182",
+  "config_path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\02m\\promo-project.json",
+  "config_sha256": "2f6d48ecc39593294f15af33f559a3cad467db85bf82cba0e5089e8e4aab31fc",
+  "director_path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\02m\\director.json",
+  "director_sha256": "1ba326c2c58cf0e746540a5397fabf1d10ed11331dc5cce51bfb1b1df4114d9f"
+}

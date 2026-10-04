@@ -1,0 +1,21 @@
+{
+  "scene_id": "SQP-09",
+  "title": "把新花样带回熟悉的宫廷",
+  "narration": "老存档也能接着玩。把这点新花样带回你熟悉的宫廷，看看谁会一夜得意，谁又会看走了眼。",
+  "narration_utf8_sha256": "cfae35cc413cf688435c7c24253b24c4559584e40e1d75c696da0eeb1830de49",
+  "status": "GREEN",
+  "audio_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-09\\narration.zh-CN.mp3",
+  "audio_sha256": "52c96ad709787a0b7b5c35cb3b625bc60f5ba971eac03d38e43e365b9d00615d",
+  "audio_bytes": 52416,
+  "duration_seconds": 8.736,
+  "sample_rate": "24000",
+  "channels": 1,
+  "request_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-09\\request.json",
+  "request_sha256": "f66624a22e1681be4513954159cc47484e40119b45be322154cfa4d50a12ac32",
+  "boundaries_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-09\\narration.zh-CN.boundaries.jsonl",
+  "boundaries_sha256": "8d658464947236aa3ea87ba2799a650cf60fce91dc6fb68564d04694828a42ad",
+  "boundary_count": 2,
+  "boundary_time_unit": "100-nanosecond ticks",
+  "started_at": "2026-10-04T08:33:04.545553+00:00",
+  "completed_at": "2026-10-04T08:33:07.122619+00:00"
+}

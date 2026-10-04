@@ -1,0 +1,79 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_run_manifest",
+  "run": {
+    "id": "narration-prep-20261004-a01"
+  },
+  "project_config": {
+    "path": "artifacts/project-config/sha256/2F/2F6D48ECC39593294F15AF33F559A3CAD467DB85BF82CBA0E5089E8E4AAB31FC.json",
+    "bytes": 7078,
+    "sha256": "2F6D48ECC39593294F15AF33F559A3CAD467DB85BF82CBA0E5089E8E4AAB31FC"
+  },
+  "artifact_policy": {
+    "strategy": "append-only-content-addressed",
+    "raw_directory": "artifacts/raw",
+    "derived_directory": "artifacts/derived",
+    "manifest_history_directory": "artifacts/manifest-history",
+    "preserve_process_material": true
+  },
+  "phase_history": [],
+  "artifacts": [
+    {
+      "id": "approved-director-json",
+      "collection": "raw",
+      "role": "director",
+      "path": "artifacts/raw/sha256/1B/1BA326C2C58CF0E746540A5397FABF1D10ED11331DC5CCE51BFB1B1DF4114D9F.json",
+      "label": "director.json",
+      "bytes": 9082,
+      "sha256": "1BA326C2C58CF0E746540A5397FABF1D10ED11331DC5CCE51BFB1B1DF4114D9F",
+      "media_type": "application/json",
+      "source_name": "director.json"
+    },
+    {
+      "id": "narration-preparation-script",
+      "collection": "raw",
+      "role": "script",
+      "path": "artifacts/raw/sha256/CE/CE6B8F0F3637E57B840FE34FD337FE4BEC8F50222FA54D964E3ED6D8ED1D91E2.py",
+      "label": "prepare_narration.py",
+      "bytes": 16429,
+      "sha256": "CE6B8F0F3637E57B840FE34FD337FE4BEC8F50222FA54D964E3ED6D8ED1D91E2",
+      "media_type": "text/x-python",
+      "source_name": "prepare_narration.py"
+    },
+    {
+      "id": "narration-framework-version",
+      "collection": "raw",
+      "role": "framework-version",
+      "path": "artifacts/raw/sha256/A1/A11708555DAF458237C24DF9138619B764B1EDFAEE41FB44E22FF34CAD768735.json",
+      "label": "framework-version.json",
+      "bytes": 1912,
+      "sha256": "A11708555DAF458237C24DF9138619B764B1EDFAEE41FB44E22FF34CAD768735",
+      "media_type": "application/json",
+      "source_name": "framework-version.json"
+    },
+    {
+      "id": "narration-latest-release",
+      "collection": "raw",
+      "role": "release-query",
+      "path": "artifacts/raw/sha256/70/70BC42C42F719EF610AE44D34ABD97171252466BDA5499FF540970C6F2C2FBA1.stdout.txt",
+      "label": "latest-release.stdout.txt",
+      "bytes": 7123,
+      "sha256": "70BC42C42F719EF610AE44D34ABD97171252466BDA5499FF540970C6F2C2FBA1",
+      "media_type": "text/plain",
+      "source_name": "latest-release.stdout.txt"
+    },
+    {
+      "id": "narration-provider-source",
+      "collection": "raw",
+      "role": "provider-source",
+      "path": "artifacts/raw/sha256/0F/0F3C093F3393FB8788C2D249FE60F44258A172F49D473D85C2D09201AC292B3D.txt",
+      "label": "provider-source.txt",
+      "bytes": 4476,
+      "sha256": "0F3C093F3393FB8788C2D249FE60F44258A172F49D473D85C2D09201AC292B3D",
+      "media_type": "text/plain",
+      "source_name": "provider-source.txt"
+    }
+  ],
+  "audits": [],
+  "signoffs": []
+}

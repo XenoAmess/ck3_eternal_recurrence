@@ -1,0 +1,18 @@
+{
+  "scene_id": "SQP-06",
+  "request": {
+    "text": "所以，赴约前，不妨看看对方的履历。右键一下，经验就能查。那个看起来人畜无害的人，可能藏得比你深。",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "+0%",
+    "pitch": "+0Hz",
+    "volume": "+0%",
+    "audio_format": "mp3",
+    "cache_salt": ""
+  },
+  "provider": {
+    "provider_id": "edge-tts",
+    "tool_version": "7.2.8"
+  },
+  "boundary": "SentenceBoundary",
+  "requested_at": "2026-10-04T08:32:37.633036+00:00"
+}

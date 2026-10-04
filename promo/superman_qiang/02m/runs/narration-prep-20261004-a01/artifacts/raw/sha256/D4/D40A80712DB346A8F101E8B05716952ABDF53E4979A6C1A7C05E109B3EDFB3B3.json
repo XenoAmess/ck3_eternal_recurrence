@@ -1,0 +1,21 @@
+{
+  "scene_id": "SQP-02",
+  "title": "宫廷艳遇，开始争夺力量",
+  "narration": "《超人强：越超人越强》。一次宫廷艳遇，不只留下秘密。它还可能把对方的本事，变成你的。",
+  "narration_utf8_sha256": "3ded2d6491ab8ad953de2559e992b41d2abd0c7e5c13c4625f93e717f5e04a9c",
+  "status": "GREEN",
+  "audio_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-02\\narration.zh-CN.mp3",
+  "audio_sha256": "2f3d062da99fed8deb8ff5d1e948c320939626b5e064596ddbb2dc17a9e98ee3",
+  "audio_bytes": 56160,
+  "duration_seconds": 9.36,
+  "sample_rate": "24000",
+  "channels": 1,
+  "request_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-02\\request.json",
+  "request_sha256": "6598b937ecc32bea39021ea01b49bd6006ad763e651e973379c041a145f14d91",
+  "boundaries_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-02\\narration.zh-CN.boundaries.jsonl",
+  "boundaries_sha256": "89e21f88e6c850922844362abd30aa0a0cf6c9a6a908f6411e5bad5ed1c8f6d7",
+  "boundary_count": 3,
+  "boundary_time_unit": "100-nanosecond ticks",
+  "started_at": "2026-10-04T08:32:03.250777+00:00",
+  "completed_at": "2026-10-04T08:32:05.592742+00:00"
+}

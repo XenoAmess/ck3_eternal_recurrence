@@ -1,0 +1,21 @@
+{
+  "scene_id": "SQP-06",
+  "title": "查履历，是赴约前的新乐趣",
+  "narration": "所以，赴约前，不妨看看对方的履历。右键一下，经验就能查。那个看起来人畜无害的人，可能藏得比你深。",
+  "narration_utf8_sha256": "d92ac0739d66d1270d549014084b81ac8f5805ffbb893f58866cda01f5a00520",
+  "status": "GREEN",
+  "audio_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-06\\narration.zh-CN.mp3",
+  "audio_sha256": "a7679e172b2450972e12b0d335ae8565d61ba11a833da747feae75367c9a378e",
+  "audio_bytes": 64512,
+  "duration_seconds": 10.752,
+  "sample_rate": "24000",
+  "channels": 1,
+  "request_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-06\\request.json",
+  "request_sha256": "236967009b8d76de37dc4be8c271bbb88c6bf27a6ef309ea3feaa932ac9766e6",
+  "boundaries_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-06\\narration.zh-CN.boundaries.jsonl",
+  "boundaries_sha256": "3522aec9448a985c13cf9066b7b062616f06bf01e7bdbb89a42dd6a17b2b4ba7",
+  "boundary_count": 3,
+  "boundary_time_unit": "100-nanosecond ticks",
+  "started_at": "2026-10-04T08:32:37.635371+00:00",
+  "completed_at": "2026-10-04T08:32:40.197376+00:00"
+}

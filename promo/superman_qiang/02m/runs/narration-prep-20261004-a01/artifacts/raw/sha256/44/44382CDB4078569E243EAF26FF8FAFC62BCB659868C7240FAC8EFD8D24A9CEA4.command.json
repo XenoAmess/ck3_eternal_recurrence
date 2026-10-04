@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8",
+    "-m",
+    "xar_promo",
+    "preserve",
+    "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-05\\narration.zh-CN.mp3",
+    "--run-manifest",
+    "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\02m\\runs\\narration-prep-20261004-a01\\run-manifest.json",
+    "--artifact-id",
+    "sqp-05-narration-zh-CN-mp3",
+    "--collection",
+    "raw",
+    "--role",
+    "audio"
+  ],
+  "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+  "started_at": "2026-10-04T08:32:34.023530+00:00",
+  "completed_at": "2026-10-04T08:32:34.604356+00:00",
+  "returncode": 0
+}

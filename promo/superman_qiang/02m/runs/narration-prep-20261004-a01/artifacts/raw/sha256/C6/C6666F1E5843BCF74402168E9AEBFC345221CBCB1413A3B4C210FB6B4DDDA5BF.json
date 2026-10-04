@@ -1,0 +1,21 @@
+{
+  "scene_id": "SQP-08",
+  "title": "随机，才让下一次有诱惑",
+  "narration": "外交、军事、管理、谋略、学识、勇武，还有健康。下一次，会带来什么？宫廷里的邀约，从此多了一层诱惑。",
+  "narration_utf8_sha256": "f5f93be1e3fba9b9c6f69d2e5c51afc7fc182920869c0446c11f357386f56c62",
+  "status": "GREEN",
+  "audio_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-08\\narration.zh-CN.mp3",
+  "audio_sha256": "6d68c64661ca0b68bf4d18d5ff271693add7874a01da7d0a77fd9e960467ff40",
+  "audio_bytes": 70704,
+  "duration_seconds": 11.784,
+  "sample_rate": "24000",
+  "channels": 1,
+  "request_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-08\\request.json",
+  "request_sha256": "c75b90c4d57b20f743006a74b1a3d4a07ac34866fc0980e7227550f34e450f6d",
+  "boundaries_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-08\\narration.zh-CN.boundaries.jsonl",
+  "boundaries_sha256": "96be314485b8f74dd7bf7d1d91f61e9686fb189ea6572334c74b5cc58e4eb561",
+  "boundary_count": 3,
+  "boundary_time_unit": "100-nanosecond ticks",
+  "started_at": "2026-10-04T08:32:55.272385+00:00",
+  "completed_at": "2026-10-04T08:32:57.865132+00:00"
+}

@@ -1,0 +1,22 @@
+{
+  "status": "GREEN",
+  "checked_owned_files": [
+    "promo/superman_qiang/tools/prepare_narration.py",
+    "promo/superman_qiang/evidence/narration-preparation-20261004/framework-version.json",
+    "promo/superman_qiang/evidence/narration-preparation-20261004/narration-summary.json",
+    "promo/superman_qiang/evidence/narration-preparation-20261004/README.md",
+    "promo/superman_qiang/evidence/narration-preparation-20261004/run-validation.json"
+  ],
+  "approved_text_matches": 10,
+  "audio_request_boundary_sha_matches": 30,
+  "sentence_boundary_timing_matches": 10,
+  "total_audio_duration_seconds": 99.576,
+  "python_only_findings": [],
+  "verification_command": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8",
+    "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\verify-owned-package.py"
+  ],
+  "limits": "Text, bytes, metadata and media encoding validation only. No listening signoff or completed movie."
+}

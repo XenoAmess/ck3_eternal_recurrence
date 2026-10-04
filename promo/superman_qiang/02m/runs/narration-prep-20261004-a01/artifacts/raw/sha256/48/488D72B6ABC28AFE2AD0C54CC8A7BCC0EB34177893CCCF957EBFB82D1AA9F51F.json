@@ -1,0 +1,18 @@
+{
+  "scene_id": "SQP-05",
+  "request": {
+    "text": "但这份好处，也轮得到别人。王冠不会替你撑腰。对面要是比你更老练——陛下，今晚是谁在变强，可就不好说了。",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "+0%",
+    "pitch": "+0Hz",
+    "volume": "+0%",
+    "audio_format": "mp3",
+    "cache_salt": ""
+  },
+  "provider": {
+    "provider_id": "edge-tts",
+    "tool_version": "7.2.8"
+  },
+  "boundary": "SentenceBoundary",
+  "requested_at": "2026-10-04T08:32:28.017804+00:00"
+}

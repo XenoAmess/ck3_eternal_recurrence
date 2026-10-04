@@ -1,0 +1,18 @@
+{
+  "scene_id": "SQP-03",
+  "request": {
+    "text": "经验更老到的人，可以吸走对方的一项属性。今晚得到的，也许是谈判的底气，也许是亲自下场的勇气。",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "+0%",
+    "pitch": "+0Hz",
+    "volume": "+0%",
+    "audio_format": "mp3",
+    "cache_salt": ""
+  },
+  "provider": {
+    "provider_id": "edge-tts",
+    "tool_version": "7.2.8"
+  },
+  "boundary": "SentenceBoundary",
+  "requested_at": "2026-10-04T08:32:11.335202+00:00"
+}

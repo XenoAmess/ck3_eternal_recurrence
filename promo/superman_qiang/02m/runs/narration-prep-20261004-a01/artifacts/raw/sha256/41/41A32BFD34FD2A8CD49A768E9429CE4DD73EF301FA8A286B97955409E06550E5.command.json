@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8",
+    "-m",
+    "xar_promo",
+    "preserve",
+    "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\tools\\prepare_narration.py",
+    "--run-manifest",
+    "D:\\workspace\\ck3_eternal_recurrence\\promo\\superman_qiang\\02m\\runs\\narration-prep-20261004-a01\\run-manifest.json",
+    "--artifact-id",
+    "narration-preparation-script",
+    "--collection",
+    "raw",
+    "--role",
+    "script"
+  ],
+  "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+  "started_at": "2026-10-04T08:31:52.921150+00:00",
+  "completed_at": "2026-10-04T08:31:53.505028+00:00",
+  "returncode": 0
+}

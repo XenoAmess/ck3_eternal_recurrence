@@ -1,0 +1,156 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_run_manifest",
+  "run": {
+    "id": "narration-prep-20261004-a01"
+  },
+  "project_config": {
+    "path": "artifacts/project-config/sha256/2F/2F6D48ECC39593294F15AF33F559A3CAD467DB85BF82CBA0E5089E8E4AAB31FC.json",
+    "bytes": 7078,
+    "sha256": "2F6D48ECC39593294F15AF33F559A3CAD467DB85BF82CBA0E5089E8E4AAB31FC"
+  },
+  "artifact_policy": {
+    "strategy": "append-only-content-addressed",
+    "raw_directory": "artifacts/raw",
+    "derived_directory": "artifacts/derived",
+    "manifest_history_directory": "artifacts/manifest-history",
+    "preserve_process_material": true
+  },
+  "phase_history": [],
+  "artifacts": [
+    {
+      "id": "approved-director-json",
+      "collection": "raw",
+      "role": "director",
+      "path": "artifacts/raw/sha256/1B/1BA326C2C58CF0E746540A5397FABF1D10ED11331DC5CCE51BFB1B1DF4114D9F.json",
+      "label": "director.json",
+      "bytes": 9082,
+      "sha256": "1BA326C2C58CF0E746540A5397FABF1D10ED11331DC5CCE51BFB1B1DF4114D9F",
+      "media_type": "application/json",
+      "source_name": "director.json"
+    },
+    {
+      "id": "narration-preparation-script",
+      "collection": "raw",
+      "role": "script",
+      "path": "artifacts/raw/sha256/CE/CE6B8F0F3637E57B840FE34FD337FE4BEC8F50222FA54D964E3ED6D8ED1D91E2.py",
+      "label": "prepare_narration.py",
+      "bytes": 16429,
+      "sha256": "CE6B8F0F3637E57B840FE34FD337FE4BEC8F50222FA54D964E3ED6D8ED1D91E2",
+      "media_type": "text/x-python",
+      "source_name": "prepare_narration.py"
+    },
+    {
+      "id": "narration-framework-version",
+      "collection": "raw",
+      "role": "framework-version",
+      "path": "artifacts/raw/sha256/A1/A11708555DAF458237C24DF9138619B764B1EDFAEE41FB44E22FF34CAD768735.json",
+      "label": "framework-version.json",
+      "bytes": 1912,
+      "sha256": "A11708555DAF458237C24DF9138619B764B1EDFAEE41FB44E22FF34CAD768735",
+      "media_type": "application/json",
+      "source_name": "framework-version.json"
+    },
+    {
+      "id": "narration-latest-release",
+      "collection": "raw",
+      "role": "release-query",
+      "path": "artifacts/raw/sha256/70/70BC42C42F719EF610AE44D34ABD97171252466BDA5499FF540970C6F2C2FBA1.stdout.txt",
+      "label": "latest-release.stdout.txt",
+      "bytes": 7123,
+      "sha256": "70BC42C42F719EF610AE44D34ABD97171252466BDA5499FF540970C6F2C2FBA1",
+      "media_type": "text/plain",
+      "source_name": "latest-release.stdout.txt"
+    },
+    {
+      "id": "narration-provider-source",
+      "collection": "raw",
+      "role": "provider-source",
+      "path": "artifacts/raw/sha256/0F/0F3C093F3393FB8788C2D249FE60F44258A172F49D473D85C2D09201AC292B3D.txt",
+      "label": "provider-source.txt",
+      "bytes": 4476,
+      "sha256": "0F3C093F3393FB8788C2D249FE60F44258A172F49D473D85C2D09201AC292B3D",
+      "media_type": "text/plain",
+      "source_name": "provider-source.txt"
+    },
+    {
+      "id": "sqp-01-ffprobe-command-json",
+      "collection": "raw",
+      "role": "tts-evidence",
+      "path": "artifacts/raw/sha256/CD/CD56425945D1F3FFF969C457C0DD45D7DB476D2AA380A96CB8490A5D395844C7.command.json",
+      "label": "ffprobe.command.json",
+      "bytes": 531,
+      "sha256": "CD56425945D1F3FFF969C457C0DD45D7DB476D2AA380A96CB8490A5D395844C7",
+      "media_type": "application/json",
+      "source_name": "ffprobe.command.json"
+    },
+    {
+      "id": "sqp-01-ffprobe-stderr-txt",
+      "collection": "raw",
+      "role": "tts-evidence",
+      "path": "artifacts/raw/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stderr.txt",
+      "label": "ffprobe.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "media_type": "text/plain",
+      "source_name": "ffprobe.stderr.txt"
+    },
+    {
+      "id": "sqp-01-ffprobe-stdout-txt",
+      "collection": "raw",
+      "role": "tts-evidence",
+      "path": "artifacts/raw/sha256/C1/C12E0C2AF60FFA8237B56A7DEBDA81D100A90F4F96C41FD205FF21F7E3141B21.stdout.txt",
+      "label": "ffprobe.stdout.txt",
+      "bytes": 2000,
+      "sha256": "C12E0C2AF60FFA8237B56A7DEBDA81D100A90F4F96C41FD205FF21F7E3141B21",
+      "media_type": "text/plain",
+      "source_name": "ffprobe.stdout.txt"
+    },
+    {
+      "id": "sqp-01-narration-zh-CN-boundaries-jsonl",
+      "collection": "raw",
+      "role": "tts-boundaries",
+      "path": "artifacts/raw/sha256/30/3047E2F6F85331AB0A6121B1FC289FA375F1E5621653A7DD738EF2AA05E21717.zhcn.boundaries.jsonl",
+      "label": "narration.zh-CN.boundaries.jsonl",
+      "bytes": 407,
+      "sha256": "3047E2F6F85331AB0A6121B1FC289FA375F1E5621653A7DD738EF2AA05E21717",
+      "media_type": "application/octet-stream",
+      "source_name": "narration.zh-CN.boundaries.jsonl"
+    },
+    {
+      "id": "sqp-01-narration-zh-CN-mp3",
+      "collection": "raw",
+      "role": "audio",
+      "path": "artifacts/raw/sha256/B3/B39CDB5D3EA2455F2D041BDF9E58C085F3A5B69EDB547AFCE2403BE9A3400A8C.zhcn.mp3",
+      "label": "narration.zh-CN.mp3",
+      "bytes": 53136,
+      "sha256": "B39CDB5D3EA2455F2D041BDF9E58C085F3A5B69EDB547AFCE2403BE9A3400A8C",
+      "media_type": "audio/mpeg",
+      "source_name": "narration.zh-CN.mp3"
+    },
+    {
+      "id": "sqp-01-narration-zh-CN-txt",
+      "collection": "raw",
+      "role": "tts-evidence",
+      "path": "artifacts/raw/sha256/2B/2BBB1398C581B7F04B2D66CA34C9CAF317E6154685F5B612FBB86AD48D14586E.zhcn.txt",
+      "label": "narration.zh-CN.txt",
+      "bytes": 120,
+      "sha256": "2BBB1398C581B7F04B2D66CA34C9CAF317E6154685F5B612FBB86AD48D14586E",
+      "media_type": "text/plain",
+      "source_name": "narration.zh-CN.txt"
+    },
+    {
+      "id": "sqp-01-request-json",
+      "collection": "raw",
+      "role": "tts-request",
+      "path": "artifacts/raw/sha256/5C/5CF60C5BBC70BF82D3ECF79C7FB408C5A54952E756BFA2F4C41F5F42E4D40B5D.json",
+      "label": "request.json",
+      "bytes": 497,
+      "sha256": "5CF60C5BBC70BF82D3ECF79C7FB408C5A54952E756BFA2F4C41F5F42E4D40B5D",
+      "media_type": "application/json",
+      "source_name": "request.json"
+    }
+  ],
+  "audits": [],
+  "signoffs": []
+}

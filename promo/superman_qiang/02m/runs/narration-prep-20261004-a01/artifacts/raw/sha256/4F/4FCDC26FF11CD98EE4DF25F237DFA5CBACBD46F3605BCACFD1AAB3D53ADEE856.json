@@ -1,0 +1,21 @@
+{
+  "scene_id": "SQP-03",
+  "title": "把诱惑接到玩家的野心上",
+  "narration": "经验更老到的人，可以吸走对方的一项属性。今晚得到的，也许是谈判的底气，也许是亲自下场的勇气。",
+  "narration_utf8_sha256": "34d6a8a0e90614e39f90fd215a43088c5b838e9e83998cc83352e6357df01071",
+  "status": "GREEN",
+  "audio_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-03\\narration.zh-CN.mp3",
+  "audio_sha256": "1fdb0c000220f7f1f175b14b570e656b3896f9752dab9f3eee92ba893ff61d51",
+  "audio_bytes": 58464,
+  "duration_seconds": 9.744,
+  "sample_rate": "24000",
+  "channels": 1,
+  "request_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-03\\request.json",
+  "request_sha256": "8626d8ec547f5f8ad8b8c8746c3289fa5229f2f2b676bdfc583cc74d4b27e31a",
+  "boundaries_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-03\\narration.zh-CN.boundaries.jsonl",
+  "boundaries_sha256": "aefc34690807410481dc850d67193bf2d259210cf8794feecde0f4f7691e46a2",
+  "boundary_count": 2,
+  "boundary_time_unit": "100-nanosecond ticks",
+  "started_at": "2026-10-04T08:32:11.336320+00:00",
+  "completed_at": "2026-10-04T08:32:13.789834+00:00"
+}

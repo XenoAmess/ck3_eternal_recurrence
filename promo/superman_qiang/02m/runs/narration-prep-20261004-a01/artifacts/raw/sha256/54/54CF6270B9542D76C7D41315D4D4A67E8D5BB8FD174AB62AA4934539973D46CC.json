@@ -1,0 +1,21 @@
+{
+  "scene_id": "SQP-04",
+  "title": "给王冠添点分量",
+  "narration": "你以为自己是来征服爱情的。结果，一次约会，可能顺便给王冠添了点分量。",
+  "narration_utf8_sha256": "7d89ff87d495c6cd64ac055fbf3907ca2474e058123a017ed8c16fe7c0091d81",
+  "status": "GREEN",
+  "audio_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-04\\narration.zh-CN.mp3",
+  "audio_sha256": "1ed1eaa57e558fab45771633912dfa7681de4245b8e5ca6c144a68f523bcf18b",
+  "audio_bytes": 45792,
+  "duration_seconds": 7.632,
+  "sample_rate": "24000",
+  "channels": 1,
+  "request_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-04\\request.json",
+  "request_sha256": "5c1929e0b155ca2ba208c3a9aa9b087cd3f9d04ac20845ddec7c6be51bf974df",
+  "boundaries_path": "C:\\ck3-superman-qiang-promo-20261004\\narration-prep-A0001\\narration\\SQP-04\\narration.zh-CN.boundaries.jsonl",
+  "boundaries_sha256": "0d96a17c7930e03914aad789cd32fc707b0653a48ebd29b3968b7000180d52b3",
+  "boundary_count": 2,
+  "boundary_time_unit": "100-nanosecond ticks",
+  "started_at": "2026-10-04T08:32:19.517210+00:00",
+  "completed_at": "2026-10-04T08:32:22.138174+00:00"
+}

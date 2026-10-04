@@ -1,0 +1,18 @@
+{
+  "scene_id": "SQP-08",
+  "request": {
+    "text": "外交、军事、管理、谋略、学识、勇武，还有健康。下一次，会带来什么？宫廷里的邀约，从此多了一层诱惑。",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "+0%",
+    "pitch": "+0Hz",
+    "volume": "+0%",
+    "audio_format": "mp3",
+    "cache_salt": ""
+  },
+  "provider": {
+    "provider_id": "edge-tts",
+    "tool_version": "7.2.8"
+  },
+  "boundary": "SentenceBoundary",
+  "requested_at": "2026-10-04T08:32:55.271281+00:00"
+}

@@ -1,0 +1,18 @@
+{
+  "scene_id": "SQP-01",
+  "request": {
+    "text": "在《十字军之王三》里，想变强，通常得读书、练兵、管账。现在，你还可以……赴个约。",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "+0%",
+    "pitch": "+0Hz",
+    "volume": "+0%",
+    "audio_format": "mp3",
+    "cache_salt": ""
+  },
+  "provider": {
+    "provider_id": "edge-tts",
+    "tool_version": "7.2.8"
+  },
+  "boundary": "SentenceBoundary",
+  "requested_at": "2026-10-04T08:31:55.158498+00:00"
+}

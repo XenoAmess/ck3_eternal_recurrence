@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8",
+    "-m",
+    "xar_promo",
+    "preserve",
+    "--help"
+  ],
+  "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+  "started_at": "2026-10-04T08:31:50.496009+00:00",
+  "completed_at": "2026-10-04T08:31:50.853111+00:00",
+  "returncode": 0
+}

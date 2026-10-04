@@ -1,0 +1,18 @@
+usage: xar-promo preserve [-h] [--run-manifest RUN_MANIFEST]
+                          --artifact-id ARTIFACT_ID --collection {raw,derived}
+                          --role ROLE [--label LABEL]
+                          [--media-type MEDIA_TYPE]
+                          source
+
+positional arguments:
+  source
+
+options:
+  -h, --help            show this help message and exit
+  --run-manifest RUN_MANIFEST
+  --artifact-id ARTIFACT_ID
+  --collection {raw,derived}
+  --role ROLE           semantic role such as capture, audio, subtitle, or
+                        deliverable
+  --label LABEL
+  --media-type MEDIA_TYPE
