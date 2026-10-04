@@ -336,3 +336,40 @@ Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-ref
 Actual cost: one exact-target `.text` instruction pass, 71,141,888 bytes in 16.169 seconds, plus 216 bytes of `.pdata`; one selected body, 8,364 newly read bytes plus 135 retained near-window bytes; 256 new reachable identifier metadata bytes. Total newly read EXE bytes: **71,150,724**. The second permitted body was unused. Calendar source added zero EXE/header/pdata/xref/body bytes. No full EXE hash, whole-text dump, generic callgraph, model, test, SDK, live RPM, game/window action or shared/Git mutation occurred.
 
 Next source construction entry: finite method metadata at the now identified primary `47807A0` / secondary `4780670`, reusing slot 0 and RTTI. Root authorized up to 8 slots per table and at most two actual candidate bodies with existing relative `+B0/+BC` queue-use or forced-writer ancestry evidence. No further absolute `CC88` scan is planned. Numeric callback readiness remains false until actual destination consumption and attribute-input values are proved; no trait boolean is converted into an EC value.
+
+
+## v70 — bounded CModifierManager method address map (2026-10-05 / W41)
+
+Root adopted v69 at `99cf4f2d0c4888c8e2f07338369f6f07c87343ed`. This EOF source increment preserves its exact 35,040-byte projection prefix (`7cbd3c4d1fffeb9e7891586ae656ddb360af537ecc4850261fd34c2c2c3b28ad`). Exact CK3 **1.20.0.3** / frozen EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6` remains the source identity.
+
+The finite metadata task read only the seven qwords after each known slot0: two 56-byte spans, **112 new EXE bytes** total. Prior cached heads supplied slot0, the image base and COL pointers. No PE header, new RTTI, executable section, xref or function body was read. `METHOD_ADDRESS_METADATA_READY=true`; consumer and numeric `SOURCE_READY=false`.
+
+| Slot / offset | Primary `47807A0` | Secondary `4780670` |
+| --- | --- | --- |
+| 0 / `+00` (reused) | `2AE2480` | `2AE8088` |
+| 1 / `+08` | `3F7E2D0` | `2A3D3C0` |
+| 2 / `+10` | `2A3D370` | `9D09F0` |
+| 3 / `+18` | `3F7E350` | `2A3DB50` |
+| 4 / `+20` | `8522C0` | `1A2E130` |
+| 5 / `+28` | `8522C0` | `855AB0` |
+| 6 / `+30` | metadata boundary candidate `4E48908` | `8522C0` |
+| 7 / `+38` | raw following value `2AE8124`, table assignment withheld | `2A3D380` |
+
+The primary `+30` value points into metadata and is retained as an adjacent table-head candidate. Its COL was not read, and the following qword is not assigned to this primary table. Secondary continuation beyond slot7 is unread. All retained method roles remain unknown. Slot numbers and addresses establish neither admission, drain, tick nor destructor behavior.
+
+```mermaid
+flowchart TD
+    T["v69 CModifierManager identity
+initializer ownerargument+CBD8 / secondary+CBE0"] --> P["primary47807A0
+slots0..5 address map"]
+    T --> S["secondary4780670
+bounded slots0..7 address map"]
+    P -. "method role unclosed" .-> Q["relative+B0/+BC destination consumer"]
+    S -. "method role unclosed" .-> Q
+    Q -. "actual writer ancestor/frame unknown" .-> W["known forced Character cache write"]
+    W -. "numeric inputs and Entry time unclosed" .-> E["effective stats / knight Entry feedback"]
+```
+
+Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-modifier-manager-consumer-v70/method-metadata/{ROOT-DELIVERY.json,BOUNDED-QWORD-CAPTURE.json,METHOD-ADDRESS-MAP.json,TREE.md,SOURCE-PINS.json,ACTUAL-READ-COST.json,EXACT-NEXT-PIN-RECIPE.json}`. The metadata packet's qualified consumer targets list is empty. A separate source lane is comparing these exact addresses with existing exact-build cached queue/forced-writer evidence; this metadata delivery supplies no result for that ongoing lookup.
+
+The next bounded body recipe requires an actual receiver-relative `+B0/+BC` queue-use or existing forced-writer ancestor edge before promoting a target to consumer status. At most two qualified actual bodies are allowed. The constructor-to-live-global binding and calendar admission remain open as recorded in v69. No further absolute `CC88` scan, calendar search, numerical module, empty fixture, test, live RPM, SDK, game/window action, shared mutation or Git operation was performed for this packet.
