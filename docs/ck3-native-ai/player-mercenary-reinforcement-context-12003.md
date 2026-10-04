@@ -100,3 +100,36 @@ The hire checkpoint `009-ck3_save_checkpoint.json` is saved at history **5545**,
 Readiness is **production-live loop for normal mercenary hire only**: observe fresh terms → choose one company → native Submit → independently verify employer/actual payment/new controlled body/actual army strength. The 36-month field remains a new-hire quote, not actual remaining duration or expiry. No extra default raise, repeated hire, merged1770-force credit, rescue of capital2640, or battle win is claimed here; subsequent merge/movement receipts own their outcomes.
 
 Root subsequently supplied the normal save paired with the independent strength capture: **history5550 / date53241096 / 91826468 bytes**, SHA-256 **cdcd3d5d388a63e5f80570d2cd6875ec19a1fa291f351b783aad2dbcaaa17401**. The hire checkpoint h5545 and this independent-strength checkpoint retain their separate frozen milestone roles. Cumulative saved progress remains4032, resume879 and Oct4+7; this normal hire loop and documentation increment add0 world days.
+
+### 2026-10-05: company siege inventory source closure and same-query construction
+
+For the current Robert29829 / war117440524 / P470 fort6 siege (Root-provided
+M=.6105/K0), mercenary company composition can be observed before normal hire.
+The already published manager query's same company+30/+3C roster contains
+stride4 persistent Regi IDs, storage5D1EB68, not battlefield ArRg IDs. The normal
+hire caller2625AC0 reaches2633E30: persistent Regi+118 points to GDbo; native tag
+check4744624F at type+38 precedes copying that identical pointer to raised ArRg+18.
+This new184B complete function has SHA
+`5a578e9457009808e1faa3fcf2e0648243a705c79bc53887f87283bc4de7ac12`.
+Read-only construction loads these fields and never calls the mutator.
+
+Reuse canonical type key at GDbo+18 and the signed tier at+2A0 from the sealed
+K247F185..192 chain, retaining observed0. Per-company effective current/max counts
+follow the sealed2625720 seven-chunk formula and exclude holder knights; holder
+from2626430 is distinct from employer+48. Add these values to the same existing
+mercenary query row beside its actual normal CanHire/reasons, ten-slot price and
+duration. Company inventory tier is separate from actual Province K and cannot
+promise current siege gain or arrival. No current company candidate is invented.
+
+Source tree, precise pins, failure branches and construction contract:
+`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-mercenary-composition-sourcefirst/`.
+The minimal samequery implementation is **static-ready**: one new production
+reader/actual serializer case passes22 native checks; its unchanged emitted wire
+passes21 checks through the registered MCP, existing service/native driver and
+projected normalizer. Company0 is legal, observed tiers-1/0/2/nonGDbo-null survive,
+holder differs from employer, and native568 equals regimental555 plus13 knights.
+These are offline fixture values, not current company candidates. The first compile
+harness RED is retained; fixing NOMINMAX and unsigned fixture constants left the
+production reader unchanged. No old tests or full DLL were repeated. Root's g72
+paused actual market observation remains the next step before normal hire.
+This package performs zero game SDK/window/Git operations and adds zero game days.
