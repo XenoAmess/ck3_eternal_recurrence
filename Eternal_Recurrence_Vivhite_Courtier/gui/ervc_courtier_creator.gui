@@ -224,6 +224,7 @@ window = {
 		}
 
 		button_normal = {
+			name = "ervc_cc_cancel_backdrop_button"
 			size = { 100% 100% }
 			onclick = "[GetScriptedGui('ervc_cc_cancel_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 		}
@@ -248,6 +249,7 @@ window = {
 						text = "[Localize('ervc.cc.title')]"
 					}
 					blockoverride "button_close" {
+						name = "ervc_cc_cancel_close_button"
 						onclick = "[GetScriptedGui('ervc_cc_cancel_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 					}
 				}
@@ -266,42 +268,49 @@ window = {
 					layoutpolicy_horizontal = expanding
 
 					button_tab = {
+						name = "ervc_cc_tab_basic_button"
 						layoutpolicy_horizontal = expanding
 						text = "[Localize('ervc.cc.tab.basic')]"
 						onclick = "[GetVariableSystem.Set('ervc_cc_tab', 'basic')]"
 						down = "[GetVariableSystem.HasValue('ervc_cc_tab', 'basic')]"
 					}
 					button_tab = {
+						name = "ervc_cc_tab_education_button"
 						layoutpolicy_horizontal = expanding
 						text = "[Localize('ervc.cc.tab.education')]"
 						onclick = "[GetVariableSystem.Set('ervc_cc_tab', 'education')]"
 						down = "[GetVariableSystem.HasValue('ervc_cc_tab', 'education')]"
 					}
 					button_tab = {
+						name = "ervc_cc_tab_commander_button"
 						layoutpolicy_horizontal = expanding
 						text = "[Localize('ervc.cc.tab.commander')]"
 						onclick = "[GetVariableSystem.Set('ervc_cc_tab', 'commander')]"
 						down = "[GetVariableSystem.HasValue('ervc_cc_tab', 'commander')]"
 					}
 					button_tab = {
+						name = "ervc_cc_tab_physical_button"
 						layoutpolicy_horizontal = expanding
 						text = "[Localize('ervc.cc.tab.physical')]"
 						onclick = "[GetVariableSystem.Set('ervc_cc_tab', 'physical')]"
 						down = "[GetVariableSystem.HasValue('ervc_cc_tab', 'physical')]"
 					}
 					button_tab = {
+						name = "ervc_cc_tab_personality_button"
 						layoutpolicy_horizontal = expanding
 						text = "[Localize('ervc.cc.tab.personality')]"
 						onclick = "[GetVariableSystem.Set('ervc_cc_tab', 'personality')]"
 						down = "[GetVariableSystem.HasValue('ervc_cc_tab', 'personality')]"
 					}
 					button_tab = {
+						name = "ervc_cc_tab_other_button"
 						layoutpolicy_horizontal = expanding
 						text = "[Localize('ervc.cc.tab.other')]"
 						onclick = "[GetVariableSystem.Set('ervc_cc_tab', 'other')]"
 						down = "[GetVariableSystem.HasValue('ervc_cc_tab', 'other')]"
 					}
 					button_tab = {
+						name = "ervc_cc_tab_origin_button"
 						layoutpolicy_horizontal = expanding
 						text = "[Localize('ervc.cc.tab.origin')]"
 						onclick = "[GetVariableSystem.Set('ervc_cc_tab', 'origin')]"
@@ -332,6 +341,7 @@ window = {
 							align = nobaseline
 						}
 						button_standard = {
+							name = "ervc_cc_sex_male_button"
 							min_width = 250
 							text = "SEX_MALE"
 							datacontext = "[GetScriptedGui('ervc_cc_choose_male_gui')]"
@@ -340,6 +350,7 @@ window = {
 							down = "[EqualTo_CFixedPoint( GetPlayer.MakeScope.Var('ervc_cc_female').GetValue, '(CFixedPoint)0' )]"
 						}
 						button_standard = {
+							name = "ervc_cc_sex_female_button"
 							min_width = 250
 							text = "SEX_FEMALE"
 							datacontext = "[GetScriptedGui('ervc_cc_choose_female_gui')]"
@@ -354,12 +365,12 @@ window = {
 						blockoverride "ervc_numeric_label" { text = "[Localize('ervc.cc.age')]" }
 						blockoverride "ervc_numeric_max" { max = 120 }
 						blockoverride "ervc_numeric_value" { value = "[GetPlayer.MakeScope.Var('ervc_cc_age').GetValue]" }
-						blockoverride "ervc_numeric_text" { raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_age').GetValue|0]" }
+						blockoverride "ervc_numeric_text" { name = "ervc_cc_age_value_text" raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_age').GetValue|0]" }
 						blockoverride "ervc_numeric_actions" {
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_age_minus_10_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_age_minus_1_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_age_plus_1_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_age_plus_10_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_age_minus_10_button" text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_age_minus_10_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_age_minus_1_button" text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_age_minus_1_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_age_plus_1_button" text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_age_plus_1_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_age_plus_10_button" text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_age_plus_10_gui')]" }
 						}
 					}
 
@@ -367,12 +378,12 @@ window = {
 						blockoverride "ervc_numeric_icon" { icon = { texture = "gfx/interface/icons/icon_skills.dds" framesize = { 60 60 } frame = 1 size = { 38 38 } } }
 						blockoverride "ervc_numeric_label" { text = "[Localize('ervc.cc.skill.diplomacy')]" }
 						blockoverride "ervc_numeric_value" { value = "[GetPlayer.MakeScope.Var('ervc_cc_diplomacy').GetValue]" }
-						blockoverride "ervc_numeric_text" { raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_diplomacy').GetValue|0]" }
+						blockoverride "ervc_numeric_text" { name = "ervc_cc_diplomacy_value_text" raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_diplomacy').GetValue|0]" }
 						blockoverride "ervc_numeric_actions" {
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_diplomacy_minus_10_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_diplomacy_minus_1_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_diplomacy_plus_1_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_diplomacy_plus_10_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_diplomacy_minus_10_button" text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_diplomacy_minus_10_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_diplomacy_minus_1_button" text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_diplomacy_minus_1_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_diplomacy_plus_1_button" text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_diplomacy_plus_1_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_diplomacy_plus_10_button" text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_diplomacy_plus_10_gui')]" }
 						}
 					}
 
@@ -380,12 +391,12 @@ window = {
 						blockoverride "ervc_numeric_icon" { icon = { texture = "gfx/interface/icons/icon_skills.dds" framesize = { 60 60 } frame = 2 size = { 38 38 } } }
 						blockoverride "ervc_numeric_label" { text = "[Localize('ervc.cc.skill.martial')]" }
 						blockoverride "ervc_numeric_value" { value = "[GetPlayer.MakeScope.Var('ervc_cc_martial').GetValue]" }
-						blockoverride "ervc_numeric_text" { raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_martial').GetValue|0]" }
+						blockoverride "ervc_numeric_text" { name = "ervc_cc_martial_value_text" raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_martial').GetValue|0]" }
 						blockoverride "ervc_numeric_actions" {
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_martial_minus_10_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_martial_minus_1_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_martial_plus_1_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_martial_plus_10_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_martial_minus_10_button" text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_martial_minus_10_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_martial_minus_1_button" text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_martial_minus_1_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_martial_plus_1_button" text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_martial_plus_1_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_martial_plus_10_button" text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_martial_plus_10_gui')]" }
 						}
 					}
 
@@ -393,12 +404,12 @@ window = {
 						blockoverride "ervc_numeric_icon" { icon = { texture = "gfx/interface/icons/icon_skills.dds" framesize = { 60 60 } frame = 3 size = { 38 38 } } }
 						blockoverride "ervc_numeric_label" { text = "[Localize('ervc.cc.skill.stewardship')]" }
 						blockoverride "ervc_numeric_value" { value = "[GetPlayer.MakeScope.Var('ervc_cc_stewardship').GetValue]" }
-						blockoverride "ervc_numeric_text" { raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_stewardship').GetValue|0]" }
+						blockoverride "ervc_numeric_text" { name = "ervc_cc_stewardship_value_text" raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_stewardship').GetValue|0]" }
 						blockoverride "ervc_numeric_actions" {
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_stewardship_minus_10_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_stewardship_minus_1_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_stewardship_plus_1_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_stewardship_plus_10_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_stewardship_minus_10_button" text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_stewardship_minus_10_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_stewardship_minus_1_button" text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_stewardship_minus_1_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_stewardship_plus_1_button" text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_stewardship_plus_1_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_stewardship_plus_10_button" text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_stewardship_plus_10_gui')]" }
 						}
 					}
 
@@ -406,12 +417,12 @@ window = {
 						blockoverride "ervc_numeric_icon" { icon = { texture = "gfx/interface/icons/icon_skills.dds" framesize = { 60 60 } frame = 4 size = { 38 38 } } }
 						blockoverride "ervc_numeric_label" { text = "[Localize('ervc.cc.skill.intrigue')]" }
 						blockoverride "ervc_numeric_value" { value = "[GetPlayer.MakeScope.Var('ervc_cc_intrigue').GetValue]" }
-						blockoverride "ervc_numeric_text" { raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_intrigue').GetValue|0]" }
+						blockoverride "ervc_numeric_text" { name = "ervc_cc_intrigue_value_text" raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_intrigue').GetValue|0]" }
 						blockoverride "ervc_numeric_actions" {
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_intrigue_minus_10_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_intrigue_minus_1_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_intrigue_plus_1_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_intrigue_plus_10_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_intrigue_minus_10_button" text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_intrigue_minus_10_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_intrigue_minus_1_button" text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_intrigue_minus_1_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_intrigue_plus_1_button" text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_intrigue_plus_1_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_intrigue_plus_10_button" text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_intrigue_plus_10_gui')]" }
 						}
 					}
 
@@ -419,12 +430,12 @@ window = {
 						blockoverride "ervc_numeric_icon" { icon = { texture = "gfx/interface/icons/icon_skills.dds" framesize = { 60 60 } frame = 5 size = { 38 38 } } }
 						blockoverride "ervc_numeric_label" { text = "[Localize('ervc.cc.skill.learning')]" }
 						blockoverride "ervc_numeric_value" { value = "[GetPlayer.MakeScope.Var('ervc_cc_learning').GetValue]" }
-						blockoverride "ervc_numeric_text" { raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_learning').GetValue|0]" }
+						blockoverride "ervc_numeric_text" { name = "ervc_cc_learning_value_text" raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_learning').GetValue|0]" }
 						blockoverride "ervc_numeric_actions" {
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_learning_minus_10_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_learning_minus_1_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_learning_plus_1_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_learning_plus_10_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_learning_minus_10_button" text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_learning_minus_10_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_learning_minus_1_button" text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_learning_minus_1_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_learning_plus_1_button" text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_learning_plus_1_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_learning_plus_10_button" text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_learning_plus_10_gui')]" }
 						}
 					}
 
@@ -432,12 +443,12 @@ window = {
 						blockoverride "ervc_numeric_icon" { icon = { texture = "gfx/interface/icons/icon_prowess.dds" size = { 38 38 } } }
 						blockoverride "ervc_numeric_label" { text = "[Localize('ervc.cc.skill.prowess')]" }
 						blockoverride "ervc_numeric_value" { value = "[GetPlayer.MakeScope.Var('ervc_cc_prowess').GetValue]" }
-						blockoverride "ervc_numeric_text" { raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_prowess').GetValue|0]" }
+						blockoverride "ervc_numeric_text" { name = "ervc_cc_prowess_value_text" raw_text = "[GetPlayer.MakeScope.Var('ervc_cc_prowess').GetValue|0]" }
 						blockoverride "ervc_numeric_actions" {
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_prowess_minus_10_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_prowess_minus_1_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_prowess_plus_1_gui')]" }
-							ervc_cc_action_button = { text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_prowess_plus_10_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_prowess_minus_10_button" text = "[Localize('ervc.cc.numeric.minus_10')]" datacontext = "[GetScriptedGui('ervc_cc_prowess_minus_10_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_prowess_minus_1_button" text = "[Localize('ervc.cc.numeric.minus_1')]" datacontext = "[GetScriptedGui('ervc_cc_prowess_minus_1_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_prowess_plus_1_button" text = "[Localize('ervc.cc.numeric.plus_1')]" datacontext = "[GetScriptedGui('ervc_cc_prowess_plus_1_gui')]" }
+							ervc_cc_action_button = { name = "ervc_cc_prowess_plus_10_button" text = "[Localize('ervc.cc.numeric.plus_10')]" datacontext = "[GetScriptedGui('ervc_cc_prowess_plus_10_gui')]" }
 						}
 					}
 
@@ -705,6 +716,7 @@ window = {
 
 					text_single = { text = "[Localize('ervc.cc.price')]" default_format = "#high" align = nobaseline }
 					text_single = {
+						name = "ervc_cc_price_value_text"
 						raw_text = "[GetPlayer.MakeScope.ScriptValue('ervc_courtier_creator_cost')|0]"
 						default_format = "#V"
 						using = Font_Size_Medium
@@ -713,6 +725,7 @@ window = {
 					text_single = { raw_text = "/" default_format = "#low" align = nobaseline }
 					icon = { texture = "gfx/interface/icons/icon_gold.dds" size = { 28 28 } }
 					text_single = {
+						name = "ervc_cc_gold_value_text"
 						raw_text = "[GetPlayer.GetGold|0]"
 						default_format = "#high"
 						using = Font_Size_Medium
@@ -722,6 +735,7 @@ window = {
 					expand = {}
 
 					button_standard = {
+						name = "ervc_cc_cancel_button"
 						min_width = 210
 						text = "[Localize('ervc.cc.cancel')]"
 						datacontext = "[GetScriptedGui('ervc_cc_cancel_gui')]"
@@ -729,6 +743,7 @@ window = {
 						onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 					}
 					button_primary_big = {
+						name = "ervc_cc_confirm_button"
 						min_width = 260
 						text = "[Localize('ervc.cc.confirm')]"
 						datacontext = "[GetScriptedGui('ervc_cc_confirm_gui')]"
