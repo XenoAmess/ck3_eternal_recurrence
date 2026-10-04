@@ -2978,3 +2978,28 @@ R34 普通战争循环成功14正常日/336h后，failed15 的 `ck3_plan_turn` �
 后续读取新结果时，成功与失败均由指定owner唯一消费原叶：GREEN记录当前功能恢复及旧cause未知；RED只从实际 typed 子树区分运行等待、frame稳定性、实际typed调用及executor结果，不把字段存在、ACK或当前无异常heartbeat当作原因证明。旧R34 failed15 RED保留，不为它扩native协议或重复无证据审计。
 
 可核验外置证据：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-supply-attrition/r34-plan-turn-typed-error-ingress/python-candidate/ROOT-DELIVERY.json`（SHA-256 `465cc625a334c4bd1234b5dfb5dbbb4f1aa3a5a63db6f63352c874d49305b692`）；军事已有缓存短包 `.../military-ooda-continuation/ordinary-v61/r34-progress-after-restored-strength-query-consumed01/FAILED15-CACHED-ERROR-INGRESS-SHORT.json`（SHA-256 `cba92ea58f6b05876da57b5d3d5d9c16e51a0104746615adab1858068499b9ef`）。本补充lane新增SDK/query/day均0。
+
+## Campaign typed completion 与 worker cache 的区别（2026-10-05）
+
+R35 普通SDK74130的第一round plan002真实失败，0h/0新增正常日。唯一原叶消费得到已有 typed_query_failure_v1：query_type=campaign、stage=final_read、final_read=false、final_equal=null；wait_completed、frame_stable、typed_result、executor_enter、executor_typed_result、executor_finish均true，executor_exception为code0/image none/RVA null。这已证明Python追加的现有error详情能在生产错误中输出；不能把第二份snapshot读取失败误归为此次main typed执行失败或异常，也不能据此归因旧R33兵力故障。
+
+实际g67调用链是WorkerMain构造WorkerAdapter作为session_game，经RunConnectedSession传入RunTypedQuery12002；query.envelope.game通过NativeAdapter12002解包native供owning main executor使用，尾部ReadSnapshot(game)仍读取WorkerAdapter缓存。main FinishQueryMailbox在拥有线程完成完整expected snapshot equality、slot、paused和date检查；其后原代码再次读取worker缓存，false导致final_equal未执行。Worker reader只一次diagnostics采样和mutexcopy，cache缺失、stamp不可读、TLS字段不为1、epoch0、date/pause不匹配或exception都能返回false。Observe在native刷新前将epoch设0，释放mutex读native，成功后重新发布；实际本次究竟命中了哪项拒绝条件没有被观测。
+
+```mermaid
+flowchart LR
+  W[Worker expected snapshot] --> E[Owning main campaign read]
+  E --> F[Finish fullnative snapshot equality / slot / paused / date]
+  F --> C[wait completed + frame stable + typed result]
+  C --> K{campaign?}
+  K -- 是 --> R[保留 reclaim / 返回已验证frame的campaign结果]
+  K -- 否 --> P[原 worker cachecopy + final equality]
+  P --> R
+```
+
+最小桥接修复只让campaign completion复用已经完成的main Finish校验，保留wait、typed result、frameStable和reclaim检查；其他typed查询保持原final缓存读取/equality。campaign跳过的final_read/final_equal保持unobserved，不能伪填true；Worker缓存reader谓词没有放松，也没有在worker直接调用native getter。修复已commit/push `60a11f657c6e49db165cb79ad23be97343d7a86c`，g68冻结2026-10-04T18:44:23Z；Root四个严格构建全部GREEN，81.569953s、569编译单元/566唯一/1108输入，没有重复nativefixtures。
+
+唯一NEW offline生产函数复现调用真实WorkerAdapter::Observe/read_snapshot：初次观察及读取true；阻塞第二次native刷新期间，读取false且output empty；释放后观察/读取true并恢复同一snapshot，native reads2/wrong owner0。首case TU编译通过但初link缺user32和两既有family符号的HARNESS RED保留；精确补一个support TU复用既有helper body、链接user32后，仅运行一次GREEN，原case obj没有重编，没有旧matrix或runtime重建。此证明生产缓存暂时不可读区间可达，不证明此次实机失败具体命中了epoch0或发布竞态，也不证明旧R33/R34故障根因。
+
+当前readiness分开记录：existing typed-error输出为production-live primitive；生产缓存复现为offline fixture-live；campaign修复为strict-build GREEN/static-ready，R36部署后的fresh plan真实恢复尚待。R35 sourceg67最近normal SAVEh7873、Root stop21223 exit0及新env前缀feaaa只是Root提供的交接事实，不能替代新plan验证。未新增SDK/正常日/原叶复读/shared/Git/schema/WAL/gate。
+
+证据：实际错误 `.../army-supply-attrition/r34-plan-turn-typed-error-ingress/r35-actual-failed-plan01/ROOT-ACTUAL-DELIVERY.json`，SHA-256 `0d396ce5d46174fb91db9a316a573843a833f1ed28d6369ad02f6004e3e6493a`；修复候选同目录下 `campaign-completion-candidate/ROOT-DELIVERY.json`，SHA-256 `de8e7950e8d7634986e0054983613ef0f4f147251094da2b92959a24833bcec2`；唯一新复现 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/r35-actual-failed-plan01/case-parent-r35/link-corrected-once/ROOT-DELIVERY.json`，SHA-256 `f11fd70884baa4f37b4fd2c56f707e2ddb1bfde5cbce5bcbd5a6c1cb8531bf73`。
