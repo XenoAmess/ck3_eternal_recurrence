@@ -412,3 +412,85 @@ Outer Root绑定g68/source60a11f657c6e49db165cb79ad23be97343d7a86c、R0036/execb
 Sea16777220在原始第13日/raw53147472进2174后，实际53团单record `(53,0,persistent16793680,chunk0)` 的native_can_replenish与native_chunk_can_replenish都从海上端点false变为true；current9/max10、monthly fraction10000/100000、prepared fraction0仍不变。第14→15日的独立暂停配对中，这两个权限保持true，完整14团Strength向量与24条raised data records完全相等；Army current/max仍1086/1087，53仍9/10。同期stock291.22808→300（capacity300），真实+188写入日期更新为原始第15日。正补给已实际发生，整数补员仍待另一窗口验证。True只证明当前许可，false旧端点不证明永久不补；当前人数不变也不证明整个间隔没有任何生产活动。
 
 新全records接口的14团行全部available/ready，实际24条records。56–60团各native_data_record_count0/records[]，但各actual Strength1/1；因此records SUM1081/1082与actual SUM1086/1087不同。这是完整读取后的真实空集合，不是旧first-record读取缺失。实际人数判断以完整ArmyRegiment Strength为准；record集合用于身份、权限与prepared fraction，不外推整个persistent regiment的全局储备或全军净月补兵公式。证据见[本期R0164索引](../../promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0164-index.json)与其SHA绑定的正式positive-pair-a05。后续若冷载R0165，必须重绑新episode与实际记录，原始53147160→53147880的30总日预算保持，当前只余15日。
+
+### R38 current complete-record and movement observation — 2026-10-05 / W41
+
+The single actual R38/g70 health query is accepted and available at native revision 3,
+public revision 2, paused raw date `53259576`. Its three requested armies are all
+readable. Native source game-version and executable-hash values remain null; Root's
+outer runtime binding does not fill them. This file consumer adds zero game days.
+
+| Public CUnit / native CArmy | Current / maximum | Regiments / DATA | Supply / capacity | Monthly supply / attrition | Current state |
+|---|---:|---:|---:|---:|---|
+| 301989997 / 201326670 | 3210 / 3874 | 39 / 40 | 293.63637 / 300 | 0 / 0 | moving (7) |
+| 184549452 / 167772208 | 3000 / 3000 | 24 / 24 | 100 / 100 | +20 / 0 | regular (1) |
+| 268435597 / 184549476 | 2981 / 4702 | 41 / 133 | 292 / 300 | +20 / 0 | moving (7) |
+
+All 104 ArmyRegiment rows and 197 stored DATA records are available; 16 rows have
+legal empty DATA arrays. Against the sealed R37 frame, 197 identities are retained
+(99 changed, 98 unchanged), one is removed, and none is added. The removed main-army
+record is ArmyRegiment `16780831`, persistent regiment `940`, ordinal `1`, formerly
+`1/4`. Retained current counts decrease by 167 and retained maximum counts are
+unchanged. Together with that removed record, these observations account for the
+main row's `3378/3878 -> 3210/3874` difference without assigning loss or refill cause.
+
+The current main physical deficit is `645 + 19 = 664` across first and nonfirst
+records; guard deficit is zero and enemy deficit is `754 + 967 = 1721`. All 197
+prepared fractions are valid zero, while all fresh fractions are positive. Current
+CanReplenish and chunk predicates remain independent: main `24/16` true/false with
+all 40 chunks false; guard both predicates false for all 24; enemy `127/6` and
+`66/67`. The closed fill path gives zero with these current prepared operands;
+this is not a prediction of a future update or an explanation of prior net changes.
+
+All three clock leaves are available and ready at D `394149`, selected bucket `9`.
+Main/guard/enemy actual bucket and last-success low date pairs are
+`0/53259360`, `28/53259312`, `6/53259504`; their stored +188 integers are preserved
+as `303722499335302240`, `303721524377726000`, `303722525105106160`. Grace anchors
+retain their independent native values and 30-day input. Current loss leaves are
+inactive with observed zero budgets; those current zeros do not explain earlier loss.
+
+The independently sealed movement cache publishes the native current edge only.
+Main accumulated movement is `2106480`, cached edge speed is actual zero,
+normalized progress is `61955/100000`, and first-edge remaining duration is
+`297360/100000`; enemy values are `758832`, actual zero, `20325/100000` and
+`631528/100000`. Guard movement is not applicable with null progress and remaining
+duration. Whole-route ETA and later arrival are separate observations owned by the
+movement lane. No duration unit or route is inferred here.
+
+The old fourth CUnit `83886508` is absent from this requested scope; that does not
+establish its lifecycle or the reason for its earlier CArmy-resolution failure.
+
+Evidence: `army-replenishment-current-input-v66/actual-r38-current-health-movement/`
+contains `ROOT-FINAL-DELIVERY.json`, complete one-pass and domain caches,
+`A-current-record-difference/ROOT-DELIVERY.json` and
+`CURRENT-MOVEMENT-PROGRESS-CACHE.json`. Original leaf SHA-256:
+`9c110e4b395022fbbe9c1c770427c2c4fc8306faca90e93cd2a1fdfc2a34ed48`.
+Readiness is **production-live primitive observation**. Root's query-time ledger
+is 4802 global / 1649 resumed / Oct5 +144; this consumer performs no SDK, tests,
+source edits, Git or window operation.
+
+### Native Army resolution observer adoption — source and controlled fixture
+
+The same strength row gains `native_army_resolution_v1`, with seven keys:
+`status`, `ready`, `branch`, `raw_reference`, `reference_index`, `storage_capacity`,
+`entry_full_id`. The last four are nullable signed int32 observations; zero remains
+a value. After CUnit resolution, its `+178` reference is observed independently
+of whether CArmy resolution succeeds. If CUnit cannot resolve, the optional leaf is absent
+and the existing health failure remains; observer readiness does not repair health.
+
+The unchanged Resolve failure classes map to `reference_absent` (reference -1),
+`storage_unavailable` (header/array/capacity), `index_out_of_range`, `entry_empty`,
+and `full_id_mismatch`; `unavailable` and `resolved` complete the branch vocabulary.
+The single controlled production case uses reference/index `0`, capacity `1`, and
+entry full ID `16777216`: it retains these observations through full-ID mismatch
+while health remains unavailable. Native 13 checks and registered-MCP 10 checks
+passed; the first harness RED remains preserved. This qualifies **static-ready**
+source/fixture behavior, not the historical cause of actual CUnit `83886508`.
+
+Code was adopted as `f3a0be5e4d6f3b58d563100c54556c058b1462cd`; the current g70/d3b
+runtime has not loaded this candidate, so it adds no live qualification. Source-first
+and diagnostic receipts are under `army-replenishment-current-input-v66/`
+`r37-new-enemy-native-army-resolution-gap/ROOT-DELIVERY.json` and
+`r37-native-army-resolution-observer/A-NATIVE-ROOT-DELIVERY.json`.
+Root's later eight-day frame is separately `4810`, h `8261`, raw `53259768`;
+it supplies no replacement health values for R38. This documentation adds zero days.
