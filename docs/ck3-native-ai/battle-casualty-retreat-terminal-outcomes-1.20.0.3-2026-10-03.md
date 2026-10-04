@@ -352,3 +352,41 @@ All raw fields preserve genuine signed int64 Q100000 operands, including zero an
 No mutating `264FF70`/`264FC10` outgoing calculator, `2652E30` incoming application or troop writeback is called. These current operands do not record an unretained prior tick's stack-local damage, establish historical casualty causation, enumerate knight deaths or certify full simulator parity. The existing dashed effective-stat refresh callsite and pursuit aggregate/helper equations stay explicit research boundaries. If genuine executed outgoing becomes required, the known passive trace entry remains `258C774..258C779`, after both original outgoing returns and before either incoming application; this delivery does not add that hook.
 
 Validation is **static-ready**: the sole new strict MSVC `/O2 /DNDEBUG /W4 /WX` focused run compiled seven production/test TUs in six parallel slots, passed four bounded native reader-to-serializer cases and the registered same-MCP Python `-O` checks, including old missing-field shape and explicit null. The run completed GREEN in 13.41 seconds. Receipt: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-effective-loss-inputs-implementation-v55/focused-fixture/parent-focused-run-01/RESULT.json`, SHA256 `74160579fbc59169ca1bb07cb022dd60e34d3876dfbb9e18ee8d71ac61dcdf87`. This fixture is not a paused game observation; the new fields still require Root deployment and a genuine current-battle query before production-live credit. No new SDK, game, window, shared-source, Git or game-day operation is performed by this work package. Root owns adoption, the combined build, later paused real observation, and Oct4/W40 report integration.
+
+## Oct4 fifth player normal terminal — attacker Robert at2669
+
+Combat1291845646@2669 的真实 paused normal_result event64>cursor23（latest64）于
+native213/public17/date53250984 发布 phase3/day0/winner0、Result469762068、wipe=false。
+combat attacker Robert29829/CUnit83886367获胜，defender primary32750/CUnit16777683，
+final commander30470。Result retained/relevant1、旧Combat删除，main@2669 active/backlink clear、
+no_successor、targetnull/route empty；Root/schedule current-control报告main regular，不能把该
+current enum与terminal movement_or_retreat_state_raw0混为一项。
+
+| side | baseline人数 | native hard当量 | soft levy / MAA当量 | cached fighting当量 | final人数 |
+|---|---|---|---|---|---|
+| player attacker0 | 3924 | 139.14343 | 200.29469 / 47.08326 | 3537.47862 | 3870 |
+| enemy defender1 | 2238 | 969.16992 | 1050.14449 / 218.68559 | 0 | 1346 |
+
+final原始值387000000/134600000Q100000与entry各账分开；敌cached0不能改成final0，
+不要求baseline-minus-final等于hard、不进行跨账差审计。recorded War129/row1
+value5000000Q100000、attacker-relative delta−50，winner_is_war_attacker=false、
+combat_side0_is_war_attacker=false；combat winner0不是war attacker。Root独立当前whole-war +40
+另列，单场delta不替代总分。当前敌军16777683 retreat/code6→2635/route6仅为Root/schedule外部状态，
+不写成terminal属性；Root另外记录的新敌军234在2619围城，本场胜利不提供capital siege clearance。
+
+实际5条type2/side0=true/target_right=false人物记录：maimed_by_enemy的left30784/60824，
+wounded_by_enemy的left43706/60821，四行right均16818648；wounded_no_enemy为left60822/right−1。
+它们是具名raw事件记录，不证明fresh maimed/wounded trait、严重等级、人物死亡或完整骑士伤亡数。
+同query当前9人物29829/32750/30470/30784/16818648/60824/43706/60821/60822均alive=true、
+custody none/jailer−1；top character_observations=null因未请求额外ID。
+
+本terminal组件资格为production-live primitive。Root已将contact1日+helper26日与独立observer
+[已封schedule receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/v54-battle1291845646-days04-consumption/ROOT-DELIVERY.json)匹配，允许有限单场战斗
+observe→decision bound step→operate→verify胜利loop信用；此lane只链接receipt，不重读控制产物，
+不外推完整战争/整代。实际输入仍是旧R27/g58/source39b；v55 loss8的新8b5efaa7/edbe源码虽已采用、
+g59构建尚未部署，本实际结果不验收新loss8 primitive，也不覆盖刚发布的source append。
+
+只一次消费父decoded/facts/pin；preterminal native210/date53250960 typed明细仅链接
+numeric-person/RETAINED-ENTRIES.json，由numeric owner独占消费。Root已计本战27normal、
+末批实际4日/96h（不是budget8）、total4444/resume1291/Oct4+419、h7027/95054193B/
+save relay SHA15447…64fd1；本text报告新增0日/0query/0test，无source读取、patch或共享写入。

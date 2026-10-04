@@ -140,3 +140,27 @@ Terminal and occupation retain separate native observations. The earlier arrival
 prestep53249784的typed明细仅引用numeric-person/RETAINED-ENTRIES.json，由numeric owner独占消费。
 Root已计本战6日=3+3、末批3日/72小时和transit30；normalh6844/94141190B/
 relay save SHA675a…20706、total4395/resume1242/Oct4+370。本text消费新增0日/0query/0test。
+
+## Oct4 fifth actual final and five named injury records
+
+Combat1291845646 normal_result event64>23，native213/public17/date53250984、phase3/day0，
+winner0为Robert29829，Result469762068 retained/relevant1、wipefalse。native final
+side0 commander29829/baseline392400000/survivors387000000Q100000（3924→3870）；
+side1 commander30470/baseline223800000/survivors134600000Q100000（2238→1346）。
+native hard13914343/96916992Q100000、cached fighting353747862/0Q100000是独立字段；
+敌cached0不等于final0，不因hard与最终人数净差不同启动审计。
+
+5条native type2/side0true/target_rightfalse记录原样保留：
+maimed_by_enemy left30784/60824、wounded_by_enemy left43706/60821（right均16818648），
+wounded_no_enemy left60822/right−1。当前9人物29829/32750/30470/30784/16818648/60824/
+43706/60821/60822全部alive=true、custody none/jailer−1；不由raw key推fresh伤残/受伤trait、
+等级、死亡或完整骑士伤亡aggregate。未请求额外IDs时top character_observations=null合法。
+
+main@2669 clear/routeempty/no successor；Root/schedule独立敌retreat→2635与当前whole-war +40
+不写成terminal属性。War129 row1的battle attacker-relative−50与combat side0非war attacker
+各自保留，本胜利不清Root另见2619的新敌军围城。组件production-live primitive；
+Root已匹配27normal（contact1+helper26）的有限单场战斗胜利OODA，独立observer仅引用
+[receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/v54-battle1291845646-days04-consumption/ROOT-DELIVERY.json)，不推whole campaign。
+旧R27/g58/source39b实际不能验收尚未部署的v55 loss8；本包text-only，不改source或新门禁。
+历史native210/date53250960 typed只链接numeric owner输出；Root已计total4444/resume1291/
+Oct4+419、末批4日/96h、h7027，报告新增0日/0query/0test。
