@@ -120,3 +120,43 @@ B evidence is [trait-caller-source/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_proces
 The research increment is complete and useful: exact registration type/next target plus a separate real Character-cache refresh caller. The selected trait feedback feature remains partial. C delivered no numeric model and D executed no case; no test GREEN or capability RED is claimed. A's retained COL-signature assertion RED came from misclassifying the description pointer as a second vptr, including the disclosed 24 B text read; cached metadata corrected that interpretation without a third decoded body. It is a source-helper attempt, not a failed trait capability test.
 
 Root also retained ordinary pure-data read failures: two source Markdown/JSON read commands lacked their read helper and produced Markdown SyntaxError/JSON false NameError, then were corrected; a requested v61 source path was absent. These commands executed no business code and wrote no files. They do not add test attempts, capability failures or an audit prerequisite. This publishing lane only copied sealed A candidate bytes and appended this sealed B result; it performed no new EXE read, source lookup, test, SDK, game, window, shared write or Git operation. The one MOD topic patch is based on the already corrected v63 topic (4127 B, SHA-256 `de8d70d5d3d0d1b218bd8898694902d7007e00558c7887d2fa080d47fba7f5fa`), whose current g38 equality Root already confirmed. Root owns adoption, shared Oct5/W41 reports and commit/push.
+
+## Compiled add_trait factory increment (2026-10-05, v65)
+
+Status: **research**, 2026-10-05 / 2026-W41. Factory identity/order is source-closed; numeric trait writer source-ready remains **false**.
+
+```mermaid
+flowchart TD
+    R["reused CEffectEntry&lt;CAddTraitEffect&lt;0&gt;&gt;
+primary+8=2D2A590"] --> F["2D2A590 factory73B"]
+    F --> A["allocate256B
+4223BB4 opaque allocator"]
+    A --> C["direct2D2AAC0 constructor103B"]
+    C --> O["opaque base3764170
+subobjectA04230"]
+    C --> D["explicit default fields
++50 vptr45DCB50
++F0 copied staticqword
++F8=-1,+FC=0"]
+    C --> V["factory finalvptr48638A8
+CAddTraitEffect&lt;0&gt;"]
+    V --> N["copy entry+10 namehandle to child+8
+child+0C=0; returnchild"]
+    V --> X["exact execute slot+B0 at4863958
+target2D2B9E0; bodyunread"]
+    P["reused generic rootdispatch3766160+B0"] -. "unknown selectedcontainer traversal" .-> V
+    X -. "unknown actual mutation operands" .-> T["trait / Character effective callback"]
+    B["independent B forcedrefresh
+28C3BC0 to28C3F60"] -. "unknown add_trait ancestor" .-> T
+    T -. "unknown trigger and time" .-> E["battle Entry cache refresh"]
+```
+
+The qualified registration-entry virtual method `2D2A590` allocates256 bytes, directly calls constructor `2D2AAC0`, then installs final vptr `48638A8`, copies the entry raw32 name handle from `+10` to child `+8`, writes zero at child byte `+0C`, and returns the child. Constructor `2D2AAC0` calls two opaque initializers, writes its explicit subobject/default fields, and returns. Its temporary vptr `4863978` is overwritten by the factory's final vptr.
+
+Validated final RTTI identifies `CAddTraitEffect<0>`. The exact final `+B0` qword at `4863958` points to **`2D2B9E0`**, now a qualified next execute entry. Scope slots `+28=A02D00` and `+30=2D29890` are addresses only; their bodies were not read. The name handle is a name-key bit pattern, not a selected trait ID or a prowess scalar. The constructor's `+F0` static qword and `+F8=-1` are not assigned guessed TraitDefinition semantics.
+
+This increment contains two new bounded bodies totaling176 bytes,384 bytes of individually recorded `.pdata` lookup rows, and168 bytes of final vptr/COL/type/slot metadata. No new xref scan, whole executable hash, prior body/needle reread, third function body, game/SDK/liveRPM/window action or test was performed. The v64 metadata-read mistake belongs to its preserved prior packet; v65 metadata pointers were classified into backed noncode sections before following them.
+
+The actual `2D2B9E0` execution body, parsed trait binding, selected loaded root/container-to-child edge, Character effective recompute arithmetic, and battle Entry timing remain typed gaps. The independent forced-refresh chain cannot establish an `add_trait` ancestor edge. This package releases no numeric model/API or fixture. The next source work should read `2D2B9E0` and a necessary actual mutation/callback target, within a separately authorized bounded package.
+
+Sealed source: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-phase-event-compiled-trait-factory-v65/source/ROOT-DELIVERY.json`, SHA-256 `7a735ca40bdb6c17715e249e6b33054e9d499b80e824eb968d1e2f3b31f8cfdb`. No model or fixture is released by this factory-only increment.
