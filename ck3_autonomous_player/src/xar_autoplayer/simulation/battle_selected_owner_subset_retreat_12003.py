@@ -17,6 +17,18 @@ from .combat_core import FIXED_SCALE, PursuitInitialPools, apply_pursuit_day, fi
 
 
 @dataclass(frozen=True, slots=True)
+class KnightBackingHardQualification12003:
+    """The 2634880 predicate result with actual or conditional provenance.
+
+    True bypasses backing writes and reaggregation, while copied soft and
+    owner hard still change. Raw positive IDs and alive flags do not supply it.
+    """
+
+    knight_getter_result: bool | None
+    source_context: Mapping[str, object] | None = None
+
+
+@dataclass(frozen=True, slots=True)
 class SelectedOwnerSubsetPursuitInputs12003:
     pursuit_stat_multiplier_raw: int | None = None
     base_toughness_multiplier_raw: int | None = None
@@ -25,6 +37,9 @@ class SelectedOwnerSubsetPursuitInputs12003:
     pursuer_efficiency_modifier_raw: int | None = None
     retreater_loss_modifier_raw: int | None = None
     source_context: Mapping[str, object] | None = None
+    knight_backing_qualifications_by_regiment: Mapping[
+        tuple[int, int], KnightBackingHardQualification12003
+    ] | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -71,6 +86,43 @@ class SelectedOwnerSubsetRetreatResult12003:
     win_probability_ready: bool = False
 
 
+def current_bucket_knight_backing_qualifications_12003(
+    condition: CurrentBattleCondition,
+) -> Mapping[tuple[int, int], KnightBackingHardQualification12003]:
+    """Adapt source-qualified current MAA Bucket publication, not raw IDs.
+
+    Its strict Character and reciprocal Regiment binding is stronger than
+    2634880. Null/absence stays unknown. This is frozen current evidence;
+    future changes require an independently supplied conditional witness.
+    """
+    source = condition.source_snapshot
+    current_frame = source.get("status") == "available" and all(
+        source.get(name) == getattr(condition, name)
+        for name in ("snapshot_revision", "observed_date_raw", "combat_id", "province_id"))
+    result = {}
+    for side in condition.sides:
+        for row in side.entries:
+            if row.bucket != "men_at_arms":
+                continue
+            published = row.source_entry.get("knight_character_id_raw")
+            same_row = (row.source_entry.get("regiment_id") == row.state.regiment_id
+                        and row.source_entry.get("native_carmy_id") == row.native_carmy_id)
+            qualified = False if row.knight_character_id_raw == -1 else None
+            if current_frame and same_row and published == row.knight_character_id_raw:
+                if isinstance(published, int) and not isinstance(published, bool) and published > 0:
+                    qualified = True
+            result[(row.native_carmy_id, row.state.regiment_id)] = KnightBackingHardQualification12003(
+                qualified, {"kind": "current_bucket_qualified_knight_binding" if qualified is True
+                            else "native_empty_knight_slot" if qualified is False
+                            else "current_bucket_qualification_unavailable",
+                    "snapshot_revision": condition.snapshot_revision,
+                    "observed_date_raw": condition.observed_date_raw,
+                    "combat_id": condition.combat_id, "side_index": side.side_index,
+                    "native_carmy_id": row.native_carmy_id, "regiment_id": row.state.regiment_id,
+                    "published_knight_character_id_raw": published})
+    return result
+
+
 def selected_owner_pursuit_inputs_from_current_condition_12003(
     condition: CurrentBattleCondition, *, selected_side_index: int,
 ) -> SelectedOwnerSubsetPursuitInputs12003:
@@ -101,6 +153,7 @@ def selected_owner_pursuit_inputs_from_current_condition_12003(
          "combat_id": condition.combat_id, "selected_side_index": selected_side_index,
          "initial_pools_source": "selected_copied_rows_at_each_callback",
          "duration_divisor": 1, "global_pools_or_skip_flag_copied": False},
+        current_bucket_knight_backing_qualifications_12003(condition),
     )
 
 
@@ -149,8 +202,9 @@ def apply_selected_owner_subset_retreats_12003(
 ) -> SelectedOwnerSubsetRetreatResult12003:
     """Apply selected copied-row loss, owner accounting and removal once.
 
-    Positive-soft normal losses use existing H58 rows and regular non-knight
-    components. Missing numeric/admission inputs leave that callback uninstalled.
+    Positive-soft losses use existing H58 rows. A source-qualified 2634880
+    true result bypasses backing writes; explicit false uses regular components.
+    Missing numeric/admission/qualification inputs leave that callback uninstalled.
     A known Q loss with missing whole operands remains a partial Q result; its
     affected whole census is explicitly None, never an unchanged after-count.
     The all-Army census includes Regiments absent from Combat Entry arrays.
@@ -200,10 +254,24 @@ def apply_selected_owner_subset_retreats_12003(
                     detail.update(branch="numeric_inputs_unavailable", installed=False, new_hard_casualties_raw=None)
                     stop = True
                     break
-                unsupported = tuple(row for row in copied if row.state.soft_casualties_raw > 0 and row.knight_character_id_raw not in (None, -1))
+                qualifications = inputs.knight_backing_qualifications_by_regiment or {}
+                qualified_by_regiment, qualification_contexts, unsupported = {}, {}, []
+                for row in copied:
+                    identity = (row.native_carmy_id, row.state.regiment_id)
+                    witness = qualifications.get(identity)
+                    value = None if witness is None else witness.knight_getter_result
+                    if witness is None and (row.knight_character_id_raw == -1 or
+                                            (row.bucket == "levy" and row.knight_character_id_raw is None)):
+                        value = False  # Native-empty or the retained V61 ordinary levy domain.
+                    qualified_by_regiment[identity] = value
+                    qualification_contexts[identity] = None if witness is None else copy.deepcopy(witness.source_context)
+                    if row.state.soft_casualties_raw > 0 and value is None:
+                        unsupported.append(identity)
                 if unsupported:
-                    gap(event_index, owner_index, owner, "occupied_knight_backing_branch_unimplemented", "26341B0->2634880 qualified early-return/count branch")
-                    detail.update(branch="occupied_knight_backing_branch_unimplemented", installed=False, new_hard_casualties_raw=None)
+                    for identity in unsupported:
+                        gap(event_index, owner_index, owner, "knight_backing_qualification_unavailable",
+                            "2634880 witness or current qualified Bucket binding for Army%d/Regiment%d" % identity)
+                    detail.update(branch="knight_backing_qualification_unavailable", installed=False, new_hard_casualties_raw=None)
                     stop = True
                     break
                 owner_row = next((index for index, row in enumerate(side.participant_hard_ledger) if row["participant_character_id"] == owner), None)
@@ -212,7 +280,13 @@ def apply_selected_owner_subset_retreats_12003(
                     detail.update(branch="owner_hard_writer_unavailable", installed=False, new_hard_casualties_raw=None)
                     stop = True
                     break
-                day = apply_pursuit_day(tuple(row.state for row in copied), condition.sides[1-event.side_index].states,
+                # The Q allocator is unchanged. Qualified native hard calls
+                # have no backing receiver; restore their untouched components
+                # below without changing CharacterID, bucket or other identity.
+                numeric_states = tuple(replace(row.state, components=())
+                    if qualified_by_regiment[(row.native_carmy_id, row.state.regiment_id)] is True
+                    else row.state for row in copied)
+                day = apply_pursuit_day(numeric_states, condition.sides[1-event.side_index].states,
                     initial_pools=PursuitInitialPools(softness["levy"], softness["men_at_arms"]),
                     pursuer_efficiency_modifier_raw=inputs.pursuer_efficiency_modifier_raw,
                     retreater_loss_modifier_raw=inputs.retreater_loss_modifier_raw,
@@ -222,12 +296,24 @@ def apply_selected_owner_subset_retreats_12003(
                     minimum_pursuit_multiplier_raw=inputs.minimum_pursuit_multiplier_raw)
                 after, writebacks = [], []
                 for row, state, (_, hard) in zip(copied, day.entries, day.hard_by_regiment_raw, strict=True):
+                    identity = (row.native_carmy_id, row.state.regiment_id)
+                    qualified = qualified_by_regiment[identity] is True
+                    if qualified:
+                        state = replace(state, components=row.state.components)
                     after.append(replace(row, state=state,
                         backing_components=None if row.backing_components is None else state.components,
                         hard_casualties_raw=None if row.hard_casualties_raw is None else row.hard_casualties_raw+hard))
                     call_selected = row.state.soft_casualties_raw > 0
                     whole_after = None
-                    if call_selected:
+                    if call_selected and qualified:
+                        census = None if backing is None else backing.get(row.native_carmy_id)
+                        captured = None if census is None else next(
+                            (item for item in census if item.regiment_id == row.state.regiment_id), None)
+                        whole_after = None if captured is None else captured.current_soldiers
+                        if captured is None:
+                            gap(event_index, owner_index, owner, "qualified_knight_whole_census_unavailable",
+                                "independent captured whole count preserved by26341DC early return")
+                    elif call_selected:
                         census = None if backing is None else backing.get(row.native_carmy_id)
                         if row.backing_components is None or census is None:
                             gap(event_index, owner_index, owner, "whole_backing_operands_unavailable", "complete ordered backing census and current regular components")
@@ -245,8 +331,13 @@ def apply_selected_owner_subset_retreats_12003(
                                 backing[row.native_carmy_id] = tuple(changed)
                     writebacks.append({"native_carmy_id": row.native_carmy_id, "regiment_id": row.state.regiment_id,
                         "new_hard_casualties_raw": hard, "whole_current_soldiers_after": whole_after,
-                        "regular_backing_call_selected": call_selected,
-                        "native_write_order": ("regular_backing_hard", "copied_soft_decrease", "existing_owner_H58_increment") if call_selected else (),
+                        "regular_backing_call_selected": call_selected and not qualified,
+                        "backing_hard_apply_invoked": call_selected,
+                        "qualified_knight_backing_early_return": call_selected and qualified,
+                        "backing_reaggregation_called": call_selected and not qualified,
+                        "knight_backing_qualification_source": qualification_contexts[identity],
+                        "native_write_order": (("qualified_knight_backing_hard_return" if qualified else "regular_backing_hard",
+                                                "copied_soft_decrease", "existing_owner_H58_increment") if call_selected else ()),
                         "owner_ledger_is_second_whole_debit": False})
                 hard_total = day.total_hard_raw
                 owner_ledger = [dict(row) for row in side.participant_hard_ledger]
