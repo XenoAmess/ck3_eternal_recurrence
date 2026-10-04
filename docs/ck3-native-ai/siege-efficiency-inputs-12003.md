@@ -197,3 +197,40 @@ Root ordinary24 SDK20302 CLOSED GREEN计入24日，累计4834/接续1681/10月5�
 当前M60900/Q100000=.609、K0、普通D93732/Q100000=.93732；disease_level已1，其余breach/starvation/desertion/stalemate状态0、prepared enum5。fresh与prepared phase现均1800000=18天、counter12，和上一冷恢复帧prepared真实0分开记录；输入不变时还需6个允许tick达到phase门槛，不保证下一事件或完成日。
 复用原生树：writer0x251CD00 enum2提升疾病等级，daily0x251F170使用其当前10% multiplier项，改变后续日速而非一次性work或强攻资格。已知(1+.609+.13)*1.1*.49固定点截断=93732吻合实读；work/D已实际增加，ETA639→559仅条件估计变化，不能追加80日信用或承诺终结。继续现occupation查询的native CanStart0x29738C0判定入口，当前false故普通推进；current roster/type/tier、stock/CanCreate、mercenary依赖保持并行。
 新004 SHA`12d488fbd941d3ba6bbc337549659bf09cec69be8758e42db9c743efc6b8bc6e`；compact、策略与日周字段见`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-efficiency-current-fort6-v65/r39-after24/ROOT-DELIVERY.json`。本consumer新增0日，不读旧原叶/snapshot005/health006/source/tests/SDK/window；batch末normalh8344与后续新normal由Root独立保存确认，不授器械改善、强攻、城破或新family信用。
+
+
+## 2026-10-05?????????????????source-first?
+
+???? 1.20.0.3/Steam25652598/EXE SHA94B55397?2A6 ? installed stock ???????? `type=siege_weapon` ????? stack=10?fights_in_main_phase=no?allowed_in_hired_troops=no??????? max_siege_level ?????????? gold ?????????????? native ??? wire???? Robert ????????
+
+| type id | tier / siege value | stock buy gold | stock low / high maintenance gold | source unlock |
+| --- | --- | ---: | --- | --- |
+| onager | 1 / 0.2 | 60 | 0.1 / 0.3 | innovation_catapult |
+| mangonel | 2 / 0.3 | 66.0 | 0.11 / 0.33 | innovation_mangonel |
+| trebuchet | 3 / 0.4 | 78.0 | 0.13 / 0.39 | innovation_trebuchet |
+| bombard | 4 / 0.6 | 96.0 | 0.16 / 0.48 | unlock_late_medieval_gunpowder_units |
+| torch_bearers | 1 / 0.1 | 30.0 | 0.05 / 0.15 | government_is_nomadic |
+| ballista | 1 / 0.2 | 60 | 0.1 / 0.3 | innovation_catapult |
+| cloud_ladder | 2 / 0.3 | 66.0 | 0.11 / 0.33 | innovation_mangonel |
+| siege_tower | 3 / 0.4 | 78.0 | 0.13 / 0.39 | innovation_trebuchet |
+| cannon | 4 / 0.6 | 121.6 | 0.560 / 1.680 | unlock_late_medieval_gunpowder_units |
+
+??????? innovation_catapult?tribal??innovation_mangonel?early medieval??innovation_trebuchet?high medieval??bombard/cannon ???????? unlock_late_medieval_gunpowder_units???? producer ? late-medieval innovation_gunpowder????????? culture_uses_eastern_siege_weapons_trigger=no/yes ?????? NOT government_is_in_steppe?torch_bearers ??? government_is_nomadic??? nomad_holding +.3 / tribal_holding +.1 siege_value?cannon ?? gunpowder ???????? tier/value ? bombard ?????27 ??? buy/low/high costblock ??? gold ????prestige/piety ????? block ????? owner ? native ???????????
+
+??????? GUI binding ???? game/gui/window_menatarms_type_view.gui?MenAtArmsTypeView.GetMenAtArmsTypes?TypeItem.GetMenAtArmsType?row permission ? TypeItem.CanCreate/GetCreateWarning?row quote ? Title valid ???? MenAtArmsType.GetTitleRegimentCostString(GetPlayer)??? GetCostString(GetPlayer)????????? MenAtArmsTypeView.GetCostString(GetPlayer)?CanCreate?Create?formatted quote ???????? typed multi-resource quote ABI?Create ?????????
+
+```mermaid
+flowchart TD
+  S[Stock siege types and tier/value] --> U[Culture innovation / parameter / government rules]
+  U -. current owner rule evaluation unobserved .-> P[TypeItem and selected View CanCreate]
+  S --> G[GUI normal or title quote binding]
+  G -. native typed final multi-resource quote in progress .-> Q[Current owner final quote]
+  P -. exact native receiver construction and fresh query pending .-> D[Affordable permitted normal purchase decision]
+  Q -. fresh query pending .-> D
+  D --> C[Normal Create]
+  C -. not executed .-> V[Created regiment and later eligible M/K readback]
+```
+
+Z:/g71 / cd0acf19a68cdbc42ce20deed226e53e9e7b8c84 ???? MAA finalquote/CanCreate MCP????????????? GUI ???/receiver ????? exact .3 ?? binding?finalquote ? permission/Create ? lane ?? new span??? locator ???owner/unraised collection ? CommanderObserver?mercenary-company ?????????? owner/current type/size ? final quote ? permission ???????????????????? stock buy cost ???????
+
+?? source/pins/????Mermaid ??? native????? `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-engine-catalog-current/` ? SOURCE-INPUT-LEDGER.json?TREE.md?stock-catalog/ROOT-DELIVERY.json?query-construction/????? research/source catalog ready???????????????????????????? SDK/??/??/?????0?Root???????????
