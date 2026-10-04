@@ -266,3 +266,23 @@ R30 SDK61052正常关闭exit0/GREEN，freshsameanchor独立续接8个实际24h�
 M7 available retainedpriming：末53253264/native151/public33承载beforeday8 raw53253240/native148/public30的期望，未授新自然继承。泛snapshot`ordinary_daily_progress`、`current_phase_length`、`prepared_phase_length`、`phase_counter`、`can_advance`仍null，Root SDK16000新专用观察与此row分开。day22 literal map unavailable以及0h正常保存h7344保留历史失败；本段GREEN只证明同实际anchorfreshrevision后八日有限循环继续成功，不声称根因已修复。八直属消费者各独占一日八JSONonce，TOP父独占一次，无运行中读取/旧raw/SDK/source/Git/window/build/tests。
 
 本专题此次只读 fresh g38 当前文档一次及两份上述新封存 append：[21日及failed22缓存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v57/r30-siege-first32-days-consumed01/NATIVE-TOPIC-APPEND.md)（SHA-256 `b23a852ca53653090ec601b78bc0ece131d125a61c273b5a38be6f2ad02a1052`）与 [fresh8日缓存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v57/r30-siege-fresh-after-map-unavailable-eight-days-consumed01/NATIVE-STAGE-APPEND.md)（SHA-256 `3d4937abd392a2f42b9ba6f6b5061cdb863bdee4eb15e80476d9b180dc9b3eb6`）。已在当前文档中的六日登陆条目原样保留；本次采用新增日、SDK、raw、审计、测试、共享修改、Git及子代理均0。Root负责统一日报、周报与共享合并。
+
+### 2026-10-04 R31：32＋39＋独立8个实际普通围城日
+
+冻结 runtime R31/g63/df6e/PID73976、Robert29829 普通 episode `native-29829-2bc2d599f7f9`。显式 `life-advance-one-day`、fresh retained M7 priming、独立后态与每日日正常保存，实际完成下表三段；请求64或8仅预算，日账来自各已关闭包及互不重叠的逐日缓存。
+
+| 已关闭实际段 | raw日期区间 | calendar / bounded / whole | 本段末完整正常保存 | P472末work / progress / ETA |
+| --- | --- | --- | --- | --- |
+| SDK29272普通32日 | 53253288→53254056 | 32 / 32 / 32 | h7474，96603726B，SHA `55be5b4d251b13a5101518706e24bf1fa468853fc27da3565f62fef51a4186c2` | 9302032 / 23.255% / 222 |
+| SDK86105请求64中的实际39日 | 53254056→53254992 | 39 / 39 / 39 | h7594，96643768B，SHA `2ca702ef8e01a91c2da696b5b6851943ddb41476a914f1ea88b961972a592c03` | 15208452 / 38.021% / 179 |
+| SDK84218独立fresh8日 | 53254992→53255184 | 8 / 8 / 8 | h7623，96635572B，SHA `bed84b0f7a0c4b8a91c3c5b1eb44de22f7e21b8afc2c73479dadb1ba319f159d` | 16316250 / 40.790% / 172 |
+
+这三段共79实际正常日/1896h：4540→4619，resume1387→1466、Oct4+515→+594。与已冻结的R30六日登陆＋21日围城＋fresh8及R31首个实际预测tick，当前4504→4619完整增量为 `6+21+8+1+32+39+8=115` 日/2760h；旧failed22与下面failed40都0日，独立查询0日。Oct3冻结777、自然继承0、G2 5/8、NW2 2/4不变，无新completed family。
+
+SDK86105第40次实际attempt在 `002-ck3_plan_turn.json` 返回 `native gameplay step failed: state_changed`，没有提交advance request，0h/0day；其独立snapshot及零日normal SAVE h7596/raw53254992/native298/public158、SHA `d57104d10063f9053c340eb60844ed9144d5fb9aca68e4f7f90b5a4832ec85e6` 保留，不能替代h7594末whole或计第40日。该literal与旧R30 map-unavailable不同，不推断同根因。Root随后另次health/phase查询的零日h7599同日期、SHA `5939f1799ba673fe607392193e4400a84ff2ee74a0e089119fe0968b65eb5d48`，再从真实日期新开SDK84218；八日GREEN只证明当前有限继续能力，未证明旧故障根因已修，不回放39日。
+
+最新whole后态raw53255184/native333/public33：Robert alive、同episode、paused/map ready、event与interaction均null；CUnit301989997@472 sieging3、184549452@2619 regular1，均可控、空route、非combat/retreat。War117440524仍active，玩家attacker/primary、opponent35991、score0；敌268435597@470 regular空route。470/3711/472均未占领。P472 ownedFullSiege251658324/公开besieger301989997/player=true、fort4/garrison500/B3550，work16316250 of40000000 Q100000、remaining23683750、progress40790 Q100000；ETA172为当前条件估计，breach0/walls未破、CanStart/CanStop=false、无assault。本阶段授有限持续围城production-live loop，未授capture/warwin或完整战争完成。
+
+逐日可见变化原绑定保留：32日段day7 P470 garrison574→598、day13 P472 siegeB3657→3621；39日段day6 P470 garrison598→621、day11 siegeB3621→3585；fresh8 day2 siegeB3585→3550（raw53255016→53255040）。work、garrison及围城B变化只记观测，不推事件因果或整军健康；generic snapshot soldiers、phase/event操作数实际null继续保留，独立rich query不反填。原[有限prospective tick独立验证](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/r29-route-actual/r31-post-predicted-tick-once/ROOT-DELIVERY.json)只闭合一次work4420875/counter13匹配（commit `54f290f0`），不推广到后续event/RNG。
+
+三段各父TOP独占一次、completed day leaf独占一次；可用线程为父＋唯一直属child，采用互不重叠原始日组，不宣称8个实际agents。[32日缓存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v58/r31-siege-next32-after-prospective-tick-consumed01/ROOT-DELIVERY.json)、[39日与failed40缓存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v58/r31-siege-next64-after-monthly-query-consumed01/ROOT-DELIVERY.json)、[独立fresh8缓存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v58/r31-siege-fresh-after-state-changed-eight-days-consumed01/ROOT-DELIVERY.json)及[统一日报/周报字段](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v58/r31-closed32-39-failed40-fresh8-topic-projection/ROOT-FINAL-DAY-WEEK-FIELDS.json)可复核。本文投影只读当前topic一次并复用自身decoded cache，无SDK、游戏/窗口、shared修改、Git、build、旧测试或原始重复读取；Root负责统一报告和共享提交。
