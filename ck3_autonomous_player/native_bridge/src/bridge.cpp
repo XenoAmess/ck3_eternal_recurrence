@@ -15424,15 +15424,28 @@ void RunConnectedSession(
             } else if (!xar::ck3_11906::ParseIngameUiRequestV1(incoming.payload,
                            step == xar::ck3_11906::kIngameUiWindowQueryV1Step, ui_request)) {
               connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(request_id, step, false, "invalid_typed_ui_request"));
+            } else if (!((game.descriptor().game_version==xar::ck3_12003::kGameVersion &&
+                           game.descriptor().executable_sha256==xar::ck3_12003::kExecutableSha256) ||
+                          (game.descriptor().game_version=="1.19.0.6" &&
+                           game.descriptor().executable_sha256==xar::ck3_11906::kExecutableSha256))) {
+              connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(request_id, step, false, "typed_ui_exact_build_not_available"));
             } else {
+              const bool current_ui=game.descriptor().game_version==xar::ck3_12003::kGameVersion;
+              const auto ui_abi=current_ui?xar::ck3_11906::GuiAbiRevisionV1::crozier12003:xar::ck3_11906::GuiAbiRevisionV1::legacy11906;
               xar::ck3_11906::FrontendGuiRouteMailboxContextV1 query{};
               query.mailbox = &g_main_thread_query_mailbox_v1;
               query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::ingame_ui;
-              query.ingame_bindings = xar::ck3_11906::BindCurrentProcess(true);
+              if(current_ui)query.ingame_game=&game;
+              else query.ingame_bindings = xar::ck3_11906::BindCurrentProcess(true);
               query.ingame_expected_snapshot = current_snapshot;
               query.ingame_request = ui_request;
               query.environment = xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(
-                  reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), true);
+                  reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), true, ui_abi);
+              query.ingame_result.gui_abi_revision=ui_abi;
+              if(!xar::ck3_11906::IsIngameUiRequestSupportedV1(ui_abi,ui_request)) {
+                connected=xar::bridge::WriteFrame(pipe,CommandResultFrame(request_id,step,false,"typed_ui_operation_not_available_for_exact_build"));
+                continue;
+              }
               const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1, &query, query.ticket);
               std::string response;

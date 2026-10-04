@@ -7,10 +7,32 @@
 #include <iostream>
 
 namespace xar::ck3_11906 {
-// Link-only GUI stubs; the negative admission cases never reach these.
-bool ResolveNamedGuiWidgetV1(const ZhongguoScoreboardNativeEnvironmentV1 &,const ZhongguoScoreboardAccessV1 &,std::string_view,std::string_view,void *&,void *&) noexcept {return false;}
-bool ReadGuiWidgetRuntimeV1(const ZhongguoScoreboardAccessV1 &,void *,std::string &,void *&,bool &,bool &) noexcept {return false;}
-bool InspectNamedGuiSubtreeV1(const ZhongguoScoreboardAccessV1 &,std::uintptr_t,void *,std::string_view,NamedGuiTreeInspectionV1 &) noexcept {return false;}
+// Explicit offline GUI projection stubs. No CK3 function executes.
+static void *fixture_army_root=nullptr,*fixture_cast_object=nullptr;
+static bool fixture_army_root_available=false;
+static std::uint32_t fixture_select_calls=0,fixture_select_id=0xFFFFFFFF;
+static void *fixture_select_handler=nullptr;static bool fixture_select_replace=false;
+static void *__cdecl FixtureArmyCast(void *,long,const void *,const void *,int) {return fixture_cast_object;}
+static void __fastcall FixtureSelectUnit(void *handler,std::uint32_t id,bool replace) {
+  ++fixture_select_calls;fixture_select_handler=handler;fixture_select_id=id;fixture_select_replace=replace;
+}
+bool ResolveNamedGuiWidgetV1(const ZhongguoScoreboardNativeEnvironmentV1 &,const ZhongguoScoreboardAccessV1 &,std::string_view root_name,std::string_view widget_name,void *&root,void *&widget) noexcept {
+  if(!fixture_army_root_available || root_name!="army_window" || widget_name!="army_window")return false;
+  root=widget=fixture_army_root;return true;
+}
+bool ReadGuiWidgetRuntimeV1(const ZhongguoScoreboardAccessV1 &,void *root,std::string &name,void *&vtable,bool &visible,bool &enabled) noexcept {
+  if(!fixture_army_root_available || root!=fixture_army_root)return false;
+  name="army_window";std::uint8_t flags=0;
+  if(!Value(root,0,vtable) || !Value(root,0xD0,flags))return false;
+  visible=(flags&8)==0;enabled=(flags&2)==0;return true;
+}
+bool InspectNamedGuiSubtreeV1(const ZhongguoScoreboardAccessV1 &,std::uintptr_t base,void *root,std::string_view name,NamedGuiTreeInspectionV1 &out) noexcept {
+  if(!fixture_army_root_available || root!=fixture_army_root)return false;
+  out={};out.scope_root_name=std::string(name);out.root_available=true;out.widget_count=1;out.widgets.resize(1);
+  auto &row=out.widgets[0];row.runtime_name=std::string(name);row.effective_visible=(static_cast<unsigned char *>(root)[0xD0]&8)==0;
+  row.enabled=(static_cast<unsigned char *>(root)[0xD0]&2)==0;void *vtable=nullptr;Value(root,0,vtable);
+  row.vtable_rva=reinterpret_cast<std::uintptr_t>(vtable)-base;return true;
+}
 // Pure offline GUI-chain resolver responses. No native GUI function executes.
 static bool fixture_gui_available=false;
 static std::uint32_t fixture_gui_reads=0;
@@ -23,6 +45,13 @@ bool ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(const ZhongguoScoreboar
 int main() {
   using namespace xar::ck3_11906;
   IngameUiRequestV1 r{};
+  for(auto revision:{GuiAbiRevisionV1::legacy11906,GuiAbiRevisionV1::crozier12003}) {
+    assert(IsIngameUiRequestSupportedV1(revision,{IngameUiOperationV1::select_army,IngameUiWindowKindV1::army,0}));
+    assert(IsIngameUiRequestSupportedV1(revision,{IngameUiOperationV1::query,IngameUiWindowKindV1::army,0}));
+  }
+  for(auto kind:{IngameUiWindowKindV1::character,IngameUiWindowKindV1::combat,IngameUiWindowKindV1::knights})
+    assert(!IsIngameUiRequestSupportedV1(GuiAbiRevisionV1::crozier12003,{IngameUiOperationV1::query,kind,0}));
+  assert(!IsIngameUiRequestSupportedV1(static_cast<GuiAbiRevisionV1>(2),{IngameUiOperationV1::query,IngameUiWindowKindV1::army,0}));
   assert(ParseIngameUiRequestV1(R"({"window_kind":"character","operation":"open_character","subject_id":33437})",false,r));
   assert(r.subject_id==33437);
   assert(!ParseIngameUiRequestV1(R"({"window_kind":"character","operation":"open_combat","subject_id":33437})",false,r));
@@ -127,6 +156,116 @@ int main() {
   self=0x2004;std::memcpy(image+0x2000+20,&self,4);assert(!TypedObject(base,object_ptr,kTypeDescriptors[0]));
   assert(!TypedObject(base,reinterpret_cast<void *>(1),kTypeDescriptors[0]));
   assert(VirtualFree(image,0,MEM_RELEASE));
+  // Actual current producer helpers read only offline memory. No game API runs.
+  auto *current_image=static_cast<unsigned char *>(VirtualAlloc(nullptr,UiExactImageSizeV1(GuiAbiRevisionV1::crozier12003),MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE));
+  assert(current_image);ZhongguoScoreboardNativeEnvironmentV1 current_env{};
+  current_env.module_base=reinterpret_cast<std::uintptr_t>(current_image);current_env.gui_abi_revision=GuiAbiRevisionV1::crozier12003;
+  std::array<unsigned char,0x200> unit_buffer{},army_buffer{},window_buffer{};
+  std::array<unsigned char,0x40> unit_storage{},army_storage{};
+  std::array<void *,8> unit_slots{},army_slots{};
+  void *up=unit_storage.data(),*ap=army_storage.data(),*us=unit_slots.data(),*as=army_slots.data();
+  std::uint32_t four=4,public_zero=0,native_full=0x01000002;std::int32_t owner=29829;
+  std::memcpy(current_image+kUiUnitStorage12003V1,&up,8);std::memcpy(current_image+kUiArmyStorage12003V1,&ap,8);
+  std::memcpy(unit_storage.data()+0x20,&us,8);std::memcpy(unit_storage.data()+0x2C,&four,4);
+  std::memcpy(army_storage.data()+0x20,&as,8);std::memcpy(army_storage.data()+0x2C,&four,4);
+  unit_slots[1]=unit_buffer.data();army_slots[5]=army_buffer.data();
+  std::memcpy(unit_buffer.data()+0x10,&public_zero,4);std::memcpy(unit_buffer.data()+0x174,&owner,4);
+  std::memcpy(unit_buffer.data()+0x178,&native_full,4);std::memcpy(army_buffer.data()+0x10,&native_full,4);
+  std::memcpy(army_buffer.data()+0x124,&public_zero,4);std::memcpy(window_buffer.data()+0xC8,&native_full,4);
+  std::uint32_t read_public=99,read_native=99;void *current_unit=nullptr;
+  assert(ReadArmyUiSubject(current_env,window_buffer.data(),read_public,read_native) && read_public==0 && read_native==native_full);
+  assert(ResolvePlayerArmyUiSubject(current_env,0,owner,current_unit) && current_unit==unit_buffer.data());
+  assert(!ResolvePlayerArmyUiSubject(current_env,0,owner+1,current_unit));
+  assert(!ResolvePlayerArmyUiSubject(current_env,0x01000000,owner,current_unit));
+  auto mismatch=native_full+1;std::memcpy(unit_buffer.data()+0x178,&mismatch,4);
+  assert(!ReadArmyUiSubject(current_env,window_buffer.data(),read_public,read_native));
+  assert(!ResolvePlayerArmyUiSubject(current_env,0,owner,current_unit));
+  std::memcpy(unit_buffer.data()+0x178,&native_full,4);
+  auto wrong_public=0x01000000;std::memcpy(army_buffer.data()+0x124,&wrong_public,4);
+  assert(!ReadArmyUiSubject(current_env,window_buffer.data(),read_public,read_native));
+  assert(!ResolvePlayerArmyUiSubject(current_env,0,owner,current_unit));
+  std::memcpy(army_buffer.data()+0x124,&public_zero,4);
+  auto invalid=0xFFFFFFFFU;std::memcpy(window_buffer.data()+0xC8,&invalid,4);
+  std::memcpy(window_buffer.data()+0xF8,&native_full,4); // legacy field cannot salvage current read
+  assert(!ReadArmyUiSubject(current_env,window_buffer.data(),read_public,read_native));
+  // Run the actual current producer against an explicit offline synthetic image.
+  // The only callable bytes jump to test-local cast/selection stubs; no CK3,
+  // DLL, process discovery, SDK, desktop, or original game function executes.
+  const auto install_jump=[&](std::uintptr_t rva,std::uintptr_t target) {
+    std::array<unsigned char,14> jump{0xFF,0x25,0,0,0,0};std::memcpy(jump.data()+6,&target,8);
+    std::memcpy(current_image+rva,jump.data(),jump.size());DWORD old_protection=0;
+    assert(VirtualProtect(current_image+rva,jump.size(),PAGE_EXECUTE_READ,&old_protection));
+    assert(FlushInstructionCache(GetCurrentProcess(),current_image+rva,jump.size()));
+  };
+  install_jump(xar::ck3_12003::kSuccessionRuntimeDynamicCastRva12003,reinterpret_cast<std::uintptr_t>(&FixtureArmyCast));
+  install_jump(kUiSelectUnitRva12003V1,reinterpret_cast<std::uintptr_t>(&FixtureSelectUnit));
+  std::array<unsigned char,0x100> root_object{},idler_object{},cast_object{};
+  std::array<unsigned char,0x700> handler_buffer{};std::array<unsigned char,0x200> gui_root{};
+  void *root_pointer=root_object.data(),*idler_pointer=idler_object.data(),*handler_pointer=handler_buffer.data();
+  void *handler_vtable=current_image+xar::ck3_12003::kSuccessionHandlerPrimaryVtableRva12003;
+  std::memcpy(current_image+xar::ck3_12003::kSuccessionIdlerRootSlotRva12003,&root_pointer,8);
+  std::memcpy(root_object.data()+0x10,&idler_pointer,8);std::memcpy(cast_object.data()+0x88,&handler_pointer,8);
+  std::memcpy(handler_buffer.data(),&handler_vtable,8);fixture_cast_object=cast_object.data();
+  std::memcpy(window_buffer.data()+0xC8,&native_full,4); // restore full native subject
+  set_modal(0,nullptr);fixture_gui_available=true;fixture_gui_reads=0;
+  fixture_gui_first={modal_context.data(),reinterpret_cast<void *>(201)};fixture_gui_second=fixture_gui_first;
+  MainThreadExecutionStampV1 current_stamp{};current_stamp.paused=true;current_stamp.date_raw=53146848;
+  current_stamp.thread_id=GetCurrentThreadId();current_stamp.pump_epoch=17;
+  xar::game::Snapshot current_snapshot{};current_snapshot.paused=true;current_snapshot.map_ready=true;
+  current_snapshot.has_played_character=true;current_snapshot.played_character_id=owner;current_snapshot.date_raw=current_stamp.date_raw;
+  current_env.exact_build_admitted=true;IngameUiResultV1 action_result{};
+  const IngameUiRequestV1 select_zero{IngameUiOperationV1::select_army,IngameUiWindowKindV1::army,0};
+  assert(ExecuteIngameUiNavigationV1(current_env,select_zero,current_snapshot,current_stamp,fixture_gui_first,action_result));
+  assert(fixture_select_calls==1 && fixture_select_id==0 && fixture_select_handler==handler_pointer && fixture_select_replace);
+  assert(action_result.available && action_result.dispatch_invoked && action_result.verification_pending);
+  assert(action_result.status=="acknowledged_verification_pending" && !action_result.window_exists && !action_result.subject_id_available);
+  assert(action_result.tree.scope_root_name=="army_window" && !action_result.tree.root_available && !action_result.owner_character_id_available);
+  IngameUiResultV1 independent_result{};
+  assert(ExecuteIngameUiNavigationV1(current_env,{IngameUiOperationV1::query,IngameUiWindowKindV1::army,0},current_snapshot,current_stamp,fixture_gui_first,independent_result));
+  assert(!independent_result.available && !independent_result.dispatch_invoked && fixture_select_calls==1);
+  // Independently populated synthetic panel permits a fresh query. Hidden or
+  // stale GUI binding never becomes pixels or an action completion assertion.
+  fixture_army_root_available=true;fixture_army_root=gui_root.data();void *gui_pointer=gui_root.data();
+  void *army_window_pointer=window_buffer.data(),*army_window_vtable=current_image+0x1000,*army_window_col=current_image+0x2000;
+  std::uint32_t army_window_signature=1,army_window_type=static_cast<std::uint32_t>(kUiArmyWindowTypeDescriptor12003V1),army_window_self=0x2000;
+  std::memcpy(handler_buffer.data()+0xC8,&army_window_pointer,8);std::memcpy(window_buffer.data(),&army_window_vtable,8);
+  std::memcpy(current_image+0x1000-8,&army_window_col,8);std::memcpy(current_image+0x2000,&army_window_signature,4);
+  std::memcpy(current_image+0x2000+12,&army_window_type,4);std::memcpy(current_image+0x2000+20,&army_window_self,4);
+  std::memcpy(window_buffer.data()+0x60,&gui_pointer,8);std::memcpy(window_buffer.data()+0xA0,&handler_pointer,8);
+  std::memcpy(gui_root.data(),&army_window_vtable,8);
+  assert(ExecuteIngameUiNavigationV1(current_env,{IngameUiOperationV1::query,IngameUiWindowKindV1::army,0},current_snapshot,current_stamp,fixture_gui_first,independent_result));
+  assert(independent_result.available && independent_result.status=="observed" && !independent_result.dispatch_invoked && !independent_result.verification_pending);
+  assert(independent_result.effective_visible && independent_result.subject_id_available && independent_result.current_subject_id==0 && independent_result.native_army_id==native_full);
+  assert(independent_result.owner_character_id_available && independent_result.owner_character_id==static_cast<std::uint32_t>(owner));
+  std::int32_t foreign_owner=owner+1;std::memcpy(unit_buffer.data()+0x174,&foreign_owner,4);
+  assert(ExecuteIngameUiNavigationV1(current_env,{IngameUiOperationV1::query,IngameUiWindowKindV1::army,0},current_snapshot,current_stamp,fixture_gui_first,independent_result));
+  assert(independent_result.available && independent_result.owner_character_id_available && independent_result.owner_character_id==static_cast<std::uint32_t>(foreign_owner));
+  std::int32_t absent_owner=-1;std::memcpy(unit_buffer.data()+0x174,&absent_owner,4);
+  assert(ExecuteIngameUiNavigationV1(current_env,{IngameUiOperationV1::query,IngameUiWindowKindV1::army,0},current_snapshot,current_stamp,fixture_gui_first,independent_result));
+  assert(independent_result.available && independent_result.subject_id_available && !independent_result.owner_character_id_available);
+  std::memcpy(unit_buffer.data()+0x174,&owner,4);
+  gui_root[0xD0]=8;
+  assert(ExecuteIngameUiNavigationV1(current_env,{IngameUiOperationV1::query,IngameUiWindowKindV1::army,0},current_snapshot,current_stamp,fixture_gui_first,independent_result));
+  assert(independent_result.available && !independent_result.effective_visible && independent_result.subject_id_available);
+  void *wrong_root=reinterpret_cast<void *>(999);std::memcpy(window_buffer.data()+0x60,&wrong_root,8);
+  assert(ExecuteIngameUiNavigationV1(current_env,{IngameUiOperationV1::query,IngameUiWindowKindV1::army,0},current_snapshot,current_stamp,fixture_gui_first,independent_result));
+  assert(!independent_result.available && independent_result.unavailable_reason=="native_army_window_gui_root_binding_failed");
+  assert(ExecuteIngameUiNavigationV1(current_env,select_zero,current_snapshot,current_stamp,fixture_gui_first,action_result));
+  assert(fixture_select_calls==2 && action_result.available && action_result.verification_pending && !action_result.window_exists);
+  assert(!action_result.subject_id_available && !action_result.owner_character_id_available && !action_result.tree.root_available && action_result.tree.widget_count==0);
+  fixture_army_root_available=false;fixture_select_calls=0;
+  assert(VirtualFree(current_image,0,MEM_RELEASE));
+  std::cout<<"current actual producer single-select/closed-window ACK/fresh independent query/public0/hidden/root-binding lifecycle PASS; test-local callable stubs only\n";
+  IngameUiResultV1 current_result{};current_result.gui_abi_revision=GuiAbiRevisionV1::crozier12003;
+  const auto current_json=SerializeIngameUiResultV1({IngameUiOperationV1::select_army,IngameUiWindowKindV1::army,0},current_result,3);
+  assert(current_json.find("ck3-1.20.0.3-native-ingame-ui-v1")!=std::string::npos);
+  assert(current_json.find("94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6")!=std::string::npos);
+  assert(current_json.find("1.19.0.6")==std::string::npos);
+  assert(current_json.find("\"owner_character_id_available\":false")!=std::string::npos && current_json.find("\"owner_character_id\":null")!=std::string::npos);
+  current_result.owner_character_id_available=true;current_result.owner_character_id=29829;
+  const auto owner_json=SerializeIngameUiResultV1({IngameUiOperationV1::query,IngameUiWindowKindV1::army,0},current_result,3);
+  assert(owner_json.find("\"owner_character_id_available\":true")!=std::string::npos && owner_json.find("\"owner_character_id\":29829")!=std::string::npos);
+  std::cout<<"current Army-only admission/public0/fullgeneration/owner/reciprocal/sentinel/legacy-offset/serializer helper cases PASS; no game calls\n";
   IngameUiResultV1 result{};ZhongguoScoreboardNativeEnvironmentV1 env{};
   xar::game::Snapshot snapshot{};MainThreadExecutionStampV1 stamp{};
   IngameUiGuiOwnerBindingV1 gui_binding{};

@@ -1,7 +1,9 @@
 """Four explicit native presentation routes; no planner/desktop fallback."""
 from __future__ import annotations
 import math
+from collections.abc import Mapping
 from .public_unit_contract import public_cunit_id
+from .version_identity import CK3_11906, CK3_12003, NativeBuildIdentity, require_exact_native_build
 
 NAVIGATE_STEP = "navigate-ingame-ui-v1"
 QUERY_STEP = "query-ingame-ui-window-v1"
@@ -28,8 +30,41 @@ def validate_ui_request(operation: str, kind: str, subject_id: int, revision: in
         raise ValueError("subject ID must be positive and exclude the invalid handle")
 
 
+def ingame_ui_build_binding(snapshot: Mapping[str, object]) -> tuple[NativeBuildIdentity, bool]:
+    """Bind UI reads to hello; archived inputs without hello remain legacy only."""
+    diagnostics = snapshot.get("diagnostics")
+    if not isinstance(diagnostics, Mapping) or "hello" not in diagnostics:
+        return CK3_11906, False
+    hello = diagnostics["hello"]
+    if not isinstance(hello, Mapping):
+        raise ValueError("native UI exact-build hello is malformed")
+    build = require_exact_native_build(
+        hello.get("expected_ck3_version", hello.get("game_version")),
+        hello.get("expected_ck3_sha256", hello.get("executable_sha256")),
+    )
+    if build not in (CK3_11906, CK3_12003):
+        raise ValueError("native UI exact build has no migrated presentation route")
+    # A hello with both field spellings must not contradict its selected pair.
+    if "game_version" in hello and hello["game_version"] != build.game_version:
+        raise ValueError("native UI hello version mirror differs")
+    if "executable_sha256" in hello:
+        mirror = hello["executable_sha256"]
+        if not isinstance(mirror, str) or mirror.upper() != build.executable_sha256:
+            raise ValueError("native UI hello executable mirror differs")
+    return build, True
+
+
+def validate_ui_build_scope(build: NativeBuildIdentity, operation: str, kind: str) -> None:
+    if build not in (CK3_11906, CK3_12003):
+        raise ValueError("native UI exact build has no migrated presentation route")
+    if build == CK3_12003 and (kind != "army" or operation not in {"query", "select_army"}):
+        raise ValueError("current native UI supports army query and select only")
+
+
 def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id: int,
-                        native_revision: int, date_raw: int, actor_id: int) -> dict[str, object]:
+                         native_revision: int, date_raw: int, actor_id: int,
+                         expected_build: NativeBuildIdentity = CK3_11906) -> dict[str, object]:
+    validate_ui_build_scope(expected_build, operation, kind)
     if not isinstance(value, dict) or value.get("schema") != "ck3-ingame-ui-window-v1":
         raise ValueError("native UI result schema unavailable")
     expected = {"window_kind": kind, "requested_subject_id": subject_id, "native_revision": native_revision,
@@ -43,8 +78,28 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
                 "gui_owner_binding_verified"):
         if type(value.get(key)) is not bool:
             raise ValueError(f"native UI boolean missing: {key}")
+    if expected_build == CK3_12003:
+        owner_available = value.get("owner_character_id_available")
+        if type(owner_available) is not bool or "owner_character_id" not in value:
+            raise ValueError("current native UI owner availability/value missing")
+        owner = value["owner_character_id"]
+        if owner_available:
+            # The native selected Unit owner is read as int32. Zero is an
+            # actual ID when available; never infer it from a default value.
+            if (not value["subject_id_available"] or isinstance(owner, bool)
+                    or not isinstance(owner, int) or not 0 <= owner <= 2**31 - 1):
+                raise ValueError("current native UI selected owner identity invalid")
+        elif owner is not None:
+            raise ValueError("unavailable current native UI owner must be explicit null")
     for key in ("current_subject_id", "native_army_id", "owner_character_id", "thread_id", "pump_epoch"):
+        if expected_build == CK3_12003 and key == "owner_character_id":
+            continue
         n = value.get(key)
+        # Missing subject evidence can be explicit null; public CUnit zero is
+        # still a valid selected ID when the availability flag is true.
+        if (expected_build == CK3_12003 and key in {"current_subject_id", "native_army_id"}
+                and key in value and n is None and not value["subject_id_available"]):
+            continue
         if isinstance(n, bool) or not isinstance(n, int) or n < 0 or (key != "pump_epoch" and n >= 2**32):
             raise ValueError(f"native UI typed integer missing: {key}")
     if kind == "army" and value["subject_id_available"]:
@@ -57,11 +112,18 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
         n=value.get(key)
         if isinstance(n,bool) or not isinstance(n,int) or not 0<=n<limit:
             raise ValueError(f"native UI owner diagnostic missing: {key}")
+    unopened_current_select_ack = (
+        expected_build == CK3_12003 and operation == "select_army" and kind == "army"
+        and value["available"] and not value["window_exists"]
+        and value.get("status") == "acknowledged_verification_pending"
+        and value["dispatch_invoked"] and value["verification_pending"]
+        and not value["effective_visible"] and not value["subject_id_available"]
+    )
     if value["available"]:
         if (not value["application_owner_thread_verified"] or not value["gui_owner_binding_verified"] or
                 not value["gui_context_address"] or not value["gui_owner_address"]):
             raise ValueError("native UI original application/GUI binding unverified")
-        if not value["thread_id"] or not value["pump_epoch"] or not value["window_exists"]:
+        if not value["thread_id"] or not value["pump_epoch"] or (not value["window_exists"] and not unopened_current_select_ack):
             raise ValueError("native UI lacks owner/target-window observation")
         if operation == "query":
             if value.get("status") != "observed" or value["dispatch_invoked"] or value["verification_pending"]:
@@ -81,9 +143,15 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
     if not isinstance(tree, dict) or type(tree.get("truncated")) is not bool or type(tree.get("root_available")) is not bool:
         raise ValueError("native target-window census missing")
     count, widgets = tree.get("widget_count"), tree.get("widgets")
-    if isinstance(count, bool) or not isinstance(count, int) or not 0 <= count <= 512 or not isinstance(widgets, list) or len(widgets) != count:
+    census_limit = 2048 if expected_build == CK3_12003 else 512
+    if isinstance(count, bool) or not isinstance(count, int) or not 0 <= count <= census_limit or not isinstance(widgets, list) or len(widgets) != count:
         raise ValueError("native census count/bound mismatch")
-    if value["available"] and (not tree["root_available"] or count < 1 or tree.get("scope_root_name") != value.get("window_name")):
+    if expected_build == CK3_12003 and value.get("window_name") != "army_window":
+        raise ValueError("current native UI window name is not the army window")
+    if unopened_current_select_ack:
+        if tree["root_available"] or count or tree["truncated"] or tree.get("scope_root_name") != "army_window":
+            raise ValueError("unopened army ACK must keep an empty target-window census")
+    elif value["available"] and (not tree["root_available"] or count < 1 or tree.get("scope_root_name") != value.get("window_name")):
         raise ValueError("native census is not scoped to the target window")
     for widget in widgets:
         if (not isinstance(widget,dict) or not isinstance(widget.get("runtime_name"),str) or not isinstance(widget.get("child_path"),str) or
@@ -93,13 +161,13 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
             n=widget.get(key)
             if isinstance(n,bool) or not isinstance(n,int) or n<0:
                 raise ValueError("native census widget integer malformed")
-    if value["available"] and (widgets[0]["runtime_name"]!=value["window_name"] or widgets[0]["depth"]!=0 or
+    if value["available"] and not unopened_current_select_ack and (widgets[0]["runtime_name"]!=value["window_name"] or widgets[0]["depth"]!=0 or
                                widgets[0]["effective_visible"]!=value["effective_visible"]):
         raise ValueError("native census root differs from target-window observation")
     if value.get("knights_list_scope") != "military_eligible_not_active_combat_roster":
         raise ValueError("native knights list scope missing")
-    if (value.get("native_backend_id") != "ck3-1.19.0.6-native-ingame-ui-v1" or value.get("game_version") != "1.19.0.6" or
-            value.get("executable_sha256") != "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"):
+    observed_build = require_exact_native_build(value.get("game_version"), value.get("executable_sha256"))
+    if observed_build != expected_build or value.get("native_backend_id") != expected_build.backend_id("ingame-ui-v1"):
         raise ValueError("native UI exact-build source binding missing")
     if type(value.get("combat_knights_read_available")) is not bool or value.get("combat_roster_full_ids_available") is not False:
         raise ValueError("native combat tooltip scope missing")

@@ -5375,7 +5375,8 @@ class NativeHeadlessGameplayDriver:
 
     def _ingame_ui_v1(self, operation: str, kind: str, subject_id: int, *, expected_revision: int) -> dict[str, object]:
         from .ingame_ui_contract import (NAVIGATE_STEP, QUERY_STEP, NAVIGATE_CAPABILITY,
-            QUERY_CAPABILITY, validate_ui_request, normalize_ui_result)
+            QUERY_CAPABILITY, validate_ui_request, normalize_ui_result,
+            ingame_ui_build_binding, validate_ui_build_scope)
         validate_ui_request(operation, kind, subject_id, expected_revision)
         starting = self.take_snapshot()
         binding = _title_map_navigation_binding_from_snapshot(starting)
@@ -5387,6 +5388,8 @@ class NativeHeadlessGameplayDriver:
         actor = played.get("character_id") if isinstance(played, dict) else None
         if isinstance(actor, bool) or not isinstance(actor, int) or actor <= 0:
             raise BridgeUnavailableError("native UI lacks the played actor")
+        source_binding = ingame_ui_build_binding(starting)
+        validate_ui_build_scope(source_binding[0], operation, kind)
         step = QUERY_STEP if operation == "query" else NAVIGATE_STEP
         fields = {"window_kind": kind, "subject_id": subject_id}
         if operation != "query":
@@ -5399,10 +5402,12 @@ class NativeHeadlessGameplayDriver:
             ending = self.take_snapshot()
             if (not _same_paused_native_frame(starting, ending) or
                     _title_map_navigation_binding_from_snapshot(ending) != binding or
-                    ending.get("map_ready") is not True or ending.get("played_character") != played):
+                    ending.get("map_ready") is not True or ending.get("played_character") != played or
+                    ingame_ui_build_binding(ending) != source_binding):
                 raise BridgeUnavailableError("native UI crossed its paused session binding")
             result = normalize_ui_result(raw, operation=operation, kind=kind, subject_id=subject_id,
-                native_revision=int(starting["native_revision"]), date_raw=int(starting["date_raw"]), actor_id=actor)
+                native_revision=int(starting["native_revision"]), date_raw=int(starting["date_raw"]), actor_id=actor,
+                expected_build=source_binding[0])
         except Exception as error:
             self._record_command(step, ok=False,
                 result={"raw_native_ui_result": copy.deepcopy(raw)} if raw is not None else None,
@@ -9060,6 +9065,20 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError(
                     "native surrender submission lacks fresh same-frame "
                     "de-jure emergency or exact WAR31 one-shot readiness"
+                )
+            return self._execute_native_war_step(
+                step, expected_revision=expected_revision
+            )
+        if parse_preview_move_army_step(step) is not None:
+            # A caller may request a read-only preview of any canonical native
+            # province.  The advertised target list is a strategy projection,
+            # not the native preview contract; its existing paused identity,
+            # controllable CUnit, ProvinceID and move validators still apply.
+            if PREVIEW_MOVE_ARMY_CAPABILITY not in set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot preview army movement"
                 )
             return self._execute_native_war_step(
                 step, expected_revision=expected_revision

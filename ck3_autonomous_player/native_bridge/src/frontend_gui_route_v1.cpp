@@ -1,4 +1,5 @@
 #include "xar_bridge/frontend_gui_route_v1.hpp"
+#include "xar_bridge/ck3_12003.hpp"
 
 #include <windows.h>
 
@@ -838,18 +839,27 @@ bool ExecuteFrontendGuiRouteMailboxV1(
     // Failure metadata is observed at this original application event boundary,
     // never copied from the caller's expected snapshot.
     query->ingame_result = {};
+    query->ingame_result.gui_abi_revision = query->environment.gui_abi_revision;
     query->ingame_result.date_raw = stamp.date_raw;
     query->ingame_result.paused = stamp.paused;
     query->ingame_result.pump_epoch = stamp.pump_epoch;
     query->ingame_result.thread_id = stamp.thread_id;
     query->ingame_result.rng_owner_thread_id = stamp.rng_owner_thread_id;
+    const bool current_ui=query->environment.gui_abi_revision==GuiAbiRevisionV1::crozier12003;
+    const auto read_ui_snapshot=[&](game::Snapshot &value) noexcept {
+      if(!current_ui)return ReadSnapshot(query->ingame_bindings,value);
+      return query->ingame_game &&
+          query->ingame_game->descriptor().game_version==ck3_12003::kGameVersion &&
+          query->ingame_game->descriptor().executable_sha256==ck3_12003::kExecutableSha256 &&
+          game::ReadSnapshot(*query->ingame_game,value);
+    };
     game::Snapshot before{};
     if (!IsIngameUiPausedOwnerStampV1(*query->mailbox, stamp, GetCurrentThreadId())) {
       query->ingame_result.unavailable_reason = "application_paused_owner_stamp_unverified";
       return true;
     }
     query->ingame_result.application_owner_thread_verified = true;
-    if (!ReadSnapshot(query->ingame_bindings, before)) {
+    if (!read_ui_snapshot(before)) {
       query->ingame_result.unavailable_reason = "owner_fresh_snapshot_read_failed";
       return true;
     }
@@ -874,7 +884,7 @@ bool ExecuteFrontendGuiRouteMailboxV1(
     const bool same_gui = ReadIngameUiGuiOwnerBindingV1(query->environment, gui_after) && gui_after == gui_before;
     query->ingame_result.gui_owner_binding_verified = same_gui;
     game::Snapshot after{};
-    if (!ran || !ReadSnapshot(query->ingame_bindings, after) || after != before) {
+    if (!ran || !read_ui_snapshot(after) || after != before) {
       query->ingame_result.available = false;
       query->ingame_result.status = "unavailable";
       query->ingame_result.unavailable_reason = "owner_post_navigation_snapshot_changed";

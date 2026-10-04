@@ -1,5 +1,7 @@
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
 #include "xar_bridge/protocol.hpp"
+#include "xar_bridge/ck3_12003.hpp"
+#include "xar_bridge/ck3_12003_succession_modal.hpp"
 #include "xar_bridge/title_map_navigation_v1_camera.hpp"
 #include <windows.h>
 #include <bcrypt.h>
@@ -25,6 +27,9 @@ constexpr std::array<std::uint32_t,4> kViewTypes{8,6,0x1A,0x55};
 constexpr std::array<std::uintptr_t,4> kTypeDescriptors{0x52159F0,0x52670E0,0x5277158,0x5262670};
 constexpr std::uintptr_t kMilitaryTypeDescriptor = 0x5260210;
 constexpr std::uintptr_t kImageSize = 0x5C2D000;
+constexpr std::uintptr_t UiExactImageSizeV1(GuiAbiRevisionV1 revision) noexcept {
+  return revision==GuiAbiRevisionV1::crozier12003?0x61C5000:kImageSize;
+}
 using CharacterClick = void (__fastcall *)(std::uint32_t);
 using SelectUnit = void (__fastcall *)(void *,std::uint32_t,bool);
 using OpenView = void (__fastcall *)(void *,std::uint32_t,bool);
@@ -107,13 +112,14 @@ bool Object(std::uintptr_t base,std::uintptr_t storage_rva,std::uint32_t id,std:
       Value(object,id_offset,actual) && actual==id;
 }
 // MSVC x64 complete-object RTTI: COL signature 1, image-relative descriptor.
-bool TypedObject(std::uintptr_t base,void *object,std::uintptr_t descriptor) noexcept {
+bool TypedObject(std::uintptr_t base,void *object,std::uintptr_t descriptor,
+                 std::uintptr_t image_size=kImageSize) noexcept {
   void *vt=nullptr;void *col=nullptr;std::uint32_t signature=0,type=0,self=0;
   if (!Value(object,0,vt))return false;
   auto v=reinterpret_cast<std::uintptr_t>(vt);
-  if(v<base+8 || v>=base+kImageSize || !Slot(v-8,col))return false;
+  if(v<base+8 || v>=base+image_size || !Slot(v-8,col))return false;
   auto c=reinterpret_cast<std::uintptr_t>(col);
-  return c>=base && c+24<=base+kImageSize && Value(col,0,signature) && signature==1 &&
+  return c>=base && c+24<=base+image_size && Value(col,0,signature) && signature==1 &&
       Value(col,12,type) && type==descriptor && Value(col,20,self) && base+self==c;
 }
 bool InvokeCast(NativeRuntimeDynamicCastV1 fn,void *object,const void *source,const void *target,void *&out) noexcept {
@@ -123,8 +129,18 @@ bool InvokeCast(NativeRuntimeDynamicCastV1 fn,void *object,const void *source,co
   out=fn(object,0,source,target,0);return true;
 #endif
 }
-bool ResolveHandler(std::uintptr_t base,void *&handler) noexcept {
+bool ResolveHandler(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *&handler) noexcept {
+  const auto base=env.module_base;
+  const bool current=env.gui_abi_revision==GuiAbiRevisionV1::crozier12003;
   handler=nullptr;void *root=nullptr;void *idler=nullptr;void *cast=nullptr;void *vt=nullptr;std::int32_t mode=1;
+  if(current) {
+    return Slot(base+ck3_12003::kSuccessionIdlerRootSlotRva12003,root) && Value(root,0x10,idler) && idler &&
+        InvokeCast(reinterpret_cast<NativeRuntimeDynamicCastV1>(base+ck3_12003::kSuccessionRuntimeDynamicCastRva12003),idler,
+                   reinterpret_cast<void *>(base+ck3_12003::kSuccessionIdlerBaseTypeDescriptorRva12003),
+                   reinterpret_cast<void *>(base+ck3_12003::kSuccessionIngameIdlerTypeDescriptorRva12003),cast) &&
+        Value(cast,0x88,handler) && handler && Value(handler,0,vt) &&
+        reinterpret_cast<std::uintptr_t>(vt)==base+ck3_12003::kSuccessionHandlerPrimaryVtableRva12003;
+  }
   return Slot(base+kTitleMapIngameIdlerRootSlotRva,root) && Value(root,0x10,idler) && idler &&
       InvokeCast(reinterpret_cast<NativeRuntimeDynamicCastV1>(base+kTitleMapRuntimeDynamicCastRva),idler,
                  reinterpret_cast<void *>(base+kTitleMapIdlerBaseTypeDescriptorRva),
@@ -140,11 +156,13 @@ bool InvokeCharacter(std::uintptr_t base,std::uint32_t id) noexcept {
   reinterpret_cast<CharacterClick>(base+kUiDefaultOnCharacterClickRvaV1)(id);return true;
 #endif
 }
-bool InvokeUnit(std::uintptr_t base,void *handler,std::uint32_t id) noexcept {
+bool InvokeUnit(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *handler,std::uint32_t id) noexcept {
+  const auto base=env.module_base;
+  const auto rva=env.gui_abi_revision==GuiAbiRevisionV1::crozier12003 ? kUiSelectUnitRva12003V1:kUiSelectUnitRvaV1;
 #if defined(_MSC_VER)
-  __try {reinterpret_cast<SelectUnit>(base+kUiSelectUnitRvaV1)(handler,id,true);return true;} __except(EXCEPTION_EXECUTE_HANDLER){return false;}
+  __try {reinterpret_cast<SelectUnit>(base+rva)(handler,id,true);return true;} __except(EXCEPTION_EXECUTE_HANDLER){return false;}
 #else
-  reinterpret_cast<SelectUnit>(base+kUiSelectUnitRvaV1)(handler,id,true);return true;
+  reinterpret_cast<SelectUnit>(base+rva)(handler,id,true);return true;
 #endif
 }
 bool InvokeKnights(std::uintptr_t base,void *handler) noexcept {
@@ -406,17 +424,49 @@ bool InvokeCombatFit(std::uintptr_t base,void *root,const CombatUiGeometryV1 &g)
 std::string JsonEscape(std::string_view s) {
   std::string x;for(unsigned char c:s){if(c=='"'||c=='\\'){x+='\\';x+=c;}else if(c<32){const char *h="0123456789ABCDEF";x+="\\u00";x+=h[c>>4];x+=h[c&15];}else x+=c;}return x;
 }
+bool ReadArmyUiSubject(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *window,
+                       std::uint32_t &public_id,std::uint32_t &native_id,std::int32_t *owner=nullptr) noexcept {
+  const bool current=env.gui_abi_revision==GuiAbiRevisionV1::crozier12003;
+  const auto army_storage=current?kUiArmyStorage12003V1:kArmyStorage;
+  const auto unit_storage=current?kUiUnitStorage12003V1:kUnitStorage;
+  const auto offset=current?kUiArmyWindowSubjectOffset12003V1:0xF8;
+  void *army=nullptr,*unit=nullptr;std::uint32_t reverse_id=0,later_id=0;
+  return Value(window,offset,native_id) && Object(env.module_base,army_storage,native_id,0x10,army) &&
+      Value(army,0x124,public_id) && public_id<=static_cast<std::uint32_t>((std::numeric_limits<std::int32_t>::max)()) &&
+      Object(env.module_base,unit_storage,public_id,0x10,unit) && Value(unit,0x178,reverse_id) && reverse_id==native_id &&
+      Value(window,offset,later_id) && later_id==native_id && (!owner || Value(unit,0x174,*owner));
+}
+bool ResolvePlayerArmyUiSubject(const ZhongguoScoreboardNativeEnvironmentV1 &env,
+    std::uint32_t public_id,std::int32_t actor,void *&unit) noexcept {
+  const bool current=env.gui_abi_revision==GuiAbiRevisionV1::crozier12003;
+  const auto army_storage=current?kUiArmyStorage12003V1:kArmyStorage;
+  const auto unit_storage=current?kUiUnitStorage12003V1:kUnitStorage;
+  std::int32_t owner=-1;std::uint32_t native_id=0,reverse=0;void *army=nullptr;
+  return Object(env.module_base,unit_storage,public_id,0x10,unit) && Value(unit,0x174,owner) && owner==actor &&
+      Value(unit,0x178,native_id) && Object(env.module_base,army_storage,native_id,0x10,army) &&
+      Value(army,0x124,reverse) && reverse==public_id;
+}
 bool ReadWindow(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *handler,
                 IngameUiWindowKindV1 kind,IngameUiResultV1 &out) noexcept {
   const auto n=static_cast<std::size_t>(kind);void *window=nullptr;
-  if(n>=kViewTypes.size() || !Value(handler,0x98+kViewTypes[n]*8,window) ||
-      !TypedObject(env.module_base,window,kTypeDescriptors[n])) {
+  out.tree.scope_root_name=std::string(IngameUiWindowNameV1(kind));
+  const bool current=env.gui_abi_revision==GuiAbiRevisionV1::crozier12003;
+  if(n>=kViewTypes.size()) {out.unavailable_reason="window_kind_invalid";return false;}
+  const auto slot=current?kUiArmyWindowHandlerSlot12003V1:(0x98+kViewTypes[n]*8);
+  const auto descriptor=current?kUiArmyWindowTypeDescriptor12003V1:kTypeDescriptors[n];
+  if(n>=kViewTypes.size() || (current && kind!=IngameUiWindowKindV1::army) ||
+      !Value(handler,slot,window) || !TypedObject(env.module_base,window,descriptor,UiExactImageSizeV1(env.gui_abi_revision))) {
     out.unavailable_reason="window_object_type_unverified";return false;
   }
   ZhongguoScoreboardAccessV1 access{};void *root=nullptr;void *widget=nullptr;
   const auto name=IngameUiWindowNameV1(kind);
   if(!ResolveNamedGuiWidgetV1(env,access,name,name,root,widget) || !root || widget!=root) {
     out.unavailable_reason="fixed_window_root_unavailable";return false;
+  }
+  void *native_root=nullptr,*linked_handler=nullptr;
+  if(current && (!Value(window,kUiArmyWindowGuiRootOffset12003V1,native_root) || native_root!=root ||
+                 !Value(window,0xA0,linked_handler) || linked_handler!=handler)) {
+    out.unavailable_reason="native_army_window_gui_root_binding_failed";return false;
   }
   std::string actual;void *vtable=nullptr;
   if(!ReadGuiWidgetRuntimeV1(access,root,actual,vtable,out.effective_visible,out.enabled) || actual!=name ||
@@ -432,16 +482,34 @@ bool ReadWindow(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *handler,
   } else if(kind==IngameUiWindowKindV1::combat) {
     out.subject_id_available=Value(window,0xF8,id) && Object(env.module_base,kCombatStorage,id,8,subject);
   } else if(kind==IngameUiWindowKindV1::army) {
-    std::uint32_t native_id=0,reverse_id=0;void *unit=nullptr;
-    out.subject_id_available=Value(window,0xF8,native_id) && Object(env.module_base,kArmyStorage,native_id,0x10,subject) &&
-        Value(subject,0x124,id) && Object(env.module_base,kUnitStorage,id,0x10,unit) &&
-        Value(unit,0x178,reverse_id) && reverse_id==native_id;
-    if(out.subject_id_available)out.native_army_id=native_id;
+    std::uint32_t native_id=0;std::int32_t owner=-1;
+    out.subject_id_available=ReadArmyUiSubject(env,window,id,native_id,current?&owner:nullptr);
+    if(out.subject_id_available) {
+      out.native_army_id=native_id;
+      if(current && owner>=0) {out.owner_character_id=static_cast<std::uint32_t>(owner);out.owner_character_id_available=true;}
+    }
   } else {
     out.subject_id_available=ReadKnightsOwner(env.module_base,handler,window,id);
     if(out.subject_id_available)out.owner_character_id=id;
   }
   if(out.subject_id_available)out.current_subject_id=id;
+  if(current) {
+    void *later_window=nullptr,*later_root=nullptr,*later_handler=nullptr;std::string later_name;void *later_vtable=nullptr;
+    std::uint32_t later_public=0,later_native=0;std::int32_t later_owner=-1;
+    const bool later_subject=ReadArmyUiSubject(env,window,later_public,later_native,&later_owner);
+    bool later_visible=false,later_enabled=false;
+    if(!Value(handler,slot,later_window) || later_window!=window ||
+        !Value(window,kUiArmyWindowGuiRootOffset12003V1,later_root) || later_root!=root ||
+        !Value(window,0xA0,later_handler) || later_handler!=handler ||
+        later_subject!=out.subject_id_available ||
+        (later_subject && (later_public!=out.current_subject_id || later_native!=out.native_army_id ||
+                           (later_owner>=0)!=out.owner_character_id_available ||
+                           (later_owner>=0 && static_cast<std::uint32_t>(later_owner)!=out.owner_character_id))) ||
+        !ReadGuiWidgetRuntimeV1(access,root,later_name,later_vtable,later_visible,later_enabled) ||
+        later_name!=name || later_vtable!=vtable || later_visible!=out.effective_visible || later_enabled!=out.enabled) {
+      out.unavailable_reason="native_army_window_binding_changed_during_read";return false;
+    }
+  }
   return true;
 }
 } // namespace
@@ -463,6 +531,12 @@ bool ValidateIngameUiRequestV1(const IngameUiRequestV1 &r) noexcept {
   if(r.operation==IngameUiOperationV1::open_knights)return r.window_kind==IngameUiWindowKindV1::knights && r.subject_id==0;
   if (o==2 && k==1) return r.subject_id <= static_cast<std::uint32_t>((std::numeric_limits<std::int32_t>::max)());
   return r.subject_id>0 && ((o==1 && k==0)||((o==3 || o==5 || o==6 || o==7) && k==2));
+}
+bool IsIngameUiRequestSupportedV1(GuiAbiRevisionV1 revision,const IngameUiRequestV1 &r) noexcept {
+  if(!ValidateIngameUiRequestV1(r))return false;
+  if(revision==GuiAbiRevisionV1::legacy11906)return true;
+  return revision==GuiAbiRevisionV1::crozier12003 && r.window_kind==IngameUiWindowKindV1::army &&
+      (r.operation==IngameUiOperationV1::query || r.operation==IngameUiOperationV1::select_army);
 }
 bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &r) noexcept {
   r={};std::string kind,operation;std::uint64_t id=0;
@@ -507,20 +581,35 @@ bool ReadIngameUiGuiOwnerBindingV1(const ZhongguoScoreboardNativeEnvironmentV1 &
 bool ExecuteIngameUiNavigationV1(const ZhongguoScoreboardNativeEnvironmentV1 &env,const IngameUiRequestV1 &request,
                                 const game::Snapshot &snapshot,const MainThreadExecutionStampV1 &stamp,
                                 const IngameUiGuiOwnerBindingV1 &gui_binding,IngameUiResultV1 &out) noexcept {
-  out={};out.date_raw=snapshot.date_raw;out.paused=snapshot.paused;out.played_character_id=snapshot.played_character_id;
+  out={};out.gui_abi_revision=env.gui_abi_revision;out.date_raw=snapshot.date_raw;out.paused=snapshot.paused;out.played_character_id=snapshot.played_character_id;
   out.pump_epoch=stamp.pump_epoch;out.thread_id=stamp.thread_id;
   if(!env.exact_build_admitted || env.offline_fixture_function_overrides || !env.module_base ||
       !ValidateIngameUiRequestV1(request) || !snapshot.paused || !snapshot.map_ready || !snapshot.has_played_character ||
       !stamp.paused || stamp.date_raw!=snapshot.date_raw || stamp.thread_id!=GetCurrentThreadId() || !stamp.pump_epoch) {
     out.unavailable_reason="paused_exact_build_owner_admission_failed";return true;
   }
+  if(!IsIngameUiRequestSupportedV1(env.gui_abi_revision,request)) {
+    out.unavailable_reason="typed_ui_operation_not_available_for_exact_build";return true;
+  }
   IngameUiGuiOwnerBindingV1 current_gui{};
   if(!gui_binding.context || !gui_binding.owner || !ReadIngameUiGuiOwnerBindingV1(env,current_gui) || current_gui!=gui_binding) {
     out.unavailable_reason="current_gui_owner_binding_changed_before_navigation";return true;
   }
   void *handler=nullptr;
-  if(!ResolveHandler(env.module_base,handler)){out.unavailable_reason="ingame_handler_unverified";return true;}
-  if(!ReadWindow(env,handler,request.window_kind,out))return true;
+  if(!ResolveHandler(env,handler)){out.unavailable_reason="ingame_handler_unverified";return true;}
+  const bool current_select=env.gui_abi_revision==GuiAbiRevisionV1::crozier12003 && request.operation==IngameUiOperationV1::select_army;
+  // Original SelectUnit creates/opens view6 itself. A not-yet-created or hidden
+  // panel cannot block the action; only the subsequent independent query can
+  // prove its visible subject. All owner/modal/full-generation gates remain.
+  if(!ReadWindow(env,handler,request.window_kind,out)) {
+    if(!current_select)return true;
+    // Failed root/type/stability reads can leave partial observations. They
+    // cannot be promoted into the ACK of a later successful selection call.
+    out.window_exists=false;out.effective_visible=false;out.enabled=false;
+    out.subject_id_available=false;out.current_subject_id=0;out.native_army_id=0;
+    out.owner_character_id_available=false;out.owner_character_id=0;
+    out.tree={};out.tree.scope_root_name=std::string(IngameUiWindowNameV1(request.window_kind));
+  }
   if(request.operation==IngameUiOperationV1::query && request.window_kind==IngameUiWindowKindV1::knights && (!out.subject_id_available ||
       out.owner_character_id!=static_cast<std::uint32_t>(snapshot.played_character_id))) {
     out.unavailable_reason="knights_owner_differs_from_played_actor";return true;
@@ -557,11 +646,10 @@ bool ExecuteIngameUiNavigationV1(const ZhongguoScoreboardNativeEnvironmentV1 &en
     if(!Object(env.module_base,kCharacterStorage,request.subject_id,0x18,subject)){out.unavailable_reason="character_full_id_not_found";return true;}
     invoked=InvokeCharacter(env.module_base,request.subject_id);
   } else if(request.operation==IngameUiOperationV1::select_army) {
-    std::int32_t actor=-1;std::uint32_t native_id=0,reverse=0;void *army=nullptr;
-    if(!Object(env.module_base,kUnitStorage,request.subject_id,0x10,subject) || !Value(subject,0x174,actor) || actor!=snapshot.played_character_id ||
-        !Value(subject,0x178,native_id) || !Object(env.module_base,kArmyStorage,native_id,0x10,army) ||
-        !Value(army,0x124,reverse) || reverse!=request.subject_id) {out.unavailable_reason="player_unit_army_full_id_join_failed";return true;}
-    invoked=InvokeUnit(env.module_base,handler,request.subject_id);
+    if(!ResolvePlayerArmyUiSubject(env,request.subject_id,snapshot.played_character_id,subject)) {
+      out.unavailable_reason="player_unit_army_full_id_join_failed";return true;
+    }
+    invoked=InvokeUnit(env,handler,request.subject_id);
   } else if(request.operation==IngameUiOperationV1::open_combat) {
     if(!Object(env.module_base,kCombatStorage,request.subject_id,8,subject)){out.unavailable_reason="combat_full_id_not_found";return true;}
     // Limit opening to a combat already carried by this played actor's army
@@ -611,10 +699,15 @@ bool ExecuteIngameUiNavigationV1(const ZhongguoScoreboardNativeEnvironmentV1 &en
   out.dispatch_invoked=invoked;out.available=invoked;out.verification_pending=invoked;
   out.status=invoked?"acknowledged_verification_pending":"unavailable";
   if(!invoked)out.unavailable_reason="native_navigation_fault";
+  else out.unavailable_reason.clear();
   return true;
 }
 
 std::string SerializeIngameUiResultV1(const IngameUiRequestV1 &r,const IngameUiResultV1 &v,std::uint64_t revision) {
+  const bool current=v.gui_abi_revision==GuiAbiRevisionV1::crozier12003;
+  const std::string_view backend=current?"ck3-1.20.0.3-native-ingame-ui-v1":"ck3-1.19.0.6-native-ingame-ui-v1";
+  const std::string_view version=current?ck3_12003::kGameVersion:"1.19.0.6";
+  const std::string_view executable=current?ck3_12003::kExecutableSha256:kZhongguoScoreboardStateV1ExecutableSha256;
   std::ostringstream o;o<<std::boolalpha<<std::setprecision(std::numeric_limits<float>::max_digits10);
   o<<"{\"schema\":\"ck3-ingame-ui-window-v1\",\"accepted\":"<<v.available<<",\"available\":"<<v.available
    <<",\"status\":\""<<v.status<<"\",\"window_kind\":\"";
@@ -622,8 +715,11 @@ std::string SerializeIngameUiResultV1(const IngameUiRequestV1 &r,const IngameUiR
    <<"\",\"window_name\":\""<<IngameUiWindowNameV1(r.window_kind)<<"\",\"requested_subject_id\":"<<r.subject_id
    <<",\"window_exists\":"<<v.window_exists<<",\"effective_visible\":"<<v.effective_visible<<",\"enabled\":"<<v.enabled
    <<",\"subject_id_available\":"<<v.subject_id_available<<",\"current_subject_id\":"<<v.current_subject_id
-   <<",\"native_army_id\":"<<v.native_army_id<<",\"owner_character_id\":"<<v.owner_character_id
-   <<",\"dispatch_invoked\":"<<v.dispatch_invoked<<",\"verification_pending\":"<<v.verification_pending
+   <<",\"native_army_id\":"<<v.native_army_id;
+  if(current)o<<",\"owner_character_id_available\":"<<v.owner_character_id_available;
+  o<<",\"owner_character_id\":";
+  if(current && !v.owner_character_id_available)o<<"null";else o<<v.owner_character_id;
+  o<<",\"dispatch_invoked\":"<<v.dispatch_invoked<<",\"verification_pending\":"<<v.verification_pending
    <<",\"date_raw\":"<<v.date_raw<<",\"paused\":"<<v.paused<<",\"played_character_id\":"<<v.played_character_id
    <<",\"native_revision\":"<<revision<<",\"pump_epoch\":"<<v.pump_epoch<<",\"thread_id\":"<<v.thread_id
    <<",\"application_owner_thread_verified\":"<<v.application_owner_thread_verified
@@ -633,7 +729,7 @@ std::string SerializeIngameUiResultV1(const IngameUiRequestV1 &r,const IngameUiR
    <<",\"combat_knights_read_available\":"<<v.combat_knights_read_available
    <<",\"left_knight_count\":"<<v.left_knight_count<<",\"right_knight_count\":"<<v.right_knight_count
    <<",\"left_knight_breakdown\":\""<<JsonEscape(v.left_knight_breakdown)<<"\",\"right_knight_breakdown\":\""<<JsonEscape(v.right_knight_breakdown)
-   <<"\",\"combat_roster_full_ids_available\":false,\"native_backend_id\":\"ck3-1.19.0.6-native-ingame-ui-v1\""
+   <<"\",\"combat_roster_full_ids_available\":false,\"native_backend_id\":\""<<backend<<"\""
    <<",\"hover_state_available\":"<<v.hover_state_available<<",\"hovered_widget_name\":\""<<v.hovered_widget_name
    <<"\",\"hovered_ui_side\":\""<<v.hovered_ui_side<<"\",\"hovered_combat_id\":"<<v.hovered_combat_id
    <<",\"hover_readback_is_pixels\":false";
@@ -666,7 +762,7 @@ std::string SerializeIngameUiResultV1(const IngameUiRequestV1 &r,const IngameUiR
   o<<",\"proposed_translation\":{\"x\":"<<(g.available?g.proposed_translation.x:0)
    <<",\"y\":"<<(g.available?g.proposed_translation.y:0)<<"},\"unavailable_reason\":\""
    <<JsonEscape(g.available?std::string_view{}:(g.unavailable_reason.empty()?std::string_view{"not_visible_current_combat_window"}:std::string_view{g.unavailable_reason}))<<"\"}"
-   <<",\"game_version\":\"1.19.0.6\",\"executable_sha256\":\"2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86\""
+   <<",\"game_version\":\""<<version<<"\",\"executable_sha256\":\""<<executable<<"\""
    <<",\"unavailable_reason\":\""<<v.unavailable_reason<<"\",\"knights_list_scope\":\"military_eligible_not_active_combat_roster\""
    <<",\"tree\":{\"scope_root_name\":\""<<v.tree.scope_root_name<<"\",\"root_available\":"<<v.tree.root_available
    <<",\"truncated\":"<<v.tree.truncated<<",\"widget_count\":"<<v.tree.widget_count<<",\"widgets\":[";

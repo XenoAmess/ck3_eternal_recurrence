@@ -974,12 +974,16 @@ int main(int argc, char **argv) {
         selected->supports_step("query-war-termination-exit-terms-v2-16777290")) {
       return Fail("three-build registry selected the wrong native implementation");
     }
-    // The historical UI and de-jure readers retain original-build RVAs.
-    // Reusing shared protocol and mailbox code must not advertise them on
-    // either current-version adapter.
     const bool original_build = descriptor == &known;
+    // Exact .3 now owns the minimal Army-only UI provider; .2 is unported.
+    // The typed provider/driver fixtures separately reject every non-Army .3
+    // role. Other historical research readers remain original-build only.
+    for (const auto ui_step : {"navigate-ingame-ui-v1", "query-ingame-ui-window-v1"}) {
+      if (selected->supports_step(ui_step) != (original_build || descriptor == &new_known)) {
+        return Fail("Army UI provider crossed an exact adapter gate");
+      }
+    }
     for (const auto legacy_step : {
-             "navigate-ingame-ui-v1", "query-ingame-ui-window-v1",
              "query-defender-de-jure-exit-terms-v1-16777290",
              "query-current-battle-knight-v1-83886341-100-401",
              "query-province-local-siege-v1-3"}) {

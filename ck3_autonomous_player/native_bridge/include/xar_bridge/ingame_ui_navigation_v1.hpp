@@ -82,7 +82,20 @@ inline bool IsIngameUiPausedOwnerStampV1(
       mailbox.paused_owner_verified_pump_epochs.load(std::memory_order_acquire) >=
           kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs;
 }
+// Exact .3 registered SelectUnit path. Current migration is Army-only.
+inline constexpr std::uintptr_t kUiSelectUnitRva12003V1 = 0xAF9000;
+inline constexpr std::uintptr_t kUiArmyWindowTypeDescriptor12003V1 = 0x57769C0;
+inline constexpr std::uintptr_t kUiArmyStorage12003V1 = 0x5D1DE48;
+inline constexpr std::uintptr_t kUiUnitStorage12003V1 = 0x5D1E380;
+inline constexpr std::size_t kUiArmyWindowSubjectOffset12003V1 = 0xC8;
+// Original B0F1E0 returns handler+0x98+view*8, so view6 is handler+0xC8.
+inline constexpr std::size_t kUiArmyWindowHandlerSlot12003V1 = 0xC8;
+// Original CArmyWindow::OnInit 1345EB0 retains the named widget at +0x60.
+inline constexpr std::size_t kUiArmyWindowGuiRootOffset12003V1 = 0x60;
+bool IsIngameUiRequestSupportedV1(GuiAbiRevisionV1 revision,
+    const IngameUiRequestV1 &request) noexcept;
 struct IngameUiResultV1 {
+  GuiAbiRevisionV1 gui_abi_revision = GuiAbiRevisionV1::legacy11906;
   bool available = false;
   bool dispatch_invoked = false;
   bool verification_pending = false;
@@ -93,6 +106,7 @@ struct IngameUiResultV1 {
   std::uint32_t current_subject_id = 0;
   std::uint32_t native_army_id = 0;
   std::uint32_t owner_character_id = 0;
+  bool owner_character_id_available = false;
   std::int32_t date_raw = 0;
   bool paused = false;
   std::int32_t played_character_id = -1;

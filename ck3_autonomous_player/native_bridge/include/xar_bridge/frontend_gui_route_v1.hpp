@@ -14,6 +14,7 @@
 #include "xar_bridge/aub_business_state_v1.hpp"
 #include "xar_bridge/white_control_action_v1.hpp"
 #include "xar_bridge/ck3_11906.hpp"
+#include "xar_bridge/game_adapter.hpp"
 
 #include <cstdint>
 #include <string_view>
@@ -278,6 +279,7 @@ struct FrontendGuiRouteMailboxContextV1 {
   std::string expected_current_setting_key;
   std::string desired_setting_key;
   Bindings ingame_bindings{};
+  const game::GameAdapter *ingame_game = nullptr;
   game::Snapshot ingame_expected_snapshot{};
   IngameUiRequestV1 ingame_request{};
   IngameUiResultV1 ingame_result{};

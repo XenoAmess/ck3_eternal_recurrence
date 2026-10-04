@@ -331,4 +331,290 @@ class IngameUiMcpTests(unittest.IsolatedAsyncioTestCase):
             self.assertTrue(generic.is_error)
             self.assertEqual(len(driver.calls),count)
 
+def current_snapshot():
+    from xar_autoplayer.bridge.version_identity import CK3_12003
+    value=snapshot()
+    value["diagnostics"]["hello"]={"expected_ck3_version":CK3_12003.game_version,
+        "expected_ck3_sha256":CK3_12003.executable_sha256}
+    return value
+
+
+def current_result(operation="query",subject=0,*,unopened=False):
+    from xar_autoplayer.bridge.version_identity import CK3_12003
+    value=result("army",operation,subject)
+    value.update(native_backend_id=CK3_12003.backend_id("ingame-ui-v1"),
+        game_version=CK3_12003.game_version,executable_sha256=CK3_12003.executable_sha256,
+        current_subject_id=subject,native_army_id=83,
+        owner_character_id_available=True,owner_character_id=29829)
+    if unopened:
+        value.update(window_exists=False,effective_visible=False,enabled=False,
+            subject_id_available=False,current_subject_id=None,native_army_id=None,
+            owner_character_id_available=False,owner_character_id=None)
+        value["tree"].update(root_available=False,widget_count=0,widgets=[])
+    return value
+
+
+class CurrentUiDriverFixture(DriverFixture):
+    def take_snapshot(self):
+        self.reads+=1
+        return copy.deepcopy(self.ending if self.reads>1 and self.ending is not None else current_snapshot())
+
+
+class CurrentPrimitiveUiFixture(PrimitiveUiFixture):
+    def take_snapshot(self):
+        self.reads+=1
+        return copy.deepcopy(self.ending if self.reads>1 and self.ending is not None else current_snapshot())
+
+
+class CrozierArmyUiTests(unittest.TestCase):
+    def normalize(self,value,operation="query",subject=0):
+        from xar_autoplayer.bridge.version_identity import CK3_12003
+        return normalize_ui_result(value,operation=operation,kind="army",subject_id=subject,
+            native_revision=3,date_raw=53146848,actor_id=29829,expected_build=CK3_12003)
+
+    def test_current_army_query_preserves_public_zero_as_observed_id(self):
+        driver=CurrentUiDriverFixture(current_result())
+        got=driver.query_ingame_ui_window_v1("army",expected_revision=4)
+        self.assertEqual(got["current_subject_id"],0)
+        self.assertEqual(got["native_army_id"],83)
+        self.assertTrue(got["subject_id_available"])
+        self.assertFalse(got["verification_pending"])
+        self.assertFalse(got["dispatch_invoked"])
+
+    def test_current_army_select_handles_zero_and_signed_upper_bound(self):
+        for subject in (0,2**31-1):
+            driver=CurrentUiDriverFixture(current_result("select_army",subject))
+            with self.subTest(subject=subject):
+                got=driver.select_army_ui_v1(subject,expected_revision=4)
+                self.assertEqual(got["requested_subject_id"],subject)
+                self.assertTrue(got["verification_pending"])
+                self.assertEqual(driver.calls[0][1]["request_fields"]["subject_id"],subject)
+
+    def test_unopened_current_army_select_is_pending_without_subject_or_census(self):
+        driver=CurrentUiDriverFixture(current_result("select_army",0,unopened=True))
+        got=driver.select_army_ui_v1(0,expected_revision=4)
+        self.assertTrue(got["accepted"])
+        self.assertTrue(got["dispatch_invoked"])
+        self.assertTrue(got["verification_pending"])
+        self.assertFalse(got["window_exists"])
+        self.assertFalse(got["subject_id_available"])
+        self.assertIsNone(got["current_subject_id"])
+        self.assertIsNone(got["native_army_id"])
+        self.assertFalse(got["tree"]["root_available"])
+        self.assertEqual(got["tree"]["widget_count"],0)
+
+    def test_unopened_select_cannot_claim_completed_or_readable_window(self):
+        mutations=[("dispatch_invoked",False),("verification_pending",False),("status","completed"),
+            ("status","already_visible_verification_pending"),("effective_visible",True),
+            ("subject_id_available",True),("application_owner_thread_verified",False),("gui_owner_binding_verified",False)]
+        for key,value in mutations:
+            raw=current_result("select_army",0,unopened=True);raw[key]=value
+            with self.subTest(key=key),self.assertRaises(ValueError):
+                self.normalize(raw,"select_army",0)
+        for key,value in [("root_available",True),("truncated",True),("scope_root_name","_root_")]:
+            raw=current_result("select_army",0,unopened=True);raw["tree"][key]=value
+            with self.subTest(key=key),self.assertRaises(ValueError):self.normalize(raw,"select_army",0)
+
+    def test_query_cannot_reuse_unopened_action_ack(self):
+        raw=current_result("select_army",0,unopened=True)
+        with self.assertRaises(ValueError):self.normalize(raw)
+        raw.update(accepted=False,available=False,dispatch_invoked=False,verification_pending=False,
+            status="unavailable",unavailable_reason="window_not_yet_created")
+        self.assertFalse(self.normalize(raw)["available"])
+
+    def test_subject_null_requires_false_flag_and_keys_cannot_be_missing(self):
+        raw=current_result();raw.update(subject_id_available=False,current_subject_id=None,native_army_id=None,
+            owner_character_id_available=False,owner_character_id=None)
+        self.assertIsNone(self.normalize(raw)["current_subject_id"])
+        raw.update(current_subject_id=0,native_army_id=0)
+        self.assertFalse(self.normalize(raw)["subject_id_available"])
+        for key in ("current_subject_id","native_army_id"):
+            changed=copy.deepcopy(raw);del changed[key]
+            with self.subTest(key=key),self.assertRaises(ValueError):self.normalize(changed)
+        for field,value in [("current_subject_id",None),("native_army_id",None),
+            ("current_subject_id",True),("current_subject_id",2**31),("current_subject_id",-1)]:
+            changed=current_result();changed[field]=value
+            with self.subTest(field=field,value=value),self.assertRaises(ValueError):self.normalize(changed)
+
+    def test_current_selected_owner_zero_and_signed_int32_bound_are_actual_ids(self):
+        for owner in (0,29829,2**31-1):
+            raw=current_result();raw["owner_character_id"]=owner
+            with self.subTest(owner=owner):
+                got=self.normalize(raw)
+                self.assertTrue(got["owner_character_id_available"])
+                self.assertEqual(got["owner_character_id"],owner)
+
+    def test_current_query_preserves_foreign_selected_owner(self):
+        raw=current_result();raw["owner_character_id"]=33437
+        driver=CurrentUiDriverFixture(raw)
+        got=driver.query_ingame_ui_window_v1("army",expected_revision=4)
+        self.assertEqual(got["played_character_id"],29829)
+        self.assertEqual(got["owner_character_id"],33437)
+        self.assertTrue(got["owner_character_id_available"])
+
+    def test_select_ack_retains_prior_selection_and_foreign_actual_owner(self):
+        raw=current_result("select_army",16777218)
+        raw.update(current_subject_id=0,owner_character_id=33437)
+        driver=CurrentUiDriverFixture(raw)
+        got=driver.select_army_ui_v1(16777218,expected_revision=4)
+        self.assertEqual(got["requested_subject_id"],16777218)
+        self.assertEqual(got["current_subject_id"],0)
+        self.assertEqual(got["owner_character_id"],33437)
+        self.assertTrue(got["verification_pending"])
+
+    def test_current_unavailable_owner_requires_explicit_null(self):
+        raw=current_result();raw.update(owner_character_id_available=False,owner_character_id=None)
+        self.assertIsNone(self.normalize(raw)["owner_character_id"])
+        for owner in (0,29829,False,"",-1):
+            changed=copy.deepcopy(raw);changed["owner_character_id"]=owner
+            with self.subTest(owner=owner),self.assertRaises(ValueError):self.normalize(changed)
+
+    def test_current_owner_flag_and_value_cannot_be_missing_or_malformed(self):
+        for key in ("owner_character_id_available","owner_character_id"):
+            raw=current_result();del raw[key]
+            with self.subTest(missing=key),self.assertRaises(ValueError):self.normalize(raw)
+        for flag in (None,0,1,"true",[],{}):
+            raw=current_result();raw["owner_character_id_available"]=flag
+            with self.subTest(flag=flag),self.assertRaises(ValueError):self.normalize(raw)
+        for owner in (None,True,False,-1,2**31,2**32-1,"0",0.0):
+            raw=current_result();raw["owner_character_id"]=owner
+            with self.subTest(owner=owner),self.assertRaises(ValueError):self.normalize(raw)
+
+    def test_owner_availability_cannot_claim_a_missing_selected_subject(self):
+        raw=current_result();raw.update(subject_id_available=False,current_subject_id=None,native_army_id=None)
+        with self.assertRaises(ValueError):self.normalize(raw)
+        raw.update(owner_character_id_available=False,owner_character_id=None)
+        self.assertFalse(self.normalize(raw)["owner_character_id_available"])
+
+    def test_unopened_current_select_keeps_owner_unavailable_null(self):
+        raw=current_result("select_army",0,unopened=True)
+        got=self.normalize(raw,"select_army",0)
+        self.assertFalse(got["owner_character_id_available"])
+        self.assertIsNone(got["owner_character_id"])
+        for owner in (0,29829):
+            changed=copy.deepcopy(raw);changed["owner_character_id"]=owner
+            with self.subTest(owner=owner),self.assertRaises(ValueError):self.normalize(changed,"select_army",0)
+
+    def test_legacy_owner_numeric_contract_does_not_require_new_flag(self):
+        raw=result("army")
+        self.assertNotIn("owner_character_id_available",raw)
+        got=normalize_ui_result(raw,operation="query",kind="army",subject_id=0,
+            native_revision=3,date_raw=53146848,actor_id=29829)
+        self.assertEqual(got["owner_character_id"],0)
+
+    def test_current_mixed_owner_payload_preserves_original_failure_record(self):
+        raw=current_result();raw.update(owner_character_id_available=False,owner_character_id=0)
+        driver=CurrentUiDriverFixture(raw)
+        with self.assertRaisesRegex(ValueError,"explicit null"):
+            driver.query_ingame_ui_window_v1("army",expected_revision=4)
+        self.assertEqual(len(driver.calls),1)
+        self.assertFalse(driver.records[-1][1]["ok"])
+        self.assertEqual(driver.records[-1][1]["result"]["raw_native_ui_result"],raw)
+
+
+    def test_null_or_missing_request_never_dispatches(self):
+        for subject in (None,True,False,-1,2**31,"0",0.0):
+            driver=CurrentUiDriverFixture(current_result("select_army",0))
+            with self.subTest(subject=subject),self.assertRaises(ValueError):driver.select_army_ui_v1(subject,expected_revision=4)
+            self.assertFalse(driver.calls)
+
+    def test_current_tree_uses_native_2048_bound_legacy_stays_512(self):
+        for count in (512,513,2048,2049):
+            raw=current_result();root=raw["tree"]["widgets"][0]
+            raw["tree"].update(widget_count=count,widgets=[copy.deepcopy(root) for _ in range(count)])
+            with self.subTest(current=count):
+                if count<=2048:self.assertEqual(self.normalize(raw)["tree"]["widget_count"],count)
+                else:
+                    with self.assertRaises(ValueError):self.normalize(raw)
+        for count in (512,513):
+            raw=result("army");root=raw["tree"]["widgets"][0]
+            raw["tree"].update(widget_count=count,widgets=[copy.deepcopy(root) for _ in range(count)])
+            with self.subTest(legacy=count):
+                if count==512:normalize_ui_result(raw,operation="query",kind="army",subject_id=0,native_revision=3,date_raw=53146848,actor_id=29829)
+                else:
+                    with self.assertRaises(ValueError):normalize_ui_result(raw,operation="query",kind="army",subject_id=0,native_revision=3,date_raw=53146848,actor_id=29829)
+
+    def test_exact_current_tuple_cannot_accept_mixed_or_legacy_identity(self):
+        from xar_autoplayer.bridge.version_identity import CK3_11906,CK3_12003
+        for key,value in [("native_backend_id",CK3_11906.backend_id("ingame-ui-v1")),
+            ("game_version",CK3_11906.game_version),("executable_sha256",CK3_11906.executable_sha256),
+            ("executable_sha256","0"*64)]:
+            raw=current_result();raw[key]=value
+            with self.subTest(key=key),self.assertRaises(ValueError):self.normalize(raw)
+        raw=current_result();raw.update(native_backend_id=CK3_11906.backend_id("ingame-ui-v1"),
+            game_version=CK3_11906.game_version,executable_sha256=CK3_11906.executable_sha256)
+        with self.assertRaises(ValueError):self.normalize(raw)
+        with self.assertRaises(ValueError):normalize_ui_result(current_result(),operation="query",kind="army",subject_id=0,native_revision=3,date_raw=53146848,actor_id=29829)
+        raw=current_result();raw["executable_sha256"]=CK3_12003.executable_sha256.lower()
+        self.assertTrue(self.normalize(raw)["available"])
+
+    def test_current_nonarmy_routes_rejected_before_dispatch(self):
+        requests=[("query","character",0),("query","combat",0),("query","knights",0),
+            ("open_character","character",33437),("open_combat","combat",18),("open_knights","knights",0),
+            ("fit_combat_window","combat",18),("hover_left_knights","combat",18)]
+        for operation,kind,subject in requests:
+            driver=CurrentUiDriverFixture(current_result())
+            with self.subTest(operation=operation,kind=kind),self.assertRaises(ValueError):
+                driver._ingame_ui_v1(operation,kind,subject,expected_revision=4)
+            self.assertFalse(driver.calls)
+
+    def test_prehello_mixed_unknown_or_unmigrated_build_never_dispatches(self):
+        from xar_autoplayer.bridge.version_identity import CK3_12002,CK3_12003
+        hellos=[None,{"expected_ck3_version":"1.20.0.3","expected_ck3_sha256":"0"*64},
+            {"expected_ck3_version":"1.20.0.2","expected_ck3_sha256":CK3_12003.executable_sha256},
+            {"expected_ck3_version":CK3_12002.game_version,"expected_ck3_sha256":CK3_12002.executable_sha256},
+            {"expected_ck3_version":CK3_12003.game_version,"expected_ck3_sha256":CK3_12003.executable_sha256,"game_version":"1.19.0.6"},
+            {"expected_ck3_version":CK3_12003.game_version,"expected_ck3_sha256":CK3_12003.executable_sha256,"executable_sha256":"0"*64}]
+        for hello in hellos:
+            before=current_snapshot();before["diagnostics"]["hello"]=hello
+            driver=CurrentUiDriverFixture(current_result())
+            with patch.object(driver,"take_snapshot",return_value=before),self.subTest(hello=hello),self.assertRaises(ValueError):
+                driver.query_ingame_ui_window_v1("army",expected_revision=4)
+            self.assertFalse(driver.calls)
+
+    def test_missing_hello_can_only_accept_legacy_result(self):
+        driver=DriverFixture(current_result())
+        with self.assertRaises(ValueError):driver.query_ingame_ui_window_v1("army",expected_revision=4)
+        self.assertEqual(driver.records[-1][1]["result"]["raw_native_ui_result"],current_result())
+        self.assertTrue(DriverFixture(result("army")).query_ingame_ui_window_v1("army",expected_revision=4)["available"])
+
+    def test_posthello_drop_or_build_change_keeps_raw_failure(self):
+        from xar_autoplayer.bridge.version_identity import CK3_11906
+        endings=[]
+        dropped=current_snapshot();del dropped["diagnostics"]["hello"];endings.append(dropped)
+        legacy=current_snapshot();legacy["diagnostics"]["hello"]={"expected_ck3_version":CK3_11906.game_version,
+            "expected_ck3_sha256":CK3_11906.executable_sha256};endings.append(legacy)
+        mixed=current_snapshot();mixed["diagnostics"]["hello"]["expected_ck3_sha256"]="0"*64;endings.append(mixed)
+        for ending in endings:
+            raw=current_result("select_army",0,unopened=True);driver=CurrentUiDriverFixture(raw,ending)
+            with self.subTest(ending=ending),self.assertRaises((ValueError,BridgeUnavailableError)):
+                driver.select_army_ui_v1(0,expected_revision=4)
+            self.assertEqual(len(driver.calls),1)
+            self.assertFalse(driver.records[-1][1]["ok"])
+            self.assertEqual(driver.records[-1][1]["result"]["raw_native_ui_result"],raw)
+
+    def test_explicit_legacy_hello_cannot_disappear_between_reads(self):
+        from xar_autoplayer.bridge.version_identity import CK3_11906
+        before=snapshot();before["diagnostics"]["hello"]={"expected_ck3_version":CK3_11906.game_version,
+            "expected_ck3_sha256":CK3_11906.executable_sha256}
+        driver=DriverFixture(result("army"))
+        with patch.object(driver,"take_snapshot",side_effect=[before,snapshot()]),self.assertRaises(BridgeUnavailableError):
+            driver.query_ingame_ui_window_v1("army",expected_revision=4)
+        self.assertEqual(len(driver.calls),1)
+
+    def test_current_real_primitive_retains_original_failed_result_once(self):
+        import json
+        for native_ok in (False,True):
+            with tempfile.TemporaryDirectory() as temp:
+                raw=current_result();raw["executable_sha256"]="0"*64
+                driver=CurrentPrimitiveUiFixture(raw,Path(temp),native_ok=native_ok)
+                with self.subTest(native_ok=native_ok),self.assertRaises(Exception):
+                    driver.query_ingame_ui_window_v1("army",expected_revision=4)
+                files=list(Path(temp).rglob("native-ui-*.json"));self.assertEqual(len(files),1)
+                saved=json.loads(files[0].read_text(encoding="utf-8"))
+                self.assertEqual(saved["original_parsed_command_result"]["result"],raw)
+                self.assertIs(saved["original_parsed_command_result"]["ok"],native_ok)
+                self.assertEqual(len(driver.sent),1)
+
+
 if __name__=="__main__":unittest.main()
