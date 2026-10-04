@@ -63,3 +63,23 @@ Owner保留3次 **harness RED**：266字符的外置wire include路径退回旧h
 Python [registered-MCP receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-terrain-actual/future-engagement/capital2619-actual-ctor0-v51/native-quality-research/implementation-ledger/python/CONSTRUCTOR-LEDGER-REGISTERED-MCP-RESULT.json) 为唯一 `python -B -O` run **GREEN/exit0**（exit0由协调者记录）：3/3新native场景各通过既有 `ck3_query_combat_simulation_inputs` 一次并精确roundtrip；2个copy-transformation错误仅使context fragment unavailable，v2 composition仍available；4个schema1/2旧absence兼容case与预像相同。Native wire JSONL SHA为 `ca6c37d79bb317c548aa9e26a23723f61e18a00d186f9edf67a878e842585a80`；本docs lane只读两份receipt各一次，未读取JSONL或重跑旧matrix。
 
 DAY03/native1102是**历史actual快照**，不是最新ongoing状态。Root随后协调消息记录：后续9个normal day已收口，`actual_subject_leftcombat`，累计4332/res1179/Oct4+307；Root latest HEAD `de894a8`。本lane没有读取后续terminal缓存，不推断winner或最终战果，不把13条constructor行完整归因到历史player +48。完整encounter与MC readiness仍false；静态扩展新增live样本/SDK/动作/天数0，Root游戏进展单独保留其证据与计数。
+
+
+## 2026-10-04：side dynamic 的具体来源施工入口（research）
+
+冻结只读g57/source1791d84。`25899C0` 消费 same side+110 aggregator：按原生顺序读 modifier ID `19B`、side0/1的`19C/19D`、目标terrain+774的uint16 ID、target-definition-byte18条件的`19E`、Combat+6FD条件的`1AD`、nested `19F`、relation1/2的`1A2/1A3`。每项 mode0最终到 `2303700(sideAggregator+68,int64*out,uint16 ID)`；输出8-byte signed Q100000，missing key为真0。固定scale100000保留raw，再加到side dynamic。人类key↔ordinal registration未闭合，先发布ID和操作定义，不猜特质原因。
+
+`25895A0` 的nested19F取本侧raw并取负，乘**对侧**effect ledger+78/count84中effect+88或+89非零行的signed contribution合计；stride16的第二字段是贡献，非scale或兵数。保留原生ordered effect key、两个rawflag与贡献，按Q100000向零截断。own attacker读defender ledger，own defender读attacker。`+6FD` 已由现source的`C6AF20 province_has_holding`设置，不能称登陆expiry；disembark仍独立Unknown。
+
+```mermaid
+flowchart LR
+  S[同query-owned side+110] --> I[显式uint16 source IDs / 条件]
+  I --> G[2303700 aggregate+68 / signed int64 Q]
+  O[对侧已closed constructor effect ledger] --> N[flag88或89行贡献和 × 负19F]
+  G --> R[下一口：既有v2 side_modifier_sources]
+  N --> R
+  R -. 未施工/新实读 .-> L[Root paused来源样本]
+  I -. unknown .-> K[人类modifier名与完整上游trait归因]
+```
+
+最小入口在现`ReadNativeCombatPhase`的same-shell读取、cleanup前，向同`ck3_query_combat_simulation_inputs.contextual_advantage.sides[]`加source rows；不新增MCP/flag/gate。完整可施工签名、row字段、callsite/函数hash在外置`battle-source-next-increments-v52/context-dynamic/NEXT-SAME-MCP-FIELD-CONTRACT.json`和`SOURCE-PINS.json`。当前R25/g54/Pyg56 cached actual第三战1593835526@2629为native1200/pub29/raw53248704/main12、attacker−11/player defender+11；不含本叶，不据总差猜来源，也不冒g57live。新增代码/测试/SDK/动作/天数/窗口/Git均0；不阻Root推进或R26部署。

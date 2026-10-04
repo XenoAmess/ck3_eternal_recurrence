@@ -222,3 +222,13 @@ positive knight IDs 为空；type_raw/prowess 尚未发布，因此不能推成�
 该 before owner hard ledger（70766=51112494、Robert29829=2631980Q100000）与终局 side input 属不同 scope，
 不计算跨账差或一致性问题。历史 selected rolls 为 phase1/day5/cadence2、advantage−5400000Q100000；
 attacker current0/next0..0/commander null，defender Robert current6/next0..10；均不是终局后当前掷骰。
+
+## 2026-10-04 v52：有效属性到实际 Entry 损失的 exact .3 消费链
+
+Exact build 与本文相同；只读源 `Z:/g57` / owner-reported `1791d84`。原生树与有界指令 pin 已先落盘：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-source-next-increments-v52/effective-attributes-loss/TREE.md`、`SOURCE-PINS.json`。本轮只研究 source，不改 producer、schema、flags 或 gate，不运行游戏/SDK/测试。
+
+主阶段 `258C640` 先刷新两侧 cached current，再在 `258C753/258C76F→264FF70` 冻结两侧 outgoing，最后 `258C7A8/258C7C2→2652E30` 交叉施加。`264FC10` 读取真实 Entry+18 fighting、+40 effective damage 与 type+260 counter class；接收侧 Entry+48 toughness 是兵员损失除数。主阶段 hard 系数读取本侧0x199、对侧0x19A经`264DD20`和条件 winter0x1AC经`2C4D550`，不是只看指挥官。`2652D20` 将 soft 加 Entry+20、soft+hard 减 Entry+18；hard 经`26341B0→2657EA0`写真实组件，同时加所属 owner hard ledger，不能将两份账相加。追击 `258CB87→26520A0→2652420` 使用败方 Entry+20 soft 池和 Combat+6E8/+6F0阶段预算，转 hard 后扣 soft，区别于主阶段 fighting subtraction；terminal hook 输入和最终 survivors 仍按已发布 numeric topic 区分。伤亡 Q 账不等于人物死亡。
+
+唯一 shared days04 cached projection（SHA `34310e64c51cb3a23476e9589fb121f7b2b5f0ca6ccbbe88d877ae84c4cb230c`）属于 R25 native g54 / Python g56，Combat1593835526、2629、Robert29829 defender、main12、native1200/public29/raw53248704。本帧双方 stored current 与 derived current 不同；这是 cache/immediate 时间语义，不能从人数差倒填实际伤害系数或给 g57 live 信用。
+
+下一施工入口是已有 `ck3_query_battle_control_snapshot_v1` 的 `Bucket/Side/ReadBattleControlSnapshot`：在既有 actual Entry effective stats 上补只读 loss operands，读取 Combat+6D8、runtime scaling/conversion slots5C69B90/5C69BA0/5C69BB0及上述 final aggregate modifiers。`264FF70/264FC10` 会写归因账，不能作为 paused read-only calculator。若决策确需真实执行过的 outgoing，最短 passive capture 入口是`258C774..258C779`，两侧真实 native 返回后、任何 apply 前。Entry refresh 与部分 pursuit aggregate helpers 的未闭合边在原生树中保持虚线。Readiness 为 **research**，不是完整 simulator、live 新观测口、损失因果 parity 或完整战斗 OODA。

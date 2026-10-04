@@ -96,3 +96,25 @@ Root 现有 readonly capture runner 每次先取 fresh snapshot，并注入 **�
 验证只有 native research plan 的文件结构与 hash 检查：首次重复 JSON/TXT evidence stem 导致 harness RED，保留失败 plan；修复列表 ID 后一次成功 render，保留 `1 RED + 1 GREEN`。它不验证 native 语义正确性，也不构成 live。另两次 leaf/pdata helper 假设失败与一次源文件名失败均已保留，修复限于提取器，没有能力 RED、原生测试或游戏动作。
 
 剩余交付是 Root 真实玩家 main 接战时采集实际换将/selected/context 结果，以及未来按具体入口闭合 outer scheduler/advantage-writer caller。没有 new live 时不升级 readiness；本包不声称整场 resume、胜率或完整战斗循环完成。
+
+# Root-only append target
+
+Target: `docs/ck3-native-ai/commander-in-battle-assignment-timing-12003.md`, with links to `join-width-production-and-fire.md` and the existing current-combat/next-roll topics. Preserve old1.19 fixtures as history.
+
+Exact1.20.0.3 source-only increment (g57/source1791d84; existing EXE pin unchanged): main258C640 has a roll gate on Combat+6E4, then draws via2650D70 into+6D0/+6D4 only when zero, increments/modulos by loaded slot5C69B48 and writes the remainder. Stock COMBAT_ROLL_DAYS=3; cached R25 g54 day11→12 counter2→0 retained rolls9/10 and independently observed bounds0..10. If a following main tick passes preceding exit branches it draws from its then-selected side commanders/actual terrain. Phase day and damage factor+6D8 are separate fields; resolved advantage cannot identify bounds or RNG outcomes.
+
+Bounded width producer2587C60..2587F0C reads side cached totals+B8/+400 and ratio5C69BA8, computes a candidate then keeps max(1,candidate,previous+6C0), applies actual Terrain+60 and minimum5C699C8, and writes final+6C4. Main passes that same stored final to both fire calls; effective fire fraction is side-specific min(1, final/current) with native Q truncation. Current cached base3434/final2747 and root-supplied side totals imply operand-derived own0.81343/enemy1, not observed damage. Exact .3 join-to-updater callsite and outer scheduler remain dashed unknowns; the next entry is bounded callers of2587C60. Existing `ck3_query_battle_control_snapshot_v1` already publishes rolls/bounds/counter/stored widths; future same-packet input work should read period/base ratio/minimum/actual terrain multiplier rather than execute RNG or fire helpers. No production change or new live credit.
+
+Owned evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-source-next-increments-v52/roll-cadence-width/NOTES.md`, `TREE.md`, `BOUNDED-EXACT-EVIDENCE.json`, `SOURCE-PINS.json`, `CACHED-ROLL-WIDTH-OBSERVATION.json`; reuse sibling effective-attributes-loss/native-active-exit topics for damage and exit.
+
+```mermaid
+flowchart LR
+  S[Actual side commander and terrain] --> G{Main +6E4 is zero and no prior exit?}
+  G -->|yes| R[Draw +6D0/+6D4]
+  G -->|no| K[Keep stored rolls]
+  R --> C[Increment and modulo period5C69B48]
+  K --> C
+  J[Join] -. exact caller remains bounded next entry .-> U[2587C60 candidate and historical base]
+  U --> W[Terrain+60 and minimum; stored final+6C4]
+  W --> F[Both fire calls; independent side-current fraction]
+```

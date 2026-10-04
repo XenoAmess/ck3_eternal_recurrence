@@ -101,3 +101,70 @@ After the native tree above, an own bounded policy may compare current battle co
 For a concrete future opponent-model need, the remaining native research entry is current ordinary-war command production: `0x1A1CF88 → 0x1A188B0(...,7)` from the accepted target package, with current command vtables `0x476B168/0x476B138` and apply `0x2969660`. A producer receipt would capture naturally produced complete UnitID, route/target, mode, caller RVA, date, exact CombatID/phase and correlated apply/result; its caller must actually read active battle odds/losses before being classified as voluntary retreat. This is a concrete observation/construction entry, not a new query implementation, an authorization request, or a required detour for Robert's current remote battle.
 
 Current status is **research with current-build static branches closed**. Existing production source is reused; this package adds no implementation or new live readiness, battle action, days, victory or G2 milestone. `.2` full-side/owner-subset fixture results retain their own evidence boundary. ROOT merges the new topic and the supplied daily/weekly report fields, commits and pushes; this researcher leaves canonical files untouched.
+
+## 2026-10-04：active exit 与自动终结的当前原生输入增量
+
+本增量绑定 CK3 **1.20.0.3 / Steam 25652598**，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`；只读源码为 Root 冻结 `g57/source1791d84`。状态为 **research / current-build static-confirmed branches**，无新实现、测试、SDK、游戏动作、存档日或部署信用。原四项撤退合法性、普通 AI active-combat 早退树及 final-survivor wrapper 直接复用；没有再次全 EXE caller census。
+
+只新提取三个逻辑函数 `0x258C7D0 / 0x258CA60 / 0x2AD8880`，沿 `.pdata` 的 chained unwind 收齐其 **14 个原生片段、1787 字节**；不展开 roll、width、damage 和 final-survivor callees。既有 `.3` main `0x258C640` 与 wrapper `0x2AD8000` 字节证据复用 `combat-commander-quality-v46/in-battle-assignment/evidence/`，没有重提。旧 `.19` 终结树只作问题目录；下表地址均由当前 `.3` 指令证明。
+
+### 玩家权限、AI 主动选择、自动战败分别解释
+
+1. **玩家/native permission**：`0x258AA10` 只决定当前选定 army 是否可以主动撤退，现有四门不重研究。原生合法为 true 不代表 AI 想撤退，也不代表任何目的省排序或命令已经生产。
+2. **AI voluntary intent**：普通 representative `0x1A1CB00` 与 follower `0x1A1CFF0` 已证明 active combat 时退出／跳过普通派令；通用 AI 的 active battle intent、cadence、候选省枚举/排序及真正自然命令 producer 仍为虚线 unknown。`.5/.4` combat-admission 与 `.45` retreat-prediction stock 值不升级成已证战中退出阈值。
+3. **Automatic defeat / destroy / result**：下列判胜、追击、毁灭标记与正常／抑制结果是引擎战斗生命周期路径，不是 AI 依据胜率选择主动撤退。Root 的一次玩家撤退命令或战后 retreating 同样不能证明上述 AI intent。
+
+### 已闭合的当前分支
+
+| 入口与精确 callsite / 指令 | 当前真实决策输入与有界语义 |
+|---|---|
+| `0x258C652/0x258C661 → 0x26505E0`，随后 `0x258C666..0x258C6A5` | main 开头刷新两侧 current 合计；`Combat+0x700 != -1` 时 forced winner 优先。否则先测 attacker `Combat+0xB8`（side0+98）`<=0` 得 winner1，再测 defender `+0x400`（side1+98）`<=0` 得 winner0；两侧均正才进入当天其它 work。两侧同时不正时 side0 检查优先。它不检查 AI 意愿或 `.45`。 |
+| main 的 `0x258C68A / 0x258C6A5 → 0x258C7D0` | 引擎判胜进入 winner helper；本 main 当天伤害写回后没有同体末尾再次判胜。下一次 main 入场刷新合计再判；其它 effect/命令独立路径不能由此排除。 |
+| `0x258C840`；`0x258C849..0x258C89D → 0x258AA10(combat, first_losing_stored_Army, nullptr)` | 先写 `winner+0x6E0`，按反侧选择败方，再读取该侧 **第一支 stored internal CArmyID**、完整 generation 解析后调用已核 permission。不是整侧兵力比，不按请求 partition 或任意玩家军替换败方代表。空 roster/fallback 保留原生路径，不能假定一定有有效首军。 |
+| `0x258C8C7/0x258C8F0 → 0x2657C10`；`0x258C90D..0x258C922`、`0x258C9B9` | 败方 permission false 分支调用各 Entry60 的原生处理 helper，清败方 current totals、写 `phase=3/day=0`，在实际 Result `+0x28` 写 wipe。该分支已经区别于正常追击；本包不展开 helper 的逐兵团因果或把 wipe 译为所有人物死亡。 |
+| `0x258C9E0..0x258CA24` | permission true 时按败方原生 levy/MAA stored entries 分别汇总 `entry+0x20` soft，冻结至 `Combat+0x6E8/+0x6F0`，写 `phase=2/day=0`。冻结 soft 量不是日后剩余人数或 final survivor。 |
+| `0x258CA2F..0x258CA3B → 0x258CA60` | 败方 `skip_pursuit`（side+C2）为真，胜方转入 pursuit 的同一调用栈同步进入 pursuit helper。其开头直接 finish，不能把该同步 call 计为一次正常追击伤害日。 |
+| `0x258CA9F..0x258CAB5` | pursuit 先读取败方 skip flag；未 skip 时读 runtime int32 **`0x5C69B74`**，只有 `phase_day > runtime_period` 才 finish。安装 stock `PURSUIT_PHASE_DAYS=3`（00_defines:599）表示默认 phase days1/2/3 可走伤亡、day4走finish；当前 loaded 值尚未由该 MCP 读口发布，不把默认3声称本帧实读。 |
+| `0x258CB87 → 0x26520A0` | 未 finish 才将冻结 soft 与当天当前 soft 及 runtime period 交给追击结算 callee。本包不展开追击损失公式，B lane 另有 owner。 |
+| `0x258CBB9`、`0x258CBC7 → 0x2588FC0`、`0x258CD22/0x258CD27` | finish 写 `phase=3/day=0`，再调用原生 finish work。之后零 soft 与有效 MAA/关联人物分支决定是否给 Result wipe；这些检查不等同 named-character killed/captured 发布。phase3 仍不单独证明 finalizer 或旧 Combat 删除。 |
+| wrapper `0x2AD814F..0x2AD817B` | 每轮 work 后先清 daily guard `Combat+705`。若 wrapper-relative manager invalidation `+58` 为真，优先 `0x2AD815A → 0x2AD8880`；否则只有 phase3 才 `0x2AD816F → 0x258CD50(combat,false)` 正常结果，然后 `0x2AD817B → 0x2ADA6D0` 移除旧 full Combat。正常结果后置继续用现有 terminal journal，不能从 phase3 单字段推胜利。 |
+| sweep `0x2AD898C..0x2AD89C2` | 完整解析双方 primary CharacterID，`0x2AD8992 → 0x2C09640(primary_attacker,primary_defender,false)` 使用已核 hostility predicate。hostile 为真跳过；非 hostile 且未 finalized，daily guard 真则延迟 sweep，guard 假才 `0x2AD89B6 → 0x258CD50(combat,true)` 抑制正常结果，随后 `0x2AD89C2 → 0x2ADA6D0` 移除。无需 main 已打空或 phase3。此分支不能记成普通胜利。 |
+
+wrapper 参数处的 manager 相对偏移与 sweep 参数处相差8：wrapper 用 `r14+58`，传 `r14-8`；sweep 用 `manager+60` 保存延迟。不能将它们当成两个不同业务旗标。sweep flag 的完整上游写入条件仍未在本包展开，保持具体 unknown，不臆称战争已结束或 primary 已死亡。
+
+```mermaid
+flowchart TD
+  W[.3 wrapper2AD8000; actual phase day increment] --> M[main258C640: refresh both current totals]
+  M --> F{forced winner+700 != -1?}
+  F -->|yes| E[winner258C7D0]
+  F -->|no| Z{side0 current<=0 then side1 current<=0?}
+  Z -->|yes| E
+  Z -->|both positive| B[phase events / rolls / damage: separate native lanes]
+  E --> R{258C89D: first losing stored Army permission258AA10?}
+  R -->|false| X[per-entry native helper; zero totals; done/day0; Result wipe]
+  R -->|true| P[freeze loser levy/MAA soft; pursuit/day0]
+  P --> S{loser skip_pursuit?}
+  S -->|yes; same stack| D[pursuit finish; done/day0]
+  S -->|no| T{next pursuit phase day > loaded period5C69B74?}
+  T -->|no| H[26520A0 pursuit settlement; separate lane]
+  T -->|yes| D
+  W --> I{manager invalidation+58?}
+  I -->|no; phase3| N[258CD50 false normal finalizer;2ADA6D0 removal]
+  I -->|yes| V[2AD8880: primary hostility false, not finalized and unguarded]
+  V --> Q[258CD50 true suppressed result; removal]
+  A[ordinary AI representative/follower] --> K[actual active combat: return/skip ordinary move]
+  U[unknown voluntary AI intent/cadence/candidate ranking/producer] -.-> L[known permission and move apply; not automatic defeat]
+  G[unknown manager invalidation writer] -.-> I
+```
+
+### 当前实际边界与下一施工入口
+
+唯一 actual 输入为协调者缓存 `cached-input/SHARED-DAYS04-CACHED-OBSERVATION.json`（SHA `34310e64c51cb3a23476e9589fb121f7b2b5f0ca6ccbbe88d877ae84c4cb230c`），不读 original days、call leaves 或 provider LAST。该缓存属于 **R25/nativeg54/Pyg56**，不是 g57 live：Combat1593835526@2629、Robert defender，main12/elapsed15、forced/winner均none、未finalized、player current permission true/full-side、selected-side skipfalse。敌攻击方 stored fighting1189.63865、entry-derived1028.53124不同是已发布的 tick-start cache 区别；不能用旧 stored 数字替代下一 main refresh，亦不从差值解释具体退出原因。双方当前仍正不表示未来不会forced/owner-subset退出。Root 已另开 continue；本包不增日、不改动作、不阻塞 R26。
+
+现有同一 MCP `ck3_query_battle_control_snapshot_v1` 已发布双方 ordered army、current/soft/hard、forced/winner/phase/day及 **selected army** flags/permission。已有结果和上述静态树足以继续当前有界交战；没有完整 AI 主动退出模型也能作自有策略。
+
+真正需要预测“败方将毁灭还是追击／何时正常终结”时，最小新增只读输入应接**同一 control 查询**，不新建 MCP、schema实现、flags 或门禁：读取两侧各自 side+C0/C1/C2，绑定第一 stored CArmy 的原生 `258AA10` 结果（带 full internal/public IDs、空集/读取失败区分），读取 current loaded int32 pursuit period `5C69B74` 与 `Combat+6E8/+6F0` 冻结 soft。现有 selected-player legaltrue 不能填另一侧 first-Army permission；selected skipfalse也不能填 enemy skip。`258C89D` 与 `258CAAF` 是这几个字段的确切消费者；先完成 same-frame paused query 后才依赖它们安排结果时点。此处仅列施工入口，没有改 DTO／schema 或实现 producer。
+
+通用 AI 主动退出意愿仍不能由上述 permission/readout 推出。其下一具体研究入口是 **自然产生**的 owned move command：复用已知 `.3` ordinary producer `1A1CF88→1A188B0(...,7)`、move apply `2969660→258B010` 和 existing command queue，将实际 full CUnit/Combat、owner、date/phase、目标/route/mode、producer return RVA 与 applied结果配对；只有 producer 确实在 active battle 读取并比较决策量，才继续上溯该**实际命中**caller的输入与候选排序。不再做全 EXE census，不把未闭合策略或 `.45` stock 默认作为游戏继续前置。
+
+外部证据包为 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-source-next-increments-v52/native-active-exit/`：`NATIVE-TREE.md` 保留提取前账本；三份 `EXE-*.json/.asm` 保存 exact bytes/span hashes；`SOURCE-PINS.json` 与 `STOCK-FACTORS.json` 固定源与安装 stock。状态保持 research/static branches，现有实机循环只保留协调者自己的原有限 credit。
