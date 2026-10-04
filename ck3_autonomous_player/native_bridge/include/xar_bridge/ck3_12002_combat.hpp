@@ -60,6 +60,12 @@ game::BattleControlNextRollBoundsSnapshot ReadSelectedCommanderNextRollBounds(
     const CombatBindings &, std::int32_t province_id, void *terrain,
     std::int32_t selected_character_id) noexcept;
 
+// Actual ongoing MAA counter census; caller supplies the same paused sample.
+// Copies battle Entry Q100000 counts and never invokes outgoing/counter writes.
+game::BattleControlCounterInputsV1 ReadActiveBattleCounterInputsV1(
+    const CombatBindings &, const void *actual_combat,
+    const game::BattleControlSnapshot &) noexcept;
+
 game::ReadCombatSimulationInputsResult ReadCombatSimulationInputs(
     const CombatBindings &bindings, const game::Snapshot &paused_scope,
     const game::CombatSimulationInputsRequest &request,

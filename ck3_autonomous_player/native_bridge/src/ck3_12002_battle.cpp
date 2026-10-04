@@ -567,6 +567,8 @@ bool ControlSample(const BattleBindings &b, const game::Snapshot &scope,
       !Retreat(b, scope, combat, army, out) ||
       At<std::uint8_t>(combat, kBattleDailyGuardOffset))
     return false;
+  out.active_counter_inputs_v1 =
+      ReadActiveBattleCounterInputsV1(b.commander_roll_context, combat, out);
   out.current_loss_inputs_v1 = CurrentLossInputs(b, combat, province, out);
   out.full_backing_inputs_v1 = FullBackingInputs(b, out);
   out.current_pursuit_inputs_v1 = CurrentPursuitInputs(b, combat, out);
